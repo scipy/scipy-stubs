@@ -57,7 +57,7 @@ mdformat = [
 lint = [
     {include-group = "extras"},
     {include-group = "mdformat"},
-    "ruff>=0.9.4",
+    "ruff>=0.9.6",
     "sp-repo-review[cli]>=2025.1.22",
 ]
 type = [
@@ -65,7 +65,7 @@ type = [
     {include-group = "ci"},
     {include-group = "codegen"},
     "basedmypy[faster-cache]>=2.9.1",
-    "basedpyright>=1.26.0",
+    "basedpyright>=1.27.1",
 ]
 dev = [
     {include-group = "lint"},
