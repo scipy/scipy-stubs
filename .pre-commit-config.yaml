@@ -48,12 +48,12 @@ repos:
           - mdformat-gfm-alerts
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.29.7
+    rev: typos-dict-v0.12.5
     hooks:
       - id: typos
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.6.0
+    rev: 0.6.1
     hooks:
       - id: uv-lock
 
