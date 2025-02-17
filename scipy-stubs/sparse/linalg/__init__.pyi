@@ -1,5 +1,16 @@
 from . import dsolve, eigen, interface, isolve, matfuncs
-from ._dsolve import MatrixRankWarning, SuperLU, factorized, spilu, splu, spsolve, spsolve_triangular, use_solver
+from ._dsolve import (
+    MatrixRankWarning,
+    SuperLU,
+    factorized,
+    is_sptriangular,
+    spbandwidth,
+    spilu,
+    splu,
+    spsolve,
+    spsolve_triangular,
+    use_solver,
+)
 from ._eigen import ArpackError, ArpackNoConvergence, eigs, eigsh, lobpcg, svds
 from ._expm_multiply import expm_multiply
 from ._interface import LinearOperator, aslinearoperator
@@ -32,6 +43,7 @@ __all__ = [
     "gmres",
     "interface",
     "inv",
+    "is_sptriangular",
     "isolve",
     "lgmres",
     "lobpcg",
@@ -43,6 +55,7 @@ __all__ = [
     "norm",
     "onenormest",
     "qmr",
+    "spbandwidth",
     "spilu",
     "splu",
     "spsolve",
