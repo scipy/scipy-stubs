@@ -3,8 +3,8 @@ from ._superlu import SuperLU
 from .linsolve import (
     MatrixRankWarning,
     factorized,
-    is_sptriangular as is_sptriangular,
-    spbandwidth as spbandwidth,
+    is_sptriangular,
+    spbandwidth,
     spilu,
     splu,
     spsolve,
@@ -12,4 +12,15 @@ from .linsolve import (
     use_solver,
 )
 
-__all__ = ["MatrixRankWarning", "SuperLU", "factorized", "spilu", "splu", "spsolve", "spsolve_triangular", "use_solver"]
+__all__ = [
+    "MatrixRankWarning",
+    "SuperLU",
+    "factorized",
+    "is_sptriangular",
+    "spbandwidth",
+    "spilu",
+    "splu",
+    "spsolve",
+    "spsolve_triangular",
+    "use_solver",
+]
