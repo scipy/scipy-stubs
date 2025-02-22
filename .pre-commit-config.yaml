@@ -39,6 +39,17 @@ repos:
     hooks:
       - id: markdownlint
 
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.29.9
+    hooks:
+      - id: typos
+
+  - repo: https://github.com/asottile/add-trailing-comma
+    rev: v3.1.0
+    hooks:
+      - id: add-trailing-comma
+        types_or: [python, pyi]
+
   - repo: https://github.com/executablebooks/mdformat
     rev: 0.7.22
     hooks:
@@ -46,11 +57,6 @@ repos:
         additional_dependencies:
           - mdformat-gfm
           - mdformat-gfm-alerts
-
-  - repo: https://github.com/crate-ci/typos
-    rev: v1.29.9
-    hooks:
-      - id: typos
 
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: 0.6.2
