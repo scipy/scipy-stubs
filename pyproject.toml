@@ -48,7 +48,6 @@ dependencies = ["optype>=0.9.1"]
 [dependency-groups]
 extras = ["scipy-stubs[scipy]"]
 ci = ["packaging>=24.2"]
-codegen = ["libcst>=1.6.0,<2"]
 mdformat = [
     "mdformat>=0.7.22",
     "mdformat-gfm>=0.4.1",
@@ -63,7 +62,6 @@ lint = [
 type = [
     {include-group = "extras"},
     {include-group = "ci"},
-    {include-group = "codegen"},
     "basedmypy[faster-cache]>=2.9.1",
     "basedpyright>=1.27.1",
 ]
@@ -84,8 +82,6 @@ packages = ["scipy-stubs"]
 [tool.poe.tasks.clean]
 cmd = """
 rm -rf
-    codegen/*.pyc
-    codegen/__pycache__
     scipy-stubs/**/*.pyc
     scipy-stubs/**/__pycache__
     scripts/*.pyc
@@ -109,28 +105,13 @@ uv run --no-editable
 """
 args = [{name = "modules", positional = true, multiple = true, default = "scipy"}]
 
-[tool.poe.tasks.codemod]
-cmd = """
-python -m libcst.tool
-    codemod
-    -x
-    --hide-progress
-    --include-stubs
-    codegen.mods.$name
-    $path
-"""
-args = [
-    {name = "name", positional = true, multiple = false, required = true},
-    {name = "path", positional = true, multiple = false, default = "scipy-stubs"},
-]
-
 
 [tool.typos.files]
 extend-exclude = ["*.pyi", ".mypyignore"]
 
 
 [tool.mypy]
-files = ["codegen/**/*.py", "scripts/**/*.py", "tests/**/*.py", "scipy-stubs/**/*.pyi"]
+files = ["scripts/**/*.py", "tests/**/*.py", "scipy-stubs/**/*.pyi"]
 exclude = ['^\.git$', '^\.ruff_cache$', '^\.tox$']
 python_version = "3.10"
 plugins = ["numpy.typing.mypy_plugin"]
@@ -144,7 +125,7 @@ enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 
 
 [tool.pyright]
-include = ["scipy-stubs", "codegen", "scripts", "tests"]
+include = ["scipy-stubs", "scripts", "tests"]
 ignore = [".venv"]
 venv = ".venv"
 venvPath = "."
@@ -182,16 +163,6 @@ reportInvalidStubStatement = true
 reportUnusedCallResult = true
 
 [[executionEnvironments]]
-root = "codegen"
-reportAny = true                       # based
-reportExplicitAny = true               # based
-reportInvalidStubStatement = true
-reportPrivateUsage = true
-reportUnreachable = true
-reportUnsafeMultipleInheritance = true # based
-reportUnusedCallResult = true
-
-[[executionEnvironments]]
 root = "tests"
 reportAny = true                       # based
 reportExplicitAny = true               # based
@@ -213,7 +184,7 @@ ignore = [
 
 
 [tool.ruff]
-src = ["scipy-stubs", "codegen", "scripts"]
+src = ["scipy-stubs", "scripts"]
 extend-exclude = [".venv", ".git", ".mypy_cache", ".tox"]
 force-exclude = true
 # https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
