@@ -986,14 +986,14 @@ def linregress(x: onp.ToFloatND, y: onp.ToFloatND, alternative: Alternative = "t
 @overload
 @deprecated(
     "Inference of the two sets of measurements from a single argument `x` is deprecated will result in an error in SciPy 1.16.0; "
-    "the sets must be specified separately as `x` and `y`."
+    "the sets must be specified separately as `x` and `y`.",
 )
 def linregress(x: onp.ToFloatND, y: None = None, alternative: Alternative = "two-sided") -> LinregressResult: ...
 
 #
 @deprecated(
     "`scipy.stats.find_repeats` is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `numpy.unique`/`numpy.unique_counts` instead."
+    "Please use `numpy.unique`/`numpy.unique_counts` instead.",
 )
 def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
 

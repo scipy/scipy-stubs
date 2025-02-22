@@ -164,5 +164,5 @@ class PosOnlySelf(_BaseMod):
             params=params.with_changes(
                 params=params.params[1:],
                 posonly_params=(self_param,),
-            )
+            ),
         )
