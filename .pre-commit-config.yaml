@@ -48,17 +48,17 @@ repos:
           - mdformat-gfm-alerts
 
   - repo: https://github.com/crate-ci/typos
-    rev: v1.29.7
+    rev: v1.29.9
     hooks:
       - id: typos
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.6.0
+    rev: 0.6.2
     hooks:
       - id: uv-lock
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.6
+    rev: v0.9.7
     hooks:
       - id: ruff
         args: [--fix, --show-fixes]
