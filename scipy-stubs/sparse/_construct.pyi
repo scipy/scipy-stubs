@@ -691,7 +691,10 @@ def hstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.A
 def hstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpArrayNonOut[np.float64]: ...
 @overload  # sparray, format: <default>, dtype: <complex>
 def hstack(
-    blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.AnyComplex128DType
+    blocks: Seq[_SpArray],
+    format: _FmtOut | None = None,
+    *,
+    dtype: onp.AnyComplex128DType,
 ) -> _SpArrayOut[np.complex128]: ...
 @overload  # sparray, format: <non-default>, dtype: <complex>
 def hstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpArrayNonOut[np.complex128]: ...
@@ -721,7 +724,10 @@ def hstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.A
 def hstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpMatrixNonOut[np.float64]: ...
 @overload  # spmatrix, format: <default>, dtype: <complex>
 def hstack(
-    blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.AnyComplex128DType
+    blocks: Seq[spmatrix],
+    format: _FmtOut | None = None,
+    *,
+    dtype: onp.AnyComplex128DType,
 ) -> _SpMatrixOut[np.complex128]: ...
 @overload  # spmatrix, format: <non-default>, dtype: <complex>
 def hstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpMatrixNonOut[np.complex128]: ...
@@ -753,7 +759,10 @@ def vstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.A
 def vstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpArrayNonOut[np.float64]: ...
 @overload  # sparray, format: <default>, dtype: <complex>
 def vstack(
-    blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.AnyComplex128DType
+    blocks: Seq[_SpArray],
+    format: _FmtOut | None = None,
+    *,
+    dtype: onp.AnyComplex128DType,
 ) -> _SpArrayOut[np.complex128]: ...
 @overload  # sparray, format: <non-default>, dtype: <complex>
 def vstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpArrayNonOut[np.complex128]: ...
@@ -783,7 +792,10 @@ def vstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.A
 def vstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpMatrixNonOut[np.float64]: ...
 @overload  # spmatrix, format: <default>, dtype: <complex>
 def vstack(
-    blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.AnyComplex128DType
+    blocks: Seq[spmatrix],
+    format: _FmtOut | None = None,
+    *,
+    dtype: onp.AnyComplex128DType,
 ) -> _SpMatrixOut[np.complex128]: ...
 @overload  # spmatrix, format: <non-default>, dtype: <complex>
 def vstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpMatrixNonOut[np.complex128]: ...

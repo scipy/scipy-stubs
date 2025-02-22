@@ -366,17 +366,17 @@ def obl_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> _f8_1d: ...
 #
 @deprecated(
     "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `scipy.special.legendre_p_all` instead."
+    "Please use `scipy.special.legendre_p_all` instead.",
 )
 def lpn(n: onp.ToInt, z: onp.ToComplex) -> onp.ArrayND[npc.inexact]: ...
 @deprecated(
     "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `scipy.special.assoc_legendre_p_all` instead."
+    "Please use `scipy.special.assoc_legendre_p_all` instead.",
 )
 def lpmn(m: onp.ToInt, n: onp.ToInt, z: _ToFloatOrND) -> _tuple2[_f8_nd]: ...
 @deprecated(
     "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `scipy.special.assoc_legendre_p_all` instead."
+    "Please use `scipy.special.assoc_legendre_p_all` instead.",
 )
 def clpmn(m: onp.ToInt, n: onp.ToInt, z: _ToComplexOrND, type: L[2, 3] = 3) -> _tuple2[_c8_nd]: ...
 
