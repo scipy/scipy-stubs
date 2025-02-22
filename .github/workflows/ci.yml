@@ -46,6 +46,9 @@ jobs:
           uv run ruff check --output-format=github
           uv run ruff format --check
 
+      - name: add-trailing-commas
+        run: uvx add-trailing-comma **/*.py **/*.pyi
+
   generate-matrix:
     name: Generate Test Matrix
     runs-on: ubuntu-latest
