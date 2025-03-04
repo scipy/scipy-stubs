@@ -29,6 +29,12 @@
             src="https://img.shields.io/github/license/scipy/scipy-stubs?style=flat"
         />
     </a>
+    <a href="https://github.com/scipy/scipy-stubs">
+        <img
+            alt="scipy-stubs - typed"
+            src="https://img.shields.io/pypi/types/scipy-stubs?color=blue&style=flat"
+        />
+    </a>
 </p>
 <p align="center">
     <a href="https://github.com/scipy/scipy-stubs/actions?query=workflow%3ACI">
