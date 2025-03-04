@@ -5,6 +5,7 @@ from typing_extensions import LiteralString
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+from numpy.polynomial._polybase import ABCPolyBase
 from scipy._typing import Falsy, Truthy
 from scipy.sparse.linalg import LinearOperator
 from ._hessian_update_strategy import HessianUpdateStrategy
@@ -26,7 +27,8 @@ _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 
 _RT = TypeVar("_RT")
-_Fun0D: TypeAlias = Callable[Concatenate[float, ...], _RT] | Callable[Concatenate[np.float64, ...], _RT]
+# NOTE: `ABCPolyBase` is required to work around https://github.com/scipy/scipy-stubs/issues/465
+_Fun0D: TypeAlias = Callable[Concatenate[float, ...], _RT] | Callable[Concatenate[np.float64, ...], _RT] | ABCPolyBase
 _Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], _RT]
 _Fun1Dp: TypeAlias = Callable[Concatenate[_Float1D, _Float1D, ...], _RT]
 
@@ -238,7 +240,7 @@ def minimize(
 @overload  # method="brent" or method="golden"
 def minimize_scalar(
     fun: _Fun0D[onp.ToFloat],
-    bracket: _ToBracket,
+    bracket: _ToBracket | None = None,
     bounds: None = None,
     args: _Args = (),
     method: Literal["brent", "golden"] | None = None,  # default: "brent"
