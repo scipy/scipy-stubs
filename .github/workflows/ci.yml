@@ -39,7 +39,6 @@ jobs:
         with:
           enable-cache: true
           python-version: "3.13"
-          version: latest
 
       - name: ruff
         run: |
