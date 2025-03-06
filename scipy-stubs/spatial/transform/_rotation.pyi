@@ -20,7 +20,7 @@ _RotAxisSeq: TypeAlias = L[
     "xyz", "xzy", "yxz", "yzx", "zxy", "zyx",
     "xyx", "xzx", "yxy", "yzy", "zxz", "zyz",
     "XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX",
-    "XYX", "XZX", "YXY", "YZY", "ZXZ", "ZYZ"
+    "XYX", "XZX", "YXY", "YZY", "ZXZ", "ZYZ",
 ]
 _RotAxis: TypeAlias = L["X", "Y", "Z"]
 
