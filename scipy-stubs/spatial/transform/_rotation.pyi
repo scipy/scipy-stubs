@@ -16,7 +16,12 @@ _Float2D3D: TypeAlias = _Float2D | _Float3D
 
 _RotOrder: TypeAlias = L["e", "extrinsic", "i", "intrinsic"]
 _RotGroup: TypeAlias = L["I", "O", "T", "D", "Dn", "C", "Cn"]
-_RotAxisSeq: TypeAlias = L["xyz", "xzy", "yzx", "yxz", "zxy", "zyx", "XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX"]
+_RotAxisSeq: TypeAlias = L[
+    "xyz", "xzy", "yxz", "yzx", "zxy", "zyx",
+    "xyx", "xzx", "yxy", "yzy", "zxz", "zyz",
+    "XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX",
+    "XYX", "XZX", "YXY", "YZY", "ZXZ", "ZYZ",
+]  # fmt: skip
 _RotAxis: TypeAlias = L["X", "Y", "Z"]
 
 _RotationT = TypeVar("_RotationT", bound=Rotation)
