@@ -18,13 +18,6 @@ commands = [
     ],
 ]
 
-[env.pre-commit]
-description = "pre-commit"
-skip_install = true
-deps = ["pre-commit-uv>=4.1.4"]
-allowlist_externals = ["pre-commit"]
-commands = [["pre-commit", "run", "--all-files"]]
-
 [env.lint]
 description = "lint"
 runner = "uv-venv-lock-runner"
