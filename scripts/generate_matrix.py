@@ -1,5 +1,4 @@
 # ruff: noqa: TRY003
-# mypy: disable-error-code="no-any-expr, no-any-decorated"
 
 import importlib.metadata
 import json

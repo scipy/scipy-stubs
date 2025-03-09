@@ -55,13 +55,13 @@ mdformat = [
 lint = [
     {include-group = "extras"},
     {include-group = "mdformat"},
-    "ruff>=0.9.9",
+    "ruff>=0.9.10",
     "sp-repo-review[cli]>=2025.1.22",
 ]
 type = [
     {include-group = "extras"},
     {include-group = "ci"},
-    "basedmypy[faster-cache]>=2.9.1",
+    "mypy[faster-cache]>=1.15.0",
     "basedpyright>=1.28.1",
 ]
 dev = [
@@ -112,7 +112,7 @@ extend-exclude = ["*.pyi", ".mypyignore"]
 [tool.mypy]
 files = ["scripts/**/*.py", "tests/**/*.py", "scipy-stubs/**/*.pyi"]
 exclude = ['^\.git$', '^\.ruff_cache$', '^\.tox$']
-python_version = "3.10"
+# python_version = "3.10"
 plugins = ["numpy.typing.mypy_plugin"]
 strict = true
 disable_bytearray_promotion = true

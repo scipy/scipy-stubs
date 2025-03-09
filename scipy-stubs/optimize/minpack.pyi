@@ -14,7 +14,7 @@ def zeros(
     like: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-class OptimizeResult(Any): ...  # type: ignore[no-subclass-any]
+class OptimizeResult(Any): ...  # type: ignore[misc]
 
 @deprecated("will be removed in SciPy v2.0.0")
 class OptimizeWarning(UserWarning): ...

@@ -11,7 +11,7 @@ from ._common import ConfidenceInterval
 __all__ = ["bootstrap", "monte_carlo_test", "permutation_test"]
 
 _FloatND: TypeAlias = float | np.float64 | onp.Array[Any, np.float64]
-_FloatNDT_co = TypeVar("_FloatNDT_co", bound=_FloatND, default=_FloatND, covariant=True)
+_FloatNDT = TypeVar("_FloatNDT", bound=_FloatND, default=Any)
 
 _BootstrapMethod: TypeAlias = Literal["percentile", "basic", "bca", "BCa"]
 _PermutationType: TypeAlias = Literal["independent", "samples", "pairings"]
@@ -25,26 +25,26 @@ class _RVSCallable(Protocol):
 ###
 
 @dataclass
-class PowerResult(Generic[_FloatNDT_co]):
-    power: _FloatNDT_co
-    pvalues: _FloatNDT_co
+class PowerResult(Generic[_FloatNDT]):
+    power: _FloatNDT
+    pvalues: _FloatNDT
 
 @dataclass
-class BootstrapResult(Generic[_FloatNDT_co]):
+class BootstrapResult(Generic[_FloatNDT]):
     confidence_interval: ConfidenceInterval
     bootstrap_distribution: onp.ArrayND[np.float64]
-    standard_error: _FloatNDT_co
+    standard_error: _FloatNDT
 
 @dataclass
-class PermutationTestResult(Generic[_FloatNDT_co]):
-    statistic: _FloatNDT_co
-    pvalue: _FloatNDT_co
+class PermutationTestResult(Generic[_FloatNDT]):
+    statistic: _FloatNDT
+    pvalue: _FloatNDT
     null_distribution: onp.ArrayND[np.float64]
 
 @dataclass
-class MonteCarloTestResult(Generic[_FloatNDT_co]):
-    statistic: _FloatNDT_co
-    pvalue: _FloatNDT_co
+class MonteCarloTestResult(Generic[_FloatNDT]):
+    statistic: _FloatNDT
+    pvalue: _FloatNDT
     null_distribution: onp.ArrayND[np.float64]
 
 @dataclass

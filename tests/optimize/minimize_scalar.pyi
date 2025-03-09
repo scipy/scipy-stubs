@@ -3,7 +3,7 @@ from typing_extensions import assert_type
 import numpy.polynomial as npp
 from scipy.optimize import minimize_scalar
 
-def f(x: float) -> float: ...
+def f(x: float, /) -> float: ...
 
 res = minimize_scalar(f)
 assert_type(res.success, bool)
