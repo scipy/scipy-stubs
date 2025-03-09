@@ -12,24 +12,18 @@ scipy\.fft\._pocketfft\..*
 # numpy re-export with wrong annotations on numpy<1.24
 scipy\.fftpack\.(_?helper\.)?fftfreq
 
-# accidental implicit exports of internal scipy machinery
+# namespace pollution
 scipy\._lib\.decorator\.(DEF|ArgSpec|FunctionMaker|__init__|append|dispatch_on|get_init|getargspec|init|n_args)
 scipy\.special\.libsf_error_state
 scipy\.stats\._rcont\.rcont
 
-# why is this even included in the wheels?
+# should this be packaged?
 scipy\.special\._precompute\..*
 
-# workarounds for mypy bugs
-scipy\.(_lib|integrate|stats)\.((_|\w)+\.)+__replace__  # `NamedTuple` on `python>=3.13`
-scipy\.sparse\.(\w+)\.warn  # all `if sys.version_info` branches are checked...?
-
-# annoying and useless __new__
+# useless __new__
 scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 
-# mypy fails recognize type-check-only ufunc subtypes as ufuncs
-# https://github.com/KotlinIsland/basedmypy/issues/815
-# https://github.com/KotlinIsland/basedmypy/issues/816
+# these require numpy/numtype to be released
 scipy\.stats\._qmvnt\.phi(nv)?
 scipy\.special\._basic\.digamma
 scipy\.special\._support_alternative_backends\.betaincc?
