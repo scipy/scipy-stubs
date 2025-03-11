@@ -68,9 +68,9 @@ class NearestNDInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
     def __call__(
         self,
         /,
-        *args: onp.ToFloatND,
+        *args: onp.ToFloat | onp.ToFloatND,
         **query_options: Unpack[_QueryOptions],
-    ) -> onp.Array[onp.AtLeast1D, _CT_co]: ...
+    ) -> onp.ArrayND[_SCT_co]: ...
 
 #
 @overload

@@ -70,7 +70,7 @@ class NdBSpline(Generic[_CT_co]):
     def __call__(
         self,
         /,
-        xi: onp.ToFloatND,
+        xi: onp.ToFloat | onp.ToFloatND,
         *,
         nu: onp.ToFloat1D | None = None,
         extrapolate: onp.ToBool | None = None,
