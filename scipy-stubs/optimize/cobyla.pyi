@@ -5,7 +5,7 @@ from typing_extensions import Any, deprecated
 __all__ = ["OptimizeResult", "fmin_cobyla"]
 
 @deprecated("will be removed in SciPy v2.0.0")
-class OptimizeResult(Any): ...  # type: ignore[misc]
+class OptimizeResult(Any): ...  # type: ignore[subclass-any]
 
 @deprecated("will be removed in SciPy v2.0.0")
 def fmin_cobyla(
