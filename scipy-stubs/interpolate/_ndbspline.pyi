@@ -1,5 +1,6 @@
 from collections.abc import Callable
-from typing import Any
+from typing import Any, Concatenate, Generic, TypeAlias, overload
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
@@ -8,25 +9,64 @@ from scipy.sparse import csr_array
 
 __all__ = ["NdBSpline"]
 
-class NdBSpline:
+###
+
+_ScalarT = TypeVar("_ScalarT", bound=np.generic)
+_CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
+
+_ToKnots: TypeAlias = tuple[onp.ToFloat1D, ...]
+_ToDegrees: TypeAlias = op.CanIndex | tuple[op.CanIndex, ...]
+
+_DesignMatrix: TypeAlias = csr_array[np.float64, tuple[int, int]]
+_SolverFunc: TypeAlias = Callable[
+    Concatenate[_DesignMatrix, onp.Array2D[np.float64], ...],
+    onp.ArrayND[_ScalarT],
+]
+
+###
+
+class NdBSpline(Generic[_CT_co]):
     c: onp.ArrayND[np.float64]
     extrapolate: bool
 
     @property
-    def k(self, /) -> int: ...
+    def k(self, /) -> tuple[np.int32, ...]: ...
     @property
-    def t(self, /) -> tuple[onp.Array1D[np.float64]]: ...
+    def t(self, /) -> tuple[onp.Array1D[np.float64], ...]: ...
 
     #
+    @overload
     def __init__(
-        self,
+        self: NdBSpline[np.float64],
         /,
-        t: tuple[onp.ToFloat1D, ...],
+        t: _ToKnots,
         c: onp.ToFloatND,
-        k: op.CanIndex | tuple[op.CanIndex, ...],
+        k: _ToDegrees,
         *,
         extrapolate: onp.ToBool | None = None,
     ) -> None: ...
+    @overload
+    def __init__(
+        self: NdBSpline[np.complex128],
+        /,
+        t: _ToKnots,
+        c: onp.ToJustComplexND,
+        k: _ToDegrees,
+        *,
+        extrapolate: onp.ToBool | None = None,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: NdBSpline[Any],
+        /,
+        t: _ToKnots,
+        c: onp.ToComplexND,
+        k: _ToDegrees,
+        *,
+        extrapolate: onp.ToBool | None = None,
+    ) -> None: ...
+
+    #
     def __call__(
         self,
         /,
@@ -34,23 +74,34 @@ class NdBSpline:
         *,
         nu: onp.ToFloat1D | None = None,
         extrapolate: onp.ToBool | None = None,
-    ) -> onp.ArrayND[np.floating[Any]]: ...
+    ) -> onp.ArrayND[_CT_co]: ...
 
     #
     @classmethod
     def design_matrix(
         cls,
         xvals: onp.ToFloat2D,
-        t: tuple[onp.ToFloat1D, ...],
-        k: op.CanIndex | tuple[op.CanIndex, ...],
+        t: _ToKnots,
+        k: _ToDegrees,
         extrapolate: onp.ToBool = True,
-    ) -> csr_array[np.float32 | np.float64, tuple[int, int]]: ...
+    ) -> _DesignMatrix: ...
 
+#
+@overload
 def make_ndbspl(
-    points: tuple[onp.ToFloat1D, ...],
+    points: _ToKnots,
     values: onp.ToFloatND,
-    k: op.CanIndex | tuple[op.CanIndex, ...] = 3,
+    k: _ToDegrees = 3,
     *,
-    solver: Callable[..., object] = ...,
+    solver: _SolverFunc[np.floating | np.integer] = ...,  # scipy.sparse.linalg.gcrotmk
     **solver_args: object,
-) -> NdBSpline: ...  # undocumented
+) -> NdBSpline[np.float64]: ...
+@overload
+def make_ndbspl(
+    points: _ToKnots,
+    values: onp.ToFloatND,
+    k: _ToDegrees = 3,
+    *,
+    solver: _SolverFunc[np.complexfloating],
+    **solver_args: object,
+) -> NdBSpline[np.complex128]: ...
