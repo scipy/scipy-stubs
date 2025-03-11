@@ -61,7 +61,7 @@ lint = [
 type = [
     {include-group = "extras"},
     {include-group = "ci"},
-    "mypy[faster-cache]>=1.15.0",
+    "basedmypy[faster-cache]>=2.10.0",
     "basedpyright>=1.28.1",
 ]
 dev = [
