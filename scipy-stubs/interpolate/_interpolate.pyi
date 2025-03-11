@@ -1,4 +1,4 @@
-from typing import Any, Final, Generic, Literal, TypeAlias
+from typing import Any, Final, Generic, Literal, TypeAlias, overload
 from typing_extensions import Never, Self, TypeVar, deprecated
 
 import numpy as np
@@ -8,7 +8,7 @@ from ._polyint import _Interpolator1D
 
 __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
 
-_CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
+_CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
 _ToAxis: TypeAlias = int | np.integer[Any]
 _Extrapolate: TypeAlias = Literal["periodic"] | bool
@@ -47,8 +47,7 @@ class interp2d:
         fill_value: object = ...,
     ) -> Never: ...
 
-@deprecated("legacy")
-class interp1d(_Interpolator1D):
+class interp1d(_Interpolator1D):  # legacy
     copy: bool
     bounds_error: bool
     axis: int
@@ -91,22 +90,48 @@ class _PPolyBase(Generic[_CT_co]):
     ) -> Self: ...
 
     #
+    @overload
     def __init__(
-        self,
+        self: _PPolyBase[np.float64],
+        /,
+        c: onp.ToFloatND,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: _PPolyBase[np.complex128],
+        /,
+        c: onp.ToJustComplexND,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: _PPolyBase[Any],
         /,
         c: onp.ToComplexND,
         x: onp.ToFloat1D,
         extrapolate: _Extrapolate | None = None,
         axis: _ToAxis = 0,
     ) -> None: ...
+
+    #
     def __call__(
         self,
         /,
-        x: onp.ToArrayND,
+        x: onp.ToFloat | onp.ToFloatND,
         nu: _ToAxis = 0,
         extrapolate: _Extrapolate | None = None,
     ) -> onp.Array[onp.AtLeast2D, _CT_co]: ...
-    def extend(self, /, c: onp.ToComplexND, x: onp.ToFloat1D) -> None: ...
+
+    #
+    @overload
+    def extend(self: _PPolyBase[np.float64], /, c: onp.ToFloatND, x: onp.ToFloat1D) -> None: ...
+    @overload
+    def extend(self: _PPolyBase[np.complex128], /, c: onp.ToComplexND, x: onp.ToFloat1D) -> None: ...
 
 class PPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
     @classmethod
@@ -128,25 +153,46 @@ class PPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
         y: onp.ToFloat = 0.0,
         discontinuity: onp.ToBool = True,
         extrapolate: _Extrapolate | None = None,
-    ) -> _CT_co | onp.ArrayND[_CT_co]: ...
+    ) -> onp.ArrayND[_CT_co]: ...
     def roots(
         self,
         /,
         discontinuity: onp.ToBool = True,
         extrapolate: _Extrapolate | None = None,
-    ) -> _CT_co | onp.ArrayND[_CT_co]: ...
+    ) -> onp.ArrayND[_CT_co]: ...
 
 class BPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
     @classmethod
     def from_power_basis(cls, pp: PPoly[_CT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
+
+    #
+    @overload
     @classmethod
     def from_derivatives(
         cls,
-        xi: onp.ToComplex1D,
-        yi: onp.ToComplexND,
+        xi: onp.ToFloat1D,
+        yi: onp.ToFloatND,
         orders: onp.ToInt | onp.ToInt1D | None = None,
         extrapolate: _Extrapolate | None = None,
     ) -> Self: ...
+    @overload
+    @classmethod
+    def from_derivatives(
+        cls,
+        xi: onp.ToFloat1D,
+        yi: onp.ToJustComplexND,
+        orders: onp.ToInt | onp.ToInt1D | None = None,
+        extrapolate: _Extrapolate | None = None,
+    ) -> BPoly[np.complex128]: ...
+    @overload
+    @classmethod
+    def from_derivatives(
+        cls,
+        xi: onp.ToFloat1D,
+        yi: onp.ToComplexND,
+        orders: onp.ToInt | onp.ToInt1D | None = None,
+        extrapolate: _Extrapolate | None = None,
+    ) -> BPoly[Any]: ...
 
     #
     def derivative(self, /, nu: _ToAxis = 1) -> Self: ...
@@ -160,19 +206,38 @@ class NdPPoly(Generic[_CT_co]):
     @classmethod
     def construct_fast(
         cls,
-        c: onp.ToComplexND,  # at least 2d
-        x: tuple[onp.ToFloat1D, ...],
+        c: onp.ArrayND[_CT_co],  # at least 2d
+        x: tuple[onp.ArrayND[np.float64], ...],
         extrapolate: _Extrapolate | None = None,
     ) -> Self: ...
 
     #
+    @overload
     def __init__(
-        self,
+        self: NdPPoly[np.float64],
+        /,
+        c: onp.ToFloatND,
+        x: tuple[onp.ToFloat1D, ...],
+        extrapolate: onp.ToBool | None = None,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: NdPPoly[np.complex128],
+        /,
+        c: onp.ToJustComplexND,
+        x: tuple[onp.ToFloat1D, ...],
+        extrapolate: onp.ToBool | None = None,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: NdPPoly[Any],
         /,
         c: onp.ToComplexND,
         x: tuple[onp.ToFloat1D, ...],
         extrapolate: onp.ToBool | None = None,
     ) -> None: ...
+
+    #
     def __call__(
         self,
         /,
@@ -180,8 +245,12 @@ class NdPPoly(Generic[_CT_co]):
         nu: tuple[_ToAxis, ...] | None = None,
         extrapolate: onp.ToBool | None = None,
     ) -> onp.ArrayND[_CT_co]: ...
+
+    #
     def derivative(self, /, nu: tuple[int, ...]) -> Self: ...
     def antiderivative(self, /, nu: tuple[int, ...]) -> Self: ...
+
+    #
     def integrate_1d(
         self,
         /,
@@ -190,6 +259,8 @@ class NdPPoly(Generic[_CT_co]):
         axis: op.CanIndex,
         extrapolate: onp.ToBool | None = None,
     ) -> Self | onp.ArrayND[_CT_co]: ...
+
+    #
     def integrate(
         self,
         /,
@@ -197,4 +268,5 @@ class NdPPoly(Generic[_CT_co]):
         extrapolate: onp.ToBool | None = None,
     ) -> onp.ArrayND[_CT_co]: ...
 
+#
 def lagrange(x: onp.ToComplex1D, w: onp.ToComplex1D) -> np.poly1d: ...

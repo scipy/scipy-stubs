@@ -1,4 +1,8 @@
+# ruff: noqa: ANN401
+
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
+
+from typing import Any
 from typing_extensions import deprecated
 
 from . import _bsplines, _fitpack2, _interpolate, _rgi
@@ -31,7 +35,7 @@ def make_interp_spline(
     bc_type: object = ...,
     axis: object = ...,
     check_finite: object = ...,
-) -> object: ...
+) -> Any: ...
 
 # _fitpack2
 
@@ -50,13 +54,13 @@ class NdPPoly(_interpolate.NdPPoly): ...
 class PPoly(_interpolate.PPoly): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-class interp1d(_interpolate.interp1d): ...  # pyright: ignore[reportDeprecated]
+class interp1d(_interpolate.interp1d): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class interp2d(_interpolate.interp2d): ...  # pyright: ignore[reportDeprecated]
 
 @deprecated("will be removed in SciPy v2.0.0")
-def lagrange(x: object, w: object) -> object: ...
+def lagrange(x: object, w: object) -> Any: ...
 
 # _rgi
 
@@ -71,4 +75,4 @@ def interpn(
     method: object = ...,
     bounds_error: object = ...,
     fill_value: object = ...,
-) -> object: ...
+) -> Any: ...
