@@ -9,10 +9,14 @@ from scipy.sparse import csr_array
 
 __all__ = ["BSpline", "make_interp_spline", "make_lsq_spline", "make_smoothing_spline"]
 
+###
+
 _Extrapolate: TypeAlias = Literal["periodic"] | bool
 _BCType: TypeAlias = Literal["not-a-knot", "natural", "clamped", "periodic"]
 _LSQMethod: TypeAlias = Literal["qr", "norm-eq"]
 
+# TODO(jorenham): Change bound to `float64 | complex128`
+# https://github.com/scipy/scipy-stubs/issues/474
 _SCT_co = TypeVar("_SCT_co", bound=np.floating[Any], default=np.floating[Any], covariant=True)
 
 ###
@@ -21,8 +25,8 @@ class BSpline(Generic[_SCT_co]):
     t: onp.Array1D[np.float64]
     c: onp.Array[onp.AtLeast1D, _SCT_co]
     k: int
-    extrapolate: _Extrapolate
     axis: int
+    extrapolate: _Extrapolate
 
     @property
     def tck(self, /) -> tuple[onp.Array1D[np.float64], onp.Array[onp.AtLeast1D, _SCT_co], int]: ...
@@ -37,25 +41,25 @@ class BSpline(Generic[_SCT_co]):
         extrapolate: _Extrapolate = True,
         axis: op.CanIndex = 0,
     ) -> None: ...
-    def __call__(self, /, x: onp.ToFloatND, nu: int = 0, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_SCT_co]: ...
+
+    #
+    def __call__(
+        self,
+        /,
+        x: onp.ToFloat | onp.ToFloatND,
+        nu: int = 0,
+        extrapolate: _Extrapolate | None = None,
+    ) -> onp.ArrayND[_SCT_co]: ...
 
     #
     def derivative(self, /, nu: int = 1) -> Self: ...
     def antiderivative(self, /, nu: int = 1) -> Self: ...
-    def integrate(self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_SCT_co]: ...
     def insert_knot(self, /, x: onp.ToFloat, m: op.CanIndex = 1) -> Self: ...
+    def integrate(self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_SCT_co]: ...
 
     #
     @classmethod
     def basis_element(cls, t: onp.ToFloat1D, extrapolate: _Extrapolate = True) -> Self: ...
-    @classmethod
-    def design_matrix(
-        cls,
-        x: onp.ToFloat1D,
-        t: onp.ToFloat1D,
-        k: op.CanIndex,
-        extrapolate: _Extrapolate = False,
-    ) -> csr_array: ...
     @classmethod
     def from_power_basis(cls, pp: CubicSpline, bc_type: _BCType = "not-a-knot") -> Self: ...
     @classmethod
@@ -67,6 +71,14 @@ class BSpline(Generic[_SCT_co]):
         extrapolate: _Extrapolate = True,
         axis: int = 0,
     ) -> Self: ...
+    @classmethod
+    def design_matrix(
+        cls,
+        x: onp.ToFloat1D,
+        t: onp.ToFloat1D,
+        k: op.CanIndex,
+        extrapolate: _Extrapolate = False,
+    ) -> csr_array[np.float64, tuple[int, int]]: ...
 
 #
 def make_interp_spline(
