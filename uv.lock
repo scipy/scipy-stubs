@@ -528,7 +528,7 @@ wheels = [
 
 [[package]]
 name = "scipy-stubs"
-version = "1.15.2.1.dev0"
+version = "1.15.2.1"
 source = { editable = "." }
 dependencies = [
     { name = "optype" },
