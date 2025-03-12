@@ -125,7 +125,7 @@ class _PPolyBase(Generic[_CT_co]):
         x: onp.ToFloat | onp.ToFloatND,
         nu: _ToAxis = 0,
         extrapolate: _Extrapolate | None = None,
-    ) -> onp.Array[onp.AtLeast2D, _CT_co]: ...
+    ) -> onp.ArrayND[_CT_co]: ...
 
     #
     @overload
@@ -241,7 +241,7 @@ class NdPPoly(Generic[_CT_co]):
     def __call__(
         self,
         /,
-        x: onp.ToFloatND,
+        x: onp.ToFloat | onp.ToFloatND,
         nu: tuple[_ToAxis, ...] | None = None,
         extrapolate: onp.ToBool | None = None,
     ) -> onp.ArrayND[_CT_co]: ...
