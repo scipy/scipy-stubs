@@ -1,4 +1,4 @@
-from typing import Generic, Literal, TypeAlias, TypedDict, overload
+from typing import Any, Generic, Literal, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar, Unpack, override
 
 import numpy as np
@@ -8,8 +8,14 @@ from ._interpnd import CloughTocher2DInterpolator, LinearNDInterpolator, NDInter
 
 __all__ = ["CloughTocher2DInterpolator", "LinearNDInterpolator", "NearestNDInterpolator", "griddata"]
 
-_SCT_co = TypeVar("_SCT_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
+###
 
+_CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
+
+_Method: TypeAlias = Literal["nearest", "linear", "cubic"]
+_ToXi: TypeAlias = onp.ToFloat2D | tuple[onp.ToFloat1D | onp.ToFloat2D, ...]
+
+@type_check_only
 class _TreeOptions(TypedDict, total=False):
     leafsize: onp.ToJustInt
     compact_nodes: onp.ToBool
@@ -17,17 +23,16 @@ class _TreeOptions(TypedDict, total=False):
     balanced_tree: onp.ToBool
     boxsize: onp.ToFloatND | None
 
+@type_check_only
 class _QueryOptions(TypedDict, total=False):
     eps: onp.ToFloat
     p: onp.ToFloat
     distance_upper_bound: onp.ToFloat
     workers: int
 
-_Method: TypeAlias = Literal["nearest", "linear", "cubic"]
-
 ###
 
-class NearestNDInterpolator(NDInterpolatorBase[_SCT_co], Generic[_SCT_co]):
+class NearestNDInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
     tree: cKDTree
 
     @overload
@@ -41,21 +46,38 @@ class NearestNDInterpolator(NDInterpolatorBase[_SCT_co], Generic[_SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self,
+        self: NearestNDInterpolator[np.complex128],
+        /,
+        x: onp.ToFloat2D,
+        y: onp.ToJustComplex1D,
+        rescale: bool = False,
+        tree_options: _TreeOptions | None = None,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: NearestNDInterpolator[Any],
         /,
         x: onp.ToFloat2D,
         y: onp.ToComplex1D,
         rescale: bool = False,
         tree_options: _TreeOptions | None = None,
     ) -> None: ...
-    @override
-    def __call__(self, /, *args: onp.ToFloatND, **query_options: Unpack[_QueryOptions]) -> onp.Array[onp.AtLeast1D, _SCT_co]: ...
 
+    #
+    @override
+    def __call__(
+        self,
+        /,
+        *args: onp.ToFloatND,
+        **query_options: Unpack[_QueryOptions],
+    ) -> onp.Array[onp.AtLeast1D, _CT_co]: ...
+
+#
 @overload
 def griddata(
     points: onp.ToFloat1D | onp.ToFloat2D,
     values: onp.ToFloat1D,
-    xi: onp.ToFloat2D | tuple[onp.ToFloat1D | onp.ToFloat2D, ...],
+    xi: _ToXi,
     method: _Method = "linear",
     fill_value: onp.ToFloat = ...,  # np.nan
     rescale: onp.ToBool = False,
@@ -63,9 +85,18 @@ def griddata(
 @overload
 def griddata(
     points: onp.ToFloat1D | onp.ToFloat2D,
-    values: onp.ToComplex1D,
-    xi: onp.ToFloat2D | tuple[onp.ToFloat1D | onp.ToFloat2D, ...],
+    values: onp.ToJustComplex1D,
+    xi: _ToXi,
     method: _Method = "linear",
     fill_value: onp.ToComplex = ...,  # np.nan
     rescale: onp.ToBool = False,
-) -> onp.Array[onp.AtLeast1D, np.float64 | np.complex128]: ...
+) -> onp.Array[onp.AtLeast1D, np.complex128]: ...
+@overload
+def griddata(
+    points: onp.ToFloat1D | onp.ToFloat2D,
+    values: onp.ToComplex1D,
+    xi: _ToXi,
+    method: _Method = "linear",
+    fill_value: onp.ToComplex = ...,  # np.nan
+    rescale: onp.ToBool = False,
+) -> onp.Array[onp.AtLeast1D, Any]: ...

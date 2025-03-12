@@ -79,6 +79,14 @@ def krogh_interpolate(
 @overload
 def krogh_interpolate(
     xi: onp.ToFloat1D,
+    yi: onp.ToJustComplexND,
+    x: onp.ToFloat | onp.ToFloat1D,
+    der: onp.ToJustInt | onp.ToJustInt1D = 0,
+    axis: int = 0,
+) -> _ComplexND: ...
+@overload
+def krogh_interpolate(
+    xi: onp.ToFloat1D,
     yi: onp.ToComplexND,
     x: onp.ToFloat | onp.ToFloat1D,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
@@ -99,19 +107,59 @@ def approximate_taylor_polynomial(
 def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToFloatND,
-    x: onp.ToFloat | onp.ToFloat1D,
+    x: onp.ToFloat,
     axis: int = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
     rng: ToRNG = None,
-) -> np.float64 | _FloatND: ...
+) -> np.float64: ...
+@overload
+def barycentric_interpolate(
+    xi: onp.ToFloat1D,
+    yi: onp.ToFloatND,
+    x: onp.ToFloat1D,
+    axis: int = 0,
+    *,
+    der: onp.ToJustInt | onp.ToJustInt1D = 0,
+    rng: ToRNG = None,
+) -> _FloatND: ...
+@overload
+def barycentric_interpolate(
+    xi: onp.ToFloat1D,
+    yi: onp.ToJustComplexND,
+    x: onp.ToFloat,
+    axis: int = 0,
+    *,
+    der: onp.ToJustInt | onp.ToJustInt1D = 0,
+    rng: ToRNG = None,
+) -> np.complex128: ...
+@overload
+def barycentric_interpolate(
+    xi: onp.ToFloat1D,
+    yi: onp.ToJustComplexND,
+    x: onp.ToFloat1D,
+    axis: int = 0,
+    *,
+    der: onp.ToJustInt | onp.ToJustInt1D = 0,
+    rng: ToRNG = None,
+) -> _ComplexND: ...
 @overload
 def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToComplexND,
-    x: onp.ToFloat | onp.ToFloat1D,
+    x: onp.ToFloat,
     axis: int = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
     rng: ToRNG = None,
-) -> np.float64 | np.complex128 | _FloatND | _ComplexND: ...
+) -> np.float64 | np.complex128: ...
+@overload
+def barycentric_interpolate(
+    xi: onp.ToFloat1D,
+    yi: onp.ToComplexND,
+    x: onp.ToFloat1D,
+    axis: int = 0,
+    *,
+    der: onp.ToJustInt | onp.ToJustInt1D = 0,
+    rng: ToRNG = None,
+) -> _FloatND | _ComplexND: ...
