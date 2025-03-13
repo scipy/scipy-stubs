@@ -111,16 +111,22 @@ extend-exclude = ["*.pyi", ".mypyignore"]
 
 [tool.mypy]
 files = ["scripts/**/*.py", "tests/**/*.py", "scipy-stubs/**/*.pyi"]
-exclude = ['^\.git$', '^\.ruff_cache$', '^\.tox$']
-# python_version = "3.10"
-plugins = ["numpy.typing.mypy_plugin"]
 strict = true
+strict_bytes = true
+
+enable_error_code = [
+    "ignore-without-code",
+    "redundant-expr",
+    "truthy-bool",
+]
+disallow_any_explicit = false                                                           # no other way to type e.g. `float64 <: number[Any]`
+warn_unreachable = false
+warn_unused_ignores = true
+# basedmypy/mypy compat
+disallow_subclassing_any = false
+# https://github.com/python/mypy/issues/18744
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
-warn_unreachable = false
-warn_unused_ignores = false
-disallow_any_explicit = false                                                           # no other way to type e.g. `float64 <: number[Any]`
-enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 
 
 [tool.pyright]
