@@ -1,4 +1,4 @@
-# mypy: disable-error-code="explicit-override"
+# mypy: disable-error-code="override, explicit-override"
 
 import abc
 from collections.abc import Callable, Mapping, Sequence, Set as AbstractSet
@@ -124,9 +124,9 @@ class _SimpleDomain(_Domain, metaclass=abc.ABCMeta):
     @override
     def __str__(self, /) -> str: ...  # noqa: PYI029
     @override
-    def get_numerical_endpoints(self, /, parameter_values: _ParamValues) -> _2D[onp.ArrayND[_OutFloat]]: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def get_numerical_endpoints(self, /, parameter_values: _ParamValues) -> _2D[onp.ArrayND[_OutFloat]]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
-    def contains(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def contains(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
         /,
         item: onp.ArrayND[_Int | _Float],
@@ -138,7 +138,7 @@ class _SimpleDomain(_Domain, metaclass=abc.ABCMeta):
 
 class _RealDomain(_SimpleDomain):
     @override
-    def draw(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def draw(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
         /,
         n: int,
@@ -183,7 +183,7 @@ class _Parameter(abc.ABC, Generic[_RealT_co]):
     ) -> onp.ArrayND[_RealT_co]: ...
 
 class _RealParameter(_Parameter[_FloatT_co], Generic[_FloatT_co]):
-    @overload  # type: ignore[override]
+    @overload
     def validate(self, /, arr: onp.ToFloat, parameter_values: _ParamValues) -> _ValidateOut0D[_FloatT_co]: ...
     @overload
     def validate(self, /, arr: onp.ToFloatND, parameter_values: _ParamValues) -> _ValidateOutND[_FloatT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
@@ -538,7 +538,7 @@ class Mixture(_BaseDistribution[_FloatT_co, _0D], Generic[_FloatT_co]):
     def __init__(self, /, components: Sequence[_CDist0[_FloatT_co]], *, weights: onp.ToFloat1D | None = None) -> None: ...
     #
     @override
-    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> _OutFloat: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> _OutFloat: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
 ###
 

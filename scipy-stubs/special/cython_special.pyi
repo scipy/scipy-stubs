@@ -1,6 +1,6 @@
 from types import CodeType
-from typing import Final, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
-from typing_extensions import CapsuleType, LiteralString, Never, ReadOnly
+from typing import Any, Final, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
+from typing_extensions import CapsuleType, LiteralString, ReadOnly
 
 import numpy as np
 
@@ -17,7 +17,7 @@ class _BaseCythonFunctionOrMethod(Protocol):
     __qualname__: str  # cannot be `LiteralString` (blame typeshed)
     __module__: str  # cannot be `Literal["scipy.special.cython_special"]` (blame typeshed)
 
-    __annotations__: dict[str, Never]  # type: ignore[assignment]
+    __annotations__: dict[str, Any]
     __defaults__: tuple[()] | tuple[Literal[0]] | None
     __kwdefaults__: None  # kw-only params aren't used
 
