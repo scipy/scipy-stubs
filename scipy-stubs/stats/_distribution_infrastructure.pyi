@@ -1,5 +1,4 @@
 # mypy: disable-error-code="explicit-override"
-# pyright: reportUnannotatedClassAttribute=false
 
 import abc
 from collections.abc import Callable, Mapping, Sequence, Set as AbstractSet
