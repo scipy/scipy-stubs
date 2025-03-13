@@ -1,5 +1,4 @@
 # mypy: disable-error-code="misc"
-# pyright: reportUnannotatedClassAttribute=false
 
 import abc
 from collections.abc import Iterator, Sequence

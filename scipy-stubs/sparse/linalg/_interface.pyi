@@ -1,6 +1,4 @@
 # mypy: disable-error-code="override"
-# pyright: reportUnannotatedClassAttribute=false
-# pyright: reportOverlappingOverload=false
 
 from collections.abc import Callable, Iterable
 from typing import Any, ClassVar, Final, Generic, Literal, Protocol, TypeAlias, final, overload, type_check_only

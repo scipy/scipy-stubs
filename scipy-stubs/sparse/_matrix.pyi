@@ -1,5 +1,3 @@
-# pyright: reportUnannotatedClassAttribute=false
-
 # needed (once) for `numpy>=2.2.0`
 # mypy: disable-error-code="overload-overlap"
 
