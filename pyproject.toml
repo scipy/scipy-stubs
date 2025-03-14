@@ -110,7 +110,6 @@ extend-exclude = ["*.pyi", ".mypyignore"]
 
 
 [tool.mypy]
-files = ["scripts/**/*.py", "tests/**/*.py", "scipy-stubs/**/*.pyi"]
 strict = true
 strict_bytes = true
 
