@@ -97,12 +97,12 @@ jobs:
 
       - name: basedpyright
         run: >
-          uv run --with="numpy==${{ matrix.numpy }}"
+          uv run --no-group=lint --with="numpy==${{ matrix.numpy }}" --no-editable
           basedpyright
 
       - name: basedmypy
         run: >
-          uv run --with="numpy==${{ matrix.numpy }}"
+          uv run --no-group=lint --with="numpy==${{ matrix.numpy }}" --no-editable
           mypy
           --tb
           --hide-error-context
@@ -111,7 +111,49 @@ jobs:
 
       - name: stubtest
         run: >
-          uv run --with="numpy==${{ matrix.numpy }}" --no-editable
+          uv run --no-group=lint --with="numpy==${{ matrix.numpy }}" --no-editable
+          stubtest
+          --tb
+          --ignore-unused-allowlist
+          --allowlist=.mypyignore
+          --mypy-config-file=pyproject.toml
+          scipy
+
+  typetest-numtype:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: setup uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          python-version: ${{ matrix.python }}
+
+      - name: basedpyright
+        run: >
+          uv run --no-group=lint --all-extras --no-editable
+          basedpyright
+
+      - name: basedmypy
+        run: >
+          uv run --no-group=lint --all-extras --no-editable
+          mypy
+          --tb
+          --hide-error-context
+          --hide-error-code-links
+          .
+
+      - name: stubtest
+        run: >
+          uv run --no-group=lint --all-extras --no-editable
           stubtest
           --tb
           --ignore-unused-allowlist
