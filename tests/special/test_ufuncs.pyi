@@ -1,4 +1,4 @@
-from typing import Any, Literal as L, TypeAlias
+from typing import Literal as L, TypeAlias
 from typing_extensions import assert_type
 
 import numpy as np
@@ -11,8 +11,8 @@ _Complex64ND: TypeAlias = onp.ArrayND[np.complex64]
 _Complex128ND: TypeAlias = onp.ArrayND[np.complex128]
 
 _b1: np.bool_
-_i: np.integer[Any]
-_f: np.floating[Any]
+_i: np.unsignedinteger | np.signedinteger
+_f: np.floating
 _f2: np.float16
 _f4: np.float32
 _f8: np.float64
