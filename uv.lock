@@ -536,11 +536,13 @@ name = "scipy-stubs"
 version = "1.15.2.2.dev0"
 source = { editable = "." }
 dependencies = [
-    { name = "numtype" },
     { name = "optype" },
 ]
 
 [package.optional-dependencies]
+numtype = [
+    { name = "numtype" },
+]
 scipy = [
     { name = "scipy" },
 ]
@@ -571,11 +573,6 @@ lint = [
     { name = "scipy-stubs", extra = ["scipy"] },
     { name = "sp-repo-review", extra = ["cli"] },
 ]
-mdformat = [
-    { name = "mdformat" },
-    { name = "mdformat-gfm" },
-    { name = "mdformat-gfm-alerts" },
-]
 type = [
     { name = "basedmypy", extra = ["faster-cache"] },
     { name = "basedpyright" },
@@ -585,11 +582,11 @@ type = [
 
 [package.metadata]
 requires-dist = [
-    { name = "numtype", git = "https://github.com/numpy/numtype?rev=e4c738806df01f86feb5764421d8c81d9edd8cca" },
+    { name = "numtype", marker = "extra == 'numtype'", git = "https://github.com/numpy/numtype?rev=e4c738806df01f86feb5764421d8c81d9edd8cca" },
     { name = "optype", specifier = ">=0.9.2" },
     { name = "scipy", marker = "extra == 'scipy'", specifier = ">=1.15.2,<1.16" },
 ]
-provides-extras = ["scipy"]
+provides-extras = ["scipy", "numtype"]
 
 [package.metadata.requires-dev]
 ci = [{ name = "packaging", specifier = ">=24.2" }]
@@ -612,11 +609,6 @@ lint = [
     { name = "ruff", specifier = ">=0.11.0" },
     { name = "scipy-stubs", extras = ["scipy"] },
     { name = "sp-repo-review", extras = ["cli"], specifier = ">=2025.1.22" },
-]
-mdformat = [
-    { name = "mdformat", specifier = ">=0.7.22" },
-    { name = "mdformat-gfm", specifier = ">=0.4.1" },
-    { name = "mdformat-gfm-alerts", specifier = ">=1.0.1" },
 ]
 type = [
     { name = "basedmypy", extras = ["faster-cache"], specifier = ">=2.10.0" },
