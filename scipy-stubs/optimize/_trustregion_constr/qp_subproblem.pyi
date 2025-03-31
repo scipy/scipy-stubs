@@ -19,17 +19,17 @@ __all__ = [
 ]
 
 _ScalarB1: TypeAlias = bool | np.bool_
-_ScalarF8: TypeAlias = float | np.float64
+_ScalarF8: TypeAlias = float | int | bool | np.float64
 _VectorF8: TypeAlias = onp.Array1D[np.float64]
 
 _ScalarInt_co: TypeAlias = np.integer[Any]
 _ScalarFloat_co: TypeAlias = np.floating[Any] | _ScalarInt_co
 
-_ScalarLikeInt_co: TypeAlias = int | _ScalarInt_co
-_ScalarLikeFloat_co: TypeAlias = float | _ScalarFloat_co
+_ScalarLikeInt_co: TypeAlias = int | bool | _ScalarInt_co
+_ScalarLikeFloat_co: TypeAlias = float | int | bool | _ScalarFloat_co
 _VectorLikeFloat_co: TypeAlias = Sequence[_ScalarLikeFloat_co] | onp.CanArray1D[_ScalarFloat_co]
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...])
 _SCT_float = TypeVar("_SCT_float", bound=_ScalarFloat_co)
 
 _SparseArray: TypeAlias = sparray | spmatrix
@@ -40,7 +40,7 @@ class _SphereInfoDict(TypedDict):
     intersect: bool
 
 class _ProjectedCGDict(TypedDict):
-    niter: int
+    niter: int | bool
     stop_cond: Literal[1, 2, 3, 4]
     hits_boundary: bool
     allvecs: NotRequired[Sequence[_VectorF8]]

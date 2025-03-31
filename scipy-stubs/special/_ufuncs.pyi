@@ -325,8 +325,8 @@ _CoFloat64ND: TypeAlias = onp.ArrayND[_CoFloat64]
 _CoComplex128ND: TypeAlias = onp.ArrayND[_CoComplex128]
 
 _SubFloat: TypeAlias = _Float16 | _CoInt  # anything "below" float32 | float64 that isn't float32 | float64
-_ToSubFloat: TypeAlias = op.JustFloat | int | _SubFloat  # does not overlap with float32 | float64
-_ToSubFloatND: TypeAlias = _ToND[_SubFloat, op.JustFloat | int]
+_ToSubFloat: TypeAlias = op.JustFloat | int | bool | _SubFloat  # does not overlap with float32 | float64
+_ToSubFloatND: TypeAlias = _ToND[_SubFloat, op.JustFloat | int | bool]
 
 _ToSubComplex: TypeAlias = op.JustComplex | _ToSubFloat  # does not overlap with complex64 | complex128
 
@@ -334,13 +334,13 @@ _CoT = TypeVar("_CoT", bound=np.generic)
 _ToT = TypeVar("_ToT")
 _ToND: TypeAlias = onp.CanArrayND[_CoT] | onp.SequenceND[onp.CanArrayND[_CoT]] | onp.SequenceND[_ToT]
 
-_ToFloat32 = TypeAliasType("_ToFloat32", int | _Float32 | _SubFloat)
-_ToFloat64 = TypeAliasType("_ToFloat64", float | _CoFloat64)
+_ToFloat32 = TypeAliasType("_ToFloat32", int | bool | _Float32 | _SubFloat)
+_ToFloat64 = TypeAliasType("_ToFloat64", float | int | bool | _CoFloat64)
 _ToFloat64ND = TypeAliasType("_ToFloat64ND", _ToND[_CoFloat64, _ToFloat64])
 _ToFloat64_D: TypeAlias = _ToFloat64 | _ToFloat64ND
 
 _ToComplex64 = TypeAliasType("_ToComplex64", _Complex64 | _ToFloat32)
-_ToComplex128 = TypeAliasType("_ToComplex128", complex | _CoComplex128)
+_ToComplex128 = TypeAliasType("_ToComplex128", complex | float | int | bool | _CoComplex128)
 _ToComplex128ND = TypeAliasType("_ToComplex128ND", _ToND[_CoComplex128, _ToComplex128])
 _ToComplex128_D: TypeAlias = _ToComplex128 | _ToComplex128ND
 
@@ -1225,7 +1225,7 @@ class _UFunc21c1(_UFuncWithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Gene
     def __call__(self, a: _ToFloat64_D, b: _ToComplex128_D, /, out: _Out1[_OutT], **kw: Unpack[_Kw21c1]) -> _OutT: ...
     #
     @override
-    @deprecated("Casting complex values to real discards the imaginary part.", category=ComplexWarning)  # pyright: ignore[reportUnknownArgumentType]
+    @deprecated("Casting complex | float | int | bool values to real discards the imaginary part.", category=ComplexWarning)  # pyright: ignore[reportUnknownArgumentType]
     def at(self, a: _CoFloat64ND, indices: _Indices, b: _ToFloat64ND, /) -> None: ...
 
     #

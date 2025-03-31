@@ -12,9 +12,9 @@ class _VoronoiPlotKwargs(TypedDict, total=False):
     show_points: bool
     show_vertices: bool
     line_colors: str
-    line_width: float
-    line_alpha: float
-    point_size: float
+    line_width: float | int | bool
+    line_alpha: float | int | bool
+    point_size: float | int | bool
 
 def delaunay_plot_2d(tri: Delaunay, ax: _Axes | None = None) -> _Figure: ...
 def convex_hull_plot_2d(hull: ConvexHull, ax: _Axes | None = None) -> _Figure: ...

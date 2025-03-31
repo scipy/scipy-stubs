@@ -47,6 +47,6 @@ class LinearNDInterpolator(_interpnd.LinearNDInterpolator): ...
 def estimate_gradients_2d_global(
     tri: DelaunayInfo_t,
     y: onp.ToComplex1D | onp.ToComplex2D,
-    maxiter: int = 400,
-    tol: float = 1e-6,
+    maxiter: int | bool = 400,
+    tol: float | int | bool = 1e-6,
 ) -> onp.Array3D[np.float64] | onp.Array3D[np.complex128]: ...

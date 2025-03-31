@@ -15,18 +15,18 @@ class levy_stable_gen(rv_continuous):
     parameterization: Literal["S0", "S1"]
     pdf_default_method: Literal["piecewise", "best", "zolotarev", "dni", "quadrature", "fft-simpson"]
     cdf_default_method: Literal["piecewise", "fft-simpson"]
-    quad_eps: float
-    piecewise_x_tol_near_zeta: float
-    piecewise_alpha_tol_near_one: float
-    pdf_fft_min_points_threshold: float | None
-    pdf_fft_grid_spacing: float
-    pdf_fft_n_points_two_power: float | None
-    pdf_fft_interpolation_level: int
-    pdf_fft_interpolation_degree: int
+    quad_eps: float | int | bool
+    piecewise_x_tol_near_zeta: float | int | bool
+    piecewise_alpha_tol_near_one: float | int | bool
+    pdf_fft_min_points_threshold: float | int | bool | None
+    pdf_fft_grid_spacing: float | int | bool
+    pdf_fft_n_points_two_power: float | int | bool | None
+    pdf_fft_interpolation_level: int | bool
+    pdf_fft_interpolation_degree: int | bool
 
 def pdf_from_cf_with_fft(
-    cf: Callable[[float], complex],
-    h: float = 0.01,
-    q: int = 9,
-    level: int = 3,
+    cf: Callable[[float | int | bool], complex | float | int | bool],
+    h: float | int | bool = 0.01,
+    q: int | bool = 9,
+    level: int | bool = 3,
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...

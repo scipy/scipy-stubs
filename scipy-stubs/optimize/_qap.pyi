@@ -28,8 +28,8 @@ QUADRATIC_ASSIGNMENT_METHODS: Final = ["faq", "2opt"]
 
 class OptimizeResult(_OptimizeResult):
     col_ind: onp.Array1D[np.intp]
-    fun: float | np.float64
-    nit: int
+    fun: float | int | bool | np.float64
+    nit: int | bool
 
 @overload
 def quadratic_assignment(

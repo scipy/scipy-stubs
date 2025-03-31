@@ -21,7 +21,7 @@ class _FortranFunction_mvnun:
         maxpts: onp.ToInt = ...,
         abseps: onp.ToFloat = 1e-6,
         releps: onp.ToFloat = 1e-6,
-    ) -> tuple[float, int]: ...
+    ) -> tuple[float | int | bool, int | bool]: ...
 
 @type_check_only
 class _FortranFunction_mvnun_weighted:
@@ -35,7 +35,7 @@ class _FortranFunction_mvnun_weighted:
         maxpts: onp.ToInt = ...,
         abseps: onp.ToFloat = 1e-6,
         releps: onp.ToFloat = 1e-6,
-    ) -> tuple[float, int]: ...
+    ) -> tuple[float | int | bool, int | bool]: ...
 
 @type_check_only
 class _FortranFunction_mvndst:
@@ -48,7 +48,7 @@ class _FortranFunction_mvndst:
         maxpts: onp.ToInt = 2000,
         abseps: onp.ToFloat = 1e-6,
         releps: onp.ToFloat = 1e-6,
-    ) -> tuple[float, float, int]: ...
+    ) -> tuple[float | int | bool, float | int | bool, int | bool]: ...
 
 __f2py_numpy_version__: Final[LiteralString] = ...
 

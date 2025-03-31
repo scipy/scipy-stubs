@@ -53,7 +53,7 @@ __all__ = [
 ]
 
 # NOTE: explicit covariance can't be used, because shape types are invariant in `numpy<2.1`
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...], default=tuple[int | bool, ...])
 
 @type_check_only
 class _CodecTemplateValue(TypedDict):

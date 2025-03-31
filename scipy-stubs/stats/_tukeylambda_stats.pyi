@@ -4,7 +4,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...])
 
 @overload
 def tukeylambda_variance(lam: onp.ToFloat) -> onp.Array0D[np.float64]: ...

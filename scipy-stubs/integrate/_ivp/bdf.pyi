@@ -25,11 +25,11 @@ MIN_FACTOR: Final = 0.2
 MAX_FACTOR: Final = 10
 
 class BDF(OdeSolver, Generic[_SCT_co]):
-    max_step: float
-    h_abs: float
-    h_abs_old: float | None
+    max_step: float | int | bool
+    h_abs: float | int | bool
+    h_abs_old: float | int | bool | None
     error_norm_old: None
-    newton_tol: float
+    newton_tol: float | int | bool
     jac_factor: onp.ArrayND[np.float64] | None  # 1d
 
     LU: _LU
@@ -41,20 +41,20 @@ class BDF(OdeSolver, Generic[_SCT_co]):
     gamma: onp.ArrayND[np.float64]
     alpha: onp.ArrayND[np.float64]
     D: onp.ArrayND[np.float64]
-    order: int
-    n_equal_steps: int
+    order: int | bool
+    n_equal_steps: int | bool
 
     def __init__(
         self,
         /,
-        fun: Callable[[float, onp.Array1D[_SCT_co]], onp.ToComplex1D],
+        fun: Callable[[float | int | bool, onp.Array1D[_SCT_co]], onp.ToComplex1D],
         t0: onp.ToFloat,
         y0: onp.Array1D[_SCT_co] | onp.ToComplexND,
         t_bound: onp.ToFloat,
         max_step: onp.ToFloat = ...,
         rtol: onp.ToFloat = 0.001,
         atol: onp.ToFloat = 1e-06,
-        jac: _ToJac | Callable[[float, onp.ArrayND[_SCT_co]], _ToJac] | None = None,
+        jac: _ToJac | Callable[[float | int | bool, onp.ArrayND[_SCT_co]], _ToJac] | None = None,
         jac_sparsity: _ToJac | None = None,
         vectorized: bool = False,
         first_step: onp.ToFloat | None = None,
@@ -62,22 +62,30 @@ class BDF(OdeSolver, Generic[_SCT_co]):
     ) -> None: ...
 
 class BdfDenseOutput(DenseOutput):
-    order: int
+    order: int | bool
     t_shift: onp.ArrayND[np.float64]
     denom: onp.ArrayND[np.float64]
     D: onp.ArrayND[np.float64]
-    def __init__(self, /, t_old: float, t: float, h: float, order: int, D: onp.ArrayND[np.float64]) -> None: ...
+    def __init__(
+        self,
+        /,
+        t_old: float | int | bool,
+        t: float | int | bool,
+        h: float | int | bool,
+        order: int | bool,
+        D: onp.ArrayND[np.float64],
+    ) -> None: ...
 
-def compute_R(order: int, factor: float) -> onp.ArrayND[np.float64]: ...
-def change_D(D: onp.ArrayND[np.float64], order: int, factor: float) -> None: ...
+def compute_R(order: int | bool, factor: float | int | bool) -> onp.ArrayND[np.float64]: ...
+def change_D(D: onp.ArrayND[np.float64], order: int | bool, factor: float | int | bool) -> None: ...
 def solve_bdf_system(
-    fun: Callable[[float, onp.ArrayND[_SCT_co]], onp.ToComplex1D],
+    fun: Callable[[float | int | bool, onp.ArrayND[_SCT_co]], onp.ToComplex1D],
     t_new: onp.ToFloat,
     y_predict: onp.ArrayND[_SCT_co],
-    c: float,
+    c: float | int | bool,
     psi: onp.ArrayND[np.float64],
     LU: _FuncLU,
     solve_lu: _FuncSolveLU,
     scale: onp.ArrayND[np.float64],
-    tol: float,
-) -> tuple[bool, int, onp.ArrayND[_SCT_co], onp.ArrayND[_SCT_co]]: ...
+    tol: float | int | bool,
+) -> tuple[bool, int | bool, onp.ArrayND[_SCT_co], onp.ArrayND[_SCT_co]]: ...

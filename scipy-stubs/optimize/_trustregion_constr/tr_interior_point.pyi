@@ -14,9 +14,9 @@ def tr_interior_point(
     fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat],
     grad: Callable[[onp.Array1D[np.float64]], onp.ToFloat1D],
     lagr_hess: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat2D],
-    n_vars: int,
-    n_ineq: int,
-    n_eq: int,
+    n_vars: int | bool,
+    n_ineq: int | bool,
+    n_eq: int | bool,
     constr: Callable[[onp.Array1D[np.float64]], tuple[onp.ToFloat1D, onp.ToFloat1D]],
     jac: Callable[[onp.Array1D[np.float64]], tuple[onp.ToFloat2D, onp.ToFloat2D]],
     x0: onp.ToFloat1D,
@@ -35,15 +35,15 @@ def tr_interior_point(
             np.float64,  # const_violation
             np.float64,  # trust_radius
             np.float64,  # penalty
-            dict[str, int],  # cg_info
+            dict[str, int | bool],  # cg_info
         ],
         onp.ToBool,
     ],
     enforce_feasibility: onp.ToArray1D,
-    xtol: float,
+    xtol: float | int | bool,
     state: _StateT,
-    initial_barrier_parameter: float,
-    initial_tolerance: float,
+    initial_barrier_parameter: float | int | bool,
+    initial_tolerance: float | int | bool,
     initial_penalty: onp.ToFloat,
     initial_trust_radius: onp.ToFloat,
     factorization_method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"],

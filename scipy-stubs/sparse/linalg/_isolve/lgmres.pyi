@@ -33,15 +33,15 @@ def lgmres(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
     callback: _Callback[_FloatT] | None = None,
-    inner_m: int = 30,
-    outer_k: int = 3,
+    inner_m: int | bool = 30,
+    outer_k: int | bool = 3,
     outer_v: list[tuple[onp.ArrayND[_Float], onp.ArrayND[_Float] | None]] | None = None,
     store_outer_Av: onp.ToBool = True,
     prepend_outer_v: onp.ToBool = False,
-) -> tuple[onp.Array1D[_FloatT], int]: ...
+) -> tuple[onp.Array1D[_FloatT], int | bool]: ...
 @overload
 def lgmres(
     A: _ToLinearOperator[_ComplexT],
@@ -50,12 +50,12 @@ def lgmres(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_ComplexT] | None = None,
     callback: _Callback[_ComplexT] | None = None,
-    inner_m: int = 30,
-    outer_k: int = 3,
+    inner_m: int | bool = 30,
+    outer_k: int | bool = 3,
     outer_v: list[tuple[onp.ArrayND[_Float | _Complex], onp.ArrayND[_Complex] | None]] | None = None,
     store_outer_Av: onp.ToBool = True,
     prepend_outer_v: onp.ToBool = False,
-) -> tuple[onp.Array1D[_ComplexT], int]: ...
+) -> tuple[onp.Array1D[_ComplexT], int | bool]: ...

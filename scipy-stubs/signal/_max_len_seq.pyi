@@ -5,7 +5,7 @@ import optype.numpy as onp
 
 __all__ = ["max_len_seq"]
 
-_mls_taps: Final[dict[int, list[int]]] = ...
+_mls_taps: Final[dict[int | bool, list[int | bool]]] = ...
 
 def max_len_seq(
     nbits: onp.ToJustInt,

@@ -66,29 +66,29 @@ class _cs_matrix(
         dtype: onp.ToDType[_SCT] | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 1-d array-like (know dtype), dtype: None
     def __init__(
-        self: _cs_matrix[_SCT0, tuple[int]],
+        self: _cs_matrix[_SCT0, tuple[int | bool]],
         /,
         arg1: Sequence[_SCT0],
         shape: ToShape1D | None = None,
         dtype: onp.ToDType[_SCT0] | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 2-d array-like (know dtype), dtype: None
     def __init__(
-        self: _cs_matrix[_SCT0, tuple[int, int]],
+        self: _cs_matrix[_SCT0, tuple[int | bool, int | bool]],
         /,
         arg1: Sequence[Sequence[_SCT0]] | Sequence[onp.CanArrayND[_SCT0]],  # assumes max. 2-d
         shape: ToShape2D | None = None,
         dtype: onp.ToDType[_SCT0] | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
@@ -99,161 +99,161 @@ class _cs_matrix(
         dtype: onp.ToDType[_SCT] | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: None
     def __init__(
-        self: _cs_matrix[np.float64, tuple[int]],
+        self: _cs_matrix[np.float64, tuple[int | bool]],
         /,
         arg1: ToShape1D,
         shape: ToShape1D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: None
     def __init__(
-        self: _cs_matrix[np.float64, tuple[int, int]],
+        self: _cs_matrix[np.float64, tuple[int | bool, int | bool]],
         /,
         arg1: ToShape2D,
         shape: ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 1-d array-like bool, dtype: type[bool] | None
     def __init__(
-        self: _cs_matrix[np.bool_, tuple[int]],
+        self: _cs_matrix[np.bool_, tuple[int | bool]],
         /,
         arg1: Sequence[bool],
         shape: ToShape1D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 2-d array-like bool, dtype: type[bool] | None
     def __init__(
-        self: _cs_matrix[np.bool_, tuple[int, int]],
+        self: _cs_matrix[np.bool_, tuple[int | bool, int | bool]],
         /,
         arg1: Sequence[Sequence[bool]],
         shape: ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like ~int, dtype: type[int] | None
+    @overload  # 1-d array-like ~int | bool, dtype: type[int | bool] | None
     def __init__(
-        self: _cs_matrix[np.int_, tuple[int]],
+        self: _cs_matrix[np.int_, tuple[int | bool]],
         /,
         arg1: Sequence[op.JustInt],
         shape: ToShapeMin1D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~int, dtype: type[int] | None
+    @overload  # 2-d array-like ~int | bool, dtype: type[int | bool] | None
     def __init__(
-        self: _cs_matrix[np.int_, tuple[int, int]],
+        self: _cs_matrix[np.int_, tuple[int | bool, int | bool]],
         /,
         arg1: Sequence[Sequence[op.JustInt]],
         shape: ToShapeMin1D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like ~float, dtype: type[float] | None
+    @overload  # 1-d array-like ~float | int | bool, dtype: type[float | int | bool] | None
     def __init__(
-        self: _cs_matrix[np.float64, tuple[int]],
+        self: _cs_matrix[np.float64, tuple[int | bool]],
         /,
         arg1: Sequence[op.JustFloat],
         shape: ToShapeMin1D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~float, dtype: type[float] | None
+    @overload  # 2-d array-like ~float | int | bool, dtype: type[float | int | bool] | None
     def __init__(
-        self: _cs_matrix[np.float64, tuple[int, int]],
+        self: _cs_matrix[np.float64, tuple[int | bool, int | bool]],
         /,
         arg1: Sequence[Sequence[op.JustFloat]],
         shape: ToShapeMin1D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like ~complex, dtype: type[complex] | None
+    @overload  # 1-d array-like ~complex | float | int | bool, dtype: type[complex | float | int | bool] | None
     def __init__(
-        self: _cs_matrix[np.complex128, tuple[int]],
+        self: _cs_matrix[np.complex128, tuple[int | bool]],
         /,
         arg1: Sequence[op.JustComplex],
         shape: ToShapeMin1D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~complex, dtype: type[complex] | None
+    @overload  # 2-d array-like ~complex | float | int | bool, dtype: type[complex | float | int | bool] | None
     def __init__(
-        self: _cs_matrix[np.complex128, tuple[int, int]],
+        self: _cs_matrix[np.complex128, tuple[int | bool, int | bool]],
         /,
         arg1: Sequence[Sequence[op.JustComplex]],
         shape: ToShapeMin1D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 1-D, dtype: <known> (positional)
     def __init__(
-        self: _cs_matrix[_SCT0, tuple[int]],
+        self: _cs_matrix[_SCT0, tuple[int | bool]],
         /,
         arg1: onp.ToComplexStrict1D,
         shape: ToShape1D | None,
         dtype: onp.ToDType[_SCT0],
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 1-D, dtype: <known> (keyword)
     def __init__(
-        self: _cs_matrix[_SCT0, tuple[int]],
+        self: _cs_matrix[_SCT0, tuple[int | bool]],
         /,
         arg1: onp.ToComplexStrict1D,
         shape: ToShape1D | None = None,
         *,
         dtype: onp.ToDType[_SCT0],
         copy: bool = False,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (positional)
     def __init__(
-        self: _cs_matrix[_SCT0, tuple[int, int]],
+        self: _cs_matrix[_SCT0, tuple[int | bool, int | bool]],
         /,
         arg1: onp.ToComplexStrict2D,
         shape: ToShape2D | None,
         dtype: onp.ToDType[_SCT0],
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (keyword)
     def __init__(
-        self: _cs_matrix[_SCT0, tuple[int, int]],
+        self: _cs_matrix[_SCT0, tuple[int | bool, int | bool]],
         /,
         arg1: onp.ToComplexStrict2D,
         shape: ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_SCT0],
         copy: bool = False,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # shape: known
     def __init__(
@@ -264,7 +264,7 @@ class _cs_matrix(
         dtype: npt.DTypeLike | None = ...,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
 
     #

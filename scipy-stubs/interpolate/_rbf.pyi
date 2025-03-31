@@ -9,19 +9,19 @@ __all__ = ["Rbf"]
 _Mode: TypeAlias = Literal["1-D", "N-D"]
 _Function: TypeAlias = (
     Literal["multiquadric", "inverse", "gaussian", "linear", "cubic", "quintic", "thin_plate"]
-    | Callable[[Rbf, float], onp.ToFloat]
+    | Callable[[Rbf, float | int | bool], onp.ToFloat]
 )
 
 ###
 
 # legacy
 class Rbf:
-    N: int
+    N: int | bool
     di: onp.Array1D[np.float64]
     xi: onp.Array2D[np.float64]
     function: _Function
-    epsilon: float
-    smooth: float
+    epsilon: float | int | bool
+    smooth: float | int | bool
     norm: str | Callable[..., onp.ToFloat2D]
     mode: _Mode
     nodes: onp.Array1D[np.float64]

@@ -26,48 +26,48 @@ def orthogonality(A: _ToMatrix, g: onp.ToFloat1D) -> np.floating[Any]: ...
 # undocumented
 def normal_equation_projections(
     A: _ToMatrix,
-    m: int,
-    n: int,
-    orth_tol: float | np.floating[Any],
-    max_refin: int,
-    tol: float,
+    m: int | bool,
+    n: int | bool,
+    orth_tol: float | int | bool | np.floating[Any],
+    max_refin: int | bool,
+    tol: float | int | bool,
 ) -> _Projections: ...
 
 # undocumented
 def augmented_system_projections(
     A: _ToMatrix,
-    m: int,
-    n: int,
-    orth_tol: float | np.floating[Any],
-    max_refin: int,
-    tol: float,
+    m: int | bool,
+    n: int | bool,
+    orth_tol: float | int | bool | np.floating[Any],
+    max_refin: int | bool,
+    tol: float | int | bool,
 ) -> _Projections: ...
 
 # undocumented
 def qr_factorization_projections(
     A: _ToMatrix,
-    m: int,
-    n: int,
-    orth_tol: float | np.floating[Any],
-    max_refin: int,
-    tol: float,
+    m: int | bool,
+    n: int | bool,
+    orth_tol: float | int | bool | np.floating[Any],
+    max_refin: int | bool,
+    tol: float | int | bool,
 ) -> _Projections: ...
 
 # undocumented
 def svd_factorization_projections(
     A: _ToMatrix,
-    m: int,
-    n: int,
-    orth_tol: float | np.floating[Any],
-    max_refin: int,
-    tol: float,
+    m: int | bool,
+    n: int | bool,
+    orth_tol: float | int | bool | np.floating[Any],
+    max_refin: int | bool,
+    tol: float | int | bool,
 ) -> _Projections: ...
 
 #
 def projections(
     A: _ToMatrix,
     method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"] | None = None,
-    orth_tol: float | np.floating[Any] = 1e-12,
+    orth_tol: float | int | bool | np.floating[Any] = 1e-12,
     max_refin: onp.ToJustInt = 3,
-    tol: float | np.floating[Any] = 1e-15,
+    tol: float | int | bool | np.floating[Any] = 1e-15,
 ) -> tuple[LinearOperator, LinearOperator, LinearOperator]: ...

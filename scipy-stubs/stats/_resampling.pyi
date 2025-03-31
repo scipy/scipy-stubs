@@ -10,7 +10,7 @@ from ._common import ConfidenceInterval
 
 __all__ = ["bootstrap", "monte_carlo_test", "permutation_test"]
 
-_FloatND: TypeAlias = float | np.float64 | onp.Array[Any, np.float64]
+_FloatND: TypeAlias = float | int | bool | np.float64 | onp.Array[Any, np.float64]
 _FloatNDT = TypeVar("_FloatNDT", bound=_FloatND, default=Any)
 
 _BootstrapMethod: TypeAlias = Literal["percentile", "basic", "bca", "BCa"]
@@ -20,7 +20,7 @@ _Statistic: TypeAlias = Callable[..., onp.ToFloat] | Callable[..., onp.ToFloatND
 
 @type_check_only
 class _RVSCallable(Protocol):
-    def __call__(self, /, *, size: tuple[int, ...]) -> onp.ArrayND[np.floating[Any]]: ...
+    def __call__(self, /, *, size: tuple[int | bool, ...]) -> onp.ArrayND[np.floating[Any]]: ...
 
 ###
 
@@ -49,8 +49,8 @@ class MonteCarloTestResult(Generic[_FloatNDT]):
 
 @dataclass
 class ResamplingMethod:
-    n_resamples: int = 9_999
-    batch: int | None = None
+    n_resamples: int | bool = 9_999
+    batch: int | bool | None = None
 
 @dataclass
 class MonteCarloMethod(ResamplingMethod):
@@ -60,8 +60,8 @@ class MonteCarloMethod(ResamplingMethod):
     def __init__(
         self,
         /,
-        n_resamples: int = 9_999,
-        batch: int | None = None,
+        n_resamples: int | bool = 9_999,
+        batch: int | bool | None = None,
         rvs: _RVSCallable | Sequence[_RVSCallable] | None = None,
         rng: ToRNG = None,
     ) -> None: ...
@@ -83,22 +83,24 @@ class PermutationMethod(ResamplingMethod):
     def __init__(
         self,
         /,
-        n_resamples: int = 9_999,
-        batch: int | None = None,
+        n_resamples: int | bool = 9_999,
+        batch: int | bool | None = None,
         random_state: None = None,
         *,
         rng: ToRNG = None,
     ) -> None: ...
     @overload
     @deprecated("`random_state` is deprecated, use `rng` instead")  # this is a reasonable lie
-    def __init__(self, /, n_resamples: int, batch: int | None, random_state: ToRNG, *, rng: ToRNG = None) -> None: ...
+    def __init__(
+        self, /, n_resamples: int | bool, batch: int | bool | None, random_state: ToRNG, *, rng: ToRNG = None
+    ) -> None: ...
     @overload
     @deprecated("`random_state` is deprecated, use `rng` instead")  # this is a reasonable lie
     def __init__(
         self,
         /,
-        n_resamples: int = 9_999,
-        batch: int | None = None,
+        n_resamples: int | bool = 9_999,
+        batch: int | bool | None = None,
         *,
         random_state: ToRNG,
         rng: ToRNG = None,
@@ -123,8 +125,8 @@ class BootstrapMethod(ResamplingMethod):
     def __init__(
         self,
         /,
-        n_resamples: int = 9_999,
-        batch: int | None = None,
+        n_resamples: int | bool = 9_999,
+        batch: int | bool | None = None,
         random_state: None = None,
         method: _BootstrapMethod = "BCa",
         *,
@@ -135,8 +137,8 @@ class BootstrapMethod(ResamplingMethod):
     def __init__(
         self,
         /,
-        n_resamples: int,
-        batch: int | None,
+        n_resamples: int | bool,
+        batch: int | bool | None,
         method: _BootstrapMethod,
         random_state: ToRNG,
         *,
@@ -147,8 +149,8 @@ class BootstrapMethod(ResamplingMethod):
     def __init__(
         self,
         /,
-        n_resamples: int = 9_999,
-        batch: int | None = None,
+        n_resamples: int | bool = 9_999,
+        batch: int | bool | None = None,
         method: _BootstrapMethod = "BCa",
         *,
         random_state: ToRNG,
@@ -164,8 +166,8 @@ def power(
     significance: onp.ToFloat | onp.ToFloatND = 0.01,
     kwargs: Mapping[str, object] | None = None,
     vectorized: bool | None = None,
-    n_resamples: int = 10_000,
-    batch: int | None = None,
+    n_resamples: int | bool = 10_000,
+    batch: int | bool | None = None,
 ) -> PowerResult: ...  # undocumented
 
 ###
@@ -176,28 +178,28 @@ def bootstrap(
     data: onp.ToFloatStrict1D,
     statistic: _Statistic,
     *,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     vectorized: bool | None = None,
     paired: bool = False,
     axis: Literal[0, -1] = 0,
-    confidence_level: float = 0.95,
+    confidence_level: float | int | bool = 0.95,
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
     bootstrap_result: BootstrapResult | None = None,
     rng: ToRNG = None,
-) -> BootstrapResult[float | np.float64]: ...
+) -> BootstrapResult[float | int | bool | np.float64]: ...
 @overload
 def bootstrap(
     data: onp.ToFloatStrict2D,
     statistic: _Statistic,
     *,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     vectorized: bool | None = None,
     paired: bool = False,
     axis: Literal[0, 1, -1, -2] = 0,
-    confidence_level: float = 0.95,
+    confidence_level: float | int | bool = 0.95,
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
     bootstrap_result: BootstrapResult | None = None,
@@ -208,12 +210,12 @@ def bootstrap(
     data: onp.ToFloatStrict3D,
     statistic: _Statistic,
     *,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     vectorized: bool | None = None,
     paired: bool = False,
     axis: Literal[0, 1, 2, -1, -2, -3] = 0,
-    confidence_level: float = 0.95,
+    confidence_level: float | int | bool = 0.95,
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
     bootstrap_result: BootstrapResult | None = None,
@@ -224,12 +226,12 @@ def bootstrap(
     data: onp.ToFloatND,
     statistic: _Statistic,
     *,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     vectorized: bool | None = None,
     paired: bool = False,
-    axis: int = 0,
-    confidence_level: float = 0.95,
+    axis: int | bool = 0,
+    confidence_level: float | int | bool = 0.95,
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
     bootstrap_result: BootstrapResult | None = None,
@@ -244,12 +246,12 @@ def permutation_test(
     *,
     permutation_type: _PermutationType = "independent",
     vectorized: bool | None = None,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, -1] = 0,
     rng: ToRNG = None,
-) -> PermutationTestResult[float | np.float64]: ...
+) -> PermutationTestResult[float | int | bool | np.float64]: ...
 @overload
 def permutation_test(
     data: onp.ToFloatStrict2D,
@@ -257,8 +259,8 @@ def permutation_test(
     *,
     permutation_type: _PermutationType = "independent",
     vectorized: bool | None = None,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, 1, -1, -2] = 0,
     rng: ToRNG = None,
@@ -270,8 +272,8 @@ def permutation_test(
     *,
     permutation_type: _PermutationType = "independent",
     vectorized: bool | None = None,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, 1, 2, -1, -2, -3] = 0,
     rng: ToRNG = None,
@@ -283,10 +285,10 @@ def permutation_test(
     *,
     permutation_type: _PermutationType = "independent",
     vectorized: bool | None = None,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     alternative: Alternative = "two-sided",
-    axis: int = 0,
+    axis: int | bool = 0,
     rng: ToRNG = None,
 ) -> PermutationTestResult: ...
 
@@ -298,11 +300,11 @@ def monte_carlo_test(
     statistic: _Statistic,
     *,
     vectorized: bool | None = None,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, -1] = 0,
-) -> MonteCarloTestResult[float | np.float64]: ...
+) -> MonteCarloTestResult[float | int | bool | np.float64]: ...
 @overload
 def monte_carlo_test(
     data: onp.ToFloatStrict2D,
@@ -310,8 +312,8 @@ def monte_carlo_test(
     statistic: _Statistic,
     *,
     vectorized: bool | None = None,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, 1, -1, -2] = 0,
 ) -> MonteCarloTestResult[onp.Array1D[np.float64]]: ...
@@ -322,8 +324,8 @@ def monte_carlo_test(
     statistic: _Statistic,
     *,
     vectorized: bool | None = None,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, 1, 2, -1, -2, -3] = 0,
 ) -> MonteCarloTestResult[onp.Array2D[np.float64]]: ...
@@ -334,8 +336,8 @@ def monte_carlo_test(
     statistic: _Statistic,
     *,
     vectorized: bool | None = None,
-    n_resamples: int = 9_999,
-    batch: int | None = None,
+    n_resamples: int | bool = 9_999,
+    batch: int | bool | None = None,
     alternative: Alternative = "two-sided",
-    axis: int = 0,
+    axis: int | bool = 0,
 ) -> MonteCarloTestResult: ...

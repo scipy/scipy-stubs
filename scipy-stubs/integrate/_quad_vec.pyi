@@ -14,10 +14,10 @@ _VT = TypeVar("_VT", default=object)
 _NDT_co = TypeVar("_NDT_co", bound=_FloatingND, default=_FloatingND, covariant=True)
 _SCT_co = TypeVar("_SCT_co", bound=np.floating[Any], default=np.float64, covariant=True)
 
-_Floating: TypeAlias = float | np.floating[Any]
+_Floating: TypeAlias = float | int | bool | np.floating[Any]
 _FloatingND: TypeAlias = onp.ArrayND[np.floating[Any]] | _Floating
 
-_Fun: TypeAlias = Callable[Concatenate[float, ...], _T] | Callable[Concatenate[np.float64, ...], _T]
+_Fun: TypeAlias = Callable[Concatenate[float | int | bool, ...], _T] | Callable[Concatenate[np.float64, ...], _T]
 
 _Norm: TypeAlias = Literal["max", "2"]
 _Quadrature: TypeAlias = Literal["gk21", "gk15", "trapezoid"]
@@ -33,21 +33,21 @@ class _DoesMap(Protocol):
 
 @type_check_only
 class _InfiniteFunc(Protocol[_NDT_co]):
-    def get_t(self, /, x: float) -> float: ...
-    def __call__(self, /, t: float) -> _NDT_co: ...
+    def get_t(self, /, x: float | int | bool) -> float | int | bool: ...
+    def __call__(self, /, t: float | int | bool) -> _NDT_co: ...
 
 ###
 
-class LRUDict(collections.OrderedDict[tuple[float, float], _VT], Generic[_VT]):
-    def __init__(self, /, max_size: int) -> None: ...
+class LRUDict(collections.OrderedDict[tuple[float | int | bool, float | int | bool], _VT], Generic[_VT]):
+    def __init__(self, /, max_size: int | bool) -> None: ...
     @override
     def update(self, other: Never, /) -> NoReturn: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 class SemiInfiniteFunc(_InfiniteFunc[_NDT_co], Generic[_NDT_co]):
-    def __init__(self, /, func: Callable[[float], _NDT_co], start: float, infty: bool) -> None: ...
+    def __init__(self, /, func: Callable[[float | int | bool], _NDT_co], start: float | int | bool, infty: bool) -> None: ...
 
 class DoubleInfiniteFunc(_InfiniteFunc, Generic[_NDT_co]):
-    def __init__(self, /, func: Callable[[float], _NDT_co]) -> None: ...
+    def __init__(self, /, func: Callable[[float | int | bool], _NDT_co]) -> None: ...
 
 # NOTE: This is only used as "info dict" for `quad_vec(..., full_output=True)`,
 # even though, confusingly, it is not even even a mapping.
@@ -60,7 +60,7 @@ class _Bunch(Generic[_SCT_co]):
         *,
         success: bool,
         status: Literal[0, 1, 2],
-        neval: int,
+        neval: int | bool,
         message: str,
         intervals: onp.Array2D[np.float64],
         errors: onp.Array1D[np.float64],
@@ -68,7 +68,7 @@ class _Bunch(Generic[_SCT_co]):
     ) -> None: ...
     success: Final[bool]
     status: Final[Literal[0, 1, 2]]
-    neval: Final[int]
+    neval: Final[int | bool]
     message: Final[str]
     intervals: Final[onp.Array2D[np.float64]]
     errors: Final[onp.Array1D[np.float64]]
@@ -82,7 +82,7 @@ def quad_vec(  # scalar function, full_output=False (default)
     epsabs: _Floating = 1e-200,
     epsrel: _Floating = 1e-08,
     norm: _Norm = "2",
-    cache_size: onp.ToJustInt | float = 100_000_000,
+    cache_size: onp.ToJustInt | float | int | bool = 100_000_000,
     limit: onp.ToFloat = 10_000,
     workers: onp.ToJustInt | _DoesMap = 1,
     points: onp.ToFloat1D | None = None,
@@ -90,7 +90,7 @@ def quad_vec(  # scalar function, full_output=False (default)
     full_output: Falsy = False,
     *,
     args: tuple[object, ...] = (),
-) -> tuple[_Floating, float]: ...
+) -> tuple[_Floating, float | int | bool]: ...
 @overload  # scalar function, full_output=True
 def quad_vec(
     f: _Fun[onp.ToFloat],
@@ -99,7 +99,7 @@ def quad_vec(
     epsabs: _Floating = 1e-200,
     epsrel: _Floating = 1e-08,
     norm: _Norm = "2",
-    cache_size: onp.ToJustInt | float = 100_000_000,
+    cache_size: onp.ToJustInt | float | int | bool = 100_000_000,
     limit: onp.ToFloat = 10_000,
     workers: onp.ToJustInt | _DoesMap = 1,
     points: onp.ToFloat1D | None = None,
@@ -107,7 +107,7 @@ def quad_vec(
     *,
     full_output: Truthy,
     args: tuple[object, ...] = (),
-) -> tuple[np.floating[Any], float, _Bunch[np.floating[Any]]]: ...
+) -> tuple[np.floating[Any], float | int | bool, _Bunch[np.floating[Any]]]: ...
 @overload  # vector function, full_output=False (default)
 def quad_vec(
     f: _Fun[onp.ToFloat1D],
@@ -116,7 +116,7 @@ def quad_vec(
     epsabs: _Floating = 1e-200,
     epsrel: _Floating = 1e-08,
     norm: _Norm = "2",
-    cache_size: onp.ToJustInt | float = 100_000_000,
+    cache_size: onp.ToJustInt | float | int | bool = 100_000_000,
     limit: onp.ToFloat = 10_000,
     workers: onp.ToJustInt | _DoesMap = 1,
     points: onp.ToFloat1D | None = None,
@@ -124,7 +124,7 @@ def quad_vec(
     *,
     full_output: Falsy,
     args: tuple[object, ...] = (),
-) -> tuple[onp.Array1D[np.floating[Any]], float]: ...
+) -> tuple[onp.Array1D[np.floating[Any]], float | int | bool]: ...
 @overload  # vector function, full_output=True
 def quad_vec(
     f: _Fun[onp.ToFloat1D],
@@ -133,7 +133,7 @@ def quad_vec(
     epsabs: _Floating = 1e-200,
     epsrel: _Floating = 1e-08,
     norm: _Norm = "2",
-    cache_size: onp.ToJustInt | float = 100_000_000,
+    cache_size: onp.ToJustInt | float | int | bool = 100_000_000,
     limit: onp.ToFloat = 10_000,
     workers: onp.ToJustInt | _DoesMap = 1,
     points: onp.ToFloat1D | None = None,
@@ -141,4 +141,4 @@ def quad_vec(
     *,
     full_output: Truthy,
     args: tuple[object, ...] = (),
-) -> tuple[onp.Array1D[np.floating[Any]], float, _Bunch[np.floating[Any]]]: ...
+) -> tuple[onp.Array1D[np.floating[Any]], float | int | bool, _Bunch[np.floating[Any]]]: ...

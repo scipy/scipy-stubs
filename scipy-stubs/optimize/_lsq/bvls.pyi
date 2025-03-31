@@ -7,13 +7,13 @@ from scipy.optimize import OptimizeResult
 @type_check_only
 class _OptimizeResult(OptimizeResult):
     x: onp.ArrayND[np.float64]
-    fun: float | np.float64
-    cost: float | np.float64
-    initial_cost: float | np.float64
-    optimality: float | np.float64
+    fun: float | int | bool | np.float64
+    cost: float | int | bool | np.float64
+    initial_cost: float | int | bool | np.float64
+    optimality: float | int | bool | np.float64
     active_mask: onp.ArrayND[np.float64]
-    nit: int
-    status: int
+    nit: int | bool
+    status: int | bool
 
 # undocumented
 def compute_kkt_optimality(

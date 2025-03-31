@@ -37,15 +37,15 @@ def gcrotmk(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
     callback: _Callback[_FloatT] | None = None,
-    m: int = 20,
-    k: int | None = None,
+    m: int | bool = 20,
+    k: int | bool | None = None,
     CU: Sequence[tuple[Sequence[onp.ArrayND[_Float]], Sequence[onp.ArrayND[_Float]] | None]] | None = None,
     discard_C: onp.ToBool = False,
     truncate: _Truncate = "oldest",
-) -> tuple[onp.Array1D[_FloatT], int]: ...
+) -> tuple[onp.Array1D[_FloatT], int | bool]: ...
 @overload
 def gcrotmk(
     A: _ToLinearOperator[_ComplexT],
@@ -54,12 +54,12 @@ def gcrotmk(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_ComplexT] | None = None,
     callback: _Callback[_ComplexT] | None = None,
-    m: int = 20,
-    k: int | None = None,
+    m: int | bool = 20,
+    k: int | bool | None = None,
     CU: Sequence[tuple[Sequence[onp.ArrayND[_Inexact]], Sequence[onp.ArrayND[_Inexact]] | None]] | None = None,
     discard_C: onp.ToBool = False,
     truncate: _Truncate = "oldest",
-) -> tuple[onp.Array1D[_ComplexT], int]: ...
+) -> tuple[onp.Array1D[_ComplexT], int | bool]: ...

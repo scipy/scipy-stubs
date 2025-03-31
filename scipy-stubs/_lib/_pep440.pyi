@@ -42,12 +42,12 @@ NegativeInfinity: Final[_NegativeInfinityType] = ...
 class InvalidVersion(ValueError): ...
 
 class _Version(NamedTuple):
-    epoch: int
-    release: tuple[int, ...]
-    dev: tuple[str, int]
-    pre: tuple[str, int]
-    post: tuple[str, int]
-    local: tuple[str | int, ...]
+    epoch: int | bool
+    release: tuple[int | bool, ...]
+    dev: tuple[str, int | bool]
+    pre: tuple[str, int | bool]
+    post: tuple[str, int | bool]
+    local: tuple[str | int | bool, ...]
 
 class _BaseVersion:
     def __lt__(self, other: _BaseVersion, /) -> bool: ...

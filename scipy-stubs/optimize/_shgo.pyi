@@ -12,7 +12,7 @@ __all__ = ["shgo"]
 _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
 
-_Float: TypeAlias = float | np.float64
+_Float: TypeAlias = float | int | bool | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], _RT]
 
@@ -20,17 +20,17 @@ _Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], _RT]
 class _SHGOOptions(TypedDict, total=False):
     f_min: _Float
     f_tol: _Float
-    maxiter: int
-    maxfev: int
-    maxev: int
+    maxiter: int | bool
+    maxfev: int | bool
+    maxev: int | bool
     mmaxtime: _Float
-    minhgrd: int
-    symmetry: Sequence[int] | onp.ToBool
+    minhgrd: int | bool
+    symmetry: Sequence[int | bool] | onp.ToBool
     jac: _Fun1D[onp.ToFloat1D] | onp.ToBool  # gradient
     hess: _Fun1D[onp.ToFloat2D]
     hessp: Callable[Concatenate[_Float1D, _Float1D, ...], onp.ToFloat1D]
     minimize_every_iter: onp.ToBool
-    local_iter: int
+    local_iter: int | bool
     infty_constraints: onp.ToBool
     disp: onp.ToBool
 
@@ -43,11 +43,11 @@ class OptimizeResult(_OptimizeResult):
     funl: Sequence[_Float]
     success: bool
     message: str
-    nfev: int
-    nlfev: int
-    nljev: int  # undocumented
-    nlhev: int  # undocumented
-    nit: int
+    nfev: int | bool
+    nlfev: int | bool
+    nljev: int | bool  # undocumented
+    nlhev: int | bool  # undocumented
+    nit: int | bool
 
 def shgo(
     func: _Fun1D[onp.ToFloat],
@@ -59,7 +59,7 @@ def shgo(
     callback: Callable[[_Float1D], None] | None = None,
     minimizer_kwargs: MinimizerKwargs | None = None,
     options: _SHGOOptions | None = None,
-    sampling_method: Callable[[int, int], onp.ToFloat2D] | Literal["simplicial", "halton", "sobol"] = "simplicial",
+    sampling_method: Callable[[int | bool, int | bool], onp.ToFloat2D] | Literal["simplicial", "halton", "sobol"] = "simplicial",
     *,
     workers: onp.ToJustInt | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
 ) -> OptimizeResult: ...

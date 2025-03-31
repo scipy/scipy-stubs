@@ -12,8 +12,8 @@ from .common import OdeSolution
 
 _SCT_cf = TypeVar("_SCT_cf", bound=np.inexact[Any], default=np.float64 | np.complex128)
 
-_FuncSol: TypeAlias = Callable[[float], onp.ArrayND[_SCT_cf]]
-_FuncEvent: TypeAlias = Callable[[float, onp.ArrayND[_SCT_cf]], float]
+_FuncSol: TypeAlias = Callable[[float | int | bool], onp.ArrayND[_SCT_cf]]
+_FuncEvent: TypeAlias = Callable[[float | int | bool, onp.ArrayND[_SCT_cf]], float | int | bool]
 _Events: TypeAlias = Sequence[_FuncEvent[_SCT_cf]]
 
 _Int1D: TypeAlias = onp.Array1D[np.intp]
@@ -29,7 +29,7 @@ class _SolverOptions(TypedDict, Generic[_SCT_cf], total=False):
     max_step: onp.ToFloat
     rtol: onp.ToFloat | onp.ToFloat1D
     atol: onp.ToFloat | onp.ToFloat1D
-    jac: _ToJac | Callable[[float, onp.Array1D[np.float64]], _ToJac] | None
+    jac: _ToJac | Callable[[float | int | bool, onp.Array1D[np.float64]], _ToJac] | None
     jac_sparsity: onp.ToFloat2D | spmatrix | sparray | None
     lband: onp.ToInt | None
     uband: onp.ToInt | None
@@ -38,10 +38,12 @@ class _SolverOptions(TypedDict, Generic[_SCT_cf], total=False):
 ###
 
 METHODS: Final[dict[str, type]] = ...
-MESSAGES: Final[dict[int, str]] = ...
+MESSAGES: Final[dict[int | bool, str]] = ...
 
 class OdeResult(
-    _RichResult[int | str | onp.ArrayND[np.float64 | _SCT_cf] | list[onp.ArrayND[np.float64 | _SCT_cf]] | OdeSolution | None],
+    _RichResult[
+        int | bool | str | onp.ArrayND[np.float64 | _SCT_cf] | list[onp.ArrayND[np.float64 | _SCT_cf]] | OdeSolution | None
+    ],
     Generic[_SCT_cf],
 ):
     t: _Float1D
@@ -49,30 +51,32 @@ class OdeResult(
     sol: OdeSolution | None
     t_events: list[_Float1D] | None
     y_events: list[onp.ArrayND[_SCT_cf]] | None
-    nfev: int
-    njev: int
-    nlu: int
+    nfev: int | bool
+    njev: int | bool
+    nlu: int | bool
     status: Literal[-1, 0, 1]
     message: str
     success: bool
 
 def prepare_events(events: _FuncEvent[_SCT_cf] | _Events[_SCT_cf]) -> tuple[_Events[_SCT_cf], _Float1D, _Float1D]: ...
-def solve_event_equation(event: _FuncEvent[_SCT_cf], sol: _FuncSol[_SCT_cf], t_old: float, t: float) -> float: ...
+def solve_event_equation(
+    event: _FuncEvent[_SCT_cf], sol: _FuncSol[_SCT_cf], t_old: float | int | bool, t: float | int | bool
+) -> float | int | bool: ...
 def handle_events(
     sol: DenseOutput,
     events: Sequence[_FuncEvent[_SCT_cf]],
     active_events: onp.ArrayND[np.intp],
     event_count: onp.ArrayND[np.intp | np.float64],
     max_events: onp.ArrayND[np.intp | np.float64],
-    t_old: float,
-    t: float,
+    t_old: float | int | bool,
+    t: float | int | bool,
 ) -> tuple[_Int1D, _Float1D, bool]: ...
 def find_active_events(g: onp.ToFloat1D, g_new: onp.ToFloat1D, direction: onp.ArrayND[np.float64]) -> _Int1D: ...
 
 #
 @overload
 def solve_ivp(
-    fun: Callable[Concatenate[float, onp.Array1D[_SCT_cf], ...], onp.ArrayND[_SCT_cf]],
+    fun: Callable[Concatenate[float | int | bool, onp.Array1D[_SCT_cf], ...], onp.ArrayND[_SCT_cf]],
     t_span: Sequence[onp.ToFloat],
     y0: onp.ToArray1D,
     method: _IVPMethod | type[OdeSolver] = "RK45",

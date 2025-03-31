@@ -24,7 +24,7 @@ class _FortranFunction(Protocol[_NameT, _FuncT_co]):
 
 @type_check_only
 class _Func_fpchec(Protocol):
-    def __call__(self, /, x: onp.ToFloat1D, t: onp.ToFloat1D, k: onp.ToJustInt) -> int: ...
+    def __call__(self, /, x: onp.ToFloat1D, t: onp.ToFloat1D, k: onp.ToJustInt) -> int | bool: ...
 
 @type_check_only
 class _Func_splev(Protocol):
@@ -36,7 +36,7 @@ class _Func_splev(Protocol):
         k: onp.ToJustInt,  # 0 <= k < len(c)
         x: onp.ToFloat1D,
         e: L[0, 1, 2, 3] = 0,
-    ) -> tuple[_Float1D, int]: ...
+    ) -> tuple[_Float1D, int | bool]: ...
 
 @type_check_only
 class _Func_splder(Protocol):
@@ -49,7 +49,7 @@ class _Func_splder(Protocol):
         x: onp.ToFloat1D,
         nu: onp.ToJustInt = 1,  # 0 <= nu <= k < len(c)
         e: L[0, 1, 2, 3] = 0,
-    ) -> tuple[_Float1D, int]: ...
+    ) -> tuple[_Float1D, int | bool]: ...
 
 @type_check_only
 class _Func_splint(Protocol):
@@ -61,7 +61,7 @@ class _Func_splint(Protocol):
         k: onp.ToJustInt,  # 0 <= k < len(c)
         a: onp.ToFloat | onp.ToFloatND,
         b: onp.ToFloat | onp.ToFloatND,
-    ) -> tuple[float, _Float1D]: ...
+    ) -> tuple[float | int | bool, _Float1D]: ...
 
 @type_check_only
 class _Func_sproot(Protocol):
@@ -71,7 +71,7 @@ class _Func_sproot(Protocol):
         t: onp.ToFloat1D,  # len(t) >= 8
         c: onp.ToFloat1D,  # len(c) >= len(t) - 4
         mest: onp.ToJustInt = ...,  # mest = 3 * (len(t) - 7)
-    ) -> tuple[_Float1D, int, int]: ...
+    ) -> tuple[_Float1D, int | bool, int | bool]: ...
 
 @type_check_only
 class _Func_spalde(Protocol):
@@ -82,7 +82,7 @@ class _Func_spalde(Protocol):
         c: onp.ToFloat1D,  # len(c) >= len(t) - 4
         k1: onp.ToJustInt,
         x: onp.ToFloat | onp.ToFloatND,
-    ) -> tuple[_Float1D, int]: ...
+    ) -> tuple[_Float1D, int | bool]: ...
 
 @type_check_only
 class _Func_bispe_(Protocol):
@@ -96,7 +96,7 @@ class _Func_bispe_(Protocol):
         ky: onp.ToJustInt,  # 0 <= ky < len(y)
         x: onp.ToFloat1D,
         y: onp.ToFloat1D,
-    ) -> tuple[_Float1D, int]: ...
+    ) -> tuple[_Float1D, int | bool]: ...
 
 ###
 
@@ -119,7 +119,7 @@ sproot: _FortranFunction[L["function sproot"], _Func_sproot] = ...
 # (t, c, k1, x) -> (d, ier)
 spalde: _FortranFunction[L["function spalde"], _Func_spalde] = ...
 
-_Func_cur: TypeAlias = Callable[..., tuple[int, _Float1D, float, int]]
+_Func_cur: TypeAlias = Callable[..., tuple[int | bool, _Float1D, float | int | bool, int | bool]]
 
 # (iopt, x, y, w, t, wrk, iwrk, xb?, xe?, k?, s?) -> (n, c, fp, ier)
 curfit: _FortranFunction[L["function curfit"], _Func_cur] = ...

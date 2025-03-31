@@ -11,12 +11,12 @@ from scipy.sparse._base import _spbase
 __all__ = ["mminfo", "mmread", "mmwrite"]
 
 _Format: TypeAlias = Literal["coordinate", "array"]
-_Field: TypeAlias = Literal["real", "complex", "pattern", "integer"]
+_Field: TypeAlias = Literal["real", "complex | float | int | bool", "pattern", "integer"]
 _Symmetry: TypeAlias = Literal["general", "symmetric", "skew-symmetric", "hermitian"]
 
 @type_check_only
 class _TextToBytesWrapperKwargs(TypedDict, total=False):
-    buffer_size: int
+    buffer_size: int | bool
 
 ###
 
@@ -36,13 +36,13 @@ class _TextToBytesWrapper(io.BufferedReader):
         **kwargs: Unpack[_TextToBytesWrapperKwargs],
     ) -> None: ...
     @override
-    def read(self, /, size: int | None = -1) -> bytes: ...
+    def read(self, /, size: int | bool | None = -1) -> bytes: ...
     @override
-    def read1(self, /, size: int = -1) -> bytes: ...
+    def read1(self, /, size: int | bool = -1) -> bytes: ...
     @override
-    def peek(self, /, size: int = -1) -> bytes: ...
+    def peek(self, /, size: int | bool = -1) -> bytes: ...
     @override
-    def seek(self, /, offset: int, whence: int = 0) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def seek(self, /, offset: int | bool, whence: int | bool = 0) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 @overload
 def mmread(source: FileLike[bytes], *, spmatrix: Truthy = True) -> onp.ArrayND[np.number[Any]] | coo_array: ...
@@ -55,9 +55,9 @@ def mmwrite(
     a: onp.CanArray | list[object] | tuple[object, ...] | _spbase,
     comment: str | None = None,
     field: _Field | None = None,
-    precision: int | None = None,
+    precision: int | bool | None = None,
     symmetry: _Symmetry | Literal["AUTO"] = "AUTO",
 ) -> None: ...
 
 #
-def mminfo(source: FileName) -> tuple[int, int, int, _Format, _Field, _Symmetry]: ...
+def mminfo(source: FileName) -> tuple[int | bool, int | bool, int | bool, _Format, _Field, _Symmetry]: ...

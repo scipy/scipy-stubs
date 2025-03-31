@@ -25,6 +25,6 @@ def griddata(
     values: object,
     xi: object,
     method: object = ...,
-    fill_value: float = ...,
+    fill_value: float | int | bool = ...,
     rescale: object = ...,
 ) -> object: ...

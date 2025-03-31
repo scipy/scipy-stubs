@@ -13,7 +13,7 @@ __all__ = [
     "scalar_search_wolfe2",
 ]
 
-_Float: TypeAlias = float | np.float64
+_Float: TypeAlias = float | int | bool | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 
 _RT = TypeVar("_RT")
@@ -37,7 +37,7 @@ def line_search_wolfe1(
     amax: onp.ToJustInt = 50,
     amin: onp.ToFloat = 1e-08,
     xtol: onp.ToFloat = 1e-14,
-) -> tuple[_Float | None, int, int, _Float | None, _Float, _Float | None]: ...
+) -> tuple[_Float | None, int | bool, int | bool, _Float | None, _Float, _Float | None]: ...
 
 # NOTE: exported as `scipy.optimize.line_search`
 def line_search_wolfe2(
@@ -52,9 +52,9 @@ def line_search_wolfe2(
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
     amax: onp.ToFloat | None = None,
-    extra_condition: Callable[[float, _Float1D, float, _Float1D], onp.ToBool] | None = None,
+    extra_condition: Callable[[float | int | bool, _Float1D, float | int | bool, _Float1D], onp.ToBool] | None = None,
     maxiter: onp.ToJustInt = 10,
-) -> tuple[_Float | None, int, int, _Float | None, _Float, _Float | None]: ...
+) -> tuple[_Float | None, int | bool, int | bool, _Float | None, _Float, _Float | None]: ...
 
 #
 def line_search_armijo(
@@ -66,7 +66,7 @@ def line_search_armijo(
     args: tuple[object, ...] = (),
     c1: onp.ToFloat = 1e-4,
     alpha0: onp.ToFloat = 1,
-) -> tuple[_Float | None, int, _Float]: ...
+) -> tuple[_Float | None, int | bool, _Float]: ...
 
 # undocumented
 def line_search_BFGS(
@@ -78,12 +78,12 @@ def line_search_BFGS(
     args: tuple[object, ...] = (),
     c1: onp.ToFloat = 1e-4,
     alpha0: onp.ToFloat = 1,
-) -> tuple[_Float | None, int, Literal[0], _Float]: ...
+) -> tuple[_Float | None, int | bool, Literal[0], _Float]: ...
 
 #
 def scalar_search_wolfe1(
-    phi: Callable[[float], onp.ToFloat],
-    derphi: Callable[[float], onp.ToFloat],
+    phi: Callable[[float | int | bool], onp.ToFloat],
+    derphi: Callable[[float | int | bool], onp.ToFloat],
     phi0: onp.ToFloat | None = None,
     old_phi0: onp.ToFloat | None = None,
     derphi0: onp.ToFloat | None = None,
@@ -96,21 +96,21 @@ def scalar_search_wolfe1(
 
 #
 def scalar_search_wolfe2(
-    phi: Callable[[float], onp.ToFloat],
-    derphi: Callable[[float], onp.ToFloat],
+    phi: Callable[[float | int | bool], onp.ToFloat],
+    derphi: Callable[[float | int | bool], onp.ToFloat],
     phi0: onp.ToFloat | None = None,
     old_phi0: onp.ToFloat | None = None,
     derphi0: onp.ToFloat | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
     amax: onp.ToFloat | None = None,
-    extra_condition: Callable[[float, float], onp.ToBool] | None = None,
+    extra_condition: Callable[[float | int | bool, float | int | bool], onp.ToBool] | None = None,
     maxiter: onp.ToJustInt = 10,
 ) -> tuple[_Float | None, _Float, _Float, _Float | None]: ...
 
 # undocumented
 def scalar_search_armijo(
-    phi: Callable[[float], onp.ToFloat],
+    phi: Callable[[float | int | bool], onp.ToFloat],
     phi0: onp.ToFloat,
     derphi0: onp.ToFloat,
     c1: onp.ToFloat = 1e-4,

@@ -36,7 +36,7 @@ def binary_closing(
     border_value: object = ...,
     brute_force: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_dilation(
@@ -49,7 +49,7 @@ def binary_dilation(
     origin: object = ...,
     brute_force: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_erosion(
@@ -62,7 +62,7 @@ def binary_erosion(
     origin: object = ...,
     brute_force: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_opening(
@@ -75,7 +75,7 @@ def binary_opening(
     border_value: object = ...,
     brute_force: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 
 #
@@ -86,7 +86,7 @@ def binary_fill_holes(
     output: object = ...,
     origin: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_hit_or_miss(
@@ -97,7 +97,7 @@ def binary_hit_or_miss(
     origin1: object = ...,
     origin2: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_propagation(
@@ -108,7 +108,7 @@ def binary_propagation(
     border_value: object = ...,
     origin: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 
 #
@@ -153,7 +153,7 @@ def grey_closing(
     cval: object = ...,
     origin: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_dilation(
@@ -166,7 +166,7 @@ def grey_dilation(
     cval: object = ...,
     origin: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_erosion(
@@ -179,7 +179,7 @@ def grey_erosion(
     cval: object = ...,
     origin: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_opening(
@@ -192,7 +192,7 @@ def grey_opening(
     cval: object = ...,
     origin: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 
 #
@@ -207,7 +207,7 @@ def morphological_gradient(
     cval: object = ...,
     origin: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def morphological_laplace(
@@ -220,7 +220,7 @@ def morphological_laplace(
     cval: object = ...,
     origin: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 
 #
@@ -235,7 +235,7 @@ def white_tophat(
     cval: object = ...,
     origin: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def black_tophat(
@@ -248,7 +248,7 @@ def black_tophat(
     cval: object = ...,
     origin: object = ...,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> object: ...
 
 #

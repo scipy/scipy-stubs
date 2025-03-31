@@ -10,7 +10,7 @@ from ._typing import MinimizerKwargs
 
 __all__ = ["basinhopping"]
 
-_Float: TypeAlias = float | np.float64
+_Float: TypeAlias = float | int | bool | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 
 _FT = TypeVar("_FT", bound=onp.ToFloat | onp.ToFloatND)
@@ -32,19 +32,19 @@ class _AcceptTestFun(Protocol[_FT_contra]):
 
 @type_check_only
 class OptimizeResult(_OptimizeResult):
-    minimization_failures: int
+    minimization_failures: int | bool
     lowest_optimization_result: _MinimizeResult
 
     x: _Float1D
     fun: _Float
 
     message: str
-    nit: int
+    nit: int | bool
     success: bool
 
-    nfev: int  # might not exist
-    njev: int  # might not exist
-    nhev: int  # might not exist
+    nfev: int | bool  # might not exist
+    njev: int | bool  # might not exist
+    nhev: int | bool  # might not exist
 
 ###
 
@@ -57,7 +57,7 @@ def basinhopping(
     minimizer_kwargs: MinimizerKwargs | None = None,
     take_step: Callable[[_Float1D], onp.ToFloat] | None = None,
     accept_test: _AcceptTestFun[onp.ToFloat] | None = None,
-    callback: _CallbackFun[float] | _CallbackFun[np.float64] | None = None,
+    callback: _CallbackFun[float | int | bool] | _CallbackFun[np.float64] | None = None,
     interval: onp.ToJustInt = 50,
     disp: onp.ToBool = False,
     niter_success: onp.ToJustInt | None = None,

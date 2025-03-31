@@ -15,10 +15,10 @@ _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
 # NOTE: This demonstrates the ridiculous complexity that's required to properly annotate this simple function with "array-likes".
 # NOTE: Shape-typing hasn't even been included, as that would require even more overloads.
 
-# sequences of `builtins.float`, that implicitly (and inevitably) also cover `builtins.int` and `builtins.bool`
+# sequences of `builtins.float | int | bool`, that implicitly (and inevitably) also cover `builtins.int | bool` and `builtins.bool`
 @overload
 def variation(
-    a: Sequence[float],
+    a: Sequence[float | int | bool],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
@@ -27,7 +27,7 @@ def variation(
 ) -> np.float64: ...
 @overload
 def variation(
-    a: onp.ToIntND | _NestedSequence[float],
+    a: onp.ToIntND | _NestedSequence[float | int | bool],
     axis: None,
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
@@ -36,7 +36,7 @@ def variation(
 ) -> np.float64: ...
 @overload
 def variation(
-    a: onp.ToIntND | _NestedSequence[float],
+    a: onp.ToIntND | _NestedSequence[float | int | bool],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
@@ -45,7 +45,7 @@ def variation(
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def variation(
-    a: onp.ToIntND | _NestedSequence[float],
+    a: onp.ToIntND | _NestedSequence[float | int | bool],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
@@ -53,7 +53,7 @@ def variation(
     keepdims: AnyBool = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 
-# array-like input with known floating- or complex-floating dtypes
+# array-like input with known floating- or complex | float | int | bool-floating dtypes
 @overload
 def variation(
     a: _ArrayLike[_SCT_fc],
@@ -82,11 +82,11 @@ def variation(
     keepdims: AnyBool = False,
 ) -> _SCT_fc | onp.ArrayND[_SCT_fc]: ...
 
-# sequences of `builtin.complex`, which behave as if `float <: complex` and therefore "overlaps" with the `builtins.float`
+# sequences of `builtin.complex | float | int | bool`, which behave as if `float | int | bool <: complex | float | int | bool` and therefore "overlaps" with the `builtins.float | int | bool`
 # overloads, hence the `complex128 | float64` returns
 @overload
 def variation(
-    a: Sequence[complex],
+    a: Sequence[complex | float | int | bool],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
@@ -95,7 +95,7 @@ def variation(
 ) -> np.complex128 | np.float64: ...
 @overload
 def variation(
-    a: _NestedSequence[complex],
+    a: _NestedSequence[complex | float | int | bool],
     axis: None,
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
@@ -104,7 +104,7 @@ def variation(
 ) -> np.complex128 | np.float64: ...
 @overload
 def variation(
-    a: _NestedSequence[complex],
+    a: _NestedSequence[complex | float | int | bool],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
@@ -113,7 +113,7 @@ def variation(
 ) -> onp.ArrayND[np.complex128 | np.float64]: ...
 @overload
 def variation(
-    a: _NestedSequence[complex],
+    a: _NestedSequence[complex | float | int | bool],
     axis: op.CanIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,

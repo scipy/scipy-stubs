@@ -34,21 +34,21 @@ _T = TypeVar("_T")
 
 class OptimizeResult(_OptimizeResult):
     x: _Float1D
-    fun: float | np.float64
+    fun: float | int | bool | np.float64
     population: _Float2D
     population_energies: _Float1D
     jac: _Float2D  # only if `polish=True`
 
     success: bool
     message: str
-    nit: int
-    nfev: int
+    nit: int | bool
+    nfev: int | bool
 
 def differential_evolution(
     func: Callable[Concatenate[_Float1D, ...], onp.ToFloat],
     bounds: tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds,
     args: tuple[object, ...] = (),
-    strategy: _StrategyName | Callable[[int, _Float2D, np.random.Generator], onp.ToFloat1D] = "best1bin",
+    strategy: _StrategyName | Callable[[int | bool, _Float2D, np.random.Generator], onp.ToFloat1D] = "best1bin",
     maxiter: onp.ToJustInt = 1000,
     popsize: onp.ToJustInt = 15,
     tol: onp.ToFloat = 0.01,

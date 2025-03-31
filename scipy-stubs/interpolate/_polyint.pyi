@@ -24,8 +24,8 @@ _ComplexND: TypeAlias = onp.ArrayND[np.complex128]
 class _Interpolator1D:  # undocumented
     __slots__: ClassVar[tuple[str, ...]] = "_y_axis", "_y_extra_shape", "dtype"
 
-    _y_axis: int | None
-    _y_extra_shape: tuple[int, ...] | None
+    _y_axis: int | bool | None
+    _y_extra_shape: tuple[int | bool, ...] | None
     dtype: type[np.float64 | np.complex128]
 
     def __init__(
@@ -33,23 +33,23 @@ class _Interpolator1D:  # undocumented
         /,
         xi: onp.ToFloatND | None = None,
         yi: onp.ToComplexND | None = None,
-        axis: int | None = None,
+        axis: int | bool | None = None,
     ) -> None: ...
     def __call__(self, /, x: onp.ToFloat | onp.ToFloatND) -> _FloatND | _ComplexND: ...
 
 class _Interpolator1DWithDerivatives(_Interpolator1D):  # undocumented
-    def derivatives(self, /, x: onp.ToFloatND, der: int | Sequence[int] | None = None) -> _FloatND | _ComplexND: ...
-    def derivative(self, /, x: onp.ToFloatND, der: int = 1) -> _FloatND | _ComplexND: ...
+    def derivatives(self, /, x: onp.ToFloatND, der: int | bool | Sequence[int | bool] | None = None) -> _FloatND | _ComplexND: ...
+    def derivative(self, /, x: onp.ToFloatND, der: int | bool = 1) -> _FloatND | _ComplexND: ...
 
 class KroghInterpolator(_Interpolator1DWithDerivatives):
     xi: _Float1D
     yi: _FloatND | _ComplexND
     c: _Float2D | _Complex2D
 
-    def __init__(self, /, xi: onp.ToFloatND, yi: onp.ToComplexND, axis: int = 0) -> None: ...
+    def __init__(self, /, xi: onp.ToFloatND, yi: onp.ToComplexND, axis: int | bool = 0) -> None: ...
 
 class BarycentricInterpolator(_Interpolator1DWithDerivatives):
-    n: int
+    n: int | bool
     xi: _Float1D
     yi: _FloatND | _ComplexND
     wi: _Float1D
@@ -59,12 +59,12 @@ class BarycentricInterpolator(_Interpolator1DWithDerivatives):
         /,
         xi: onp.ToFloat1D,
         yi: onp.ToComplexND | None = None,
-        axis: int = 0,
+        axis: int | bool = 0,
         *,
         wi: onp.ToFloatND | None = None,
         rng: ToRNG = None,
     ) -> None: ...
-    def set_yi(self, /, yi: onp.ToComplexND, axis: int | None = None) -> None: ...
+    def set_yi(self, /, yi: onp.ToComplexND, axis: int | bool | None = None) -> None: ...
     def add_xi(self, /, xi: onp.ToFloat1D, yi: onp.ToComplexND | None = None) -> None: ...
 
 #
@@ -74,7 +74,7 @@ def krogh_interpolate(
     yi: onp.ToFloatND,
     x: onp.ToFloat | onp.ToFloat1D,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
-    axis: int = 0,
+    axis: int | bool = 0,
 ) -> _FloatND: ...
 @overload
 def krogh_interpolate(
@@ -82,7 +82,7 @@ def krogh_interpolate(
     yi: onp.ToJustComplexND,
     x: onp.ToFloat | onp.ToFloat1D,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
-    axis: int = 0,
+    axis: int | bool = 0,
 ) -> _ComplexND: ...
 @overload
 def krogh_interpolate(
@@ -90,7 +90,7 @@ def krogh_interpolate(
     yi: onp.ToComplexND,
     x: onp.ToFloat | onp.ToFloat1D,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
-    axis: int = 0,
+    axis: int | bool = 0,
 ) -> _FloatND | _ComplexND: ...
 
 #
@@ -108,7 +108,7 @@ def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToFloatND,
     x: onp.ToFloat,
-    axis: int = 0,
+    axis: int | bool = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
     rng: ToRNG = None,
@@ -118,7 +118,7 @@ def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToFloatND,
     x: onp.ToFloat1D,
-    axis: int = 0,
+    axis: int | bool = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
     rng: ToRNG = None,
@@ -128,7 +128,7 @@ def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToJustComplexND,
     x: onp.ToFloat,
-    axis: int = 0,
+    axis: int | bool = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
     rng: ToRNG = None,
@@ -138,7 +138,7 @@ def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToJustComplexND,
     x: onp.ToFloat1D,
-    axis: int = 0,
+    axis: int | bool = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
     rng: ToRNG = None,
@@ -148,7 +148,7 @@ def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToComplexND,
     x: onp.ToFloat,
-    axis: int = 0,
+    axis: int | bool = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
     rng: ToRNG = None,
@@ -158,7 +158,7 @@ def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToComplexND,
     x: onp.ToFloat1D,
-    axis: int = 0,
+    axis: int | bool = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
     rng: ToRNG = None,

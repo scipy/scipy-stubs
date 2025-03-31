@@ -3,5 +3,5 @@ from typing import NamedTuple
 import numpy as np
 
 class ConfidenceInterval(NamedTuple):
-    low: float | np.float64
-    high: float | np.float64
+    low: float | int | bool | np.float64
+    high: float | int | bool | np.float64

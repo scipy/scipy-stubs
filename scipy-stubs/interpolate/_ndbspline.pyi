@@ -17,7 +17,7 @@ _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64,
 _ToKnots: TypeAlias = tuple[onp.ToFloat1D, ...]
 _ToDegrees: TypeAlias = op.CanIndex | tuple[op.CanIndex, ...]
 
-_DesignMatrix: TypeAlias = csr_array[np.float64, tuple[int, int]]
+_DesignMatrix: TypeAlias = csr_array[np.float64, tuple[int | bool, int | bool]]
 _SolverFunc: TypeAlias = Callable[
     Concatenate[_DesignMatrix, onp.Array2D[np.float64], ...],
     onp.ArrayND[_ScalarT],

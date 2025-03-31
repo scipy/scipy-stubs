@@ -35,11 +35,11 @@ _Complex: TypeAlias = np.complex64 | np.complex128
 _Inexact: TypeAlias = _Float | _Complex
 _Number: TypeAlias = npc.integer | _Inexact
 
-_ToNumber: TypeAlias = complex | _Number
+_ToNumber: TypeAlias = complex | float | int | bool | _Number
 _ToNumberOrND: TypeAlias = _ToNumber | onp.ArrayND[_Number]
 
 _SCT = TypeVar("_SCT", bound=np.generic)
-_Array12D: TypeAlias = onp.ArrayND[_SCT, tuple[int] | tuple[int, int]]
+_Array12D: TypeAlias = onp.ArrayND[_SCT, tuple[int | bool] | tuple[int | bool, int | bool]]
 _Array012D: TypeAlias = onp.ArrayND[_SCT, onp.AtMost2D]
 
 _Float1D: TypeAlias = onp.Array1D[_Float]
@@ -87,8 +87,8 @@ _DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=onp.ToComplex |
 ###
 
 class LinearTimeInvariant(Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
-    inputs: Final[int]
-    outputs: Final[int]
+    inputs: Final[int | bool]
+    outputs: Final[int | bool]
 
     def __new__(cls, *system: Never, **kwargs: Never) -> Self: ...
 
@@ -372,9 +372,9 @@ class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Gener
 
     #
     @property
-    def gain(self, /) -> float: ...
+    def gain(self, /) -> float | int | bool: ...
     @gain.setter
-    def gain(self, gain: float, /) -> None: ...
+    def gain(self, gain: float | int | bool, /) -> None: ...
 
     #
     @override
@@ -431,7 +431,7 @@ class ZerosPolesGainDiscrete(
     ) -> None: ...
 
 class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
-    __array_priority__: ClassVar[float] = 100.0
+    __array_priority__: ClassVar[float | int | bool] = 100.0
     __array_ufunc__: ClassVar[None] = None
 
     @overload
@@ -579,8 +579,8 @@ class Bunch:
     computed_poles: _Float64_1D
     requested_poles: _Float64_1D
     X: onp.Array2D[np.complex128]
-    rtol: float
-    nb_iter: int
+    rtol: float | int | bool
+    nb_iter: int | bool
 
     def __init__(self, /, **kwds: Never) -> None: ...
 
@@ -590,8 +590,8 @@ def place_poles(
     B: onp.ToFloat2D,
     poles: onp.ToComplex1D,
     method: Literal["YT", "KNV0"] = "YT",
-    rtol: float = 0.001,
-    maxiter: int = 30,
+    rtol: float | int | bool = 0.001,
+    maxiter: int | bool = 30,
 ) -> Bunch: ...
 
 #

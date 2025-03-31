@@ -35,9 +35,9 @@ class CubatureResult(Generic[_ShapeT_co]):
     error: onp.ArrayND[np.float64, _ShapeT_co]
     status: _Status
     regions: list[CubatureRegion[_ShapeT_co]]
-    subdivisions: int
-    atol: float
-    rtol: float
+    subdivisions: int | bool
+    atol: float | int | bool
+    rtol: float | int | bool
 
 def cubature(
     f: Callable[Concatenate[onp.Array2D[np.float64], ...], onp.ToFloatND],
@@ -45,10 +45,10 @@ def cubature(
     b: onp.ToFloat1D,
     *,
     rule: _Rule = "gk21",
-    rtol: float = 1e-8,
-    atol: float = 0,
+    rtol: float | int | bool = 1e-8,
+    atol: float | int | bool = 0,
     max_subdivisions: onp.ToJustInt = 10_000,
     args: tuple[object, ...] = (),
-    workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
+    workers: int | bool | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
     points: Sequence[onp.ToFloat1D] | None = None,
 ) -> CubatureResult: ...

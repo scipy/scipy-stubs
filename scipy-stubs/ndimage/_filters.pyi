@@ -36,7 +36,7 @@ __all__ = [
 
 _Mode: TypeAlias = Literal["reflect", "constant", "nearest", "mirror", "wrap", "grid-constant", "grid-mirror", "grid-wrap"]
 _Modes: TypeAlias = _Mode | Sequence[_Mode]
-_Ints: TypeAlias = int | Sequence[int]
+_Ints: TypeAlias = int | bool | Sequence[int | bool]
 
 _FilterFunc1D: TypeAlias = Callable[Concatenate[onp.ArrayND[np.float64], onp.ArrayND[np.float64], ...], None]
 _FilterFuncND: TypeAlias = Callable[
@@ -45,13 +45,13 @@ _FilterFuncND: TypeAlias = Callable[
 ]
 _Derivative: TypeAlias = Callable[
     # (input, axis, output, mode, cval, *extra_arguments, **extra_keywords)
-    Concatenate[_ScalarArrayOut, int, np.dtype[_ScalarValueOut], _Mode, onp.ToComplex, ...],
+    Concatenate[_ScalarArrayOut, int | bool, np.dtype[_ScalarValueOut], _Mode, onp.ToComplex, ...],
     _ScalarArrayOut,
 ]
 
 @type_check_only
 class _GaussianKwargs(TypedDict, total=False):
-    truncate: float
+    truncate: float | int | bool
     radius: _Ints
 
 ###
@@ -65,13 +65,13 @@ def laplace(
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
 def prewitt(
     input: onp.ToComplex | onp.ToComplexND,
-    axis: int = -1,
+    axis: int | bool = -1,
     output: _ScalarArrayOut | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
@@ -80,7 +80,7 @@ def prewitt(
 #
 def sobel(
     input: onp.ToComplex | onp.ToComplexND,
-    axis: int = -1,
+    axis: int | bool = -1,
     output: _ScalarArrayOut | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
@@ -90,22 +90,22 @@ def sobel(
 def correlate1d(
     input: onp.ToComplex | onp.ToComplexND,
     weights: onp.ToFloat | onp.ToFloat1D,
-    axis: int = -1,
+    axis: int | bool = -1,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
-    origin: int = 0,
+    origin: int | bool = 0,
 ) -> _ScalarArrayOut: ...
 
 #
 def convolve1d(
     input: onp.ToComplex | onp.ToComplexND,
     weights: onp.ToFloat | onp.ToFloat1D,
-    axis: int = -1,
+    axis: int | bool = -1,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
-    origin: int = 0,
+    origin: int | bool = 0,
 ) -> _ScalarArrayOut: ...
 
 #
@@ -117,7 +117,7 @@ def correlate(
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
@@ -129,7 +129,7 @@ def convolve(
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
@@ -140,7 +140,7 @@ def gaussian_laplace(
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
     **kwargs: Unpack[_GaussianKwargs],
 ) -> _ScalarArrayOut: ...
 
@@ -152,7 +152,7 @@ def gaussian_gradient_magnitude(
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
     **kwargs: Unpack[_GaussianKwargs],
 ) -> _ScalarArrayOut: ...
 
@@ -160,14 +160,14 @@ def gaussian_gradient_magnitude(
 def gaussian_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
     sigma: onp.ToFloat,
-    axis: int = -1,
-    order: int = 0,
+    axis: int | bool = -1,
+    order: int | bool = 0,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
-    truncate: float = 4.0,
+    truncate: float | int | bool = 4.0,
     *,
-    radius: int | None = None,
+    radius: int | bool | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
@@ -178,10 +178,10 @@ def gaussian_filter(
     output: _ScalarArrayOut | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
-    truncate: float = 4.0,
+    truncate: float | int | bool = 4.0,
     *,
     radius: _Ints | None = None,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
@@ -194,7 +194,7 @@ def generic_laplace(
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, object] | None = None,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
@@ -207,7 +207,7 @@ def generic_gradient_magnitude(
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, object] | None = None,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
@@ -215,12 +215,12 @@ def generic_gradient_magnitude(
 def generic_filter1d(
     input: onp.ToFloat | onp.ToFloatND,
     function: _FilterFunc1D | LowLevelCallable,
-    filter_size: float,
-    axis: int = -1,
+    filter_size: float | int | bool,
+    axis: int | bool = -1,
     output: _FloatArrayOut | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
-    origin: int = 0,
+    origin: int | bool = 0,
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, object] | None = None,
 ) -> _FloatArrayOut: ...
@@ -229,7 +229,7 @@ def generic_filter1d(
 def generic_filter(
     input: onp.ToFloat | onp.ToFloatND,
     function: _FilterFuncND | LowLevelCallable,
-    size: int | tuple[int, ...] | None = None,
+    size: int | bool | tuple[int | bool, ...] | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Modes = "reflect",
@@ -238,117 +238,117 @@ def generic_filter(
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, object] | None = None,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
 def uniform_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int,
-    axis: int = -1,
+    size: int | bool,
+    axis: int | bool = -1,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
-    origin: int = 0,
+    origin: int | bool = 0,
 ) -> _ScalarArrayOut: ...
 
 #
 def minimum_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int,
-    axis: int = -1,
+    size: int | bool,
+    axis: int | bool = -1,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
-    origin: int = 0,
+    origin: int | bool = 0,
 ) -> _ScalarArrayOut: ...
 
 #
 def maximum_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int,
-    axis: int = -1,
+    size: int | bool,
+    axis: int | bool = -1,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
-    origin: int = 0,
+    origin: int | bool = 0,
 ) -> _ScalarArrayOut: ...
 
 #
 def uniform_filter(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int | tuple[int, ...] = 3,
+    size: int | bool | tuple[int | bool, ...] = 3,
     output: _ScalarArrayOut | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
 def minimum_filter(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int | tuple[int, ...] | None = None,
+    size: int | bool | tuple[int | bool, ...] | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
 def maximum_filter(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int | tuple[int, ...] | None = None,
+    size: int | bool | tuple[int | bool, ...] | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
 def median_filter(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int | tuple[int, ...] | None = None,
+    size: int | bool | tuple[int | bool, ...] | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
 def rank_filter(
     input: onp.ToComplex | onp.ToComplexND,
-    rank: int,
-    size: int | tuple[int, ...] | None = None,
+    rank: int | bool,
+    size: int | bool | tuple[int | bool, ...] | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
 def percentile_filter(
     input: onp.ToComplex | onp.ToComplexND,
     percentile: onp.ToFloat,
-    size: int | tuple[int, ...] | None = None,
+    size: int | bool | tuple[int | bool, ...] | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...

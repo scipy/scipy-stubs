@@ -16,24 +16,24 @@ _ToMatrix: TypeAlias = onp.ToComplex2D | LinearOperator | _spbase
 @overload  # compute_v: falsy, compute_w: falsy
 def onenormest(
     A: _ToMatrix,
-    t: int = 2,
-    itmax: int = 5,
+    t: int | bool = 2,
+    itmax: int | bool = 5,
     compute_v: Falsy = False,
     compute_w: Falsy = False,
 ) -> np.float64: ...
 @overload  # compute_v: falsy, compute_w: truthy  (positional)
 def onenormest(
     A: _ToMatrix,
-    t: int,
-    itmax: int,
+    t: int | bool,
+    itmax: int | bool,
     compute_v: Falsy,
     compute_w: Truthy,
 ) -> tuple[np.float64, _Float1D]: ...
 @overload  # compute_v: falsy, compute_w: truthy  (keyword)
 def onenormest(
     A: _ToMatrix,
-    t: int = 2,
-    itmax: int = 5,
+    t: int | bool = 2,
+    itmax: int | bool = 5,
     compute_v: Falsy = False,
     *,
     compute_w: Truthy,
@@ -41,16 +41,16 @@ def onenormest(
 @overload  # compute_v: truthy  (positional), compute_w: falsy
 def onenormest(
     A: _ToMatrix,
-    t: int,
-    itmax: int,
+    t: int | bool,
+    itmax: int | bool,
     compute_v: Truthy,
     compute_w: Falsy = False,
 ) -> tuple[np.float64, _Float1D]: ...
 @overload  # compute_v: truthy  (keyword), compute_w: falsy
 def onenormest(
     A: _ToMatrix,
-    t: int = 2,
-    itmax: int = 5,
+    t: int | bool = 2,
+    itmax: int | bool = 5,
     *,
     compute_v: Truthy,
     compute_w: Falsy = False,
@@ -58,16 +58,16 @@ def onenormest(
 @overload  # compute_v: truthy  (positional), compute_w: truthy
 def onenormest(
     A: _ToMatrix,
-    t: int,
-    itmax: int,
+    t: int | bool,
+    itmax: int | bool,
     compute_v: Truthy,
     compute_w: Truthy,
 ) -> tuple[np.float64, _Float1D, _Float1D]: ...
 @overload  # compute_v: truthy  (keyword), compute_w: truthy
 def onenormest(
     A: _ToMatrix,
-    t: int = 2,
-    itmax: int = 5,
+    t: int | bool = 2,
+    itmax: int | bool = 5,
     *,
     compute_v: Truthy,
     compute_w: Truthy,

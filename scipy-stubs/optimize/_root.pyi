@@ -101,7 +101,7 @@ class _RootOptionsDFSane(TypedDict, total=False):
     fnorm: Callable[[onp.ArrayND[np.float64]], onp.ToFloat]
     maxfev: onp.ToJustInt
     disp: onp.ToBool
-    eta_strategy: Callable[[int, onp.ArrayND[np.float64], onp.ArrayND[np.float64]], onp.ToFloat1D]
+    eta_strategy: Callable[[int | bool, onp.ArrayND[np.float64], onp.ArrayND[np.float64]], onp.ToFloat1D]
     sigma_eps: onp.ToFloat
     sigma_0: onp.ToFloat
     M: onp.ToJustInt
@@ -125,7 +125,7 @@ class OptimizeResult(_OptimizeResult):
     x: onp.ArrayND[np.floating[Any]]
     success: bool
     message: str
-    nfev: int
+    nfev: int | bool
 
 @overload  # `jac` not given (None), False, or a callable
 def root(

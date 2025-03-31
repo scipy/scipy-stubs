@@ -39,7 +39,9 @@ __all__ = [
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
 _SCT1 = TypeVar("_SCT1", bound=Numeric)
 _SCT2 = TypeVar("_SCT2", bound=Numeric)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int])
+_ShapeT = TypeVar(
+    "_ShapeT", bound=tuple[int | bool] | tuple[int | bool, int | bool], default=tuple[int | bool] | tuple[int | bool, int | bool]
+)
 
 _ToArray1D: TypeAlias = Seq[_SCT] | onp.CanArrayND[_SCT]
 _ToArray2D: TypeAlias = Seq[Seq[_SCT] | onp.CanArrayND[_SCT]] | onp.CanArrayND[_SCT]
@@ -63,41 +65,43 @@ _SpArray: TypeAlias = (
     | dok_array[_SCT, _ShapeT]
     | lil_array[_SCT]
 )
-_SpArray1D: TypeAlias = coo_array[_SCT, tuple[int]] | csr_array[_SCT, tuple[int]] | dok_array[_SCT, tuple[int]]
-_SpArray2D: TypeAlias = _SpArray[_SCT, tuple[int, int]]
+_SpArray1D: TypeAlias = (
+    coo_array[_SCT, tuple[int | bool]] | csr_array[_SCT, tuple[int | bool]] | dok_array[_SCT, tuple[int | bool]]
+)
+_SpArray2D: TypeAlias = _SpArray[_SCT, tuple[int | bool, int | bool]]
 
 _BSRArray: TypeAlias = bsr_array[_SCT]
-_CSRArray: TypeAlias = csr_array[_SCT, tuple[int, int]]
+_CSRArray: TypeAlias = csr_array[_SCT, tuple[int | bool, int | bool]]
 _NonBSRArray: TypeAlias = (
-    coo_array[_SCT, tuple[int, int]]
+    coo_array[_SCT, tuple[int | bool, int | bool]]
     | csc_array[_SCT]
-    | csr_array[_SCT, tuple[int, int]]
+    | csr_array[_SCT, tuple[int | bool, int | bool]]
     | dia_array[_SCT]
-    | dok_array[_SCT, tuple[int, int]]
+    | dok_array[_SCT, tuple[int | bool, int | bool]]
     | lil_array[_SCT]
 )
 _NonCOOArray: TypeAlias = (
     bsr_array[_SCT]
     | csc_array[_SCT]
-    | csr_array[_SCT, tuple[int, int]]
+    | csr_array[_SCT, tuple[int | bool, int | bool]]
     | dia_array[_SCT]
-    | dok_array[_SCT, tuple[int, int]]
+    | dok_array[_SCT, tuple[int | bool, int | bool]]
     | lil_array[_SCT]
 )
 _NonCSRArray: TypeAlias = (
     bsr_array[_SCT]
-    | coo_array[_SCT, tuple[int, int]]
+    | coo_array[_SCT, tuple[int | bool, int | bool]]
     | csc_array[_SCT]
     | dia_array[_SCT]
-    | dok_array[_SCT, tuple[int, int]]
+    | dok_array[_SCT, tuple[int | bool, int | bool]]
     | lil_array[_SCT]
 )
 _NonDIAArray: TypeAlias = (
     bsr_array[_SCT]
-    | coo_array[_SCT, tuple[int, int]]
+    | coo_array[_SCT, tuple[int | bool, int | bool]]
     | csc_array[_SCT]
-    | csr_array[_SCT, tuple[int, int]]
-    | dok_array[_SCT, tuple[int, int]]
+    | csr_array[_SCT, tuple[int | bool, int | bool]]
+    | dok_array[_SCT, tuple[int | bool, int | bool]]
     | lil_array[_SCT]
 )
 _NonBSRMatrix: TypeAlias = (
@@ -116,7 +120,7 @@ _NonDIAMatrix: TypeAlias = (
 _SpMatrixOut: TypeAlias = coo_matrix[_SCT] | csc_matrix[_SCT] | csr_matrix[_SCT]
 _SpMatrixNonOut: TypeAlias = bsr_matrix[_SCT] | dia_matrix[_SCT] | dok_matrix[_SCT] | lil_matrix[_SCT]
 _SpArrayOut: TypeAlias = coo_array[_SCT, _ShapeT] | csc_array[_SCT] | csr_array[_SCT, _ShapeT]
-_SpArrayNonOut: TypeAlias = bsr_array[_SCT] | dia_array[_SCT] | dok_array[_SCT, tuple[int, int]] | lil_array[_SCT]
+_SpArrayNonOut: TypeAlias = bsr_array[_SCT] | dia_array[_SCT] | dok_array[_SCT, tuple[int | bool, int | bool]] | lil_array[_SCT]
 
 _FmtBSR: TypeAlias = Literal["bsr"]
 _FmtCOO: TypeAlias = Literal["coo"]
@@ -129,13 +133,13 @@ _FmtNonCSR: TypeAlias = Literal["bsr", "coo", "csc", "dia", "dok", "lil"]
 _FmtNonDIA: TypeAlias = Literal["bsr", "coo", "csc", "csr", "dok", "lil"]
 _FmtNonOut: TypeAlias = Literal["bsr", "dia", "dok", "lil"]
 
-_DataRVS: TypeAlias = Callable[[int], onp.ArrayND[Numeric]]
+_DataRVS: TypeAlias = Callable[[int | bool], onp.ArrayND[Numeric]]
 
 _ToBlocks: TypeAlias = Seq[Seq[_spbase]] | onp.ArrayND[np.object_]
 
 @type_check_only
 class _DataSampler(Protocol):
-    def __call__(self, /, *, size: int) -> onp.ArrayND[Numeric]: ...
+    def __call__(self, /, *, size: int | bool) -> onp.ArrayND[Numeric]: ...
 
 ###
 
@@ -160,7 +164,7 @@ def diags_array(  # type: ignore[overload-overlap]
     format: _FmtNonDIA,
     dtype: None = None,
 ) -> _NonDIAArray[_SCT]: ...
-@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: int
+@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: int | bool
 def diags_array(
     diagonals: onp.ToFloat1D | onp.ToFloat2D,
     /,
@@ -170,7 +174,7 @@ def diags_array(
     format: _FmtDIA | None = None,
     dtype: onp.AnyIntDType,
 ) -> dia_array[np.int_]: ...
-@overload  # diagonals: <unknown>, format: <otherwise>, dtype: int
+@overload  # diagonals: <unknown>, format: <otherwise>, dtype: int | bool
 def diags_array(
     diagonals: onp.ToFloat1D | onp.ToFloat2D,
     /,
@@ -180,7 +184,7 @@ def diags_array(
     format: _FmtNonDIA,
     dtype: onp.AnyIntDType,
 ) -> _NonDIAArray[np.int_]: ...
-@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: float
+@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: float | int | bool
 def diags_array(
     diagonals: onp.ToFloat1D | onp.ToFloat2D,
     /,
@@ -190,7 +194,7 @@ def diags_array(
     format: _FmtDIA | None = None,
     dtype: onp.AnyFloat64DType,
 ) -> dia_array[np.float64]: ...
-@overload  # diagonals: <unknown>, format: <otherwise>, dtype: float
+@overload  # diagonals: <unknown>, format: <otherwise>, dtype: float | int | bool
 def diags_array(
     diagonals: onp.ToFloat1D | onp.ToFloat2D,
     /,
@@ -200,7 +204,7 @@ def diags_array(
     format: _FmtNonDIA,
     dtype: onp.AnyFloat64DType,
 ) -> _NonDIAArray[np.float64]: ...
-@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: complex
+@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: complex | float | int | bool
 def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
@@ -210,7 +214,7 @@ def diags_array(
     format: _FmtDIA | None = None,
     dtype: onp.AnyComplex128DType,
 ) -> dia_array[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: <otherwise>, dtype: complex
+@overload  # diagonals: <unknown>, format: <otherwise>, dtype: complex | float | int | bool
 def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
@@ -383,7 +387,7 @@ def spdiags(
 ) -> _NonDIAMatrix[_SCT]: ...
 @overload
 def spdiags(
-    data: Seq[complex] | Seq[Seq[complex]],
+    data: Seq[complex | float | int | bool] | Seq[Seq[complex | float | int | bool]],
     diags: onp.ToInt | onp.ToInt1D,
     m: onp.ToJustInt,
     n: onp.ToJustInt,
@@ -391,7 +395,7 @@ def spdiags(
 ) -> _SpMatrix: ...
 @overload
 def spdiags(
-    data: Seq[complex] | Seq[Seq[complex]],
+    data: Seq[complex | float | int | bool] | Seq[Seq[complex | float | int | bool]],
     diags: onp.ToInt | onp.ToInt1D,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -402,25 +406,25 @@ def spdiags(
 #
 @overload  # dtype like bool, format: None = ...
 def identity(n: opt.AnyInt, dtype: onp.AnyBoolDType, format: _FmtDIA | None = None) -> dia_matrix[np.bool_]: ...
-@overload  # dtype like int, format: None = ...
+@overload  # dtype like int | bool, format: None = ...
 def identity(n: opt.AnyInt, dtype: onp.AnyIntDType, format: _FmtDIA | None = None) -> dia_matrix[np.int_]: ...
-@overload  # dtype like float (default), format: None = ...
+@overload  # dtype like float | int | bool (default), format: None = ...
 def identity(n: opt.AnyInt, dtype: onp.AnyFloat64DType = "d", format: _FmtDIA | None = None) -> dia_matrix[np.float64]: ...
-@overload  # dtype like complex, format: None = ...
+@overload  # dtype like complex | float | int | bool, format: None = ...
 def identity(n: opt.AnyInt, dtype: onp.AnyComplex128DType, format: _FmtDIA | None = None) -> dia_matrix[np.complex128]: ...
 @overload  # dtype like <known>, format: None = ...
 def identity(n: opt.AnyInt, dtype: onp.ToDType[_SCT], format: _FmtDIA | None = None) -> dia_matrix[_SCT]: ...
 @overload  # dtype like <unknown>, format: None = ...
 def identity(n: opt.AnyInt, dtype: npt.DTypeLike, format: _FmtDIA | None = None) -> dia_matrix: ...
-@overload  # dtype like float, format: <given> (positional)
+@overload  # dtype like float | int | bool, format: <given> (positional)
 def identity(n: opt.AnyInt, dtype: onp.AnyFloat64DType, format: _FmtNonDIA) -> _SpMatrix[np.float64]: ...
-@overload  # dtype like float (default), format: <given> (keyword)
+@overload  # dtype like float | int | bool (default), format: <given> (keyword)
 def identity(n: opt.AnyInt, dtype: onp.AnyFloat64DType = "d", *, format: _FmtNonDIA) -> _SpMatrix[np.float64]: ...
 @overload  # dtype like bool, format: <given>
 def identity(n: opt.AnyInt, dtype: onp.AnyBoolDType, format: _FmtNonDIA) -> _SpMatrix[np.bool_]: ...
-@overload  # dtype like int, format: <given>
+@overload  # dtype like int | bool, format: <given>
 def identity(n: opt.AnyInt, dtype: onp.AnyIntDType, format: _FmtNonDIA) -> _SpMatrix[np.int_]: ...
-@overload  # dtype like complex, format: <given>
+@overload  # dtype like complex | float | int | bool, format: <given>
 def identity(n: opt.AnyInt, dtype: onp.AnyComplex128DType, format: _FmtNonDIA) -> _SpMatrix[np.complex128]: ...
 @overload  # dtype like <known>, format: <given>
 def identity(n: opt.AnyInt, dtype: onp.ToDType[_SCT], format: _FmtNonDIA) -> _SpMatrix[_SCT]: ...
@@ -433,34 +437,34 @@ def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.AnyBoolDType,
     format: _FmtDIA | None = None,
 ) -> dia_array[np.bool_]: ...
-@overload  # dtype like int, format: None = ...
+@overload  # dtype like int | bool, format: None = ...
 def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.AnyIntDType,
     format: _FmtDIA | None = None,
 ) -> dia_array[np.int_]: ...
-@overload  # dtype like float (default), format: None = ...
+@overload  # dtype like float | int | bool (default), format: None = ...
 def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.AnyFloat64DType = ...,
     format: _FmtDIA | None = None,
 ) -> dia_array[np.float64]: ...
-@overload  # dtype like complex, format: None = ...
+@overload  # dtype like complex | float | int | bool, format: None = ...
 def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.AnyComplex128DType,
     format: _FmtDIA | None = None,
 ) -> dia_array[np.complex128]: ...
@@ -469,7 +473,7 @@ def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.ToDType[_SCT],
     format: _FmtDIA | None = None,
 ) -> dia_array[_SCT]: ...
@@ -478,16 +482,16 @@ def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: npt.DTypeLike,
     format: _FmtDIA | None = None,
 ) -> dia_array: ...
-@overload  # dtype like float (default), format: <given>
+@overload  # dtype like float | int | bool (default), format: <given>
 def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.AnyFloat64DType = ...,
     format: _FmtNonDIA,
 ) -> _SpArray2D[np.float64]: ...
@@ -496,25 +500,25 @@ def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.AnyBoolDType,
     format: _FmtNonDIA,
 ) -> _SpArray2D[np.bool_]: ...
-@overload  # dtype like int, format: <given>
+@overload  # dtype like int | bool, format: <given>
 def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.AnyIntDType,
     format: _FmtNonDIA,
 ) -> _SpArray2D[np.int_]: ...
-@overload  # dtype like complex, format: <given>
+@overload  # dtype like complex | float | int | bool, format: <given>
 def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.AnyComplex128DType,
     format: _FmtNonDIA,
 ) -> _SpArray2D[np.complex128]: ...
@@ -523,7 +527,7 @@ def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.ToDType[_SCT],
     format: _FmtNonDIA,
 ) -> _SpArray2D[_SCT]: ...
@@ -532,17 +536,17 @@ def eye_array(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
     *,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: npt.DTypeLike,
     format: _FmtNonDIA,
 ) -> _SpArray2D: ...
 
 # NOTE: `eye_array` should be prefered over `eye`
-@overload  # dtype like float (default)
+@overload  # dtype like float | int | bool (default)
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
-    k: int = 0,
+    k: int | bool = 0,
     dtype: onp.AnyFloat64DType = ...,
     format: SPFormat | None = None,
 ) -> _SpMatrix[np.float64]: ...
@@ -550,7 +554,7 @@ def eye(
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None,
-    k: int,
+    k: int | bool,
     dtype: onp.AnyBoolDType,
     format: SPFormat | None = None,
 ) -> _SpMatrix[np.bool_]: ...
@@ -558,41 +562,41 @@ def eye(
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
-    k: int = 0,
+    k: int | bool = 0,
     *,
     dtype: onp.AnyBoolDType,
     format: SPFormat | None = None,
 ) -> _SpMatrix[np.bool_]: ...
-@overload  # dtype like int (positional)
+@overload  # dtype like int | bool (positional)
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None,
-    k: int,
+    k: int | bool,
     dtype: onp.AnyIntDType,
     format: SPFormat | None = None,
 ) -> _SpMatrix[np.int_]: ...
-@overload  # dtype like int (keyword)
+@overload  # dtype like int | bool (keyword)
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
-    k: int = 0,
+    k: int | bool = 0,
     *,
     dtype: onp.AnyIntDType,
     format: SPFormat | None = None,
 ) -> _SpMatrix[np.int_]: ...
-@overload  # dtype like complex (positional)
+@overload  # dtype like complex | float | int | bool (positional)
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None,
-    k: int,
+    k: int | bool,
     dtype: onp.AnyComplex128DType,
     format: SPFormat | None = None,
 ) -> _SpMatrix[np.complex128]: ...
-@overload  # dtype like complex (keyword)
+@overload  # dtype like complex | float | int | bool (keyword)
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
-    k: int = 0,
+    k: int | bool = 0,
     *,
     dtype: onp.AnyComplex128DType,
     format: SPFormat | None = None,
@@ -601,7 +605,7 @@ def eye(
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None,
-    k: int,
+    k: int | bool,
     dtype: onp.ToDType[_SCT],
     format: SPFormat | None = None,
 ) -> _SpMatrix[_SCT]: ...
@@ -609,7 +613,7 @@ def eye(
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
-    k: int = 0,
+    k: int | bool = 0,
     *,
     dtype: onp.ToDType[_SCT],
     format: SPFormat | None = None,
@@ -618,7 +622,7 @@ def eye(
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None,
-    k: int,
+    k: int | bool,
     dtype: npt.DTypeLike,
     format: SPFormat | None = None,
 ) -> _SpMatrix: ...
@@ -626,7 +630,7 @@ def eye(
 def eye(
     m: opt.AnyInt,
     n: opt.AnyInt | None = None,
-    k: int = 0,
+    k: int | bool = 0,
     *,
     dtype: npt.DTypeLike,
     format: SPFormat | None = None,
@@ -677,26 +681,26 @@ def kronsum(
 def hstack(blocks: Seq[_SpArray[_SCT]], format: _FmtOut | None = None, dtype: None = None) -> _SpArrayOut[_SCT]: ...
 @overload  # sparray, format: <non-default>, dtype: None
 def hstack(blocks: Seq[_SpArray[_SCT]], format: _FmtNonOut, dtype: None = None) -> _SpArrayNonOut[_SCT]: ...
-@overload  # sparray, format: <default>, dtype: <int>
+@overload  # sparray, format: <default>, dtype: <int | bool>
 def hstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.AnyBoolDType) -> _SpArrayOut[np.bool_]: ...
-@overload  # sparray, format: <non-default>, dtype: <int>
+@overload  # sparray, format: <non-default>, dtype: <int | bool>
 def hstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyBoolDType) -> _SpArrayNonOut[np.bool_]: ...
-@overload  # sparray, format: <default>, dtype: <int>
+@overload  # sparray, format: <default>, dtype: <int | bool>
 def hstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.AnyIntDType) -> _SpArrayOut[np.int_]: ...
-@overload  # sparray, format: <non-default>, dtype: <int>
+@overload  # sparray, format: <non-default>, dtype: <int | bool>
 def hstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyIntDType) -> _SpArrayNonOut[np.int_]: ...
-@overload  # sparray, format: <default>, dtype: <float>
+@overload  # sparray, format: <default>, dtype: <float | int | bool>
 def hstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.AnyFloat64DType) -> _SpArrayOut[np.float64]: ...
-@overload  # sparray, format: <non-default>, dtype: <float>
+@overload  # sparray, format: <non-default>, dtype: <float | int | bool>
 def hstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpArrayNonOut[np.float64]: ...
-@overload  # sparray, format: <default>, dtype: <complex>
+@overload  # sparray, format: <default>, dtype: <complex | float | int | bool>
 def hstack(
     blocks: Seq[_SpArray],
     format: _FmtOut | None = None,
     *,
     dtype: onp.AnyComplex128DType,
 ) -> _SpArrayOut[np.complex128]: ...
-@overload  # sparray, format: <non-default>, dtype: <complex>
+@overload  # sparray, format: <non-default>, dtype: <complex | float | int | bool>
 def hstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpArrayNonOut[np.complex128]: ...
 @overload  # sparray, format: <default>, dtype: <known>
 def hstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.ToDType[_SCT]) -> _SpArrayOut[_SCT]: ...
@@ -710,26 +714,26 @@ def hstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: npt.DTypeLike) -> _
 def hstack(blocks: Seq[spmatrix[_SCT]], format: _FmtOut | None = None, dtype: None = None) -> _SpMatrixOut[_SCT]: ...  # type: ignore[overload-overlap]
 @overload  # spmatrix, format: <non-default>, dtype: None
 def hstack(blocks: Seq[spmatrix[_SCT]], format: _FmtNonOut, dtype: None = None) -> _SpMatrixNonOut[_SCT]: ...  # type: ignore[overload-overlap]
-@overload  # spmatrix, format: <default>, dtype: <int>
+@overload  # spmatrix, format: <default>, dtype: <int | bool>
 def hstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.AnyBoolDType) -> _SpMatrixOut[np.bool_]: ...
-@overload  # spmatrix, format: <non-default>, dtype: <int>
+@overload  # spmatrix, format: <non-default>, dtype: <int | bool>
 def hstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyBoolDType) -> _SpMatrixNonOut[np.bool_]: ...
-@overload  # spmatrix, format: <default>, dtype: <int>
+@overload  # spmatrix, format: <default>, dtype: <int | bool>
 def hstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.AnyIntDType) -> _SpMatrixOut[np.int_]: ...
-@overload  # spmatrix, format: <non-default>, dtype: <int>
+@overload  # spmatrix, format: <non-default>, dtype: <int | bool>
 def hstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyIntDType) -> _SpMatrixNonOut[np.int_]: ...
-@overload  # spmatrix, format: <default>, dtype: <float>
+@overload  # spmatrix, format: <default>, dtype: <float | int | bool>
 def hstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.AnyFloat64DType) -> _SpMatrixOut[np.float64]: ...
-@overload  # spmatrix, format: <non-default>, dtype: <float>
+@overload  # spmatrix, format: <non-default>, dtype: <float | int | bool>
 def hstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpMatrixNonOut[np.float64]: ...
-@overload  # spmatrix, format: <default>, dtype: <complex>
+@overload  # spmatrix, format: <default>, dtype: <complex | float | int | bool>
 def hstack(
     blocks: Seq[spmatrix],
     format: _FmtOut | None = None,
     *,
     dtype: onp.AnyComplex128DType,
 ) -> _SpMatrixOut[np.complex128]: ...
-@overload  # spmatrix, format: <non-default>, dtype: <complex>
+@overload  # spmatrix, format: <non-default>, dtype: <complex | float | int | bool>
 def hstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpMatrixNonOut[np.complex128]: ...
 @overload  # spmatrix, format: <default>, dtype: <known>
 def hstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.ToDType[_SCT]) -> _SpMatrixOut[_SCT]: ...
@@ -745,26 +749,26 @@ def hstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: npt.DTypeLike) -> _
 def vstack(blocks: Seq[_SpArray[_SCT]], format: _FmtOut | None = None, dtype: None = None) -> _SpArrayOut[_SCT]: ...
 @overload  # sparray, format: <non-default>, dtype: None
 def vstack(blocks: Seq[_SpArray[_SCT]], format: _FmtNonOut, dtype: None = None) -> _SpArrayNonOut[_SCT]: ...
-@overload  # sparray, format: <default>, dtype: <int>
+@overload  # sparray, format: <default>, dtype: <int | bool>
 def vstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.AnyBoolDType) -> _SpArrayOut[np.bool_]: ...
-@overload  # sparray, format: <non-default>, dtype: <int>
+@overload  # sparray, format: <non-default>, dtype: <int | bool>
 def vstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyBoolDType) -> _SpArrayNonOut[np.bool_]: ...
-@overload  # sparray, format: <default>, dtype: <int>
+@overload  # sparray, format: <default>, dtype: <int | bool>
 def vstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.AnyIntDType) -> _SpArrayOut[np.int_]: ...
-@overload  # sparray, format: <non-default>, dtype: <int>
+@overload  # sparray, format: <non-default>, dtype: <int | bool>
 def vstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyIntDType) -> _SpArrayNonOut[np.int_]: ...
-@overload  # sparray, format: <default>, dtype: <float>
+@overload  # sparray, format: <default>, dtype: <float | int | bool>
 def vstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.AnyFloat64DType) -> _SpArrayOut[np.float64]: ...
-@overload  # sparray, format: <non-default>, dtype: <float>
+@overload  # sparray, format: <non-default>, dtype: <float | int | bool>
 def vstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpArrayNonOut[np.float64]: ...
-@overload  # sparray, format: <default>, dtype: <complex>
+@overload  # sparray, format: <default>, dtype: <complex | float | int | bool>
 def vstack(
     blocks: Seq[_SpArray],
     format: _FmtOut | None = None,
     *,
     dtype: onp.AnyComplex128DType,
 ) -> _SpArrayOut[np.complex128]: ...
-@overload  # sparray, format: <non-default>, dtype: <complex>
+@overload  # sparray, format: <non-default>, dtype: <complex | float | int | bool>
 def vstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpArrayNonOut[np.complex128]: ...
 @overload  # sparray, format: <default>, dtype: <known>
 def vstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.ToDType[_SCT]) -> _SpArrayOut[_SCT]: ...
@@ -778,26 +782,26 @@ def vstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: npt.DTypeLike) -> _
 def vstack(blocks: Seq[spmatrix[_SCT]], format: _FmtOut | None = None, dtype: None = None) -> _SpMatrixOut[_SCT]: ...  # type: ignore[overload-overlap]
 @overload  # spmatrix, format: <non-default>, dtype: None
 def vstack(blocks: Seq[spmatrix[_SCT]], format: _FmtNonOut, dtype: None = None) -> _SpMatrixNonOut[_SCT]: ...  # type: ignore[overload-overlap]
-@overload  # spmatrix, format: <default>, dtype: <int>
+@overload  # spmatrix, format: <default>, dtype: <int | bool>
 def vstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.AnyBoolDType) -> _SpMatrixOut[np.bool_]: ...
-@overload  # spmatrix, format: <non-default>, dtype: <int>
+@overload  # spmatrix, format: <non-default>, dtype: <int | bool>
 def vstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyBoolDType) -> _SpMatrixNonOut[np.bool_]: ...
-@overload  # spmatrix, format: <default>, dtype: <int>
+@overload  # spmatrix, format: <default>, dtype: <int | bool>
 def vstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.AnyIntDType) -> _SpMatrixOut[np.int_]: ...
-@overload  # spmatrix, format: <non-default>, dtype: <int>
+@overload  # spmatrix, format: <non-default>, dtype: <int | bool>
 def vstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyIntDType) -> _SpMatrixNonOut[np.int_]: ...
-@overload  # spmatrix, format: <default>, dtype: <float>
+@overload  # spmatrix, format: <default>, dtype: <float | int | bool>
 def vstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.AnyFloat64DType) -> _SpMatrixOut[np.float64]: ...
-@overload  # spmatrix, format: <non-default>, dtype: <float>
+@overload  # spmatrix, format: <non-default>, dtype: <float | int | bool>
 def vstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpMatrixNonOut[np.float64]: ...
-@overload  # spmatrix, format: <default>, dtype: <complex>
+@overload  # spmatrix, format: <default>, dtype: <complex | float | int | bool>
 def vstack(
     blocks: Seq[spmatrix],
     format: _FmtOut | None = None,
     *,
     dtype: onp.AnyComplex128DType,
 ) -> _SpMatrixOut[np.complex128]: ...
-@overload  # spmatrix, format: <non-default>, dtype: <complex>
+@overload  # spmatrix, format: <non-default>, dtype: <complex | float | int | bool>
 def vstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpMatrixNonOut[np.complex128]: ...
 @overload  # spmatrix, format: <default>, dtype: <known>
 def vstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.ToDType[_SCT]) -> _SpMatrixOut[_SCT]: ...
@@ -808,7 +812,7 @@ def vstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: npt.D
 @overload  # spmatrix, format: <non-default>, dtype: <unknown>
 def vstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: npt.DTypeLike) -> _SpMatrixNonOut: ...
 
-_COOArray2D: TypeAlias = coo_array[_SCT, tuple[int, int]]
+_COOArray2D: TypeAlias = coo_array[_SCT, tuple[int | bool, int | bool]]
 
 #
 @overload  # blocks: <known dtype>, format: <default>, dtype: <default>
@@ -855,7 +859,7 @@ def block_diag(
     mats: Iterable[_SpArray[_SCT]],
     format: SPFormat | None = None,
     dtype: None = None,
-) -> _SpArray[_SCT, tuple[int, int]]: ...
+) -> _SpArray[_SCT, tuple[int | bool, int | bool]]: ...
 @overload  # mats: <matrix, known dtype>
 def block_diag(
     mats: Iterable[spmatrix[_SCT]],
@@ -867,59 +871,59 @@ def block_diag(
     mats: Iterable[_spbase[_SCT] | onp.ArrayND[_SCT]],
     format: SPFormat | None = None,
     dtype: None = None,
-) -> _SpArray[_SCT, tuple[int, int]] | _SpMatrix[_SCT]: ...
+) -> _SpArray[_SCT, tuple[int | bool, int | bool]] | _SpMatrix[_SCT]: ...
 @overload  # mats: <array, unknown dtype>, dtype: <known>  (positional)
 def block_diag(
     mats: Iterable[sparray],
     format: SPFormat | None,
     dtype: onp.ToDType[_SCT],
-) -> _SpArray[_SCT, tuple[int, int]]: ...
+) -> _SpArray[_SCT, tuple[int | bool, int | bool]]: ...
 @overload  # mats: <array, unknown dtype>, dtype: <known>  (keyword)
 def block_diag(
     mats: Iterable[sparray],
     format: SPFormat | None = None,
     *,
     dtype: onp.ToDType[_SCT],
-) -> _SpArray[_SCT, tuple[int, int]]: ...
+) -> _SpArray[_SCT, tuple[int | bool, int | bool]]: ...
 @overload  # mats: <matrix, unknown dtype>, dtype: <known>  (positional)
 def block_diag(
-    mats: Iterable[spmatrix | onp.ArrayND[Numeric] | complex | list[onp.ToComplex] | list[onp.ToComplex1D]],
+    mats: Iterable[spmatrix | onp.ArrayND[Numeric] | complex | float | int | bool | list[onp.ToComplex] | list[onp.ToComplex1D]],
     format: SPFormat | None,
     dtype: onp.ToDType[_SCT],
 ) -> _SpMatrix[_SCT]: ...
 @overload  # mats: <matrix, unknown dtype>, dtype: <known>  (keyword)
 def block_diag(
-    mats: Iterable[spmatrix | onp.ArrayND[Numeric] | complex | list[onp.ToComplex] | list[onp.ToComplex1D]],
+    mats: Iterable[spmatrix | onp.ArrayND[Numeric] | complex | float | int | bool | list[onp.ToComplex] | list[onp.ToComplex1D]],
     format: SPFormat | None = None,
     *,
     dtype: onp.ToDType[_SCT],
 ) -> _SpMatrix[_SCT]: ...
 @overload  # mats: <unknown, unknown dtype>, dtype: <known>  (positional)
 def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | list[onp.ToComplex] | list[onp.ToComplex1D]],
+    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | float | int | bool | list[onp.ToComplex] | list[onp.ToComplex1D]],
     format: SPFormat | None,
     dtype: onp.ToDType[_SCT],
-) -> _SpArray[_SCT, tuple[int, int]] | _SpMatrix[_SCT]: ...
+) -> _SpArray[_SCT, tuple[int | bool, int | bool]] | _SpMatrix[_SCT]: ...
 @overload  # mats: <unknown, unknown dtype>, dtype: <known>  (keyword)
 def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | list[onp.ToComplex] | list[onp.ToComplex1D]],
+    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | float | int | bool | list[onp.ToComplex] | list[onp.ToComplex1D]],
     format: SPFormat | None = None,
     *,
     dtype: onp.ToDType[_SCT],
-) -> _SpArray[_SCT, tuple[int, int]] | _SpMatrix[_SCT]: ...
+) -> _SpArray[_SCT, tuple[int | bool, int | bool]] | _SpMatrix[_SCT]: ...
 @overload  # catch-all
 def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | list[onp.ToComplex] | list[onp.ToComplex1D]],
+    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | float | int | bool | list[onp.ToComplex] | list[onp.ToComplex1D]],
     format: SPFormat | None = None,
     dtype: npt.DTypeLike | None = None,
-) -> _SpArray[Any, tuple[int, int]] | _SpMatrix[Any]: ...
+) -> _SpArray[Any, tuple[int | bool, int | bool]] | _SpMatrix[Any]: ...
 
 #
 @overload  # shape: 1d, dtype: <default>
 def random_array(
-    shape: tuple[int],
+    shape: tuple[int | bool],
     *,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyFloat64DType | None = None,
     rng: ToRNG = None,
@@ -927,19 +931,19 @@ def random_array(
 ) -> _SpArray1D[np.float64]: ...
 @overload  # shape: 1d, dtype: <known>
 def random_array(
-    shape: tuple[int],
+    shape: tuple[int | bool],
     *,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.ToDType[_SCT],
     rng: ToRNG = None,
     data_sampler: _DataSampler | None = None,
 ) -> _SpArray1D[_SCT]: ...
-@overload  # shape: 1d, dtype: complex
+@overload  # shape: 1d, dtype: complex | float | int | bool
 def random_array(
-    shape: tuple[int],
+    shape: tuple[int | bool],
     *,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyComplex128DType,
     rng: ToRNG = None,
@@ -947,9 +951,9 @@ def random_array(
 ) -> _SpArray1D[np.complex128]: ...
 @overload  # shape: 1d, dtype: <unknown>
 def random_array(
-    shape: tuple[int],
+    shape: tuple[int | bool],
     *,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: npt.DTypeLike,
     rng: ToRNG = None,
@@ -957,9 +961,9 @@ def random_array(
 ) -> _SpArray1D: ...
 @overload  # shape: 2d, dtype: <default>
 def random_array(
-    shape: tuple[int, int],
+    shape: tuple[int | bool, int | bool],
     *,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyFloat64DType | None = None,
     rng: ToRNG = None,
@@ -967,19 +971,19 @@ def random_array(
 ) -> _SpArray2D[np.float64]: ...
 @overload  # shape: 2d, dtype: <known>
 def random_array(
-    shape: tuple[int, int],
+    shape: tuple[int | bool, int | bool],
     *,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.ToDType[_SCT],
     rng: ToRNG = None,
     data_sampler: _DataSampler | None = None,
 ) -> _SpArray2D[_SCT]: ...
-@overload  # shape: 2d, dtype: complex
+@overload  # shape: 2d, dtype: complex | float | int | bool
 def random_array(
-    shape: tuple[int, int],
+    shape: tuple[int | bool, int | bool],
     *,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyComplex128DType,
     rng: ToRNG = None,
@@ -987,9 +991,9 @@ def random_array(
 ) -> _SpArray2D[np.complex128]: ...
 @overload  # shape: 2d, dtype: <unknown>
 def random_array(
-    shape: tuple[int, int],
+    shape: tuple[int | bool, int | bool],
     *,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: npt.DTypeLike,
     rng: ToRNG = None,
@@ -1001,7 +1005,7 @@ def random_array(
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyFloat64DType | None = None,
     rng: ToRNG = None,
@@ -1011,7 +1015,7 @@ def random(
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating,
+    density: float | int | bool | Floating,
     format: SPFormat,
     dtype: onp.ToDType[_SCT],
     rng: ToRNG = None,
@@ -1021,28 +1025,28 @@ def random(
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     *,
     dtype: onp.ToDType[_SCT],
     rng: ToRNG = None,
     data_rvs: _DataRVS | None = None,
 ) -> _SpMatrix[_SCT]: ...
-@overload  # dtype: complex (positional)
+@overload  # dtype: complex | float | int | bool (positional)
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating,
+    density: float | int | bool | Floating,
     format: SPFormat,
     dtype: onp.AnyComplex128DType,
     rng: ToRNG = None,
     data_rvs: _DataRVS | None = None,
 ) -> _SpMatrix[np.complex128]: ...
-@overload  # dtype: complex (keyword)
+@overload  # dtype: complex | float | int | bool (keyword)
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     *,
     dtype: onp.AnyComplex128DType,
@@ -1053,7 +1057,7 @@ def random(
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: npt.DTypeLike | None = None,
     rng: ToRNG = None,
@@ -1065,7 +1069,7 @@ def random(
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyFloat64DType | None = None,
     rng: ToRNG = None,
@@ -1074,7 +1078,7 @@ def rand(
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating,
+    density: float | int | bool | Floating,
     format: SPFormat,
     dtype: onp.ToDType[_SCT],
     rng: ToRNG = None,
@@ -1083,26 +1087,26 @@ def rand(
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     *,
     dtype: onp.ToDType[_SCT],
     rng: ToRNG = None,
 ) -> _SpMatrix[_SCT]: ...
-@overload  # dtype: complex (positional)
+@overload  # dtype: complex | float | int | bool (positional)
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating,
+    density: float | int | bool | Floating,
     format: SPFormat,
     dtype: onp.AnyComplex128DType,
     rng: ToRNG = None,
 ) -> _SpMatrix[np.complex128]: ...
-@overload  # dtype: complex (keyword)
+@overload  # dtype: complex | float | int | bool (keyword)
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     *,
     dtype: onp.AnyComplex128DType,
@@ -1112,7 +1116,7 @@ def rand(
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | int | bool | Floating = 0.01,
     format: SPFormat = "coo",
     dtype: npt.DTypeLike | None = None,
     rng: ToRNG = None,

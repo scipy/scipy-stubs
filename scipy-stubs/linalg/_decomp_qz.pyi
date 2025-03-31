@@ -19,14 +19,14 @@ _Inexact1D: TypeAlias = onp.Array1D[np.inexact[Any]]
 _Inexact2D: TypeAlias = onp.Array2D[np.inexact[Any]]
 
 _OutputReal: TypeAlias = Literal["real", "r"]
-_OutputComplex: TypeAlias = Literal["complex", "c"]
+_OutputComplex: TypeAlias = Literal["complex | float | int | bool", "c"]
 
-_Sort: TypeAlias = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], onp.ToBool]
+_Sort: TypeAlias = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float | int | bool, float | int | bool], onp.ToBool]
 
 ###
 
 # NOTE: `sort` will raise `ValueError` if not `None`.
-@overload  # float, {"real"}
+@overload  # float | int | bool, {"real"}
 def qz(
     A: onp.ToFloat2D,
     B: onp.ToFloat2D,
@@ -37,7 +37,7 @@ def qz(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Tuple4[_Float2D]: ...
-@overload  # complex, {"real"}
+@overload  # complex | float | int | bool, {"real"}
 def qz(
     A: onp.ToComplex2D,
     B: onp.ToComplex2D,
@@ -48,7 +48,7 @@ def qz(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Tuple4[_Inexact2D]: ...
-@overload  # complex, {"complex"}
+@overload  # complex | float | int | bool, {"complex | float | int | bool"}
 def qz(
     A: onp.ToComplex2D,
     B: onp.ToComplex2D,
@@ -61,7 +61,7 @@ def qz(
 ) -> _Tuple4[_Complex2D]: ...
 
 #
-@overload  # float, {"real"}
+@overload  # float | int | bool, {"real"}
 def ordqz(
     A: onp.ToFloat2D,
     B: onp.ToFloat2D,
@@ -71,7 +71,7 @@ def ordqz(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Tuple222[_Float2D, _Float1D]: ...
-@overload  # complex, {"real"}
+@overload  # complex | float | int | bool, {"real"}
 def ordqz(
     A: onp.ToComplex2D,
     B: onp.ToComplex2D,
@@ -81,7 +81,7 @@ def ordqz(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Tuple222[_Inexact2D, _Inexact1D]: ...
-@overload  # complex, {"complex"} (positional)
+@overload  # complex | float | int | bool, {"complex | float | int | bool"} (positional)
 def ordqz(
     A: onp.ToComplex2D,
     B: onp.ToComplex2D,
@@ -91,7 +91,7 @@ def ordqz(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Tuple222[_Complex2D, _Complex1D]: ...
-@overload  # complex, {"complex"} (keyword)
+@overload  # complex | float | int | bool, {"complex | float | int | bool"} (keyword)
 def ordqz(
     A: onp.ToComplex2D,
     B: onp.ToComplex2D,

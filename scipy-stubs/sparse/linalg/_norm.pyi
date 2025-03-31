@@ -7,7 +7,7 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["norm"]
 
-_Ord: TypeAlias = Literal["fro", 0, 1, 2, -1] | float
+_Ord: TypeAlias = Literal["fro", 0, 1, 2, -1] | float | int | bool
 _Real: TypeAlias = np.int32 | np.int64 | np.float64
 
 ###

@@ -5,7 +5,7 @@ import numpy as np
 import optype.numpy as onp
 from scipy.stats import distributions as d
 
-_Float: TypeAlias = float | np.float64
+_Float: TypeAlias = float | int | bool | np.float64
 _FloatND: TypeAlias = _Float | onp.ArrayND[np.float64]
 
 ###

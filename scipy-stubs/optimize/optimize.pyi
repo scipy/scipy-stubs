@@ -65,7 +65,7 @@ def brent(
     tol: object = ...,
     full_output: object = ...,
     maxiter: object = ...,
-) -> float | object: ...
+) -> float | int | bool | object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def brute(
     func: object,
@@ -180,7 +180,7 @@ def fminbound(
     maxfun: object = ...,
     full_output: object = ...,
     disp: object = ...,
-) -> float | object: ...
+) -> float | int | bool | object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def golden(
     func: object,
@@ -189,7 +189,7 @@ def golden(
     tol: object = ...,
     full_output: object = ...,
     maxiter: object = ...,
-) -> float | object: ...
+) -> float | int | bool | object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def line_search(
     f: object,

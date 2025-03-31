@@ -58,19 +58,19 @@ __all__ = [
 
 # mypy: disable-error-code="explicit-override"
 class orthopoly1d(np.poly1d):
-    limits: tuple[float, float]
+    limits: tuple[float | int | bool, float | int | bool]
     weights: onp.ArrayND[np.float64]
-    weight_func: Callable[[float], float]
-    normcoef: float
+    weight_func: Callable[[float | int | bool], float | int | bool]
+    normcoef: float | int | bool
     def __init__(
         self,
         /,
         roots: onp.ToComplex1D,
         weights: onp.ToFloat1D | None = None,
-        hn: float = 1.0,
-        kn: float = 1.0,
-        wfunc: Callable[[float], float] | None = None,
-        limits: tuple[float, float] | None = None,
+        hn: float | int | bool = 1.0,
+        kn: float | int | bool = 1.0,
+        wfunc: Callable[[float | int | bool], float | int | bool] | None = None,
+        limits: tuple[float | int | bool, float | int | bool] | None = None,
         monic: bool = False,
         eval_func: np.ufunc | None = None,
     ) -> None: ...

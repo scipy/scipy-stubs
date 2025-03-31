@@ -6,7 +6,7 @@ import optype.numpy as onp
 _Float: TypeAlias = np.float32 | np.float64
 _Complex: TypeAlias = np.complex64 | np.complex128
 
-_ToFloat: TypeAlias = float | _Float
+_ToFloat: TypeAlias = float | int | bool | _Float
 
 _FloatND: TypeAlias = onp.ArrayND[_Float]
 _ComplexND: TypeAlias = onp.ArrayND[_Complex]

@@ -9,15 +9,15 @@ from scipy.optimize._typing import TRSolver
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...], default=tuple[int | bool, ...])
 
-_ValueFloat: TypeAlias = float | np.float64
+_ValueFloat: TypeAlias = float | int | bool | np.float64
 
 _ArrayFloat: TypeAlias = onp.Array[_ShapeT, np.float64]
 _MatrixFloat: TypeAlias = onp.Array[_ShapeT, np.float64] | sparray | spmatrix | LinearOperator
 
-_FunObj: TypeAlias = Callable[[_ArrayFloat[tuple[int]], _ValueFloat], _MatrixFloat]
-_FunJac: TypeAlias = Callable[[_ArrayFloat[tuple[int]], _ValueFloat], _MatrixFloat]
+_FunObj: TypeAlias = Callable[[_ArrayFloat[tuple[int | bool]], _ValueFloat], _MatrixFloat]
+_FunJac: TypeAlias = Callable[[_ArrayFloat[tuple[int | bool]], _ValueFloat], _MatrixFloat]
 _FunLoss: TypeAlias = Callable[[_ValueFloat], _ValueFloat]
 
 @type_check_only
@@ -30,7 +30,7 @@ class _OptimizeResult(OptimizeResult):
     ftol: _ValueFloat
     xtol: _ValueFloat
     gtol: _ValueFloat
-    max_nfev: int
+    max_nfev: int | bool
     x_scale: _ValueFloat | _ArrayFloat
     loss_function: _ValueFloat | _ArrayFloat
     tr_solver: TRSolver | None
@@ -48,7 +48,7 @@ def trf(
     ftol: _ValueFloat,
     xtol: _ValueFloat,
     gtol: _ValueFloat,
-    max_nfev: int,
+    max_nfev: int | bool,
     x_scale: Literal["jac"] | _ValueFloat | _ArrayFloat,
     loss_function: _FunLoss,
     tr_solver: TRSolver | None,
@@ -68,7 +68,7 @@ def trf_bounds(
     ftol: _ValueFloat,
     xtol: _ValueFloat,
     gtol: _ValueFloat,
-    max_nfev: int,
+    max_nfev: int | bool,
     x_scale: Literal["jac"] | _ValueFloat | _ArrayFloat,
     loss_function: _FunLoss,
     tr_solver: TRSolver | None,
@@ -86,7 +86,7 @@ def trf_no_bounds(
     ftol: _ValueFloat,
     xtol: _ValueFloat,
     gtol: _ValueFloat,
-    max_nfev: int,
+    max_nfev: int | bool,
     x_scale: Literal["jac"] | _ValueFloat | _ArrayFloat,
     loss_function: _FunLoss,
     tr_solver: TRSolver | None,

@@ -36,7 +36,7 @@ class LinearOperator(Generic[_SCT_co]):
     __array_ufunc__: ClassVar[None]
 
     ndim: ClassVar[Literal[2]] = 2
-    shape: Final[tuple[int, int]]
+    shape: Final[tuple[int | bool, int | bool]]
     dtype: np.dtype[_SCT_co]
 
     #
@@ -63,26 +63,26 @@ class LinearOperator(Generic[_SCT_co]):
     def __init__(self, /, dtype: onp.AnyInexactDType | None, shape: _ToShape) -> None: ...
 
     #
-    @overload  # float array 1d
+    @overload  # float | int | bool array 1d
     def matvec(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
-    @overload  # float matrix
+    @overload  # float | int | bool matrix
     def matvec(self, /, x: onp.Matrix[_Real]) -> onp.Matrix[_SCT_co]: ...
-    @overload  # complex matrix
+    @overload  # complex | float | int | bool matrix
     def matvec(self, /, x: onp.Matrix[_Number]) -> onp.Matrix[_SCT_co | np.complex128]: ...
-    @overload  # float array 2d
+    @overload  # float | int | bool array 2d
     def matvec(self, /, x: onp.ToFloatStrict2D) -> onp.Array2D[_SCT_co]: ...
-    @overload  # complex array 1d
+    @overload  # complex | float | int | bool array 1d
     def matvec(self, /, x: onp.ToComplexStrict1D) -> onp.Array1D[_SCT_co | np.complex128]: ...
-    @overload  # complex array 2d
+    @overload  # complex | float | int | bool array 2d
     def matvec(self, /, x: onp.ToComplexStrict2D) -> onp.Array2D[_SCT_co | np.complex128]: ...
-    @overload  # float array
+    @overload  # float | int | bool array
     def matvec(self, /, x: onp.ToFloat2D) -> onp.Array1D[_SCT_co] | onp.Array2D[_SCT_co]: ...
-    @overload  # complex array
+    @overload  # complex | float | int | bool array
     def matvec(self, /, x: onp.ToComplex2D) -> _Array1D2D[_SCT_co | np.complex128]: ...
     rmatvec = matvec
 
     #
-    def matmat(self, /, X: onp.ToComplex2D) -> onp.Array[tuple[int, int], _SCT_co | np.complex128]: ...
+    def matmat(self, /, X: onp.ToComplex2D) -> onp.Array[tuple[int | bool, int | bool], _SCT_co | np.complex128]: ...
     rmatmat = matmat
 
     #
@@ -249,13 +249,15 @@ class _ProductLinearOperator(LinearOperator[_SCT1_co | _SCT2_co], Generic[_SCT1_
 
 @final
 class _ScaledLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
-    args: tuple[LinearOperator[_SCT_co], _SCT_co | complex]
+    args: tuple[LinearOperator[_SCT_co], _SCT_co | complex | float | int | bool]
     @overload
-    def __init__(self, /, A: LinearOperator[_SCT_co], alpha: _SCT_co | complex) -> None: ...
+    def __init__(self, /, A: LinearOperator[_SCT_co], alpha: _SCT_co | complex | float | int | bool) -> None: ...
     @overload
-    def __init__(self: _ScaledLinearOperator[np.float64], /, A: LinearOperator[Floating], alpha: float) -> None: ...
+    def __init__(self: _ScaledLinearOperator[np.float64], /, A: LinearOperator[Floating], alpha: float | int | bool) -> None: ...
     @overload
-    def __init__(self: _ScaledLinearOperator[np.complex128], /, A: LinearOperator, alpha: complex) -> None: ...
+    def __init__(
+        self: _ScaledLinearOperator[np.complex128], /, A: LinearOperator, alpha: complex | float | int | bool
+    ) -> None: ...
 
 @final
 class _PowerLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
@@ -289,7 +291,7 @@ class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
 
 @type_check_only
 class _HasShapeAndMatVec(Protocol[_SCT_co]):
-    shape: tuple[int, int]
+    shape: tuple[int | bool, int | bool]
     @overload
     def matvec(self, /, x: onp.CanArray1D[np.float64]) -> onp.CanArray1D[_SCT_co]: ...
     @overload
@@ -301,7 +303,7 @@ class _HasShapeAndMatVec(Protocol[_SCT_co]):
 
 @type_check_only
 class _HasShapeAndDTypeAndMatVec(Protocol[_SCT_co]):
-    shape: tuple[int, int]
+    shape: tuple[int | bool, int | bool]
     @property
     def dtype(self, /) -> np.dtype[_SCT_co]: ...
     @overload

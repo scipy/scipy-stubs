@@ -10,13 +10,13 @@ from scipy.stats.qmc import QMCEngine
 __all__ = ["cumulative_simpson", "cumulative_trapezoid", "fixed_quad", "newton_cotes", "qmc_quad", "romb", "simpson", "trapezoid"]
 
 _NDT_f = TypeVar("_NDT_f", bound=_QuadFuncOut)
-_QuadFuncOut: TypeAlias = onp.ArrayND[np.floating[Any]] | Sequence[float]
+_QuadFuncOut: TypeAlias = onp.ArrayND[np.floating[Any]] | Sequence[float | int | bool]
 
 ###
 
 class QMCQuadResult(NamedTuple):
-    integral: float
-    standard_error: float
+    integral: float | int | bool
+    standard_error: float | int | bool
 
 # sample-based integration
 @overload
@@ -130,11 +130,11 @@ def qmc_quad(
     a: onp.ToFloat1D,
     b: onp.ToFloat1D,
     *,
-    n_estimates: int = 8,
-    n_points: int = 1024,
+    n_estimates: int | bool = 8,
+    n_points: int | bool = 1024,
     qrng: QMCEngine | None = None,
     log: bool = False,
 ) -> QMCQuadResult: ...
 
 # low-level
-def newton_cotes(rn: int, equal: int = 0) -> tuple[onp.Array1D[np.float64], float]: ...
+def newton_cotes(rn: int | bool, equal: int | bool = 0) -> tuple[onp.Array1D[np.float64], float | int | bool]: ...

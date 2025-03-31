@@ -9,14 +9,14 @@ from scipy._typing import AnyBool, Falsy, Truthy
 
 __all__ = ["LinAlgError", "LinAlgWarning", "norm"]
 
-_Inf: TypeAlias = float
+_Inf: TypeAlias = float | int | bool
 _Order: TypeAlias = Literal["fro", "nuc", 0, 1, -1, 2, -2] | _Inf
 _Axis: TypeAlias = op.CanIndex | tuple[op.CanIndex, op.CanIndex]
 
 _SubScalar: TypeAlias = np.complex128 | np.float64 | np.integer[Any] | np.bool_
 
 _NBitT = TypeVar("_NBitT", bound=npt.NBitBase)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...])
 
 ###
 
@@ -24,7 +24,7 @@ class LinAlgWarning(RuntimeWarning): ...
 
 @overload  # scalar, axis: None = ...
 def norm(
-    a: complex | _SubScalar,
+    a: complex | float | int | bool | _SubScalar,
     ord: _Order | None = None,
     axis: None = None,
     keepdims: op.CanBool = False,
@@ -65,7 +65,7 @@ def norm(
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # float64-coercible array-like, keepdims: True (positional)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[complex | _SubScalar],
+    a: onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[complex | float | int | bool | _SubScalar],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: Truthy,
@@ -73,7 +73,7 @@ def norm(
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # float64-coercible array-like, keepdims: True (keyword)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[complex | _SubScalar],
+    a: onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[complex | float | int | bool | _SubScalar],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,

@@ -5,7 +5,7 @@ import optype as op
 import optype.numpy as onp
 from scipy.optimize import OptimizeResult as _OptimizeResult
 
-_Float: TypeAlias = float | np.float64
+_Float: TypeAlias = float | int | bool | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Int1D: TypeAlias = onp.Array1D[np.int_]
 
@@ -18,8 +18,8 @@ class OptimizeResult(_OptimizeResult):
     initial_cost: _Float
     optimality: _Float
     active_mask: _Int1D
-    nit: int
-    status: int
+    nit: int | bool
+    status: int | bool
 
 def regularized_lsq_with_qr(
     m: onp.ToJustInt,

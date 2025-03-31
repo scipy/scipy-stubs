@@ -10,12 +10,12 @@ __all__ = ["direct"]
 
 class OptimizeResult(_OptimizeResult):
     x: onp.Array1D[np.float64]
-    fun: float | np.float64
-    status: int
+    fun: float | int | bool | np.float64
+    status: int | bool
     success: bool
     message: str
-    nfev: int
-    nit: int
+    nfev: int | bool
+    nit: int | bool
 
 ###
 

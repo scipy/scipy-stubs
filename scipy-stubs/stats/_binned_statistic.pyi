@@ -18,7 +18,7 @@ def binned_statistic(
     values: onp.ToComplex1D | Sequence[onp.ToComplex1D],
     statistic: _Statistic | Callable[[onp.Array1D[np.float64]], onp.ToFloat] = "mean",
     bins: onp.ToInt | onp.ToFloat1D = 10,
-    range: tuple[float, float] | Sequence[tuple[float, float]] | None = None,
+    range: tuple[float | int | bool, float | int | bool] | Sequence[tuple[float | int | bool, float | int | bool]] | None = None,
 ) -> BinnedStatisticResult: ...
 
 class BinnedStatistic2dResult(NamedTuple):
@@ -33,7 +33,7 @@ def binned_statistic_2d(
     values: onp.ToComplex1D | Sequence[onp.ToComplex1D],
     statistic: _Statistic | Callable[[onp.ArrayND[np.float64]], onp.ToFloat] = "mean",
     bins: onp.ToInt | onp.ToFloat1D | Sequence[onp.ToFloat1D] = 10,
-    range: tuple[int, int] | None = None,
+    range: tuple[int | bool, int | bool] | None = None,
     expand_binnumbers: bool = False,
 ) -> BinnedStatistic2dResult: ...
 
@@ -47,7 +47,7 @@ def binned_statistic_dd(
     values: onp.ToComplex1D | Sequence[onp.ToComplex1D],
     statistic: _Statistic | Callable[[onp.ArrayND[np.float64]], onp.ToFloat] = "mean",
     bins: onp.ToInt | onp.ToFloat1D = 10,
-    range: tuple[int, int] | None = None,
+    range: tuple[int | bool, int | bool] | None = None,
     expand_binnumbers: bool = False,
     binned_statistic_result: BinnedStatisticddResult | None = None,
 ) -> BinnedStatisticddResult: ...

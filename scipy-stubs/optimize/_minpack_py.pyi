@@ -58,12 +58,12 @@ class _KwargsCurveFit(TypedDict, total=False):
 
 @type_check_only
 class _InfoDictBase(TypedDict):
-    nfev: int
+    nfev: int | bool
     fvec: _Float1D
 
 @type_check_only
 class _InfoDictSolve(_InfoDictBase, TypedDict):
-    njev: int
+    njev: int | bool
     fjac: _Float2D
     r: _Float1D
     qtf: _Float1D
@@ -284,16 +284,16 @@ def curve_fit(
 #
 @overload  # 0-d real
 def fixed_point(
-    func: _Fun[np.float64, onp.ToFloat] | _Fun[float, onp.ToFloat],
+    func: _Fun[np.float64, onp.ToFloat] | _Fun[float | int | bool, onp.ToFloat],
     x0: onp.ToFloat,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
     maxiter: onp.ToJustInt = 500,
     method: Literal["del2", "iteration"] = "del2",
 ) -> np.float64: ...
-@overload  # 0-d complex
+@overload  # 0-d complex | float | int | bool
 def fixed_point(
-    func: _Fun[np.complex128, onp.ToComplex] | _Fun[complex, onp.ToComplex],
+    func: _Fun[np.complex128, onp.ToComplex] | _Fun[complex | float | int | bool, onp.ToComplex],
     x0: onp.ToComplex,
     args: tuple[object, ...] = (),
     xtol: onp.ToFloat = 1e-08,
@@ -309,7 +309,7 @@ def fixed_point(
     maxiter: onp.ToJustInt = 500,
     method: Literal["del2", "iteration"] = "del2",
 ) -> _Float1D: ...
-@overload  # 1-d complex
+@overload  # 1-d complex | float | int | bool
 def fixed_point(
     func: _Fun[onp.Array1D[np.complex128], onp.ToComplex1D],
     x0: onp.ToComplex1D,
@@ -327,7 +327,7 @@ def fixed_point(
     maxiter: onp.ToJustInt = 500,
     method: Literal["del2", "iteration"] = "del2",
 ) -> _Float2D: ...
-@overload  # 2-d complex
+@overload  # 2-d complex | float | int | bool
 def fixed_point(
     func: _Fun[onp.Array2D[np.complex128], onp.ToComplex2D],
     x0: onp.ToComplex2D,
@@ -345,7 +345,7 @@ def fixed_point(
     maxiter: onp.ToJustInt = 500,
     method: Literal["del2", "iteration"] = "del2",
 ) -> onp.Array3D[np.float64]: ...
-@overload  # 3-d complex
+@overload  # 3-d complex | float | int | bool
 def fixed_point(
     func: _Fun[onp.Array3D[np.complex128], onp.ToComplex3D],
     x0: onp.ToComplex3D,
@@ -363,7 +363,7 @@ def fixed_point(
     maxiter: onp.ToJustInt = 500,
     method: Literal["del2", "iteration"] = "del2",
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # N-d complex
+@overload  # N-d complex | float | int | bool
 def fixed_point(
     func: _Fun[onp.ArrayND[np.complex128], onp.ToComplexND],
     x0: onp.ToComplexND,

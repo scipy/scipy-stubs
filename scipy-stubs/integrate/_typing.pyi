@@ -8,8 +8,8 @@ import optype.numpy as onp
 
 __all__ = "ODEInfoDict", "QuadInfoDict", "QuadOpts", "QuadWeights"
 
-_IntLike: TypeAlias = int | np.integer[Any]
-_FloatLike: TypeAlias = float | np.floating[Any]
+_IntLike: TypeAlias = int | bool | np.integer[Any]
+_FloatLike: TypeAlias = float | int | bool | np.floating[Any]
 
 QuadWeights: TypeAlias = Literal["cos", "sin", "alg", "alg-loga", "alg-logb", "alg-log", "cauchy"]
 
@@ -25,8 +25,8 @@ class QuadOpts(TypedDict, total=False):
 
 @type_check_only
 class QuadInfoDict(TypedDict):
-    neval: int
-    last: int
+    neval: int | bool
+    last: int | bool
     alist: onp.Array1D[np.float64]
     blist: onp.Array1D[np.float64]
     rlist: onp.Array1D[np.float64]
@@ -39,12 +39,12 @@ class QuadInfoDict(TypedDict):
     ndin: NotRequired[onp.Array1D[np.int_]]
 
     # finite integration limits
-    momcom: NotRequired[float | np.float64]
+    momcom: NotRequired[float | int | bool | np.float64]
     nnlog: NotRequired[onp.Array1D[np.int_]]
     chebmo: NotRequired[onp.Array2D[np.int_]]
 
     # single infitite integration limit and numerical error
-    lst: NotRequired[int]
+    lst: NotRequired[int | bool]
     rslst: NotRequired[onp.Array1D[np.float64]]
     erlst: NotRequired[onp.Array1D[np.float64]]
     ierlst: NotRequired[onp.Array1D[np.float64]]
@@ -54,12 +54,12 @@ class ODEInfoDict(TypedDict):
     hu: onp.Array1D[np.float64]
     tcur: onp.Array1D[np.float64]
     tolsf: onp.Array1D[np.float64]
-    tsw: float
-    nst: int
-    nfe: int
-    nje: int
+    tsw: float | int | bool
+    nst: int | bool
+    nfe: int | bool
+    nje: int | bool
     nqu: onp.Array1D[np.int_]
-    imxer: int
-    lenrw: int
-    leniw: int
+    imxer: int | bool
+    lenrw: int | bool
+    leniw: int | bool
     mused: onp.Array1D[np.int_]

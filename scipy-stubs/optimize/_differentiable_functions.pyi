@@ -12,7 +12,7 @@ from ._hessian_update_strategy import HessianUpdateStrategy
 _XT = TypeVar("_XT", bound=np.floating[Any], default=np.floating[Any])
 _XT_contra = TypeVar("_XT_contra", bound=np.floating[Any], default=np.floating[Any], contravariant=True)
 
-_ToFloat64Vec: TypeAlias = Sequence[float | np.float64 | np.integer[Any] | np.bool_] | onp.CanArrayND[np.float64]
+_ToFloat64Vec: TypeAlias = Sequence[float | int | bool | np.float64 | np.integer[Any] | np.bool_] | onp.CanArrayND[np.float64]
 _ToJac: TypeAlias = onp.ToFloat2D | spmatrix | sparray
 _ToHess: TypeAlias = _ToJac | LinearOperator
 
@@ -41,7 +41,7 @@ class ScalarFunction(Generic[_XT_contra]):
 
     _args: Final[tuple[object, ...]]
 
-    n: Final[int]
+    n: Final[int | bool]
     x_dtype: _XT_contra  # readonly
     x: _Vec[_XT_contra]
     x_prev: _Vec[_XT_contra] | None
@@ -49,29 +49,29 @@ class ScalarFunction(Generic[_XT_contra]):
 
     _orig_fun: _ScalarFun[_XT_contra]  # readonly
     _wrapped_fun: Callable[[onp.Array1D[_XT_contra]], onp.ToFloat]  # readonly
-    _nfev: Final[list[int]]  # size 1
+    _nfev: Final[list[int | bool]]  # size 1
     _lowest_f: onp.ToFloat
     f_updated: bool
 
     _orig_grad: _ToGradFun[_XT_contra]  # readonly
     _wrapped_grad: Callable[[onp.Array1D[_XT_contra]], _Vec]  # readonly
-    _ngev: Final[list[int]]  # size 1
+    _ngev: Final[list[int | bool]]  # size 1
     g_prev: _Vec | None
     g_updated: bool
 
     _orig_hess: _ToHessFun[_XT_contra]  # readonly
     _wrapped_hess: Callable[[onp.Array1D[_XT_contra]], _Hess]  # readonly
-    _nhev: Final[list[int]]  # size 1
+    _nhev: Final[list[int | bool]]  # size 1
     H: _Hess
     H_updated: bool
 
     #
     @property
-    def nfev(self, /) -> int: ...
+    def nfev(self, /) -> int | bool: ...
     @property
-    def ngev(self, /) -> int: ...
+    def ngev(self, /) -> int | bool: ...
     @property
-    def nhev(self, /) -> int: ...
+    def nhev(self, /) -> int | bool: ...
 
     #
     @overload
@@ -108,35 +108,35 @@ class ScalarFunction(Generic[_XT_contra]):
     def _update_hess(self, /) -> None: ...
 
     #
-    def fun(self, /, x: onp.ToFloat1D) -> float | np.floating[Any]: ...
+    def fun(self, /, x: onp.ToFloat1D) -> float | int | bool | np.floating[Any]: ...
     def grad(self, /, x: onp.ToFloat1D) -> _Vec: ...
     def hess(self, /, x: onp.ToFloat1D) -> _Hess: ...
-    def fun_and_grad(self, /, x: onp.ToFloat1D) -> tuple[float | np.floating[Any], _Vec]: ...
+    def fun_and_grad(self, /, x: onp.ToFloat1D) -> tuple[float | int | bool | np.floating[Any], _Vec]: ...
 
 class VectorFunction(Generic[_XT_contra]):
     xp: Final[ModuleType]
 
-    n: Final[int]
+    n: Final[int | bool]
     x_dtype: _XT_contra  # readonly
     x: _Vec[_XT_contra]
     x_diff: _Vec[_XT_contra]
     x_prev: _Vec[_XT_contra] | None
 
-    m: Final[int]
+    m: Final[int | bool]
     f: _Vec
     v: _Vec
     f_updated: bool
-    nfev: int
+    nfev: int | bool
 
     sparse_jacobian: Final[bool]
     J: _Jac
     J_prev: _Jac | None
     J_updated: bool
-    njev: int
+    njev: int | bool
 
     H: _Hess
     H_updated: bool
-    nhev: int
+    nhev: int | bool
 
     @overload
     def __init__(
@@ -180,11 +180,11 @@ class VectorFunction(Generic[_XT_contra]):
 class LinearVectorFunction(Generic[_XT_contra]):
     xp: Final[ModuleType]
 
-    n: Final[int]
+    n: Final[int | bool]
     x_dtype: _XT_contra  # readonly
     x: _Vec[_XT_contra]
 
-    m: Final[int]
+    m: Final[int | bool]
     f: _Vec
     f_updated: bool
 

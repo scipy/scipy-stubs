@@ -14,11 +14,11 @@ def entropy(
     pk: onp.ToFloatND,
     qk: onp.ToFloatND | None = None,
     base: onp.ToFloat | None = None,
-    axis: int = 0,
+    axis: int | bool = 0,
     *,
     nan_policy: spt.NanPolicy = "propagate",
     keepdims: onp.ToBool = False,
-) -> float | np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...
+) -> float | int | bool | np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...
 def differential_entropy(
     values: onp.ToFloatND,
     *,
@@ -28,4 +28,4 @@ def differential_entropy(
     method: Literal["vasicek", "van es", "ebrahimi", "correa", "auto"] = "auto",
     nan_policy: spt.NanPolicy = "propagate",
     keepdims: onp.ToBool = False,
-) -> float | np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...
+) -> float | int | bool | np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...

@@ -26,9 +26,9 @@ def minres(
     *,
     rtol: onp.ToFloat = 1e-5,
     shift: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
     callback: Callable[[onp.Array1D[_FloatT]], _Ignored] | None = None,
     show: onp.ToBool = False,
     check: onp.ToBool = False,
-) -> tuple[onp.Array1D[_FloatT], int]: ...
+) -> tuple[onp.Array1D[_FloatT], int | bool]: ...

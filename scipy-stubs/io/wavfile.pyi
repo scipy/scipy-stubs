@@ -9,8 +9,8 @@ __all__ = ["WavFileWarning", "read", "write"]
 
 _ScalarR: TypeAlias = np.uint8 | np.int16 | np.int32 | np.float32
 _ScalarW: TypeAlias = _ScalarR | np.int_ | np.int64 | np.float64
-_Shape1D: TypeAlias = tuple[int]
-_Shape2D: TypeAlias = tuple[int, int]
+_Shape1D: TypeAlias = tuple[int | bool]
+_Shape2D: TypeAlias = tuple[int | bool, int | bool]
 
 KNOWN_WAVE_FORMATS: set[WAVE_FORMAT]
 
@@ -287,4 +287,4 @@ class WAVE_FORMAT(IntEnum):
     DEVELOPMENT = 0xFFFF
 
 def read(filename: FileLike[bytes], mmap: bool = False) -> onp.Array[_Shape1D | _Shape2D, _ScalarR]: ...
-def write(filename: FileLike[bytes], rate: int, data: onp.Array[_Shape1D | _Shape2D, _ScalarW]) -> None: ...
+def write(filename: FileLike[bytes], rate: int | bool, data: onp.Array[_Shape1D | _Shape2D, _ScalarW]) -> None: ...

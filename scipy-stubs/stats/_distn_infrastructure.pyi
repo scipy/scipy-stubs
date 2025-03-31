@@ -16,7 +16,7 @@ from scipy._typing import RNG, AnyShape, Falsy, ToRNG, Truthy
 from scipy.integrate._typing import QuadOpts as _QuadOpts
 
 _T = TypeVar("_T")
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...], default=tuple[int | bool, ...])
 _ArgT = TypeVar("_ArgT", bound=_ToFloatOrND, default=_ToFloatOrND)
 _FloatNDT = TypeVar("_FloatNDT", bound=_FloatOrND, default=_FloatOrND)
 
@@ -36,8 +36,8 @@ _Floating: TypeAlias = np.float64 | np.float32 | np.float16  # longdouble often 
 _CoFloat: TypeAlias = _Floating | npc.integer
 
 _Bool: TypeAlias = bool | np.bool_
-_Int: TypeAlias = int | np.int32 | np.int64
-_Float: TypeAlias = float | np.float64
+_Int: TypeAlias = int | bool | np.int32 | np.int64
+_Float: TypeAlias = float | int | bool | np.float64
 
 _Float0D: TypeAlias = onp.Array0D[np.float64]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
@@ -54,7 +54,7 @@ _FloatOrND: TypeAlias = _Float | _FloatND
 
 _ToFloatOrND: TypeAlias = onp.ToFloat | onp.ToFloatND
 
-_Expectant: TypeAlias = Callable[[float], onp.ToFloat]
+_Expectant: TypeAlias = Callable[[float | int | bool], onp.ToFloat]
 
 # there are at most 4 + 2 args
 _RVArgs: TypeAlias = (
@@ -241,7 +241,7 @@ class rv_generic:
         locscale_in: str,
         locscale_out: str,
     ) -> None: ...
-    def _construct_doc(self, /, docdict: dict[str, str], shapes_vals: tuple[float, ...] | None = None) -> None: ...
+    def _construct_doc(self, /, docdict: dict[str, str], shapes_vals: tuple[float | int | bool, ...] | None = None) -> None: ...
     def _construct_default_doc(
         self,
         /,
@@ -275,7 +275,7 @@ class rv_generic:
         /,
         *args: onp.ToFloat,
         size: onp.ToInt | onp.ToIntND | None = None,
-    ) -> tuple[list[_CoFloatND], _CoFloatND, _CoFloatND, tuple[int, ...] | tuple[np.int_, ...]]: ...
+    ) -> tuple[list[_CoFloatND], _CoFloatND, _CoFloatND, tuple[int | bool, ...] | tuple[np.int_, ...]]: ...
     def _argcheck(self, /, *args: onp.ToFloat) -> _BoolOrND: ...
 
     #
@@ -803,7 +803,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         data: _ToFloatOrND,
         *args: onp.ToFloat,
         optimizer: Callable[
-            [_FloatND, tuple[float, ...], tuple[float, ...], bool],
+            [_FloatND, tuple[float | int | bool, ...], tuple[float | int | bool, ...], bool],
             tuple[onp.ToFloat, ...],
         ]
         | None = ...,
@@ -839,8 +839,8 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> _FloatOrND: ...
 
 class rv_discrete(_rv_mixin, rv_generic):
-    inc: Final[int]
-    moment_tol: Final[float]
+    inc: Final[int | bool]
+    moment_tol: Final[float | int | bool]
 
     @overload
     def __new__(
@@ -851,7 +851,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         badvalue: _Float | None = None,
         moment_tol: _Float = 1e-8,
         values: None = None,
-        inc: int | np.int_ = 1,
+        inc: int | bool | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
         seed: ToRNG = None,
@@ -866,7 +866,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         badvalue: _Float | None,
         moment_tol: _Float,
         values: _Tuple2[onp.ToFloatND],
-        inc: int | np.int_ = 1,
+        inc: int | bool | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
         seed: ToRNG = None,
@@ -881,7 +881,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         moment_tol: _Float = 1e-8,
         *,
         values: _Tuple2[onp.ToFloatND],
-        inc: int | np.int_ = 1,
+        inc: int | bool | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
         seed: ToRNG = None,
@@ -898,7 +898,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         moment_tol: _Float = 1e-8,
         # mypy workaround: `values` can only be None
         values: _Tuple2[onp.ToFloatND] | None = None,
-        inc: int | np.int_ = 1,
+        inc: int | bool | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
         seed: ToRNG = None,
@@ -1079,7 +1079,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
         moment_tol: _Float = 1e-8,
         # never None in practice, but required by stubtest
         values: _Tuple2[onp.ToFloatND] | None = None,
-        inc: int | np.int_ = 1,
+        inc: int | bool | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
         seed: ToRNG = None,

@@ -25,7 +25,7 @@ class HessianUpdateStrategy(Protocol):
     def dot(self, /, p: onp.ToComplex1D) -> onp.Array1D[np.float64 | np.complex128]: ...
     #
     def get_matrix(self, /) -> onp.Array2D[np.float64]: ...
-    def initialize(self, /, n: int, approx_type: _HessApprox) -> None: ...
+    def initialize(self, /, n: int | bool, approx_type: _HessApprox) -> None: ...
     def update(self, /, delta_x: onp.Array1D[np.float64], delta_grad: onp.Array1D[np.float64]) -> None: ...
 
 class FullHessianUpdateStrategy(HessianUpdateStrategy):
@@ -35,23 +35,23 @@ class FullHessianUpdateStrategy(HessianUpdateStrategy):
     H: onp.Array2D[np.float64] | None
     first_iteration: bool | None
     approx_type: _HessApprox | None
-    n: int  # set in `initialize`
+    n: int | bool  # set in `initialize`
 
     def __init__(self, /, init_scale: _ToInitScale = "auto") -> None: ...
 
 class BFGS(FullHessianUpdateStrategy):
     exception_strategy: Final[_ExceptionStrategy]
-    min_curvature: Final[float]
+    min_curvature: Final[float | int | bool]
 
     def __init__(
         self,
         /,
         exception_strategy: _ExceptionStrategy = "skip_update",
-        min_curvature: float | None = None,
+        min_curvature: float | int | bool | None = None,
         init_scale: _ToInitScale = "auto",
     ) -> None: ...
 
 class SR1(FullHessianUpdateStrategy):
-    min_denominator: Final[float]
+    min_denominator: Final[float | int | bool]
 
-    def __init__(self, /, min_denominator: float = 1e-08, init_scale: _ToInitScale = "auto") -> None: ...
+    def __init__(self, /, min_denominator: float | int | bool = 1e-08, init_scale: _ToInitScale = "auto") -> None: ...

@@ -44,7 +44,7 @@ _Int: TypeAlias = np.integer[Any]
 _Float: TypeAlias = np.floating[Any]
 _OutFloat: TypeAlias = np.float64 | np.longdouble
 
-_NT = TypeVar("_NT", default=int)
+_NT = TypeVar("_NT", default=int | bool)
 _0D: TypeAlias = tuple[()]  # noqa: PYI042
 _1D: TypeAlias = tuple[_NT]  # noqa: PYI042
 _2D: TypeAlias = tuple[_NT, _NT]  # noqa: PYI042
@@ -105,9 +105,9 @@ _null: Final[_Null] = ...
 def _isnull(x: object) -> TypeIs[_Null | None]: ...
 
 class _Domain(abc.ABC):
-    # NOTE: This is a `ClassVar[dict[str, float]]` that's overridden as instance attribute in `_SimpleDomain`.
+    # NOTE: This is a `ClassVar[dict[str, float | int | bool]]` that's overridden as instance attribute in `_SimpleDomain`.
     # https://github.com/scipy/scipy/pull/22139
-    symbols: Mapping[float, LiteralString] = ...
+    symbols: Mapping[float | int | bool, LiteralString] = ...
 
     @abc.abstractmethod
     @override
@@ -115,7 +115,7 @@ class _Domain(abc.ABC):
     @abc.abstractmethod
     def contains(self, /, x: onp.ArrayND[Any]) -> onp.ArrayND[np.bool_]: ...
     @abc.abstractmethod
-    def draw(self, /, n: int) -> onp.ArrayND[_FloatT]: ...
+    def draw(self, /, n: int | bool) -> onp.ArrayND[_FloatT]: ...
     @abc.abstractmethod
     def get_numerical_endpoints(self, /, x: _ParamValues) -> tuple[onp.ArrayND[_OutFloat], onp.ArrayND[_OutFloat]]: ...
 
@@ -141,7 +141,7 @@ class _RealDomain(_SimpleDomain):
     def draw(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
         /,
-        n: int,
+        n: int | bool,
         type_: _DomainDrawType,
         min: onp.ArrayND[_Float | _Int],
         max: onp.ArrayND[_Float | _Int],
@@ -192,7 +192,7 @@ class _Parameterization:
     parameters: Final[Mapping[str, _Parameter]]
 
     def __init__(self, /, *parameters: _Parameter) -> None: ...
-    def __len__(self, /) -> int: ...
+    def __len__(self, /) -> int | bool: ...
     def copy(self, /) -> Self: ...
     def matches(self, /, parameters: AbstractSet[str]) -> bool: ...
     def validation(self, /, parameter_values: Mapping[str, _Parameter]) -> tuple[onp.ArrayND[np.bool_], np.dtype[_Float]]: ...
@@ -208,7 +208,7 @@ class _Parameterization:
 ###
 
 class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[_FloatT_co, _ShapeT_co]):
-    __array_priority__: ClassVar[float] = 1
+    __array_priority__: ClassVar[float | int | bool] = 1
     _parameterizations: ClassVar[Sequence[_Parameterization]]
 
     _not_implemented: Final[str]
@@ -217,9 +217,9 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
     _variable: _Parameter
 
     @property
-    def tol(self, /) -> float | np.float64 | _Null | None: ...
+    def tol(self, /) -> float | int | bool | np.float64 | _Null | None: ...
     @tol.setter
-    def tol(self, tol: float | np.float64 | _Null | None, /) -> None: ...
+    def tol(self, tol: float | int | bool | np.float64 | _Null | None, /) -> None: ...
     #
     @property
     def validation_policy(self, /) -> _ValidationPolicy: ...
@@ -244,7 +244,7 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
 
     #
     @overload
-    def __add__(self, x: float | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __add__(self, x: float | int | bool | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __add__(self, x: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
@@ -263,7 +263,7 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
 
     #
     @overload
-    def __sub__(self, lshift: float | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __sub__(self, lshift: float | int | bool | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __sub__(self, lshift: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
@@ -286,7 +286,7 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
 
     #
     @overload
-    def __mul__(self, scale: float | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __mul__(self, scale: float | int | bool | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __mul__(self, scale: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
@@ -309,7 +309,9 @@ class ContinuousDistribution(_BaseDistribution[_FloatT_co, _ShapeT_co], Generic[
 
     #
     @overload
-    def __truediv__(self, iscale: float | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __truediv__(
+        self, iscale: float | int | bool | _Int | np.bool_, /
+    ) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __truediv__(self, iscale: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload

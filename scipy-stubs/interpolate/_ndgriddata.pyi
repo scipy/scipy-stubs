@@ -28,7 +28,7 @@ class _QueryOptions(TypedDict, total=False):
     eps: onp.ToFloat
     p: onp.ToFloat
     distance_upper_bound: onp.ToFloat
-    workers: int
+    workers: int | bool
 
 ###
 

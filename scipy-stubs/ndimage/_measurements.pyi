@@ -50,16 +50,16 @@ def label(
     input: onp.ToComplex | onp.ToComplexND,
     structure: onp.ToComplex | onp.ToComplexND | None = None,
     output: onp.ArrayND[np.int32 | np.intp] | None = None,
-) -> int | tuple[onp.ArrayND[np.int32 | np.intp], int]: ...
+) -> int | bool | tuple[onp.ArrayND[np.int32 | np.intp], int | bool]: ...
 
 #
-def find_objects(input: onp.ToInt | onp.ToIntND, max_label: int = 0) -> list[tuple[slice, ...]]: ...
+def find_objects(input: onp.ToInt | onp.ToIntND, max_label: int | bool = 0) -> list[tuple[slice, ...]]: ...
 
 #
 def value_indices(
     arr: onp.ToInt | onp.ToIntND,
     *,
-    ignore_value: int | None = None,
+    ignore_value: int | bool | None = None,
 ) -> dict[np.intp, tuple[onp.ArrayND[np.intp], ...]]: ...
 
 #
@@ -79,7 +79,7 @@ def labeled_comprehension(
     labels: onp.ToComplex | onp.ToComplexND | None,
     index: onp.ToInt | onp.ToIntND | None,
     func: _ComprehensionFunc,
-    out_dtype: type[int],
+    out_dtype: type[int | bool],
     default: onp.ToInt,
     pass_positions: bool = False,
 ) -> onp.ArrayND[np.intp]: ...
@@ -89,7 +89,7 @@ def labeled_comprehension(
     labels: onp.ToComplex | onp.ToComplexND | None,
     index: onp.ToInt | onp.ToIntND | None,
     func: _ComprehensionFunc,
-    out_dtype: type[float],
+    out_dtype: type[float | int | bool],
     default: onp.ToFloat,
     pass_positions: bool = False,
 ) -> onp.ArrayND[np.float64 | np.intp]: ...
@@ -99,7 +99,7 @@ def labeled_comprehension(
     labels: onp.ToComplex | onp.ToComplexND | None,
     index: onp.ToInt | onp.ToIntND | None,
     func: _ComprehensionFunc,
-    out_dtype: type[complex],
+    out_dtype: type[complex | float | int | bool],
     default: onp.ToComplex,
     pass_positions: bool = False,
 ) -> onp.ArrayND[np.complex128 | np.float64 | np.intp]: ...
@@ -361,7 +361,7 @@ def histogram(
 #
 def watershed_ift(
     input: _ArrayLike[np.uint8 | np.uint16],
-    markers: _ArrayLike[np.signedinteger[Any]] | onp.SequenceND[int],
+    markers: _ArrayLike[np.signedinteger[Any]] | onp.SequenceND[int | bool],
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: onp.ArrayND[np.signedinteger[Any]] | None = None,
 ) -> onp.ArrayND[np.signedinteger[Any]]: ...

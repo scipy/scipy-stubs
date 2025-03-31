@@ -16,7 +16,7 @@ _SparseGraph: TypeAlias = (
     | lil_array[_RealT] | lil_matrix[_RealT]
 )  # fmt: skip
 
-_ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
+_ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int | bool, int | bool]]
 
 ###
 
@@ -28,7 +28,7 @@ def csgraph_from_masked(graph: onp.MArray2D[_Real]) -> csr_array[np.float64 | np
 #
 def csgraph_masked_from_dense(
     graph: onp.ToFloat2D,
-    null_value: float | None = 0,
+    null_value: float | int | bool | None = 0,
     nan_null: bool = True,
     infinity_null: bool = True,
     copy: bool = True,
@@ -37,13 +37,15 @@ def csgraph_masked_from_dense(
 #
 def csgraph_from_dense(
     graph: onp.ToFloat2D,
-    null_value: float | None = 0,
+    null_value: float | int | bool | None = 0,
     nan_null: bool = True,
     infinity_null: bool = True,
 ) -> csr_array[np.float64 | np.int32]: ...
 
 #
-def csgraph_to_dense(csgraph: _SparseGraph[_Real], null_value: float | None = 0) -> onp.Array2D[np.float64 | np.int32]: ...
+def csgraph_to_dense(
+    csgraph: _SparseGraph[_Real], null_value: float | int | bool | None = 0
+) -> onp.Array2D[np.float64 | np.int32]: ...
 def csgraph_to_masked(csgraph: _SparseGraph[_Real]) -> onp.MArray2D[np.float64 | np.int32]: ...
 
 #
@@ -58,5 +60,5 @@ def construct_dist_matrix(
     graph: _ToGraph,
     predecessors: onp.ToFloatND,
     directed: bool = True,
-    null_value: float = ...,
+    null_value: float | int | bool = ...,
 ) -> onp.Array2D[np.float64 | np.int32]: ...

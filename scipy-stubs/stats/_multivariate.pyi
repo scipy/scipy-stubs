@@ -34,7 +34,7 @@ _RVF_co = TypeVar("_RVF_co", bound=multi_rv_frozen, covariant=True)
 _Scalar_f: TypeAlias = np.floating[Any]
 _Scalar_uif: TypeAlias = np.integer[Any] | _Scalar_f
 _ToFloatMax2D: TypeAlias = onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D
-_ToJustFloat: TypeAlias = float | _Scalar_f
+_ToJustFloat: TypeAlias = float | int | bool | _Scalar_f
 _ToJustFloatND: TypeAlias = (
     onp.CanArrayND[_Scalar_f]
     | onp.SequenceND[_ToJustFloat]
@@ -93,8 +93,8 @@ class multivariate_normal_gen(multi_rv_generic):
         cov: _AnyCov = 1,
         allow_singular: bool = False,
         maxpts: onp.ToJustInt | None = None,
-        abseps: float = 1e-05,
-        releps: float = 1e-05,
+        abseps: float | int | bool = 1e-05,
+        releps: float | int | bool = 1e-05,
         *,
         lower_limit: onp.ToFloat1D | None = None,
     ) -> _ScalarOrArray_f8: ...
@@ -106,8 +106,8 @@ class multivariate_normal_gen(multi_rv_generic):
         cov: _AnyCov = 1,
         allow_singular: bool = False,
         maxpts: onp.ToJustInt | None = None,
-        abseps: float = 1e-05,
-        releps: float = 1e-05,
+        abseps: float | int | bool = 1e-05,
+        releps: float | int | bool = 1e-05,
         *,
         lower_limit: onp.ToFloat1D | None = None,
     ) -> _ScalarOrArray_f8: ...
@@ -116,7 +116,7 @@ class multivariate_normal_gen(multi_rv_generic):
         /,
         mean: onp.ToFloat1D | None = None,
         cov: _AnyCov = 1,
-        size: onp.ToJustInt | tuple[int, ...] = 1,
+        size: onp.ToJustInt | tuple[int | bool, ...] = 1,
         random_state: spt.ToRNG = None,
     ) -> onp.ArrayND[np.float64]: ...
     def entropy(self, /, mean: onp.ToFloat1D | None = None, cov: _AnyCov = 1) -> np.float64: ...
@@ -129,11 +129,11 @@ class multivariate_normal_gen(multi_rv_generic):
     ) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
 
 class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
-    dim: Final[int]
+    dim: Final[int | bool]
     allow_singular: Final[bool]
-    maxpts: Final[int]
-    abseps: Final[float]
-    releps: Final[float]
+    maxpts: Final[int | bool]
+    abseps: Final[float | int | bool]
+    releps: Final[float | int | bool]
     cov_object: Final[Covariance]
     mean: onp.Array1D[np.float64]
 
@@ -145,8 +145,8 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
         allow_singular: bool = False,
         seed: spt.ToRNG = None,
         maxpts: onp.ToJustInt | None = None,
-        abseps: float = 1e-05,
-        releps: float = 1e-05,
+        abseps: float | int | bool = 1e-05,
+        releps: float | int | bool = 1e-05,
     ) -> None: ...
     @property
     def cov(self, /) -> onp.Array2D[np.float64]: ...
@@ -296,17 +296,17 @@ class wishart_gen(multi_rv_generic):
         /,
         df: onp.ToFloat,
         scale: _ToFloatMax2D,
-        size: onp.ToJustInt | tuple[int, ...] = 1,
+        size: onp.ToJustInt | tuple[int | bool, ...] = 1,
         random_state: spt.ToRNG = None,
     ) -> _ScalarOrArray_f8: ...
     def entropy(self, /, df: onp.ToFloat, scale: _ToFloatMax2D) -> np.float64: ...
 
 class wishart_frozen(multi_rv_frozen[wishart_gen]):
-    dim: Final[int]
+    dim: Final[int | bool]
     df: Final[onp.ToFloat]
     scale: Final[onp.Array2D[np.float64]]
     C: Final[onp.Array2D[np.float64]]
-    log_det_scale: Final[float]
+    log_det_scale: Final[float | int | bool]
 
     def __init__(self, /, df: onp.ToFloat, scale: _ToFloatMax2D, seed: spt.ToRNG = None) -> None: ...
     def logpdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
@@ -389,7 +389,7 @@ class multinomial_frozen(multi_rv_frozen[multinomial_gen]):
     def rvs(
         self,
         /,
-        size: onp.AtLeast1D | int = 1,
+        size: onp.AtLeast1D | int | bool = 1,
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
 
@@ -457,8 +457,8 @@ class random_correlation_gen(multi_rv_generic):
     ) -> onp.ArrayND[np.float64]: ...
 
 class random_correlation_frozen(multi_rv_frozen[random_correlation_gen]):
-    tol: Final[float]
-    diag_tol: Final[float]
+    tol: Final[float | int | bool]
+    diag_tol: Final[float | int | bool]
     eigs: Final[onp.Array1D[np.float64]]
 
     def __init__(
@@ -546,7 +546,7 @@ class multivariate_t_gen(multi_rv_generic):
         loc: onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
         df: onp.ToJustInt = 1,
-        size: onp.ToJustInt | tuple[int] = 1,
+        size: onp.ToJustInt | tuple[int | bool] = 1,
         random_state: spt.ToRNG = None,
     ) -> onp.Array2D[np.float64]: ...
     @overload
@@ -572,8 +572,8 @@ class multivariate_t_gen(multi_rv_generic):
     ) -> onp.Array[onp.AtLeast3D, np.float64]: ...
 
 class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
-    dim: Final[int]
-    df: Final[int]
+    dim: Final[int | bool]
+    df: Final[int | bool]
     loc: Final[onp.Array1D[np.float64]]
     shape: Final[onp.Array2D[np.float64]]
     shape_info: Final[_PSD]
@@ -602,7 +602,7 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
     @overload
     def rvs(self, /, size: tuple[()], random_state: spt.ToRNG = None) -> onp.Array1D[np.float64]: ...
     @overload
-    def rvs(self, /, size: onp.ToJustInt | tuple[int] = 1, random_state: spt.ToRNG = None) -> onp.Array2D[np.float64]: ...
+    def rvs(self, /, size: onp.ToJustInt | tuple[int | bool] = 1, random_state: spt.ToRNG = None) -> onp.Array2D[np.float64]: ...
     @overload
     def rvs(self, /, size: onp.AtLeast2D, random_state: spt.ToRNG = None) -> onp.Array[onp.AtLeast3D, np.float64]: ...
 
@@ -731,7 +731,7 @@ class vonmises_fisher_gen(multi_rv_generic):
         size: op.CanIndex | tuple[op.CanIndex, Unpack[tuple[op.CanIndex, ...]]] = 1,
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
-    def fit(self, /, x: onp.ToFloatND) -> tuple[onp.Array1D[np.float64], float]: ...
+    def fit(self, /, x: onp.ToFloatND) -> tuple[onp.Array1D[np.float64], float | int | bool]: ...
 
 class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
     def __init__(self, /, mu: onp.ToFloat1D | None = None, kappa: op.JustInt = 1, seed: spt.ToRNG = None) -> None: ...

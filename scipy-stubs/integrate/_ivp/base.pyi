@@ -10,25 +10,25 @@ _VT = TypeVar("_VT", bound=onp.ArrayND[np.inexact[Any]], default=onp.ArrayND[np.
 class OdeSolver:
     TOO_SMALL_STEP: ClassVar[str] = ...
 
-    t: float
-    t_old: float
-    t_bound: float
+    t: float | int | bool
+    t_old: float | int | bool
+    t_bound: float | int | bool
     vectorized: bool
-    fun: Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
-    fun_single: Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
-    fun_vectorized: Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
-    direction: float
-    n: int
+    fun: Callable[[float | int | bool, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
+    fun_single: Callable[[float | int | bool, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
+    fun_vectorized: Callable[[float | int | bool, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
+    direction: float | int | bool
+    n: int | bool
     status: Literal["running", "finished", "failed"]
-    nfev: int
-    njev: int
-    nlu: int
+    nfev: int | bool
+    njev: int | bool
+    nlu: int | bool
 
     @overload
     def __init__(
         self,
         /,
-        fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND],
+        fun: Callable[[float | int | bool, onp.ArrayND[np.float64]], onp.ToFloatND],
         t0: onp.ToFloatND,
         y0: onp.ToFloatND,
         t_bound: onp.ToFloat,
@@ -39,7 +39,7 @@ class OdeSolver:
     def __init__(
         self,
         /,
-        fun: Callable[[float, onp.ArrayND[np.float64 | np.complex128]], onp.ToComplexND],
+        fun: Callable[[float | int | bool, onp.ArrayND[np.float64 | np.complex128]], onp.ToComplexND],
         t0: onp.ToFloat,
         y0: onp.ToComplexND,
         t_bound: onp.ToFloat,
@@ -47,15 +47,15 @@ class OdeSolver:
         support_complex: Truthy,
     ) -> None: ...
     @property
-    def step_size(self, /) -> float | None: ...
+    def step_size(self, /) -> float | int | bool | None: ...
     def step(self, /) -> str | None: ...
     def dense_output(self, /) -> ConstantDenseOutput: ...
 
 class DenseOutput:
-    t_old: Final[float]
-    t: Final[float]
-    t_min: Final[float]
-    t_max: Final[float]
+    t_old: Final[float | int | bool]
+    t: Final[float | int | bool]
+    t_min: Final[float | int | bool]
+    t_max: Final[float | int | bool]
 
     def __init__(self, /, t_old: onp.ToFloat, t: onp.ToFloat) -> None: ...
     @overload
@@ -68,10 +68,10 @@ class ConstantDenseOutput(DenseOutput, Generic[_VT]):
     def __init__(self, /, t_old: onp.ToFloat, t: onp.ToFloat, value: _VT) -> None: ...
 
 def check_arguments(
-    fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToComplexND],
+    fun: Callable[[float | int | bool, onp.ArrayND[np.float64]], onp.ToComplexND],
     y0: onp.ToComplexND,
     support_complex: bool,
 ) -> (
-    Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
-    | Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.complex128]]
+    Callable[[float | int | bool, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
+    | Callable[[float | int | bool, onp.ArrayND[np.float64]], onp.ArrayND[np.complex128]]
 ): ...

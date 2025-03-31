@@ -25,7 +25,9 @@ _ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
 
 ###
 
-class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int, int]], Generic[_SCT]):
+class _bsr_base(
+    _cs_matrix[_SCT, tuple[int | bool, int | bool]], _minmax_mixin[_SCT, tuple[int | bool, int | bool]], Generic[_SCT]
+):
     data: onp.Array3D[_SCT]
 
     @property
@@ -36,9 +38,9 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
     def ndim(self, /) -> Literal[2]: ...
     @property
     @override
-    def shape(self, /) -> tuple[int, int]: ...
+    def shape(self, /) -> tuple[int | bool, int | bool]: ...
     @property
-    def blocksize(self, /) -> tuple[int, int]: ...
+    def blocksize(self, /) -> tuple[int | bool, int | bool]: ...
 
     #
     @overload  # matrix-like (known dtype), dtype: None
@@ -49,9 +51,9 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         shape: ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
-        blocksize: tuple[int, int] | None = None,
+        blocksize: tuple[int | bool, int | bool] | None = None,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: None
     def __init__(
@@ -61,7 +63,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         shape: None = None,
         dtype: None = None,
         copy: bool = False,
-        blocksize: tuple[int, int] | None = None,
+        blocksize: tuple[int | bool, int | bool] | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: type[bool] | None
     def __init__(
@@ -71,11 +73,11 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         shape: ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
-        blocksize: tuple[int, int] | None = None,
+        blocksize: tuple[int | bool, int | bool] | None = None,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    @overload  # matrix-like builtins.int | bool, dtype: type[int | bool] | None
     def __init__(
         self: _bsr_base[np.int_],
         /,
@@ -83,11 +85,11 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         shape: ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
-        blocksize: tuple[int, int] | None = None,
+        blocksize: tuple[int | bool, int | bool] | None = None,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    @overload  # matrix-like builtins.float | int | bool, dtype: type[float | int | bool] | None
     def __init__(
         self: _bsr_base[np.float64],
         /,
@@ -95,11 +97,11 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         shape: ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
-        blocksize: tuple[int, int] | None = None,
+        blocksize: tuple[int | bool, int | bool] | None = None,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    @overload  # matrix-like builtins.complex | float | int | bool, dtype: type[complex | float | int | bool] | None
     def __init__(
         self: _bsr_base[np.complex128],
         /,
@@ -107,9 +109,9 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         shape: ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
-        blocksize: tuple[int, int] | None = None,
+        blocksize: tuple[int | bool, int | bool] | None = None,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (positional)
     def __init__(
@@ -118,9 +120,9 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         arg1: onp.ToComplexND,
         shape: ToShape2D | None,
         copy: bool = False,
-        blocksize: tuple[int, int] | None = None,
+        blocksize: tuple[int | bool, int | bool] | None = None,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (keyword)
     def __init__(
@@ -130,11 +132,11 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         shape: ToShape2D | None = None,
         *,
         copy: bool = False,
-        blocksize: tuple[int, int] | None = None,
-        maxprint: int | None = None,
+        blocksize: tuple[int | bool, int | bool] | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
 
-class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]): ...
+class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int | bool, int | bool]], Generic[_SCT]): ...
 class bsr_matrix(_bsr_base[_SCT], spmatrix[_SCT], Generic[_SCT]): ...  # type: ignore[misc]
 
 def isspmatrix_bsr(x: object) -> TypeIs[bsr_matrix]: ...

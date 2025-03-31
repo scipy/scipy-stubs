@@ -17,10 +17,10 @@ _SCT_co = TypeVar("_SCT_co", bound=_Scalar_uif, covariant=True, default=np.float
 class Covariance(Generic[_SCT_co]):
     @staticmethod
     @overload
-    def from_diagonal(diagonal: Sequence[int]) -> CovViaDiagonal[np.int_]: ...
+    def from_diagonal(diagonal: Sequence[int | bool]) -> CovViaDiagonal[np.int_]: ...
     @staticmethod
     @overload
-    def from_diagonal(diagonal: Sequence[float]) -> CovViaDiagonal[np.int_ | np.float64]: ...
+    def from_diagonal(diagonal: Sequence[float | int | bool]) -> CovViaDiagonal[np.int_ | np.float64]: ...
     @staticmethod
     @overload
     def from_diagonal(diagonal: Sequence[_SCT] | onp.CanArrayND[_SCT]) -> CovViaDiagonal[_SCT]: ...
@@ -39,15 +39,15 @@ class Covariance(Generic[_SCT_co]):
     @property
     def covariance(self, /) -> onp.Array2D[_SCT_co]: ...
     @property
-    def shape(self, /) -> tuple[int, int]: ...
+    def shape(self, /) -> tuple[int | bool, int | bool]: ...
 
 class CovViaDiagonal(Covariance[_SCT_co], Generic[_SCT_co]):
     @overload
-    def __init__(self: CovViaDiagonal[np.int_], /, diagonal: Sequence[int]) -> None: ...
+    def __init__(self: CovViaDiagonal[np.int_], /, diagonal: Sequence[int | bool]) -> None: ...
     @overload
-    def __init__(self: CovViaDiagonal[np.int_ | np.float64], /, diagonal: Sequence[float]) -> None: ...
+    def __init__(self: CovViaDiagonal[np.int_ | np.float64], /, diagonal: Sequence[float | int | bool]) -> None: ...
     @overload
-    def __init__(self, /, diagonal: Sequence[float | _SCT_co] | onp.CanArrayND[_SCT_co]) -> None: ...
+    def __init__(self, /, diagonal: Sequence[float | int | bool | _SCT_co] | onp.CanArrayND[_SCT_co]) -> None: ...
 
 class CovViaPrecision(Covariance[np.float64]):
     def __init__(self, /, precision: onp.ToFloat2D, covariance: onp.ToFloat2D | None = None) -> None: ...
@@ -63,20 +63,20 @@ class _PSD(Protocol):
     _M: onp.ArrayND[np.float64]
     V: onp.ArrayND[np.float64]
     U: onp.ArrayND[np.float64]
-    eps: np.float64 | float
-    log_pdet: np.float64 | float
-    cond: np.float64 | float
-    rank: int
+    eps: np.float64 | float | int | bool
+    log_pdet: np.float64 | float | int | bool
+    cond: np.float64 | float | int | bool
+    rank: int | bool
 
     @property
     def pinv(self, /) -> onp.ArrayND[npc.floating]: ...
 
 class CovViaPSD(Covariance[np.float64]):
     _LP: Final[onp.ArrayND[np.float64]]
-    _log_pdet: Final[np.float64 | float]
-    _rank: Final[int]
+    _log_pdet: Final[np.float64 | float | int | bool]
+    _rank: Final[int | bool]
     _covariance: Final[onp.ArrayND[np.float64]]
-    _shape: tuple[int, int]
+    _shape: tuple[int | bool, int | bool]
     _psd: Final[_PSD]
     _allow_singular: Final = False
 

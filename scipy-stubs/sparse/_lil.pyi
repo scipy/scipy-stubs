@@ -22,7 +22,7 @@ _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
 ###
 
-class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]], Generic[_SCT]):
+class _lil_base(_spbase[_SCT, tuple[int | bool, int | bool]], IndexMixin[_SCT, tuple[int | bool, int | bool]], Generic[_SCT]):
     dtype: np.dtype[_SCT]
     data: onp.Array1D[np.object_]
     rows: onp.Array1D[np.object_]
@@ -35,7 +35,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     def ndim(self, /) -> Literal[2]: ...
     @property
     @override
-    def shape(self, /) -> tuple[int, int]: ...
+    def shape(self, /) -> tuple[int | bool, int | bool]: ...
 
     #
     @overload  # matrix-like (known dtype), dtype: None
@@ -47,7 +47,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         dtype: None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: None
     def __init__(
@@ -58,7 +58,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: type[bool] | None
     def __init__(
@@ -69,9 +69,9 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    @overload  # matrix-like builtins.int | bool, dtype: type[int | bool] | None
     def __init__(
         self: _lil_base[np.int_],
         /,
@@ -80,9 +80,9 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    @overload  # matrix-like builtins.float | int | bool, dtype: type[float | int | bool] | None
     def __init__(
         self: _lil_base[np.float64],
         /,
@@ -91,9 +91,9 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    @overload  # matrix-like builtins.complex | float | int | bool, dtype: type[complex | float | int | bool] | None
     def __init__(
         self: _lil_base[np.complex128],
         /,
@@ -102,7 +102,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (positional)
     def __init__(
@@ -113,7 +113,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (keyword)
     def __init__(
@@ -124,7 +124,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
         *,
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
 
     #
@@ -143,21 +143,21 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     @override
     def tolil(self, /, copy: bool = False) -> Self: ...  # type: ignore[override]
     @override
-    def resize(self, /, *shape: int) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def resize(self, /, *shape: int | bool) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
     # NOTE: Adding `@override` here will crash stubtest (basedmypy 1.13.0)
     @overload  # type: ignore[explicit-override]
-    def count_nonzero(self, /, axis: None = None) -> int: ...
+    def count_nonzero(self, /, axis: None = None) -> int | bool: ...
     @overload
     def count_nonzero(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
 
     #
-    def getrowview(self, /, i: int) -> Self: ...
-    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int, int]] | csr_matrix[_SCT]: ...
+    def getrowview(self, /, i: int | bool) -> Self: ...
+    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int | bool, int | bool]] | csr_matrix[_SCT]: ...
 
-class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
+class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int | bool, int | bool]], Generic[_SCT]):
     @override
-    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int, int]]: ...
+    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int | bool, int | bool]]: ...
 
 class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):  # type: ignore[misc]
     @override
@@ -165,7 +165,7 @@ class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):  # type: ignor
 
     # NOTE: using `@override` together with `@overload` causes stubtest to crash...
     @overload  # type: ignore[explicit-override]
-    def getnnz(self, /, axis: None = None) -> int: ...
+    def getnnz(self, /, axis: None = None) -> int | bool: ...
     @overload
     def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...
 

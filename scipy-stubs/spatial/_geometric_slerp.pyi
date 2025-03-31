@@ -9,7 +9,7 @@ __all__ = ["geometric_slerp"]
 def geometric_slerp(
     start: onp.ToFloat1D,
     end: onp.ToFloat1D,
-    t: float | np.floating[Any],
+    t: float | int | bool | np.floating[Any],
     tol: onp.ToFloat = 1e-07,
 ) -> onp.Array1D[np.float64]: ...
 @overload

@@ -10,7 +10,7 @@ from scipy._typing import EnterSelfMixin, FileLike, FileModeRWA
 
 __all__ = ["netcdf_file", "netcdf_variable"]
 
-_ShapeT_co = TypeVar("_ShapeT_co", covariant=True, bound=tuple[int, ...], default=tuple[int, ...])
+_ShapeT_co = TypeVar("_ShapeT_co", covariant=True, bound=tuple[int | bool, ...], default=tuple[int | bool, ...])
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
 _SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.generic, default=np.generic)
 
@@ -66,9 +66,9 @@ class netcdf_file(EnterSelfMixin):
     filename: Final[str]
     use_mmap: Final[bool]
     mode: Final[FileModeRWA]
-    version_byte: Final[int]
+    version_byte: Final[int | bool]
     maskandscale: Final[bool]
-    dimensions: Final[dict[str, int]]
+    dimensions: Final[dict[str, int | bool]]
     variables: Final[dict[str, netcdf_variable]]
     def __init__(
         self,
@@ -76,12 +76,12 @@ class netcdf_file(EnterSelfMixin):
         filename: FileLike[bytes],
         mode: FileModeRWA = "r",
         mmap: bool | None = None,
-        version: int = 1,
+        version: int | bool = 1,
         maskandscale: bool = False,
     ) -> None: ...
     def __del__(self, /) -> None: ...
     def close(self, /) -> None: ...
-    def createDimension(self, /, name: str, length: int) -> None: ...
+    def createDimension(self, /, name: str, length: int | bool) -> None: ...
     @overload
     def createVariable(
         self,
@@ -89,7 +89,7 @@ class netcdf_file(EnterSelfMixin):
         name: str,
         type: np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]],
         dimensions: Sequence[str],
-    ) -> netcdf_variable[tuple[int, ...], _SCT]: ...
+    ) -> netcdf_variable[tuple[int | bool, ...], _SCT]: ...
     @overload
     def createVariable(self, /, name: str, type: npt.DTypeLike, dimensions: Sequence[str]) -> netcdf_variable: ...
     def flush(self, /) -> None: ...
@@ -108,18 +108,20 @@ class netcdf_variable(Generic[_ShapeT_co, _SCT_co]):
         /,
         data: onp.Array[_ShapeT_co, _SCT_co],
         typecode: str,
-        size: int,
-        shape: tuple[int, ...] | list[int],
+        size: int | bool,
+        shape: tuple[int | bool, ...] | list[int | bool],
         dimensions: Sequence[str],
         attributes: Mapping[str, object] | None = None,
         maskandscale: bool = False,
     ) -> None: ...
     def __getitem__(self, /, index: op.CanIndex | slice | tuple[op.CanIndex | slice, ...]) -> _SCT | onp.ArrayND[_SCT]: ...
-    def __setitem__(self: netcdf_variable[tuple[int, ...], _SCT], /, index: object, data: _SCT | onp.ArrayND[_SCT]) -> None: ...
+    def __setitem__(
+        self: netcdf_variable[tuple[int | bool, ...], _SCT], /, index: object, data: _SCT | onp.ArrayND[_SCT]
+    ) -> None: ...
     def getValue(self, /) -> _SCT_co: ...
     def assignValue(self, /, value: object) -> None: ...
     def typecode(self, /) -> str: ...
-    def itemsize(self, /) -> int: ...
+    def itemsize(self, /) -> int | bool: ...
 
 NetCDFFile = netcdf_file
 NetCDFVariable = netcdf_variable

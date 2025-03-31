@@ -12,11 +12,11 @@ _IntC1D: TypeAlias = onp.Array1D[np.int32]
 _IntC2D: TypeAlias = onp.Array2D[np.int32]
 _IntCND: TypeAlias = onp.ArrayND[np.int32]
 
-_Int: TypeAlias = int | np.int32 | np.int64 | np.intp | np.int_
+_Int: TypeAlias = int | bool | np.int32 | np.int64 | np.intp | np.int_
 _Int1D: TypeAlias = onp.Array1D[np.int32 | np.int64 | np.intp]
 _Int2D: TypeAlias = onp.Array2D[np.int32 | np.int64 | np.intp]
 
-_Float: TypeAlias = float | np.float64
+_Float: TypeAlias = float | int | bool | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 _Float3D: TypeAlias = onp.Array3D[np.float64]
@@ -67,7 +67,7 @@ class _Qhull:
     furthest_site: bool
 
     @property
-    def ndim(self, /) -> int: ...
+    def ndim(self, /) -> int | bool: ...
     def __init__(
         self,
         /,
@@ -83,21 +83,21 @@ class _Qhull:
     def close(self, /) -> None: ...
     def get_points(self, /) -> _Float2D: ...
     def add_points(self, /, points: onp.ToFloat2D, interior_point: onp.ToFloat1D | None = None) -> None: ...
-    def get_paraboloid_shift_scale(self, /) -> tuple[float, float]: ...
-    def volume_area(self, /) -> tuple[float, float]: ...
+    def get_paraboloid_shift_scale(self, /) -> tuple[float | int | bool, float | int | bool]: ...
+    def volume_area(self, /) -> tuple[float | int | bool, float | int | bool]: ...
     def triangulate(self, /) -> None: ...
     def get_simplex_facet_array(self, /) -> tuple[_IntC2D, _IntC2D, _Float2D, _IntC2D, _IntC1D]: ...
     def get_hull_points(self, /) -> _Float2D: ...
-    def get_hull_facets(self, /) -> tuple[list[list[int]], _Float2D]: ...
-    def get_voronoi_diagram(self, /) -> tuple[_Float2D, _IntC2D, list[list[int]], list[list[int]], _Int1D]: ...
+    def get_hull_facets(self, /) -> tuple[list[list[int | bool]], _Float2D]: ...
+    def get_voronoi_diagram(self, /) -> tuple[_Float2D, _IntC2D, list[list[int | bool]], list[list[int | bool]], _Int1D]: ...
     def get_extremes_2d(self, /) -> _IntC1D: ...
 
 _QT = TypeVar("_QT", bound=_Qhull, default=_Qhull)
 
 class _QhullUser(Generic[_QT]):
     _qhull: _QT | None = None
-    ndim: int
-    npoints: int
+    ndim: int | bool
+    npoints: int | bool
     min_bound: _Float1D
     max_bound: _Float1D
 
@@ -115,14 +115,14 @@ class _QhullUser(Generic[_QT]):
 
 class Delaunay(_QhullUser[_Qhull]):
     furthest_site: bool
-    paraboloid_scale: float
-    paraboloid_shift: float
+    paraboloid_scale: float | int | bool
+    paraboloid_shift: float | int | bool
     simplices: _IntC2D
     neighbors: _IntC2D
     equations: _Float2D
     coplanar: _IntC2D
     good: _IntC1D
-    nsimplex: int
+    nsimplex: int | bool
     vertices: _Float2D
 
     @property
@@ -146,7 +146,7 @@ class Delaunay(_QhullUser[_Qhull]):
         qhull_options: str | None = None,
     ) -> None: ...
     def add_points(self, /, points: onp.ToFloat2D, restart: bool = False) -> None: ...
-    def find_simplex(self, /, xi: onp.ToFloatND, bruteforce: bool = False, tol: float | None = None) -> _IntCND: ...
+    def find_simplex(self, /, xi: onp.ToFloatND, bruteforce: bool = False, tol: float | int | bool | None = None) -> _IntCND: ...
     def plane_distance(self, /, xi: onp.ToFloatND) -> _Float2D: ...
     def lift_points(self, /, x: onp.ToFloatND) -> _FloatND: ...
 
@@ -156,9 +156,9 @@ class ConvexHull(_QhullUser[_Qhull]):
     equations: _Float2D
     coplanar: _IntC2D
     good: _Bool1D | None
-    volume: float
-    area: float
-    nsimplex: int
+    volume: float | int | bool
+    area: float | int | bool
+    nsimplex: int | bool
 
     @property
     def points(self, /) -> _Float2D: ...
@@ -172,15 +172,15 @@ class ConvexHull(_QhullUser[_Qhull]):
 class Voronoi(_QhullUser):
     vertices: _Float2D
     ridge_points: _IntC2D
-    ridge_vertices: list[list[int]]
-    regions: list[list[int]]
+    ridge_vertices: list[list[int | bool]]
+    regions: list[list[int | bool]]
     point_region: _Int1D
     furthest_site: bool
 
     @property
     def points(self, /) -> _Float2D: ...
     @property
-    def ridge_dict(self, /) -> dict[tuple[int, int], list[int]]: ...
+    def ridge_dict(self, /) -> dict[tuple[int | bool, int | bool], list[int | bool]]: ...
 
     #
     def __init__(
@@ -196,13 +196,13 @@ class Voronoi(_QhullUser):
 class HalfspaceIntersection(_QhullUser):
     interior_point: _Float1D
     intersections: _Float2D
-    dual_facets: list[list[int]]
+    dual_facets: list[list[int | bool]]
     dual_equations: _Float2D
     dual_points: _Float2D
-    dual_volume: float
-    dual_area: float
-    ndim: int
-    nineq: int
+    dual_volume: float | int | bool
+    dual_area: float | int | bool
+    ndim: int | bool
+    nineq: int | bool
 
     @property
     def halfspaces(self, /) -> _Float2D: ...

@@ -41,7 +41,7 @@ _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 
 _Norm: TypeAlias = Literal[2, "approximate", "subsample"]
-_ToM: TypeAlias = int | np.int16 | np.int32 | np.int64
+_ToM: TypeAlias = int | bool | np.int16 | np.int32 | np.int64
 _WindowName0: TypeAlias = Literal[
     "barthann", "brthan", "bth",
     "bartlett", "bart", "brt",

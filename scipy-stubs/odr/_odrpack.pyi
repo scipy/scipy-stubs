@@ -25,16 +25,16 @@ class _FullOutput(TypedDict):
     eps: _Float1D
     xplus: _Float1D
     y: _Float1D
-    res_var: float
-    sum_square: float
-    sum_square_delta: float
-    sum_square_eps: float
-    inc_condnum: float
-    rel_error: float
+    res_var: float | int | bool
+    sum_square: float | int | bool
+    sum_square_delta: float | int | bool
+    sum_square_eps: float | int | bool
+    inc_condnum: float | int | bool
+    rel_error: float | int | bool
     work: _Float1D
-    work_ind: dict[str, int]
+    work_ind: dict[str, int | bool]
     iwork: onp.Array1D[np.int32]
-    info: int
+    info: int | bool
 
 ###
 
@@ -208,18 +208,18 @@ class ODR:
     ifixb: Final[onp.Array1D[np.int32] | None]
     errfile: Final[str | None]
     rptfile: Final[str | None]
-    ndigit: Final[int | None]
-    taufac: Final[float | None]
-    sstol: Final[float | None]
-    partol: Final[float | None]
+    ndigit: Final[int | bool | None]
+    taufac: Final[float | int | bool | None]
+    sstol: Final[float | int | bool | None]
+    partol: Final[float | int | bool | None]
     stpb: Final[onp.Array1D[_ToFloatScalar] | None]
     stpd: Final[onp.Array1D[_ToFloatScalar] | None]
     sclb: Final[onp.Array1D[_ToFloatScalar] | None]
     scld: Final[onp.Array1D[_ToFloatScalar] | None]
 
-    job: int | None
-    iprint: int | None
-    maxit: int | None
+    job: int | bool | None
+    iprint: int | bool | None
+    maxit: int | bool | None
     work: onp.Array1D[np.float64] | None
     iwork: onp.Array1D[np.int32 | np.int64] | None
 
@@ -232,15 +232,15 @@ class ODR:
         delta0: onp.ToFloat1D | None = None,
         ifixb: onp.ToInt1D | None = None,
         ifixx: onp.ToIntND | None = None,
-        job: int | None = None,
-        iprint: int | None = None,
+        job: int | bool | None = None,
+        iprint: int | bool | None = None,
         errfile: str | None = None,
         rptfile: str | None = None,
-        ndigit: int | None = None,
-        taufac: float | None = None,  # = 1
-        sstol: float | None = None,  # = eps**(1/2)
-        partol: float | None = None,  # = eps**(2/3) (explicit), = eps**(1/3) (implicit)
-        maxit: int | None = None,  # = 10
+        ndigit: int | bool | None = None,
+        taufac: float | int | bool | None = None,  # = 1
+        sstol: float | int | bool | None = None,  # = eps**(1/2)
+        partol: float | int | bool | None = None,  # = eps**(2/3) (explicit), = eps**(1/3) (implicit)
+        maxit: int | bool | None = None,  # = 10
         stpb: onp.ToFloat1D | None = None,
         stpd: onp.ToFloatND | None = None,
         sclb: onp.ToFloat1D | None = None,
@@ -270,7 +270,7 @@ class ODR:
         so_final: _012 | None = None,
     ) -> None: ...
     def run(self, /) -> Output: ...
-    def restart(self, /, iter: int | None = None) -> Output: ...
+    def restart(self, /, iter: int | bool | None = None) -> Output: ...
 
 @overload
 def odr(
@@ -285,15 +285,15 @@ def odr(
     extra_args: tuple[object, ...] | None = None,
     ifixx: onp.ToIntND | None = None,
     ifixb: onp.ToInt1D | None = None,
-    job: int = 0,
-    iprint: int = 0,
+    job: int | bool = 0,
+    iprint: int | bool = 0,
     errfile: str | None = None,
     rptfile: str | None = None,
-    ndigit: int = 0,
-    taufac: float = 0.0,
-    sstol: float = -1.0,
-    partol: float = -1.0,
-    maxit: int = -1,
+    ndigit: int | bool = 0,
+    taufac: float | int | bool = 0.0,
+    sstol: float | int | bool = -1.0,
+    partol: float | int | bool = -1.0,
+    maxit: int | bool = -1,
     stpb: onp.ToFloat1D | None = None,
     stpd: onp.ToFloatND | None = None,
     sclb: onp.ToFloat1D | None = None,
@@ -315,15 +315,15 @@ def odr(
     extra_args: tuple[object, ...] | None = None,
     ifixx: onp.ToIntND | None = None,
     ifixb: onp.ToInt1D | None = None,
-    job: int = 0,
-    iprint: int = 0,
+    job: int | bool = 0,
+    iprint: int | bool = 0,
     errfile: str | None = None,
     rptfile: str | None = None,
-    ndigit: int = 0,
-    taufac: float = 0.0,
-    sstol: float = -1.0,
-    partol: float = -1.0,
-    maxit: int = -1,
+    ndigit: int | bool = 0,
+    taufac: float | int | bool = 0.0,
+    sstol: float | int | bool = -1.0,
+    partol: float | int | bool = -1.0,
+    maxit: int | bool = -1,
     stpb: onp.ToFloat1D | None = None,
     stpd: onp.ToFloatND | None = None,
     sclb: onp.ToFloat1D | None = None,

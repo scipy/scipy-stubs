@@ -21,7 +21,8 @@ _PeakProminences: TypeAlias = tuple[_FloatND, _IntND, _IntND]
 _PeakWidths: TypeAlias = tuple[_FloatND, _FloatND, _FloatND, _FloatND]
 
 _WaveletFunc: TypeAlias = (
-    Callable[Concatenate[int, float, ...], onp.ToComplex1D] | Callable[Concatenate[np.intp, np.float64, ...], onp.ToComplex1D]
+    Callable[Concatenate[int | bool, float | int | bool, ...], onp.ToComplex1D]
+    | Callable[Concatenate[np.intp, np.float64, ...], onp.ToComplex1D]
 )
 
 @type_check_only

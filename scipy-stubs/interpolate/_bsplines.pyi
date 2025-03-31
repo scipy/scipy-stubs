@@ -23,12 +23,12 @@ _LSQMethod: TypeAlias = Literal["qr", "norm-eq"]
 class BSpline(Generic[_CT_co]):
     t: onp.Array1D[np.float64]
     c: onp.Array[onp.AtLeast1D, _CT_co]
-    k: int
-    axis: int
+    k: int | bool
+    axis: int | bool
     extrapolate: _Extrapolate
 
     @property
-    def tck(self, /) -> tuple[onp.Array1D[np.float64], onp.Array[onp.AtLeast1D, _CT_co], int]: ...
+    def tck(self, /) -> tuple[onp.Array1D[np.float64], onp.Array[onp.AtLeast1D, _CT_co], int | bool]: ...
 
     #
     @overload
@@ -62,23 +62,23 @@ class BSpline(Generic[_CT_co]):
         axis: op.CanIndex = 0,
     ) -> None: ...
 
-    # NOTE: Complex `x` will unsafely be cast to `float64`, even if the coefficients are complex
+    # NOTE: Complex `x` will unsafely be cast to `float64`, even if the coefficients are complex | float | int | bool
     def __call__(
         self,
         /,
         x: onp.ToComplex | onp.ToComplexND,
-        nu: int = 0,
+        nu: int | bool = 0,
         extrapolate: _Extrapolate | None = None,
     ) -> onp.ArrayND[_CT_co]: ...
 
     #
-    def derivative(self, /, nu: int = 1) -> Self: ...
-    def antiderivative(self, /, nu: int = 1) -> Self: ...
+    def derivative(self, /, nu: int | bool = 1) -> Self: ...
+    def antiderivative(self, /, nu: int | bool = 1) -> Self: ...
 
     #
     def insert_knot(self, /, x: onp.ToFloat, m: op.CanIndex = 1) -> Self: ...
 
-    # NOTE: `integrate` will raise a (cryptic) `ValueError` for complex coefficients
+    # NOTE: `integrate` will raise a (cryptic) `ValueError` for complex | float | int | bool coefficients
     def integrate(
         self: BSpline[np.float64],
         /,
@@ -108,9 +108,9 @@ class BSpline(Generic[_CT_co]):
         cls,
         t: onp.ArrayND[np.float64],
         c: onp.ArrayND[_CT_co],
-        k: int,
+        k: int | bool,
         extrapolate: _Extrapolate = True,
-        axis: int = 0,
+        axis: int | bool = 0,
     ) -> Self: ...
 
     #
@@ -121,7 +121,7 @@ class BSpline(Generic[_CT_co]):
         t: onp.ToFloat1D,
         k: op.CanIndex,
         extrapolate: _Extrapolate = False,
-    ) -> csr_array[np.float64, tuple[int, int]]: ...
+    ) -> csr_array[np.float64, tuple[int | bool, int | bool]]: ...
 
 #
 @overload
@@ -193,7 +193,7 @@ def make_lsq_spline(
     method: _LSQMethod = "qr",
 ) -> BSpline[Any]: ...
 
-# NOTE: will unsafely cast complex input to float64
+# NOTE: will unsafely cast complex | float | int | bool input to float64
 def make_smoothing_spline(
     x: onp.ToComplex1D,
     y: onp.ToComplex1D,

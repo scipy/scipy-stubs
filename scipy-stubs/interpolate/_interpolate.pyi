@@ -10,7 +10,7 @@ __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
 
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
-_ToAxis: TypeAlias = int | np.integer[Any]
+_ToAxis: TypeAlias = int | bool | np.integer[Any]
 _Extrapolate: TypeAlias = Literal["periodic"] | bool
 
 _Interp1dKind: TypeAlias = Literal["linear", "nearest", "nearest-up", "zero", "slinear", "quadratic", "cubic", "previous", "next"]
@@ -50,7 +50,7 @@ class interp2d:
 class interp1d(_Interpolator1D):  # legacy
     copy: bool
     bounds_error: bool
-    axis: int
+    axis: int | bool
     x: onp.Array1D[np.floating[Any] | np.integer[Any] | np.bool_]
     y: onp.ArrayND[np.inexact[Any]]
     x_bds: onp.Array1D[np.floating[Any]]  # only set if `kind in {"nearest", "nearest-up"}`
@@ -66,7 +66,7 @@ class interp1d(_Interpolator1D):  # legacy
         /,
         x: onp.ToFloat1D,
         y: onp.ToFloatND,
-        kind: _Interp1dKind | int = "linear",
+        kind: _Interp1dKind | int | bool = "linear",
         axis: _ToAxis = -1,
         copy: bool = True,
         bounds_error: bool | None = None,
@@ -78,7 +78,7 @@ class _PPolyBase(Generic[_CT_co]):
     c: onp.Array[onp.AtLeast2D, _CT_co]
     x: onp.Array1D[np.float64]
     extrapolate: Final[_Extrapolate]
-    axis: Final[int]
+    axis: Final[int | bool]
 
     @classmethod
     def construct_fast(
@@ -137,7 +137,7 @@ class PPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
     @classmethod
     def from_spline(
         cls,
-        tck: tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int],
+        tck: tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int | bool],
         extrapolate: _Extrapolate | None = None,
     ) -> Self: ...
     @classmethod
@@ -247,8 +247,8 @@ class NdPPoly(Generic[_CT_co]):
     ) -> onp.ArrayND[_CT_co]: ...
 
     #
-    def derivative(self, /, nu: tuple[int, ...]) -> Self: ...
-    def antiderivative(self, /, nu: tuple[int, ...]) -> Self: ...
+    def derivative(self, /, nu: tuple[int | bool, ...]) -> Self: ...
+    def antiderivative(self, /, nu: tuple[int | bool, ...]) -> Self: ...
 
     #
     def integrate_1d(

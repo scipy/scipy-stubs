@@ -64,15 +64,17 @@ class _TestResult(NamedTuple, Generic[_NDT_co]):
 
 @type_check_only
 class _ConfidenceInterval(NamedTuple):
-    statistic: float | np.float64
-    minmax: tuple[float, float] | tuple[np.float64, np.float64]
+    statistic: float | int | bool | np.float64
+    minmax: tuple[float | int | bool, float | int | bool] | tuple[np.float64, np.float64]
 
 # represents the e.g. `matplotlib.pyplot` module and a `matplotlib.axes.Axes` object with a `plot` and `text` method
 @type_check_only
 class _CanPlotText(Protocol):
     # NOTE: `Any` is required as return type because it's covariant, and not shouldn't be `Never`.
-    def plot(self, /, *args: float | onp.ToFloatND | str, **kwargs: object) -> Any: ...  # noqa: ANN401
-    def text(self, /, x: float, y: float, s: str, fontdict: dict[str, Any] | None = None, **kwargs: object) -> Any: ...  # noqa: ANN401
+    def plot(self, /, *args: float | int | bool | onp.ToFloatND | str, **kwargs: object) -> Any: ...  # noqa: ANN401
+    def text(
+        self, /, x: float | int | bool, y: float | int | bool, s: str, fontdict: dict[str, Any] | None = None, **kwargs: object
+    ) -> Any: ...  # noqa: ANN401
 
 @type_check_only
 class _CanPPF(Protocol):
@@ -80,7 +82,7 @@ class _CanPPF(Protocol):
 
 @type_check_only
 class _HasX(Protocol):
-    x: float | np.floating[Any]
+    x: float | int | bool | np.floating[Any]
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
@@ -160,7 +162,7 @@ _RVC1: TypeAlias = Literal[
     "wrapcauchy",
 ]
 
-_ObjFun1D: TypeAlias = Callable[[float], float | np.floating[Any]]
+_ObjFun1D: TypeAlias = Callable[[float | int | bool], float | int | bool | np.floating[Any]]
 _MinFun1D: TypeAlias = Callable[[_ObjFun1D], _HasX] | Callable[[_ObjFun1D], OptimizeResult]
 
 _AndersonResult: TypeAlias = FitResult[Callable[[onp.ToFloat, onp.ToFloat], np.float64]]
@@ -370,7 +372,7 @@ def ppcc_plot(
     b: onp.ToFloat,
     dist: _RVC1 | _CanPPF = "tukeylambda",
     plot: _CanPlotText | ModuleType | None = None,
-    N: int = 80,
+    N: int | bool = 80,
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...
 
 #
@@ -388,24 +390,24 @@ def boxcox(
 def boxcox(
     x: onp.ToFloat | onp.ToFloatND,
     lmbda: onp.ToFloat,
-    alpha: float | np.floating[Any] | None = None,
+    alpha: float | int | bool | np.floating[Any] | None = None,
     optimizer: _MinFun1D | None = None,
 ) -> _Float1D: ...
 @overload
 def boxcox(
     x: onp.ToFloat | onp.ToFloatND,
     lmbda: None,
-    alpha: float | np.floating[Any],
+    alpha: float | int | bool | np.floating[Any],
     optimizer: _MinFun1D | None = None,
-) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
+) -> tuple[_Float1D, np.float64, _Tuple2[float | int | bool]]: ...
 @overload
 def boxcox(
     x: onp.ToFloat | onp.ToFloatND,
     lmbda: None = None,
     *,
-    alpha: float | np.floating[Any],
+    alpha: float | int | bool | np.floating[Any],
     optimizer: _MinFun1D | None = None,
-) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
+) -> tuple[_Float1D, np.float64, _Tuple2[float | int | bool]]: ...
 
 #
 @overload

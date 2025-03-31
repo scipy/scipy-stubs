@@ -31,7 +31,7 @@ _FloatDT = TypeVar("_FloatDT", bound=_FloatD)
 _InexactDT = TypeVar("_InexactDT", bound=_InexactD)
 _InexactQT = TypeVar("_InexactQT", bound=_InexactQ)
 _InexactT = TypeVar("_InexactT", bound=_Inexact)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...])
 
 ###
 

@@ -62,10 +62,10 @@ _ArrayAPINamespace: TypeAlias = ModuleType
 @type_check_only
 class _DendrogramResult(TypedDict):
     color_list: list[str]
-    icoord: list[list[int]]
-    dcoord: list[list[int]]
+    icoord: list[list[int | bool]]
+    dcoord: list[list[int | bool]]
     ivl: list[str]
-    leaves: list[int] | None
+    leaves: list[int | bool] | None
     leaves_color_list: list[str]
 
 ###
@@ -74,25 +74,27 @@ class ClusterWarning(UserWarning): ...
 
 # NOTE: this can't be made generic, because mypy doesn't support cyclical generic types (classic mypy...)
 class ClusterNode:
-    id: Final[int]
+    id: Final[int | bool]
     left: Final[ClusterNode | None]
     right: Final[ClusterNode | None]
-    dist: Final[float]
-    count: Final[int]
+    dist: Final[float | int | bool]
+    count: Final[int | bool]
 
     # NOTE: either both `left` and `right` are None, or both are `ClusterNode`
     @overload
     def __init__(
         self: ClusterNode,
         /,
-        id: int,
+        id: int | bool,
         left: None = None,
         right: None = None,
-        dist: float = 0.0,
-        count: int = 1,
+        dist: float | int | bool = 0.0,
+        count: int | bool = 1,
     ) -> None: ...
     @overload
-    def __init__(self, /, id: int, left: ClusterNode, right: ClusterNode, dist: float = 0, count: int = 1) -> None: ...
+    def __init__(
+        self, /, id: int | bool, left: ClusterNode, right: ClusterNode, dist: float | int | bool = 0, count: int | bool = 1
+    ) -> None: ...
 
     # NOTE: These raise a `ValueError` if passed anything other than `ClusterNode`
     @override
@@ -101,8 +103,8 @@ class ClusterNode:
     def __gt__(self, node: ClusterNode, /) -> bool: ...
 
     # NOTE: These getters are basically redundant, as the attributes they (directly) return are public anyway
-    def get_id(self, /) -> int: ...
-    def get_count(self, /) -> int: ...
+    def get_id(self, /) -> int | bool: ...
+    def get_count(self, /) -> int | bool: ...
     def get_left(self, /) -> ClusterNode | None: ...
     def get_right(self, /) -> ClusterNode | None: ...
 
@@ -111,12 +113,12 @@ class ClusterNode:
 
     # NOTE: `func` defaults to `(x) -> x.id`
     @overload
-    def pre_order(self, /, func: Callable[[ClusterNode], int] = ...) -> list[int]: ...
+    def pre_order(self, /, func: Callable[[ClusterNode], int | bool] = ...) -> list[int | bool]: ...
     @overload
     def pre_order(self, /, func: Callable[[ClusterNode], _T]) -> list[_T]: ...
 
 #
-def int_floor(arr: onp.ToArrayND, xp: _ArrayAPINamespace) -> int: ...
+def int_floor(arr: onp.ToArrayND, xp: _ArrayAPINamespace) -> int | bool: ...
 
 #
 def single(y: onp.ToArrayND) -> _LinkageArray: ...
@@ -156,7 +158,7 @@ def cophenet(Z: onp.ToArray2D, Y: None = None) -> onp.Array1D[np.float64]: ...
 def cophenet(Z: onp.ToArray2D, Y: onp.ToArrayND) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
 
 #
-def inconsistent(Z: onp.ToArray2D, d: int = 2) -> _LinkageArray: ...
+def inconsistent(Z: onp.ToArray2D, d: int | bool = 2) -> _LinkageArray: ...
 
 #
 def from_mlab_linkage(Z: onp.ToArray2D) -> _LinkageArray: ...
@@ -169,7 +171,7 @@ def is_valid_linkage(Z: onp.ToArray2D, warning: bool = False, throw: bool = Fals
 def is_isomorphic(T1: onp.ToArrayND, T2: onp.ToArrayND) -> bool: ...
 
 #
-def num_obs_linkage(Z: onp.ToArray2D) -> int: ...
+def num_obs_linkage(Z: onp.ToArray2D) -> int | bool: ...
 
 #
 def correspond(Z: onp.ToArray2D, Y: onp.ToArrayND) -> bool: ...
@@ -204,9 +206,9 @@ def set_link_color_palette(palette: list[str] | tuple[str, ...] | None) -> None:
 #
 def dendrogram(
     Z: onp.ToArray2D,
-    p: int = 30,
+    p: int | bool = 30,
     truncate_mode: _TruncateMode | None = None,
-    color_threshold: float | np.floating[Any] | None = None,
+    color_threshold: float | int | bool | np.floating[Any] | None = None,
     get_leaves: bool = True,
     orientation: _Orientation = "top",
     labels: onp.ToArrayND | None = None,
@@ -215,11 +217,11 @@ def dendrogram(
     show_leaf_counts: bool = True,
     no_plot: bool = False,
     no_labels: bool = False,
-    leaf_font_size: float | np.floating[Any] | None = None,
-    leaf_rotation: float | np.floating[Any] | None = None,
-    leaf_label_func: Callable[[int], str] | None = None,
+    leaf_font_size: float | int | bool | np.floating[Any] | None = None,
+    leaf_rotation: float | int | bool | np.floating[Any] | None = None,
+    leaf_label_func: Callable[[int | bool], str] | None = None,
     show_contracted: bool = False,
-    link_color_func: Callable[[int], str] | None = None,
+    link_color_func: Callable[[int | bool], str] | None = None,
     ax: _MatplotlibAxes | None = None,
     above_threshold_color: str = "C0",
 ) -> _DendrogramResult: ...
@@ -227,5 +229,5 @@ def dendrogram(
 #
 def maxdists(Z: onp.ToArray2D) -> onp.Array1D[np.float64]: ...
 def maxinconsts(Z: onp.ToArray2D, R: onp.ToArrayND) -> onp.Array1D[np.float64]: ...
-def maxRstat(Z: onp.ToArray2D, R: onp.ToArrayND, i: int) -> onp.Array1D[np.float64]: ...
+def maxRstat(Z: onp.ToArray2D, R: onp.ToArrayND, i: int | bool) -> onp.Array1D[np.float64]: ...
 def leaders(Z: onp.ToArray2D, T: onp.ToArrayND) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]: ...

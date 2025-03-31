@@ -29,7 +29,7 @@ class NDInterpolatorBase(Generic[_CT_co]):
         points: onp.ToFloat2D | Delaunay,
         values: onp.ToFloatND,
         fill_value: onp.ToFloat = ...,  # np.nan
-        ndim: int | None = None,
+        ndim: int | bool | None = None,
         rescale: bool = False,
         need_contiguous: bool = True,
         need_values: bool = True,
@@ -41,7 +41,7 @@ class NDInterpolatorBase(Generic[_CT_co]):
         points: onp.ToFloat2D | Delaunay,
         values: onp.ToJustComplexND | None,
         fill_value: onp.ToComplex = ...,  # np.nan
-        ndim: int | None = None,
+        ndim: int | bool | None = None,
         rescale: bool = False,
         need_contiguous: bool = True,
         need_values: bool = True,
@@ -53,7 +53,7 @@ class NDInterpolatorBase(Generic[_CT_co]):
         points: onp.ToFloat2D | Delaunay,
         values: onp.ToComplexND | None,
         fill_value: onp.ToComplex = ...,  # np.nan
-        ndim: int | None = None,
+        ndim: int | bool | None = None,
         rescale: bool = False,
         need_contiguous: bool = True,
         need_values: bool = True,
@@ -100,7 +100,7 @@ class CloughTocher2DInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
         values: onp.ToFloatND,
         fill_value: onp.ToFloat = ...,  # np.nan
         tol: onp.ToFloat = 1e-06,
-        maxiter: int = 400,
+        maxiter: int | bool = 400,
         rescale: bool = False,
     ) -> None: ...
     @overload
@@ -111,7 +111,7 @@ class CloughTocher2DInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
         values: onp.ToJustComplexND,
         fill_value: onp.ToComplex = ...,  # np.nan
         tol: onp.ToFloat = 1e-06,
-        maxiter: int = 400,
+        maxiter: int | bool = 400,
         rescale: bool = False,
     ) -> None: ...
     @overload
@@ -122,7 +122,7 @@ class CloughTocher2DInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
         values: onp.ToComplexND,
         fill_value: onp.ToComplex = ...,  # np.nan
         tol: onp.ToFloat = 1e-06,
-        maxiter: int = 400,
+        maxiter: int | bool = 400,
         rescale: bool = False,
     ) -> None: ...
 
@@ -131,19 +131,19 @@ def estimate_gradients_2d_global(
     tri: DelaunayInfo_t,
     y: onp.ToFloat1D | onp.ToFloat2D,
     maxiter: onp.ToJustInt = 400,
-    tol: float = 1e-6,
+    tol: float | int | bool = 1e-6,
 ) -> onp.Array3D[np.float64]: ...
 @overload
 def estimate_gradients_2d_global(
     tri: DelaunayInfo_t,
     y: onp.ToJustComplex1D | onp.ToJustComplex2D,
     maxiter: onp.ToJustInt = 400,
-    tol: float = 1e-6,
+    tol: float | int | bool = 1e-6,
 ) -> onp.Array3D[np.complex128]: ...
 @overload
 def estimate_gradients_2d_global(
     tri: DelaunayInfo_t,
     y: onp.ToComplex1D | onp.ToComplex2D,
     maxiter: onp.ToJustInt = 400,
-    tol: float = 1e-6,
+    tol: float | int | bool = 1e-6,
 ) -> onp.Array3D[np.float64] | onp.Array3D[np.complex128]: ...

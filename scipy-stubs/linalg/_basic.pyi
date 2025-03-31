@@ -30,7 +30,9 @@ _Float1D: TypeAlias = onp.Array1D[_Float]
 _Float2D: TypeAlias = onp.Array2D[_Float]
 _FloatND: TypeAlias = onp.ArrayND[_Float]
 
-_Complex: TypeAlias = np.inexact[Any]  # float and complex input types are near impossible to distinguish
+_Complex: TypeAlias = np.inexact[
+    Any
+]  # float | int | bool and complex | float | int | bool input types are near impossible to distinguish
 _Complex0D: TypeAlias = onp.Array0D[_Complex]
 _Complex1D: TypeAlias = onp.Array1D[_Complex]
 _Complex2D: TypeAlias = onp.Array2D[_Complex]
@@ -55,7 +57,7 @@ _LapackDriver: TypeAlias = Literal["gelsd", "gelsy", "gelss"]
 
 lapack_cast_dict: Final[dict[str, str]] = ...
 
-@overload  # (float[:, :], float[:, :]) -> float[:, :]
+@overload  # (float | int | bool[:, :], float | int | bool[:, :]) -> float | int | bool[:, :]
 def solve(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D,
@@ -66,7 +68,7 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: onp.ToBool = False,
 ) -> _Float2D: ...
-@overload  # (complex[:, :], complex[:, :]) -> complex[:, :]
+@overload  # (complex | float | int | bool[:, :], complex | float | int | bool[:, :]) -> complex | float | int | bool[:, :]
 def solve(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D,
@@ -79,7 +81,7 @@ def solve(
 ) -> _Complex2D: ...
 
 #
-@overload  # (float[:, :], float[:]) -> float[:]
+@overload  # (float | int | bool[:, :], float | int | bool[:]) -> float | int | bool[:]
 def solve_triangular(
     a: onp.ToFloat2D,
     b: onp.ToFloatStrict1D,
@@ -89,7 +91,7 @@ def solve_triangular(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Float1D: ...
-@overload  # (float[:, :], float[:, :]) -> float[:. :]
+@overload  # (float | int | bool[:, :], float | int | bool[:, :]) -> float | int | bool[:. :]
 def solve_triangular(
     a: onp.ToFloat2D,
     b: onp.ToFloatStrict2D,
@@ -99,7 +101,7 @@ def solve_triangular(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Float2D: ...
-@overload  # (float[:, :], float[:, :?]) -> float[:. :?]
+@overload  # (float | int | bool[:, :], float | int | bool[:, :?]) -> float | int | bool[:. :?]
 def solve_triangular(
     a: onp.ToFloat2D,
     b: onp.ToFloat1D | onp.ToFloat2D,
@@ -109,7 +111,7 @@ def solve_triangular(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Float1D | _Float2D: ...
-@overload  # (complex[:, :], complex[:, :?]) -> complex[:. :?]
+@overload  # (complex | float | int | bool[:, :], complex | float | int | bool[:, :?]) -> complex | float | int | bool[:. :?]
 def solve_triangular(
     a: onp.ToComplex2D,
     b: onp.ToComplex1D | onp.ToComplex2D,
@@ -121,7 +123,7 @@ def solve_triangular(
 ) -> _Complex1D | _Complex2D: ...
 
 #
-@overload  # (float[:, :], float[:]) -> float[:]
+@overload  # (float | int | bool[:, :], float | int | bool[:]) -> float | int | bool[:]
 def solve_banded(
     l_and_u: _Tuple2[onp.ToJustInt],
     ab: onp.ToFloat2D,
@@ -130,7 +132,7 @@ def solve_banded(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Float1D: ...
-@overload  # (float[:, :], float[:, :]) -> float[:, :]
+@overload  # (float | int | bool[:, :], float | int | bool[:, :]) -> float | int | bool[:, :]
 def solve_banded(
     l_and_u: _Tuple2[onp.ToJustInt],
     ab: onp.ToFloat2D,
@@ -139,7 +141,7 @@ def solve_banded(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Float2D: ...
-@overload  # (float[:, :], float[:, :?]) -> float[:, :?]
+@overload  # (float | int | bool[:, :], float | int | bool[:, :?]) -> float | int | bool[:, :?]
 def solve_banded(
     l_and_u: _Tuple2[onp.ToJustInt],
     ab: onp.ToFloat2D,
@@ -148,7 +150,7 @@ def solve_banded(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Float1D | _Float2D: ...
-@overload  # (complex[:, :], complex[:, :?]) -> complex[:, :?]
+@overload  # (complex | float | int | bool[:, :], complex | float | int | bool[:, :?]) -> complex | float | int | bool[:, :?]
 def solve_banded(
     l_and_u: _Tuple2[onp.ToJustInt],
     ab: onp.ToComplex2D,
@@ -159,7 +161,7 @@ def solve_banded(
 ) -> _Complex1D | _Complex2D: ...
 
 #
-@overload  # (float[:, :], float[:]) -> float[:]
+@overload  # (float | int | bool[:, :], float | int | bool[:]) -> float | int | bool[:]
 def solveh_banded(
     ab: onp.ToFloat2D,
     b: onp.ToFloatStrict1D,
@@ -168,7 +170,7 @@ def solveh_banded(
     lower: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Float1D: ...
-@overload  # (float[:, :], float[:, :]) -> float[:, :]
+@overload  # (float | int | bool[:, :], float | int | bool[:, :]) -> float | int | bool[:, :]
 def solveh_banded(
     ab: onp.ToFloat2D,
     b: onp.ToFloatStrict2D,
@@ -177,7 +179,7 @@ def solveh_banded(
     lower: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Float2D: ...
-@overload  # (float[:, :], float[:, :?]) -> float[:, :?]
+@overload  # (float | int | bool[:, :], float | int | bool[:, :?]) -> float | int | bool[:, :?]
 def solveh_banded(
     ab: onp.ToFloat2D,
     b: onp.ToFloat1D | onp.ToFloat2D,
@@ -186,7 +188,7 @@ def solveh_banded(
     lower: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Float1D | _Float2D: ...
-@overload  # (complex[:, :], complex[:, :?]) -> complex[:, :?]
+@overload  # (complex | float | int | bool[:, :], complex | float | int | bool[:, :?]) -> complex | float | int | bool[:, :?]
 def solveh_banded(
     ab: onp.ToComplex2D,
     b: onp.ToComplex1D | onp.ToComplex2D,
@@ -197,25 +199,25 @@ def solveh_banded(
 ) -> _Complex1D | _Complex2D: ...
 
 #
-@overload  # (float[:], float[:]) -> float[:]
+@overload  # (float | int | bool[:], float | int | bool[:]) -> float | int | bool[:]
 def solve_toeplitz(
     c_or_cr: onp.ToFloat1D | _Tuple2[onp.ToFloat1D],
     b: onp.ToFloatStrict1D,
     check_finite: onp.ToBool = True,
 ) -> _Float1D: ...
-@overload  # (float[:], float[:, :]) -> float[:, :]
+@overload  # (float | int | bool[:], float | int | bool[:, :]) -> float | int | bool[:, :]
 def solve_toeplitz(
     c_or_cr: onp.ToFloat1D | _Tuple2[onp.ToFloat1D],
     b: onp.ToFloatStrict2D,
     check_finite: onp.ToBool = True,
 ) -> _Float2D: ...
-@overload  # (float[:], float[:, :?]) -> float[:, :?]
+@overload  # (float | int | bool[:], float | int | bool[:, :?]) -> float | int | bool[:, :?]
 def solve_toeplitz(
     c_or_cr: onp.ToFloat1D | _Tuple2[onp.ToFloat1D],
     b: onp.ToFloat1D | onp.ToFloat2D,
     check_finite: onp.ToBool = True,
 ) -> _Float1D | _Float2D: ...
-@overload  # (complex[:], complex[:, :?]) -> complex[:, :?]
+@overload  # (complex | float | int | bool[:], complex | float | int | bool[:, :?]) -> complex | float | int | bool[:, :?]
 def solve_toeplitz(
     c_or_cr: onp.ToComplex1D | _Tuple2[onp.ToComplex1D],
     b: onp.ToComplex1D | onp.ToComplex2D,
@@ -223,7 +225,7 @@ def solve_toeplitz(
 ) -> _Complex1D | _Complex2D: ...
 
 #
-@overload  # (float[:, :], float[:, :]) -> float[:]
+@overload  # (float | int | bool[:, :], float | int | bool[:, :]) -> float | int | bool[:]
 def solve_circulant(
     c: onp.ToFloatStrict2D,
     b: onp.ToFloatStrict2D,
@@ -233,7 +235,7 @@ def solve_circulant(
     baxis: op.CanIndex = 0,
     outaxis: op.CanIndex = 0,
 ) -> _Float1D: ...
-@overload  # (float[:, :, ...], float[:, :, ...]) -> float[:, ...]
+@overload  # (float | int | bool[:, :, ...], float | int | bool[:, :, ...]) -> float | int | bool[:, ...]
 def solve_circulant(
     c: onp.ToFloatND,
     b: onp.ToFloatND,
@@ -243,7 +245,7 @@ def solve_circulant(
     baxis: op.CanIndex = 0,
     outaxis: op.CanIndex = 0,
 ) -> onp.Array[onp.AtLeast1D, _Float]: ...
-@overload  # (complex[:, :, ...], complex[:, :, ...]) -> complex[:, ...]
+@overload  # (complex | float | int | bool[:, :, ...], complex | float | int | bool[:, :, ...]) -> complex | float | int | bool[:, ...]
 def solve_circulant(
     c: onp.ToComplexND,
     b: onp.ToComplexND,
@@ -255,21 +257,21 @@ def solve_circulant(
 ) -> onp.Array[onp.AtLeast1D, _Complex]: ...
 
 #
-@overload  # float[:, :] -> float[:, :]
+@overload  # float | int | bool[:, :] -> float | int | bool[:, :]
 def inv(a: onp.ToFloat2D, overwrite_a: onp.ToBool = False, check_finite: onp.ToBool = True) -> _Float2D: ...
-@overload  # complex[:, :] -> complex[:, :]
+@overload  # complex | float | int | bool[:, :] -> complex | float | int | bool[:, :]
 def inv(a: onp.ToComplex2D, overwrite_a: onp.ToBool = False, check_finite: onp.ToBool = True) -> _Complex2D: ...
 
 #
-@overload  # float[:, :] -> float
+@overload  # float | int | bool[:, :] -> float | int | bool
 def det(a: onp.ToFloatStrict2D, overwrite_a: onp.ToBool = False, check_finite: onp.ToBool = True) -> _Float: ...
-@overload  # float[:, :, :] -> float[:]
+@overload  # float | int | bool[:, :, :] -> float | int | bool[:]
 def det(a: onp.ToFloatStrict3D, overwrite_a: onp.ToBool = False, check_finite: onp.ToBool = True) -> _Float1D: ...
-@overload  # float[:, :, ...] -> float | float[...]
+@overload  # float | int | bool[:, :, ...] -> float | int | bool | float | int | bool[...]
 def det(a: onp.ToFloatND, overwrite_a: onp.ToBool = False, check_finite: onp.ToBool = True) -> _Float | _FloatND: ...
-@overload  # complex[:, :, ...] -> complex | complex[...]
+@overload  # complex | float | int | bool[:, :, ...] -> complex | float | int | bool | complex | float | int | bool[...]
 def det(a: onp.ToComplexND, overwrite_a: onp.ToBool = False, check_finite: onp.ToBool = True) -> _Complex | _ComplexND: ...
-@overload  # (float[:, :], float[:]) -> (float[:], float[], ...)
+@overload  # (float | int | bool[:, :], float | int | bool[:]) -> (float | int | bool[:], float | int | bool[], ...)
 def lstsq(
     a: onp.ToFloat2D,
     b: onp.ToFloatStrict1D,
@@ -278,8 +280,8 @@ def lstsq(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver | None = None,
-) -> tuple[_Float1D, _Float0D, int, _Float1D | None]: ...
-@overload  # (float[:, :], float[:, :]) -> (float[:, :], float[:], ...)
+) -> tuple[_Float1D, _Float0D, int | bool, _Float1D | None]: ...
+@overload  # (float | int | bool[:, :], float | int | bool[:, :]) -> (float | int | bool[:, :], float | int | bool[:], ...)
 def lstsq(
     a: onp.ToFloat2D,
     b: onp.ToFloatStrict2D,
@@ -288,8 +290,8 @@ def lstsq(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver | None = None,
-) -> tuple[_Float2D, _Float1D, int, _Float1D | None]: ...
-@overload  # (float[:, :], float[:, :?]) -> (float[:, :?], float[:?], ...)
+) -> tuple[_Float2D, _Float1D, int | bool, _Float1D | None]: ...
+@overload  # (float | int | bool[:, :], float | int | bool[:, :?]) -> (float | int | bool[:, :?], float | int | bool[:?], ...)
 def lstsq(
     a: onp.ToFloat2D,
     b: onp.ToFloat1D | onp.ToFloat2D,
@@ -298,8 +300,8 @@ def lstsq(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver | None = None,
-) -> tuple[_Float1D | _Float2D, _Float0D | _Float1D, int, _Float1D | None]: ...
-@overload  # (complex[:, :], complex[:, :?]) -> (complex[:, :?], complex[:?], ...)
+) -> tuple[_Float1D | _Float2D, _Float0D | _Float1D, int | bool, _Float1D | None]: ...
+@overload  # (complex | float | int | bool[:, :], complex | float | int | bool[:, :?]) -> (complex | float | int | bool[:, :?], complex | float | int | bool[:?], ...)
 def lstsq(
     a: onp.ToComplex2D,
     b: onp.ToComplex1D | onp.ToComplex2D,
@@ -308,11 +310,11 @@ def lstsq(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver | None = None,
-) -> tuple[_Complex1D | _Complex2D, _Complex0D | _Complex1D, int, _Complex1D | None]: ...
+) -> tuple[_Complex1D | _Complex2D, _Complex0D | _Complex1D, int | bool, _Complex1D | None]: ...
 
 #
 @overload
-def pinv(  # (float[:, :], return_rank=False) -> float[:, :]
+def pinv(  # (float | int | bool[:, :], return_rank=False) -> float | int | bool[:, :]
     a: onp.ToFloat2D,
     *,
     atol: onp.ToFloat | None = None,
@@ -320,7 +322,7 @@ def pinv(  # (float[:, :], return_rank=False) -> float[:, :]
     return_rank: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> _Float2D: ...
-@overload  # (float[:, :], return_rank=True) -> (float[:, :], int)
+@overload  # (float | int | bool[:, :], return_rank=True) -> (float | int | bool[:, :], int | bool)
 def pinv(
     a: onp.ToFloat2D,
     *,
@@ -328,8 +330,8 @@ def pinv(
     rtol: onp.ToFloat | None = None,
     return_rank: Truthy,
     check_finite: onp.ToBool = True,
-) -> tuple[_Float2D, int]: ...
-@overload  # (complex[:, :], return_rank=False) -> complex[:, :]
+) -> tuple[_Float2D, int | bool]: ...
+@overload  # (complex | float | int | bool[:, :], return_rank=False) -> complex | float | int | bool[:, :]
 def pinv(
     a: onp.ToComplex2D,
     *,
@@ -338,7 +340,7 @@ def pinv(
     return_rank: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> _Complex2D: ...
-@overload  # (complex[:, :], return_rank=True) -> (complex[:, :], int)
+@overload  # (complex | float | int | bool[:, :], return_rank=True) -> (complex | float | int | bool[:, :], int | bool)
 def pinv(
     a: onp.ToComplex2D,
     *,
@@ -346,10 +348,10 @@ def pinv(
     rtol: onp.ToFloat | None = None,
     return_rank: Truthy,
     check_finite: onp.ToBool = True,
-) -> tuple[_Complex2D, int]: ...
+) -> tuple[_Complex2D, int | bool]: ...
 
 #
-@overload  # (float[:, :], return_rank=False) -> float[:, :]
+@overload  # (float | int | bool[:, :], return_rank=False) -> float | int | bool[:, :]
 def pinvh(
     a: onp.ToFloat2D,
     atol: onp.ToFloat | None = None,
@@ -358,7 +360,7 @@ def pinvh(
     return_rank: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> _Float2D: ...
-@overload  # (float[:, :], return_rank=True, /) -> (float[:, :], int)
+@overload  # (float | int | bool[:, :], return_rank=True, /) -> (float | int | bool[:, :], int | bool)
 def pinvh(
     a: onp.ToFloat2D,
     atol: onp.ToFloat | None,
@@ -366,8 +368,8 @@ def pinvh(
     lower: onp.ToBool,
     return_rank: Truthy,
     check_finite: onp.ToBool = True,
-) -> tuple[_Float2D, int]: ...
-@overload  # (float[:, :], *, return_rank=True) -> (float[:, :], int)
+) -> tuple[_Float2D, int | bool]: ...
+@overload  # (float | int | bool[:, :], *, return_rank=True) -> (float | int | bool[:, :], int | bool)
 def pinvh(
     a: onp.ToFloat2D,
     atol: onp.ToFloat | None = None,
@@ -376,8 +378,8 @@ def pinvh(
     *,
     return_rank: Truthy,
     check_finite: onp.ToBool = True,
-) -> tuple[_Float2D, int]: ...
-@overload  # (complex[:, :], return_rank=False) -> complex[:, :]
+) -> tuple[_Float2D, int | bool]: ...
+@overload  # (complex | float | int | bool[:, :], return_rank=False) -> complex | float | int | bool[:, :]
 def pinvh(
     a: onp.ToComplex2D,
     atol: onp.ToFloat | None = None,
@@ -386,7 +388,7 @@ def pinvh(
     return_rank: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> _Complex2D: ...
-@overload  # (complex[:, :], return_rank=True, /) -> (complex[:, :], int)
+@overload  # (complex | float | int | bool[:, :], return_rank=True, /) -> (complex | float | int | bool[:, :], int | bool)
 def pinvh(
     a: onp.ToComplex2D,
     atol: onp.ToFloat | None,
@@ -394,8 +396,8 @@ def pinvh(
     lower: onp.ToBool,
     return_rank: Truthy,
     check_finite: onp.ToBool = True,
-) -> tuple[_Complex2D, int]: ...
-@overload  # (complex[:, :], *, return_rank=True) -> (complex[:, :], int)
+) -> tuple[_Complex2D, int | bool]: ...
+@overload  # (complex | float | int | bool[:, :], *, return_rank=True) -> (complex | float | int | bool[:, :], int | bool)
 def pinvh(
     a: onp.ToComplex2D,
     atol: onp.ToFloat | None = None,
@@ -404,10 +406,10 @@ def pinvh(
     *,
     return_rank: Truthy,
     check_finite: onp.ToBool = True,
-) -> tuple[_Complex2D, int]: ...
+) -> tuple[_Complex2D, int | bool]: ...
 
 #
-@overload  # (float[:, :], separate=True) -> (float[:, :], float[:, :])
+@overload  # (float | int | bool[:, :], separate=True) -> (float | int | bool[:, :], float | int | bool[:, :])
 def matrix_balance(
     A: onp.ToFloat2D,
     permute: onp.ToBool = True,
@@ -415,7 +417,7 @@ def matrix_balance(
     separate: Falsy = False,
     overwrite_a: onp.ToBool = False,
 ) -> _Tuple2[_Float2D]: ...
-@overload  # (float[:, :], separate=False, /) -> (float[:, :], (float[:], float[:]))
+@overload  # (float | int | bool[:, :], separate=False, /) -> (float | int | bool[:, :], (float | int | bool[:], float | int | bool[:]))
 def matrix_balance(
     A: onp.ToFloat2D,
     permute: onp.ToBool,
@@ -423,7 +425,7 @@ def matrix_balance(
     separate: Truthy,
     overwrite_a: onp.ToBool = False,
 ) -> tuple[_Float2D, _Tuple2[_Float1D]]: ...
-@overload  # (float[:, :], *, separate=False) -> (float[:, :], (float[:], float[:]))
+@overload  # (float | int | bool[:, :], *, separate=False) -> (float | int | bool[:, :], (float | int | bool[:], float | int | bool[:]))
 def matrix_balance(
     A: onp.ToFloat2D,
     permute: onp.ToBool = True,
@@ -432,7 +434,7 @@ def matrix_balance(
     separate: Truthy,
     overwrite_a: onp.ToBool = False,
 ) -> tuple[_Float2D, _Tuple2[_Float1D]]: ...
-@overload  # (complex[:, :], separate=True) -> (complex[:, :], complex[:, :])
+@overload  # (complex | float | int | bool[:, :], separate=True) -> (complex | float | int | bool[:, :], complex | float | int | bool[:, :])
 def matrix_balance(
     A: onp.ToComplex2D,
     permute: onp.ToBool = True,
@@ -440,7 +442,7 @@ def matrix_balance(
     separate: Falsy = False,
     overwrite_a: onp.ToBool = False,
 ) -> _Tuple2[_Complex2D]: ...
-@overload  # (complex[:, :], separate=False, /) -> (complex[:, :], (complex[:], complex[:]))
+@overload  # (complex | float | int | bool[:, :], separate=False, /) -> (complex | float | int | bool[:, :], (complex | float | int | bool[:], complex | float | int | bool[:]))
 def matrix_balance(
     A: onp.ToComplex2D,
     permute: onp.ToBool,
@@ -448,7 +450,7 @@ def matrix_balance(
     separate: Truthy,
     overwrite_a: onp.ToBool = False,
 ) -> tuple[_Complex2D, _Tuple2[_Complex1D]]: ...
-@overload  # (complex[:, :], *, separate=False) -> (complex[:, :], (complex[:], complex[:]))
+@overload  # (complex | float | int | bool[:, :], *, separate=False) -> (complex | float | int | bool[:, :], (complex | float | int | bool[:], complex | float | int | bool[:]))
 def matrix_balance(
     A: onp.ToComplex2D,
     permute: onp.ToBool = True,
@@ -459,28 +461,28 @@ def matrix_balance(
 ) -> tuple[_Complex2D, _Tuple2[_Complex1D]]: ...
 
 #
-@overload  # (float[:], float[:]) -> float[:]
+@overload  # (float | int | bool[:], float | int | bool[:]) -> float | int | bool[:]
 def matmul_toeplitz(
     c_or_cr: onp.ToFloat1D | _Tuple2[onp.ToFloat1D],
     x: onp.ToFloatStrict1D,
     check_finite: onp.ToBool = False,
     workers: onp.ToJustInt | None = None,
 ) -> _Float1D: ...
-@overload  # (float[:], float[:, :]) -> float[:, :]
+@overload  # (float | int | bool[:], float | int | bool[:, :]) -> float | int | bool[:, :]
 def matmul_toeplitz(
     c_or_cr: onp.ToFloat1D | _Tuple2[onp.ToFloat1D],
     x: onp.ToFloatStrict2D,
     check_finite: onp.ToBool = False,
     workers: onp.ToJustInt | None = None,
 ) -> _Float2D: ...
-@overload  # (float[:], float[:, :?]) -> float[:, :?]
+@overload  # (float | int | bool[:], float | int | bool[:, :?]) -> float | int | bool[:, :?]
 def matmul_toeplitz(
     c_or_cr: onp.ToFloat1D | _Tuple2[onp.ToFloat1D],
     x: onp.ToFloat1D | onp.ToFloat2D,
     check_finite: onp.ToBool = False,
     workers: onp.ToJustInt | None = None,
 ) -> _Float1D | _Float2D: ...
-@overload  # (complex[:], complex[:, :?]) -> complex[:, :?]
+@overload  # (complex | float | int | bool[:], complex | float | int | bool[:, :?]) -> complex | float | int | bool[:, :?]
 def matmul_toeplitz(
     c_or_cr: onp.ToComplex1D | _Tuple2[onp.ToComplex1D],
     x: onp.ToComplex1D | onp.ToComplex2D,

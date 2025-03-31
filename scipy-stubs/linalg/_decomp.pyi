@@ -37,11 +37,11 @@ _SelectA: TypeAlias = Literal["a", "all", 0]
 _SelectV: TypeAlias = Literal["v", "value", 1]
 _SelectI: TypeAlias = Literal["i", "index", 2]
 
-# NOTE: `_check_select()` requires the `select_range` array-like to be of `int{16,32,64}` when `select: _SelectIndex`
+# NOTE: `_check_select()` requires the `select_range` array-like to be of `int | bool{16,32,64}` when `select: _SelectIndex`
 # https://github.com/scipy/scipy-stubs/issues/154
 # NOTE: This `select_range` parameter type must be of shape `(2,)` and in nondescending order
-_SelectRange: TypeAlias = Sequence[float | _Integer | _Floating]
-_SelectRangeI: TypeAlias = Sequence[int | np.int16 | np.int32 | np.int64]  # no bool, int8 or unsigned ints
+_SelectRange: TypeAlias = Sequence[float | int | bool | _Integer | _Floating]
+_SelectRangeI: TypeAlias = Sequence[int | bool | np.int16 | np.int32 | np.int64]  # no bool, int8 or unsigned ints
 
 _EigHType: TypeAlias = Literal[1, 2, 3]
 _EigHSubsetByIndex: TypeAlias = Iterable[opt.AnyInt]
@@ -67,7 +67,7 @@ _Inexact2D: TypeAlias = onp.Array2D[_Float | _Complex]
 ###
 
 # `eig` has `2 * (6 + 7) + 1 == 27` overloads...
-@overload  # float, left: True (positional), right: True = ..., homogeneous_eigvals: False = ...
+@overload  # float | int | bool, left: True (positional), right: True = ..., homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None,
@@ -78,7 +78,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Float2D]: ...
-@overload  # float, left: True (positional), right: True = ..., homogeneous_eigvals: True (keyword)
+@overload  # float | int | bool, left: True (positional), right: True = ..., homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None,
@@ -90,7 +90,7 @@ def eig(
     *,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Float2D]: ...
-@overload  # float, left: True (keyword), right: True = ..., homogeneous_eigvals: False = ...
+@overload  # float | int | bool, left: True (keyword), right: True = ..., homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None = None,
@@ -102,7 +102,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Float2D]: ...
-@overload  # float, left: True (keyword), right: True = ..., homogeneous_eigvals: True
+@overload  # float | int | bool, left: True (keyword), right: True = ..., homogeneous_eigvals: True
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None = None,
@@ -114,7 +114,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Float2D]: ...
-@overload  # float, left: False, right: False (positional), homogeneous_eigvals: False = ...
+@overload  # float | int | bool, left: False, right: False (positional), homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None,
@@ -125,7 +125,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Float2D]: ...
-@overload  # float, left: False, right: False (positional), homogeneous_eigvals: True (keyword)
+@overload  # float | int | bool, left: False, right: False (positional), homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None,
@@ -137,7 +137,7 @@ def eig(
     *,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Float2D]: ...
-@overload  # float, left: False = ..., right: False (keyword), homogeneous_eigvals: False = ...
+@overload  # float | int | bool, left: False = ..., right: False (keyword), homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None = None,
@@ -149,7 +149,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Float2D]: ...
-@overload  # float, left: False = ..., right: False (keyword), homogeneous_eigvals: True
+@overload  # float | int | bool, left: False = ..., right: False (keyword), homogeneous_eigvals: True
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None = None,
@@ -161,7 +161,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Float2D]: ...
-@overload  # float, left: True (positional), right: False, homogeneous_eigvals: False = ...
+@overload  # float | int | bool, left: True (positional), right: False, homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None,
@@ -172,7 +172,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Float2D, _Float2D]: ...
-@overload  # float, left: True (positional), right: False, homogeneous_eigvals: True (keyword)
+@overload  # float | int | bool, left: True (positional), right: False, homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None,
@@ -184,7 +184,7 @@ def eig(
     *,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Float2D, _Float2D]: ...
-@overload  # float, left: True (keyword), right: False, homogeneous_eigvals: False = ...
+@overload  # float | int | bool, left: True (keyword), right: False, homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None = None,
@@ -196,7 +196,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Float2D, _Float2D]: ...
-@overload  # float, left: True (keyword), right: False, homogeneous_eigvals: True
+@overload  # float | int | bool, left: True (keyword), right: False, homogeneous_eigvals: True
 def eig(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None = None,
@@ -208,7 +208,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Float2D, _Float2D]: ...
-@overload  # complex, left: False = ..., right: True = ..., homogeneous_eigvals: False = ...
+@overload  # complex | float | int | bool, left: False = ..., right: True = ..., homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -219,7 +219,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> _Complex1D: ...
-@overload  # complex, left: False = ..., right: True = ..., homogeneous_eigvals: True (keyword)
+@overload  # complex | float | int | bool, left: False = ..., right: True = ..., homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -231,7 +231,7 @@ def eig(
     *,
     homogeneous_eigvals: Truthy,
 ) -> _Complex2D: ...
-@overload  # complex, left: True (positional), right: True = ..., homogeneous_eigvals: False = ...
+@overload  # complex | float | int | bool, left: True (positional), right: True = ..., homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None,
@@ -242,7 +242,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Inexact2D]: ...
-@overload  # complex, left: True (positional), right: True = ..., homogeneous_eigvals: True (keyword)
+@overload  # complex | float | int | bool, left: True (positional), right: True = ..., homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None,
@@ -254,7 +254,7 @@ def eig(
     *,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Inexact2D]: ...
-@overload  # complex, left: True (keyword), right: True = ..., homogeneous_eigvals: False = ...
+@overload  # complex | float | int | bool, left: True (keyword), right: True = ..., homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -266,7 +266,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Inexact2D]: ...
-@overload  # complex, left: True (keyword), right: True = ..., homogeneous_eigvals: True
+@overload  # complex | float | int | bool, left: True (keyword), right: True = ..., homogeneous_eigvals: True
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -278,7 +278,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Inexact2D]: ...
-@overload  # complex, left: False, right: False (positional), homogeneous_eigvals: False = ...
+@overload  # complex | float | int | bool, left: False, right: False (positional), homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None,
@@ -289,7 +289,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Inexact2D]: ...
-@overload  # complex, left: False, right: False (positional), homogeneous_eigvals: True (keyword)
+@overload  # complex | float | int | bool, left: False, right: False (positional), homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None,
@@ -301,7 +301,7 @@ def eig(
     *,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Inexact2D]: ...
-@overload  # complex, left: False = ..., right: False (keyword), homogeneous_eigvals: False = ...
+@overload  # complex | float | int | bool, left: False = ..., right: False (keyword), homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -313,7 +313,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Inexact2D]: ...
-@overload  # complex, left: False = ..., right: False (keyword), homogeneous_eigvals: True
+@overload  # complex | float | int | bool, left: False = ..., right: False (keyword), homogeneous_eigvals: True
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -325,7 +325,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Inexact2D]: ...
-@overload  # complex, left: True (positional), right: False, homogeneous_eigvals: False = ...
+@overload  # complex | float | int | bool, left: True (positional), right: False, homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None,
@@ -336,7 +336,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Inexact2D, _Inexact2D]: ...
-@overload  # complex, left: True (positional), right: False, homogeneous_eigvals: True (keyword)
+@overload  # complex | float | int | bool, left: True (positional), right: False, homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None,
@@ -348,7 +348,7 @@ def eig(
     *,
     homogeneous_eigvals: Truthy,
 ) -> tuple[_Complex2D, _Inexact2D, _Inexact2D]: ...
-@overload  # complex, left: True (keyword), right: False (keyword), homogeneous_eigvals: False = ...
+@overload  # complex | float | int | bool, left: True (keyword), right: False (keyword), homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -360,7 +360,7 @@ def eig(
     check_finite: op.CanBool = True,
     homogeneous_eigvals: Falsy = False,
 ) -> tuple[_Complex1D, _Inexact2D, _Inexact2D]: ...
-@overload  # complex, left: True (keyword), right: False (keyword), homogeneous_eigvals: True
+@overload  # complex | float | int | bool, left: True (keyword), right: False (keyword), homogeneous_eigvals: True
 def eig(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -391,7 +391,7 @@ def eig(
     ...
 
 #
-@overload  # float, eigvals_only: False = ...
+@overload  # float | int | bool, eigvals_only: False = ...
 def eigh(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None = None,
@@ -406,7 +406,7 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> tuple[_Float1D, _Float2D]: ...
-@overload  # float, eigvals_only: True
+@overload  # float | int | bool, eigvals_only: True
 def eigh(
     a: onp.ToFloat2D,
     b: onp.ToFloat2D | None = None,
@@ -421,7 +421,7 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _EigHSubsetByValue | None = None,
 ) -> _Float1D: ...
-@overload  # complex, eigvals_only: False = ...
+@overload  # complex | float | int | bool, eigvals_only: False = ...
 def eigh(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -436,7 +436,7 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> tuple[_Float1D, _Inexact2D]: ...
-@overload  # complex, eigvals_only: True
+@overload  # complex | float | int | bool, eigvals_only: True
 def eigh(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -451,7 +451,7 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _EigHSubsetByValue | None = None,
 ) -> _Float1D: ...
-@overload  # complex, eigvals_only: CanBool (catch-all)
+@overload  # complex | float | int | bool, eigvals_only: CanBool (catch-all)
 def eigh(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D | None = None,
@@ -468,7 +468,7 @@ def eigh(
 ) -> _Float1D | tuple[_Float1D, _Inexact2D]: ...
 
 #
-@overload  # float, eigvals_only: False = ..., select: _SelectA = ...
+@overload  # float | int | bool, eigvals_only: False = ..., select: _SelectA = ...
 def eig_banded(
     a_band: onp.ToFloat2D,
     lower: op.CanBool = True,
@@ -479,7 +479,7 @@ def eig_banded(
     max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> tuple[_Float1D, _Float2D]: ...
-@overload  # float, eigvals_only: False = ..., select: _SelectV (keyword)
+@overload  # float | int | bool, eigvals_only: False = ..., select: _SelectV (keyword)
 def eig_banded(
     a_band: onp.ToFloat2D,
     lower: op.CanBool = True,
@@ -491,7 +491,7 @@ def eig_banded(
     max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> tuple[_Float1D, _Float2D]: ...
-@overload  # float, eigvals_only: False = ..., select: _SelectI (keyword)
+@overload  # float | int | bool, eigvals_only: False = ..., select: _SelectI (keyword)
 def eig_banded(
     a_band: onp.ToFloat2D,
     lower: op.CanBool = True,
@@ -503,7 +503,7 @@ def eig_banded(
     max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> tuple[_Float1D, _Float2D]: ...
-@overload  # complex, eigvals_only: False = ..., select: _SelectA = ...
+@overload  # complex | float | int | bool, eigvals_only: False = ..., select: _SelectA = ...
 def eig_banded(
     a_band: onp.ToComplex2D,
     lower: op.CanBool = True,
@@ -514,7 +514,7 @@ def eig_banded(
     max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> tuple[_Float1D, _Inexact2D]: ...
-@overload  # complex, eigvals_only: False = ..., select: _SelectV (keyword)
+@overload  # complex | float | int | bool, eigvals_only: False = ..., select: _SelectV (keyword)
 def eig_banded(
     a_band: onp.ToComplex2D,
     lower: op.CanBool = True,
@@ -526,7 +526,7 @@ def eig_banded(
     max_ev: onp.ToInt = 0,
     check_finite: op.CanBool = True,
 ) -> tuple[_Float1D, _Inexact2D]: ...
-@overload  # complex, eigvals_only: False = ..., select: _SelectI (keyword)
+@overload  # complex | float | int | bool, eigvals_only: False = ..., select: _SelectI (keyword)
 def eig_banded(
     a_band: onp.ToComplex2D,
     lower: op.CanBool = True,
@@ -834,35 +834,35 @@ def eigh_tridiagonal(
 ) -> _Float1D: ...
 
 #
-@overload  # float, calc_q: False = ...
+@overload  # float | int | bool, calc_q: False = ...
 def hessenberg(
     a: onp.ToFloat2D,
     calc_q: Falsy = False,
     overwrite_a: op.CanBool = False,
     check_finite: op.CanBool = True,
 ) -> _Float2D: ...
-@overload  # float, calc_q: True
+@overload  # float | int | bool, calc_q: True
 def hessenberg(
     a: onp.ToFloat2D,
     calc_q: Truthy,
     overwrite_a: op.CanBool = False,
     check_finite: op.CanBool = True,
 ) -> tuple[_Float2D, _Float2D]: ...
-@overload  # complex, calc_q: False = ...
+@overload  # complex | float | int | bool, calc_q: False = ...
 def hessenberg(
     a: onp.ToComplex2D,
     calc_q: Falsy = False,
     overwrite_a: op.CanBool = False,
     check_finite: op.CanBool = True,
 ) -> _Inexact2D: ...
-@overload  # complex, calc_q: True
+@overload  # complex | float | int | bool, calc_q: True
 def hessenberg(
     a: onp.ToComplex2D,
     calc_q: Truthy,
     overwrite_a: op.CanBool = False,
     check_finite: op.CanBool = True,
 ) -> tuple[_Inexact2D, _Inexact2D]: ...
-@overload  # complex, calc_q: CanBool (catch-all)
+@overload  # complex | float | int | bool, calc_q: CanBool (catch-all)
 def hessenberg(
     a: onp.ToComplex2D,
     calc_q: op.CanBool,

@@ -22,8 +22,8 @@ _FunHess: TypeAlias = Callable[
 _PreparedConstraints: TypeAlias = Iterable[CanonicalConstraint]
 
 class CanonicalConstraint:
-    n_eq: int
-    n_ineq: int
+    n_eq: int | bool
+    n_ineq: int | bool
     fun: _FunConstr
     jac: _FunJac
     hess: _FunHess
@@ -33,8 +33,8 @@ class CanonicalConstraint:
     def __init__(
         self,
         /,
-        n_eq: int,
-        n_ineq: int,
+        n_eq: int | bool,
+        n_ineq: int | bool,
         fun: _FunConstr,
         jac: _FunJac,
         hess: _FunHess,

@@ -11,7 +11,7 @@ __all__ = ["Normal", "Uniform"]
 
 _Float: TypeAlias = np.floating[Any]
 
-_NT = TypeVar("_NT", default=int)
+_NT = TypeVar("_NT", default=int | bool)
 _0D: TypeAlias = tuple[()]  # noqa: PYI042
 _1D: TypeAlias = tuple[_NT]  # noqa: PYI042
 _2D: TypeAlias = tuple[_NT, _NT]  # noqa: PYI042
@@ -69,10 +69,24 @@ class Normal(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co,
         sigma: onp.CanArrayND[_FloatT, _ShapeT],
         **kw: Unpack[_DistOpts],
     ) -> None: ...
-    @overload  # mu, sigma: 0-d float
-    def __init__(self: Normal[_0D, np.float64], /, *, mu: float, sigma: float | onp.ToInt, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
-    @overload  # mu, sigma: 0-d float
-    def __init__(self: Normal[_0D, np.float64], /, *, mu: float | onp.ToInt, sigma: float, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    @overload  # mu, sigma: 0-d float | int | bool
+    def __init__(  # pyright: ignore[reportOverlappingOverload]
+        self: Normal[_0D, np.float64],
+        /,
+        *,
+        mu: float | int | bool,
+        sigma: float | int | bool | onp.ToInt,
+        **kw: Unpack[_DistOpts],
+    ) -> None: ...
+    @overload  # mu, sigma: 0-d float | int | bool
+    def __init__(  # pyright: ignore[reportOverlappingOverload]
+        self: Normal[_0D, np.float64],
+        /,
+        *,
+        mu: float | int | bool | onp.ToInt,
+        sigma: float | int | bool,
+        **kw: Unpack[_DistOpts],
+    ) -> None: ...
     @overload  # mu: 0-d <known dtype>, sigma: 0-d
     def __init__(self: Normal[_0D, _FloatT], /, *, mu: _FloatT, sigma: _FloatT | onp.ToInt, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
     @overload  # a, sigma: 0-d <known dtype>
@@ -132,10 +146,14 @@ class Uniform(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co
     def ab(self, /) -> _FloatT_co | onp.Array[_ShapeT_co, _FloatT_co]: ...  # b - a
 
     # NOTE: `a` and `b` are both required; the defaults are just there to confuse you or something...
-    @overload  # a: 0-d float, b: 0-d
-    def __init__(self: Uniform[_0D, np.float64], /, *, a: float, b: float | onp.ToInt, **kw: Unpack[_DistOpts]) -> None: ...
-    @overload  # a, b: 0-d float
-    def __init__(self: Uniform[_0D, np.float64], /, *, a: float | onp.ToInt, b: float, **kw: Unpack[_DistOpts]) -> None: ...
+    @overload  # a: 0-d float | int | bool, b: 0-d
+    def __init__(
+        self: Uniform[_0D, np.float64], /, *, a: float | int | bool, b: float | int | bool | onp.ToInt, **kw: Unpack[_DistOpts]
+    ) -> None: ...
+    @overload  # a, b: 0-d float | int | bool
+    def __init__(
+        self: Uniform[_0D, np.float64], /, *, a: float | int | bool | onp.ToInt, b: float | int | bool, **kw: Unpack[_DistOpts]
+    ) -> None: ...
     @overload  # a: 0-d <known dtype>, b: 0-d
     def __init__(self: Uniform[_0D, _FloatT], /, *, a: _FloatT, b: _FloatT | onp.ToInt, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a, b: 0-d <known dtype>

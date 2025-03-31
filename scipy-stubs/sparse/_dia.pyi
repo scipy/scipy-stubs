@@ -21,7 +21,7 @@ _ToData: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Integer]]
 
 ###
 
-class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
+class _dia_base(_data_matrix[_SCT, tuple[int | bool, int | bool]], Generic[_SCT]):
     data: onp.Array2D[_SCT]
     offsets: Index1D
 
@@ -33,7 +33,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     def ndim(self, /) -> Literal[2]: ...
     @property
     @override
-    def shape(self, /) -> tuple[int, int]: ...
+    def shape(self, /) -> tuple[int | bool, int | bool]: ...
 
     #
     @overload  # matrix-like (known dtype), dtype: None
@@ -45,7 +45,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         dtype: None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: None
     def __init__(
@@ -56,7 +56,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         dtype: None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: type[bool] | None
     def __init__(
@@ -67,9 +67,9 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    @overload  # matrix-like builtins.int | bool, dtype: type[int | bool] | None
     def __init__(
         self: _dia_base[np.int_],
         /,
@@ -78,9 +78,9 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    @overload  # matrix-like builtins.float | int | bool, dtype: type[float | int | bool] | None
     def __init__(
         self: _dia_base[np.float64],
         /,
@@ -89,9 +89,9 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    @overload  # matrix-like builtins.complex | float | int | bool, dtype: type[complex | float | int | bool] | None
     def __init__(
         self: _dia_base[np.complex128],
         /,
@@ -100,7 +100,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (positional)
     def __init__(
@@ -111,7 +111,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (keyword)
     def __init__(
@@ -122,10 +122,10 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         *,
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
 
-class dia_array(_dia_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]): ...
+class dia_array(_dia_base[_SCT], sparray[_SCT, tuple[int | bool, int | bool]], Generic[_SCT]): ...
 class dia_matrix(_dia_base[_SCT], spmatrix[_SCT], Generic[_SCT]): ...  # type: ignore[misc]
 
 def isspmatrix_dia(x: object) -> TypeIs[dia_matrix]: ...

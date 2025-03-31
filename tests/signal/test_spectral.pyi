@@ -17,7 +17,7 @@ spectrogram_mode_real: Literal["psd", "magnitude", "angle", "phase"]
 # test spectrogram function overloads
 assert_type(spectrogram(array_f8_1d), tuple[_DoubleND, _DoubleND, _FloatND])
 assert_type(spectrogram(array_f8_1d, mode=spectrogram_mode_real), tuple[_DoubleND, _DoubleND, _FloatND])
-assert_type(spectrogram(array_f8_1d, mode="complex"), tuple[_DoubleND, _DoubleND, _ComplexND])
+assert_type(spectrogram(array_f8_1d, mode="complex | float | int | bool"), tuple[_DoubleND, _DoubleND, _ComplexND])
 assert_type(
     spectrogram(
         array_f8_1d,
@@ -30,7 +30,7 @@ assert_type(
         True,
         "density",
         -1,
-        "complex",
+        "complex | float | int | bool",
     ),
     tuple[_DoubleND, _DoubleND, _ComplexND],
 )

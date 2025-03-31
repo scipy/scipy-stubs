@@ -20,7 +20,7 @@ __all__ = [
     "tukey_hsd",
 ]
 
-_FloatOrArray: TypeAlias = float | np.float64 | onp.ArrayND[np.float64]
+_FloatOrArray: TypeAlias = float | int | bool | np.float64 | onp.ArrayND[np.float64]
 _FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_FloatOrArray, default=_FloatOrArray)
 
 class Epps_Singleton_2sampResult(NamedTuple, Generic[_FloatOrArrayT]):
@@ -40,52 +40,52 @@ class TukeyHSDResult:
         /,
         statistic: onp.ArrayND[np.float64],
         pvalue: onp.ArrayND[np.float64],
-        _nobs: int,
-        _ntreatments: int,
-        _stand_err: float,
+        _nobs: int | bool,
+        _ntreatments: int | bool,
+        _stand_err: float | int | bool,
     ) -> None: ...
-    def confidence_interval(self, /, confidence_level: float = 0.95) -> ConfidenceInterval: ...
+    def confidence_interval(self, /, confidence_level: float | int | bool = 0.95) -> ConfidenceInterval: ...
 
 @dataclass
 class SomersDResult:
-    statistic: float | np.float64
-    pvalue: float | np.float64
+    statistic: float | int | bool | np.float64
+    pvalue: float | int | bool | np.float64
     table: onp.Array2D[np.float64]
 
 @dataclass
 class BarnardExactResult:
-    statistic: float | np.float64
-    pvalue: float | np.float64
+    statistic: float | int | bool | np.float64
+    pvalue: float | int | bool | np.float64
 
 @dataclass
 class BoschlooExactResult:
-    statistic: float | np.float64
-    pvalue: float | np.float64
+    statistic: float | int | bool | np.float64
+    pvalue: float | int | bool | np.float64
 
 def epps_singleton_2samp(
     x: onp.ToFloat1D,
     y: onp.ToFloat1D,
     t: onp.ToFloat1D = (0.4, 0.8),
     *,
-    axis: int | None = 0,
+    axis: int | bool | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> Epps_Singleton_2sampResult: ...
 def poisson_means_test(
-    k1: int,
-    n1: float,
-    k2: int,
-    n2: float,
+    k1: int | bool,
+    n1: float | int | bool,
+    k2: int | bool,
+    n2: float | int | bool,
     *,
-    diff: float = 0,
+    diff: float | int | bool = 0,
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult[np.float64]: ...
 def cramervonmises(
     rvs: onp.ToFloat1D,
-    cdf: str | Callable[Concatenate[float, ...], float | np.float64 | np.float32],
+    cdf: str | Callable[Concatenate[float | int | bool, ...], float | int | bool | np.float64 | np.float32],
     args: tuple[onp.ToFloat, ...] = (),
     *,
-    axis: int | None = 0,
+    axis: int | bool | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> CramerVonMisesResult: ...
@@ -94,7 +94,7 @@ def cramervonmises_2samp(
     y: onp.ToFloat1D,
     method: Literal["auto", "asymptotic", "exact"] = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | bool | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> CramerVonMisesResult: ...
@@ -107,7 +107,7 @@ def barnard_exact(
     table: onp.ToInt2D,
     alternative: Alternative = "two-sided",
     pooled: bool = True,
-    n: int = 32,
+    n: int | bool = 32,
 ) -> BarnardExactResult: ...
-def boschloo_exact(table: onp.ToInt2D, alternative: Alternative = "two-sided", n: int = 32) -> BoschlooExactResult: ...
+def boschloo_exact(table: onp.ToInt2D, alternative: Alternative = "two-sided", n: int | bool = 32) -> BoschlooExactResult: ...
 def tukey_hsd(arg0: onp.ToFloatND, arg1: onp.ToFloatND, /, *args: onp.ToFloatND) -> TukeyHSDResult: ...

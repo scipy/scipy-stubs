@@ -17,7 +17,7 @@ _Kernel: TypeAlias = Literal[
     "gaussian",
 ]
 
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=onp.AtLeast1D, covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int | bool, ...], default=onp.AtLeast1D, covariant=True)
 _SCT_co = TypeVar("_SCT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
 ###
@@ -26,16 +26,16 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     y: onp.Array2D[np.float64]
     d: onp.Array[_ShapeT_co, np.float64]
     d_shape: _ShapeT_co
-    d_dtype: type[float | complex]
-    neighbors: int
+    d_dtype: type[float | int | bool | complex | float | int | bool]
+    neighbors: int | bool
     smoothing: onp.Array1D[np.float64]
     kernel: _Kernel
-    epsilon: float
-    powers: int
+    epsilon: float | int | bool
+    powers: int | bool
 
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int], np.float64],
+        self: RBFInterpolator[tuple[int | bool], np.float64],
         /,
         y: onp.ToFloat2D,
         d: onp.ToFloatStrict1D,
@@ -47,7 +47,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int], np.complex128],
+        self: RBFInterpolator[tuple[int | bool], np.complex128],
         /,
         y: onp.ToFloat2D,
         d: onp.ToJustComplexStrict1D,
@@ -59,7 +59,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int], Any],
+        self: RBFInterpolator[tuple[int | bool], Any],
         /,
         y: onp.ToFloat2D,
         d: onp.ToComplexStrict1D,
@@ -71,7 +71,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int], np.float64],
+        self: RBFInterpolator[tuple[int | bool, int | bool], np.float64],
         /,
         y: onp.ToFloat2D,
         d: onp.ToFloatStrict2D,
@@ -83,7 +83,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int], np.complex128],
+        self: RBFInterpolator[tuple[int | bool, int | bool], np.complex128],
         /,
         y: onp.ToFloat2D,
         d: onp.ToJustComplexStrict2D,
@@ -95,7 +95,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int], Any],
+        self: RBFInterpolator[tuple[int | bool, int | bool], Any],
         /,
         y: onp.ToFloat2D,
         d: onp.ToComplexStrict2D,
@@ -107,7 +107,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int, int], np.float64],
+        self: RBFInterpolator[tuple[int | bool, int | bool, int | bool], np.float64],
         /,
         y: onp.ToFloat2D,
         d: onp.ToFloatStrict3D,
@@ -119,7 +119,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int, int], np.complex128],
+        self: RBFInterpolator[tuple[int | bool, int | bool, int | bool], np.complex128],
         /,
         y: onp.ToFloat2D,
         d: onp.ToJustComplexStrict3D,
@@ -131,7 +131,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int, int], Any],
+        self: RBFInterpolator[tuple[int | bool, int | bool, int | bool], Any],
         /,
         y: onp.ToFloat2D,
         d: onp.ToComplexStrict3D,
@@ -178,5 +178,5 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
         degree: onp.ToJustInt | None = None,
     ) -> None: ...
 
-    # TODO(jorenham): Return `onp.Array[tuple[int, Unpack[_ShapeT_co]], _SCT_co]` once mypy supports it (if ever)
+    # TODO(jorenham): Return `onp.Array[tuple[int | bool, Unpack[_ShapeT_co]], _SCT_co]` once mypy supports it (if ever)
     def __call__(self, /, x: onp.ToFloat2D) -> onp.ArrayND[_SCT_co]: ...

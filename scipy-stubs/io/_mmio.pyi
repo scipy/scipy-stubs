@@ -10,15 +10,15 @@ from scipy.sparse._coo import coo_array
 __all__ = ["MMFile", "mminfo", "mmread", "mmwrite"]
 
 _Format: TypeAlias = Literal["coordinate", "array"]
-_Field: TypeAlias = Literal["real", "complex", "pattern", "integer"]
+_Field: TypeAlias = Literal["real", "complex | float | int | bool", "pattern", "integer"]
 _Symmetry: TypeAlias = Literal["general", "symmetric", "skew-symmetric", "hermitian"]
-_Info: TypeAlias = tuple[int, int, int, _Format, _Field, _Symmetry]
+_Info: TypeAlias = tuple[int | bool, int | bool, int | bool, _Format, _Field, _Symmetry]
 
 @type_check_only
 class _MMFileKwargs(TypedDict, total=False):
-    rows: int
-    cols: int
-    entries: int
+    rows: int | bool
+    cols: int | bool
+    entries: int | bool
     format: _Format
     field: _Field
     symmetry: _Symmetry
@@ -33,9 +33,9 @@ class MMFile:
     FIELD_INTEGER: ClassVar[str] = "integer"
     FIELD_UNSIGNED: ClassVar[str] = "unsigned-integer"
     FIELD_REAL: ClassVar[str] = "real"
-    FIELD_COMPLEX: ClassVar[str] = "complex"
+    FIELD_COMPLEX: ClassVar[str] = "complex | float | int | bool"
     FIELD_PATTERN: ClassVar[str] = "pattern"
-    FIELD_VALUES: ClassVar[tuple[str, ...]] = "integer", "unsigned-integer", "real", "complex", "pattern"
+    FIELD_VALUES: ClassVar[tuple[str, ...]] = "integer", "unsigned-integer", "real", "complex | float | int | bool", "pattern"
 
     SYMMETRY_GENERAL: ClassVar[str] = "general"
     SYMMETRY_SYMMETRIC: ClassVar[str] = "symmetric"
@@ -46,11 +46,11 @@ class MMFile:
     DTYPES_BY_FIELD: ClassVar[dict[_Field, Literal["intp", "uint64", "d", "D"]]] = ...
 
     @property
-    def rows(self, /) -> int: ...
+    def rows(self, /) -> int | bool: ...
     @property
-    def cols(self, /) -> int: ...
+    def cols(self, /) -> int | bool: ...
     @property
-    def entries(self, /) -> int: ...
+    def entries(self, /) -> int | bool: ...
     @property
     def format(self, /) -> _Format: ...
     @property
@@ -77,7 +77,7 @@ class MMFile:
         a: spmatrix | sparray | onp.ToArrayND,
         comment: str = "",
         field: _Field | None = None,
-        precision: int | None = None,
+        precision: int | bool | None = None,
         symmetry: _Symmetry | None = None,
     ) -> None: ...
 
@@ -104,7 +104,7 @@ def mmwrite(
     a: spmatrix | sparray | onp.ToArrayND,
     comment: str = "",
     field: _Field | None = None,
-    precision: int | None = None,
+    precision: int | bool | None = None,
     symmetry: _Symmetry | None = None,
 ) -> None: ...
 

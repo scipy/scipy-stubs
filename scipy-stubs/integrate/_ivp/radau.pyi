@@ -13,13 +13,13 @@ _ToJac: TypeAlias = onp.ToArray2D | spmatrix | sparray
 
 ###
 
-S6: Final[float] = ...
+S6: Final[float | int | bool] = ...
 
 C: Final[onp.ArrayND[np.float64]] = ...
 E: Final[onp.ArrayND[np.float64]] = ...
 
-MU_REAL: Final[float] = ...
-MU_COMPLEX: Final[complex] = ...
+MU_REAL: Final[float | int | bool] = ...
+MU_COMPLEX: Final[complex | float | int | bool] = ...
 
 T: Final[onp.ArrayND[np.float64]] = ...
 TI: Final[onp.ArrayND[np.float64]] = ...
@@ -33,11 +33,11 @@ MIN_FACTOR: Final = 0.2
 MAX_FACTOR: Final = 10
 
 class Radau(OdeSolver):
-    max_step: float
-    h_abs: float
-    h_abs_old: float | None
-    error_norm_old: float | None
-    newton_tol: float
+    max_step: float | int | bool
+    h_abs: float | int | bool
+    h_abs_old: float | int | bool | None
+    error_norm_old: float | int | bool | None
+    newton_tol: float | int | bool
     jac_factor: onp.ArrayND[np.float64] | None  # 1d
     current_jac: bool
 
@@ -55,14 +55,14 @@ class Radau(OdeSolver):
     def __init__(
         self,
         /,
-        fun: Callable[[float, onp.Array1D[np.float64]], onp.ToArray1D],
+        fun: Callable[[float | int | bool, onp.Array1D[np.float64]], onp.ToArray1D],
         t0: onp.ToFloat,
         y0: onp.ToArray1D,
         t_bound: onp.ToFloat,
         max_step: onp.ToFloat = ...,
         rtol: onp.ToFloat = 0.001,
         atol: onp.ToFloat = 1e-06,
-        jac: _ToJac | Callable[[float, onp.Array1D[np.float64]], _ToJac] | None = None,
+        jac: _ToJac | Callable[[float | int | bool, onp.Array1D[np.float64]], _ToJac] | None = None,
         jac_sparsity: _ToJac | None = None,
         vectorized: bool = False,
         first_step: onp.ToFloat | None = None,
@@ -70,15 +70,17 @@ class Radau(OdeSolver):
     ) -> None: ...
 
 class RadauDenseOutput(DenseOutput):
-    order: int
-    h: float
+    order: int | bool
+    h: float | int | bool
     Q: onp.ArrayND[np.float64]
     y_old: onp.ArrayND[np.float64]
 
-    def __init__(self, /, t_old: float, t: float, y_old: onp.ArrayND[np.float64], Q: onp.ArrayND[np.float64]) -> None: ...
+    def __init__(
+        self, /, t_old: float | int | bool, t: float | int | bool, y_old: onp.ArrayND[np.float64], Q: onp.ArrayND[np.float64]
+    ) -> None: ...
 
 def solve_collocation_system(
-    fun: Callable[[float, onp.Array1D[np.float64]], onp.ToFloat1D],
+    fun: Callable[[float | int | bool, onp.Array1D[np.float64]], onp.ToFloat1D],
     t: onp.ToFloat,
     y: onp.ArrayND[np.float64],
     h: onp.ToFloat,
@@ -88,7 +90,7 @@ def solve_collocation_system(
     LU_real: _LU,
     LU_complex: _LU,
     solve_lu: _FuncSolveLU,
-) -> tuple[bool, int, onp.Array2D[np.float64], float | None]: ...
+) -> tuple[bool, int | bool, onp.Array2D[np.float64], float | int | bool | None]: ...
 def predict_factor(
     h_abs: onp.ToFloat,
     h_abs_old: onp.ToFloat,

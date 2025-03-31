@@ -113,7 +113,7 @@ def cdist(
     metric: _MetricName = "euclidean",
     *,
     out: None = None,
-    p: float = 2,
+    p: float | int | bool = 2,
     w: onp.ToFloat1D | None = None,
     V: onp.ToFloat2D | None = None,
     VI: onp.ToFloat2D | None = None,
@@ -125,7 +125,7 @@ def cdist(
     metric: _MetricName = "euclidean",
     *,
     out: None = None,
-    p: float = 2,
+    p: float | int | bool = 2,
     w: onp.ToFloat1D | None = None,
     V: onp.ToFloat2D | None = None,
     VI: onp.ToFloat2D | None = None,
@@ -137,7 +137,7 @@ def cdist(
     metric: _MetricName = "euclidean",
     *,
     out: _ArrayT,
-    p: float = 2,
+    p: float | int | bool = 2,
     w: onp.ToFloat1D | None = None,
     V: onp.ToFloat2D | None = None,
     VI: onp.ToFloat2D | None = None,
@@ -156,7 +156,7 @@ def pdist(
     metric: _MetricName = "euclidean",
     *,
     out: None = None,
-    p: float = 2,
+    p: float | int | bool = 2,
     w: onp.ToFloat1D | None = None,
     V: onp.ToFloat2D | None = None,
     VI: onp.ToFloat2D | None = None,
@@ -167,7 +167,7 @@ def pdist(
     metric: _MetricName = "euclidean",
     *,
     out: None = None,
-    p: float = 2,
+    p: float | int | bool = 2,
     w: onp.ToFloat1D | None = None,
     V: onp.ToFloat2D | None = None,
     VI: onp.ToFloat2D | None = None,
@@ -178,7 +178,7 @@ def pdist(
     metric: _MetricName = "euclidean",
     *,
     out: _ArrayT,
-    p: float = 2,
+    p: float | int | bool = 2,
     w: onp.ToFloat1D | None = None,
     V: onp.ToFloat2D | None = None,
     VI: onp.ToFloat2D | None = None,
@@ -191,11 +191,11 @@ def pdist(X: onp.ToComplex2D, metric: _MetricFunc, *, out: None = None, **kwargs
 def pdist(X: onp.ToComplex2D, metric: _MetricFunc, *, out: _ArrayT, **kwargs: object) -> _ArrayT: ...
 
 #
-@overload  # 1-d int
+@overload  # 1-d int | bool
 def squareform(X: onp.ToJustIntStrict1D, force: _Force = "no", checks: bool = True) -> onp.Array2D[np.int_]: ...
-@overload  # 1-d float
+@overload  # 1-d float | int | bool
 def squareform(X: onp.ToJustFloatStrict1D, force: _Force = "no", checks: bool = True) -> onp.Array2D[np.float64]: ...
-@overload  # 1-d complex
+@overload  # 1-d complex | float | int | bool
 def squareform(X: onp.ToJustComplexStrict1D, force: _Force = "no", checks: bool = True) -> onp.Array2D[np.complex128]: ...
 @overload  # 1-d array-like
 def squareform(
@@ -203,11 +203,11 @@ def squareform(
     force: _Force = "no",
     checks: bool = True,
 ) -> onp.Array2D[_NumberT]: ...
-@overload  # 2-d int
+@overload  # 2-d int | bool
 def squareform(X: onp.ToJustIntStrict2D, force: _Force = "no", checks: bool = True) -> onp.Array1D[np.int_]: ...
-@overload  # 2-d float
+@overload  # 2-d float | int | bool
 def squareform(X: onp.ToJustFloatStrict2D, force: _Force = "no", checks: bool = True) -> onp.Array1D[np.float64]: ...
-@overload  # 2-d complex
+@overload  # 2-d complex | float | int | bool
 def squareform(X: onp.ToJustComplexStrict2D, force: _Force = "no", checks: bool = True) -> onp.Array1D[np.complex128]: ...
 @overload  # 2-d array-like
 def squareform(
@@ -261,7 +261,7 @@ def jensenshannon(
     q: onp.ToFloatStrict1D,
     base: onp.ToFloat | None = None,
     *,
-    axis: int = 0,
+    axis: int | bool = 0,
     keepdims: Falsy = False,
 ) -> np.float32 | np.float64: ...
 @overload
@@ -270,7 +270,7 @@ def jensenshannon(
     q: onp.ToFloatStrict1D,
     base: onp.ToFloat | None = None,
     *,
-    axis: int = 0,
+    axis: int | bool = 0,
     keepdims: Truthy,
 ) -> onp.Array1D[np.float32 | np.float64]: ...
 @overload
@@ -279,38 +279,44 @@ def jensenshannon(
     q: onp.ToFloatND,
     base: onp.ToFloat | None = None,
     *,
-    axis: int = 0,
+    axis: int | bool = 0,
     keepdims: bool = False,
 ) -> np.float32 | np.float64 | onp.ArrayND[np.float32 | np.float64]: ...
 
-# NOTE: The output of the following functions is always real, but complex input usually results in a `ComplexWarning` at runtime.
+# NOTE: The output of the following functions is always real, but complex | float | int | bool input usually results in a `ComplexWarning` at runtime.
 def braycurtis(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
 def canberra(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
 def chebyshev(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.floating[Any]: ...
 def cityblock(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.floating[Any]: ...
-def dice(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
-def directed_hausdorff(u: onp.ToComplex2D, v: onp.ToComplex2D, rng: ToRNG = 0) -> tuple[float, int, int]: ...
+def dice(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float | int | bool: ...
+def directed_hausdorff(
+    u: onp.ToComplex2D, v: onp.ToComplex2D, rng: ToRNG = 0
+) -> tuple[float | int | bool, int | bool, int | bool]: ...
 def hamming(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
-def euclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
+def euclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float | int | bool: ...
 def jaccard(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToBool1D | None = None) -> np.float64: ...
 @deprecated(
     "The `kulczynski1` metric is deprecated since SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
     "Replace usage of `kulczynski1(u, v)` with `1 / jaccard(u, v) - 1`.",
 )
 def kulczynski1(u: onp.ToComplex1D, v: onp.ToFloat1D, *, w: onp.ToFloat1D | None = None) -> np.float64: ...
-def minkowski(u: onp.ToComplex1D, v: onp.ToComplex1D, p: float = 2, w: onp.ToFloat1D | None = None) -> float: ...
-def rogerstanimoto(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
-def russellrao(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
-def seuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, V: onp.ToFloat1D) -> float: ...
+def minkowski(
+    u: onp.ToComplex1D, v: onp.ToComplex1D, p: float | int | bool = 2, w: onp.ToFloat1D | None = None
+) -> float | int | bool: ...
+def rogerstanimoto(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float | int | bool: ...
+def russellrao(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float | int | bool: ...
+def seuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, V: onp.ToFloat1D) -> float | int | bool: ...
 @deprecated(
     "The `sokalmichener` metric is deprecated since SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
     "Replace usage of `sokalmichener(u, v)` with `rogerstanimoto(u, v)`.",
 )
-def sokalmichener(u: onp.ToComplex1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> float: ...
-def yule(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
+def sokalmichener(u: onp.ToComplex1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> float | int | bool: ...
+def yule(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float | int | bool: ...
 
 #
-def num_obs_dm(d: onp.ToArray2D) -> int: ...
-def num_obs_y(Y: onp.ToArray1D) -> int: ...
-def is_valid_dm(D: onp.ToArray2D, tol: float = 0.0, throw: bool = False, name: str = "D", warning: bool = False) -> bool: ...
+def num_obs_dm(d: onp.ToArray2D) -> int | bool: ...
+def num_obs_y(Y: onp.ToArray1D) -> int | bool: ...
+def is_valid_dm(
+    D: onp.ToArray2D, tol: float | int | bool = 0.0, throw: bool = False, name: str = "D", warning: bool = False
+) -> bool: ...
 def is_valid_y(y: onp.ToArray1D, warning: bool = False, throw: bool = False, name: str | None = None) -> bool: ...

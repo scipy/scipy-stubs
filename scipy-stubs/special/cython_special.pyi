@@ -5,11 +5,11 @@ from typing_extensions import CapsuleType, LiteralString, ReadOnly
 import numpy as np
 
 _X_b: TypeAlias = bool | np.bool_ | Literal[0, 1]
-_X_i: TypeAlias = int | np.intp
-_X_f: TypeAlias = float | np.float64
-_X_c: TypeAlias = complex | np.complex128
-_X_if: TypeAlias = int | float | np.intp | np.float64
-_X_fc: TypeAlias = float | complex | np.float64 | np.complex128
+_X_i: TypeAlias = int | bool | np.intp
+_X_f: TypeAlias = float | int | bool | np.float64
+_X_c: TypeAlias = complex | float | int | bool | np.complex128
+_X_if: TypeAlias = float | int | bool | np.intp | np.float64
+_X_fc: TypeAlias = complex | float | int | bool | np.float64 | np.complex128
 
 @type_check_only
 class _BaseCythonFunctionOrMethod(Protocol):
@@ -33,7 +33,7 @@ class _BaseCythonFunctionOrMethod(Protocol):
 
 @type_check_only
 class _CythonFunctionOrMethod_1f(_BaseCythonFunctionOrMethod, Protocol):
-    def __call__(self, /, x0: _X_f) -> float: ...
+    def __call__(self, /, x0: _X_f) -> float | int | bool: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_1c(_BaseCythonFunctionOrMethod, Protocol):
@@ -42,22 +42,22 @@ class _CythonFunctionOrMethod_1c(_BaseCythonFunctionOrMethod, Protocol):
 @type_check_only
 class _CythonFunctionOrMethod_1fc(_BaseCythonFunctionOrMethod, Protocol):
     @overload
-    def __call__(self, /, x0: _X_f) -> float: ...
+    def __call__(self, /, x0: _X_f) -> float | int | bool: ...
     @overload
     def __call__(self, /, x0: _X_c) -> complex: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_2f(_BaseCythonFunctionOrMethod, Protocol):
-    def __call__(self, /, x0: _X_f, x1: _X_f) -> float: ...
+    def __call__(self, /, x0: _X_f, x1: _X_f) -> float | int | bool: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_2fc(_BaseCythonFunctionOrMethod, Protocol):
-    def __call__(self, /, x0: _X_fc, x1: _X_fc) -> float | complex: ...
+    def __call__(self, /, x0: _X_fc, x1: _X_fc) -> float | int | bool | complex: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_2_poly(_BaseCythonFunctionOrMethod, Protocol):
     @overload
-    def __call__(self, /, x0: _X_if, x1: _X_f) -> float: ...
+    def __call__(self, /, x0: _X_if, x1: _X_f) -> float | int | bool: ...
     @overload
     def __call__(self, /, x0: _X_f, x1: _X_c) -> complex: ...
 
@@ -68,37 +68,37 @@ class _CythonFunctionOrMethod_2_hankel(_BaseCythonFunctionOrMethod, Protocol):
 @type_check_only
 class _CythonFunctionOrMethod_2_spherical(_BaseCythonFunctionOrMethod, Protocol):
     @overload
-    def __call__(self, /, n: _X_i, z: _X_f, derivative: _X_b = 0) -> float: ...
+    def __call__(self, /, n: _X_i, z: _X_f, derivative: _X_b = 0) -> float | int | bool: ...
     @overload
     def __call__(self, /, n: _X_i, z: _X_c, derivative: _X_b = 0) -> complex: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_3f(_BaseCythonFunctionOrMethod, Protocol):
-    def __call__(self, /, x0: _X_f, x1: _X_f, x2: _X_f) -> float: ...
+    def __call__(self, /, x0: _X_f, x1: _X_f, x2: _X_f) -> float | int | bool: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_3fc(_BaseCythonFunctionOrMethod, Protocol):
-    def __call__(self, /, x0: _X_fc, x1: _X_fc, x2: _X_fc) -> float | complex: ...
+    def __call__(self, /, x0: _X_fc, x1: _X_fc, x2: _X_fc) -> float | int | bool | complex: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_3_poly(_BaseCythonFunctionOrMethod, Protocol):
     @overload
-    def __call__(self, /, x0: _X_if, x1: _X_f, x2: _X_f) -> float: ...
+    def __call__(self, /, x0: _X_if, x1: _X_f, x2: _X_f) -> float | int | bool: ...
     @overload
     def __call__(self, /, x0: _X_f, x1: _X_f, x2: _X_c) -> complex: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_4f(_BaseCythonFunctionOrMethod, Protocol):
-    def __call__(self, /, x0: _X_f, x1: _X_f, x2: _X_f, x3: _X_f) -> float: ...
+    def __call__(self, /, x0: _X_f, x1: _X_f, x2: _X_f, x3: _X_f) -> float | int | bool: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_4fc(_BaseCythonFunctionOrMethod, Protocol):
-    def __call__(self, /, x0: _X_fc, x1: _X_fc, x2: _X_fc, x3: _X_fc) -> float | complex: ...
+    def __call__(self, /, x0: _X_fc, x1: _X_fc, x2: _X_fc, x3: _X_fc) -> float | int | bool | complex: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_4_poly(_BaseCythonFunctionOrMethod, Protocol):
     @overload
-    def __call__(self, /, x0: _X_if, x1: _X_f, x2: _X_f, x3: _X_f) -> float: ...
+    def __call__(self, /, x0: _X_if, x1: _X_f, x2: _X_f, x3: _X_f) -> float | int | bool: ...
     @overload
     def __call__(self, /, x0: _X_f, x1: _X_f, x2: _X_c, x3: _X_fc) -> complex: ...
 

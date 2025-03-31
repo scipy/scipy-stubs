@@ -13,8 +13,8 @@ _Ignored: TypeAlias = object
 class _InfoDict(TypedDict):
     grad: onp.Array1D[np.float64]
     task: str  # undocumented
-    funcalls: int
-    nit: int
+    funcalls: int | bool
+    nit: int | bool
     warnflag: Literal[0, 1, 2]
 
 ###
@@ -22,8 +22,8 @@ class _InfoDict(TypedDict):
 class LbfgsInvHessProduct(LinearOperator[np.float64]):
     sk: Final[onp.Array2D[np.float64]]
     yk: Final[onp.Array2D[np.float64]]
-    n_corrs: Final[int]
-    rho: Final[float | np.float64]
+    n_corrs: Final[int | bool]
+    rho: Final[float | int | bool | np.float64]
 
     def __init__(self, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> None: ...
     def todense(self, /) -> onp.Array2D[np.float64]: ...
@@ -45,4 +45,4 @@ def fmin_l_bfgs_b(
     disp: onp.ToJustInt | None = None,
     callback: Callable[[onp.Array1D[np.float64]], _Ignored] | None = None,
     maxls: onp.ToJustInt = 20,
-) -> tuple[onp.Array1D[np.float64], float | np.float64, _InfoDict]: ...
+) -> tuple[onp.Array1D[np.float64], float | int | bool | np.float64, _InfoDict]: ...

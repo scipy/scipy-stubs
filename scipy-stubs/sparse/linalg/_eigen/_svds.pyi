@@ -20,12 +20,12 @@ _Solver: TypeAlias = Literal["arpack", "propack", "lobpcg"]
 
 def svds(
     A: _ToMatrix[_SCT],
-    k: int = 6,
-    ncv: int | None = None,
-    tol: float = 0,
+    k: int | bool = 6,
+    ncv: int | bool | None = None,
+    tol: float | int | bool = 0,
     which: _Which = "LM",
     v0: onp.ArrayND[_SCT] | None = None,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     return_singular_vectors: _ReturnSingularVectors = True,
     solver: _Solver = "arpack",
     rng: ToRNG = None,

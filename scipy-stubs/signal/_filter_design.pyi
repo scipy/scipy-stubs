@@ -71,7 +71,7 @@ _InexactND: TypeAlias = onp.ArrayND[np.float64 | np.complex128]
 
 _SCT_z = TypeVar("_SCT_z", bound=np.generic)
 _SCT_p = TypeVar("_SCT_p", bound=np.generic, default=np.complex128)
-_SCT_k = TypeVar("_SCT_k", bound=np.generic | float, default=np.float64)
+_SCT_k = TypeVar("_SCT_k", bound=np.generic | float | int | bool, default=np.float64)
 _ZPK: TypeAlias = tuple[onp.Array1D[_SCT_z], onp.Array1D[_SCT_p], _SCT_k]
 
 _SCT_ba = TypeVar("_SCT_ba", bound=np.floating[Any], default=np.float64)
@@ -79,7 +79,7 @@ _Ba1D: TypeAlias = tuple[onp.Array1D[_SCT_ba], onp.Array1D[_SCT_ba]]
 _Ba2D: TypeAlias = tuple[onp.Array2D[_SCT_ba], onp.Array1D[_SCT_ba]]
 
 # excludes `float16` and `longdouble`
-_ToFloat: TypeAlias = float | np.float32 | np.float64 | np.integer[Any]
+_ToFloat: TypeAlias = float | int | bool | np.float32 | np.float64 | np.integer[Any]
 _ToFloat1D: TypeAlias = Sequence[_ToFloat] | onp.CanArrayND[np.float32 | np.float64 | np.integer[Any]]
 _ToFloat2D: TypeAlias = Sequence[_ToFloat1D] | onp.CanArrayND[np.float32 | np.float64 | np.integer[Any]]
 
@@ -105,7 +105,7 @@ def freqs(
     worN: op.CanIndex | onp.ToFloat1D = 200,
     plot: Callable[[_Float1D, _Complex1D], object] | None = None,
 ) -> tuple[_Float1D, _Complex1D]: ...
-@overload  # worN: complex
+@overload  # worN: complex | float | int | bool
 def freqs(
     b: onp.ToComplex1D,
     a: onp.ToComplex1D,
@@ -121,7 +121,7 @@ def freqs_zpk(
     k: onp.ToComplex1D,
     worN: op.CanIndex | onp.ToFloat1D = 200,
 ) -> tuple[_Float1D, _Complex1D]: ...
-@overload  # worN: complex
+@overload  # worN: complex | float | int | bool
 def freqs_zpk(
     z: onp.ToComplex1D,
     p: onp.ToComplex1D,
@@ -140,7 +140,7 @@ def freqz(
     fs: onp.ToFloat = ...,  # 2 * pi
     include_nyquist: bool = False,
 ) -> tuple[_FloatND, _ComplexND]: ...
-@overload  # worN: complex
+@overload  # worN: complex | float | int | bool
 def freqz(
     b: onp.ToComplex | onp.ToComplexND,
     a: onp.ToComplex | onp.ToComplexND = 1,
@@ -161,7 +161,7 @@ def freqz_zpk(
     whole: op.CanBool = False,
     fs: onp.ToFloat = ...,  # 2 * pi
 ) -> tuple[_FloatND, _ComplexND]: ...
-@overload  # worN: complex
+@overload  # worN: complex | float | int | bool
 def freqz_zpk(
     z: onp.ToComplex1D,
     p: onp.ToComplex1D,
@@ -179,7 +179,7 @@ def group_delay(
     whole: op.CanBool = False,
     fs: onp.ToFloat = ...,  # 2 * pi
 ) -> _Ba1D: ...
-@overload  # w: complex
+@overload  # w: complex | float | int | bool
 def group_delay(
     system: tuple[onp.ToComplex1D, onp.ToComplex1D],
     w: onp.ToComplex1D,
@@ -462,7 +462,7 @@ def butter(
     *,
     output: L["zpk"],
     fs: onp.ToFloat | None = None,
-) -> _ZPK[np.float64, np.complex128, float]: ...
+) -> _ZPK[np.float64, np.complex128, float | int | bool]: ...
 @overload  # output="sos" (keyword)
 def butter(
     N: onp.ToJustInt,
@@ -715,7 +715,7 @@ def buttord(
     gstop: onp.ToFloat,
     analog: onp.ToBool = False,
     fs: onp.ToFloat | None = None,
-) -> tuple[int, np.float64 | np.longdouble]: ...
+) -> tuple[int | bool, np.float64 | np.longdouble]: ...
 @overload
 def buttord(
     wp: onp.ToFloatND,
@@ -724,7 +724,7 @@ def buttord(
     gstop: onp.ToFloat,
     analog: onp.ToBool = False,
     fs: onp.ToFloat | None = None,
-) -> tuple[int, onp.Array1D[np.float64 | np.longdouble]]: ...
+) -> tuple[int | bool, onp.Array1D[np.float64 | np.longdouble]]: ...
 
 #
 @overload
@@ -735,7 +735,7 @@ def cheb1ord(
     gstop: onp.ToFloat,
     analog: onp.ToBool = False,
     fs: onp.ToFloat | None = None,
-) -> tuple[int, _Floating]: ...
+) -> tuple[int | bool, _Floating]: ...
 @overload
 def cheb1ord(
     wp: onp.ToFloatND,
@@ -744,7 +744,7 @@ def cheb1ord(
     gstop: onp.ToFloat,
     analog: onp.ToBool = False,
     fs: onp.ToFloat | None = None,
-) -> tuple[int, _FloatingND]: ...
+) -> tuple[int | bool, _FloatingND]: ...
 
 #
 @overload
@@ -755,7 +755,7 @@ def cheb2ord(
     gstop: onp.ToFloat,
     analog: onp.ToBool = False,
     fs: onp.ToFloat | None = None,
-) -> tuple[int, _Floating]: ...
+) -> tuple[int | bool, _Floating]: ...
 @overload
 def cheb2ord(
     wp: onp.ToFloatND,
@@ -764,7 +764,7 @@ def cheb2ord(
     gstop: onp.ToFloat,
     analog: onp.ToBool = False,
     fs: onp.ToFloat | None = None,
-) -> tuple[int, _FloatND]: ...  # only nd-output is cast to float64
+) -> tuple[int | bool, _FloatND]: ...  # only nd-output is cast to float64
 
 #
 @overload
@@ -775,7 +775,7 @@ def ellipord(
     gstop: onp.ToFloat,
     analog: onp.ToBool = False,
     fs: onp.ToFloat | None = None,
-) -> tuple[int, _Floating]: ...
+) -> tuple[int | bool, _Floating]: ...
 @overload
 def ellipord(
     wp: onp.ToFloatND,
@@ -784,7 +784,7 @@ def ellipord(
     gstop: onp.ToFloat,
     analog: onp.ToBool = False,
     fs: onp.ToFloat | None = None,
-) -> tuple[int, _FloatingND]: ...
+) -> tuple[int | bool, _FloatingND]: ...
 
 #
 
@@ -792,7 +792,7 @@ def buttap(N: onp.ToJustInt) -> tuple[_Float1D, _Complex1D, L[1]]: ...
 def cheb1ap(N: onp.ToJustInt, rp: onp.ToFloat) -> tuple[_Float1D, _Complex1D, np.float64]: ...
 def cheb2ap(N: onp.ToJustInt, rs: onp.ToFloat) -> tuple[_Complex1D, _Complex1D, np.float64]: ...
 def ellipap(N: onp.ToJustInt, rp: onp.ToFloat, rs: onp.ToFloat) -> tuple[_Complex1D, _Complex1D, np.float64]: ...
-def besselap(N: onp.ToJustInt, norm: _Normalization = "phase") -> tuple[_Float1D, _Complex1D, float]: ...
+def besselap(N: onp.ToJustInt, norm: _Normalization = "phase") -> tuple[_Float1D, _Complex1D, float | int | bool]: ...
 
 #
 def iirnotch(w0: onp.ToFloat, Q: onp.ToFloat, fs: onp.ToFloat = 2.0) -> _Ba1D: ...
@@ -811,7 +811,7 @@ def gammatone(
     freq: onp.ToFloat,
     ftype: L["fir", "iir"],
     order: L[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24] | None = None,
-    numtaps: int | None = None,
+    numtaps: int | bool | None = None,
     fs: onp.ToFloat | None = None,
 ) -> _Ba1D: ...
 

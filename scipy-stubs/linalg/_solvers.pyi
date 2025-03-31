@@ -22,13 +22,13 @@ _DiscreteMethod: TypeAlias = Literal["direct", "bilinear"]
 
 @overload  # real
 def solve_sylvester(a: onp.ToFloat2D, b: onp.ToFloat2D, q: onp.ToFloat2D) -> onp.Array2D[_Float]: ...
-@overload  # complex
+@overload  # complex | float | int | bool
 def solve_sylvester(a: onp.ToComplex2D, b: onp.ToComplex2D, q: onp.ToComplex2D) -> onp.Array2D[_Float | _Complex]: ...
 
 #
 @overload  # real
 def solve_continuous_lyapunov(a: onp.ToFloat2D, q: onp.ToFloat2D) -> onp.Array2D[_Float]: ...
-@overload  # complex
+@overload  # complex | float | int | bool
 def solve_continuous_lyapunov(a: onp.ToComplex2D, q: onp.ToComplex2D) -> onp.Array2D[_Float | _Complex]: ...
 
 #
@@ -41,7 +41,7 @@ def solve_discrete_lyapunov(
     q: onp.ToFloat2D,
     method: _DiscreteMethod | None = None,
 ) -> onp.Array2D[_Float]: ...
-@overload  # complex
+@overload  # complex | float | int | bool
 def solve_discrete_lyapunov(
     a: onp.ToComplex2D,
     q: onp.ToComplex2D,
@@ -59,7 +59,7 @@ def solve_continuous_are(
     s: onp.ToFloat2D | None = None,
     balanced: op.CanBool = True,
 ) -> onp.Array2D[_Float]: ...
-@overload  # complex
+@overload  # complex | float | int | bool
 def solve_continuous_are(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D,
@@ -81,7 +81,7 @@ def solve_discrete_are(
     s: onp.ToFloat2D | None = None,
     balanced: op.CanBool = True,
 ) -> onp.Array2D[_Float]: ...
-@overload  # complex
+@overload  # complex | float | int | bool
 def solve_discrete_are(
     a: onp.ToComplex2D,
     b: onp.ToComplex2D,

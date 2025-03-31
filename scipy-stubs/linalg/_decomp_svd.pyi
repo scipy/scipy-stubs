@@ -45,7 +45,7 @@ def svd(
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",
 ) -> _FloatSVD | _ComplexSVD: ...
-@overload  # complex, compute_uv: {False}
+@overload  # complex | float | int | bool, compute_uv: {False}
 def svd(
     a: onp.ToComplex2D,
     full_matrices: onp.ToBool,
@@ -54,7 +54,7 @@ def svd(
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",
 ) -> _Float1D: ...
-@overload  # complex, *, compute_uv: {False}
+@overload  # complex | float | int | bool, *, compute_uv: {False}
 def svd(
     a: onp.ToComplex2D,
     full_matrices: onp.ToBool = True,
@@ -68,15 +68,15 @@ def svd(
 #
 def svdvals(a: onp.ToComplex2D, overwrite_a: onp.ToBool = False, check_finite: onp.ToBool = True) -> _Float1D: ...
 
-# beware the overlapping overloads for bool <: int (<: float)
+# beware the overlapping overloads for bool <: int | bool (<: float | int | bool)
 @overload
 def diagsvd(s: Sequence[_RealT] | onp.CanArrayND[_RealT], M: op.CanIndex, N: op.CanIndex) -> onp.Array2D[_RealT]: ...
 @overload
 def diagsvd(s: Sequence[bool], M: op.CanIndex, N: op.CanIndex) -> onp.Array2D[np.bool_]: ...
 @overload
-def diagsvd(s: Sequence[int], M: op.CanIndex, N: op.CanIndex) -> onp.Array2D[np.bool_ | np.int_]: ...
+def diagsvd(s: Sequence[int | bool], M: op.CanIndex, N: op.CanIndex) -> onp.Array2D[np.bool_ | np.int_]: ...
 @overload
-def diagsvd(s: Sequence[float], M: op.CanIndex, N: op.CanIndex) -> onp.Array2D[np.bool_ | np.int_ | np.float64]: ...
+def diagsvd(s: Sequence[float | int | bool], M: op.CanIndex, N: op.CanIndex) -> onp.Array2D[np.bool_ | np.int_ | np.float64]: ...
 
 #
 @overload

@@ -13,8 +13,8 @@ __all__ = ["RootResults", "bisect", "brenth", "brentq", "newton", "ridder", "tom
 _Flag: TypeAlias = Literal["converged", "sign error", "convergence error", "value error", "No error"]
 _FlagKey: TypeAlias = Literal[0, -1, -2, -3, -4, 1]
 
-_Float: TypeAlias = float | np.float64
-_Floating: TypeAlias = float | np.floating[Any]
+_Float: TypeAlias = float | int | bool | np.float64
+_Floating: TypeAlias = float | int | bool | np.floating[Any]
 
 _T = TypeVar("_T")
 _KT = TypeVar("_KT", bound=_FlagKey)
@@ -22,7 +22,9 @@ _RT = TypeVar("_RT", bound=_Floating)
 _RT_co = TypeVar("_RT_co", bound=_Floating, default=_Float, covariant=True)
 _ToFloatT = TypeVar("_ToFloatT", bound=onp.ToFloat | onp.ToFloatND, default=onp.ToFloat)
 
-_Fun0D: TypeAlias = Callable[Concatenate[float, ...], onp.ToFloat] | Callable[Concatenate[np.float64, ...], onp.ToFloat]
+_Fun0D: TypeAlias = (
+    Callable[Concatenate[float | int | bool, ...], onp.ToFloat] | Callable[Concatenate[np.float64, ...], onp.ToFloat]
+)
 _Fun1D: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], _ToFloatT]
 
 _State: TypeAlias = tuple[_FlagKey, _Float]
@@ -40,8 +42,8 @@ flag_map: Final[dict[_FlagKey, _Flag]] = ...  # undocumented
 
 class RootResults(OptimizeResult, Generic[_RT_co]):
     root: _RT_co  # readonly
-    iterations: Final[int]
-    function_calls: Final[int]
+    iterations: Final[int | bool]
+    function_calls: Final[int | bool]
     converged: Final[bool]
     flag: Final[_Flag]
     method: Final[MethodRootScalar]
@@ -50,8 +52,8 @@ class RootResults(OptimizeResult, Generic[_RT_co]):
         self,
         /,
         root: _RT_co,
-        iterations: int,
-        function_calls: int,
+        iterations: int | bool,
+        function_calls: int | bool,
         flag: _FlagKey,
         method: MethodRootScalar,
     ) -> None: ...
@@ -60,9 +62,9 @@ class RootResults(OptimizeResult, Generic[_RT_co]):
 class TOMS748Solver:
     f: _Fun0D | None
     args: tuple[object, ...] | None
-    function_calls: int
-    iterations: int
-    k: int
+    function_calls: int | bool
+    iterations: int | bool
+    k: int | bool
     ab: list[_Float]  # size  2
     fab: list[_Float]  # size 2
     d: _Float | None
@@ -72,15 +74,15 @@ class TOMS748Solver:
     disp: bool
     xtol: _Float
     rtol: _Float
-    maxiter: int
+    maxiter: int | bool
 
     def __init__(self, /) -> None: ...
-    def configure(self, /, xtol: _Float, rtol: _Float, maxiter: int, disp: bool, k: int) -> None: ...
+    def configure(self, /, xtol: _Float, rtol: _Float, maxiter: int | bool, disp: bool, k: int | bool) -> None: ...
     def _callf(self, /, x: _Float, error: bool = True) -> onp.ToFloat: ...
     @overload
-    def get_result(self, /, x: _T, flag: Literal[0] = 0) -> tuple[_T, int, int, Literal[0]]: ...
+    def get_result(self, /, x: _T, flag: Literal[0] = 0) -> tuple[_T, int | bool, int | bool, Literal[0]]: ...
     @overload
-    def get_result(self, /, x: _T, flag: _KT) -> tuple[_T, int, int, _KT]: ...
+    def get_result(self, /, x: _T, flag: _KT) -> tuple[_T, int | bool, int | bool, _KT]: ...
     def _update_bracket(self, /, c: _Float, fc: _Float) -> _Bracket: ...
     def start(self, /, f: _Fun0D, a: _Float, b: _Float, args: tuple[object, ...] = ()) -> _State: ...
     def get_status(self, /) -> _State: ...
@@ -94,8 +96,8 @@ class TOMS748Solver:
         args: tuple[object, ...] = (),
         xtol: _Float = 2e-12,
         rtol: _Float = ...,
-        k: int = 2,
-        maxiter: int = 100,
+        k: int | bool = 2,
+        maxiter: int | bool = 100,
         disp: op.CanBool = True,
     ) -> _State: ...
 
@@ -108,7 +110,7 @@ def results_c(full_output: Falsy, r: _T, method: MethodRootScalar) -> _T: ...
 @overload
 def results_c(
     full_output: Truthy,
-    r: tuple[_RT, int, int, _FlagKey],
+    r: tuple[_RT, int | bool, int | bool, _FlagKey],
     method: MethodRootScalar,
 ) -> tuple[_RT, RootResults[_RT]]: ...
 
@@ -184,7 +186,7 @@ def bisect(
     maxiter: onp.ToJustInt = 100,
     full_output: Falsy = False,
     disp: op.CanBool = True,
-) -> float: ...
+) -> float | int | bool: ...
 @overload
 def bisect(
     f: _Fun0D,
@@ -197,7 +199,7 @@ def bisect(
     *,
     full_output: Truthy,
     disp: op.CanBool = True,
-) -> tuple[float, RootResults[_Float]]: ...
+) -> tuple[float | int | bool, RootResults[_Float]]: ...
 
 #
 @overload
@@ -211,7 +213,7 @@ def ridder(
     maxiter: onp.ToJustInt = 100,
     full_output: Falsy = False,
     disp: op.CanBool = True,
-) -> float: ...
+) -> float | int | bool: ...
 @overload
 def ridder(
     f: _Fun0D,
@@ -224,7 +226,7 @@ def ridder(
     *,
     full_output: Truthy,
     disp: op.CanBool = True,
-) -> tuple[float, RootResults[_Float]]: ...
+) -> tuple[float | int | bool, RootResults[_Float]]: ...
 
 #
 @overload
@@ -238,7 +240,7 @@ def brentq(
     maxiter: onp.ToJustInt = 100,
     full_output: Falsy = False,
     disp: op.CanBool = True,
-) -> float: ...
+) -> float | int | bool: ...
 @overload
 def brentq(
     f: _Fun0D,
@@ -251,7 +253,7 @@ def brentq(
     *,
     full_output: Truthy,
     disp: op.CanBool = True,
-) -> tuple[float, RootResults[_Float]]: ...
+) -> tuple[float | int | bool, RootResults[_Float]]: ...
 
 #
 @overload
@@ -265,7 +267,7 @@ def brenth(
     maxiter: onp.ToJustInt = 100,
     full_output: Falsy = False,
     disp: op.CanBool = True,
-) -> float: ...
+) -> float | int | bool: ...
 @overload
 def brenth(
     f: _Fun0D,
@@ -278,7 +280,7 @@ def brenth(
     *,
     full_output: Truthy,
     disp: op.CanBool = True,
-) -> tuple[float, RootResults[_Float]]: ...
+) -> tuple[float | int | bool, RootResults[_Float]]: ...
 
 #
 @overload

@@ -50,8 +50,14 @@ _T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=np.inexact[Any])
 _EnvelopeSCT = TypeVar("_EnvelopeSCT", bound=_OutFloat | np.longdouble | _Complex | np.clongdouble)
 _FilterSCT = TypeVar("_FilterSCT", bound=_Int | _Float)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_AnyShapeT = TypeVar("_AnyShapeT", tuple[int], tuple[int, int], tuple[int, int, int], tuple[int, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...])
+_AnyShapeT = TypeVar(
+    "_AnyShapeT",
+    tuple[int | bool],
+    tuple[int | bool, int | bool],
+    tuple[int | bool, int | bool, int | bool],
+    tuple[int | bool, ...],
+)
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 
@@ -75,14 +81,14 @@ _ToBoolND: TypeAlias = onp.CanArrayND[_CoBool] | onp.SequenceND[_ToBool] | onp.S
 
 _Int: TypeAlias = np.integer[Any]
 _CoInt: TypeAlias = _Bool | _Int
-_ToInt: TypeAlias = int | _CoInt
+_ToInt: TypeAlias = int | bool | _CoInt
 _ToIntND: TypeAlias = onp.CanArrayND[_CoInt] | onp.SequenceND[_ToInt] | onp.SequenceND[onp.CanArrayND[_CoInt]]
 
 _Float: TypeAlias = np.float16 | np.float32 | np.float64
 _LFloat: TypeAlias = np.float64 | np.longdouble
 _OutFloat: TypeAlias = np.float32 | np.float64
 _CoFloat: TypeAlias = _CoInt | _Float
-_ToFloat: TypeAlias = float | _CoFloat
+_ToFloat: TypeAlias = float | int | bool | _CoFloat
 _ToFloat1D: TypeAlias = onp.CanArrayND[_CoFloat] | Sequence[_ToFloat | onp.CanArray0D[_CoFloat]]
 _ToFloat2D: TypeAlias = onp.CanArrayND[_CoFloat] | Sequence[_ToFloat1D] | Sequence[Sequence[_ToFloat | onp.CanArray0D[_CoFloat]]]
 _ToFloatND: TypeAlias = onp.CanArrayND[_CoFloat] | onp.SequenceND[_ToFloat] | onp.SequenceND[onp.CanArrayND[_CoFloat]]
@@ -90,7 +96,7 @@ _ToFloatND: TypeAlias = onp.CanArrayND[_CoFloat] | onp.SequenceND[_ToFloat] | on
 _Complex: TypeAlias = np.complex64 | np.complex128
 _LComplex: TypeAlias = np.complex128 | np.clongdouble
 _CoComplex: TypeAlias = _CoFloat | _Complex
-_ToComplex: TypeAlias = complex | _CoComplex
+_ToComplex: TypeAlias = complex | float | int | bool | _CoComplex
 _ToComplex1D: TypeAlias = onp.CanArrayND[_CoComplex] | Sequence[_ToComplex | onp.CanArray0D[_CoComplex]]
 _ToComplex2D: TypeAlias = (
     onp.CanArrayND[_CoComplex] | Sequence[_ToComplex1D] | Sequence[Sequence[_ToComplex | onp.CanArray0D[_CoComplex]]]
@@ -102,8 +108,8 @@ _WindowFuncComplex: TypeAlias = Callable[[onp.Array1D[np.complex128]], onp.ToFlo
 
 @type_check_only
 class _ConvMeasureDict(TypedDict):
-    direct: float
-    fft: float
+    direct: float | int | bool
+    fft: float | int | bool
 
 ###
 

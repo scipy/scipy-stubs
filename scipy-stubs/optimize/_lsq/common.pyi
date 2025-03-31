@@ -10,7 +10,7 @@ _T = TypeVar("_T")
 
 _Int1D: TypeAlias = onp.Array1D[np.int_]
 
-_Float: TypeAlias = float | np.float64
+_Float: TypeAlias = float | int | bool | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 
@@ -20,7 +20,7 @@ _Matrix: TypeAlias = _Float2D | _Sparse | LinearOperator
 
 ###
 
-EPS: Final[float] = ...
+EPS: Final[float | int | bool] = ...
 
 def intersect_trust_region(x: onp.ToFloat1D, s: onp.ToFloatND, Delta: onp.ToFloat) -> tuple[_Float, _Float]: ...
 def solve_trust_region_2d(B: onp.ToFloat2D, g: onp.ToFloat1D, Delta: onp.ToFloat) -> tuple[_Float1D, bool]: ...
@@ -34,7 +34,7 @@ def solve_lsq_trust_region(
     initial_alpha: onp.ToFloat | None = None,
     rtol: onp.ToFloat = 0.01,
     max_iter: onp.ToInt = 10,
-) -> tuple[_Float1D, _Float, int]: ...
+) -> tuple[_Float1D, _Float, int | bool]: ...
 def update_tr_radius(
     Delta: onp.ToFloat,
     actual_reduction: onp.ToFloat,
@@ -76,20 +76,20 @@ def reflective_transformation(y: onp.ToFloat1D, lb: onp.ToFloat1D, ub: onp.ToFlo
 #
 def print_header_nonlinear() -> None: ...
 def print_iteration_nonlinear(
-    iteration: int,
-    nfev: int,
-    cost: float,
-    cost_reduction: float,
-    step_norm: float,
-    optimality: float,
+    iteration: int | bool,
+    nfev: int | bool,
+    cost: float | int | bool,
+    cost_reduction: float | int | bool,
+    step_norm: float | int | bool,
+    optimality: float | int | bool,
 ) -> None: ...
 def print_header_linear() -> None: ...
 def print_iteration_linear(
-    iteration: int,
-    cost: float,
-    cost_reduction: float,
-    step_norm: float,
-    optimality: float,
+    iteration: int | bool,
+    cost: float | int | bool,
+    cost_reduction: float | int | bool,
+    step_norm: float | int | bool,
+    optimality: float | int | bool,
 ) -> None: ...
 
 #

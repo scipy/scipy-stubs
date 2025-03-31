@@ -11,7 +11,7 @@ from scipy.sparse.linalg import LinearOperator
 _Vector_b1: TypeAlias = onp.Array1D[np.bool_]
 _Vector_i0: TypeAlias = onp.Array1D[np.int_]
 
-_Scalar_f8: TypeAlias = float | np.float64
+_Scalar_f8: TypeAlias = float | int | bool | np.float64
 _Vector_f8: TypeAlias = onp.Array1D[np.float64]
 _Matrix_f8: TypeAlias = onp.Array2D[np.float64] | _spbase | LinearOperator
 
@@ -30,8 +30,8 @@ class OptimizeResult(_OptimizeResult):
     grad: _Vector_f8
     optimality: _Scalar_f8
     active_mask: _Vector_b1
-    nfev: int
-    njev: int
+    nfev: int | bool
+    njev: int | bool
     status: Literal[0, 1, 2, 3, 4]
 
 # undocumented
@@ -69,7 +69,7 @@ def dogbox(
     ftol: _Scalar_f8,
     xtol: _Scalar_f8,
     gtol: _Scalar_f8,
-    max_nfev: int,
+    max_nfev: int | bool,
     x_scale: Literal["jac"] | _Scalar_f8 | _Vector_f8,
     loss_function: _FunLoss,
     tr_solver: TRSolver | None,

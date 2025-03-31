@@ -23,13 +23,13 @@ class _VertexMixin:
 class VertexBase(abc.ABC):
     x: onp.ToFloat1D
     x_a: _Float1D  # lazy
-    hash: Final[int]
-    index: Final[int | None]
+    hash: Final[int | bool]
+    index: Final[int | bool | None]
     nn: set[VertexBase]
     st: set[VertexBase]  # might not be set
     feasible: bool  # might not be set
 
-    def __init__(self, /, x: onp.ToFloat1D, nn: Iterable[VertexBase] | None = None, index: int | None = None) -> None: ...
+    def __init__(self, /, x: onp.ToFloat1D, nn: Iterable[VertexBase] | None = None, index: int | bool | None = None) -> None: ...
     @abc.abstractmethod
     def connect(self, /, v: VertexBase) -> None: ...
     @abc.abstractmethod
@@ -46,7 +46,7 @@ class VertexScalarField(_VertexMixin, VertexBase):
         x: onp.ToFloat1D,
         field: _Fun0D | None = None,
         nn: Iterable[VertexBase] | None = None,
-        index: int | None = None,
+        index: int | bool | None = None,
         field_args: tuple[object, ...] = (),
         g_cons: _Fun1D | None = None,
         g_cons_args: tuple[object, ...] = (),
@@ -68,20 +68,20 @@ class VertexVectorField(_VertexMixin, VertexBase):
         g_cons: _Fun1D | None = None,
         g_cons_args: tuple[object, ...] = (),
         nn: Iterable[VertexBase] | None = None,
-        index: int | None = None,
+        index: int | bool | None = None,
     ) -> None: ...
 
 class VertexCube(_VertexMixin, VertexBase):
-    def __init__(self, /, x: onp.ToFloat1D, nn: Iterable[VertexBase] | None = None, index: int | None = None) -> None: ...
+    def __init__(self, /, x: onp.ToFloat1D, nn: Iterable[VertexBase] | None = None, index: int | bool | None = None) -> None: ...
 
 class VertexCacheBase(Generic[_VT_co]):
     cache: OrderedDict[onp.ToFloat1D, _VT_co]
-    nfev: int
-    index: int
+    nfev: int | bool
+    index: int | bool
 
     def __init__(self, /) -> None: ...
     def __iter__(self, /) -> Iterator[_VT_co]: ...
-    def size(self, /) -> int: ...
+    def size(self, /) -> int | bool: ...
     def print_out(self, /) -> None: ...
 
 class VertexCacheIndex(VertexCacheBase[VertexCube]):
@@ -104,8 +104,8 @@ class VertexCacheField(VertexCacheBase[VertexScalarField]):
     gpool: Final[set[VertexScalarField]]
     process_gpool: Final[Callable[[], None]]
 
-    workers: Final[int]
-    index: int
+    workers: Final[int | bool]
+    index: int | bool
     sfc_lock: bool
 
     def __init__(
@@ -115,7 +115,7 @@ class VertexCacheField(VertexCacheBase[VertexScalarField]):
         field_args: tuple[object, ...] = (),
         g_cons: Sequence[_Fun1D] | None = None,
         g_cons_args: tuple[object, ...] = (),
-        workers: int = 1,
+        workers: int | bool = 1,
     ) -> None: ...
     def __getitem__(self, x: onp.ToFloat1D, /, nn: Iterable[VertexBase] | None = None) -> VertexScalarField: ...
     def process_pools(self, /) -> None: ...

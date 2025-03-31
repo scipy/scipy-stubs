@@ -6,14 +6,14 @@ import optype as op
 import optype.numpy as onp
 from ._bsplines import BSpline
 
-_Float: TypeAlias = float | np.float32 | np.float64 | np.longdouble
-_Float64: TypeAlias = float | np.float64
+_Float: TypeAlias = float | int | bool | np.float32 | np.float64 | np.longdouble
+_Float64: TypeAlias = float | int | bool | np.float64
 
 @type_check_only
 class _RootRatiBunch(Bunch):
     root: _Float
     converged: bool
-    iterations: int
+    iterations: int | bool
     ier: Literal[0, 2, 3]
 
 ###
@@ -27,7 +27,7 @@ class F:  # undocumented
     x: onp.Array1D[np.float64]
     y: onp.Array1D[np.float64]
     t: onp.Array1D[np.float64]
-    k: int
+    k: int | bool
     w: onp.Array1D[np.float64] | None
     s: _Float
 
@@ -35,7 +35,7 @@ class F:  # undocumented
     AA: onp.Array2D[np.float64]
     offset: onp.Array1D[np.int64]
 
-    nc: int
+    nc: int | bool
     b: onp.Array2D[np.float64]
 
     spl: BSpline  # set in __call__
@@ -46,7 +46,7 @@ class F:  # undocumented
         x: onp.Array1D[np.float64],
         y: onp.Array1D[np.float64],
         t: onp.Array1D[np.float64],
-        k: int,
+        k: int | bool,
         s: _Float64,
         w: onp.Array1D[np.float64] | None = None,
         *,
@@ -61,18 +61,18 @@ class Bunch: ...  # undocumented
 def add_knot(
     x: onp.Array1D[np.float64],
     t: onp.Array1D[np.float64],
-    k: int,
+    k: int | bool,
     residuals: onp.Array1D[np.float64],
 ) -> onp.Array1D[np.float64]: ...  # undocumented
 
 #
-def prodd(t: onp.Array1D[np.float64], i: int, j: int, k: int) -> _Float64: ...  # undocumented
+def prodd(t: onp.Array1D[np.float64], i: int | bool, j: int | bool, k: int | bool) -> _Float64: ...  # undocumented
 
 #
 def disc(
     t: onp.ArrayND[np.floating[Any]],
-    k: int,
-) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.int64], int]: ...  # undocumented
+    k: int | bool,
+) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.int64], int | bool]: ...  # undocumented
 
 #
 def fprati(
@@ -86,7 +86,7 @@ def fprati(
 
 #
 def root_rati(
-    f: Callable[[float], onp.ToFloat],
+    f: Callable[[float | int | bool], onp.ToFloat],
     p0: onp.ToFloat,
     bracket: tuple[tuple[onp.ToFloat, onp.ToFloat], tuple[onp.ToFloat, onp.ToFloat]],
     acc: onp.ToFloat,

@@ -11,51 +11,51 @@ __all__ = ["DiscreteAliasUrn", "NumericalInversePolynomial", "TransformedDensity
 @type_check_only
 class _HasSupport(Protocol):
     @property
-    def support(self, /) -> tuple[float, float]: ...
+    def support(self, /) -> tuple[float | int | bool, float | int | bool]: ...
 
 @type_check_only
 class _HasPMF(_HasSupport, Protocol):
     @property
-    def pmf(self, /) -> Callable[..., float]: ...
+    def pmf(self, /) -> Callable[..., float | int | bool]: ...
 
 @type_check_only
 class _HasPDF(_HasSupport, Protocol):
     @property
-    def pdf(self, /) -> Callable[..., float]: ...
+    def pdf(self, /) -> Callable[..., float | int | bool]: ...
 
 @type_check_only
 class _HasCDF(_HasPDF, Protocol):
     @property
-    def cdf(self, /) -> Callable[..., float]: ...
+    def cdf(self, /) -> Callable[..., float | int | bool]: ...
 
 @type_check_only
 class _TDRDist(_HasPDF, Protocol):
     @property
-    def dpdf(self, /) -> Callable[..., float]: ...
+    def dpdf(self, /) -> Callable[..., float | int | bool]: ...
 
 @type_check_only
 class _PINVDist(_HasCDF, Protocol):
     @property
-    def logpdf(self, /) -> Callable[..., float]: ...
+    def logpdf(self, /) -> Callable[..., float | int | bool]: ...
 
 @type_check_only
 class _PPFMethodMixin:
     @overload
-    def ppf(self, /, u: onp.ToFloat) -> float: ...
+    def ppf(self, /, u: onp.ToFloat) -> float | int | bool: ...
     @overload
     def ppf(self, /, u: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
 
 class UNURANError(RuntimeError): ...
 
 class UError(NamedTuple):
-    max_error: float
-    mean_absolute_error: float
+    max_error: float | int | bool
+    mean_absolute_error: float | int | bool
 
 class Method:
     @overload
-    def rvs(self, /, size: None = None, random_state: ToRNG = None) -> float | int: ...
+    def rvs(self, /, size: None = None, random_state: ToRNG = None) -> float | int | bool | int | bool: ...
     @overload
-    def rvs(self, /, size: int | tuple[int, ...]) -> onp.ArrayND[np.float64 | np.int_]: ...
+    def rvs(self, /, size: int | bool | tuple[int | bool, ...]) -> onp.ArrayND[np.float64 | np.int_]: ...
     def set_random_state(self, /, random_state: ToRNG = None) -> None: ...
 
 class TransformedDensityRejection(Method):
@@ -64,25 +64,25 @@ class TransformedDensityRejection(Method):
         /,
         dist: _TDRDist,
         *,
-        mode: float | None = ...,
-        center: float | None = ...,
-        domain: tuple[float, float] | None = ...,
-        c: float = ...,
+        mode: float | int | bool | None = ...,
+        center: float | int | bool | None = ...,
+        domain: tuple[float | int | bool, float | int | bool] | None = ...,
+        c: float | int | bool = ...,
         construction_points: onp.ToFloatND = ...,
         use_dars: bool = ...,
-        max_squeeze_hat_ratio: float = ...,
+        max_squeeze_hat_ratio: float | int | bool = ...,
         random_state: ToRNG = ...,
     ) -> None: ...
     @property
-    def hat_area(self, /) -> float: ...
+    def hat_area(self, /) -> float | int | bool: ...
     @property
-    def squeeze_hat_ratio(self, /) -> float: ...
+    def squeeze_hat_ratio(self, /) -> float | int | bool: ...
     @property
-    def squeeze_area(self, /) -> float: ...
+    def squeeze_area(self, /) -> float | int | bool: ...
     @overload
-    def ppf_hat(self, /, u: onp.ToFloat) -> float: ...
+    def ppf_hat(self, /, u: onp.ToFloat) -> float | int | bool: ...
     @overload
-    def ppf_hat(self, /, u: onp.ToScalar | onp.ToArrayND) -> float | onp.ArrayND[np.float64]: ...
+    def ppf_hat(self, /, u: onp.ToScalar | onp.ToArrayND) -> float | int | bool | onp.ArrayND[np.float64]: ...
 
 class SimpleRatioUniforms(Method):
     def __init__(
@@ -90,10 +90,10 @@ class SimpleRatioUniforms(Method):
         /,
         dist: _HasPDF,
         *,
-        mode: float | None = ...,
-        pdf_area: float = ...,
-        domain: tuple[float, float] | None = ...,
-        cdf_at_mode: float = ...,
+        mode: float | int | bool | None = ...,
+        pdf_area: float | int | bool = ...,
+        domain: tuple[float | int | bool, float | int | bool] | None = ...,
+        cdf_at_mode: float | int | bool = ...,
         random_state: ToRNG = ...,
     ) -> None: ...
 
@@ -103,27 +103,27 @@ class NumericalInversePolynomial(_PPFMethodMixin, Method):
         /,
         dist: _PINVDist,
         *,
-        mode: float | None = ...,
-        center: float | None = ...,
-        domain: tuple[float, float] | None = ...,
-        order: int = ...,
-        u_resolution: float = ...,
+        mode: float | int | bool | None = ...,
+        center: float | int | bool | None = ...,
+        domain: tuple[float | int | bool, float | int | bool] | None = ...,
+        order: int | bool = ...,
+        u_resolution: float | int | bool = ...,
         random_state: ToRNG = ...,
     ) -> None: ...
     @property
-    def intervals(self, /) -> int: ...
+    def intervals(self, /) -> int | bool: ...
     @overload
-    def cdf(self, /, x: onp.ToFloat) -> float: ...
+    def cdf(self, /, x: onp.ToFloat) -> float | int | bool: ...
     @overload
-    def cdf(self, /, x: onp.ToFloat | onp.ToFloatND) -> float | onp.ArrayND[np.float64]: ...
-    def u_error(self, /, sample_size: int = ...) -> UError: ...
+    def cdf(self, /, x: onp.ToFloat | onp.ToFloatND) -> float | int | bool | onp.ArrayND[np.float64]: ...
+    def u_error(self, /, sample_size: int | bool = ...) -> UError: ...
     def qrvs(
         self,
         /,
-        size: int | tuple[int, ...] | None = ...,
-        d: int | None = ...,
+        size: int | bool | tuple[int | bool, ...] | None = ...,
+        d: int | bool | None = ...,
         qmc_engine: stats.qmc.QMCEngine | None = ...,
-    ) -> float | onp.ArrayND[np.float64]: ...
+    ) -> float | int | bool | onp.ArrayND[np.float64]: ...
 
 class NumericalInverseHermite(_PPFMethodMixin, Method):
     def __init__(
@@ -131,25 +131,25 @@ class NumericalInverseHermite(_PPFMethodMixin, Method):
         /,
         dist: _HasCDF,
         *,
-        domain: tuple[float, float] | None = ...,
-        order: int = ...,
-        u_resolution: float = ...,
+        domain: tuple[float | int | bool, float | int | bool] | None = ...,
+        order: int | bool = ...,
+        u_resolution: float | int | bool = ...,
         construction_points: onp.ToFloatND | None = ...,
-        max_intervals: int = ...,
+        max_intervals: int | bool = ...,
         random_state: ToRNG = ...,
     ) -> None: ...
     @property
-    def intervals(self, /) -> int: ...
+    def intervals(self, /) -> int | bool: ...
     @property
-    def midpoint_error(self, /) -> float: ...
-    def u_error(self, /, sample_size: int = ...) -> UError: ...
+    def midpoint_error(self, /) -> float | int | bool: ...
+    def u_error(self, /, sample_size: int | bool = ...) -> UError: ...
     def qrvs(
         self,
         /,
-        size: int | tuple[int, ...] | None = ...,
-        d: int | None = ...,
+        size: int | bool | tuple[int | bool, ...] | None = ...,
+        d: int | bool | None = ...,
         qmc_engine: stats.qmc.QMCEngine | None = ...,
-    ) -> float | onp.ArrayND[np.float64]: ...
+    ) -> float | int | bool | onp.ArrayND[np.float64]: ...
 
 class DiscreteAliasUrn(Method):
     def __init__(
@@ -157,8 +157,8 @@ class DiscreteAliasUrn(Method):
         /,
         dist: onp.ToFloat | onp.ToFloatND | _HasPMF,
         *,
-        domain: tuple[float, float] | None = ...,
-        urn_factor: float = ...,
+        domain: tuple[float | int | bool, float | int | bool] | None = ...,
+        urn_factor: float | int | bool = ...,
         random_state: ToRNG = ...,
     ) -> None: ...
 
@@ -168,7 +168,7 @@ class DiscreteGuideTable(_PPFMethodMixin, Method):
         /,
         dist: onp.ToFloat | onp.ToFloatND | _HasPMF,
         *,
-        domain: tuple[float, float] | None = ...,
-        guide_factor: float = ...,
+        domain: tuple[float | int | bool, float | int | bool] | None = ...,
+        guide_factor: float | int | bool = ...,
         random_state: ToRNG = ...,
     ) -> None: ...

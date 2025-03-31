@@ -7,7 +7,7 @@ from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Floating, Integer
 
 _Real: TypeAlias = Integer | Floating
-_ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
+_ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int | bool, int | bool]]
 
 ###
 
@@ -21,8 +21,8 @@ def validate_graph(
     dense_output: bool = True,
     copy_if_dense: bool = False,
     copy_if_sparse: bool = False,
-    null_value_in: float = 0,
-    null_value_out: float = ...,
+    null_value_in: float | int | bool = 0,
+    null_value_out: float | int | bool = ...,
     infinity_null: bool = True,
     nan_null: bool = True,
 ) -> onp.Array2D[_Real]: ...

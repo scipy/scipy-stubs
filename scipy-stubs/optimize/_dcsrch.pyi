@@ -3,65 +3,74 @@ from typing import Final, TypeAlias
 
 import optype.numpy as onp
 
-_Fun: TypeAlias = Callable[[float], onp.ToFloat]
+_Fun: TypeAlias = Callable[[float | int | bool], onp.ToFloat]
 
 ###
 
 class DCSRCH:
     phi: Final[_Fun]
     derphi: Final[_Fun]
-    ftol: Final[float]
-    gtol: Final[float]
-    xtol: Final[float]
-    stpmin: Final[float]
-    stpmax: Final[float]
+    ftol: Final[float | int | bool]
+    gtol: Final[float | int | bool]
+    xtol: Final[float | int | bool]
+    stpmin: Final[float | int | bool]
+    stpmax: Final[float | int | bool]
 
-    stage: int | None
-    ginit: float | None
-    gtest: float | None
-    gx: float | None
-    gy: float | None
-    finit: float | None
-    fx: float | None
-    fy: float | None
-    stx: float | None
-    sty: float | None
-    stmin: float | None
-    stmax: float | None
-    width: float | None
-    width1: float | None
+    stage: int | bool | None
+    ginit: float | int | bool | None
+    gtest: float | int | bool | None
+    gx: float | int | bool | None
+    gy: float | int | bool | None
+    finit: float | int | bool | None
+    fx: float | int | bool | None
+    fy: float | int | bool | None
+    stx: float | int | bool | None
+    sty: float | int | bool | None
+    stmin: float | int | bool | None
+    stmax: float | int | bool | None
+    width: float | int | bool | None
+    width1: float | int | bool | None
 
     def __init__(
         self,
         /,
         phi: _Fun,
         derphi: _Fun,
-        ftol: float,
-        gtol: float,
-        xtol: float,
-        stpmin: float,
-        stpmax: float,
+        ftol: float | int | bool,
+        gtol: float | int | bool,
+        xtol: float | int | bool,
+        stpmin: float | int | bool,
+        stpmax: float | int | bool,
     ) -> None: ...
     def __call__(
         self,
         /,
-        alpha1: float,
-        phi0: float | None = None,
-        derphi0: float | None = None,
-        maxiter: int = 100,
-    ) -> tuple[float | None, float, float, bytes]: ...  # alpha, phi(alpha), phi(0), task
+        alpha1: float | int | bool,
+        phi0: float | int | bool | None = None,
+        derphi0: float | int | bool | None = None,
+        maxiter: int | bool = 100,
+    ) -> tuple[float | int | bool | None, float | int | bool, float | int | bool, bytes]: ...  # alpha, phi(alpha), phi(0), task
 
 def dcstep(
-    stx: float,
-    fx: float,
-    dx: float,
-    sty: float,
-    fy: float,
-    dy: float,
-    stp: float,
-    fp: float,
-    dp: float,
+    stx: float | int | bool,
+    fx: float | int | bool,
+    dx: float | int | bool,
+    sty: float | int | bool,
+    fy: float | int | bool,
+    dy: float | int | bool,
+    stp: float | int | bool,
+    fp: float | int | bool,
+    dp: float | int | bool,
     brackt: bool,
-    stpmin: float,
-    stpmax: float,
-) -> tuple[float, float, float, float, float, float, float, bool]: ...  # stx, fx, dx, sty, fy, dy, stp, brackt
+    stpmin: float | int | bool,
+    stpmax: float | int | bool,
+) -> tuple[
+    float | int | bool,
+    float | int | bool,
+    float | int | bool,
+    float | int | bool,
+    float | int | bool,
+    float | int | bool,
+    float | int | bool,
+    bool,
+]: ...  # stx, fx, dx, sty, fy, dy, stp, brackt

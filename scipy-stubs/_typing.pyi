@@ -80,6 +80,7 @@ RNG: TypeAlias = np.random.Generator | np.random.RandomState
 # NOTE: This is less incorrect and more accurate than the current `np.random.default_rng` `seed` param annotation.
 ToRNG: TypeAlias = (
     int
+    | bool
     | np.integer[Any]
     | np.timedelta64
     | onp.ArrayND[np.integer[Any] | np.timedelta64 | np.flexible | np.object_]

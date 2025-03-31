@@ -25,28 +25,28 @@ def _minimize_trustregion_exact(
     hess: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat2D] | None = None,
     **trust_region_options: Unpack[_TrustRegionOptions],
 ) -> OptimizeResult: ...
-def estimate_smallest_singular_value(U: onp.ToFloat2D) -> tuple[float | np.float64, onp.Array1D[np.float64]]: ...
-def gershgorin_bounds(H: onp.ToFloat2D) -> tuple[float | np.float64, float | np.float64]: ...
+def estimate_smallest_singular_value(U: onp.ToFloat2D) -> tuple[float | int | bool | np.float64, onp.Array1D[np.float64]]: ...
+def gershgorin_bounds(H: onp.ToFloat2D) -> tuple[float | int | bool | np.float64, float | int | bool | np.float64]: ...
 def singular_leading_submatrix(
     A: onp.ToFloat2D,
     U: onp.ToFloat2D,
     k: onp.ToJustInt,
-) -> tuple[float | np.float64, onp.Array1D[np.float64]]: ...
+) -> tuple[float | int | bool | np.float64, onp.Array1D[np.float64]]: ...
 
 class IterativeSubproblem(BaseQuadraticSubproblem):
-    UPDATE_COEFF: ClassVar[float] = 0.01
-    EPS: ClassVar[float | np.float64] = ...
+    UPDATE_COEFF: ClassVar[float | int | bool] = 0.01
+    EPS: ClassVar[float | int | bool | np.float64] = ...
 
-    CLOSE_TO_ZERO: Final[float | np.float64]
-    dimension: Final[int]
-    previous_tr_radius: int
-    niter: int
-    k_easy: float | np.float64
-    k_hard: float | np.float64
-    hess_inf: float | np.float64
-    hess_fro: float | np.float64
-    lambda_lb: float | np.float64 | None  # intially `None`
-    lambda_current: float | np.float64  # set in `solve()`
+    CLOSE_TO_ZERO: Final[float | int | bool | np.float64]
+    dimension: Final[int | bool]
+    previous_tr_radius: int | bool
+    niter: int | bool
+    k_easy: float | int | bool | np.float64
+    k_hard: float | int | bool | np.float64
+    hess_inf: float | int | bool | np.float64
+    hess_fro: float | int | bool | np.float64
+    lambda_lb: float | int | bool | np.float64 | None  # intially `None`
+    lambda_current: float | int | bool | np.float64  # set in `solve()`
 
     def __init__(
         self,

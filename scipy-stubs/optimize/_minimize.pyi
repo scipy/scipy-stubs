@@ -21,14 +21,16 @@ _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
 _Args: TypeAlias = tuple[object, ...]
 
-_Float: TypeAlias = float | np.float64
-_Floating: TypeAlias = float | npc.floating
+_Float: TypeAlias = float | int | bool | np.float64
+_Floating: TypeAlias = float | int | bool | npc.floating
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 
 _RT = TypeVar("_RT")
 # NOTE: `ABCPolyBase` is required to work around https://github.com/scipy/scipy-stubs/issues/465
-_Fun0D: TypeAlias = Callable[Concatenate[float, ...], _RT] | Callable[Concatenate[np.float64, ...], _RT] | ABCPolyBase
+_Fun0D: TypeAlias = (
+    Callable[Concatenate[float | int | bool, ...], _RT] | Callable[Concatenate[np.float64, ...], _RT] | ABCPolyBase
+)
 _Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], _RT]
 _Fun1Dp: TypeAlias = Callable[Concatenate[_Float1D, _Float1D, ...], _RT]
 
@@ -73,22 +75,22 @@ class _MinimizeOptions(TypedDict, total=False):
     # Nelder-Mead, Powell, CG, BFGS, L-BFGS-B, Newton-CG, TNC, COBYLA, COBYQA, SLSQP, trust-constr
     disp: onp.ToBool
     # Nelder-Mead, Powell, CG, BFGS, L-BFGS-B, Newton-CG, COBYLA, SLSQP, trust-constr
-    maxiter: int
+    maxiter: int | bool
     # Nelder-Mead, Powell, COBYQA
-    maxfev: int
+    maxfev: int | bool
     # TNC
-    maxCGit: int
+    maxCGit: int | bool
     offset: _Floating
     stepmx: _Floating
     accuracy: _Floating
     minfev: _Floating
     rescale: _Floating
     # L-BFGS-B, TNC
-    maxfun: int
+    maxfun: int | bool
     # L-BFGS-B
-    maxcor: int
-    iprint: int
-    maxls: int
+    maxcor: int | bool
+    iprint: int | bool
+    maxls: int | bool
     # Nelder-Mead
     initial_simplex: onp.ToFloatND
     adaptive: onp.ToBool
@@ -144,7 +146,7 @@ class _MinimizeOptions(TypedDict, total=False):
 
 @type_check_only
 class _MinimizeScalarOptionsCommon(TypedDict, total=False):
-    maxiter: int
+    maxiter: int | bool
     disp: Literal[0, 1, 2, 3]
 
 @type_check_only
@@ -164,8 +166,8 @@ class _MinimizeScalarResultBase(_OptimizeResult):
 class _MinimizeScalarResult(_MinimizeScalarResultBase):
     success: bool
     message: LiteralString
-    nit: int
-    nfev: int
+    nit: int | bool
+    nfev: int | bool
 
 ###
 
@@ -176,18 +178,18 @@ MINIMIZE_SCALAR_METHODS: Final[list[MethodMinimizeScalar]] = ...
 # NOTE: This `OptimizeResult` "flavor" is specific to `minimize`
 class OptimizeResult(_OptimizeResult):
     success: bool
-    status: int
+    status: int | bool
     message: LiteralString
     x: _Float1D
-    nit: int
-    maxcv: float  # requires `bounds`
+    nit: int | bool
+    maxcv: float | int | bool  # requires `bounds`
     fun: _Float
-    nfev: int
+    nfev: int | bool
     jac: _Float1D  # requires `jac`
-    njev: int  # requires `jac`
+    njev: int | bool  # requires `jac`
     hess: _Float2D  # requires `hess` or `hessp`
     hess_inv: _Float2D | LinearOperator  # requires `hess` or `hessp`, depends on solver
-    nhev: int  # requires `hess` or `hessp`
+    nhev: int | bool  # requires `hess` or `hessp`
 
 @overload  # `fun` return scalar, `jac` not truthy
 def minimize(

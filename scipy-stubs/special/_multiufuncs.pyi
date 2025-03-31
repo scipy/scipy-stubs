@@ -40,7 +40,7 @@ _Complex0D: TypeAlias = onp.Array0D[np.complex128]
 _Complex1D: TypeAlias = onp.Array1D[np.complex128]
 _Complex2D: TypeAlias = onp.Array2D[np.complex128]
 _Complex3D: TypeAlias = onp.Array3D[np.complex128]
-_Complex4D: TypeAlias = onp.ArrayND[np.complex128, tuple[int, int, int, int]]
+_Complex4D: TypeAlias = onp.ArrayND[np.complex128, tuple[int | bool, int | bool, int | bool, int | bool]]
 _Complex1_D: TypeAlias = onp.Array[onp.AtLeast1D, np.complex128]
 _Complex2_D: TypeAlias = onp.Array[onp.AtLeast2D, np.complex128]
 _Complex3_D: TypeAlias = onp.Array[onp.AtLeast3D, np.complex128]
@@ -75,16 +75,16 @@ class _LegendreP(Protocol):
 
 @type_check_only
 class _LegendrePAll(Protocol):
-    @overload  # float
+    @overload  # float | int | bool
     def __call__(self, /, n: onp.ToInt, z: _ToFloat_D, *, diff_n: _Dn = 0) -> _Float3_D: ...
-    @overload  # complex
+    @overload  # complex | float | int | bool
     def __call__(self, /, n: onp.ToInt, z: _ToJustComplex_D, *, diff_n: _Dn = 0) -> _Complex3_D: ...
-    @overload  # float or complex
+    @overload  # float | int | bool or complex | float | int | bool
     def __call__(self, /, n: onp.ToInt, z: _ToComplex_D, *, diff_n: _Dn = 0) -> _Float3_D | _Complex3_D: ...
 
 @type_check_only
 class _AssocLegendreP(Protocol):
-    @overload  # float
+    @overload  # float | int | bool
     def __call__(
         self,
         /,
@@ -96,7 +96,7 @@ class _AssocLegendreP(Protocol):
         norm: onp.ToBool = False,
         diff_n: _Dn = 0,
     ) -> _Float1_D: ...
-    @overload  # complex
+    @overload  # complex | float | int | bool
     def __call__(
         self,
         /,
@@ -108,7 +108,7 @@ class _AssocLegendreP(Protocol):
         norm: onp.ToBool = False,
         diff_n: _Dn = 0,
     ) -> _Complex1_D: ...
-    @overload  # float or complex
+    @overload  # float | int | bool or complex | float | int | bool
     def __call__(
         self,
         /,
@@ -123,7 +123,7 @@ class _AssocLegendreP(Protocol):
 
 @type_check_only
 class _AssocLegendrePAll(Protocol):
-    @overload  # z: 0-d float
+    @overload  # z: 0-d float | int | bool
     def __call__(
         self,
         /,
@@ -135,7 +135,7 @@ class _AssocLegendrePAll(Protocol):
         norm: onp.ToBool = False,
         diff_n: _Dn = 0,
     ) -> _Float3D: ...
-    @overload  # z: >=0-d float
+    @overload  # z: >=0-d float | int | bool
     def __call__(
         self,
         /,
@@ -147,7 +147,7 @@ class _AssocLegendrePAll(Protocol):
         norm: onp.ToBool = False,
         diff_n: _Dn = 0,
     ) -> _Float3_D: ...
-    @overload  # z: 0-d complex
+    @overload  # z: 0-d complex | float | int | bool
     def __call__(
         self,
         /,
@@ -159,7 +159,7 @@ class _AssocLegendrePAll(Protocol):
         norm: onp.ToBool = False,
         diff_n: _Dn = 0,
     ) -> _Complex3D: ...
-    @overload  # z: >=0-d complex
+    @overload  # z: >=0-d complex | float | int | bool
     def __call__(
         self,
         /,
@@ -171,7 +171,7 @@ class _AssocLegendrePAll(Protocol):
         norm: onp.ToBool = False,
         diff_n: _Dn = 0,
     ) -> _Complex3_D: ...
-    @overload  # z: >=0-d float or complex
+    @overload  # z: >=0-d float | int | bool or complex | float | int | bool
     def __call__(
         self,
         /,

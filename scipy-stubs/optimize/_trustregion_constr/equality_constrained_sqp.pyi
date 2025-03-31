@@ -11,7 +11,7 @@ _StateT = TypeVar("_StateT")
 
 def default_scaling(x: onp.ToArray1D) -> dia_matrix: ...
 def equality_constrained_sqp(
-    fun_and_constr: Callable[[onp.Array1D[np.float64]], tuple[float | np.floating[Any], onp.ToFloat1D]],
+    fun_and_constr: Callable[[onp.Array1D[np.float64]], tuple[float | int | bool | np.floating[Any], onp.ToFloat1D]],
     grad_and_jac: Callable[[onp.Array1D[np.float64]], tuple[onp.ToFloat1D, onp.ToFloat2D]],
     lagr_hess: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat2D],
     x0: onp.ToFloat1D,
@@ -28,7 +28,7 @@ def equality_constrained_sqp(
             np.float64,  # const_violation
             np.float64,  # trust_radius
             np.float64,  # penalty
-            dict[str, int],  # cg_info
+            dict[str, int | bool],  # cg_info
         ],
         onp.ToBool,
     ],

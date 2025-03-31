@@ -16,10 +16,10 @@ _Self2DT = TypeVar("_Self2DT", bound=IndexMixin[Any, _2D])
 
 _ToInt: TypeAlias = str | op.CanInt | op.CanIndex | op.CanTrunc | Buffer
 _ToFloat: TypeAlias = str | op.CanFloat | op.CanIndex | Buffer
-_ToComplex: TypeAlias = str | op.CanComplex | op.CanFloat | op.CanIndex | complex
+_ToComplex: TypeAlias = str | op.CanComplex | op.CanFloat | op.CanIndex | complex | float | int | bool
 
-_1D: TypeAlias = tuple[int]  # noqa: PYI042
-_2D: TypeAlias = tuple[int, int]  # noqa: PYI042
+_1D: TypeAlias = tuple[int | bool]  # noqa: PYI042
+_2D: TypeAlias = tuple[int | bool, int | bool]  # noqa: PYI042
 
 _ToIndex1D: TypeAlias = op.CanIndex | tuple[op.CanIndex]
 _ToIndex2D: TypeAlias = tuple[op.CanIndex, op.CanIndex]
@@ -33,13 +33,13 @@ _ToSlice2D: TypeAlias = (
     | onp.ToBool2D
     | list[bool]
     | list[np.bool_]
-    | list[int]
+    | list[int | bool]
     | _spbase[np.bool_, _2D]
 )
 
 ###
 
-INT_TYPES: tuple[type[int], type[np.integer[Any]]] = ...
+INT_TYPES: tuple[type[int | bool], type[np.integer[Any]]] = ...
 
 class IndexMixin(Generic[_SCT, _ShapeT_co]):
     @overload

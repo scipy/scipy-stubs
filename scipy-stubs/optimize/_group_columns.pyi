@@ -8,10 +8,10 @@ import optype.numpy as onp
 
 __pythran__: Final[tuple[LiteralString, LiteralString]]
 
-# (int, int, int[:, :]) -> int[:]
+# (int | bool, int | bool, int | bool[:, :]) -> int | bool[:]
 def group_dense(m: onp.ToJustInt, n: onp.ToJustInt, A: onp.ToJustInt2D) -> onp.Array1D[np.int32]: ...
 
-# (int, int, int[:], int[:]) -> int[:]
+# (int | bool, int | bool, int | bool[:], int | bool[:]) -> int | bool[:]
 def group_sparse(
     m: onp.ToJustInt,
     n: onp.ToJustInt,

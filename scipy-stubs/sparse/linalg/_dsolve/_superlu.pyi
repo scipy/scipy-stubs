@@ -17,8 +17,8 @@ _Inexact2D: TypeAlias = onp.Array2D[np.float32 | np.float64 | np.complex64 | np.
 
 @final
 class SuperLU:
-    shape: tuple[int, int]
-    nnz: int
+    shape: tuple[int | bool, int | bool]
+    nnz: int | bool
     perm_r: onp.Array1D[np.intp]
     perm_c: onp.Array1D[np.intp]
     L: csc_array[np.float64 | np.complex128]
@@ -48,7 +48,7 @@ def gssv(
     B: _Inexact2D,
     csc: onp.ToBool = 0,
     options: Mapping[str, object] = ...,
-) -> tuple[csc_matrix | csr_matrix, int]: ...
+) -> tuple[csc_matrix | csr_matrix, int | bool]: ...
 
 #
 def gstrf(
@@ -76,4 +76,4 @@ def gstrs(
     U_rowind: _Int1D,
     U_colptr: _Int1D,
     B: _Inexact2D,
-) -> tuple[_Float1D | _Complex1D | _Float2D | _Complex2D, int]: ...
+) -> tuple[_Float1D | _Complex1D | _Float2D | _Complex2D, int | bool]: ...

@@ -36,11 +36,11 @@ def bicg(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
     callback: _Callback[_FloatT] | None = None,
-) -> tuple[onp.Array1D[_FloatT], int]: ...
-@overload  # complex
+) -> tuple[onp.Array1D[_FloatT], int | bool]: ...
+@overload  # complex | float | int | bool
 def bicg(
     A: _ToLinearOperator[_ComplexT],
     b: onp.ToComplex1D,
@@ -48,10 +48,10 @@ def bicg(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_ComplexT] | None = None,
     callback: _Callback[_ComplexT] | None = None,
-) -> tuple[onp.Array1D[_ComplexT], int]: ...
+) -> tuple[onp.Array1D[_ComplexT], int | bool]: ...
 
 #
 @overload  # real
@@ -62,11 +62,11 @@ def bicgstab(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
     callback: _Callback[_FloatT] | None = None,
-) -> tuple[onp.Array1D[_FloatT], int]: ...
-@overload  # complex
+) -> tuple[onp.Array1D[_FloatT], int | bool]: ...
+@overload  # complex | float | int | bool
 def bicgstab(
     A: _ToLinearOperator[_ComplexT],
     b: onp.ToComplex1D,
@@ -74,10 +74,10 @@ def bicgstab(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_ComplexT] | None = None,
     callback: _Callback[_ComplexT] | None = None,
-) -> tuple[onp.Array1D[_ComplexT], int]: ...
+) -> tuple[onp.Array1D[_ComplexT], int | bool]: ...
 
 #
 @overload  # real
@@ -88,11 +88,11 @@ def cg(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
     callback: _Callback[_FloatT] | None = None,
-) -> tuple[onp.Array1D[_FloatT], int]: ...
-@overload  # complex
+) -> tuple[onp.Array1D[_FloatT], int | bool]: ...
+@overload  # complex | float | int | bool
 def cg(
     A: _ToLinearOperator[_ComplexT],
     b: onp.ToComplex1D,
@@ -100,10 +100,10 @@ def cg(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_ComplexT] | None = None,
     callback: _Callback[_ComplexT] | None = None,
-) -> tuple[onp.Array1D[_ComplexT], int]: ...
+) -> tuple[onp.Array1D[_ComplexT], int | bool]: ...
 
 #
 def cgs(
@@ -113,10 +113,10 @@ def cgs(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
     callback: _Callback[_FloatT] | None = None,
-) -> tuple[onp.Array1D[_FloatT], int]: ...
+) -> tuple[onp.Array1D[_FloatT], int | bool]: ...
 
 #
 @overload  # real, callback_type: {"pr_norm", "legacy"} | None = ...
@@ -127,12 +127,12 @@ def gmres(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    restart: int | None = None,
-    maxiter: int | None = None,
+    restart: int | bool | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_ToFloat] | None = None,
-    callback: Callable[[float], _Ignored] | Callable[[np.float64], _Ignored] | None = None,
+    callback: Callable[[float | int | bool], _Ignored] | Callable[[np.float64], _Ignored] | None = None,
     callback_type: Literal["pr_norm", "legacy"] | None = ...,
-) -> tuple[onp.Array1D[_FloatT], int]: ...
+) -> tuple[onp.Array1D[_FloatT], int | bool]: ...
 @overload  # real, callback_type: {"x"}
 def gmres(
     A: _ToLinearOperator[_FloatT | _ToInt],
@@ -141,13 +141,13 @@ def gmres(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    restart: int | None = None,
-    maxiter: int | None = None,
+    restart: int | bool | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_ToFloat] | None = None,
     callback: _Callback[_FloatT] | None = None,
     callback_type: Literal["x"],
-) -> tuple[onp.Array1D[_FloatT], int]: ...
-@overload  # complex, callback_type: {"pr_norm", "legacy"} | None = ...
+) -> tuple[onp.Array1D[_FloatT], int | bool]: ...
+@overload  # complex | float | int | bool, callback_type: {"pr_norm", "legacy"} | None = ...
 def gmres(
     A: _ToLinearOperator[_ComplexT],
     b: onp.ToComplex1D,
@@ -155,13 +155,13 @@ def gmres(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    restart: int | None = None,
-    maxiter: int | None = None,
+    restart: int | bool | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_ToFloat] | None = None,
-    callback: Callable[[float], _Ignored] | Callable[[np.float64], _Ignored] | None = None,
+    callback: Callable[[float | int | bool], _Ignored] | Callable[[np.float64], _Ignored] | None = None,
     callback_type: Literal["pr_norm", "legacy"] | None = ...,
-) -> tuple[onp.Array1D[_ComplexT], int]: ...
-@overload  # complex, callback_type: {"x"}
+) -> tuple[onp.Array1D[_ComplexT], int | bool]: ...
+@overload  # complex | float | int | bool, callback_type: {"x"}
 def gmres(
     A: _ToLinearOperator[_ComplexT],
     b: onp.ToComplex1D,
@@ -169,12 +169,12 @@ def gmres(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    restart: int | None = None,
-    maxiter: int | None = None,
+    restart: int | bool | None = None,
+    maxiter: int | bool | None = None,
     M: _ToLinearOperator[_ToComplex] | None = None,
     callback: _Callback[_ComplexT] | None = None,
     callback_type: Literal["x"],
-) -> tuple[onp.Array1D[_ComplexT], int]: ...
+) -> tuple[onp.Array1D[_ComplexT], int | bool]: ...
 
 #
 @overload  # real
@@ -185,12 +185,12 @@ def qmr(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M1: _ToLinearOperator[_ToFloat] | None = None,
     M2: _ToLinearOperator[_ToFloat] | None = None,
     callback: _Callback[_FloatT] | None = None,
-) -> tuple[onp.Array1D[_FloatT], int]: ...
-@overload  # complex
+) -> tuple[onp.Array1D[_FloatT], int | bool]: ...
+@overload  # complex | float | int | bool
 def qmr(
     A: _ToLinearOperator[_ComplexT],
     b: onp.ToComplex1D,
@@ -198,8 +198,8 @@ def qmr(
     *,
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     M1: _ToLinearOperator[_ToComplex] | None = None,
     M2: _ToLinearOperator[_ToComplex] | None = None,
     callback: _Callback[_ComplexT] | None = None,
-) -> tuple[onp.Array1D[_ComplexT], int]: ...
+) -> tuple[onp.Array1D[_ComplexT], int | bool]: ...

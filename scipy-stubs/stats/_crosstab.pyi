@@ -42,20 +42,20 @@ def crosstab(
 ) -> CrosstabResult[np.bool_]: ...
 @overload
 def crosstab(
-    *args: Sequence[int],
-    levels: Sequence[int] | None = None,
+    *args: Sequence[int | bool],
+    levels: Sequence[int | bool] | None = None,
     sparse: bool = False,
 ) -> CrosstabResult[np.int_] | CrosstabResult[np.bool_]: ...
 @overload
 def crosstab(
-    *args: Sequence[float],
-    levels: Sequence[float] | None = None,
+    *args: Sequence[float | int | bool],
+    levels: Sequence[float | int | bool] | None = None,
     sparse: bool = False,
 ) -> CrosstabResult[np.float64] | CrosstabResult[np.int_] | CrosstabResult[np.bool_]: ...
 @overload
 def crosstab(
-    *args: Sequence[complex],
-    levels: Sequence[complex] | None = None,
+    *args: Sequence[complex | float | int | bool],
+    levels: Sequence[complex | float | int | bool] | None = None,
     sparse: bool = False,
 ) -> CrosstabResult[np.complex128] | CrosstabResult[np.float64] | CrosstabResult[np.int_] | CrosstabResult[np.bool_]: ...
 @overload

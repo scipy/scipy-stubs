@@ -32,7 +32,7 @@ def convolve_z(
 @overload
 def init_convolution_kernel(
     n: onp.ToInt,
-    kernel_func: Callable[[int], float],
+    kernel_func: Callable[[int | bool], float | int | bool],
     d: onp.ToInt = 0,
     zero_nyquist: onp.ToInt | None = None,
     kernel_func_extra_args: tuple[()] = (),
@@ -40,7 +40,7 @@ def init_convolution_kernel(
 @overload
 def init_convolution_kernel(
     n: onp.ToInt,
-    kernel_func: Callable[Concatenate[int, ...], float],
+    kernel_func: Callable[Concatenate[int | bool, ...], float | int | bool],
     d: onp.ToInt,
     zero_nyquist: onp.ToInt | None,
     kernel_func_extra_args: tuple[object, ...],
@@ -48,7 +48,7 @@ def init_convolution_kernel(
 @overload
 def init_convolution_kernel(
     n: onp.ToInt,
-    kernel_func: Callable[Concatenate[int, ...], float],
+    kernel_func: Callable[Concatenate[int | bool, ...], float | int | bool],
     d: onp.ToInt = 0,
     zero_nyquist: onp.ToInt | None = None,
     *,

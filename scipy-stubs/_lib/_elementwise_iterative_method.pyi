@@ -17,7 +17,7 @@ _FuncRealT = TypeVar("_FuncRealT", bound=Callable[Concatenate[onp.ArrayND[np.flo
 _ModuleT = TypeVar("_ModuleT", bound=ModuleType, default=ModuleType)
 _WorkT = TypeVar("_WorkT", bound=Mapping[str, Any])
 _ResT = TypeVar("_ResT", bound=_RichResult, default=_RichResult)
-_ToShapeT = TypeVar("_ToShapeT", bound=op.CanIndex | tuple[op.CanIndex, ...], default=tuple[int, ...])
+_ToShapeT = TypeVar("_ToShapeT", bound=op.CanIndex | tuple[op.CanIndex, ...], default=tuple[int | bool, ...])
 
 _Ignored: TypeAlias = _ResT
 
@@ -31,7 +31,7 @@ _EINPUTERR: Final = -5
 _ECONVERGED: Final = 0
 _EINPROGRESS: Final = 1
 
-# TODO: complex
+# TODO: complex | float | int | bool
 def _initialize(
     func: _FuncRealT,
     xs: Sequence[onp.ToFloat1D],
@@ -54,7 +54,7 @@ def _loop(
     work: _ResT,
     callback: Callable[[_ResT], _Ignored],
     shape: Sequence[op.CanIndex],
-    maxiter: int,
+    maxiter: int | bool,
     func: Callable[[onp.Array[_ShapeT, _FloatT]], onp.ToComplexND],
     args: tuple[onp.ArrayND[np.floating[Any]], ...],
     dtype: np.inexact[Any],
@@ -62,7 +62,7 @@ def _loop(
     post_func_eval: Callable[[onp.Array[_ShapeT, _FloatT], onp.Array[_ShapeT, np.floating[Any]], _ResT], _Ignored],
     check_termination: Callable[[_ResT], onp.Array[_ShapeT, np.bool_]],
     post_termination_check: Callable[[_ResT], _Ignored],
-    customize_result: Callable[[_ResT, _ToShapeT], tuple[int, ...]],
+    customize_result: Callable[[_ResT, _ToShapeT], tuple[int | bool, ...]],
     res_work_pairs: Iterable[tuple[str, str]],
     xp: ModuleType,
     preserve_shape: bool | None = False,
@@ -97,7 +97,7 @@ def _prepare_result(
     res_work_pairs: Iterable[tuple[str, str]],
     active: onp.Array[_ShapeT, np.integer[Any]],
     shape: _ToShapeT,
-    customize_result: Callable[[_ResT, _ToShapeT], tuple[int, ...]],
+    customize_result: Callable[[_ResT, _ToShapeT], tuple[int | bool, ...]],
     preserve_shape: bool | None,
     xp: ModuleType,
 ) -> _ResT: ...

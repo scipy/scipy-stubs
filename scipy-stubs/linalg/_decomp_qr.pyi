@@ -23,7 +23,7 @@ _ModeRaw: TypeAlias = Literal["raw"]
 ###
 
 # 2 * (3 + 4 + 4) = 22 overloads (10/22 handle the positional cases of `mode`/`pivoting`)
-@overload  # float, mode: {full, economic}, pivoting: {False}
+@overload  # float | int | bool, mode: {full, economic}, pivoting: {False}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool = False,
@@ -32,7 +32,7 @@ def qr(
     pivoting: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> _Tuple2[_Float2D]: ...
-@overload  # float, mode: {full, economic}, pivoting: {True}
+@overload  # float | int | bool, mode: {full, economic}, pivoting: {True}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool,
@@ -41,7 +41,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Float2D, _Float2D, _Int1D]: ...
-@overload  # float, mode: {full, economic}, *, pivoting: {True}
+@overload  # float | int | bool, mode: {full, economic}, *, pivoting: {True}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool = False,
@@ -51,7 +51,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Float2D, _Float2D, _Int1D]: ...
-@overload  # float, mode: {r}, pivoting: {False}
+@overload  # float | int | bool, mode: {r}, pivoting: {False}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool,
@@ -60,7 +60,7 @@ def qr(
     pivoting: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Float2D]: ...
-@overload  # float, mode: {r}, pivoting: {True}
+@overload  # float | int | bool, mode: {r}, pivoting: {True}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool,
@@ -69,7 +69,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Float2D, _Int1D]: ...
-@overload  # float, *, mode: {r}, pivoting: {False}
+@overload  # float | int | bool, *, mode: {r}, pivoting: {False}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool = False,
@@ -79,7 +79,7 @@ def qr(
     pivoting: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Float2D]: ...
-@overload  # float, *, mode: {r}, pivoting: {True}
+@overload  # float | int | bool, *, mode: {r}, pivoting: {True}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool = False,
@@ -89,7 +89,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Float2D, _Int1D]: ...
-@overload  # float, mode: {raw}, pivoting: {False}
+@overload  # float | int | bool, mode: {raw}, pivoting: {False}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool,
@@ -98,7 +98,7 @@ def qr(
     pivoting: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_Float2D], _Float2D]: ...
-@overload  # float, mode: {raw}, pivoting: {True}
+@overload  # float | int | bool, mode: {raw}, pivoting: {True}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool,
@@ -107,7 +107,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_Float2D], _Float2D, _Int1D]: ...
-@overload  # float, *, mode: {raw}, pivoting: {False}
+@overload  # float | int | bool, *, mode: {raw}, pivoting: {False}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool = False,
@@ -117,7 +117,7 @@ def qr(
     pivoting: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_Float2D], _Float2D]: ...
-@overload  # float, *, mode: {raw}, pivoting: {True}
+@overload  # float | int | bool, *, mode: {raw}, pivoting: {True}
 def qr(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool = False,
@@ -127,7 +127,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_Float2D], _Float2D, _Int1D]: ...
-@overload  # complex, mode: {full, economic}, pivoting: {False}
+@overload  # complex | float | int | bool, mode: {full, economic}, pivoting: {False}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool = False,
@@ -136,7 +136,7 @@ def qr(
     pivoting: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> _Tuple2[_Complex2D]: ...
-@overload  # complex, mode: {full, economic}, pivoting: {True}
+@overload  # complex | float | int | bool, mode: {full, economic}, pivoting: {True}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool,
@@ -145,7 +145,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Complex2D, _Complex2D, _Int1D]: ...
-@overload  # complex, mode: {full, economic}, *, pivoting: {True}
+@overload  # complex | float | int | bool, mode: {full, economic}, *, pivoting: {True}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool = False,
@@ -155,7 +155,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Complex2D, _Complex2D, _Int1D]: ...
-@overload  # complex, mode: {r}, pivoting: {False}
+@overload  # complex | float | int | bool, mode: {r}, pivoting: {False}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool,
@@ -164,7 +164,7 @@ def qr(
     pivoting: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Complex2D]: ...
-@overload  # complex, mode: {r}, pivoting: {True}
+@overload  # complex | float | int | bool, mode: {r}, pivoting: {True}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool,
@@ -173,7 +173,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Complex2D, _Int1D]: ...
-@overload  # complex, *, mode: {r}, pivoting: {False}
+@overload  # complex | float | int | bool, *, mode: {r}, pivoting: {False}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool = False,
@@ -183,7 +183,7 @@ def qr(
     pivoting: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Complex2D]: ...
-@overload  # complex, *, mode: {r}, pivoting: {True}
+@overload  # complex | float | int | bool, *, mode: {r}, pivoting: {True}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool = False,
@@ -193,7 +193,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Complex2D, _Int1D]: ...
-@overload  # complex, mode: {raw}, pivoting: {False}
+@overload  # complex | float | int | bool, mode: {raw}, pivoting: {False}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool,
@@ -202,7 +202,7 @@ def qr(
     pivoting: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_Complex2D], _Complex2D]: ...
-@overload  # complex, mode: {raw}, pivoting: {True}
+@overload  # complex | float | int | bool, mode: {raw}, pivoting: {True}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool,
@@ -211,7 +211,7 @@ def qr(
     pivoting: Truthy,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_Complex2D], _Complex2D, _Int1D]: ...
-@overload  # complex, *, mode: {raw}, pivoting: {False}
+@overload  # complex | float | int | bool, *, mode: {raw}, pivoting: {False}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool = False,
@@ -221,7 +221,7 @@ def qr(
     pivoting: Falsy = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_Complex2D], _Complex2D]: ...
-@overload  # complex, *, mode: {raw}, pivoting: {True}
+@overload  # complex | float | int | bool, *, mode: {raw}, pivoting: {True}
 def qr(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool = False,
@@ -233,7 +233,7 @@ def qr(
 ) -> tuple[_Tuple2[_Complex2D], _Complex2D, _Int1D]: ...
 
 #
-@overload  # (float[:, :], float[:], pivoting=False) -> (float[:], float[:, :])
+@overload  # (float | int | bool[:, :], float | int | bool[:], pivoting=False) -> (float | int | bool[:], float | int | bool[:, :])
 def qr_multiply(
     a: onp.ToFloat2D,
     c: onp.ToFloatStrict1D,
@@ -243,7 +243,7 @@ def qr_multiply(
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
 ) -> tuple[_Float1D, _Complex2D]: ...
-@overload  # (float[:, :], float[:, :], pivoting=False) -> (float[:, :], float[:, :])
+@overload  # (float | int | bool[:, :], float | int | bool[:, :], pivoting=False) -> (float | int | bool[:, :], float | int | bool[:, :])
 def qr_multiply(
     a: onp.ToFloat2D,
     c: onp.ToFloatStrict2D,
@@ -253,7 +253,7 @@ def qr_multiply(
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
 ) -> tuple[_Float2D, _Complex2D]: ...
-@overload  # (float[:, :], float[:, :?], pivoting=False) -> (float[:, :?], float[:, :])
+@overload  # (float | int | bool[:, :], float | int | bool[:, :?], pivoting=False) -> (float | int | bool[:, :?], float | int | bool[:, :])
 def qr_multiply(
     a: onp.ToFloat2D,
     c: onp.ToFloat1D | onp.ToFloat2D,
@@ -263,7 +263,7 @@ def qr_multiply(
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
 ) -> tuple[_Float1D | _Float2D, _Complex2D]: ...
-@overload  # (float[:, :], float[:, :?], pivoting=True, /) -> (float[:, :?], float[:, :], int[:])
+@overload  # (float | int | bool[:, :], float | int | bool[:, :?], pivoting=True, /) -> (float | int | bool[:, :?], float | int | bool[:, :], int | bool[:])
 def qr_multiply(
     a: onp.ToFloat2D,
     c: onp.ToFloat1D | onp.ToFloat2D,
@@ -273,7 +273,7 @@ def qr_multiply(
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
 ) -> tuple[_Float1D | _Float2D, _Float2D, _Int1D]: ...
-@overload  # (float[:, :], float[:, :?], *, pivoting=True) -> (float[:, :?], float[:, :], int[:])
+@overload  # (float | int | bool[:, :], float | int | bool[:, :?], *, pivoting=True) -> (float | int | bool[:, :?], float | int | bool[:, :], int | bool[:])
 def qr_multiply(
     a: onp.ToFloat2D,
     c: onp.ToFloat1D | onp.ToFloat2D,
@@ -284,7 +284,7 @@ def qr_multiply(
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
 ) -> tuple[_Float1D | _Float2D, _Float2D, _Int1D]: ...
-@overload  # (complex[:, :], complex[:, :?], pivoting=False) -> (complex[:, :?], complex[:, :])
+@overload  # (complex | float | int | bool[:, :], complex | float | int | bool[:, :?], pivoting=False) -> (complex | float | int | bool[:, :?], complex | float | int | bool[:, :])
 def qr_multiply(
     a: onp.ToComplex2D,
     c: onp.ToComplex1D | onp.ToComplex2D,
@@ -294,7 +294,7 @@ def qr_multiply(
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
 ) -> tuple[_Complex1D | _Complex2D, _Complex2D]: ...
-@overload  # (complex[:, :], complex[:, :?], pivoting=True, /) -> (complex[:, :?], complex[:, :], int[:])
+@overload  # (complex | float | int | bool[:, :], complex | float | int | bool[:, :?], pivoting=True, /) -> (complex | float | int | bool[:, :?], complex | float | int | bool[:, :], int | bool[:])
 def qr_multiply(
     a: onp.ToComplex2D,
     c: onp.ToComplex1D | onp.ToComplex2D,
@@ -304,7 +304,7 @@ def qr_multiply(
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
 ) -> tuple[_Complex1D | _Complex2D, _Complex2D, _Int1D]: ...
-@overload  # (complex[:, :], complex[:, :?], *, pivoting=True) -> (complex[:, :?], complex[:, :], int[:])
+@overload  # (complex | float | int | bool[:, :], complex | float | int | bool[:, :?], *, pivoting=True) -> (complex | float | int | bool[:, :?], complex | float | int | bool[:, :], int | bool[:])
 def qr_multiply(
     a: onp.ToComplex2D,
     c: onp.ToComplex1D | onp.ToComplex2D,
@@ -317,7 +317,7 @@ def qr_multiply(
 ) -> tuple[_Complex1D | _Complex2D, _Complex2D, _Int1D]: ...
 
 #
-@overload  # (float[:, :], mode: {"full", "economic"}) -> (float[:, :], float[:, :])
+@overload  # (float | int | bool[:, :], mode: {"full", "economic"}) -> (float | int | bool[:, :], float | int | bool[:, :])
 def rq(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool = False,
@@ -325,7 +325,7 @@ def rq(
     mode: _ModeFullEcon = "full",
     check_finite: onp.ToBool = True,
 ) -> tuple[_Float2D, _Float2D]: ...
-@overload  # (float[:, :], mode: {"r"}, /) -> float[:, :]
+@overload  # (float | int | bool[:, :], mode: {"r"}, /) -> float | int | bool[:, :]
 def rq(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool,
@@ -333,7 +333,7 @@ def rq(
     mode: _ModeR,
     check_finite: onp.ToBool = True,
 ) -> _Float2D: ...
-@overload  # (float[:, :], *, mode: {"r"}) -> float[:, :]
+@overload  # (float | int | bool[:, :], *, mode: {"r"}) -> float | int | bool[:, :]
 def rq(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool = False,
@@ -342,7 +342,7 @@ def rq(
     mode: _ModeR,
     check_finite: onp.ToBool = True,
 ) -> _Float2D: ...
-@overload  # (complex[:, :], mode: {"full", "economic"}) -> (complex[:, :], complex[:, :])
+@overload  # (complex | float | int | bool[:, :], mode: {"full", "economic"}) -> (complex | float | int | bool[:, :], complex | float | int | bool[:, :])
 def rq(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool = False,
@@ -350,7 +350,7 @@ def rq(
     mode: _ModeFullEcon = "full",
     check_finite: onp.ToBool = True,
 ) -> _Tuple2[_Complex2D]: ...
-@overload  # (complex[:, :], mode: {"r"}, /) -> complex[:, :]
+@overload  # (complex | float | int | bool[:, :], mode: {"r"}, /) -> complex | float | int | bool[:, :]
 def rq(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool,
@@ -358,7 +358,7 @@ def rq(
     mode: _ModeR,
     check_finite: onp.ToBool = True,
 ) -> _Complex2D: ...
-@overload  # (complex[:, :], *, mode: {"r"}) -> complex[:, :]
+@overload  # (complex | float | int | bool[:, :], *, mode: {"r"}) -> complex | float | int | bool[:, :]
 def rq(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool = False,

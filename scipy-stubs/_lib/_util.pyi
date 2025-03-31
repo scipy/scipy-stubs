@@ -30,8 +30,8 @@ np_ulong: Final[type[np.uint32 | np.uint64]] = ...  # `np.ulong` on `numpy>=2`, 
 copy_if_needed: Final[Literal[False] | None] = ...  # `None` on `numpy>=2`, otherwise `False`
 
 # NOTE: These aliases are implictly exported at runtime
-IntNumber: TypeAlias = int | npc.integer
-DecimalNumber: TypeAlias = float | npc.floating | npc.integer
+IntNumber: TypeAlias = int | bool | npc.integer
+DecimalNumber: TypeAlias = float | int | bool | npc.floating | npc.integer
 _RNG: TypeAlias = np.random.Generator | np.random.RandomState
 SeedType: TypeAlias = IntNumber | _RNG | None
 GeneratorType = TypeVar("GeneratorType", bound=_RNG)  # noqa: PYI001  # oof
@@ -43,12 +43,12 @@ class VisibleDeprecationWarning(UserWarning): ...
 
 class AxisError(ValueError, IndexError):
     _msg: Final[str | None]
-    axis: Final[int | None]
+    axis: Final[int | bool | None]
     ndim: Final[onp.NDim | None]
     @overload
     def __init__(self, /, axis: str, ndim: None = None, msg_prefix: None = None) -> None: ...
     @overload
-    def __init__(self, /, axis: int, ndim: onp.NDim, msg_prefix: str | None = None) -> None: ...
+    def __init__(self, /, axis: int | bool, ndim: onp.NDim, msg_prefix: str | None = None) -> None: ...
 
 class FullArgSpec(NamedTuple):
     args: list[str]
@@ -69,9 +69,9 @@ class _FunctionWrapper(Generic[_T_contra, _T_co]):
     def __call__(self, /, x: _T_contra) -> _T_co: ...
 
 class MapWrapper(EnterSelfMixin):
-    pool: int | mpp.Pool | None
+    pool: int | bool | mpp.Pool | None
 
-    def __init__(self, /, pool: Callable[[Callable[[_VT], _RT], Iterable[_VT]], Iterable[_RT]] | int = 1) -> None: ...
+    def __init__(self, /, pool: Callable[[Callable[[_VT], _RT], Iterable[_VT]], Iterable[_RT]] | int | bool = 1) -> None: ...
     def __call__(self, /, func: Callable[[_VT], _RT], iterable: Iterable[_VT]) -> Iterable[_RT]: ...
     def terminate(self, /) -> None: ...
     def join(self, /) -> None: ...
@@ -83,7 +83,7 @@ class _RichResult(dict[str, _T]):
     def __setattr__(self, name: str, value: _T, /) -> None: ...
 
 #
-def float_factorial(n: op.CanIndex) -> float: ...  # will be `np.inf` if `n >= 171`
+def float_factorial(n: op.CanIndex) -> float | int | bool: ...  # will be `np.inf` if `n >= 171`
 
 #
 def getfullargspec_no_self(func: Callable[..., object]) -> FullArgSpec: ...
@@ -116,8 +116,8 @@ def rng_integers(
 
 #
 @overload
-def normalize_axis_index(axis: int, ndim: onp.NDim) -> onp.NDim: ...
+def normalize_axis_index(axis: int | bool, ndim: onp.NDim) -> onp.NDim: ...
 @overload
-def normalize_axis_index(axis: int | _AxisT, ndim: _AxisT) -> _AxisT: ...
+def normalize_axis_index(axis: int | bool | _AxisT, ndim: _AxisT) -> _AxisT: ...
 @overload
 def normalize_axis_index(axis: _AxisT, ndim: onp.NDim | _AxisT) -> _AxisT: ...

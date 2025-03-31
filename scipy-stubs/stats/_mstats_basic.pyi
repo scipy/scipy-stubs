@@ -79,11 +79,13 @@ _SCT_bifcmO = TypeVar("_SCT_bifcmO", bound=np.number[Any] | np.timedelta64 | np.
 
 _MArrayOrND: TypeAlias = _SCT | onp.MArray[_SCT]
 
-_NDT_f_co = TypeVar("_NDT_f_co", covariant=True, bound=float | _MArrayOrND[np.floating[Any]], default=onp.MArray[np.float64])
+_NDT_f_co = TypeVar(
+    "_NDT_f_co", covariant=True, bound=float | int | bool | _MArrayOrND[np.floating[Any]], default=onp.MArray[np.float64]
+)
 _NDT_fc_co = TypeVar(
     "_NDT_fc_co",
     covariant=True,
-    bound=complex | _MArrayOrND[np.inexact[Any]],
+    bound=complex | float | int | bool | _MArrayOrND[np.inexact[Any]],
     default=_MArrayOrND[np.float64 | np.complex128],
 )
 
@@ -146,12 +148,12 @@ class FriedmanchisquareResult(_TestResult[np.float64, np.float64]): ...
 class BrunnerMunzelResult(_TestResult[np.float64, np.float64]): ...
 
 class SenSeasonalSlopesResult(BaseBunch[onp.MArray[np.float64], np.float64]):
-    def __new__(_cls, intra_slope: float, inter_slope: float) -> Self: ...
-    def __init__(self, /, intra_slope: float, inter_slope: float) -> None: ...
+    def __new__(_cls, intra_slope: float | int | bool, inter_slope: float | int | bool) -> Self: ...
+    def __init__(self, /, intra_slope: float | int | bool, inter_slope: float | int | bool) -> None: ...
     @property
     def intra_slope(self, /) -> onp.MArray[np.float64]: ...
     @property
-    def inter_slope(self, /) -> float: ...
+    def inter_slope(self, /) -> float | int | bool: ...
 
 # TODO(jorenham): Overloads for scalar vs. array
 # TODO(jorenham): Overloads for specific dtypes
@@ -229,7 +231,7 @@ def kruskal(arg0: onp.ToFloatND, arg1: onp.ToFloatND, /, *args: onp.ToFloatND) -
 @overload
 def ks_1samp(
     x: onp.ToFloatND,
-    cdf: str | Callable[[float], onp.ToFloat],
+    cdf: str | Callable[[float | int | bool], onp.ToFloat],
     args: tuple[()] = (),
     alternative: Alternative = "two-sided",
     method: _KSMethod = "auto",
@@ -237,7 +239,7 @@ def ks_1samp(
 @overload
 def ks_1samp(
     x: onp.ToFloatND,
-    cdf: str | Callable[Concatenate[float, ...], onp.ToFloat],
+    cdf: str | Callable[Concatenate[float | int | bool, ...], onp.ToFloat],
     args: tuple[object, ...],
     alternative: Alternative = "two-sided",
     method: _KSMethod = "auto",
@@ -255,7 +257,7 @@ def ks_2samp(
 @overload
 def kstest(
     data1: onp.ToFloatND,
-    data2: onp.ToFloatND | str | Callable[[float], onp.ToFloat],
+    data2: onp.ToFloatND | str | Callable[[float | int | bool], onp.ToFloat],
     args: tuple[()] = (),
     alternative: Alternative = "two-sided",
     method: _KTestMethod = "auto",
@@ -263,7 +265,7 @@ def kstest(
 @overload
 def kstest(
     data1: onp.ToFloatND,
-    data2: Callable[Concatenate[float, ...], onp.ToFloat],
+    data2: Callable[Concatenate[float | int | bool, ...], onp.ToFloat],
     args: tuple[object, ...],
     alternative: Alternative = "two-sided",
     method: _KTestMethod = "auto",
@@ -284,13 +286,13 @@ def trima(
 ) -> onp.MArray[np.int_]: ...
 @overload
 def trima(
-    a: onp.SequenceND[float],
+    a: onp.SequenceND[float | int | bool],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
 ) -> onp.MArray[np.float64 | np.int_ | np.bool_]: ...
 @overload
 def trima(
-    a: onp.SequenceND[complex],
+    a: onp.SequenceND[complex | float | int | bool],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
 ) -> onp.MArray[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
@@ -311,14 +313,14 @@ def trimr(
 ) -> onp.MArray[np.int_]: ...
 @overload
 def trimr(
-    a: onp.SequenceND[float],
+    a: onp.SequenceND[float | int | bool],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> onp.MArray[np.float64 | np.int_]: ...
 @overload
 def trimr(
-    a: onp.SequenceND[complex],
+    a: onp.SequenceND[complex | float | int | bool],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
@@ -342,7 +344,7 @@ def trim(
 ) -> onp.MArray[np.int_]: ...
 @overload
 def trim(
-    a: onp.SequenceND[float],
+    a: onp.SequenceND[float | int | bool],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     relative: op.CanBool = False,
@@ -350,7 +352,7 @@ def trim(
 ) -> onp.MArray[np.float64 | np.int_]: ...
 @overload
 def trim(
-    a: onp.SequenceND[complex],
+    a: onp.SequenceND[complex | float | int | bool],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     relative: op.CanBool = False,
@@ -369,28 +371,28 @@ def trim(
 @overload
 def trimboth(
     data: onp.SequenceND[op.JustInt | np.int_],
-    proportiontocut: float | np.floating[Any] = 0.2,
+    proportiontocut: float | int | bool | np.floating[Any] = 0.2,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> onp.MArray[np.int_]: ...
 @overload
 def trimboth(
-    data: onp.SequenceND[float],
-    proportiontocut: float | np.floating[Any] = 0.2,
+    data: onp.SequenceND[float | int | bool],
+    proportiontocut: float | int | bool | np.floating[Any] = 0.2,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> onp.MArray[np.float64 | np.int_]: ...
 @overload
 def trimboth(
-    data: onp.SequenceND[complex],
-    proportiontocut: float | np.floating[Any] = 0.2,
+    data: onp.SequenceND[complex | float | int | bool],
+    proportiontocut: float | int | bool | np.floating[Any] = 0.2,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> onp.MArray[np.complex128 | np.float64 | np.int_]: ...
 @overload
 def trimboth(
     data: _ArrayLike[_SCT_bifc],
-    proportiontocut: float | np.floating[Any] = 0.2,
+    proportiontocut: float | int | bool | np.floating[Any] = 0.2,
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> onp.MArray[_SCT_bifc]: ...
@@ -399,23 +401,23 @@ def trimboth(
 @overload
 def trimtail(
     data: onp.SequenceND[op.JustInt | np.int_],
-    proportiontocut: float | np.floating[Any] = 0.2,
+    proportiontocut: float | int | bool | np.floating[Any] = 0.2,
     tail: Literal["left", "right"] = "left",
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> onp.MArray[np.int_]: ...
 @overload
 def trimtail(
-    data: onp.SequenceND[float],
-    proportiontocut: float | np.floating[Any] = 0.2,
+    data: onp.SequenceND[float | int | bool],
+    proportiontocut: float | int | bool | np.floating[Any] = 0.2,
     tail: Literal["left", "right"] = "left",
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
 ) -> onp.MArray[np.float64 | np.int_]: ...
 @overload
 def trimtail(
-    data: onp.SequenceND[complex],
-    proportiontocut: float | np.floating[Any] = 0.2,
+    data: onp.SequenceND[complex | float | int | bool],
+    proportiontocut: float | int | bool | np.floating[Any] = 0.2,
     tail: Literal["left", "right"] = "left",
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
@@ -423,7 +425,7 @@ def trimtail(
 @overload
 def trimtail(
     data: _ArrayLike[_SCT_bifc],
-    proportiontocut: float | np.floating[Any] = 0.2,
+    proportiontocut: float | int | bool | np.floating[Any] = 0.2,
     tail: Literal["left", "right"] = "left",
     inclusive: tuple[op.CanBool, op.CanBool] = (True, True),
     axis: op.CanIndex | None = None,
@@ -510,14 +512,14 @@ def tmin(
 ) -> _MArrayOrND[np.int_]: ...
 @overload
 def tmin(
-    a: onp.SequenceND[float],
+    a: onp.SequenceND[float | int | bool],
     lowerlimit: onp.ToFloat | None = None,
     axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
 ) -> _MArrayOrND[np.float64 | np.int_]: ...
 @overload
 def tmin(
-    a: onp.SequenceND[complex],
+    a: onp.SequenceND[complex | float | int | bool],
     lowerlimit: onp.ToComplex | None = None,
     axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
@@ -540,14 +542,14 @@ def tmax(
 ) -> _MArrayOrND[np.int_]: ...
 @overload
 def tmax(
-    a: onp.SequenceND[float],
+    a: onp.SequenceND[float | int | bool],
     upperlimit: onp.ToFloat | None = None,
     axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
 ) -> _MArrayOrND[np.float64 | np.int_]: ...
 @overload
 def tmax(
-    a: onp.SequenceND[complex],
+    a: onp.SequenceND[complex | float | int | bool],
     upperlimit: onp.ToComplex | None = None,
     axis: op.CanIndex | None = 0,
     inclusive: AnyBool = True,
@@ -607,7 +609,7 @@ def winsorize(
     nan_policy: NanPolicy = "propagate",
 ) -> onp.MArray[np.complex128 | np.floating[Any] | np.int_]: ...
 
-# TODO(jorenham): Overloads for complex array-likes
+# TODO(jorenham): Overloads for complex | float | int | bool array-likes
 def moment(
     a: onp.ToFloatND,
     moment: onp.ToInt | onp.ToIntND = 1,

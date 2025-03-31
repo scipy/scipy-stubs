@@ -17,7 +17,7 @@ _R = TypeVar("_R")
 @type_check_only
 class _MGCDict(TypedDict):
     mgc_map: onp.Array2D[np.float64]
-    opt_scale: Sequence[int | np.intp]  # list of size 2
+    opt_scale: Sequence[int | bool | np.intp]  # list of size 2
     null_dist: onp.Array1D[np.float64]
 
 ###
@@ -38,8 +38,8 @@ def multiscale_graphcorr(
     x: onp.ArrayND[np.floating[Any] | np.integer[Any] | np.bool_],
     y: onp.ArrayND[np.floating[Any] | np.integer[Any] | np.bool_],
     compute_distance: Callable[[onp.ArrayND[np.float64]], onp.ArrayND[np.floating[Any]]] = ...,
-    reps: int = 1000,
-    workers: int | Callable[[Callable[[_T], _R], Iterable[_T]], Sequence[_R]] = 1,
+    reps: int | bool = 1000,
+    workers: int | bool | Callable[[Callable[[_T], _R], Iterable[_T]], Sequence[_R]] = 1,
     is_twosamp: bool = False,
     random_state: ToRNG = None,
 ) -> MGCResult: ...

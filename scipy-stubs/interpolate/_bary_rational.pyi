@@ -9,8 +9,8 @@ __all__ = ["AAA", "FloaterHormannInterpolator"]
 
 _SCT = TypeVar("_SCT", bound=np.inexact[Any])
 _SCT_co = TypeVar("_SCT_co", bound=np.inexact[Any], default=np.inexact[Any], covariant=True)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[int, ...], covariant=True)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int | bool, ...], default=tuple[int | bool, ...], covariant=True)
 
 _ToFloat16: TypeAlias = np.bool_ | np.integer[Any] | np.float16
 _ToFloat64: TypeAlias = _ToFloat16 | np.float32 | np.float64
@@ -24,7 +24,7 @@ class _BarycentricRational(Generic[_SCT_co, _ShapeT_co]):
     #
     @overload
     def __call__(
-        self: _BarycentricRational[_SCT, tuple[int]],
+        self: _BarycentricRational[_SCT, tuple[int | bool]],
         /,
         z: onp.ArrayND[_SCT, _ShapeT],
     ) -> onp.ArrayND[_SCT, _ShapeT]: ...
@@ -40,7 +40,7 @@ class _BarycentricRational(Generic[_SCT_co, _ShapeT_co]):
     def roots(self, /) -> onp.Array1D[np.complexfloating[Any, Any]]: ...
     def residues(self, /) -> onp.ArrayND[np.inexact[Any]]: ...
 
-class AAA(_BarycentricRational[_SCT_co, tuple[int]], Generic[_SCT_co]):
+class AAA(_BarycentricRational[_SCT_co, tuple[int | bool]], Generic[_SCT_co]):
     weights: onp.Array1D[_SCT_co]
 
     @property
@@ -56,108 +56,108 @@ class AAA(_BarycentricRational[_SCT_co, tuple[int]], Generic[_SCT_co]):
         x: onp.CanArrayND[_SCT_co] | Sequence[_SCT_co],
         y: onp.CanArrayND[_SCT_co | _ToFloat16] | Sequence[_SCT_co | _ToFloat16],
         *,
-        rtol: float | None = None,
-        max_terms: int = 100,
+        rtol: float | int | bool | None = None,
+        max_terms: int | bool = 100,
         clean_up: bool = True,
-        clean_up_tol: float = 1e-13,
+        clean_up_tol: float | int | bool = 1e-13,
     ) -> None: ...
     @overload
     def __init__(
         self: AAA[np.float64],
         /,
-        x: Sequence[float],
-        y: onp.CanArrayND[_ToFloat64] | Sequence[float | _ToFloat64],
+        x: Sequence[float | int | bool],
+        y: onp.CanArrayND[_ToFloat64] | Sequence[float | int | bool | _ToFloat64],
         *,
-        rtol: float | None = None,
-        max_terms: int = 100,
+        rtol: float | int | bool | None = None,
+        max_terms: int | bool = 100,
         clean_up: bool = True,
-        clean_up_tol: float = 1e-13,
+        clean_up_tol: float | int | bool = 1e-13,
     ) -> None: ...
     @overload
     def __init__(
         self: AAA[np.float64],
         /,
-        x: onp.CanArrayND[_ToFloat64] | Sequence[float | _ToFloat64],
-        y: Sequence[float],
+        x: onp.CanArrayND[_ToFloat64] | Sequence[float | int | bool | _ToFloat64],
+        y: Sequence[float | int | bool],
         *,
-        rtol: float | None = None,
-        max_terms: int = 100,
+        rtol: float | int | bool | None = None,
+        max_terms: int | bool = 100,
         clean_up: bool = True,
-        clean_up_tol: float = 1e-13,
+        clean_up_tol: float | int | bool = 1e-13,
     ) -> None: ...
     @overload
     def __init__(
         self: AAA[np.complex128],
         /,
-        x: Sequence[complex],
-        y: onp.CanArrayND[_ToFloat64] | Sequence[complex | _ToComplex128],
+        x: Sequence[complex | float | int | bool],
+        y: onp.CanArrayND[_ToFloat64] | Sequence[complex | float | int | bool | _ToComplex128],
         *,
-        rtol: float | None = None,
-        max_terms: int = 100,
+        rtol: float | int | bool | None = None,
+        max_terms: int | bool = 100,
         clean_up: bool = True,
-        clean_up_tol: float = 1e-13,
+        clean_up_tol: float | int | bool = 1e-13,
     ) -> None: ...
     @overload
     def __init__(
         self: AAA[np.complex128],
         /,
-        x: onp.CanArrayND[_ToComplex128] | Sequence[complex | _ToComplex128],
-        y: Sequence[complex],
+        x: onp.CanArrayND[_ToComplex128] | Sequence[complex | float | int | bool | _ToComplex128],
+        y: Sequence[complex | float | int | bool],
         *,
-        rtol: float | None = None,
-        max_terms: int = 100,
+        rtol: float | int | bool | None = None,
+        max_terms: int | bool = 100,
         clean_up: bool = True,
-        clean_up_tol: float = 1e-13,
+        clean_up_tol: float | int | bool = 1e-13,
     ) -> None: ...
 
     #
-    def clean_up(self, /, cleanup_tol: float = 1e-13) -> int: ...
+    def clean_up(self, /, cleanup_tol: float | int | bool = 1e-13) -> int | bool: ...
 
 class FloaterHormannInterpolator(_BarycentricRational[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     @overload
     def __init__(
         self,
         /,
-        points: onp.CanArrayND[_SCT_co | _ToFloat16] | Sequence[_SCT_co | _ToFloat16 | int],
+        points: onp.CanArrayND[_SCT_co | _ToFloat16] | Sequence[_SCT_co | _ToFloat16 | int | bool],
         values: onp.CanArrayND[_SCT_co, _ShapeT_co],
         *,
-        d: int = 3,
+        d: int | bool = 3,
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[np.floating[Any], tuple[int]],
+        self: FloaterHormannInterpolator[np.floating[Any], tuple[int | bool]],
         /,
         points: onp.ToFloat1D,
         values: onp.ToFloatStrict1D,
         *,
-        d: int = 3,
+        d: int | bool = 3,
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[np.floating[Any], tuple[int, int]],
+        self: FloaterHormannInterpolator[np.floating[Any], tuple[int | bool, int | bool]],
         /,
         points: onp.ToFloat1D,
         values: onp.ToFloatStrict2D,
         *,
-        d: int = 3,
+        d: int | bool = 3,
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[np.inexact[Any], tuple[int]],
+        self: FloaterHormannInterpolator[np.inexact[Any], tuple[int | bool]],
         /,
         points: onp.ToComplex1D,
         values: onp.ToComplexStrict1D,
         *,
-        d: int = 3,
+        d: int | bool = 3,
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[np.inexact[Any], tuple[int, int]],
+        self: FloaterHormannInterpolator[np.inexact[Any], tuple[int | bool, int | bool]],
         /,
         points: onp.ToComplex1D,
         values: onp.ToComplexStrict2D,
         *,
-        d: int = 3,
+        d: int | bool = 3,
     ) -> None: ...
     @overload
-    def __init__(self, /, points: onp.ToComplex1D, values: onp.ToComplexND, *, d: int = 3) -> None: ...
+    def __init__(self, /, points: onp.ToComplex1D, values: onp.ToComplexND, *, d: int | bool = 3) -> None: ...

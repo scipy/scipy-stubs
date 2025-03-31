@@ -35,13 +35,13 @@ def lobpcg(
     B: _ToRealMatrix[_FloatT] | None = None,
     M: _ToRealMatrix[_FloatT] | None = None,
     Y: onp.ArrayND[_FloatT] | None = None,  # 2d
-    tol: float | None = None,
-    maxiter: int | None = None,
+    tol: float | int | bool | None = None,
+    maxiter: int | bool | None = None,
     largest: bool = True,
-    verbosityLevel: int = 0,
+    verbosityLevel: int | bool = 0,
     retLambdaHistory: Falsy = False,
     retResidualNormsHistory: Falsy = False,
-    restartControl: int = 20,
+    restartControl: int | bool = 20,
 ) -> tuple[onp.Array1D[_FloatT], onp.Array2D[_FloatT | _Complex]]: ...
 @overload  # retLambdaHistory: falsy = ..., retResidualNormsHistory: truthy  (positional)
 def lobpcg(
@@ -50,13 +50,13 @@ def lobpcg(
     B: _ToRealMatrix[_FloatT] | None,
     M: _ToRealMatrix[_FloatT] | None,
     Y: onp.ArrayND[_FloatT] | None,  # 2d
-    tol: float | None,
-    maxiter: int | None,
+    tol: float | int | bool | None,
+    maxiter: int | bool | None,
     largest: bool,
-    verbosityLevel: int,
+    verbosityLevel: int | bool,
     retLambdaHistory: Falsy,
     retResidualNormsHistory: Truthy,
-    restartControl: int = 20,
+    restartControl: int | bool = 20,
 ) -> tuple[onp.Array1D[_FloatT], onp.Array2D[_FloatT | _Complex], list[onp.Array0D[_FloatT]]]: ...
 @overload  # retLambdaHistory: falsy = ..., retResidualNormsHistory: truthy  (keyword)
 def lobpcg(
@@ -65,14 +65,14 @@ def lobpcg(
     B: _ToRealMatrix[_FloatT] | None = None,
     M: _ToRealMatrix[_FloatT] | None = None,
     Y: onp.ArrayND[_FloatT] | None = None,  # 2d
-    tol: float | None = None,
-    maxiter: int | None = None,
+    tol: float | int | bool | None = None,
+    maxiter: int | bool | None = None,
     largest: bool = True,
-    verbosityLevel: int = 0,
+    verbosityLevel: int | bool = 0,
     retLambdaHistory: Falsy = False,
     *,
     retResidualNormsHistory: Truthy,
-    restartControl: int = 20,
+    restartControl: int | bool = 20,
 ) -> tuple[onp.Array1D[_FloatT], onp.Array2D[_FloatT | _Complex], list[onp.Array0D[_FloatT]]]: ...
 @overload  # retLambdaHistory: truthy  (positional), retResidualNormsHistory: falsy = ...
 def lobpcg(
@@ -81,13 +81,13 @@ def lobpcg(
     B: _ToRealMatrix[_FloatT] | None,
     M: _ToRealMatrix[_FloatT] | None,
     Y: onp.ArrayND[_FloatT] | None,  # 2d
-    tol: float | None,
-    maxiter: int | None,
+    tol: float | int | bool | None,
+    maxiter: int | bool | None,
     largest: bool,
-    verbosityLevel: int,
+    verbosityLevel: int | bool,
     retLambdaHistory: Truthy,
     retResidualNormsHistory: Falsy = False,
-    restartControl: int = 20,
+    restartControl: int | bool = 20,
 ) -> tuple[onp.Array1D[_FloatT], onp.Array2D[_FloatT | _Complex], list[onp.Array0D[_FloatT]]]: ...
 @overload  # retLambdaHistory: truthy  (keyword), retResidualNormsHistory: falsy = ...
 def lobpcg(
@@ -96,14 +96,14 @@ def lobpcg(
     B: _ToRealMatrix[_FloatT] | None = None,
     M: _ToRealMatrix[_FloatT] | None = None,
     Y: onp.ArrayND[_FloatT] | None = None,  # 2d
-    tol: float | None = None,
-    maxiter: int | None = None,
+    tol: float | int | bool | None = None,
+    maxiter: int | bool | None = None,
     largest: bool = True,
-    verbosityLevel: int = 0,
+    verbosityLevel: int | bool = 0,
     *,
     retLambdaHistory: Truthy,
     retResidualNormsHistory: Falsy = False,
-    restartControl: int = 20,
+    restartControl: int | bool = 20,
 ) -> tuple[onp.Array1D[_FloatT], onp.Array2D[_FloatT | _Complex], list[onp.Array0D[_FloatT]]]: ...
 @overload  # retLambdaHistory: truthy  (positional), retResidualNormsHistory: truthy
 def lobpcg(
@@ -112,13 +112,13 @@ def lobpcg(
     B: _ToRealMatrix[_FloatT] | None,
     M: _ToRealMatrix[_FloatT] | None,
     Y: onp.ArrayND[_FloatT] | None,  # 2d
-    tol: float | None,
-    maxiter: int | None,
+    tol: float | int | bool | None,
+    maxiter: int | bool | None,
     largest: bool,
-    verbosityLevel: int,
+    verbosityLevel: int | bool,
     retLambdaHistory: Truthy,
     retResidualNormsHistory: Truthy,
-    restartControl: int = 20,
+    restartControl: int | bool = 20,
 ) -> tuple[onp.Array1D[_FloatT], onp.Array2D[_FloatT | _Complex], list[onp.Array0D[_FloatT]], list[onp.Array0D[_FloatT]]]: ...
 @overload  # retLambdaHistory: truthy  (keyword), retResidualNormsHistory: truthy
 def lobpcg(
@@ -127,12 +127,12 @@ def lobpcg(
     B: _ToRealMatrix[_FloatT] | None = None,
     M: _ToRealMatrix[_FloatT] | None = None,
     Y: onp.ArrayND[_FloatT] | None = None,  # 2d
-    tol: float | None = None,
-    maxiter: int | None = None,
+    tol: float | int | bool | None = None,
+    maxiter: int | bool | None = None,
     largest: bool = True,
-    verbosityLevel: int = 0,
+    verbosityLevel: int | bool = 0,
     *,
     retLambdaHistory: Truthy,
     retResidualNormsHistory: Truthy,
-    restartControl: int = 20,
+    restartControl: int | bool = 20,
 ) -> tuple[onp.Array1D[_FloatT], onp.Array2D[_FloatT | _Complex], list[onp.Array0D[_FloatT]], list[onp.Array0D[_FloatT]]]: ...

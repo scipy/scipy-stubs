@@ -15,18 +15,18 @@ class DunnettResult:
 
     _alternative: Alternative
     _rho: onp.Array2D[np.float64]
-    _df: int
+    _df: int | bool
     _std: np.float64
     _mean_samples: onp.Array1D[np.float64]
     _mean_control: np.float64  # incorrectly annotated as `ndarray` at runtime
     _n_samples: onp.Array1D[np.int_]
-    _n_control: int
+    _n_control: int | bool
     _rng: np.random.Generator | np.random.RandomState
 
     _ci: ConfidenceInterval | None = None
-    _ci_cl: float | np.floating[Any] | None = None
+    _ci_cl: float | int | bool | np.floating[Any] | None = None
 
-    def confidence_interval(self, /, confidence_level: float | np.floating[Any] = 0.95) -> ConfidenceInterval: ...
+    def confidence_interval(self, /, confidence_level: float | int | bool | np.floating[Any] = 0.95) -> ConfidenceInterval: ...
 
 def dunnett(
     *samples: onp.ToFloat1D,

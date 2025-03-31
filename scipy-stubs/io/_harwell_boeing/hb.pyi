@@ -9,7 +9,7 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["hb_read", "hb_write"]
 
-_ValueType: TypeAlias = Literal["real", "complex", "pattern", "integer"]
+_ValueType: TypeAlias = Literal["real", "complex | float | int | bool", "pattern", "integer"]
 _Structure: TypeAlias = Literal["symmetric", "unsymmetric", "hermitian", "skewsymmetric", "rectangular"]
 _Storage: TypeAlias = Literal["assembled", "elemental"]
 
@@ -18,9 +18,9 @@ _Real: TypeAlias = np.integer[Any] | np.float32 | np.float64
 @type_check_only
 class _HasWidthAndRepeat(Protocol):
     @property
-    def width(self, /) -> int: ...
+    def width(self, /) -> int | bool: ...
     @property
-    def repeat(self, /) -> int | None: ...
+    def repeat(self, /) -> int | bool | None: ...
 
 ###
 
@@ -30,23 +30,23 @@ class LineOverflow(Warning): ...
 class HBInfo:
     title: Final[str]
     key: Final[str]
-    total_nlines: Final[int]
-    pointer_nlines: Final[int]
-    indices_nlines: Final[int]
-    values_nlines: Final[int]
-    pointer_format: Final[int]
-    indices_format: Final[int]
-    values_format: Final[int]
-    pointer_dtype: Final[int]
-    indices_dtype: Final[int]
-    values_dtype: Final[int]
-    pointer_nbytes_full: Final[int]
-    indices_nbytes_full: Final[int]
-    values_nbytes_full: Final[int]
-    nrows: Final[int]
-    ncols: Final[int]
-    nnon_zeros: Final[int]
-    nelementals: Final[int]
+    total_nlines: Final[int | bool]
+    pointer_nlines: Final[int | bool]
+    indices_nlines: Final[int | bool]
+    values_nlines: Final[int | bool]
+    pointer_format: Final[int | bool]
+    indices_format: Final[int | bool]
+    values_format: Final[int | bool]
+    pointer_dtype: Final[int | bool]
+    indices_dtype: Final[int | bool]
+    values_dtype: Final[int | bool]
+    pointer_nbytes_full: Final[int | bool]
+    indices_nbytes_full: Final[int | bool]
+    values_nbytes_full: Final[int | bool]
+    nrows: Final[int | bool]
+    ncols: Final[int | bool]
+    nnon_zeros: Final[int | bool]
+    nelementals: Final[int | bool]
     mxtype: HBMatrixType
 
     @classmethod
@@ -67,19 +67,19 @@ class HBInfo:
         /,
         title: str,
         key: str,
-        total_nlines: int,
-        pointer_nlines: int,
-        indices_nlines: int,
-        values_nlines: int,
+        total_nlines: int | bool,
+        pointer_nlines: int | bool,
+        indices_nlines: int | bool,
+        values_nlines: int | bool,
         mxtype: HBMatrixType,
-        nrows: int,
-        ncols: int,
-        nnon_zeros: int,
+        nrows: int | bool,
+        ncols: int | bool,
+        nnon_zeros: int | bool,
         pointer_format_str: str,
         indices_format_str: str,
         values_format_str: str,
-        right_hand_sides_nlines: int = 0,
-        nelementals: int = 0,
+        right_hand_sides_nlines: int | bool = 0,
+        nelementals: int | bool = 0,
     ) -> None: ...
     def dump(self, /) -> str: ...
 
@@ -113,8 +113,8 @@ class HBFile:
     def read_matrix(self, /) -> csc_array[_Real]: ...
     def write_matrix(self, /, m: _spbase) -> None: ...
 
-def _nbytes_full(fmt: _HasWidthAndRepeat, nlines: int) -> int: ...
-def _expect_int(value: opt.AnyInt, msg: str | None = None) -> int: ...
+def _nbytes_full(fmt: _HasWidthAndRepeat, nlines: int | bool) -> int | bool: ...
+def _expect_int(value: opt.AnyInt, msg: str | None = None) -> int | bool: ...
 def _read_hb_data(content: IO[str], header: HBInfo) -> csc_array[_Real]: ...
 def _write_data(m: _spbase, fid: IO[str], header: HBInfo) -> None: ...
 

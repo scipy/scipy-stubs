@@ -63,7 +63,7 @@ def eig_banded(
     overwrite_a_band: object = ...,
     select: object = ...,
     select_range: object = ...,
-    max_ev: int = ...,
+    max_ev: int | bool = ...,
     check_finite: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")

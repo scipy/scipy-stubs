@@ -14,7 +14,7 @@ from ._optimize import OptimizeResult as _OptimizeResult
 _Max3: TypeAlias = Literal[0, 1, 2, 3]
 _Max4: TypeAlias = Literal[_Max3, 4]
 
-_Float: TypeAlias = float | np.float64
+_Float: TypeAlias = float | int | bool | np.float64
 _ToFloat2D: TypeAlias = onp.ToFloat2D | _spbase[np.bool_ | npc.integer | np.float32 | np.float64 | np.longdouble]
 # The `TypeAliasType` helps make error messages less unreadable
 _ToLinearConstraint = TypeAliasType(
@@ -29,7 +29,7 @@ _ToLinearConstraint = TypeAliasType(
 class _OptionsMILP(TypedDict, total=False):
     disp: onp.ToBool  # default: False
     presolve: onp.ToBool  # default: True
-    node_limit: int  # default: no limit
+    node_limit: int | bool  # default: no limit
     time_limit: onp.ToFloat  # default: no limit
     min_rel_gap: onp.ToFloat  # default: ?
 
@@ -40,7 +40,7 @@ class _OptimizeResultSucess(_OptimizeResult):
     status: Literal[0]
     message: LiteralString
     success: Literal[True]
-    mip_node_count: int
+    mip_node_count: int | bool
     mip_dual_bound: _Float
     mip_gap: _Float
 
@@ -51,7 +51,7 @@ class _OptimizeResultNoSolution(_OptimizeResult):
     status: Literal[1, 2, 3, 4]
     message: LiteralString
     success: Literal[False]
-    mip_node_count: int | None
+    mip_node_count: int | bool | None
     mip_dual_bound: _Float | None
     mip_gap: _Float | None
 
@@ -64,7 +64,7 @@ class OptimizeResult(_OptimizeResult):
     status: _Max4
     message: LiteralString
     success: bool  # status == 0
-    mip_node_count: int | None
+    mip_node_count: int | bool | None
     mip_dual_bound: _Float | None
     mip_gap: _Float | None
 

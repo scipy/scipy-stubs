@@ -12,7 +12,7 @@ _Inexact2D: TypeAlias = onp.Array2D[np.inexact[Any]]
 
 class SqrtmError(np.linalg.LinAlgError): ...  # undocumented
 
-# NOTE: The output dtype (floating or complex) depends on the sign of the values, so this is the best we can do.
+# NOTE: The output dtype (floating or complex | float | int | bool) depends on the sign of the values, so this is the best we can do.
 @overload
 def sqrtm(A: onp.ToComplex2D, disp: Truthy = True, blocksize: onp.ToJustInt = 64) -> _Inexact2D: ...
 @overload

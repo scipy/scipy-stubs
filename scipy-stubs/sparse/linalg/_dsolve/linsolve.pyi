@@ -84,8 +84,8 @@ def splu(
     A: _spbase | onp.ToComplex2D,
     permc_spec: _PermcSpec | None = None,
     diag_pivot_thresh: onp.ToFloat | None = None,
-    relax: int | None = None,
-    panel_size: int | None = None,
+    relax: int | bool | None = None,
+    panel_size: int | bool | None = None,
     options: Mapping[str, object] | None = None,
 ) -> SuperLU: ...
 
@@ -97,8 +97,8 @@ def spilu(
     drop_rule: str | None = None,
     permc_spec: _PermcSpec | None = None,
     diag_pivot_thresh: onp.ToFloat | None = None,
-    relax: int | None = None,
-    panel_size: int | None = None,
+    relax: int | bool | None = None,
+    panel_size: int | bool | None = None,
     options: Mapping[str, object] | None = None,
 ) -> SuperLU: ...
 
@@ -112,6 +112,6 @@ def is_sptriangular(A: _spbase) -> tuple[bool, bool]: ...
 #
 @overload
 @deprecated("spbandwidth needs sparse format not LIL and BSR. Converting to CSR.", category=SparseEfficiencyWarning)
-def spbandwidth(A: _bsr_base | _lil_base) -> tuple[int, int]: ...
+def spbandwidth(A: _bsr_base | _lil_base) -> tuple[int | bool, int | bool]: ...
 @overload
-def spbandwidth(A: _spbase) -> tuple[int, int]: ...
+def spbandwidth(A: _spbase) -> tuple[int | bool, int | bool]: ...

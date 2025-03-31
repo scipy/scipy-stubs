@@ -27,21 +27,21 @@ class _CythonMixin:
 @type_check_only
 class _KDTreeNode(Protocol):
     @property
-    def level(self, /) -> int: ...
+    def level(self, /) -> int | bool: ...
     @property
-    def split_dim(self, /) -> int: ...
+    def split_dim(self, /) -> int | bool: ...
     @property
-    def split(self, /) -> float: ...
+    def split(self, /) -> float | int | bool: ...
     @property
-    def children(self, /) -> int: ...
+    def children(self, /) -> int | bool: ...
     @property
     def data_points(self, /) -> _Float2D: ...
     @property
     def indices(self, /) -> _Indices: ...
     @property
-    def start_idx(self, /) -> int: ...
+    def start_idx(self, /) -> int | bool: ...
     @property
-    def end_idx(self, /) -> int: ...
+    def end_idx(self, /) -> int | bool: ...
     @property
     def lesser(self, /) -> _KDTreeNode | None: ...
     @property
@@ -61,11 +61,11 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     @property
     def data(self, /) -> _Float2D: ...
     @property
-    def leafsize(self, /) -> int: ...
+    def leafsize(self, /) -> int | bool: ...
     @property
-    def m(self, /) -> int: ...
+    def m(self, /) -> int | bool: ...
     @property
-    def n(self, /) -> int: ...
+    def n(self, /) -> int | bool: ...
     @property
     def maxes(self, /) -> _Float1D: ...
     @property
@@ -73,7 +73,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     @property
     def tree(self, /) -> cKDTreeNode: ...
     @property
-    def size(self, /) -> int: ...
+    def size(self, /) -> int | bool: ...
     @property
     def indices(self, /) -> _Indices: ...
     @property
@@ -86,7 +86,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         self: cKDTree[None, None],
         /,
         data: onp.ToFloat2D,
-        leafsize: int = 16,
+        leafsize: int | bool = 16,
         compact_nodes: bool = True,
         copy_data: bool = False,
         balanced_tree: bool = True,
@@ -97,7 +97,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         self: cKDTree[_Float2D, _Float1D],
         /,
         data: onp.ToFloat2D,
-        leafsize: int,
+        leafsize: int | bool,
         compact_nodes: bool,
         copy_data: bool,
         balanced_tree: bool,
@@ -108,7 +108,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         self: cKDTree[_Float2D, _Float1D],
         /,
         data: onp.ToFloat2D,
-        leafsize: int = 16,
+        leafsize: int | bool = 16,
         compact_nodes: bool = True,
         copy_data: bool = False,
         balanced_tree: bool = True,
@@ -124,9 +124,9 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         k: onp.ToInt | onp.ToInt1D = 1,
         eps: onp.ToFloat = ...,
         p: onp.ToFloat = ...,
-        distance_upper_bound: float = float("inf"),  # noqa: PYI011
-        workers: int | None = ...,
-    ) -> tuple[float, np.intp] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
+        distance_upper_bound: float | int | bool = float("inf"),  # noqa: PYI011
+        workers: int | bool | None = ...,
+    ) -> tuple[float | int | bool, np.intp] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
 
     #
     @overload
@@ -140,7 +140,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         return_length: Falsy = False,
-    ) -> list[int]: ...
+    ) -> list[int | bool]: ...
     @overload
     def query_ball_point(
         self,
@@ -214,7 +214,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         return_length: Falsy = False,
-    ) -> list[int] | onp.ArrayND[np.object_]: ...
+    ) -> list[int | bool] | onp.ArrayND[np.object_]: ...
     @overload
     def query_ball_point(
         self,
@@ -249,7 +249,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
         eps: onp.ToFloat = ...,  # defaults to `0.0`, but is overridden in `KDTree` with `0` as default
-    ) -> list[list[int]]: ...
+    ) -> list[list[int | bool]]: ...
 
     #
     @overload
@@ -260,7 +260,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         p: onp.ToFloat = 2.0,
         eps: onp.ToFloat = 0,
         output_type: L["set"] = "set",
-    ) -> set[tuple[int, int]]: ...
+    ) -> set[tuple[int | bool, int | bool]]: ...
     @overload
     def query_pairs(
         self,
@@ -374,7 +374,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         p: onp.ToFloat = 2.0,
         *,
         output_type: L["dict"],
-    ) -> dict[tuple[int, int], float]: ...
+    ) -> dict[tuple[int | bool, int | bool], float | int | bool]: ...
     @overload
     def sparse_distance_matrix(
         self,

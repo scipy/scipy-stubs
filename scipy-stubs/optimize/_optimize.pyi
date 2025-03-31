@@ -42,13 +42,13 @@ _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
 
 _Fn1: TypeAlias = Callable[Concatenate[_XT, ...], _YT]
-_Fn1_0d: TypeAlias = _Fn1[float, _YT] | _Fn1[np.float64, _YT]
+_Fn1_0d: TypeAlias = _Fn1[float | int | bool, _YT] | _Fn1[np.float64, _YT]
 _Fn1_1d: TypeAlias = _Fn1[_Float1D, _YT]
 _Fn2: TypeAlias = Callable[Concatenate[_XT, _PT, ...], _YT]
 _Callback_1d: TypeAlias = Callable[[_Float1D], None]
 
 _Int1D: TypeAlias = onp.Array1D[np.intp]
-_Float: TypeAlias = float | np.float64  # equivalent to `np.float64` in `numpy>=2.2`
+_Float: TypeAlias = float | int | bool | np.float64  # equivalent to `np.float64` in `numpy>=2.2`
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 _ComplexCo1D: TypeAlias = onp.Array1D[npc.number | np.bool_]
@@ -57,19 +57,21 @@ _FloatingCoND: TypeAlias = onp.ArrayND[npc.floating | npc.integer | np.bool_]
 _NumericND: TypeAlias = onp.ArrayND[npc.number | np.bool_ | np.timedelta64 | np.object_]
 
 _Args: TypeAlias = tuple[object, ...]
-_Brack: TypeAlias = tuple[float, float] | tuple[float, float, float]
+_Brack: TypeAlias = (
+    tuple[float | int | bool, float | int | bool] | tuple[float | int | bool, float | int | bool, float | int | bool]
+)
 _Disp: TypeAlias = Literal[0, 1, 2, 3] | bool | np.bool_
 _BracketInfo: TypeAlias = tuple[
     _Float, _Float, _Float,  # xa, xb, xc
     _Float, _Float, _Float,  # fa, fb, fx
-    int,  # funcalls
+    int | bool,  # funcalls
 ]  # fmt: skip
 _WarnFlag: TypeAlias = Literal[0, 1, 2, 3, 4]
 _AllVecs: TypeAlias = list[_Int1D | _Float1D]
 
 _ResultValueT = TypeVar("_ResultValueT", default=Any)
 _XT_contra = TypeVar("_XT_contra", bound=_ComplexCo1D, default=_Float1D, contravariant=True)
-_ValueT_co = TypeVar("_ValueT_co", bound=float | npc.floating, default=_Float, covariant=True)
+_ValueT_co = TypeVar("_ValueT_co", bound=float | int | bool | npc.floating, default=_Float, covariant=True)
 _JacT_co = TypeVar("_JacT_co", bound=onp.Array1D[npc.floating] | onp.Array2D[npc.floating], default=_Float1D, covariant=True)
 
 @type_check_only
@@ -100,18 +102,18 @@ class MemoizeJac(Generic[_XT_contra, _ValueT_co, _JacT_co]):
 
 # undocumented
 class Brent(Generic[_ValueT_co]):
-    _mintol: Final[float]  # 1e-11
-    _cg: Final[float]  # 0.3819660
+    _mintol: Final[float | int | bool]  # 1e-11
+    _cg: Final[float | int | bool]  # 0.3819660
 
-    func: _Fn1[np.float64, _ValueT_co]  # `float & np.float64`
+    func: _Fn1[np.float64, _ValueT_co]  # `float | int | bool & np.float64`
     args: Final[_Args]
-    tol: Final[float]
-    maxiter: Final[int]
+    tol: Final[float | int | bool]
+    maxiter: Final[int | bool]
 
     xmin: _Float | None
     fval: _Float | None
-    iter: int
-    funcalls: int
+    iter: int | bool
+    funcalls: int | bool
     disp: _Disp
     brack: _Brack | None  # might be undefined; set by `set_bracket`
 
@@ -121,7 +123,7 @@ class Brent(Generic[_ValueT_co]):
         func: _Fn1_0d,
         args: _Args = (),
         tol: onp.ToFloat = 1.48e-08,
-        maxiter: int = 500,
+        maxiter: int | bool = 500,
         full_output: onp.ToBool = 0,  # ignored
         disp: _Disp = 0,
     ) -> None: ...
@@ -131,7 +133,9 @@ class Brent(Generic[_ValueT_co]):
     @overload
     def get_result(self, /, full_output: Falsy = False) -> _Float: ...
     @overload
-    def get_result(self, /, full_output: Truthy) -> tuple[_Float, _Float, int, int]: ...  # xmin, fval, itere, funcalls
+    def get_result(
+        self, /, full_output: Truthy
+    ) -> tuple[_Float, _Float, int | bool, int | bool]: ...  # xmin, fval, itere, funcalls
 
 # undocumented
 @overload
@@ -166,8 +170,8 @@ def fmin(
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
-    maxiter: int | None = None,
-    maxfun: int | None = None,
+    maxiter: int | bool | None = None,
+    maxfun: int | bool | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
     retall: Falsy = 0,
@@ -181,8 +185,8 @@ def fmin(
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
-    maxiter: int | None = None,
-    maxfun: int | None = None,
+    maxiter: int | bool | None = None,
+    maxfun: int | bool | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
     *,
@@ -197,15 +201,15 @@ def fmin(
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
-    maxiter: int | None = None,
-    maxfun: int | None = None,
+    maxiter: int | bool | None = None,
+    maxfun: int | bool | None = None,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
     retall: Falsy = 0,
     callback: _Callback_1d | None = None,
     initial_simplex: onp.ToFloat2D | None = None,
-) -> tuple[_Float1D, onp.ToFloat, int, int, _WarnFlag]: ...  # x, fun, nit, nfev, status
+) -> tuple[_Float1D, onp.ToFloat, int | bool, int | bool, _WarnFlag]: ...  # x, fun, nit, nfev, status
 @overload  # full_output: True  (keyword), retall: True
 def fmin(
     func: _Fn1_1d,
@@ -213,15 +217,15 @@ def fmin(
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
-    maxiter: int | None = None,
-    maxfun: int | None = None,
+    maxiter: int | bool | None = None,
+    maxfun: int | bool | None = None,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
     retall: Truthy,
     callback: _Callback_1d | None = None,
     initial_simplex: onp.ToFloat2D | None = None,
-) -> tuple[_Float1D, onp.ToFloat, int, int, _WarnFlag, _AllVecs]: ...  # x, fun, nit, nfev, status, allvecs
+) -> tuple[_Float1D, onp.ToFloat, int | bool, int | bool, _WarnFlag, _AllVecs]: ...  # x, fun, nit, nfev, status, allvecs
 
 #
 @overload  # full_output: False = ..., retall: False = ...
@@ -233,7 +237,7 @@ def fmin_bfgs(
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
     epsilon: onp.ToFloat | onp.ToFloat1D = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
     retall: Falsy = 0,
@@ -252,7 +256,7 @@ def fmin_bfgs(
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
     epsilon: onp.ToFloat | onp.ToFloat1D = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
     *,
@@ -272,7 +276,7 @@ def fmin_bfgs(
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
     epsilon: onp.ToFloat | onp.ToFloat1D = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
@@ -282,7 +286,7 @@ def fmin_bfgs(
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
     hess_inv0: onp.ToFloat2D | None = None,
-) -> tuple[_Float1D, _Float, _Float1D, _Float2D, int, int, _WarnFlag]: ...
+) -> tuple[_Float1D, _Float, _Float1D, _Float2D, int | bool, int | bool, _WarnFlag]: ...
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_bfgs(
     f: _Fn1_1d,
@@ -292,7 +296,7 @@ def fmin_bfgs(
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
     epsilon: onp.ToFloat | onp.ToFloat1D = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
@@ -302,7 +306,7 @@ def fmin_bfgs(
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
     hess_inv0: onp.ToFloat2D | None = None,
-) -> tuple[_Float1D, _Float, _Float1D, _Float2D, int, int, _WarnFlag, _AllVecs]: ...
+) -> tuple[_Float1D, _Float, _Float1D, _Float2D, int | bool, int | bool, _WarnFlag, _AllVecs]: ...
 
 #
 @overload  # full_output: False = ..., retall: False = ...
@@ -314,7 +318,7 @@ def fmin_cg(
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
     epsilon: onp.ToFloat | _FloatingCoND = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
     retall: Falsy = 0,
@@ -331,7 +335,7 @@ def fmin_cg(
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
     epsilon: onp.ToFloat | _FloatingCoND = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
     *,
@@ -349,7 +353,7 @@ def fmin_cg(
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
     epsilon: onp.ToFloat | _FloatingCoND = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
@@ -357,7 +361,7 @@ def fmin_cg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> tuple[_Float1D, _Float, int, int, _WarnFlag]: ...
+) -> tuple[_Float1D, _Float, int | bool, int | bool, _WarnFlag]: ...
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_cg(
     f: _Fn1_1d,
@@ -367,7 +371,7 @@ def fmin_cg(
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
     epsilon: onp.ToFloat | _FloatingCoND = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
@@ -375,7 +379,7 @@ def fmin_cg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> tuple[_Float1D, _Float, int, int, _WarnFlag, _AllVecs]: ...
+) -> tuple[_Float1D, _Float, int | bool, int | bool, _WarnFlag, _AllVecs]: ...
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_ncg(
     f: _Fn1_1d,
@@ -386,7 +390,7 @@ def fmin_ncg(
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
     epsilon: onp.ToFloat | _FloatingCoND = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
     retall: Falsy = 0,
@@ -404,7 +408,7 @@ def fmin_ncg(
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
     epsilon: onp.ToFloat | _FloatingCoND = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
     *,
@@ -423,7 +427,7 @@ def fmin_ncg(
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
     epsilon: onp.ToFloat | _FloatingCoND = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
@@ -431,7 +435,7 @@ def fmin_ncg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> tuple[_Float1D, _Float, int, int, int, _WarnFlag]: ...
+) -> tuple[_Float1D, _Float, int | bool, int | bool, int | bool, _WarnFlag]: ...
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_ncg(
     f: _Fn1_1d,
@@ -442,7 +446,7 @@ def fmin_ncg(
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
     epsilon: onp.ToFloat | _FloatingCoND = ...,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
@@ -450,7 +454,7 @@ def fmin_ncg(
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
-) -> tuple[_Float1D, _Float, int, int, int, _WarnFlag, _AllVecs]: ...
+) -> tuple[_Float1D, _Float, int | bool, int | bool, int | bool, _WarnFlag, _AllVecs]: ...
 
 #
 @overload  # full_output: False = ..., retall: False = ...
@@ -460,8 +464,8 @@ def fmin_powell(
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
-    maxiter: int | None = None,
-    maxfun: int | None = None,
+    maxiter: int | bool | None = None,
+    maxfun: int | bool | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
     retall: Falsy = 0,
@@ -475,8 +479,8 @@ def fmin_powell(
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
-    maxiter: int | None = None,
-    maxfun: int | None = None,
+    maxiter: int | bool | None = None,
+    maxfun: int | bool | None = None,
     full_output: Falsy = 0,
     disp: _Disp = 1,
     *,
@@ -491,15 +495,15 @@ def fmin_powell(
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
-    maxiter: int | None = None,
-    maxfun: int | None = None,
+    maxiter: int | bool | None = None,
+    maxfun: int | bool | None = None,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
     retall: Falsy = 0,
     callback: _Callback_1d | None = None,
     direc: onp.ToFloat2D | None = None,
-) -> tuple[_Float1D, _Float, _Float2D, int, int, _WarnFlag]: ...
+) -> tuple[_Float1D, _Float, _Float2D, int | bool, int | bool, _WarnFlag]: ...
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_powell(
     func: _Fn1_1d,
@@ -507,15 +511,15 @@ def fmin_powell(
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
-    maxiter: int | None = None,
-    maxfun: int | None = None,
+    maxiter: int | bool | None = None,
+    maxfun: int | bool | None = None,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
     retall: Truthy,
     callback: _Callback_1d | None = None,
     direc: onp.ToFloat2D | None = None,
-) -> tuple[_Float1D, _Float, _Float2D, int, int, _WarnFlag, _AllVecs]: ...
+) -> tuple[_Float1D, _Float, _Float2D, int | bool, int | bool, _WarnFlag, _AllVecs]: ...
 
 #
 @overload  # full_output: False = ...
@@ -525,7 +529,7 @@ def fminbound(
     x2: onp.ToFloat,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-05,
-    maxfun: int = 500,
+    maxfun: int | bool = 500,
     full_output: Falsy = 0,
     disp: _Disp = 1,
 ) -> _Float: ...
@@ -536,11 +540,11 @@ def fminbound(
     x2: onp.ToFloat,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-05,
-    maxfun: int = 500,
+    maxfun: int | bool = 500,
     *,
     full_output: Truthy,
     disp: _Disp = 1,
-) -> tuple[_Float, _Float, _WarnFlag, int]: ...  # x, fun, status, nfev
+) -> tuple[_Float, _Float, _WarnFlag, int | bool]: ...  # x, fun, status, nfev
 
 #
 @overload  # full_output: False = ...
@@ -548,23 +552,23 @@ def brute(
     func: _Fn1_1d,
     ranges: tuple[tuple[onp.ToFloat, onp.ToFloat] | slice, ...],
     args: _Args = (),
-    Ns: int = 20,
+    Ns: int | bool = 20,
     full_output: Falsy = 0,
     finish: _DoesFMin | None = ...,  # default: `fmin`
     disp: onp.ToBool = False,
-    workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
+    workers: int | bool | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
 ) -> _Float1D: ...
 @overload  # full_output: True (keyword)
 def brute(
     func: _Fn1_1d,
     ranges: tuple[tuple[onp.ToFloat, onp.ToFloat] | slice, ...],
     args: _Args = (),
-    Ns: int = 20,
+    Ns: int | bool = 20,
     *,
     full_output: Truthy,
     finish: _DoesFMin | None = ...,  # default: `fmin`
     disp: onp.ToBool = False,
-    workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
+    workers: int | bool | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
 ) -> tuple[_Float1D, np.float64, onp.Array3D[np.float64], onp.Array2D[npc.floating]]: ...
 
 #
@@ -575,7 +579,7 @@ def brent(
     brack: Brack | None = None,
     tol: onp.ToFloat = 1.48e-08,
     full_output: Falsy = 0,
-    maxiter: int = 500,
+    maxiter: int | bool = 500,
 ) -> _Float: ...
 @overload  # full_output: True (positional)
 def brent(
@@ -584,8 +588,8 @@ def brent(
     brack: Brack | None,
     tol: onp.ToFloat,
     full_output: Truthy,
-    maxiter: int = 500,
-) -> tuple[_Float, _Float, int, int]: ...
+    maxiter: int | bool = 500,
+) -> tuple[_Float, _Float, int | bool, int | bool]: ...
 @overload  # full_output: True (keyword)
 def brent(
     func: _Fn1_0d,
@@ -594,8 +598,8 @@ def brent(
     tol: onp.ToFloat = 1.48e-08,
     *,
     full_output: Truthy,
-    maxiter: int = 500,
-) -> tuple[_Float, _Float, int, int]: ...
+    maxiter: int | bool = 500,
+) -> tuple[_Float, _Float, int | bool, int | bool]: ...
 
 #
 @overload  # full_output: False = ...
@@ -605,7 +609,7 @@ def golden(
     brack: Brack | None = None,
     tol: onp.ToFloat = ...,
     full_output: Falsy = 0,
-    maxiter: int = 5_000,
+    maxiter: int | bool = 5_000,
 ) -> _Float: ...
 @overload  # full_output: True (positional)
 def golden(
@@ -614,8 +618,8 @@ def golden(
     brack: Brack | None,
     tol: onp.ToFloat,
     full_output: Truthy,
-    maxiter: int = 5_000,
-) -> tuple[_Float, _Float, int]: ...
+    maxiter: int | bool = 5_000,
+) -> tuple[_Float, _Float, int | bool]: ...
 @overload  # full_output: True (keyword)
 def golden(
     func: _Fn1_0d,
@@ -624,8 +628,8 @@ def golden(
     tol: onp.ToFloat = ...,
     *,
     full_output: Truthy,
-    maxiter: int = 5_000,
-) -> tuple[_Float, _Float, int]: ...
+    maxiter: int | bool = 5_000,
+) -> tuple[_Float, _Float, int | bool]: ...
 
 #
 def bracket(
@@ -634,7 +638,7 @@ def bracket(
     xb: onp.ToFloat = 1.0,
     args: _Args = (),
     grow_limit: onp.ToFloat = 110.0,
-    maxiter: int = 1_000,
+    maxiter: int | bool = 1_000,
 ) -> _BracketInfo: ...
 
 # rosenbrock

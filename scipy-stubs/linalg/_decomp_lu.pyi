@@ -18,13 +18,13 @@ _ComplexND: TypeAlias = onp.ArrayND[np.inexact[Any], onp.AtLeast2D]
 
 _Trans: TypeAlias = Literal[0, 1, 2]
 
-@overload  # float[:, :] -> (float[:, :], float[:])
+@overload  # float | int | bool[:, :] -> (float | int | bool[:, :], float | int | bool[:])
 def lu_factor(
     a: onp.ToFloat2D,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Float2D, _Float1D]: ...
-@overload  # complex[:, :] -> (complex[:, :], complex[:])
+@overload  # complex | float | int | bool[:, :] -> (complex | float | int | bool[:, :], complex | float | int | bool[:])
 def lu_factor(
     a: onp.ToComplex2D,
     overwrite_a: onp.ToBool = False,
@@ -32,7 +32,7 @@ def lu_factor(
 ) -> tuple[_Complex2D, _Complex1D]: ...
 
 #
-@overload  # (float[:, :], float[:]) -> float[:, :]
+@overload  # (float | int | bool[:, :], float | int | bool[:]) -> float | int | bool[:, :]
 def lu_solve(
     lu_and_piv: tuple[_Float2D, _Float1D],
     b: onp.ToFloat1D,
@@ -40,7 +40,7 @@ def lu_solve(
     overwrite_b: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _Float2D: ...
-@overload  # (complex[:, :], complex[:]) -> complex[:, :]
+@overload  # (complex | float | int | bool[:, :], complex | float | int | bool[:]) -> complex | float | int | bool[:, :]
 def lu_solve(
     lu_and_piv: tuple[_Complex2D, _Complex1D],
     b: onp.ToComplex1D,
@@ -50,7 +50,7 @@ def lu_solve(
 ) -> _Complex2D: ...
 
 #
-@overload  # (float[:, :], permute_l=False, p_indices=False) -> (float[...], float[...], float[...])
+@overload  # (float | int | bool[:, :], permute_l=False, p_indices=False) -> (float | int | bool[...], float | int | bool[...], float | int | bool[...])
 def lu(
     a: onp.ToFloat2D,
     permute_l: Falsy = False,
@@ -58,7 +58,7 @@ def lu(
     check_finite: onp.ToBool = True,
     p_indices: Falsy = False,
 ) -> tuple[_FloatND, _FloatND, _FloatND]: ...
-@overload  # (float[:, :], permute_l=False, p_indices=True, /) -> (intp[...], float[...], float[...])
+@overload  # (float | int | bool[:, :], permute_l=False, p_indices=True, /) -> (intp[...], float | int | bool[...], float | int | bool[...])
 def lu(
     a: onp.ToFloat2D,
     permute_l: Falsy,
@@ -66,7 +66,7 @@ def lu(
     check_finite: onp.ToBool,
     p_indices: Truthy,
 ) -> tuple[_IntPND, _FloatND, _FloatND]: ...
-@overload  # (float[:, :], permute_l=False, *, p_indices=True) -> (intp[...], float[...], float[...])
+@overload  # (float | int | bool[:, :], permute_l=False, *, p_indices=True) -> (intp[...], float | int | bool[...], float | int | bool[...])
 def lu(
     a: onp.ToFloat2D,
     permute_l: Falsy = False,
@@ -75,7 +75,7 @@ def lu(
     *,
     p_indices: Truthy,
 ) -> tuple[_IntPND, _FloatND, _FloatND]: ...
-@overload  # (float[:, :], permute_l=True, p_indices=False) -> (intp[...], float[...], float[...])
+@overload  # (float | int | bool[:, :], permute_l=True, p_indices=False) -> (intp[...], float | int | bool[...], float | int | bool[...])
 def lu(
     a: onp.ToFloat2D,
     permute_l: Truthy,
@@ -83,7 +83,7 @@ def lu(
     check_finite: onp.ToBool = True,
     p_indices: onp.ToBool = False,
 ) -> tuple[_FloatND, _FloatND]: ...
-@overload  # (complex[:, :], permute_l=False, p_indices=False) -> (complex[...], complex[...], complex[...])
+@overload  # (complex | float | int | bool[:, :], permute_l=False, p_indices=False) -> (complex | float | int | bool[...], complex | float | int | bool[...], complex | float | int | bool[...])
 def lu(
     a: onp.ToComplex2D,
     permute_l: Falsy = False,
@@ -91,7 +91,7 @@ def lu(
     check_finite: onp.ToBool = True,
     p_indices: Falsy = False,
 ) -> tuple[_ComplexND, _ComplexND, _ComplexND]: ...
-@overload  # (complex[:, :], permute_l=False, p_indices=True, /) -> (intp[...], complex[...], complex[...])
+@overload  # (complex | float | int | bool[:, :], permute_l=False, p_indices=True, /) -> (intp[...], complex | float | int | bool[...], complex | float | int | bool[...])
 def lu(
     a: onp.ToComplex2D,
     permute_l: Falsy,
@@ -99,7 +99,7 @@ def lu(
     check_finite: onp.ToBool,
     p_indices: Truthy,
 ) -> tuple[_IntPND, _ComplexND, _ComplexND]: ...
-@overload  # (complex[:, :], permute_l=False, *, p_indices=True) -> (intp[...], complex[...], complex[...])
+@overload  # (complex | float | int | bool[:, :], permute_l=False, *, p_indices=True) -> (intp[...], complex | float | int | bool[...], complex | float | int | bool[...])
 def lu(
     a: onp.ToComplex2D,
     permute_l: Falsy = False,
@@ -108,7 +108,7 @@ def lu(
     *,
     p_indices: Truthy,
 ) -> tuple[_IntPND, _ComplexND, _ComplexND]: ...
-@overload  # (complex[:, :], permute_l=True, p_indices=False) -> (intp[...], complex[...], complex[...])
+@overload  # (complex | float | int | bool[:, :], permute_l=True, p_indices=False) -> (intp[...], complex | float | int | bool[...], complex | float | int | bool[...])
 def lu(
     a: onp.ToComplex2D,
     permute_l: Truthy,

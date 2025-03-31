@@ -218,7 +218,7 @@ line-length = 130
     [tool.ruff.lint]
     preview = true
     select = ["ALL"]
-    ignore = ["D", "FBT", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
+    ignore = ["D", "FBT", "COM812", "CPY", "EM", "TD", "FIX", "DOC", "PYI041"]
 
         [tool.ruff.lint.per-file-ignores]
         "*.pyi" = ["F", "E741", "N", "A", "PYI054", "PLC2701", "PLW3201", "PLR", "FURB"]

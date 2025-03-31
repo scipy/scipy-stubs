@@ -77,7 +77,7 @@ def csd(
 ) -> tuple[_FloatND, _CFloatingND]: ...
 
 #
-@overload  # non-complex mode (positional and keyword)
+@overload  # non-complex | float | int | bool mode (positional and keyword)
 def spectrogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
@@ -91,7 +91,7 @@ def spectrogram(
     axis: op.CanIndex = -1,
     mode: Literal["psd", "magnitude", "angle", "phase"] = "psd",
 ) -> tuple[_FloatND, _FloatND, _FloatingND]: ...
-@overload  # complex mode (positional)
+@overload  # complex | float | int | bool mode (positional)
 def spectrogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat,
@@ -103,9 +103,9 @@ def spectrogram(
     return_onesided: op.CanBool,
     scaling: _Scaling,
     axis: op.CanIndex,
-    mode: Literal["complex"],
+    mode: Literal["complex | float | int | bool"],
 ) -> tuple[_FloatND, _FloatND, _CFloatingND]: ...
-@overload  # complex mode (keyword)
+@overload  # complex | float | int | bool mode (keyword)
 def spectrogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
@@ -118,7 +118,7 @@ def spectrogram(
     scaling: _Scaling = "density",
     axis: op.CanIndex = -1,
     *,
-    mode: Literal["complex"],
+    mode: Literal["complex | float | int | bool"],
 ) -> tuple[_FloatND, _FloatND, _CFloatingND]: ...
 
 #

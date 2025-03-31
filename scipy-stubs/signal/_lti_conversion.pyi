@@ -27,7 +27,7 @@ _Inexact1D: TypeAlias = onp.Array1D[_InexactT]
 _Inexact2D: TypeAlias = onp.Array2D[_InexactT]
 
 _SystemTF: TypeAlias = tuple[_Inexact2D[_InexactT], _Inexact1D[_InexactT]]
-_SystemZPK: TypeAlias = tuple[_Inexact1D[_InexactT], _Inexact1D[_InexactT], float | np.float64]
+_SystemZPK: TypeAlias = tuple[_Inexact1D[_InexactT], _Inexact1D[_InexactT], float | int | bool | np.float64]
 _SystemSS: TypeAlias = tuple[_Inexact2D[_InexactT], _Inexact2D[_InexactT], _Inexact2D[_InexactT], _Inexact2D[_InexactT]]
 
 _DiscretizeMethod: TypeAlias = Literal["gbt", "bilinear", "euler", "backward_diff", "foh", "impulse", "zoh"]
@@ -94,49 +94,49 @@ def ss2zpk(
 @overload
 def cont2discrete(
     system: TransferFunctionContinuous,
-    dt: float,
+    dt: float | int | bool,
     method: _DiscretizeMethod = "zoh",
     alpha: onp.ToJustFloat | None = None,
 ) -> TransferFunctionDiscrete: ...
 @overload
 def cont2discrete(
     system: ZerosPolesGainContinuous,
-    dt: float,
+    dt: float | int | bool,
     method: _DiscretizeMethod = "zoh",
     alpha: onp.ToJustFloat | None = None,
 ) -> ZerosPolesGainDiscrete: ...
 @overload
 def cont2discrete(
     system: StateSpaceContinuous,
-    dt: float,
+    dt: float | int | bool,
     method: _DiscretizeMethod = "zoh",
     alpha: onp.ToJustFloat | None = None,
 ) -> StateSpaceDiscrete: ...
 @overload
 def cont2discrete(
     system: lti,
-    dt: float,
+    dt: float | int | bool,
     method: _DiscretizeMethod = "zoh",
     alpha: onp.ToJustFloat | None = None,
 ) -> dlti: ...
 @overload
 def cont2discrete(
     system: _ToSystemTF,
-    dt: float,
+    dt: float | int | bool,
     method: _DiscretizeMethod = "zoh",
     alpha: onp.ToJustFloat | None = None,
-) -> tuple[_Inexact2D[_InexactT], _Inexact1D[_InexactT], float]: ...
+) -> tuple[_Inexact2D[_InexactT], _Inexact1D[_InexactT], float | int | bool]: ...
 @overload
 def cont2discrete(
     system: _ToSystemZPK,
-    dt: float,
+    dt: float | int | bool,
     method: _DiscretizeMethod = "zoh",
     alpha: onp.ToJustFloat | None = None,
-) -> tuple[_Inexact1D[_InexactT], _Inexact1D[_InexactT], float, float]: ...
+) -> tuple[_Inexact1D[_InexactT], _Inexact1D[_InexactT], float | int | bool, float | int | bool]: ...
 @overload
 def cont2discrete(
     system: _ToSystemSS,
-    dt: float,
+    dt: float | int | bool,
     method: _DiscretizeMethod = "zoh",
     alpha: onp.ToJustFloat | None = None,
-) -> tuple[_Inexact2D[_InexactT], _Inexact2D[_InexactT], _Inexact2D[_InexactT], _Inexact2D[_InexactT], float]: ...
+) -> tuple[_Inexact2D[_InexactT], _Inexact2D[_InexactT], _Inexact2D[_InexactT], _Inexact2D[_InexactT], float | int | bool]: ...

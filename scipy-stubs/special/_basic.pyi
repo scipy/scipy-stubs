@@ -78,7 +78,7 @@ _T0 = TypeVar("_T0")
 _T1 = TypeVar("_T1")
 
 _ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...])
 _SCT_iu = TypeVar("_SCT_iu", bound=npc.integer)
 _SCT_f = TypeVar("_SCT_f", bound=npc.floating)
 _SCT_fc = TypeVar("_SCT_fc", bound=npc.inexact)
@@ -89,7 +89,7 @@ _ToComplexOrND: TypeAlias = onp.ToComplex | onp.ToComplexND
 _ToJustComplexOrND: TypeAlias = onp.ToJustComplex | onp.ToJustComplexND
 
 _Extend0: TypeAlias = L["zero"]
-_ExtendC: TypeAlias = L["complex"]
+_ExtendC: TypeAlias = L["complex | float | int | bool"]
 _Extend: TypeAlias = L[_Extend0, _ExtendC]
 
 # ruff: noqa: PYI042
@@ -127,11 +127,11 @@ _fc_nd: TypeAlias = onp.ArrayND[_fc]
 @overload
 def sinc(x: _SCT_fc) -> _SCT_fc: ...
 @overload
-def sinc(x: float | onp.ToInt) -> _f8: ...
+def sinc(x: float | int | bool | onp.ToInt) -> _f8: ...
 @overload
 def sinc(x: op.JustComplex) -> _c8: ...
 @overload
-def sinc(x: complex) -> _fc8: ...  # type: ignore[overload-cannot-match]  # pyright: ignore[reportOverlappingOverload]s
+def sinc(x: complex | float | int | bool) -> _fc8: ...  # type: ignore[overload-cannot-match]  # pyright: ignore[reportOverlappingOverload]
 @overload
 def sinc(x: onp.ToIntND) -> _f8_nd: ...
 @overload
@@ -141,7 +141,7 @@ def sinc(x: onp.ToComplexND) -> onp.ArrayND[npc.inexact]: ...
 
 #
 @overload
-def diric(x: onp.ToFloat, n: int | _i) -> onp.Array0D[_f8]: ...
+def diric(x: onp.ToFloat, n: int | bool | _i) -> onp.Array0D[_f8]: ...
 @overload
 def diric(x: onp.ToFloat, n: onp.ToInt) -> onp.Array0D[npc.floating]: ...
 @overload
@@ -378,7 +378,9 @@ def clpmn(m: onp.ToInt, n: onp.ToInt, z: _ToComplexOrND, type: L[2, 3] = 3) -> _
 
 #
 @overload
-def comb(N: onp.ToInt | onp.Array0D[npc.integer], k: onp.ToInt, *, exact: Truthy, repetition: op.CanBool = False) -> int: ...
+def comb(
+    N: onp.ToInt | onp.Array0D[npc.integer], k: onp.ToInt, *, exact: Truthy, repetition: op.CanBool = False
+) -> int | bool: ...
 @overload
 @deprecated("`exact=True` is deprecated for non-integer `N` and `k` and will raise an error in SciPy 1.16.0")
 def comb(N: onp.ToFloat, k: onp.ToJustFloat, *, exact: Truthy, repetition: op.CanBool = False) -> _f: ...
@@ -396,7 +398,7 @@ def comb(N: _ToFloatOrND, k: _ToFloatOrND, *, exact: Falsy = False, repetition: 
 
 #
 @overload
-def perm(N: onp.ToInt | onp.Array0D[npc.integer], k: onp.ToInt | onp.Array0D[npc.integer], exact: Truthy) -> int: ...
+def perm(N: onp.ToInt | onp.Array0D[npc.integer], k: onp.ToInt | onp.Array0D[npc.integer], exact: Truthy) -> int | bool: ...
 @overload
 def perm(N: onp.ToFloat, k: onp.ToFloat, exact: Falsy = False) -> _f: ...
 @overload
@@ -408,7 +410,7 @@ def perm(N: _ToFloatOrND, k: _ToFloatOrND, exact: Falsy = False) -> _f | _f_nd: 
 
 #
 @overload
-def factorial(n: onp.ToJustInt, exact: Truthy, extend: _Extend0 = "zero") -> int: ...
+def factorial(n: onp.ToJustInt, exact: Truthy, extend: _Extend0 = "zero") -> int | bool: ...
 @overload
 def factorial(n: onp.ToIntND, exact: Truthy, extend: _Extend0 = "zero") -> _i_nd: ...
 @overload
@@ -426,7 +428,7 @@ def factorial(n: onp.ToComplexND, exact: Falsy = False, *, extend: _ExtendC) -> 
 
 #
 @overload
-def factorial2(n: int, exact: Truthy, extend: _Extend0 = "zero") -> int: ...
+def factorial2(n: int | bool, exact: Truthy, extend: _Extend0 = "zero") -> int | bool: ...
 @overload
 def factorial2(n: _SCT_iu, exact: Truthy, extend: _Extend0 = "zero") -> _SCT_iu: ...
 @overload
@@ -446,7 +448,7 @@ def factorial2(n: onp.ToComplexND, exact: Falsy = False, *, extend: _ExtendC) ->
 
 #
 @overload
-def factorialk(n: onp.ToJustInt, k: onp.ToJustInt, exact: Truthy, extend: _Extend0 = "zero") -> int: ...
+def factorialk(n: onp.ToJustInt, k: onp.ToJustInt, exact: Truthy, extend: _Extend0 = "zero") -> int | bool: ...
 @overload
 def factorialk(n: onp.ToJustIntND, k: onp.ToJustInt, exact: Truthy, extend: _Extend0 = "zero") -> _i_nd: ...
 @overload
@@ -464,7 +466,7 @@ def factorialk(n: onp.ToComplexND, k: onp.ToInt, exact: Falsy = False, *, extend
 
 #
 @overload
-def stirling2(N: onp.ToInt, K: onp.ToInt, *, exact: Truthy) -> int: ...
+def stirling2(N: onp.ToInt, K: onp.ToInt, *, exact: Truthy) -> int | bool: ...
 @overload
 def stirling2(N: _ToIntOrND, K: onp.ToIntND, *, exact: Truthy) -> onp.ArrayND[np.object_]: ...
 @overload
@@ -504,7 +506,7 @@ def zeta(x: onp.ToComplexND, q: _ToFloatOrND | None = None, out: None = None) ->
 @overload
 def softplus(x: _ToFloatOrND, *, out: _ArrayT, dtype: None = None, **kwds: Unpack[_KwBase]) -> _ArrayT: ...
 @overload
-def softplus(x: float | _f8, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> _f8: ...
+def softplus(x: float | int | bool | _f8, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> _f8: ...
 @overload
 def softplus(x: onp.ToInt, *, out: None, dtype: None = None, **kwds: Unpack[_KwBase]) -> _f: ...
 @overload

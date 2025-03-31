@@ -90,7 +90,7 @@ def dijkstra(
     indices: onp.ToIntND | None = None,
     return_predecessors: Falsy = False,
     unweighted: bool = False,
-    limit: float = ...,
+    limit: float | int | bool = ...,
     min_only: Falsy = False,
 ) -> _Float2D: ...
 @overload
@@ -100,7 +100,7 @@ def dijkstra(
     indices: onp.ToIntND | None = None,
     return_predecessors: Falsy = False,
     unweighted: bool = False,
-    limit: float = ...,
+    limit: float | int | bool = ...,
     *,
     min_only: Truthy,
 ) -> _Float1D: ...
@@ -111,7 +111,7 @@ def dijkstra(
     indices: onp.ToIntND | None,
     return_predecessors: Truthy,
     unweighted: bool = False,
-    limit: float = ...,
+    limit: float | int | bool = ...,
     min_only: Falsy = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
@@ -122,7 +122,7 @@ def dijkstra(
     *,
     return_predecessors: Truthy,
     unweighted: bool = False,
-    limit: float = ...,
+    limit: float | int | bool = ...,
     min_only: Falsy = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
@@ -132,7 +132,7 @@ def dijkstra(
     indices: onp.ToIntND | None,
     return_predecessors: Truthy,
     unweighted: bool = False,
-    limit: float = ...,
+    limit: float | int | bool = ...,
     *,
     min_only: Truthy,
 ) -> tuple[_Float1D, _Int1D, _Int1D]: ...
@@ -144,7 +144,7 @@ def dijkstra(
     *,
     return_predecessors: Truthy,
     unweighted: bool = False,
-    limit: float = ...,
+    limit: float | int | bool = ...,
     min_only: Truthy,
 ) -> tuple[_Float1D, _Int1D, _Int1D]: ...
 
@@ -206,9 +206,9 @@ def johnson(
 @overload
 def yen(
     csgraph: _ToGraphArray,
-    source: int,
-    sink: int,
-    K: int,
+    source: int | bool,
+    sink: int | bool,
+    K: int | bool,
     *,
     directed: bool = True,
     return_predecessors: Falsy = False,
@@ -217,9 +217,9 @@ def yen(
 @overload
 def yen(
     csgraph: _ToGraphArray,
-    source: int,
-    sink: int,
-    K: int,
+    source: int | bool,
+    sink: int | bool,
+    K: int | bool,
     *,
     directed: bool = True,
     return_predecessors: Truthy,

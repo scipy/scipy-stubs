@@ -15,8 +15,8 @@ _T = TypeVar("_T")
 _XT = TypeVar("_XT", bound=np.number[Any], default=np.number[Any])
 _XT_co = TypeVar("_XT_co", bound=np.number[Any], default=np.float64, covariant=True)
 _ShapeT = TypeVar("_ShapeT", bound=onp.AtLeast1D, default=onp.AtLeast1D)
-_ShapeT0 = TypeVar("_ShapeT0", bound=tuple[int, ...], default=tuple[int, ...])
-_ShapeT0_co = TypeVar("_ShapeT0_co", bound=tuple[int, ...], default=tuple[int, ...], covariant=True)
+_ShapeT0 = TypeVar("_ShapeT0", bound=tuple[int | bool, ...], default=tuple[int | bool, ...])
+_ShapeT0_co = TypeVar("_ShapeT0_co", bound=tuple[int | bool, ...], default=tuple[int | bool, ...], covariant=True)
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 _ToQRNG: TypeAlias = QMCEngine | ToRNG
@@ -64,7 +64,7 @@ class _ProbabilityDistribution(Generic[_XT_co], metaclass=abc.ABCMeta):
     def sample(
         self,
         /,
-        shape: int | tuple[int, ...],
+        shape: int | bool | tuple[int | bool, ...],
         *,
         method: _SampleMethod,
         rng: _ToQRNG,
@@ -127,9 +127,9 @@ class _ProbabilityDistribution(Generic[_XT_co], metaclass=abc.ABCMeta):
 
 _Self: TypeAlias = _BaseDistribution[_XT, _ShapeT0]
 _Self0: TypeAlias = _Self[_XT, tuple[()]]
-_Self1: TypeAlias = _Self[_XT, tuple[int]]
-_Self2: TypeAlias = _Self[_XT, tuple[int, int]]
-_Self3: TypeAlias = _Self[_XT, tuple[int, int, int]]
+_Self1: TypeAlias = _Self[_XT, tuple[int | bool]]
+_Self2: TypeAlias = _Self[_XT, tuple[int | bool, int | bool]]
+_Self3: TypeAlias = _Self[_XT, tuple[int | bool, int | bool, int | bool]]
 _Self1_: TypeAlias = _Self[_XT, onp.AtLeast1D]
 
 # TODO(jorenham): Merge into ContinuousDistribution?

@@ -7,7 +7,7 @@ from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Floating, Integer
 
 _Real: TypeAlias = Integer | Floating
-_ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
+_ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int | bool, int | bool]]
 
 ###
 

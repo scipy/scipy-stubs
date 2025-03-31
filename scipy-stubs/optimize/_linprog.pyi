@@ -16,8 +16,8 @@ _Ignored: TypeAlias = object
 _Max3: TypeAlias = Literal[0, 1, 2, 3]
 _Max4: TypeAlias = Literal[_Max3, 4]
 
-_Int: TypeAlias = int | np.int32 | np.int64
-_Float: TypeAlias = float | np.float64
+_Int: TypeAlias = int | bool | np.int32 | np.int64
+_Float: TypeAlias = float | int | bool | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 
 @type_check_only
@@ -29,7 +29,7 @@ class _OptionsCommon(TypedDict, total=False):
 # highs-ds
 @type_check_only
 class _OptionsHighsDS(_OptionsCommon, TypedDict, total=False):
-    time_limit: _Float  # default: np.finfo(float).max
+    time_limit: _Float  # default: np.finfo(float | int | bool).max
     dual_feasibility_tolerance: _Float  # default: 1e-7
     primal_feasibility_tolerance: _Float  # default: 1e-7
     simplex_dual_edge_weight_strategy: Literal["dantzig", "devex", "steepest", "steepest-devex"] | None  # default: None
@@ -88,7 +88,7 @@ class OptimizeResult(_OptimizeResult):
     con: _Float1D  # residuals of equality constraints; nominally zero
     status: _Max4
     message: LiteralString
-    nit: int  # >=0
+    nit: int | bool  # >=0
     success: bool  # `success = status == 0`
 
 def linprog_verbose_callback(res: _OptimizeResult) -> None: ...

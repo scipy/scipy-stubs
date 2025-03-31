@@ -108,7 +108,7 @@ _FunCol_jac: TypeAlias = Callable[
 
 ###
 
-EPS: Final[float] = ...
+EPS: Final[float | int | bool] = ...
 TERMINATION_MESSAGES: Final[dict[Literal[0, 1, 2, 3], str]] = ...
 
 # NOTE: this inherits from `scipy.optimize.OptimizeResult` at runtime.
@@ -119,7 +119,7 @@ class BVPResult(Generic[_SCT_fc]):
     p: Final[onp.Array1D[np.float64] | None]
     x: Final[onp.Array1D[np.float64]]
     rms_residuals: Final[onp.Array1D[np.float64]]
-    niter: Final[int]
+    niter: Final[int | bool]
     status: Final[Literal[0, 1, 2]]
     message: Final[str]
     success: Final[bool]
@@ -141,15 +141,17 @@ def estimate_bc_jac(
     p: onp.Array1D[np.float64],
     bc0: onp.Array1D[_SCT_fc] | None = None,
 ) -> tuple[onp.Array2D[_SCT_fc], onp.Array2D[_SCT_fc], onp.Array2D[_SCT_fc] | None]: ...  # undocumented
-def compute_jac_indices(n: int, m: int, k: int) -> tuple[onp.Array1D[np.intp], onp.Array1D[np.intp]]: ...  # undocumented
+def compute_jac_indices(
+    n: int | bool, m: int | bool, k: int | bool
+) -> tuple[onp.Array1D[np.intp], onp.Array1D[np.intp]]: ...  # undocumented
 def stacked_matmul(a: onp.ArrayND[_SCT_fc], b: onp.ArrayND[_SCT_fc]) -> onp.ArrayND[_SCT_fc]: ...  # undocumented
 def construct_global_jac(
-    n: int,
-    m: int,
-    k: int,
+    n: int | bool,
+    m: int | bool,
+    k: int | bool,
     i_jac: onp.Array1D[np.intp],
     j_jac: onp.Array1D[np.intp],
-    h: float,
+    h: float | int | bool,
     df_dy: onp.Array3D[_SCT_fc],
     df_dy_middle: onp.Array3D[_SCT_fc],
     df_dp: onp.Array3D[_SCT_fc] | None,
@@ -163,7 +165,7 @@ def collocation_fun(
     y: onp.Array2D[_SCT_fc],
     p: onp.Array1D[np.float64],
     x: onp.Array1D[np.float64],
-    h: float,
+    h: float | int | bool,
 ) -> tuple[
     onp.Array2D[_SCT_fc],
     onp.Array2D[_SCT_fc],
@@ -171,42 +173,42 @@ def collocation_fun(
     onp.Array2D[_SCT_fc],
 ]: ...  # undocumented
 def prepare_sys(
-    n: int,
-    m: int,
-    k: int,
+    n: int | bool,
+    m: int | bool,
+    k: int | bool,
     fun: _FunRHS_x[_SCT_fc],
     bc: _FunBCR_x[_SCT_fc],
     fun_jac: _FunRHS_jac_x[_SCT_fc] | None,
     bc_jac: _FunBCR_jac_x[_SCT_fc] | None,
     x: onp.Array1D[np.float64],
-    h: float,
+    h: float | int | bool,
 ) -> tuple[_FunCol[_SCT_fc], _FunCol_jac[_SCT_fc]]: ...  # undocumented
 def solve_newton(
-    n: int,
-    m: int,
-    h: int,
+    n: int | bool,
+    m: int | bool,
+    h: int | bool,
     col_fun: _FunCol[_SCT_fc],
     bc: _FunBCR_x[_SCT_fc],
     jac: _FunCol_jac[_SCT_fc],
     y: onp.Array2D[_SCT_fc],
     p: onp.Array1D[np.float64],
     B: onp.Array2D[np.float64] | None,
-    bvp_tol: float,
-    bc_tol: float,
+    bvp_tol: float | int | bool,
+    bc_tol: float | int | bool,
 ) -> tuple[onp.Array2D[_SCT_fc], onp.Array1D[np.float64], bool]: ...  # undocumented
 def print_iteration_header() -> None: ...  # undocumented
 def print_iteration_progress(
-    iteration: int,
-    residual: complex,
-    bc_residual: complex,
-    total_nodes: int,
-    nodes_added: int,
+    iteration: int | bool,
+    residual: complex | float | int | bool,
+    bc_residual: complex | float | int | bool,
+    total_nodes: int | bool,
+    nodes_added: int | bool,
 ) -> None: ...  # undocumented
 def estimate_rms_residuals(
     fun: _FunRHS_x[_SCT_fc],
     sol: PPoly,
     x: onp.Array1D,
-    h: float,
+    h: float | int | bool,
     p: onp.Array1D,
     r_middle: onp.Array2D[_SCT_fc],
     f_middle: onp.Array2D[_SCT_fc],
@@ -215,7 +217,7 @@ def create_spline(
     y: onp.Array2D[_SCT_fc],
     yp: onp.Array2D[_SCT_fc],
     x: onp.Array1D[np.float64],
-    h: float,
+    h: float | int | bool,
 ) -> PPoly: ...  # undocumented
 def modify_mesh(
     x: onp.Array1D,
@@ -232,7 +234,7 @@ def wrap_functions(
     a: onp.ToFloat,
     S: onp.Array2D[np.float64] | None,
     D: onp.Array2D[np.float64] | None,
-    dtype: type[float | complex],
+    dtype: type[float | int | bool | complex | float | int | bool],
 ) -> _Funs_x[_SCT_fc]: ...  # undocumented
 @overload
 def wrap_functions(
@@ -244,7 +246,7 @@ def wrap_functions(
     a: onp.ToFloat,
     S: onp.Array2D[np.float64] | None,
     D: onp.Array2D[np.float64] | None,
-    dtype: type[float | complex],
+    dtype: type[float | int | bool | complex | float | int | bool],
 ) -> _Funs_x[_SCT_fc]: ...  # undocumented
 
 #
@@ -258,10 +260,10 @@ def solve_bvp(
     S: onp.ToFloat2D | None = None,
     fun_jac: _FunRHS_jac[_SCT_fc] | None = None,
     bc_jac: _FunBCR_jac[_SCT_fc] | None = None,
-    tol: float = 0.001,
-    max_nodes: int = 1_000,
+    tol: float | int | bool = 0.001,
+    max_nodes: int | bool = 1_000,
     verbose: Literal[0, 1, 2] = 0,
-    bc_tol: float | None = None,
+    bc_tol: float | int | bool | None = None,
 ) -> BVPResult[_SCT_fc]: ...
 @overload
 def solve_bvp(
@@ -273,8 +275,8 @@ def solve_bvp(
     S: onp.ToFloat2D | None = None,
     fun_jac: _FunRHS_jac_p[_SCT_fc] | None = None,
     bc_jac: _FunBCR_jac_p[_SCT_fc] | None = None,
-    tol: float = 0.001,
-    max_nodes: int = 1_000,
+    tol: float | int | bool = 0.001,
+    max_nodes: int | bool = 1_000,
     verbose: Literal[0, 1, 2] = 0,
-    bc_tol: float | None = None,
+    bc_tol: float | int | bool | None = None,
 ) -> BVPResult[_SCT_fc]: ...

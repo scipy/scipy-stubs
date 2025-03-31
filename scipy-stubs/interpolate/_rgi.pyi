@@ -21,7 +21,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
     grid: tuple[onp.ArrayND[_CT_co], ...]
     values: onp.ArrayND[_CT_co]
     method: _Method
-    fill_value: float | None
+    fill_value: float | int | bool | None
     bounds_error: bool
 
     @overload

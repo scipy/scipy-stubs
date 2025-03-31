@@ -16,13 +16,13 @@ _Float1D: TypeAlias = onp.Array1D[np.float64]
 
 class OptimizeResult(_OptimizeResult):
     success: bool
-    status: int
+    status: int | bool
     x: _Float1D
-    fun: float
-    nit: int
-    nfev: int
-    njev: int
-    nhev: int
+    fun: float | int | bool
+    nit: int | bool
+    nfev: int | bool
+    njev: int | bool
+    nhev: int | bool
     message: str
 
 def dual_annealing(
@@ -38,6 +38,6 @@ def dual_annealing(
     maxfun: onp.ToFloat = 10_000_000.0,
     rng: ToRNG = None,
     no_local_search: onp.ToBool = False,
-    callback: Callable[[_Float1D, float, Literal[0, 1, 2]], bool | None] | None = None,
+    callback: Callable[[_Float1D, float | int | bool, Literal[0, 1, 2]], bool | None] | None = None,
     x0: onp.ToFloat1D | None = None,
 ) -> _OptimizeResult: ...

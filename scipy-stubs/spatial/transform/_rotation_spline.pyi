@@ -6,8 +6,8 @@ from scipy.interpolate import PPoly
 from ._rotation import Rotation
 
 class RotationSpline:
-    MAX_ITER: ClassVar[int] = 10
-    TOL: ClassVar[float] = 1e-9
+    MAX_ITER: ClassVar[int | bool] = 10
+    TOL: ClassVar[float | int | bool] = 1e-9
 
     times: Final[onp.Array1D[np.int32 | np.int64 | np.float32 | np.float64]]
     rotations: Final[Rotation]

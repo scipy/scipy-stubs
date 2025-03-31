@@ -54,7 +54,7 @@ def chirp(
     *,
     complex: Falsy = False,
 ) -> _FloatingND: ...
-@overload  # complex scalars
+@overload  # complex | float | int | bool scalars
 def chirp(
     t: onp.ToFloat,
     f0: onp.ToFloat,
@@ -66,7 +66,7 @@ def chirp(
     *,
     complex: Truthy,
 ) -> np.complexfloating[Any, Any]: ...
-@overload  # complex arrays
+@overload  # complex | float | int | bool arrays
 def chirp(
     t: onp.ToFloatND,
     f0: onp.ToFloat,
@@ -91,7 +91,7 @@ def sweep_poly(
 def unit_impulse(
     shape: AnyShape,
     idx: op.CanIndex | Iterable[op.CanIndex] | Literal["mid"] | None = None,
-    dtype: type[float] = ...,
+    dtype: type[float | int | bool] = ...,
 ) -> _FloatND: ...
 @overload  # dtype is given
 def unit_impulse(

@@ -12,7 +12,12 @@ from ._typing import Index1D, Numeric
 __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
+_ShapeT_co = TypeVar(
+    "_ShapeT_co",
+    bound=tuple[int | bool] | tuple[int | bool, int | bool],
+    default=tuple[int | bool] | tuple[int | bool, int | bool],
+    covariant=True,
+)
 
 ###
 
@@ -26,20 +31,22 @@ class _csr_base(_cs_matrix[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
 
     #
     @overload  # type: ignore[explicit-override]
-    def count_nonzero(self, /, axis: None = None) -> int: ...
+    def count_nonzero(self, /, axis: None = None) -> int | bool: ...
     @overload
-    def count_nonzero(self: _csr_base[Any, tuple[int]], /, axis: op.CanIndex) -> int: ...
+    def count_nonzero(self: _csr_base[Any, tuple[int | bool]], /, axis: op.CanIndex) -> int | bool: ...
     @overload
-    def count_nonzero(self: _csr_base[Any, tuple[int, int]], /, axis: op.CanIndex) -> onp.Array1D[np.int32 | np.int64]: ...
+    def count_nonzero(
+        self: _csr_base[Any, tuple[int | bool, int | bool]], /, axis: op.CanIndex
+    ) -> onp.Array1D[np.int32 | np.int64]: ...
     @overload
-    def count_nonzero(self: csr_array, /, axis: op.CanIndex) -> int | onp.Array1D[np.int32 | np.int64]: ...  # type: ignore[misc]
+    def count_nonzero(self: csr_array, /, axis: op.CanIndex) -> int | bool | onp.Array1D[np.int32 | np.int64]: ...  # type: ignore[misc]
 
 class csr_array(_csr_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]): ...
 
-class csr_matrix(_csr_base[_SCT, tuple[int, int]], spmatrix[_SCT], Generic[_SCT]):  # type: ignore[misc]
+class csr_matrix(_csr_base[_SCT, tuple[int | bool, int | bool]], spmatrix[_SCT], Generic[_SCT]):  # type: ignore[misc]
     # NOTE: using `@override` together with `@overload` causes stubtest to crash...
     @overload  # type: ignore[explicit-override]
-    def getnnz(self, /, axis: None = None) -> int: ...
+    def getnnz(self, /, axis: None = None) -> int | bool: ...
     @overload
     def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...
 

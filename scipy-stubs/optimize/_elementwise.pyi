@@ -7,8 +7,8 @@ import optype.numpy as onp
 from scipy._lib._util import _RichResult
 
 _T = TypeVar("_T")
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[int, ...], covariant=True)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int | bool, ...], default=tuple[int | bool, ...])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int | bool, ...], default=tuple[int | bool, ...], covariant=True)
 
 _Bracket: TypeAlias = tuple[_T, _T]
 
@@ -53,7 +53,7 @@ def find_root(
     *,
     args: tuple[()] = (),
     tolerances: _Tolerances | None = None,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     callback: Callable[[_FindResult[_ShapeT]], None] | None = None,
 ) -> _FindResult[_ShapeT]: ...
 @overload
@@ -64,7 +64,7 @@ def find_root(
     *,
     args: tuple[object, ...],
     tolerances: _Tolerances | None = None,
-    maxiter: int | None = None,
+    maxiter: int | bool | None = None,
     callback: Callable[[_FindResult[_ShapeT]], None] | None = None,
 ) -> _FindResult[_ShapeT]: ...
 
@@ -77,7 +77,7 @@ def find_minimum(
     *,
     args: tuple[()] = (),
     tolerances: _Tolerances | None = None,
-    maxiter: int = 100,
+    maxiter: int | bool = 100,
     callback: Callable[[_FindResult[_ShapeT]], None] | None = None,
 ) -> _FindResult[_ShapeT]: ...
 @overload
@@ -88,7 +88,7 @@ def find_minimum(
     *,
     args: tuple[object, ...],
     tolerances: _Tolerances | None = None,
-    maxiter: int = 100,
+    maxiter: int | bool = 100,
     callback: Callable[[_FindResult[_ShapeT]], None] | None = None,
 ) -> _FindResult[_ShapeT]: ...
 
@@ -103,7 +103,7 @@ def bracket_root(
     xmax: onp.ToFloat | onp.ToFloatND | None = None,
     factor: onp.ToFloat | onp.ToFloatND | None = None,
     args: tuple[()] = (),
-    maxiter: int = 1_000,
+    maxiter: int | bool = 1_000,
 ) -> _BracketResult[_ShapeT]: ...
 @overload
 def bracket_root(
@@ -115,7 +115,7 @@ def bracket_root(
     xmax: onp.ToFloat | onp.ToFloatND | None = None,
     factor: onp.ToFloat | onp.ToFloatND | None = None,
     args: tuple[object, ...],
-    maxiter: int = 1_000,
+    maxiter: int | bool = 1_000,
 ) -> _BracketResult[_ShapeT]: ...
 
 #
@@ -130,7 +130,7 @@ def bracket_minimum(
     xmax: onp.ToFloat | onp.ToFloatND | None = None,
     factor: onp.ToFloat | onp.ToFloatND | None = None,
     args: tuple[()] = (),
-    maxiter: int = 1_000,
+    maxiter: int | bool = 1_000,
 ) -> _BracketResult[_ShapeT]: ...
 @overload
 def bracket_minimum(
@@ -143,5 +143,5 @@ def bracket_minimum(
     xmax: onp.ToFloat | onp.ToFloatND | None = None,
     factor: onp.ToFloat | onp.ToFloatND | None = None,
     args: tuple[object, ...],
-    maxiter: int = 1_000,
+    maxiter: int | bool = 1_000,
 ) -> _BracketResult[_ShapeT]: ...

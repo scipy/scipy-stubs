@@ -6,7 +6,7 @@ import optype.numpy as onp
 from scipy._typing import Alternative
 from ._resampling import PermutationMethod
 
-_FloatOrArray: TypeAlias = float | np.float64 | onp.ArrayND[np.float64]
+_FloatOrArray: TypeAlias = float | int | bool | np.float64 | onp.ArrayND[np.float64]
 _FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_FloatOrArray, default=_FloatOrArray)
 
 class MannwhitneyuResult(NamedTuple, Generic[_FloatOrArrayT]):
@@ -18,7 +18,7 @@ def mannwhitneyu(
     y: onp.ToFloatND,
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
-    axis: int = 0,
+    axis: int | bool = 0,
     method: Literal["auto", "asymptotic", "exact"] | PermutationMethod = "auto",
     *,
     nan_policy: Literal["propagate", "raise", "coerce", "omit"] = "propagate",

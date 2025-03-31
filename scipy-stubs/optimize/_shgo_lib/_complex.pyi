@@ -15,16 +15,16 @@ _FloatingND: TypeAlias = onp.ArrayND[np.floating[Any] | np.integer[Any]]
 _Fun0D: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat]
 _Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]
 
-_Location: TypeAlias = _FloatingND | Sequence[float]
+_Location: TypeAlias = _FloatingND | Sequence[float | int | bool]
 _Bounds: TypeAlias = _FloatingND | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
-_Symmetry: TypeAlias = onp.ArrayND[np.integer[Any]] | op.CanGetitem[int, op.CanIndex]
+_Symmetry: TypeAlias = onp.ArrayND[np.integer[Any]] | op.CanGetitem[int | bool, op.CanIndex]
 
 _HT = TypeVar("_HT", bound=VertexCacheBase, default=VertexCacheBase)
 
 ###
 
 class Complex(Generic[_HT]):  # undocumented
-    dim: Final[int]
+    dim: Final[int | bool]
     domain: Final[_Bounds]
     bounds: Final[_Bounds]
     symmetry: Final[_Symmetry]
@@ -34,14 +34,14 @@ class Complex(Generic[_HT]):  # undocumented
     g_cons: Final[Sequence[_Fun1D]]
     g_args: Final[tuple[object, ...]]
 
-    gen: int
-    perm_cycle: int
+    gen: int | bool
+    perm_cycle: int | bool
 
     H: list[_HT]  # readonly
     V: Final[VertexCacheBase]
     V_non_symm: Final[list[VertexBase]]
-    origin: list[float]
-    supremum: list[float]
+    origin: list[float | int | bool]
+    supremum: list[float | int | bool]
     triangulated_vectors: list[tuple[_Floats, _Floats]]
 
     cp: Generator[_Floats, None, _Floats]
@@ -50,13 +50,13 @@ class Complex(Generic[_HT]):  # undocumented
     def __init__(
         self,
         /,
-        dim: int,
+        dim: int | bool,
         domain: _Bounds | None = None,
         sfield: _Fun0D | None = None,
         sfield_args: tuple[object, ...] = (),
         symmetry: _Symmetry | None = None,
         constraints: Constraints | None = None,
-        workers: int = 1,
+        workers: int | bool = 1,
     ) -> None: ...
     def __call__(self, /) -> list[_HT]: ...
     def cyclic_product(
@@ -70,12 +70,12 @@ class Complex(Generic[_HT]):  # undocumented
     def triangulate(
         self,
         /,
-        n: int | None = None,
+        n: int | bool | None = None,
         symmetry: _Symmetry | None = None,
         centroid: onp.ToFloat = True,
         printout: onp.ToFloat = False,
     ) -> None: ...
-    def refine(self, /, n: int = 1) -> None: ...
+    def refine(self, /, n: int | bool = 1) -> None: ...
     def refine_all(self, /, centroids: onp.ToBool = True) -> None: ...
     def refine_local_space(
         self,

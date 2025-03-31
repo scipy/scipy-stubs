@@ -13,44 +13,52 @@ __all__ = ["IntegrationWarning", "dblquad", "nquad", "quad", "tplquad"]
 
 _T = TypeVar("_T")
 _T_co = TypeVar("_T_co", covariant=True)
-_T_f_contra = TypeVar("_T_f_contra", contravariant=True, default=float)
+_T_f_contra = TypeVar("_T_f_contra", contravariant=True, default=float | int | bool)
 _BT_co = TypeVar("_BT_co", bound=bool, covariant=True, default=bool)
 
 # NOTE: Technically `integer[Any]` and `bool_` are also allowed, but there's no valid usecase for that.
-_IntLike: TypeAlias = int | np.integer[Any]
-_FloatLike: TypeAlias = float | np.floating[Any]
-_ComplexLike: TypeAlias = complex | np.inexact[Any]
+_IntLike: TypeAlias = int | bool | np.integer[Any]
+_FloatLike: TypeAlias = float | int | bool | np.floating[Any]
+_ComplexLike: TypeAlias = complex | float | int | bool | np.inexact[Any]
 
 # NOTE: Technically allowing `x: float64` here is type-unsafe. But in practice that isn't likely to be a problem at all.
-_QuadFunc10: TypeAlias = Callable[[float], _T] | Callable[[np.float64], _T] | LowLevelCallable
-_QuadFunc1N: TypeAlias = Callable[Concatenate[float, ...], _T] | Callable[Concatenate[np.float64, ...], _T] | LowLevelCallable
+_QuadFunc10: TypeAlias = Callable[[float | int | bool], _T] | Callable[[np.float64], _T] | LowLevelCallable
+_QuadFunc1N: TypeAlias = (
+    Callable[Concatenate[float | int | bool, ...], _T] | Callable[Concatenate[np.float64, ...], _T] | LowLevelCallable
+)
 
-_QuadFunc20: TypeAlias = Callable[[float, float], _FloatLike] | Callable[[np.float64, np.float64], _FloatLike] | LowLevelCallable
+_QuadFunc20: TypeAlias = (
+    Callable[[float | int | bool, float | int | bool], _FloatLike]
+    | Callable[[np.float64, np.float64], _FloatLike]
+    | LowLevelCallable
+)
 _QuadFunc2N: TypeAlias = (
-    Callable[Concatenate[float, float, ...], _FloatLike]
+    Callable[Concatenate[float | int | bool, float | int | bool, ...], _FloatLike]
     | Callable[Concatenate[np.float64, np.float64, ...], _FloatLike]
     | LowLevelCallable
 )  # fmt: skip
 
 _QuadFunc30: TypeAlias = (
-    Callable[[float, float, float], _FloatLike]
+    Callable[[float | int | bool, float | int | bool, float | int | bool], _FloatLike]
     | Callable[[np.float64, np.float64, np.float64], _FloatLike]
     | LowLevelCallable
 )  # fmt: skip
 _QuadFunc3N: TypeAlias = (
-    Callable[Concatenate[float, float, float, ...], _FloatLike]
+    Callable[Concatenate[float | int | bool, float | int | bool, float | int | bool, ...], _FloatLike]
     | Callable[Concatenate[np.float64, np.float64, np.float64, ...], _FloatLike]
     | LowLevelCallable
 )  # fmt: skip
 
 _QuadFuncN: TypeAlias = (
-    Callable[Concatenate[float, ...], _FloatLike]
+    Callable[Concatenate[float | int | bool, ...], _FloatLike]
     | Callable[Concatenate[np.float64, ...], _FloatLike]
     | LowLevelCallable
 )  # fmt: skip
 
-_GHFunc: TypeAlias = _FloatLike | Callable[[float], _FloatLike] | Callable[[np.float64], _FloatLike]
-_QRFunc: TypeAlias = _FloatLike | Callable[[float, float], _FloatLike] | Callable[[np.float64, np.float64], _FloatLike]
+_GHFunc: TypeAlias = _FloatLike | Callable[[float | int | bool], _FloatLike] | Callable[[np.float64], _FloatLike]
+_QRFunc: TypeAlias = (
+    _FloatLike | Callable[[float | int | bool, float | int | bool], _FloatLike] | Callable[[np.float64, np.float64], _FloatLike]
+)
 
 @type_check_only
 class _QuadOutput1C_1(TypedDict):
@@ -69,18 +77,18 @@ class _QuadOutput1C_3(TypedDict):
 
 @type_check_only
 class _QuadOutputNC(TypedDict):
-    neval: int
+    neval: int | bool
 
 _QuadComplexFullOutput: TypeAlias = _QuadOutput1C_1 | _QuadOutput1C_2 | _QuadOutput1C_3
 _QuadExplain = TypedDict("_QuadExplain", {0: str, 1: str, 2: str, 3: str, 4: str, 5: str})  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]
 
 @type_check_only
 class _CanLenAndIter(Protocol[_T_co]):
-    def __len__(self, /) -> int: ...
+    def __len__(self, /) -> int | bool: ...
     def __iter__(self, /) -> Iterator[_T_co]: ...
 
-_SizedIterable: TypeAlias = _CanLenAndIter[_T] | op.CanSequence[int, _T]
-_QuadRange: TypeAlias = _SizedIterable[float]
+_SizedIterable: TypeAlias = _CanLenAndIter[_T] | op.CanSequence[int | bool, _T]
+_QuadRange: TypeAlias = _SizedIterable[float | int | bool]
 _RangeT = TypeVar("_RangeT", bound=_QuadRange, default=_QuadRange)
 _RangeT_co = TypeVar("_RangeT_co", bound=_QuadRange, covariant=True, default=_QuadRange)
 
@@ -106,8 +114,8 @@ class _OptFunc(_OptCallable[_T_f_contra, _OptT], Generic[_T_f_contra, _OptT]):
     def __init__(self, /, opt: _OptT) -> None: ...
 
 class _NQuad(Generic[_BT_co]):
-    abserr: Final[float]
-    maxdepth: Final[int]
+    abserr: Final[float | int | bool]
+    maxdepth: Final[int | bool]
     out_dict: Final[_QuadOutputNC]
 
     func: _QuadFuncN
@@ -117,9 +125,11 @@ class _NQuad(Generic[_BT_co]):
 
     def __init__(self, /, func: _QuadFuncN, ranges: list[_RangeFunc], opts: list[_OptFunc], full_output: _BT_co) -> None: ...
     @overload
-    def integrate(self: _NQuad[Literal[False]], /, *args: object) -> tuple[float, float]: ...
+    def integrate(self: _NQuad[Literal[False]], /, *args: object) -> tuple[float | int | bool, float | int | bool]: ...
     @overload
-    def integrate(self: _NQuad[Literal[True]], /, *args: object) -> tuple[float, float, _QuadOutputNC]: ...
+    def integrate(
+        self: _NQuad[Literal[True]], /, *args: object
+    ) -> tuple[float | int | bool, float | int | bool, _QuadOutputNC]: ...
 
 class IntegrationWarning(UserWarning): ...
 
@@ -142,7 +152,7 @@ def quad(
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
     complex_func: Falsy = False,
-) -> tuple[float, float]: ...
+) -> tuple[float | int | bool, float | int | bool]: ...
 @overload
 def quad(
     func: _QuadFunc1N[_FloatLike],
@@ -160,7 +170,7 @@ def quad(
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
     complex_func: Falsy = False,
-) -> tuple[float, float]: ...
+) -> tuple[float | int | bool, float | int | bool]: ...
 @overload
 def quad(
     func: _QuadFunc10[_FloatLike],
@@ -179,9 +189,9 @@ def quad(
     limlst: _IntLike = 50,
     complex_func: Falsy = False,
 ) -> (
-    tuple[float, float, QuadInfoDict]
-    | tuple[float, float, QuadInfoDict, str]
-    | tuple[float, float, QuadInfoDict, str, _QuadExplain]
+    tuple[float | int | bool, float | int | bool, QuadInfoDict]
+    | tuple[float | int | bool, float | int | bool, QuadInfoDict, str]
+    | tuple[float | int | bool, float | int | bool, QuadInfoDict, str, _QuadExplain]
 ): ...
 @overload
 def quad(
@@ -202,9 +212,9 @@ def quad(
     limlst: _IntLike = 50,
     complex_func: Falsy = False,
 ) -> (
-    tuple[float, float, QuadInfoDict]
-    | tuple[float, float, QuadInfoDict, str]
-    | tuple[float, float, QuadInfoDict, str, _QuadExplain]
+    tuple[float | int | bool, float | int | bool, QuadInfoDict]
+    | tuple[float | int | bool, float | int | bool, QuadInfoDict, str]
+    | tuple[float | int | bool, float | int | bool, QuadInfoDict, str, _QuadExplain]
 ): ...
 @overload
 def quad(
@@ -224,9 +234,9 @@ def quad(
     limlst: _IntLike = 50,
     complex_func: Falsy = False,
 ) -> (
-    tuple[float, float, QuadInfoDict]
-    | tuple[float, float, QuadInfoDict, str]
-    | tuple[float, float, QuadInfoDict, str, _QuadExplain]
+    tuple[float | int | bool, float | int | bool, QuadInfoDict]
+    | tuple[float | int | bool, float | int | bool, QuadInfoDict, str]
+    | tuple[float | int | bool, float | int | bool, QuadInfoDict, str, _QuadExplain]
 ): ...
 @overload
 def quad(
@@ -245,7 +255,7 @@ def quad(
     maxp1: _IntLike,
     limlst: _IntLike,
     complex_func: Truthy,
-) -> tuple[complex, complex]: ...
+) -> tuple[complex | float | int | bool, complex | float | int | bool]: ...
 @overload
 def quad(
     func: _QuadFunc10[_ComplexLike],
@@ -264,7 +274,7 @@ def quad(
     limlst: _IntLike = 50,
     *,
     complex_func: Truthy,
-) -> tuple[complex, complex]: ...
+) -> tuple[complex | float | int | bool, complex | float | int | bool]: ...
 @overload
 def quad(
     func: _QuadFunc10[_ComplexLike],
@@ -282,7 +292,7 @@ def quad(
     maxp1: _IntLike,
     limlst: _IntLike,
     complex_func: Truthy,
-) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
+) -> tuple[complex | float | int | bool, complex | float | int | bool, _QuadComplexFullOutput]: ...
 @overload
 def quad(
     func: _QuadFunc10[_ComplexLike],
@@ -301,7 +311,7 @@ def quad(
     limlst: _IntLike = 50,
     *,
     complex_func: Truthy,
-) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
+) -> tuple[complex | float | int | bool, complex | float | int | bool, _QuadComplexFullOutput]: ...
 @overload
 def quad(
     func: _QuadFunc10[_ComplexLike],
@@ -320,7 +330,7 @@ def quad(
     maxp1: _IntLike = 50,
     limlst: _IntLike = 50,
     complex_func: Truthy,
-) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
+) -> tuple[complex | float | int | bool, complex | float | int | bool, _QuadComplexFullOutput]: ...
 @overload
 def quad(
     func: _QuadFunc1N[_ComplexLike],
@@ -338,7 +348,7 @@ def quad(
     maxp1: _IntLike,
     limlst: _IntLike,
     complex_func: Truthy,
-) -> tuple[complex, complex]: ...
+) -> tuple[complex | float | int | bool, complex | float | int | bool]: ...
 @overload
 def quad(
     func: _QuadFunc1N[_ComplexLike],
@@ -357,7 +367,7 @@ def quad(
     limlst: _IntLike = 50,
     *,
     complex_func: Truthy,
-) -> tuple[complex, complex]: ...
+) -> tuple[complex | float | int | bool, complex | float | int | bool]: ...
 @overload
 def quad(
     func: _QuadFunc1N[_ComplexLike],
@@ -375,7 +385,7 @@ def quad(
     maxp1: _IntLike,
     limlst: _IntLike,
     complex_func: Truthy,
-) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
+) -> tuple[complex | float | int | bool, complex | float | int | bool, _QuadComplexFullOutput]: ...
 @overload
 def quad(
     func: _QuadFunc1N[_ComplexLike],
@@ -394,7 +404,7 @@ def quad(
     limlst: _IntLike = 50,
     *,
     complex_func: Truthy,
-) -> tuple[complex, complex, _QuadComplexFullOutput]: ...
+) -> tuple[complex | float | int | bool, complex | float | int | bool, _QuadComplexFullOutput]: ...
 
 # 2-dimensional quadrature
 
@@ -408,7 +418,7 @@ def dblquad(
     args: tuple[()] = (),
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
-) -> tuple[float, float]: ...
+) -> tuple[float | int | bool, float | int | bool]: ...
 @overload
 def dblquad(
     func: _QuadFunc2N,
@@ -419,7 +429,7 @@ def dblquad(
     args: tuple[object, ...],
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
-) -> tuple[float, float]: ...
+) -> tuple[float | int | bool, float | int | bool]: ...
 
 # 3-dimensional quadrature
 
@@ -435,7 +445,7 @@ def tplquad(
     args: tuple[()] = (),
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
-) -> tuple[float, float]: ...
+) -> tuple[float | int | bool, float | int | bool]: ...
 @overload
 def tplquad(
     func: _QuadFunc3N,
@@ -448,32 +458,32 @@ def tplquad(
     args: tuple[object, ...],
     epsabs: _FloatLike = 1.49e-08,
     epsrel: _FloatLike = 1.49e-08,
-) -> tuple[float, float]: ...
+) -> tuple[float | int | bool, float | int | bool]: ...
 
 # N-dimensional quadrature
 
 @overload
 def nquad(
     func: _QuadFuncN,
-    ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
+    ranges: _SizedIterable[_QuadRange | _RangeCallable[float | int | bool]],
     args: Iterable[object] | None = None,
     opts: QuadOpts | Callable[..., QuadOpts] | Iterable[QuadOpts | Callable[..., QuadOpts]] | None = None,
     full_output: Falsy = False,
-) -> tuple[float, float]: ...
+) -> tuple[float | int | bool, float | int | bool]: ...
 @overload
 def nquad(
     func: _QuadFuncN,
-    ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
+    ranges: _SizedIterable[_QuadRange | _RangeCallable[float | int | bool]],
     args: Iterable[object] | None,
     opts: QuadOpts | _OptCallable | Iterable[QuadOpts | _OptCallable] | None,
     full_output: Truthy,
-) -> tuple[float, float, _QuadOutputNC]: ...
+) -> tuple[float | int | bool, float | int | bool, _QuadOutputNC]: ...
 @overload
 def nquad(
     func: _QuadFuncN,
-    ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
+    ranges: _SizedIterable[_QuadRange | _RangeCallable[float | int | bool]],
     args: Iterable[object] | None = None,
     opts: QuadOpts | _OptCallable | Iterable[QuadOpts | _OptCallable] | None = None,
     *,
     full_output: Truthy,
-) -> tuple[float, float, _QuadOutputNC]: ...
+) -> tuple[float | int | bool, float | int | bool, _QuadOutputNC]: ...

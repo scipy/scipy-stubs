@@ -12,7 +12,7 @@ _Params: TypeAlias = Mapping[str, onp.ToFloat]
 _Bounds: TypeAlias = Mapping[str, tuple[onp.ToFloat, onp.ToFloat]] | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
 
 _GOFStatName: TypeAlias = Literal["ad", "ks", "cvm", "filliben"]
-_GOFStatFunc: TypeAlias = Callable[[rv_continuous_frozen, onp.ArrayND[np.float64]], float | np.float32 | np.float64]
+_GOFStatFunc: TypeAlias = Callable[[rv_continuous_frozen, onp.ArrayND[np.float64]], float | int | bool | np.float32 | np.float64]
 _FitMethod: TypeAlias = Literal["mle", "mse"]
 _PlotType: TypeAlias = Literal["hist", "qq", "pp", "cdf"]
 
@@ -65,8 +65,8 @@ class FitResult(Generic[_PXFT_co]):
 
 class GoodnessOfFitResult(NamedTuple):
     fit_result: FitResult[_PXF2n]  # always continuous
-    statistic: float | np.float64
-    pvalue: float | np.float64
+    statistic: float | int | bool | np.float64
+    pvalue: float | int | bool | np.float64
     null_distribution: onp.Array1D[np.float64]
 
 @overload

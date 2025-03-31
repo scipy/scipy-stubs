@@ -66,7 +66,7 @@ class _HessianResult(_RichResult, Generic[_FloatT_co, _ShapeT2_co]):
 @overload  # 0-d float64
 def derivative(
     f: _Function00[np.float64],
-    x: float | np.float64 | np.integer[Any] | onp.CanArray0D[np.float64 | np.integer[Any]],
+    x: float | int | bool | np.float64 | np.integer[Any] | onp.CanArray0D[np.float64 | np.integer[Any]],
     *,
     args: tuple[onp.ToScalar, ...] = (),
     tolerances: _Tolerances | None = None,
@@ -121,8 +121,8 @@ def derivative(
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntStrict1D = 0,
     preserve_shape: bool = False,
-    callback: Callable[[_DerivativeResultND[_FloatT, tuple[int]]], _Ignored] | None = None,
-) -> _DerivativeResultND[_FloatT, tuple[int]]: ...
+    callback: Callable[[_DerivativeResultND[_FloatT, tuple[int | bool]]], _Ignored] | None = None,
+) -> _DerivativeResultND[_FloatT, tuple[int | bool]]: ...
 @overload  # n-d <unknown>
 def derivative(
     f: _FunctionNN[_FloatT],

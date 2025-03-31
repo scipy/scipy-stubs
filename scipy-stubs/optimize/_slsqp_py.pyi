@@ -58,7 +58,7 @@ def fmin_slsqp(
     iprint: onp.ToJustInt = 1,
     disp: onp.ToInt | None = None,
     full_output: Falsy = 0,
-    epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float).eps)
+    epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float | int | bool).eps)
     callback: Callable[[onp.Array1D[np.float64]], _Ignored] | None = None,
 ) -> onp.Array1D[np.float64]: ...
 @overload
@@ -80,6 +80,6 @@ def fmin_slsqp(
     disp: onp.ToInt | None = None,
     *,
     full_output: Truthy,
-    epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float).eps)
+    epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float | int | bool).eps)
     callback: Callable[[onp.Array1D[np.float64]], _Ignored] | None = None,
-) -> tuple[onp.Array1D[np.float64], float | np.float64, int, _ExitMode, _ExitDesc]: ...
+) -> tuple[onp.Array1D[np.float64], float | int | bool | np.float64, int | bool, _ExitMode, _ExitDesc]: ...

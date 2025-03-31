@@ -10,7 +10,7 @@ from scipy.sparse.linalg import LinearOperator
 
 _Int1D: TypeAlias = onp.Array1D[np.intp]
 
-_Float: TypeAlias = float | np.float64
+_Float: TypeAlias = float | int | bool | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 
 _ToBounds: TypeAlias = tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bound
@@ -24,7 +24,7 @@ class _OptimizeResult(OptimizeResult):
     optimality: _Float
     active_mask: _Int1D
     unbounded_sol: tuple[onp.ToFloat | onp.ArrayND[np.number[Any]], ...]
-    nit: int
+    nit: int | bool
     status: _TerminationStatus
     message: str
     success: bool

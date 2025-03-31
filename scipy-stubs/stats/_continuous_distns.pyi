@@ -230,7 +230,7 @@ __all__ = [
 ]
 
 _Scalar_f8_in: TypeAlias = np.float64 | np.float32 | np.float16 | np.integer[Any] | np.bool_
-_AnyArray_f8_in: TypeAlias = float | onp.CanArrayND[_Scalar_f8_in] | Sequence[_AnyArray_f8_in]
+_AnyArray_f8_in: TypeAlias = float | int | bool | onp.CanArrayND[_Scalar_f8_in] | Sequence[_AnyArray_f8_in]
 
 # without shape params
 class anglit_gen(_rv_continuous_0): ...
@@ -365,9 +365,9 @@ class rv_histogram(rv_continuous):
         self,
         /,
         histogram: tuple[onp.ArrayND[np.floating[Any]], onp.ArrayND[np.inexact[Any]]],
-        *args: float | LiteralString | ToRNG,
+        *args: float | int | bool | LiteralString | ToRNG,
         density: bool | None = None,
-        **kwargs: float | LiteralString | ToRNG,
+        **kwargs: float | int | bool | LiteralString | ToRNG,
     ) -> None: ...
 
 class studentized_range_gen(rv_continuous): ...

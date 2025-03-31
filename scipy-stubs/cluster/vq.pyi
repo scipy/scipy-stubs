@@ -58,42 +58,42 @@ def py_vq(
 def kmeans(
     obs: onp.ToFloat2D,
     k_or_guess: onp.ToJustInt | onp.ToFloatND,
-    iter: int = 20,
-    thresh: float = 1e-5,
+    iter: int | bool = 20,
+    thresh: float | int | bool = 1e-5,
     check_finite: bool = True,
     *,
     rng: ToRNG = None,
-) -> tuple[onp.Array2D[_Floating], float]: ...
-@overload  # complex
+) -> tuple[onp.Array2D[_Floating], float | int | bool]: ...
+@overload  # complex | float | int | bool
 def kmeans(
     obs: onp.ToComplex2D,
     k_or_guess: onp.ToJustInt | onp.ToFloatND,
-    iter: int = 20,
-    thresh: float = 1e-5,
+    iter: int | bool = 20,
+    thresh: float | int | bool = 1e-5,
     check_finite: bool = True,
     *,
     rng: ToRNG = None,
-) -> tuple[onp.Array2D[_Inexact], float]: ...
+) -> tuple[onp.Array2D[_Inexact], float | int | bool]: ...
 
 #
 @overload  # real
 def kmeans2(
     data: onp.ToFloat1D | onp.ToFloat2D,
     k: onp.ToJustInt | onp.ToFloatND,
-    iter: int = 10,
-    thresh: float = 1e-5,
+    iter: int | bool = 10,
+    thresh: float | int | bool = 1e-5,
     minit: _InitMethod = "random",
     missing: _MissingMethod = "warn",
     check_finite: bool = True,
     *,
     rng: ToRNG = None,
 ) -> tuple[onp.Array2D[_Floating], onp.Array1D[np.int32]]: ...
-@overload  # complex
+@overload  # complex | float | int | bool
 def kmeans2(
     data: onp.ToComplex1D | onp.ToComplex2D,
     k: onp.ToJustInt | onp.ToFloatND,
-    iter: int = 10,
-    thresh: float = 1e-5,
+    iter: int | bool = 10,
+    thresh: float | int | bool = 1e-5,
     minit: _InitMethod = "random",
     missing: _MissingMethod = "warn",
     check_finite: bool = True,

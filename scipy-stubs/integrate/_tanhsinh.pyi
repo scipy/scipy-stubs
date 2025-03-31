@@ -17,22 +17,22 @@ class _Tolerances(TypedDict, total=False):
     atol: onp.ToFloat
 
 @type_check_only
-class _TanhSinhResult(_RichResult[bool | int | _SCT], Generic[_SCT]):
+class _TanhSinhResult(_RichResult[bool | int | bool | _SCT], Generic[_SCT]):
     success: Final[bool]
     status: Final[Literal[0, -1, -2, -3, -4, 1]]
     integral: _SCT
     error: Final[np.float64]
-    maxlevel: Final[int]
-    nfev: Final[int]
+    maxlevel: Final[int | bool]
+    nfev: Final[int | bool]
 
 @type_check_only
-class _NSumResult(_RichResult[bool | int | _SCT], Generic[_SCT]):
+class _NSumResult(_RichResult[bool | int | bool | _SCT], Generic[_SCT]):
     success: Final[bool]
     status: Final[Literal[0, -1, -2, -3]]
     sum: _SCT
     error: Final[np.float64]
-    maxlevel: Final[int]
-    nfev: Final[int]
+    maxlevel: Final[int | bool]
+    nfev: Final[int | bool]
 
 ###
 

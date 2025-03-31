@@ -33,14 +33,14 @@ _MetricBF: TypeAlias = Literal["euclidean", _MetricCDT]
 _BorderValue: TypeAlias = onp.ToInt | np.bool_
 
 _BoolArrayOut: TypeAlias = onp.ArrayND[np.bool_]
-_Origin: TypeAlias = int | tuple[int, ...]
+_Origin: TypeAlias = int | bool | tuple[int | bool, ...]
 
 def iterate_structure(
     structure: onp.ToInt | onp.ToIntND,
     iterations: onp.ToInt,
     origin: _Origin | None = None,
 ) -> _BoolArrayOut: ...
-def generate_binary_structure(rank: int, connectivity: int) -> _BoolArrayOut: ...
+def generate_binary_structure(rank: int | bool, connectivity: int | bool) -> _BoolArrayOut: ...
 
 #
 def binary_erosion(
@@ -53,7 +53,7 @@ def binary_erosion(
     origin: _Origin = 0,
     brute_force: onp.ToBool = False,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _BoolArrayOut: ...
 def binary_dilation(
     input: onp.ToComplex | onp.ToComplexND,
@@ -65,7 +65,7 @@ def binary_dilation(
     origin: _Origin = 0,
     brute_force: onp.ToBool = False,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _BoolArrayOut: ...
 def binary_opening(
     input: onp.ToComplex | onp.ToComplexND,
@@ -77,7 +77,7 @@ def binary_opening(
     border_value: _BorderValue = 0,
     brute_force: onp.ToBool = False,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _BoolArrayOut: ...
 def binary_closing(
     input: onp.ToComplex | onp.ToComplexND,
@@ -89,7 +89,7 @@ def binary_closing(
     border_value: _BorderValue = 0,
     brute_force: onp.ToBool = False,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _BoolArrayOut: ...
 
 #
@@ -101,7 +101,7 @@ def binary_hit_or_miss(
     origin1: _Origin = 0,
     origin2: _Origin | None = None,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _BoolArrayOut: ...
 def binary_propagation(
     input: onp.ToComplex | onp.ToComplexND,
@@ -111,7 +111,7 @@ def binary_propagation(
     border_value: _BorderValue = 0,
     origin: _Origin = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _BoolArrayOut: ...
 def binary_fill_holes(
     input: onp.ToComplex | onp.ToComplexND,
@@ -119,13 +119,13 @@ def binary_fill_holes(
     output: _BoolArrayOut | None = None,
     origin: _Origin = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _BoolArrayOut: ...
 
 #
 def grey_erosion(
     input: onp.ToComplex | onp.ToComplexND,
-    size: tuple[int, ...] | None = None,
+    size: tuple[int | bool, ...] | None = None,
     footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
@@ -133,11 +133,11 @@ def grey_erosion(
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 def grey_dilation(
     input: onp.ToComplex | onp.ToComplexND,
-    size: tuple[int, ...] | None = None,
+    size: tuple[int | bool, ...] | None = None,
     footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
@@ -145,11 +145,11 @@ def grey_dilation(
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 def grey_opening(
     input: onp.ToComplex | onp.ToComplexND,
-    size: tuple[int, ...] | None = None,
+    size: tuple[int | bool, ...] | None = None,
     footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
@@ -157,11 +157,11 @@ def grey_opening(
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 def grey_closing(
     input: onp.ToComplex | onp.ToComplexND,
-    size: tuple[int, ...] | None = None,
+    size: tuple[int | bool, ...] | None = None,
     footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
@@ -169,13 +169,13 @@ def grey_closing(
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
 def morphological_gradient(
     input: onp.ToComplex | onp.ToComplexND,
-    size: tuple[int, ...] | None = None,
+    size: tuple[int | bool, ...] | None = None,
     footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
@@ -183,11 +183,11 @@ def morphological_gradient(
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 def morphological_laplace(
     input: onp.ToComplex | onp.ToComplexND,
-    size: tuple[int, ...] | None = None,
+    size: tuple[int | bool, ...] | None = None,
     footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
@@ -195,13 +195,13 @@ def morphological_laplace(
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #
 def white_tophat(
     input: onp.ToComplex | onp.ToComplexND,
-    size: tuple[int, ...] | None = None,
+    size: tuple[int | bool, ...] | None = None,
     footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
@@ -209,11 +209,11 @@ def white_tophat(
     cval: onp.ToComplex = 0.0,
     origin: _Origin = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 def black_tophat(
     input: onp.ToComplex | onp.ToComplexND,
-    size: tuple[int, ...] | None = None,
+    size: tuple[int | bool, ...] | None = None,
     footprint: onp.ToScalar | onp.ToArrayND | None = None,
     structure: onp.ToInt | onp.ToIntND | None = None,
     output: _ScalarArrayOut | None = None,
@@ -221,7 +221,7 @@ def black_tophat(
     cval: onp.ToComplex = 0.0,
     origin: onp.ToComplex = 0,
     *,
-    axes: tuple[int, ...] | None = None,
+    axes: tuple[int | bool, ...] | None = None,
 ) -> _ScalarArrayOut: ...
 
 #

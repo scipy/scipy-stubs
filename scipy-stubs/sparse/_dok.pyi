@@ -20,10 +20,15 @@ __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int], covariant=True)
+_ShapeT_co = TypeVar(
+    "_ShapeT_co",
+    bound=tuple[int | bool] | tuple[int | bool, int | bool],
+    default=tuple[int | bool] | tuple[int | bool, int | bool],
+    covariant=True,
+)
 
-_1D: TypeAlias = tuple[int]  # noqa: PYI042
-_2D: TypeAlias = tuple[int, int]  # noqa: PYI042
+_1D: TypeAlias = tuple[int | bool]  # noqa: PYI042
+_2D: TypeAlias = tuple[int | bool, int | bool]  # noqa: PYI042
 
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
@@ -39,7 +44,7 @@ _ToKeys2D: TypeAlias = Iterable[_ToKey2D]
 class _dok_base(
     _spbase[_SCT, _ShapeT_co],
     IndexMixin[_SCT, _ShapeT_co],
-    dict[tuple[int] | tuple[int, int], _SCT],
+    dict[tuple[int | bool] | tuple[int | bool, int | bool], _SCT],
     Generic[_SCT, _ShapeT_co],
 ):
     dtype: np.dtype[_SCT]
@@ -64,7 +69,7 @@ class _dok_base(
         dtype: None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: None
     def __init__(
@@ -75,7 +80,7 @@ class _dok_base(
         dtype: None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: type[bool] | None
     def __init__(
@@ -86,9 +91,9 @@ class _dok_base(
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    @overload  # matrix-like builtins.int | bool, dtype: type[int | bool] | None
     def __init__(
         self: _dok_base[np.int_],
         /,
@@ -97,9 +102,9 @@ class _dok_base(
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    @overload  # matrix-like builtins.float | int | bool, dtype: type[float | int | bool] | None
     def __init__(
         self: _dok_base[np.float64],
         /,
@@ -108,9 +113,9 @@ class _dok_base(
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    @overload  # matrix-like builtins.complex | float | int | bool, dtype: type[complex | float | int | bool] | None
     def __init__(
         self: _dok_base[np.complex128],
         /,
@@ -119,7 +124,7 @@ class _dok_base(
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (positional)
     def __init__(
@@ -129,7 +134,7 @@ class _dok_base(
         shape: ToShapeMin1D | None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (keyword)
     def __init__(
@@ -139,14 +144,14 @@ class _dok_base(
         shape: ToShapeMin1D | None = None,
         *,
         copy: bool = False,
-        maxprint: int | None = None,
+        maxprint: int | bool | None = None,
     ) -> None: ...
     @override
     def todok(self, /, copy: bool = False) -> Self: ...
 
     #
     @override
-    def __len__(self, /) -> int: ...
+    def __len__(self, /) -> int | bool: ...
 
     #
     @overload
@@ -166,7 +171,7 @@ class _dok_base(
 
     #
     @overload
-    def count_nonzero(self, /, axis: None = None) -> int: ...
+    def count_nonzero(self, /, axis: None = None) -> int | bool: ...
     @overload
     def count_nonzero(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
 
@@ -192,15 +197,15 @@ class _dok_base(
     @overload
     def get(self: _dok_base[Any, _2D], /, key: _ToKey2D, default: _T) -> _SCT | _T: ...
     @overload
-    def get(self: _dok_base[Any, _2D], /, key: _ToKey2D, default: float = 0.0) -> _SCT | float: ...
+    def get(self: _dok_base[Any, _2D], /, key: _ToKey2D, default: float | int | bool = 0.0) -> _SCT | float | int | bool: ...
     @overload
     def get(self: _dok_base[Any, _1D], /, key: _ToKey1D, default: _T) -> _SCT | _T: ...
     @overload
-    def get(self: _dok_base[Any, _1D], /, key: _ToKey1D, default: float = 0.0) -> _SCT | float: ...
+    def get(self: _dok_base[Any, _1D], /, key: _ToKey1D, default: float | int | bool = 0.0) -> _SCT | float | int | bool: ...
     @overload
     def get(self, /, key: _ToKey1D | _ToKey2D, default: _T) -> _SCT | _T: ...
     @overload
-    def get(self, /, key: _ToKey1D | _ToKey2D, default: float = 0.0) -> _SCT | float: ...
+    def get(self, /, key: _ToKey1D | _ToKey2D, default: float | int | bool = 0.0) -> _SCT | float | int | bool: ...
 
     #
     def conjtransp(self, /) -> Self: ...
