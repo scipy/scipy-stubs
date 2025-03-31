@@ -126,6 +126,9 @@ disallow_subclassing_any = false
 # https://github.com/python/mypy/issues/18744
 disable_bytearray_promotion = true
 disable_memoryview_promotion = true
+# optype numpy compat
+always_true = ["NP123", "NP124", "NP125", "NP126", "NP20", "NP21", "NP22"]
+always_false = ["NP23", "NP30"]
 
 
 [tool.pyright]
@@ -178,15 +181,16 @@ reportUnreachable = true
 reportUnsafeMultipleInheritance = true # base
 
     [tool.pyright.defineConstant]
-    # NP123 = true
-    # NP124 = true
-    # NP125 = true
-    # NP126 = true
-    # NP20 = true
-    # NP21 = true
-    # NP22 = true
-    # NP23 = false
-    # NP30 = false
+    # optype numpy compat
+    NP123 = true
+    NP124 = true
+    NP125 = true
+    NP126 = true
+    NP20 = true
+    NP21 = true
+    NP22 = true
+    NP23 = false
+    NP30 = false
 
 [tool.repo-review]
 ignore = [
