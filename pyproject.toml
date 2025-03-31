@@ -55,14 +55,14 @@ mdformat = [
 lint = [
     {include-group = "extras"},
     {include-group = "mdformat"},
-    "ruff>=0.11.0",
+    "ruff>=0.11.2",
     "sp-repo-review[cli]>=2025.1.22",
 ]
 type = [
     {include-group = "extras"},
     {include-group = "ci"},
     "basedmypy[faster-cache]>=2.10.0",
-    "basedpyright>=1.28.1",
+    "basedpyright>=1.28.4",
 ]
 dev = [
     {include-group = "lint"},
@@ -152,6 +152,7 @@ reportImportCycles = true
 reportInvalidCast = true                   # based
 reportInvalidStubStatement = false         # see execution environments
 reportMissingSuperCall = true
+reportPrivateImportUsage = false           # not a linter
 reportPrivateLocalImportUsage = true       # based
 reportPrivateUsage = false
 reportPropertyTypeMismatch = false
