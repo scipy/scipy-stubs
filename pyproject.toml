@@ -118,7 +118,7 @@ enable_error_code = [
     "redundant-expr",
     "truthy-bool",
 ]
-disallow_any_explicit = false                                                           # no other way to type e.g. `float64 <: number[Any]`
+disallow_any_explicit = false # no other way to type e.g. `float64 <: number[Any]`
 warn_unreachable = false
 warn_unused_ignores = true
 # basedmypy/mypy compat
@@ -134,30 +134,35 @@ ignore = [".venv"]
 stubPath = "."
 pythonPlatform = "All"
 typeCheckingMode = "strict"
-
 deprecateTypingAliases = true
 enableReachabilityAnalysis = false
 enableTypeIgnoreComments = false
-failOnWarnings = true                      # based
 reportCallInDefaultInitializer = true
-reportIgnoreCommentWithoutRule = true      # based
-reportImplicitAbstractClass = true         # based
 reportImplicitOverride = true
-reportImplicitRelativeImport = true        # based
-reportImplicitStringConcatenation = false  # based, but I disagree
 reportImportCycles = true
-reportInvalidCast = true                   # based
-reportInvalidStubStatement = false         # see execution environments
 reportMissingSuperCall = true
-reportPrivateImportUsage = false           # not a linter
-reportPrivateLocalImportUsage = true       # based
-reportPrivateUsage = false
 reportPropertyTypeMismatch = false
 reportShadowedImports = true
-reportUnannotatedClassAttribute = false    # based, but disabled for pyright compat
 reportUninitializedInstanceVariable = true
-reportUnnecessaryTypeIgnoreComment = true  # mypy compat
-strictGenericNarrowing = true              # based
+reportUnnecessaryTypeIgnoreComment = true
+
+# overridden in the execution environments
+reportInvalidStubStatement = false
+
+# type-checkers should type-check; linters should lint
+reportImplicitStringConcatenation = false
+reportPrivateImportUsage = false
+reportPrivateUsage = false
+
+# basedpyright
+failOnWarnings = true
+reportIgnoreCommentWithoutRule = true
+reportImplicitAbstractClass = true
+reportImplicitRelativeImport = true
+reportInvalidCast = true
+reportPrivateLocalImportUsage = true
+reportUnannotatedClassAttribute = false
+strictGenericNarrowing = false
 
 [[executionEnvironments]]
 root = "scipy-stubs"
@@ -166,12 +171,22 @@ reportUnusedCallResult = true
 
 [[executionEnvironments]]
 root = "tests"
-reportAny = true                       # based
-reportExplicitAny = true               # based
+reportAny = true
+reportExplicitAny = true
 reportPrivateUsage = true
 reportUnreachable = true
-reportUnsafeMultipleInheritance = true # based
+reportUnsafeMultipleInheritance = true # base
 
+    [tool.pyright.defineConstant]
+    # NP123 = true
+    # NP124 = true
+    # NP125 = true
+    # NP126 = true
+    # NP20 = true
+    # NP21 = true
+    # NP22 = true
+    # NP23 = false
+    # NP30 = false
 
 [tool.repo-review]
 ignore = [
