@@ -131,10 +131,7 @@ disable_memoryview_promotion = true
 [tool.pyright]
 include = ["scipy-stubs", "scripts", "tests"]
 ignore = [".venv"]
-venv = ".venv"
-venvPath = "."
 stubPath = "."
-pythonVersion = "3.10"
 pythonPlatform = "All"
 typeCheckingMode = "strict"
 
