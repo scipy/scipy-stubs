@@ -152,6 +152,7 @@ reportImportCycles = true
 reportInvalidCast = true                   # based
 reportInvalidStubStatement = false         # see execution environments
 reportMissingSuperCall = true
+reportPrivateImportUsage = false           # not a linter
 reportPrivateLocalImportUsage = true       # based
 reportPrivateUsage = false
 reportPropertyTypeMismatch = false
