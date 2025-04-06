@@ -172,11 +172,10 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 
 ## Supported static type-checkers
 
-1. [`basedpyright`](https://github.com/DetachHead/basedpyright) (recommended)
-1. [`basedmypy`](https://github.com/KotlinIsland/basedmypy)
-1. [`pyright`](https://pyright.readthedocs.io/en/latest/index.html)
-1. [`mypy`](https://mypy.readthedocs.io/en/stable/index.html) (not recommended, see
-   [mypy_issues](https://github.com/erictraut/mypy_issues))
+- [`basedpyright`](https://github.com/DetachHead/basedpyright)
+- [`pyright`](https://pyright.readthedocs.io/en/latest/index.html)
+- [`basedmypy`](https://github.com/KotlinIsland/basedmypy)
+- [`mypy`](https://mypy.readthedocs.io/en/stable/index.html)
 
 For validation and testing, `scipy-stubs` primarily uses [`basedmypy`](https://github.com/KotlinIsland/basedmypy) (a `mypy` fork)
 and [`basedpyright`](https://github.com/DetachHead/basedpyright) (a `pyright` fork).
@@ -201,20 +200,3 @@ There are many ways that you can help improve `scipy-stubs`, for example
   specifics)
 - write new documentation (usage examples, guides, tips & tricks, FAQ, etc.), or e.g. improve this `README.md`
 - help spread the word on `scipy-stubs`, so that more can benefit from using it
-
-## AI generated Podcast
-
-### Typing in SciPy
-
-<https://github.com/user-attachments/assets/adbec640-2329-488b-bda2-d9687c6b1f7b>
-
-## See also
-
-- [scipy/scipy#21614](https://github.com/scipy/scipy/issues/21614): On why `scipy-stubs` is a separate package, and not part of
-  `scipy` (yet).
-- [microsoft/python-type-stubs#321](https://github.com/microsoft/python-type-stubs/pull/321): The removal of Microsoft's
-  `scipy-stubs` — that used to be bundled with Pylance — in favor of `scipy-stubs`.
-- [`optype`](https://github.com/jorenham/optype): The fundamental typing package that made `scipy-stubs` possible.
-- [`basedpyright`](https://github.com/detachhead/basedpyright): The recommended type-checker to use with `scipy-stubs`.
-- [`basedmypy`](https://github.com/KotlinIsland/basedmypy): A [less-broken](https://github.com/erictraut/mypy_issues) `mypy` fork,
-  with a bunch of cool extra features.
