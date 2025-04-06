@@ -1,4 +1,3 @@
-# mypy: disable-error-code="any, decorated-any"
 # ruff: noqa: TRY003
 
 import importlib.metadata
