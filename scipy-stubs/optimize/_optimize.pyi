@@ -151,7 +151,7 @@ def vecnorm(x: onp.ToComplexND, ord: onp.ToFloat = 2) -> onp.ToFloat | _Floating
 
 # undocumented
 def approx_fhess_p(
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     p: onp.ToFloat,
     fprime: _Fn1[_Float1D, _FloatingCoND],
     epsilon: onp.ToFloat | _FloatingCoND,  # scalar or 1d ndarray
@@ -162,7 +162,7 @@ def approx_fhess_p(
 @overload  # full_output: False = ..., retall: False = ...
 def fmin(
     func: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -177,7 +177,7 @@ def fmin(
 @overload  # full_output: False = ..., retall: True (keyword)
 def fmin(
     func: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -193,7 +193,7 @@ def fmin(
 @overload  # full_output: True  (keyword), retall: False = ...
 def fmin(
     func: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -209,7 +209,7 @@ def fmin(
 @overload  # full_output: True  (keyword), retall: True
 def fmin(
     func: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -227,7 +227,7 @@ def fmin(
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_bfgs(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -246,7 +246,7 @@ def fmin_bfgs(
 @overload  # full_output: False = ..., retall: True  (keyword)
 def fmin_bfgs(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -266,7 +266,7 @@ def fmin_bfgs(
 @overload  # full_output: True (keyword), retall: False = ...
 def fmin_bfgs(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -286,7 +286,7 @@ def fmin_bfgs(
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_bfgs(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -308,7 +308,7 @@ def fmin_bfgs(
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_cg(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -325,7 +325,7 @@ def fmin_cg(
 @overload  # full_output: False = ..., retall: True  (keyword)
 def fmin_cg(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -343,7 +343,7 @@ def fmin_cg(
 @overload  # full_output: True (keyword), retall: False = ...
 def fmin_cg(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -361,7 +361,7 @@ def fmin_cg(
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_cg(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
@@ -379,7 +379,7 @@ def fmin_cg(
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_ncg(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND],
     fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
     fhess: _Fn1_1d[_FloatingCoND] | None = None,
@@ -397,7 +397,7 @@ def fmin_ncg(
 @overload  # full_output: False = ..., retall: True  (keyword)
 def fmin_ncg(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND],
     fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
     fhess: _Fn1_1d[_FloatingCoND] | None = None,
@@ -416,7 +416,7 @@ def fmin_ncg(
 @overload  # full_output: True (keyword), retall: False = ...
 def fmin_ncg(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND],
     fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
     fhess: _Fn1_1d[_FloatingCoND] | None = None,
@@ -435,7 +435,7 @@ def fmin_ncg(
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_ncg(
     f: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     fprime: _Fn1_1d[_FloatingCoND],
     fhess_p: _Fn2[_Float1D, _Float1D] | None = None,
     fhess: _Fn1_1d[_FloatingCoND] | None = None,
@@ -456,7 +456,7 @@ def fmin_ncg(
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_powell(
     func: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -471,7 +471,7 @@ def fmin_powell(
 @overload  # full_output: False = ..., retall: True  (keyword)
 def fmin_powell(
     func: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -487,7 +487,7 @@ def fmin_powell(
 @overload  # full_output: True (keyword), retall: False = ...
 def fmin_powell(
     func: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -503,7 +503,7 @@ def fmin_powell(
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_powell(
     func: _Fn1_1d,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     xtol: onp.ToFloat = 1e-4,
     ftol: onp.ToFloat = 1e-4,
@@ -658,7 +658,7 @@ def approx_fprime(xk: onp.ToFloat1D, f: _Fn1_1d, epsilon: onp.ToFloat | _Floatin
 def check_grad(
     func: _Fn1_1d,
     grad: _Fn1_1d[_FloatingCoND],
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     *args: object,
     epsilon: onp.ToFloat = ...,
     direction: Literal["all", "random"] = "all",
