@@ -21,7 +21,6 @@ _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
 _Args: TypeAlias = tuple[object, ...]
 
-_Float: TypeAlias = float | np.float64
 _Floating: TypeAlias = float | npc.floating
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
@@ -157,8 +156,8 @@ class _MinimizeScalarOptionsBounded(_MinimizeScalarOptionsCommon, TypedDict, tot
 
 @type_check_only
 class _MinimizeScalarResultBase(_OptimizeResult):
-    x: _Float
-    fun: _Float
+    x: np.float64
+    fun: np.float64
 
 @type_check_only
 class _MinimizeScalarResult(_MinimizeScalarResultBase):
@@ -181,7 +180,7 @@ class OptimizeResult(_OptimizeResult):
     x: _Float1D
     nit: int
     maxcv: float  # requires `bounds`
-    fun: _Float
+    fun: float
     nfev: int
     jac: _Float1D  # requires `jac`
     njev: int  # requires `jac`
