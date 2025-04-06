@@ -120,10 +120,12 @@ enable_error_code = [
     "redundant-expr",
     "truthy-bool",
 ]
-disallow_any_explicit = false # no other way to type e.g. `float64 <: number[Any]`
 warn_unreachable = false
 warn_unused_ignores = true
 # basedmypy/mypy compat
+disallow_any_decorated = false
+disallow_any_explicit = false
+disallow_any_expr = false
 disallow_subclassing_any = false
 # https://github.com/python/mypy/issues/18744
 disable_bytearray_promotion = true
