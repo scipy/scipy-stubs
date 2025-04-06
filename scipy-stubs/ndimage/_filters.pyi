@@ -7,7 +7,6 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 from scipy._lib._ccallback import LowLevelCallable
-from ._typing import _ScalarArrayOut
 
 __all__ = [
     "convolve",
@@ -37,14 +36,15 @@ __all__ = [
 ]
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.bool | npc.number])
-_ScalarT = TypeVar("_ScalarT", bound=np.bool | npc.number)
+_DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.bool_ | npc.number])
+_ScalarT = TypeVar("_ScalarT", bound=np.bool_ | npc.number)
 
 _Ignored: TypeAlias = object
 
 _Mode: TypeAlias = Literal["reflect", "constant", "nearest", "mirror", "wrap", "grid-constant", "grid-mirror", "grid-wrap"]
 _Modes: TypeAlias = _Mode | Sequence[_Mode]
 _Ints: TypeAlias = int | Sequence[int]
+_AnyOutput: TypeAlias = onp.ArrayND[npc.number | np.bool_] | onp.AnyDType
 
 _FilterFunc1D: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], onp.Array1D[np.float64], ...], _Ignored]
 _FilterFuncND: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToComplex | onp.ToComplexND]
@@ -117,7 +117,7 @@ def correlate1d(
     input: onp.ToComplexND,
     weights: onp.ToFloat1D,
     axis: int = -1,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
@@ -183,7 +183,7 @@ def correlate(
 def correlate(
     input: onp.ToComplexND,
     weights: onp.ToFloatND,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
@@ -247,7 +247,7 @@ def convolve1d(
     input: onp.ToComplexND,
     weights: onp.ToFloat1D,
     axis: int = -1,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
@@ -313,7 +313,7 @@ def convolve(
 def convolve(
     input: onp.ToComplexND,
     weights: onp.ToFloatND,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
@@ -366,7 +366,7 @@ def prewitt(
 def prewitt(
     input: onp.ToComplex | onp.ToComplexND,
     axis: int = -1,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
 ) -> onp.ArrayND[Any]: ...
@@ -416,7 +416,7 @@ def sobel(
 def sobel(
     input: onp.ToComplex | onp.ToComplexND,
     axis: int = -1,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
 ) -> onp.ArrayND[Any]: ...
@@ -470,7 +470,7 @@ def laplace(
 @overload
 def laplace(
     input: onp.ToComplex | onp.ToComplexND,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
@@ -537,7 +537,7 @@ def gaussian_laplace(
 def gaussian_laplace(
     input: onp.ToComplex | onp.ToComplexND,
     sigma: onp.ToFloat | onp.ToFloatND,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
@@ -610,7 +610,7 @@ def generic_laplace(
 def generic_laplace(
     input: onp.ToComplex | onp.ToComplexND,
     derivative2: _Derivative[Any, Any],
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     extra_arguments: tuple[object, ...] = (),
@@ -679,7 +679,7 @@ def gaussian_gradient_magnitude(
 def gaussian_gradient_magnitude(
     input: onp.ToComplex | onp.ToComplexND,
     sigma: onp.ToFloat | onp.ToFloatND,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
@@ -752,7 +752,7 @@ def generic_gradient_magnitude(
 def generic_gradient_magnitude(
     input: onp.ToComplex | onp.ToComplexND,
     derivative: _Derivative[Any, Any],
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     extra_arguments: tuple[object, ...] = (),
@@ -833,7 +833,7 @@ def gaussian_filter1d(
     sigma: onp.ToFloat,
     axis: int = -1,
     order: int = 0,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToComplex = 0.0,
     truncate: float = 4.0,
@@ -912,7 +912,7 @@ def gaussian_filter(
     input: onp.ToComplex | onp.ToComplexND,
     sigma: onp.ToFloat | onp.ToFloatND,
     order: _Ints = 0,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     truncate: float = 4.0,
@@ -980,7 +980,7 @@ def generic_filter1d(
     function: _FilterFunc1D | LowLevelCallable,
     filter_size: float,
     axis: int = -1,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Mode = "reflect",
     cval: onp.ToFloat = 0.0,
     origin: int = 0,
@@ -1055,7 +1055,7 @@ def generic_filter(
     function: _FilterFuncND | LowLevelCallable,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToFloat = 0.0,
     origin: _Ints = 0,
@@ -1121,7 +1121,7 @@ def uniform_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
     size: int,
     axis: int = -1,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
@@ -1187,7 +1187,7 @@ def uniform_filter(
 def uniform_filter(
     input: onp.ToComplex | onp.ToComplexND,
     size: _Ints = 3,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
@@ -1251,7 +1251,7 @@ def minimum_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
     size: int,
     axis: int = -1,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
@@ -1323,7 +1323,7 @@ def minimum_filter(
     input: onp.ToComplex | onp.ToComplexND,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
@@ -1387,7 +1387,7 @@ def maximum_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
     size: int,
     axis: int = -1,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: int = 0,
@@ -1459,7 +1459,7 @@ def maximum_filter(
     input: onp.ToComplex | onp.ToComplexND,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
@@ -1533,7 +1533,7 @@ def median_filter(
     input: onp.ToComplex | onp.ToComplexND,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
@@ -1613,7 +1613,7 @@ def rank_filter(
     rank: int,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
@@ -1693,7 +1693,7 @@ def percentile_filter(
     percentile: onp.ToFloat,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | onp.AnyDType | None = None,
+    output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,

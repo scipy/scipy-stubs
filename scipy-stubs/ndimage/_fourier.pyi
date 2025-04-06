@@ -1,12 +1,12 @@
 from typing import TypeVar, overload
 
+import numpy as np
 import optype.numpy as onp
-from ._typing import _ComplexArrayOut, _FloatArrayOut
 
 __all__ = ["fourier_ellipsoid", "fourier_gaussian", "fourier_shift", "fourier_uniform"]
 
-_FloatArrayOutT = TypeVar("_FloatArrayOutT", bound=_FloatArrayOut)
-_ComplexArrayOutT = TypeVar("_ComplexArrayOutT", bound=_ComplexArrayOut)
+_FloatArrayOutT = TypeVar("_FloatArrayOutT", bound=onp.ArrayND[np.float64 | np.float32])
+_ComplexArrayOutT = TypeVar("_ComplexArrayOutT", bound=onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32])
 
 #
 @overload
