@@ -1,3 +1,4 @@
+from collections.abc import Iterable
 from typing import Any, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -13,7 +14,7 @@ _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64,
 
 _MethodReal: TypeAlias = Literal["linear", "nearest", "slinear", "cubic", "quintic"]
 _Method: TypeAlias = Literal[_MethodReal, "pchip"]
-_ToPoints: TypeAlias = tuple[onp.ToFloat1D, ...]
+_ToPoints: TypeAlias = Iterable[onp.ToFloat1D]
 
 ###
 
