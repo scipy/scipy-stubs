@@ -192,7 +192,7 @@ class OptimizeResult(_OptimizeResult):
 @overload  # `fun` return scalar, `jac` not truthy
 def minimize(
     fun: _Fun1D[onp.ToFloat],
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | Falsy | None = None,
@@ -207,7 +207,7 @@ def minimize(
 @overload  # fun` return (scalar, vector), `jac` truthy  (positional)
 def minimize(
     fun: _Fun1D[tuple[onp.ToFloat, onp.ToFloat1D]],
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args,
     method: MethodMimimize | _MinimizeMethodFun | None,
     jac: Truthy,
@@ -222,7 +222,7 @@ def minimize(
 @overload  # fun` return (scalar, vector), `jac` truthy  (keyword)
 def minimize(
     fun: _Fun1D[tuple[onp.ToFloat, onp.ToFloat1D]],
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
     *,
