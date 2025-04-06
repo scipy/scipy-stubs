@@ -3,7 +3,6 @@ from typing import Concatenate, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
-from ._typing import _ComplexArrayOut, _FloatArrayOut
 
 __all__ = [
     "affine_transform",
@@ -17,9 +16,13 @@ __all__ = [
 ]
 
 _SCT = TypeVar("_SCT", bound=np.generic)
+
 _Order: TypeAlias = Literal[0, 1, 2, 3, 4, 5]
 _Mode: TypeAlias = Literal["reflect", "grid-mirror", "constant", "grid-constant", "nearest", "mirror", "wrap", "grid-wrap"]
 _MappingFunc: TypeAlias = Callable[Concatenate[tuple[int, ...], ...], tuple[onp.ToFloat, ...]]
+
+_FloatArrayOut: TypeAlias = onp.ArrayND[np.float64 | np.float32]
+_ComplexArrayOut: TypeAlias = onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32]
 
 #
 @overload
