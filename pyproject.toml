@@ -55,7 +55,7 @@ mdformat = [
 lint = [
     {include-group = "extras"},
     {include-group = "mdformat"},
-    "ruff>=0.11.2",
+    "ruff>=0.11.4",
     "sp-repo-review[cli]>=2025.1.22",
 ]
 type = [

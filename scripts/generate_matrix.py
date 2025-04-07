@@ -144,7 +144,7 @@ def get_available_python_versions(
         urllib.error.URLError: If fetching data fails.
 
     """
-    data_raw = subprocess.check_output(["uv", "python", "list", "--output-format=json"])  # noqa: S603, S607
+    data_raw = subprocess.check_output(["uv", "python", "list", "--output-format=json"])  # noqa: S607
     data = cast("list[UVPythonRelease]", json.loads(data_raw))
 
     versions: dict[tuple[int, int], Version] = {}
