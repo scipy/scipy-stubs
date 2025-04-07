@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scipy-stubs"
-version = "1.15.2.2"
+version = "1.15.2.3.dev0"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
