@@ -52,7 +52,7 @@ class Normal(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co,
     @overload  # default
     def __init__(self: Normal[_0D, np.float64], /, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: N-d <known shape, dtype>
-    def __init__(  # pyright: ignore[reportOverlappingOverload]
+    def __init__(
         self: Normal[_ShapeT, _FloatT],
         /,
         *,
@@ -61,7 +61,7 @@ class Normal(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co,
         **kw: Unpack[_DistOpts],
     ) -> None: ...
     @overload  # sigma: N-d <known shape, dtype>
-    def __init__(  # pyright: ignore[reportOverlappingOverload]
+    def __init__(
         self: Normal[_ShapeT, _FloatT],
         /,
         *,
@@ -70,44 +70,34 @@ class Normal(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co,
         **kw: Unpack[_DistOpts],
     ) -> None: ...
     @overload  # mu, sigma: 0-d float
-    def __init__(self: Normal[_0D, np.float64], /, *, mu: float, sigma: float | onp.ToInt, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_0D, np.float64], /, *, mu: float, sigma: float | onp.ToInt, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu, sigma: 0-d float
-    def __init__(self: Normal[_0D, np.float64], /, *, mu: float | onp.ToInt, sigma: float, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_0D, np.float64], /, *, mu: float | onp.ToInt, sigma: float, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: 0-d <known dtype>, sigma: 0-d
-    def __init__(self: Normal[_0D, _FloatT], /, *, mu: _FloatT, sigma: _FloatT | onp.ToInt, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_0D, _FloatT], /, *, mu: _FloatT, sigma: _FloatT | onp.ToInt, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a, sigma: 0-d <known dtype>
-    def __init__(self: Normal[_0D, _FloatT], /, *, mu: _FloatT | onp.ToInt, sigma: _FloatT, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_0D, _FloatT], /, *, mu: _FloatT | onp.ToInt, sigma: _FloatT, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a, sigma: 0-d
-    def __init__(self: Normal[_0D], /, *, mu: onp.ToFloat = 0.0, sigma: onp.ToFloat = 1.0, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_0D], /, *, mu: onp.ToFloat = 0.0, sigma: onp.ToFloat = 1.0, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: 1-d
-    def __init__(self: Normal[_1D], /, *, mu: onp.ToFloatStrict1D, sigma: _ToFloat_1D = 1.0, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_1D], /, *, mu: onp.ToFloatStrict1D, sigma: _ToFloat_1D = 1.0, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # sigma: 1-d
-    def __init__(self: Normal[_1D], /, *, mu: _ToFloat_1D = 0.0, sigma: onp.ToFloatStrict1D, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_1D], /, *, mu: _ToFloat_1D = 0.0, sigma: onp.ToFloatStrict1D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: 2-d
-    def __init__(self: Normal[_2D], /, *, mu: onp.ToFloatStrict2D, sigma: _ToFloat_2D = 1.0, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_2D], /, *, mu: onp.ToFloatStrict2D, sigma: _ToFloat_2D = 1.0, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # sigma: 2-d
-    def __init__(self: Normal[_2D], /, *, mu: _ToFloat_2D = 0.0, sigma: onp.ToFloatStrict2D, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_2D], /, *, mu: _ToFloat_2D = 0.0, sigma: onp.ToFloatStrict2D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: 3-d
-    def __init__(self: Normal[_2D], /, *, mu: onp.ToFloatStrict3D, sigma: _ToFloat_3D = 1.0, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_2D], /, *, mu: onp.ToFloatStrict3D, sigma: _ToFloat_3D = 1.0, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # sigma: 3-d
-    def __init__(self: Normal[_3D], /, *, mu: _ToFloat_3D = 0.0, sigma: onp.ToFloatStrict3D, **kw: Unpack[_DistOpts]) -> None: ...  # pyright: ignore[reportOverlappingOverload]
+    def __init__(self: Normal[_3D], /, *, mu: _ToFloat_3D = 0.0, sigma: onp.ToFloatStrict3D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: >=1-d
-    def __init__(  # pyright: ignore[reportOverlappingOverload]
-        self: Normal[onp.AtLeast1D],
-        /,
-        *,
-        mu: onp.ToFloatND,
-        sigma: _ToFloat_ND = 1.0,
-        **kw: Unpack[_DistOpts],
+    def __init__(
+        self: Normal[onp.AtLeast1D], /, *, mu: onp.ToFloatND, sigma: _ToFloat_ND = 1.0, **kw: Unpack[_DistOpts]
     ) -> None: ...
     @overload  # sigma: >=1-d
-    def __init__(  # pyright: ignore[reportOverlappingOverload]
-        self: Normal[onp.AtLeast1D],
-        /,
-        *,
-        mu: _ToFloat_ND = 0.0,
-        sigma: onp.ToFloatND,
-        **kw: Unpack[_DistOpts],
+    def __init__(
+        self: Normal[onp.AtLeast1D], /, *, mu: _ToFloat_ND = 0.0, sigma: onp.ToFloatND, **kw: Unpack[_DistOpts]
     ) -> None: ...
 
 class StandardNormal(Normal[tuple[()], np.float64]):  # undocumented

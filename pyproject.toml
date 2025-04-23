@@ -46,7 +46,7 @@ dependencies = ["optype>=0.9.3"]
 
 [dependency-groups]
 extras = ["scipy-stubs[scipy]"]
-ci = ["packaging>=24.2"]
+ci = ["packaging>=25.0"]
 mdformat = [
     "mdformat>=0.7.22",
     "mdformat-gfm>=0.4.1",
@@ -55,14 +55,14 @@ mdformat = [
 lint = [
     {include-group = "extras"},
     {include-group = "mdformat"},
-    "ruff>=0.11.4",
+    "ruff>=0.11.6",
     "sp-repo-review[cli]>=2025.1.22",
 ]
 type = [
     {include-group = "extras"},
     {include-group = "ci"},
     "basedmypy[faster-cache]>=2.10.0",
-    "basedpyright>=1.28.4",
+    "basedpyright>=1.29.1",
 ]
 dev = [
     {include-group = "lint"},
