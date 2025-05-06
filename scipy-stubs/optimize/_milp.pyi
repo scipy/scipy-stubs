@@ -31,7 +31,7 @@ class _OptionsMILP(TypedDict, total=False):
     presolve: onp.ToBool  # default: True
     node_limit: int  # default: no limit
     time_limit: onp.ToFloat  # default: no limit
-    min_rel_gap: onp.ToFloat  # default: ?
+    mip_rel_gap: onp.ToFloat  # default: ?
 
 @type_check_only
 class _OptimizeResultSucess(_OptimizeResult):
