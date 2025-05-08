@@ -275,7 +275,7 @@ class _AdjointMatrixOperator(MatrixLinearOperator[_SCT_co], Generic[_SCT_co]):
     @property
     @override
     def dtype(self, /) -> np.dtype[_SCT_co]: ...  # pyright: ignore[reportIncompatibleVariableOverride]
-    def __init__(self, /, adjoint: LinearOperator) -> None: ...
+    def __init__(self, /, adjoint_array: LinearOperator) -> None: ...
 
 class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     @overload
