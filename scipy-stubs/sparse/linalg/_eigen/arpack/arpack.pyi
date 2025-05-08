@@ -21,7 +21,7 @@ _Mode: TypeAlias = Literal["normal", "buckling", "cayley"]
 ###
 
 class ArpackError(RuntimeError):
-    def __init__(self, /, info: _KT, infodict: Mapping[_KT, str] = ...) -> None: ...
+    def __init__(self, /, info: _KT, infodict: Mapping[_KT, str] | None = None) -> None: ...
 
 class ArpackNoConvergence(ArpackError):
     eigenvalues: Final[onp.Array1D[np.float64 | np.complex128]]
