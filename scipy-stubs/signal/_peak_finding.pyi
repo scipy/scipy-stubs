@@ -69,15 +69,17 @@ def peak_widths(
 #
 def find_peaks(
     x: onp.ToArray1D,
-    height: onp.ToFloatND | Sequence[onp.ToFloat | None] | onp.ToFloat | None = None,
-    threshold: onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
+    height: onp.ToFloat | onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
+    threshold: onp.ToInt | onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
     distance: onp.ToFloat | None = None,
     prominence: onp.ToFloat | onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
-    width: onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
+    width: onp.ToFloat | onp.ToFloatND | Sequence[onp.ToFloat | None] | None = None,
     wlen: onp.ToFloat | None = None,
     rel_height: onp.ToFloat = 0.5,
-    plateau_size: onp.ToIntND | Sequence[onp.ToInt | None] | None = None,
+    plateau_size: onp.ToInt | onp.ToIntND | Sequence[onp.ToInt | None] | None = None,
 ) -> tuple[_Int1D, _FindPeaksResultsDict]: ...
+
+#
 def find_peaks_cwt(
     vector: onp.Array,
     widths: onp.ToFloat | onp.ToFloatND,
