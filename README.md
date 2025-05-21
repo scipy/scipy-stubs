@@ -88,8 +88,8 @@ ______________________________________________________________________
   - ... even in the strict mode
   - compatible with the [Python Typing Spec](https://typing.readthedocs.io/en/latest/spec/index.html)
 - [SPEC 0](https://scientific-python.org/specs/spec-0000/) compliant
-  - Supports Python ≥ 3.10
-  - Supports NumPy ≥ 1.23.5
+  - Supports Python ≥ 3.11
+  - Supports NumPy ≥ 1.25.2
 
 <!-- NOTE: SciPy permalinks to the following `#installation` anchor; don't modify it! -->
 
@@ -161,7 +161,7 @@ Even though `scipy-stubs` doesn't enforce an upper bound on the `scipy` version,
 fully compatible.
 
 There are no additional restrictions enforced by `scipy-stubs` on the `numpy` requirements.
-For `scipy[-stubs]` `1.14.*` and `1.15.*` that is `numpy >= 1.23.5`.
+For `scipy-stubs==1.16.*` that is `numpy >= 1.25.2`.
 
 Currently, `scipy-stubs` has one required dependency: [`optype`](https://github.com/jorenham/optype).
 This is essential for `scipy-stubs` to work properly, as it relies heavily on it for annotating (shaped) array-likes,

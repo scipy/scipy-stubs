@@ -16,7 +16,7 @@ INDENT: Final = 4
 PACKAGE_NAME: Final = "scipy"
 DEPENDENCY_NAME: Final = "numpy"
 MIN_VERSIONS: Final = (
-    (Version("3.11"), Version("1.24")),
+    (Version("3.11"), Version("1.25")),
     (Version("3.12"), Version("1.26")),
     (Version("3.13"), Version("2.1")),
 )
