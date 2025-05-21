@@ -2,8 +2,7 @@
 # It contains system_info results at the time of building this package.
 from enum import Enum
 from types import ModuleType
-from typing import Final, Literal, TypedDict, TypeVar, overload, type_check_only
-from typing_extensions import NotRequired
+from typing import Final, Literal, NotRequired, TypedDict, TypeVar, overload, type_check_only
 
 __all__ = ["show"]
 

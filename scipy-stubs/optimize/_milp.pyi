@@ -1,6 +1,6 @@
 from collections.abc import Sequence
-from typing import Literal, TypeAlias, TypedDict, type_check_only
-from typing_extensions import LiteralString, TypeAliasType
+from typing import Literal, LiteralString, TypeAlias, TypedDict, type_check_only
+from typing_extensions import TypeAliasType
 
 import numpy as np
 import optype.numpy as onp

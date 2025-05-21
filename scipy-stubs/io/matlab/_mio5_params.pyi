@@ -1,5 +1,5 @@
-from typing import Final, Generic, Literal, TypeAlias, TypedDict, final, type_check_only
-from typing_extensions import Self, TypeVar, override
+from typing import Final, Generic, Literal, Self, TypeAlias, TypedDict, final, type_check_only
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype.numpy as onp

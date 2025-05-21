@@ -1,6 +1,6 @@
 from collections.abc import Mapping
-from typing import Final, TypedDict, type_check_only
-from typing_extensions import CapsuleType, Never, ReadOnly
+from typing import Final, Never, TypedDict, type_check_only
+from typing_extensions import CapsuleType, ReadOnly
 
 @type_check_only
 class _CApiDict(TypedDict):

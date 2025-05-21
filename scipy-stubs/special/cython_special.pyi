@@ -1,6 +1,6 @@
 from types import CodeType
-from typing import Any, Final, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
-from typing_extensions import CapsuleType, LiteralString, ReadOnly
+from typing import Any, Final, Literal, LiteralString, Protocol, TypeAlias, TypedDict, overload, type_check_only
+from typing_extensions import CapsuleType, ReadOnly
 
 import numpy as np
 

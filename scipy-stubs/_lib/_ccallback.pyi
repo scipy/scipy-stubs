@@ -1,8 +1,8 @@
 import ctypes as ct
 from _ctypes import CFuncPtr as _CFuncPtr
 from types import ModuleType
-from typing import ClassVar, Generic, Literal, NoReturn, Protocol, TypeAlias, final, overload, type_check_only
-from typing_extensions import CapsuleType as PyCapsule, Self, TypeVar, TypeVarTuple, Unpack, override
+from typing import ClassVar, Generic, Literal, NoReturn, Protocol, Self, TypeAlias, final, overload, type_check_only
+from typing_extensions import CapsuleType as PyCapsule, TypeVar, TypeVarTuple, Unpack, override
 
 # some quick interfaces for the relevant `cffi` types
 

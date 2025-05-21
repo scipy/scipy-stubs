@@ -1,6 +1,5 @@
 from collections.abc import Callable
-from typing import Final, TypeAlias
-from typing_extensions import Never
+from typing import Final, Never, TypeAlias
 
 import numpy as np
 import optype.numpy as onp

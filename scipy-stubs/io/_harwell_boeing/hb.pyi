@@ -1,5 +1,5 @@
-from typing import IO, Any, Final, Literal, TypeAlias, overload, type_check_only
-from typing_extensions import LiteralString, Protocol, Self
+from typing import IO, Any, Final, Literal, LiteralString, Self, TypeAlias, overload, type_check_only
+from typing_extensions import Protocol
 
 import numpy as np
 import optype.typing as opt

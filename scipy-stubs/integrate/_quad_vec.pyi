@@ -1,7 +1,7 @@
 import collections
 from collections.abc import Callable
-from typing import Any, Concatenate, Final, Generic, Literal, NoReturn, Protocol, TypeAlias, overload, type_check_only
-from typing_extensions import Never, TypeVar, override
+from typing import Any, Concatenate, Final, Generic, Literal, Never, NoReturn, Protocol, TypeAlias, overload, type_check_only
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype as op

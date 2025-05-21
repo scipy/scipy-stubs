@@ -1,7 +1,6 @@
 import abc
 import re
-from typing import Final, Generic, Literal, TypeAlias, TypeVar, type_check_only
-from typing_extensions import Self
+from typing import Final, Generic, Literal, Self, TypeAlias, TypeVar, type_check_only
 
 import optype.numpy as onp
 

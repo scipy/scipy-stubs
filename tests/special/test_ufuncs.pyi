@@ -1,5 +1,4 @@
-from typing import Any, Literal as L, TypeAlias
-from typing_extensions import assert_type
+from typing import Any, Literal as L, TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp

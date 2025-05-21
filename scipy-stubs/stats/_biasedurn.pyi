@@ -1,7 +1,6 @@
 # see `scipy/stats/_biasedurn.pyx`
 
-from typing import type_check_only
-from typing_extensions import Never
+from typing import Never, type_check_only
 
 import numpy as np
 import optype as op

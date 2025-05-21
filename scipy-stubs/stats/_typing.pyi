@@ -1,8 +1,8 @@
 # NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
 
 import abc
-from typing import Generic, Literal, TypeAlias, final, type_check_only
-from typing_extensions import Self, TypeVarTuple, Unpack
+from typing import Generic, Literal, Self, TypeAlias, final, type_check_only
+from typing_extensions import TypeVarTuple, Unpack
 
 __all__ = ("BaseBunch", "PowerDivergenceStatistic")
 

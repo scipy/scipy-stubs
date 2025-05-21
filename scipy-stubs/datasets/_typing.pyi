@@ -1,6 +1,5 @@
 from collections.abc import Callable
-from typing import Literal as L, Protocol, TypeAlias, overload, type_check_only
-from typing_extensions import LiteralString
+from typing import Literal as L, LiteralString, Protocol, TypeAlias, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp

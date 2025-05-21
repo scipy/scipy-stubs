@@ -1,8 +1,8 @@
 # mypy: disable-error-code="override"
 
 from collections.abc import Callable, Iterable
-from typing import Any, ClassVar, Final, Generic, Literal, Protocol, TypeAlias, final, overload, type_check_only
-from typing_extensions import Self, TypeVar, override
+from typing import Any, ClassVar, Final, Generic, Literal, Protocol, Self, TypeAlias, final, overload, type_check_only
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype as op

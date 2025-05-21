@@ -1,8 +1,8 @@
 import abc
 import numbers
 from collections.abc import Callable, Mapping
-from typing import Any, ClassVar, Concatenate, Final, Generic, Literal, Protocol, TypeAlias, overload, type_check_only
-from typing_extensions import Self, TypeVar, override
+from typing import Any, ClassVar, Concatenate, Final, Generic, Literal, Protocol, Self, TypeAlias, overload, type_check_only
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype as op

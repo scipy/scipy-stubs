@@ -2,8 +2,8 @@
 # mypy: disable-error-code="overload-overlap"
 
 from collections.abc import Sequence
-from typing import Any, Generic, TypeAlias, overload
-from typing_extensions import Self, TypeVar
+from typing import Any, Generic, Self, TypeAlias, overload
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op

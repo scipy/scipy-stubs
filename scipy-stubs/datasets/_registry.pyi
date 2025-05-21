@@ -1,5 +1,4 @@
-from typing import Final, Literal as L, TypedDict, type_check_only
-from typing_extensions import LiteralString
+from typing import Final, Literal as L, LiteralString, TypedDict, type_check_only
 
 @type_check_only
 class _MethodRegistry(TypedDict):

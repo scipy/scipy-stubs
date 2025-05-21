@@ -5,8 +5,8 @@
 # pyright: reportIncompatibleMethodOverride = false
 
 from collections.abc import Callable, Iterable, Mapping, Sequence
-from typing import Any, Final, Generic, Literal as L, TypeAlias, overload, type_check_only
-from typing_extensions import Self, TypeVar, Unpack, override
+from typing import Any, Final, Generic, Literal as L, Self, TypeAlias, overload, type_check_only
+from typing_extensions import TypeVar, Unpack, override
 
 import numpy as np
 import optype as op

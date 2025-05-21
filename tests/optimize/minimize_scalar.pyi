@@ -1,4 +1,4 @@
-from typing_extensions import assert_type
+from typing import assert_type
 
 import numpy.polynomial as npp
 from scipy.optimize import minimize_scalar

@@ -1,6 +1,6 @@
 from collections.abc import Sequence
-from typing import Literal, TypeAlias
-from typing_extensions import Never, override
+from typing import Literal, Never, TypeAlias
+from typing_extensions import override
 
 import numpy as np
 import optype.numpy as onp

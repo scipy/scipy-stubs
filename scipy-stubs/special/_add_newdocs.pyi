@@ -1,5 +1,4 @@
-from typing import Final
-from typing_extensions import LiteralString
+from typing import Final, LiteralString
 
 docdict: Final[dict[str, str]]
 

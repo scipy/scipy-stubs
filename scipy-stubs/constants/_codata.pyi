@@ -1,6 +1,5 @@
 from collections.abc import Mapping
-from typing import Final, Literal, TypeAlias
-from typing_extensions import LiteralString
+from typing import Final, Literal, LiteralString, TypeAlias
 
 __all__ = ["ConstantWarning", "find", "physical_constants", "precision", "unit", "value"]
 

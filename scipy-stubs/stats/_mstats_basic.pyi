@@ -1,6 +1,6 @@
 from collections.abc import Callable
-from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, TypeAlias, TypedDict, overload, type_check_only
-from typing_extensions import Self, TypeVar
+from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Self, TypeAlias, TypedDict, overload, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op

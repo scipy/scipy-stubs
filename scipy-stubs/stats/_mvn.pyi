@@ -1,7 +1,6 @@
 # NOTE: see `scipy/stats/mvn.pyf` for the f2py interface and `scipy/stats/mvndst.f` for the Fortran code
 
-from typing import Final, type_check_only
-from typing_extensions import LiteralString
+from typing import Final, LiteralString, type_check_only
 
 import numpy as np
 import optype.numpy as onp

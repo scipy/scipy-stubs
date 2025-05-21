@@ -1,7 +1,6 @@
 # type-check-only typing utilities used internally by scipy-stubs, with no guarantee of API stability
 
-from typing import Any, Literal, TypeAlias, TypedDict, type_check_only
-from typing_extensions import NotRequired
+from typing import Any, Literal, NotRequired, TypeAlias, TypedDict, type_check_only
 
 import numpy as np
 import optype.numpy as onp

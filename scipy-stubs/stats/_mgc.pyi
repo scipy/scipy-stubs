@@ -1,6 +1,6 @@
 from collections.abc import Callable, Iterable, Sequence
-from typing import Any, TypedDict, type_check_only
-from typing_extensions import Self, TypeVar
+from typing import Any, Self, TypedDict, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

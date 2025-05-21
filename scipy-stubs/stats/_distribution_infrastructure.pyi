@@ -2,8 +2,22 @@
 
 import abc
 from collections.abc import Callable, Mapping, Sequence, Set as AbstractSet
-from typing import Any, ClassVar, Final, Generic, Literal as L, Protocol, TypeAlias, TypedDict, overload, type_check_only
-from typing_extensions import LiteralString, Never, Self, TypeIs, TypeVar, Unpack, override
+from typing import (
+    Any,
+    ClassVar,
+    Final,
+    Generic,
+    Literal as L,
+    LiteralString,
+    Never,
+    Protocol,
+    Self,
+    TypeAlias,
+    TypedDict,
+    overload,
+    type_check_only,
+)
+from typing_extensions import TypeIs, TypeVar, Unpack, override
 
 import numpy as np
 import optype as op

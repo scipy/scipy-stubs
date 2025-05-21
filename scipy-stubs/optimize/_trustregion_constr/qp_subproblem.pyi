@@ -1,6 +1,6 @@
 from collections.abc import Sequence
-from typing import Any, Literal, TypeAlias, TypedDict, overload
-from typing_extensions import NotRequired, TypeVar
+from typing import Any, Literal, NotRequired, TypeAlias, TypedDict, overload
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
