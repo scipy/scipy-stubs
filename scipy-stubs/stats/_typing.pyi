@@ -2,9 +2,9 @@
 
 import abc
 from typing import Generic, Literal, Self, TypeAlias, final, type_check_only
-from typing_extensions import TypeVarTuple, Unpack
+from typing_extensions import TypeVarTuple
 
-__all__ = ("BaseBunch", "PowerDivergenceStatistic")
+__all__ = "BaseBunch", "PowerDivergenceStatistic"
 
 _Ts = TypeVarTuple("_Ts")
 

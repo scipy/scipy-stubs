@@ -1,7 +1,7 @@
 # mypy: disable-error-code="explicit-override"
 import abc
 from typing import ClassVar, Final, Generic, Literal, Never, Self, TypeAlias, final, overload, type_check_only
-from typing_extensions import TypeVar, Unpack, override
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype as op

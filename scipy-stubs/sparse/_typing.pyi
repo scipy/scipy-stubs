@@ -1,6 +1,6 @@
 # NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
 from typing import Literal, TypeAlias
-from typing_extensions import TypeAliasType, Unpack
+from typing_extensions import TypeAliasType
 
 import numpy as np
 import optype as op

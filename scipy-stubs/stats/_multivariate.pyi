@@ -1,5 +1,5 @@
 from typing import Any, Final, Generic, Literal, TypeAlias, overload, type_check_only
-from typing_extensions import TypeVar, Unpack, override
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype as op
