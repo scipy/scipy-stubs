@@ -162,7 +162,11 @@ def get_available_python_versions(
         if max_version and version > max_version:
             continue
 
-        versions[version.major, version.minor] = version
+        version_tuple = version.major, version.minor
+        if version_tuple < MIN_VERSIONS[0][0].release[:2]:
+            continue
+
+        versions[version_tuple] = version
 
     return sorted(versions.values())
 
