@@ -136,7 +136,11 @@ always_false = ["NP23", "NP30"]
 
 [tool.pyright]
 include = ["scipy-stubs", "scripts", "tests"]
-ignore = [".venv"]
+ignore = [
+    ".venv",
+    # https://github.com/jakebailey/pyright-action/issues/188
+    "/opt/hostedtoolcache/pyright/",
+]
 stubPath = "."
 pythonPlatform = "All"
 typeCheckingMode = "strict"
