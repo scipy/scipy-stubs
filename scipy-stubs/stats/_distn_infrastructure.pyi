@@ -153,7 +153,7 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     def rvs(
         self,
         /,
-        size: op.CanIndex | tuple[op.CanIndex, Unpack[tuple[op.CanIndex, ...]]],
+        size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]],
         random_state: ToRNG = None,
     ) -> _FloatND: ...
     @overload
@@ -790,7 +790,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         /,
         data: _FloatND,
         args: tuple[onp.ToFloat, ...] | None = None,
-    ) -> tuple[Unpack[tuple[_Float, ...]], _Float, _Float]: ...
+    ) -> tuple[*tuple[_Float, ...], _Float, _Float]: ...
 
     #
     def _fit_loc_scale_support(self, /, data: _ToFloatOrND, *args: onp.ToFloat) -> _Tuple2[np.int32 | np.int64 | _Float]: ...

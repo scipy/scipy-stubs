@@ -113,20 +113,20 @@ class LinearTimeInvariant(Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
 
 class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co, _PolesT_co], metaclass=abc.ABCMeta):
     @overload
-    def __new__(cls, *system: Unpack[tuple[_ToFloat12D, onp.ToFloat1D]]) -> TransferFunctionContinuous[_Float]: ...
+    def __new__(cls, *system: *tuple[_ToFloat12D, onp.ToFloat1D]) -> TransferFunctionContinuous[_Float]: ...
     @overload
-    def __new__(cls, *system: Unpack[tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat]]) -> ZerosPolesGainContinuous[_Float]: ...
+    def __new__(cls, *system: *tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat]) -> ZerosPolesGainContinuous[_Float]: ...
     @overload
-    def __new__(cls, *system: Unpack[tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat]]) -> ZerosPolesGainContinuous: ...
+    def __new__(cls, *system: *tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat]) -> ZerosPolesGainContinuous: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D]],
+        *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D],
     ) -> StateSpaceContinuous[_Float]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D]],
+        *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D],
     ) -> StateSpaceContinuous: ...
 
     #
@@ -176,31 +176,31 @@ class dlti(
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToFloat12D, onp.ToFloat1D]],
+        *system: *tuple[_ToFloat12D, onp.ToFloat1D],
         dt: _DTT_co = ...,
     ) -> TransferFunctionDiscrete[_Float, _DTT_co]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[onp.ToFloat1D, onp.ToFloat2D, onp.ToFloat1D]],
+        *system: *tuple[onp.ToFloat1D, onp.ToFloat2D, onp.ToFloat1D],
         dt: _DTT_co = ...,
     ) -> ZerosPolesGainDiscrete[_Float, _Float, _DTT_co]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat]],
+        *system: *tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat],
         dt: _DTT_co = ...,
     ) -> ZerosPolesGainDiscrete[_Inexact, _Float, _DTT_co]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D]],
+        *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D],
         dt: _DTT_co = ...,
     ) -> StateSpaceDiscrete[_Float, _Float, _DTT_co]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D]],
+        *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D],
         dt: _DTT_co = ...,
     ) -> StateSpaceDiscrete[_Inexact, _Float, _DTT_co]: ...
 
@@ -250,18 +250,18 @@ class TransferFunction(
     metaclass=abc.ABCMeta,
 ):
     @overload
-    def __new__(cls, *system: Unpack[tuple[lti[_PolesT, _PolesT]]]) -> TransferFunctionContinuous[_PolesT]: ...
+    def __new__(cls, *system: *tuple[lti[_PolesT, _PolesT]]) -> TransferFunctionContinuous[_PolesT]: ...
     @overload
-    def __new__(cls, *system: Unpack[tuple[dlti[_PolesT, _PolesT, _DTT]]]) -> TransferFunctionDiscrete[_PolesT, _DTT]: ...
+    def __new__(cls, *system: *tuple[dlti[_PolesT, _PolesT, _DTT]]) -> TransferFunctionDiscrete[_PolesT, _DTT]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToFloat12D, onp.ToFloat1D]],
+        *system: *tuple[_ToFloat12D, onp.ToFloat1D],
     ) -> TransferFunctionContinuous[_Float]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToFloat12D, onp.ToFloat1D]],
+        *system: *tuple[_ToFloat12D, onp.ToFloat1D],
         dt: _DTT,
     ) -> TransferFunctionDiscrete[_Float, _DTT]: ...
 
@@ -320,33 +320,33 @@ class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Gener
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[lti[_ZerosT_co, _PolesT_co]]],
+        *system: *tuple[lti[_ZerosT_co, _PolesT_co]],
     ) -> ZerosPolesGainContinuous[_ZerosT_co, _PolesT_co]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[dlti[_ZerosT_co, _PolesT_co, _DTT_co]]],
+        *system: *tuple[dlti[_ZerosT_co, _PolesT_co, _DTT_co]],
     ) -> ZerosPolesGainDiscrete[_ZerosT_co, _PolesT_co, _DTT_co]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToFloat12D, onp.ToFloat1D, onp.ToFloat]],
+        *system: *tuple[_ToFloat12D, onp.ToFloat1D, onp.ToFloat],
     ) -> ZerosPolesGainContinuous[_Float, _Float]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToComplex12D, onp.ToFloat1D, onp.ToFloat]],
+        *system: *tuple[_ToComplex12D, onp.ToFloat1D, onp.ToFloat],
     ) -> ZerosPolesGainContinuous[_Inexact, _Float]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToFloat12D, onp.ToFloat1D, onp.ToFloat]],
+        *system: *tuple[_ToFloat12D, onp.ToFloat1D, onp.ToFloat],
         dt: _DTT,
     ) -> ZerosPolesGainDiscrete[_Float, _Float, _DTT]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToComplex12D, onp.ToFloat1D, onp.ToFloat]],
+        *system: *tuple[_ToComplex12D, onp.ToFloat1D, onp.ToFloat],
         dt: _DTT,
     ) -> ZerosPolesGainDiscrete[_Inexact, _Float, _DTT]: ...
 
@@ -435,32 +435,32 @@ class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_
     __array_ufunc__: ClassVar[None] = None
 
     @overload
-    def __new__(cls, *system: Unpack[tuple[lti[_ZerosT_co, _PolesT_co]]]) -> StateSpaceContinuous[_ZerosT_co, _PolesT_co]: ...
+    def __new__(cls, *system: *tuple[lti[_ZerosT_co, _PolesT_co]]) -> StateSpaceContinuous[_ZerosT_co, _PolesT_co]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[dlti[_ZerosT_co, _PolesT_co, _DTT_co]]],
+        *system: *tuple[dlti[_ZerosT_co, _PolesT_co, _DTT_co]],
     ) -> StateSpaceDiscrete[_ZerosT_co, _PolesT_co, _DTT_co]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D]],
+        *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D],
     ) -> StateSpaceContinuous[_Float, _Float]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D]],
+        *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D],
     ) -> StateSpaceContinuous[_Inexact, _Float]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D]],
+        *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D],
         dt: _DTT,
     ) -> StateSpaceDiscrete[_Float, _Float, _DTT]: ...
     @overload
     def __new__(
         cls,
-        *system: Unpack[tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D]],
+        *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D],
         dt: _DTT,
     ) -> StateSpaceDiscrete[_Inexact, _Float, _DTT]: ...
 

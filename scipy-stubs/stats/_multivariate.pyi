@@ -240,7 +240,7 @@ class dirichlet_gen(multi_rv_generic):
         self,
         /,
         alpha: onp.ToFloat1D,
-        size: tuple[op.CanIndex, op.CanIndex, op.CanIndex, Unpack[tuple[op.CanIndex, ...]]],
+        size: tuple[op.CanIndex, op.CanIndex, op.CanIndex, *tuple[op.CanIndex, ...]],
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast3D, np.float64]: ...
 
@@ -274,7 +274,7 @@ class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
     def rvs(
         self,
         /,
-        size: tuple[op.CanIndex, op.CanIndex, op.CanIndex, Unpack[tuple[op.CanIndex, ...]]],
+        size: tuple[op.CanIndex, op.CanIndex, op.CanIndex, *tuple[op.CanIndex, ...]],
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast3D, np.float64]: ...
 
@@ -635,7 +635,7 @@ class multivariate_hypergeom_gen(multi_rv_generic):
         /,
         m: onp.ToIntND,
         n: onp.ToJustInt | onp.ToJustIntND,
-        size: op.CanIndex | tuple[op.CanIndex, Unpack[tuple[op.CanIndex, ...]]] | None = None,
+        size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]] | None = None,
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
 
@@ -652,7 +652,7 @@ class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen])
     def rvs(
         self,
         /,
-        size: op.CanIndex | tuple[op.CanIndex, Unpack[tuple[op.CanIndex, ...]]] = 1,
+        size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]] = 1,
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
 
@@ -728,7 +728,7 @@ class vonmises_fisher_gen(multi_rv_generic):
         /,
         mu: onp.ToFloat1D | None = None,
         kappa: op.JustInt = 1,
-        size: op.CanIndex | tuple[op.CanIndex, Unpack[tuple[op.CanIndex, ...]]] = 1,
+        size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]] = 1,
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
     def fit(self, /, x: onp.ToFloatND) -> tuple[onp.Array1D[np.float64], float]: ...
@@ -741,7 +741,7 @@ class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
     def rvs(
         self,
         /,
-        size: op.CanIndex | tuple[op.CanIndex, Unpack[tuple[op.CanIndex, ...]]] = 1,
+        size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]] = 1,
         random_state: spt.ToRNG = None,
     ) -> onp.Array[onp.AtLeast2D, np.float64]: ...
 
