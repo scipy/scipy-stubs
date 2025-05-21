@@ -1,6 +1,6 @@
 from collections.abc import Callable, Sequence
-from typing import Final, Literal, TypeAlias, TypedDict, overload, type_check_only
-from typing_extensions import LiteralString, deprecated
+from typing import Final, Literal, LiteralString, TypeAlias, TypedDict, overload, type_check_only
+from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp

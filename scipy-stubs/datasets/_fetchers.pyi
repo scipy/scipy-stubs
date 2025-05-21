@@ -1,5 +1,4 @@
-from typing import Final, Literal as L, overload
-from typing_extensions import LiteralString
+from typing import Final, Literal as L, LiteralString, overload
 
 from ._typing import AscentDataset, CanFetch, ECGDataset, Face2Dataset, Face3Dataset
 

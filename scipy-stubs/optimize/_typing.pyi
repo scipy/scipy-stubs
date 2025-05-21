@@ -1,6 +1,6 @@
 from collections.abc import Callable, Sequence
-from typing import Concatenate, Literal, TypeAlias, type_check_only
-from typing_extensions import NotRequired, TypedDict
+from typing import Concatenate, Literal, NotRequired, TypeAlias, type_check_only
+from typing_extensions import TypedDict
 
 import numpy as np
 import optype.numpy as onp

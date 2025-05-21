@@ -1,8 +1,8 @@
 # mypy: disable-error-code="override"
 # pyright: reportIncompatibleMethodOverride=false
 
-from typing import Final, Generic, Literal, TypeAlias
-from typing_extensions import Self, TypeVar, override
+from typing import Final, Generic, Literal, Self, TypeAlias
+from typing_extensions import TypeVar, override
 
 import optype as op
 import optype.numpy as onp

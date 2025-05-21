@@ -1,6 +1,5 @@
 from collections.abc import Callable, Iterable
-from typing import TypeAlias, TypeVar
-from typing_extensions import Self
+from typing import Self, TypeAlias, TypeVar
 
 import numpy as np
 import optype as op

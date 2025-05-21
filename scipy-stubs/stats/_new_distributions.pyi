@@ -1,5 +1,5 @@
-from typing import Any, ClassVar, Generic, TypeAlias, overload
-from typing_extensions import Never, TypeVar, Unpack
+from typing import Any, ClassVar, Generic, Never, TypeAlias, overload
+from typing_extensions import TypeVar, Unpack
 
 import numpy as np
 import optype.numpy as onp

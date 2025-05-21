@@ -1,7 +1,7 @@
 from collections.abc import Callable
 from types import ModuleType
-from typing import Any, Generic, Literal, NamedTuple, Protocol, TypeAlias, final, overload, type_check_only
-from typing_extensions import Self, TypeVar
+from typing import Any, Generic, Literal, NamedTuple, Protocol, Self, TypeAlias, final, overload, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op

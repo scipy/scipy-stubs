@@ -1,5 +1,5 @@
-from typing import Any, Final, Generic, Literal, TypeAlias, overload
-from typing_extensions import Never, Self, TypeVar, deprecated
+from typing import Any, Final, Generic, Literal, Never, Self, TypeAlias, overload
+from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype as op

@@ -1,5 +1,4 @@
-from typing import Any, Generic, Literal, TypeAlias, TypeVar, overload
-from typing_extensions import Self
+from typing import Any, Generic, Literal, Self, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op

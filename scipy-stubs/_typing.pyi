@@ -3,8 +3,8 @@
 from os import PathLike
 from collections.abc import Sequence
 from types import TracebackType
-from typing import IO, Any, Literal, Protocol, TypeAlias, type_check_only
-from typing_extensions import LiteralString, Self, TypeVar
+from typing import IO, Any, Literal, LiteralString, Protocol, Self, TypeAlias, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op

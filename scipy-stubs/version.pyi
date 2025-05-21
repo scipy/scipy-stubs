@@ -1,5 +1,4 @@
-from typing import Final as _Final
-from typing_extensions import LiteralString as _LiteralString
+from typing import Final as _Final, LiteralString as _LiteralString
 
 version: _Final[_LiteralString] = ...
 full_version: _Final[_LiteralString] = ...

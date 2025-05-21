@@ -1,7 +1,6 @@
 # https://github.com/scipy/scipy/blob/v1.14.1/scipy/optimize/_group_columns.py
 
-from typing import Final
-from typing_extensions import LiteralString
+from typing import Final, LiteralString
 
 import numpy as np
 import optype.numpy as onp

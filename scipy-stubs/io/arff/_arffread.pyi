@@ -2,8 +2,8 @@ import abc
 import re
 from csv import Dialect
 from collections.abc import Iterable, Iterator, Sequence
-from typing import Any, ClassVar, Final, Generic, Literal
-from typing_extensions import Self, TypeVar
+from typing import Any, ClassVar, Final, Generic, Literal, Self
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

@@ -1,15 +1,15 @@
 # NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
 
 import abc
-from typing import Generic, Literal, TypeAlias, final, type_check_only
-from typing_extensions import Self, TypeVarTuple, Unpack
+from typing import Generic, Literal, Self, TypeAlias, final, type_check_only
+from typing_extensions import TypeVarTuple
 
-__all__ = ("BaseBunch", "PowerDivergenceStatistic")
+__all__ = "BaseBunch", "PowerDivergenceStatistic"
 
 _Ts = TypeVarTuple("_Ts")
 
 @type_check_only
-class BaseBunch(tuple[Unpack[_Ts]], Generic[Unpack[_Ts]]):
+class BaseBunch(tuple[*_Ts], Generic[*_Ts]):
     # A helper baseclass for annotating the return type of a *specific*
     # `scipy._lib.bunch._make_tuple_bunch` call.
     #
@@ -31,7 +31,7 @@ class BaseBunch(tuple[Unpack[_Ts]], Generic[Unpack[_Ts]]):
     @abc.abstractmethod
     def __init__(self, /) -> None: ...
     @final
-    def __getnewargs_ex__(self, /) -> tuple[tuple[Unpack[_Ts]], dict[str, object]]: ...
+    def __getnewargs_ex__(self, /) -> tuple[tuple[*_Ts], dict[str, object]]: ...
 
     # NOTE: `._fields` and `._extra_fields` are mutually exclusive (disjoint)
     @property

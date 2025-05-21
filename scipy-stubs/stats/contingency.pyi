@@ -1,5 +1,4 @@
-from typing import Any, Literal
-from typing_extensions import Self
+from typing import Any, Literal, Self
 
 import numpy as np
 import optype.numpy as onp

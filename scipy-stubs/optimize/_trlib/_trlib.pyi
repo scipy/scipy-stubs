@@ -1,8 +1,7 @@
 # https://github.com/scipy/scipy/blob/v1.14.1/scipy/optimize/_trlib/_trlib.pyx
 
 from collections.abc import Callable, Mapping
-from typing import Final
-from typing_extensions import Never
+from typing import Final, Never
 
 import numpy as np
 import optype.numpy as onp

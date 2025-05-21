@@ -1,7 +1,7 @@
 import abc
 from collections.abc import Sequence
-from typing import Any, Generic, Literal, TypeAlias, overload
-from typing_extensions import Self, TypeVar, override
+from typing import Any, Generic, Literal, Self, TypeAlias, overload
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import numpy.typing as npt

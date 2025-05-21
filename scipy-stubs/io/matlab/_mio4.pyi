@@ -1,6 +1,6 @@
 from collections.abc import Mapping, Sequence
-from typing import IO, Any, Final, Generic, Literal, Protocol, TypeAlias, type_check_only
-from typing_extensions import LiteralString, TypeVar
+from typing import IO, Any, Final, Generic, Literal, LiteralString, Protocol, TypeAlias, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

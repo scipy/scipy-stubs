@@ -16,7 +16,7 @@ INDENT: Final = 4
 PACKAGE_NAME: Final = "scipy"
 DEPENDENCY_NAME: Final = "numpy"
 MIN_VERSIONS: Final = (
-    (Version("3.11"), Version("1.24")),
+    (Version("3.11"), Version("1.25")),
     (Version("3.12"), Version("1.26")),
     (Version("3.13"), Version("2.1")),
 )
@@ -162,7 +162,11 @@ def get_available_python_versions(
         if max_version and version > max_version:
             continue
 
-        versions[version.major, version.minor] = version
+        version_tuple = version.major, version.minor
+        if version_tuple < MIN_VERSIONS[0][0].release[:2]:
+            continue
+
+        versions[version_tuple] = version
 
     return sorted(versions.values())
 

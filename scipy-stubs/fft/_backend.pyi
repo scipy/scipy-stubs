@@ -1,6 +1,6 @@
 from collections.abc import Mapping, Sequence
-from typing import Any, ClassVar, Protocol, final, type_check_only
-from typing_extensions import LiteralString, TypeVar
+from typing import Any, ClassVar, LiteralString, Protocol, final, type_check_only
+from typing_extensions import TypeVar
 
 import optype as op
 

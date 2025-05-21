@@ -1,6 +1,17 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, TypedDict, TypeVar, overload, type_check_only
-from typing_extensions import LiteralString
+from typing import (
+    Any,
+    Concatenate,
+    Final,
+    Literal,
+    LiteralString,
+    Protocol,
+    TypeAlias,
+    TypedDict,
+    TypeVar,
+    overload,
+    type_check_only,
+)
 
 import numpy as np
 import optype.numpy as onp

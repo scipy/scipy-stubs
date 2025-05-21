@@ -1,8 +1,8 @@
 # pyright: reportIncompatibleMethodOverride=false, reportIncompatibleVariableOverride=false, reportImplicitOverride=false
 
 from types import EllipsisType
-from typing import Any, Generic, Literal as L, TypeAlias, TypedDict, final, overload, type_check_only
-from typing_extensions import LiteralString, Never, TypeAliasType, TypeVar, Unpack, deprecated, override
+from typing import Any, Generic, Literal as L, LiteralString, Never, TypeAlias, TypedDict, final, overload, type_check_only
+from typing_extensions import TypeAliasType, TypeVar, Unpack, deprecated, override
 
 import numpy as np
 import optype as op

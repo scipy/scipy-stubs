@@ -1,6 +1,6 @@
 from collections.abc import Callable
-from typing import ClassVar, Final, Generic, overload
-from typing_extensions import Never, TypeVar
+from typing import ClassVar, Final, Generic, Never, overload
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

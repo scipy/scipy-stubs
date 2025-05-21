@@ -24,10 +24,10 @@ Ensure you have [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
 installed. Now you can install the project with the dev dependencies:
 
 ```shell
-uv sync --python 3.10
+uv sync --python 3.11
 ```
 
-By installing the lowest support Python version (3.10 in this example), it prevents
+By installing the lowest support Python version (3.11 in this example), it prevents
 your IDE from e.g. auto-importing unsupported `typing` features.
 
 ### Tox

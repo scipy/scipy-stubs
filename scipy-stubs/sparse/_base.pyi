@@ -2,8 +2,8 @@
 
 import abc
 from collections.abc import Iterator, Sequence
-from typing import Any, Final, Generic, Literal as L, TypeAlias, overload
-from typing_extensions import Never, Self, TypeIs, TypeVar
+from typing import Any, Final, Generic, Literal as L, Never, Self, TypeAlias, overload
+from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
 import numpy.typing as npt

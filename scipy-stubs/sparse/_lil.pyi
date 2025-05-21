@@ -1,6 +1,6 @@
 from collections.abc import Sequence
-from typing import Any, Generic, Literal, TypeAlias, overload
-from typing_extensions import Self, TypeIs, TypeVar, override
+from typing import Any, Generic, Literal, Self, TypeAlias, overload
+from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
 import optype as op

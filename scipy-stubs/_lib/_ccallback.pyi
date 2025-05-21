@@ -1,8 +1,8 @@
 import ctypes as ct
 from _ctypes import CFuncPtr as _CFuncPtr
 from types import ModuleType
-from typing import ClassVar, Generic, Literal, NoReturn, Protocol, TypeAlias, final, overload, type_check_only
-from typing_extensions import CapsuleType as PyCapsule, Self, TypeVar, TypeVarTuple, Unpack, override
+from typing import ClassVar, Generic, Literal, NoReturn, Protocol, Self, TypeAlias, final, overload, type_check_only
+from typing_extensions import CapsuleType as PyCapsule, TypeVar, TypeVarTuple, Unpack, override
 
 # some quick interfaces for the relevant `cffi` types
 
@@ -57,25 +57,25 @@ class _CFFIVoid(_CFFIType, Protocol):
     def __init__(self, /) -> None: ...
 
 @type_check_only
-class _CFFIFunc(_CFFIType, Protocol[_CT_co, Unpack[_CTs]]):
+class _CFFIFunc(_CFFIType, Protocol[_CT_co, *_CTs]):
     is_array_type: ClassVar[bool] = False
 
     @property
-    def args(self, /) -> tuple[Unpack[_CTs]]: ...
+    def args(self, /) -> tuple[*_CTs]: ...
     @property
     def result(self, /) -> _CT_co: ...
     @property
     def ellipsis(self, /) -> bool: ...
     @property
     def abi(self, /) -> int | str | None: ...
-    def __init__(self, /, args: tuple[Unpack[_CTs]], result: _CT_co, ellipsis: bool, abi: int | None = None) -> None: ...
+    def __init__(self, /, args: tuple[*_CTs], result: _CT_co, ellipsis: bool, abi: int | None = None) -> None: ...
 
 @type_check_only
 @final
-class _CFFIFuncPtr(_CFFIFunc[_CT_co, Unpack[_CTs]], Protocol[_CT_co, Unpack[_CTs]]):
+class _CFFIFuncPtr(_CFFIFunc[_CT_co, *_CTs], Protocol[_CT_co, *_CTs]):
     is_raw_function: ClassVar = False
 
-    def as_raw_function(self, /) -> _CFFIFunc[_CT_co, Unpack[_CTs]]: ...
+    def as_raw_function(self, /) -> _CFFIFunc[_CT_co, *_CTs]: ...
 
 @type_check_only
 @final

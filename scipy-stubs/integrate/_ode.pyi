@@ -1,6 +1,6 @@
 from collections.abc import Callable
-from typing import Any, ClassVar, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, type_check_only
-from typing_extensions import Self, TypeVar, TypeVarTuple, Unpack, override
+from typing import Any, ClassVar, Final, Generic, Literal, Protocol, Self, TypeAlias, TypedDict, type_check_only
+from typing_extensions import TypeVar, TypeVarTuple, Unpack, override
 
 import numpy as np
 import optype.numpy as onp
@@ -34,53 +34,53 @@ class _IntegratorParams(TypedDict, total=False):
     verbosity: int
 
 @type_check_only
-class _ODEFuncF(Protocol[Unpack[_Ts]]):
+class _ODEFuncF(Protocol[*_Ts]):
     def __call__(
         self,
         t: float,
         y: float | onp.ArrayND[np.float64],
         /,
-        *args: Unpack[_Ts],
+        *args: *_Ts,
     ) -> float | onp.ArrayND[np.floating[Any]]: ...
 
 @type_check_only
-class _ODEFuncC(Protocol[Unpack[_Ts]]):
+class _ODEFuncC(Protocol[*_Ts]):
     def __call__(
         self,
         t: float,
         y: complex | onp.ArrayND[np.complex128],
         /,
-        *args: Unpack[_Ts],
+        *args: *_Ts,
     ) -> complex | onp.ArrayND[np.complexfloating[Any, Any]]: ...
 
 _SolOutFunc: TypeAlias = Callable[[float, onp.Array1D[np.inexact[Any]]], Literal[0, -1]]
 
 ###
 
-class ode(Generic[Unpack[_Ts]]):
+class ode(Generic[*_Ts]):
     stiff: int
-    f: _ODEFuncF[Unpack[_Ts]]
-    f_params: tuple[()] | tuple[Unpack[_Ts]]
-    jac: _ODEFuncF[Unpack[_Ts]] | None
-    jac_params: tuple[()] | tuple[Unpack[_Ts]]
+    f: _ODEFuncF[*_Ts]
+    f_params: tuple[()] | tuple[*_Ts]
+    jac: _ODEFuncF[*_Ts] | None
+    jac_params: tuple[()] | tuple[*_Ts]
     t: float
-    def __init__(self, /, f: _ODEFuncF[Unpack[_Ts]], jac: _ODEFuncF[Unpack[_Ts]] | None = None) -> None: ...
+    def __init__(self, /, f: _ODEFuncF[*_Ts], jac: _ODEFuncF[*_Ts] | None = None) -> None: ...
     @property
     def y(self, /) -> float: ...
     def integrate(self, /, t: float, step: bool = False, relax: bool = False) -> float: ...
     def set_initial_value(self, /, y: onp.ToComplex | onp.ToComplexND, t: float = 0.0) -> Self: ...
     def set_integrator(self, /, name: str, **integrator_params: Unpack[_IntegratorParams]) -> Self: ...
-    def set_f_params(self, /, *args: Unpack[_Ts]) -> Self: ...
-    def set_jac_params(self, /, *args: Unpack[_Ts]) -> Self: ...
+    def set_f_params(self, /, *args: *_Ts) -> Self: ...
+    def set_jac_params(self, /, *args: *_Ts) -> Self: ...
     def set_solout(self, /, solout: _SolOutFunc) -> None: ...
     def get_return_code(self, /) -> Literal[-7, -6, -5, -4, -3, -2, -1, 1, 2]: ...
     def successful(self, /) -> bool: ...
 
-class complex_ode(ode[Unpack[_Ts]], Generic[Unpack[_Ts]]):
-    cf: _ODEFuncC[Unpack[_Ts]]
-    cjac: _ODEFuncC[Unpack[_Ts]] | None
+class complex_ode(ode[*_Ts], Generic[*_Ts]):
+    cf: _ODEFuncC[*_Ts]
+    cjac: _ODEFuncC[*_Ts] | None
     tmp: onp.Array1D[np.float64]
-    def __init__(self, /, f: _ODEFuncC[Unpack[_Ts]], jac: _ODEFuncC[Unpack[_Ts]] | None = None) -> None: ...
+    def __init__(self, /, f: _ODEFuncC[*_Ts], jac: _ODEFuncC[*_Ts] | None = None) -> None: ...
     @property
     @override
     def y(self, /) -> complex: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]

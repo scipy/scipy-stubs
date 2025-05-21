@@ -1,6 +1,6 @@
 from collections.abc import Callable, Mapping, Sequence
 from typing import Any, Concatenate, Generic, Literal, NamedTuple, Protocol, TypeAlias, overload, type_check_only
-from typing_extensions import TypeVar, Unpack
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -35,7 +35,7 @@ _AxesT = TypeVar("_AxesT", default=Any)  # represents a `matplotlib.lines.Axes`
 class FitResult(Generic[_PXFT_co]):
     # tuple of at least size 1
     pxf: _PXFT_co
-    params: tuple[onp.ToFloat, Unpack[tuple[onp.ToFloat, ...]]]
+    params: tuple[onp.ToFloat, *tuple[onp.ToFloat, ...]]
     success: bool | None
     message: str | None
     discrete: bool

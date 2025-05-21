@@ -1,6 +1,5 @@
 from collections.abc import Callable
-from typing import Literal
-from typing_extensions import assert_type
+from typing import Literal, assert_type
 
 import numpy as np
 from scipy.integrate import quad

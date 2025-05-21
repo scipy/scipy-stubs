@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing_extensions import Never
+from typing import Never
 
 import numpy as np
 import optype.numpy as onp
