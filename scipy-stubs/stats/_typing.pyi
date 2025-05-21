@@ -1,7 +1,5 @@
 # NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
 
-# pyright: reportImplicitAbstractClass=false
-
 import abc
 from typing import Generic, Literal, TypeAlias, final, type_check_only
 from typing_extensions import Self, TypeVarTuple, Unpack

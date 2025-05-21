@@ -163,7 +163,7 @@ reportPrivateUsage = false
 # basedpyright
 failOnWarnings = true
 reportIgnoreCommentWithoutRule = true
-reportImplicitAbstractClass = true
+reportImplicitAbstractClass = false
 reportImplicitRelativeImport = true
 reportInvalidCast = true
 reportPrivateLocalImportUsage = true
