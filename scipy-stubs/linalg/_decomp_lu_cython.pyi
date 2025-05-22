@@ -1,12 +1,16 @@
-from typing import TypeAlias, TypeVar
+# NOTE: keep in sync with scipy/stubs/linalg/_decomp_lu_cython.pyi
+
+from typing import TypeVar
 
 import numpy as np
-import optype.numpy as onp
+import numpy.typing as npt
 
-_AnyInexactT = TypeVar("_AnyInexactT", np.float32, np.float64, np.complex64, np.complex128)
-_Int1D: TypeAlias = onp.ArrayND[np.int32 | np.int64]
+# this mimicks the `ctypedef fused lapack_t`
+_LapackT = TypeVar("_LapackT", np.float32, np.float64, np.complex64, np.complex128)
 
-###
-
-# the `lu_decompose` function in scipy's bundled stub file does not exist
-def lu_dispatcher(a: onp.Array2D[_AnyInexactT], u: onp.Array2D[_AnyInexactT], piv: _Int1D, permute_l: onp.ToBool) -> None: ...
+def lu_dispatcher(
+    a: npt.NDArray[_LapackT],
+    lu: npt.NDArray[_LapackT],
+    perm: npt.NDArray[np.integer],
+    permute_l: bool,
+) -> None: ...
