@@ -169,6 +169,7 @@ class RectBivariateSpline(BivariateSpline):
         kx: int = 3,
         ky: int = 3,
         s: onp.ToFloat = 0,
+        maxit: int = 20,
     ) -> None: ...
 
 class SphereBivariateSpline(_BivariateSplineBase):
