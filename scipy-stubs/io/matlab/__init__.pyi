@@ -13,12 +13,13 @@ from . import (
 from ._mio import loadmat, savemat, whosmat
 from ._mio5 import varmats_from_mat
 from ._mio5_params import MatlabFunction, MatlabObject, MatlabOpaque, mat_struct
-from ._miobase import MatReadError, MatReadWarning, MatWriteError, matfile_version
+from ._miobase import MatReadError, MatReadWarning, MatWriteError, MatWriteWarning, matfile_version
 
 __all__ = [
     "MatReadError",
     "MatReadWarning",
     "MatWriteError",
+    "MatWriteWarning",
     "MatlabFunction",
     "MatlabObject",
     "MatlabOpaque",
