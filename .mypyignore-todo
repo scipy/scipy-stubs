@@ -1,4 +1,3 @@
-scipy._lib._util.np_vecdot
 scipy._lib.pyprima
 scipy._lib.pyprima.cobyla
 scipy._lib.pyprima.cobyla.cobyla
