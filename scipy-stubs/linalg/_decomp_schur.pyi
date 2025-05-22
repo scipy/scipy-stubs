@@ -10,9 +10,9 @@ _T = TypeVar("_T")
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple2i: TypeAlias = tuple[_T, _T, int]
 
-_Float2D: TypeAlias = onp.Array2D[np.floating[Any]]
-_Complex2D: TypeAlias = onp.Array2D[np.complexfloating[Any, Any]]
-_Inexact2D: TypeAlias = onp.Array2D[np.inexact[Any]]
+_FloatND: TypeAlias = onp.ArrayND[np.floating[Any]]
+_ComplexND: TypeAlias = onp.ArrayND[np.complexfloating[Any, Any]]
+_InexactND: TypeAlias = onp.ArrayND[np.inexact[Any]]
 
 _OutputReal: TypeAlias = Literal["real", "r"]
 _OutputComplex: TypeAlias = Literal["complex", "c"]
@@ -23,61 +23,61 @@ _Sort: TypeAlias = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float]
 
 @overload  # float, output: {"real"}, sort: _Sort (positional)
 def schur(
-    a: onp.ToFloat2D,
+    a: onp.ToFloatND,
     output: _OutputReal = "real",
     lwork: onp.ToJustInt | None = None,
     overwrite_a: onp.ToBool = False,
     sort: None = None,
     check_finite: onp.ToBool = True,
-) -> _Tuple2[_Float2D]: ...
+) -> _Tuple2[_FloatND]: ...
 @overload  # float, output: {"real"}, sort: _Sort (keyword)
 def schur(
-    a: onp.ToFloat2D,
+    a: onp.ToFloatND,
     output: _OutputReal = "real",
     lwork: onp.ToJustInt | None = None,
     overwrite_a: onp.ToBool = False,
     *,
     sort: _Sort,
     check_finite: onp.ToBool = True,
-) -> _Tuple2i[_Inexact2D]: ...
+) -> _Tuple2i[_InexactND]: ...
 @overload  # complex, output: {"real"}, sort: _Sort (positional)
 def schur(
-    a: onp.ToComplex2D,
+    a: onp.ToComplexND,
     output: _OutputReal = "real",
     lwork: onp.ToJustInt | None = None,
     overwrite_a: onp.ToBool = False,
     sort: None = None,
     check_finite: onp.ToBool = True,
-) -> _Tuple2[_Inexact2D]: ...
+) -> _Tuple2[_InexactND]: ...
 @overload  # complex, output: {"real"}, sort: _Sort (keyword)
 def schur(
-    a: onp.ToComplex2D,
+    a: onp.ToComplexND,
     output: _OutputReal = "real",
     lwork: onp.ToJustInt | None = None,
     overwrite_a: onp.ToBool = False,
     *,
     sort: _Sort,
     check_finite: onp.ToBool = True,
-) -> _Tuple2i[_Inexact2D]: ...
+) -> _Tuple2i[_InexactND]: ...
 @overload  # complex, output: {"complex"}, sort: _Sort (positional)
 def schur(
-    a: onp.ToComplex2D,
+    a: onp.ToComplexND,
     output: _OutputComplex,
     lwork: onp.ToJustInt | None = None,
     overwrite_a: onp.ToBool = False,
     sort: None = None,
     check_finite: onp.ToBool = True,
-) -> _Tuple2[_Complex2D]: ...
+) -> _Tuple2[_ComplexND]: ...
 @overload  # complex, output: {"complex"}, sort: _Sort (keyword)
 def schur(
-    a: onp.ToComplex2D,
+    a: onp.ToComplexND,
     output: _OutputComplex,
     lwork: onp.ToJustInt | None = None,
     overwrite_a: onp.ToBool = False,
     *,
     sort: _Sort,
     check_finite: onp.ToBool = True,
-) -> _Tuple2i[_Complex2D]: ...
+) -> _Tuple2i[_ComplexND]: ...
 
 #
-def rsf2csf(T: onp.ToFloat2D, Z: onp.ToComplex2D, check_finite: onp.ToBool = True) -> tuple[_Complex2D, _Complex2D]: ...
+def rsf2csf(T: onp.ToFloatND, Z: onp.ToComplexND, check_finite: onp.ToBool = True) -> tuple[_ComplexND, _ComplexND]: ...

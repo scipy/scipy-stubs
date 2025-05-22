@@ -5,11 +5,11 @@ import optype.numpy as onp
 
 __all__ = ["qr_delete", "qr_insert", "qr_update"]
 
-_Float2D: TypeAlias = onp.Array2D[np.float32 | np.float64]
-_FloatQR: TypeAlias = tuple[_Float2D, _Float2D]
+_FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64]
+_FloatQR: TypeAlias = tuple[_FloatND, _FloatND]
 
-_Complex2D: TypeAlias = onp.Array2D[np.complex64 | np.complex128]
-_ComplexQR: TypeAlias = _FloatQR | tuple[_Complex2D, _Complex2D]
+_ComplexND: TypeAlias = onp.ArrayND[np.complex64 | np.complex128]
+_ComplexQR: TypeAlias = _FloatQR | tuple[_ComplexND, _ComplexND]
 
 _Which: TypeAlias = Literal["row", "col"]
 
@@ -17,8 +17,8 @@ _Which: TypeAlias = Literal["row", "col"]
 
 @overload
 def qr_delete(
-    Q: onp.ToFloat2D,
-    R: onp.ToFloat2D,
+    Q: onp.ToFloatND,
+    R: onp.ToFloatND,
     k: onp.ToJustInt,
     p: onp.ToJustInt = 1,
     which: _Which = "row",
@@ -27,8 +27,8 @@ def qr_delete(
 ) -> _FloatQR: ...
 @overload
 def qr_delete(
-    Q: onp.ToComplex2D,
-    R: onp.ToComplex2D,
+    Q: onp.ToComplexND,
+    R: onp.ToComplexND,
     k: onp.ToJustInt,
     p: onp.ToJustInt = 1,
     which: _Which = "row",
@@ -39,9 +39,9 @@ def qr_delete(
 #
 @overload
 def qr_insert(
-    Q: onp.ToFloat2D,
-    R: onp.ToFloat2D,
-    u: onp.ToFloat1D | onp.ToFloat2D,
+    Q: onp.ToFloatND,
+    R: onp.ToFloatND,
+    u: onp.ToFloatND,
     k: onp.ToJustInt,
     which: _Which = "row",
     rcond: onp.ToFloat | None = None,
@@ -50,9 +50,9 @@ def qr_insert(
 ) -> _FloatQR: ...
 @overload
 def qr_insert(
-    Q: onp.ToComplex2D,
-    R: onp.ToComplex2D,
-    u: onp.ToComplex1D | onp.ToComplex2D,
+    Q: onp.ToComplexND,
+    R: onp.ToComplexND,
+    u: onp.ToComplexND,
     k: onp.ToJustInt,
     which: _Which = "row",
     rcond: onp.ToFloat | None = None,
@@ -63,19 +63,19 @@ def qr_insert(
 #
 @overload
 def qr_update(
-    Q: onp.ToFloat2D,
-    R: onp.ToFloat2D,
-    u: onp.ToFloat1D | onp.ToFloat2D,
-    v: onp.ToFloat1D | onp.ToFloat2D,
+    Q: onp.ToFloatND,
+    R: onp.ToFloatND,
+    u: onp.ToFloatND,
+    v: onp.ToFloatND,
     overwrite_qruv: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _FloatQR: ...
 @overload
 def qr_update(
-    Q: onp.ToComplex2D,
-    R: onp.ToComplex2D,
-    u: onp.ToComplex1D | onp.ToComplex2D,
-    v: onp.ToComplex1D | onp.ToComplex2D,
+    Q: onp.ToComplexND,
+    R: onp.ToComplexND,
+    u: onp.ToComplexND,
+    v: onp.ToComplexND,
     overwrite_qruv: onp.ToBool = False,
     check_finite: onp.ToBool = True,
 ) -> _ComplexQR: ...
