@@ -97,9 +97,9 @@ uv run
     --no-editable
     --reinstall-package=scipy-stubs
     stubtest
-    --mypy-config-file=pyproject.toml
     --allowlist=.mypyignore
     --allowlist=.mypyignore-todo
+    --mypy-config-file=pyproject.toml
     $modules
 """
 args = [{name = "modules", positional = true, multiple = true, default = "scipy"}]

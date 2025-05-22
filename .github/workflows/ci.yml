@@ -112,8 +112,7 @@ jobs:
         run: >
           uv run --with="numpy==${{ matrix.numpy }}" --no-editable
           stubtest
-          --tb
-          --ignore-unused-allowlist
           --allowlist=.mypyignore
+          --allowlist=.mypyignore-todo
           --mypy-config-file=pyproject.toml
           scipy
