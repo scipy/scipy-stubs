@@ -1,8 +1,3 @@
-scipy.ndimage.__all__
-scipy.ndimage._filters.__all__
-scipy.ndimage._filters.vectorized_filter
-scipy.ndimage.vectorized_filter
-
 scipy.optimize._differentiable_functions.ScalarFunction.__init__
 scipy.optimize._differentiable_functions.VectorFunction.__init__
 scipy.optimize._differentiable_functions.VectorFunction.nfev

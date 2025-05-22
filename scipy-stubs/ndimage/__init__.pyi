@@ -33,6 +33,7 @@ from ._filters import (
     sobel,
     uniform_filter,
     uniform_filter1d,
+    vectorized_filter,
 )
 from ._fourier import fourier_ellipsoid, fourier_gaussian, fourier_shift, fourier_uniform
 from ._interpolation import (
@@ -160,6 +161,7 @@ __all__ = [
     "uniform_filter1d",
     "value_indices",
     "variance",
+    "vectorized_filter",
     "watershed_ift",
     "white_tophat",
     "zoom",
