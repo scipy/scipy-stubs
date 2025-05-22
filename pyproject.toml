@@ -33,7 +33,7 @@ requires-python = ">=3.11"
 dependencies = ["optype>=0.9.3"]
 
     [project.optional-dependencies]
-    scipy = ["scipy>=1.15.3,<1.16"]
+    scipy = ["scipy>=1.16.0rc1,<1.17"]
 
     [project.urls]
     Homepage = "https://scipy.org/"
@@ -99,7 +99,7 @@ uv run
     stubtest
     --mypy-config-file=pyproject.toml
     --allowlist=.mypyignore
-    --ignore-unused-allowlist
+    --allowlist=.mypyignore-todo
     $modules
 """
 args = [{name = "modules", positional = true, multiple = true, default = "scipy"}]
