@@ -1,5 +1,3 @@
-scipy.cluster.vq.whiten
-
 scipy.interpolate.RectBivariateSpline.__init__
 scipy.interpolate._bsplines.make_smoothing_spline
 scipy.interpolate._fitpack2.RectBivariateSpline.__init__
