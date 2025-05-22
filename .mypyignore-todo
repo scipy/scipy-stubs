@@ -1,6 +1,3 @@
-scipy.interpolate.RectBivariateSpline.__init__
-scipy.interpolate._?fitpack2.RectBivariateSpline.__init__
-scipy.interpolate.interpolate.RectBivariateSpline.__init__
 scipy.interpolate._bsplines.make_smoothing_spline
 scipy.interpolate.make_smoothing_spline
 
