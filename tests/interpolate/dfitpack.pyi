@@ -3,4 +3,3 @@
 from scipy.interpolate import dfitpack
 
 dfitpack.spalde(1, 1, 1, 1)  # pyright: ignore[reportDeprecated]
-dfitpack.bispeu(1, 1, 1, 1, 1, 1, 1)  # pyright: ignore[reportDeprecated]
