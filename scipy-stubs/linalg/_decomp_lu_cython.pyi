@@ -10,7 +10,7 @@ _LapackT = TypeVar("_LapackT", np.float32, np.float64, np.complex64, np.complex1
 
 def lu_dispatcher(
     a: npt.NDArray[_LapackT],
-    lu: npt.NDArray[_LapackT],
-    perm: npt.NDArray[np.integer],
+    u: npt.NDArray[_LapackT],
+    piv: npt.NDArray[np.integer],
     permute_l: bool,
 ) -> None: ...
