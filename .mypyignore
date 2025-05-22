@@ -14,7 +14,6 @@ scipy\.fftpack\.(_?helper\.)?fftfreq
 
 # namespace pollution
 scipy\._lib\.decorator\.(DEF|ArgSpec|FunctionMaker|__init__|append|dispatch_on|get_init|getargspec|init|n_args)
-scipy\.special\.libsf_error_state
 scipy\.stats\._rcont\.rcont
 
 # should this be packaged?
