@@ -1,4 +1,3 @@
-scipy.optimize._lsq.dogbox.dogbox
 scipy.optimize._lsq.least_squares
 scipy.optimize._lsq.least_squares.call_minpack
 scipy.optimize._lsq.least_squares.check_x_scale
