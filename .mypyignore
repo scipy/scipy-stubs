@@ -9,9 +9,6 @@ scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
 scipy\._lib\.(array_api_compat|array_api_extra|cobyqa).*
 scipy\.fft\._pocketfft\..*
 
-# numpy re-export with wrong annotations on numpy<1.24
-scipy\.fftpack\.(_?helper\.)?fftfreq
-
 # namespace pollution
 scipy\._lib\.decorator\.(DEF|ArgSpec|FunctionMaker|__init__|append|dispatch_on|get_init|getargspec|init|n_args)
 scipy\.stats\._rcont\.rcont
