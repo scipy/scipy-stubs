@@ -1,11 +1,12 @@
 from collections.abc import Callable
 from typing import Any, Literal, TypeAlias, overload
+from typing_extensions import deprecated
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 from scipy._typing import Falsy, Truthy
 from ._expm_frechet import expm_cond, expm_frechet
-from ._matfuncs_sqrtm import sqrtm
 
 __all__ = [
     "coshm",
@@ -34,7 +35,10 @@ _Numeric2D: TypeAlias = onp.Array2D[np.number[Any]]
 _Float2D: TypeAlias = onp.Array2D[np.floating[Any]]
 _Inexact2D: TypeAlias = onp.Array2D[np.inexact[Any]]
 
+_Float64ND: TypeAlias = onp.ArrayND[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.floating[Any]]
+_Complex128ND: TypeAlias = onp.ArrayND[np.complex128]
+_ComplexND: TypeAlias = onp.ArrayND[np.complexfloating[Any, Any]]
 _InexactND: TypeAlias = onp.ArrayND[np.inexact[Any]]
 
 _FloatFunc: TypeAlias = Callable[[onp.Array1D[np.float64]], onp.ToFloat1D]
@@ -50,6 +54,35 @@ def fractional_matrix_power(A: onp.ToFloat2D, t: onp.ToInt) -> _Real2D: ...
 def fractional_matrix_power(A: onp.ToComplex2D, t: onp.ToInt) -> _Numeric2D: ...
 @overload  # complex, float
 def fractional_matrix_power(A: onp.ToComplex2D, t: onp.ToJustFloat) -> _Complex2D: ...
+
+#
+@overload
+def sqrtm(A: onp.ToIntND | onp.ToJustFloat64_ND, disp: op.JustObject = ..., blocksize: op.JustObject = ...) -> _Float64ND: ...
+@overload
+def sqrtm(A: onp.ToJustFloatND, disp: op.JustObject = ..., blocksize: op.JustObject = ...) -> _FloatND: ...
+@overload
+def sqrtm(A: onp.ToJustComplex128_ND, disp: op.JustObject = ..., blocksize: op.JustObject = ...) -> _Complex128ND: ...
+@overload
+def sqrtm(A: onp.ToJustComplexND, disp: op.JustObject = ..., blocksize: op.JustObject = ...) -> _ComplexND: ...
+@overload
+def sqrtm(A: onp.ToComplexND, disp: op.JustObject = ..., blocksize: op.JustObject = ...) -> _InexactND: ...
+@overload
+@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
+def sqrtm(A: onp.ToComplexND, disp: Truthy, blocksize: op.JustObject = ...) -> _InexactND: ...
+@overload
+@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
+def sqrtm(A: onp.ToComplexND, disp: Falsy, blocksize: op.JustObject = ...) -> tuple[_InexactND, np.float64]: ...
+@overload
+@deprecated("The `blocksize` argument is deprecated and will be removed in SciPy 1.18.0.")
+def sqrtm(A: onp.ToComplexND, disp: op.JustObject = ..., *, blocksize: int) -> _InexactND: ...
+@overload
+@deprecated("The `blocksize` argument is deprecated and will be removed in SciPy 1.18.0.")
+@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
+def sqrtm(A: onp.ToComplexND, disp: Truthy, blocksize: int) -> _InexactND: ...
+@overload
+@deprecated("The `blocksize` argument is deprecated and will be removed in SciPy 1.18.0.")
+@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
+def sqrtm(A: onp.ToComplexND, disp: Falsy, blocksize: int) -> tuple[_InexactND, np.float64]: ...
 
 # NOTE: return dtype depends on the sign of the values
 @overload  # disp: True = ...
