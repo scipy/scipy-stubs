@@ -195,9 +195,11 @@ def make_lsq_spline(
 # NOTE: will unsafely cast complex input to float64
 def make_smoothing_spline(
     x: onp.ToComplex1D,
-    y: onp.ToComplex1D,
+    y: onp.ToComplexND,
     w: onp.ToFloat1D | None = None,
     lam: onp.ToFloat | None = None,
+    *,
+    axis: op.CanIndex = 0,
 ) -> BSpline[np.float64]: ...
 
 #

@@ -1,6 +1,3 @@
-scipy.interpolate._bsplines.make_smoothing_spline
-scipy.interpolate.make_smoothing_spline
-
 scipy.io.matlab.MatWriteWarning
 scipy.io.matlab.__all__
 scipy.io.matlab._miobase.MatWriteWarning
