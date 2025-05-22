@@ -6,7 +6,7 @@ scipy\.conftest
 scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
 
 # git submodules and bundled 3rd party libs
-scipy\._lib\.(array_api_compat|array_api_extra|cobyqa).*
+scipy\._lib\.(array_api_compat|array_api_extra|cobyqa|pyprima).*
 scipy\.fft\._pocketfft\..*
 
 # namespace pollution
