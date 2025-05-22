@@ -33,11 +33,12 @@ __all__ = [
     "sobel",
     "uniform_filter",
     "uniform_filter1d",
+    "vectorized_filter",
 ]
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.bool_ | npc.number])
-_ScalarT = TypeVar("_ScalarT", bound=np.bool_ | npc.number)
+_ScalarT = TypeVar("_ScalarT", bound=np.bool_ | npc.number, default=Any)
 
 _Ignored: TypeAlias = object
 
@@ -60,6 +61,35 @@ class _GaussianKwargs(TypedDict, total=False):
     radius: _Ints
 
 ###
+
+@overload
+def vectorized_filter(
+    input: onp.ToComplexND,
+    function: Callable[..., _ScalarT],
+    *,
+    size: op.CanIndex | tuple[op.CanIndex, ...] | None = None,
+    footprint: onp.Array | None = None,
+    output: None = None,
+    mode: Literal["reflect", "constant", "nearest", "mirror", "wrap"] = "reflect",
+    cval: onp.ToFloat | None = None,
+    origin: onp.ToInt | onp.ToInt1D | None = None,
+    axes: tuple[op.CanIndex, ...] | None = None,
+    batch_memory: int = 1_073_741_824,
+) -> onp.ArrayND[_ScalarT]: ...
+@overload
+def vectorized_filter(
+    input: onp.ToComplexND,
+    function: Callable[..., onp.ToComplex],
+    *,
+    size: op.CanIndex | tuple[op.CanIndex, ...] | None = None,
+    footprint: onp.Array | None = None,
+    output: onp.ArrayND[_ScalarT] | np.dtype[_ScalarT] | type[_ScalarT] | None = None,
+    mode: Literal["reflect", "constant", "nearest", "mirror", "wrap"] = "reflect",
+    cval: onp.ToFloat | None = None,
+    origin: onp.ToInt | onp.ToInt1D | None = None,
+    axes: tuple[op.CanIndex, ...] | None = None,
+    batch_memory: int = 1_073_741_824,
+) -> onp.ArrayND[_ScalarT]: ...
 
 # keep roughly in sync with sobel
 @overload
