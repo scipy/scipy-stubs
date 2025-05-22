@@ -9,7 +9,6 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 from numpy.random import Generator as Generator  # implicit re-export
-from optype.numpy.compat import DTypePromotionError as DTypePromotionError  # implicit re-export
 from scipy._typing import RNG, EnterSelfMixin
 
 _AnyRNGT = TypeVar("_AnyRNGT", np.random.RandomState, np.random.Generator)
@@ -37,9 +36,6 @@ SeedType: TypeAlias = IntNumber | _RNG | None
 GeneratorType = TypeVar("GeneratorType", bound=_RNG)  # noqa: PYI001  # oof
 
 ###
-
-class ComplexWarning(RuntimeWarning): ...
-class VisibleDeprecationWarning(UserWarning): ...
 
 class AxisError(ValueError, IndexError):
     _msg: Final[str | None]

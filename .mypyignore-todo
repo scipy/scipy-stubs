@@ -1,6 +1,3 @@
-scipy._lib._util.ComplexWarning
-scipy._lib._util.DTypePromotionError
-scipy._lib._util.VisibleDeprecationWarning
 scipy._lib._util.np_vecdot
 scipy._lib.pyprima
 scipy._lib.pyprima.cobyla
