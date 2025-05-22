@@ -1,6 +1,6 @@
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Iterable, Sequence
 from types import ModuleType
-from typing import Any, Concatenate, Final, Generic, Literal, TypeAlias, overload
+from typing import Any, Concatenate, Final, Generic, Literal, Protocol, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,6 +11,8 @@ from ._hessian_update_strategy import HessianUpdateStrategy
 
 _XT = TypeVar("_XT", bound=np.floating[Any], default=np.floating[Any])
 _XT_contra = TypeVar("_XT_contra", bound=np.floating[Any], default=np.floating[Any], contravariant=True)
+_VT = TypeVar("_VT")
+_RT = TypeVar("_RT")
 
 _ToFloat64Vec: TypeAlias = Sequence[float | np.float64 | np.integer[Any] | np.bool_] | onp.CanArrayND[np.float64]
 _ToJac: TypeAlias = onp.ToFloat2D | spmatrix | sparray
@@ -31,6 +33,10 @@ _FDBounds: TypeAlias = onp.ToFloat1D | onp.ToFloat2D  # len-2 array-like of scal
 _ToGradFun: TypeAlias = _VectorFun[_XT_contra] | _FDMethod
 _ToJacFun: TypeAlias = _JacFun[_XT_contra] | _FDMethod
 _ToHessFun: TypeAlias = _HessFun[_XT_contra] | _FDMethod | HessianUpdateStrategy
+
+@type_check_only
+class _DoesMap(Protocol):
+    def __call__(self, func: Callable[[_VT], _RT], iterable: Iterable[_VT], /) -> Iterable[_RT]: ...
 
 ###
 
@@ -83,9 +89,10 @@ class ScalarFunction(Generic[_XT_contra]):
         args: tuple[object, ...],
         grad: _ToGradFun[np.float64],
         hess: _ToHessFun[np.float64],
-        finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None,
-        finite_diff_bounds: _FDBounds,
+        finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None = None,
+        finite_diff_bounds: _FDBounds = ...,
         epsilon: onp.ToFloat | onp.ToFloat1D | None = None,
+        workers: int | _DoesMap | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -96,9 +103,10 @@ class ScalarFunction(Generic[_XT_contra]):
         args: tuple[object, ...],
         grad: _ToGradFun[_XT_contra],
         hess: _ToHessFun[_XT_contra],
-        finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None,
-        finite_diff_bounds: _FDBounds,
+        finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None = None,
+        finite_diff_bounds: _FDBounds = ...,
         epsilon: onp.ToFloat | onp.ToFloat1D | None = None,
+        workers: int | _DoesMap | None = None,
     ) -> None: ...
 
     #
@@ -126,17 +134,14 @@ class VectorFunction(Generic[_XT_contra]):
     f: _Vec
     v: _Vec
     f_updated: bool
-    nfev: int
 
     sparse_jacobian: Final[bool]
     J: _Jac
     J_prev: _Jac | None
     J_updated: bool
-    njev: int
 
     H: _Hess
     H_updated: bool
-    nhev: int
 
     @overload
     def __init__(
@@ -146,10 +151,11 @@ class VectorFunction(Generic[_XT_contra]):
         x0: _ToFloat64Vec,
         jac: _ToJacFun[np.float64],
         hess: _ToHessFun[np.float64],
-        finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None,
-        finite_diff_jac_sparsity: _ToJac | None,
-        finite_diff_bounds: _FDBounds,
-        sparse_jacobian: onp.ToBool | None,
+        finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None = None,
+        finite_diff_jac_sparsity: _ToJac | None = None,
+        finite_diff_bounds: _FDBounds = ...,
+        sparse_jacobian: onp.ToBool | None = None,
+        workers: int | _DoesMap | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -159,11 +165,20 @@ class VectorFunction(Generic[_XT_contra]):
         x0: _Vec[_XT_contra] | onp.ToFloat1D,
         jac: _ToJacFun[_XT_contra],
         hess: _ToHessFun[_XT_contra],
-        finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None,
-        finite_diff_jac_sparsity: _ToJac | None,
-        finite_diff_bounds: _FDBounds,
-        sparse_jacobian: onp.ToBool | None,
+        finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None = None,
+        finite_diff_jac_sparsity: _ToJac | None = None,
+        finite_diff_bounds: _FDBounds = ...,
+        sparse_jacobian: onp.ToBool | None = None,
+        workers: int | _DoesMap | None = None,
     ) -> None: ...
+
+    #
+    @property
+    def nfev(self, /) -> int: ...
+    @property
+    def njev(self, /) -> int: ...
+    @property
+    def nhev(self, /) -> int: ...
 
     #
     def _update_v(self, /, v: onp.ToFloat1D) -> None: ...
