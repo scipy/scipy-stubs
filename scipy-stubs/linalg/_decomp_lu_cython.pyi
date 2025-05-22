@@ -8,5 +8,5 @@ _Int1D: TypeAlias = onp.ArrayND[np.int32 | np.int64]
 
 ###
 
-def lu_decompose(a: onp.Array2D[_AnyInexactT], u: onp.Array2D[_AnyInexactT], piv: _Int1D, permute_l: onp.ToBool) -> None: ...
+# the `lu_decompose` function in scipy's bundled stub file does not exist
 def lu_dispatcher(a: onp.Array2D[_AnyInexactT], u: onp.Array2D[_AnyInexactT], piv: _Int1D, permute_l: onp.ToBool) -> None: ...
