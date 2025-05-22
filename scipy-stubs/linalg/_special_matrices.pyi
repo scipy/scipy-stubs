@@ -57,14 +57,6 @@ _ToJustComplexStrict2ND: TypeAlias = onp.SequenceND[onp.ToJustComplex1D] | onp.C
 
 #
 @overload
-@deprecated("`kron` has been deprecated in favour of `numpy.kron` in SciPy 1.15.0 and will be removed in SciPy 1.17.0.")
-def kron(a: onp.Array2D[_SCT], b: onp.Array2D[_SCT]) -> onp.Array2D[_SCT]: ...
-@overload
-@deprecated("`kron` has been deprecated in favour of `numpy.kron` in SciPy 1.15.0 and will be removed in SciPy 1.17.0.")
-def kron(a: onp.ArrayND[_SCT], b: onp.ArrayND[_SCT]) -> onp.Array[onp.AtLeast2D, _SCT]: ...
-
-#
-@overload
 def toeplitz(c: onp.ToJustInt1D, r: onp.ToJustInt1D | None = None) -> _Int2D: ...
 @overload
 def toeplitz(c: onp.ToJustFloat1D, r: onp.ToJustFloat1D | None = None) -> _Float2D: ...
@@ -230,6 +222,14 @@ def leslie(f: _ToStrict1D[_SCT], s: _ToStrict2ND[_SCT]) -> _Array3ND[_SCT]: ...
 def leslie(f: _ToStrict2ND[_SCT], s: _ToND[_SCT]) -> _Array3ND[_SCT]: ...
 @overload
 def leslie(f: _ToND[_SCT], s: _ToND[_SCT]) -> _Array2ND[_SCT]: ...
+
+#
+@overload
+@deprecated("`kron` has been deprecated in favour of `numpy.kron` in SciPy 1.15.0 and will be removed in SciPy 1.17.0.")
+def kron(a: onp.Array2D[_SCT], b: onp.Array2D[_SCT]) -> onp.Array2D[_SCT]: ...
+@overload
+@deprecated("`kron` has been deprecated in favour of `numpy.kron` in SciPy 1.15.0 and will be removed in SciPy 1.17.0.")
+def kron(a: onp.ArrayND[_SCT], b: onp.ArrayND[_SCT]) -> onp.Array[onp.AtLeast2D, _SCT]: ...
 
 #
 @overload
