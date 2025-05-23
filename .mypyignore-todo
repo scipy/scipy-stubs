@@ -1,14 +1,9 @@
-scipy.optimize._lsq.least_squares
-scipy.optimize._lsq.least_squares.call_minpack
-scipy.optimize._lsq.least_squares.check_x_scale
-scipy.optimize._lsq.least_squares.least_squares
 scipy.optimize._lsq.trf.trf
 scipy.optimize._lsq.trf.trf_bounds
 scipy.optimize._lsq.trf.trf_no_bounds
 scipy.optimize._numdiff.approx_derivative
 scipy.optimize._trustregion_constr._minimize_trustregion_constr
 scipy.optimize._trustregion_constr.minimize_trustregion_constr._minimize_trustregion_constr
-scipy.optimize.minpack.least_squares
 scipy.optimize.nnls
 scipy.optimize._nnls.nnls
 scipy.optimize.slsqp.__all__
