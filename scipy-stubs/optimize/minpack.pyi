@@ -6,20 +6,13 @@ from typing_extensions import deprecated
 __all__ = ["OptimizeResult", "OptimizeWarning", "curve_fit", "fixed_point", "fsolve", "least_squares", "leastsq", "zeros"]
 
 @deprecated("will be removed in SciPy v2.0.0")
-def zeros(
-    shape: object,
-    dtype: object = ...,
-    order: object = ...,
-    *,
-    device: object = ...,
-    like: object = ...,
-) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
 class OptimizeResult(Any): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class OptimizeWarning(UserWarning): ...
 
+@deprecated("will be removed in SciPy v2.0.0")
+def zeros(shape: object, dtype: object = ..., order: object = ..., *, device: object = ..., like: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def least_squares(
     fun: object,
@@ -41,6 +34,8 @@ def least_squares(
     verbose: object = ...,
     args: tuple[object, ...] = (),
     kwargs: dict[str, object] | None = None,
+    callback: object | None = None,
+    workers: object | None = None,
 ) -> OptimizeResult: ...  # pyright: ignore[reportDeprecated]
 @deprecated("will be removed in SciPy v2.0.0")
 def fsolve(

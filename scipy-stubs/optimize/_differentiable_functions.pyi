@@ -5,7 +5,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
-from scipy.sparse import csr_matrix, sparray, spmatrix
+from scipy.sparse import csr_array, sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 from ._hessian_update_strategy import HessianUpdateStrategy
 
@@ -19,7 +19,7 @@ _ToJac: TypeAlias = onp.ToFloat2D | spmatrix | sparray
 _ToHess: TypeAlias = _ToJac | LinearOperator
 
 _Vec: TypeAlias = onp.Array1D[_XT]
-_Jac: TypeAlias = onp.Array2D[_XT] | csr_matrix
+_Jac: TypeAlias = onp.Array2D[_XT] | csr_array[_XT]
 _Hess: TypeAlias = _Jac[_XT] | LinearOperator
 
 _ScalarFun: TypeAlias = Callable[Concatenate[onp.Array1D[_XT], ...], onp.ToFloat]
@@ -37,6 +37,8 @@ _ToHessFun: TypeAlias = _HessFun[_XT_contra] | _FDMethod | HessianUpdateStrategy
 @type_check_only
 class _DoesMap(Protocol):
     def __call__(self, func: Callable[[_VT], _RT], iterable: Iterable[_VT], /) -> Iterable[_RT]: ...
+
+_Workers: TypeAlias = int | _DoesMap
 
 ###
 
@@ -155,7 +157,7 @@ class VectorFunction(Generic[_XT_contra]):
         finite_diff_jac_sparsity: _ToJac | None = None,
         finite_diff_bounds: _FDBounds = ...,
         sparse_jacobian: onp.ToBool | None = None,
-        workers: int | _DoesMap | None = None,
+        workers: _Workers | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -206,7 +208,7 @@ class LinearVectorFunction(Generic[_XT_contra]):
     sparse_jacobian: Final[bool]
     J: Final[_Jac]
 
-    H: Final[csr_matrix]
+    H: Final[csr_array]
     v: _Vec[np.float64]
 
     @overload
@@ -232,7 +234,7 @@ class LinearVectorFunction(Generic[_XT_contra]):
     #
     def fun(self, /, x: onp.ToFloat1D) -> _Vec: ...
     def jac(self, /, x: onp.ToFloat1D) -> _Jac: ...
-    def hess(self, /, x: onp.ToFloat1D, v: _Vec[np.float64]) -> csr_matrix: ...
+    def hess(self, /, x: onp.ToFloat1D, v: _Vec[np.float64]) -> csr_array: ...
 
 class IdentityVectorFunction(LinearVectorFunction[_XT_contra]):
     @overload

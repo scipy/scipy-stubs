@@ -1,27 +1,25 @@
 from collections.abc import Callable, Mapping
-from typing import Literal, TypeAlias, type_check_only
-from typing_extensions import TypeVar
+from typing import Any, Literal, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
-from scipy.optimize import OptimizeResult
+from scipy.optimize import OptimizeResult as _OptimizeResult
 from scipy.optimize._typing import TRSolver
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
-
+_Ignored: TypeAlias = object
 _ValueFloat: TypeAlias = float | np.float64
 
-_ArrayFloat: TypeAlias = onp.Array[_ShapeT, np.float64]
-_MatrixFloat: TypeAlias = onp.Array[_ShapeT, np.float64] | sparray | spmatrix | LinearOperator
+_ArrayFloat: TypeAlias = onp.ArrayND[np.float64]
+_MatrixFloat: TypeAlias = onp.ArrayND[np.float64] | sparray | spmatrix | LinearOperator
 
-_FunObj: TypeAlias = Callable[[_ArrayFloat[tuple[int]], _ValueFloat], _MatrixFloat]
-_FunJac: TypeAlias = Callable[[_ArrayFloat[tuple[int]], _ValueFloat], _MatrixFloat]
+_FunObj: TypeAlias = Callable[[onp.Array1D[np.float64], _ValueFloat], _MatrixFloat]
+_FunJac: TypeAlias = Callable[[onp.Array1D[np.float64], _ValueFloat], _MatrixFloat]
 _FunLoss: TypeAlias = Callable[[_ValueFloat], _ValueFloat]
+_FunCallback: TypeAlias = Callable[[OptimizeResult], _Ignored]
 
-@type_check_only
-class _OptimizeResult(OptimizeResult):
+class OptimizeResult(_OptimizeResult):
     x: _ArrayFloat
     jac: _MatrixFloat
     cost: _ValueFloat
@@ -34,7 +32,7 @@ class _OptimizeResult(OptimizeResult):
     x_scale: _ValueFloat | _ArrayFloat
     loss_function: _ValueFloat | _ArrayFloat
     tr_solver: TRSolver | None
-    tr_options: Mapping[str, object]
+    tr_options: Mapping[str, Any]
 
 # undocumented
 def trf(
@@ -54,7 +52,8 @@ def trf(
     tr_solver: TRSolver | None,
     tr_options: Mapping[str, object],
     verbose: bool,
-) -> _OptimizeResult: ...
+    callback: _FunCallback | None = None,
+) -> OptimizeResult: ...
 
 # undocumented
 def trf_bounds(
@@ -74,7 +73,8 @@ def trf_bounds(
     tr_solver: TRSolver | None,
     tr_options: Mapping[str, object],
     verbose: bool,
-) -> _OptimizeResult: ...
+    callback: _FunCallback | None = None,
+) -> OptimizeResult: ...
 
 # undocumented
 def trf_no_bounds(
@@ -92,7 +92,8 @@ def trf_no_bounds(
     tr_solver: TRSolver | None,
     tr_options: Mapping[str, object],
     verbose: bool,
-) -> _OptimizeResult: ...
+    callback: _FunCallback | None = None,
+) -> OptimizeResult: ...
 
 # undocumented
 def select_step(

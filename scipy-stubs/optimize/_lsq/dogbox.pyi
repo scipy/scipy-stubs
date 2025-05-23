@@ -34,8 +34,7 @@ class OptimizeResult(_OptimizeResult):
     njev: int
     status: Literal[0, 1, 2, 3, 4]
 
-# undocumented
-def lsmr_operator(Jop: LinearOperator, d: _Vector_f8, active_set: _Vector_b1) -> LinearOperator: ...
+def lsmr_operator(Jop: LinearOperator, d: _Vector_f8, active_set: _Vector_b1) -> LinearOperator: ...  # undocumented
 
 #
 def find_intersection(
@@ -57,7 +56,7 @@ def dogleg_step(
     ub: _Vector_f8,
 ) -> tuple[_Vector_f8, _Vector_i0, np.bool_]: ...
 
-# undocumented
+#
 def dogbox(
     fun: _FunResid,
     jac: _FunJac,
@@ -75,4 +74,5 @@ def dogbox(
     tr_solver: TRSolver | None,
     tr_options: Mapping[str, object],
     verbose: bool,
-) -> OptimizeResult: ...
+    callback: Callable[[OptimizeResult], object] | None = None,
+) -> OptimizeResult: ...  # undocumented
