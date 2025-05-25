@@ -84,7 +84,7 @@ from ._ltisys import (
 from ._max_len_seq import max_len_seq
 from ._peak_finding import argrelextrema, argrelmax, argrelmin, find_peaks, find_peaks_cwt, peak_prominences, peak_widths
 from ._savitzky_golay import savgol_coeffs, savgol_filter
-from ._short_time_fft import ShortTimeFFT
+from ._short_time_fft import ShortTimeFFT, closest_STFT_dual_window
 from ._signaltools import (
     choose_conv_method,
     convolve,
@@ -170,6 +170,7 @@ __all__ = [
     "check_NOLA",
     "chirp",
     "choose_conv_method",
+    "closest_STFT_dual_window",
     "coherence",
     "cont2discrete",
     "convolve",
