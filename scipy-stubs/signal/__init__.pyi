@@ -61,7 +61,7 @@ from ._filter_design import (
     zpk2sos,
     zpk2tf,
 )
-from ._fir_filter_design import firls, firwin, firwin2, kaiser_atten, kaiser_beta, kaiserord, minimum_phase, remez
+from ._fir_filter_design import firls, firwin, firwin2, firwin_2d, kaiser_atten, kaiser_beta, kaiserord, minimum_phase, remez
 from ._lti_conversion import abcd_normalize, cont2discrete, ss2tf, ss2zpk, tf2ss, zpk2ss
 from ._ltisys import (
     StateSpace,
@@ -207,6 +207,7 @@ __all__ = [
     "firls",
     "firwin",
     "firwin2",
+    "firwin_2d",
     "freqresp",
     "freqs",
     "freqs_zpk",
