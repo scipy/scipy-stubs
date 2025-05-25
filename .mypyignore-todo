@@ -1,4 +1,3 @@
-scipy.signal.__all__
 scipy.signal.(signaltools.|spectral.)?get_window
 scipy.signal.windows.(_?windows.)?barthann
 scipy.signal.windows.(_?windows.)?bartlett
