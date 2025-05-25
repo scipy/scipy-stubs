@@ -1,6 +1,4 @@
 scipy.signal.__all__
-scipy.signal._?fir_filter_design.__all__
-scipy.signal.(_?fir_filter_design.)?firwin_2d
 scipy.signal.(signaltools.|spectral.)?get_window
 scipy.signal.windows.(_?windows.)?barthann
 scipy.signal.windows.(_?windows.)?bartlett

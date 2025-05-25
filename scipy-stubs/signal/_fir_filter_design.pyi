@@ -5,9 +5,10 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+from scipy._typing import Falsy, Truthy
 from .windows._windows import _ToWindow
 
-__all__ = ["firls", "firwin", "firwin2", "kaiser_atten", "kaiser_beta", "kaiserord", "minimum_phase", "remez"]
+__all__ = ["firls", "firwin", "firwin2", "firwin_2d", "kaiser_atten", "kaiser_beta", "kaiserord", "minimum_phase", "remez"]
 
 ###
 
@@ -57,6 +58,30 @@ def firwin(
     scale: op.CanBool = True,
     fs: onp.ToFloat | None = None,
 ) -> onp.Array1D[np.float64 | np.longdouble]: ...
+
+#
+@overload  # `fc` required, `circular=False` (default)
+def firwin_2d(
+    hsize: tuple[onp.ToJustInt, onp.ToJustInt],
+    window: _ToWindow,
+    *,
+    fc: onp.ToFloat | onp.ToFloat1D,
+    fs: onp.ToFloat = 2,
+    circular: Falsy = False,
+    pass_zero: _IIRFilterType | bool = True,
+    scale: bool = True,
+) -> onp.Array2D[np.float64]: ...
+@overload  # `fc` optional, `circular=True`
+def firwin_2d(
+    hsize: tuple[onp.ToJustInt, onp.ToJustInt],
+    window: _ToWindow,
+    *,
+    fc: onp.ToFloat | onp.ToFloat1D | None = None,
+    fs: float = 2,
+    circular: Truthy,
+    pass_zero: _IIRFilterType | bool = True,
+    scale: bool = True,
+) -> onp.Array2D[np.float64]: ...
 
 #
 def firwin2(
