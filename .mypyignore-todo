@@ -1,5 +1,3 @@
-scipy.optimize.nnls
-scipy.optimize._nnls.nnls
 scipy.optimize.slsqp.__all__
 scipy.optimize.slsqp.zeros
 
