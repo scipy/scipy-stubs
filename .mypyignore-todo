@@ -1,5 +1,4 @@
 scipy.signal.__all__
-scipy.signal.(_short_time_fft.)?ShortTimeFFT.from_win_equals_dual
 scipy.signal._?fir_filter_design.__all__
 scipy.signal.(_?fir_filter_design.)?firwin_2d
 scipy.signal.(signaltools.|spectral.)?get_window

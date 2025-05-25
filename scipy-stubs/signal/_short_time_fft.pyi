@@ -16,6 +16,7 @@ _InexactND: TypeAlias = onp.ArrayND[np.inexact[Any]]
 _PadType: TypeAlias = Literal["zeros", "edge", "even", "odd"]
 _FFTModeType: TypeAlias = Literal["twosided", "centered", "onesided", "onesided2X"]
 _ScaleTo: TypeAlias = Literal["magnitude", "psd"]
+_Scaling: TypeAlias = Literal[_ScaleTo, "unitary"]
 _Detr: TypeAlias = (
     Literal["linear", "constant"]
     | Callable[[onp.ArrayND[np.float64]], onp.ToComplexND]
@@ -62,35 +63,35 @@ class ShortTimeFFT:
     @property
     def T(self, /) -> float: ...
     @T.setter
-    def T(self, /, v: float) -> None: ...
+    def T(self, v: float, /) -> None: ...
 
     #
     @property
     def fs(self, /) -> float: ...
     @fs.setter
-    def fs(self, /, v: float) -> None: ...
+    def fs(self, v: float, /) -> None: ...
 
     #
     @property
     def fft_mode(self, /) -> _FFTModeType: ...
     @fft_mode.setter
-    def fft_mode(self, /, t: _FFTModeType) -> None: ...
+    def fft_mode(self, t: _FFTModeType, /) -> None: ...
 
     #
     @property
     def mfft(self, /) -> int: ...
     @mfft.setter
-    def mfft(self, /, n_: int) -> None: ...
+    def mfft(self, n_: int, /) -> None: ...
 
     #
     @property
     def phase_shift(self, /) -> int | None: ...
     @phase_shift.setter
-    def phase_shift(self, /, v: int | None) -> None: ...
+    def phase_shift(self, v: int | None, /) -> None: ...
 
     #
     @property
-    def scaling(self, /) -> _ScaleTo | None: ...
+    def scaling(self, /) -> _Scaling | None: ...
 
     #
     def __init__(
@@ -197,6 +198,18 @@ class ShortTimeFFT:
         fft_mode: _FFTModeType = "onesided",
         mfft: int | None = None,
         scale_to: _ScaleTo | None = None,
+        phase_shift: int | None = 0,
+    ) -> Self: ...
+    @classmethod
+    def from_win_equals_dual(
+        cls,
+        desired_win: onp.ArrayND[npc.inexact],
+        hop: int,
+        fs: float,
+        *,
+        fft_mode: _FFTModeType = "onesided",
+        mfft: int | None = None,
+        scale_to: _Scaling | None = None,
         phase_shift: int | None = 0,
     ) -> Self: ...
 
