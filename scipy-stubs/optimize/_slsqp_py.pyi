@@ -1,8 +1,9 @@
 from collections.abc import Callable, Sequence
-from typing import Concatenate, Final, Literal, TypeAlias, TypeVar, overload
+from typing import Any, Concatenate, Final, Literal, TypeAlias, TypedDict, TypeVar, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from scipy._typing import Falsy, Truthy
 
 __all__ = ["approx_jacobian", "fmin_slsqp"]
@@ -31,6 +32,17 @@ _ExitDesc: TypeAlias = Literal[
     "Positive directional derivative for linesearch",  # 8
     "Iteration limit reached",  # 9
 ]
+
+@type_check_only
+class _ConDict(TypedDict):
+    fun: Callable[..., onp.ToFloat]
+    jac: Callable[..., onp.ToFloat2D] | None
+    args: tuple[Any, ...]
+
+@type_check_only
+class _ConsDict(TypedDict):
+    eq: tuple[_ConDict, ...]
+    ineq: tuple[_ConDict, ...]
 
 ###
 
@@ -83,3 +95,7 @@ def fmin_slsqp(
     epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float).eps)
     callback: Callable[[onp.Array1D[np.float64]], _Ignored] | None = None,
 ) -> tuple[onp.Array1D[np.float64], float | np.float64, int, _ExitMode, _ExitDesc]: ...
+
+#
+def _eval_constraint(d: onp.Array1D[np.float64], x: onp.Array1D[npc.floating], cons: _ConsDict, m: int, meq: int) -> None: ...
+def _eval_con_normals(C: onp.Array2D[np.float64], x: onp.Array1D[npc.floating], cons: _ConsDict, m: int, meq: int) -> None: ...
