@@ -1,11 +1,13 @@
 from collections.abc import Callable
-from typing import Any, Literal, Self, TypeAlias
+from typing import Any, Literal, Self, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
+from scipy._typing import Falsy, Truthy
 from .windows._windows import _ToWindow
 
-__all__ = ["ShortTimeFFT"]
+__all__ = ["ShortTimeFFT", "closest_STFT_dual_window"]
 
 ###
 
@@ -197,3 +199,26 @@ class ShortTimeFFT:
         scale_to: _ScaleTo | None = None,
         phase_shift: int | None = 0,
     ) -> Self: ...
+
+_InexactT = TypeVar("_InexactT", bound=npc.inexact)
+
+#
+def _calc_dual_canonical_window(win: onp.ArrayND[_InexactT], hop: int) -> onp.Array1D[_InexactT]: ...
+
+#
+@overload
+def closest_STFT_dual_window(
+    win: onp.ArrayND[_InexactT],
+    hop: int,
+    desired_dual: onp.ArrayND[_InexactT] | None = None,
+    *,
+    scaled: Truthy = True,
+) -> tuple[onp.Array1D[_InexactT], _InexactT]: ...
+@overload
+def closest_STFT_dual_window(
+    win: onp.ArrayND[_InexactT],
+    hop: int,
+    desired_dual: onp.ArrayND[_InexactT] | None = None,
+    *,
+    scaled: Falsy,
+) -> tuple[onp.Array1D[_InexactT], float]: ...
