@@ -4,6 +4,7 @@ from typing import Concatenate, Final, Literal, Protocol, TypeAlias, TypedDict, 
 import numpy as np
 import optype.numpy as onp
 from scipy.optimize._constraints import Bounds, LinearConstraint, NonlinearConstraint, PreparedConstraint
+from scipy.optimize._differentiable_functions import _DoesMap
 from scipy.optimize._optimize import OptimizeResult as _OptimizeResult
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
@@ -137,4 +138,5 @@ def _minimize_trustregion_constr(
     initial_barrier_tolerance: float = 0.1,
     factorization_method: str | None = None,
     disp: bool = False,
+    workers: int | _DoesMap | None = None,
 ) -> OptimizeResult: ...
