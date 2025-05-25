@@ -1,3 +1,4 @@
+from types import ModuleType
 from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeAliasType
 
@@ -94,7 +95,9 @@ _ToWindow = TypeAliasType(
 
 ###
 
-def get_window(window: _ToWindow, Nx: _ToM, fftbins: op.CanBool = True) -> _Float1D: ...
+def get_window(
+    window: _ToWindow, Nx: _ToM, fftbins: op.CanBool = True, *, xp: ModuleType | None = None, device: object | None = None
+) -> _Float1D: ...
 
 #
 def barthann(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
