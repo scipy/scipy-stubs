@@ -4,17 +4,8 @@ from collections.abc import Callable
 from typing import Any
 from typing_extensions import deprecated
 
-__all__ = ["OptimizeResult", "fmin_slsqp", "slsqp", "zeros"]
+__all__ = ["OptimizeResult", "fmin_slsqp", "slsqp"]
 
-@deprecated("will be removed in SciPy v2.0.0")
-def zeros(
-    shape: object,
-    dtype: object = ...,
-    order: object = ...,
-    *,
-    device: object = ...,
-    like: object = ...,
-) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 class OptimizeResult(Any): ...
 
@@ -38,7 +29,6 @@ def fmin_slsqp(
     full_output: object = ...,
     epsilon: object = ...,
     callback: object = ...,
-) -> object: ...
+) -> Any: ...  # noqa: ANN401
 
-# Deprecated
-slsqp: Callable[..., object]
+slsqp: Callable[..., Any] = ...  # deprecated

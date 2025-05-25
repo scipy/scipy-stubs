@@ -1,6 +1,3 @@
-scipy.optimize.slsqp.__all__
-scipy.optimize.slsqp.zeros
-
 scipy.signal.ShortTimeFFT.from_win_equals_dual
 scipy.signal.__all__
 scipy.signal._fir_filter_design.__all__
