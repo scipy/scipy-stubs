@@ -1,4 +1,3 @@
-scipy.optimize._numdiff.approx_derivative
 scipy.optimize._trustregion_constr._minimize_trustregion_constr
 scipy.optimize._trustregion_constr.minimize_trustregion_constr._minimize_trustregion_constr
 scipy.optimize.nnls
