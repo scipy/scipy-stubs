@@ -42,6 +42,7 @@ _SCT = TypeVar("_SCT", bound=np.generic, default=Any)
 _IntT = TypeVar("_IntT", bound=npc.integer)
 _NonIntDTypeT = TypeVar("_NonIntDTypeT", bound=np.dtype[npc.inexact | np.flexible | np.datetime64 | np.timedelta64 | np.object_])
 
+_Axis: TypeAlias = L[-2, -1, 0, 1] | bool | np.bool_ | npc.integer
 _ShapeLike: TypeAlias = Iterable[op.CanIndex]
 _ScalarLike: TypeAlias = complex | bytes | str | np.generic | onp.Array0D
 _SequenceLike: TypeAlias = tuple[_ScalarLike, ...] | list[_ScalarLike] | onp.Array1D
@@ -127,12 +128,19 @@ def get_sum_dtype(dtype: _NonIntDTypeT) -> _NonIntDTypeT: ...
 def isintlike(x: object) -> TypeIs[op.CanIndex]: ...
 def isscalarlike(x: object) -> TypeIs[_ScalarLike]: ...
 def isshape(x: _SizedIndexIterable, nonneg: bool = False, *, allow_nd: tuple[int, ...] = (2,)) -> bool: ...
-def issequence(t: object) -> TypeIs[_SequenceLike]: ...
-def ismatrix(t: object) -> TypeIs[_MatrixLike]: ...
-def isdense(x: object) -> TypeIs[onp.Array]: ...
+def issequence(t: object) -> TypeIs[_SequenceLike]: ...  # undocumented
+def ismatrix(t: object) -> TypeIs[_MatrixLike]: ...  # undocumented
+def isdense(x: object) -> TypeIs[onp.Array]: ...  # undocumented
 
 #
-def validateaxis(axis: L[-2, -1, 0, 1] | bool | np.bool_ | npc.integer | None) -> None: ...
+@overload
+def validateaxis(axis: None, *, ndim: int = 2) -> None: ...  # undocumented
+@overload
+def validateaxis(
+    axis: _Axis | tuple[_Axis, *tuple[_Axis, ...]] | None, *, ndim: int = 2
+) -> tuple[int, ...] | None: ...  # undocumented
+
+#
 def check_shape(
     args: _ShapeLike | tuple[_ShapeLike, ...],
     current_shape: tuple[int, ...] | None = None,
