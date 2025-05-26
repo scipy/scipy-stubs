@@ -1,6 +1,6 @@
 scipy.spatial.transform.RigidTransform
 scipy.spatial.transform.__all__
-scipy.spatial.transform._rotation.compose_quat
+
 scipy.special._support_alternative_backends.__all__
 scipy.special._support_alternative_backends.stdtrit
 
