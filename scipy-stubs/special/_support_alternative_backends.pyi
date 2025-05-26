@@ -20,6 +20,7 @@ from ._ufuncs import (
     ndtri,
     rel_entr,
     stdtr,
+    stdtrit,
     xlogy,
 )
 
@@ -45,5 +46,6 @@ __all__ = [
     "ndtri",
     "rel_entr",
     "stdtr",
+    "stdtrit",
     "xlogy",
 ]

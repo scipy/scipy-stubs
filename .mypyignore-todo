@@ -1,6 +1,3 @@
-scipy.special._support_alternative_backends.__all__
-scipy.special._support_alternative_backends.stdtrit
-
 scipy.stats.Binomial
 scipy.stats.Mixture.logpmf
 scipy.stats.Mixture.pmf

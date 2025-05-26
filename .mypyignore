@@ -32,6 +32,7 @@ scipy\.special\._support_alternative_backends\.xlogy
 scipy\.special\._support_alternative_backends\.chdtrc?
 scipy\.special\._support_alternative_backends\.(log_)?ndtri?
 scipy\.special\._support_alternative_backends\.stdtr
+scipy\.special\._support_alternative_backends\.stdtrit
 scipy\.special\._ufuncs\._(hypergeom|n?binom)_(pm|cd|pp|i?s)f
 scipy\.special\._ufuncs\._(hypergeom|nbinom|nc(f|t))_(mean|variance|skewness|kurtosis_excess)
 scipy\.special\._ufuncs\._(beta|cauchy|invgauss|landau|nc(f|t|x2)|skewnorm)_(pd|cd|pp|i?s)f
