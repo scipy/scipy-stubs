@@ -1,3 +1,5 @@
+# https://github.com/scipy/scipy/blob/maintenance/1.16.x/scipy/spatial/transform/_rotation.pyx
+
 from collections.abc import Sequence
 from typing import Final, Literal as L, Self, TypeAlias, overload
 from typing_extensions import TypeVar
@@ -170,3 +172,6 @@ class Slerp:
 
     def __init__(self, /, times: onp.ToFloat1D, rotations: Rotation) -> None: ...
     def __call__(self, /, times: onp.ToFloat1D) -> Rotation: ...
+
+# (double[:, :], double[:, :]) -> noexcept double[:, :]
+def compose_quat(p: onp.ArrayND[np.float64], q: onp.ArrayND[np.float64]) -> onp.Array2D[np.float64]: ...  # undocumented
