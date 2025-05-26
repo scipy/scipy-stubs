@@ -75,6 +75,7 @@ from ._multivariate import (
 )
 from ._new_distributions import Normal, Uniform
 from ._page_trend_test import page_trend_test
+from ._quantile import quantile
 from ._resampling import (
     BootstrapMethod,
     MonteCarloMethod,
@@ -525,6 +526,7 @@ __all__ = [
     "ppcc_plot",
     "probplot",
     "qmc",
+    "quantile",
     "quantile_test",
     "randint",
     "random_correlation",
