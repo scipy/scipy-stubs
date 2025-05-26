@@ -2,6 +2,7 @@
 # mypy: disable-error-code="overload-overlap"
 
 from collections.abc import Sequence
+from types import GenericAlias
 from typing import Any, Generic, Self, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -139,3 +140,7 @@ class spmatrix(Generic[_SCT_co]):
     def todense(self, /, order: OrderCF | None, out: onp.ArrayND[_SCT]) -> onp.Matrix[_SCT]: ...
     @overload
     def todense(self, /, order: OrderCF | None = None, *, out: onp.ArrayND[_SCT]) -> onp.Matrix[_SCT]: ...
+
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> GenericAlias: ...
