@@ -1,10 +1,12 @@
 from types import ModuleType
-from typing import Literal, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, overload
 from typing_extensions import TypeAliasType
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
+from _typeshed import Incomplete
 from scipy._typing import Falsy, Truthy
 
 __all__ = [
@@ -38,12 +40,19 @@ __all__ = [
 
 ###
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
+_Xp = TypeAliasType("_Xp", ModuleType)
+_Device = TypeAliasType("_Device", Incomplete)
+
+_Float64_1D: TypeAlias = onp.Array1D[np.float64]
+_Float64_2D: TypeAlias = onp.Array2D[np.float64]
+
+_ToBool: TypeAlias = bool | np.bool_[Any]
+_ToInt: TypeAlias = int | np.int16 | np.int32 | np.int64
+_ToFloat: TypeAlias = float | npc.floating | npc.integer
 
 _Norm: TypeAlias = Literal[2, "approximate", "subsample"]
-_ToM: TypeAlias = int | np.int16 | np.int32 | np.int64
-_WindowName0: TypeAlias = Literal[
+
+_NameWindow0: TypeAlias = Literal[
     "barthann", "brthan", "bth",
     "bartlett", "bart", "brt",
     "blackman", "black", "blk",
@@ -62,7 +71,7 @@ _WindowName0: TypeAlias = Literal[
     "triangle", "triang", "tri",
     "tukey", "tuk",
 ]  # fmt: skip
-_WindowName1: TypeAlias = Literal[
+_NameWindow1: TypeAlias = Literal[
     "chebwin", "cheb",
     "dpss",
     "exponential", "poisson",
@@ -72,115 +81,170 @@ _WindowName1: TypeAlias = Literal[
     "kaiser bessel derived", "kbd",
     "tukey", "tuk",
 ]  # fmt: skip
-_WindowName2: TypeAlias = Literal[
-    "general gaussian", "general_gaussian", "general gauss", "general_gauss", "ggs",
+_NameWindow2: TypeAlias = Literal[
     "exponential", "poisson",
+    "general gaussian", "general_gaussian", "general gauss", "general_gauss", "ggs",
 ]  # fmt: skip
-_WindowName_taylor: TypeAlias = Literal["taylor", "taylorwin"]
-_WindowName_gencos: TypeAlias = Literal["general cosine", "general_cosine"]
+_NameTaylor: TypeAlias = Literal["taylor", "taylorwin"]
+_NameGenCos: TypeAlias = Literal["general cosine", "general_cosine"]
+_NameDPSS: TypeAlias = Literal["dpss"]
 
-_ToWindow = TypeAliasType(
-    "_ToWindow",
-    onp.ToFloat
-    | _WindowName0
-    | tuple[_WindowName0]
-    | tuple[_WindowName1, onp.ToFloat]
-    | tuple[_WindowName2, onp.ToFloat1D, onp.ToFloat1D]
-    | tuple[_WindowName_taylor, onp.ToInt]
-    | tuple[_WindowName_taylor, onp.ToInt, onp.ToInt]
-    | tuple[_WindowName_taylor, onp.ToInt, onp.ToInt, op.CanBool]
-    | tuple[_WindowName_gencos, onp.ToFloat1D]
-    | tuple[Literal["dpss"], onp.ToFloat, op.CanIndex],
-)
+_ToWindow0: TypeAlias = _NameWindow0 | tuple[_NameWindow0]
+_ToWindow1: TypeAlias = _ToFloat | tuple[_NameWindow1, _ToFloat]
+_ToWindow2: TypeAlias = tuple[_NameWindow2, _ToFloat, _ToFloat]
+_ToGenCos: TypeAlias = tuple[_NameGenCos, onp.ToFloat1D]
+_ToTaylor: TypeAlias = tuple[_NameTaylor, _ToInt] | tuple[_NameTaylor, _ToInt, _ToInt] | tuple[_NameTaylor, _ToInt, _ToInt, bool]
+_ToDPSS: TypeAlias = tuple[_NameDPSS, _ToFloat, op.CanIndex]
+
+_ToWindow = TypeAliasType("_ToWindow", _ToWindow0 | _ToWindow1 | _ToWindow2 | _ToGenCos | _ToTaylor | _ToDPSS)
 
 ###
 
 def get_window(
-    window: _ToWindow, Nx: _ToM, fftbins: op.CanBool = True, *, xp: ModuleType | None = None, device: object | None = None
-) -> _Float1D: ...
+    window: _ToWindow, Nx: _ToInt, fftbins: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None
+) -> _Float64_1D: ...
 
 #
-def barthann(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def bartlett(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def blackman(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def blackmanharris(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def bohman(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def boxcar(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def cosine(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def flattop(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def hamming(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def hann(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def lanczos(M: _ToM, *, sym: op.CanBool = True) -> _Float1D: ...
-def nuttall(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def parzen(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
-def triang(M: _ToM, sym: op.CanBool = True) -> _Float1D: ...
+def barthann(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def bartlett(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def blackman(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def blackmanharris(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def bohman(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def boxcar(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def cosine(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def flattop(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def hamming(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def hann(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def lanczos(M: _ToInt, *, sym: _ToBool = True, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def nuttall(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def parzen(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
+def triang(M: _ToInt, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None) -> _Float64_1D: ...
 
 #
-def exponential(M: _ToM, center: onp.ToFloat | None = None, tau: onp.ToFloat = 1.0, sym: op.CanBool = True) -> _Float1D: ...
-def taylor(M: _ToM, nbar: onp.ToInt = 4, sll: onp.ToInt = 30, norm: op.CanBool = True, sym: op.CanBool = True) -> _Float1D: ...
-def tukey(M: _ToM, alpha: onp.ToFloat = 0.5, sym: op.CanBool = True) -> _Float1D: ...
+def chebwin(
+    M: _ToInt, at: _ToFloat, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None
+) -> _Float64_1D: ...
+def gaussian(
+    M: _ToInt, std: _ToFloat, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None
+) -> _Float64_1D: ...
+def general_hamming(
+    M: _ToInt, alpha: _ToFloat, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None
+) -> _Float64_1D: ...
+def kaiser(
+    M: _ToInt, beta: _ToFloat, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None
+) -> _Float64_1D: ...
+def kaiser_bessel_derived(
+    M: _ToInt, beta: _ToFloat, *, sym: _ToBool = True, xp: _Xp | None = None, device: _Device | None = None
+) -> _Float64_1D: ...
+def tukey(
+    M: _ToInt, alpha: _ToFloat = 0.5, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None
+) -> _Float64_1D: ...
 
 #
-def chebwin(M: _ToM, at: onp.ToFloat, sym: op.CanBool = True) -> _Float1D: ...
-def gaussian(M: _ToM, std: onp.ToFloat, sym: op.CanBool = True) -> _Float1D: ...
-def general_cosine(M: _ToM, a: onp.ToFloat1D, sym: op.CanBool = True) -> _Float1D: ...
-def general_hamming(M: _ToM, alpha: onp.ToFloat, sym: op.CanBool = True) -> _Float1D: ...
-def general_gaussian(M: _ToM, p: onp.ToFloat, sig: onp.ToFloat, sym: op.CanBool = True) -> _Float1D: ...
-def kaiser(M: _ToM, beta: onp.ToFloat, sym: op.CanBool = True) -> _Float1D: ...
-def kaiser_bessel_derived(M: _ToM, beta: onp.ToFloat, *, sym: op.CanBool = True) -> _Float1D: ...
-@overload  # `return_ratios` is `False`
-def dpss(
-    M: _ToM,
-    NW: onp.ToFloat,
-    Kmax: op.CanIndex,
-    sym: op.CanBool = True,
-    norm: _Norm | None = None,
-    return_ratios: Falsy = False,
-) -> _Float2D: ...
-@overload  # `return_ratios` is `False`.
-def dpss(
-    M: _ToM,
-    NW: onp.ToFloat,
-    Kmax: None = None,
-    sym: op.CanBool = True,
-    norm: _Norm | None = None,
-    return_ratios: Falsy = False,
-) -> _Float1D: ...
-@overload  # `return_ratios` is `True`, `return_ratios` as a positional argument
-def dpss(
-    M: _ToM,
-    NW: onp.ToFloat,
-    Kmax: op.CanIndex,
-    sym: op.CanBool,
-    norm: _Norm | None,
-    return_ratios: Truthy,
-) -> tuple[_Float2D, _Float1D]: ...
-@overload  # `return_ratios` as a keyword argument
-def dpss(
-    M: _ToM,
-    NW: onp.ToFloat,
-    Kmax: op.CanIndex,
-    sym: op.CanBool = True,
-    norm: _Norm | None = None,
+def general_cosine(M: _ToInt, a: onp.ToFloat1D, sym: _ToBool = True) -> _Float64_1D: ...
+
+#
+def exponential(
+    M: _ToInt,
+    center: _ToFloat | None = None,
+    tau: _ToFloat = 1.0,
+    sym: _ToBool = True,
     *,
-    return_ratios: Truthy,
-) -> tuple[_Float2D, _Float1D]: ...
-@overload  # `return_ratios` as a positional argument
+    xp: _Xp | None = None,
+    device: _Device | None = None,
+) -> _Float64_1D: ...
+def general_gaussian(
+    M: _ToInt,
+    p: _ToFloat,
+    sig: _ToFloat,
+    sym: _ToBool = True,
+    *,
+    xp: _Xp | None = None,
+    device: _Device | None = None,
+) -> _Float64_1D: ...
+
+#
+def taylor(
+    M: _ToInt,
+    nbar: onp.ToInt = 4,
+    sll: onp.ToInt = 30,
+    norm: _ToBool = True,
+    sym: _ToBool = True,
+    *,
+    xp: _Xp | None = None,
+    device: _Device | None = None,
+) -> _Float64_1D: ...
+
+#
+@overload  # Kmax=None, return_ratios=False
 def dpss(
-    M: _ToM,
-    NW: onp.ToFloat,
+    M: _ToInt,
+    NW: _ToFloat,
+    Kmax: None = None,
+    sym: _ToBool = True,
+    norm: _Norm | None = None,
+    return_ratios: Falsy = False,
+    *,
+    xp: _Xp | None = None,
+    device: _Device | None = None,
+) -> _Float64_1D: ...
+@overload  # Kmax=None, return_ratios=True, /
+def dpss(
+    M: _ToInt,
+    NW: _ToFloat,
     Kmax: None,
-    sym: op.CanBool,
+    sym: _ToBool,
     norm: _Norm | None,
     return_ratios: Truthy,
-) -> tuple[_Float1D, np.float64]: ...
-@overload  # `return_ratios` as a keyword argument
+    *,
+    xp: _Xp | None = None,
+    device: _Device | None = None,
+) -> tuple[_Float64_1D, np.float64]: ...
+@overload  # Kmax=None, *, return_ratios=True
 def dpss(
-    M: _ToM,
-    NW: onp.ToFloat,
+    M: _ToInt,
+    NW: _ToFloat,
     Kmax: None = None,
-    sym: op.CanBool = True,
+    sym: _ToBool = True,
     norm: _Norm | None = None,
     *,
     return_ratios: Truthy,
-) -> tuple[_Float1D, np.float64]: ...
+    xp: _Xp | None = None,
+    device: _Device | None = None,
+) -> tuple[_Float64_1D, np.float64]: ...
+@overload  # Kmax, return_ratios=False
+def dpss(
+    M: _ToInt,
+    NW: _ToFloat,
+    Kmax: op.CanIndex,
+    sym: _ToBool = True,
+    norm: _Norm | None = None,
+    return_ratios: Falsy = False,
+    *,
+    xp: _Xp | None = None,
+    device: _Device | None = None,
+) -> _Float64_2D: ...
+@overload  # Kmax, return_ratios=True, /
+def dpss(
+    M: _ToInt,
+    NW: _ToFloat,
+    Kmax: op.CanIndex,
+    sym: _ToBool,
+    norm: _Norm | None,
+    return_ratios: Truthy,
+    *,
+    xp: _Xp | None = None,
+    device: _Device | None = None,
+) -> tuple[_Float64_2D, _Float64_1D]: ...
+@overload  # Kmax, *, return_ratios=True
+def dpss(
+    M: _ToInt,
+    NW: _ToFloat,
+    Kmax: op.CanIndex,
+    sym: _ToBool = True,
+    norm: _Norm | None = None,
+    *,
+    return_ratios: Truthy,
+    xp: _Xp | None = None,
+    device: _Device | None = None,
+) -> tuple[_Float64_2D, _Float64_1D]: ...
