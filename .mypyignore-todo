@@ -1,7 +1,5 @@
 scipy.sparse._dok._dok_base.conjtransp
 scipy.sparse._sputils.validateaxis
-scipy.sparse.csgraph._shortest_path.__reduce_cython__
-scipy.sparse.csgraph._shortest_path.__setstate_cython__
 
 scipy.spatial.transform.RigidTransform
 scipy.spatial.transform.__all__
