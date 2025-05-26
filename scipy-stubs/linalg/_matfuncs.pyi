@@ -1,9 +1,10 @@
 from collections.abc import Callable
-from typing import Any, Literal, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, TypeVar, overload
 from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from scipy._typing import Falsy, Truthy
 from ._expm_frechet import expm_cond, expm_frechet
 
@@ -25,18 +26,18 @@ __all__ = [
     "tanm",
 ]
 
-_ToPosInt: TypeAlias = np.unsignedinteger[Any] | Literal[0, 1, 2, 4, 5, 6, 7, 8]
+_InexactT = TypeVar("_InexactT", bound=npc.inexact)
+_FuncND: TypeAlias = Callable[[onp.Array[Any, _InexactT]], onp.ToComplexND]  # return type is unsafely cast to the input type
 
-_IntND: TypeAlias = onp.ArrayND[np.integer[Any]]
+_ToPosInt: TypeAlias = npc.unsignedinteger | Literal[0, 1, 2, 4, 5, 6, 7, 8]
+
+_IntND: TypeAlias = onp.ArrayND[npc.integer]
 _Float64ND: TypeAlias = onp.ArrayND[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.floating[Any]]
+_FloatND: TypeAlias = onp.ArrayND[npc.floating]
 _Complex128ND: TypeAlias = onp.ArrayND[np.complex128]
-_ComplexND: TypeAlias = onp.ArrayND[np.complexfloating[Any, Any]]
-_RealND: TypeAlias = onp.ArrayND[np.floating[Any] | np.integer[Any]]
-_InexactND: TypeAlias = onp.ArrayND[np.inexact[Any]]
-
-_FloatFunc: TypeAlias = Callable[[onp.Array1D[np.float64]], onp.ToFloat1D]
-_ComplexFunc: TypeAlias = Callable[[onp.Array1D[np.complex128]], onp.ToComplex1D]
+_ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
+_RealND: TypeAlias = onp.ArrayND[npc.floating | npc.integer]
+_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
 ###
 
@@ -134,14 +135,18 @@ def tanhm(A: onp.ToFloatND) -> _FloatND: ...
 def tanhm(A: onp.ToComplexND) -> _InexactND: ...
 
 #
-@overload  # real, disp: True = ...
-def funm(A: onp.ToFloatND, func: _FloatFunc, disp: Truthy = True) -> _FloatND: ...
-@overload  # real, disp: False
-def funm(A: onp.ToFloatND, func: _FloatFunc, disp: Falsy) -> _ComplexND: ...
-@overload  # complex, disp: True = ...
-def funm(A: onp.ToComplexND, func: _ComplexFunc, disp: Truthy = True) -> _ComplexND: ...
-@overload  # complex, disp: False
-def funm(A: onp.ToComplexND, func: _ComplexFunc, disp: Falsy) -> tuple[_ComplexND, np.float64]: ...
+@overload  # +float64, disp: True = ...
+def funm(A: onp.ToFloat64_ND, func: _FuncND[np.float64], disp: Truthy = True) -> _Float64ND: ...
+@overload  # +floating, disp: False
+def funm(A: onp.ToFloat64_ND, func: _FuncND[np.float64], disp: Falsy) -> tuple[_Float64ND, float]: ...
+@overload  # +complexfloating, disp: True = ...
+def funm(A: onp.ToJustComplex128_ND, func: _FuncND[np.complex128], disp: Truthy = True) -> _Complex128ND: ...
+@overload  # +complexfloating, disp: False
+def funm(A: onp.ToJustComplex128_ND, func: _FuncND[np.complex128], disp: Falsy) -> tuple[_Complex128ND, float]: ...
+@overload  # T: inexact, disp: True = ...
+def funm(A: onp.CanArrayND[_InexactT], func: _FuncND[_InexactT], disp: Truthy = True) -> onp.ArrayND[_InexactT]: ...
+@overload  # T: inexact, disp: False
+def funm(A: onp.CanArrayND[_InexactT], func: _FuncND[_InexactT], disp: Falsy) -> tuple[onp.ArrayND[_InexactT], float]: ...
 
 #
 @overload  # +float64
