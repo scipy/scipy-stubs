@@ -144,23 +144,20 @@ def funm(A: onp.ToComplexND, func: _ComplexFunc, disp: Truthy = True) -> _Comple
 def funm(A: onp.ToComplexND, func: _ComplexFunc, disp: Falsy) -> tuple[_ComplexND, np.float64]: ...
 
 #
-@overload  # real 2d+ array-like
+@overload  # +float64
+def signm(A: onp.ToIntND | onp.ToFloat64_ND) -> _Float64ND: ...
+@overload  # +floating
 def signm(A: onp.ToFloatND) -> _FloatND: ...
-@overload  # real 2d+ array-like, disp: True  (deprecated)
-@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
-def signm(A: onp.ToFloatND, disp: Truthy) -> _FloatND: ...
-@overload  # real 2d+ array-like, disp: False  (deprecated)
-@deprecated(
-    "The `disp` argument is deprecated and will be removed in SciPy 1.18.0. "
-    "The previously returned error estimate can be computed as `norm(signm @ signm - signm, 1)`."
-)
-def signm(A: onp.ToFloatND, disp: Falsy) -> tuple[_FloatND, np.float64]: ...
-@overload  # complex 2d+ array-like
+@overload  # +complexfloating
+def signm(A: onp.ToJustComplex128_ND) -> _Complex128ND: ...
+@overload  # +complexfloating
+def signm(A: onp.ToJustComplexND) -> _ComplexND: ...
+@overload  # +complexfloating
 def signm(A: onp.ToComplexND) -> _InexactND: ...
-@overload  # complex 2d+ array-like, disp: True  (deprecated)
+@overload  # +complexfloating, disp: True  (deprecated)
 @deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
 def signm(A: onp.ToComplexND, disp: Truthy) -> _InexactND: ...
-@overload  # complex 2d+ array-like, disp: False  (deprecated)
+@overload  # +complexfloating, disp: False  (deprecated)
 @deprecated(
     "The `disp` argument is deprecated and will be removed in SciPy 1.18.0. "
     "The previously returned error estimate can be computed as `norm(signm @ signm - signm, 1)`."
