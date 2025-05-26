@@ -36,19 +36,24 @@ _Float64ND: TypeAlias = onp.ArrayND[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[npc.floating]
 _Complex128ND: TypeAlias = onp.ArrayND[np.complex128]
 _ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
-_RealND: TypeAlias = onp.ArrayND[npc.floating | npc.integer]
 _InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
 ###
 
-@overload  # int, positive int
+@overload  # +integer, +unsignedinteger
 def fractional_matrix_power(A: onp.ToIntND, t: _ToPosInt) -> _IntND: ...
-@overload  # real, int
-def fractional_matrix_power(A: onp.ToFloatND, t: onp.ToInt) -> _RealND: ...
-@overload  # complex, int
-def fractional_matrix_power(A: onp.ToComplexND, t: onp.ToInt) -> onp.ArrayND[Any]: ...
-@overload  # complex, float
+@overload  # ~float64, +integer
+def fractional_matrix_power(A: onp.ToJustFloat64_ND, t: onp.ToInt) -> _Float64ND: ...
+@overload  # ~floating, +integer
+def fractional_matrix_power(A: onp.ToJustFloatND, t: onp.ToInt) -> _FloatND: ...
+@overload  # ~complex128, +float64
+def fractional_matrix_power(A: onp.ToJustComplex128_ND, t: onp.ToFloat64) -> _Complex128ND: ...
+@overload  # +complex128, ~float64
+def fractional_matrix_power(A: onp.ToComplex128_ND, t: onp.ToJustFloat64) -> _Complex128ND: ...
+@overload  # +complexfloating, ~float
 def fractional_matrix_power(A: onp.ToComplexND, t: onp.ToJustFloat) -> _ComplexND: ...
+@overload  # +complex, +floating
+def fractional_matrix_power(A: onp.ToComplexND, t: onp.ToFloat) -> onp.ArrayND[Any]: ...
 
 #
 @overload
