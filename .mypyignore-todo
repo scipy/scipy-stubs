@@ -1,5 +1,4 @@
 scipy.sparse._dok._dok_base.conjtransp
-scipy.sparse._sputils.validateaxis
 
 scipy.spatial.transform.RigidTransform
 scipy.spatial.transform.__all__
