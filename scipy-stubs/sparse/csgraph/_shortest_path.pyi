@@ -1,4 +1,4 @@
-from typing import Final, Literal, TypeAlias, overload
+from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -17,8 +17,8 @@ _ShortestPathMethod: TypeAlias = Literal["auto", "FW", "D", "BF", "J"]
 
 ###
 
-DTYPE: Final[type[np.float64]] = ...
-ITYPE: Final[type[np.int32]] = ...
+def __setstate_cython__(self: object, pyx_state: object, /) -> None: ...  # undocumented
+def __reduce_cython__(self: object) -> None: ...  # undocumented
 
 class NegativeCycleError(Exception):
     def __init__(self, /, message: str = "") -> None: ...
