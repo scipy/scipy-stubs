@@ -1,4 +1,3 @@
-scipy.sparse._base.sparray.__class_getitem__
 scipy.sparse._base.spmatrix.__class_getitem__
 scipy.sparse._dok._dok_base.conjtransp
 scipy.sparse._matrix.spmatrix.__class_getitem__
@@ -112,7 +111,6 @@ scipy.sparse.dok.isshape
 scipy.sparse.dok.spmatrix.__class_getitem__
 scipy.sparse.dok.upcast
 scipy.sparse.dok.upcast_scalar
-scipy.sparse.sparray.__class_getitem__
 scipy.sparse.spmatrix.__class_getitem__
 
 scipy.spatial.transform.RigidTransform

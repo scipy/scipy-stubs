@@ -2,6 +2,7 @@
 
 import abc
 from collections.abc import Iterator, Sequence
+from types import GenericAlias
 from typing import Any, Final, Generic, Literal as L, Never, Self, TypeAlias, overload
 from typing_extensions import TypeIs, TypeVar
 
@@ -1041,6 +1042,8 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     #
     def setdiag(self, /, values: onp.ToComplex1D, k: int = 0) -> None: ...
 
-class sparray(Generic[_ScalarT_co, _ShapeT_co]): ...
+class sparray(Generic[_ScalarT_co, _ShapeT_co]):
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> GenericAlias: ...
 
 def isspmatrix(x: object) -> TypeIs[spmatrix]: ...
