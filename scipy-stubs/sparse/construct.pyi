@@ -1,7 +1,6 @@
 # ruff: noqa: ANN401
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 
-import numbers
 from typing import Any
 from typing_extensions import deprecated
 
@@ -11,10 +10,8 @@ __all__ = [
     "block_diag",
     "bmat",
     "bsr_matrix",
-    "check_random_state",
     "coo_matrix",
     "csc_matrix",
-    "csr_hstack",
     "csr_matrix",
     "dia_matrix",
     "diags",
@@ -22,16 +19,12 @@ __all__ = [
     "get_index_dtype",
     "hstack",
     "identity",
-    "isscalarlike",
     "issparse",
     "kron",
     "kronsum",
-    "numbers",
     "rand",
     "random",
-    "rng_integers",
     "spdiags",
-    "upcast",
     "vstack",
 ]
 
@@ -51,20 +44,7 @@ class dia_matrix(_dia.dia_matrix): ...
 class bsr_matrix(_bsr.bsr_matrix): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-def csr_hstack(*args: object, **kwargs: object) -> Any: ...
-@deprecated("will be removed in SciPy v2.0.0")
 def issparse(x: object) -> Any: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def check_random_state(seed: object) -> Any: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def rng_integers(
-    gen: object,
-    low: object,
-    high: object = ...,
-    size: object = ...,
-    dtype: object = ...,
-    endpoint: object = ...,
-) -> Any: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def vstack(blocks: object, format: object = ..., dtype: object = ...) -> Any: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -101,7 +81,3 @@ def bmat(blocks: object, format: object = ..., dtype: object = ...) -> Any: ...
 # sputils
 @deprecated("will be removed in SciPy v2.0.0")
 def get_index_dtype(arrays: object = ..., maxval: object = ..., check_contents: object = ...) -> Any: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def isscalarlike(x: object) -> Any: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def upcast(*args: object) -> Any: ...
