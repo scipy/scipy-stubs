@@ -1,6 +1,10 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-from typing import Self
 from typing_extensions import deprecated
+
+from .filter_design import cheby1
+from .fir_filter_design import firwin
+from .ltisys import dlti
+from .windows.windows import get_window
 
 __all__ = [
     "cheby1",
@@ -42,62 +46,12 @@ __all__ = [
     "wiener",
 ]
 
-# filter_design
-@deprecated("will be removed in SciPy v2.0.0")
-def cheby1(
-    N: object,
-    rp: object,
-    Wn: object,
-    btype: object = ...,
-    analog: object = ...,
-    output: object = ...,
-    fs: object = ...,
-) -> object: ...
-
-# fir_filter_design
-@deprecated("will be removed in SciPy v2.0.0")
-def firwin(
-    numtaps: object,
-    cutoff: object,
-    *,
-    width: object = ...,
-    window: object = ...,
-    pass_zero: object = ...,
-    scale: object = ...,
-    fs: object = ...,
-) -> object: ...
-
-# ltisys
-@deprecated("will be removed in SciPy v2.0.0")
-class dlti:
-    def __new__(cls, *system: object, **kwargs: object) -> Self: ...
-    def __init__(self, /, *system: object, **kwargs: object) -> None: ...
-    @property
-    def dt(self, /) -> object: ...
-    @dt.setter
-    def dt(self, /, dt: object) -> None: ...
-    def impulse(self, /, x0: object = ..., t: object = ..., n: object = ...) -> object: ...
-    def step(self, /, x0: object = ..., t: object = ..., n: object = ...) -> object: ...
-    def output(self, /, u: object, t: object, x0: object = ...) -> object: ...
-    def bode(self, /, w: object = ..., n: object = ...) -> object: ...
-    def freqresp(self, /, w: object = ..., n: object = ..., whole: object = ...) -> object: ...
-
-# upfirdn
+# ._upfirdn
 def upfirdn(
-    h: object,
-    x: object,
-    up: object = ...,
-    down: object = ...,
-    axis: object = ...,
-    mode: object = ...,
-    cval: object = ...,
+    h: object, x: object, up: object = ..., down: object = ..., axis: object = ..., mode: object = ..., cval: object = ...
 ) -> object: ...
 
-# window
-@deprecated("will be removed in SciPy v2.0.0")
-def get_window(window: object, Nx: object, fftbins: object = ...) -> object: ...
-
-# signaltools
+# ._signaltools
 @deprecated("will be removed in SciPy v2.0.0")
 def correlate(in1: object, in2: object, mode: object = ..., method: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -144,33 +98,16 @@ def residuez(b: object, a: object, tol: object = ..., rtype: object = ...) -> ob
 def invresz(r: object, p: object, k: object, tol: object = ..., rtype: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def resample(
-    x: object,
-    num: object,
-    t: object = ...,
-    axis: object = ...,
-    window: object = ...,
-    domain: object = ...,
+    x: object, num: object, t: object = ..., axis: object = ..., window: object = ..., domain: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def resample_poly(
-    x: object,
-    up: object,
-    down: object,
-    axis: object = ...,
-    window: object = ...,
-    padtype: object = ...,
-    cval: object = ...,
+    x: object, up: object, down: object, axis: object = ..., window: object = ..., padtype: object = ..., cval: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def vectorstrength(events: object, period: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def detrend(
-    data: object,
-    axis: object = ...,
-    type: object = ...,
-    bp: object = ...,
-    overwrite_data: object = ...,
-) -> object: ...
+def detrend(data: object, axis: object = ..., type: object = ..., bp: object = ..., overwrite_data: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def lfilter_zi(b: object, a: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -192,10 +129,5 @@ def sosfilt(sos: object, x: object, axis: object = ..., zi: object = ...) -> obj
 def sosfiltfilt(sos: object, x: object, axis: object = ..., padtype: object = ..., padlen: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def decimate(
-    x: object,
-    q: object,
-    n: object = ...,
-    ftype: object = ...,
-    axis: object = ...,
-    zero_phase: object = ...,
+    x: object, q: object, n: object = ..., ftype: object = ..., axis: object = ..., zero_phase: object = ...
 ) -> object: ...
