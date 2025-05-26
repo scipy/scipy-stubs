@@ -9,7 +9,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
-from scipy._lib._sparse import SparseABC
+from scipy._lib._sparse import SparseABC, issparse
 from scipy._typing import Casting, Falsy, OrderCF
 from ._bsr import bsr_array, bsr_matrix
 from ._coo import coo_array, coo_matrix
@@ -1043,5 +1043,4 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
 
 class sparray(Generic[_ScalarT_co, _ShapeT_co]): ...
 
-def issparse(x: object) -> TypeIs[_spbase]: ...
 def isspmatrix(x: object) -> TypeIs[spmatrix]: ...
