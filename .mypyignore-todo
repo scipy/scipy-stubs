@@ -1,5 +1,3 @@
-scipy.sparse._dok._dok_base.conjtransp
-
 scipy.spatial.transform.RigidTransform
 scipy.spatial.transform.__all__
 scipy.spatial.transform._rotation.compose_quat
