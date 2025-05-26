@@ -1,6 +1,8 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 from typing_extensions import deprecated
 
+from ._filter_design import BadCoefficients as _BadCoefficients
+
 __all__ = [
     "BadCoefficients",
     "band_stop_obj",
@@ -52,7 +54,7 @@ __all__ = [
 ]
 
 @deprecated("will be removed in SciPy v2.0.0")
-class BadCoefficients: ...
+class BadCoefficients(_BadCoefficients): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 def findfreqs(num: object, den: object, N: object, kind: object = ...) -> object: ...
@@ -138,32 +140,15 @@ def lp2bp_zpk(z: object, p: object, k: object, wo: object = ..., bw: object = ..
 def lp2bs_zpk(z: object, p: object, k: object, wo: object = ..., bw: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def butter(
-    N: object,
-    Wn: object,
-    btype: object = ...,
-    analog: object = ...,
-    output: object = ...,
-    fs: object = ...,
+    N: object, Wn: object, btype: object = ..., analog: object = ..., output: object = ..., fs: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def cheby1(
-    N: object,
-    rp: object,
-    Wn: object,
-    btype: object = ...,
-    analog: object = ...,
-    output: object = ...,
-    fs: object = ...,
+    N: object, rp: object, Wn: object, btype: object = ..., analog: object = ..., output: object = ..., fs: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def cheby2(
-    N: object,
-    rs: object,
-    Wn: object,
-    btype: object = ...,
-    analog: object = ...,
-    output: object = ...,
-    fs: object = ...,
+    N: object, rs: object, Wn: object, btype: object = ..., analog: object = ..., output: object = ..., fs: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def ellip(
@@ -178,23 +163,11 @@ def ellip(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def bessel(
-    N: object,
-    Wn: object,
-    btype: object = ...,
-    analog: object = ...,
-    output: object = ...,
-    norm: object = ...,
-    fs: object = ...,
+    N: object, Wn: object, btype: object = ..., analog: object = ..., output: object = ..., norm: object = ..., fs: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def band_stop_obj(
-    wp: object,
-    ind: object,
-    passb: object,
-    stopb: object,
-    gpass: object,
-    gstop: object,
-    type: object,
+    wp: object, ind: object, passb: object, stopb: object, gpass: object, gstop: object, type: object
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def buttord(wp: object, ws: object, gpass: object, gstop: object, analog: object = ..., fs: object = ...) -> object: ...

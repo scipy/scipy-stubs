@@ -2,6 +2,9 @@
 from typing import Self
 from typing_extensions import deprecated
 
+from .filter_design import freqs, freqs_zpk, freqz, freqz_zpk, normalize, tf2zpk, zpk2tf
+from .lti_conversion import abcd_normalize, cont2discrete, ss2tf, ss2zpk, tf2ss, zpk2ss
+
 __all__ = [
     "StateSpace",
     "TransferFunction",
@@ -34,45 +37,6 @@ __all__ = [
     "zpk2tf",
 ]
 
-# filter_design
-@deprecated("will be removed in SciPy v2.0.0")
-def freqs(b: object, a: object, worN: object = ..., plot: object = ...) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def freqs_zpk(z: object, p: object, k: object, worN: object = ...) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def freqz(
-    b: object,
-    a: object = ...,
-    worN: object = ...,
-    whole: object = ...,
-    plot: object = ...,
-    fs: object = ...,
-    include_nyquist: object = ...,
-) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def freqz_zpk(z: object, p: object, k: object, worN: object = ..., whole: object = ..., fs: object = ...) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def normalize(b: object, a: object) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def tf2zpk(b: object, a: object) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def zpk2tf(z: object, p: object, k: object) -> object: ...
-
-# lti_conversion
-@deprecated("will be removed in SciPy v2.0.0")
-def abcd_normalize(A: object = ..., B: object = ..., C: object = ..., D: object = ...) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def cont2discrete(system: object, dt: object, method: object = ..., alpha: object = ...) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def tf2ss(num: object, den: object) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def ss2tf(A: object, B: object, C: object, D: object, input: object = ...) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def ss2zpk(A: object, B: object, C: object, D: object, input: object = ...) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def zpk2ss(z: object, p: object, k: object) -> object: ...
-
-# ltisys
 @deprecated("will be removed in SciPy v2.0.0")
 class StateSpace:
     __array_priority__: object
@@ -180,12 +144,7 @@ def bode(system: object, w: object = ..., n: object = ...) -> object: ...
 def freqresp(system: object, w: object = ..., n: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def place_poles(
-    A: object,
-    B: object,
-    poles: object,
-    method: object = ...,
-    rtol: object = ...,
-    maxiter: object = ...,
+    A: object, B: object, poles: object, method: object = ..., rtol: object = ..., maxiter: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def dlsim(system: object, u: object, t: object = ..., x0: object = ...) -> object: ...
