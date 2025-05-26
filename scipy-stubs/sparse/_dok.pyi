@@ -203,9 +203,6 @@ class _dok_base(
     def get(self, /, key: _ToKey1D | _ToKey2D, default: float = 0.0) -> _SCT | float: ...
 
     #
-    def conjtransp(self, /) -> Self: ...
-
-    #
     @overload
     @classmethod
     def fromkeys(cls: type[_dok_base[_SCT, _2D]], iterable: _ToKeys2D, v: _SCT, /) -> _dok_base[_SCT, _2D]: ...
