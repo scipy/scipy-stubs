@@ -1,4 +1,3 @@
-scipy\.stats\._multivariate\.multivariate_normal_(frozen|gen)\.(log)?cdf
 scipy\.stats\.(_?morestats\.)?boxcox_llf
 scipy\.stats\.(_?kde\.)?gaussian_kde\.integrate_box
 scipy\.stats\.mstats\.chisquare
