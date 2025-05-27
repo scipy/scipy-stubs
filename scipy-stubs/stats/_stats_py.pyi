@@ -636,6 +636,7 @@ def trim_mean(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) ->
 def f_oneway(
     *samples: onp.ToFloatND,
     nan_policy: NanPolicy = "propagate",
+    equal_var: bool = True,
     axis: int | None = 0,
     keepdims: bool = False,
 ) -> F_onewayResult: ...

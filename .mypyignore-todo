@@ -6,7 +6,6 @@ scipy\.stats\.(_?morestats\.)?boxcox_llf
 scipy\.stats\.(_?kde\.)?gaussian_kde\.integrate_box
 scipy\.stats\.mstats\.chisquare
 scipy\.stats\.(stats\.|_stats_py\.)?chisquare
-scipy\.stats\.(stats\.|_stats_py\.)?f_oneway
 scipy\.stats\.(stats\.|_stats_py\.)?gstd
 scipy\.stats\.(stats\.|_stats_py\.)?kendalltau
 scipy\.stats\.(stats\.|_stats_py\.)?linregress
