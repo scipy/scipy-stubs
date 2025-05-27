@@ -8,7 +8,6 @@ from typing import (
     Final,
     Generic,
     Literal as L,
-    LiteralString,
     Never,
     Protocol,
     Self,
@@ -36,6 +35,7 @@ _Tss = ParamSpec("_Tss", default=...)
 
 _FloatT = TypeVar("_FloatT", bound=_Float, default=_Float)
 _FloatT_co = TypeVar("_FloatT_co", bound=_Float, default=_Float, covariant=True)
+_IntT_co = TypeVar("_IntT_co", bound=_Int, default=_Int, covariant=True)
 
 _RealT = TypeVar("_RealT", bound=_Float | _Int, default=_Float | _Int)
 _RealT_co = TypeVar("_RealT_co", bound=_Float | _Int, default=_Float | _Int, covariant=True)
@@ -158,10 +158,10 @@ _null: Final[_Null] = ...
 
 def _isnull(x: object) -> TypeIs[_Null | None]: ...
 
-class _Domain(abc.ABC):
+class _Domain(abc.ABC, Generic[_XT_co]):
     # NOTE: This is a `ClassVar[dict[str, float]]` that's overridden as instance attribute in `_SimpleDomain`.
     # https://github.com/scipy/scipy/pull/22139
-    symbols: Mapping[float, LiteralString] = ...
+    symbols: Mapping[str, str] = ...
 
     @abc.abstractmethod
     @override
@@ -169,28 +169,27 @@ class _Domain(abc.ABC):
     @abc.abstractmethod
     def contains(self, /, x: onp.ArrayND[Any]) -> onp.ArrayND[np.bool_]: ...
     @abc.abstractmethod
-    def draw(self, /, n: int) -> onp.ArrayND[_FloatT]: ...
+    def draw(self, /, n: int) -> onp.ArrayND[_XT_co]: ...
     @abc.abstractmethod
     def get_numerical_endpoints(self, /, x: _ParamValues) -> tuple[onp.ArrayND[_OutFloat], onp.ArrayND[_OutFloat]]: ...
 
-class _SimpleDomain(_Domain, metaclass=abc.ABCMeta):
+class _Interval(_Domain[_XT_co], Generic[_XT_co]):
     def __init__(self, /, endpoints: _ToDomain = ..., inclusive: tuple[bool, bool] = (False, False)) -> None: ...
     @override
     def __str__(self, /) -> str: ...  # noqa: PYI029
     @override
-    def get_numerical_endpoints(self, /, parameter_values: _ParamValues) -> _2D[onp.ArrayND[_OutFloat]]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def get_numerical_endpoints(  # pyright: ignore[reportIncompatibleMethodOverride]
+        self, /, parameter_values: _ParamValues
+    ) -> tuple[onp.ArrayND[_OutFloat], onp.ArrayND[_OutFloat]]: ...
     @override
     def contains(  # pyright: ignore[reportIncompatibleMethodOverride]
-        self,
-        /,
-        item: onp.ArrayND[_Int | _Float],
-        parameter_values: _ParamValues | None = None,
+        self, /, item: onp.ArrayND[_Int | _Float], parameter_values: _ParamValues | None = None
     ) -> onp.ArrayND[np.bool_]: ...
 
     #
     def define_parameters(self, /, *parameters: _Parameter) -> None: ...
 
-class _RealDomain(_SimpleDomain):
+    #
     @override
     def draw(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
@@ -201,7 +200,10 @@ class _RealDomain(_SimpleDomain):
         max: onp.ArrayND[_Float | _Int],
         squeezed_base_shape: _ND,
         rng: ToRNG = None,
-    ) -> onp.ArrayND[np.float64]: ...
+    ) -> onp.ArrayND[_XT_co]: ...
+
+class _RealInterval(_Interval[_FloatT_co], Generic[_FloatT_co]): ...
+class _IntegerInterval(_Interval[_IntT_co], Generic[_IntT_co]): ...
 
 _ValidateOut0D: TypeAlias = tuple[_RealT, np.dtype[_RealT], onp.Array0D[np.bool_]]
 _ValidateOutND: TypeAlias = tuple[onp.ArrayND[_RealT, _ShapeT1], np.dtype[_RealT], onp.ArrayND[np.bool_, _ShapeT1]]
@@ -209,13 +211,7 @@ _ValidateOutND: TypeAlias = tuple[onp.ArrayND[_RealT, _ShapeT1], np.dtype[_RealT
 #
 class _Parameter(abc.ABC, Generic[_RealT_co]):
     def __init__(
-        self,
-        /,
-        name: str,
-        *,
-        domain: _Domain,
-        symbol: str | None = None,
-        typical: _Domain | _ToDomain | None = None,
+        self, /, name: str, *, domain: _Domain, symbol: str | None = None, typical: _Domain | _ToDomain | None = None
     ) -> None: ...
     #
     @overload
@@ -1303,7 +1299,7 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
 class ContinuousDistribution(UnivariateDistribution[_FloatT_co, _ShapeT_co], Generic[_FloatT_co, _ShapeT_co]): ...
 
 #
-class DiscreteDistribution(UnivariateDistribution[_FloatT_co, _ShapeT_co], Generic[_FloatT_co, _ShapeT_co]): ...
+class DiscreteDistribution(UnivariateDistribution[_RealT_co, _ShapeT_co], Generic[_RealT_co, _ShapeT_co]): ...
 
 # 7 years of asking and >400 upvotes, but still no higher-kinded typing support: https://github.com/python/typing/issues/548
 class TransformedDistribution(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_DistT_co, _FloatT_co, _ShapeT_co]):
@@ -1318,9 +1314,9 @@ class TransformedDistribution(ContinuousDistribution[_FloatT_co, _ShapeT_co], Ge
     ) -> None: ...
 
 class ShiftedScaledDistribution(_TransDist[_DistT_co, _FloatT_co, _ShapeT_co], Generic[_DistT_co, _FloatT_co, _ShapeT_co]):
-    _loc_domain: ClassVar[_RealDomain] = ...
+    _loc_domain: ClassVar[_RealInterval] = ...
     _loc_param: ClassVar[_RealParameter] = ...
-    _scale_domain: ClassVar[_RealDomain] = ...
+    _scale_domain: ClassVar[_RealInterval] = ...
     _scale_param: ClassVar[_RealParameter] = ...
 
     loc: _ParamField[_FloatT_co, _ShapeT_co]
@@ -1339,9 +1335,9 @@ class FoldedDistribution(_TransDist[_DistT_co, _FloatT_co, _ShapeT_co], Generic[
     def __init__(self: _FoldDist[_DistT, _Float, _ND], X: _DistT, /, *args: Never, **kwargs: Unpack[_DistOpts]) -> None: ...
 
 class TruncatedDistribution(_TransDist[_DistT_co, _Float, _ShapeT_co], Generic[_DistT_co, _ShapeT_co]):
-    _lb_domain: ClassVar[_RealDomain] = ...
+    _lb_domain: ClassVar[_RealInterval] = ...
     _lb_param: ClassVar[_RealParameter] = ...
-    _ub_domain: ClassVar[_RealDomain] = ...
+    _ub_domain: ClassVar[_RealInterval] = ...
     _ub_param: ClassVar[_RealParameter] = ...
 
     lb: _ParamField[_Float, _ShapeT_co]
@@ -1401,9 +1397,9 @@ class TruncatedDistribution(_TransDist[_DistT_co, _Float, _ShapeT_co], Generic[_
 # always float64 or longdouble
 class OrderStatisticDistribution(_TransDist[_DistT_co, _OutFloat, _ShapeT_co], Generic[_DistT_co, _ShapeT_co]):
     # these should actually be integral; but the `_IntegerDomain` isn't finished yet
-    _r_domain: ClassVar[_RealDomain] = ...
+    _r_domain: ClassVar[_RealInterval] = ...
     _r_param: ClassVar[_RealParameter] = ...
-    _n_domain: ClassVar[_RealDomain] = ...
+    _n_domain: ClassVar[_RealInterval] = ...
     _n_param: ClassVar[_RealParameter] = ...
 
     @overload

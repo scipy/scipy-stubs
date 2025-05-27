@@ -73,7 +73,7 @@ from ._multivariate import (
     vonmises_fisher,
     wishart,
 )
-from ._new_distributions import Normal, Uniform
+from ._new_distributions import Binomial, Normal, Uniform
 from ._page_trend_test import page_trend_test
 from ._quantile import quantile
 from ._resampling import (
@@ -299,6 +299,7 @@ from .distributions import (
 )
 
 __all__ = [
+    "Binomial",
     "BootstrapMethod",
     "CensoredData",
     "ConstantInputWarning",
