@@ -93,10 +93,11 @@ class multivariate_normal_gen(multi_rv_generic):
         cov: _AnyCov = 1,
         allow_singular: bool = False,
         maxpts: onp.ToJustInt | None = None,
-        abseps: float = 1e-05,
-        releps: float = 1e-05,
+        abseps: float = 1e-5,
+        releps: float = 1e-5,
         *,
         lower_limit: onp.ToFloat1D | None = None,
+        rng: spt.ToRNG = None,
     ) -> _ScalarOrArray_f8: ...
     def cdf(
         self,
@@ -106,10 +107,11 @@ class multivariate_normal_gen(multi_rv_generic):
         cov: _AnyCov = 1,
         allow_singular: bool = False,
         maxpts: onp.ToJustInt | None = None,
-        abseps: float = 1e-05,
-        releps: float = 1e-05,
+        abseps: float = 1e-5,
+        releps: float = 1e-5,
         *,
         lower_limit: onp.ToFloat1D | None = None,
+        rng: spt.ToRNG = None,
     ) -> _ScalarOrArray_f8: ...
     def rvs(
         self,
@@ -145,15 +147,19 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
         allow_singular: bool = False,
         seed: spt.ToRNG = None,
         maxpts: onp.ToJustInt | None = None,
-        abseps: float = 1e-05,
-        releps: float = 1e-05,
+        abseps: float = 1e-5,
+        releps: float = 1e-5,
     ) -> None: ...
     @property
     def cov(self, /) -> onp.Array2D[np.float64]: ...
     def logpdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
-    def logcdf(self, /, x: onp.ToFloatND, *, lower_limit: onp.ToFloat1D | None = None) -> _ScalarOrArray_f8: ...
-    def cdf(self, /, x: onp.ToFloatND, *, lower_limit: onp.ToFloat1D | None = None) -> _ScalarOrArray_f8: ...
+    def logcdf(
+        self, /, x: onp.ToFloatND, *, lower_limit: onp.ToFloat1D | None = None, rng: spt.ToRNG = None
+    ) -> _ScalarOrArray_f8: ...
+    def cdf(
+        self, /, x: onp.ToFloatND, *, lower_limit: onp.ToFloat1D | None = None, rng: spt.ToRNG = None
+    ) -> _ScalarOrArray_f8: ...
     def rvs(self, /, size: spt.AnyShape = 1, random_state: spt.ToRNG = None) -> onp.ArrayND[np.float64]: ...
     def entropy(self, /) -> np.float64: ...
 
