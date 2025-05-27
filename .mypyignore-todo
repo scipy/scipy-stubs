@@ -1,7 +1,4 @@
-scipy.stats.__all__
 scipy\.stats\._multivariate\.multivariate_normal_(frozen|gen)\.(log)?cdf
-scipy\.stats\.(_continuous_distns\.|distributions\.)__all__
-scipy\.stats\.(_continuous_distns\.|distributions\.)?trapz(_gen)?
 scipy\.stats\.(_?morestats\.)?boxcox_llf
 scipy\.stats\.(_?kde\.)?gaussian_kde\.integrate_box
 scipy\.stats\.mstats\.chisquare
