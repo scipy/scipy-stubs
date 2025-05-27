@@ -2,7 +2,6 @@ scipy.stats.__all__
 scipy\.stats\._multivariate\.multivariate_normal_(frozen|gen)\.(log)?cdf
 scipy\.stats\.(_continuous_distns\.|distributions\.)__all__
 scipy\.stats\.(_continuous_distns\.|distributions\.)?trapz(_gen)?
-scipy\.stats\.(_hypotests\.)?tukey_hsd
 scipy\.stats\.(_hypotests|_result_classes)\.TukeyHSDResult\.__init__
 scipy\.stats\.(_?morestats\.)?boxcox_llf
 scipy\.stats\.(_?kde\.)?gaussian_kde\.integrate_box
