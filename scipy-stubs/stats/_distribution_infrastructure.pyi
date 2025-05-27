@@ -14,10 +14,11 @@ from typing import (
     Self,
     TypeAlias,
     TypedDict,
+    final,
     overload,
     type_check_only,
 )
-from typing_extensions import TypeIs, TypeVar, Unpack, override
+from typing_extensions import ParamSpec, TypeIs, TypeVar, Unpack, override
 
 import numpy as np
 import optype as op
@@ -29,6 +30,8 @@ from ._probability_distribution import _BaseDistribution
 __all__ = ["Mixture", "abs", "exp", "log", "make_distribution", "order_statistic", "truncate"]
 
 ###
+
+_Tss = ParamSpec("_Tss", default=...)
 
 _FloatT = TypeVar("_FloatT", bound=_Float, default=_Float)
 _FloatT_co = TypeVar("_FloatT_co", bound=_Float, default=_Float, covariant=True)
@@ -51,6 +54,40 @@ _DistT = TypeVar("_DistT", bound=ContinuousDistribution)
 _DistT_co = TypeVar("_DistT_co", bound=ContinuousDistribution, default=ContinuousDistribution, covariant=True)
 
 _AxesT = TypeVar("_AxesT", bound=_Axes, default=Any)
+
+_ParameterEndpoint: TypeAlias = onp.ToFloat | Callable[..., onp.ToFloat] | str
+_ParameterTuple: TypeAlias = tuple[_ParameterEndpoint, _ParameterEndpoint]
+
+# NOTE: `TypedDict` with `NotRequired` cannot be used, because `NotRequired` does not
+# mean "not required": Other `TypedDict` MUST also include them to be assignable,
+# so a `NotRequired` value is REQUIRED. Absolutely ridiculous...
+# https://typing.python.org/en/latest/spec/typeddict.html#id4
+_ParameterDict: TypeAlias = Mapping[str, tuple[Any, ...]]
+_ParameterSpec: TypeAlias = _ParameterDict | _ParameterTuple
+
+@type_check_only
+class _DuckDistributionBase(Protocol[_Tss]):
+    # NOTE: The dummy `ParamSpec` ensures that `pdf` implementations with required parameter kwargs are assignable.
+    @property
+    def __make_distribution_version__(self, /) -> str: ...
+    @property
+    def support(self, /) -> _ParameterSpec: ...
+    def pdf(self, x: float, /, *do_not_use_these: _Tss.args, **parameters: _Tss.kwargs) -> float: ...
+
+@final
+@type_check_only
+class _DuckDistributionSingle(_DuckDistributionBase, Protocol):
+    @property
+    def parameters(self, /) -> Mapping[str, _ParameterSpec]: ...
+
+@final
+@type_check_only
+class _DuckDistributionMulti(_DuckDistributionBase, Protocol):
+    @property
+    def parameters(self, /) -> tuple[Mapping[str, _ParameterSpec], ...]: ...
+    def process_parameters(self, /) -> Mapping[str, onp.ToFloat]: ...
+
+_DuckDistributionType: TypeAlias = type[_DuckDistributionSingle | _DuckDistributionMulti]
 
 ###
 
@@ -619,7 +656,8 @@ def log(X: _DistT, /) -> MonotonicTransformedDistribution[_DistT, _ND]: ...
 
 # NOTE: These currently don't support >0-d parameters, and it looks like they always return float64, regardless of dtype
 @type_check_only
-class CustomDistribution(ContinuousDistribution[np.float64, _0D]):
+class CustomContinuousDistribution(ContinuousDistribution[np.float64, _0D]):
     _dtype: np.dtype[_Float]  # ignored
 
-def make_distribution(dist: rv_continuous) -> type[CustomDistribution]: ...
+# TODO(jorenham): support for `rv_discrete`
+def make_distribution(dist: rv_continuous | _DuckDistributionType) -> type[CustomContinuousDistribution]: ...
