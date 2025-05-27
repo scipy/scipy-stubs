@@ -4,6 +4,7 @@ from typing import Concatenate, Final, Generic, Literal, NamedTuple, TypeAlias
 from typing_extensions import TypeVar
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 from scipy._typing import Alternative, NanPolicy
 from ._common import ConfidenceInterval
@@ -21,6 +22,7 @@ __all__ = [
 ]
 
 _Float: TypeAlias = float | np.float64
+_Float2D: TypeAlias = onp.Array2D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 _FloatOrND: TypeAlias = _Float | _FloatND
 _FloatOrNDT = TypeVar("_FloatOrNDT", bound=_FloatOrND, default=_FloatOrND)
@@ -101,9 +103,16 @@ def boschloo_exact(table: onp.ToInt2D, alternative: Alternative = "two-sided", n
 
 #
 class TukeyHSDResult:
-    statistic: Final[_FloatND]
-    pvalue: Final[_FloatND]
-    def __init__(self, /, statistic: _FloatND, pvalue: _FloatND, _nobs: int, _ntreatments: int, _stand_err: float) -> None: ...
-    def confidence_interval(self, /, confidence_level: _Float = 0.95) -> ConfidenceInterval: ...
+    statistic: Final[_Float2D]
+    pvalue: Final[_Float2D]
+    _ntreatments: Final[int]
+    _df: Final[int]
+    _stand_err: Final[float]
+    def __init__(self, /, statistic: _Float2D, pvalue: _Float2D, _ntreatments: int, _df: int, _stand_err: float) -> None: ...
+
+    #
+    _ci: ConfidenceInterval | None
+    _ci_cl: float | None
+    def confidence_interval(self, /, confidence_level: op.JustFloat = 0.95) -> ConfidenceInterval: ...
 
 def tukey_hsd(arg0: onp.ToFloatND, arg1: onp.ToFloatND, /, *args: onp.ToFloatND, equal_var: bool = True) -> TukeyHSDResult: ...
