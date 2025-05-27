@@ -281,7 +281,13 @@ def trim1(a: object, proportiontocut: object, tail: object = ..., axis: object =
 @deprecated("will be removed in SciPy v2.0.0")
 def trim_mean(a: object, proportiontocut: object, axis: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def f_oneway(*samples: object, axis: object = ..., nan_policy: object = ..., keepdims: object = ...) -> object: ...
+def f_oneway(
+    *samples: object,
+    axis: object = ...,
+    equal_var: object = ...,
+    nan_policy: object = ...,
+    keepdims: object = ...,
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def alexandergovern(*samples: object, nan_policy: object = ..., axis: object = ..., keepdims: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -289,13 +295,7 @@ def pearsonr(x: object, y: object, *, alternative: object = ..., method: object 
 @deprecated("will be removed in SciPy v2.0.0")
 def fisher_exact(table: object, alternative: object = ..., *, method: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def spearmanr(
-    a: object,
-    b: object = ...,
-    axis: object = ...,
-    nan_policy: object = ...,
-    alternative: object = ...,
-) -> object: ...
+def spearmanr(a: object, b: object = ..., axis: object = ..., nan_policy: object = ..., alternative: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def pointbiserialr(x: object, y: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
