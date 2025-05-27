@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 from collections.abc import Callable
-from typing import Concatenate, Final, Generic, Literal, NamedTuple, TypeAlias
+from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from scipy._typing import Alternative, NanPolicy
+from scipy._typing import Alternative, Falsy, NanPolicy, Truthy
 from ._common import ConfidenceInterval
 from ._stats_py import SignificanceResult
 
@@ -21,11 +21,14 @@ __all__ = [
     "tukey_hsd",
 ]
 
-_Float: TypeAlias = float | np.float64
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
-_FloatOrND: TypeAlias = _Float | _FloatND
-_FloatOrNDT = TypeVar("_FloatOrNDT", bound=_FloatOrND, default=_FloatOrND)
+_FloatOrND: TypeAlias = float | _FloatND
+_FloatOrNDT = TypeVar("_FloatOrNDT", bound=_FloatOrND, default=Any)
+
+_ToCDF: TypeAlias = str | Callable[Concatenate[float, ...], float | np.float32]
+_ToCDFArgs: TypeAlias = tuple[onp.ToFloat, ...]
+_CV2Method: TypeAlias = Literal["auto", "asymptotic", "exact"]
 
 ###
 
@@ -33,10 +36,41 @@ class Epps_Singleton_2sampResult(NamedTuple, Generic[_FloatOrNDT]):
     statistic: _FloatOrNDT  # readonly
     pvalue: _FloatOrNDT  # readonly
 
+@overload
 def epps_singleton_2samp(
-    x: onp.ToFloat1D,
-    y: onp.ToFloat1D,
-    t: onp.ToFloat1D = (0.4, 0.8),
+    x: onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict1D,
+    t: onp.ToFloatStrict1D = (0.4, 0.8),
+    *,
+    axis: Literal[0, -1] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Falsy = False,
+) -> Epps_Singleton_2sampResult[float]: ...
+@overload
+def epps_singleton_2samp(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    t: onp.ToFloatND = (0.4, 0.8),
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Falsy = False,
+) -> Epps_Singleton_2sampResult[float]: ...
+@overload
+def epps_singleton_2samp(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    t: onp.ToFloatND = (0.4, 0.8),
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Truthy,
+) -> Epps_Singleton_2sampResult[_FloatND]: ...
+@overload
+def epps_singleton_2samp(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    t: onp.ToFloatND = (0.4, 0.8),
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
@@ -48,19 +82,83 @@ class CramerVonMisesResult(Generic[_FloatOrNDT]):
     pvalue: _FloatOrNDT  # readonly
     def __init__(self, /, statistic: _FloatOrNDT, pvalue: _FloatOrNDT) -> None: ...
 
+@overload
 def cramervonmises(
-    rvs: onp.ToFloat1D,
-    cdf: str | Callable[Concatenate[float, ...], _Float | np.float32],
-    args: tuple[onp.ToFloat, ...] = (),
+    rvs: onp.ToFloatStrict1D,
+    cdf: _ToCDF,
+    args: _ToCDFArgs = (),
+    *,
+    axis: Literal[0, -1] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Falsy = False,
+) -> CramerVonMisesResult[float]: ...
+@overload
+def cramervonmises(
+    rvs: onp.ToFloatND,
+    cdf: _ToCDF,
+    args: _ToCDFArgs = (),
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Falsy = False,
+) -> CramerVonMisesResult[float]: ...
+@overload
+def cramervonmises(
+    rvs: onp.ToFloatND,
+    cdf: _ToCDF,
+    args: _ToCDFArgs = (),
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Truthy,
+) -> CramerVonMisesResult[_FloatND]: ...
+@overload
+def cramervonmises(
+    rvs: onp.ToFloatND,
+    cdf: _ToCDF,
+    args: _ToCDFArgs = (),
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> CramerVonMisesResult: ...
+
+#
+@overload
 def cramervonmises_2samp(
-    x: onp.ToFloat1D,
-    y: onp.ToFloat1D,
-    method: Literal["auto", "asymptotic", "exact"] = "auto",
+    x: onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict1D,
+    method: _CV2Method = "auto",
+    *,
+    axis: Literal[0, -1] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Falsy = False,
+) -> CramerVonMisesResult[float]: ...
+@overload
+def cramervonmises_2samp(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    method: _CV2Method = "auto",
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Falsy = False,
+) -> CramerVonMisesResult[float]: ...
+@overload
+def cramervonmises_2samp(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    method: _CV2Method = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Truthy,
+) -> CramerVonMisesResult[_FloatND]: ...
+@overload
+def cramervonmises_2samp(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    method: _CV2Method = "auto",
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
@@ -69,15 +167,15 @@ def cramervonmises_2samp(
 
 #
 def poisson_means_test(
-    k1: int, n1: _Float, k2: int, n2: _Float, *, diff: _Float = 0, alternative: Alternative = "two-sided"
+    k1: int, n1: float, k2: int, n2: float, *, diff: float = 0, alternative: Alternative = "two-sided"
 ) -> SignificanceResult[np.float64]: ...
 
 #
 @dataclass
 class SomersDResult:
-    statistic: Final[_Float]
-    pvalue: Final[_Float]
-    table: Final[onp.Array2D[np.float64]]
+    statistic: Final[float]
+    pvalue: Final[float]
+    table: Final[_Float2D]
 
 def somersd(
     x: onp.ToFloat1D | onp.ToFloat2D, y: onp.ToFloat1D | None = None, alternative: Alternative = "two-sided"
@@ -86,20 +184,20 @@ def somersd(
 #
 @dataclass
 class BarnardExactResult:
-    statistic: Final[_Float]
-    pvalue: Final[_Float]
+    statistic: Final[float]
+    pvalue: Final[float]
 
 def barnard_exact(
-    table: onp.ToInt2D, alternative: Alternative = "two-sided", pooled: bool = True, n: int = 32
+    table: onp.ToInt2D, alternative: Alternative = "two-sided", pooled: bool = True, n: op.JustInt = 32
 ) -> BarnardExactResult: ...
 
 #
 @dataclass
 class BoschlooExactResult:
-    statistic: Final[_Float]
-    pvalue: Final[_Float]
+    statistic: Final[float]
+    pvalue: Final[float]
 
-def boschloo_exact(table: onp.ToInt2D, alternative: Alternative = "two-sided", n: int = 32) -> BoschlooExactResult: ...
+def boschloo_exact(table: onp.ToInt2D, alternative: Alternative = "two-sided", n: op.JustInt = 32) -> BoschlooExactResult: ...
 
 #
 class TukeyHSDResult:
@@ -113,6 +211,6 @@ class TukeyHSDResult:
     #
     _ci: ConfidenceInterval | None
     _ci_cl: float | None
-    def confidence_interval(self, /, confidence_level: op.JustFloat = 0.95) -> ConfidenceInterval: ...
+    def confidence_interval(self, /, confidence_level: op.JustFloat | np.float64 = 0.95) -> ConfidenceInterval: ...
 
 def tukey_hsd(arg0: onp.ToFloatND, arg1: onp.ToFloatND, /, *args: onp.ToFloatND, equal_var: bool = True) -> TukeyHSDResult: ...
