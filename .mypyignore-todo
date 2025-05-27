@@ -2,7 +2,6 @@ scipy.stats.__all__
 scipy.stats._mvn
 scipy.stats._new_distributions.__all__
 scipy\.stats\.(_new_distributions\.)?Binomial
-scipy.stats._distribution_infrastructure.ContinuousDistribution.plot
 scipy\.stats\._multivariate\.multivariate_normal_(frozen|gen)\.(log)?cdf
 scipy\.stats\.(_continuous_distns\.|distributions\.)__all__
 scipy\.stats\.(_continuous_distns\.|distributions\.)?trapz(_gen)?
