@@ -23,7 +23,6 @@ from typing_extensions import ParamSpec, TypeIs, TypeVar, Unpack, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from _typeshed import Incomplete
 from scipy._typing import ToRNG
 from ._distn_infrastructure import rv_continuous
 from ._probability_distribution import _ProbabilityDistribution
@@ -1166,6 +1165,10 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
 #
 class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0_co]):
     __array_priority__: ClassVar = 1
+    _parameterizations: ClassVar[Sequence[_Parameterization]]
+    _not_implemented: Final[str]
+    _original_parameters: dict[str, _XT_co | onp.ArrayND[_XT_co, _ShapeT0_co]]
+    _variable: _Parameter
 
     def __init__(
         self,
@@ -1297,18 +1300,10 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
     __rtruediv__ = __truediv__
 
 #
-class ContinuousDistribution(UnivariateDistribution[_FloatT_co, _ShapeT_co], Generic[_FloatT_co, _ShapeT_co]):
-    __array_priority__: ClassVar[float] = 1
-    _parameterizations: ClassVar[Sequence[_Parameterization]]
+class ContinuousDistribution(UnivariateDistribution[_FloatT_co, _ShapeT_co], Generic[_FloatT_co, _ShapeT_co]): ...
 
-    _not_implemented: Final[str]
-    _original_parameters: dict[str, _FloatT_co | onp.ArrayND[_FloatT_co, _ShapeT_co]]
-
-    _variable: _Parameter
-    #
-    def __init__(
-        self, /, *, tol: _ToTol = ..., validation_policy: _ValidationPolicy = None, cache_policy: _CachePolicy = None
-    ) -> None: ...
+#
+class DiscreteDistribution(UnivariateDistribution[_FloatT_co, _ShapeT_co], Generic[_FloatT_co, _ShapeT_co]): ...
 
 # 7 years of asking and >400 upvotes, but still no higher-kinded typing support: https://github.com/python/typing/issues/548
 class TransformedDistribution(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_DistT_co, _FloatT_co, _ShapeT_co]):
