@@ -30,7 +30,7 @@ _SMomentMethod: TypeAlias = L["formula", "transform", "general", "cache", "norma
 _KurtosisConvention: TypeAlias = L["non-excess", "excess"]
 _EntropyMethod: TypeAlias = L["formula", "logexp", "quadrature"] | None
 
-_PDFMethod: TypeAlias = L["formula", "logexp"] | None
+_PXFMethod: TypeAlias = L["formula", "logexp"] | None
 _CDFMethod: TypeAlias = L["formula", "logexp", "complement", "quadrature", "subtraction"] | None
 _CCDFMethod: TypeAlias = L["formula", "logexp", "complement", "quadrature", "addition"] | None
 _ICDFMethod: TypeAlias = L["formula", "complement", "inversion"] | None
@@ -62,12 +62,7 @@ class _ProbabilityDistribution(Generic[_XT_co], metaclass=abc.ABCMeta):
     def mode(self, /, *, method: _ModeMethod) -> _XT_co | onp.ArrayND[_XT_co]: ...
     @abc.abstractmethod
     def sample(
-        self,
-        /,
-        shape: int | tuple[int, ...],
-        *,
-        method: _SampleMethod,
-        rng: _ToQRNG,
+        self, /, shape: int | tuple[int, ...], *, method: _SampleMethod, rng: _ToQRNG
     ) -> _XT_co | onp.Array[Any, _XT_co]: ...  # `Any` shape is needed on `numpy<2.1`
 
     #
@@ -101,9 +96,13 @@ class _ProbabilityDistribution(Generic[_XT_co], metaclass=abc.ABCMeta):
 
     #
     @abc.abstractmethod
-    def pdf(self, x: _ToFloat0ND, /, *, method: _PDFMethod) -> _Float | _FloatND: ...
+    def pdf(self, x: _ToFloat0ND, /, *, method: _PXFMethod) -> _Float | _FloatND: ...
     @abc.abstractmethod
-    def logpdf(self, x: _ToFloat0ND, /, *, method: _PDFMethod) -> _Float | _FloatND: ...
+    def logpdf(self, x: _ToFloat0ND, /, *, method: _PXFMethod) -> _Float | _FloatND: ...
+
+    #
+    def pmf(self, x: _ToFloat0ND, /, *, method: _PXFMethod = None) -> _Float | _FloatND: ...
+    def logpmf(self, x: _ToFloat0ND, /, *, method: _PXFMethod = None) -> _Float | _FloatND: ...
 
     #
     @abc.abstractmethod
@@ -158,30 +157,15 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     def sample(self: _Self0[_XT], /, shape: tuple[()] = (), *, method: _SampleMethod = None, rng: _ToQRNG = None) -> _XT: ...
     @overload
     def sample(
-        self: _Self0[_XT],
-        /,
-        shape: op.CanIndex,
-        *,
-        method: _SampleMethod = None,
-        rng: _ToQRNG = None,
+        self: _Self0[_XT], /, shape: op.CanIndex, *, method: _SampleMethod = None, rng: _ToQRNG = None
     ) -> onp.Array1D[_XT]: ...
     @overload
     def sample(
-        self: _Self0[_XT],
-        /,
-        shape: _ShapeT,
-        *,
-        method: _SampleMethod = None,
-        rng: _ToQRNG = None,
+        self: _Self0[_XT], /, shape: _ShapeT, *, method: _SampleMethod = None, rng: _ToQRNG = None
     ) -> onp.ArrayND[_XT, _ShapeT]: ...
     @overload
     def sample(
-        self: _Self[_XT, _ShapeT],
-        /,
-        shape: tuple[()] = (),
-        *,
-        method: _SampleMethod = None,
-        rng: _ToQRNG = None,
+        self: _Self[_XT, _ShapeT], /, shape: tuple[()] = (), *, method: _SampleMethod = None, rng: _ToQRNG = None
     ) -> onp.ArrayND[_XT, _ShapeT]: ...
     @overload
     def sample(
@@ -194,12 +178,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     ) -> onp.ArrayND[_XT, _ShapeT] | onp.ArrayND[_XT]: ...  # first union type is needed on `numpy<2.1`
     @overload
     def sample(
-        self,
-        /,
-        shape: op.CanIndex | Iterable[op.CanIndex],
-        *,
-        method: _SampleMethod = None,
-        rng: _ToQRNG = None,
+        self, /, shape: op.CanIndex | Iterable[op.CanIndex], *, method: _SampleMethod = None, rng: _ToQRNG = None
     ) -> _XT_co | onp.ArrayND[_XT_co, _ShapeT] | onp.ArrayND[_XT_co]: ...  # first union type is needed on `numpy<2.1`
 
     #
@@ -229,19 +208,11 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     #
     @overload
     def kurtosis(
-        self: _Self0[_XT],
-        /,
-        *,
-        method: _SMomentMethod = None,
-        convention: _KurtosisConvention = "non-excess",
+        self: _Self0[_XT], /, *, method: _SMomentMethod = None, convention: _KurtosisConvention = "non-excess"
     ) -> _XT: ...
     @overload
     def kurtosis(  # pyright: ignore[reportIncompatibleMethodOverride]
-        self: _Self[_XT, _ShapeT],
-        /,
-        *,
-        method: _SMomentMethod = None,
-        convention: _KurtosisConvention = "non-excess",
+        self: _Self[_XT, _ShapeT], /, *, method: _SMomentMethod = None, convention: _KurtosisConvention = "non-excess"
     ) -> onp.ArrayND[_XT, _ShapeT]: ...
 
     #
@@ -257,48 +228,23 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     def moment(self: _Self0, /, order: onp.ToInt = 1, *, kind: L["standardized"], method: _SMomentMethod = None) -> _Float: ...
     @overload
     def moment(
-        self: _Self[Any, _ShapeT],
-        /,
-        order: onp.ToInt = 1,
-        kind: L["raw"] = "raw",
-        *,
-        method: _RMomentMethod = None,
+        self: _Self[Any, _ShapeT], /, order: onp.ToInt = 1, kind: L["raw"] = "raw", *, method: _RMomentMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload
     def moment(
-        self: _Self[Any, _ShapeT],
-        /,
-        order: onp.ToInt,
-        kind: L["central"],
-        *,
-        method: _CMomentMethod = None,
+        self: _Self[Any, _ShapeT], /, order: onp.ToInt, kind: L["central"], *, method: _CMomentMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload
     def moment(
-        self: _Self[Any, _ShapeT],
-        /,
-        order: onp.ToInt = 1,
-        *,
-        kind: L["central"],
-        method: _CMomentMethod = None,
+        self: _Self[Any, _ShapeT], /, order: onp.ToInt = 1, *, kind: L["central"], method: _CMomentMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload
     def moment(
-        self: _Self[Any, _ShapeT],
-        /,
-        order: onp.ToInt,
-        kind: L["standardized"],
-        *,
-        method: _SMomentMethod = None,
+        self: _Self[Any, _ShapeT], /, order: onp.ToInt, kind: L["standardized"], *, method: _SMomentMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload
     def moment(  # pyright: ignore[reportIncompatibleMethodOverride]
-        self: _Self[Any, _ShapeT],
-        /,
-        order: onp.ToInt = 1,
-        *,
-        kind: L["standardized"],
-        method: _SMomentMethod = None,
+        self: _Self[Any, _ShapeT], /, order: onp.ToInt = 1, *, kind: L["standardized"], method: _SMomentMethod = None
     ) -> _FloatND[_ShapeT]: ...
 
     #
@@ -315,223 +261,209 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
 
     #
     # TODO(jorenham): Adjust these, depending on the result of https://github.com/scipy/scipy/issues/22145
-    # NOTE: The signatures of `pdf` and `logpdf` are equivalent
+    # NOTE: The signatures of `pdf`, `logpdf`, `pmf`, and `logpmf` are equivalent
     @overload  # self: T1-d, x: 0-d
-    def pdf(self: _Self[Any, _ShapeT], x: onp.ToFloat, /, *, method: _PDFMethod = None) -> _FloatND[_ShapeT]: ...
+    def pdf(self: _Self[Any, _ShapeT], x: onp.ToFloat, /, *, method: _PXFMethod = None) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: 0-d
-    def pdf(self: _Self0, x: onp.ToFloat, /, *, method: _PDFMethod = None) -> _Float: ...
+    def pdf(self: _Self0, x: onp.ToFloat, /, *, method: _PXFMethod = None) -> _Float: ...
     @overload  # self: 0-d, x: 1-d
-    def pdf(self: _Self0, x: onp.ToFloatStrict1D, /, *, method: _PDFMethod = None) -> _Float1D: ...
+    def pdf(self: _Self0, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float1D: ...
     @overload  # self: 0-d, x: 2-d
-    def pdf(self: _Self0, x: onp.ToFloatStrict2D, /, *, method: _PDFMethod = None) -> _Float2D: ...
+    def pdf(self: _Self0, x: onp.ToFloatStrict2D, /, *, method: _PXFMethod = None) -> _Float2D: ...
     @overload  # self: 0-d, x: 3-d
-    def pdf(self: _Self0, x: onp.ToFloatStrict3D, /, *, method: _PDFMethod = None) -> _Float3D: ...
+    def pdf(self: _Self0, x: onp.ToFloatStrict3D, /, *, method: _PXFMethod = None) -> _Float3D: ...
     @overload  # self: 0-d, x: T1-d
-    def pdf(self: _Self0, x: _ToFloatND[_ShapeT], /, *, method: _PDFMethod = None) -> _FloatND[_ShapeT]: ...
+    def pdf(self: _Self0, x: _ToFloatND[_ShapeT], /, *, method: _PXFMethod = None) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: >=1-d
     def pdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        x: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        /,
-        *,
-        method: _PDFMethod = None,
+        self: _Self0, x: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _PXFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 1-d, x: 1-d
-    def pdf(self: _Self1, x: onp.ToFloatStrict1D, /, *, method: _PDFMethod = None) -> _Float2D: ...
+    def pdf(self: _Self1, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float2D: ...
     @overload  # self: 1-d, x: 2-d
-    def pdf(self: _Self1, x: onp.ToFloatStrict2D, /, *, method: _PDFMethod = None) -> _Float3D: ...
+    def pdf(self: _Self1, x: onp.ToFloatStrict2D, /, *, method: _PXFMethod = None) -> _Float3D: ...
     @overload  # self: 1-d, x: >=-d
-    def pdf(self: _Self1, x: onp.ToFloatND, /, *, method: _PDFMethod = None) -> _FloatND[onp.AtLeast2D]: ...
+    def pdf(self: _Self1, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast2D]: ...
     @overload  # self: 2-d, x: 1-d
-    def pdf(self: _Self2, x: onp.ToFloatStrict1D, /, *, method: _PDFMethod = None) -> _Float3D: ...
+    def pdf(self: _Self2, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float3D: ...
     @overload  # self: 2-d, x: >=1-d
-    def pdf(self: _Self2, x: onp.ToFloatND, /, *, method: _PDFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
+    def pdf(self: _Self2, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: 3-d, x: >=1-d
-    def pdf(self: _Self3, x: onp.ToFloatND, /, *, method: _PDFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
+    def pdf(self: _Self3, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: >=1-d
-    def pdf(self: _Self1_, x: _ToFloat0ND, /, *, method: _PDFMethod = None) -> _FloatND: ...
+    def pdf(self: _Self1_, x: _ToFloat0ND, /, *, method: _PXFMethod = None) -> _FloatND: ...
 
     #
     @overload  # self: T1-d, x: 0-d
-    def logpdf(self: _Self[Any, _ShapeT], x: onp.ToFloat, /, *, method: _PDFMethod = None) -> _FloatND[_ShapeT]: ...
+    def logpdf(self: _Self[Any, _ShapeT], x: onp.ToFloat, /, *, method: _PXFMethod = None) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: 0-d
-    def logpdf(self: _Self0, x: onp.ToFloat, /, *, method: _PDFMethod = None) -> _Float: ...
+    def logpdf(self: _Self0, x: onp.ToFloat, /, *, method: _PXFMethod = None) -> _Float: ...
     @overload  # self: 0-d, x: 1-d
-    def logpdf(self: _Self0, x: onp.ToFloatStrict1D, /, *, method: _PDFMethod = None) -> _Float1D: ...
+    def logpdf(self: _Self0, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float1D: ...
     @overload  # self: 0-d, x: 2-d
-    def logpdf(self: _Self0, x: onp.ToFloatStrict2D, /, *, method: _PDFMethod = None) -> _Float2D: ...
+    def logpdf(self: _Self0, x: onp.ToFloatStrict2D, /, *, method: _PXFMethod = None) -> _Float2D: ...
     @overload  # self: 0-d, x: 3-d
-    def logpdf(self: _Self0, x: onp.ToFloatStrict3D, /, *, method: _PDFMethod = None) -> _Float3D: ...
+    def logpdf(self: _Self0, x: onp.ToFloatStrict3D, /, *, method: _PXFMethod = None) -> _Float3D: ...
     @overload  # self: 0-d, x: T1-d
-    def logpdf(self: _Self0, x: _ToFloatND[_ShapeT], /, *, method: _PDFMethod = None) -> _FloatND[_ShapeT]: ...
+    def logpdf(self: _Self0, x: _ToFloatND[_ShapeT], /, *, method: _PXFMethod = None) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: >=1-d
     def logpdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        x: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        /,
-        *,
-        method: _PDFMethod = None,
+        self: _Self0, x: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _PXFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 1-d, x: 1-d
-    def logpdf(self: _Self1, x: onp.ToFloatStrict1D, /, *, method: _PDFMethod = None) -> _Float2D: ...
+    def logpdf(self: _Self1, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float2D: ...
     @overload  # self: 1-d, x: 2-d
-    def logpdf(self: _Self1, x: onp.ToFloatStrict2D, /, *, method: _PDFMethod = None) -> _Float3D: ...
+    def logpdf(self: _Self1, x: onp.ToFloatStrict2D, /, *, method: _PXFMethod = None) -> _Float3D: ...
     @overload  # self: 1-d, x: >=1-d
-    def logpdf(self: _Self1, x: onp.ToFloatND, /, *, method: _PDFMethod = None) -> _FloatND[onp.AtLeast2D]: ...
+    def logpdf(self: _Self1, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast2D]: ...
     @overload  # self: 2-d, x: 1-d
-    def logpdf(self: _Self2, x: onp.ToFloatStrict1D, /, *, method: _PDFMethod = None) -> _Float3D: ...
+    def logpdf(self: _Self2, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float3D: ...
     @overload  # self: 2-d, x: >=1-d
-    def logpdf(self: _Self2, x: onp.ToFloatND, /, *, method: _PDFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
+    def logpdf(self: _Self2, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: 3-d, x: >=1-d
-    def logpdf(self: _Self3, x: onp.ToFloatND, /, *, method: _PDFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
+    def logpdf(self: _Self3, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: >=1-d
-    def logpdf(self: _Self1_, x: _ToFloat0ND, /, *, method: _PDFMethod = None) -> _FloatND: ...
+    def logpdf(self: _Self1_, x: _ToFloat0ND, /, *, method: _PXFMethod = None) -> _FloatND: ...
+
+    #
+    @overload  # self: T1-d, x: 0-d
+    def pmf(self: _Self[Any, _ShapeT], x: onp.ToFloat, /, *, method: _PXFMethod = None) -> _FloatND[_ShapeT]: ...
+    @overload  # self: 0-d, x: 0-d
+    def pmf(self: _Self0, x: onp.ToFloat, /, *, method: _PXFMethod = None) -> _Float: ...
+    @overload  # self: 0-d, x: 1-d
+    def pmf(self: _Self0, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float1D: ...
+    @overload  # self: 0-d, x: 2-d
+    def pmf(self: _Self0, x: onp.ToFloatStrict2D, /, *, method: _PXFMethod = None) -> _Float2D: ...
+    @overload  # self: 0-d, x: 3-d
+    def pmf(self: _Self0, x: onp.ToFloatStrict3D, /, *, method: _PXFMethod = None) -> _Float3D: ...
+    @overload  # self: 0-d, x: T1-d
+    def pmf(self: _Self0, x: _ToFloatND[_ShapeT], /, *, method: _PXFMethod = None) -> _FloatND[_ShapeT]: ...
+    @overload  # self: 0-d, x: >=1-d
+    def pmf(  # first union type is needed on `numpy<2.1`
+        self: _Self0, x: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _PXFMethod = None
+    ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
+    @overload  # self: 1-d, x: 1-d
+    def pmf(self: _Self1, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float2D: ...
+    @overload  # self: 1-d, x: 2-d
+    def pmf(self: _Self1, x: onp.ToFloatStrict2D, /, *, method: _PXFMethod = None) -> _Float3D: ...
+    @overload  # self: 1-d, x: >=-d
+    def pmf(self: _Self1, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast2D]: ...
+    @overload  # self: 2-d, x: 1-d
+    def pmf(self: _Self2, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float3D: ...
+    @overload  # self: 2-d, x: >=1-d
+    def pmf(self: _Self2, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
+    @overload  # self: 3-d, x: >=1-d
+    def pmf(self: _Self3, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
+    @overload  # self: >=1-d
+    def pmf(self: _Self1_, x: _ToFloat0ND, /, *, method: _PXFMethod = None) -> _FloatND: ...
+
+    #
+    @overload  # self: T1-d, x: 0-d
+    def logpmf(self: _Self[Any, _ShapeT], x: onp.ToFloat, /, *, method: _PXFMethod = None) -> _FloatND[_ShapeT]: ...
+    @overload  # self: 0-d, x: 0-d
+    def logpmf(self: _Self0, x: onp.ToFloat, /, *, method: _PXFMethod = None) -> _Float: ...
+    @overload  # self: 0-d, x: 1-d
+    def logpmf(self: _Self0, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float1D: ...
+    @overload  # self: 0-d, x: 2-d
+    def logpmf(self: _Self0, x: onp.ToFloatStrict2D, /, *, method: _PXFMethod = None) -> _Float2D: ...
+    @overload  # self: 0-d, x: 3-d
+    def logpmf(self: _Self0, x: onp.ToFloatStrict3D, /, *, method: _PXFMethod = None) -> _Float3D: ...
+    @overload  # self: 0-d, x: T1-d
+    def logpmf(self: _Self0, x: _ToFloatND[_ShapeT], /, *, method: _PXFMethod = None) -> _FloatND[_ShapeT]: ...
+    @overload  # self: 0-d, x: >=1-d
+    def logpmf(  # first union type is needed on `numpy<2.1`
+        self: _Self0, x: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _PXFMethod = None
+    ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
+    @overload  # self: 1-d, x: 1-d
+    def logpmf(self: _Self1, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float2D: ...
+    @overload  # self: 1-d, x: 2-d
+    def logpmf(self: _Self1, x: onp.ToFloatStrict2D, /, *, method: _PXFMethod = None) -> _Float3D: ...
+    @overload  # self: 1-d, x: >=1-d
+    def logpmf(self: _Self1, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast2D]: ...
+    @overload  # self: 2-d, x: 1-d
+    def logpmf(self: _Self2, x: onp.ToFloatStrict1D, /, *, method: _PXFMethod = None) -> _Float3D: ...
+    @overload  # self: 2-d, x: >=1-d
+    def logpmf(self: _Self2, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
+    @overload  # self: 3-d, x: >=1-d
+    def logpmf(self: _Self3, x: onp.ToFloatND, /, *, method: _PXFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
+    @overload  # self: >=1-d
+    def logpmf(self: _Self1_, x: _ToFloat0ND, /, *, method: _PXFMethod = None) -> _FloatND: ...
 
     #
     # NOTE: Apart from the `method` type, the signatures of `[log]cdf` and `[log]ccdf` are equivalent
     @overload  # self: T1-d, x: 0-d, y?: 0-d
     def cdf(
-        self: _Self[Any, _ShapeT],
-        x: onp.ToFloat,
-        y: onp.ToFloat | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self[Any, _ShapeT], x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: 0-d, y?: 0-d
     def cdf(self: _Self0, x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CDFMethod = None) -> _Float: ...
     @overload  # self: 0-d, x: 1-d, y?: <=1-d
     def cdf(
-        self: _Self0,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float1D: ...
     @overload  # self: 0-d, x: <=1-d, y: 1-d
     def cdf(self: _Self0, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CDFMethod = None) -> _Float1D: ...
     @overload  # self: 0-d, x: 2-d, y?: <=2-d
     def cdf(
-        self: _Self0,
-        x: onp.ToFloatStrict2D,
-        y: _ToFloatMax2D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict2D, y: _ToFloatMax2D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float2D: ...
     @overload  # self: 0-d, x: <=2-d, y: 2-d
     def cdf(self: _Self0, x: _ToFloatMax2D, y: onp.ToFloatStrict2D, /, *, method: _CDFMethod = None) -> _Float2D: ...
     @overload  # self: 0-d, x: 3-d, y?: <=3-d
     def cdf(
-        self: _Self0,
-        x: onp.ToFloatStrict3D,
-        y: _ToFloatMax3D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict3D, y: _ToFloatMax3D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 0-d, x: <=3-d, y: 3-d
     def cdf(self: _Self0, x: _ToFloatMax3D, y: onp.ToFloatStrict3D, /, *, method: _CDFMethod = None) -> _Float3D: ...
     @overload  # self: 0-d, x: T1-d, y?: T1-d | <=1-d
     def cdf(
-        self: _Self0,
-        x: _ToFloatND[_ShapeT],
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: _ToFloatND[_ShapeT], y: _ToFloatMax1D | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: T1-d | <=1-d, y: T1-d
     def cdf(
-        self: _Self0,
-        x: _ToFloatMaxND[_ShapeT],
-        y: _ToFloatND[_ShapeT],
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: _ToFloatMaxND[_ShapeT], y: _ToFloatND[_ShapeT], /, *, method: _CDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: >=1-d, y?: >=0-d
     def cdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        x: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: _ToFloatND[_ShapeT] | onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 0-d, x: >=0-d, y: >=1-d
     def cdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        x: _ToFloat0ND,
-        y: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: _ToFloat0ND, y: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _CDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 1-d, x: 1-d, y?: <=1-d
     def cdf(
-        self: _Self1,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self1, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float2D: ...
     @overload  # self: 1-d, x: <=1-d, y: 1-d
     def cdf(self: _Self1, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CDFMethod = None) -> _Float2D: ...
     @overload  # self: 1-d, x: 2-d, y?: <=2-d
     def cdf(
-        self: _Self1,
-        x: onp.ToFloatStrict2D,
-        y: _ToFloatMax2D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self1, x: onp.ToFloatStrict2D, y: _ToFloatMax2D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 1-d, x: <=2-d, y: 2-d
     def cdf(self: _Self1, x: _ToFloatMax2D, y: onp.ToFloatStrict2D, /, *, method: _CDFMethod = None) -> _Float3D: ...
     @overload  # self: 1-d, x: >=1-d, y?: >=0-d
     def cdf(
-        self: _Self1,
-        x: onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self1, x: onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[onp.AtLeast2D]: ...
     @overload  # self: 1-d, x: >=0-d, y: >=1-d
     def cdf(self: _Self1, x: _ToFloat0ND, y: onp.ToFloatND, /, *, method: _CDFMethod = None) -> _FloatND[onp.AtLeast2D]: ...
     @overload  # self: 2-d, x: 1-d, y?: <=1-d
     def cdf(
-        self: _Self2,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self2, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 2-d, x: <=1-d, y: 1-d
     def cdf(self: _Self2, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CDFMethod = None) -> _Float3D: ...
     @overload  # self: 2-d, x: >=1-d, y?: >=0-d
     def cdf(
-        self: _Self2,
-        x: onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self2, x: onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: 2-d, x: >=0-d, y: >=1-d
     def cdf(self: _Self2, x: _ToFloat0ND, y: onp.ToFloatND, /, *, method: _CDFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: 3-d, x: >=0-d, y?: >=0-d
     def cdf(
-        self: _Self3,
-        x: _ToFloat0ND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self3, x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
     def cdf(self: _Self1_, x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod = None) -> _FloatND: ...
@@ -539,147 +471,77 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     #
     @overload  # self: T1-d, x: 0-d, y?: 0-d
     def logcdf(
-        self: _Self[Any, _ShapeT],
-        x: onp.ToFloat,
-        y: onp.ToFloat | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self[Any, _ShapeT], x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: 0-d, y?: 0-d
     def logcdf(self: _Self0, x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CDFMethod = None) -> _Float: ...
     @overload  # self: 0-d, x: 1-d, y?: <=1-d
     def logcdf(
-        self: _Self0,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float1D: ...
     @overload  # self: 0-d, x: <=1-d, y: 1-d
     def logcdf(self: _Self0, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CDFMethod = None) -> _Float1D: ...
     @overload  # self: 0-d, x: 2-d, y?: <=2-d
     def logcdf(
-        self: _Self0,
-        x: onp.ToFloatStrict2D,
-        y: _ToFloatMax2D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict2D, y: _ToFloatMax2D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float2D: ...
     @overload  # self: 0-d, x: <=2-d, y: 2-d
     def logcdf(self: _Self0, x: _ToFloatMax2D, y: onp.ToFloatStrict2D, /, *, method: _CDFMethod = None) -> _Float2D: ...
     @overload  # self: 0-d, x: 3-d, y?: <=3-d
     def logcdf(
-        self: _Self0,
-        x: onp.ToFloatStrict3D,
-        y: _ToFloatMax3D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict3D, y: _ToFloatMax3D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 0-d, x: <=3-d, y: 3-d
     def logcdf(self: _Self0, x: _ToFloatMax3D, y: onp.ToFloatStrict3D, /, *, method: _CDFMethod = None) -> _Float3D: ...
     @overload  # self: 0-d, x: T1-d, y?: T1-d | <=1-d
     def logcdf(
-        self: _Self0,
-        x: _ToFloatND[_ShapeT],
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: _ToFloatND[_ShapeT], y: _ToFloatMax1D | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: T1-d | <=1-d, y: T1-d
     def logcdf(
-        self: _Self0,
-        x: _ToFloatMaxND[_ShapeT],
-        y: _ToFloatND[_ShapeT],
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: _ToFloatMaxND[_ShapeT], y: _ToFloatND[_ShapeT], /, *, method: _CDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: >=1-d, y?: >=0-d
     def logcdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        x: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: _ToFloatND[_ShapeT] | onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 0-d, x: >=0-d, y: >=1-d
     def logcdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        x: _ToFloat0ND,
-        y: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self0, x: _ToFloat0ND, y: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _CDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 1-d, x: 1-d, y?: <=1-d
     def logcdf(
-        self: _Self1,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self1, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float2D: ...
     @overload  # self: 1-d, x: <=1-d, y: 1-d
     def logcdf(self: _Self1, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CDFMethod = None) -> _Float2D: ...
     @overload  # self: 1-d, x: 2-d, y?: <=2-d
     def logcdf(
-        self: _Self1,
-        x: onp.ToFloatStrict2D,
-        y: _ToFloatMax2D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self1, x: onp.ToFloatStrict2D, y: _ToFloatMax2D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 1-d, x: <=2-d, y: 2-d
     def logcdf(self: _Self1, x: _ToFloatMax2D, y: onp.ToFloatStrict2D, /, *, method: _CDFMethod = None) -> _Float3D: ...
     @overload  # self: 1-d, x: >=1-d, y?: >=0-d
     def logcdf(
-        self: _Self1,
-        x: onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self1, x: onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[onp.AtLeast2D]: ...
     @overload  # self: 1-d, x: >=0-d, y: >=1-d
     def logcdf(self: _Self1, x: _ToFloat0ND, y: onp.ToFloatND, /, *, method: _CDFMethod = None) -> _FloatND[onp.AtLeast2D]: ...
     @overload  # self: 2-d, x: 1-d, y?: <=1-d
     def logcdf(
-        self: _Self2,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self2, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 2-d, x: <=1-d, y: 1-d
     def logcdf(self: _Self2, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CDFMethod = None) -> _Float3D: ...
     @overload  # self: 2-d, x: >=1-d, y?: >=0-d
     def logcdf(
-        self: _Self2,
-        x: onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self2, x: onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: 2-d, x: >=0-d, y: >=1-d
     def logcdf(self: _Self2, x: _ToFloat0ND, y: onp.ToFloatND, /, *, method: _CDFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: 3-d, x: >=0-d, y?: >=0-d
     def logcdf(
-        self: _Self3,
-        x: _ToFloat0ND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CDFMethod = None,
+        self: _Self3, x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod = None
     ) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
     def logcdf(self: _Self1_, x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod = None) -> _FloatND: ...
@@ -687,147 +549,77 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     #
     @overload  # self: T1-d, x: 0-d, y?: 0-d
     def ccdf(
-        self: _Self[Any, _ShapeT],
-        x: onp.ToFloat,
-        y: onp.ToFloat | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self[Any, _ShapeT], x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: 0-d, y?: 0-d
     def ccdf(self: _Self0, x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CCDFMethod = None) -> _Float: ...
     @overload  # self: 0-d, x: 1-d, y?: <=1-d
     def ccdf(
-        self: _Self0,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float1D: ...
     @overload  # self: 0-d, x: <=1-d, y: 1-d
     def ccdf(self: _Self0, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CCDFMethod = None) -> _Float1D: ...
     @overload  # self: 0-d, x: 2-d, y?: <=2-d
     def ccdf(
-        self: _Self0,
-        x: onp.ToFloatStrict2D,
-        y: _ToFloatMax2D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict2D, y: _ToFloatMax2D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float2D: ...
     @overload  # self: 0-d, x: <=2-d, y: 2-d
     def ccdf(self: _Self0, x: _ToFloatMax2D, y: onp.ToFloatStrict2D, /, *, method: _CCDFMethod = None) -> _Float2D: ...
     @overload  # self: 0-d, x: 3-d, y?: <=3-d
     def ccdf(
-        self: _Self0,
-        x: onp.ToFloatStrict3D,
-        y: _ToFloatMax3D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict3D, y: _ToFloatMax3D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 0-d, x: <=3-d, y: 3-d
     def ccdf(self: _Self0, x: _ToFloatMax3D, y: onp.ToFloatStrict3D, /, *, method: _CCDFMethod = None) -> _Float3D: ...
     @overload  # self: 0-d, x: T1-d, y?: T1-d | <=1-d
     def ccdf(
-        self: _Self0,
-        x: _ToFloatND[_ShapeT],
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: _ToFloatND[_ShapeT], y: _ToFloatMax1D | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: T1-d | <=1-d, y: T1-d
     def ccdf(
-        self: _Self0,
-        x: _ToFloatMaxND[_ShapeT],
-        y: _ToFloatND[_ShapeT],
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: _ToFloatMaxND[_ShapeT], y: _ToFloatND[_ShapeT], /, *, method: _CCDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: >=1-d, y?: >=0-d
     def ccdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        x: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: _ToFloatND[_ShapeT] | onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 0-d, x: >=0-d, y: >=1-d
     def ccdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        x: _ToFloat0ND,
-        y: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: _ToFloat0ND, y: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _CCDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 1-d, x: 1-d, y?: <=1-d
     def ccdf(
-        self: _Self1,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self1, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float2D: ...
     @overload  # self: 1-d, x: <=1-d, y: 1-d
     def ccdf(self: _Self1, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CCDFMethod = None) -> _Float2D: ...
     @overload  # self: 1-d, x: 2-d, y?: <=2-d
     def ccdf(
-        self: _Self1,
-        x: onp.ToFloatStrict2D,
-        y: _ToFloatMax2D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self1, x: onp.ToFloatStrict2D, y: _ToFloatMax2D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 1-d, x: <=2-d, y: 2-d
     def ccdf(self: _Self1, x: _ToFloatMax2D, y: onp.ToFloatStrict2D, /, *, method: _CCDFMethod = None) -> _Float3D: ...
     @overload  # self: 1-d, x: >=1-d, y?: >=0-d
     def ccdf(
-        self: _Self1,
-        x: onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self1, x: onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[onp.AtLeast2D]: ...
     @overload  # self: 1-d, x: >=0-d, y: >=1-d
     def ccdf(self: _Self1, x: _ToFloat0ND, y: onp.ToFloatND, /, *, method: _CCDFMethod = None) -> _FloatND[onp.AtLeast2D]: ...
     @overload  # self: 2-d, x: 1-d, y?: <=1-d
     def ccdf(
-        self: _Self2,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self2, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 2-d, x: <=1-d, y: 1-d
     def ccdf(self: _Self2, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CCDFMethod = None) -> _Float3D: ...
     @overload  # self: 2-d, x: >=1-d, y?: >=0-d
     def ccdf(
-        self: _Self2,
-        x: onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self2, x: onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: 2-d, x: >=0-d, y: >=1-d
     def ccdf(self: _Self2, x: _ToFloat0ND, y: onp.ToFloatND, /, *, method: _CCDFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: 3-d, x: >=0-d, y?: >=0-d
     def ccdf(
-        self: _Self3,
-        x: _ToFloat0ND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self3, x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
     def ccdf(self: _Self1_, x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod = None) -> _FloatND: ...
@@ -835,147 +627,77 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     #
     @overload  # self: T1-d, x: 0-d, y?: 0-d
     def logccdf(
-        self: _Self[Any, _ShapeT],
-        x: onp.ToFloat,
-        y: onp.ToFloat | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self[Any, _ShapeT], x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: 0-d, y?: 0-d
     def logccdf(self: _Self0, x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CCDFMethod = None) -> _Float: ...
     @overload  # self: 0-d, x: 1-d, y?: <=1-d
     def logccdf(
-        self: _Self0,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float1D: ...
     @overload  # self: 0-d, x: <=1-d, y: 1-d
     def logccdf(self: _Self0, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CCDFMethod = None) -> _Float1D: ...
     @overload  # self: 0-d, x: 2-d, y?: <=2-d
     def logccdf(
-        self: _Self0,
-        x: onp.ToFloatStrict2D,
-        y: _ToFloatMax2D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict2D, y: _ToFloatMax2D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float2D: ...
     @overload  # self: 0-d, x: <=2-d, y: 2-d
     def logccdf(self: _Self0, x: _ToFloatMax2D, y: onp.ToFloatStrict2D, /, *, method: _CCDFMethod = None) -> _Float2D: ...
     @overload  # self: 0-d, x: 3-d, y?: <=3-d
     def logccdf(
-        self: _Self0,
-        x: onp.ToFloatStrict3D,
-        y: _ToFloatMax3D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: onp.ToFloatStrict3D, y: _ToFloatMax3D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 0-d, x: <=3-d, y: 3-d
     def logccdf(self: _Self0, x: _ToFloatMax3D, y: onp.ToFloatStrict3D, /, *, method: _CCDFMethod = None) -> _Float3D: ...
     @overload  # self: 0-d, x: T1-d, y?: T1-d | <=1-d
     def logccdf(
-        self: _Self0,
-        x: _ToFloatND[_ShapeT],
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: _ToFloatND[_ShapeT], y: _ToFloatMax1D | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: T1-d | <=1-d, y: T1-d
     def logccdf(
-        self: _Self0,
-        x: _ToFloatMaxND[_ShapeT],
-        y: _ToFloatND[_ShapeT],
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: _ToFloatMaxND[_ShapeT], y: _ToFloatND[_ShapeT], /, *, method: _CCDFMethod = None
     ) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, x: >=1-d, y?: >=0-d
     def logccdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        x: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: _ToFloatND[_ShapeT] | onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 0-d, x: >=0-d, y: >=1-d
     def logccdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        x: _ToFloat0ND,
-        y: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self0, x: _ToFloat0ND, y: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _CCDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 1-d, x: 1-d, y?: <=1-d
     def logccdf(
-        self: _Self1,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self1, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float2D: ...
     @overload  # self: 1-d, x: <=1-d, y: 1-d
     def logccdf(self: _Self1, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CCDFMethod = None) -> _Float2D: ...
     @overload  # self: 1-d, x: 2-d, y?: <=2-d
     def logccdf(
-        self: _Self1,
-        x: onp.ToFloatStrict2D,
-        y: _ToFloatMax2D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self1, x: onp.ToFloatStrict2D, y: _ToFloatMax2D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 1-d, x: <=2-d, y: 2-d
     def logccdf(self: _Self1, x: _ToFloatMax2D, y: onp.ToFloatStrict2D, /, *, method: _CCDFMethod = None) -> _Float3D: ...
     @overload  # self: 1-d, x: >=1-d, y?: >=0-d
     def logccdf(
-        self: _Self1,
-        x: onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self1, x: onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[onp.AtLeast2D]: ...
     @overload  # self: 1-d, x: >=0-d, y: >=1-d
     def logccdf(self: _Self1, x: _ToFloat0ND, y: onp.ToFloatND, /, *, method: _CCDFMethod = None) -> _FloatND[onp.AtLeast2D]: ...
     @overload  # self: 2-d, x: 1-d, y?: <=1-d
     def logccdf(
-        self: _Self2,
-        x: onp.ToFloatStrict1D,
-        y: _ToFloatMax1D | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self2, x: onp.ToFloatStrict1D, y: _ToFloatMax1D | None = None, /, *, method: _CCDFMethod = None
     ) -> _Float3D: ...
     @overload  # self: 2-d, x: <=1-d, y: 1-d
     def logccdf(self: _Self2, x: _ToFloatMax1D, y: onp.ToFloatStrict1D, /, *, method: _CCDFMethod = None) -> _Float3D: ...
     @overload  # self: 2-d, x: >=1-d, y?: >=0-d
     def logccdf(
-        self: _Self2,
-        x: onp.ToFloatND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self2, x: onp.ToFloatND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: 2-d, x: >=0-d, y: >=1-d
     def logccdf(self: _Self2, x: _ToFloat0ND, y: onp.ToFloatND, /, *, method: _CCDFMethod = None) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: 3-d, x: >=0-d, y?: >=0-d
     def logccdf(
-        self: _Self3,
-        x: _ToFloat0ND,
-        y: _ToFloat0ND | None = None,
-        /,
-        *,
-        method: _CCDFMethod = None,
+        self: _Self3, x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod = None
     ) -> _FloatND[onp.AtLeast3D]: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
     def logccdf(self: _Self1_, x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod = None) -> _FloatND: ...
@@ -995,11 +717,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     def icdf(self: _Self0, p: _ToFloatND[_ShapeT], /, *, method: _ICDFMethod = None) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, p: >=1-d
     def icdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        p: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        /,
-        *,
-        method: _ICDFMethod = None,
+        self: _Self0, p: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _ICDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 1-d, p: 1-d
     def icdf(self: _Self1, p: onp.ToFloatStrict1D, /, *, method: _ICDFMethod = None) -> _Float2D: ...
@@ -1030,11 +748,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     def ilogcdf(self: _Self0, logp: _ToFloatND[_ShapeT], /, *, method: _ICDFMethod = None) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, p: >=1-d
     def ilogcdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        logp: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        /,
-        *,
-        method: _ICDFMethod = None,
+        self: _Self0, logp: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _ICDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 1-d, logp: 1-d
     def ilogcdf(self: _Self1, logp: onp.ToFloatStrict1D, /, *, method: _ICDFMethod = None) -> _Float2D: ...
@@ -1066,11 +780,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     def iccdf(self: _Self0, p: _ToFloatND[_ShapeT], /, *, method: _ICDFMethod = None) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, p: >=1-d
     def iccdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        p: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        /,
-        *,
-        method: _ICDFMethod = None,
+        self: _Self0, p: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _ICDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 1-d, p: 1-d
     def iccdf(self: _Self1, p: onp.ToFloatStrict1D, /, *, method: _ICDFMethod = None) -> _Float2D: ...
@@ -1101,11 +811,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     def ilogccdf(self: _Self0, logp: _ToFloatND[_ShapeT], /, *, method: _ICDFMethod = None) -> _FloatND[_ShapeT]: ...
     @overload  # self: 0-d, q: >=1-d
     def ilogccdf(  # first union type is needed on `numpy<2.1`
-        self: _Self0,
-        logp: _ToFloatND[_ShapeT] | onp.ToFloatND,
-        /,
-        *,
-        method: _ICDFMethod = None,
+        self: _Self0, logp: _ToFloatND[_ShapeT] | onp.ToFloatND, /, *, method: _ICDFMethod = None
     ) -> _FloatND[_ShapeT] | _FloatND[onp.AtLeast1D]: ...
     @overload  # self: 1-d, logp: 1-d
     def ilogccdf(self: _Self1, logp: onp.ToFloatStrict1D, /, *, method: _ICDFMethod = None) -> _Float2D: ...
