@@ -12,7 +12,7 @@ import optype.numpy.compat as npc
 from scipy._typing import Alternative, Falsy, NanPolicy, ToRNG, Truthy
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._stats_mstats_common import siegelslopes, theilslopes
-from ._typing import BaseBunch, PowerDivergenceStatistic
+from ._typing import BaseBunch, BunchMixin, PowerDivergenceStatistic
 
 __all__ = [
     "alexandergovern",
@@ -303,40 +303,44 @@ class KstestResult(_TestResultBunch[np.float64]):
 
 Ks_2sampResult = KstestResult
 
-class LinregressResult(BaseBunch[np.float64, np.float64, np.float64, _AsFloat64, _AsFloat64]):
-    @property
-    def slope(self, /) -> np.float64: ...
-    @property
-    def intercept(self, /) -> np.float64: ...
-    @property
-    def rvalue(self, /) -> np.float64: ...
-    @property
-    def pvalue(self, /) -> _AsFloat64: ...
-    @property
-    def stderr(self, /) -> _AsFloat64: ...
-    @property
-    def intercept_stderr(self, /) -> _AsFloat64: ...
+class LinregressResult(
+    BunchMixin[tuple[_NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co]],
+    tuple[_NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co],
+    Generic[_NDT_float_co],
+):
     def __new__(
         _cls,
-        slope: np.float64,
-        intercept: np.float64,
-        rvalue: np.float64,
-        pvalue: _AsFloat64,
-        stderr: _AsFloat64,
+        slope: _NDT_float_co,
+        intercept: _NDT_float_co,
+        rvalue: _NDT_float_co,
+        pvalue: _NDT_float_co,
+        stderr: _NDT_float_co,
         *,
-        intercept_stderr: _AsFloat64,
+        intercept_stderr: _NDT_float_co,
     ) -> Self: ...
     def __init__(
         self,
         /,
-        slope: np.float64,
-        intercept: np.float64,
-        rvalue: np.float64,
-        pvalue: _AsFloat64,
-        stderr: _AsFloat64,
+        slope: _NDT_float_co,
+        intercept: _NDT_float_co,
+        rvalue: _NDT_float_co,
+        pvalue: _NDT_float_co,
+        stderr: _NDT_float_co,
         *,
-        intercept_stderr: _AsFloat64,
+        intercept_stderr: _NDT_float_co,
     ) -> None: ...
+    @property
+    def slope(self, /) -> _NDT_float_co: ...
+    @property
+    def intercept(self, /) -> _NDT_float_co: ...
+    @property
+    def rvalue(self, /) -> _NDT_float_co: ...
+    @property
+    def pvalue(self, /) -> _NDT_float_co: ...
+    @property
+    def stderr(self, /) -> _NDT_float_co: ...
+    @property
+    def intercept_stderr(self, /) -> _NDT_float_co: ...
 
 def gmean(
     a: onp.ToFloatND,
@@ -1114,7 +1118,66 @@ def rankdata(
 def expectile(a: onp.ToFloatND, alpha: float = 0.5, *, weights: onp.ToFloatND | None = None) -> np.float64: ...
 
 #
-def linregress(x: onp.ToFloatND, y: onp.ToFloatND, alternative: Alternative = "two-sided") -> LinregressResult: ...
+@overload
+def linregress(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: None,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[np.float64]: ...
+@overload
+def linregress(
+    x: onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int | None = 0,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[np.float64]: ...
+@overload
+def linregress(
+    x: onp.ToFloatStrict2D,
+    y: onp.ToFloatStrict2D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[onp.Array1D[np.float64]]: ...
+@overload
+def linregress(
+    x: onp.ToFloatStrict3D,
+    y: onp.ToFloatStrict3D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[onp.Array2D[np.float64]]: ...
+@overload
+def linregress(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int | None = 0,
+    keepdims: L[True],
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[onp.ArrayND[np.float64]]: ...
+@overload
+def linregress(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int | None = 0,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[np.float64 | Any]: ...
 
 #
 @deprecated(
