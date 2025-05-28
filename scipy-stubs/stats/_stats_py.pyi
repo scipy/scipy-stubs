@@ -430,7 +430,42 @@ def tsem(
 ) -> _FloatOrND: ...
 
 #
-def gstd(a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1) -> _FloatOrND: ...
+@overload
+def gstd(
+    a: onp.ToFloatND,
+    axis: None,
+    ddof: int = 1,
+    *,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float64: ...
+@overload
+def gstd(
+    a: onp.ToFloatStrict1D,
+    axis: int | None = 0,
+    ddof: int = 1,
+    *,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float64: ...
+@overload
+def gstd(
+    a: onp.ToFloatND,
+    axis: int | None = 0,
+    ddof: int = 1,
+    *,
+    keepdims: L[True],
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def gstd(
+    a: onp.ToFloatND,
+    axis: int | None = 0,
+    ddof: int = 1,
+    *,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 
 #
 def moment(
@@ -762,8 +797,9 @@ def ttest_ind(
 ) -> TtestResult: ...
 @overload
 @deprecated(
-    "Argument `random_state` is deprecated, and will be removed in SciPy 1.17. Use `method to perform a permutation test.",
-)
+    "Argument `random_state` is deprecated, and will be removed in SciPy 1.17. "
+    "Use `method to perform a permutation test."
+)  # fmt: skip
 def ttest_ind(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
@@ -780,8 +816,9 @@ def ttest_ind(
 ) -> TtestResult: ...
 @overload
 @deprecated(
-    "Argument `permutations` is deprecated, and will be removed in SciPy 1.17. Use method` to perform a permutation test.",
-)
+    "Argument `permutations` is deprecated, and will be removed in SciPy 1.17. "
+    "Use method` to perform a permutation test."
+)  # fmt: skip
 def ttest_ind(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
@@ -799,7 +836,7 @@ def ttest_ind(
 @overload
 @deprecated(
     "Arguments {'random_state', 'permutations'} are deprecated, and will be removed in SciPy 1.17. "
-    "Use `method` to perform a permutation test.",
+    "Use `method` to perform a permutation test."
 )
 def ttest_ind(
     a: onp.ToFloatND,
@@ -987,14 +1024,14 @@ def linregress(x: onp.ToFloatND, y: onp.ToFloatND, alternative: Alternative = "t
 @overload
 @deprecated(
     "Inference of the two sets of measurements from a single argument `x` is deprecated will result in an error in SciPy 1.16.0; "
-    "the sets must be specified separately as `x` and `y`.",
+    "the sets must be specified separately as `x` and `y`."
 )
 def linregress(x: onp.ToFloatND, y: None = None, alternative: Alternative = "two-sided") -> LinregressResult: ...
 
 #
 @deprecated(
     "`scipy.stats.find_repeats` is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `numpy.unique`/`numpy.unique_counts` instead.",
+    "Please use `numpy.unique`/`numpy.unique_counts` instead."
 )
 def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
 
