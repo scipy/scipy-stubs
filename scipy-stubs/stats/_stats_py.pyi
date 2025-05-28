@@ -1114,14 +1114,7 @@ def rankdata(
 def expectile(a: onp.ToFloatND, alpha: float = 0.5, *, weights: onp.ToFloatND | None = None) -> np.float64: ...
 
 #
-@overload
 def linregress(x: onp.ToFloatND, y: onp.ToFloatND, alternative: Alternative = "two-sided") -> LinregressResult: ...
-@overload
-@deprecated(
-    "Inference of the two sets of measurements from a single argument `x` is deprecated will result in an error in SciPy 1.16.0; "
-    "the sets must be specified separately as `x` and `y`."
-)
-def linregress(x: onp.ToFloatND, y: None = None, alternative: Alternative = "two-sided") -> LinregressResult: ...
 
 #
 @deprecated(
