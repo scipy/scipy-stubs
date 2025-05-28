@@ -3,6 +3,7 @@ from typing_extensions import TypeVar, Unpack
 
 import numpy as np
 import optype.numpy as onp
+
 from ._distribution_infrastructure import (
     ContinuousDistribution,
     DiscreteDistribution,

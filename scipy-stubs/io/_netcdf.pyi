@@ -6,6 +6,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import EnterSelfMixin, FileLike, FileModeRWA
 
 __all__ = ["netcdf_file", "netcdf_variable"]

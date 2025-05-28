@@ -5,6 +5,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLike
+
 from scipy._typing import AnyShape
 
 _SCT = TypeVar("_SCT", bound=np.inexact[Any])

@@ -4,6 +4,7 @@ from typing_extensions import Unpack
 
 import numpy as np
 import optype.numpy as onp
+
 from ._minimize import OptimizeResult
 
 __all__ = ["_minimize_trust_krylov"]

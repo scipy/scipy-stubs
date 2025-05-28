@@ -3,6 +3,7 @@ from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype.numpy as onp
+
 from ._interpolate import PPoly
 
 __all__ = [

@@ -2,6 +2,7 @@ from typing import Any, Literal, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.optimize import OptimizeResult
 
 @type_check_only

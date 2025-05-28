@@ -4,6 +4,7 @@ from typing_extensions import TypeVar, deprecated
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from ._polyint import _Interpolator1D
 
 __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]

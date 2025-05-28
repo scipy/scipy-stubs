@@ -2,6 +2,7 @@ from typing import Literal, TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.signal import gausspulse
 
 _Array_f8: TypeAlias = onp.ArrayND[np.float64]

@@ -3,6 +3,7 @@ from typing import Never
 
 import numpy as np
 import optype.numpy as onp
+
 from .base import DenseOutput, OdeSolver
 
 class LSODA(OdeSolver):

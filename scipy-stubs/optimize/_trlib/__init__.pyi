@@ -3,6 +3,7 @@ from typing import Protocol, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+
 from ._trlib import TRLIBQuadraticSubproblem
 
 __all__ = ["TRLIBQuadraticSubproblem", "get_trlib_quadratic_subproblem"]

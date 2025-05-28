@@ -5,6 +5,7 @@ from typing import Never, type_check_only
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import RNG
 
 @type_check_only

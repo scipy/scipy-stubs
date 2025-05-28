@@ -3,6 +3,7 @@ from typing_extensions import Protocol
 
 import numpy as np
 import optype.typing as opt
+
 from scipy._typing import Falsy, FileLike, Truthy
 from scipy.sparse import csc_array, csc_matrix
 from scipy.sparse._base import _spbase

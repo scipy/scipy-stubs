@@ -3,9 +3,11 @@ from typing import Concatenate, Literal, TypeAlias, TypedDict, overload, type_ch
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 from scipy.sparse import csr_array, sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
+
 from ._differentiable_functions import _DoesMap
 
 _ToSparse: TypeAlias = spmatrix | sparray

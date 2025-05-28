@@ -12,6 +12,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._typing import RNG, AnyShape, Falsy, ToRNG, Truthy
 from scipy.integrate._typing import QuadOpts as _QuadOpts
 

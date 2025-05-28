@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Concatenate, Literal, TypeAlias, TypedDict, TypeVar, type_check_only
+from typing import Any, Concatenate, Literal, TypeAlias, TypeVar, TypedDict, type_check_only
 
 import numpy as np
 import optype as op

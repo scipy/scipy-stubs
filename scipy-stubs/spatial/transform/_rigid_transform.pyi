@@ -6,6 +6,7 @@ from typing import Self, TypeAlias, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from ._rotation import Rotation as Rotation, compose_quat as compose_quat
 
 _Indexer: TypeAlias = op.CanIndex | onp.ToInt1D | slice

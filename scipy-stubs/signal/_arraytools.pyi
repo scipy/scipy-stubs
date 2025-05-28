@@ -3,6 +3,7 @@ from typing import TypeVar, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import Truthy
 
 _SCT = TypeVar("_SCT", bound=np.generic)

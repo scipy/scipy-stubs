@@ -3,6 +3,7 @@ from typing import Protocol, TypeAlias, type_check_only
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import AnyBool, AnyShape
 
 __all__ = ["fft", "fft2", "fftn", "ifft", "ifft2", "ifftn", "irfft", "rfft"]

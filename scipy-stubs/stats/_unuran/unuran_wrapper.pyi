@@ -3,6 +3,7 @@ from typing import NamedTuple, Protocol, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+
 import scipy.stats as stats
 from scipy._typing import ToRNG
 

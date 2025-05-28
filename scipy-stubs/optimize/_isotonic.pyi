@@ -3,6 +3,7 @@ from typing import Final, final
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from ._optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["isotonic_regression"]

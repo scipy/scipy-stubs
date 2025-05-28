@@ -3,6 +3,7 @@ from typing import Final, Literal
 
 import numpy.typing as npt
 import optype.numpy as onp
+
 import scipy._typing as spt
 
 __all__ = ["get_lapack_funcs"]

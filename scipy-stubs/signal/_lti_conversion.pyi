@@ -3,6 +3,7 @@ from typing import Literal, TypeAlias, TypeVar, overload
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from ._ltisys import (
     StateSpaceContinuous,
     StateSpaceDiscrete,

@@ -4,7 +4,9 @@ from typing import Any, Concatenate, Final, Generic, Literal, TypeAlias, TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
+
 from ._optimize import OptimizeResult
 from ._typing import MethodRootScalar
 

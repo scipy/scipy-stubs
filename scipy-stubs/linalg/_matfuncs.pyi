@@ -5,7 +5,9 @@ from typing_extensions import deprecated
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._typing import Falsy, Truthy
+
 from ._expm_frechet import expm_cond, expm_frechet
 
 __all__ = [

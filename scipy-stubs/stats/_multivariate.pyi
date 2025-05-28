@@ -5,7 +5,9 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
+
 import scipy._typing as spt
+
 from ._covariance import _PSD, Covariance
 
 __all__ = [

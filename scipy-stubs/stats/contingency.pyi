@@ -2,6 +2,7 @@ from typing import Any, Literal, Self
 
 import numpy as np
 import optype.numpy as onp
+
 from ._crosstab import crosstab
 from ._odds_ratio import odds_ratio
 from ._relative_risk import relative_risk

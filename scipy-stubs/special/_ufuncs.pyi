@@ -7,6 +7,7 @@ from typing_extensions import TypeAliasType, TypeVar, Unpack, deprecated, overri
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import AnyShape, Casting, EnterNoneMixin, Falsy, OrderKACF, Truthy
 
 # NOTE: The only way I was able to get `ComplexWarning` to work on both numpy<1.25 and >=1.25, and is needed until `scipy>=1.16`

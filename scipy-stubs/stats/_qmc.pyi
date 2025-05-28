@@ -8,6 +8,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
+
 from scipy._typing import RNG, ToRNG
 from scipy.spatial.distance import _Metric
 

@@ -7,6 +7,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
+
 from ._base import _spbase
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin

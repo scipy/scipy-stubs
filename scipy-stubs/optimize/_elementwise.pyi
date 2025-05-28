@@ -4,6 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._lib._util import _RichResult
 
 _T = TypeVar("_T")

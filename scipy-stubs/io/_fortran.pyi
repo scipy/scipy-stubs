@@ -5,6 +5,7 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._typing import EnterSelfMixin, FileLike, FileModeRW
 
 __all__ = ["FortranEOFError", "FortranFile", "FortranFormattingError"]

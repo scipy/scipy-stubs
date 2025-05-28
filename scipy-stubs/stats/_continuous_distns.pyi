@@ -4,7 +4,9 @@ from typing_extensions import override
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
+
 from ._distn_infrastructure import _rv_continuous_0, rv_continuous
 
 __all__ = [

@@ -3,6 +3,7 @@ from typing import Any, Literal, TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse import dia_matrix
 
 __all__ = ["equality_constrained_sqp"]

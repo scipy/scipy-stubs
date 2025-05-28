@@ -9,6 +9,7 @@ from typing_extensions import TypeIs, TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from ._base import _spbase, sparray
 from ._index import IndexMixin
 from ._matrix import spmatrix

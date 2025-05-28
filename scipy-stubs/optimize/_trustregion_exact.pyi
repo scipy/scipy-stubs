@@ -4,6 +4,7 @@ from typing_extensions import Unpack, override
 
 import numpy as np
 import optype.numpy as onp
+
 from ._minimize import OptimizeResult
 from ._trustregion import BaseQuadraticSubproblem
 

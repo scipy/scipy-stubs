@@ -4,7 +4,9 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
+
 from ._qmc import QMCEngine
 
 _XT_co = TypeVar("_XT_co", bound=np.number[Any], default=np.float64, covariant=True)

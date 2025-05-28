@@ -22,7 +22,9 @@ from typing_extensions import ParamSpec, TypeIs, TypeVar, Unpack, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
+
 from ._distn_infrastructure import rv_continuous
 from ._probability_distribution import _ProbabilityDistribution
 from ._qmc import QMCEngine

@@ -3,6 +3,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse import csc_array, csc_matrix, csr_array, csr_matrix, lil_array, lil_matrix
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Floating, Integer

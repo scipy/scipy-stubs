@@ -4,6 +4,7 @@ from typing import Self, TypeAlias, TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.optimize._constraints import PreparedConstraint
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import LinearOperator

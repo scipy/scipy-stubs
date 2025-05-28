@@ -3,6 +3,7 @@ from typing import Concatenate, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import AnyBool
 
 __all__ = ["convolve", "convolve_z", "destroy_convolve_cache", "init_convolution_kernel"]

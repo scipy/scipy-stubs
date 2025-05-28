@@ -2,6 +2,7 @@ from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Floating, Integer

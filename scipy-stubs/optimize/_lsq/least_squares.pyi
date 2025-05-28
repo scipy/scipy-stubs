@@ -4,6 +4,7 @@ from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, type_c
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.optimize import Bounds, OptimizeResult as _OptimizeResult
 from scipy.optimize._differentiable_functions import _Workers
 from scipy.sparse import csr_array

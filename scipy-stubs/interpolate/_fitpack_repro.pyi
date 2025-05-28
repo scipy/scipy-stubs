@@ -4,6 +4,7 @@ from typing import Any, Final, Literal, TypeAlias, type_check_only
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from ._bsplines import BSpline
 
 _Float: TypeAlias = float | np.float32 | np.float64 | np.longdouble

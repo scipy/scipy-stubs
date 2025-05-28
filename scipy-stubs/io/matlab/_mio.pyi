@@ -3,8 +3,10 @@ from typing import Literal, TypeAlias, TypedDict, type_check_only
 from typing_extensions import Unpack
 
 import optype.numpy as onp
+
 from scipy._typing import ByteOrder, FileName
 from scipy.sparse import coo_array, coo_matrix
+
 from ._miobase import MatFileReader
 
 __all__ = ["loadmat", "savemat", "whosmat"]

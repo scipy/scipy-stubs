@@ -3,6 +3,7 @@ from typing import Literal, Self, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
 
 __all__ = ["gaussian_kde"]

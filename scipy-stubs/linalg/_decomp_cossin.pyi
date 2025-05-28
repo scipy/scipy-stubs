@@ -4,6 +4,7 @@ from typing import Any, TypeAlias, TypeVar, overload
 import numpy as np
 import optype.numpy as onp
 import optype.typing as opt
+
 from scipy._typing import Falsy, Truthy
 
 __all__ = ["cossin"]

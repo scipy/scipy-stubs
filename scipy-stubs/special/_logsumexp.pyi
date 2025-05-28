@@ -2,6 +2,7 @@ from typing import overload
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import AnyShape, Falsy, Truthy
 
 __all__ = ["log_softmax", "logsumexp", "softmax"]

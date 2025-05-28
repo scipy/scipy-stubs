@@ -2,6 +2,7 @@ from typing import Final, Literal, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse import csr_array, csr_matrix
 from scipy.sparse._coo import coo_array, coo_matrix
 from scipy.sparse._csc import csc_array, csc_matrix

@@ -5,6 +5,7 @@ from typing_extensions import deprecated
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import Bound, MethodLinprog, MethodLinprogLegacy
 

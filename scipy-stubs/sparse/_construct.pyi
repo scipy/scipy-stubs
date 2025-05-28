@@ -5,7 +5,9 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 import optype.typing as opt
+
 from scipy._typing import ToRNG
+
 from ._base import _spbase, sparray
 from ._bsr import bsr_array, bsr_matrix
 from ._coo import coo_array, coo_matrix

@@ -1,3 +1,4 @@
+from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from typing import Any, Protocol, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar
@@ -5,7 +6,6 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
-from _typeshed import Incomplete
 from numpy._typing import _ArrayLike, _DTypeLike
 
 __all__ = [

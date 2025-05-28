@@ -2,6 +2,7 @@ from typing import TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.stats import distributions as d
 
 _Float: TypeAlias = float | np.float64

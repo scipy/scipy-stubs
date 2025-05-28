@@ -5,8 +5,10 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse import csr_array, sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
+
 from ._hessian_update_strategy import HessianUpdateStrategy
 
 _XT = TypeVar("_XT", bound=np.floating[Any], default=np.floating[Any])

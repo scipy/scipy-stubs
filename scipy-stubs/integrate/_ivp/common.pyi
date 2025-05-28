@@ -4,7 +4,9 @@ from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.sparse import csc_matrix
+
 from .base import DenseOutput
 
 _SCT = TypeVar("_SCT", bound=np.generic)

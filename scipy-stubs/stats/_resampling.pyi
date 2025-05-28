@@ -1,11 +1,13 @@
-from dataclasses import dataclass
 from collections.abc import Callable, Mapping, Sequence
+from dataclasses import dataclass
 from typing import Any, ClassVar, Generic, Literal, Protocol, TypeAlias, TypeVar, overload, type_check_only
 from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Alternative, ToRNG
+
 from ._common import ConfidenceInterval
 
 __all__ = ["bootstrap", "monte_carlo_test", "permutation_test"]

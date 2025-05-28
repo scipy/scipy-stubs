@@ -2,6 +2,7 @@ from typing import Literal, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Floating, Integer
 from scipy.sparse.linalg import LinearOperator

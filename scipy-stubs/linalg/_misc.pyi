@@ -5,6 +5,7 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy.linalg import LinAlgError
+
 from scipy._typing import AnyBool, Falsy, Truthy
 
 __all__ = ["LinAlgError", "LinAlgWarning", "norm"]

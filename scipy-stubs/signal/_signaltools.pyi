@@ -1,10 +1,12 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Literal as L, TypeAlias, TypedDict, TypeVar, overload, type_check_only
+from typing import Any, Literal as L, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import ConvMode, Falsy, Truthy
+
 from ._ltisys import dlti
 from .windows._windows import _ToWindow
 

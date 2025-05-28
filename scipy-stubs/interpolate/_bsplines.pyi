@@ -3,6 +3,7 @@ from typing import Any, Generic, Literal, Self, TypeAlias, TypeVar, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.interpolate import CubicSpline
 from scipy.sparse import csr_array
 

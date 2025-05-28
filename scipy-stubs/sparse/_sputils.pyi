@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Any, Final, Literal as L, Protocol, TypeAlias, TypedDict, TypeVar, overload, type_check_only
+from typing import Any, Final, Literal as L, Protocol, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 from typing_extensions import TypeIs
 
 import numpy as np
@@ -7,6 +7,7 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._typing import OrderKACF
 from scipy.sparse import (
     bsr_array,
@@ -20,6 +21,7 @@ from scipy.sparse import (
     dia_array,
     dia_matrix,
 )
+
 from ._typing import Numeric
 
 __all__ = [

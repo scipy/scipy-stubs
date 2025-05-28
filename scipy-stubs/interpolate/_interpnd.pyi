@@ -5,6 +5,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.spatial._qhull import Delaunay, DelaunayInfo_t
 
 ###

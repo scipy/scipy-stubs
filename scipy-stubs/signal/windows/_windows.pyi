@@ -1,3 +1,4 @@
+from _typeshed import Incomplete
 from types import ModuleType
 from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeAliasType
@@ -6,7 +7,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
-from _typeshed import Incomplete
+
 from scipy._typing import Falsy, Truthy
 
 __all__ = [

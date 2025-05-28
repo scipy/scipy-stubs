@@ -1,8 +1,9 @@
+from _typeshed import IdentityFunction
 from typing import Final, Literal, TypeAlias, TypeVar
 
 import numpy as np
 import optype.numpy as onp
-from _typeshed import IdentityFunction
+
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Numeric
 from scipy.sparse.linalg import LinearOperator

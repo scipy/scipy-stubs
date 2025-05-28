@@ -3,6 +3,7 @@ from typing import Any, Final, Literal, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 

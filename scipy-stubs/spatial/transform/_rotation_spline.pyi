@@ -2,7 +2,9 @@ from typing import ClassVar, Final, Literal, overload
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.interpolate import PPoly
+
 from ._rotation import Rotation
 
 class RotationSpline:

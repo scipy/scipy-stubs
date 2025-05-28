@@ -1,6 +1,7 @@
 from typing import Literal as L, TypeAlias, TypeVar
 
 import optype.numpy as onp
+
 from ._base import _spbase
 from ._typing import Floating
 

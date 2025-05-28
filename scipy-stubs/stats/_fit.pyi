@@ -4,8 +4,10 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
 from scipy.optimize import OptimizeResult
+
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
 
 _Params: TypeAlias = Mapping[str, onp.ToFloat]

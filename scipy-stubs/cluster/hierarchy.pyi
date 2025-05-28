@@ -6,6 +6,7 @@ from typing_extensions import TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._lib._disjoint_set import DisjointSet
 from scipy._typing import Falsy, Truthy
 from scipy.spatial.distance import _Metric

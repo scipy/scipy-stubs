@@ -3,6 +3,7 @@ from typing import Literal, TypeAlias, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.sparse._base import _spbase
 
 __all__ = ["norm"]

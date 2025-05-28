@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 from collections.abc import Callable, Sequence
+from dataclasses import dataclass
 from types import ModuleType
 from typing import Any, Generic, Literal as L, Protocol, Self, TypeAlias, overload, type_check_only
 from typing_extensions import NamedTuple, TypeVar, deprecated
@@ -9,7 +9,9 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._typing import Alternative, Falsy, NanPolicy, ToRNG, Truthy
+
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._stats_mstats_common import siegelslopes, theilslopes
 from ._typing import BaseBunch, BunchMixin, PowerDivergenceStatistic

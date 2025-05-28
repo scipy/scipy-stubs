@@ -1,6 +1,7 @@
 from typing import Final, Literal, TypeAlias
 
 import optype.numpy as onp
+
 from ._stats_mstats_common import SiegelslopesResult
 
 _Method: TypeAlias = Literal["hierarchical", "separate"]

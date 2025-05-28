@@ -5,7 +5,9 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._typing import Falsy, Truthy
+
 from ._ufuncs import _KwBase, psi as digamma
 
 __all__ = [

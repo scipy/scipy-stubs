@@ -3,6 +3,7 @@ from typing import Literal, TypeAlias, TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator

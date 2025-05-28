@@ -7,6 +7,7 @@ from typing_extensions import TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import CFloating, Floating, Integer, Numeric
 

@@ -1,6 +1,7 @@
 from typing import assert_type
 
 import numpy.polynomial as npp
+
 from scipy.optimize import minimize_scalar
 
 def f(x: float, /) -> float: ...

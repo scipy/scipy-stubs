@@ -4,6 +4,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
+
 from scipy.sparse import bsr_array, coo_array, csc_array, csr_array, dia_array, dok_array, lil_array
 from scipy.sparse._typing import Floating, Integer
 from scipy.sparse.linalg import LinearOperator

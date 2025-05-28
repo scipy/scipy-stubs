@@ -2,6 +2,7 @@ from typing import Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 from scipy.sparse import csr_matrix
 from scipy.sparse._base import _spbase

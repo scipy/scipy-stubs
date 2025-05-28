@@ -2,6 +2,7 @@ from typing import Any, Literal, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 
 __all__ = ["lu", "lu_factor", "lu_solve"]

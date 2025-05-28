@@ -2,6 +2,7 @@ from typing import Any, Literal as L, TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
+
 import scipy.special as sp
 
 _Float32ND: TypeAlias = onp.ArrayND[np.float32]

@@ -6,6 +6,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLike, _NestedSequence
+
 from scipy._typing import AnyBool, Falsy, NanPolicy, Truthy
 
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])

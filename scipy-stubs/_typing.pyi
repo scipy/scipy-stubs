@@ -1,7 +1,7 @@
 # NOTE: This private(!) module only exists in `if typing.TYPE_CHECKING: ...` and in `.pyi` stubs
 
-from os import PathLike
 from collections.abc import Sequence
+from os import PathLike
 from types import TracebackType
 from typing import IO, Any, Literal, LiteralString, Protocol, Self, TypeAlias, type_check_only
 from typing_extensions import TypeVar

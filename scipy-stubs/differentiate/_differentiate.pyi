@@ -5,6 +5,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 import optype.typing as opt
+
 from scipy._lib._util import _RichResult
 
 _FloatT = TypeVar("_FloatT", bound=np.floating[Any], default=np.floating[Any])

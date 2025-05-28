@@ -3,6 +3,7 @@ from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 
 __all__ = [

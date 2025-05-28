@@ -3,6 +3,7 @@ from typing import Final, Literal
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.stats.distributions import rv_continuous
 
 __all__ = ["levy_stable", "levy_stable_gen", "pdf_from_cf_with_fft"]

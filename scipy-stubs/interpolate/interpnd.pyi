@@ -2,7 +2,9 @@ from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.spatial._qhull import DelaunayInfo_t
+
 from . import _interpnd
 
 __all__ = [

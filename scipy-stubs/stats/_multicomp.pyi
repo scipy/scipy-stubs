@@ -3,7 +3,9 @@ from typing import Any
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Alternative, ToRNG
+
 from ._common import ConfidenceInterval
 
 __all__ = ["dunnett"]

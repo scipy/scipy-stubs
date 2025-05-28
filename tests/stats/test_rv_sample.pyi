@@ -2,6 +2,7 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.stats._distn_infrastructure import rv_discrete, rv_sample
 
 xk: onp.Array1D[np.int_]

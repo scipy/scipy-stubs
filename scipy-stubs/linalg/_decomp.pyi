@@ -7,6 +7,7 @@ import optype as op
 import optype.numpy as onp
 import optype.typing as opt
 from numpy._typing import _ArrayLike
+
 from scipy._typing import Falsy, Truthy
 
 __all__ = [

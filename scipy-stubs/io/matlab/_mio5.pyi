@@ -4,8 +4,10 @@ from typing import IO, Any, Final, Literal, TypeAlias, TypedDict, final, type_ch
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import AnyShape, ByteOrder
 from scipy.sparse import sparray, spmatrix
+
 from ._miobase import MatFileReader
 
 _OnedAs: TypeAlias = Literal["row", "column"]

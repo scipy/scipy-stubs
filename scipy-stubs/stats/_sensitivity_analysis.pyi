@@ -1,10 +1,12 @@
-from dataclasses import dataclass
 from collections.abc import Callable, Mapping, Sequence
+from dataclasses import dataclass
 from typing import Any, Literal, Protocol, TypeAlias, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
+
 from ._resampling import BootstrapResult
 
 __all__ = ["sobol_indices"]

@@ -1,12 +1,14 @@
 from collections.abc import Callable, Sequence
 from typing import Any, Concatenate, Final, Generic, Literal, TypeAlias, overload, type_check_only
-from typing_extensions import TypedDict, TypeVar, Unpack
+from typing_extensions import TypeVar, TypedDict, Unpack
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._lib._util import _RichResult
 from scipy._typing import Falsy, Truthy
 from scipy.sparse import sparray, spmatrix
+
 from .base import DenseOutput, OdeSolver
 from .common import OdeSolution
 

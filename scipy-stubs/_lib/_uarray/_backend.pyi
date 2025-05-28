@@ -1,5 +1,5 @@
-from contextlib import _GeneratorContextManager
 from collections.abc import Callable, Iterable
+from contextlib import _GeneratorContextManager
 from types import NotImplementedType
 from typing import Final, Generic, Literal, TypeAlias, TypedDict, final, overload, type_check_only
 from typing_extensions import ParamSpec, TypeVar, Unpack
