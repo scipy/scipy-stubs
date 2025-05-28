@@ -1,4 +1,3 @@
-scipy\.stats\.(_?morestats\.)?boxcox_llf
 scipy\.stats\.mstats\.chisquare
 scipy\.stats\.(stats\.|_stats_py\.)?chisquare
 scipy\.stats\.(stats\.|_stats_py\.)?gstd
