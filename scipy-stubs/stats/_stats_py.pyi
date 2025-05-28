@@ -716,7 +716,60 @@ def spearmanr(
 ) -> SignificanceResult: ...
 
 #
-def pointbiserialr(x: onp.ToBoolND, y: onp.ToFloatND) -> SignificanceResult[float]: ...
+@overload
+def pointbiserialr(
+    x: onp.ToBoolND,
+    y: onp.ToFloatND,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload
+def pointbiserialr(
+    x: onp.ToBoolStrict1D,
+    y: onp.ToFloatStrict1D,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload
+def pointbiserialr(
+    x: onp.ToBoolStrict2D,
+    y: onp.ToFloatStrict2D,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array1D[np.float64]]: ...
+@overload
+def pointbiserialr(
+    x: onp.ToBoolStrict3D,
+    y: onp.ToFloatStrict3D,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+@overload
+def pointbiserialr(
+    x: onp.ToBoolND,
+    y: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload
+def pointbiserialr(
+    x: onp.ToBoolND,
+    y: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
+) -> SignificanceResult[np.float64 | Any]: ...
 
 #
 def kendalltau(
@@ -746,7 +799,7 @@ def pack_TtestResult(
     alternative: Alternative,
     standard_error: _NDT_float,
     estimate: _NDT_float,
-) -> TtestResult[_NDT_float]: ...
+) -> TtestResult[_NDT_float]: ...  # undocumented
 
 #
 def unpack_TtestResult(
@@ -758,7 +811,7 @@ def unpack_TtestResult(
     Alternative,  # _alternative
     _NDT_float,  # _standard_error
     _NDT_float,  # _estimate
-]: ...
+]: ...  # undocumented
 
 #
 def ttest_1samp(
