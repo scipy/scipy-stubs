@@ -126,8 +126,8 @@ _RankMethod: TypeAlias = L["average", "min", "max", "dense", "ordinal"]
 
 _LMomentOrder: TypeAlias = L[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] | npc.integer
 _LMomentOrder1D: TypeAlias = Sequence[_LMomentOrder] | onp.CanArrayND[npc.integer]
-
 _RealLimits: TypeAlias = tuple[float | _Real0D, float | _Real0D]
+_Weigher: TypeAlias = Callable[[int], float | _Real0D]
 
 @type_check_only
 class _RVSCallable(Protocol):
@@ -772,24 +772,152 @@ def pointbiserialr(
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 #
+@overload
 def kendalltau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     *,
-    nan_policy: NanPolicy = "propagate",
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[float]: ...
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload
+def kendalltau(
+    x: onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict1D,
+    *,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload
+def kendalltau(
+    x: onp.ToFloatStrict2D,
+    y: onp.ToFloatStrict2D,
+    *,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array1D[np.float64]]: ...
+@overload
+def kendalltau(
+    x: onp.ToFloatStrict3D,
+    y: onp.ToFloatStrict3D,
+    *,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+@overload
+def kendalltau(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    *,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload
+def kendalltau(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    *,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
+) -> SignificanceResult[np.float64 | Any]: ...
 
 #
+@overload
 def weightedtau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     rank: onp.ToInt | onp.ToIntND = True,
-    weigher: Callable[[int], float | _Real0D] | None = None,
+    weigher: _Weigher | None = None,
     additive: bool = True,
-) -> SignificanceResult[float]: ...
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload
+def weightedtau(
+    x: onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict1D,
+    rank: onp.ToInt | onp.ToIntND = True,
+    weigher: _Weigher | None = None,
+    additive: bool = True,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload
+def weightedtau(
+    x: onp.ToFloatStrict2D,
+    y: onp.ToFloatStrict2D,
+    rank: onp.ToInt | onp.ToIntND = True,
+    weigher: _Weigher | None = None,
+    additive: bool = True,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array1D[np.float64]]: ...
+@overload
+def weightedtau(
+    x: onp.ToFloatStrict3D,
+    y: onp.ToFloatStrict3D,
+    rank: onp.ToInt | onp.ToIntND = True,
+    weigher: _Weigher | None = None,
+    additive: bool = True,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+@overload
+def weightedtau(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    rank: onp.ToInt | onp.ToIntND = True,
+    weigher: _Weigher | None = None,
+    additive: bool = True,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload
+def weightedtau(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    rank: onp.ToInt | onp.ToIntND = True,
+    weigher: _Weigher | None = None,
+    additive: bool = True,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
+) -> SignificanceResult[np.float64 | Any]: ...
 
 #
 def pack_TtestResult(

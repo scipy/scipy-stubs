@@ -1,2 +1,0 @@
-scipy\.stats\.(stats\.|_stats_py\.)?kendalltau
-scipy\.stats\.(stats\.|_stats_py\.)?weightedtau
