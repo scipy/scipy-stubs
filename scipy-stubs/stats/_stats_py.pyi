@@ -772,15 +772,78 @@ def pointbiserialr(
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 #
+@overload
 def kendalltau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     *,
-    nan_policy: NanPolicy = "propagate",
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[float]: ...
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload
+def kendalltau(
+    x: onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict1D,
+    *,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload
+def kendalltau(
+    x: onp.ToFloatStrict2D,
+    y: onp.ToFloatStrict2D,
+    *,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array1D[np.float64]]: ...
+@overload
+def kendalltau(
+    x: onp.ToFloatStrict3D,
+    y: onp.ToFloatStrict3D,
+    *,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+@overload
+def kendalltau(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    *,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload
+def kendalltau(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    *,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
+) -> SignificanceResult[np.float64 | Any]: ...
 
 #
 def weightedtau(
