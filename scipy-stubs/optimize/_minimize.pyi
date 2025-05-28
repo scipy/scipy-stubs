@@ -1,17 +1,5 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import (
-    Any,
-    Concatenate,
-    Final,
-    Literal,
-    LiteralString,
-    Protocol,
-    TypeAlias,
-    TypeVar,
-    TypedDict,
-    overload,
-    type_check_only,
-)
+from typing import Concatenate, Final, Literal, LiteralString, Protocol, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -63,7 +51,7 @@ class _CallbackVector(Protocol):
 
 @type_check_only
 class _MinimizeMethodFun(Protocol):
-    def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args, **kwargs: Any) -> OptimizeResult: ...
+    def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args) -> OptimizeResult: ...
 
 @type_check_only
 class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
@@ -75,7 +63,6 @@ class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
         args: _Args,
         bracket: _ToBracket,
         bound: _ToBound,
-        **options: Any,
     ) -> _MinimizeScalarResultT_co: ...
 
 @type_check_only
