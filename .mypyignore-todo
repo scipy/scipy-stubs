@@ -6,5 +6,3 @@ scipy\.stats\.(stats\.|_stats_py\.)?linregress
 scipy\.stats\.(stats\.|_stats_py\.)?pointbiserialr
 scipy\.stats\.(stats\.|_stats_py\.)?power_divergence
 scipy\.stats\.(stats\.|_stats_py\.)?weightedtau
-scipy\.stats\.(stats\.|_stats_py\.|_stats_mstats_common\.)?siegelslopes
-scipy\.stats\.(stats\.|_stats_py\.|_stats_mstats_common\.)?theilslopes

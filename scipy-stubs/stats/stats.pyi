@@ -452,6 +452,23 @@ def linregress(x: object, y: object = ..., alternative: object = ...) -> object:
 
 # mstats_basic
 @deprecated("will be removed in SciPy v2.0.0")
-def theilslopes(y: object, x: object = ..., alpha: object = ..., method: object = ...) -> object: ...
+def theilslopes(
+    y: object,
+    x: object = ...,
+    alpha: object = ...,
+    method: object = ...,
+    *,
+    axis: object = ...,
+    nan_policy: object = ...,
+    keepdims: object = ...,
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def siegelslopes(y: object, x: object = ..., method: object = ...) -> object: ...
+def siegelslopes(
+    y: object,
+    x: object = ...,
+    method: object = ...,
+    *,
+    axis: object = ...,
+    nan_policy: object = ...,
+    keepdims: object = ...,
+) -> object: ...
