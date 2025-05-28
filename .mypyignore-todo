@@ -1,8 +1,4 @@
-scipy\.stats\.mstats\.chisquare
-scipy\.stats\.(stats\.|_stats_py\.)?chisquare
-scipy\.stats\.(stats\.|_stats_py\.)?power_divergence
 scipy\.stats\.(stats\.|_stats_py\.)?linregress
-
 scipy\.stats\.(stats\.|_stats_py\.)?pointbiserialr
 scipy\.stats\.(stats\.|_stats_py\.)?kendalltau
 scipy\.stats\.(stats\.|_stats_py\.)?weightedtau

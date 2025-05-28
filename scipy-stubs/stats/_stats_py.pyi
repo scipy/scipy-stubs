@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Generic, Literal as L, Protocol, Self, TypeAlias, overload, type_check_only
+from typing import Any, Generic, Literal as L, Protocol, Self, TypeAlias, overload, type_check_only
 from typing_extensions import NamedTuple, TypeVar, deprecated
 
 import numpy as np
@@ -865,15 +865,97 @@ def ttest_rel(
 ) -> TtestResult: ...
 
 #
+@overload
+def power_divergence(
+    f_obs: onp.ToFloatStrict1D,
+    f_exp: onp.ToFloatStrict1D | None = None,
+    ddof: int = 0,
+    axis: int | None = 0,
+    lambda_: PowerDivergenceStatistic | float | None = None,
+    *,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float64]: ...
+@overload
+def power_divergence(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None,
+    ddof: int,
+    axis: None,
+    lambda_: PowerDivergenceStatistic | float | None = None,
+    *,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float64]: ...
+@overload
+def power_divergence(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None = None,
+    ddof: int = 0,
+    *,
+    axis: None,
+    lambda_: PowerDivergenceStatistic | float | None = None,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float64]: ...
+@overload
 def power_divergence(
     f_obs: onp.ToFloatND,
     f_exp: onp.ToFloatND | None = None,
     ddof: int = 0,
     axis: int | None = 0,
     lambda_: PowerDivergenceStatistic | float | None = None,
-) -> Power_divergenceResult: ...
+    *,
+    keepdims: L[True],
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[onp.ArrayND[np.float64]]: ...
+@overload
+def power_divergence(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None = None,
+    ddof: int = 0,
+    axis: int | None = 0,
+    lambda_: PowerDivergenceStatistic | float | None = None,
+    *,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float64 | Any]: ...
 
 #
+@overload
+def chisquare(
+    f_obs: onp.ToFloatStrict1D,
+    f_exp: onp.ToFloatStrict1D | None = None,
+    ddof: int = 0,
+    axis: int | None = 0,
+    *,
+    sum_check: bool = True,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float64]: ...
+@overload
+def chisquare(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None,
+    ddof: int,
+    axis: None,
+    *,
+    sum_check: bool = True,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float64]: ...
+@overload
+def chisquare(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None = None,
+    ddof: int = 0,
+    *,
+    axis: None,
+    sum_check: bool = True,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float64]: ...
+@overload
 def chisquare(
     f_obs: onp.ToFloatND,
     f_exp: onp.ToFloatND | None = None,
@@ -881,7 +963,20 @@ def chisquare(
     axis: int | None = 0,
     *,
     sum_check: bool = True,
-) -> Power_divergenceResult: ...
+    keepdims: L[True],
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[onp.ArrayND[np.float64]]: ...
+@overload
+def chisquare(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None = None,
+    ddof: int = 0,
+    axis: int | None = 0,
+    *,
+    sum_check: bool = True,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float64 | Any]: ...
 
 #
 def ks_1samp(
