@@ -12,8 +12,8 @@ authors = [
     {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
 ]
 maintainers = [
-    {name = "SciPy Developers", email = "scipy-dev@python.org"},
     {name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com"},
+    {name = "SciPy Developers", email = "scipy-dev@python.org"},
 ]
 license = "BSD-3-Clause"
 keywords = ["scipy", "typing", "pep484"]
@@ -98,7 +98,6 @@ uv run
     --reinstall-package=scipy-stubs
     stubtest
     --allowlist=.mypyignore
-    --allowlist=.mypyignore-todo
     --mypy-config-file=pyproject.toml
     $modules
 """
@@ -138,6 +137,7 @@ include = ["scipy-stubs", "scripts", "tests"]
 ignore = [
     ".venv",
     # https://github.com/jakebailey/pyright-action/issues/188
+    # https://github.com/microsoft/pyright/issues/10484
     "/opt/hostedtoolcache/pyright/",
 ]
 stubPath = "."
@@ -214,7 +214,7 @@ ignore = [
 src = ["scipy-stubs", "scripts"]
 extend-exclude = [".venv", ".git", ".mypy_cache", ".tox"]
 force-exclude = true
-# https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#maximum-line-length
+# https://typing.python.org/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130
 
     [tool.ruff.format]

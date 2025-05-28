@@ -126,6 +126,5 @@ jobs:
           --no-editable
           stubtest
           --allowlist=.mypyignore
-          --allowlist=.mypyignore-todo
           --mypy-config-file=pyproject.toml
           scipy
