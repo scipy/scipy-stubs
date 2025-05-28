@@ -2,8 +2,7 @@ name: CI
 
 on:
   push:
-    branches:
-      - master
+    branches: [master]
   pull_request:
   workflow_dispatch:
 
@@ -48,9 +47,6 @@ jobs:
         run: |
           uv run ruff check --output-format=github
           uv run ruff format --check
-
-      - name: add-trailing-commas
-        run: uvx add-trailing-comma **/*.py **/*.pyi
 
       # mypy_primer expects pyright to pass
       - name: pyright
@@ -97,20 +93,37 @@ jobs:
           python-version: ${{ matrix.python }}
 
       - name: basedpyright
-        run: uv run --with="numpy==${{ matrix.numpy }}" basedpyright
+        run: >
+          uv run
+          -p ${{ matrix.python }}
+          --with="numpy==${{ matrix.numpy }}"
+          --active
+          --no-editable
+          basedpyright
 
       - name: basedmypy
         run: >
-          uv run --with="numpy==${{ matrix.numpy }}"
+          uv run
+          -p ${{ matrix.python }}
+          --with="numpy==${{ matrix.numpy }}"
+          --active
+          --no-editable
           mypy
           --tb
           --hide-error-context
           --hide-error-code-links
+          --no-incremental
+          --cache-dir=/dev/null
+          --soft-error-limit=-1
           .
 
       - name: stubtest
         run: >
-          uv run --with="numpy==${{ matrix.numpy }}" --no-editable
+          uv run
+          -p ${{ matrix.python }}
+          --with="numpy==${{ matrix.numpy }}"
+          --active
+          --no-editable
           stubtest
           --allowlist=.mypyignore
           --allowlist=.mypyignore-todo
