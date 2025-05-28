@@ -1,3 +1,2 @@
-scipy\.stats\.(stats\.|_stats_py\.)?pointbiserialr
 scipy\.stats\.(stats\.|_stats_py\.)?kendalltau
 scipy\.stats\.(stats\.|_stats_py\.)?weightedtau
