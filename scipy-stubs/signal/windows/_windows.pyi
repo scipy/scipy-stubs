@@ -1,5 +1,5 @@
 from types import ModuleType
-from typing import Any, Literal, TypeAlias, overload
+from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeAliasType
 
 import numpy as np
@@ -46,7 +46,7 @@ _Device = TypeAliasType("_Device", Incomplete)
 _Float64_1D: TypeAlias = onp.Array1D[np.float64]
 _Float64_2D: TypeAlias = onp.Array2D[np.float64]
 
-_ToBool: TypeAlias = bool | np.bool_[Any]
+_ToBool: TypeAlias = bool | np.bool_
 _ToInt: TypeAlias = int | np.int16 | np.int32 | np.int64
 _ToFloat: TypeAlias = float | npc.floating | npc.integer
 
