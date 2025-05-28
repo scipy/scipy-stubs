@@ -219,8 +219,8 @@ line-length = 130
 preview = true
 
     [tool.ruff.format]
-    docstring-code-format = true
     line-ending = "lf"
+    skip-magic-trailing-comma = true
 
     [tool.ruff.lint]
     select = ["ALL"]
