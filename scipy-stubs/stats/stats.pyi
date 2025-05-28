@@ -363,9 +363,21 @@ def power_divergence(
     ddof: object = ...,
     axis: object = ...,
     lambda_: object = ...,
+    *,
+    keepdims: object = ...,
+    nan_policy: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def chisquare(f_obs: object, f_exp: object = ..., ddof: object = ..., axis: object = ..., *, sum_check: bool = ...) -> object: ...
+def chisquare(
+    f_obs: object,
+    f_exp: object = ...,
+    ddof: object = ...,
+    axis: object = ...,
+    *,
+    sum_check: bool = ...,
+    keepdims: object = ...,
+    nan_policy: object = ...,
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def ks_1samp(
     x: object,
