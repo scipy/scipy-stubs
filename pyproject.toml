@@ -212,17 +212,17 @@ ignore = [
 
 [tool.ruff]
 src = ["scipy-stubs", "scripts"]
-extend-exclude = [".venv", ".git", ".mypy_cache", ".tox"]
+extend-exclude = [".git", ".mypy_cache", ".tox", ".venv"]
 force-exclude = true
 # https://typing.python.org/en/latest/guides/writing_stubs.html#maximum-line-length
 line-length = 130
+preview = true
 
     [tool.ruff.format]
     docstring-code-format = true
     line-ending = "lf"
 
     [tool.ruff.lint]
-    preview = true
     select = ["ALL"]
     ignore = ["D", "FBT", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
 
@@ -231,6 +231,7 @@ line-length = 130
 
         [tool.ruff.lint.flake8-import-conventions]
         banned-from = ["numpy", "numpy.typing", "optype", "optype.numpy", "optype.typing"]
+
             [tool.ruff.lint.flake8-import-conventions.extend-aliases]
             "ctypes" = "ct"
             "datetime" = "dt"
@@ -238,17 +239,15 @@ line-length = 130
             "numpy.typing" = "npt"
             "optype" = "op"
             "optype.numpy" = "onp"
+            "optype.numpy.compat" = "npc"
             "optype.typing" = "opt"
 
         [tool.ruff.lint.isort]
+        case-sensitive = true
         combine-as-imports = true
+        extra-standard-library = ["_typeshed", "typing_extensions"]
         known-first-party = ["scipy"]
-        no-lines-before = ["typing", "first-party", "local-folder"]
-        section-order = ["standard-library", "typing", "third-party", "first-party", "local-folder"]
-        split-on-trailing-comma = true
-
-            [tool.ruff.lint.isort.sections]
-            typing = ["collections.abc", "types", "typing", "typing_extensions"]
+        split-on-trailing-comma = false
 
         [tool.ruff.lint.flake8-annotations]
         allow-star-arg-any = true
