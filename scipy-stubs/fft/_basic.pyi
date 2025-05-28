@@ -3,6 +3,7 @@ from typing import Literal, TypeAlias
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import AnyShape
 
 _Norm: TypeAlias = Literal["backward", "ortho", "forward"]

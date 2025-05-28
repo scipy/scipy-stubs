@@ -4,6 +4,7 @@ from typing_extensions import TypedDict
 
 import numpy as np
 import optype.numpy as onp
+
 from ._constraints import Bounds as _Bounds, LinearConstraint, NonlinearConstraint
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._minimize import _MinimizeOptions
@@ -78,7 +79,7 @@ _MethodRoot: TypeAlias = Literal[
     "excitingmixing",
     "krylov",
     "df-sane",
-]
+]  # fmt: skip
 MethodRootScalar: TypeAlias = Literal["bisect", "brentq", "brenth", "ridder", "toms748", "newton", "secant", "halley"]
 _MethodQuadraticAssignment: TypeAlias = Literal["faq", "2opt"]
 MethodAll: TypeAlias = Literal[
@@ -88,7 +89,7 @@ MethodAll: TypeAlias = Literal[
     MethodRootScalar,
     MethodLinprog,
     _MethodQuadraticAssignment,
-]
+]  # fmt: skip
 
 _FDMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
 

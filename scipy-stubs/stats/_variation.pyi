@@ -6,6 +6,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLike, _NestedSequence
+
 from scipy._typing import AnyBool, Falsy, NanPolicy, Truthy
 
 _SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
@@ -56,12 +57,7 @@ def variation(
 # array-like input with known floating- or complex-floating dtypes
 @overload
 def variation(
-    a: _ArrayLike[_SCT_fc],
-    axis: None,
-    nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
-    *,
-    keepdims: Falsy = False,
+    a: _ArrayLike[_SCT_fc], axis: None, nan_policy: NanPolicy = "propagate", ddof: onp.ToInt = 0, *, keepdims: Falsy = False
 ) -> _SCT_fc: ...
 @overload
 def variation(
@@ -95,12 +91,7 @@ def variation(
 ) -> np.complex128 | np.float64: ...
 @overload
 def variation(
-    a: _NestedSequence[complex],
-    axis: None,
-    nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
-    *,
-    keepdims: Falsy = False,
+    a: _NestedSequence[complex], axis: None, nan_policy: NanPolicy = "propagate", ddof: onp.ToInt = 0, *, keepdims: Falsy = False
 ) -> np.complex128 | np.float64: ...
 @overload
 def variation(

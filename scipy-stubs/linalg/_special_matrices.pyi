@@ -7,6 +7,7 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._typing import ConvMode
 
 __all__ = [

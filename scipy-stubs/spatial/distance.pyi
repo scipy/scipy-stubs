@@ -5,6 +5,7 @@ from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, ToRNG, Truthy
 
 __all__ = [
@@ -199,9 +200,7 @@ def squareform(X: onp.ToJustFloatStrict1D, force: _Force = "no", checks: bool = 
 def squareform(X: onp.ToJustComplexStrict1D, force: _Force = "no", checks: bool = True) -> onp.Array2D[np.complex128]: ...
 @overload  # 1-d array-like
 def squareform(
-    X: Seq[_NumberT] | onp.CanArray1D[_NumberT],
-    force: _Force = "no",
-    checks: bool = True,
+    X: Seq[_NumberT] | onp.CanArray1D[_NumberT], force: _Force = "no", checks: bool = True
 ) -> onp.Array2D[_NumberT]: ...
 @overload  # 2-d int
 def squareform(X: onp.ToJustIntStrict2D, force: _Force = "no", checks: bool = True) -> onp.Array1D[np.int_]: ...
@@ -211,15 +210,11 @@ def squareform(X: onp.ToJustFloatStrict2D, force: _Force = "no", checks: bool = 
 def squareform(X: onp.ToJustComplexStrict2D, force: _Force = "no", checks: bool = True) -> onp.Array1D[np.complex128]: ...
 @overload  # 2-d array-like
 def squareform(
-    X: _Seq2D[_NumberT] | Seq[onp.Array1D[_NumberT]] | onp.CanArray2D[_NumberT],
-    force: _Force = "no",
-    checks: bool = True,
+    X: _Seq2D[_NumberT] | Seq[onp.Array1D[_NumberT]] | onp.CanArray2D[_NumberT], force: _Force = "no", checks: bool = True
 ) -> onp.Array1D[_NumberT]: ...
 @overload  # ?-d array-like
 def squareform(
-    X: Seq[onp.CanArrayND[_NumberT]] | onp.CanArrayND[_NumberT],
-    force: _Force = "no",
-    checks: bool = True,
+    X: Seq[onp.CanArrayND[_NumberT]] | onp.CanArrayND[_NumberT], force: _Force = "no", checks: bool = True
 ) -> onp.Array1D[_NumberT] | onp.Array2D[_NumberT]: ...
 
 #
@@ -257,30 +252,15 @@ def sqeuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None 
 #
 @overload
 def jensenshannon(
-    p: onp.ToFloatStrict1D,
-    q: onp.ToFloatStrict1D,
-    base: onp.ToFloat | None = None,
-    *,
-    axis: int = 0,
-    keepdims: Falsy = False,
+    p: onp.ToFloatStrict1D, q: onp.ToFloatStrict1D, base: onp.ToFloat | None = None, *, axis: int = 0, keepdims: Falsy = False
 ) -> np.float32 | np.float64: ...
 @overload
 def jensenshannon(
-    p: onp.ToFloatStrict1D,
-    q: onp.ToFloatStrict1D,
-    base: onp.ToFloat | None = None,
-    *,
-    axis: int = 0,
-    keepdims: Truthy,
+    p: onp.ToFloatStrict1D, q: onp.ToFloatStrict1D, base: onp.ToFloat | None = None, *, axis: int = 0, keepdims: Truthy
 ) -> onp.Array1D[np.float32 | np.float64]: ...
 @overload
 def jensenshannon(
-    p: onp.ToFloatND,
-    q: onp.ToFloatND,
-    base: onp.ToFloat | None = None,
-    *,
-    axis: int = 0,
-    keepdims: bool = False,
+    p: onp.ToFloatND, q: onp.ToFloatND, base: onp.ToFloat | None = None, *, axis: int = 0, keepdims: bool = False
 ) -> np.float32 | np.float64 | onp.ArrayND[np.float32 | np.float64]: ...
 
 # NOTE: The output of the following functions is always real, but complex input usually results in a `ComplexWarning` at runtime.
@@ -295,7 +275,7 @@ def euclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = 
 def jaccard(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToBool1D | None = None) -> np.float64: ...
 @deprecated(
     "The `kulczynski1` metric is deprecated since SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Replace usage of `kulczynski1(u, v)` with `1 / jaccard(u, v) - 1`.",
+    "Replace usage of `kulczynski1(u, v)` with `1 / jaccard(u, v) - 1`."
 )
 def kulczynski1(u: onp.ToComplex1D, v: onp.ToFloat1D, *, w: onp.ToFloat1D | None = None) -> np.float64: ...
 def minkowski(u: onp.ToComplex1D, v: onp.ToComplex1D, p: float = 2, w: onp.ToFloat1D | None = None) -> float: ...
@@ -304,7 +284,7 @@ def russellrao(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None =
 def seuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, V: onp.ToFloat1D) -> float: ...
 @deprecated(
     "The `sokalmichener` metric is deprecated since SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Replace usage of `sokalmichener(u, v)` with `rogerstanimoto(u, v)`.",
+    "Replace usage of `sokalmichener(u, v)` with `rogerstanimoto(u, v)`."
 )
 def sokalmichener(u: onp.ToComplex1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> float: ...
 def yule(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...

@@ -3,7 +3,9 @@ from typing_extensions import TypeVar, Unpack, override
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.spatial._ckdtree import cKDTree
+
 from ._interpnd import CloughTocher2DInterpolator, LinearNDInterpolator, NDInterpolatorBase
 
 __all__ = ["CloughTocher2DInterpolator", "LinearNDInterpolator", "NearestNDInterpolator", "griddata"]
@@ -65,12 +67,7 @@ class NearestNDInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
 
     #
     @override
-    def __call__(
-        self,
-        /,
-        *args: onp.ToFloatND,
-        **query_options: Unpack[_QueryOptions],
-    ) -> onp.Array[onp.AtLeast1D, _CT_co]: ...
+    def __call__(self, /, *args: onp.ToFloatND, **query_options: Unpack[_QueryOptions]) -> onp.Array[onp.AtLeast1D, _CT_co]: ...
 
 #
 @overload

@@ -1,12 +1,14 @@
 from collections.abc import Callable, Mapping
-from typing import Concatenate, Literal, TypeAlias, TypedDict, TypeVar, final, overload, type_check_only
+from typing import Concatenate, Literal, TypeAlias, TypeVar, TypedDict, final, overload, type_check_only
 from typing_extensions import Unpack
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 from scipy.sparse import sparray, spmatrix
+
 from ._constraints import Bounds
 
 __all__ = ["curve_fit", "fixed_point", "fsolve", "leastsq"]

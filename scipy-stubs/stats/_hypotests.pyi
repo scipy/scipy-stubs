@@ -1,12 +1,14 @@
-from dataclasses import dataclass
 from collections.abc import Callable
+from dataclasses import dataclass
 from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import Alternative, Falsy, NanPolicy, Truthy
+
 from ._common import ConfidenceInterval
 from ._stats_py import SignificanceResult
 

@@ -4,6 +4,7 @@ from typing_extensions import Unpack, override
 
 import numpy as np
 import optype.numpy as onp
+
 from ._minimize import OptimizeResult
 from ._trustregion import BaseQuadraticSubproblem
 
@@ -28,9 +29,7 @@ def _minimize_trustregion_exact(
 def estimate_smallest_singular_value(U: onp.ToFloat2D) -> tuple[float | np.float64, onp.Array1D[np.float64]]: ...
 def gershgorin_bounds(H: onp.ToFloat2D) -> tuple[float | np.float64, float | np.float64]: ...
 def singular_leading_submatrix(
-    A: onp.ToFloat2D,
-    U: onp.ToFloat2D,
-    k: onp.ToJustInt,
+    A: onp.ToFloat2D, U: onp.ToFloat2D, k: onp.ToJustInt
 ) -> tuple[float | np.float64, onp.Array1D[np.float64]]: ...
 
 class IterativeSubproblem(BaseQuadraticSubproblem):

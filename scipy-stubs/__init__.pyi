@@ -2,6 +2,7 @@ from collections.abc import Sequence
 from typing import Final, Literal, TypeAlias
 
 from numpy import __version__ as __numpy_version__  # noqa: ICN003
+
 from . import (
     cluster,
     constants,

@@ -1,10 +1,12 @@
 from collections.abc import Callable, Mapping
-from typing import Any, Concatenate, Generic, Literal, TypeAlias, TypedDict, TypeVar, overload, type_check_only
+from typing import Any, Concatenate, Generic, Literal, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 from scipy.sparse.linalg import LinearOperator
+
 from ._nonlin import InverseJacobian
 from ._optimize import OptimizeResult as _OptimizeResult
 
@@ -21,7 +23,7 @@ _RootMethod: TypeAlias = Literal[
     "excitingmixing",
     "krylov",
     "df-sane",
-]
+]  # fmt: skip
 
 _JacOptionsT = TypeVar("_JacOptionsT", bound=Mapping[str, object])
 

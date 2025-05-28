@@ -13,19 +13,10 @@ class LinAlgError(np.linalg.LinAlgError): ...
 def get_lapack_funcs(names: object, arrays: object = ..., dtype: object = ..., ilp64: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def eigvals(
-    a: object,
-    b: object = ...,
-    overwrite_a: object = ...,
-    check_finite: object = ...,
-    homogeneous_eigvals: object = ...,
+    a: object, b: object = ..., overwrite_a: object = ..., check_finite: object = ..., homogeneous_eigvals: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def norm(
-    x: object,
-    ord: object = ...,
-    axis: object = ...,
-    keepdims: object = ...,
-) -> object: ...
+def norm(x: object, ord: object = ..., axis: object = ..., keepdims: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def schur(
     a: object,

@@ -4,6 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from .base import DenseOutput, OdeSolver
 
 _SCT_fc = TypeVar("_SCT_fc", bound=np.float64 | np.complex128, default=np.float64 | np.complex128)

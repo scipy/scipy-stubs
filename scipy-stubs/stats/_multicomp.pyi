@@ -3,7 +3,9 @@ from typing import Any
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Alternative, ToRNG
+
 from ._common import ConfidenceInterval
 
 __all__ = ["dunnett"]
@@ -29,8 +31,5 @@ class DunnettResult:
     def confidence_interval(self, /, confidence_level: float | np.floating[Any] = 0.95) -> ConfidenceInterval: ...
 
 def dunnett(
-    *samples: onp.ToFloat1D,
-    control: onp.ToFloat1D,
-    alternative: Alternative = "two-sided",
-    rng: ToRNG = None,
+    *samples: onp.ToFloat1D, control: onp.ToFloat1D, alternative: Alternative = "two-sided", rng: ToRNG = None
 ) -> DunnettResult: ...

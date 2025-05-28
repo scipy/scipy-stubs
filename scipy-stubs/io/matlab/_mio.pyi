@@ -3,8 +3,10 @@ from typing import Literal, TypeAlias, TypedDict, type_check_only
 from typing_extensions import Unpack
 
 import optype.numpy as onp
+
 from scipy._typing import ByteOrder, FileName
 from scipy.sparse import coo_array, coo_matrix
+
 from ._miobase import MatFileReader
 
 __all__ = ["loadmat", "savemat", "whosmat"]
@@ -47,9 +49,7 @@ class _ReaderKwargs(TypedDict, total=False):
 ###
 
 def mat_reader_factory(
-    file_name: FileName,
-    appendmat: bool = True,
-    **kwargs: Unpack[_ReaderKwargs],
+    file_name: FileName, appendmat: bool = True, **kwargs: Unpack[_ReaderKwargs]
 ) -> tuple[MatFileReader, bool]: ...
 
 #
@@ -75,7 +75,5 @@ def savemat(
 
 #
 def whosmat(
-    file_name: FileName,
-    appendmat: bool = True,
-    **kwargs: Unpack[_ReaderKwargs],
+    file_name: FileName, appendmat: bool = True, **kwargs: Unpack[_ReaderKwargs]
 ) -> list[tuple[str, tuple[int, ...], _DataClass]]: ...

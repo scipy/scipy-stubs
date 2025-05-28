@@ -3,11 +3,13 @@ from typing import Concatenate, Final, Literal, Protocol, TypeAlias, TypedDict, 
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.optimize._constraints import Bounds, LinearConstraint, NonlinearConstraint, PreparedConstraint
 from scipy.optimize._differentiable_functions import _DoesMap
 from scipy.optimize._optimize import OptimizeResult as _OptimizeResult
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
+
 from .canonical_constraint import CanonicalConstraint
 
 _StopCond: TypeAlias = Literal[0, 1, 2, 3, 4]

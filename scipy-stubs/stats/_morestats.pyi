@@ -7,8 +7,10 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._typing import Alternative, AnyBool, Falsy, NanPolicy, Truthy
 from scipy.optimize import OptimizeResult
+
 from ._distn_infrastructure import rv_continuous_frozen
 from ._fit import FitResult
 from ._resampling import PermutationMethod
@@ -57,7 +59,7 @@ _NDT_co = TypeVar(
     covariant=True,
     bound=np.float64 | onp.ArrayND[np.float64],
     default=np.float64 | onp.ArrayND[np.float64],
-)
+)  # fmt: skip
 
 @type_check_only
 class _TestResult(NamedTuple, Generic[_NDT_co]):
@@ -200,21 +202,10 @@ class AndersonResult(BaseBunch[np.float64, _Float1D, _Float1D]):
 
     #
     def __new__(
-        _cls,
-        statistic: np.float64,
-        critical_values: _Float1D,
-        significance_level: _Float1D,
-        *,
-        fit_result: _AndersonResult,
+        _cls, statistic: np.float64, critical_values: _Float1D, significance_level: _Float1D, *, fit_result: _AndersonResult
     ) -> Self: ...
     def __init__(
-        self,
-        /,
-        statistic: np.float64,
-        critical_values: _Float1D,
-        significance_level: _Float1D,
-        *,
-        fit_result: _AndersonResult,
+        self, /, statistic: np.float64, critical_values: _Float1D, significance_level: _Float1D, *, fit_result: _AndersonResult
     ) -> None: ...
 
 class Anderson_ksampResult(BaseBunch[np.float64, _Float1D, np.float64]):
@@ -257,12 +248,7 @@ def mvsdist(data: onp.ToFloatND) -> _Tuple3[rv_continuous_frozen]: ...
 #
 @overload
 def kstat(
-    data: onp.ToFloatND,
-    n: _KStatOrder = 2,
-    *,
-    axis: None = None,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: Falsy = False,
+    data: onp.ToFloatND, n: _KStatOrder = 2, *, axis: None = None, nan_policy: NanPolicy = "propagate", keepdims: Falsy = False
 ) -> np.float64: ...
 @overload
 def kstat(
@@ -286,12 +272,7 @@ def kstat(
 #
 @overload
 def kstatvar(
-    data: onp.ToFloatND,
-    n: _KStatOrder = 2,
-    *,
-    axis: None = None,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: Falsy = False,
+    data: onp.ToFloatND, n: _KStatOrder = 2, *, axis: None = None, nan_policy: NanPolicy = "propagate", keepdims: Falsy = False
 ) -> np.float64: ...
 @overload
 def kstatvar(
@@ -435,30 +416,15 @@ def boxcox_llf(
 ) -> npc.floating: ...
 @overload
 def boxcox_llf(
-    lmb: onp.ToFloat,
-    data: onp.ToFloatND,
-    *,
-    axis: None,
-    keepdims: Literal[False] = False,
-    nan_policy: NanPolicy = "propagate",
+    lmb: onp.ToFloat, data: onp.ToFloatND, *, axis: None, keepdims: Literal[False] = False, nan_policy: NanPolicy = "propagate"
 ) -> npc.floating: ...
 @overload
 def boxcox_llf(
-    lmb: onp.ToFloat,
-    data: onp.ToFloatND,
-    *,
-    axis: int | None = 0,
-    keepdims: Literal[True],
-    nan_policy: NanPolicy = "propagate",
+    lmb: onp.ToFloat, data: onp.ToFloatND, *, axis: int | None = 0, keepdims: Literal[True], nan_policy: NanPolicy = "propagate"
 ) -> onp.ArrayND[npc.floating]: ...
 @overload
 def boxcox_llf(
-    lmb: onp.ToFloat,
-    data: onp.ToFloatND,
-    *,
-    axis: int | None = 0,
-    keepdims: bool = False,
-    nan_policy: NanPolicy = "propagate",
+    lmb: onp.ToFloat, data: onp.ToFloatND, *, axis: int | None = 0, keepdims: bool = False, nan_policy: NanPolicy = "propagate"
 ) -> npc.floating | onp.ArrayND[npc.floating]: ...
 @overload
 def boxcox_llf(
@@ -473,10 +439,7 @@ def boxcox_llf(
 #
 @overload
 def boxcox(
-    x: onp.ToFloat | onp.ToFloatND,
-    lmbda: None = None,
-    alpha: None = None,
-    optimizer: _MinFun1D | None = None,
+    x: onp.ToFloat | onp.ToFloatND, lmbda: None = None, alpha: None = None, optimizer: _MinFun1D | None = None
 ) -> tuple[_Float1D, np.float64]: ...
 @overload
 def boxcox(
@@ -487,18 +450,11 @@ def boxcox(
 ) -> _Float1D: ...
 @overload
 def boxcox(
-    x: onp.ToFloat | onp.ToFloatND,
-    lmbda: None,
-    alpha: float | npc.floating,
-    optimizer: _MinFun1D | None = None,
+    x: onp.ToFloat | onp.ToFloatND, lmbda: None, alpha: float | npc.floating, optimizer: _MinFun1D | None = None
 ) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
 @overload
 def boxcox(
-    x: onp.ToFloat | onp.ToFloatND,
-    lmbda: None = None,
-    *,
-    alpha: float | npc.floating,
-    optimizer: _MinFun1D | None = None,
+    x: onp.ToFloat | onp.ToFloatND, lmbda: None = None, *, alpha: float | npc.floating, optimizer: _MinFun1D | None = None
 ) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
 
 #
@@ -565,28 +521,17 @@ def anderson(x: onp.ToFloat | onp.ToFloatND, dist: _RVCAnderson = "norm") -> And
 
 #
 def anderson_ksamp(
-    samples: onp.ToFloatND,
-    midrank: bool = True,
-    *,
-    method: PermutationMethod | None = None,
+    samples: onp.ToFloatND, midrank: bool = True, *, method: PermutationMethod | None = None
 ) -> Anderson_ksampResult: ...
 
 #
 @overload
 def shapiro(
-    x: onp.ToFloat | onp.ToFloatND,
-    *,
-    axis: None = None,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: Falsy = False,
+    x: onp.ToFloat | onp.ToFloatND, *, axis: None = None, nan_policy: NanPolicy = "propagate", keepdims: Falsy = False
 ) -> ShapiroResult[np.float64]: ...
 @overload
 def shapiro(
-    x: onp.ToFloat | onp.ToFloatND,
-    *,
-    axis: op.CanIndex | None = None,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: Truthy,
+    x: onp.ToFloat | onp.ToFloatND, *, axis: op.CanIndex | None = None, nan_policy: NanPolicy = "propagate", keepdims: Truthy
 ) -> ShapiroResult[onp.ArrayND[np.float64]]: ...
 @overload
 def shapiro(
@@ -632,24 +577,15 @@ def ansari(
 #
 @overload
 def bartlett(
-    *samples: onp.ToFloatND,
-    axis: None,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: Falsy = False,
+    *samples: onp.ToFloatND, axis: None, nan_policy: NanPolicy = "propagate", keepdims: Falsy = False
 ) -> BartlettResult[np.float64]: ...
 @overload
 def bartlett(
-    *samples: onp.ToFloatND,
-    axis: op.CanIndex | None = 0,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: Truthy,
+    *samples: onp.ToFloatND, axis: op.CanIndex | None = 0, nan_policy: NanPolicy = "propagate", keepdims: Truthy
 ) -> BartlettResult[onp.ArrayND[np.float64]]: ...
 @overload
 def bartlett(
-    *samples: onp.ToFloatND,
-    axis: op.CanIndex | None = 0,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: AnyBool = False,
+    *samples: onp.ToFloatND, axis: op.CanIndex | None = 0, nan_policy: NanPolicy = "propagate", keepdims: AnyBool = False
 ) -> BartlettResult: ...
 
 #
@@ -785,9 +721,7 @@ def wilcoxon(
 
 #
 def wilcoxon_result_object(
-    statistic: np.float64,
-    pvalue: np.float64,
-    zstatistic: np.float64 | None = None,
+    statistic: np.float64, pvalue: np.float64, zstatistic: np.float64 | None = None
 ) -> WilcoxonResult: ...  # undocumented
 def wilcoxon_result_unpacker(res: WilcoxonResult) -> _Tuple2[np.float64] | _Tuple3[np.float64]: ...  # undocumented
 def wilcoxon_outputs(kwds: dict[str, str]) -> Literal[2, 3]: ...  # undocumented
@@ -905,8 +839,5 @@ def directional_stats(samples: onp.ToFloatND, *, axis: op.CanIndex | None = 0, n
 
 #
 def false_discovery_control(
-    ps: onp.ToFloat | onp.ToFloatND,
-    *,
-    axis: op.CanIndex | None = 0,
-    method: Literal["bh", "by"] = "bh",
+    ps: onp.ToFloat | onp.ToFloatND, *, axis: op.CanIndex | None = 0, method: Literal["bh", "by"] = "bh"
 ) -> onp.ArrayND[np.float64]: ...

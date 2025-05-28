@@ -7,6 +7,7 @@ from typing_extensions import TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import CFloating, Floating, Integer, Numeric
 
@@ -48,7 +49,7 @@ class LinearOperator(Generic[_SCT_co]):
     def transpose(self, /) -> _TransposedLinearOperator[_SCT_co]: ...
 
     #
-    def __new__(cls, *args: Any, **kwargs: Any) -> Self: ...
+    def __new__(cls, *args: Any, **kwargs: Any) -> Self: ...  # noqa: ANN401
 
     #
     @overload

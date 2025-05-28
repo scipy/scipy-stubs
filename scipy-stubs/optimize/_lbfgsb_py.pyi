@@ -3,6 +3,7 @@ from typing import Concatenate, Final, Literal, TypeAlias, TypedDict, type_check
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["LbfgsInvHessProduct", "fmin_l_bfgs_b"]

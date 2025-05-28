@@ -4,6 +4,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
+
 from scipy.sparse import bsr_array, coo_array, csc_array, csr_array, dia_array, dok_array, lil_array
 from scipy.sparse._typing import Floating, Integer
 from scipy.sparse.linalg import LinearOperator
@@ -26,31 +27,13 @@ class LaplacianNd(LinearOperator[_SCT], Generic[_SCT]):
     boundary_conditions: Final[_BCs]
 
     @overload  # default dtype (int8)
-    def __init__(
-        self: LaplacianNd[np.int8],
-        /,
-        grid_shape: onp.AtLeast1D,
-        *,
-        boundary_conditions: _BCs = "neumann",
-    ) -> None: ...
+    def __init__(self: LaplacianNd[np.int8], /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann") -> None: ...
     @overload  # know dtype
     def __init__(
-        self,
-        /,
-        grid_shape: onp.AtLeast1D,
-        *,
-        boundary_conditions: _BCs = "neumann",
-        dtype: onp.ToDType[_SCT],
+        self, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann", dtype: onp.ToDType[_SCT]
     ) -> None: ...
     @overload  # unknow dtype
-    def __init__(
-        self,
-        /,
-        grid_shape: onp.AtLeast1D,
-        *,
-        boundary_conditions: _BCs = "neumann",
-        dtype: npt.DTypeLike,
-    ) -> None: ...
+    def __init__(self, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann", dtype: npt.DTypeLike) -> None: ...
 
     #
     def eigenvalues(self, /, m: onp.ToJustInt | None = None) -> onp.Array1D[np.float64]: ...

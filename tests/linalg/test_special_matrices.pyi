@@ -2,6 +2,7 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.linalg import kron, toeplitz
 
 arr_f8_1d: onp.Array1D[np.float64]

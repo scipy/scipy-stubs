@@ -3,6 +3,7 @@ from typing import Any, TypeVar, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.sparse._typing import Numeric
 from scipy.sparse.linalg._interface import LinearOperator
 

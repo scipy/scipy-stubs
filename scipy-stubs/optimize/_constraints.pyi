@@ -5,6 +5,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.optimize._differentiable_functions import LinearVectorFunction, VectorFunction
 from scipy.optimize._hessian_update_strategy import HessianUpdateStrategy
 from scipy.sparse import sparray, spmatrix

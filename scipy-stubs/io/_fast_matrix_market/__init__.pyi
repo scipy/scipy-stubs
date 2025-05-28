@@ -4,6 +4,7 @@ from typing_extensions import TypedDict, Unpack, override
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, FileLike, FileName, Truthy
 from scipy.sparse import coo_array, coo_matrix
 from scipy.sparse._base import _spbase

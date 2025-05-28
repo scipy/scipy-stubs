@@ -5,7 +5,9 @@ from typing import Literal as L, TypeAlias, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import NanPolicy
+
 from . import _resampling
 from ._stats_py import SignificanceResult
 

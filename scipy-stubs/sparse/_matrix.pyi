@@ -9,7 +9,9 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import OrderCF
+
 from ._base import _spbase
 from ._bsr import bsr_matrix
 from ._coo import coo_matrix

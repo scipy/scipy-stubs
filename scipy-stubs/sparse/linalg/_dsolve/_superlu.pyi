@@ -4,6 +4,7 @@ from typing import Any, Literal, TypeAlias, final, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.sparse import csc_array, csc_matrix, csr_matrix
 
 _Int1D: TypeAlias = onp.Array1D[np.int32]

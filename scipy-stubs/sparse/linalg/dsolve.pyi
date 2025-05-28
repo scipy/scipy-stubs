@@ -45,10 +45,5 @@ def spilu(
 def factorized(A: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def spsolve_triangular(
-    A: object,
-    b: object,
-    lower: object = ...,
-    overwrite_A: object = ...,
-    overwrite_b: object = ...,
-    unit_diagonal: object = ...,
+    A: object, b: object, lower: object = ..., overwrite_A: object = ..., overwrite_b: object = ..., unit_diagonal: object = ...
 ) -> object: ...

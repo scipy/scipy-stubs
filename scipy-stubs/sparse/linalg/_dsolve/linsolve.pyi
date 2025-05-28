@@ -4,9 +4,11 @@ from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse._base import SparseEfficiencyWarning, _spbase
 from scipy.sparse._bsr import _bsr_base
 from scipy.sparse._lil import _lil_base
+
 from ._superlu import SuperLU
 
 __all__ = [
@@ -56,10 +58,7 @@ def factorized(A: _spbase | onp.ToComplex2D) -> _Solve: ...
 #
 @overload
 def spsolve(
-    A: _spbase | onp.ToComplex2D,
-    b: _SparseT,
-    permc_spec: _PermcSpec | None = None,
-    use_umfpack: bool = True,
+    A: _spbase | onp.ToComplex2D, b: _SparseT, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
 ) -> _SparseT: ...
 @overload
 def spsolve(

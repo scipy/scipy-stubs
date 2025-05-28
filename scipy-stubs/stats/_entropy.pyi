@@ -6,6 +6,7 @@ from typing import Any, Literal
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 import scipy._typing as spt
 
 __all__ = ["differential_entropy", "entropy"]

@@ -4,6 +4,7 @@ from typing_extensions import TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 from scipy.sparse import coo_matrix, dok_matrix
 
@@ -254,31 +255,15 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     #
     @overload
     def query_pairs(
-        self,
-        /,
-        r: onp.ToFloat,
-        p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = 0,
-        output_type: L["set"] = "set",
+        self, /, r: onp.ToFloat, p: onp.ToFloat = 2.0, eps: onp.ToFloat = 0, output_type: L["set"] = "set"
     ) -> set[tuple[int, int]]: ...
     @overload
     def query_pairs(
-        self,
-        /,
-        r: onp.ToFloat,
-        p: onp.ToFloat,
-        eps: onp.ToFloat,
-        output_type: L["ndarray"],
+        self, /, r: onp.ToFloat, p: onp.ToFloat, eps: onp.ToFloat, output_type: L["ndarray"]
     ) -> onp.ArrayND[np.intp]: ...
     @overload
     def query_pairs(
-        self,
-        /,
-        r: onp.ToFloat,
-        p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = 0,
-        *,
-        output_type: L["ndarray"],
+        self, /, r: onp.ToFloat, p: onp.ToFloat = 2.0, eps: onp.ToFloat = 0, *, output_type: L["ndarray"]
     ) -> onp.ArrayND[np.intp]: ...
 
     #
@@ -294,24 +279,11 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     ) -> np.intp: ...
     @overload
     def count_neighbors(
-        self,
-        /,
-        other: cKDTree,
-        r: onp.ToFloat,
-        p: onp.ToFloat,
-        weights: _Weights,
-        cumulative: bool = True,
+        self, /, other: cKDTree, r: onp.ToFloat, p: onp.ToFloat, weights: _Weights, cumulative: bool = True
     ) -> np.float64: ...
     @overload
     def count_neighbors(
-        self,
-        /,
-        other: cKDTree,
-        r: onp.ToFloat,
-        p: onp.ToFloat = 2.0,
-        *,
-        weights: _Weights,
-        cumulative: bool = True,
+        self, /, other: cKDTree, r: onp.ToFloat, p: onp.ToFloat = 2.0, *, weights: _Weights, cumulative: bool = True
     ) -> np.float64: ...
     @overload
     def count_neighbors(
@@ -325,13 +297,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     ) -> np.intp | onp.Array1D[np.intp]: ...
     @overload
     def count_neighbors(
-        self,
-        /,
-        other: cKDTree,
-        r: onp.ToFloat | onp.ToFloat1D,
-        p: onp.ToFloat,
-        weights: _Weights,
-        cumulative: bool = True,
+        self, /, other: cKDTree, r: onp.ToFloat | onp.ToFloat1D, p: onp.ToFloat, weights: _Weights, cumulative: bool = True
     ) -> np.float64 | onp.Array1D[np.float64]: ...
     @overload
     def count_neighbors(
@@ -348,40 +314,17 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     #
     @overload
     def sparse_distance_matrix(
-        self,
-        /,
-        other: cKDTree,
-        max_distance: onp.ToFloat,
-        p: onp.ToFloat = 2.0,
-        output_type: L["dok_matrix"] = ...,
+        self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, output_type: L["dok_matrix"] = ...
     ) -> dok_matrix[np.float64]: ...
     @overload
     def sparse_distance_matrix(
-        self,
-        /,
-        other: cKDTree,
-        max_distance: onp.ToFloat,
-        p: onp.ToFloat = 2.0,
-        *,
-        output_type: L["coo_matrix"],
+        self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["coo_matrix"]
     ) -> coo_matrix[np.float64]: ...
     @overload
     def sparse_distance_matrix(
-        self,
-        /,
-        other: cKDTree,
-        max_distance: onp.ToFloat,
-        p: onp.ToFloat = 2.0,
-        *,
-        output_type: L["dict"],
+        self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["dict"]
     ) -> dict[tuple[int, int], float]: ...
     @overload
     def sparse_distance_matrix(
-        self,
-        /,
-        other: cKDTree,
-        max_distance: onp.ToFloat,
-        p: onp.ToFloat = 2.0,
-        *,
-        output_type: L["ndarray"],
+        self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["ndarray"]
     ) -> onp.ArrayND[np.void]: ...

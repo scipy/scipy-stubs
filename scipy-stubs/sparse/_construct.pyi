@@ -5,7 +5,9 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 import optype.typing as opt
+
 from scipy._typing import ToRNG
+
 from ._base import _spbase, sparray
 from ._bsr import bsr_array, bsr_matrix
 from ._coo import coo_array, coo_matrix
@@ -430,206 +432,95 @@ def identity(n: opt.AnyInt, dtype: npt.DTypeLike, format: _FmtNonDIA) -> _SpMatr
 #
 @overload  # dtype like bool, format: None = ...
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: onp.AnyBoolDType,
-    format: _FmtDIA | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: onp.AnyBoolDType, format: _FmtDIA | None = None
 ) -> dia_array[np.bool_]: ...
 @overload  # dtype like int, format: None = ...
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: onp.AnyIntDType,
-    format: _FmtDIA | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: onp.AnyIntDType, format: _FmtDIA | None = None
 ) -> dia_array[np.int_]: ...
 @overload  # dtype like float (default), format: None = ...
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: onp.AnyFloat64DType = ...,
-    format: _FmtDIA | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtDIA | None = None
 ) -> dia_array[np.float64]: ...
 @overload  # dtype like complex, format: None = ...
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: onp.AnyComplex128DType,
-    format: _FmtDIA | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: onp.AnyComplex128DType, format: _FmtDIA | None = None
 ) -> dia_array[np.complex128]: ...
 @overload  # dtype like <known>, format: None = ...
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: onp.ToDType[_SCT],
-    format: _FmtDIA | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: onp.ToDType[_SCT], format: _FmtDIA | None = None
 ) -> dia_array[_SCT]: ...
 @overload  # dtype like <unknown>, format: None = ...
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: npt.DTypeLike,
-    format: _FmtDIA | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: npt.DTypeLike, format: _FmtDIA | None = None
 ) -> dia_array: ...
 @overload  # dtype like float (default), format: <given>
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: onp.AnyFloat64DType = ...,
-    format: _FmtNonDIA,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtNonDIA
 ) -> _SpArray2D[np.float64]: ...
 @overload  # dtype like bool, format: <given>
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: onp.AnyBoolDType,
-    format: _FmtNonDIA,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: onp.AnyBoolDType, format: _FmtNonDIA
 ) -> _SpArray2D[np.bool_]: ...
 @overload  # dtype like int, format: <given>
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: onp.AnyIntDType,
-    format: _FmtNonDIA,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: onp.AnyIntDType, format: _FmtNonDIA
 ) -> _SpArray2D[np.int_]: ...
 @overload  # dtype like complex, format: <given>
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: onp.AnyComplex128DType,
-    format: _FmtNonDIA,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: onp.AnyComplex128DType, format: _FmtNonDIA
 ) -> _SpArray2D[np.complex128]: ...
 @overload  # dtype like <known>, format: <given>
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: onp.ToDType[_SCT],
-    format: _FmtNonDIA,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: onp.ToDType[_SCT], format: _FmtNonDIA
 ) -> _SpArray2D[_SCT]: ...
 @overload  # dtype like <unknown>, fformat: <given>
 def eye_array(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    *,
-    k: int = 0,
-    dtype: npt.DTypeLike,
-    format: _FmtNonDIA,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: npt.DTypeLike, format: _FmtNonDIA
 ) -> _SpArray2D: ...
 
 # NOTE: `eye_array` should be prefered over `eye`
 @overload  # dtype like float (default)
 def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    k: int = 0,
-    dtype: onp.AnyFloat64DType = ...,
-    format: SPFormat | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: SPFormat | None = None
 ) -> _SpMatrix[np.float64]: ...
 @overload  # dtype like bool (positional)
 def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None,
-    k: int,
-    dtype: onp.AnyBoolDType,
-    format: SPFormat | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyBoolDType, format: SPFormat | None = None
 ) -> _SpMatrix[np.bool_]: ...
 @overload  # dtype like bool (keyword)
 def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    k: int = 0,
-    *,
-    dtype: onp.AnyBoolDType,
-    format: SPFormat | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: SPFormat | None = None
 ) -> _SpMatrix[np.bool_]: ...
 @overload  # dtype like int (positional)
 def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None,
-    k: int,
-    dtype: onp.AnyIntDType,
-    format: SPFormat | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyIntDType, format: SPFormat | None = None
 ) -> _SpMatrix[np.int_]: ...
 @overload  # dtype like int (keyword)
 def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    k: int = 0,
-    *,
-    dtype: onp.AnyIntDType,
-    format: SPFormat | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: SPFormat | None = None
 ) -> _SpMatrix[np.int_]: ...
 @overload  # dtype like complex (positional)
 def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None,
-    k: int,
-    dtype: onp.AnyComplex128DType,
-    format: SPFormat | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyComplex128DType, format: SPFormat | None = None
 ) -> _SpMatrix[np.complex128]: ...
 @overload  # dtype like complex (keyword)
 def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    k: int = 0,
-    *,
-    dtype: onp.AnyComplex128DType,
-    format: SPFormat | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: SPFormat | None = None
 ) -> _SpMatrix[np.complex128]: ...
 @overload  # dtype like <known> (positional)
 def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None,
-    k: int,
-    dtype: onp.ToDType[_SCT],
-    format: SPFormat | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.ToDType[_SCT], format: SPFormat | None = None
 ) -> _SpMatrix[_SCT]: ...
 @overload  # dtype like <known> (keyword)
 def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    k: int = 0,
-    *,
-    dtype: onp.ToDType[_SCT],
-    format: SPFormat | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.ToDType[_SCT], format: SPFormat | None = None
 ) -> _SpMatrix[_SCT]: ...
 @overload  # dtype like <unknown> (positional)
-def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None,
-    k: int,
-    dtype: npt.DTypeLike,
-    format: SPFormat | None = None,
-) -> _SpMatrix: ...
+def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: npt.DTypeLike, format: SPFormat | None = None) -> _SpMatrix: ...
 @overload  # dtype like <unknown> (keyword)
 def eye(
-    m: opt.AnyInt,
-    n: opt.AnyInt | None = None,
-    k: int = 0,
-    *,
-    dtype: npt.DTypeLike,
-    format: SPFormat | None = None,
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: SPFormat | None = None
 ) -> _SpMatrix: ...
 
 #
@@ -647,9 +538,7 @@ def kron(A: _spbase[_SCT1], B: _SpArray[_SCT2], format: _FmtBSR | None = None) -
 def kron(A: _spbase[_SCT1], B: _SpArray[_SCT2], format: _FmtNonBSR) -> _NonBSRArray[_SCT1 | _SCT2]: ...
 @overload  # A: unknown array-like, B: unknown array-like  (catch-all)
 def kron(
-    A: onp.ToComplex2D | _spbase[_SCT],
-    B: onp.ToComplex2D | _spbase[_SCT],
-    format: SPFormat | None = None,
+    A: onp.ToComplex2D | _spbase[_SCT], B: onp.ToComplex2D | _spbase[_SCT], format: SPFormat | None = None
 ) -> _SpArray2D[_SCT] | _SpMatrix[_SCT]: ...
 
 # NOTE: The `overload-overlap` mypy errors are false positives.
@@ -667,9 +556,7 @@ def kronsum(A: _spbase[_SCT1], B: _SpArray[_SCT2], format: _FmtCSR | None = None
 def kronsum(A: _spbase[_SCT1], B: _SpArray[_SCT2], format: _FmtNonCSR) -> _NonCSRArray[_SCT1 | _SCT2]: ...
 @overload  # A: unknown array-like, B: unknown array-like  (catch-all)
 def kronsum(
-    A: onp.ToComplex2D | _spbase[_SCT],
-    B: onp.ToComplex2D | _spbase[_SCT],
-    format: SPFormat | None = None,
+    A: onp.ToComplex2D | _spbase[_SCT], B: onp.ToComplex2D | _spbase[_SCT], format: SPFormat | None = None
 ) -> _SpArray2D[_SCT] | _SpMatrix[_SCT]: ...
 
 # NOTE: hstack and vstack have identical signatures
@@ -691,10 +578,7 @@ def hstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.A
 def hstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpArrayNonOut[np.float64]: ...
 @overload  # sparray, format: <default>, dtype: <complex>
 def hstack(
-    blocks: Seq[_SpArray],
-    format: _FmtOut | None = None,
-    *,
-    dtype: onp.AnyComplex128DType,
+    blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.AnyComplex128DType
 ) -> _SpArrayOut[np.complex128]: ...
 @overload  # sparray, format: <non-default>, dtype: <complex>
 def hstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpArrayNonOut[np.complex128]: ...
@@ -724,10 +608,7 @@ def hstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.A
 def hstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpMatrixNonOut[np.float64]: ...
 @overload  # spmatrix, format: <default>, dtype: <complex>
 def hstack(
-    blocks: Seq[spmatrix],
-    format: _FmtOut | None = None,
-    *,
-    dtype: onp.AnyComplex128DType,
+    blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.AnyComplex128DType
 ) -> _SpMatrixOut[np.complex128]: ...
 @overload  # spmatrix, format: <non-default>, dtype: <complex>
 def hstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpMatrixNonOut[np.complex128]: ...
@@ -759,10 +640,7 @@ def vstack(blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.A
 def vstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpArrayNonOut[np.float64]: ...
 @overload  # sparray, format: <default>, dtype: <complex>
 def vstack(
-    blocks: Seq[_SpArray],
-    format: _FmtOut | None = None,
-    *,
-    dtype: onp.AnyComplex128DType,
+    blocks: Seq[_SpArray], format: _FmtOut | None = None, *, dtype: onp.AnyComplex128DType
 ) -> _SpArrayOut[np.complex128]: ...
 @overload  # sparray, format: <non-default>, dtype: <complex>
 def vstack(blocks: Seq[_SpArray], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpArrayNonOut[np.complex128]: ...
@@ -792,10 +670,7 @@ def vstack(blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.A
 def vstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyFloat64DType) -> _SpMatrixNonOut[np.float64]: ...
 @overload  # spmatrix, format: <default>, dtype: <complex>
 def vstack(
-    blocks: Seq[spmatrix],
-    format: _FmtOut | None = None,
-    *,
-    dtype: onp.AnyComplex128DType,
+    blocks: Seq[spmatrix], format: _FmtOut | None = None, *, dtype: onp.AnyComplex128DType
 ) -> _SpMatrixOut[np.complex128]: ...
 @overload  # spmatrix, format: <non-default>, dtype: <complex>
 def vstack(blocks: Seq[spmatrix], format: _FmtNonOut, dtype: onp.AnyComplex128DType) -> _SpMatrixNonOut[np.complex128]: ...
@@ -833,10 +708,7 @@ def bmat(blocks: Seq[Seq[spmatrix[_SCT]]], format: _FmtCOO | None = None, dtype:
 def bmat(blocks: _ToBlocks, format: _FmtCOO | None, dtype: onp.ToDType[_SCT]) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
 @overload  # sparray, blocks: <unknown, unknown dtype>, format: <default>, dtype: <known> (keyword)
 def bmat(
-    blocks: _ToBlocks,
-    format: _FmtCOO | None = None,
-    *,
-    dtype: onp.ToDType[_SCT],
+    blocks: _ToBlocks, format: _FmtCOO | None = None, *, dtype: onp.ToDType[_SCT]
 ) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
 @overload  # sparray, blocks: <unknown, unknown dtype>, format: <default>, dtype: <unknown>
 def bmat(blocks: _ToBlocks, format: _FmtCOO | None = None, dtype: npt.DTypeLike | None = None) -> _COOArray2D | coo_matrix: ...
@@ -852,34 +724,19 @@ def bmat(blocks: _ToBlocks, format: _FmtNonCOO, dtype: npt.DTypeLike) -> _NonCOO
 #
 @overload  # mats: <array, known dtype>
 def block_diag(
-    mats: Iterable[_SpArray[_SCT]],
-    format: SPFormat | None = None,
-    dtype: None = None,
+    mats: Iterable[_SpArray[_SCT]], format: SPFormat | None = None, dtype: None = None
 ) -> _SpArray[_SCT, tuple[int, int]]: ...
 @overload  # mats: <matrix, known dtype>
-def block_diag(
-    mats: Iterable[spmatrix[_SCT]],
-    format: SPFormat | None = None,
-    dtype: None = None,
-) -> _SpMatrix[_SCT]: ...
+def block_diag(mats: Iterable[spmatrix[_SCT]], format: SPFormat | None = None, dtype: None = None) -> _SpMatrix[_SCT]: ...
 @overload  # mats: <unknown, known dtype>
 def block_diag(
-    mats: Iterable[_spbase[_SCT] | onp.ArrayND[_SCT]],
-    format: SPFormat | None = None,
-    dtype: None = None,
+    mats: Iterable[_spbase[_SCT] | onp.ArrayND[_SCT]], format: SPFormat | None = None, dtype: None = None
 ) -> _SpArray[_SCT, tuple[int, int]] | _SpMatrix[_SCT]: ...
 @overload  # mats: <array, unknown dtype>, dtype: <known>  (positional)
-def block_diag(
-    mats: Iterable[sparray],
-    format: SPFormat | None,
-    dtype: onp.ToDType[_SCT],
-) -> _SpArray[_SCT, tuple[int, int]]: ...
+def block_diag(mats: Iterable[sparray], format: SPFormat | None, dtype: onp.ToDType[_SCT]) -> _SpArray[_SCT, tuple[int, int]]: ...
 @overload  # mats: <array, unknown dtype>, dtype: <known>  (keyword)
 def block_diag(
-    mats: Iterable[sparray],
-    format: SPFormat | None = None,
-    *,
-    dtype: onp.ToDType[_SCT],
+    mats: Iterable[sparray], format: SPFormat | None = None, *, dtype: onp.ToDType[_SCT]
 ) -> _SpArray[_SCT, tuple[int, int]]: ...
 @overload  # mats: <matrix, unknown dtype>, dtype: <known>  (positional)
 def block_diag(
@@ -1072,12 +929,7 @@ def rand(
 ) -> _SpMatrix[np.float64]: ...
 @overload  # dtype: <known> (positional)
 def rand(
-    m: opt.AnyInt,
-    n: opt.AnyInt,
-    density: float | Floating,
-    format: SPFormat,
-    dtype: onp.ToDType[_SCT],
-    rng: ToRNG = None,
+    m: opt.AnyInt, n: opt.AnyInt, density: float | Floating, format: SPFormat, dtype: onp.ToDType[_SCT], rng: ToRNG = None
 ) -> _SpMatrix[_SCT]: ...
 @overload  # dtype: <known> (keyword)
 def rand(
@@ -1091,12 +943,7 @@ def rand(
 ) -> _SpMatrix[_SCT]: ...
 @overload  # dtype: complex (positional)
 def rand(
-    m: opt.AnyInt,
-    n: opt.AnyInt,
-    density: float | Floating,
-    format: SPFormat,
-    dtype: onp.AnyComplex128DType,
-    rng: ToRNG = None,
+    m: opt.AnyInt, n: opt.AnyInt, density: float | Floating, format: SPFormat, dtype: onp.AnyComplex128DType, rng: ToRNG = None
 ) -> _SpMatrix[np.complex128]: ...
 @overload  # dtype: complex (keyword)
 def rand(

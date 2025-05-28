@@ -1,9 +1,10 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Concatenate, Final, Literal, TypeAlias, TypedDict, TypeVar, overload, type_check_only
+from typing import Any, Concatenate, Final, Literal, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._typing import Falsy, Truthy
 
 __all__ = ["approx_jacobian", "fmin_slsqp"]

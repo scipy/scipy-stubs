@@ -3,6 +3,7 @@ from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import optype.numpy as onp
+
 from ._base import _spbase, sparray
 from ._bsr import bsr_array, bsr_matrix
 from ._coo import coo_array, coo_matrix

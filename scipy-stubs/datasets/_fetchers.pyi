@@ -7,8 +7,7 @@ from ._typing import AscentDataset, CanFetch, ECGDataset, Face2Dataset, Face3Dat
 data_fetcher: Final[CanFetch | None] = ...  # undocumented
 
 def fetch_data(
-    dataset_name: L["ascent.dat", "ecg.dat", "face.dat"],
-    data_fetcher: CanFetch | None = None,
+    dataset_name: L["ascent.dat", "ecg.dat", "face.dat"], data_fetcher: CanFetch | None = None
 ) -> LiteralString: ...  # undocumented
 
 #

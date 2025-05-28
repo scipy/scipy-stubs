@@ -5,6 +5,7 @@ from typing import Final, Never
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.optimize._trustregion import BaseQuadraticSubproblem
 
 ###

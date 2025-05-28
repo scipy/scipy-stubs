@@ -3,6 +3,7 @@ from typing import Any, Concatenate, Final, Literal, TypeAlias, TypedDict, overl
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import AnyBool, Falsy, Truthy
 
 __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output", "RealData", "odr", "odr_error", "odr_stop"]

@@ -5,6 +5,7 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 from numpy.linalg import LinAlgError
+
 from scipy._typing import AnyBool, Falsy, Truthy
 
 __all__ = ["LinAlgError", "LinAlgWarning", "norm"]
@@ -48,11 +49,7 @@ def norm(
 ) -> np.float64: ...
 @overload  # float64-coercible array, keepdims: True (positional)
 def norm(
-    a: onp.ArrayND[_SubScalar, _ShapeT],
-    ord: _Order | None,
-    axis: _Axis | None,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    a: onp.ArrayND[_SubScalar, _ShapeT], ord: _Order | None, axis: _Axis | None, keepdims: Truthy, check_finite: AnyBool = True
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # float64-coercible array, keepdims: True (keyword)
 def norm(
@@ -116,28 +113,15 @@ def norm(
 ) -> onp.ArrayND[np.floating[_NBitT]]: ...
 @overload  # array-like, axis: None = ..., keepdims: False = ...
 def norm(
-    a: onp.ToComplexND,
-    ord: _Order | None = None,
-    axis: None = None,
-    keepdims: Falsy = False,
-    check_finite: AnyBool = True,
+    a: onp.ToComplexND, ord: _Order | None = None, axis: None = None, keepdims: Falsy = False, check_finite: AnyBool = True
 ) -> np.float64: ...
 @overload  # array-like, keepdims: True (positional)
 def norm(
-    a: onp.ToComplexND,
-    ord: _Order | None,
-    axis: _Axis | None,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    a: onp.ToComplexND, ord: _Order | None, axis: _Axis | None, keepdims: Truthy, check_finite: AnyBool = True
 ) -> onp.ArrayND[np.floating[Any]]: ...
 @overload  # array-like, keepdims: True (keyword)
 def norm(
-    a: onp.ToComplexND,
-    ord: _Order | None = None,
-    axis: _Axis | None = None,
-    *,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    a: onp.ToComplexND, ord: _Order | None = None, axis: _Axis | None = None, *, keepdims: Truthy, check_finite: AnyBool = True
 ) -> onp.ArrayND[np.floating[Any]]: ...
 @overload  # catch-all
 def norm(

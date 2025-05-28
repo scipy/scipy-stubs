@@ -2,6 +2,7 @@ from collections.abc import Callable
 from typing import Literal, assert_type
 
 import numpy as np
+
 from scipy.integrate import quad
 from scipy.integrate._quadpack_py import _QuadExplain
 from scipy.integrate._typing import QuadInfoDict

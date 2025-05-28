@@ -3,6 +3,7 @@ from typing import Literal, TypeAlias
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.optimize import OptimizeResult as _OptimizeResult
 
 _Float: TypeAlias = float | np.float64

@@ -22,7 +22,9 @@ from typing_extensions import ParamSpec, TypeIs, TypeVar, Unpack, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
+
 from ._distn_infrastructure import rv_continuous
 from ._probability_distribution import _ProbabilityDistribution
 from ._qmc import QMCEngine
@@ -430,12 +432,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     ) -> _FloatND[_ShapeT1]: ...
     @overload
     def moment(
-        self: _BaseDistribution[Any, _ShapeT1],
-        /,
-        order: onp.ToInt,
-        kind: L["central"],
-        *,
-        method: _CMomentMethod | None = None,
+        self: _BaseDistribution[Any, _ShapeT1], /, order: onp.ToInt, kind: L["central"], *, method: _CMomentMethod | None = None
     ) -> _FloatND[_ShapeT1]: ...
     @overload
     def moment(

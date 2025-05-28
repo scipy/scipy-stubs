@@ -3,6 +3,7 @@ from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
 from scipy.sparse.linalg import LinearOperator
 
@@ -33,45 +34,32 @@ def rand(*shape: int) -> onp.ArrayND[np.float64]: ...
 
 #
 def interp_decomp(
-    A: onp.ArrayND[_AnyNumber] | LinearOperator,
-    eps_or_k: onp.ToFloat,
-    rand: bool = True,
-    rng: ToRNG = None,
+    A: onp.ArrayND[_AnyNumber] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: ToRNG = None
 ) -> tuple[int, onp.ArrayND[np.intp], onp.ArrayND[np.float64]]: ...
 
 #
 def reconstruct_matrix_from_id(
-    B: onp.ArrayND,
-    idx: onp.ArrayND[np.integer[Any]],
-    proj: onp.ArrayND[_AnyNumber],
+    B: onp.ArrayND, idx: onp.ArrayND[np.integer[Any]], proj: onp.ArrayND[_AnyNumber]
 ) -> onp.ArrayND[_AnyNumber]: ...
 
 #
 def reconstruct_interp_matrix(
-    idx: onp.ArrayND[np.integer[Any]],
-    proj: onp.ArrayND[_AnyNumber],
+    idx: onp.ArrayND[np.integer[Any]], proj: onp.ArrayND[_AnyNumber]
 ) -> onp.ArrayND[np.float64 | np.complex128]: ...
 
 #
 def reconstruct_skel_matrix(
-    A: np.ndarray[tuple[int, ...], _DT],
-    k: SupportsIndex,
-    idx: onp.ArrayND[np.integer[Any]],
+    A: np.ndarray[tuple[int, ...], _DT], k: SupportsIndex, idx: onp.ArrayND[np.integer[Any]]
 ) -> np.ndarray[tuple[int, ...], _DT]: ...
 
 #
 def id_to_svd(
-    B: onp.ArrayND,
-    idx: onp.ArrayND[np.integer[Any]],
-    proj: onp.ArrayND[_AnyNumber],
+    B: onp.ArrayND, idx: onp.ArrayND[np.integer[Any]], proj: onp.ArrayND[_AnyNumber]
 ) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
 
 #
 def svd(
-    A: onp.ArrayND[_AnyNumber] | LinearOperator,
-    eps_or_k: onp.ToFloat,
-    rand: bool = True,
-    rng: ToRNG = None,
+    A: onp.ArrayND[_AnyNumber] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: ToRNG = None
 ) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
 
 #

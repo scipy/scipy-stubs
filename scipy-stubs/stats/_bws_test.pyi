@@ -1,6 +1,7 @@
 from typing import Literal
 
 import optype.numpy as onp
+
 from ._resampling import PermutationMethod, PermutationTestResult
 
 def bws_test(

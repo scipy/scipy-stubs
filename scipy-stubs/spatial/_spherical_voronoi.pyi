@@ -11,12 +11,7 @@ class SphericalVoronoi:
     radius: float
 
     def __init__(
-        self,
-        /,
-        points: onp.ToFloat2D,
-        radius: float = 1,
-        center: onp.ToFloat1D | None = None,
-        threshold: float = 1e-06,
+        self, /, points: onp.ToFloat2D, radius: float = 1, center: onp.ToFloat1D | None = None, threshold: float = 1e-06
     ) -> None: ...
     def sort_vertices_of_regions(self, /) -> None: ...
     def calculate_areas(self, /) -> onp.Array1D[np.float64]: ...

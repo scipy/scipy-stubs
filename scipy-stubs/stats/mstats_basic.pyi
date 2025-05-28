@@ -78,21 +78,11 @@ def msign(x: object) -> object: ...
 def pearsonr(x: object, y: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def spearmanr(
-    x: object,
-    y: object = ...,
-    use_ties: object = ...,
-    axis: object = ...,
-    nan_policy: object = ...,
-    alternative: object = ...,
+    x: object, y: object = ..., use_ties: object = ..., axis: object = ..., nan_policy: object = ..., alternative: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def kendalltau(
-    x: object,
-    y: object,
-    use_ties: object = ...,
-    use_missing: object = ...,
-    method: object = ...,
-    alternative: object = ...,
+    x: object, y: object, use_ties: object = ..., use_missing: object = ..., method: object = ..., alternative: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def kendalltau_seasonal(x: object) -> object: ...
@@ -133,48 +123,24 @@ def trima(a: object, limits: object = ..., inclusive: object = ...) -> object: .
 @deprecated("will be removed in SciPy v2.0.0")
 def trimr(a: object, limits: object = ..., inclusive: object = ..., axis: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def trim(
-    a: object,
-    limits: object = ...,
-    inclusive: object = ...,
-    relative: object = ...,
-    axis: object = ...,
-) -> object: ...
+def trim(a: object, limits: object = ..., inclusive: object = ..., relative: object = ..., axis: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def trimboth(data: object, proportiontocut: object = ..., inclusive: object = ..., axis: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def trimtail(
-    data: object,
-    proportiontocut: object = ...,
-    tail: object = ...,
-    inclusive: object = ...,
-    axis: object = ...,
+    data: object, proportiontocut: object = ..., tail: object = ..., inclusive: object = ..., axis: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def trimmed_mean(
-    a: object,
-    limits: object = ...,
-    inclusive: object = ...,
-    relative: object = ...,
-    axis: object = ...,
+    a: object, limits: object = ..., inclusive: object = ..., relative: object = ..., axis: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def trimmed_var(
-    a: object,
-    limits: object = ...,
-    inclusive: object = ...,
-    relative: object = ...,
-    axis: object = ...,
-    ddof: object = ...,
+    a: object, limits: object = ..., inclusive: object = ..., relative: object = ..., axis: object = ..., ddof: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def trimmed_std(
-    a: object,
-    limits: object = ...,
-    inclusive: object = ...,
-    relative: object = ...,
-    axis: object = ...,
-    ddof: object = ...,
+    a: object, limits: object = ..., inclusive: object = ..., relative: object = ..., axis: object = ..., ddof: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def trimmed_stde(a: object, limits: object = ..., inclusive: object = ..., axis: object = ...) -> object: ...
@@ -190,12 +156,7 @@ def tmax(a: object, upperlimit: object = ..., axis: object = ..., inclusive: obj
 def tsem(a: object, limits: object = ..., inclusive: object = ..., axis: object = ..., ddof: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def winsorize(
-    a: object,
-    limits: object = ...,
-    inclusive: object = ...,
-    inplace: object = ...,
-    axis: object = ...,
-    nan_policy: object = ...,
+    a: object, limits: object = ..., inclusive: object = ..., inplace: object = ..., axis: object = ..., nan_policy: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def moment(a: object, moment: object = ..., axis: object = ...) -> object: ...
@@ -215,12 +176,7 @@ def kurtosistest(a: object, axis: object = ..., alternative: object = ...) -> ob
 def normaltest(a: object, axis: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def mquantiles(
-    a: object,
-    prob: object = ...,
-    alphap: object = ...,
-    betap: object = ...,
-    axis: object = ...,
-    limit: object = ...,
+    a: object, prob: object = ..., alphap: object = ..., betap: object = ..., axis: object = ..., limit: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def scoreatpercentile(data: object, per: object, limit: object = ..., alphap: object = ..., betap: object = ...) -> object: ...

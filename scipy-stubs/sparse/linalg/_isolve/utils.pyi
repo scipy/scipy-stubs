@@ -1,8 +1,9 @@
+from _typeshed import IdentityFunction
 from typing import Final, Literal, TypeAlias, TypeVar
 
 import numpy as np
 import optype.numpy as onp
-from _typeshed import IdentityFunction
+
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Numeric
 from scipy.sparse.linalg import LinearOperator
@@ -22,10 +23,7 @@ _coerce_rules: Final[dict[tuple[_Char, _Char], _Char]]
 def id(x: _T) -> _T: ...
 def coerce(x: str, y: str) -> _Char: ...
 def make_system(
-    A: _ToLinearOperator,
-    M: _ToLinearOperator | None,
-    x0: onp.ToComplex1D | Literal["Mb"] | None,
-    b: onp.ToComplex1D,
+    A: _ToLinearOperator, M: _ToLinearOperator | None, x0: onp.ToComplex1D | Literal["Mb"] | None, b: onp.ToComplex1D
 ) -> tuple[
     LinearOperator,  # A
     LinearOperator,  # M

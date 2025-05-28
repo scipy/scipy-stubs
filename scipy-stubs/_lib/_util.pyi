@@ -9,6 +9,7 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 from numpy.random import Generator as Generator  # implicit re-export
+
 from scipy._typing import RNG, EnterSelfMixin
 
 _AnyRNGT = TypeVar("_AnyRNGT", np.random.RandomState, np.random.Generator)

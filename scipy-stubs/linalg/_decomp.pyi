@@ -7,6 +7,7 @@ import optype as op
 import optype.numpy as onp
 import optype.typing as opt
 from numpy._typing import _ArrayLike
+
 from scipy._typing import Falsy, Truthy
 
 __all__ = [
@@ -614,11 +615,7 @@ def eigvals(
 ) -> _ComplexND: ...
 @overload  # homogeneous_eigvals: True (positional)
 def eigvals(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None,
-    overwrite_a: op.CanBool,
-    check_finite: op.CanBool,
-    homogeneous_eigvals: Truthy,
+    a: onp.ToComplexND, b: onp.ToComplexND | None, overwrite_a: op.CanBool, check_finite: op.CanBool, homogeneous_eigvals: Truthy
 ) -> _ComplexND: ...
 @overload  # homogeneous_eigvals: True (keyword)
 def eigvals(
@@ -829,38 +826,23 @@ def eigh_tridiagonal(
 #
 @overload  # float, calc_q: False = ...
 def hessenberg(
-    a: onp.ToFloatND,
-    calc_q: Falsy = False,
-    overwrite_a: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    a: onp.ToFloatND, calc_q: Falsy = False, overwrite_a: op.CanBool = False, check_finite: op.CanBool = True
 ) -> _FloatND: ...
 @overload  # float, calc_q: True
 def hessenberg(
-    a: onp.ToFloatND,
-    calc_q: Truthy,
-    overwrite_a: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    a: onp.ToFloatND, calc_q: Truthy, overwrite_a: op.CanBool = False, check_finite: op.CanBool = True
 ) -> tuple[_FloatND, _FloatND]: ...
 @overload  # complex, calc_q: False = ...
 def hessenberg(
-    a: onp.ToComplexND,
-    calc_q: Falsy = False,
-    overwrite_a: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    a: onp.ToComplexND, calc_q: Falsy = False, overwrite_a: op.CanBool = False, check_finite: op.CanBool = True
 ) -> _InexactND: ...
 @overload  # complex, calc_q: True
 def hessenberg(
-    a: onp.ToComplexND,
-    calc_q: Truthy,
-    overwrite_a: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    a: onp.ToComplexND, calc_q: Truthy, overwrite_a: op.CanBool = False, check_finite: op.CanBool = True
 ) -> tuple[_InexactND, _InexactND]: ...
 @overload  # complex, calc_q: CanBool (catch-all)
 def hessenberg(
-    a: onp.ToComplexND,
-    calc_q: op.CanBool,
-    overwrite_a: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    a: onp.ToComplexND, calc_q: op.CanBool, overwrite_a: op.CanBool = False, check_finite: op.CanBool = True
 ) -> _InexactND | tuple[_InexactND, _InexactND]: ...
 
 #

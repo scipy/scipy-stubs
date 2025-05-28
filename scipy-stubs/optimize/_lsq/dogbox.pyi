@@ -3,6 +3,7 @@ from typing import Literal, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.optimize import OptimizeResult as _OptimizeResult
 from scipy.optimize._typing import TRSolver
 from scipy.sparse._base import _spbase
@@ -38,10 +39,7 @@ def lsmr_operator(Jop: LinearOperator, d: _Vector_f8, active_set: _Vector_b1) ->
 
 #
 def find_intersection(
-    x: _Vector_f8,
-    tr_bounds: _Vector_f8,
-    lb: _Vector_f8,
-    ub: _Vector_f8,
+    x: _Vector_f8, tr_bounds: _Vector_f8, lb: _Vector_f8, ub: _Vector_f8
 ) -> tuple[_Vector_f8, _Vector_f8, _Vector_b1, _Vector_b1, _Vector_b1, _Vector_b1]: ...
 
 #

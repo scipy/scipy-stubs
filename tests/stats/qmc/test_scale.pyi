@@ -2,6 +2,7 @@ from typing import Any
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.stats import qmc
 
 _f8_xd: np.ndarray[Any, np.dtype[np.float64]]

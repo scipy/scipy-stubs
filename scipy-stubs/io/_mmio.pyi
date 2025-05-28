@@ -3,6 +3,7 @@ from typing_extensions import Unpack
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, FileLike, Truthy
 from scipy.sparse import coo_matrix, sparray, spmatrix
 from scipy.sparse._coo import coo_array

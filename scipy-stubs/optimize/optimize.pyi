@@ -28,14 +28,7 @@ __all__ = [
 ]
 
 @deprecated("will be removed in SciPy v2.0.0")
-def zeros(
-    shape: object,
-    dtype: object = ...,
-    order: object = ...,
-    *,
-    device: object = ...,
-    like: object = ...,
-) -> object: ...
+def zeros(shape: object, dtype: object = ..., order: object = ..., *, device: object = ..., like: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 class OptimizeResult(Any): ...
 
@@ -43,29 +36,14 @@ class OptimizeResult(Any): ...
 class OptimizeWarning(UserWarning): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-def approx_fprime(
-    xk: object,
-    f: object,
-    epsilon: object = ...,
-    *args: object,
-) -> object: ...
+def approx_fprime(xk: object, f: object, epsilon: object = ..., *args: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def bracket(
-    func: object,
-    xa: object = ...,
-    xb: object = ...,
-    args: object = ...,
-    grow_limit: object = ...,
-    maxiter: object = ...,
+    func: object, xa: object = ..., xb: object = ..., args: object = ..., grow_limit: object = ..., maxiter: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def brent(
-    func: object,
-    args: object = ...,
-    brack: object = ...,
-    tol: object = ...,
-    full_output: object = ...,
-    maxiter: object = ...,
+    func: object, args: object = ..., brack: object = ..., tol: object = ..., full_output: object = ..., maxiter: object = ...
 ) -> float | object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def brute(
@@ -80,13 +58,7 @@ def brute(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def check_grad(
-    func: object,
-    grad: object,
-    x0: object,
-    *args: object,
-    epsilon: object = ...,
-    direction: object = ...,
-    rng: object = ...,
+    func: object, grad: object, x0: object, *args: object, epsilon: object = ..., direction: object = ..., rng: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def fmin(
@@ -184,12 +156,7 @@ def fminbound(
 ) -> float | object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def golden(
-    func: object,
-    args: object = ...,
-    brack: object = ...,
-    tol: object = ...,
-    full_output: object = ...,
-    maxiter: object = ...,
+    func: object, args: object = ..., brack: object = ..., tol: object = ..., full_output: object = ..., maxiter: object = ...
 ) -> float | object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def line_search(

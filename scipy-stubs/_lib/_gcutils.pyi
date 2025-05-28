@@ -1,5 +1,5 @@
-from contextlib import _GeneratorContextManager
 from collections.abc import Callable
+from contextlib import _GeneratorContextManager
 from typing import Final, ParamSpec, TypeVar
 
 __all__ = ["assert_deallocated", "gc_state", "set_gc_state"]

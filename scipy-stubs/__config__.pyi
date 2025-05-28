@@ -2,28 +2,15 @@
 # It contains system_info results at the time of building this package.
 from enum import Enum
 from types import ModuleType
-from typing import Final, Literal, NotRequired, TypedDict, TypeVar, overload, type_check_only
+from typing import Final, Literal, NotRequired, TypeVar, TypedDict, overload, type_check_only
 
 __all__ = ["show"]
 
 _ConfigCompilerDict = TypedDict(
     "_ConfigCompilerDict",
-    {
-        "name": str,
-        "version": str,
-        "linker": str,
-        "commands": str,
-        "args": NotRequired[str],
-        "linker args": NotRequired[str],
-    },
+    {"name": str, "version": str, "linker": str, "commands": str, "args": NotRequired[str], "linker args": NotRequired[str]},
 )
-_ConfigCompilerFortranDict = TypedDict(
-    "_ConfigCompilerFortranDict",
-    {
-        "version": str,
-        "include directory": str,
-    },
-)
+_ConfigCompilerFortranDict = TypedDict("_ConfigCompilerFortranDict", {"version": str, "include directory": str})
 _ConfigCompilersDict = TypedDict(
     "_ConfigCompilersDict",
     {
@@ -44,11 +31,7 @@ class _ConfigMachineInformationValueDict(TypedDict):
 
 _ConfigMachineInformationDict = TypedDict(
     "_ConfigMachineInformationDict",
-    {
-        "host": _ConfigMachineInformationValueDict,
-        "build": _ConfigMachineInformationValueDict,
-        "cross-compiled": bool,
-    },
+    {"host": _ConfigMachineInformationValueDict, "build": _ConfigMachineInformationValueDict, "cross-compiled": bool},
 )
 _ConfigBuildDependencyDict = TypedDict(
     "_ConfigBuildDependencyDict",
@@ -65,12 +48,7 @@ _ConfigBuildDependencyDict = TypedDict(
 )
 _ConfigBuildDependencyPybind11Dict = TypedDict(
     "_ConfigBuildDependencyPybind11Dict",
-    {
-        "name": Literal["pybind11"],
-        "version": str,
-        "detection method": NotRequired[str],
-        "include directory": str,
-    },
+    {"name": Literal["pybind11"], "version": str, "detection method": NotRequired[str], "include directory": str},
 )
 
 @type_check_only

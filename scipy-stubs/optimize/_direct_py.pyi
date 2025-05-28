@@ -3,6 +3,7 @@ from typing import Concatenate
 
 import numpy as np
 import optype.numpy as onp
+
 from ._constraints import Bounds
 from ._optimize import OptimizeResult as _OptimizeResult
 

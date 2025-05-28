@@ -1,24 +1,14 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import (
-    Any,
-    Concatenate,
-    Final,
-    Literal,
-    LiteralString,
-    Protocol,
-    TypeAlias,
-    TypedDict,
-    TypeVar,
-    overload,
-    type_check_only,
-)
+from typing import Concatenate, Final, Literal, LiteralString, Protocol, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 from numpy.polynomial._polybase import ABCPolyBase
+
 from scipy._typing import Falsy, Truthy
 from scipy.sparse.linalg import LinearOperator
+
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
 from .optimize import OptimizeResult as _OptimizeResult
@@ -61,19 +51,12 @@ class _CallbackVector(Protocol):
 
 @type_check_only
 class _MinimizeMethodFun(Protocol):
-    def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args, **kwargs: Any) -> OptimizeResult: ...
+    def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args) -> OptimizeResult: ...
 
 @type_check_only
 class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
     def __call__(
-        self,
-        fun: _Fun0D[onp.ToFloat],
-        /,
-        *,
-        args: _Args,
-        bracket: _ToBracket,
-        bound: _ToBound,
-        **options: Any,
+        self, fun: _Fun0D[onp.ToFloat], /, *, args: _Args, bracket: _ToBracket, bound: _ToBound
     ) -> _MinimizeScalarResultT_co: ...
 
 @type_check_only

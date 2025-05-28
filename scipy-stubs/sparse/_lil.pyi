@@ -5,7 +5,9 @@ from typing_extensions import TypeIs, TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import Falsy
+
 from ._base import _spbase, sparray
 from ._csr import csr_array, csr_matrix
 from ._index import IndexMixin

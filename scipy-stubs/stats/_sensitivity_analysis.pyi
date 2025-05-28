@@ -1,10 +1,12 @@
-from dataclasses import dataclass
 from collections.abc import Callable, Mapping, Sequence
+from dataclasses import dataclass
 from typing import Any, Literal, Protocol, TypeAlias, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
+
 from ._resampling import BootstrapResult
 
 __all__ = ["sobol_indices"]
@@ -51,9 +53,7 @@ def sample_AB(A: onp.ArrayND[np.float64], B: onp.ArrayND[np.float64]) -> onp.Arr
 
 #
 def saltelli_2010(
-    f_A: onp.ArrayND[np.float64],
-    f_B: onp.ArrayND[np.float64],
-    f_AB: onp.ArrayND[np.float64],
+    f_A: onp.ArrayND[np.float64], f_B: onp.ArrayND[np.float64], f_AB: onp.ArrayND[np.float64]
 ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 
 #

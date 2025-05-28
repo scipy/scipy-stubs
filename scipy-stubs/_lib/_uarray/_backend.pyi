@@ -1,7 +1,7 @@
-from contextlib import _GeneratorContextManager
 from collections.abc import Callable, Iterable
+from contextlib import _GeneratorContextManager
 from types import NotImplementedType
-from typing import Final, Generic, Literal, TypeAlias, TypedDict, final, overload, type_check_only
+from typing import Any, Final, Generic, Literal, TypeAlias, TypedDict, final, overload, type_check_only
 from typing_extensions import ParamSpec, TypeVar, Unpack
 
 from scipy._typing import AnyBool, EnterNoneMixin
@@ -58,9 +58,9 @@ class _DetermineBackendMultiKwargs(TypedDict, Generic[_T], total=False):
 
 ArgumentExtractorType: TypeAlias = Callable[..., tuple[Dispatchable, ...]]
 ArgumentReplacerType: TypeAlias = Callable[
-    [tuple[object, ...], dict[str, object], tuple[Dispatchable, ...]],
-    tuple[tuple[object, ...], dict[str, object]],
-]
+    [tuple[Any, ...], dict[str, Any], tuple[Dispatchable, ...]],
+    tuple[tuple[Any, ...], dict[str, Any]],
+]  # fmt: skip
 
 @final
 class _BackendState: ...
@@ -107,22 +107,15 @@ def set_state(state: _BackendState) -> _GeneratorContextManager[None]: ...
 
 #
 def create_multimethod(
-    *args: ArgumentReplacerType | str | Callable[_Tss, _T],
-    **kwargs: ArgumentReplacerType | str | Callable[_Tss, _T],
+    *args: ArgumentReplacerType | str | Callable[_Tss, _T], **kwargs: ArgumentReplacerType | str | Callable[_Tss, _T]
 ) -> Callable[[ArgumentExtractorType], _Function[_Tss, _T]]: ...
 @overload
 def generate_multimethod(
-    argument_extractor: ArgumentExtractorType,
-    argument_replacer: ArgumentReplacerType,
-    domain: str,
-    default: None = None,
+    argument_extractor: ArgumentExtractorType, argument_replacer: ArgumentReplacerType, domain: str, default: None = None
 ) -> _Function: ...
 @overload
 def generate_multimethod(
-    argument_extractor: ArgumentExtractorType,
-    argument_replacer: ArgumentReplacerType,
-    domain: str,
-    default: Callable[_Tss, _T],
+    argument_extractor: ArgumentExtractorType, argument_replacer: ArgumentReplacerType, domain: str, default: Callable[_Tss, _T]
 ) -> _Function[_Tss, _T]: ...
 
 #
@@ -131,11 +124,7 @@ def skip_backend(backend: _Backend) -> _SkipBackendContext: ...
 
 #
 def set_global_backend(
-    backend: _Backend,
-    coerce: AnyBool = False,
-    only: AnyBool = False,
-    *,
-    try_last: AnyBool = False,
+    backend: _Backend, coerce: AnyBool = False, only: AnyBool = False, *, try_last: AnyBool = False
 ) -> None: ...
 def register_backend(backend: _Backend) -> None: ...
 def clear_backends(domain: str | None, registered: AnyBool = True, globals: AnyBool = False) -> None: ...
@@ -144,10 +133,7 @@ def clear_backends(domain: str | None, registered: AnyBool = True, globals: AnyB
 def mark_as(dispatch_type: type[_T] | str) -> Callable[[_T], Dispatchable[_T]]: ...
 def all_of_type(
     arg_type: type[_T] | str,
-) -> Callable[
-    [Callable[_Tss, Iterable[_T | Dispatchable[_T2]]]],
-    Callable[_Tss, tuple[Dispatchable[_T | _T2], ...]],
-]: ...
+) -> Callable[[Callable[_Tss, Iterable[_T | Dispatchable[_T2]]]], Callable[_Tss, tuple[Dispatchable[_T | _T2], ...]]]: ...
 
 #
 @overload
@@ -177,12 +163,7 @@ def wrap_single_convertor_instance(
 
 #
 def determine_backend(
-    value: _V,
-    dispatch_type: _DispatchType[_V],
-    *,
-    domain: str,
-    only: AnyBool = True,
-    coerce: AnyBool = False,
+    value: _V, dispatch_type: _DispatchType[_V], *, domain: str, only: AnyBool = True, coerce: AnyBool = False
 ) -> _SetBackendContext: ...
 def determine_backend_multi(
     dispatchables: Iterable[_V | Dispatchable[_V]],

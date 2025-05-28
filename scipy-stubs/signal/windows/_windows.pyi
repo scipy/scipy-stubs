@@ -1,3 +1,4 @@
+from _typeshed import Incomplete
 from types import ModuleType
 from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeAliasType
@@ -6,7 +7,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
-from _typeshed import Incomplete
+
 from scipy._typing import Falsy, Truthy
 
 __all__ = [
@@ -154,13 +155,7 @@ def exponential(
     device: _Device | None = None,
 ) -> _Float64_1D: ...
 def general_gaussian(
-    M: _ToInt,
-    p: _ToFloat,
-    sig: _ToFloat,
-    sym: _ToBool = True,
-    *,
-    xp: _Xp | None = None,
-    device: _Device | None = None,
+    M: _ToInt, p: _ToFloat, sig: _ToFloat, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None
 ) -> _Float64_1D: ...
 
 #

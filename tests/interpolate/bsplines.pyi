@@ -2,6 +2,7 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.interpolate import BSpline
 
 # based on the example from

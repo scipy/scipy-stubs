@@ -3,6 +3,7 @@ from typing import Any, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 
 _PointsWeights: TypeAlias = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]

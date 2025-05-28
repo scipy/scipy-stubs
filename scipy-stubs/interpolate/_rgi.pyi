@@ -4,6 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from ._ndbspline import _SolverFunc
 
 __all__ = ["RegularGridInterpolator", "interpn"]
@@ -67,12 +68,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
 
     #
     def __call__(
-        self,
-        /,
-        xi: onp.ToFloatND,
-        method: _Method | None = None,
-        *,
-        nu: onp.ToJustInt1D | None = None,
+        self, /, xi: onp.ToFloatND, method: _Method | None = None, *, nu: onp.ToJustInt1D | None = None
     ) -> onp.ArrayND[_CT_co]: ...
 
 @overload

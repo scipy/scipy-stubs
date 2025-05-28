@@ -5,6 +5,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.stats.qmc import QMCEngine
 
 __all__ = ["cumulative_simpson", "cumulative_trapezoid", "fixed_quad", "newton_cotes", "qmc_quad", "romb", "simpson", "trapezoid"]
@@ -21,51 +22,31 @@ class QMCQuadResult(NamedTuple):
 # sample-based integration
 @overload
 def trapezoid(
-    y: onp.ToFloatND,
-    x: onp.ToFloatND | None = None,
-    dx: onp.ToFloat = 1.0,
-    axis: op.CanIndex = -1,
+    y: onp.ToFloatND, x: onp.ToFloatND | None = None, dx: onp.ToFloat = 1.0, axis: op.CanIndex = -1
 ) -> np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...
 @overload
 def trapezoid(
-    y: onp.ToComplexND,
-    x: onp.ToFloatND | None = None,
-    dx: onp.ToFloat = 1.0,
-    axis: op.CanIndex = -1,
+    y: onp.ToComplexND, x: onp.ToFloatND | None = None, dx: onp.ToFloat = 1.0, axis: op.CanIndex = -1
 ) -> np.inexact[Any] | onp.ArrayND[np.inexact[Any]]: ...
 
 #
 @overload
 def simpson(
-    y: onp.ToFloatND,
-    x: onp.ToFloatND | None = None,
-    *,
-    dx: onp.ToFloat = 1.0,
-    axis: op.CanIndex = -1,
+    y: onp.ToFloatND, x: onp.ToFloatND | None = None, *, dx: onp.ToFloat = 1.0, axis: op.CanIndex = -1
 ) -> np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...
 @overload
 def simpson(
-    y: onp.ToComplexND,
-    x: onp.ToFloatND | None = None,
-    *,
-    dx: onp.ToFloat = 1.0,
-    axis: op.CanIndex = -1,
+    y: onp.ToComplexND, x: onp.ToFloatND | None = None, *, dx: onp.ToFloat = 1.0, axis: op.CanIndex = -1
 ) -> np.inexact[Any] | onp.ArrayND[np.inexact[Any]]: ...
 
 #
 @overload
 def romb(
-    y: onp.ToFloatND,
-    dx: onp.ToFloat = 1.0,
-    axis: op.CanIndex = -1,
-    show: bool = False,
+    y: onp.ToFloatND, dx: onp.ToFloat = 1.0, axis: op.CanIndex = -1, show: bool = False
 ) -> np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...
 @overload
 def romb(
-    y: onp.ToComplexND,
-    dx: onp.ToFloat = 1.0,
-    axis: op.CanIndex = -1,
-    show: bool = False,
+    y: onp.ToComplexND, dx: onp.ToFloat = 1.0, axis: op.CanIndex = -1, show: bool = False
 ) -> np.inexact[Any] | onp.ArrayND[np.inexact[Any]]: ...
 
 # sample-based cumulative integration
@@ -109,11 +90,7 @@ def cumulative_simpson(
 # function-based
 @overload
 def fixed_quad(
-    func: Callable[[onp.Array1D[np.float64]], _NDT_f],
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    args: tuple[()] = (),
-    n: op.CanIndex = 5,
+    func: Callable[[onp.Array1D[np.float64]], _NDT_f], a: onp.ToFloat, b: onp.ToFloat, args: tuple[()] = (), n: op.CanIndex = 5
 ) -> _NDT_f: ...
 @overload
 def fixed_quad(

@@ -2,6 +2,7 @@ from typing import Any, Literal, Self
 
 import numpy as np
 import optype.numpy as onp
+
 from ._crosstab import crosstab
 from ._odds_ratio import odds_ratio
 from ._relative_risk import relative_risk
@@ -19,20 +20,9 @@ class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, int, onp.ArrayND[n
     def dof(self, /) -> int: ...
     @property
     def expected_freq(self, /) -> onp.ArrayND[np.float64]: ...
-    def __new__(
-        _cls,
-        statistic: np.float64,
-        pvalue: np.float64,
-        dof: int,
-        expected_freq: onp.ArrayND[np.float64],
-    ) -> Self: ...
+    def __new__(_cls, statistic: np.float64, pvalue: np.float64, dof: int, expected_freq: onp.ArrayND[np.float64]) -> Self: ...
     def __init__(
-        self,
-        /,
-        statistic: np.float64,
-        pvalue: np.float64,
-        dof: int,
-        expected_freq: onp.ArrayND[np.float64],
+        self, /, statistic: np.float64, pvalue: np.float64, dof: int, expected_freq: onp.ArrayND[np.float64]
     ) -> None: ...
 
 #

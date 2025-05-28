@@ -3,6 +3,7 @@ from typing import Any, Literal, TypeAlias, overload
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator

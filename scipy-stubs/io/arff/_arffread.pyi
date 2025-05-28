@@ -1,12 +1,13 @@
 import abc
 import re
-from csv import Dialect
 from collections.abc import Iterable, Iterator, Sequence
+from csv import Dialect
 from typing import Any, ClassVar, Final, Generic, Literal, Self
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import FileLike
 
 __all__ = ["ArffError", "MetaData", "ParseArffError", "loadarff"]

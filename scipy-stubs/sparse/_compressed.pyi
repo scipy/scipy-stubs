@@ -7,6 +7,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
+
 from ._base import _spbase
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin
@@ -31,10 +32,7 @@ _ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
 ###
 
 class _cs_matrix(
-    _data_matrix[_SCT, _ShapeT_co],
-    _minmax_mixin[_SCT, _ShapeT_co],
-    IndexMixin[_SCT, _ShapeT_co],
-    Generic[_SCT, _ShapeT_co],
+    _data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]
 ):
     data: onp.ArrayND[_SCT]
     indices: Index1D

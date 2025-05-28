@@ -3,6 +3,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse import csc_array, csc_matrix, csr_array, csr_matrix, lil_array, lil_matrix
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Floating, Integer
@@ -27,19 +28,12 @@ def csgraph_from_masked(graph: onp.MArray2D[_Real]) -> csr_array[np.float64 | np
 
 #
 def csgraph_masked_from_dense(
-    graph: onp.ToFloat2D,
-    null_value: float | None = 0,
-    nan_null: bool = True,
-    infinity_null: bool = True,
-    copy: bool = True,
+    graph: onp.ToFloat2D, null_value: float | None = 0, nan_null: bool = True, infinity_null: bool = True, copy: bool = True
 ) -> onp.MArray2D[np.float64 | np.int32]: ...
 
 #
 def csgraph_from_dense(
-    graph: onp.ToFloat2D,
-    null_value: float | None = 0,
-    nan_null: bool = True,
-    infinity_null: bool = True,
+    graph: onp.ToFloat2D, null_value: float | None = 0, nan_null: bool = True, infinity_null: bool = True
 ) -> csr_array[np.float64 | np.int32]: ...
 
 #
@@ -48,15 +42,10 @@ def csgraph_to_masked(csgraph: _SparseGraph[_Real]) -> onp.MArray2D[np.float64 |
 
 #
 def reconstruct_path(
-    csgraph: _ToGraph,
-    predecessors: onp.ToFloatND,
-    directed: bool = True,
+    csgraph: _ToGraph, predecessors: onp.ToFloatND, directed: bool = True
 ) -> csr_matrix[np.float64 | np.int32]: ...
 
 #
 def construct_dist_matrix(
-    graph: _ToGraph,
-    predecessors: onp.ToFloatND,
-    directed: bool = True,
-    null_value: float = ...,
+    graph: _ToGraph, predecessors: onp.ToFloatND, directed: bool = True, null_value: float = ...
 ) -> onp.Array2D[np.float64 | np.int32]: ...

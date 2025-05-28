@@ -3,6 +3,7 @@ from typing import Any, ClassVar, Final, Generic, Literal, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Truthy
 
 _VT = TypeVar("_VT", bound=onp.ArrayND[np.inexact[Any]], default=onp.ArrayND[np.inexact[Any]])
@@ -68,9 +69,7 @@ class ConstantDenseOutput(DenseOutput, Generic[_VT]):
     def __init__(self, /, t_old: onp.ToFloat, t: onp.ToFloat, value: _VT) -> None: ...
 
 def check_arguments(
-    fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToComplexND],
-    y0: onp.ToComplexND,
-    support_complex: bool,
+    fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToComplexND], y0: onp.ToComplexND, support_complex: bool
 ) -> (
     Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
     | Callable[[float, onp.ArrayND[np.float64]], onp.ArrayND[np.complex128]]

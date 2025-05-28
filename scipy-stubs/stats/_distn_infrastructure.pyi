@@ -12,6 +12,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._typing import RNG, AnyShape, Falsy, ToRNG, Truthy
 from scipy.integrate._typing import QuadOpts as _QuadOpts
 
@@ -151,10 +152,7 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     def rvs(self, /, size: tuple[()] | None = None, random_state: ToRNG = None) -> _FloatNDT_co: ...
     @overload
     def rvs(
-        self,
-        /,
-        size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]],
-        random_state: ToRNG = None,
+        self, /, size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]], random_state: ToRNG = None
     ) -> _FloatND: ...
     @overload
     def rvs(self, /, size: AnyShape | None = None, random_state: ToRNG = None) -> _FloatOrND: ...
@@ -235,11 +233,7 @@ class rv_generic:
 
     #
     def _construct_argparser(
-        self,
-        /,
-        meths_to_inspect: Iterable[Callable[..., Any]],
-        locscale_in: str,
-        locscale_out: str,
+        self, /, meths_to_inspect: Iterable[Callable[..., Any]], locscale_in: str, locscale_out: str
     ) -> None: ...
     def _construct_doc(self, /, docdict: dict[str, str], shapes_vals: tuple[float, ...] | None = None) -> None: ...
     def _construct_default_doc(
@@ -266,15 +260,12 @@ class rv_generic:
     @overload
     def freeze(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> rv_frozen[Self]: ...
     #
-    def _stats(self, /, *args: onp.ToFloat, **kwds: Any) -> _Tuple4[_Float | None] | _Tuple4[_FloatND | None]: ...
+    def _stats(self, /, *args: onp.ToFloat, **kwds: object) -> _Tuple4[_Float | None] | _Tuple4[_FloatND | None]: ...
     def _munp(self, /, n: onp.ToInt | onp.ToIntND, *args: onp.ToFloat) -> _FloatND: ...
 
     #
     def _argcheck_rvs(
-        self,
-        /,
-        *args: onp.ToFloat,
-        size: onp.ToInt | onp.ToIntND | None = None,
+        self, /, *args: onp.ToFloat, size: onp.ToInt | onp.ToIntND | None = None
     ) -> tuple[list[_CoFloatND], _CoFloatND, _CoFloatND, tuple[int, ...] | tuple[np.int_, ...]]: ...
     def _argcheck(self, /, *args: onp.ToFloat) -> _BoolOrND: ...
 
@@ -301,12 +292,7 @@ class rv_generic:
     def rvs(self, /, *args: onp.ToFloat, random_state: ToRNG, discrete: Falsy | None = ..., **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def rvs(
-        self,
-        /,
-        *args: _ToFloatOrND,
-        random_state: ToRNG,
-        discrete: Falsy | None = ...,
-        **kwds: _ToFloatOrND,
+        self, /, *args: _ToFloatOrND, random_state: ToRNG, discrete: Falsy | None = ..., **kwds: _ToFloatOrND
     ) -> _FloatOrND: ...
 
     #
@@ -396,12 +382,7 @@ class _ShapeInfo:
     domain: Final[Sequence[_Float]]  # in practice always a list of size two
 
     def __init__(
-        self,
-        /,
-        name: str,
-        integrality: bool = False,
-        domain: Sequence[_Float] = ...,
-        inclusive: Sequence[bool] = (True, True),
+        self, /, name: str, integrality: bool = False, domain: Sequence[_Float] = ..., inclusive: Sequence[bool] = (True, True)
     ) -> None: ...
 
 @type_check_only
@@ -424,22 +405,14 @@ class _rv_mixin:
     def _cdf(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
     def _ppfvec(self, /, q: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
     @overload
-    def _unpack_loc_scale(
-        self,
-        /,
-        theta: Sequence[onp.ToFloat],
-    ) -> tuple[onp.ToFloat, onp.ToFloat, tuple[onp.ToFloat, ...]]: ...
+    def _unpack_loc_scale(self, /, theta: Sequence[onp.ToFloat]) -> tuple[onp.ToFloat, onp.ToFloat, tuple[onp.ToFloat, ...]]: ...
     @overload
     def _unpack_loc_scale(
-        self,
-        /,
-        theta: Sequence[onp.ToFloatND],
+        self, /, theta: Sequence[onp.ToFloatND]
     ) -> tuple[onp.ToFloatND, onp.ToFloatND, tuple[onp.ToFloatND, ...]]: ...
     @overload
     def _unpack_loc_scale(
-        self,
-        /,
-        theta: Sequence[_ToFloatOrND],
+        self, /, theta: Sequence[_ToFloatOrND]
     ) -> tuple[_ToFloatOrND, _ToFloatOrND, tuple[_ToFloatOrND, ...]]: ...
 
 class rv_continuous(_rv_mixin, rv_generic):
@@ -465,21 +438,11 @@ class rv_continuous(_rv_mixin, rv_generic):
     def __call__(self, /) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
     def __call__(
-        self,
-        /,
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        **kwds: onp.ToFloat,
+        self, /, *args: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, **kwds: onp.ToFloat
     ) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
     def __call__(
-        self,
-        /,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
-        **kwds: _ToFloatOrND,
+        self, /, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1, **kwds: _ToFloatOrND
     ) -> rv_continuous_frozen[Self]: ...
 
     #
@@ -487,21 +450,11 @@ class rv_continuous(_rv_mixin, rv_generic):
     def freeze(self, /) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
     def freeze(
-        self,
-        /,
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        **kwds: onp.ToFloat,
+        self, /, *args: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, **kwds: onp.ToFloat
     ) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
     def freeze(
-        self,
-        /,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
-        **kwds: _ToFloatOrND,
+        self, /, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1, **kwds: _ToFloatOrND
     ) -> rv_continuous_frozen[Self]: ...
 
     #
@@ -511,13 +464,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     #
     @overload
     def pdf(
-        self,
-        /,
-        x: onp.ToFloat,
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        **kwds: onp.ToFloat,
+        self, /, x: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, **kwds: onp.ToFloat
     ) -> _Float: ...
     @overload
     def pdf(
@@ -531,25 +478,13 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def pdf(
-        self,
-        /,
-        x: _ToFloatOrND,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
-        **kwds: _ToFloatOrND,
+        self, /, x: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1, **kwds: _ToFloatOrND
     ) -> _FloatOrND: ...
 
     #
     @overload
     def logpdf(
-        self,
-        /,
-        x: onp.ToFloat,
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        **kwds: onp.ToFloat,
+        self, /, x: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, **kwds: onp.ToFloat
     ) -> _Float: ...
     @overload
     def logpdf(
@@ -563,25 +498,13 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logpdf(
-        self,
-        /,
-        x: _ToFloatOrND,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
-        **kwds: _ToFloatOrND,
+        self, /, x: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1, **kwds: _ToFloatOrND
     ) -> _FloatOrND: ...
 
     #
     @overload
     def cdf(
-        self,
-        /,
-        x: onp.ToFloat,
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        **kwds: onp.ToFloat,
+        self, /, x: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, **kwds: onp.ToFloat
     ) -> _Float: ...
     @overload
     def cdf(
@@ -595,25 +518,13 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def cdf(
-        self,
-        /,
-        x: _ToFloatOrND,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
-        **kwds: _ToFloatOrND,
+        self, /, x: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1, **kwds: _ToFloatOrND
     ) -> _FloatOrND: ...
 
     #
     @overload
     def logcdf(
-        self,
-        /,
-        x: onp.ToFloat,
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        **kwds: onp.ToFloat,
+        self, /, x: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, **kwds: onp.ToFloat
     ) -> _Float: ...
     @overload
     def logcdf(
@@ -627,25 +538,13 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logcdf(
-        self,
-        /,
-        x: _ToFloatOrND,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
-        **kwds: _ToFloatOrND,
+        self, /, x: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1, **kwds: _ToFloatOrND
     ) -> _FloatOrND: ...
 
     #
     @overload
     def sf(
-        self,
-        /,
-        x: onp.ToFloat,
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        **kwds: onp.ToFloat,
+        self, /, x: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, **kwds: onp.ToFloat
     ) -> _Float: ...
     @overload
     def sf(
@@ -659,25 +558,13 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def sf(
-        self,
-        /,
-        x: _ToFloatOrND,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
-        **kwds: _ToFloatOrND,
+        self, /, x: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1, **kwds: _ToFloatOrND
     ) -> _FloatOrND: ...
 
     #
     @overload
     def logsf(
-        self,
-        /,
-        x: onp.ToFloat,
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        **kwds: onp.ToFloat,
+        self, /, x: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, **kwds: onp.ToFloat
     ) -> _Float: ...
     @overload
     def logsf(
@@ -691,25 +578,13 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logsf(
-        self,
-        /,
-        x: _ToFloatOrND,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
-        **kwds: _ToFloatOrND,
+        self, /, x: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1, **kwds: _ToFloatOrND
     ) -> _FloatOrND: ...
 
     #
     @overload
     def ppf(
-        self,
-        /,
-        q: onp.ToFloat,
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        **kwds: onp.ToFloat,
+        self, /, q: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, **kwds: onp.ToFloat
     ) -> _Float: ...
     @overload
     def ppf(
@@ -723,25 +598,13 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def ppf(
-        self,
-        /,
-        q: _ToFloatOrND,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
-        **kwds: _ToFloatOrND,
+        self, /, q: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1, **kwds: _ToFloatOrND
     ) -> _FloatOrND: ...
 
     #
     @overload
     def isf(
-        self,
-        /,
-        q: onp.ToFloat,
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        **kwds: onp.ToFloat,
+        self, /, q: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, **kwds: onp.ToFloat
     ) -> _Float: ...
     @overload
     def isf(
@@ -755,13 +618,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def isf(
-        self,
-        /,
-        q: _ToFloatOrND,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
-        **kwds: _ToFloatOrND,
+        self, /, q: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1, **kwds: _ToFloatOrND
     ) -> _FloatOrND: ...
 
     #
@@ -769,11 +626,7 @@ class rv_continuous(_rv_mixin, rv_generic):
 
     #
     def _reduce_func(
-        self,
-        /,
-        args: tuple[onp.ToFloat, ...],
-        kwds: Mapping[str, onp.ToFloat],
-        data: _ToFloatOrND | None = None,
+        self, /, args: tuple[onp.ToFloat, ...], kwds: Mapping[str, onp.ToFloat], data: _ToFloatOrND | None = None
     ) -> tuple[
         list[_Float],
         Callable[[list[onp.ToFloat], _CoFloatND], _Float],
@@ -786,10 +639,7 @@ class rv_continuous(_rv_mixin, rv_generic):
 
     #
     def _fitstart(
-        self,
-        /,
-        data: _FloatND,
-        args: tuple[onp.ToFloat, ...] | None = None,
+        self, /, data: _FloatND, args: tuple[onp.ToFloat, ...] | None = None
     ) -> tuple[*tuple[_Float, ...], _Float, _Float]: ...
 
     #
@@ -802,11 +652,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         /,
         data: _ToFloatOrND,
         *args: onp.ToFloat,
-        optimizer: Callable[
-            [_FloatND, tuple[float, ...], tuple[float, ...], bool],
-            tuple[onp.ToFloat, ...],
-        ]
-        | None = ...,
+        optimizer: Callable[[_FloatND, tuple[float, ...], tuple[float, ...], bool], tuple[onp.ToFloat, ...]] | None = ...,
         method: _FitMethod = "MLE",
         **kwds: onp.ToFloat,
     ) -> tuple[_Float, ...]: ...
@@ -925,12 +771,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     def pmf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def pmf(
-        self,
-        /,
-        k: onp.Array[_ShapeT, _CoFloat],
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        **kwds: onp.ToFloat,
+        self, /, k: onp.Array[_ShapeT, _CoFloat], *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def pmf(self, /, k: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> _FloatOrND: ...
@@ -939,12 +780,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     def logpmf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def logpmf(
-        self,
-        /,
-        k: onp.Array[_ShapeT, _CoFloat],
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        **kwds: onp.ToFloat,
+        self, /, k: onp.Array[_ShapeT, _CoFloat], *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logpmf(self, /, k: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> _FloatOrND: ...
@@ -954,12 +790,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     def cdf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def cdf(
-        self,
-        /,
-        k: onp.Array[_ShapeT, _CoFloat],
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        **kwds: onp.ToFloat,
+        self, /, k: onp.Array[_ShapeT, _CoFloat], *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def cdf(self, /, k: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> _FloatOrND: ...
@@ -968,12 +799,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     def logcdf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def logcdf(
-        self,
-        /,
-        k: onp.Array[_ShapeT, _CoFloat],
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        **kwds: onp.ToFloat,
+        self, /, k: onp.Array[_ShapeT, _CoFloat], *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logcdf(self, /, k: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> _FloatOrND: ...
@@ -983,12 +809,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     def sf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def sf(
-        self,
-        /,
-        k: onp.Array[_ShapeT, _CoFloat],
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        **kwds: onp.ToFloat,
+        self, /, k: onp.Array[_ShapeT, _CoFloat], *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def sf(self, /, k: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> _FloatOrND: ...
@@ -997,12 +818,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     def logsf(self, /, k: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def logsf(
-        self,
-        /,
-        k: onp.Array[_ShapeT, _CoFloat],
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        **kwds: onp.ToFloat,
+        self, /, k: onp.Array[_ShapeT, _CoFloat], *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logsf(self, /, k: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> _FloatOrND: ...
@@ -1012,12 +828,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     def ppf(self, /, q: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def ppf(
-        self,
-        /,
-        q: onp.Array[_ShapeT, _CoFloat],
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        **kwds: onp.ToFloat,
+        self, /, q: onp.Array[_ShapeT, _CoFloat], *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def ppf(self, /, q: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> _FloatOrND: ...
@@ -1026,12 +837,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     def isf(self, /, q: onp.ToFloat, *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat) -> _Float: ...
     @overload
     def isf(
-        self,
-        /,
-        q: onp.Array[_ShapeT, _CoFloat],
-        *args: onp.ToFloat,
-        loc: onp.ToFloat = 0,
-        **kwds: onp.ToFloat,
+        self, /, q: onp.Array[_ShapeT, _CoFloat], *args: onp.ToFloat, loc: onp.ToFloat = 0, **kwds: onp.ToFloat
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def isf(self, /, q: _ToFloatOrND, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> _FloatOrND: ...
@@ -1054,13 +860,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     #
     @override
     def rvs(
-        self,
-        /,
-        *args: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        size: AnyShape = 1,
-        random_state: ToRNG = None,
-        **kwds: _ToFloatOrND,
+        self, /, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, size: AnyShape = 1, random_state: ToRNG = None, **kwds: _ToFloatOrND
     ) -> _IntOrND: ...
 
 # returned by `rv_discrete.__new__` if `values` is specified
@@ -1199,11 +999,7 @@ class _rv_continuous_0(rv_continuous):
     def interval(self, /, confidence: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Tuple2[_Float]: ...
     @overload
     def interval(
-        self,
-        /,
-        confidence: _ToFloatOrND,
-        loc: _ToFloatOrND = 0,
-        scale: _ToFloatOrND = 1,
+        self, /, confidence: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1
     ) -> _Tuple2[_Float] | _Tuple2[_FloatND]: ...
 
     #
@@ -1242,11 +1038,7 @@ class _rv_continuous_0(rv_continuous):
     def pdf(self, /, x: onp.ToFloat, loc: onp.ToFloatND, scale: _ToFloatOrND) -> _FloatND: ...
     @overload
     def pdf(
-        self,
-        /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
+        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def pdf(self, /, x: onp.ToFloatND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatND: ...
@@ -1259,11 +1051,7 @@ class _rv_continuous_0(rv_continuous):
     def logpdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def logpdf(
-        self,
-        /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
+        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logpdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1274,11 +1062,7 @@ class _rv_continuous_0(rv_continuous):
     def cdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def cdf(
-        self,
-        /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
+        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def cdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1289,11 +1073,7 @@ class _rv_continuous_0(rv_continuous):
     def logcdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def logcdf(
-        self,
-        /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
+        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logcdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1304,11 +1084,7 @@ class _rv_continuous_0(rv_continuous):
     def sf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def sf(
-        self,
-        /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
+        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def sf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1319,11 +1095,7 @@ class _rv_continuous_0(rv_continuous):
     def logsf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def logsf(
-        self,
-        /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
+        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logsf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1334,11 +1106,7 @@ class _rv_continuous_0(rv_continuous):
     def ppf(self, /, q: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def ppf(
-        self,
-        /,
-        q: onp.Array[_ShapeT, _CoFloat],
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
+        self, /, q: onp.Array[_ShapeT, _CoFloat], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def ppf(self, /, q: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1349,11 +1117,7 @@ class _rv_continuous_0(rv_continuous):
     def isf(self, /, q: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def isf(
-        self,
-        /,
-        q: onp.Array[_ShapeT, _CoFloat],
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
+        self, /, q: onp.Array[_ShapeT, _CoFloat], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def isf(self, /, q: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1361,12 +1125,7 @@ class _rv_continuous_0(rv_continuous):
     #
     @override
     def rvs(
-        self,
-        /,
-        loc: onp.ToFloat = 0,
-        scale: onp.ToFloat = 1,
-        size: AnyShape = 1,
-        random_state: ToRNG = None,
+        self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, size: AnyShape = 1, random_state: ToRNG = None
     ) -> _FloatOrND: ...
 
     #

@@ -1,5 +1,5 @@
-from contextlib import _GeneratorContextManager
 from collections.abc import Callable, Iterator
+from contextlib import _GeneratorContextManager
 from typing import Concatenate, Final, Generic, ParamSpec, overload
 from typing_extensions import TypeVar, deprecated
 

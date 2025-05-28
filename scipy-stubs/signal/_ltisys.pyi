@@ -7,6 +7,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from ._lti_conversion import _DiscretizeMethod
 
 __all__ = [
@@ -119,40 +120,22 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
     @overload
     def __new__(cls, *system: *tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat]) -> ZerosPolesGainContinuous: ...
     @overload
-    def __new__(
-        cls,
-        *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D],
-    ) -> StateSpaceContinuous[_Float]: ...
+    def __new__(cls, *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D]) -> StateSpaceContinuous[_Float]: ...
     @overload
-    def __new__(
-        cls,
-        *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D],
-    ) -> StateSpaceContinuous: ...
+    def __new__(cls, *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D]) -> StateSpaceContinuous: ...
 
     #
     def __init__(self, /, *system: Never) -> None: ...
 
     #
     def impulse(
-        self,
-        /,
-        X0: onp.ToFloat1D | None = None,
-        T: onp.ToFloat1D | None = None,
-        N: onp.ToJustInt | None = None,
+        self, /, X0: onp.ToFloat1D | None = None, T: onp.ToFloat1D | None = None, N: onp.ToJustInt | None = None
     ) -> tuple[_Float1D, _Float1D]: ...
     def step(
-        self,
-        /,
-        X0: onp.ToComplex1D | None = None,
-        T: onp.ToFloat1D | None = None,
-        N: onp.ToJustInt | None = None,
+        self, /, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: onp.ToJustInt | None = None
     ) -> tuple[_Float1D, _Inexact1D]: ...
     def output(
-        self,
-        /,
-        U: _ToFloat012D | None,
-        T: onp.ToFloat1D,
-        X0: onp.ToComplex1D | None = None,
+        self, /, U: _ToFloat012D | None, T: onp.ToFloat1D, X0: onp.ToComplex1D | None = None
     ) -> tuple[_Array12D[_Float], _Inexact1D, _Array12D[_Inexact]]: ...
     def bode(self, /, w: onp.ToFloat1D | None = None, n: onp.ToJustInt = 100) -> tuple[_Float1D, _Float1D, _Float1D]: ...
     def freqresp(self, /, w: onp.ToFloat1D | None = None, n: onp.ToJustInt = 10_000) -> tuple[_Float1D, _Complex1D]: ...
@@ -160,48 +143,30 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
     #
     @abc.abstractmethod
     def to_discrete(
-        self,
-        /,
-        dt: _DTT,
-        method: _DiscretizeMethod = "zoh",
-        alpha: onp.ToJustFloat | None = None,
+        self, /, dt: _DTT, method: _DiscretizeMethod = "zoh", alpha: onp.ToJustFloat | None = None
     ) -> dlti[_ZerosT_co, _PolesT_co, _DTT]: ...
 
 #
-class dlti(
-    LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co],
-    Generic[_ZerosT_co, _PolesT_co, _DTT_co],
-    metaclass=abc.ABCMeta,
-):
+class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co], metaclass=abc.ABCMeta):
     @overload
     def __new__(
-        cls,
-        *system: *tuple[_ToFloat12D, onp.ToFloat1D],
-        dt: _DTT_co = ...,
+        cls, *system: *tuple[_ToFloat12D, onp.ToFloat1D], dt: _DTT_co = ...
     ) -> TransferFunctionDiscrete[_Float, _DTT_co]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[onp.ToFloat1D, onp.ToFloat2D, onp.ToFloat1D],
-        dt: _DTT_co = ...,
+        cls, *system: *tuple[onp.ToFloat1D, onp.ToFloat2D, onp.ToFloat1D], dt: _DTT_co = ...
     ) -> ZerosPolesGainDiscrete[_Float, _Float, _DTT_co]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat],
-        dt: _DTT_co = ...,
+        cls, *system: *tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat], dt: _DTT_co = ...
     ) -> ZerosPolesGainDiscrete[_Inexact, _Float, _DTT_co]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D],
-        dt: _DTT_co = ...,
+        cls, *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D], dt: _DTT_co = ...
     ) -> StateSpaceDiscrete[_Float, _Float, _DTT_co]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D],
-        dt: _DTT_co = ...,
+        cls, *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D], dt: _DTT_co = ...
     ) -> StateSpaceDiscrete[_Inexact, _Float, _DTT_co]: ...
 
     #
@@ -209,61 +174,29 @@ class dlti(
 
     #
     def impulse(
-        self,
-        /,
-        x0: onp.ToFloat1D | None = None,
-        t: onp.ToFloat1D | None = None,
-        n: onp.ToJustInt | None = None,
+        self, /, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: onp.ToJustInt | None = None
     ) -> tuple[_Float1D, _Float1D]: ...
     def step(
-        self,
-        /,
-        x0: onp.ToFloat1D | None = None,
-        t: onp.ToFloat1D | None = None,
-        n: onp.ToJustInt | None = None,
+        self, /, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: onp.ToJustInt | None = None
     ) -> tuple[_Float1D, _Float1D]: ...
     def output(
-        self,
-        /,
-        u: _ToFloat12D | onp.ToFloat | None,
-        t: onp.ToFloat1D,
-        x0: onp.ToFloat1D | None = None,
+        self, /, u: _ToFloat12D | onp.ToFloat | None, t: onp.ToFloat1D, x0: onp.ToFloat1D | None = None
     ) -> tuple[_Float1D, _Float1D]: ...
-    def bode(
-        self,
-        /,
-        w: onp.ToFloat1D | None = None,
-        n: onp.ToJustInt = 100,
-    ) -> tuple[_Float1D, _Float1D, _Float1D]: ...
+    def bode(self, /, w: onp.ToFloat1D | None = None, n: onp.ToJustInt = 100) -> tuple[_Float1D, _Float1D, _Float1D]: ...
     def freqresp(
-        self,
-        /,
-        w: onp.ToFloat1D | None = None,
-        n: onp.ToJustInt = 10_000,
-        whole: op.CanBool = False,
+        self, /, w: onp.ToFloat1D | None = None, n: onp.ToJustInt = 10_000, whole: op.CanBool = False
     ) -> tuple[_Float1D, _Complex1D]: ...
 
 #
-class TransferFunction(
-    LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co],
-    Generic[_PolesT_co, _DTT_co],
-    metaclass=abc.ABCMeta,
-):
+class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Generic[_PolesT_co, _DTT_co], metaclass=abc.ABCMeta):
     @overload
     def __new__(cls, *system: *tuple[lti[_PolesT, _PolesT]]) -> TransferFunctionContinuous[_PolesT]: ...
     @overload
     def __new__(cls, *system: *tuple[dlti[_PolesT, _PolesT, _DTT]]) -> TransferFunctionDiscrete[_PolesT, _DTT]: ...
     @overload
-    def __new__(
-        cls,
-        *system: *tuple[_ToFloat12D, onp.ToFloat1D],
-    ) -> TransferFunctionContinuous[_Float]: ...
+    def __new__(cls, *system: *tuple[_ToFloat12D, onp.ToFloat1D]) -> TransferFunctionContinuous[_Float]: ...
     @overload
-    def __new__(
-        cls,
-        *system: *tuple[_ToFloat12D, onp.ToFloat1D],
-        dt: _DTT,
-    ) -> TransferFunctionDiscrete[_Float, _DTT]: ...
+    def __new__(cls, *system: *tuple[_ToFloat12D, onp.ToFloat1D], dt: _DTT) -> TransferFunctionDiscrete[_Float, _DTT]: ...
 
     #
     @overload
@@ -297,18 +230,12 @@ class TransferFunctionContinuous(TransferFunction[_PolesT_co, None], lti[_PolesT
     def to_tf(self, /) -> Self: ...
     @override
     def to_discrete(
-        self,
-        /,
-        dt: _DTT,
-        method: _DiscretizeMethod = "zoh",
-        alpha: onp.ToJustFloat | None = None,
+        self, /, dt: _DTT, method: _DiscretizeMethod = "zoh", alpha: onp.ToJustFloat | None = None
     ) -> TransferFunctionDiscrete[_PolesT_co, _DTT]: ...
 
 @final
 class TransferFunctionDiscrete(
-    TransferFunction[_PolesT_co, _DTT_co],
-    dlti[_PolesT_co, _PolesT_co, _DTT_co],
-    Generic[_PolesT_co, _DTT_co],
+    TransferFunction[_PolesT_co, _DTT_co], dlti[_PolesT_co, _PolesT_co, _DTT_co], Generic[_PolesT_co, _DTT_co]
 ):
     @overload
     def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], /) -> None: ...
@@ -318,36 +245,24 @@ class TransferFunctionDiscrete(
 #
 class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     @overload
-    def __new__(
-        cls,
-        *system: *tuple[lti[_ZerosT_co, _PolesT_co]],
-    ) -> ZerosPolesGainContinuous[_ZerosT_co, _PolesT_co]: ...
+    def __new__(cls, *system: *tuple[lti[_ZerosT_co, _PolesT_co]]) -> ZerosPolesGainContinuous[_ZerosT_co, _PolesT_co]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[dlti[_ZerosT_co, _PolesT_co, _DTT_co]],
+        cls, *system: *tuple[dlti[_ZerosT_co, _PolesT_co, _DTT_co]]
     ) -> ZerosPolesGainDiscrete[_ZerosT_co, _PolesT_co, _DTT_co]: ...
     @overload
-    def __new__(
-        cls,
-        *system: *tuple[_ToFloat12D, onp.ToFloat1D, onp.ToFloat],
-    ) -> ZerosPolesGainContinuous[_Float, _Float]: ...
+    def __new__(cls, *system: *tuple[_ToFloat12D, onp.ToFloat1D, onp.ToFloat]) -> ZerosPolesGainContinuous[_Float, _Float]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[_ToComplex12D, onp.ToFloat1D, onp.ToFloat],
+        cls, *system: *tuple[_ToComplex12D, onp.ToFloat1D, onp.ToFloat]
     ) -> ZerosPolesGainContinuous[_Inexact, _Float]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[_ToFloat12D, onp.ToFloat1D, onp.ToFloat],
-        dt: _DTT,
+        cls, *system: *tuple[_ToFloat12D, onp.ToFloat1D, onp.ToFloat], dt: _DTT
     ) -> ZerosPolesGainDiscrete[_Float, _Float, _DTT]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[_ToComplex12D, onp.ToFloat1D, onp.ToFloat],
-        dt: _DTT,
+        cls, *system: *tuple[_ToComplex12D, onp.ToFloat1D, onp.ToFloat], dt: _DTT
     ) -> ZerosPolesGainDiscrete[_Inexact, _Float, _DTT]: ...
 
     #
@@ -386,19 +301,13 @@ class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Gener
 
 @final
 class ZerosPolesGainContinuous(
-    ZerosPolesGain[_ZerosT_co, _PolesT_co, None],
-    lti[_ZerosT_co, _PolesT_co],
-    Generic[_ZerosT_co, _PolesT_co],
+    ZerosPolesGain[_ZerosT_co, _PolesT_co, None], lti[_ZerosT_co, _PolesT_co], Generic[_ZerosT_co, _PolesT_co]
 ):
     @override
     def to_zpk(self, /) -> Self: ...
     @override
     def to_discrete(
-        self,
-        /,
-        dt: _DTT,
-        method: _DiscretizeMethod = "zoh",
-        alpha: onp.ToJustFloat | None = None,
+        self, /, dt: _DTT, method: _DiscretizeMethod = "zoh", alpha: onp.ToJustFloat | None = None
     ) -> ZerosPolesGainDiscrete[_ZerosT_co, _PolesT_co, _DTT]: ...
 
 @final
@@ -438,30 +347,23 @@ class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_
     def __new__(cls, *system: *tuple[lti[_ZerosT_co, _PolesT_co]]) -> StateSpaceContinuous[_ZerosT_co, _PolesT_co]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[dlti[_ZerosT_co, _PolesT_co, _DTT_co]],
+        cls, *system: *tuple[dlti[_ZerosT_co, _PolesT_co, _DTT_co]]
     ) -> StateSpaceDiscrete[_ZerosT_co, _PolesT_co, _DTT_co]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D],
+        cls, *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D]
     ) -> StateSpaceContinuous[_Float, _Float]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D],
+        cls, *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D]
     ) -> StateSpaceContinuous[_Inexact, _Float]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D],
-        dt: _DTT,
+        cls, *system: *tuple[_ToFloat012D, _ToFloat012D, _ToFloat012D, _ToFloat012D], dt: _DTT
     ) -> StateSpaceDiscrete[_Float, _Float, _DTT]: ...
     @overload
     def __new__(
-        cls,
-        *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D],
-        dt: _DTT,
+        cls, *system: *tuple[_ToComplex012D, _ToComplex012D, _ToComplex012D, _ToComplex012D], dt: _DTT
     ) -> StateSpaceDiscrete[_Inexact, _Float, _DTT]: ...
 
     #
@@ -469,21 +371,11 @@ class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_
     def __init__(self, system: StateSpace[_ZerosT_co, _PolesT_co, _DTT_co], /) -> None: ...
     @overload
     def __init__(
-        self: StateSpace[_Float, _Float],
-        A: _ToFloat012D,
-        B: _ToFloat012D,
-        C: _ToFloat012D,
-        D: _ToFloat012D,
-        /,
+        self: StateSpace[_Float, _Float], A: _ToFloat012D, B: _ToFloat012D, C: _ToFloat012D, D: _ToFloat012D, /
     ) -> None: ...
     @overload
     def __init__(
-        self: StateSpace[_Inexact, _Float],
-        A: _ToComplex012D,
-        B: _ToComplex012D,
-        C: _ToComplex012D,
-        D: _ToComplex012D,
-        /,
+        self: StateSpace[_Inexact, _Float], A: _ToComplex012D, B: _ToComplex012D, C: _ToComplex012D, D: _ToComplex012D, /
     ) -> None: ...
 
     #
@@ -527,26 +419,18 @@ class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_
 
 @final
 class StateSpaceContinuous(
-    StateSpace[_ZerosT_co, _PolesT_co, None],
-    lti[_ZerosT_co, _PolesT_co],
-    Generic[_ZerosT_co, _PolesT_co],
+    StateSpace[_ZerosT_co, _PolesT_co, None], lti[_ZerosT_co, _PolesT_co], Generic[_ZerosT_co, _PolesT_co]
 ):
     @override
     def to_ss(self, /) -> Self: ...
     @override
     def to_discrete(
-        self,
-        /,
-        dt: _DTT,
-        method: _DiscretizeMethod = "zoh",
-        alpha: onp.ToJustFloat | None = None,
+        self, /, dt: _DTT, method: _DiscretizeMethod = "zoh", alpha: onp.ToJustFloat | None = None
     ) -> StateSpaceDiscrete[_ZerosT_co, _PolesT_co, _DTT]: ...
 
 @final
 class StateSpaceDiscrete(
-    StateSpace[_ZerosT_co, _PolesT_co, _DTT_co],
-    dlti[_ZerosT_co, _PolesT_co, _DTT_co],
-    Generic[_ZerosT_co, _PolesT_co, _DTT_co],
+    StateSpace[_ZerosT_co, _PolesT_co, _DTT_co], dlti[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]
 ):
     @overload
     def __init__(self, system: StateSpace[_ZerosT_co, _PolesT_co, _DTT_co], /) -> None: ...
@@ -622,10 +506,7 @@ def dlsim(
 ) -> tuple[_Float64_1D, _Float64_2D, _Float64_2D]: ...
 @overload
 def dlsim(
-    system: _ToDLTI,
-    u: _ToFloat12D | onp.ToFloat | None,
-    t: onp.ToFloat1D | None = None,
-    x0: onp.ToFloat1D | None = None,
+    system: _ToDLTI, u: _ToFloat12D | onp.ToFloat | None, t: onp.ToFloat1D | None = None, x0: onp.ToFloat1D | None = None
 ) -> tuple[_Float64_1D, _Float64_1D]: ...
 
 #
@@ -638,17 +519,11 @@ def impulse(
 ) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
 @overload
 def impulse(
-    system: _ToLTIReal,
-    X0: onp.ToFloat1D | None = None,
-    T: onp.ToFloat1D | None = None,
-    N: onp.ToJustInt | None = None,
+    system: _ToLTIReal, X0: onp.ToFloat1D | None = None, T: onp.ToFloat1D | None = None, N: onp.ToJustInt | None = None
 ) -> tuple[_Float1D, _Float1D]: ...
 @overload
 def impulse(
-    system: _ToLTIComplex,
-    X0: onp.ToComplex1D | None = None,
-    T: onp.ToFloat1D | None = None,
-    N: onp.ToJustInt | None = None,
+    system: _ToLTIComplex, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: onp.ToJustInt | None = None
 ) -> tuple[_Float1D, _Inexact1D]: ...
 
 #
@@ -661,10 +536,7 @@ def dimpulse(
 ) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
 @overload
 def dimpulse(
-    system: _ToDLTI,
-    x0: onp.ToFloat1D | None = None,
-    t: onp.ToFloat1D | None = None,
-    n: onp.ToJustInt | None = None,
+    system: _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: onp.ToJustInt | None = None
 ) -> tuple[_Float1D, _Float1D]: ...
 
 #
@@ -677,17 +549,11 @@ def step(
 ) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
 @overload
 def step(
-    system: _ToLTIReal,
-    X0: onp.ToFloat1D | None = None,
-    T: onp.ToFloat1D | None = None,
-    N: onp.ToJustInt | None = None,
+    system: _ToLTIReal, X0: onp.ToFloat1D | None = None, T: onp.ToFloat1D | None = None, N: onp.ToJustInt | None = None
 ) -> tuple[_Float1D, _Float1D]: ...
 @overload
 def step(
-    system: _ToLTIComplex,
-    X0: onp.ToComplex1D | None = None,
-    T: onp.ToFloat1D | None = None,
-    N: onp.ToJustInt | None = None,
+    system: _ToLTIComplex, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: onp.ToJustInt | None = None
 ) -> tuple[_Float1D, _Inexact1D]: ...
 
 #
@@ -700,37 +566,25 @@ def dstep(
 ) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
 @overload
 def dstep(
-    system: _ToDLTI,
-    x0: onp.ToFloat1D | None = None,
-    t: onp.ToFloat1D | None = None,
-    n: onp.ToJustInt | None = None,
+    system: _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: onp.ToJustInt | None = None
 ) -> tuple[_Float1D, _Float1D]: ...
 
 #
 def bode(
-    system: lti | _ToLTIComplex,
-    w: onp.ToFloat1D | None = None,
-    n: onp.ToJustInt = 100,
+    system: lti | _ToLTIComplex, w: onp.ToFloat1D | None = None, n: onp.ToJustInt = 100
 ) -> tuple[_Float1D, _Float1D, _Float1D]: ...
 
 #
 def dbode(
-    system: dlti | _ToDLTI,
-    w: onp.ToFloat1D | None = None,
-    n: onp.ToJustInt = 100,
+    system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: onp.ToJustInt = 100
 ) -> tuple[_Float1D, _Float1D, _Float1D]: ...
 
 #
 def freqresp(
-    system: lti | _ToLTIComplex,
-    w: onp.ToFloat1D | None = None,
-    n: onp.ToJustInt = 10_000,
+    system: lti | _ToLTIComplex, w: onp.ToFloat1D | None = None, n: onp.ToJustInt = 10_000
 ) -> tuple[_Float1D, _Complex1D]: ...
 
 #
 def dfreqresp(
-    system: dlti | _ToDLTI,
-    w: onp.ToFloat1D | None = None,
-    n: onp.ToJustInt = 10_000,
-    whole: op.CanBool = False,
+    system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: onp.ToJustInt = 10_000, whole: op.CanBool = False
 ) -> tuple[_Float1D, _Complex1D]: ...

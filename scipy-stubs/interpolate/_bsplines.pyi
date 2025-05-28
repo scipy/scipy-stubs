@@ -3,6 +3,7 @@ from typing import Any, Generic, Literal, Self, TypeAlias, TypeVar, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy.interpolate import CubicSpline
 from scipy.sparse import csr_array
 
@@ -63,11 +64,7 @@ class BSpline(Generic[_CT_co]):
 
     # NOTE: Complex `x` will unsafely be cast to `float64`, even if the coefficients are complex
     def __call__(
-        self,
-        /,
-        x: onp.ToComplex | onp.ToComplexND,
-        nu: int = 0,
-        extrapolate: _Extrapolate | None = None,
+        self, /, x: onp.ToComplex | onp.ToComplexND, nu: int = 0, extrapolate: _Extrapolate | None = None
     ) -> onp.ArrayND[_CT_co]: ...
 
     #
@@ -79,11 +76,7 @@ class BSpline(Generic[_CT_co]):
 
     # NOTE: `integrate` will raise a (cryptic) `ValueError` for complex coefficients
     def integrate(
-        self: BSpline[np.float64],
-        /,
-        a: onp.ToFloat,
-        b: onp.ToFloat,
-        extrapolate: _Extrapolate | None = None,
+        self: BSpline[np.float64], /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
     ) -> onp.ArrayND[np.float64]: ...
 
     #
@@ -104,22 +97,13 @@ class BSpline(Generic[_CT_co]):
     #
     @classmethod
     def construct_fast(
-        cls,
-        t: onp.ArrayND[np.float64],
-        c: onp.ArrayND[_CT_co],
-        k: int,
-        extrapolate: _Extrapolate = True,
-        axis: int = 0,
+        cls, t: onp.ArrayND[np.float64], c: onp.ArrayND[_CT_co], k: int, extrapolate: _Extrapolate = True, axis: int = 0
     ) -> Self: ...
 
     #
     @classmethod
     def design_matrix(
-        cls,
-        x: onp.ToFloat1D,
-        t: onp.ToFloat1D,
-        k: op.CanIndex,
-        extrapolate: _Extrapolate = False,
+        cls, x: onp.ToFloat1D, t: onp.ToFloat1D, k: op.CanIndex, extrapolate: _Extrapolate = False
     ) -> csr_array[np.float64, tuple[int, int]]: ...
 
 #

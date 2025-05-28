@@ -3,6 +3,7 @@ from typing import NamedTuple, Protocol, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+
 import scipy.stats as stats
 from scipy._typing import ToRNG
 
@@ -118,11 +119,7 @@ class NumericalInversePolynomial(_PPFMethodMixin, Method):
     def cdf(self, /, x: onp.ToFloat | onp.ToFloatND) -> float | onp.ArrayND[np.float64]: ...
     def u_error(self, /, sample_size: int = ...) -> UError: ...
     def qrvs(
-        self,
-        /,
-        size: int | tuple[int, ...] | None = ...,
-        d: int | None = ...,
-        qmc_engine: stats.qmc.QMCEngine | None = ...,
+        self, /, size: int | tuple[int, ...] | None = ..., d: int | None = ..., qmc_engine: stats.qmc.QMCEngine | None = ...
     ) -> float | onp.ArrayND[np.float64]: ...
 
 class NumericalInverseHermite(_PPFMethodMixin, Method):
@@ -144,11 +141,7 @@ class NumericalInverseHermite(_PPFMethodMixin, Method):
     def midpoint_error(self, /) -> float: ...
     def u_error(self, /, sample_size: int = ...) -> UError: ...
     def qrvs(
-        self,
-        /,
-        size: int | tuple[int, ...] | None = ...,
-        d: int | None = ...,
-        qmc_engine: stats.qmc.QMCEngine | None = ...,
+        self, /, size: int | tuple[int, ...] | None = ..., d: int | None = ..., qmc_engine: stats.qmc.QMCEngine | None = ...
     ) -> float | onp.ArrayND[np.float64]: ...
 
 class DiscreteAliasUrn(Method):

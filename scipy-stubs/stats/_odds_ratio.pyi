@@ -2,6 +2,7 @@ from typing import Any, Literal, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
+
 from ._common import ConfidenceInterval
 
 _Kind: TypeAlias = Literal["conditional", "sample"]

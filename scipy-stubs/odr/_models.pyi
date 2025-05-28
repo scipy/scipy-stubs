@@ -1,6 +1,7 @@
 from typing import Final, type_check_only
 
 import optype.numpy as onp
+
 from ._odrpack import Model
 
 __all__ = ["Model", "exponential", "multilinear", "polynomial", "quadratic", "unilinear"]

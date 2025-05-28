@@ -4,6 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
@@ -46,16 +47,10 @@ class _ProjectedCGDict(TypedDict):
     allvecs: NotRequired[Sequence[_VectorF8]]
 
 def eqp_kktfact(
-    H: _SparseArray,
-    c: _VectorLikeFloat_co,
-    A: _SparseArray,
-    b: _VectorLikeFloat_co,
+    H: _SparseArray, c: _VectorLikeFloat_co, A: _SparseArray, b: _VectorLikeFloat_co
 ) -> tuple[_VectorF8, _VectorF8]: ...
 def sphere_intersections(
-    z: _VectorLikeFloat_co,
-    d: _VectorLikeFloat_co,
-    trust_radius: _ScalarLikeFloat_co,
-    entire_line: _ScalarB1 = False,
+    z: _VectorLikeFloat_co, d: _VectorLikeFloat_co, trust_radius: _ScalarLikeFloat_co, entire_line: _ScalarB1 = False
 ) -> tuple[_ScalarF8, _ScalarF8, _ScalarB1]: ...
 def box_intersections(
     z: _VectorLikeFloat_co,
@@ -96,14 +91,10 @@ def box_sphere_intersections(
     extra_info: Truthy,
 ) -> tuple[_ScalarF8, _ScalarF8, _ScalarB1, _SphereInfoDict, _SphereInfoDict]: ...
 def inside_box_boundaries(
-    x: onp.Array[_ShapeT, _ScalarFloat_co],
-    lb: onp.Array[_ShapeT, _ScalarFloat_co],
-    ub: onp.Array[_ShapeT, _ScalarFloat_co],
+    x: onp.Array[_ShapeT, _ScalarFloat_co], lb: onp.Array[_ShapeT, _ScalarFloat_co], ub: onp.Array[_ShapeT, _ScalarFloat_co]
 ) -> np.bool_: ...
 def reinforce_box_boundaries(
-    x: onp.Array[_ShapeT, _SCT_float],
-    lb: onp.Array[_ShapeT, _SCT_float],
-    ub: onp.Array[_ShapeT, _SCT_float],
+    x: onp.Array[_ShapeT, _SCT_float], lb: onp.Array[_ShapeT, _SCT_float], ub: onp.Array[_ShapeT, _SCT_float]
 ) -> onp.Array[_ShapeT, _SCT_float]: ...
 def modified_dogleg(
     A: LinearOperator | _SparseArray | onp.ArrayND[_ScalarFloat_co],

@@ -10,8 +10,10 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
+
 from scipy._lib._sparse import SparseABC, issparse
 from scipy._typing import Casting, Falsy, OrderCF
+
 from ._bsr import bsr_array, bsr_matrix
 from ._coo import coo_array, coo_matrix
 from ._csc import csc_array, csc_matrix
@@ -601,19 +603,11 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def sum(self: _spbase[_FromIntT], /, axis: None = None, dtype: None = None, out: None = None) -> _FromIntT: ...
     @overload  # sparray[-Int, 1d], axis: index
     def sum(
-        self: _SpArray1D[_FromIntT],
-        /,
-        axis: op.CanIndex | None = None,
-        dtype: None = None,
-        out: None = None,
+        self: _SpArray1D[_FromIntT], /, axis: op.CanIndex | None = None, dtype: None = None, out: None = None
     ) -> _FromIntT: ...
     @overload  # sparray[-Int, 2d], axis: index
     def sum(
-        self: _SpArray2D[_FromIntT],
-        /,
-        axis: op.CanIndex,
-        dtype: None = None,
-        out: None = None,
+        self: _SpArray2D[_FromIntT], /, axis: op.CanIndex, dtype: None = None, out: None = None
     ) -> onp.Array1D[_FromIntT]: ...
     @overload  # spmatrix[-Int], axis: index
     def sum(self: spmatrix[_FromIntT], /, axis: op.CanIndex, dtype: None = None, out: None = None) -> onp.Matrix[_FromIntT]: ...
@@ -633,69 +627,30 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def mean(self: _spbase[_FromFloatT], /, axis: None = None, dtype: None = None, out: None = None) -> _FromFloatT: ...
     @overload  # sparray[+Int, 1d]
     def mean(
-        self: _SpArray1D[_ToBool],
-        /,
-        axis: op.CanIndex | None = None,
-        dtype: None = None,
-        out: None = None,
+        self: _SpArray1D[_ToBool], /, axis: op.CanIndex | None = None, dtype: None = None, out: None = None
     ) -> np.float64: ...
     @overload  # sparray[+Int, 2d], axis: index
     def mean(
-        self: _SpArray2D[_ToBool],
-        /,
-        axis: op.CanIndex,
-        dtype: None = None,
-        out: None = None,
+        self: _SpArray2D[_ToBool], /, axis: op.CanIndex, dtype: None = None, out: None = None
     ) -> onp.Array1D[np.float64]: ...
     @overload  # spmatrix[+Int], axis: index
-    def mean(
-        self: spmatrix[_ToBool],
-        /,
-        axis: op.CanIndex,
-        dtype: None = None,
-        out: None = None,
-    ) -> onp.Matrix[np.float64]: ...
+    def mean(self: spmatrix[_ToBool], /, axis: op.CanIndex, dtype: None = None, out: None = None) -> onp.Matrix[np.float64]: ...
     @overload  # sparray[-Float, 1d]
     def mean(
-        self: _SpArray1D[_FromFloatT],
-        /,
-        axis: op.CanIndex | None = None,
-        dtype: None = None,
-        out: None = None,
+        self: _SpArray1D[_FromFloatT], /, axis: op.CanIndex | None = None, dtype: None = None, out: None = None
     ) -> onp.Array1D[_FromFloatT]: ...
     @overload  # sparray[-Float, 2d], axis: index
     def mean(
-        self: _SpArray2D[_FromFloatT],
-        /,
-        axis: op.CanIndex,
-        dtype: None = None,
-        out: None = None,
+        self: _SpArray2D[_FromFloatT], /, axis: op.CanIndex, dtype: None = None, out: None = None
     ) -> onp.Array1D[_FromFloatT]: ...
     @overload  # spmatrix[-Float], axis: index
     def mean(
-        self: spmatrix[_FromFloatT],
-        /,
-        axis: op.CanIndex,
-        dtype: None = None,
-        out: None = None,
+        self: spmatrix[_FromFloatT], /, axis: op.CanIndex, dtype: None = None, out: None = None
     ) -> onp.Matrix[_FromFloatT]: ...
     @overload  # spmatrix, axis: index, dtype: <unknown>
-    def mean(
-        self: spmatrix,
-        /,
-        axis: op.CanIndex,
-        dtype: npt.DTypeLike,
-        out: None = None,
-    ) -> onp.Matrix[Any]: ...
+    def mean(self: spmatrix, /, axis: op.CanIndex, dtype: npt.DTypeLike, out: None = None) -> onp.Matrix[Any]: ...
     @overload  # dtype: <unknown>  (keyword)
-    def mean(
-        self,
-        /,
-        axis: op.CanIndex | None = None,
-        *,
-        dtype: npt.DTypeLike,
-        out: None = None,
-    ) -> Any: ...  # noqa: ANN401
+    def mean(self, /, axis: op.CanIndex | None = None, *, dtype: npt.DTypeLike, out: None = None) -> Any: ...  # noqa: ANN401
 
     #
     def copy(self, /) -> Self: ...
@@ -708,229 +663,113 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
 
     # NOTE: the following two ignored errors won't cause any problems (when using the public API)
     @overload  # current type
-    def astype(
-        self,
-        /,
-        dtype: onp.ToDType[_ScalarT_co],
-        casting: Casting = "unsafe",
-        copy: bool = True,
-    ) -> Self: ...
+    def astype(self, /, dtype: onp.ToDType[_ScalarT_co], casting: Casting = "unsafe", copy: bool = True) -> Self: ...
     @overload  # known type -> sparray
     def astype(
-        self: bsr_array,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: bsr_array, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> bsr_array[_ScalarT]: ...
     @overload
     def astype(
-        self: coo_array[Any, _COOShapeT],
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: coo_array[Any, _COOShapeT], /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> coo_array[_ScalarT, _COOShapeT]: ...
     @overload
     def astype(
-        self: csc_array,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: csc_array, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> csc_array[_ScalarT]: ...
     @overload
     def astype(
-        self: csr_array[Any, _CSRShapeT],
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: csr_array[Any, _CSRShapeT], /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> csr_array[_ScalarT, _CSRShapeT]: ...
     @overload
     def astype(
-        self: dia_array,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: dia_array, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> dia_array[_ScalarT]: ...
     @overload
     def astype(
-        self: dok_array[Any, _DOKShapeT],
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: dok_array[Any, _DOKShapeT], /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> dok_array[_ScalarT, _DOKShapeT]: ...
     @overload
     def astype(
-        self: lil_array,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: lil_array, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> lil_array[_ScalarT]: ...
     @overload  # known type -> spmatrix
     def astype(
-        self: bsr_matrix,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: bsr_matrix, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> bsr_matrix[_ScalarT]: ...
     @overload
     def astype(
-        self: coo_matrix,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: coo_matrix, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> coo_matrix[_ScalarT]: ...
     @overload
     def astype(
-        self: csc_matrix,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: csc_matrix, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> csc_matrix[_ScalarT]: ...
     @overload
     def astype(
-        self: csr_matrix,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: csr_matrix, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> csr_matrix[_ScalarT]: ...
     @overload
     def astype(
-        self: dia_matrix,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: dia_matrix, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> dia_matrix[_ScalarT]: ...
     @overload
     def astype(
-        self: dok_matrix,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: dok_matrix, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> dok_matrix[_ScalarT]: ...
     @overload
     def astype(
-        self: lil_matrix,
-        /,
-        dtype: onp.ToDType[_ScalarT],
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: lil_matrix, /, dtype: onp.ToDType[_ScalarT], casting: Casting = "unsafe", copy: bool = True
     ) -> lil_matrix[_ScalarT]: ...
     @overload  # dtype-like -> 1d sparray
     def astype(
-        self: _spbase[Numeric, _1D],
-        /,
-        dtype: onp.AnyBoolDType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: _spbase[Numeric, _1D], /, dtype: onp.AnyBoolDType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpArray1D[np.bool_]: ...
     @overload
     def astype(
-        self: _spbase[Numeric, _1D],
-        /,
-        dtype: onp.AnyIntDType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: _spbase[Numeric, _1D], /, dtype: onp.AnyIntDType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpArray1D[np.int_]: ...
     @overload
     def astype(
-        self: _spbase[Numeric, _1D],
-        /,
-        dtype: onp.AnyFloat64DType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: _spbase[Numeric, _1D], /, dtype: onp.AnyFloat64DType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpArray1D[np.float64]: ...
     @overload
     def astype(
-        self: _spbase[Numeric, _1D],
-        /,
-        dtype: onp.AnyComplex128DType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: _spbase[Numeric, _1D], /, dtype: onp.AnyComplex128DType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpArray1D[np.complex128]: ...
     @overload  # dtype-like -> 2d sparray
     def astype(
-        self: sparray,
-        /,
-        dtype: onp.AnyBoolDType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: sparray, /, dtype: onp.AnyBoolDType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpArray2D[np.bool_]: ...
     @overload
     def astype(
-        self: sparray,
-        /,
-        dtype: onp.AnyIntDType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: sparray, /, dtype: onp.AnyIntDType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpArray2D[np.int_]: ...
     @overload
     def astype(
-        self: sparray,
-        /,
-        dtype: onp.AnyFloat64DType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: sparray, /, dtype: onp.AnyFloat64DType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpArray2D[np.float64]: ...
     @overload
     def astype(
-        self: sparray,
-        /,
-        dtype: onp.AnyComplex128DType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: sparray, /, dtype: onp.AnyComplex128DType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpArray2D[np.complex128]: ...
     @overload  # dtype-like -> spmatrix
     def astype(
-        self: spmatrix,
-        /,
-        dtype: onp.AnyBoolDType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: spmatrix, /, dtype: onp.AnyBoolDType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpMatrix[np.bool_]: ...
     @overload
     def astype(
-        self: spmatrix,
-        /,
-        dtype: onp.AnyIntDType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: spmatrix, /, dtype: onp.AnyIntDType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpMatrix[np.int_]: ...
     @overload
     def astype(
-        self: spmatrix,
-        /,
-        dtype: onp.AnyFloat64DType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: spmatrix, /, dtype: onp.AnyFloat64DType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpMatrix[np.float64]: ...
     @overload
     def astype(
-        self: spmatrix,
-        /,
-        dtype: onp.AnyComplex128DType,
-        casting: Casting = "unsafe",
-        copy: bool = True,
+        self: spmatrix, /, dtype: onp.AnyComplex128DType, casting: Casting = "unsafe", copy: bool = True
     ) -> _SpMatrix[np.complex128]: ...
     @overload  # catch-all
-    def astype(
-        self,
-        /,
-        dtype: npt.DTypeLike,
-        casting: Casting = "unsafe",
-        copy: bool = True,
-    ) -> _spbase[Any]: ...
+    def astype(self, /, dtype: npt.DTypeLike, casting: Casting = "unsafe", copy: bool = True) -> _spbase[Any]: ...
 
     #
     @overload

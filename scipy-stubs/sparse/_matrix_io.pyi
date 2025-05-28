@@ -1,6 +1,7 @@
 from typing import Final, Literal, Protocol, TypeAlias, TypedDict, type_check_only
 
 import optype as op
+
 from ._bsr import bsr_array, bsr_matrix
 from ._coo import coo_array, coo_matrix
 from ._csc import csc_array, csc_matrix

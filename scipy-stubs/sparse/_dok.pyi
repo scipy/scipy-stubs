@@ -9,6 +9,7 @@ from typing_extensions import TypeIs, TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from ._base import _spbase, sparray
 from ._index import IndexMixin
 from ._matrix import spmatrix
@@ -37,10 +38,7 @@ _ToKeys2D: TypeAlias = Iterable[_ToKey2D]
 ###
 
 class _dok_base(
-    _spbase[_SCT, _ShapeT_co],
-    IndexMixin[_SCT, _ShapeT_co],
-    dict[tuple[int] | tuple[int, int], _SCT],
-    Generic[_SCT, _ShapeT_co],
+    _spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[tuple[int] | tuple[int, int], _SCT], Generic[_SCT, _ShapeT_co]
 ):
     dtype: np.dtype[_SCT]
 
@@ -123,23 +121,11 @@ class _dok_base(
     ) -> None: ...
     @overload  # dtype: <known> (positional)
     def __init__(
-        self,
-        /,
-        arg1: onp.ToComplexND,
-        shape: ToShapeMin1D | None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
+        self, /, arg1: onp.ToComplexND, shape: ToShapeMin1D | None, copy: bool = False, *, maxprint: int | None = None
     ) -> None: ...
     @overload  # dtype: <known> (keyword)
     def __init__(
-        self,
-        /,
-        arg1: onp.ToComplexND,
-        shape: ToShapeMin1D | None = None,
-        *,
-        copy: bool = False,
-        maxprint: int | None = None,
+        self, /, arg1: onp.ToComplexND, shape: ToShapeMin1D | None = None, *, copy: bool = False, maxprint: int | None = None
     ) -> None: ...
     @override
     def todok(self, /, copy: bool = False) -> Self: ...
@@ -224,34 +210,22 @@ class _dok_base(
     @overload
     @classmethod
     def fromkeys(
-        cls: type[_dok_base[np.float64, _2D]],
-        iterable: _ToKeys2D,
-        v: op.JustFloat,
-        /,
+        cls: type[_dok_base[np.float64, _2D]], iterable: _ToKeys2D, v: op.JustFloat, /
     ) -> _dok_base[np.float64, _2D]: ...
     @overload
     @classmethod
     def fromkeys(
-        cls: type[_dok_base[np.float64, _1D]],
-        iterable: _ToKeys1D,
-        v: op.JustFloat,
-        /,
+        cls: type[_dok_base[np.float64, _1D]], iterable: _ToKeys1D, v: op.JustFloat, /
     ) -> _dok_base[np.float64, _1D]: ...
     @overload
     @classmethod
     def fromkeys(
-        cls: type[_dok_base[np.complex128, _2D]],
-        iterable: _ToKeys2D,
-        v: op.JustComplex,
-        /,
+        cls: type[_dok_base[np.complex128, _2D]], iterable: _ToKeys2D, v: op.JustComplex, /
     ) -> _dok_base[np.complex128, _2D]: ...
     @overload
     @classmethod
     def fromkeys(
-        cls: type[_dok_base[np.complex128, _1D]],
-        iterable: _ToKeys1D,
-        v: op.JustComplex,
-        /,
+        cls: type[_dok_base[np.complex128, _1D]], iterable: _ToKeys1D, v: op.JustComplex, /
     ) -> _dok_base[np.complex128, _1D]: ...
 
 #
@@ -279,34 +253,22 @@ class dok_array(_dok_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[
     @overload
     @classmethod
     def fromkeys(
-        cls: type[dok_array[np.float64, _2D]],
-        iterable: _ToKeys2D,
-        v: op.JustFloat,
-        /,
+        cls: type[dok_array[np.float64, _2D]], iterable: _ToKeys2D, v: op.JustFloat, /
     ) -> dok_array[np.float64, _2D]: ...
     @overload
     @classmethod
     def fromkeys(
-        cls: type[dok_array[np.float64, _1D]],
-        iterable: _ToKeys1D,
-        v: op.JustFloat,
-        /,
+        cls: type[dok_array[np.float64, _1D]], iterable: _ToKeys1D, v: op.JustFloat, /
     ) -> dok_array[np.float64, _1D]: ...
     @overload
     @classmethod
     def fromkeys(
-        cls: type[dok_array[np.complex128, _2D]],
-        iterable: _ToKeys2D,
-        v: op.JustComplex,
-        /,
+        cls: type[dok_array[np.complex128, _2D]], iterable: _ToKeys2D, v: op.JustComplex, /
     ) -> dok_array[np.complex128, _2D]: ...
     @overload
     @classmethod
     def fromkeys(
-        cls: type[dok_array[np.complex128, _1D]],
-        iterable: _ToKeys1D,
-        v: op.JustComplex,
-        /,
+        cls: type[dok_array[np.complex128, _1D]], iterable: _ToKeys1D, v: op.JustComplex, /
     ) -> dok_array[np.complex128, _1D]: ...
 
 #
@@ -332,10 +294,7 @@ class dok_matrix(_dok_base[_SCT, _2D], spmatrix[_SCT], Generic[_SCT]):
     @overload
     @classmethod
     def fromkeys(
-        cls: type[dok_matrix[np.complex128]],
-        iterable: _ToKeys2D,
-        v: op.JustComplex,
-        /,
+        cls: type[dok_matrix[np.complex128]], iterable: _ToKeys2D, v: op.JustComplex, /
     ) -> dok_matrix[np.complex128]: ...
 
 #

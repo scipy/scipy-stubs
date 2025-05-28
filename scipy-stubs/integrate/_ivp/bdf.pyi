@@ -4,7 +4,9 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse import sparray, spmatrix
+
 from .base import DenseOutput, OdeSolver
 
 ###

@@ -8,6 +8,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.typing as opt
+
 from scipy._typing import RNG, ToRNG
 from scipy.spatial.distance import _Metric
 
@@ -46,11 +47,7 @@ class _Optimizer(Protocol):
 @type_check_only
 class _HypersphereMethod(Protocol):
     def __call__(
-        self,
-        /,
-        center: onp.Array2D[np.float64],
-        radius: onp.ToFloat,
-        candidates: onp.ToJustInt = 1,
+        self, /, center: onp.Array2D[np.float64], radius: onp.ToFloat, candidates: onp.ToJustInt = 1
     ) -> onp.Array2D[np.float64]: ...
 
 @type_check_only
@@ -99,13 +96,7 @@ class Halton(QMCEngine[np.float64]):
     _permutations: Final[list[onp.Array2D[np.int_]]]
 
     def __init__(
-        self,
-        /,
-        d: onp.ToJustInt,
-        *,
-        scramble: bool = True,
-        optimization: _MethodQMC | None = None,
-        rng: ToRNG = None,
+        self, /, d: onp.ToJustInt, *, scramble: bool = True, optimization: _MethodQMC | None = None, rng: ToRNG = None
     ) -> None: ...
 
     #
@@ -191,18 +182,10 @@ class PoissonDisk(QMCEngine[np.float64]):
 
     #
     def _hypersphere_volume_sample(
-        self,
-        /,
-        center: onp.Array2D[np.float64],
-        radius: onp.ToFloat,
-        candidates: onp.ToJustInt = 1,
+        self, /, center: onp.Array2D[np.float64], radius: onp.ToFloat, candidates: onp.ToJustInt = 1
     ) -> onp.Array2D[np.float64]: ...
     def _hypersphere_surface_sample(
-        self,
-        /,
-        center: onp.Array2D[np.float64],
-        radius: onp.ToFloat,
-        candidates: onp.ToJustInt = 1,
+        self, /, center: onp.Array2D[np.float64], radius: onp.ToFloat, candidates: onp.ToJustInt = 1
     ) -> onp.Array2D[np.float64]: ...
 
     #
@@ -235,14 +218,10 @@ class MultivariateNormalQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co])
     ) -> None: ...
     #
     def _correlate(
-        self: MultivariateNormalQMC[QMCEngine[_InexactT]],
-        /,
-        base_samples: onp.Array2D[_InexactT],
+        self: MultivariateNormalQMC[QMCEngine[_InexactT]], /, base_samples: onp.Array2D[_InexactT]
     ) -> onp.Array2D[_InexactT]: ...
     def _standard_normal_samples(
-        self: MultivariateNormalQMC[QMCEngine[_InexactT]],
-        /,
-        n: onp.ToJustInt = 1,
+        self: MultivariateNormalQMC[QMCEngine[_InexactT]], /, n: onp.ToJustInt = 1
     ) -> onp.Array2D[_InexactT]: ...
 
 class MultinomialQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co]):
@@ -261,13 +240,7 @@ class MultinomialQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self,
-        /,
-        pvals: onp.ToJustFloat | onp.ToJustFloat1D,
-        n_trials: onp.ToJustInt,
-        *,
-        engine: _EngineT_co,
-        rng: ToRNG = None,
+        self, /, pvals: onp.ToJustFloat | onp.ToJustFloat1D, n_trials: onp.ToJustInt, *, engine: _EngineT_co, rng: ToRNG = None
     ) -> None: ...
 
 #
@@ -287,18 +260,12 @@ def scale(
 
 #
 def discrepancy(
-    sample: onp.ToFloat2D,
-    *,
-    iterative: op.CanBool = False,
-    method: _MethodDisc = "CD",
-    workers: onp.ToJustInt = 1,
+    sample: onp.ToFloat2D, *, iterative: op.CanBool = False, method: _MethodDisc = "CD", workers: onp.ToJustInt = 1
 ) -> float | np.float64: ...
 
 #
 def geometric_discrepancy(
-    sample: onp.ToJustFloat2D,
-    method: _MethodDist = "mindist",
-    metric: _Metric = "euclidean",
+    sample: onp.ToJustFloat2D, method: _MethodDist = "mindist", metric: _Metric = "euclidean"
 ) -> float | np.float64: ...
 
 #
@@ -312,30 +279,18 @@ def _random_cd(best_sample: _FloatArrayT, n_iters: onp.ToInt, n_nochange: onp.To
 def _l1_norm(sample: onp.ToJustFloat2D) -> float | np.float64: ...
 def _lloyd_iteration(sample: _FloatArrayT, decay: onp.ToFloat, qhull_options: str | None) -> _FloatArrayT: ...
 def _lloyd_centroidal_voronoi_tessellation(
-    sample: onp.ToJustFloat2D,
-    *,
-    tol: onp.ToFloat = 1e-5,
-    maxiter: onp.ToJustInt = 10,
-    qhull_options: str | None = None,
+    sample: onp.ToJustFloat2D, *, tol: onp.ToFloat = 1e-5, maxiter: onp.ToJustInt = 10, qhull_options: str | None = None
 ) -> onp.Array2D[np.float64]: ...
 def _ensure_in_unit_hypercube(sample: onp.ToJustFloat2D) -> onp.Array2D[np.float64]: ...
 
 #
 @overload
 def _perturb_discrepancy(
-    sample: onp.Array2D[np.integer[Any] | np.bool_],
-    i1: op.CanIndex,
-    i2: op.CanIndex,
-    k: op.CanIndex,
-    disc: onp.ToFloat,
+    sample: onp.Array2D[np.integer[Any] | np.bool_], i1: op.CanIndex, i2: op.CanIndex, k: op.CanIndex, disc: onp.ToFloat
 ) -> float | np.float64: ...
 @overload
 def _perturb_discrepancy(
-    sample: onp.Array2D[_InexactT],
-    i1: op.CanIndex,
-    i2: op.CanIndex,
-    k: op.CanIndex,
-    disc: onp.ToFloat,
+    sample: onp.Array2D[_InexactT], i1: op.CanIndex, i2: op.CanIndex, k: op.CanIndex, disc: onp.ToFloat
 ) -> _InexactT: ...
 
 #
@@ -359,7 +314,5 @@ def _van_der_corput_permutation(base: op.CanFloat, *, random_state: ToRNG = None
 #
 def _validate_workers(workers: onp.ToJustInt = 1) -> int: ...
 def _validate_bounds(
-    l_bounds: onp.ToFloat1D,
-    u_bounds: onp.ToFloat1D,
-    d: onp.ToJustInt,
+    l_bounds: onp.ToFloat1D, u_bounds: onp.ToFloat1D, d: onp.ToJustInt
 ) -> tuple[onp.Array1D[_Real], onp.Array1D[_Real]]: ...

@@ -8,23 +8,10 @@ class IntegrationWarning(UserWarning): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 def dblquad(
-    func: object,
-    a: object,
-    b: object,
-    gfun: object,
-    hfun: object,
-    args: object = ...,
-    epsabs: object = ...,
-    epsrel: object = ...,
+    func: object, a: object, b: object, gfun: object, hfun: object, args: object = ..., epsabs: object = ..., epsrel: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def nquad(
-    func: object,
-    ranges: object,
-    args: object = ...,
-    opts: object = ...,
-    full_output: object = ...,
-) -> object: ...
+def nquad(func: object, ranges: object, args: object = ..., opts: object = ..., full_output: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def quad(
     func: object,

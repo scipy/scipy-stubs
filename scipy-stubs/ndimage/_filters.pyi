@@ -6,6 +6,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
 from scipy._lib._ccallback import LowLevelCallable
 
 __all__ = [

@@ -2,7 +2,9 @@ from typing import Final, Literal, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
+
 from ._optimize import OptimizeResult as _OptimizeResult
 
 @type_check_only
@@ -33,15 +35,9 @@ class OptimizeResult(_OptimizeResult):
 
 @overload
 def quadratic_assignment(
-    A: onp.ToFloat2D,
-    B: onp.ToFloat2D,
-    method: Literal["faq"] = "faq",
-    options: _FAQOptions | None = None,
+    A: onp.ToFloat2D, B: onp.ToFloat2D, method: Literal["faq"] = "faq", options: _FAQOptions | None = None
 ) -> OptimizeResult: ...
 @overload
 def quadratic_assignment(
-    A: onp.ToFloat2D,
-    B: onp.ToFloat2D,
-    method: Literal["2opt"],
-    options: _2OptOptions | None = None,
+    A: onp.ToFloat2D, B: onp.ToFloat2D, method: Literal["2opt"], options: _2OptOptions | None = None
 ) -> OptimizeResult: ...

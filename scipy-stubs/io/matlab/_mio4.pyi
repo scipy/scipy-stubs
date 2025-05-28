@@ -4,7 +4,9 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse import coo_matrix, sparray, spmatrix
+
 from ._miobase import MatFileReader
 
 __all__ = [
@@ -90,10 +92,7 @@ class VarReader4:
     def __init__(self, /, file_reader: MatFileReader) -> None: ...
     def read_header(self, /) -> tuple[VarHeader4, int]: ...
     def array_from_header(
-        self,
-        /,
-        hdr: _SupportsVarHeader[_DT],
-        process: bool = True,
+        self, /, hdr: _SupportsVarHeader[_DT], process: bool = True
     ) -> np.ndarray[tuple[int, ...], _DT] | coo_matrix: ...
     def read_sub_array(self, /, hdr: _SupportsVarHeader[_DT], copy: bool = True) -> np.ndarray[tuple[int, ...], _DT]: ...
     def read_full_array(self, /, hdr: _SupportsVarHeader[_DT]) -> np.ndarray[tuple[int, ...], _DT]: ...

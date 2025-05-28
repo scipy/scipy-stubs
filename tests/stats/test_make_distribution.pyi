@@ -1,6 +1,7 @@
 from typing import Literal
 
 import numpy as np
+
 from scipy.stats import distributions, make_distribution
 from scipy.stats._distribution_infrastructure import ContinuousDistribution
 

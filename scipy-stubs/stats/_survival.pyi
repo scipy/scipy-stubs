@@ -4,7 +4,9 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Alternative
+
 from ._censored_data import CensoredData
 from ._common import ConfidenceInterval
 
@@ -45,11 +47,7 @@ class EmpiricalDistributionFunction:
     @overload
     def plot(self, /, ax: _CanStep[_KwargsT, _LineT], **kwds: _KwargsT) -> list[_LineT]: ...
     def confidence_interval(
-        self,
-        /,
-        confidence_level: onp.ToFloat = 0.95,
-        *,
-        method: _CIMethod = "linear",
+        self, /, confidence_level: onp.ToFloat = 0.95, *, method: _CIMethod = "linear"
     ) -> ConfidenceInterval: ...
 
 @dataclass

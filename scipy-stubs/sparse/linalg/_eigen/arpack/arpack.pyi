@@ -3,6 +3,7 @@ from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
@@ -27,11 +28,7 @@ class ArpackNoConvergence(ArpackError):
     eigenvalues: Final[onp.Array1D[np.float64 | np.complex128]]
     eigenvectors: Final[onp.Array2D[np.float64]]
     def __init__(
-        self,
-        /,
-        msg: str,
-        eigenvalues: onp.Array1D[np.float64 | np.complex128],
-        eigenvectors: onp.Array2D[np.float64],
+        self, /, msg: str, eigenvalues: onp.Array1D[np.float64 | np.complex128], eigenvectors: onp.Array2D[np.float64]
     ) -> None: ...
 
 #

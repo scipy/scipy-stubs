@@ -81,9 +81,7 @@ def qspline1d(signal: onp.ToComplexND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[_
 def cspline2d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0) -> onp.Array1D[np.float64]: ...
 @overload
 def cspline2d(
-    signal: onp.ToComplexND,
-    lamb: onp.ToFloat = 0.0,
-    precision: onp.ToFloat = -1.0,
+    signal: onp.ToComplexND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0
 ) -> onp.Array1D[np.float64 | np.complex128]: ...
 
 #
@@ -91,39 +89,25 @@ def cspline2d(
 def qspline2d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0) -> onp.Array1D[np.float64]: ...
 @overload
 def qspline2d(
-    signal: onp.ToComplexND,
-    lamb: onp.ToFloat = 0.0,
-    precision: onp.ToFloat = -1.0,
+    signal: onp.ToComplexND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0
 ) -> onp.Array1D[np.float64 | np.complex128]: ...
 
 #
 def cspline1d_eval(
-    cj: onp.Array1D[_InexactT],
-    newx: onp.ToFloatND,
-    dx: onp.ToFloat = 1.0,
-    x0: onp.ToFloat = 0,
+    cj: onp.Array1D[_InexactT], newx: onp.ToFloatND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
 ) -> onp.Array1D[_InexactT]: ...
 
 #
 def qspline1d_eval(
-    cj: onp.Array1D[_InexactQT],
-    newx: onp.ToFloatND,
-    dx: onp.ToFloat = 1.0,
-    x0: onp.ToFloat = 0,
+    cj: onp.Array1D[_InexactQT], newx: onp.ToFloatND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
 ) -> onp.Array1D[_InexactQT]: ...
 
 #
 def symiirorder1(
-    signal: onp.ArrayND[_InexactDT, _ShapeT],
-    c0: onp.ToComplex,
-    z1: onp.ToComplex,
-    precision: onp.ToFloat = -1.0,
+    signal: onp.ArrayND[_InexactDT, _ShapeT], c0: onp.ToComplex, z1: onp.ToComplex, precision: onp.ToFloat = -1.0
 ) -> onp.ArrayND[_InexactDT, _ShapeT]: ...
 
 #
 def symiirorder2(
-    input: onp.ArrayND[_FloatDT, _ShapeT],
-    r: onp.ToFloat,
-    omega: onp.ToFloat,
-    precision: onp.ToFloat = -1.0,
+    input: onp.ArrayND[_FloatDT, _ShapeT], r: onp.ToFloat, omega: onp.ToFloat, precision: onp.ToFloat = -1.0
 ) -> onp.ArrayND[_FloatDT, _ShapeT]: ...

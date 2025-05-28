@@ -16,9 +16,5 @@ def _cy_wrapper_l2_star_discrepancy(sample: _Matrix_f8, iterative: op.CanBool, w
 def _cy_wrapper_update_discrepancy(x_new_view: _Vector_f8, sample_view: _Matrix_f8, initial_disc: opt.AnyFloat) -> float: ...
 def _cy_van_der_corput(n: opt.AnyInt, base: opt.AnyInt, start_index: opt.AnyInt, workers: opt.AnyInt) -> _Vector_f8: ...
 def _cy_van_der_corput_scrambled(
-    n: opt.AnyInt,
-    base: opt.AnyInt,
-    start_index: opt.AnyInt,
-    permutations: _Vector_i8,
-    workers: opt.AnyInt,
+    n: opt.AnyInt, base: opt.AnyInt, start_index: opt.AnyInt, permutations: _Vector_i8, workers: opt.AnyInt
 ) -> _Vector_f8: ...

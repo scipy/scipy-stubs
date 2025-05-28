@@ -6,6 +6,7 @@ from typing_extensions import TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._lib._disjoint_set import DisjointSet
 from scipy._typing import Falsy, Truthy
 from scipy.spatial.distance import _Metric
@@ -83,13 +84,7 @@ class ClusterNode:
     # NOTE: either both `left` and `right` are None, or both are `ClusterNode`
     @overload
     def __init__(
-        self: ClusterNode,
-        /,
-        id: int,
-        left: None = None,
-        right: None = None,
-        dist: float = 0.0,
-        count: int = 1,
+        self: ClusterNode, /, id: int, left: None = None, right: None = None, dist: float = 0.0, count: int = 1
     ) -> None: ...
     @overload
     def __init__(self, /, id: int, left: ClusterNode, right: ClusterNode, dist: float = 0, count: int = 1) -> None: ...
@@ -127,17 +122,12 @@ def centroid(y: onp.ToArrayND) -> _LinkageArray: ...
 def median(y: onp.ToArrayND) -> _LinkageArray: ...
 def ward(y: onp.ToArrayND) -> _LinkageArray: ...
 def linkage(
-    y: onp.ToArrayND,
-    method: _LinkageMethod = "single",
-    metric: _Metric = "euclidean",
-    optimal_ordering: bool = False,
+    y: onp.ToArrayND, method: _LinkageMethod = "single", metric: _Metric = "euclidean", optimal_ordering: bool = False
 ) -> _LinkageArray[np.int_ | np.float64 | np.complex128]: ...
 
 #
 def cut_tree(
-    Z: onp.ToArray2D,
-    n_clusters: onp.ToInt1D | None = None,
-    height: onp.ToFloat1D | None = None,
+    Z: onp.ToArray2D, n_clusters: onp.ToInt1D | None = None, height: onp.ToFloat1D | None = None
 ) -> onp.Array2D[np.int64]: ...
 
 #

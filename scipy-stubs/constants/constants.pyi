@@ -47,25 +47,25 @@ from ._constants import (
     dyn,
     dyne,
     e,
+    eV,
     electron_mass,
     electron_volt,
     elementary_charge,
     epsilon_0,
     erg,
-    eV,
     exa,
     exbi,
     femto,
     fermi,
     fine_structure,
     fluid_ounce,
-    fluid_ounce_imp,
     fluid_ounce_US,
+    fluid_ounce_imp,
     foot,
     g,
     gallon,
-    gallon_imp,
     gallon_US,
+    gallon_imp,
     gas_constant,
     gibi,
     giga,
@@ -314,11 +314,7 @@ __all__ = [
 ]
 
 @deprecated("will be removed in SciPy v2.0.0")
-def convert_temperature(
-    val: object,
-    old_scale: object,
-    new_scale: object,
-) -> object: ...
+def convert_temperature(val: object, old_scale: object, new_scale: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def lambda2nu(lambda_: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")

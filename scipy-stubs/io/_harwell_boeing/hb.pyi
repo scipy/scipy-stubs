@@ -3,6 +3,7 @@ from typing_extensions import Protocol
 
 import numpy as np
 import optype.typing as opt
+
 from scipy._typing import Falsy, FileLike, Truthy
 from scipy.sparse import csc_array, csc_matrix
 from scipy.sparse._base import _spbase
@@ -51,12 +52,7 @@ class HBInfo:
 
     @classmethod
     def from_data(
-        cls,
-        m: _spbase,
-        title: str = "Default title",
-        key: str = "0",
-        mxtype: HBMatrixType | None = None,
-        fmt: None = None,
+        cls, m: _spbase, title: str = "Default title", key: str = "0", mxtype: HBMatrixType | None = None, fmt: None = None
     ) -> Self: ...
     @classmethod
     def from_file(cls, fid: IO[str]) -> Self: ...

@@ -3,6 +3,7 @@ from typing import Final, final
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from ._optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["isotonic_regression"]
@@ -14,8 +15,5 @@ class OptimizeResult(_OptimizeResult):
     blocks: Final[onp.Array1D[np.intp]]
 
 def isotonic_regression(
-    y: onp.ToFloat1D,
-    *,
-    weights: onp.ToFloat1D | None = None,
-    increasing: op.CanBool = True,
+    y: onp.ToFloat1D, *, weights: onp.ToFloat1D | None = None, increasing: op.CanBool = True
 ) -> OptimizeResult: ...

@@ -79,11 +79,7 @@ def eigh_tridiagonal(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def eigvals(
-    a: object,
-    b: object = ...,
-    overwrite_a: object = ...,
-    check_finite: object = ...,
-    homogeneous_eigvals: object = ...,
+    a: object, b: object = ..., overwrite_a: object = ..., check_finite: object = ..., homogeneous_eigvals: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def eigvals_banded(

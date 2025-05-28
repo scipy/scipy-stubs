@@ -17,12 +17,7 @@ class CZT:
     n: Final[int]
 
     def __init__(
-        self,
-        /,
-        n: int,
-        m: int | None = None,
-        w: complex | np.complex128 | None = None,
-        a: complex | np.complex128 = 1 + 0j,
+        self, /, n: int, m: int | None = None, w: complex | np.complex128 | None = None, a: complex | np.complex128 = 1 + 0j
     ) -> None: ...
     @overload
     def __call__(self, /, x: onp.ToComplexStrict1D, *, axis: op.CanIndex = -1) -> onp.Array1D[_Complex]: ...
@@ -55,9 +50,7 @@ def _validate_sizes(n: int, m: int | None) -> int: ...
 
 #
 def czt_points(
-    m: int,
-    w: complex | np.complex128 | None = None,
-    a: complex | np.complex128 = 1 + 0j,
+    m: int, w: complex | np.complex128 | None = None, a: complex | np.complex128 = 1 + 0j
 ) -> onp.Array1D[np.complex128]: ...
 
 #

@@ -3,7 +3,9 @@ from typing import Concatenate, Literal, Protocol, TypeAlias, TypeVar, type_chec
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
+
 from ._minimize import OptimizeResult as _MinimizeResult
 from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import MinimizerKwargs
@@ -21,13 +23,7 @@ _CallbackFun: TypeAlias = Callable[[_Float1D, _FT, bool], bool | None]
 @type_check_only
 class _AcceptTestFun(Protocol[_FT_contra]):
     def __call__(
-        self,
-        /,
-        *,
-        f_new: _FT_contra,
-        x_new: onp.ToFloat1D,
-        f_old: _FT_contra,
-        x_old: onp.ToFloat1D,
+        self, /, *, f_new: _FT_contra, x_new: onp.ToFloat1D, f_old: _FT_contra, x_old: onp.ToFloat1D
     ) -> bool | Literal["force accept"]: ...
 
 @type_check_only

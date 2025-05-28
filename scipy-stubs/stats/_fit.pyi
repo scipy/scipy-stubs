@@ -4,8 +4,10 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
 from scipy.optimize import OptimizeResult
+
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
 
 _Params: TypeAlias = Mapping[str, onp.ToFloat]
@@ -42,21 +44,11 @@ class FitResult(Generic[_PXFT_co]):
 
     @overload
     def __init__(
-        self: FitResult[_PXF1n],
-        /,
-        dist: rv_discrete,
-        data: onp.ToFloatND,
-        discrete: bool,
-        res: OptimizeResult,
+        self: FitResult[_PXF1n], /, dist: rv_discrete, data: onp.ToFloatND, discrete: bool, res: OptimizeResult
     ) -> None: ...
     @overload
     def __init__(
-        self: FitResult[_PXF2n],
-        /,
-        dist: rv_continuous,
-        data: onp.ToFloatND,
-        discrete: bool,
-        res: OptimizeResult,
+        self: FitResult[_PXF2n], /, dist: rv_continuous, data: onp.ToFloatND, discrete: bool, res: OptimizeResult
     ) -> None: ...
 
     #

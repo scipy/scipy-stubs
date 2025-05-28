@@ -4,6 +4,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from ._ckdtree import cKDTree, cKDTreeNode
 
 __all__ = ["KDTree", "Rectangle", "distance_matrix", "minkowski_distance", "minkowski_distance_p"]
@@ -106,8 +107,5 @@ def minkowski_distance(x: onp.ToComplexND, y: onp.ToComplexND, p: int = 2) -> on
 def distance_matrix(x: onp.ToFloatND, y: onp.ToFloatND, p: int = 2, threshold: int = 1_000_000) -> onp.Array2D[np.float64]: ...
 @overload
 def distance_matrix(
-    x: onp.ToComplexND,
-    y: onp.ToComplexND,
-    p: int = 2,
-    threshold: int = 1_000_000,
+    x: onp.ToComplexND, y: onp.ToComplexND, p: int = 2, threshold: int = 1_000_000
 ) -> onp.Array2D[np.float64 | np.complex128]: ...

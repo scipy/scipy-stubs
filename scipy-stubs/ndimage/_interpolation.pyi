@@ -62,32 +62,19 @@ def spline_filter1d(
 #
 @overload
 def spline_filter(
-    input: onp.ToScalar | onp.ToArrayND,
-    order: _Order = 3,
-    output: type[float | np.float64] = ...,
-    mode: _Mode = "mirror",
+    input: onp.ToScalar | onp.ToArrayND, order: _Order = 3, output: type[float | np.float64] = ..., mode: _Mode = "mirror"
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def spline_filter(
-    input: onp.ToScalar | onp.ToArrayND,
-    order: _Order = 3,
-    output: type[complex] = ...,
-    mode: _Mode = "mirror",
+    input: onp.ToScalar | onp.ToArrayND, order: _Order = 3, output: type[complex] = ..., mode: _Mode = "mirror"
 ) -> onp.ArrayND[np.complex128 | np.float64]: ...
 @overload
 def spline_filter(
-    input: onp.ToScalar | onp.ToArrayND,
-    order: _Order,
-    output: onp.ArrayND[_SCT] | type[_SCT],
-    mode: _Mode = "mirror",
+    input: onp.ToScalar | onp.ToArrayND, order: _Order, output: onp.ArrayND[_SCT] | type[_SCT], mode: _Mode = "mirror"
 ) -> onp.ArrayND[_SCT]: ...
 @overload
 def spline_filter(
-    input: onp.ToScalar | onp.ToArrayND,
-    order: _Order = 3,
-    *,
-    output: onp.ArrayND[_SCT] | type[_SCT],
-    mode: _Mode = "mirror",
+    input: onp.ToScalar | onp.ToArrayND, order: _Order = 3, *, output: onp.ArrayND[_SCT] | type[_SCT], mode: _Mode = "mirror"
 ) -> onp.ArrayND[_SCT]: ...
 
 #

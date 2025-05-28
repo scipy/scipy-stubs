@@ -2,6 +2,7 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.signal.windows import dpss
 
 # test dpss function overloads

@@ -2,6 +2,7 @@ from typing import Final, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.sparse import csr_matrix
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Floating, Integer

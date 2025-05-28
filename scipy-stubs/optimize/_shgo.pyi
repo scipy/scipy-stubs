@@ -1,8 +1,9 @@
 from collections.abc import Callable, Iterable, Sequence
-from typing import Concatenate, Literal, TypeAlias, TypedDict, TypeVar, type_check_only
+from typing import Concatenate, Literal, TypeAlias, TypeVar, TypedDict, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+
 from ._constraints import Bounds
 from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import Constraints, MinimizerKwargs

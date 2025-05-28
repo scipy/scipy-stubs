@@ -19,7 +19,7 @@ MIN_VERSIONS: Final = (
     (Version("3.11"), Version("1.25")),
     (Version("3.12"), Version("1.26")),
     (Version("3.13"), Version("2.1")),
-)
+)  # fmt: skip
 
 
 class UVPythonVersionParts(TypedDict):
@@ -112,10 +112,7 @@ def get_dependency_minimum_version(package: str, dependency: str) -> Version:
         raise ValueError(f"Dependency {dependency} not found in requirements for {package}") from e
 
         # Extract the version specifier (e.g., ">=1.21.0")
-    version_specifier = next(
-        (ver for ver in dependency_req.split(",") if ">" in ver),
-        None,
-    )
+    version_specifier = next((ver for ver in dependency_req.split(",") if ">" in ver), None)
     if version_specifier is None:
         raise ValueError(f"No version specifier found for dependency {dependency} in {package}")
 
@@ -125,9 +122,7 @@ def get_dependency_minimum_version(package: str, dependency: str) -> Version:
 
 
 def get_available_python_versions(
-    min_version: Version | None = None,
-    max_version: Version | None = None,
-    pre_releases: bool = False,
+    min_version: Version | None = None, max_version: Version | None = None, pre_releases: bool = False
 ) -> list[Version]:
     """
     Get a list of available Python versions from GitHub Actions' Python Versions Manifest.
@@ -194,11 +189,7 @@ def fetch_json(url: str) -> Any:  # noqa: ANN401
         sys.exit(1)
 
 
-def get_available_package_versions(
-    package_name: str,
-    min_version: Version,
-    pre_releases: bool = False,
-) -> dict[Version, str]:
+def get_available_package_versions(package_name: str, min_version: Version, pre_releases: bool = False) -> dict[Version, str]:
     """
     Get available package versions from PyPI starting from the specified minimum version,
     but only include the latest micro version within each minor version series,

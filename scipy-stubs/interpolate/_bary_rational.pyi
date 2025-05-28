@@ -24,9 +24,7 @@ class _BarycentricRational(Generic[_SCT_co, _ShapeT_co]):
     #
     @overload
     def __call__(
-        self: _BarycentricRational[_SCT, tuple[int]],
-        /,
-        z: onp.ArrayND[_SCT, _ShapeT],
+        self: _BarycentricRational[_SCT, tuple[int]], /, z: onp.ArrayND[_SCT, _ShapeT]
     ) -> onp.ArrayND[_SCT, _ShapeT]: ...
     @overload
     def __call__(self, /, z: onp.ToFloat) -> onp.ArrayND[_SCT_co, _ShapeT_co]: ...

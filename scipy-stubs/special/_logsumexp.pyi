@@ -2,17 +2,14 @@ from typing import overload
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import AnyShape, Falsy, Truthy
 
 __all__ = ["log_softmax", "logsumexp", "softmax"]
 
 @overload
 def logsumexp(
-    a: onp.ToFloat,
-    axis: AnyShape | None = None,
-    b: onp.ToFloat | None = None,
-    keepdims: bool = False,
-    return_sign: Falsy = False,
+    a: onp.ToFloat, axis: AnyShape | None = None, b: onp.ToFloat | None = None, keepdims: bool = False, return_sign: Falsy = False
 ) -> np.float64: ...
 @overload
 def logsumexp(
@@ -40,30 +37,15 @@ def logsumexp(
 ) -> np.float64 | np.complex128 | onp.ArrayND[np.float64 | np.complex128]: ...
 @overload
 def logsumexp(
-    a: onp.ToFloat,
-    axis: AnyShape | None = None,
-    b: onp.ToFloat | None = None,
-    keepdims: bool = False,
-    *,
-    return_sign: Truthy,
+    a: onp.ToFloat, axis: AnyShape | None = None, b: onp.ToFloat | None = None, keepdims: bool = False, *, return_sign: Truthy
 ) -> tuple[np.float64, bool | np.bool_]: ...
 @overload
 def logsumexp(
-    a: onp.ToComplex,
-    axis: AnyShape | None = None,
-    b: onp.ToFloat | None = None,
-    keepdims: bool = False,
-    *,
-    return_sign: Truthy,
+    a: onp.ToComplex, axis: AnyShape | None = None, b: onp.ToFloat | None = None, keepdims: bool = False, *, return_sign: Truthy
 ) -> tuple[np.float64 | np.complex128, bool | np.bool_]: ...
 @overload
 def logsumexp(
-    a: onp.ToFloatND,
-    axis: AnyShape,
-    b: onp.ToFloat | onp.ToFloatND | None = None,
-    keepdims: bool = False,
-    *,
-    return_sign: Truthy,
+    a: onp.ToFloatND, axis: AnyShape, b: onp.ToFloat | onp.ToFloatND | None = None, keepdims: bool = False, *, return_sign: Truthy
 ) -> tuple[np.float64, bool | np.bool_] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.bool_]]: ...
 @overload
 def logsumexp(

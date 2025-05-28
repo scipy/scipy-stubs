@@ -3,6 +3,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy._typing import ToRNG
 
 __all__ = ["kmeans", "kmeans2", "vq", "whiten"]
@@ -28,29 +29,21 @@ def whiten(obs: onp.ArrayND[_InexactT], check_finite: bool | None = None) -> onp
 #
 @overload
 def vq(
-    obs: onp.ToFloat2D,
-    code_book: onp.ToFloat2D,
-    check_finite: bool = True,
+    obs: onp.ToFloat2D, code_book: onp.ToFloat2D, check_finite: bool = True
 ) -> tuple[onp.Array1D[np.int32 | np.intp], onp.Array1D[_Floating]]: ...
 @overload
 def vq(
-    obs: onp.ToComplex2D,
-    code_book: onp.ToComplex2D,
-    check_finite: bool = True,
+    obs: onp.ToComplex2D, code_book: onp.ToComplex2D, check_finite: bool = True
 ) -> tuple[onp.Array1D[np.int32 | np.intp], onp.Array1D[_Inexact]]: ...
 
 #
 @overload
 def py_vq(
-    obs: onp.ToFloat2D,
-    code_book: onp.ToFloat2D,
-    check_finite: bool = True,
+    obs: onp.ToFloat2D, code_book: onp.ToFloat2D, check_finite: bool = True
 ) -> tuple[onp.Array1D[np.intp], onp.Array1D[_Floating]]: ...
 @overload
 def py_vq(
-    obs: onp.ToComplex2D,
-    code_book: onp.ToComplex2D,
-    check_finite: bool = True,
+    obs: onp.ToComplex2D, code_book: onp.ToComplex2D, check_finite: bool = True
 ) -> tuple[onp.Array1D[np.intp], onp.Array1D[_Inexact]]: ...
 
 #

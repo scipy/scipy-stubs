@@ -1,9 +1,9 @@
+from _typeshed import IdentityFunction
 from collections.abc import Callable
 from typing import Literal as L, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
-from _typeshed import IdentityFunction
 
 _Inexact: TypeAlias = np.float64 | np.complex128
 

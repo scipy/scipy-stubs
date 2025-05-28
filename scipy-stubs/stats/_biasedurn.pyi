@@ -5,6 +5,7 @@ from typing import Never, type_check_only
 import numpy as np
 import optype as op
 import optype.numpy as onp
+
 from scipy._typing import RNG
 
 @type_check_only
@@ -29,24 +30,10 @@ class _PyStochasticLib3:
     def WalleniusNCHyp(self, /, n: op.CanInt, m: op.CanInt, N: op.CanInt, odds: op.CanFloat) -> _PyWalleniusNCHypergeometric: ...
     #
     def rvs_fisher(
-        self,
-        /,
-        n: op.CanInt,
-        m: op.CanInt,
-        N: op.CanInt,
-        odds: op.CanFloat,
-        size: op.CanInt,
-        random_state: RNG | None = None,
+        self, /, n: op.CanInt, m: op.CanInt, N: op.CanInt, odds: op.CanFloat, size: op.CanInt, random_state: RNG | None = None
     ) -> onp.Array1D[np.float64]: ...
     def rvs_wallenius(
-        self,
-        /,
-        n: op.CanInt,
-        m: op.CanInt,
-        N: op.CanInt,
-        odds: op.CanFloat,
-        size: op.CanInt,
-        random_state: RNG | None = None,
+        self, /, n: op.CanInt, m: op.CanInt, N: op.CanInt, odds: op.CanFloat, size: op.CanInt, random_state: RNG | None = None
     ) -> onp.Array1D[np.float64]: ...
 
 def __setstate_cython__(self: object, pyx_state: object, /) -> None: ...
