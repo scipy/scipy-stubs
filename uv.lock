@@ -242,14 +242,14 @@ wheels = [
 
 [[package]]
 name = "optype"
-version = "0.9.3"
+version = "0.10.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "typing-extensions", marker = "python_full_version < '3.13'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/88/3c/9d59b0167458b839273ad0c4fc5f62f787058d8f5aed7f71294963a99471/optype-0.9.3.tar.gz", hash = "sha256:5f09d74127d316053b26971ce441a4df01f3a01943601d3712dd6f34cdfbaf48", size = 96143, upload-time = "2025-03-31T17:00:08.392Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/11/11/5bc1ad8e4dd339783daec5299c9162eaa80ad072aaa1256561b336152981/optype-0.10.0.tar.gz", hash = "sha256:2b89a1b8b48f9d6dd8c4dd4f59e22557185c81823c6e2bfc43c4819776d5a7ca", size = 95630, upload-time = "2025-05-28T22:43:18.799Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/73/d8/ac50e2982bdc2d3595dc2bfe3c7e5a0574b5e407ad82d70b5f3707009671/optype-0.9.3-py3-none-any.whl", hash = "sha256:2935c033265938d66cc4198b0aca865572e635094e60e6e79522852f029d9e8d", size = 84357, upload-time = "2025-03-31T17:00:06.464Z" },
+    { url = "https://files.pythonhosted.org/packages/2b/98/7f97864d5b6801bc63c24e72c45a58417c344c563ca58134a43249ce8afa/optype-0.10.0-py3-none-any.whl", hash = "sha256:7e9ccc329fb65c326c6bd62c30c2ba03b694c28c378a96c2bcdd18a084f2c96b", size = 83825, upload-time = "2025-05-28T22:43:16.772Z" },
 ]
 
 [[package]]
@@ -530,7 +530,7 @@ type = [
 
 [package.metadata]
 requires-dist = [
-    { name = "optype", specifier = ">=0.9.3" },
+    { name = "optype", specifier = ">=0.10.0,<1" },
     { name = "scipy", marker = "extra == 'scipy'", specifier = ">=1.16.0rc1,<1.17" },
 ]
 provides-extras = ["scipy"]

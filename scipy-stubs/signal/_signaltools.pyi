@@ -572,7 +572,7 @@ def envelope(
     axis: op.CanIndex = -1,
 ) -> onp.Array3D[np.float32]: ...
 @overload
-def envelope(  # type: ignore[overload-overlap]
+def envelope(
     z: onp.ArrayND[np.float16],
     bp_in: tuple[_ToInt | None, _ToInt | None] = (1, None),
     *,
