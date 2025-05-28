@@ -194,7 +194,11 @@ def fetch_json(url: str) -> Any:  # noqa: ANN401
         sys.exit(1)
 
 
-def get_available_package_versions(package_name: str, min_version: Version) -> dict[Version, str]:
+def get_available_package_versions(
+    package_name: str,
+    min_version: Version,
+    pre_releases: bool = False,
+) -> dict[Version, str]:
     """
     Get available package versions from PyPI starting from the specified minimum version,
     but only include the latest micro version within each minor version series,
@@ -218,7 +222,7 @@ def get_available_package_versions(package_name: str, min_version: Version) -> d
     latest_versions: dict[tuple[int, int], tuple[Version, str]] = {}
     for version_str, release_files in releases.items():
         version = parse(version_str)
-        if version < min_version:
+        if version < min_version or (version.is_prerelease and not pre_releases):
             continue
 
             # Get 'requires_python' for this version
@@ -258,40 +262,30 @@ def main() -> None:
         A JSON object representing the test matrix, printed to stdout.
 
     """
-    # Get the minimum required Python version for the package
-    min_python_version = get_package_minimum_python_version(PACKAGE_NAME)
+    min_py = get_package_minimum_python_version(PACKAGE_NAME)
+    versions_py = get_available_python_versions(min_py)
 
-    # Get the available Python versions starting from the minimum version
-    python_versions = get_available_python_versions(min_python_version)
+    min_np = get_dependency_minimum_version(PACKAGE_NAME, DEPENDENCY_NAME)
+    versions_np = get_available_package_versions(DEPENDENCY_NAME, min_np)
 
-    # Get the minimum required version of the dependency for the package
-    min_dependency_version = get_dependency_minimum_version(PACKAGE_NAME, DEPENDENCY_NAME)
+    matrix_entries: list[dict[str, str]] = []
+    for np_version, py_requires in versions_np.items():
+        py_spec = SpecifierSet(py_requires)
 
-    # Get the available versions of the dependency starting from the minimum version
-    package_versions = get_available_package_versions(
-        DEPENDENCY_NAME,
-        min_dependency_version,
-    )
-
-    include: list[dict[str, str]] = []
-
-    for package_version, requires_python in package_versions.items():
-        specifier_set = SpecifierSet(requires_python)
-
-        for python_version in python_versions:
-            if python_version not in specifier_set:
+        for py_version in versions_py:
+            if py_version not in py_spec:
                 continue
 
             # Skip incompatible combinations
-            if any(python_version >= py_min and package_version < np_min for py_min, np_min in MIN_VERSIONS):
+            if any(py_version >= py_min and np_version < np_min for py_min, np_min in MIN_VERSIONS):
                 continue
 
-            include.append({
-                "python": str(python_version),
-                DEPENDENCY_NAME: str(package_version),
+            matrix_entries.append({
+                "python": f"{py_version.major}.{py_version.minor}",
+                DEPENDENCY_NAME: f"{np_version.major}.{np_version.minor}",
             })  # fmt: skip
 
-    json.dump({"include": include}, indent=INDENT, fp=sys.stdout)
+    json.dump({"include": matrix_entries}, indent=INDENT, fp=sys.stdout)
     sys.stderr.flush()
     sys.stdout.flush()
 
