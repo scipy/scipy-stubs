@@ -311,7 +311,17 @@ def kendalltau(
     keepdims: object = ...,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def weightedtau(x: object, y: object, rank: object = ..., weigher: object = ..., additive: object = ...) -> object: ...
+def weightedtau(
+    x: object,
+    y: object,
+    rank: object = ...,
+    weigher: object = ...,
+    additive: object = ...,
+    *,
+    axis: object = ...,
+    nan_policy: object = ...,
+    keepdims: object = ...,
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def ttest_1samp(
     a: object,
