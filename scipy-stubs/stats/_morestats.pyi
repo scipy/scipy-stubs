@@ -1,4 +1,4 @@
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from types import ModuleType
 from typing import Any, Generic, Literal, NamedTuple, Protocol, Self, TypeAlias, final, overload, type_check_only
 from typing_extensions import TypeVar
@@ -6,6 +6,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from scipy._typing import Alternative, AnyBool, Falsy, NanPolicy, Truthy
 from scipy.optimize import OptimizeResult
 from ._distn_infrastructure import rv_continuous_frozen
@@ -50,6 +51,7 @@ __all__ = [
 ###
 
 _T = TypeVar("_T")
+_InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _NDT_co = TypeVar(
     "_NDT_co",
     covariant=True,
@@ -64,8 +66,8 @@ class _TestResult(NamedTuple, Generic[_NDT_co]):
 
 @type_check_only
 class _ConfidenceInterval(NamedTuple):
-    statistic: float | np.float64
-    minmax: tuple[float, float] | tuple[np.float64, np.float64]
+    statistic: float
+    minmax: tuple[float, float]
 
 # represents the e.g. `matplotlib.pyplot` module and a `matplotlib.axes.Axes` object with a `plot` and `text` method
 @type_check_only
@@ -80,7 +82,7 @@ class _CanPPF(Protocol):
 
 @type_check_only
 class _HasX(Protocol):
-    x: float | np.floating[Any]
+    x: float | npc.floating
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
@@ -160,7 +162,7 @@ _RVC1: TypeAlias = Literal[
     "wrapcauchy",
 ]
 
-_ObjFun1D: TypeAlias = Callable[[float], float | np.floating[Any]]
+_ObjFun1D: TypeAlias = Callable[[float], float | npc.floating]
 _MinFun1D: TypeAlias = Callable[[_ObjFun1D], _HasX] | Callable[[_ObjFun1D], OptimizeResult]
 
 _AndersonResult: TypeAlias = FitResult[Callable[[onp.ToFloat, onp.ToFloat], np.float64]]
@@ -173,7 +175,6 @@ class _BigFloat: ...
 class DirectionalStats:
     mean_direction: onp.ArrayND[np.float64]
     mean_resultant_length: onp.ArrayND[np.float64]
-    #
     def __init__(self, /, mean_direction: onp.ArrayND[np.float64], mean_resultant_length: onp.ArrayND[np.float64]) -> None: ...
 
 class ShapiroResult(_TestResult[_NDT_co], Generic[_NDT_co]): ...
@@ -245,12 +246,7 @@ class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onp.Array2D
     def table(self, /) -> onp.Array2D[np.float64]: ...
     def __new__(_cls, statistic: np.float64, pvalue: np.float64, median: np.float64, table: onp.Array2D[np.float64]) -> Self: ...
     def __init__(
-        self,
-        /,
-        statistic: np.float64,
-        pvalue: np.float64,
-        median: np.float64,
-        table: onp.Array2D[np.float64],
+        self, /, statistic: np.float64, pvalue: np.float64, median: np.float64, table: onp.Array2D[np.float64]
     ) -> None: ...
 
 def bayes_mvs(data: onp.ToFloatND, alpha: onp.ToFloat = 0.9) -> tuple[Mean, Variance, Std_dev]: ...
@@ -374,7 +370,105 @@ def ppcc_plot(
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...
 
 #
-def boxcox_llf(lmb: onp.ToFloat, data: onp.ToFloatND) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload
+def boxcox_llf(
+    lmb: onp.ToJustFloat64,
+    data: onp.ToIntStrict1D | onp.ToJustFloat64Strict1D,
+    *,
+    axis: Literal[0, -1] | None = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float64: ...
+@overload
+def boxcox_llf(
+    lmb: onp.ToJustFloat64,
+    data: onp.ToIntND | onp.ToJustFloat64_ND,
+    *,
+    axis: None,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float64: ...
+@overload
+def boxcox_llf(
+    lmb: onp.ToJustFloat64,
+    data: onp.ToIntND | onp.ToJustFloat64_ND,
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[True],
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def boxcox_llf(  # type: ignore[overload-overlap]
+    lmb: float | onp.ToInt | _InexactT,
+    data: onp.CanArray1D[_InexactT] | Sequence[_InexactT],
+    *,
+    axis: Literal[0, -1] | None = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> _InexactT: ...
+@overload
+def boxcox_llf(  # type: ignore[overload-overlap]
+    lmb: float | onp.ToInt | _InexactT,
+    data: onp.CanArrayND[_InexactT] | Sequence[_InexactT],
+    *,
+    axis: None,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> _InexactT: ...
+@overload
+def boxcox_llf(  # type: ignore[overload-overlap]
+    lmb: float | onp.ToInt | _InexactT,
+    data: onp.CanArrayND[_InexactT] | Sequence[_InexactT],
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[True],
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[_InexactT]: ...
+@overload
+def boxcox_llf(
+    lmb: onp.ToFloat,
+    data: onp.ToFloatStrict1D,
+    *,
+    axis: Literal[0, -1] | None = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> npc.floating: ...
+@overload
+def boxcox_llf(
+    lmb: onp.ToFloat,
+    data: onp.ToFloatND,
+    *,
+    axis: None,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> npc.floating: ...
+@overload
+def boxcox_llf(
+    lmb: onp.ToFloat,
+    data: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[True],
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[npc.floating]: ...
+@overload
+def boxcox_llf(
+    lmb: onp.ToFloat,
+    data: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> npc.floating | onp.ArrayND[npc.floating]: ...
+@overload
+def boxcox_llf(
+    lmb: onp.ToComplex,
+    data: onp.ToJustComplexND,
+    *,
+    axis: int | None = 0,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> npc.complexfloating | onp.ArrayND[npc.complexfloating]: ...
 
 #
 @overload
@@ -388,14 +482,14 @@ def boxcox(
 def boxcox(
     x: onp.ToFloat | onp.ToFloatND,
     lmbda: onp.ToFloat,
-    alpha: float | np.floating[Any] | None = None,
+    alpha: float | npc.floating | None = None,
     optimizer: _MinFun1D | None = None,
 ) -> _Float1D: ...
 @overload
 def boxcox(
     x: onp.ToFloat | onp.ToFloatND,
     lmbda: None,
-    alpha: float | np.floating[Any],
+    alpha: float | npc.floating,
     optimizer: _MinFun1D | None = None,
 ) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
 @overload
@@ -403,7 +497,7 @@ def boxcox(
     x: onp.ToFloat | onp.ToFloatND,
     lmbda: None = None,
     *,
-    alpha: float | np.floating[Any],
+    alpha: float | npc.floating,
     optimizer: _MinFun1D | None = None,
 ) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
 

@@ -54,38 +54,23 @@ def mvsdist(data: object) -> object: ...
 def kstat(data: object, n: object = ..., *, axis: object = ..., nan_policy: object = ..., keepdims: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def kstatvar(
-    data: object,
-    n: object = ...,
-    *,
-    axis: object = ...,
-    nan_policy: object = ...,
-    keepdims: object = ...,
+    data: object, n: object = ..., *, axis: object = ..., nan_policy: object = ..., keepdims: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def probplot(
-    x: object,
-    sparams: object = ...,
-    dist: object = ...,
-    fit: object = ...,
-    plot: object = ...,
-    rvalue: object = ...,
+    x: object, sparams: object = ..., dist: object = ..., fit: object = ..., plot: object = ..., rvalue: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def ppcc_max(x: object, brack: object = ..., dist: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def ppcc_plot(x: object, a: object, b: object, dist: object = ..., plot: object = ..., N: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def boxcox_llf(lmb: object, data: object) -> object: ...
+def boxcox_llf(lmb: object, data: object, *, axis: object = ..., keepdims: object = ..., nan_policy: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def boxcox(x: object, lmbda: object = ..., alpha: object = ..., optimizer: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def boxcox_normmax(
-    x: object,
-    brack: object = ...,
-    method: object = ...,
-    optimizer: object = ...,
-    *,
-    ymax: object = ...,
+    x: object, brack: object = ..., method: object = ..., optimizer: object = ..., *, ymax: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def boxcox_normplot(x: object, la: object, lb: object, plot: object = ..., N: object = ...) -> object: ...
@@ -105,21 +90,10 @@ def anderson(x: object, dist: object = ...) -> object: ...
 def anderson_ksamp(samples: object, midrank: object = ..., *, method: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def ansari(
-    x: object,
-    y: object,
-    alternative: object = ...,
-    *,
-    axis: object = ...,
-    nan_policy: object = ...,
-    keepdims: object = ...,
+    x: object, y: object, alternative: object = ..., *, axis: object = ..., nan_policy: object = ..., keepdims: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def bartlett(
-    *samples: object,
-    axis: object = ...,
-    nan_policy: object = ...,
-    keepdims: object = ...,
-) -> object: ...
+def bartlett(*samples: object, axis: object = ..., nan_policy: object = ..., keepdims: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def levene(
     *samples: object,
@@ -140,13 +114,7 @@ def fligner(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def mood(
-    x: object,
-    y: object,
-    axis: object = ...,
-    alternative: object = ...,
-    *,
-    nan_policy: object = ...,
-    keepdims: object = ...,
+    x: object, y: object, axis: object = ..., alternative: object = ..., *, nan_policy: object = ..., keepdims: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def wilcoxon(
@@ -163,11 +131,7 @@ def wilcoxon(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def median_test(
-    *samples: object,
-    ties: object = ...,
-    correction: object = ...,
-    lambda_: object = ...,
-    nan_policy: object = ...,
+    *samples: object, ties: object = ..., correction: object = ..., lambda_: object = ..., nan_policy: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def circmean(
