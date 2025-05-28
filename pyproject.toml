@@ -248,7 +248,3 @@ preview = true
         extra-standard-library = ["_typeshed", "typing_extensions"]
         known-first-party = ["scipy"]
         split-on-trailing-comma = false
-
-        [tool.ruff.lint.flake8-annotations]
-        allow-star-arg-any = true
-        mypy-init-return = true
