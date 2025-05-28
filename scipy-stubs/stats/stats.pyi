@@ -460,7 +460,15 @@ def find_repeats(arr: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def rankdata(a: object, method: object = ..., *, axis: object = ..., nan_policy: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def linregress(x: object, y: object = ..., alternative: object = ...) -> object: ...
+def linregress(
+    x: object,
+    y: object,
+    alternative: object = ...,
+    *,
+    axis: object = ...,
+    nan_policy: object = ...,
+    keepdims: object = ...,
+) -> object: ...
 
 # mstats_basic
 @deprecated("will be removed in SciPy v2.0.0")
