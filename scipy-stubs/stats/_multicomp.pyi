@@ -31,8 +31,5 @@ class DunnettResult:
     def confidence_interval(self, /, confidence_level: float | np.floating[Any] = 0.95) -> ConfidenceInterval: ...
 
 def dunnett(
-    *samples: onp.ToFloat1D,
-    control: onp.ToFloat1D,
-    alternative: Alternative = "two-sided",
-    rng: ToRNG = None,
+    *samples: onp.ToFloat1D, control: onp.ToFloat1D, alternative: Alternative = "two-sided", rng: ToRNG = None
 ) -> DunnettResult: ...

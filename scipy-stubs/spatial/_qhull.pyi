@@ -105,11 +105,7 @@ class _QhullUser(Generic[_QT]):
     def __del__(self, /) -> None: ...
     def _update(self, /, qhull: _QT) -> None: ...
     def _add_points(
-        self,
-        /,
-        points: onp.ToFloat2D,
-        restart: bool = False,
-        interior_point: onp.ToFloat1D | None = None,
+        self, /, points: onp.ToFloat2D, restart: bool = False, interior_point: onp.ToFloat1D | None = None
     ) -> None: ...
     def close(self, /) -> None: ...
 
@@ -138,12 +134,7 @@ class Delaunay(_QhullUser[_Qhull]):
 
     #
     def __init__(
-        self,
-        /,
-        points: onp.ToFloat2D,
-        furthest_site: bool = False,
-        incremental: bool = False,
-        qhull_options: str | None = None,
+        self, /, points: onp.ToFloat2D, furthest_site: bool = False, incremental: bool = False, qhull_options: str | None = None
     ) -> None: ...
     def add_points(self, /, points: onp.ToFloat2D, restart: bool = False) -> None: ...
     def find_simplex(self, /, xi: onp.ToFloatND, bruteforce: bool = False, tol: float | None = None) -> _IntCND: ...
@@ -184,12 +175,7 @@ class Voronoi(_QhullUser):
 
     #
     def __init__(
-        self,
-        /,
-        points: onp.ToFloat2D,
-        furthest_site: bool = False,
-        incremental: bool = False,
-        qhull_options: str | None = None,
+        self, /, points: onp.ToFloat2D, furthest_site: bool = False, incremental: bool = False, qhull_options: str | None = None
     ) -> None: ...
     def add_points(self, /, points: onp.ToFloat2D, restart: bool = False) -> None: ...
 

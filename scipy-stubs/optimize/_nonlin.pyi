@@ -40,7 +40,7 @@ _JacobianMethod: TypeAlias = Literal[
     "diagbroyden",
     "linearmixing",
     "excitingmixing",
-]
+]  # fmt: skip
 _KrylovMethod: TypeAlias = Literal["lgmres", "gmres", "bicgstab", "cgs", "minres", "tfqmr"]
 _ReductionMethod: TypeAlias = Literal["restart", "simple", "svd"]
 _LineSearch: TypeAlias = Literal["armijo", "wolfe"]
@@ -180,11 +180,7 @@ class BroydenFirst(GenericBroyden[_InexactT_co], Generic[_InexactT_co]):
     Gm: LowRankMatrix[_InexactT_co] | None
 
     def __init__(
-        self,
-        /,
-        alpha: float | None = None,
-        reduction_method: _ReductionMethod = "restart",
-        max_rank: int | None = None,
+        self, /, alpha: float | None = None, reduction_method: _ReductionMethod = "restart", max_rank: int | None = None
     ) -> None: ...
     @override
     def solve(self, /, f: _InexactND, tol: float = 0) -> onp.Array2D[_InexactT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]

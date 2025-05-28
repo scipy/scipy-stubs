@@ -18,11 +18,7 @@ _Method: TypeAlias = Literal["hierarchical", "separate"]
 
 ###
 
-class SiegelslopesResult(
-    BunchMixin[tuple[_ResultT_co, _ResultT_co]],
-    tuple[_ResultT_co, _ResultT_co],
-    Generic[_ResultT_co],
-):
+class SiegelslopesResult(BunchMixin[tuple[_ResultT_co, _ResultT_co]], tuple[_ResultT_co, _ResultT_co], Generic[_ResultT_co]):
     def __new__(_cls, slope: _ResultT_co, intercept: _ResultT_co) -> Self: ...
     def __init__(self, /, slope: _ResultT_co, intercept: _ResultT_co) -> None: ...
     @property

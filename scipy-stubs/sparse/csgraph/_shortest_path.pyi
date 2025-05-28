@@ -67,11 +67,7 @@ def floyd_warshall(
 ) -> _Float2D: ...
 @overload
 def floyd_warshall(
-    csgraph: _ToGraphArray,
-    directed: bool,
-    return_predecessors: Truthy,
-    unweighted: bool = False,
-    overwrite: bool = False,
+    csgraph: _ToGraphArray, directed: bool, return_predecessors: Truthy, unweighted: bool = False, overwrite: bool = False
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def floyd_warshall(
@@ -160,11 +156,7 @@ def bellman_ford(
 ) -> _Float2D: ...
 @overload
 def bellman_ford(
-    csgraph: _ToGraphArray,
-    directed: bool,
-    indices: onp.ToIntND | None,
-    return_predecessors: Truthy,
-    unweighted: bool = False,
+    csgraph: _ToGraphArray, directed: bool, indices: onp.ToIntND | None, return_predecessors: Truthy, unweighted: bool = False
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def bellman_ford(
@@ -187,11 +179,7 @@ def johnson(
 ) -> _Float2D: ...
 @overload
 def johnson(
-    csgraph: _ToGraphArray,
-    directed: bool,
-    indices: onp.ToIntND | None,
-    return_predecessors: Truthy,
-    unweighted: bool = False,
+    csgraph: _ToGraphArray, directed: bool, indices: onp.ToIntND | None, return_predecessors: Truthy, unweighted: bool = False
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def johnson(

@@ -35,22 +35,12 @@ class _IntegratorParams(TypedDict, total=False):
 
 @type_check_only
 class _ODEFuncF(Protocol[*_Ts]):
-    def __call__(
-        self,
-        t: float,
-        y: float | onp.ArrayND[np.float64],
-        /,
-        *args: *_Ts,
-    ) -> float | onp.ArrayND[np.floating[Any]]: ...
+    def __call__(self, t: float, y: float | onp.ArrayND[np.float64], /, *args: *_Ts) -> float | onp.ArrayND[np.floating[Any]]: ...
 
 @type_check_only
 class _ODEFuncC(Protocol[*_Ts]):
     def __call__(
-        self,
-        t: float,
-        y: complex | onp.ArrayND[np.complex128],
-        /,
-        *args: *_Ts,
+        self, t: float, y: complex | onp.ArrayND[np.complex128], /, *args: *_Ts
     ) -> complex | onp.ArrayND[np.complexfloating[Any, Any]]: ...
 
 _SolOutFunc: TypeAlias = Callable[[float, onp.Array1D[np.inexact[Any]]], Literal[0, -1]]

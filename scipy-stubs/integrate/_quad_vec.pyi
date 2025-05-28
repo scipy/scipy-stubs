@@ -25,12 +25,7 @@ _Quadrature: TypeAlias = Literal["gk21", "gk15", "trapezoid"]
 
 @type_check_only
 class _DoesMap(Protocol):
-    def __call__(
-        self,
-        func: Callable[[_S], _T],
-        iterable: op.CanIter[op.CanNext[_S]],
-        /,
-    ) -> op.CanIter[op.CanIterSelf[_T]]: ...
+    def __call__(self, func: Callable[[_S], _T], iterable: op.CanIter[op.CanNext[_S]], /) -> op.CanIter[op.CanIterSelf[_T]]: ...
 
 @type_check_only
 class _InfiniteFunc(Protocol[_NDT_co]):

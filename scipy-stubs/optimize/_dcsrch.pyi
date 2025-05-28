@@ -32,23 +32,10 @@ class DCSRCH:
     width1: float | None
 
     def __init__(
-        self,
-        /,
-        phi: _Fun,
-        derphi: _Fun,
-        ftol: float,
-        gtol: float,
-        xtol: float,
-        stpmin: float,
-        stpmax: float,
+        self, /, phi: _Fun, derphi: _Fun, ftol: float, gtol: float, xtol: float, stpmin: float, stpmax: float
     ) -> None: ...
     def __call__(
-        self,
-        /,
-        alpha1: float,
-        phi0: float | None = None,
-        derphi0: float | None = None,
-        maxiter: int = 100,
+        self, /, alpha1: float, phi0: float | None = None, derphi0: float | None = None, maxiter: int = 100
     ) -> tuple[float | None, float, float, bytes]: ...  # alpha, phi(alpha), phi(0), task
 
 def dcstep(

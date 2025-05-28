@@ -432,12 +432,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     ) -> _FloatND[_ShapeT1]: ...
     @overload
     def moment(
-        self: _BaseDistribution[Any, _ShapeT1],
-        /,
-        order: onp.ToInt,
-        kind: L["central"],
-        *,
-        method: _CMomentMethod | None = None,
+        self: _BaseDistribution[Any, _ShapeT1], /, order: onp.ToInt, kind: L["central"], *, method: _CMomentMethod | None = None
     ) -> _FloatND[_ShapeT1]: ...
     @overload
     def moment(

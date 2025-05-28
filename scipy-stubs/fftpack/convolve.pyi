@@ -15,18 +15,12 @@ def destroy_convolve_cache() -> None: ...
 
 #
 def convolve(
-    inout: onp.ToFloat1D,
-    omega: onp.ToFloat1D,
-    swap_real_imag: AnyBool = False,
-    overwrite_x: AnyBool = False,
+    inout: onp.ToFloat1D, omega: onp.ToFloat1D, swap_real_imag: AnyBool = False, overwrite_x: AnyBool = False
 ) -> _Float1D: ...
 
 #
 def convolve_z(
-    inout: onp.ToFloat1D,
-    omega_real: onp.ToFloat1D,
-    omega_imag: onp.ToFloat1D,
-    overwrite_x: AnyBool = False,
+    inout: onp.ToFloat1D, omega_real: onp.ToFloat1D, omega_imag: onp.ToFloat1D, overwrite_x: AnyBool = False
 ) -> _Float1D: ...
 
 #

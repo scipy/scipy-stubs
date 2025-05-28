@@ -68,12 +68,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
 
     #
     def __call__(
-        self,
-        /,
-        xi: onp.ToFloatND,
-        method: _Method | None = None,
-        *,
-        nu: onp.ToJustInt1D | None = None,
+        self, /, xi: onp.ToFloatND, method: _Method | None = None, *, nu: onp.ToJustInt1D | None = None
     ) -> onp.ArrayND[_CT_co]: ...
 
 @overload

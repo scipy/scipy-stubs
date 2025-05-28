@@ -91,8 +91,5 @@ def solve_collocation_system(
     solve_lu: _FuncSolveLU,
 ) -> tuple[bool, int, onp.Array2D[np.float64], float | None]: ...
 def predict_factor(
-    h_abs: onp.ToFloat,
-    h_abs_old: onp.ToFloat,
-    error_norm: onp.ToFloat,
-    error_norm_old: onp.ToFloat,
+    h_abs: onp.ToFloat, h_abs_old: onp.ToFloat, error_norm: onp.ToFloat, error_norm_old: onp.ToFloat
 ) -> onp.ToFloat: ...

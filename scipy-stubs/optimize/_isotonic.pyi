@@ -15,8 +15,5 @@ class OptimizeResult(_OptimizeResult):
     blocks: Final[onp.Array1D[np.intp]]
 
 def isotonic_regression(
-    y: onp.ToFloat1D,
-    *,
-    weights: onp.ToFloat1D | None = None,
-    increasing: op.CanBool = True,
+    y: onp.ToFloat1D, *, weights: onp.ToFloat1D | None = None, increasing: op.CanBool = True
 ) -> OptimizeResult: ...

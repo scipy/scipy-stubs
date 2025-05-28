@@ -175,13 +175,7 @@ class RectBivariateSpline(BivariateSpline):
 class SphereBivariateSpline(_BivariateSplineBase):
     @override
     def __call__(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
-        self,
-        /,
-        theta: onp.ToFloat1D,
-        phi: onp.ToFloat1D,
-        dtheta: int = 0,
-        dphi: int = 0,
-        grid: onp.ToBool = True,
+        self, /, theta: onp.ToFloat1D, phi: onp.ToFloat1D, dtheta: int = 0, dphi: int = 0, grid: onp.ToBool = True
     ) -> _FloatND: ...
     def ev(self, /, theta: onp.ToFloatND, phi: onp.ToFloatND, dtheta: int = 0, dphi: int = 0) -> _FloatND: ...
 

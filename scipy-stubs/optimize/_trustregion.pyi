@@ -30,11 +30,7 @@ class BaseQuadraticSubproblem:
     #
     def hessp(self, /, p: onp.ToFloat1D) -> onp.Array1D[np.float64]: ...
     def get_boundaries_intersections(
-        self,
-        /,
-        z: onp.ToArray1D,
-        d: onp.ToArray1D,
-        trust_radius: onp.ToFloat,
+        self, /, z: onp.ToArray1D, d: onp.ToArray1D, trust_radius: onp.ToFloat
     ) -> list[float | np.float64]: ...  # list of size 2
 
     #

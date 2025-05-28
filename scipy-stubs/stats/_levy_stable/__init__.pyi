@@ -26,8 +26,5 @@ class levy_stable_gen(rv_continuous):
     pdf_fft_interpolation_degree: int
 
 def pdf_from_cf_with_fft(
-    cf: Callable[[float], complex],
-    h: float = 0.01,
-    q: int = 9,
-    level: int = 3,
+    cf: Callable[[float], complex], h: float = 0.01, q: int = 9, level: int = 3
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...

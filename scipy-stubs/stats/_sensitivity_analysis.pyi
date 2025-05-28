@@ -53,9 +53,7 @@ def sample_AB(A: onp.ArrayND[np.float64], B: onp.ArrayND[np.float64]) -> onp.Arr
 
 #
 def saltelli_2010(
-    f_A: onp.ArrayND[np.float64],
-    f_B: onp.ArrayND[np.float64],
-    f_AB: onp.ArrayND[np.float64],
+    f_A: onp.ArrayND[np.float64], f_B: onp.ArrayND[np.float64], f_AB: onp.ArrayND[np.float64]
 ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 
 #

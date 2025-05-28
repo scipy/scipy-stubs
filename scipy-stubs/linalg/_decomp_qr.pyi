@@ -381,19 +381,11 @@ def rq(
 ) -> tuple[_FloatND, _FloatND]: ...
 @overload  # (float[:, :], mode: {"r"}, /) -> float[:, :]
 def rq(
-    a: onp.ToFloatStrict2D,
-    overwrite_a: onp.ToBool,
-    lwork: onp.ToJustInt | None,
-    mode: _ModeR,
-    check_finite: onp.ToBool = True,
+    a: onp.ToFloatStrict2D, overwrite_a: onp.ToBool, lwork: onp.ToJustInt | None, mode: _ModeR, check_finite: onp.ToBool = True
 ) -> _Float2D: ...
 @overload  # (float[:, :, ...], mode: {"r"}, /) -> float[:, :, ...]
 def rq(
-    a: onp.ToFloatND,
-    overwrite_a: onp.ToBool,
-    lwork: onp.ToJustInt | None,
-    mode: _ModeR,
-    check_finite: onp.ToBool = True,
+    a: onp.ToFloatND, overwrite_a: onp.ToBool, lwork: onp.ToJustInt | None, mode: _ModeR, check_finite: onp.ToBool = True
 ) -> _FloatND: ...
 @overload  # (float[:, :], *, mode: {"r"}) -> float[:, :]
 def rq(
@@ -431,19 +423,11 @@ def rq(
 ) -> _Tuple2[_InexactND]: ...
 @overload  # (complex[:, :], mode: {"r"}, /) -> complex[:, :]
 def rq(
-    a: onp.ToComplexStrict2D,
-    overwrite_a: onp.ToBool,
-    lwork: onp.ToJustInt | None,
-    mode: _ModeR,
-    check_finite: onp.ToBool = True,
+    a: onp.ToComplexStrict2D, overwrite_a: onp.ToBool, lwork: onp.ToJustInt | None, mode: _ModeR, check_finite: onp.ToBool = True
 ) -> _Inexact2D: ...
 @overload  # (complex[:, :, ...], mode: {"r"}, /) -> complex[:, :, ...]
 def rq(
-    a: onp.ToComplexND,
-    overwrite_a: onp.ToBool,
-    lwork: onp.ToJustInt | None,
-    mode: _ModeR,
-    check_finite: onp.ToBool = True,
+    a: onp.ToComplexND, overwrite_a: onp.ToBool, lwork: onp.ToJustInt | None, mode: _ModeR, check_finite: onp.ToBool = True
 ) -> _InexactND: ...
 @overload  # (complex[:, :], *, mode: {"r"}) -> complex[:, :]
 def rq(

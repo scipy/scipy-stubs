@@ -21,10 +21,5 @@ class NearestNDInterpolator(_ndgriddata.NearestNDInterpolator): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 def griddata(
-    points: object,
-    values: object,
-    xi: object,
-    method: object = ...,
-    fill_value: float = ...,
-    rescale: object = ...,
+    points: object, values: object, xi: object, method: object = ..., fill_value: float = ..., rescale: object = ...
 ) -> object: ...

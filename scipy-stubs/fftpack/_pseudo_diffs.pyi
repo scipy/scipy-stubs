@@ -45,73 +45,41 @@ def ihilbert(x: onp.ToComplex1D) -> _Vec_dD: ...
 #
 @overload
 def cs_diff(
-    x: onp.ToFloat1D,
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    period: onp.ToFloat | None = None,
-    _cache: _Cache = ...,
+    x: onp.ToFloat1D, a: onp.ToFloat, b: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...
 ) -> _Vec_d: ...
 @overload
 def cs_diff(
-    x: onp.ToComplex1D,
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    period: onp.ToFloat | None = None,
-    _cache: _Cache = ...,
+    x: onp.ToComplex1D, a: onp.ToFloat, b: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...
 ) -> _Vec_dD: ...
 
 #
 @overload
 def sc_diff(
-    x: onp.ToFloat1D,
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    period: onp.ToFloat | None = None,
-    _cache: _Cache = ...,
+    x: onp.ToFloat1D, a: onp.ToFloat, b: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...
 ) -> _Vec_d: ...
 @overload
 def sc_diff(
-    x: onp.ToComplex1D,
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    period: onp.ToFloat | None = None,
-    _cache: _Cache = ...,
+    x: onp.ToComplex1D, a: onp.ToFloat, b: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...
 ) -> _Vec_dD: ...
 
 #
 @overload
 def ss_diff(
-    x: onp.ToFloat1D,
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    period: onp.ToFloat | None = None,
-    _cache: _Cache = ...,
+    x: onp.ToFloat1D, a: onp.ToFloat, b: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...
 ) -> _Vec_d: ...
 @overload
 def ss_diff(
-    x: onp.ToComplex1D,
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    period: onp.ToFloat | None = None,
-    _cache: _Cache = ...,
+    x: onp.ToComplex1D, a: onp.ToFloat, b: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...
 ) -> _Vec_dD: ...
 
 #
 @overload
 def cc_diff(
-    x: onp.ToFloat1D,
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    period: onp.ToFloat | None = None,
-    _cache: _Cache = ...,
+    x: onp.ToFloat1D, a: onp.ToFloat, b: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...
 ) -> _Vec_d: ...
 @overload
 def cc_diff(
-    x: onp.ToComplex1D,
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    period: onp.ToFloat | None = None,
-    _cache: _Cache = ...,
+    x: onp.ToComplex1D, a: onp.ToFloat, b: onp.ToFloat, period: onp.ToFloat | None = None, _cache: _Cache = ...
 ) -> _Vec_dD: ...
 
 #

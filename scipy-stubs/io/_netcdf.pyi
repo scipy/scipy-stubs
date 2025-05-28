@@ -36,7 +36,7 @@ _TypeFill: TypeAlias = Literal[
     b"\x80\x00\x00\x01",
     b"\x7c\xf0\x00\x00",
     b"\x47\x9e\x00\x00\x00\x00\x00\x00",
-]
+]  # fmt: skip
 
 IS_PYPY: Final[bool] = ...
 
@@ -85,11 +85,7 @@ class netcdf_file(EnterSelfMixin):
     def createDimension(self, /, name: str, length: int) -> None: ...
     @overload
     def createVariable(
-        self,
-        /,
-        name: str,
-        type: np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]],
-        dimensions: Sequence[str],
+        self, /, name: str, type: np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]], dimensions: Sequence[str]
     ) -> netcdf_variable[tuple[int, ...], _SCT]: ...
     @overload
     def createVariable(self, /, name: str, type: npt.DTypeLike, dimensions: Sequence[str]) -> netcdf_variable: ...

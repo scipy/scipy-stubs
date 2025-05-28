@@ -17,10 +17,7 @@ class _OptimizeResult(OptimizeResult):
     status: int
 
 # undocumented
-def compute_kkt_optimality(
-    g: onp.ArrayND[np.float64],
-    on_bound: onp.ArrayND[np.float64],
-) -> np.float64: ...
+def compute_kkt_optimality(g: onp.ArrayND[np.float64], on_bound: onp.ArrayND[np.float64]) -> np.float64: ...
 
 # undocumented
 def bvls(

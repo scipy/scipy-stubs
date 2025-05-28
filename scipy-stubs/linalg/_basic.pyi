@@ -222,27 +222,19 @@ def solveh_banded(
 #
 @overload  # floating 1d
 def solve_toeplitz(
-    c_or_cr: onp.ToFloatStrict1D | _Tuple2[onp.ToFloatStrict1D],
-    b: onp.ToFloat1D,
-    check_finite: onp.ToBool = True,
+    c_or_cr: onp.ToFloatStrict1D | _Tuple2[onp.ToFloatStrict1D], b: onp.ToFloat1D, check_finite: onp.ToBool = True
 ) -> _Float1D: ...
 @overload  # floating
 def solve_toeplitz(
-    c_or_cr: onp.ToFloatND | _Tuple2[onp.ToFloatND],
-    b: onp.ToFloatND,
-    check_finite: onp.ToBool = True,
+    c_or_cr: onp.ToFloatND | _Tuple2[onp.ToFloatND], b: onp.ToFloatND, check_finite: onp.ToBool = True
 ) -> _FloatND: ...
 @overload  # complexfloating 1d
 def solve_toeplitz(
-    c_or_cr: onp.ToComplexStrict1D | _Tuple2[onp.ToComplexStrict1D],
-    b: onp.ToComplex1D,
-    check_finite: onp.ToBool = True,
+    c_or_cr: onp.ToComplexStrict1D | _Tuple2[onp.ToComplexStrict1D], b: onp.ToComplex1D, check_finite: onp.ToBool = True
 ) -> _Complex1D: ...
 @overload  # complexfloating
 def solve_toeplitz(
-    c_or_cr: onp.ToComplexND | _Tuple2[onp.ToComplexND],
-    b: onp.ToComplexND,
-    check_finite: onp.ToBool = True,
+    c_or_cr: onp.ToComplexND | _Tuple2[onp.ToComplexND], b: onp.ToComplexND, check_finite: onp.ToBool = True
 ) -> _ComplexND: ...
 
 #
@@ -460,20 +452,11 @@ def matrix_balance(
 ) -> _Tuple2[_FloatND]: ...
 @overload  # (float[:, :], separate=False, /) -> (float[:, :], (float[:], float[:]))
 def matrix_balance(
-    A: onp.ToFloatND,
-    permute: onp.ToBool,
-    scale: onp.ToBool,
-    separate: Truthy,
-    overwrite_a: onp.ToBool = False,
+    A: onp.ToFloatND, permute: onp.ToBool, scale: onp.ToBool, separate: Truthy, overwrite_a: onp.ToBool = False
 ) -> tuple[_FloatND, _Tuple2[_FloatND]]: ...
 @overload  # (float[:, :], *, separate=False) -> (float[:, :], (float[:], float[:]))
 def matrix_balance(
-    A: onp.ToFloatND,
-    permute: onp.ToBool = True,
-    scale: onp.ToBool = True,
-    *,
-    separate: Truthy,
-    overwrite_a: onp.ToBool = False,
+    A: onp.ToFloatND, permute: onp.ToBool = True, scale: onp.ToBool = True, *, separate: Truthy, overwrite_a: onp.ToBool = False
 ) -> tuple[_FloatND, _Tuple2[_FloatND]]: ...
 @overload  # (complex[:, :], separate=True) -> (complex[:, :], complex[:, :])
 def matrix_balance(
@@ -485,20 +468,11 @@ def matrix_balance(
 ) -> _Tuple2[_ComplexND]: ...
 @overload  # (complex[:, :], separate=False, /) -> (complex[:, :], (complex[:], complex[:]))
 def matrix_balance(
-    A: onp.ToComplexND,
-    permute: onp.ToBool,
-    scale: onp.ToBool,
-    separate: Truthy,
-    overwrite_a: onp.ToBool = False,
+    A: onp.ToComplexND, permute: onp.ToBool, scale: onp.ToBool, separate: Truthy, overwrite_a: onp.ToBool = False
 ) -> tuple[_ComplexND, _Tuple2[_ComplexND]]: ...
 @overload  # (complex[:, :], *, separate=False) -> (complex[:, :], (complex[:], complex[:]))
 def matrix_balance(
-    A: onp.ToComplexND,
-    permute: onp.ToBool = True,
-    scale: onp.ToBool = True,
-    *,
-    separate: Truthy,
-    overwrite_a: onp.ToBool = False,
+    A: onp.ToComplexND, permute: onp.ToBool = True, scale: onp.ToBool = True, *, separate: Truthy, overwrite_a: onp.ToBool = False
 ) -> tuple[_ComplexND, _Tuple2[_ComplexND]]: ...
 
 #

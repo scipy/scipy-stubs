@@ -314,11 +314,7 @@ __all__ = [
 ]
 
 @deprecated("will be removed in SciPy v2.0.0")
-def convert_temperature(
-    val: object,
-    old_scale: object,
-    new_scale: object,
-) -> object: ...
+def convert_temperature(val: object, old_scale: object, new_scale: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def lambda2nu(lambda_: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")

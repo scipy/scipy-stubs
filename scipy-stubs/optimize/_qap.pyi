@@ -35,15 +35,9 @@ class OptimizeResult(_OptimizeResult):
 
 @overload
 def quadratic_assignment(
-    A: onp.ToFloat2D,
-    B: onp.ToFloat2D,
-    method: Literal["faq"] = "faq",
-    options: _FAQOptions | None = None,
+    A: onp.ToFloat2D, B: onp.ToFloat2D, method: Literal["faq"] = "faq", options: _FAQOptions | None = None
 ) -> OptimizeResult: ...
 @overload
 def quadratic_assignment(
-    A: onp.ToFloat2D,
-    B: onp.ToFloat2D,
-    method: Literal["2opt"],
-    options: _2OptOptions | None = None,
+    A: onp.ToFloat2D, B: onp.ToFloat2D, method: Literal["2opt"], options: _2OptOptions | None = None
 ) -> OptimizeResult: ...

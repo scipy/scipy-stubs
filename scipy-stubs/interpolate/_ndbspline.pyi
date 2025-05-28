@@ -19,10 +19,7 @@ _ToKnots: TypeAlias = tuple[onp.ToFloat1D, ...]
 _ToDegrees: TypeAlias = op.CanIndex | tuple[op.CanIndex, ...]
 
 _DesignMatrix: TypeAlias = csr_array[np.float64, tuple[int, int]]
-_SolverFunc: TypeAlias = Callable[
-    Concatenate[_DesignMatrix, onp.Array2D[np.float64], ...],
-    onp.ArrayND[_ScalarT],
-]
+_SolverFunc: TypeAlias = Callable[Concatenate[_DesignMatrix, onp.Array2D[np.float64], ...], onp.ArrayND[_ScalarT]]
 
 ###
 
@@ -38,13 +35,7 @@ class NdBSpline(Generic[_CT_co]):
     #
     @overload
     def __init__(
-        self: NdBSpline[np.float64],
-        /,
-        t: _ToKnots,
-        c: onp.ToFloatND,
-        k: _ToDegrees,
-        *,
-        extrapolate: onp.ToBool | None = None,
+        self: NdBSpline[np.float64], /, t: _ToKnots, c: onp.ToFloatND, k: _ToDegrees, *, extrapolate: onp.ToBool | None = None
     ) -> None: ...
     @overload
     def __init__(
@@ -58,34 +49,17 @@ class NdBSpline(Generic[_CT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: NdBSpline[Any],
-        /,
-        t: _ToKnots,
-        c: onp.ToComplexND,
-        k: _ToDegrees,
-        *,
-        extrapolate: onp.ToBool | None = None,
+        self: NdBSpline[Any], /, t: _ToKnots, c: onp.ToComplexND, k: _ToDegrees, *, extrapolate: onp.ToBool | None = None
     ) -> None: ...
 
     #
     def __call__(
-        self,
-        /,
-        xi: onp.ToFloatND,
-        *,
-        nu: onp.ToFloat1D | None = None,
-        extrapolate: onp.ToBool | None = None,
+        self, /, xi: onp.ToFloatND, *, nu: onp.ToFloat1D | None = None, extrapolate: onp.ToBool | None = None
     ) -> onp.ArrayND[_CT_co]: ...
 
     #
     @classmethod
-    def design_matrix(
-        cls,
-        xvals: onp.ToFloat2D,
-        t: _ToKnots,
-        k: _ToDegrees,
-        extrapolate: onp.ToBool = True,
-    ) -> _DesignMatrix: ...
+    def design_matrix(cls, xvals: onp.ToFloat2D, t: _ToKnots, k: _ToDegrees, extrapolate: onp.ToBool = True) -> _DesignMatrix: ...
 
 #
 @overload
@@ -99,10 +73,5 @@ def make_ndbspl(
 ) -> NdBSpline[np.float64]: ...
 @overload
 def make_ndbspl(
-    points: _ToKnots,
-    values: onp.ToFloatND,
-    k: _ToDegrees = 3,
-    *,
-    solver: _SolverFunc[np.complexfloating],
-    **solver_args: object,
+    points: _ToKnots, values: onp.ToFloatND, k: _ToDegrees = 3, *, solver: _SolverFunc[np.complexfloating], **solver_args: object
 ) -> NdBSpline[np.complex128]: ...

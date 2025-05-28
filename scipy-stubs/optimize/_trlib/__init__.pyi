@@ -23,7 +23,5 @@ class _SubproblemFactory(Protocol):
 ###
 
 def get_trlib_quadratic_subproblem(
-    tol_rel_i: onp.ToFloat = -2.0,
-    tol_rel_b: onp.ToFloat = -3.0,
-    disp: onp.ToBool = False,
+    tol_rel_i: onp.ToFloat = -2.0, tol_rel_b: onp.ToFloat = -3.0, disp: onp.ToBool = False
 ) -> _SubproblemFactory: ...

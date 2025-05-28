@@ -23,7 +23,7 @@ _RootMethod: TypeAlias = Literal[
     "excitingmixing",
     "krylov",
     "df-sane",
-]
+]  # fmt: skip
 
 _JacOptionsT = TypeVar("_JacOptionsT", bound=Mapping[str, object])
 

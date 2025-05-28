@@ -116,17 +116,11 @@ def freqs(
 #
 @overload  # worN: real
 def freqs_zpk(
-    z: onp.ToComplex1D,
-    p: onp.ToComplex1D,
-    k: onp.ToComplex1D,
-    worN: op.CanIndex | onp.ToFloat1D = 200,
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToComplex1D, worN: op.CanIndex | onp.ToFloat1D = 200
 ) -> tuple[_Float1D, _Complex1D]: ...
 @overload  # worN: complex
 def freqs_zpk(
-    z: onp.ToComplex1D,
-    p: onp.ToComplex1D,
-    k: onp.ToComplex1D,
-    worN: onp.ToComplex1D,
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToComplex1D, worN: onp.ToComplex1D
 ) -> tuple[_Inexact1D, _Complex1D]: ...
 
 #
@@ -212,12 +206,7 @@ def tf2sos(b: _ToFloat1D, a: _ToFloat1D, pairing: _Pairing | None = None, *, ana
 #
 def zpk2tf(z: onp.ToFloat1D, p: onp.ToFloat1D, k: onp.ToFloat) -> _Ba1D: ...
 def zpk2sos(
-    z: onp.ToFloat1D,
-    p: onp.ToFloat1D,
-    k: onp.ToFloat,
-    pairing: _Pairing | None = None,
-    *,
-    analog: onp.ToBool = False,
+    z: onp.ToFloat1D, p: onp.ToFloat1D, k: onp.ToFloat, pairing: _Pairing | None = None, *, analog: onp.ToBool = False
 ) -> _Float2D: ...
 
 #
@@ -239,66 +228,42 @@ def lp2lp(b: onp.ToFloatStrict1D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0) -> _B
 def lp2lp(b: onp.ToFloatStrict2D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0) -> _Ba2D | _Ba2D[np.longdouble]: ...
 @overload
 def lp2lp(
-    b: onp.ToFloat1D | onp.ToFloat2D,
-    a: onp.ToFloat1D,
-    wo: onp.ToFloat = 1.0,
+    b: onp.ToFloat1D | onp.ToFloat2D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0
 ) -> _Ba1D | _Ba1D[np.longdouble] | _Ba2D | _Ba2D[np.longdouble]: ...
 
 #
 def lp2hp(
-    b: onp.ToFloat1D,
-    a: onp.ToFloat1D,
-    wo: onp.ToFloat = 1.0,
+    b: onp.ToFloat1D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0
 ) -> _Ba1D | _Ba1D[np.float16] | _Ba1D[np.float32] | _Ba1D[np.longdouble]: ...
 
 #
 def lp2bp(
-    b: onp.ToFloat1D,
-    a: onp.ToFloat1D,
-    wo: onp.ToFloat = 1.0,
-    bw: onp.ToFloat = 1.0,
+    b: onp.ToFloat1D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0, bw: onp.ToFloat = 1.0
 ) -> _Ba1D | _Ba1D[np.float32] | _Ba1D[np.longdouble]: ...
 
 #
 def lp2bs(
-    b: onp.ToFloat1D,
-    a: onp.ToFloat1D,
-    wo: onp.ToFloat = 1.0,
-    bw: onp.ToFloat = 1.0,
+    b: onp.ToFloat1D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0, bw: onp.ToFloat = 1.0
 ) -> _Ba1D | _Ba1D[np.float32] | _Ba1D[np.longdouble]: ...
 
 #
 def lp2lp_zpk(
-    z: onp.ToComplex1D,
-    p: onp.ToComplex1D,
-    k: onp.ToFloat,
-    wo: onp.ToFloat = 1.0,
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0
 ) -> _ZPK[np.inexact[Any], _CFloating, _Floating]: ...
 
 #
 def lp2hp_zpk(
-    z: onp.ToComplex1D,
-    p: onp.ToComplex1D,
-    k: onp.ToFloat,
-    wo: onp.ToFloat = 1.0,
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0
 ) -> _ZPK[np.inexact[Any], _CFloating, _Floating]: ...
 
 #
 def lp2bp_zpk(
-    z: onp.ToComplex1D,
-    p: onp.ToComplex1D,
-    k: onp.ToFloat,
-    wo: onp.ToFloat = 1.0,
-    bw: onp.ToFloat = 1.0,
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0, bw: onp.ToFloat = 1.0
 ) -> _ZPK[np.inexact[Any], _CFloating, _Floating]: ...
 
 #
 def lp2bs_zpk(
-    z: onp.ToComplex1D,
-    p: onp.ToComplex1D,
-    k: onp.ToFloat,
-    wo: onp.ToFloat = 1.0,
-    bw: onp.ToFloat = 1.0,
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0, bw: onp.ToFloat = 1.0
 ) -> _ZPK[np.inexact[Any], _CFloating, _Floating]: ...
 
 #
@@ -307,17 +272,11 @@ def bilinear(b: onp.ToFloat1D, a: onp.ToFloat1D, fs: onp.ToFloat = 1.0) -> _Ba1D
 #
 @overload
 def bilinear_zpk(
-    z: onp.ToFloat1D,
-    p: onp.ToComplex1D,
-    k: onp.ToFloat,
-    fs: onp.ToFloat,
+    z: onp.ToFloat1D, p: onp.ToComplex1D, k: onp.ToFloat, fs: onp.ToFloat
 ) -> _ZPK[np.float64, _CFloating] | _ZPK[np.longdouble, _CFloating, np.longdouble]: ...
 @overload
 def bilinear_zpk(
-    z: onp.ToComplex1D,
-    p: onp.ToComplex1D,
-    k: onp.ToFloat,
-    fs: onp.ToFloat,
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, fs: onp.ToFloat
 ) -> _ZPK[np.float64 | np.complex128, _CFloating] | _ZPK[np.longdouble | np.clongdouble, _CFloating, np.longdouble]: ...
 
 #
@@ -798,12 +757,7 @@ def besselap(N: onp.ToJustInt, norm: _Normalization = "phase") -> tuple[_Float1D
 def iirnotch(w0: onp.ToFloat, Q: onp.ToFloat, fs: onp.ToFloat = 2.0) -> _Ba1D: ...
 def iirpeak(w0: onp.ToFloat, Q: onp.ToFloat, fs: onp.ToFloat = 2.0) -> _Ba1D: ...
 def iircomb(
-    w0: onp.ToFloat,
-    Q: onp.ToFloat,
-    ftype: L["notch", "peak"] = "notch",
-    fs: onp.ToFloat = 2.0,
-    *,
-    pass_zero: onp.ToBool = False,
+    w0: onp.ToFloat, Q: onp.ToFloat, ftype: L["notch", "peak"] = "notch", fs: onp.ToFloat = 2.0, *, pass_zero: onp.ToBool = False
 ) -> _Ba1D: ...
 
 #

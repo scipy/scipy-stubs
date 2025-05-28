@@ -60,10 +60,7 @@ class Bunch: ...  # undocumented
 
 #
 def add_knot(
-    x: onp.Array1D[np.float64],
-    t: onp.Array1D[np.float64],
-    k: int,
-    residuals: onp.Array1D[np.float64],
+    x: onp.Array1D[np.float64], t: onp.Array1D[np.float64], k: int, residuals: onp.Array1D[np.float64]
 ) -> onp.Array1D[np.float64]: ...  # undocumented
 
 #
@@ -71,18 +68,12 @@ def prodd(t: onp.Array1D[np.float64], i: int, j: int, k: int) -> _Float64: ...  
 
 #
 def disc(
-    t: onp.ArrayND[np.floating[Any]],
-    k: int,
+    t: onp.ArrayND[np.floating[Any]], k: int
 ) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.int64], int]: ...  # undocumented
 
 #
 def fprati(
-    p1: onp.ToFloat,
-    f1: onp.ToFloat,
-    p2: onp.ToFloat,
-    f2: onp.ToFloat,
-    p3: onp.ToFloat,
-    f3: onp.ToFloat,
+    p1: onp.ToFloat, f1: onp.ToFloat, p2: onp.ToFloat, f2: onp.ToFloat, p3: onp.ToFloat, f3: onp.ToFloat
 ) -> _Float: ...  # undocumented
 
 #

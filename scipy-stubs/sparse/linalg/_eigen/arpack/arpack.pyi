@@ -28,11 +28,7 @@ class ArpackNoConvergence(ArpackError):
     eigenvalues: Final[onp.Array1D[np.float64 | np.complex128]]
     eigenvectors: Final[onp.Array2D[np.float64]]
     def __init__(
-        self,
-        /,
-        msg: str,
-        eigenvalues: onp.Array1D[np.float64 | np.complex128],
-        eigenvectors: onp.Array2D[np.float64],
+        self, /, msg: str, eigenvalues: onp.Array1D[np.float64 | np.complex128], eigenvectors: onp.Array2D[np.float64]
     ) -> None: ...
 
 #

@@ -36,9 +36,7 @@ _Origin: TypeAlias = int | tuple[int, ...]
 _ScalarArrayOut: TypeAlias = onp.ArrayND[np.number[Any] | np.bool_]
 
 def iterate_structure(
-    structure: onp.ToInt | onp.ToIntND,
-    iterations: onp.ToInt,
-    origin: _Origin | None = None,
+    structure: onp.ToInt | onp.ToIntND, iterations: onp.ToInt, origin: _Origin | None = None
 ) -> _BoolArrayOut: ...
 def generate_binary_structure(rank: int, connectivity: int) -> _BoolArrayOut: ...
 

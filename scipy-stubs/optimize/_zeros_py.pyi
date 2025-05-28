@@ -49,13 +49,7 @@ class RootResults(OptimizeResult, Generic[_RT_co]):
     method: Final[MethodRootScalar]
 
     def __init__(
-        self,
-        /,
-        root: _RT_co,
-        iterations: int,
-        function_calls: int,
-        flag: _FlagKey,
-        method: MethodRootScalar,
+        self, /, root: _RT_co, iterations: int, function_calls: int, flag: _FlagKey, method: MethodRootScalar
     ) -> None: ...
 
 # undocumented
@@ -109,9 +103,7 @@ def _update_bracket(ab: list[_Float] | _Bracket, fab: list[_Float] | _Bracket, c
 def results_c(full_output: Falsy, r: _T, method: MethodRootScalar) -> _T: ...
 @overload
 def results_c(
-    full_output: Truthy,
-    r: tuple[_RT, int, int, _FlagKey],
-    method: MethodRootScalar,
+    full_output: Truthy, r: tuple[_RT, int, int, _FlagKey], method: MethodRootScalar
 ) -> tuple[_RT, RootResults[_RT]]: ...
 
 #

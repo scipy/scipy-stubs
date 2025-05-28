@@ -581,12 +581,7 @@ def brent(
 ) -> _Float: ...
 @overload  # full_output: True (positional)
 def brent(
-    func: _Fn1_0d,
-    args: _Args,
-    brack: Brack | None,
-    tol: onp.ToFloat,
-    full_output: Truthy,
-    maxiter: int = 500,
+    func: _Fn1_0d, args: _Args, brack: Brack | None, tol: onp.ToFloat, full_output: Truthy, maxiter: int = 500
 ) -> tuple[_Float, _Float, int, int]: ...
 @overload  # full_output: True (keyword)
 def brent(
@@ -611,12 +606,7 @@ def golden(
 ) -> _Float: ...
 @overload  # full_output: True (positional)
 def golden(
-    func: _Fn1_0d,
-    args: _Args,
-    brack: Brack | None,
-    tol: onp.ToFloat,
-    full_output: Truthy,
-    maxiter: int = 5_000,
+    func: _Fn1_0d, args: _Args, brack: Brack | None, tol: onp.ToFloat, full_output: Truthy, maxiter: int = 5_000
 ) -> tuple[_Float, _Float, int]: ...
 @overload  # full_output: True (keyword)
 def golden(

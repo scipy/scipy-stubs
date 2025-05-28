@@ -49,9 +49,7 @@ class _ReaderKwargs(TypedDict, total=False):
 ###
 
 def mat_reader_factory(
-    file_name: FileName,
-    appendmat: bool = True,
-    **kwargs: Unpack[_ReaderKwargs],
+    file_name: FileName, appendmat: bool = True, **kwargs: Unpack[_ReaderKwargs]
 ) -> tuple[MatFileReader, bool]: ...
 
 #
@@ -77,7 +75,5 @@ def savemat(
 
 #
 def whosmat(
-    file_name: FileName,
-    appendmat: bool = True,
-    **kwargs: Unpack[_ReaderKwargs],
+    file_name: FileName, appendmat: bool = True, **kwargs: Unpack[_ReaderKwargs]
 ) -> list[tuple[str, tuple[int, ...], _DataClass]]: ...

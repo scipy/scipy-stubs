@@ -19,19 +19,7 @@ assert_type(spectrogram(array_f8_1d), tuple[_DoubleND, _DoubleND, _FloatND])
 assert_type(spectrogram(array_f8_1d, mode=spectrogram_mode_real), tuple[_DoubleND, _DoubleND, _FloatND])
 assert_type(spectrogram(array_f8_1d, mode="complex"), tuple[_DoubleND, _DoubleND, _ComplexND])
 assert_type(
-    spectrogram(
-        array_f8_1d,
-        1.0,
-        ("tukey", 2.5),
-        None,
-        None,
-        None,
-        "constant",
-        True,
-        "density",
-        -1,
-        "complex",
-    ),
+    spectrogram(array_f8_1d, 1.0, ("tukey", 2.5), None, None, None, "constant", True, "density", -1, "complex"),
     tuple[_DoubleND, _DoubleND, _ComplexND],
 )
 
@@ -40,15 +28,7 @@ assert_type(istft(array_c16_1d), tuple[_DoubleND, _FloatND])
 assert_type(istft(array_c16_1d, input_onesided=True), tuple[_DoubleND, _FloatND])
 assert_type(istft(array_c16_1d, 1.0, "hann", 256, 128, 256, False), tuple[_DoubleND, _ComplexND])
 assert_type(
-    istft(
-        array_c16_1d,
-        input_onesided=False,
-        fs=1.0,
-        window="hann",
-        nperseg=256,
-        noverlap=128,
-        nfft=256,
-    ),
+    istft(array_c16_1d, input_onesided=False, fs=1.0, window="hann", nperseg=256, noverlap=128, nfft=256),
     tuple[_DoubleND, _ComplexND],
 )
 assert_type(

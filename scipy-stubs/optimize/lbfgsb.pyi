@@ -6,14 +6,7 @@ from typing_extensions import deprecated
 __all__ = ["LbfgsInvHessProduct", "OptimizeResult", "fmin_l_bfgs_b", "zeros"]
 
 @deprecated("will be removed in SciPy v2.0.0")
-def zeros(
-    shape: object,
-    dtype: object = ...,
-    order: object = ...,
-    *,
-    device: object = ...,
-    like: object = ...,
-) -> object: ...
+def zeros(shape: object, dtype: object = ..., order: object = ..., *, device: object = ..., like: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 class OptimizeResult(Any): ...
 

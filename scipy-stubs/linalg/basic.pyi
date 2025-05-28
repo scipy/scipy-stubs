@@ -28,12 +28,7 @@ class LinAlgError(Exception): ...
 class LinAlgWarning(RuntimeWarning): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-def get_lapack_funcs(
-    names: object,
-    arrays: object = ...,
-    dtype: object = ...,
-    ilp64: object = ...,
-) -> object: ...
+def get_lapack_funcs(names: object, arrays: object = ..., dtype: object = ..., ilp64: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solve(
     a: object,
@@ -57,28 +52,14 @@ def solve_triangular(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solve_banded(
-    l_and_u: object,
-    ab: object,
-    b: object,
-    overwrite_ab: object = ...,
-    overwrite_b: object = ...,
-    check_finite: object = ...,
+    l_and_u: object, ab: object, b: object, overwrite_ab: object = ..., overwrite_b: object = ..., check_finite: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solveh_banded(
-    ab: object,
-    b: object,
-    overwrite_ab: object = ...,
-    overwrite_b: object = ...,
-    lower: object = ...,
-    check_finite: object = ...,
+    ab: object, b: object, overwrite_ab: object = ..., overwrite_b: object = ..., lower: object = ..., check_finite: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def solve_toeplitz(
-    c_or_cr: object | tuple[object, object],
-    b: object,
-    check_finite: object = ...,
-) -> object: ...
+def solve_toeplitz(c_or_cr: object | tuple[object, object], b: object, check_finite: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solve_circulant(
     c: object,
@@ -105,34 +86,17 @@ def lstsq(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def pinv(
-    a: object,
-    *,
-    atol: object = ...,
-    rtol: object = ...,
-    return_rank: object = ...,
-    check_finite: object = ...,
+    a: object, *, atol: object = ..., rtol: object = ..., return_rank: object = ..., check_finite: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def pinvh(
-    a: object,
-    atol: object = ...,
-    rtol: object = ...,
-    lower: object = ...,
-    return_rank: object = ...,
-    check_finite: object = ...,
+    a: object, atol: object = ..., rtol: object = ..., lower: object = ..., return_rank: object = ..., check_finite: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def matrix_balance(
-    A: object,
-    permute: object = ...,
-    scale: object = ...,
-    separate: object = ...,
-    overwrite_a: object = ...,
+    A: object, permute: object = ..., scale: object = ..., separate: object = ..., overwrite_a: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def matmul_toeplitz(
-    c_or_cr: object | tuple[object, object],
-    x: object,
-    check_finite: object = ...,
-    workers: object = ...,
+    c_or_cr: object | tuple[object, object], x: object, check_finite: object = ..., workers: object = ...
 ) -> object: ...

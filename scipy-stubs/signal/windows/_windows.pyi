@@ -155,13 +155,7 @@ def exponential(
     device: _Device | None = None,
 ) -> _Float64_1D: ...
 def general_gaussian(
-    M: _ToInt,
-    p: _ToFloat,
-    sig: _ToFloat,
-    sym: _ToBool = True,
-    *,
-    xp: _Xp | None = None,
-    device: _Device | None = None,
+    M: _ToInt, p: _ToFloat, sig: _ToFloat, sym: _ToBool = True, *, xp: _Xp | None = None, device: _Device | None = None
 ) -> _Float64_1D: ...
 
 #

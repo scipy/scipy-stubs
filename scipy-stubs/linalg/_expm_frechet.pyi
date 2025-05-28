@@ -15,28 +15,15 @@ _ArrayC128: TypeAlias = onp.ArrayND[np.complex128]
 
 @overload
 def expm_frechet(
-    A: onp.ToComplexND,
-    E: onp.ToComplexND,
-    method: _Method | None = None,
-    compute_expm: Truthy = True,
-    check_finite: bool = True,
+    A: onp.ToComplexND, E: onp.ToComplexND, method: _Method | None = None, compute_expm: Truthy = True, check_finite: bool = True
 ) -> tuple[_ArrayF64, _ArrayF64] | tuple[_ArrayF64 | _ArrayC128, _ArrayC128]: ...
 @overload
 def expm_frechet(
-    A: onp.ToComplexND,
-    E: onp.ToComplexND,
-    method: _Method | None,
-    compute_expm: Falsy,
-    check_finite: bool = True,
+    A: onp.ToComplexND, E: onp.ToComplexND, method: _Method | None, compute_expm: Falsy, check_finite: bool = True
 ) -> tuple[_ArrayF64, _ArrayF64] | tuple[_ArrayF64 | _ArrayC128, _ArrayC128]: ...
 @overload
 def expm_frechet(
-    A: onp.ToComplexND,
-    E: onp.ToComplexND,
-    method: _Method | None = None,
-    *,
-    compute_expm: Falsy,
-    check_finite: bool = True,
+    A: onp.ToComplexND, E: onp.ToComplexND, method: _Method | None = None, *, compute_expm: Falsy, check_finite: bool = True
 ) -> tuple[_ArrayF64, _ArrayF64] | tuple[_ArrayF64 | _ArrayC128, _ArrayC128]: ...
 
 #

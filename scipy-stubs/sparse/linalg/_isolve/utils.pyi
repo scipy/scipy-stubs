@@ -23,10 +23,7 @@ _coerce_rules: Final[dict[tuple[_Char, _Char], _Char]]
 def id(x: _T) -> _T: ...
 def coerce(x: str, y: str) -> _Char: ...
 def make_system(
-    A: _ToLinearOperator,
-    M: _ToLinearOperator | None,
-    x0: onp.ToComplex1D | Literal["Mb"] | None,
-    b: onp.ToComplex1D,
+    A: _ToLinearOperator, M: _ToLinearOperator | None, x0: onp.ToComplex1D | Literal["Mb"] | None, b: onp.ToComplex1D
 ) -> tuple[
     LinearOperator,  # A
     LinearOperator,  # M

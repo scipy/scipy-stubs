@@ -30,11 +30,7 @@ class _Interpolator1D:  # undocumented
     dtype: type[np.float64 | np.complex128]
 
     def __init__(
-        self,
-        /,
-        xi: onp.ToFloatND | None = None,
-        yi: onp.ToComplexND | None = None,
-        axis: int | None = None,
+        self, /, xi: onp.ToFloatND | None = None, yi: onp.ToComplexND | None = None, axis: int | None = None
     ) -> None: ...
     def __call__(self, /, x: onp.ToFloat | onp.ToFloatND) -> _FloatND | _ComplexND: ...
 
@@ -71,11 +67,7 @@ class BarycentricInterpolator(_Interpolator1DWithDerivatives):
 #
 @overload
 def krogh_interpolate(
-    xi: onp.ToFloat1D,
-    yi: onp.ToFloatND,
-    x: onp.ToFloat | onp.ToFloat1D,
-    der: onp.ToJustInt | onp.ToJustInt1D = 0,
-    axis: int = 0,
+    xi: onp.ToFloat1D, yi: onp.ToFloatND, x: onp.ToFloat | onp.ToFloat1D, der: onp.ToJustInt | onp.ToJustInt1D = 0, axis: int = 0
 ) -> _FloatND: ...
 @overload
 def krogh_interpolate(

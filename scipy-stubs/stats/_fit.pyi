@@ -44,21 +44,11 @@ class FitResult(Generic[_PXFT_co]):
 
     @overload
     def __init__(
-        self: FitResult[_PXF1n],
-        /,
-        dist: rv_discrete,
-        data: onp.ToFloatND,
-        discrete: bool,
-        res: OptimizeResult,
+        self: FitResult[_PXF1n], /, dist: rv_discrete, data: onp.ToFloatND, discrete: bool, res: OptimizeResult
     ) -> None: ...
     @overload
     def __init__(
-        self: FitResult[_PXF2n],
-        /,
-        dist: rv_continuous,
-        data: onp.ToFloatND,
-        discrete: bool,
-        res: OptimizeResult,
+        self: FitResult[_PXF2n], /, dist: rv_continuous, data: onp.ToFloatND, discrete: bool, res: OptimizeResult
     ) -> None: ...
 
     #

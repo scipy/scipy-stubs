@@ -31,32 +31,17 @@ _ToAxis: TypeAlias = op.CanIndex | None
 
 @overload
 def hdquantiles(
-    data: onp.ToFloat1D,
-    prob: _ToProb = [0.25, 0.5, 0.75],
-    axis: _ToAxis = None,
-    var: Falsy = False,
+    data: onp.ToFloat1D, prob: _ToProb = [0.25, 0.5, 0.75], axis: _ToAxis = None, var: Falsy = False
 ) -> onp.MArray1D[np.float64]: ...
 @overload
+def hdquantiles(data: onp.ToFloat1D, prob: _ToProb, axis: _ToAxis, var: Truthy) -> onp.MArray2D[np.float64]: ...
+@overload
 def hdquantiles(
-    data: onp.ToFloat1D,
-    prob: _ToProb,
-    axis: _ToAxis,
-    var: Truthy,
+    data: onp.ToFloat1D, prob: _ToProb = [0.25, 0.5, 0.75], axis: _ToAxis = None, *, var: Truthy
 ) -> onp.MArray2D[np.float64]: ...
 @overload
 def hdquantiles(
-    data: onp.ToFloat1D,
-    prob: _ToProb = [0.25, 0.5, 0.75],
-    axis: _ToAxis = None,
-    *,
-    var: Truthy,
-) -> onp.MArray2D[np.float64]: ...
-@overload
-def hdquantiles(
-    data: onp.ToFloatND,
-    prob: _ToProb = [0.25, 0.5, 0.75],
-    axis: _ToAxis = None,
-    var: bool = False,
+    data: onp.ToFloatND, prob: _ToProb = [0.25, 0.5, 0.75], axis: _ToAxis = None, var: bool = False
 ) -> onp.MArray[np.float64]: ...
 
 #
@@ -84,10 +69,7 @@ def mjci(data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis =
 
 #
 def mquantiles_cimj(
-    data: onp.ToFloatND,
-    prob: _ToProb = (0.25, 0.5, 0.75),
-    alpha: onp.ToJustFloat = 0.05,
-    axis: _ToAxis = None,
+    data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), alpha: onp.ToJustFloat = 0.05, axis: _ToAxis = None
 ) -> _Tuple2[_FloatND]: ...
 
 #

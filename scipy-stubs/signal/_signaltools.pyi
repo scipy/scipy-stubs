@@ -110,73 +110,36 @@ class _ConvMeasureDict(TypedDict):
 ###
 
 @overload
-def choose_conv_method(
-    in1: _ToIntND,
-    in2: _ToIntND,
-    mode: ConvMode = "full",
-    measure: Falsy = False,
-) -> L["direct"]: ...
+def choose_conv_method(in1: _ToIntND, in2: _ToIntND, mode: ConvMode = "full", measure: Falsy = False) -> L["direct"]: ...
+@overload
+def choose_conv_method(in1: _ToComplexND, in2: _ToComplexND, mode: ConvMode = "full", measure: Falsy = False) -> _ConvMethod: ...
 @overload
 def choose_conv_method(
-    in1: _ToComplexND,
-    in2: _ToComplexND,
-    mode: ConvMode = "full",
-    measure: Falsy = False,
-) -> _ConvMethod: ...
-@overload
-def choose_conv_method(
-    in1: _ToComplexND,
-    in2: _ToComplexND,
-    mode: ConvMode,
-    measure: Truthy,
+    in1: _ToComplexND, in2: _ToComplexND, mode: ConvMode, measure: Truthy
 ) -> tuple[_ConvMethod, _ConvMeasureDict]: ...
 @overload
 def choose_conv_method(
-    in1: _ToComplexND,
-    in2: _ToComplexND,
-    mode: ConvMode = "full",
-    *,
-    measure: Truthy,
+    in1: _ToComplexND, in2: _ToComplexND, mode: ConvMode = "full", *, measure: Truthy
 ) -> tuple[_ConvMethod, _ConvMeasureDict]: ...
 
 #
 @overload
-def convolve(
-    in1: _ToBoolND,
-    in2: _ToBoolND,
-    mode: ConvMode = "full",
-    method: _ToConvMethod = "auto",
-) -> onp.ArrayND[_CoBool]: ...
+def convolve(in1: _ToBoolND, in2: _ToBoolND, mode: ConvMode = "full", method: _ToConvMethod = "auto") -> onp.ArrayND[_CoBool]: ...
+@overload
+def convolve(in1: _ToIntND, in2: _ToIntND, mode: ConvMode = "full", method: _ToConvMethod = "auto") -> onp.ArrayND[_CoInt]: ...
 @overload
 def convolve(
-    in1: _ToIntND,
-    in2: _ToIntND,
-    mode: ConvMode = "full",
-    method: _ToConvMethod = "auto",
-) -> onp.ArrayND[_CoInt]: ...
-@overload
-def convolve(
-    in1: _ToFloatND,
-    in2: _ToFloatND,
-    mode: ConvMode = "full",
-    method: _ToConvMethod = "auto",
+    in1: _ToFloatND, in2: _ToFloatND, mode: ConvMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[_CoFloat]: ...
 @overload
 def convolve(
-    in1: _ToComplexND,
-    in2: _ToComplexND,
-    mode: ConvMode = "full",
-    method: _ToConvMethod = "auto",
+    in1: _ToComplexND, in2: _ToComplexND, mode: ConvMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[_CoComplex]: ...
 
 #
 @overload
 def convolve2d(
-    in1: onp.ToInt2D,
-    in2: onp.ToInt2D,
-    mode: ConvMode = "full",
-    boundary: _BoundaryConditions = "fill",
-    fillvalue: onp.ToInt = 0,
+    in1: onp.ToInt2D, in2: onp.ToInt2D, mode: ConvMode = "full", boundary: _BoundaryConditions = "fill", fillvalue: onp.ToInt = 0
 ) -> onp.Array2D[_Int]: ...
 @overload
 def convolve2d(
@@ -212,17 +175,11 @@ def fftconvolve(
 ) -> onp.ArrayND[_EnvelopeSCT, _AnyShapeT]: ...
 @overload
 def fftconvolve(
-    in1: onp.ToFloatND,
-    in2: onp.ToFloatND,
-    mode: ConvMode = "full",
-    axes: op.CanIndex | Sequence[op.CanIndex] | None = None,
+    in1: onp.ToFloatND, in2: onp.ToFloatND, mode: ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
 ) -> onp.ArrayND[_OutFloat | np.longdouble]: ...
 @overload
 def fftconvolve(
-    in1: onp.ToComplexND,
-    in2: onp.ToComplexND,
-    mode: ConvMode = "full",
-    axes: op.CanIndex | Sequence[op.CanIndex] | None = None,
+    in1: onp.ToComplexND, in2: onp.ToComplexND, mode: ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
 ) -> onp.ArrayND[_OutFloat | np.longdouble | _Complex | np.clongdouble]: ...
 
 #
@@ -242,17 +199,11 @@ def oaconvolve(
 ) -> onp.ArrayND[_EnvelopeSCT, _AnyShapeT]: ...
 @overload
 def oaconvolve(
-    in1: onp.ToFloatND,
-    in2: onp.ToFloatND,
-    mode: ConvMode = "full",
-    axes: op.CanIndex | Sequence[op.CanIndex] | None = None,
+    in1: onp.ToFloatND, in2: onp.ToFloatND, mode: ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
 ) -> onp.ArrayND[_OutFloat | np.longdouble]: ...
 @overload
 def oaconvolve(
-    in1: onp.ToComplexND,
-    in2: onp.ToComplexND,
-    mode: ConvMode = "full",
-    axes: op.CanIndex | Sequence[op.CanIndex] | None = None,
+    in1: onp.ToComplexND, in2: onp.ToComplexND, mode: ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
 ) -> onp.ArrayND[_OutFloat | np.longdouble | _Complex | np.clongdouble]: ...
 
 #
@@ -264,41 +215,23 @@ def deconvolve(signal: onp.ToComplex1D, divisor: onp.ToComplex1D) -> _Tuple2[onp
 #
 @overload
 def correlate(
-    in1: _ToBoolND,
-    in2: _ToBoolND,
-    mode: ConvMode = "full",
-    method: _ToConvMethod = "auto",
+    in1: _ToBoolND, in2: _ToBoolND, mode: ConvMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[_CoBool]: ...
 @overload
-def correlate(
-    in1: _ToIntND,
-    in2: _ToIntND,
-    mode: ConvMode = "full",
-    method: _ToConvMethod = "auto",
-) -> onp.ArrayND[_CoInt]: ...
+def correlate(in1: _ToIntND, in2: _ToIntND, mode: ConvMode = "full", method: _ToConvMethod = "auto") -> onp.ArrayND[_CoInt]: ...
 @overload
 def correlate(
-    in1: _ToFloatND,
-    in2: _ToFloatND,
-    mode: ConvMode = "full",
-    method: _ToConvMethod = "auto",
+    in1: _ToFloatND, in2: _ToFloatND, mode: ConvMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[_CoFloat]: ...
 @overload
 def correlate(
-    in1: _ToComplexND,
-    in2: _ToComplexND,
-    mode: ConvMode = "full",
-    method: _ToConvMethod = "auto",
+    in1: _ToComplexND, in2: _ToComplexND, mode: ConvMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[_CoComplex]: ...
 
 #
 @overload
 def correlate2d(
-    in1: onp.ToInt2D,
-    in2: onp.ToInt2D,
-    mode: ConvMode = "full",
-    boundary: _BoundaryConditions = "fill",
-    fillvalue: onp.ToInt = 0,
+    in1: onp.ToInt2D, in2: onp.ToInt2D, mode: ConvMode = "full", boundary: _BoundaryConditions = "fill", fillvalue: onp.ToInt = 0
 ) -> onp.Array2D[_Int]: ...
 @overload
 def correlate2d(
@@ -329,69 +262,33 @@ def lfilter_zi(b: _ToComplex1D, a: _ToComplex1D) -> onp.Array1D[_Float | _Comple
 #
 @overload
 def lfiltic(
-    b: onp.ToFloat1D,
-    a: onp.ToFloat1D,
-    y: onp.ToFloat1D,
-    x: onp.ToFloat1D | None = None,
+    b: onp.ToFloat1D, a: onp.ToFloat1D, y: onp.ToFloat1D, x: onp.ToFloat1D | None = None
 ) -> onp.Array1D[np.floating[Any]]: ...
 @overload
 def lfiltic(
-    b: onp.ToComplex1D,
-    a: onp.ToComplex1D,
-    y: onp.ToComplex1D,
-    x: onp.ToComplex1D | None = None,
+    b: onp.ToComplex1D, a: onp.ToComplex1D, y: onp.ToComplex1D, x: onp.ToComplex1D | None = None
 ) -> onp.Array1D[np.inexact[Any]]: ...
 
 #
 @overload
-def lfilter(
-    b: _ToFloat1D,
-    a: _ToFloat1D,
-    x: _ToFloatND,
-    axis: op.CanIndex = -1,
-    zi: None = None,
-) -> onp.ArrayND[_Float]: ...
+def lfilter(b: _ToFloat1D, a: _ToFloat1D, x: _ToFloatND, axis: op.CanIndex = -1, zi: None = None) -> onp.ArrayND[_Float]: ...
+@overload
+def lfilter(b: _ToFloat1D, a: _ToFloat1D, x: _ToFloatND, axis: op.CanIndex, zi: _ToFloatND) -> _Tuple2[onp.ArrayND[_Float]]: ...
 @overload
 def lfilter(
-    b: _ToFloat1D,
-    a: _ToFloat1D,
-    x: _ToFloatND,
-    axis: op.CanIndex,
-    zi: _ToFloatND,
+    b: _ToFloat1D, a: _ToFloat1D, x: _ToFloatND, axis: op.CanIndex = -1, *, zi: _ToFloatND
 ) -> _Tuple2[onp.ArrayND[_Float]]: ...
 @overload
 def lfilter(
-    b: _ToFloat1D,
-    a: _ToFloat1D,
-    x: _ToFloatND,
-    axis: op.CanIndex = -1,
-    *,
-    zi: _ToFloatND,
-) -> _Tuple2[onp.ArrayND[_Float]]: ...
-@overload
-def lfilter(
-    b: _ToComplex1D,
-    a: _ToComplex1D,
-    x: _ToComplexND,
-    axis: op.CanIndex = -1,
-    zi: None = None,
+    b: _ToComplex1D, a: _ToComplex1D, x: _ToComplexND, axis: op.CanIndex = -1, zi: None = None
 ) -> onp.ArrayND[_Complex | _Float]: ...
 @overload
 def lfilter(
-    b: _ToComplex1D,
-    a: _ToComplex1D,
-    x: _ToComplexND,
-    axis: op.CanIndex,
-    zi: _ToComplexND,
+    b: _ToComplex1D, a: _ToComplex1D, x: _ToComplexND, axis: op.CanIndex, zi: _ToComplexND
 ) -> _Tuple2[onp.ArrayND[_Complex | _Float]]: ...
 @overload
 def lfilter(
-    b: _ToComplex1D,
-    a: _ToComplex1D,
-    x: _ToComplexND,
-    axis: op.CanIndex = -1,
-    *,
-    zi: _ToComplexND,
+    b: _ToComplex1D, a: _ToComplex1D, x: _ToComplexND, axis: op.CanIndex = -1, *, zi: _ToComplexND
 ) -> _Tuple2[onp.ArrayND[_Complex | _Float]]: ...
 
 #
@@ -436,45 +333,26 @@ def sosfilt(sos: _ToFloat2D, x: _ToFloatND, axis: op.CanIndex = -1, *, zi: _ToFl
 @overload
 def sosfilt(sos: _ToComplex2D, x: _ToComplexND, axis: op.CanIndex = -1, zi: None = None) -> onp.ArrayND[_Float | _Complex]: ...
 @overload
-def sosfilt(
-    sos: _ToComplex2D,
-    x: _ToComplexND,
-    axis: op.CanIndex,
-    zi: _ToFloatND,
-) -> _Tuple2[onp.ArrayND[_Float | _Complex]]: ...
+def sosfilt(sos: _ToComplex2D, x: _ToComplexND, axis: op.CanIndex, zi: _ToFloatND) -> _Tuple2[onp.ArrayND[_Float | _Complex]]: ...
 @overload
 def sosfilt(
-    sos: _ToComplex2D,
-    x: _ToComplexND,
-    axis: op.CanIndex = -1,
-    *,
-    zi: _ToFloatND,
+    sos: _ToComplex2D, x: _ToComplexND, axis: op.CanIndex = -1, *, zi: _ToFloatND
 ) -> _Tuple2[onp.ArrayND[_Float | _Complex]]: ...
 
 #
 @overload
 def sosfiltfilt(
-    sos: _ToFloat2D,
-    x: _ToFloatND,
-    axis: op.CanIndex = -1,
-    padtype: _FiltFiltPadType = "odd",
-    padlen: onp.ToInt | None = None,
+    sos: _ToFloat2D, x: _ToFloatND, axis: op.CanIndex = -1, padtype: _FiltFiltPadType = "odd", padlen: onp.ToInt | None = None
 ) -> onp.ArrayND[_Float]: ...
 @overload
 def sosfiltfilt(
-    sos: _ToComplex2D,
-    x: _ToComplexND,
-    axis: op.CanIndex = -1,
-    padtype: _FiltFiltPadType = "odd",
-    padlen: onp.ToInt | None = None,
+    sos: _ToComplex2D, x: _ToComplexND, axis: op.CanIndex = -1, padtype: _FiltFiltPadType = "odd", padlen: onp.ToInt | None = None
 ) -> onp.ArrayND[_Float | _Complex]: ...
 
 #
 @overload
 def order_filter(
-    a: onp.ArrayND[_FilterSCT, _ShapeT],
-    domain: onp.ToArrayND,
-    rank: onp.ToJustInt,
+    a: onp.ArrayND[_FilterSCT, _ShapeT], domain: onp.ToArrayND, rank: onp.ToJustInt
 ) -> onp.ArrayND[_FilterSCT, _ShapeT]: ...
 @overload
 def order_filter(a: _ToIntND, domain: onp.ToArrayND, rank: onp.ToJustInt) -> onp.ArrayND[_Int]: ...
@@ -484,8 +362,7 @@ def order_filter(a: _ToFloatND, domain: onp.ToArrayND, rank: onp.ToJustInt) -> o
 #
 @overload
 def medfilt(
-    volume: onp.ArrayND[_FilterSCT, _ShapeT],
-    kernel_size: onp.ToInt | onp.ToInt1D | None = None,
+    volume: onp.ArrayND[_FilterSCT, _ShapeT], kernel_size: onp.ToInt | onp.ToInt1D | None = None
 ) -> onp.ArrayND[_FilterSCT, _ShapeT]: ...
 @overload
 def medfilt(volume: _ToIntND, kernel_size: onp.ToInt | onp.ToInt1D | None = None) -> onp.ArrayND[_Int]: ...
@@ -498,74 +375,49 @@ def medfilt2d(input: _ToFloat2D, kernel_size: onp.ToInt | onp.ToInt1D = 3) -> on
 #
 @overload
 def wiener(
-    im: onp.ToFloatND,
-    mysize: onp.ToInt | onp.ToInt1D | None = None,
-    noise: onp.ToFloat | None = None,
+    im: onp.ToFloatND, mysize: onp.ToInt | onp.ToInt1D | None = None, noise: onp.ToFloat | None = None
 ) -> onp.ArrayND[_LFloat]: ...
 @overload
 def wiener(
-    im: onp.ToComplexND,
-    mysize: onp.ToInt | onp.ToInt1D | None = None,
-    noise: onp.ToFloat | None = None,
+    im: onp.ToComplexND, mysize: onp.ToInt | onp.ToInt1D | None = None, noise: onp.ToFloat | None = None
 ) -> onp.ArrayND[_LFloat | _LComplex]: ...
 
 #
 def hilbert(
-    x: onp.ToFloatND,
-    N: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    x: onp.ToFloatND, N: onp.ToInt | None = None, axis: op.CanIndex = -1
 ) -> onp.ArrayND[np.complexfloating[Any, Any]]: ...
 
 #
 def hilbert2(
-    x: onp.ToFloat2D,
-    N: onp.ToInt | tuple[onp.ToInt, onp.ToInt] | None = None,
+    x: onp.ToFloat2D, N: onp.ToInt | tuple[onp.ToInt, onp.ToInt] | None = None
 ) -> onp.Array2D[np.complexfloating[Any, Any]]: ...
 
 #
 @overload
 def unique_roots(
-    p: onp.ToFloat1D,
-    tol: onp.ToFloat = 0.001,
-    rtype: _RootType = "min",
+    p: onp.ToFloat1D, tol: onp.ToFloat = 0.001, rtype: _RootType = "min"
 ) -> tuple[onp.Array1D[np.floating[Any]], onp.Array1D[np.int_]]: ...
 @overload
 def unique_roots(
-    p: onp.ToComplex1D,
-    tol: onp.ToFloat = 0.001,
-    rtype: _RootType = "min",
+    p: onp.ToComplex1D, tol: onp.ToFloat = 0.001, rtype: _RootType = "min"
 ) -> tuple[onp.Array1D[np.inexact[Any]], onp.Array1D[np.int_]]: ...
 
 #
 def residue(
-    b: onp.ToComplex1D,
-    a: onp.ToComplex1D,
-    tol: onp.ToFloat = 0.001,
-    rtype: _ResidueType = "avg",
+    b: onp.ToComplex1D, a: onp.ToComplex1D, tol: onp.ToFloat = 0.001, rtype: _ResidueType = "avg"
 ) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64]]: ...
 
 #
 def residuez(
-    b: onp.ToComplex1D,
-    a: onp.ToComplex1D,
-    tol: onp.ToFloat = 0.001,
-    rtype: _ResidueType = "avg",
+    b: onp.ToComplex1D, a: onp.ToComplex1D, tol: onp.ToFloat = 0.001, rtype: _ResidueType = "avg"
 ) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64]]: ...
 
 #
 def invres(
-    r: onp.ToComplex1D,
-    p: onp.ToComplex1D,
-    k: onp.ToFloat1D,
-    tol: onp.ToFloat = 0.001,
-    rtype: _ResidueType = "avg",
+    r: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat1D, tol: onp.ToFloat = 0.001, rtype: _ResidueType = "avg"
 ) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]]: ...
 def invresz(
-    r: onp.ToComplex1D,
-    p: onp.ToComplex1D,
-    k: onp.ToFloat1D,
-    tol: onp.ToFloat = 0.001,
-    rtype: _ResidueType = "avg",
+    r: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat1D, tol: onp.ToFloat = 0.001, rtype: _ResidueType = "avg"
 ) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]]: ...
 
 #
@@ -653,13 +505,11 @@ def vectorstrength(events: onp.ToFloat1D, period: onp.ToFloat) -> _Tuple2[_Float
 def vectorstrength(events: onp.ToFloat1D, period: onp.ToFloat1D) -> _Tuple2[onp.Array1D[_Float | np.longdouble]]: ...
 @overload
 def vectorstrength(
-    events: onp.ToComplex1D,
-    period: onp.ToComplex,
+    events: onp.ToComplex1D, period: onp.ToComplex
 ) -> _Tuple2[_Float | np.longdouble | _Complex | np.clongdouble]: ...
 @overload
 def vectorstrength(
-    events: onp.ToComplex1D,
-    period: onp.ToComplex1D,
+    events: onp.ToComplex1D, period: onp.ToComplex1D
 ) -> _Tuple2[onp.Array1D[_Float | np.longdouble | _Complex | np.clongdouble]]: ...
 
 #

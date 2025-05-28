@@ -58,10 +58,7 @@ def factorized(A: _spbase | onp.ToComplex2D) -> _Solve: ...
 #
 @overload
 def spsolve(
-    A: _spbase | onp.ToComplex2D,
-    b: _SparseT,
-    permc_spec: _PermcSpec | None = None,
-    use_umfpack: bool = True,
+    A: _spbase | onp.ToComplex2D, b: _SparseT, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
 ) -> _SparseT: ...
 @overload
 def spsolve(

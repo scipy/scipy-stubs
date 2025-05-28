@@ -37,11 +37,7 @@ class Rotation:
 
     #
     def __init__(
-        self,
-        /,
-        quat: onp.ToFloat1D | onp.ToFloat2D,
-        normalize: bool = True,
-        copy: bool = False,
+        self, /, quat: onp.ToFloat1D | onp.ToFloat2D, normalize: bool = True, copy: bool = False
     ) -> None: ...  # undocumented
     def __setstate_cython__(self, pyx_state: object, /) -> None: ...  # undocumented
     def __reduce_cython__(self, /) -> None: ...  # undocumented
@@ -66,38 +62,21 @@ class Rotation:
     def magnitude(self, /) -> float | np.float64 | _Float1D: ...
     def apply(self, /, vectors: onp.ToFloat1D | onp.ToFloat2D, inverse: bool = False) -> _Float1D2D: ...
     def approx_equal(
-        self,
-        /,
-        other: Rotation,
-        atol: onp.ToFloat | None = None,
-        degrees: bool = False,
+        self, /, other: Rotation, atol: onp.ToFloat | None = None, degrees: bool = False
     ) -> bool | np.bool_ | onp.Array1D[np.bool_]: ...
 
     #
     @overload
     def reduce(
-        self,
-        /,
-        left: Rotation | None = None,
-        right: Rotation | None = None,
-        return_indices: L[False] = False,
+        self, /, left: Rotation | None = None, right: Rotation | None = None, return_indices: L[False] = False
     ) -> Self: ...
     @overload
     def reduce(
-        self,
-        /,
-        left: Rotation | None,
-        right: Rotation | None,
-        return_indices: L[True],
+        self, /, left: Rotation | None, right: Rotation | None, return_indices: L[True]
     ) -> tuple[Self, onp.ArrayND[np.int32 | np.int64], onp.ArrayND[np.int32 | np.int64]]: ...
     @overload
     def reduce(
-        self,
-        /,
-        left: Rotation | None = None,
-        right: Rotation | None = None,
-        *,
-        return_indices: L[True],
+        self, /, left: Rotation | None = None, right: Rotation | None = None, *, return_indices: L[True]
     ) -> tuple[Self, onp.ArrayND[np.int32 | np.int64], onp.ArrayND[np.int32 | np.int64]]: ...
 
     #

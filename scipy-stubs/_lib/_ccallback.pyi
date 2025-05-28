@@ -126,20 +126,12 @@ class LowLevelCallable(tuple[PyCapsule, _FuncT_co, _DataT_co], Generic[_FuncT_co
     @classmethod
     @overload
     def from_cython(
-        cls,
-        module: ModuleType,
-        name: str,
-        user_data: None = None,
-        signature: str | None = None,
+        cls, module: ModuleType, name: str, user_data: None = None, signature: str | None = None
     ) -> LowLevelCallable[PyCapsule, None]: ...
     @classmethod
     @overload
     def from_cython(
-        cls,
-        module: ModuleType,
-        name: str,
-        user_data: _DataT,
-        signature: str | None = None,
+        cls, module: ModuleType, name: str, user_data: _DataT, signature: str | None = None
     ) -> LowLevelCallable[PyCapsule, _DataT]: ...
 
     # NOTE: `__getitem__` will always raise a `ValueError`

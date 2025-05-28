@@ -46,24 +46,13 @@ def update_tr_radius(
 
 #
 def build_quadratic_1d(
-    J: _ToMatrix,
-    g: onp.ToFloat1D,
-    s: onp.ToFloat1D,
-    diag: onp.ToFloat1D | None = None,
-    s0: onp.ToFloat1D | None = None,
+    J: _ToMatrix, g: onp.ToFloat1D, s: onp.ToFloat1D, diag: onp.ToFloat1D | None = None, s0: onp.ToFloat1D | None = None
 ) -> tuple[_Float, _Float, _Float]: ...
 def minimize_quadratic_1d(
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    lb: onp.ToFloat1D,
-    ub: onp.ToFloat1D,
-    c: onp.ToFloat = 0,
+    a: onp.ToFloat, b: onp.ToFloat, lb: onp.ToFloat1D, ub: onp.ToFloat1D, c: onp.ToFloat = 0
 ) -> tuple[_Float, _Float]: ...
 def evaluate_quadratic(
-    J: _ToMatrix,
-    g: onp.ToFloat1D,
-    s: onp.ToFloat1D | onp.ToFloat2D,
-    diag: onp.ToFloat1D | None = None,
+    J: _ToMatrix, g: onp.ToFloat1D, s: onp.ToFloat1D | onp.ToFloat2D, diag: onp.ToFloat1D | None = None
 ) -> _Float | _Float1D: ...
 
 #
@@ -77,21 +66,10 @@ def reflective_transformation(y: onp.ToFloat1D, lb: onp.ToFloat1D, ub: onp.ToFlo
 #
 def print_header_nonlinear() -> None: ...
 def print_iteration_nonlinear(
-    iteration: int,
-    nfev: int,
-    cost: float,
-    cost_reduction: float,
-    step_norm: float,
-    optimality: float,
+    iteration: int, nfev: int, cost: float, cost_reduction: float, step_norm: float, optimality: float
 ) -> None: ...
 def print_header_linear() -> None: ...
-def print_iteration_linear(
-    iteration: int,
-    cost: float,
-    cost_reduction: float,
-    step_norm: float,
-    optimality: float,
-) -> None: ...
+def print_iteration_linear(iteration: int, cost: float, cost_reduction: float, step_norm: float, optimality: float) -> None: ...
 
 #
 def compute_grad(J: _ToMatrix, f: onp.ToFloat1D) -> _Float1D | _Sparse: ...

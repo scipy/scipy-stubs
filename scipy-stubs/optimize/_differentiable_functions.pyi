@@ -223,11 +223,7 @@ class LinearVectorFunction(Generic[_XT_contra]):
     ) -> None: ...
     @overload
     def __init__(
-        self,
-        /,
-        A: onp.ToFloat2D | spmatrix | sparray,
-        x0: _Vec[_XT_contra] | onp.ToFloat1D,
-        sparse_jacobian: onp.ToBool | None,
+        self, /, A: onp.ToFloat2D | spmatrix | sparray, x0: _Vec[_XT_contra] | onp.ToFloat1D, sparse_jacobian: onp.ToBool | None
     ) -> None: ...
 
     #

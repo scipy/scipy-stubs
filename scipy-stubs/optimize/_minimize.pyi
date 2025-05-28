@@ -56,13 +56,7 @@ class _MinimizeMethodFun(Protocol):
 @type_check_only
 class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
     def __call__(
-        self,
-        fun: _Fun0D[onp.ToFloat],
-        /,
-        *,
-        args: _Args,
-        bracket: _ToBracket,
-        bound: _ToBound,
+        self, fun: _Fun0D[onp.ToFloat], /, *, args: _Args, bracket: _ToBracket, bound: _ToBound
     ) -> _MinimizeScalarResultT_co: ...
 
 @type_check_only

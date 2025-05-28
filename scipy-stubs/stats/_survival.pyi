@@ -47,11 +47,7 @@ class EmpiricalDistributionFunction:
     @overload
     def plot(self, /, ax: _CanStep[_KwargsT, _LineT], **kwds: _KwargsT) -> list[_LineT]: ...
     def confidence_interval(
-        self,
-        /,
-        confidence_level: onp.ToFloat = 0.95,
-        *,
-        method: _CIMethod = "linear",
+        self, /, confidence_level: onp.ToFloat = 0.95, *, method: _CIMethod = "linear"
     ) -> ConfidenceInterval: ...
 
 @dataclass

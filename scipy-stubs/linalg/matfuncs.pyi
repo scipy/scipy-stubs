@@ -27,13 +27,7 @@ __all__ = [
 ]
 
 @deprecated("will be removed in SciPy v2.0.0")
-def norm(
-    a: object,
-    ord: object = ...,
-    axis: object = ...,
-    keepdims: object = ...,
-    check_finite: object = ...,
-) -> object: ...
+def norm(a: object, ord: object = ..., axis: object = ..., keepdims: object = ..., check_finite: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def svd(
     a: object,
@@ -86,11 +80,7 @@ def sinhm(A: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def tanhm(A: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def funm(
-    A: object,
-    func: object,
-    disp: object = ...,
-) -> object: ...
+def funm(A: object, func: object, disp: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def signm(A: object, disp: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -99,11 +89,7 @@ def khatri_rao(a: object, b: object) -> object: ...
 def sqrtm(A: object, disp: object = ..., blocksize: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def expm_frechet(
-    A: object,
-    E: object,
-    method: object = ...,
-    compute_expm: object = ...,
-    check_finite: object = ...,
+    A: object, E: object, method: object = ..., compute_expm: object = ..., check_finite: object = ...
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def expm_cond(A: object, check_finite: object = ...) -> object: ...

@@ -52,12 +52,7 @@ class HBInfo:
 
     @classmethod
     def from_data(
-        cls,
-        m: _spbase,
-        title: str = "Default title",
-        key: str = "0",
-        mxtype: HBMatrixType | None = None,
-        fmt: None = None,
+        cls, m: _spbase, title: str = "Default title", key: str = "0", mxtype: HBMatrixType | None = None, fmt: None = None
     ) -> Self: ...
     @classmethod
     def from_file(cls, fid: IO[str]) -> Self: ...

@@ -364,17 +364,17 @@ def obl_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> _f8_1d: ...
 #
 @deprecated(
     "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `scipy.special.legendre_p_all` instead.",
+    "Please use `scipy.special.legendre_p_all` instead."
 )
 def lpn(n: onp.ToInt, z: onp.ToComplex) -> onp.ArrayND[npc.inexact]: ...
 @deprecated(
     "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `scipy.special.assoc_legendre_p_all` instead.",
+    "Please use `scipy.special.assoc_legendre_p_all` instead."
 )
 def lpmn(m: onp.ToInt, n: onp.ToInt, z: _ToFloatOrND) -> _tuple2[_f8_nd]: ...
 @deprecated(
     "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `scipy.special.assoc_legendre_p_all` instead.",
+    "Please use `scipy.special.assoc_legendre_p_all` instead."
 )
 def clpmn(m: onp.ToInt, n: onp.ToInt, z: _ToComplexOrND, type: L[2, 3] = 3) -> _tuple2[_c8_nd]: ...
 
@@ -517,65 +517,33 @@ def softplus(x: _SCT_f, *, out: None = None, dtype: onp.ToDType[_SCT_f] | None =
 def softplus(x: onp.ToFloat, *, out: None, dtype: onp.ToDType[_SCT_f], **kwds: Unpack[_KwBase]) -> _SCT_f: ...
 @overload
 def softplus(
-    x: onp.ToFloat,
-    *,
-    out: None,
-    dtype: onp.AnyFloatingDType | None = None,
-    **kwds: Unpack[_KwBase],
+    x: onp.ToFloat, *, out: None, dtype: onp.AnyFloatingDType | None = None, **kwds: Unpack[_KwBase]
 ) -> npc.floating: ...
 @overload
 def softplus(
-    x: onp.ToJustFloat64Strict1D,
-    *,
-    out: None = None,
-    dtype: onp.AnyFloat64DType | None = None,
-    **kwds: Unpack[_KwBase],
+    x: onp.ToJustFloat64Strict1D, *, out: None = None, dtype: onp.AnyFloat64DType | None = None, **kwds: Unpack[_KwBase]
 ) -> _f8_1d: ...
 @overload
 def softplus(
-    x: onp.ToJustFloat64Strict2D,
-    *,
-    out: None = None,
-    dtype: onp.AnyFloat64DType | None = None,
-    **kwds: Unpack[_KwBase],
+    x: onp.ToJustFloat64Strict2D, *, out: None = None, dtype: onp.AnyFloat64DType | None = None, **kwds: Unpack[_KwBase]
 ) -> onp.Array2D[_f8]: ...
 @overload
 def softplus(
-    x: onp.ToJustFloat64Strict3D,
-    *,
-    out: None = None,
-    dtype: onp.AnyFloat64DType | None = None,
-    **kwds: Unpack[_KwBase],
+    x: onp.ToJustFloat64Strict3D, *, out: None = None, dtype: onp.AnyFloat64DType | None = None, **kwds: Unpack[_KwBase]
 ) -> onp.Array3D[_f8]: ...
 @overload
 def softplus(
-    x: onp.ToJustFloat64_ND,
-    *,
-    out: None = None,
-    dtype: onp.AnyFloat64DType | None = None,
-    **kwds: Unpack[_KwBase],
+    x: onp.ToJustFloat64_ND, *, out: None = None, dtype: onp.AnyFloat64DType | None = None, **kwds: Unpack[_KwBase]
 ) -> _f8_nd: ...
 @overload
 def softplus(
-    x: onp.CanArrayND[_SCT_f, _ShapeT],
-    *,
-    out: None = None,
-    dtype: onp.ToDType[_SCT_f] | None = None,
-    **kwds: Unpack[_KwBase],
+    x: onp.CanArrayND[_SCT_f, _ShapeT], *, out: None = None, dtype: onp.ToDType[_SCT_f] | None = None, **kwds: Unpack[_KwBase]
 ) -> onp.ArrayND[_SCT_f, _ShapeT]: ...
 @overload
 def softplus(
-    x: onp.ToFloatND,
-    *,
-    out: None = None,
-    dtype: onp.ToDType[_SCT_f],
-    **kwds: Unpack[_KwBase],
+    x: onp.ToFloatND, *, out: None = None, dtype: onp.ToDType[_SCT_f], **kwds: Unpack[_KwBase]
 ) -> onp.ArrayND[_SCT_f]: ...
 @overload
 def softplus(
-    x: onp.ToFloatND,
-    *,
-    out: None,
-    dtype: onp.AnyFloatingDType | None = None,
-    **kwds: Unpack[_KwBase],
+    x: onp.ToFloatND, *, out: None, dtype: onp.AnyFloatingDType | None = None, **kwds: Unpack[_KwBase]
 ) -> onp.ArrayND[npc.floating]: ...

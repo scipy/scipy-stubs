@@ -11,8 +11,5 @@ class _DeprecationHelperStr:
 
 def _deprecated(msg: str, stacklevel: int = 2) -> Callable[[_F], _F]: ...
 def deprecate_cython_api(
-    module: ModuleType,
-    routine_name: str,
-    new_name: str | None = None,
-    message: str | None = None,
+    module: ModuleType, routine_name: str, new_name: str | None = None, message: str | None = None
 ) -> None: ...

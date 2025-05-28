@@ -15,12 +15,7 @@ def get_lapack_funcs(names: object, arrays: object = ..., dtype: object = ..., i
 def diagsvd(s: object, M: object, N: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def null_space(
-    A: object,
-    rcond: object = ...,
-    *,
-    overwrite_a: bool = False,
-    check_finite: bool = True,
-    lapack_driver: str = "gesdd",
+    A: object, rcond: object = ..., *, overwrite_a: bool = False, check_finite: bool = True, lapack_driver: str = "gesdd"
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def orth(A: object, rcond: object = ...) -> object: ...

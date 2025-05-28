@@ -86,15 +86,7 @@ class _LegendrePAll(Protocol):
 class _AssocLegendreP(Protocol):
     @overload  # float
     def __call__(
-        self,
-        /,
-        n: _ToInt_D,
-        m: _ToInt_D,
-        z: _ToFloat_D,
-        *,
-        branch_cut: _Branch_D = 2,
-        norm: onp.ToBool = False,
-        diff_n: _Dn = 0,
+        self, /, n: _ToInt_D, m: _ToInt_D, z: _ToFloat_D, *, branch_cut: _Branch_D = 2, norm: onp.ToBool = False, diff_n: _Dn = 0
     ) -> _Float1_D: ...
     @overload  # complex
     def __call__(
@@ -125,15 +117,7 @@ class _AssocLegendreP(Protocol):
 class _AssocLegendrePAll(Protocol):
     @overload  # z: 0-d float
     def __call__(
-        self,
-        /,
-        n: onp.ToInt,
-        m: onp.ToInt,
-        z: onp.ToFloat,
-        *,
-        branch_cut: _Branch = 2,
-        norm: onp.ToBool = False,
-        diff_n: _Dn = 0,
+        self, /, n: onp.ToInt, m: onp.ToInt, z: onp.ToFloat, *, branch_cut: _Branch = 2, norm: onp.ToBool = False, diff_n: _Dn = 0
     ) -> _Float3D: ...
     @overload  # z: >=0-d float
     def __call__(
@@ -241,25 +225,11 @@ class _SphHarmYAll(Protocol):
     def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloat, phi: onp.ToFloat, *, diff_n: _D0 = 0) -> _Complex2D: ...
     @overload  # theta: >=0-d, phi: >0-d, diff_n == 0
     def __call__(
-        self,
-        /,
-        n: onp.ToInt,
-        m: onp.ToInt,
-        theta: _ToFloat_D,
-        phi: onp.ToFloatND,
-        *,
-        diff_n: _D0 = 0,
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToFloat_D, phi: onp.ToFloatND, *, diff_n: _D0 = 0
     ) -> _Complex3_D: ...
     @overload  # theta: >=0-d, phi: >0-d, diff_n == 0
     def __call__(
-        self,
-        /,
-        n: onp.ToInt,
-        m: onp.ToInt,
-        theta: onp.ToFloatND,
-        phi: _ToFloat_D,
-        *,
-        diff_n: _D0 = 0,
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloatND, phi: _ToFloat_D, *, diff_n: _D0 = 0
     ) -> _Complex3_D: ...
     @overload  # theta: 0-d, phi: 0-d,    diff_n == 1
     def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToFloat, phi: onp.ToFloat, *, diff_n: _D1) -> _Complex23D: ...

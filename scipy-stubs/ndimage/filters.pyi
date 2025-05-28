@@ -172,12 +172,7 @@ def generic_laplace(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def laplace(
-    input: object,
-    output: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    *,
-    axes: tuple[int, ...] | None = None,
+    input: object, output: object = ..., mode: object = ..., cval: object = ..., *, axes: tuple[int, ...] | None = None
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def maximum_filter(

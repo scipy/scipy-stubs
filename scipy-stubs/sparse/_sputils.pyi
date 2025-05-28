@@ -91,9 +91,7 @@ def to_native(A: onp.HasDType[_DTypeT]) -> np.ndarray[Any, _DTypeT]: ...
 
 #
 def getdtype(
-    dtype: onp.ToDType[_SCT] | None,
-    a: onp.HasDType[np.dtype[_SCT]] | None = None,
-    default: onp.ToDType[_SCT] | None = None,
+    dtype: onp.ToDType[_SCT] | None, a: onp.HasDType[np.dtype[_SCT]] | None = None, default: onp.ToDType[_SCT] | None = None
 ) -> np.dtype[_SCT]: ...
 
 #
@@ -112,9 +110,7 @@ def getdata(obj: onp.ToArrayND[_SCT, _SCT], dtype: onp.ToDType[_SCT] | None = No
 
 #
 def get_index_dtype(
-    arrays: tuple[onp.ToInt | onp.ToIntND, ...] = (),
-    maxval: onp.ToFloat | None = None,
-    check_contents: op.CanBool = False,
+    arrays: tuple[onp.ToInt | onp.ToIntND, ...] = (), maxval: onp.ToFloat | None = None, check_contents: op.CanBool = False
 ) -> _IntP: ...
 
 # NOTE: The inline annotations (`(np.dtype) -> np.dtype`) are incorrect.
@@ -144,10 +140,7 @@ def validateaxis(
 
 #
 def check_shape(
-    args: _ShapeLike | tuple[_ShapeLike, ...],
-    current_shape: tuple[int, ...] | None = None,
-    *,
-    allow_nd: tuple[int, ...] = (2,),
+    args: _ShapeLike | tuple[_ShapeLike, ...], current_shape: tuple[int, ...] | None = None, *, allow_nd: tuple[int, ...] = (2,)
 ) -> tuple[int, ...]: ...
 def check_reshape_kwargs(kwargs: _ReshapeKwargs) -> L["C", "F"] | bool: ...
 
@@ -180,9 +173,7 @@ def safely_cast_index_arrays(
 ) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]: ...
 @overload  # BSR/CSC/CSR, dtype: <known>
 def safely_cast_index_arrays(
-    A: bsr_array | bsr_matrix | csc_array | csc_matrix | csr_array | csr_matrix,
-    idx_dtype: onp.ToDType[_IntT],
-    msg: str = "",
+    A: bsr_array | bsr_matrix | csc_array | csc_matrix | csr_array | csr_matrix, idx_dtype: onp.ToDType[_IntT], msg: str = ""
 ) -> tuple[onp.Array1D[_IntT], onp.Array1D[_IntT]]: ...
 @overload  # 2d COO, dtype: <default>
 def safely_cast_index_arrays(
@@ -192,9 +183,7 @@ def safely_cast_index_arrays(
 ) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]: ...
 @overload  # 2d COO, dtype: <known>
 def safely_cast_index_arrays(
-    A: coo_array[Any, tuple[int, int]] | coo_matrix,
-    idx_dtype: onp.ToDType[_IntT],
-    msg: str = "",
+    A: coo_array[Any, tuple[int, int]] | coo_matrix, idx_dtype: onp.ToDType[_IntT], msg: str = ""
 ) -> tuple[onp.Array1D[_IntT], onp.Array1D[_IntT]]: ...
 @overload  # nd COO, dtype: <default>
 def safely_cast_index_arrays(
@@ -203,11 +192,7 @@ def safely_cast_index_arrays(
     msg: str = "",
 ) -> tuple[onp.Array1D[np.int32], ...]: ...
 @overload  # nd COO, dtype: <known>
-def safely_cast_index_arrays(
-    A: coo_array,
-    idx_dtype: onp.ToDType[_IntT],
-    msg: str = "",
-) -> tuple[onp.Array1D[_IntT], ...]: ...
+def safely_cast_index_arrays(A: coo_array, idx_dtype: onp.ToDType[_IntT], msg: str = "") -> tuple[onp.Array1D[_IntT], ...]: ...
 @overload  # DIA, dtype: <default>
 def safely_cast_index_arrays(
     A: dia_array | dia_matrix,
@@ -215,11 +200,7 @@ def safely_cast_index_arrays(
     msg: str = "",
 ) -> onp.Array1D[np.int32]: ...
 @overload  # DIA, dtype: <known>
-def safely_cast_index_arrays(
-    A: dia_array | dia_matrix,
-    idx_dtype: onp.ToDType[_IntT],
-    msg: str = "",
-) -> onp.Array1D[_IntT]: ...
+def safely_cast_index_arrays(A: dia_array | dia_matrix, idx_dtype: onp.ToDType[_IntT], msg: str = "") -> onp.Array1D[_IntT]: ...
 
 #
 @overload

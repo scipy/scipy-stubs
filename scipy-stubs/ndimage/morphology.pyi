@@ -81,12 +81,7 @@ def binary_opening(
 #
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_fill_holes(
-    input: object,
-    structure: object = ...,
-    output: object = ...,
-    origin: object = ...,
-    *,
-    axes: tuple[int, ...] | None = None,
+    input: object, structure: object = ..., output: object = ..., origin: object = ..., *, axes: tuple[int, ...] | None = None
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_hit_or_miss(
