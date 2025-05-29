@@ -48,12 +48,12 @@ ci = ["packaging>=25.0"]
 mdformat = [
     "mdformat>=0.7.22",
     "mdformat-gfm>=0.4.1",
-    "mdformat-gfm-alerts>=1.0.1",
+    "mdformat-gfm-alerts>=1.0.2",
 ]
 lint = [
     {include-group = "extras"},
     {include-group = "mdformat"},
-    "ruff>=0.11.10",
+    "ruff>=0.11.12",
     "sp-repo-review[cli]>=2025.5.2",
 ]
 type = [
