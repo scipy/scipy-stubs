@@ -165,8 +165,8 @@ class _Domain(abc.ABC, Generic[_XT_co]):
     # https://github.com/scipy/scipy/pull/22139
     symbols: Mapping[str, str] = ...
 
-    @abc.abstractmethod
     @override
+    @abc.abstractmethod
     def __str__(self, /) -> str: ...
     @abc.abstractmethod
     def contains(self, /, x: onp.ArrayND[Any]) -> onp.ArrayND[np.bool_]: ...
@@ -176,9 +176,12 @@ class _Domain(abc.ABC, Generic[_XT_co]):
     def get_numerical_endpoints(self, /, x: _ParamValues) -> tuple[onp.ArrayND[_OutFloat], onp.ArrayND[_OutFloat]]: ...
 
 class _Interval(_Domain[_XT_co], Generic[_XT_co]):
-    def __init__(self, /, endpoints: _ToDomain = ..., inclusive: tuple[bool, bool] = (False, False)) -> None: ...
     @override
-    def __str__(self, /) -> str: ...  # noqa: PYI029
+    @abc.abstractmethod
+    def __str__(self, /) -> str: ...
+
+    #
+    def __init__(self, /, endpoints: _ToDomain = ..., inclusive: tuple[bool, bool] = (False, False)) -> None: ...
     @override
     def get_numerical_endpoints(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, /, parameter_values: _ParamValues
@@ -187,11 +190,6 @@ class _Interval(_Domain[_XT_co], Generic[_XT_co]):
     def contains(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, /, item: onp.ArrayND[_Int | _Float], parameter_values: _ParamValues | None = None
     ) -> onp.ArrayND[np.bool_]: ...
-
-    #
-    def define_parameters(self, /, *parameters: _Parameter) -> None: ...
-
-    #
     @override
     def draw(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
@@ -203,9 +201,15 @@ class _Interval(_Domain[_XT_co], Generic[_XT_co]):
         squeezed_base_shape: _ND,
         rng: ToRNG = None,
     ) -> onp.ArrayND[_XT_co]: ...
+    def define_parameters(self, /, *parameters: _Parameter) -> None: ...
 
-class _RealInterval(_Interval[_FloatT_co], Generic[_FloatT_co]): ...
-class _IntegerInterval(_Interval[_IntT_co], Generic[_IntT_co]): ...
+class _RealInterval(_Interval[_FloatT_co], Generic[_FloatT_co]):
+    @override  # https://github.com/astral-sh/ruff/issues/18372
+    def __str__(self, /) -> str: ...  # noqa: PYI029
+
+class _IntegerInterval(_Interval[_IntT_co], Generic[_IntT_co]):
+    @override  # https://github.com/astral-sh/ruff/issues/18372
+    def __str__(self, /) -> str: ...  # noqa: PYI029
 
 _ValidateOut0D: TypeAlias = tuple[_RealT, np.dtype[_RealT], onp.Array0D[np.bool_]]
 _ValidateOutND: TypeAlias = tuple[onp.ArrayND[_RealT, _ShapeT1], np.dtype[_RealT], onp.ArrayND[np.bool_, _ShapeT1]]
