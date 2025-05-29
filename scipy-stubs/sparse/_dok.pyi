@@ -1,4 +1,4 @@
-# NOTE: Adding `@override` to `@overload`ed methods will crash stubtest (basedmypy 1.13.0)
+# NOTE: Adding `@override` to `@overload`ed methods will crash stubtest (mypy 1.13.0)
 # mypy: disable-error-code="misc, override, explicit-override"
 # pyright: reportIncompatibleMethodOverride=false
 

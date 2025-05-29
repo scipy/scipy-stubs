@@ -70,6 +70,6 @@ is configured with [`reportUnnecessaryTypeIgnoreComment = true`][bpr-rules] and
 
 [assert_type]: https://docs.python.org/3/library/typing.html#typing.assert_type
 [bpr-rules]: https://docs.basedpyright.com/latest/configuration/config-files/#type-check-rule-overrides
-[mypy-warn-ignore]: https://kotlinisland.github.io/basedmypy/config_file.html#confval-warn_unused_ignores
+[mypy-warn-ignore]: https://mypy.readthedocs.io/en/stable/config_file.html#confval-warn_unused_ignores
 [optype]: https://github.com/jorenham/optype
 [optype-binops]: https://github.com/jorenham/optype?tab=readme-ov-file#binary-operations
