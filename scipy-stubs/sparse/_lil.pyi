@@ -147,8 +147,8 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     @override
     def resize(self, /, *shape: int) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
-    # NOTE: Adding `@override` here will crash stubtest (basedmypy 1.13.0)
-    @overload  # type: ignore[explicit-override]
+    # NOTE: Adding `@override` here will crash stubtest (mypy 1.13.0)
+    @overload
     def count_nonzero(self, /, axis: None = None) -> int: ...
     @overload
     def count_nonzero(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
@@ -161,12 +161,12 @@ class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
     @override
     def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int, int]]: ...
 
-class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):  # type: ignore[misc]
+class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
     @override
     def getrow(self, /, i: onp.ToJustInt) -> csr_matrix[_SCT]: ...
 
     # NOTE: using `@override` together with `@overload` causes stubtest to crash...
-    @overload  # type: ignore[explicit-override]
+    @overload
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload
     def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...

@@ -1,9 +1,10 @@
 from collections.abc import Sequence
-from typing import Any, ClassVar, Final, LiteralString, TypeAlias
+from typing import ClassVar, Final, LiteralString
 from typing_extensions import override
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import ToRNG
 
@@ -229,8 +230,7 @@ __all__ = [
     "wrapcauchy_gen",
 ]
 
-_Scalar_f8_in: TypeAlias = np.float64 | np.float32 | np.float16 | np.integer[Any] | np.bool_
-_AnyArray_f8_in: TypeAlias = float | onp.CanArrayND[_Scalar_f8_in] | Sequence[_AnyArray_f8_in]
+pairs: Final[Sequence[tuple[str, rv_continuous]]] = ...  # undocumented
 
 # without shape params
 class anglit_gen(_rv_continuous_0): ...
@@ -259,10 +259,11 @@ class norm_gen(_rv_continuous_0):
     def fit(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
         /,
-        data: _AnyArray_f8_in,
-        floc: _Scalar_f8_in | None = None,
-        fscale: _Scalar_f8_in | None = None,
-        **kwds: _Scalar_f8_in,
+        data: onp.ToFloat64_ND,
+        *,
+        floc: onp.ToFloat64 | None = None,
+        fscale: onp.ToFloat64 | None = None,
+        **kwds: onp.ToFloat64,
     ) -> tuple[np.float64, np.float64]: ...
 
 class rayleigh_gen(_rv_continuous_0): ...
@@ -359,10 +360,10 @@ class rv_histogram(rv_continuous):
     def __init__(
         self,
         /,
-        histogram: tuple[onp.ArrayND[np.floating[Any]], onp.ArrayND[np.inexact[Any]]],
-        *args: float | LiteralString | ToRNG,
+        histogram: tuple[onp.ArrayND[npc.floating | npc.integer], onp.ArrayND[npc.number]],
+        *args: float | str | ToRNG,
         density: bool | None = None,
-        **kwargs: float | LiteralString | ToRNG,
+        **kwargs: float | str | ToRNG,
     ) -> None: ...
 
 class studentized_range_gen(rv_continuous): ...

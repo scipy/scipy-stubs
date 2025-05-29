@@ -59,4 +59,4 @@ class IterativeSubproblem(BaseQuadraticSubproblem):
         k_hard: onp.ToFloat = 0.2,
     ) -> None: ...
     @override
-    def solve(self, /, tr_radius: onp.ToFloat) -> tuple[onp.ArrayND[np.float64], bool]: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def solve(self, /, tr_radius: onp.ToFloat) -> tuple[onp.ArrayND[np.float64], bool]: ...  # pyright: ignore[reportIncompatibleMethodOverride]

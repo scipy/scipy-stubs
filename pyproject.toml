@@ -59,7 +59,7 @@ lint = [
 type = [
     {include-group = "extras"},
     {include-group = "ci"},
-    "basedmypy[faster-cache]>=2.10.0",
+    "mypy[faster-cache]==1.16.0",
     "basedpyright>=1.29.2",
 ]
 dev = [
@@ -112,24 +112,16 @@ extend-exclude = ["*.pyi", ".mypyignore"]
 strict = true
 strict_bytes = true
 
-enable_error_code = [
-    "ignore-without-code",
-    "redundant-expr",
-    "truthy-bool",
-]
+enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 warn_unreachable = false
 warn_unused_ignores = true
-# basedmypy/mypy compat
 disallow_any_decorated = false
 disallow_any_explicit = false
 disallow_any_expr = false
 disallow_subclassing_any = false
-# https://github.com/python/mypy/issues/18744
-disable_bytearray_promotion = true
-disable_memoryview_promotion = true
-# optype numpy compat
-always_true = ["NP123", "NP124", "NP125", "NP126", "NP20", "NP21", "NP22"]
-always_false = ["NP23", "NP30"]
+# optype.numpy compat
+always_true = ["NP125", "NP126", "NP20", "NP21", "NP22"]
+always_false = ["NP23"]
 
 
 [tool.pyright]
@@ -187,16 +179,13 @@ reportUnreachable = true
 reportUnsafeMultipleInheritance = true # base
 
     [tool.pyright.defineConstant]
-    # optype numpy compat
-    NP123 = true
-    NP124 = true
+    # optype.numpy compat
     NP125 = true
     NP126 = true
     NP20 = true
     NP21 = true
     NP22 = true
     NP23 = false
-    NP30 = false
 
 [tool.repo-review]
 ignore = [

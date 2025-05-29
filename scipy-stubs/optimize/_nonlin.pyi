@@ -2,7 +2,7 @@
 
 import abc
 from collections.abc import Callable
-from typing import Final, Generic, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
+from typing import Any, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar, Unpack, override
 
 import numpy as np
@@ -27,40 +27,47 @@ __all__ = [
     "newton_krylov",
 ]
 
+###
+
 _Floating: TypeAlias = np.float32 | np.float64
 _Inexact: TypeAlias = _Floating | np.complex64 | np.complex128
 _Inexact1D: TypeAlias = onp.Array1D[_Inexact]
 _InexactND: TypeAlias = onp.ArrayND[_Inexact]
 
 _JacobianMethod: TypeAlias = Literal[
+    "anderson",
     "krylov",
     "broyden1",
     "broyden2",
-    "anderson",
     "diagbroyden",
-    "linearmixing",
     "excitingmixing",
+    "linearmixing",
 ]  # fmt: skip
 _KrylovMethod: TypeAlias = Literal["lgmres", "gmres", "bicgstab", "cgs", "minres", "tfqmr"]
 _ReductionMethod: TypeAlias = Literal["restart", "simple", "svd"]
 _LineSearch: TypeAlias = Literal["armijo", "wolfe"]
 
+_Ignored: TypeAlias = object
 _Callback: TypeAlias = (
-    Callable[[onp.ArrayND[np.float64], np.float64], None] | Callable[[onp.ArrayND[np.complex128], np.float64], None]
-)
-_ResidFunc: TypeAlias = Callable[[onp.ArrayND[np.float64]], onp.ToFloat] | Callable[[onp.ArrayND[np.complex128]], onp.ToFloat]
+    Callable[[onp.ArrayND[np.float64, Any], np.float64], _Ignored]
+    | Callable[[onp.ArrayND[np.complex128, Any], np.float64], _Ignored]
+)  # fmt: skip
+_ResidFunc: TypeAlias = (
+    Callable[[onp.ArrayND[np.float64, Any]], onp.ToFloat]
+    | Callable[[onp.ArrayND[np.complex128, Any]], onp.ToFloat]
+)  # fmt: skip
 
 _InexactT = TypeVar("_InexactT", bound=_Inexact, default=_Inexact)
 _InexactT_co = TypeVar("_InexactT_co", bound=_Inexact, default=_Inexact, covariant=True)
 
+_ArrayOrSparse: TypeAlias = onp.ArrayND[_InexactT] | _spbase[_InexactT]
 _JacobianLike: TypeAlias = (
     Jacobian[_InexactT]
     | type[Jacobian[_InexactT]]
-    | onp.ArrayND[_InexactT]
-    | _spbase[_InexactT]
     | _SupportsJacobian[_InexactT]
-    | Callable[[onp.Array1D[np.float64]], onp.ArrayND[_InexactT] | _spbase[_InexactT]]
-    | Callable[[onp.Array1D[np.complex128]], onp.ArrayND[_InexactT] | _spbase[_InexactT]]
+    | _ArrayOrSparse[_InexactT]
+    | Callable[[onp.Array1D[np.float64]], _ArrayOrSparse[_InexactT]]
+    | Callable[[onp.Array1D[np.complex128]], _ArrayOrSparse[_InexactT]]
 )
 
 @type_check_only
@@ -153,7 +160,7 @@ class GenericBroyden(Jacobian[_InexactT_co], Generic[_InexactT_co], metaclass=ab
     @override
     def setup(self, /, x0: _InexactND, f0: _InexactND, func: _ResidFunc) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
-    def update(self, /, x0: _InexactND, f0: _InexactND) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def update(self, /, x: _InexactND, f: _InexactND) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
 class LowRankMatrix(Generic[_InexactT_co]):
     dtype: np.dtype[_InexactT_co]
@@ -183,8 +190,10 @@ class BroydenFirst(GenericBroyden[_InexactT_co], Generic[_InexactT_co]):
         self, /, alpha: float | None = None, reduction_method: _ReductionMethod = "restart", max_rank: int | None = None
     ) -> None: ...
     @override
-    def solve(self, /, f: _InexactND, tol: float = 0) -> onp.Array2D[_InexactT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-    def rsolve(self, /, f: _InexactND, tol: float = 0) -> onp.Array2D[_InexactT_co]: ...
+    def setup(self, /, x: _InexactND, F: _InexactND, func: _ResidFunc) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override
+    def solve(self, /, f: _InexactND, tol: float = 0) -> onp.ArrayND[_InexactT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def rsolve(self, /, f: _InexactND, tol: float = 0) -> onp.ArrayND[_InexactT_co]: ...
     def matvec(self, /, f: _InexactND) -> onp.Array1D[_InexactT_co]: ...
     def rmatvec(self, /, f: _InexactND) -> onp.Array1D[_InexactT_co]: ...
     def todense(self, /) -> onp.Array2D[_InexactT_co]: ...
@@ -208,6 +217,8 @@ class DiagBroyden(GenericBroyden[_InexactT_co], Generic[_InexactT_co]):
 
     def __init__(self, /, alpha: float | None = None) -> None: ...
     @override
+    def setup(self, /, x: _InexactND, F: _InexactND, func: _ResidFunc) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override
     def solve(self, /, f: _InexactND, tol: float = 0) -> onp.Array2D[_InexactT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     def rsolve(self, /, f: _InexactND, tol: float = 0) -> onp.Array2D[_InexactT_co]: ...
     def matvec(self, /, f: _InexactND) -> onp.Array1D[_InexactT_co]: ...
@@ -228,6 +239,8 @@ class ExcitingMixing(GenericBroyden[_InexactT_co], Generic[_InexactT_co]):
     beta: onp.Array1D[_InexactT_co] | None
 
     def __init__(self, /, alpha: float | None = None, alphamax: float = 1.0) -> None: ...
+    @override
+    def setup(self, /, x: _InexactND, F: _InexactND, func: _ResidFunc) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
     def solve(self, /, f: _InexactND, tol: float = 0) -> onp.Array2D[_InexactT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     def rsolve(self, /, f: _InexactND, tol: float = 0) -> onp.Array2D[_InexactT_co]: ...

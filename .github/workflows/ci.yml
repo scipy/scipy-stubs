@@ -101,7 +101,7 @@ jobs:
           --no-editable
           basedpyright
 
-      - name: basedmypy
+      - name: mypy
         run: >
           uv run
           -p ${{ matrix.python }}

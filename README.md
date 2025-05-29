@@ -43,10 +43,16 @@
             src="https://img.shields.io/pypi/types/scipy-stubs?color=blue&style=flat"
         />
     </a>
-    <a href="https://github.com/KotlinIsland/basedmypy">
+    <a href="https://github.com/python/mypy">
         <img
-            alt="scipy-stubs - basedmypy"
-            src="https://img.shields.io/badge/basedmypy-checked-fd9002"
+            alt="scipy-stubs - mypy"
+            src="https://www.mypy-lang.org/static/mypy_badge.svg"
+        />
+    </a>
+    <a href="https://github.com/microsoft/pyright">
+        <img
+            alt="scipy-stubs - pyright"
+            src="https://microsoft.github.io/pyright/img/pyright_badge.svg"
         />
     </a>
     <a href="https://detachhead.github.io/basedpyright">
@@ -83,7 +89,7 @@ ______________________________________________________________________
   - many of the functions that return an array are *shape-typed*
   - shape-typing is optional: all functions still accept arrays with unknown shape-type
 - Type-checker agnostic
-  - works with at least [`mypy`](https://github.com/KotlinIsland/basedmypy),
+  - works with at least [`mypy`](https://github.com/python/mypy),
     [`pyright`](https://github.com/DetachHead/basedpyright)/pylance and [`ruff`](https://github.com/astral-sh/ruff)
   - ... even in the strict mode
   - compatible with the [Python Typing Spec](https://typing.readthedocs.io/en/latest/spec/index.html)
@@ -174,13 +180,10 @@ The exact version requirements are specified in the [`pyproject.toml`](pyproject
 
 - [`basedpyright`](https://github.com/DetachHead/basedpyright)
 - [`pyright`](https://pyright.readthedocs.io/en/latest/index.html)
-- [`basedmypy`](https://github.com/KotlinIsland/basedmypy)
 - [`mypy`](https://mypy.readthedocs.io/en/stable/index.html)
 
-For validation and testing, `scipy-stubs` primarily uses [`basedmypy`](https://github.com/KotlinIsland/basedmypy) (a `mypy` fork)
-and [`basedpyright`](https://github.com/DetachHead/basedpyright) (a `pyright` fork).
-They are in generally stricter than `mypy` and `pyright`, so you can assume compatibility with `mypy` and `pyright` as well.
-But if you find that this isn't the case, then don't hesitate to open an issue or submit a pull request.
+For validation and testing, `scipy-stubs` primarily uses [`mypy`](https://github.com/python/mypy)
+and [`basedpyright`](https://github.com/DetachHead/basedpyright) (a backwards-compatible `pyright` fork).
 
 ## `scipy` coverage
 

@@ -10,7 +10,6 @@ uv_sync_flags = ["--no-editable"]
 commands = [
     [
         "stubtest",
-        "--ignore-unused-allowlist",
         "--allowlist=.mypyignore",
         "--mypy-config-file=pyproject.toml",
         "--concise",
@@ -35,7 +34,7 @@ dependency_groups = ["type"]
 commands = [["basedpyright"]]
 
 [env.mypy]
-description = "basedmypy"
+description = "mypy"
 runner = "uv-venv-lock-runner"
 dependency_groups = ["type"]
 commands = [
