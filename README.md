@@ -43,10 +43,16 @@
             src="https://img.shields.io/pypi/types/scipy-stubs?color=blue&style=flat"
         />
     </a>
-    <a href="https://github.com/KotlinIsland/basedmypy">
+    <a href="https://github.com/python/mypy">
         <img
-            alt="scipy-stubs - basedmypy"
-            src="https://img.shields.io/badge/basedmypy-checked-fd9002"
+            alt="scipy-stubs - mypy"
+            src="https://www.mypy-lang.org/static/mypy_badge.svg"
+        />
+    </a>
+    <a href="https://github.com/microsoft/pyright">
+        <img
+            alt="scipy-stubs - pyright"
+            src="https://microsoft.github.io/pyright/img/pyright_badge.svg"
         />
     </a>
     <a href="https://detachhead.github.io/basedpyright">
