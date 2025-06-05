@@ -1,5 +1,6 @@
 # NOTE: This private(!) module only exists in `if typing.TYPE_CHECKING: ...` and in `.pyi` stubs
 
+from _typeshed import Incomplete
 from collections.abc import Iterator, Sequence
 from os import PathLike
 from types import TracebackType
@@ -49,7 +50,7 @@ class EnterNoneMixin:
 @type_check_only
 class _FortranFunction(Protocol):
     @property
-    def dtype(self, /) -> np.dtype[np.number[Any]]: ...
+    def dtype(self, /) -> np.dtype[Incomplete]: ...
     @property
     def int_dtype(self, /) -> np.dtype[np.integer[Any]]: ...
     @property
@@ -58,7 +59,7 @@ class _FortranFunction(Protocol):
     def prefix(self, /) -> LiteralString: ...
     @property
     def typecode(self, /) -> LiteralString: ...
-    def __call__(self, /, *args: object, **kwargs: object) -> object: ...
+    def __call__(self, /, *args: object, **kwargs: object) -> Incomplete: ...
 
 _VT_co = TypeVar("_VT_co", covariant=True)
 
