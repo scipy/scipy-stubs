@@ -1,9 +1,9 @@
 # NOTE: This private(!) module only exists in `if typing.TYPE_CHECKING: ...` and in `.pyi` stubs
 
-from collections.abc import Sequence
+from collections.abc import Iterator, Sequence
 from os import PathLike
 from types import TracebackType
-from typing import IO, Any, Literal, LiteralString, Protocol, Self, TypeAlias, type_check_only
+from typing import IO, Any, Literal, LiteralString, Protocol, Self, SupportsIndex, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -28,6 +28,7 @@ __all__ = [
     "NanPolicy",
     "OrderCF",
     "OrderKACF",
+    "SequenceNotStr",
     "ToRNG",
     "Truthy",
     "_FortranFunction",
@@ -58,6 +59,23 @@ class _FortranFunction(Protocol):
     @property
     def typecode(self, /) -> LiteralString: ...
     def __call__(self, /, *args: object, **kwargs: object) -> object: ...
+
+_VT_co = TypeVar("_VT_co", covariant=True)
+
+# A slightly modified variant from https://github.com/python/typing/issues/256#issuecomment-1442633430
+# This works because `str.__contains__` does not accept object (either in typeshed or at runtime)
+@type_check_only
+class SequenceNotStr(Protocol[_VT_co]):
+    @overload
+    def __getitem__(self, index: SupportsIndex, /) -> _VT_co: ...
+    @overload
+    def __getitem__(self, index: slice, /) -> Sequence[_VT_co]: ...
+    def __iter__(self, /) -> Iterator[_VT_co]: ...
+    def __reversed__(self, /) -> Iterator[_VT_co]: ...
+    def __contains__(self, value: object, /) -> bool: ...  # <-- the trick
+    def __len__(self, /) -> int: ...
+    def index(self, value: object, start: int = 0, stop: int = ..., /) -> int: ...
+    def count(self, value: object, /) -> int: ...
 
 # I/O
 _ByteSOrStr = TypeVar("_ByteSOrStr", bytes, str)
