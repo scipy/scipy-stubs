@@ -1,21 +1,21 @@
-# typecheck-only helper types
+# scipy-stubs internal helper types (typecheck-only)
 scipy(\.\w+)?\._typing
 
-# internal scipy testing code
+# scipy tests
 scipy\.conftest
 scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
 
 # git submodules and bundled 3rd party libs
-scipy\._lib\.(array_api_compat|array_api_extra|cobyqa|pyprima).*
+scipy\._lib\.(array_api_(compat|extra)|cobyqa|pyprima).*
 scipy\.fft\._pocketfft\..*
 
 # https://github.com/scipy/scipy/pull/23115
 # https://github.com/scipy/scipy/pull/23117
 scipy\.linalg\._decomp_interpolative\.__all__
 
-# namespace pollution
+# https://github.com/scipy/scipy/pull/23119
+# https://github.com/scipy/scipy/pull/23125
 scipy\._lib\.decorator\.(DEF|ArgSpec|FunctionMaker|__init__|append|dispatch_on|get_init|getargspec|init|n_args)
-scipy\.stats\._rcont\.rcont
 
 # should this be packaged?
 scipy\.special\._precompute\..*
