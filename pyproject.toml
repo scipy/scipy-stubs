@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scipy-stubs"
-version = "1.16.0.0.dev0"
+version = "1.16.0.0.dev1"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
@@ -33,7 +33,7 @@ requires-python = ">=3.11"
 dependencies = ["optype>=0.10.0,<1"]
 
     [project.optional-dependencies]
-    scipy = ["scipy>=1.16.0rc1,<1.17"]
+    scipy = ["scipy>=1.16.0rc2,<1.17"]
 
     [project.urls]
     Homepage = "https://scipy.org/"
@@ -48,12 +48,12 @@ ci = ["packaging>=25.0"]
 mdformat = [
     "mdformat>=0.7.22",
     "mdformat-gfm>=0.4.1",
-    "mdformat-gfm-alerts>=1.0.2",
+    "mdformat-gfm-alerts>=2.0.0",
 ]
 lint = [
     {include-group = "extras"},
     {include-group = "mdformat"},
-    "ruff>=0.11.12",
+    "ruff>=0.11.13",
     "sp-repo-review[cli]>=2025.5.2",
 ]
 type = [
@@ -120,8 +120,7 @@ disallow_any_explicit = false
 disallow_any_expr = false
 disallow_subclassing_any = false
 # optype.numpy compat
-always_true = ["NP125", "NP126", "NP20", "NP21", "NP22"]
-always_false = ["NP23"]
+always_true = ["NP125", "NP126", "NP20", "NP21", "NP22", "NP23"]
 
 
 [tool.pyright]
