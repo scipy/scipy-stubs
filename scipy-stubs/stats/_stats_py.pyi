@@ -834,7 +834,7 @@ def pack_TtestResult(
 
 #
 def unpack_TtestResult(
-    res: TtestResult[_NDT_float],
+    res: TtestResult[_NDT_float], _: int
 ) -> tuple[
     _NDT_float,  # statistic
     _NDT_float,  # pvalue

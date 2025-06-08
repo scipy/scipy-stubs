@@ -723,7 +723,7 @@ def wilcoxon(
 def wilcoxon_result_object(
     statistic: np.float64, pvalue: np.float64, zstatistic: np.float64 | None = None
 ) -> WilcoxonResult: ...  # undocumented
-def wilcoxon_result_unpacker(res: WilcoxonResult) -> _Tuple2[np.float64] | _Tuple3[np.float64]: ...  # undocumented
+def wilcoxon_result_unpacker(res: WilcoxonResult, _: int) -> _Tuple2[np.float64] | _Tuple3[np.float64]: ...  # undocumented
 def wilcoxon_outputs(kwds: dict[str, str]) -> Literal[2, 3]: ...  # undocumented
 
 #
