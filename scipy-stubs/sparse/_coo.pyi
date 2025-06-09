@@ -19,7 +19,7 @@ __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
 _SCT0 = TypeVar("_SCT0", bound=Numeric)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast1D, covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 
 _ToData: TypeAlias = tuple[onp.ArrayND[_SCT0], tuple[onp.ArrayND[Integer]] | tuple[onp.ArrayND[Integer], onp.ArrayND[Integer]]]
 _ToDense: TypeAlias = onp.ArrayND[_SCT0] | onp.SequenceND[onp.ArrayND[_SCT0]] | onp.SequenceND[_SCT0]

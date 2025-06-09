@@ -43,7 +43,7 @@ _RealT = TypeVar("_RealT", bound=_Float | _Int, default=_Float | _Int)
 _RealT_co = TypeVar("_RealT_co", bound=_Float | _Int, default=_Float | _Int, covariant=True)
 
 _ShapeT = TypeVar("_ShapeT", bound=_ND, default=_ND)
-_ShapeT1 = TypeVar("_ShapeT1", bound=onp.AtLeast1D, default=onp.AtLeast1D)
+_ShapeT1 = TypeVar("_ShapeT1", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=_ND, default=_ND, covariant=True)
 
 _DistT0 = TypeVar("_DistT0", bound=_Dist[_0D])

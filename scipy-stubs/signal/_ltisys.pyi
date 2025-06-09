@@ -1,6 +1,6 @@
 # mypy: disable-error-code="explicit-override"
 import abc
-from typing import ClassVar, Final, Generic, Literal, Never, Self, TypeAlias, final, overload, type_check_only
+from typing import Any, ClassVar, Final, Generic, Literal, Never, Self, TypeAlias, final, overload, type_check_only
 from typing_extensions import TypeVar, override
 
 import numpy as np
@@ -83,7 +83,7 @@ _ZerosT_co = TypeVar("_ZerosT_co", bound=_Inexact, default=_Inexact, covariant=T
 _PolesT = TypeVar("_PolesT", bound=_Float)
 _PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=_Float, covariant=True)
 _DTT = TypeVar("_DTT", bound=onp.ToComplex | None)
-_DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=onp.ToComplex | None, covariant=True)
+_DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=Any, covariant=True)
 
 ###
 

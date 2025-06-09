@@ -16,7 +16,7 @@ __all__: list[str] = []
 
 _SCT = TypeVar("_SCT", bound=Numeric)
 _SCT_co = TypeVar("_SCT_co", bound=Numeric, default=Numeric, covariant=True)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast1D, covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 
 ###
 
