@@ -17,7 +17,7 @@ _Kernel: TypeAlias = Literal[
     "gaussian",
 ]  # fmt: skip
 
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=onp.AtLeast1D, covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast0D, default=onp.AtLeast0D[Any], covariant=True)
 _SCT_co = TypeVar("_SCT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
 ###

@@ -13,7 +13,7 @@ from .qmc import QMCEngine
 
 __all__ = ["FastGeneratorInversion", "RatioUniforms"]
 
-_RT_co = TypeVar("_RT_co", covariant=True, bound=onp.ToFloat, default=onp.ToFloat)
+_RT_co = TypeVar("_RT_co", bound=onp.ToFloat, default=float, covariant=True)
 
 ###
 

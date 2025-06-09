@@ -10,7 +10,7 @@ from ._base import _spbase
 from ._typing import CFloating, Floating, Integer, Numeric
 
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast1D, covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 
 _Self1DT = TypeVar("_Self1DT", bound=IndexMixin[Any, _1D])
 _Self2DT = TypeVar("_Self2DT", bound=IndexMixin[Any, _2D])

@@ -3,7 +3,7 @@ __all__ = ["cubature"]
 import dataclasses
 from collections.abc import Callable, Iterable, Sequence
 from types import ModuleType
-from typing import Concatenate, Generic, Literal, TypeAlias
+from typing import Any, Concatenate, Generic, Literal, TypeAlias
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,7 +11,7 @@ import optype.numpy as onp
 
 _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
-_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast1D, covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 
 _ArrayAPINamespace: TypeAlias = ModuleType
 _Rule: TypeAlias = Literal["gk21", "gk15", "gauss-kronrod", "genz-malik"]

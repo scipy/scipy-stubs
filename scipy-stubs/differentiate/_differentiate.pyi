@@ -8,11 +8,11 @@ import optype.typing as opt
 
 from scipy._lib._util import _RichResult
 
-_FloatT = TypeVar("_FloatT", bound=np.floating[Any], default=np.floating[Any])
-_FloatT_co = TypeVar("_FloatT_co", bound=np.floating[Any], default=np.floating[Any], covariant=True)
-_ShapeT = TypeVar("_ShapeT", bound=onp.AtLeast1D, default=onp.AtLeast1D)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast1D, covariant=True)
-_ShapeT2_co = TypeVar("_ShapeT2_co", bound=onp.AtLeast2D, default=onp.AtLeast2D, covariant=True)
+_FloatT = TypeVar("_FloatT", bound=np.floating[Any], default=np.float64)
+_FloatT_co = TypeVar("_FloatT_co", bound=np.floating[Any], default=np.float64, covariant=True)
+_ShapeT = TypeVar("_ShapeT", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
+_ShapeT2_co = TypeVar("_ShapeT2_co", bound=onp.AtLeast2D, default=onp.AtLeast0D[Any], covariant=True)
 
 _Ignored: TypeAlias = object
 

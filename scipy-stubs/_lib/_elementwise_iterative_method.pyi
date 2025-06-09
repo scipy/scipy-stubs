@@ -13,13 +13,13 @@ from ._util import _RichResult
 
 ###
 
-_FloatT = TypeVar("_FloatT", bound=np.floating[Any], default=np.floating[Any])
-_ShapeT = TypeVar("_ShapeT", bound=onp.AtLeast1D, default=onp.AtLeast1D)
+_FloatT = TypeVar("_FloatT", bound=np.floating[Any], default=np.float64)
+_ShapeT = TypeVar("_ShapeT", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any])
 _FuncRealT = TypeVar("_FuncRealT", bound=Callable[Concatenate[onp.ArrayND[np.float64], ...], object])
 _ModuleT = TypeVar("_ModuleT", bound=ModuleType, default=ModuleType)
 _WorkT = TypeVar("_WorkT", bound=Mapping[str, Any])
 _ResT = TypeVar("_ResT", bound=_RichResult, default=_RichResult)
-_ToShapeT = TypeVar("_ToShapeT", bound=op.CanIndex | tuple[op.CanIndex, ...], default=tuple[int, ...])
+_ToShapeT = TypeVar("_ToShapeT", bound=op.CanIndex | tuple[op.CanIndex, ...], default=onp.AtLeast0D)
 
 _Ignored: TypeAlias = _ResT
 

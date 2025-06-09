@@ -6,7 +6,7 @@ import optype.numpy as onp
 
 from scipy._typing import Truthy
 
-_VT = TypeVar("_VT", bound=onp.ArrayND[np.inexact[Any]], default=onp.ArrayND[np.inexact[Any]])
+_VT = TypeVar("_VT", bound=onp.ArrayND[np.inexact[Any]], default=onp.ArrayND[Any])
 
 class OdeSolver:
     TOO_SMALL_STEP: ClassVar[str] = ...
