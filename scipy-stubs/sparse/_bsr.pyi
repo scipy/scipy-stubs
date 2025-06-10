@@ -1,16 +1,17 @@
 from collections.abc import Sequence
-from typing import Any, Generic, Literal, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
 from ._compressed import _cs_matrix
 from ._data import _minmax_mixin
 from ._matrix import spmatrix
-from ._typing import Integer, Numeric, ToShape2D
+from ._typing import Numeric, ToShape2D
 
 __all__ = ["bsr_array", "bsr_matrix", "isspmatrix_bsr"]
 
@@ -20,13 +21,15 @@ _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
-_ToData2: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Integer]]
-_ToData3: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Integer], onp.ArrayND[Integer]]
+_ToData2: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[npc.integer]]
+_ToData3: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]
 _ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
 
 ###
 
 class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int, int]], Generic[_SCT]):
+    _format: ClassVar = "bsr"
+
     data: onp.Array3D[_SCT]
 
     @property

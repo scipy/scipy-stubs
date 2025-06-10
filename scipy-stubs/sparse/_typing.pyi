@@ -1,32 +1,19 @@
-# NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
+# NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`, and has no stable API.
+
 from typing import Literal, TypeAlias
 from typing_extensions import TypeAliasType
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
-from optype.numpy.compat import complexfloating as CFloating, integer as Integer
+import optype.numpy.compat as npc
 
-__all__ = (
-    "CFloating",
-    "Floating",
-    "Index1D",
-    "Integer",
-    "Numeric",
-    "SPFormat",
-    "ToShape1D",
-    "ToShape1D",
-    "ToShape2D",
-    "ToShapeMin1D",
-    "ToShapeMin3D",
-)
+__all__ = ("Index1D", "Numeric", "SPFormat", "ToShape1D", "ToShape1D", "ToShape2D", "ToShapeMin1D", "ToShapeMin3D")
 
 ###
 
-# NOTE: The `TypeAliasType`s are used to avoid long error messages.
-Floating = TypeAliasType("Floating", np.float32 | np.float64 | np.longdouble)
-# NOTE: This (almost always) matches `scipy.sparse._sputils.supported_dtypes`
-Numeric = TypeAliasType("Numeric", np.bool_ | Integer | Floating | CFloating)
+# NOTE: For convenience, this does no explicitly disallow `float16`, which is not supported by SciPy.
+Numeric = TypeAliasType("Numeric", np.bool_ | npc.number)
 
 Index1D: TypeAlias = onp.Array1D[np.int32 | np.int64]
 
