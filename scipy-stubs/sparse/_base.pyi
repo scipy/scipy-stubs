@@ -889,7 +889,6 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     @overload
     def tocsc(self: spmatrix, /, copy: bool = False) -> csc_matrix[_ScalarT_co]: ...
     #
-
     @overload
     def tocsr(self: _SpArrayND[_ShapeT], /, copy: bool = False) -> csr_array[_ScalarT_co, _ShapeT]: ...
     @overload
