@@ -1,18 +1,19 @@
 # mypy: disable-error-code="explicit-override"
 
 from collections.abc import Sequence
-from typing import Any, Generic, Literal, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
 from ._data import _data_matrix, _minmax_mixin
 from ._matrix import spmatrix
-from ._typing import Index1D, Integer, Numeric, ToShape1D, ToShape2D, ToShapeMin1D, ToShapeMin3D
+from ._typing import Index1D, Numeric, ToShape1D, ToShape2D, ToShapeMin1D, ToShapeMin3D
 
 __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 
@@ -21,18 +22,19 @@ _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
 _SCT0 = TypeVar("_SCT0", bound=Numeric)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 
-_ToData: TypeAlias = tuple[onp.ArrayND[_SCT0], tuple[onp.ArrayND[Integer]] | tuple[onp.ArrayND[Integer], onp.ArrayND[Integer]]]
+_IntND: TypeAlias = onp.ArrayND[npc.integer]
+_ToData: TypeAlias = tuple[onp.ArrayND[_SCT0], tuple[_IntND] | tuple[_IntND, _IntND]]
 _ToDense: TypeAlias = onp.ArrayND[_SCT0] | onp.SequenceND[onp.ArrayND[_SCT0]] | onp.SequenceND[_SCT0]
 
 _ScalarOrDense: TypeAlias = onp.ArrayND[_SCT0] | _SCT0
 _JustND: TypeAlias = onp.SequenceND[op.Just[_T]]
 
-_SubInt: TypeAlias = np.bool_ | np.int8 | np.int16 | np.int32 | np.intp | np.int_ | np.uint8 | np.uint16
-_SubFloat: TypeAlias = np.bool_ | Integer | np.float32 | np.float64
+_SubInt: TypeAlias = np.bool_ | npc.integer8 | npc.integer16 | np.int32 | np.int_
+_SubFloat: TypeAlias = np.bool_ | npc.integer | np.float32 | np.float64
 _SubComplex: TypeAlias = _SubFloat | np.complex64 | np.complex128
 _SupComplex: TypeAlias = np.complex128 | np.clongdouble
 _SupFloat: TypeAlias = np.float64 | np.longdouble | _SupComplex
-_SupInt: TypeAlias = np.int_ | np.int64 | np.uint32 | np.uintp | np.uint | np.uint64 | _SupFloat
+_SupInt: TypeAlias = npc.integer64 | np.int_ | np.uintp | np.uint32 | _SupFloat
 
 _Axes: TypeAlias = int | tuple[Sequence[int], Sequence[int]]
 
@@ -43,6 +45,9 @@ _SupIntT = TypeVar("_SupIntT", bound=_SupInt)
 ###
 
 class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
+    _format: ClassVar = "coo"
+    _allow_nd: ClassVar[Sequence[int]] = ...  # range(1, 65)
+
     data: onp.Array1D[_SCT]
     coords: tuple[Index1D, ...]  # len(coords) == ndim
     has_canonical_format: bool
@@ -319,10 +324,14 @@ class coo_matrix(_coo_base[_SCT, tuple[int, int]], spmatrix[_SCT], Generic[_SCT]
     @property
     @override
     def ndim(self, /) -> Literal[2]: ...
+
     #
     @overload
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload
     def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...
+
+    #
+    def __setstate__(self, state: dict[str, Any], /) -> None: ...
 
 def isspmatrix_coo(x: object) -> TypeIs[coo_matrix]: ...

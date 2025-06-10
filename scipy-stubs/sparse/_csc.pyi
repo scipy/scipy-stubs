@@ -1,4 +1,4 @@
-from typing import Any, Generic, Literal, overload
+from typing import Any, ClassVar, Generic, Literal, overload
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
@@ -17,6 +17,8 @@ _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
 ###
 
 class _csc_base(_cs_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
+    _format: ClassVar = "csc"
+
     @property
     @override
     def format(self, /) -> Literal["csc"]: ...

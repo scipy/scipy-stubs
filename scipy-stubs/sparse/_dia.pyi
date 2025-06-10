@@ -1,15 +1,16 @@
 from collections.abc import Sequence
-from typing import Any, Generic, Literal, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
 from ._data import _data_matrix
 from ._matrix import spmatrix
-from ._typing import Index1D, Integer, Numeric, ToShape2D
+from ._typing import Index1D, Numeric, ToShape2D
 
 __all__ = ["dia_array", "dia_matrix", "isspmatrix_dia"]
 
@@ -18,11 +19,13 @@ _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
 
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
-_ToData: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Integer]]
+_ToData: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[npc.integer]]
 
 ###
 
 class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
+    _format: ClassVar = "dia"
+
     data: onp.Array2D[_SCT]
     offsets: Index1D
 

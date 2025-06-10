@@ -4,6 +4,7 @@ from typing import Any, Literal, Protocol, TypeAlias, TypeVar, overload, type_ch
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
+import optype.numpy.compat as npc
 import optype.typing as opt
 
 from scipy._typing import ToRNG
@@ -17,7 +18,7 @@ from ._dia import dia_array, dia_matrix
 from ._dok import dok_array, dok_matrix
 from ._lil import lil_array, lil_matrix
 from ._matrix import spmatrix
-from ._typing import Floating, Numeric, SPFormat, ToShape2D
+from ._typing import Numeric, SPFormat, ToShape2D
 
 __all__ = [
     "block_array",
@@ -776,7 +777,7 @@ def block_diag(
 def random_array(
     shape: tuple[int],
     *,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyFloat64DType | None = None,
     rng: ToRNG = None,
@@ -786,7 +787,7 @@ def random_array(
 def random_array(
     shape: tuple[int],
     *,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.ToDType[_SCT],
     rng: ToRNG = None,
@@ -796,7 +797,7 @@ def random_array(
 def random_array(
     shape: tuple[int],
     *,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyComplex128DType,
     rng: ToRNG = None,
@@ -806,7 +807,7 @@ def random_array(
 def random_array(
     shape: tuple[int],
     *,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: npt.DTypeLike,
     rng: ToRNG = None,
@@ -816,7 +817,7 @@ def random_array(
 def random_array(
     shape: tuple[int, int],
     *,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyFloat64DType | None = None,
     rng: ToRNG = None,
@@ -826,7 +827,7 @@ def random_array(
 def random_array(
     shape: tuple[int, int],
     *,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.ToDType[_SCT],
     rng: ToRNG = None,
@@ -836,7 +837,7 @@ def random_array(
 def random_array(
     shape: tuple[int, int],
     *,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyComplex128DType,
     rng: ToRNG = None,
@@ -846,7 +847,7 @@ def random_array(
 def random_array(
     shape: tuple[int, int],
     *,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: npt.DTypeLike,
     rng: ToRNG = None,
@@ -858,7 +859,7 @@ def random_array(
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyFloat64DType | None = None,
     rng: ToRNG = None,
@@ -868,7 +869,7 @@ def random(
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating,
+    density: float | npc.floating,
     format: SPFormat,
     dtype: onp.ToDType[_SCT],
     rng: ToRNG = None,
@@ -878,7 +879,7 @@ def random(
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     *,
     dtype: onp.ToDType[_SCT],
@@ -889,7 +890,7 @@ def random(
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating,
+    density: float | npc.floating,
     format: SPFormat,
     dtype: onp.AnyComplex128DType,
     rng: ToRNG = None,
@@ -899,7 +900,7 @@ def random(
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     *,
     dtype: onp.AnyComplex128DType,
@@ -910,7 +911,7 @@ def random(
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: npt.DTypeLike | None = None,
     rng: ToRNG = None,
@@ -922,20 +923,20 @@ def random(
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: onp.AnyFloat64DType | None = None,
     rng: ToRNG = None,
 ) -> _SpMatrix[np.float64]: ...
 @overload  # dtype: <known> (positional)
 def rand(
-    m: opt.AnyInt, n: opt.AnyInt, density: float | Floating, format: SPFormat, dtype: onp.ToDType[_SCT], rng: ToRNG = None
+    m: opt.AnyInt, n: opt.AnyInt, density: float | npc.floating, format: SPFormat, dtype: onp.ToDType[_SCT], rng: ToRNG = None
 ) -> _SpMatrix[_SCT]: ...
 @overload  # dtype: <known> (keyword)
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     *,
     dtype: onp.ToDType[_SCT],
@@ -943,13 +944,18 @@ def rand(
 ) -> _SpMatrix[_SCT]: ...
 @overload  # dtype: complex (positional)
 def rand(
-    m: opt.AnyInt, n: opt.AnyInt, density: float | Floating, format: SPFormat, dtype: onp.AnyComplex128DType, rng: ToRNG = None
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | npc.floating,
+    format: SPFormat,
+    dtype: onp.AnyComplex128DType,
+    rng: ToRNG = None,
 ) -> _SpMatrix[np.complex128]: ...
 @overload  # dtype: complex (keyword)
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     *,
     dtype: onp.AnyComplex128DType,
@@ -959,7 +965,7 @@ def rand(
 def rand(
     m: opt.AnyInt,
     n: opt.AnyInt,
-    density: float | Floating = 0.01,
+    density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
     dtype: npt.DTypeLike | None = None,
     rng: ToRNG = None,

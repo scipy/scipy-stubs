@@ -145,7 +145,7 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     @override
     def tolil(self, /, copy: bool = False) -> Self: ...  # type: ignore[override]
     @override
-    def resize(self, /, *shape: int) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def resize(self, /, *shape: int) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     # NOTE: Adding `@override` here will crash stubtest (mypy 1.13.0)
     @overload

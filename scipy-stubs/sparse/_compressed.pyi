@@ -7,11 +7,12 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._base import _spbase
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin
-from ._typing import Index1D, Integer, Numeric, ToShape1D, ToShape2D, ToShapeMin1D
+from ._typing import Index1D, Numeric, ToShape1D, ToShape2D, ToShapeMin1D
 
 __all__: list[str] = []
 
@@ -23,10 +24,10 @@ _ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[An
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
-_ToData2B: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Integer]]  # bsr
-_ToData2C: TypeAlias = tuple[onp.ArrayND[_SCT], tuple[onp.ArrayND[Integer], onp.ArrayND[Integer]]]  # csc, csr
+_ToData2B: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[npc.integer]]  # bsr
+_ToData2C: TypeAlias = tuple[onp.ArrayND[_SCT], tuple[onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]]  # csc, csr
 _ToData2: TypeAlias = _ToData2B[_SCT] | _ToData2C[_SCT]
-_ToData3: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[Integer], onp.ArrayND[Integer]]
+_ToData3: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]
 _ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
 
 ###

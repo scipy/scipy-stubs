@@ -1,4 +1,4 @@
-from typing import Any, Generic, Literal, overload
+from typing import Any, ClassVar, Generic, Literal, overload
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
@@ -18,6 +18,9 @@ _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=t
 ###
 
 class _csr_base(_cs_matrix[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
+    _format: ClassVar = "csr"
+    _allow_nd: ClassVar = (1, 2)
+
     @property
     @override
     def ndim(self, /) -> Literal[1, 2]: ...

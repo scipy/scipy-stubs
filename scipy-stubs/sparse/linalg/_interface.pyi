@@ -7,29 +7,25 @@ from typing_extensions import TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import CFloating, Floating, Integer, Numeric
+from scipy.sparse._typing import Numeric
 
 __all__ = ["LinearOperator", "aslinearoperator"]
 
-_Real: TypeAlias = np.bool_ | Integer | Floating
-_Inexact: TypeAlias = Floating | CFloating
-_Number: TypeAlias = Integer | _Inexact  # excludes `bool_`
-
 _SCT = TypeVar("_SCT", bound=Numeric)
-_SCT_co = TypeVar("_SCT_co", bound=Numeric, default=_Inexact, covariant=True)
-_SCT1_co = TypeVar("_SCT1_co", bound=Numeric, default=_Inexact, covariant=True)
+_SCT_co = TypeVar("_SCT_co", bound=Numeric, default=Any, covariant=True)
+_SCT1_co = TypeVar("_SCT1_co", bound=Numeric, default=Any, covariant=True)
 _SCT2_co = TypeVar("_SCT2_co", bound=Numeric, default=_SCT1_co, covariant=True)
+_InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec, covariant=True)
 
-_InexactT = TypeVar("_InexactT", bound=_Inexact)
-
 _ToShape: TypeAlias = Iterable[op.CanIndex]
-_FunMatVec: TypeAlias = Callable[[onp.Array1D[_Number] | onp.Array2D[_Number]], onp.ToComplex1D | onp.ToComplex2D]
-_FunMatMat: TypeAlias = Callable[[onp.Array2D[_Number]], onp.ToComplex2D]
-
-_Array1D2D: TypeAlias = onp.Array1D[_SCT] | onp.Array2D[_SCT]
+_Real: TypeAlias = np.bool_ | npc.integer | npc.floating
+_Array1or2D: TypeAlias = onp.ArrayND[_SCT, tuple[int] | tuple[int, int]]
+_FunMatVec: TypeAlias = Callable[[_Array1or2D[npc.number]], onp.ToComplex1D | onp.ToComplex2D]
+_FunMatMat: TypeAlias = Callable[[onp.Array2D[npc.number]], onp.ToComplex2D]
 
 ###
 
@@ -69,7 +65,7 @@ class LinearOperator(Generic[_SCT_co]):
     @overload  # float matrix
     def matvec(self, /, x: onp.Matrix[_Real]) -> onp.Matrix[_SCT_co]: ...
     @overload  # complex matrix
-    def matvec(self, /, x: onp.Matrix[_Number]) -> onp.Matrix[_SCT_co | np.complex128]: ...
+    def matvec(self, /, x: onp.Matrix[npc.number]) -> onp.Matrix[_SCT_co | np.complex128]: ...
     @overload  # float array 2d
     def matvec(self, /, x: onp.ToFloatStrict2D) -> onp.Array2D[_SCT_co]: ...
     @overload  # complex array 1d
@@ -79,7 +75,7 @@ class LinearOperator(Generic[_SCT_co]):
     @overload  # float array
     def matvec(self, /, x: onp.ToFloat2D) -> onp.Array1D[_SCT_co] | onp.Array2D[_SCT_co]: ...
     @overload  # complex array
-    def matvec(self, /, x: onp.ToComplex2D) -> _Array1D2D[_SCT_co | np.complex128]: ...
+    def matvec(self, /, x: onp.ToComplex2D) -> _Array1or2D[_SCT_co | np.complex128]: ...
     rmatvec = matvec
 
     #
@@ -104,7 +100,7 @@ class LinearOperator(Generic[_SCT_co]):
     @overload
     def dot(self, /, x: onp.ToFloatND) -> onp.Array1D[_SCT_co] | onp.Array2D[_SCT_co]: ...
     @overload
-    def dot(self, /, x: onp.ToComplexND) -> _Array1D2D[_SCT_co | np.complex128]: ...
+    def dot(self, /, x: onp.ToComplexND) -> _Array1or2D[_SCT_co | np.complex128]: ...
     __mul__ = dot
     __rmul__ = dot
     __call__ = dot
@@ -123,7 +119,7 @@ class LinearOperator(Generic[_SCT_co]):
     @overload
     def __matmul__(self, /, x: onp.ToFloatND) -> onp.Array1D[_SCT_co] | onp.Array2D[_SCT_co]: ...
     @overload
-    def __matmul__(self, /, x: onp.ToComplexND) -> _Array1D2D[_SCT_co | np.complex128]: ...
+    def __matmul__(self, /, x: onp.ToComplexND) -> _Array1or2D[_SCT_co | np.complex128]: ...
     __rmatmul__ = __matmul__
 
     #
@@ -254,7 +250,7 @@ class _ScaledLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     @overload
     def __init__(self, /, A: LinearOperator[_SCT_co], alpha: _SCT_co | complex) -> None: ...
     @overload
-    def __init__(self: _ScaledLinearOperator[np.float64], /, A: LinearOperator[Floating], alpha: float) -> None: ...
+    def __init__(self: _ScaledLinearOperator[np.float64], /, A: LinearOperator[npc.floating], alpha: float) -> None: ...
     @overload
     def __init__(self: _ScaledLinearOperator[np.complex128], /, A: LinearOperator, alpha: complex) -> None: ...
 
@@ -315,7 +311,9 @@ def aslinearoperator(A: onp.CanArrayND[_InexactT]) -> MatrixLinearOperator[_Inex
 @overload
 def aslinearoperator(A: _spbase[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
 @overload
-def aslinearoperator(A: onp.ArrayND[np.bool_ | Integer] | _spbase[np.bool_ | Integer]) -> MatrixLinearOperator[np.float64]: ...
+def aslinearoperator(
+    A: onp.ArrayND[np.bool_ | npc.integer] | _spbase[np.bool_ | npc.integer],
+) -> MatrixLinearOperator[np.float64]: ...
 @overload
 def aslinearoperator(A: _HasShapeAndDTypeAndMatVec[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
 @overload
