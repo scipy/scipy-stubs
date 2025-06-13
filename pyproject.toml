@@ -60,7 +60,7 @@ type = [
     {include-group = "extras"},
     {include-group = "ci"},
     "mypy[faster-cache]==1.16.0",
-    "basedpyright>=1.29.2",
+    "basedpyright>=1.29.4",
 ]
 dev = [
     {include-group = "lint"},
@@ -125,12 +125,7 @@ always_true = ["NP125", "NP126", "NP20", "NP21", "NP22", "NP23"]
 
 [tool.pyright]
 include = ["scipy-stubs", "scripts", "tests"]
-ignore = [
-    ".venv",
-    # https://github.com/jakebailey/pyright-action/issues/188
-    # https://github.com/microsoft/pyright/issues/10484
-    "/opt/hostedtoolcache/pyright/",
-]
+ignore = [".venv"]
 stubPath = "."
 pythonPlatform = "All"
 typeCheckingMode = "strict"
@@ -184,7 +179,7 @@ reportUnsafeMultipleInheritance = true # base
     NP20 = true
     NP21 = true
     NP22 = true
-    NP23 = false
+    NP23 = true
 
 [tool.repo-review]
 ignore = [
