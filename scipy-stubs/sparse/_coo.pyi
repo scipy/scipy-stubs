@@ -130,7 +130,7 @@ class coo_array(_coo_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: None
-    def __init__(  # type: ignore[misc]
+    def __init__(
         self: coo_array[np.float64, tuple[int]],
         /,
         arg1: ToShape1D,

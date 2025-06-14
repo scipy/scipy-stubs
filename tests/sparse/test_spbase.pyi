@@ -4,25 +4,7 @@ import numpy as np
 
 import scipy.sparse as sparse
 
-from ._types import (
-    ScalarType,
-    any_arr,
-    any_mat,
-    bsr_arr,
-    bsr_mat,
-    coo_arr,
-    coo_mat,
-    csc_arr,
-    csc_mat,
-    csr_arr,
-    csr_mat,
-    dia_arr,
-    dia_mat,
-    dok_arr,
-    dok_mat,
-    lil_arr,
-    lil_mat,
-)
+from ._types import ScalarType, any_arr, any_mat, coo_arr, coo_mat, csr_arr, csr_mat
 
 i64_1d: np.ndarray[tuple[int], np.dtype[np.int64]]
 i64_2d: np.ndarray[tuple[int, int], np.dtype[np.int64]]
@@ -103,7 +85,7 @@ assert_type(csr_mat + csr_mat, sparse.csr_matrix[ScalarType])
 assert_type(csr_mat - csr_mat, sparse.csr_matrix[ScalarType])
 assert_type(csr_mat * csr_mat, sparse.csr_matrix[ScalarType])
 assert_type(csr_mat @ csr_mat, sparse.csr_matrix[ScalarType])
-assert_type(csr_mat / csr_mat, sparse.csr_matrix[np.float64])  # even float32 is converted to float64
+assert_type(csr_mat / csr_mat, np.matrix[tuple[int, int], np.dtype[np.float64]])
 
 # CSR array
 assert_type(sparse.csr_array(dense_2d), sparse.csr_array[ScalarType])
@@ -119,6 +101,6 @@ assert_type(csr_arr + csr_arr, sparse.csr_array[ScalarType])
 assert_type(csr_arr - csr_arr, sparse.csr_array[ScalarType])
 assert_type(csr_arr * csr_arr, sparse.csr_array[ScalarType])
 assert_type(csr_arr @ csr_arr, sparse.csr_array[ScalarType])
-assert_type(csr_arr / csr_arr, sparse.csr_array[np.float64])
+assert_type(csr_arr / csr_arr, np.ndarray[tuple[int, int], np.dtype[np.float64]])
 
 # TODO(jorenham): test other arithmetic operations for all formats
