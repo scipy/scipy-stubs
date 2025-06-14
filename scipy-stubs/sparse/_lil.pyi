@@ -42,96 +42,6 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     def shape(self, /) -> tuple[int, int]: ...
 
     #
-    @overload  # matrix-like (known dtype), dtype: None
-    def __init__(
-        self,
-        /,
-        arg1: _ToMatrix[_SCT],
-        shape: ToShape2D | None = None,
-        dtype: None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d shape-like, dtype: None
-    def __init__(
-        self: _lil_base[np.float64],
-        /,
-        arg1: ToShape2D,
-        shape: None = None,
-        dtype: onp.AnyFloat64DType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
-    def __init__(
-        self: _lil_base[np.bool_],
-        /,
-        arg1: _ToMatrixPy[bool],
-        shape: ToShape2D | None = None,
-        dtype: onp.AnyBoolDType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # matrix-like builtins.int, dtype: type[int] | None
-    def __init__(
-        self: _lil_base[np.int_],
-        /,
-        arg1: _ToMatrixPy[op.JustInt],
-        shape: ToShape2D | None = None,
-        dtype: onp.AnyIntDType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # matrix-like builtins.float, dtype: type[float] | None
-    def __init__(
-        self: _lil_base[np.float64],
-        /,
-        arg1: _ToMatrixPy[op.JustFloat],
-        shape: ToShape2D | None = None,
-        dtype: onp.AnyFloat64DType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
-    def __init__(
-        self: _lil_base[np.complex128],
-        /,
-        arg1: _ToMatrixPy[op.JustComplex],
-        shape: ToShape2D | None = None,
-        dtype: onp.AnyComplex128DType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # dtype: <known> (positional)
-    def __init__(
-        self,
-        /,
-        arg1: onp.ToComplexND,
-        shape: ToShape2D | None,
-        dtype: onp.ToDType[_SCT],
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # dtype: <known> (keyword)
-    def __init__(
-        self,
-        /,
-        arg1: onp.ToComplexND,
-        shape: ToShape2D | None = None,
-        *,
-        dtype: onp.ToDType[_SCT],
-        copy: bool = False,
-        maxprint: int | None = None,
-    ) -> None: ...
-
-    #
     @override
     def __iadd__(self, other: Falsy | _spbase[Numeric] | onp.ArrayND[Numeric], /) -> Self: ...
     @override
@@ -169,6 +79,96 @@ class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_array[_AsSCT, tuple[int, int]]: ...
 
+    # NOTE: keep the in sync with `lil_matrix.__init__`
+    @overload  # matrix-like (known dtype), dtype: None
+    def __init__(
+        self,
+        /,
+        arg1: _ToMatrix[_SCT],
+        shape: ToShape2D | None = None,
+        dtype: None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: None
+    def __init__(
+        self: lil_array[np.float64],
+        /,
+        arg1: ToShape2D,
+        shape: None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
+    def __init__(
+        self: lil_array[np.bool_],
+        /,
+        arg1: _ToMatrixPy[bool],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    def __init__(
+        self: lil_array[np.int_],
+        /,
+        arg1: _ToMatrixPy[op.JustInt],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyIntDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    def __init__(
+        self: lil_array[np.float64],
+        /,
+        arg1: _ToMatrixPy[op.JustFloat],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    def __init__(
+        self: lil_array[np.complex128],
+        /,
+        arg1: _ToMatrixPy[op.JustComplex],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <known> (positional)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShape2D | None,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <known> (keyword)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+
     #
     @override
     def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int, int]]: ...
@@ -183,6 +183,96 @@ class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_matrix[_AsSCT]: ...
 
+    # NOTE: keep the in sync with `lil_array.__init__`
+    @overload  # matrix-like (known dtype), dtype: None
+    def __init__(
+        self,
+        /,
+        arg1: _ToMatrix[_SCT],
+        shape: ToShape2D | None = None,
+        dtype: None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: None
+    def __init__(
+        self: lil_matrix[np.float64],
+        /,
+        arg1: ToShape2D,
+        shape: None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
+    def __init__(
+        self: lil_matrix[np.bool_],
+        /,
+        arg1: _ToMatrixPy[bool],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    def __init__(
+        self: lil_matrix[np.int_],
+        /,
+        arg1: _ToMatrixPy[op.JustInt],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyIntDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    def __init__(
+        self: lil_matrix[np.float64],
+        /,
+        arg1: _ToMatrixPy[op.JustFloat],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    def __init__(
+        self: lil_matrix[np.complex128],
+        /,
+        arg1: _ToMatrixPy[op.JustComplex],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <known> (positional)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShape2D | None,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <known> (keyword)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+
     #
     @override
     def getrow(self, /, i: onp.ToJustInt) -> csr_matrix[_SCT]: ...
@@ -193,4 +283,5 @@ class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
     @overload
     def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...
 
+#
 def isspmatrix_lil(x: object) -> TypeIs[lil_matrix]: ...
