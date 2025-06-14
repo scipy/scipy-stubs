@@ -481,6 +481,10 @@ def eye_array(
 ) -> _SpArray2D: ...
 
 # NOTE: `eye_array` should be prefered over `eye`
+@overload  # dtype like float (default), default fdormat
+def eye(
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: Literal["dia"] | None = None
+) -> dia_matrix[np.float64]: ...
 @overload  # dtype like float (default)
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: SPFormat | None = None
