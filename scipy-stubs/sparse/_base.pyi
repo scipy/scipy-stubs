@@ -67,9 +67,6 @@ _ToFloat32: TypeAlias = np.float32 | _ToInt
 _ToFloat: TypeAlias = npc.floating | _ToInt
 _ToComplex64: TypeAlias = np.complex64 | _ToFloat
 
-_CoFloat: TypeAlias = np.float64 | np.int_ | np.bool_
-_CoComplex: TypeAlias = np.complex128 | _CoFloat
-
 _ToSparseSeq: TypeAlias = Sequence[Sequence[_T]] | Sequence[_T]
 _ToSparseArray: TypeAlias = onp.CanArrayND[_ScalarT_co] | _ToSparseSeq[_ScalarT_co]
 
@@ -137,7 +134,7 @@ class SparseEfficiencyWarning(SparseWarning): ...
 class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     __array_priority__: ClassVar[float] = 10.1
     _format: ClassVar[str] = "und"
-    _allow_nd: ClassVar[Sequence[int]] = (2,)
+    _allow_nd: ClassVar[Sequence[int]] = (2,)  # will be either a `tuple[int, ...]` or a `builtins.range` instance
 
     maxprint: Final[int | None]
 
@@ -189,10 +186,6 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def __init__(self: _spbase[np.float64], /, arg1: _ToSparseSeq[op.JustFloat], *, maxprint: int | None = 50) -> None: ...
     @overload  # dense array-like cfloat
     def __init__(self: _spbase[np.complex128], /, arg1: _ToSparseSeq[op.JustComplex], *, maxprint: int | None = 50) -> None: ...
-    @overload  # dense array-like real (pyright is wrong here)
-    def __init__(self: _spbase[_CoFloat], /, arg1: _ToSparseSeq[float], *, maxprint: int | None = 50) -> None: ...  # pyright: ignore[reportOverlappingOverload]
-    @overload  # dense array-like complex (pyright is wrong here)
-    def __init__(self: _spbase[_CoComplex], /, arg1: _ToSparseSeq[complex], *, maxprint: int | None = 50) -> None: ...  # pyright: ignore[reportOverlappingOverload]
 
     #
     def __bool__(self, /) -> bool: ...
