@@ -598,7 +598,7 @@ def vstack(blocks: Seq[_spbase], format: SPFormat, dtype: npt.DTypeLike | None =
 
 _COOArray2D: TypeAlias = coo_array[_SCT, tuple[int, int]]
 
-#
+# TODO(jorenham): Use `_CanStack` here, which requires a way to map matrix types to array types.
 @overload  # blocks: <known dtype>, format: <default>, dtype: <default>
 def block_array(blocks: Seq[Seq[_spbase[_SCT]]], *, format: _FmtCOO | None = None, dtype: None = None) -> _COOArray2D[_SCT]: ...
 @overload  # blocks: <unknown dtype>, format: <default>, dtype: <known>
@@ -612,7 +612,7 @@ def block_array(blocks: _ToBlocks, *, format: _FmtNonCOO, dtype: onp.ToDType[_SC
 @overload  # blocks: <unknown dtype>, format: <otherwise>, dtype: <unknown>
 def block_array(blocks: _ToBlocks, *, format: _FmtNonCOO, dtype: npt.DTypeLike) -> _NonCOOArray: ...
 
-#
+# TODO(jorenham): Use `_CanStack` here, which requires a way to map array types to matrix types.
 @overload  # blocks: <array, known dtype>, format: <default>, dtype: <default>
 def bmat(blocks: Seq[Seq[_SpArray[_SCT]]], format: _FmtCOO | None = None, dtype: None = None) -> _COOArray2D[_SCT]: ...
 @overload  # blocks: <matrix, known dtype>, format: <default>, dtype: <default>
