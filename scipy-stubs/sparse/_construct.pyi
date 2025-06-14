@@ -273,7 +273,7 @@ def diags(
     shape: ToShape2D | None = None,
     format: _FmtDIA | None = None,
     dtype: onp.ToDType[_SCT] | None = None,
-) -> dia_array[_SCT]: ...
+) -> dia_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: <otherwise> (positional)
 def diags(
     diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
@@ -281,7 +281,7 @@ def diags(
     shape: ToShape2D | None,
     format: _FmtNonDIA,
     dtype: onp.ToDType[_SCT] | None = None,
-) -> _NonDIAArray[_SCT]: ...
+) -> _NonDIAMatrix[_SCT]: ...
 @overload  # diagonals: <known>, format: <otherwise> (keyword)
 def diags(
     diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
@@ -290,7 +290,7 @@ def diags(
     *,
     format: _FmtNonDIA,
     dtype: onp.ToDType[_SCT] | None = None,
-) -> _NonDIAArray[_SCT]: ...
+) -> _NonDIAMatrix[_SCT]: ...
 @overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: <known> (positional)
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
@@ -298,7 +298,7 @@ def diags(
     shape: ToShape2D | None,
     format: _FmtDIA | None,
     dtype: onp.ToDType[_SCT],
-) -> dia_array[_SCT]: ...
+) -> dia_matrix[_SCT]: ...
 @overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: <known> (keyword)
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
@@ -307,7 +307,7 @@ def diags(
     format: _FmtDIA | None = None,
     *,
     dtype: onp.ToDType[_SCT],
-) -> dia_array[_SCT]: ...
+) -> dia_matrix[_SCT]: ...
 @overload  # diagonals: <unknown>, format: <otherwise> (positional), dtype: <known>
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
@@ -315,7 +315,7 @@ def diags(
     shape: ToShape2D | None,
     format: _FmtNonDIA,
     dtype: onp.ToDType[_SCT],
-) -> _NonDIAArray[_SCT]: ...
+) -> _NonDIAMatrix[_SCT]: ...
 @overload  # diagonals: <unknown>, format: <otherwise> (keyword), dtype: <known>
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
@@ -324,7 +324,7 @@ def diags(
     *,
     format: _FmtNonDIA,
     dtype: onp.ToDType[_SCT],
-) -> _NonDIAArray[_SCT]: ...
+) -> _NonDIAMatrix[_SCT]: ...
 @overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: <unknown>
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
@@ -332,7 +332,7 @@ def diags(
     shape: ToShape2D | None = None,
     format: _FmtDIA | None = None,
     dtype: npt.DTypeLike | None = None,
-) -> dia_array: ...
+) -> dia_matrix: ...
 @overload  # diagonals: <unknown>, format: <otherwise> (positional), dtype: <unknown>
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
@@ -340,7 +340,7 @@ def diags(
     shape: ToShape2D | None,
     format: _FmtNonDIA,
     dtype: npt.DTypeLike | None = None,
-) -> _NonDIAArray: ...
+) -> _NonDIAMatrix: ...
 @overload  # diagonals: <unknown>, format: <otherwise> (keyword), dtype: <unknown>
 def diags(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
@@ -349,7 +349,7 @@ def diags(
     *,
     format: _FmtNonDIA,
     dtype: npt.DTypeLike | None = None,
-) -> _NonDIAArray: ...
+) -> _NonDIAMatrix: ...
 
 # NOTE: `diags_array` should be prefered over `spdiags`
 @overload

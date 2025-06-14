@@ -43,7 +43,10 @@ assert_type(sparse.random_array(shape_2d), sparse.coo_array[np.float64, tuple[in
 assert_type(sparse.random_array(shape_3d), sparse.coo_array[np.float64, tuple[int, int, int]])
 
 # diags
-assert_type(sparse.diags([dense_1d, dense_1d, dense_1d], int_list, shape=shape_2d), sparse.dia_matrix[np.float64])
+assert_type(sparse.diags(dense_1d), sparse.dia_matrix[ScalarType])
+assert_type(sparse.diags([dense_1d, dense_1d]), sparse.dia_matrix[ScalarType])
+assert_type(sparse.diags_array(dense_1d), sparse.dia_array[ScalarType])
+assert_type(sparse.diags_array([dense_1d, dense_1d]), sparse.dia_array[ScalarType])
 
 # stack (same as hstack)
 assert_type(sparse.vstack([bsr_mat, bsr_mat]), sparse.coo_matrix[ScalarType])
