@@ -24,15 +24,23 @@ from ._types import (
     lil_mat,
 )
 
+shape_1d: tuple[int]
 shape_2d: tuple[int, int]
+shape_3d: tuple[int, int, int]
 dense_1d: np.ndarray[tuple[int], np.dtype[ScalarType]]
 int_list: list[int]
 
 # eye
 assert_type(sparse.eye(5), sparse.dia_matrix[np.float64])
+assert_type(sparse.eye(5, 4), sparse.dia_matrix[np.float64])
+assert_type(sparse.eye_array(5), sparse.dia_array[np.float64])
+assert_type(sparse.eye_array(5, 4), sparse.dia_array[np.float64])
 
 # random
 assert_type(sparse.random(4, 2), sparse.coo_matrix[np.float64])
+assert_type(sparse.random_array(shape_1d), sparse.coo_array[np.float64, tuple[int]])
+assert_type(sparse.random_array(shape_2d), sparse.coo_array[np.float64, tuple[int, int]])
+assert_type(sparse.random_array(shape_3d), sparse.coo_array[np.float64, tuple[int, int, int]])
 
 # diags
 assert_type(sparse.diags([dense_1d, dense_1d, dense_1d], int_list, shape=shape_2d), sparse.dia_matrix[np.float64])

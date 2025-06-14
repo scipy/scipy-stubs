@@ -42,7 +42,8 @@ __all__ = [
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
 _SCT1 = TypeVar("_SCT1", bound=Numeric)
 _SCT2 = TypeVar("_SCT2", bound=Numeric)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int])
+_Shape2T = TypeVar("_Shape2T", bound=tuple[int] | tuple[int, int], default=tuple[int] | tuple[int, int])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]])
 
 _ToArray1D: TypeAlias = Seq[_SCT] | onp.CanArrayND[_SCT]
 _ToArray2D: TypeAlias = Seq[Seq[_SCT] | onp.CanArrayND[_SCT]] | onp.CanArrayND[_SCT]
@@ -59,11 +60,11 @@ _SpMatrix: TypeAlias = (
 )
 _SpArray: TypeAlias = (
     bsr_array[_SCT]
-    | coo_array[_SCT, _ShapeT]
+    | coo_array[_SCT, _Shape2T]
     | csc_array[_SCT]
-    | csr_array[_SCT, _ShapeT]
+    | csr_array[_SCT, _Shape2T]
     | dia_array[_SCT]
-    | dok_array[_SCT, _ShapeT]
+    | dok_array[_SCT, _Shape2T]
     | lil_array[_SCT]
 )
 _SpArray1D: TypeAlias = coo_array[_SCT, tuple[int]] | csr_array[_SCT, tuple[int]] | dok_array[_SCT, tuple[int]]
@@ -118,7 +119,7 @@ _NonDIAMatrix: TypeAlias = (
 
 _SpMatrixOut: TypeAlias = coo_matrix[_SCT] | csc_matrix[_SCT] | csr_matrix[_SCT]
 _SpMatrixNonOut: TypeAlias = bsr_matrix[_SCT] | dia_matrix[_SCT] | dok_matrix[_SCT] | lil_matrix[_SCT]
-_SpArrayOut: TypeAlias = coo_array[_SCT, _ShapeT] | csc_array[_SCT] | csr_array[_SCT, _ShapeT]
+_SpArrayOut: TypeAlias = coo_array[_SCT, _Shape2T] | csc_array[_SCT] | csr_array[_SCT, _Shape2T]
 _SpArrayNonOut: TypeAlias = bsr_array[_SCT] | dia_array[_SCT] | dok_array[_SCT, tuple[int, int]] | lil_array[_SCT]
 
 _FmtBSR: TypeAlias = Literal["bsr"]
@@ -777,16 +778,66 @@ def block_diag(
 ) -> _SpArray[Any, tuple[int, int]] | _SpMatrix[Any]: ...
 
 #
-@overload  # shape: 1d, dtype: <default>
+@overload  # shape: T, dtype: <default>, format: <default>
+def random_array(  # type: ignore[overload-overlap]
+    shape: _ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    dtype: onp.AnyFloat64DType = None,
+    rng: ToRNG = None,
+    data_sampler: _DataSampler | None = None,
+) -> coo_array[np.float64, _ShapeT]: ...
+@overload  # shape: T, dtype: <known>, format: <default>
+def random_array(
+    shape: _ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    dtype: onp.ToDType[_SCT],
+    rng: ToRNG = None,
+    data_sampler: _DataSampler | None = None,
+) -> coo_array[_SCT, _ShapeT]: ...
+@overload  # shape: T, dtype: complex, format: <default>
+def random_array(  # type: ignore[overload-overlap]
+    shape: _ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    dtype: onp.AnyComplex128DType,
+    rng: ToRNG = None,
+    data_sampler: _DataSampler | None = None,
+) -> coo_array[np.complex128, _ShapeT]: ...
+@overload  # shape: T, dtype: <unknown>, format: <default>
+def random_array(
+    shape: _ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    dtype: npt.DTypeLike,
+    rng: ToRNG = None,
+    data_sampler: _DataSampler | None = None,
+) -> coo_array[Any, _ShapeT]: ...
+@overload  # shape: T, dtype: <default>
 def random_array(
     shape: tuple[int],
     *,
     density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
-    dtype: onp.AnyFloat64DType | None = None,
+    dtype: onp.AnyFloat64DType = None,
     rng: ToRNG = None,
     data_sampler: _DataSampler | None = None,
 ) -> _SpArray1D[np.float64]: ...
+@overload  # shape: 2d, dtype: <default>
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: SPFormat = "coo",
+    dtype: onp.AnyFloat64DType = None,
+    rng: ToRNG = None,
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray2D[np.float64]: ...
 @overload  # shape: 1d, dtype: <known>
 def random_array(
     shape: tuple[int],
@@ -797,36 +848,6 @@ def random_array(
     rng: ToRNG = None,
     data_sampler: _DataSampler | None = None,
 ) -> _SpArray1D[_SCT]: ...
-@overload  # shape: 1d, dtype: complex
-def random_array(
-    shape: tuple[int],
-    *,
-    density: float | npc.floating = 0.01,
-    format: SPFormat = "coo",
-    dtype: onp.AnyComplex128DType,
-    rng: ToRNG = None,
-    data_sampler: _DataSampler | None = None,
-) -> _SpArray1D[np.complex128]: ...
-@overload  # shape: 1d, dtype: <unknown>
-def random_array(
-    shape: tuple[int],
-    *,
-    density: float | npc.floating = 0.01,
-    format: SPFormat = "coo",
-    dtype: npt.DTypeLike,
-    rng: ToRNG = None,
-    data_sampler: _DataSampler | None = None,
-) -> _SpArray1D: ...
-@overload  # shape: 2d, dtype: <default>
-def random_array(
-    shape: tuple[int, int],
-    *,
-    density: float | npc.floating = 0.01,
-    format: SPFormat = "coo",
-    dtype: onp.AnyFloat64DType | None = None,
-    rng: ToRNG = None,
-    data_sampler: _DataSampler | None = None,
-) -> _SpArray2D[np.float64]: ...
 @overload  # shape: 2d, dtype: <known>
 def random_array(
     shape: tuple[int, int],
@@ -837,6 +858,16 @@ def random_array(
     rng: ToRNG = None,
     data_sampler: _DataSampler | None = None,
 ) -> _SpArray2D[_SCT]: ...
+@overload  # shape: 1d, dtype: complex
+def random_array(
+    shape: tuple[int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: SPFormat = "coo",
+    dtype: onp.AnyComplex128DType,
+    rng: ToRNG = None,
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray1D[np.complex128]: ...
 @overload  # shape: 2d, dtype: complex
 def random_array(
     shape: tuple[int, int],
@@ -847,6 +878,16 @@ def random_array(
     rng: ToRNG = None,
     data_sampler: _DataSampler | None = None,
 ) -> _SpArray2D[np.complex128]: ...
+@overload  # shape: 1d, dtype: <unknown>
+def random_array(
+    shape: tuple[int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: SPFormat = "coo",
+    dtype: npt.DTypeLike,
+    rng: ToRNG = None,
+    data_sampler: _DataSampler | None = None,
+) -> _SpArray1D: ...
 @overload  # shape: 2d, dtype: <unknown>
 def random_array(
     shape: tuple[int, int],
@@ -859,13 +900,75 @@ def random_array(
 ) -> _SpArray2D: ...
 
 # NOTE: `random_array` should be prefered over `random`
+@overload  # dtype: <default>, format: <default>
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    dtype: onp.AnyFloat64DType = None,
+    rng: ToRNG = None,
+    data_rvs: _DataRVS | None = None,
+) -> coo_matrix[np.float64]: ...
+@overload  # dtype: <known> (positional), format: "coo"
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | npc.floating,
+    format: _FmtCOO,
+    dtype: onp.ToDType[_SCT],
+    rng: ToRNG = None,
+    data_rvs: _DataRVS | None = None,
+) -> coo_matrix[_SCT]: ...
+@overload  # dtype: <known> (keyword), format: <default>
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    *,
+    dtype: onp.ToDType[_SCT],
+    rng: ToRNG = None,
+    data_rvs: _DataRVS | None = None,
+) -> coo_matrix[_SCT]: ...
+@overload  # dtype: complex (positional), format: <default>
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | npc.floating,
+    format: _FmtCOO,
+    dtype: onp.AnyComplex128DType,
+    rng: ToRNG = None,
+    data_rvs: _DataRVS | None = None,
+) -> coo_matrix[np.complex128]: ...
+@overload  # dtype: complex (keyword), format: <default>
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    *,
+    dtype: onp.AnyComplex128DType,
+    rng: ToRNG = None,
+    data_rvs: _DataRVS | None = None,
+) -> coo_matrix[np.complex128]: ...
+@overload  # dtype: <unknown>, format: <default>
+def random(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    dtype: npt.DTypeLike | None = None,
+    rng: ToRNG = None,
+    data_rvs: _DataRVS | None = None,
+) -> coo_matrix: ...
 @overload  # dtype: <default>
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
-    format: SPFormat = "coo",
-    dtype: onp.AnyFloat64DType | None = None,
+    format: SPFormat = ...,
+    dtype: onp.AnyFloat64DType = None,
     rng: ToRNG = None,
     data_rvs: _DataRVS | None = None,
 ) -> _SpMatrix[np.float64]: ...
@@ -884,7 +987,7 @@ def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
-    format: SPFormat = "coo",
+    format: SPFormat = ...,
     *,
     dtype: onp.ToDType[_SCT],
     rng: ToRNG = None,
@@ -905,7 +1008,7 @@ def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
-    format: SPFormat = "coo",
+    format: SPFormat = ...,
     *,
     dtype: onp.AnyComplex128DType,
     rng: ToRNG = None,
@@ -916,7 +1019,7 @@ def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
-    format: SPFormat = "coo",
+    format: SPFormat = ...,
     dtype: npt.DTypeLike | None = None,
     rng: ToRNG = None,
     data_rvs: _DataRVS | None = None,
@@ -929,7 +1032,7 @@ def rand(
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
     format: SPFormat = "coo",
-    dtype: onp.AnyFloat64DType | None = None,
+    dtype: onp.AnyFloat64DType = None,
     rng: ToRNG = None,
 ) -> _SpMatrix[np.float64]: ...
 @overload  # dtype: <known> (positional)
