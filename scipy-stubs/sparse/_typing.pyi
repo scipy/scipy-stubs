@@ -15,7 +15,7 @@ __all__ = ("Index1D", "Numeric", "SPFormat", "ToShape1D", "ToShape1D", "ToShape2
 # NOTE: For convenience, this does no explicitly disallow `float16`, which is not supported by SciPy.
 Numeric = TypeAliasType("Numeric", np.bool_ | npc.number)
 
-Index1D: TypeAlias = onp.Array1D[np.int32 | np.int64]
+Index1D: TypeAlias = onp.Array1D[np.int32]
 
 ToShape1D: TypeAlias = tuple[op.CanIndex]  # ndim == 1
 ToShape2D: TypeAlias = tuple[op.CanIndex, op.CanIndex]  # ndim == 2
