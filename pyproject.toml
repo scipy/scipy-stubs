@@ -140,6 +140,7 @@ reportPropertyTypeMismatch = false
 reportShadowedImports = true
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
+reportUnusedExpression = false
 
 # overridden in the execution environments
 reportInvalidStubStatement = false
@@ -163,6 +164,7 @@ strictGenericNarrowing = false
 root = "scipy-stubs"
 reportInvalidStubStatement = true
 reportUnusedCallResult = true
+reportUnusedExpression = true
 
 [[executionEnvironments]]
 root = "tests"
