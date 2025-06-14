@@ -1,3 +1,4 @@
+from _typeshed import Incomplete
 from collections.abc import Callable, Iterable, Sequence as Seq
 from typing import Any, Literal, Protocol, TypeAlias, TypeVar, overload, type_check_only
 
@@ -727,55 +728,57 @@ def bmat(blocks: _ToBlocks, format: _FmtNonCOO, dtype: onp.ToDType[_SCT]) -> _No
 @overload  # sparray, blocks: <unknown, unknown dtype>, format: <otherwise>, dtype: <unknown>
 def bmat(blocks: _ToBlocks, format: _FmtNonCOO, dtype: npt.DTypeLike) -> _NonCOOArray | _NonCOOMatrix: ...
 
-#
+# TODO(jorenham): Add support for non-COO formats.
 @overload  # mats: <array, known dtype>
-def block_diag(
-    mats: Iterable[_SpArray[_SCT]], format: SPFormat | None = None, dtype: None = None
-) -> _SpArray[_SCT, tuple[int, int]]: ...
+def block_diag(mats: Iterable[_SpArray[_SCT]], format: _FmtCOO | None = None, dtype: None = None) -> _COOArray2D[_SCT]: ...
 @overload  # mats: <matrix, known dtype>
-def block_diag(mats: Iterable[spmatrix[_SCT]], format: SPFormat | None = None, dtype: None = None) -> _SpMatrix[_SCT]: ...
+def block_diag(mats: Iterable[spmatrix[_SCT]], format: _FmtCOO | None = None, dtype: None = None) -> coo_matrix[_SCT]: ...
 @overload  # mats: <unknown, known dtype>
 def block_diag(
-    mats: Iterable[_spbase[_SCT] | onp.ArrayND[_SCT]], format: SPFormat | None = None, dtype: None = None
-) -> _SpArray[_SCT, tuple[int, int]] | _SpMatrix[_SCT]: ...
+    mats: Iterable[_spbase[_SCT] | onp.ArrayND[_SCT]], format: _FmtCOO | None = None, dtype: None = None
+) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
 @overload  # mats: <array, unknown dtype>, dtype: <known>  (positional)
-def block_diag(mats: Iterable[sparray], format: SPFormat | None, dtype: onp.ToDType[_SCT]) -> _SpArray[_SCT, tuple[int, int]]: ...
+def block_diag(mats: Iterable[sparray], format: _FmtCOO | None, dtype: onp.ToDType[_SCT]) -> coo_array[_SCT, tuple[int, int]]: ...
 @overload  # mats: <array, unknown dtype>, dtype: <known>  (keyword)
-def block_diag(
-    mats: Iterable[sparray], format: SPFormat | None = None, *, dtype: onp.ToDType[_SCT]
-) -> _SpArray[_SCT, tuple[int, int]]: ...
+def block_diag(mats: Iterable[sparray], format: _FmtCOO | None = None, *, dtype: onp.ToDType[_SCT]) -> _COOArray2D[_SCT]: ...
 @overload  # mats: <matrix, unknown dtype>, dtype: <known>  (positional)
 def block_diag(
-    mats: Iterable[spmatrix | onp.ArrayND[Numeric] | complex | list[onp.ToComplex] | list[onp.ToComplex1D]],
-    format: SPFormat | None,
+    mats: Iterable[spmatrix | onp.ArrayND[Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
+    format: _FmtCOO | None,
     dtype: onp.ToDType[_SCT],
-) -> _SpMatrix[_SCT]: ...
+) -> coo_matrix[_SCT]: ...
 @overload  # mats: <matrix, unknown dtype>, dtype: <known>  (keyword)
 def block_diag(
-    mats: Iterable[spmatrix | onp.ArrayND[Numeric] | complex | list[onp.ToComplex] | list[onp.ToComplex1D]],
-    format: SPFormat | None = None,
+    mats: Iterable[spmatrix | onp.ArrayND[Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
+    format: _FmtCOO | None = None,
     *,
     dtype: onp.ToDType[_SCT],
-) -> _SpMatrix[_SCT]: ...
+) -> coo_matrix[_SCT]: ...
 @overload  # mats: <unknown, unknown dtype>, dtype: <known>  (positional)
 def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | list[onp.ToComplex] | list[onp.ToComplex1D]],
-    format: SPFormat | None,
+    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
+    format: _FmtCOO | None,
     dtype: onp.ToDType[_SCT],
-) -> _SpArray[_SCT, tuple[int, int]] | _SpMatrix[_SCT]: ...
+) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
 @overload  # mats: <unknown, unknown dtype>, dtype: <known>  (keyword)
 def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | list[onp.ToComplex] | list[onp.ToComplex1D]],
-    format: SPFormat | None = None,
+    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
+    format: _FmtCOO | None = None,
     *,
     dtype: onp.ToDType[_SCT],
-) -> _SpArray[_SCT, tuple[int, int]] | _SpMatrix[_SCT]: ...
+) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
 @overload  # catch-all
 def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | list[onp.ToComplex] | list[onp.ToComplex1D]],
+    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
+    format: _FmtCOO | None = None,
+    dtype: npt.DTypeLike | None = None,
+) -> _COOArray2D[_SCT] | coo_matrix[Any]: ...
+@overload  # catch-all
+def block_diag(
+    mats: Iterable[_spbase | onp.ArrayND[Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
     format: SPFormat | None = None,
     dtype: npt.DTypeLike | None = None,
-) -> _SpArray[Any, tuple[int, int]] | _SpMatrix[Any]: ...
+) -> Incomplete: ...
 
 #
 @overload  # shape: T, dtype: <default>, format: <default>

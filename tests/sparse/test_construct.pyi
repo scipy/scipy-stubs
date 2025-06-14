@@ -48,6 +48,11 @@ assert_type(sparse.diags([dense_1d, dense_1d]), sparse.dia_matrix[ScalarType])
 assert_type(sparse.diags_array(dense_1d), sparse.dia_array[ScalarType])
 assert_type(sparse.diags_array([dense_1d, dense_1d]), sparse.dia_array[ScalarType])
 
+# block_diag
+assert_type(sparse.block_diag([any_mat, any_mat]), sparse.coo_matrix[ScalarType])
+assert_type(sparse.block_diag([any_arr, any_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.block_diag([any_arr, any_mat]), sparse.coo_array[ScalarType, tuple[int, int]] | sparse.coo_matrix[ScalarType])
+
 # stack (same as hstack)
 assert_type(sparse.vstack([bsr_mat, bsr_mat]), sparse.coo_matrix[ScalarType])
 assert_type(sparse.vstack([coo_mat, coo_mat]), sparse.coo_matrix[ScalarType])
@@ -64,10 +69,6 @@ assert_type(sparse.vstack([csr_arr, csr_arr]), sparse.csr_array[ScalarType])
 assert_type(sparse.vstack([dia_arr, dia_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
 assert_type(sparse.vstack([dok_arr, dok_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
 assert_type(sparse.vstack([lil_arr, lil_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
-
-# block_diag
-assert_type(sparse.block_diag([any_mat, any_mat]), sparse.coo_matrix[ScalarType])
-assert_type(sparse.block_diag([any_arr, any_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
 
 # kron (Kronecker product)
 assert_type(sparse.kron(any_mat, any_mat), sparse.bsr_matrix[ScalarType])
