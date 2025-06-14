@@ -1,7 +1,7 @@
 # mypy: disable-error-code="explicit-override"
 
 from collections.abc import Sequence
-from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
@@ -318,9 +318,27 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     @overload
     def tensordot(self: _spbase[_SupIntT], /, other: _JustND[int], axes: _Axes = 2) -> _ScalarOrDense[_SupIntT]: ...
 
-class coo_array(_coo_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]): ...
+class coo_array(_coo_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_array[_SCT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _SCT0, /) -> coo_array[_SCT0, tuple[int, int]]: ...
 
 class coo_matrix(_coo_base[_SCT, tuple[int, int]], spmatrix[_SCT], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_matrix[_SCT]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _SCT0, /) -> coo_matrix[_SCT0]: ...
+
+    #
     @property
     @override
     def ndim(self, /) -> Literal[2]: ...

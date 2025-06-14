@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
@@ -8,6 +8,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
+from ._coo import coo_array, coo_matrix
 from ._data import _data_matrix
 from ._matrix import spmatrix
 from ._typing import Index1D, Numeric, ToShape2D
@@ -16,6 +17,7 @@ __all__ = ["dia_array", "dia_matrix", "isspmatrix_dia"]
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_AsSCT = TypeVar("_AsSCT", bound=Numeric)
 
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
@@ -129,7 +131,24 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         maxprint: int | None = None,
     ) -> None: ...
 
-class dia_array(_dia_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]): ...
-class dia_matrix(_dia_base[_SCT], spmatrix[_SCT], Generic[_SCT]): ...
+class dia_array(_dia_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_array[_SCT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_array[_AsSCT, tuple[int, int]]: ...
+
+class dia_matrix(_dia_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_matrix[_SCT]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_matrix[_AsSCT]: ...
 
 def isspmatrix_dia(x: object) -> TypeIs[dia_matrix]: ...

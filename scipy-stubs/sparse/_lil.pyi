@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, Generic, Literal, Self, TypeAlias, overload
+from typing import Any, Generic, Literal, Self, TypeAlias, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
@@ -9,6 +9,7 @@ import optype.numpy as onp
 from scipy._typing import Falsy
 
 from ._base import _spbase, sparray
+from ._coo import coo_array, coo_matrix
 from ._csr import csr_array, csr_matrix
 from ._index import IndexMixin
 from ._matrix import spmatrix
@@ -18,6 +19,7 @@ __all__ = ["isspmatrix_lil", "lil_array", "lil_matrix"]
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_AsSCT = TypeVar("_AsSCT", bound=Numeric)
 
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
@@ -158,10 +160,30 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int, int]] | csr_matrix[_SCT]: ...
 
 class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_array[_SCT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_array[_AsSCT, tuple[int, int]]: ...
+
+    #
     @override
     def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int, int]]: ...
 
 class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_matrix[_SCT]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_matrix[_AsSCT]: ...
+
+    #
     @override
     def getrow(self, /, i: onp.ToJustInt) -> csr_matrix[_SCT]: ...
 

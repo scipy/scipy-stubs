@@ -3,7 +3,7 @@
 # pyright: reportIncompatibleMethodOverride=false
 
 from collections.abc import Iterable, Sequence
-from typing import Any, ClassVar, Generic, Literal, Never, Self, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, Never, Self, TypeAlias, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
@@ -11,6 +11,7 @@ import optype as op
 import optype.numpy as onp
 
 from ._base import _spbase, sparray
+from ._coo import coo_array, coo_matrix
 from ._index import IndexMixin
 from ._matrix import spmatrix
 from ._typing import Numeric, ToShapeMin1D
@@ -21,6 +22,7 @@ __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_AsSCT = TypeVar("_AsSCT", bound=Numeric)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
 
 _1D: TypeAlias = tuple[int]  # noqa: PYI042
@@ -235,6 +237,15 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[tu
 
 #
 class dok_array(_dok_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_array[_SCT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_array[_AsSCT, tuple[int, int]]: ...
+
     # NOTE: This horrible code duplication is required due to the lack of higher-kinded typing (HKT) support.
     # https://github.com/python/typing/issues/548
     @overload
@@ -297,6 +308,16 @@ class dok_array(_dok_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[
 
 #
 class dok_matrix(_dok_base[_SCT, _2D], spmatrix[_SCT], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_matrix[_SCT]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_matrix[_AsSCT]: ...
+
+    #
     @override
     def get(self, /, key: _ToKey2D, default: onp.ToComplex = 0.0) -> _SCT: ...
     @override

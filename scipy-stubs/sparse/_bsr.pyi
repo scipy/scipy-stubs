@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
@@ -9,6 +9,7 @@ import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
 from ._compressed import _cs_matrix
+from ._coo import coo_array, coo_matrix
 from ._data import _minmax_mixin
 from ._matrix import spmatrix
 from ._typing import Numeric, ToShape2D
@@ -17,6 +18,7 @@ __all__ = ["bsr_array", "bsr_matrix", "isspmatrix_bsr"]
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_AsSCT = TypeVar("_AsSCT", bound=Numeric, default=Any)
 
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
@@ -32,6 +34,7 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
 
     data: onp.Array3D[_SCT]
 
+    #
     @property
     @override
     def format(self, /) -> Literal["bsr"]: ...
@@ -138,7 +141,25 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         maxprint: int | None = None,
     ) -> None: ...
 
-class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]): ...
-class bsr_matrix(_bsr_base[_SCT], spmatrix[_SCT], Generic[_SCT]): ...
+class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_array[_SCT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_array[_AsSCT, tuple[int, int]]: ...
 
+class bsr_matrix(_bsr_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_matrix[_SCT]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_matrix[_AsSCT]: ...
+
+#
 def isspmatrix_bsr(x: object) -> TypeIs[bsr_matrix]: ...

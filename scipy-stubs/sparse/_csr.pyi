@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Generic, Literal, Never, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, Never, TypeAlias, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
@@ -13,6 +13,7 @@ from ._typing import Index1D, Numeric
 __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_AsSCT = TypeVar("_AsSCT", bound=Numeric)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
 
 # workaround for the typing-spec non-conformance regarding overload behavior of mypy and pyright
@@ -43,10 +44,27 @@ class _csr_base(_cs_matrix[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
     @overload
     def count_nonzero(self: csr_array[Any, Any], /, axis: op.CanIndex) -> onp.Array1D[np.intp] | Any: ...  # type: ignore[misc]  # noqa: ANN401
 
-class csr_array(_csr_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]): ...
+class csr_array(_csr_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> csr_array[_SCT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> csr_array[_AsSCT, tuple[int, int]]: ...
 
 class csr_matrix(_csr_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
-    # NOTE: using `@override` together with `@overload` causes stubtest to crash...
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> csr_matrix[_SCT]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> csr_matrix[_AsSCT]: ...
+
+    #
     @overload
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload

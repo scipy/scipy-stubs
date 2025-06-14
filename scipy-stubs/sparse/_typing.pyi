@@ -1,6 +1,6 @@
 # NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`, and has no stable API.
 
-from typing import Literal, TypeAlias
+from typing import Literal, Protocol, TypeAlias, TypeVar, final, type_check_only
 from typing_extensions import TypeAliasType
 
 import numpy as np
@@ -8,7 +8,18 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-__all__ = ("Index1D", "Numeric", "SPFormat", "ToShape1D", "ToShape1D", "ToShape2D", "ToShapeMin1D", "ToShapeMin3D")
+__all__ = (
+    "Index1D",
+    "Numeric",
+    "SPFormat",
+    "ToShape1D",
+    "ToShape1D",
+    "ToShape2D",
+    "ToShapeMin1D",
+    "ToShapeMin3D",
+    "_CanStack",
+    "_CanStackAs",
+)
 
 ###
 
@@ -23,3 +34,21 @@ ToShapeMin1D: TypeAlias = tuple[op.CanIndex, *tuple[op.CanIndex, ...]]  # ndim >
 ToShapeMin3D: TypeAlias = tuple[op.CanIndex, op.CanIndex, op.CanIndex, *tuple[op.CanIndex, ...]]  # ndim >= 2
 
 SPFormat: TypeAlias = Literal["bsr", "coo", "csc", "csr", "dia", "dok", "lil"]
+
+###
+# Interfaces for emulated dependent associated types
+
+_AssocT_co = TypeVar("_AssocT_co", covariant=True)
+_ScalarT_contra = TypeVar("_ScalarT_contra", bound=Numeric, contravariant=True)
+
+@final
+@type_check_only
+class _CanStack(Protocol[_AssocT_co]):
+    @type_check_only
+    def __assoc_stacked__(self, /) -> _AssocT_co: ...
+
+@final
+@type_check_only
+class _CanStackAs(Protocol[_ScalarT_contra, _AssocT_co]):
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _ScalarT_contra, /) -> _AssocT_co: ...

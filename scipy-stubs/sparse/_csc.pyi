@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Generic, Literal, overload
+from typing import Any, ClassVar, Generic, Literal, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
@@ -13,6 +13,7 @@ from ._typing import Index1D, Numeric
 __all__ = ["csc_array", "csc_matrix", "isspmatrix_csc"]
 
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_AsSCT = TypeVar("_AsSCT", bound=Numeric)
 
 ###
 
@@ -35,10 +36,27 @@ class _csc_base(_cs_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     @overload
     def count_nonzero(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
 
-class csc_array(_csc_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]): ...
+class csc_array(_csc_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> csc_array[_SCT]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> csc_array[_AsSCT]: ...
 
 class csc_matrix(_csc_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
-    # NOTE: using `@override` together with `@overload` causes stubtest to crash...
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> csc_matrix[_SCT]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> csc_matrix[_AsSCT]: ...
+
+    #
     @overload
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload

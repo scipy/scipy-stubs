@@ -3,7 +3,7 @@
 import abc
 from collections.abc import Callable, Iterator, Sequence
 from types import GenericAlias
-from typing import Any, ClassVar, Final, Generic, Literal as L, Never, Self, TypeAlias, overload
+from typing import Any, ClassVar, Final, Generic, Literal as L, Never, Self, TypeAlias, overload, type_check_only
 from typing_extensions import TypeAliasType, TypeIs, TypeVar
 
 import numpy as np
@@ -141,6 +141,17 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
 
     maxprint: Final[int | None]
 
+    # NOTE: These two methods do not exist at runtime.
+    # We use it to emulate dependent associated types, which allows functions such as
+    # `hstack` and `block_array` to accurately annotate their return types.
+    # Note that overloads cannot be used due to limitations in the constraint matching
+    # algorithms of the supported static type checkers (hence two methods).
+    @type_check_only
+    def __assoc_stacked__(self, /) -> _spbase[_ScalarT_co, tuple[int, int]]: ...  # always 2d
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> _spbase[_ScalarT, tuple[int, int]]: ...
+
+    #
     @property
     def ndim(self, /) -> int: ...
     @property
@@ -915,7 +926,17 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     #
     def setdiag(self, /, values: onp.ToComplex1D, k: int = 0) -> None: ...
 
+_StackedSparseArray: TypeAlias = coo_array[_ScalarT, tuple[int, int]] | csc_array[_ScalarT] | csr_array[_ScalarT, tuple[int, int]]
+
 class sparray(Generic[_ScalarT_co, _ShapeT_co]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `_spbase` for more information.
+    @type_check_only
+    def __assoc_stacked__(self, /) -> _StackedSparseArray[_ScalarT_co]: ...
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> _StackedSparseArray[_ScalarT]: ...
+
+    #
     @classmethod
     def __class_getitem__(cls, arg: type | object, /) -> GenericAlias: ...
 
