@@ -1,13 +1,15 @@
 from collections.abc import Sequence
-from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
+import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
+from ._coo import coo_array, coo_matrix
 from ._data import _data_matrix
 from ._matrix import spmatrix
 from ._typing import Index1D, Numeric, ToShape2D
@@ -16,6 +18,7 @@ __all__ = ["dia_array", "dia_matrix", "isspmatrix_dia"]
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_AsSCT = TypeVar("_AsSCT", bound=Numeric)
 
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
@@ -40,6 +43,28 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     def shape(self, /) -> tuple[int, int]: ...
 
     #
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+
+class dia_array(_dia_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_array[_SCT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_array[_AsSCT, tuple[int, int]]: ...
+
+    # NOTE: keep in sync with `dia_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
@@ -53,7 +78,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: None
     def __init__(
-        self: _dia_base[np.float64],
+        self: dia_array[np.float64],
         /,
         arg1: ToShape2D,
         shape: None = None,
@@ -64,7 +89,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: type[bool] | None
     def __init__(
-        self: _dia_base[np.bool_],
+        self: dia_array[np.bool_],
         /,
         arg1: _ToMatrixPy[bool],
         shape: ToShape2D | None = None,
@@ -75,7 +100,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     ) -> None: ...
     @overload  # matrix-like builtins.int, dtype: type[int] | None
     def __init__(
-        self: _dia_base[np.int_],
+        self: dia_array[np.int_],
         /,
         arg1: _ToMatrixPy[op.JustInt],
         shape: ToShape2D | None = None,
@@ -86,7 +111,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     ) -> None: ...
     @overload  # matrix-like builtins.float, dtype: type[float] | None
     def __init__(
-        self: _dia_base[np.float64],
+        self: dia_array[np.float64],
         /,
         arg1: _ToMatrixPy[op.JustFloat],
         shape: ToShape2D | None = None,
@@ -97,7 +122,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     ) -> None: ...
     @overload  # matrix-like builtins.complex, dtype: type[complex] | None
     def __init__(
-        self: _dia_base[np.complex128],
+        self: dia_array[np.complex128],
         /,
         arg1: _ToMatrixPy[op.JustComplex],
         shape: ToShape2D | None = None,
@@ -110,7 +135,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexND,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
@@ -121,7 +146,7 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexND,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_SCT],
@@ -129,7 +154,115 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         maxprint: int | None = None,
     ) -> None: ...
 
-class dia_array(_dia_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]): ...
-class dia_matrix(_dia_base[_SCT], spmatrix[_SCT], Generic[_SCT]): ...
+class dia_matrix(_dia_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_matrix[_SCT]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_matrix[_AsSCT]: ...
+
+    # NOTE: keep in sync with `dia_array.__init__`
+    @overload  # matrix-like (known dtype), dtype: None
+    def __init__(
+        self,
+        /,
+        arg1: _ToMatrix[_SCT] | _ToData[_SCT],
+        shape: ToShape2D | None = None,
+        dtype: None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: None
+    def __init__(
+        self: dia_matrix[np.float64],
+        /,
+        arg1: ToShape2D,
+        shape: None = None,
+        dtype: None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
+    def __init__(
+        self: dia_matrix[np.bool_],
+        /,
+        arg1: _ToMatrixPy[bool],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    def __init__(
+        self: dia_matrix[np.int_],
+        /,
+        arg1: _ToMatrixPy[op.JustInt],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyIntDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    def __init__(
+        self: dia_matrix[np.float64],
+        /,
+        arg1: _ToMatrixPy[op.JustFloat],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    def __init__(
+        self: dia_matrix[np.complex128],
+        /,
+        arg1: _ToMatrixPy[op.JustComplex],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <known> (positional)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <known> (keyword)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
 
 def isspmatrix_dia(x: object) -> TypeIs[dia_matrix]: ...

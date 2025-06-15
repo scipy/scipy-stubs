@@ -3,7 +3,7 @@
 
 from collections.abc import Sequence
 from types import GenericAlias
-from typing import Any, Generic, Self, TypeAlias, overload
+from typing import Any, Generic, Self, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -44,9 +44,19 @@ _DualArrayLike: TypeAlias = Sequence[Sequence[_T | _SCT] | onp.CanArrayND[_SCT]]
 
 _SpMatrixOut: TypeAlias = bsr_matrix[_SCT] | csc_matrix[_SCT] | csr_matrix[_SCT]
 
+_StackedSparseMatrix: TypeAlias = coo_matrix[_SCT] | csc_matrix[_SCT] | csr_matrix[_SCT]
+
 ###
 
 class spmatrix(Generic[_SCT_co]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @type_check_only
+    def __assoc_stacked__(self, /) -> _StackedSparseMatrix[_SCT_co]: ...
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _SCT, /) -> _StackedSparseMatrix[_SCT]: ...
+
+    #
     @property
     def _bsr_container(self, /) -> bsr_matrix[_SCT_co]: ...
     @property

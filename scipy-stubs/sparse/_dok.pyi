@@ -3,17 +3,19 @@
 # pyright: reportIncompatibleMethodOverride=false
 
 from collections.abc import Iterable, Sequence
-from typing import Any, ClassVar, Generic, Literal, Never, Self, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, Never, Self, TypeAlias, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
+import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 
 from ._base import _spbase, sparray
+from ._coo import coo_array, coo_matrix
 from ._index import IndexMixin
 from ._matrix import spmatrix
-from ._typing import Numeric, ToShapeMin1D
+from ._typing import Numeric, ToShape2D, ToShapeMin1D
 
 __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
@@ -21,12 +23,13 @@ __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=Numeric, default=Any)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[Any, ...], covariant=True)
+_AsSCT = TypeVar("_AsSCT", bound=Numeric)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
 
 _1D: TypeAlias = tuple[int]  # noqa: PYI042
 _2D: TypeAlias = tuple[int, int]  # noqa: PYI042
 # workaround for the typing-spec non-conformance regarding overload behavior of mypy and pyright
-_AnyD: TypeAlias = tuple[Never] | tuple[Never, Never]
+_NeitherD: TypeAlias = tuple[Never] | tuple[Never, Never]
 
 _ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
@@ -42,9 +45,7 @@ _C2T = TypeVar("_C2T", bound=_dok_base[np.float64, _2D])
 
 ###
 
-class _dok_base(
-    _spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[tuple[int] | tuple[int, int], _SCT], Generic[_SCT, _ShapeT_co]
-):
+class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[tuple[Any, ...], _SCT], Generic[_SCT, _ShapeT_co]):
     _format: ClassVar = "dok"
     _allow_nd: ClassVar = (1, 2)
 
@@ -61,82 +62,16 @@ class _dok_base(
     def shape(self, /) -> _ShapeT_co: ...
 
     #
-    @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT],
+        arg1: onp.ToComplexND,
         shape: ToShapeMin1D | None = None,
-        dtype: None = None,
+        dtype: npt.DTypeLike | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: None
-    def __init__(
-        self: _dok_base[np.float64],
-        /,
-        arg1: ToShapeMin1D,
-        shape: None = None,
-        dtype: None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
-    def __init__(
-        self: _dok_base[np.bool_],
-        /,
-        arg1: _ToMatrixPy[bool],
-        shape: ToShapeMin1D | None = None,
-        dtype: onp.AnyBoolDType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # matrix-like builtins.int, dtype: type[int] | None
-    def __init__(
-        self: _dok_base[np.int_],
-        /,
-        arg1: _ToMatrixPy[op.JustInt],
-        shape: ToShapeMin1D | None = None,
-        dtype: onp.AnyIntDType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # matrix-like builtins.float, dtype: type[float] | None
-    def __init__(
-        self: _dok_base[np.float64],
-        /,
-        arg1: _ToMatrixPy[op.JustFloat],
-        shape: ToShapeMin1D | None = None,
-        dtype: onp.AnyFloat64DType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
-    def __init__(
-        self: _dok_base[np.complex128],
-        /,
-        arg1: _ToMatrixPy[op.JustComplex],
-        shape: ToShapeMin1D | None = None,
-        dtype: onp.AnyComplex128DType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # dtype: <known> (positional)
-    def __init__(
-        self, /, arg1: onp.ToComplexND, shape: ToShapeMin1D | None, copy: bool = False, *, maxprint: int | None = None
-    ) -> None: ...
-    @overload  # dtype: <known> (keyword)
-    def __init__(
-        self, /, arg1: onp.ToComplexND, shape: ToShapeMin1D | None = None, *, copy: bool = False, maxprint: int | None = None
-    ) -> None: ...
-    @override
-    def todok(self, /, copy: bool = False) -> Self: ...
 
     #
     @override
@@ -224,8 +159,8 @@ class _dok_base(
     @overload
     @classmethod
     def fromkeys(
-        cls: type[_dok_base[np.complex128, _AnyD]], iterable: _ToKeys, v: op.JustComplex, /
-    ) -> _dok_base[np.complex128]: ...
+        cls: type[_dok_base[np.complex128, _NeitherD]], iterable: _ToKeys, v: op.JustComplex, /
+    ) -> _dok_base[np.complex128, tuple[Any, ...]]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[_C2T], iterable: _ToKeys2, v: op.JustComplex, /) -> _C2T: ...
@@ -237,11 +172,121 @@ class _dok_base(
 
 #
 class dok_array(_dok_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[_SCT, _ShapeT_co]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_array[_SCT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_array[_AsSCT, tuple[int, int]]: ...
+
+    # NOTE: keep the 2d overloads in sync with `dok_matrix.__init__`
+    @overload  # matrix-like (known dtype), dtype: None
+    def __init__(
+        self,
+        /,
+        arg1: _ToMatrix[_SCT],
+        shape: ToShapeMin1D | None = None,
+        dtype: None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: None
+    def __init__(
+        self: dok_array[np.float64],
+        /,
+        arg1: ToShapeMin1D,
+        shape: None = None,
+        dtype: None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
+    def __init__(
+        self: dok_array[np.bool_],
+        /,
+        arg1: _ToMatrixPy[bool],
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    def __init__(
+        self: dok_array[np.int_],
+        /,
+        arg1: _ToMatrixPy[op.JustInt],
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.AnyIntDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    def __init__(
+        self: dok_array[np.float64],
+        /,
+        arg1: _ToMatrixPy[op.JustFloat],
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    def __init__(
+        self: dok_array[np.complex128],
+        /,
+        arg1: _ToMatrixPy[op.JustComplex],
+        shape: ToShapeMin1D | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <known> (positional)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShapeMin1D | None,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <known> (keyword)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShapeMin1D | None = None,
+        *,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShapeMin1D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+
     # NOTE: This horrible code duplication is required due to the lack of higher-kinded typing (HKT) support.
     # https://github.com/python/typing/issues/548
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_array[_SCT, _AnyD]], iterable: _ToKeys, v: _SCT, /) -> dok_array[_SCT]: ...
+    def fromkeys(cls: type[dok_array[_SCT, _NeitherD]], iterable: _ToKeys, v: _SCT, /) -> dok_array[_SCT, tuple[Any, ...]]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[dok_array[_SCT, _2D]], iterable: _ToKeys2, v: _SCT, /) -> dok_array[_SCT, _2D]: ...
@@ -250,7 +295,9 @@ class dok_array(_dok_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[
     def fromkeys(cls: type[dok_array[_SCT, _1D]], iterable: _ToKeys1, v: _SCT, /) -> dok_array[_SCT, _1D]: ...
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_array[np.bool_, _AnyD]], iterable: _ToKeys, v: onp.ToBool, /) -> dok_array[np.bool_]: ...
+    def fromkeys(
+        cls: type[dok_array[np.bool_, _NeitherD]], iterable: _ToKeys, v: onp.ToBool, /
+    ) -> dok_array[np.bool_, tuple[Any, ...]]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[dok_array[np.bool_, _2D]], iterable: _ToKeys2, v: onp.ToBool, /) -> dok_array[np.bool_, _2D]: ...
@@ -259,7 +306,9 @@ class dok_array(_dok_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[
     def fromkeys(cls: type[dok_array[np.bool_, _1D]], iterable: _ToKeys1, v: onp.ToBool, /) -> dok_array[np.bool_, _1D]: ...
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_array[np.int_, _AnyD]], iterable: _ToKeys, v: op.JustInt = 1, /) -> dok_array[np.int_]: ...
+    def fromkeys(
+        cls: type[dok_array[np.int_, _NeitherD]], iterable: _ToKeys, v: op.JustInt = 1, /
+    ) -> dok_array[np.int_, tuple[Any, ...]]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[dok_array[np.int_, _2D]], iterable: _ToKeys2, v: op.JustInt = 1, /) -> dok_array[np.int_, _2D]: ...
@@ -268,7 +317,9 @@ class dok_array(_dok_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[
     def fromkeys(cls: type[dok_array[np.int_, _1D]], iterable: _ToKeys1, v: op.JustInt = 1, /) -> dok_array[np.int_, _1D]: ...
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_array[np.float64, _AnyD]], iterable: _ToKeys, v: op.JustFloat, /) -> dok_array[np.float64]: ...
+    def fromkeys(
+        cls: type[dok_array[np.float64, _NeitherD]], iterable: _ToKeys, v: op.JustFloat, /
+    ) -> dok_array[np.float64, tuple[Any, ...]]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[dok_array[np.float64, _2D]], iterable: _ToKeys2, v: op.JustFloat, /) -> dok_array[np.float64, _2D]: ...
@@ -278,8 +329,8 @@ class dok_array(_dok_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[
     @overload
     @classmethod
     def fromkeys(
-        cls: type[dok_array[np.complex128, _AnyD]], iterable: _ToKeys, v: op.JustComplex, /
-    ) -> dok_array[np.complex128]: ...
+        cls: type[dok_array[np.complex128, _NeitherD]], iterable: _ToKeys, v: op.JustComplex, /
+    ) -> dok_array[np.complex128, tuple[Any, ...]]: ...
     @overload
     @classmethod
     def fromkeys(
@@ -293,6 +344,117 @@ class dok_array(_dok_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[
 
 #
 class dok_matrix(_dok_base[_SCT, _2D], spmatrix[_SCT], Generic[_SCT]):
+    # NOTE: These two methods do not exist at runtime.
+    # See the relevant comment in `sparse._base._spbase` for more information.
+    @override
+    @type_check_only
+    def __assoc_stacked__(self, /) -> coo_matrix[_SCT]: ...
+    @override
+    @type_check_only
+    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_matrix[_AsSCT]: ...
+
+    # NOTE: keep the in sync with `dok_array.__init__`
+    @overload  # matrix-like (known dtype), dtype: None
+    def __init__(
+        self,
+        /,
+        arg1: _ToMatrix[_SCT],
+        shape: ToShape2D | None = None,
+        dtype: None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: None
+    def __init__(
+        self: dok_matrix[np.float64],
+        /,
+        arg1: ToShape2D,
+        shape: None = None,
+        dtype: None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
+    def __init__(
+        self: dok_matrix[np.bool_],
+        /,
+        arg1: _ToMatrixPy[bool],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    def __init__(
+        self: dok_matrix[np.int_],
+        /,
+        arg1: _ToMatrixPy[op.JustInt],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyIntDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    def __init__(
+        self: dok_matrix[np.float64],
+        /,
+        arg1: _ToMatrixPy[op.JustFloat],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    def __init__(
+        self: dok_matrix[np.complex128],
+        /,
+        arg1: _ToMatrixPy[op.JustComplex],
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <known> (positional)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <known> (keyword)
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+
+    #
     @override
     def get(self, /, key: _ToKey2D, default: onp.ToComplex = 0.0) -> _SCT: ...
     @override
