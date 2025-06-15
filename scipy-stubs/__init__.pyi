@@ -14,7 +14,6 @@ from . import (
     interpolate,
     io,
     linalg,
-    misc as misc,
     ndimage,
     odr,
     optimize,
