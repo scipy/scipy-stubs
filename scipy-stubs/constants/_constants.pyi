@@ -1,7 +1,8 @@
-from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
+from typing import Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = [
     "N_A",
@@ -164,14 +165,15 @@ __all__ = [
     "zetta",
 ]
 
-_FloatScalarT = TypeVar("_FloatScalarT", bound=np.floating[Any])
-_FloatArrayT = TypeVar("_FloatArrayT", bound=onp.ArrayND[np.floating[Any]])
+_InexactArrayLikeT = TypeVar("_InexactArrayLikeT", bound=npc.inexact | onp.ArrayND[np.inexact])
 
 _TempScaleC: TypeAlias = Literal["Celsius", "celsius", "C", "c"]
 _TempScaleK: TypeAlias = Literal["Kelvin", "kelvin", "K", "k"]
 _TempScaleF: TypeAlias = Literal["Fahrenheit", "fahrenheit", "F", "f"]
 _TempScaleR: TypeAlias = Literal["Rankine", "rankine", "R", "r"]
 _TempScale: TypeAlias = Literal[_TempScaleC, _TempScaleK, _TempScaleF, _TempScaleR]
+
+###
 
 # mathematical constants
 pi: Final = 3.141592653589793
@@ -205,12 +207,12 @@ ronto: Final = 1e-27
 quecto: Final = 1e-30
 
 # binary prefixes
-kibi: Final = 0x400
-mebi: Final = 0x10_0000
-gibi: Final = 0x4000_0000
-tebi: Final = 0x100_0000_0000
-pebi: Final = 0x4_0000_0000_0000
-exbi: Final = 0x1000_0000_0000_0000
+kibi: Final[int] = ...  # 0x400
+mebi: Final[int] = ...  # 0x10_0000
+gibi: Final[int] = ...  # 0x4000_0000
+tebi: Final[int] = ...  # 0x100_0000_0000
+pebi: Final[int] = ...  # 0x4_0000_0000_0000
+exbi: Final[int] = ...  # 0x1000_0000_0000_0000
 zebi: Final[int] = ...  # 0x40_0000_0000_0000_0000
 yobi: Final[int] = ...  # 0x1_0000_0000_0000_0000_0000
 
@@ -363,30 +365,32 @@ kgf: Final = 9.80665
 kilogram_force: Final = 9.80665
 
 @overload
-def convert_temperature(val: _FloatScalarT, old_scale: _TempScale, new_scale: _TempScale) -> _FloatScalarT: ...
+def convert_temperature(val: _InexactArrayLikeT, old_scale: _TempScale, new_scale: _TempScale) -> _InexactArrayLikeT: ...
 @overload
-def convert_temperature(val: _FloatArrayT, old_scale: _TempScale, new_scale: _TempScale) -> _FloatArrayT: ...
+def convert_temperature(val: onp.ToInt | onp.ToJustFloat64, old_scale: _TempScale, new_scale: _TempScale) -> np.float64: ...
 @overload
-def convert_temperature(val: onp.ToFloat, old_scale: _TempScale, new_scale: _TempScale) -> np.floating[Any]: ...
+def convert_temperature(
+    val: onp.ToIntND | onp.ToJustFloat64_ND, old_scale: _TempScale, new_scale: _TempScale
+) -> onp.ArrayND[np.float64]: ...
 @overload
-def convert_temperature(val: onp.ToFloatND, old_scale: _TempScale, new_scale: _TempScale) -> onp.ArrayND[np.floating[Any]]: ...
+def convert_temperature(val: onp.ToFloatND, old_scale: _TempScale, new_scale: _TempScale) -> onp.ArrayND[npc.floating]: ...
 
 #
 @overload
-def lambda2nu(lambda_: _FloatScalarT) -> _FloatScalarT: ...
+def lambda2nu(lambda_: _InexactArrayLikeT) -> _InexactArrayLikeT: ...
 @overload
-def lambda2nu(lambda_: _FloatArrayT) -> _FloatArrayT: ...
+def lambda2nu(lambda_: onp.ToInt | onp.ToJustFloat64) -> np.float64: ...
 @overload
-def lambda2nu(lambda_: onp.ToFloat) -> np.floating[Any]: ...
+def lambda2nu(lambda_: onp.ToIntND | onp.ToJustFloat64_ND) -> onp.ArrayND[np.float64]: ...
 @overload
-def lambda2nu(lambda_: onp.ToFloatND) -> onp.ArrayND[np.floating[Any]]: ...
+def lambda2nu(lambda_: onp.ToFloatND) -> onp.ArrayND[npc.floating]: ...
 
 #
 @overload
-def nu2lambda(nu: _FloatScalarT) -> _FloatScalarT: ...
+def nu2lambda(nu: _InexactArrayLikeT) -> _InexactArrayLikeT: ...
 @overload
-def nu2lambda(nu: _FloatArrayT) -> _FloatArrayT: ...
+def nu2lambda(nu: onp.ToInt | onp.ToJustFloat64) -> np.float64: ...
 @overload
-def nu2lambda(nu: onp.ToFloat) -> np.floating[Any]: ...
+def nu2lambda(nu: onp.ToIntND | onp.ToJustFloat64_ND) -> onp.ArrayND[np.float64]: ...
 @overload
-def nu2lambda(nu: onp.ToFloatND) -> onp.ArrayND[np.floating[Any]]: ...
+def nu2lambda(nu: onp.ToFloatND) -> onp.ArrayND[npc.floating]: ...
