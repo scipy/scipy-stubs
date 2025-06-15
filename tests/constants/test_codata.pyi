@@ -1,17 +1,25 @@
-from typing import assert_type
+from typing import LiteralString, assert_type
 
 from scipy import constants
 
 assert_type(constants.value("elementary charge"), float)
-assert_type(type(constants.unit("proton mass")), type[str])
-assert_type(constants.precision("proton mass"), float)
+constants.value(None)  # type: ignore[call-arg]  # pyright: ignore[reportArgumentType]
+constants.value(b"proton mass")  # type: ignore[call-arg]  # pyright: ignore[reportArgumentType]
 
+assert_type(constants.unit("proton mass"), LiteralString)
+constants.unit(None)  # type: ignore[call-arg]  # pyright: ignore[reportArgumentType]
+constants.unit(b"proton mass")  # type: ignore[call-arg]  # pyright: ignore[reportArgumentType]
+
+assert_type(constants.precision("proton mass"), float)
+constants.precision(None)  # type: ignore[call-arg]  # pyright: ignore[reportArgumentType]
+constants.precision(b"proton mass")  # type: ignore[call-arg]  # pyright: ignore[reportArgumentType]
+
+assert_type(constants.find(None), list[str])
 assert_type(constants.find("boltzmann"), list[str])
 assert_type(constants.find("boltzmann", False), list[str])
 assert_type(constants.find("boltzmann", disp=False), list[str])
 assert_type(constants.find("boltzmann", True), None)
 assert_type(constants.find("boltzmann", disp=True), None)
+constants.find(b"boltzmann")  # type: ignore[call-arg]  # pyright: ignore[reportArgumentType]
 
-assert_type(constants.physical_constants["classical electron radius"][0], float)
-assert_type(type(constants.physical_constants["classical electron radius"][1]), type[str])
-assert_type(constants.physical_constants["classical electron radius"][2], float)
+assert_type(constants.physical_constants, dict[str, tuple[float, str, float]])
