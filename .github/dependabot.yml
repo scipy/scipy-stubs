@@ -4,7 +4,7 @@ updates:
     directory: /
     target-branch: master
     labels:
-      - "meta: CI"
+      - "tool: github actions"
     schedule:
       interval: daily
     groups:
@@ -16,7 +16,7 @@ updates:
     directory: /
     target-branch: master
     labels:
-      - "meta: deps"
+      - "topic: dependencies"
     schedule:
       interval: daily
     groups:
