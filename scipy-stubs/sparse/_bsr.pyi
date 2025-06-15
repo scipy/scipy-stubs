@@ -3,6 +3,7 @@ from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload, type_ch
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
+import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
@@ -45,6 +46,19 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
     def shape(self, /) -> tuple[int, int]: ...
     @property
     def blocksize(self, /) -> tuple[int, int]: ...
+
+    #
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        blocksize: tuple[int, int] | None = None,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
 
 class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
     # NOTE: These two methods do not exist at runtime.
@@ -133,8 +147,9 @@ class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexND,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
+        dtype: onp.ToDType[_SCT],
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         *,
@@ -144,11 +159,24 @@ class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexND,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
+        dtype: onp.ToDType[_SCT],
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        blocksize: tuple[int, int] | None = None,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
 
@@ -239,8 +267,9 @@ class bsr_matrix(_bsr_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexND,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
+        dtype: onp.ToDType[_SCT],
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         *,
@@ -250,11 +279,24 @@ class bsr_matrix(_bsr_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexND,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
+        dtype: onp.ToDType[_SCT],
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        blocksize: tuple[int, int] | None = None,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
 

@@ -3,6 +3,7 @@ from typing import Any, Generic, Literal, Self, TypeAlias, overload, type_check_
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
+import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 
@@ -40,6 +41,18 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
     @property
     @override
     def shape(self, /) -> tuple[int, int]: ...
+
+    #
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
 
     #
     @override
@@ -150,7 +163,7 @@ class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexND,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
@@ -161,11 +174,22 @@ class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexND,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
 
@@ -254,7 +278,7 @@ class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexND,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
@@ -265,11 +289,22 @@ class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexND,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_SCT],
         copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
 

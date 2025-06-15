@@ -2,11 +2,12 @@ import abc
 from typing import Any, Generic, Literal, Self
 from typing_extensions import TypeVar, override
 
+import numpy.typing as npt
 import optype.numpy as onp
 
 from ._data import _data_matrix, _minmax_mixin
 from ._index import IndexMixin
-from ._typing import Index1D, Numeric
+from ._typing import Index1D, Numeric, ToShapeMin1D
 
 __all__: list[str] = []
 
@@ -41,6 +42,18 @@ class _cs_matrix(
     def has_sorted_indices(self, /) -> bool: ...
     @has_sorted_indices.setter
     def has_sorted_indices(self, val: bool, /) -> None: ...
+
+    #
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShapeMin1D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
 
     #
     def sorted_indices(self, /) -> Self: ...

@@ -7,6 +7,7 @@ from typing import Any, ClassVar, Generic, Literal, Never, Self, TypeAlias, over
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
+import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 
@@ -59,6 +60,18 @@ class _dok_base(_spbase[_SCT, _ShapeT_co], IndexMixin[_SCT, _ShapeT_co], dict[tu
     @property
     @override
     def shape(self, /) -> _ShapeT_co: ...
+
+    #
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShapeMin1D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
 
     #
     @override
@@ -237,11 +250,36 @@ class dok_array(_dok_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[
     ) -> None: ...
     @overload  # dtype: <known> (positional)
     def __init__(
-        self, /, arg1: onp.ToComplexND, shape: ToShapeMin1D | None, copy: bool = False, *, maxprint: int | None = None
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShapeMin1D | None,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (keyword)
     def __init__(
-        self, /, arg1: onp.ToComplexND, shape: ToShapeMin1D | None = None, *, copy: bool = False, maxprint: int | None = None
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShapeMin1D | None = None,
+        *,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplexND,
+        shape: ToShapeMin1D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
 
     # NOTE: This horrible code duplication is required due to the lack of higher-kinded typing (HKT) support.
@@ -384,11 +422,36 @@ class dok_matrix(_dok_base[_SCT, _2D], spmatrix[_SCT], Generic[_SCT]):
     ) -> None: ...
     @overload  # dtype: <known> (positional)
     def __init__(
-        self, /, arg1: onp.ToComplexND, shape: ToShape2D | None, copy: bool = False, *, maxprint: int | None = None
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: <known> (keyword)
     def __init__(
-        self, /, arg1: onp.ToComplexND, shape: ToShape2D | None = None, *, copy: bool = False, maxprint: int | None = None
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_SCT],
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
     ) -> None: ...
 
     #

@@ -71,6 +71,18 @@ class _coo_base(_data_matrix[_SCT, _ShapeT_co], _minmax_mixin[_SCT, _ShapeT_co],
     def col(self, col: onp.ToInt1D, /) -> None: ...
 
     #
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex1D | onp.ToComplex2D,
+        shape: ToShapeMin1D | None = None,
+        dtype: npt.DTypeLike | None = ...,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+
+    #
     def sum_duplicates(self, /) -> None: ...
     def eliminate_zeros(self, /) -> None: ...
 
@@ -316,13 +328,13 @@ class coo_array(_coo_base[_SCT, _ShapeT_co], sparray[_SCT, _ShapeT_co], Generic[
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # shape: known
+    @overload
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex1D | onp.ToComplex2D,
+        arg1: onp.ToComplexND,
         shape: ToShapeMin1D | None = None,
-        dtype: npt.DTypeLike | None = ...,
+        dtype: npt.DTypeLike | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -449,7 +461,7 @@ class coo_matrix(_coo_base[_SCT, tuple[int, int]], spmatrix[_SCT], Generic[_SCT]
         /,
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
-        dtype: npt.DTypeLike | None = ...,
+        dtype: npt.DTypeLike | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
