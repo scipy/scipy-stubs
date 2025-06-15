@@ -1,4 +1,4 @@
-# NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`, and has no stable API.
+# NOTE(scipy-stubs): This module only exists `if typing.TYPE_CHECKING: ...`, and has no stable API.
 
 from typing import Literal, Protocol, SupportsIndex, TypeAlias, TypeVar, final, type_check_only
 from typing_extensions import TypeAliasType
