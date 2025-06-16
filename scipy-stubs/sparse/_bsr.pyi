@@ -17,23 +17,25 @@ from ._typing import Numeric, ToShape2D
 
 __all__ = ["bsr_array", "bsr_matrix", "isspmatrix_bsr"]
 
+###
+
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
-_AsSCT = TypeVar("_AsSCT", bound=Numeric, default=Any)
+_ScalarT = TypeVar("_ScalarT", bound=Numeric)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
 
-_ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
+_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
 
-_ToData2: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[npc.integer]]
-_ToData3: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]
-_ToData: TypeAlias = _ToData2[_SCT] | _ToData3[_SCT]
+_ToData2: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer]]
+_ToData3: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]
+_ToData: TypeAlias = _ToData2[_ScalarT] | _ToData3[_ScalarT]
 
 ###
 
-class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int, int]], Generic[_SCT]):
+class _bsr_base(_cs_matrix[_ScalarT_co, tuple[int, int]], _minmax_mixin[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     _format: ClassVar = "bsr"
 
-    data: onp.Array3D[_SCT]
+    data: onp.Array3D[_ScalarT_co]
 
     @property
     @override
@@ -60,22 +62,22 @@ class _bsr_base(_cs_matrix[_SCT, tuple[int, int]], _minmax_mixin[_SCT, tuple[int
         maxprint: int | None = None,
     ) -> None: ...
 
-class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
+class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
-    def __assoc_stacked__(self, /) -> coo_array[_SCT, tuple[int, int]]: ...
+    def __assoc_stacked__(self, /) -> coo_array[_ScalarT_co, tuple[int, int]]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_array[_AsSCT, tuple[int, int]]: ...
+    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
 
     # NOTE: keep in sync with `bsr_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT] | _ToData[_SCT],
+        arg1: _ToMatrix[_ScalarT_co] | _ToData[_ScalarT_co],
         shape: ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -149,7 +151,7 @@ class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
         /,
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         *,
@@ -162,7 +164,7 @@ class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         maxprint: int | None = None,
@@ -180,22 +182,22 @@ class bsr_array(_bsr_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
         maxprint: int | None = None,
     ) -> None: ...
 
-class bsr_matrix(_bsr_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
+class bsr_matrix(_bsr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
-    def __assoc_stacked__(self, /) -> coo_matrix[_SCT]: ...
+    def __assoc_stacked__(self, /) -> coo_matrix[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_matrix[_AsSCT]: ...
+    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_matrix[_ScalarT]: ...
 
     # NOTE: keep in sync with `bsr_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT] | _ToData[_SCT],
+        arg1: _ToMatrix[_ScalarT_co] | _ToData[_ScalarT_co],
         shape: ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -269,7 +271,7 @@ class bsr_matrix(_bsr_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
         /,
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         *,
@@ -282,7 +284,7 @@ class bsr_matrix(_bsr_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         blocksize: tuple[int, int] | None = None,
         maxprint: int | None = None,

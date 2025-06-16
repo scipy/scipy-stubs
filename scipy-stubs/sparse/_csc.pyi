@@ -14,15 +14,15 @@ from ._typing import Index1D, Numeric, ToShape2D
 __all__ = ["csc_array", "csc_matrix", "isspmatrix_csc"]
 
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
-_AsSCT = TypeVar("_AsSCT", bound=Numeric)
+_ScalarT = TypeVar("_ScalarT", bound=Numeric)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
 
-_ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
+_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
 
 ###
 
-class _csc_base(_cs_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
+class _csc_base(_cs_matrix[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     _format: ClassVar = "csc"
 
     @property
@@ -41,24 +41,24 @@ class _csc_base(_cs_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
     @overload
     def count_nonzero(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
 
-class csc_array(_csc_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
+class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
-    def __assoc_stacked__(self, /) -> csc_array[_SCT]: ...
+    def __assoc_stacked__(self, /) -> csc_array[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> csc_array[_AsSCT]: ...
+    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> csc_array[_ScalarT]: ...
 
     # NOTE: keep in sync with `csc_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT],
+        arg1: _ToMatrix[_ScalarT_co],
         shape: ToShape2D | None = None,
-        dtype: onp.ToDType[_SCT] | None = None,
+        dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -124,7 +124,7 @@ class csc_array(_csc_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
         /,
         arg1: onp.ToComplexStrict2D,
         shape: ToShape2D | None,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -136,29 +136,29 @@ class csc_array(_csc_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
         arg1: onp.ToComplexStrict2D,
         shape: ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
 
-class csc_matrix(_csc_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
+class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
-    def __assoc_stacked__(self, /) -> csc_matrix[_SCT]: ...
+    def __assoc_stacked__(self, /) -> csc_matrix[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> csc_matrix[_AsSCT]: ...
+    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> csc_matrix[_ScalarT]: ...
 
     # NOTE: keep in sync with `csc_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT],
+        arg1: _ToMatrix[_ScalarT_co],
         shape: ToShape2D | None = None,
-        dtype: onp.ToDType[_SCT] | None = None,
+        dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -224,7 +224,7 @@ class csc_matrix(_csc_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
         /,
         arg1: onp.ToComplexStrict2D,
         shape: ToShape2D | None,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -236,7 +236,7 @@ class csc_matrix(_csc_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
         arg1: onp.ToComplexStrict2D,
         shape: ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...

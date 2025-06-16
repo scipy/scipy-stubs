@@ -25,11 +25,9 @@ _Graph: TypeAlias = onp.CanArray2D[_RealT] | _spbase[_RealT, tuple[int, int]]
 DTYPE: Final[type[np.float64]] = ...
 ITYPE: Final[type[np.int32]] = ...
 
-# NOTE: Pyright reports some weird false positive errors about overlapping overloads.
-
 #
 @overload
-def csgraph_from_masked(graph: onp.MArray2D[npc.integer]) -> csr_array[np.int32, tuple[int, int]]: ...  # pyright: ignore[reportOverlappingOverload]
+def csgraph_from_masked(graph: onp.MArray2D[npc.integer]) -> csr_array[np.int32, tuple[int, int]]: ...
 @overload
 def csgraph_from_masked(graph: onp.MArray2D[npc.floating]) -> csr_array[np.float64, tuple[int, int]]: ...
 @overload
@@ -51,7 +49,7 @@ def csgraph_masked_from_dense(
 
 #
 @overload
-def csgraph_from_dense(  # pyright: ignore[reportOverlappingOverload]
+def csgraph_from_dense(
     graph: onp.ToInt2D, null_value: int | None = 0, nan_null: bool = True, infinity_null: bool = True
 ) -> csr_array[np.int32, tuple[int, int]]: ...
 @overload
@@ -81,7 +79,7 @@ def csgraph_to_masked(csgraph: _SparseGraph[_Real]) -> onp.MArray2D[np.float64 |
 
 #
 @overload
-def reconstruct_path(  # pyright: ignore[reportOverlappingOverload]
+def reconstruct_path(
     csgraph: _Graph[npc.integer], predecessors: onp.ToIntND, directed: bool = True
 ) -> csr_array[np.int32, tuple[int, int]]: ...
 @overload
