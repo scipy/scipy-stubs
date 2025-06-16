@@ -61,6 +61,20 @@ assert_type(sparse.identity(5), sparse.dia_matrix[np.float64])
 assert_type(sparse.identity(5, dtype=sctype), sparse.dia_matrix[ScalarType])
 
 ###
+# kron
+assert_type(sparse.kron(any_mat, any_mat), sparse.bsr_matrix[ScalarType])
+assert_type(sparse.kron(any_mat, any_arr), sparse.bsr_array[ScalarType])
+assert_type(sparse.kron(any_arr, any_mat), sparse.bsr_array[ScalarType])
+assert_type(sparse.kron(any_arr, any_arr), sparse.bsr_array[ScalarType])
+# kronsum
+assert_type(sparse.kronsum(any_mat, any_mat), sparse.csr_matrix[ScalarType])
+assert_type(sparse.kronsum(any_mat, any_arr), sparse.csr_array[ScalarType])
+assert_type(sparse.kronsum(any_arr, any_mat), sparse.csr_array[ScalarType])
+assert_type(sparse.kronsum(any_arr, any_arr), sparse.csr_array[ScalarType])
+assert_type(sparse.kronsum(any_mat, [[1, 2], [3, 4]]), sparse.csr_matrix[ScalarType])
+assert_type(sparse.kronsum(any_arr, [[1, 2], [3, 4]]), sparse.csr_array[ScalarType])
+
+###
 # random
 assert_type(sparse.random(4, 2), sparse.coo_matrix[np.float64])
 assert_type(sparse.random_array(shape_1d), sparse.coo_array[np.float64, tuple[int]])
@@ -106,10 +120,3 @@ assert_type(sparse.hstack([csr_arr, csr_arr], dtype=float), sparse.csr_array[np.
 assert_type(sparse.hstack([dia_arr, dia_arr], dtype=complex), sparse.coo_array[np.complex128, tuple[int, int]])
 assert_type(sparse.hstack([dok_arr, dok_arr], dtype=complex), sparse.coo_array[np.complex128, tuple[int, int]])
 assert_type(sparse.hstack([lil_arr, lil_arr], dtype=complex), sparse.coo_array[np.complex128, tuple[int, int]])
-
-###
-# kron
-assert_type(sparse.kron(any_mat, any_mat), sparse.bsr_matrix[ScalarType])
-assert_type(sparse.kron(any_mat, any_arr), sparse.bsr_array[ScalarType])
-assert_type(sparse.kron(any_arr, any_mat), sparse.bsr_array[ScalarType])
-assert_type(sparse.kron(any_arr, any_arr), sparse.bsr_array[ScalarType])
