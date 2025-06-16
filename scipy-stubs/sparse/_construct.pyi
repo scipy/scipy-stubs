@@ -798,7 +798,7 @@ def random(
     rng: ToRNG = None,
     data_rvs: _DataRVS | None = None,
 ) -> coo_matrix[np.float64]: ...
-@overload  # dtype: <known> (positional), format: "coo"
+@overload  # dtype: <known> (positional), format: <default>
 def random(
     m: opt.AnyInt,
     n: opt.AnyInt,
@@ -913,6 +913,44 @@ def random(
     data_rvs: _DataRVS | None = None,
 ) -> _SpMatrix: ...
 
+# NOTE: `random_array` should be prefered over `rand`
+@overload  # dtype: <default>, format: <default>
+def rand(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    dtype: onp.AnyFloat64DType = None,
+    rng: ToRNG = None,
+) -> coo_matrix[np.float64]: ...
+@overload  # dtype: <known> (positional), format: <default>
+def rand(
+    m: opt.AnyInt, n: opt.AnyInt, density: float | npc.floating, format: _FmtCOO, dtype: onp.ToDType[_SCT], rng: ToRNG = None
+) -> coo_matrix[_SCT]: ...
+@overload  # dtype: <known> (keyword), format: <default>
+def rand(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    *,
+    dtype: onp.ToDType[_SCT],
+    rng: ToRNG = None,
+) -> coo_matrix[_SCT]: ...
+@overload  # dtype: complex (positional), format: <default>
+def rand(
+    m: opt.AnyInt, n: opt.AnyInt, density: float | npc.floating, format: _FmtCOO, dtype: onp.AnyComplex128DType, rng: ToRNG = None
+) -> coo_matrix[np.complex128]: ...
+@overload  # dtype: complex (keyword), format: <default>
+def rand(
+    m: opt.AnyInt,
+    n: opt.AnyInt,
+    density: float | npc.floating = 0.01,
+    format: _FmtCOO = "coo",
+    *,
+    dtype: onp.AnyComplex128DType,
+    rng: ToRNG = None,
+) -> coo_matrix[np.complex128]: ...
 # NOTE: `random_array` should be prefered over `rand`
 @overload  # dtype: <default>
 def rand(
