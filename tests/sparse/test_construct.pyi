@@ -75,19 +75,6 @@ assert_type(sparse.kronsum(any_mat, [[1, 2], [3, 4]]), sparse.csr_matrix[ScalarT
 assert_type(sparse.kronsum(any_arr, [[1, 2], [3, 4]]), sparse.csr_array[ScalarType])
 
 ###
-# random
-assert_type(sparse.random(4, 2), sparse.coo_matrix[np.float64])
-assert_type(sparse.random_array(shape_1d), sparse.coo_array[np.float64, tuple[int]])
-assert_type(sparse.random_array(shape_2d), sparse.coo_array[np.float64, tuple[int, int]])
-assert_type(sparse.random_array(shape_3d), sparse.coo_array[np.float64, tuple[int, int, int]])
-
-###
-# block_diag
-assert_type(sparse.block_diag([any_mat, any_mat]), sparse.coo_matrix[ScalarType])
-assert_type(sparse.block_diag([any_arr, any_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
-assert_type(sparse.block_diag([any_arr, any_mat]), sparse.coo_array[ScalarType, tuple[int, int]] | sparse.coo_matrix[ScalarType])
-
-###
 # hstack (same as vstack)
 assert_type(sparse.hstack([bsr_mat, bsr_mat]), sparse.coo_matrix[ScalarType])
 assert_type(sparse.hstack([coo_mat, coo_mat]), sparse.coo_matrix[ScalarType])
@@ -120,3 +107,22 @@ assert_type(sparse.hstack([csr_arr, csr_arr], dtype=float), sparse.csr_array[np.
 assert_type(sparse.hstack([dia_arr, dia_arr], dtype=complex), sparse.coo_array[np.complex128, tuple[int, int]])
 assert_type(sparse.hstack([dok_arr, dok_arr], dtype=complex), sparse.coo_array[np.complex128, tuple[int, int]])
 assert_type(sparse.hstack([lil_arr, lil_arr], dtype=complex), sparse.coo_array[np.complex128, tuple[int, int]])
+
+###
+# block_array
+assert_type(sparse.block_array([[any_mat]]), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.block_array([[any_mat]], dtype=sctype), sparse.coo_array[ScalarType, tuple[int, int]])
+# bmat (legacy, `block_array` is preferred)
+assert_type(sparse.bmat([[any_mat]]), sparse.coo_matrix[ScalarType])
+assert_type(sparse.bmat([[any_arr]]), sparse.coo_array[ScalarType, tuple[int, int]])
+# block_diag
+assert_type(sparse.block_diag([any_mat, any_mat]), sparse.coo_matrix[ScalarType])
+assert_type(sparse.block_diag([any_arr, any_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.block_diag([any_arr, any_mat]), sparse.coo_array[ScalarType, tuple[int, int]] | sparse.coo_matrix[ScalarType])
+
+###
+# random
+assert_type(sparse.random(4, 2), sparse.coo_matrix[np.float64])
+assert_type(sparse.random_array(shape_1d), sparse.coo_array[np.float64, tuple[int]])
+assert_type(sparse.random_array(shape_2d), sparse.coo_array[np.float64, tuple[int, int]])
+assert_type(sparse.random_array(shape_3d), sparse.coo_array[np.float64, tuple[int, int, int]])
