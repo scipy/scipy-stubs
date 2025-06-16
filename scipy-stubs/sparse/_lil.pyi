@@ -7,14 +7,13 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 
-from scipy._typing import Falsy
-
 from ._base import _spbase, sparray
 from ._coo import coo_array, coo_matrix
 from ._csr import csr_array, csr_matrix
 from ._index import IndexMixin
 from ._matrix import spmatrix
 from ._typing import Index1D, Numeric, ToShape2D
+from scipy._typing import Falsy
 
 __all__ = ["isspmatrix_lil", "lil_array", "lil_matrix"]
 

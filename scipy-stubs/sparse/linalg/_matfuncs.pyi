@@ -4,10 +4,9 @@ from typing_extensions import TypeVar, override
 import optype as op
 import optype.numpy as onp
 
+from ._interface import LinearOperator
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Numeric
-
-from ._interface import LinearOperator
 
 __all__ = ["expm", "inv", "matrix_power"]
 

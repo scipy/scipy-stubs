@@ -3,9 +3,8 @@ from typing_extensions import deprecated
 import numpy as np
 import optype.numpy as onp
 
-from scipy.spatial._qhull import DelaunayInfo_t
-
 from . import _interpnd
+from scipy.spatial._qhull import DelaunayInfo_t
 
 __all__ = [
     "CloughTocher2DInterpolator",

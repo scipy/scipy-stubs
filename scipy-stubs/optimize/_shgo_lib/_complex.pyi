@@ -6,9 +6,8 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from scipy.optimize._typing import Constraints
-
 from ._vertex import VertexBase, VertexCacheBase
+from scipy.optimize._typing import Constraints
 
 _Floats: TypeAlias = onp.ToFloat
 _Float1D: TypeAlias = onp.Array1D[np.float64]

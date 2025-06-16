@@ -3,10 +3,9 @@ from typing import TypeAlias, overload
 import numpy as np
 import optype.numpy as onp
 
+from ._interface import LinearOperator
 from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
-
-from ._interface import LinearOperator
 
 __all__ = ["onenormest"]
 

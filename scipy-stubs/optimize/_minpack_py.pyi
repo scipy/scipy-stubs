@@ -6,10 +6,9 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
+from ._constraints import Bounds
 from scipy._typing import Falsy, Truthy
 from scipy.sparse import sparray, spmatrix
-
-from ._constraints import Bounds
 
 __all__ = ["curve_fit", "fixed_point", "fsolve", "leastsq"]
 

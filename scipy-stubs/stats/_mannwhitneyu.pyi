@@ -4,9 +4,8 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 
-from scipy._typing import Alternative
-
 from ._resampling import PermutationMethod
+from scipy._typing import Alternative
 
 _FloatOrArray: TypeAlias = float | np.float64 | onp.ArrayND[np.float64]
 _FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_FloatOrArray, default=_FloatOrArray)

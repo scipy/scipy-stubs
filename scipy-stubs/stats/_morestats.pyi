@@ -8,14 +8,13 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Alternative, AnyBool, Falsy, NanPolicy, Truthy
-from scipy.optimize import OptimizeResult
-
 from ._distn_infrastructure import rv_continuous_frozen
 from ._fit import FitResult
 from ._resampling import PermutationMethod
 from ._stats_py import SignificanceResult
 from ._typing import BaseBunch
+from scipy._typing import Alternative, AnyBool, Falsy, NanPolicy, Truthy
+from scipy.optimize import OptimizeResult
 
 __all__ = [
     "anderson",

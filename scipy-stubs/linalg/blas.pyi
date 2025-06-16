@@ -5,8 +5,6 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 
-from scipy._typing import SequenceNotStr, _FortranFunction
-
 from ._fblas import (
     caxpy as caxpy,
     ccopy as ccopy,
@@ -159,6 +157,7 @@ from ._fblas import (
     ztrsm as ztrsm,
     ztrsv as ztrsv,
 )
+from scipy._typing import SequenceNotStr, _FortranFunction
 
 __all__ = ["find_best_blas_type", "get_blas_funcs"]
 

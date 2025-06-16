@@ -7,11 +7,10 @@ import optype as op
 import optype.numpy as onp
 from numpy._typing import _ArrayLike
 
-from scipy._typing import Alternative, AnyBool, NanPolicy
-
 from ._stats_mstats_common import SiegelslopesResult, TheilslopesResult
 from ._stats_py import KstestResult, LinregressResult, SignificanceResult
 from ._typing import BaseBunch
+from scipy._typing import Alternative, AnyBool, NanPolicy
 
 __all__ = [
     "argstoarray",

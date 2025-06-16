@@ -3,7 +3,6 @@ from typing import assert_type
 import numpy as np
 
 import scipy.sparse as sparse
-
 from ._types import ScalarType, any_arr, any_mat, coo_arr, coo_mat, csr_arr, csr_mat
 
 i64_1d: np.ndarray[tuple[int], np.dtype[np.int64]]

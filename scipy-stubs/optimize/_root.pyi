@@ -4,11 +4,10 @@ from typing import Any, Concatenate, Generic, Literal, TypeAlias, TypeVar, Typed
 import numpy as np
 import optype.numpy as onp
 
-from scipy._typing import Falsy, Truthy
-from scipy.sparse.linalg import LinearOperator
-
 from ._nonlin import InverseJacobian
 from ._optimize import OptimizeResult as _OptimizeResult
+from scipy._typing import Falsy, Truthy
+from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["root"]
 

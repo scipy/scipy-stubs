@@ -6,12 +6,11 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 from numpy.polynomial._polybase import ABCPolyBase
 
-from scipy._typing import Falsy, Truthy
-from scipy.sparse.linalg import LinearOperator
-
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
 from .optimize import OptimizeResult as _OptimizeResult
+from scipy._typing import Falsy, Truthy
+from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["minimize", "minimize_scalar"]
 

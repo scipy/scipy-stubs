@@ -5,10 +5,9 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import NanPolicy
-
 from . import distributions as distributions
 from ._typing import BunchMixin
+from scipy._typing import NanPolicy
 
 __all__ = ["_find_repeats", "siegelslopes", "theilslopes"]
 

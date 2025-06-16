@@ -5,11 +5,10 @@ from typing_extensions import deprecated
 import numpy as np
 import optype.numpy as onp
 
+from ._superlu import SuperLU
 from scipy.sparse._base import SparseEfficiencyWarning, _spbase
 from scipy.sparse._bsr import _bsr_base
 from scipy.sparse._lil import _lil_base
-
-from ._superlu import SuperLU
 
 __all__ = [
     "MatrixRankWarning",

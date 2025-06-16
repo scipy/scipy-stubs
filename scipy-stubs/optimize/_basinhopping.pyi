@@ -4,11 +4,10 @@ from typing import Concatenate, Literal, Protocol, TypeAlias, TypeVar, type_chec
 import numpy as np
 import optype.numpy as onp
 
-from scipy._typing import ToRNG
-
 from ._minimize import OptimizeResult as _MinimizeResult
 from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import MinimizerKwargs
+from scipy._typing import ToRNG
 
 __all__ = ["basinhopping"]
 

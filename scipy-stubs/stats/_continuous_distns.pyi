@@ -6,9 +6,8 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import ToRNG
-
 from ._distn_infrastructure import _rv_continuous_0, rv_continuous
+from scipy._typing import ToRNG
 
 __all__ = [
     "alpha",

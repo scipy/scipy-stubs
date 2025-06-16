@@ -5,9 +5,8 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from scipy._typing import Falsy, Truthy
-
 from .windows._windows import _ToWindow
+from scipy._typing import Falsy, Truthy
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
 
