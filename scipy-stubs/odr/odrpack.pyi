@@ -61,7 +61,7 @@ def odr(
     work: object | None = None,
     iwork: object | None = None,
     full_output: int = 0,
-) -> Any: ...  # noqa: ANN401
+) -> Any: ...
 
 odr_error = OdrError  # pyright: ignore[reportDeprecated]
 odr_stop = OdrStop  # pyright: ignore[reportDeprecated]

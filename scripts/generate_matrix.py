@@ -167,7 +167,7 @@ def get_available_python_versions(
 
 
 @cache
-def fetch_json(url: str) -> Any:  # noqa: ANN401
+def fetch_json(url: str) -> Any:
     """
     Fetch JSON data from a URL with caching.
 

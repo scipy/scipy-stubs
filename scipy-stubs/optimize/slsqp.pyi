@@ -29,6 +29,6 @@ def fmin_slsqp(
     full_output: object = ...,
     epsilon: object = ...,
     callback: object = ...,
-) -> Any: ...  # noqa: ANN401
+) -> Any: ...
 
 slsqp: Callable[..., Any] = ...  # deprecated
