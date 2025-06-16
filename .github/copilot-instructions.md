@@ -1,11 +1,13 @@
 # Copilot Instructions for scipy-stubs
 
 Whenever you run a command in the terminal, pipe the output to a file, `output.txt`,
-that you can read from. Make sure to overwrite each time so that it doesn't grow too
-big. There is a bug in the current version of Copilot that causes it to not read the
-output of commands correctly. This workaround allows you to read the output from the
-temporary file instead. Be sure to delete `output.txt` after you are done, as it is
-not included in `.gitignore`, and might contain sensitive information.
+that you can read from. Do not attempt to read the output of commands from the terminal
+directly, as Copilot will not be able to read it correctly. Make sure to overwrite each
+time so that it doesn't grow too big. There is a bug in the current version of Copilot
+that causes it to not read the output of commands correctly. This workaround allows you
+to read the output from the temporary file instead. Be sure to delete `output.txt` after
+you are done, as it is not included in `.gitignore`, and might contain sensitive
+information.
 
 ## Type annotations
 
