@@ -6,9 +6,8 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
-
 from ._expm_frechet import expm_cond, expm_frechet
+from scipy._typing import Falsy, Truthy
 
 __all__ = [
     "coshm",

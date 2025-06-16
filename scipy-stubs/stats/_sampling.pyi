@@ -6,10 +6,9 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from scipy._typing import AnyShape, ToRNG
-
 from ._distn_infrastructure import rv_frozen
 from .qmc import QMCEngine
+from scipy._typing import AnyShape, ToRNG
 
 __all__ = ["FastGeneratorInversion", "RatioUniforms"]
 

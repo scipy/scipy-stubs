@@ -6,9 +6,8 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
-
 from .windows._windows import _ToWindow
+from scipy._typing import Falsy, Truthy
 
 __all__ = ["ShortTimeFFT", "closest_STFT_dual_window"]
 

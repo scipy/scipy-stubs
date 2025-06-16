@@ -5,7 +5,6 @@ import numpy.typing as npt
 import optype.numpy as onp
 
 import scipy._typing as spt
-
 from ._flapack import (
     cgbcon as cgbcon,
     cgbsv as cgbsv,

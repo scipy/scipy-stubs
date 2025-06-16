@@ -3,9 +3,8 @@ from typing import Final, Literal, TypedDict, overload, type_check_only
 import numpy as np
 import optype.numpy as onp
 
-from scipy._typing import ToRNG
-
 from ._optimize import OptimizeResult as _OptimizeResult
+from scipy._typing import ToRNG
 
 @type_check_only
 class _CommonOptions(TypedDict, total=False):

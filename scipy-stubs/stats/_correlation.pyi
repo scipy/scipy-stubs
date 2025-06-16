@@ -6,10 +6,9 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from scipy._typing import NanPolicy
-
 from . import _resampling
 from ._stats_py import SignificanceResult
+from scipy._typing import NanPolicy
 
 _PermutationMethod: TypeAlias = L["asymptotic"] | _resampling.PermutationMethod
 

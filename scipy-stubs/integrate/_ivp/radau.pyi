@@ -4,9 +4,8 @@ from typing import Final, Never, TypeAlias
 import numpy as np
 import optype.numpy as onp
 
-from scipy.sparse import sparray, spmatrix
-
 from .base import DenseOutput, OdeSolver
+from scipy.sparse import sparray, spmatrix
 
 _LU: TypeAlias = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]
 _FuncSolveLU: TypeAlias = Callable[[_LU, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]

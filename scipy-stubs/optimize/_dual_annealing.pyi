@@ -4,11 +4,10 @@ from typing import Concatenate, Literal, TypeAlias
 import numpy as np
 import optype.numpy as onp
 
-from scipy._typing import ToRNG
-from scipy.optimize import OptimizeResult as _OptimizeResult
-
 from ._constraints import Bounds
 from ._typing import MinimizerKwargs
+from scipy._typing import ToRNG
+from scipy.optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["dual_annealing"]
 

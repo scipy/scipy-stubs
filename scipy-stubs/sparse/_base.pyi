@@ -12,9 +12,6 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._lib._sparse import SparseABC, issparse
-from scipy._typing import Casting, Falsy, OrderCF
-
 from ._bsr import bsr_array, bsr_matrix
 from ._coo import coo_array, coo_matrix
 from ._csc import csc_array, csc_matrix
@@ -24,6 +21,8 @@ from ._dok import dok_array, dok_matrix
 from ._lil import lil_array, lil_matrix
 from ._matrix import spmatrix as spmatrix
 from ._typing import Index1D, Numeric, SPFormat, ToShape1D, ToShape2D, ToShapeMin1D
+from scipy._lib._sparse import SparseABC, issparse
+from scipy._typing import Casting, Falsy, OrderCF
 
 __all__ = ["SparseEfficiencyWarning", "SparseWarning", "issparse", "isspmatrix", "sparray"]
 

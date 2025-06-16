@@ -6,11 +6,10 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._lib._util import _RichResult
-from scipy._typing import Falsy, ToRNG, Truthy
-
 from ._linesearch import line_search_wolfe2 as line_search
 from ._typing import Brack, MethodAll, Solver
+from scipy._lib._util import _RichResult
+from scipy._typing import Falsy, ToRNG, Truthy
 
 __all__ = [
     "OptimizeResult",

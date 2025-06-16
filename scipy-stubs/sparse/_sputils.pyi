@@ -8,6 +8,7 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from ._typing import Numeric
 from scipy._typing import OrderKACF
 from scipy.sparse import (
     bsr_array,
@@ -21,8 +22,6 @@ from scipy.sparse import (
     dia_array,
     dia_matrix,
 )
-
-from ._typing import Numeric
 
 __all__ = [
     "broadcast_shapes",

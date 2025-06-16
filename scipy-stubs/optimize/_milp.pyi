@@ -6,10 +6,9 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.sparse._base import _spbase
-
 from ._constraints import Bounds, LinearConstraint
 from ._optimize import OptimizeResult as _OptimizeResult
+from scipy.sparse._base import _spbase
 
 ###
 

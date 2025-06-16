@@ -6,10 +6,9 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
+from ._typing import QuadInfoDict, QuadOpts, QuadWeights
 from scipy._lib._ccallback import LowLevelCallable
 from scipy._typing import Falsy, Truthy
-
-from ._typing import QuadInfoDict, QuadOpts, QuadWeights
 
 __all__ = ["IntegrationWarning", "dblquad", "nquad", "quad", "tplquad"]
 

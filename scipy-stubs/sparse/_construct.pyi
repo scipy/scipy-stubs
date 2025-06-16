@@ -8,8 +8,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 import optype.typing as opt
 
-from scipy._typing import ToRNG
-
 from ._base import _spbase, sparray
 from ._bsr import bsr_array, bsr_matrix
 from ._coo import coo_array, coo_matrix
@@ -17,6 +15,7 @@ from ._csr import csr_array, csr_matrix
 from ._dia import dia_array, dia_matrix
 from ._matrix import spmatrix
 from ._typing import Numeric, SPFormat, ToShape2D, _CanStack, _CanStackAs
+from scipy._typing import ToRNG
 
 __all__ = [
     "block_array",

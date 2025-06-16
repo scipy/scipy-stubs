@@ -6,9 +6,8 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
-
 from .windows._windows import _ToWindow
+from scipy._typing import Falsy, Truthy
 
 __all__ = ["firls", "firwin", "firwin2", "firwin_2d", "kaiser_atten", "kaiser_beta", "kaiserord", "minimum_phase", "remez"]
 

@@ -6,9 +6,8 @@ import numpy as np
 import optype.numpy as onp
 from numpy._typing import _ArrayLike
 
-from scipy.sparse import coo_matrix
-
 from ._typing import BaseBunch
+from scipy.sparse import coo_matrix
 
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
 

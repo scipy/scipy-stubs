@@ -5,10 +5,9 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from scipy._typing import ConvMode, Falsy, Truthy
-
 from ._ltisys import dlti
 from .windows._windows import _ToWindow
+from scipy._typing import ConvMode, Falsy, Truthy
 
 __all__ = [
     "choose_conv_method",

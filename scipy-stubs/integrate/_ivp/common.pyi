@@ -5,9 +5,8 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from scipy.sparse import csc_matrix
-
 from .base import DenseOutput
+from scipy.sparse import csc_matrix
 
 _SCT = TypeVar("_SCT", bound=np.generic)
 _ToFloatT = TypeVar("_ToFloatT", bound=onp.ToFloat)

@@ -231,5 +231,5 @@ preview = true
         case-sensitive = true
         combine-as-imports = true
         extra-standard-library = ["_typeshed", "typing_extensions"]
-        known-first-party = ["scipy"]
+        known-local-folder = ["scipy"]
         split-on-trailing-comma = false
