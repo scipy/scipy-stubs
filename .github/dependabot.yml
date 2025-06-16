@@ -2,24 +2,29 @@ version: 2
 updates:
   - package-ecosystem: github-actions
     directory: /
-    target-branch: master
+    schedule:
+      interval: daily
+    allow:
+      - dependency-type: "all"
     labels:
       - "tool: github actions"
-    schedule:
-      interval: daily
+    commit-message:
+      prefix: "⬆️ "
     groups:
       actions:
-        patterns:
-          - "*"
+        patterns: ["*"]
 
-  - package-ecosystem: pip
+  - package-ecosystem: uv
+    versioning-strategy: increase
     directory: /
-    target-branch: master
+    schedule:
+      interval: daily
+    allow:
+      - dependency-type: "all"
     labels:
       - "topic: dependencies"
-    schedule:
-      interval: daily
+    commit-message:
+      prefix: "⬆️ "
     groups:
       actions:
-        patterns:
-          - "*"
+        patterns: ["*"]
