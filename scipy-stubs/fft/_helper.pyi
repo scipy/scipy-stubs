@@ -19,7 +19,7 @@ def fftfreq(
     n: int | np.integer[Any], d: onp.ToFloat = 1.0, *, xp: None = None, device: Literal["cpu"] | None = None
 ) -> onp.Array1D[np.float64]: ...
 @overload  # xp: ModuleType -> xp.fft.fftfreq
-def fftfreq(n: int, d: float = 1.0, *, xp: ModuleType, device: object | None = None) -> Any: ...  # noqa: ANN401
+def fftfreq(n: int, d: float = 1.0, *, xp: ModuleType, device: object | None = None) -> Any: ...
 
 #
 @overload  # np.fft.rfftfreq
@@ -27,7 +27,7 @@ def rfftfreq(
     n: int | np.integer[Any], d: onp.ToFloat = 1.0, *, xp: None = None, device: Literal["cpu"] | None = None
 ) -> onp.Array1D[np.float64]: ...
 @overload  # xp.fft.fftfreq
-def rfftfreq(n: int, d: float = 1.0, *, xp: ModuleType, device: object | None = None) -> Any: ...  # noqa: ANN401
+def rfftfreq(n: int, d: float = 1.0, *, xp: ModuleType, device: object | None = None) -> Any: ...
 
 #
 @overload

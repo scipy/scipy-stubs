@@ -722,7 +722,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     @overload  # spmatrix, axis: index, dtype: <unknown>
     def sum(self: spmatrix, /, axis: op.CanIndex, dtype: npt.DTypeLike, out: None = None) -> onp.Matrix[Any]: ...
     @overload  # dtype: <unknown>  (keyword)
-    def sum(self, /, axis: op.CanIndex | None = None, *, dtype: npt.DTypeLike, out: None = None) -> Any: ...  # noqa: ANN401
+    def sum(self, /, axis: op.CanIndex | None = None, *, dtype: npt.DTypeLike, out: None = None) -> Any: ...
 
     #
     @overload  # out: array (keyword)
@@ -758,7 +758,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     @overload  # spmatrix, axis: index, dtype: <unknown>
     def mean(self: spmatrix, /, axis: op.CanIndex, dtype: npt.DTypeLike, out: None = None) -> onp.Matrix[Any]: ...
     @overload  # dtype: <unknown>  (keyword)
-    def mean(self, /, axis: op.CanIndex | None = None, *, dtype: npt.DTypeLike, out: None = None) -> Any: ...  # noqa: ANN401
+    def mean(self, /, axis: op.CanIndex | None = None, *, dtype: npt.DTypeLike, out: None = None) -> Any: ...
 
     #
     def copy(self, /) -> Self: ...

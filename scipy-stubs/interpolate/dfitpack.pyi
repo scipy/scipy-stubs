@@ -15,7 +15,7 @@ class _DeprecatedFortranFunction(Protocol):
         "The `scipy.interpolate.dfitpack` namespace is deprecated and will be removed in SciPy 2.0.0. "
         "Please use the `scipy.interpolate` namespace instead."
     )
-    def __call__(self, /, *args: object, **kwds: object) -> Any: ...  # noqa: ANN401
+    def __call__(self, /, *args: object, **kwds: object) -> Any: ...
 
 ###
 

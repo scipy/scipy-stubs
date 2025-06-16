@@ -75,8 +75,8 @@ class _ConfidenceInterval(NamedTuple):
 @type_check_only
 class _CanPlotText(Protocol):
     # NOTE: `Any` is required as return type because it's covariant, and not shouldn't be `Never`.
-    def plot(self, /, *args: float | onp.ToFloatND | str, **kwargs: object) -> Any: ...  # noqa: ANN401
-    def text(self, /, x: float, y: float, s: str, fontdict: dict[str, Any] | None = None, **kwargs: object) -> Any: ...  # noqa: ANN401
+    def plot(self, /, *args: float | onp.ToFloatND | str, **kwargs: object) -> Any: ...
+    def text(self, /, x: float, y: float, s: str, fontdict: dict[str, Any] | None = None, **kwargs: object) -> Any: ...
 
 @type_check_only
 class _CanPPF(Protocol):
