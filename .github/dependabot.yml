@@ -10,6 +10,9 @@ updates:
       - "tool: github actions"
     commit-message:
       prefix: "⬆️ "
+    groups:
+      actions:
+        patterns: ["*"]
 
   - package-ecosystem: uv
     versioning-strategy: increase
@@ -22,3 +25,6 @@ updates:
       - "topic: dependencies"
     commit-message:
       prefix: "⬆️ "
+    groups:
+      actions:
+        patterns: ["*"]
