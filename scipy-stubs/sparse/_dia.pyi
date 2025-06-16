@@ -17,19 +17,19 @@ from ._typing import Index1D, Numeric, ToShape2D
 __all__ = ["dia_array", "dia_matrix", "isspmatrix_dia"]
 
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
-_AsSCT = TypeVar("_AsSCT", bound=Numeric)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=Numeric)
 
-_ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
-_ToData: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[npc.integer]]
+_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
+_ToData: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer]]
 
 ###
 
-class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
+class _dia_base(_data_matrix[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     _format: ClassVar = "dia"
 
-    data: onp.Array2D[_SCT]
+    data: onp.Array2D[_ScalarT_co]
     offsets: Index1D
 
     @property
@@ -54,22 +54,22 @@ class _dia_base(_data_matrix[_SCT, tuple[int, int]], Generic[_SCT]):
         maxprint: int | None = None,
     ) -> None: ...
 
-class dia_array(_dia_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
+class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
-    def __assoc_stacked__(self, /) -> coo_array[_SCT, tuple[int, int]]: ...
+    def __assoc_stacked__(self, /) -> coo_array[_ScalarT_co, tuple[int, int]]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_array[_AsSCT, tuple[int, int]]: ...
+    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
 
     # NOTE: keep in sync with `dia_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT] | _ToData[_SCT],
+        arg1: _ToMatrix[_ScalarT_co] | _ToData[_ScalarT_co],
         shape: ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -137,7 +137,7 @@ class dia_array(_dia_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
         /,
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -149,27 +149,27 @@ class dia_array(_dia_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
 
-class dia_matrix(_dia_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
+class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
-    def __assoc_stacked__(self, /) -> coo_matrix[_SCT]: ...
+    def __assoc_stacked__(self, /) -> coo_matrix[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_matrix[_AsSCT]: ...
+    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_matrix[_ScalarT]: ...
 
     # NOTE: keep in sync with `dia_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT] | _ToData[_SCT],
+        arg1: _ToMatrix[_ScalarT_co] | _ToData[_ScalarT_co],
         shape: ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -237,7 +237,7 @@ class dia_matrix(_dia_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
         /,
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -249,7 +249,7 @@ class dia_matrix(_dia_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...

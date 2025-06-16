@@ -18,16 +18,16 @@ from scipy._typing import Falsy
 __all__ = ["isspmatrix_lil", "lil_array", "lil_matrix"]
 
 _T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
-_AsSCT = TypeVar("_AsSCT", bound=Numeric)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=Numeric)
 
-_ToMatrix: TypeAlias = _spbase[_SCT] | onp.CanArrayND[_SCT] | Sequence[onp.CanArrayND[_SCT]] | _ToMatrixPy[_SCT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
+_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
 
 ###
 
-class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]], Generic[_SCT]):
-    dtype: np.dtype[_SCT]
+class _lil_base(_spbase[_ScalarT_co, tuple[int, int]], IndexMixin[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
+    dtype: np.dtype[_ScalarT_co]
     data: onp.Array1D[np.object_]
     rows: onp.Array1D[np.object_]
 
@@ -79,24 +79,24 @@ class _lil_base(_spbase[_SCT, tuple[int, int]], IndexMixin[_SCT, tuple[int, int]
 
     #
     def getrowview(self, /, i: int) -> Self: ...
-    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int, int]] | csr_matrix[_SCT]: ...
+    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_ScalarT_co, tuple[int, int]] | csr_matrix[_ScalarT_co]: ...
 
-class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
+class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
-    def __assoc_stacked__(self, /) -> coo_array[_SCT, tuple[int, int]]: ...
+    def __assoc_stacked__(self, /) -> coo_array[_ScalarT_co, tuple[int, int]]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_array[_AsSCT, tuple[int, int]]: ...
+    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
 
     # NOTE: keep the in sync with `lil_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT],
+        arg1: _ToMatrix[_ScalarT_co],
         shape: ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -164,7 +164,7 @@ class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
         /,
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -176,7 +176,7 @@ class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -194,24 +194,24 @@ class lil_array(_lil_base[_SCT], sparray[_SCT, tuple[int, int]], Generic[_SCT]):
 
     #
     @override
-    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_SCT, tuple[int, int]]: ...
+    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_ScalarT_co, tuple[int, int]]: ...
 
-class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
+class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
-    def __assoc_stacked__(self, /) -> coo_matrix[_SCT]: ...
+    def __assoc_stacked__(self, /) -> coo_matrix[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _AsSCT, /) -> coo_matrix[_AsSCT]: ...
+    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_matrix[_ScalarT]: ...
 
     # NOTE: keep the in sync with `lil_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_SCT],
+        arg1: _ToMatrix[_ScalarT_co],
         shape: ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -279,7 +279,7 @@ class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
         /,
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -291,7 +291,7 @@ class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
         arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -309,7 +309,7 @@ class lil_matrix(_lil_base[_SCT], spmatrix[_SCT], Generic[_SCT]):
 
     #
     @override
-    def getrow(self, /, i: onp.ToJustInt) -> csr_matrix[_SCT]: ...
+    def getrow(self, /, i: onp.ToJustInt) -> csr_matrix[_ScalarT_co]: ...
 
     # NOTE: using `@override` together with `@overload` causes stubtest to crash...
     @overload

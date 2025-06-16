@@ -10,7 +10,8 @@ import optype.numpy.compat as npc
 from ._base import _spbase
 from ._typing import Numeric
 
-_SCT = TypeVar("_SCT", bound=Numeric, default=Any)
+_ScalarT = TypeVar("_ScalarT", bound=Numeric)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 
 _Self1DT = TypeVar("_Self1DT", bound=IndexMixin[Any, _1D])
@@ -43,11 +44,11 @@ _ToSlice2D: TypeAlias = (
 
 INT_TYPES: tuple[type[int], type[np.integer[Any]]] = ...
 
-class IndexMixin(Generic[_SCT, _ShapeT_co]):
+class IndexMixin(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
-    def __getitem__(self: IndexMixin[Any, _1D], ix: op.CanIndex, /) -> _SCT: ...
+    def __getitem__(self: IndexMixin[Any, _1D], ix: op.CanIndex, /) -> _ScalarT_co: ...
     @overload
-    def __getitem__(self: IndexMixin[Any, _2D], ix: _ToIndex2D, /) -> _SCT: ...
+    def __getitem__(self: IndexMixin[Any, _2D], ix: _ToIndex2D, /) -> _ScalarT_co: ...
     @overload
     def __getitem__(self: _Self1DT, ixs: _ToSlice1D, /) -> _Self1DT: ...
     @overload
@@ -55,9 +56,9 @@ class IndexMixin(Generic[_SCT, _ShapeT_co]):
 
     #
     @overload
-    def __setitem__(self: IndexMixin[Any, _1D], ix: op.CanIndex | _ToSlice1D, x: _SCT, /) -> None: ...
+    def __setitem__(self: IndexMixin[_ScalarT, _1D], ix: op.CanIndex | _ToSlice1D, x: _ScalarT, /) -> None: ...
     @overload
-    def __setitem__(self: IndexMixin[Any], ix: _ToIndex2D | _ToSlice2D, x: _SCT, /) -> None: ...
+    def __setitem__(self: IndexMixin[_ScalarT], ix: _ToIndex2D | _ToSlice2D, x: _ScalarT, /) -> None: ...
     @overload
     def __setitem__(self: IndexMixin[npc.integer, _1D], ix: _ToIndex1D, x: _ToInt, /) -> None: ...
     @overload

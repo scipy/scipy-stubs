@@ -11,18 +11,18 @@ from ._typing import Index1D, Numeric, ToShapeMin1D
 
 __all__: list[str] = []
 
-_ScalarT = TypeVar("_ScalarT", bound=Numeric, default=Any)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 
 ###
 
 class _cs_matrix(
-    _data_matrix[_ScalarT, _ShapeT_co],
-    _minmax_mixin[_ScalarT, _ShapeT_co],
-    IndexMixin[_ScalarT, _ShapeT_co],
-    Generic[_ScalarT, _ShapeT_co],
+    _data_matrix[_ScalarT_co, _ShapeT_co],
+    _minmax_mixin[_ScalarT_co, _ShapeT_co],
+    IndexMixin[_ScalarT_co, _ShapeT_co],
+    Generic[_ScalarT_co, _ShapeT_co],
 ):
-    data: onp.ArrayND[_ScalarT]
+    data: onp.ArrayND[_ScalarT_co]
     indices: Index1D
     indptr: Index1D
 
