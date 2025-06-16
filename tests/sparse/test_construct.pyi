@@ -27,7 +27,10 @@ from ._types import (
 shape_1d: tuple[int]
 shape_2d: tuple[int, int]
 shape_3d: tuple[int, int, int]
+
 dense_1d: np.ndarray[tuple[int], np.dtype[ScalarType]]
+dense_2d: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
+
 int_list: list[int]
 
 # eye
@@ -45,6 +48,14 @@ assert_type(sparse.random_array(shape_3d), sparse.coo_array[np.float64, tuple[in
 # diags
 assert_type(sparse.diags(dense_1d), sparse.dia_matrix[ScalarType])
 assert_type(sparse.diags([dense_1d, dense_1d]), sparse.dia_matrix[ScalarType])
+
+# spdiags
+assert_type(sparse.spdiags(dense_1d, int_list, 4, 4), sparse.dia_matrix[ScalarType])
+assert_type(sparse.spdiags(dense_1d, int_list, shape_2d), sparse.dia_matrix[ScalarType])
+assert_type(sparse.spdiags(dense_2d, int_list, 4, 4), sparse.dia_matrix[ScalarType])
+assert_type(sparse.spdiags(dense_2d, int_list, shape_2d), sparse.dia_matrix[ScalarType])
+
+# diags_array
 assert_type(sparse.diags_array(dense_1d), sparse.dia_array[ScalarType])
 assert_type(sparse.diags_array([dense_1d, dense_1d]), sparse.dia_array[ScalarType])
 
