@@ -58,7 +58,7 @@ class _csr_base(_cs_matrix[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _Shape
     def count_nonzero(self: csr_array[Any, Any], /, axis: op.CanIndex) -> onp.Array1D[np.intp] | Any: ...  # type: ignore[misc]
 
 class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):
-    # NOTE: These two methods do not exist at runtime.
+    # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
@@ -66,6 +66,12 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> csr_array[_ScalarT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float32__(self, /) -> csr_array[np.float32, _ShapeT_co]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> csr_array[np.float64, _ShapeT_co]: ...
 
     #
     @overload  # sparse or dense (know dtype & shape), dtype: None
@@ -279,7 +285,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
 
 class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
-    # NOTE: These two methods do not exist at runtime.
+    # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
@@ -287,6 +293,12 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> csr_matrix[_ScalarT]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float32__(self, /) -> csr_matrix[np.float32]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> csr_matrix[np.float64]: ...
 
     # NOTE: keep in sync with `csc_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None

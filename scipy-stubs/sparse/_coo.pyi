@@ -111,7 +111,7 @@ class _coo_base(_data_matrix[_ScalarT_co, _ShapeT_co], _minmax_mixin[_ScalarT_co
     def tensordot(self: _spbase[_SupIntT], /, other: _JustND[int], axes: _Axes = 2) -> _ScalarOrDense[_SupIntT]: ...
 
 class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):
-    # NOTE: These two methods do not exist at runtime.
+    # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
@@ -119,6 +119,12 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float32__(self, /) -> coo_array[np.float32, _ShapeT_co]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> coo_array[np.float64, _ShapeT_co]: ...
 
     # NOTE: keep in sync with `coo_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None
@@ -343,7 +349,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
 
 class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
-    # NOTE: These two methods do not exist at runtime.
+    # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
@@ -351,6 +357,12 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_matrix[_ScalarT]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float32__(self, /) -> coo_matrix[np.float32]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> coo_matrix[np.float64]: ...
 
     #
     @property
