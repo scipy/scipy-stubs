@@ -382,7 +382,7 @@ def spdiags(
 ) -> _NonDIAMatrix[_SCT]: ...
 @overload
 def spdiags(
-    data: Seq[complex] | Seq[Seq[complex]],
+    data: onp.ToComplex1D | onp.ToComplex2D,
     diags: onp.ToInt | onp.ToInt1D,
     m: onp.ToJustInt,
     n: onp.ToJustInt,
@@ -390,7 +390,7 @@ def spdiags(
 ) -> _SpMatrix: ...
 @overload
 def spdiags(
-    data: Seq[complex] | Seq[Seq[complex]],
+    data: onp.ToComplex1D | onp.ToComplex2D,
     diags: onp.ToInt | onp.ToInt1D,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
