@@ -951,6 +951,7 @@ def rand(
     dtype: onp.AnyComplex128DType,
     rng: ToRNG = None,
 ) -> coo_matrix[np.complex128]: ...
+
 # NOTE: `random_array` should be prefered over `rand`
 @overload  # dtype: <default>
 def rand(
