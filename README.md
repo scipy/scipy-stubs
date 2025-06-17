@@ -1,109 +1,70 @@
-<h1 align="center">scipy-stubs</h1>
+# scipy-stubs
 
-<p align="center">
-    Precise type hints for <i>all</i> of <a href="https://github.com/scipy/scipy">SciPy</a>.
-</p>
+Precise type hints for **all** of <a href="https://github.com/scipy/scipy">SciPy</a>.
 
-<p align="center">
-    <a href="https://pypi.org/project/scipy-stubs/">
-        <img
-            alt="scipy-stubs - PyPI"
-            src="https://img.shields.io/pypi/v/scipy-stubs?style=flat&color=olive"
-        />
-    </a>
-    <a href="https://anaconda.org/conda-forge/scipy-stubs">
-        <img
-            alt="scipy-stubs - conda-forge"
-            src="https://anaconda.org/conda-forge/scipy-stubs/badges/version.svg"
-        />
-    </a>
-    <a href="https://github.com/scipy/scipy-stubs">
-        <img
-            alt="scipy-stubs - Python Versions"
-            src="https://img.shields.io/pypi/pyversions/scipy-stubs?style=flat"
-        />
-    </a>
-    <a href="https://github.com/scipy/scipy-stubs">
-        <img
-            alt="scipy-stubs - license"
-            src="https://img.shields.io/github/license/scipy/scipy-stubs?style=flat"
-        />
-    </a>
-</p>
-<p align="center">
-    <a href="https://github.com/scipy/scipy-stubs/actions?query=workflow%3ACI">
-        <img
-            alt="scipy-stubs - CI"
-            src="https://github.com/scipy/scipy-stubs/workflows/CI/badge.svg"
-        />
-    </a>
-    <a href="https://github.com/scipy/scipy-stubs">
-        <img
-            alt="scipy-stubs - typed"
-            src="https://img.shields.io/pypi/types/scipy-stubs?color=blue&style=flat"
-        />
-    </a>
-    <a href="https://github.com/python/mypy">
-        <img
-            alt="scipy-stubs - mypy"
-            src="https://www.mypy-lang.org/static/mypy_badge.svg"
-        />
-    </a>
-    <a href="https://github.com/microsoft/pyright">
-        <img
-            alt="scipy-stubs - pyright"
-            src="https://microsoft.github.io/pyright/img/pyright_badge.svg"
-        />
-    </a>
-    <a href="https://detachhead.github.io/basedpyright">
-        <img
-            alt="scipy-stubs - basedpyright"
-            src="https://img.shields.io/badge/basedpyright-checked-42b983"
-        />
-    </a>
-    <a href="https://github.com/astral-sh/ruff">
-        <img
-            alt="scipy-stubs - ruff"
-            src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json"
-        />
-    </a>
-</p>
+<a href="https://pypi.org/project/scipy-stubs/">
+    <img alt="scipy-stubs - PyPI" src="https://img.shields.io/pypi/v/scipy-stubs?color=blue&style=flat-square">
+</a>
+<a href="https://anaconda.org/conda-forge/scipy-stubs">
+    <img alt="scipy-stubs - conda-forge" src="https://anaconda.org/conda-forge/scipy-stubs/badges/version.svg">
+</a>
+<img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/scipy-stubs?color=blue&style=flat-square">
+<img alt="license" src="https://img.shields.io/github/license/scipy/scipy-stubs?color=violet&style=flat-square">
+<img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/scipy-stubs?color=violet&style=flat-square">
 
-______________________________________________________________________
+<a href="https://github.com/astral-sh/ruff">
+    <img alt="ruff" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json">
+</a>
+<a href="https://detachhead.github.io/basedpyright">
+    <img alt="basedpyright" src="https://img.shields.io/badge/basedpyright-checked-42b983">
+</a>
+<a href="https://github.com/microsoft/pyright">
+    <img alt="pyright" src="https://microsoft.github.io/pyright/img/pyright_badge.svg">
+</a>
+<a href="https://github.com/python/mypy">
+    <img alt="mypy" src="https://www.mypy-lang.org/static/mypy_badge.svg">
+</a>
+<img alt="typed" src="https://img.shields.io/pypi/types/scipy-stubs?color=white">
 
-## Highlights
+## Quick Start
 
-- Works out-of-the-box
-  - all that's needed is to [install `scipy-stubs`](#installation)
-  - does not require a `mypy` plugin or other configuration
-  - available on [PyPI](https://pypi.org/project/scipy-stubs/) and [conda-forge](https://anaconda.org/conda-forge/scipy-stubs)
-- Improves IDE suggestions and autocompletion
-  - ... even if you don't use static typing in your code
-  - no additional plugins required
-- 0% runtime overhead
-  - not even a single import is required
-- 100% coverage of the [public SciPy API](https://docs.scipy.org/doc/scipy/reference/index.html)
-  - also covers most of the private API
-- Precise type-hinting of dtypes and [shape-types](https://github.com/numpy/numpy/issues/16544)
-  - works with all "array-likes" and "dtype-likes"
-  - many of the functions that return an array are *shape-typed*
-  - shape-typing is optional: all functions still accept arrays with unknown shape-type
-- Type-checker agnostic
-  - works with at least [`mypy`](https://github.com/python/mypy),
-    [`pyright`](https://github.com/DetachHead/basedpyright)/pylance and [`ruff`](https://github.com/astral-sh/ruff)
-  - ... even in the strict mode
-  - compatible with the [Python Typing Spec](https://typing.readthedocs.io/en/latest/spec/index.html)
-- [SPEC 0](https://scientific-python.org/specs/spec-0000/) compliant
-  - Supports Python ≥ 3.11
-  - Supports NumPy ≥ 1.25.2
+Install `scipy-stubs` and start getting better type hints immediately:
+
+```bash
+pip install scipy-stubs
+```
+
+That's it! Your IDE and type checker will now provide precise type information for SciPy functions:
+
+![scipy-stubs demo](https://gist.github.com/user-attachments/assets/7f97b24f-2769-41ba-933c-9b09780cbb4f)
+
+## Why use scipy-stubs?
+
+### Enhanced Development Experience
+
+- **Better IDE support**: Get accurate autocompletion, parameter hints, and return type information
+- **Catch errors early**: Type checkers can detect mistakes before runtime
+- **Improved code documentation**: Type hints serve as inline documentation for function signatures
+
+### Zero Configuration Required
+
+- **Drop-in replacement**: Works immediately after installation, no configuration needed
+- **No runtime impact**: Type stubs are only used during development and type checking
+- **IDE agnostic**: Works with VSCode, PyCharm, Vim, Emacs, and any editor with Python language server support
+
+### Precise and Complete
+
+- **Array shape awareness**: Many functions include shape-type information for better array handling
+- **Generic types**: Supports generic types for sparse arrays, distributions, and more
+- **Complete coverage**: Type hints are provided for the entire SciPy API
 
 <!-- NOTE: SciPy permalinks to the following `#installation` anchor; don't modify it! -->
 
 ## Installation
 
-The source code is currently hosted on GitHub at [github.com/scipy/scipy-stubs](https://github.com/scipy/scipy-stubs/).
+The source code is hosted on GitHub at [github.com/scipy/scipy-stubs](https://github.com/scipy/scipy-stubs/).
 
-Binary distributions are available at the [Python Package Index (PyPI)](https://pypi.org/project/scipy-stubs/) and on
+Binary distributions are available on [PyPI](https://pypi.org/project/scipy-stubs/) and
 [conda-forge](https://anaconda.org/conda-forge/scipy-stubs).
 
 ### Using pip (PyPI)
@@ -135,30 +96,47 @@ It's also possible to install both `scipy` and `scipy-stubs` together through th
 conda install conda-forge::scipy-typed
 ```
 
-### Packages overview
+## Frequently Asked Questions
 
-<table>
-  <tr>
-    <th rowspan="2" colspan="2"></th>
-    <th colspan="2">Python packages</th>
-  </tr>
-  <tr>
-    <th><code>scipy-stubs</code></th>
-    <th><code>scipy</code> + <code>scipy-stubs</code></td>
-  </tr>
-  <tr>
-    <th>PyPI</th>
-    <th align="right"><code>pip install {}</code></th>
-    <td><code>scipy-stubs</code></td>
-    <td><code>scipy-stubs[scipy]</code></td>
-  </tr>
-  <tr>
-    <th>conda-forge</th>
-    <th align="right"><code>conda install conda-forge::{}</code></th>
-    <td><code>scipy-stubs</code></td>
-    <td><code>scipy-typed</code></td>
-  </tr>
-</table>
+### Q: Do I need to change my existing code?
+
+**A:** No! `scipy-stubs` works with your existing code without any modifications.
+    Just install it and your type checker and IDE will automatically use the type information.
+
+### Q: Will this slow down my code?
+
+**A:** Not at all. Type stubs are only used during development and type checking.
+    They have zero runtime overhead since they're not imported when your code runs.
+
+### Q: What if I don't use type hints in my code?
+
+**A:** You'll still benefit! Your IDE will provide better autocompletion and error detection
+    even without explicit type annotations in your code.
+
+### Q: Can I use this with Jupyter notebooks?
+
+**A:** Yes! Most modern Jupyter environments (JupyterLab, VS Code notebooks) support
+    type checking and will benefit from `scipy-stubs`.
+
+### Q: What's the difference between this and the built-in scipy typing?
+
+**A:** SciPy itself has limited type annotations. `scipy-stubs` provides comprehensive,
+    precise type information for the entire SciPy API, including shape-typing and advanced type features.
+
+### Q: How do I know if it's working?
+
+**A:** You should see improved autocompletion in your IDE and more precise type information.
+    You can also run `pyright` or another type checker on your code to see type checking in action.
+
+### Q: How much of SciPy is covered?
+
+**A:** All of it! If you find any missing or incorrect type annotations, please open an issue on [GitHub](https://github.com/scipy/scipy-stubs/issues).
+
+### Q: What static type-checkers are supported?
+
+**A:** `scipy-stubs` is compatible with [`pyright`](https://pyright.readthedocs.io/en/latest/index.html) (a.k.a. pylance),
+    [`basedpyright`](https://github.com/DetachHead/basedpyright), and [`mypy`](https://github.com/python/mypy).
+    We only support the latest versions of these type-checkers, so make sure to keep them up to date.
 
 ## Versioning and requirements
 
@@ -171,35 +149,27 @@ For `scipy-stubs==1.16.*` that is `numpy >= 1.25.2`.
 
 Currently, `scipy-stubs` has one required dependency: [`optype`](https://github.com/jorenham/optype).
 This is essential for `scipy-stubs` to work properly, as it relies heavily on it for annotating (shaped) array-likes,
-scalar-likes, shape-typing in general, and much more.
-At the moment, `scipy-stubs` requires the latest version `optype`.
+scalar-likes, shape-typing in general, and much more. At the moment, `scipy-stubs` requires the latest version `optype`.
 
 The exact version requirements are specified in the [`pyproject.toml`](pyproject.toml).
 
-## Supported static type-checkers
-
-- [`basedpyright`](https://github.com/DetachHead/basedpyright)
-- [`pyright`](https://pyright.readthedocs.io/en/latest/index.html)
-- [`mypy`](https://mypy.readthedocs.io/en/stable/index.html)
-
-For validation and testing, `scipy-stubs` primarily uses [`mypy`](https://github.com/python/mypy)
-and [`basedpyright`](https://github.com/DetachHead/basedpyright) (a backwards-compatible `pyright` fork).
-
-## `scipy` coverage
-
-The entire public API of `scipy` is **fully annotated** and **verifiably valid**.
-For the most part, this can also be said about `scipy`'s private API and other internal machinery.
-
-Note that this does not mean that all annotations are optimal, and some might even be incorrect. If you encounter this, it would
-help a lot if you could open an issue or a PR for it.
-
 ## Contributing
 
-There are many ways that you can help improve `scipy-stubs`, for example
+We welcome contributions from the community! There are many ways to help improve `scipy-stubs`:
 
-- reporting issues, bugs, or other unexpected outcomes
-- improving the `.pyi` stubs (see [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTRIBUTING.md))
-- type-testing (see the `README.md` in [`scipy-stubs/tests`](https://github.com/scipy/scipy-stubs/tree/master/tests) for the
-  specifics)
-- write new documentation (usage examples, guides, tips & tricks, FAQ, etc.), or e.g. improve this `README.md`
-- help spread the word on `scipy-stubs`, so that more can benefit from using it
+### Ways to Contribute
+
+- **Report issues**: Found a bug or incorrect type annotation? [Open an issue](https://github.com/scipy/scipy-stubs/issues)
+- **Improve stubs**: Fix or enhance `.pyi` files (see [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTRIBUTING.md))
+- **Add tests**: Help with type-testing (see the `README.md` in [`tests/`](https://github.com/scipy/scipy-stubs/tree/master/tests))
+- **Documentation**: Write guides, examples, or improve existing documentation
+- **Spread the word**: Help others discover `scipy-stubs`
+
+### Development Setup
+
+See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTRIBUTING.md) for detailed instructions.
+
+## License
+
+`scipy-stubs` is licensed under the [BSD 3-Clause License](https://github.com/scipy/scipy-stubs/blob/master/LICENSE),
+the same as SciPy itself.
