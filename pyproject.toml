@@ -227,3 +227,53 @@ preview = true
         extra-standard-library = ["_typeshed", "typing_extensions"]
         known-local-folder = ["scipy"]
         split-on-trailing-comma = false
+
+
+[tool.tox]
+min_version = "4"
+requires = ["tox-uv>=1"]
+env_list = ["lint", "pyright", "mypy", "3.11", "3.12", "3.13"]
+
+    [tool.tox.env_run_base]
+    description = "stubtest with {base_python}"
+    runner = "uv-venv-lock-runner"
+    dependency_groups = ["type"]
+    uv_sync_flags = ["--no-editable", "--reinstall-package=scipy-stubs"]
+    commands = [
+        [
+            "stubtest",
+            "--allowlist=.mypyignore",
+            "--mypy-config-file=pyproject.toml",
+            {replace = "posargs", default = ["scipy"], extend = true},
+        ],
+    ]
+
+    [tool.tox.env.lint]
+    description = "lint"
+    runner = "uv-venv-lock-runner"
+    dependency_groups = ["lint"]
+    commands = [
+        ["repo-review", "."],
+        ["ruff", "check", "--show-fixes"],
+        ["ruff", "format", "--check"],
+    ]
+
+    [tool.tox.env.pyright]
+    description = "basedpyright"
+    runner = "uv-venv-lock-runner"
+    dependency_groups = ["type"]
+    commands = [["basedpyright"]]
+
+    [tool.tox.env.mypy]
+    description = "mypy"
+    runner = "uv-venv-lock-runner"
+    dependency_groups = ["type"]
+    commands = [
+        [
+            "mypy",
+            "--hide-error-context",
+            "--hide-error-code-links",
+            "--no-incremental",
+            {replace = "posargs", default = ["."], extend = true},
+        ],
+    ]
