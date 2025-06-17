@@ -39,3 +39,7 @@ any_arr: (
     | sparse.dok_array[ScalarType, tuple[int, int]]
     | sparse.lil_array[ScalarType]
 )
+
+coo_vec: sparse.coo_array[ScalarType, tuple[int]]
+csr_vec: sparse.csr_array[ScalarType, tuple[int]]
+dok_vec: sparse.dok_array[ScalarType, tuple[int]]
