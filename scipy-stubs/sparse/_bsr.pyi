@@ -63,7 +63,7 @@ class _bsr_base(_cs_matrix[_ScalarT_co, tuple[int, int]], _minmax_mixin[_ScalarT
     ) -> None: ...
 
 class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
-    # NOTE: These two methods do not exist at runtime.
+    # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
@@ -71,6 +71,12 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float32__(self, /) -> bsr_array[np.float32]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> bsr_array[np.float64]: ...
 
     # NOTE: keep in sync with `bsr_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
@@ -191,6 +197,12 @@ class bsr_matrix(_bsr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_matrix[_ScalarT]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float32__(self, /) -> bsr_matrix[np.float32]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> bsr_matrix[np.float64]: ...
 
     # NOTE: keep in sync with `bsr_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None

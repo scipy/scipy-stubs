@@ -42,7 +42,7 @@ class _csc_base(_cs_matrix[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     def count_nonzero(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
 
 class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
-    # NOTE: These two methods do not exist at runtime.
+    # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
@@ -50,6 +50,12 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> csc_array[_ScalarT]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float32__(self, /) -> csc_array[np.float32]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> csc_array[np.float64]: ...
 
     # NOTE: keep in sync with `csc_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
@@ -142,7 +148,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
 
 class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
-    # NOTE: These two methods do not exist at runtime.
+    # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
@@ -150,6 +156,12 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> csc_matrix[_ScalarT]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float32__(self, /) -> csc_matrix[np.float32]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> csc_matrix[np.float64]: ...
 
     # NOTE: keep in sync with `csc_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None

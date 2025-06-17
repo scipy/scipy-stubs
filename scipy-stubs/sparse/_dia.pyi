@@ -55,7 +55,7 @@ class _dia_base(_data_matrix[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]
     ) -> None: ...
 
 class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
-    # NOTE: These two methods do not exist at runtime.
+    # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
@@ -63,6 +63,12 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float32__(self, /) -> dia_array[np.float32]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> dia_array[np.float64]: ...
 
     # NOTE: keep in sync with `dia_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
@@ -155,7 +161,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
 
 class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
-    # NOTE: These two methods do not exist at runtime.
+    # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
     @type_check_only
@@ -163,6 +169,12 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_matrix[_ScalarT]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float32__(self, /) -> dia_matrix[np.float32]: ...
+    @override
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> dia_matrix[np.float64]: ...
 
     # NOTE: keep in sync with `dia_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None
