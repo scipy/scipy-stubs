@@ -111,9 +111,29 @@ def getdata(
     obj: onp.ToArrayND[_ScalarT, _ScalarT], dtype: onp.ToDType[_ScalarT] | None = None, copy: bool = False
 ) -> onp.ArrayND[_ScalarT]: ...
 
+_CoInt32: TypeAlias = np.bool_ | np.int8 | np.uint8 | np.int16 | np.uint16 | np.int32
+_ContraInt32: TypeAlias = np.uint32 | np.int64 | np.uint64
+
 #
+@overload
 def get_index_dtype(
-    arrays: tuple[onp.ToInt | onp.ToIntND, ...] = (), maxval: onp.ToFloat | None = None, check_contents: op.CanBool = False
+    arrays: tuple[()] = (), maxval: onp.ToFloat | None = None, check_contents: op.CanBool = False
+) -> type[np.int32]: ...
+@overload
+def get_index_dtype(
+    arrays: tuple[onp.CanArrayND[_CoInt32], *tuple[onp.CanArrayND[_CoInt32], ...]],
+    maxval: onp.ToFloat | None = None,
+    check_contents: op.CanBool = False,
+) -> type[np.int32]: ...
+@overload
+def get_index_dtype(
+    arrays: tuple[onp.CanArrayND[_ContraInt32], *tuple[onp.CanArrayND[_ContraInt32], ...]],
+    maxval: onp.ToFloat | None = None,
+    check_contents: op.CanBool = False,
+) -> type[np.int64]: ...
+@overload
+def get_index_dtype(
+    arrays: tuple[onp.ToInt | onp.ToIntND, ...], maxval: onp.ToFloat | None = None, check_contents: op.CanBool = False
 ) -> type[_IntP]: ...
 
 # NOTE: The inline annotations (`(np.dtype) -> np.dtype`) are incorrect.
