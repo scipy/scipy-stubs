@@ -16,7 +16,7 @@ maintainers = [
     {name = "SciPy Developers", email = "scipy-dev@python.org"},
 ]
 license = "BSD-3-Clause"
-keywords = ["scipy", "typing", "pep484"]
+keywords = ["scipy", "typing", "stubs", "mypy", "pyright", "pep484", "pep561", "scipy-stubs"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -27,6 +27,7 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Typing :: Stubs Only",
 ]
 requires-python = ">=3.11"
@@ -54,13 +55,13 @@ type = [
     {include-group = "extras"},
     {include-group = "ci"},
     "basedpyright>=1.29.4",
-    "mypy[faster-cache]==1.16.1",
+    "mypy>=1.16.1",
+    "orjson>=3.10.18; python_version<'3.14'", # used by mypy
 ]
 dev = [
     {include-group = "lint"},
     {include-group = "type"},
 ]
-
 
 [tool.hatch.build]
 packages = ["scipy-stubs"]
@@ -232,7 +233,7 @@ preview = true
 [tool.tox]
 min_version = "4"
 requires = ["tox-uv>=1"]
-env_list = ["lint", "pyright", "mypy", "3.11", "3.12", "3.13"]
+env_list = ["lint", "pyright", "mypy", "3.11", "3.12", "3.13", "3.14"]
 
     [tool.tox.env_run_base]
     description = "stubtest with {base_python}"

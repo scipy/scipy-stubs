@@ -1,6 +1,12 @@
+import sys
 from typing import Final, LiteralString
 
-docdict: Final[dict[str, str]]
+# mypy<=1.16.1 workaround
+if sys.version_info >= (3, 14):
+    # see https://github.com/python/cpython/pull/130935
+    __conditional_annotations__: Final[set[int]] = ...
+
+docdict: Final[dict[str, str]] = ...
 
 def get(name: LiteralString) -> str: ...
 def add_newdoc(name: LiteralString, doc: str) -> None: ...
