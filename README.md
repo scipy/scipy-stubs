@@ -2,29 +2,17 @@
 
 Precise type hints for **all** of <a href="https://github.com/scipy/scipy">SciPy</a>.
 
-<a href="https://pypi.org/project/scipy-stubs/">
-    <img alt="scipy-stubs - PyPI" src="https://img.shields.io/pypi/v/scipy-stubs?color=blue&style=flat-square">
-</a>
-<a href="https://anaconda.org/conda-forge/scipy-stubs">
-    <img alt="scipy-stubs - conda-forge" src="https://anaconda.org/conda-forge/scipy-stubs/badges/version.svg">
-</a>
-<img alt="Python Versions" src="https://img.shields.io/pypi/pyversions/scipy-stubs?color=blue&style=flat-square">
-<img alt="license" src="https://img.shields.io/github/license/scipy/scipy-stubs?color=violet&style=flat-square">
-<img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/scipy-stubs?color=violet&style=flat-square">
+[![PyPI](https://img.shields.io/pypi/v/scipy-stubs?color=blue&style=flat-square)](https://pypi.org/project/scipy-stubs/)
+[![scipy-stubs - conda-forge](https://anaconda.org/conda-forge/scipy-stubs/badges/version.svg)](https://anaconda.org/conda-forge/scipy-stubs)
+![Python Versions](https://img.shields.io/pypi/pyversions/scipy-stubs?color=blue&style=flat-square)
+![license](https://img.shields.io/github/license/scipy/scipy-stubs?color=violet&style=flat-square)
+![PyPI Downloads](https://img.shields.io/pypi/dm/scipy-stubs?color=violet&style=flat-square)
 
-<a href="https://github.com/astral-sh/ruff">
-    <img alt="ruff" src="https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json">
-</a>
-<a href="https://detachhead.github.io/basedpyright">
-    <img alt="basedpyright" src="https://img.shields.io/badge/basedpyright-checked-42b983">
-</a>
-<a href="https://github.com/microsoft/pyright">
-    <img alt="pyright" src="https://microsoft.github.io/pyright/img/pyright_badge.svg">
-</a>
-<a href="https://github.com/python/mypy">
-    <img alt="mypy" src="https://www.mypy-lang.org/static/mypy_badge.svg">
-</a>
-<img alt="typed" src="https://img.shields.io/pypi/types/scipy-stubs?color=white">
+[![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![basedpyright](https://img.shields.io/badge/basedpyright-checked-42b983)](https://detachhead.github.io/basedpyright)
+[![pyright](https://microsoft.github.io/pyright/img/pyright_badge.svg)](https://github.com/microsoft/pyright)
+[![mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://github.com/python/mypy)
+![typed](https://img.shields.io/pypi/types/scipy-stubs?color=white)
 
 ## Quick Start
 
@@ -36,7 +24,7 @@ pip install scipy-stubs
 
 That's it! Your IDE and type checker will now provide precise type information for SciPy functions:
 
-![scipy-stubs demo](https://gist.github.com/user-attachments/assets/7f97b24f-2769-41ba-933c-9b09780cbb4f)
+![scipy-stubs demo](https://github.com/user-attachments/assets/2cf05d30-9a4c-41f9-8bc2-bbf12998ff26)
 
 ## Why use scipy-stubs?
 
