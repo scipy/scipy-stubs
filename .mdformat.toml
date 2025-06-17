@@ -1,4 +1,0 @@
-end_of_line = "lf"
-# exclude = [".tox/**", ".venv/**", "**/*.m[!d]", "**/*.[!m]d"]
-# TODO: Uncomment once `--exclude` can be used on `python<3.13`, see
-# https://github.com/hukkin/mdformat/issues/489
