@@ -102,7 +102,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     @overload
     def count_nonzero(self, /, axis: None = None) -> int: ...
     @overload
-    def count_nonzero(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def count_nonzero(self: _dok_base[Any, _2D], /, axis: Literal[0, 1, -1, -2]) -> onp.Array1D[np.intp]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @override
@@ -480,7 +480,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         /,
         arg1: _ToMatrix[_ScalarT],
         shape: ToShape2D | None = None,
-        dtype: None = None,
+        dtype: onp.ToDType[_ScalarT] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -490,8 +490,8 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         self: dok_matrix[np.float64],
         /,
         arg1: ToShape2D,
-        shape: None = None,
-        dtype: None = None,
+        shape: ToShape2D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -573,6 +573,11 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         *,
         maxprint: int | None = None,
     ) -> None: ...
+
+    #
+    @property
+    @override
+    def ndim(self, /) -> Literal[2]: ...
 
     #
     @override
