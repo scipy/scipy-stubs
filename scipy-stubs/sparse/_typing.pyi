@@ -12,8 +12,8 @@ __all__ = (
     "Numeric",
     "SPFormat",
     "ToShape1D",
-    "ToShape1D",
     "ToShape2D",
+    "ToShapeMax2D",
     "ToShapeMin1D",
     "ToShapeMin3D",
     "_CanStack",
@@ -29,6 +29,7 @@ Index1D: TypeAlias = onp.Array1D[np.int32]
 
 ToShape1D: TypeAlias = tuple[SupportsIndex]  # ndim == 1
 ToShape2D: TypeAlias = tuple[SupportsIndex, SupportsIndex]  # ndim == 2
+ToShapeMax2D: TypeAlias = ToShape1D | ToShape2D  # ndim <= 2
 ToShapeMin1D: TypeAlias = tuple[SupportsIndex, *tuple[SupportsIndex, ...]]  # ndim >= 1
 ToShapeMin3D: TypeAlias = tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]]  # ndim >= 2
 
