@@ -9,6 +9,7 @@ import numpy as np
 import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
 from ._coo import coo_array, coo_matrix
@@ -23,6 +24,7 @@ __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 _T = TypeVar("_T")
 _ScalarT = TypeVar("_ScalarT", bound=Numeric)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int] | tuple[int, int])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
 
 _1D: TypeAlias = tuple[int]  # noqa: PYI042
@@ -81,14 +83,20 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     #
     @override
     def __len__(self, /) -> int: ...
+    @override
+    def __delitem__(self: _dok_base[Any, _ShapeT], key: _ShapeT, /) -> None: ...
 
     #
     @overload
-    def __delitem__(self: _dok_base[Any, _2D], key: _ToKey2D, /) -> None: ...
+    def setdefault(self: _dok_base[_ScalarT, _ShapeT], key: _ShapeT, default: _T, /) -> _ScalarT | _T: ...
     @overload
-    def __delitem__(self: _dok_base[Any, _1D], key: _ToKey1D, /) -> None: ...
+    def setdefault(self: _dok_base[_ScalarT, _ShapeT], key: _ShapeT, default: None = None, /) -> _ScalarT | None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+
+    #
     @overload
-    def __delitem__(self, key: _ToKey1D | _ToKey2D, /) -> None: ...
+    def get(self: _dok_base[_ScalarT, _ShapeT], /, key: _ShapeT, default: _T) -> _ScalarT | _T: ...
+    @overload
+    def get(self: _dok_base[_ScalarT, _ShapeT], /, key: _ShapeT, default: float = 0.0) -> _ScalarT | float: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @override
@@ -97,44 +105,12 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     def __ror__(self, other: Never, /) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
     def __ior__(self, other: Never, /) -> Self: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-
-    #
-    @overload
-    def count_nonzero(self, /, axis: None = None) -> int: ...
-    @overload
-    def count_nonzero(self: _dok_base[Any, _2D], /, axis: Literal[0, 1, -1, -2]) -> onp.Array1D[np.intp]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-
-    #
     @override
     def update(self, /, val: Never) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
-    @overload
-    def setdefault(self: _dok_base[Any, _2D], key: _ToKey2D, default: _T, /) -> _ScalarT_co | _T: ...
-    @overload
-    def setdefault(self: _dok_base[Any, _2D], key: _ToKey2D, default: None = None, /) -> _ScalarT_co | None: ...
-    @overload
-    def setdefault(self: _dok_base[Any, _1D], key: _ToKey1D, default: _T, /) -> _ScalarT_co | _T: ...
-    @overload
-    def setdefault(self: _dok_base[Any, _1D], key: _ToKey1D, default: None = None, /) -> _ScalarT_co | None: ...
-    @overload
-    def setdefault(self, key: _ToKey1D | _ToKey2D, default: _T, /) -> _ScalarT_co | _T: ...
-    @overload
-    def setdefault(self, key: _ToKey1D | _ToKey2D, default: None = None, /) -> _ScalarT_co | None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-
-    #
-    @overload
-    def get(self: _dok_base[Any, _2D], /, key: _ToKey2D, default: _T) -> _ScalarT_co | _T: ...
-    @overload
-    def get(self: _dok_base[Any, _2D], /, key: _ToKey2D, default: float = 0.0) -> _ScalarT_co | float: ...
-    @overload
-    def get(self: _dok_base[Any, _1D], /, key: _ToKey1D, default: _T) -> _ScalarT_co | _T: ...
-    @overload
-    def get(self: _dok_base[Any, _1D], /, key: _ToKey1D, default: float = 0.0) -> _ScalarT_co | float: ...
-    @overload
-    def get(self, /, key: _ToKey1D | _ToKey2D, default: _T) -> _ScalarT_co | _T: ...
-    @overload
-    def get(self, /, key: _ToKey1D | _ToKey2D, default: float = 0.0) -> _ScalarT_co | float: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @override
+    def count_nonzero(self, /, axis: None = None) -> int: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @overload
@@ -402,6 +378,20 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
 
+    #
+    @overload
+    def __getitem__(self, key: onp.CanArrayND[np.bool_ | npc.integer] | list[int] | slice, /) -> Self: ...
+    @overload
+    def __getitem__(self: dok_array[_ScalarT, _ShapeT], key: _spbase[np.bool_, _ShapeT], /) -> dok_array[_ScalarT, _ShapeT]: ...
+    @overload
+    def __getitem__(self: dok_array[_ScalarT, _NoD], key: _ToKey1D, /) -> Any: ...
+    @overload
+    def __getitem__(self: dok_array[_ScalarT, _2D], key: _ToKey2D, /) -> _ScalarT: ...
+    @overload
+    def __getitem__(self: dok_array[_ScalarT, _1D], key: _ToKey1D, /) -> _ScalarT: ...
+    @overload
+    def __getitem__(self: dok_array[_ScalarT, _2D], key: _ToKey1D, /) -> coo_array[_ScalarT, _1D]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+
     # NOTE: This horrible code duplication is required due to the lack of higher-kinded typing (HKT) support.
     # https://github.com/python/typing/issues/548
     @overload
@@ -472,6 +462,11 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     def __assoc_as_float32__(self, /) -> dok_matrix[np.float32]: ...
     @type_check_only
     def __assoc_as_float64__(self, /) -> dok_matrix[np.float64]: ...
+
+    #
+    @property
+    @override
+    def ndim(self, /) -> Literal[2]: ...
 
     # NOTE: keep the in sync with `dok_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None
@@ -575,15 +570,12 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     ) -> None: ...
 
     #
-    @property
-    @override
-    def ndim(self, /) -> Literal[2]: ...
-
-    #
-    @override
-    def get(self, /, key: _ToKey2D, default: onp.ToComplex = 0.0) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride]
-    @override
-    def setdefault(self, key: _ToKey2D, default: onp.ToComplex | None = None, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    @overload
+    def __getitem__(
+        self, key: _ToKey1D | onp.CanArrayND[np.bool_ | npc.integer] | _spbase[np.bool_, _2D] | list[int] | slice, /
+    ) -> Self: ...
+    @overload
+    def __getitem__(self, key: _ToKey2D, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @overload
