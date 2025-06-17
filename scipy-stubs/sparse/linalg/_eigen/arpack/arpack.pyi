@@ -15,7 +15,8 @@ _KT = TypeVar("_KT")
 _ToRealMatrix: TypeAlias = onp.ToFloat2D | LinearOperator[np.floating[Any] | np.integer[Any]] | _spbase
 _ToComplexMatrix: TypeAlias = onp.ToComplex2D | LinearOperator | _spbase
 
-_Which: TypeAlias = Literal["LM", "SM", "LR", "SR", "LI", "SI"]
+_Which_eigs: TypeAlias = Literal["LM", "SM", "LR", "SR", "LI", "SI"]
+_Which_eigsh: TypeAlias = Literal["LM", "SM", "LA", "SA", "BE"]
 _OPpart: TypeAlias = Literal["r", "i"]
 _Mode: TypeAlias = Literal["normal", "buckling", "cayley"]
 
@@ -38,7 +39,7 @@ def eigs(
     k: int = 6,
     M: _ToRealMatrix | None = None,
     sigma: onp.ToComplex | None = None,
-    which: _Which = "LM",
+    which: _Which_eigs = "LM",
     v0: onp.ToFloat1D | None = None,
     ncv: int | None = None,
     maxiter: int | None = None,
@@ -54,7 +55,7 @@ def eigs(
     k: int,
     M: _ToRealMatrix | None,
     sigma: onp.ToComplex | None,
-    which: _Which,
+    which: _Which_eigs,
     v0: onp.ToFloat1D | None,
     ncv: int | None,
     maxiter: int | None,
@@ -70,7 +71,7 @@ def eigs(
     k: int = 6,
     M: _ToRealMatrix | None = None,
     sigma: onp.ToComplex | None = None,
-    which: _Which = "LM",
+    which: _Which_eigs = "LM",
     v0: onp.ToFloat1D | None = None,
     ncv: int | None = None,
     maxiter: int | None = None,
@@ -89,7 +90,7 @@ def eigsh(
     k: int = 6,
     M: _ToRealMatrix | None = None,
     sigma: onp.ToComplex | None = None,
-    which: _Which = "LM",
+    which: _Which_eigsh = "LM",
     v0: onp.ToFloat1D | None = None,
     ncv: int | None = None,
     maxiter: int | None = None,
@@ -105,7 +106,7 @@ def eigsh(
     k: int,
     M: _ToRealMatrix | None,
     sigma: onp.ToComplex | None,
-    which: _Which,
+    which: _Which_eigsh,
     v0: onp.ToFloat1D | None,
     ncv: int | None,
     maxiter: int | None,
@@ -121,7 +122,7 @@ def eigsh(
     k: int = 6,
     M: _ToRealMatrix | None = None,
     sigma: onp.ToComplex | None = None,
-    which: _Which = "LM",
+    which: _Which_eigsh = "LM",
     v0: onp.ToFloat1D | None = None,
     ncv: int | None = None,
     maxiter: int | None = None,
