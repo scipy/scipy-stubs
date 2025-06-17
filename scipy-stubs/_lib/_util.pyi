@@ -1,4 +1,5 @@
 import multiprocessing.pool as mpp
+import sys
 import types
 from collections.abc import Callable, Iterable, Sequence
 from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, TypeAlias, overload
@@ -37,6 +38,11 @@ SeedType: TypeAlias = IntNumber | _RNG | None
 GeneratorType = TypeVar("GeneratorType", bound=_RNG)  # noqa: PYI001  # oof
 
 ###
+
+# mypy<=1.16.1 workaround
+if sys.version_info >= (3, 14):
+    # see https://github.com/python/cpython/pull/130935
+    __conditional_annotations__: Final[set[int]] = ...
 
 class AxisError(ValueError, IndexError):
     _msg: Final[str | None]
