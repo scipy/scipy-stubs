@@ -171,4 +171,5 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 
 ## License
 
-`scipy-stubs` is licensed under the [BSD 3-Clause License](https://github.com/scipy/scipy-stubs/blob/master/LICENSE), the same as SciPy itself.
+`scipy-stubs` is licensed under the [BSD 3-Clause License](https://github.com/scipy/scipy-stubs/blob/master/LICENSE),
+the same as SciPy itself.
