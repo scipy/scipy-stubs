@@ -11,7 +11,7 @@ import optype.numpy.compat as npc
 from ._base import _spbase, sparray
 from ._compressed import _cs_matrix
 from ._matrix import spmatrix
-from ._typing import Index1D, Numeric, ToShape1D, ToShape2D, ToShapeMin1D
+from ._typing import Numeric, ToShape1D, ToShape2D, ToShapeMax2D
 
 __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
@@ -53,7 +53,7 @@ class _csr_base(_cs_matrix[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _Shape
     @overload
     def count_nonzero(self: csr_array[Any, tuple[int]], /, axis: op.CanIndex) -> np.intp: ...  # type: ignore[misc]
     @overload
-    def count_nonzero(self: _csr_base[Any], /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
+    def count_nonzero(self: _csr_base[Any, tuple[int, int]], /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
     @overload
     def count_nonzero(self: csr_array[Any, Any], /, axis: op.CanIndex) -> onp.Array1D[np.intp] | Any: ...  # type: ignore[misc]
 
@@ -100,7 +100,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[_ScalarT, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[_ScalarT]] | Sequence[onp.CanArrayND[_ScalarT]],  # assumes max. 2-d
+        arg1: Sequence[Sequence[_ScalarT] | onp.CanArrayND[_ScalarT]],  # assumes max. 2-d
         shape: ToShape2D | None = None,
         dtype: onp.ToDType[_ScalarT] | None = None,
         copy: bool = False,
@@ -109,11 +109,11 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
-        self,
+        self: csr_array[_ScalarT, tuple[Any, ...]],
         /,
-        arg1: _ToMatrix[_ScalarT_co] | _ToData[_ScalarT_co],
-        shape: ToShapeMin1D | None = None,
-        dtype: onp.ToDType[_ScalarT_co] | None = None,
+        arg1: _ToMatrix[_ScalarT] | _ToData[_ScalarT],
+        shape: ToShapeMax2D | None = None,
+        dtype: onp.ToDType[_ScalarT] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -144,7 +144,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.bool_, tuple[int]],
         /,
-        arg1: Sequence[bool],
+        arg1: onp.ToJustBoolStrict1D,
         shape: ToShape1D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
@@ -155,7 +155,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.bool_, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[bool]],
+        arg1: onp.ToJustBoolStrict2D,
         shape: ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
@@ -164,10 +164,10 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 1-d array-like ~int, dtype: type[int] | None
     def __init__(
-        self: csr_array[np.int_, tuple[int]],
+        self: csr_array[np.int64, tuple[int]],
         /,
-        arg1: Sequence[op.JustInt],
-        shape: ToShapeMin1D | None = None,
+        arg1: onp.ToJustInt64Strict1D,
+        shape: ToShape1D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
@@ -175,10 +175,10 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 2-d array-like ~int, dtype: type[int] | None
     def __init__(
-        self: csr_array[np.int_, tuple[int, int]],
+        self: csr_array[np.int64, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[op.JustInt]],
-        shape: ToShapeMin1D | None = None,
+        arg1: onp.ToJustInt64Strict2D,
+        shape: ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
@@ -188,8 +188,8 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.float64, tuple[int]],
         /,
-        arg1: Sequence[op.JustFloat],
-        shape: ToShapeMin1D | None = None,
+        arg1: onp.ToJustFloat64Strict1D,
+        shape: ToShapeMax2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -199,8 +199,8 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.float64, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[op.JustFloat]],
-        shape: ToShapeMin1D | None = None,
+        arg1: onp.ToJustFloat64Strict2D,
+        shape: ToShapeMax2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -210,8 +210,8 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.complex128, tuple[int]],
         /,
-        arg1: Sequence[op.JustComplex],
-        shape: ToShapeMin1D | None = None,
+        arg1: onp.ToJustComplex128Strict1D,
+        shape: ToShapeMax2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
@@ -221,8 +221,8 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.complex128, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[op.JustComplex]],
-        shape: ToShapeMin1D | None = None,
+        arg1: onp.ToJustComplex128Strict2D,
+        shape: ToShapeMax2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
@@ -277,7 +277,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         self,
         /,
         arg1: onp.ToComplex1D | onp.ToComplex2D,
-        shape: ToShapeMin1D | None = None,
+        shape: ToShapeMax2D | None = None,
         dtype: npt.DTypeLike | None = ...,
         copy: bool = False,
         *,
@@ -303,11 +303,11 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     # NOTE: keep in sync with `csc_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
-        self,
+        self: csr_matrix[_ScalarT],  # this self annotation works around a mypy bug
         /,
-        arg1: _ToMatrix[_ScalarT_co],
+        arg1: _ToMatrix[_ScalarT],
         shape: ToShape2D | None = None,
-        dtype: onp.ToDType[_ScalarT_co] | None = None,
+        dtype: onp.ToDType[_ScalarT] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -327,7 +327,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.bool_],
         /,
-        arg1: Sequence[Sequence[bool]],
+        arg1: onp.ToJustBoolStrict2D,
         shape: ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
@@ -336,9 +336,9 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     ) -> None: ...
     @overload  # 2-d array-like ~int, dtype: type[int] | None
     def __init__(
-        self: csr_matrix[np.int_],
+        self: csr_matrix[np.int64],
         /,
-        arg1: Sequence[Sequence[op.JustInt]],
+        arg1: onp.ToJustInt64Strict2D,
         shape: ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
@@ -349,7 +349,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.float64],
         /,
-        arg1: Sequence[Sequence[op.JustFloat]],
+        arg1: onp.ToJustFloat64Strict2D,
         shape: ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -360,7 +360,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.complex128],
         /,
-        arg1: Sequence[Sequence[op.JustComplex]],
+        arg1: onp.ToJustComplex128Strict2D,
         shape: ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
@@ -371,7 +371,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexStrict2D,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -382,18 +382,34 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexStrict2D,
+        arg1: onp.ToComplex2D,
         shape: ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: onp.ToComplex2D,
+        shape: ToShape2D | None = None,
+        dtype: npt.DTypeLike | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+
+    #
+    @property
+    @override
+    def ndim(self, /) -> Literal[2]: ...
 
     #
     @overload
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload
-    def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...
+    def getnnz(self, /, axis: Literal[0, 1, -1, -2]) -> onp.Array1D[np.intp]: ...
 
 def isspmatrix_csr(x: object) -> TypeIs[csr_matrix]: ...
