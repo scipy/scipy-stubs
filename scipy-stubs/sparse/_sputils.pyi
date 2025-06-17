@@ -114,7 +114,7 @@ def getdata(
 #
 def get_index_dtype(
     arrays: tuple[onp.ToInt | onp.ToIntND, ...] = (), maxval: onp.ToFloat | None = None, check_contents: op.CanBool = False
-) -> _IntP: ...
+) -> type[_IntP]: ...
 
 # NOTE: The inline annotations (`(np.dtype) -> np.dtype`) are incorrect.
 @overload
