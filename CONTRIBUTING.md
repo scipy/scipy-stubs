@@ -30,6 +30,33 @@ uv sync --python 3.11
 By installing the lowest support Python version (3.11 in this example), it prevents
 your IDE from e.g. auto-importing unsupported `typing` features.
 
+## Lefthook
+
+[Lefthook] is a modern Git hooks manager, which automatically lints and formats
+your code before you committing it. It will also keep your `uv` environment
+up-to-date with the lockfile when you `git pull`.
+
+To install it as a `uv` tool, run
+
+```shell
+uv tool install lefthook --upgrade
+```
+
+To set it up, navigate to the root of the `numtype` repo, and run
+
+```shell
+uvx lefthook install
+```
+
+Now let's see it all works:
+
+```bash
+$ uvx lefthook validate
+All good
+```
+
+See <https://lefthook.dev/> for more information.
+
 ### Tox
 
 The linters, type-checkers, and `stubtest` can easily be run with
@@ -49,20 +76,18 @@ uvx tox p
 <summary>Output:</summary>
 
 ```plaintext
-lint: OK ✔ in 0.52 seconds
-3.11: OK ✔ in 21.59 seconds
-mypy: OK ✔ in 21.62 seconds
-pyright: OK ✔ in 25.23 seconds
-3.10: OK ✔ in 25.4 seconds
-3.12: OK ✔ in 38.71 seconds
-  lint: OK (0.52=setup[0.04]+cmd[0.41,0.03,0.05] seconds)
-  pyright: OK (25.23=setup[0.03]+cmd[25.20] seconds)
-  mypy: OK (21.62=setup[0.03]+cmd[21.59] seconds)
-  3.13: OK (53.28=setup[0.03]+cmd[53.25] seconds)
-  3.12: OK (38.71=setup[0.03]+cmd[38.68] seconds)
-  3.11: OK (21.59=setup[0.03]+cmd[21.55] seconds)
-  3.10: OK (25.40=setup[0.03]+cmd[25.36] seconds)
-  congratulations :) (53.35 seconds)
+lint: OK ✔ in 0.6 seconds
+pyright: OK ✔ in 11.97 seconds
+mypy: OK ✔ in 16.69 seconds
+3.11: OK ✔ in 18.05 seconds
+3.12: OK ✔ in 22.94 seconds
+  lint: OK (0.60=setup[0.30]+cmd[0.16,0.11,0.04] seconds)
+  pyright: OK (11.97=setup[0.30]+cmd[11.67] seconds)
+  mypy: OK (16.69=setup[0.30]+cmd[16.39] seconds)
+  3.13: OK (25.80=setup[0.30]+cmd[25.51] seconds)
+  3.12: OK (22.94=setup[0.29]+cmd[22.64] seconds)
+  3.11: OK (18.05=setup[0.30]+cmd[17.75] seconds)
+  congratulations :) (25.84 seconds)
 ```
 
 </details>
@@ -71,7 +96,7 @@ pyright: OK ✔ in 25.23 seconds
 
 All [documentation] lives in the `README.md`. Please read it carefully before proposing
 any changes. Ensure that the markdown is formatted correctly with
-[markdownlint](https://github.com/DavidAnson/markdownlint/tree/main).
+[markdownlint](https://github.com/DavidAnson/markdownlint).
 
 ## Testing
 
@@ -79,7 +104,7 @@ See the `README.md` in [`scipy-stubs/tests`][tests].
 
 ## Code style
 
-See <https://typing.readthedocs.io/en/latest/guides/writing_stubs.html#style-guide>.
+See <https://typing.python.org/en/latest/guides/writing_stubs.html#style-guide>.
 
 ## Commit message style
 
