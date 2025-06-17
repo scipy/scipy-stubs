@@ -4,22 +4,14 @@ __pycache__/
 *$py.class
 
 # Distribution / packaging
-build/
 dist/
-site/
 
 # Cache
 .cache/
 .mypy_cache/
-.pytest_cache/
 .ruff_cache/
 .tox/
 
 # Environments
 .env
 .venv/
-venv/
-
-# IntelliJ
-.idea/
-.run/
