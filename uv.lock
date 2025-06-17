@@ -88,11 +88,6 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/cf/d3/53e684e78e07c1a2bf7105715e5edd09ce951fc3f47cf9ed095ec1b7a037/mypy-1.16.1-py3-none-any.whl", hash = "sha256:5fc2ac4027d0ef28d6ba69a0343737a23c4d1b83672bf38d1fe237bdc0643b37", size = 2265923, upload-time = "2025-06-16T16:48:02.366Z" },
 ]
 
-[package.optional-dependencies]
-faster-cache = [
-    { name = "orjson" },
-]
-
 [[package]]
 name = "mypy-extensions"
 version = "1.1.0"
@@ -441,7 +436,8 @@ ci = [
 ]
 dev = [
     { name = "basedpyright" },
-    { name = "mypy", extra = ["faster-cache"] },
+    { name = "mypy" },
+    { name = "orjson", marker = "python_full_version < '3.14'" },
     { name = "packaging" },
     { name = "ruff" },
     { name = "scipy-stubs", extra = ["scipy"] },
@@ -457,7 +453,8 @@ lint = [
 ]
 type = [
     { name = "basedpyright" },
-    { name = "mypy", extra = ["faster-cache"] },
+    { name = "mypy" },
+    { name = "orjson", marker = "python_full_version < '3.14'" },
     { name = "packaging" },
     { name = "scipy-stubs", extra = ["scipy"] },
 ]
@@ -473,7 +470,8 @@ provides-extras = ["scipy"]
 ci = [{ name = "packaging", specifier = ">=25.0" }]
 dev = [
     { name = "basedpyright", specifier = ">=1.29.4" },
-    { name = "mypy", extras = ["faster-cache"], specifier = "==1.16.1" },
+    { name = "mypy", specifier = ">=1.16.1" },
+    { name = "orjson", marker = "python_full_version < '3.14'", specifier = ">=3.10.18" },
     { name = "packaging", specifier = ">=25.0" },
     { name = "ruff", specifier = ">=0.11.13" },
     { name = "scipy-stubs", extras = ["scipy"] },
@@ -487,7 +485,8 @@ lint = [
 ]
 type = [
     { name = "basedpyright", specifier = ">=1.29.4" },
-    { name = "mypy", extras = ["faster-cache"], specifier = "==1.16.1" },
+    { name = "mypy", specifier = ">=1.16.1" },
+    { name = "orjson", marker = "python_full_version < '3.14'", specifier = ">=3.10.18" },
     { name = "packaging", specifier = ">=25.0" },
     { name = "scipy-stubs", extras = ["scipy"] },
 ]
