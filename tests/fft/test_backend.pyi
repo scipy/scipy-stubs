@@ -6,7 +6,8 @@ from scipy import fft
 @type_check_only
 class MyBackend:
     __ua_domain__: ClassVar[str] = ...
-    def __ua_function__(self, method: Callable[..., Any], args: tuple[Any, ...], kwargs: dict[str, Any], /) -> Any: ...
+    @staticmethod
+    def __ua_function__(method: Callable[..., Any], args: tuple[Any, ...], kwargs: dict[str, Any], /) -> Any: ...
 
 # set_global_backend
 assert_type(fft.set_global_backend("scipy"), None)
