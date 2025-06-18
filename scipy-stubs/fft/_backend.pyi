@@ -1,6 +1,6 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, ClassVar, Final, Generic, Literal, TypeAlias, final, override
-from typing_extensions import TypeVar
+from typing import Any, ClassVar, Final, Generic, Literal, TypeAlias, final
+from typing_extensions import TypeVar, override
 
 import optype as op
 
