@@ -1,7 +1,7 @@
 from collections.abc import Callable, Iterable
 from contextlib import _GeneratorContextManager
 from types import NotImplementedType
-from typing import Any, Final, Generic, Literal, TypeAlias, TypedDict, final, overload, type_check_only
+from typing import Any, ClassVar, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, final, overload, type_check_only
 from typing_extensions import ParamSpec, TypeVar, Unpack
 
 from scipy._typing import AnyBool, EnterNoneMixin
@@ -36,10 +36,9 @@ _T = TypeVar("_T", default=object)
 _T2 = TypeVar("_T2", default=object)
 _S = TypeVar("_S")
 _C = TypeVar("_C")
-_T_co = TypeVar("_T_co", covariant=True, default=object)
+_T_co = TypeVar("_T_co", covariant=True, default=Any)
 _Tss = ParamSpec("_Tss", default=...)
 
-_Backend: TypeAlias = object
 _DispatchType: TypeAlias = type[_T] | str
 _DispatchTypeSlice: TypeAlias = (
     tuple[()]
@@ -48,6 +47,12 @@ _DispatchTypeSlice: TypeAlias = (
     | tuple[_DispatchType[_T], _T]
     | tuple[_T, _DispatchType[_T]]
 )  # fmt: skip
+
+@type_check_only
+class _Backend(Protocol[_T_co]):
+    __ua_domain__: ClassVar[str] = ...
+    @staticmethod
+    def __ua_function__(method: Callable[..., Any], args: tuple[Any, ...], kwargs: dict[str, Any], /) -> _T_co: ...
 
 @final
 @type_check_only
