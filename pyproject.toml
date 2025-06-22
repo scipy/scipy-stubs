@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scipy-stubs"
-version = "1.16.0.0"
+version = "1.16.0.1.dev0"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
@@ -34,7 +34,7 @@ requires-python = ">=3.11"
 dependencies = ["optype>=0.10.0,<1"]
 
     [project.optional-dependencies]
-    scipy = ["scipy>=1.16.0rc2,<1.17"]
+    scipy = ["scipy>=1.16.0,<1.17"]
 
     [project.urls]
     Homepage = "https://scipy.org/"
