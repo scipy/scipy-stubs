@@ -67,8 +67,14 @@ class QMCEngine(abc.ABC, Generic[_InexactT_co]):
     rng: np.random.Generator
     num_generated: int
 
+    @overload
     @abc.abstractmethod
     def __init__(self, /, d: onp.ToJustInt, *, optimization: _MethodQMC | None = None, rng: ToRNG = None) -> None: ...
+    @overload  # will be deprecated in the future
+    @abc.abstractmethod
+    def __init__(self, /, d: onp.ToJustInt, *, optimization: _MethodQMC | None = None, seed: ToRNG) -> None: ...
+
+    #
     def _initialize(self, /, d: onp.ToJustInt, *, optimization: _MethodQMC | None = None, rng: ToRNG = None) -> None: ...
 
     #
@@ -95,8 +101,13 @@ class Halton(QMCEngine[np.float64]):
     scramble: Final[bool]
     _permutations: Final[list[onp.Array2D[np.int_]]]
 
+    @overload
     def __init__(
         self, /, d: onp.ToJustInt, *, scramble: bool = True, optimization: _MethodQMC | None = None, rng: ToRNG = None
+    ) -> None: ...
+    @overload  # will be deprecated in the future
+    def __init__(
+        self, /, d: onp.ToJustInt, *, scramble: bool = True, optimization: _MethodQMC | None = None, seed: ToRNG
     ) -> None: ...
 
     #
@@ -108,6 +119,7 @@ class LatinHypercube(QMCEngine[np.float64]):
     scramble: Final[bool]
     lhs_method: Final[Callable[[onp.ToInt], onp.Array2D[np.float64]]]
 
+    @overload
     def __init__(
         self,
         /,
@@ -117,6 +129,17 @@ class LatinHypercube(QMCEngine[np.float64]):
         strength: int = 1,
         optimization: _MethodQMC | None = None,
         rng: ToRNG = None,
+    ) -> None: ...
+    @overload  # will be deprecated in the future
+    def __init__(
+        self,
+        /,
+        d: onp.ToJustInt,
+        *,
+        scramble: bool = True,
+        strength: int = 1,
+        optimization: _MethodQMC | None = None,
+        seed: ToRNG,
     ) -> None: ...
 
     #
@@ -134,6 +157,7 @@ class Sobol(QMCEngine[np.float64]):
     bits: int | np.integer[Any]
     maxn: int | np.integer[Any]
 
+    @overload
     def __init__(
         self,
         /,
@@ -143,6 +167,17 @@ class Sobol(QMCEngine[np.float64]):
         bits: onp.ToJustInt | None = None,
         optimization: _MethodQMC | None = None,
         rng: ToRNG = None,
+    ) -> None: ...
+    @overload  # will be deprecated in the future
+    def __init__(
+        self,
+        /,
+        d: onp.ToJustInt,
+        *,
+        scramble: bool = True,
+        bits: onp.ToJustInt | None = None,
+        optimization: _MethodQMC | None = None,
+        seed: ToRNG,
     ) -> None: ...
 
     #
@@ -163,6 +198,7 @@ class PoissonDisk(QMCEngine[np.float64]):
     sample_pool: list[onp.Array1D]
     sample_grid: onp.Array2D[np.float32]
 
+    @overload
     def __init__(
         self,
         /,
@@ -176,6 +212,22 @@ class PoissonDisk(QMCEngine[np.float64]):
         l_bounds: onp.ToFloat1D | None = None,
         u_bounds: onp.ToFloat1D | None = None,
     ) -> None: ...
+    @overload  # will be deprecated in the future
+    def __init__(
+        self,
+        /,
+        d: onp.ToJustInt,
+        *,
+        radius: onp.ToFloat = 0.05,
+        hypersphere: _HyperSphere = "volume",
+        ncandidates: onp.ToJustInt = 30,
+        optimization: _MethodQMC | None = None,
+        seed: ToRNG,
+        l_bounds: onp.ToFloat1D | None = None,
+        u_bounds: onp.ToFloat1D | None = None,
+    ) -> None: ...
+
+    #
     def _initialize_grid_pool(self, /) -> None: ...
     @override
     def _random(self, /, n: onp.ToJustInt = 1, *, workers: onp.ToJustInt = 1) -> onp.Array2D[np.float64]: ...
@@ -216,6 +268,30 @@ class MultivariateNormalQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co])
         engine: _EngineT_co,
         rng: ToRNG = None,
     ) -> None: ...
+    @overload  # will be deprecated in the future
+    def __init__(
+        self: MultivariateNormalQMC[Sobol],
+        /,
+        mean: onp.ToFloat1D,
+        cov: onp.ToFloat2D | None = None,
+        *,
+        cov_root: onp.ToFloat2D | None = None,
+        inv_transform: op.CanBool = True,
+        engine: None = None,
+        seed: ToRNG,
+    ) -> None: ...
+    @overload  # will be deprecated in the future
+    def __init__(
+        self,
+        /,
+        mean: onp.ToFloat1D,
+        cov: onp.ToFloat2D | None = None,
+        *,
+        cov_root: onp.ToFloat2D | None = None,
+        inv_transform: op.CanBool = True,
+        engine: _EngineT_co,
+        seed: ToRNG,
+    ) -> None: ...
     #
     def _correlate(
         self: MultivariateNormalQMC[QMCEngine[_InexactT]], /, base_samples: onp.Array2D[_InexactT]
@@ -241,6 +317,20 @@ class MultinomialQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co]):
     @overload
     def __init__(
         self, /, pvals: onp.ToJustFloat | onp.ToJustFloat1D, n_trials: onp.ToJustInt, *, engine: _EngineT_co, rng: ToRNG = None
+    ) -> None: ...
+    @overload  # will be deprecated in the future
+    def __init__(
+        self: MultinomialQMC[Sobol],
+        /,
+        pvals: onp.ToJustFloat | onp.ToJustFloat1D,
+        n_trials: onp.ToJustInt,
+        *,
+        engine: None = None,
+        seed: ToRNG,
+    ) -> None: ...
+    @overload  # will be deprecated in the future
+    def __init__(
+        self, /, pvals: onp.ToJustFloat | onp.ToJustFloat1D, n_trials: onp.ToJustInt, *, engine: _EngineT_co, seed: ToRNG
     ) -> None: ...
 
 #

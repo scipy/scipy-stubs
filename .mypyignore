@@ -14,6 +14,16 @@ scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
 scipy\._lib\.(array_api_(compat|extra)|cobyqa|pyprima).*
 scipy\.fft\._pocketfft\..*
 
+# https://github.com/scipy/scipy/issues/23216
+# https://github.com/scipy/scipy-stubs/issues/644
+scipy\.stats\._?qmc\.QMCEngine\.__init__
+scipy\.stats\._?qmc\.Halton\.__init__
+scipy\.stats\._?qmc\.LatinHypercube\.__init__
+scipy\.stats\._?qmc\.Sobol\.__init__
+scipy\.stats\._?qmc\.PoissonDisk\.__init__
+scipy\.stats\._?qmc\.MultivariateNormalQMC\.__init__
+scipy\.stats\._?qmc\.MultinomialQMC\.__init__
+
 # https://github.com/scipy/scipy/pull/23115
 # https://github.com/scipy/scipy/pull/23117
 scipy\.linalg\._decomp_interpolative\.__all__
