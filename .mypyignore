@@ -28,6 +28,7 @@ scipy\.stats(\._fit)?\.goodness_of_fit
 scipy\.stats(\._multicomp)?\.dunnett
 scipy\.stats(\._resampling)?\.bootstrap
 scipy\.stats(\._resampling)?\.permutation_test
+scipy\.stats(\._sensitivity_analysis)?\.sobol_indices
 scipy\.stats\._?qmc\.QMCEngine\.__init__
 scipy\.stats\._?qmc\.Halton\.__init__
 scipy\.stats\._?qmc\.LatinHypercube\.__init__
