@@ -14,6 +14,7 @@ scipy\.fft\._pocketfft\..*
 scipy\.cluster\._?vq\.kmeans
 scipy\.cluster\._?vq\.kmeans2
 scipy\.interpolate(\._?polyint)?\.BarycentricInterpolator\.__init__
+scipy\.linalg(\._sketches)?\.clarkson_woodruff_transform
 scipy\.stats\._?qmc\.QMCEngine\.__init__
 scipy\.stats\._?qmc\.Halton\.__init__
 scipy\.stats\._?qmc\.LatinHypercube\.__init__
