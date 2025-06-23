@@ -53,51 +53,15 @@ _ToFloat: TypeAlias = float | npc.floating | npc.integer
 
 _Norm: TypeAlias = Literal[2, "approximate", "subsample"]
 
-_NameWindow0: TypeAlias = Literal[
-    "barthann", "brthan", "bth",
-    "bartlett", "bart", "brt",
-    "blackman", "black", "blk",
-    "blackmanharris", "blackharr", "bkh",
-    "bohman", "bman", "bmn",
-    "boxcar", "box", "ones", "rect", "rectangular",
-    "cosine", "halfcosine",
-    "exponential", "poisson",
-    "flattop", "flat", "flt",
-    "hamming", "hamm", "ham",
-    "hann", "han",
-    "lanczos", "sinc",
-    "nuttall", "nutl", "nut",
-    "parzen", "parz", "par",
-    "taylor", "taylorwin",
-    "triangle", "triang", "tri",
-    "tukey", "tuk",
-]  # fmt: skip
-_NameWindow1: TypeAlias = Literal[
-    "chebwin", "cheb",
-    "dpss",
-    "exponential", "poisson",
-    "gaussian", "gauss", "gss",
-    "general hamming", "general_hamming",
-    "kaiser", "ksr",
-    "kaiser bessel derived", "kbd",
-    "tukey", "tuk",
-]  # fmt: skip
-_NameWindow2: TypeAlias = Literal[
-    "exponential", "poisson",
-    "general gaussian", "general_gaussian", "general gauss", "general_gauss", "ggs",
-]  # fmt: skip
-_NameTaylor: TypeAlias = Literal["taylor", "taylorwin"]
-_NameGenCos: TypeAlias = Literal["general cosine", "general_cosine"]
-_NameDPSS: TypeAlias = Literal["dpss"]
-
-_ToWindow0: TypeAlias = _NameWindow0 | tuple[_NameWindow0]
-_ToWindow1: TypeAlias = _ToFloat | tuple[_NameWindow1, _ToFloat]
-_ToWindow2: TypeAlias = tuple[_NameWindow2, _ToFloat, _ToFloat]
-_ToGenCos: TypeAlias = tuple[_NameGenCos, onp.ToFloat1D]
-_ToTaylor: TypeAlias = tuple[_NameTaylor, _ToInt] | tuple[_NameTaylor, _ToInt, _ToInt] | tuple[_NameTaylor, _ToInt, _ToInt, bool]
-_ToDPSS: TypeAlias = tuple[_NameDPSS, _ToFloat, op.CanIndex]
-
-_ToWindow = TypeAliasType("_ToWindow", _ToWindow0 | _ToWindow1 | _ToWindow2 | _ToGenCos | _ToTaylor | _ToDPSS)
+_ToWindow = TypeAliasType(
+    "_ToWindow",
+    _ToFloat
+    | str
+    | tuple[str]
+    | tuple[str, _ToFloat | onp.ToFloat1D]
+    | tuple[str, _ToFloat, _ToFloat | op.CanIndex]
+    | tuple[str, _ToInt, _ToInt, bool],
+)
 
 ###
 
