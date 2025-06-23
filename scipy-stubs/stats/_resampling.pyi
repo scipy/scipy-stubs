@@ -7,7 +7,7 @@ import numpy as np
 import optype.numpy as onp
 
 from ._common import ConfidenceInterval
-from scipy._typing import Alternative, ToRNG
+from scipy._typing import Alternative
 
 __all__ = ["bootstrap", "monte_carlo_test", "permutation_test"]
 
@@ -56,7 +56,7 @@ class ResamplingMethod:
 @dataclass
 class MonteCarloMethod(ResamplingMethod):
     rvs: _RVSCallable | Sequence[_RVSCallable] | None = None
-    rng: ToRNG = None
+    rng: onp.random.ToRNG | None = None
 
     def __init__(
         self,
@@ -64,7 +64,7 @@ class MonteCarloMethod(ResamplingMethod):
         n_resamples: int = 9_999,
         batch: int | None = None,
         rvs: _RVSCallable | Sequence[_RVSCallable] | None = None,
-        rng: ToRNG = None,
+        rng: onp.random.ToRNG | None = None,
     ) -> None: ...
 
 @dataclass
@@ -73,24 +73,44 @@ class PermutationMethod(ResamplingMethod):
     __match_args__: ClassVar[tuple[str, ...]] = "n_resamples", "batch", "rng"  # pyright: ignore[reportIncompatibleVariableOverride]
 
     @property
-    def rng(self, /) -> ToRNG: ...
+    def rng(self, /) -> onp.random.ToRNG | None: ...
     #
     @property
-    def random_state(self, /) -> ToRNG: ...
+    def random_state(self, /) -> onp.random.ToRNG | None: ...
     @random_state.setter
-    def random_state(self, rng: ToRNG, /) -> None: ...
+    def random_state(self, rng: onp.random.ToRNG | None, /) -> None: ...
     #
     @overload
     def __init__(
-        self, /, n_resamples: int = 9_999, batch: int | None = None, random_state: None = None, *, rng: ToRNG = None
+        self,
+        /,
+        n_resamples: int = 9_999,
+        batch: int | None = None,
+        random_state: None = None,
+        *,
+        rng: onp.random.ToRNG | None = None,
     ) -> None: ...
     @overload
     @deprecated("`random_state` is deprecated, use `rng` instead")  # this is a reasonable lie
-    def __init__(self, /, n_resamples: int, batch: int | None, random_state: ToRNG, *, rng: ToRNG = None) -> None: ...
+    def __init__(
+        self,
+        /,
+        n_resamples: int,
+        batch: int | None,
+        random_state: onp.random.ToRNG | None,
+        *,
+        rng: onp.random.ToRNG | None = None,
+    ) -> None: ...
     @overload
     @deprecated("`random_state` is deprecated, use `rng` instead")  # this is a reasonable lie
     def __init__(
-        self, /, n_resamples: int = 9_999, batch: int | None = None, *, random_state: ToRNG, rng: ToRNG = None
+        self,
+        /,
+        n_resamples: int = 9_999,
+        batch: int | None = None,
+        *,
+        random_state: onp.random.ToRNG | None,
+        rng: onp.random.ToRNG | None = None,
     ) -> None: ...
 
 @dataclass(match_args=False)
@@ -101,12 +121,12 @@ class BootstrapMethod(ResamplingMethod):
     method: _BootstrapMethod = "BCa"
 
     @property
-    def rng(self, /) -> ToRNG: ...
+    def rng(self, /) -> onp.random.ToRNG | None: ...
     #
     @property
-    def random_state(self, /) -> ToRNG: ...
+    def random_state(self, /) -> onp.random.ToRNG | None: ...
     @random_state.setter
-    def random_state(self, rng: ToRNG, /) -> None: ...
+    def random_state(self, rng: onp.random.ToRNG | None, /) -> None: ...
     #
     @overload
     def __init__(
@@ -117,12 +137,19 @@ class BootstrapMethod(ResamplingMethod):
         random_state: None = None,
         method: _BootstrapMethod = "BCa",
         *,
-        rng: ToRNG = None,
+        rng: onp.random.ToRNG | None = None,
     ) -> None: ...
     @overload
     @deprecated("`random_state` is deprecated, use `rng` instead")  # this is a reasonable lie
     def __init__(
-        self, /, n_resamples: int, batch: int | None, method: _BootstrapMethod, random_state: ToRNG, *, rng: ToRNG = None
+        self,
+        /,
+        n_resamples: int,
+        batch: int | None,
+        method: _BootstrapMethod,
+        random_state: onp.random.ToRNG | None,
+        *,
+        rng: onp.random.ToRNG | None = None,
     ) -> None: ...
     @overload
     @deprecated("`random_state` is deprecated, use `rng` instead")  # this is a reasonable lie
@@ -133,8 +160,8 @@ class BootstrapMethod(ResamplingMethod):
         batch: int | None = None,
         method: _BootstrapMethod = "BCa",
         *,
-        random_state: ToRNG,
-        rng: ToRNG = None,
+        random_state: onp.random.ToRNG | None,
+        rng: onp.random.ToRNG | None = None,
     ) -> None: ...
 
 #
@@ -167,7 +194,8 @@ def bootstrap(
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
     bootstrap_result: BootstrapResult | None = None,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> BootstrapResult[float | np.float64]: ...
 @overload
 def bootstrap(
@@ -183,7 +211,8 @@ def bootstrap(
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
     bootstrap_result: BootstrapResult | None = None,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> BootstrapResult[onp.Array1D[np.float64]]: ...
 @overload
 def bootstrap(
@@ -199,7 +228,8 @@ def bootstrap(
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
     bootstrap_result: BootstrapResult | None = None,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> BootstrapResult[onp.Array2D[np.float64]]: ...
 @overload
 def bootstrap(
@@ -215,7 +245,8 @@ def bootstrap(
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
     bootstrap_result: BootstrapResult | None = None,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> BootstrapResult: ...
 
 #
@@ -230,7 +261,8 @@ def permutation_test(
     batch: int | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, -1] = 0,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> PermutationTestResult[float | np.float64]: ...
 @overload
 def permutation_test(
@@ -243,7 +275,8 @@ def permutation_test(
     batch: int | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, 1, -1, -2] = 0,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> PermutationTestResult[onp.Array1D[np.float64]]: ...
 @overload
 def permutation_test(
@@ -256,7 +289,8 @@ def permutation_test(
     batch: int | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, 1, 2, -1, -2, -3] = 0,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> PermutationTestResult[onp.Array2D[np.float64]]: ...
 @overload
 def permutation_test(
@@ -269,7 +303,8 @@ def permutation_test(
     batch: int | None = None,
     alternative: Alternative = "two-sided",
     axis: int = 0,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> PermutationTestResult: ...
 
 #
