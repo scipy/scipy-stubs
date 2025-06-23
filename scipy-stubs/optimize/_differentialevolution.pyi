@@ -5,8 +5,7 @@ import numpy as np
 import optype.numpy as onp
 
 from ._constraints import Bounds, LinearConstraint, NonlinearConstraint
-from scipy._typing import ToRNG
-from scipy.optimize import OptimizeResult as _OptimizeResult
+from ._optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["differential_evolution"]
 
@@ -55,7 +54,7 @@ def differential_evolution(
     tol: onp.ToFloat = 0.01,
     mutation: onp.ToFloat | tuple[onp.ToFloat, onp.ToFloat] = (0.5, 1),
     recombination: onp.ToFloat = 0.7,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
     callback: Callable[[OptimizeResult], None] | Callable[[_Float1D, onp.ToFloat], None] | None = None,
     disp: onp.ToBool = False,
     polish: onp.ToBool = True,
@@ -68,4 +67,5 @@ def differential_evolution(
     *,
     integrality: onp.ToBool1D | None = None,
     vectorized: onp.ToBool = False,
+    seed: onp.random.ToRNG | None = None,
 ) -> OptimizeResult: ...
