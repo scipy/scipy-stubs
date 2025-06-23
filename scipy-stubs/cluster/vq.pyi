@@ -57,6 +57,7 @@ def kmeans(
     thresh: float = 1e-5,
     check_finite: bool = True,
     *,
+    seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[np.float64], np.float64]: ...
 @overload  # float32
@@ -67,6 +68,7 @@ def kmeans(
     thresh: float = 1e-5,
     check_finite: bool = True,
     *,
+    seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[np.float32], np.float32]: ...
 @overload  # floating
@@ -77,6 +79,7 @@ def kmeans(
     thresh: float = 1e-5,
     check_finite: bool = True,
     *,
+    seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[npc.floating], npc.floating]: ...
 
@@ -111,6 +114,7 @@ def kmeans2(
     missing: _MissingMethod = "warn",
     check_finite: bool = True,
     *,
+    seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.int32]]: ...
 @overload  # float32
@@ -123,6 +127,7 @@ def kmeans2(
     missing: _MissingMethod = "warn",
     check_finite: bool = True,
     *,
+    seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[np.float32], onp.Array1D[np.int32]]: ...
 @overload  # floating
@@ -135,5 +140,6 @@ def kmeans2(
     missing: _MissingMethod = "warn",
     check_finite: bool = True,
     *,
+    seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[npc.floating], onp.Array1D[np.int32]]: ...
