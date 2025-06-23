@@ -2,8 +2,8 @@ from typing import Literal, TypeAlias, assert_type
 
 import numpy as np
 
-from ._types import csr_arr, csr_mat, csr_vec
-from scipy.sparse import csr_array, csr_matrix, isspmatrix
+from ._types import ScalarType, csr_arr, csr_mat, csr_vec
+from scipy.sparse import coo_array, csr_array, csr_matrix, isspmatrix
 
 ###
 
@@ -76,3 +76,42 @@ csr_mat.getnnz(-3)  # type: ignore[call-overload]  # pyright: ignore[reportArgum
 assert_type(isspmatrix(csr_arr), bool)
 assert_type(isspmatrix(csr_mat), bool)
 assert_type(isspmatrix(object()), bool)
+
+# __getitem__
+assert_type(csr_vec[0], ScalarType)
+assert_type(csr_vec[()], csr_array[ScalarType, tuple[int]])
+assert_type(csr_vec[:], csr_array[ScalarType, tuple[int]])
+assert_type(csr_vec[...], csr_array[ScalarType, tuple[int]])
+assert_type(csr_vec[seq_bool], csr_array[ScalarType, tuple[int]])
+assert_type(csr_vec[seq_int], csr_array[ScalarType, tuple[int]])
+assert_type(csr_vec[0, None], csr_array[ScalarType, tuple[int]])
+assert_type(csr_vec[None, 0], csr_array[ScalarType, tuple[int]])
+assert_type(csr_vec[None], coo_array[ScalarType, tuple[int, int]])
+
+csr_arr[None]  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
+assert_type(csr_arr[0, 0], ScalarType)
+assert_type(csr_arr[0], coo_array[ScalarType, tuple[int]])
+assert_type(csr_arr[0, seq_int], coo_array[ScalarType, tuple[int]])
+assert_type(csr_arr[seq_int, 0], coo_array[ScalarType, tuple[int]])
+assert_type(csr_arr[()], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[:], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[...], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[seq_bool], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[seq_int], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[0, None], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[None, 0], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[seq_int, seq_int], np.ndarray[tuple[int], np.dtype[ScalarType]])
+
+csr_mat[None]  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
+assert_type(csr_mat[0, 0], ScalarType)
+assert_type(csr_mat[0], csr_matrix[ScalarType])
+assert_type(csr_mat[0, seq_int], csr_matrix[ScalarType])
+assert_type(csr_mat[seq_int, 0], csr_matrix[ScalarType])
+assert_type(csr_mat[()], csr_matrix[ScalarType])
+assert_type(csr_mat[:], csr_matrix[ScalarType])
+assert_type(csr_mat[...], csr_matrix[ScalarType])
+assert_type(csr_mat[seq_bool], csr_matrix[ScalarType])
+assert_type(csr_mat[seq_int], csr_matrix[ScalarType])
+assert_type(csr_mat[0, None], csr_matrix[ScalarType])
+assert_type(csr_mat[None, 0], csr_matrix[ScalarType])
+assert_type(csr_mat[seq_int, seq_int], np.matrix[tuple[int, int], np.dtype[ScalarType]])
