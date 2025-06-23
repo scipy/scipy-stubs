@@ -26,6 +26,8 @@ scipy\.spatial\.distance\.directed_hausdorff
 scipy\.spatial\.transform(\._?rotation|\._rigid_transform)?\.Rotation\.random
 scipy\.stats(\._fit)?\.goodness_of_fit
 scipy\.stats(\._multicomp)?\.dunnett
+scipy\.stats(\._resampling)?\.bootstrap
+scipy\.stats(\._resampling)?\.permutation_test
 scipy\.stats\._?qmc\.QMCEngine\.__init__
 scipy\.stats\._?qmc\.Halton\.__init__
 scipy\.stats\._?qmc\.LatinHypercube\.__init__
