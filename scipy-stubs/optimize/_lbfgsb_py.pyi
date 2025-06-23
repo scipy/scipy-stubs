@@ -46,7 +46,26 @@ class LbfgsInvHessProduct(LinearOperator[np.float64]):
     def __init__(self, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> None: ...
     def todense(self, /) -> onp.Array2D[np.float64]: ...
 
-@overload  # no fprime, no approx_grad
+@overload  # no args, no fprime, no approx_grad
+def fmin_l_bfgs_b(
+    func: _Fn[_ToFloatAnd1D],
+    x0: _ToFloatOr1D,
+    fprime: None = None,
+    args: tuple[()] = (),
+    approx_grad: onp.ToFalse = 0,
+    bounds: _Bounds | None = None,
+    m: onp.ToJustInt = 10,
+    factr: onp.ToFloat = 1e7,
+    pgtol: onp.ToFloat = 1e-5,
+    epsilon: onp.ToFloat = 1e-8,
+    iprint: _NoValueType = ...,
+    maxfun: onp.ToJustInt = 15_000,
+    maxiter: onp.ToJustInt = 15_000,
+    disp: _NoValueType = ...,
+    callback: _Fn[_Ignored] | None = None,
+    maxls: onp.ToJustInt = 20,
+) -> _FMinResult: ...
+@overload  # args, no fprime, no approx_grad
 def fmin_l_bfgs_b(
     func: _Fn[_ToFloatAnd1D, *_Ts],
     x0: _ToFloatOr1D,
