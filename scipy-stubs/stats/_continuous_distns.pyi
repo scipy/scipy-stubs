@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import ClassVar, Final, LiteralString
+from typing import Any, ClassVar, Final, LiteralString, overload
 from typing_extensions import override
 
 import numpy as np
@@ -230,6 +230,69 @@ __all__ = [
 ]
 
 pairs: Final[Sequence[tuple[str, rv_continuous]]] = ...  # undocumented
+_norm_pdf_C: Final[np.float64] = ...  # undocumented
+_norm_pdf_logC: Final[np.float64] = ...  # undocumented
+_distn_names: Final[list[str]] = ...  # undocumented
+_distn_gen_names: Final[list[str]] = ...  # undocumented
+
+#
+def _remove_optimizer_parameters(kwds: dict[str, Any]) -> None: ...  # undocumented
+
+#
+@overload
+def _norm_pdf(x: onp.ToFloat) -> np.float64: ...
+@overload
+def _norm_pdf(x: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+@overload
+def _norm_logpdf(x: onp.ToFloat) -> np.float64: ...
+@overload
+def _norm_logpdf(x: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+@overload
+def _norm_cdf(x: onp.ToFloat) -> np.float64: ...
+@overload
+def _norm_cdf(x: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+@overload
+def _norm_logcdf(x: onp.ToFloat) -> np.float64: ...
+@overload
+def _norm_logcdf(x: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+@overload
+def _norm_ppf(q: onp.ToFloat) -> np.float64: ...
+@overload
+def _norm_ppf(q: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+@overload
+def _norm_sf(x: onp.ToFloat) -> np.float64: ...
+@overload
+def _norm_sf(x: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+@overload
+def _norm_logsf(x: onp.ToFloat) -> np.float64: ...
+@overload
+def _norm_logsf(x: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+@overload
+def _norm_isf(q: onp.ToFloat) -> np.float64: ...
+@overload
+def _norm_isf(q: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+
+#
+def _beta_mle_a(a: onp.ToFloat, b: onp.ToFloat, n: int, s1: onp.ToFloat) -> np.float64: ...  # undocumented
+def _beta_mle_ab(theta: onp.Array1D[np.float64], n: int, s1: onp.ToFloat, s2: onp.ToFloat) -> np.float64: ...  # undocumented
+def _digammainv(y: onp.ToFloat) -> np.float64: ...  # undocumented
+def _average_with_log_weights(x: onp.ToFloatND, logweights: onp.ToFloatND) -> np.float64: ...  # undocumented
+def _lognorm_logpdf(x: onp.ToFloatND, s: onp.ToFloat) -> onp.ArrayND[np.float64]: ...  # undocumented
+def _ncx2_log_pdf(x: onp.ToFloatND, df: onp.ToFloat, nc: onp.ToFloat) -> onp.ArrayND[np.float64]: ...  # undocumented
+def _log_sum(log_p: onp.ToFloatND, log_q: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+def _log_diff(log_p: onp.ToFloatND, log_q: onp.ToFloatND) -> onp.ArrayND[np.complex128]: ...  # undocumented
+def _log_gauss_mass(a: onp.ToFloatND, b: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+def _argus_phi(chi: onp.ToFloat) -> np.float64: ...  # undocumented
+
+#
+class FitDataError(ValueError):  # undocumented
+    def __init__(self, /, distr: str, lower: float, upper: float) -> None: ...
+
+class FitSolverError(FitDataError):  # undocumented
+    def __init__(self, /, mesg: str) -> None: ...
+
+class FitUniformFixedScaleDataError(FitDataError):  # undocumented
+    def __init__(self, /, ptp: onp.ToFloat, fscale: onp.ToFloat) -> None: ...
 
 # without shape params
 class anglit_gen(_rv_continuous_0): ...
