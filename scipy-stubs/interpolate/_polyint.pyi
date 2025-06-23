@@ -4,8 +4,6 @@ from typing import ClassVar, TypeAlias, overload
 import numpy as np
 import optype.numpy as onp
 
-from scipy._typing import ToRNG
-
 __all__ = [
     "BarycentricInterpolator",
     "KroghInterpolator",
@@ -59,7 +57,8 @@ class BarycentricInterpolator(_Interpolator1DWithDerivatives):
         axis: int = 0,
         *,
         wi: onp.ToFloatND | None = None,
-        rng: ToRNG = None,
+        seed: onp.random.ToRNG | None = None,
+        rng: onp.random.ToRNG | None = None,
     ) -> None: ...
     def set_yi(self, /, yi: onp.ToComplexND, axis: int | None = None) -> None: ...
     def add_xi(self, /, xi: onp.ToFloat1D, yi: onp.ToComplexND | None = None) -> None: ...
@@ -104,7 +103,7 @@ def barycentric_interpolate(
     axis: int = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
 ) -> np.float64: ...
 @overload
 def barycentric_interpolate(
@@ -114,7 +113,7 @@ def barycentric_interpolate(
     axis: int = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
 ) -> _FloatND: ...
 @overload
 def barycentric_interpolate(
@@ -124,7 +123,7 @@ def barycentric_interpolate(
     axis: int = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
 ) -> np.complex128: ...
 @overload
 def barycentric_interpolate(
@@ -134,7 +133,7 @@ def barycentric_interpolate(
     axis: int = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
 ) -> _ComplexND: ...
 @overload
 def barycentric_interpolate(
@@ -144,7 +143,7 @@ def barycentric_interpolate(
     axis: int = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
 ) -> np.float64 | np.complex128: ...
 @overload
 def barycentric_interpolate(
@@ -154,5 +153,5 @@ def barycentric_interpolate(
     axis: int = 0,
     *,
     der: onp.ToJustInt | onp.ToJustInt1D = 0,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
 ) -> _FloatND | _ComplexND: ...
