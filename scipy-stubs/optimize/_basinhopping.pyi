@@ -7,7 +7,6 @@ import optype.numpy as onp
 from ._minimize import OptimizeResult as _MinimizeResult
 from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import MinimizerKwargs
-from scipy._typing import ToRNG
 
 __all__ = ["basinhopping"]
 
@@ -56,8 +55,9 @@ def basinhopping(
     interval: onp.ToJustInt = 50,
     disp: onp.ToBool = False,
     niter_success: onp.ToJustInt | None = None,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
     *,
+    seed: onp.random.ToRNG | None = None,
     target_accept_rate: onp.ToFloat = 0.5,
     stepwise_factor: onp.ToFloat = 0.9,
 ) -> OptimizeResult: ...

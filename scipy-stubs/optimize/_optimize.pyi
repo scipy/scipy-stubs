@@ -9,7 +9,7 @@ import optype.numpy.compat as npc
 from ._linesearch import line_search_wolfe2 as line_search
 from ._typing import Brack, MethodAll, Solver
 from scipy._lib._util import _RichResult
-from scipy._typing import Falsy, ToRNG, Truthy
+from scipy._typing import Falsy, Truthy
 
 __all__ = [
     "OptimizeResult",
@@ -653,5 +653,6 @@ def check_grad(
     *args: object,
     epsilon: onp.ToFloat = ...,
     direction: Literal["all", "random"] = "all",
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
+    seed: onp.random.ToRNG | None = None,
 ) -> _Float: ...
