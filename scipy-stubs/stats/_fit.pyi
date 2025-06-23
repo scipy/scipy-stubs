@@ -6,7 +6,6 @@ import numpy as np
 import optype.numpy as onp
 
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
-from scipy._typing import ToRNG
 from scipy.optimize import OptimizeResult
 
 _Params: TypeAlias = Mapping[str, onp.ToFloat]
@@ -91,5 +90,6 @@ def goodness_of_fit(
     guessed_params: _Params | None = None,
     statistic: _GOFStatName | _GOFStatFunc = "ad",
     n_mc_samples: onp.ToJustInt = 9_999,
-    rng: ToRNG = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> GoodnessOfFitResult: ...
