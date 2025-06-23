@@ -10,13 +10,13 @@ scipy\._lib\.(array_api_(compat|extra)|cobyqa|pyprima).*
 scipy\.fft\._pocketfft\..*
 
 # https://github.com/scipy/scipy/issues/23216
-# https://github.com/scipy/scipy-stubs/issues/644
 scipy\.cluster\._?vq\.kmeans
 scipy\.cluster\._?vq\.kmeans2
 scipy\.interpolate(\._?polyint)?\.BarycentricInterpolator\.__init__
 scipy\.linalg(\._sketches)?\.clarkson_woodruff_transform
 scipy\.optimize(\._basinhopping)?\.basinhopping
 scipy\.optimize(\._differentialevolution)?\.differential_evolution
+scipy\.optimize(\._dual_annealing)?\.dual_annealing
 scipy\.stats\._?qmc\.QMCEngine\.__init__
 scipy\.stats\._?qmc\.Halton\.__init__
 scipy\.stats\._?qmc\.LatinHypercube\.__init__
