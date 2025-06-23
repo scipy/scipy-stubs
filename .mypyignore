@@ -22,6 +22,7 @@ scipy\.sparse(\._construct)?\.random_array
 scipy\.sparse(\._construct)?\.random
 scipy\.sparse(\._construct)?\.rand
 scipy\.sparse\.linalg(\._eigen(\._svds)?)?\.svds
+scipy\.spatial\.distance\.directed_hausdorff
 scipy\.stats\._?qmc\.QMCEngine\.__init__
 scipy\.stats\._?qmc\.Halton\.__init__
 scipy\.stats\._?qmc\.LatinHypercube\.__init__
