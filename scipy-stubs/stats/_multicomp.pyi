@@ -1,11 +1,11 @@
 from dataclasses import dataclass
-from typing import Any
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._common import ConfidenceInterval
-from scipy._typing import Alternative, ToRNG
+from scipy._typing import Alternative
 
 __all__ = ["dunnett"]
 
@@ -25,10 +25,14 @@ class DunnettResult:
     _rng: np.random.Generator | np.random.RandomState
 
     _ci: ConfidenceInterval | None = None
-    _ci_cl: float | np.floating[Any] | None = None
+    _ci_cl: float | npc.floating | None = None
 
-    def confidence_interval(self, /, confidence_level: float | np.floating[Any] = 0.95) -> ConfidenceInterval: ...
+    def confidence_interval(self, /, confidence_level: float | npc.floating = 0.95) -> ConfidenceInterval: ...
 
 def dunnett(
-    *samples: onp.ToFloat1D, control: onp.ToFloat1D, alternative: Alternative = "two-sided", rng: ToRNG = None
+    *samples: onp.ToFloat1D,
+    control: onp.ToFloat1D,
+    alternative: Alternative = "two-sided",
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> DunnettResult: ...
