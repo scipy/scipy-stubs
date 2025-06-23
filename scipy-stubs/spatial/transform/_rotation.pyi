@@ -8,8 +8,6 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from scipy._typing import ToRNG
-
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 _Float3D: TypeAlias = onp.Array3D[np.float64]
@@ -113,7 +111,9 @@ class Rotation:
     @classmethod
     def identity(cls, num: int | None = None) -> Self: ...
     @classmethod
-    def random(cls, num: int | None = None, rng: ToRNG = None) -> Self: ...
+    def random(
+        cls, num: int | None = None, rng: onp.random.ToRNG | None = None, *, random_state: onp.random.ToRNG | None = None
+    ) -> Self: ...
     #
     @overload
     @classmethod
