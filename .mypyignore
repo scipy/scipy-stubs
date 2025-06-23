@@ -11,6 +11,8 @@ scipy\.fft\._pocketfft\..*
 
 # https://github.com/scipy/scipy/issues/23216
 # https://github.com/scipy/scipy-stubs/issues/644
+scipy\.cluster\._?vq\.kmeans
+scipy\.cluster\._?vq\.kmeans2
 scipy\.stats\._?qmc\.QMCEngine\.__init__
 scipy\.stats\._?qmc\.Halton\.__init__
 scipy\.stats\._?qmc\.LatinHypercube\.__init__
