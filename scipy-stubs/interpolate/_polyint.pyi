@@ -1,4 +1,3 @@
-import abc
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from typing import (
@@ -82,8 +81,7 @@ class _Interpolator1D(Generic[_YT_co]):  # undocumented
     def __call__(self, /, x: onp.ToFloat | onp.ToFloatND) -> onp.ArrayND[_YT_co]: ...
 
     #
-    @abc.abstractmethod
-    def _evaluate(self, /, x: onp.ToFloat1D) -> onp.ArrayND[_YT_co]: ...  # undocumented
+    def _evaluate(self, /, x: onp.ToFloat1D) -> onp.ArrayND[_YT_co]: ...  # undocumented, not implemented
     @final
     def _prepare_x(
         self, /, x: onp.ToFloat | onp.ToFloatND
@@ -120,8 +118,7 @@ class _Interpolator1D(Generic[_YT_co]):  # undocumented
 class _Interpolator1DWithDerivatives(_Interpolator1D[_YT_co], Generic[_YT_co]):  # undocumented
     def derivatives(self, /, x: onp.ToFloat | onp.ToFloatND, der: _MultiIndex | None = None) -> onp.ArrayND[_YT_co]: ...
     def derivative(self, /, x: onp.ToFloat | onp.ToFloatND, der: SupportsIndex = 1) -> onp.ArrayND[_YT_co]: ...
-    @abc.abstractmethod
-    def _evaluate_derivatives(self, /, x: onp.ToFloat1D) -> onp.ArrayND[_YT_co]: ...  # undocumented
+    def _evaluate_derivatives(self, /, x: onp.ToFloat1D) -> onp.ArrayND[_YT_co]: ...  # undocumented, not implemented
 
 # NOTE: `KroghInterpolator` is not generic at runtime (`scipy<1.17`):
 # https://github.com/scipy/scipy-stubs/issues/653
@@ -220,8 +217,6 @@ class BarycentricInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_Y
     def add_xi(self: BarycentricInterpolator[np.complex128], /, xi: onp.ToFloat1D, yi: onp.ToComplex2D | None = None) -> None: ...
 
     #
-    @override
-    def _evaluate(self, /, x: onp.ToFloat1D) -> onp.ArrayND[_YT_co]: ...  # undocumented
     @override
     def _evaluate_derivatives(self, /, x: onp.ToFloat1D) -> onp.Array2D[_YT_co] | onp.Array3D[_YT_co]: ...  # undocumented
 
