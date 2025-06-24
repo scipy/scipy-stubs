@@ -118,7 +118,9 @@ class _Interpolator1D(Generic[_YT_co]):  # undocumented
 class _Interpolator1DWithDerivatives(_Interpolator1D[_YT_co], Generic[_YT_co]):  # undocumented
     def derivatives(self, /, x: onp.ToFloat | onp.ToFloatND, der: _MultiIndex | None = None) -> onp.ArrayND[_YT_co]: ...
     def derivative(self, /, x: onp.ToFloat | onp.ToFloatND, der: SupportsIndex = 1) -> onp.ArrayND[_YT_co]: ...
-    def _evaluate_derivatives(self, /, x: onp.ToFloat1D) -> onp.ArrayND[_YT_co]: ...  # undocumented, not implemented
+    def _evaluate_derivatives(
+        self, /, x: onp.ToFloat1D, der: int | None = None
+    ) -> onp.ArrayND[_YT_co]: ...  # undocumented, not implemented
 
 # NOTE: `KroghInterpolator` is not generic at runtime (`scipy<1.17`):
 # https://github.com/scipy/scipy-stubs/issues/653
@@ -166,7 +168,7 @@ class KroghInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_YT_co, 
     @override
     def _evaluate(self, /, x: onp.ToFloat1D) -> onp.Array2D[_YT_co]: ...  # undocumented
     @override
-    def _evaluate_derivatives(self, /, x: onp.ToFloat1D) -> onp.Array3D[_YT_co]: ...  # undocumented
+    def _evaluate_derivatives(self, /, x: onp.ToFloat1D, der: int | None = None) -> onp.Array3D[_YT_co]: ...  # undocumented
 
 # NOTE: `BarycentricInterpolator` is not generic at runtime (`scipy<1.17`):
 # https://github.com/scipy/scipy-stubs/issues/653
@@ -218,7 +220,9 @@ class BarycentricInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_Y
 
     #
     @override
-    def _evaluate_derivatives(self, /, x: onp.ToFloat1D) -> onp.Array2D[_YT_co] | onp.Array3D[_YT_co]: ...  # undocumented
+    def _evaluate_derivatives(
+        self, /, x: onp.ToFloat1D, der: int | None = None, all_lower: bool = True
+    ) -> onp.Array2D[_YT_co] | onp.Array3D[_YT_co]: ...  # undocumented
 
 #
 def _isscalar(x: object) -> TypeIs[np.generic | complex | str | bytes | _HasShape0]: ...  # undocumented
