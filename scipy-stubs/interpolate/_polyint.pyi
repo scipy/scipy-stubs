@@ -1,20 +1,7 @@
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
-from typing import (
-    Any,
-    ClassVar,
-    Final,
-    Generic,
-    Protocol,
-    Self,
-    SupportsIndex,
-    TypeAlias,
-    final,
-    overload,
-    override,
-    type_check_only,
-)
-from typing_extensions import TypeIs, TypeVar
+from typing import Any, ClassVar, Final, Generic, Protocol, Self, SupportsIndex, TypeAlias, final, overload, type_check_only
+from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
 import optype.numpy as onp
