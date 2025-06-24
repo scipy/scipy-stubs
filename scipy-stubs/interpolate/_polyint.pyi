@@ -80,6 +80,8 @@ class _Interpolator1D(Generic[_YT_co]):  # undocumented
 
     #
     def __call__(self, /, x: onp.ToFloat | onp.ToFloatND) -> onp.ArrayND[_YT_co]: ...
+
+    #
     @abc.abstractmethod
     def _evaluate(self, /, x: onp.ToFloat1D) -> onp.ArrayND[_YT_co]: ...  # undocumented
     @final
@@ -117,7 +119,7 @@ class _Interpolator1D(Generic[_YT_co]):  # undocumented
 
 class _Interpolator1DWithDerivatives(_Interpolator1D[_YT_co], Generic[_YT_co]):  # undocumented
     def derivatives(self, /, x: onp.ToFloat | onp.ToFloatND, der: _MultiIndex | None = None) -> onp.ArrayND[_YT_co]: ...
-    def derivative(self, /, x: onp.ToFloat | onp.ToFloat1D, der: SupportsIndex = 1) -> onp.ArrayND[_YT_co]: ...
+    def derivative(self, /, x: onp.ToFloat | onp.ToFloatND, der: SupportsIndex = 1) -> onp.ArrayND[_YT_co]: ...
     @abc.abstractmethod
     def _evaluate_derivatives(self, /, x: onp.ToFloat1D) -> onp.ArrayND[_YT_co]: ...  # undocumented
 
@@ -148,13 +150,17 @@ class KroghInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_YT_co, 
     ) -> None: ...
     @overload  # xi: T, yi: f64
     def __init__(
-        self: KroghInterpolator[np.float64, _XT], /, xi: onp.CanArrayND[_XT] | Sequence[_XT], yi: onp.ToFloatND, axis: int = 0
+        self: KroghInterpolator[np.float64, _XT],
+        /,
+        xi: onp.CanArray[Any, np.dtype[_XT]] | Sequence[_XT],
+        yi: onp.ToFloatND,
+        axis: int = 0,
     ) -> None: ...
     @overload  # xi: T, yi: c128
     def __init__(
         self: KroghInterpolator[np.complex128, _XT],
         /,
-        xi: onp.CanArrayND[_XT] | Sequence[_XT],
+        xi: onp.CanArray[Any, np.dtype[_XT]] | Sequence[_XT],
         yi: onp.ToJustComplexND,
         axis: int = 0,
     ) -> None: ...
@@ -190,7 +196,7 @@ class BarycentricInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_Y
     ) -> None: ...
     @overload  # yi: c128
     def __init__(
-        self: BarycentricInterpolator[np.float64],
+        self: BarycentricInterpolator[np.complex128],
         /,
         xi: onp.ToFloat1D,
         yi: onp.ToJustComplexND,
