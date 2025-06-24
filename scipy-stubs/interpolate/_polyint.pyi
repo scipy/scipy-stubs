@@ -1,5 +1,6 @@
 from collections.abc import Callable, Sequence
-from typing import ClassVar, TypeAlias, overload
+from typing import ClassVar, Protocol, TypeAlias, overload, type_check_only
+from typing_extensions import TypeIs
 
 import numpy as np
 import optype.numpy as onp
@@ -18,7 +19,14 @@ _FloatND: TypeAlias = onp.ArrayND[np.float64]
 _Complex2D: TypeAlias = onp.Array2D[np.complex128]
 _ComplexND: TypeAlias = onp.ArrayND[np.complex128]
 
+@type_check_only
+class _HasShape0(Protocol):
+    @property
+    def shape(self) -> tuple[()]: ...
+
 ###
+
+def _isscalar(x: object) -> TypeIs[np.generic | complex | str | bytes | _HasShape0]: ...  # undocumented
 
 class _Interpolator1D:  # undocumented
     __slots__: ClassVar[tuple[str, ...]] = "_y_axis", "_y_extra_shape", "dtype"
