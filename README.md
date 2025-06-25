@@ -43,7 +43,7 @@ That's it! Your IDE and type checker will now provide precise type information f
 ### Precise and Complete
 
 - **Array shape awareness**: Many functions include shape-type information for better array handling
-- **Generic types**: Supports generic types for sparse arrays, distributions, and more
+- **Generic types**: Comprehensive generic classes for sparse arrays, distributions, linear operators, and more
 - **Complete coverage**: Type hints are provided for the entire SciPy API
 
 <!-- NOTE: SciPy permalinks to the following `#installation` anchor; don't modify it! -->
@@ -140,6 +140,103 @@ This is essential for `scipy-stubs` to work properly, as it relies heavily on it
 scalar-likes, shape-typing in general, and much more. At the moment, `scipy-stubs` requires the latest version `optype`.
 
 The exact version requirements are specified in the [`pyproject.toml`](pyproject.toml).
+
+## Generics
+
+`scipy-stubs` provides many generic classes that enable precise type checking for SciPy's complex APIs.
+
+All generic type parameters are optional and can be omitted if not needed.
+
+### `scipy.integrate`
+
+| generic type                       |                                                                                               |
+| ---------------------------------- | --------------------------------------------------------------------------------------------- |
+| `BDF[T: float64 \| complex128]`    | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.BDF.html)         |
+| `DOP853[T: float64 \| complex128]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.DOP853.html)      |
+| `RK23[T: float64 \| complex128]`   | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.RK23.html)        |
+| `RK45[T: float64 \| complex128]`   | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.RK45.html)        |
+| `ode[*ArgTs]`                      | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html)         |
+| `complex_ode[*ArgTs]`              | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.complex_ode.html) |
+
+### `scipy.interpolate`
+
+| generic type                                               |                                                                                                                |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `AAA[T: inexact]`                                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.AAA.html)                        |
+| `BarycentricInterpolator[T: float64 \| complex128]`        | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BarycentricInterpolator.html)    |
+| `BPoly[T: float64 \| complex128]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BPoly.html)                      |
+| `BSpline[T: float64 \| complex128]`                        | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BSpline.html)                    |
+| `CubicHermiteSpline[T: float64 \| complex128]`             | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicHermiteSpline.html)         |
+| `CubicSpline[T: float64 \| complex128]`                    | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicSpline.html)                |
+| `FloaterHormannInterpolator[T: float64 \| complex128]`     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.FloaterHormannInterpolator.html) |
+| `KroghInterpolator[T: float64 \| complex128]`              | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.KroghInterpolator.html)          |
+| `LinearNDInterpolator[T: float64 \| complex128]`           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.LinearNDInterpolator.html)       |
+| `NdBSpline[T: float64 \| complex128]`                      | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdBSpline.html)                  |
+| `NdPPoly[T: float64 \| complex128]`                        | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdPPoly.html)                    |
+| `NearestNDInterpolator[T: float64 \| complex128]`          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NearestNDInterpolator.html)      |
+| `PPoly[T: float64 \| complex128]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PPoly.html)                      |
+| `RBFInterpolator[S: (int, ...), T: float64 \| complex128]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RBFInterpolator.html)            |
+| `RegularGridInterpolator[T: float64 \| complex128]`        | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RegularGridInterpolator.html)    |
+
+### `scipy.optimize`
+
+| generic type                  |                                                                                                  |
+| ----------------------------- | ------------------------------------------------------------------------------------------------ |
+| `BroydenFirst[T: inexact]`    | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.BroydenFirst.html)    |
+| `InverseJacobian[T: inexact]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.InverseJacobian.html) |
+| `KrylovJacobian[T: inexact]`  | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.KrylovJacobian.html)  |
+
+### `scipy.signal`
+
+| generic type                                         |                                                                                                 |
+| ---------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `ShortTimeFFT[T: inexact]`                           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html)     |
+| `StateSpace[Z: inexact, P: floating, D: scalar]`     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.StateSpace.html)       |
+| `TransferFunction[P: floating, D: scalar]`           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.TransferFunction.html) |
+| `ZerosPolesGain[Z: inexact, P: floating, D: scalar]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ZerosPolesGain.html)   |
+| `lti[Z: inexact, P: floating]`                       | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.lti.html)              |
+| `dlti[Z: inexact, P: floating, D: scalar]`           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.dlti.html)             |
+
+### `scipy.sparse`
+
+| generic type                                    |                                                                                           |
+| ----------------------------------------------- | ----------------------------------------------------------------------------------------- |
+| `bsr_array[T: scalar]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.bsr_array.html)  |
+| `bsr_matrix[T: scalar]`                         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.bsr_matrix.html) |
+| `coo_array[T: scalar, S: (int, ...)]`           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_array.html)  |
+| `coo_matrix[T: scalar]`                         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html) |
+| `csc_array[T: scalar]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_array.html)  |
+| `csc_matrix[T: scalar]`                         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csc_matrix.html) |
+| `csr_array[T: scalar, S: (int,) \| (int, int)]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_array.html)  |
+| `csr_matrix[T: scalar]`                         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html) |
+| `dia_array[T: scalar]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.dia_array.html)  |
+| `dia_matrix[T: scalar]`                         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.dia_matrix.html) |
+| `dok_array[T: scalar, S: (int,) \| (int, int)]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.dok_array.html)  |
+| `dok_matrix[T: scalar]`                         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.dok_matrix.html) |
+| `lil_array[T: scalar]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.lil_array.html)  |
+| `lil_matrix[T: scalar]`                         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.lil_matrix.html) |
+| `sparray[T: scalar, S: (int, ...)]`             | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.sparray.html)    |
+| `spmatrix[T: scalar]`                           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.spmatrix.html)   |
+
+#### `scipy.sparse.linalg`
+
+| generic type                |                                                                                                      |
+| --------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `LaplacianNd[T: real]`      | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LaplacianNd.html)    |
+| `LinearOperator[T: scalar]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
+
+### `scipy.stats`
+
+| generic type                                   |                                                                                               |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `Covariance[T: real]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Covariance.html)      |
+| `Uniform[S: (int, ...), T: floating]`          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Uniform.html)         |
+| `Normal[S: (int, ...), T: floating]`           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Normal.html)          |
+| `Binomial[S: (int, ...), T: floating]`         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Binomial.html)        |
+| `Mixture[T: floating]`                         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Mixture.html)         |
+| `rv_frozen[D: rv_generic, T: scalar or array]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_frozen.html)       |
+| `multi_rv_frozen[D: rv_generic]`               | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.multi_rv_frozen.html) |
+
 
 ## Contributing
 
