@@ -82,3 +82,13 @@ dok_mat.get((0,))  # type: ignore[arg-type]  # pyright: ignore[reportArgumentTyp
 dok_vec.get((0, 1))  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
 assert_type(dok_arr.get((0, 0)), ScalarType | float)
 assert_type(dok_mat.get((0, 0)), ScalarType | float)
+
+# .T
+assert_type(dok_vec.T, dok_array[ScalarType, tuple[int]])
+assert_type(dok_arr.T, dok_array[ScalarType])
+assert_type(dok_mat.T, dok_matrix[ScalarType])
+
+# .transpose()
+assert_type(dok_vec.transpose(), dok_array[ScalarType, tuple[int]])
+assert_type(dok_arr.transpose(), dok_array[ScalarType])
+assert_type(dok_mat.transpose(), dok_matrix[ScalarType])
