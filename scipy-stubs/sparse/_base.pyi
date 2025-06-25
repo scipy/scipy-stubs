@@ -3,7 +3,7 @@
 import abc
 from collections.abc import Callable, Iterator, Sequence
 from types import GenericAlias
-from typing import Any, ClassVar, Final, Generic, Literal as L, Never, Self, TypeAlias, overload, type_check_only
+from typing import Any, ClassVar, Final, Generic, Literal as L, Never, Protocol, Self, TypeAlias, overload, type_check_only
 from typing_extensions import TypeAliasType, TypeIs, TypeVar
 
 import numpy as np
@@ -29,6 +29,7 @@ __all__ = ["SparseEfficiencyWarning", "SparseWarning", "issparse", "isspmatrix",
 ###
 
 _T = TypeVar("_T")
+_T_co = TypeVar("_T_co", covariant=True)
 _ScalarT = TypeVar("_ScalarT", bound=Numeric, default=Any)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
 
@@ -117,6 +118,11 @@ _To2DLike: TypeAlias = Sequence[_T | _ScalarT] | _To2D[_T, _ScalarT]
 
 _BinOp: TypeAlias = Callable[[object, object], Any]
 
+# Used to emulate `@property` overloading in `_spbase.T`
+@type_check_only
+class _CanTranspose(Protocol[_T_co]):
+    def transpose(self, /) -> _T_co: ...
+
 ###
 
 _formats: Final[dict[str, list[int | str]]] = ...  # undocumented
@@ -164,8 +170,6 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def format(self, /) -> SPFormat: ...
 
     #
-    @property
-    def T(self, /) -> Self: ...
     @property
     def real(self, /) -> Self: ...
     @property
@@ -687,6 +691,11 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def count_nonzero(self, /, axis: None = None) -> np.intp: ...
     def conjugate(self, /, copy: bool = True) -> Self: ...
     def conj(self, /, copy: bool = True) -> Self: ...
+
+    # NOTE: CSC and CSR do not return `Self`, but instead return a CSR or CSC array/matrix, respectively.
+    # So this property and method are overridden in those classes (my apologies, Miss Liskov).
+    @property
+    def T(self: _CanTranspose[_T_co], /) -> _T_co: ...
     def transpose(self, /, axes: None = None, copy: bool = False) -> Self: ...
 
     #

@@ -8,6 +8,7 @@ import optype.numpy as onp
 
 from ._base import _spbase, sparray
 from ._compressed import _cs_matrix
+from ._csr import _csr_base, csr_array, csr_matrix
 from ._matrix import spmatrix
 from ._typing import Index1D, Numeric, ToShape2D
 
@@ -36,6 +37,13 @@ class _csc_base(_cs_matrix[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     def shape(self, /) -> tuple[int, int]: ...
 
     #
+    @override
+    def transpose(  # type: ignore[override]
+        self, /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
+    ) -> _csr_base[_ScalarT_co, tuple[int, int]]: ...
+
+    #
+    @override
     @overload
     def count_nonzero(self, /, axis: None = None) -> np.intp: ...
     @overload
@@ -147,6 +155,12 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
 
+    #
+    @override
+    def transpose(  # type: ignore[override]
+        self, /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
+    ) -> csr_array[_ScalarT_co, tuple[int, int]]: ...
+
 class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
@@ -254,6 +268,13 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     ) -> None: ...
 
     #
+    @override
+    def transpose(  # type: ignore[override]
+        self, /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
+    ) -> csr_matrix[_ScalarT_co]: ...
+
+    #
+    @override
     @overload
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload

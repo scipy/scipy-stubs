@@ -10,6 +10,7 @@ import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
 from ._compressed import _cs_matrix
+from ._csc import csc_array, csc_matrix
 from ._matrix import spmatrix
 from ._typing import Numeric, ToShape1D, ToShape2D, ToShapeMax2D
 
@@ -46,6 +47,7 @@ class _csr_base(_cs_matrix[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _Shape
     def format(self, /) -> Literal["csr"]: ...
 
     #
+    @override
     @overload
     def count_nonzero(self, /, axis: None = None) -> np.intp: ...
     @overload
@@ -284,6 +286,17 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
 
+    #
+    @override  # type: ignore[override]
+    @overload
+    def transpose(
+        self: csr_array[_ScalarT, tuple[int, int]], /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
+    ) -> csc_array[_ScalarT]: ...
+    @overload
+    def transpose(  # pyright: ignore[reportIncompatibleMethodOverride]
+        self: csr_array[_ScalarT, tuple[int]], /, axes: None = None, copy: bool = False
+    ) -> csr_array[_ScalarT, tuple[int]]: ...
+
 class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
@@ -407,6 +420,13 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def ndim(self, /) -> Literal[2]: ...
 
     #
+    @override
+    def transpose(  # type: ignore[override]
+        self, /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
+    ) -> csc_matrix[_ScalarT_co]: ...
+
+    #
+    @override
     @overload
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload

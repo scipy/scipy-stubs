@@ -3,7 +3,7 @@ from typing import Literal, TypeAlias, assert_type
 import numpy as np
 
 from ._types import ScalarType, csr_arr, csr_mat, csr_vec
-from scipy.sparse import coo_array, csr_array, csr_matrix, isspmatrix
+from scipy.sparse import coo_array, csc_array, csc_matrix, csr_array, csr_matrix, isspmatrix
 
 ###
 
@@ -115,3 +115,13 @@ assert_type(csr_mat[seq_int], csr_matrix[ScalarType])
 assert_type(csr_mat[0, None], csr_matrix[ScalarType])
 assert_type(csr_mat[None, 0], csr_matrix[ScalarType])
 assert_type(csr_mat[seq_int, seq_int], np.matrix[tuple[int, int], np.dtype[ScalarType]])
+
+# T
+assert_type(csr_vec.T, csr_array[ScalarType, tuple[int]])
+assert_type(csr_arr.T, csc_array[ScalarType])
+assert_type(csr_mat.T, csc_matrix[ScalarType])
+
+# transpose
+assert_type(csr_vec.transpose(), csr_array[ScalarType, tuple[int]])
+assert_type(csr_arr.transpose(), csc_array[ScalarType])
+assert_type(csr_mat.transpose(), csc_matrix[ScalarType])
