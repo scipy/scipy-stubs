@@ -237,7 +237,6 @@ All generic type parameters are optional and can be omitted if not needed.
 | `rv_frozen[D: rv_generic, T: scalar or array]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_frozen.html)       |
 | `multi_rv_frozen[D: rv_generic]`               | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.multi_rv_frozen.html) |
 
-
 ## Contributing
 
 We welcome contributions from the community! There are many ways to help improve `scipy-stubs`:
