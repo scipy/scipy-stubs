@@ -54,7 +54,15 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
     ) -> None: ...
     @overload
     def __init__(
-        self: Bounds[tuple[int], np.int_],
+        self: Bounds[tuple[Any, ...], np.int_],
+        /,
+        lb: onp.SequenceND[int],
+        ub: onp.SequenceND[int],
+        keep_feasible: onp.ToBool | onp.ToBoolStrict1D = False,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: Bounds[tuple[int], np.float64],
         /,
         lb: op.JustFloat | Sequence[op.JustFloat] = ...,  # = np.inf
         ub: op.JustFloat | Sequence[op.JustFloat] = ...,  # = -np.inf
