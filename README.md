@@ -221,22 +221,23 @@ All generic type parameters are optional and can be omitted if not needed.
 
 #### `scipy.sparse.linalg`
 
-| generic type                |                                                                                                      |
-| --------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `LaplacianNd[T: real]`      | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LaplacianNd.html)    |
-| `LinearOperator[T: scalar]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
+| generic type                        |                                                                                                      |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `LaplacianNd[T: real]`              | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LaplacianNd.html)    |
+| `LinearOperator[T: scalar]`         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
+| `SuperLU[T: inexact]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.SuperLU.html)        |
 
 ### `scipy.stats`
 
-| generic type                                   |                                                                                               |
-| ---------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| `Covariance[T: real]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Covariance.html)      |
-| `Uniform[S: (int, ...), T: floating]`          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Uniform.html)         |
-| `Normal[S: (int, ...), T: floating]`           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Normal.html)          |
-| `Binomial[S: (int, ...), T: floating]`         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Binomial.html)        |
-| `Mixture[T: floating]`                         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Mixture.html)         |
-| `rv_frozen[D: rv_generic, T: scalar or array]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.rv_frozen.html)       |
-| `multi_rv_frozen[D: rv_generic]`               | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.multi_rv_frozen.html) |
+| generic type                                   |                                                                                          |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| `Covariance[T: real]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Covariance.html) |
+| `Uniform[S: (int, ...), T: floating]`          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Uniform.html)    |
+| `Normal[S: (int, ...), T: floating]`           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Normal.html)     |
+| `Binomial[S: (int, ...), T: floating]`         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Binomial.html)   |
+| `Mixture[T: floating]`                         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Mixture.html)    |
+| `rv_frozen[D: rv_generic, T: scalar or array]` |                                                                                          |
+| `multi_rv_frozen[D: rv_generic]`               |                                                                                          |
 
 ## Contributing
 
