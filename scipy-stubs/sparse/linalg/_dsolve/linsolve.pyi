@@ -31,12 +31,19 @@ _Float2D: TypeAlias = onp.Array2D[np.float64]
 _Complex1D: TypeAlias = onp.Array1D[np.complex128]
 _Complex2D: TypeAlias = onp.Array2D[np.complex128]
 
+_ToF32Mat: TypeAlias = _spbase[np.float32, tuple[int, int]] | onp.CanArray[tuple[Any, ...], np.dtype[np.float32]]
+_ToF64Mat: TypeAlias = _spbase[np.float64 | npc.integer, tuple[int, int]] | onp.ToInt2D | onp.ToJustFloat64_2D
+_ToC64Mat: TypeAlias = _spbase[np.complex64, tuple[int, int]] | onp.CanArray[tuple[Any, ...], np.dtype[np.complex64]]
+_ToC128Mat: TypeAlias = _spbase[np.complex128, tuple[int, int]] | onp.ToJustComplex128_2D
+
 _ToFloatMat: TypeAlias = _spbase[npc.floating | npc.integer | np.bool_, tuple[int, int]] | onp.ToFloat2D
 _ToFloatMatStrict: TypeAlias = _spbase[npc.floating | npc.integer | np.bool_, tuple[int, int]] | onp.ToFloatStrict2D
 _ToComplexMat: TypeAlias = _spbase[npc.complexfloating, tuple[int, int]] | onp.ToJustComplex2D
-_ToInexactMat: TypeAlias = _spbase[Any, tuple[int, int]] | onp.ToComplex2D
-_ToInexactMatStrict: TypeAlias = _spbase[Any, tuple[int, int]] | onp.ToComplexStrict2D
+_ToInexactMat: TypeAlias = _spbase[Any, tuple[int, int]] | onp.ToComplex128_2D
+_ToInexactMatStrict: TypeAlias = _spbase[Any, tuple[int, int]] | onp.ToComplex128Strict2D
 
+# TODO(jorenham): make generic (because safe casting rules apply, i.e. the current annotations are incorrect)
+# https://github.com/scipy/scipy-stubs/issues/677
 @type_check_only
 class _Solve(Protocol):
     @overload
@@ -158,8 +165,45 @@ def spsolve_triangular(
     unit_diagonal: bool = False,
 ) -> onp.ArrayND[np.float64 | np.complex128]: ...
 
-#
-@overload
+# NOTE: keep in sync with `spilu`
+# NOTE: the mypy ignores work around a mypy bug in overload overlap checking
+@overload  # float64
+def splu(  # type: ignore[overload-overlap]
+    A: _ToF64Mat,
+    permc_spec: _PermcSpec | None = None,
+    diag_pivot_thresh: onp.ToFloat | None = None,
+    relax: int | None = None,
+    panel_size: int | None = None,
+    options: Mapping[str, object] | None = None,
+) -> SuperLU[np.float64]: ...
+@overload  # complex128
+def splu(  # type: ignore[overload-overlap]
+    A: _ToC128Mat,
+    permc_spec: _PermcSpec | None = None,
+    diag_pivot_thresh: onp.ToFloat | None = None,
+    relax: int | None = None,
+    panel_size: int | None = None,
+    options: Mapping[str, object] | None = None,
+) -> SuperLU[np.complex128]: ...
+@overload  # float32
+def splu(
+    A: _ToF32Mat,
+    permc_spec: _PermcSpec | None = None,
+    diag_pivot_thresh: onp.ToFloat | None = None,
+    relax: int | None = None,
+    panel_size: int | None = None,
+    options: Mapping[str, object] | None = None,
+) -> SuperLU[np.float32]: ...
+@overload  # complex64
+def splu(
+    A: _ToC64Mat,
+    permc_spec: _PermcSpec | None = None,
+    diag_pivot_thresh: onp.ToFloat | None = None,
+    relax: int | None = None,
+    panel_size: int | None = None,
+    options: Mapping[str, object] | None = None,
+) -> SuperLU[np.complex64]: ...
+@overload  # floating
 def splu(
     A: _ToFloatMat,
     permc_spec: _PermcSpec | None = None,
@@ -167,8 +211,8 @@ def splu(
     relax: int | None = None,
     panel_size: int | None = None,
     options: Mapping[str, object] | None = None,
-) -> SuperLU[np.float64]: ...
-@overload
+) -> SuperLU[np.float32 | np.float64]: ...
+@overload  # complexfloating
 def splu(
     A: _ToComplexMat,
     permc_spec: _PermcSpec | None = None,
@@ -176,8 +220,8 @@ def splu(
     relax: int | None = None,
     panel_size: int | None = None,
     options: Mapping[str, object] | None = None,
-) -> SuperLU[np.complex128]: ...
-@overload
+) -> SuperLU[np.complex64 | np.complex128]: ...
+@overload  # unknown
 def splu(
     A: _ToInexactMat,
     permc_spec: _PermcSpec | None = None,
@@ -185,10 +229,58 @@ def splu(
     relax: int | None = None,
     panel_size: int | None = None,
     options: Mapping[str, object] | None = None,
-) -> SuperLU[np.float64 | np.complex128]: ...
+) -> SuperLU: ...
 
-#
-@overload
+# NOTE: keep in sync with `splu`
+@overload  # float64
+def spilu(  # type: ignore[overload-overlap]
+    A: _ToF64Mat,
+    drop_tol: onp.ToFloat | None = None,
+    fill_factor: onp.ToFloat | None = None,
+    drop_rule: str | None = None,
+    permc_spec: _PermcSpec | None = None,
+    diag_pivot_thresh: onp.ToFloat | None = None,
+    relax: int | None = None,
+    panel_size: int | None = None,
+    options: Mapping[str, object] | None = None,
+) -> SuperLU[np.float64]: ...
+@overload  # complex128
+def spilu(  # type: ignore[overload-overlap]
+    A: _ToC128Mat,
+    drop_tol: onp.ToFloat | None = None,
+    fill_factor: onp.ToFloat | None = None,
+    drop_rule: str | None = None,
+    permc_spec: _PermcSpec | None = None,
+    diag_pivot_thresh: onp.ToFloat | None = None,
+    relax: int | None = None,
+    panel_size: int | None = None,
+    options: Mapping[str, object] | None = None,
+) -> SuperLU[np.complex128]: ...
+@overload  # float32
+def spilu(
+    A: _ToF32Mat,
+    drop_tol: onp.ToFloat | None = None,
+    fill_factor: onp.ToFloat | None = None,
+    drop_rule: str | None = None,
+    permc_spec: _PermcSpec | None = None,
+    diag_pivot_thresh: onp.ToFloat | None = None,
+    relax: int | None = None,
+    panel_size: int | None = None,
+    options: Mapping[str, object] | None = None,
+) -> SuperLU[np.float32]: ...
+@overload  # complex64
+def spilu(
+    A: _ToC64Mat,
+    drop_tol: onp.ToFloat | None = None,
+    fill_factor: onp.ToFloat | None = None,
+    drop_rule: str | None = None,
+    permc_spec: _PermcSpec | None = None,
+    diag_pivot_thresh: onp.ToFloat | None = None,
+    relax: int | None = None,
+    panel_size: int | None = None,
+    options: Mapping[str, object] | None = None,
+) -> SuperLU[np.complex64]: ...
+@overload  # floating
 def spilu(
     A: _ToFloatMat,
     drop_tol: onp.ToFloat | None = None,
@@ -199,8 +291,8 @@ def spilu(
     relax: int | None = None,
     panel_size: int | None = None,
     options: Mapping[str, object] | None = None,
-) -> SuperLU[np.float64]: ...
-@overload
+) -> SuperLU[np.float32 | np.float64]: ...
+@overload  # complexfloating
 def spilu(
     A: _ToComplexMat,
     drop_tol: onp.ToFloat | None = None,
@@ -211,7 +303,7 @@ def spilu(
     relax: int | None = None,
     panel_size: int | None = None,
     options: Mapping[str, object] | None = None,
-) -> SuperLU[np.complex128]: ...
+) -> SuperLU[np.complex64 | np.complex128]: ...
 @overload
 def spilu(
     A: _ToInexactMat,
@@ -223,7 +315,7 @@ def spilu(
     relax: int | None = None,
     panel_size: int | None = None,
     options: Mapping[str, object] | None = None,
-) -> SuperLU[np.float64 | np.complex128]: ...
+) -> SuperLU: ...
 
 #
 @overload
