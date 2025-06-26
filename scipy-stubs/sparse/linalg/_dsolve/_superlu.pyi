@@ -1,11 +1,15 @@
 from collections.abc import Callable, Mapping
-from typing import Any, Literal, TypeAlias, final, overload
+from typing import Final, Generic, Literal, TypeAlias, final, overload
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.sparse import csc_array, csc_matrix, csr_matrix
+
+_Inexact64T_co = TypeVar("_Inexact64T_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
 
 _Int1D: TypeAlias = onp.Array1D[np.int32]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
@@ -14,31 +18,33 @@ _Complex1D: TypeAlias = onp.Array1D[np.complex128]
 _Complex2D: TypeAlias = onp.Array2D[np.complex128]
 _Inexact2D: TypeAlias = onp.Array2D[np.float32 | np.float64 | np.complex64 | np.complex128]
 
+_Real: TypeAlias = npc.integer | npc.floating
+
 ###
 
 @final
-class SuperLU:
-    shape: tuple[int, int]
-    nnz: int
-    perm_r: onp.Array1D[np.intp]
-    perm_c: onp.Array1D[np.intp]
-    L: csc_array[np.float64 | np.complex128]
-    U: csc_array[np.float64 | np.complex128]
+class SuperLU(Generic[_Inexact64T_co]):
+    shape: Final[tuple[int, int]]
+    nnz: Final[int]
+    perm_r: Final[onp.Array1D[np.intp]]
+    perm_c: Final[onp.Array1D[np.intp]]
+    L: csc_array[_Inexact64T_co]  # readonly
+    U: csc_array[_Inexact64T_co]  # readonly
 
     @overload
-    def solve(self, /, rhs: onp.Array1D[np.integer[Any] | np.floating[Any]]) -> _Float1D: ...
+    def solve(self, /, rhs: onp.Array1D[_Real]) -> _Float1D: ...
     @overload
-    def solve(self, /, rhs: onp.Array1D[np.complexfloating[Any, Any]]) -> _Complex1D: ...
+    def solve(self, /, rhs: onp.Array1D[npc.complexfloating]) -> _Complex1D: ...
     @overload
-    def solve(self, /, rhs: onp.Array2D[np.integer[Any] | np.floating[Any]]) -> _Float2D: ...
+    def solve(self, /, rhs: onp.Array2D[_Real]) -> _Float2D: ...
     @overload
-    def solve(self, /, rhs: onp.Array2D[np.complexfloating[Any, Any]]) -> _Complex2D: ...
+    def solve(self, /, rhs: onp.Array2D[npc.complexfloating]) -> _Complex2D: ...
     @overload
-    def solve(self, /, rhs: onp.ArrayND[np.integer[Any] | np.floating[Any]]) -> _Float1D | _Float2D: ...
+    def solve(self, /, rhs: onp.ArrayND[_Real]) -> onp.ArrayND[np.float64]: ...
     @overload
-    def solve(self, /, rhs: onp.ArrayND[np.complexfloating[Any, Any]]) -> _Complex1D | _Complex2D: ...
+    def solve(self, /, rhs: onp.ArrayND[npc.complexfloating]) -> onp.ArrayND[np.complex128]: ...
     @overload
-    def solve(self, /, rhs: onp.ArrayND[np.number[Any]]) -> _Float1D | _Complex1D | _Float2D | _Complex2D: ...
+    def solve(self, /, rhs: onp.ArrayND[npc.number]) -> onp.ArrayND[np.float64 | np.complex128]: ...
 
 def gssv(
     N: op.CanIndex,
@@ -77,4 +83,4 @@ def gstrs(
     U_rowind: _Int1D,
     U_colptr: _Int1D,
     B: _Inexact2D,
-) -> tuple[_Float1D | _Complex1D | _Float2D | _Complex2D, int]: ...
+) -> tuple[onp.ArrayND[np.float64 | np.complex128], int]: ...
