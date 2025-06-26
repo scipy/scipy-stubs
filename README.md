@@ -180,11 +180,12 @@ All generic type parameters are optional and can be omitted if not needed.
 
 ### `scipy.optimize`
 
-| generic type                  |                                                                                                  |
-| ----------------------------- | ------------------------------------------------------------------------------------------------ |
-| `BroydenFirst[T: inexact]`    | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.BroydenFirst.html)    |
-| `InverseJacobian[T: inexact]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.InverseJacobian.html) |
-| `KrylovJacobian[T: inexact]`  | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.KrylovJacobian.html)  |
+| generic type                            |                                                                                                  |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `BroydenFirst[T: inexact]`              | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.BroydenFirst.html)    |
+| `InverseJacobian[T: inexact]`           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.InverseJacobian.html) |
+| `KrylovJacobian[T: inexact]`            | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.KrylovJacobian.html)  |
+| `Bounds[S: (int, int, ...), T: scalar]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.Bounds.html)          |
 
 ### `scipy.signal`
 
