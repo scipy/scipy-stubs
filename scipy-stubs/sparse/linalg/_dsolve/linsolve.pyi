@@ -1,6 +1,6 @@
 from collections.abc import Mapping
-from typing import Any, Literal, Protocol, TypeAlias, TypeVar, overload, type_check_only
-from typing_extensions import deprecated
+from typing import Any, Literal, Protocol, TypeAlias, overload, type_check_only
+from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype.numpy as onp
@@ -24,12 +24,10 @@ __all__ = [
 ]
 
 _SparseT = TypeVar("_SparseT", bound=_spbase)
+_NumberT_contra = TypeVar("_NumberT_contra", bound=npc.number, contravariant=True)
+_InexactT_co = TypeVar("_InexactT_co", bound=np.float32 | np.float64 | np.complex64 | np.complex128, covariant=True)
 
 _PermcSpec: TypeAlias = Literal["COLAMD", "NATURAL", "MMD_ATA", "MMD_AT_PLUS_A"]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_Complex1D: TypeAlias = onp.Array1D[np.complex128]
-_Complex2D: TypeAlias = onp.Array2D[np.complex128]
 
 _ToF32Mat: TypeAlias = _spbase[np.float32, tuple[int, int]] | onp.CanArray[tuple[Any, ...], np.dtype[np.float32]]
 _ToF64Mat: TypeAlias = _spbase[np.float64 | npc.integer, tuple[int, int]] | onp.ToInt2D | onp.ToJustFloat64_2D
@@ -42,31 +40,35 @@ _ToComplexMat: TypeAlias = _spbase[npc.complexfloating, tuple[int, int]] | onp.T
 _ToInexactMat: TypeAlias = _spbase[Any, tuple[int, int]] | onp.ToComplex128_2D
 _ToInexactMatStrict: TypeAlias = _spbase[Any, tuple[int, int]] | onp.ToComplex128Strict2D
 
-# TODO(jorenham): make generic (because safe casting rules apply, i.e. the current annotations are incorrect)
-# https://github.com/scipy/scipy-stubs/issues/677
+_AsF32: TypeAlias = npc.integer8 | npc.number16 | np.int32 | np.float16 | np.float32
+_AsF64: TypeAlias = npc.integer | np.float16 | np.float32 | np.float64
+_AsC64: TypeAlias = npc.integer8 | npc.integer16 | np.int32 | np.float16 | npc.inexact32
+_AsC128: TypeAlias = npc.integer | np.float16 | npc.inexact32 | npc.inexact64
+
 @type_check_only
-class _Solve(Protocol):
+class _SuperLU_solve(Protocol[_NumberT_contra, _InexactT_co]):
     @overload
-    def __call__(self, b: onp.Array1D[npc.integer | npc.floating], /) -> _Float1D: ...
+    def __call__(self, rhs: onp.Array1D[_NumberT_contra | np.bool_]) -> onp.Array1D[_InexactT_co]: ...
     @overload
-    def __call__(self, b: onp.Array1D[npc.complexfloating], /) -> _Complex1D: ...
+    def __call__(self, rhs: onp.Array2D[_NumberT_contra | np.bool_]) -> onp.Array2D[_InexactT_co]: ...
     @overload
-    def __call__(self, b: onp.Array2D[npc.integer | npc.floating], /) -> _Float2D: ...
-    @overload
-    def __call__(self, b: onp.Array2D[npc.complexfloating], /) -> _Complex2D: ...
-    @overload
-    def __call__(self, b: onp.ArrayND[npc.integer | npc.floating], /) -> _Float1D | _Float2D: ...
-    @overload
-    def __call__(self, b: onp.ArrayND[npc.complexfloating], /) -> _Complex1D | _Complex2D: ...
-    @overload
-    def __call__(self, b: onp.ArrayND[npc.number], /) -> _Float1D | _Complex1D | _Float2D | _Complex2D: ...
+    def __call__(self, rhs: onp.ArrayND[_NumberT_contra | np.bool_]) -> onp.ArrayND[_InexactT_co]: ...
 
 ###
 
 class MatrixRankWarning(UserWarning): ...
 
-def use_solver(*, useUmfpack: bool = ..., assumeSortedIndices: bool = ...) -> None: ...
-def factorized(A: _ToInexactMat) -> _Solve: ...
+def use_solver(*, useUmfpack: bool = True, assumeSortedIndices: bool = False) -> None: ...
+
+# NOTE: the mypy ignores work around a mypy bug in overload overlap checking
+@overload
+def factorized(A: _ToF64Mat) -> _SuperLU_solve[_AsF64, np.float64]: ...  # type: ignore[overload-overlap]
+@overload
+def factorized(A: _ToC128Mat) -> _SuperLU_solve[_AsC128, np.complex128]: ...  # type: ignore[overload-overlap]
+@overload
+def factorized(A: _ToF32Mat) -> _SuperLU_solve[_AsF32, np.float32]: ...
+@overload
+def factorized(A: _ToC64Mat) -> _SuperLU_solve[_AsC64, np.complex64]: ...
 
 #
 @overload  # 2d float, sparse 2d
