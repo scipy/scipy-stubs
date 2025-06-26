@@ -1,16 +1,16 @@
 from collections.abc import Mapping
-from typing import Literal, TypeAlias, TypedDict, type_check_only
+from typing import Any, Literal, TypeAlias, TypedDict, type_check_only
 from typing_extensions import Unpack
 
 import optype.numpy as onp
 
 from ._miobase import MatFileReader
 from scipy._typing import ByteOrder, FileName
-from scipy.sparse import coo_array, coo_matrix
 
 __all__ = ["loadmat", "savemat", "whosmat"]
 
-_MDict: TypeAlias = Mapping[str, onp.Array2D | coo_array | coo_matrix]
+# values can be either a 2d `ndarray`, 2d `coo_array`, or `coo_matrix`.
+_MDict: TypeAlias = Mapping[str, onp.Array2D | Any]
 _DataClass: TypeAlias = Literal[
     "int8",
     "int16",
@@ -43,7 +43,7 @@ class _ReaderKwargs(TypedDict, total=False):
     struct_as_record: bool
     verify_compressed_data_integrity: bool
     simplify_cells: bool
-    variable_names: list[str] | tuple[str] | None
+    variable_names: list[str] | tuple[str, ...] | None
 
 ###
 
