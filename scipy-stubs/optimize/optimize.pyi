@@ -29,6 +29,7 @@ __all__ = [
 
 @deprecated("will be removed in SciPy v2.0.0")
 def zeros(shape: object, dtype: object = ..., order: object = ..., *, device: object = ..., like: object = ...) -> object: ...
+
 @deprecated("will be removed in SciPy v2.0.0")
 class OptimizeResult(Any): ...
 

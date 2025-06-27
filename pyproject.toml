@@ -48,7 +48,7 @@ extras = ["scipy-stubs[scipy]"]
 ci = ["packaging>=25.0"]
 lint = [
     {include-group = "extras"},
-    "ruff>=0.12.0",
+    "ruff>=0.12.1",
     "sp-repo-review[cli]>=2025.5.2",
 ]
 type = [
@@ -103,7 +103,7 @@ args = [{name = "modules", positional = true, multiple = true, default = "scipy"
 extend-exclude = ["*.pyi", ".mypyignore"]
 
 [tool.typos.default]
-extend-ignore-identifiers-re = ['ND|Nd|']
+extend-ignore-identifiers-re = ['ND|Nd']
 
 [tool.mypy]
 strict = true
