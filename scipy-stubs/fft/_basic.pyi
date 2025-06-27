@@ -442,6 +442,63 @@ def ihfft(
 ###
 # 2-D
 
+# keep in sync with `ifft2`
+@overload
+def fft2(  # type: ignore[overload-overlap]
+    x: _AsComplex64[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.complex64]: ...
+@overload
+def fft2(
+    x: _AsComplex128[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.complex128]: ...
+@overload
+def fft2(
+    x: _AsComplex160[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.clongdouble]: ...
+@overload
+def fft2(
+    x: Sequence[Sequence[complex]],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array2D[np.complex128]: ...
+@overload
+def fft2(
+    x: _ToComplex128_ND,
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload
 def fft2(
     x: onp.ToComplexND,
     s: onp.ToJustInt1D | None = None,
@@ -451,7 +508,65 @@ def fft2(
     workers: int | None = None,
     *,
     plan: _Unused | None = None,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
+
+# keep in sync with `fft2`
+@overload
+def ifft2(  # type: ignore[overload-overlap]
+    x: _AsComplex64[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.complex64]: ...
+@overload
+def ifft2(
+    x: _AsComplex128[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.complex128]: ...
+@overload
+def ifft2(
+    x: _AsComplex160[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.clongdouble]: ...
+@overload
+def ifft2(
+    x: Sequence[Sequence[complex]],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array2D[np.complex128]: ...
+@overload
+def ifft2(
+    x: _ToComplex128_ND,
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload
 def ifft2(
     x: onp.ToComplexND,
     s: onp.ToJustInt1D | None = None,
@@ -461,7 +576,65 @@ def ifft2(
     workers: int | None = None,
     *,
     plan: _Unused | None = None,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
+
+# keep in sync with `ihfft2`
+@overload
+def rfft2(  # type: ignore[overload-overlap]
+    x: _AsFloat32[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.complex64]: ...
+@overload
+def rfft2(
+    x: _AsFloat64[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.complex128]: ...
+@overload
+def rfft2(
+    x: _AsFloat80[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.clongdouble]: ...
+@overload
+def rfft2(
+    x: Sequence[Sequence[float]],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array2D[np.complex128]: ...
+@overload
+def rfft2(
+    x: _ToFloat64_ND,
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload
 def rfft2(
     x: onp.ToFloatND,
     s: onp.ToJustInt1D | None = None,
@@ -471,7 +644,65 @@ def rfft2(
     workers: int | None = None,
     *,
     plan: _Unused | None = None,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
+
+# keep in sync with `hfft2`
+@overload
+def irfft2(  # type: ignore[overload-overlap]
+    x: _AsComplex64[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.float32]: ...
+@overload
+def irfft2(
+    x: _AsComplex128[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.float64]: ...
+@overload
+def irfft2(
+    x: _AsComplex160[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.longdouble]: ...
+@overload
+def irfft2(
+    x: Sequence[Sequence[complex]],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array2D[np.float64]: ...
+@overload
+def irfft2(
+    x: _ToComplex128_ND,
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload
 def irfft2(
     x: onp.ToComplexND,
     s: onp.ToJustInt1D | None = None,
@@ -481,7 +712,65 @@ def irfft2(
     workers: int | None = None,
     *,
     plan: _Unused | None = None,
-) -> _FloatingND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
+
+# keep in sync with `irfft2`
+@overload
+def hfft2(  # type: ignore[overload-overlap]
+    x: _AsComplex64[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.float32]: ...
+@overload
+def hfft2(
+    x: _AsComplex128[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.float64]: ...
+@overload
+def hfft2(
+    x: _AsComplex160[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.longdouble]: ...
+@overload
+def hfft2(
+    x: Sequence[Sequence[complex]],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array2D[np.float64]: ...
+@overload
+def hfft2(
+    x: _ToComplex128_ND,
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload
 def hfft2(
     x: onp.ToComplexND,
     s: onp.ToJustInt1D | None = None,
@@ -491,7 +780,65 @@ def hfft2(
     workers: int | None = None,
     *,
     plan: _Unused | None = None,
-) -> _FloatingND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
+
+# keep in sync with `rfft2`
+@overload
+def ihfft2(  # type: ignore[overload-overlap]
+    x: _AsFloat32[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.complex64]: ...
+@overload
+def ihfft2(
+    x: _AsFloat64[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.complex128]: ...
+@overload
+def ihfft2(
+    x: _AsFloat80[_ShapeT],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array[_ShapeT, np.clongdouble]: ...
+@overload
+def ihfft2(
+    x: Sequence[Sequence[float]],
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.Array2D[np.complex128]: ...
+@overload
+def ihfft2(
+    x: _ToFloat64_ND,
+    s: onp.ToJustInt1D | None = None,
+    axes: AnyShape = (-2, -1),
+    norm: _Norm | None = None,
+    overwrite_x: onp.ToBool = False,
+    workers: int | None = None,
+    *,
+    plan: _Unused | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload
 def ihfft2(
     x: onp.ToFloatND,
     s: onp.ToJustInt1D | None = None,
@@ -501,7 +848,7 @@ def ihfft2(
     workers: int | None = None,
     *,
     plan: _Unused | None = None,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
 
 ###
 # N-D
