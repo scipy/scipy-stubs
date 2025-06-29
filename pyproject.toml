@@ -251,6 +251,7 @@ runner = "uv-venv-lock-runner"
 dependency_groups = ["lint"]
 commands = [
   ["repo-review", "."],
+  ["dprint", "check", "--incremental=false"],
   ["ruff", "check", "--show-fixes"],
   ["ruff", "format", "--check"],
 ]
