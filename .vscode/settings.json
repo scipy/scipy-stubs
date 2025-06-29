@@ -2,13 +2,22 @@
   "[json][jsonc][yaml][yml]": {
     "editor.tabSize": 2
   },
-  "[markdown][python]": {
-    "editor.rulers": [130]
+  "[markdown]": {
+    "editor.rulers": [
+      200
+    ]
+  },
+  "[python]": {
+    "editor.rulers": [
+      130
+    ]
   },
   "[toml]": {
-    "editor.rulers": [100],
-    "editor.tabSize": 4
+    "editor.rulers": [
+      100
+    ]
   },
+  "editor.tabSize": 4,
   "evenBetterToml.formatter.alignComments": true,
   "evenBetterToml.formatter.allowedBlankLines": 2,
   "evenBetterToml.formatter.arrayTrailingComma": true,
