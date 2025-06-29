@@ -4,8 +4,11 @@
     "detachhead.basedpyright",
     "ms-python.mypy-type-checker",
     "ms-python.python",
-    "tamasfe.even-better-toml",
-    "tekumara.typos-vscode"
+    "seatonjiang.gitmoji-vscode",
+    "tamasfe.even-better-toml"
   ],
-  "unwantedRecommendations": ["ms-pyright.pyright", "ms-python.vscode-pylance"]
+  "unwantedRecommendations": [
+    "ms-pyright.pyright",
+    "ms-python.vscode-pylance"
+  ]
 }

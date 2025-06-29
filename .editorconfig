@@ -5,10 +5,24 @@ root = true
 [*]
 charset = utf-8
 end_of_line = lf
-indent_size = 4
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{json,jsonc,yml,yaml}]
+[*.{json,jsonc,yaml,yml}]
 indent_size = 2
+
+[*.{md,py,pyi,toml}]
+indent_size = 4
+
+[*.mypyignore,*.md]
+max_line_length = 200
+
+[*.py]
+max_line_length = 88
+
+[*.pyi]
+max_line_length = 130
+
+[*.toml]
+max_line_length = 100
