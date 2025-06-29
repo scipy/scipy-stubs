@@ -17,12 +17,12 @@ _Kernel: TypeAlias = Literal[
     "gaussian",
 ]  # fmt: skip
 
+_Inexact64T_co = TypeVar("_Inexact64T_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast0D, default=onp.AtLeast0D[Any], covariant=True)
-_SCT_co = TypeVar("_SCT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
 ###
 
-class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
+class RBFInterpolator(Generic[_Inexact64T_co, _ShapeT_co]):
     y: onp.Array2D[np.float64]
     d: onp.Array[_ShapeT_co, np.float64]
     d_shape: _ShapeT_co
@@ -35,7 +35,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
 
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int], np.float64],
+        self: RBFInterpolator[np.float64, tuple[int]],
         /,
         y: onp.ToFloat2D,
         d: onp.ToFloatStrict1D,
@@ -47,7 +47,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int], np.complex128],
+        self: RBFInterpolator[np.complex128, tuple[int]],
         /,
         y: onp.ToFloat2D,
         d: onp.ToJustComplexStrict1D,
@@ -59,7 +59,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int], Any],
+        self: RBFInterpolator[Any, tuple[int]],
         /,
         y: onp.ToFloat2D,
         d: onp.ToComplexStrict1D,
@@ -71,7 +71,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int], np.float64],
+        self: RBFInterpolator[np.float64, tuple[int, int]],
         /,
         y: onp.ToFloat2D,
         d: onp.ToFloatStrict2D,
@@ -83,7 +83,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int], np.complex128],
+        self: RBFInterpolator[np.complex128, tuple[int, int]],
         /,
         y: onp.ToFloat2D,
         d: onp.ToJustComplexStrict2D,
@@ -95,7 +95,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int], Any],
+        self: RBFInterpolator[Any, tuple[int, int]],
         /,
         y: onp.ToFloat2D,
         d: onp.ToComplexStrict2D,
@@ -107,7 +107,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int, int], np.float64],
+        self: RBFInterpolator[np.float64, tuple[int, int, int]],
         /,
         y: onp.ToFloat2D,
         d: onp.ToFloatStrict3D,
@@ -119,7 +119,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int, int], np.complex128],
+        self: RBFInterpolator[np.complex128, tuple[int, int, int]],
         /,
         y: onp.ToFloat2D,
         d: onp.ToJustComplexStrict3D,
@@ -131,7 +131,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[tuple[int, int, int], Any],
+        self: RBFInterpolator[Any, tuple[int, int, int]],
         /,
         y: onp.ToFloat2D,
         d: onp.ToComplexStrict3D,
@@ -143,7 +143,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[onp.AtLeast1D, np.float64],
+        self: RBFInterpolator[np.float64],
         /,
         y: onp.ToFloat2D,
         d: onp.ToFloatND,
@@ -155,7 +155,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[onp.AtLeast1D, np.complex128],
+        self: RBFInterpolator[np.complex128],
         /,
         y: onp.ToFloat2D,
         d: onp.ToJustComplexND,
@@ -167,7 +167,7 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: RBFInterpolator[onp.AtLeast1D, Any],
+        self: RBFInterpolator[Any],
         /,
         y: onp.ToFloat2D,
         d: onp.ToComplexND,
@@ -179,4 +179,4 @@ class RBFInterpolator(Generic[_ShapeT_co, _SCT_co]):
     ) -> None: ...
 
     # TODO(jorenham): Return `onp.Array[tuple[int, Unpack[_ShapeT_co]], _SCT_co]` once mypy supports it (if ever)
-    def __call__(self, /, x: onp.ToFloat2D) -> onp.ArrayND[_SCT_co]: ...
+    def __call__(self, /, x: onp.ToFloat2D) -> onp.ArrayND[_Inexact64T_co]: ...
