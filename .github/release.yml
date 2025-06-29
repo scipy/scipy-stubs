@@ -1,19 +1,26 @@
 changelog:
   categories:
-    - title: API Changes
+    - title: 💥 Breaking Changes
+      labels:
+        - "is: breaking"
+    - title: 👽️ SciPy Changes
       labels:
         - "stubs: api change"
         - "stubs: api change - undocumented"
+        - "topic: upstream release"
         - "topic: deprecation"
-    - title: Improvements
+    - title: ✨ Improvements
       labels:
         - "is: feature"
         - "stubs: incomplete"
-    - title: Fixes
+    - title: 🐛 Fixes
       labels:
         - "is: fix"
         - "stubs: incorrect"
-    - title: Dependency updates
+    - title: ✅ Testing
+      labels:
+        - "topic: testing"
+    - title: ⬆️ Dependencies
       labels:
         - "topic: dependencies"
     - title: Other Changes
