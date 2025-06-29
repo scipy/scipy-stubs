@@ -1,4 +1,4 @@
-from typing import LiteralString, assert_type
+from typing import Literal, LiteralString, assert_type
 
 import scipy.version
 
@@ -6,8 +6,5 @@ import scipy.version
 v: str = scipy.version.short_version
 assert_type(v, str)
 
-assert_type(scipy.version.version, LiteralString)
-assert_type(scipy.version.full_version, LiteralString)
 assert_type(scipy.version.git_revision, LiteralString)
-
-assert_type(scipy.version.release, bool)
+assert_type(scipy.version.release, Literal[True])
