@@ -160,23 +160,23 @@ All generic type parameters are optional and can be omitted if not needed.
 
 ### `scipy.interpolate`
 
-| generic type                                               |                                                                                                                |
-| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `AAA[T: inexact]`                                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.AAA.html)                        |
-| `BarycentricInterpolator[T: float64 \| complex128]`        | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BarycentricInterpolator.html)    |
-| `BPoly[T: float64 \| complex128]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BPoly.html)                      |
-| `BSpline[T: float64 \| complex128]`                        | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BSpline.html)                    |
-| `CubicHermiteSpline[T: float64 \| complex128]`             | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicHermiteSpline.html)         |
-| `CubicSpline[T: float64 \| complex128]`                    | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicSpline.html)                |
-| `FloaterHormannInterpolator[T: float64 \| complex128]`     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.FloaterHormannInterpolator.html) |
-| `KroghInterpolator[T: float64 \| complex128]`              | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.KroghInterpolator.html)          |
-| `LinearNDInterpolator[T: float64 \| complex128]`           | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.LinearNDInterpolator.html)       |
-| `NdBSpline[T: float64 \| complex128]`                      | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdBSpline.html)                  |
-| `NdPPoly[T: float64 \| complex128]`                        | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdPPoly.html)                    |
-| `NearestNDInterpolator[T: float64 \| complex128]`          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NearestNDInterpolator.html)      |
-| `PPoly[T: float64 \| complex128]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PPoly.html)                      |
-| `RBFInterpolator[S: (int, ...), T: float64 \| complex128]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RBFInterpolator.html)            |
-| `RegularGridInterpolator[T: float64 \| complex128]`        | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RegularGridInterpolator.html)    |
+| generic type                                                 |                                                                                                                |
+| ------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------- |
+| `AAA[T: inexact]`                                            | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.AAA.html)                        |
+| `BarycentricInterpolator[T: float64 \| complex128]`          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BarycentricInterpolator.html)    |
+| `BPoly[T: float64 \| complex128]`                            | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BPoly.html)                      |
+| `BSpline[T: float64 \| complex128]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BSpline.html)                    |
+| `CubicHermiteSpline[T: float64 \| complex128]`               | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicHermiteSpline.html)         |
+| `CubicSpline[T: float64 \| complex128]`                      | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicSpline.html)                |
+| `FloaterHormannInterpolator[T: float64 \| complex128]`       | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.FloaterHormannInterpolator.html) |
+| `KroghInterpolator[T: float64 \| complex128, S: (int, ...)]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.KroghInterpolator.html)          |
+| `LinearNDInterpolator[T: float64 \| complex128]`             | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.LinearNDInterpolator.html)       |
+| `NdBSpline[T: float64 \| complex128]`                        | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdBSpline.html)                  |
+| `NdPPoly[T: float64 \| complex128]`                          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdPPoly.html)                    |
+| `NearestNDInterpolator[T: float64 \| complex128]`            | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NearestNDInterpolator.html)      |
+| `PPoly[T: float64 \| complex128]`                            | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PPoly.html)                      |
+| `RBFInterpolator[T: float64 \| complex128, S: (int, ...)]`   | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RBFInterpolator.html)            |
+| `RegularGridInterpolator[T: float64 \| complex128]`          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RegularGridInterpolator.html)    |
 
 ### `scipy.optimize`
 
@@ -221,11 +221,11 @@ All generic type parameters are optional and can be omitted if not needed.
 
 #### `scipy.sparse.linalg`
 
-| generic type                        |                                                                                                      |
-| ----------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `LaplacianNd[T: real]`              | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LaplacianNd.html)    |
-| `LinearOperator[T: scalar]`         | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
-| `SuperLU[T: inexact]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.SuperLU.html)        |
+| generic type                |                                                                                                      |
+| --------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `LaplacianNd[T: real]`      | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LaplacianNd.html)    |
+| `LinearOperator[T: scalar]` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
+| `SuperLU[T: inexact]`       | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.SuperLU.html)        |
 
 ### `scipy.stats`
 
