@@ -1,32 +1,38 @@
 {
-  "[json][jsonc][yaml][yml]": {
-    "editor.tabSize": 2
+  "[json]": {
+    "editor.defaultFormatter": "dprint.dprint",
+    "editor.rulers": [100],
+    "editor.tabSize": 2,
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "dprint.dprint",
+    "editor.rulers": [100],
+    "editor.tabSize": 2,
   },
   "[markdown]": {
-    "editor.rulers": [
-      200
-    ]
+    "editor.defaultFormatter": "dprint.dprint",
+    "editor.rulers": [200],
   },
   "[python]": {
-    "editor.rulers": [
-      130
-    ]
+    "editor.rulers": [130],
+    "editor.tabSize": 4,
   },
   "[toml]": {
-    "editor.rulers": [
-      100
-    ]
+    "editor.defaultFormatter": "dprint.dprint",
+    "editor.rulers": [100],
+    "editor.tabSize": 2,
   },
-  "editor.tabSize": 4,
-  "evenBetterToml.formatter.alignComments": true,
-  "evenBetterToml.formatter.allowedBlankLines": 2,
-  "evenBetterToml.formatter.arrayTrailingComma": true,
-  "evenBetterToml.formatter.columnWidth": 100,
-  "evenBetterToml.formatter.compactArrays": true,
-  "evenBetterToml.formatter.compactInlineTables": true,
-  "evenBetterToml.formatter.indentString": "    ",
-  "evenBetterToml.formatter.indentTables": true,
-  "evenBetterToml.formatter.trailingNewline": true,
+  "[yaml]": {
+    "editor.defaultFormatter": "dprint.dprint",
+    "editor.rulers": [100],
+    "editor.tabSize": 2,
+  },
+  "[yml]": {
+    "editor.defaultFormatter": "dprint.dprint",
+    "editor.rulers": [100],
+    "editor.tabSize": 2,
+  },
+  "dprint.path": ".venv/bin/dprint",
   "mypy-type-checker.path": [
     "uv",
     "run",
@@ -34,6 +40,6 @@
     "--isolated",
     "--no-editable",
     "--refresh-package=scipy-stubs",
-    "mypy"
-  ]
+    "mypy",
+  ],
 }

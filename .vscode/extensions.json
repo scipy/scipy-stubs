@@ -2,13 +2,10 @@
   "recommendations": [
     "charliermarsh.ruff",
     "detachhead.basedpyright",
+    "dprint.dprint",
     "ms-python.mypy-type-checker",
     "ms-python.python",
     "seatonjiang.gitmoji-vscode",
-    "tamasfe.even-better-toml"
   ],
-  "unwantedRecommendations": [
-    "ms-pyright.pyright",
-    "ms-python.vscode-pylance"
-  ]
+  "unwantedRecommendations": ["ms-pyright.pyright", "ms-python.vscode-pylance"],
 }

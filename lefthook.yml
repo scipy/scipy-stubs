@@ -4,6 +4,10 @@ templates:
 pre-commit:
   parallel: true
   jobs:
+    - name: dprint
+      glob: "*.{json,jsonc,md,toml,yaml,yml}"
+      stage_fixed: true
+      run: uv {run} dprint fmt --incremental=false
     - name: ruff
       glob: "*.{py,pyi}"
       stage_fixed: true

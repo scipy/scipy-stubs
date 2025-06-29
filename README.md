@@ -89,32 +89,32 @@ conda install conda-forge::scipy-typed
 ### Q: Do I need to change my existing code?
 
 **A:** No! `scipy-stubs` works with your existing code without any modifications.
-    Just install it and your type checker and IDE will automatically use the type information.
+Just install it and your type checker and IDE will automatically use the type information.
 
 ### Q: Will this slow down my code?
 
 **A:** Not at all. Type stubs are only used during development and type checking.
-    They have zero runtime overhead since they're not imported when your code runs.
+They have zero runtime overhead since they're not imported when your code runs.
 
 ### Q: What if I don't use type hints in my code?
 
 **A:** You'll still benefit! Your IDE will provide better autocompletion and error detection
-    even without explicit type annotations in your code.
+even without explicit type annotations in your code.
 
 ### Q: Can I use this with Jupyter notebooks?
 
 **A:** Yes! Most modern Jupyter environments (JupyterLab, VS Code notebooks) support
-    type checking and will benefit from `scipy-stubs`.
+type checking and will benefit from `scipy-stubs`.
 
 ### Q: What's the difference between this and the built-in scipy typing?
 
 **A:** SciPy itself has limited type annotations. `scipy-stubs` provides comprehensive,
-    precise type information for the entire SciPy API, including shape-typing and advanced type features.
+precise type information for the entire SciPy API, including shape-typing and advanced type features.
 
 ### Q: How do I know if it's working?
 
 **A:** You should see improved autocompletion in your IDE and more precise type information.
-    You can also run `pyright` or another type checker on your code to see type checking in action.
+You can also run `pyright` or another type checker on your code to see type checking in action.
 
 ### Q: How much of SciPy is covered?
 
@@ -123,8 +123,8 @@ conda install conda-forge::scipy-typed
 ### Q: What static type-checkers are supported?
 
 **A:** `scipy-stubs` is compatible with [`pyright`](https://pyright.readthedocs.io/en/latest/index.html) (a.k.a. pylance),
-    [`basedpyright`](https://github.com/DetachHead/basedpyright), and [`mypy`](https://github.com/python/mypy).
-    We only support the latest versions of these type-checkers, so make sure to keep them up to date.
+[`basedpyright`](https://github.com/DetachHead/basedpyright), and [`mypy`](https://github.com/python/mypy).
+We only support the latest versions of these type-checkers, so make sure to keep them up to date.
 
 ## Versioning and requirements
 
