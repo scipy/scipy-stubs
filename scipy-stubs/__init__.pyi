@@ -78,7 +78,7 @@ _SubModule: TypeAlias = Literal[
 
 ###
 
-np_minversion: Final = "1.23.5"  # undocumented
-np_maxversion: Final = "2.5.0"  # undocumented
+np_minversion: Final = "1.25.2"  # undocumented
+np_maxversion: Final = "2.6.0"  # undocumented
 test: Final[PytestTester] = ...  # undocumented
 submodules: Final[Sequence[_SubModule]] = ...  # undocumented
