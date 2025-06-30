@@ -53,7 +53,7 @@ lint = [
 type = [
   { include-group = "extras" },
   { include-group = "ci" },
-  "basedpyright>=1.29.4",
+  "basedpyright>=1.29.5",
   "mypy>=1.16.1",
   "orjson>=3.10.18; python_version<'3.14'", # used by mypy
 ]
