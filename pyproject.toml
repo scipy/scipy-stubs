@@ -117,7 +117,6 @@ disallow_subclassing_any = false
 always_true = ["NP125", "NP126", "NP20", "NP21", "NP22", "NP23"]
 
 [tool.pyright]
-include = ["scipy-stubs", "scripts", "tests"]
 ignore = [".venv"]
 stubPath = "."
 pythonPlatform = "All"
@@ -133,10 +132,7 @@ reportPropertyTypeMismatch = false
 reportShadowedImports = true
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
-reportUnusedExpression = false
-
-# overridden in the execution environments
-reportInvalidStubStatement = false
+reportUnusedCallResult = true
 
 # type-checkers should type-check; linters should lint
 reportImplicitStringConcatenation = false
@@ -153,19 +149,11 @@ reportPrivateLocalImportUsage = true
 reportUnannotatedClassAttribute = false
 strictGenericNarrowing = false
 
-[[executionEnvironments]]
-root = "scipy-stubs"
-reportInvalidStubStatement = true
-reportUnusedCallResult = true
-reportUnusedExpression = true
-
-[[executionEnvironments]]
+[[tool.pyright.executionEnvironments]]
 root = "tests"
-reportAny = true
-reportExplicitAny = true
-reportPrivateUsage = true
-reportUnreachable = true
-reportUnsafeMultipleInheritance = true # base
+reportInvalidStubStatement = false
+reportUnusedCallResult = false
+reportUnusedExpression = false
 
 [tool.pyright.defineConstant]
 # optype.numpy compat
