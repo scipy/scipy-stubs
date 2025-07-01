@@ -170,14 +170,14 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 
 ### `scipy.integrate`
 
-| generic type             | `scipy-stubs` | `scipy` |                                                                                               |
-| ------------------------ | ------------- | ------- | --------------------------------------------------------------------------------------------- |
-| `BDF[T: f64 \| c128]`    | `>=1.14.0.1`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.BDF.html)         |
-| `DOP853[T: f64 \| c128]` | `>=1.14.0.1`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.DOP853.html)      |
-| `RK23[T: f64 \| c128]`   | `>=1.14.0.1`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.RK23.html)        |
-| `RK45[T: f64 \| c128]`   | `>=1.14.0.1`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.RK45.html)        |
-| `ode[*ArgTs]`            | `>=1.14.0.0`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html)         |
-| `complex_ode[*ArgTs]`    | `>=1.14.0.0`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.complex_ode.html) |
+| generic type             | `scipy-stubs` | `scipy`  |                                                                                               |
+| ------------------------ | ------------- | -------- | --------------------------------------------------------------------------------------------- |
+| `BDF[T: f64 \| c128]`    | `>=1.14.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.BDF.html)         |
+| `DOP853[T: f64 \| c128]` | `>=1.14.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.DOP853.html)      |
+| `RK23[T: f64 \| c128]`   | `>=1.14.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.RK23.html)        |
+| `RK45[T: f64 \| c128]`   | `>=1.14.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.RK45.html)        |
+| `ode[*ArgTs]`            | `>=1.14.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html)         |
+| `complex_ode[*ArgTs]`    | `>=1.14.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.complex_ode.html) |
 
 ### `scipy.interpolate`
 
@@ -242,23 +242,23 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 
 #### `scipy.sparse.linalg`
 
-| generic type                | `scipy-stubs` | `scipy` |                                                                                                      |
-| --------------------------- | ------------- | ------- | ---------------------------------------------------------------------------------------------------- |
-| `LaplacianNd[T: real]`      | `>=1.14.1.6`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LaplacianNd.html)    |
-| `LinearOperator[T: scalar]` | `>=1.14.1.6`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
-| `SuperLU[T: inexact]`       | `>=1.16.0.1`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.SuperLU.html)        |
+| generic type                | `scipy-stubs` | `scipy`  |                                                                                                      |
+| --------------------------- | ------------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `LaplacianNd[T: real]`      | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LaplacianNd.html)    |
+| `LinearOperator[T: scalar]` | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
+| `SuperLU[T: inexact]`       | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.SuperLU.html)        |
 
 ### `scipy.stats`
 
-| generic type                                   | `scipy-stubs` | `scipy` |                                                                                          |
-| ---------------------------------------------- | ------------- | ------- | ---------------------------------------------------------------------------------------- |
-| `Covariance[T: real]`                          | `>=1.14.0.0`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Covariance.html) |
-| `Uniform[S: (int, ...), T: floating]`          | `>=1.15.0.0`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Uniform.html)    |
-| `Normal[S: (int, ...), T: floating]`           | `>=1.15.0.0`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Normal.html)     |
-| `Binomial[S: (int, ...), T: floating]`         | `>=1.16.0.0`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Binomial.html)   |
-| `Mixture[T: floating]`                         | `>=1.15.0.0`  | :x:     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Mixture.html)    |
-| `rv_frozen[D: rv_generic, T: scalar or array]` | `>=1.14.0.0`  | :x:     |                                                                                          |
-| `multi_rv_frozen[D: rv_generic]`               | `>=1.14.0.0`  | :x:     |                                                                                          |
+| generic type                                   | `scipy-stubs` | `scipy`  |                                                                                          |
+| ---------------------------------------------- | ------------- | -------- | ---------------------------------------------------------------------------------------- |
+| `Covariance[T: real]`                          | `>=1.14.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Covariance.html) |
+| `Uniform[S: (int, ...), T: floating]`          | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Uniform.html)    |
+| `Normal[S: (int, ...), T: floating]`           | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Normal.html)     |
+| `Binomial[S: (int, ...), T: floating]`         | `>=1.16.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Binomial.html)   |
+| `Mixture[T: floating]`                         | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Mixture.html)    |
+| `rv_frozen[D: rv_generic, T: scalar or array]` | `>=1.14.0.0`  | `>=1.17` |                                                                                          |
+| `multi_rv_frozen[D: rv_generic]`               | `>=1.14.0.0`  | `>=1.17` |                                                                                          |
 
 ## Contributing
 
