@@ -24,7 +24,23 @@ pip install scipy-stubs
 
 That's it! Your IDE and type checker will now provide precise type information for SciPy functions:
 
-![scipy-stubs demo](https://github.com/user-attachments/assets/2cf05d30-9a4c-41f9-8bc2-bbf12998ff26)
+## Examples
+
+Prevent mistakes with precise type hints:
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://gist.github.com/user-attachments/assets/43902002-f06c-4121-aab8-7c8a52faee7a.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://gist.github.com/user-attachments/assets/be9c07de-8e20-4802-b851-605887a1d912.png">
+  <img alt="bug prevention demo" src="https://gist.github.com/user-attachments/assets/be9c07de-8e20-4802-b851-605887a1d912.png">
+</picture>
+
+Accurate annotations for dtypes and shapes:
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://gist.github.com/user-attachments/assets/6adc57c7-8d13-4832-87dd-df786516e3f7.png">
+  <source media="(prefers-color-scheme: light)" srcset="https://gist.github.com/user-attachments/assets/0112e9ad-8487-40b2-8a4e-b43b781eac78.png">
+  <img alt="precise type inference demo" src="https://gist.github.com/user-attachments/assets/0112e9ad-8487-40b2-8a4e-b43b781eac78.png">
+</picture>
 
 ## Why use scipy-stubs?
 
