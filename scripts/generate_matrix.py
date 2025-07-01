@@ -277,8 +277,8 @@ def main() -> None:
             })  # fmt: skip
 
     json.dump({"include": matrix_entries}, indent=INDENT, fp=sys.stdout)
-    sys.stderr.flush()
-    sys.stdout.flush()
+    _ = sys.stderr.flush()
+    _ = sys.stdout.flush()
 
 
 if __name__ == "__main__":
