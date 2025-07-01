@@ -22,7 +22,7 @@ def logsumexp(
 @overload
 def logsumexp(
     a: onp.ToFloatND,
-    axis: AnyShape,
+    axis: AnyShape | None = None,
     b: onp.ToFloat | onp.ToFloatND | None = None,
     keepdims: bool = False,
     return_sign: Falsy = False,
@@ -30,7 +30,7 @@ def logsumexp(
 @overload
 def logsumexp(
     a: onp.ToComplexND,
-    axis: AnyShape,
+    axis: AnyShape | None = None,
     b: onp.ToFloat | onp.ToFloatND | None = None,
     keepdims: bool = False,
     return_sign: Falsy = False,
@@ -45,12 +45,17 @@ def logsumexp(
 ) -> tuple[np.float64 | np.complex128, bool | np.bool_]: ...
 @overload
 def logsumexp(
-    a: onp.ToFloatND, axis: AnyShape, b: onp.ToFloat | onp.ToFloatND | None = None, keepdims: bool = False, *, return_sign: Truthy
+    a: onp.ToFloatND,
+    axis: AnyShape | None = None,
+    b: onp.ToFloat | onp.ToFloatND | None = None,
+    keepdims: bool = False,
+    *,
+    return_sign: Truthy,
 ) -> tuple[np.float64, bool | np.bool_] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.bool_]]: ...
 @overload
 def logsumexp(
     a: onp.ToComplexND,
-    axis: AnyShape,
+    axis: AnyShape | None = None,
     b: onp.ToFloat | onp.ToFloatND | None = None,
     keepdims: bool = False,
     *,
