@@ -276,12 +276,22 @@ def _norm_isf(q: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
 def _beta_mle_a(a: onp.ToFloat, b: onp.ToFloat, n: int, s1: onp.ToFloat) -> np.float64: ...  # undocumented
 def _beta_mle_ab(theta: onp.Array1D[np.float64], n: int, s1: onp.ToFloat, s2: onp.ToFloat) -> np.float64: ...  # undocumented
 def _digammainv(y: onp.ToFloat) -> np.float64: ...  # undocumented
-def _average_with_log_weights(x: onp.ToFloatND, logweights: onp.ToFloatND) -> np.float64: ...  # undocumented
-def _lognorm_logpdf(x: onp.ToFloatND, s: onp.ToFloat) -> onp.ArrayND[np.float64]: ...  # undocumented
-def _ncx2_log_pdf(x: onp.ToFloatND, df: onp.ToFloat, nc: onp.ToFloat) -> onp.ArrayND[np.float64]: ...  # undocumented
-def _log_sum(log_p: onp.ToFloatND, log_q: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
-def _log_diff(log_p: onp.ToFloatND, log_q: onp.ToFloatND) -> onp.ArrayND[np.complex128]: ...  # undocumented
-def _log_gauss_mass(a: onp.ToFloatND, b: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...  # undocumented
+def _average_with_log_weights(
+    x: onp.ToFloat | onp.ToFloatND, logweights: onp.ToFloat | onp.ToFloatND
+) -> np.float64: ...  # undocumented
+def _lognorm_logpdf(x: onp.ToFloat | onp.ToFloatND, s: onp.ToFloat) -> onp.ArrayND[np.float64]: ...  # undocumented
+def _ncx2_log_pdf(
+    x: onp.ToFloat | onp.ToFloatND, df: onp.ToFloat, nc: onp.ToFloat
+) -> onp.ArrayND[np.float64]: ...  # undocumented
+def _log_sum(
+    log_p: onp.ToFloat | onp.ToFloatND, log_q: onp.ToFloat | onp.ToFloatND
+) -> np.float64 | onp.ArrayND[np.float64]: ...  # undocumented
+def _log_diff(
+    log_p: onp.ToFloat | onp.ToFloatND, log_q: onp.ToFloat | onp.ToFloatND
+) -> np.complex128 | onp.ArrayND[np.complex128]: ...  # undocumented
+def _log_gauss_mass(
+    a: onp.ToFloat | onp.ToFloatND, b: onp.ToFloat | onp.ToFloatND
+) -> onp.ArrayND[np.float64]: ...  # undocumented
 def _argus_phi(chi: onp.ToFloat) -> np.float64: ...  # undocumented
 
 #
