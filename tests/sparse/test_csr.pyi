@@ -25,6 +25,14 @@ csr_matrix(1)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentTy
 
 assert_type(csr_array((2,)), csr_array[np.float64, tuple[int]])
 assert_type(csr_array((2, 3)), csr_array[np.float64, tuple[int, int]])
+assert_type(csr_array((2,), dtype=np.bool_), csr_array[np.bool_, tuple[int]])
+assert_type(csr_array((2, 3), dtype=np.bool_), csr_array[np.bool_, tuple[int, int]])
+assert_type(csr_array((2,), dtype=np.int64), csr_array[np.int64, tuple[int]])
+assert_type(csr_array((2, 3), dtype=np.int64), csr_array[np.int64, tuple[int, int]])
+assert_type(csr_array((2,), dtype=np.float64), csr_array[np.float64, tuple[int]])
+assert_type(csr_array((2, 3), dtype=np.float64), csr_array[np.float64, tuple[int, int]])
+assert_type(csr_array((2,), dtype=np.complex128), csr_array[np.complex128, tuple[int]])
+assert_type(csr_array((2, 3), dtype=np.complex128), csr_array[np.complex128, tuple[int, int]])
 assert_type(csr_matrix((2, 3)), csr_matrix[np.float64])
 
 assert_type(csr_array(seq_bool), csr_array[np.bool_, tuple[int]])
