@@ -173,3 +173,6 @@ def norm(
     keepdims: AnyBool = False,
     check_finite: AnyBool = True,
 ) -> np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...
+
+#
+def _datacopied(arr: onp.ArrayND, original: onp.CanArrayND) -> bool: ...  # undocumented
