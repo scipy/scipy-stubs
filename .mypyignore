@@ -1,6 +1,9 @@
 # scipy-stubs internal helper types (typecheck-only)
 scipy(\.\w+)?\._typing
 
+# https://github.com/python/mypy/issues/17251
+scipy\.sparse\.linalg(\._?interface|\.matfuncs)?\.LinearOperator\.__init__
+
 # scipy tests
 scipy\.conftest
 scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
