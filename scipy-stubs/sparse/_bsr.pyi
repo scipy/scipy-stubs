@@ -98,18 +98,18 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: None
+    @overload  # 2-d shape-like, dtype: type[float] | None
     def __init__(
         self: bsr_array[np.float64],
         /,
         arg1: ToShape2D,
         shape: ToShape2D | None = None,
-        dtype: None = None,
+        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[bool]
+    @overload  # 2-d shape-like, dtype: type[bool] | None
     def __init__(
         self: bsr_array[np.bool_],
         /,
@@ -127,17 +127,6 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         arg1: ToShape2D,
         shape: ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[float]
-    def __init__(
-        self: bsr_array[np.float64],
-        /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None = None,
-        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
