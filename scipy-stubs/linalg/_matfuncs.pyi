@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
 from typing_extensions import deprecated
 
 import numpy as np
@@ -28,6 +28,9 @@ __all__ = [
 ]
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
+_ComplexT = TypeVar("_ComplexT", bound=npc.complexfloating)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+
 _FuncND: TypeAlias = Callable[[onp.Array[Any, _InexactT]], onp.ToComplexND]  # return type is unsafely cast to the input type
 
 _ToPosInt: TypeAlias = npc.unsignedinteger | Literal[0, 1, 2, 4, 5, 6, 7, 8]
@@ -41,6 +44,23 @@ _InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
 ###
 
+eps: Final[np.float64] = ...  # undocumented
+feps: Final[np.float32] = ...  # undocumented
+_array_precision: Final[dict[Literal["i", "l", "f", "d", "F", "D"], Literal[0, 1]]] = ...  # undocumented
+
+def _asarray_square(A: onp.ToArray2D[_InexactT]) -> onp.Array2D[_InexactT]: ...  # undocumented
+
+#
+@overload
+def _maybe_real(
+    A: onp.ArrayND[npc.inexact], B: onp.ArrayND[npc.inexact64, _ShapeT], tol: float | None = None
+) -> onp.ArrayND[np.float64, _ShapeT]: ...  # undocumented
+@overload
+def _maybe_real(
+    A: onp.ArrayND[npc.inexact], B: onp.ArrayND[npc.inexact32, _ShapeT], tol: float | None = None
+) -> onp.ArrayND[np.float32, _ShapeT]: ...  # undocumented
+
+#
 @overload  # +integer, +unsignedinteger
 def fractional_matrix_power(A: onp.ToIntND, t: _ToPosInt) -> _IntND: ...
 @overload  # ~float64, +integer
@@ -117,6 +137,9 @@ def expm(A: onp.ToJustComplex128_ND) -> _Complex128ND: ...
 def expm(A: onp.ToJustComplexND) -> _ComplexND: ...
 @overload  # +complexfloating
 def expm(A: onp.ToComplexND) -> _InexactND: ...
+
+#
+def _exp_sinch(x: onp.ArrayND[_ComplexT, _ShapeT]) -> onp.ArrayND[_ComplexT, _ShapeT]: ...  # undocumented
 
 #
 @overload  # +integer | ~float64
