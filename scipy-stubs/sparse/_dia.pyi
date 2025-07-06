@@ -101,6 +101,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         shape: ToShape2D | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: type[bool] (keyword)
@@ -122,6 +123,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         shape: ToShape2D | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: type[int] (keyword)
@@ -143,6 +145,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         shape: ToShape2D | None,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: type[complex] (keyword)

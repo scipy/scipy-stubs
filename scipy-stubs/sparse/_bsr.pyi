@@ -117,6 +117,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         shape: ToShape2D | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: type[bool] (keyword)
@@ -138,6 +139,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         shape: ToShape2D | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: type[int] (keyword)
@@ -159,6 +161,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         shape: ToShape2D | None,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: type[complex] (keyword)

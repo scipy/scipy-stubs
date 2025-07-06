@@ -190,6 +190,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         shape: ToShape1D | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: type[bool] (keyword)
@@ -211,6 +212,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         shape: ToShape2D | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: type[bool] (keyword)
@@ -232,6 +234,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         shape: ToShapeMin3D | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # >2-d shape-like, dtype: type[bool] (keyword)
@@ -253,6 +256,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         shape: ToShape1D | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: type[int] (keyword)
@@ -274,6 +278,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         shape: ToShape2D | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: type[int] (keyword)
@@ -295,6 +300,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         shape: ToShapeMin3D | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # >2-d shape-like, dtype: type[int] (keyword)
@@ -316,6 +322,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         shape: ToShape1D | None,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: type[complex] (keyword)
@@ -337,6 +344,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         shape: ToShape2D | None,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: type[complex] (keyword)
@@ -358,6 +366,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         shape: ToShapeMin3D | None,
         dtype: onp.AnyComplex64DType,
         copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # >2-d shape-like, dtype: type[complex] (keyword)
