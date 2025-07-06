@@ -1,6 +1,6 @@
 from collections.abc import Callable
-from types import CapsuleType
-from typing import Any, Final, ReadOnly, SupportsFloat, TypeIs, TypedDict, type_check_only
+from typing import Any, Final, SupportsFloat, TypedDict, type_check_only
+from typing_extensions import CapsuleType, ReadOnly, TypeIs
 
 @type_check_only
 class _CApiDict(TypedDict):
