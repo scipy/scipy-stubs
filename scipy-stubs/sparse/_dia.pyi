@@ -93,37 +93,67 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[bool]
+    @overload  # 2-d shape-like, dtype: type[bool] (positional)
+    def __init__(
+        self: dia_array[np.bool_],
+        /,
+        arg1: ToShape2D,
+        shape: ToShape2D | None,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: type[bool] (keyword)
     def __init__(
         self: dia_array[np.bool_],
         /,
         arg1: ToShape2D,
         shape: ToShape2D | None = None,
-        dtype: onp.AnyBoolDType | None = None,
-        copy: bool = False,
         *,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[int]
+    @overload  # 2-d shape-like, dtype: type[int] (positional)
+    def __init__(
+        self: dia_array[np.int64],
+        /,
+        arg1: ToShape2D,
+        shape: ToShape2D | None,
+        dtype: onp.AnyIntDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: type[int] (keyword)
     def __init__(
         self: dia_array[np.int64],
         /,
         arg1: ToShape2D,
         shape: ToShape2D | None = None,
-        dtype: onp.AnyIntDType | None = None,
-        copy: bool = False,
         *,
+        dtype: onp.AnyIntDType,
+        copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[complex]
+    @overload  # 2-d shape-like, dtype: type[complex] (positional)
+    def __init__(
+        self: dia_array[np.complex128],
+        /,
+        arg1: ToShape2D,
+        shape: ToShape2D | None,
+        dtype: onp.AnyComplex128DType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: type[complex] (keyword)
     def __init__(
         self: dia_array[np.complex128],
         /,
         arg1: ToShape2D,
         shape: ToShape2D | None = None,
-        dtype: onp.AnyComplex128DType | None = None,
-        copy: bool = False,
         *,
+        dtype: onp.AnyComplex128DType,
+        copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: type[bool] | None
