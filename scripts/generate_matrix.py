@@ -19,7 +19,7 @@ MIN_VERSIONS: Final = (
     (Version("3.11"), Version("1.25")),
     (Version("3.12"), Version("1.26")),
     (Version("3.13"), Version("2.1")),
-)  # fmt: skip
+)
 
 
 class UVPythonVersionParts(TypedDict):
@@ -81,7 +81,9 @@ def get_package_minimum_python_version(package: str) -> Version:
     """
     raw_version = importlib.metadata.metadata(package)["Requires-Python"]
     if "<" in raw_version:
-        raise NotImplementedError("Version specifier with upper bound not yet supported!")
+        raise NotImplementedError(
+            "Version specifier with upper bound not yet supported!"
+        )
 
     return parse(raw_version.replace(">=", "").replace("~=", ""))
 
@@ -98,7 +100,8 @@ def get_dependency_minimum_version(package: str, dependency: str) -> Version:
         Version: The minimum required version of the dependency.
 
     Raises:
-        ValueError: If the package does not list any requirements or the dependency is not found.
+        ValueError:
+            The package does not list any requirements or the dependency is not found.
 
     """
     requirements = importlib.metadata.requires(package)
@@ -107,25 +110,40 @@ def get_dependency_minimum_version(package: str, dependency: str) -> Version:
 
     try:
         # Find the first requirement that matches the dependency and is not an extra
-        dependency_req = next(req for req in requirements if req.startswith(dependency) and " extra " not in req)
+        dependency_req = next(
+            req
+            for req in requirements
+            if req.startswith(dependency) and " extra " not in req
+        )
     except StopIteration as e:
-        raise ValueError(f"Dependency {dependency} not found in requirements for {package}") from e
+        raise ValueError(
+            f"Dependency {dependency} not found in requirements for {package}"
+        ) from e
 
         # Extract the version specifier (e.g., ">=1.21.0")
-    version_specifier = next((ver for ver in dependency_req.split(",") if ">" in ver), None)
+    version_specifier = next(
+        (ver for ver in dependency_req.split(",") if ">" in ver), None
+    )
     if version_specifier is None:
-        raise ValueError(f"No version specifier found for dependency {dependency} in {package}")
+        raise ValueError(
+            f"No version specifier found for dependency {dependency} in {package}"
+        )
 
     # Remove dependency name and comparison operator to get the version
-    version_str = version_specifier.replace(dependency, "").replace(">=", "").replace(">", "")
+    version_str = (
+        version_specifier.replace(dependency, "").replace(">=", "").replace(">", "")
+    )
     return parse(version_str)
 
 
 def get_available_python_versions(
-    min_version: Version | None = None, max_version: Version | None = None, pre_releases: bool = False
+    min_version: Version | None = None,
+    max_version: Version | None = None,
+    pre_releases: bool = False,
 ) -> list[Version]:
     """
-    Get a list of available Python versions from GitHub Actions' Python Versions Manifest.
+    Get a list of available Python versions from GitHub Actions' Python Versions
+    Manifest.
 
     Args:
         min_version (Version | None): The minimum Python version to include in the list.
@@ -133,7 +151,8 @@ def get_available_python_versions(
         pre_releases (bool): Whether to include pre-release versions.
 
     Returns:
-        list[Version]: A list of available Python versions satisfying the specified criteria.
+        list[Version]:
+            A list of available Python versions satisfying the specified criteria.
 
     Raises:
         urllib.error.URLError: If fetching data fails.
@@ -189,10 +208,12 @@ def fetch_json(url: str) -> Any:
         sys.exit(1)
 
 
-def get_available_package_versions(package_name: str, min_version: Version, pre_releases: bool = False) -> dict[Version, str]:
+def get_available_package_versions(
+    package_name: str, min_version: Version, pre_releases: bool = False
+) -> dict[Version, str]:
     """
-    Get available package versions from PyPI starting from the specified minimum version,
-    but only include the latest micro version within each minor version series,
+    Get available package versions from PyPI starting from the specified minimum
+    version, but only include the latest micro version within each minor version series,
     along with their 'requires_python' specifiers.
 
     Args:
@@ -200,8 +221,9 @@ def get_available_package_versions(package_name: str, min_version: Version, pre_
         min_version (Version): The minimum version to include.
 
     Returns:
-        dict[Version, str]: A mapping from the latest package versions in each minor version
-                            series to their 'requires_python' specifier.
+        dict[Version, str]:
+            A mapping from the latest package versions in each minor version series to
+            their 'requires_python' specifier.
 
     Raises:
         RuntimeError: If no 'requires_python' is found for a package version.
@@ -268,7 +290,10 @@ def main() -> None:
                 continue
 
             # Skip incompatible combinations
-            if any(py_version >= py_min and np_version < np_min for py_min, np_min in MIN_VERSIONS):
+            if any(
+                py_version >= py_min and np_version < np_min
+                for py_min, np_min in MIN_VERSIONS
+            ):
                 continue
 
             matrix_entries.append({
