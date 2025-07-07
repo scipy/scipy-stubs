@@ -2,8 +2,8 @@
 
 from _typeshed import Incomplete
 from collections.abc import Callable, Mapping
-from types import CapsuleType
 from typing import overload
+from typing_extensions import CapsuleType
 
 import numpy as np
 import optype.numpy as onp
