@@ -1,8 +1,8 @@
 # defined in scipy/io/matlab/_mio5_utils.pyx
 
 from collections.abc import Iterable
-from types import CapsuleType
 from typing import Any, ClassVar, Final, Literal, Never, TypeAlias
+from typing_extensions import CapsuleType
 
 import numpy as np
 import optype.numpy as onp

@@ -1,5 +1,5 @@
-from types import CapsuleType
 from typing import Any, ClassVar, Final, Literal, Protocol, type_check_only
+from typing_extensions import CapsuleType
 
 @type_check_only
 class _FileLike(Protocol):

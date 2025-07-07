@@ -1,6 +1,6 @@
 import datetime as dt
-from types import CapsuleType
 from typing import Any, Final, Never, TypeVar, overload
+from typing_extensions import CapsuleType
 
 import numpy as np
 import optype.numpy as onp
