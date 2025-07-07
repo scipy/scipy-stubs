@@ -11,10 +11,19 @@ from typing import Any
 
 import scipy
 
-BUNDLED = "scipy._lib.array_api_compat", "scipy._lib.array_api_extra", "scipy.fft._pocketfft"
+BUNDLED = (
+    "scipy._lib.array_api_compat",
+    "scipy._lib.array_api_extra",
+    "scipy.fft._pocketfft",
+    "scipy.optimize._highspy",
+    "scipy.sparse.linalg._eigen.arpack",
+    "scipy.sparse.linalg._propack",
+)
 
 
-def modules(mod: types.ModuleType, _seen: set[types.ModuleType] | None = None) -> list[str]:
+def modules(
+    mod: types.ModuleType, _seen: set[types.ModuleType] | None = None
+) -> list[str]:
     seen = _seen or set()
     out: list[str] = []
 
@@ -28,7 +37,11 @@ def modules(mod: types.ModuleType, _seen: set[types.ModuleType] | None = None) -
     mod_vars |= vars(mod)
 
     for k, v in mod_vars.items():
-        if isinstance(v, types.ModuleType) and v not in seen and v.__name__.startswith("scipy"):
+        if (
+            isinstance(v, types.ModuleType)
+            and v not in seen
+            and v.__name__.startswith("scipy")
+        ):
             seen.add(v)
             fname = v.__spec__.name if v.__spec__ else k
             if "." in fname:
@@ -51,7 +64,9 @@ def is_stubbed(mod: str) -> bool:
 
     *subpackages, submod = submods
     subpackage_path = stubs_path.joinpath(*subpackages)
-    return (subpackage_path / f"{submod}.pyi").is_file() or (subpackage_path / submod / "__init__.pyi").is_file()
+    return (subpackage_path / f"{submod}.pyi").is_file() or (
+        subpackage_path / submod / "__init__.pyi"
+    ).is_file()
 
 
 if __name__ == "__main__":
