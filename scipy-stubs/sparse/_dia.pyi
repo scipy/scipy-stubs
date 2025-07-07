@@ -82,7 +82,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[float] | None
+    @overload  # 2-d shape-like, dtype: float64-like | None
     def __init__(
         self: dia_array[np.float64],
         /,
@@ -93,7 +93,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[bool] (positional)
+    @overload  # 2-d shape-like, dtype: bool-like (positional)
     def __init__(
         self: dia_array[np.bool_],
         /,
@@ -104,7 +104,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[bool] (keyword)
+    @overload  # 2-d shape-like, dtype: bool-like (keyword)
     def __init__(
         self: dia_array[np.bool_],
         /,
@@ -115,7 +115,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[int] (positional)
+    @overload  # 2-d shape-like, dtype: int-like (positional)
     def __init__(
         self: dia_array[np.int64],
         /,
@@ -126,7 +126,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[int] (keyword)
+    @overload  # 2-d shape-like, dtype: int-like (keyword)
     def __init__(
         self: dia_array[np.int64],
         /,
@@ -137,7 +137,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[complex] (positional)
+    @overload  # 2-d shape-like, dtype: complex128-like (positional)
     def __init__(
         self: dia_array[np.complex128],
         /,
@@ -148,7 +148,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[complex] (keyword)
+    @overload  # 2-d shape-like, dtype: complex128-like (keyword)
     def __init__(
         self: dia_array[np.complex128],
         /,
@@ -159,7 +159,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
+    @overload  # matrix-like builtins.bool, dtype: bool-like | None
     def __init__(
         self: dia_array[np.bool_],
         /,
@@ -170,7 +170,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    @overload  # matrix-like builtins.int, dtype: int-like | None
     def __init__(
         self: dia_array[np.int_],
         /,
@@ -181,7 +181,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    @overload  # matrix-like builtins.float, dtype: float64-like | None
     def __init__(
         self: dia_array[np.float64],
         /,
@@ -192,7 +192,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    @overload  # matrix-like builtins.complex, dtype: complex128-like | None
     def __init__(
         self: dia_array[np.complex128],
         /,
@@ -265,7 +265,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
+    @overload  # matrix-like builtins.bool, dtype: bool-like | None
     def __init__(
         self: dia_matrix[np.bool_],
         /,
@@ -276,7 +276,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    @overload  # matrix-like builtins.int, dtype: int-like | None
     def __init__(
         self: dia_matrix[np.int_],
         /,
@@ -287,7 +287,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    @overload  # matrix-like builtins.float, dtype: float64-like | None
     def __init__(
         self: dia_matrix[np.float64],
         /,
@@ -298,7 +298,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    @overload  # matrix-like builtins.complex, dtype: complex128-like | None
     def __init__(
         self: dia_matrix[np.complex128],
         /,

@@ -212,7 +212,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: type[float] | None
+    @overload  # 1-d shape-like, dtype: float64-like | None
     def __init__(
         self: dok_array[np.float64, _1D],
         /,
@@ -223,7 +223,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[float] | None
+    @overload  # 2-d shape-like, dtype: float64-like | None
     def __init__(
         self: dok_array[np.float64, _2D],
         /,
@@ -234,7 +234,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: type[bool] (positional)
+    @overload  # 1-d shape-like, dtype: bool-like (positional)
     def __init__(
         self: dok_array[np.bool_, _1D],
         /,
@@ -245,7 +245,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: type[bool] (keyword)
+    @overload  # 1-d shape-like, dtype: bool-like (keyword)
     def __init__(
         self: dok_array[np.bool_, _1D],
         /,
@@ -256,7 +256,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[bool] (positional)
+    @overload  # 2-d shape-like, dtype: bool-like (positional)
     def __init__(
         self: dok_array[np.bool_, _2D],
         /,
@@ -267,7 +267,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[bool] (keyword)
+    @overload  # 2-d shape-like, dtype: bool-like (keyword)
     def __init__(
         self: dok_array[np.bool_, _2D],
         /,
@@ -278,7 +278,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: type[int] (positional)
+    @overload  # 1-d shape-like, dtype: int-like (positional)
     def __init__(
         self: dok_array[np.int64, _1D],
         /,
@@ -289,7 +289,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: type[int] (keyword)
+    @overload  # 1-d shape-like, dtype: int-like (keyword)
     def __init__(
         self: dok_array[np.int64, _1D],
         /,
@@ -300,7 +300,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[int] (positional)
+    @overload  # 2-d shape-like, dtype: int-like (positional)
     def __init__(
         self: dok_array[np.int64, _2D],
         /,
@@ -311,7 +311,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[int] (keyword)
+    @overload  # 2-d shape-like, dtype: int-like (keyword)
     def __init__(
         self: dok_array[np.int64, _2D],
         /,
@@ -322,7 +322,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: type[complex] (positional)
+    @overload  # 1-d shape-like, dtype: complex128-like (positional)
     def __init__(
         self: dok_array[np.complex128, _1D],
         /,
@@ -333,7 +333,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: type[complex] (keyword)
+    @overload  # 1-d shape-like, dtype: complex128-like (keyword)
     def __init__(
         self: dok_array[np.complex128, _1D],
         /,
@@ -344,7 +344,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[complex] (positional)
+    @overload  # 2-d shape-like, dtype: complex128-like (positional)
     def __init__(
         self: dok_array[np.complex128, _2D],
         /,
@@ -355,7 +355,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: type[complex] (keyword)
+    @overload  # 2-d shape-like, dtype: complex128-like (keyword)
     def __init__(
         self: dok_array[np.complex128, _2D],
         /,
@@ -366,7 +366,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like bool, dtype: type[bool] | None
+    @overload  # 1-d array-like bool, dtype: bool-like | None
     def __init__(
         self: dok_array[np.bool_, _1D],
         /,
@@ -377,7 +377,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like bool, dtype: type[bool] | None
+    @overload  # 2-d array-like bool, dtype: bool-like | None
     def __init__(
         self: dok_array[np.bool_, _2D],
         /,
@@ -388,7 +388,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like ~int, dtype: type[int] | None
+    @overload  # 1-d array-like ~int, dtype: int-like | None
     def __init__(
         self: dok_array[np.int64, _1D],
         /,
@@ -399,7 +399,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~int, dtype: type[int] | None
+    @overload  # 2-d array-like ~int, dtype: int-like | None
     def __init__(
         self: dok_array[np.int64, _2D],
         /,
@@ -410,7 +410,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like ~float, dtype: type[float] | None
+    @overload  # 1-d array-like ~float, dtype: float64-like | None
     def __init__(
         self: dok_array[np.float64, _1D],
         /,
@@ -421,7 +421,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~float, dtype: type[float] | None
+    @overload  # 2-d array-like ~float, dtype: float64-like | None
     def __init__(
         self: dok_array[np.float64, _2D],
         /,
@@ -432,7 +432,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like ~complex, dtype: type[complex] | None
+    @overload  # 1-d array-like ~complex, dtype: complex128-like | None
     def __init__(
         self: dok_array[np.complex128, _1D],
         /,
@@ -443,7 +443,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~complex, dtype: type[complex] | None
+    @overload  # 2-d array-like ~complex, dtype: complex128-like | None
     def __init__(
         self: dok_array[np.complex128, _2D],
         /,
@@ -623,7 +623,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.bool, dtype: type[bool] | None
+    @overload  # matrix-like builtins.bool, dtype: bool-like | None
     def __init__(
         self: dok_matrix[np.bool_],
         /,
@@ -634,7 +634,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.int, dtype: type[int] | None
+    @overload  # matrix-like builtins.int, dtype: int-like | None
     def __init__(
         self: dok_matrix[np.int64],
         /,
@@ -645,7 +645,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.float, dtype: type[float] | None
+    @overload  # matrix-like builtins.float, dtype: float64-like | None
     def __init__(
         self: dok_matrix[np.float64],
         /,
@@ -656,7 +656,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like builtins.complex, dtype: type[complex] | None
+    @overload  # matrix-like builtins.complex, dtype: complex128-like | None
     def __init__(
         self: dok_matrix[np.complex128],
         /,
