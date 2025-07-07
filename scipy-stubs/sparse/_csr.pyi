@@ -120,7 +120,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: None
+    @overload  # 1-d shape-like, dtype: float64-like | None
     def __init__(
         self: csr_array[np.float64, tuple[int]],
         /,
@@ -131,7 +131,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: None
+    @overload  # 2-d shape-like, dtype: float64-like | None
     def __init__(
         self: csr_array[np.float64, tuple[int, int]],
         /,
@@ -142,7 +142,139 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like bool, dtype: type[bool] | None
+    @overload  # 1-d shape-like, dtype: bool-like (positional)
+    def __init__(
+        self: csr_array[np.bool_, tuple[int]],
+        /,
+        arg1: ToShape1D,
+        shape: ToShape1D | None,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 1-d shape-like, dtype: bool-like (keyword)
+    def __init__(
+        self: csr_array[np.bool_, tuple[int]],
+        /,
+        arg1: ToShape1D,
+        shape: ToShape1D | None = None,
+        *,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: bool-like (positional)
+    def __init__(
+        self: csr_array[np.bool_, tuple[int, int]],
+        /,
+        arg1: ToShape2D,
+        shape: ToShape2D | None,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: bool-like (keyword)
+    def __init__(
+        self: csr_array[np.bool_, tuple[int, int]],
+        /,
+        arg1: ToShape2D,
+        shape: ToShape2D | None = None,
+        *,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 1-d shape-like, dtype: int-like (positional)
+    def __init__(
+        self: csr_array[np.int64, tuple[int]],
+        /,
+        arg1: ToShape1D,
+        shape: ToShape1D | None,
+        dtype: onp.AnyIntDType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 1-d shape-like, dtype: int-like (keyword)
+    def __init__(
+        self: csr_array[np.int64, tuple[int]],
+        /,
+        arg1: ToShape1D,
+        shape: ToShape1D | None = None,
+        *,
+        dtype: onp.AnyIntDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: int-like (positional)
+    def __init__(
+        self: csr_array[np.int64, tuple[int, int]],
+        /,
+        arg1: ToShape2D,
+        shape: ToShape2D | None,
+        dtype: onp.AnyIntDType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: int-like (keyword)
+    def __init__(
+        self: csr_array[np.int64, tuple[int, int]],
+        /,
+        arg1: ToShape2D,
+        shape: ToShape2D | None = None,
+        *,
+        dtype: onp.AnyIntDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 1-d shape-like, dtype: complex128-like (positional)
+    def __init__(
+        self: csr_array[np.complex128, tuple[int]],
+        /,
+        arg1: ToShape1D,
+        shape: ToShape1D | None,
+        dtype: onp.AnyComplex128DType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 1-d shape-like, dtype: complex128-like (keyword)
+    def __init__(
+        self: csr_array[np.complex128, tuple[int]],
+        /,
+        arg1: ToShape1D,
+        shape: ToShape1D | None = None,
+        *,
+        dtype: onp.AnyComplex128DType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: complex128-like (positional)
+    def __init__(
+        self: csr_array[np.complex128, tuple[int, int]],
+        /,
+        arg1: ToShape2D,
+        shape: ToShape2D | None,
+        dtype: onp.AnyComplex128DType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: complex128-like (keyword)
+    def __init__(
+        self: csr_array[np.complex128, tuple[int, int]],
+        /,
+        arg1: ToShape2D,
+        shape: ToShape2D | None = None,
+        *,
+        dtype: onp.AnyComplex128DType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 1-d array-like bool, dtype: bool-like | None
     def __init__(
         self: csr_array[np.bool_, tuple[int]],
         /,
@@ -153,7 +285,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like bool, dtype: type[bool] | None
+    @overload  # 2-d array-like bool, dtype: bool-like | None
     def __init__(
         self: csr_array[np.bool_, tuple[int, int]],
         /,
@@ -164,7 +296,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like ~int, dtype: type[int] | None
+    @overload  # 1-d array-like ~int, dtype: int-like | None
     def __init__(
         self: csr_array[np.int64, tuple[int]],
         /,
@@ -175,7 +307,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~int, dtype: type[int] | None
+    @overload  # 2-d array-like ~int, dtype: int-like | None
     def __init__(
         self: csr_array[np.int64, tuple[int, int]],
         /,
@@ -186,7 +318,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like ~float, dtype: type[float] | None
+    @overload  # 1-d array-like ~float, dtype: float64-like | None
     def __init__(
         self: csr_array[np.float64, tuple[int]],
         /,
@@ -197,7 +329,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~float, dtype: type[float] | None
+    @overload  # 2-d array-like ~float, dtype: float64-like | None
     def __init__(
         self: csr_array[np.float64, tuple[int, int]],
         /,
@@ -208,7 +340,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like ~complex, dtype: type[complex] | None
+    @overload  # 1-d array-like ~complex, dtype: complex128-like | None
     def __init__(
         self: csr_array[np.complex128, tuple[int]],
         /,
@@ -219,7 +351,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~complex, dtype: type[complex] | None
+    @overload  # 2-d array-like ~complex, dtype: complex128-like | None
     def __init__(
         self: csr_array[np.complex128, tuple[int, int]],
         /,
@@ -336,7 +468,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like bool, dtype: type[bool] | None
+    @overload  # 2-d array-like bool, dtype: bool-like | None
     def __init__(
         self: csr_matrix[np.bool_],
         /,
@@ -347,7 +479,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~int, dtype: type[int] | None
+    @overload  # 2-d array-like ~int, dtype: int-like | None
     def __init__(
         self: csr_matrix[np.int64],
         /,
@@ -358,7 +490,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~float, dtype: type[float] | None
+    @overload  # 2-d array-like ~float, dtype: float64-like | None
     def __init__(
         self: csr_matrix[np.float64],
         /,
@@ -369,7 +501,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~complex, dtype: type[complex] | None
+    @overload  # 2-d array-like ~complex, dtype: complex128-like | None
     def __init__(
         self: csr_matrix[np.complex128],
         /,
