@@ -15,6 +15,9 @@ BUNDLED = (
     "scipy._lib.array_api_compat",
     "scipy._lib.array_api_extra",
     "scipy.fft._pocketfft",
+    "scipy.optimize._highspy",
+    "scipy.sparse.linalg._eigen.arpack",
+    "scipy.sparse.linalg._propack",
 )
 
 
