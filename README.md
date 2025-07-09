@@ -276,6 +276,28 @@ We welcome contributions from the community! There are many ways to help improve
 
 See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTRIBUTING.md) for detailed instructions.
 
+## Who's using `scipy-stubs`?
+
+`scipy-stubs` is used by a number of major open-source projects, including:
+
+- Apache Spark ([PySpark](https://github.com/apache/spark))
+- [Artisan](https://github.com/artisan-roaster-scope/artisan)
+- [Arviz](https://github.com/arviz-devs/arviz)
+- [asammdf](https://github.com/danielhrisca/asammdf)
+- [Colour](https://github.com/colour-science/colour)
+- [CSAPS](https://github.com/espdev/csaps)
+- [Efax](https://github.com/NeilGirdhar/efax)
+- [Fast GraphRAG](https://github.com/circlemind-ai/fast-graphrag)
+- [Freqtrade](https://github.com/freqtrade/freqtrade)
+- [librosa](https://github.com/librosa/librosa)
+- [Lmo](https://github.com/jorenham/Lmo)
+- [MouseTracks](https://github.com/huntfx/MouseTracks)
+- [mypy_primer](https://github.com/hauntsaninja/mypy_primer)
+- [Optuna](https://github.com/optuna/optuna)
+- [TQEC](https://github.com/tqec/tqec)
+- [Ultralytics](https://github.com/ultralytics/ultralytics)
+- [Voctomix](https://github.com/voc/voctomix)
+
 ## License
 
 `scipy-stubs` is licensed under the [BSD 3-Clause License](https://github.com/scipy/scipy-stubs/blob/master/LICENSE),
