@@ -4,12 +4,13 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 import optype.typing as opt
 
 from scipy._lib._util import _RichResult
 
-_FloatT = TypeVar("_FloatT", bound=np.floating[Any], default=np.float64)
-_FloatT_co = TypeVar("_FloatT_co", bound=np.floating[Any], default=np.float64, covariant=True)
+_FloatT = TypeVar("_FloatT", bound=npc.floating, default=np.float64)
+_FloatT_co = TypeVar("_FloatT_co", bound=npc.floating, default=np.float64, covariant=True)
 _ShapeT = TypeVar("_ShapeT", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 _ShapeT2_co = TypeVar("_ShapeT2_co", bound=onp.AtLeast2D, default=onp.AtLeast0D[Any], covariant=True)
@@ -67,7 +68,7 @@ class _HessianResult(_RichResult, Generic[_FloatT_co, _ShapeT2_co]):
 @overload  # 0-d float64
 def derivative(
     f: _Function00[np.float64],
-    x: float | np.float64 | np.integer[Any] | onp.CanArray0D[np.float64 | np.integer[Any]],
+    x: float | np.float64 | npc.integer | onp.CanArray0D[np.float64 | npc.integer],
     *,
     args: tuple[onp.ToScalar, ...] = (),
     tolerances: _Tolerances | None = None,
@@ -103,9 +104,9 @@ def derivative(
     tolerances: _Tolerances | None = None,
     maxiter: opt.AnyInt = 10,
     order: opt.AnyInt = 8,
-    initial_step: onp.ToFloat | onp.ToFloat1D | onp.CanArrayND[np.floating[Any], _ShapeT] = 0.5,
+    initial_step: onp.ToFloat | onp.ToFloat1D | onp.CanArrayND[npc.floating, _ShapeT] = 0.5,
     step_factor: onp.ToFloat = 2.0,
-    step_direction: onp.ToJustInt | onp.ToJustInt1D | onp.CanArrayND[np.integer[Any], _ShapeT] = 0,
+    step_direction: onp.ToJustInt | onp.ToJustInt1D | onp.CanArrayND[npc.integer, _ShapeT] = 0,
     preserve_shape: bool = False,
     callback: Callable[[_DerivativeResultND[_FloatT, _ShapeT]], _Ignored] | None = None,
 ) -> _DerivativeResultND[_FloatT, _ShapeT]: ...

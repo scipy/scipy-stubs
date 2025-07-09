@@ -1,9 +1,10 @@
 from collections.abc import Callable
-from typing import Any, Literal, TypeAlias, overload
+from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Numeric
@@ -14,7 +15,7 @@ __all__ = ["bicg", "bicgstab", "cg", "cgs", "gmres", "qmr"]
 _Float: TypeAlias = np.float32 | np.float64
 _Complex: TypeAlias = np.complex64 | np.complex128
 
-_ToInt: TypeAlias = np.integer[Any] | np.bool_
+_ToInt: TypeAlias = npc.integer | np.bool_
 _ToFloat: TypeAlias = _Float | _ToInt
 _ToComplex: TypeAlias = _Complex | _ToFloat
 

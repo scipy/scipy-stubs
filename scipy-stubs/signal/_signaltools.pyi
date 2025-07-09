@@ -1,9 +1,10 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Literal as L, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import Literal as L, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._ltisys import dlti
 from .windows._windows import _ToWindow
@@ -48,7 +49,7 @@ __all__ = [
 ###
 
 _T = TypeVar("_T")
-_InexactT = TypeVar("_InexactT", bound=np.inexact[Any])
+_InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _EnvelopeSCT = TypeVar("_EnvelopeSCT", bound=_OutFloat | np.longdouble | _Complex | np.clongdouble)
 _FilterSCT = TypeVar("_FilterSCT", bound=_Int | _Float)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
@@ -74,7 +75,7 @@ _CoBool: TypeAlias = _Bool
 _ToBool: TypeAlias = bool | _CoBool
 _ToBoolND: TypeAlias = onp.CanArrayND[_CoBool] | onp.SequenceND[_ToBool] | onp.SequenceND[onp.CanArrayND[_CoBool]]
 
-_Int: TypeAlias = np.integer[Any]
+_Int: TypeAlias = npc.integer
 _CoInt: TypeAlias = _Bool | _Int
 _ToInt: TypeAlias = int | _CoInt
 _ToIntND: TypeAlias = onp.CanArrayND[_CoInt] | onp.SequenceND[_ToInt] | onp.SequenceND[onp.CanArrayND[_CoInt]]
@@ -262,11 +263,11 @@ def lfilter_zi(b: _ToComplex1D, a: _ToComplex1D) -> onp.Array1D[_Float | _Comple
 @overload
 def lfiltic(
     b: onp.ToFloat1D, a: onp.ToFloat1D, y: onp.ToFloat1D, x: onp.ToFloat1D | None = None
-) -> onp.Array1D[np.floating[Any]]: ...
+) -> onp.Array1D[npc.floating]: ...
 @overload
 def lfiltic(
     b: onp.ToComplex1D, a: onp.ToComplex1D, y: onp.ToComplex1D, x: onp.ToComplex1D | None = None
-) -> onp.Array1D[np.inexact[Any]]: ...
+) -> onp.Array1D[npc.inexact]: ...
 
 #
 @overload
@@ -318,9 +319,9 @@ def filtfilt(
 @overload
 def sosfilt_zi(sos: onp.ArrayND[_InexactT]) -> onp.Array2D[_InexactT]: ...
 @overload
-def sosfilt_zi(sos: onp.ToFloat2D) -> onp.Array2D[np.floating[Any]]: ...
+def sosfilt_zi(sos: onp.ToFloat2D) -> onp.Array2D[npc.floating]: ...
 @overload
-def sosfilt_zi(sos: onp.ToComplex2D) -> onp.Array2D[np.inexact[Any]]: ...
+def sosfilt_zi(sos: onp.ToComplex2D) -> onp.Array2D[npc.inexact]: ...
 
 #
 @overload
@@ -382,24 +383,20 @@ def wiener(
 ) -> onp.ArrayND[_LFloat | _LComplex]: ...
 
 #
-def hilbert(
-    x: onp.ToFloatND, N: onp.ToInt | None = None, axis: op.CanIndex = -1
-) -> onp.ArrayND[np.complexfloating[Any, Any]]: ...
+def hilbert(x: onp.ToFloatND, N: onp.ToInt | None = None, axis: op.CanIndex = -1) -> onp.ArrayND[npc.complexfloating]: ...
 
 #
-def hilbert2(
-    x: onp.ToFloat2D, N: onp.ToInt | tuple[onp.ToInt, onp.ToInt] | None = None
-) -> onp.Array2D[np.complexfloating[Any, Any]]: ...
+def hilbert2(x: onp.ToFloat2D, N: onp.ToInt | tuple[onp.ToInt, onp.ToInt] | None = None) -> onp.Array2D[npc.complexfloating]: ...
 
 #
 @overload
 def unique_roots(
     p: onp.ToFloat1D, tol: onp.ToFloat = 0.001, rtype: _RootType = "min"
-) -> tuple[onp.Array1D[np.floating[Any]], onp.Array1D[np.int_]]: ...
+) -> tuple[onp.Array1D[npc.floating], onp.Array1D[np.int_]]: ...
 @overload
 def unique_roots(
     p: onp.ToComplex1D, tol: onp.ToFloat = 0.001, rtype: _RootType = "min"
-) -> tuple[onp.Array1D[np.inexact[Any]], onp.Array1D[np.int_]]: ...
+) -> tuple[onp.Array1D[npc.inexact], onp.Array1D[np.int_]]: ...
 
 #
 def residue(
@@ -437,7 +434,7 @@ def resample(
     axis: op.CanIndex = 0,
     window: _WindowFuncFloat | onp.ToFloat1D | _ToWindow | None = None,
     domain: _Domain = "time",
-) -> onp.ArrayND[np.floating[Any]]: ...
+) -> onp.ArrayND[npc.floating]: ...
 @overload
 def resample(
     x: onp.ToComplexND,
@@ -446,7 +443,7 @@ def resample(
     axis: op.CanIndex = 0,
     window: _WindowFuncComplex | onp.ToFloat1D | _ToWindow | None = None,
     domain: _Domain = "time",
-) -> onp.ArrayND[np.inexact[Any]]: ...
+) -> onp.ArrayND[npc.inexact]: ...
 @overload
 def resample(
     x: onp.ArrayND[_EnvelopeSCT, _AnyShapeT],
@@ -455,7 +452,7 @@ def resample(
     axis: op.CanIndex = 0,
     window: _WindowFuncFloat | _WindowFuncComplex | onp.ToFloat1D | _ToWindow | None = None,
     domain: _Domain = "time",
-) -> tuple[onp.ArrayND[_EnvelopeSCT, _AnyShapeT], onp.Array1D[np.floating[Any]]]: ...
+) -> tuple[onp.ArrayND[_EnvelopeSCT, _AnyShapeT], onp.Array1D[npc.floating]]: ...
 @overload
 def resample(
     x: onp.ToFloatND,
@@ -464,7 +461,7 @@ def resample(
     axis: op.CanIndex = 0,
     window: _WindowFuncFloat | onp.ToFloat1D | _ToWindow | None = None,
     domain: _Domain = "time",
-) -> tuple[onp.ArrayND[np.floating[Any]], onp.Array1D[np.floating[Any]]]: ...
+) -> tuple[onp.ArrayND[npc.floating], onp.Array1D[npc.floating]]: ...
 @overload
 def resample(
     x: onp.ToComplexND,
@@ -473,7 +470,7 @@ def resample(
     axis: op.CanIndex = 0,
     window: _WindowFuncComplex | onp.ToFloat1D | _ToWindow | None = None,
     domain: _Domain = "time",
-) -> tuple[onp.ArrayND[np.inexact[Any]], onp.Array1D[np.floating[Any]]]: ...
+) -> tuple[onp.ArrayND[npc.inexact], onp.Array1D[npc.floating]]: ...
 
 #
 @overload

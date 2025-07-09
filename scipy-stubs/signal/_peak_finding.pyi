@@ -1,9 +1,10 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Concatenate, Literal, TypeAlias, TypeVar, TypedDict, type_check_only
+from typing import Concatenate, Literal, TypeAlias, TypeVar, TypedDict, type_check_only
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_cwt", "peak_prominences", "peak_widths"]
 
@@ -84,7 +85,7 @@ def find_peaks_cwt(
     vector: onp.Array,
     widths: onp.ToFloat | onp.ToFloatND,
     wavelet: _WaveletFunc | None = None,
-    max_distances: onp.ArrayND[np.floating[Any] | np.integer[Any]] | None = None,
+    max_distances: onp.ArrayND[npc.floating | npc.integer] | None = None,
     gap_thresh: onp.ToFloat | None = None,
     min_length: onp.ToInt | None = None,
     min_snr: onp.ToFloat = 1,

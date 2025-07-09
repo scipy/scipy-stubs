@@ -1,9 +1,10 @@
-from typing import Any, Final, Generic, Literal, TypeAlias, overload, type_check_only
+from typing import Final, Generic, Literal, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 import optype.typing as opt
 
 import scipy._typing as spt
@@ -32,8 +33,8 @@ __all__ = [
 _RVG_co = TypeVar("_RVG_co", bound=multi_rv_generic, default=multi_rv_generic, covariant=True)
 _RVF_co = TypeVar("_RVF_co", bound=multi_rv_frozen, covariant=True)
 
-_Scalar_f: TypeAlias = np.floating[Any]
-_Scalar_uif: TypeAlias = np.integer[Any] | _Scalar_f
+_Scalar_f: TypeAlias = npc.floating
+_Scalar_uif: TypeAlias = npc.integer | _Scalar_f
 _ToFloatMax2D: TypeAlias = onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D
 _ToJustFloat: TypeAlias = float | _Scalar_f
 _ToJustFloatND: TypeAlias = (

@@ -1,9 +1,10 @@
 from collections.abc import Callable
-from typing import Any, Concatenate, Final, Generic, Literal, TypeAlias, TypeVar, overload
+from typing import Concatenate, Final, Generic, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._optimize import OptimizeResult
 from ._typing import MethodRootScalar
@@ -15,7 +16,7 @@ _Flag: TypeAlias = Literal["converged", "sign error", "convergence error", "valu
 _FlagKey: TypeAlias = Literal[0, -1, -2, -3, -4, 1]
 
 _Float: TypeAlias = float | np.float64
-_Floating: TypeAlias = float | np.floating[Any]
+_Floating: TypeAlias = float | npc.floating
 
 _T = TypeVar("_T")
 _KT = TypeVar("_KT", bound=_FlagKey)

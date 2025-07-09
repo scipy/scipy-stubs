@@ -2,12 +2,13 @@
 # mypy: disable-error-code="override"
 
 from types import EllipsisType
-from typing import Any, Generic, Literal as L, LiteralString, Never, TypeAlias, TypedDict, final, overload, type_check_only
+from typing import Generic, Literal as L, LiteralString, Never, TypeAlias, TypedDict, final, overload, type_check_only
 from typing_extensions import TypeAliasType, TypeVar, Unpack, deprecated, override
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from numpy.exceptions import ComplexWarning
 
 from scipy._typing import AnyShape, Casting, EnterNoneMixin, Falsy, OrderKACF, Truthy
@@ -255,16 +256,16 @@ __all__ = [
 _T = TypeVar("_T")
 _NameT_co = TypeVar("_NameT_co", bound=LiteralString, covariant=True)
 _IdentityT_co = TypeVar("_IdentityT_co", bound=L[0] | None, default=None, covariant=True)
-_OutT = TypeVar("_OutT", bound=onp.ArrayND[np.number[Any]])
-_OutT1 = TypeVar("_OutT1", bound=onp.ArrayND[np.number[Any]])
-_OutT2 = TypeVar("_OutT2", bound=onp.ArrayND[np.number[Any]])
-_OutT3 = TypeVar("_OutT3", bound=onp.ArrayND[np.number[Any]])
-_OutT4 = TypeVar("_OutT4", bound=onp.ArrayND[np.number[Any]])
+_OutT = TypeVar("_OutT", bound=onp.ArrayND[npc.number])
+_OutT1 = TypeVar("_OutT1", bound=onp.ArrayND[npc.number])
+_OutT2 = TypeVar("_OutT2", bound=onp.ArrayND[npc.number])
+_OutT3 = TypeVar("_OutT3", bound=onp.ArrayND[npc.number])
+_OutT4 = TypeVar("_OutT4", bound=onp.ArrayND[npc.number])
 
 _None2: TypeAlias = tuple[None, None]
 _None4: TypeAlias = tuple[None, None, None, None]
 
-_MaybeOutT = TypeVar("_MaybeOutT", bound=onp.ArrayND[np.number[Any]] | None, default=None)
+_MaybeOutT = TypeVar("_MaybeOutT", bound=onp.ArrayND[npc.number] | None, default=None)
 _Out1: TypeAlias = tuple[_MaybeOutT] | _MaybeOutT
 
 _OneOrMany: TypeAlias = _T | tuple[_T, ...]
@@ -303,8 +304,8 @@ _InexactND: TypeAlias = onp.ArrayND[_Inexact]
 _Inexact_D: TypeAlias = _Inexact | _InexactND
 _Inexact_DT = TypeVar("_Inexact_DT", bound=_Inexact_D)
 
-_CoInt: TypeAlias = np.integer[Any] | _Bool  # coercible to integer
-_CoFloat: TypeAlias = np.floating[Any] | _CoInt  # coercible to floating
+_CoInt: TypeAlias = npc.integer | _Bool  # coercible to integer
+_CoFloat: TypeAlias = npc.floating | _CoInt  # coercible to floating
 _CoFloat64: TypeAlias = _Float64 | _Float32 | _Float16 | _CoInt  # coercible to float64
 _CoComplex128: TypeAlias = _Complex128 | _Complex64 | _CoFloat64  # coercible to complex128
 

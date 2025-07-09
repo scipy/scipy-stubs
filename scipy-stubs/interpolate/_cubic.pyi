@@ -3,6 +3,7 @@ from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._interpolate import PPoly
 
@@ -14,7 +15,7 @@ _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64,
 _AxisT = TypeVar("_AxisT", bound=_ToAxis)
 
 _Tuple2: TypeAlias = tuple[_T, _T]
-_ToAxis: TypeAlias = int | np.integer[Any]
+_ToAxis: TypeAlias = int | npc.integer
 
 _Akima1DMethod: TypeAlias = Literal["akima", "makima"]
 _Extrapolate: TypeAlias = Literal["periodic"] | bool

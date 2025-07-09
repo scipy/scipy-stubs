@@ -1,8 +1,8 @@
 from collections.abc import Callable
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing import Literal, TypeAlias, TypeVar, overload
 
-import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["ordqz", "qz"]
 
@@ -11,9 +11,9 @@ _T2 = TypeVar("_T2")
 _Tuple4: TypeAlias = tuple[_T2, _T2, _T2, _T2]
 _Tuple222: TypeAlias = tuple[_T2, _T2, _T1, _T1, _T2, _T2]
 
-_FloatND: TypeAlias = onp.ArrayND[np.floating[Any]]
-_ComplexND: TypeAlias = onp.ArrayND[np.complexfloating[Any, Any]]
-_InexactND: TypeAlias = onp.ArrayND[np.inexact[Any]]
+_FloatND: TypeAlias = onp.ArrayND[npc.floating]
+_ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
+_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
 _OutputReal: TypeAlias = Literal["real", "r"]
 _OutputComplex: TypeAlias = Literal["complex", "c"]

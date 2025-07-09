@@ -1,10 +1,11 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Literal as L, TypeAlias, overload
+from typing import Literal as L, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = [
     "BadCoefficients",
@@ -56,11 +57,11 @@ __all__ = [
     "zpk2tf",
 ]
 
-_Floating: TypeAlias = np.floating[Any]
-_CFloating: TypeAlias = np.complexfloating[Any, Any]
+_Floating: TypeAlias = npc.floating
+_CFloating: TypeAlias = npc.complexfloating
 
-_Floating1D: TypeAlias = onp.Array1D[np.floating[Any]]
-_FloatingND: TypeAlias = onp.ArrayND[np.floating[Any]]
+_Floating1D: TypeAlias = onp.Array1D[npc.floating]
+_FloatingND: TypeAlias = onp.ArrayND[npc.floating]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
@@ -74,14 +75,14 @@ _SCT_p = TypeVar("_SCT_p", bound=np.generic, default=np.complex128)
 _SCT_k = TypeVar("_SCT_k", bound=np.generic | float, default=np.float64)
 _ZPK: TypeAlias = tuple[onp.Array1D[_SCT_z], onp.Array1D[_SCT_p], _SCT_k]
 
-_SCT_ba = TypeVar("_SCT_ba", bound=np.floating[Any], default=np.float64)
+_SCT_ba = TypeVar("_SCT_ba", bound=npc.floating, default=np.float64)
 _Ba1D: TypeAlias = tuple[onp.Array1D[_SCT_ba], onp.Array1D[_SCT_ba]]
 _Ba2D: TypeAlias = tuple[onp.Array2D[_SCT_ba], onp.Array1D[_SCT_ba]]
 
 # excludes `float16` and `longdouble`
-_ToFloat: TypeAlias = float | np.float32 | np.float64 | np.integer[Any]
-_ToFloat1D: TypeAlias = Sequence[_ToFloat] | onp.CanArrayND[np.float32 | np.float64 | np.integer[Any]]
-_ToFloat2D: TypeAlias = Sequence[_ToFloat1D] | onp.CanArrayND[np.float32 | np.float64 | np.integer[Any]]
+_ToFloat: TypeAlias = float | np.float32 | np.float64 | npc.integer
+_ToFloat1D: TypeAlias = Sequence[_ToFloat] | onp.CanArrayND[np.float32 | np.float64 | npc.integer]
+_ToFloat2D: TypeAlias = Sequence[_ToFloat1D] | onp.CanArrayND[np.float32 | np.float64 | npc.integer]
 
 _FType0: TypeAlias = L["butter", "cheby1", "cheby2", "ellip"]
 _FType: TypeAlias = _FType0 | L["bessel"]
@@ -249,22 +250,22 @@ def lp2bs(
 #
 def lp2lp_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0
-) -> _ZPK[np.inexact[Any], _CFloating, _Floating]: ...
+) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
 
 #
 def lp2hp_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0
-) -> _ZPK[np.inexact[Any], _CFloating, _Floating]: ...
+) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
 
 #
 def lp2bp_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0, bw: onp.ToFloat = 1.0
-) -> _ZPK[np.inexact[Any], _CFloating, _Floating]: ...
+) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
 
 #
 def lp2bs_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0, bw: onp.ToFloat = 1.0
-) -> _ZPK[np.inexact[Any], _CFloating, _Floating]: ...
+) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
 
 #
 def bilinear(b: onp.ToFloat1D, a: onp.ToFloat1D, fs: onp.ToFloat = 1.0) -> _Ba1D: ...
@@ -657,9 +658,9 @@ def bessel(
 #
 def band_stop_obj(
     wp: onp.ToFloat,
-    ind: L[0, 1] | np.integer[Any],  # bool doesn't work
-    passb: onp.ArrayND[_Floating | np.integer[Any]],  # 1-d
-    stopb: onp.ArrayND[_Floating | np.integer[Any]],  # 1-d
+    ind: L[0, 1] | npc.integer,  # bool doesn't work
+    passb: onp.ArrayND[_Floating | npc.integer],  # 1-d
+    stopb: onp.ArrayND[_Floating | npc.integer],  # 1-d
     gpass: onp.ToFloat,
     gstop: onp.ToFloat,
     type: L["butter", "cheby", "ellip"],

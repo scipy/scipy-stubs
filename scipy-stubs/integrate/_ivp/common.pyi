@@ -1,9 +1,10 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
+from typing import Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from .base import DenseOutput
 from scipy.sparse import csc_matrix
@@ -15,7 +16,7 @@ _Side: TypeAlias = Literal["left", "right"]
 _Interpolants: TypeAlias = Sequence[DenseOutput]
 
 _To1D: TypeAlias = Sequence[_SCT] | onp.CanArrayND[_SCT]
-_ToFloat64: TypeAlias = np.float16 | np.float32 | np.float64 | np.integer[Any] | np.bool_
+_ToFloat64: TypeAlias = np.float16 | np.float32 | np.float64 | npc.integer | np.bool_
 
 ###
 
@@ -61,9 +62,9 @@ def validate_first_step(first_step: _ToFloatT, t0: onp.ToFloat, t_bound: onp.ToF
 def validate_max_step(max_step: _ToFloatT) -> _ToFloatT: ...
 def warn_extraneous(extraneous: dict[str, object]) -> None: ...
 def validate_tol(
-    rtol: onp.ArrayND[np.floating[Any]], atol: onp.ArrayND[np.floating[Any]], n: int
-) -> tuple[onp.Array1D[np.floating[Any]], onp.Array1D[np.floating[Any]]]: ...
-def norm(x: onp.ToFloatND) -> np.floating[Any]: ...
+    rtol: onp.ArrayND[npc.floating], atol: onp.ArrayND[npc.floating], n: int
+) -> tuple[onp.Array1D[npc.floating], onp.Array1D[npc.floating]]: ...
+def norm(x: onp.ToFloatND) -> npc.floating: ...
 def select_initial_step(
     fun: Callable[[np.float64, onp.Array1D[np.float64]], onp.Array1D[np.float64]],
     t0: float | np.float64,

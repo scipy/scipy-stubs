@@ -1,7 +1,8 @@
-from typing import Any, Literal, TypeAlias
+from typing import Literal, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = [
     "binary_closing",
@@ -33,7 +34,7 @@ _BorderValue: TypeAlias = onp.ToInt | np.bool_
 
 _BoolArrayOut: TypeAlias = onp.ArrayND[np.bool_]
 _Origin: TypeAlias = int | tuple[int, ...]
-_ScalarArrayOut: TypeAlias = onp.ArrayND[np.number[Any] | np.bool_]
+_ScalarArrayOut: TypeAlias = onp.ArrayND[npc.number | np.bool_]
 
 def iterate_structure(
     structure: onp.ToInt | onp.ToIntND, iterations: onp.ToInt, origin: _Origin | None = None

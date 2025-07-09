@@ -1,9 +1,10 @@
 from collections.abc import Callable
-from typing import Any, TypeAlias, overload
+from typing import TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Numeric
@@ -24,7 +25,7 @@ _Callback: TypeAlias = Callable[[onp.Array1D[_ScalarT]], _Ignored]
 
 @overload  # real
 def tfqmr(
-    A: _ToLinearOperator[_FloatT | np.integer[Any] | np.bool_],
+    A: _ToLinearOperator[_FloatT | npc.integer | np.bool_],
     b: onp.ToFloat1D,
     x0: onp.ToFloat1D | None = None,
     *,

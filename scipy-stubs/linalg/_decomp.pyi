@@ -1,10 +1,11 @@
 from collections.abc import Iterable, Sequence
-from typing import Any, Literal, TypeAlias, overload
+from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 import optype.typing as opt
 from numpy._typing import _ArrayLike
 
@@ -27,8 +28,8 @@ _FloatT = TypeVar("_FloatT", bound=_Floating, default=_Float)
 _FloatT2 = TypeVar("_FloatT2", bound=_Floating, default=_Float)
 
 # scalar types
-_Integer: TypeAlias = np.integer[Any]
-_Floating: TypeAlias = np.floating[Any]
+_Integer: TypeAlias = npc.integer
+_Floating: TypeAlias = npc.floating
 _Float: TypeAlias = np.float32 | np.float64
 _Complex: TypeAlias = np.complex64 | np.complex128
 

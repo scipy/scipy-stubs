@@ -1,7 +1,8 @@
-from typing import Any, Literal, type_check_only
+from typing import Literal, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.optimize import OptimizeResult
 
@@ -21,11 +22,11 @@ def compute_kkt_optimality(g: onp.ArrayND[np.float64], on_bound: onp.ArrayND[np.
 
 # undocumented
 def bvls(
-    A: onp.ArrayND[np.floating[Any]],
-    b: onp.ArrayND[np.floating[Any]],
-    x_lsq: onp.ArrayND[np.floating[Any]],
-    lb: onp.ArrayND[np.floating[Any]],
-    ub: onp.ArrayND[np.floating[Any]],
+    A: onp.ArrayND[npc.floating],
+    b: onp.ArrayND[npc.floating],
+    x_lsq: onp.ArrayND[npc.floating],
+    lb: onp.ArrayND[npc.floating],
+    ub: onp.ArrayND[npc.floating],
     tol: onp.ToFloat,
     max_iter: onp.ToInt | None,
     verbose: Literal[0, 1, 2],

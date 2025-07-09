@@ -1,15 +1,16 @@
 from collections.abc import Callable, Mapping
-from typing import Any, Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import AnyBool, Falsy, Truthy
 
 __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output", "RealData", "odr", "odr_error", "odr_stop"]
 
-_ToIntScalar: TypeAlias = np.integer[Any] | np.bool_
-_ToFloatScalar: TypeAlias = np.floating[Any] | _ToIntScalar
+_ToIntScalar: TypeAlias = npc.integer | np.bool_
+_ToFloatScalar: TypeAlias = npc.floating | _ToIntScalar
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]

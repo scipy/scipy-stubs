@@ -1,12 +1,13 @@
 import abc
 import numbers
 from collections.abc import Callable, Mapping
-from typing import Any, ClassVar, Concatenate, Final, Generic, Literal, Protocol, Self, TypeAlias, overload, type_check_only
+from typing import ClassVar, Concatenate, Final, Generic, Literal, Protocol, Self, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 import optype.typing as opt
 
 from scipy._typing import RNG, ToRNG
@@ -28,12 +29,12 @@ __all__ = [
 
 _AnyRNG = TypeVar("_AnyRNG", np.random.Generator, np.random.RandomState)
 
-_FloatArrayT = TypeVar("_FloatArrayT", bound=onp.ArrayND[np.floating[Any]])
-_InexactT = TypeVar("_InexactT", bound=np.inexact[Any])
-_InexactT_co = TypeVar("_InexactT_co", bound=np.inexact[Any], default=np.float64, covariant=True)
-_EngineT_co = TypeVar("_EngineT_co", bound=QMCEngine[np.inexact[Any]], default=Sobol, covariant=True)
+_FloatArrayT = TypeVar("_FloatArrayT", bound=onp.ArrayND[npc.floating])
+_InexactT = TypeVar("_InexactT", bound=npc.inexact)
+_InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=np.float64, covariant=True)
+_EngineT_co = TypeVar("_EngineT_co", bound=QMCEngine[npc.inexact], default=Sobol, covariant=True)
 
-_Real: TypeAlias = np.floating[Any] | np.integer[Any]
+_Real: TypeAlias = npc.floating | npc.integer
 
 _MethodQMC: TypeAlias = Literal["random-cd", "lloyd"]
 _MethodDisc: TypeAlias = Literal["CD", "WD", "MD", "L2-star"]
@@ -154,8 +155,8 @@ class Sobol(QMCEngine[np.float64]):
     dtype_i: Final[type[np.uint32 | np.uint64]]
     scramble: Final[bool]
 
-    bits: int | np.integer[Any]
-    maxn: int | np.integer[Any]
+    bits: int | npc.integer
+    maxn: int | npc.integer
 
     @overload
     def __init__(
@@ -302,7 +303,7 @@ class MultivariateNormalQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co])
 
 class MultinomialQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co]):
     pvals: Final[onp.Array1D[np.float32 | np.float64]]
-    n_trials: Final[int | np.integer[Any]]
+    n_trials: Final[int | npc.integer]
 
     @overload
     def __init__(
@@ -335,7 +336,7 @@ class MultinomialQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co]):
 
 #
 @overload
-def check_random_state(seed: int | np.integer[Any] | numbers.Integral | None = None) -> np.random.Generator: ...
+def check_random_state(seed: int | npc.integer | numbers.Integral | None = None) -> np.random.Generator: ...
 @overload
 def check_random_state(seed: _AnyRNG) -> _AnyRNG: ...
 
@@ -376,7 +377,7 @@ def _ensure_in_unit_hypercube(sample: onp.ToJustFloat2D) -> onp.Array2D[np.float
 #
 @overload
 def _perturb_discrepancy(
-    sample: onp.Array2D[np.integer[Any] | np.bool_], i1: op.CanIndex, i2: op.CanIndex, k: op.CanIndex, disc: onp.ToFloat
+    sample: onp.Array2D[npc.integer | np.bool_], i1: op.CanIndex, i2: op.CanIndex, k: op.CanIndex, disc: onp.ToFloat
 ) -> float | np.float64: ...
 @overload
 def _perturb_discrepancy(

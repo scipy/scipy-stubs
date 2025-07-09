@@ -1,20 +1,21 @@
 from collections.abc import Callable
-from typing import Any, Final, Generic, Never, TypeAlias
+from typing import Final, Generic, Never, TypeAlias
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from .base import DenseOutput, OdeSolver
 from scipy.sparse import sparray, spmatrix
 
 ###
 
-_SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.inexact[Any], default=np.float64 | np.complex128)
+_SCT_co = TypeVar("_SCT_co", covariant=True, bound=npc.inexact, default=np.float64 | np.complex128)
 
-_LU: TypeAlias = tuple[onp.ArrayND[np.inexact[Any]], onp.ArrayND[np.integer[Any]]]
+_LU: TypeAlias = tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.integer]]
 _FuncLU: TypeAlias = Callable[[onp.ArrayND[np.float64]], _LU] | Callable[[onp.ArrayND[np.complex128]], _LU]
-_FuncSolveLU: TypeAlias = Callable[[_LU, onp.ArrayND], onp.ArrayND[np.inexact[Any]]]
+_FuncSolveLU: TypeAlias = Callable[[_LU, onp.ArrayND], onp.ArrayND[npc.inexact]]
 
 _ToJac: TypeAlias = onp.ToComplex2D | spmatrix | sparray
 

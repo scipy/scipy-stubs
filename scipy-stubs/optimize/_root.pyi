@@ -1,8 +1,9 @@
 from collections.abc import Callable, Mapping
-from typing import Any, Concatenate, Generic, Literal, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import Concatenate, Generic, Literal, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._nonlin import InverseJacobian
 from ._optimize import OptimizeResult as _OptimizeResult
@@ -123,7 +124,7 @@ _RootOptions: TypeAlias = (
 ###
 
 class OptimizeResult(_OptimizeResult):
-    x: onp.ArrayND[np.floating[Any]]
+    x: onp.ArrayND[npc.floating]
     success: bool
     message: str
     nfev: int

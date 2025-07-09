@@ -1,4 +1,4 @@
-from typing import Any, Literal, TypeAlias, overload
+from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -20,7 +20,7 @@ _Complex: TypeAlias = np.complex64 | np.complex128
 
 _LapackDriver: TypeAlias = Literal["gesdd", "gesvd"]
 
-_RealT = TypeVar("_RealT", bound=np.bool_ | np.integer[Any] | np.floating[Any])
+_RealT = TypeVar("_RealT", bound=np.bool_ | npc.integer | npc.floating)
 _InexactT = TypeVar("_InexactT", bound=_Float | _Complex)
 
 _as_f32: TypeAlias = np.float32 | np.float16  # noqa: PYI042

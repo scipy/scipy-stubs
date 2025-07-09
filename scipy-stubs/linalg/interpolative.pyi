@@ -1,8 +1,9 @@
-from typing import Any, SupportsIndex, TypeAlias, TypeVar
+from typing import SupportsIndex, TypeAlias, TypeVar
 from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import ToRNG
 from scipy.sparse.linalg import LinearOperator
@@ -22,10 +23,10 @@ __all__ = [
 ]
 
 _DT = TypeVar("_DT", bound=np.dtype[np.generic])
-_Inexact1D: TypeAlias = onp.Array1D[np.inexact[Any]]
-_Inexact2D: TypeAlias = onp.Array2D[np.inexact[Any]]
+_Inexact1D: TypeAlias = onp.Array1D[npc.inexact]
+_Inexact2D: TypeAlias = onp.Array2D[npc.inexact]
 
-_AnyNumber: TypeAlias = np.number[Any]
+_AnyNumber: TypeAlias = npc.number
 
 @deprecated("will be removed in SciPy 1.17.0.")
 def seed(seed: None = None) -> None: ...
@@ -39,22 +40,22 @@ def interp_decomp(
 
 #
 def reconstruct_matrix_from_id(
-    B: onp.ArrayND, idx: onp.ArrayND[np.integer[Any]], proj: onp.ArrayND[_AnyNumber]
+    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[_AnyNumber]
 ) -> onp.ArrayND[_AnyNumber]: ...
 
 #
 def reconstruct_interp_matrix(
-    idx: onp.ArrayND[np.integer[Any]], proj: onp.ArrayND[_AnyNumber]
+    idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[_AnyNumber]
 ) -> onp.ArrayND[np.float64 | np.complex128]: ...
 
 #
 def reconstruct_skel_matrix(
-    A: np.ndarray[tuple[int, ...], _DT], k: SupportsIndex, idx: onp.ArrayND[np.integer[Any]]
+    A: np.ndarray[tuple[int, ...], _DT], k: SupportsIndex, idx: onp.ArrayND[npc.integer]
 ) -> np.ndarray[tuple[int, ...], _DT]: ...
 
 #
 def id_to_svd(
-    B: onp.ArrayND, idx: onp.ArrayND[np.integer[Any]], proj: onp.ArrayND[_AnyNumber]
+    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[_AnyNumber]
 ) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
 
 #

@@ -1,8 +1,8 @@
-from typing import Any, Literal, Protocol, overload, type_check_only
+from typing import Literal, Protocol, overload, type_check_only
 from typing_extensions import TypeVar, TypeVarTuple, Unpack
 
-import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._typing import ODEInfoDict
 from scipy._typing import Falsy, Truthy
@@ -38,7 +38,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[npc.integer | npc.floating] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -49,7 +49,7 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
     tfirst: Falsy = False,
-) -> onp.Array2D[np.floating[Any]]: ...
+) -> onp.Array2D[npc.floating]: ...
 @overload
 def odeint(
     func: _ODEFunc[_YT],
@@ -63,7 +63,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[npc.integer | npc.floating] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -75,7 +75,7 @@ def odeint(
     printmessg: Literal[0, 1] | bool = 0,
     *,
     tfirst: Truthy,
-) -> onp.Array2D[np.floating[Any]]: ...
+) -> onp.Array2D[npc.floating]: ...
 @overload
 def odeint(
     func: _ODEFunc[_YT],
@@ -90,7 +90,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[npc.integer | npc.floating] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -101,7 +101,7 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
     tfirst: Falsy = False,
-) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...
+) -> tuple[onp.Array2D[npc.floating], ODEInfoDict]: ...
 @overload
 def odeint(
     func: _ODEFunc[_YT],
@@ -116,7 +116,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[npc.integer | npc.floating] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -127,7 +127,7 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
     tfirst: Truthy,
-) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...
+) -> tuple[onp.Array2D[npc.floating], ODEInfoDict]: ...
 
 # specified args
 @overload
@@ -143,7 +143,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[npc.integer | npc.floating] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -154,7 +154,7 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
     tfirst: Falsy = False,
-) -> onp.Array2D[np.floating[Any]]: ...
+) -> onp.Array2D[npc.floating]: ...
 @overload
 def odeint(
     func: _ODEFuncInv[_YT, *_Ts],
@@ -168,7 +168,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[npc.integer | npc.floating] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -180,7 +180,7 @@ def odeint(
     printmessg: Literal[0, 1] | bool = 0,
     *,
     tfirst: Truthy,
-) -> onp.Array2D[np.floating[Any]]: ...
+) -> onp.Array2D[npc.floating]: ...
 @overload
 def odeint(
     func: _ODEFunc[_YT, *_Ts],
@@ -195,7 +195,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[npc.integer | npc.floating] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -206,7 +206,7 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
     tfirst: Falsy = False,
-) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...
+) -> tuple[onp.Array2D[npc.floating], ODEInfoDict]: ...
 @overload
 def odeint(
     func: _ODEFuncInv[_YT, *_Ts],
@@ -221,7 +221,7 @@ def odeint(
     mu: int | None = None,
     rtol: float | None = None,
     atol: float | None = None,
-    tcrit: onp.ArrayND[np.integer[Any] | np.floating[Any]] | None = None,
+    tcrit: onp.ArrayND[npc.integer | npc.floating] | None = None,
     h0: float = 0.0,
     hmax: float = 0.0,
     hmin: float = 0.0,
@@ -232,4 +232,4 @@ def odeint(
     mxords: int = 5,
     printmessg: Literal[0, 1] | bool = 0,
     tfirst: Truthy,
-) -> tuple[onp.Array2D[np.floating[Any]], ODEInfoDict]: ...
+) -> tuple[onp.Array2D[npc.floating], ODEInfoDict]: ...

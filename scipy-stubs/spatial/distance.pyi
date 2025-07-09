@@ -1,11 +1,12 @@
 # NOTE: Scipy already has a `distance.pyi` stub, but it has several errors, which are fixed here
 
 from collections.abc import Callable, Sequence as Seq
-from typing import Any, Literal, TypeAlias, overload
+from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, Truthy
 
@@ -98,12 +99,12 @@ _Metric: TypeAlias = _MetricName | _MetricFunc  # noqa: PYI047
 _Force: TypeAlias = Literal["NO", "No", "no", "TOMATRIX", "ToMatrix", "tomatrix", "TOVECTOR", "ToVector", "tovector"]
 
 _Seq2D: TypeAlias = Seq[Seq[_T]]
-_FloatingND: TypeAlias = onp.ArrayND[np.floating[Any]]
-_InexactND: TypeAlias = onp.ArrayND[np.inexact[Any]]
+_FloatingND: TypeAlias = onp.ArrayND[npc.floating]
+_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
 _T = TypeVar("_T")
-_NumberT = TypeVar("_NumberT", bound=np.number[Any])
-_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[np.number[Any]])
+_NumberT = TypeVar("_NumberT", bound=npc.number)
+_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[npc.number])
 
 ###
 
@@ -246,9 +247,9 @@ def sokalsneath(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None 
 
 #
 @overload
-def sqeuclidean(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> np.floating[Any]: ...
+def sqeuclidean(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> npc.floating: ...
 @overload
-def sqeuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.inexact[Any]: ...
+def sqeuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> npc.inexact: ...
 
 #
 @overload
@@ -267,8 +268,8 @@ def jensenshannon(
 # NOTE: The output of the following functions is always real, but complex input usually results in a `ComplexWarning` at runtime.
 def braycurtis(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
 def canberra(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
-def chebyshev(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.floating[Any]: ...
-def cityblock(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.floating[Any]: ...
+def chebyshev(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> npc.floating: ...
+def cityblock(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> npc.floating: ...
 def dice(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
 def directed_hausdorff(
     u: onp.ToComplex2D, v: onp.ToComplex2D, rng: onp.random.ToRNG | None = 0, *, seed: onp.random.ToRNG | None = ...

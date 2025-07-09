@@ -1,8 +1,9 @@
 from collections.abc import Callable
-from typing import Any, TypeAlias, TypeVar, overload
+from typing import TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
@@ -16,7 +17,7 @@ _FloatT = TypeVar("_FloatT", bound=_Float)
 
 _ToRealMatrix: TypeAlias = (
     onp.ToFloat2D
-    | LinearOperator[np.integer[Any] | np.floating[Any]]
+    | LinearOperator[npc.integer | npc.floating]
     | _spbase
     | Callable[[onp.Array2D[_FloatT]], onp.ArrayND[_Float | _Complex]]
 )

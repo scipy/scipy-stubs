@@ -1,7 +1,8 @@
-from typing import Any, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.cluster import vq
 
@@ -22,7 +23,7 @@ assert_type(vq.whiten(c128_2d), onp.Array2D[np.complex128])
 vq.vq(i64_2d, i64_2d)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(vq.vq(f32_2d, f32_2d), tuple[onp.Array1D[np.int32], onp.Array1D[np.float32]])
 assert_type(vq.vq(f64_2d, f64_2d), tuple[onp.Array1D[np.int32], onp.Array1D[np.float64]])
-assert_type(vq.vq(floating_2d, floating_2d), tuple[onp.Array1D[np.int32], onp.Array1D[np.floating[Any]]])
+assert_type(vq.vq(floating_2d, floating_2d), tuple[onp.Array1D[np.int32], onp.Array1D[npc.floating]])
 vq.vq(c128_2d, f64_2d)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 
 # py_vq
@@ -36,12 +37,12 @@ vq.py_vq(c128_2d, f64_2d)  # type: ignore[arg-type]  # pyright: ignore[reportArg
 vq.kmeans(i64_2d, 2)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(vq.kmeans(f32_2d, 2), tuple[onp.Array2D[np.float32], np.float32])
 assert_type(vq.kmeans(f64_2d, 2), tuple[onp.Array2D[np.float64], np.float64])
-assert_type(vq.kmeans(floating_2d, 2), tuple[onp.Array2D[np.floating[Any]], np.floating[Any]])
+assert_type(vq.kmeans(floating_2d, 2), tuple[onp.Array2D[npc.floating], npc.floating])
 vq.kmeans(c128_2d, 2)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 
 # kmeans2
 vq.kmeans2(i64_2d, 2)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(vq.kmeans2(f32_2d, 2), tuple[onp.Array2D[np.float32], onp.Array1D[np.int32]])
 assert_type(vq.kmeans2(f64_2d, 2), tuple[onp.Array2D[np.float64], onp.Array1D[np.int32]])
-assert_type(vq.kmeans2(floating_2d, 2), tuple[onp.Array2D[np.floating[Any]], onp.Array1D[np.int32]])
+assert_type(vq.kmeans2(floating_2d, 2), tuple[onp.Array2D[npc.floating], onp.Array1D[np.int32]])
 vq.kmeans2(c128_2d, 2)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]

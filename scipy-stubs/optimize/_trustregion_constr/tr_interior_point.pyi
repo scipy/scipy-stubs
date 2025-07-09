@@ -1,8 +1,9 @@
 from collections.abc import Callable
-from typing import Any, Literal, TypeVar
+from typing import Literal, TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["tr_interior_point"]
 
@@ -22,9 +23,9 @@ def tr_interior_point(
     x0: onp.ToFloat1D,
     fun0: onp.ToFloat,
     grad0: onp.ToFloat1D,
-    constr_ineq0: onp.ArrayND[np.floating[Any]],
+    constr_ineq0: onp.ArrayND[npc.floating],
     jac_ineq0: onp.ToArray2D,
-    constr_eq0: onp.ArrayND[np.floating[Any]],
+    constr_eq0: onp.ArrayND[npc.floating],
     jac_eq0: onp.ToArray2D,
     stop_criteria: Callable[
         [
@@ -48,4 +49,4 @@ def tr_interior_point(
     initial_trust_radius: onp.ToFloat,
     factorization_method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"],
     finite_diff_bounds: tuple[onp.ToFloat1D, onp.ToFloat1D],
-) -> tuple[onp.Array1D[np.floating[Any]], _StateT]: ...
+) -> tuple[onp.Array1D[npc.floating], _StateT]: ...

@@ -1,7 +1,8 @@
-from typing import Any, Literal, Self
+from typing import Literal, Self
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._crosstab import crosstab
 from ._odds_ratio import odds_ratio
@@ -26,7 +27,7 @@ class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, int, onp.ArrayND[n
     ) -> None: ...
 
 #
-def margins(a: onp.ArrayND[np.number[Any] | np.bool_ | np.timedelta64]) -> list[onp.ArrayND[np.number[Any] | np.timedelta64]]: ...
+def margins(a: onp.ArrayND[npc.number | np.bool_ | np.timedelta64]) -> list[onp.ArrayND[npc.number | np.timedelta64]]: ...
 
 #
 def expected_freq(observed: onp.ToFloatND) -> np.float64 | onp.ArrayND[np.float64]: ...

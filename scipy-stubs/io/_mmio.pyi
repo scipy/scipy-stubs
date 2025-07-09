@@ -1,8 +1,8 @@
-from typing import Any, ClassVar, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import ClassVar, Literal, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import Unpack
 
-import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, FileLike, Truthy
 from scipy.sparse import coo_matrix, sparray, spmatrix
@@ -66,9 +66,9 @@ class MMFile:
 
     #
     @overload
-    def read(self, /, source: FileLike[bytes], *, spmatrix: Truthy = True) -> onp.ArrayND[np.number[Any]] | coo_array: ...
+    def read(self, /, source: FileLike[bytes], *, spmatrix: Truthy = True) -> onp.ArrayND[npc.number] | coo_array: ...
     @overload
-    def read(self, /, source: FileLike[bytes], *, spmatrix: Falsy) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
+    def read(self, /, source: FileLike[bytes], *, spmatrix: Falsy) -> onp.ArrayND[npc.number] | coo_matrix: ...
 
     #
     def write(
@@ -95,9 +95,9 @@ def asstr(s: object) -> str: ...
 
 #
 @overload
-def mmread(source: FileLike[bytes], *, spmatrix: Truthy = True) -> onp.ArrayND[np.number[Any]] | coo_array: ...
+def mmread(source: FileLike[bytes], *, spmatrix: Truthy = True) -> onp.ArrayND[npc.number] | coo_array: ...
 @overload
-def mmread(source: FileLike[bytes], *, spmatrix: Falsy) -> onp.ArrayND[np.number[Any]] | coo_matrix: ...
+def mmread(source: FileLike[bytes], *, spmatrix: Falsy) -> onp.ArrayND[npc.number] | coo_matrix: ...
 
 #
 def mmwrite(

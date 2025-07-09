@@ -1,8 +1,8 @@
-from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
+from typing import Final, Literal, TypeAlias, TypeVar, overload
 
-import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, Truthy
 
@@ -25,13 +25,13 @@ __all__ = [
 _T = TypeVar("_T")
 _Tuple2: TypeAlias = tuple[_T, _T]
 
-_Float: TypeAlias = np.floating[Any]
+_Float: TypeAlias = npc.floating
 _Float0D: TypeAlias = onp.Array0D[_Float]
 _Float1D: TypeAlias = onp.Array1D[_Float]
 _Float2D: TypeAlias = onp.Array2D[_Float]
 _FloatND: TypeAlias = onp.ArrayND[_Float]
 
-_Complex: TypeAlias = np.inexact[Any]  # float and complex input types are near impossible to distinguish
+_Complex: TypeAlias = npc.inexact  # float and complex input types are near impossible to distinguish
 _Complex0D: TypeAlias = onp.Array0D[_Complex]
 _Complex1D: TypeAlias = onp.Array1D[_Complex]
 _Complex2D: TypeAlias = onp.Array2D[_Complex]

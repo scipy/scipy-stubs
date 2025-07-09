@@ -1,15 +1,16 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Literal, NamedTuple, TypeAlias
+from typing import Literal, NamedTuple, TypeAlias
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["binned_statistic", "binned_statistic_2d", "binned_statistic_dd"]
 
 _Statistic: TypeAlias = Literal["mean", "std", "median", "count", "sum", "min", "max"]
 
 class BinnedStatisticResult(NamedTuple):
-    statistic: onp.Array1D[np.inexact[Any]]
+    statistic: onp.Array1D[npc.inexact]
     bin_edges: onp.Array1D[np.float64]
     binnumber: onp.Array1D[np.intp]
 
@@ -22,7 +23,7 @@ def binned_statistic(
 ) -> BinnedStatisticResult: ...
 
 class BinnedStatistic2dResult(NamedTuple):
-    statistic: onp.Array2D[np.inexact[Any]]
+    statistic: onp.Array2D[npc.inexact]
     x_edge: onp.Array1D[np.float64]
     y_edge: onp.Array1D[np.float64]
     binnumber: onp.Array1D[np.intp]
@@ -38,7 +39,7 @@ def binned_statistic_2d(
 ) -> BinnedStatistic2dResult: ...
 
 class BinnedStatisticddResult(NamedTuple):
-    statistic: onp.ArrayND[np.inexact[Any]]
+    statistic: onp.ArrayND[npc.inexact]
     bin_edges: list[onp.Array1D[np.float64]]
     binnumber: onp.Array1D[np.intp] | onp.Array2D[np.intp]
 

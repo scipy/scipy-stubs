@@ -1,9 +1,10 @@
 from collections.abc import Iterable
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing import Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from numpy._typing import _DTypeLike
 
 from scipy._typing import AnyShape, Falsy, Truthy
@@ -13,7 +14,7 @@ __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impu
 _SCT = TypeVar("_SCT", bound=np.generic)
 
 _ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
-_FloatingND: TypeAlias = onp.ArrayND[np.floating[Any]]
+_FloatingND: TypeAlias = onp.ArrayND[npc.floating]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 
 _ChirpMethod: TypeAlias = Literal["linear", "quadratic", "logarithmic", "hyperbolic"]
@@ -35,7 +36,7 @@ def chirp(
     vertex_zero: op.CanBool = True,
     *,
     complex: Falsy = False,
-) -> np.floating[Any]: ...
+) -> npc.floating: ...
 @overload  # real arrays
 def chirp(
     t: onp.ToFloatND,
@@ -59,7 +60,7 @@ def chirp(
     vertex_zero: op.CanBool = True,
     *,
     complex: Truthy,
-) -> np.complexfloating[Any, Any]: ...
+) -> npc.complexfloating: ...
 @overload  # complex arrays
 def chirp(
     t: onp.ToFloatND,
@@ -71,7 +72,7 @@ def chirp(
     vertex_zero: op.CanBool = True,
     *,
     complex: Truthy,
-) -> onp.ArrayND[np.complexfloating[Any, Any]]: ...
+) -> onp.ArrayND[npc.complexfloating]: ...
 
 #
 def sweep_poly(t: _ToFloat0ND, poly: onp.ToFloatND | np.poly1d, phi: onp.ToFloat = 0) -> _FloatND: ...

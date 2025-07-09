@@ -1,8 +1,9 @@
-from typing import Any, Final, Literal, TypeAlias, type_check_only
+from typing import Final, Literal, TypeAlias, type_check_only
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.optimize import OptimizeResult
 from scipy.optimize._typing import Bound
@@ -24,7 +25,7 @@ class _OptimizeResult(OptimizeResult):
     const: _Float
     optimality: _Float
     active_mask: _Int1D
-    unbounded_sol: tuple[onp.ToFloat | onp.ArrayND[np.number[Any]], ...]
+    unbounded_sol: tuple[onp.ToFloat | onp.ArrayND[npc.number], ...]
     nit: int
     status: _TerminationStatus
     message: str

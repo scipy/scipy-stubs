@@ -5,6 +5,7 @@ from typing_extensions import TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = [
     "assoc_legendre_p",
@@ -55,7 +56,7 @@ _Complex33_D: TypeAlias = tuple[_Complex3_D, _Complex3_D]
 _Complex333_D: TypeAlias = tuple[_Complex3_D, _Complex3_D, _Complex3_D]
 
 _Branch: TypeAlias = L[2, 3]
-_Branch_D: TypeAlias = _Branch | onp.SequenceND[_Branch] | onp.CanArrayND[np.integer[Any]]
+_Branch_D: TypeAlias = _Branch | onp.SequenceND[_Branch] | onp.CanArrayND[npc.integer]
 
 _D0: TypeAlias = L[False, 0]
 _D1: TypeAlias = L[True, 1]

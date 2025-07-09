@@ -1,8 +1,9 @@
-from typing import Any, Literal, TypeAlias
+from typing import Literal, TypeAlias
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 _Mode: TypeAlias = Literal["mirror", "constant", "nearest", "wrap", "interp"]
 
@@ -13,7 +14,7 @@ def savgol_coeffs(
     delta: float = 1.0,
     pos: int | None = None,
     use: Literal["conv", "dot"] = "conv",
-) -> onp.Array1D[np.floating[Any]]: ...
+) -> onp.Array1D[npc.floating]: ...
 
 #
 def savgol_filter(

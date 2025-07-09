@@ -4,10 +4,11 @@ from typing_extensions import TypeVar, TypeVarTuple, Unpack, override
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["complex_ode", "ode"]
 
-_SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.inexact[Any], default=np.float64 | np.complex128)
+_SCT_co = TypeVar("_SCT_co", covariant=True, bound=npc.inexact, default=np.float64 | np.complex128)
 _Ts = TypeVarTuple("_Ts", default=Unpack[tuple[()]])
 
 @type_check_only
@@ -35,15 +36,15 @@ class _IntegratorParams(TypedDict, total=False):
 
 @type_check_only
 class _ODEFuncF(Protocol[*_Ts]):
-    def __call__(self, t: float, y: float | onp.ArrayND[np.float64], /, *args: *_Ts) -> float | onp.ArrayND[np.floating[Any]]: ...
+    def __call__(self, t: float, y: float | onp.ArrayND[np.float64], /, *args: *_Ts) -> float | onp.ArrayND[npc.floating]: ...
 
 @type_check_only
 class _ODEFuncC(Protocol[*_Ts]):
     def __call__(
         self, t: float, y: complex | onp.ArrayND[np.complex128], /, *args: *_Ts
-    ) -> complex | onp.ArrayND[np.complexfloating[Any, Any]]: ...
+    ) -> complex | onp.ArrayND[npc.complexfloating]: ...
 
-_SolOutFunc: TypeAlias = Callable[[float, onp.Array1D[np.inexact[Any]]], Literal[0, -1]]
+_SolOutFunc: TypeAlias = Callable[[float, onp.Array1D[npc.inexact]], Literal[0, -1]]
 
 ###
 
@@ -187,7 +188,7 @@ class dopri5(IntegratorBase[np.float64]):
     dfactor: Final[float]
     beta: Final[float]
     verbosity: Final[int]
-    solout: Callable[[float, onp.Array1D[np.inexact[Any]]], Literal[0, -1]] | None
+    solout: Callable[[float, onp.Array1D[npc.inexact]], Literal[0, -1]] | None
     solout_cmplx: bool
     iout: int
     work: onp.Array1D[np.float64]
@@ -216,7 +217,7 @@ class dopri5(IntegratorBase[np.float64]):
         nr: int,  # unused
         xold: object,  # unused
         x: float,
-        y: onp.Array1D[np.floating[Any]],
+        y: onp.Array1D[npc.floating],
         nd: int,  # unused
         icomp: int,  # unused
         con: object,  # unused

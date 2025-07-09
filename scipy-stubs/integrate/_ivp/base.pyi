@@ -3,10 +3,11 @@ from typing import Any, ClassVar, Final, Generic, Literal, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Truthy
 
-_VT = TypeVar("_VT", bound=onp.ArrayND[np.inexact[Any]], default=onp.ArrayND[Any])
+_VT = TypeVar("_VT", bound=onp.ArrayND[npc.inexact], default=onp.ArrayND[Any])
 
 class OdeSolver:
     TOO_SMALL_STEP: ClassVar[str] = ...
@@ -60,9 +61,9 @@ class DenseOutput:
 
     def __init__(self, /, t_old: onp.ToFloat, t: onp.ToFloat) -> None: ...
     @overload
-    def __call__(self, /, t: onp.ToFloat) -> onp.Array1D[np.inexact[Any]]: ...
+    def __call__(self, /, t: onp.ToFloat) -> onp.Array1D[npc.inexact]: ...
     @overload
-    def __call__(self, /, t: onp.ToFloatND) -> onp.ArrayND[np.inexact[Any]]: ...
+    def __call__(self, /, t: onp.ToFloatND) -> onp.ArrayND[npc.inexact]: ...
 
 class ConstantDenseOutput(DenseOutput, Generic[_VT]):
     value: _VT

@@ -1,9 +1,10 @@
 from collections.abc import Sequence
-from typing import Any, Literal, NotRequired, TypeAlias, TypedDict, overload
+from typing import Literal, NotRequired, TypeAlias, TypedDict, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, Truthy
 from scipy.sparse import sparray, spmatrix
@@ -23,8 +24,8 @@ _ScalarB1: TypeAlias = bool | np.bool_
 _ScalarF8: TypeAlias = float | np.float64
 _VectorF8: TypeAlias = onp.Array1D[np.float64]
 
-_ScalarInt_co: TypeAlias = np.integer[Any]
-_ScalarFloat_co: TypeAlias = np.floating[Any] | _ScalarInt_co
+_ScalarInt_co: TypeAlias = npc.integer
+_ScalarFloat_co: TypeAlias = npc.floating | _ScalarInt_co
 
 _ScalarLikeInt_co: TypeAlias = int | _ScalarInt_co
 _ScalarLikeFloat_co: TypeAlias = float | _ScalarFloat_co
@@ -115,6 +116,6 @@ def projected_cg(
     ub: _ScalarLikeFloat_co | None = None,
     tol: _ScalarLikeFloat_co | None = None,
     max_iter: _ScalarLikeInt_co | None = None,
-    max_infeasible_iter: _ScalarLikeInt_co | np.integer[Any] | None = None,
+    max_infeasible_iter: _ScalarLikeInt_co | npc.integer | None = None,
     return_all: _ScalarB1 = False,
 ) -> tuple[_VectorF8, _ProjectedCGDict]: ...

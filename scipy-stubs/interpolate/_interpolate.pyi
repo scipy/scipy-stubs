@@ -4,6 +4,7 @@ from typing_extensions import TypeVar, deprecated
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._polyint import _Interpolator1D
 
@@ -11,7 +12,7 @@ __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
 
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
-_ToAxis: TypeAlias = int | np.integer[Any]
+_ToAxis: TypeAlias = int | npc.integer
 _Extrapolate: TypeAlias = Literal["periodic"] | bool
 
 _Interp1dKind: TypeAlias = Literal["linear", "nearest", "nearest-up", "zero", "slinear", "quadratic", "cubic", "previous", "next"]
@@ -52,9 +53,9 @@ class interp1d(_Interpolator1D):  # legacy
     copy: bool
     bounds_error: bool
     axis: int
-    x: onp.Array1D[np.floating[Any] | np.integer[Any] | np.bool_]
-    y: onp.ArrayND[np.inexact[Any]]
-    x_bds: onp.Array1D[np.floating[Any]]  # only set if `kind in {"nearest", "nearest-up"}`
+    x: onp.Array1D[npc.floating | npc.integer | np.bool_]
+    y: onp.ArrayND[npc.inexact]
+    x_bds: onp.Array1D[npc.floating]  # only set if `kind in {"nearest", "nearest-up"}`
 
     @property
     def fill_value(self, /) -> _Interp1dFillValue: ...

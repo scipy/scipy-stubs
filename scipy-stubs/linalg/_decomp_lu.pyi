@@ -1,7 +1,8 @@
-from typing import Any, Literal, TypeAlias, overload
+from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, Truthy
 
@@ -9,15 +10,15 @@ __all__ = ["lu", "lu_factor", "lu_solve"]
 
 _ISizeND: TypeAlias = onp.ArrayND[np.intp]
 
-_Float1D: TypeAlias = onp.Array1D[np.floating[Any]]
-_Float2D: TypeAlias = onp.Array2D[np.floating[Any]]
-_FloatND: TypeAlias = onp.ArrayND[np.floating[Any]]
+_Float1D: TypeAlias = onp.Array1D[npc.floating]
+_Float2D: TypeAlias = onp.Array2D[npc.floating]
+_FloatND: TypeAlias = onp.ArrayND[npc.floating]
 
-_Complex1D: TypeAlias = onp.Array1D[np.complexfloating[Any, Any]]
-_Complex2D: TypeAlias = onp.Array2D[np.complexfloating[Any, Any]]
-_ComplexND: TypeAlias = onp.ArrayND[np.complexfloating[Any, Any]]
+_Complex1D: TypeAlias = onp.Array1D[npc.complexfloating]
+_Complex2D: TypeAlias = onp.Array2D[npc.complexfloating]
+_ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
 
-_InexactND: TypeAlias = onp.ArrayND[np.inexact[Any]]
+_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
 _Trans: TypeAlias = Literal[0, 1, 2]
 

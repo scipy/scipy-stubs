@@ -1,14 +1,14 @@
-from typing import Any, TypeAlias, overload
+from typing import TypeAlias, overload
 
-import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["cho_factor", "cho_solve", "cho_solve_banded", "cholesky", "cholesky_banded"]
 
-_Float2D: TypeAlias = onp.Array2D[np.floating[Any]]
-_FloatND: TypeAlias = onp.ArrayND[np.floating[Any]]
-_Complex2D: TypeAlias = onp.Array2D[np.inexact[Any]]
-_ComplexND: TypeAlias = onp.ArrayND[np.inexact[Any]]
+_Float2D: TypeAlias = onp.Array2D[npc.floating]
+_FloatND: TypeAlias = onp.ArrayND[npc.floating]
+_Complex2D: TypeAlias = onp.Array2D[npc.inexact]
+_ComplexND: TypeAlias = onp.ArrayND[npc.inexact]
 
 ###
 
