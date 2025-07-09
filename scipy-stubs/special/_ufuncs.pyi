@@ -1067,7 +1067,12 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     #
     @override
     def accumulate(
-        self, /, array: onp.ToFloat64_ND, axis: op.CanIndex = 0, dtype: _ToDType_fd = None, out: _Out1[_FloatND | None] = None
+        self,
+        /,
+        array: onp.ToFloat64_ND,
+        axis: op.CanIndex = 0,
+        dtype: _ToDType_fd | None = None,
+        out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
     #
     @overload
@@ -1076,7 +1081,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         /,
         array: onp.ToFloat64_ND,
         axis: None,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1 = None,
         keepdims: onp.ToFalse = False,
         initial: onp.ToFloat64 = ...,
@@ -1088,7 +1093,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         /,
         array: onp.ToFloat64_ND,
         axis: _Axis = 0,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1 = None,
         keepdims: onp.ToFalse = False,
         initial: onp.ToFloat64 = ...,
@@ -1100,7 +1105,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         /,
         array: onp.ToFloat64_ND,
         axis: _Axis = 0,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1 = None,
         *,
         keepdims: onp.ToTrue,
@@ -1125,7 +1130,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         /,
         array: onp.ToFloat64_ND,
         axis: _Axis = 0,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         *,
         out: _Out1[_OutT],
         keepdims: bool = False,
@@ -1140,7 +1145,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         array: onp.ToFloat64_ND,
         indices: _Indices,
         axis: op.CanIndex = 0,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
     #
@@ -1223,7 +1228,12 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     #
     @override
     def accumulate(
-        self, /, array: onp.ToFloat64_ND, axis: op.CanIndex = 0, dtype: _ToDType_fd = None, out: _Out1[_FloatND | None] = None
+        self,
+        /,
+        array: onp.ToFloat64_ND,
+        axis: op.CanIndex = 0,
+        dtype: _ToDType_fd | None = None,
+        out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
     #
     @overload
@@ -1232,7 +1242,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         /,
         array: onp.ToFloat64_ND,
         axis: None,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1 = None,
         keepdims: onp.ToFalse = False,
         initial: onp.ToFloat64 = ...,
@@ -1244,7 +1254,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         /,
         array: onp.ToFloat64_ND,
         axis: _Axis = 0,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1 = None,
         keepdims: onp.ToFalse = False,
         initial: onp.ToFloat64 = ...,
@@ -1256,7 +1266,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         /,
         array: onp.ToFloat64_ND,
         axis: _Axis = 0,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1 = None,
         *,
         keepdims: onp.ToTrue,
@@ -1281,7 +1291,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         /,
         array: onp.ToFloat64_ND,
         axis: _Axis = 0,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         *,
         out: _Out1[_OutT],
         keepdims: bool = False,
@@ -1296,7 +1306,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         array: onp.ToFloat64_ND,
         indices: _Indices,
         axis: op.CanIndex = 0,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
     #
@@ -1351,7 +1361,12 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     #
     @overload
     def accumulate(
-        self, /, array: onp.ToFloat64_ND, axis: op.CanIndex = 0, dtype: _ToDType_fd = None, out: _Out1[_FloatND | None] = None
+        self,
+        /,
+        array: onp.ToFloat64_ND,
+        axis: op.CanIndex = 0,
+        dtype: _ToDType_fd | None = None,
+        out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
     @overload
     def accumulate(
@@ -1369,7 +1384,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         /,
         array: onp.ToFloat64_ND,
         axis: None,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1 = None,
         keepdims: onp.ToFalse = False,
         initial: onp.ToFloat = ...,
@@ -1381,7 +1396,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         /,
         array: onp.ToFloat64_ND,
         axis: _Axis = 0,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1 = None,
         *,
         keepdims: onp.ToTrue,
@@ -1458,7 +1473,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         array: onp.ToFloat64_ND,
         indices: _Indices,
         axis: op.CanIndex = 0,
-        dtype: _ToDType_fd = None,
+        dtype: _ToDType_fd | None = None,
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
     @overload

@@ -86,9 +86,8 @@ class _DataSampler(Protocol):
 
 ###
 
-# NOTE: The `overload-overlap` mypy errors are false positives.
 @overload  # diagonals: <known>, dtype: None = ..., format: {"dia", None} = ...
-def diags_array(  # type: ignore[overload-overlap]
+def diags_array(
     diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
     /,
     *,
@@ -739,7 +738,7 @@ def random_array(
     *,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
-    dtype: onp.AnyFloat64DType = None,
+    dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
@@ -783,7 +782,7 @@ def random_array(
     *,
     density: float | npc.floating = 0.01,
     format: _Format = "coo",
-    dtype: onp.AnyFloat64DType = None,
+    dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
@@ -794,7 +793,7 @@ def random_array(
     *,
     density: float | npc.floating = 0.01,
     format: _Format = "coo",
-    dtype: onp.AnyFloat64DType = None,
+    dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
@@ -873,7 +872,7 @@ def random(
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
-    dtype: onp.AnyFloat64DType = None,
+    dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
     *,
@@ -945,7 +944,7 @@ def random(
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
     format: _Format = ...,
-    dtype: onp.AnyFloat64DType = None,
+    dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
     *,
@@ -1019,7 +1018,7 @@ def rand(
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
-    dtype: onp.AnyFloat64DType = None,
+    dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     *,
     random_state: onp.random.ToRNG | None = None,
@@ -1074,7 +1073,7 @@ def rand(
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
     format: _Format = "coo",
-    dtype: onp.AnyFloat64DType = None,
+    dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     *,
     random_state: onp.random.ToRNG | None = None,

@@ -65,7 +65,7 @@ class LinearOperator(Generic[_SCT_co]):
 
     # keep in sync with `_CustomLinearOperator.__init__`
     @overload  # no dtype
-    def __new__(  # type: ignore[overload-overlap]
+    def __new__(
         cls,
         shape: _ToShape,
         matvec: _FunMatVec,
