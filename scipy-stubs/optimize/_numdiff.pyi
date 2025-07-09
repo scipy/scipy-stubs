@@ -5,7 +5,6 @@ import numpy as np
 import optype.numpy as onp
 
 from ._differentiable_functions import _DoesMap
-from scipy._typing import Falsy, Truthy
 from scipy.sparse import csr_array, sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
@@ -41,10 +40,10 @@ def approx_derivative(
     f0: _ToFloatOr1D | None = None,
     bounds: tuple[_ToFloatOr1D, _ToFloatOr1D] = ...,
     sparsity: None = None,
-    as_linear_operator: Falsy = False,
+    as_linear_operator: onp.ToFalse = False,
     args: tuple[object, ...] = (),
     kwargs: Mapping[str, object] | None = None,
-    full_output: Falsy = False,
+    full_output: onp.ToFalse = False,
     workers: int | _DoesMap | None = None,
 ) -> _Float1D | onp.Array2D[np.float64]: ...
 @overload  # sparsity: <given>, as_linear_operator: False (default), full_output: False (default)
@@ -58,10 +57,10 @@ def approx_derivative(
     bounds: tuple[_ToFloatOr1D, _ToFloatOr1D] = ...,
     *,
     sparsity: _Sparsity,
-    as_linear_operator: Falsy = False,
+    as_linear_operator: onp.ToFalse = False,
     args: tuple[object, ...] = (),
     kwargs: Mapping[str, object] | None = None,
-    full_output: Falsy = False,
+    full_output: onp.ToFalse = False,
     workers: int | _DoesMap | None = None,
 ) -> csr_array: ...
 @overload  # as_linear_operator: True, full_output: False (default)
@@ -75,10 +74,10 @@ def approx_derivative(
     bounds: tuple[_ToFloatOr1D, _ToFloatOr1D] = ...,
     sparsity: _Sparsity | None = None,
     *,
-    as_linear_operator: Truthy,
+    as_linear_operator: onp.ToTrue,
     args: tuple[object, ...] = (),
     kwargs: Mapping[str, object] | None = None,
-    full_output: Falsy = False,
+    full_output: onp.ToFalse = False,
     workers: int | _DoesMap | None = None,
 ) -> LinearOperator: ...
 @overload  # sparsity: None (default), as_linear_operator: False (default), full_output: True (keyword)
@@ -91,11 +90,11 @@ def approx_derivative(
     f0: _ToFloatOr1D | None = None,
     bounds: tuple[_ToFloatOr1D, _ToFloatOr1D] = ...,
     sparsity: None = None,
-    as_linear_operator: Falsy = False,
+    as_linear_operator: onp.ToFalse = False,
     args: tuple[object, ...] = (),
     kwargs: Mapping[str, object] | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     workers: int | _DoesMap | None = None,
 ) -> tuple[_Float1D | onp.Array2D[np.float64], _InfoDict]: ...
 @overload  # sparsity: <given>, as_linear_operator: False (default), full_output: True
@@ -109,10 +108,10 @@ def approx_derivative(
     bounds: tuple[_ToFloatOr1D, _ToFloatOr1D] = ...,
     *,
     sparsity: _Sparsity,
-    as_linear_operator: Falsy = False,
+    as_linear_operator: onp.ToFalse = False,
     args: tuple[object, ...] = (),
     kwargs: Mapping[str, object] | None = None,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     workers: int | _DoesMap | None = None,
 ) -> tuple[csr_array, _InfoDict]: ...
 @overload  # as_linear_operator: True, full_output: True
@@ -126,10 +125,10 @@ def approx_derivative(
     bounds: tuple[_ToFloatOr1D, _ToFloatOr1D] = ...,
     sparsity: _Sparsity | None = None,
     *,
-    as_linear_operator: Truthy,
+    as_linear_operator: onp.ToTrue,
     args: tuple[object, ...] = (),
     kwargs: Mapping[str, object] | None = None,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     workers: int | _DoesMap | None = None,
 ) -> tuple[LinearOperator, _InfoDict]: ...
 

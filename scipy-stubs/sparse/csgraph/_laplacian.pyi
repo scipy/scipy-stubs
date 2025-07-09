@@ -4,7 +4,6 @@ import numpy.typing as npt
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
@@ -19,7 +18,7 @@ _Form: TypeAlias = Literal["array", "function", "lo"]
 def laplacian(
     csgraph: _ToCSGraph,
     normed: bool = False,
-    return_diag: Falsy = False,
+    return_diag: onp.ToFalse = False,
     use_out_degree: bool = False,
     *,
     copy: bool = True,
@@ -31,7 +30,7 @@ def laplacian(
 def laplacian(
     csgraph: _ToCSGraph,
     normed: bool,
-    return_diag: Truthy,
+    return_diag: onp.ToTrue,
     use_out_degree: bool = False,
     *,
     copy: bool = True,
@@ -44,7 +43,7 @@ def laplacian(
     csgraph: _ToCSGraph,
     normed: bool = False,
     *,
-    return_diag: Truthy,
+    return_diag: onp.ToTrue,
     use_out_degree: bool = False,
     copy: bool = True,
     form: _Form = "array",

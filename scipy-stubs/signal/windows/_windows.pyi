@@ -8,8 +8,6 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
-
 __all__ = [
     "barthann",
     "bartlett",
@@ -142,7 +140,7 @@ def dpss(
     Kmax: None = None,
     sym: _ToBool = True,
     norm: _Norm | None = None,
-    return_ratios: Falsy = False,
+    return_ratios: onp.ToFalse = False,
     *,
     xp: _Xp | None = None,
     device: _Device | None = None,
@@ -154,7 +152,7 @@ def dpss(
     Kmax: None,
     sym: _ToBool,
     norm: _Norm | None,
-    return_ratios: Truthy,
+    return_ratios: onp.ToTrue,
     *,
     xp: _Xp | None = None,
     device: _Device | None = None,
@@ -167,7 +165,7 @@ def dpss(
     sym: _ToBool = True,
     norm: _Norm | None = None,
     *,
-    return_ratios: Truthy,
+    return_ratios: onp.ToTrue,
     xp: _Xp | None = None,
     device: _Device | None = None,
 ) -> tuple[_Float64_1D, np.float64]: ...
@@ -178,7 +176,7 @@ def dpss(
     Kmax: op.CanIndex,
     sym: _ToBool = True,
     norm: _Norm | None = None,
-    return_ratios: Falsy = False,
+    return_ratios: onp.ToFalse = False,
     *,
     xp: _Xp | None = None,
     device: _Device | None = None,
@@ -190,7 +188,7 @@ def dpss(
     Kmax: op.CanIndex,
     sym: _ToBool,
     norm: _Norm | None,
-    return_ratios: Truthy,
+    return_ratios: onp.ToTrue,
     *,
     xp: _Xp | None = None,
     device: _Device | None = None,
@@ -203,7 +201,7 @@ def dpss(
     sym: _ToBool = True,
     norm: _Norm | None = None,
     *,
-    return_ratios: Truthy,
+    return_ratios: onp.ToTrue,
     xp: _Xp | None = None,
     device: _Device | None = None,
 ) -> tuple[_Float64_2D, _Float64_1D]: ...

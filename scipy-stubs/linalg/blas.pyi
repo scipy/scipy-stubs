@@ -1,9 +1,11 @@
-from collections.abc import Iterable, Sequence
-from typing import Literal as L, overload
+from _typeshed import Incomplete
+from collections.abc import Iterable, Iterator, Sequence
+from typing import Literal as L, Protocol, SupportsIndex, TypeVar, overload, type_check_only
 
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._fblas import (
     caxpy as caxpy,
@@ -157,9 +159,44 @@ from ._fblas import (
     ztrsm as ztrsm,
     ztrsv as ztrsv,
 )
-from scipy._typing import SequenceNotStr, _FortranFunction
 
 __all__ = ["find_best_blas_type", "get_blas_funcs"]
+
+###
+
+_VT_co = TypeVar("_VT_co", covariant=True)
+
+# A slightly modified variant from https://github.com/python/typing/issues/256#issuecomment-1442633430
+# This works because `str.__contains__` does not accept object (either in typeshed or at runtime)
+@type_check_only
+class _SequenceNotStr(Protocol[_VT_co]):
+    @overload
+    def __getitem__(self, index: SupportsIndex, /) -> _VT_co: ...
+    @overload
+    def __getitem__(self, index: slice, /) -> Sequence[_VT_co]: ...
+    def __iter__(self, /) -> Iterator[_VT_co]: ...
+    def __reversed__(self, /) -> Iterator[_VT_co]: ...
+    def __contains__(self, value: object, /) -> bool: ...  # <-- the trick
+    def __len__(self, /) -> int: ...
+    def index(self, value: object, start: int = 0, stop: int = ..., /) -> int: ...
+    def count(self, value: object, /) -> int: ...
+
+# NOTE: used in `lapack.pyi`
+@type_check_only
+class _FortranFunction(Protocol):
+    @property
+    def dtype(self, /) -> np.dtype[Incomplete]: ...
+    @property
+    def int_dtype(self, /) -> np.dtype[npc.integer]: ...
+    @property
+    def module_name(self, /) -> str: ...
+    @property
+    def prefix(self, /) -> str: ...
+    @property
+    def typecode(self, /) -> str: ...
+    def __call__(self, /, *args: object, **kwargs: object) -> Incomplete: ...
+
+###
 
 # see `scipy.linalg.blas._type_conv`
 def find_best_blas_type(
@@ -178,7 +215,7 @@ def get_blas_funcs(
 ) -> _FortranFunction: ...
 @overload
 def get_blas_funcs(
-    names: SequenceNotStr[str],
+    names: _SequenceNotStr[str],
     arrays: Sequence[onp.ArrayND] = (),
     dtype: npt.DTypeLike | None = None,
     ilp64: L["preferred"] | bool = False,

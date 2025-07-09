@@ -9,7 +9,7 @@ import optype.numpy as onp
 
 from ._common import ConfidenceInterval
 from ._stats_py import SignificanceResult
-from scipy._typing import Alternative, Falsy, NanPolicy, Truthy
+from ._typing import Alternative, NanPolicy
 
 __all__ = [
     "barnard_exact",
@@ -45,7 +45,7 @@ def epps_singleton_2samp(
     *,
     axis: Literal[0, -1] | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Falsy = False,
+    keepdims: onp.ToFalse = False,
 ) -> Epps_Singleton_2sampResult[float]: ...
 @overload
 def epps_singleton_2samp(
@@ -55,7 +55,7 @@ def epps_singleton_2samp(
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Falsy = False,
+    keepdims: onp.ToFalse = False,
 ) -> Epps_Singleton_2sampResult[float]: ...
 @overload
 def epps_singleton_2samp(
@@ -65,7 +65,7 @@ def epps_singleton_2samp(
     *,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Truthy,
+    keepdims: onp.ToTrue,
 ) -> Epps_Singleton_2sampResult[_FloatND]: ...
 @overload
 def epps_singleton_2samp(
@@ -91,7 +91,7 @@ def cramervonmises(
     *,
     axis: Literal[0, -1] | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Falsy = False,
+    keepdims: onp.ToFalse = False,
 ) -> CramerVonMisesResult[float]: ...
 @overload
 def cramervonmises(
@@ -101,7 +101,7 @@ def cramervonmises(
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Falsy = False,
+    keepdims: onp.ToFalse = False,
 ) -> CramerVonMisesResult[float]: ...
 @overload
 def cramervonmises(
@@ -111,7 +111,7 @@ def cramervonmises(
     *,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Truthy,
+    keepdims: onp.ToTrue,
 ) -> CramerVonMisesResult[_FloatND]: ...
 @overload
 def cramervonmises(
@@ -133,7 +133,7 @@ def cramervonmises_2samp(
     *,
     axis: Literal[0, -1] | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Falsy = False,
+    keepdims: onp.ToFalse = False,
 ) -> CramerVonMisesResult[float]: ...
 @overload
 def cramervonmises_2samp(
@@ -143,7 +143,7 @@ def cramervonmises_2samp(
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Falsy = False,
+    keepdims: onp.ToFalse = False,
 ) -> CramerVonMisesResult[float]: ...
 @overload
 def cramervonmises_2samp(
@@ -153,7 +153,7 @@ def cramervonmises_2samp(
     *,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: Truthy,
+    keepdims: onp.ToTrue,
 ) -> CramerVonMisesResult[_FloatND]: ...
 @overload
 def cramervonmises_2samp(

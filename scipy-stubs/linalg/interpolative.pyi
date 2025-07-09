@@ -5,7 +5,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import ToRNG
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = [
@@ -35,7 +34,7 @@ def rand(*shape: int) -> onp.ArrayND[np.float64]: ...
 
 #
 def interp_decomp(
-    A: onp.ArrayND[_AnyNumber] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: ToRNG = None
+    A: onp.ArrayND[_AnyNumber] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[int, onp.ArrayND[np.intp], onp.ArrayND[np.float64]]: ...
 
 #
@@ -60,10 +59,12 @@ def id_to_svd(
 
 #
 def svd(
-    A: onp.ArrayND[_AnyNumber] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: ToRNG = None
+    A: onp.ArrayND[_AnyNumber] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
 
 #
-def estimate_spectral_norm(A: LinearOperator, its: int = 20, rng: ToRNG = None) -> float | np.float64: ...
-def estimate_spectral_norm_diff(A: LinearOperator, B: LinearOperator, its: int = 20, rng: ToRNG = None) -> float | np.float64: ...
-def estimate_rank(A: onp.ArrayND[_AnyNumber] | LinearOperator, eps: onp.ToFloat, rng: ToRNG = None) -> int: ...
+def estimate_spectral_norm(A: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None) -> float | np.float64: ...
+def estimate_spectral_norm_diff(
+    A: LinearOperator, B: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None
+) -> float | np.float64: ...
+def estimate_rank(A: onp.ArrayND[_AnyNumber] | LinearOperator, eps: onp.ToFloat, rng: onp.random.ToRNG | None = None) -> int: ...

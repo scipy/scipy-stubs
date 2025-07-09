@@ -4,8 +4,6 @@ from typing import Literal, LiteralString, TypeAlias, overload
 import numpy as np
 import optype.numpy as onp
 
-from scipy._typing import Falsy, Truthy
-
 __all__ = ["bisplev", "bisplrep", "insert", "spalde", "splantider", "splder", "splev", "splint", "splprep", "splrep", "sproot"]
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
@@ -39,7 +37,7 @@ def splprep(
     task: _Task = 0,
     s: onp.ToFloat | None = None,
     t: onp.ToFloat1D | None = None,
-    full_output: Falsy = 0,
+    full_output: onp.ToFalse = 0,
     nest: int | None = None,
     per: onp.ToBool = 0,
     quiet: onp.ToBool = 1,
@@ -55,7 +53,7 @@ def splprep(
     task: _Task,
     s: onp.ToFloat | None,
     t: onp.ToFloat1D | None,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     nest: int | None = None,
     per: onp.ToBool = 0,
     quiet: onp.ToBool = 1,
@@ -72,7 +70,7 @@ def splprep(
     s: onp.ToFloat | None = None,
     t: onp.ToFloat1D | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     nest: int | None = None,
     per: onp.ToBool = 0,
     quiet: onp.ToBool = 1,
@@ -90,7 +88,7 @@ def splrep(
     task: _Task = 0,
     s: onp.ToFloat | None = None,
     t: onp.ToFloat1D | None = None,
-    full_output: Falsy = 0,
+    full_output: onp.ToFalse = 0,
     per: onp.ToBool = 0,
     quiet: onp.ToBool = 1,
 ) -> _OutTCK1: ...
@@ -105,7 +103,7 @@ def splrep(
     task: _Task,
     s: onp.ToFloat | None,
     t: onp.ToFloat1D | None,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     per: onp.ToBool = 0,
     quiet: onp.ToBool = 1,
 ) -> tuple[_OutTCK1, float, int, LiteralString]: ...
@@ -121,7 +119,7 @@ def splrep(
     s: onp.ToFloat | None = None,
     t: onp.ToFloat1D | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     per: onp.ToBool = 0,
     quiet: onp.ToBool = 1,
 ) -> tuple[_OutTCK1, float, int, LiteralString]: ...
@@ -131,9 +129,9 @@ def splev(x: onp.ToFloatND, tck: _ToTCK, der: int = 0, ext: _Ext = 0) -> _FloatN
 
 #
 @overload  # full_output: falsy
-def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK, full_output: Falsy = 0) -> float | list[float]: ...
+def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK, full_output: onp.ToFalse = 0) -> float | list[float]: ...
 @overload  # full_output: truthy
-def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK, full_output: Truthy) -> tuple[float | list[float], _Float1D]: ...
+def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK, full_output: onp.ToTrue) -> tuple[float | list[float], _Float1D]: ...
 
 #
 def sproot(tck: _ToTCK, mest: int = 10) -> _Float1D | list[_Float1D]: ...
@@ -164,7 +162,7 @@ def bisplrep(
     eps: onp.ToFloat = 1e-16,
     tx: onp.ToFloat1D | None = None,
     ty: onp.ToFloat1D | None = None,
-    full_output: Falsy = 0,
+    full_output: onp.ToFalse = 0,
     nxest: onp.ToFloat | None = None,
     nyest: onp.ToFloat | None = None,
     quiet: onp.ToBool = 1,
@@ -186,7 +184,7 @@ def bisplrep(
     eps: onp.ToFloat,
     tx: onp.ToFloat1D | None,
     ty: onp.ToFloat1D | None,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     nxest: onp.ToFloat | None = None,
     nyest: onp.ToFloat | None = None,
     quiet: onp.ToBool = 1,
@@ -209,7 +207,7 @@ def bisplrep(
     tx: onp.ToFloat1D | None = None,
     ty: onp.ToFloat1D | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     nxest: onp.ToFloat | None = None,
     nyest: onp.ToFloat | None = None,
     quiet: onp.ToBool = 1,

@@ -6,7 +6,7 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 
-from scipy._typing import ByteOrder, FileName
+from scipy.io._typing import ByteOrder, FileName
 
 __all__ = ["MatReadError", "MatReadWarning", "MatWriteError", "MatWriteWarning"]
 

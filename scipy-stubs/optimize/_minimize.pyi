@@ -9,7 +9,6 @@ from numpy.polynomial._polybase import ABCPolyBase
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
 from .optimize import OptimizeResult as _OptimizeResult
-from scipy._typing import Falsy, Truthy
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["minimize", "minimize_scalar"]
@@ -189,7 +188,7 @@ def minimize(
     x0: onp.ToFloat,
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
-    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | Falsy | None = None,
+    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
     hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
@@ -204,7 +203,7 @@ def minimize(
     x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
-    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | Falsy | None = None,
+    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
     hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
@@ -219,7 +218,7 @@ def minimize(
     x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args,
     method: MethodMimimize | _MinimizeMethodFun | None,
-    jac: Truthy,
+    jac: onp.ToTrue,
     hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
@@ -235,7 +234,7 @@ def minimize(
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
     *,
-    jac: Truthy,
+    jac: onp.ToTrue,
     hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,

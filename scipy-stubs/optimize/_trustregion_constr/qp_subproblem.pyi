@@ -6,7 +6,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
@@ -68,7 +67,7 @@ def box_sphere_intersections(
     ub: _VectorLikeFloat_co,
     trust_radius: _ScalarLikeFloat_co,
     entire_line: _ScalarB1 = False,
-    extra_info: Falsy | None = False,
+    extra_info: onp.ToFalse | None = False,
 ) -> tuple[_ScalarF8, _ScalarF8, _ScalarB1]: ...
 @overload
 def box_sphere_intersections(
@@ -78,7 +77,7 @@ def box_sphere_intersections(
     ub: _VectorLikeFloat_co,
     trust_radius: _ScalarLikeFloat_co,
     entire_line: _ScalarB1,
-    extra_info: Truthy,
+    extra_info: onp.ToTrue,
 ) -> tuple[_ScalarF8, _ScalarF8, _ScalarB1, _SphereInfoDict, _SphereInfoDict]: ...
 @overload
 def box_sphere_intersections(
@@ -89,7 +88,7 @@ def box_sphere_intersections(
     trust_radius: _ScalarLikeFloat_co,
     entire_line: _ScalarB1 = False,
     *,
-    extra_info: Truthy,
+    extra_info: onp.ToTrue,
 ) -> tuple[_ScalarF8, _ScalarF8, _ScalarB1, _SphereInfoDict, _SphereInfoDict]: ...
 def inside_box_boundaries(
     x: onp.Array[_ShapeT, _ScalarFloat_co], lb: onp.Array[_ShapeT, _ScalarFloat_co], ub: onp.Array[_ShapeT, _ScalarFloat_co]

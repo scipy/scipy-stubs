@@ -5,8 +5,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import AnyBool, Falsy, Truthy
-
 __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output", "RealData", "odr", "odr_error", "odr_stop"]
 
 _ToIntScalar: TypeAlias = npc.integer | np.bool_
@@ -174,7 +172,7 @@ class Model:
     fjacd: Final[_FCN]
     extra_args: Final[tuple[object, ...]]
     covx: Final[onp.ArrayND[_ToFloatScalar] | None]
-    implicit: Final[AnyBool]
+    implicit: Final[onp.ToBool]
     meta: Final[Mapping[str, object]]
 
     def __init__(
@@ -185,7 +183,7 @@ class Model:
         fjacd: _FCN | None = None,
         extra_args: tuple[object, ...] | None = None,
         estimate: onp.ToFloat1D | None = None,
-        implicit: AnyBool = 0,
+        implicit: onp.ToBool = 0,
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
     def set_meta(self, /, **kwds: object) -> None: ...
@@ -302,7 +300,7 @@ def odr(
     scld: onp.ToFloatND | None = None,
     work: onp.ArrayND[np.float64] | None = None,
     iwork: onp.ArrayND[np.int32 | np.int64] | None = None,
-    full_output: Falsy = 0,
+    full_output: onp.ToFalse = 0,
 ) -> tuple[_Float1D, _Float1D, _Float2D]: ...
 @overload
 def odr(
@@ -333,5 +331,5 @@ def odr(
     work: onp.ArrayND[np.float64] | None = None,
     iwork: onp.ArrayND[np.int32 | np.int64] | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
 ) -> tuple[_Float1D, _Float1D, _Float2D, _FullOutput]: ...

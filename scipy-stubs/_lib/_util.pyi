@@ -2,7 +2,7 @@ import multiprocessing.pool as mpp
 import sys
 import types
 from collections.abc import Callable, Iterable, Sequence
-from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, TypeAlias, overload
+from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, Self, TypeAlias, overload
 from typing_extensions import TypeVar, override
 
 import numpy as np
@@ -11,7 +11,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 from numpy.random import Generator as Generator  # implicit re-export
 
-from scipy._typing import RNG, EnterSelfMixin
+from scipy._typing import ExitMixin
 
 _AnyRNGT = TypeVar("_AnyRNGT", np.random.RandomState, np.random.Generator)
 
@@ -71,11 +71,12 @@ class _FunctionWrapper(Generic[_T_contra, _T_co]):
     def __init__(self, /, f: Callable[Concatenate[_T_contra, ...], _T_co], args: tuple[object, ...]) -> None: ...
     def __call__(self, /, x: _T_contra) -> _T_co: ...
 
-class MapWrapper(EnterSelfMixin):
+class MapWrapper(ExitMixin):
     pool: int | mpp.Pool | None
 
     def __init__(self, /, pool: Callable[[Callable[[_VT], _RT], Iterable[_VT]], Iterable[_RT]] | int = 1) -> None: ...
     def __call__(self, /, func: Callable[[_VT], _RT], iterable: Iterable[_VT]) -> Iterable[_RT]: ...
+    def __enter__(self, /) -> Self: ...
     def terminate(self, /) -> None: ...
     def join(self, /) -> None: ...
     def close(self, /) -> None: ...
@@ -100,7 +101,7 @@ def check_random_state(seed: onp.ToJustInt | types.ModuleType | None) -> np.rand
 #
 @overload
 def rng_integers(
-    gen: RNG | None,
+    gen: onp.random.RNG | None,
     low: onp.ToInt,
     high: onp.ToInt | None = None,
     size: tuple[()] | None = None,
@@ -109,7 +110,7 @@ def rng_integers(
 ) -> npc.integer: ...
 @overload
 def rng_integers(
-    gen: RNG | None,
+    gen: onp.random.RNG | None,
     low: onp.ToInt | onp.ToIntND,
     high: onp.ToInt | onp.ToIntND | None = None,
     size: op.CanIndex | Sequence[op.CanIndex] | None = None,

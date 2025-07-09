@@ -5,18 +5,19 @@ from typing_extensions import TypeIs, TypeVar, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
 from ._compressed import _cs_matrix
 from ._csr import _csr_base, csr_array, csr_matrix
 from ._matrix import spmatrix
-from ._typing import Index1D, Numeric, ToShape2D
+from ._typing import _ToShape2D
 
 __all__ = ["csc_array", "csc_matrix", "isspmatrix_csc"]
 
 _T = TypeVar("_T")
-_ScalarT = TypeVar("_ScalarT", bound=Numeric)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
 
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 _ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
@@ -71,7 +72,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self,
         /,
         arg1: _ToMatrix[_ScalarT_co],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,
         *,
@@ -81,8 +82,8 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.float64],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None = None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -92,8 +93,8 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.bool_],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
         *,
@@ -103,8 +104,8 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.bool_],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None = None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
@@ -114,8 +115,8 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.int64],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
         *,
@@ -125,8 +126,8 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.int64],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None = None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyIntDType,
         copy: bool = False,
@@ -136,8 +137,8 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.complex128],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
         *,
@@ -147,8 +148,8 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.complex128],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None = None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
@@ -159,7 +160,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self: csc_array[np.bool_],
         /,
         arg1: Sequence[Sequence[bool]],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
@@ -170,7 +171,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self: csc_array[np.int_],
         /,
         arg1: Sequence[Sequence[op.JustInt]],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
@@ -181,7 +182,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self: csc_array[np.float64],
         /,
         arg1: Sequence[Sequence[op.JustFloat]],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -192,7 +193,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self: csc_array[np.complex128],
         /,
         arg1: Sequence[Sequence[op.JustComplex]],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
@@ -203,7 +204,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self,
         /,
         arg1: onp.ToComplexStrict2D,
-        shape: ToShape2D | None,
+        shape: _ToShape2D | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         *,
@@ -214,7 +215,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self,
         /,
         arg1: onp.ToComplexStrict2D,
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -249,7 +250,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self,
         /,
         arg1: _ToMatrix[_ScalarT_co],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,
         *,
@@ -259,8 +260,8 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csc_matrix[np.float64],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None = None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -271,7 +272,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self: csc_matrix[np.bool_],
         /,
         arg1: Sequence[Sequence[bool]],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
@@ -282,7 +283,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self: csc_matrix[np.int_],
         /,
         arg1: Sequence[Sequence[op.JustInt]],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
@@ -293,7 +294,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self: csc_matrix[np.float64],
         /,
         arg1: Sequence[Sequence[op.JustFloat]],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -304,7 +305,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self: csc_matrix[np.complex128],
         /,
         arg1: Sequence[Sequence[op.JustComplex]],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
@@ -315,7 +316,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self,
         /,
         arg1: onp.ToComplexStrict2D,
-        shape: ToShape2D | None,
+        shape: _ToShape2D | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         *,
@@ -326,7 +327,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self,
         /,
         arg1: onp.ToComplexStrict2D,
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -344,6 +345,6 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @overload
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload
-    def getnnz(self, /, axis: op.CanIndex) -> Index1D: ...
+    def getnnz(self, /, axis: op.CanIndex) -> onp.Array1D[np.int32]: ...
 
 def isspmatrix_csc(x: object) -> TypeIs[csc_matrix]: ...

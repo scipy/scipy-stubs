@@ -4,12 +4,11 @@ import numpy as np
 import optype.numpy as onp
 
 from ._optimize import OptimizeResult as _OptimizeResult
-from scipy._typing import ToRNG
 
 @type_check_only
 class _CommonOptions(TypedDict, total=False):
     maximize: onp.ToBool
-    rng: ToRNG
+    rng: onp.random.ToRNG | None
     partial_match: onp.ToInt2D | None
 
 @type_check_only

@@ -8,7 +8,7 @@ import optype.numpy as onp
 
 from ._distn_infrastructure import rv_frozen
 from .qmc import QMCEngine
-from scipy._typing import AnyShape, ToRNG
+from scipy._typing import AnyShape
 
 __all__ = ["FastGeneratorInversion", "RatioUniforms"]
 
@@ -32,7 +32,7 @@ class RatioUniforms:
         vmin: onp.ToFloat,
         vmax: onp.ToFloat,
         c: onp.ToFloat = 0,
-        random_state: ToRNG = None,
+        random_state: onp.random.ToRNG | None = None,
     ) -> None: ...
     def rvs(self, /, size: AnyShape = 1) -> np.float64 | onp.ArrayND[np.float64]: ...
 
@@ -44,12 +44,12 @@ class FastGeneratorInversion:
         *,
         domain: tuple[onp.ToFloat, onp.ToFloat] | None = None,
         ignore_shape_range: bool = False,
-        random_state: ToRNG = None,
+        random_state: onp.random.ToRNG | None = None,
     ) -> None: ...
     @property
     def random_state(self, /) -> np.random.Generator: ...
     @random_state.setter
-    def random_state(self, random_state: ToRNG, /) -> None: ...
+    def random_state(self, random_state: onp.random.ToRNG | None, /) -> None: ...
     @property
     def loc(self, /) -> float | np.float64: ...
     @loc.setter
@@ -75,7 +75,7 @@ class FastGeneratorInversion:
     @overload
     def ppf(self, /, q: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
     def evaluate_error(
-        self, /, size: int = 100_000, random_state: ToRNG = None, x_error: bool = False
+        self, /, size: int = 100_000, random_state: onp.random.ToRNG | None = None, x_error: bool = False
     ) -> tuple[np.float64, np.float64]: ...
     def support(self, /) -> tuple[float, float] | tuple[np.float64, np.float64]: ...
 

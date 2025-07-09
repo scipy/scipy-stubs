@@ -9,7 +9,6 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
@@ -300,7 +299,7 @@ def nonlin_solve(
     tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch = "armijo",
     callback: _Callback | None = None,
-    full_output: Falsy = False,
+    full_output: onp.ToFalse = False,
     raise_exception: op.CanBool = True,
 ) -> _InexactND: ...
 @overload
@@ -319,7 +318,7 @@ def nonlin_solve(
     line_search: _LineSearch = "armijo",
     callback: _Callback | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     raise_exception: op.CanBool = True,
 ) -> tuple[_InexactND, _NonlinInfoDict]: ...
 

@@ -12,13 +12,13 @@ from ._base import _spbase, sparray
 from ._coo import coo_array, coo_matrix
 from ._data import _data_matrix
 from ._matrix import spmatrix
-from ._typing import Index1D, Numeric, ToShape2D
+from ._typing import _ToShape2D
 
 __all__ = ["dia_array", "dia_matrix", "isspmatrix_dia"]
 
 _T = TypeVar("_T")
-_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
-_ScalarT = TypeVar("_ScalarT", bound=Numeric)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
 
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 _ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
@@ -30,7 +30,7 @@ class _dia_base(_data_matrix[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]
     _format: ClassVar = "dia"
 
     data: onp.Array2D[_ScalarT_co]
-    offsets: Index1D
+    offsets: onp.Array1D[np.int32]
 
     @property
     @override
@@ -47,7 +47,7 @@ class _dia_base(_data_matrix[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]
         self,
         /,
         arg1: onp.ToComplex2D,
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: npt.DTypeLike | None = None,
         copy: bool = False,
         *,
@@ -76,7 +76,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self,
         /,
         arg1: _ToMatrix[_ScalarT_co] | _ToData[_ScalarT_co],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
         *,
@@ -86,8 +86,8 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: dia_array[np.float64],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None = None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -97,8 +97,8 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: dia_array[np.bool_],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
         *,
@@ -108,8 +108,8 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: dia_array[np.bool_],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None = None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
@@ -119,8 +119,8 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: dia_array[np.int64],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
         *,
@@ -130,8 +130,8 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: dia_array[np.int64],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None = None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyIntDType,
         copy: bool = False,
@@ -141,8 +141,8 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: dia_array[np.complex128],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
         *,
@@ -152,8 +152,8 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: dia_array[np.complex128],
         /,
-        arg1: ToShape2D,
-        shape: ToShape2D | None = None,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
@@ -164,7 +164,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self: dia_array[np.bool_],
         /,
         arg1: _ToMatrixPy[bool],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
@@ -175,7 +175,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self: dia_array[np.int_],
         /,
         arg1: _ToMatrixPy[op.JustInt],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
@@ -186,7 +186,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self: dia_array[np.float64],
         /,
         arg1: _ToMatrixPy[op.JustFloat],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -197,7 +197,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self: dia_array[np.complex128],
         /,
         arg1: _ToMatrixPy[op.JustComplex],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
@@ -208,7 +208,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self,
         /,
         arg1: onp.ToComplex2D,
-        shape: ToShape2D | None,
+        shape: _ToShape2D | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         *,
@@ -219,7 +219,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self,
         /,
         arg1: onp.ToComplex2D,
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -248,7 +248,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self,
         /,
         arg1: _ToMatrix[_ScalarT_co] | _ToData[_ScalarT_co],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
         *,
@@ -258,7 +258,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: dia_matrix[np.float64],
         /,
-        arg1: ToShape2D,
+        arg1: _ToShape2D,
         shape: None = None,
         dtype: None = None,
         copy: bool = False,
@@ -270,7 +270,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self: dia_matrix[np.bool_],
         /,
         arg1: _ToMatrixPy[bool],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
         *,
@@ -281,7 +281,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self: dia_matrix[np.int_],
         /,
         arg1: _ToMatrixPy[op.JustInt],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
         *,
@@ -292,7 +292,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self: dia_matrix[np.float64],
         /,
         arg1: _ToMatrixPy[op.JustFloat],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
@@ -303,7 +303,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self: dia_matrix[np.complex128],
         /,
         arg1: _ToMatrixPy[op.JustComplex],
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
         *,
@@ -314,7 +314,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self,
         /,
         arg1: onp.ToComplex2D,
-        shape: ToShape2D | None,
+        shape: _ToShape2D | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         *,
@@ -325,7 +325,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self,
         /,
         arg1: onp.ToComplex2D,
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -336,7 +336,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         self,
         /,
         arg1: onp.ToComplex2D,
-        shape: ToShape2D | None = None,
+        shape: _ToShape2D | None = None,
         dtype: npt.DTypeLike | None = None,
         copy: bool = False,
         *,

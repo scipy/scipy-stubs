@@ -1,8 +1,10 @@
 from collections.abc import Sequence as Seq
-from typing import Literal, TypeAlias, overload
+from typing import Any, Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
+import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
 from ._bsr import bsr_array, bsr_matrix
@@ -13,19 +15,19 @@ from ._dia import dia_array, dia_matrix
 from ._dok import dok_array, dok_matrix
 from ._lil import lil_array, lil_matrix
 from ._matrix import spmatrix
-from ._typing import Index1D, Numeric, SPFormat
+from ._typing import _Format
 
 __all__ = ["find", "tril", "triu"]
 
 ###
 
-_SCT = TypeVar("_SCT", bound=Numeric, default=Numeric)
+_SCT = TypeVar("_SCT", bound=npc.number | np.bool_, default=Any)
 _ToDense: TypeAlias = onp.CanArrayND[_SCT] | Seq[_SCT] | Seq[Seq[_SCT] | onp.CanArrayND[_SCT]]
 
 ###
 
 #
-def find(A: _spbase[_SCT] | _ToDense) -> tuple[Index1D, Index1D, onp.Array1D[_SCT]]: ...
+def find(A: _spbase[_SCT] | _ToDense) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32], onp.Array1D[_SCT]]: ...
 
 # NOTE: `tril` and `triu` have identical signatures
 @overload  # sparray -> coo_array (default)
@@ -81,7 +83,7 @@ def tril(A: spmatrix[_SCT] | _ToDense[_SCT], k: int, format: Literal["lil"]) -> 
 @overload  # spmatrix | array-like -> lil_matrix (keyword)
 def tril(A: spmatrix[_SCT] | _ToDense[_SCT], k: int = 0, *, format: Literal["lil"]) -> lil_matrix[_SCT]: ...
 @overload  # catch-all
-def tril(A: _spbase[_SCT] | onp.ToComplexND, k: int = 0, *, format: SPFormat | None = None) -> _spbase[_SCT, tuple[int, int]]: ...
+def tril(A: _spbase[_SCT] | onp.ToComplexND, k: int = 0, *, format: _Format | None = None) -> _spbase[_SCT, tuple[int, int]]: ...
 
 #
 @overload  # sparray -> coo_array (default)
@@ -137,4 +139,4 @@ def triu(A: spmatrix[_SCT] | _ToDense[_SCT], k: int, format: Literal["lil"]) -> 
 @overload  # spmatrix | array-like -> lil_matrix (keyword)
 def triu(A: spmatrix[_SCT] | _ToDense[_SCT], k: int = 0, *, format: Literal["lil"]) -> lil_matrix[_SCT]: ...
 @overload  # catch-all
-def triu(A: _spbase[_SCT] | onp.ToComplexND, k: int = 0, *, format: SPFormat | None = None) -> _spbase[_SCT, tuple[int, int]]: ...
+def triu(A: _spbase[_SCT] | onp.ToComplexND, k: int = 0, *, format: _Format | None = None) -> _spbase[_SCT, tuple[int, int]]: ...

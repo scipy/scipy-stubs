@@ -4,8 +4,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
-
 __all__ = ["qr", "qr_multiply", "rq"]
 
 _T = TypeVar("_T")
@@ -34,7 +32,7 @@ def qr(
     overwrite_a: onp.ToBool = False,
     lwork: onp.ToJustInt | None = None,
     mode: _ModeFullEcon = "full",
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> _Tuple2[_FloatND]: ...
 @overload  # float, mode: {full, economic}, pivoting: {True}
@@ -43,7 +41,7 @@ def qr(
     overwrite_a: onp.ToBool,
     lwork: onp.ToJustInt | None,
     mode: _ModeFullEcon,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_FloatND, _FloatND, _IntND]: ...
 @overload  # float, mode: {full, economic}, *, pivoting: {True}
@@ -53,7 +51,7 @@ def qr(
     lwork: onp.ToJustInt | None = None,
     mode: _ModeFullEcon = "full",
     *,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_FloatND, _FloatND, _IntND]: ...
 @overload  # float, mode: {r}, pivoting: {False}
@@ -62,7 +60,7 @@ def qr(
     overwrite_a: onp.ToBool,
     lwork: onp.ToJustInt | None,
     mode: _ModeR,
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_FloatND]: ...
 @overload  # float, mode: {r}, pivoting: {True}
@@ -71,7 +69,7 @@ def qr(
     overwrite_a: onp.ToBool,
     lwork: onp.ToJustInt | None,
     mode: _ModeR,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_FloatND, _IntND]: ...
 @overload  # float, *, mode: {r}, pivoting: {False}
@@ -81,7 +79,7 @@ def qr(
     lwork: onp.ToJustInt | None = None,
     *,
     mode: _ModeR,
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_FloatND]: ...
 @overload  # float, *, mode: {r}, pivoting: {True}
@@ -91,7 +89,7 @@ def qr(
     lwork: onp.ToJustInt | None = None,
     *,
     mode: _ModeR,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_FloatND, _IntND]: ...
 @overload  # float, mode: {raw}, pivoting: {False}
@@ -100,7 +98,7 @@ def qr(
     overwrite_a: onp.ToBool,
     lwork: onp.ToJustInt | None,
     mode: _ModeRaw,
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_FloatND], _FloatND]: ...
 @overload  # float, mode: {raw}, pivoting: {True}
@@ -109,7 +107,7 @@ def qr(
     overwrite_a: onp.ToBool,
     lwork: onp.ToJustInt | None,
     mode: _ModeRaw,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_FloatND], _FloatND, _IntND]: ...
 @overload  # float, *, mode: {raw}, pivoting: {False}
@@ -119,7 +117,7 @@ def qr(
     lwork: onp.ToJustInt | None = None,
     *,
     mode: _ModeRaw,
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_FloatND], _FloatND]: ...
 @overload  # float, *, mode: {raw}, pivoting: {True}
@@ -129,7 +127,7 @@ def qr(
     lwork: onp.ToJustInt | None = None,
     *,
     mode: _ModeRaw,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_FloatND], _FloatND, _IntND]: ...
 @overload  # complex, mode: {full, economic}, pivoting: {False}
@@ -138,7 +136,7 @@ def qr(
     overwrite_a: onp.ToBool = False,
     lwork: onp.ToJustInt | None = None,
     mode: _ModeFullEcon = "full",
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> _Tuple2[_InexactND]: ...
 @overload  # complex, mode: {full, economic}, pivoting: {True}
@@ -147,7 +145,7 @@ def qr(
     overwrite_a: onp.ToBool,
     lwork: onp.ToJustInt | None,
     mode: _ModeFullEcon,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_InexactND, _InexactND, _IntND]: ...
 @overload  # complex, mode: {full, economic}, *, pivoting: {True}
@@ -157,7 +155,7 @@ def qr(
     lwork: onp.ToJustInt | None = None,
     mode: _ModeFullEcon = "full",
     *,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_InexactND, _InexactND, _IntND]: ...
 @overload  # complex, mode: {r}, pivoting: {False}
@@ -166,7 +164,7 @@ def qr(
     overwrite_a: onp.ToBool,
     lwork: onp.ToJustInt | None,
     mode: _ModeR,
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_InexactND]: ...
 @overload  # complex, mode: {r}, pivoting: {True}
@@ -175,7 +173,7 @@ def qr(
     overwrite_a: onp.ToBool,
     lwork: onp.ToJustInt | None,
     mode: _ModeR,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_InexactND, _IntND]: ...
 @overload  # complex, *, mode: {r}, pivoting: {False}
@@ -185,7 +183,7 @@ def qr(
     lwork: onp.ToJustInt | None = None,
     *,
     mode: _ModeR,
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_InexactND]: ...
 @overload  # complex, *, mode: {r}, pivoting: {True}
@@ -195,7 +193,7 @@ def qr(
     lwork: onp.ToJustInt | None = None,
     *,
     mode: _ModeR,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_InexactND, _IntND]: ...
 @overload  # complex, mode: {raw}, pivoting: {False}
@@ -204,7 +202,7 @@ def qr(
     overwrite_a: onp.ToBool,
     lwork: onp.ToJustInt | None,
     mode: _ModeRaw,
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_InexactND], _InexactND]: ...
 @overload  # complex, mode: {raw}, pivoting: {True}
@@ -213,7 +211,7 @@ def qr(
     overwrite_a: onp.ToBool,
     lwork: onp.ToJustInt | None,
     mode: _ModeRaw,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_InexactND], _InexactND, _IntND]: ...
 @overload  # complex, *, mode: {raw}, pivoting: {False}
@@ -223,7 +221,7 @@ def qr(
     lwork: onp.ToJustInt | None = None,
     *,
     mode: _ModeRaw,
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_InexactND], _InexactND]: ...
 @overload  # complex, *, mode: {raw}, pivoting: {True}
@@ -233,7 +231,7 @@ def qr(
     lwork: onp.ToJustInt | None = None,
     *,
     mode: _ModeRaw,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_Tuple2[_InexactND], _InexactND, _IntND]: ...
 
@@ -243,7 +241,7 @@ def qr_multiply(
     a: onp.ToFloatStrict2D,
     c: onp.ToFloatStrict1D,
     mode: _Side = "right",
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -253,7 +251,7 @@ def qr_multiply(
     a: onp.ToFloatStrict2D,
     c: onp.ToFloatStrict2D,
     mode: _Side = "right",
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -263,7 +261,7 @@ def qr_multiply(
     a: onp.ToFloatStrict2D,
     c: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
     mode: _Side = "right",
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -273,7 +271,7 @@ def qr_multiply(
     a: onp.ToFloatND,
     c: onp.ToFloatND,
     mode: _Side = "right",
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -283,7 +281,7 @@ def qr_multiply(
     a: onp.ToFloatStrict2D,
     c: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
     mode: _Side,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -294,7 +292,7 @@ def qr_multiply(
     c: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
     mode: _Side = "right",
     *,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -305,7 +303,7 @@ def qr_multiply(
     c: onp.ToFloatND,
     mode: _Side = "right",
     *,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -315,7 +313,7 @@ def qr_multiply(
     a: onp.ToComplexStrict2D,
     c: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
     mode: _Side = "right",
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -325,7 +323,7 @@ def qr_multiply(
     a: onp.ToComplexND,
     c: onp.ToComplexND,
     mode: _Side = "right",
-    pivoting: Falsy = False,
+    pivoting: onp.ToFalse = False,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -335,7 +333,7 @@ def qr_multiply(
     a: onp.ToComplexStrict2D,
     c: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
     mode: _Side,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -346,7 +344,7 @@ def qr_multiply(
     c: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
     mode: _Side = "right",
     *,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,
@@ -357,7 +355,7 @@ def qr_multiply(
     c: onp.ToComplexND,
     mode: _Side = "right",
     *,
-    pivoting: Truthy,
+    pivoting: onp.ToTrue,
     conjugate: onp.ToBool = False,
     overwrite_a: onp.ToBool = False,
     overwrite_c: onp.ToBool = False,

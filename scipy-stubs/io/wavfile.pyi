@@ -4,7 +4,7 @@ from typing import TypeAlias
 import numpy as np
 import optype.numpy as onp
 
-from scipy._typing import FileLike
+from ._typing import FileLike
 
 __all__ = ["WavFileWarning", "read", "write"]
 

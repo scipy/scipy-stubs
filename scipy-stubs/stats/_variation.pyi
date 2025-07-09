@@ -8,7 +8,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 from numpy._typing import _ArrayLike, _NestedSequence
 
-from scipy._typing import AnyBool, Falsy, NanPolicy, Truthy
+from ._typing import NanPolicy
 
 _SCT_fc = TypeVar("_SCT_fc", bound=npc.inexact)
 
@@ -25,7 +25,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Falsy = False,
+    keepdims: onp.ToFalse = False,
 ) -> np.float64: ...
 @overload
 def variation(
@@ -34,7 +34,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Falsy = False,
+    keepdims: onp.ToFalse = False,
 ) -> np.float64: ...
 @overload
 def variation(
@@ -43,7 +43,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Truthy,
+    keepdims: onp.ToTrue,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def variation(
@@ -52,13 +52,13 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: AnyBool = False,
+    keepdims: onp.ToBool = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 
 # array-like input with known floating- or complex-floating dtypes
 @overload
 def variation(
-    a: _ArrayLike[_SCT_fc], axis: None, nan_policy: NanPolicy = "propagate", ddof: onp.ToInt = 0, *, keepdims: Falsy = False
+    a: _ArrayLike[_SCT_fc], axis: None, nan_policy: NanPolicy = "propagate", ddof: onp.ToInt = 0, *, keepdims: onp.ToFalse = False
 ) -> _SCT_fc: ...
 @overload
 def variation(
@@ -67,7 +67,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Truthy,
+    keepdims: onp.ToTrue,
 ) -> onp.ArrayND[_SCT_fc]: ...
 @overload
 def variation(
@@ -76,7 +76,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: AnyBool = False,
+    keepdims: onp.ToBool = False,
 ) -> _SCT_fc | onp.ArrayND[_SCT_fc]: ...
 
 # sequences of `builtin.complex`, which behave as if `float <: complex` and therefore "overlaps" with the `builtins.float`
@@ -88,11 +88,16 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Falsy = False,
+    keepdims: onp.ToFalse = False,
 ) -> np.complex128 | np.float64: ...
 @overload
 def variation(
-    a: _NestedSequence[complex], axis: None, nan_policy: NanPolicy = "propagate", ddof: onp.ToInt = 0, *, keepdims: Falsy = False
+    a: _NestedSequence[complex],
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    ddof: onp.ToInt = 0,
+    *,
+    keepdims: onp.ToFalse = False,
 ) -> np.complex128 | np.float64: ...
 @overload
 def variation(
@@ -101,7 +106,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: Truthy,
+    keepdims: onp.ToTrue,
 ) -> onp.ArrayND[np.complex128 | np.float64]: ...
 @overload
 def variation(
@@ -110,7 +115,7 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: AnyBool = False,
+    keepdims: onp.ToBool = False,
 ) -> np.complex128 | np.float64 | onp.ArrayND[np.complex128 | np.float64]: ...
 
 # catch-all in case of broad gradual types
@@ -121,5 +126,5 @@ def variation(
     nan_policy: NanPolicy = "propagate",
     ddof: onp.ToInt = 0,
     *,
-    keepdims: AnyBool = False,
+    keepdims: onp.ToBool = False,
 ) -> npc.inexact | onp.ArrayND[npc.inexact]: ...

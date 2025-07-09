@@ -4,8 +4,6 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
-
 __all__ = [
     "det",
     "inv",
@@ -352,7 +350,7 @@ def pinv(  # (float[:, :], return_rank=False) -> float[:, :]
     *,
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
-    return_rank: Falsy = False,
+    return_rank: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> _FloatND: ...
 @overload  # (float[:, :], return_rank=True) -> (float[:, :], int)
@@ -361,7 +359,7 @@ def pinv(
     *,
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
-    return_rank: Truthy,
+    return_rank: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_FloatND, int]: ...
 @overload  # (complex[:, :], return_rank=False) -> complex[:, :]
@@ -370,7 +368,7 @@ def pinv(
     *,
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
-    return_rank: Falsy = False,
+    return_rank: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> _ComplexND: ...
 @overload  # (complex[:, :], return_rank=True) -> (complex[:, :], int)
@@ -379,7 +377,7 @@ def pinv(
     *,
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
-    return_rank: Truthy,
+    return_rank: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_ComplexND, int]: ...
 
@@ -390,7 +388,7 @@ def pinvh(
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
     lower: onp.ToBool = True,
-    return_rank: Falsy = False,
+    return_rank: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> _FloatND: ...
 @overload  # (float[:, :], return_rank=True, /) -> (float[:, :], int)
@@ -399,7 +397,7 @@ def pinvh(
     atol: onp.ToFloat | None,
     rtol: onp.ToFloat | None,
     lower: onp.ToBool,
-    return_rank: Truthy,
+    return_rank: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_FloatND, int]: ...
 @overload  # (float[:, :], *, return_rank=True) -> (float[:, :], int)
@@ -409,7 +407,7 @@ def pinvh(
     rtol: onp.ToFloat | None = None,
     lower: onp.ToBool = True,
     *,
-    return_rank: Truthy,
+    return_rank: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_FloatND, int]: ...
 @overload  # (complex[:, :], return_rank=False) -> complex[:, :]
@@ -418,7 +416,7 @@ def pinvh(
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
     lower: onp.ToBool = True,
-    return_rank: Falsy = False,
+    return_rank: onp.ToFalse = False,
     check_finite: onp.ToBool = True,
 ) -> _ComplexND: ...
 @overload  # (complex[:, :], return_rank=True, /) -> (complex[:, :], int)
@@ -427,7 +425,7 @@ def pinvh(
     atol: onp.ToFloat | None,
     rtol: onp.ToFloat | None,
     lower: onp.ToBool,
-    return_rank: Truthy,
+    return_rank: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_ComplexND, int]: ...
 @overload  # (complex[:, :], *, return_rank=True) -> (complex[:, :], int)
@@ -437,7 +435,7 @@ def pinvh(
     rtol: onp.ToFloat | None = None,
     lower: onp.ToBool = True,
     *,
-    return_rank: Truthy,
+    return_rank: onp.ToTrue,
     check_finite: onp.ToBool = True,
 ) -> tuple[_ComplexND, int]: ...
 
@@ -447,32 +445,42 @@ def matrix_balance(
     A: onp.ToFloatND,
     permute: onp.ToBool = True,
     scale: onp.ToBool = True,
-    separate: Falsy = False,
+    separate: onp.ToFalse = False,
     overwrite_a: onp.ToBool = False,
 ) -> _Tuple2[_FloatND]: ...
 @overload  # (float[:, :], separate=False, /) -> (float[:, :], (float[:], float[:]))
 def matrix_balance(
-    A: onp.ToFloatND, permute: onp.ToBool, scale: onp.ToBool, separate: Truthy, overwrite_a: onp.ToBool = False
+    A: onp.ToFloatND, permute: onp.ToBool, scale: onp.ToBool, separate: onp.ToTrue, overwrite_a: onp.ToBool = False
 ) -> tuple[_FloatND, _Tuple2[_FloatND]]: ...
 @overload  # (float[:, :], *, separate=False) -> (float[:, :], (float[:], float[:]))
 def matrix_balance(
-    A: onp.ToFloatND, permute: onp.ToBool = True, scale: onp.ToBool = True, *, separate: Truthy, overwrite_a: onp.ToBool = False
+    A: onp.ToFloatND,
+    permute: onp.ToBool = True,
+    scale: onp.ToBool = True,
+    *,
+    separate: onp.ToTrue,
+    overwrite_a: onp.ToBool = False,
 ) -> tuple[_FloatND, _Tuple2[_FloatND]]: ...
 @overload  # (complex[:, :], separate=True) -> (complex[:, :], complex[:, :])
 def matrix_balance(
     A: onp.ToComplexND,
     permute: onp.ToBool = True,
     scale: onp.ToBool = True,
-    separate: Falsy = False,
+    separate: onp.ToFalse = False,
     overwrite_a: onp.ToBool = False,
 ) -> _Tuple2[_ComplexND]: ...
 @overload  # (complex[:, :], separate=False, /) -> (complex[:, :], (complex[:], complex[:]))
 def matrix_balance(
-    A: onp.ToComplexND, permute: onp.ToBool, scale: onp.ToBool, separate: Truthy, overwrite_a: onp.ToBool = False
+    A: onp.ToComplexND, permute: onp.ToBool, scale: onp.ToBool, separate: onp.ToTrue, overwrite_a: onp.ToBool = False
 ) -> tuple[_ComplexND, _Tuple2[_ComplexND]]: ...
 @overload  # (complex[:, :], *, separate=False) -> (complex[:, :], (complex[:], complex[:]))
 def matrix_balance(
-    A: onp.ToComplexND, permute: onp.ToBool = True, scale: onp.ToBool = True, *, separate: Truthy, overwrite_a: onp.ToBool = False
+    A: onp.ToComplexND,
+    permute: onp.ToBool = True,
+    scale: onp.ToBool = True,
+    *,
+    separate: onp.ToTrue,
+    overwrite_a: onp.ToBool = False,
 ) -> tuple[_ComplexND, _Tuple2[_ComplexND]]: ...
 
 #

@@ -5,7 +5,8 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import AnyShape, DCTType, NormalizationMode
+from ._typing import DCTType, NormalizationMode
+from scipy._typing import AnyShape
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
@@ -16,7 +17,6 @@ _ToIntOrND: TypeAlias = onp.ToInt | onp.ToIntND
 _FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]  # doesn't include `numpy.float16`
 
 ###
-
 # NOTE: These have (almost) identical signatures, so be sure to keep them in sync.
 
 @overload

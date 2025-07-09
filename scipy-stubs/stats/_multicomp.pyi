@@ -5,7 +5,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._common import ConfidenceInterval
-from scipy._typing import Alternative
+from ._typing import Alternative
 
 __all__ = ["dunnett"]
 

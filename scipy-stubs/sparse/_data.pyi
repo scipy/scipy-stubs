@@ -1,6 +1,6 @@
 import abc
 from collections.abc import Sequence
-from typing import Any, Generic, Literal, Never, Protocol, Self, final, overload, type_check_only
+from typing import Any, Generic, Literal, Never, Protocol, Self, SupportsIndex, final, overload, type_check_only
 from typing_extensions import TypeVar, override
 
 import numpy as np
@@ -11,12 +11,11 @@ from ._base import _spbase, sparray
 from ._coo import coo_array, coo_matrix
 from ._matrix import spmatrix
 from ._sputils import _ScalarLike
-from ._typing import Numeric, ToShape1D, ToShape2D
 
 __all__: list[str] = []
 
-_ScalarT = TypeVar("_ScalarT", bound=Numeric)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 
 ###
@@ -79,9 +78,17 @@ class _data_matrix(_spbase[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _Shape
         maxprint: int | None = None,
     ) -> None: ...
     @overload
-    def __init__(self: _data_matrix[np.float64, tuple[int]], /, arg1: ToShape1D, *, maxprint: int | None = None) -> None: ...
+    def __init__(
+        self: _data_matrix[np.float64, tuple[int]], /, arg1: tuple[SupportsIndex], *, maxprint: int | None = None
+    ) -> None: ...
     @overload
-    def __init__(self: _data_matrix[np.float64, tuple[int, int]], /, arg1: ToShape2D, *, maxprint: int | None = None) -> None: ...
+    def __init__(
+        self: _data_matrix[np.float64, tuple[int, int]],
+        /,
+        arg1: tuple[SupportsIndex, SupportsIndex],
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload
     def __init__(self, /, arg1: onp.CanArrayND[_ScalarT_co], *, maxprint: int | None = None) -> None: ...
 

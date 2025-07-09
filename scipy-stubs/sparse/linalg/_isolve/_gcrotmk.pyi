@@ -7,7 +7,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Numeric
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["gcrotmk"]
@@ -18,7 +17,7 @@ _Inexact: TypeAlias = _Float | _Complex
 
 _FloatT = TypeVar("_FloatT", bound=_Float, default=np.float64)
 _ComplexT = TypeVar("_ComplexT", bound=_Complex, default=np.complex128)
-_NumericT = TypeVar("_NumericT", bound=Numeric)
+_NumericT = TypeVar("_NumericT", bound=npc.number | np.bool_)
 
 _ToInt: TypeAlias = npc.integer | np.bool_
 _ToLinearOperator: TypeAlias = onp.CanArrayND[_NumericT] | _spbase[_NumericT] | LinearOperator[_NumericT]

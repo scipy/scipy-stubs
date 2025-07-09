@@ -5,8 +5,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 import optype.typing as opt
 
-from scipy._typing import Falsy, Truthy
-
 __all__ = ["cossin"]
 
 _T = TypeVar("_T")
@@ -24,7 +22,7 @@ def cossin(
     X: onp.ToFloatStrict2D | Iterable[onp.ToFloatStrict2D],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
-    separate: Falsy = False,
+    separate: onp.ToFalse = False,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,
@@ -34,7 +32,7 @@ def cossin(
     X: onp.ToFloatND | Iterable[onp.ToFloatND],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
-    separate: Falsy = False,
+    separate: onp.ToFalse = False,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,
@@ -45,7 +43,7 @@ def cossin(
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
-    separate: Truthy,
+    separate: onp.ToTrue,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,
@@ -56,7 +54,7 @@ def cossin(
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
-    separate: Truthy,
+    separate: onp.ToTrue,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,
@@ -66,7 +64,7 @@ def cossin(
     X: onp.ToComplexStrict2D | Iterable[onp.ToComplexStrict2D],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
-    separate: Falsy = False,
+    separate: onp.ToFalse = False,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,
@@ -76,7 +74,7 @@ def cossin(
     X: onp.ToComplexND | Iterable[onp.ToComplexND],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
-    separate: Falsy = False,
+    separate: onp.ToFalse = False,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,
@@ -87,7 +85,7 @@ def cossin(
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
-    separate: Truthy,
+    separate: onp.ToTrue,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,
@@ -98,7 +96,7 @@ def cossin(
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
-    separate: Truthy,
+    separate: onp.ToTrue,
     swap_sign: onp.ToBool = False,
     compute_u: onp.ToBool = True,
     compute_vh: onp.ToBool = True,

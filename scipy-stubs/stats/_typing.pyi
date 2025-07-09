@@ -1,14 +1,17 @@
-# NOTE(scipy-stubs): This ia a module only exists `if typing.TYPE_CHECKING: ...`
+# NOTE(scipy-stubs): This private module should not be used outside of scipy-stubs
 
 import abc
 from typing import Any, Generic, Literal, Self, TypeAlias, final, type_check_only
 from typing_extensions import TypeVar, TypeVarTuple
 
-__all__ = "BaseBunch", "BunchMixin", "PowerDivergenceStatistic"
+__all__ = "Alternative", "BaseBunch", "BunchMixin", "NanPolicy", "PowerDivergenceStatistic"
 
 _Ts = TypeVarTuple("_Ts")
 _ValueT = TypeVar("_ValueT")
 _TupleT_co = TypeVar("_TupleT_co", bound=tuple[object, ...], default=tuple[Any, ...], covariant=True)
+
+Alternative: TypeAlias = Literal["two-sided", "less", "greater"]
+NanPolicy: TypeAlias = Literal["raise", "propagate", "omit"]
 
 PowerDivergenceStatistic: TypeAlias = Literal[
     "pearson",

@@ -6,7 +6,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
 from scipy.interpolate import PPoly
 from scipy.sparse import csc_matrix
 
@@ -170,7 +169,7 @@ def wrap_functions(
     bc: _FunBCR[_SCT_fc],
     fun_jac: _FunRHS_jac[_SCT_fc] | None,
     bc_jac: _FunBCR_jac[_SCT_fc] | None,
-    k: Falsy,
+    k: onp.ToFalse,
     a: onp.ToFloat,
     S: onp.Array2D[np.float64] | None,
     D: onp.Array2D[np.float64] | None,
@@ -182,7 +181,7 @@ def wrap_functions(
     bc: _FunBCR_p[_SCT_fc],
     fun_jac: _FunRHS_jac_p[_SCT_fc] | None,
     bc_jac: _FunBCR_jac_p[_SCT_fc] | None,
-    k: Truthy,
+    k: onp.ToTrue,
     a: onp.ToFloat,
     S: onp.Array2D[np.float64] | None,
     D: onp.Array2D[np.float64] | None,

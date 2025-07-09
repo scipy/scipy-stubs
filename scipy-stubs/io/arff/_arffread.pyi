@@ -8,7 +8,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 
-from scipy._typing import FileLike
+from scipy.io._typing import FileLike
 
 __all__ = ["ArffError", "MetaData", "ParseArffError", "loadarff"]
 

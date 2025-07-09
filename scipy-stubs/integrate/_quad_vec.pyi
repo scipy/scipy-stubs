@@ -8,8 +8,6 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
-
 _S = TypeVar("_S")
 _T = TypeVar("_T")
 _VT = TypeVar("_VT", default=object)
@@ -84,7 +82,7 @@ def quad_vec(  # scalar function, full_output=False (default)
     workers: onp.ToJustInt | _DoesMap = 1,
     points: onp.ToFloat1D | None = None,
     quadrature: _Quadrature | None = None,
-    full_output: Falsy = False,
+    full_output: onp.ToFalse = False,
     *,
     args: tuple[object, ...] = (),
 ) -> tuple[_Floating, float]: ...
@@ -102,7 +100,7 @@ def quad_vec(
     points: onp.ToFloat1D | None = None,
     quadrature: _Quadrature | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     args: tuple[object, ...] = (),
 ) -> tuple[npc.floating, float, _Bunch[npc.floating]]: ...
 @overload  # vector function, full_output=False (default)
@@ -119,7 +117,7 @@ def quad_vec(
     points: onp.ToFloat1D | None = None,
     quadrature: _Quadrature | None = None,
     *,
-    full_output: Falsy,
+    full_output: onp.ToFalse,
     args: tuple[object, ...] = (),
 ) -> tuple[onp.Array1D[npc.floating], float]: ...
 @overload  # vector function, full_output=True
@@ -136,6 +134,6 @@ def quad_vec(
     points: onp.ToFloat1D | None = None,
     quadrature: _Quadrature | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     args: tuple[object, ...] = (),
 ) -> tuple[onp.Array1D[npc.floating], float, _Bunch[npc.floating]]: ...

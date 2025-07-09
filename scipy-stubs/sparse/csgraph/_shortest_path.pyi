@@ -4,7 +4,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
 
 _Int1D: TypeAlias = onp.Array1D[np.int32]
@@ -29,7 +28,7 @@ def shortest_path(
     csgraph: _ToGraphArray,
     method: _ShortestPathMethod = "auto",
     directed: bool = True,
-    return_predecessors: Falsy = False,
+    return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
     overwrite: bool = False,
     indices: onp.ToInt | onp.ToIntND | None = None,
@@ -39,7 +38,7 @@ def shortest_path(
     csgraph: _ToGraphArray,
     method: _ShortestPathMethod,
     directed: bool,
-    return_predecessors: Truthy,
+    return_predecessors: onp.ToTrue,
     unweighted: bool = False,
     overwrite: bool = False,
     indices: onp.ToInt | onp.ToIntND | None = None,
@@ -50,7 +49,7 @@ def shortest_path(
     method: _ShortestPathMethod = "auto",
     directed: bool = True,
     *,
-    return_predecessors: Truthy,
+    return_predecessors: onp.ToTrue,
     unweighted: bool = False,
     overwrite: bool = False,
     indices: onp.ToInt | onp.ToIntND | None = None,
@@ -61,20 +60,20 @@ def shortest_path(
 def floyd_warshall(
     csgraph: _ToGraphArray,
     directed: bool = True,
-    return_predecessors: Falsy = False,
+    return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
     overwrite: bool = False,
 ) -> _Float2D: ...
 @overload
 def floyd_warshall(
-    csgraph: _ToGraphArray, directed: bool, return_predecessors: Truthy, unweighted: bool = False, overwrite: bool = False
+    csgraph: _ToGraphArray, directed: bool, return_predecessors: onp.ToTrue, unweighted: bool = False, overwrite: bool = False
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def floyd_warshall(
     csgraph: _ToGraphArray,
     directed: bool = True,
     *,
-    return_predecessors: Truthy,
+    return_predecessors: onp.ToTrue,
     unweighted: bool = False,
     overwrite: bool = False,
 ) -> tuple[_Float2D, _Int2D]: ...
@@ -85,31 +84,31 @@ def dijkstra(
     csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
-    return_predecessors: Falsy = False,
+    return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
     limit: float = ...,
-    min_only: Falsy = False,
+    min_only: onp.ToFalse = False,
 ) -> _Float2D: ...
 @overload
 def dijkstra(
     csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
-    return_predecessors: Falsy = False,
+    return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
     limit: float = ...,
     *,
-    min_only: Truthy,
+    min_only: onp.ToTrue,
 ) -> _Float1D: ...
 @overload
 def dijkstra(
     csgraph: _ToGraphArray,
     directed: bool,
     indices: onp.ToIntND | None,
-    return_predecessors: Truthy,
+    return_predecessors: onp.ToTrue,
     unweighted: bool = False,
     limit: float = ...,
-    min_only: Falsy = False,
+    min_only: onp.ToFalse = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def dijkstra(
@@ -117,21 +116,21 @@ def dijkstra(
     directed: bool = True,
     indices: onp.ToIntND | None = None,
     *,
-    return_predecessors: Truthy,
+    return_predecessors: onp.ToTrue,
     unweighted: bool = False,
     limit: float = ...,
-    min_only: Falsy = False,
+    min_only: onp.ToFalse = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def dijkstra(
     csgraph: _ToGraphArray,
     directed: bool,
     indices: onp.ToIntND | None,
-    return_predecessors: Truthy,
+    return_predecessors: onp.ToTrue,
     unweighted: bool = False,
     limit: float = ...,
     *,
-    min_only: Truthy,
+    min_only: onp.ToTrue,
 ) -> tuple[_Float1D, _Int1D, _Int1D]: ...
 @overload
 def dijkstra(
@@ -139,10 +138,10 @@ def dijkstra(
     directed: bool = True,
     indices: onp.ToIntND | None = None,
     *,
-    return_predecessors: Truthy,
+    return_predecessors: onp.ToTrue,
     unweighted: bool = False,
     limit: float = ...,
-    min_only: Truthy,
+    min_only: onp.ToTrue,
 ) -> tuple[_Float1D, _Int1D, _Int1D]: ...
 
 #
@@ -151,12 +150,12 @@ def bellman_ford(
     csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
-    return_predecessors: Falsy = False,
+    return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
 ) -> _Float2D: ...
 @overload
 def bellman_ford(
-    csgraph: _ToGraphArray, directed: bool, indices: onp.ToIntND | None, return_predecessors: Truthy, unweighted: bool = False
+    csgraph: _ToGraphArray, directed: bool, indices: onp.ToIntND | None, return_predecessors: onp.ToTrue, unweighted: bool = False
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def bellman_ford(
@@ -164,7 +163,7 @@ def bellman_ford(
     directed: bool = True,
     indices: onp.ToIntND | None = None,
     *,
-    return_predecessors: Truthy,
+    return_predecessors: onp.ToTrue,
     unweighted: bool = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 
@@ -174,12 +173,12 @@ def johnson(
     csgraph: _ToGraphArray,
     directed: bool = True,
     indices: onp.ToIntND | None = None,
-    return_predecessors: Falsy = False,
+    return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
 ) -> _Float2D: ...
 @overload
 def johnson(
-    csgraph: _ToGraphArray, directed: bool, indices: onp.ToIntND | None, return_predecessors: Truthy, unweighted: bool = False
+    csgraph: _ToGraphArray, directed: bool, indices: onp.ToIntND | None, return_predecessors: onp.ToTrue, unweighted: bool = False
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def johnson(
@@ -187,7 +186,7 @@ def johnson(
     directed: bool = True,
     indices: onp.ToIntND | None = None,
     *,
-    return_predecessors: Truthy,
+    return_predecessors: onp.ToTrue,
     unweighted: bool = False,
 ) -> tuple[_Float2D, _Int2D]: ...
 
@@ -200,7 +199,7 @@ def yen(
     K: int,
     *,
     directed: bool = True,
-    return_predecessors: Falsy = False,
+    return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
 ) -> _Float1D: ...
 @overload
@@ -211,6 +210,6 @@ def yen(
     K: int,
     *,
     directed: bool = True,
-    return_predecessors: Truthy,
+    return_predecessors: onp.ToTrue,
     unweighted: bool = False,
 ) -> tuple[_Float1D, _Int2D]: ...
