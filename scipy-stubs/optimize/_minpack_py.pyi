@@ -7,7 +7,6 @@ import optype as op
 import optype.numpy as onp
 
 from ._constraints import Bounds
-from scipy._typing import Falsy, Truthy
 from scipy.sparse import sparray, spmatrix
 
 __all__ = ["curve_fit", "fixed_point", "fsolve", "leastsq"]
@@ -86,7 +85,7 @@ def fsolve(
     x0: onp.ToFloat | onp.ToFloat1D,
     args: tuple[object, ...] = (),
     fprime: _Jac1D | None = None,
-    full_output: Falsy = 0,
+    full_output: onp.ToFalse = 0,
     col_deriv: onp.ToBool = 0,
     xtol: onp.ToFloat = 1.49012e-8,
     maxfev: onp.ToJustInt = 0,
@@ -101,7 +100,7 @@ def fsolve(
     x0: onp.ToFloat | onp.ToFloat1D,
     args: tuple[object, ...],
     fprime: _Jac1D | None,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     col_deriv: onp.ToBool = 0,
     xtol: onp.ToFloat = 1.49012e-8,
     maxfev: onp.ToJustInt = 0,
@@ -117,7 +116,7 @@ def fsolve(
     args: tuple[object, ...] = (),
     fprime: _Jac1D | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     col_deriv: onp.ToBool = 0,
     xtol: onp.ToFloat = 1.49012e-8,
     maxfev: onp.ToJustInt = 0,
@@ -134,7 +133,7 @@ def leastsq(
     x0: onp.ToFloat1D,
     args: tuple[object, ...] = (),
     Dfun: _Jac1D | None = None,
-    full_output: Falsy = False,
+    full_output: onp.ToFalse = False,
     col_deriv: onp.ToBool = False,
     ftol: onp.ToFloat = 1.49012e-8,
     xtol: onp.ToFloat = 1.49012e-8,
@@ -150,7 +149,7 @@ def leastsq(
     x0: onp.ToFloat1D,
     args: tuple[object, ...],
     Dfun: _Jac1D | None,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     col_deriv: onp.ToBool = False,
     ftol: onp.ToFloat = 1.49012e-8,
     xtol: onp.ToFloat = 1.49012e-8,
@@ -167,7 +166,7 @@ def leastsq(
     args: tuple[object, ...] = (),
     Dfun: _Jac1D | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     col_deriv: onp.ToBool = False,
     ftol: onp.ToFloat = 1.49012e-8,
     xtol: onp.ToFloat = 1.49012e-8,
@@ -192,7 +191,7 @@ def curve_fit(
     method: _CurveFitMethod | None = None,
     jac: _Jac1D | _JacMethod | None = None,
     *,
-    full_output: Falsy = False,
+    full_output: onp.ToFalse = False,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
 ) -> tuple[_Float1D, _Float2D]: ...
@@ -209,7 +208,7 @@ def curve_fit(
     method: _CurveFitMethod | None = None,
     jac: _Jac1D | _JacMethod | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
 ) -> tuple[_Float1D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...
@@ -226,7 +225,7 @@ def curve_fit(
     method: _CurveFitMethod | None = None,
     jac: _Jac2D | _JacMethod | None = None,
     *,
-    full_output: Falsy = False,
+    full_output: onp.ToFalse = False,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
 ) -> tuple[_Float2D, _Float2D]: ...
@@ -243,7 +242,7 @@ def curve_fit(
     method: _CurveFitMethod | None = None,
     jac: _Jac2D | _JacMethod | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
 ) -> tuple[_Float2D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...
@@ -260,7 +259,7 @@ def curve_fit(
     method: _CurveFitMethod | None = None,
     jac: _Jac1D | _Jac2D | _JacMethod | None = None,
     *,
-    full_output: Falsy = False,
+    full_output: onp.ToFalse = False,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
 ) -> tuple[_Float1D | _Float2D, _Float2D]: ...
@@ -277,7 +276,7 @@ def curve_fit(
     method: _CurveFitMethod | None = None,
     jac: _Jac1D | _Jac2D | _JacMethod | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
 ) -> tuple[_Float1D | _Float2D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...

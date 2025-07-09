@@ -4,8 +4,6 @@ from typing import Concatenate, TypeAlias, overload
 import numpy as np
 import optype.numpy as onp
 
-from scipy._typing import AnyBool
-
 __all__ = ["convolve", "convolve_z", "destroy_convolve_cache", "init_convolution_kernel"]
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
@@ -15,12 +13,12 @@ def destroy_convolve_cache() -> None: ...
 
 #
 def convolve(
-    inout: onp.ToFloat1D, omega: onp.ToFloat1D, swap_real_imag: AnyBool = False, overwrite_x: AnyBool = False
+    inout: onp.ToFloat1D, omega: onp.ToFloat1D, swap_real_imag: onp.ToBool = False, overwrite_x: onp.ToBool = False
 ) -> _Float1D: ...
 
 #
 def convolve_z(
-    inout: onp.ToFloat1D, omega_real: onp.ToFloat1D, omega_imag: onp.ToFloat1D, overwrite_x: AnyBool = False
+    inout: onp.ToFloat1D, omega_real: onp.ToFloat1D, omega_imag: onp.ToFloat1D, overwrite_x: onp.ToBool = False
 ) -> _Float1D: ...
 
 #

@@ -9,7 +9,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._util import _RichResult
-from scipy._typing import Falsy
 
 ###
 
@@ -38,7 +37,7 @@ def _initialize(
     func: _FuncRealT,
     xs: Sequence[onp.ToFloat1D],
     args: tuple[onp.ToFloat1D, ...],
-    complex_ok: Falsy = False,
+    complex_ok: onp.ToFalse = False,
     preserve_shape: bool | None = None,
     xp: _ModuleT | None = None,
 ) -> tuple[

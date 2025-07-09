@@ -4,7 +4,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
 from scipy.sparse import csr_array
 from scipy.sparse._base import _spbase
 
@@ -43,19 +42,21 @@ def depth_first_tree(csgraph: _ToGraph, i_start: int, directed: bool = True) -> 
 #
 @overload
 def breadth_first_order(
-    csgraph: _ToGraph, i_start: int, directed: bool = True, return_predecessors: Truthy = True
+    csgraph: _ToGraph, i_start: int, directed: bool = True, return_predecessors: onp.ToTrue = True
 ) -> _Pair[_Int1D]: ...
 @overload
-def breadth_first_order(csgraph: _ToGraph, i_start: int, directed: bool, return_predecessors: Falsy) -> _Int1D: ...
+def breadth_first_order(csgraph: _ToGraph, i_start: int, directed: bool, return_predecessors: onp.ToFalse) -> _Int1D: ...
 @overload
-def breadth_first_order(csgraph: _ToGraph, i_start: int, directed: bool = True, *, return_predecessors: Falsy) -> _Int1D: ...
+def breadth_first_order(
+    csgraph: _ToGraph, i_start: int, directed: bool = True, *, return_predecessors: onp.ToFalse
+) -> _Int1D: ...
 
 #
 @overload
 def depth_first_order(
-    csgraph: _ToGraph, i_start: int, directed: bool = True, return_predecessors: Truthy = True
+    csgraph: _ToGraph, i_start: int, directed: bool = True, return_predecessors: onp.ToTrue = True
 ) -> _Pair[_Int1D]: ...
 @overload
-def depth_first_order(csgraph: _ToGraph, i_start: int, directed: bool, return_predecessors: Falsy) -> _Int1D: ...
+def depth_first_order(csgraph: _ToGraph, i_start: int, directed: bool, return_predecessors: onp.ToFalse) -> _Int1D: ...
 @overload
-def depth_first_order(csgraph: _ToGraph, i_start: int, directed: bool = True, *, return_predecessors: Falsy) -> _Int1D: ...
+def depth_first_order(csgraph: _ToGraph, i_start: int, directed: bool = True, *, return_predecessors: onp.ToFalse) -> _Int1D: ...

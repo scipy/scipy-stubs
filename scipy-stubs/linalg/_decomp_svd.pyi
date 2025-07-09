@@ -6,8 +6,6 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
-
 __all__ = ["diagsvd", "null_space", "orth", "subspace_angles", "svd", "svdvals"]
 
 _T = TypeVar("_T")
@@ -32,7 +30,7 @@ _as_f64: TypeAlias = np.longdouble | np.float64 | npc.integer | np.bool_  # noqa
 def svd(
     a: onp.ToArrayND[float, _as_f64],
     full_matrices: onp.ToBool = True,
-    compute_uv: Truthy = True,
+    compute_uv: onp.ToTrue = True,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",
@@ -41,7 +39,7 @@ def svd(
 def svd(
     a: onp.ToArrayND[_as_f32, _as_f32],
     full_matrices: onp.ToBool = True,
-    compute_uv: Truthy = True,
+    compute_uv: onp.ToTrue = True,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",
@@ -50,7 +48,7 @@ def svd(
 def svd(
     a: onp.ToArrayND[op.JustComplex, np.complex128 | np.clongdouble],
     full_matrices: onp.ToBool = True,
-    compute_uv: Truthy = True,
+    compute_uv: onp.ToTrue = True,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",
@@ -59,7 +57,7 @@ def svd(
 def svd(
     a: onp.ToArrayND[np.complex64, np.complex64],
     full_matrices: onp.ToBool = True,
-    compute_uv: Truthy = True,
+    compute_uv: onp.ToTrue = True,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",
@@ -69,7 +67,7 @@ def svd(
     a: onp.ToArrayND[complex, _as_f64 | np.complex128 | np.clongdouble],
     full_matrices: onp.ToBool = True,
     *,
-    compute_uv: Falsy,
+    compute_uv: onp.ToFalse,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",
@@ -79,7 +77,7 @@ def svd(
     a: onp.ToArrayND[_as_f32, _as_f32 | np.complex64],
     full_matrices: onp.ToBool = True,
     *,
-    compute_uv: Falsy,
+    compute_uv: onp.ToFalse,
     overwrite_a: onp.ToBool = False,
     check_finite: onp.ToBool = True,
     lapack_driver: _LapackDriver = "gesdd",

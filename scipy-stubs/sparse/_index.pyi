@@ -10,9 +10,8 @@ import optype.numpy.compat as npc
 from ._base import _spbase, sparray
 from ._coo import coo_array
 from ._matrix import spmatrix
-from ._typing import Numeric
 
-_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 
 _Self2T = TypeVar("_Self2T", bound=IndexMixin[Any, _2D])

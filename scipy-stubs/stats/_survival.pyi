@@ -7,7 +7,7 @@ import optype.numpy as onp
 
 from ._censored_data import CensoredData
 from ._common import ConfidenceInterval
-from scipy._typing import Alternative
+from ._typing import Alternative
 
 __all__ = ["ecdf", "logrank"]
 

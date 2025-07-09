@@ -7,7 +7,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._qmc import QMCEngine
-from scipy._typing import ToRNG
 
 _XT_co = TypeVar("_XT_co", bound=npc.number, default=np.float64, covariant=True)
 
@@ -39,7 +38,7 @@ class _ProbabilityDistribution(Generic[_XT_co], metaclass=abc.ABCMeta):
     def mode(self, /, *, method: _ModeMethod) -> _XT_co | onp.ArrayND[_XT_co]: ...
     @abc.abstractmethod
     def sample(
-        self, /, shape: int | tuple[int, ...], *, method: _SampleMethod, rng: QMCEngine | ToRNG
+        self, /, shape: int | tuple[int, ...], *, method: _SampleMethod, rng: QMCEngine | onp.random.ToRNG | None
     ) -> _XT_co | onp.Array[Any, _XT_co]: ...  # `Any` shape is needed on `numpy<2.1`
 
     #

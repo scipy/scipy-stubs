@@ -4,7 +4,8 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from scipy._typing import AnyBool, AnyShape, DCTType
+from scipy._typing import AnyShape
+from scipy.fft._typing import DCTType
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
@@ -23,7 +24,7 @@ def dctn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
 @overload
 def dctn(
@@ -32,7 +33,7 @@ def dctn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -43,7 +44,7 @@ def idctn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
 @overload
 def idctn(
@@ -52,7 +53,7 @@ def idctn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -63,7 +64,7 @@ def dstn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
 @overload
 def dstn(
@@ -72,7 +73,7 @@ def dstn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -83,7 +84,7 @@ def idstn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
 @overload
 def idstn(
@@ -92,7 +93,7 @@ def idstn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -103,7 +104,7 @@ def dct(
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
 @overload
 def dct(
@@ -112,7 +113,7 @@ def dct(
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -123,7 +124,7 @@ def idct(
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
 @overload
 def idct(
@@ -132,7 +133,7 @@ def idct(
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -143,7 +144,7 @@ def dst(
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
 @overload
 def dst(
@@ -152,7 +153,7 @@ def dst(
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -163,7 +164,7 @@ def idst(
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
 @overload
 def idst(
@@ -172,5 +173,5 @@ def idst(
     n: onp.ToInt | None = None,
     axis: op.CanIndex | None = None,
     norm: _NormKind = None,
-    overwrite_x: AnyBool = False,
+    overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...

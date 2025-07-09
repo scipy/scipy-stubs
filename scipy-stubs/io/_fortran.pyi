@@ -1,4 +1,4 @@
-from typing import TypedDict, final, overload, type_check_only
+from typing import Literal, Self, TypeAlias, TypedDict, final, overload, type_check_only
 from typing_extensions import Unpack
 
 import numpy as np
@@ -6,20 +6,26 @@ import numpy.typing as npt
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import EnterSelfMixin, FileLike, FileModeRW
+from scipy._typing import ExitMixin
+from scipy.io._typing import FileLike
 
 __all__ = ["FortranEOFError", "FortranFile", "FortranFormattingError"]
+
+_FileModeRW: TypeAlias = Literal["r", "w"]
 
 @final
 @type_check_only
 class _DTypeKwargs(TypedDict, total=False):
     dtype: npt.DTypeLike
 
+###
+
 class FortranEOFError(TypeError, OSError): ...
 class FortranFormattingError(TypeError, OSError): ...
 
-class FortranFile(EnterSelfMixin):
-    def __init__(self, /, filename: FileLike[bytes], mode: FileModeRW = "r", header_dtype: npt.DTypeLike = ...) -> None: ...
+class FortranFile(ExitMixin):
+    def __init__(self, /, filename: FileLike[bytes], mode: _FileModeRW = "r", header_dtype: npt.DTypeLike = ...) -> None: ...
+    def __enter__(self, /) -> Self: ...
     def close(self, /) -> None: ...
     def write_record(self, /, *items: onp.ToArrayND) -> None: ...
     @overload

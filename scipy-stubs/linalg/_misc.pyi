@@ -6,8 +6,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 from numpy.linalg import LinAlgError
 
-from scipy._typing import AnyBool, Falsy, Truthy
-
 __all__ = ["LinAlgError", "LinAlgWarning", "norm"]
 
 _Inf: TypeAlias = float
@@ -30,7 +28,7 @@ def norm(  # type: ignore[overload-overlap]
     ord: _Order | None = None,
     axis: None = None,
     keepdims: op.CanBool = False,
-    check_finite: AnyBool = True,
+    check_finite: onp.ToBool = True,
 ) -> np.float64: ...
 @overload  # inexact32, axis: None = ...
 def norm(
@@ -38,7 +36,7 @@ def norm(
     ord: _Order | None = None,
     axis: None = None,
     keepdims: op.CanBool = False,
-    check_finite: AnyBool = True,
+    check_finite: onp.ToBool = True,
 ) -> np.float32: ...
 @overload  # longdouble, axis: None = ...
 def norm(
@@ -46,19 +44,23 @@ def norm(
     ord: _Order | None = None,
     axis: None = None,
     keepdims: op.CanBool = False,
-    check_finite: AnyBool = True,
+    check_finite: onp.ToBool = True,
 ) -> np.longdouble: ...
 @overload  # scalar array, axis: None = ..., keepdims: False = ...
 def norm(
     a: onp.CanArrayND[_SubScalar] | onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[_SubScalar],
     ord: _Order | None = None,
     axis: None = None,
-    keepdims: Falsy = False,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToFalse = False,
+    check_finite: onp.ToBool = True,
 ) -> np.float64: ...
 @overload  # float64-coercible array, keepdims: True (positional)
 def norm(  # type: ignore[overload-overlap]
-    a: onp.ArrayND[_SubScalar, _ShapeT], ord: _Order | None, axis: _Axis | None, keepdims: Truthy, check_finite: AnyBool = True
+    a: onp.ArrayND[_SubScalar, _ShapeT],
+    ord: _Order | None,
+    axis: _Axis | None,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # float64-coercible array, keepdims: True (keyword)
 def norm(  # type: ignore[overload-overlap]
@@ -66,16 +68,16 @@ def norm(  # type: ignore[overload-overlap]
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # float64-coercible array-like, keepdims: True (positional)
 def norm(  # type: ignore[overload-overlap]
     a: onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[complex | _SubScalar],
     ord: _Order | None,
     axis: _Axis | None,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # float64-coercible array-like, keepdims: True (keyword)
 def norm(  # type: ignore[overload-overlap]
@@ -83,24 +85,24 @@ def norm(  # type: ignore[overload-overlap]
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # shaped inexact32 array, keepdims: True (positional)
 def norm(
     a: onp.ArrayND[np.float32 | np.complex64, _ShapeT],
     ord: _Order | None,
     axis: _Axis | None,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float32, _ShapeT]: ...
 @overload  # shaped longdouble array, keepdims: True (positional)
 def norm(
     a: onp.ArrayND[np.longdouble | np.clongdouble, _ShapeT],
     ord: _Order | None,
     axis: _Axis | None,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.longdouble, _ShapeT]: ...
 @overload  # shaped inexact32 array, keepdims: True (keyword)
 def norm(
@@ -108,8 +110,8 @@ def norm(
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float32, _ShapeT]: ...
 @overload  # shaped longdouble array, keepdims: True (keyword)
 def norm(
@@ -117,24 +119,24 @@ def norm(
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.longdouble, _ShapeT]: ...
 @overload  # scalar array-like, keepdims: True (positional)
 def norm(
     a: onp.SequenceND[onp.CanArrayND[np.float32 | np.complex64]] | onp.SequenceND[np.float32 | np.complex64],
     ord: _Order | None,
     axis: _Axis | None,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # scalar array-like, keepdims: True (positional)
 def norm(
     a: onp.SequenceND[onp.CanArrayND[np.longdouble | np.clongdouble]] | onp.SequenceND[np.longdouble | np.clongdouble],
     ord: _Order | None,
     axis: _Axis | None,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.longdouble]: ...
 @overload  # scalar array-like, keepdims: True (keyword)
 def norm(
@@ -142,8 +144,8 @@ def norm(
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # scalar array-like, keepdims: True (keyword)
 def norm(
@@ -151,28 +153,37 @@ def norm(
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
-    keepdims: Truthy,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.longdouble]: ...
 @overload  # array-like, axis: None = ..., keepdims: False = ...
 def norm(
-    a: onp.ToComplexND, ord: _Order | None = None, axis: None = None, keepdims: Falsy = False, check_finite: AnyBool = True
+    a: onp.ToComplexND,
+    ord: _Order | None = None,
+    axis: None = None,
+    keepdims: onp.ToFalse = False,
+    check_finite: onp.ToBool = True,
 ) -> np.float64: ...
 @overload  # array-like, keepdims: True (positional)
 def norm(
-    a: onp.ToComplexND, ord: _Order | None, axis: _Axis | None, keepdims: Truthy, check_finite: AnyBool = True
+    a: onp.ToComplexND, ord: _Order | None, axis: _Axis | None, keepdims: onp.ToTrue, check_finite: onp.ToBool = True
 ) -> onp.ArrayND[npc.floating]: ...
 @overload  # array-like, keepdims: True (keyword)
 def norm(
-    a: onp.ToComplexND, ord: _Order | None = None, axis: _Axis | None = None, *, keepdims: Truthy, check_finite: AnyBool = True
+    a: onp.ToComplexND,
+    ord: _Order | None = None,
+    axis: _Axis | None = None,
+    *,
+    keepdims: onp.ToTrue,
+    check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[npc.floating]: ...
 @overload  # catch-all
 def norm(
     a: onp.ToArrayND,
     ord: _Order | None = None,
     axis: _Axis | None = None,
-    keepdims: AnyBool = False,
-    check_finite: AnyBool = True,
+    keepdims: onp.ToBool = False,
+    check_finite: onp.ToBool = True,
 ) -> npc.floating | onp.ArrayND[npc.floating]: ...
 
 #

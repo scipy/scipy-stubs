@@ -7,7 +7,6 @@ import optype.numpy.compat as npc
 
 from ._nonlin import InverseJacobian
 from ._optimize import OptimizeResult as _OptimizeResult
-from scipy._typing import Falsy, Truthy
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["root"]
@@ -135,7 +134,7 @@ def root(
     x0: onp.ToFloatND,
     args: tuple[object, ...] = (),
     method: _RootMethod = "hybr",
-    jac: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloatND] | Falsy | None = None,
+    jac: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloatND] | onp.ToFalse | None = None,
     tol: onp.ToFloat | None = None,
     callback: Callable[[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], None] | None = None,
     options: _RootOptions | None = None,
@@ -146,7 +145,7 @@ def root(
     x0: onp.ToFloatND,
     args: tuple[object, ...],
     method: _RootMethod,
-    jac: Truthy,
+    jac: onp.ToTrue,
     tol: onp.ToFloat | None = None,
     callback: Callable[[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], None] | None = None,
     options: _RootOptions | None = None,
@@ -158,7 +157,7 @@ def root(
     args: tuple[object, ...] = (),
     method: _RootMethod = "hybr",
     *,
-    jac: Truthy,
+    jac: onp.ToTrue,
     tol: onp.ToFloat | None = None,
     callback: Callable[[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], None] | None = None,
     options: _RootOptions | None = None,

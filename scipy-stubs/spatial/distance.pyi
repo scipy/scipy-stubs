@@ -8,8 +8,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
-
 __all__ = [
     "braycurtis",
     "canberra",
@@ -254,11 +252,16 @@ def sqeuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None 
 #
 @overload
 def jensenshannon(
-    p: onp.ToFloatStrict1D, q: onp.ToFloatStrict1D, base: onp.ToFloat | None = None, *, axis: int = 0, keepdims: Falsy = False
+    p: onp.ToFloatStrict1D,
+    q: onp.ToFloatStrict1D,
+    base: onp.ToFloat | None = None,
+    *,
+    axis: int = 0,
+    keepdims: onp.ToFalse = False,
 ) -> np.float32 | np.float64: ...
 @overload
 def jensenshannon(
-    p: onp.ToFloatStrict1D, q: onp.ToFloatStrict1D, base: onp.ToFloat | None = None, *, axis: int = 0, keepdims: Truthy
+    p: onp.ToFloatStrict1D, q: onp.ToFloatStrict1D, base: onp.ToFloat | None = None, *, axis: int = 0, keepdims: onp.ToTrue
 ) -> onp.Array1D[np.float32 | np.float64]: ...
 @overload
 def jensenshannon(

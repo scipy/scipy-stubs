@@ -5,8 +5,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Truthy
-
 _VT = TypeVar("_VT", bound=onp.ArrayND[npc.inexact], default=onp.ArrayND[Any])
 
 class OdeSolver:
@@ -46,7 +44,7 @@ class OdeSolver:
         y0: onp.ToComplexND,
         t_bound: onp.ToFloat,
         vectorized: bool,
-        support_complex: Truthy,
+        support_complex: onp.ToTrue,
     ) -> None: ...
     @property
     def step_size(self, /) -> float | None: ...

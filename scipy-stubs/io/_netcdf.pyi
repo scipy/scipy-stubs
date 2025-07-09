@@ -1,5 +1,5 @@
 from collections.abc import Mapping, Sequence
-from typing import IO, Final, Generic, Literal, TypeAlias, overload
+from typing import IO, Final, Generic, Literal, Self, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -7,7 +7,8 @@ import numpy.typing as npt
 import optype as op
 import optype.numpy as onp
 
-from scipy._typing import EnterSelfMixin, FileLike, FileModeRWA
+from ._typing import FileLike
+from scipy._typing import ExitMixin
 
 __all__ = ["netcdf_file", "netcdf_variable"]
 
@@ -15,6 +16,7 @@ _ShapeT_co = TypeVar("_ShapeT_co", covariant=True, bound=tuple[int, ...], defaul
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
 _SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.generic, default=np.generic)
 
+_FileModeRWA: TypeAlias = Literal["r", "w", "a"]
 _TypeCode: TypeAlias = Literal["b", "c", "h", "i", "f", "d"]
 _TypeSize: TypeAlias = Literal[1, 2, 4, 8]
 _TypeSpec: TypeAlias = tuple[_TypeCode, _TypeSize]
@@ -62,11 +64,11 @@ TYPEMAP: Final[dict[_TypeNC, _TypeSpec]] = ...
 FILLMAP: Final[dict[_TypeNC, _TypeFill]]
 REVERSE: Final[dict[_TypeSpec, _TypeNC]]
 
-class netcdf_file(EnterSelfMixin):
+class netcdf_file(ExitMixin):
     fp: Final[IO[bytes]]
     filename: Final[str]
     use_mmap: Final[bool]
-    mode: Final[FileModeRWA]
+    mode: Final[_FileModeRWA]
     version_byte: Final[int]
     maskandscale: Final[bool]
     dimensions: Final[dict[str, int]]
@@ -75,12 +77,13 @@ class netcdf_file(EnterSelfMixin):
         self,
         /,
         filename: FileLike[bytes],
-        mode: FileModeRWA = "r",
+        mode: _FileModeRWA = "r",
         mmap: bool | None = None,
         version: int = 1,
         maskandscale: bool = False,
     ) -> None: ...
     def __del__(self, /) -> None: ...
+    def __enter__(self, /) -> Self: ...
     def close(self, /) -> None: ...
     def createDimension(self, /, name: str, length: int) -> None: ...
     @overload

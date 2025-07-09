@@ -5,7 +5,7 @@ from typing_extensions import Unpack
 import optype.numpy as onp
 
 from ._miobase import MatFileReader
-from scipy._typing import ByteOrder, FileName
+from scipy.io._typing import ByteOrder, FileName
 
 __all__ = ["loadmat", "savemat", "whosmat"]
 

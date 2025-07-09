@@ -10,14 +10,13 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Numeric
 
 __all__ = ["LinearOperator", "aslinearoperator"]
 
-_SCT = TypeVar("_SCT", bound=Numeric)
-_SCT_co = TypeVar("_SCT_co", bound=Numeric, default=Any, covariant=True)
-_SCT1_co = TypeVar("_SCT1_co", bound=Numeric, default=Any, covariant=True)
-_SCT2_co = TypeVar("_SCT2_co", bound=Numeric, default=_SCT1_co, covariant=True)
+_SCT = TypeVar("_SCT", bound=npc.number | np.bool_)
+_SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
+_SCT1_co = TypeVar("_SCT1_co", bound=npc.number | np.bool_, default=Any, covariant=True)
+_SCT2_co = TypeVar("_SCT2_co", bound=npc.number | np.bool_, default=_SCT1_co, covariant=True)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec, covariant=True)
 

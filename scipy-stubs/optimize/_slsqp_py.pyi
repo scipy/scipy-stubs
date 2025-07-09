@@ -5,8 +5,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import Falsy, Truthy
-
 __all__ = ["approx_jacobian", "fmin_slsqp"]
 
 ###
@@ -70,7 +68,7 @@ def fmin_slsqp(
     acc: onp.ToFloat = 1e-06,
     iprint: onp.ToJustInt = 1,
     disp: onp.ToInt | None = None,
-    full_output: Falsy = 0,
+    full_output: onp.ToFalse = 0,
     epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float).eps)
     callback: Callable[[onp.Array1D[np.float64]], _Ignored] | None = None,
 ) -> onp.Array1D[np.float64]: ...
@@ -92,7 +90,7 @@ def fmin_slsqp(
     iprint: onp.ToJustInt = 1,
     disp: onp.ToInt | None = None,
     *,
-    full_output: Truthy,
+    full_output: onp.ToTrue,
     epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float).eps)
     callback: Callable[[onp.Array1D[np.float64]], _Ignored] | None = None,
 ) -> tuple[onp.Array1D[np.float64], float | np.float64, int, _ExitMode, _ExitDesc]: ...

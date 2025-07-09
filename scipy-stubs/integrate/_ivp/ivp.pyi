@@ -9,7 +9,6 @@ import optype.numpy.compat as npc
 from .base import DenseOutput, OdeSolver
 from .common import OdeSolution
 from scipy._lib._util import _RichResult
-from scipy._typing import Falsy, Truthy
 from scipy.sparse import sparray, spmatrix
 
 _SCT_cf = TypeVar("_SCT_cf", bound=npc.inexact, default=np.float64 | np.complex128)
@@ -81,7 +80,7 @@ def solve_ivp(
     t_eval: onp.ToFloat1D | None = None,
     dense_output: bool = False,
     events: _Events[_SCT_cf] | None = None,
-    vectorized: Falsy = False,
+    vectorized: onp.ToFalse = False,
     args: tuple[object, ...] | None = None,
     **options: Unpack[_SolverOptions],
 ) -> OdeResult[_SCT_cf]: ...
@@ -95,7 +94,7 @@ def solve_ivp(
     dense_output: bool = False,
     events: _Events[_SCT_cf] | None = None,
     *,
-    vectorized: Truthy,
+    vectorized: onp.ToTrue,
     args: tuple[object, ...] | None = None,
     **options: Unpack[_SolverOptions],
 ) -> OdeResult[_SCT_cf]: ...

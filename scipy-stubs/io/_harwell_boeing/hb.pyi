@@ -2,10 +2,11 @@ from typing import IO, Final, Literal, LiteralString, Self, TypeAlias, overload,
 from typing_extensions import Protocol
 
 import numpy as np
+import optype.numpy as onp
 import optype.numpy.compat as npc
 import optype.typing as opt
 
-from scipy._typing import Falsy, FileLike, Truthy
+from scipy.io._typing import FileLike
 from scipy.sparse import csc_array, csc_matrix
 from scipy.sparse._base import _spbase
 
@@ -117,9 +118,9 @@ def _write_data(m: _spbase, fid: IO[str], header: HBInfo) -> None: ...
 
 #
 @overload
-def hb_read(path_or_open_file: FileLike[str], *, spmatrix: Truthy = True) -> csc_array[_Real]: ...
+def hb_read(path_or_open_file: FileLike[str], *, spmatrix: onp.ToTrue = True) -> csc_array[_Real]: ...
 @overload
-def hb_read(path_or_open_file: FileLike[str], *, spmatrix: Falsy) -> csc_matrix[_Real]: ...
+def hb_read(path_or_open_file: FileLike[str], *, spmatrix: onp.ToFalse) -> csc_matrix[_Real]: ...
 
 #
 def hb_write(path_or_open_file: FileLike[str], m: _spbase, hb_info: HBInfo | None = None) -> None: ...

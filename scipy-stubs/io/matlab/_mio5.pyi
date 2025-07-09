@@ -7,7 +7,8 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._miobase import MatFileReader
-from scipy._typing import AnyShape, ByteOrder
+from scipy._typing import AnyShape
+from scipy.io._typing import ByteOrder
 from scipy.sparse import sparray, spmatrix
 
 _OnedAs: TypeAlias = Literal["row", "column"]

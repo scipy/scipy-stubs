@@ -4,8 +4,6 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from scipy._typing import Truthy
-
 _SCT = TypeVar("_SCT", bound=np.generic)
 
 ###
@@ -27,6 +25,6 @@ def zero_ext(x: onp.ArrayND[_SCT], n: onp.ToInt, axis: op.CanIndex = -1) -> onp.
 
 #
 @overload
-def _validate_fs(fs: None, allow_none: Truthy = True) -> None: ...
+def _validate_fs(fs: None, allow_none: onp.ToTrue = True) -> None: ...
 @overload
 def _validate_fs(fs: onp.ToFloat, allow_none: onp.ToBool = True) -> float: ...

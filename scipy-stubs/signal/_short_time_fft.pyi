@@ -7,7 +7,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from .windows._windows import _ToWindow
-from scipy._typing import Falsy, Truthy
 
 __all__ = ["ShortTimeFFT", "closest_STFT_dual_window"]
 
@@ -354,9 +353,9 @@ def _calc_dual_canonical_window(win: onp.ArrayND[_InexactT], hop: int) -> onp.Ar
 #
 @overload
 def closest_STFT_dual_window(
-    win: onp.ArrayND[_InexactT], hop: int, desired_dual: onp.ArrayND[_InexactT] | None = None, *, scaled: Truthy = True
+    win: onp.ArrayND[_InexactT], hop: int, desired_dual: onp.ArrayND[_InexactT] | None = None, *, scaled: onp.ToTrue = True
 ) -> tuple[onp.Array1D[_InexactT], _InexactT]: ...
 @overload
 def closest_STFT_dual_window(
-    win: onp.ArrayND[_InexactT], hop: int, desired_dual: onp.ArrayND[_InexactT] | None = None, *, scaled: Falsy
+    win: onp.ArrayND[_InexactT], hop: int, desired_dual: onp.ArrayND[_InexactT] | None = None, *, scaled: onp.ToFalse
 ) -> tuple[onp.Array1D[_InexactT], float]: ...

@@ -27,7 +27,6 @@ import optype.numpy.compat as npc
 from ._distn_infrastructure import rv_continuous
 from ._probability_distribution import _ProbabilityDistribution
 from ._qmc import QMCEngine
-from scipy._typing import ToRNG
 
 __all__ = ["Mixture", "abs", "exp", "log", "make_distribution", "order_statistic", "truncate"]
 
@@ -199,7 +198,7 @@ class _Interval(_Domain[_XT_co], Generic[_XT_co]):
         min: onp.ArrayND[_Float | _Int],
         max: onp.ArrayND[_Float | _Int],
         squeezed_base_shape: _ND,
-        rng: ToRNG = None,
+        rng: onp.random.ToRNG | None = None,
     ) -> onp.ArrayND[_XT_co]: ...
     def define_parameters(self, /, *parameters: _Parameter) -> None: ...
 
@@ -232,7 +231,7 @@ class _Parameter(abc.ABC, Generic[_RealT_co]):
         /,
         size: _ND | None = None,
         *,
-        rng: ToRNG = None,
+        rng: onp.random.ToRNG | None = None,
         region: _DomainRegion = "domain",
         proportions: _DrawProportions | None = None,
         parameter_values: _ParamValues | None = None,
@@ -256,7 +255,7 @@ class _Parameterization:
         self,
         /,
         sizes: _ND | Sequence[_ND] | None = None,
-        rng: ToRNG = None,
+        rng: onp.random.ToRNG | None = None,
         proportions: _DrawProportions | None = None,
         region: _DomainRegion = "domain",
     ) -> dict[str, onp.ArrayND[_Float]]: ...
@@ -299,7 +298,7 @@ _ToFloatND: TypeAlias = onp.CanArrayND[npc.floating | npc.integer | np.bool_, _S
 _ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
 _ToFloatMaxND: TypeAlias = _ToFloatND[_ShapeT1] | _ToFloatMax1D
 
-_ToQRNG: TypeAlias = QMCEngine | ToRNG
+_ToQRNG: TypeAlias = QMCEngine | onp.random.ToRNG | None
 
 @type_check_only
 class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _ShapeT0_co]):

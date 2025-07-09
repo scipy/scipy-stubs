@@ -3,7 +3,7 @@
 
 from collections.abc import Sequence
 from types import GenericAlias
-from typing import Any, Generic, Self, TypeAlias, overload, type_check_only
+from typing import Any, Generic, Literal as L, Self, SupportsIndex, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -19,12 +19,11 @@ from ._csr import csr_matrix
 from ._dia import dia_matrix
 from ._dok import dok_matrix
 from ._lil import lil_matrix
-from ._typing import Numeric, SPFormat, ToShape2D
-from scipy._typing import OrderCF
+from ._typing import _Format
 
 _T = TypeVar("_T")
-_ScalarT = TypeVar("_ScalarT", bound=Numeric)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=Numeric, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
 
 _SpMatrixT = TypeVar("_SpMatrixT", bound=spmatrix)
 
@@ -75,7 +74,7 @@ class spmatrix(Generic[_ScalarT_co]):
     @property
     def shape(self, /) -> tuple[int, int]: ...
     def get_shape(self, /) -> tuple[int, int]: ...
-    def set_shape(self, /, shape: ToShape2D) -> None: ...
+    def set_shape(self, /, shape: tuple[SupportsIndex, SupportsIndex]) -> None: ...
 
     #
     @overload  # Self[-Bool], other: scalar-like +Bool
@@ -125,7 +124,9 @@ class spmatrix(Generic[_ScalarT_co]):
         self: spmatrix[_ToFloat], other: _DualArrayLike[op.JustComplex, npc.complexfloating], /
     ) -> onp.Array2D[npc.complexfloating]: ...
     @overload  # catch-all
-    def __mul__(self, other: _DualArrayLike[complex, Numeric] | _spbase, /) -> _spbase[Any, Any] | onp.Array[Any, Any]: ...
+    def __mul__(
+        self, other: _DualArrayLike[complex, npc.number | np.bool_] | _spbase, /
+    ) -> _spbase[Any, Any] | onp.Array[Any, Any]: ...
     __rmul__ = __mul__
 
     #
@@ -133,7 +134,7 @@ class spmatrix(Generic[_ScalarT_co]):
 
     #
     def getmaxprint(self, /) -> int: ...
-    def getformat(self, /) -> SPFormat: ...
+    def getformat(self, /) -> _Format: ...
     # NOTE: `axis` is only supported by `{coo,csc,csr,lil}_matrix`
     def getnnz(self, /, axis: None = None) -> int: ...
     def getH(self, /) -> Self: ...
@@ -150,11 +151,11 @@ class spmatrix(Generic[_ScalarT_co]):
 
     #
     @overload
-    def todense(self, /, order: OrderCF | None = None, out: None = None) -> onp.Matrix[_ScalarT_co]: ...
+    def todense(self, /, order: L["C", "F"] | None = None, out: None = None) -> onp.Matrix[_ScalarT_co]: ...
     @overload
-    def todense(self, /, order: OrderCF | None, out: onp.ArrayND[_ScalarT]) -> onp.Matrix[_ScalarT]: ...
+    def todense(self, /, order: L["C", "F"] | None, out: onp.ArrayND[_ScalarT]) -> onp.Matrix[_ScalarT]: ...
     @overload
-    def todense(self, /, order: OrderCF | None = None, *, out: onp.ArrayND[_ScalarT]) -> onp.Matrix[_ScalarT]: ...
+    def todense(self, /, order: L["C", "F"] | None = None, *, out: onp.ArrayND[_ScalarT]) -> onp.Matrix[_ScalarT]: ...
 
     #
     @classmethod

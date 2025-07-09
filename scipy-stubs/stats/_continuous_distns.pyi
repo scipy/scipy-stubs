@@ -7,7 +7,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._distn_infrastructure import _rv_continuous_0, rv_continuous
-from scipy._typing import ToRNG
 
 __all__ = [
     "alpha",
@@ -433,9 +432,9 @@ class rv_histogram(rv_continuous):
         self,
         /,
         histogram: tuple[onp.ArrayND[npc.floating | npc.integer], onp.ArrayND[npc.number]],
-        *args: float | str | ToRNG,
+        *args: float | str | onp.random.ToRNG | None,
         density: bool | None = None,
-        **kwargs: float | str | ToRNG,
+        **kwargs: float | str | onp.random.ToRNG | None,
     ) -> None: ...
 
 class studentized_range_gen(rv_continuous): ...

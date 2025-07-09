@@ -8,7 +8,6 @@ import optype.numpy.compat as npc
 
 from ._ltisys import dlti
 from .windows._windows import _ToWindow
-from scipy._typing import ConvMode, Falsy, Truthy
 
 __all__ = [
     "choose_conv_method",
@@ -57,6 +56,7 @@ _AnyShapeT = TypeVar("_AnyShapeT", tuple[int], tuple[int, int], tuple[int, int, 
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 
+_ConvMode: TypeAlias = L["valid", "same", "full"]
 _ConvMethod: TypeAlias = L["direct", "fft"]
 _ToConvMethod: TypeAlias = L["auto", _ConvMethod]
 _BoundaryConditions: TypeAlias = L["fill", "wrap", "symm"]
@@ -110,42 +110,46 @@ class _ConvMeasureDict(TypedDict):
 ###
 
 @overload
-def choose_conv_method(in1: _ToIntND, in2: _ToIntND, mode: ConvMode = "full", measure: Falsy = False) -> L["direct"]: ...
-@overload
-def choose_conv_method(in1: _ToComplexND, in2: _ToComplexND, mode: ConvMode = "full", measure: Falsy = False) -> _ConvMethod: ...
+def choose_conv_method(in1: _ToIntND, in2: _ToIntND, mode: _ConvMode = "full", measure: onp.ToFalse = False) -> L["direct"]: ...
 @overload
 def choose_conv_method(
-    in1: _ToComplexND, in2: _ToComplexND, mode: ConvMode, measure: Truthy
+    in1: _ToComplexND, in2: _ToComplexND, mode: _ConvMode = "full", measure: onp.ToFalse = False
+) -> _ConvMethod: ...
+@overload
+def choose_conv_method(
+    in1: _ToComplexND, in2: _ToComplexND, mode: _ConvMode, measure: onp.ToTrue
 ) -> tuple[_ConvMethod, _ConvMeasureDict]: ...
 @overload
 def choose_conv_method(
-    in1: _ToComplexND, in2: _ToComplexND, mode: ConvMode = "full", *, measure: Truthy
+    in1: _ToComplexND, in2: _ToComplexND, mode: _ConvMode = "full", *, measure: onp.ToTrue
 ) -> tuple[_ConvMethod, _ConvMeasureDict]: ...
 
 #
 @overload
-def convolve(in1: _ToBoolND, in2: _ToBoolND, mode: ConvMode = "full", method: _ToConvMethod = "auto") -> onp.ArrayND[_CoBool]: ...
+def convolve(
+    in1: _ToBoolND, in2: _ToBoolND, mode: _ConvMode = "full", method: _ToConvMethod = "auto"
+) -> onp.ArrayND[_CoBool]: ...
 @overload
-def convolve(in1: _ToIntND, in2: _ToIntND, mode: ConvMode = "full", method: _ToConvMethod = "auto") -> onp.ArrayND[_CoInt]: ...
+def convolve(in1: _ToIntND, in2: _ToIntND, mode: _ConvMode = "full", method: _ToConvMethod = "auto") -> onp.ArrayND[_CoInt]: ...
 @overload
 def convolve(
-    in1: _ToFloatND, in2: _ToFloatND, mode: ConvMode = "full", method: _ToConvMethod = "auto"
+    in1: _ToFloatND, in2: _ToFloatND, mode: _ConvMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[_CoFloat]: ...
 @overload
 def convolve(
-    in1: _ToComplexND, in2: _ToComplexND, mode: ConvMode = "full", method: _ToConvMethod = "auto"
+    in1: _ToComplexND, in2: _ToComplexND, mode: _ConvMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[_CoComplex]: ...
 
 #
 @overload
 def convolve2d(
-    in1: onp.ToInt2D, in2: onp.ToInt2D, mode: ConvMode = "full", boundary: _BoundaryConditions = "fill", fillvalue: onp.ToInt = 0
+    in1: onp.ToInt2D, in2: onp.ToInt2D, mode: _ConvMode = "full", boundary: _BoundaryConditions = "fill", fillvalue: onp.ToInt = 0
 ) -> onp.Array2D[_Int]: ...
 @overload
 def convolve2d(
     in1: onp.ToFloat2D,
     in2: onp.ToFloat2D,
-    mode: ConvMode = "full",
+    mode: _ConvMode = "full",
     boundary: _BoundaryConditions = "fill",
     fillvalue: onp.ToFloat = 0,
 ) -> onp.Array2D[_OutFloat | _Int]: ...
@@ -153,7 +157,7 @@ def convolve2d(
 def convolve2d(
     in1: onp.ToComplex2D,
     in2: onp.ToComplex2D,
-    mode: ConvMode = "full",
+    mode: _ConvMode = "full",
     boundary: _BoundaryConditions = "fill",
     fillvalue: onp.ToComplex = 0,
 ) -> onp.Array2D[_Complex | _OutFloat | _Int]: ...
@@ -163,23 +167,23 @@ def convolve2d(
 def fftconvolve(  # type: ignore[overload-overlap]
     in1: onp.ArrayND[np.float16, _AnyShapeT],
     in2: onp.ArrayND[np.float16 | np.float32, _AnyShapeT],
-    mode: ConvMode = "full",
+    mode: _ConvMode = "full",
     axes: None = None,
 ) -> onp.ArrayND[np.float32, _AnyShapeT]: ...
 @overload
 def fftconvolve(
     in1: onp.ArrayND[_EnvelopeSCT, _AnyShapeT],
     in2: onp.ArrayND[_EnvelopeSCT, _AnyShapeT],
-    mode: ConvMode = "full",
+    mode: _ConvMode = "full",
     axes: None = None,
 ) -> onp.ArrayND[_EnvelopeSCT, _AnyShapeT]: ...
 @overload
 def fftconvolve(
-    in1: onp.ToFloatND, in2: onp.ToFloatND, mode: ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
+    in1: onp.ToFloatND, in2: onp.ToFloatND, mode: _ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
 ) -> onp.ArrayND[_OutFloat | np.longdouble]: ...
 @overload
 def fftconvolve(
-    in1: onp.ToComplexND, in2: onp.ToComplexND, mode: ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
+    in1: onp.ToComplexND, in2: onp.ToComplexND, mode: _ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
 ) -> onp.ArrayND[_OutFloat | np.longdouble | _Complex | np.clongdouble]: ...
 
 #
@@ -187,23 +191,23 @@ def fftconvolve(
 def oaconvolve(  # type: ignore[overload-overlap]
     in1: onp.ArrayND[np.float16, _AnyShapeT],
     in2: onp.ArrayND[np.float16 | np.float32, _AnyShapeT],
-    mode: ConvMode = "full",
+    mode: _ConvMode = "full",
     axes: None = None,
 ) -> onp.ArrayND[np.float32, _AnyShapeT]: ...
 @overload
 def oaconvolve(
     in1: onp.ArrayND[_EnvelopeSCT, _AnyShapeT],
     in2: onp.ArrayND[_EnvelopeSCT, _AnyShapeT],
-    mode: ConvMode = "full",
+    mode: _ConvMode = "full",
     axes: None = None,
 ) -> onp.ArrayND[_EnvelopeSCT, _AnyShapeT]: ...
 @overload
 def oaconvolve(
-    in1: onp.ToFloatND, in2: onp.ToFloatND, mode: ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
+    in1: onp.ToFloatND, in2: onp.ToFloatND, mode: _ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
 ) -> onp.ArrayND[_OutFloat | np.longdouble]: ...
 @overload
 def oaconvolve(
-    in1: onp.ToComplexND, in2: onp.ToComplexND, mode: ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
+    in1: onp.ToComplexND, in2: onp.ToComplexND, mode: _ConvMode = "full", axes: op.CanIndex | Sequence[op.CanIndex] | None = None
 ) -> onp.ArrayND[_OutFloat | np.longdouble | _Complex | np.clongdouble]: ...
 
 #
@@ -215,29 +219,29 @@ def deconvolve(signal: onp.ToComplex1D, divisor: onp.ToComplex1D) -> _Tuple2[onp
 #
 @overload
 def correlate(
-    in1: _ToBoolND, in2: _ToBoolND, mode: ConvMode = "full", method: _ToConvMethod = "auto"
+    in1: _ToBoolND, in2: _ToBoolND, mode: _ConvMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[_CoBool]: ...
 @overload
-def correlate(in1: _ToIntND, in2: _ToIntND, mode: ConvMode = "full", method: _ToConvMethod = "auto") -> onp.ArrayND[_CoInt]: ...
+def correlate(in1: _ToIntND, in2: _ToIntND, mode: _ConvMode = "full", method: _ToConvMethod = "auto") -> onp.ArrayND[_CoInt]: ...
 @overload
 def correlate(
-    in1: _ToFloatND, in2: _ToFloatND, mode: ConvMode = "full", method: _ToConvMethod = "auto"
+    in1: _ToFloatND, in2: _ToFloatND, mode: _ConvMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[_CoFloat]: ...
 @overload
 def correlate(
-    in1: _ToComplexND, in2: _ToComplexND, mode: ConvMode = "full", method: _ToConvMethod = "auto"
+    in1: _ToComplexND, in2: _ToComplexND, mode: _ConvMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[_CoComplex]: ...
 
 #
 @overload
 def correlate2d(
-    in1: onp.ToInt2D, in2: onp.ToInt2D, mode: ConvMode = "full", boundary: _BoundaryConditions = "fill", fillvalue: onp.ToInt = 0
+    in1: onp.ToInt2D, in2: onp.ToInt2D, mode: _ConvMode = "full", boundary: _BoundaryConditions = "fill", fillvalue: onp.ToInt = 0
 ) -> onp.Array2D[_Int]: ...
 @overload
 def correlate2d(
     in1: onp.ToFloat2D,
     in2: onp.ToFloat2D,
-    mode: ConvMode = "full",
+    mode: _ConvMode = "full",
     boundary: _BoundaryConditions = "fill",
     fillvalue: onp.ToFloat = 0,
 ) -> onp.Array2D[_OutFloat | _Int]: ...
@@ -245,13 +249,13 @@ def correlate2d(
 def correlate2d(
     in1: onp.ToComplex2D,
     in2: onp.ToComplex2D,
-    mode: ConvMode = "full",
+    mode: _ConvMode = "full",
     boundary: _BoundaryConditions = "fill",
     fillvalue: onp.ToComplex = 0,
 ) -> onp.Array2D[_Complex | _OutFloat | _Int]: ...
 
 #
-def correlation_lags(in1_len: onp.ToInt, in2_len: onp.ToInt, mode: ConvMode = "full") -> onp.Array1D[np.int_]: ...
+def correlation_lags(in1_len: onp.ToInt, in2_len: onp.ToInt, mode: _ConvMode = "full") -> onp.Array1D[np.int_]: ...
 
 #
 @overload

@@ -7,7 +7,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from .windows._windows import _ToWindow
-from scipy._typing import Falsy, Truthy
 
 __all__ = ["firls", "firwin", "firwin2", "firwin_2d", "kaiser_atten", "kaiser_beta", "kaiserord", "minimum_phase", "remez"]
 
@@ -68,7 +67,7 @@ def firwin_2d(
     *,
     fc: onp.ToFloat | onp.ToFloat1D,
     fs: onp.ToFloat = 2,
-    circular: Falsy = False,
+    circular: onp.ToFalse = False,
     pass_zero: _IIRFilterType | bool = True,
     scale: bool = True,
 ) -> onp.Array2D[np.float64]: ...
@@ -79,7 +78,7 @@ def firwin_2d(
     *,
     fc: onp.ToFloat | onp.ToFloat1D | None = None,
     fs: float = 2,
-    circular: Truthy,
+    circular: onp.ToTrue,
     pass_zero: _IIRFilterType | bool = True,
     scale: bool = True,
 ) -> onp.Array2D[np.float64]: ...

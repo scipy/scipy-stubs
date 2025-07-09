@@ -6,7 +6,8 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._realtransforms import dct, dctn, dst, dstn, idct, idst
-from scipy._typing import AnyShape, DCTType, NormalizationMode
+from ._typing import DCTType, NormalizationMode
+from scipy._typing import AnyShape
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 

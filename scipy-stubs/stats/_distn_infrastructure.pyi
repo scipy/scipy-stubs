@@ -13,7 +13,7 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import RNG, AnyShape, Falsy, ToRNG, Truthy
+from scipy._typing import AnyShape
 from scipy.integrate._typing import QuadOpts as _QuadOpts
 
 _T = TypeVar("_T")
@@ -105,9 +105,9 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     kwds: _RVKwds
 
     @property
-    def random_state(self, /) -> RNG: ...
+    def random_state(self, /) -> onp.random.RNG: ...
     @random_state.setter
-    def random_state(self, seed: ToRNG, /) -> None: ...
+    def random_state(self, seed: onp.random.ToRNG | None, /) -> None: ...
 
     #
     @overload
@@ -149,13 +149,13 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
 
     #
     @overload
-    def rvs(self, /, size: tuple[()] | None = None, random_state: ToRNG = None) -> _FloatNDT_co: ...
+    def rvs(self, /, size: tuple[()] | None = None, random_state: onp.random.ToRNG | None = None) -> _FloatNDT_co: ...
     @overload
     def rvs(
-        self, /, size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]], random_state: ToRNG = None
+        self, /, size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]], random_state: onp.random.ToRNG | None = None
     ) -> _FloatND: ...
     @overload
-    def rvs(self, /, size: AnyShape | None = None, random_state: ToRNG = None) -> _FloatOrND: ...
+    def rvs(self, /, size: AnyShape | None = None, random_state: onp.random.ToRNG | None = None) -> _FloatOrND: ...
 
     #
     def median(self, /) -> _FloatNDT_co: ...
@@ -220,18 +220,14 @@ class rv_discrete_frozen(rv_frozen[_DRVT_co, _FloatNDT_co], Generic[_DRVT_co, _F
 # Considering the Liskov Substitution Principle, the only remaining option is to annotate `*args, and `**kwargs` as `Any`.
 class rv_generic:
     @property
-    def random_state(self, /) -> RNG: ...
+    def random_state(self, /) -> onp.random.RNG: ...
     @random_state.setter
-    def random_state(self, seed: ToRNG, /) -> None: ...
+    def random_state(self, seed: onp.random.ToRNG | None, /) -> None: ...
 
     #
-    def __init__(self, /, seed: ToRNG = None) -> None: ...
-
-    #
+    def __init__(self, /, seed: onp.random.ToRNG | None = None) -> None: ...
     def _attach_methods(self, /) -> None: ...
     def _attach_argparser_methods(self, /) -> None: ...
-
-    #
     def _construct_argparser(
         self, /, meths_to_inspect: Iterable[Callable[..., Any]], locscale_in: str, locscale_out: str
     ) -> None: ...
@@ -275,7 +271,9 @@ class rv_generic:
     def _open_support_mask(self, /, x: _CoFloatND, *args: onp.ToFloat) -> _BoolOrND: ...
 
     #
-    def _rvs(self, /, *args: onp.ToFloat, size: AnyShape | None = None, random_state: ToRNG = None) -> _FloatOrND: ...
+    def _rvs(
+        self, /, *args: onp.ToFloat, size: AnyShape | None = None, random_state: onp.random.ToRNG | None = None
+    ) -> _FloatOrND: ...
 
     #
     def _logcdf(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
@@ -285,14 +283,30 @@ class rv_generic:
     def _isf(self, /, q: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
     #
     @overload
-    def rvs(self, /, *args: onp.ToFloat, random_state: ToRNG, discrete: Truthy, **kwds: onp.ToFloat) -> _Int: ...
-    @overload
-    def rvs(self, /, *args: onp.ToFloat, random_state: ToRNG, discrete: Truthy, **kwds: _ToFloatOrND) -> _IntOrND: ...
-    @overload
-    def rvs(self, /, *args: onp.ToFloat, random_state: ToRNG, discrete: Falsy | None = ..., **kwds: onp.ToFloat) -> _Float: ...
+    def rvs(
+        self, /, *args: onp.ToFloat, random_state: onp.random.ToRNG | None, discrete: onp.ToTrue, **kwds: onp.ToFloat
+    ) -> _Int: ...
     @overload
     def rvs(
-        self, /, *args: _ToFloatOrND, random_state: ToRNG, discrete: Falsy | None = ..., **kwds: _ToFloatOrND
+        self, /, *args: onp.ToFloat, random_state: onp.random.ToRNG | None, discrete: onp.ToTrue, **kwds: _ToFloatOrND
+    ) -> _IntOrND: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: onp.ToFloat,
+        random_state: onp.random.ToRNG | None,
+        discrete: onp.ToFalse | None = ...,
+        **kwds: onp.ToFloat,
+    ) -> _Float: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: _ToFloatOrND,
+        random_state: onp.random.ToRNG | None,
+        discrete: onp.ToFalse | None = ...,
+        **kwds: _ToFloatOrND,
     ) -> _FloatOrND: ...
 
     #
@@ -430,7 +444,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         name: str | None = None,
         longname: str | None = None,
         shapes: str | None = None,
-        seed: ToRNG = None,
+        seed: onp.random.ToRNG | None = None,
     ) -> None: ...
 
     #
@@ -680,7 +694,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         loc: onp.ToFloat = 0,
         scale: onp.ToFloat = 1,
         size: AnyShape = 1,
-        random_state: ToRNG = None,
+        random_state: onp.random.ToRNG | None = None,
         **kwds: _ToFloatOrND,
     ) -> _FloatOrND: ...
 
@@ -700,7 +714,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         inc: int | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
-        seed: ToRNG = None,
+        seed: onp.random.ToRNG | None = None,
     ) -> Self: ...
     # NOTE: The return types of the following overloads is ignored by mypy
     @overload
@@ -715,7 +729,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         inc: int | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
-        seed: ToRNG = None,
+        seed: onp.random.ToRNG | None = None,
     ) -> rv_sample: ...
     @overload
     def __new__(
@@ -730,7 +744,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         inc: int | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
-        seed: ToRNG = None,
+        seed: onp.random.ToRNG | None = None,
     ) -> rv_sample: ...
 
     #
@@ -747,7 +761,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         inc: int | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
-        seed: ToRNG = None,
+        seed: onp.random.ToRNG | None = None,
     ) -> None: ...
 
     # NOTE: Using `@override` on `__call__` or `freeze` causes stubtest to crash (mypy 1.11.1)
@@ -860,7 +874,13 @@ class rv_discrete(_rv_mixin, rv_generic):
     #
     @override
     def rvs(
-        self, /, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, size: AnyShape = 1, random_state: ToRNG = None, **kwds: _ToFloatOrND
+        self,
+        /,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        size: AnyShape = 1,
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: _ToFloatOrND,
     ) -> _IntOrND: ...
 
 # returned by `rv_discrete.__new__` if `values` is specified
@@ -882,7 +902,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
         inc: int | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
-        seed: ToRNG = None,
+        seed: onp.random.ToRNG | None = None,
     ) -> None: ...
 
     #
@@ -1125,7 +1145,7 @@ class _rv_continuous_0(rv_continuous):
     #
     @override
     def rvs(
-        self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, size: AnyShape = 1, random_state: ToRNG = None
+        self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, size: AnyShape = 1, random_state: onp.random.ToRNG | None = None
     ) -> _FloatOrND: ...
 
     #

@@ -8,8 +8,6 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from ._typing import Numeric
-from scipy._typing import OrderKACF
 from scipy.sparse import (
     bsr_array,
     bsr_matrix,
@@ -64,12 +62,12 @@ class _SizedIndexIterable(Protocol):
 
 ###
 
-supported_dtypes: Final[list[type[Numeric]]] = ...
+supported_dtypes: Final[list[type[npc.number | np.bool_]]] = ...
 
 #
 # NOTE: Technically any `numpy.generic` could be returned, but we only care about the supported scalar types in `scipy.sparse`.
-def upcast(*args: npt.DTypeLike) -> Numeric: ...
-def upcast_char(*args: npt.DTypeLike) -> Numeric: ...
+def upcast(*args: npt.DTypeLike) -> npc.number | np.bool_: ...
+def upcast_char(*args: npt.DTypeLike) -> npc.number | np.bool_: ...
 @overload
 def upcast_scalar(dtype: onp.ToDType[_ScalarT], scalar: onp.ToScalar) -> np.dtype[_ScalarT]: ...
 @overload
@@ -173,7 +171,7 @@ def matrix(
     dtype: onp.ToDType[_ScalarT] | type | str | None = None,
     *,
     copy: L[0, 1, 2] | bool | None = True,
-    order: OrderKACF = "K",
+    order: L["K", "A", "C", "F"] = "K",
     subok: bool = False,
     ndmin: L[0, 1, 2] = 0,
     like: onp.CanArrayFunction | None = None,

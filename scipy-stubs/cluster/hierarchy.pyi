@@ -9,7 +9,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from scipy._lib._disjoint_set import DisjointSet
-from scipy._typing import Falsy, Truthy
 from scipy.spatial.distance import _Metric
 
 __all__ = [
@@ -133,9 +132,9 @@ def cut_tree(
 
 #
 @overload
-def to_tree(Z: onp.ToArray2D, rd: Falsy = False) -> ClusterNode: ...
+def to_tree(Z: onp.ToArray2D, rd: onp.ToFalse = False) -> ClusterNode: ...
 @overload
-def to_tree(Z: onp.ToArray2D, rd: Truthy) -> tuple[ClusterNode, list[ClusterNode]]: ...
+def to_tree(Z: onp.ToArray2D, rd: onp.ToTrue) -> tuple[ClusterNode, list[ClusterNode]]: ...
 
 #
 def optimal_leaf_ordering(Z: onp.ToArray2D, y: onp.ToArrayND, metric: _Metric = "euclidean") -> _LinkageArray: ...

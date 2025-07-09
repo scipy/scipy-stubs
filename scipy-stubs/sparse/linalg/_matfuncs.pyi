@@ -1,16 +1,17 @@
 from typing import Any, Final, Generic, Literal, Self, TypeAlias
 from typing_extensions import TypeVar, override
 
+import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._interface import LinearOperator
 from scipy.sparse._base import _spbase
-from scipy.sparse._typing import Numeric
 
 __all__ = ["expm", "inv", "matrix_power"]
 
-_SCT_co = TypeVar("_SCT_co", bound=Numeric, default=Any, covariant=True)
+_SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
 _SparseT = TypeVar("_SparseT", bound=_spbase)
 
 _Structure: TypeAlias = Literal["upper_triangular"]

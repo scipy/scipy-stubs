@@ -6,7 +6,6 @@ import optype as op
 import optype.numpy as onp
 
 from .windows._windows import _ToWindow
-from scipy._typing import Falsy, Truthy
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
 
@@ -151,7 +150,7 @@ def istft(
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
-    input_onesided: Truthy = True,
+    input_onesided: onp.ToTrue = True,
     boundary: op.CanBool = True,
     time_axis: op.CanIndex = -1,
     freq_axis: op.CanIndex = -2,
@@ -165,7 +164,7 @@ def istft(
     nperseg: onp.ToInt | None,
     noverlap: onp.ToInt | None,
     nfft: onp.ToInt | None,
-    input_onesided: Falsy,
+    input_onesided: onp.ToFalse,
     boundary: op.CanBool = True,
     time_axis: op.CanIndex = -1,
     freq_axis: op.CanIndex = -2,
@@ -180,7 +179,7 @@ def istft(
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
     *,
-    input_onesided: Falsy,
+    input_onesided: onp.ToFalse,
     boundary: op.CanBool = True,
     time_axis: op.CanIndex = -1,
     freq_axis: op.CanIndex = -2,

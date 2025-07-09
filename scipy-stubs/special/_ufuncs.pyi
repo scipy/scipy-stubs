@@ -11,7 +11,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 from numpy.exceptions import ComplexWarning
 
-from scipy._typing import AnyShape, Casting, EnterNoneMixin, Falsy, OrderKACF, Truthy
+from scipy._typing import AnyShape, ExitMixin
 
 __all__ = [
     "agm",
@@ -404,8 +404,8 @@ _ToDTypes_d7 = TypeAliasType("_ToDTypes_d7", _Tuple7[_ToDType_d])
 
 @type_check_only
 class _KwBase(TypedDict, total=False):
-    order: OrderKACF
-    casting: Casting
+    order: L["K", "A", "C", "F"]
+    casting: L["no", "equiv", "safe", "same_kind", "unsafe"]
     subok: onp.ToBool
     where: _ToBool_D
 
@@ -1078,7 +1078,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         axis: None,
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
-        keepdims: Falsy = False,
+        keepdims: onp.ToFalse = False,
         initial: onp.ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _Float: ...
@@ -1090,7 +1090,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         axis: _Axis = 0,
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
-        keepdims: Falsy = False,
+        keepdims: onp.ToFalse = False,
         initial: onp.ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _Float_D: ...
@@ -1103,7 +1103,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
         *,
-        keepdims: Truthy,
+        keepdims: onp.ToTrue,
         initial: onp.ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _FloatND: ...
@@ -1234,7 +1234,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: None,
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
-        keepdims: Falsy = False,
+        keepdims: onp.ToFalse = False,
         initial: onp.ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _Float: ...
@@ -1246,7 +1246,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: _Axis = 0,
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
-        keepdims: Falsy = False,
+        keepdims: onp.ToFalse = False,
         initial: onp.ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _Float_D: ...
@@ -1259,7 +1259,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
         *,
-        keepdims: Truthy,
+        keepdims: onp.ToTrue,
         initial: onp.ToFloat64 = ...,
         where: _ToBool_D = True,
     ) -> _FloatND: ...
@@ -1371,7 +1371,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: None,
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
-        keepdims: Falsy = False,
+        keepdims: onp.ToFalse = False,
         initial: onp.ToFloat = ...,
         where: _ToBool_D = True,
     ) -> _Float: ...
@@ -1384,7 +1384,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         dtype: _ToDType_fd = None,
         out: _Out1 = None,
         *,
-        keepdims: Truthy,
+        keepdims: onp.ToTrue,
         initial: onp.ToFloat = ...,
         where: _ToBool_D = True,
     ) -> _FloatND: ...
@@ -1396,7 +1396,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: None,
         dtype: _ToDType_fdFD | None = None,
         out: _Out1 = None,
-        keepdims: Falsy = False,
+        keepdims: onp.ToFalse = False,
         initial: _ToComplex128 = ...,
         where: _ToBool_D = True,
     ) -> _Inexact: ...
@@ -1409,7 +1409,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         dtype: _ToDType_fdFD | None = None,
         out: _Out1 = None,
         *,
-        keepdims: Truthy,
+        keepdims: onp.ToTrue,
         initial: _ToComplex128 = ...,
         where: _ToBool_D = True,
     ) -> _InexactND: ...
@@ -1421,7 +1421,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         axis: _Axis = 0,
         dtype: _ToDType_fdFD | None = None,
         out: _Out1 = None,
-        keepdims: Falsy = False,
+        keepdims: onp.ToFalse = False,
         initial: _ToComplex128 = ...,
         where: _ToBool_D = True,
     ) -> _Inexact_D: ...
@@ -2646,8 +2646,9 @@ class _ErrKwargs(TypedDict, total=False):
 def geterr() -> _ErrDict: ...
 def seterr(**kwargs: Unpack[_ErrKwargs]) -> _ErrDict: ...
 
-class errstate(EnterNoneMixin):
+class errstate(ExitMixin):
     def __init__(self, /, **kwargs: Unpack[_ErrKwargs]) -> None: ...
+    def __enter__(self, /) -> None: ...
 
 ###
 

@@ -7,7 +7,6 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._typing import BaseBunch
-from scipy._typing import ToRNG
 
 __all__ = ["multiscale_graphcorr"]
 
@@ -43,5 +42,5 @@ def multiscale_graphcorr(
     reps: int = 1000,
     workers: int | Callable[[Callable[[_T], _R], Iterable[_T]], Sequence[_R]] = 1,
     is_twosamp: bool = False,
-    random_state: ToRNG = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> MGCResult: ...
