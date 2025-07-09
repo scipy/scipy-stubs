@@ -1,11 +1,8 @@
-# These stubs won't be used, because the implementation has type annotations, which unfortunately are incorrect.
-# This again shows that "no type annotations than wrong ones".
-# Anyway, these stubs are just for show, and perhaps could be used as an example of how to correctly annotate `_entropy.py`.
-from typing import Any, Literal
+from typing import Literal
 
-import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 import scipy._typing as spt
 
@@ -19,7 +16,7 @@ def entropy(
     *,
     nan_policy: spt.NanPolicy = "propagate",
     keepdims: onp.ToBool = False,
-) -> float | np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...
+) -> float | npc.floating | onp.ArrayND[npc.floating]: ...
 def differential_entropy(
     values: onp.ToFloatND,
     *,
@@ -29,4 +26,4 @@ def differential_entropy(
     method: Literal["vasicek", "van es", "ebrahimi", "correa", "auto"] = "auto",
     nan_policy: spt.NanPolicy = "propagate",
     keepdims: onp.ToBool = False,
-) -> float | np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...
+) -> float | npc.floating | onp.ArrayND[npc.floating]: ...

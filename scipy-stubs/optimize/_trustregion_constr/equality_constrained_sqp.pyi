@@ -1,8 +1,9 @@
 from collections.abc import Callable
-from typing import Any, Literal, TypeVar
+from typing import Literal, TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.sparse import dia_matrix
 
@@ -12,7 +13,7 @@ _StateT = TypeVar("_StateT")
 
 def default_scaling(x: onp.ToArray1D) -> dia_matrix: ...
 def equality_constrained_sqp(
-    fun_and_constr: Callable[[onp.Array1D[np.float64]], tuple[float | np.floating[Any], onp.ToFloat1D]],
+    fun_and_constr: Callable[[onp.Array1D[np.float64]], tuple[float | npc.floating, onp.ToFloat1D]],
     grad_and_jac: Callable[[onp.Array1D[np.float64]], tuple[onp.ToFloat1D, onp.ToFloat2D]],
     lagr_hess: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat2D],
     x0: onp.ToFloat1D,
@@ -37,7 +38,7 @@ def equality_constrained_sqp(
     initial_penalty: onp.ToFloat,
     initial_trust_radius: onp.ToFloat,
     factorization_method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"],
-    trust_lb: onp.Array1D[np.floating[Any]] | None = None,
-    trust_ub: onp.Array1D[np.floating[Any]] | None = None,
+    trust_lb: onp.Array1D[npc.floating] | None = None,
+    trust_ub: onp.Array1D[npc.floating] | None = None,
     scaling: Callable[[onp.Array1D[np.float64]], dia_matrix] = ...,
-) -> tuple[onp.Array1D[np.floating[Any]], _StateT]: ...
+) -> tuple[onp.Array1D[npc.floating], _StateT]: ...

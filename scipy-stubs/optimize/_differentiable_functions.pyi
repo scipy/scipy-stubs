@@ -1,21 +1,22 @@
 from collections.abc import Callable, Iterable, Sequence
 from types import ModuleType
-from typing import Any, Concatenate, Final, Generic, Literal, Protocol, TypeAlias, overload, type_check_only
+from typing import Concatenate, Final, Generic, Literal, Protocol, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._hessian_update_strategy import HessianUpdateStrategy
 from scipy.sparse import csr_array, sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
-_XT = TypeVar("_XT", bound=np.floating[Any], default=np.floating[Any])
-_XT_contra = TypeVar("_XT_contra", bound=np.floating[Any], default=np.floating[Any], contravariant=True)
+_XT = TypeVar("_XT", bound=npc.floating, default=npc.floating)
+_XT_contra = TypeVar("_XT_contra", bound=npc.floating, default=npc.floating, contravariant=True)
 _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
 
-_ToFloat64Vec: TypeAlias = Sequence[float | np.float64 | np.integer[Any] | np.bool_] | onp.CanArrayND[np.float64]
+_ToFloat64Vec: TypeAlias = Sequence[float | np.float64 | npc.integer | np.bool_] | onp.CanArrayND[np.float64]
 _ToJac: TypeAlias = onp.ToFloat2D | spmatrix | sparray
 _ToHess: TypeAlias = _ToJac | LinearOperator
 
@@ -119,10 +120,10 @@ class ScalarFunction(Generic[_XT_contra]):
     def _update_hess(self, /) -> None: ...
 
     #
-    def fun(self, /, x: onp.ToFloat1D) -> float | np.floating[Any]: ...
+    def fun(self, /, x: onp.ToFloat1D) -> float | npc.floating: ...
     def grad(self, /, x: onp.ToFloat1D) -> _Vec: ...
     def hess(self, /, x: onp.ToFloat1D) -> _Hess: ...
-    def fun_and_grad(self, /, x: onp.ToFloat1D) -> tuple[float | np.floating[Any], _Vec]: ...
+    def fun_and_grad(self, /, x: onp.ToFloat1D) -> tuple[float | npc.floating, _Vec]: ...
 
 class VectorFunction(Generic[_XT_contra]):
     xp: Final[ModuleType]

@@ -5,6 +5,7 @@ from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._common import ConfidenceInterval
 from scipy._typing import Alternative
@@ -21,7 +22,7 @@ _Statistic: TypeAlias = Callable[..., onp.ToFloat] | Callable[..., onp.ToFloatND
 
 @type_check_only
 class _RVSCallable(Protocol):
-    def __call__(self, /, *, size: tuple[int, ...]) -> onp.ArrayND[np.floating[Any]]: ...
+    def __call__(self, /, *, size: tuple[int, ...]) -> onp.ArrayND[npc.floating]: ...
 
 ###
 

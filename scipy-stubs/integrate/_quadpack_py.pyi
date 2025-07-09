@@ -1,10 +1,11 @@
 from collections.abc import Callable, Iterable, Iterator
-from typing import Any, Concatenate, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
+from typing import Concatenate, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._typing import QuadInfoDict, QuadOpts, QuadWeights
 from scipy._lib._ccallback import LowLevelCallable
@@ -18,9 +19,9 @@ _T_f_contra = TypeVar("_T_f_contra", contravariant=True, default=float)
 _BT_co = TypeVar("_BT_co", bound=bool, covariant=True, default=bool)
 
 # NOTE: Technically `integer[Any]` and `bool_` are also allowed, but there's no valid usecase for that.
-_IntLike: TypeAlias = int | np.integer[Any]
-_FloatLike: TypeAlias = float | np.floating[Any]
-_ComplexLike: TypeAlias = complex | np.inexact[Any]
+_IntLike: TypeAlias = int | npc.integer
+_FloatLike: TypeAlias = float | npc.floating
+_ComplexLike: TypeAlias = complex | npc.inexact
 
 # NOTE: Technically allowing `x: float64` here is type-unsafe. But in practice that isn't likely to be a problem at all.
 _QuadFunc10: TypeAlias = Callable[[float], _T] | Callable[[np.float64], _T] | LowLevelCallable

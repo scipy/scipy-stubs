@@ -22,6 +22,7 @@ from typing_extensions import ParamSpec, TypeIs, TypeVar, Unpack, override
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._distn_infrastructure import rv_continuous
 from ._probability_distribution import _ProbabilityDistribution
@@ -93,8 +94,8 @@ _DuckDistributionType: TypeAlias = type[_DuckDistributionSingle | _DuckDistribut
 
 ###
 
-_Int: TypeAlias = np.integer[Any]
-_Float: TypeAlias = np.floating[Any]
+_Int: TypeAlias = npc.integer
+_Float: TypeAlias = npc.floating
 _OutFloat: TypeAlias = np.float64 | np.longdouble
 
 _NT = TypeVar("_NT", default=int)
@@ -265,8 +266,8 @@ class _Parameterization:
 _T = TypeVar("_T")
 _Tuple2: TypeAlias = tuple[_T, _T]
 
-_XT = TypeVar("_XT", bound=np.number[Any], default=np.number[Any])
-_XT_co = TypeVar("_XT_co", bound=np.number[Any], default=np.float64, covariant=True)
+_XT = TypeVar("_XT", bound=npc.number, default=npc.number)
+_XT_co = TypeVar("_XT_co", bound=npc.number, default=np.float64, covariant=True)
 _ShapeT0_co = TypeVar("_ShapeT0_co", bound=_ND, default=_ND, covariant=True)
 
 _BaseDist0: TypeAlias = _BaseDistribution[_XT, tuple[()]]
@@ -294,7 +295,7 @@ _FloatND: TypeAlias = onp.ArrayND[_Float, _ShapeT1]
 _Complex: TypeAlias = np.complex128 | np.clongdouble
 _ComplexND: TypeAlias = onp.ArrayND[_Complex, _ShapeT1]
 
-_ToFloatND: TypeAlias = onp.CanArrayND[np.floating[Any] | np.integer[Any] | np.bool_, _ShapeT1]
+_ToFloatND: TypeAlias = onp.CanArrayND[npc.floating | npc.integer | np.bool_, _ShapeT1]
 _ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
 _ToFloatMaxND: TypeAlias = _ToFloatND[_ShapeT1] | _ToFloatMax1D
 

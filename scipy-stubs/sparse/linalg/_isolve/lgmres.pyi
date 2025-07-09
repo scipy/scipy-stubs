@@ -1,9 +1,10 @@
 from collections.abc import Callable
-from typing import Any, TypeAlias, overload
+from typing import TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.sparse._base import _spbase
 from scipy.sparse._typing import Numeric
@@ -18,7 +19,7 @@ _FloatT = TypeVar("_FloatT", bound=_Float, default=np.float64)
 _ComplexT = TypeVar("_ComplexT", bound=_Complex, default=np.complex128)
 _ScalarT = TypeVar("_ScalarT", bound=Numeric)
 
-_ToInt: TypeAlias = np.integer[Any] | np.bool_
+_ToInt: TypeAlias = npc.integer | np.bool_
 _ToLinearOperator: TypeAlias = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
 
 _Ignored: TypeAlias = object

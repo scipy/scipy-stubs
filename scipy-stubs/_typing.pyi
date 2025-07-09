@@ -4,12 +4,13 @@ from _typeshed import Incomplete
 from collections.abc import Iterator, Sequence
 from os import PathLike
 from types import TracebackType
-from typing import IO, Any, Literal, LiteralString, Protocol, Self, SupportsIndex, TypeAlias, overload, type_check_only
+from typing import IO, Literal, LiteralString, Protocol, Self, SupportsIndex, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = [
     "RNG",
@@ -52,7 +53,7 @@ class _FortranFunction(Protocol):
     @property
     def dtype(self, /) -> np.dtype[Incomplete]: ...
     @property
-    def int_dtype(self, /) -> np.dtype[np.integer[Any]]: ...
+    def int_dtype(self, /) -> np.dtype[npc.integer]: ...
     @property
     def module_name(self, /) -> LiteralString: ...
     @property
@@ -99,9 +100,9 @@ RNG: TypeAlias = np.random.Generator | np.random.RandomState
 # NOTE: This is less incorrect and more accurate than the current `np.random.default_rng` `seed` param annotation.
 ToRNG: TypeAlias = (
     int
-    | np.integer[Any]
+    | npc.integer
     | np.timedelta64
-    | onp.ArrayND[np.integer[Any] | np.timedelta64 | np.flexible | np.object_]
+    | onp.ArrayND[npc.integer | np.timedelta64 | np.flexible | np.object_]
     | np.random.SeedSequence
     | np.random.BitGenerator
     | RNG

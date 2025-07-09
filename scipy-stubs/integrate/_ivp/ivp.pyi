@@ -1,9 +1,10 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Concatenate, Final, Generic, Literal, TypeAlias, overload, type_check_only
+from typing import Concatenate, Final, Generic, Literal, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar, TypedDict, Unpack
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from .base import DenseOutput, OdeSolver
 from .common import OdeSolution
@@ -11,7 +12,7 @@ from scipy._lib._util import _RichResult
 from scipy._typing import Falsy, Truthy
 from scipy.sparse import sparray, spmatrix
 
-_SCT_cf = TypeVar("_SCT_cf", bound=np.inexact[Any], default=np.float64 | np.complex128)
+_SCT_cf = TypeVar("_SCT_cf", bound=npc.inexact, default=np.float64 | np.complex128)
 
 _FuncSol: TypeAlias = Callable[[float], onp.ArrayND[_SCT_cf]]
 _FuncEvent: TypeAlias = Callable[[float, onp.ArrayND[_SCT_cf]], float]

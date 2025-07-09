@@ -1,9 +1,10 @@
 from collections.abc import Callable
-from typing import Any, Final, Generic, Literal, TypeAlias, overload
+from typing import Final, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, Truthy
 from scipy.interpolate import PPoly
@@ -11,7 +12,7 @@ from scipy.sparse import csc_matrix
 
 ###
 
-_SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any], default=np.float64 | np.complex128)
+_SCT_fc = TypeVar("_SCT_fc", bound=npc.inexact, default=np.float64 | np.complex128)
 
 _FunRHS: TypeAlias = Callable[[onp.Array1D, onp.Array2D[_SCT_fc]], onp.ArrayND[_SCT_fc]]
 _FunRHS_p: TypeAlias = Callable[[onp.Array1D, onp.Array2D[_SCT_fc], onp.Array1D], onp.ArrayND[_SCT_fc]]

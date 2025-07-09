@@ -1,8 +1,9 @@
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing import Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from numpy.linalg import LinAlgError
 
 from scipy._typing import AnyBool, Falsy, Truthy
@@ -13,7 +14,7 @@ _Inf: TypeAlias = float
 _Order: TypeAlias = Literal["fro", "nuc", 0, 1, -1, 2, -2] | _Inf
 _Axis: TypeAlias = op.CanIndex | tuple[op.CanIndex, op.CanIndex]
 
-_SubScalar: TypeAlias = np.complex128 | np.float64 | np.integer[Any] | np.bool_
+_SubScalar: TypeAlias = np.complex128 | np.float64 | npc.integer | np.bool_
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
@@ -160,11 +161,11 @@ def norm(
 @overload  # array-like, keepdims: True (positional)
 def norm(
     a: onp.ToComplexND, ord: _Order | None, axis: _Axis | None, keepdims: Truthy, check_finite: AnyBool = True
-) -> onp.ArrayND[np.floating[Any]]: ...
+) -> onp.ArrayND[npc.floating]: ...
 @overload  # array-like, keepdims: True (keyword)
 def norm(
     a: onp.ToComplexND, ord: _Order | None = None, axis: _Axis | None = None, *, keepdims: Truthy, check_finite: AnyBool = True
-) -> onp.ArrayND[np.floating[Any]]: ...
+) -> onp.ArrayND[npc.floating]: ...
 @overload  # catch-all
 def norm(
     a: onp.ToArrayND,
@@ -172,7 +173,7 @@ def norm(
     axis: _Axis | None = None,
     keepdims: AnyBool = False,
     check_finite: AnyBool = True,
-) -> np.floating[Any] | onp.ArrayND[np.floating[Any]]: ...
+) -> npc.floating | onp.ArrayND[npc.floating]: ...
 
 #
 def _datacopied(arr: onp.ArrayND, original: onp.CanArrayND) -> bool: ...  # undocumented

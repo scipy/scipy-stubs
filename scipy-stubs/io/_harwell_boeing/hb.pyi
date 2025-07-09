@@ -1,7 +1,8 @@
-from typing import IO, Any, Final, Literal, LiteralString, Self, TypeAlias, overload, type_check_only
+from typing import IO, Final, Literal, LiteralString, Self, TypeAlias, overload, type_check_only
 from typing_extensions import Protocol
 
 import numpy as np
+import optype.numpy.compat as npc
 import optype.typing as opt
 
 from scipy._typing import Falsy, FileLike, Truthy
@@ -14,7 +15,7 @@ _ValueType: TypeAlias = Literal["real", "complex", "pattern", "integer"]
 _Structure: TypeAlias = Literal["symmetric", "unsymmetric", "hermitian", "skewsymmetric", "rectangular"]
 _Storage: TypeAlias = Literal["assembled", "elemental"]
 
-_Real: TypeAlias = np.integer[Any] | np.float32 | np.float64
+_Real: TypeAlias = npc.integer | np.float32 | np.float64
 
 @type_check_only
 class _HasWidthAndRepeat(Protocol):

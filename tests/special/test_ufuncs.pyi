@@ -1,7 +1,8 @@
-from typing import Any, Literal as L, TypeAlias, assert_type
+from typing import Literal as L, TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 import scipy.special as sp
 
@@ -11,8 +12,8 @@ _Complex64ND: TypeAlias = onp.ArrayND[np.complex64]
 _Complex128ND: TypeAlias = onp.ArrayND[np.complex128]
 
 _b1: np.bool_
-_i: np.integer[Any]
-_f: np.floating[Any]
+_i: npc.integer
+_f: npc.floating
 _f2: np.float16
 _f4: np.float32
 _f8: np.float64
@@ -27,7 +28,7 @@ _f8_nd: _Float64ND
 _c8_nd: _Complex64ND
 _c16_nd: _Complex128ND
 
-# NOTE: `[c]longdouble` can't be tested, because it types as `floating[Any]` on `numpy<2.2`
+# NOTE: `[c]longdouble` can't be tested, because it's typed as `floating` on `numpy<2.2`
 
 # _UFunc
 assert_type(sp.cbrt.__name__, L["cbrt"])

@@ -1,11 +1,12 @@
 import collections
 from collections.abc import Callable
-from typing import Any, Concatenate, Final, Generic, Literal, Never, NoReturn, Protocol, TypeAlias, overload, type_check_only
+from typing import Concatenate, Final, Generic, Literal, Never, NoReturn, Protocol, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, Truthy
 
@@ -13,10 +14,10 @@ _S = TypeVar("_S")
 _T = TypeVar("_T")
 _VT = TypeVar("_VT", default=object)
 _NDT_co = TypeVar("_NDT_co", bound=_FloatingND, default=_FloatingND, covariant=True)
-_SCT_co = TypeVar("_SCT_co", bound=np.floating[Any], default=np.float64, covariant=True)
+_SCT_co = TypeVar("_SCT_co", bound=npc.floating, default=np.float64, covariant=True)
 
-_Floating: TypeAlias = float | np.floating[Any]
-_FloatingND: TypeAlias = onp.ArrayND[np.floating[Any]] | _Floating
+_Floating: TypeAlias = float | npc.floating
+_FloatingND: TypeAlias = onp.ArrayND[npc.floating] | _Floating
 
 _Fun: TypeAlias = Callable[Concatenate[float, ...], _T] | Callable[Concatenate[np.float64, ...], _T]
 
@@ -103,7 +104,7 @@ def quad_vec(
     *,
     full_output: Truthy,
     args: tuple[object, ...] = (),
-) -> tuple[np.floating[Any], float, _Bunch[np.floating[Any]]]: ...
+) -> tuple[npc.floating, float, _Bunch[npc.floating]]: ...
 @overload  # vector function, full_output=False (default)
 def quad_vec(
     f: _Fun[onp.ToFloat1D],
@@ -120,7 +121,7 @@ def quad_vec(
     *,
     full_output: Falsy,
     args: tuple[object, ...] = (),
-) -> tuple[onp.Array1D[np.floating[Any]], float]: ...
+) -> tuple[onp.Array1D[npc.floating], float]: ...
 @overload  # vector function, full_output=True
 def quad_vec(
     f: _Fun[onp.ToFloat1D],
@@ -137,4 +138,4 @@ def quad_vec(
     *,
     full_output: Truthy,
     args: tuple[object, ...] = (),
-) -> tuple[onp.Array1D[np.floating[Any]], float, _Bunch[np.floating[Any]]]: ...
+) -> tuple[onp.Array1D[npc.floating], float, _Bunch[npc.floating]]: ...

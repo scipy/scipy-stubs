@@ -1,9 +1,10 @@
 from collections.abc import Callable, Iterable, Mapping
-from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, type_check_only
+from typing import Concatenate, Final, Literal, Protocol, TypeAlias, type_check_only
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.optimize import Bounds, OptimizeResult as _OptimizeResult
 from scipy.optimize._differentiable_functions import _Workers
@@ -81,7 +82,7 @@ def prepare_bounds(bounds: Iterable[onp.ToFloat | onp.ToFloat1D], n: op.CanIndex
 def check_tolerance(
     ftol: onp.ToFloat | None, xtol: onp.ToFloat | None, gtol: onp.ToFloat | None, method: _LeastSquaresMethod
 ) -> tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]: ...
-def check_x_scale(x_scale: _XScale, x0: onp.ArrayND[np.floating[Any]], method: _LeastSquaresMethod) -> _Float1ND: ...
+def check_x_scale(x_scale: _XScale, x0: onp.ArrayND[npc.floating], method: _LeastSquaresMethod) -> _Float1ND: ...
 def check_jac_sparsity(jac_sparsity: _ToJac2D | None, m: onp.ToInt, n: onp.ToInt) -> _Float1D: ...
 
 #

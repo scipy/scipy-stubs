@@ -1,7 +1,8 @@
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing import Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, Truthy
 
@@ -12,12 +13,12 @@ _Tuple2: TypeAlias = tuple[_T, _T]
 
 _Int1D: TypeAlias = onp.Array1D[np.int32 | np.int64]
 _IntND: TypeAlias = onp.ArrayND[np.int32 | np.int64]
-_Float1D: TypeAlias = onp.Array1D[np.floating[Any]]
-_Float2D: TypeAlias = onp.Array2D[np.floating[Any]]
-_FloatND: TypeAlias = onp.ArrayND[np.floating[Any]]
-_Inexact1D: TypeAlias = onp.Array1D[np.inexact[Any]]
-_Inexact2D: TypeAlias = onp.Array2D[np.inexact[Any]]
-_InexactND: TypeAlias = onp.ArrayND[np.inexact[Any]]
+_Float1D: TypeAlias = onp.Array1D[npc.floating]
+_Float2D: TypeAlias = onp.Array2D[npc.floating]
+_FloatND: TypeAlias = onp.ArrayND[npc.floating]
+_Inexact1D: TypeAlias = onp.Array1D[npc.inexact]
+_Inexact2D: TypeAlias = onp.Array2D[npc.inexact]
+_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
 _Side: TypeAlias = Literal["left", "right"]
 _ModeFullEcon: TypeAlias = Literal["full", "economic"]

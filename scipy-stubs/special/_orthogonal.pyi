@@ -1,8 +1,9 @@
 from collections.abc import Callable
-from typing import Any, TypeAlias, overload
+from typing import TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, Truthy
 
@@ -78,13 +79,13 @@ class orthopoly1d(np.poly1d):
     @overload  # type: ignore[override]
     def __call__(self, /, v: np.poly1d) -> np.poly1d: ...
     @overload
-    def __call__(self, /, v: onp.ToFloat) -> np.floating[Any]: ...
+    def __call__(self, /, v: onp.ToFloat) -> npc.floating: ...
     @overload
-    def __call__(self, /, v: onp.ToComplex) -> np.inexact[Any]: ...
+    def __call__(self, /, v: onp.ToComplex) -> npc.inexact: ...
     @overload
-    def __call__(self, /, v: onp.ToFloatND) -> onp.ArrayND[np.floating[Any]]: ...
+    def __call__(self, /, v: onp.ToFloatND) -> onp.ArrayND[npc.floating]: ...
     @overload
-    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[np.inexact[Any]]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[npc.inexact]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
 @overload
 def roots_jacobi(n: onp.ToInt, alpha: onp.ToFloat, beta: onp.ToFloat, mu: Falsy = False) -> _PointsWeights: ...

@@ -1,8 +1,9 @@
 from collections.abc import Mapping
-from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
+from typing import Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import Falsy, Truthy
 from scipy.sparse._base import _spbase
@@ -12,7 +13,7 @@ __all__ = ["ArpackError", "ArpackNoConvergence", "eigs", "eigsh"]
 
 _KT = TypeVar("_KT")
 
-_ToRealMatrix: TypeAlias = onp.ToFloat2D | LinearOperator[np.floating[Any] | np.integer[Any]] | _spbase
+_ToRealMatrix: TypeAlias = onp.ToFloat2D | LinearOperator[npc.floating | npc.integer] | _spbase
 _ToComplexMatrix: TypeAlias = onp.ToComplex2D | LinearOperator | _spbase
 
 _Which_eigs: TypeAlias = Literal["LM", "SM", "LR", "SR", "LI", "SI"]

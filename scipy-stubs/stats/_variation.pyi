@@ -1,15 +1,16 @@
 from collections.abc import Sequence
-from typing import Any, overload
+from typing import overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from numpy._typing import _ArrayLike, _NestedSequence
 
 from scipy._typing import AnyBool, Falsy, NanPolicy, Truthy
 
-_SCT_fc = TypeVar("_SCT_fc", bound=np.inexact[Any])
+_SCT_fc = TypeVar("_SCT_fc", bound=npc.inexact)
 
 ###
 
@@ -121,4 +122,4 @@ def variation(
     ddof: onp.ToInt = 0,
     *,
     keepdims: AnyBool = False,
-) -> np.inexact[Any] | onp.ArrayND[np.inexact[Any]]: ...
+) -> npc.inexact | onp.ArrayND[npc.inexact]: ...

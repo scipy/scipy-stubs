@@ -1,8 +1,8 @@
 from collections.abc import Callable
-from typing import Any, Final, Literal, TypeAlias
+from typing import Final, Literal, TypeAlias
 
-import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
@@ -22,33 +22,33 @@ _Projections: TypeAlias = tuple[
 sksparse_available: Final[bool] = ...
 
 # undocumented
-def orthogonality(A: _ToMatrix, g: onp.ToFloat1D) -> np.floating[Any]: ...
+def orthogonality(A: _ToMatrix, g: onp.ToFloat1D) -> npc.floating: ...
 
 # undocumented
 def normal_equation_projections(
-    A: _ToMatrix, m: int, n: int, orth_tol: float | np.floating[Any], max_refin: int, tol: float
+    A: _ToMatrix, m: int, n: int, orth_tol: float | npc.floating, max_refin: int, tol: float
 ) -> _Projections: ...
 
 # undocumented
 def augmented_system_projections(
-    A: _ToMatrix, m: int, n: int, orth_tol: float | np.floating[Any], max_refin: int, tol: float
+    A: _ToMatrix, m: int, n: int, orth_tol: float | npc.floating, max_refin: int, tol: float
 ) -> _Projections: ...
 
 # undocumented
 def qr_factorization_projections(
-    A: _ToMatrix, m: int, n: int, orth_tol: float | np.floating[Any], max_refin: int, tol: float
+    A: _ToMatrix, m: int, n: int, orth_tol: float | npc.floating, max_refin: int, tol: float
 ) -> _Projections: ...
 
 # undocumented
 def svd_factorization_projections(
-    A: _ToMatrix, m: int, n: int, orth_tol: float | np.floating[Any], max_refin: int, tol: float
+    A: _ToMatrix, m: int, n: int, orth_tol: float | npc.floating, max_refin: int, tol: float
 ) -> _Projections: ...
 
 #
 def projections(
     A: _ToMatrix,
     method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"] | None = None,
-    orth_tol: float | np.floating[Any] = 1e-12,
+    orth_tol: float | npc.floating = 1e-12,
     max_refin: onp.ToJustInt = 3,
-    tol: float | np.floating[Any] = 1e-15,
+    tol: float | npc.floating = 1e-15,
 ) -> tuple[LinearOperator, LinearOperator, LinearOperator]: ...

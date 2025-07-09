@@ -1,9 +1,10 @@
 from collections.abc import Callable, Iterable, Sequence
-from typing import Any, Self, TypedDict, type_check_only
+from typing import Self, TypedDict, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._typing import BaseBunch
 from scipy._typing import ToRNG
@@ -36,9 +37,9 @@ class MGCResult(BaseBunch[np.float64, np.float64, _MGCDict]):
     def __init__(self, /, statistic: np.float64, pvalue: np.float64, mgc_dict: _MGCDict) -> None: ...
 
 def multiscale_graphcorr(
-    x: onp.ArrayND[np.floating[Any] | np.integer[Any] | np.bool_],
-    y: onp.ArrayND[np.floating[Any] | np.integer[Any] | np.bool_],
-    compute_distance: Callable[[onp.ArrayND[np.float64]], onp.ArrayND[np.floating[Any]]] = ...,
+    x: onp.ArrayND[npc.floating | npc.integer | np.bool_],
+    y: onp.ArrayND[npc.floating | npc.integer | np.bool_],
+    compute_distance: Callable[[onp.ArrayND[np.float64]], onp.ArrayND[npc.floating]] = ...,
     reps: int = 1000,
     workers: int | Callable[[Callable[[_T], _R], Iterable[_T]], Sequence[_R]] = 1,
     is_twosamp: bool = False,

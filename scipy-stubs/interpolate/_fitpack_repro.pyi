@@ -1,9 +1,10 @@
 from collections.abc import Callable, Generator
-from typing import Any, Final, Literal, TypeAlias, type_check_only
+from typing import Final, Literal, TypeAlias, type_check_only
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._bsplines import BSpline
 
@@ -67,9 +68,7 @@ def add_knot(
 def prodd(t: onp.Array1D[np.float64], i: int, j: int, k: int) -> _Float64: ...  # undocumented
 
 #
-def disc(
-    t: onp.ArrayND[np.floating[Any]], k: int
-) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.int64], int]: ...  # undocumented
+def disc(t: onp.ArrayND[npc.floating], k: int) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.int64], int]: ...  # undocumented
 
 #
 def fprati(
@@ -124,4 +123,4 @@ def make_splprep(
     s: onp.ToFloat = 0,
     t: onp.ToFloat1D | None = None,
     nest: op.JustInt | None = None,
-) -> tuple[BSpline, onp.Array1D[np.floating[Any]]]: ...
+) -> tuple[BSpline, onp.Array1D[npc.floating]]: ...

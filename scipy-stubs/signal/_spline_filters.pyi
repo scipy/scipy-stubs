@@ -1,8 +1,9 @@
-from typing import Any, TypeAlias, overload
+from typing import TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = [
     "cspline1d",
@@ -17,7 +18,7 @@ __all__ = [
     "symiirorder2",
 ]
 
-_SubFloat64: TypeAlias = np.bool_ | np.integer[Any] | np.float16 | np.float32
+_SubFloat64: TypeAlias = np.bool_ | npc.integer | np.float16 | np.float32
 
 _FloatD: TypeAlias = np.float32 | np.float64
 _FloatQ: TypeAlias = np.float64 | np.longdouble
@@ -25,7 +26,7 @@ _ComplexD: TypeAlias = np.complex64 | np.complex128
 _ComplexQ: TypeAlias = np.complex128 | np.clongdouble
 _InexactD: TypeAlias = _FloatD | _ComplexD
 _InexactQ: TypeAlias = _FloatQ | _ComplexQ
-_Inexact: TypeAlias = np.inexact[Any]
+_Inexact: TypeAlias = npc.inexact
 
 _FloatDT = TypeVar("_FloatDT", bound=_FloatD)
 _InexactDT = TypeVar("_InexactDT", bound=_InexactD)

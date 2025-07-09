@@ -1,18 +1,19 @@
 from collections.abc import Sequence
-from typing import Any, Generic, TypeAlias, overload
+from typing import Generic, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["AAA", "FloaterHormannInterpolator"]
 
-_SCT = TypeVar("_SCT", bound=np.inexact[Any])
-_SCT_co = TypeVar("_SCT_co", bound=np.inexact[Any], default=np.inexact[Any], covariant=True)
+_SCT = TypeVar("_SCT", bound=npc.inexact)
+_SCT_co = TypeVar("_SCT_co", bound=npc.inexact, default=npc.inexact, covariant=True)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[int, ...], covariant=True)
 
-_ToFloat16: TypeAlias = np.bool_ | np.integer[Any] | np.float16
+_ToFloat16: TypeAlias = np.bool_ | npc.integer | np.float16
 _ToFloat64: TypeAlias = _ToFloat16 | np.float32 | np.float64
 _ToComplex128: TypeAlias = _ToFloat64 | np.complex64 | np.complex128
 
@@ -29,14 +30,14 @@ class _BarycentricRational(Generic[_SCT_co, _ShapeT_co]):
     @overload
     def __call__(self, /, z: onp.ToFloat) -> onp.ArrayND[_SCT_co, _ShapeT_co]: ...
     @overload
-    def __call__(self, /, z: onp.ToComplex) -> onp.ArrayND[np.inexact[Any], _ShapeT_co]: ...
+    def __call__(self, /, z: onp.ToComplex) -> onp.ArrayND[npc.inexact, _ShapeT_co]: ...
     @overload
-    def __call__(self, /, z: onp.ToComplexND) -> onp.ArrayND[np.inexact[Any]]: ...
+    def __call__(self, /, z: onp.ToComplexND) -> onp.ArrayND[npc.inexact]: ...
 
     #
-    def poles(self, /) -> onp.Array1D[np.complexfloating[Any, Any]]: ...
-    def roots(self, /) -> onp.Array1D[np.complexfloating[Any, Any]]: ...
-    def residues(self, /) -> onp.ArrayND[np.inexact[Any]]: ...
+    def poles(self, /) -> onp.Array1D[npc.complexfloating]: ...
+    def roots(self, /) -> onp.Array1D[npc.complexfloating]: ...
+    def residues(self, /) -> onp.ArrayND[npc.inexact]: ...
 
 class AAA(_BarycentricRational[_SCT_co, tuple[int]], Generic[_SCT_co]):
     weights: onp.Array1D[_SCT_co]
@@ -123,7 +124,7 @@ class FloaterHormannInterpolator(_BarycentricRational[_SCT_co, _ShapeT_co], Gene
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[np.floating[Any], tuple[int]],
+        self: FloaterHormannInterpolator[npc.floating, tuple[int]],
         /,
         points: onp.ToFloat1D,
         values: onp.ToFloatStrict1D,
@@ -132,7 +133,7 @@ class FloaterHormannInterpolator(_BarycentricRational[_SCT_co, _ShapeT_co], Gene
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[np.floating[Any], tuple[int, int]],
+        self: FloaterHormannInterpolator[npc.floating, tuple[int, int]],
         /,
         points: onp.ToFloat1D,
         values: onp.ToFloatStrict2D,
@@ -141,7 +142,7 @@ class FloaterHormannInterpolator(_BarycentricRational[_SCT_co, _ShapeT_co], Gene
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[np.inexact[Any], tuple[int]],
+        self: FloaterHormannInterpolator[npc.inexact, tuple[int]],
         /,
         points: onp.ToComplex1D,
         values: onp.ToComplexStrict1D,
@@ -150,7 +151,7 @@ class FloaterHormannInterpolator(_BarycentricRational[_SCT_co, _ShapeT_co], Gene
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[np.inexact[Any], tuple[int, int]],
+        self: FloaterHormannInterpolator[npc.inexact, tuple[int, int]],
         /,
         points: onp.ToComplex1D,
         values: onp.ToComplexStrict2D,
