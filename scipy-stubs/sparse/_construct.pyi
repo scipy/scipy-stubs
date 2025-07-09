@@ -79,7 +79,7 @@ _FmtLIL: TypeAlias = Literal["lil"]
 _FmtNonCOO: TypeAlias = Literal["bsr", "csc", "csr", "dia", "dok", "lil"]
 
 _Diag: TypeAlias = _ToArray1D[_SCT] | _ToArray2D[_SCT]
-_Offsets: TypeAlias = onp.ToInt | onp.ToIntStrict1D
+_Offsets: TypeAlias = onp.ToInt | onp.ToInt1D
 
 _DataRVS: TypeAlias = Callable[[int], onp.ArrayND[_Numeric]]
 
