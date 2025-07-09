@@ -88,7 +88,7 @@ def labeled_comprehension(
     labels: onp.ToComplex | onp.ToComplexND | None,
     index: onp.ToInt | onp.ToIntND | None,
     func: _ComprehensionFunc,
-    out_dtype: onp.AnyFloat64DType,
+    out_dtype: onp.AnyFloat64DType | None,
     default: onp.ToFloat,
     pass_positions: bool = False,
 ) -> onp.ArrayND[np.float64]: ...
