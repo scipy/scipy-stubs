@@ -111,7 +111,7 @@ def gaussian_kernel_estimate(
     values: onp.Array2D[_Real],
     xi: onp.Array2D[_AsReal],
     cho_cov: onp.Array2D[_AsReal],
-    dtype: onp.AnyFloat64DType,
+    dtype: onp.AnyFloat64DType | None,
     _: _Real | float = 0.0,
 ) -> onp.Array2D[np.float64]: ...
 @overload
@@ -140,7 +140,7 @@ def gaussian_kernel_estimate_log(
     values: onp.Array2D[_Real],
     xi: onp.Array2D[_AsReal],
     cho_cov: onp.Array2D[_AsReal],
-    dtype: onp.AnyFloat64DType,
+    dtype: onp.AnyFloat64DType | None,
     _: _Real | float = 0.0,
 ) -> onp.Array2D[np.float64]: ...
 @overload
