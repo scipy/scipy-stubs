@@ -33,9 +33,6 @@
     "editor.tabSize": 2,
   },
   "dprint.path": ".venv/bin/dprint",
-  "code-runner.executorMap": {
-    "python": "cd \"$workspaceRoot\" && source \".venv/bin/activate\" && uvx basedpyright $fullFileName && python $fullFileName",
-  },
   "mypy-type-checker.path": [
     "uv",
     "run",
