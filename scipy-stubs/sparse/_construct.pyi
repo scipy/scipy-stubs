@@ -4,13 +4,11 @@ from typing import Any, Literal, Protocol, TypeAlias, TypeVar, overload, type_ch
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 import optype.typing as opt
-from optype.numpy._any_dtype import f_cls
-from optype.numpy._dtype import ToDType
 from optype.numpy._dtype_attr import f8_code
-from optype.numpy._scalar import floating64
 
 from ._base import _spbase, sparray
 from ._bsr import bsr_array, bsr_matrix
@@ -43,15 +41,15 @@ __all__ = [
 ]
 
 _Numeric: TypeAlias = npc.number | np.bool_
-_AnyFloat64DTypeNotNone: TypeAlias = f_cls | ToDType[floating64] | f8_code
+_AnyFloat64DTypeNotNone: TypeAlias = type[op.JustFloat] | onp.ToDType[npc.floating64] | f8_code
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=_Numeric, default=Any)
 _SCT0 = TypeVar("_SCT0", bound=_Numeric)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...])
 
-_ToArray1D: TypeAlias = Seq[int | float | complex | _SCT] | onp.CanArrayND[_SCT]
-_ToArray2D: TypeAlias = Seq[_ToArray1D[_SCT]] | onp.CanArrayND[_SCT]
+_ToArray1D: TypeAlias = onp.ToArray1D[complex, _SCT]
+_ToArray2D: TypeAlias = onp.ToArray2D[complex, _SCT]
 _ToSpMatrix: TypeAlias = spmatrix[_SCT] | _ToArray2D[_SCT]
 _ToSparse2D: TypeAlias = _spbase[_SCT, tuple[int, int]] | _ToArray2D[_SCT]
 
@@ -80,6 +78,9 @@ _FmtDOK: TypeAlias = Literal["dok"]
 _FmtLIL: TypeAlias = Literal["lil"]
 _FmtNonCOO: TypeAlias = Literal["bsr", "csc", "csr", "dia", "dok", "lil"]
 
+_Diag: TypeAlias = _ToArray1D[_SCT] | _ToArray2D[_SCT]
+_Offsets: TypeAlias = onp.ToInt | onp.ToIntStrict1D
+
 _DataRVS: TypeAlias = Callable[[int], onp.ArrayND[_Numeric]]
 
 _ToBlocks: TypeAlias = Seq[Seq[_spbase[_SCT] | None]] | onp.ArrayND[np.object_]
@@ -92,100 +93,50 @@ class _DataSampler(Protocol):
 
 @overload  # diagonals: <known>, dtype: None = ..., format: {"dia", None} = ...
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
     dtype: None = None,
 ) -> _DIAArray[_SCT]: ...
 @overload  # diagonals: <known>, format: {"dia", None} = ..., dtype: bool-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
     dtype: onp.AnyBoolDType,
 ) -> _DIAArray[np.bool_]: ...
 @overload  # diagonals: <known>, format: {"dia", None} = ..., dtype: int-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
     dtype: onp.AnyIntDType,
 ) -> _DIAArray[np.int_]: ...
 @overload  # diagonals: <known>, format: {"dia", None} = ..., dtype: float64-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
     dtype: _AnyFloat64DTypeNotNone,
 ) -> _DIAArray[np.float64]: ...
 @overload  # diagonals: <known>, format: {"dia", None} = ..., dtype: complex128-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDIA | None = None,
-    dtype: onp.AnyComplex128DType,
-) -> _DIAArray[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: float64-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDIA | None = None,
-    dtype: _AnyFloat64DTypeNotNone,
-) -> _DIAArray[np.float64]: ...
-@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: bool-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDIA | None = None,
-    dtype: onp.AnyBoolDType,
-) -> _DIAArray[np.bool_]: ...
-@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: int-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDIA | None = None,
-    dtype: onp.AnyIntDType,
-) -> _DIAArray[np.int_]: ...
-@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDIA | None = None,
-    dtype: onp.AnyComplex128DType,
-) -> _DIAArray[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
     dtype: onp.AnyComplex128DType,
@@ -195,7 +146,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
     dtype: onp.ToDType[_SCT],
@@ -205,7 +156,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
     dtype: npt.DTypeLike,
@@ -214,100 +165,32 @@ def diags_array(
 # BSR
 @overload  # diagonals: <known>, format: "bsr", dtype: None
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtBSR,
-    dtype: None = None,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtBSR, dtype: None = None
 ) -> _BSRArray[_SCT]: ...
 @overload  # diagonals: <known>, format: "bsr", dtype: bool-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtBSR,
-    dtype: onp.AnyBoolDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtBSR, dtype: onp.AnyBoolDType
 ) -> _BSRArray[np.bool_]: ...
 @overload  # diagonals: <known>, format: "bsr", dtype: int-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtBSR,
-    dtype: onp.AnyIntDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtBSR, dtype: onp.AnyIntDType
 ) -> _BSRArray[np.int_]: ...
 @overload  # diagonals: <known>, format: "bsr", dtype: float64-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtBSR,
     dtype: _AnyFloat64DTypeNotNone,
 ) -> _BSRArray[np.float64]: ...
 @overload  # diagonals: <known>, format: "bsr", dtype: complex128-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtBSR,
-    dtype: onp.AnyComplex128DType,
-) -> _BSRArray[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "bsr", dtype: float64-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtBSR,
-    dtype: _AnyFloat64DTypeNotNone,
-) -> _BSRArray[np.float64]: ...
-@overload  # diagonals: <unknown>, format: "bsr", dtype: bool-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtBSR,
-    dtype: onp.AnyBoolDType,
-) -> _BSRArray[np.bool_]: ...
-@overload  # diagonals: <unknown>, format: "bsr", dtype: int-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtBSR,
-    dtype: onp.AnyIntDType,
-) -> _BSRArray[np.int_]: ...
-@overload  # diagonals: <unknown>, format: "bsr", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtBSR,
-    dtype: onp.AnyComplex128DType,
-) -> _BSRArray[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "bsr", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtBSR,
     dtype: onp.AnyComplex128DType,
@@ -317,7 +200,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtBSR,
     dtype: onp.ToDType[_SCT],
@@ -327,7 +210,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtBSR,
     dtype: npt.DTypeLike,
@@ -336,202 +219,86 @@ def diags_array(
 # COO
 @overload  # diagonals: <known>, format: "coo", dtype: None
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCOO,
-    dtype: None = None,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCOO, dtype: None = None
 ) -> _COOArray2D[_SCT]: ...
 @overload  # diagonals: <known>, format: "coo", dtype: bool-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCOO,
-    dtype: onp.AnyBoolDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCOO, dtype: onp.AnyBoolDType
 ) -> _COOArray2D[np.bool_]: ...
 @overload  # diagonals: <known>, format: "coo", dtype: int-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCOO,
-    dtype: onp.AnyIntDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCOO, dtype: onp.AnyIntDType
 ) -> _COOArray2D[np.int_]: ...
 @overload  # diagonals: <known>, format: "coo", dtype: float64-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCOO,
     dtype: _AnyFloat64DTypeNotNone,
 ) -> _COOArray2D[np.float64]: ...
 @overload  # diagonals: <known>, format: "coo", dtype: complex128-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCOO,
     dtype: onp.AnyComplex128DType,
 ) -> _COOArray2D[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "coo", dtype: float64-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCOO,
-    dtype: _AnyFloat64DTypeNotNone,
-) -> _COOArray2D[np.float64]: ...
-@overload  # diagonals: <unknown>, format: "coo", dtype: bool-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCOO,
-    dtype: onp.AnyBoolDType,
-) -> _COOArray2D[np.bool_]: ...
-@overload  # diagonals: <unknown>, format: "coo", dtype: int-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCOO,
-    dtype: onp.AnyIntDType,
-) -> _COOArray2D[np.int_]: ...
-@overload  # diagonals: <unknown>, format: "coo", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCOO,
-    dtype: onp.AnyComplex128DType,
-) -> _COOArray2D[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "coo", dtype: complex128-like
+@overload  # diagonals: <unknown>, format: "coo", dtype: <known>
 def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCOO,
-    dtype: onp.AnyComplex128DType,
-) -> _COOArray2D[np.complex128]: ...
+    dtype: onp.ToDType[_SCT],
+) -> _COOArray2D[_SCT]: ...
+@overload  # diagonals: <unknown>, format: "coo", dtype: <unknown>
+def diags_array(
+    diagonals: onp.ToComplex1D | onp.ToComplex2D,
+    /,
+    *,
+    offsets: _Offsets = 0,
+    shape: _ToShape2D | None = None,
+    format: _FmtCOO,
+    dtype: npt.DTypeLike,
+) -> _COOArray2D: ...
 
 # CSC
 @overload  # diagonals: <known>, format: "csc", dtype: None
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSC,
-    dtype: None = None,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSC, dtype: None = None
 ) -> _CSCArray[_SCT]: ...
 @overload  # diagonals: <known>, format: "csc", dtype: bool-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSC,
-    dtype: onp.AnyBoolDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSC, dtype: onp.AnyBoolDType
 ) -> _CSCArray[np.bool_]: ...
 @overload  # diagonals: <known>, format: "csc", dtype: int-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSC,
-    dtype: onp.AnyIntDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSC, dtype: onp.AnyIntDType
 ) -> _CSCArray[np.int_]: ...
 @overload  # diagonals: <known>, format: "csc", dtype: float64-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCSC,
     dtype: _AnyFloat64DTypeNotNone,
 ) -> _CSCArray[np.float64]: ...
 @overload  # diagonals: <known>, format: "csc", dtype: complex128-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSC,
-    dtype: onp.AnyComplex128DType,
-) -> _CSCArray[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "csc", dtype: float64-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSC,
-    dtype: _AnyFloat64DTypeNotNone,
-) -> _CSCArray[np.float64]: ...
-@overload  # diagonals: <unknown>, format: "csc", dtype: bool-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSC,
-    dtype: onp.AnyBoolDType,
-) -> _CSCArray[np.bool_]: ...
-@overload  # diagonals: <unknown>, format: "csc", dtype: int-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSC,
-    dtype: onp.AnyIntDType,
-) -> _CSCArray[np.int_]: ...
-@overload  # diagonals: <unknown>, format: "csc", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSC,
-    dtype: onp.AnyComplex128DType,
-) -> _CSCArray[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "csc", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCSC,
     dtype: onp.AnyComplex128DType,
@@ -541,7 +308,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCSC,
     dtype: onp.ToDType[_SCT],
@@ -551,7 +318,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCSC,
     dtype: npt.DTypeLike,
@@ -560,100 +327,32 @@ def diags_array(
 # CSR
 @overload  # diagonals: <known>, format: "csr", dtype: None
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSR,
-    dtype: None = None,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSR, dtype: None = None
 ) -> _CSRArray2D[_SCT]: ...
 @overload  # diagonals: <known>, format: "csr", dtype: bool-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSR,
-    dtype: onp.AnyBoolDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSR, dtype: onp.AnyBoolDType
 ) -> _CSRArray2D[np.bool_]: ...
 @overload  # diagonals: <known>, format: "csr", dtype: int-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSR,
-    dtype: onp.AnyIntDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSR, dtype: onp.AnyIntDType
 ) -> _CSRArray2D[np.int_]: ...
 @overload  # diagonals: <known>, format: "csr", dtype: float64-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCSR,
     dtype: _AnyFloat64DTypeNotNone,
 ) -> _CSRArray2D[np.float64]: ...
 @overload  # diagonals: <known>, format: "csr", dtype: complex128-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSR,
-    dtype: onp.AnyComplex128DType,
-) -> _CSRArray2D[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "csr", dtype: float64-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSR,
-    dtype: _AnyFloat64DTypeNotNone,
-) -> _CSRArray2D[np.float64]: ...
-@overload  # diagonals: <unknown>, format: "csr", dtype: bool-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSR,
-    dtype: onp.AnyBoolDType,
-) -> _CSRArray2D[np.bool_]: ...
-@overload  # diagonals: <unknown>, format: "csr", dtype: int-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSR,
-    dtype: onp.AnyIntDType,
-) -> _CSRArray2D[np.int_]: ...
-@overload  # diagonals: <unknown>, format: "csr", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSR,
-    dtype: onp.AnyComplex128DType,
-) -> _CSRArray2D[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "csr", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCSR,
     dtype: onp.AnyComplex128DType,
@@ -663,7 +362,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCSR,
     dtype: onp.ToDType[_SCT],
@@ -673,7 +372,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtCSR,
     dtype: npt.DTypeLike,
@@ -682,100 +381,32 @@ def diags_array(
 # DOK
 @overload  # diagonals: <known>, format: "dok", dtype: None
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDOK,
-    dtype: None = None,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtDOK, dtype: None = None
 ) -> _DOKArray2D[_SCT]: ...
 @overload  # diagonals: <known>, format: "dok", dtype: bool-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDOK,
-    dtype: onp.AnyBoolDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtDOK, dtype: onp.AnyBoolDType
 ) -> _DOKArray2D[np.bool_]: ...
 @overload  # diagonals: <known>, format: "dok", dtype: int-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDOK,
-    dtype: onp.AnyIntDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtDOK, dtype: onp.AnyIntDType
 ) -> _DOKArray2D[np.int_]: ...
 @overload  # diagonals: <known>, format: "dok", dtype: float64-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDOK,
     dtype: _AnyFloat64DTypeNotNone,
 ) -> _DOKArray2D[np.float64]: ...
 @overload  # diagonals: <known>, format: "dok", dtype: complex128-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDOK,
-    dtype: onp.AnyComplex128DType,
-) -> _DOKArray2D[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "dok", dtype: float64-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDOK,
-    dtype: _AnyFloat64DTypeNotNone,
-) -> _DOKArray2D[np.float64]: ...
-@overload  # diagonals: <unknown>, format: "dok", dtype: bool-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDOK,
-    dtype: onp.AnyBoolDType,
-) -> _DOKArray2D[np.bool_]: ...
-@overload  # diagonals: <unknown>, format: "dok", dtype: int-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDOK,
-    dtype: onp.AnyIntDType,
-) -> _DOKArray2D[np.int_]: ...
-@overload  # diagonals: <unknown>, format: "dok", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDOK,
-    dtype: onp.AnyComplex128DType,
-) -> _DOKArray2D[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "dok", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDOK,
     dtype: onp.AnyComplex128DType,
@@ -785,7 +416,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDOK,
     dtype: onp.ToDType[_SCT],
@@ -795,7 +426,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDOK,
     dtype: npt.DTypeLike,
@@ -804,100 +435,32 @@ def diags_array(
 # LIL
 @overload  # diagonals: <known>, format: "lil", dtype: None
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtLIL,
-    dtype: None = None,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtLIL, dtype: None = None
 ) -> _LILArray[_SCT]: ...
 @overload  # diagonals: <known>, format: "lil", dtype: bool-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtLIL,
-    dtype: onp.AnyBoolDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtLIL, dtype: onp.AnyBoolDType
 ) -> _LILArray[np.bool_]: ...
 @overload  # diagonals: <known>, format: "lil", dtype: int-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtLIL,
-    dtype: onp.AnyIntDType,
+    diagonals: _Diag[_SCT], /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtLIL, dtype: onp.AnyIntDType
 ) -> _LILArray[np.int_]: ...
 @overload  # diagonals: <known>, format: "lil", dtype: float64-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtLIL,
     dtype: _AnyFloat64DTypeNotNone,
 ) -> _LILArray[np.float64]: ...
 @overload  # diagonals: <known>, format: "lil", dtype: complex128-like
 def diags_array(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtLIL,
-    dtype: onp.AnyComplex128DType,
-) -> _LILArray[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "lil", dtype: float64-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtLIL,
-    dtype: _AnyFloat64DTypeNotNone,
-) -> _LILArray[np.float64]: ...
-@overload  # diagonals: <unknown>, format: "lil", dtype: bool-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtLIL,
-    dtype: onp.AnyBoolDType,
-) -> _LILArray[np.bool_]: ...
-@overload  # diagonals: <unknown>, format: "lil", dtype: int-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtLIL,
-    dtype: onp.AnyIntDType,
-) -> _LILArray[np.int_]: ...
-@overload  # diagonals: <unknown>, format: "lil", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToFloat1D | onp.ToFloat2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtLIL,
-    dtype: onp.AnyComplex128DType,
-) -> _LILArray[np.complex128]: ...
-@overload  # diagonals: <unknown>, format: "lil", dtype: complex128-like
-def diags_array(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    /,
-    *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtLIL,
     dtype: onp.AnyComplex128DType,
@@ -907,7 +470,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtLIL,
     dtype: onp.ToDType[_SCT],
@@ -917,7 +480,7 @@ def diags_array(
     diagonals: onp.ToComplex1D | onp.ToComplex2D,
     /,
     *,
-    offsets: onp.ToInt | onp.ToIntStrict1D = 0,
+    offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtLIL,
     dtype: npt.DTypeLike,
@@ -926,7 +489,7 @@ def diags_array(
 # NOTE: `diags_array` should be prefered over `diags`
 @overload  # diagonals: <known>, format: {"dia", None} = ...
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
@@ -934,7 +497,7 @@ def diags(
 ) -> dia_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "bsr" (positional)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D,
     shape: _ToShape2D | None,
     format: _FmtBSR,
@@ -942,7 +505,7 @@ def diags(
 ) -> bsr_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "bsr" (keyword)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -951,7 +514,7 @@ def diags(
 ) -> bsr_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "coo" (positional)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D,
     shape: _ToShape2D | None,
     format: _FmtCOO,
@@ -959,7 +522,7 @@ def diags(
 ) -> coo_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "coo" (keyword)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -968,7 +531,7 @@ def diags(
 ) -> coo_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "csr" (positional)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D,
     shape: _ToShape2D | None,
     format: _FmtCSR,
@@ -976,7 +539,7 @@ def diags(
 ) -> csr_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "csr" (keyword)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -985,7 +548,7 @@ def diags(
 ) -> csr_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "csc" (positional)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D,
     shape: _ToShape2D | None,
     format: _FmtCSC,
@@ -993,7 +556,7 @@ def diags(
 ) -> csc_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "csc" (keyword)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -1002,7 +565,7 @@ def diags(
 ) -> csc_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "dok" (positional)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D,
     shape: _ToShape2D | None,
     format: _FmtDOK,
@@ -1010,7 +573,7 @@ def diags(
 ) -> dok_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "dok" (keyword)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -1019,7 +582,7 @@ def diags(
 ) -> dok_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "lil" (positional)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D,
     shape: _ToShape2D | None,
     format: _FmtLIL,
@@ -1027,131 +590,12 @@ def diags(
 ) -> lil_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "lil" (keyword)
 def diags(
-    diagonals: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    diagonals: _Diag[_SCT],
     offsets: onp.ToInt | onp.ToInt1D = 0,
     shape: _ToShape2D | None = None,
     *,
     format: _FmtLIL,
     dtype: onp.ToDType[_SCT] | None = None,
-) -> lil_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: <known> (positional)
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D,
-    shape: _ToShape2D | None,
-    format: _FmtDIA | None,
-    dtype: onp.ToDType[_SCT],
-) -> dia_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: <known> (keyword)
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDIA | None = None,
-    *,
-    dtype: onp.ToDType[_SCT],
-) -> dia_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "bsr" (positional), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D,
-    shape: _ToShape2D | None,
-    format: _FmtBSR,
-    dtype: onp.ToDType[_SCT],
-) -> bsr_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "bsr" (keyword), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: _ToShape2D | None = None,
-    *,
-    format: _FmtBSR,
-    dtype: onp.ToDType[_SCT],
-) -> bsr_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "coo" (positional), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D,
-    shape: _ToShape2D | None,
-    format: _FmtCOO,
-    dtype: onp.ToDType[_SCT],
-) -> coo_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "coo" (keyword), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: _ToShape2D | None = None,
-    *,
-    format: _FmtCOO,
-    dtype: onp.ToDType[_SCT],
-) -> coo_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "csr" (positional), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D,
-    shape: _ToShape2D | None,
-    format: _FmtCSR,
-    dtype: onp.ToDType[_SCT],
-) -> csr_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "csr" (keyword), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: _ToShape2D | None = None,
-    *,
-    format: _FmtCSR,
-    dtype: onp.ToDType[_SCT],
-) -> csr_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "csc" (positional), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D,
-    shape: _ToShape2D | None,
-    format: _FmtCSC,
-    dtype: onp.ToDType[_SCT],
-) -> csc_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "csc" (keyword), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: _ToShape2D | None = None,
-    *,
-    format: _FmtCSC,
-    dtype: onp.ToDType[_SCT],
-) -> csc_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "dok" (positional), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D,
-    shape: _ToShape2D | None,
-    format: _FmtDOK,
-    dtype: onp.ToDType[_SCT],
-) -> dok_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "dok" (keyword), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: _ToShape2D | None = None,
-    *,
-    format: _FmtDOK,
-    dtype: onp.ToDType[_SCT],
-) -> dok_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "lil" (positional), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D,
-    shape: _ToShape2D | None,
-    format: _FmtLIL,
-    dtype: onp.ToDType[_SCT],
-) -> lil_matrix[_SCT]: ...
-@overload  # diagonals: <unknown>, format: "lil" (keyword), dtype: <known>
-def diags(
-    diagonals: onp.ToComplex1D | onp.ToComplex2D,
-    offsets: onp.ToInt | onp.ToInt1D = 0,
-    shape: _ToShape2D | None = None,
-    *,
-    format: _FmtLIL,
-    dtype: onp.ToDType[_SCT],
 ) -> lil_matrix[_SCT]: ...
 @overload  # diagonals: <unknown>, format: {"dia", None} = ..., dtype: <unknown>
 def diags(
@@ -1267,15 +711,11 @@ def diags(
 # NOTE: `diags_array` should be prefered over `spdiags`
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT],
-    diags: onp.ToInt | onp.ToInt1D,
-    m: onp.ToJustInt,
-    n: onp.ToJustInt,
-    format: _FmtDIA | None = None,
+    data: _Diag[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDIA | None = None
 ) -> dia_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    data: _Diag[_SCT],
     diags: onp.ToInt | onp.ToInt1D,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -1283,11 +723,11 @@ def spdiags(
 ) -> dia_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtBSR
+    data: _Diag[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtBSR
 ) -> bsr_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    data: _Diag[_SCT],
     diags: onp.ToInt | onp.ToInt1D,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -1296,11 +736,11 @@ def spdiags(
 ) -> bsr_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCOO
+    data: _Diag[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCOO
 ) -> coo_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    data: _Diag[_SCT],
     diags: onp.ToInt | onp.ToInt1D,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -1309,11 +749,11 @@ def spdiags(
 ) -> coo_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSR
+    data: _Diag[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSR
 ) -> csr_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    data: _Diag[_SCT],
     diags: onp.ToInt | onp.ToInt1D,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -1322,11 +762,11 @@ def spdiags(
 ) -> csr_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSC
+    data: _Diag[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSC
 ) -> csc_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    data: _Diag[_SCT],
     diags: onp.ToInt | onp.ToInt1D,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -1335,11 +775,11 @@ def spdiags(
 ) -> csc_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDOK
+    data: _Diag[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDOK
 ) -> dok_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    data: _Diag[_SCT],
     diags: onp.ToInt | onp.ToInt1D,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -1348,112 +788,17 @@ def spdiags(
 ) -> dok_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtLIL
+    data: _Diag[_SCT], diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtLIL
 ) -> lil_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D[_SCT] | _ToArray2D[_SCT],
+    data: _Diag[_SCT],
     diags: onp.ToInt | onp.ToInt1D,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
     *,
     format: _FmtLIL,
 ) -> lil_matrix[_SCT]: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D,
-    diags: onp.ToInt | onp.ToInt1D,
-    m: onp.ToJustInt,
-    n: onp.ToJustInt,
-    format: _FmtDIA | None = None,
-) -> dia_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D,
-    diags: onp.ToInt | onp.ToInt1D,
-    m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
-    n: None = None,
-    *,
-    format: _FmtDIA | None = None,
-) -> dia_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D, diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtBSR
-) -> bsr_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D,
-    diags: onp.ToInt | onp.ToInt1D,
-    m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
-    n: None = None,
-    *,
-    format: _FmtBSR,
-) -> bsr_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D, diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCOO
-) -> coo_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D,
-    diags: onp.ToInt | onp.ToInt1D,
-    m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
-    n: None = None,
-    *,
-    format: _FmtCOO,
-) -> coo_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D, diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSR
-) -> csr_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D,
-    diags: onp.ToInt | onp.ToInt1D,
-    m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
-    n: None = None,
-    *,
-    format: _FmtCSR,
-) -> csr_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D, diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSC
-) -> csc_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D,
-    diags: onp.ToInt | onp.ToInt1D,
-    m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
-    n: None = None,
-    *,
-    format: _FmtCSC,
-) -> csc_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D, diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDOK
-) -> dok_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D,
-    diags: onp.ToInt | onp.ToInt1D,
-    m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
-    n: None = None,
-    *,
-    format: _FmtDOK,
-) -> dok_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D, diags: onp.ToInt | onp.ToInt1D, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtLIL
-) -> lil_matrix: ...
-@overload
-def spdiags(
-    data: onp.ToComplex1D | onp.ToComplex2D,
-    diags: onp.ToInt | onp.ToInt1D,
-    m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
-    n: None = None,
-    *,
-    format: _FmtLIL,
-) -> lil_matrix: ...
 
 #
 @overload  # dtype like bool, format: None = ...
@@ -1468,18 +813,6 @@ def identity(n: opt.AnyInt, dtype: onp.AnyComplex128DType, format: _FmtDIA | Non
 def identity(n: opt.AnyInt, dtype: onp.ToDType[_SCT], format: _FmtDIA | None = None) -> dia_matrix[_SCT]: ...
 @overload  # dtype like <unknown>, format: None = ...
 def identity(n: opt.AnyInt, dtype: npt.DTypeLike, format: _FmtDIA | None = None) -> dia_matrix[Incomplete]: ...
-@overload  # dtype like float, format: "bsr" (positional)
-def identity(n: opt.AnyInt, dtype: onp.AnyFloat64DType, format: _FmtBSR) -> bsr_matrix[np.float64]: ...
-@overload  # dtype like float, format: "coo" (positional)
-def identity(n: opt.AnyInt, dtype: onp.AnyFloat64DType, format: _FmtCOO) -> coo_matrix[np.float64]: ...
-@overload  # dtype like float, format: "csc" (positional)
-def identity(n: opt.AnyInt, dtype: onp.AnyFloat64DType, format: _FmtCSC) -> csc_matrix[np.float64]: ...
-@overload  # dtype like float, format: "csr" (positional)
-def identity(n: opt.AnyInt, dtype: onp.AnyFloat64DType, format: _FmtCSR) -> csr_matrix[np.float64]: ...
-@overload  # dtype like float, format: "dok" (positional)
-def identity(n: opt.AnyInt, dtype: onp.AnyFloat64DType, format: _FmtDOK) -> dok_matrix[np.float64]: ...
-@overload  # dtype like float, format: "lil" (positional)
-def identity(n: opt.AnyInt, dtype: onp.AnyFloat64DType, format: _FmtLIL) -> lil_matrix[np.float64]: ...
 @overload  # dtype like float (default), format: "bsr" (keyword)
 def identity(n: opt.AnyInt, dtype: onp.AnyFloat64DType = "d", *, format: _FmtBSR) -> bsr_matrix[np.float64]: ...
 @overload  # dtype like float (default), format: "coo" (keyword)
@@ -1728,43 +1061,23 @@ def eye_array(
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtDIA | None = None
 ) -> dia_matrix[np.float64]: ...
-@overload  # dtype like bool (positional), default format
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyBoolDType, format: _FmtDIA | None = None
-) -> dia_matrix[np.bool_]: ...
-@overload  # dtype like bool (keyword), default format
+@overload  # dtype like bool, default format
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtDIA | None = None
 ) -> dia_matrix[np.bool_]: ...
-@overload  # dtype like int (positional), default format
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyIntDType, format: _FmtDIA | None = None
-) -> dia_matrix[np.int_]: ...
-@overload  # dtype like int (keyword), default format
+@overload  # dtype like int, default format
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtDIA | None = None
 ) -> dia_matrix[np.int_]: ...
-@overload  # dtype like complex (positional), default format
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyComplex128DType, format: _FmtDIA | None = None
-) -> dia_matrix[np.complex128]: ...
-@overload  # dtype like complex (keyword), default format
+@overload  # dtype like complex, default format
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtDIA | None = None
 ) -> dia_matrix[np.complex128]: ...
-@overload  # dtype like <known> (positional), default format
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.ToDType[_SCT], format: _FmtDIA | None = None
-) -> dia_matrix[_SCT]: ...
-@overload  # dtype like <known> (keyword), default format
+@overload  # dtype like <known>, default format
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.ToDType[_SCT], format: _FmtDIA | None = None
 ) -> dia_matrix[_SCT]: ...
-@overload  # dtype like <unknown> (positional), default format
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: npt.DTypeLike, format: _FmtDIA | None = None
-) -> dia_matrix[Incomplete]: ...
-@overload  # dtype like <unknown> (keyword), default format
+@overload  # dtype like <unknown>, default format
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtDIA | None = None
 ) -> dia_matrix[Incomplete]: ...
@@ -1772,35 +1085,23 @@ def eye(
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtBSR
 ) -> bsr_matrix[np.float64]: ...
-@overload  # dtype like bool (positional), format: "bsr"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyBoolDType, format: _FmtBSR) -> bsr_matrix[np.bool_]: ...
-@overload  # dtype like bool (keyword), format: "bsr"
+@overload  # dtype like bool, format: "bsr"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtBSR
 ) -> bsr_matrix[np.bool_]: ...
-@overload  # dtype like int (positional), format: "bsr"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyIntDType, format: _FmtBSR) -> bsr_matrix[np.int_]: ...
-@overload  # dtype like int (keyword), format: "bsr"
+@overload  # dtype like int, format: "bsr"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtBSR
 ) -> bsr_matrix[np.int_]: ...
-@overload  # dtype like complex (positional), format: "bsr"
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyComplex128DType, format: _FmtBSR
-) -> bsr_matrix[np.complex128]: ...
-@overload  # dtype like complex (keyword), format: "bsr"
+@overload  # dtype like complex, format: "bsr"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtBSR
 ) -> bsr_matrix[np.complex128]: ...
-@overload  # dtype like <known> (positional), format: "bsr"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.ToDType[_SCT], format: _FmtBSR) -> bsr_matrix[_SCT]: ...
-@overload  # dtype like <known> (keyword), format: "bsr"
+@overload  # dtype like <known>, format: "bsr"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.ToDType[_SCT], format: _FmtBSR
 ) -> bsr_matrix[_SCT]: ...
-@overload  # dtype like <unknown> (positional), format: "bsr"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: npt.DTypeLike, format: _FmtBSR) -> bsr_matrix[Incomplete]: ...
-@overload  # dtype like <unknown> (keyword), format: "bsr"
+@overload  # dtype like <unknown>, format: "bsr"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtBSR
 ) -> bsr_matrix[Incomplete]: ...
@@ -1808,35 +1109,23 @@ def eye(
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtCOO
 ) -> coo_matrix[np.float64]: ...
-@overload  # dtype like bool (positional), format: "coo"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyBoolDType, format: _FmtCOO) -> coo_matrix[np.bool_]: ...
-@overload  # dtype like bool (keyword), format: "coo"
+@overload  # dtype like bool, format: "coo"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtCOO
 ) -> coo_matrix[np.bool_]: ...
-@overload  # dtype like int (positional), format: "coo"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyIntDType, format: _FmtCOO) -> coo_matrix[np.int_]: ...
-@overload  # dtype like int (keyword), format: "coo"
+@overload  # dtype like int, format: "coo"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtCOO
 ) -> coo_matrix[np.int_]: ...
-@overload  # dtype like complex (positional), format: "coo"
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyComplex128DType, format: _FmtCOO
-) -> coo_matrix[np.complex128]: ...
-@overload  # dtype like complex (keyword), format: "coo"
+@overload  # dtype like complex, format: "coo"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtCOO
 ) -> coo_matrix[np.complex128]: ...
-@overload  # dtype like <known> (positional), format: "coo"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.ToDType[_SCT], format: _FmtCOO) -> coo_matrix[_SCT]: ...
-@overload  # dtype like <known> (keyword), format: "coo"
+@overload  # dtype like <known>, format: "coo"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.ToDType[_SCT], format: _FmtCOO
 ) -> coo_matrix[_SCT]: ...
-@overload  # dtype like <unknown> (positional), format: "coo"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: npt.DTypeLike, format: _FmtCOO) -> coo_matrix[Incomplete]: ...
-@overload  # dtype like <unknown> (keyword), format: "coo"
+@overload  # dtype like <unknown>, format: "coo"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtCOO
 ) -> coo_matrix[Incomplete]: ...
@@ -1844,35 +1133,23 @@ def eye(
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtCSC
 ) -> csc_matrix[np.float64]: ...
-@overload  # dtype like bool (positional), format: "csc"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyBoolDType, format: _FmtCSC) -> csc_matrix[np.bool_]: ...
-@overload  # dtype like bool (keyword), format: "csc"
+@overload  # dtype like bool, format: "csc"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtCSC
 ) -> csc_matrix[np.bool_]: ...
-@overload  # dtype like int (positional), format: "csc"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyIntDType, format: _FmtCSC) -> csc_matrix[np.int_]: ...
-@overload  # dtype like int (keyword), format: "csc"
+@overload  # dtype like int, format: "csc"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtCSC
 ) -> csc_matrix[np.int_]: ...
-@overload  # dtype like complex (positional), format: "csc"
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyComplex128DType, format: _FmtCSC
-) -> csc_matrix[np.complex128]: ...
-@overload  # dtype like complex (keyword), format: "csc"
+@overload  # dtype like complex, format: "csc"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtCSC
 ) -> csc_matrix[np.complex128]: ...
-@overload  # dtype like <known> (positional), format: "csc"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.ToDType[_SCT], format: _FmtCSC) -> csc_matrix[_SCT]: ...
-@overload  # dtype like <known> (keyword), format: "csc"
+@overload  # dtype like <known>, format: "csc"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.ToDType[_SCT], format: _FmtCSC
 ) -> csc_matrix[_SCT]: ...
-@overload  # dtype like <unknown> (positional), format: "csc"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: npt.DTypeLike, format: _FmtCSC) -> csc_matrix[Incomplete]: ...
-@overload  # dtype like <unknown> (keyword), format: "csc"
+@overload  # dtype like <unknown>, format: "csc"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtCSC
 ) -> csc_matrix[Incomplete]: ...
@@ -1880,35 +1157,23 @@ def eye(
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtCSR
 ) -> csr_matrix[np.float64]: ...
-@overload  # dtype like bool (positional), format: "csr"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyBoolDType, format: _FmtCSR) -> csr_matrix[np.bool_]: ...
-@overload  # dtype like bool (keyword), format: "csr"
+@overload  # dtype like bool, format: "csr"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtCSR
 ) -> csr_matrix[np.bool_]: ...
-@overload  # dtype like int (positional), format: "csr"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyIntDType, format: _FmtCSR) -> csr_matrix[np.int_]: ...
-@overload  # dtype like int (keyword), format: "csr"
+@overload  # dtype like int, format: "csr"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtCSR
 ) -> csr_matrix[np.int_]: ...
-@overload  # dtype like complex (positional), format: "csr"
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyComplex128DType, format: _FmtCSR
-) -> csr_matrix[np.complex128]: ...
-@overload  # dtype like complex (keyword), format: "csr"
+@overload  # dtype like complex, format: "csr"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtCSR
 ) -> csr_matrix[np.complex128]: ...
-@overload  # dtype like <known> (positional), format: "csr"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.ToDType[_SCT], format: _FmtCSR) -> csr_matrix[_SCT]: ...
-@overload  # dtype like <known> (keyword), format: "csr"
+@overload  # dtype like <known>, format: "csr"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.ToDType[_SCT], format: _FmtCSR
 ) -> csr_matrix[_SCT]: ...
-@overload  # dtype like <unknown> (positional), format: "csr"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: npt.DTypeLike, format: _FmtCSR) -> csr_matrix[Incomplete]: ...
-@overload  # dtype like <unknown> (keyword), format: "csr"
+@overload  # dtype like <unknown>, format: "csr"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtCSR
 ) -> csr_matrix[Incomplete]: ...
@@ -1916,35 +1181,23 @@ def eye(
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtDOK
 ) -> dok_matrix[np.float64]: ...
-@overload  # dtype like bool (positional), format: "dok"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyBoolDType, format: _FmtDOK) -> dok_matrix[np.bool_]: ...
-@overload  # dtype like bool (keyword), format: "dok"
+@overload  # dtype like bool, format: "dok"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtDOK
 ) -> dok_matrix[np.bool_]: ...
-@overload  # dtype like int (positional), format: "dok"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyIntDType, format: _FmtDOK) -> dok_matrix[np.int_]: ...
-@overload  # dtype like int (keyword), format: "dok"
+@overload  # dtype like int, format: "dok"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtDOK
 ) -> dok_matrix[np.int_]: ...
-@overload  # dtype like complex (positional), format: "dok"
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyComplex128DType, format: _FmtDOK
-) -> dok_matrix[np.complex128]: ...
-@overload  # dtype like complex (keyword), format: "dok"
+@overload  # dtype like complex, format: "dok"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtDOK
 ) -> dok_matrix[np.complex128]: ...
-@overload  # dtype like <known> (positional), format: "dok"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.ToDType[_SCT], format: _FmtDOK) -> dok_matrix[_SCT]: ...
-@overload  # dtype like <known> (keyword), format: "dok"
+@overload  # dtype like <known>, format: "dok"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.ToDType[_SCT], format: _FmtDOK
 ) -> dok_matrix[_SCT]: ...
-@overload  # dtype like <unknown> (positional), format: "dok"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: npt.DTypeLike, format: _FmtDOK) -> dok_matrix[Incomplete]: ...
-@overload  # dtype like <unknown> (keyword), format: "dok"
+@overload  # dtype like <unknown>, format: "dok"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtDOK
 ) -> dok_matrix[Incomplete]: ...
@@ -1952,35 +1205,23 @@ def eye(
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtLIL
 ) -> lil_matrix[np.float64]: ...
-@overload  # dtype like bool (positional), format: "lil"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyBoolDType, format: _FmtLIL) -> lil_matrix[np.bool_]: ...
-@overload  # dtype like bool (keyword), format: "lil"
+@overload  # dtype like bool, format: "lil"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtLIL
 ) -> lil_matrix[np.bool_]: ...
-@overload  # dtype like int (positional), format: "lil"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyIntDType, format: _FmtLIL) -> lil_matrix[np.int_]: ...
-@overload  # dtype like int (keyword), format: "lil"
+@overload  # dtype like int, format: "lil"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtLIL
 ) -> lil_matrix[np.int_]: ...
-@overload  # dtype like complex (positional), format: "lil"
-def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.AnyComplex128DType, format: _FmtLIL
-) -> lil_matrix[np.complex128]: ...
-@overload  # dtype like complex (keyword), format: "lil"
+@overload  # dtype like complex, format: "lil"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtLIL
 ) -> lil_matrix[np.complex128]: ...
-@overload  # dtype like <known> (positional), format: "lil"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: onp.ToDType[_SCT], format: _FmtLIL) -> lil_matrix[_SCT]: ...
-@overload  # dtype like <known> (keyword), format: "lil"
+@overload  # dtype like <known>, format: "lil"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: onp.ToDType[_SCT], format: _FmtLIL
 ) -> lil_matrix[_SCT]: ...
-@overload  # dtype like <unknown> (positional), format: "lil"
-def eye(m: opt.AnyInt, n: opt.AnyInt | None, k: int, dtype: npt.DTypeLike, format: _FmtLIL) -> lil_matrix[Incomplete]: ...
-@overload  # dtype like <unknown> (keyword), format: "lil"
+@overload  # dtype like <unknown>, format: "lil"
 def eye(
     m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtLIL
 ) -> lil_matrix[Incomplete]: ...
