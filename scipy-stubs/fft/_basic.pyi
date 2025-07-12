@@ -6,23 +6,26 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import AnyShape
+from scipy._typing import (
+    AnyShape,
+    CanArrayND,  # path-dependent Pyright bug workaround
+)
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 _Norm: TypeAlias = Literal["backward", "ortho", "forward"]
 _Unused: TypeAlias = Never  # not used by scipy
 
-_AsFloat32: TypeAlias = onp.CanArrayND[npc.floating32, _ShapeT]
-_AsFloat64: TypeAlias = onp.CanArrayND[np.bool_ | npc.integer | npc.floating64, _ShapeT]
-_AsFloat80: TypeAlias = onp.CanArrayND[np.longdouble, _ShapeT]
+_CoInteger: TypeAlias = npc.integer | np.bool_
+_AsFloat32: TypeAlias = CanArrayND[npc.floating32, _ShapeT]
+_AsFloat64: TypeAlias = CanArrayND[npc.floating64 | _CoInteger, _ShapeT]
+_AsFloat80: TypeAlias = CanArrayND[np.longdouble, _ShapeT]
+_AsComplex64: TypeAlias = CanArrayND[npc.inexact32, _ShapeT]
+_AsComplex128: TypeAlias = CanArrayND[npc.inexact64 | _CoInteger, _ShapeT]
+_AsComplex160: TypeAlias = CanArrayND[np.longdouble | np.clongdouble, _ShapeT]
 
-_AsComplex64: TypeAlias = onp.CanArrayND[np.float32 | np.complex64, _ShapeT]
-_AsComplex128: TypeAlias = onp.CanArrayND[np.bool_ | npc.integer | np.float64 | np.complex128, _ShapeT]
-_AsComplex160: TypeAlias = onp.CanArrayND[np.longdouble | np.clongdouble, _ShapeT]
-
-_ToFloat64_ND: TypeAlias = onp.ToArrayND[float, np.bool_ | npc.integer | np.float64]
-_ToComplex128_ND: TypeAlias = onp.ToArrayND[complex, np.bool_ | npc.integer | npc.inexact64]
+_ToFloat64_ND: TypeAlias = onp.ToArrayND[float, npc.floating64 | _CoInteger]
+_ToComplex128_ND: TypeAlias = onp.ToArrayND[complex, npc.inexact64 | _CoInteger]
 
 ###
 # 1-D

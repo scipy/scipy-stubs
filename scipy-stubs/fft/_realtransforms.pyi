@@ -6,7 +6,10 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._typing import DCTType, NormalizationMode
-from scipy._typing import AnyShape
+from scipy._typing import (
+    AnyShape,
+    CanArrayND,  # path-dependent Pyright bug workaround
+)
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
@@ -21,7 +24,7 @@ _FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]  # do
 
 @overload
 def dctn(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+    x: CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -33,7 +36,7 @@ def dctn(
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def dctn(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+    x: CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -83,7 +86,7 @@ def dctn(
 #
 @overload
 def idctn(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+    x: CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -94,7 +97,7 @@ def idctn(
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def idctn(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+    x: CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -140,7 +143,7 @@ def idctn(
 #
 @overload
 def dstn(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+    x: CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -151,7 +154,7 @@ def dstn(
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def dstn(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+    x: CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -197,7 +200,7 @@ def dstn(
 #
 @overload
 def idstn(
-    x: onp.CanArrayND[npc.integer, _ShapeT],
+    x: CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -208,7 +211,7 @@ def idstn(
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def idstn(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+    x: CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
@@ -254,7 +257,7 @@ def idstn(
 #
 @overload
 def dct(
-    x: onp.CanArrayND[np.integer, _ShapeT],
+    x: CanArrayND[np.integer, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
@@ -265,7 +268,7 @@ def dct(
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def dct(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+    x: CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
@@ -311,7 +314,7 @@ def dct(
 #
 @overload
 def idct(
-    x: onp.CanArrayND[np.integer, _ShapeT],
+    x: CanArrayND[np.integer, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
@@ -322,7 +325,7 @@ def idct(
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def idct(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+    x: CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
@@ -368,7 +371,7 @@ def idct(
 #
 @overload
 def dst(
-    x: onp.CanArrayND[np.integer, _ShapeT],
+    x: CanArrayND[np.integer, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
@@ -379,7 +382,7 @@ def dst(
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def dst(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+    x: CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
@@ -425,7 +428,7 @@ def dst(
 #
 @overload
 def idst(
-    x: onp.CanArrayND[np.integer, _ShapeT],
+    x: CanArrayND[np.integer, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
@@ -436,7 +439,7 @@ def idst(
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def idst(
-    x: onp.CanArrayND[np.float16, _ShapeT],
+    x: CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
