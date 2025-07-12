@@ -7,6 +7,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._ufuncs import _KwBase, psi as digamma
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = [
     "ai_zeros",
@@ -535,7 +536,7 @@ def softplus(
 ) -> _f8_nd: ...
 @overload
 def softplus(
-    x: onp.CanArrayND[_SCT_f, _ShapeT], *, out: None = None, dtype: onp.ToDType[_SCT_f] | None = None, **kwds: Unpack[_KwBase]
+    x: CanArrayND[_SCT_f, _ShapeT], *, out: None = None, dtype: onp.ToDType[_SCT_f] | None = None, **kwds: Unpack[_KwBase]
 ) -> onp.ArrayND[_SCT_f, _ShapeT]: ...
 @overload
 def softplus(

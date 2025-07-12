@@ -11,7 +11,11 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 from numpy.exceptions import ComplexWarning
 
-from scipy._typing import AnyShape, ExitMixin
+from scipy._typing import (
+    AnyShape,
+    CanArrayND,  # path-dependent Pyright bug workaround
+    ExitMixin,
+)
 
 __all__ = [
     "agm",
@@ -322,7 +326,7 @@ _ToSubComplex: TypeAlias = op.JustComplex | _ToSubFloat  # does not overlap with
 
 _CoT = TypeVar("_CoT", bound=np.generic)
 _ToT = TypeVar("_ToT")
-_ToND: TypeAlias = onp.CanArrayND[_CoT] | onp.SequenceND[onp.CanArrayND[_CoT]] | onp.SequenceND[_ToT]
+_ToND: TypeAlias = CanArrayND[_CoT] | onp.SequenceND[CanArrayND[_CoT]] | onp.SequenceND[_ToT]
 
 _ToFloat32 = TypeAliasType("_ToFloat32", int | _Float32 | _SubFloat)
 _ToFloat64OrND: TypeAlias = onp.ToFloat64 | onp.ToFloat64_ND

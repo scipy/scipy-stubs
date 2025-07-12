@@ -7,6 +7,8 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
+
 __all__ = [
     "assoc_legendre_p",
     "assoc_legendre_p_all",
@@ -24,7 +26,7 @@ _UFuncT_co = TypeVar("_UFuncT_co", bound=Callable[..., object], default=Callable
 
 _Complex: TypeAlias = np.complex64 | np.complex128  # `clongdouble` isn't supported
 _ToJustComplex: TypeAlias = op.JustComplex | _Complex
-_ToJustComplexND: TypeAlias = onp.CanArrayND[_Complex] | onp.SequenceND[onp.CanArrayND[_Complex]] | onp.SequenceND[_ToJustComplex]
+_ToJustComplexND: TypeAlias = CanArrayND[_Complex] | onp.SequenceND[CanArrayND[_Complex]] | onp.SequenceND[_ToJustComplex]
 _ToJustComplex_D: TypeAlias = _ToJustComplex | _ToJustComplexND
 
 _ToInt_D: TypeAlias = onp.ToInt | onp.ToIntND
@@ -56,7 +58,7 @@ _Complex33_D: TypeAlias = tuple[_Complex3_D, _Complex3_D]
 _Complex333_D: TypeAlias = tuple[_Complex3_D, _Complex3_D, _Complex3_D]
 
 _Branch: TypeAlias = L[2, 3]
-_Branch_D: TypeAlias = _Branch | onp.SequenceND[_Branch] | onp.CanArrayND[npc.integer]
+_Branch_D: TypeAlias = _Branch | onp.SequenceND[_Branch] | CanArrayND[npc.integer]
 
 _D0: TypeAlias = L[False, 0]
 _D1: TypeAlias = L[True, 1]
