@@ -8,7 +8,10 @@ import optype.numpy.compat as npc
 import optype.typing as opt
 
 from ._covariance import _PSD, Covariance
-from scipy._typing import AnyShape
+from scipy._typing import (
+    AnyShape,
+    CanArrayND,  # path-dependent Pyright bug workaround
+)
 
 __all__ = [
     "dirichlet",
@@ -38,9 +41,9 @@ _Scalar_uif: TypeAlias = npc.integer | _Scalar_f
 _ToFloatMax2D: TypeAlias = onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D
 _ToJustFloat: TypeAlias = float | _Scalar_f
 _ToJustFloatND: TypeAlias = (
-    onp.CanArrayND[_Scalar_f]
+    CanArrayND[_Scalar_f]
     | onp.SequenceND[_ToJustFloat]
-    | onp.SequenceND[onp.CanArrayND[_Scalar_f]]
+    | onp.SequenceND[CanArrayND[_Scalar_f]]
 )  # fmt: skip
 
 _ScalarOrArray_f8: TypeAlias = np.float64 | onp.Array[onp.AtLeast1D, np.float64]

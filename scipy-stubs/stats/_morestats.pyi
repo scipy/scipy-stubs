@@ -13,6 +13,7 @@ from ._fit import FitResult
 from ._resampling import PermutationMethod
 from ._stats_py import SignificanceResult
 from ._typing import Alternative, BaseBunch, NanPolicy
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 from scipy.optimize import OptimizeResult
 
 __all__ = [
@@ -398,7 +399,7 @@ def boxcox_llf(  # type: ignore[overload-overlap]
 @overload
 def boxcox_llf(  # type: ignore[overload-overlap]
     lmb: float | onp.ToInt | _InexactT,
-    data: onp.CanArrayND[_InexactT] | Sequence[_InexactT],
+    data: CanArrayND[_InexactT] | Sequence[_InexactT],
     *,
     axis: None,
     keepdims: Literal[False] = False,
@@ -407,7 +408,7 @@ def boxcox_llf(  # type: ignore[overload-overlap]
 @overload
 def boxcox_llf(  # type: ignore[overload-overlap]
     lmb: float | onp.ToInt | _InexactT,
-    data: onp.CanArrayND[_InexactT] | Sequence[_InexactT],
+    data: CanArrayND[_InexactT] | Sequence[_InexactT],
     *,
     axis: int | None = 0,
     keepdims: Literal[True],

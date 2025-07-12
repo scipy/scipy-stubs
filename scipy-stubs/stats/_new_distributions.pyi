@@ -13,6 +13,7 @@ from ._distribution_infrastructure import (
     _RealInterval,
     _RealParameter,
 )
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = ["Binomial", "Normal", "Uniform"]
 
@@ -70,8 +71,8 @@ class Normal(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co,
         self: Normal[_ShapeT, _FloatT],
         /,
         *,
-        mu: onp.CanArrayND[_FloatT, _ShapeT],
-        sigma: onp.CanArrayND[_FloatT | npc.integer | np.bool_, _ShapeT] | onp.ToInt,
+        mu: CanArrayND[_FloatT, _ShapeT],
+        sigma: CanArrayND[_FloatT | npc.integer | np.bool_, _ShapeT] | onp.ToInt,
         **kw: Unpack[_DistOpts],
     ) -> None: ...
     @overload  # sigma: N-d <known shape, dtype>
@@ -79,8 +80,8 @@ class Normal(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co,
         self: Normal[_ShapeT, _FloatT],
         /,
         *,
-        mu: onp.CanArrayND[_FloatT | npc.integer | np.bool_, _ShapeT] | onp.ToInt,
-        sigma: onp.CanArrayND[_FloatT, _ShapeT],
+        mu: CanArrayND[_FloatT | npc.integer | np.bool_, _ShapeT] | onp.ToInt,
+        sigma: CanArrayND[_FloatT, _ShapeT],
         **kw: Unpack[_DistOpts],
     ) -> None: ...
     @overload  # mu, sigma: 0-d float

@@ -27,6 +27,7 @@ import optype.numpy.compat as npc
 from ._distn_infrastructure import rv_continuous
 from ._probability_distribution import _ProbabilityDistribution
 from ._qmc import QMCEngine
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = ["Mixture", "abs", "exp", "log", "make_distribution", "order_statistic", "truncate"]
 
@@ -294,7 +295,7 @@ _FloatND: TypeAlias = onp.ArrayND[_Float, _ShapeT1]
 _Complex: TypeAlias = np.complex128 | np.clongdouble
 _ComplexND: TypeAlias = onp.ArrayND[_Complex, _ShapeT1]
 
-_ToFloatND: TypeAlias = onp.CanArrayND[npc.floating | npc.integer | np.bool_, _ShapeT1]
+_ToFloatND: TypeAlias = CanArrayND[npc.floating | npc.integer | np.bool_, _ShapeT1]
 _ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
 _ToFloatMaxND: TypeAlias = _ToFloatND[_ShapeT1] | _ToFloatMax1D
 
@@ -1217,7 +1218,7 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
     @overload
     def __add__(self, x: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
     @overload
-    def __add__(self: _DistT0, x: onp.CanArrayND[_FloatT, _ShapeT1], /) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
+    def __add__(self: _DistT0, x: CanArrayND[_FloatT, _ShapeT1], /) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
     @overload
     def __add__(self: _DistT_1, x: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...
     @overload
@@ -1236,9 +1237,7 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
     @overload
     def __sub__(self, lshift: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
     @overload
-    def __sub__(
-        self: _DistT0, lshift: onp.CanArrayND[_FloatT, _ShapeT1], /
-    ) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
+    def __sub__(self: _DistT0, lshift: CanArrayND[_FloatT, _ShapeT1], /) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
     @overload
     def __sub__(self: _DistT_1, lshift: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...
     @overload
@@ -1257,9 +1256,7 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
     @overload
     def __mul__(self, scale: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
     @overload
-    def __mul__(
-        self: _DistT0, scale: onp.CanArrayND[_FloatT, _ShapeT1], /
-    ) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
+    def __mul__(self: _DistT0, scale: CanArrayND[_FloatT, _ShapeT1], /) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
     @overload
     def __mul__(self: _DistT_1, scale: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...
     @overload
@@ -1283,7 +1280,7 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
     def __truediv__(self, iscale: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
     @overload
     def __truediv__(
-        self: _DistT0, iscale: onp.CanArrayND[_FloatT, _ShapeT1], /
+        self: _DistT0, iscale: CanArrayND[_FloatT, _ShapeT1], /
     ) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
     @overload
     def __truediv__(self: _DistT_1, iscale: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...

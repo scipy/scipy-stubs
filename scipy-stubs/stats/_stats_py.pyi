@@ -13,6 +13,7 @@ import optype.numpy.compat as npc
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._stats_mstats_common import siegelslopes, theilslopes
 from ._typing import Alternative, BaseBunch, BunchMixin, NanPolicy, PowerDivergenceStatistic
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = [
     "alexandergovern",
@@ -119,7 +120,7 @@ _CombinePValuesMethod: TypeAlias = L["fisher", "pearson", "tippett", "stouffer",
 _RankMethod: TypeAlias = L["average", "min", "max", "dense", "ordinal"]
 
 _LMomentOrder: TypeAlias = L[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16] | npc.integer
-_LMomentOrder1D: TypeAlias = Sequence[_LMomentOrder] | onp.CanArrayND[npc.integer]
+_LMomentOrder1D: TypeAlias = Sequence[_LMomentOrder] | CanArrayND[npc.integer]
 _RealLimits: TypeAlias = tuple[float | _Real0D, float | _Real0D]
 _Weigher: TypeAlias = Callable[[int], float | _Real0D]
 

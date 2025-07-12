@@ -13,7 +13,10 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy._typing import AnyShape
+from scipy._typing import (
+    AnyShape,
+    CanArrayND,  # path-dependent Pyright bug workaround
+)
 from scipy.integrate._typing import QuadOpts as _QuadOpts
 
 _T = TypeVar("_T")
@@ -484,7 +487,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     def pdf(
         self,
         /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        x: CanArrayND[_CoFloat, _ShapeT],
         *args: onp.ToFloat,
         loc: onp.ToFloat = 0,
         scale: onp.ToFloat = 1,
@@ -504,7 +507,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     def logpdf(
         self,
         /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        x: CanArrayND[_CoFloat, _ShapeT],
         *args: onp.ToFloat,
         loc: onp.ToFloat = 0,
         scale: onp.ToFloat = 1,
@@ -524,7 +527,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     def cdf(
         self,
         /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        x: CanArrayND[_CoFloat, _ShapeT],
         *args: onp.ToFloat,
         loc: onp.ToFloat = 0,
         scale: onp.ToFloat = 1,
@@ -544,7 +547,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     def logcdf(
         self,
         /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        x: CanArrayND[_CoFloat, _ShapeT],
         *args: onp.ToFloat,
         loc: onp.ToFloat = 0,
         scale: onp.ToFloat = 1,
@@ -564,7 +567,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     def sf(
         self,
         /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        x: CanArrayND[_CoFloat, _ShapeT],
         *args: onp.ToFloat,
         loc: onp.ToFloat = 0,
         scale: onp.ToFloat = 1,
@@ -584,7 +587,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     def logsf(
         self,
         /,
-        x: onp.CanArrayND[_CoFloat, _ShapeT],
+        x: CanArrayND[_CoFloat, _ShapeT],
         *args: onp.ToFloat,
         loc: onp.ToFloat = 0,
         scale: onp.ToFloat = 1,
@@ -1058,7 +1061,7 @@ class _rv_continuous_0(rv_continuous):
     def pdf(self, /, x: onp.ToFloat, loc: onp.ToFloatND, scale: _ToFloatOrND) -> _FloatND: ...
     @overload
     def pdf(
-        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
+        self, /, x: CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def pdf(self, /, x: onp.ToFloatND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatND: ...
@@ -1071,7 +1074,7 @@ class _rv_continuous_0(rv_continuous):
     def logpdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def logpdf(
-        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
+        self, /, x: CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logpdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1082,7 +1085,7 @@ class _rv_continuous_0(rv_continuous):
     def cdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def cdf(
-        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
+        self, /, x: CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def cdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1093,7 +1096,7 @@ class _rv_continuous_0(rv_continuous):
     def logcdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def logcdf(
-        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
+        self, /, x: CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logcdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1104,7 +1107,7 @@ class _rv_continuous_0(rv_continuous):
     def sf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def sf(
-        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
+        self, /, x: CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def sf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
@@ -1115,7 +1118,7 @@ class _rv_continuous_0(rv_continuous):
     def logsf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
     def logsf(
-        self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
+        self, /, x: CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
     def logsf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
