@@ -18,6 +18,7 @@ from ._dok import dok_array, dok_matrix
 from ._lil import lil_array, lil_matrix
 from ._matrix import spmatrix
 from ._typing import _CanStack, _CanStackAs, _Format, _ToShape2D
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = [
     "block_array",
@@ -45,8 +46,8 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]], default=tuple[A
 
 _Numeric: TypeAlias = npc.number | np.bool_
 
-_ToArray1D: TypeAlias = Seq[_SCT] | onp.CanArrayND[_SCT]
-_ToArray2D: TypeAlias = Seq[Seq[_SCT | int] | onp.CanArrayND[_SCT]] | onp.CanArrayND[_SCT]
+_ToArray1D: TypeAlias = Seq[_SCT] | CanArrayND[_SCT]
+_ToArray2D: TypeAlias = Seq[Seq[_SCT | int] | CanArrayND[_SCT]] | CanArrayND[_SCT]
 _ToSpMatrix: TypeAlias = spmatrix[_SCT] | _ToArray2D[_SCT]
 _ToSparse2D: TypeAlias = _spbase[_SCT, tuple[int, int]] | _ToArray2D[_SCT]
 

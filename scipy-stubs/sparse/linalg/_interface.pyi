@@ -9,6 +9,7 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 from scipy.sparse._base import _spbase
 
 __all__ = ["LinearOperator", "aslinearoperator"]
@@ -523,7 +524,7 @@ class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
 
 #
 @overload
-def aslinearoperator(A: onp.CanArrayND[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
+def aslinearoperator(A: CanArrayND[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
 @overload
 def aslinearoperator(A: _spbase[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
 @overload

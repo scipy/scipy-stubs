@@ -6,6 +6,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
@@ -19,7 +20,7 @@ _ComplexT = TypeVar("_ComplexT", bound=_Complex, default=np.complex128)
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
 
 _ToInt: TypeAlias = npc.integer | np.bool_
-_ToLinearOperator: TypeAlias = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
+_ToLinearOperator: TypeAlias = CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
 
 _Ignored: TypeAlias = object
 _Callback: TypeAlias = Callable[[onp.Array1D[_ScalarT]], _Ignored]

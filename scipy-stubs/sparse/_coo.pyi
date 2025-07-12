@@ -14,6 +14,7 @@ from ._base import _spbase, sparray
 from ._data import _data_matrix, _minmax_mixin
 from ._matrix import spmatrix
 from ._typing import _ToShape1D, _ToShape2D
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 
@@ -575,7 +576,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __init__(
         self,
         /,
-        arg1: _spbase[_ScalarT_co, _ShapeT_co] | onp.CanArrayND[_ScalarT_co],
+        arg1: _spbase[_ScalarT_co, _ShapeT_co] | CanArrayND[_ScalarT_co],
         shape: _ShapeT_co | None = None,
         dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,

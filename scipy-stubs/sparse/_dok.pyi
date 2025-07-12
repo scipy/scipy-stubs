@@ -16,6 +16,7 @@ from ._coo import coo_array, coo_matrix
 from ._index import IndexMixin
 from ._matrix import spmatrix
 from ._typing import _ToShape1D, _ToShape2D
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
@@ -33,7 +34,7 @@ _2D: TypeAlias = tuple[int, int]  # noqa: PYI042
 _NoD: TypeAlias = tuple[Never] | tuple[Never, Never]
 _AnyD: TypeAlias = tuple[Any, ...]
 
-_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
+_ToMatrix: TypeAlias = _spbase[_ScalarT] | CanArrayND[_ScalarT] | Sequence[CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 
 _ToKey1D: TypeAlias = onp.ToJustInt | tuple[onp.ToJustInt]
@@ -172,7 +173,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self,
         /,
-        arg1: _spbase[_ScalarT_co, _ShapeT_co] | onp.CanArrayND[_ScalarT_co, _ShapeT_co],
+        arg1: _spbase[_ScalarT_co, _ShapeT_co] | CanArrayND[_ScalarT_co, _ShapeT_co],
         shape: _ShapeT_co | None = None,
         dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,
@@ -194,7 +195,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: dok_array[_ScalarT, _2D],
         /,
-        arg1: Sequence[Sequence[_ScalarT] | onp.CanArrayND[_ScalarT]],  # assumes max. 2-d
+        arg1: Sequence[Sequence[_ScalarT] | CanArrayND[_ScalarT]],  # assumes max. 2-d
         shape: _ToShape2D | None = None,
         dtype: onp.ToDType[_ScalarT] | None = None,
         copy: bool = False,
@@ -512,7 +513,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
 
     #
     @overload
-    def __getitem__(self, key: onp.CanArrayND[np.bool_ | npc.integer] | list[int] | slice, /) -> Self: ...
+    def __getitem__(self, key: CanArrayND[np.bool_ | npc.integer] | list[int] | slice, /) -> Self: ...
     @overload
     def __getitem__(self: dok_array[_ScalarT, _ShapeT], key: _spbase[np.bool_, _ShapeT], /) -> dok_array[_ScalarT, _ShapeT]: ...
     @overload
@@ -704,7 +705,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     #
     @overload
     def __getitem__(
-        self, key: _ToKey1D | onp.CanArrayND[np.bool_ | npc.integer] | _spbase[np.bool_, _2D] | list[int] | slice, /
+        self, key: _ToKey1D | CanArrayND[np.bool_ | npc.integer] | _spbase[np.bool_, _2D] | list[int] | slice, /
     ) -> Self: ...
     @overload
     def __getitem__(self, key: _ToKey2D, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride]

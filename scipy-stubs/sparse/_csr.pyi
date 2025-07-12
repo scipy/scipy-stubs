@@ -13,6 +13,7 @@ from ._compressed import _cs_matrix
 from ._csc import csc_array, csc_matrix
 from ._matrix import spmatrix
 from ._typing import _ToShape1D, _ToShape2D
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
@@ -25,7 +26,7 @@ _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=t
 _NeitherD: TypeAlias = tuple[Never] | tuple[Never, Never]
 
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
-_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
+_ToMatrix: TypeAlias = _spbase[_ScalarT] | CanArrayND[_ScalarT] | Sequence[CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
 
 _ToData2B: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer]]  # bsr
 _ToData2C: TypeAlias = tuple[onp.ArrayND[_ScalarT], tuple[onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]]  # csc, csr
@@ -80,7 +81,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self,
         /,
-        arg1: _spbase[_ScalarT_co, _ShapeT_co] | onp.CanArrayND[_ScalarT_co, _ShapeT_co],
+        arg1: _spbase[_ScalarT_co, _ShapeT_co] | CanArrayND[_ScalarT_co, _ShapeT_co],
         shape: _ShapeT_co | None = None,
         dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,
@@ -102,7 +103,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[_ScalarT, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[_ScalarT] | onp.CanArrayND[_ScalarT]],  # assumes max. 2-d
+        arg1: Sequence[Sequence[_ScalarT] | CanArrayND[_ScalarT]],  # assumes max. 2-d
         shape: _ToShape2D | None = None,
         dtype: onp.ToDType[_ScalarT] | None = None,
         copy: bool = False,

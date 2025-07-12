@@ -11,6 +11,7 @@ from ._base import _spbase, sparray
 from ._coo import coo_array, coo_matrix
 from ._matrix import spmatrix
 from ._sputils import _ScalarLike
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__: list[str] = []
 
@@ -63,7 +64,7 @@ class _data_matrix(_spbase[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _Shape
     #
     @overload
     def __init__(
-        self, /, arg1: _spbase[_ScalarT_co, _ShapeT_co] | onp.CanArrayND[_ScalarT_co, _ShapeT_co], *, maxprint: int | None = None
+        self, /, arg1: _spbase[_ScalarT_co, _ShapeT_co] | CanArrayND[_ScalarT_co, _ShapeT_co], *, maxprint: int | None = None
     ) -> None: ...
     @overload
     def __init__(
@@ -73,7 +74,7 @@ class _data_matrix(_spbase[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _Shape
     def __init__(
         self: _data_matrix[_ScalarT, tuple[int, int]],
         /,
-        arg1: Sequence[onp.CanArrayND[_ScalarT] | Sequence[_ScalarT]],
+        arg1: Sequence[CanArrayND[_ScalarT] | Sequence[_ScalarT]],
         *,
         maxprint: int | None = None,
     ) -> None: ...
@@ -90,7 +91,7 @@ class _data_matrix(_spbase[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _Shape
         maxprint: int | None = None,
     ) -> None: ...
     @overload
-    def __init__(self, /, arg1: onp.CanArrayND[_ScalarT_co], *, maxprint: int | None = None) -> None: ...
+    def __init__(self, /, arg1: CanArrayND[_ScalarT_co], *, maxprint: int | None = None) -> None: ...
 
     #
     @override

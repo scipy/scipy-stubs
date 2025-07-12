@@ -6,13 +6,14 @@ import numpy.typing as npt
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 from scipy.sparse._base import _spbase
 
 _Real: TypeAlias = npc.integer | npc.floating
 _ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
 
 _RealT = TypeVar("_RealT", bound=_Real)
-_Graph: TypeAlias = onp.CanArrayND[_RealT] | _spbase[_RealT, tuple[int, int]]
+_Graph: TypeAlias = CanArrayND[_RealT] | _spbase[_RealT, tuple[int, int]]
 
 ###
 

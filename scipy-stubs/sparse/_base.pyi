@@ -35,6 +35,7 @@ from ._lil import lil_array, lil_matrix
 from ._matrix import spmatrix as spmatrix
 from ._typing import _Format
 from scipy._lib._sparse import SparseABC, issparse
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = ["SparseEfficiencyWarning", "SparseWarning", "issparse", "isspmatrix", "sparray"]
 
@@ -83,7 +84,7 @@ _ToFloat: TypeAlias = npc.floating | _ToInt
 _ToComplex64: TypeAlias = np.complex64 | _ToFloat
 
 _ToSparseSeq: TypeAlias = Sequence[Sequence[_T]] | Sequence[_T]
-_ToSparseArray: TypeAlias = onp.CanArrayND[_ScalarT_co] | _ToSparseSeq[_ScalarT_co]
+_ToSparseArray: TypeAlias = CanArrayND[_ScalarT_co] | _ToSparseSeq[_ScalarT_co]
 
 _SpMatrix: TypeAlias = (
     bsr_matrix[_ScalarT]
@@ -127,7 +128,7 @@ _ToCSRArray: TypeAlias = coo_array[_ScalarT] | csr_array[_ScalarT] | dia_array[_
 _ToCSRMatrix: TypeAlias = coo_matrix[_ScalarT] | csr_matrix[_ScalarT] | dia_matrix[_ScalarT] | dok_matrix[_ScalarT]
 
 _SparseLike: TypeAlias = _T | _ScalarT | _spbase[_ScalarT]
-_To2D: TypeAlias = Sequence[Sequence[_T | _ScalarT] | onp.CanArrayND[_ScalarT]] | onp.CanArrayND[_ScalarT]
+_To2D: TypeAlias = Sequence[Sequence[_T | _ScalarT] | CanArrayND[_ScalarT]] | CanArrayND[_ScalarT]
 _To2DLike: TypeAlias = Sequence[_T | _ScalarT] | _To2D[_T, _ScalarT]
 
 _BinOp: TypeAlias = Callable[[object, object], Any]

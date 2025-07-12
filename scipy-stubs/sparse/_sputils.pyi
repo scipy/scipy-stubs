@@ -8,6 +8,7 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 from scipy.sparse import (
     bsr_array,
     bsr_matrix,
@@ -119,13 +120,13 @@ def get_index_dtype(
 ) -> type[np.int32]: ...
 @overload
 def get_index_dtype(
-    arrays: tuple[onp.CanArrayND[_CoInt32], *tuple[onp.CanArrayND[_CoInt32], ...]],
+    arrays: tuple[CanArrayND[_CoInt32], *tuple[CanArrayND[_CoInt32], ...]],
     maxval: onp.ToFloat | None = None,
     check_contents: op.CanBool = False,
 ) -> type[np.int32]: ...
 @overload
 def get_index_dtype(
-    arrays: tuple[onp.CanArrayND[_ContraInt32], *tuple[onp.CanArrayND[_ContraInt32], ...]],
+    arrays: tuple[CanArrayND[_ContraInt32], *tuple[CanArrayND[_ContraInt32], ...]],
     maxval: onp.ToFloat | None = None,
     check_contents: op.CanBool = False,
 ) -> type[np.int64]: ...

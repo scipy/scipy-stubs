@@ -14,6 +14,7 @@ from ._csr import csr_array, csr_matrix
 from ._index import IndexMixin
 from ._matrix import spmatrix
 from ._typing import _ToShape2D
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = ["isspmatrix_lil", "lil_array", "lil_matrix"]
 
@@ -22,7 +23,7 @@ _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
 
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
-_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
+_ToMatrix: TypeAlias = _spbase[_ScalarT] | CanArrayND[_ScalarT] | Sequence[CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
 
 ###
 

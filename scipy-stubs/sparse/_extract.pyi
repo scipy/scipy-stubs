@@ -16,13 +16,14 @@ from ._dok import dok_array, dok_matrix
 from ._lil import lil_array, lil_matrix
 from ._matrix import spmatrix
 from ._typing import _Format
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 __all__ = ["find", "tril", "triu"]
 
 ###
 
 _SCT = TypeVar("_SCT", bound=npc.number | np.bool_, default=Any)
-_ToDense: TypeAlias = onp.CanArrayND[_SCT] | Seq[_SCT] | Seq[Seq[_SCT] | onp.CanArrayND[_SCT]]
+_ToDense: TypeAlias = CanArrayND[_SCT] | Seq[_SCT] | Seq[Seq[_SCT] | CanArrayND[_SCT]]
 
 ###
 

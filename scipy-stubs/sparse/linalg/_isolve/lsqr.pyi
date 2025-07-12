@@ -4,13 +4,14 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["lsqr"]
 
 _Real: TypeAlias = np.bool_ | npc.integer | np.floating
-_ToRealMatrix: TypeAlias = onp.CanArrayND[_Real] | _spbase[_Real] | LinearOperator[_Real]
+_ToRealMatrix: TypeAlias = CanArrayND[_Real] | _spbase[_Real] | LinearOperator[_Real]
 
 _IStop: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7]
 

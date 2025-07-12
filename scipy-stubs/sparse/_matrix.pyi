@@ -20,6 +20,7 @@ from ._dia import dia_matrix
 from ._dok import dok_matrix
 from ._lil import lil_matrix
 from ._typing import _Format
+from scipy._typing import CanArrayND  # path-dependent Pyright bug workaround
 
 _T = TypeVar("_T")
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
@@ -38,7 +39,7 @@ _ToFloat: TypeAlias = npc.floating | _ToInt
 _ToComplex64: TypeAlias = np.complex64 | _ToFloat
 
 _DualMatrixLike: TypeAlias = _T | _ScalarT | _spbase[_ScalarT]
-_DualArrayLike: TypeAlias = Sequence[Sequence[_T | _ScalarT] | onp.CanArrayND[_ScalarT]] | onp.CanArrayND[_ScalarT]
+_DualArrayLike: TypeAlias = Sequence[Sequence[_T | _ScalarT] | CanArrayND[_ScalarT]] | CanArrayND[_ScalarT]
 
 _SpMatrixOut: TypeAlias = bsr_matrix[_ScalarT] | csc_matrix[_ScalarT] | csr_matrix[_ScalarT]
 
