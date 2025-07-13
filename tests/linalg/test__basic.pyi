@@ -6,39 +6,60 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.linalg import solve, solve_banded, solve_circulant, solve_toeplitz, solve_triangular
+from scipy.linalg import inv, solve, solve_banded, solve_circulant, solve_toeplitz, solve_triangular
+
+b1_nd: onp.ArrayND[np.bool_]
 
 i8_1d: onp.Array1D[np.int8]
 i8_2d: onp.Array2D[np.int8]
 i8_3d: onp.Array3D[np.int8]
+i8_nd: onp.ArrayND[np.int8]
+
+i32_1d: onp.Array1D[np.int32]
+i32_2d: onp.Array2D[np.int32]
+i32_3d: onp.Array3D[np.int32]
+i32_nd: onp.ArrayND[np.int32]
 
 f16_1d: onp.Array1D[np.float16]
 f16_2d: onp.Array2D[np.float16]
 f16_3d: onp.Array3D[np.float16]
+f16_nd: onp.ArrayND[np.float16]
 
 f32_1d: onp.Array1D[np.float32]
 f32_2d: onp.Array2D[np.float32]
 f32_3d: onp.Array3D[np.float32]
+f32_nd: onp.ArrayND[np.float32]
 
 f64_1d: onp.Array1D[np.float64]
 f64_2d: onp.Array2D[np.float64]
 f64_3d: onp.Array3D[np.float64]
+f64_nd: onp.ArrayND[np.float64]
 
 f80_1d: onp.Array1D[np.longdouble]
 f80_2d: onp.Array2D[np.longdouble]
 f80_3d: onp.Array3D[np.longdouble]
+f80_nd: onp.ArrayND[np.longdouble]
 
 c64_1d: onp.Array1D[np.complex64]
 c64_2d: onp.Array2D[np.complex64]
 c64_3d: onp.Array3D[np.complex64]
+c64_nd: onp.ArrayND[np.complex64]
 
 c128_1d: onp.Array1D[np.complex128]
 c128_2d: onp.Array2D[np.complex128]
 c128_3d: onp.Array3D[np.complex128]
+c128_nd: onp.ArrayND[np.complex128]
 
 c160_1d: onp.Array1D[np.clongdouble]
 c160_2d: onp.Array2D[np.clongdouble]
 c160_3d: onp.Array3D[np.clongdouble]
+c160_nd: onp.ArrayND[np.clongdouble]
+
+py_b_2d: list[list[bool]]
+py_b_3d: list[list[list[bool]]]
+
+py_i_2d: list[list[int]]
+py_i_3d: list[list[list[int]]]
 
 py_f_1d: list[float]
 py_f_2d: list[list[float]]
@@ -314,4 +335,50 @@ assert_type(solve_circulant(py_c_1d, py_c_3d), onp.ArrayND[np.complex128])
 assert_type(solve_circulant(py_c_2d, py_c_1d), onp.ArrayND[np.complex128])
 
 ###
-# TODO(jorenham): inv, pinv, pinvh, det, lstsq, matrix_balance, matmul_toeplitz
+# inv
+
+assert_type(inv(f32_2d), onp.Array2D[np.float32])
+assert_type(inv(f64_2d), onp.Array2D[np.float64])
+assert_type(inv(c64_2d), onp.Array2D[np.complex64])
+assert_type(inv(c128_2d), onp.Array2D[np.complex128])
+
+assert_type(inv(py_b_2d), onp.Array2D[np.float32])
+assert_type(inv(py_i_2d), onp.Array2D[np.float64])
+assert_type(inv(py_f_2d), onp.Array2D[np.float64])
+assert_type(inv(py_c_2d), onp.Array2D[np.complex128])
+
+assert_type(inv(f32_3d), onp.Array3D[np.float32])
+assert_type(inv(f64_3d), onp.Array3D[np.float64])
+assert_type(inv(c64_3d), onp.Array3D[np.complex64])
+assert_type(inv(c128_3d), onp.Array3D[np.complex128])
+
+assert_type(inv(py_b_3d), onp.ArrayND[np.float32])
+assert_type(inv(py_i_3d), onp.ArrayND[np.float64])
+assert_type(inv(py_f_3d), onp.ArrayND[np.float64])
+assert_type(inv(py_c_3d), onp.ArrayND[np.complex128])
+
+assert_type(inv(b1_nd), onp.ArrayND[np.float32])
+assert_type(inv(i8_nd), onp.ArrayND[np.float32])
+assert_type(inv(f16_nd), onp.ArrayND[np.float32])
+assert_type(inv(f32_nd), onp.ArrayND[np.float32])
+assert_type(inv(i32_nd), onp.ArrayND[np.float64])
+assert_type(inv(f64_nd), onp.ArrayND[np.float64])
+assert_type(inv(f80_nd), onp.ArrayND[np.float64])
+assert_type(inv(c64_nd), onp.ArrayND[np.complex64])
+assert_type(inv(c128_nd), onp.ArrayND[np.complex128])
+assert_type(inv(c160_nd), onp.ArrayND[np.complex128])
+
+###
+# TODO(jorenham): det
+
+###
+# TODO(jorenham): lstsq
+
+###
+# TODO(jorenham): pinv[h]
+
+###
+# TODO(jorenham): matrix_balance
+
+###
+# TODO(jorenham): matmul_toeplitz
