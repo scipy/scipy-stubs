@@ -1,5 +1,6 @@
 # mypy: disable-error-code=overload-overlap
 
+from collections.abc import Sequence
 from typing import Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
@@ -23,20 +24,20 @@ __all__ = [
     "solveh_banded",
 ]
 
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _T = TypeVar("_T")
+
 _Tuple2: TypeAlias = tuple[_T, _T]
 _COrCR: TypeAlias = _T | _Tuple2[_T]
 
 _Float: TypeAlias = npc.floating
 _Float0D: TypeAlias = onp.Array0D[_Float]
 _Float1D: TypeAlias = onp.Array1D[_Float]
-_Float2D: TypeAlias = onp.Array2D[_Float]
 _FloatND: TypeAlias = onp.ArrayND[_Float]
 
 _Inexact: TypeAlias = npc.inexact
 _Inexact0D: TypeAlias = onp.Array0D[_Inexact]
 _Inexact1D: TypeAlias = onp.Array1D[_Inexact]
-_Inexact2D: TypeAlias = onp.Array2D[_Inexact]
 _InexactND: TypeAlias = onp.ArrayND[_Inexact]
 
 _InputFloat: TypeAlias = onp.ToArrayND[float, np.float64 | np.longdouble | npc.integer | np.bool_]
@@ -992,15 +993,48 @@ def solve_circulant(
     outaxis: int = 0,
 ) -> onp.ArrayND[npc.inexact]: ...
 
-# TODO(jorenham): improve this
-@overload  # floating 2d
-def inv(a: onp.ToFloatStrict2D, overwrite_a: bool = False, check_finite: bool = True) -> _Float2D: ...
-@overload  # floating
-def inv(a: onp.ToFloatND, overwrite_a: bool = False, check_finite: bool = True) -> _FloatND: ...
-@overload  # complexfloating 2d
-def inv(a: onp.ToComplexStrict2D, overwrite_a: bool = False, check_finite: bool = True) -> _Inexact2D: ...
-@overload  # complexfloating
-def inv(a: onp.ToComplexND, overwrite_a: bool = False, check_finite: bool = True) -> _InexactND: ...
+#
+
+@overload  # 2d bool sequence
+def inv(a: Sequence[Sequence[bool]], overwrite_a: bool = False, check_finite: bool = True) -> onp.Array2D[np.float32]: ...
+@overload  # Nd bool sequence
+def inv(a: Sequence[onp.SequenceND[bool]], overwrite_a: bool = False, check_finite: bool = True) -> onp.ArrayND[np.float32]: ...
+@overload  # 2d float or int sequence
+def inv(
+    a: Sequence[Sequence[op.JustFloat | op.JustInt]], overwrite_a: bool = False, check_finite: bool = True
+) -> onp.Array2D[np.float64]: ...
+@overload  # Nd float or int sequence
+def inv(
+    a: Sequence[onp.SequenceND[op.JustFloat | op.JustInt]], overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float64]: ...
+@overload  # 2d complex sequence
+def inv(
+    a: Sequence[Sequence[op.JustComplex]], overwrite_a: bool = False, check_finite: bool = True
+) -> onp.Array2D[np.complex128]: ...
+@overload  # Nd complex sequence
+def inv(
+    a: Sequence[onp.SequenceND[op.JustComplex]], overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # generic shape, as float32
+def inv(
+    a: onp.CanArrayND[np.float32 | npc.number16 | npc.integer8 | np.bool_, _ShapeT],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32, _ShapeT]: ...
+@overload  # generic shape, as float64
+def inv(
+    a: onp.CanArrayND[np.float64 | np.longdouble | npc.integer64 | npc.integer32, _ShapeT],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # generic shape, as complex64
+def inv(
+    a: onp.CanArrayND[np.complex64, _ShapeT], overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.complex64, _ShapeT]: ...
+@overload  # generic shape, as complex128
+def inv(
+    a: onp.CanArrayND[np.complex128 | np.clongdouble, _ShapeT], overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.complex128, _ShapeT]: ...
 
 # TODO(jorenham): improve this
 @overload  # floating 2d
