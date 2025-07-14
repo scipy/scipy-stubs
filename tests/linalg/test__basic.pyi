@@ -6,7 +6,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.linalg import inv, solve, solve_banded, solve_circulant, solve_toeplitz, solve_triangular
+from scipy.linalg import det, inv, solve, solve_banded, solve_circulant, solve_toeplitz, solve_triangular
 
 b1_nd: onp.ArrayND[np.bool_]
 
@@ -369,7 +369,27 @@ assert_type(inv(c128_nd), onp.ArrayND[np.complex128])
 assert_type(inv(c160_nd), onp.ArrayND[np.complex128])
 
 ###
-# TODO(jorenham): det
+# det
+
+assert_type(det(f32_2d), np.float64)
+assert_type(det(f64_2d), np.float64)
+assert_type(det(c64_2d), np.complex128)
+assert_type(det(c128_2d), np.complex128)
+
+assert_type(det(py_b_2d), np.float64)
+assert_type(det(py_i_2d), np.float64)
+assert_type(det(py_f_2d), np.float64)
+assert_type(det(py_c_2d), np.complex128)
+
+assert_type(det(f32_3d), onp.Array1D[np.float64])
+assert_type(det(f64_3d), onp.Array1D[np.float64])
+assert_type(det(c64_3d), onp.Array1D[np.complex128])
+assert_type(det(c128_3d), onp.Array1D[np.complex128])
+
+assert_type(det(py_b_3d), onp.Array1D[np.float64])
+assert_type(det(py_i_3d), onp.Array1D[np.float64])
+assert_type(det(py_f_3d), onp.Array1D[np.float64])
+assert_type(det(py_c_3d), onp.Array1D[np.complex128])
 
 ###
 # TODO(jorenham): lstsq
