@@ -891,7 +891,11 @@ def diags(
 # NOTE: `diags_array` should be prefered over `spdiags`
 @overload
 def spdiags(
-    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDIA | None = None
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
+    diags: _Offsets,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
+    format: _FmtDIA | None = None,
 ) -> dia_matrix[_SCT]: ...
 @overload
 def spdiags(
