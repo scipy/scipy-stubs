@@ -3,7 +3,6 @@ from collections.abc import Callable, Iterable, Sequence as Seq
 from typing import Any, Literal, Protocol, TypeAlias, TypeVar, overload, type_check_only
 
 import numpy as np
-import numpy._typing as _npt
 import numpy.typing as npt
 import optype.numpy as onp
 import optype.numpy.compat as npc
@@ -102,7 +101,7 @@ def diags_array(
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
     dtype: None = None,
-) -> _DIAArray[np.number[_npt._64Bit, float | _PSCT]]: ...
+) -> _DIAArray[np.float64] | _DIAArray[np.complex128]: ...
 @overload  # diagonals: <known>, dtype: None = ..., format: {"dia", None} = ...
 def diags_array(
     diagonals: _CanArray1D2D[_SCT],
@@ -184,7 +183,7 @@ def diags_array(
     shape: _ToShape2D | None = None,
     format: _FmtBSR,
     dtype: None = None,
-) -> _BSRArray[np.number[_npt._64Bit, float | _PSCT]]: ...
+) -> _BSRArray[np.float64] | _BSRArray[np.complex128]: ...
 @overload  # diagonals: <known>, format: "bsr", dtype: None
 def diags_array(
     diagonals: _CanArray1D2D[_SCT],
@@ -266,7 +265,7 @@ def diags_array(
     shape: _ToShape2D | None = None,
     format: _FmtCOO,
     dtype: None = None,
-) -> _COOArray2D[np.number[_npt._64Bit, float | _PSCT]]: ...
+) -> _COOArray2D[np.float64] | _COOArray2D[np.complex128]: ...
 @overload  # diagonals: <known>, format: "coo", dtype: None
 def diags_array(
     diagonals: _CanArray1D2D[_SCT],
@@ -348,7 +347,7 @@ def diags_array(
     shape: _ToShape2D | None = None,
     format: _FmtCSC,
     dtype: None = None,
-) -> _CSCArray[np.number[_npt._64Bit, float | _PSCT]]: ...
+) -> _CSCArray[np.float64] | _CSCArray[np.complex128]: ...
 @overload  # diagonals: <known>, format: "csc", dtype: None
 def diags_array(
     diagonals: _CanArray1D2D[_SCT],
@@ -430,7 +429,7 @@ def diags_array(
     shape: _ToShape2D | None = None,
     format: _FmtCSR,
     dtype: None = None,
-) -> _CSRArray2D[np.number[_npt._64Bit, float | _PSCT]]: ...
+) -> _CSRArray2D[np.float64] | _CSRArray2D[np.complex128]: ...
 @overload  # diagonals: <known>, format: "csr", dtype: None
 def diags_array(
     diagonals: _CanArray1D2D[_SCT],
@@ -512,7 +511,7 @@ def diags_array(
     shape: _ToShape2D | None = None,
     format: _FmtDOK,
     dtype: None = None,
-) -> _DOKArray2D[np.number[_npt._64Bit, float | _PSCT]]: ...
+) -> _DOKArray2D[np.float64] | _DOKArray2D[np.complex128]: ...
 @overload  # diagonals: <known>, format: "dok", dtype: None
 def diags_array(
     diagonals: _CanArray1D2D[_SCT],
@@ -594,7 +593,7 @@ def diags_array(
     shape: _ToShape2D | None = None,
     format: _FmtLIL,
     dtype: None = None,
-) -> _LILArray[np.number[_npt._64Bit, float | _PSCT]]: ...
+) -> _LILArray[np.float64] | _LILArray[np.complex128]: ...
 @overload  # diagonals: <known>, format: "lil", dtype: None
 def diags_array(
     diagonals: _CanArray1D2D[_SCT],
