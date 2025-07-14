@@ -53,7 +53,6 @@ _CanArray1D2D: TypeAlias = _CanArray1D[_SCT] | _CanArray2D[_SCT]
 
 _ToArray1D: TypeAlias = onp.ToArray1D[_PSCT, _SCT]
 _ToArray2D: TypeAlias = onp.ToArray2D[_PSCT, _SCT]
-_ToArray1D2D: TypeAlias = _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT]
 _ToSpMatrix: TypeAlias = spmatrix[_SCT] | _ToArray2D[_PSCT, _SCT]
 _ToSparse2D: TypeAlias = _spbase[_SCT, tuple[int, int]] | _ToArray2D[_PSCT, _SCT]
 
@@ -670,7 +669,7 @@ def diags_array(
 # NOTE: `diags_array` should be prefered over `diags`
 @overload  # diagonals: <known>, format: {"dia", None} = ...
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
@@ -678,7 +677,7 @@ def diags(
 ) -> dia_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "bsr" (positional)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets,
     shape: _ToShape2D | None,
     format: _FmtBSR,
@@ -686,7 +685,7 @@ def diags(
 ) -> bsr_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "bsr" (keyword)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -695,7 +694,7 @@ def diags(
 ) -> bsr_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "coo" (positional)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets,
     shape: _ToShape2D | None,
     format: _FmtCOO,
@@ -703,7 +702,7 @@ def diags(
 ) -> coo_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "coo" (keyword)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -712,7 +711,7 @@ def diags(
 ) -> coo_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "csr" (positional)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets,
     shape: _ToShape2D | None,
     format: _FmtCSR,
@@ -720,7 +719,7 @@ def diags(
 ) -> csr_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "csr" (keyword)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -729,7 +728,7 @@ def diags(
 ) -> csr_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "csc" (positional)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets,
     shape: _ToShape2D | None,
     format: _FmtCSC,
@@ -737,7 +736,7 @@ def diags(
 ) -> csc_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "csc" (keyword)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -746,7 +745,7 @@ def diags(
 ) -> csc_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "dok" (positional)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets,
     shape: _ToShape2D | None,
     format: _FmtDOK,
@@ -754,7 +753,7 @@ def diags(
 ) -> dok_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "dok" (keyword)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -763,7 +762,7 @@ def diags(
 ) -> dok_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "lil" (positional)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets,
     shape: _ToShape2D | None,
     format: _FmtLIL,
@@ -771,7 +770,7 @@ def diags(
 ) -> lil_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "lil" (keyword)
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
+    diagonals: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     *,
@@ -892,11 +891,11 @@ def diags(
 # NOTE: `diags_array` should be prefered over `spdiags`
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDIA | None = None
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDIA | None = None
 ) -> dia_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT],
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     diags: _Offsets,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -904,11 +903,11 @@ def spdiags(
 ) -> dia_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtBSR
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtBSR
 ) -> bsr_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT],
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     diags: _Offsets,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -917,11 +916,11 @@ def spdiags(
 ) -> bsr_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCOO
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCOO
 ) -> coo_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT],
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     diags: _Offsets,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -930,11 +929,11 @@ def spdiags(
 ) -> coo_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSR
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSR
 ) -> csr_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT],
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     diags: _Offsets,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -943,11 +942,11 @@ def spdiags(
 ) -> csr_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSC
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSC
 ) -> csc_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT],
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     diags: _Offsets,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -956,11 +955,11 @@ def spdiags(
 ) -> csc_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDOK
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDOK
 ) -> dok_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT],
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     diags: _Offsets,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
@@ -969,11 +968,11 @@ def spdiags(
 ) -> dok_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtLIL
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtLIL
 ) -> lil_matrix[_SCT]: ...
 @overload
 def spdiags(
-    data: _ToArray1D2D[_SCT],
+    data: _ToArray1D[_PSCT, _SCT] | _ToArray2D[_PSCT, _SCT],
     diags: _Offsets,
     m: tuple[onp.ToJustInt, onp.ToJustInt] | None = None,
     n: None = None,
