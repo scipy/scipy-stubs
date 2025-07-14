@@ -1,6 +1,7 @@
-from typing import Any, assert_type
+from typing import assert_type
 
 import numpy as np
+from numpy._typing import _64Bit
 
 import scipy.sparse as sparse
 from ._types import (
@@ -36,8 +37,13 @@ int_list: list[int]
 
 ###
 # diags_array
-assert_type(sparse.diags_array([1, 2]), sparse.dia_array[Any])
-assert_type(sparse.diags_array([[1, 2.0], [3j]], offsets=int_list), sparse.dia_array[Any])
+# TODO: find way to only return float64 for real numbers and complex128 if there is a single complex number inside the sequence
+assert_type(sparse.diags_array([1, 2]), sparse.dia_array[np.number[_64Bit, int | float]])
+assert_type(sparse.diags_array([[1, 2], 2.0]), sparse.dia_array[np.number[_64Bit, float]])
+assert_type(sparse.diags_array([[1, 2.0], [2]]), sparse.dia_array[np.number[_64Bit, int | float]])
+assert_type(sparse.diags_array([3j, 5j]), sparse.dia_array[np.number[_64Bit, float | complex]])
+assert_type(sparse.diags_array([[1, 2.0], [3j]]), sparse.dia_array[np.number[_64Bit, float | complex]])
+assert_type(sparse.diags_array([[1, 2.0], 3j]), sparse.dia_array[np.number[_64Bit, float | complex]])
 assert_type(sparse.diags_array(dense_1d), sparse.dia_array[ScalarType])
 assert_type(sparse.diags_array(dense_1d.astype(np.longdouble)), sparse.dia_array[np.longdouble])
 assert_type(sparse.diags_array(dense_1d.astype(np.complex128)), sparse.dia_array[np.complex128])
