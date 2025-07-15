@@ -55,8 +55,8 @@ type = [
   { include-group = "ci" },
   "array-api-compat==1.12.0", # bundled as `scipy._lib.array_api_compat`
   "basedpyright>=1.30.0",
-  "mypy>=1.16.1",
-  "orjson>=3.10.18; python_version<'3.14'", # used by mypy
+  "mypy>=1.17.0",
+  "orjson>=3.11.0; python_version<'3.14'", # used by mypy
 ]
 dev = [
   { include-group = "lint" },
