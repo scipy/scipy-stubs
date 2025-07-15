@@ -1,4 +1,4 @@
-from typing import Literal, TypeAlias, TypeVar, overload
+from typing import Any, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op
@@ -11,8 +11,7 @@ __all__ = ["LinAlgError", "LinAlgWarning", "norm"]
 _Inf: TypeAlias = float
 _Order: TypeAlias = Literal["fro", "nuc", 0, 1, -1, 2, -2] | _Inf
 _Axis: TypeAlias = op.CanIndex | tuple[op.CanIndex, op.CanIndex]
-
-_SubScalar: TypeAlias = np.complex128 | np.float64 | npc.integer | np.bool_
+_SubScalar: TypeAlias = npc.inexact64 | npc.integer | np.bool_
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
@@ -23,7 +22,7 @@ class LinAlgWarning(RuntimeWarning): ...
 # NOTE: the mypy errors are false positives (join vs union)
 
 @overload  # scalar, axis: None = ...
-def norm(  # type: ignore[overload-overlap]
+def norm(
     a: complex | _SubScalar,
     ord: _Order | None = None,
     axis: None = None,
@@ -32,11 +31,7 @@ def norm(  # type: ignore[overload-overlap]
 ) -> np.float64: ...
 @overload  # inexact32, axis: None = ...
 def norm(
-    a: np.float32 | np.complex64,
-    ord: _Order | None = None,
-    axis: None = None,
-    keepdims: op.CanBool = False,
-    check_finite: onp.ToBool = True,
+    a: npc.inexact32, ord: _Order | None = None, axis: None = None, keepdims: op.CanBool = False, check_finite: onp.ToBool = True
 ) -> np.float32: ...
 @overload  # longdouble, axis: None = ...
 def norm(
@@ -55,7 +50,7 @@ def norm(
     check_finite: onp.ToBool = True,
 ) -> np.float64: ...
 @overload  # float64-coercible array, keepdims: True (positional)
-def norm(  # type: ignore[overload-overlap]
+def norm(
     a: onp.ArrayND[_SubScalar, _ShapeT],
     ord: _Order | None,
     axis: _Axis | None,
@@ -63,7 +58,7 @@ def norm(  # type: ignore[overload-overlap]
     check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # float64-coercible array, keepdims: True (keyword)
-def norm(  # type: ignore[overload-overlap]
+def norm(
     a: onp.ArrayND[_SubScalar, _ShapeT],
     ord: _Order | None = None,
     axis: _Axis | None = None,
@@ -72,7 +67,7 @@ def norm(  # type: ignore[overload-overlap]
     check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # float64-coercible array-like, keepdims: True (positional)
-def norm(  # type: ignore[overload-overlap]
+def norm(
     a: onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[complex | _SubScalar],
     ord: _Order | None,
     axis: _Axis | None,
@@ -80,7 +75,7 @@ def norm(  # type: ignore[overload-overlap]
     check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # float64-coercible array-like, keepdims: True (keyword)
-def norm(  # type: ignore[overload-overlap]
+def norm(
     a: onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[complex | _SubScalar],
     ord: _Order | None = None,
     axis: _Axis | None = None,
@@ -90,7 +85,7 @@ def norm(  # type: ignore[overload-overlap]
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # shaped inexact32 array, keepdims: True (positional)
 def norm(
-    a: onp.ArrayND[np.float32 | np.complex64, _ShapeT],
+    a: onp.ArrayND[npc.inexact32, _ShapeT],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: onp.ToTrue,
@@ -106,7 +101,7 @@ def norm(
 ) -> onp.ArrayND[np.longdouble, _ShapeT]: ...
 @overload  # shaped inexact32 array, keepdims: True (keyword)
 def norm(
-    a: onp.ArrayND[np.float32 | np.complex64, _ShapeT],
+    a: onp.ArrayND[npc.inexact32, _ShapeT],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
@@ -124,7 +119,7 @@ def norm(
 ) -> onp.ArrayND[np.longdouble, _ShapeT]: ...
 @overload  # scalar array-like, keepdims: True (positional)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[np.float32 | np.complex64]] | onp.SequenceND[np.float32 | np.complex64],
+    a: onp.SequenceND[onp.CanArrayND[npc.inexact32]] | onp.SequenceND[npc.inexact32],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: onp.ToTrue,
@@ -140,7 +135,7 @@ def norm(
 ) -> onp.ArrayND[np.longdouble]: ...
 @overload  # scalar array-like, keepdims: True (keyword)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[np.float32 | np.complex64]] | onp.SequenceND[np.float32 | np.complex64],
+    a: onp.SequenceND[onp.CanArrayND[npc.inexact32]] | onp.SequenceND[npc.inexact32],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
@@ -187,4 +182,4 @@ def norm(
 ) -> npc.floating | onp.ArrayND[npc.floating]: ...
 
 #
-def _datacopied(arr: onp.ArrayND, original: onp.CanArrayND) -> bool: ...  # undocumented
+def _datacopied(arr: onp.ArrayND[Any], original: onp.CanArrayND[Any]) -> bool: ...  # undocumented
