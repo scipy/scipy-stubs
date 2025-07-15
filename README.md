@@ -294,6 +294,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 - [MouseTracks](https://github.com/huntfx/MouseTracks)
 - [mypy_primer](https://github.com/hauntsaninja/mypy_primer)
 - [Optuna](https://github.com/optuna/optuna)
+- [Scanpy](https://github.com/scverse/scanpy)
 - [TQEC](https://github.com/tqec/tqec)
 - [Ultralytics](https://github.com/ultralytics/ultralytics)
 - [Voctomix](https://github.com/voc/voctomix)
