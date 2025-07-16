@@ -994,7 +994,6 @@ def solve_circulant(
 ) -> onp.ArrayND[npc.inexact]: ...
 
 #
-
 @overload  # 2d bool sequence
 def inv(a: Sequence[Sequence[bool]], overwrite_a: bool = False, check_finite: bool = True) -> onp.Array2D[np.float32]: ...
 @overload  # Nd bool sequence
@@ -1036,32 +1035,30 @@ def inv(
     a: onp.CanArrayND[np.complex128 | np.clongdouble, _ShapeT], overwrite_a: bool = False, check_finite: bool = True
 ) -> onp.ArrayND[np.complex128, _ShapeT]: ...
 
-# TODO(jorenham): improve this
+# NOTE: The order of the overloads has been carefully chosen to avoid triggering a Pyright bug.
 @overload  # +float64 2d
 def det(a: onp.ToFloat64Strict2D, overwrite_a: bool = False, check_finite: bool = True) -> np.float64: ...
-@overload  # +float64 3d
-def det(a: onp.ToFloat64Strict3D, overwrite_a: bool = False, check_finite: bool = True) -> onp.Array1D[np.float64]: ...
-@overload  # +float64 ND
-def det(a: onp.ToFloat64_ND, overwrite_a: bool = False, check_finite: bool = True) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # complex128 | complex64 2d
 def det(
-    a: onp.ToJustComplex128Strict2D | onp.CanArray2D[np.complex64], overwrite_a: bool = False, check_finite: bool = True
+    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64], overwrite_a: bool = False, check_finite: bool = True
 ) -> np.complex128: ...
+@overload  # +float64 3d
+def det(a: onp.ToFloat64Strict3D, overwrite_a: bool = False, check_finite: bool = True) -> onp.Array1D[np.float64]: ...
 @overload  # complex128 | complex64 3d
 def det(
-    a: onp.ToJustComplex128Strict3D | onp.CanArray3D[np.complex64], overwrite_a: bool = False, check_finite: bool = True
+    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64], overwrite_a: bool = False, check_finite: bool = True
 ) -> onp.Array1D[np.complex128]: ...
+@overload  # +float64 ND
+def det(a: onp.ToFloat64_ND, overwrite_a: bool = False, check_finite: bool = True) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # complex128 | complex64 Nd
 def det(
-    a: onp.ToJustComplex128_ND, overwrite_a: bool = False, check_finite: bool = True
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], overwrite_a: bool = False, check_finite: bool = True
 ) -> np.complex128 | onp.ArrayND[np.complex128]: ...
 @overload  # +complex128 2d
-def det(
-    a: onp.ToComplex128Strict2D | onp.CanArray2D[np.complex64], overwrite_a: bool = False, check_finite: bool = True
-) -> np.float64 | np.complex128: ...
+def det(a: onp.ToComplex128Strict2D, overwrite_a: bool = False, check_finite: bool = True) -> np.float64 | np.complex128: ...
 @overload  # +complex128 3d
 def det(
-    a: onp.ToComplex128Strict3D | onp.CanArray3D[np.complex64], overwrite_a: bool = False, check_finite: bool = True
+    a: onp.ToComplex128Strict3D, overwrite_a: bool = False, check_finite: bool = True
 ) -> onp.Array1D[np.float64 | np.complex128]: ...
 @overload  # +complex128 Nd
 def det(
