@@ -106,28 +106,6 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-D, dtype: <known> (positional)
-    def __init__(
-        self,
-        /,
-        arg1: _ToAnyCSC,
-        shape: _ToShape2D | None,
-        dtype: onp.ToDType[_ScalarT_co],
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-D, dtype: <known> (keyword)
-    def __init__(
-        self,
-        /,
-        arg1: _ToAnyCSC,
-        shape: _ToShape2D | None = None,
-        *,
-        dtype: onp.ToDType[_ScalarT_co],
-        copy: bool = False,
-        maxprint: int | None = None,
-    ) -> None: ...
     @overload  # 2-d array-like bool, dtype: bool-like | None
     def __init__(
         self: csc_array[np.bool_],
@@ -257,6 +235,28 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyComplex128DType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-D, dtype: <known> (positional)
+    def __init__(
+        self,
+        /,
+        arg1: _ToAnyCSC,
+        shape: _ToShape2D | None,
+        dtype: onp.ToDType[_ScalarT_co],
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-D, dtype: <known> (keyword)
+    def __init__(
+        self,
+        /,
+        arg1: _ToAnyCSC,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -295,28 +295,6 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-D, dtype: <known> (positional)
-    def __init__(
-        self,
-        /,
-        arg1: _ToAnyCSC,
-        shape: _ToShape2D | None,
-        dtype: onp.ToDType[_ScalarT_co],
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-D, dtype: <known> (keyword)
-    def __init__(
-        self,
-        /,
-        arg1: _ToAnyCSC,
-        shape: _ToShape2D | None = None,
-        *,
-        dtype: onp.ToDType[_ScalarT_co],
-        copy: bool = False,
-        maxprint: int | None = None,
-    ) -> None: ...
     @overload  # 2-d array-like bool, dtype: bool-like | None
     def __init__(
         self: csc_matrix[np.bool_],
@@ -446,6 +424,28 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyComplex128DType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-D, dtype: <known> (positional)
+    def __init__(
+        self,
+        /,
+        arg1: _ToAnyCSC,
+        shape: _ToShape2D | None,
+        dtype: onp.ToDType[_ScalarT_co],
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-D, dtype: <known> (keyword)
+    def __init__(
+        self,
+        /,
+        arg1: _ToAnyCSC,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
