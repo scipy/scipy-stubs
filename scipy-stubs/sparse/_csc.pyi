@@ -16,11 +16,14 @@ from ._typing import _ToShape2D
 __all__ = ["csc_array", "csc_matrix", "isspmatrix_csc"]
 
 _T = TypeVar("_T")
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=_Scalar)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
 
-_ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
-_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
+_Scalar: TypeAlias = npc.number | np.bool_
+
+_Seq2: TypeAlias = Sequence[Sequence[_T]]
+_ToCSC: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _Seq2[_ScalarT]
+_AnyCSC: TypeAlias = _ToCSC[_Scalar] | _ToShape2D
 
 ###
 
@@ -71,20 +74,9 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_ScalarT_co],
+        arg1: _ToCSC[_ScalarT_co],
         shape: _ToShape2D | None = None,
         dtype: onp.ToDType[_ScalarT_co] | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d shape-like, dtype: float64-like | None
-    def __init__(
-        self: csc_array[np.float64],
-        /,
-        arg1: _ToShape2D,
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -93,7 +85,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.bool_],
         /,
-        arg1: _ToShape2D,
+        arg1: _AnyCSC,
         shape: _ToShape2D | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
@@ -104,7 +96,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.bool_],
         /,
-        arg1: _ToShape2D,
+        arg1: _AnyCSC,
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyBoolDType,
@@ -113,9 +105,9 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: int-like (positional)
     def __init__(
-        self: csc_array[np.int64],
+        self: csc_array[np.int_],
         /,
-        arg1: _ToShape2D,
+        arg1: _AnyCSC,
         shape: _ToShape2D | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
@@ -124,12 +116,34 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: int-like (keyword)
     def __init__(
-        self: csc_array[np.int64],
+        self: csc_array[np.int_],
         /,
-        arg1: _ToShape2D,
+        arg1: _AnyCSC,
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyIntDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: float-like (positional)
+    def __init__(
+        self: csc_array[np.float64],
+        /,
+        arg1: _AnyCSC,
+        shape: _ToShape2D | None,
+        dtype: onp.AnyFloat64DType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: float-like (keyword)
+    def __init__(
+        self: csc_array[np.float64],
+        /,
+        arg1: _AnyCSC,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyFloat64DType,
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -137,7 +151,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.complex128],
         /,
-        arg1: _ToShape2D,
+        arg1: _AnyCSC,
         shape: _ToShape2D | None,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
@@ -148,62 +162,18 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: csc_array[np.complex128],
         /,
-        arg1: _ToShape2D,
+        arg1: _AnyCSC,
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like bool, dtype: bool-like | None
-    def __init__(
-        self: csc_array[np.bool_],
-        /,
-        arg1: Sequence[Sequence[bool]],
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyBoolDType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d array-like ~int, dtype: int-like | None
-    def __init__(
-        self: csc_array[np.int_],
-        /,
-        arg1: Sequence[Sequence[op.JustInt]],
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyIntDType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d array-like ~float, dtype: float64-like | None
-    def __init__(
-        self: csc_array[np.float64],
-        /,
-        arg1: Sequence[Sequence[op.JustFloat]],
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyFloat64DType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d array-like ~complex, dtype: complex128-like | None
-    def __init__(
-        self: csc_array[np.complex128],
-        /,
-        arg1: Sequence[Sequence[op.JustComplex]],
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyComplex128DType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
     @overload  # 2-D, dtype: <known> (positional)
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexStrict2D,
+        arg1: _AnyCSC,
         shape: _ToShape2D | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -214,11 +184,55 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexStrict2D,
+        arg1: _AnyCSC,
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d array-like bool, dtype: bool-like | None
+    def __init__(
+        self: csc_array[np.bool_],
+        /,
+        arg1: _Seq2[bool],
+        shape: _ToShape2D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d array-like ~int, dtype: int-like | None
+    def __init__(
+        self: csc_array[np.int_],
+        /,
+        arg1: _Seq2[op.JustInt],
+        shape: _ToShape2D | None = None,
+        dtype: onp.AnyIntDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d array-like ~float or 2-d shape-like, dtype: float64-like | None
+    def __init__(
+        self: csc_array[np.float64],
+        /,
+        arg1: _Seq2[op.JustFloat] | _ToShape2D,
+        shape: _ToShape2D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d array-like ~complex, dtype: complex128-like | None
+    def __init__(
+        self: csc_array[np.complex128],
+        /,
+        arg1: _Seq2[op.JustComplex],
+        shape: _ToShape2D | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
+        copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
 
@@ -249,73 +263,106 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self,
         /,
-        arg1: _ToMatrix[_ScalarT_co],
+        arg1: _ToCSC[_ScalarT_co],
         shape: _ToShape2D | None = None,
         dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: None
-    def __init__(
-        self: csc_matrix[np.float64],
-        /,
-        arg1: _ToShape2D,
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyFloat64DType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d array-like bool, dtype: bool-like | None
+    @overload  # dtype: bool-like (positional)
     def __init__(
         self: csc_matrix[np.bool_],
         /,
-        arg1: Sequence[Sequence[bool]],
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyBoolDType | None = None,
+        arg1: _AnyCSC,
+        shape: _ToShape2D | None,
+        dtype: onp.AnyBoolDType,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~int, dtype: int-like | None
+    @overload  # dtype: bool-like (keyword)
+    def __init__(
+        self: csc_matrix[np.bool_],
+        /,
+        arg1: _AnyCSC,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: int-like (positional)
     def __init__(
         self: csc_matrix[np.int_],
         /,
-        arg1: Sequence[Sequence[op.JustInt]],
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyIntDType | None = None,
+        arg1: _AnyCSC,
+        shape: _ToShape2D | None,
+        dtype: onp.AnyIntDType,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~float, dtype: float64-like | None
+    @overload  # dtype: int-like (keyword)
+    def __init__(
+        self: csc_matrix[np.int_],
+        /,
+        arg1: _AnyCSC,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyIntDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: float-like (positional)
     def __init__(
         self: csc_matrix[np.float64],
         /,
-        arg1: Sequence[Sequence[op.JustFloat]],
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyFloat64DType | None = None,
+        arg1: _AnyCSC,
+        shape: _ToShape2D | None,
+        dtype: onp.AnyFloat64DType,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like ~complex, dtype: complex128-like | None
+    @overload  # dtype: float-like (keyword)
+    def __init__(
+        self: csc_matrix[np.float64],
+        /,
+        arg1: _AnyCSC,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyFloat64DType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: complex128-like (positional)
     def __init__(
         self: csc_matrix[np.complex128],
         /,
-        arg1: Sequence[Sequence[op.JustComplex]],
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyComplex128DType | None = None,
+        arg1: _AnyCSC,
+        shape: _ToShape2D | None,
+        dtype: onp.AnyComplex128DType,
         copy: bool = False,
         *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: complex128-like (keyword)
+    def __init__(
+        self: csc_matrix[np.complex128],
+        /,
+        arg1: _AnyCSC,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyComplex128DType,
+        copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (positional)
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexStrict2D,
+        arg1: _AnyCSC,
         shape: _ToShape2D | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -326,11 +373,55 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self,
         /,
-        arg1: onp.ToComplexStrict2D,
+        arg1: _AnyCSC,
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d array-like bool, dtype: bool-like | None
+    def __init__(
+        self: csc_matrix[np.bool_],
+        /,
+        arg1: _Seq2[bool],
+        shape: _ToShape2D | None = None,
+        dtype: onp.AnyBoolDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d array-like ~int, dtype: int-like | None
+    def __init__(
+        self: csc_matrix[np.int_],
+        /,
+        arg1: _Seq2[op.JustInt],
+        shape: _ToShape2D | None = None,
+        dtype: onp.AnyIntDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d array-like ~float, dtype: float64-like | None
+    def __init__(
+        self: csc_matrix[np.float64],
+        /,
+        arg1: _Seq2[op.JustFloat] | _ToShape2D,
+        shape: _ToShape2D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d array-like ~complex or 2-d shape-like, dtype: complex128-like | None
+    def __init__(
+        self: csc_matrix[np.complex128],
+        /,
+        arg1: _Seq2[op.JustComplex],
+        shape: _ToShape2D | None = None,
+        dtype: onp.AnyComplex128DType | None = None,
+        copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
 
@@ -347,4 +438,4 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @overload
     def getnnz(self, /, axis: op.CanIndex) -> onp.Array1D[np.int32]: ...
 
-def isspmatrix_csc(x: object) -> TypeIs[csc_matrix]: ...
+def isspmatrix_csc(x: object) -> TypeIs[csc_matrix[Any]]: ...
