@@ -1,0 +1,79 @@
+{
+  "version": "2.0.0",
+  "tasks": [{
+    "label": "basedpyright",
+    "type": "shell",
+    "command": "uv",
+    "args": ["run", "basedpyright"],
+    "group": {
+      "kind": "build",
+      "isDefault": false
+    },
+    "presentation": {
+      "clear": true
+    },
+    "problemMatcher": [{
+      "owner": "basedpyright",
+      "fileLocation": "absolute",
+      "pattern": {
+        "regexp": "^(.+):(\\d+):(\\d+) - (error|warning|info): (.+)$",
+        "file": 1,
+        "line": 2,
+        "column": 3,
+        "severity": 4,
+        "message": 5
+      }
+    }],
+    "options": {
+      "cwd": "${workspaceFolder}"
+    }
+  }, {
+    "label": "mypy",
+    "type": "shell",
+    "command": "uv",
+    "args": ["run", "--no-editable", "mypy", "."],
+    "group": {
+      "kind": "build",
+      "isDefault": false
+    },
+    "presentation": {
+      "clear": true
+    },
+    "problemMatcher": [{
+      "owner": "mypy",
+      "fileLocation": "absolute",
+      "pattern": {
+        "regexp": "^(.+):(\\d+): (error|warning|note): (.+)$",
+        "file": 1,
+        "line": 2,
+        "severity": 3,
+        "message": 4
+      }
+    }],
+    "options": {
+      "cwd": "${workspaceFolder}"
+    }
+  }, {
+    "label": "stubtest",
+    "type": "shell",
+    "command": "uv",
+    "args": [
+      "run",
+      "--no-editable",
+      "--reinstall-package=scipy-stubs",
+      "stubtest",
+      "--allowlist=.mypyignore",
+      "scipy"
+    ],
+    "group": {
+      "kind": "build",
+      "isDefault": false
+    },
+    "presentation": {
+      "clear": true
+    },
+    "options": {
+      "cwd": "${workspaceFolder}"
+    }
+  }]
+}

@@ -87,13 +87,8 @@ rm -rf
 
 [tool.poe.tasks.stubtest]
 cmd = """
-uv run
-    --no-editable
-    --reinstall-package=scipy-stubs
-    stubtest
-    --allowlist=.mypyignore
-    --mypy-config-file=pyproject.toml
-    $modules
+uv run --no-editable --reinstall-package=scipy-stubs
+    stubtest --allowlist=.mypyignore $modules
 """
 args = [{ name = "modules", positional = true, multiple = true, default = "scipy" }]
 
@@ -229,7 +224,6 @@ commands = [
   [
     "stubtest",
     "--allowlist=.mypyignore",
-    "--mypy-config-file=pyproject.toml",
     { replace = "posargs", default = ["scipy"], extend = true },
   ],
 ]
