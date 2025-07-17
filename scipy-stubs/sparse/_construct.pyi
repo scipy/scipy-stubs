@@ -78,7 +78,7 @@ _FmtLIL: TypeAlias = Literal["lil"]
 _FmtNonCOO: TypeAlias = Literal["bsr", "csc", "csr", "dia", "dok", "lil"]
 
 _ComplexSeq1D2D: TypeAlias = Seq[Seq[complex] | complex]
-_ToComplex1D2D: TypeAlias = onp.ToComplex1D |  onp.ToComplex2D
+_ToComplex1D2D: TypeAlias = onp.ToComplex1D | onp.ToComplex2D
 _Offsets: TypeAlias = onp.ToInt | onp.ToInt1D
 
 _DataRVS: TypeAlias = Callable[[int], onp.ArrayND[_Numeric]]
@@ -100,7 +100,7 @@ def diags_array(
     format: _FmtDIA | None = None,
     dtype: None = None,
 ) -> _DIAArray[np.float64] | _DIAArray[np.complex128]: ...
-@overload  # diagonals: <known dtype>, dtype: None, format: "dia" | None
+@overload  # diagonals: <known>, dtype: None, format: "dia" | None
 def diags_array(
     diagonals: _CanArray1D2D[_SCT],
     /,
@@ -238,13 +238,7 @@ def diags_array(
 ) -> _BSRArray[_SCT]: ...
 @overload  # diagonals: <unknown>, format: "bsr", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D,
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtBSR,
-    dtype: npt.DTypeLike,
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtBSR, dtype: npt.DTypeLike
 ) -> _BSRArray: ...
 
 # COO
@@ -314,13 +308,7 @@ def diags_array(
 ) -> _COOArray2D[_SCT]: ...
 @overload  # diagonals: <unknown>, format: "coo", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D,
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCOO,
-    dtype: npt.DTypeLike,
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCOO, dtype: npt.DTypeLike
 ) -> _COOArray2D: ...
 
 # CSC
@@ -390,13 +378,7 @@ def diags_array(
 ) -> _CSCArray[_SCT]: ...
 @overload  # diagonals: <unknown>, format: "csc", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D,
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSC,
-    dtype: npt.DTypeLike,
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSC, dtype: npt.DTypeLike
 ) -> _CSCArray: ...
 
 # CSR
@@ -466,13 +448,7 @@ def diags_array(
 ) -> _CSRArray2D[_SCT]: ...
 @overload  # diagonals: <unknown>, format: "csr", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D,
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtCSR,
-    dtype: npt.DTypeLike,
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSR, dtype: npt.DTypeLike
 ) -> _CSRArray2D: ...
 
 # DOK
@@ -542,13 +518,7 @@ def diags_array(
 ) -> _DOKArray2D[_SCT]: ...
 @overload  # diagonals: <unknown>, format: "dok", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D,
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtDOK,
-    dtype: npt.DTypeLike,
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtDOK, dtype: npt.DTypeLike
 ) -> _DOKArray2D: ...
 
 # LIL
@@ -618,13 +588,7 @@ def diags_array(
 ) -> _LILArray[_SCT]: ...
 @overload  # diagonals: <unknown>, format: "lil", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D,
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None = None,
-    format: _FmtLIL,
-    dtype: npt.DTypeLike,
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtLIL, dtype: npt.DTypeLike
 ) -> _LILArray: ...
 
 # NOTE: `diags_array` should be prefered over `diags`
@@ -748,11 +712,7 @@ def diags(
 ) -> dia_matrix: ...
 @overload  # diagonals: <unknown>, format: "bsr" (positional), dtype: <unknown>
 def diags(
-    diagonals: _ToComplex1D2D,
-    offsets: _Offsets,
-    shape: _ToShape2D | None,
-    format: _FmtBSR,
-    dtype: npt.DTypeLike | None = None,
+    diagonals: _ToComplex1D2D, offsets: _Offsets, shape: _ToShape2D | None, format: _FmtBSR, dtype: npt.DTypeLike | None = None
 ) -> bsr_matrix: ...
 @overload  # diagonals: <unknown>, format: "bsr" (keyword), dtype: <unknown>
 def diags(
@@ -765,11 +725,7 @@ def diags(
 ) -> bsr_matrix: ...
 @overload  # diagonals: <unknown>, format: "coo" (positional), dtype: <unknown>
 def diags(
-    diagonals: _ToComplex1D2D,
-    offsets: _Offsets,
-    shape: _ToShape2D | None,
-    format: _FmtCOO,
-    dtype: npt.DTypeLike | None = None,
+    diagonals: _ToComplex1D2D, offsets: _Offsets, shape: _ToShape2D | None, format: _FmtCOO, dtype: npt.DTypeLike | None = None
 ) -> coo_matrix: ...
 @overload  # diagonals: <unknown>, format: "coo" (keyword), dtype: <unknown>
 def diags(
@@ -782,11 +738,7 @@ def diags(
 ) -> coo_matrix: ...
 @overload  # diagonals: <unknown>, format: "csr" (positional), dtype: <unknown>
 def diags(
-    diagonals: _ToComplex1D2D,
-    offsets: _Offsets,
-    shape: _ToShape2D | None,
-    format: _FmtCSR,
-    dtype: npt.DTypeLike | None = None,
+    diagonals: _ToComplex1D2D, offsets: _Offsets, shape: _ToShape2D | None, format: _FmtCSR, dtype: npt.DTypeLike | None = None
 ) -> csr_matrix: ...
 @overload  # diagonals: <unknown>, format: "csr" (keyword), dtype: <unknown>
 def diags(
@@ -799,11 +751,7 @@ def diags(
 ) -> csr_matrix: ...
 @overload  # diagonals: <unknown>, format: "csc" (positional), dtype: <unknown>
 def diags(
-    diagonals: _ToComplex1D2D,
-    offsets: _Offsets,
-    shape: _ToShape2D | None,
-    format: _FmtCSC,
-    dtype: npt.DTypeLike | None = None,
+    diagonals: _ToComplex1D2D, offsets: _Offsets, shape: _ToShape2D | None, format: _FmtCSC, dtype: npt.DTypeLike | None = None
 ) -> csc_matrix: ...
 @overload  # diagonals: <unknown>, format: "csc" (keyword), dtype: <unknown>
 def diags(
@@ -816,11 +764,7 @@ def diags(
 ) -> csc_matrix: ...
 @overload  # diagonals: <unknown>, format: "dok" (positional), dtype: <unknown>
 def diags(
-    diagonals: _ToComplex1D2D,
-    offsets: _Offsets,
-    shape: _ToShape2D | None,
-    format: _FmtDOK,
-    dtype: npt.DTypeLike | None = None,
+    diagonals: _ToComplex1D2D, offsets: _Offsets, shape: _ToShape2D | None, format: _FmtDOK, dtype: npt.DTypeLike | None = None
 ) -> dok_matrix: ...
 @overload  # diagonals: <unknown>, format: "dok" (keyword), dtype: <unknown>
 def diags(
@@ -833,11 +777,7 @@ def diags(
 ) -> dok_matrix: ...
 @overload  # diagonals: <unknown>, format: "lil" (positional), dtype: <unknown>
 def diags(
-    diagonals: _ToComplex1D2D,
-    offsets: _Offsets,
-    shape: _ToShape2D | None,
-    format: _FmtLIL,
-    dtype: npt.DTypeLike | None = None,
+    diagonals: _ToComplex1D2D, offsets: _Offsets, shape: _ToShape2D | None, format: _FmtLIL, dtype: npt.DTypeLike | None = None
 ) -> lil_matrix: ...
 @overload  # diagonals: <unknown>, format: "lil" (keyword), dtype: <unknown>
 def diags(
@@ -1496,76 +1436,76 @@ def vstack(blocks: Seq[_CanStackAs[Any, _T]], format: None = None, *, dtype: npt
 def vstack(blocks: Seq[_spbase], format: _Format, dtype: npt.DTypeLike | None = None) -> Incomplete: ...
 
 # TODO(jorenham): Use `_CanStack` here, which requires a way to map matrix types to array types.
-@overload  # blocks: <known dtype>, format: <default>, dtype: <default>
+@overload  # blocks: <known>, format: <default>, dtype: <default>
 def block_array(blocks: _ToBlocks[_SCT], *, format: _FmtCOO | None = None, dtype: None = None) -> _COOArray2D[_SCT]: ...
-@overload  # blocks: <unknown dtype>, format: <default>, dtype: <known>
+@overload  # blocks: <unknown>, format: <default>, dtype: <known>
 def block_array(blocks: _ToBlocks, *, format: _FmtCOO | None = None, dtype: onp.ToDType[_SCT]) -> _COOArray2D[_SCT]: ...
-@overload  # blocks: <unknown dtype>, format: <default>, dtype: <unknown>
+@overload  # blocks: <unknown>, format: <default>, dtype: <unknown>
 def block_array(blocks: _ToBlocks, *, format: _FmtCOO | None = None, dtype: npt.DTypeLike) -> _COOArray2D: ...
-@overload  # blocks: <known dtype>, format: <otherwise>, dtype: <default>
+@overload  # blocks: <known>, format: <otherwise>, dtype: <default>
 def block_array(blocks: _ToBlocks[_SCT], *, format: _FmtNonCOO, dtype: None = None) -> _SpArray2D[_SCT]: ...
-@overload  # blocks: <unknown dtype>, format: <otherwise>, dtype: <known>
+@overload  # blocks: <unknown>, format: <otherwise>, dtype: <known>
 def block_array(blocks: _ToBlocks, *, format: _FmtNonCOO, dtype: onp.ToDType[_SCT]) -> _SpArray2D[_SCT]: ...
-@overload  # blocks: <unknown dtype>, format: <otherwise>, dtype: <unknown>
+@overload  # blocks: <unknown>, format: <otherwise>, dtype: <unknown>
 def block_array(blocks: _ToBlocks, *, format: _FmtNonCOO, dtype: npt.DTypeLike) -> _SpArray2D: ...
 
 # TODO(jorenham): Use `_CanStack` here, which requires a way to map array types to matrix types.
-@overload  # blocks: <array, known dtype>, format: <default>, dtype: <default>
+@overload  # blocks: <array, known>, format: <default>, dtype: <default>
 def bmat(blocks: Seq[Seq[sparray[_SCT]]], format: _FmtCOO | None = None, dtype: None = None) -> _COOArray2D[_SCT]: ...
-@overload  # blocks: <matrix, known dtype>, format: <default>, dtype: <default>
+@overload  # blocks: <matrix, known>, format: <default>, dtype: <default>
 def bmat(blocks: Seq[Seq[spmatrix[_SCT]]], format: _FmtCOO | None = None, dtype: None = None) -> coo_matrix[_SCT]: ...
-@overload  # sparray, blocks: <unknown, unknown dtype>, format: <default>, dtype: <known> (positional)
+@overload  # sparray, blocks: <unknown, unknown>, format: <default>, dtype: <known> (positional)
 def bmat(blocks: _ToBlocks, format: _FmtCOO | None, dtype: onp.ToDType[_SCT]) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
-@overload  # sparray, blocks: <unknown, unknown dtype>, format: <default>, dtype: <known> (keyword)
+@overload  # sparray, blocks: <unknown, unknown>, format: <default>, dtype: <known> (keyword)
 def bmat(
     blocks: _ToBlocks, format: _FmtCOO | None = None, *, dtype: onp.ToDType[_SCT]
 ) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
-@overload  # sparray, blocks: <unknown, unknown dtype>, format: <default>, dtype: <unknown>
+@overload  # sparray, blocks: <unknown, unknown>, format: <default>, dtype: <unknown>
 def bmat(
     blocks: _ToBlocks[_SCT], format: _FmtCOO | None = None, dtype: npt.DTypeLike | None = None
 ) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
-@overload  # sparray, blocks: <array, known dtype>, format: <otherwise>, dtype: <default>
+@overload  # sparray, blocks: <array, known>, format: <otherwise>, dtype: <default>
 def bmat(blocks: Seq[Seq[sparray[_SCT]]], format: _Format, dtype: None = None) -> _SpArray2D[_SCT]: ...
-@overload  # sparray, blocks: <matrix, known dtype>, format: <otherwise>, dtype: <default>
+@overload  # sparray, blocks: <matrix, known>, format: <otherwise>, dtype: <default>
 def bmat(blocks: Seq[Seq[spmatrix[_SCT]]], format: _Format, dtype: None = None) -> _SpMatrix[_SCT]: ...
-@overload  # sparray, blocks: <unknown, unknown dtype>, format: <otherwise>, dtype: <known>
+@overload  # sparray, blocks: <unknown, unknown>, format: <otherwise>, dtype: <known>
 def bmat(blocks: _ToBlocks, format: _Format, dtype: onp.ToDType[_SCT]) -> _SpBase2D[_SCT]: ...
-@overload  # sparray, blocks: <unknown, unknown dtype>, format: <otherwise>, dtype: <unknown>
+@overload  # sparray, blocks: <unknown, unknown>, format: <otherwise>, dtype: <unknown>
 def bmat(blocks: _ToBlocks, format: _Format, dtype: npt.DTypeLike) -> _SpBase2D: ...
 
 # TODO(jorenham): Add support for non-COO formats.
-@overload  # mats: <array, known dtype>
+@overload  # mats: <array, known>
 def block_diag(mats: Iterable[sparray[_SCT]], format: _FmtCOO | None = None, dtype: None = None) -> _COOArray2D[_SCT]: ...
-@overload  # mats: <matrix, known dtype>
+@overload  # mats: <matrix, known>
 def block_diag(mats: Iterable[spmatrix[_SCT]], format: _FmtCOO | None = None, dtype: None = None) -> coo_matrix[_SCT]: ...
-@overload  # mats: <unknown, known dtype>
+@overload  # mats: <unknown, known>
 def block_diag(
     mats: Iterable[_spbase[_SCT] | onp.ArrayND[_SCT]], format: _FmtCOO | None = None, dtype: None = None
 ) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
-@overload  # mats: <array, unknown dtype>, dtype: <known>  (positional)
+@overload  # mats: <array, unknown>, dtype: <known>  (positional)
 def block_diag(mats: Iterable[sparray], format: _FmtCOO | None, dtype: onp.ToDType[_SCT]) -> coo_array[_SCT, tuple[int, int]]: ...
-@overload  # mats: <array, unknown dtype>, dtype: <known>  (keyword)
+@overload  # mats: <array, unknown>, dtype: <known>  (keyword)
 def block_diag(mats: Iterable[sparray], format: _FmtCOO | None = None, *, dtype: onp.ToDType[_SCT]) -> _COOArray2D[_SCT]: ...
-@overload  # mats: <matrix, unknown dtype>, dtype: <known>  (positional)
+@overload  # mats: <matrix, unknown>, dtype: <known>  (positional)
 def block_diag(
     mats: Iterable[spmatrix | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
     format: _FmtCOO | None,
     dtype: onp.ToDType[_SCT],
 ) -> coo_matrix[_SCT]: ...
-@overload  # mats: <matrix, unknown dtype>, dtype: <known>  (keyword)
+@overload  # mats: <matrix, unknown>, dtype: <known>  (keyword)
 def block_diag(
     mats: Iterable[spmatrix | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
     format: _FmtCOO | None = None,
     *,
     dtype: onp.ToDType[_SCT],
 ) -> coo_matrix[_SCT]: ...
-@overload  # mats: <unknown, unknown dtype>, dtype: <known>  (positional)
+@overload  # mats: <unknown, unknown>, dtype: <known>  (positional)
 def block_diag(
     mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
     format: _FmtCOO | None,
     dtype: onp.ToDType[_SCT],
 ) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
-@overload  # mats: <unknown, unknown dtype>, dtype: <known>  (keyword)
+@overload  # mats: <unknown, unknown>, dtype: <known>  (keyword)
 def block_diag(
     mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
     format: _FmtCOO | None = None,
