@@ -94,7 +94,6 @@ jobs:
           uv run
           -p ${{ matrix.python }}
           --with="numpy==${{ matrix.numpy }}"
-          --active
           --no-editable
           basedpyright
 
@@ -103,7 +102,6 @@ jobs:
           uv run
           -p ${{ matrix.python }}
           --with="numpy==${{ matrix.numpy }}"
-          --active
           --no-editable
           mypy
           --tb
@@ -119,9 +117,7 @@ jobs:
           uv run
           -p ${{ matrix.python }}
           --with="numpy==${{ matrix.numpy }}"
-          --active
           --no-editable
           stubtest
           --allowlist=.mypyignore
-          --mypy-config-file=pyproject.toml
           scipy
