@@ -384,7 +384,22 @@ def eig(
     ...
 
 #
-@overload  # float, eigvals_only: False = ...
+@overload  # +float64, eigvals_only: False = ...
+def eigh(  #
+    a: onp.ToArrayND[float, np.float64 | np.longdouble | npc.integer64 | npc.integer32],
+    b: onp.ToFloat64_ND | None = None,
+    *,
+    lower: op.CanBool = True,
+    eigvals_only: onp.ToFalse = False,
+    overwrite_a: op.CanBool = False,
+    overwrite_b: op.CanBool = False,
+    type: _EigHType = 1,
+    check_finite: op.CanBool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # +float, eigvals_only: False = ...
 def eigh(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
@@ -399,22 +414,22 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> tuple[_FloatND, _FloatND]: ...
-@overload  # float, eigvals_only: True
+@overload  # ~complex, eigvals_only: False = ...
 def eigh(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None = None,
+    a: onp.ToJustComplexND,
+    b: onp.ToComplexND | None = None,
     *,
     lower: op.CanBool = True,
-    eigvals_only: onp.ToTrue,
+    eigvals_only: onp.ToFalse = False,
     overwrite_a: op.CanBool = False,
     overwrite_b: op.CanBool = False,
     type: _EigHType = 1,
     check_finite: op.CanBool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
-    driver: _DriverEV | _EigHSubsetByValue | None = None,
-) -> _FloatND: ...
-@overload  # complex, eigvals_only: False = ...
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[_FloatND, _ComplexND]: ...
+@overload  # +complex, eigvals_only: False = ...
 def eigh(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -429,7 +444,22 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> tuple[_FloatND, _InexactND]: ...
-@overload  # complex, eigvals_only: True
+@overload  # +complex128, eigvals_only: True
+def eigh(
+    a: onp.ToArrayND[float, npc.inexact80 | npc.number64 | npc.integer32],
+    b: onp.ToComplex128_ND | None = None,
+    *,
+    lower: op.CanBool = True,
+    eigvals_only: onp.ToTrue,
+    overwrite_a: op.CanBool = False,
+    overwrite_b: op.CanBool = False,
+    type: _EigHType = 1,
+    check_finite: op.CanBool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _EigHSubsetByValue | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +complex, eigvals_only: True
 def eigh(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -444,21 +474,6 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _EigHSubsetByValue | None = None,
 ) -> _FloatND: ...
-@overload  # complex, eigvals_only: CanBool (catch-all)
-def eigh(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None = None,
-    *,
-    lower: op.CanBool,
-    eigvals_only: op.CanBool,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    type: _EigHType = 1,
-    check_finite: op.CanBool = True,
-    subset_by_index: _EigHSubsetByIndex | None = None,
-    subset_by_value: _EigHSubsetByValue | None = None,
-    driver: _DriverEV | _EigHSubsetByValue | None = None,
-) -> _FloatND | tuple[_FloatND, _InexactND]: ...
 
 #
 @overload  # float, eigvals_only: False = ..., select: _SelectA = ...
