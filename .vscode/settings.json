@@ -42,6 +42,4 @@
     "--refresh-package=scipy-stubs",
     "mypy",
   ],
-  "python.languageServer": "None",
-  "python.analysis.typeCheckingMode": "off",
 }
