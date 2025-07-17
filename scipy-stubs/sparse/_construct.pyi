@@ -1652,6 +1652,8 @@ def random(
     dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[np.float64]: ...
 @overload  # format: <otherwise>, dtype: <default>
 def random(
@@ -1663,6 +1665,7 @@ def random(
     dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix[np.float64]: ...
 
 #
@@ -1676,6 +1679,7 @@ def random(
     dtype: onp.ToDType[_SCT],
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[_SCT]: ...
 @overload  # format: <otherwise>, dtype: <known> (keyword)
 def random(
@@ -1687,6 +1691,7 @@ def random(
     dtype: onp.ToDType[_SCT],
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix[_SCT]: ...
 
 #
@@ -1699,6 +1704,8 @@ def random(
     dtype: onp.ToDType[_SCT],
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[_SCT]: ...
 @overload  # format: <otherwise>, dtype: <known> (positional)
 def random(
@@ -1709,6 +1716,8 @@ def random(
     dtype: onp.ToDType[_SCT],
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix[_SCT]: ...
 
 #
@@ -1722,6 +1731,7 @@ def random(
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[np.complex128]: ...
 @overload  # format: <otherwise>, dtype: complex (keyword)
 def random(
@@ -1733,6 +1743,7 @@ def random(
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix[np.complex128]: ...
 
 #
@@ -1745,6 +1756,8 @@ def random(
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[np.complex128]: ...
 @overload  # format: <otherwise>, dtype: complex (positional)
 def random(
@@ -1755,6 +1768,8 @@ def random(
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix[np.complex128]: ...
 
 #
@@ -1767,6 +1782,8 @@ def random(
     dtype: npt.DTypeLike | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix: ...
 @overload  # format: <otherwise> (keyword), dtype: <unknown>
 def random(
@@ -1778,6 +1795,7 @@ def random(
     dtype: npt.DTypeLike | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix: ...
 @overload  # format: <otherwise> (positional), dtype: <unknown>
 def random(
@@ -1788,6 +1806,8 @@ def random(
     dtype: npt.DTypeLike | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix: ...
 
 ###
@@ -1800,6 +1820,8 @@ def rand(
     format: _FmtCOO = "coo",
     dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[np.float64]: ...
 @overload  # format: <otherwise>, dtype: <default>
 def rand(
@@ -1810,6 +1832,7 @@ def rand(
     format: _FmtNonCOO,
     dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix[np.float64]: ...
 
 #
@@ -1822,6 +1845,7 @@ def rand(
     *,
     dtype: onp.ToDType[_SCT],
     rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[_SCT]: ...
 @overload  # format: <otherwise>, dtype: <known> (keyword)
 def rand(
@@ -1832,6 +1856,7 @@ def rand(
     format: _FmtNonCOO,
     dtype: onp.ToDType[_SCT],
     rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix[_SCT]: ...
 
 #
@@ -1843,6 +1868,8 @@ def rand(
     format: _FmtCOO,
     dtype: onp.ToDType[_SCT],
     rng: onp.random.ToRNG | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[_SCT]: ...
 @overload  # format: <otherwise>, dtype: <known> (positional)
 def rand(
@@ -1852,6 +1879,8 @@ def rand(
     format: _FmtNonCOO,
     dtype: onp.ToDType[_SCT],
     rng: onp.random.ToRNG | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix[_SCT]: ...
 
 #
@@ -1864,6 +1893,7 @@ def rand(
     *,
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[np.complex128]: ...
 @overload  # format: <otherwise>, dtype: complex (keyword)
 def rand(
@@ -1874,6 +1904,7 @@ def rand(
     format: _FmtNonCOO,
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix[np.complex128]: ...
 
 #
@@ -1885,6 +1916,8 @@ def rand(
     format: _FmtCOO,
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[np.complex128]: ...
 @overload  # format: <otherwise>, dtype: complex (positional)
 def rand(
@@ -1894,6 +1927,8 @@ def rand(
     format: _FmtNonCOO,
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix[np.complex128]: ...
 
 #
@@ -1905,6 +1940,8 @@ def rand(
     format: _FmtCOO = "coo",
     dtype: npt.DTypeLike | None = None,
     rng: onp.random.ToRNG | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix: ...
 @overload  # format: <otherwise> (keyword), dtype: <unknown>
 def rand(
@@ -1915,6 +1952,7 @@ def rand(
     format: _FmtNonCOO,
     dtype: npt.DTypeLike | None = None,
     rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix: ...
 @overload  # format: <otherwise> (positional), dtype: <unknown>
 def rand(
@@ -1924,4 +1962,6 @@ def rand(
     format: _FmtNonCOO,
     dtype: npt.DTypeLike | None = None,
     rng: onp.random.ToRNG | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
 ) -> _SpMatrix: ...
