@@ -1450,17 +1450,11 @@ def bmat(blocks: Seq[Seq[spmatrix[_SCT]]], format: _FmtCOO | None = None, dtype:
 def bmat(blocks: Seq[Seq[spmatrix[_SCT]]], format: _FmtNonCOO, dtype: None = None) -> _SpMatrix[_SCT]: ...
 
 #
-@overload  # blocks: <unknown, unknown>, format: <default>, dtype: <known> (keyword)
+@overload  # blocks: <unknown, unknown>, format: <default>, dtype: <known>
 def bmat(
-    blocks: _ToBlocks, /, format: _FmtCOO | None = None, *, dtype: onp.ToDType[_SCT]
+    blocks: _ToBlocks, format: _FmtCOO | None = None, *, dtype: onp.ToDType[_SCT]
 ) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
-@overload  # blocks: <unknown, unknown>, format: <otherwise>, dtype: <known> (keyword)
-def bmat(blocks: _ToBlocks, /, *, format: _FmtNonCOO, dtype: onp.ToDType[_SCT]) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
-
-#
-@overload  # blocks: <unknown, unknown>, format: <default>, dtype: <known> (positional)
-def bmat(blocks: _ToBlocks, format: _FmtCOO | None, dtype: onp.ToDType[_SCT]) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
-@overload  # blocks: <unknown, unknown>, format: <otherwise>, dtype: <known> (positional)
+@overload  # blocks: <unknown, unknown>, format: <otherwise>, dtype: <known>
 def bmat(blocks: _ToBlocks, format: _FmtNonCOO, dtype: onp.ToDType[_SCT]) -> _SpBase2D[_SCT]: ...
 
 #
