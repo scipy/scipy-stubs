@@ -27,6 +27,7 @@ shape_1d: tuple[int]
 shape_2d: tuple[int, int]
 shape_3d: tuple[int, int, int]
 
+# TODO(julvandenbroeck): add tests for arrays with unknown shape, like np.ndarray[tuple[int, ...], np.dtype[ScalarType]]
 dense_1d: np.ndarray[tuple[int], np.dtype[ScalarType]]
 dense_2d: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
 
@@ -36,7 +37,6 @@ int_list: list[int]
 
 ###
 # diags_array
-# TODO: find way to only return float64 for real numbers and complex128 if there is a single complex number inside the sequence
 assert_type(sparse.diags_array([1, 2]), sparse.dia_array[np.float64] | sparse.dia_array[np.complex128])
 assert_type(sparse.diags_array([[1, 2], 2.0]), sparse.dia_array[np.float64] | sparse.dia_array[np.complex128])
 assert_type(sparse.diags_array([[1, 2.0], [2]]), sparse.dia_array[np.float64] | sparse.dia_array[np.complex128])

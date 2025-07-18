@@ -38,12 +38,12 @@ __all__ = [
     "vstack",
 ]
 
-_Numeric: TypeAlias = np.bool_ | npc.number
-
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=_Numeric, default=Any)
 _SCT0 = TypeVar("_SCT0", bound=_Numeric)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...])
+
+_Numeric: TypeAlias = np.bool_ | npc.number
 
 _ToArray1D: TypeAlias = Seq[_SCT] | onp.CanArray1D[_SCT]
 _ToArray2D: TypeAlias = Seq[Seq[_SCT] | onp.CanArray1D[_SCT]] | onp.CanArray2D[_SCT]
@@ -76,6 +76,7 @@ _FmtDOK: TypeAlias = Literal["dok"]
 _FmtLIL: TypeAlias = Literal["lil"]
 _FmtNonCOO: TypeAlias = Literal["bsr", "csc", "csr", "dia", "dok", "lil"]
 
+# TODO(julvandenbroeck): find a way to separate float and complex
 _ComplexSeq1D2D: TypeAlias = Seq[Seq[complex] | complex]
 _ToComplex1D2D: TypeAlias = onp.ToComplex1D | onp.ToComplex2D
 _Offsets: TypeAlias = onp.ToInt | onp.ToInt1D
