@@ -137,7 +137,7 @@ def diags_array(
 ) -> _DIAArray[_SCT]: ...
 @overload  # diagonals: <known>, format: "bsr", dtype: None
 def diags_array(
-    diagonals: onp.CanArray1D[_SCT] | onp.CanArray2D[_SCT],
+    diagonals: _CanArray1D2D[_SCT],
     /,
     *,
     offsets: _Offsets = 0,
@@ -147,7 +147,7 @@ def diags_array(
 ) -> _BSRArray[_SCT]: ...
 @overload  # diagonals: <known>, format: "coo", dtype: None
 def diags_array(
-    diagonals: onp.CanArray1D[_SCT] | onp.CanArray2D[_SCT],
+    diagonals: _CanArray1D2D[_SCT],
     /,
     *,
     offsets: _Offsets = 0,
@@ -157,7 +157,7 @@ def diags_array(
 ) -> _COOArray2D[_SCT]: ...
 @overload  # diagonals: <known>, format: "csc", dtype: None
 def diags_array(
-    diagonals: onp.CanArray1D[_SCT] | onp.CanArray2D[_SCT],
+    diagonals: _CanArray1D2D[_SCT],
     /,
     *,
     offsets: _Offsets = 0,
@@ -167,7 +167,7 @@ def diags_array(
 ) -> _CSCArray[_SCT]: ...
 @overload  # diagonals: <known>, format: "csr", dtype: None
 def diags_array(
-    diagonals: onp.CanArray1D[_SCT] | onp.CanArray2D[_SCT],
+    diagonals: _CanArray1D2D[_SCT],
     /,
     *,
     offsets: _Offsets = 0,
@@ -177,7 +177,7 @@ def diags_array(
 ) -> _CSRArray2D[_SCT]: ...
 @overload  # diagonals: <known>, format: "dok", dtype: None
 def diags_array(
-    diagonals: onp.CanArray1D[_SCT] | onp.CanArray2D[_SCT],
+    diagonals: _CanArray1D2D[_SCT],
     /,
     *,
     offsets: _Offsets = 0,
@@ -187,7 +187,7 @@ def diags_array(
 ) -> _DOKArray2D[_SCT]: ...
 @overload  # diagonals: <known>, format: "lil", dtype: None
 def diags_array(
-    diagonals: onp.CanArray1D[_SCT] | onp.CanArray2D[_SCT],
+    diagonals: _CanArray1D2D[_SCT],
     /,
     *,
     offsets: _Offsets = 0,
@@ -594,75 +594,72 @@ def diags_array(
 
 ###
 # NOTE: `diags_array` should be prefered over `diags`
-@overload  # diagonals: <known>, format: "dia" | None
+@overload  # diagonals: <known>, format: "dia" | None, dtype: None
 def diags(
     diagonals: _ToArray1D2D[_SCT],
-    /,
-    *,
     offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
-    dtype: onp.ToDType[_SCT] | None = None,
+    dtype: None = None,
 ) -> dia_matrix[_SCT]: ...
-@overload  # diagonals: <known>, format: "bsr"
+@overload  # diagonals: <known>, format: "bsr", dtype: None
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
-    format: _FmtBSR,
-    dtype: onp.ToDType[_SCT] | None = None,
+    diagonals: _ToArray1D2D[_SCT], offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtBSR, dtype: None = None
 ) -> bsr_matrix[_SCT]: ...
-@overload  # diagonals: <known>, format: "coo"
+@overload  # diagonals: <known>, format: "coo", dtype: None
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
-    format: _FmtCOO,
-    dtype: onp.ToDType[_SCT] | None = None,
+    diagonals: _ToArray1D2D[_SCT], offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtCOO, dtype: None = None
 ) -> coo_matrix[_SCT]: ...
-@overload  # diagonals: <known>, format: "csr"
+@overload  # diagonals: <known>, format: "csc", dtype: None
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
-    format: _FmtCSR,
-    dtype: onp.ToDType[_SCT] | None = None,
-) -> csr_matrix[_SCT]: ...
-@overload  # diagonals: <known>, format: "csc"
-def diags(
-    diagonals: _ToArray1D2D[_SCT],
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
-    format: _FmtCSC,
-    dtype: onp.ToDType[_SCT] | None = None,
+    diagonals: _ToArray1D2D[_SCT], offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtCSC, dtype: None = None
 ) -> csc_matrix[_SCT]: ...
-@overload  # diagonals: <known>, format: "dok"
+@overload  # diagonals: <known>, format: "csr", dtype: None
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
-    /,
-    *,
-    offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
-    format: _FmtDOK,
-    dtype: onp.ToDType[_SCT] | None = None,
+    diagonals: _ToArray1D2D[_SCT], offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtCSR, dtype: None = None
+) -> csr_matrix[_SCT]: ...
+@overload  # diagonals: <known>, format: "dok", dtype: None
+def diags(
+    diagonals: _ToArray1D2D[_SCT], offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtDOK, dtype: None = None
 ) -> dok_matrix[_SCT]: ...
-@overload  # diagonals: <known>, format: "lil"
+@overload  # diagonals: <known>, format: "lil", dtype: None
 def diags(
-    diagonals: _ToArray1D2D[_SCT],
-    /,
-    *,
+    diagonals: _ToArray1D2D[_SCT], offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtLIL, dtype: None = None
+) -> lil_matrix[_SCT]: ...
+
+#
+@overload  # diagonals: <known>, format: "dia" | None, dtype: <known>
+def diags(
+    diagonals: _ToArray1D2D,
     offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
-    format: _FmtLIL,
-    dtype: onp.ToDType[_SCT] | None = None,
+    shape: _ToShape2D | None = None,
+    format: _FmtDIA | None = None,
+    *,
+    dtype: onp.ToDType[_SCT],
+) -> dia_matrix[_SCT]: ...
+@overload  # diagonals: <known>, format: "bsr", dtype: <known>
+def diags(
+    diagonals: _ToArray1D2D, offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtBSR, dtype: onp.ToDType[_SCT]
+) -> bsr_matrix[_SCT]: ...
+@overload  # diagonals: <known>, format: "coo", dtype: <known>
+def diags(
+    diagonals: _ToArray1D2D, offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtCOO, dtype: onp.ToDType[_SCT]
+) -> coo_matrix[_SCT]: ...
+@overload  # diagonals: <known>, format: "csr", dtype: <known>
+def diags(
+    diagonals: _ToArray1D2D, offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtCSR, dtype: onp.ToDType[_SCT]
+) -> csr_matrix[_SCT]: ...
+@overload  # diagonals: <known>, format: "csc", dtype: <known>
+def diags(
+    diagonals: _ToArray1D2D, offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtCSC, dtype: onp.ToDType[_SCT]
+) -> csc_matrix[_SCT]: ...
+@overload  # diagonals: <known>, format: "dok", dtype: <known>
+def diags(
+    diagonals: _ToArray1D2D, offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtDOK, dtype: onp.ToDType[_SCT]
+) -> dok_matrix[_SCT]: ...
+@overload  # diagonals: <known>, format: "lil", dtype: <known>
+def diags(
+    diagonals: _ToArray1D2D, offsets: _Offsets = 0, shape: _ToShape2D | None = None, *, format: _FmtLIL, dtype: onp.ToDType[_SCT]
 ) -> lil_matrix[_SCT]: ...
 
 #
@@ -677,60 +674,54 @@ def diags(
 @overload  # diagonals: <unknown>, format: "bsr", dtype: <unknown>
 def diags(
     diagonals: _ToComplex1D2D,
-    /,
-    *,
     offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
+    shape: _ToShape2D | None = None,
+    *,
     format: _FmtBSR,
     dtype: npt.DTypeLike | None = None,
 ) -> bsr_matrix: ...
 @overload  # diagonals: <unknown>, format: "coo", dtype: <unknown>
 def diags(
     diagonals: _ToComplex1D2D,
-    /,
-    *,
     offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
+    shape: _ToShape2D | None = None,
+    *,
     format: _FmtCOO,
     dtype: npt.DTypeLike | None = None,
 ) -> coo_matrix: ...
 @overload  # diagonals: <unknown>, format: "csr", dtype: <unknown>
 def diags(
     diagonals: _ToComplex1D2D,
-    /,
-    *,
     offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
+    shape: _ToShape2D | None = None,
+    *,
     format: _FmtCSR,
     dtype: npt.DTypeLike | None = None,
 ) -> csr_matrix: ...
 @overload  # diagonals: <unknown>, format: "csc", dtype: <unknown>
 def diags(
     diagonals: _ToComplex1D2D,
-    /,
-    *,
     offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
+    shape: _ToShape2D | None = None,
+    *,
     format: _FmtCSC,
     dtype: npt.DTypeLike | None = None,
 ) -> csc_matrix: ...
 @overload  # diagonals: <unknown>, format: "dok" dtype: <unknown>
 def diags(
     diagonals: _ToComplex1D2D,
-    /,
-    *,
     offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
+    shape: _ToShape2D | None = None,
+    *,
     format: _FmtDOK,
     dtype: npt.DTypeLike | None = None,
 ) -> dok_matrix: ...
 @overload  # diagonals: <unknown>, format: "lil", dtype: <unknown>
 def diags(
     diagonals: _ToComplex1D2D,
-    /,
-    *,
     offsets: _Offsets = 0,
-    shape: _ToShape2D | None,
+    shape: _ToShape2D | None = None,
+    *,
     format: _FmtLIL,
     dtype: npt.DTypeLike | None = None,
 ) -> lil_matrix: ...
