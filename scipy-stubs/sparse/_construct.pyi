@@ -707,7 +707,7 @@ def diags(
     format: _FmtCSC,
     dtype: npt.DTypeLike | None = None,
 ) -> csc_matrix: ...
-@overload  # diagonals: <unknown>, format: "dok" dtype: <unknown>
+@overload  # diagonals: <unknown>, format: "dok", dtype: <unknown>
 def diags(
     diagonals: _ToComplex1D2D,
     offsets: _Offsets = 0,
