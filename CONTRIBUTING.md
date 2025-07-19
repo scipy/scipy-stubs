@@ -42,7 +42,7 @@ To install it as a `uv` tool, run
 uv tool install lefthook --upgrade
 ```
 
-To set it up, navigate to the root of the `numtype` repo, and run
+To set it up, navigate to the root of the `scipy-stubs` repo, and run
 
 ```shell
 uvx lefthook install
