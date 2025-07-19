@@ -96,7 +96,11 @@ mypy: OK ✔ in 16.69 seconds
 
 All [documentation] lives in the `README.md`. Please read it carefully before proposing
 any changes. Ensure that the markdown is formatted correctly with
-[markdownlint](https://github.com/DavidAnson/markdownlint).
+[dprint][dprint] by running:
+
+```shell
+uv run dprint fmt
+```
 
 ## Testing
 
@@ -115,3 +119,4 @@ titles. For VSCode and VSCodium users, it can be convenient to use the
 [coc]: https://docs.scipy.org/doc/scipy/dev/conduct/code_of_conduct.html
 [license]: https://github.com/scipy/scipy-stubs/blob/master/LICENSE
 [tests]: https://github.com/scipy/scipy-stubs/tree/master/tests
+[dprint]: https://github.com/dprint/dprint
