@@ -27,14 +27,14 @@ installed. Now you can install the project with the dev dependencies:
 uv sync --python 3.11
 ```
 
-By installing the lowest support Python version (3.11 in this example), it prevents
+Installing the lowest supported Python version (3.11 in this example) prevents
 your IDE from e.g. auto-importing unsupported `typing` features.
 
 ## Lefthook
 
-[Lefthook] is a modern Git hooks manager, which automatically lints and formats
-your code before you committing it. It will also keep your `uv` environment
-up-to-date with the lockfile when you `git pull`.
+[Lefthook](https://github.com/evilmartians/lefthook) is a modern Git hooks manager,
+which automatically lints and formats your code before you commit it. It will also sync
+your `uv` environment with the lockfile when you `git pull` or `git checkout`.
 
 To install it as a `uv` tool, run
 
@@ -48,7 +48,7 @@ To set it up, navigate to the root of the `scipy-stubs` repo, and run
 uvx lefthook install
 ```
 
-Now let's see it all works:
+Now let's see if it all works:
 
 ```bash
 $ uvx lefthook validate
@@ -108,9 +108,9 @@ See <https://typing.python.org/en/latest/guides/writing_stubs.html#style-guide>.
 
 ## Commit message style
 
-Scipy-stubs recommends using [Gitmoji](https://gitmoji.dev/) for commit messages and PR
-titles. For VSCode and VSCodium users, it is recommended to use the
-[`gitmoji-vscode` extension](https://github.com/seatonjiang/gitmoji-vscode) for this.
+scipy-stubs recommends using [Gitmoji](https://gitmoji.dev/) for commit messages and PR
+titles. For VSCode and VSCodium users, it can be convenient to use the
+[`gitmoji-vscode`](https://github.com/seatonjiang/gitmoji-vscode) extension for this.
 
 [coc]: https://docs.scipy.org/doc/scipy/dev/conduct/code_of_conduct.html
 [license]: https://github.com/scipy/scipy-stubs/blob/master/LICENSE
