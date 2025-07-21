@@ -195,7 +195,7 @@ def odeint(
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
     args: tuple[*_Ts],
-    Dfun: _FuncTY[*_Ts, onp.ToFloat2D] | None = None,
+    Dfun: _FuncYT[*_Ts, onp.ToFloat2D] | None = None,
     col_deriv: onp.ToBool = 0,
     *,
     full_output: Literal[True, 1],
