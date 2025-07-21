@@ -12,7 +12,7 @@ information.
 ## Type annotations
 
 Use `A | B` instead of `Union[A, B]`.
-Use `*Tss` instead of `Unpack[Tss]`.
+Use `*Ts` instead of `Unpack[Ts]`.
 Use `type[T]` and `list[T]` instead of `Type[T]` and `List[T]`.
 Import `Sequence`, `Mapping`, `Iterable`, `Iterator`, `Generator`, and `Callable` from
 `collections.abc` instead of `typing`.
