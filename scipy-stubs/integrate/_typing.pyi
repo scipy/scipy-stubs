@@ -6,7 +6,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-__all__ = "ODEInfoDict", "QuadInfoDict", "QuadOpts", "QuadWeights"
+__all__ = "QuadInfoDict", "QuadOpts", "QuadWeights"
 
 _IntLike: TypeAlias = int | npc.integer
 _FloatLike: TypeAlias = float | npc.floating
@@ -48,18 +48,3 @@ class QuadInfoDict(TypedDict):
     rslst: NotRequired[onp.Array1D[np.float64]]
     erlst: NotRequired[onp.Array1D[np.float64]]
     ierlst: NotRequired[onp.Array1D[np.float64]]
-
-@type_check_only
-class ODEInfoDict(TypedDict):
-    hu: onp.Array1D[np.float64]
-    tcur: onp.Array1D[np.float64]
-    tolsf: onp.Array1D[np.float64]
-    tsw: float
-    nst: int
-    nfe: int
-    nje: int
-    nqu: onp.Array1D[np.int_]
-    imxer: int
-    lenrw: int
-    leniw: int
-    mused: onp.Array1D[np.int_]
