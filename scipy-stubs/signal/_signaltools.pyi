@@ -1,3 +1,8 @@
+# NOTE: Due to the many false positive overlap mypy errors in this file, we disable the error code, and instead rely on pyright to
+# catch incompatible overlapping overloads.
+
+# mypy: disable-error-code=overload-overlap
+
 from collections.abc import Callable
 from typing import Any, Literal as L, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
@@ -415,17 +420,17 @@ def correlation_lags(in1_len: int, in2_len: int, mode: onp.ConvolveMode = "full"
 
 #
 @overload  # +float64, ~float64
-def lfilter_zi(b: onp.ToJustFloat64_1D, a: onp.ToFloat64_1D) -> onp.Array1D[np.float64]: ...  # type: ignore[overload-overlap]
+def lfilter_zi(b: onp.ToJustFloat64_1D, a: onp.ToFloat64_1D) -> onp.Array1D[np.float64]: ...
 @overload  # ~float64, +float64
-def lfilter_zi(b: onp.ToFloat64_1D, a: onp.ToJustFloat64_1D) -> onp.Array1D[np.float64]: ...  # type: ignore[overload-overlap]
+def lfilter_zi(b: onp.ToFloat64_1D, a: onp.ToJustFloat64_1D) -> onp.Array1D[np.float64]: ...
 @overload  # ~float32, +float32
 def lfilter_zi(b: onp.ToJustFloat32_1D, a: onp.ToFloat32_1D) -> onp.Array1D[np.float32]: ...
 @overload  # +float32, ~float32
 def lfilter_zi(b: onp.ToFloat32_1D, a: onp.ToJustFloat32_1D) -> onp.Array1D[np.float32]: ...
 @overload  # +complex128, ~complex128
-def lfilter_zi(b: onp.ToJustComplex128_1D, a: onp.ToComplex128_1D) -> onp.Array1D[np.complex128]: ...  # type: ignore[overload-overlap]
+def lfilter_zi(b: onp.ToJustComplex128_1D, a: onp.ToComplex128_1D) -> onp.Array1D[np.complex128]: ...
 @overload  # ~complex128, +complex128
-def lfilter_zi(b: onp.ToComplex128_1D, a: onp.ToJustComplex128_1D) -> onp.Array1D[np.complex128]: ...  # type: ignore[overload-overlap]
+def lfilter_zi(b: onp.ToComplex128_1D, a: onp.ToJustComplex128_1D) -> onp.Array1D[np.complex128]: ...
 @overload  # +complex64, ~complex64
 def lfilter_zi(b: onp.ToJustComplex64_1D, a: onp.ToComplex64_1D) -> onp.Array1D[np.complex64]: ...
 @overload  # ~complex64, +complex64
@@ -937,7 +942,7 @@ def wiener(im: onp.ToComplexND, mysize: int | onp.ToInt1D | None = None, noise: 
 
 #
 @overload  # float64 | integer, known shape
-def hilbert(  # type: ignore[overload-overlap]
+def hilbert(
     x: onp.CanArrayND[np.float64 | npc.integer, _ShapeT], N: int | None = None, axis: int = -1
 ) -> onp.ArrayND[np.complex128, _ShapeT]: ...
 @overload  # float32 | float16, known shape
@@ -957,7 +962,7 @@ def hilbert(x: onp.ToFloatND, N: int | None = None, axis: int = -1) -> onp.Array
 
 #
 @overload  # float64 | integer
-def hilbert2(  # type: ignore[overload-overlap]
+def hilbert2(
     x: onp.ToArray2D[float, np.float64 | npc.integer], N: int | tuple[int, int] | None = None
 ) -> onp.Array2D[np.complex128]: ...
 @overload  # float32 | float16
