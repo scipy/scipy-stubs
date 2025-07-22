@@ -501,23 +501,63 @@ def sosfilt_zi(sos: onp.ToJustComplex128_2D) -> onp.Array2D[np.complex128]: ...
 @overload  # fallback
 def sosfilt_zi(sos: onp.ToComplex2D) -> onp.Array2D[Any]: ...
 
-# TODO(jorenham): improve
-@overload
-def sosfilt(sos: onp.ToFloat2D, x: onp.ToFloatND, axis: int = -1, zi: None = None) -> onp.ArrayND[_F16_64]: ...
-@overload
-def sosfilt(sos: onp.ToFloat2D, x: onp.ToFloatND, axis: int, zi: onp.ToFloatND) -> _Tuple2[onp.ArrayND[_F16_64]]: ...
-@overload
-def sosfilt(sos: onp.ToFloat2D, x: onp.ToFloatND, axis: int = -1, *, zi: onp.ToFloatND) -> _Tuple2[onp.ArrayND[_F16_64]]: ...
-@overload
-def sosfilt(sos: onp.ToComplex2D, x: onp.ToComplexND, axis: int = -1, zi: None = None) -> onp.ArrayND[_F16_64 | _C64_128]: ...
-@overload
+#
+@overload  # ~float64 | integer, +float64, zi: None (default)
 def sosfilt(
-    sos: onp.ToComplex2D, x: onp.ToComplexND, axis: int, zi: onp.ToFloatND
-) -> _Tuple2[onp.ArrayND[_F16_64 | _C64_128]]: ...
-@overload
+    sos: onp.ToArray2D[float, np.float64 | npc.integer], x: onp.ToFloat64_ND, axis: int = -1, zi: None = None
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~float64 | integer, +float64, *, zi: +float64
 def sosfilt(
-    sos: onp.ToComplex2D, x: onp.ToComplexND, axis: int = -1, *, zi: onp.ToFloatND
-) -> _Tuple2[onp.ArrayND[_F16_64 | _C64_128]]: ...
+    sos: onp.ToArray2D[float, np.float64 | npc.integer], x: onp.ToFloat64_ND, *, axis: int = -1, zi: onp.ToFloat64_ND
+) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+@overload  # +float64, ~float64 | integer, zi: None (default)
+def sosfilt(
+    sos: onp.ToFloat64_2D, x: onp.ToArrayND[float, np.float64 | npc.integer], axis: int = -1, zi: None = None
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float64, ~float64 | integer, *, zi: +float64
+def sosfilt(
+    sos: onp.ToFloat64_2D, x: onp.ToArrayND[float, np.float64 | npc.integer], *, axis: int = -1, zi: onp.ToFloat64_ND
+) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+@overload  # ~float32, +float32, zi: None (default)
+def sosfilt(sos: onp.ToJustFloat32_2D, x: onp.ToFloat32_ND, axis: int = -1, zi: None = None) -> onp.ArrayND[np.float32]: ...
+@overload  # ~float32, +float32, *, zi: +float32
+def sosfilt(
+    sos: onp.ToJustFloat32_2D, x: onp.ToFloat32_ND, *, axis: int = -1, zi: onp.ToFloat32_ND
+) -> _Tuple2[onp.ArrayND[np.float32]]: ...
+@overload  # +float32, ~float32, zi: None (default)
+def sosfilt(sos: onp.ToFloat32_2D, x: onp.ToJustFloat32_ND, axis: int = -1, zi: None = None) -> onp.ArrayND[np.float32]: ...
+@overload  # +float32, ~float32, *, zi: +float32
+def sosfilt(
+    sos: onp.ToFloat32_2D, x: onp.ToJustFloat32_ND, *, axis: int = -1, zi: onp.ToFloat32_ND
+) -> _Tuple2[onp.ArrayND[np.float32]]: ...
+@overload  # ~complex128, +complex128, zi: None (default)
+def sosfilt(
+    sos: onp.ToJustComplex128_2D, x: onp.ToComplex128_ND, axis: int = -1, zi: None = None
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~complex128, +complex128, *, zi: +complex128
+def sosfilt(
+    sos: onp.ToJustComplex128_2D, x: onp.ToComplex128_ND, *, axis: int = -1, zi: onp.ToComplex128_ND
+) -> _Tuple2[onp.ArrayND[np.complex128]]: ...
+@overload  # +complex128, ~complex128, zi: None (default)
+def sosfilt(
+    sos: onp.ToComplex128_2D, x: onp.ToJustComplex128_ND, axis: int = -1, zi: None = None
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +complex128, ~complex128, *, zi: +complex128
+def sosfilt(
+    sos: onp.ToComplex128_2D, x: onp.ToJustComplex128_ND, *, axis: int = -1, zi: onp.ToComplex128_ND
+) -> _Tuple2[onp.ArrayND[np.complex128]]: ...
+@overload  # ~complex64, +complex64, zi: None (default)
+def sosfilt(sos: onp.ToJustComplex64_2D, x: onp.ToComplex64_ND, axis: int = -1, zi: None = None) -> onp.ArrayND[np.complex64]: ...
+@overload  # ~complex64, +complex64, *, zi: +complex64
+def sosfilt(
+    sos: onp.ToJustComplex64_2D, x: onp.ToComplex64_ND, *, axis: int = -1, zi: onp.ToComplex64_ND
+) -> _Tuple2[onp.ArrayND[np.complex64]]: ...
+@overload  # +complex64, ~complex64, zi: None (default)
+def sosfilt(sos: onp.ToComplex64_2D, x: onp.ToJustComplex64_ND, axis: int = -1, zi: None = None) -> onp.ArrayND[np.complex64]: ...
+@overload  # +complex64, ~complex64, *, zi: +complex64
+def sosfilt(
+    sos: onp.ToComplex64_2D, x: onp.ToJustComplex64_ND, *, axis: int = -1, zi: onp.ToComplex64_ND
+) -> _Tuple2[onp.ArrayND[np.complex64]]: ...
 
 #
 @overload  # ~float64 | integer, +float64
@@ -544,10 +584,6 @@ def sosfiltfilt(
 def sosfiltfilt(
     sos: onp.ToFloat32_2D, x: onp.ToJustFloat32_ND, axis: int = -1, padtype: _FiltFiltPadType = "odd", padlen: int | None = None
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # +floating, ~longdouble  (does not hold for the commuted case)
-def sosfiltfilt(
-    sos: onp.ToFloat2D, x: onp.ToJustLongDoubleND, axis: int = -1, padtype: _FiltFiltPadType = "odd", padlen: int | None = None
-) -> onp.ArrayND[np.longdouble]: ...
 @overload  # ~complex128, +complex128
 def sosfiltfilt(
     sos: onp.ToJustComplex128_2D,
@@ -580,10 +616,6 @@ def sosfiltfilt(
     padtype: _FiltFiltPadType = "odd",
     padlen: int | None = None,
 ) -> onp.ArrayND[np.complex64]: ...
-@overload  # +complexfloating, ~clongdouble  (does not hold for the commuted case)
-def sosfiltfilt(
-    sos: onp.ToComplex2D, x: onp.ToJustCLongDoubleND, axis: int = -1, padtype: _FiltFiltPadType = "odd", padlen: int | None = None
-) -> onp.ArrayND[np.clongdouble]: ...
 @overload  # fallback
 def sosfiltfilt(
     sos: onp.ToComplex2D, x: onp.ToComplexND, axis: int = -1, padtype: _FiltFiltPadType = "odd", padlen: int | None = None
