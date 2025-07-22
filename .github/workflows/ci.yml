@@ -89,35 +89,24 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
 
+      # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
+      # manually (re)install the desired version directly in the environment.
+      - name: install deps
+        run: |
+          uv sync --no-editable
+          uv pip install numpy==${{ matrix.numpy }}
+
       - name: basedpyright
         run: >
-          uv run
-          -p ${{ matrix.python }}
-          --with="numpy==${{ matrix.numpy }}"
-          --no-editable
+          uv run --active --no-sync
           basedpyright
 
       - name: mypy
         run: >
-          uv run
-          -p ${{ matrix.python }}
-          --with="numpy==${{ matrix.numpy }}"
-          --no-editable
-          mypy
-          --tb
-          --hide-error-context
-          --hide-error-code-links
-          --no-incremental
-          --cache-dir=/dev/null
-          --soft-error-limit=-1
-          .
+          uv run --active --no-sync
+          mypy --no-incremental --cache-dir=/dev/null --soft-error-limit=-1 .
 
       - name: stubtest
         run: >
-          uv run
-          -p ${{ matrix.python }}
-          --with="numpy==${{ matrix.numpy }}"
-          --no-editable
-          stubtest
-          --allowlist=.mypyignore
-          scipy
+          uv run --active --no-sync
+          stubtest --allowlist=.mypyignore scipy
