@@ -467,29 +467,139 @@ def lfilter(
     b: onp.ToComplex1D, a: onp.ToComplex1D, x: onp.ToComplexND, axis: int = -1, *, zi: onp.ToComplexND
 ) -> _Tuple2[onp.ArrayND[_C64_128 | _F16_64]]: ...
 
-# TODO(jorenham): improve
-@overload
+#
+@overload  # ~float64 | integer, +float64, +float64
 def filtfilt(
-    b: onp.ToFloat1D,
-    a: onp.ToFloat1D,
-    x: onp.ToFloatND,
+    b: onp.ToArray1D[float, np.float64 | npc.integer],
+    a: onp.ToFloat64_1D,
+    x: onp.ToFloat64_ND,
     axis: int = -1,
     padtype: _FiltFiltPadType = "odd",
     padlen: int | None = None,
     method: _FiltFiltMethod = "pad",
     irlen: int | None = None,
-) -> onp.ArrayND[_F16_64]: ...
-@overload
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float64, ~float64 | integer, +float64
 def filtfilt(
-    b: onp.ToComplex1D,
-    a: onp.ToComplex1D,
-    x: onp.ToComplexND,
+    b: onp.ToFloat64_1D,
+    a: onp.ToArray1D[float, np.float64 | npc.integer],
+    x: onp.ToFloat64_ND,
     axis: int = -1,
     padtype: _FiltFiltPadType = "odd",
     padlen: int | None = None,
     method: _FiltFiltMethod = "pad",
     irlen: int | None = None,
-) -> onp.ArrayND[_C64_128 | _F16_64]: ...
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float64, +float64, ~float64 | integer
+def filtfilt(
+    b: onp.ToFloat64_1D,
+    a: onp.ToFloat64_1D,
+    x: onp.ToArrayND[float, np.float64 | npc.integer],
+    axis: int = -1,
+    padtype: _FiltFiltPadType = "odd",
+    padlen: int | None = None,
+    method: _FiltFiltMethod = "pad",
+    irlen: int | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~float32, +float32, +float32
+def filtfilt(
+    b: onp.ToJustFloat32_1D,
+    a: onp.ToFloat32_1D,
+    x: onp.ToFloat32_ND,
+    axis: int = -1,
+    padtype: _FiltFiltPadType = "odd",
+    padlen: int | None = None,
+    method: _FiltFiltMethod = "pad",
+    irlen: int | None = None,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +float32, ~float32, +float32
+def filtfilt(
+    b: onp.ToFloat32_1D,
+    a: onp.ToJustFloat32_1D,
+    x: onp.ToFloat32_ND,
+    axis: int = -1,
+    padtype: _FiltFiltPadType = "odd",
+    padlen: int | None = None,
+    method: _FiltFiltMethod = "pad",
+    irlen: int | None = None,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +float32, +float32, ~float32
+def filtfilt(
+    b: onp.ToFloat32_1D,
+    a: onp.ToFloat32_1D,
+    x: onp.ToJustFloat32_ND,
+    axis: int = -1,
+    padtype: _FiltFiltPadType = "odd",
+    padlen: int | None = None,
+    method: _FiltFiltMethod = "pad",
+    irlen: int | None = None,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~complex128, +complex128, +complex128
+def filtfilt(
+    b: onp.ToJustComplex128_1D,
+    a: onp.ToComplex128_1D,
+    x: onp.ToComplex128_ND,
+    axis: int = -1,
+    padtype: _FiltFiltPadType = "odd",
+    padlen: int | None = None,
+    method: _FiltFiltMethod = "pad",
+    irlen: int | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +complex128, ~complex128, +complex128
+def filtfilt(
+    b: onp.ToComplex128_1D,
+    a: onp.ToJustComplex128_1D,
+    x: onp.ToComplex128_ND,
+    axis: int = -1,
+    padtype: _FiltFiltPadType = "odd",
+    padlen: int | None = None,
+    method: _FiltFiltMethod = "pad",
+    irlen: int | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +complex128, +complex128, ~complex128
+def filtfilt(
+    b: onp.ToComplex128_1D,
+    a: onp.ToComplex128_1D,
+    x: onp.ToJustComplex128_ND,
+    axis: int = -1,
+    padtype: _FiltFiltPadType = "odd",
+    padlen: int | None = None,
+    method: _FiltFiltMethod = "pad",
+    irlen: int | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~complex64, +complex64, +complex64
+def filtfilt(
+    b: onp.ToJustComplex64_1D,
+    a: onp.ToComplex64_1D,
+    x: onp.ToComplex64_ND,
+    axis: int = -1,
+    padtype: _FiltFiltPadType = "odd",
+    padlen: int | None = None,
+    method: _FiltFiltMethod = "pad",
+    irlen: int | None = None,
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # +complex64, ~complex64, +complex64
+def filtfilt(
+    b: onp.ToComplex64_1D,
+    a: onp.ToJustComplex64_1D,
+    x: onp.ToComplex64_ND,
+    axis: int = -1,
+    padtype: _FiltFiltPadType = "odd",
+    padlen: int | None = None,
+    method: _FiltFiltMethod = "pad",
+    irlen: int | None = None,
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # +complex64, +complex64, ~complex64
+def filtfilt(
+    b: onp.ToComplex64_1D,
+    a: onp.ToComplex64_1D,
+    x: onp.ToJustComplex64_ND,
+    axis: int = -1,
+    padtype: _FiltFiltPadType = "odd",
+    padlen: int | None = None,
+    method: _FiltFiltMethod = "pad",
+    irlen: int | None = None,
+) -> onp.ArrayND[np.complex64]: ...
 
 #
 @overload  # T -> T
