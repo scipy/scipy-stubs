@@ -433,15 +433,57 @@ def lfilter_zi(b: onp.ToComplex64_1D, a: onp.ToJustComplex64_1D) -> onp.Array1D[
 @overload  # fallback
 def lfilter_zi(b: onp.ToComplex1D, a: onp.ToComplex1D) -> onp.Array1D[Any]: ...
 
-# TODO(jorenham): improve
-@overload
+#
+@overload  # ~float64 | integer, +float64, +float64, +float64 | None
 def lfiltic(
-    b: onp.ToFloat1D, a: onp.ToFloat1D, y: onp.ToFloat1D, x: onp.ToFloat1D | None = None
-) -> onp.Array1D[npc.floating]: ...
-@overload
+    b: onp.ToArray1D[float, np.float64 | npc.integer], a: onp.ToFloat64_1D, y: onp.ToFloat64_1D, x: onp.ToFloat64_1D | None = None
+) -> onp.Array1D[np.float64]: ...
+@overload  # +float64, ~float64 | integer, +float64, +float64 | None
 def lfiltic(
-    b: onp.ToComplex1D, a: onp.ToComplex1D, y: onp.ToComplex1D, x: onp.ToComplex1D | None = None
-) -> onp.Array1D[npc.inexact]: ...
+    b: onp.ToFloat64_1D, a: onp.ToArray1D[float, np.float64 | npc.integer], y: onp.ToFloat64_1D, x: onp.ToFloat64_1D | None = None
+) -> onp.Array1D[np.float64]: ...
+@overload  # +float64, +float64, ~float64 | integer, +float64 | None
+def lfiltic(
+    b: onp.ToFloat64_1D, a: onp.ToFloat64_1D, y: onp.ToArray1D[float, np.float64 | npc.integer], x: onp.ToFloat64_1D | None = None
+) -> onp.Array1D[np.float64]: ...
+@overload  # ~float32, +float32, +float32, +float32 | None
+def lfiltic(
+    b: onp.ToJustFloat32_1D, a: onp.ToFloat32_1D, y: onp.ToFloat32_1D, x: onp.ToFloat32_1D | None = None
+) -> onp.Array1D[np.float32]: ...
+@overload  # +float32, ~float32, +float32, +float32 | None
+def lfiltic(
+    b: onp.ToFloat32_1D, a: onp.ToJustFloat32_1D, y: onp.ToFloat32_1D, x: onp.ToFloat32_1D | None = None
+) -> onp.Array1D[np.float32]: ...
+@overload  # +float32, +float32, ~float32, +float32 | None
+def lfiltic(
+    b: onp.ToFloat32_1D, a: onp.ToFloat32_1D, y: onp.ToJustFloat32_1D, x: onp.ToFloat32_1D | None = None
+) -> onp.Array1D[np.float32]: ...
+@overload  # ~complex128, +complex128, +complex128, +complex128 | None
+def lfiltic(
+    b: onp.ToJustComplex128_1D, a: onp.ToComplex128_1D, y: onp.ToComplex128_1D, x: onp.ToComplex128_1D | None = None
+) -> onp.Array1D[np.complex128]: ...
+@overload  # +complex128, ~complex128, +complex128, +complex128 | None
+def lfiltic(
+    b: onp.ToComplex128_1D, a: onp.ToJustComplex128_1D, y: onp.ToComplex128_1D, x: onp.ToComplex128_1D | None = None
+) -> onp.Array1D[np.complex128]: ...
+@overload  # +complex128, +complex128, ~complex128, +complex128 | None
+def lfiltic(
+    b: onp.ToComplex128_1D, a: onp.ToComplex128_1D, y: onp.ToJustComplex128_1D, x: onp.ToComplex128_1D | None = None
+) -> onp.Array1D[np.complex128]: ...
+@overload  # ~complex64, +complex64, +complex64, +complex64 | None
+def lfiltic(
+    b: onp.ToJustComplex64_1D, a: onp.ToComplex64_1D, y: onp.ToComplex64_1D, x: onp.ToComplex64_1D | None = None
+) -> onp.Array1D[np.complex64]: ...
+@overload  # +complex64, ~complex64, +complex64, +complex64 | None
+def lfiltic(
+    b: onp.ToComplex64_1D, a: onp.ToJustComplex64_1D, y: onp.ToComplex64_1D, x: onp.ToComplex64_1D | None = None
+) -> onp.Array1D[np.complex64]: ...
+@overload  # +complex64, +complex64, ~complex64, +complex64 | None
+def lfiltic(
+    b: onp.ToComplex64_1D, a: onp.ToComplex64_1D, y: onp.ToJustComplex64_1D, x: onp.ToComplex64_1D | None = None
+) -> onp.Array1D[np.complex64]: ...
+@overload  # fallback
+def lfiltic(b: onp.ToComplex1D, a: onp.ToComplex1D, y: onp.ToComplex1D, x: onp.ToComplex1D | None = None) -> onp.Array1D[Any]: ...
 
 #
 @overload  # ~float64 | integer, +float64, +float64, zi: None (default)
