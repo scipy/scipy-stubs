@@ -113,6 +113,13 @@ disallow_subclassing_any = false
 always_true = ["NP125", "NP126", "NP20", "NP21", "NP22", "NP23"]
 
 [tool.pyright]
+exclude = [
+  "**/__pycache__",
+  "**/.mypy_cache",
+  "**/.ruff_cache",
+  "**/.tox",
+  "**/.venv",
+]
 ignore = [".venv"]
 stubPath = "."
 pythonPlatform = "All"
