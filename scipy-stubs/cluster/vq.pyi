@@ -1,6 +1,6 @@
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Any, Final, Literal, TypeAlias, overload
+from typing import Final, Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -29,9 +29,9 @@ class ClusterError(Exception): ...
 
 #
 @overload
-def whiten(obs: onp.ArrayND[np.bool_ | npc.integer, Any], check_finite: bool | None = None) -> onp.Array2D[np.float64]: ...
+def whiten(obs: onp.ArrayND[np.bool_ | npc.integer], check_finite: bool | None = None) -> onp.Array2D[np.float64]: ...
 @overload
-def whiten(obs: onp.ArrayND[_InexactT, Any], check_finite: bool | None = None) -> onp.Array2D[_InexactT]: ...
+def whiten(obs: onp.ArrayND[_InexactT], check_finite: bool | None = None) -> onp.Array2D[_InexactT]: ...
 
 #
 @overload  # float32
