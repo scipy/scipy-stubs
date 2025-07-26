@@ -217,26 +217,28 @@ wheels = [
 
 [[package]]
 name = "numpy-typing-compat"
-version = "2.3.20250724"
+version = "2.3.20250726"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "numpy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/59/7f/de2a17e81f36ad01974207a7b325eb04a866405688045b849fb4e76e2670/numpy_typing_compat-2.3.20250724.tar.gz", hash = "sha256:076c0fa2865a43bf7c86a4f83ef33c0a4dcf1d6c4a1e70ba99dfe8930e501a59", size = 3367, upload-time = "2025-07-24T00:59:30.672Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/f7/65/1b9914c6edb875e36b24496ab63fd507a5ea1c2c45ddb11fe91ad554ec1c/numpy_typing_compat-2.3.20250726.tar.gz", hash = "sha256:ffa89ab34e5f13549f84b9fd10be1d9873971055e6df305c9c9d4a88f10665a8", size = 3948, upload-time = "2025-07-26T17:19:45.31Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/e6/0a/ddf146cdbd09ce0aa27d789891cc2a7b2c9c5a1e2ae53055e6ddbd77d7e4/numpy_typing_compat-2.3.20250724-py3-none-any.whl", hash = "sha256:5b4ce1a3c9ba3650ff5ab99b7623c12ce790b4380558fc833fe908751b229de6", size = 4706, upload-time = "2025-07-24T00:59:25.137Z" },
+    { url = "https://files.pythonhosted.org/packages/d2/77/8f52c7537dbe6982c1bb8c7c875ed1d6dc6470875e0742ebf922dc451080/numpy_typing_compat-2.3.20250726-py3-none-any.whl", hash = "sha256:def439bdd78ece8893619515d2c6f856b1acf749ed10e26a4b76f5e3d87a312e", size = 5309, upload-time = "2025-07-26T17:19:37.757Z" },
 ]
 
 [[package]]
 name = "optype"
-version = "0.12.2"
-source = { registry = "https://pypi.org/simple" }
+version = "0.13.0.dev0"
+source = { git = "https://github.com/jorenham/optype?rev=238533504e9ff479abdeb6b17c0f2bb90e4dd2b4#238533504e9ff479abdeb6b17c0f2bb90e4dd2b4" }
 dependencies = [
     { name = "typing-extensions", marker = "python_full_version < '3.13'" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/43/51/1f6c24e698e1b9e6b9d9a4c3d20374ce92c4790755252b224fc3fe5c1c19/optype-0.12.2.tar.gz", hash = "sha256:3f53a89f56f0ea23be4d212611dce0f3a2a8946543a9a72783e349c49b232934", size = 99163, upload-time = "2025-07-20T19:03:59.047Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/83/b9/3a3fc49de2f9a607ee871227ec1e8806d1a399fa691e0d44d080a5742691/optype-0.12.2-py3-none-any.whl", hash = "sha256:e38966fcd5ae9dec1c1bdecccdd8fdc7cfb8f21686f45ce3669a3a566c7cc110", size = 87737, upload-time = "2025-07-20T19:03:57.417Z" },
+
+[package.optional-dependencies]
+numpy = [
+    { name = "numpy" },
+    { name = "numpy-typing-compat" },
 ]
 
 [[package]]
@@ -489,8 +491,7 @@ name = "scipy-stubs"
 version = "1.16.0.3.dev0"
 source = { editable = "." }
 dependencies = [
-    { name = "numpy-typing-compat" },
-    { name = "optype" },
+    { name = "optype", extra = ["numpy"] },
 ]
 
 [package.optional-dependencies]
@@ -533,8 +534,7 @@ type = [
 
 [package.metadata]
 requires-dist = [
-    { name = "numpy-typing-compat", specifier = ">=1.25" },
-    { name = "optype", specifier = ">=0.12.2" },
+    { name = "optype", extras = ["numpy"], git = "https://github.com/jorenham/optype?rev=238533504e9ff479abdeb6b17c0f2bb90e4dd2b4" },
     { name = "scipy", marker = "extra == 'scipy'", specifier = ">=1.16.0,<1.17" },
 ]
 provides-extras = ["scipy"]
