@@ -6,10 +6,10 @@ import optype.numpy as onp
 
 from scipy.linalg import svd
 
-ArrayF32: TypeAlias = npt.NDArray[np.float32]
-ArrayF64: TypeAlias = npt.NDArray[np.float64]
-ArrayC64: TypeAlias = npt.NDArray[np.complex64]
-ArrayC128: TypeAlias = npt.NDArray[np.complex128]
+ArrayF32: TypeAlias = onp.ArrayND[np.float32]
+ArrayF64: TypeAlias = onp.ArrayND[np.float64]
+ArrayC64: TypeAlias = onp.ArrayND[np.complex64]
+ArrayC128: TypeAlias = onp.ArrayND[np.complex128]
 
 ###
 
