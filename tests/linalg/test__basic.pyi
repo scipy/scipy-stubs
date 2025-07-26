@@ -35,11 +35,6 @@ f64_2d: onp.Array2D[np.float64]
 f64_3d: onp.Array3D[np.float64]
 f64_nd: onp.ArrayND[np.float64]
 
-f80_1d: onp.Array1D[np.longdouble]
-f80_2d: onp.Array2D[np.longdouble]
-f80_3d: onp.Array3D[np.longdouble]
-f80_nd: onp.ArrayND[np.longdouble]
-
 c64_1d: onp.Array1D[np.complex64]
 c64_2d: onp.Array2D[np.complex64]
 c64_3d: onp.Array3D[np.complex64]
@@ -50,10 +45,18 @@ c128_2d: onp.Array2D[np.complex128]
 c128_3d: onp.Array3D[np.complex128]
 c128_nd: onp.ArrayND[np.complex128]
 
-c160_1d: onp.Array1D[np.clongdouble]
-c160_2d: onp.Array2D[np.clongdouble]
-c160_3d: onp.Array3D[np.clongdouble]
-c160_nd: onp.ArrayND[np.clongdouble]
+# NOTE: These extended precision types may not exist at runtime, but are used
+# here to work around `[c]longdouble` issues on `numpy<2.2`
+
+f80_1d: onp.Array1D[np.float128]
+f80_2d: onp.Array2D[np.float128]
+f80_3d: onp.Array3D[np.float128]
+f80_nd: onp.ArrayND[np.float128]
+
+c160_1d: onp.Array1D[np.complex256]
+c160_2d: onp.Array2D[np.complex256]
+c160_3d: onp.Array3D[np.complex256]
+c160_nd: onp.ArrayND[np.complex256]
 
 py_b_2d: list[list[bool]]
 py_b_3d: list[list[list[bool]]]

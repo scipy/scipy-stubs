@@ -118,22 +118,6 @@ class KroghInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_YT_co, 
     n: Final[int]  # undocumented
     r: Final[int]  # undocumented
 
-    @overload  # xi: i64, yi: f64
-    def __init__(
-        self: KroghInterpolator[np.float64, np.float64], /, xi: onp.ToJustInt64_1D, yi: onp.ToFloatND, axis: int = 0
-    ) -> None: ...
-    @overload  # xi: i64, yi: c128
-    def __init__(
-        self: KroghInterpolator[np.complex128, np.float64], /, xi: onp.ToJustInt64_1D, yi: onp.ToJustComplexND, axis: int = 0
-    ) -> None: ...
-    @overload  # xi: f64, yi: f64
-    def __init__(
-        self: KroghInterpolator[np.float64, np.float64], /, xi: onp.ToJustFloat64_1D, yi: onp.ToFloatND, axis: int = 0
-    ) -> None: ...
-    @overload  # xi: f64, yi: c128
-    def __init__(
-        self: KroghInterpolator[np.complex128, np.float64], /, xi: onp.ToJustFloat64_1D, yi: onp.ToJustComplexND, axis: int = 0
-    ) -> None: ...
     @overload  # xi: T, yi: f64
     def __init__(
         self: KroghInterpolator[np.float64, _XT],
@@ -149,6 +133,22 @@ class KroghInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_YT_co, 
         xi: onp.CanArray[Any, np.dtype[_XT]] | Sequence[_XT],
         yi: onp.ToJustComplexND,
         axis: int = 0,
+    ) -> None: ...
+    @overload  # xi: i64, yi: f64
+    def __init__(
+        self: KroghInterpolator[np.float64, np.float64], /, xi: onp.ToJustInt64_1D, yi: onp.ToFloatND, axis: int = 0
+    ) -> None: ...
+    @overload  # xi: i64, yi: c128
+    def __init__(
+        self: KroghInterpolator[np.complex128, np.float64], /, xi: onp.ToJustInt64_1D, yi: onp.ToJustComplexND, axis: int = 0
+    ) -> None: ...
+    @overload  # xi: f64, yi: f64
+    def __init__(
+        self: KroghInterpolator[np.float64, np.float64], /, xi: onp.ToJustFloat64_1D, yi: onp.ToFloatND, axis: int = 0
+    ) -> None: ...
+    @overload  # xi: f64, yi: c128
+    def __init__(
+        self: KroghInterpolator[np.complex128, np.float64], /, xi: onp.ToJustFloat64_1D, yi: onp.ToJustComplexND, axis: int = 0
     ) -> None: ...
 
     #

@@ -15,16 +15,19 @@ like_c128_2d: list[list[complex]]
 arr_any: npt.NDArray[Any]
 arr_i8: npt.NDArray[np.int8]
 arr_f32: npt.NDArray[np.float32]
-arr_f80: npt.NDArray[np.longdouble]
 arr_c64: npt.NDArray[np.complex64]
-arr_c160: npt.NDArray[np.clongdouble]
 
 sparse_any: spmatrix[Any] | sparray[Any]
 sparse_i8: spmatrix[np.int8] | sparray[np.int8]
 sparse_f32: spmatrix[np.float32] | sparray[np.float32]
-sparse_f80: spmatrix[np.longdouble] | sparray[np.longdouble]
 sparse_c64: spmatrix[np.complex64] | sparray[np.complex64]
-sparse_c160: spmatrix[np.clongdouble] | sparray[np.clongdouble]
+
+# NOTE: These extended precision types may not exist at runtime, but are used
+# here to work around `[c]longdouble` issues on `numpy<2.2`
+arr_f80: npt.NDArray[np.float128]
+sparse_f80: spmatrix[np.float128] | sparray[np.float128]
+arr_c160: npt.NDArray[np.complex256]
+sparse_c160: spmatrix[np.complex256] | sparray[np.complex256]
 
 ###
 

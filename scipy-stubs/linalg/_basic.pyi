@@ -40,17 +40,17 @@ _Inexact0D: TypeAlias = onp.Array0D[_Inexact]
 _Inexact1D: TypeAlias = onp.Array1D[_Inexact]
 _InexactND: TypeAlias = onp.ArrayND[_Inexact]
 
-_InputFloat: TypeAlias = onp.ToArrayND[float, np.float64 | np.longdouble | npc.integer | np.bool_]
-_InputFloatStrict1D: TypeAlias = onp.ToArrayStrict1D[float, np.float64 | np.longdouble | npc.integer | np.bool_]
-_InputFloatStrict2D: TypeAlias = onp.ToArrayStrict2D[float, np.float64 | np.longdouble | npc.integer | np.bool_]
+_InputFloat: TypeAlias = onp.ToArrayND[float, np.float64 | npc.floating80 | npc.integer | np.bool_]
+_InputFloatStrict1D: TypeAlias = onp.ToArrayStrict1D[float, np.float64 | npc.floating80 | npc.integer | np.bool_]
+_InputFloatStrict2D: TypeAlias = onp.ToArrayStrict2D[float, np.float64 | npc.floating80 | npc.integer | np.bool_]
 
 _InputF64: TypeAlias = onp.ToArrayND[float, np.float64 | npc.integer | np.bool_]
 _InputF64Strict1D: TypeAlias = onp.ToArrayStrict1D[float, np.float64 | npc.integer | np.bool_]
 _InputF64Strict2D: TypeAlias = onp.ToArrayStrict2D[float, np.float64 | npc.integer | np.bool_]
 
-_InputComplex: TypeAlias = onp.ToArrayND[op.JustComplex, np.complex128 | np.clongdouble]
-_InputComplexStrict1D: TypeAlias = onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.clongdouble]
-_InputComplexStrict2D: TypeAlias = onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.clongdouble]
+_InputComplex: TypeAlias = onp.ToArrayND[op.JustComplex, np.complex128 | npc.complexfloating160]
+_InputComplexStrict1D: TypeAlias = onp.ToArrayStrict1D[op.JustComplex, np.complex128 | npc.complexfloating160]
+_InputComplexStrict2D: TypeAlias = onp.ToArrayStrict2D[op.JustComplex, np.complex128 | npc.complexfloating160]
 
 _AssumeA: TypeAlias = Literal[
     "diagonal",
@@ -1022,7 +1022,7 @@ def inv(
 ) -> onp.ArrayND[np.float32, _ShapeT]: ...
 @overload  # generic shape, as float64
 def inv(
-    a: onp.CanArrayND[np.float64 | np.longdouble | npc.integer64 | npc.integer32, _ShapeT],
+    a: onp.CanArrayND[np.float64 | npc.floating80 | npc.integer64 | npc.integer32, _ShapeT],
     overwrite_a: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
@@ -1032,7 +1032,7 @@ def inv(
 ) -> onp.ArrayND[np.complex64, _ShapeT]: ...
 @overload  # generic shape, as complex128
 def inv(
-    a: onp.CanArrayND[np.complex128 | np.clongdouble, _ShapeT], overwrite_a: bool = False, check_finite: bool = True
+    a: onp.CanArrayND[np.complex128 | npc.complexfloating160, _ShapeT], overwrite_a: bool = False, check_finite: bool = True
 ) -> onp.ArrayND[np.complex128, _ShapeT]: ...
 
 # NOTE: The order of the overloads has been carefully chosen to avoid triggering a Pyright bug.
