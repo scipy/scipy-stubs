@@ -104,21 +104,15 @@ jobs:
 
       - name: install specific numpy version
         run: >
-          uv pip install
+          uv pip install --upgrade
           "numpy==${{ matrix.np }}.*"
           "numpy-typing-compat==${{ matrix.np }}.*"
 
       - name: basedpyright
-        run: >
-          uv run --active --no-sync
-          basedpyright
+        run: basedpyright
 
       - name: mypy
-        run: >
-          uv run --active --no-sync
-          mypy --no-incremental --cache-dir=/dev/null --soft-error-limit=-1 .
+        run: mypy --no-incremental --cache-dir=/dev/null --soft-error-limit=-1 .
 
       - name: stubtest
-        run: >
-          uv run --active --no-sync
-          stubtest --allowlist=.mypyignore scipy
+        run: stubtest --allowlist=.mypyignore scipy
