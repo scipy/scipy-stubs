@@ -17,8 +17,14 @@ _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
 _Inexact64T = TypeVar("_Inexact64T", bound=np.float64 | np.complex128)
 _Inexact64T_co = TypeVar("_Inexact64T_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
 
-_FuncSol: TypeAlias = Callable[[np.float64], onp.ArrayND[_Inexact64T]]
-_FuncEvent: TypeAlias = Callable[[np.float64, onp.ArrayND[_Inexact64T], *_Ts], float]
+# numpy <2.2 workarounds
+_Float: TypeAlias = np.float64 | float
+_FloatT = TypeVar("_FloatT", bound=_Float)
+
+_FuncSol: TypeAlias = Callable[[np.float64], onp.ArrayND[_Inexact64T]] | Callable[[float], onp.ArrayND[_Inexact64T]]
+_FuncEvent: TypeAlias = (
+    Callable[[np.float64, onp.ArrayND[_Inexact64T], *_Ts], _Float] | Callable[[float, onp.ArrayND[_Inexact64T], *_Ts], _Float]
+)
 _Events: TypeAlias = Sequence[_FuncEvent[_Inexact64T, *_Ts]] | _FuncEvent[_Inexact64T, *_Ts]
 
 _Int1D: TypeAlias = onp.Array1D[np.int_]
@@ -26,6 +32,9 @@ _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 _Complex1D: TypeAlias = onp.Array1D[np.complex128]
 _Complex2D: TypeAlias = onp.Array2D[np.complex128]
+
+_ToFloatMax1D: TypeAlias = onp.ToFloat1D | onp.ToFloat
+_ToComplexMax1D: TypeAlias = onp.ToComplex1D | onp.ToComplex
 
 _Sparse2D: TypeAlias = _spbase[_ScalarT, tuple[int, int]] | sparray[_ScalarT, tuple[int, int]] | spmatrix[_ScalarT]
 _ToJac: TypeAlias = onp.ToArray2D[complex, npc.inexact] | _Sparse2D[npc.inexact]
@@ -75,10 +84,10 @@ def handle_events(
 ) -> tuple[_Int1D, _Float1D, bool]: ...
 def find_active_events(g: onp.ToFloat1D, g_new: onp.ToFloat1D, direction: onp.ArrayND[np.float64]) -> _Int1D: ...
 
-#
+# NOTE: The *free* `_FloatT` type variable works around `float64` not being a subtype of `float` on `numpy <2.2`.
 @overload  # float, vectorized=False (default), args=None (default)
 def solve_ivp(
-    fun: Callable[[np.float64, _Float1D], onp.ToFloat1D | float],
+    fun: Callable[[_FloatT, _Float1D], _ToFloatMax1D],
     t_span: Sequence[float],
     y0: onp.ToFloat1D,
     method: _IVPMethod = "RK45",
@@ -91,7 +100,7 @@ def solve_ivp(
 ) -> OdeResult[np.float64]: ...
 @overload  # float, vectorized=False (default), args=<given>
 def solve_ivp(
-    fun: Callable[[np.float64, _Float1D, *_Ts], onp.ToFloat1D | float],
+    fun: Callable[[_FloatT, _Float1D, *_Ts], _ToFloatMax1D],
     t_span: Sequence[float],
     y0: onp.ToFloat1D,
     method: _IVPMethod = "RK45",
@@ -133,7 +142,7 @@ def solve_ivp(
 ) -> OdeResult[np.float64]: ...
 @overload  # complex, vectorized=False (default), args=None (default)
 def solve_ivp(
-    fun: Callable[[np.float64, _Complex1D], onp.ToComplex1D | complex],
+    fun: Callable[[_FloatT, _Complex1D], _ToComplexMax1D],
     t_span: Sequence[float],
     y0: onp.ToComplex1D,
     method: _IVPMethod = "RK45",
@@ -146,7 +155,7 @@ def solve_ivp(
 ) -> OdeResult[np.complex128]: ...
 @overload  # complex, vectorized=False (default), args=<given>
 def solve_ivp(
-    fun: Callable[[np.float64, _Complex1D, *_Ts], onp.ToComplex1D | complex],
+    fun: Callable[[_FloatT, _Complex1D, *_Ts], _ToComplexMax1D],
     t_span: Sequence[float],
     y0: onp.ToComplex1D,
     method: _IVPMethod = "RK45",

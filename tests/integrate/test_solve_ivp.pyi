@@ -1,4 +1,4 @@
-from typing import TypeAlias, assert_type, type_check_only
+from typing import Any, TypeAlias, assert_type, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -7,10 +7,10 @@ from scipy.integrate import solve_ivp
 
 _VecF64: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
 _MatF64: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
-_ArrF64: TypeAlias = np.ndarray[tuple[int, ...], np.dtype[np.float64]]
+_ArrF64: TypeAlias = np.ndarray[tuple[Any, ...], np.dtype[np.float64]]
 _VecC128: TypeAlias = np.ndarray[tuple[int], np.dtype[np.complex128]]
 _MatC128: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.complex128]]
-_ArrC128: TypeAlias = np.ndarray[tuple[int, ...], np.dtype[np.complex128]]
+_ArrC128: TypeAlias = np.ndarray[tuple[Any, ...], np.dtype[np.complex128]]
 
 list_float: list[float] = ...
 list_complex: list[complex] = ...
@@ -38,6 +38,7 @@ def upward_cannon(t: np.float64, y: _VecF64) -> list[float]: ...
 @type_check_only
 def hit_ground(t: np.float64, y: _VecF64) -> np.float64: ...
 
+assert_type(solve_ivp(upward_cannon, list_float, list_float).y, _MatF64)
 assert_type(solve_ivp(upward_cannon, list_float, list_float, events=hit_ground).y, _MatF64)
 assert_type(solve_ivp(upward_cannon, list_float, list_float, events=hit_ground, args=()).y, _MatF64)
 assert_type(solve_ivp(upward_cannon, list_float, list_float, events=hit_ground, dense_output=True).y, _MatF64)
