@@ -14,7 +14,7 @@ import optype.numpy.compat as npc
 _Ordered: TypeAlias = np.int32 | np.int64 | np.float32 | np.float64
 
 # matches the `ctypedef fused real`
-_Real: TypeAlias = np.float32 | np.float64 | np.longdouble
+_Real: TypeAlias = np.float32 | np.float64 | npc.floating80
 
 # castable to `_Real`
 _AsReal: TypeAlias = npc.floating | npc.integer | np.bool_
@@ -95,9 +95,12 @@ def _studentized_range_pdf_logconst(k: float, df: float) -> float: ...  # undocu
 def genhyperbolic_pdf(x: float, p: float, a: float, b: float) -> float: ...  # undocumented
 def genhyperbolic_logpdf(x: float, p: float, a: float, b: float) -> float: ...  # undocumented
 
+# NOTE: Because this mypy false positive depends on numpy versions, we need to disable it for the entire file.
+# mypy: disable-error-code=overload-overlap
+
 # keep in sync with `gaussian_kernel_estimate_log`
 @overload
-def gaussian_kernel_estimate(  # type: ignore[overload-overlap]
+def gaussian_kernel_estimate(
     points: onp.Array2D[_AsReal],
     values: onp.Array2D[_Real],
     xi: onp.Array2D[_AsReal],
@@ -126,7 +129,7 @@ def gaussian_kernel_estimate(
 
 # keep in sync with `gaussian_kernel_estimate`
 @overload
-def gaussian_kernel_estimate_log(  # type: ignore[overload-overlap]
+def gaussian_kernel_estimate_log(
     points: onp.Array2D[_AsReal],
     values: onp.Array2D[_Real],
     xi: onp.Array2D[_AsReal],

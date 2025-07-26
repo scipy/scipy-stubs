@@ -1,6 +1,6 @@
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Final, Literal, TypeAlias, overload
+from typing import Any, Final, Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -19,15 +19,19 @@ _AsFloat64_2D: TypeAlias = onp.ToArray2D[float, npc.floating64 | npc.integer]
 _PyFloatMax2D: TypeAlias = Sequence[float] | Sequence[Sequence[float]]
 
 ###
+
 # NOTE: DO NOT RE-ORDER THE OVERLOADS WITH a `# type: ignore`, otherwise it'll trigger a pernicious bug in pyright (1.1.403).
+
+# NOTE: The ignored false positive mypy errors disappear on `numpy<2.2`, so we ignore the `unused-ignore` error code in this file.
+# mypy: disable-error-code=unused-ignore
 
 class ClusterError(Exception): ...
 
 #
 @overload
-def whiten(obs: onp.ArrayND[np.bool_ | npc.integer], check_finite: bool | None = None) -> onp.Array2D[np.float64]: ...
+def whiten(obs: onp.ArrayND[np.bool_ | npc.integer, Any], check_finite: bool | None = None) -> onp.Array2D[np.float64]: ...
 @overload
-def whiten(obs: onp.ArrayND[_InexactT], check_finite: bool | None = None) -> onp.Array2D[_InexactT]: ...
+def whiten(obs: onp.ArrayND[_InexactT, Any], check_finite: bool | None = None) -> onp.Array2D[_InexactT]: ...
 
 #
 @overload  # float32
