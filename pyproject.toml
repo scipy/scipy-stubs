@@ -47,7 +47,7 @@ ci = ["packaging>=25.0"]
 lint = [
   { include-group = "extras" },
   "dprint-py>=0.50.0.0",
-  "ruff>=0.12.4",
+  "ruff>=0.12.5",
   "sp-repo-review[cli]>=2025.5.2",
 ]
 type = [
@@ -56,7 +56,7 @@ type = [
   "array-api-compat==1.12.0", # bundled as `scipy._lib.array_api_compat`
   "basedpyright>=1.31.0",
   "mypy>=1.17.0",
-  "orjson>=3.11.0; python_version<'3.14'", # used by mypy
+  "orjson>=3.11.1; python_version<'3.14'", # used by mypy
 ]
 dev = [
   { include-group = "lint" },
