@@ -1,7 +1,6 @@
 from typing import TypeAlias, assert_type
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 
 from scipy.linalg import svd
