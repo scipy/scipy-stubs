@@ -1,10 +1,10 @@
 from typing import assert_type
 
-from scipy import fft
+from scipy.fft import get_workers, set_workers
 
 ###
 
-with fft.set_workers(4) as ctx:
+with set_workers(4) as ctx:
     assert_type(ctx, None)
 
-assert_type(fft.get_workers(), int)
+assert_type(get_workers(), int)
