@@ -34,7 +34,7 @@ dependencies = ["optype[numpy]>=0.12.2"]
 
 [tool.uv.sources.optype]
 git = "https://github.com/jorenham/optype"
-rev = "238533504e9ff479abdeb6b17c0f2bb90e4dd2b4"
+rev = "47fcbd6f0d20521356eb76107311b0292aa34ea1"
 
 [project.optional-dependencies]
 scipy = ["scipy>=1.16.0,<1.17"]

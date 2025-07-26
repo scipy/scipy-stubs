@@ -230,7 +230,7 @@ wheels = [
 [[package]]
 name = "optype"
 version = "0.13.0.dev0"
-source = { git = "https://github.com/jorenham/optype?rev=238533504e9ff479abdeb6b17c0f2bb90e4dd2b4#238533504e9ff479abdeb6b17c0f2bb90e4dd2b4" }
+source = { git = "https://github.com/jorenham/optype?rev=47fcbd6f0d20521356eb76107311b0292aa34ea1#47fcbd6f0d20521356eb76107311b0292aa34ea1" }
 dependencies = [
     { name = "typing-extensions", marker = "python_full_version < '3.13'" },
 ]
@@ -534,7 +534,7 @@ type = [
 
 [package.metadata]
 requires-dist = [
-    { name = "optype", extras = ["numpy"], git = "https://github.com/jorenham/optype?rev=238533504e9ff479abdeb6b17c0f2bb90e4dd2b4" },
+    { name = "optype", extras = ["numpy"], git = "https://github.com/jorenham/optype?rev=47fcbd6f0d20521356eb76107311b0292aa34ea1" },
     { name = "scipy", marker = "extra == 'scipy'", specifier = ">=1.16.0,<1.17" },
 ]
 provides-extras = ["scipy"]
