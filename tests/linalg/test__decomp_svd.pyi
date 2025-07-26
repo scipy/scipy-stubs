@@ -2,6 +2,7 @@ from typing import TypeAlias, assert_type
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 
 from scipy.linalg import svd
 
@@ -16,14 +17,14 @@ py_i_2d: list[list[int]]
 py_f_2d: list[list[float]]
 py_c_2d: list[list[complex]]
 
-f16_nd: npt.NDArray[np.float16]
-f32_nd: npt.NDArray[np.float32]
-f64_nd: npt.NDArray[np.float64]
-f80_nd: npt.NDArray[np.longdouble]
+f16_nd: onp.ArrayND[np.float16]
+f32_nd: onp.ArrayND[np.float32]
+f64_nd: onp.ArrayND[np.float64]
+f80_nd: onp.ArrayND[np.longdouble]
 
-c64_nd: npt.NDArray[np.complex64]
-c128_nd: npt.NDArray[np.complex128]
-c160_nd: npt.NDArray[np.clongdouble]
+c64_nd: onp.ArrayND[np.complex64]
+c128_nd: onp.ArrayND[np.complex128]
+c160_nd: onp.ArrayND[np.clongdouble]
 
 ###
 # svd

@@ -1,7 +1,7 @@
 from typing import TypeAlias, assert_type, type_check_only
 
 import numpy as np
-import numpy.typing as npt
+import optype.numpy as onp
 
 from scipy.integrate import solve_ivp
 
@@ -55,7 +55,7 @@ assert_type(solve_ivp(lotkavolterra, list_float, list_float, args=(1.5, 1, 3, 1)
 ###
 
 @type_check_only
-def deriv_vec(t: float, y: npt.NDArray[np.float64 | np.complex128]) -> npt.NDArray[np.float64 | np.complex128]: ...
+def deriv_vec(t: float, y: onp.ArrayND[np.float64 | np.complex128]) -> onp.ArrayND[np.float64 | np.complex128]: ...
 
 assert_type(solve_ivp(deriv_vec, list_float, list_complex).y, _MatC128)
 assert_type(solve_ivp(deriv_vec, list_float, vec_c128).y, _MatC128)
