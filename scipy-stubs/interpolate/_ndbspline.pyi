@@ -5,6 +5,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.sparse import csr_array
 
@@ -68,10 +69,10 @@ def make_ndbspl(
     values: onp.ToFloatND,
     k: _ToDegrees = 3,
     *,
-    solver: _SolverFunc[np.floating | np.integer] = ...,  # scipy.sparse.linalg.gcrotmk
+    solver: _SolverFunc[npc.floating | npc.integer] = ...,  # scipy.sparse.linalg.gcrotmk
     **solver_args: object,
 ) -> NdBSpline[np.float64]: ...
 @overload
 def make_ndbspl(
-    points: _ToKnots, values: onp.ToFloatND, k: _ToDegrees = 3, *, solver: _SolverFunc[np.complexfloating], **solver_args: object
+    points: _ToKnots, values: onp.ToFloatND, k: _ToDegrees = 3, *, solver: _SolverFunc[npc.complexfloating], **solver_args: object
 ) -> NdBSpline[np.complex128]: ...
