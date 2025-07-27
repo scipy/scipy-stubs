@@ -1,4 +1,5 @@
-from typing import Literal, TypeAlias, overload
+from collections.abc import Sequence
+from typing import Literal, Never, TypeAlias, overload
 from typing_extensions import TypeAliasType, TypeVar
 
 import numpy as np
@@ -13,25 +14,35 @@ _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
 _PyScalarT = TypeVar("_PyScalarT")
 
-_AsF32: TypeAlias = np.float16 | np.float32
+_AsF32: TypeAlias = np.float32 | np.float16
 _AsF64: TypeAlias = np.float64 | npc.integer | np.bool_
 
 _DifferentialMethod: TypeAlias = Literal["vasicek", "van es", "ebrahimi", "correa", "auto"]
 
 _ToArrayMaxND = TypeAliasType(
-    "_ToArrayMaxND", onp.ToArrayND[_PyScalarT, _ScalarT] | _PyScalarT | _ScalarT, type_params=(_ScalarT, _PyScalarT)
+    "_ToArrayMaxND",
+    onp.CanArray[tuple[int, ...], np.dtype[_ScalarT]] | onp.SequenceND[_PyScalarT] | _PyScalarT,
+    type_params=(_ScalarT, _PyScalarT),
 )
 _ToArrayMax1D = TypeAliasType(
-    "_ToArrayMax1D", onp.ToArrayStrict1D[_PyScalarT, _ScalarT] | _PyScalarT | _ScalarT, type_params=(_ScalarT, _PyScalarT)
+    "_ToArrayMax1D",
+    onp.CanArray[onp.AtMost1D, np.dtype[_ScalarT]] | Sequence[_PyScalarT] | _PyScalarT,
+    type_params=(_ScalarT, _PyScalarT),
 )
 _ToArrayMax2D = TypeAliasType(
     "_ToArrayMax2D",
-    onp.ToArrayStrict2D[_PyScalarT, _ScalarT] | _ToArrayMax1D[_ScalarT, _PyScalarT],
+    onp.CanArray[onp.AtMost2D, np.dtype[_ScalarT]] | Sequence[Sequence[_PyScalarT]] | Sequence[_PyScalarT] | _PyScalarT,
     type_params=(_ScalarT, _PyScalarT),
 )
 _ToArrayMax3D = TypeAliasType(
     "_ToArrayMax3D",
-    onp.ToArrayStrict3D[_PyScalarT, _ScalarT] | _ToArrayMax2D[_ScalarT, _PyScalarT],
+    (
+        onp.CanArray[onp.AtMost3D, np.dtype[_ScalarT]]
+        | Sequence[Sequence[Sequence[_PyScalarT]]]
+        | Sequence[Sequence[_PyScalarT]]
+        | Sequence[_PyScalarT]
+        | _PyScalarT
+    ),
     type_params=(_ScalarT, _PyScalarT),
 )
 
@@ -42,7 +53,7 @@ _ToArrayMax3D = TypeAliasType(
 
 @overload  # nd float64 | int, axis=None (positional) -> 0d float64
 def entropy(
-    pk: _ToArrayMaxND[_AsF64, float],
+    pk: _ToArrayMaxND[_AsF64, _AsF64 | float],
     qk: onp.ToFloat64_ND | onp.ToFloat64 | None,
     base: float | None,
     axis: None,
@@ -53,7 +64,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64_ND | onp.ToFloat64,
-    qk: _ToArrayMaxND[_AsF64, float],
+    qk: _ToArrayMaxND[_AsF64, _AsF64 | float],
     base: float | None,
     axis: None,
     *,
@@ -62,7 +73,7 @@ def entropy(
 ) -> np.float64: ...
 @overload  # nd float64 | int, axis=None (keyword) -> 0d float64
 def entropy(
-    pk: _ToArrayMaxND[_AsF64, float],
+    pk: _ToArrayMaxND[_AsF64, _AsF64 | float],
     qk: onp.ToFloat64_ND | onp.ToFloat64 | None = None,
     base: float | None = None,
     *,
@@ -73,7 +84,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64_ND | onp.ToFloat64,
-    qk: _ToArrayMaxND[_AsF64, float],
+    qk: _ToArrayMaxND[_AsF64, _AsF64 | float],
     base: float | None = None,
     *,
     axis: None,
@@ -82,7 +93,7 @@ def entropy(
 ) -> np.float64: ...
 @overload  # 0d or 1d float64 | int -> 0d float64
 def entropy(
-    pk: _ToArrayMax1D[_AsF64, float],
+    pk: _ToArrayMax1D[_AsF64, _AsF64 | float],
     qk: onp.ToFloat64Strict1D | onp.ToFloat64 | None = None,
     base: float | None = None,
     axis: int = 0,
@@ -93,7 +104,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64 | onp.ToFloat64Strict1D,
-    qk: _ToArrayMax1D[_AsF64, float],
+    qk: _ToArrayMax1D[_AsF64, _AsF64 | float],
     base: float | None = None,
     axis: int = 0,
     *,
@@ -122,7 +133,7 @@ def entropy(
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def entropy(
-    pk: _ToArrayMax2D[_AsF64, float],
+    pk: _ToArrayMax2D[_AsF64, _AsF64 | float],
     qk: onp.ToFloat64Strict2D,
     base: float | None = None,
     axis: int = 0,
@@ -133,7 +144,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64Strict2D,
-    qk: _ToArrayMax2D[_AsF64, float],
+    qk: _ToArrayMax2D[_AsF64, _AsF64 | float],
     base: float | None = None,
     axis: int = 0,
     *,
@@ -162,7 +173,7 @@ def entropy(
 ) -> onp.Array2D[np.float64]: ...
 @overload
 def entropy(
-    pk: _ToArrayMax3D[_AsF64, float],
+    pk: _ToArrayMax3D[_AsF64, _AsF64 | float],
     qk: onp.ToFloat64Strict3D,
     base: float | None = None,
     axis: int = 0,
@@ -173,7 +184,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64Strict3D,
-    qk: _ToArrayMax3D[_AsF64, float],
+    qk: _ToArrayMax3D[_AsF64, _AsF64 | float],
     base: float | None = None,
     axis: int = 0,
     *,
@@ -182,7 +193,7 @@ def entropy(
 ) -> onp.Array2D[np.float64]: ...
 @overload  # Nd float64 | int, keepdims=True -> Nd float64
 def entropy(
-    pk: _ToArrayMaxND[_AsF64, float],
+    pk: _ToArrayMaxND[_AsF64, _AsF64 | float],
     qk: onp.ToFloat64_ND | onp.ToFloat64 | None = None,
     base: float | None = None,
     axis: int = 0,
@@ -193,7 +204,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64_ND | onp.ToFloat64,
-    qk: _ToArrayMaxND[_AsF64, float],
+    qk: _ToArrayMaxND[_AsF64, _AsF64 | float],
     base: float | None = None,
     axis: int = 0,
     *,
@@ -202,7 +213,7 @@ def entropy(
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # Nd float64 | int -> 0d float64 | Nd float64
 def entropy(
-    pk: _ToArrayMaxND[_AsF64, float],
+    pk: _ToArrayMaxND[_AsF64, _AsF64 | float],
     qk: onp.ToFloat64_ND | onp.ToFloat64 | None = None,
     base: float | None = None,
     axis: int = 0,
@@ -213,7 +224,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64_ND | onp.ToFloat64,
-    qk: _ToArrayMaxND[_AsF64, float],
+    qk: _ToArrayMaxND[_AsF64, _AsF64 | float],
     base: float | None = None,
     axis: int = 0,
     *,
@@ -222,8 +233,8 @@ def entropy(
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # Nd float32 | float16, axis=None (positional) -> 0d float32
 def entropy(
-    pk: _ToArrayMaxND[_AsF32, np.float32],
-    qk: _ToArrayMaxND[_AsF32, np.float32] | None,
+    pk: _ToArrayMaxND[_AsF32, _AsF32],
+    qk: _ToArrayMaxND[_AsF32, _AsF32] | None,
     base: float | None,
     axis: None,
     *,
@@ -232,8 +243,8 @@ def entropy(
 ) -> np.float32: ...
 @overload  # Nd float32 | float16, axis=None (keyword) -> 0d float32
 def entropy(
-    pk: _ToArrayMaxND[_AsF32, np.float32],
-    qk: _ToArrayMaxND[_AsF32, np.float32] | None = None,
+    pk: _ToArrayMaxND[_AsF32, _AsF32],
+    qk: _ToArrayMaxND[_AsF32, _AsF32] | None = None,
     base: float | None = None,
     *,
     axis: None,
@@ -242,8 +253,8 @@ def entropy(
 ) -> np.float32: ...
 @overload  # 1d float32 | float16 -> 0d float32
 def entropy(
-    pk: _ToArrayMax1D[_AsF32, np.float32],
-    qk: _ToArrayMax1D[_AsF32, np.float32] | None = None,
+    pk: _ToArrayMax1D[_AsF32, _AsF32],
+    qk: _ToArrayMax1D[_AsF32, _AsF32] | None = None,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -252,8 +263,8 @@ def entropy(
 ) -> np.float32: ...
 @overload  # 2d float32 | float16 -> 1d float32
 def entropy(
-    pk: onp.ToArrayStrict2D[np.float32, _AsF32],
-    qk: _ToArrayMax2D[_AsF32, np.float32] | None = None,
+    pk: onp.ToArrayStrict2D[Never, _AsF32],
+    qk: _ToArrayMax2D[_AsF32, _AsF32] | None = None,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -262,8 +273,8 @@ def entropy(
 ) -> onp.Array1D[np.float32]: ...
 @overload
 def entropy(
-    pk: _ToArrayMax2D[_AsF32, np.float32],
-    qk: onp.ToArrayStrict2D[np.float32, _AsF32],
+    pk: _ToArrayMax2D[_AsF32, _AsF32],
+    qk: onp.ToArrayStrict2D[Never, _AsF32],
     base: float | None = None,
     axis: int = 0,
     *,
@@ -272,8 +283,8 @@ def entropy(
 ) -> onp.Array1D[np.float32]: ...
 @overload  # 3d float32 | float16 -> 2d float32
 def entropy(
-    pk: onp.ToArrayStrict3D[np.float32, _AsF32],
-    qk: _ToArrayMax3D[_AsF32, np.float32] | None = None,
+    pk: onp.ToArrayStrict3D[Never, _AsF32],
+    qk: _ToArrayMax3D[_AsF32, _AsF32] | None = None,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -282,8 +293,8 @@ def entropy(
 ) -> onp.Array2D[np.float32]: ...
 @overload
 def entropy(
-    pk: _ToArrayMax3D[_AsF32, np.float32],
-    qk: onp.ToArrayStrict3D[np.float32, _AsF32],
+    pk: _ToArrayMax3D[_AsF32, _AsF32],
+    qk: onp.ToArrayStrict3D[Never, _AsF32],
     base: float | None = None,
     axis: int = 0,
     *,
@@ -292,8 +303,8 @@ def entropy(
 ) -> onp.Array2D[np.float32]: ...
 @overload  # Nd float32 | float16, keepdims=True -> Nd float32
 def entropy(
-    pk: _ToArrayMaxND[_AsF32, np.float32],
-    qk: _ToArrayMaxND[_AsF32, np.float32] | None = None,
+    pk: _ToArrayMaxND[_AsF32, _AsF32],
+    qk: _ToArrayMaxND[_AsF32, _AsF32] | None = None,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -302,8 +313,8 @@ def entropy(
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # Nd float32 | float16 -> 0d float32 | Nd float32
 def entropy(
-    pk: _ToArrayMaxND[_AsF32, np.float32],
-    qk: _ToArrayMaxND[_AsF32, np.float32] | None = None,
+    pk: _ToArrayMaxND[_AsF32, _AsF32],
+    qk: _ToArrayMaxND[_AsF32, _AsF32] | None = None,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -346,7 +357,7 @@ def differential_entropy(
 ) -> _InexactT: ...
 @overload  # 2d known inexact dtype
 def differential_entropy(
-    values: onp.ToArrayStrict2D[_InexactT, _InexactT],
+    values: onp.ToArrayStrict2D[Never, _InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -357,7 +368,7 @@ def differential_entropy(
 ) -> onp.Array1D[_InexactT]: ...
 @overload  # 2d known inexact dtype
 def differential_entropy(
-    values: onp.ToArrayStrict3D[_InexactT, _InexactT],
+    values: onp.ToArrayStrict3D[Never, _InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -368,7 +379,7 @@ def differential_entropy(
 ) -> onp.Array2D[_InexactT]: ...
 @overload  # Nd known inexact dtype, keepdims=True
 def differential_entropy(
-    values: onp.ToArrayND[_InexactT, _InexactT],
+    values: onp.ToArrayND[Never, _InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -379,7 +390,7 @@ def differential_entropy(
 ) -> onp.ArrayND[_InexactT]: ...
 @overload  # Nd known inexact dtype
 def differential_entropy(
-    values: onp.ToArrayND[_InexactT, _InexactT],
+    values: onp.ToArrayND[Never, _InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -390,7 +401,7 @@ def differential_entropy(
 ) -> _InexactT | onp.ArrayND[_InexactT]: ...
 @overload  # Nd float64 | +integer, axis=None
 def differential_entropy(
-    values: _ToArrayMaxND[_AsF64, float],
+    values: _ToArrayMaxND[_AsF64, _AsF64 | float],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -401,7 +412,7 @@ def differential_entropy(
 ) -> np.float64: ...
 @overload  # 0d or 1d float64 | +integer
 def differential_entropy(
-    values: _ToArrayMax1D[_AsF64, float],
+    values: _ToArrayMax1D[_AsF64, _AsF64 | float],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -434,7 +445,7 @@ def differential_entropy(
 ) -> onp.Array2D[np.float64]: ...
 @overload  # Nd float64 | +integer, keepdims=True
 def differential_entropy(
-    values: _ToArrayMaxND[_AsF64, float],
+    values: _ToArrayMaxND[_AsF64, _AsF64 | float],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -445,7 +456,7 @@ def differential_entropy(
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # Nd float64 | +integer
 def differential_entropy(
-    values: _ToArrayMaxND[_AsF64, float],
+    values: _ToArrayMaxND[_AsF64, _AsF64 | float],
     *,
     window_length: int | None = None,
     base: float | None = None,
