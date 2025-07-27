@@ -1,4 +1,4 @@
-from typing import TypeVar, overload
+from typing import Any, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op
@@ -12,7 +12,9 @@ from scipy._typing import AnyShape
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.float32 | np.float64 | np.longdouble | npc.complexfloating])
+_DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating])
+
+_FloatND: TypeAlias = onp.ArrayND[np.float64 | Any, tuple[int] | tuple[Any, ...]]
 
 # NOTE: Unlike the ones in `scipy.fft._realtransforms`, `orthogonalize` is keyword-only here.
 
@@ -43,6 +45,18 @@ def idctn(
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def idctn(
+    x: onp.CanArray[_ShapeT, _DTypeT],
+    type: DCTType = 2,
+    s: onp.ToInt | onp.ToIntND | None = None,
+    axes: AnyShape | None = None,
+    norm: NormalizationMode | None = None,
+    overwrite_x: op.CanBool = False,
+    workers: onp.ToInt | None = None,
+    *,
+    orthogonalize: op.CanBool | None = None,
+) -> np.ndarray[_ShapeT, _DTypeT]: ...
+@overload
+def idctn(
     x: onp.ToJustFloat64_ND,
     type: DCTType = 2,
     s: onp.ToInt | onp.ToIntND | None = None,
@@ -64,7 +78,7 @@ def idctn(
     workers: onp.ToInt | None = None,
     *,
     orthogonalize: op.CanBool | None = None,
-) -> onp.ArrayND[npc.floating]: ...
+) -> _FloatND: ...
 
 #
 @overload
@@ -126,4 +140,4 @@ def idstn(
     workers: onp.ToInt | None = None,
     *,
     orthogonalize: op.CanBool | None = None,
-) -> onp.ArrayND[npc.floating]: ...
+) -> _FloatND: ...

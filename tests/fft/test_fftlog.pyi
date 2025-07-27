@@ -4,10 +4,10 @@ import numpy as np
 
 from scipy.fft import fht, fhtoffset, ifht
 
-f64_0d: np.float64 = ...
-f64_1d: np.ndarray[tuple[int], np.dtype[np.float64]] = ...
-f32_2d: np.ndarray[tuple[int, int], np.dtype[np.float32]] = ...
-f80_3d: np.ndarray[tuple[int, int, int], np.dtype[np.longdouble]] = ...
+f64_0d: np.float64
+f64_1d: np.ndarray[tuple[int], np.dtype[np.float64]]
+f32_2d: np.ndarray[tuple[int, int], np.dtype[np.float32]]
+f80_3d: np.ndarray[tuple[int, int, int], np.dtype[np.longdouble]]
 
 ###
 

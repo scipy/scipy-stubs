@@ -7,14 +7,14 @@ import optype.numpy.compat as npc
 
 __all__ = ["fht", "fhtoffset", "ifht"]
 
-_FloatT = TypeVar("_FloatT", bound=np.float32 | np.float64 | np.longdouble)
+_FloatT = TypeVar("_FloatT", bound=np.float32 | np.float64 | npc.floating80)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 ###
 
 @overload
 def fht(
-    a: onp.CanArrayND[_FloatT, _ShapeT], dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
+    a: onp.ArrayND[_FloatT, _ShapeT], dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
 ) -> onp.ArrayND[_FloatT, _ShapeT]: ...
 @overload
 def fht(
@@ -36,7 +36,7 @@ def fht(
 #
 @overload
 def ifht(
-    A: onp.CanArrayND[_FloatT, _ShapeT], dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
+    A: onp.ArrayND[_FloatT, _ShapeT], dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
 ) -> onp.ArrayND[_FloatT, _ShapeT]: ...
 @overload
 def ifht(
