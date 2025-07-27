@@ -1,3 +1,5 @@
+# ruff: noqa: ERA001
+
 from typing import assert_type
 
 import numpy as np
@@ -24,6 +26,8 @@ def f_f64_1nd_0d(x: onp.Array[onp.AtLeast1D, np.float64]) -> np.float64: ...
 def f_f64_1nd_nd(x: onp.Array[onp.AtLeast1D, np.float64]) -> onp.ArrayND[np.float64]: ...
 def f_f64_0d_arg(x: np.float64, a: float) -> np.float64: ...
 
+# NOTE: the commented out assertions only work on numpy 2.1+, so we instead check for assignability
+
 ###
 # derivative
 
@@ -31,8 +35,14 @@ assert_type(derivative(f_f64_0d, 1.0), _DerivativeResult0D[np.float64])
 assert_type(derivative(f_f64_0d, f64_0d), _DerivativeResult0D[np.float64])
 assert_type(derivative(f_f64_0d, i32_0d), _DerivativeResult0D[np.float64])
 assert_type(derivative(f_f32_0d, f32_0d), _DerivativeResult0D[np.float32])
-assert_type(derivative(f_f64_1d, f64_1d), _DerivativeResultND[np.float64, tuple[int]])
-assert_type(derivative(f_f64_nd, f64_2d), _DerivativeResultND[np.float64, tuple[int, int]])
+
+# assert_type(derivative(f_f64_1d, f64_1d), _DerivativeResultND[np.float64, tuple[int]])
+# assert_type(derivative(f_f64_nd, f64_2d), _DerivativeResultND[np.float64, tuple[int, int]])
+# assert_type(derivative(f_f64_1d, f64_1d, <...>), _DerivativeResultND[np.float64, tuple[int]])
+_0: _DerivativeResultND[np.float64, tuple[int]] = derivative(f_f64_1d, f64_1d)
+_1: _DerivativeResultND[np.float64, tuple[int, int]] = derivative(f_f64_nd, f64_2d)
+_2: _DerivativeResultND[np.float64, tuple[int]] = derivative(f_f64_1d, f64_1d, initial_step=f64_1d, step_direction=i64_1d)
+
 assert_type(derivative(f_f64_0d_arg, 1.0, args=(2.0,)), _DerivativeResult0D[np.float64])
 assert_type(derivative(f_f64_0d, 1.0, tolerances={"atol": 0.1}), _DerivativeResult0D[np.float64])
 assert_type(
@@ -51,7 +61,6 @@ assert_type(
     ),
     _DerivativeResult0D[np.float64],
 )
-assert_type(derivative(f_f64_1d, f64_1d, initial_step=f64_1d, step_direction=i64_1d), _DerivativeResultND[np.float64, tuple[int]])
 
 res_der_0d = derivative(f_f64_0d, 1.0)
 assert_type(res_der_0d.success, np.bool_)
@@ -63,13 +72,20 @@ assert_type(res_der_0d.df, np.float64)
 assert_type(res_der_0d.error, np.float64)
 
 res_der_nd = derivative(f_f64_1d, f64_1d)
-assert_type(res_der_nd.success, onp.Array1D[np.bool_])
-assert_type(res_der_nd.status, onp.Array1D[np.int32])
-assert_type(res_der_nd.nfev, onp.Array1D[np.int32])
-assert_type(res_der_nd.nit, onp.Array1D[np.int32])
-assert_type(res_der_nd.x, onp.Array1D[np.float64])
-assert_type(res_der_nd.df, onp.Array1D[np.float64])
-assert_type(res_der_nd.error, onp.Array1D[np.float64])
+# assert_type(res_der_nd.success, onp.Array1D[np.bool_])
+# assert_type(res_der_nd.status, onp.Array1D[np.int32])
+# assert_type(res_der_nd.nfev, onp.Array1D[np.int32])
+# assert_type(res_der_nd.nit, onp.Array1D[np.int32])
+# assert_type(res_der_nd.x, onp.Array1D[np.float64])
+# assert_type(res_der_nd.df, onp.Array1D[np.float64])
+# assert_type(res_der_nd.error, onp.Array1D[np.float64])
+_3: onp.Array1D[np.bool_] = res_der_nd.success
+_4: onp.Array1D[np.int32] = res_der_nd.status
+_5: onp.Array1D[np.int32] = res_der_nd.nfev
+_6: onp.Array1D[np.int32] = res_der_nd.nit
+_7: onp.Array1D[np.float64] = res_der_nd.x
+_8: onp.Array1D[np.float64] = res_der_nd.df
+_9: onp.Array1D[np.float64] = res_der_nd.error
 
 ###
 # jacobian
