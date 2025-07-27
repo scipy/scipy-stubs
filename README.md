@@ -289,16 +289,20 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 - [CSAPS](https://github.com/espdev/csaps)
 - [Efax](https://github.com/NeilGirdhar/efax)
 - [Fast GraphRAG](https://github.com/circlemind-ai/fast-graphrag)
+- [foamlib](https://github.com/gerlero/foamlib)
 - [Freqtrade](https://github.com/freqtrade/freqtrade)
 - [librosa](https://github.com/librosa/librosa)
 - [Lmo](https://github.com/jorenham/Lmo)
 - [MouseTracks](https://github.com/huntfx/MouseTracks)
 - [mypy_primer](https://github.com/hauntsaninja/mypy_primer)
+- [NeuroGym](https://github.com/neurogym/neurogym)
 - [Optuna](https://github.com/optuna/optuna)
+- [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay)
 - [Scanpy](https://github.com/scverse/scanpy)
 - [TQEC](https://github.com/tqec/tqec)
 - [Ultralytics](https://github.com/ultralytics/ultralytics)
 - [Voctomix](https://github.com/voc/voctomix)
+- [xarray](https://github.com/pydata/xarray)
 
 ## License
 
