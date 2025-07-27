@@ -17,7 +17,7 @@ _InexactOrArrayT = TypeVar("_InexactOrArrayT", bound=npc.inexact | onp.ArrayND[n
 
 @overload  # 0d/nd T, axis=None (default), keepdims=False (default)
 def logsumexp(
-    a: _InexactT | onp.ToArrayND[_InexactT, _InexactT],
+    a: onp.CanArray[Any, np.dtype[_InexactT]],
     axis: None = None,
     b: onp.ToComplex | onp.ToComplexND | None = None,
     keepdims: onp.ToFalse = False,
@@ -41,7 +41,7 @@ def logsumexp(
 ) -> np.complex128: ...
 @overload  # 0d/nd T, keepdims=True
 def logsumexp(
-    a: _InexactT | onp.ToArrayND[_InexactT, _InexactT],
+    a: onp.CanArray[Any, np.dtype[_InexactT]],
     axis: AnyShape | None = None,
     b: onp.ToComplex | onp.ToComplexND | None = None,
     *,
@@ -68,7 +68,7 @@ def logsumexp(
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # 0d/nd T, axis=<given>
 def logsumexp(
-    a: _InexactT | onp.ToArrayND[_InexactT, _InexactT],
+    a: onp.CanArray[Any, np.dtype[_InexactT]],
     axis: AnyShape,
     b: onp.ToComplex | onp.ToComplexND | None = None,
     *,
@@ -234,17 +234,19 @@ def logsumexp(
     return_sign: onp.ToTrue,
 ) -> tuple[onp.ArrayND[np.float64 | Any] | Any, onp.ArrayND[np.complex128 | Any] | Any]: ...
 
+# mypy: disable-error-code="overload-overlap"
+
 # NOTE: keep in sync with `log_softmax`
 @overload  # T
-def softmax(x: _InexactOrArrayT, axis: AnyShape | None = None) -> _InexactOrArrayT: ...  # type: ignore[overload-overlap]
+def softmax(x: _InexactOrArrayT, axis: AnyShape | None = None) -> _InexactOrArrayT: ...
 @overload  # 0d +float64
-def softmax(x: onp.ToInt | onp.ToJustFloat64, axis: AnyShape | None = None) -> np.float64: ...
+def softmax(x: float | np.float64 | npc.integer, axis: AnyShape | None = None) -> np.float64: ...
 @overload  # 0d ~complex128
 def softmax(x: onp.ToJustComplex128, axis: AnyShape | None = None) -> np.complex128: ...
 @overload  # nd T@inexact
-def softmax(x: onp.ToArrayND[_InexactT, _InexactT], axis: AnyShape | None = None) -> onp.ArrayND[_InexactT]: ...
+def softmax(x: onp.CanArrayND[_InexactT], axis: AnyShape | None = None) -> onp.ArrayND[_InexactT]: ...
 @overload  # nd +float64
-def softmax(x: onp.ToIntND | onp.ToJustFloat64_ND, axis: AnyShape | None = None) -> onp.ArrayND[np.float64]: ...
+def softmax(x: onp.ToArrayND[float, np.float64 | npc.integer], axis: AnyShape | None = None) -> onp.ArrayND[np.float64]: ...
 @overload  # nd ~complex128
 def softmax(x: onp.ToJustComplex128_ND, axis: AnyShape | None = None) -> onp.ArrayND[np.complex128]: ...
 @overload  # 0d float fallback
@@ -258,15 +260,15 @@ def softmax(x: onp.ToComplexND, axis: AnyShape | None = None) -> onp.ArrayND[np.
 
 # NOTE: keep in sync with `softmax`
 @overload  # T
-def log_softmax(x: _InexactOrArrayT, axis: AnyShape | None = None) -> _InexactOrArrayT: ...  # type: ignore[overload-overlap]
+def log_softmax(x: _InexactOrArrayT, axis: AnyShape | None = None) -> _InexactOrArrayT: ...
 @overload  # 0d +float64
-def log_softmax(x: onp.ToInt | onp.ToJustFloat64, axis: AnyShape | None = None) -> np.float64: ...
+def log_softmax(x: float | np.float64 | npc.integer, axis: AnyShape | None = None) -> np.float64: ...
 @overload  # 0d ~complex128
 def log_softmax(x: onp.ToJustComplex128, axis: AnyShape | None = None) -> np.complex128: ...
 @overload  # nd T@inexact
-def log_softmax(x: onp.ToArrayND[_InexactT, _InexactT], axis: AnyShape | None = None) -> onp.ArrayND[_InexactT]: ...
+def log_softmax(x: onp.CanArrayND[_InexactT], axis: AnyShape | None = None) -> onp.ArrayND[_InexactT]: ...
 @overload  # nd +float64
-def log_softmax(x: onp.ToIntND | onp.ToJustFloat64_ND, axis: AnyShape | None = None) -> onp.ArrayND[np.float64]: ...
+def log_softmax(x: onp.ToArrayND[float, np.float64 | npc.integer], axis: AnyShape | None = None) -> onp.ArrayND[np.float64]: ...
 @overload  # nd ~complex128
 def log_softmax(x: onp.ToJustComplex128_ND, axis: AnyShape | None = None) -> onp.ArrayND[np.complex128]: ...
 @overload  # 0d float fallback
