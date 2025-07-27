@@ -72,10 +72,49 @@ jobs:
   #         matrix=$(uv run scripts/generate_matrix.py | jq -c)
   #         echo "matrix=$matrix" >> $GITHUB_OUTPUT
 
+  typecheck:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        py: ["3.11"]
+        np: ["1.25", "2.0", "2.1", "2.2", "2.3"]
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: setup uv
+        uses: astral-sh/setup-uv@v6.4.3
+        with:
+          activate-environment: true
+          python-version: ${{ matrix.py }}
+
+      # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
+      # manually (re)install the desired version directly in the environment.
+      - name: sync env
+        run: uv sync --no-editable
+
+      - name: install specific numpy version
+        run: >
+          uv pip install --upgrade
+          "numpy==${{ matrix.np }}.*"
+          "numpy-typing-compat==${{ matrix.np }}.*"
+
+      - name: basedpyright scipy-stubs
+        run: basedpyright scipy-stubs
+
+      - name: mypy scipy-stubs
+        run: mypy --no-incremental --cache-dir=/dev/null scipy-stubs
+
+      - name: stubtest scipy
+        run: stubtest --allowlist=.mypyignore scipy
+
   typetest:
     # needs: generate-matrix
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 5
 
     strategy:
       fail-fast: false
@@ -110,11 +149,8 @@ jobs:
           "numpy==${{ matrix.np }}.*"
           "numpy-typing-compat==${{ matrix.np }}.*"
 
-      - name: basedpyright
-        run: basedpyright
+      - name: basedpyright tests
+        run: basedpyright tests
 
-      - name: mypy
-        run: mypy --no-incremental --cache-dir=/dev/null --soft-error-limit=-1 .
-
-      - name: stubtest
-        run: stubtest --allowlist=.mypyignore scipy
+      - name: mypy tests
+        run: mypy --no-incremental --cache-dir=/dev/null --soft-error-limit=-1 tests
