@@ -353,7 +353,7 @@ def fftconvolve(
 @overload  # fallback
 def fftconvolve(
     in1: onp.ToComplexND, in2: onp.ToComplexND, mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
-) -> onp.ArrayND[Any]: ...
+) -> onp.ArrayND[Any, tuple[Any, ...] | tuple[int]]: ...  # workaround for a bug in pyright's overlapping overload detection
 
 # NOTE: keep in sync with `fftconvolve`
 @overload  # float32 | float16, float32 | float16, generic shape
@@ -389,7 +389,7 @@ def oaconvolve(
 @overload  # fallback
 def oaconvolve(
     in1: onp.ToComplexND, in2: onp.ToComplexND, mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
-) -> onp.ArrayND[Any]: ...
+) -> onp.ArrayND[Any, tuple[Any, ...] | tuple[int]]: ...  # workaround for a bug in pyright's overlapping overload detection
 
 #
 @overload  # +float64, +float64
@@ -1037,13 +1037,13 @@ def resample(
 ) -> onp.ArrayND[npc.floating]: ...
 @overload
 def resample(
-    x: onp.ToComplexND,
+    x: onp.ToJustComplexND,
     num: int,
     t: None = None,
     axis: int = 0,
     window: _WindowFuncComplex | onp.ToFloat1D | _ToWindow | None = None,
     domain: _Domain = "time",
-) -> onp.ArrayND[npc.inexact]: ...
+) -> onp.ArrayND[npc.complexfloating]: ...
 @overload
 def resample(
     x: onp.ArrayND[_EnvelopeSCT, _AnyShapeT],
@@ -1064,13 +1064,13 @@ def resample(
 ) -> tuple[onp.ArrayND[npc.floating], onp.Array1D[npc.floating]]: ...
 @overload
 def resample(
-    x: onp.ToComplexND,
+    x: onp.ToJustComplexND,
     num: int,
     t: onp.ToFloat1D,
     axis: int = 0,
     window: _WindowFuncComplex | onp.ToFloat1D | _ToWindow | None = None,
     domain: _Domain = "time",
-) -> tuple[onp.ArrayND[npc.inexact], onp.Array1D[npc.floating]]: ...
+) -> tuple[onp.ArrayND[npc.complexfloating], onp.Array1D[npc.floating]]: ...
 
 # TODO(jorenham): improve
 @overload
