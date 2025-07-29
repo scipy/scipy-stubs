@@ -60,33 +60,33 @@ py_c_nd: list[list[list[list[list[list[complex]]]]]]
 
 assert_type(entropy(i8_0d), np.float64)
 assert_type(entropy(i8_1d), np.float64)
-assert_type(entropy(i8_2d), onp.Array1D[np.float64])  # X
-assert_type(entropy(i8_3d), onp.Array2D[np.float64])  # X
-assert_type(entropy(i8_nd), np.float64 | onp.ArrayND[np.float64])  # X
+assert_type(entropy(i8_2d), onp.Array1D[np.float64])
+assert_type(entropy(i8_3d), onp.Array2D[np.float64])
+assert_type(entropy(i8_nd), np.float64 | onp.ArrayND[np.float64])
 assert_type(entropy(i8_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(entropy(i8_nd, axis=None), np.float64)
 
 assert_type(entropy(f16_0d), np.float32)
 assert_type(entropy(f16_1d), np.float32)
-assert_type(entropy(f16_2d), onp.Array1D[np.float32])  # X
-assert_type(entropy(f16_3d), onp.Array2D[np.float32])  # X
-assert_type(entropy(f16_nd), np.float32 | onp.ArrayND[np.float32])  # X
+assert_type(entropy(f16_2d), onp.Array1D[np.float32])
+assert_type(entropy(f16_3d), onp.Array2D[np.float32])
+assert_type(entropy(f16_nd), np.float32 | onp.ArrayND[np.float32])
 assert_type(entropy(f16_nd, keepdims=True), onp.ArrayND[np.float32])
 assert_type(entropy(f16_nd, axis=None), np.float32)
 
 assert_type(entropy(f32_0d), np.float32)
 assert_type(entropy(f32_1d), np.float32)
-assert_type(entropy(f32_2d), onp.Array1D[np.float32])  # X
-assert_type(entropy(f32_3d), onp.Array2D[np.float32])  # X
-assert_type(entropy(f32_nd), np.float32 | onp.ArrayND[np.float32])  # X
+assert_type(entropy(f32_2d), onp.Array1D[np.float32])
+assert_type(entropy(f32_3d), onp.Array2D[np.float32])
+assert_type(entropy(f32_nd), np.float32 | onp.ArrayND[np.float32])
 assert_type(entropy(f32_nd, keepdims=True), onp.ArrayND[np.float32])
 assert_type(entropy(f32_nd, axis=None), np.float32)
 
 assert_type(entropy(f64_0d), np.float64)
 assert_type(entropy(f64_1d), np.float64)
-assert_type(entropy(f64_2d), onp.Array1D[np.float64])  # X
-assert_type(entropy(f64_3d), onp.Array2D[np.float64])  # X
-assert_type(entropy(f64_nd), np.float64 | onp.ArrayND[np.float64])  # X
+assert_type(entropy(f64_2d), onp.Array1D[np.float64])
+assert_type(entropy(f64_3d), onp.Array2D[np.float64])
+assert_type(entropy(f64_nd), np.float64 | onp.ArrayND[np.float64])
 assert_type(entropy(f64_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(entropy(f64_nd, axis=None), np.float64)
 
@@ -100,33 +100,33 @@ assert_type(entropy(py_f_nd, axis=None), np.float64)
 
 assert_type(entropy(i8_0d, f16_0d), np.float64)
 assert_type(entropy(i8_1d, f16_0d), np.float64)
-assert_type(entropy(i8_2d, f16_0d), onp.Array1D[np.float64])  # X
-assert_type(entropy(i8_3d, f16_0d), onp.Array2D[np.float64])  # X
-assert_type(entropy(i8_nd, f16_0d), np.float64 | onp.ArrayND[np.float64])  # X
+assert_type(entropy(i8_2d, f16_0d), onp.Array1D[np.float64])
+assert_type(entropy(i8_3d, f16_0d), onp.Array2D[np.float64])
+assert_type(entropy(i8_nd, f16_0d), np.float64 | onp.ArrayND[np.float64])
 assert_type(entropy(i8_nd, f16_0d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(entropy(i8_nd, f16_0d, axis=None), np.float64)
 
 assert_type(entropy(f16_0d, f16_0d), np.float32)
 assert_type(entropy(f16_1d, f16_0d), np.float32)
-assert_type(entropy(f16_2d, f16_0d), onp.Array1D[np.float32])  # X
-assert_type(entropy(f16_3d, f16_0d), onp.Array2D[np.float32])  # X
-assert_type(entropy(f16_nd, f16_0d), np.float32 | onp.ArrayND[np.float32])  # X
+assert_type(entropy(f16_2d, f16_0d), onp.Array1D[np.float32])
+assert_type(entropy(f16_3d, f16_0d), onp.Array2D[np.float32])
+assert_type(entropy(f16_nd, f16_0d), np.float32 | onp.ArrayND[np.float32])
 assert_type(entropy(f16_nd, f16_0d, keepdims=True), onp.ArrayND[np.float32])
 assert_type(entropy(f16_nd, f16_0d, axis=None), np.float32)
 
 assert_type(entropy(f32_0d, f16_0d), np.float32)
 assert_type(entropy(f32_1d, f16_0d), np.float32)
-assert_type(entropy(f32_2d, f16_0d), onp.Array1D[np.float32])  # X
-assert_type(entropy(f32_3d, f16_0d), onp.Array2D[np.float32])  # X
-assert_type(entropy(f32_nd, f16_0d), np.float32 | onp.ArrayND[np.float32])  # X
+assert_type(entropy(f32_2d, f16_0d), onp.Array1D[np.float32])
+assert_type(entropy(f32_3d, f16_0d), onp.Array2D[np.float32])
+assert_type(entropy(f32_nd, f16_0d), np.float32 | onp.ArrayND[np.float32])
 assert_type(entropy(f32_nd, f16_0d, keepdims=True), onp.ArrayND[np.float32])
 assert_type(entropy(f32_nd, f16_0d, axis=None), np.float32)
 
 assert_type(entropy(f64_0d, f16_0d), np.float64)
 assert_type(entropy(f64_1d, f16_0d), np.float64)
-assert_type(entropy(f64_2d, f16_0d), onp.Array1D[np.float64])  # X
-assert_type(entropy(f64_3d, f16_0d), onp.Array2D[np.float64])  # X
-assert_type(entropy(f64_nd, f16_0d), np.float64 | onp.ArrayND[np.float64])  # X
+assert_type(entropy(f64_2d, f16_0d), onp.Array1D[np.float64])
+assert_type(entropy(f64_3d, f16_0d), onp.Array2D[np.float64])
+assert_type(entropy(f64_nd, f16_0d), np.float64 | onp.ArrayND[np.float64])
 assert_type(entropy(f64_nd, f16_0d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(entropy(f64_nd, f16_0d, axis=None), np.float64)
 
@@ -140,33 +140,33 @@ assert_type(entropy(py_f_nd, f16_0d, axis=None), np.float64)
 
 assert_type(entropy(i8_0d, py_f_0d), np.float64)
 assert_type(entropy(i8_1d, py_f_0d), np.float64)
-assert_type(entropy(i8_2d, py_f_0d), onp.Array1D[np.float64])  # X
-assert_type(entropy(i8_3d, py_f_0d), onp.Array2D[np.float64])  # X
-assert_type(entropy(i8_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])  # X
+assert_type(entropy(i8_2d, py_f_0d), onp.Array1D[np.float64])
+assert_type(entropy(i8_3d, py_f_0d), onp.Array2D[np.float64])
+assert_type(entropy(i8_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])
 assert_type(entropy(i8_nd, py_f_0d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(entropy(i8_nd, py_f_0d, axis=None), np.float64)
 
 assert_type(entropy(f16_0d, py_f_0d), np.float64)
 assert_type(entropy(f16_1d, py_f_0d), np.float64)
-assert_type(entropy(f16_2d, py_f_0d), onp.Array1D[np.float64])  # X
-assert_type(entropy(f16_3d, py_f_0d), onp.Array2D[np.float64])  # X
-assert_type(entropy(f16_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])  # X
+assert_type(entropy(f16_2d, py_f_0d), onp.Array1D[np.float64])
+assert_type(entropy(f16_3d, py_f_0d), onp.Array2D[np.float64])
+assert_type(entropy(f16_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])
 assert_type(entropy(f16_nd, py_f_0d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(entropy(f16_nd, py_f_0d, axis=None), np.float64)
 
 assert_type(entropy(f32_0d, py_f_0d), np.float64)
 assert_type(entropy(f32_1d, py_f_0d), np.float64)
-assert_type(entropy(f32_2d, py_f_0d), onp.Array1D[np.float64])  # X
-assert_type(entropy(f32_3d, py_f_0d), onp.Array2D[np.float64])  # X
-assert_type(entropy(f32_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])  # X
+assert_type(entropy(f32_2d, py_f_0d), onp.Array1D[np.float64])
+assert_type(entropy(f32_3d, py_f_0d), onp.Array2D[np.float64])
+assert_type(entropy(f32_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])
 assert_type(entropy(f32_nd, py_f_0d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(entropy(f32_nd, py_f_0d, axis=None), np.float64)
 
 assert_type(entropy(f64_0d, py_f_0d), np.float64)
 assert_type(entropy(f64_1d, py_f_0d), np.float64)
-assert_type(entropy(f64_2d, py_f_0d), onp.Array1D[np.float64])  # X
-assert_type(entropy(f64_3d, py_f_0d), onp.Array2D[np.float64])  # X
-assert_type(entropy(f64_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])  # X
+assert_type(entropy(f64_2d, py_f_0d), onp.Array1D[np.float64])
+assert_type(entropy(f64_3d, py_f_0d), onp.Array2D[np.float64])
+assert_type(entropy(f64_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])
 assert_type(entropy(f64_nd, py_f_0d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(entropy(f64_nd, py_f_0d, axis=None), np.float64)
 
@@ -183,49 +183,49 @@ assert_type(entropy(py_f_nd, py_f_0d, axis=None), np.float64)
 
 assert_type(differential_entropy(i8_0d), np.float64)
 assert_type(differential_entropy(i8_1d), np.float64)
-assert_type(differential_entropy(i8_2d), onp.Array1D[np.float64])  # X
-assert_type(differential_entropy(i8_3d), onp.Array2D[np.float64])  # X
-assert_type(differential_entropy(i8_nd), np.float64 | onp.ArrayND[np.float64])  # X
+assert_type(differential_entropy(i8_2d), onp.Array1D[np.float64])
+assert_type(differential_entropy(i8_3d), onp.Array2D[np.float64])
+assert_type(differential_entropy(i8_nd), np.float64 | onp.ArrayND[np.float64])
 assert_type(differential_entropy(i8_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(differential_entropy(i8_nd, axis=None), np.float64)
 
 assert_type(differential_entropy(f16_0d), np.float16)
 assert_type(differential_entropy(f16_1d), np.float16)
-assert_type(differential_entropy(f16_2d), onp.Array1D[np.float16])  # X
-assert_type(differential_entropy(f16_3d), onp.Array2D[np.float16])  # X
-assert_type(differential_entropy(f16_nd), np.float16 | onp.ArrayND[np.float16])  # X
+assert_type(differential_entropy(f16_2d), onp.Array1D[np.float16])
+assert_type(differential_entropy(f16_3d), onp.Array2D[np.float16])
+assert_type(differential_entropy(f16_nd), np.float16 | onp.ArrayND[np.float16])
 assert_type(differential_entropy(f16_nd, keepdims=True), onp.ArrayND[np.float16])
 assert_type(differential_entropy(f16_nd, axis=None), np.float16)
 
 assert_type(differential_entropy(f32_0d), np.float32)
 assert_type(differential_entropy(f32_1d), np.float32)
-assert_type(differential_entropy(f32_2d), onp.Array1D[np.float32])  # X
-assert_type(differential_entropy(f32_3d), onp.Array2D[np.float32])  # X
-assert_type(differential_entropy(f32_nd), np.float32 | onp.ArrayND[np.float32])  # X
+assert_type(differential_entropy(f32_2d), onp.Array1D[np.float32])
+assert_type(differential_entropy(f32_3d), onp.Array2D[np.float32])
+assert_type(differential_entropy(f32_nd), np.float32 | onp.ArrayND[np.float32])
 assert_type(differential_entropy(f32_nd, keepdims=True), onp.ArrayND[np.float32])
 assert_type(differential_entropy(f32_nd, axis=None), np.float32)
 
 assert_type(differential_entropy(f64_0d), np.float64)
 assert_type(differential_entropy(f64_1d), np.float64)
-assert_type(differential_entropy(f64_2d), onp.Array1D[np.float64])  # X
-assert_type(differential_entropy(f64_3d), onp.Array2D[np.float64])  # X
-assert_type(differential_entropy(f64_nd), np.float64 | onp.ArrayND[np.float64])  # X
+assert_type(differential_entropy(f64_2d), onp.Array1D[np.float64])
+assert_type(differential_entropy(f64_3d), onp.Array2D[np.float64])
+assert_type(differential_entropy(f64_nd), np.float64 | onp.ArrayND[np.float64])
 assert_type(differential_entropy(f64_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(differential_entropy(f64_nd, axis=None), np.float64)
 
 assert_type(differential_entropy(f80_0d), np.float128)
 assert_type(differential_entropy(f80_1d), np.float128)
-assert_type(differential_entropy(f80_2d), onp.Array1D[np.float128])  # X
-assert_type(differential_entropy(f80_3d), onp.Array2D[np.float128])  # X
-assert_type(differential_entropy(f80_nd), np.float128 | onp.ArrayND[np.float128])  # X
+assert_type(differential_entropy(f80_2d), onp.Array1D[np.float128])
+assert_type(differential_entropy(f80_3d), onp.Array2D[np.float128])
+assert_type(differential_entropy(f80_nd), np.float128 | onp.ArrayND[np.float128])
 assert_type(differential_entropy(f80_nd, keepdims=True), onp.ArrayND[np.float128])
 assert_type(differential_entropy(f80_nd, axis=None), np.float128)
 
 assert_type(differential_entropy(c64_0d), np.complex64)
 assert_type(differential_entropy(c64_1d), np.complex64)
-assert_type(differential_entropy(c64_2d), onp.Array1D[np.complex64])  # X
-assert_type(differential_entropy(c64_3d), onp.Array2D[np.complex64])  # X
-assert_type(differential_entropy(c64_nd), np.complex64 | onp.ArrayND[np.complex64])  # X
+assert_type(differential_entropy(c64_2d), onp.Array1D[np.complex64])
+assert_type(differential_entropy(c64_3d), onp.Array2D[np.complex64])
+assert_type(differential_entropy(c64_nd), np.complex64 | onp.ArrayND[np.complex64])
 assert_type(differential_entropy(c64_nd, keepdims=True), onp.ArrayND[np.complex64])
 assert_type(differential_entropy(c64_nd, axis=None), np.complex64)
 

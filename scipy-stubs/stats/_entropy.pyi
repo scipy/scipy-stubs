@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import Literal, Never, TypeAlias, overload
 from typing_extensions import TypeAliasType, TypeVar
 
@@ -20,29 +19,19 @@ _AsF64: TypeAlias = np.float64 | npc.integer | np.bool_
 _DifferentialMethod: TypeAlias = Literal["vasicek", "van es", "ebrahimi", "correa", "auto"]
 
 _ToArrayMaxND = TypeAliasType(
-    "_ToArrayMaxND",
-    onp.CanArray[tuple[int, ...], np.dtype[_ScalarT]] | onp.SequenceND[_PyScalarT] | _PyScalarT,
-    type_params=(_ScalarT, _PyScalarT),
+    "_ToArrayMaxND", onp.ToArrayND[_PyScalarT, _ScalarT] | _PyScalarT, type_params=(_ScalarT, _PyScalarT)
 )
 _ToArrayMax1D = TypeAliasType(
-    "_ToArrayMax1D",
-    onp.CanArray[onp.AtMost1D, np.dtype[_ScalarT]] | Sequence[_PyScalarT] | _PyScalarT,
-    type_params=(_ScalarT, _PyScalarT),
+    "_ToArrayMax1D", onp.ToArrayStrict1D[_PyScalarT, _ScalarT] | _PyScalarT, type_params=(_ScalarT, _PyScalarT)
 )
 _ToArrayMax2D = TypeAliasType(
     "_ToArrayMax2D",
-    onp.CanArray[onp.AtMost2D, np.dtype[_ScalarT]] | Sequence[Sequence[_PyScalarT]] | Sequence[_PyScalarT] | _PyScalarT,
+    onp.ToArrayStrict2D[_PyScalarT, _ScalarT] | _ToArrayMax1D[_ScalarT, _PyScalarT],
     type_params=(_ScalarT, _PyScalarT),
 )
 _ToArrayMax3D = TypeAliasType(
     "_ToArrayMax3D",
-    (
-        onp.CanArray[onp.AtMost3D, np.dtype[_ScalarT]]
-        | Sequence[Sequence[Sequence[_PyScalarT]]]
-        | Sequence[Sequence[_PyScalarT]]
-        | Sequence[_PyScalarT]
-        | _PyScalarT
-    ),
+    onp.ToArrayStrict3D[_PyScalarT, _ScalarT] | _ToArrayMax2D[_ScalarT, _PyScalarT],
     type_params=(_ScalarT, _PyScalarT),
 )
 
