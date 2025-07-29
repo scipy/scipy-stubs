@@ -249,6 +249,18 @@ assert_type(sparse.hstack([dia_arr, dia_arr], dtype=complex), sparse.coo_array[n
 assert_type(sparse.hstack([dok_arr, dok_arr], dtype=complex), sparse.coo_array[np.complex128, tuple[int, int]])
 assert_type(sparse.hstack([lil_arr, lil_arr], dtype=complex), sparse.coo_array[np.complex128, tuple[int, int]])
 
+assert_type(sparse.hstack([coo_arr, coo_arr], format="bsr"), sparse.bsr_array[ScalarType])
+assert_type(sparse.hstack([csc_arr, csc_arr], format="bsr", dtype=np.complex64), sparse.bsr_array[np.complex64])
+assert_type(sparse.hstack([csr_arr, csr_arr], format="bsr", dtype=int), sparse.bsr_array[np.int_])
+assert_type(sparse.hstack([dia_arr, dia_arr], format="bsr", dtype=float), sparse.bsr_array[np.float64])
+assert_type(sparse.hstack([dok_arr, dok_arr], format="bsr", dtype=complex), sparse.bsr_array[np.complex128])
+assert_type(sparse.hstack([csc_arr, csc_arr], format="coo", dtype=np.complex64), sparse.coo_array[np.complex64, tuple[int, int]])
+assert_type(sparse.hstack([csc_arr, csc_arr], format="csc", dtype=np.complex64), sparse.csc_array[np.complex64])
+assert_type(sparse.hstack([csc_arr, csc_arr], format="csr", dtype=np.complex64), sparse.csr_array[np.complex64, tuple[int, int]])
+assert_type(sparse.hstack([csc_arr, csc_arr], format="dia", dtype=np.complex64), sparse.dia_array[np.complex64])
+assert_type(sparse.hstack([csc_arr, csc_arr], format="dok", dtype=np.complex64), sparse.dok_array[np.complex64, tuple[int, int]])
+assert_type(sparse.hstack([csc_arr, csc_arr], format="lil", dtype=np.complex64), sparse.lil_array[np.complex64])
+
 ###
 # block_array
 assert_type(sparse.block_array([[any_mat]]), sparse.coo_array[ScalarType, tuple[int, int]])
