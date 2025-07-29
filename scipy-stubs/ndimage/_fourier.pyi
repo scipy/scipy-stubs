@@ -35,11 +35,11 @@ def _get_output_fourier(output: _OutputArrayT, input: onp.ToComplex128_ND) -> _O
 @overload  # output: <T: scalar type>
 def _get_output_fourier(output: type[_OutputScalarT], input: onp.ToComplex128_ND) -> onp.ArrayND[_OutputScalarT]: ...
 @overload  # +float64
-def _get_output_fourier(output: None, input: _InputF64) -> onp.ArrayND[np.float64]: ...  # type: ignore[overload-overlap]
+def _get_output_fourier(output: None, input: _InputF64) -> onp.ArrayND[np.float64]: ...
 @overload  # +float32
 def _get_output_fourier(output: None, input: _InputF32) -> onp.ArrayND[np.float32]: ...
 @overload  # ~complex128
-def _get_output_fourier(output: None, input: _InputC128) -> onp.ArrayND[np.complex128]: ...  # type: ignore[overload-overlap]
+def _get_output_fourier(output: None, input: _InputC128) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~complex64
 def _get_output_fourier(output: None, input: _InputC64) -> onp.ArrayND[np.complex64]: ...
 @overload  # fallback
@@ -51,7 +51,7 @@ def _get_output_fourier_complex(
     output: onp.ArrayND[_OutputScalarComplexT] | type[_OutputScalarComplexT], input: onp.ToComplex128_ND
 ) -> onp.ArrayND[_OutputScalarComplexT]: ...
 @overload  # ~complex128 | +floating
-def _get_output_fourier_complex(output: None, input: _InputF64C128) -> onp.ArrayND[np.complex128]: ...  # type: ignore[overload-overlap]
+def _get_output_fourier_complex(output: None, input: _InputF64C128) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~complex64
 def _get_output_fourier_complex(output: None, input: _InputC64) -> onp.ArrayND[np.complex64]: ...
 @overload  # fallback
@@ -75,7 +75,7 @@ def fourier_gaussian(
     input: onp.ToComplex128_ND, sigma: _Sigma, n: CanIndex = -1, axis: int = -1, *, output: type[_OutputScalarT]
 ) -> onp.ArrayND[_OutputScalarT]: ...
 @overload  # +float64
-def fourier_gaussian(  # type: ignore[overload-overlap]
+def fourier_gaussian(
     input: _InputF64, sigma: _Sigma, n: CanIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # +float32
@@ -83,7 +83,7 @@ def fourier_gaussian(
     input: _InputF32, sigma: _Sigma, n: CanIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # ~complex128
-def fourier_gaussian(  # type: ignore[overload-overlap]
+def fourier_gaussian(
     input: _InputC128, sigma: _Sigma, n: CanIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~complex64
@@ -111,7 +111,7 @@ def fourier_uniform(
     input: onp.ToComplex128_ND, size: _Sigma, n: CanIndex = -1, axis: int = -1, *, output: type[_OutputScalarT]
 ) -> onp.ArrayND[_OutputScalarT]: ...
 @overload  # +float64
-def fourier_uniform(  # type: ignore[overload-overlap]
+def fourier_uniform(
     input: _InputF64, size: _Sigma, n: CanIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # +float32
@@ -119,7 +119,7 @@ def fourier_uniform(
     input: _InputF32, size: _Sigma, n: CanIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # ~complex128
-def fourier_uniform(  # type: ignore[overload-overlap]
+def fourier_uniform(
     input: _InputC128, size: _Sigma, n: CanIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~complex64
@@ -149,7 +149,7 @@ def fourier_ellipsoid(
     input: onp.ToComplex128_ND, size: _Sigma, n: CanIndex = -1, axis: int = -1, *, output: type[_OutputScalarT]
 ) -> onp.ArrayND[_OutputScalarT]: ...
 @overload  # +float64
-def fourier_ellipsoid(  # type: ignore[overload-overlap]
+def fourier_ellipsoid(
     input: _InputF64, size: _Sigma, n: CanIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # +float32
@@ -157,7 +157,7 @@ def fourier_ellipsoid(
     input: _InputF32, size: _Sigma, n: CanIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # ~complex128
-def fourier_ellipsoid(  # type: ignore[overload-overlap]
+def fourier_ellipsoid(
     input: _InputC128, size: _Sigma, n: CanIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~complex64
@@ -187,7 +187,7 @@ def fourier_shift(
     input: onp.ToComplex128_ND, shift: _Sigma, n: CanIndex = -1, axis: int = -1, *, output: type[_OutputScalarComplexT]
 ) -> onp.ArrayND[_OutputScalarComplexT]: ...
 @overload  # ~complex128 | +floating
-def fourier_shift(  # type: ignore[overload-overlap]
+def fourier_shift(
     input: _InputF64C128, shift: _Sigma, n: CanIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~complex64
