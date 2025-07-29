@@ -57,7 +57,7 @@ _FloatOrND: TypeAlias = _Float | _FloatND
 _Float1ND: TypeAlias = onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]]
 _FloatOr1ND: TypeAlias = _Float | _Float1ND
 
-_ToFloatOrND: TypeAlias = onp.ToFloat | onp.ToFloatND
+_ToFloatOrND: TypeAlias = onp.CanArray[Any, np.dtype[npc.floating | npc.integer | np.bool_]] | float
 
 _Expectant: TypeAlias = Callable[[float], onp.ToFloat]
 
@@ -428,10 +428,6 @@ class _rv_mixin:
     def _unpack_loc_scale(
         self, /, theta: Sequence[onp.ToFloatND]
     ) -> tuple[onp.ToFloatND, onp.ToFloatND, tuple[onp.ToFloatND, ...]]: ...
-    @overload
-    def _unpack_loc_scale(
-        self, /, theta: Sequence[_ToFloatOrND]
-    ) -> tuple[_ToFloatOrND, _ToFloatOrND, tuple[_ToFloatOrND, ...]]: ...
 
 class rv_continuous(_rv_mixin, rv_generic):
     moment_type: Final[_MomentType]
@@ -1157,8 +1153,6 @@ class _rv_continuous_0(rv_continuous):
     def _unpack_loc_scale(self, /, theta: Sequence[onp.ToFloat]) -> tuple[onp.ToFloat, onp.ToFloat, tuple[()]]: ...
     @overload
     def _unpack_loc_scale(self, /, theta: Sequence[onp.ToFloatND]) -> tuple[onp.ToFloatND, onp.ToFloatND, tuple[()]]: ...
-    @overload
-    def _unpack_loc_scale(self, /, theta: Sequence[_ToFloatOrND]) -> tuple[_ToFloatOrND, _ToFloatOrND, tuple[()]]: ...
 
 # undocumented
 def argsreduce(cond: _BoolND, *args: _ToFloatOrND) -> list[_CoFloatND]: ...
