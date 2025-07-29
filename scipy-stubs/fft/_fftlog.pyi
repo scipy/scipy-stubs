@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import TypeVar, overload
+from typing import Any, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -9,6 +9,8 @@ __all__ = ["fht", "fhtoffset", "ifht"]
 
 _FloatT = TypeVar("_FloatT", bound=np.float32 | np.float64 | npc.floating80)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+
+_WorkaroundForPyright: TypeAlias = tuple[Any, ...] | tuple[int]
 
 ###
 
@@ -31,7 +33,7 @@ def fht(
 @overload
 def fht(
     a: onp.ToFloatND, dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[npc.floating, _WorkaroundForPyright]: ...
 
 #
 @overload
@@ -53,7 +55,7 @@ def ifht(
 @overload
 def ifht(
     A: onp.ToFloatND, dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[npc.floating, _WorkaroundForPyright]: ...
 
 #
 def fhtoffset(dln: onp.ToFloat, mu: onp.ToFloat, initial: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0) -> np.float64: ...
