@@ -35,7 +35,8 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 #
 def spline_filter(Iin: onp.ArrayND[_FloatDT], lmbda: onp.ToFloat = 5.0) -> onp.Array2D[_FloatDT]: ...
 
-#
+# NOTE: mypy reports false positive `overload-overlap` errors here, but only with `numpy<2.1`, so we disable it in the entire file
+# mypy: disable-error-code=overload-overlap
 @overload
 def gauss_spline(x: onp.ArrayND[_SubFloat64, _ShapeT], n: onp.ToFloat) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload
