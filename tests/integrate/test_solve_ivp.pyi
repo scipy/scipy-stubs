@@ -1,6 +1,7 @@
 from typing import Any, TypeAlias, assert_type, type_check_only
 
 import numpy as np
+import numpy.typing as npt
 import optype.numpy as onp
 
 from scipy.integrate import solve_ivp
@@ -46,9 +47,7 @@ assert_type(solve_ivp(upward_cannon, list_float, list_float, events=hit_ground, 
 ###
 
 @type_check_only
-def lotkavolterra(
-    t: float, z: np.ndarray[tuple[int, ...], np.dtype[np.float64]], a: float, b: float, c: float, d: float
-) -> _VecF64: ...
+def lotkavolterra(t: float, z: npt.NDArray[np.float64], a: float, b: float, c: float, d: float) -> _VecF64: ...
 
 assert_type(solve_ivp(lotkavolterra, list_float, list_float, args=(1.5, 1, 3, 1)).y, _MatF64)
 assert_type(solve_ivp(lotkavolterra, list_float, list_float, args=(1.5, 1, 3, 1), dense_output=True).y, _MatF64)
