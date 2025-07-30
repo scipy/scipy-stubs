@@ -13,7 +13,7 @@ from scipy.sparse import sparray, spmatrix
 from scipy.sparse._base import _spbase
 
 _Ts = TypeVarTuple("_Ts")
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
 _Inexact64T = TypeVar("_Inexact64T", bound=np.float64 | np.complex128)
 _Inexact64T_co = TypeVar("_Inexact64T_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
 
