@@ -4,7 +4,7 @@ from typing import Concatenate, Final, Literal, LiteralString, Protocol, TypeAli
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
-from numpy.polynomial._polybase import ABCPolyBase
+from numpy_typing_compat import ABCPolyBase
 
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
