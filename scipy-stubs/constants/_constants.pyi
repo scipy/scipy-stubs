@@ -165,7 +165,7 @@ __all__ = [
     "zetta",
 ]
 
-_InexactArrayLikeT = TypeVar("_InexactArrayLikeT", bound=npc.inexact | onp.ArrayND[np.inexact])
+_InexactArrayLikeT = TypeVar("_InexactArrayLikeT", bound=npc.inexact | onp.ArrayND[npc.inexact])
 
 _TempScaleC: TypeAlias = Literal["Celsius", "celsius", "C", "c"]
 _TempScaleK: TypeAlias = Literal["Kelvin", "kelvin", "K", "k"]

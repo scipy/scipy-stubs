@@ -254,7 +254,7 @@ def idstn(
 #
 @overload
 def dct(
-    x: onp.CanArrayND[np.integer, _ShapeT],
+    x: onp.CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
@@ -311,7 +311,7 @@ def dct(
 #
 @overload
 def idct(
-    x: onp.CanArrayND[np.integer, _ShapeT],
+    x: onp.CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
@@ -368,7 +368,7 @@ def idct(
 #
 @overload
 def dst(
-    x: onp.CanArrayND[np.integer, _ShapeT],
+    x: onp.CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
@@ -425,7 +425,7 @@ def dst(
 #
 @overload
 def idst(
-    x: onp.CanArrayND[np.integer, _ShapeT],
+    x: onp.CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
     n: onp.ToInt | None = None,
     axis: op.CanIndex = -1,
