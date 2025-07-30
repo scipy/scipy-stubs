@@ -20,8 +20,8 @@ _QuantileMethod: TypeAlias = Literal[
 
 ###
 
-@overload  # this mypy error is a false positive
-def quantile(  # type: ignore[overload-overlap]
+@overload
+def quantile(
     x: onp.ToFloatStrict1D,
     p: onp.ToJustFloat,
     *,

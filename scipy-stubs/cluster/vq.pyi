@@ -19,7 +19,7 @@ _AsFloat64_2D: TypeAlias = onp.ToArray2D[float, npc.floating64 | npc.integer]
 _PyFloatMax2D: TypeAlias = Sequence[float] | Sequence[Sequence[float]]
 
 ###
-# NOTE: DO NOT RE-ORDER THE OVERLOADS WITH a `# type: ignore`, otherwise it'll trigger a pernicious bug in pyright (1.1.403).
+# NOTE: DO NOT RE-ORDER THE OVERLOADS, otherwise it'll trigger a pernicious bug in pyright (1.1.403).
 
 class ClusterError(Exception): ...
 
@@ -31,7 +31,7 @@ def whiten(obs: onp.ArrayND[_InexactT], check_finite: bool | None = None) -> onp
 
 #
 @overload  # float32
-def vq(  # type: ignore[overload-overlap]
+def vq(
     obs: onp.CanArrayND[np.float32], code_book: _ToFloat32_2D, check_finite: bool = True
 ) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.float32]]: ...
 @overload  # float64
@@ -55,7 +55,7 @@ def py_vq(
 
 #
 @overload  # float32
-def kmeans(  # type: ignore[overload-overlap]
+def kmeans(
     obs: onp.CanArrayND[np.float32],
     k_or_guess: int | _ToFloat32_2D,
     iter: int = 20,

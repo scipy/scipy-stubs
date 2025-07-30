@@ -405,7 +405,7 @@ def boxcox_llf(  # type: ignore[overload-overlap]
     nan_policy: NanPolicy = "propagate",
 ) -> _InexactT: ...
 @overload
-def boxcox_llf(  # type: ignore[overload-overlap]
+def boxcox_llf(
     lmb: float | onp.ToInt | _InexactT,
     data: onp.CanArrayND[_InexactT] | Sequence[_InexactT],
     *,
