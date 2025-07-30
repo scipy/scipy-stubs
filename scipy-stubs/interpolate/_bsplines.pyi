@@ -162,7 +162,7 @@ def make_lsq_spline(
     check_finite: onp.ToBool = True,
     *,
     method: _LSQMethod = "qr",
-) -> BSpline[np.complex128]: ...
+) -> BSpline[np.float64]: ...
 @overload
 def make_lsq_spline(
     x: onp.ToFloat1D,
