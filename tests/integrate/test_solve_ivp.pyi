@@ -8,8 +8,8 @@ from scipy.integrate import solve_ivp
 
 _VecF64: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
 _MatF64: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
-_ArrF64: TypeAlias = np.ndarray[tuple[int, ...], np.dtype[np.float64]]
-_VecC128: TypeAlias = np.ndarray[tuple[Any], np.dtype[np.complex128]]
+_ArrF64: TypeAlias = np.ndarray[tuple[Any, ...], np.dtype[np.float64]]
+_VecC128: TypeAlias = np.ndarray[tuple[int], np.dtype[np.complex128]]
 _MatC128: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.complex128]]
 _ArrC128: TypeAlias = np.ndarray[tuple[Any, ...], np.dtype[np.complex128]]
 
