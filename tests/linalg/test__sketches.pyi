@@ -2,6 +2,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import numpy.typing as npt
+import optype.numpy as onp
 
 from scipy.linalg import clarkson_woodruff_transform
 from scipy.sparse import csc_matrix, sparray, spmatrix
@@ -27,17 +28,17 @@ sparse_c160: spmatrix[np.complex256] | sparray[np.complex256]
 
 ###
 
-assert_type(clarkson_woodruff_transform(like_bool_2d, 2), npt.NDArray[np.int_])
-assert_type(clarkson_woodruff_transform(like_i64_2d, 2), npt.NDArray[np.int_])
-assert_type(clarkson_woodruff_transform(like_f64_2d, 2), npt.NDArray[np.float64])
-assert_type(clarkson_woodruff_transform(like_c128_2d, 2), npt.NDArray[np.complex128])
+assert_type(clarkson_woodruff_transform(like_bool_2d, 2), onp.ArrayND[np.int_])
+assert_type(clarkson_woodruff_transform(like_i64_2d, 2), onp.ArrayND[np.int_])
+assert_type(clarkson_woodruff_transform(like_f64_2d, 2), onp.ArrayND[np.float64])
+assert_type(clarkson_woodruff_transform(like_c128_2d, 2), onp.ArrayND[np.complex128])
 
-assert_type(clarkson_woodruff_transform(arr_any, 2), npt.NDArray[Any])  # type: ignore[assert-type]
-assert_type(clarkson_woodruff_transform(arr_i8, 2), npt.NDArray[np.int_])
-assert_type(clarkson_woodruff_transform(arr_f32, 2), npt.NDArray[np.float64])
-assert_type(clarkson_woodruff_transform(arr_c64, 2), npt.NDArray[np.complex128])
-assert_type(clarkson_woodruff_transform(arr_f80, 2), npt.NDArray[np.longdouble])
-assert_type(clarkson_woodruff_transform(arr_c160, 2), npt.NDArray[np.clongdouble])
+assert_type(clarkson_woodruff_transform(arr_any, 2), onp.ArrayND[Any])  # type: ignore[assert-type]
+assert_type(clarkson_woodruff_transform(arr_i8, 2), onp.ArrayND[np.int_])
+assert_type(clarkson_woodruff_transform(arr_f32, 2), onp.ArrayND[np.float64])
+assert_type(clarkson_woodruff_transform(arr_c64, 2), onp.ArrayND[np.complex128])
+assert_type(clarkson_woodruff_transform(arr_f80, 2), onp.ArrayND[np.longdouble])
+assert_type(clarkson_woodruff_transform(arr_c160, 2), onp.ArrayND[np.clongdouble])
 
 assert_type(clarkson_woodruff_transform(sparse_any, 2), csc_matrix[Any])
 assert_type(clarkson_woodruff_transform(sparse_i8, 2), csc_matrix[np.int_])
