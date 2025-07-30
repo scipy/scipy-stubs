@@ -184,7 +184,7 @@ def make_smoothing_spline(
     lam: onp.ToFloat | None = None,
     *,
     axis: op.CanIndex = 0,
-) -> BSpline[np.float64]: ...
+) -> BSpline[np.complex128]: ...
 
 #
 def fpcheck(x: onp.ToFloat1D, t: onp.ToFloat1D, k: onp.ToJustInt) -> None: ...  # undocumented
