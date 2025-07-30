@@ -15,6 +15,9 @@ _SubScalar: TypeAlias = npc.inexact64 | npc.integer | np.bool_
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
+# workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
+_WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
+
 ###
 
 class LinAlgWarning(RuntimeWarning): ...
@@ -158,7 +161,7 @@ def norm(
 @overload  # array-like, keepdims: True (positional)
 def norm(
     a: onp.ToComplexND, ord: _Order | None, axis: _Axis | None, keepdims: onp.ToTrue, check_finite: onp.ToBool = True
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[npc.floating, _WorkaroundForPyright]: ...
 @overload  # array-like, keepdims: True (keyword)
 def norm(
     a: onp.ToComplexND,
@@ -167,7 +170,7 @@ def norm(
     *,
     keepdims: onp.ToTrue,
     check_finite: onp.ToBool = True,
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[npc.floating, _WorkaroundForPyright]: ...
 @overload  # catch-all
 def norm(
     a: onp.ToArrayND,
@@ -175,7 +178,7 @@ def norm(
     axis: _Axis | None = None,
     keepdims: onp.ToBool = False,
     check_finite: onp.ToBool = True,
-) -> npc.floating | onp.ArrayND[npc.floating]: ...
+) -> npc.floating | onp.ArrayND[npc.floating, _WorkaroundForPyright]: ...
 
 #
 def _datacopied(arr: onp.ArrayND[Any], original: onp.CanArrayND[Any]) -> bool: ...  # undocumented

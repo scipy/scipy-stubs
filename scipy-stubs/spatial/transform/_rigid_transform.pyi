@@ -1,7 +1,7 @@
 # https://github.com/scipy/scipy/blob/maintenance/1.16.x/scipy/spatial/transform/_rigid_transform.pyx
 
 from collections.abc import Iterable
-from typing import Self, TypeAlias, overload
+from typing import Any, Self, TypeAlias, overload
 
 import numpy as np
 import optype as op
@@ -63,7 +63,7 @@ class RigidTransform:
     @overload
     def apply(
         self, /, vector: onp.ToFloat1D | onp.ToFloat2D, inverse: bool = False
-    ) -> onp.ArrayND[np.float64, tuple[int] | tuple[int, int]]: ...
+    ) -> onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]]: ...
 
     #
     @property

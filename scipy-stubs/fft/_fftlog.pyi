@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import TypeVar, overload
+from typing import Any, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -10,11 +10,14 @@ __all__ = ["fht", "fhtoffset", "ifht"]
 _FloatT = TypeVar("_FloatT", bound=np.float32 | np.float64 | npc.floating80)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
+# workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
+_WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
+
 ###
 
 @overload
 def fht(
-    a: onp.CanArrayND[_FloatT, _ShapeT], dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
+    a: onp.ArrayND[_FloatT, _ShapeT], dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
 ) -> onp.ArrayND[_FloatT, _ShapeT]: ...
 @overload
 def fht(
@@ -31,12 +34,12 @@ def fht(
 @overload
 def fht(
     a: onp.ToFloatND, dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[npc.floating, _WorkaroundForPyright]: ...
 
 #
 @overload
 def ifht(
-    A: onp.CanArrayND[_FloatT, _ShapeT], dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
+    A: onp.ArrayND[_FloatT, _ShapeT], dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
 ) -> onp.ArrayND[_FloatT, _ShapeT]: ...
 @overload
 def ifht(
@@ -53,7 +56,7 @@ def ifht(
 @overload
 def ifht(
     A: onp.ToFloatND, dln: onp.ToFloat, mu: onp.ToFloat, offset: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[npc.floating, _WorkaroundForPyright]: ...
 
 #
 def fhtoffset(dln: onp.ToFloat, mu: onp.ToFloat, initial: onp.ToFloat = 0.0, bias: onp.ToFloat = 0.0) -> np.float64: ...
