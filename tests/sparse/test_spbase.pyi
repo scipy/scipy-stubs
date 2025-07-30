@@ -1,3 +1,5 @@
+# ruff: noqa: ERA001
+
 from typing import assert_type
 
 import numpy as np
@@ -11,6 +13,8 @@ f64_2d: np.ndarray[tuple[int, int], np.dtype[np.float64]]
 
 shape_2d: tuple[int, int]
 dense_2d: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
+
+# NOTE: the commented out assertions only work on numpy 2.1+, so we instead check for assignability
 
 ###
 # utility functions
@@ -41,11 +45,14 @@ assert_type(sparse.lil_matrix(shape_2d), sparse.lil_matrix[np.float64])
 
 assert_type(sparse.coo_array((i64_1d, (i64_1d, i64_1d)), shape=shape_2d), sparse.coo_array[np.int64, tuple[int, int]])
 assert_type(sparse.bsr_array(f64_2d), sparse.bsr_array[np.float64])
-assert_type(sparse.coo_array(f64_2d), sparse.coo_array[np.float64, tuple[int, int]])
+# assert_type(sparse.coo_array(f64_2d), sparse.coo_array[np.float64, tuple[int, int]])
+_0: sparse.coo_array[np.float64, tuple[int, int]] = sparse.coo_array(f64_2d)
 assert_type(sparse.csc_array(f64_2d), sparse.csc_array[np.float64])
-assert_type(sparse.csr_array(f64_2d), sparse.csr_array[np.float64])
+# assert_type(sparse.csr_array(f64_2d), sparse.csr_array[np.float64])
+_1: sparse.csr_array[np.float64, tuple[int, int]] = sparse.csr_array(f64_2d)
 assert_type(sparse.dia_array(f64_2d), sparse.dia_array[np.float64])
-assert_type(sparse.dok_array(f64_2d), sparse.dok_array[np.float64])
+# assert_type(sparse.dok_array(f64_2d), sparse.dok_array[np.float64])
+_2: sparse.dok_array[np.float64, tuple[int, int]] = sparse.dok_array(f64_2d)
 assert_type(sparse.lil_array(f64_2d), sparse.lil_array[np.float64])
 
 ###
@@ -87,7 +94,9 @@ assert_type(csr_mat @ csr_mat, sparse.csr_matrix[ScalarType])
 assert_type(csr_mat / csr_mat, np.matrix[tuple[int, int], np.dtype[np.float64]])
 
 # CSR array
-assert_type(sparse.csr_array(dense_2d), sparse.csr_array[ScalarType])
+# assert_type(sparse.csr_array(dense_2d), sparse.csr_array[ScalarType])
+_3: sparse.csr_array[ScalarType] = sparse.csr_array(dense_2d)
+
 assert_type(-csr_arr, sparse.csr_array[ScalarType])
 assert_type(round(csr_arr), sparse.csr_array[ScalarType])
 assert_type(csr_arr + 0, sparse.csr_array[ScalarType])
