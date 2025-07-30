@@ -95,9 +95,12 @@ def _studentized_range_pdf_logconst(k: float, df: float) -> float: ...  # undocu
 def genhyperbolic_pdf(x: float, p: float, a: float, b: float) -> float: ...  # undocumented
 def genhyperbolic_logpdf(x: float, p: float, a: float, b: float) -> float: ...  # undocumented
 
+# NOTE: There are two false positive `overload-overlap` mypy errors that only occur with `numpy>=2.2`.
+# mypy: disable-error-code=overload-overlap
+
 # keep in sync with `gaussian_kernel_estimate_log`
 @overload
-def gaussian_kernel_estimate(  # type: ignore[overload-overlap]
+def gaussian_kernel_estimate(
     points: onp.Array2D[_AsReal],
     values: onp.Array2D[_Real],
     xi: onp.Array2D[_AsReal],
@@ -126,7 +129,7 @@ def gaussian_kernel_estimate(
 
 # keep in sync with `gaussian_kernel_estimate`
 @overload
-def gaussian_kernel_estimate_log(  # type: ignore[overload-overlap]
+def gaussian_kernel_estimate_log(
     points: onp.Array2D[_AsReal],
     values: onp.Array2D[_Real],
     xi: onp.Array2D[_AsReal],

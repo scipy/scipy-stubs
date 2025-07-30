@@ -108,9 +108,12 @@ def _missing_raise() -> None: ...  # undocumented
 
 _valid_miss_meth: Final[dict[str, Callable[[], None]]] = ...  # undocumented
 
+# NOTE: There is a false positive `overload-overlap` mypy error that only occurs with `numpy<2.2`
+# mypy: disable-error-code=overload-overlap
+
 #
 @overload  # float32
-def kmeans2(  # type: ignore[overload-overlap]
+def kmeans2(
     data: onp.CanArrayND[np.float32],
     k: int | _ToFloat32_2D,
     iter: int = 10,
