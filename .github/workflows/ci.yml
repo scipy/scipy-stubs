@@ -49,28 +49,8 @@ jobs:
       - name: pyright
         uses: jakebailey/pyright-action@v2.3.2
 
-  # generate-matrix:
-  #   name: Generate Test Matrix
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 1
-
-  #   outputs:
-  #     matrix: ${{ steps.set-matrix.outputs.matrix }}
-
-  #   steps:
-  #     - uses: actions/checkout@v4.2.2
-
-  #     - name: Install uv
-  #       uses: astral-sh/setup-uv@v6.4.3
-  #       with:
-  #         python-version: "3.13"
-
-  #     - name: Generate Matrix
-  #       id: set-matrix
-  #       shell: bash
-  #       run: |
-  #         matrix=$(uv run scripts/generate_matrix.py | jq -c)
-  #         echo "matrix=$matrix" >> $GITHUB_OUTPUT
+  # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
+  # manually (re)install the desired version directly in the environment.
 
   typecheck:
     runs-on: ubuntu-latest
@@ -91,13 +71,14 @@ jobs:
           activate-environment: true
           python-version: ${{ matrix.py }}
 
-      # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
-      # manually (re)install the desired version directly in the environment.
       - name: sync env
         run: uv sync --no-editable
 
       - name: install specific numpy version
-        run: uv pip install --upgrade "numpy-typing-compat==${{ matrix.np }}.*"
+        run: >
+          uv pip install --upgrade
+          "numpy==${{ matrix.np }}.*"
+          "numpy-typing-compat==${{ matrix.np }}.*"
 
       - name: basedpyright scipy-stubs
         run: basedpyright scipy-stubs
@@ -134,13 +115,14 @@ jobs:
           activate-environment: true
           python-version: ${{ matrix.py }}
 
-      # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
-      # manually (re)install the desired version directly in the environment.
       - name: sync env
         run: uv sync --no-editable
 
       - name: install specific numpy version
-        run: uv pip install --upgrade "numpy-typing-compat==${{ matrix.np }}.*"
+        run: >
+          uv pip install --upgrade
+          "numpy==${{ matrix.np }}.*"
+          "numpy-typing-compat==${{ matrix.np }}.*"
 
       - name: basedpyright tests
         run: basedpyright tests
