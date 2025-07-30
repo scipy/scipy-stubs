@@ -4,6 +4,7 @@ from typing import Literal, TypeAlias, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from .windows._windows import _ToWindow
 
@@ -12,7 +13,7 @@ __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 _FloatingND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
-_CFloatingND: TypeAlias = onp.ArrayND[np.complex64 | np.complex128 | np.clongdouble]
+_CFloatingND: TypeAlias = onp.ArrayND[npc.complexfloating]
 
 _Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[onp.ArrayND], onp.ArrayND]
 _Scaling: TypeAlias = Literal["density", "spectrum"]

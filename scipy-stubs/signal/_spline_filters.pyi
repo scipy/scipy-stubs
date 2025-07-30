@@ -20,18 +20,13 @@ __all__ = [
 
 _SubFloat64: TypeAlias = np.bool_ | npc.integer | np.float16 | np.float32
 
-_FloatD: TypeAlias = np.float32 | np.float64
 _FloatQ: TypeAlias = np.float64 | np.longdouble
-_ComplexD: TypeAlias = np.complex64 | np.complex128
 _ComplexQ: TypeAlias = np.complex128 | np.clongdouble
-_InexactD: TypeAlias = _FloatD | _ComplexD
-_InexactQ: TypeAlias = _FloatQ | _ComplexQ
-_Inexact: TypeAlias = npc.inexact
 
-_FloatDT = TypeVar("_FloatDT", bound=_FloatD)
-_InexactDT = TypeVar("_InexactDT", bound=_InexactD)
-_InexactQT = TypeVar("_InexactQT", bound=_InexactQ)
-_InexactT = TypeVar("_InexactT", bound=_Inexact)
+_FloatDT = TypeVar("_FloatDT", bound=np.float32 | np.float64)
+_InexactDT = TypeVar("_InexactDT", bound=npc.inexact32 | npc.inexact64)
+_InexactQT = TypeVar("_InexactQT", bound=npc.inexact64 | npc.inexact80)
+_InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 ###
@@ -53,13 +48,13 @@ def gauss_spline(x: onp.ToFloatStrict3D, n: onp.ToFloat) -> onp.Array3D[_FloatQ]
 @overload
 def gauss_spline(x: onp.ToFloatND, n: onp.ToFloat) -> onp.ArrayND[_FloatQ]: ...
 @overload
-def gauss_spline(x: onp.ToComplexStrict1D, n: onp.ToFloat) -> onp.Array1D[_InexactQ]: ...
+def gauss_spline(x: onp.ToJustComplexStrict1D, n: onp.ToFloat) -> onp.Array1D[_ComplexQ]: ...
 @overload
-def gauss_spline(x: onp.ToComplexStrict2D, n: onp.ToFloat) -> onp.Array2D[_InexactQ]: ...
+def gauss_spline(x: onp.ToJustComplexStrict2D, n: onp.ToFloat) -> onp.Array2D[_ComplexQ]: ...
 @overload
-def gauss_spline(x: onp.ToComplexStrict3D, n: onp.ToFloat) -> onp.Array3D[_InexactQ]: ...
+def gauss_spline(x: onp.ToJustComplexStrict3D, n: onp.ToFloat) -> onp.Array3D[_ComplexQ]: ...
 @overload
-def gauss_spline(x: onp.ToComplexND, n: onp.ToFloat) -> onp.ArrayND[_InexactQ]: ...
+def gauss_spline(x: onp.ToJustComplexND, n: onp.ToFloat) -> onp.ArrayND[_ComplexQ]: ...
 
 #
 @overload
@@ -67,7 +62,7 @@ def cspline1d(signal: onp.ArrayND[_InexactQT], lamb: onp.ToFloat = 0.0) -> onp.A
 @overload
 def cspline1d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[_FloatQ]: ...
 @overload
-def cspline1d(signal: onp.ToComplexND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[_InexactQ]: ...
+def cspline1d(signal: onp.ToJustComplexND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[_ComplexQ]: ...
 
 #
 @overload
@@ -75,23 +70,23 @@ def qspline1d(signal: onp.ArrayND[_InexactQT], lamb: onp.ToFloat = 0.0) -> onp.A
 @overload
 def qspline1d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[_FloatQ]: ...
 @overload
-def qspline1d(signal: onp.ToComplexND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[_InexactQ]: ...
+def qspline1d(signal: onp.ToJustComplexND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[_ComplexQ]: ...
 
 #
 @overload
 def cspline2d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0) -> onp.Array1D[np.float64]: ...
 @overload
 def cspline2d(
-    signal: onp.ToComplexND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0
-) -> onp.Array1D[np.float64 | np.complex128]: ...
+    signal: onp.ToJustComplexND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0
+) -> onp.Array1D[np.complex128]: ...
 
 #
 @overload
 def qspline2d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0) -> onp.Array1D[np.float64]: ...
 @overload
 def qspline2d(
-    signal: onp.ToComplexND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0
-) -> onp.Array1D[np.float64 | np.complex128]: ...
+    signal: onp.ToJustComplexND, lamb: onp.ToFloat = 0.0, precision: onp.ToFloat = -1.0
+) -> onp.Array1D[np.complex128]: ...
 
 #
 def cspline1d_eval(

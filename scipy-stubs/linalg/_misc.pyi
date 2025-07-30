@@ -35,11 +35,7 @@ def norm(
 ) -> np.float32: ...
 @overload  # longdouble, axis: None = ...
 def norm(
-    a: np.longdouble | np.clongdouble,
-    ord: _Order | None = None,
-    axis: None = None,
-    keepdims: op.CanBool = False,
-    check_finite: onp.ToBool = True,
+    a: npc.inexact80, ord: _Order | None = None, axis: None = None, keepdims: op.CanBool = False, check_finite: onp.ToBool = True
 ) -> np.longdouble: ...
 @overload  # scalar array, axis: None = ..., keepdims: False = ...
 def norm(
@@ -93,7 +89,7 @@ def norm(
 ) -> onp.ArrayND[np.float32, _ShapeT]: ...
 @overload  # shaped longdouble array, keepdims: True (positional)
 def norm(
-    a: onp.ArrayND[np.longdouble | np.clongdouble, _ShapeT],
+    a: onp.ArrayND[npc.inexact80, _ShapeT],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: onp.ToTrue,
@@ -110,7 +106,7 @@ def norm(
 ) -> onp.ArrayND[np.float32, _ShapeT]: ...
 @overload  # shaped longdouble array, keepdims: True (keyword)
 def norm(
-    a: onp.ArrayND[np.longdouble | np.clongdouble, _ShapeT],
+    a: onp.ArrayND[npc.inexact80, _ShapeT],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
@@ -127,7 +123,7 @@ def norm(
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # scalar array-like, keepdims: True (positional)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[np.longdouble | np.clongdouble]] | onp.SequenceND[np.longdouble | np.clongdouble],
+    a: onp.SequenceND[onp.CanArrayND[npc.inexact80]] | onp.SequenceND[npc.inexact80],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: onp.ToTrue,
@@ -144,7 +140,7 @@ def norm(
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # scalar array-like, keepdims: True (keyword)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[np.longdouble | np.clongdouble]] | onp.SequenceND[np.longdouble | np.clongdouble],
+    a: onp.SequenceND[onp.CanArrayND[npc.inexact80]] | onp.SequenceND[npc.inexact80],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,

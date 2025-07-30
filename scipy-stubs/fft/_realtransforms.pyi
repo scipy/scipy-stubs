@@ -10,11 +10,11 @@ from scipy._typing import AnyShape
 
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
-_DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.float32 | np.float64 | np.longdouble | npc.complexfloating])
+_DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating])
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 _ToIntOrND: TypeAlias = onp.ToInt | onp.ToIntND
-_FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]  # doesn't include `numpy.float16`
+_FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
 
 ###
 # NOTE: These have (almost) identical signatures, so be sure to keep them in sync.

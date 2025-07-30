@@ -386,7 +386,7 @@ def eig(
 #
 @overload  # +float64, eigvals_only: False = ...
 def eigh(  #
-    a: onp.ToArrayND[float, np.float64 | np.longdouble | npc.integer64 | npc.integer32],
+    a: onp.ToArrayND[float, np.float64 | npc.floating80 | npc.integer64 | npc.integer32],
     b: onp.ToFloat64_ND | None = None,
     *,
     lower: op.CanBool = True,

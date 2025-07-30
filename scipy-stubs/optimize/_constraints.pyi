@@ -114,7 +114,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
     ) -> _Tuple2[onp.ArrayND[np.float64, _ShapeT_co]]: ...
     @overload  # known floating type
     def residual(
-        self: Bounds[Any, np.float64 | np.longdouble | np.complex128 | np.clongdouble], /, x: onp.ToFloat64 | onp.ToFloat64_1D
+        self: Bounds[Any, npc.inexact64 | npc.inexact80], /, x: onp.ToFloat64 | onp.ToFloat64_1D
     ) -> _Tuple2[onp.ArrayND[_ScalarT_co, _ShapeT_co]]: ...
     @overload  # c128 scalar type
     def residual(
@@ -124,7 +124,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
     ) -> _Tuple2[onp.ArrayND[np.complex128, _ShapeT_co]]: ...
     @overload  # known complex type
     def residual(
-        self: Bounds[Any, np.complex128 | np.clongdouble], /, x: onp.ToComplex128 | onp.ToComplex128_1D
+        self: Bounds[Any, np.complex128 | npc.complexfloating160], /, x: onp.ToComplex128 | onp.ToComplex128_1D
     ) -> _Tuple2[onp.ArrayND[_ScalarT_co, _ShapeT_co]]: ...
 
 class LinearConstraint(_Constraint[tuple[int], np.float64]):

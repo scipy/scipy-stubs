@@ -12,7 +12,7 @@ from scipy._typing import AnyShape
 __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.float32 | np.float64 | np.longdouble | npc.complexfloating])
+_DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating])
 
 # NOTE: Unlike the ones in `scipy.fft._realtransforms`, `orthogonalize` is keyword-only here.
 

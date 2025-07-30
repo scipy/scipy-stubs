@@ -274,27 +274,19 @@ _OneOrMany: TypeAlias = _T | tuple[_T, ...]
 _ToBool_D = TypeAliasType("_ToBool_D", onp.ToBool | onp.ToBoolND)
 _ToInt_D = TypeAliasType("_ToInt_D", onp.ToInt | onp.ToIntND)
 
-_Bool = TypeAliasType("_Bool", np.bool_)
-_Float16 = TypeAliasType("_Float16", np.float16)
-_Float32 = TypeAliasType("_Float32", np.float32)
-_Float64 = TypeAliasType("_Float64", np.float64)
-_LongDouble = TypeAliasType("_LongDouble", np.longdouble)
-_Complex64 = TypeAliasType("_Complex64", np.complex64)
-_Complex128 = TypeAliasType("_Complex128", np.complex128)
+_Float64ND: TypeAlias = onp.ArrayND[np.float64]
 
-_Float64ND: TypeAlias = onp.ArrayND[_Float64]
-
-_Float: TypeAlias = _Float32 | _Float64
+_Float: TypeAlias = np.float32 | np.float64
 _FloatND: TypeAlias = onp.ArrayND[_Float]
 _Float_D: TypeAlias = _Float | onp.ArrayND[_Float]
 _Float_DT = TypeVar("_Float_DT", bound=_Float_D)
 
-_LFloat: TypeAlias = _Float | _LongDouble
+_LFloat: TypeAlias = _Float | np.longdouble
 _LFloatND: TypeAlias = onp.ArrayND[_LFloat]
 _LFloat_D: TypeAlias = _LFloat | _LFloatND
 _LFloat_DT = TypeVar("_LFloat_DT", bound=_LFloat_D)
 
-_Complex: TypeAlias = _Complex64 | _Complex128
+_Complex: TypeAlias = np.complex64 | np.complex128
 _ComplexND: TypeAlias = onp.ArrayND[_Complex]
 _Complex_D: TypeAlias = _Complex | _ComplexND
 _Complex_DT = TypeVar("_Complex_DT", bound=_Complex_D)
@@ -304,17 +296,17 @@ _InexactND: TypeAlias = onp.ArrayND[_Inexact]
 _Inexact_D: TypeAlias = _Inexact | _InexactND
 _Inexact_DT = TypeVar("_Inexact_DT", bound=_Inexact_D)
 
-_CoInt: TypeAlias = npc.integer | _Bool  # coercible to integer
+_CoInt: TypeAlias = npc.integer | np.bool_  # coercible to integer
 _CoFloat: TypeAlias = npc.floating | _CoInt  # coercible to floating
-_CoFloat64: TypeAlias = _Float64 | _Float32 | _Float16 | _CoInt  # coercible to float64
-_CoComplex128: TypeAlias = _Complex128 | _Complex64 | _CoFloat64  # coercible to complex128
+_CoFloat64: TypeAlias = np.float64 | np.float32 | np.float16 | _CoInt  # coercible to float64
+_CoComplex128: TypeAlias = np.complex128 | np.complex64 | _CoFloat64  # coercible to complex128
 
 _CoIntND: TypeAlias = onp.ArrayND[_CoInt]
 _CoFloatND: TypeAlias = onp.ArrayND[_CoFloat]
 _CoFloat64ND: TypeAlias = onp.ArrayND[_CoFloat64]
 _CoComplex128ND: TypeAlias = onp.ArrayND[_CoComplex128]
 
-_SubFloat: TypeAlias = _Float16 | _CoInt  # anything "below" float32 | float64 that isn't float32 | float64
+_SubFloat: TypeAlias = np.float16 | _CoInt  # anything "below" float32 | float64 that isn't float32 | float64
 _ToSubFloat: TypeAlias = op.JustFloat | int | _SubFloat  # does not overlap with float32 | float64
 _ToSubFloatND: TypeAlias = _ToND[_SubFloat, op.JustFloat | int]
 
@@ -324,10 +316,10 @@ _CoT = TypeVar("_CoT", bound=np.generic)
 _ToT = TypeVar("_ToT")
 _ToND: TypeAlias = onp.CanArrayND[_CoT] | onp.SequenceND[onp.CanArrayND[_CoT]] | onp.SequenceND[_ToT]
 
-_ToFloat32 = TypeAliasType("_ToFloat32", int | _Float32 | _SubFloat)
+_ToFloat32 = TypeAliasType("_ToFloat32", int | np.float32 | _SubFloat)
 _ToFloat64OrND: TypeAlias = onp.ToFloat64 | onp.ToFloat64_ND
 
-_ToComplex64 = TypeAliasType("_ToComplex64", _Complex64 | _ToFloat32)
+_ToComplex64 = TypeAliasType("_ToComplex64", np.complex64 | _ToFloat32)
 _ToComplex128 = TypeAliasType("_ToComplex128", complex | _CoComplex128)
 _ToComplex128ND = TypeAliasType("_ToComplex128ND", _ToND[_CoComplex128, _ToComplex128])
 _ToComplex128_D: TypeAlias = _ToComplex128 | _ToComplex128ND
@@ -767,7 +759,7 @@ class _UFunc11f(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def types(self, /) -> list[L["f->f", "d->d"]]: ...
     #
     @overload
-    def __call__(self, x: _ToSubFloat, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Float64: ...
+    def __call__(self, x: _ToSubFloat, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> np.float64: ...
     @overload
     def __call__(self, x: _ToSubFloat, /, out: _Out1 = None, **kw: Unpack[_Kw11f]) -> _Float: ...
     @overload
@@ -793,7 +785,7 @@ class _UFunc11g(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def types(self, /) -> list[L["f->f", "d->d", "g->g"]]: ...
     #
     @overload
-    def __call__(self, x: _ToSubFloat, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Float64: ...
+    def __call__(self, x: _ToSubFloat, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> np.float64: ...
     @overload
     def __call__(self, x: _ToSubFloat, /, out: _Out1 = None, **kw: Unpack[_Kw11g]) -> _LFloat: ...
     @overload
@@ -841,11 +833,11 @@ class _UFunc11fc(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
     def types(self, /) -> list[L["f->f", "d->d", "F->F", "D->D"]]: ...
     #
     @overload
-    def __call__(self, x: op.JustFloat | op.JustInt, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Float64: ...
+    def __call__(self, x: op.JustFloat | op.JustInt, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> np.float64: ...
     @overload
     def __call__(self, x: _ToSubFloat, /, out: _Out1 = None, **kw: Unpack[_Kw11fc]) -> _Float: ...
     @overload
-    def __call__(self, x: op.JustComplex, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> _Complex128: ...
+    def __call__(self, x: op.JustComplex, /, out: _Out1 = None, **kw: Unpack[_KwBase]) -> np.complex128: ...
     @overload
     def __call__(self, x: _ToSubComplex, /, out: _Out1 = None, **kw: Unpack[_Kw11fc]) -> _Inexact: ...
     @overload

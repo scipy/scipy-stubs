@@ -18,8 +18,8 @@ _Float: TypeAlias = np.float64 | np.float32
 _Complex: TypeAlias = np.complex128 | np.complex64
 
 _as_f32: TypeAlias = np.float32 | np.float16  # noqa: PYI042
-_as_f64: TypeAlias = np.longdouble | np.float64 | npc.integer | np.bool_  # noqa: PYI042
-_as_c128: TypeAlias = np.complex128 | np.clongdouble  # noqa: PYI042
+_as_f64: TypeAlias = npc.floating80 | np.float64 | npc.integer | np.bool_  # noqa: PYI042
+_as_c128: TypeAlias = np.complex128 | npc.complexfloating160  # noqa: PYI042
 
 _ToSafeFloat64ND: TypeAlias = onp.ToArrayND[float, np.float64 | npc.integer | np.bool_]
 _ToArrayND: TypeAlias = onp.CanArrayND[_ScalarT] | onp.SequenceND[_ScalarT]

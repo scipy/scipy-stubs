@@ -14,7 +14,7 @@ import optype.numpy.compat as npc
 _Ordered: TypeAlias = np.int32 | np.int64 | np.float32 | np.float64
 
 # matches the `ctypedef fused real`
-_Real: TypeAlias = np.float32 | np.float64 | np.longdouble
+_Real: TypeAlias = np.float32 | np.float64 | npc.floating80
 
 # castable to `_Real`
 _AsReal: TypeAlias = npc.floating | npc.integer | np.bool_

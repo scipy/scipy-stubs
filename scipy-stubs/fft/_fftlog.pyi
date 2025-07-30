@@ -7,7 +7,7 @@ import optype.numpy.compat as npc
 
 __all__ = ["fht", "fhtoffset", "ifht"]
 
-_FloatT = TypeVar("_FloatT", bound=np.float32 | np.float64 | np.longdouble)
+_FloatT = TypeVar("_FloatT", bound=np.float32 | np.float64 | npc.floating80)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 ###
