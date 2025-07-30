@@ -83,6 +83,9 @@ _ToBlocksCanStack: TypeAlias = Seq[Seq[_CanStack[_T] | None]]
 _ToBlocksCanStackAs: TypeAlias = Seq[Seq[_CanStackAs[_SCT0, _T] | None]]
 _ToBlocksUnkown: TypeAlias = _ToBlocksSPArray | _ToBlocksArray
 
+_ToMatsDiagKnown: TypeAlias = Iterable[_spbase[_SCT] | onp.ToArrayND[_SCT]]
+_ToMatsDiagUnknown: TypeAlias = Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]]
+
 @type_check_only
 class _DataSampler(Protocol):
     def __call__(self, /, *, size: int) -> onp.ArrayND[_Numeric]: ...
@@ -1891,121 +1894,56 @@ def block_diag(mats: Iterable[sparray], format: _FmtLIL, dtype: onp.ToDType[_SCT
 #
 @overload  # mats: <unknown, known>, format: <default>, dtype: None
 def block_diag(
-    mats: Iterable[_spbase[_SCT] | onp.ToArrayND[_SCT]], format: _FmtCOO | None = None, dtype: None = None
+    mats: _ToMatsDiagKnown[_SCT], format: _FmtCOO | None = None, dtype: None = None
 ) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
 @overload  # mats: <unknown, known>, format: "bsr", dtype: None
-def block_diag(
-    mats: Iterable[_spbase[_SCT] | onp.ToArrayND[_SCT]], format: _FmtBSR, dtype: None = None
-) -> _BSRArray[_SCT] | bsr_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagKnown[_SCT], format: _FmtBSR, dtype: None = None) -> _BSRArray[_SCT] | bsr_matrix[_SCT]: ...
 @overload  # mats: <unknown, known>, format: "csc", dtype: None
-def block_diag(
-    mats: Iterable[_spbase[_SCT] | onp.ToArrayND[_SCT]], format: _FmtCSC, dtype: None = None
-) -> _CSCArray[_SCT] | csc_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagKnown[_SCT], format: _FmtCSC, dtype: None = None) -> _CSCArray[_SCT] | csc_matrix[_SCT]: ...
 @overload  # mats: <unknown, known>, format: "csr", dtype: None
-def block_diag(
-    mats: Iterable[_spbase[_SCT] | onp.ToArrayND[_SCT]], format: _FmtCSR, dtype: None = None
-) -> _CSRArray2D[_SCT] | csr_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagKnown[_SCT], format: _FmtCSR, dtype: None = None) -> _CSRArray2D[_SCT] | csr_matrix[_SCT]: ...
 @overload  # mats: <unknown, known>, format: "dia", dtype: None
-def block_diag(
-    mats: Iterable[_spbase[_SCT] | onp.ToArrayND[_SCT]], format: _FmtDIA, dtype: None = None
-) -> _DIAArray[_SCT] | dia_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagKnown[_SCT], format: _FmtDIA, dtype: None = None) -> _DIAArray[_SCT] | dia_matrix[_SCT]: ...
 @overload  # mats: <unknown, known>, format: "dok", dtype: None
-def block_diag(
-    mats: Iterable[_spbase[_SCT] | onp.ToArrayND[_SCT]], format: _FmtDOK, dtype: None = None
-) -> _DOKArray2D[_SCT] | dok_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagKnown[_SCT], format: _FmtDOK, dtype: None = None) -> _DOKArray2D[_SCT] | dok_matrix[_SCT]: ...
 @overload  # mats: <unknown, known>, format: "lil", dtype: None
-def block_diag(
-    mats: Iterable[_spbase[_SCT] | onp.ToArrayND[_SCT]], format: _FmtLIL, dtype: None = None
-) -> _LILArray[_SCT] | lil_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagKnown[_SCT], format: _FmtLIL, dtype: None = None) -> _LILArray[_SCT] | lil_matrix[_SCT]: ...
 
 #
 @overload  # mats: <unknown, unknown>, format: <default>, dtype: <known>
 def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtCOO | None = None,
-    *,
-    dtype: onp.ToDType[_SCT],
+    mats: _ToMatsDiagUnknown, format: _FmtCOO | None = None, *, dtype: onp.ToDType[_SCT]
 ) -> _COOArray2D[_SCT] | coo_matrix[_SCT]: ...
 @overload  # mats: <unknown, unknown>, format: "bsr", dtype: <known>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtBSR,
-    dtype: onp.ToDType[_SCT],
-) -> _BSRArray[_SCT] | bsr_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtBSR, dtype: onp.ToDType[_SCT]) -> _BSRArray[_SCT] | bsr_matrix[_SCT]: ...
 @overload  # mats: <unknown, unknown>, format: "csc", dtype: <known>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtCSC,
-    dtype: onp.ToDType[_SCT],
-) -> _CSCArray[_SCT] | csc_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSC, dtype: onp.ToDType[_SCT]) -> _CSCArray[_SCT] | csc_matrix[_SCT]: ...
 @overload  # mats: <unknown, unknown>, format: "csr", dtype: <known>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtCSR,
-    dtype: onp.ToDType[_SCT],
-) -> _CSRArray2D[_SCT] | csr_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSR, dtype: onp.ToDType[_SCT]) -> _CSRArray2D[_SCT] | csr_matrix[_SCT]: ...
 @overload  # mats: <unknown, unknown>, format: "dia", dtype: <known>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtDIA,
-    dtype: onp.ToDType[_SCT],
-) -> _DIAArray[_SCT] | dia_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDIA, dtype: onp.ToDType[_SCT]) -> _DIAArray[_SCT] | dia_matrix[_SCT]: ...
 @overload  # mats: <unknown, unknown>, format: "dok", dtype: <known>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtDOK,
-    dtype: onp.ToDType[_SCT],
-) -> _DOKArray2D[_SCT] | dok_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDOK, dtype: onp.ToDType[_SCT]) -> _DOKArray2D[_SCT] | dok_matrix[_SCT]: ...
 @overload  # mats: <unknown, unknown>, format: "lil", dtype: <known>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtLIL,
-    dtype: onp.ToDType[_SCT],
-) -> _LILArray[_SCT] | lil_matrix[_SCT]: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtLIL, dtype: onp.ToDType[_SCT]) -> _LILArray[_SCT] | lil_matrix[_SCT]: ...
 
 #
 @overload  # mats: <unknown, unknown>, format: <default>, dtype: <unknown>
 def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtCOO | None = None,
-    dtype: npt.DTypeLike | None = None,
+    mats: _ToMatsDiagUnknown, format: _FmtCOO | None = None, dtype: npt.DTypeLike | None = None
 ) -> _COOArray2D | coo_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "bsr", dtype: <unknown>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtBSR,
-    dtype: npt.DTypeLike | None = None,
-) -> _BSRArray | bsr_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtBSR, dtype: npt.DTypeLike | None = None) -> _BSRArray | bsr_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "csc", dtype: <unknown>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtCSC,
-    dtype: npt.DTypeLike | None = None,
-) -> _CSCArray | csc_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSC, dtype: npt.DTypeLike | None = None) -> _CSCArray | csc_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "csr", dtype: <unknown>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtCSR,
-    dtype: npt.DTypeLike | None = None,
-) -> _CSRArray2D | csr_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSR, dtype: npt.DTypeLike | None = None) -> _CSRArray2D | csr_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "dia", dtype: <unknown>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtDIA,
-    dtype: npt.DTypeLike | None = None,
-) -> _DIAArray | dia_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDIA, dtype: npt.DTypeLike | None = None) -> _DIAArray | dia_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "dok", dtype: <unknown>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtDOK,
-    dtype: npt.DTypeLike | None = None,
-) -> _DOKArray2D | dok_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDOK, dtype: npt.DTypeLike | None = None) -> _DOKArray2D | dok_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "lil", dtype: <unknown>
-def block_diag(
-    mats: Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]],
-    format: _FmtLIL,
-    dtype: npt.DTypeLike | None = None,
-) -> _LILArray | lil_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtLIL, dtype: npt.DTypeLike | None = None) -> _LILArray | lil_matrix: ...
 
 ###
 @overload  # shape: T, format: <default>, dtype: <default>
