@@ -19,11 +19,11 @@ py_c_2d: list[list[complex]]
 f16_nd: npt.NDArray[np.float16]
 f32_nd: npt.NDArray[np.float32]
 f64_nd: npt.NDArray[np.float64]
-f80_nd: npt.NDArray[np.longdouble]
+f80_nd: npt.NDArray[np.float128]
 
 c64_nd: npt.NDArray[np.complex64]
 c128_nd: npt.NDArray[np.complex128]
-c160_nd: npt.NDArray[np.clongdouble]
+c160_nd: npt.NDArray[np.complex256]
 
 ###
 # svd

@@ -46,7 +46,7 @@ def clarkson_woodruff_transform(
 ) -> csc_matrix[np.float64]: ...
 @overload
 def clarkson_woodruff_transform(
-    input_matrix: _ToSparse[np.longdouble],
+    input_matrix: _ToSparse[npc.floating80],
     sketch_size: _ToInt,
     rng: onp.random.ToRNG | None = None,
     *,
@@ -62,7 +62,7 @@ def clarkson_woodruff_transform(
 ) -> csc_matrix[np.complex128]: ...
 @overload
 def clarkson_woodruff_transform(
-    input_matrix: _ToSparse[np.clongdouble],
+    input_matrix: _ToSparse[npc.complexfloating160],
     sketch_size: _ToInt,
     rng: onp.random.ToRNG | None = None,
     *,
@@ -90,7 +90,7 @@ def clarkson_woodruff_transform(
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def clarkson_woodruff_transform(
-    input_matrix: onp.ToArrayND[np.longdouble, np.longdouble],
+    input_matrix: onp.ToJustLongDoubleND,
     sketch_size: _ToInt,
     rng: onp.random.ToRNG | None = None,
     *,
@@ -106,7 +106,7 @@ def clarkson_woodruff_transform(
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
 def clarkson_woodruff_transform(
-    input_matrix: onp.ToArrayND[np.clongdouble, np.clongdouble],
+    input_matrix: onp.ToJustCLongDoubleND,
     sketch_size: _ToInt,
     rng: onp.random.ToRNG | None = None,
     *,

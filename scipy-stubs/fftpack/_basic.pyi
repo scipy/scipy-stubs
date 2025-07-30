@@ -3,13 +3,14 @@ from typing import Protocol, TypeAlias, type_check_only
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import AnyShape
 
 __all__ = ["fft", "fft2", "fftn", "ifft", "ifft2", "ifftn", "irfft", "rfft"]
 
 _ArrayReal: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]  # no float16
-_ArrayComplex: TypeAlias = onp.ArrayND[np.complex64 | np.complex128 | np.clongdouble]
+_ArrayComplex: TypeAlias = onp.ArrayND[npc.complexfloating]
 
 @type_check_only
 class _OrderedIndex(op.CanIndex, Protocol):

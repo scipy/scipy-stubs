@@ -22,28 +22,21 @@ __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 _T = TypeVar("_T")
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
+_SupComplexT = TypeVar("_SupComplexT", bound=np.complex128 | npc.complexfloating160)
+_SupFloatT = TypeVar("_SupFloatT", bound=npc.inexact64 | npc.inexact80)
+_SupIntT = TypeVar("_SupIntT", bound=np.int_ | np.uintp | np.uint32 | npc.number64 | npc.inexact80)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
 
-_IntND: TypeAlias = onp.ArrayND[npc.integer]
-_ToData: TypeAlias = tuple[onp.ArrayND[_ScalarT], tuple[_IntND] | tuple[_IntND, _IntND]]
-_ToDense: TypeAlias = onp.ArrayND[_ScalarT] | onp.SequenceND[onp.ArrayND[_ScalarT]] | onp.SequenceND[_ScalarT]
+_ToData: TypeAlias = tuple[
+    onp.ArrayND[_ScalarT],
+    tuple[onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]] | tuple[onp.ArrayND[npc.integer]],
+]  # fmt: skip
 
 _ScalarOrDense: TypeAlias = onp.ArrayND[_ScalarT] | _ScalarT
 _JustND: TypeAlias = onp.SequenceND[op.Just[_T]]
 
-_SubInt: TypeAlias = np.bool_ | npc.integer8 | npc.integer16 | np.int32 | np.int_
-_SubFloat: TypeAlias = np.bool_ | npc.integer | np.float32 | np.float64
-_SubComplex: TypeAlias = _SubFloat | np.complex64 | np.complex128
-_SupComplex: TypeAlias = np.complex128 | np.clongdouble
-_SupFloat: TypeAlias = np.float64 | np.longdouble | _SupComplex
-_SupInt: TypeAlias = npc.integer64 | np.int_ | np.uintp | np.uint32 | _SupFloat
-
 _Axes: TypeAlias = int | tuple[Sequence[int], Sequence[int]]
 _ToShapeMin3D: TypeAlias = tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]]  # ndim > 2
-
-_SupComplexT = TypeVar("_SupComplexT", bound=_SupComplex)
-_SupFloatT = TypeVar("_SupFloatT", bound=_SupFloat)
-_SupIntT = TypeVar("_SupIntT", bound=_SupInt)
 
 ###
 
@@ -97,15 +90,23 @@ class _coo_base(_data_matrix[_ScalarT_co, _ShapeT_co], _minmax_mixin[_ScalarT_co
         self, /, other: _spbase[_ScalarT], axes: _Axes = 2
     ) -> _ScalarT_co | _ScalarT | coo_array[_ScalarT_co | _ScalarT]: ...
     @overload
-    def tensordot(self, /, other: _ToDense[_ScalarT], axes: _Axes = 2) -> _ScalarOrDense[_ScalarT_co | _ScalarT]: ...
+    def tensordot(
+        self, /, other: onp.ArrayND[_ScalarT] | onp.SequenceND[onp.ArrayND[_ScalarT]] | onp.SequenceND[_ScalarT], axes: _Axes = 2
+    ) -> _ScalarOrDense[_ScalarT_co | _ScalarT]: ...
     @overload
     def tensordot(self, /, other: onp.SequenceND[bool], axes: _Axes = 2) -> _ScalarOrDense[_ScalarT_co]: ...
     @overload
-    def tensordot(self: _spbase[_SubInt], /, other: _JustND[int], axes: _Axes = 2) -> _ScalarOrDense[np.int_]: ...
+    def tensordot(
+        self: _spbase[np.bool_ | npc.integer8 | npc.integer16 | np.int32 | np.int_], /, other: _JustND[int], axes: _Axes = 2
+    ) -> _ScalarOrDense[np.int_]: ...
     @overload
-    def tensordot(self: _spbase[_SubFloat], /, other: _JustND[float], axes: _Axes = 2) -> _ScalarOrDense[np.float64]: ...
+    def tensordot(
+        self: _spbase[np.bool_ | npc.integer | np.float32 | np.float64], /, other: _JustND[float], axes: _Axes = 2
+    ) -> _ScalarOrDense[np.float64]: ...
     @overload
-    def tensordot(self: _spbase[_SubComplex], /, other: _JustND[complex], axes: _Axes = 2) -> _ScalarOrDense[np.complex128]: ...
+    def tensordot(
+        self: _spbase[np.bool_ | npc.integer | npc.inexact32 | npc.inexact64], /, other: _JustND[complex], axes: _Axes = 2
+    ) -> _ScalarOrDense[np.complex128]: ...
     @overload
     def tensordot(self: _spbase[_SupComplexT], /, other: _JustND[complex], axes: _Axes = 2) -> _ScalarOrDense[_SupComplexT]: ...
     @overload

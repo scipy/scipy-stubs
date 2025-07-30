@@ -21,10 +21,10 @@ _FusedScalarT = TypeVar(
     np.int64,
     np.float32,
     np.float64,
-    np.longdouble,
+    npc.floating80,  # longdouble
     np.complex64,
     np.complex128,
-    np.clongdouble,
+    npc.complexfloating160,  # clongdouble
 )
 
 ###

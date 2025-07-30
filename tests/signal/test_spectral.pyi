@@ -2,12 +2,13 @@ from typing import Literal, TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.signal import istft, spectrogram
 
 _DoubleND: TypeAlias = onp.ArrayND[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
-_ComplexND: TypeAlias = onp.ArrayND[np.complex64 | np.complex128 | np.clongdouble]
+_ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
 
 array_f8_1d: onp.Array[tuple[Literal[256]], np.float64]
 array_c16_1d: onp.Array[tuple[Literal[256]], np.complex128]

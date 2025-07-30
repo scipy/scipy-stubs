@@ -3,6 +3,7 @@ from typing import Literal, TypeAlias, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy._typing import AnyShape
 from scipy.fft._typing import DCTType
@@ -12,7 +13,7 @@ __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 _NormKind: TypeAlias = Literal["ortho"] | None
 
 _ArrayReal: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]  # no float16
-_ArrayComplex: TypeAlias = onp.ArrayND[np.complex64 | np.complex128 | np.clongdouble]
+_ArrayComplex: TypeAlias = onp.ArrayND[npc.complexfloating]
 
 ###
 

@@ -56,7 +56,7 @@ __all__ = [
 _T = TypeVar("_T")
 _NumericT = TypeVar("_NumericT", bound=npc.number | np.bool_)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_EnvelopeSCT = TypeVar("_EnvelopeSCT", bound=np.float32 | np.float64 | np.longdouble | npc.complexfloating)
+_EnvelopeSCT = TypeVar("_EnvelopeSCT", bound=np.float32 | np.float64 | npc.floating80 | npc.complexfloating)
 _CoFloat64T = TypeVar("_CoFloat64T", bound=np.float64 | np.float32 | npc.integer)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _AnyShapeT = TypeVar("_AnyShapeT", tuple[int], tuple[int, int], tuple[int, int, int], tuple[Any, ...])
@@ -951,7 +951,7 @@ def hilbert(
 ) -> onp.ArrayND[np.complex64, _ShapeT]: ...
 @overload  # longdouble, known shape
 def hilbert(
-    x: onp.CanArrayND[np.longdouble, _ShapeT], N: int | None = None, axis: int = -1
+    x: onp.CanArrayND[npc.floating80, _ShapeT], N: int | None = None, axis: int = -1
 ) -> onp.ArrayND[np.clongdouble, _ShapeT]: ...
 @overload  # float64 | integer, unknown shape
 def hilbert(
