@@ -9,7 +9,7 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["lsqr"]
 
-_Real: TypeAlias = np.bool_ | npc.integer | np.floating
+_Real: TypeAlias = np.bool_ | npc.integer | npc.floating
 _ToRealMatrix: TypeAlias = onp.CanArrayND[_Real] | _spbase[_Real] | LinearOperator[_Real]
 
 _IStop: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7]

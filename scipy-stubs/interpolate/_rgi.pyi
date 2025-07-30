@@ -4,6 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._ndbspline import _SolverFunc
 
@@ -36,7 +37,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
         bounds_error: onp.ToBool = True,
         fill_value: onp.ToFloat | None = ...,  # np.nan
         *,
-        solver: _SolverFunc[np.floating | np.integer] | None = None,
+        solver: _SolverFunc[npc.floating | npc.integer] | None = None,
         solver_args: tuple[object, ...] | None = None,
     ) -> None: ...
     @overload
@@ -49,7 +50,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
         bounds_error: onp.ToBool = True,
         fill_value: onp.ToComplex | None = ...,  # np.nan
         *,
-        solver: _SolverFunc[np.number] | None = None,
+        solver: _SolverFunc[npc.number] | None = None,
         solver_args: tuple[object, ...] | None = None,
     ) -> None: ...
     @overload
@@ -62,7 +63,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
         bounds_error: onp.ToBool = True,
         fill_value: onp.ToComplex | None = ...,  # np.nan
         *,
-        solver: _SolverFunc[np.number] | None = None,
+        solver: _SolverFunc[npc.number] | None = None,
         solver_args: tuple[object, ...] | None = None,
     ) -> None: ...
 
