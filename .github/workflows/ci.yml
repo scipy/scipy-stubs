@@ -39,7 +39,6 @@ jobs:
         with:
           activate-environment: true
           python-version: "3.13"
-          version: "0.8.3"
 
       - name: ruff
         run: |
@@ -50,75 +49,101 @@ jobs:
       - name: pyright
         uses: jakebailey/pyright-action@v2.3.2
 
-  generate-matrix:
-    name: Generate Test Matrix
+  # generate-matrix:
+  #   name: Generate Test Matrix
+  #   runs-on: ubuntu-latest
+  #   timeout-minutes: 1
+
+  #   outputs:
+  #     matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+  #   steps:
+  #     - uses: actions/checkout@v4.2.2
+
+  #     - name: Install uv
+  #       uses: astral-sh/setup-uv@v6.4.3
+  #       with:
+  #         python-version: "3.13"
+
+  #     - name: Generate Matrix
+  #       id: set-matrix
+  #       shell: bash
+  #       run: |
+  #         matrix=$(uv run scripts/generate_matrix.py | jq -c)
+  #         echo "matrix=$matrix" >> $GITHUB_OUTPUT
+
+  typecheck:
     runs-on: ubuntu-latest
-    timeout-minutes: 1
-
-    outputs:
-      matrix: ${{ steps.set-matrix.outputs.matrix }}
-
-    steps:
-      - uses: actions/checkout@v4.2.2
-
-      - uses: astral-sh/setup-uv@v6.4.3
-        with:
-          python-version: "3.13"
-          version: "0.8.3"
-
-      - name: Generate Matrix
-        id: set-matrix
-        shell: bash
-        run: |
-          matrix=$(uv run scripts/generate_matrix.py | jq -c)
-          echo "matrix=$matrix" >> $GITHUB_OUTPUT
-
-  typetest:
-    needs: generate-matrix
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 5
 
     strategy:
       fail-fast: false
-      matrix: ${{ fromJSON(needs.generate-matrix.outputs.matrix) }}
+      matrix:
+        py: ["3.11"]
+        np: ["1.25", "2.0", "2.1", "2.2", "2.3"]
+
+    steps:
+      - uses: actions/checkout@v4.2.2
+
+      - name: setup uv
+        uses: astral-sh/setup-uv@v6.4.3
+        with:
+          activate-environment: true
+          python-version: ${{ matrix.py }}
+
+      # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
+      # manually (re)install the desired version directly in the environment.
+      - name: sync env
+        run: uv sync --no-editable
+
+      - name: install specific numpy version
+        run: uv pip install --upgrade "numpy-typing-compat==${{ matrix.np }}.*"
+
+      - name: basedpyright scipy-stubs
+        run: basedpyright scipy-stubs
+
+      - name: mypy scipy-stubs
+        run: mypy --no-incremental --cache-dir=/dev/null scipy-stubs
+
+      - name: stubtest scipy
+        run: stubtest --allowlist=.mypyignore scipy
+
+  typetest:
+    # needs: generate-matrix
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        py: ["3.11", "3.12", "3.13"]
+        np: ["1.25", "2.0", "2.1", "2.2", "2.3"]
+        exclude:
+          - py: "3.12"
+            np: "1.25"
+          - py: "3.13"
+            np: "1.25"
+          - py: "3.13"
+            np: "2.0"
 
     steps:
       - uses: actions/checkout@v4.2.2
 
       - uses: astral-sh/setup-uv@v6.4.3
         with:
-          python-version: ${{ matrix.python }}
-          version: "0.8.3"
+          activate-environment: true
+          python-version: ${{ matrix.py }}
 
-      - name: basedpyright
-        run: >
-          uv run
-          -p ${{ matrix.python }}
-          --with="numpy==${{ matrix.numpy }}"
-          --no-editable
-          basedpyright
+      # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
+      # manually (re)install the desired version directly in the environment.
+      - name: sync env
+        run: uv sync --no-editable
 
-      - name: mypy
-        run: >
-          uv run
-          -p ${{ matrix.python }}
-          --with="numpy==${{ matrix.numpy }}"
-          --no-editable
-          mypy
-          --tb
-          --hide-error-context
-          --hide-error-code-links
-          --no-incremental
-          --cache-dir=/dev/null
-          --soft-error-limit=-1
-          .
+      - name: install specific numpy version
+        run: uv pip install --upgrade "numpy-typing-compat==${{ matrix.np }}.*"
 
-      - name: stubtest
-        run: >
-          uv run
-          -p ${{ matrix.python }}
-          --with="numpy==${{ matrix.numpy }}"
-          --no-editable
-          stubtest
-          --allowlist=.mypyignore
-          scipy
+      - name: basedpyright tests
+        run: basedpyright tests
+
+      - name: mypy tests
+        run: mypy --no-incremental --cache-dir=/dev/null --soft-error-limit=-1 tests
