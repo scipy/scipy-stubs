@@ -236,7 +236,7 @@ def logsumexp(
 
 # NOTE: keep in sync with `log_softmax`
 @overload  # T
-def softmax(x: _InexactOrArrayT, axis: AnyShape | None = None) -> _InexactOrArrayT: ...  # type: ignore[overload-overlap]
+def softmax(x: _InexactOrArrayT, axis: AnyShape | None = None) -> _InexactOrArrayT: ...
 @overload  # 0d +float64
 def softmax(x: onp.ToInt | onp.ToJustFloat64, axis: AnyShape | None = None) -> np.float64: ...
 @overload  # 0d ~complex128
@@ -258,7 +258,7 @@ def softmax(x: onp.ToComplexND, axis: AnyShape | None = None) -> onp.ArrayND[np.
 
 # NOTE: keep in sync with `softmax`
 @overload  # T
-def log_softmax(x: _InexactOrArrayT, axis: AnyShape | None = None) -> _InexactOrArrayT: ...  # type: ignore[overload-overlap]
+def log_softmax(x: _InexactOrArrayT, axis: AnyShape | None = None) -> _InexactOrArrayT: ...
 @overload  # 0d +float64
 def log_softmax(x: onp.ToInt | onp.ToJustFloat64, axis: AnyShape | None = None) -> np.float64: ...
 @overload  # 0d ~complex128
