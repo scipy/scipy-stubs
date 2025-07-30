@@ -1,4 +1,4 @@
-from typing import TypeAlias, overload
+from typing import Any, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -34,6 +34,9 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 #
 def spline_filter(Iin: onp.ArrayND[_FloatDT], lmbda: onp.ToFloat = 5.0) -> onp.Array2D[_FloatDT]: ...
 
+# NOTE: Mypy reports a false positive `overload-overlap` error with `numpy<2.1`.
+# mypy: disable-error-code=overload-overlap
+
 #
 @overload
 def gauss_spline(x: onp.ArrayND[_SubFloat64, _ShapeT], n: onp.ToFloat) -> onp.ArrayND[np.float64, _ShapeT]: ...
@@ -45,8 +48,8 @@ def gauss_spline(x: onp.ToFloatStrict1D, n: onp.ToFloat) -> onp.Array1D[_FloatQ]
 def gauss_spline(x: onp.ToFloatStrict2D, n: onp.ToFloat) -> onp.Array2D[_FloatQ]: ...
 @overload
 def gauss_spline(x: onp.ToFloatStrict3D, n: onp.ToFloat) -> onp.Array3D[_FloatQ]: ...
-@overload
-def gauss_spline(x: onp.ToFloatND, n: onp.ToFloat) -> onp.ArrayND[_FloatQ]: ...
+@overload  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection
+def gauss_spline(x: onp.ToFloatND, n: onp.ToFloat) -> onp.ArrayND[_FloatQ, tuple[int] | tuple[Any, ...]]: ...
 @overload
 def gauss_spline(x: onp.ToJustComplexStrict1D, n: onp.ToFloat) -> onp.Array1D[_ComplexQ]: ...
 @overload

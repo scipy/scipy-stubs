@@ -81,6 +81,9 @@ _C64_128: TypeAlias = np.complex128 | np.complex64
 _WindowFuncFloat: TypeAlias = Callable[[onp.Array1D[np.float64]], onp.ToFloat1D]
 _WindowFuncComplex: TypeAlias = Callable[[onp.Array1D[np.complex128]], onp.ToFloat1D]
 
+# workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
+_WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
+
 @type_check_only
 class _ConvMeasureDict(TypedDict):
     direct: float
@@ -112,8 +115,8 @@ def convolve(
 ) -> onp.ArrayND[np.bool_]: ...
 @overload  # generic
 def convolve(
-    in1: onp.CanArrayND[_NumericT, _AnyShapeT],
-    in2: onp.CanArrayND[_NumericT, _AnyShapeT],
+    in1: onp.CanArray[_AnyShapeT, np.dtype[_NumericT]],
+    in2: onp.CanArray[_AnyShapeT, np.dtype[_NumericT]],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
 ) -> onp.ArrayND[_NumericT, _AnyShapeT]: ...
@@ -153,8 +156,8 @@ def correlate(
 ) -> onp.ArrayND[np.bool_]: ...
 @overload  # generic
 def correlate(
-    in1: onp.CanArrayND[_NumericT, _AnyShapeT],
-    in2: onp.CanArrayND[_NumericT, _AnyShapeT],
+    in1: onp.CanArray[_AnyShapeT, np.dtype[_NumericT]],
+    in2: onp.CanArray[_AnyShapeT, np.dtype[_NumericT]],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
 ) -> onp.ArrayND[_NumericT, _AnyShapeT]: ...
@@ -353,7 +356,7 @@ def fftconvolve(
 @overload  # fallback
 def fftconvolve(
     in1: onp.ToComplexND, in2: onp.ToComplexND, mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
-) -> onp.ArrayND[Any]: ...
+) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...
 
 # NOTE: keep in sync with `fftconvolve`
 @overload  # float32 | float16, float32 | float16, generic shape
@@ -389,15 +392,15 @@ def oaconvolve(
 @overload  # fallback
 def oaconvolve(
     in1: onp.ToComplexND, in2: onp.ToComplexND, mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
-) -> onp.ArrayND[Any]: ...
+) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...
 
 #
 @overload  # +float64, +float64
 def deconvolve(signal: onp.ToFloat64_1D, divisor: onp.ToFloat64_1D) -> _Tuple2[onp.Array1D[np.float64]]: ...
 @overload  # ~longdouble, +floating
-def deconvolve(signal: onp.ToJustLongDouble1D, divisor: onp.ToFloat1D) -> _Tuple2[onp.Array1D[np.longdouble]]: ...
+def deconvolve(signal: onp.ToJustLongDouble1D, divisor: onp.ToFloat1D) -> _Tuple2[onp.Array1D[npc.floating80]]: ...
 @overload  # +floating, ~longdouble
-def deconvolve(signal: onp.ToFloat1D, divisor: onp.ToJustLongDouble1D) -> _Tuple2[onp.Array1D[np.longdouble]]: ...
+def deconvolve(signal: onp.ToFloat1D, divisor: onp.ToJustLongDouble1D) -> _Tuple2[onp.Array1D[npc.floating80]]: ...
 @overload  # ~complex128 | ~complex64, +complex128
 def deconvolve(
     signal: onp.ToArray1D[op.JustComplex, _C64_128], divisor: onp.ToComplex128_1D
@@ -891,7 +894,7 @@ def order_filter(a: onp.ToJustInt64_ND, domain: int | onp.ToIntND, rank: int) ->
 def order_filter(a: onp.ToJustFloat64_ND, domain: int | onp.ToIntND, rank: int) -> onp.ArrayND[np.float64]: ...
 @overload
 def order_filter(
-    a: onp.CanArrayND[_CoFloat64T, _ShapeT], domain: int | onp.ToIntND, rank: int
+    a: onp.CanArray[_ShapeT, np.dtype[_CoFloat64T]], domain: int | onp.ToIntND, rank: int
 ) -> onp.ArrayND[_CoFloat64T, _ShapeT]: ...
 @overload
 def order_filter(a: onp.ToFloatND, domain: int | onp.ToIntND, rank: int) -> onp.ArrayND[Any]: ...
@@ -903,7 +906,7 @@ def medfilt(volume: onp.ToJustInt64_ND, kernel_size: int | onp.ToInt1D | None = 
 def medfilt(volume: onp.ToJustFloat64_ND, kernel_size: int | onp.ToInt1D | None = None) -> onp.ArrayND[np.float64]: ...
 @overload
 def medfilt(
-    volume: onp.CanArrayND[_CoFloat64T, _ShapeT], kernel_size: int | onp.ToInt1D | None = None
+    volume: onp.CanArray[_ShapeT, np.dtype[_CoFloat64T]], kernel_size: int | onp.ToInt1D | None = None
 ) -> onp.ArrayND[_CoFloat64T, _ShapeT]: ...
 @overload
 def medfilt(volume: onp.ToFloatND, kernel_size: int | onp.ToInt1D | None = None) -> onp.ArrayND[Any]: ...
@@ -926,7 +929,7 @@ def wiener(
 @overload  # ~longdouble
 def wiener(
     im: onp.ToJustLongDoubleND, mysize: int | onp.ToInt1D | None = None, noise: float | None = None
-) -> onp.ArrayND[np.longdouble]: ...
+) -> onp.ArrayND[npc.floating80]: ...
 @overload  # ~complex128 | ~complex64
 def wiener(
     im: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
@@ -943,15 +946,15 @@ def wiener(im: onp.ToComplexND, mysize: int | onp.ToInt1D | None = None, noise: 
 #
 @overload  # float64 | integer, known shape
 def hilbert(
-    x: onp.CanArrayND[np.float64 | npc.integer, _ShapeT], N: int | None = None, axis: int = -1
+    x: onp.CanArray[_ShapeT, np.dtype[np.float64 | npc.integer]], N: int | None = None, axis: int = -1
 ) -> onp.ArrayND[np.complex128, _ShapeT]: ...
 @overload  # float32 | float16, known shape
 def hilbert(
-    x: onp.CanArrayND[np.float32 | np.float16, _ShapeT], N: int | None = None, axis: int = -1
+    x: onp.CanArray[_ShapeT, np.dtype[np.float32 | np.float16]], N: int | None = None, axis: int = -1
 ) -> onp.ArrayND[np.complex64, _ShapeT]: ...
 @overload  # longdouble, known shape
 def hilbert(
-    x: onp.CanArrayND[npc.floating80, _ShapeT], N: int | None = None, axis: int = -1
+    x: onp.CanArray[_ShapeT, np.dtype[npc.floating80]], N: int | None = None, axis: int = -1
 ) -> onp.ArrayND[np.clongdouble, _ShapeT]: ...
 @overload  # float64 | integer, unknown shape
 def hilbert(
@@ -1037,13 +1040,13 @@ def resample(
 ) -> onp.ArrayND[npc.floating]: ...
 @overload
 def resample(
-    x: onp.ToComplexND,
+    x: onp.ToJustComplexND,
     num: int,
     t: None = None,
     axis: int = 0,
     window: _WindowFuncComplex | onp.ToFloat1D | _ToWindow | None = None,
     domain: _Domain = "time",
-) -> onp.ArrayND[npc.inexact]: ...
+) -> onp.ArrayND[npc.complexfloating]: ...
 @overload
 def resample(
     x: onp.ArrayND[_EnvelopeSCT, _AnyShapeT],
@@ -1064,13 +1067,13 @@ def resample(
 ) -> tuple[onp.ArrayND[npc.floating], onp.Array1D[npc.floating]]: ...
 @overload
 def resample(
-    x: onp.ToComplexND,
+    x: onp.ToJustComplexND,
     num: int,
     t: onp.ToFloat1D,
     axis: int = 0,
     window: _WindowFuncComplex | onp.ToFloat1D | _ToWindow | None = None,
     domain: _Domain = "time",
-) -> tuple[onp.ArrayND[npc.inexact], onp.Array1D[npc.floating]]: ...
+) -> tuple[onp.ArrayND[npc.complexfloating], onp.Array1D[npc.floating]]: ...
 
 # TODO(jorenham): improve
 @overload

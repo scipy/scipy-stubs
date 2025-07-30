@@ -15,18 +15,18 @@ _Unused: TypeAlias = Never  # not used by scipy
 
 _CoInteger: TypeAlias = npc.integer | np.bool_
 
-_AsFloat32: TypeAlias = onp.CanArrayND[npc.floating32, _ShapeT]
-_AsFloat64: TypeAlias = onp.CanArrayND[npc.floating64 | _CoInteger, _ShapeT]
-_AsFloat80: TypeAlias = onp.CanArrayND[npc.floating80, _ShapeT]
+_AsFloat32: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.floating32]]
+_AsFloat64: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.floating64 | _CoInteger]]
+_AsFloat80: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.floating80]]
 
-_AsComplex64: TypeAlias = onp.CanArrayND[npc.inexact32, _ShapeT]
-_AsComplex128: TypeAlias = onp.CanArrayND[npc.inexact64 | _CoInteger, _ShapeT]
-_AsComplex160: TypeAlias = onp.CanArrayND[npc.inexact80, _ShapeT]
+_AsComplex64: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.inexact32]]
+_AsComplex128: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.inexact64 | _CoInteger]]
+_AsComplex160: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.inexact80]]
 
 _ToFloat64_ND: TypeAlias = onp.ToArrayND[float, npc.floating64 | _CoInteger]
 _ToComplex128_ND: TypeAlias = onp.ToArrayND[complex, npc.inexact64 | _CoInteger]
 
-# NOTE: The order of overloads is carefully chosen to avoid a pyright bug.
+# NOTE: The order of overloads has been carefully chosen to avoid triggering a pyright bug.
 
 ###
 # 1-D
