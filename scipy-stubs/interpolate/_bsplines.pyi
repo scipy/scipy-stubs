@@ -142,7 +142,7 @@ def make_interp_spline(
 @overload
 def make_lsq_spline(
     x: onp.ToFloat1D,
-    y: onp.ToJustComplexND,
+    y: onp.ToFloatND,
     t: onp.ToFloat1D,
     k: op.CanIndex = 3,
     w: onp.ToFloat1D | None = None,
@@ -154,7 +154,7 @@ def make_lsq_spline(
 @overload
 def make_lsq_spline(
     x: onp.ToFloat1D,
-    y: onp.ToFloatND,
+    y: onp.ToJustComplexND,
     t: onp.ToFloat1D,
     k: op.CanIndex = 3,
     w: onp.ToFloat1D | None = None,
@@ -162,7 +162,7 @@ def make_lsq_spline(
     check_finite: onp.ToBool = True,
     *,
     method: _LSQMethod = "qr",
-) -> BSpline[np.float64]: ...
+) -> BSpline[np.complex128]: ...
 @overload
 def make_lsq_spline(
     x: onp.ToFloat1D,
@@ -184,7 +184,7 @@ def make_smoothing_spline(
     lam: onp.ToFloat | None = None,
     *,
     axis: op.CanIndex = 0,
-) -> BSpline[np.complex128]: ...
+) -> BSpline[np.float64]: ...
 
 #
 def fpcheck(x: onp.ToFloat1D, t: onp.ToFloat1D, k: onp.ToJustInt) -> None: ...  # undocumented
