@@ -141,7 +141,7 @@ def linprog(
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
 ) -> _OptimizeResult: ...
 @overload  # interior-point (legacy, see https://github.com/scipy/scipy/issues/15707)
-@deprecated("`method='interior-point'` is deprecated and will be removed in SciPy 1.16.0. Please use one of the HIGHS solvers.")
+@deprecated("`method='interior-point'` is deprecated and will be removed in SciPy 1.17. Please use one of the HIGHS solvers.")
 def linprog(
     c: onp.ToFloat1D,
     A_ub: onp.ToFloat2D | None = None,
@@ -157,7 +157,7 @@ def linprog(
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
 ) -> _OptimizeResult: ...
 @overload  # revised simplex (legacy, see https://github.com/scipy/scipy/issues/15707)
-@deprecated("`method='revised simplex'` is deprecated and will be removed in SciPy 1.16.0. Please use one of the HIGHS solvers.")
+@deprecated("`method='revised simplex'` is deprecated and will be removed in SciPy 1.17. Please use one of the HIGHS solvers.")
 def linprog(
     c: onp.ToFloat1D,
     A_ub: onp.ToFloat2D | None = None,
@@ -173,7 +173,7 @@ def linprog(
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
 ) -> _OptimizeResult: ...
 @overload  # simplex (legacy, see https://github.com/scipy/scipy/issues/15707)
-@deprecated("`method='simplex'` is deprecated and will be removed in SciPy 1.16.0. Please use one of the HIGHS solvers.")
+@deprecated("`method='simplex'` is deprecated and will be removed in SciPy 1.17. Please use one of the HIGHS solvers.")
 def linprog(
     c: onp.ToFloat1D,
     A_ub: onp.ToFloat2D | None = None,
