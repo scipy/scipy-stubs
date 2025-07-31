@@ -59,7 +59,14 @@ def brute(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def check_grad(
-    func: object, grad: object, x0: object, *args: object, epsilon: object = ..., direction: object = ..., rng: object = ...
+    func: object,
+    grad: object,
+    x0: object,
+    *args: object,
+    epsilon: object = ...,
+    direction: object = ...,
+    rng: object = None,
+    seed: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def fmin(
@@ -95,6 +102,7 @@ def fmin_bfgs(
     c2: object = ...,
     hess_inv0: object = ...,
 ) -> object: ...
+@deprecated("will be removed in SciPy v2.0.0")
 def fmin_cg(
     f: object,
     x0: object,

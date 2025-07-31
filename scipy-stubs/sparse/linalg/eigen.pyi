@@ -75,4 +75,6 @@ def svds(
     solver: object = ...,
     rng: object = None,
     options: object = None,
+    *,
+    random_state: object = None,
 ) -> object: ...
