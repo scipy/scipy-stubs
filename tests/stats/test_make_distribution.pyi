@@ -1,5 +1,3 @@
-from typing import Literal
-
 import numpy as np
 
 from scipy.stats import distributions, make_distribution
@@ -9,7 +7,7 @@ LogUniform: type[ContinuousDistribution] = make_distribution(distributions.logun
 
 class _DuckRV:
     @property
-    def __make_distribution_version__(self) -> Literal["1.16.0"]: ...
+    def __make_distribution_version__(self) -> str: ...
     @property
     def parameters(self) -> dict[str, tuple[float, float]]: ...
     @property
@@ -18,7 +16,7 @@ class _DuckRV:
 
 class _MultiDuckRV:
     @property
-    def __make_distribution_version__(self) -> Literal["1.16.0"]: ...
+    def __make_distribution_version__(self) -> str: ...
     @property
     def parameters(self) -> tuple[dict[str, tuple[float, float]], dict[str, tuple[float, float]]]: ...
     def process_parameters(self, quack: float | None = None, swim: float | None = None) -> dict[str, float]: ...
