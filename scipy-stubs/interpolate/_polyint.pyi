@@ -177,8 +177,8 @@ class BarycentricInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_Y
         axis: int = 0,
         *,
         wi: onp.ArrayND[npc.floating] | None = None,
-        seed: onp.random.ToRNG | None = None,
         rng: onp.random.ToRNG | None = None,
+        random_state: onp.random.ToRNG | None = None,  # legacy
     ) -> None: ...
     @overload  # yi: c128
     def __init__(
@@ -189,8 +189,8 @@ class BarycentricInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_Y
         axis: int = 0,
         *,
         wi: onp.ArrayND[npc.floating] | None = None,
-        seed: onp.random.ToRNG | None = None,
         rng: onp.random.ToRNG | None = None,
+        random_state: onp.random.ToRNG | None = None,  # legacy
     ) -> None: ...
 
     #
