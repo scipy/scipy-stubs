@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "scipy-stubs"
-version = "1.16.0.3.dev0"
+version = "1.16.1.0.dev0"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
@@ -33,7 +33,7 @@ requires-python = ">=3.11"
 dependencies = ["optype[numpy]>=0.13.1,<0.14"]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.16.0,<1.17"]
+scipy = ["scipy>=1.16.1,<1.17"]
 
 [project.urls]
 Homepage = "https://scipy.org/"
@@ -73,16 +73,12 @@ force-include = { ".mypyignore" = ".mypyignore" } # for scipy-stubs-feedstock
 [tool.poe.tasks.clean]
 cmd = """
 rm -rf
-    scipy-stubs/**/*.pyc
-    scipy-stubs/**/__pycache__
-    scripts/*.pyc
-    scripts/__pycache__
-    tests/**/*.pyc
-    tests/**/__pycache__
-    ./**/.cache
-    ./**/.mypy_cache
-    ./**/.ruff_cache
-    ./**/.tox
+    **/*.pyc
+    **/__pycache__
+    **/.cache
+    **/.mypy_cache
+    **/.ruff_cache
+    **/.tox
 """
 
 [tool.poe.tasks.stubtest]
