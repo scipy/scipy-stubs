@@ -1,7 +1,7 @@
 import sys
 from typing import Final, LiteralString
 
-# mypy<=1.16.1 workaround
+# mypy<=1.17.0 workaround
 if sys.version_info >= (3, 14):
     # see https://github.com/python/cpython/pull/130935
     __conditional_annotations__: Final[set[int]] = ...
