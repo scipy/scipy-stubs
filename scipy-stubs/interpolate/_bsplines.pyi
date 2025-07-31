@@ -142,7 +142,7 @@ def make_interp_spline(
 @overload
 def make_lsq_spline(
     x: onp.ToFloat1D,
-    y: onp.ToJustComplexND,
+    y: onp.ToFloatND,
     t: onp.ToFloat1D,
     k: op.CanIndex = 3,
     w: onp.ToFloat1D | None = None,
@@ -154,7 +154,7 @@ def make_lsq_spline(
 @overload
 def make_lsq_spline(
     x: onp.ToFloat1D,
-    y: onp.ToFloatND,
+    y: onp.ToJustComplexND,
     t: onp.ToFloat1D,
     k: op.CanIndex = 3,
     w: onp.ToFloat1D | None = None,
