@@ -12,34 +12,6 @@ scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
 scipy\._lib\.(array_api_(compat|extra)|cobyqa|pyprima).*
 scipy\.fft\._pocketfft\..*
 
-# https://github.com/scipy/scipy/issues/23216
-scipy\.cluster\._?vq\.kmeans
-scipy\.cluster\._?vq\.kmeans2
-scipy\.interpolate(\._?polyint)?\.BarycentricInterpolator\.__init__
-scipy\.linalg(\._sketches)?\.clarkson_woodruff_transform
-scipy\.optimize(\._basinhopping)?\.basinhopping
-scipy\.optimize(\._differentialevolution)?\.differential_evolution
-scipy\.optimize(\._dual_annealing)?\.dual_annealing
-scipy\.optimize(\._optimize)?\.check_grad
-scipy\.sparse(\._construct)?\.random_array
-scipy\.sparse(\._construct)?\.random
-scipy\.sparse(\._construct)?\.rand
-scipy\.sparse\.linalg(\._eigen(\._svds)?)?\.svds
-scipy\.spatial\.distance\.directed_hausdorff
-scipy\.spatial\.transform(\._?rotation|\._rigid_transform)?\.Rotation\.random
-scipy\.stats(\._fit)?\.goodness_of_fit
-scipy\.stats(\._multicomp)?\.dunnett
-scipy\.stats(\._resampling)?\.bootstrap
-scipy\.stats(\._resampling)?\.permutation_test
-scipy\.stats(\._sensitivity_analysis)?\.sobol_indices
-scipy\.stats\._?qmc\.QMCEngine\.__init__
-scipy\.stats\._?qmc\.Halton\.__init__
-scipy\.stats\._?qmc\.LatinHypercube\.__init__
-scipy\.stats\._?qmc\.Sobol\.__init__
-scipy\.stats\._?qmc\.PoissonDisk\.__init__
-scipy\.stats\._?qmc\.MultivariateNormalQMC\.__init__
-scipy\.stats\._?qmc\.MultinomialQMC\.__init__
-
 # https://github.com/scipy/scipy/pull/23115
 # https://github.com/scipy/scipy/pull/23117
 scipy\.linalg\._decomp_interpolative\.__all__
@@ -54,7 +26,7 @@ scipy\.special\._precompute\..*
 # useless __new__
 scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 
-# these require numpy/numtype to be released
+# these require numtype to be released
 scipy\.stats\._qmvnt\.phi(nv)?
 scipy\.special\._basic\.digamma
 scipy\.special\._support_alternative_backends\.betaincc?
