@@ -297,7 +297,7 @@ assert_type(
 assert_type(sparse.block_diag([any_arr, any_arr], format="bsr"), sparse.bsr_array[ScalarType])
 assert_type(sparse.block_diag([any_arr, any_arr], format="csc", dtype=float), sparse.csc_array[np.float64])
 assert_type(sparse.block_diag([any_arr, any_arr], format="csr", dtype=complex), sparse.csr_array[np.complex128, tuple[int, int]])
-assert_type(sparse.block_diag([any_arr, any_arr], format="dia", dtype=np.int32), sparse.dia_array[np.int32])
+assert_type(sparse.block_diag([any_arr, any_arr], format="dia", dtype="int"), sparse.dia_array[np.int_])
 assert_type(sparse.block_diag([any_arr, any_arr], format="dok", dtype="bool"), sparse.dok_array[np.bool_, tuple[int, int]])
 assert_type(sparse.block_diag([any_arr, any_arr], format="lil", dtype=np.complex64), sparse.lil_array[np.complex64])
 
