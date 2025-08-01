@@ -65,7 +65,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4.2.2
 
-      - uses: astral-sh/setup-uv@v6.4.3
+      - name: setup uv
+        uses: astral-sh/setup-uv@v6.4.3
         with:
           activate-environment: true
           python-version: ${{ matrix.py }}
