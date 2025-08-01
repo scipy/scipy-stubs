@@ -15,6 +15,7 @@ maintainers = [
   { name = "SciPy Developers", email = "scipy-dev@python.org" },
 ]
 license = "BSD-3-Clause"
+license-files = ["LICENSE"]
 keywords = ["scipy", "typing", "stubs", "mypy", "pyright", "pep484", "pep561", "scipy-stubs"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
