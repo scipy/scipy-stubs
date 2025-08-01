@@ -265,7 +265,7 @@ assert_type(sparse.hstack([csc_arr, csc_arr], format="lil", dtype=np.complex64),
 # block_array
 assert_type(sparse.block_array([[bsr_mat]]), sparse.coo_matrix[ScalarType])
 assert_type(sparse.block_array([[bsr_arr]]), sparse.coo_array[ScalarType, tuple[int, int]])
-assert_type(sparse.block_array([[coo_arr]], dtype=int), sparse.coo_array[np.int_, tuple[int, int]])
+assert_type(sparse.block_array([[coo_arr]], dtype=int), sparse.coo_array[np.int64, tuple[int, int]])
 assert_type(sparse.block_array([[csr_arr]], dtype=sctype), sparse.csr_array[ScalarType, tuple[int, int]])
 assert_type(sparse.block_array([[lil_arr]], dtype=np.complex64), sparse.coo_array[np.complex64, tuple[int, int]])
 assert_type(sparse.block_array([[csr_arr]], format="lil"), sparse.lil_array[ScalarType])
