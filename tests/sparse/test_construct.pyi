@@ -263,16 +263,43 @@ assert_type(sparse.hstack([csc_arr, csc_arr], format="lil", dtype=np.complex64),
 
 ###
 # block_array
-assert_type(sparse.block_array([[any_mat]]), sparse.coo_array[ScalarType, tuple[int, int]])
-assert_type(sparse.block_array([[any_mat]], dtype=sctype), sparse.coo_array[ScalarType, tuple[int, int]])
-# bmat (legacy, `block_array` is preferred)
-assert_type(sparse.bmat([[any_mat]]), sparse.coo_matrix[ScalarType])
-assert_type(sparse.bmat([[any_arr]]), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.block_array([[bsr_mat]]), sparse.coo_matrix[ScalarType])
+assert_type(sparse.block_array([[bsr_arr]]), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.block_array([[coo_arr]], dtype=int), sparse.coo_array[np.int64, tuple[int, int]])
+assert_type(sparse.block_array([[csr_arr]], dtype=sctype), sparse.csr_array[ScalarType, tuple[int, int]])
+assert_type(sparse.block_array([[lil_arr]], dtype=np.complex64), sparse.coo_array[np.complex64, tuple[int, int]])
+assert_type(sparse.block_array([[csr_arr]], format="lil"), sparse.lil_array[ScalarType])
+assert_type(sparse.block_array([[coo_arr, None]], format="bsr", dtype="float"), sparse.bsr_array[np.float64])
+assert_type(sparse.block_array([[dia_arr], [None]], format="dok", dtype=complex), sparse.dok_array[np.complex128])
+# NOTE: mypy reports false positive errors here, because of join vs. union approach
+assert_type(sparse.block_array([[csr_arr, None], [None, dok_arr]], format="dia"), sparse.dia_array[ScalarType])  # type: ignore[assert-type]
+
+# bmat (legacy, `block_array` is p`referred)
+assert_type(sparse.bmat([[bsr_mat]]), sparse.coo_matrix[ScalarType])
+assert_type(sparse.bmat([[dia_mat]], dtype=np.int_), sparse.coo_matrix[np.int_])
+assert_type(sparse.bmat([[bsr_arr]]), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.bmat([[dia_arr]], dtype=np.int_), sparse.coo_array[np.int_, tuple[int, int]])
+# NOTE: mypy reports false positive errors here, because of join vs. union approach
+assert_type(sparse.bmat([[csr_mat], [None]]), sparse.csr_matrix[ScalarType])  # type: ignore[assert-type,arg-type]
+assert_type(sparse.bmat([[dok_mat], [None]], dtype=np.complex64), sparse.coo_matrix[np.complex64])  # type: ignore[assert-type,arg-type]
+assert_type(sparse.bmat([[csr_arr], [None]]), sparse.csr_array[ScalarType, tuple[int, int]])  # type: ignore[assert-type,arg-type]
+assert_type(sparse.bmat([[dok_arr], [None]], dtype=np.complex64), sparse.coo_array[np.complex64, tuple[int, int]])  # type: ignore[assert-type,arg-type]
 
 # block_diag
-assert_type(sparse.block_diag([any_mat, any_mat]), sparse.coo_matrix[ScalarType])
 assert_type(sparse.block_diag([any_arr, any_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
-assert_type(sparse.block_diag([any_arr, any_mat]), sparse.coo_array[ScalarType, tuple[int, int]] | sparse.coo_matrix[ScalarType])
+assert_type(sparse.block_diag([any_arr, any_mat]), sparse.coo_matrix[ScalarType] | sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.block_diag([any_arr, any_arr], dtype="bool"), sparse.coo_array[np.bool_, tuple[int, int]])
+assert_type(sparse.block_diag([any_arr, any_arr], dtype=int), sparse.coo_array[np.int_, tuple[int, int]])
+assert_type(
+    sparse.block_diag([any_arr, any_mat], dtype=np.complex64),
+    sparse.coo_matrix[np.complex64] | sparse.coo_array[np.complex64, tuple[int, int]],
+)
+assert_type(sparse.block_diag([any_arr, any_arr], format="bsr"), sparse.bsr_array[ScalarType])
+assert_type(sparse.block_diag([any_arr, any_arr], format="csc", dtype=float), sparse.csc_array[np.float64])
+assert_type(sparse.block_diag([any_arr, any_arr], format="csr", dtype=complex), sparse.csr_array[np.complex128, tuple[int, int]])
+assert_type(sparse.block_diag([any_arr, any_arr], format="dia", dtype="int"), sparse.dia_array[np.int_])
+assert_type(sparse.block_diag([any_arr, any_arr], format="dok", dtype="bool"), sparse.dok_array[np.bool_, tuple[int, int]])
+assert_type(sparse.block_diag([any_arr, any_arr], format="lil", dtype=np.complex64), sparse.lil_array[np.complex64])
 
 ###
 # random_array
