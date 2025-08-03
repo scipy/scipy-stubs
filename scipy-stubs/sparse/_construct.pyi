@@ -45,6 +45,8 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]])
 
 _Numeric: TypeAlias = npc.number | np.bool_
 
+_ToDType: TypeAlias = type[complex | _Numeric] | np.dtype[_Numeric] | str
+
 _SpBase2D: TypeAlias = _spbase[_SCT, tuple[int, int]]
 _SpArray2D: TypeAlias = sparray[_SCT, tuple[int, int]]
 
@@ -56,7 +58,7 @@ _DIAArray: TypeAlias = dia_array[_SCT]
 _DOKArray2D: TypeAlias = dok_array[_SCT, tuple[int, int]]
 _LILArray: TypeAlias = lil_array[_SCT]
 
-_ToArray1D2D: TypeAlias = onp.ToArray1D[Never, _SCT] | onp.ToArray2D[Never, _SCT]
+_ToArray1D2D: TypeAlias = onp.CanArray[tuple[int] | tuple[int, int], np.dtype[_SCT]] | Seq[_SCT | Seq[_SCT]]
 _ToSpMatrix: TypeAlias = spmatrix[_SCT] | onp.ToArray2D[Never, _SCT]
 _ToSparse2D: TypeAlias = _SpBase2D[_SCT] | onp.ToArray2D[Never, _SCT]
 
@@ -568,31 +570,31 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
-    dtype: npt.DTypeLike,
+    dtype: _ToDType,
 ) -> _DIAArray: ...
 @overload  # diagonals: <unknown>, format: "bsr", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtBSR, dtype: npt.DTypeLike
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtBSR, dtype: _ToDType
 ) -> _BSRArray: ...
 @overload  # diagonals: <unknown>, format: "coo", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCOO, dtype: npt.DTypeLike
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCOO, dtype: _ToDType
 ) -> _COOArray2D: ...
 @overload  # diagonals: <unknown>, format: "csc", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSC, dtype: npt.DTypeLike
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSC, dtype: _ToDType
 ) -> _CSCArray: ...
 @overload  # diagonals: <unknown>, format: "csr", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSR, dtype: npt.DTypeLike
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtCSR, dtype: _ToDType
 ) -> _CSRArray2D: ...
 @overload  # diagonals: <unknown>, format: "dok", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtDOK, dtype: npt.DTypeLike
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtDOK, dtype: _ToDType
 ) -> _DOKArray2D: ...
 @overload  # diagonals: <unknown>, format: "lil", dtype: <unknown>
 def diags_array(
-    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtLIL, dtype: npt.DTypeLike
+    diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: _ToShape2D | None = None, format: _FmtLIL, dtype: _ToDType
 ) -> _LILArray: ...
 
 ###
@@ -672,7 +674,7 @@ def diags(
     offsets: _Offsets = 0,
     shape: _ToShape2D | None = None,
     format: _FmtDIA | None = None,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
 ) -> dia_matrix: ...
 @overload  # diagonals: <unknown>, format: "bsr", dtype: <unknown>
 def diags(
@@ -681,7 +683,7 @@ def diags(
     shape: _ToShape2D | None = None,
     *,
     format: _FmtBSR,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
 ) -> bsr_matrix: ...
 @overload  # diagonals: <unknown>, format: "coo", dtype: <unknown>
 def diags(
@@ -690,7 +692,7 @@ def diags(
     shape: _ToShape2D | None = None,
     *,
     format: _FmtCOO,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
 ) -> coo_matrix: ...
 @overload  # diagonals: <unknown>, format: "csr", dtype: <unknown>
 def diags(
@@ -699,7 +701,7 @@ def diags(
     shape: _ToShape2D | None = None,
     *,
     format: _FmtCSR,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
 ) -> csr_matrix: ...
 @overload  # diagonals: <unknown>, format: "csc", dtype: <unknown>
 def diags(
@@ -708,7 +710,7 @@ def diags(
     shape: _ToShape2D | None = None,
     *,
     format: _FmtCSC,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
 ) -> csc_matrix: ...
 @overload  # diagonals: <unknown>, format: "dok", dtype: <unknown>
 def diags(
@@ -717,7 +719,7 @@ def diags(
     shape: _ToShape2D | None = None,
     *,
     format: _FmtDOK,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
 ) -> dok_matrix: ...
 @overload  # diagonals: <unknown>, format: "lil", dtype: <unknown>
 def diags(
@@ -726,7 +728,7 @@ def diags(
     shape: _ToShape2D | None = None,
     *,
     format: _FmtLIL,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
 ) -> lil_matrix: ...
 
 ###
@@ -906,19 +908,19 @@ def identity(n: opt.AnyInt, dtype: onp.ToDType[_SCT], format: _FmtLIL) -> lil_ma
 
 #
 @overload  # dtype: <unknown>, format: "dia" | None
-def identity(n: opt.AnyInt, dtype: npt.DTypeLike, format: _FmtDIA | None = None) -> dia_matrix[Incomplete]: ...
+def identity(n: opt.AnyInt, dtype: _ToDType, format: _FmtDIA | None = None) -> dia_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "bsr"
-def identity(n: opt.AnyInt, dtype: npt.DTypeLike, format: _FmtBSR) -> bsr_matrix[Incomplete]: ...
+def identity(n: opt.AnyInt, dtype: _ToDType, format: _FmtBSR) -> bsr_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "coo"
-def identity(n: opt.AnyInt, dtype: npt.DTypeLike, format: _FmtCOO) -> coo_matrix[Incomplete]: ...
+def identity(n: opt.AnyInt, dtype: _ToDType, format: _FmtCOO) -> coo_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csc"
-def identity(n: opt.AnyInt, dtype: npt.DTypeLike, format: _FmtCSC) -> csc_matrix[Incomplete]: ...
+def identity(n: opt.AnyInt, dtype: _ToDType, format: _FmtCSC) -> csc_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csr"
-def identity(n: opt.AnyInt, dtype: npt.DTypeLike, format: _FmtCSR) -> csr_matrix[Incomplete]: ...
+def identity(n: opt.AnyInt, dtype: _ToDType, format: _FmtCSR) -> csr_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "dok"
-def identity(n: opt.AnyInt, dtype: npt.DTypeLike, format: _FmtDOK) -> dok_matrix[Incomplete]: ...
+def identity(n: opt.AnyInt, dtype: _ToDType, format: _FmtDOK) -> dok_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "lil"
-def identity(n: opt.AnyInt, dtype: npt.DTypeLike, format: _FmtLIL) -> lil_matrix[Incomplete]: ...
+def identity(n: opt.AnyInt, dtype: _ToDType, format: _FmtLIL) -> lil_matrix[Incomplete]: ...
 
 ###
 @overload  # dtype: float64-like (default), format: "dia" | None
@@ -1073,31 +1075,31 @@ def eye_array(
 #
 @overload  # dtype: <unknown>, format: "dia" | None
 def eye_array(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: npt.DTypeLike, format: _FmtDIA | None = None
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtDIA | None = None
 ) -> _DIAArray[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "bsr"
 def eye_array(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: npt.DTypeLike, format: _FmtBSR
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtBSR
 ) -> _BSRArray[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "coo"
 def eye_array(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: npt.DTypeLike, format: _FmtCOO
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtCOO
 ) -> _COOArray2D[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csc"
 def eye_array(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: npt.DTypeLike, format: _FmtCSC
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtCSC
 ) -> _CSCArray[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csr"
 def eye_array(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: npt.DTypeLike, format: _FmtCSR
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtCSR
 ) -> _CSRArray2D[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "dok"
 def eye_array(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: npt.DTypeLike, format: _FmtDOK
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtDOK
 ) -> _DOKArray2D[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "lil"
 def eye_array(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: npt.DTypeLike, format: _FmtLIL
+    m: opt.AnyInt, n: opt.AnyInt | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtLIL
 ) -> _LILArray[Incomplete]: ...
 
 ###
@@ -1254,31 +1256,31 @@ def eye(
 #
 @overload  # dtype: <unknown>, format: "dia" | None
 def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtDIA | None = None
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtDIA | None = None
 ) -> dia_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "bsr"
 def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtBSR
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtBSR
 ) -> bsr_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "coo"
 def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtCOO
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtCOO
 ) -> coo_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csc"
 def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtCSC
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtCSC
 ) -> csc_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csr"
 def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtCSR
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtCSR
 ) -> csr_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "dok"
 def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtDOK
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtDOK
 ) -> dok_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "lil"
 def eye(
-    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: npt.DTypeLike, format: _FmtLIL
+    m: opt.AnyInt, n: opt.AnyInt | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtLIL
 ) -> lil_matrix[Incomplete]: ...
 
 ###
@@ -1493,25 +1495,25 @@ def hstack(blocks: Seq[sparray], format: _FmtLIL, dtype: onp.ToDType[_SCT0]) -> 
 
 #
 @overload  # sparray, format: <default>, dtype: <unknown>
-def hstack(blocks: Seq[_CanStackAs[Any, _T]], format: None = None, *, dtype: npt.DTypeLike) -> _T: ...
+def hstack(blocks: Seq[_CanStackAs[Any, _T]], format: None = None, *, dtype: _ToDType) -> _T: ...
 @overload  # sparray, format: "bsr", dtype: <unknown>
-def hstack(blocks: Seq[sparray], format: _FmtBSR, dtype: npt.DTypeLike) -> _BSRArray: ...
+def hstack(blocks: Seq[sparray], format: _FmtBSR, dtype: _ToDType) -> _BSRArray: ...
 @overload  # sparray, format: "coo", dtype: <unknown>
-def hstack(blocks: Seq[sparray], format: _FmtCOO, dtype: npt.DTypeLike) -> _COOArray2D: ...
+def hstack(blocks: Seq[sparray], format: _FmtCOO, dtype: _ToDType) -> _COOArray2D: ...
 @overload  # sparray, format: "csc", dtype: <unknown>
-def hstack(blocks: Seq[sparray], format: _FmtCSC, dtype: npt.DTypeLike) -> _CSCArray: ...
+def hstack(blocks: Seq[sparray], format: _FmtCSC, dtype: _ToDType) -> _CSCArray: ...
 @overload  # sparray, format: "csr", dtype: <unknown>
-def hstack(blocks: Seq[sparray], format: _FmtCSR, dtype: npt.DTypeLike) -> _CSRArray2D: ...
+def hstack(blocks: Seq[sparray], format: _FmtCSR, dtype: _ToDType) -> _CSRArray2D: ...
 @overload  # sparray, format: "dia", dtype: <unknown>
-def hstack(blocks: Seq[sparray], format: _FmtDIA, dtype: npt.DTypeLike) -> _DIAArray: ...
+def hstack(blocks: Seq[sparray], format: _FmtDIA, dtype: _ToDType) -> _DIAArray: ...
 @overload  # sparray, format: "dok", dtype: <unknown>
-def hstack(blocks: Seq[sparray], format: _FmtDOK, dtype: npt.DTypeLike) -> _DOKArray2D: ...
+def hstack(blocks: Seq[sparray], format: _FmtDOK, dtype: _ToDType) -> _DOKArray2D: ...
 @overload  # sparray, format: "lil", dtype: <unknown>
-def hstack(blocks: Seq[sparray], format: _FmtLIL, dtype: npt.DTypeLike) -> _LILArray: ...
+def hstack(blocks: Seq[sparray], format: _FmtLIL, dtype: _ToDType) -> _LILArray: ...
 
 #
 @overload
-def hstack(blocks: Seq[_spbase], format: _Format, dtype: npt.DTypeLike | None = None) -> Incomplete: ...
+def hstack(blocks: Seq[_spbase], format: _Format, dtype: _ToDType | None = None) -> Incomplete: ...
 
 ###
 # NOTE: keep in sync with `hstack`
@@ -1624,25 +1626,25 @@ def vstack(blocks: Seq[sparray], format: _FmtLIL, dtype: onp.ToDType[_SCT0]) -> 
 
 #
 @overload  # sparray, format: <default>, dtype: <unknown>
-def vstack(blocks: Seq[_CanStackAs[Any, _T]], format: None = None, *, dtype: npt.DTypeLike) -> _T: ...
+def vstack(blocks: Seq[_CanStackAs[Any, _T]], format: None = None, *, dtype: _ToDType) -> _T: ...
 @overload  # sparray, format: "bsr", dtype: <unknown>
-def vstack(blocks: Seq[sparray], format: _FmtBSR, dtype: npt.DTypeLike) -> _BSRArray: ...
+def vstack(blocks: Seq[sparray], format: _FmtBSR, dtype: _ToDType) -> _BSRArray: ...
 @overload  # sparray, format: "coo", dtype: <unknown>
-def vstack(blocks: Seq[sparray], format: _FmtCOO, dtype: npt.DTypeLike) -> _COOArray2D: ...
+def vstack(blocks: Seq[sparray], format: _FmtCOO, dtype: _ToDType) -> _COOArray2D: ...
 @overload  # sparray, format: "csc", dtype: <unknown>
-def vstack(blocks: Seq[sparray], format: _FmtCSC, dtype: npt.DTypeLike) -> _CSCArray: ...
+def vstack(blocks: Seq[sparray], format: _FmtCSC, dtype: _ToDType) -> _CSCArray: ...
 @overload  # sparray, format: "csr", dtype: <unknown>
-def vstack(blocks: Seq[sparray], format: _FmtCSR, dtype: npt.DTypeLike) -> _CSRArray2D: ...
+def vstack(blocks: Seq[sparray], format: _FmtCSR, dtype: _ToDType) -> _CSRArray2D: ...
 @overload  # sparray, format: "dia", dtype: <unknown>
-def vstack(blocks: Seq[sparray], format: _FmtDIA, dtype: npt.DTypeLike) -> _DIAArray: ...
+def vstack(blocks: Seq[sparray], format: _FmtDIA, dtype: _ToDType) -> _DIAArray: ...
 @overload  # sparray, format: "dok", dtype: <unknown>
-def vstack(blocks: Seq[sparray], format: _FmtDOK, dtype: npt.DTypeLike) -> _DOKArray2D: ...
+def vstack(blocks: Seq[sparray], format: _FmtDOK, dtype: _ToDType) -> _DOKArray2D: ...
 @overload  # sparray, format: "lil", dtype: <unknown>
-def vstack(blocks: Seq[sparray], format: _FmtLIL, dtype: npt.DTypeLike) -> _LILArray: ...
+def vstack(blocks: Seq[sparray], format: _FmtLIL, dtype: _ToDType) -> _LILArray: ...
 
 #
 @overload
-def vstack(blocks: Seq[_spbase], format: _Format, dtype: npt.DTypeLike | None = None) -> Incomplete: ...
+def vstack(blocks: Seq[_spbase], format: _Format, dtype: _ToDType | None = None) -> Incomplete: ...
 
 ###
 @overload  # blocks: <known, known>, format: <default>, dtype: <default>
@@ -1754,21 +1756,21 @@ def block_array(blocks: _ToBlocksUnkown, *, format: _FmtLIL, dtype: onp.ToDType[
 
 #
 @overload  # blocks: <known, unknown>, format: <default>, dtype: <unknown>
-def block_array(blocks: _ToBlocksCanStackAs[Any, _T], *, format: None = None, dtype: npt.DTypeLike | None = None) -> _T: ...
+def block_array(blocks: _ToBlocksCanStackAs[Any, _T], *, format: None = None, dtype: _ToDType | None = None) -> _T: ...
 @overload  # blocks: <unknown, unknown>, format: "bsr", dtype: <unknown>
-def block_array(blocks: _ToBlocksUnkown, *, format: _FmtBSR, dtype: npt.DTypeLike | None = None) -> _BSRArray: ...
+def block_array(blocks: _ToBlocksUnkown, *, format: _FmtBSR, dtype: _ToDType | None = None) -> _BSRArray: ...
 @overload  # blocks: <unknown, unknown>, format: "coo", dtype: <unknown>
-def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCOO, dtype: npt.DTypeLike | None = None) -> _COOArray2D: ...
+def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCOO, dtype: _ToDType | None = None) -> _COOArray2D: ...
 @overload  # blocks: <unknown, unknown>, format: "csc", dtype: <unknown>
-def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCSC, dtype: npt.DTypeLike | None = None) -> _CSCArray: ...
+def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCSC, dtype: _ToDType | None = None) -> _CSCArray: ...
 @overload  # blocks: <unknown, unknown>, format: "csr", dtype: <unknown>
-def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCSR, dtype: npt.DTypeLike | None = None) -> _CSRArray2D: ...
+def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCSR, dtype: _ToDType | None = None) -> _CSRArray2D: ...
 @overload  # blocks: <unknown, unknown>, format: "dia", dtype: <unknown>
-def block_array(blocks: _ToBlocksUnkown, *, format: _FmtDIA, dtype: npt.DTypeLike | None = None) -> _DIAArray: ...
+def block_array(blocks: _ToBlocksUnkown, *, format: _FmtDIA, dtype: _ToDType | None = None) -> _DIAArray: ...
 @overload  # blocks: <unknown, unknown>, format: "dok", dtype: <unknown>
-def block_array(blocks: _ToBlocksUnkown, *, format: _FmtDOK, dtype: npt.DTypeLike | None = None) -> _DOKArray2D: ...
+def block_array(blocks: _ToBlocksUnkown, *, format: _FmtDOK, dtype: _ToDType | None = None) -> _DOKArray2D: ...
 @overload  # blocks: <unknown, unknown>, format: "lil", dtype: <unknown>
-def block_array(blocks: _ToBlocksUnkown, *, format: _FmtLIL, dtype: npt.DTypeLike | None = None) -> _LILArray: ...
+def block_array(blocks: _ToBlocksUnkown, *, format: _FmtLIL, dtype: _ToDType | None = None) -> _LILArray: ...
 
 ###
 @overload  # blocks: <known, known>, format: <default>, dtype: <default>
@@ -1786,11 +1788,11 @@ def bmat(blocks: _ToBlocksUnkown, format: _Format, dtype: onp.ToDType[_SCT0]) ->
 
 #
 @overload  # blocks: <known, unknown>, format: <default>, dtype: <unknown>
-def bmat(blocks: _ToBlocksCanStackAs[Any, _T], format: None = None, *, dtype: npt.DTypeLike) -> _T: ...
+def bmat(blocks: _ToBlocksCanStackAs[Any, _T], format: None = None, *, dtype: _ToDType) -> _T: ...
 @overload  # blocks: <matrix, unknown>, format: <otherwise>, dtype: <unknown>
-def bmat(blocks: _ToBlocksSPMatrix, format: _Format, *, dtype: npt.DTypeLike) -> spmatrix: ...
+def bmat(blocks: _ToBlocksSPMatrix, format: _Format, *, dtype: _ToDType) -> spmatrix: ...
 @overload  # blocks: <unknown, unknown>, format: <otherwise>, dtype: <unknown>
-def bmat(blocks: _ToBlocksUnkown, format: _Format, *, dtype: npt.DTypeLike) -> spmatrix | _SpArray2D: ...
+def bmat(blocks: _ToBlocksUnkown, format: _Format, *, dtype: _ToDType) -> spmatrix | _SpArray2D: ...
 
 ###
 @overload  # mats: <array, known>, format: <default>, dtype: None
@@ -1931,20 +1933,20 @@ def block_diag(mats: _ToMatsDiagUnknown, format: _FmtLIL, dtype: onp.ToDType[_SC
 #
 @overload  # mats: <unknown, unknown>, format: <default>, dtype: <unknown>
 def block_diag(
-    mats: _ToMatsDiagUnknown, format: _FmtCOO | None = None, dtype: npt.DTypeLike | None = None
+    mats: _ToMatsDiagUnknown, format: _FmtCOO | None = None, dtype: _ToDType | None = None
 ) -> _COOArray2D | coo_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "bsr", dtype: <unknown>
-def block_diag(mats: _ToMatsDiagUnknown, format: _FmtBSR, dtype: npt.DTypeLike | None = None) -> _BSRArray | bsr_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtBSR, dtype: _ToDType | None = None) -> _BSRArray | bsr_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "csc", dtype: <unknown>
-def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSC, dtype: npt.DTypeLike | None = None) -> _CSCArray | csc_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSC, dtype: _ToDType | None = None) -> _CSCArray | csc_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "csr", dtype: <unknown>
-def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSR, dtype: npt.DTypeLike | None = None) -> _CSRArray2D | csr_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSR, dtype: _ToDType | None = None) -> _CSRArray2D | csr_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "dia", dtype: <unknown>
-def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDIA, dtype: npt.DTypeLike | None = None) -> _DIAArray | dia_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDIA, dtype: _ToDType | None = None) -> _DIAArray | dia_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "dok", dtype: <unknown>
-def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDOK, dtype: npt.DTypeLike | None = None) -> _DOKArray2D | dok_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDOK, dtype: _ToDType | None = None) -> _DOKArray2D | dok_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "lil", dtype: <unknown>
-def block_diag(mats: _ToMatsDiagUnknown, format: _FmtLIL, dtype: npt.DTypeLike | None = None) -> _LILArray | lil_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtLIL, dtype: _ToDType | None = None) -> _LILArray | lil_matrix: ...
 
 ###
 @overload  # shape: T, format: <default>, dtype: <default>
@@ -2025,7 +2027,7 @@ def random_array(
     *,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
-    dtype: npt.DTypeLike,
+    dtype: _ToDType,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
@@ -2036,7 +2038,7 @@ def random_array(
     *,
     density: float | npc.floating = 0.01,
     format: _FmtNonCOO,
-    dtype: npt.DTypeLike,
+    dtype: _ToDType,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
@@ -2180,7 +2182,7 @@ def random(
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
     *,
@@ -2193,7 +2195,7 @@ def random(
     density: float | npc.floating = 0.01,
     *,
     format: _FmtNonCOO,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
     random_state: onp.random.ToRNG | None = None,
@@ -2204,7 +2206,7 @@ def random(
     n: opt.AnyInt,
     density: float | npc.floating,
     format: _FmtNonCOO,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
     *,
@@ -2339,7 +2341,7 @@ def rand(
     n: opt.AnyInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
     rng: onp.random.ToRNG | None = None,
     *,
     random_state: onp.random.ToRNG | None = None,
@@ -2351,7 +2353,7 @@ def rand(
     density: float | npc.floating = 0.01,
     *,
     format: _FmtNonCOO,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> spmatrix: ...
@@ -2361,7 +2363,7 @@ def rand(
     n: opt.AnyInt,
     density: float | npc.floating,
     format: _FmtNonCOO,
-    dtype: npt.DTypeLike | None = None,
+    dtype: _ToDType | None = None,
     rng: onp.random.ToRNG | None = None,
     *,
     random_state: onp.random.ToRNG | None = None,
