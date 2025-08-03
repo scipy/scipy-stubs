@@ -3,7 +3,6 @@ from collections.abc import Callable, Iterable, Sequence as Seq
 from typing import Any, Literal, Never, Protocol, TypeAlias, TypeVar, overload, type_check_only
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 import optype.numpy.compat as npc
 import optype.typing as opt
