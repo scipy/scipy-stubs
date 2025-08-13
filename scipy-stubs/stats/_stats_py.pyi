@@ -87,26 +87,25 @@ __all__ = [
 
 ###
 
-_SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
+_SCT = TypeVar("_SCT", bound=np.generic)
 
 _SCT_float = TypeVar("_SCT_float", bound=npc.floating, default=npc.floating)
 _SCT_real = TypeVar("_SCT_real", bound=_Real0D, default=_Real0D)
 _SCT_real_co = TypeVar("_SCT_real_co", covariant=True, bound=_Real0D, default=_Real0D)
 
-_AsFloat64: TypeAlias = float | np.float64
 _Real0D: TypeAlias = npc.integer | npc.floating
 
 _ScalarOrND: TypeAlias = _SCT | onp.ArrayND[_SCT]
 _FloatOrND: TypeAlias = _ScalarOrND[_SCT_float]
 _RealOrND: TypeAlias = _ScalarOrND[_SCT_real]
 
-_NDT_int_co = TypeVar("_NDT_int_co", bound=int | _ScalarOrND[npc.integer], default=int | _ScalarOrND[np.intp], covariant=True)
-_NDT_float = TypeVar("_NDT_float", bound=float | _ScalarOrND[npc.floating], default=float | _ScalarOrND[np.float64])
-_NDT_float_co = TypeVar(
-    "_NDT_float_co", bound=float | _ScalarOrND[npc.floating], default=float | _ScalarOrND[np.float64], covariant=True
+_IntOrArrayT_co = TypeVar("_IntOrArrayT_co", bound=_ScalarOrND[npc.integer], default=_ScalarOrND[np.intp], covariant=True)
+_FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_ScalarOrND[npc.floating])
+_FloatOrArrayT_co = TypeVar(
+    "_FloatOrArrayT_co", bound=float | _ScalarOrND[npc.floating], default=float | onp.ArrayND[np.float64], covariant=True
 )
-_NDT_real_co = TypeVar(
-    "_NDT_real_co", bound=float | _ScalarOrND[_Real0D], default=float | _ScalarOrND[np.intp | np.float64], covariant=True
+_RealOrArrayT_co = TypeVar(
+    "_RealOrArrayT_co", bound=_ScalarOrND[_Real0D], default=_ScalarOrND[np.intp | np.float64], covariant=True
 )
 
 _InterpolationMethod: TypeAlias = L["linear", "lower", "higher", "nearest", "midpoint"]
@@ -132,47 +131,47 @@ class _MADCenterFunc(Protocol):
     def __call__(self, x: onp.Array1D[np.float64], /, *, axis: int | None) -> onp.ToFloat: ...
 
 @type_check_only
-class _TestResultTuple(NamedTuple, Generic[_NDT_float_co]):
-    statistic: _NDT_float_co
-    pvalue: _NDT_float_co
+class _TestResultTuple(NamedTuple, Generic[_FloatOrArrayT_co]):
+    statistic: _FloatOrArrayT_co
+    pvalue: _FloatOrArrayT_co
 
 @type_check_only
-class _TestResultBunch(BaseBunch[_NDT_float_co, _NDT_float_co], Generic[_NDT_float_co]):  # pyright: ignore[reportInvalidTypeArguments]
+class _TestResultBunch(BaseBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):  # pyright: ignore[reportInvalidTypeArguments]
     @property
-    def statistic(self, /) -> _NDT_float_co: ...
+    def statistic(self, /) -> _FloatOrArrayT_co: ...
     @property
-    def pvalue(self, /) -> _NDT_float_co: ...
-    def __new__(_cls, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> Self: ...
-    def __init__(self, /, statistic: _NDT_float_co, pvalue: _NDT_float_co) -> None: ...
+    def pvalue(self, /) -> _FloatOrArrayT_co: ...
+    def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co) -> Self: ...
+    def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co) -> None: ...
 
 ###
 
-class SkewtestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
-class KurtosistestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
-class NormaltestResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
-class Ttest_indResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
-class Power_divergenceResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
-class RanksumsResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
-class KruskalResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
-class FriedmanchisquareResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
-class BrunnerMunzelResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
-class F_onewayResult(_TestResultTuple[_NDT_float_co], Generic[_NDT_float_co]): ...
+class SkewtestResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class KurtosistestResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class NormaltestResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class Ttest_indResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class Power_divergenceResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class RanksumsResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class KruskalResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class FriedmanchisquareResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class BrunnerMunzelResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class F_onewayResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
 
-class ConfidenceInterval(NamedTuple, Generic[_NDT_float_co]):
-    low: _NDT_float_co
-    high: _NDT_float_co
+class ConfidenceInterval(NamedTuple, Generic[_FloatOrArrayT_co]):
+    low: _FloatOrArrayT_co
+    high: _FloatOrArrayT_co
 
-class DescribeResult(NamedTuple, Generic[_NDT_real_co, _NDT_float_co]):
+class DescribeResult(NamedTuple, Generic[_RealOrArrayT_co, _FloatOrArrayT_co]):
     nobs: int
-    minmax: tuple[_NDT_real_co, _NDT_real_co]
-    mean: _NDT_float_co
-    variance: _NDT_float_co
-    skewness: _NDT_float_co
-    kurtosis: _NDT_float_co
+    minmax: tuple[_RealOrArrayT_co, _RealOrArrayT_co]
+    mean: _FloatOrArrayT_co
+    variance: _FloatOrArrayT_co
+    skewness: _FloatOrArrayT_co
+    kurtosis: _FloatOrArrayT_co
 
-class ModeResult(NamedTuple, Generic[_NDT_real_co, _NDT_int_co]):
-    mode: _NDT_real_co
-    count: _NDT_int_co  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
+class ModeResult(NamedTuple, Generic[_RealOrArrayT_co, _IntOrArrayT_co]):
+    mode: _RealOrArrayT_co
+    count: _IntOrArrayT_co  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 class HistogramResult(NamedTuple):
     count: onp.Array1D[np.float64]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
@@ -192,10 +191,10 @@ class RelfreqResult(NamedTuple):
     binsize: onp.Array1D[np.float64]
     extrapoints: int
 
-class SigmaclipResult(NamedTuple, Generic[_SCT_real_co, _NDT_float_co]):
+class SigmaclipResult(NamedTuple, Generic[_SCT_real_co, _FloatOrArrayT_co]):
     clipped: onp.Array1D[_SCT_real_co]
-    lower: _NDT_float_co
-    upper: _NDT_float_co
+    lower: _FloatOrArrayT_co
+    upper: _FloatOrArrayT_co
 
 class RepeatedResults(NamedTuple):
     values: onp.Array1D[np.float64]
@@ -216,21 +215,21 @@ class QuantileTestResult:
     _p: float
     def confidence_interval(self, /, confidence_level: float = 0.95) -> float: ...
 
-class SignificanceResult(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]): ...
-class PearsonRResultBase(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]): ...
+class SignificanceResult(_TestResultBunch[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class PearsonRResultBase(_TestResultBunch[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
 
-class PearsonRResult(PearsonRResultBase[_NDT_float_co], Generic[_NDT_float_co]):
+class PearsonRResult(PearsonRResultBase[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):
     _alternative: Alternative
     _n: int
     _x: onp.ArrayND[_Real0D]
     _y: onp.ArrayND[_Real0D]
     _axis: int
-    correlation: _NDT_float_co  # alias for `statistic`
+    correlation: _FloatOrArrayT_co  # alias for `statistic`
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,
-        statistic: _NDT_float_co,
-        pvalue: _NDT_float_co,
+        statistic: _FloatOrArrayT_co,
+        pvalue: _FloatOrArrayT_co,
         alternative: Alternative,
         n: int,
         x: onp.ArrayND[_Real0D],
@@ -239,35 +238,35 @@ class PearsonRResult(PearsonRResultBase[_NDT_float_co], Generic[_NDT_float_co]):
     ) -> None: ...
     def confidence_interval(
         self, /, confidence_level: float = 0.95, method: BootstrapMethod | None = None
-    ) -> ConfidenceInterval[_NDT_float_co]: ...
+    ) -> ConfidenceInterval[_FloatOrArrayT_co]: ...
 
-class TtestResultBase(_TestResultBunch[_NDT_float_co], Generic[_NDT_float_co]):
+class TtestResultBase(_TestResultBunch[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):
     @property
-    def df(self, /) -> _NDT_float_co: ...
-    def __new__(_cls, statistic: _NDT_float_co, pvalue: _NDT_float_co, *, df: _NDT_float_co) -> Self: ...
-    def __init__(self, /, statistic: _NDT_float_co, pvalue: _NDT_float_co, *, df: _NDT_float_co) -> None: ...
+    def df(self, /) -> _FloatOrArrayT_co: ...
+    def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co, *, df: _FloatOrArrayT_co) -> Self: ...
+    def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co, *, df: _FloatOrArrayT_co) -> None: ...
 
-class TtestResult(TtestResultBase[_NDT_float_co], Generic[_NDT_float_co]):
+class TtestResult(TtestResultBase[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):
     _alternative: Alternative
-    _standard_error: _NDT_float_co
-    _estimate: _NDT_float_co
-    _statistic_np: _NDT_float_co
+    _standard_error: _FloatOrArrayT_co
+    _estimate: _FloatOrArrayT_co
+    _statistic_np: _FloatOrArrayT_co
     _dtype: np.dtype[npc.floating]
     _xp: ModuleType
 
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,
-        statistic: _NDT_float_co,
-        pvalue: _NDT_float_co,
-        df: _NDT_float_co,
+        statistic: _FloatOrArrayT_co,
+        pvalue: _FloatOrArrayT_co,
+        df: _FloatOrArrayT_co,
         alternative: Alternative,
-        standard_error: _NDT_float_co,
-        estimate: _NDT_float_co,
-        statistic_np: _NDT_float_co | None = None,
+        standard_error: _FloatOrArrayT_co,
+        estimate: _FloatOrArrayT_co,
+        statistic_np: _FloatOrArrayT_co | None = None,
         xp: ModuleType | None = None,
     ) -> None: ...
-    def confidence_interval(self, /, confidence_level: float = 0.95) -> ConfidenceInterval[_NDT_float_co]: ...
+    def confidence_interval(self, /, confidence_level: float = 0.95) -> ConfidenceInterval[_FloatOrArrayT_co]: ...
 
 class KstestResult(_TestResultBunch[np.float64]):
     @property
@@ -284,43 +283,45 @@ class KstestResult(_TestResultBunch[np.float64]):
 Ks_2sampResult = KstestResult
 
 class LinregressResult(
-    BunchMixin[tuple[_NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co]],
-    tuple[_NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co, _NDT_float_co],
-    Generic[_NDT_float_co],
+    BunchMixin[
+        tuple[_FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co]
+    ],
+    tuple[_FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co],
+    Generic[_FloatOrArrayT_co],
 ):
     def __new__(
         _cls,
-        slope: _NDT_float_co,
-        intercept: _NDT_float_co,
-        rvalue: _NDT_float_co,
-        pvalue: _NDT_float_co,
-        stderr: _NDT_float_co,
+        slope: _FloatOrArrayT_co,
+        intercept: _FloatOrArrayT_co,
+        rvalue: _FloatOrArrayT_co,
+        pvalue: _FloatOrArrayT_co,
+        stderr: _FloatOrArrayT_co,
         *,
-        intercept_stderr: _NDT_float_co,
+        intercept_stderr: _FloatOrArrayT_co,
     ) -> Self: ...
     def __init__(
         self,
         /,
-        slope: _NDT_float_co,
-        intercept: _NDT_float_co,
-        rvalue: _NDT_float_co,
-        pvalue: _NDT_float_co,
-        stderr: _NDT_float_co,
+        slope: _FloatOrArrayT_co,
+        intercept: _FloatOrArrayT_co,
+        rvalue: _FloatOrArrayT_co,
+        pvalue: _FloatOrArrayT_co,
+        stderr: _FloatOrArrayT_co,
         *,
-        intercept_stderr: _NDT_float_co,
+        intercept_stderr: _FloatOrArrayT_co,
     ) -> None: ...
     @property
-    def slope(self, /) -> _NDT_float_co: ...
+    def slope(self, /) -> _FloatOrArrayT_co: ...
     @property
-    def intercept(self, /) -> _NDT_float_co: ...
+    def intercept(self, /) -> _FloatOrArrayT_co: ...
     @property
-    def rvalue(self, /) -> _NDT_float_co: ...
+    def rvalue(self, /) -> _FloatOrArrayT_co: ...
     @property
-    def pvalue(self, /) -> _NDT_float_co: ...
+    def pvalue(self, /) -> _FloatOrArrayT_co: ...
     @property
-    def stderr(self, /) -> _NDT_float_co: ...
+    def stderr(self, /) -> _FloatOrArrayT_co: ...
     @property
-    def intercept_stderr(self, /) -> _NDT_float_co: ...
+    def intercept_stderr(self, /) -> _FloatOrArrayT_co: ...
 
 def gmean(
     a: onp.ToFloatND,
@@ -499,7 +500,7 @@ def percentileofscore(
     score: onp.ToFloat | onp.ToFloatND,
     kind: L["rank", "weak", "strict", "mean"] = "rank",
     nan_policy: NanPolicy = "propagate",
-) -> _AsFloat64: ...
+) -> np.float64: ...
 
 #
 def cumfreq(
@@ -822,24 +823,24 @@ def weightedtau(
 
 #
 def pack_TtestResult(
-    statistic: _NDT_float,
-    pvalue: _NDT_float,
-    df: _NDT_float,
+    statistic: _FloatOrArrayT,
+    pvalue: _FloatOrArrayT,
+    df: _FloatOrArrayT,
     alternative: Alternative,
-    standard_error: _NDT_float,
-    estimate: _NDT_float,
-) -> TtestResult[_NDT_float]: ...  # undocumented
+    standard_error: _FloatOrArrayT,
+    estimate: _FloatOrArrayT,
+) -> TtestResult[_FloatOrArrayT]: ...  # undocumented
 
 #
 def unpack_TtestResult(
-    res: TtestResult[_NDT_float], _: int
+    res: TtestResult[_FloatOrArrayT], _: int
 ) -> tuple[
-    _NDT_float,  # statistic
-    _NDT_float,  # pvalue
-    _NDT_float,  # df
+    _FloatOrArrayT,  # statistic
+    _FloatOrArrayT,  # pvalue
+    _FloatOrArrayT,  # df
     Alternative,  # _alternative
-    _NDT_float,  # _standard_error
-    _NDT_float,  # _estimate
+    _FloatOrArrayT,  # _standard_error
+    _FloatOrArrayT,  # _estimate
 ]: ...  # undocumented
 
 #
@@ -1104,7 +1105,7 @@ def kstest(
 ) -> KstestResult: ...
 
 #
-def tiecorrect(rankvals: onp.ToInt | onp.ToIntND) -> _AsFloat64: ...
+def tiecorrect(rankvals: onp.ToIntND) -> float: ...
 
 #
 def ranksums(
@@ -1160,7 +1161,7 @@ def wasserstein_distance_nd(
     v_values: onp.ToFloatND,
     u_weights: onp.ToFloatND | None = None,
     v_weights: onp.ToFloatND | None = None,
-) -> _AsFloat64: ...
+) -> np.float64: ...
 def wasserstein_distance(
     u_values: onp.ToFloatND,
     v_values: onp.ToFloatND,
