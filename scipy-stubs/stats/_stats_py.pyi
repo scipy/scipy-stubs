@@ -98,6 +98,12 @@ _FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_ScalarOrND[npc.floating])
 _FloatOrArrayT_co = TypeVar(
     "_FloatOrArrayT_co", bound=float | _ScalarOrND[npc.floating], default=float | onp.ArrayND[np.float64], covariant=True
 )
+_FloatOrArrayT2_co = TypeVar(
+    "_FloatOrArrayT2_co", bound=float | _ScalarOrND[npc.floating], default=float | onp.ArrayND[np.float64], covariant=True
+)
+_F64OrArrayT_co = TypeVar(
+    "_F64OrArrayT_co", bound=np.float64 | onp.ArrayND[np.float64], default=np.float64 | onp.ArrayND[np.float64], covariant=True
+)
 _RealOrArrayT_co = TypeVar("_RealOrArrayT_co", bound=_ScalarOrND[_Real0D], default=_ScalarOrND[Any], covariant=True)
 
 _Real0D: TypeAlias = npc.integer | npc.floating
@@ -134,13 +140,13 @@ class _TestResultTuple(NamedTuple, Generic[_FloatOrArrayT_co]):
     pvalue: _FloatOrArrayT_co
 
 @type_check_only
-class _TestResultBunch(BaseBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):  # pyright: ignore[reportInvalidTypeArguments]
+class _TestResultBunch(BaseBunch[_FloatOrArrayT_co, _FloatOrArrayT2_co], Generic[_FloatOrArrayT_co, _FloatOrArrayT2_co]):
     @property
     def statistic(self, /) -> _FloatOrArrayT_co: ...
     @property
-    def pvalue(self, /) -> _FloatOrArrayT_co: ...
-    def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co) -> Self: ...
-    def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co) -> None: ...
+    def pvalue(self, /) -> _FloatOrArrayT2_co: ...
+    def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT2_co) -> Self: ...
+    def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT2_co) -> None: ...
 
 ###
 
@@ -213,21 +219,22 @@ class QuantileTestResult:
     _p: float
     def confidence_interval(self, /, confidence_level: float = 0.95) -> float: ...
 
-class SignificanceResult(_TestResultBunch[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
-class PearsonRResultBase(_TestResultBunch[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class SignificanceResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+class PearsonRResultBase(_TestResultBunch[_FloatOrArrayT_co, _F64OrArrayT_co], Generic[_FloatOrArrayT_co, _F64OrArrayT_co]): ...
 
-class PearsonRResult(PearsonRResultBase[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):
+class PearsonRResult(PearsonRResultBase[_FloatOrArrayT_co, _F64OrArrayT_co], Generic[_FloatOrArrayT_co, _F64OrArrayT_co]):
     _alternative: Alternative
     _n: int
     _x: onp.ArrayND[_Real0D]
     _y: onp.ArrayND[_Real0D]
     _axis: int
     correlation: _FloatOrArrayT_co  # alias for `statistic`
+
     def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,
         statistic: _FloatOrArrayT_co,
-        pvalue: _FloatOrArrayT_co,
+        pvalue: _F64OrArrayT_co,
         alternative: Alternative,
         n: int,
         x: onp.ArrayND[_Real0D],
@@ -238,7 +245,7 @@ class PearsonRResult(PearsonRResultBase[_FloatOrArrayT_co], Generic[_FloatOrArra
         self, /, confidence_level: float = 0.95, method: BootstrapMethod | None = None
     ) -> ConfidenceInterval[_FloatOrArrayT_co]: ...
 
-class TtestResultBase(_TestResultBunch[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):
+class TtestResultBase(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):
     @property
     def df(self, /) -> _FloatOrArrayT_co: ...
     def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co, *, df: _FloatOrArrayT_co) -> Self: ...
@@ -266,7 +273,7 @@ class TtestResult(TtestResultBase[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]
     ) -> None: ...
     def confidence_interval(self, /, confidence_level: float = 0.95) -> ConfidenceInterval[_FloatOrArrayT_co]: ...
 
-class KstestResult(_TestResultBunch[np.float64]):
+class KstestResult(_TestResultBunch[np.float64, np.float64]):
     @property
     def statistic_location(self, /) -> np.float64: ...
     @property
@@ -676,21 +683,103 @@ def alexandergovern(
 ) -> AlexanderGovernResult: ...
 
 #
+@overload  # 1d +integer | ~float64, +floating
+def pearsonr(
+    x: onp.ToJustFloat64Strict1D | onp.ToIntStrict1D,
+    y: onp.ToFloatStrict1D,
+    *,
+    axis: L[0, -1] | None = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[np.float64, np.float64]: ...
+@overload  # 1d +floating, +integer | ~float64
+def pearsonr(
+    x: onp.ToFloatStrict1D,
+    y: onp.ToJustFloat64Strict1D | onp.ToIntStrict1D,
+    *,
+    axis: L[0, -1] | None = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[np.float64, np.float64]: ...
+@overload  # 1d +floating, +floating
+def pearsonr(
+    x: onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict1D,
+    *,
+    axis: L[0, -1] | None = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[npc.floating, np.float64]: ...
+@overload  # ?d +integer | ~float64, +floating, axis=None
+def pearsonr(
+    x: onp.ToJustFloat64_ND | onp.ToIntND,
+    y: onp.ToFloatND,
+    *,
+    axis: None,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[np.float64, np.float64]: ...
+@overload  # ?d +floating, +integer | ~float64, axis=None
+def pearsonr(
+    x: onp.ToFloatND,
+    y: onp.ToJustFloat64_ND | onp.ToIntND,
+    *,
+    axis: None,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[np.float64, np.float64]: ...
+@overload  # ?d +floating, +floating, axis=None
 def pearsonr(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     *,
+    axis: None,
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
+) -> PearsonRResult[npc.floating, np.float64]: ...
+@overload  # >=2d +integer | ~float64, +floating
+def pearsonr(
+    x: onp.CanArray[onp.AtLeast2D, np.dtype[npc.integer | npc.floating]] | Sequence[onp.SequenceND[float]],
+    y: onp.CanArray[onp.AtLeast2D, np.dtype[npc.integer | np.float64]] | Sequence[onp.SequenceND[float]],
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # >=2d +floating, +integer | ~float64
+def pearsonr(
+    x: onp.CanArray[onp.AtLeast2D, np.dtype[npc.integer | np.float64]] | Sequence[onp.SequenceND[float]],
+    y: onp.CanArray[onp.AtLeast2D, np.dtype[npc.integer | npc.floating]] | Sequence[onp.SequenceND[float]],
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # >=2d +floating, +floating
+def pearsonr(
+    x: onp.CanArray[onp.AtLeast2D, np.dtype[npc.integer | npc.floating]] | Sequence[onp.SequenceND[float]],
+    y: onp.CanArray[onp.AtLeast2D, np.dtype[npc.integer | npc.floating]] | Sequence[onp.SequenceND[float]],
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[onp.ArrayND[npc.floating], onp.ArrayND[np.float64]]: ...
+@overload  # fallback
+def pearsonr(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    *,
     axis: int | None = 0,
-) -> PearsonRResult: ...
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[npc.floating, np.float64] | PearsonRResult[onp.ArrayND[npc.floating], onp.ArrayND[np.float64]]: ...
 
 #
 def fisher_exact(
     table: onp.ArrayND[_Real0D], alternative: Alternative | None = None, *, method: ResamplingMethod | None = None
 ) -> SignificanceResult[float]: ...
 
-#
+# TODO(jorenham): improve like `pearsonr` (but always return `f64`)
 def spearmanr(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
