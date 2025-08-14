@@ -328,6 +328,7 @@ class LinregressResult(
     @property
     def intercept_stderr(self, /) -> _FloatOrArrayT_co: ...
 
+# TODO(jorenham): improve
 def gmean(
     a: onp.ToFloatND,
     axis: int | None = 0,
@@ -337,6 +338,8 @@ def gmean(
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> _RealOrND: ...
+
+# TODO(jorenham): improve
 def hmean(
     a: onp.ToFloatND,
     axis: int | None = 0,
@@ -346,6 +349,8 @@ def hmean(
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> _RealOrND: ...
+
+# TODO(jorenham): improve
 def pmean(
     a: onp.ToFloatND,
     p: float | _Real0D,
@@ -429,7 +434,7 @@ def mode(
     a: onp.ToFloat | onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
 ) -> ModeResult: ...
 
-#
+# TODO(jorenham): improve
 def tmean(
     a: onp.ToFloatND,
     limits: _RealLimits | None = None,
@@ -439,6 +444,8 @@ def tmean(
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> _FloatOrND: ...
+
+# TODO(jorenham): improve
 def tvar(
     a: onp.ToFloatND,
     limits: _RealLimits | None = None,
@@ -449,6 +456,8 @@ def tvar(
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> _FloatOrND: ...
+
+# TODO(jorenham): improve
 def tmin(
     a: onp.ToFloatND,
     lowerlimit: float | _Real0D | None = None,
@@ -458,6 +467,8 @@ def tmin(
     *,
     keepdims: bool = False,
 ) -> _RealOrND: ...
+
+# TODO(jorenham): improve
 def tmax(
     a: onp.ToFloatND,
     upperlimit: float | _Real0D | None = None,
@@ -467,6 +478,8 @@ def tmax(
     *,
     keepdims: bool = False,
 ) -> _RealOrND: ...
+
+# TODO(jorenham): improve
 def tstd(
     a: onp.ToFloatND,
     limits: _RealLimits | None = None,
@@ -477,6 +490,8 @@ def tstd(
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> _FloatOrND: ...
+
+# TODO(jorenham): improve
 def tsem(
     a: onp.ToFloatND,
     limits: _RealLimits | None = None,
@@ -511,7 +526,7 @@ def gstd(
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, *, keepdims: bool = False, nan_policy: NanPolicy = "propagate"
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 
-#
+# TODO(jorenham): improve
 def moment(
     a: onp.ToFloatND,
     order: int = 1,
@@ -521,9 +536,13 @@ def moment(
     center: float | npc.floating | None = None,
     keepdims: bool = False,
 ) -> _FloatOrND: ...
+
+# TODO(jorenham): improve
 def skew(
     a: onp.ToFloatND, axis: int | None = 0, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
 ) -> _FloatOrND: ...
+
+# TODO(jorenham): improve
 def kurtosis(
     a: onp.ToFloatND,
     axis: int | None = 0,
@@ -533,11 +552,13 @@ def kurtosis(
     *,
     keepdims: bool = False,
 ) -> _FloatOrND: ...
+
+#
 def describe(
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
 ) -> DescribeResult: ...
 
-#
+# TODO(jorenham): improve
 def skewtest(
     a: onp.ToFloatND,
     axis: int | None = 0,
@@ -546,6 +567,8 @@ def skewtest(
     *,
     keepdims: bool = False,
 ) -> SkewtestResult: ...
+
+# TODO(jorenham): improve
 def kurtosistest(
     a: onp.ToFloatND,
     axis: int | None = 0,
@@ -554,14 +577,18 @@ def kurtosistest(
     *,
     keepdims: bool = False,
 ) -> KurtosistestResult: ...
+
+# TODO(jorenham): improve
 def normaltest(
     a: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
 ) -> NormaltestResult: ...
+
+# TODO(jorenham): improve
 def jarque_bera(
     x: onp.ToFloatND, *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: bool = False
 ) -> SignificanceResult: ...
 
-#
+# TODO(jorenham): improve
 def scoreatpercentile(
     a: onp.ToFloat1D,
     per: onp.ToFloat | onp.ToFloatND,
@@ -569,6 +596,8 @@ def scoreatpercentile(
     interpolation_method: L["fraction", "lower", "higher"] = "fraction",
     axis: int | None = None,
 ) -> _FloatOrND: ...
+
+#
 def percentileofscore(
     a: onp.ToFloat1D,
     score: onp.ToFloat | onp.ToFloatND,
@@ -587,20 +616,22 @@ def relfreq(
 #
 def obrientransform(*samples: onp.ToFloatND) -> onp.Array2D[npc.floating] | onp.Array1D[np.object_]: ...
 
-#
+# TODO(jorenham): improve
 def sem(
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
 ) -> _FloatOrND: ...
 
-#
+# TODO(jorenham): improve
 def zscore(
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
 ) -> onp.ArrayND[npc.floating]: ...
+
+# TODO(jorenham): improve
 def gzscore(
     a: onp.ToFloatND, *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
 ) -> onp.ArrayND[npc.floating]: ...
 
-#
+# TODO(jorenham): improve
 @overload  # (real vector-like, real vector-like) -> floating vector
 def zmap(
     scores: onp.ToFloat1D, compare: onp.ToFloat1D, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
@@ -642,7 +673,7 @@ def zmap(
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[npc.complexfloating]: ...
 
-#
+# TODO(jorenham): improve
 def iqr(
     x: onp.ToFloatND,
     axis: int | Sequence[int] | None = None,
@@ -653,7 +684,7 @@ def iqr(
     keepdims: bool = False,
 ) -> _FloatOrND: ...
 
-#
+# TODO(jorenham): improve
 def median_abs_deviation(
     x: onp.ToFloatND,
     axis: int | None = 0,
@@ -664,22 +695,28 @@ def median_abs_deviation(
 
 #
 def sigmaclip(a: onp.ToFloatND, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...
+
+# TODO(jorenham): improve
 def trimboth(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
+
+# TODO(jorenham): improve
 def trim1(a: onp.ToFloatND, proportiontocut: float, tail: _TrimTail = "right", axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
+
+# TODO(jorenham): improve
 def trim_mean(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> _FloatOrND: ...
 
-#
+# TODO(jorenham): improve
 def f_oneway(
     *samples: onp.ToFloatND,
-    nan_policy: NanPolicy = "propagate",
-    equal_var: bool = True,
     axis: int | None = 0,
     keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+    equal_var: bool = True,
 ) -> F_onewayResult: ...
 
-#
+# TODO(jorenham): improve
 def alexandergovern(
-    *samples: onp.ToFloatND, nan_policy: NanPolicy = "propagate", axis: int | None = 0, keepdims: bool = False
+    *samples: onp.ToFloatND, axis: int | None = 0, keepdims: bool = False, nan_policy: NanPolicy = "propagate"
 ) -> AlexanderGovernResult: ...
 
 #
@@ -788,7 +825,7 @@ def spearmanr(
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult: ...
 
-#
+# TODO(jorenham): improve like `pearsonr` (but return `SignificanceResult`, not `PearsonRResult`)
 @overload
 def pointbiserialr(
     x: onp.ToBoolND, y: onp.ToFloatND, *, axis: None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
@@ -835,72 +872,72 @@ def kendalltau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     *,
+    axis: None,
+    keepdims: L[False] = False,
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
-    axis: None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
 ) -> SignificanceResult[np.float64]: ...
 @overload
 def kendalltau(
     x: onp.ToFloatStrict1D,
     y: onp.ToFloatStrict1D,
     *,
+    axis: int | None = 0,
+    keepdims: L[False] = False,
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
-    axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
 ) -> SignificanceResult[np.float64]: ...
 @overload
 def kendalltau(
     x: onp.ToFloatStrict2D,
     y: onp.ToFloatStrict2D,
     *,
+    axis: int = 0,
+    keepdims: L[False] = False,
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
-    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
 ) -> SignificanceResult[onp.Array1D[np.float64]]: ...
 @overload
 def kendalltau(
     x: onp.ToFloatStrict3D,
     y: onp.ToFloatStrict3D,
     *,
+    axis: int = 0,
+    keepdims: L[False] = False,
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
-    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
 ) -> SignificanceResult[onp.Array2D[np.float64]]: ...
 @overload
 def kendalltau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     *,
+    axis: int | None = 0,
+    keepdims: L[True],
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
-    axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
 @overload
 def kendalltau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     *,
+    axis: int | None = 0,
+    keepdims: bool = False,
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
-    axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 #
@@ -913,8 +950,8 @@ def weightedtau(
     additive: bool = True,
     *,
     axis: None,
-    nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[np.float64]: ...
 @overload
 def weightedtau(
@@ -925,8 +962,8 @@ def weightedtau(
     additive: bool = True,
     *,
     axis: int | None = 0,
-    nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[np.float64]: ...
 @overload
 def weightedtau(
@@ -937,8 +974,8 @@ def weightedtau(
     additive: bool = True,
     *,
     axis: int = 0,
-    nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[onp.Array1D[np.float64]]: ...
 @overload
 def weightedtau(
@@ -949,8 +986,8 @@ def weightedtau(
     additive: bool = True,
     *,
     axis: int = 0,
-    nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[onp.Array2D[np.float64]]: ...
 @overload
 def weightedtau(
@@ -961,8 +998,8 @@ def weightedtau(
     additive: bool = True,
     *,
     axis: int | None = 0,
-    nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
+    nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
 @overload
 def weightedtau(
@@ -973,8 +1010,8 @@ def weightedtau(
     additive: bool = True,
     *,
     axis: int | None = 0,
-    nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 #
@@ -999,7 +1036,7 @@ def unpack_TtestResult(
     _FloatOrArrayT,  # _estimate
 ]: ...  # undocumented
 
-#
+# TODO(jorenham): improve
 def ttest_1samp(
     a: onp.ToFloatND,
     popmean: onp.ToFloat | onp.ToFloatND,
@@ -1010,7 +1047,7 @@ def ttest_1samp(
     keepdims: bool = False,
 ) -> TtestResult: ...
 
-#
+# TODO(jorenham): improve
 def ttest_ind_from_stats(
     mean1: onp.ToFloat | onp.ToFloatND,
     std1: onp.ToFloat | onp.ToFloatND,
@@ -1096,7 +1133,7 @@ def ttest_ind(
     keepdims: bool = False,
 ) -> TtestResult: ...
 
-#
+# TODO(jorenham): improve
 def ttest_rel(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
@@ -1221,7 +1258,7 @@ def chisquare(
     nan_policy: NanPolicy = "propagate",
 ) -> Power_divergenceResult[np.float64 | Any]: ...
 
-#
+# TODO(jorenham): improve
 def ks_1samp(
     x: onp.ToFloatND,
     cdf: Callable[[float], float | _Real0D],
@@ -1234,7 +1271,7 @@ def ks_1samp(
     keepdims: bool = False,
 ) -> KstestResult: ...
 
-#
+# TODO(jorenham): improve
 def ks_2samp(
     data1: onp.ToFloatND,
     data2: onp.ToFloatND,
@@ -1246,7 +1283,7 @@ def ks_2samp(
     keepdims: bool = False,
 ) -> KstestResult: ...
 
-#
+# TODO(jorenham): improve
 def kstest(
     rvs: str | onp.ToFloatND | _RVSCallable,
     cdf: str | onp.ToFloatND | Callable[[float], float | npc.floating],
@@ -1263,7 +1300,7 @@ def kstest(
 #
 def tiecorrect(rankvals: onp.ToIntND) -> float: ...
 
-#
+# TODO(jorenham): improve
 def ranksums(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -1274,13 +1311,17 @@ def ranksums(
     keepdims: bool = False,
 ) -> RanksumsResult: ...
 
-#
+# TODO(jorenham): improve
 def kruskal(
     *samples: onp.ToFloatND, nan_policy: NanPolicy = "propagate", axis: int | None = 0, keepdims: bool = False
 ) -> KruskalResult: ...
+
+# TODO(jorenham): improve
 def friedmanchisquare(
     *samples: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
 ) -> FriedmanchisquareResult: ...
+
+# TODO(jorenham): improve
 def brunnermunzel(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -1292,7 +1333,7 @@ def brunnermunzel(
     axis: int | None = 0,
 ) -> BrunnerMunzelResult: ...
 
-#
+# TODO(jorenham): improve
 def combine_pvalues(
     pvalues: onp.ToFloatND,
     method: _CombinePValuesMethod = "fisher",
@@ -1304,9 +1345,11 @@ def combine_pvalues(
 ) -> SignificanceResult: ...
 
 #
-def quantile_test_iv(  # undocumented
+def quantile_test_iv(
     x: onp.ToFloatND, q: float | _Real0D, p: float | npc.floating, alternative: Alternative
-) -> tuple[onp.ArrayND[_Real0D], _Real0D, npc.floating, Alternative]: ...
+) -> tuple[onp.ArrayND[_Real0D], _Real0D, npc.floating, Alternative]: ...  # undocumented
+
+#
 def quantile_test(
     x: onp.ToFloatND, *, q: float | _Real0D = 0, p: float | npc.floating = 0.5, alternative: Alternative = "two-sided"
 ) -> QuantileTestResult: ...
@@ -1331,7 +1374,7 @@ def energy_distance(
     v_weights: onp.ToFloatND | None = None,
 ) -> np.float64: ...
 
-#
+# TODO(jorenham): improve
 def rankdata(
     a: onp.ToFloatND, method: _RankMethod = "average", *, axis: int | None = None, nan_policy: NanPolicy = "propagate"
 ) -> onp.ArrayND[_Real0D]: ...
@@ -1412,6 +1455,7 @@ def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
 # See https://github.com/jorenham/Lmo/ for a more stable implementation that additionally supports generalized trimmed TL-moments,
 # multivariate L- and TL-comoments, theoretical L- and TL-moments or `scipy.stats` distributions, and much more ;)
 
+# TODO(jorenham): improve dtype
 @overload  # sample: 1-d, order: 0-d, keepdims: falsy
 def lmoment(
     sample: onp.ToFloatStrict1D,
