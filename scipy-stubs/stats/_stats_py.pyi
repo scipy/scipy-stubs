@@ -616,9 +616,72 @@ def relfreq(
 #
 def obrientransform(*samples: onp.ToFloatND) -> onp.Array2D[npc.floating] | onp.Array1D[np.object_]: ...
 
-# TODO(jorenham): improve
+#
+@overload  # 1d ~inexact64 | +integer, keepdims=False (default)
 def sem(
-    a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
+    a: onp.ToArrayStrict1D[complex, npc.inexact64 | npc.integer | np.bool_],
+    axis: L[0, -1] | None = 0,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # >1d ~inexact64 | +integer, axis: int (default)
+def sem(
+    a: onp.CanArray[onp.AtLeast2D, np.dtype[npc.inexact64 | npc.integer | np.bool_]] | Sequence[onp.SequenceND[complex]],
+    axis: int = 0,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: bool = False,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d ~inexact64 | +integer, axis=None, keepdims=False (default)
+def sem(
+    a: onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool_],
+    axis: None,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # ?d ~inexact64 | +integer, keepdims=True
+def sem(
+    a: onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool_],
+    axis: int | None = 0,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # 1d +complex, keepdims=False (default)
+def sem(
+    a: onp.ToComplexStrict1D,
+    axis: L[0, -1] | None = 0,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> npc.floating: ...
+@overload  # >1d +complex, axis: int (default)
+def sem(
+    a: onp.CanArray[onp.AtLeast2D, np.dtype[npc.number]],
+    axis: int = 0,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: bool = False,
+) -> onp.ArrayND[npc.floating]: ...
+@overload  # ?d +complex, axis=None, keepdims=False (default)
+def sem(
+    a: onp.ToComplexND, axis: None, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+) -> npc.floating: ...
+@overload  # ?d +complex, keepdims=True
+def sem(
+    a: onp.ToComplexND, axis: int | None = 0, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+) -> onp.ArrayND[npc.floating]: ...
+@overload  # ?d +complex
+def sem(
+    a: onp.ToComplexND, axis: int | None = 0, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
 ) -> _FloatOrND: ...
 
 # TODO(jorenham): improve
