@@ -1,7 +1,7 @@
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from types import ModuleType
-from typing import Any, Generic, Literal as L, Protocol, Self, TypeAlias, overload, type_check_only
+from typing import Any, Generic, Literal as L, Never, Protocol, Self, TypeAlias, overload, type_check_only
 from typing_extensions import NamedTuple, TypeVar, deprecated
 
 import numpy as np
@@ -89,24 +89,22 @@ __all__ = [
 
 _SCT = TypeVar("_SCT", bound=np.generic)
 
-_SCT_float = TypeVar("_SCT_float", bound=npc.floating, default=npc.floating)
-_SCT_real = TypeVar("_SCT_real", bound=_Real0D, default=_Real0D)
-_SCT_real_co = TypeVar("_SCT_real_co", covariant=True, bound=_Real0D, default=_Real0D)
+_FloatT = TypeVar("_FloatT", bound=npc.floating, default=npc.floating)
+_RealT = TypeVar("_RealT", bound=_Real0D, default=_Real0D)
+_RealT_co = TypeVar("_RealT_co", bound=_Real0D, default=_Real0D, covariant=True)
 
-_Real0D: TypeAlias = npc.integer | npc.floating
-
-_ScalarOrND: TypeAlias = _SCT | onp.ArrayND[_SCT]
-_FloatOrND: TypeAlias = _ScalarOrND[_SCT_float]
-_RealOrND: TypeAlias = _ScalarOrND[_SCT_real]
-
-_IntOrArrayT_co = TypeVar("_IntOrArrayT_co", bound=_ScalarOrND[npc.integer], default=_ScalarOrND[np.intp], covariant=True)
+_IntOrArrayT_co = TypeVar("_IntOrArrayT_co", bound=_ScalarOrND[np.intp], default=_ScalarOrND[np.intp], covariant=True)
 _FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_ScalarOrND[npc.floating])
 _FloatOrArrayT_co = TypeVar(
     "_FloatOrArrayT_co", bound=float | _ScalarOrND[npc.floating], default=float | onp.ArrayND[np.float64], covariant=True
 )
-_RealOrArrayT_co = TypeVar(
-    "_RealOrArrayT_co", bound=_ScalarOrND[_Real0D], default=_ScalarOrND[np.intp | np.float64], covariant=True
-)
+_RealOrArrayT_co = TypeVar("_RealOrArrayT_co", bound=_ScalarOrND[_Real0D], default=_ScalarOrND[Any], covariant=True)
+
+_Real0D: TypeAlias = npc.integer | npc.floating
+
+_ScalarOrND: TypeAlias = _SCT | onp.ArrayND[_SCT]
+_FloatOrND: TypeAlias = _ScalarOrND[_FloatT]
+_RealOrND: TypeAlias = _ScalarOrND[_RealT]
 
 _InterpolationMethod: TypeAlias = L["linear", "lower", "higher", "nearest", "midpoint"]
 _TrimTail: TypeAlias = L["left", "right"]
@@ -191,8 +189,8 @@ class RelfreqResult(NamedTuple):
     binsize: onp.Array1D[np.float64]
     extrapoints: int
 
-class SigmaclipResult(NamedTuple, Generic[_SCT_real_co, _FloatOrArrayT_co]):
-    clipped: onp.Array1D[_SCT_real_co]
+class SigmaclipResult(NamedTuple, Generic[_RealT_co, _FloatOrArrayT_co]):
+    clipped: onp.Array1D[_RealT_co]
     lower: _FloatOrArrayT_co
     upper: _FloatOrArrayT_co
 
@@ -352,8 +350,77 @@ def pmean(
     keepdims: bool = False,
 ) -> _RealOrND: ...
 
-#
-def mode(a: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False) -> ModeResult: ...
+# NOTE: The two mypy `overload-overlap` errors are false positive
+@overload  # int {0,1}d, keepdims=False (default)
+def mode(
+    a: int | Sequence[int], axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> ModeResult[np.int_, np.intp]: ...
+@overload  # int ?d, axis=None, keepdims=False (default)
+def mode(
+    a: int | onp.SequenceND[int], axis: None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> ModeResult[np.int_, np.intp]: ...
+@overload  # int ?d, keepdims=True (keyword)
+def mode(
+    a: int | onp.SequenceND[int], axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+) -> ModeResult[onp.ArrayND[np.int_], onp.ArrayND[np.intp]]: ...
+@overload  # int >1d, axis: int (default)
+def mode(  # type: ignore[overload-overlap]
+    a: Sequence[onp.SequenceND[int]], axis: int = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+) -> ModeResult[onp.ArrayND[np.int_], onp.ArrayND[np.intp]]: ...
+@overload  # float {0,1}d, keepdims=False (default)
+def mode(
+    a: op.JustFloat | Sequence[op.JustFloat],
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> ModeResult[np.float64, np.intp]: ...
+@overload  # float ?d, axis=None, keepdims=False (default)
+def mode(
+    a: op.JustFloat | onp.SequenceND[op.JustFloat], axis: None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> ModeResult[np.float64, np.intp]: ...
+@overload  # float ?d, keepdims=True (keyword)
+def mode(
+    a: op.JustFloat | onp.SequenceND[op.JustFloat],
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> ModeResult[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
+@overload  # float >1d, axis: int (default)
+def mode(  # type: ignore[overload-overlap]
+    a: Sequence[onp.SequenceND[op.JustFloat]], axis: int = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+) -> ModeResult[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
+@overload  # T@real {0,1}d, keepdims=False (default)
+def mode(
+    a: _RealT | onp.ToArrayStrict1D[Never, _RealT],
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> ModeResult[_RealT, np.intp]: ...
+@overload  # T@real ?d, axis=None, keepdims=False (default)
+def mode(
+    a: _RealT | onp.ToArrayND[Never, _RealT], axis: None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> ModeResult[_RealT, np.intp]: ...
+@overload  # T@real ?d, keepdims=True (keyword)
+def mode(
+    a: _RealT | onp.ToArrayND[Never, _RealT], axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+) -> ModeResult[onp.ArrayND[_RealT], onp.ArrayND[np.intp]]: ...
+@overload  # T@real >1d, axis: int (default)
+def mode(
+    a: onp.CanArray[onp.AtLeast2D, np.dtype[_RealT]], axis: int = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+) -> ModeResult[onp.ArrayND[_RealT], onp.ArrayND[np.intp]]: ...
+@overload  # real ?d, axis=None, keepdims=False (default)
+def mode(
+    a: onp.ToFloat | onp.ToFloatND, axis: None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> ModeResult[np.float64 | Any, np.intp]: ...
+@overload  # real ?d, keepdims=True (keyword)
+def mode(
+    a: onp.ToFloat | onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+) -> ModeResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.intp]]: ...
+@overload  # real ?d
+def mode(
+    a: onp.ToFloat | onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+) -> ModeResult: ...
 
 #
 def tmean(
