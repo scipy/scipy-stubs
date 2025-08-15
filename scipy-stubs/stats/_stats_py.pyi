@@ -6,6 +6,7 @@ from typing_extensions import NamedTuple, TypeVar, deprecated
 
 import numpy as np
 import numpy.typing as npt
+import numpy_typing_compat as nptc
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
@@ -89,6 +90,8 @@ __all__ = [
 
 _SCT = TypeVar("_SCT", bound=np.generic)
 
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _FloatT = TypeVar("_FloatT", bound=npc.floating, default=npc.floating)
 _RealT = TypeVar("_RealT", bound=_Real0D, default=_Real0D)
 _RealT_co = TypeVar("_RealT_co", bound=_Real0D, default=_Real0D, covariant=True)
@@ -684,17 +687,98 @@ def sem(
     a: onp.ToComplexND, axis: int | None = 0, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
 ) -> _FloatOrND: ...
 
-# TODO(jorenham): improve
+# NOTE: keep in sync with `gzscore`
+@overload  # +integer, known shape
 def zscore(
+    a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # known inexact dtype, known shape
+def zscore(
+    a: nptc.CanArray[_ShapeT, np.dtype[_InexactT]], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # float 1d
+def zscore(
+    a: Sequence[float], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.float64]: ...
+@overload  # float 2d
+def zscore(
+    a: Sequence[Sequence[float]], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array2D[np.float64]: ...
+@overload  # float 3d
+def zscore(
+    a: Sequence[Sequence[Sequence[float]]], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array3D[np.float64]: ...
+@overload  # complex 1d
+def zscore(
+    a: Sequence[op.JustComplex], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.complex128]: ...
+@overload  # complex 2d
+def zscore(
+    a: Sequence[Sequence[op.JustComplex]], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array2D[np.complex128]: ...
+@overload  # complex 3d
+def zscore(
+    a: Sequence[Sequence[Sequence[op.JustComplex]]], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array3D[np.complex128]: ...
+@overload  # floating fallback
+def zscore(  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection on numpy<2.1
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[npc.floating, tuple[int] | tuple[Any, ...]]: ...
+@overload  # complex fallback
+def zscore(
+    a: onp.ToJustComplexND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[npc.complexfloating]: ...
 
-# TODO(jorenham): improve
+# NOTE: keep in sync with `zscore`
+@overload  # +integer, known shape
 def gzscore(
+    a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
+    *,
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # known inexact dtype, known shape
+def gzscore(
+    a: nptc.CanArray[_ShapeT, np.dtype[_InexactT]], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # float 1d
+def gzscore(
+    a: Sequence[float], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.float64]: ...
+@overload  # float 2d
+def gzscore(
+    a: Sequence[Sequence[float]], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array2D[np.float64]: ...
+@overload  # float 3d
+def gzscore(
+    a: Sequence[Sequence[Sequence[float]]], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array3D[np.float64]: ...
+@overload  # complex 1d
+def gzscore(
+    a: Sequence[op.JustComplex], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.complex128]: ...
+@overload  # complex 2d
+def gzscore(
+    a: Sequence[Sequence[op.JustComplex]], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array2D[np.complex128]: ...
+@overload  # complex 3d
+def gzscore(
+    a: Sequence[Sequence[Sequence[op.JustComplex]]], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array3D[np.complex128]: ...
+@overload  # floating fallback
+def gzscore(  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection on numpy<2.1
     a: onp.ToFloatND, *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[npc.floating, tuple[int] | tuple[Any, ...]]: ...
+@overload  # complex fallback
+def gzscore(
+    a: onp.ToJustComplexND, *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[npc.complexfloating]: ...
 
-# TODO(jorenham): improve
+# TODO(jorenham): improve like zscore
 @overload  # (real vector-like, real vector-like) -> floating vector
 def zmap(
     scores: onp.ToFloat1D, compare: onp.ToFloat1D, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
@@ -1568,7 +1652,7 @@ def lmoment(
     sample: onp.ToFloatStrict2D,
     order: _LMomentOrder,
     *,
-    axis: L[0, 1, -1, -2] = 0,
+    axis: int = 0,
     keepdims: onp.ToFalse = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
@@ -1579,7 +1663,7 @@ def lmoment(
     sample: onp.ToFloatStrict2D,
     order: _LMomentOrder,
     *,
-    axis: L[0, 1, -1, -2] | None = 0,
+    axis: int | None = 0,
     keepdims: onp.ToTrue,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
@@ -1590,7 +1674,7 @@ def lmoment(
     sample: onp.ToFloatStrict2D,
     order: _LMomentOrder1D | None = None,
     *,
-    axis: L[0, 1, -1, -2] = 0,
+    axis: int = 0,
     keepdims: onp.ToFalse = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
@@ -1601,7 +1685,7 @@ def lmoment(
     sample: onp.ToFloatStrict2D,
     order: _LMomentOrder1D | None = None,
     *,
-    axis: L[0, 1, -1, -2] | None = 0,
+    axis: int | None = 0,
     keepdims: onp.ToTrue,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
@@ -1612,7 +1696,7 @@ def lmoment(
     sample: onp.ToFloatStrict3D,
     order: _LMomentOrder,
     *,
-    axis: L[0, 1, 2, -1, -2, -3] = 0,
+    axis: int = 0,
     keepdims: onp.ToFalse = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
@@ -1623,7 +1707,7 @@ def lmoment(
     sample: onp.ToFloatStrict3D,
     order: _LMomentOrder,
     *,
-    axis: L[0, 1, 2, -1, -2, -3] | None = 0,
+    axis: int | None = 0,
     keepdims: onp.ToTrue,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
@@ -1634,7 +1718,7 @@ def lmoment(
     sample: onp.ToFloatStrict3D,
     order: _LMomentOrder1D | None = None,
     *,
-    axis: L[0, 1, 2, -1, -2, -3] = 0,
+    axis: int = 0,
     keepdims: onp.ToFalse = False,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
@@ -1645,7 +1729,7 @@ def lmoment(
     sample: onp.ToFloatStrict3D,
     order: _LMomentOrder1D | None = None,
     *,
-    axis: L[0, 1, 2, -1, -2, -3] | None = 0,
+    axis: int | None = 0,
     keepdims: onp.ToTrue,
     sorted: op.CanBool = False,
     standardize: op.CanBool = True,
