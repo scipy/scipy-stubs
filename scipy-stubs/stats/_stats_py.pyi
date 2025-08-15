@@ -724,9 +724,9 @@ def zscore(
     a: Sequence[Sequence[Sequence[op.JustComplex]]], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
 ) -> onp.Array3D[np.complex128]: ...
 @overload  # floating fallback
-def zscore(
+def zscore(  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection on numpy<2.1
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[npc.floating, tuple[int] | tuple[Any, ...]]: ...
 @overload  # complex fallback
 def zscore(
     a: onp.ToJustComplexND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
@@ -770,9 +770,9 @@ def gzscore(
     a: Sequence[Sequence[Sequence[op.JustComplex]]], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
 ) -> onp.Array3D[np.complex128]: ...
 @overload  # floating fallback
-def gzscore(
+def gzscore(  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection on numpy<2.1
     a: onp.ToFloatND, *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[npc.floating, tuple[int] | tuple[Any, ...]]: ...
 @overload  # complex fallback
 def gzscore(
     a: onp.ToJustComplexND, *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
