@@ -6,6 +6,7 @@ from typing_extensions import NamedTuple, TypeVar, deprecated
 
 import numpy as np
 import numpy.typing as npt
+import numpy_typing_compat as nptc
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
@@ -689,14 +690,14 @@ def sem(
 # NOTE: keep in sync with `gzscore`
 @overload  # +integer, known shape
 def zscore(
-    a: onp.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
+    a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # known inexact dtype, known shape
 def zscore(
-    a: onp.CanArray[_ShapeT, np.dtype[_InexactT]], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+    a: nptc.CanArray[_ShapeT, np.dtype[_InexactT]], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
 ) -> onp.ArrayND[_InexactT, _ShapeT]: ...
 @overload  # float 1d
 def zscore(
@@ -734,7 +735,7 @@ def zscore(
 # NOTE: keep in sync with `zscore`
 @overload  # +integer, known shape
 def gzscore(
-    a: onp.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
+    a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
     *,
     axis: int | None = 0,
     ddof: int = 0,
@@ -742,7 +743,7 @@ def gzscore(
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # known inexact dtype, known shape
 def gzscore(
-    a: onp.CanArray[_ShapeT, np.dtype[_InexactT]], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+    a: nptc.CanArray[_ShapeT, np.dtype[_InexactT]], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
 ) -> onp.ArrayND[_InexactT, _ShapeT]: ...
 @overload  # float 1d
 def gzscore(
