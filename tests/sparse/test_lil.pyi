@@ -14,7 +14,7 @@ shape2: tuple[int, int]
 data2: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
 
 ###
-# CSC matrix constructor
+# LIL matrix constructor
 # ruff: noqa: ERA001
 
 # lil_matrix(D)
@@ -38,7 +38,7 @@ assert_type(lil_matrix(shape2, dtype=float), lil_matrix[np.float64])
 assert_type(lil_matrix(shape2, dtype=complex), lil_matrix[np.complex128])
 
 ###
-# CSC array constructor
+# LIL array constructor
 
 # lil_array(D)
 assert_type(lil_array(data2), lil_array[ScalarType])
