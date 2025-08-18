@@ -1,10 +1,9 @@
 from collections.abc import Sequence
-from typing import Any, Generic, Literal, Self, TypeAlias, overload, type_check_only
+from typing import Any, Generic, Literal, Self, SupportsIndex, TypeAlias, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -21,8 +20,9 @@ _T = TypeVar("_T")
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
 
-_ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
+_ToMatrixPy: TypeAlias = list[_T] | list[list[_T]]  # intentionally invariant
 _ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
+_ToAnyLIL: TypeAlias = _ToShape2D | _ToMatrix[npc.number | np.bool_]
 
 ###
 
@@ -75,7 +75,7 @@ class _lil_base(_spbase[_ScalarT_co, tuple[int, int]], IndexMixin[_ScalarT_co, t
     @overload
     def count_nonzero(self, /, axis: None = None) -> np.intp: ...
     @overload
-    def count_nonzero(self, /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
+    def count_nonzero(self, /, axis: SupportsIndex) -> onp.Array1D[np.intp]: ...
 
     #
     def getrowview(self, /, i: int) -> Self: ...
@@ -98,7 +98,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         /,
         arg1: _ToMatrix[_ScalarT_co],
         shape: _ToShape2D | None = None,
-        dtype: None = None,
+        dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -118,7 +118,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: lil_array[np.bool_],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
@@ -129,7 +129,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: lil_array[np.bool_],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyBoolDType,
@@ -138,9 +138,9 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: int-like (positional)
     def __init__(
-        self: lil_array[np.int64],
+        self: lil_array[np.int_],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
@@ -149,12 +149,34 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: int-like (keyword)
     def __init__(
-        self: lil_array[np.int64],
+        self: lil_array[np.int_],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyIntDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: float64-like (positional)
+    def __init__(
+        self: lil_array[np.float64],
+        /,
+        arg1: _ToAnyLIL,
+        shape: _ToShape2D | None,
+        dtype: onp.AnyFloat64DType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: float64-like (keyword)
+    def __init__(
+        self: lil_array[np.float64],
+        /,
+        arg1: _ToAnyLIL,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyFloat64DType,
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -162,7 +184,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: lil_array[np.complex128],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
@@ -173,7 +195,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: lil_array[np.complex128],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyComplex128DType,
@@ -195,7 +217,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: lil_array[np.int_],
         /,
-        arg1: _ToMatrixPy[op.JustInt],
+        arg1: _ToMatrixPy[int],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
@@ -206,7 +228,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: lil_array[np.float64],
         /,
-        arg1: _ToMatrixPy[op.JustFloat],
+        arg1: _ToMatrixPy[float],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -217,7 +239,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self: lil_array[np.complex128],
         /,
-        arg1: _ToMatrixPy[op.JustComplex],
+        arg1: _ToMatrixPy[complex],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
@@ -228,7 +250,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -239,7 +261,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
@@ -250,7 +272,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None = None,
         dtype: npt.DTypeLike | None = None,
         copy: bool = False,
@@ -279,20 +301,108 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         /,
         arg1: _ToMatrix[_ScalarT_co],
         shape: _ToShape2D | None = None,
-        dtype: None = None,
+        dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: None
+    @overload  # 2-d shape-like, dtype: float64-like | None
     def __init__(
         self: lil_matrix[np.float64],
         /,
         arg1: _ToShape2D,
-        shape: None = None,
+        shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: bool-like (positional)
+    def __init__(
+        self: lil_matrix[np.bool_],
+        /,
+        arg1: _ToAnyLIL,
+        shape: _ToShape2D | None,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: bool-like (keyword)
+    def __init__(
+        self: lil_matrix[np.bool_],
+        /,
+        arg1: _ToAnyLIL,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: int-like (positional)
+    def __init__(
+        self: lil_matrix[np.int_],
+        /,
+        arg1: _ToAnyLIL,
+        shape: _ToShape2D | None,
+        dtype: onp.AnyIntDType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: int-like (keyword)
+    def __init__(
+        self: lil_matrix[np.int_],
+        /,
+        arg1: _ToAnyLIL,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyIntDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: float64-like (positional)
+    def __init__(
+        self: lil_matrix[np.float64],
+        /,
+        arg1: _ToAnyLIL,
+        shape: _ToShape2D | None,
+        dtype: onp.AnyFloat64DType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: float64-like (keyword)
+    def __init__(
+        self: lil_matrix[np.float64],
+        /,
+        arg1: _ToAnyLIL,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyFloat64DType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: complex128-like (positional)
+    def __init__(
+        self: lil_matrix[np.complex128],
+        /,
+        arg1: _ToAnyLIL,
+        shape: _ToShape2D | None,
+        dtype: onp.AnyComplex128DType,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: complex128-like (keyword)
+    def __init__(
+        self: lil_matrix[np.complex128],
+        /,
+        arg1: _ToAnyLIL,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyComplex128DType,
+        copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: bool-like | None
@@ -310,7 +420,7 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: lil_matrix[np.int_],
         /,
-        arg1: _ToMatrixPy[op.JustInt],
+        arg1: _ToMatrixPy[int],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
@@ -321,7 +431,7 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: lil_matrix[np.float64],
         /,
-        arg1: _ToMatrixPy[op.JustFloat],
+        arg1: _ToMatrixPy[float],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -332,7 +442,7 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: lil_matrix[np.complex128],
         /,
-        arg1: _ToMatrixPy[op.JustComplex],
+        arg1: _ToMatrixPy[complex],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
@@ -343,7 +453,7 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -354,7 +464,7 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
@@ -365,7 +475,7 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex2D,
+        arg1: _ToAnyLIL,
         shape: _ToShape2D | None = None,
         dtype: npt.DTypeLike | None = None,
         copy: bool = False,
@@ -381,7 +491,7 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @overload
     def getnnz(self, /, axis: None = None) -> int: ...
     @overload
-    def getnnz(self, /, axis: op.CanIndex) -> onp.Array1D[np.int32]: ...
+    def getnnz(self, /, axis: SupportsIndex) -> onp.Array1D[np.int32]: ...
 
 #
 def isspmatrix_lil(x: object) -> TypeIs[lil_matrix]: ...
