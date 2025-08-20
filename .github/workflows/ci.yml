@@ -1,18 +1,15 @@
 name: CI
+permissions: read-all
 
 on:
+  pull_request:
   push:
     branches: [master]
-  pull_request:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
-
-permissions:
-  contents: read
-  pull-requests: write
 
 env:
   UV_LOCKED: 1
@@ -71,14 +68,8 @@ jobs:
           activate-environment: true
           python-version: ${{ matrix.py }}
 
-      - name: sync env
-        run: uv sync --no-editable
-
-      - name: install specific numpy version
-        run: >
-          uv pip install --upgrade
-          "numpy==${{ matrix.np }}.*"
-          "numpy-typing-compat==${{ matrix.np }}.*"
+      - name: install dependencies
+        run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
 
       - name: basedpyright scipy-stubs
         run: basedpyright scipy-stubs
@@ -115,17 +106,11 @@ jobs:
           activate-environment: true
           python-version: ${{ matrix.py }}
 
-      - name: sync env
-        run: uv sync --no-editable
-
-      - name: install specific numpy version
-        run: >
-          uv pip install --upgrade
-          "numpy==${{ matrix.np }}.*"
-          "numpy-typing-compat==${{ matrix.np }}.*"
+      - name: install dependencies
+        run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
 
       - name: basedpyright tests
         run: basedpyright tests
 
       - name: mypy tests
-        run: mypy --no-incremental --cache-dir=/dev/null --soft-error-limit=-1 tests
+        run: mypy --no-incremental --cache-dir=/dev/null tests
