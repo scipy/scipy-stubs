@@ -60,7 +60,7 @@ type = [
   { include-group = "extras" },
   { include-group = "ci" },
   "array-api-compat==1.12.0", # bundled as `scipy._lib.array_api_compat`
-  "basedpyright>=1.31.2",
+  "basedpyright>=1.31.2, !=1.31.3", # see https://github.com/microsoft/pyright/issues/10832
   "mypy[faster-cache]>=1.17.1",
 ]
 dev = [
