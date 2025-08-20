@@ -573,7 +573,7 @@ provides-extras = ["scipy"]
 ci = [{ name = "packaging", specifier = ">=25.0" }]
 dev = [
     { name = "array-api-compat", specifier = "==1.12.0" },
-    { name = "basedpyright", specifier = ">=1.31.2" },
+    { name = "basedpyright", specifier = ">=1.31.2,!=1.31.3" },
     { name = "dprint-py", specifier = ">=0.50.1.4" },
     { name = "mypy", extras = ["faster-cache"], specifier = ">=1.17.1" },
     { name = "packaging", specifier = ">=25.0" },
@@ -590,7 +590,7 @@ lint = [
 ]
 type = [
     { name = "array-api-compat", specifier = "==1.12.0" },
-    { name = "basedpyright", specifier = ">=1.31.2" },
+    { name = "basedpyright", specifier = ">=1.31.2,!=1.31.3" },
     { name = "mypy", extras = ["faster-cache"], specifier = ">=1.17.1" },
     { name = "packaging", specifier = ">=25.0" },
     { name = "scipy-stubs", extras = ["scipy"] },

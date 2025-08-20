@@ -45,6 +45,9 @@ jobs:
       # mypy_primer expects pyright to pass
       - name: pyright
         uses: jakebailey/pyright-action@v2.3.3
+        with:
+          # see https://github.com/microsoft/pyright/issues/10832
+          version: 1.1.403
 
   # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
   # manually (re)install the desired version directly in the environment.
