@@ -1,5 +1,17 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import Concatenate, Final, Literal, LiteralString, Protocol, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import (
+    Concatenate,
+    Final,
+    Literal,
+    LiteralString,
+    Never,
+    Protocol,
+    TypeAlias,
+    TypeVar,
+    TypedDict,
+    overload,
+    type_check_only,
+)
 
 import numpy as np
 import optype.numpy as onp
@@ -16,7 +28,6 @@ __all__ = ["minimize", "minimize_scalar"]
 ###
 
 _T = TypeVar("_T")
-_Float1DT = TypeVar("_Float1DT", bound=_Float1D)
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
@@ -182,59 +193,13 @@ class OptimizeResult(_OptimizeResult):
     hess_inv: _Float2D | LinearOperator  # requires `hess` or `hessp`, depends on solver
     nhev: int  # requires `hess` or `hessp`
 
-@overload  # identity function with and one parameter, `jac` not truthy
+# TODO(@jorenham): This is intentionally broken, and should be reverted after checking that mypy_primer works
 def minimize(
-    fun: Callable[Concatenate[_Float1DT, ...], _Float1DT],
-    x0: onp.ToFloat,
-    args: _Args = (),
+    fun: Never,
+    x0: Never,
+    args: tuple[()] = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
-    hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
-    bounds: Bounds | None = None,
-    constraints: Constraints = (),
-    tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
-    options: _MinimizeOptions | None = None,
-) -> OptimizeResult: ...
-@overload  # `fun` return scalar, `jac` not truthy
-def minimize(
-    fun: _Fun1D[onp.ToFloat],
-    x0: onp.ToFloat | onp.ToFloat1D,
-    args: _Args = (),
-    method: MethodMimimize | _MinimizeMethodFun | None = None,
-    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
-    hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
-    bounds: Bounds | None = None,
-    constraints: Constraints = (),
-    tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
-    options: _MinimizeOptions | None = None,
-) -> OptimizeResult: ...
-@overload  # fun` return (scalar, vector), `jac` truthy  (positional)
-def minimize(
-    fun: _Fun1D[tuple[onp.ToFloat, onp.ToFloat1D]],
-    x0: onp.ToFloat | onp.ToFloat1D,
-    args: _Args,
-    method: MethodMimimize | _MinimizeMethodFun | None,
-    jac: onp.ToTrue,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
-    hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
-    bounds: Bounds | None = None,
-    constraints: Constraints = (),
-    tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
-    options: _MinimizeOptions | None = None,
-) -> OptimizeResult: ...
-@overload  # fun` return (scalar, vector), `jac` truthy  (keyword)
-def minimize(
-    fun: _Fun1D[tuple[onp.ToFloat, onp.ToFloat1D]],
-    x0: onp.ToFloat | onp.ToFloat1D,
-    args: _Args = (),
-    method: MethodMimimize | _MinimizeMethodFun | None = None,
-    *,
-    jac: onp.ToTrue,
     hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
