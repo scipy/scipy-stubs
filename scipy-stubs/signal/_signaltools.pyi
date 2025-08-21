@@ -1121,7 +1121,7 @@ def resample(
     axis: int = 0,
     window: _ToResampleWindow[_AnyInexact64T] | None = None,
     domain: _Domain = "time",
-) -> onp.ArrayND[Any]: ...
+) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...
 @overload  # unknown dtype, unknown shape, t=<given>
 def resample(
     x: onp.ToComplexND,
@@ -1130,7 +1130,7 @@ def resample(
     axis: int = 0,
     window: _ToResampleWindow[_AnyInexact64T] | None = None,
     domain: _Domain = "time",
-) -> tuple[onp.ArrayND[Any], onp.Array1D[np.float64]]: ...
+) -> tuple[onp.ArrayND[Any, _WorkaroundForPyright], onp.Array1D[np.float64]]: ...
 
 # TODO(jorenham): improve
 @overload
