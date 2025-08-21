@@ -5,7 +5,7 @@ on:
   # only run on pr, since we diff between branches
   pull_request:
     paths:
-      - "**/*.pyi"
+      - "scipy-stubs/**/*.pyi"
       - ".github/workflows/mypy_primer.yml"
       - ".github/workflows/mypy_primer_comment.yml"
 
