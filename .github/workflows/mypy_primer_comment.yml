@@ -48,11 +48,11 @@ jobs:
             const fs = require('fs');
             return parseInt(fs.readFileSync('pr_number.txt', {encoding: 'utf8'}))
 
-      - name: hide old comments
-        uses: kanga333/comment-hider@v0.4.0
+      - name: hide previous comments
+        uses: int128/hide-comment-action@v1.43.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          issue_number: ${{ steps.pr-number.outputs.result }}
+          issue-number: ${{ steps.pr-number.outputs.result }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - run: cat diff_*.txt | tee fulldiff.txt
 
