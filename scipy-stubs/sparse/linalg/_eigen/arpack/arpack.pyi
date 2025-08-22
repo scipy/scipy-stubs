@@ -27,9 +27,13 @@ class ArpackError(RuntimeError):
 
 class ArpackNoConvergence(ArpackError):
     eigenvalues: Final[onp.Array1D[np.float64 | np.complex128]]
-    eigenvectors: Final[onp.Array2D[np.float64]]
+    eigenvectors: Final[onp.Array2D[np.float64 | np.complex128]]
     def __init__(
-        self, /, msg: str, eigenvalues: onp.Array1D[np.float64 | np.complex128], eigenvectors: onp.Array2D[np.float64]
+        self,
+        /,
+        msg: str,
+        eigenvalues: onp.Array1D[np.float64 | np.complex128],
+        eigenvectors: onp.Array2D[np.float64 | np.complex128],
     ) -> None: ...
 
 #
@@ -37,49 +41,49 @@ class ArpackNoConvergence(ArpackError):
 def eigs(
     A: _ToComplexMatrix,
     k: int = 6,
-    M: _ToRealMatrix | None = None,
+    M: _ToComplexMatrix | None = None,
     sigma: onp.ToComplex | None = None,
     which: _Which_eigs = "LM",
-    v0: onp.ToFloat1D | None = None,
+    v0: onp.ToComplex1D | None = None,
     ncv: int | None = None,
     maxiter: int | None = None,
     tol: float = 0,
     return_eigenvectors: onp.ToTrue = True,
-    Minv: _ToRealMatrix | None = None,
-    OPinv: _ToRealMatrix | None = None,
+    Minv: _ToComplexMatrix | None = None,
+    OPinv: _ToComplexMatrix | None = None,
     OPpart: _OPpart | None = None,
-) -> tuple[onp.Array1D[np.complex128], onp.Array2D[np.float64]]: ...
+) -> tuple[onp.Array1D[np.complex128], onp.Array2D[np.complex128]]: ...
 @overload  # returns_eigenvectors: falsy (positional)
 def eigs(
     A: _ToComplexMatrix,
     k: int,
-    M: _ToRealMatrix | None,
+    M: _ToComplexMatrix | None,
     sigma: onp.ToComplex | None,
     which: _Which_eigs,
-    v0: onp.ToFloat1D | None,
+    v0: onp.ToComplex1D | None,
     ncv: int | None,
     maxiter: int | None,
     tol: float,
     return_eigenvectors: onp.ToFalse,
-    Minv: _ToRealMatrix | None = None,
-    OPinv: _ToRealMatrix | None = None,
+    Minv: _ToComplexMatrix | None = None,
+    OPinv: _ToComplexMatrix | None = None,
     OPpart: _OPpart | None = None,
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # returns_eigenvectors: falsy (keyword)
 def eigs(
     A: _ToComplexMatrix,
     k: int = 6,
-    M: _ToRealMatrix | None = None,
+    M: _ToComplexMatrix | None = None,
     sigma: onp.ToComplex | None = None,
     which: _Which_eigs = "LM",
-    v0: onp.ToFloat1D | None = None,
+    v0: onp.ToComplex1D | None = None,
     ncv: int | None = None,
     maxiter: int | None = None,
     tol: float = 0,
     *,
     return_eigenvectors: onp.ToFalse,
-    Minv: _ToRealMatrix | None = None,
-    OPinv: _ToRealMatrix | None = None,
+    Minv: _ToComplexMatrix | None = None,
+    OPinv: _ToComplexMatrix | None = None,
     OPpart: _OPpart | None = None,
 ) -> onp.Array1D[np.complex128]: ...
 
@@ -88,48 +92,48 @@ def eigs(
 def eigsh(
     A: _ToComplexMatrix,
     k: int = 6,
-    M: _ToRealMatrix | None = None,
-    sigma: onp.ToComplex | None = None,
+    M: _ToComplexMatrix | None = None,
+    sigma: onp.ToFloat | None = None,
     which: _Which_eigsh = "LM",
-    v0: onp.ToFloat1D | None = None,
+    v0: onp.ToComplex1D | None = None,
     ncv: int | None = None,
     maxiter: int | None = None,
     tol: float = 0,
     return_eigenvectors: onp.ToTrue = True,
-    Minv: _ToRealMatrix | None = None,
-    OPinv: _ToRealMatrix | None = None,
+    Minv: _ToComplexMatrix | None = None,
+    OPinv: _ToComplexMatrix | None = None,
     mode: _Mode = "normal",
-) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64 | np.complex128]]: ...
 @overload  # returns_eigenvectors: falsy (positional)
 def eigsh(
     A: _ToComplexMatrix,
     k: int,
-    M: _ToRealMatrix | None,
-    sigma: onp.ToComplex | None,
+    M: _ToComplexMatrix | None,
+    sigma: onp.ToFloat | None,
     which: _Which_eigsh,
-    v0: onp.ToFloat1D | None,
+    v0: onp.ToComplex1D | None,
     ncv: int | None,
     maxiter: int | None,
     tol: float,
     return_eigenvectors: onp.ToFalse,
-    Minv: _ToRealMatrix | None = None,
-    OPinv: _ToRealMatrix | None = None,
+    Minv: _ToComplexMatrix | None = None,
+    OPinv: _ToComplexMatrix | None = None,
     mode: _Mode = "normal",
 ) -> onp.Array1D[np.float64]: ...
 @overload  # returns_eigenvectors: falsy (keyword)
 def eigsh(
     A: _ToComplexMatrix,
     k: int = 6,
-    M: _ToRealMatrix | None = None,
-    sigma: onp.ToComplex | None = None,
+    M: _ToComplexMatrix | None = None,
+    sigma: onp.ToFloat | None = None,
     which: _Which_eigsh = "LM",
-    v0: onp.ToFloat1D | None = None,
+    v0: onp.ToComplex1D | None = None,
     ncv: int | None = None,
     maxiter: int | None = None,
     tol: float = 0,
     *,
     return_eigenvectors: onp.ToFalse,
-    Minv: _ToRealMatrix | None = None,
-    OPinv: _ToRealMatrix | None = None,
+    Minv: _ToComplexMatrix | None = None,
+    OPinv: _ToComplexMatrix | None = None,
     mode: _Mode = "normal",
 ) -> onp.Array1D[np.float64]: ...
