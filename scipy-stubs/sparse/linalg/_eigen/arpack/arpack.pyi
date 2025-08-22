@@ -3,7 +3,6 @@ from typing import Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
@@ -12,7 +11,6 @@ __all__ = ["ArpackError", "ArpackNoConvergence", "eigs", "eigsh"]
 
 _KT = TypeVar("_KT")
 
-_ToRealMatrix: TypeAlias = onp.ToFloat2D | LinearOperator[npc.floating | npc.integer] | _spbase
 _ToComplexMatrix: TypeAlias = onp.ToComplex2D | LinearOperator | _spbase
 
 _Which_eigs: TypeAlias = Literal["LM", "SM", "LR", "SR", "LI", "SI"]
