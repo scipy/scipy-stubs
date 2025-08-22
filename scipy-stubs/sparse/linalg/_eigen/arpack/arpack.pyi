@@ -5,7 +5,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.sparse._base import _SpMatrix, _SpArray2D
+from scipy.sparse._base import _SpArray2D, _SpMatrix
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["ArpackError", "ArpackNoConvergence", "eigs", "eigsh"]
