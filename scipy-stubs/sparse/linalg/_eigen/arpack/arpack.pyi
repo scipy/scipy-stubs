@@ -3,15 +3,25 @@ from typing import Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
-from scipy.sparse._base import _spbase
+from scipy.sparse._base import _SpMatrix, _SpArray2D
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["ArpackError", "ArpackNoConvergence", "eigs", "eigsh"]
 
 _KT = TypeVar("_KT")
+_SCT = TypeVar("_SCT", bound=_Numeric, default=_Numeric)
 
-_ToComplexMatrix: TypeAlias = onp.ToComplex2D | LinearOperator | _spbase
+_Numeric: TypeAlias = npc.number | np.bool_
+_ToFloat: TypeAlias = npc.floating | npc.integer | np.bool_
+_ToJustComplex: TypeAlias = npc.complexfloating
+
+_Sparse2D: TypeAlias = _SpMatrix[_SCT] | _SpArray2D[_SCT]
+
+_ToRealMatrix: TypeAlias = onp.ToFloat2D | _Sparse2D[_ToFloat] | LinearOperator[_ToFloat]
+_ToJustComplexMatrix: TypeAlias = onp.ToJustComplex2D | _Sparse2D[_ToJustComplex] | LinearOperator[_ToJustComplex]
+_ToComplexMatrix: TypeAlias = onp.ToComplex2D | _Sparse2D | LinearOperator
 
 _Which_eigs: TypeAlias = Literal["LM", "SM", "LR", "SR", "LI", "SI"]
 _Which_eigsh: TypeAlias = Literal["LM", "SM", "LA", "SA", "BE"]
@@ -86,7 +96,39 @@ def eigs(
 ) -> onp.Array1D[np.complex128]: ...
 
 #
-@overload  # returns_eigenvectors: truthy (default)
+@overload  # real, returns_eigenvectors: truthy (default)
+def eigsh(
+    A: _ToRealMatrix,
+    k: int = 6,
+    M: _ToRealMatrix | None = None,
+    sigma: onp.ToFloat | None = None,
+    which: _Which_eigsh = "LM",
+    v0: onp.ToFloat1D | None = None,
+    ncv: int | None = None,
+    maxiter: int | None = None,
+    tol: float = 0,
+    return_eigenvectors: onp.ToTrue = True,
+    Minv: _ToRealMatrix | None = None,
+    OPinv: _ToRealMatrix | None = None,
+    mode: _Mode = "normal",
+) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
+@overload  # complex, returns_eigenvectors: truthy (default)
+def eigsh(
+    A: _ToJustComplexMatrix,
+    k: int = 6,
+    M: _ToComplexMatrix | None = None,
+    sigma: onp.ToFloat | None = None,
+    which: _Which_eigsh = "LM",
+    v0: onp.ToComplex1D | None = None,
+    ncv: int | None = None,
+    maxiter: int | None = None,
+    tol: float = 0,
+    return_eigenvectors: onp.ToTrue = True,
+    Minv: _ToComplexMatrix | None = None,
+    OPinv: _ToComplexMatrix | None = None,
+    mode: _Mode = "normal",
+) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.complex128]]: ...
+@overload  # real or complex (catch-all), returns_eigenvectors: truthy (default)
 def eigsh(
     A: _ToComplexMatrix,
     k: int = 6,
@@ -102,7 +144,7 @@ def eigsh(
     OPinv: _ToComplexMatrix | None = None,
     mode: _Mode = "normal",
 ) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64 | np.complex128]]: ...
-@overload  # returns_eigenvectors: falsy (positional)
+@overload  # real or complex, returns_eigenvectors: falsy (positional)
 def eigsh(
     A: _ToComplexMatrix,
     k: int,
@@ -118,7 +160,7 @@ def eigsh(
     OPinv: _ToComplexMatrix | None = None,
     mode: _Mode = "normal",
 ) -> onp.Array1D[np.float64]: ...
-@overload  # returns_eigenvectors: falsy (keyword)
+@overload  # real or complex, returns_eigenvectors: falsy (keyword)
 def eigsh(
     A: _ToComplexMatrix,
     k: int = 6,
