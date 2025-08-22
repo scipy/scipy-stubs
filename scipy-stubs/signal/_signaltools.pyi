@@ -3,7 +3,7 @@
 
 # mypy: disable-error-code=overload-overlap
 
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from typing import Any, Literal as L, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
@@ -57,7 +57,8 @@ __all__ = [
 _T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _NumericT = TypeVar("_NumericT", bound=npc.number | np.bool_)
-_InexactStandardT = TypeVar("_InexactStandardT", bound=np.float32 | np.float64 | npc.floating80 | npc.complexfloating)
+_InexactT2 = TypeVar("_InexactT2", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
+_InexactT3 = TypeVar("_InexactT3", bound=np.float32 | np.float64 | npc.floating80 | npc.complexfloating)
 _CoFloat64T = TypeVar("_CoFloat64T", bound=np.float64 | np.float32 | npc.integer)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
@@ -334,11 +335,11 @@ def fftconvolve(
 ) -> onp.ArrayND[np.float32, _AnyShapeT]: ...
 @overload  # generic dtype, generic, shape
 def fftconvolve(
-    in1: onp.ArrayND[_InexactStandardT, _AnyShapeT],
-    in2: onp.ArrayND[_InexactStandardT, _AnyShapeT],
+    in1: onp.ArrayND[_InexactT3, _AnyShapeT],
+    in2: onp.ArrayND[_InexactT3, _AnyShapeT],
     mode: onp.ConvolveMode = "full",
     axes: None = None,
-) -> onp.ArrayND[_InexactStandardT, _AnyShapeT]: ...
+) -> onp.ArrayND[_InexactT3, _AnyShapeT]: ...
 @overload  # ~float64, +float64
 def fftconvolve(
     in1: onp.ToJustFloat64_ND, in2: onp.ToFloat64_ND, mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
@@ -370,11 +371,11 @@ def oaconvolve(
 ) -> onp.ArrayND[np.float32, _AnyShapeT]: ...
 @overload  # generic dtype, generic, shape
 def oaconvolve(
-    in1: onp.ArrayND[_InexactStandardT, _AnyShapeT],
-    in2: onp.ArrayND[_InexactStandardT, _AnyShapeT],
+    in1: onp.ArrayND[_InexactT3, _AnyShapeT],
+    in2: onp.ArrayND[_InexactT3, _AnyShapeT],
     mode: onp.ConvolveMode = "full",
     axes: None = None,
-) -> onp.ArrayND[_InexactStandardT, _AnyShapeT]: ...
+) -> onp.ArrayND[_InexactT3, _AnyShapeT]: ...
 @overload  # ~float64, +float64
 def oaconvolve(
     in1: onp.ToJustFloat64_ND, in2: onp.ToFloat64_ND, mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
@@ -1025,22 +1026,22 @@ def invresz(
 # the (hypothetical) `AnyOf[np.float64, np.complex128]` gradual type.
 @overload  # known dtype, known shape, t=None (default)
 def resample(
-    x: nptc.CanArray[_ShapeT, np.dtype[_InexactStandardT]],
+    x: nptc.CanArray[_ShapeT, np.dtype[_InexactT3]],
     num: int,
     t: None = None,
     axis: int = 0,
     window: _ToResampleWindow[_AnyInexact64T] | None = None,
     domain: _Domain = "time",
-) -> onp.ArrayND[_InexactStandardT, _ShapeT]: ...
+) -> onp.ArrayND[_InexactT3, _ShapeT]: ...
 @overload  # known dtype, known shape, t=<given>
 def resample(
-    x: nptc.CanArray[_ShapeT, np.dtype[_InexactStandardT]],
+    x: nptc.CanArray[_ShapeT, np.dtype[_InexactT3]],
     num: int,
     t: onp.ToFloat1D,
     axis: int = 0,
     window: _ToResampleWindow[_AnyInexact64T] | None = None,
     domain: _Domain = "time",
-) -> tuple[onp.ArrayND[_InexactStandardT, _ShapeT], onp.Array1D[np.float64]]: ...
+) -> tuple[onp.ArrayND[_InexactT3, _ShapeT], onp.Array1D[np.float64]]: ...
 @overload  # +integer, known shape, t=None (default)
 def resample(
     x: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
@@ -1068,7 +1069,7 @@ def resample(
     window: _ToResampleWindow[np.float64] | None = None,
     domain: _Domain = "time",
 ) -> onp.ArrayND[np.float32, _ShapeT]: ...
-@overload  # ~float16, unknown shape, t=<given>
+@overload  # ~float16, known shape, t=<given>
 def resample(
     x: nptc.CanArray[_ShapeT, np.dtype[np.float16]],
     num: int,
@@ -1077,7 +1078,7 @@ def resample(
     window: _ToResampleWindow[np.float64] | None = None,
     domain: _Domain = "time",
 ) -> tuple[onp.ArrayND[np.float32, _ShapeT], onp.Array1D[np.float64]]: ...
-@overload  # ~float64 | +integer, unknown shape, t=None (default)
+@overload  # +float, unknown shape, t=None (default)
 def resample(
     x: onp.SequenceND[float],
     num: int,
@@ -1086,7 +1087,7 @@ def resample(
     window: _ToResampleWindow[np.float64] | None = None,
     domain: _Domain = "time",
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # ~float64 | +integer, unknown shape, t=<given>
+@overload  # +float, unknown shape, t=<given>
 def resample(
     x: onp.SequenceND[float],
     num: int,
@@ -1095,7 +1096,7 @@ def resample(
     window: _ToResampleWindow[np.float64] | None = None,
     domain: _Domain = "time",
 ) -> tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]]: ...
-@overload  # ~complex128, unknown shape, t=None (default)
+@overload  # ~complex, unknown shape, t=None (default)
 def resample(
     x: onp.SequenceND[op.JustComplex | np.complex128],
     num: int,
@@ -1104,7 +1105,7 @@ def resample(
     window: _ToResampleWindow[np.complex128] | None = None,
     domain: _Domain = "time",
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # ~complex128, unknown shape, t=<given>
+@overload  # ~complex, unknown shape, t=<given>
 def resample(
     x: onp.SequenceND[op.JustComplex | np.complex128],
     num: int,
@@ -1132,27 +1133,87 @@ def resample(
     domain: _Domain = "time",
 ) -> tuple[onp.ArrayND[Any, _WorkaroundForPyright], onp.Array1D[np.float64]]: ...
 
-# TODO(jorenham): improve
-@overload
+# NOTE: This does not support the (useless) `up == down` case, which at runtime can return ANY dtype.
+@overload  # known dtype, known shape
 def resample_poly(
-    x: onp.ToFloatND,
+    x: nptc.CanArray[_ShapeT, np.dtype[_InexactT2]],
     up: int,
     down: int,
     axis: int = 0,
     window: _ToWindow = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
-) -> onp.ArrayND[_F16_64]: ...
-@overload
+) -> onp.ArrayND[_InexactT2, _ShapeT]: ...
+@overload  # +integer, known shape
 def resample_poly(
-    x: onp.ToComplexND,
+    x: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
     up: int,
     down: int,
     axis: int = 0,
     window: _ToWindow = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
-) -> onp.ArrayND[_C64_128 | _F16_64]: ...
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # ~float16, known shape
+def resample_poly(
+    x: nptc.CanArray[_ShapeT, np.dtype[np.float16]],
+    up: int,
+    down: int,
+    axis: int = 0,
+    window: _ToWindow = ("kaiser", 5.0),
+    padtype: _PadType = "constant",
+    cval: float | None = None,
+) -> onp.ArrayND[np.float32, _ShapeT]: ...
+@overload  # +float, 1d
+def resample_poly(
+    x: Sequence[float],
+    up: int,
+    down: int,
+    axis: int = 0,
+    window: _ToWindow = ("kaiser", 5.0),
+    padtype: _PadType = "constant",
+    cval: float | None = None,
+) -> onp.Array1D[np.float64]: ...
+@overload  # +float, unknown shape
+def resample_poly(
+    x: onp.SequenceND[float],
+    up: int,
+    down: int,
+    axis: int = 0,
+    window: _ToWindow = ("kaiser", 5.0),
+    padtype: _PadType = "constant",
+    cval: float | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~complex, 1d
+def resample_poly(
+    x: Sequence[op.JustComplex | np.complex128],
+    up: int,
+    down: int,
+    axis: int = 0,
+    window: _ToWindow = ("kaiser", 5.0),
+    padtype: _PadType = "constant",
+    cval: float | None = None,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # ~complex, unknown shape
+def resample_poly(
+    x: onp.SequenceND[op.JustComplex | np.complex128],
+    up: int,
+    down: int,
+    axis: int = 0,
+    window: _ToWindow = ("kaiser", 5.0),
+    padtype: _PadType = "constant",
+    cval: float | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # unknown dtype, unknown shape
+def resample_poly(
+    x: onp.ToComplex128_ND,
+    up: int,
+    down: int,
+    axis: int = 0,
+    window: _ToWindow = ("kaiser", 5.0),
+    padtype: _PadType = "constant",
+    cval: float | None = None,
+) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...
 
 # TODO(jorenham): improve
 @overload
@@ -1207,31 +1268,31 @@ def envelope(
 ) -> onp.ArrayND[np.float32]: ...
 @overload
 def envelope(
-    z: onp.Array1D[_InexactStandardT],
+    z: onp.Array1D[_InexactT3],
     bp_in: tuple[int | None, int | None] = (1, None),
     *,
     n_out: int | None = None,
     squared: bool = False,
     residual: _ResidualKind | None = "lowpass",
     axis: int = -1,
-) -> onp.Array2D[_InexactStandardT]: ...
+) -> onp.Array2D[_InexactT3]: ...
 @overload
 def envelope(
-    z: onp.Array2D[_InexactStandardT],
+    z: onp.Array2D[_InexactT3],
     bp_in: tuple[int | None, int | None] = (1, None),
     *,
     n_out: int | None = None,
     squared: bool = False,
     residual: _ResidualKind | None = "lowpass",
     axis: int = -1,
-) -> onp.Array3D[_InexactStandardT]: ...
+) -> onp.Array3D[_InexactT3]: ...
 @overload
 def envelope(
-    z: onp.ArrayND[_InexactStandardT],
+    z: onp.ArrayND[_InexactT3],
     bp_in: tuple[int | None, int | None] = (1, None),
     *,
     n_out: int | None = None,
     squared: bool = False,
     residual: _ResidualKind | None = "lowpass",
     axis: int = -1,
-) -> onp.ArrayND[_InexactStandardT]: ...
+) -> onp.ArrayND[_InexactT3]: ...
