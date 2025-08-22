@@ -1213,7 +1213,7 @@ def resample_poly(
     window: _ToWindow = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
-) -> onp.ArrayND[Any]: ...
+) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...
 
 # TODO(jorenham): improve
 @overload
