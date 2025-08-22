@@ -5,7 +5,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.sparse._base import _SpArray2D, _SpMatrix
+from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["ArpackError", "ArpackNoConvergence", "eigs", "eigsh"]
@@ -15,13 +15,12 @@ _SCT = TypeVar("_SCT", bound=_Numeric, default=_Numeric)
 
 _Numeric: TypeAlias = npc.number | np.bool_
 _ToFloat: TypeAlias = npc.floating | npc.integer | np.bool_
-_ToJustComplex: TypeAlias = npc.complexfloating
 
-_Sparse2D: TypeAlias = _SpMatrix[_SCT] | _SpArray2D[_SCT]
+_MatrixOperator: TypeAlias = spmatrix[_SCT] | sparray[_SCT, tuple[int, int]] | LinearOperator[_SCT]
 
-_ToRealMatrix: TypeAlias = onp.ToFloat2D | _Sparse2D[_ToFloat] | LinearOperator[_ToFloat]
-_ToJustComplexMatrix: TypeAlias = onp.ToJustComplex2D | _Sparse2D[_ToJustComplex] | LinearOperator[_ToJustComplex]
-_ToComplexMatrix: TypeAlias = onp.ToComplex2D | _Sparse2D | LinearOperator
+_ToRealMatrix: TypeAlias = onp.ToFloat2D | _MatrixOperator[_ToFloat]
+_ToJustComplexMatrix: TypeAlias = onp.ToJustComplex2D | _MatrixOperator[npc.complexfloating]
+_ToComplexMatrix: TypeAlias = onp.ToComplex2D | _MatrixOperator
 
 _Which_eigs: TypeAlias = Literal["LM", "SM", "LR", "SR", "LI", "SI"]
 _Which_eigsh: TypeAlias = Literal["LM", "SM", "LA", "SA", "BE"]
