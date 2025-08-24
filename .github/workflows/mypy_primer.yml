@@ -33,8 +33,6 @@ jobs:
         shell: bash
         run: |
           cd new
-          MYPY_VERSION=$(grep /mypy- uv.lock | sed -n "s/.*\/mypy-\([^;]*\)-py3.*/\1/p")
-
           echo "new commit"
           git checkout $GITHUB_SHA
           git rev-list --format=%s --max-count=1 HEAD
@@ -53,12 +51,10 @@ jobs:
             --from="https://github.com/hauntsaninja/mypy_primer.git" \
             mypy_primer \
             --project-selector "/(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|altair|hydpy|static-frame)/?$" \
-            --new v${MYPY_VERSION} \
+            --type-checker=pyright \
             --new-prepend-path new \
-            --old v${MYPY_VERSION} \
             --old-prepend-path old \
             --output concise \
-            --additional-flags="--hide-error-context" \
             --show-speed-regression \
             --debug > mypy_primer.diff || [ $? -eq 1 ]
 

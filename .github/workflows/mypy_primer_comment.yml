@@ -61,7 +61,7 @@ jobs:
           echo '## `mypy_primer` results' >> comment.md
           if [ -s "${{ runner.temp }}/artifacts/mypy_primer.diff" ]; then
             echo '<details>' >> comment.md
-            echo '<summary>Changes were detected when running mypy on open source projects</summary>' >> comment.md
+            echo '<summary>Changes were detected when running pyright on open source projects</summary>' >> comment.md
             echo '' >> comment.md
             echo '```diff' >> comment.md
             cat ${{ runner.temp }}/artifacts/mypy_primer.diff >> comment.md
