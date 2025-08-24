@@ -32,6 +32,8 @@ jobs:
       - name: run mypy_primer
         shell: bash
         run: |
+          PYRIGHT_VERSION=1.1.403
+
           cd new
           echo "new commit"
           git checkout $GITHUB_SHA
@@ -52,6 +54,8 @@ jobs:
             mypy_primer \
             --project-selector "/(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|altair|hydpy|static-frame)/?$" \
             --type-checker=pyright \
+            --new ${PYRIGHT_VERSION} \
+            --old ${PYRIGHT_VERSION} \
             --new-prepend-path new \
             --old-prepend-path old \
             --output concise \
