@@ -20,14 +20,15 @@ jobs:
         name: download pr-number
         with:
           name: pr-number
+          path: ${{ runner.temp }}/artifacts
           run_id: ${{ github.event.workflow_run.id }}
 
       - name: parse pr-number
         id: pr-number
         run: |
-          if [[ -f pr-number ]]
+          if [[ -f ${{ runner.temp }}/artifacts/pr-number ]]
           then
-            echo "pr-number=$(<pr-number)" >> "$GITHUB_OUTPUT"
+            echo "pr-number=$(<${{ runner.temp }}/artifacts/pr-number)" >> "$GITHUB_OUTPUT"
           fi
 
       - uses: dawidd6/action-download-artifact@v11
@@ -37,6 +38,7 @@ jobs:
         with:
           name: mypy_primer-diff
           workflow: mypy_primer.yml
+          path: ${{ runner.temp }}/artifacts
           pr: ${{ steps.pr-number.outputs.pr-number }}
           workflow_conclusion: completed
 
@@ -46,7 +48,7 @@ jobs:
         run: |
           # Guard against malicious mypy_primer results that symlink to a secret
           # file on this runner
-          if [[ -L mypy_primer.diff ]]
+          if [[ -L ${{ runner.temp }}/artifacts/mypy_primer.diff ]]
           then
               echo "Error: mypy_primer.diff cannot be a symlink"
               exit 1
@@ -57,12 +59,12 @@ jobs:
           echo '<!-- generated-comment mypy_primer -->' >> comment.md
 
           echo '## `mypy_primer` results' >> comment.md
-          if [ -s "mypy_primer.diff" ]; then
+          if [ -s "${{ runner.temp }}/artifacts/mypy_primer.diff" ]; then
             echo '<details>' >> comment.md
             echo '<summary>Changes were detected when running mypy on open source projects</summary>' >> comment.md
             echo '' >> comment.md
             echo '```diff' >> comment.md
-            cat mypy_primer.diff >> comment.md
+            cat ${{ runner.temp }}/artifacts/mypy_primer.diff >> comment.md
             echo '```' >> comment.md
             echo '</details>' >> comment.md
           else
