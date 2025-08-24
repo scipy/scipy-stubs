@@ -61,7 +61,7 @@ jobs:
           # fail action if exit code isn't zero or one
           (
             mypy_primer \
-            --known-dependency-selector scipy-stubs \
+            --project-selector "(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|colour|altair|hydpy|static-frame)$" \
             --new v${MYPY_VERSION} \
             --new-prepend-path new \
             --old v${MYPY_VERSION} \
