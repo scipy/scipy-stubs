@@ -84,7 +84,9 @@ jobs:
         uses: actions/upload-artifact@v4.6.2
         with:
           name: primer_diffs-${{ matrix.shard-index }}
-          path: diff_${{ matrix.shard-index }}.txt pr_number.txt
+          path: |
+            diff_${{ matrix.shard-index }}.txt
+            pr_number.txt
 
       - name: upload diff
         if: ${{ matrix.shard-index != 0 }}
