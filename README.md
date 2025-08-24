@@ -66,8 +66,9 @@ Accurate annotations for dtypes and shapes:
 
 - **stubtest validation**: Ensures all type annotations match the actual SciPy runtime behavior
 - **Comprehensive type-tests**: Validates type checker behavior with real-world usage patterns
-- **Regression testing**: Uses [mypy_primer](https://github.com/hauntsaninja/mypy_primer) to test
-  against popular open-source projects, preventing breaking changes
+- **Regression testing**: Uses [mypy_primer][PRIMER] to test against popular open-source projects, preventing breaking changes
+
+[PRIMER]: https://github.com/hauntsaninja/mypy_primer
 
 <!-- NOTE: SciPy permalinks to the following `#installation` anchor; don't modify it! -->
 
