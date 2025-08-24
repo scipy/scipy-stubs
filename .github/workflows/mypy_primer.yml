@@ -61,16 +61,17 @@ jobs:
           # fail action if exit code isn't zero or one
           (
             mypy_primer \
-            --project-selector "(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|colour|altair|hydpy|static-frame)$" \
+            --project-selector "/(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|colour|altair|hydpy|static-frame)/?$" \
             --new v${MYPY_VERSION} \
             --new-prepend-path new \
             --old v${MYPY_VERSION} \
             --old-prepend-path old \
             --num-shards 1 \
             --shard-index ${{ matrix.shard-index }} \
-            --debug \
             --output concise \
+            --additional-flags="--hide-error-context" \
             --show-speed-regression \
+            --debug \
             | tee diff_${{ matrix.shard-index }}.txt
           ) || [ $? -eq 1 ]
 
