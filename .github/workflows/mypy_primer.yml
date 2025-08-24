@@ -54,6 +54,7 @@ jobs:
             mypy_primer \
             --project-selector "/(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|altair|hydpy|static-frame)/?$" \
             --type-checker=pyright \
+            --additional-flags="--threads=2" \
             --new ${PYRIGHT_VERSION} \
             --old ${PYRIGHT_VERSION} \
             --new-prepend-path new \
