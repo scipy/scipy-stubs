@@ -303,6 +303,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 - [Namer](https://github.com/ThePornDatabase/namer)
 - [NeuroGym](https://github.com/neurogym/neurogym)
 - [Optuna](https://github.com/optuna/optuna)
+- [pandas-stubs](https://github.com/pandas-dev/pandas-stubs)
 - [ProgressiVis](https://github.com/progressivis/progressivis)
 - [pysmo](https://github.com/pysmo/pysmo)
 - [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay)
