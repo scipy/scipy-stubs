@@ -16,12 +16,10 @@ concurrency:
 jobs:
   mypy_primer:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 15
 
     strategy:
       fail-fast: false
-      matrix:
-        shard-index: [0, 1]
 
     steps:
       - uses: actions/checkout@v5.0.0
@@ -30,14 +28,8 @@ jobs:
           fetch-depth: 0
 
       - uses: astral-sh/setup-uv@v6.6.0
-        with:
-          activate-environment: true
-          python-version: "3.13"
 
-      - name: install
-        run: uv pip install git+https://github.com/hauntsaninja/mypy_primer.git
-
-      - name: run
+      - name: run mypy_primer
         shell: bash
         run: |
           cd new
@@ -57,51 +49,32 @@ jobs:
           echo ""
           cd ..
 
-          # fail action if exit code isn't zero or one
-          (
+          uvx \
+            --from="https://github.com/hauntsaninja/mypy_primer.git" \
             mypy_primer \
-              --project-selector "/(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|colour|altair|hydpy|static-frame)/?$" \
-              --new v${MYPY_VERSION} \
-              --new-prepend-path new \
-              --old v${MYPY_VERSION} \
-              --old-prepend-path old \
-              --num-shards 2 \
-              --shard-index ${{ matrix.shard-index }} \
-              --output concise \
-              --additional-flags="--hide-error-context" \
-              --show-speed-regression \
-              --debug \
-            | tee diff_${{ matrix.shard-index }}.txt
-          ) || [ $? -eq 1 ]
+            --project-selector "/(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|altair|hydpy|static-frame)/?$" \
+            --new v${MYPY_VERSION} \
+            --new-prepend-path new \
+            --old v${MYPY_VERSION} \
+            --old-prepend-path old \
+            --output concise \
+            --additional-flags="--hide-error-context" \
+            --show-speed-regression \
+            --debug > mypy_primer.diff || [ $? -eq 1 ]
 
-      - name: save pr number
-        if: ${{ matrix.shard-index == 0 }}
-        run: echo ${{ github.event.pull_request.number }} | tee pr_number.txt
+          # Remove ANSI color codes before uploading
+          sed -ie 's/\x1b\[[0-9;]*m//g' mypy_primer.diff
 
-      - name: upload diff and pr number
-        if: ${{ matrix.shard-index == 0 }}
+          echo ${{ github.event.number }} > pr-number
+
+      - name: upload mypy_primer.diff
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: primer_diffs-${{ matrix.shard-index }}
-          path: |
-            diff_${{ matrix.shard-index }}.txt
-            pr_number.txt
+          name: mypy_primer-diff
+          path: mypy_primer.diff
 
-      - name: upload diff
-        if: ${{ matrix.shard-index != 0 }}
+      - name: upload pr-number
         uses: actions/upload-artifact@v4.6.2
         with:
-          name: primer_diffs-${{ matrix.shard-index }}
-          path: diff_${{ matrix.shard-index }}.txt
-
-  join_artifacts:
-    needs: [mypy_primer]
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-
-    steps:
-      - uses: actions/upload-artifact/merge@v4.6.2
-        with:
-          name: primer_diffs
-          pattern: primer_diffs-*
-          delete-merged: true
+          name: pr-number
+          path: pr-number
