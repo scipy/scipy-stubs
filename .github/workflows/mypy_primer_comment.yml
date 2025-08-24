@@ -13,89 +13,80 @@ jobs:
   comment:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 2
 
     steps:
-      - name: download diffs
-        uses: actions/github-script@v7.0.1
+      - uses: dawidd6/action-download-artifact@v11
+        name: download pr-number
         with:
-          script: |
-            const fs = require('fs');
-            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: ${{ github.event.workflow_run.id }},
-            });
-            const [matchArtifact] = artifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == 'primer_diffs'
-            });
+          name: pr-number
+          run_id: ${{ github.event.workflow_run.id }}
 
-            const download = await github.rest.actions.downloadArtifact({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              artifact_id: matchArtifact.id,
-              archive_format: 'zip',
-            });
-            fs.writeFileSync('diff.zip', Buffer.from(download.data));
-
-      - run: unzip diff.zip
-
-      - name: get pr number
+      - name: parse pr-number
         id: pr-number
-        uses: actions/github-script@v7.0.1
+        run: |
+          if [[ -f pr-number ]]
+          then
+            echo "pr-number=$(<pr-number)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: dawidd6/action-download-artifact@v11
+        name: download mypy_primer.diff
+        id: download-mypy_primer-diff
+        if: steps.pr-number.outputs.pr-number
         with:
-          script: |
-            const fs = require('fs');
-            return parseInt(fs.readFileSync('pr_number.txt', {encoding: 'utf8'}))
+          name: mypy_primer-diff
+          workflow: mypy_primer.yml
+          pr: ${{ steps.pr-number.outputs.pr-number }}
+          workflow_conclusion: completed
 
-      - name: hide previous comments
-        uses: int128/hide-comment-action@v1.43.0
+      - name: generate comment content
+        id: generate-comment
+        if: ${{ steps.download-mypy_primer-diff.outputs.found_artifact == 'true' }}
+        run: |
+          # Guard against malicious mypy_primer results that symlink to a secret
+          # file on this runner
+          if [[ -L mypy_primer.diff ]]
+          then
+              echo "Error: mypy_primer.diff cannot be a symlink"
+              exit 1
+          fi
+
+          # Note this identifier is used to find the comment to update on
+          # subsequent runs
+          echo '<!-- generated-comment mypy_primer -->' >> comment.md
+
+          echo '## `mypy_primer` results' >> comment.md
+          if [ -s "mypy_primer.diff" ]; then
+            echo '<details>' >> comment.md
+            echo '<summary>Changes were detected when running mypy on open source projects</summary>' >> comment.md
+            echo '' >> comment.md
+            echo '```diff' >> comment.md
+            cat mypy_primer.diff >> comment.md
+            echo '```' >> comment.md
+            echo '</details>' >> comment.md
+          else
+            echo 'No ecosystem changes detected ✅' >> comment.md
+          fi
+
+          echo 'comment<<EOF' >> "$GITHUB_OUTPUT"
+          cat comment.md >> "$GITHUB_OUTPUT"
+          echo 'EOF' >> "$GITHUB_OUTPUT"
+
+      - name: find existing comment
+        uses: peter-evans/find-comment@v3.1.0
+        if: steps.generate-comment.outcome == 'success'
+        id: find-comment
         with:
-          issue-number: ${{ steps.pr-number.outputs.result }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ steps.pr-number.outputs.pr-number }}
+          comment-author: "github-actions[bot]"
+          body-includes: "<!-- generated-comment mypy_primer -->"
 
-      - run: cat diff_*.txt | tee fulldiff.txt
-
-      - name: post comment
-        uses: actions/github-script@v7.0.1
+      - name: create or update comment
+        if: steps.find-comment.outcome == 'success'
+        uses: peter-evans/create-or-update-comment@v4
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const MAX_CHARS = 50000
-            const MAX_CHARS_PER_PROJECT = MAX_CHARS / 3
-
-            const fs = require('fs')
-            let data = fs.readFileSync('fulldiff.txt', {encoding: 'utf8'})
-
-            function maybeTruncate(original, maxLength) {
-              if (original.length <= maxLength) {
-                return original
-              }
-              let truncated = original.substring(0, maxLength)
-              // further, remove last line that might be truncated
-              truncated = truncated.substring(0, truncated.lastIndexOf('\n'))
-              let lines_truncated = original.split('\n').length - truncated.split('\n').length
-              return `${truncated}\n\n... (truncated ${lines_truncated} lines) ...`
-            }
-
-            const projects = data.split('\n\n')
-            // don't let one project dominate
-            data = projects.map(project => maybeTruncate(project, MAX_CHARS_PER_PROJECT)).join('\n\n')
-            // posting comment fails if too long, so truncate
-            data = maybeTruncate(data, MAX_CHARS)
-
-            console.log('mypy_primer diffs:')
-            console.log(data)
-
-            let body
-            if (data.trim()) {
-              body = '[mypy_primer](https://github.com/hauntsaninja/mypy_primer) diffs:\n\n'
-              body += '```diff\n' + data + '```'
-              const prNumber = parseInt(fs.readFileSync('pr_number.txt', {encoding: 'utf8'}))
-              await github.rest.issues.createComment({
-                issue_number: prNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body
-              })
-            }
+          comment-id: ${{ steps.find-comment.outputs.comment-id }}
+          issue-number: ${{ steps.pr-number.outputs.pr-number }}
+          body-path: comment.md
+          edit-mode: replace
