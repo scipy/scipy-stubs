@@ -62,6 +62,13 @@ Accurate annotations for dtypes and shapes:
 - **Generic types**: Comprehensive generic classes for sparse arrays, distributions, linear operators, and more
 - **Complete coverage**: Type hints are provided for the entire SciPy API
 
+### Thoroughly Tested and Reliable
+
+- **stubtest validation**: Ensures all type annotations match the actual SciPy runtime behavior
+- **Comprehensive type-tests**: Validates type checker behavior with real-world usage patterns
+- **Regression testing**: Uses [mypy_primer](https://github.com/hauntsaninja/mypy_primer) to test
+  against popular open-source projects, preventing breaking changes
+
 <!-- NOTE: SciPy permalinks to the following `#installation` anchor; don't modify it! -->
 
 ## Installation
