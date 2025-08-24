@@ -21,8 +21,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # e.g. change this to `[0, 1, 2]` with `--num-shards=3` below
-        shard-index: [0, 1, 2]
+        shard-index: [0, 1]
 
     steps:
       - uses: actions/checkout@v5.0.0
@@ -66,7 +65,7 @@ jobs:
               --new-prepend-path new \
               --old v${MYPY_VERSION} \
               --old-prepend-path old \
-              --num-shards 3 \
+              --num-shards 2 \
               --shard-index ${{ matrix.shard-index }} \
               --output concise \
               --additional-flags="--hide-error-context" \
