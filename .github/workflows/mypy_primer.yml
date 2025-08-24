@@ -61,15 +61,16 @@ jobs:
           # fail action if exit code isn't zero or one
           (
             mypy_primer \
-            --new v${MYPY_VERSION} \
-            --old v${MYPY_VERSION} \
             --known-dependency-selector scipy-stubs \
-            --old-prepend-path old \
+            --new v${MYPY_VERSION} \
             --new-prepend-path new \
+            --old v${MYPY_VERSION} \
+            --old-prepend-path old \
             --num-shards 1 \
             --shard-index ${{ matrix.shard-index }} \
             --debug \
             --output concise \
+            --show-speed-regression \
             | tee diff_${{ matrix.shard-index }}.txt
           ) || [ $? -eq 1 ]
 
