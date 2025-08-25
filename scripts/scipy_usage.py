@@ -235,7 +235,7 @@ class ScipyUsageAnalyzer:
                 self.module_repos[module_name] = set()
             self.module_repos[module_name].add(repo_name)
 
-        repo_stats = {
+        repo_stats: dict[str, int | dict[str, int]] = {
             "files_total": n_total,
             "files_relevant": n_relevant,
             "unique_calls": len(repo_calls),
