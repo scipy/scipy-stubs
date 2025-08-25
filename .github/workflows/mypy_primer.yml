@@ -52,13 +52,14 @@ jobs:
           uvx \
             --from="https://github.com/hauntsaninja/mypy_primer.git" \
             mypy_primer \
-            --project-selector "/(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|altair|hydpy|static-frame)/?$" \
-            --new v${MYPY_VERSION} \
+            --project-selector="/(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|altair|hydpy|static-frame|colour)/?$" \
+            --new=v${MYPY_VERSION} \
             --new-prepend-path new \
-            --old v${MYPY_VERSION} \
+            --old=v${MYPY_VERSION} \
             --old-prepend-path old \
-            --output concise \
+            --output=concise \
             --additional-flags="--hide-error-context" \
+            --mypyc-compile-level=3
             --show-speed-regression \
             --debug > mypy_primer.diff || [ $? -eq 1 ]
 
