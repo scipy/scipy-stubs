@@ -1,48 +1,13 @@
 # scipy-stubs
 
-Precise type hints for **all** of <a href="https://github.com/scipy/scipy">SciPy</a>.
+Reliable type annotations for <a href="https://github.com/scipy/scipy">SciPy</a>
 
-[![PyPI](https://img.shields.io/pypi/v/scipy-stubs?color=blue&style=flat-square)](https://pypi.org/project/scipy-stubs/)
-[![scipy-stubs - conda-forge](https://anaconda.org/conda-forge/scipy-stubs/badges/version.svg)](https://anaconda.org/conda-forge/scipy-stubs)
-![Python Versions](https://img.shields.io/pypi/pyversions/scipy-stubs?color=blue&style=flat-square)
-![license](https://img.shields.io/github/license/scipy/scipy-stubs?color=violet&style=flat-square)
-![PyPI Downloads](https://img.shields.io/pypi/dm/scipy-stubs?color=violet&style=flat-square)
+[![GitHub License](https://img.shields.io/github/license/scipy/scipy-stubs?style=flat-square&color=333)](https://github.com/scipy/scipy-stubs/blob/master/LICENSE)
+![Python Versions](https://img.shields.io/pypi/pyversions/scipy-stubs?style=flat-square&color=333)
+[![PyPI - Version](https://img.shields.io/pypi/v/scipy-stubs?style=flat-square&label=PyPI&color=333)](https://pypi.org/project/scipy-stubs/)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/scipy-stubs?style=flat-square&color=333)](https://anaconda.org/conda-forge/scipy-stubs)
 
-[![ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
-[![basedpyright](https://img.shields.io/badge/basedpyright-checked-42b983)](https://detachhead.github.io/basedpyright)
-[![pyright](https://microsoft.github.io/pyright/img/pyright_badge.svg)](https://github.com/microsoft/pyright)
-[![mypy](https://www.mypy-lang.org/static/mypy_badge.svg)](https://github.com/python/mypy)
-![typed](https://img.shields.io/pypi/types/scipy-stubs?color=white)
-
-## Quick Start
-
-Install `scipy-stubs` and start getting better type hints immediately:
-
-```bash
-pip install scipy-stubs
-```
-
-That's it! Your IDE and type checker will now provide precise type information for SciPy functions:
-
-## Examples
-
-Prevent mistakes with precise type hints:
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/e50eb3db-7cb5-41e7-a56b-a563e9bd28d6">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/7905d0ea-693c-4b5f-aaf9-4af0d11a520f">
-  <img alt="bug prevention demo" src="https://github.com/user-attachments/assets/7905d0ea-693c-4b5f-aaf9-4af0d11a520f">
-</picture>
-
-Accurate annotations for dtypes and shapes:
-
-<picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/c8a5d204-13ca-4fe8-8d83-95d55ca9b9df">
-  <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/2170df07-3491-480e-985f-24494e7d5d3f">
-  <img alt="precise type inference demo" src="https://github.com/user-attachments/assets/2170df07-3491-480e-985f-24494e7d5d3f">
-</picture>
-
-## Why use scipy-stubs?
+## Features
 
 ### Enhanced Development Experience
 
@@ -60,7 +25,7 @@ Accurate annotations for dtypes and shapes:
 
 - **Array shape awareness**: Many functions include shape-type information for better array handling
 - **Generic types**: Comprehensive generic classes for sparse arrays, distributions, linear operators, and more
-- **Complete coverage**: Type hints are provided for the entire SciPy API
+- **Complete coverage**: Type annotations are provided for the entire SciPy API
 
 ### Thoroughly Tested and Reliable
 
@@ -69,6 +34,24 @@ Accurate annotations for dtypes and shapes:
 - **Regression testing**: Uses [mypy_primer][PRIMER] to test against popular open-source projects, preventing breaking changes
 
 [PRIMER]: https://github.com/hauntsaninja/mypy_primer
+
+## Examples
+
+### Accurate type hints for shapes and dtypes
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/c8a5d204-13ca-4fe8-8d83-95d55ca9b9df">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/2170df07-3491-480e-985f-24494e7d5d3f">
+  <img alt="precise type inference demo" src="https://github.com/user-attachments/assets/2170df07-3491-480e-985f-24494e7d5d3f">
+</picture>
+
+### Prevent mistakes with precise type hints
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/e50eb3db-7cb5-41e7-a56b-a563e9bd28d6">
+  <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/7905d0ea-693c-4b5f-aaf9-4af0d11a520f">
+  <img alt="bug prevention demo" src="https://github.com/user-attachments/assets/7905d0ea-693c-4b5f-aaf9-4af0d11a520f">
+</picture>
 
 <!-- NOTE: SciPy permalinks to the following `#installation` anchor; don't modify it! -->
 
