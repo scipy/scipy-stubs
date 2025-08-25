@@ -51,8 +51,8 @@ class _CFFIType(Protocol):
 @type_check_only
 @final
 class _CFFIVoid(_CFFIType, Protocol):
-    is_array_type: ClassVar = False
-    is_raw_function: ClassVar = False
+    is_array_type: ClassVar[bool] = False
+    is_raw_function: ClassVar[bool] = False
 
     def __init__(self, /) -> None: ...
 
@@ -73,15 +73,15 @@ class _CFFIFunc(_CFFIType, Protocol[_CT_co, *_CTs]):
 @type_check_only
 @final
 class _CFFIFuncPtr(_CFFIFunc[_CT_co, *_CTs], Protocol[_CT_co, *_CTs]):
-    is_raw_function: ClassVar = False
+    is_raw_function: ClassVar[bool] = False
 
     def as_raw_function(self, /) -> _CFFIFunc[_CT_co, *_CTs]: ...
 
 @type_check_only
 @final
 class _CFFIPointerType(_CFFIType, Protocol[_CT_co]):
-    is_array_type: ClassVar = False
-    is_raw_function: ClassVar = False
+    is_array_type: ClassVar[bool] = False
+    is_raw_function: ClassVar[bool] = False
 
     @property
     def totype(self, /) -> _CT_co: ...
