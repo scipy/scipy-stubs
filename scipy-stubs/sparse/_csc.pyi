@@ -7,11 +7,11 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from ._base import _spbase, sparray
+from ._base import sparray
 from ._compressed import _cs_matrix
 from ._csr import _csr_base, csr_array, csr_matrix
 from ._matrix import spmatrix
-from ._typing import _ToShape2D
+from ._typing import _Sparse2D, _ToShape2D
 
 __all__ = ["csc_array", "csc_matrix", "isspmatrix_csc"]
 
@@ -22,7 +22,6 @@ _ScalarT = TypeVar("_ScalarT", bound=_Scalar)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
 
 _Seq2D: TypeAlias = Sequence[Sequence[_T]]
-_Sparse2D: TypeAlias = _spbase[_ScalarT] | spmatrix[_ScalarT] | sparray[_ScalarT, tuple[int, int]]
 
 _ToIndices: TypeAlias = onp.CanArrayND[npc.integer] | Sequence[int]
 

@@ -9,11 +9,9 @@ import optype.numpy.compat as npc
 from .base import DenseOutput, OdeSolver
 from .common import OdeSolution
 from scipy._lib._util import _RichResult
-from scipy.sparse import sparray, spmatrix
-from scipy.sparse._base import _spbase
+from scipy.sparse._typing import _Sparse2D
 
 _Ts = TypeVarTuple("_Ts")
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
 _Inexact64T = TypeVar("_Inexact64T", bound=np.float64 | np.complex128)
 _Inexact64T_co = TypeVar("_Inexact64T_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
 
@@ -37,7 +35,6 @@ _Complex2D: TypeAlias = onp.Array2D[np.complex128]
 _ToFloatMax1D: TypeAlias = onp.ToFloat1D | onp.ToFloat
 _ToComplexMax1D: TypeAlias = onp.ToComplex1D | onp.ToComplex
 
-_Sparse2D: TypeAlias = _spbase[_ScalarT, tuple[int, int]] | sparray[_ScalarT, tuple[int, int]] | spmatrix[_ScalarT]
 _ToJac: TypeAlias = onp.ToArray2D[complex, npc.inexact] | _Sparse2D[npc.inexact]
 
 _IVPMethod: TypeAlias = Literal["RK23", "RK45", "DOP853", "Radau", "BDF", "LSODA"] | type[OdeSolver]
