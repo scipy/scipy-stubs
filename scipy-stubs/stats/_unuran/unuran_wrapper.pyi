@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import NamedTuple, Protocol, overload, type_check_only
+from typing import NamedTuple, Protocol, Self, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -61,9 +61,8 @@ class Method:
     def set_random_state(self, /, random_state: onp.random.ToRNG | None = None) -> None: ...
 
 class TransformedDensityRejection(Method):
-    def __init__(
-        self,
-        /,
+    def __new__(
+        cls,
         dist: _TDRDist,
         *,
         mode: float | None = ...,
@@ -74,7 +73,7 @@ class TransformedDensityRejection(Method):
         use_dars: bool = ...,
         max_squeeze_hat_ratio: float = ...,
         random_state: onp.random.ToRNG | None = ...,
-    ) -> None: ...
+    ) -> Self: ...
     @property
     def hat_area(self, /) -> float: ...
     @property
@@ -87,9 +86,8 @@ class TransformedDensityRejection(Method):
     def ppf_hat(self, /, u: onp.ToScalar | onp.ToArrayND) -> float | onp.ArrayND[np.float64]: ...
 
 class SimpleRatioUniforms(Method):
-    def __init__(
-        self,
-        /,
+    def __new__(
+        cls,
         dist: _HasPDF,
         *,
         mode: float | None = ...,
@@ -97,12 +95,11 @@ class SimpleRatioUniforms(Method):
         domain: tuple[float, float] | None = ...,
         cdf_at_mode: float = ...,
         random_state: onp.random.ToRNG | None = ...,
-    ) -> None: ...
+    ) -> Self: ...
 
 class NumericalInversePolynomial(_PPFMethodMixin, Method):
-    def __init__(
-        self,
-        /,
+    def __new__(
+        cls,
         dist: _PINVDist,
         *,
         mode: float | None = ...,
@@ -111,7 +108,7 @@ class NumericalInversePolynomial(_PPFMethodMixin, Method):
         order: int = ...,
         u_resolution: float = ...,
         random_state: onp.random.ToRNG | None = ...,
-    ) -> None: ...
+    ) -> Self: ...
     @property
     def intervals(self, /) -> int: ...
     @overload
@@ -124,9 +121,8 @@ class NumericalInversePolynomial(_PPFMethodMixin, Method):
     ) -> float | onp.ArrayND[np.float64]: ...
 
 class NumericalInverseHermite(_PPFMethodMixin, Method):
-    def __init__(
-        self,
-        /,
+    def __new__(
+        cls,
         dist: _HasCDF,
         *,
         domain: tuple[float, float] | None = ...,
@@ -135,7 +131,7 @@ class NumericalInverseHermite(_PPFMethodMixin, Method):
         construction_points: onp.ToFloatND | None = ...,
         max_intervals: int = ...,
         random_state: onp.random.ToRNG | None = ...,
-    ) -> None: ...
+    ) -> Self: ...
     @property
     def intervals(self, /) -> int: ...
     @property
@@ -146,23 +142,21 @@ class NumericalInverseHermite(_PPFMethodMixin, Method):
     ) -> float | onp.ArrayND[np.float64]: ...
 
 class DiscreteAliasUrn(Method):
-    def __init__(
-        self,
-        /,
+    def __new__(
+        cls,
         dist: onp.ToFloat | onp.ToFloatND | _HasPMF,
         *,
         domain: tuple[float, float] | None = ...,
         urn_factor: float = ...,
         random_state: onp.random.ToRNG | None = ...,
-    ) -> None: ...
+    ) -> Self: ...
 
 class DiscreteGuideTable(_PPFMethodMixin, Method):
-    def __init__(
-        self,
-        /,
+    def __new__(
+        cls,
         dist: onp.ToFloat | onp.ToFloatND | _HasPMF,
         *,
         domain: tuple[float, float] | None = ...,
         guide_factor: float = ...,
         random_state: onp.random.ToRNG | None = ...,
-    ) -> None: ...
+    ) -> Self: ...

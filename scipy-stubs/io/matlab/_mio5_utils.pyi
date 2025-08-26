@@ -1,7 +1,7 @@
 # defined in scipy/io/matlab/_mio5_utils.pyx
 
 from collections.abc import Iterable
-from typing import Any, ClassVar, Final, Literal, Never, TypeAlias
+from typing import Any, ClassVar, Final, Literal, Never, Self, TypeAlias
 from typing_extensions import CapsuleType
 
 import numpy as np
@@ -50,7 +50,7 @@ class VarReader5:  # undocumented
     is_swapped: _bint
     little_endian: _bint
 
-    def __init__(self, /, preader: MatVarReader) -> None: ...
+    def __new__(cls, preader: MatVarReader) -> Self: ...
     def set_stream(self, /, fobj: GenericStream | _FileLike) -> None: ...
     def read_tag(self, /) -> tuple[int, int, str | None]: ...
     def read_numeric(self, /, copy: _bint = True, nnz: int = -1) -> onp.Array1D[Any]: ...
