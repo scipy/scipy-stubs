@@ -9,7 +9,7 @@ import optype.numpy.compat as npc
 
 from scipy.optimize._differentiable_functions import LinearVectorFunction, VectorFunction
 from scipy.optimize._hessian_update_strategy import HessianUpdateStrategy
-from scipy.sparse._base import _spbase
+from scipy.sparse._typing import _Sparse2D
 from scipy.sparse.linalg import LinearOperator
 
 _T = TypeVar("_T")
@@ -20,7 +20,6 @@ _ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[An
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 
-_Sparse2D: TypeAlias = _spbase[_ScalarT, tuple[int, int]]
 _ToFloat2D: TypeAlias = onp.ToFloat2D | _Sparse2D[npc.floating | npc.integer]
 
 _MethodJac: TypeAlias = Literal["2-point", "3-point", "cs"]

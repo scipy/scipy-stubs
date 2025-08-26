@@ -3,6 +3,7 @@ from typing import Any, Literal, Protocol, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
+import numpy_typing_compat as nptc
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -10,6 +11,7 @@ from ._superlu import SuperLU
 from scipy.sparse._base import SparseEfficiencyWarning, _spbase
 from scipy.sparse._bsr import _bsr_base
 from scipy.sparse._lil import _lil_base
+from scipy.sparse._typing import _Sparse2D
 
 __all__ = [
     "MatrixRankWarning",
@@ -29,16 +31,16 @@ _InexactT_co = TypeVar("_InexactT_co", bound=np.float32 | np.float64 | np.comple
 
 _PermcSpec: TypeAlias = Literal["COLAMD", "NATURAL", "MMD_ATA", "MMD_AT_PLUS_A"]
 
-_ToF32Mat: TypeAlias = _spbase[np.float32, tuple[int, int]] | onp.CanArray[tuple[Any, ...], np.dtype[np.float32]]
-_ToF64Mat: TypeAlias = _spbase[np.float64 | npc.integer, tuple[int, int]] | onp.ToInt2D | onp.ToJustFloat64_2D
-_ToC64Mat: TypeAlias = _spbase[np.complex64, tuple[int, int]] | onp.CanArray[tuple[Any, ...], np.dtype[np.complex64]]
-_ToC128Mat: TypeAlias = _spbase[np.complex128, tuple[int, int]] | onp.ToJustComplex128_2D
+_ToF32Mat: TypeAlias = _Sparse2D[np.float32] | nptc.CanArray[tuple[Any, ...], np.dtype[np.float32]]
+_ToF64Mat: TypeAlias = _Sparse2D[np.float64 | npc.integer] | onp.ToInt2D | onp.ToJustFloat64_2D
+_ToC64Mat: TypeAlias = _Sparse2D[np.complex64] | nptc.CanArray[tuple[Any, ...], np.dtype[np.complex64]]
+_ToC128Mat: TypeAlias = _Sparse2D[np.complex128] | onp.ToJustComplex128_2D
 
-_ToFloatMat: TypeAlias = _spbase[npc.floating | npc.integer | np.bool_, tuple[int, int]] | onp.ToFloat2D
-_ToFloatMatStrict: TypeAlias = _spbase[npc.floating | npc.integer | np.bool_, tuple[int, int]] | onp.ToFloatStrict2D
-_ToComplexMat: TypeAlias = _spbase[npc.complexfloating, tuple[int, int]] | onp.ToJustComplex2D
-_ToInexactMat: TypeAlias = _spbase[Any, tuple[int, int]] | onp.ToComplex128_2D
-_ToInexactMatStrict: TypeAlias = _spbase[Any, tuple[int, int]] | onp.ToComplex128Strict2D
+_ToFloatMat: TypeAlias = _Sparse2D[npc.floating | npc.integer | np.bool_] | onp.ToFloat2D
+_ToFloatMatStrict: TypeAlias = _Sparse2D[npc.floating | npc.integer | np.bool_] | onp.ToFloatStrict2D
+_ToComplexMat: TypeAlias = _Sparse2D[npc.complexfloating] | onp.ToJustComplex2D
+_ToInexactMat: TypeAlias = _Sparse2D[Any] | onp.ToComplex128_2D
+_ToInexactMatStrict: TypeAlias = _Sparse2D[Any] | onp.ToComplex128Strict2D
 
 _AsF32: TypeAlias = npc.integer8 | npc.number16 | np.int32 | np.float16 | np.float32
 _AsF64: TypeAlias = npc.integer | np.float16 | np.float32 | np.float64
