@@ -286,6 +286,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 - [foamlib](https://github.com/gerlero/foamlib)
 - [Freqtrade](https://github.com/freqtrade/freqtrade)
 - [gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)
+- [JAX](https://github.com/jax-ml/jax)
 - [librosa](https://github.com/librosa/librosa)
 - [Lmo](https://github.com/jorenham/Lmo)
 - [MouseTracks](https://github.com/huntfx/MouseTracks)
