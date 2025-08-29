@@ -299,6 +299,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 - [Pandera](https://github.com/unionai-oss/pandera)
 - [ProgressiVis](https://github.com/progressivis/progressivis)
 - [pysmo](https://github.com/pysmo/pysmo)
+- [PyTensor](https://github.com/pymc-devs/pytensor)
 - [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay)
 - [Scanpy](https://github.com/scverse/scanpy)
 - [TQEC](https://github.com/tqec/tqec)
