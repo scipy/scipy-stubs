@@ -18,13 +18,10 @@ assert_type(d.uniform([0, -1]).mean(), _FloatND)
 assert_type(d.uniform([0, 0.5], 2).mean(), _FloatND)
 assert_type(d.uniform(0, [0.5, 2]).mean(), _FloatND)
 
-# .expect()
+# .expect() - only scalar inputs
 assert_type(d.uniform().expect(), _Float)
 assert_type(d.uniform(0).expect(), _Float)
 assert_type(d.uniform(0.5, 2).expect(), _Float)
-assert_type(d.uniform([0, -1]).expect(), _FloatND)
-assert_type(d.uniform([0, 0.5], 2).expect(), _FloatND)
-assert_type(d.uniform(0, [0.5, 2]).expect(), _FloatND)
 
 # Additional continuous distributions
 assert_type(d.norm().mean(), _Float)
@@ -33,10 +30,9 @@ assert_type(d.norm([0, 1], 1).mean(), _FloatND)
 assert_type(d.expon().mean(), _Float)
 assert_type(d.expon([0, 1]).mean(), _FloatND)
 
+# .expect() - only scalar inputs
 assert_type(d.norm().expect(), _Float)
-assert_type(d.norm([0, 1], 1).expect(), _FloatND)
 assert_type(d.expon().expect(), _Float)
-assert_type(d.expon([0, 1]).expect(), _FloatND)
 ###
 
 ###
@@ -51,13 +47,10 @@ assert_type(d.binom([5, 10], 0.5).mean(), _FloatND)
 assert_type(d.poisson(3).mean(), _Float)
 assert_type(d.poisson([1, 3]).mean(), _FloatND)
 
-# .expect()
+# .expect() - only scalar inputs
 assert_type(d.bernoulli(0.5).expect(), _Float)
 assert_type(d.bernoulli(0.5, 1).expect(), _Float)
 assert_type(d.bernoulli(0.5, loc=1).expect(), _Float)
-assert_type(d.bernoulli([0, 0.5]).expect(), _FloatND)
 assert_type(d.binom(10, 0.5).expect(), _Float)
-assert_type(d.binom([5, 10], 0.5).expect(), _FloatND)
 assert_type(d.poisson(3).expect(), _Float)
-assert_type(d.poisson([1, 3]).expect(), _FloatND)
 ###
