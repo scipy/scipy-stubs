@@ -94,6 +94,29 @@ class _ConvMeasureDict(TypedDict):
 
 ###
 
+# undocumented
+@overload
+def _valfrommode(mode: L["valid"]) -> L[0]: ...
+@overload
+def _valfrommode(mode: L["same"]) -> L[1]: ...
+@overload
+def _valfrommode(mode: L["full"]) -> L[2]: ...
+@overload
+def _valfrommode(mode: str) -> int: ...
+
+# undocumented
+@overload
+def _bvalfromboundary(boundary: L["fill", "pad"]) -> L[0]: ...
+@overload
+def _bvalfromboundary(boundary: L["symm", "symmetric"]) -> L[4]: ...
+@overload
+def _bvalfromboundary(boundary: L["wrap", "circular"]) -> L[8]: ...
+@overload
+def _bvalfromboundary(boundary: L["reflect"]) -> L[16]: ...
+@overload
+def _bvalfromboundary(boundary: str) -> int: ...
+
+#
 @overload
 def choose_conv_method(
     in1: onp.ToIntND, in2: onp.ToIntND, mode: onp.ConvolveMode = "full", measure: onp.ToFalse = False
