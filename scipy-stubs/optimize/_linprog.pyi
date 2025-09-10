@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Final, Literal, LiteralString, TypeAlias, TypedDict, overload, type_check_only
+from typing import Final, Literal, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import deprecated
 
 import numpy as np
@@ -15,11 +15,9 @@ __all__ = ["linprog", "linprog_terse_callback", "linprog_verbose_callback"]
 
 _Ignored: TypeAlias = object
 _Max3: TypeAlias = Literal[0, 1, 2, 3]
-_Max4: TypeAlias = Literal[_Max3, 4]
 
 _Int: TypeAlias = int | np.int32 | np.int64
 _Float: TypeAlias = float | np.float64
-_Float1D: TypeAlias = onp.Array1D[np.float64]
 
 @type_check_only
 class _OptionsCommon(TypedDict, total=False):
@@ -79,21 +77,39 @@ class _OptionsSimplex(_OptionsCommonLegacy, TypedDict, total=False):
 
 ###
 
+class OptimizeResult(_OptimizeResult):
+    x: onp.Array1D[np.float64] | None
+    fun: float | None
+    slack: onp.Array1D[np.float64] | None
+    con: onp.Array1D[np.float64] | None
+    success: bool
+    status: Literal[0, 1, 2, 3, 4]
+    message: str
+    nit: int
+
+@type_check_only
+class _OptimizeResultSensitivity(_OptimizeResult):
+    residual: onp.Array1D[np.float64]
+    marginals: onp.Array1D[np.float64]
+
+@type_check_only
+class _OptimizeResultHighs(OptimizeResult):
+    crossover_nit: int
+    lower: _OptimizeResultSensitivity
+    upper: _OptimizeResultSensitivity
+    eqlin: _OptimizeResultSensitivity
+    ineqlin: _OptimizeResultSensitivity
+    mip_node_count: int  # only exists if `success=True`
+    mip_dual_bound: float  # only exists if `success=True`
+    mip_gap: float  # only exists if `success=True`
+
+###
+
 __docformat__: Final = "restructuredtext en"  # undocumented
 LINPROG_METHODS: Final[Sequence[MethodLinprog | MethodLinprogLegacy]] = ...  # undocumented
 
-class OptimizeResult(_OptimizeResult):
-    x: _Float1D  # minimizing decision variables w.r.t. the constraints
-    fun: _Float  # optimal objective function value
-    slack: _Float1D  # slack values; nominally positive
-    con: _Float1D  # residuals of equality constraints; nominally zero
-    status: _Max4
-    message: LiteralString
-    nit: int  # >=0
-    success: bool  # `success = status == 0`
-
-def linprog_verbose_callback(res: _OptimizeResult) -> None: ...
-def linprog_terse_callback(res: _OptimizeResult) -> None: ...
+def linprog_verbose_callback(res: OptimizeResult) -> None: ...
+def linprog_terse_callback(res: OptimizeResult) -> None: ...
 
 #
 @overload  # highs (default)
@@ -105,11 +121,11 @@ def linprog(
     b_eq: onp.ToFloat1D | None = None,
     bounds: Bound | Sequence[Bound] = (0, None),
     method: Literal["highs"] = "highs",
-    callback: Callable[[_OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], _Ignored] | None = None,
     options: _OptionsHighs | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> _OptimizeResult: ...
+) -> _OptimizeResultHighs: ...
 @overload  # highs-ds
 def linprog(
     c: onp.ToFloat1D,
@@ -120,11 +136,11 @@ def linprog(
     bounds: Bound | Sequence[Bound] = (0, None),
     *,
     method: Literal["highs-ds"],
-    callback: Callable[[_OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], _Ignored] | None = None,
     options: _OptionsHighsDS | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> _OptimizeResult: ...
+) -> _OptimizeResultHighs: ...
 @overload  # highs-ipm
 def linprog(
     c: onp.ToFloat1D,
@@ -135,11 +151,11 @@ def linprog(
     bounds: Bound | Sequence[Bound] = (0, None),
     *,
     method: Literal["highs-ipm"],
-    callback: Callable[[_OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], _Ignored] | None = None,
     options: _OptionsHighsIPM | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> _OptimizeResult: ...
+) -> _OptimizeResultHighs: ...
 @overload  # interior-point (legacy, see https://github.com/scipy/scipy/issues/15707)
 @deprecated("`method='interior-point'` is deprecated and will be removed in SciPy 1.17. Please use one of the HIGHS solvers.")
 def linprog(
@@ -151,11 +167,11 @@ def linprog(
     bounds: Bound | Sequence[Bound] = (0, None),
     *,
     method: Literal["interior-point"],
-    callback: Callable[[_OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], _Ignored] | None = None,
     options: _OptionsInteriorPoint | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> _OptimizeResult: ...
+) -> OptimizeResult: ...
 @overload  # revised simplex (legacy, see https://github.com/scipy/scipy/issues/15707)
 @deprecated("`method='revised simplex'` is deprecated and will be removed in SciPy 1.17. Please use one of the HIGHS solvers.")
 def linprog(
@@ -167,11 +183,11 @@ def linprog(
     bounds: Bound | Sequence[Bound] = (0, None),
     *,
     method: Literal["revised simplex"],
-    callback: Callable[[_OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], _Ignored] | None = None,
     options: _OptionsRevisedSimplex | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> _OptimizeResult: ...
+) -> OptimizeResult: ...
 @overload  # simplex (legacy, see https://github.com/scipy/scipy/issues/15707)
 @deprecated("`method='simplex'` is deprecated and will be removed in SciPy 1.17. Please use one of the HIGHS solvers.")
 def linprog(
@@ -183,11 +199,11 @@ def linprog(
     bounds: Bound | Sequence[Bound] = (0, None),
     *,
     method: Literal["simplex"],
-    callback: Callable[[_OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], _Ignored] | None = None,
     options: _OptionsSimplex | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> _OptimizeResult: ...
+) -> OptimizeResult: ...
 @overload  # any "highs"
 def linprog(
     c: onp.ToFloat1D,
@@ -197,8 +213,8 @@ def linprog(
     b_eq: onp.ToFloat1D | None = None,
     bounds: Bound | Sequence[Bound] = (0, None),
     method: MethodLinprog = "highs",
-    callback: Callable[[_OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], _Ignored] | None = None,
     options: _OptionsHighs | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> _OptimizeResult: ...
+) -> _OptimizeResultHighs: ...

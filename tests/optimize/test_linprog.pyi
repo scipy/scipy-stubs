@@ -1,15 +1,23 @@
 from collections.abc import Sequence
 from typing import assert_type
 
+import numpy as np
+
 from scipy.optimize import OptimizeResult, linprog
 from scipy.optimize._typing import Bound
 
 c: list[float]
 
 bound: Bound
-uniformly_bounded = linprog(c, bounds=bound)
-assert_type(uniformly_bounded, OptimizeResult)
-
 bounds: Sequence[Bound]
-variably_bounded = linprog(c, bounds=bounds)
-assert_type(variably_bounded, OptimizeResult)
+
+###
+
+res = linprog(c, bounds=bounds)
+assert_type(res.fun, float | None)
+assert_type(res.x, np.ndarray[tuple[int], np.dtype[np.float64]] | None)
+assert_type(res.success, bool)
+assert_type(res.message, str)
+
+_1: OptimizeResult = linprog(c, bounds=bound)
+_2: OptimizeResult = linprog(c, bounds=bounds)
