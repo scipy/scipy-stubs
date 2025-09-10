@@ -77,9 +77,6 @@ class _OptionsSimplex(_OptionsCommonLegacy, TypedDict, total=False):
 
 ###
 
-__docformat__: Final = "restructuredtext en"  # undocumented
-LINPROG_METHODS: Final[Sequence[MethodLinprog | MethodLinprogLegacy]] = ...  # undocumented
-
 class OptimizeResult(_OptimizeResult):
     x: onp.Array1D[np.float64] | None
     fun: float | None
@@ -89,6 +86,27 @@ class OptimizeResult(_OptimizeResult):
     status: Literal[0, 1, 2, 3, 4]
     message: str
     nit: int
+
+@type_check_only
+class _OptimizeResultSensitivity(_OptimizeResult):
+    residual: onp.Array1D[np.float64]
+    marginals: onp.Array1D[np.float64]
+
+@type_check_only
+class _OptimizeResultHighs(OptimizeResult):
+    crossover_nit: int
+    lower: _OptimizeResultSensitivity
+    upper: _OptimizeResultSensitivity
+    eqlin: _OptimizeResultSensitivity
+    ineqlin: _OptimizeResultSensitivity
+    mip_node_count: int  # only exists if `success=True`
+    mip_dual_bound: float  # only exists if `success=True`
+    mip_gap: float  # only exists if `success=True`
+
+###
+
+__docformat__: Final = "restructuredtext en"  # undocumented
+LINPROG_METHODS: Final[Sequence[MethodLinprog | MethodLinprogLegacy]] = ...  # undocumented
 
 def linprog_verbose_callback(res: OptimizeResult) -> None: ...
 def linprog_terse_callback(res: OptimizeResult) -> None: ...
@@ -107,7 +125,7 @@ def linprog(
     options: _OptionsHighs | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> OptimizeResult: ...
+) -> _OptimizeResultHighs: ...
 @overload  # highs-ds
 def linprog(
     c: onp.ToFloat1D,
@@ -122,7 +140,7 @@ def linprog(
     options: _OptionsHighsDS | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> OptimizeResult: ...
+) -> _OptimizeResultHighs: ...
 @overload  # highs-ipm
 def linprog(
     c: onp.ToFloat1D,
@@ -137,7 +155,7 @@ def linprog(
     options: _OptionsHighsIPM | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> OptimizeResult: ...
+) -> _OptimizeResultHighs: ...
 @overload  # interior-point (legacy, see https://github.com/scipy/scipy/issues/15707)
 @deprecated("`method='interior-point'` is deprecated and will be removed in SciPy 1.17. Please use one of the HIGHS solvers.")
 def linprog(
@@ -199,4 +217,4 @@ def linprog(
     options: _OptionsHighs | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
-) -> OptimizeResult: ...
+) -> _OptimizeResultHighs: ...
