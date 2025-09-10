@@ -53,7 +53,7 @@ ci = ["packaging>=25.0"]
 lint = [
   { include-group = "extras" },
   "dprint-py>=0.50.1.4",
-  "ruff>=0.12.10",
+  "ruff>=0.13.0",
   "sp-repo-review[cli]>=2025.5.2",
 ]
 type = [
@@ -118,7 +118,7 @@ reportImplicitOverride = true
 reportImportCycles = true
 reportMissingSuperCall = true
 reportPropertyTypeMismatch = false
-reportShadowedImports = true
+reportShadowedImports = false
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
 reportUnusedCallResult = true
