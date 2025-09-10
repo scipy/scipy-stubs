@@ -16,7 +16,6 @@ bounds: Sequence[Bound]
 res = linprog(c, bounds=bounds)
 assert_type(res.fun, float | None)
 assert_type(res.x, np.ndarray[tuple[int], np.dtype[np.float64]] | None)
-assert_type(res.fun, float | None)
 assert_type(res.success, bool)
 assert_type(res.message, str)
 
