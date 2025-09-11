@@ -16,7 +16,7 @@ _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=Any, covariant=True)
 
 _PadType: TypeAlias = Literal["zeros", "edge", "even", "odd"]
-_FFTModeType: TypeAlias = Literal["centered", "onesided", "onesided2X", "twosided"]
+_FFTMode: TypeAlias = Literal["twosided", "centered", "onesided", "onesided2X"]
 _ScaleTo: TypeAlias = Literal["magnitude", "psd"]
 _Scaling: TypeAlias = Literal[_ScaleTo, "unitary"]
 _Detr: TypeAlias = (
@@ -33,7 +33,7 @@ class ShortTimeFFT(Generic[_InexactT_co]):
     _hop: Final[int]
 
     _fs: float
-    _fft_mode: _FFTModeType = "onesided"
+    _fft_mode: _FFTMode = "onesided"
     _mfft: int
     _scaling: _Scaling | None = None
     _phase_shift: int | None
@@ -42,6 +42,11 @@ class ShortTimeFFT(Generic[_InexactT_co]):
     _fac_psd: float | None = None
     _lower_border_end: tuple[int, int] | None = None
 
+    _cache_post_padding: tuple[int, tuple[int, int]] = ...
+    _cache_upper_border_begin: tuple[int, tuple[int, int]] = ...
+    _cache_t: tuple[tuple[int, int | None, int | None, int, float], onp.Array1D[np.float64]] = ...
+    _cache_f: tuple[tuple[_FFTMode, int, float], onp.Array1D[np.float64]] = ...
+
     @classmethod
     def from_dual(
         cls,
@@ -49,7 +54,7 @@ class ShortTimeFFT(Generic[_InexactT_co]):
         hop: int,
         fs: float,
         *,
-        fft_mode: _FFTModeType = "onesided",
+        fft_mode: _FFTMode = "onesided",
         mfft: int | None = None,
         scale_to: _ScaleTo | None = None,
         phase_shift: int | None = 0,
@@ -63,7 +68,7 @@ class ShortTimeFFT(Generic[_InexactT_co]):
         noverlap: int,
         *,
         symmetric_win: bool = False,
-        fft_mode: _FFTModeType = "onesided",
+        fft_mode: _FFTMode = "onesided",
         mfft: int | None = None,
         scale_to: _ScaleTo | None = None,
         phase_shift: int | None = 0,
@@ -75,7 +80,7 @@ class ShortTimeFFT(Generic[_InexactT_co]):
         hop: int,
         fs: float,
         *,
-        fft_mode: _FFTModeType = "onesided",
+        fft_mode: _FFTMode = "onesided",
         mfft: int | None = None,
         scale_to: _Scaling | None = None,
         phase_shift: int | None = 0,
@@ -131,9 +136,9 @@ class ShortTimeFFT(Generic[_InexactT_co]):
 
     #
     @property
-    def fft_mode(self, /) -> _FFTModeType: ...
+    def fft_mode(self, /) -> _FFTMode: ...
     @fft_mode.setter
-    def fft_mode(self, /, t: _FFTModeType) -> None: ...
+    def fft_mode(self, /, t: _FFTMode) -> None: ...
 
     #
     @property
@@ -148,6 +153,11 @@ class ShortTimeFFT(Generic[_InexactT_co]):
     def phase_shift(self, /, v: int | None) -> None: ...
 
     #
+    @property
+    def _pre_padding(self, /) -> tuple[int, int]: ...
+    def _post_padding(self, /, n: int) -> tuple[int, int]: ...
+
+    #
     def __init__(
         self,
         /,
@@ -155,7 +165,7 @@ class ShortTimeFFT(Generic[_InexactT_co]):
         hop: int,
         fs: float,
         *,
-        fft_mode: _FFTModeType = "onesided",
+        fft_mode: _FFTMode = "onesided",
         mfft: int | None = None,
         dual_win: onp.ArrayND[_InexactT_co] | None = None,
         scale_to: _ScaleTo | None = None,
