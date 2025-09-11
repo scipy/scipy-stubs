@@ -5,7 +5,7 @@ updates:
     schedule:
       interval: daily
     allow:
-      - dependency-type: "all"
+      - dependency-type: all
     labels:
       - "tool: github actions"
     commit-message:
@@ -20,7 +20,9 @@ updates:
     schedule:
       interval: daily
     allow:
-      - dependency-type: "all"
+      - dependency-type: all
+    ignore:
+      - dependency-name: scipy
     labels:
       - "topic: dependencies"
     commit-message:
