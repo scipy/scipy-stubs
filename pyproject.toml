@@ -9,7 +9,7 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 
 [project]
 name = "scipy-stubs"
-version = "1.16.2.0"
+version = "1.16.2.1.dev0"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
@@ -61,7 +61,7 @@ type = [
   { include-group = "ci" },
   "array-api-compat==1.12.0", # bundled as `scipy._lib.array_api_compat`
   "basedpyright>=1.31.4",
-  "mypy[faster-cache]>=1.17.1",
+  "mypy[faster-cache]>=1.17.1,<1.18",
 ]
 dev = [
   { include-group = "lint" },
