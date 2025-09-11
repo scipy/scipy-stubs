@@ -42,6 +42,9 @@ jobs:
           uv run ruff check --output-format=github
           uv run ruff format --check
 
+      - name: check version literals
+        run: uv run scripts/check_version_literals.py
+
       # mypy_primer expects pyright to pass
       - name: pyright
         uses: jakebailey/pyright-action@v2.3.3

@@ -21,6 +21,8 @@ pre-commit:
     - name: basedpyright
       glob: "*.{py,pyi}"
       run: uv {run} basedpyright --threads=3 {staged_files}
+    - name: check-version-literals
+      run: uv {run} scripts/check_version_literals.py
 
 post-checkout:
   jobs:
