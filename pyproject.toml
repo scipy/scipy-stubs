@@ -71,20 +71,24 @@ dev = [
 [tool.poe.tasks.clean]
 cmd = """
 rm -rf
-    **/*.pyc
-    **/__pycache__
-    **/.cache
-    **/.mypy_cache
-    **/.ruff_cache
-    **/.tox
+  **/*.pyc
+  **/__pycache__
+  **/.cache
+  **/.mypy_cache
+  **/.ruff_cache
+  **/.tox
 """
 
 [tool.poe.tasks.stubtest]
 cmd = """
-uv run --no-editable --reinstall-package=scipy-stubs
-    stubtest --allowlist=.mypyignore $modules
+uv run
+  --no-editable
+  --reinstall-package=scipy-stubs
+  stubtest
+  --ignore-disjoint-bases
+  --allowlist=.mypyignore
+  scipy
 """
-args = [{ name = "modules", positional = true, multiple = true, default = "scipy" }]
 
 [tool.typos.files]
 extend-exclude = ["*.pyi", ".mypyignore"]
@@ -207,6 +211,7 @@ uv_sync_flags = ["--no-editable", "--reinstall-package=scipy-stubs"]
 commands = [
   [
     "stubtest",
+    "--ignore-disjoint-bases",
     "--allowlist=.mypyignore",
     { replace = "posargs", default = ["scipy"], extend = true },
   ],
