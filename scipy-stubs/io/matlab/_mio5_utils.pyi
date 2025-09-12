@@ -16,8 +16,8 @@ _bint: TypeAlias = Literal[0, 1] | bool  # noqa: PYI042
 ###
 
 # NOTE: These apprear to be broken, and will always raise `TypeError: no default __reduce__ due to non-trivial __cinit__`
-def __reduce_cython__(self: Never) -> Never: ...  # undocumented
-def __setstate_cython__(self: Never, __pyx_state: Never) -> None: ...  # undocumented  # pyright: ignore[reportGeneralTypeIssues]
+def __reduce_cython__(self: Never, /) -> Never: ...  # undocumented
+def __setstate_cython__(self: Never, pyx_state: Never, /) -> None: ...  # undocumented
 
 swapped_code: Final[Literal[">", "<"]] = ...  # undocumented  # ">" sys.byteorder == "little" else "<"
 
