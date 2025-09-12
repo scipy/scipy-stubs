@@ -12,7 +12,7 @@ from scipy.sparse import csc_matrix
 
 _FloatingT = TypeVar("_FloatingT", bound=npc.floating)
 _ToFloatT = TypeVar("_ToFloatT", bound=onp.ToFloat)
-_InterpT_co = TypeVar("_InterpT_co", bound=DenseOutput, default=DenseOutput, covariant=True)
+_InterpT_co = TypeVar("_InterpT_co", bound=DenseOutput[npc.inexact], default=DenseOutput[Any], covariant=True)
 
 _ToFloat64: TypeAlias = np.float16 | np.float32 | np.float64 | npc.integer | np.bool_
 

@@ -63,7 +63,7 @@ class BDF(OdeSolver, Generic[_SCT_co]):
         **extraneous: Never,
     ) -> None: ...
 
-class BdfDenseOutput(DenseOutput):
+class BdfDenseOutput(DenseOutput[np.float64]):
     order: int
     t_shift: onp.ArrayND[np.float64]
     denom: onp.ArrayND[np.float64]
