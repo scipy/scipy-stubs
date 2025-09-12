@@ -60,7 +60,7 @@ class DOP853(RungeKutta[_SCT_fc], Generic[_SCT_fc]):
 
     K_extended: onp.ArrayND[_SCT_fc]
 
-class RkDenseOutput(DenseOutput, Generic[_SCT_fc]):
+class RkDenseOutput(DenseOutput[_SCT_fc], Generic[_SCT_fc]):
     h: float
     order: int
     Q: onp.ArrayND[_SCT_fc]
@@ -68,7 +68,7 @@ class RkDenseOutput(DenseOutput, Generic[_SCT_fc]):
 
     def __init__(self, /, t_old: float, t: float, y_old: onp.ArrayND[_SCT_fc], Q: onp.ArrayND[_SCT_fc]) -> None: ...
 
-class Dop853DenseOutput(DenseOutput, Generic[_SCT_fc]):
+class Dop853DenseOutput(DenseOutput[_SCT_fc], Generic[_SCT_fc]):
     h: float
     F: onp.ArrayND[_SCT_fc]
     y_old: onp.ArrayND[_SCT_fc]

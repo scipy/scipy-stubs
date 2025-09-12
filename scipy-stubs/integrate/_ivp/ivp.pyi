@@ -72,7 +72,7 @@ class OdeResult(_RichResult[Any], Generic[_Inexact64T_co]):
 def prepare_events(events: _Events[_Inexact64T]) -> tuple[_Events[_Inexact64T], _Float1D, _Float1D]: ...
 def solve_event_equation(event: _FuncEvent[_Inexact64T], sol: _FuncSol[_Inexact64T], t_old: float, t: float) -> float: ...
 def handle_events(
-    sol: DenseOutput,
+    sol: DenseOutput[Any],
     events: Sequence[_FuncEvent[_Inexact64T]],
     active_events: onp.ArrayND[np.intp],
     event_count: onp.ArrayND[np.intp | np.float64],

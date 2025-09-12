@@ -69,7 +69,7 @@ class Radau(OdeSolver):
         **extraneous: Never,
     ) -> None: ...
 
-class RadauDenseOutput(DenseOutput):
+class RadauDenseOutput(DenseOutput[np.float64]):
     order: int
     h: float
     Q: onp.ArrayND[np.float64]
