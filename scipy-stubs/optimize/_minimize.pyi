@@ -7,8 +7,8 @@ import optype.numpy.compat as npc
 from numpy_typing_compat import ABCPolyBase
 
 from ._hessian_update_strategy import HessianUpdateStrategy
+from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
-from .optimize import OptimizeResult as _OptimizeResult
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["minimize", "minimize_scalar"]
