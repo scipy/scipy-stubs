@@ -98,9 +98,14 @@ extend-ignore-identifiers-re = ['ND|Nd']
 
 [tool.mypy]
 strict = true
-disallow_subclassing_any = false
+strict_equality_for_none = true
+# required by repo-review
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
-warn_unreachable = false # required by repo-review
+warn_unreachable = false
+# experimental
+fixed_format_cache = true
+local_partial_types = true
+allow_redefinition_new = true
 
 [tool.pyright]
 exclude = [
