@@ -4,10 +4,12 @@ from collections.abc import Callable
 from typing import Any
 from typing_extensions import deprecated
 
+from ._optimize import OptimizeResult as _OptimizeResult
+
 __all__ = ["OptimizeResult", "fmin_slsqp", "slsqp"]
 
 @deprecated("will be removed in SciPy v2.0.0")
-class OptimizeResult(Any): ...
+class OptimizeResult(_OptimizeResult): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 def fmin_slsqp(
