@@ -6,7 +6,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_ScalarT = TypeVar("_ScalarT", bound=np.float64 | np.complex128, default=np.float64)
+_ScalarT = TypeVar("_ScalarT", bound=np.float64 | np.complex128, default=np.float64 | Any)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.inexact, default=np.float64 | Any, covariant=True)
 
 _ToFunReal: TypeAlias = Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND]

@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Final, Generic, Never, TypeAlias
+from typing import Any, Final, Generic, Never, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -7,17 +7,22 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from .base import DenseOutput, OdeSolver
-from scipy.sparse import sparray, spmatrix
+from scipy.sparse import csc_matrix, sparray, spmatrix
 
 ###
 
-_SCT_co = TypeVar("_SCT_co", covariant=True, bound=npc.inexact, default=np.float64 | np.complex128)
+_NumberT = TypeVar("_NumberT", bound=npc.number)
+_InexactT = TypeVar("_InexactT", bound=np.float64 | np.complex128, default=np.float64 | Any)
 
 _LU: TypeAlias = tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.integer]]
 _FuncLU: TypeAlias = Callable[[onp.ArrayND[np.float64]], _LU] | Callable[[onp.ArrayND[np.complex128]], _LU]
 _FuncSolveLU: TypeAlias = Callable[[_LU, onp.ArrayND], onp.ArrayND[npc.inexact]]
 
-_ToJac: TypeAlias = onp.ToComplex2D | spmatrix | sparray
+_Sparse2D: TypeAlias = spmatrix[_NumberT] | sparray[_NumberT, tuple[int, int]]
+_ArrayOrCSC: TypeAlias = onp.Array2D[_NumberT] | csc_matrix[_NumberT]
+
+_ToJacReal: TypeAlias = onp.ToFloat2D | _Sparse2D[npc.floating | npc.integer]
+_ToJacComplex: TypeAlias = onp.ToComplex2D | _Sparse2D[npc.number]
 
 ###
 
@@ -26,40 +31,63 @@ NEWTON_MAXITER: Final = 4
 MIN_FACTOR: Final = 0.2
 MAX_FACTOR: Final = 10
 
-class BDF(OdeSolver, Generic[_SCT_co]):
+class BDF(OdeSolver[_InexactT], Generic[_InexactT]):
     max_step: float
     h_abs: float
     h_abs_old: float | None
     error_norm_old: None
     newton_tol: float
-    jac_factor: onp.ArrayND[np.float64] | None  # 1d
 
-    LU: _LU
+    jac_factor: onp.Array1D[np.float64] | None
+    jac: Callable[[float, onp.ArrayND[_InexactT]], _ArrayOrCSC[_InexactT]] | None
+
+    J: _ArrayOrCSC[_InexactT]
+    I: _ArrayOrCSC[_InexactT]
+    D: onp.Array2D[_InexactT]
+
+    LU: _LU | None
     lu: _FuncLU
     solve_lu: _FuncSolveLU
 
-    I: onp.ArrayND[_SCT_co]
-    error_const: onp.ArrayND[np.float64]
-    gamma: onp.ArrayND[np.float64]
-    alpha: onp.ArrayND[np.float64]
-    D: onp.ArrayND[np.float64]
-    order: int
+    gamma: onp.Array1D[np.float64]
+    alpha: onp.Array1D[np.float64]
+    error_const: onp.Array1D[np.float64]
+
+    order: int | np.intp
     n_equal_steps: int
 
+    @overload
     def __init__(
-        self,
+        self: OdeSolver[np.float64],
         /,
-        fun: Callable[[float, onp.Array1D[_SCT_co]], onp.ToComplex1D],
-        t0: onp.ToFloat,
-        y0: onp.Array1D[_SCT_co] | onp.ToComplexND,
-        t_bound: onp.ToFloat,
-        max_step: onp.ToFloat = ...,
-        rtol: onp.ToFloat = 0.001,
-        atol: onp.ToFloat = 1e-06,
-        jac: _ToJac | Callable[[float, onp.ArrayND[_SCT_co]], _ToJac] | None = None,
-        jac_sparsity: _ToJac | None = None,
+        fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND],
+        t0: float,
+        y0: onp.ToFloatND,
+        t_bound: float,
+        max_step: float = ...,  # = np.inf
+        rtol: float = 1e-3,
+        atol: float = 1e-6,
+        jac: _ToJacReal | Callable[[float, onp.ArrayND[np.float64]], _ToJacReal] | None = None,
+        jac_sparsity: _ToJacReal | None = None,
         vectorized: bool = False,
-        first_step: onp.ToFloat | None = None,
+        first_step: float | None = None,
+        **extraneous: Never,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: OdeSolver[np.complex128],
+        /,
+        fun: Callable[[float, onp.ArrayND[np.complex128]], onp.ToComplexND],
+        t0: float,
+        y0: onp.ToJustComplexND,
+        t_bound: float,
+        max_step: float = ...,  # = np.inf
+        rtol: float = 1e-3,
+        atol: float = 1e-6,
+        jac: _ToJacComplex | Callable[[float, onp.ArrayND[np.complex128]], _ToJacComplex] | None = None,
+        jac_sparsity: _ToJacComplex | None = None,
+        vectorized: bool = False,
+        first_step: float | None = None,
         **extraneous: Never,
     ) -> None: ...
 
@@ -73,13 +101,13 @@ class BdfDenseOutput(DenseOutput[np.float64]):
 def compute_R(order: int, factor: float) -> onp.ArrayND[np.float64]: ...
 def change_D(D: onp.ArrayND[np.float64], order: int, factor: float) -> None: ...
 def solve_bdf_system(
-    fun: Callable[[float, onp.ArrayND[_SCT_co]], onp.ToComplex1D],
+    fun: Callable[[float, onp.ArrayND[_InexactT]], onp.ToComplex1D],
     t_new: onp.ToFloat,
-    y_predict: onp.ArrayND[_SCT_co],
+    y_predict: onp.ArrayND[_InexactT],
     c: float,
     psi: onp.ArrayND[np.float64],
     LU: _FuncLU,
     solve_lu: _FuncSolveLU,
     scale: onp.ArrayND[np.float64],
     tol: float,
-) -> tuple[bool, int, onp.ArrayND[_SCT_co], onp.ArrayND[_SCT_co]]: ...
+) -> tuple[bool, int, onp.ArrayND[_InexactT], onp.ArrayND[_InexactT]]: ...
