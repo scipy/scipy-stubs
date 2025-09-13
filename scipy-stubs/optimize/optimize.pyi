@@ -1,7 +1,8 @@
 # This file is not meant for public use and will be removed in SciPy v2.0.0.
 
-from typing import Any
 from typing_extensions import deprecated
+
+from ._optimize import OptimizeResult as _OptimizeResult
 
 __all__ = [
     "OptimizeResult",
@@ -31,7 +32,7 @@ __all__ = [
 def zeros(shape: object, dtype: object = ..., order: object = ..., *, device: object = ..., like: object = ...) -> object: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-class OptimizeResult(Any): ...
+class OptimizeResult(_OptimizeResult): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class OptimizeWarning(UserWarning): ...
