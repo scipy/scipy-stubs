@@ -278,6 +278,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 - [asammdf](https://github.com/danielhrisca/asammdf)
 - [Chemotools](https://github.com/paucablop/chemotools)
 - [Colour](https://github.com/colour-science/colour)
+- [Colour - Checker Detection](https://github.com/colour-science/colour-checker-detection)
 - [Colour - Visuals](https://github.com/colour-science/colour-visuals)
 - [CSAPS](https://github.com/espdev/csaps)
 - [cuPyNumeric](https://github.com/nv-legate/cupynumeric)
