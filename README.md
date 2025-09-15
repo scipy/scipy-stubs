@@ -295,6 +295,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 - [Namer](https://github.com/ThePornDatabase/namer)
 - [NeuroGym](https://github.com/neurogym/neurogym)
 - [Optuna](https://github.com/optuna/optuna)
+- [pandas](https://github.com/pandas-dev/pandas)
 - [pandas-stubs](https://github.com/pandas-dev/pandas-stubs)
 - [Pandera](https://github.com/unionai-oss/pandera)
 - [ProgressiVis](https://github.com/progressivis/progressivis)
