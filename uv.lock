@@ -46,14 +46,14 @@ wheels = [
 
 [[package]]
 name = "dprint-py"
-version = "0.50.1.4"
+version = "0.50.2.0"
 source = { registry = "https://pypi.org/simple" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/02/07/357c1a997f13b9a72cb86f654e9cfc087b68856102c3d78bf2a0646f0461/dprint_py-0.50.1.4-py3-none-macosx_11_0_arm64.whl", hash = "sha256:c1bc95f56c832f38a07fd76d7bee438b6e3f64128b9d5c31eed42e2fe79e4b5a", size = 21151554, upload-time = "2025-07-31T13:04:26.013Z" },
-    { url = "https://files.pythonhosted.org/packages/6c/10/25ec06220055a4d38f728bdf26f95b1f7ffc44987cf44a3fefca0911fa31/dprint_py-0.50.1.4-py3-none-macosx_11_0_x86_64.whl", hash = "sha256:02d373d8aee97bfe2b91423351fbd3b5e2efef1c30dcf469599db42725265d67", size = 22366839, upload-time = "2025-07-31T13:04:28.376Z" },
-    { url = "https://files.pythonhosted.org/packages/f9/41/1bcd3f5113bd1818f07ab1889163384aa74db052b1bfe361ab1518cfc5aa/dprint_py-0.50.1.4-py3-none-manylinux_2_17_aarch64.whl", hash = "sha256:a9261c4cdcb1d88d289ded67e3c0f678ea85367464ab99c65e46baaa2c120dd5", size = 23884927, upload-time = "2025-07-31T13:04:30.742Z" },
-    { url = "https://files.pythonhosted.org/packages/d7/86/ab569f5b7203156767e2cd2be60d0febef18043ca9c1d4d37b7c6429b4f7/dprint_py-0.50.1.4-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:89fd0253fd11d4f80db2c779f056065cd345199684e60fa89494b1876d5485d8", size = 24459510, upload-time = "2025-07-31T13:04:33.901Z" },
-    { url = "https://files.pythonhosted.org/packages/cb/2c/d71cd39383342e0bcfb7b0330ebdc8089c300d535674a1de2ee41c29ba97/dprint_py-0.50.1.4-py3-none-win_amd64.whl", hash = "sha256:7e141c1a0d5dc9793b7029808447c5f648499729ed57e35a3d56e9d608d09610", size = 20604053, upload-time = "2025-07-31T13:04:36.821Z" },
+    { url = "https://files.pythonhosted.org/packages/47/2d/a43c88180a8029cf4b9a31cc96153b8b0ab93c96582d36b1108bf3e7ff54/dprint_py-0.50.2.0-py3-none-macosx_11_0_arm64.whl", hash = "sha256:1d348a96acc1bbaf6d6e6191f334614b64772159c0737ebca7a0e1a580501bc3", size = 21260194, upload-time = "2025-09-14T05:02:29.053Z" },
+    { url = "https://files.pythonhosted.org/packages/31/15/42c94194d3fb9b5300c0d24ead24ba51093b2a30d7873546f0973b405af1/dprint_py-0.50.2.0-py3-none-macosx_11_0_x86_64.whl", hash = "sha256:9ddf5090636a9785415d754ab3f77ed7188253d5b628e6ba4acdf240777b36d5", size = 22542955, upload-time = "2025-09-14T05:02:32.692Z" },
+    { url = "https://files.pythonhosted.org/packages/32/45/348e9030d6c37d4b262d02463d878273c214b6afccb902a73af41dd98797/dprint_py-0.50.2.0-py3-none-manylinux_2_17_aarch64.whl", hash = "sha256:83053177d170a648277ce67f9f39703a87529c6850a7c48bc5b723670c3efc34", size = 23944295, upload-time = "2025-09-14T05:02:35.838Z" },
+    { url = "https://files.pythonhosted.org/packages/99/2f/e2fbe538b3ff960b184d8f19cfebd88cdfc1554939a754cc124cdd610e66/dprint_py-0.50.2.0-py3-none-manylinux_2_17_x86_64.whl", hash = "sha256:61ca954449445a0795c31e38d56ebdbf24f67884b1f22e782e52d09bb54abfd0", size = 24559662, upload-time = "2025-09-14T05:02:38.991Z" },
+    { url = "https://files.pythonhosted.org/packages/61/7e/366c14840e8e7ea8b148cabcf07ed1e7df18664cb357709f81a79755c11d/dprint_py-0.50.2.0-py3-none-win_amd64.whl", hash = "sha256:29056d12fbf18ca302351e0e0d16567b13eccef3236c0d29fc86082a233f13b4", size = 20666005, upload-time = "2025-09-14T05:02:41.785Z" },
 ]
 
 [[package]]
@@ -580,7 +580,7 @@ ci = [{ name = "packaging", specifier = ">=25.0" }]
 dev = [
     { name = "array-api-compat", specifier = "==1.12.0" },
     { name = "basedpyright", specifier = "==1.31.4" },
-    { name = "dprint-py", specifier = "==0.50.1.4" },
+    { name = "dprint-py", specifier = "==0.50.2.0" },
     { name = "mypy", extras = ["faster-cache"], specifier = "==1.18.1" },
     { name = "packaging", specifier = ">=25.0" },
     { name = "ruff", specifier = "==0.13.0" },
@@ -589,7 +589,7 @@ dev = [
 ]
 extras = [{ name = "scipy-stubs", extras = ["scipy"] }]
 lint = [
-    { name = "dprint-py", specifier = "==0.50.1.4" },
+    { name = "dprint-py", specifier = "==0.50.2.0" },
     { name = "ruff", specifier = "==0.13.0" },
     { name = "scipy-stubs", extras = ["scipy"] },
     { name = "sp-repo-review", extras = ["cli"], specifier = "==2025.5.2" },
