@@ -161,15 +161,16 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 
 ### `scipy.integrate`
 
-| generic type                  | `scipy-stubs`           | `scipy`  |                                                                                               |
-| ----------------------------- | ----------------------- | -------- | --------------------------------------------------------------------------------------------- |
-| `BDF[T: f64 \| c128]`         | `>=1.14.0.1`            | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.BDF.html)         |
-| `DOP853[T: f64 \| c128]`      | `>=1.14.0.1`            | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.DOP853.html)      |
-| `RK23[T: f64 \| c128]`        | `>=1.14.0.1`            | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.RK23.html)        |
-| `RK45[T: f64 \| c128]`        | `>=1.14.0.1`            | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.RK45.html)        |
-| `ode[*ArgTs]`                 | `>=1.14.0.0, <1.16.0.3` | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html)         |
-| `ode[T: f64 \| c128, *ArgTs]` | `>=1.16.0.3`            | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html)         |
-| `complex_ode[*ArgTs]`         | `>=1.14.0.0`            | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.complex_ode.html) |
+| generic type                  | `scipy-stubs` | `scipy`  |                                                                                               |
+| ----------------------------- | ------------- | -------- | --------------------------------------------------------------------------------------------- |
+| `BDF[T: f64 \| c128]`         | `>=1.14.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.BDF.html)         |
+| `DOP853[T: f64 \| c128]`      | `>=1.14.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.DOP853.html)      |
+| `RK23[T: f64 \| c128]`        | `>=1.14.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.RK23.html)        |
+| `RK45[T: f64 \| c128]`        | `>=1.14.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.RK45.html)        |
+| `OdeSolver[T: f64 \| c128]`   | `>=1.16.2.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.OdeSolver.html)   |
+| `DenseOutput[T: inexact]`     | `>=1.16.2.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.DenseOutput.html) |
+| `ode[T: f64 \| c128, *ArgTs]` | `>=1.16.0.3`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.ode.html)         |
+| `complex_ode[*ArgTs]`         | `>=1.14.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.complex_ode.html) |
 
 ### `scipy.interpolate`
 
