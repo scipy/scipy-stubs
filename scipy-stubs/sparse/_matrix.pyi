@@ -3,8 +3,8 @@
 
 from collections.abc import Sequence
 from types import GenericAlias
-from typing import Any, Generic, Literal as L, Self, SupportsIndex, TypeAlias, TypeAliasType, overload, type_check_only
-from typing_extensions import TypeVar
+from typing import Any, Generic, Literal as L, Self, SupportsIndex, TypeAlias, overload, type_check_only
+from typing_extensions import TypeAliasType, TypeVar
 
 import numpy as np
 import optype as op
