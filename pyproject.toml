@@ -108,8 +108,7 @@ local_partial_types = true
 allow_redefinition_new = true
 
 [tool.pyrefly]
-# project-includes = ["scipy-stubs", "scripts", "tests"]
-project-includes = ["scipy-stubs"]
+project-includes = ["scipy-stubs", "scripts", "tests"]
 
 [[tool.pyrefly.sub-config]]
 matches = "scipy-stubs/*/__init__.pyi"
