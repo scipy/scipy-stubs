@@ -107,9 +107,9 @@ assert_type(csr_mat.getnnz(-2), _Index1D)
 csr_mat.getnnz(2)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 csr_mat.getnnz(-3)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 
-assert_type(isspmatrix(csr_arr), bool)
-assert_type(isspmatrix(csr_mat), bool)
-assert_type(isspmatrix(object()), bool)
+assert_type(isspmatrix(csr_arr), bool)  # pyrefly: ignore[assert-type]
+assert_type(isspmatrix(csr_mat), bool)  # pyrefly: ignore[assert-type]
+assert_type(isspmatrix(object()), bool)  # pyrefly: ignore[assert-type]
 
 # __getitem__
 assert_type(csr_vec[0], ScalarType)
@@ -134,7 +134,7 @@ assert_type(csr_arr[seq_bool], csr_array[ScalarType, tuple[int, int]])
 assert_type(csr_arr[seq_int], csr_array[ScalarType, tuple[int, int]])
 assert_type(csr_arr[0, None], csr_array[ScalarType, tuple[int, int]])
 assert_type(csr_arr[None, 0], csr_array[ScalarType, tuple[int, int]])
-assert_type(csr_arr[seq_int, seq_int], np.ndarray[tuple[int], np.dtype[ScalarType]])
+assert_type(csr_arr[seq_int, seq_int], np.ndarray[tuple[int], np.dtype[ScalarType]])  # pyrefly: ignore[assert-type]
 
 csr_mat[None]  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(csr_mat[0, 0], ScalarType)
@@ -148,10 +148,10 @@ assert_type(csr_mat[seq_bool], csr_matrix[ScalarType])
 assert_type(csr_mat[seq_int], csr_matrix[ScalarType])
 assert_type(csr_mat[0, None], csr_matrix[ScalarType])
 assert_type(csr_mat[None, 0], csr_matrix[ScalarType])
-assert_type(csr_mat[seq_int, seq_int], np.matrix[tuple[int, int], np.dtype[ScalarType]])
+assert_type(csr_mat[seq_int, seq_int], np.matrix[tuple[int, int], np.dtype[ScalarType]])  # pyrefly: ignore[assert-type]
 
 # T
-assert_type(csr_vec.T, csr_array[ScalarType, tuple[int]])
+assert_type(csr_vec.T, csr_array[ScalarType, tuple[int]])  # pyrefly: ignore[assert-type]
 assert_type(csr_arr.T, csc_array[ScalarType])
 assert_type(csr_mat.T, csc_matrix[ScalarType])
 

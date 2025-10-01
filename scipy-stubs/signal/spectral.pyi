@@ -1,7 +1,7 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 from typing_extensions import deprecated
 
-from .windows.windows import get_window
+from .windows.windows import get_window  # pyrefly: ignore[deprecated]
 
 __all__ = [
     "check_COLA",

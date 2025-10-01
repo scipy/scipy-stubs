@@ -2,4 +2,4 @@
 
 from scipy.interpolate import dfitpack
 
-dfitpack.spalde(1, 1, 1, 1)  # pyright: ignore[reportDeprecated]
+dfitpack.spalde(1, 1, 1, 1)  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]

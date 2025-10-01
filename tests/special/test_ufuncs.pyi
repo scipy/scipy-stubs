@@ -62,7 +62,7 @@ assert_type(sp.cbrt([0]), _Float64ND)
 assert_type(sp.cbrt(0.0), np.float64)
 assert_type(sp.cbrt([0.0]), _Float64ND)
 sp.cbrt(0j)  # type:ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
-sp.cbrt([0j])  # pyright: ignore[reportArgumentType, reportCallIssue]
+sp.cbrt([0j])  # pyright: ignore[reportArgumentType, reportCallIssue]  # pyrefly: ignore[no-matching-overload]
 assert_type(sp.cbrt.at(_b1_nd, _i), None)
 assert_type(sp.cbrt.at(_f8_nd, _i), None)
 sp.cbrt.at(_c16, _i)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType]

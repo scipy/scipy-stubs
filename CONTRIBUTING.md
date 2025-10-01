@@ -24,7 +24,7 @@ Ensure you have [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
 installed. Now you can install the project with the dev dependencies:
 
 ```shell
-uv sync --python 3.11
+uv sync --exact --python 3.11
 ```
 
 Installing the lowest supported Python version (3.11 in this example) prevents
@@ -76,18 +76,22 @@ uvx tox p
 <summary>Output:</summary>
 
 ```plaintext
-lint: OK ✔ in 0.6 seconds
-pyright: OK ✔ in 11.97 seconds
-mypy: OK ✔ in 16.69 seconds
-3.11: OK ✔ in 18.05 seconds
-3.12: OK ✔ in 22.94 seconds
-  lint: OK (0.60=setup[0.30]+cmd[0.16,0.11,0.04] seconds)
-  pyright: OK (11.97=setup[0.30]+cmd[11.67] seconds)
-  mypy: OK (16.69=setup[0.30]+cmd[16.39] seconds)
-  3.13: OK (25.80=setup[0.30]+cmd[25.51] seconds)
-  3.12: OK (22.94=setup[0.29]+cmd[22.64] seconds)
-  3.11: OK (18.05=setup[0.30]+cmd[17.75] seconds)
-  congratulations :) (25.84 seconds)
+lint: OK ✔ in 0.79 seconds
+pyrefly: OK ✔ in 1.19 seconds
+mypy: OK ✔ in 15.16 seconds
+pyright: OK ✔ in 17.69 seconds
+3.14: OK ✔ in 17.97 seconds
+3.13: OK ✔ in 18.37 seconds
+3.12: OK ✔ in 18.61 seconds
+  lint: OK (0.79=setup[0.11]+cmd[0.43,0.06,0.14,0.04] seconds)
+  pyrefly: OK (1.19=setup[0.18]+cmd[1.01] seconds)
+  pyright: OK (17.69=setup[0.13]+cmd[17.56] seconds)
+  mypy: OK (15.16=setup[0.29]+cmd[14.86] seconds)
+  3.11: OK (18.72=setup[0.20]+cmd[18.52] seconds)
+  3.12: OK (18.61=setup[0.26]+cmd[18.35] seconds)
+  3.13: OK (18.37=setup[0.37]+cmd[18.00] seconds)
+  3.14: OK (17.97=setup[0.17]+cmd[17.80] seconds)
+  congratulations :) (18.74 seconds)
 ```
 
 </details>

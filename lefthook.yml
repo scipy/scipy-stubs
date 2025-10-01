@@ -8,6 +8,7 @@ pre-commit:
       glob: "*.{json,jsonc,md,toml,yaml,yml}"
       stage_fixed: true
       run: uv {run} dprint fmt --incremental=false
+
     - name: ruff
       glob: "*.{py,pyi}"
       stage_fixed: true
@@ -18,9 +19,15 @@ pre-commit:
             run: uv {run} ruff check --fix {staged_files}
           - name: format
             run: uv {run} ruff format {staged_files}
+
     - name: basedpyright
       glob: "*.{py,pyi}"
       run: uv {run} basedpyright --threads=3 {staged_files}
+
+    - name: pyrefly
+      glob: "*.{py,pyi}"
+      run: uv {run} pyrefly check {staged_files}
+
     - name: check-version-literals
       run: uv {run} scripts/check_version_literals.py
 

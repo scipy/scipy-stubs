@@ -69,7 +69,7 @@ class _lil_base(_spbase[_ScalarT_co, tuple[int, int]], IndexMixin[_ScalarT_co, t
     @override
     def tolil(self, /, copy: bool = False) -> Self: ...  # type: ignore[override]
     @override
-    def resize(self, /, *shape: int) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def resize(self, /, *shape: int) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
 
     # NOTE: Adding `@override` here will crash stubtest (mypy 1.15.0)
     @overload

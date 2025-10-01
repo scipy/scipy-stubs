@@ -16,10 +16,11 @@ assert_type(datasets.clear_cache([datasets.electrocardiogram]), None)
 assert_type(datasets.clear_cache((datasets.electrocardiogram,)), None)
 
 # face
-assert_type(datasets.clear_cache(datasets.face), None)
+assert_type(datasets.clear_cache(datasets.face), None)  # pyrefly: ignore[bad-argument-type]
 assert_type(datasets.clear_cache([datasets.face]), None)
-assert_type(datasets.clear_cache((datasets.face,)), None)
+assert_type(datasets.clear_cache((datasets.face,)), None)  # pyrefly: ignore[bad-argument-type]
 
 # combined
 assert_type(datasets.clear_cache([datasets.ascent, datasets.electrocardiogram, datasets.face]), None)
+# pyrefly: ignore[bad-argument-type]
 assert_type(datasets.clear_cache((datasets.ascent, datasets.electrocardiogram, datasets.face)), None)

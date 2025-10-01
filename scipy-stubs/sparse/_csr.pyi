@@ -421,7 +421,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     #
     @override  # type: ignore[override]
     @overload
-    def transpose(
+    def transpose(  # pyrefly: ignore[bad-override]
         self: csr_array[_ScalarT, tuple[int, int]], /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
     ) -> csc_array[_ScalarT]: ...
     @overload

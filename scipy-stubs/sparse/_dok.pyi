@@ -87,14 +87,20 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     def __delitem__(self: _dok_base[Any, _ShapeT], key: _ShapeT, /) -> None: ...
 
     #
+    @override
     @overload
-    def setdefault(self: _dok_base[_ScalarT, _ShapeT], key: _ShapeT, default: _T, /) -> _ScalarT | _T: ...
+    def setdefault(  # pyrefly: ignore[bad-override]
+        self: _dok_base[_ScalarT, _ShapeT], key: _ShapeT, default: _T, /
+    ) -> _ScalarT | _T: ...
     @overload
     def setdefault(self: _dok_base[_ScalarT, _ShapeT], key: _ShapeT, default: None = None, /) -> _ScalarT | None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
+    @override
     @overload
-    def get(self: _dok_base[_ScalarT, _ShapeT], /, key: _ShapeT, default: _T) -> _ScalarT | _T: ...
+    def get(  # pyrefly: ignore[bad-override]
+        self: _dok_base[_ScalarT, _ShapeT], /, key: _ShapeT, default: _T
+    ) -> _ScalarT | _T: ...
     @overload
     def get(self: _dok_base[_ScalarT, _ShapeT], /, key: _ShapeT, default: float = 0.0) -> _ScalarT | float: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
@@ -106,16 +112,19 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
     def __ior__(self, other: Never, /) -> Self: ...  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
-    def update(self, /, val: Never) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def update(self, /, val: Never) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
 
     #
     @override
-    def count_nonzero(self, /, axis: None = None) -> int: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def count_nonzero(self, /, axis: None = None) -> int: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
 
     #
+    @override
     @overload
     @classmethod
-    def fromkeys(cls: type[_dok_base[np.bool_, _2D]], iterable: _ToKeys2, v: onp.ToBool, /) -> _dok_base[np.bool_, _2D]: ...
+    def fromkeys(  # pyrefly: ignore[bad-override]
+        cls: type[_dok_base[np.bool_, _2D]], iterable: _ToKeys2, v: onp.ToBool, /
+    ) -> _dok_base[np.bool_, _2D]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[_dok_base[np.bool_, _1D]], iterable: _ToKeys1, v: onp.ToBool, /) -> _dok_base[np.bool_, _1D]: ...
@@ -526,9 +535,12 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
 
     # NOTE: This horrible code duplication is required due to the lack of higher-kinded typing (HKT) support.
     # https://github.com/python/typing/issues/548
+    @override
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_array[np.bool_, _NoD]], iterable: _ToKeys, v: onp.ToBool, /) -> dok_array[np.bool_, _AnyD]: ...
+    def fromkeys(  # pyrefly: ignore[bad-override]
+        cls: type[dok_array[np.bool_, _NoD]], iterable: _ToKeys, v: onp.ToBool, /
+    ) -> dok_array[np.bool_, _AnyD]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[dok_array[np.bool_, _2D]], iterable: _ToKeys2, v: onp.ToBool, /) -> dok_array[np.bool_, _2D]: ...
@@ -712,7 +724,9 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     #
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_matrix[np.bool_]], iterable: _ToKeys2, v: onp.ToBool, /) -> dok_matrix[np.bool_]: ...
+    def fromkeys(  # pyrefly: ignore[bad-override]
+        cls: type[dok_matrix[np.bool_]], iterable: _ToKeys2, v: onp.ToBool, /
+    ) -> dok_matrix[np.bool_]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[dok_matrix[_ScalarT]], iterable: _ToKeys2, v: _ScalarT, /) -> dok_matrix[_ScalarT]: ...

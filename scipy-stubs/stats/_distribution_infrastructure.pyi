@@ -17,7 +17,7 @@ from typing import (
     overload,
     type_check_only,
 )
-from typing_extensions import ParamSpec, TypeIs, TypeVar, Unpack, override
+from typing_extensions import ParamSpec, TypeAliasType, TypeIs, TypeVar, Unpack, override
 
 import numpy as np
 import optype as op
@@ -182,15 +182,15 @@ class _Interval(_Domain[_XT_co], Generic[_XT_co]):
     #
     def __init__(self, /, endpoints: _ToDomain = ..., inclusive: tuple[bool, bool] = (False, False)) -> None: ...
     @override
-    def get_numerical_endpoints(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def get_numerical_endpoints(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-param-name-override]
         self, /, parameter_values: _ParamValues
     ) -> tuple[onp.ArrayND[_OutFloat], onp.ArrayND[_OutFloat]]: ...
     @override
-    def contains(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def contains(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-param-name-override]
         self, /, item: onp.ArrayND[_Int | _Float], parameter_values: _ParamValues | None = None
     ) -> onp.ArrayND[np.bool_]: ...
     @override
-    def draw(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def draw(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
         self,
         /,
         n: int,
@@ -210,8 +210,12 @@ class _IntegerInterval(_Interval[_IntT_co], Generic[_IntT_co]):
     @override  # https://github.com/astral-sh/ruff/issues/18372
     def __str__(self, /) -> str: ...  # noqa: PYI029
 
-_ValidateOut0D: TypeAlias = tuple[_RealT, np.dtype[_RealT], onp.Array0D[np.bool_]]
-_ValidateOutND: TypeAlias = tuple[onp.ArrayND[_RealT, _ShapeT1], np.dtype[_RealT], onp.ArrayND[np.bool_, _ShapeT1]]
+_ValidateOut0D = TypeAliasType("_ValidateOut0D", tuple[_RealT, np.dtype[_RealT], onp.Array0D[np.bool_]], type_params=(_RealT,))
+_ValidateOutND = TypeAliasType(
+    "_ValidateOutND",
+    tuple[onp.ArrayND[_RealT, _ShapeT1], np.dtype[_RealT], onp.ArrayND[np.bool_, _ShapeT1]],
+    type_params=(_RealT, _ShapeT1),
+)
 
 #
 class _Parameter(abc.ABC, Generic[_RealT_co]):
@@ -238,7 +242,9 @@ class _Parameter(abc.ABC, Generic[_RealT_co]):
     ) -> onp.ArrayND[_RealT_co]: ...
 
 class _RealParameter(_Parameter[_FloatT_co], Generic[_FloatT_co]):
+    @override
     @overload
+    # pyrefly: ignore[bad-override]
     def validate(self, /, arr: onp.ToFloat, parameter_values: _ParamValues) -> _ValidateOut0D[_FloatT_co]: ...
     @overload
     def validate(self, /, arr: onp.ToFloatND, parameter_values: _ParamValues) -> _ValidateOutND[_FloatT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
@@ -1493,7 +1499,7 @@ class Mixture(_BaseDistribution[_FloatT_co, _0D], Generic[_FloatT_co]):
     def __init__(self, /, components: Sequence[_CDist0[_FloatT_co]], *, weights: onp.ToFloat1D | None = None) -> None: ...
     #
     @override
-    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> _OutFloat: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> _OutFloat: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
 
 ###
 

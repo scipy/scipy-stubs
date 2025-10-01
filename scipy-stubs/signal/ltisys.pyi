@@ -2,8 +2,8 @@
 from typing import Self
 from typing_extensions import deprecated
 
-from .filter_design import freqs, freqs_zpk, freqz, freqz_zpk, normalize, tf2zpk, zpk2tf
-from .lti_conversion import abcd_normalize, cont2discrete, ss2tf, ss2zpk, tf2ss, zpk2ss
+from .filter_design import freqs, freqs_zpk, freqz, freqz_zpk, normalize, tf2zpk, zpk2tf  # pyrefly: ignore[deprecated]
+from .lti_conversion import abcd_normalize, cont2discrete, ss2tf, ss2zpk, tf2ss, zpk2ss  # pyrefly: ignore[deprecated]
 
 __all__ = [
     "StateSpace",
