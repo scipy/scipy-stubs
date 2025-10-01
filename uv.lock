@@ -13,14 +13,14 @@ wheels = [
 
 [[package]]
 name = "basedpyright"
-version = "1.31.5"
+version = "1.31.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "nodejs-wheel-binaries" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/23/c1/f50d6dfc35f87c75b109b414d48cdc55097b21d2f4b5fb7f74702ef0d26c/basedpyright-1.31.5.tar.gz", hash = "sha256:11bbc4af6107de1b1aa1eb76647f0c194095251dfff3c5f7aaf50376690142f5", size = 22511888, upload-time = "2025-09-24T12:53:13.202Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a9/f6/c5657b1e464d04757cde2db76922a88091fe16854bd3d12e470c23b0dcf1/basedpyright-1.31.6.tar.gz", hash = "sha256:07f3602ba1582218dfd1db25b8b69cd3493e1f4367f46a44fd57bb9034b52ea9", size = 22683901, upload-time = "2025-10-01T13:11:21.317Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/71/b3/42b736baf91f5289f8907937575a1ea1a91484a8bf0985d03ed4251c5e4f/basedpyright-1.31.5-py3-none-any.whl", hash = "sha256:a345aae09fa6c12694f401514baf87fdb66ddade36a45bf978f1920a40b08df6", size = 11738983, upload-time = "2025-09-24T12:53:09.624Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/2b/34f338b4c04fe965fd209ed872d9fdd893dacc1a06feb6c9fec13ff535c1/basedpyright-1.31.6-py3-none-any.whl", hash = "sha256:620968ee69c14eee6682f29ffd6f813a30966afb1083ecfa4caf155c5d24f2d5", size = 11805295, upload-time = "2025-10-01T13:11:18.308Z" },
 ]
 
 [[package]]
@@ -600,24 +600,24 @@ provides-extras = ["scipy"]
 ci = [{ name = "packaging", specifier = ">=25.0" }]
 dev = [
     { name = "array-api-compat", specifier = "==1.12.0" },
-    { name = "basedpyright", specifier = "==1.31.5" },
+    { name = "basedpyright", specifier = "==1.31.6" },
     { name = "dprint-py", specifier = "==0.50.2.0" },
     { name = "mypy", extras = ["faster-cache"], specifier = "==1.18.2" },
     { name = "packaging", specifier = ">=25.0" },
     { name = "ruff", specifier = "==0.13.2" },
     { name = "scipy-stubs", extras = ["scipy"] },
-    { name = "sp-repo-review", extras = ["cli"], specifier = "==2025.5.2" },
+    { name = "sp-repo-review", extras = ["cli"], specifier = "==2025.10.1" },
 ]
 extras = [{ name = "scipy-stubs", extras = ["scipy"] }]
 lint = [
     { name = "dprint-py", specifier = "==0.50.2.0" },
     { name = "ruff", specifier = "==0.13.2" },
     { name = "scipy-stubs", extras = ["scipy"] },
-    { name = "sp-repo-review", extras = ["cli"], specifier = "==2025.5.2" },
+    { name = "sp-repo-review", extras = ["cli"], specifier = "==2025.10.1" },
 ]
 type = [
     { name = "array-api-compat", specifier = "==1.12.0" },
-    { name = "basedpyright", specifier = "==1.31.5" },
+    { name = "basedpyright", specifier = "==1.31.6" },
     { name = "mypy", extras = ["faster-cache"], specifier = "==1.18.2" },
     { name = "packaging", specifier = ">=25.0" },
     { name = "scipy-stubs", extras = ["scipy"] },
@@ -625,15 +625,15 @@ type = [
 
 [[package]]
 name = "sp-repo-review"
-version = "2025.5.2"
+version = "2025.10.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml" },
     { name = "repo-review" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ec/3e/8d8c72e1ea8c4e9e8494c08057a98dd420327bdd7f5d2341cc626209d06b/sp_repo_review-2025.5.2.tar.gz", hash = "sha256:3bf9074ea64c780d15916dc426438315b30bfc8e0b802b0c46026a9a8b4a9288", size = 158493, upload-time = "2025-05-02T15:15:24.114Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/81/2c/b2e017b588114a8f4d9437d8ade805756bf479f429ad9fbbc05a34864264/sp_repo_review-2025.10.1.tar.gz", hash = "sha256:599e91e37a2d7fa6bd0446b1b434a2336f7dd3527162195cc5295af2b405c622", size = 169310, upload-time = "2025-10-01T16:29:40.075Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/be/b5/2b737b035e651f1e5b2b6291d67ba3367d5d21f0577466b003f73aefa69f/sp_repo_review-2025.5.2-py3-none-any.whl", hash = "sha256:4160ace19bffdef0452ed98cd27d2aea014cc75678fe18b80c8c60c2ba5a634f", size = 22322, upload-time = "2025-05-02T15:15:22.831Z" },
+    { url = "https://files.pythonhosted.org/packages/da/ca/c367c299c3e0c72270a13207e9b8dbb28ab8bc8e9cb42938aff93aece5f2/sp_repo_review-2025.10.1-py3-none-any.whl", hash = "sha256:6c2624ca47ed2a745fa4c00e6ead0ed44087bc6a1b0dbfe8d136bbbc0430f5b1", size = 22506, upload-time = "2025-10-01T16:29:38.499Z" },
 ]
 
 [package.optional-dependencies]
