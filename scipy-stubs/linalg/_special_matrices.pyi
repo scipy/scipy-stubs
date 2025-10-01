@@ -43,7 +43,7 @@ _Float3ND: TypeAlias = _Array3ND[np.float64]
 _Complex2D: TypeAlias = onp.Array2D[np.complex128]
 _Complex3ND: TypeAlias = _Array3ND[np.complex128]
 
-_To0D: TypeAlias = _SCT | onp.CanArray0D[_SCT]
+_To0D: TypeAlias = onp.CanArray0[_SCT]
 _To1D: TypeAlias = Sequence[_To0D[_SCT]] | onp.CanArrayND[_SCT]
 _ToStrict1D: TypeAlias = Sequence[_To0D[_SCT]] | onp.CanArray1D[_SCT]
 _ToStrict2ND: TypeAlias = onp.SequenceND[_To1D[_SCT]] | onp.CanArrayND[_SCT, onp.AtLeast2D]
