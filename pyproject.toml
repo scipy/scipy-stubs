@@ -54,13 +54,13 @@ lint = [
   { include-group = "extras" },
   "dprint-py==0.50.2.0",
   "ruff==0.13.2",
-  "sp-repo-review[cli]==2025.5.2",
+  "sp-repo-review[cli]==2025.10.1",
 ]
 type = [
   { include-group = "extras" },
   { include-group = "ci" },
   "array-api-compat==1.12.0", # bundled as `scipy._lib.array_api_compat`
-  "basedpyright==1.31.5",
+  "basedpyright==1.31.6",
   "mypy[faster-cache]==1.18.2",
 ]
 dev = [
@@ -126,7 +126,6 @@ reportImplicitOverride = true
 reportImportCycles = true
 reportMissingSuperCall = true
 reportPropertyTypeMismatch = false
-reportShadowedImports = false
 reportUninitializedInstanceVariable = true
 reportUnnecessaryTypeIgnoreComment = true
 reportUnusedCallResult = true
