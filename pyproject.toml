@@ -62,6 +62,7 @@ type = [
   "array-api-compat==1.12.0", # bundled as `scipy._lib.array_api_compat`
   "basedpyright==1.31.5",
   "mypy[faster-cache]==1.18.2",
+  "pyrefly==0.35.0",
 ]
 dev = [
   { include-group = "lint" },
@@ -105,6 +106,26 @@ warn_unreachable = false
 # experimental
 local_partial_types = true
 allow_redefinition_new = true
+
+[tool.pyrefly]
+# project-includes = ["scipy-stubs", "scripts", "tests"]
+project-includes = ["scipy-stubs"]
+
+[[tool.pyrefly.sub-config]]
+matches = "scipy-stubs/*/__init__.pyi"
+errors = { deprecated = "ignore" }
+
+[[tool.pyrefly.sub-config]]
+matches = "scipy-stubs/special/_ufuncs.pyi"
+errors = { bad-override = "ignore" }
+
+[[tool.pyrefly.sub-config]]
+matches = "scipy-stubs/special/orthogonal.pyi"
+errors = { deprecated = "ignore" }
+
+[[tool.pyrefly.sub-config]]
+matches = "scipy-stubs/stats/_distn_infrastructure.pyi"
+errors = { bad-override = "ignore" }
 
 [tool.pyright]
 exclude = [
