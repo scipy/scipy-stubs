@@ -77,6 +77,9 @@ jobs:
       - name: install dependencies
         run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
 
+      - name: pyrefly check scipy-stubs
+        run: pyrefly check scipy-stubs
+
       - name: basedpyright scipy-stubs
         run: basedpyright scipy-stubs
 
@@ -114,6 +117,9 @@ jobs:
 
       - name: install dependencies
         run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
+
+      - name: pyrefly check tests
+        run: pyrefly check tests
 
       - name: basedpyright tests
         run: basedpyright tests
