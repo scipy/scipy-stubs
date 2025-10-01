@@ -16,7 +16,7 @@ __all__ = ["LinearOperator", "aslinearoperator"]
 _SCT = TypeVar("_SCT", bound=npc.number | np.bool_)
 _SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
 _SCT1_co = TypeVar("_SCT1_co", bound=npc.number | np.bool_, default=Any, covariant=True)
-_SCT2_co = TypeVar("_SCT2_co", bound=npc.number | np.bool_, default=_SCT1_co, covariant=True)
+_SCT2_co = TypeVar("_SCT2_co", bound=npc.number | np.bool_, default=_SCT1_co, covariant=True)  # pyrefly: ignore[invalid-type-var]
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec, covariant=True)
 
@@ -489,13 +489,13 @@ class _AdjointMatrixOperator(MatrixLinearOperator[_SCT_co], Generic[_SCT_co]):
 
     @property
     @override
-    def dtype(self, /) -> np.dtype[_SCT_co]: ...  # pyright: ignore[reportIncompatibleVariableOverride]
+    def dtype(self, /) -> np.dtype[_SCT_co]: ...  # pyright: ignore[reportIncompatibleVariableOverride]  # pyrefly: ignore[bad-override]
 
     #
     def __new__(cls, adjoint_array: LinearOperator[_SCT_co]) -> Self: ...
     def __init__(self, /, adjoint_array: LinearOperator[_SCT_co]) -> None: ...
     @override
-    def _adjoint(self, /) -> MatrixLinearOperator[_SCT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def _adjoint(self, /) -> MatrixLinearOperator[_SCT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
 
 class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     @overload

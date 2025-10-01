@@ -79,7 +79,7 @@ def group_delay(system: object, w: object = ..., whole: object = ..., fs: object
 @deprecated("will be removed in SciPy v2.0.0")
 def freqz_sos(sos: object, worN: object = ..., whole: object = ..., fs: object = ...) -> object: ...
 
-sosfreqz = freqz_sos  # pyright: ignore[reportDeprecated]
+sosfreqz = freqz_sos  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
 
 @deprecated("will be removed in SciPy v2.0.0")
 def tf2zpk(b: object, a: object) -> object: ...

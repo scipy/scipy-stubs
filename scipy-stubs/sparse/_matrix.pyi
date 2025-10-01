@@ -3,7 +3,7 @@
 
 from collections.abc import Sequence
 from types import GenericAlias
-from typing import Any, Generic, Literal as L, Self, SupportsIndex, TypeAlias, overload, type_check_only
+from typing import Any, Generic, Literal as L, Self, SupportsIndex, TypeAlias, TypeAliasType, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -37,8 +37,12 @@ _ToFloat32: TypeAlias = np.float32 | _ToInt
 _ToFloat: TypeAlias = npc.floating | _ToInt
 _ToComplex64: TypeAlias = np.complex64 | _ToFloat
 
-_DualMatrixLike: TypeAlias = _T | _ScalarT | _spbase[_ScalarT]
-_DualArrayLike: TypeAlias = Sequence[Sequence[_T | _ScalarT] | onp.CanArrayND[_ScalarT]] | onp.CanArrayND[_ScalarT]
+_DualMatrixLike = TypeAliasType("_DualMatrixLike", _T | _ScalarT | _spbase[_ScalarT], type_params=(_T, _ScalarT))
+_DualArrayLike = TypeAliasType(
+    "_DualArrayLike",
+    Sequence[Sequence[_T | _ScalarT] | onp.CanArrayND[_ScalarT]] | onp.CanArrayND[_ScalarT],
+    type_params=(_T, _ScalarT),
+)
 
 _SpMatrixOut: TypeAlias = bsr_matrix[_ScalarT] | csc_matrix[_ScalarT] | csr_matrix[_ScalarT]
 

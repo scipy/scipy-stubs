@@ -126,9 +126,11 @@ _SpArrayOut: TypeAlias = bsr_array[_ScalarT] | csc_array[_ScalarT] | csr_array[_
 _ToCSRArray: TypeAlias = coo_array[_ScalarT] | csr_array[_ScalarT] | dia_array[_ScalarT] | dok_array[_ScalarT]
 _ToCSRMatrix: TypeAlias = coo_matrix[_ScalarT] | csr_matrix[_ScalarT] | dia_matrix[_ScalarT] | dok_matrix[_ScalarT]
 
-_SparseLike: TypeAlias = _T | _ScalarT | _spbase[_ScalarT]
-_To2D: TypeAlias = Sequence[Sequence[_T | _ScalarT] | onp.CanArrayND[_ScalarT]] | onp.CanArrayND[_ScalarT]
-_To2DLike: TypeAlias = Sequence[_T | _ScalarT] | _To2D[_T, _ScalarT]
+_SparseLike = TypeAliasType("_SparseLike", _T | _ScalarT | _spbase[_ScalarT], type_params=(_T, _ScalarT))
+_To2D = TypeAliasType(
+    "_To2D", Sequence[Sequence[_T | _ScalarT] | onp.CanArrayND[_ScalarT]] | onp.CanArrayND[_ScalarT], type_params=(_T, _ScalarT)
+)
+_To2DLike = TypeAliasType("_To2DLike", Sequence[_T | _ScalarT] | _To2D[_T, _ScalarT], type_params=(_T, _ScalarT))
 
 _BinOp: TypeAlias = Callable[[object, object], Any]
 

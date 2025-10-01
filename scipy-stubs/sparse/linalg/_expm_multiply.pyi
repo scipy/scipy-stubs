@@ -1,5 +1,6 @@
 from _typeshed import Incomplete
 from typing import Any, Never, TypeAlias, TypeVar, overload
+from typing_extensions import TypeAliasType
 
 import numpy as np
 import optype as op
@@ -16,7 +17,9 @@ _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
 
 _ToLinearOperator: TypeAlias = LinearOperator[_ScalarT] | _spbase[_ScalarT, tuple[int, int]] | onp.ArrayND[_ScalarT]
-_SparseOrDense: TypeAlias = sparray[_ScalarT, _ShapeT] | onp.ArrayND[_ScalarT, _ShapeT]
+_SparseOrDense = TypeAliasType(
+    "_SparseOrDense", sparray[_ScalarT, _ShapeT] | onp.ArrayND[_ScalarT, _ShapeT], type_params=(_ScalarT, _ShapeT)
+)
 
 _AsFloat64: TypeAlias = np.float64 | npc.integer | np.bool_
 _ToFloat64: TypeAlias = _AsFloat64 | np.float32 | np.float16

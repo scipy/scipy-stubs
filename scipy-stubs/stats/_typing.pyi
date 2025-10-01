@@ -8,7 +8,7 @@ __all__ = "Alternative", "BaseBunch", "BunchMixin", "NanPolicy", "PowerDivergenc
 
 _Ts = TypeVarTuple("_Ts")
 _ValueT = TypeVar("_ValueT")
-_TupleT_co = TypeVar("_TupleT_co", bound=tuple[object, ...], default=tuple[Any, ...], covariant=True)
+_TupleT_co = TypeVar("_TupleT_co", bound=tuple[Any, ...], default=tuple[Any, ...], covariant=True)
 
 Alternative: TypeAlias = Literal["two-sided", "less", "greater"]
 NanPolicy: TypeAlias = Literal["raise", "propagate", "omit"]
