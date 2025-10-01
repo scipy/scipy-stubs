@@ -225,7 +225,7 @@ split-on-trailing-comma = false
 [tool.tox]
 min_version = "4"
 requires = ["tox-uv>=1"]
-env_list = ["lint", "pyright", "mypy", "3.11", "3.12", "3.13", "3.14"]
+env_list = ["lint", "pyrefly", "pyright", "mypy", "3.11", "3.12", "3.13", "3.14"]
 
 [tool.tox.env_run_base]
 description = "stubtest with {base_python}"
@@ -252,11 +252,17 @@ commands = [
   ["ruff", "format", "--check"],
 ]
 
+[tool.tox.env.pyrefly]
+description = "pyrefly"
+runner = "uv-venv-lock-runner"
+dependency_groups = ["type"]
+commands = [["pyrefly", "check", { replace = "posargs", default = [], extend = true }]]
+
 [tool.tox.env.pyright]
 description = "basedpyright"
 runner = "uv-venv-lock-runner"
 dependency_groups = ["type"]
-commands = [["basedpyright"]]
+commands = [["basedpyright", { replace = "posargs", default = [], extend = true }]]
 
 [tool.tox.env.mypy]
 description = "mypy"
@@ -265,8 +271,6 @@ dependency_groups = ["type"]
 commands = [
   [
     "mypy",
-    "--hide-error-context",
-    "--hide-error-code-links",
     "--no-incremental",
     { replace = "posargs", default = ["."], extend = true },
   ],
