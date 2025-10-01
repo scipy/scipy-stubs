@@ -19,14 +19,14 @@ dense_2d: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
 ###
 # utility functions
 
-assert_type(sparse.issparse(coo_mat), bool)
-assert_type(sparse.issparse(coo_arr), bool)
-assert_type(sparse.issparse(i64_2d), bool)
+assert_type(sparse.issparse(coo_mat), bool)  # pyrefly: ignore[assert-type]
+assert_type(sparse.issparse(coo_arr), bool)  # pyrefly: ignore[assert-type]
+assert_type(sparse.issparse(i64_2d), bool)  # pyrefly: ignore[assert-type]
 
-assert_type(sparse.isspmatrix_csr(csr_mat), bool)
-assert_type(sparse.isspmatrix_csc(csr_mat), bool)
+assert_type(sparse.isspmatrix_csr(csr_mat), bool)  # pyrefly: ignore[assert-type]
+assert_type(sparse.isspmatrix_csc(csr_mat), bool)  # pyrefly: ignore[assert-type]
 
-assert_type(sparse.issparse("duck"), bool)
+assert_type(sparse.issparse("duck"), bool)  # pyrefly: ignore[assert-type]
 
 ###
 # constructors with different formats
@@ -35,11 +35,11 @@ assert_type(sparse.coo_matrix((i64_1d, (i64_1d, i64_1d)), shape=shape_2d), spars
 assert_type(sparse.csr_matrix(f64_2d), sparse.csr_matrix[np.float64])
 assert_type(sparse.csc_matrix(f64_2d), sparse.csc_matrix[np.float64])
 
-assert_type(sparse.bsr_matrix(shape_2d), sparse.bsr_matrix[np.float64])
+assert_type(sparse.bsr_matrix(shape_2d), sparse.bsr_matrix[np.float64])  # pyrefly: ignore[assert-type]
 assert_type(sparse.coo_matrix(shape_2d), sparse.coo_matrix[np.float64])
 assert_type(sparse.csc_matrix(shape_2d), sparse.csc_matrix[np.float64])
 assert_type(sparse.csr_matrix(shape_2d), sparse.csr_matrix[np.float64])
-assert_type(sparse.dia_matrix(shape_2d), sparse.dia_matrix[np.float64])
+assert_type(sparse.dia_matrix(shape_2d), sparse.dia_matrix[np.float64])  # pyrefly: ignore[assert-type]
 assert_type(sparse.dok_matrix(shape_2d), sparse.dok_matrix[np.float64])
 assert_type(sparse.lil_matrix(shape_2d), sparse.lil_matrix[np.float64])
 

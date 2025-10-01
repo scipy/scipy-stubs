@@ -20,18 +20,20 @@ assert_type(fft.set_global_backend(MyBackend), None)
 assert_type(fft.register_backend("scipy"), None)
 assert_type(fft.register_backend(MyBackend), None)
 
+# See https://github.com/facebook/pyrefly/issues/1221
+
 # set_backend
-with fft.set_backend("scipy") as ctx1:
+with fft.set_backend("scipy") as ctx1:  # pyrefly: ignore[bad-context-manager]
     assert_type(ctx1, None)
-with fft.set_backend("scipy", coerce=True) as ctx2:
+with fft.set_backend("scipy", coerce=True) as ctx2:  # pyrefly: ignore[bad-context-manager]
     assert_type(ctx2, None)
-with fft.set_backend("scipy", only=True) as ctx3:
+with fft.set_backend("scipy", only=True) as ctx3:  # pyrefly: ignore[bad-context-manager]
     assert_type(ctx3, None)
-with fft.set_backend(MyBackend) as ctx4:
+with fft.set_backend(MyBackend) as ctx4:  # pyrefly: ignore[bad-context-manager]
     assert_type(ctx4, None)
 
 # skip_backend
-with fft.skip_backend("scipy") as ctx5:
+with fft.skip_backend("scipy") as ctx5:  # pyrefly: ignore[bad-context-manager]
     assert_type(ctx5, None)
-with fft.skip_backend(MyBackend) as ctx6:
+with fft.skip_backend(MyBackend) as ctx6:  # pyrefly: ignore[bad-context-manager]
     assert_type(ctx6, None)
