@@ -86,7 +86,7 @@ jobs:
 
       - name: create or update comment
         if: steps.find-comment.outcome == 'success'
-        uses: peter-evans/create-or-update-comment@v4
+        uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ steps.pr-number.outputs.pr-number }}
