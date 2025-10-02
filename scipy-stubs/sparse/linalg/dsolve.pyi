@@ -19,31 +19,36 @@ class SuperLU(_dsolve.SuperLU): ...  # type: ignore[misc]  # pyright: ignore[rep
 @deprecated("will be removed in SciPy v2.0.0")
 def use_solver(**kwargs: object) -> None: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def spsolve(A: object, b: object, permc_spec: object = ..., use_umfpack: object = ...) -> object: ...
+def spsolve(A: object, b: object, permc_spec: object = None, use_umfpack: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def splu(
     A: object,
-    permc_spec: object = ...,
-    diag_pivot_thresh: object = ...,
-    relax: object = ...,
-    panel_size: object = ...,
-    options: object = ...,
+    permc_spec: object = None,
+    diag_pivot_thresh: object = None,
+    relax: object = None,
+    panel_size: object = None,
+    options: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def spilu(
     A: object,
-    drop_tol: object = ...,
-    fill_factor: object = ...,
-    drop_rule: object = ...,
-    permc_spec: object = ...,
-    diag_pivot_thresh: object = ...,
-    relax: object = ...,
-    panel_size: object = ...,
-    options: object = ...,
+    drop_tol: object = None,
+    fill_factor: object = None,
+    drop_rule: object = None,
+    permc_spec: object = None,
+    diag_pivot_thresh: object = None,
+    relax: object = None,
+    panel_size: object = None,
+    options: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def factorized(A: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def spsolve_triangular(
-    A: object, b: object, lower: object = ..., overwrite_A: object = ..., overwrite_b: object = ..., unit_diagonal: object = ...
+    A: object,
+    b: object,
+    lower: object = True,
+    overwrite_A: object = False,
+    overwrite_b: object = False,
+    unit_diagonal: object = False,
 ) -> object: ...

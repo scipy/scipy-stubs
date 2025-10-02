@@ -72,7 +72,7 @@ class _coo_base(_data_matrix[_ScalarT_co, _ShapeT_co], _minmax_mixin[_ScalarT_co
         /,
         arg1: onp.ToComplex1D | onp.ToComplex2D,
         shape: tuple[SupportsIndex, *tuple[SupportsIndex, ...]] | None = None,
-        dtype: npt.DTypeLike | None = ...,
+        dtype: npt.DTypeLike | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,

@@ -28,75 +28,85 @@ class LinAlgError(Exception): ...
 class LinAlgWarning(RuntimeWarning): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-def get_lapack_funcs(names: object, arrays: object = ..., dtype: object = ..., ilp64: object = ...) -> object: ...
+def get_lapack_funcs(names: object, arrays: object = (), dtype: object = None, ilp64: object = False) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solve(
     a: object,
     b: object,
-    lower: object = ...,
-    overwrite_a: object = ...,
-    overwrite_b: object = ...,
-    check_finite: object = ...,
-    assume_a: object = ...,
-    transposed: object = ...,
+    lower: object = False,
+    overwrite_a: object = False,
+    overwrite_b: object = False,
+    check_finite: object = True,
+    assume_a: object = None,
+    transposed: object = False,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solve_triangular(
     a: object,
     b: object,
-    trans: object = ...,
-    lower: object = ...,
-    unit_diagonal: object = ...,
-    overwrite_b: object = ...,
-    check_finite: object = ...,
+    trans: object = 0,
+    lower: object = False,
+    unit_diagonal: object = False,
+    overwrite_b: object = False,
+    check_finite: object = True,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solve_banded(
-    l_and_u: object, ab: object, b: object, overwrite_ab: object = ..., overwrite_b: object = ..., check_finite: object = ...
+    l_and_u: object, ab: object, b: object, overwrite_ab: object = False, overwrite_b: object = False, check_finite: object = True
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solveh_banded(
-    ab: object, b: object, overwrite_ab: object = ..., overwrite_b: object = ..., lower: object = ..., check_finite: object = ...
+    ab: object,
+    b: object,
+    overwrite_ab: object = False,
+    overwrite_b: object = False,
+    lower: object = False,
+    check_finite: object = True,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def solve_toeplitz(c_or_cr: object | tuple[object, object], b: object, check_finite: object = ...) -> object: ...
+def solve_toeplitz(c_or_cr: object | tuple[object, object], b: object, check_finite: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solve_circulant(
     c: object,
     b: object,
-    singular: object = ...,
-    tol: object = ...,
-    caxis: object = ...,
-    baxis: object = ...,
-    outaxis: object = ...,
+    singular: object = "raise",
+    tol: object = None,
+    caxis: object = -1,
+    baxis: object = 0,
+    outaxis: object = 0,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def inv(a: object, overwrite_a: object = ..., check_finite: object = ...) -> object: ...
+def inv(a: object, overwrite_a: object = False, check_finite: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def det(a: object, overwrite_a: object = ..., check_finite: object = ...) -> object: ...
+def det(a: object, overwrite_a: object = False, check_finite: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def lstsq(
     a: object,
     b: object,
-    cond: object = ...,
-    overwrite_a: object = ...,
-    overwrite_b: object = ...,
-    check_finite: object = ...,
-    lapack_driver: object = ...,
+    cond: object = None,
+    overwrite_a: object = False,
+    overwrite_b: object = False,
+    check_finite: object = True,
+    lapack_driver: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def pinv(
-    a: object, *, atol: object = ..., rtol: object = ..., return_rank: object = ..., check_finite: object = ...
+    a: object, *, atol: object = None, rtol: object = None, return_rank: object = False, check_finite: object = True
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def pinvh(
-    a: object, atol: object = ..., rtol: object = ..., lower: object = ..., return_rank: object = ..., check_finite: object = ...
+    a: object,
+    atol: object = None,
+    rtol: object = None,
+    lower: object = True,
+    return_rank: object = False,
+    check_finite: object = True,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def matrix_balance(
-    A: object, permute: object = ..., scale: object = ..., separate: object = ..., overwrite_a: object = ...
+    A: object, permute: object = True, scale: object = True, separate: object = False, overwrite_a: object = False
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def matmul_toeplitz(
-    c_or_cr: object | tuple[object, object], x: object, check_finite: object = ..., workers: object = ...
+    c_or_cr: object | tuple[object, object], x: object, check_finite: object = False, workers: object = None
 ) -> object: ...

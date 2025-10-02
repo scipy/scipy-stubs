@@ -132,7 +132,7 @@ def gmres(
     maxiter: int | None = None,
     M: _ToLinearOperator[_ToFloat] | None = None,
     callback: Callable[[float], _Ignored] | Callable[[np.float64], _Ignored] | None = None,
-    callback_type: Literal["pr_norm", "legacy"] | None = ...,
+    callback_type: Literal["pr_norm", "legacy"] | None = None,
 ) -> tuple[onp.Array1D[_FloatT], int]: ...
 @overload  # real, callback_type: {"x"}
 def gmres(
@@ -160,7 +160,7 @@ def gmres(
     maxiter: int | None = None,
     M: _ToLinearOperator[_ToFloat] | None = None,
     callback: Callable[[float], _Ignored] | Callable[[np.float64], _Ignored] | None = None,
-    callback_type: Literal["pr_norm", "legacy"] | None = ...,
+    callback_type: Literal["pr_norm", "legacy"] | None = None,
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...
 @overload  # complex, callback_type: {"x"}
 def gmres(

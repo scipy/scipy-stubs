@@ -122,13 +122,18 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         /,
         x: onp.ToFloat1D,
         k: onp.ToInt | onp.ToInt1D = 1,
-        eps: onp.ToFloat = ...,
-        p: onp.ToFloat = ...,
+        eps: onp.ToFloat = 0.0,
+        p: onp.ToFloat = 2.0,
         distance_upper_bound: float = float("inf"),  # noqa: PYI011
-        workers: int | None = ...,
+        workers: int | None = None,
     ) -> tuple[float, np.intp] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
 
-    #
+    # NOTE: The parameters `eps` and `p` default to `0.0` and `2.0` in `cKDTree`, but are overridden in KDTree to default to
+    # `0` and `2` (or `2.0`) respectively. Filling in these defaults would therefore require us to override these methods in
+    # `KDTree`, which otherwise wouldn't be necessary. Hence, we leave these parameters without defaults here, so that we avoid a
+    # lot of duplicated code.
+    # In scipy 1.17.0 this will no longer be necessary (scipy/scipy#23727).
+
     @overload
     def query_ball_point(
         self,
@@ -136,7 +141,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatStrict1D,
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,
+        eps: onp.ToFloat = ...,  # noqa: missing-default
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         return_length: onp.ToFalse = False,
@@ -160,7 +165,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatStrict1D,
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,
+        eps: onp.ToFloat = ...,  # noqa: missing-default
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         *,
@@ -173,7 +178,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,
+        eps: onp.ToFloat = 0,  # noqa: missing-default
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         return_length: onp.ToFalse = False,
@@ -197,7 +202,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,
+        eps: onp.ToFloat = ...,  # noqa: missing-default
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         *,
@@ -210,7 +215,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,
+        eps: onp.ToFloat = ...,  # noqa: missing-default
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         return_length: onp.ToFalse = False,
@@ -234,7 +239,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,
+        eps: onp.ToFloat = ...,  # # noqa: missing-default
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         *,
@@ -248,7 +253,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         other: cKDTree,
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # defaults to `0.0`, but is overridden in `KDTree` with `0` as default
+        eps: onp.ToFloat = ...,  # noqa: missing-default
     ) -> list[list[int]]: ...
 
     #
@@ -291,7 +296,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         other: cKDTree,
         r: onp.ToFloat | onp.ToFloat1D,
         p: onp.ToFloat = 2.0,
-        weights: tuple[None, None] | None = ...,
+        weights: tuple[None, None] | None = None,
         cumulative: bool = True,
     ) -> np.intp | onp.Array1D[np.intp]: ...
     @overload
@@ -313,7 +318,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     #
     @overload
     def sparse_distance_matrix(
-        self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, output_type: L["dok_matrix"] = ...
+        self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, output_type: L["dok_matrix"] = "dok_matrix"
     ) -> dok_matrix[np.float64]: ...
     @overload
     def sparse_distance_matrix(

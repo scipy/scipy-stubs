@@ -88,8 +88,8 @@ def geometric_transform(
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: onp.ToBool = True,
-    extra_arguments: tuple[object, ...] = ...,
-    extra_keywords: dict[str, object] | None = ...,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
 ) -> _FloatArrayOut: ...
 @overload
 def geometric_transform(
@@ -101,8 +101,8 @@ def geometric_transform(
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: onp.ToBool = True,
-    extra_arguments: tuple[object, ...] = ...,
-    extra_keywords: dict[str, object] | None = ...,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
 ) -> _ComplexArrayOut: ...
 @overload
 def geometric_transform(
@@ -114,8 +114,8 @@ def geometric_transform(
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: onp.ToBool = True,
-    extra_arguments: tuple[object, ...] = ...,
-    extra_keywords: dict[str, object] | None = ...,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
 ) -> onp.ArrayND[_SCT]: ...
 @overload
 def geometric_transform(
@@ -128,8 +128,8 @@ def geometric_transform(
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: onp.ToBool = True,
-    extra_arguments: tuple[object, ...] = ...,
-    extra_keywords: dict[str, object] | None = ...,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
 ) -> onp.ArrayND[_SCT]: ...
 @overload
 def geometric_transform(
@@ -142,8 +142,8 @@ def geometric_transform(
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: onp.ToBool = True,
-    extra_arguments: tuple[object, ...] = ...,
-    extra_keywords: dict[str, object] | None = ...,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
 ) -> onp.ArrayND[np.int_]: ...
 @overload
 def geometric_transform(
@@ -156,8 +156,8 @@ def geometric_transform(
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: onp.ToBool = True,
-    extra_arguments: tuple[object, ...] = ...,
-    extra_keywords: dict[str, object] | None = ...,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
 ) -> onp.ArrayND[np.float64 | np.int_]: ...
 @overload
 def geometric_transform(
@@ -170,8 +170,8 @@ def geometric_transform(
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: onp.ToBool = True,
-    extra_arguments: tuple[object, ...] = ...,
-    extra_keywords: dict[str, object] | None = ...,
+    extra_arguments: tuple[object, ...] = (),
+    extra_keywords: dict[str, object] | None = None,
 ) -> onp.ArrayND[np.complex128 | np.float64 | np.int_]: ...
 
 #

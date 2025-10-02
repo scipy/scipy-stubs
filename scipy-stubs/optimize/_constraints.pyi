@@ -153,7 +153,7 @@ class NonlinearConstraint(_Constraint[tuple[int], np.float64]):
         lb: onp.ToFloat | onp.ToFloat1D,
         ub: onp.ToFloat | onp.ToFloat1D,
         jac: Callable[[onp.Array1D[np.float64]], _ToFloat2D] | _MethodJac = "2-point",
-        hess: Callable[[onp.Array1D[np.float64]], _ToFloat2D | LinearOperator] | _MethodJac | HessianUpdateStrategy | None = ...,
+        hess: Callable[[onp.Array1D[np.float64]], _ToFloat2D | LinearOperator] | _MethodJac | HessianUpdateStrategy | None = None,
         keep_feasible: onp.ToBool | onp.ToBool1D = False,
         finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None = None,
         finite_diff_jac_sparsity: _ToFloat2D | None = None,

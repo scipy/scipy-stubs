@@ -41,22 +41,22 @@ class OptimizeWarning(UserWarning): ...
 def approx_fprime(xk: object, f: object, epsilon: object = ..., *args: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def bracket(
-    func: object, xa: object = ..., xb: object = ..., args: object = ..., grow_limit: object = ..., maxiter: object = ...
+    func: object, xa: object = 0.0, xb: object = 1.0, args: object = (), grow_limit: object = 110.0, maxiter: object = 1000
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def brent(
-    func: object, args: object = ..., brack: object = ..., tol: object = ..., full_output: object = ..., maxiter: object = ...
+    func: object, args: object = (), brack: object = None, tol: object = 1.48e-08, full_output: object = 0, maxiter: object = 500
 ) -> float | object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def brute(
     func: object,
     ranges: object,
-    args: object = ...,
-    Ns: object = ...,
-    full_output: object = ...,
+    args: object = (),
+    Ns: object = 20,
+    full_output: object = 0,
     finish: object = ...,
-    disp: object = ...,
-    workers: object = ...,
+    disp: object = False,
+    workers: object = 1,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def check_grad(
@@ -65,7 +65,7 @@ def check_grad(
     x0: object,
     *args: object,
     epsilon: object = ...,
-    direction: object = ...,
+    direction: object = "all",
     rng: object = None,
     seed: object = None,
 ) -> object: ...
@@ -73,100 +73,100 @@ def check_grad(
 def fmin(
     func: object,
     x0: object,
-    args: object = ...,
-    xtol: object = ...,
-    ftol: object = ...,
-    maxiter: object = ...,
-    maxfun: object = ...,
-    full_output: object = ...,
-    disp: object = ...,
-    retall: object = ...,
-    callback: object = ...,
-    initial_simplex: object = ...,
+    args: object = (),
+    xtol: object = 0.0001,
+    ftol: object = 0.0001,
+    maxiter: object = None,
+    maxfun: object = None,
+    full_output: object = 0,
+    disp: object = 1,
+    retall: object = 0,
+    callback: object = None,
+    initial_simplex: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def fmin_bfgs(
     f: object,
     x0: object,
-    fprime: object = ...,
-    args: object = ...,
-    gtol: object = ...,
+    fprime: object = None,
+    args: object = (),
+    gtol: object = 1e-05,
     norm: object = ...,
     epsilon: object = ...,
-    maxiter: object = ...,
-    full_output: object = ...,
-    disp: object = ...,
-    retall: object = ...,
-    callback: object = ...,
-    xrtol: object = ...,
-    c1: object = ...,
-    c2: object = ...,
-    hess_inv0: object = ...,
+    maxiter: object = None,
+    full_output: object = 0,
+    disp: object = 1,
+    retall: object = 0,
+    callback: object = None,
+    xrtol: object = 0,
+    c1: object = 0.0001,
+    c2: object = 0.9,
+    hess_inv0: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def fmin_cg(
     f: object,
     x0: object,
-    fprime: object = ...,
-    args: object = ...,
-    gtol: object = ...,
+    fprime: object = None,
+    args: object = (),
+    gtol: object = 1e-05,
     norm: object = ...,
     epsilon: object = ...,
-    maxiter: object = ...,
-    full_output: object = ...,
-    disp: object = ...,
-    retall: object = ...,
-    callback: object = ...,
-    c1: object = ...,
-    c2: object = ...,
+    maxiter: object = None,
+    full_output: object = 0,
+    disp: object = 1,
+    retall: object = 0,
+    callback: object = None,
+    c1: object = 0.0001,
+    c2: object = 0.4,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def fmin_ncg(
     f: object,
     x0: object,
     fprime: object,
-    fhess_p: object = ...,
-    fhess: object = ...,
-    args: object = ...,
-    avextol: object = ...,
+    fhess_p: object = None,
+    fhess: object = None,
+    args: object = (),
+    avextol: object = 1e-05,
     epsilon: object = ...,
-    maxiter: object = ...,
-    full_output: object = ...,
-    disp: object = ...,
-    retall: object = ...,
-    callback: object = ...,
-    c1: object = ...,
-    c2: object = ...,
+    maxiter: object = None,
+    full_output: object = 0,
+    disp: object = 1,
+    retall: object = 0,
+    callback: object = None,
+    c1: object = 0.0001,
+    c2: object = 0.9,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def fmin_powell(
     func: object,
     x0: object,
-    args: object = ...,
-    xtol: object = ...,
-    ftol: object = ...,
-    maxiter: object = ...,
-    maxfun: object = ...,
-    full_output: object = ...,
-    disp: object = ...,
-    retall: object = ...,
-    callback: object = ...,
-    direc: object = ...,
+    args: object = (),
+    xtol: object = 0.0001,
+    ftol: object = 0.0001,
+    maxiter: object = None,
+    maxfun: object = None,
+    full_output: object = 0,
+    disp: object = 1,
+    retall: object = 0,
+    callback: object = None,
+    direc: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def fminbound(
     func: object,
     x1: object,
     x2: object,
-    args: object = ...,
-    xtol: object = ...,
-    maxfun: object = ...,
-    full_output: object = ...,
-    disp: object = ...,
+    args: object = (),
+    xtol: object = 1e-05,
+    maxfun: object = 500,
+    full_output: object = 0,
+    disp: object = 1,
 ) -> float | object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def golden(
-    func: object, args: object = ..., brack: object = ..., tol: object = ..., full_output: object = ..., maxiter: object = ...
+    func: object, args: object = (), brack: object = None, tol: object = ..., full_output: object = 0, maxiter: object = 5000
 ) -> float | object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def line_search(
@@ -174,15 +174,15 @@ def line_search(
     myfprime: object,
     xk: object,
     pk: object,
-    gfk: object = ...,
-    old_fval: object = ...,
-    old_old_fval: object = ...,
+    gfk: object = None,
+    old_fval: object = None,
+    old_old_fval: object = None,
     args: object = (),
-    c1: object = ...,
-    c2: object = ...,
-    amax: object = ...,
-    extra_condition: object = ...,
-    maxiter: object = ...,
+    c1: object = 0.0001,
+    c2: object = 0.9,
+    amax: object = None,
+    extra_condition: object = None,
+    maxiter: object = 10,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def rosen(x: object) -> object: ...
@@ -193,4 +193,4 @@ def rosen_hess(x: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def rosen_hess_prod(x: object, p: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def show_options(solver: object = ..., method: object = ..., disp: object = ...) -> str: ...
+def show_options(solver: object = None, method: object = None, disp: object = True) -> str: ...

@@ -43,10 +43,10 @@ class interp2d:
         x: Never,
         y: Never,
         z: Never,
-        kind: object = ...,
-        copy: object = ...,
-        bounds_error: object = ...,
-        fill_value: object = ...,
+        kind: object = "linear",
+        copy: object = True,
+        bounds_error: object = False,
+        fill_value: object = None,
     ) -> Never: ...
 
 class interp1d(_Interpolator1D):  # legacy

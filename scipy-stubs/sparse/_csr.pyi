@@ -412,7 +412,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         /,
         arg1: onp.ToComplex1D | onp.ToComplex2D,
         shape: _ToShape1D | _ToShape2D | None = None,
-        dtype: npt.DTypeLike | None = ...,
+        dtype: npt.DTypeLike | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
