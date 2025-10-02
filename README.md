@@ -2,10 +2,11 @@
 
 Reliable type annotations for <a href="https://github.com/scipy/scipy">SciPy</a>
 
-[![GitHub License](https://img.shields.io/github/license/scipy/scipy-stubs?style=flat-square&color=333)](https://github.com/scipy/scipy-stubs/blob/master/LICENSE)
-![Python Versions](https://img.shields.io/pypi/pyversions/scipy-stubs?style=flat-square&color=333)
-[![PyPI - Version](https://img.shields.io/pypi/v/scipy-stubs?style=flat-square&label=PyPI&color=333)](https://pypi.org/project/scipy-stubs/)
-[![Conda Version](https://img.shields.io/conda/vn/conda-forge/scipy-stubs?style=flat-square&color=333)](https://anaconda.org/conda-forge/scipy-stubs)
+[![GitHub License](https://img.shields.io/github/license/scipy/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d)](https://github.com/scipy/scipy-stubs)
+[![PyPI Version](https://img.shields.io/pypi/v/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d)](https://pypi.org/project/scipy-stubs)
+[![Conda Version](https://img.shields.io/conda/vn/conda-forge/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d)](https://anaconda.org/conda-forge/scipy-stubs)
+[![Python Versions](https://img.shields.io/pypi/pyversions/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d)](https://github.com/scipy/scipy-stubs)
+[![PyPI Downloads](https://img.shields.io/pypi/dm/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d&cacheSeconds=86400)](https://pypi.org/project/scipy-stubs)
 
 ## Features
 
