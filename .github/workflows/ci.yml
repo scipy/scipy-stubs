@@ -89,8 +89,10 @@ jobs:
       - name: stubtest scipy
         run: stubtest --ignore-disjoint-bases --allowlist=.mypyignore scipy
 
+      - name: stubdefaulter check
+        run: stubdefaulter --check --exit-zero --packages .
+
   typetest:
-    # needs: generate-matrix
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
