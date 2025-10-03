@@ -63,11 +63,17 @@ type = [
   "basedpyright==1.31.6",
   "mypy[faster-cache]==1.18.2",
   "pyrefly==0.35.0",
+  "stubdefaulter>=0.1.0",
 ]
 dev = [
   { include-group = "lint" },
   { include-group = "type" },
 ]
+
+# the required stubdefaulter features not released yet (>0.1.0)
+[tool.uv.sources.stubdefaulter]
+git = "https://github.com/JelleZijlstra/stubdefaulter.git"
+rev = "ebe9e31"
 
 [tool.poe.tasks.clean]
 cmd = """
@@ -90,6 +96,10 @@ uv run
   --allowlist=.mypyignore
   scipy
 """
+
+[tool.poe.tasks.stubdefaulter]
+cmd = "stubdefaulter --packages=. --exit-zero --check"
+executor.type = "uv"
 
 [tool.typos.files]
 extend-exclude = ["*.pyi", ".mypyignore"]
@@ -232,12 +242,8 @@ runner = "uv-venv-lock-runner"
 dependency_groups = ["type"]
 uv_sync_flags = ["--no-editable", "--reinstall-package=scipy-stubs"]
 commands = [
-  [
-    "stubtest",
-    "--ignore-disjoint-bases",
-    "--allowlist=.mypyignore",
-    { replace = "posargs", default = ["scipy"], extend = true },
-  ],
+  ["stubtest", "--ignore-disjoint-bases", "--allowlist=.mypyignore", "scipy"],
+  ["stubdefaulter", "--packages=.", "--exit-zero", "--check"],
 ]
 
 [tool.tox.env.lint]
