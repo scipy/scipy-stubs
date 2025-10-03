@@ -285,6 +285,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 - [gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)
 - [JAX](https://github.com/jax-ml/jax)
 - [librosa](https://github.com/librosa/librosa)
+- [linearmodels](https://github.com/bashtage/linearmodels)
 - [Lmo](https://github.com/jorenham/Lmo)
 - [MouseTracks](https://github.com/huntfx/MouseTracks)
 - Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis))
