@@ -77,6 +77,8 @@ class interp1d(_Interpolator1D):  # legacy
     ) -> None: ...
 
 class _PPolyBase(Generic[_CT_co]):
+    __slots__ = "axis", "c", "extrapolate", "x"
+
     c: onp.Array[onp.AtLeast2D, _CT_co]
     x: onp.Array1D[np.float64]
     extrapolate: Final[_Extrapolate]
