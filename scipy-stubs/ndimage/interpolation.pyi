@@ -16,74 +16,74 @@ __all__ = [
 def affine_transform(
     input: object,
     matrix: object,
-    offset: object = ...,
-    output_shape: object = ...,
-    output: object = ...,
-    order: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    prefilter: object = ...,
+    offset: object = 0.0,
+    output_shape: object = None,
+    output: object = None,
+    order: object = 3,
+    mode: object = "constant",
+    cval: object = 0.0,
+    prefilter: object = True,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def geometric_transform(
     input: object,
     mapping: object,
-    output_shape: object = ...,
-    output: object = ...,
-    order: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    prefilter: object = ...,
-    extra_arguments: object = ...,
-    extra_keywords: object = ...,
+    output_shape: object = None,
+    output: object = None,
+    order: object = 3,
+    mode: object = "constant",
+    cval: object = 0.0,
+    prefilter: object = True,
+    extra_arguments: object = (),
+    extra_keywords: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def map_coordinates(
     input: object,
     coordinates: object,
-    output: object = ...,
-    order: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    prefilter: object = ...,
+    output: object = None,
+    order: object = 3,
+    mode: object = "constant",
+    cval: object = 0.0,
+    prefilter: object = True,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def rotate(
     input: object,
     angle: object,
-    axes: object = ...,
-    reshape: object = ...,
-    output: object = ...,
-    order: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    prefilter: object = ...,
+    axes: object = (1, 0),
+    reshape: object = True,
+    output: object = None,
+    order: object = 3,
+    mode: object = "constant",
+    cval: object = 0.0,
+    prefilter: object = True,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def shift(
     input: object,
     shift: object,
-    output: object = ...,
-    order: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    prefilter: object = ...,
+    output: object = None,
+    order: object = 3,
+    mode: object = "constant",
+    cval: object = 0.0,
+    prefilter: object = True,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def spline_filter(input: object, order: object = ..., output: object = ..., mode: object = ...) -> object: ...
+def spline_filter(input: object, order: object = 3, output: object = ..., mode: object = "mirror") -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def spline_filter1d(
-    input: object, order: object = ..., axis: object = ..., output: object = ..., mode: object = ...
+    input: object, order: object = 3, axis: object = -1, output: object = ..., mode: object = "mirror"
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def zoom(
     input: object,
     zoom: object,
-    output: object = ...,
-    order: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    prefilter: object = ...,
+    output: object = None,
+    order: object = 3,
+    mode: object = "constant",
+    cval: object = 0.0,
+    prefilter: object = True,
     *,
-    grid_mode: object = ...,
+    grid_mode: object = False,
 ) -> object: ...

@@ -70,7 +70,7 @@ def fmin_l_bfgs_b(
     func: _Fn[_ToFloatAnd1D, *_Ts],
     x0: _ToFloatOr1D,
     fprime: None = None,
-    args: tuple[*_Ts] = ...,
+    args: tuple[*_Ts] = ...,  # noqa: missing-default
     approx_grad: onp.ToFalse = 0,
     bounds: _Bounds | None = None,
     m: onp.ToJustInt = 10,
@@ -89,7 +89,7 @@ def fmin_l_bfgs_b(
     func: _Fn[onp.ToFloat, *_Ts],
     x0: _ToFloatOr1D,
     fprime: _Fn[onp.ToFloat1D, *_Ts],
-    args: tuple[*_Ts] = ...,
+    args: tuple[*_Ts] = ...,  # noqa: missing-default
     approx_grad: onp.ToFalse = 0,
     bounds: _Bounds | None = None,
     m: onp.ToJustInt = 10,
@@ -108,7 +108,7 @@ def fmin_l_bfgs_b(
     func: _Fn[onp.ToFloat, *_Ts],
     x0: _ToFloatOr1D,
     fprime: None = None,
-    args: tuple[*_Ts] = ...,
+    args: tuple[*_Ts] = ...,  # noqa: missing-default
     *,
     approx_grad: onp.ToTrue,
     bounds: _Bounds | None = None,
@@ -128,7 +128,7 @@ def fmin_l_bfgs_b(
     func: _Fn[onp.ToFloat, *_Ts] | _Fn[_ToFloatAnd1D, *_Ts],
     x0: _ToFloatOr1D,
     fprime: None = None,
-    args: tuple[*_Ts] = ...,
+    args: tuple[*_Ts] = ...,  # noqa: missing-default
     *,
     approx_grad: onp.ToBool,
     bounds: _Bounds | None = None,
@@ -149,7 +149,7 @@ def fmin_l_bfgs_b(
     func: _Fn[onp.ToFloat, *_Ts] | _Fn[_ToFloatAnd1D, *_Ts],
     x0: _ToFloatOr1D,
     fprime: _Fn[onp.ToFloat1D, *_Ts] | None = None,
-    args: tuple[*_Ts] = ...,
+    args: tuple[*_Ts] = ...,  # noqa: missing-default
     approx_grad: onp.ToBool = 0,
     bounds: _Bounds | None = None,
     m: onp.ToJustInt = 10,
@@ -170,7 +170,7 @@ def fmin_l_bfgs_b(
     func: _Fn[onp.ToFloat, *_Ts] | _Fn[_ToFloatAnd1D, *_Ts],
     x0: _ToFloatOr1D,
     fprime: _Fn[onp.ToFloat1D, *_Ts] | None = None,
-    args: tuple[*_Ts] = ...,
+    args: tuple[*_Ts] = ...,  # noqa: missing-default
     approx_grad: onp.ToBool = 0,
     bounds: _Bounds | None = None,
     m: onp.ToJustInt = 10,
@@ -191,7 +191,7 @@ def fmin_l_bfgs_b(
     func: _Fn[onp.ToFloat, *_Ts] | _Fn[_ToFloatAnd1D, *_Ts],
     x0: _ToFloatOr1D,
     fprime: _Fn[onp.ToFloat1D, *_Ts] | None = None,
-    args: tuple[*_Ts] = ...,
+    args: tuple[*_Ts] = ...,  # noqa: missing-default
     approx_grad: onp.ToBool = 0,
     bounds: _Bounds | None = None,
     m: onp.ToJustInt = 10,

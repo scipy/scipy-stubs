@@ -747,7 +747,7 @@ def median_test(
 @overload
 def circmean(
     samples: onp.ToFloatND,
-    high: onp.ToFloat = ...,
+    high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
@@ -757,7 +757,7 @@ def circmean(
 @overload
 def circmean(
     samples: onp.ToFloatND,
-    high: onp.ToFloat = ...,
+    high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -767,7 +767,7 @@ def circmean(
 @overload
 def circmean(
     samples: onp.ToFloatND,
-    high: onp.ToFloat = ...,
+    high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -779,7 +779,7 @@ def circmean(
 @overload
 def circvar(
     samples: onp.ToFloatND,
-    high: onp.ToFloat = ...,
+    high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
@@ -789,7 +789,7 @@ def circvar(
 @overload
 def circvar(
     samples: onp.ToFloatND,
-    high: onp.ToFloat = ...,
+    high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -799,7 +799,7 @@ def circvar(
 @overload
 def circvar(
     samples: onp.ToFloatND,
-    high: onp.ToFloat = ...,
+    high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -811,7 +811,7 @@ def circvar(
 @overload
 def circstd(
     samples: onp.ToFloatND,
-    high: onp.ToFloat = ...,
+    high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
@@ -822,7 +822,7 @@ def circstd(
 @overload
 def circstd(
     samples: onp.ToFloatND,
-    high: onp.ToFloat = ...,
+    high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -833,7 +833,7 @@ def circstd(
 @overload
 def circstd(
     samples: onp.ToFloatND,
-    high: onp.ToFloat = ...,
+    high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
     axis: op.CanIndex | None = None,
     nan_policy: NanPolicy = "propagate",

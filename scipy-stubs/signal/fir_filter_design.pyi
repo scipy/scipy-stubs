@@ -8,22 +8,22 @@ def firwin(
     numtaps: object,
     cutoff: object,
     *,
-    width: object = ...,
-    window: object = ...,
-    pass_zero: object = ...,
-    scale: object = ...,
-    fs: object = ...,
+    width: object = None,
+    window: object = "hamming",
+    pass_zero: object = True,
+    scale: object = True,
+    fs: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def firwin_2d(
     hsize: object,
     window: object,
     *,
-    fc: object | None = ...,
-    fs: object = ...,
-    circular: object = ...,
-    pass_zero: object = ...,
-    scale: object = ...,
+    fc: object | None = None,
+    fs: object = 2,
+    circular: object = False,
+    pass_zero: object = True,
+    scale: object = True,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def firwin2(
@@ -31,13 +31,13 @@ def firwin2(
     freq: object,
     gain: object,
     *,
-    nfreqs: object = ...,
-    window: object = ...,
-    antisymmetric: object = ...,
-    fs: object = ...,
+    nfreqs: object = None,
+    window: object = "hamming",
+    antisymmetric: object = False,
+    fs: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def firls(numtaps: object, bands: object, desired: object, *, weight: object = ..., fs: object = ...) -> object: ...
+def firls(numtaps: object, bands: object, desired: object, *, weight: object = None, fs: object = None) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def kaiser_beta(a: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -45,16 +45,16 @@ def kaiser_atten(numtaps: object, width: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def kaiserord(ripple: object, width: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def minimum_phase(h: object, method: object = ..., n_fft: object = ..., *, half: object = ...) -> object: ...
+def minimum_phase(h: object, method: object = "homomorphic", n_fft: object = None, *, half: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def remez(
     numtaps: object,
     bands: object,
     desired: object,
     *,
-    weight: object = ...,
-    type: object = ...,
-    maxiter: object = ...,
-    grid_density: object = ...,
-    fs: object = ...,
+    weight: object = None,
+    type: object = "bandpass",
+    maxiter: object = 25,
+    grid_density: object = 16,
+    fs: object = None,
 ) -> object: ...

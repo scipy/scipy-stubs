@@ -37,7 +37,7 @@ def fmin_tnc(
     epsilon: float = 1e-08,
     scale: onp.ToFloat | onp.ToFloat1D | None = None,
     offset: onp.ToFloat | onp.ToFloat1D | None = None,
-    messages: int = ...,
+    messages: int = 15,
     maxCGit: int = -1,
     maxfun: int | None = None,
     eta: float = -1,

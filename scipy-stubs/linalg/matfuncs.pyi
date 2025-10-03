@@ -27,39 +27,39 @@ __all__ = [
 ]
 
 @deprecated("will be removed in SciPy v2.0.0")
-def norm(a: object, ord: object = ..., axis: object = ..., keepdims: object = ..., check_finite: object = ...) -> object: ...
+def norm(a: object, ord: object = None, axis: object = None, keepdims: object = False, check_finite: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def svd(
     a: object,
-    full_matrices: object = ...,
-    compute_uv: object = ...,
-    overwrite_a: object = ...,
-    check_finite: object = ...,
-    lapack_driver: object = ...,
+    full_matrices: object = True,
+    compute_uv: object = True,
+    overwrite_a: object = False,
+    check_finite: object = True,
+    lapack_driver: object = "gesdd",
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def rsf2csf(T: object, Z: object, check_finite: object = ...) -> object: ...
+def rsf2csf(T: object, Z: object, check_finite: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def schur(
     a: object,
-    output: object = ...,
-    lwork: object = ...,
-    overwrite_a: object = ...,
-    sort: object = ...,
-    check_finite: object = ...,
+    output: object = "real",
+    lwork: object = None,
+    overwrite_a: object = False,
+    sort: object = None,
+    check_finite: object = True,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def inv(a: object, overwrite_a: object = ..., check_finite: object = ...) -> object: ...
+def inv(a: object, overwrite_a: object = False, check_finite: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solve(
     a: object,
     b: object,
-    lower: object = ...,
-    overwrite_a: object = ...,
-    overwrite_b: object = ...,
-    check_finite: object = ...,
-    assume_a: object = ...,
-    transposed: object = ...,
+    lower: object = False,
+    overwrite_a: object = False,
+    overwrite_b: object = False,
+    check_finite: object = True,
+    assume_a: object = None,
+    transposed: object = False,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def fractional_matrix_power(A: object, t: object) -> object: ...
@@ -80,7 +80,7 @@ def sinhm(A: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def tanhm(A: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def funm(A: object, func: object, disp: object = ...) -> object: ...
+def funm(A: object, func: object, disp: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def signm(A: object, disp: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -89,7 +89,7 @@ def khatri_rao(a: object, b: object) -> object: ...
 def sqrtm(A: object, disp: object = ..., blocksize: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def expm_frechet(
-    A: object, E: object, method: object = ..., compute_expm: object = ..., check_finite: object = ...
+    A: object, E: object, method: object = None, compute_expm: object = True, check_finite: object = True
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def expm_cond(A: object, check_finite: object = ...) -> object: ...
+def expm_cond(A: object, check_finite: object = True) -> object: ...

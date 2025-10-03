@@ -28,52 +28,52 @@ __all__ = [
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_closing(
     input: object,
-    structure: object = ...,
-    iterations: object = ...,
-    output: object = ...,
-    origin: object = ...,
-    mask: object = ...,
-    border_value: object = ...,
-    brute_force: object = ...,
+    structure: object = None,
+    iterations: object = 1,
+    output: object = None,
+    origin: object = 0,
+    mask: object = None,
+    border_value: object = 0,
+    brute_force: object = False,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_dilation(
     input: object,
-    structure: object = ...,
-    iterations: object = ...,
-    mask: object = ...,
-    output: object = ...,
-    border_value: object = ...,
-    origin: object = ...,
-    brute_force: object = ...,
+    structure: object = None,
+    iterations: object = 1,
+    mask: object = None,
+    output: object = None,
+    border_value: object = 0,
+    origin: object = 0,
+    brute_force: object = False,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_erosion(
     input: object,
-    structure: object = ...,
-    iterations: object = ...,
-    mask: object = ...,
-    output: object = ...,
-    border_value: object = ...,
-    origin: object = ...,
-    brute_force: object = ...,
+    structure: object = None,
+    iterations: object = 1,
+    mask: object = None,
+    output: object = None,
+    border_value: object = 0,
+    origin: object = 0,
+    brute_force: object = False,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_opening(
     input: object,
-    structure: object = ...,
-    iterations: object = ...,
-    output: object = ...,
-    origin: object = ...,
-    mask: object = ...,
-    border_value: object = ...,
-    brute_force: object = ...,
+    structure: object = None,
+    iterations: object = 1,
+    output: object = None,
+    origin: object = 0,
+    mask: object = None,
+    border_value: object = 0,
+    brute_force: object = False,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
@@ -81,27 +81,27 @@ def binary_opening(
 #
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_fill_holes(
-    input: object, structure: object = ..., output: object = ..., origin: object = ..., *, axes: tuple[int, ...] | None = None
+    input: object, structure: object = None, output: object = None, origin: object = 0, *, axes: tuple[int, ...] | None = None
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_hit_or_miss(
     input: object,
-    structure1: object = ...,
-    structure2: object = ...,
-    output: object = ...,
-    origin1: object = ...,
-    origin2: object = ...,
+    structure1: object = None,
+    structure2: object = None,
+    output: object = None,
+    origin1: object = 0,
+    origin2: object = None,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def binary_propagation(
     input: object,
-    structure: object = ...,
-    mask: object = ...,
-    output: object = ...,
-    border_value: object = ...,
-    origin: object = ...,
+    structure: object = None,
+    mask: object = None,
+    output: object = None,
+    border_value: object = 0,
+    origin: object = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
@@ -110,82 +110,82 @@ def binary_propagation(
 @deprecated("will be removed in SciPy v2.0.0")
 def distance_transform_bf(
     input: object,
-    metric: object = ...,
-    sampling: object = ...,
-    return_distances: object = ...,
-    return_indices: object = ...,
-    distances: object = ...,
-    indices: object = ...,
+    metric: object = "euclidean",
+    sampling: object = None,
+    return_distances: object = True,
+    return_indices: object = False,
+    distances: object = None,
+    indices: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def distance_transform_cdt(
     input: object,
-    metric: object = ...,
-    return_distances: object = ...,
-    return_indices: object = ...,
-    distances: object = ...,
-    indices: object = ...,
+    metric: object = "chessboard",
+    return_distances: object = True,
+    return_indices: object = False,
+    distances: object = None,
+    indices: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def distance_transform_edt(
     input: object,
-    sampling: object = ...,
-    return_distances: object = ...,
-    return_indices: object = ...,
-    distances: object = ...,
-    indices: object = ...,
+    sampling: object = None,
+    return_distances: object = True,
+    return_indices: object = False,
+    distances: object = None,
+    indices: object = None,
 ) -> object: ...
 
 #
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_closing(
     input: object,
-    size: object = ...,
-    footprint: object = ...,
-    structure: object = ...,
-    output: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    origin: object = ...,
+    size: object = None,
+    footprint: object = None,
+    structure: object = None,
+    output: object = None,
+    mode: object = "reflect",
+    cval: object = 0.0,
+    origin: object = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_dilation(
     input: object,
-    size: object = ...,
-    footprint: object = ...,
-    structure: object = ...,
-    output: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    origin: object = ...,
+    size: object = None,
+    footprint: object = None,
+    structure: object = None,
+    output: object = None,
+    mode: object = "reflect",
+    cval: object = 0.0,
+    origin: object = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_erosion(
     input: object,
-    size: object = ...,
-    footprint: object = ...,
-    structure: object = ...,
-    output: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    origin: object = ...,
+    size: object = None,
+    footprint: object = None,
+    structure: object = None,
+    output: object = None,
+    mode: object = "reflect",
+    cval: object = 0.0,
+    origin: object = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def grey_opening(
     input: object,
-    size: object = ...,
-    footprint: object = ...,
-    structure: object = ...,
-    output: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    origin: object = ...,
+    size: object = None,
+    footprint: object = None,
+    structure: object = None,
+    output: object = None,
+    mode: object = "reflect",
+    cval: object = 0.0,
+    origin: object = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
@@ -194,26 +194,26 @@ def grey_opening(
 @deprecated("will be removed in SciPy v2.0.0")
 def morphological_gradient(
     input: object,
-    size: object = ...,
-    footprint: object = ...,
-    structure: object = ...,
-    output: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    origin: object = ...,
+    size: object = None,
+    footprint: object = None,
+    structure: object = None,
+    output: object = None,
+    mode: object = "reflect",
+    cval: object = 0.0,
+    origin: object = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def morphological_laplace(
     input: object,
-    size: object = ...,
-    footprint: object = ...,
-    structure: object = ...,
-    output: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    origin: object = ...,
+    size: object = None,
+    footprint: object = None,
+    structure: object = None,
+    output: object = None,
+    mode: object = "reflect",
+    cval: object = 0.0,
+    origin: object = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
@@ -222,32 +222,32 @@ def morphological_laplace(
 @deprecated("will be removed in SciPy v2.0.0")
 def white_tophat(
     input: object,
-    size: object = ...,
-    footprint: object = ...,
-    structure: object = ...,
-    output: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    origin: object = ...,
+    size: object = None,
+    footprint: object = None,
+    structure: object = None,
+    output: object = None,
+    mode: object = "reflect",
+    cval: object = 0.0,
+    origin: object = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def black_tophat(
     input: object,
-    size: object = ...,
-    footprint: object = ...,
-    structure: object = ...,
-    output: object = ...,
-    mode: object = ...,
-    cval: object = ...,
-    origin: object = ...,
+    size: object = None,
+    footprint: object = None,
+    structure: object = None,
+    output: object = None,
+    mode: object = "reflect",
+    cval: object = 0.0,
+    origin: object = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> object: ...
 
 #
 @deprecated("will be removed in SciPy v2.0.0")
-def iterate_structure(structure: object, iterations: object, origin: object = ...) -> object: ...
+def iterate_structure(structure: object, iterations: object, origin: object = None) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def generate_binary_structure(rank: object, connectivity: object) -> object: ...

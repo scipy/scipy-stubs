@@ -132,7 +132,7 @@ def freqz(
     worN: op.CanIndex | onp.ToFloat1D = 512,
     whole: op.CanBool = False,
     plot: Callable[[_FloatND, _ComplexND], object] | None = None,
-    fs: onp.ToFloat = ...,  # 2 * pi
+    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
     include_nyquist: bool = False,
 ) -> tuple[_FloatND, _ComplexND]: ...
 @overload  # worN: complex
@@ -142,7 +142,7 @@ def freqz(
     worN: op.CanIndex | onp.ToComplex1D = 512,
     whole: op.CanBool = False,
     plot: Callable[[_FloatND, _ComplexND], object] | None = None,
-    fs: onp.ToFloat = ...,  # 2 * pi
+    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
     include_nyquist: bool = False,
 ) -> tuple[_InexactND, _ComplexND]: ...
 
@@ -154,7 +154,7 @@ def freqz_zpk(
     k: onp.ToComplex1D,
     worN: op.CanIndex | onp.ToFloat1D = 512,
     whole: op.CanBool = False,
-    fs: onp.ToFloat = ...,  # 2 * pi
+    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
 ) -> tuple[_FloatND, _ComplexND]: ...
 @overload  # worN: complex
 def freqz_zpk(
@@ -163,7 +163,7 @@ def freqz_zpk(
     k: onp.ToComplex1D,
     worN: onp.ToComplex1D,
     whole: op.CanBool = False,
-    fs: onp.ToFloat = ...,  # 2 * pi
+    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
 ) -> tuple[_InexactND, _ComplexND]: ...
 
 #
@@ -172,14 +172,14 @@ def group_delay(
     system: tuple[onp.ToComplex1D, onp.ToComplex1D],
     w: op.CanIndex | onp.ToFloat1D | None = 512,
     whole: op.CanBool = False,
-    fs: onp.ToFloat = ...,  # 2 * pi
+    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
 ) -> _Ba1D: ...
 @overload  # w: complex
 def group_delay(
     system: tuple[onp.ToComplex1D, onp.ToComplex1D],
     w: onp.ToComplex1D,
     whole: op.CanBool = False,
-    fs: onp.ToFloat = ...,  # 2 * pi
+    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
 ) -> tuple[_Inexact1D, _Float1D]: ...
 
 #
@@ -188,14 +188,14 @@ def freqz_sos(
     sos: onp.ToFloat2D,
     worN: op.CanIndex | onp.ToFloat1D = 512,
     whole: op.CanBool = False,
-    fs: onp.ToFloat = ...,  # 2 * pi
+    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
 ) -> tuple[_Float1D, _Complex1D]: ...
 @overload  # worN: real
 def freqz_sos(
     sos: onp.ToFloat2D,
     worN: onp.ToComplex1D,
     whole: op.CanBool = False,
-    fs: onp.ToFloat = ...,  # 2 * pi
+    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
 ) -> tuple[_Inexact1D, _Complex1D]: ...
 
 sosfreqz = freqz_sos
