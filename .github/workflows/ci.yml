@@ -52,6 +52,24 @@ jobs:
           # see https://github.com/microsoft/pyright/issues/10832
           version: 1.1.403
 
+  stubdefaulter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5.0.0
+
+      - name: setup uv
+        uses: astral-sh/setup-uv@v6.8.0
+        with:
+          python-version: "3.13"
+
+      # avoid stubdefaulter checking the tests as if they were stubs
+      - name: exclude tests
+        run: rm -rf tests
+
+      - name: stubdefaulter check
+        run: uv run stubdefaulter --check --exit-zero --packages .
+
   # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
   # manually (re)install the desired version directly in the environment.
 
@@ -88,9 +106,6 @@ jobs:
 
       - name: stubtest scipy
         run: stubtest --ignore-disjoint-bases --allowlist=.mypyignore scipy
-
-      - name: stubdefaulter check
-        run: stubdefaulter --check --exit-zero --packages .
 
   typetest:
     runs-on: ubuntu-latest
