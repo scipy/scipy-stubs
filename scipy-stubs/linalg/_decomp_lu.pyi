@@ -139,7 +139,7 @@ def lu(
     a: onp.ToJustComplexND,
     permute_l: onp.ToTrue,
     overwrite_a: onp.ToBool = False,
-    check_finite: onp.ToBool = False,
+    check_finite: onp.ToBool = True,
     p_indices: onp.ToBool = False,
 ) -> tuple[_ComplexND, _ComplexND]: ...
 @overload  # fallback, permute_l=False, p_indices=False
@@ -168,6 +168,6 @@ def lu(
     a: onp.ToComplexND,
     permute_l: onp.ToTrue,
     overwrite_a: onp.ToBool = False,
-    check_finite: onp.ToBool = False,
+    check_finite: onp.ToBool = True,
     p_indices: onp.ToBool = False,
 ) -> tuple[_InexactND, _InexactND]: ...

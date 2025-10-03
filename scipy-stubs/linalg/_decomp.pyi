@@ -479,7 +479,7 @@ def eigh(
 @overload  # float, eigvals_only: False = ..., select: _SelectA = ...
 def eig_banded(
     a_band: onp.ToFloatND,
-    lower: op.CanBool = True,
+    lower: op.CanBool = False,
     eigvals_only: onp.ToFalse = False,
     overwrite_a_band: op.CanBool = False,
     select: _SelectA = "a",
@@ -490,7 +490,7 @@ def eig_banded(
 @overload  # float, eigvals_only: False = ..., select: _SelectV (keyword)
 def eig_banded(
     a_band: onp.ToFloatND,
-    lower: op.CanBool = True,
+    lower: op.CanBool = False,
     eigvals_only: onp.ToFalse = False,
     overwrite_a_band: op.CanBool = False,
     *,
@@ -502,7 +502,7 @@ def eig_banded(
 @overload  # float, eigvals_only: False = ..., select: _SelectI (keyword)
 def eig_banded(
     a_band: onp.ToFloatND,
-    lower: op.CanBool = True,
+    lower: op.CanBool = False,
     eigvals_only: onp.ToFalse = False,
     overwrite_a_band: op.CanBool = False,
     *,
@@ -514,7 +514,7 @@ def eig_banded(
 @overload  # complex, eigvals_only: False = ..., select: _SelectA = ...
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = True,
+    lower: op.CanBool = False,
     eigvals_only: onp.ToFalse = False,
     overwrite_a_band: op.CanBool = False,
     select: _SelectA = "a",
@@ -525,7 +525,7 @@ def eig_banded(
 @overload  # complex, eigvals_only: False = ..., select: _SelectV (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = True,
+    lower: op.CanBool = False,
     eigvals_only: onp.ToFalse = False,
     overwrite_a_band: op.CanBool = False,
     *,
@@ -537,7 +537,7 @@ def eig_banded(
 @overload  # complex, eigvals_only: False = ..., select: _SelectI (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = True,
+    lower: op.CanBool = False,
     eigvals_only: onp.ToFalse = False,
     overwrite_a_band: op.CanBool = False,
     *,
@@ -560,7 +560,7 @@ def eig_banded(
 @overload  # eigvals_only: True  (keyword), select: _SelectA = ... (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = True,
+    lower: op.CanBool = False,
     *,
     eigvals_only: onp.ToTrue,
     overwrite_a_band: op.CanBool = False,
@@ -584,7 +584,7 @@ def eig_banded(
 @overload  # eigvals_only: True  (keyword), select: _SelectV (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = True,
+    lower: op.CanBool = False,
     *,
     eigvals_only: onp.ToTrue,
     overwrite_a_band: op.CanBool = False,
@@ -608,7 +608,7 @@ def eig_banded(
 @overload  # eigvals_only: True (keyword), select: _SelectI (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = True,
+    lower: op.CanBool = False,
     *,
     eigvals_only: onp.ToTrue,
     overwrite_a_band: op.CanBool = False,

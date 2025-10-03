@@ -51,7 +51,7 @@ def quantile(
     method: _QuantileMethod = "linear",
     axis: op.CanIndex = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: op.CanBool | None = False,
+    keepdims: op.CanBool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def quantile(

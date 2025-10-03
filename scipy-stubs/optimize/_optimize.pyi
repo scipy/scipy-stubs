@@ -320,7 +320,7 @@ def fmin_cg(
     retall: onp.ToFalse = 0,
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
-    c2: onp.ToFloat = 0.9,
+    c2: onp.ToFloat = 0.4,
 ) -> _Float1D: ...
 @overload  # full_output: False = ..., retall: True  (keyword)
 def fmin_cg(
@@ -338,7 +338,7 @@ def fmin_cg(
     retall: onp.ToTrue,
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
-    c2: onp.ToFloat = 0.9,
+    c2: onp.ToFloat = 0.4,
 ) -> tuple[_Float1D, _AllVecs]: ...
 @overload  # full_output: True (keyword), retall: False = ...
 def fmin_cg(
@@ -356,7 +356,7 @@ def fmin_cg(
     retall: onp.ToFalse = 0,
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
-    c2: onp.ToFloat = 0.9,
+    c2: onp.ToFloat = 0.4,
 ) -> tuple[_Float1D, _Float, int, int, _WarnFlag]: ...
 @overload  # full_output: True (keyword), retall: True (keyword)
 def fmin_cg(
@@ -374,7 +374,7 @@ def fmin_cg(
     retall: onp.ToTrue,
     callback: _Callback_1d | None = None,
     c1: onp.ToFloat = 1e-4,
-    c2: onp.ToFloat = 0.9,
+    c2: onp.ToFloat = 0.4,
 ) -> tuple[_Float1D, _Float, int, int, _WarnFlag, _AllVecs]: ...
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_ncg(
