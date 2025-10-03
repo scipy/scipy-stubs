@@ -26,6 +26,8 @@ class _MMFileKwargs(TypedDict, total=False):
 ###
 
 class MMFile:
+    __slots__ = "_cols", "_entries", "_field", "_format", "_rows", "_symmetry"
+
     FORMAT_COORDINATE: ClassVar[str] = "coordinate"
     FORMAT_ARRAY: ClassVar[str] = "array"
     FORMAT_VALUES: ClassVar[tuple[str, ...]] = "coordinate", "array"

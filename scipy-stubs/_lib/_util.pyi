@@ -45,6 +45,8 @@ if sys.version_info >= (3, 14):
     __conditional_annotations__: Final[set[int]] = ...
 
 class AxisError(ValueError, IndexError):
+    __slots__ = "_msg", "axis", "ndim"
+
     _msg: Final[str | None]
     axis: Final[int | None]
     ndim: Final[onp.NDim | None]
