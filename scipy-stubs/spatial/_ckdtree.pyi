@@ -178,7 +178,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = 0,  # noqa: missing-default
+        eps: onp.ToFloat = ...,  # noqa: missing-default
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         return_length: onp.ToFalse = False,
@@ -259,7 +259,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     #
     @overload
     def query_pairs(
-        self, /, r: onp.ToFloat, p: onp.ToFloat = 2.0, eps: onp.ToFloat = 0, output_type: L["set"] = "set"
+        self, /, r: onp.ToFloat, p: onp.ToFloat = 2.0, eps: onp.ToFloat = 0.0, output_type: L["set"] = "set"
     ) -> set[tuple[int, int]]: ...
     @overload
     def query_pairs(
@@ -267,7 +267,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     ) -> onp.ArrayND[np.intp]: ...
     @overload
     def query_pairs(
-        self, /, r: onp.ToFloat, p: onp.ToFloat = 2.0, eps: onp.ToFloat = 0, *, output_type: L["ndarray"]
+        self, /, r: onp.ToFloat, p: onp.ToFloat = 2.0, eps: onp.ToFloat = 0.0, *, output_type: L["ndarray"]
     ) -> onp.ArrayND[np.intp]: ...
 
     #

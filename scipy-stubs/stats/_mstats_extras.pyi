@@ -29,17 +29,17 @@ _ToAxis: TypeAlias = op.CanIndex | None
 
 @overload
 def hdquantiles(
-    data: onp.ToFloat1D, prob: _ToProb = [0.25, 0.5, 0.75], axis: _ToAxis = None, var: onp.ToFalse = False
+    data: onp.ToFloat1D, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis = None, var: onp.ToFalse = False
 ) -> onp.MArray1D[np.float64]: ...
 @overload
 def hdquantiles(data: onp.ToFloat1D, prob: _ToProb, axis: _ToAxis, var: onp.ToTrue) -> onp.MArray2D[np.float64]: ...
 @overload
 def hdquantiles(
-    data: onp.ToFloat1D, prob: _ToProb = [0.25, 0.5, 0.75], axis: _ToAxis = None, *, var: onp.ToTrue
+    data: onp.ToFloat1D, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis = None, *, var: onp.ToTrue
 ) -> onp.MArray2D[np.float64]: ...
 @overload
 def hdquantiles(
-    data: onp.ToFloatND, prob: _ToProb = [0.25, 0.5, 0.75], axis: _ToAxis = None, var: bool = False
+    data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis = None, var: bool = False
 ) -> onp.MArray[np.float64]: ...
 
 #

@@ -103,7 +103,7 @@ def dct(
     x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex | None = None,
+    axis: op.CanIndex = -1,
     norm: _NormKind = None,
     overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
@@ -112,7 +112,7 @@ def dct(
     x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex | None = None,
+    axis: op.CanIndex = -1,
     norm: _NormKind = None,
     overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
@@ -123,7 +123,7 @@ def idct(
     x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex | None = None,
+    axis: op.CanIndex = -1,
     norm: _NormKind = None,
     overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
@@ -132,7 +132,7 @@ def idct(
     x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex | None = None,
+    axis: op.CanIndex = -1,
     norm: _NormKind = None,
     overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
@@ -143,7 +143,7 @@ def dst(
     x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex | None = None,
+    axis: op.CanIndex = -1,
     norm: _NormKind = None,
     overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
@@ -152,7 +152,7 @@ def dst(
     x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex | None = None,
+    axis: op.CanIndex = -1,
     norm: _NormKind = None,
     overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
@@ -163,7 +163,7 @@ def idst(
     x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex | None = None,
+    axis: op.CanIndex = -1,
     norm: _NormKind = None,
     overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal: ...
@@ -172,7 +172,7 @@ def idst(
     x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex | None = None,
+    axis: op.CanIndex = -1,
     norm: _NormKind = None,
     overwrite_x: onp.ToBool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
