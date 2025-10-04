@@ -4,6 +4,7 @@ Prints the names of all SciPy modules that are not stubbed.
 
 # ruff: noqa: T201, S101
 
+import sys
 import types
 import warnings
 from pathlib import Path
@@ -11,6 +12,7 @@ from typing import Any
 
 import scipy
 
+STUBS_PATH = Path(__file__).parent.parent / "scipy-stubs"
 BUNDLED = (
     "scipy._lib.array_api_compat",
     "scipy._lib.array_api_extra",
@@ -19,6 +21,12 @@ BUNDLED = (
     "scipy.sparse.linalg._eigen.arpack",
     "scipy.sparse.linalg._propack",
 )
+
+
+def _check_stubs_path() -> None:
+    # sanity check
+    assert STUBS_PATH.is_dir()
+    assert (STUBS_PATH / "__init__.pyi").exists()
 
 
 def modules(
@@ -50,32 +58,44 @@ def modules(
     return out
 
 
-def is_stubbed(mod: str) -> bool:
-    if not mod.startswith("scipy."):
-        return False
-
-    stubs_path = Path(__file__).parent.parent / "scipy-stubs"
-    if not stubs_path.is_dir():
-        raise FileNotFoundError(stubs_path)
-
+def module_to_path(mod: str) -> Path | None:
     _, *submods = mod.split(".")
-    if not submods:
-        return (stubs_path / "__init__.pyi").is_file()
+    if (path := STUBS_PATH.joinpath(*submods, "__init__.pyi")).is_file():
+        return path
 
-    *subpackages, submod = submods
-    subpackage_path = stubs_path.joinpath(*subpackages)
-    return (subpackage_path / f"{submod}.pyi").is_file() or (
-        subpackage_path / submod / "__init__.pyi"
-    ).is_file()
+    # https://github.com/facebook/pyrefly/issues/913#issuecomment-3367579203
+    assert submods, path  # pyrefly: ignore[unbound-name]
+
+    if (path := STUBS_PATH.joinpath(*submods[:-1], f"{submods[-1]}.pyi")).is_file():
+        return path
+
+    return None
 
 
-if __name__ == "__main__":
+def is_stubbed(mod: str) -> bool:
+    return mod.startswith("scipy.") and module_to_path(mod) is not None
+
+
+def main() -> int:
+    _check_stubs_path()
+
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", DeprecationWarning)
         warnings.simplefilter("ignore", FutureWarning)
         module_list = modules(scipy)
-
     module_list.sort()
+
+    exit_code = 0
     for name in module_list:
-        if not any(map(name.startswith, BUNDLED)) and not is_stubbed(name):
-            print(name)
+        if any(map(name.startswith, BUNDLED)):
+            continue
+
+        if not is_stubbed(name):
+            print(name, file=sys.stderr)
+            exit_code = 1
+
+    return exit_code
+
+
+if __name__ == "__main__":
+    sys.exit(main())
