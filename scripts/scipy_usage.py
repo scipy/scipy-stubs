@@ -42,6 +42,7 @@ DEFAULT_REPOS = [
     "ThePornDatabase/namer",
     "neurogym/neurogym",
     "optuna/optuna",
+    "bashtage/linearmodels",
     "pandas-dev/pandas",
     "pandas-dev/pandas-stubs",
     "progressivis/progressivis",
@@ -54,22 +55,23 @@ DEFAULT_REPOS = [
     "vega/altair",
     "voc/voctomix",
     "pydata/xarray",
-    "scikit-learn/scikit-learn",  # TODO: scipy-stubs PR
-    "jax-ml/jax",  # TODO: scipy-stubs PR
+    "jax-ml/jax",
     "unionai-oss/pandera/",
     "JohannesBuchner/imagehash",
     "hydpy-dev/hydpy",
     "static-frame/static-frame",
-    "theislab/anndata2ri",  # TODO: add to readme
+    "theislab/anndata2ri",
     "gdsfactory/kfactory",
     "nipreps/nireports",
     "UBC-Solar/physics",
     "nirum/jetplot",
     "flika-org/flika",
-    "networkx/networkx",  # TODO: scipy-stubs PR
-    "fonttools/fonttools",  # TODO: scipy-stubs PR
-    "tensorflow/tensorflow",  # TODO: scipy-stubs PR
-    "dmlc/xgboost",  # TODO: scipy-stubs PR ?
+    # these projects might benefit from adding scipy-stubs as dev dependency
+    "scikit-learn/scikit-learn",
+    "networkx/networkx",
+    "fonttools/fonttools",
+    "tensorflow/tensorflow",
+    "dmlc/xgboost",
 ]
 
 
