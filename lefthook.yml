@@ -31,6 +31,9 @@ pre-commit:
     - name: check-version-literals
       run: uv {run} scripts/check_version_literals.py
 
+    - name: unstubbed-modules
+      run: uv {run} scripts/unstubbed_modules.py
+
 post-checkout:
   jobs:
     - run: uv sync
