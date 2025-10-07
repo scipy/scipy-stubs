@@ -141,7 +141,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatStrict1D,
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # noqa: missing-default
+        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         return_length: onp.ToFalse = False,
@@ -165,7 +165,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatStrict1D,
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # noqa: missing-default
+        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         *,
@@ -178,7 +178,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # noqa: missing-default
+        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         return_length: onp.ToFalse = False,
@@ -202,7 +202,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # noqa: missing-default
+        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         *,
@@ -215,7 +215,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # noqa: missing-default
+        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         return_length: onp.ToFalse = False,
@@ -239,7 +239,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # # noqa: missing-default
+        eps: onp.ToFloat = ...,  # # stubdefaulter: ignore[missing-default]
         workers: op.CanIndex | None = None,
         return_sorted: onp.ToBool | None = None,
         *,
@@ -253,7 +253,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         other: cKDTree,
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # noqa: missing-default
+        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
     ) -> list[list[int]]: ...
 
     #
