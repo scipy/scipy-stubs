@@ -132,9 +132,9 @@ errors = { bad-override = "ignore" }
 matches = "scipy-stubs/special/orthogonal.pyi"
 errors = { deprecated = "ignore" }
 
-[[tool.pyrefly.sub-config]]
-matches = "scipy-stubs/stats/_distn_infrastructure.pyi"
-errors = { bad-override = "ignore" }
+# [[tool.pyrefly.sub-config]]
+# matches = "scipy-stubs/stats/_distn_infrastructure.pyi"
+# errors = { bad-override = "ignore" }
 
 [tool.pyright]
 exclude = [
