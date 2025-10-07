@@ -19,6 +19,7 @@ class _ScipyBackend(_Backend[_T_co], Generic[_T_co]):
 
     @override
     @staticmethod
+    # pyrefly: ignore[bad-override]
     def __ua_function__(method: Callable[..., _T_co], args: Sequence[object], kwargs: Mapping[str, object]) -> _T_co: ...
 
 _named_backends: Final[dict[str, type[_Backend[Any]]]] = ...

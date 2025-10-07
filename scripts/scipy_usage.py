@@ -382,7 +382,7 @@ class ScipyVisitor(ast.NodeVisitor):
             (call_name := self._get_call_name(node.func))
             and (scipy_call := self._resolve_scipy_call(call_name))
         ):  # fmt: skip
-            self.calls.add(scipy_call)
+            self.calls.add(scipy_call)  # pyrefly: ignore[unbound-name]
 
         self.generic_visit(node)
 

@@ -84,7 +84,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
     def __len__(self, /) -> int: ...
     @override
-    def __delitem__(self: _dok_base[Any, _ShapeT], key: _ShapeT, /) -> None: ...
+    def __delitem__(self: _dok_base[Any, _ShapeT], key: _ShapeT, /) -> None: ...  # pyrefly: ignore[bad-override]
 
     #
     @override
@@ -106,11 +106,11 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @override
-    def __or__(self, other: Never, /) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __or__(self, other: Never, /) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
     @override
-    def __ror__(self, other: Never, /) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __ror__(self, other: Never, /) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
     @override
-    def __ior__(self, other: Never, /) -> Self: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __ior__(self, other: Never, /) -> Self: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
     @override
     def update(self, /, val: Never) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
 
@@ -521,6 +521,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
 
     #
     @overload
+    # pyrefly: ignore[bad-override]
     def __getitem__(self, key: onp.CanArrayND[np.bool_ | npc.integer] | list[int] | slice, /) -> Self: ...
     @overload
     def __getitem__(self: dok_array[_ScalarT, _ShapeT], key: _spbase[np.bool_, _ShapeT], /) -> dok_array[_ScalarT, _ShapeT]: ...
@@ -715,7 +716,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
 
     #
     @overload
-    def __getitem__(
+    def __getitem__(  # pyrefly: ignore[bad-override]
         self, key: _ToKey1D | onp.CanArrayND[np.bool_ | npc.integer] | _spbase[np.bool_, _2D] | list[int] | slice, /
     ) -> Self: ...
     @overload
