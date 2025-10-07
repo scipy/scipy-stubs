@@ -90,9 +90,9 @@ assert_type(entropy(py_f_0d), np.float64)
 assert_type(entropy(py_f_1d), np.float64)
 assert_type(entropy(py_f_2d), onp.Array1D[np.float64])
 assert_type(entropy(py_f_3d), onp.Array2D[np.float64])
-assert_type(entropy(py_f_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly: ignore
-assert_type(entropy(py_f_nd, keepdims=True), onp.ArrayND[np.float64])  # pyrefly: ignore
-assert_type(entropy(py_f_nd, axis=None), np.float64)  # pyrefly: ignore
+assert_type(entropy(py_f_nd), np.float64 | onp.ArrayND[np.float64])
+assert_type(entropy(py_f_nd, keepdims=True), onp.ArrayND[np.float64])
+assert_type(entropy(py_f_nd, axis=None), np.float64)
 
 assert_type(entropy(i8_0d, f16_0d), np.float64)
 assert_type(entropy(i8_1d, f16_0d), np.float64)
@@ -126,9 +126,9 @@ assert_type(entropy(py_f_0d, f16_0d), np.float64)
 assert_type(entropy(py_f_1d, f16_0d), np.float64)
 assert_type(entropy(py_f_2d, f16_0d), onp.Array1D[np.float64])
 assert_type(entropy(py_f_3d, f16_0d), onp.Array2D[np.float64])
-assert_type(entropy(py_f_nd, f16_0d), np.float64 | onp.ArrayND[np.float64])  # pyrefly: ignore
-assert_type(entropy(py_f_nd, f16_0d, keepdims=True), onp.ArrayND[np.float64])  # pyrefly: ignore
-assert_type(entropy(py_f_nd, f16_0d, axis=None), np.float64)  # pyrefly: ignore
+assert_type(entropy(py_f_nd, f16_0d), np.float64 | onp.ArrayND[np.float64])
+assert_type(entropy(py_f_nd, f16_0d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(entropy(py_f_nd, f16_0d, axis=None), np.float64)
 
 assert_type(entropy(i8_0d, py_f_0d), np.float64)
 assert_type(entropy(i8_1d, py_f_0d), np.float64)
@@ -162,9 +162,9 @@ assert_type(entropy(py_f_0d, py_f_0d), np.float64)
 assert_type(entropy(py_f_1d, py_f_0d), np.float64)
 assert_type(entropy(py_f_2d, py_f_0d), onp.Array1D[np.float64])
 assert_type(entropy(py_f_3d, py_f_0d), onp.Array2D[np.float64])
-assert_type(entropy(py_f_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])  # pyrefly: ignore
-assert_type(entropy(py_f_nd, py_f_0d, keepdims=True), onp.ArrayND[np.float64])  # pyrefly: ignore
-assert_type(entropy(py_f_nd, py_f_0d, axis=None), np.float64)  # pyrefly: ignore
+assert_type(entropy(py_f_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])
+assert_type(entropy(py_f_nd, py_f_0d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(entropy(py_f_nd, py_f_0d, axis=None), np.float64)
 
 ###
 # differential_entropy
@@ -215,13 +215,13 @@ assert_type(differential_entropy(py_f_0d), np.float64)
 assert_type(differential_entropy(py_f_1d), np.float64)
 assert_type(differential_entropy(py_f_2d), onp.Array1D[np.float64])
 assert_type(differential_entropy(py_f_3d), onp.Array2D[np.float64])
-assert_type(differential_entropy(py_f_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly: ignore
-assert_type(differential_entropy(py_f_nd, keepdims=True), onp.ArrayND[np.float64])  # pyrefly: ignore
-assert_type(differential_entropy(py_f_nd, axis=None), np.float64)  # pyrefly: ignore
+assert_type(differential_entropy(py_f_nd), np.float64 | onp.ArrayND[np.float64])
+assert_type(differential_entropy(py_f_nd, keepdims=True), onp.ArrayND[np.float64])
+assert_type(differential_entropy(py_f_nd, axis=None), np.float64)
 assert_type(differential_entropy(py_c_0d), np.complex128)
 assert_type(differential_entropy(py_c_1d), np.complex128)
 assert_type(differential_entropy(py_c_2d), onp.Array1D[np.complex128])
 assert_type(differential_entropy(py_c_3d), onp.Array2D[np.complex128])
-assert_type(differential_entropy(py_c_nd), np.complex128 | onp.ArrayND[np.complex128])  # pyrefly: ignore
-assert_type(differential_entropy(py_c_nd, keepdims=True), onp.ArrayND[np.complex128])  # pyrefly: ignore
-assert_type(differential_entropy(py_c_nd, axis=None), np.complex128)  # pyrefly: ignore
+assert_type(differential_entropy(py_c_nd), np.complex128 | onp.ArrayND[np.complex128])
+assert_type(differential_entropy(py_c_nd, keepdims=True), onp.ArrayND[np.complex128])
+assert_type(differential_entropy(py_c_nd, axis=None), np.complex128)
