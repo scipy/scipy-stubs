@@ -54,6 +54,21 @@
       "cwd": "${workspaceFolder}"
     }
   }, {
+    "label": "pyrefly",
+    "type": "shell",
+    "command": "uv",
+    "args": ["run", "pyrefly", "check"],
+    "group": {
+      "kind": "build",
+      "isDefault": false
+    },
+    "presentation": {
+      "clear": true
+    },
+    "options": {
+      "cwd": "${workspaceFolder}"
+    }
+  }, {
     "label": "stubtest",
     "type": "shell",
     "command": "uv",
