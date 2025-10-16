@@ -10,7 +10,12 @@ from ._isotonic import isotonic_regression
 from ._lbfgsb_py import LbfgsInvHessProduct, fmin_l_bfgs_b
 from ._linprog import linprog, linprog_verbose_callback
 from ._lsap import linear_sum_assignment
-from ._lsq import least_squares, lsq_linear
+
+# workarounds for https://github.com/python/mypy/issues/20079
+from ._lsq.least_squares import least_squares
+from ._lsq.lsq_linear import lsq_linear
+
+#
 from ._milp import milp
 from ._minimize import minimize, minimize_scalar
 from ._minpack_py import curve_fit, fixed_point, fsolve, leastsq
