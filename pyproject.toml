@@ -53,7 +53,7 @@ ci = ["packaging>=25.0"]
 lint = [
   { include-group = "extras" },
   "dprint-py==0.50.2.0",
-  "ruff==0.14.0",
+  "ruff==0.14.1",
   "sp-repo-review[cli]==2025.10.1",
 ]
 type = [
