@@ -218,7 +218,7 @@ _, props_tps = find_peaks(data, threshold=cond, prominence=cond, plateau_size=co
 props_tps["peak_heights"]  # type: ignore[typeddict-item]  # pyright: ignore[reportGeneralTypeIssues]  # pyrefly: ignore[typed-dict-key-error]
 assert_type(props_tps["left_thresholds"], _Float1D)
 assert_type(props_tps["prominences"], _Float1D)
-props_tps["widths"]  # type: ignore[typeddict-item] # pyright: ignore[reportGeneralTypeIssues]  # pyrefly: ignore[typed-dict-key-error]
+props_tps["widths"]  # type: ignore[typeddict-item]  # pyright: ignore[reportGeneralTypeIssues]  # pyrefly: ignore[typed-dict-key-error]
 assert_type(props_tps["plateau_sizes"], _Int1D)
 
 # {threshold, width, plateau_size}
@@ -253,7 +253,7 @@ _, props_htps = find_peaks(data, height=cond, threshold=cond, prominence=cond, p
 assert_type(props_htps["peak_heights"], _Float1D)
 assert_type(props_htps["left_thresholds"], _Float1D)
 assert_type(props_htps["prominences"], _Float1D)
-props_tps["widths"]  # type: ignore[typeddict-item] # pyright: ignore[reportGeneralTypeIssues]  # pyrefly: ignore[typed-dict-key-error]
+props_htps["widths"]  # type: ignore[typeddict-item]  # pyright: ignore[reportGeneralTypeIssues]  # pyrefly: ignore[typed-dict-key-error]
 assert_type(props_htps["plateau_sizes"], _Int1D)
 
 # {height, threshold, width, plateau_size}
