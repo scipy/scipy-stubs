@@ -1,9 +1,9 @@
 changelog:
   categories:
-    - title: 💥 Breaking Changes
+    - title: 💥 Breaking
       labels:
         - "is: breaking"
-    - title: 👽️ SciPy Changes
+    - title: ⏬ SciPy Changes
       labels:
         - "stubs: api change"
         - "stubs: api change - undocumented"
@@ -13,15 +13,27 @@ changelog:
       labels:
         - "is: feature"
         - "stubs: incomplete"
+        - "stubs: performance"
+        - "stubs: shape-typing"
+        - "topic: DX"
     - title: 🐛 Fixes
       labels:
         - "is: fix"
         - "stubs: incorrect"
+    - title: ↪️ Workarounds
+      labels:
+        - "is: workaround"
+    - title: 📝 Documentation
+      labels:
+        - "topic: documentation"
     - title: ✅ Testing
       labels:
         - "topic: testing"
-    - title: ⬆️ Dependencies
+    - title: 🧹 Maintenance
       labels:
+        - "is: chore"
+        - "is: refactor"
+        - "topic: code style"
         - "topic: dependencies"
     - title: Other Changes
       labels:
