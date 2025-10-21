@@ -41,6 +41,7 @@ jobs:
           path: ${{ runner.temp }}/artifacts
           pr: ${{ steps.pr-number.outputs.pr-number }}
           workflow_conclusion: completed
+          allow_forks: true
 
       - name: generate comment content
         id: generate-comment
