@@ -287,6 +287,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 - [librosa](https://github.com/librosa/librosa)
 - [linearmodels](https://github.com/bashtage/linearmodels)
 - [Lmo](https://github.com/jorenham/Lmo)
+- [MaxText](https://github.com/AI-Hypercomputer/maxtext)
 - [MouseTracks](https://github.com/huntfx/MouseTracks)
 - Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis))
 - [mypy_primer](https://github.com/hauntsaninja/mypy_primer)
