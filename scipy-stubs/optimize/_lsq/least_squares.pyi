@@ -30,7 +30,7 @@ _XScale: TypeAlias = onp.ToFloat | onp.ToFloatND | _XScaleMethod
 _LossMethod: TypeAlias = Literal["linear", "soft_l1", "huber", "cauchy", "arctan"]
 _Loss: TypeAlias = _UserLossFunction | _LossMethod
 
-_ResidFunction: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]
+_ResidFunction: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D | onp.ToFloat]
 
 _ResultStatus: TypeAlias = Literal[-2, -1, 0, 1, 2, 3, 4]
 
