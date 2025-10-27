@@ -15,3 +15,8 @@ x0: npt.NDArray[np.float64]
 
 result = least_squares(example_residual, x0=x0)
 assert_type(result.x, np.ndarray[tuple[int], np.dtype[np.float64]])
+
+def example_residual_scalar(x: npt.NDArray[np.float64]) -> np.float64 | float: ...
+
+result = least_squares(example_residual_scalar, x0=x0)
+assert_type(result.x, np.ndarray[tuple[int], np.dtype[np.float64]])
