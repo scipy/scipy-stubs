@@ -274,8 +274,8 @@ Apache Spark ([PySpark](https://github.com/apache/spark)) |
 [asammdf](https://github.com/danielhrisca/asammdf) |
 [Chemotools](https://github.com/paucablop/chemotools) |
 Colour ([colour](https://github.com/colour-science/colour),
-  [colour-checker-detection](https://github.com/colour-science/colour-checker-detection),
-  [colour-visuals](https://github.com/colour-science/colour-visuals)) |
+[colour-checker-detection](https://github.com/colour-science/colour-checker-detection),
+[colour-visuals](https://github.com/colour-science/colour-visuals)) |
 [CSAPS](https://github.com/espdev/csaps) |
 [cuPyNumeric](https://github.com/nv-legate/cupynumeric) |
 [Efax](https://github.com/NeilGirdhar/efax) |
@@ -295,7 +295,7 @@ Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis)) |
 [NeuroGym](https://github.com/neurogym/neurogym) |
 [Optuna](https://github.com/optuna/optuna) |
 Pandas ([pandas](https://github.com/pandas-dev/pandas),
-  [pandas-stubs](https://github.com/pandas-dev/pandas-stubs)) |
+[pandas-stubs](https://github.com/pandas-dev/pandas-stubs)) |
 [Pandera](https://github.com/unionai-oss/pandera) |
 [ProgressiVis](https://github.com/progressivis/progressivis) |
 PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
