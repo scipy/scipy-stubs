@@ -268,47 +268,47 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 
 `scipy-stubs` is used by a number of major open-source projects, including:
 
-- Apache Spark ([PySpark](https://github.com/apache/spark))
-- [Artisan](https://github.com/artisan-roaster-scope/artisan)
-- [Arviz](https://github.com/arviz-devs/arviz)
-- [asammdf](https://github.com/danielhrisca/asammdf)
-- [Chemotools](https://github.com/paucablop/chemotools)
-- Colour ([colour](https://github.com/colour-science/colour),
+Apache Spark ([PySpark](https://github.com/apache/spark)) |
+[Artisan](https://github.com/artisan-roaster-scope/artisan) |
+[Arviz](https://github.com/arviz-devs/arviz) |
+[asammdf](https://github.com/danielhrisca/asammdf) |
+[Chemotools](https://github.com/paucablop/chemotools) |
+Colour ([colour](https://github.com/colour-science/colour),
   [colour-checker-detection](https://github.com/colour-science/colour-checker-detection),
-  [colour-visuals](https://github.com/colour-science/colour-visuals))
-- [CSAPS](https://github.com/espdev/csaps)
-- [cuPyNumeric](https://github.com/nv-legate/cupynumeric)
-- [Efax](https://github.com/NeilGirdhar/efax)
-- [Fast GraphRAG](https://github.com/circlemind-ai/fast-graphrag)
-- [foamlib](https://github.com/gerlero/foamlib)
-- [Freqtrade](https://github.com/freqtrade/freqtrade)
-- Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools))
-- [JAX](https://github.com/jax-ml/jax)
-- [librosa](https://github.com/librosa/librosa)
-- [linearmodels](https://github.com/bashtage/linearmodels)
-- [Lmo](https://github.com/jorenham/Lmo)
-- [MaxText](https://github.com/AI-Hypercomputer/maxtext)
-- [MouseTracks](https://github.com/huntfx/MouseTracks)
-- Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis))
-- [mypy_primer](https://github.com/hauntsaninja/mypy_primer)
-- [Namer](https://github.com/ThePornDatabase/namer)
-- [NeuroGym](https://github.com/neurogym/neurogym)
-- [Optuna](https://github.com/optuna/optuna)
-- Pandas ([pandas](https://github.com/pandas-dev/pandas),
-  [pandas-stubs](https://github.com/pandas-dev/pandas-stubs))
-- [Pandera](https://github.com/unionai-oss/pandera)
-- [ProgressiVis](https://github.com/progressivis/progressivis)
-- PyMC ([PyTensor](https://github.com/pymc-devs/pytensor))
-- [pysmo](https://github.com/pysmo/pysmo)
-- [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay)
-- scverse ([scanpy](https://github.com/scverse/scanpy))
-- Theis Lab ([anndata2ri](https://github.com/theislab/anndata2ri))
-- [TQEC](https://github.com/tqec/tqec)
-- [traccuracy](https://github.com/live-image-tracking-tools/traccuracy)
-- [Ultralytics](https://github.com/ultralytics/ultralytics)
-- Vega ([Altair](https://github.com/vega/altair))
-- [Voctomix](https://github.com/voc/voctomix)
-- [xarray](https://github.com/pydata/xarray)
+  [colour-visuals](https://github.com/colour-science/colour-visuals)) |
+[CSAPS](https://github.com/espdev/csaps) |
+[cuPyNumeric](https://github.com/nv-legate/cupynumeric) |
+[Efax](https://github.com/NeilGirdhar/efax) |
+[Fast GraphRAG](https://github.com/circlemind-ai/fast-graphrag) |
+[foamlib](https://github.com/gerlero/foamlib) |
+[Freqtrade](https://github.com/freqtrade/freqtrade) |
+Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)) |
+[JAX](https://github.com/jax-ml/jax) |
+[librosa](https://github.com/librosa/librosa) |
+[linearmodels](https://github.com/bashtage/linearmodels) |
+[Lmo](https://github.com/jorenham/Lmo) |
+[MaxText](https://github.com/AI-Hypercomputer/maxtext) |
+[MouseTracks](https://github.com/huntfx/MouseTracks) |
+Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis)) |
+[mypy_primer](https://github.com/hauntsaninja/mypy_primer) |
+[Namer](https://github.com/ThePornDatabase/namer) |
+[NeuroGym](https://github.com/neurogym/neurogym) |
+[Optuna](https://github.com/optuna/optuna) |
+Pandas ([pandas](https://github.com/pandas-dev/pandas),
+  [pandas-stubs](https://github.com/pandas-dev/pandas-stubs)) |
+[Pandera](https://github.com/unionai-oss/pandera) |
+[ProgressiVis](https://github.com/progressivis/progressivis) |
+PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
+[pysmo](https://github.com/pysmo/pysmo) |
+[radioactivedecay](https://github.com/radioactivedecay/radioactivedecay) |
+scverse ([scanpy](https://github.com/scverse/scanpy)) |
+Theis Lab ([anndata2ri](https://github.com/theislab/anndata2ri)) |
+[TQEC](https://github.com/tqec/tqec) |
+[traccuracy](https://github.com/live-image-tracking-tools/traccuracy) |
+[Ultralytics](https://github.com/ultralytics/ultralytics) |
+Vega ([Altair](https://github.com/vega/altair)) |
+[Voctomix](https://github.com/voc/voctomix) |
+[xarray](https://github.com/pydata/xarray)
 
 ## License
 
