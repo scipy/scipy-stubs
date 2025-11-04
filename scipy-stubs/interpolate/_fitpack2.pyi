@@ -24,7 +24,7 @@ _FloatND: TypeAlias = onp.Array2D[np.float64]
 _Degree: TypeAlias = Literal[1, 2, 3, 4, 5]
 
 _ExtInt: TypeAlias = Literal[0, 1, 2, 3]
-_ExtStr: TypeAlias = Literal["extrapolate", "zeroes", "raise", "const"]
+_ExtStr: TypeAlias = Literal["extrapolate", "zeros", "raise", "const"]
 _Ext: TypeAlias = _ExtInt | _ExtStr
 
 _BBox: TypeAlias = onp.Array[tuple[Literal[2]], np.float64]
