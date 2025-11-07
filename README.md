@@ -302,6 +302,7 @@ PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 [pysmo](https://github.com/pysmo/pysmo) |
 [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay) |
 scverse ([scanpy](https://github.com/scverse/scanpy)) |
+[Skore](https://github.com/probabl-ai/skore) |
 Theis Lab ([anndata2ri](https://github.com/theislab/anndata2ri)) |
 [TQEC](https://github.com/tqec/tqec) |
 [traccuracy](https://github.com/live-image-tracking-tools/traccuracy) |
