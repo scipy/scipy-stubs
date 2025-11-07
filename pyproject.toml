@@ -53,14 +53,14 @@ ci = ["packaging>=25.0"]
 lint = [
   { include-group = "extras" },
   "dprint-py==0.50.2.0",
-  "ruff==0.14.3",
-  "sp-repo-review[cli]==2025.10.20",
+  "ruff==0.14.4",
+  "sp-repo-review[cli]==2025.11.7",
 ]
 type = [
   { include-group = "extras" },
   { include-group = "ci" },
   "array-api-compat==1.12.0", # bundled as `scipy._lib.array_api_compat`
-  "basedpyright==1.32.1",
+  "basedpyright==1.33.0",
   "mypy[faster-cache]==1.18.2",
   "pyrefly==0.40.0",
   "stubdefaulter>=0.1.0",
