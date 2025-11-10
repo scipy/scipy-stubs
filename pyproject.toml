@@ -54,7 +54,7 @@ lint = [
   { include-group = "extras" },
   "dprint-py==0.50.2.0",
   "ruff==0.14.4",
-  "sp-repo-review[cli]==2025.11.7",
+  "sp-repo-review[cli]==2025.11.10",
 ]
 type = [
   { include-group = "extras" },
@@ -62,7 +62,7 @@ type = [
   "array-api-compat==1.12.0", # bundled as `scipy._lib.array_api_compat`
   "basedpyright==1.33.0",
   "mypy[faster-cache]==1.18.2",
-  "pyrefly==0.40.0",
+  "pyrefly==0.40.1",
   "stubdefaulter>=0.1.0",
 ]
 dev = [

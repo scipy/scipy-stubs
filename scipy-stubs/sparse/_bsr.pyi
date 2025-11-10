@@ -68,7 +68,7 @@ class _bsr_base(_cs_matrix[_ScalarT_co, tuple[int, int]], _minmax_mixin[_ScalarT
     @override
     def __setitem__(self, key: Never, val: object, /) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
 
-#
+# pyrefly: ignore[inconsistent-inheritance]
 class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
@@ -260,6 +260,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
 
+# pyrefly: ignore[inconsistent-inheritance]
 class bsr_matrix(_bsr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
