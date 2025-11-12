@@ -111,6 +111,7 @@ The `scipy-stubs` versioning scheme uses four numbers: `{scipy_version}.{stubs_v
 ### CI efficiency
 
 The SciPy CI pipeline is comprehensive and takes over 30 minutes to run. The `scipy-stubs` CI is lightweight and completes in under 4 minutes. This difference has a substantial impact on development workflow, enabling rapid iteration and faster delivery of improvements.
+
 ## Frequently Asked Questions
 
 ### Q: What static type-checkers are supported?
