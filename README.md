@@ -92,6 +92,25 @@ It's also possible to install both `scipy` and `scipy-stubs` together through th
 conda install conda-forge::scipy-typed
 ```
 
+## Why is scipy-stubs a separate package?
+
+There are several important reasons why `scipy-stubs` is maintained as a separate package rather than being integrated into SciPy itself.
+
+### Separation of concerns
+
+If `scipy-stubs` were part of SciPy, every contributor would need to be familiar with type stubs. Writing high-quality stubs is complex and requires significant typing expertise ([example](link-to-example)). Requiring all SciPy developers to become typing experts would likely reduce overall willingness to contribute. By keeping stubs separate, SciPy contributors can focus on scientific functionality while typing specialists handle the stubs, with each group reviewing changes in their domain of expertise.
+
+### Opt-in by design
+
+A significant portion of SciPy users don't use type checking. Without `scipy-stubs` installed, type checkers won't analyze scipy-related code. Some code patterns may be technically type-unsafe but work perfectly fine in practice installing `scipy-stubs` would flag these cases. By keeping stubs separate, users retain full control over whether to enable type checking for their SciPy code.
+
+### Independent release cycles
+
+The `scipy-stubs` versioning scheme uses four numbers: `{scipy_version}.{stubs_version}`. The first three match the SciPy semver version, while the fourth is specific to stub releases. Since stub releases occur more frequently than SciPy releases, this independence allows typing improvements and bug fixes to be delivered without waiting for the next SciPy version.
+
+### CI efficiency
+
+The SciPy CI pipeline is comprehensive and takes over 30 minutes to run. The `scipy-stubs` CI is lightweight and completes in under 4 minutes. This difference has a substantial impact on development workflow, enabling rapid iteration and faster delivery of improvements.
 ## Frequently Asked Questions
 
 ### Q: What static type-checkers are supported?
