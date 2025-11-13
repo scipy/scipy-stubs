@@ -94,23 +94,36 @@ conda install conda-forge::scipy-typed
 
 ## Why is scipy-stubs a separate package?
 
-There are several important reasons why `scipy-stubs` is maintained as a separate package rather than being integrated into SciPy itself.
+These are only a subset of the many other important reasons why `scipy-stubs` is maintained as a separate package rather than being integrated into SciPy itself.
 
 ### Separation of concerns
 
-If `scipy-stubs` were part of SciPy, every contributor would need to be familiar with type stubs. Writing high-quality stubs is complex and requires significant typing expertise ([example](link-to-example)). Requiring all SciPy developers to become typing experts would likely reduce overall willingness to contribute. By keeping stubs separate, SciPy contributors can focus on scientific functionality while typing specialists handle the stubs, with each group reviewing changes in their domain of expertise.
+If `scipy-stubs` were part of SciPy, every contributor would need to be familiar with type stubs.
+Some areas of `scipy-stubs` get intricate, so keeping them in good shape goes more smoothly when you’re comfortable with how the typing pieces interact ([example](https://github.com/scipy/scipy-stubs/blob/2d6cca6a5e6ee21b6be7008c6c773dd8f12723fb/scipy-stubs/sparse/_base.pyi#L322-L389)).
+Requiring all SciPy developers to become typing experts would likely reduce overall willingness to contribute.
+By keeping stubs separate, SciPy contributors can focus on scientific functionality while typing specialists handle the stubs, with each group reviewing changes in its domain of expertise.
 
 ### Opt-in by design
 
-A significant portion of SciPy users don't use type checking. Without `scipy-stubs` installed, type checkers won't analyze scipy-related code. Some code patterns may be technically type-unsafe but work perfectly fine in practice installing `scipy-stubs` would flag these cases. By keeping stubs separate, users retain full control over whether to enable type checking for their SciPy code.
+A significant portion of SciPy users don’t use type checking.
+Without `scipy-stubs` installed, type checkers won’t analyze SciPy-related code.
+Some patterns may be technically type-unsafe while still working fine in practice, and installing `scipy-stubs` would flag these cases.
+By keeping stubs separate, users retain full control over whether to enable type checking for their SciPy code.
 
 ### Independent release cycles
 
-The `scipy-stubs` versioning scheme uses four numbers: `{scipy_version}.{stubs_version}`. The first three match the SciPy semver version, while the fourth is specific to stub releases. Since stub releases occur more frequently than SciPy releases, this independence allows typing improvements and bug fixes to be delivered without waiting for the next SciPy version.
+The `scipy-stubs` versioning scheme uses four numbers: `{scipy_version}.{stubs_version}`.
+The first three match the SciPy semver version, while the fourth is specific to stub releases.
+Since stub releases occur more frequently than SciPy releases, this independence allows typing improvements and bug fixes to ship without waiting for the next SciPy version.
 
 ### CI efficiency
 
-The SciPy CI pipeline is comprehensive and takes over 30 minutes to run. The `scipy-stubs` CI is lightweight and completes in under 4 minutes. This difference has a substantial impact on development workflow, enabling rapid iteration and faster delivery of improvements.
+The SciPy CI pipeline is large and takes over 30 minutes to run.
+The `scipy-stubs` CI is lightweight and finishes in under 4 minutes.
+This difference has a real impact on development workflow, enabling quicker iteration and faster delivery of changes.
+The speed gap exists mainly because `scipy-stubs` doesn’t require compilation - it can rely on SciPy’s pre-built wheels.
+
+> **Maintainer's note:** A very important point is that scipy-stubs only tracks the current SciPy release and doesn't maintain older versions. SciPy has long support windows and can't change typing behavior quickly. scipy-stubs can. If a typing trick breaks or needs adjustment, a new stub release can go out the same day. That speed removes the overhead of supporting multiple stub versions and keeps the typing layer flexible without adding extra burden to SciPy.
 
 ## Frequently Asked Questions
 
