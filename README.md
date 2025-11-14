@@ -123,11 +123,6 @@ The `scipy-stubs` CI is lightweight and finishes in under 4 minutes.
 This difference has a real impact on development workflow, enabling quicker iteration and faster delivery of changes.
 The speed gap exists mainly because `scipy-stubs` doesn’t require compilation - it can rely on SciPy’s pre-built wheels.
 
-> **Maintainer's note:** A very important point is that scipy-stubs only tracks the current SciPy release and doesn't maintain older versions.
-> SciPy has long support windows and can't change typing behavior quickly. scipy-stubs can.
-> If a typing trick breaks or needs adjustment, a new stub release can go out the same day.
-> That speed removes the overhead of supporting multiple stub versions and keeps the typing layer flexible without adding extra burden to SciPy.
-
 ## Frequently Asked Questions
 
 ### Q: What static type-checkers are supported?
