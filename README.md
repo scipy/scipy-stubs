@@ -94,7 +94,7 @@ conda install conda-forge::scipy-typed
 
 ## Why is scipy-stubs a separate package?
 
-These are only a subset of the many other important reasons why `scipy-stubs` is maintained as a separate package rather than being integrated into SciPy itself.
+Here are some of the key reasons why `scipy-stubs` is maintained as a separate package rather than being integrated into SciPy itself.
 
 ### Separation of concerns
 
