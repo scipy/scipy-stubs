@@ -1,5 +1,6 @@
 from typing import Final, type_check_only, TypeVar, Generic
 
+import numpy as np
 import optype.numpy as onp
 
 from ._odrpack import Model
