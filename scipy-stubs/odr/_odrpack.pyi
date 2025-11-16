@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only, TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -9,6 +9,8 @@ __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output"
 
 _ToIntScalar: TypeAlias = npc.integer | np.bool_
 _ToFloatScalar: TypeAlias = npc.floating | _ToIntScalar
+
+_ScalarType = TypeVar('_ScalarType', bound=np.generic)
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
@@ -45,11 +47,11 @@ class OdrWarning(UserWarning): ...
 class OdrError(Exception): ...
 class OdrStop(Exception): ...
 
-class Data:
-    x: Final[onp.ArrayND[_ToFloatScalar]]
-    y: Final[_ToFloatScalar | onp.ArrayND[_ToFloatScalar] | None]
-    we: Final[_ToFloatScalar | onp.ArrayND[_ToFloatScalar] | None]
-    wd: Final[_ToFloatScalar | onp.ArrayND[_ToFloatScalar] | None]
+class Data(Generic[_ScalarType]):
+    x: Final[onp.ArrayND[_ScalarType]]
+    y: Final[_ToFloatScalar | onp.ArrayND[_ScalarType] | None]
+    we: Final[_ToFloatScalar | onp.ArrayND[_ScalarType] | None]
+    wd: Final[_ToFloatScalar | onp.ArrayND[_ScalarType] | None]
     fix: Final[onp.ArrayND[_ToIntScalar] | None]
     meta: Final[Mapping[str, object]]
 
@@ -65,11 +67,11 @@ class Data:
     ) -> None: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
-class RealData(Data):
-    sx: Final[onp.ArrayND[_ToFloatScalar] | None]
-    sy: Final[onp.ArrayND[_ToFloatScalar] | None]
-    covx: Final[onp.ArrayND[_ToFloatScalar] | None]
-    covy: Final[onp.ArrayND[_ToFloatScalar] | None]
+class RealData(Data[_ScalarType]):
+    sx: Final[onp.ArrayND[_ScalarType] | None]
+    sy: Final[onp.ArrayND[_ScalarType] | None]
+    covx: Final[onp.ArrayND[_ScalarType] | None]
+    covy: Final[onp.ArrayND[_ScalarType] | None]
 
     @overload
     def __init__(
@@ -166,12 +168,12 @@ class RealData(Data):
         meta: Mapping[str, object] | None = None,
     ) -> None: ...
 
-class Model:
+class Model(Generic[_ScalarType]):
     fcn: Final[_FCN]
     fjacb: Final[_FCN]
     fjacd: Final[_FCN]
     extra_args: Final[tuple[object, ...]]
-    covx: Final[onp.ArrayND[_ToFloatScalar] | None]
+    covx: Final[onp.ArrayND[_ScalarType] | None]
     implicit: Final[onp.ToBool]
     meta: Final[Mapping[str, object]]
 
@@ -188,22 +190,22 @@ class Model:
     ) -> None: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
-class Output:
-    beta: Final[onp.Array1D[_ToFloatScalar]]
-    sd_beta: Final[onp.Array1D[_ToFloatScalar]]
-    cov_beta: Final[onp.Array1D[_ToFloatScalar]]
+class Output(Generic[_ScalarType]):
+    beta: Final[onp.Array1D[_ScalarType]]
+    sd_beta: Final[onp.Array1D[_ScalarType]]
+    cov_beta: Final[onp.Array1D[_ScalarType]]
     stopreason: Final[list[str]]
 
     def __init__(self, /, output: onp.ArrayND[_ToFloatScalar]) -> None: ...
     def pprint(self, /) -> None: ...
 
-class ODR:
+class ODR(Generic[_ScalarType]):
     data: Final[Data]
     model: Final[Model]
     output: Output | None
 
-    beta0: Final[onp.Array1D[_ToFloatScalar]]
-    delta0: Final[onp.Array1D[_ToFloatScalar] | None]
+    beta0: Final[onp.Array1D[_ScalarType]]
+    delta0: Final[onp.Array1D[_ScalarType] | None]
     ifixx: Final[onp.Array1D[np.int32] | None]
     ifixb: Final[onp.Array1D[np.int32] | None]
     errfile: Final[str | None]
@@ -212,10 +214,10 @@ class ODR:
     taufac: Final[float | None]
     sstol: Final[float | None]
     partol: Final[float | None]
-    stpb: Final[onp.Array1D[_ToFloatScalar] | None]
-    stpd: Final[onp.Array1D[_ToFloatScalar] | None]
-    sclb: Final[onp.Array1D[_ToFloatScalar] | None]
-    scld: Final[onp.Array1D[_ToFloatScalar] | None]
+    stpb: Final[onp.Array1D[_ScalarType] | None]
+    stpd: Final[onp.Array1D[_ScalarType] | None]
+    sclb: Final[onp.Array1D[_ScalarType] | None]
+    scld: Final[onp.Array1D[_ScalarType] | None]
 
     job: int | None
     iprint: int | None
