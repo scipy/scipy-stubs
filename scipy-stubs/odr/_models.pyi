@@ -1,4 +1,4 @@
-from typing import Final, type_check_only
+from typing import Final, type_check_only, TypeVar, Generic
 
 import optype.numpy as onp
 
@@ -6,22 +6,24 @@ from ._odrpack import Model
 
 __all__ = ["Model", "exponential", "multilinear", "polynomial", "quadratic", "unilinear"]
 
+_ScalarType = TypeVar('_ScalarType', bound=np.generic)
+
 @type_check_only
-class _NamedModel(Model):
+class _NamedModel(Model[_ScalarType]):
     name: Final[str]
     equ: Final[str]
     TeXequ: Final[str]
 
 @type_check_only
-class _SimpleModel(_NamedModel):
+class _SimpleModel(_NamedModel[_ScalarType]):
     def __init__(self, /) -> None: ...
 
 ###
 
-class _MultilinearModel(_SimpleModel): ...
-class _ExponentialModel(_SimpleModel): ...
-class _UnilinearModel(_SimpleModel): ...
-class _QuadraticModel(_SimpleModel): ...
+class _MultilinearModel(_SimpleModel[_ScalarType]): ...
+class _ExponentialModel(_SimpleModel[_ScalarType]): ...
+class _UnilinearModel(_SimpleModel[_ScalarType]): ...
+class _QuadraticModel(_SimpleModel[_ScalarType]): ...
 
 def polynomial(order: onp.ToInt | onp.ToInt1D) -> _NamedModel: ...
 
