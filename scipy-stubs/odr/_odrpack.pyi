@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only, TypeVar
+from typing import Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only, TypeVar, Generic
 
 import numpy as np
 import optype.numpy as onp
