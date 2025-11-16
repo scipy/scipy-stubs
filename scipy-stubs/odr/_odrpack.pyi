@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only, TypeVar, Generic
+from typing import Concatenate, Final, Generic, Literal, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -10,7 +10,7 @@ __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output"
 _ToIntScalar: TypeAlias = npc.integer | np.bool_
 _ToFloatScalar: TypeAlias = npc.floating | _ToIntScalar
 
-_ScalarType = TypeVar('_ScalarType', bound=np.generic)
+_ScalarType = TypeVar("_ScalarType", bound=np.generic)
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
@@ -200,9 +200,9 @@ class Output(Generic[_ScalarType]):
     def pprint(self, /) -> None: ...
 
 class ODR(Generic[_ScalarType]):
-    data: Final[Data]
-    model: Final[Model]
-    output: Output | None
+    data: Final[Data[_ScalarType]]
+    model: Final[Model[_ScalarType]]
+    output: Output[_ScalarType] | None
 
     beta0: Final[onp.Array1D[_ScalarType]]
     delta0: Final[onp.Array1D[_ScalarType] | None]
@@ -228,8 +228,8 @@ class ODR(Generic[_ScalarType]):
     def __init__(
         self,
         /,
-        data: Data,
-        model: Model,
+        data: Data[_ScalarType],
+        model: Model[_ScalarType],
         beta0: onp.ToFloat1D | None = None,
         delta0: onp.ToFloat1D | None = None,
         ifixb: onp.ToInt1D | None = None,
@@ -271,8 +271,8 @@ class ODR(Generic[_ScalarType]):
         final: _012 | None = None,
         so_final: _012 | None = None,
     ) -> None: ...
-    def run(self, /) -> Output: ...
-    def restart(self, /, iter: int | None = None) -> Output: ...
+    def run(self, /) -> Output[_ScalarType]: ...
+    def restart(self, /, iter: int | None = None) -> Output[_ScalarType]: ...
 
 @overload
 def odr(
