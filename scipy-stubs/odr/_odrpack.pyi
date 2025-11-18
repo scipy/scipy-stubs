@@ -48,10 +48,10 @@ class OdrError(Exception): ...
 class OdrStop(Exception): ...
 
 class Data(Generic[_ScalarType]):
-    x: Final[onp.ArrayND[_ScalarType]]
-    y: Final[_ToFloatScalar | onp.ArrayND[_ScalarType] | None]
-    we: Final[_ToFloatScalar | onp.ArrayND[_ScalarType] | None]
-    wd: Final[_ToFloatScalar | onp.ArrayND[_ScalarType] | None]
+    x: Final[onp.ArrayND[_ScalarType]] # type: ignore[misc]
+    y: Final[_ToFloatScalar | onp.ArrayND[_ScalarType] | None] # type: ignore[misc]
+    we: Final[_ToFloatScalar | onp.ArrayND[_ScalarType] | None] # type: ignore[misc]
+    wd: Final[_ToFloatScalar | onp.ArrayND[_ScalarType] | None] # type: ignore[misc]
     fix: Final[onp.ArrayND[_ToIntScalar] | None]
     meta: Final[Mapping[str, object]]
 
@@ -68,10 +68,10 @@ class Data(Generic[_ScalarType]):
     def set_meta(self, /, **kwds: object) -> None: ...
 
 class RealData(Data[_ScalarType]):
-    sx: Final[onp.ArrayND[_ScalarType] | None]
-    sy: Final[onp.ArrayND[_ScalarType] | None]
-    covx: Final[onp.ArrayND[_ScalarType] | None]
-    covy: Final[onp.ArrayND[_ScalarType] | None]
+    sx: Final[onp.ArrayND[_ScalarType] | None] # type: ignore[misc]
+    sy: Final[onp.ArrayND[_ScalarType] | None] # type: ignore[misc]
+    covx: Final[onp.ArrayND[_ScalarType] | None] # type: ignore[misc]
+    covy: Final[onp.ArrayND[_ScalarType] | None] # type: ignore[misc]
 
     @overload
     def __init__(
@@ -173,7 +173,7 @@ class Model(Generic[_ScalarType]):
     fjacb: Final[_FCN]
     fjacd: Final[_FCN]
     extra_args: Final[tuple[object, ...]]
-    covx: Final[onp.ArrayND[_ScalarType] | None]
+    covx: Final[onp.ArrayND[_ScalarType] | None] # type: ignore[misc]
     implicit: Final[onp.ToBool]
     meta: Final[Mapping[str, object]]
 
@@ -191,21 +191,21 @@ class Model(Generic[_ScalarType]):
     def set_meta(self, /, **kwds: object) -> None: ...
 
 class Output(Generic[_ScalarType]):
-    beta: Final[onp.Array1D[_ScalarType]]
-    sd_beta: Final[onp.Array1D[_ScalarType]]
-    cov_beta: Final[onp.Array1D[_ScalarType]]
+    beta: Final[onp.Array1D[_ScalarType]] # type: ignore[misc]
+    sd_beta: Final[onp.Array1D[_ScalarType]] # type: ignore[misc]
+    cov_beta: Final[onp.Array1D[_ScalarType]] # type: ignore[misc]
     stopreason: Final[list[str]]
 
     def __init__(self, /, output: onp.ArrayND[_ToFloatScalar]) -> None: ...
     def pprint(self, /) -> None: ...
 
 class ODR(Generic[_ScalarType]):
-    data: Final[Data[_ScalarType]]
-    model: Final[Model[_ScalarType]]
+    data: Final[Data[_ScalarType]] # type: ignore[misc]
+    model: Final[Model[_ScalarType]] # type: ignore[misc]
     output: Output[_ScalarType] | None
 
-    beta0: Final[onp.Array1D[_ScalarType]]
-    delta0: Final[onp.Array1D[_ScalarType] | None]
+    beta0: Final[onp.Array1D[_ScalarType]] # type: ignore[misc]
+    delta0: Final[onp.Array1D[_ScalarType] | None] # type: ignore[misc]
     ifixx: Final[onp.Array1D[np.int32] | None]
     ifixb: Final[onp.Array1D[np.int32] | None]
     errfile: Final[str | None]
@@ -214,10 +214,10 @@ class ODR(Generic[_ScalarType]):
     taufac: Final[float | None]
     sstol: Final[float | None]
     partol: Final[float | None]
-    stpb: Final[onp.Array1D[_ScalarType] | None]
-    stpd: Final[onp.Array1D[_ScalarType] | None]
-    sclb: Final[onp.Array1D[_ScalarType] | None]
-    scld: Final[onp.Array1D[_ScalarType] | None]
+    stpb: Final[onp.Array1D[_ScalarType] | None] # type: ignore[misc]
+    stpd: Final[onp.Array1D[_ScalarType] | None] # type: ignore[misc]
+    sclb: Final[onp.Array1D[_ScalarType] | None] # type: ignore[misc]
+    scld: Final[onp.Array1D[_ScalarType] | None] # type: ignore[misc]
 
     job: int | None
     iprint: int | None
