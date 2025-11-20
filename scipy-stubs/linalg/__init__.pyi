@@ -80,22 +80,24 @@ from ._solvers import (
     solve_lyapunov,
     solve_sylvester,
 )
+
+# https://github.com/microsoft/pyright/issues/11127
 from ._special_matrices import (
     block_diag,
-    circulant,
-    companion,
-    convolution_matrix,
+    circulant,  # pyright: ignore[reportUnknownVariableType]
+    companion,  # pyright: ignore[reportUnknownVariableType]
+    convolution_matrix,  # pyright: ignore[reportUnknownVariableType]
     dft,
-    fiedler,
-    fiedler_companion,
+    fiedler,  # pyright: ignore[reportUnknownVariableType]
+    fiedler_companion,  # pyright: ignore[reportUnknownVariableType]
     hadamard,
     hankel,
     helmert,
     hilbert,
     invhilbert,
     invpascal,
-    kron,
-    leslie,
+    kron,  # pyright: ignore[reportUnknownVariableType]
+    leslie,  # pyright: ignore[reportUnknownVariableType]
     pascal,
     toeplitz,
 )

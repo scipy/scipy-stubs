@@ -1,9 +1,9 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
 
-from scipy.linalg import kron, toeplitz
+from scipy.linalg import kron, toeplitz  # pyright: ignore[reportUnknownVariableType]
 
 arr_f8_1d: onp.Array1D[np.float64]
 arr_f8_2d: onp.Array2D[np.float64]
@@ -11,11 +11,13 @@ arr_f8_nd: onp.Array[tuple[int, ...], np.float64]
 
 ###
 # kron
-# > deprecated
+# > 2D
 f_kron_f8_2d = kron(arr_f8_2d, arr_f8_2d)  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
-f_kron_f8_nd = kron(arr_f8_nd, arr_f8_nd)  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
 assert_type(f_kron_f8_2d, onp.Array2D[np.float64])
-assert_type(f_kron_f8_nd, onp.Array[onp.AtLeast2D, np.float64])
+# > nD
+# https://github.com/microsoft/pyright/issues/11127
+f_kron_f8_nd = kron(arr_f8_nd, arr_f8_nd)  # pyright: ignore[reportDeprecated, reportUnknownVariableType]  # pyrefly: ignore[deprecated]
+assert_type(f_kron_f8_nd, onp.Array[onp.AtLeast2D[Any], np.float64])  # pyright: ignore[reportInvalidTypeForm]
 ###
 
 ###

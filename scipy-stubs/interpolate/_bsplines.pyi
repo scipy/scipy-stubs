@@ -22,13 +22,13 @@ _LSQMethod: TypeAlias = Literal["qr", "norm-eq"]
 
 class BSpline(Generic[_CT_co]):
     t: onp.Array1D[np.float64]
-    c: onp.Array[onp.AtLeast1D, _CT_co]
+    c: onp.Array[onp.AtLeast1D[Any], _CT_co]
     k: int
     axis: int
     extrapolate: _Extrapolate
 
     @property
-    def tck(self, /) -> tuple[onp.Array1D[np.float64], onp.Array[onp.AtLeast1D, _CT_co], int]: ...
+    def tck(self, /) -> tuple[onp.Array1D[np.float64], onp.Array[onp.AtLeast1D[Any], _CT_co], int]: ...
 
     #
     @overload

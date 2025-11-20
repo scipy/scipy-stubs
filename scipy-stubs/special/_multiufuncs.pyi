@@ -33,18 +33,20 @@ _ToComplex_D: TypeAlias = onp.ToComplex | onp.ToComplexND
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float3D: TypeAlias = onp.Array3D[np.float64]
-_Float1_D: TypeAlias = onp.Array[onp.AtLeast1D, np.float64]
-_Float2_D: TypeAlias = onp.Array[onp.AtLeast2D, np.float64]
-_Float3_D: TypeAlias = onp.Array[onp.AtLeast3D, np.float64]
+_Float1_D: TypeAlias = onp.Array[onp.AtLeast1D[Any], np.float64]
+# https://github.com/microsoft/pyright/issues/11127
+_Float2_D: TypeAlias = onp.Array[onp.AtLeast2D[Any], np.float64]  # pyright: ignore[reportInvalidTypeForm]
+_Float3_D: TypeAlias = onp.Array[onp.AtLeast3D[Any], np.float64]  # pyright: ignore[reportInvalidTypeForm]
 
 _Complex0D: TypeAlias = onp.Array0D[np.complex128]
 _Complex1D: TypeAlias = onp.Array1D[np.complex128]
 _Complex2D: TypeAlias = onp.Array2D[np.complex128]
 _Complex3D: TypeAlias = onp.Array3D[np.complex128]
 _Complex4D: TypeAlias = onp.ArrayND[np.complex128, tuple[int, int, int, int]]
-_Complex1_D: TypeAlias = onp.Array[onp.AtLeast1D, np.complex128]
-_Complex2_D: TypeAlias = onp.Array[onp.AtLeast2D, np.complex128]
-_Complex3_D: TypeAlias = onp.Array[onp.AtLeast3D, np.complex128]
+_Complex1_D: TypeAlias = onp.Array[onp.AtLeast1D[Any], np.complex128]
+# https://github.com/microsoft/pyright/issues/11127
+_Complex2_D: TypeAlias = onp.Array[onp.AtLeast2D[Any], np.complex128]  # pyright: ignore[reportInvalidTypeForm]
+_Complex3_D: TypeAlias = onp.Array[onp.AtLeast3D[Any], np.complex128]  # pyright: ignore[reportInvalidTypeForm]
 
 _Complex01D: TypeAlias = tuple[_Complex0D, _Complex1D]
 _Complex012D: TypeAlias = tuple[_Complex0D, _Complex1D, _Complex2D]

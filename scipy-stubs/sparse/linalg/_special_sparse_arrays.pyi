@@ -23,7 +23,7 @@ _BCs: TypeAlias = Literal["dirichlet", "neumann", "periodic"]
 ###
 
 class LaplacianNd(LinearOperator[_SCT], Generic[_SCT]):
-    grid_shape: Final[onp.AtLeast1D]
+    grid_shape: Final[onp.AtLeast1D[Any]]
     boundary_conditions: Final[_BCs]
 
     @overload  # default dtype (int8)
