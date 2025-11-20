@@ -10,6 +10,7 @@ from ._polyint import _Interpolator1D
 
 __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
 
+_NumberT = TypeVar("_NumberT", bound=np.number[Any], default=np.float64)
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
 _ToAxis: TypeAlias = int | npc.integer
@@ -17,6 +18,9 @@ _Extrapolate: TypeAlias = Literal["periodic"] | bool
 
 _Interp1dKind: TypeAlias = Literal["linear", "nearest", "nearest-up", "zero", "slinear", "quadratic", "cubic", "previous", "next"]
 _Interp1dFillValue: TypeAlias = onp.ToFloat | onp.ToFloatND | tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND]
+
+# https://github.com/microsoft/pyright/issues/11127
+_Array2ND: TypeAlias = onp.Array[tuple[int, int, *tuple[Any, ...]], _NumberT]  # pyright: ignore[reportInvalidTypeForm]
 
 ###
 
@@ -79,7 +83,7 @@ class interp1d(_Interpolator1D):  # legacy
 class _PPolyBase(Generic[_CT_co]):
     __slots__ = "axis", "c", "extrapolate", "x"
 
-    c: onp.Array[onp.AtLeast2D, _CT_co]
+    c: _Array2ND[_CT_co]
     x: onp.Array1D[np.float64]
     extrapolate: Final[_Extrapolate]
     axis: Final[int]
@@ -184,7 +188,7 @@ class BPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
     def integrate(self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_CT_co]: ...
 
 class NdPPoly(Generic[_CT_co]):
-    c: onp.Array[onp.AtLeast2D, _CT_co]
+    c: _Array2ND[_CT_co]
     x: tuple[onp.Array1D[np.float64], ...]
 
     @classmethod

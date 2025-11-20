@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Literal as L, TypeAlias, overload
+from typing import Any, Literal as L, TypeAlias, overload
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
@@ -33,8 +33,9 @@ _SCT = TypeVar("_SCT", bound=np.generic, default=npc.number | np.bool_ | np.obje
 _Kind: TypeAlias = L["symmetric", "upper", "lower"]
 _ConvMode: TypeAlias = L["valid", "same", "full"]
 
-_Array2ND: TypeAlias = onp.Array[onp.AtLeast2D, _SCT]
-_Array3ND: TypeAlias = onp.Array[onp.AtLeast3D, _SCT]
+# https://github.com/microsoft/pyright/issues/11127
+_Array2ND: TypeAlias = onp.Array[tuple[int, int, *tuple[Any, ...]], _SCT]  # pyright: ignore[reportInvalidTypeForm]
+_Array3ND: TypeAlias = onp.Array[tuple[int, int, int, *tuple[Any, ...]], _SCT]  # pyright: ignore[reportInvalidTypeForm]
 
 _Int2D: TypeAlias = onp.Array2D[np.int_]
 _Int3ND: TypeAlias = _Array3ND[np.int_]
@@ -229,7 +230,7 @@ def leslie(f: _ToND[_SCT], s: _ToND[_SCT]) -> _Array2ND[_SCT]: ...
 def kron(a: onp.Array2D[_SCT], b: onp.Array2D[_SCT]) -> onp.Array2D[_SCT]: ...
 @overload
 @deprecated("`kron` has been deprecated in favour of `numpy.kron` in SciPy 1.15.0 and will be removed in SciPy 1.17.0.")
-def kron(a: onp.ArrayND[_SCT], b: onp.ArrayND[_SCT]) -> onp.Array[onp.AtLeast2D, _SCT]: ...
+def kron(a: onp.ArrayND[_SCT], b: onp.ArrayND[_SCT]) -> _Array2ND[_SCT]: ...
 
 #
 @overload
