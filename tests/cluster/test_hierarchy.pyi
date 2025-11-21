@@ -17,8 +17,9 @@ i64_1d: onp.Array1D[np.int64]
 # DisjointSet(Iterable[T]) produces a DisjointSet[T] with universal set of type T.
 assert_type(DisjointSet(py_str_1d), DisjointSet[str])
 assert_type(DisjointSet(py_int_1d), DisjointSet[int])
-assert_type(DisjointSet(i32_1d), DisjointSet[np.int32])  # pyrefly: ignore[assert-type]
-assert_type(DisjointSet(i64_1d), DisjointSet[np.int64])  # pyrefly: ignore[assert-type]
+# NOTE: Directly using assert_type fails with numpy arrays for all numpy<=2.0. Instead, use assignment statements.
+_10: DisjointSet[np.int32] = DisjointSet(i32_1d)
+_11: DisjointSet[np.int64] = DisjointSet(i64_1d)
 # DisjointSet() produces a DisjointSet[Any] because T is unbound.
 assert_type(DisjointSet(), DisjointSet[Any])
 
