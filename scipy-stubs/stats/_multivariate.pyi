@@ -560,7 +560,7 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
     @overload
     def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND: ...
 
-# NOTE: `m` and `n` are broadcastable (but doing so will break `.rvs()` at runtime...)``
+# NOTE: `m` and `n` are broadcastable (but doing so will break `.rvs()` at runtime...)
 class multivariate_hypergeom_gen(multi_rv_generic):
     def __call__(
         self, /, m: onp.ToJustIntND, n: onp.ToJustInt | onp.ToJustIntND, seed: onp.random.ToRNG | None = None

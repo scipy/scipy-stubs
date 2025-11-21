@@ -68,7 +68,7 @@ assert_type(multivariate_hypergeom([1], 1).rvs().dtype, np.dtype[np.float64])  #
 assert_type(random_table.rvs([1, 2], [2, 1]).dtype, np.dtype[np.float64])
 assert_type(random_table([1, 2], [2, 1]).rvs().dtype, np.dtype[np.float64])
 
-# `dirichlet_multinomial` has  has no `rvs` method
+# `dirichlet_multinomial` has no `rvs` method
 
 assert_type(vonmises_fisher.rvs([0.8, 0.6]).dtype, np.dtype[np.float64])  # pyright: ignore[reportUnknownMemberType]
 assert_type(vonmises_fisher([0.8, 0.6]).rvs().dtype, np.dtype[np.float64])  # pyright: ignore[reportUnknownMemberType]
