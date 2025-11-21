@@ -4,7 +4,7 @@ from typing_extensions import TypeVar
 
 import optype as op
 
-_T = TypeVar("_T", bound=op.CanHash, default=object)
+_T = TypeVar("_T", bound=op.CanHash)
 
 class DisjointSet(Generic[_T]):
     n_subsets: int
