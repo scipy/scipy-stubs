@@ -5,10 +5,8 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
-import optype.typing as opt
 
 from ._covariance import _PSD, Covariance
-from scipy._typing import AnyShape
 
 __all__ = [
     "dirichlet",
@@ -41,11 +39,6 @@ _Scalar_f: TypeAlias = npc.floating
 _Scalar_uif: TypeAlias = npc.integer | _Scalar_f
 _ToFloatMax2D: TypeAlias = onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D
 _ToJustFloat: TypeAlias = float | _Scalar_f
-_ToJustFloatND: TypeAlias = (
-    onp.CanArrayND[_Scalar_f]
-    | onp.SequenceND[_ToJustFloat]
-    | onp.SequenceND[onp.CanArrayND[_Scalar_f]]
-)  # fmt: skip
 
 _Array1ND: TypeAlias = onp.Array[tuple[int, *tuple[Any, ...]], _ScalarT]
 # https://github.com/microsoft/pyright/issues/11127
@@ -93,7 +86,7 @@ class multivariate_normal_gen(multi_rv_generic):
         mean: onp.ToFloat1D | None = None,
         cov: _AnyCov = 1,
         allow_singular: bool = False,
-        maxpts: onp.ToJustInt | None = None,
+        maxpts: int | None = None,
         abseps: float = 1e-5,
         releps: float = 1e-5,
         *,
@@ -107,26 +100,75 @@ class multivariate_normal_gen(multi_rv_generic):
         mean: onp.ToFloat1D | None = None,
         cov: _AnyCov = 1,
         allow_singular: bool = False,
-        maxpts: onp.ToJustInt | None = None,
+        maxpts: int | None = None,
         abseps: float = 1e-5,
         releps: float = 1e-5,
         *,
         lower_limit: onp.ToFloat1D | None = None,
         rng: onp.random.ToRNG | None = None,
     ) -> _ScalarOrArray_f8: ...
+
+    # returns a scalar or array depending on the *value* of size and *mean*
+    @overload
+    def rvs(
+        self,
+        /,
+        mean: onp.ToFloat | None = None,
+        cov: onp.ToFloat = 1,
+        size: Literal[1] = 1,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> np.float64: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        mean: onp.ToFloat1D | None,
+        cov: Covariance | onp.ToFloat2D,
+        size: int | tuple[int, ...] = 1,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        mean: onp.ToFloat1D | None = None,
+        *,
+        cov: Covariance | onp.ToFloat2D,
+        size: int | tuple[int, ...] = 1,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload
+    def rvs(
+        self, /, mean: onp.ToFloat1D | None, cov: _AnyCov, size: tuple[int, ...], random_state: onp.random.ToRNG | None = None
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload
     def rvs(
         self,
         /,
         mean: onp.ToFloat1D | None = None,
         cov: _AnyCov = 1,
-        size: onp.ToJustInt | tuple[int, ...] = 1,
+        *,
+        size: tuple[int, ...],
         random_state: onp.random.ToRNG | None = None,
     ) -> onp.ArrayND[np.float64]: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        mean: onp.ToFloat1D | None = None,
+        cov: _AnyCov = 1,
+        size: int | tuple[int, ...] = 1,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> _ScalarOrArray_f8: ...
+
+    #
     def entropy(self, /, mean: onp.ToFloat1D | None = None, cov: _AnyCov = 1) -> np.float64: ...
     def fit(
         self, /, x: onp.ToFloatND, fix_mean: onp.ToFloat1D | None = None, fix_cov: onp.ToFloat2D | None = None
     ) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
 
+# TODO(@jorenham): Generic shape-type for mean and cov, so that we can determine whether the methods return scalars or arrays.
+# https://github.com/scipy/scipy-stubs/issues/406
 class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
     dim: Final[int]
     allow_singular: Final[bool]
@@ -136,6 +178,10 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
     cov_object: Final[Covariance]
     mean: onp.Array1D[np.float64]
 
+    @property
+    def cov(self, /) -> onp.Array2D[np.float64]: ...
+
+    #
     def __init__(
         self,
         /,
@@ -147,8 +193,8 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
         abseps: float = 1e-5,
         releps: float = 1e-5,
     ) -> None: ...
-    @property
-    def cov(self, /) -> onp.Array2D[np.float64]: ...
+
+    #
     def logpdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def logcdf(
@@ -157,7 +203,15 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
     def cdf(
         self, /, x: onp.ToFloatND, *, lower_limit: onp.ToFloat1D | None = None, rng: onp.random.ToRNG | None = None
     ) -> _ScalarOrArray_f8: ...
-    def rvs(self, /, size: AnyShape = 1, random_state: onp.random.ToRNG | None = None) -> onp.ArrayND[np.float64]: ...
+
+    # If mean and cov are 0-D, and size = 1, this returns a scalar. But without knowing the shape of mean and cov at type-check
+    # time, we cannot determine that. See https://github.com/scipy/scipy-stubs/issues/406 for more info.
+    @overload
+    def rvs(self, /, size: int = 1, random_state: onp.random.ToRNG | None = None) -> _ScalarOrArray_f8: ...
+    @overload
+    def rvs(self, /, size: tuple[int, ...], random_state: onp.random.ToRNG | None = None) -> onp.ArrayND[np.float64]: ...
+
+    #
     def entropy(self, /) -> np.float64: ...
 
 class matrix_normal_gen(multi_rv_generic):
@@ -169,6 +223,8 @@ class matrix_normal_gen(multi_rv_generic):
         colcov: onp.ToFloat2D | onp.ToFloat = 1,
         seed: onp.random.ToRNG | None = None,
     ) -> matrix_normal_frozen: ...
+
+    #
     def logpdf(
         self,
         /,
@@ -185,31 +241,65 @@ class matrix_normal_gen(multi_rv_generic):
         rowcov: onp.ToFloat2D | onp.ToFloat = 1,
         colcov: onp.ToFloat2D | onp.ToFloat = 1,
     ) -> _ScalarOrArray_f8: ...
+
+    # If `size > 1` the output is 3-D, otherwise 2-D.
+    @overload
     def rvs(
         self,
         /,
         mean: onp.ToFloat2D | None = None,
         rowcov: onp.ToFloat2D | onp.ToFloat = 1,
         colcov: onp.ToFloat2D | onp.ToFloat = 1,
-        size: opt.AnyInt = 1,
+        size: Literal[1] = 1,
         random_state: onp.random.ToRNG | None = None,
-    ) -> onp.Array3D[np.float64]: ...
+    ) -> onp.Array2D[np.float64]: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        mean: onp.ToFloat2D | None,
+        rowcov: onp.ToFloat2D | onp.ToFloat,
+        colcov: onp.ToFloat2D | onp.ToFloat,
+        size: int,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> _Array2ND[np.float64]: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        mean: onp.ToFloat2D | None = None,
+        rowcov: onp.ToFloat2D | onp.ToFloat = 1,
+        colcov: onp.ToFloat2D | onp.ToFloat = 1,
+        *,
+        size: int,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> _Array2ND[np.float64]: ...
+
+    #
     def entropy(self, /, rowcov: _AnyCov = 1, colcov: _AnyCov = 1) -> np.float64: ...
 
 class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen]):
     rowpsd: Final[_PSD]
     colpsd: Final[_PSD]
+
     def __init__(
         self,
         /,
         mean: onp.ToFloat2D | None = None,
-        rowcov: onp.ToFloat | onp.ToFloat2D = 1,
-        colcov: onp.ToFloat | onp.ToFloat2D = 1,
+        rowcov: onp.ToFloat2D | onp.ToFloat = 1,
+        colcov: onp.ToFloat2D | onp.ToFloat = 1,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
     def logpdf(self, /, X: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pdf(self, /, X: onp.ToFloatND) -> _ScalarOrArray_f8: ...
-    def rvs(self, /, size: opt.AnyInt = 1, random_state: onp.random.ToRNG | None = None) -> onp.Array3D[np.float64]: ...
+
+    #
+    @overload
+    def rvs(self, /, size: Literal[1] = 1, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
+    @overload
+    def rvs(self, /, size: int, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
+
+    #
     def entropy(self, /) -> np.float64: ...
 
 class dirichlet_gen(multi_rv_generic):
@@ -273,20 +363,35 @@ class wishart_gen(multi_rv_generic):
     def __call__(
         self, /, df: onp.ToFloat | None = None, scale: _ToFloatMax2D | None = None, seed: onp.random.ToRNG | None = None
     ) -> wishart_frozen: ...
+
+    #
     def logpdf(self, /, x: onp.ToFloatND, df: onp.ToFloat, scale: _ToFloatMax2D) -> _ScalarOrArray_f8: ...
     def pdf(self, /, x: onp.ToFloatND, df: onp.ToFloat, scale: _ToFloatMax2D) -> _ScalarOrArray_f8: ...
+
+    #
     def mean(self, /, df: onp.ToFloat, scale: _ToFloatMax2D) -> np.float64 | onp.Array2D[np.float64]: ...
     def mode(self, /, df: onp.ToFloat, scale: _ToFloatMax2D) -> np.float64 | None: ...
     def var(self, /, df: onp.ToFloat, scale: _ToFloatMax2D) -> np.float64 | onp.Array2D[np.float64]: ...
+    def entropy(self, /, df: onp.ToFloat, scale: _ToFloatMax2D) -> np.float64: ...
+
+    #
+    @overload
+    def rvs(
+        self, /, df: onp.ToFloat, scale: onp.ToFloat, size: Literal[1] = 1, random_state: onp.random.ToRNG | None = None
+    ) -> np.float64: ...
+    @overload
+    def rvs(
+        self, /, df: onp.ToFloat, scale: _ToFloatMax2D, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None
+    ) -> _Array2ND[np.float64]: ...
+    @overload
     def rvs(
         self,
         /,
         df: onp.ToFloat,
         scale: _ToFloatMax2D,
-        size: onp.ToJustInt | tuple[int, ...] = 1,
+        size: int | tuple[int, ...] = 1,
         random_state: onp.random.ToRNG | None = None,
-    ) -> _ScalarOrArray_f8: ...
-    def entropy(self, /, df: onp.ToFloat, scale: _ToFloatMax2D) -> np.float64: ...
+    ) -> _Array2ND[np.float64] | np.float64: ...
 
 class wishart_frozen(multi_rv_frozen[wishart_gen]):
     dim: Final[int]
@@ -296,15 +401,22 @@ class wishart_frozen(multi_rv_frozen[wishart_gen]):
     log_det_scale: Final[float]
 
     def __init__(self, /, df: onp.ToFloat, scale: _ToFloatMax2D, seed: onp.random.ToRNG | None = None) -> None: ...
+
+    #
     def logpdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
+
+    #
     def mean(self, /) -> np.float64 | onp.Array2D[np.float64]: ...
     def mode(self, /) -> np.float64 | None: ...
     def var(self, /) -> np.float64 | onp.Array2D[np.float64]: ...
-    def rvs(
-        self, /, size: onp.ToJustInt | tuple[int, ...] = 1, random_state: onp.random.ToRNG | None = None
-    ) -> _ScalarOrArray_f8: ...
     def entropy(self, /) -> np.float64: ...
+
+    #
+    @overload
+    def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
+    @overload
+    def rvs(self, /, size: int | tuple[int, ...] = 1, random_state: onp.random.ToRNG | None = None) -> _ScalarOrArray_f8: ...
 
 class invwishart_gen(wishart_gen):
     @override
@@ -320,44 +432,67 @@ class invwishart_gen(wishart_gen):
 
 class invwishart_frozen(multi_rv_frozen[invwishart_gen]):
     def __init__(self, /, df: onp.ToFloat, scale: _ToFloatMax2D, seed: onp.random.ToRNG | None = None) -> None: ...
+
+    #
     def logpdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
+
+    #
     def mean(self, /) -> np.float64 | onp.Array2D[np.float64]: ...
     def mode(self, /) -> np.float64 | None: ...
     def var(self, /) -> np.float64 | onp.Array2D[np.float64]: ...
-    def rvs(self, /, size: AnyShape = 1, random_state: onp.random.ToRNG | None = None) -> onp.ArrayND[np.float64]: ...
     def entropy(self, /) -> np.float64: ...
+
+    #
+    @overload
+    def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
+    @overload
+    def rvs(self, /, size: int | tuple[int, ...] = 1, random_state: onp.random.ToRNG | None = None) -> _ScalarOrArray_f8: ...
 
 # NOTE: `n` and `p` are broadcast-able (although this breaks `.rvs()` at runtime...)
 class multinomial_gen(multi_rv_generic):
-    def __call__(self, /, n: onp.ToJustIntND, p: _ToJustFloatND, seed: onp.random.ToRNG | None = None) -> multinomial_frozen: ...
-    def logpmf(self, /, x: onp.ToFloatND, n: onp.ToJustIntND, p: _ToJustFloatND) -> _ScalarOrArray_f8: ...
-    def pmf(self, /, x: onp.ToFloatND, n: onp.ToJustIntND, p: _ToJustFloatND) -> _ScalarOrArray_f8: ...
-    def mean(self, /, n: onp.ToJustIntND, p: _ToJustFloatND) -> _Array1ND: ...
-    def cov(self, /, n: onp.ToJustIntND, p: _ToJustFloatND) -> _Array2ND: ...
-    def entropy(self, /, n: onp.ToJustIntND, p: _ToJustFloatND) -> _ScalarOrArray_f8: ...
+    def __call__(
+        self, /, n: onp.ToJustIntND, p: onp.ToJustFloatND, seed: onp.random.ToRNG | None = None
+    ) -> multinomial_frozen: ...
+
+    #
+    def logpmf(self, /, x: onp.ToFloatND, n: onp.ToJustIntND, p: onp.ToJustFloatND) -> _ScalarOrArray_f8: ...
+    def pmf(self, /, x: onp.ToFloatND, n: onp.ToJustIntND, p: onp.ToJustFloatND) -> _ScalarOrArray_f8: ...
+
+    #
+    def mean(self, /, n: onp.ToJustIntND, p: onp.ToJustFloatND) -> _Array1ND: ...
+    def cov(self, /, n: onp.ToJustIntND, p: onp.ToJustFloatND) -> _Array2ND: ...
+    def entropy(self, /, n: onp.ToJustIntND, p: onp.ToJustFloatND) -> _ScalarOrArray_f8: ...
+
+    #
     @overload
     def rvs(
-        self, /, n: onp.ToJustIntND, p: _ToJustFloatND, size: tuple[()], random_state: onp.random.ToRNG | None = None
+        self, /, n: int | onp.ToJustIntND, p: onp.ToJustFloatND, size: tuple[()], random_state: onp.random.ToRNG | None = None
     ) -> _Array1ND: ...
     @overload
     def rvs(
         self,
         /,
         n: onp.ToJustIntND,
-        p: _ToJustFloatND,
-        size: onp.ToJustInt | onp.AtLeast1D | None = None,
+        p: onp.ToJustFloatND,
+        size: int | onp.AtLeast1D | None = None,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array2ND: ...
 
 #
 class multinomial_frozen(multi_rv_frozen[multinomial_gen]):
-    def __init__(self, /, n: onp.ToJustIntND, p: _ToJustFloatND, seed: onp.random.ToRNG | None = None) -> None: ...
+    def __init__(self, /, n: onp.ToJustIntND, p: onp.ToJustFloatND, seed: onp.random.ToRNG | None = None) -> None: ...
+
+    #
     def logpmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
+
+    #
     def mean(self, /) -> _Array1ND: ...
     def cov(self, /) -> _Array2ND: ...
     def entropy(self, /) -> _ScalarOrArray_f8: ...
+
+    #
     @overload
     def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> _Array1ND: ...
     @overload
@@ -365,18 +500,29 @@ class multinomial_frozen(multi_rv_frozen[multinomial_gen]):
 
 @type_check_only
 class _group_rv_gen_mixin(Generic[_RVF_co, _ScalarT_co]):
-    def __call__(self, /, dim: onp.ToJustInt | None = None, seed: onp.random.ToRNG | None = None) -> _RVF_co: ...
+    # NOTE: Contrary to what the `dim` default suggests, it is required.
+    def __call__(self, /, dim: int | None = None, seed: onp.random.ToRNG | None = None) -> _RVF_co: ...
+
+    #
+    @overload
     def rvs(
-        self, /, dim: onp.ToJustInt, size: onp.ToJustInt | None = 1, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array3D[_ScalarT_co]: ...
+        self, /, dim: int, size: Literal[0, 1] = 1, random_state: onp.random.ToRNG | None = None
+    ) -> onp.Array2D[_ScalarT_co]: ...
+    @overload
+    def rvs(self, /, dim: int, size: int, random_state: onp.random.ToRNG | None = None) -> _Array2ND[_ScalarT_co]: ...
 
 @type_check_only
 class _group_rv_frozen_mixin(Generic[_ScalarT_co]):
-    dim: onp.ToJustInt
-    def __init__(self, /, dim: onp.ToJustInt | None = None, seed: onp.random.ToRNG | None = None) -> None: ...
-    def rvs(
-        self, /, size: onp.ToJustInt | None = 1, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array3D[_ScalarT_co]: ...
+    dim: Final[int]
+
+    # NOTE: Contrary to what the `dim` default suggests, it is required.
+    def __init__(self, /, dim: int | None = None, seed: onp.random.ToRNG | None = None) -> None: ...
+
+    #
+    @overload
+    def rvs(self, /, size: Literal[0, 1] = 1, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[_ScalarT_co]: ...
+    @overload
+    def rvs(self, /, size: int, random_state: onp.random.ToRNG | None = None) -> _Array2ND[_ScalarT_co]: ...
 
 class special_ortho_group_gen(_group_rv_gen_mixin[special_ortho_group_frozen], multi_rv_generic): ...
 class special_ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[special_ortho_group_gen]): ...
@@ -387,17 +533,30 @@ class unitary_group_frozen(_group_rv_frozen_mixin[np.complex128], multi_rv_froze
 
 #
 class uniform_direction_gen(multi_rv_generic):
-    def __call__(self, /, dim: onp.ToJustInt | None = None, seed: onp.random.ToRNG | None = None) -> uniform_direction_frozen: ...
+    def __call__(self, /, dim: int | None = None, seed: onp.random.ToRNG | None = None) -> uniform_direction_frozen: ...
+
+    #
+    @overload
+    def rvs(self, /, dim: int, size: None = None, random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
+    @overload
     def rvs(
-        self, /, dim: onp.ToJustInt, size: onp.ToJustInt | None = None, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array3D[np.float64]: ...
+        self, /, dim: int, size: int | tuple[int], random_state: onp.random.ToRNG | None = None
+    ) -> onp.Array2D[np.float64]: ...
+    @overload
+    def rvs(self, /, dim: int, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND[np.float64]: ...
 
 class uniform_direction_frozen(multi_rv_frozen[uniform_direction_gen]):
-    dim: onp.ToJustInt
-    def __init__(self, /, dim: onp.ToJustInt | None = None, seed: onp.random.ToRNG | None = None) -> None: ...
-    def rvs(
-        self, /, size: onp.ToJustInt | None = None, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array3D[np.float64]: ...
+    dim: Final[int]
+
+    def __init__(self, /, dim: int | None = None, seed: onp.random.ToRNG | None = None) -> None: ...
+
+    #
+    @overload
+    def rvs(self, /, size: None = None, random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
+    @overload
+    def rvs(self, /, size: int | tuple[int], random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
+    @overload
+    def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
 
 class random_correlation_gen(multi_rv_generic):
     def __call__(
@@ -406,21 +565,23 @@ class random_correlation_gen(multi_rv_generic):
         eigs: onp.ToFloat1D,
         seed: onp.random.ToRNG | None = None,
         tol: _ToJustFloat = 1e-13,
-        diag_tol: _ToJustFloat = 1e-07,
+        diag_tol: _ToJustFloat = 1e-7,
     ) -> random_correlation_frozen: ...
+
+    #
     def rvs(
         self,
         /,
         eigs: onp.ToFloat1D,
         random_state: onp.random.ToRNG | None = None,
         tol: _ToJustFloat = 1e-13,
-        diag_tol: _ToJustFloat = 1e-07,
-    ) -> onp.ArrayND[np.float64]: ...
+        diag_tol: _ToJustFloat = 1e-7,
+    ) -> onp.Array2D[np.float64]: ...
 
 class random_correlation_frozen(multi_rv_frozen[random_correlation_gen]):
+    eigs: Final[onp.Array1D[np.float64]]
     tol: Final[float]
     diag_tol: Final[float]
-    eigs: Final[onp.Array1D[np.float64]]
 
     def __init__(
         self,
@@ -428,9 +589,11 @@ class random_correlation_frozen(multi_rv_frozen[random_correlation_gen]):
         eigs: onp.ToFloat1D,
         seed: onp.random.ToRNG | None = None,
         tol: _ToJustFloat = 1e-13,
-        diag_tol: _ToJustFloat = 1e-07,
+        diag_tol: _ToJustFloat = 1e-7,
     ) -> None: ...
-    def rvs(self, /, random_state: onp.random.ToRNG | None = None) -> onp.ArrayND[np.float64]: ...
+
+    #
+    def rvs(self, /, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
 
 class multivariate_t_gen(multi_rv_generic):
     def __call__(
@@ -442,17 +605,19 @@ class multivariate_t_gen(multi_rv_generic):
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
     ) -> multivariate_t_frozen: ...
+
+    #
+    def logpdf(
+        self, /, x: onp.ToFloatND, loc: onp.ToFloat1D | None = None, shape: onp.ToFloat | onp.ToFloat2D = 1, df: int = 1
+    ) -> _ScalarOrArray_f8: ...
     def pdf(
         self,
         /,
         x: onp.ToFloatND,
         loc: onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: onp.ToJustInt = 1,
+        df: int = 1,
         allow_singular: bool = False,
-    ) -> _ScalarOrArray_f8: ...
-    def logpdf(
-        self, /, x: onp.ToFloatND, loc: onp.ToFloat1D | None = None, shape: onp.ToFloat | onp.ToFloat2D = 1, df: onp.ToJustInt = 1
     ) -> _ScalarOrArray_f8: ...
     def cdf(
         self,
@@ -460,23 +625,25 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatND,
         loc: onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: onp.ToJustInt = 1,
+        df: int = 1,
         allow_singular: bool = False,
         *,
-        maxpts: onp.ToJustInt | None = None,
+        maxpts: int | None = None,
         lower_limit: onp.ToFloat1D | None = None,
         random_state: onp.random.ToRNG | None = None,
     ) -> _ScalarOrArray_f8: ...
-    def entropy(
-        self, /, loc: onp.ToFloat1D | None = None, shape: onp.ToFloat | onp.ToFloat2D = 1, df: onp.ToJustInt = 1
-    ) -> np.float64: ...
+
+    #
+    def entropy(self, /, loc: onp.ToFloat1D | None = None, shape: onp.ToFloat | onp.ToFloat2D = 1, df: int = 1) -> np.float64: ...
+
+    #
     @overload
     def rvs(
         self,
         /,
         loc: onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: onp.ToJustInt = 1,
+        df: int = 1,
         *,
         size: tuple[()],
         random_state: onp.random.ToRNG | None = None,
@@ -487,7 +654,7 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat1D | None,
         shape: onp.ToFloat | onp.ToFloat2D,
-        df: onp.ToJustInt,
+        df: int,
         size: tuple[()],
         random_state: onp.random.ToRNG | None = None,
     ) -> onp.Array1D[np.float64]: ...
@@ -497,8 +664,8 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: onp.ToJustInt = 1,
-        size: onp.ToJustInt | tuple[int] = 1,
+        df: int = 1,
+        size: int | tuple[int] = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> onp.Array2D[np.float64]: ...
     @overload
@@ -507,7 +674,7 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: onp.ToJustInt = 1,
+        df: int = 1,
         *,
         size: onp.AtLeast2D,
         random_state: onp.random.ToRNG | None = None,
@@ -518,7 +685,7 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat1D | None,
         shape: onp.ToFloat | onp.ToFloat2D,
-        df: onp.ToJustInt,
+        df: int,
         size: onp.AtLeast2D,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array3ND: ...
@@ -535,10 +702,12 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
         /,
         loc: onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: onp.ToJustInt = 1,
+        df: int = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
+
+    #
     def logpdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def cdf(
@@ -546,17 +715,19 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
         /,
         x: onp.ToFloatND,
         *,
-        maxpts: onp.ToJustInt | None = None,
+        maxpts: int | None = None,
         lower_limit: onp.ToFloat1D | None = None,
         random_state: onp.random.ToRNG | None = None,
     ) -> _ScalarOrArray_f8: ...
+
+    #
     def entropy(self, /) -> np.float64: ...
+
+    #
     @overload
     def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
     @overload
-    def rvs(
-        self, /, size: onp.ToJustInt | tuple[int] = 1, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array2D[np.float64]: ...
+    def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
     @overload
     def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND: ...
 
@@ -580,7 +751,7 @@ class multivariate_hypergeom_gen(multi_rv_generic):
         /,
         m: onp.ToIntND,
         n: onp.ToJustInt | onp.ToJustIntND,
-        size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]] | None = None,
+        size: int | onp.AtLeast1D | None = None,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array2ND: ...
 
@@ -594,12 +765,7 @@ class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen])
     @overload
     def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> _Array1ND: ...
     @overload
-    def rvs(
-        self,
-        /,
-        size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]] = 1,
-        random_state: onp.random.ToRNG | None = None,
-    ) -> _Array2ND: ...
+    def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> _Array2ND: ...
 
 _RandomTableRVSMethod: TypeAlias = Literal["boyett", "patefield"]
 
@@ -607,32 +773,72 @@ class random_table_gen(multi_rv_generic):
     def __call__(
         self, /, row: onp.ToJustIntND, col: onp.ToJustIntND, *, seed: onp.random.ToRNG | None = None
     ) -> random_table_frozen: ...
+
+    #
     def logpmf(self, /, x: onp.ToFloatND, row: onp.ToJustIntND, col: onp.ToJustIntND) -> _ScalarOrArray_f8: ...
     def pmf(self, /, x: onp.ToFloatND, row: onp.ToJustIntND, col: onp.ToJustIntND) -> _ScalarOrArray_f8: ...
+
+    #
     def mean(self, /, row: onp.ToJustIntND, col: onp.ToJustIntND) -> onp.Array2D[np.float64]: ...
+
+    #
+    @overload
     def rvs(
         self,
         /,
         row: onp.ToJustIntND,
         col: onp.ToJustIntND,
         *,
-        size: onp.ToJustInt | onp.ToJustInt1D | None = None,
+        size: None = None,
         method: _RandomTableRVSMethod | None = None,
         random_state: onp.random.ToRNG | None = None,
-    ) -> onp.Array3D[np.float64]: ...
-
-class random_table_frozen(multi_rv_frozen[random_table_gen]):
-    def __init__(self, /, row: onp.ToJustIntND, col: onp.ToJustIntND, *, seed: onp.random.ToRNG | None = None) -> None: ...
-    def logpmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
-    def pmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
-    def mean(self, /) -> onp.Array2D[np.float64]: ...
+    ) -> onp.Array2D[np.float64]: ...
+    @overload
     def rvs(
         self,
         /,
-        size: onp.ToJustInt | onp.ToJustInt1D | None = None,
+        row: onp.ToJustIntND,
+        col: onp.ToJustIntND,
+        *,
+        size: int | tuple[int],
         method: _RandomTableRVSMethod | None = None,
         random_state: onp.random.ToRNG | None = None,
     ) -> onp.Array3D[np.float64]: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        row: onp.ToJustIntND,
+        col: onp.ToJustIntND,
+        *,
+        size: onp.AtLeast1D,
+        method: _RandomTableRVSMethod | None = None,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> _Array3ND[np.float64]: ...
+
+class random_table_frozen(multi_rv_frozen[random_table_gen]):
+    def __init__(self, /, row: onp.ToJustIntND, col: onp.ToJustIntND, *, seed: onp.random.ToRNG | None = None) -> None: ...
+
+    #
+    def logpmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
+    def pmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
+
+    #
+    def mean(self, /) -> onp.Array2D[np.float64]: ...
+
+    #
+    @overload
+    def rvs(
+        self, /, size: None = None, method: _RandomTableRVSMethod | None = None, random_state: onp.random.ToRNG | None = None
+    ) -> onp.Array2D[np.float64]: ...
+    @overload
+    def rvs(
+        self, /, size: int | tuple[int], method: _RandomTableRVSMethod | None = None, random_state: onp.random.ToRNG | None = None
+    ) -> onp.Array3D[np.float64]: ...
+    @overload
+    def rvs(
+        self, /, size: onp.AtLeast1D, method: _RandomTableRVSMethod | None = None, random_state: onp.random.ToRNG | None = None
+    ) -> _Array3ND[np.float64]: ...
 
 class dirichlet_multinomial_gen(multi_rv_generic):
     def __call__(
