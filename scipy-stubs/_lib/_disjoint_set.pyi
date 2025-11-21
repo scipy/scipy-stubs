@@ -1,10 +1,11 @@
 from collections.abc import Iterable, Iterator
-from typing import Generic
+from typing import Any, Generic
 from typing_extensions import TypeVar
 
+import numpy as np
 import optype as op
 
-_T = TypeVar("_T", bound=op.CanHash)
+_T = TypeVar("_T", bound=op.CanHash | np.generic, default=Any)
 
 class DisjointSet(Generic[_T]):
     n_subsets: int

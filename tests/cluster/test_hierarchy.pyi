@@ -19,12 +19,8 @@ assert_type(DisjointSet(py_str_1d), DisjointSet[str])
 assert_type(DisjointSet(py_int_1d), DisjointSet[int])
 assert_type(DisjointSet(i32_1d), DisjointSet[np.int32])  # pyrefly: ignore[assert-type]
 assert_type(DisjointSet(i64_1d), DisjointSet[np.int64])  # pyrefly: ignore[assert-type]
-# DisjointSet() produces a DisjointSet[Any] in pyrefly and pyright because T is unbound.
-# mypy instead returns a bottom consistent with its treatment of containers, so we expect
-# >>> x = DisjointSet()
-# to fail without an annotation
-# >>> x: DisjointSet[str] = DisjointSet()
-assert_type(DisjointSet(), DisjointSet[Any])  # type: ignore[assert-type]
+# DisjointSet() produces a DisjointSet[Any] because T is unbound.
+assert_type(DisjointSet(), DisjointSet[Any])
 
 disjoint_set_str: DisjointSet[str]
 disjoint_set_i64: DisjointSet[np.int64]
