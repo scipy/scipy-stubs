@@ -1,5 +1,5 @@
-from collections.abc import Callable, Mapping
-from typing import Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only
+from collections.abc import Callable, Iterable
+from typing import Any, Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -7,8 +7,11 @@ import optype.numpy.compat as npc
 
 __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output", "RealData", "odr", "odr_error", "odr_stop"]
 
-_ToIntScalar: TypeAlias = npc.integer | np.bool_
-_ToFloatScalar: TypeAlias = npc.floating | _ToIntScalar
+# Technically this can be `np.floating | np.integer | np.bool`, but that'd
+# force users to explicitly narrow the type in many places. In practice,
+# `float64` is used most often, so we simplify this using the "any trick",
+# even though it's technically type-unsafe this way.
+_ToFloatScalar: TypeAlias = np.float64 | Any
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
@@ -19,12 +22,25 @@ _01: TypeAlias = Literal[0, 1]  # noqa: PYI042
 _012: TypeAlias = Literal[0, 1, 2]  # noqa: PYI042
 _0123: TypeAlias = Literal[0, 1, 2, 3]  # noqa: PYI042
 
+# return value of `__odrpack.odr` with `full_output=False`
+_RawOutput: TypeAlias = tuple[
+    _Float1D,  # beta
+    _Float1D,  # sd_beta
+    _Float2D,  # cov_beta
+]
+_RawOutputFull: TypeAlias = tuple[
+    _Float1D,  # beta
+    _Float1D,  # sd_beta
+    _Float2D,  # cov_beta
+    _FullOutput,
+]
+
 @type_check_only
 class _FullOutput(TypedDict):
-    delta: _Float1D
-    eps: _Float1D
-    xplus: _Float1D
-    y: _Float1D
+    delta: _FloatND
+    eps: _FloatND
+    xplus: _FloatND
+    y: _FloatND
     res_var: float
     sum_square: float
     sum_square_delta: float
@@ -33,7 +49,7 @@ class _FullOutput(TypedDict):
     rel_error: float
     work: _Float1D
     work_ind: dict[str, int]
-    iwork: onp.Array1D[np.int32]
+    iwork: onp.Array1D[np.int32 | np.int64]
     info: int
 
 ###
@@ -47,11 +63,11 @@ class OdrStop(Exception): ...
 
 class Data:
     x: Final[onp.ArrayND[_ToFloatScalar]]
-    y: Final[_ToFloatScalar | onp.ArrayND[_ToFloatScalar] | None]
-    we: Final[_ToFloatScalar | onp.ArrayND[_ToFloatScalar] | None]
-    wd: Final[_ToFloatScalar | onp.ArrayND[_ToFloatScalar] | None]
-    fix: Final[onp.ArrayND[_ToIntScalar] | None]
-    meta: Final[Mapping[str, object]]
+    y: Final[onp.ArrayND[_ToFloatScalar] | _ToFloatScalar | None]
+    we: onp.ArrayND[_ToFloatScalar] | _ToFloatScalar | None
+    wd: onp.ArrayND[_ToFloatScalar] | _ToFloatScalar | None
+    fix: Final[onp.ArrayND[npc.integer] | None]
+    meta: Final[dict[str, Any]]
 
     def __init__(
         self,
@@ -61,7 +77,7 @@ class Data:
         we: onp.ToFloat | onp.ToFloatND | None = None,
         wd: onp.ToFloat | onp.ToFloatND | None = None,
         fix: onp.ToIntND | None = None,
-        meta: Mapping[str, object] | None = None,
+        meta: dict[str, Any] | None = None,
     ) -> None: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
@@ -70,6 +86,10 @@ class RealData(Data):
     sy: Final[onp.ArrayND[_ToFloatScalar] | None]
     covx: Final[onp.ArrayND[_ToFloatScalar] | None]
     covy: Final[onp.ArrayND[_ToFloatScalar] | None]
+
+    # readonly attributes that are dynamically computed in `RealData.__getattr__`
+    wd: onp.ArrayND[_ToFloatScalar] | None  # pyrefly: ignore[bad-override]
+    we: onp.ArrayND[_ToFloatScalar] | None  # pyrefly: ignore[bad-override]
 
     @overload
     def __init__(
@@ -82,7 +102,7 @@ class RealData(Data):
         covx: None = None,
         covy: None = None,
         fix: onp.ToIntND | None = None,
-        meta: Mapping[str, object] | None = None,
+        meta: dict[str, Any] | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -95,7 +115,7 @@ class RealData(Data):
         covx: onp.ToFloatND,
         covy: None = None,
         fix: onp.ToIntND | None = None,
-        meta: Mapping[str, object] | None = None,
+        meta: dict[str, Any] | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -108,7 +128,7 @@ class RealData(Data):
         covx: None,
         covy: onp.ToFloatND,
         fix: onp.ToIntND | None = None,
-        meta: Mapping[str, object] | None = None,
+        meta: dict[str, Any] | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -121,7 +141,7 @@ class RealData(Data):
         covx: onp.ToFloatND,
         covy: onp.ToFloatND,
         fix: onp.ToIntND | None = None,
-        meta: Mapping[str, object] | None = None,
+        meta: dict[str, Any] | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -135,7 +155,7 @@ class RealData(Data):
         covx: onp.ToFloatND,
         covy: None = None,
         fix: onp.ToIntND | None = None,
-        meta: Mapping[str, object] | None = None,
+        meta: dict[str, Any] | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -149,7 +169,7 @@ class RealData(Data):
         covx: None = None,
         covy: onp.ToFloatND,
         fix: onp.ToIntND | None = None,
-        meta: Mapping[str, object] | None = None,
+        meta: dict[str, Any] | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -163,17 +183,16 @@ class RealData(Data):
         covx: onp.ToFloatND,
         covy: onp.ToFloatND,
         fix: onp.ToIntND | None = None,
-        meta: Mapping[str, object] | None = None,
+        meta: dict[str, Any] | None = None,
     ) -> None: ...
 
 class Model:
     fcn: Final[_FCN]
     fjacb: Final[_FCN]
     fjacd: Final[_FCN]
-    extra_args: Final[tuple[object, ...]]
-    covx: Final[onp.ArrayND[_ToFloatScalar] | None]
-    implicit: Final[onp.ToBool]
-    meta: Final[Mapping[str, object]]
+    extra_args: Final[tuple[Any, ...]]
+    implicit: Final[bool | Literal[0, 1]]
+    meta: Final[dict[str, Any]]
 
     def __init__(
         self,
@@ -181,20 +200,35 @@ class Model:
         fcn: _FCN,
         fjacb: _FCN | None = None,
         fjacd: _FCN | None = None,
-        extra_args: tuple[object, ...] | None = None,
+        extra_args: Iterable[object] | None = None,
         estimate: onp.ToFloat1D | None = None,
-        implicit: onp.ToBool = 0,
-        meta: Mapping[str, object] | None = None,
+        implicit: bool | Literal[0, 1] = 0,
+        meta: dict[str, Any] | None = None,
     ) -> None: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
 class Output:
-    beta: Final[onp.Array1D[_ToFloatScalar]]
-    sd_beta: Final[onp.Array1D[_ToFloatScalar]]
-    cov_beta: Final[onp.Array1D[_ToFloatScalar]]
+    beta: Final[onp.Array1D[np.float64]]
+    sd_beta: Final[onp.Array1D[np.float64]]
+    cov_beta: Final[onp.Array2D[np.float64]]
+
+    # the following attributes are only available if `full_output=True` was used
+    delta: Final[onp.Array1D[np.float64] | onp.Array2D[np.float64]]
+    eps: Final[onp.Array1D[np.float64] | onp.Array2D[np.float64]]
+    xplus: Final[onp.Array1D[np.float64] | onp.Array2D[np.float64]]
+    y: Final[onp.Array1D[np.float64] | onp.Array2D[np.float64]]
+    res_var: Final[float]
+    sum_square: Final[float]
+    sum_square_delta: Final[float]
+    sum_square_eps: Final[float]
+    inv_condnum: Final[float]
+    rel_error: Final[float]
+    work: Final[onp.Array1D[np.float64]]
+    work_ind: Final[dict[str, int]]
+    info: Final[int]
     stopreason: Final[list[str]]
 
-    def __init__(self, /, output: onp.ArrayND[_ToFloatScalar]) -> None: ...
+    def __init__(self, /, output: _RawOutput | _RawOutputFull) -> None: ...
     def pprint(self, /) -> None: ...
 
 class ODR:
@@ -301,7 +335,7 @@ def odr(
     work: onp.ArrayND[np.float64] | None = None,
     iwork: onp.ArrayND[np.int32 | np.int64] | None = None,
     full_output: onp.ToFalse = 0,
-) -> tuple[_Float1D, _Float1D, _Float2D]: ...
+) -> _RawOutput: ...
 @overload
 def odr(
     fcn: _FCN,
@@ -332,4 +366,4 @@ def odr(
     iwork: onp.ArrayND[np.int32 | np.int64] | None = None,
     *,
     full_output: onp.ToTrue,
-) -> tuple[_Float1D, _Float1D, _Float2D, _FullOutput]: ...
+) -> _RawOutputFull: ...
