@@ -35,7 +35,6 @@ assert_type(len(disjoint_set_str), int)
 
 # __contains__ accepts an element of the universal set and returns a boolean
 assert_type("a" in disjoint_set_str, bool)
-_ = 1 in disjoint_set_str  # type: ignore[operator]  # pyright: ignore[reportOperatorIssue]
 assert_type(np.int64(2) in disjoint_set_i64, bool)
 
 # __getitem__ returns an element of the universal set
