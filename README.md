@@ -304,9 +304,11 @@ Apache Spark ([PySpark](https://github.com/apache/spark)) |
 [Arviz](https://github.com/arviz-devs/arviz) |
 [asammdf](https://github.com/danielhrisca/asammdf) |
 [Chemotools](https://github.com/paucablop/chemotools) |
-Colour ([colour](https://github.com/colour-science/colour),
-[colour-checker-detection](https://github.com/colour-science/colour-checker-detection),
-[colour-visuals](https://github.com/colour-science/colour-visuals)) |
+Colour ([Colour](https://github.com/colour-science/colour),
+[Checker Detection](https://github.com/colour-science/colour-checker-detection),
+[Demosaicing](https://github.com/colour-science/colour-demosaicing),
+[HDRI](https://github.com/colour-science/colour-hdri),
+[Visuals](https://github.com/colour-science/colour-visuals)) |
 [CSAPS](https://github.com/espdev/csaps) |
 [cuPyNumeric](https://github.com/nv-legate/cupynumeric) |
 [Efax](https://github.com/NeilGirdhar/efax) |
