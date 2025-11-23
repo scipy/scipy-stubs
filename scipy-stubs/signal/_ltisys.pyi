@@ -299,10 +299,8 @@ class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Gener
     @override
     def to_ss(self, /) -> StateSpace[_ZerosT_co, _PolesT_co, _DTT_co]: ...
 
-# NOTE: The pyrefly-ignore comments are needed because of https://github.com/facebook/pyrefly/issues/1530
-
 @final
-class ZerosPolesGainContinuous(  # pyrefly: ignore[inconsistent-inheritance]
+class ZerosPolesGainContinuous(
     ZerosPolesGain[_ZerosT_co, _PolesT_co, None], lti[_ZerosT_co, _PolesT_co], Generic[_ZerosT_co, _PolesT_co]
 ):
     @override
@@ -313,7 +311,7 @@ class ZerosPolesGainContinuous(  # pyrefly: ignore[inconsistent-inheritance]
     ) -> ZerosPolesGainDiscrete[_ZerosT_co, _PolesT_co, _DTT]: ...
 
 @final
-class ZerosPolesGainDiscrete(  # pyrefly: ignore[inconsistent-inheritance]
+class ZerosPolesGainDiscrete(
     ZerosPolesGain[_ZerosT_co, _PolesT_co, _DTT_co],
     dlti[_ZerosT_co, _PolesT_co, _DTT_co],
     Generic[_ZerosT_co, _PolesT_co, _DTT_co],
