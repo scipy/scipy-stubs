@@ -5,6 +5,9 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype as op
 
+# Only the existence of `__hash__` is required. However, in numpy < 2.1 the
+# `__hash__` method is missing from numpy stubs on scalar values. Allowing
+# `np.generic` fixes this for older numpy versions.
 _T = TypeVar("_T", bound=op.CanHash | np.generic, default=Any)
 
 class DisjointSet(Generic[_T]):
