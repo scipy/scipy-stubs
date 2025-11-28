@@ -12,7 +12,7 @@ misc.electrocardiogram  # type: ignore[attr-defined]  # pyright: ignore[reportAt
 
 # ensure that the (empty) submodules are not exported
 
-# NOTE: For some reason mypy does not report these `[attr-defined]` errors when run as `uv run mypy`,
-# even though the mypy plugin (which uses the same config) does report it.
-misc.common  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]  # pyrefly: ignore[implicit-import]
-misc.doccer  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]  # pyrefly: ignore[implicit-import]
+# pyrefly: ignore[implicit-import]
+misc.common  # type: ignore[attr-defined]  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
+# pyrefly: ignore[implicit-import]
+misc.doccer  # type: ignore[attr-defined]  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType]
