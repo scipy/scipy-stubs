@@ -2,8 +2,9 @@ name: Build a new release, and publish to PyPI
 
 on:
   workflow_dispatch:
-  release:
-    types: [created]
+  push:
+    tags:
+      - "v*"
 
 env:
   UV_LOCKED: 1
@@ -23,7 +24,7 @@ jobs:
 
       - uses: astral-sh/setup-uv@v7.1.4
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: uv build
         run: uv build
