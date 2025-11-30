@@ -35,6 +35,7 @@ changelog:
         - "is: refactor"
         - "topic: code style"
         - "topic: dependencies"
+        - "tool: github actions"
     - title: Other Changes
       labels:
         - "*"
