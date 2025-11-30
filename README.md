@@ -315,6 +315,7 @@ Colour ([Colour](https://github.com/colour-science/colour),
 [Fast GraphRAG](https://github.com/circlemind-ai/fast-graphrag) |
 [foamlib](https://github.com/gerlero/foamlib) |
 [Freqtrade](https://github.com/freqtrade/freqtrade) |
+[graphix](https://github.com/TeamGraphix/graphix) |
 Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)) |
 [JAX](https://github.com/jax-ml/jax) |
 [librosa](https://github.com/librosa/librosa) |
