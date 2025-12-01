@@ -114,7 +114,7 @@ def download_repo(repo_name: str, target_dir: Path) -> Path:
         zip_path = target_dir / f"{repo_name.replace('/', '_')}_{branch}.zip"
 
         try:
-            _, _ = urllib.request.urlretrieve(zip_url, zip_path)  # noqa: S310
+            _, _ = urllib.request.urlretrieve(zip_url, zip_path)
         except urllib.error.HTTPError as e:
             if e.code == 404:  # noqa: PLR2004
                 logger.warning(
