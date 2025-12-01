@@ -16,7 +16,7 @@ _T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _ScalarT = TypeVar("_ScalarT", bound=npc.number)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number, default=np.float64, covariant=True)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
 _Tuple2: TypeAlias = tuple[_T, _T]
 

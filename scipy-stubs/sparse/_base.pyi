@@ -47,11 +47,11 @@ _ScalarT_co = TypeVar("_ScalarT_co", bound=_Numeric, default=Any, covariant=True
 
 _Numeric: TypeAlias = npc.number | np.bool_
 
-_COOShapeT = TypeVar("_COOShapeT", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any])
-_CSRShapeT = TypeVar("_CSRShapeT", bound=tuple[int] | tuple[int, int], default=onp.AtLeast0D[Any])
-_DOKShapeT = TypeVar("_DOKShapeT", bound=tuple[int] | tuple[int, int], default=onp.AtLeast0D[Any])
-_ShapeT = TypeVar("_ShapeT", bound=onp.AtLeast0D[Any])
-_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
+_COOShapeT = TypeVar("_COOShapeT", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...])
+_CSRShapeT = TypeVar("_CSRShapeT", bound=tuple[int] | tuple[int, int], default=tuple[Any, ...])
+_DOKShapeT = TypeVar("_DOKShapeT", bound=tuple[int] | tuple[int, int], default=tuple[Any, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
 _Sp1dT = TypeVar("_Sp1dT", bound=_spbase[_Numeric, _1D])
 _Sp2dT = TypeVar("_Sp2dT", bound=_spbase[_Numeric, _2D])

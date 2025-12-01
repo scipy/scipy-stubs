@@ -11,7 +11,7 @@ import optype.numpy as onp
 
 _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
-_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
 _ArrayAPINamespace: TypeAlias = ModuleType
 _Rule: TypeAlias = Literal["gk21", "gk15", "gauss-kronrod", "genz-malik"]

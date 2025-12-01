@@ -1,6 +1,6 @@
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from types import ModuleType
-from typing import Any, Concatenate, Final, TypeAlias
+from typing import Any, Concatenate, Final, SupportsIndex, TypeAlias
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -12,15 +12,15 @@ from ._util import _RichResult
 
 ###
 
-_FloatT = TypeVar("_FloatT", bound=npc.floating, default=np.float64)
-_ShapeT = TypeVar("_ShapeT", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any])
+_FloatT = TypeVar("_FloatT", bound=npc.floating)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]])
 _FuncRealT = TypeVar("_FuncRealT", bound=Callable[Concatenate[onp.ArrayND[np.float64], ...], object])
-_ModuleT = TypeVar("_ModuleT", bound=ModuleType, default=ModuleType)
+_ModuleT = TypeVar("_ModuleT", bound=ModuleType)
 _WorkT = TypeVar("_WorkT", bound=Mapping[str, Any])
-_ResT = TypeVar("_ResT", bound=_RichResult, default=_RichResult)
-_ToShapeT = TypeVar("_ToShapeT", bound=op.CanIndex | tuple[op.CanIndex, ...], default=onp.AtLeast0D)
+_ResT = TypeVar("_ResT", bound=_RichResult)
+_ToShapeT = TypeVar("_ToShapeT", bound=SupportsIndex | tuple[SupportsIndex, ...])
 
-_Ignored: TypeAlias = _ResT
+_Ignored: TypeAlias = object
 
 ###
 
@@ -63,7 +63,7 @@ def _loop(
     post_func_eval: Callable[[onp.Array[_ShapeT, _FloatT], onp.Array[_ShapeT, npc.floating], _ResT], _Ignored],
     check_termination: Callable[[_ResT], onp.Array[_ShapeT, np.bool_]],
     post_termination_check: Callable[[_ResT], _Ignored],
-    customize_result: Callable[[_ResT, _ToShapeT], tuple[int, ...]],
+    customize_result: Callable[[_ResT, tuple[int, ...]], tuple[int, ...]],
     res_work_pairs: Iterable[tuple[str, str]],
     xp: ModuleType,
     preserve_shape: bool | None = False,

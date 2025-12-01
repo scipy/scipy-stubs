@@ -12,7 +12,7 @@ from ._coo import coo_array
 from ._matrix import spmatrix
 
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
 _Self2T = TypeVar("_Self2T", bound=IndexMixin[Any, _2D])
 _SelfMatrixT = TypeVar("_SelfMatrixT", bound=spmatrix)

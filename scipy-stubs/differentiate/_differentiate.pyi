@@ -1,3 +1,4 @@
+from _typeshed import ConvertibleToInt
 from collections.abc import Callable
 from typing import Any, Concatenate, Generic, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar
@@ -5,15 +6,14 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
-import optype.typing as opt
 
 from scipy._lib._util import _RichResult
 
 _FloatT = TypeVar("_FloatT", bound=npc.floating, default=np.float64)
 _FloatT_co = TypeVar("_FloatT_co", bound=npc.floating, default=np.float64, covariant=True)
-_ShapeT = TypeVar("_ShapeT", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any])
-_ShapeT_co = TypeVar("_ShapeT_co", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any], covariant=True)
-_ShapeT2_co = TypeVar("_ShapeT2_co", bound=onp.AtLeast2D, default=onp.AtLeast0D[Any], covariant=True)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
+_ShapeT2_co = TypeVar("_ShapeT2_co", bound=tuple[int, int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
 _Ignored: TypeAlias = object
 
@@ -72,8 +72,8 @@ def derivative(
     *,
     args: tuple[onp.ToScalar, ...] = (),
     tolerances: _Tolerances | None = None,
-    maxiter: opt.AnyInt = 10,
-    order: opt.AnyInt = 8,
+    maxiter: ConvertibleToInt = 10,
+    order: ConvertibleToInt = 8,
     initial_step: onp.ToFloat = 0.5,
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt = 0,
@@ -87,8 +87,8 @@ def derivative(
     *,
     args: tuple[onp.ToScalar, ...] = (),
     tolerances: _Tolerances | None = None,
-    maxiter: opt.AnyInt = 10,
-    order: opt.AnyInt = 8,
+    maxiter: ConvertibleToInt = 10,
+    order: ConvertibleToInt = 8,
     initial_step: onp.ToFloat = 0.5,
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt = 0,
@@ -102,8 +102,8 @@ def derivative(
     *,
     args: tuple[onp.ToScalar | onp.ToArray1D | onp.CanArray[_ShapeT], ...] = (),
     tolerances: _Tolerances | None = None,
-    maxiter: opt.AnyInt = 10,
-    order: opt.AnyInt = 8,
+    maxiter: ConvertibleToInt = 10,
+    order: ConvertibleToInt = 8,
     initial_step: onp.ToFloat | onp.ToFloat1D | onp.CanArrayND[npc.floating, _ShapeT] = 0.5,
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustInt1D | onp.CanArrayND[npc.integer, _ShapeT] = 0,
@@ -117,8 +117,8 @@ def derivative(
     *,
     args: tuple[onp.ToScalar | onp.ToArrayStrict1D, ...] = (),
     tolerances: _Tolerances | None = None,
-    maxiter: opt.AnyInt = 10,
-    order: opt.AnyInt = 8,
+    maxiter: ConvertibleToInt = 10,
+    order: ConvertibleToInt = 8,
     initial_step: onp.ToFloat | onp.ToFloatStrict1D = 0.5,
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntStrict1D = 0,
@@ -132,8 +132,8 @@ def derivative(
     *,
     args: tuple[onp.ToScalar | onp.ToArrayND, ...] = (),
     tolerances: _Tolerances | None = None,
-    maxiter: opt.AnyInt = 10,
-    order: opt.AnyInt = 8,
+    maxiter: ConvertibleToInt = 10,
+    order: ConvertibleToInt = 8,
     initial_step: onp.ToFloat | onp.ToFloatND = 0.5,
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntND = 0,
@@ -147,8 +147,8 @@ def jacobian(
     x: onp.ToFloatND,
     *,
     tolerances: _Tolerances | None = None,
-    maxiter: opt.AnyInt = 10,
-    order: opt.AnyInt = 8,
+    maxiter: ConvertibleToInt = 10,
+    order: ConvertibleToInt = 8,
     initial_step: onp.ToFloat | onp.ToFloatND = 0.5,
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntND = 0,
@@ -160,8 +160,8 @@ def hessian(
     x: onp.ToFloatND,
     *,
     tolerances: _Tolerances | None = None,
-    maxiter: opt.AnyInt = 10,
-    order: opt.AnyInt = 8,
+    maxiter: ConvertibleToInt = 10,
+    order: ConvertibleToInt = 8,
     initial_step: onp.ToFloat | onp.ToFloatND = 0.5,
     step_factor: onp.ToFloat = 2.0,
 ) -> _HessianResult[_FloatT, onp.AtLeast2D]: ...
