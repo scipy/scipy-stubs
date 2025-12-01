@@ -21,12 +21,10 @@ __all__ = ["Binomial", "Normal", "Uniform"]
 _Float: TypeAlias = npc.floating
 _Int: TypeAlias = npc.integer
 
-_NT = TypeVar("_NT", default=int)
 _0D: TypeAlias = tuple[()]  # noqa: PYI042
-_1D: TypeAlias = tuple[_NT]  # noqa: PYI042
-_2D: TypeAlias = tuple[_NT, _NT]  # noqa: PYI042
-_3D: TypeAlias = tuple[_NT, _NT, _NT]  # noqa: PYI042
-_ND: TypeAlias = tuple[_NT, ...]
+_1D: TypeAlias = tuple[int]  # noqa: PYI042
+_2D: TypeAlias = tuple[int, int]  # noqa: PYI042
+_3D: TypeAlias = tuple[int, int, int]  # noqa: PYI042
 
 _ToFloat_1D: TypeAlias = onp.ToFloatStrict1D | onp.ToFloat
 _ToFloat_2D: TypeAlias = onp.ToFloatStrict2D | _ToFloat_1D
@@ -40,8 +38,8 @@ _FloatT_co = TypeVar("_FloatT_co", bound=_Float, default=_Float, covariant=True)
 _IntT = TypeVar("_IntT", bound=_Int, default=_Int)
 _IntT_co = TypeVar("_IntT_co", bound=_Int, default=_Int, covariant=True)
 
-_ShapeT = TypeVar("_ShapeT", bound=_ND, default=_ND)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=_ND, default=_ND, covariant=True)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 ###
 

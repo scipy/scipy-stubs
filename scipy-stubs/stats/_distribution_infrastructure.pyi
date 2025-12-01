@@ -41,9 +41,9 @@ _IntT_co = TypeVar("_IntT_co", bound=_Int, default=_Int, covariant=True)
 _RealT = TypeVar("_RealT", bound=_Float | _Int, default=_Float | _Int)
 _RealT_co = TypeVar("_RealT_co", bound=_Float | _Int, default=_Float | _Int, covariant=True)
 
-_ShapeT = TypeVar("_ShapeT", bound=_ND, default=_ND)
-_ShapeT1 = TypeVar("_ShapeT1", bound=onp.AtLeast1D, default=onp.AtLeast0D[Any])
-_ShapeT_co = TypeVar("_ShapeT_co", bound=_ND, default=_ND, covariant=True)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
+_ShapeT1 = TypeVar("_ShapeT1", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 _DistT0 = TypeVar("_DistT0", bound=_Dist[_0D])
 _DistT1 = TypeVar("_DistT1", bound=_Dist[_1D])
@@ -52,8 +52,8 @@ _DistT2 = TypeVar("_DistT2", bound=_Dist[_2D])
 _DistT_2 = TypeVar("_DistT_2", bound=_Dist[onp.AtMost2D])
 _DistT3 = TypeVar("_DistT3", bound=_Dist[_3D])
 _DistT_3 = TypeVar("_DistT_3", bound=_Dist[onp.AtMost3D])
-_DistT = TypeVar("_DistT", bound=_Dist)
-_DistT_co = TypeVar("_DistT_co", bound=_Dist, default=UnivariateDistribution, covariant=True)
+_DistT = TypeVar("_DistT", bound=_Dist[tuple[int, ...]])
+_DistT_co = TypeVar("_DistT_co", bound=_Dist[tuple[int, ...]], default=UnivariateDistribution, covariant=True)
 
 _AxesT = TypeVar("_AxesT", bound=_Axes, default=Any)
 
@@ -97,12 +97,11 @@ _Int: TypeAlias = npc.integer
 _Float: TypeAlias = npc.floating
 _OutFloat: TypeAlias = np.float64 | np.longdouble
 
-_NT = TypeVar("_NT", default=int)
 _0D: TypeAlias = tuple[()]  # noqa: PYI042
-_1D: TypeAlias = tuple[_NT]  # noqa: PYI042
-_2D: TypeAlias = tuple[_NT, _NT]  # noqa: PYI042
-_3D: TypeAlias = tuple[_NT, _NT, _NT]  # noqa: PYI042
-_ND: TypeAlias = tuple[_NT, ...]
+_1D: TypeAlias = tuple[int]  # noqa: PYI042
+_2D: TypeAlias = tuple[int, int]  # noqa: PYI042
+_3D: TypeAlias = tuple[int, int, int]  # noqa: PYI042
+_ND: TypeAlias = tuple[int, ...]
 
 _ToFloatMax1D: TypeAlias = onp.ToFloatStrict1D | onp.ToFloat
 _ToFloatMax2D: TypeAlias = onp.ToFloatStrict2D | _ToFloatMax1D
@@ -273,13 +272,13 @@ _Tuple2: TypeAlias = tuple[_T, _T]
 
 _XT = TypeVar("_XT", bound=npc.number, default=npc.number)
 _XT_co = TypeVar("_XT_co", bound=npc.number, default=np.float64, covariant=True)
-_ShapeT0_co = TypeVar("_ShapeT0_co", bound=_ND, default=_ND, covariant=True)
+_ShapeT0_co = TypeVar("_ShapeT0_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 _BaseDist0: TypeAlias = _BaseDistribution[_XT, tuple[()]]
 _BaseDist1: TypeAlias = _BaseDistribution[_XT, tuple[int]]
 _BaseDist2: TypeAlias = _BaseDistribution[_XT, tuple[int, int]]
 _BaseDist3: TypeAlias = _BaseDistribution[_XT, tuple[int, int, int]]
-_BaseDist1N: TypeAlias = _BaseDistribution[_XT, onp.AtLeast1D]
+_BaseDist1N: TypeAlias = _BaseDistribution[_XT, tuple[int, *tuple[int, ...]]]
 
 _KurtosisConvention: TypeAlias = L["non-excess", "excess"]
 _MedianMethod: TypeAlias = L["formula", "icdf"]
