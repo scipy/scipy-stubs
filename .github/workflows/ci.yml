@@ -96,6 +96,9 @@ jobs:
       - name: install dependencies
         run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
 
+      - name: ty check scipy-stubs
+        run: uvx ty check scipy-stubs
+
       - name: pyrefly check scipy-stubs
         run: pyrefly check scipy-stubs
 
