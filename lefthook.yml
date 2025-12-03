@@ -1,13 +1,10 @@
-templates:
-  run: run --no-sync
-
 pre-commit:
   parallel: true
   jobs:
     - name: dprint
       glob: "*.{json,jsonc,md,toml,yaml,yml}"
       stage_fixed: true
-      run: uv {run} dprint fmt --incremental=false
+      run: uv run dprint fmt --incremental=false
 
     - name: ruff
       glob: "*.{py,pyi}"
@@ -16,23 +13,27 @@ pre-commit:
         piped: true
         jobs:
           - name: check
-            run: uv {run} ruff check --fix {staged_files}
+            run: uv run ruff check --fix {staged_files}
           - name: format
-            run: uv {run} ruff format {staged_files}
+            run: uv run ruff format {staged_files}
 
     - name: basedpyright
       glob: "*.{py,pyi}"
-      run: uv {run} basedpyright --threads=3 {staged_files}
+      run: uv run basedpyright --threads=3 {staged_files}
 
     - name: pyrefly
       glob: "*.{py,pyi}"
-      run: uv {run} pyrefly check {staged_files}
+      run: uv run pyrefly check {staged_files}
+
+    - name: ty
+      glob: "scipy-stubs/*.{py,pyi}"
+      run: uvx ty check {staged_files}
 
     - name: check-version-literals
-      run: uv {run} scripts/check_version_literals.py
+      run: uv run scripts/check_version_literals.py
 
     - name: unstubbed-modules
-      run: uv {run} scripts/unstubbed_modules.py
+      run: uv run scripts/unstubbed_modules.py
 
 post-checkout:
   jobs:
