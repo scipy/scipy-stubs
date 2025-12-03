@@ -382,7 +382,7 @@ class ScipyVisitor(ast.NodeVisitor):
             (call_name := self._get_call_name(node.func))
             and (scipy_call := self._resolve_scipy_call(call_name))
         ):  # fmt: skip
-            self.calls.add(scipy_call)
+            self.calls.add(scipy_call)  # ty:ignore[possibly-unresolved-reference]  # false positive
 
         self.generic_visit(node)
 

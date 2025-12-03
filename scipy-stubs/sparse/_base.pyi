@@ -117,7 +117,7 @@ _SpArray2D: TypeAlias = (
 )
 _SpArrayND = TypeAliasType(
     "_SpArrayND",
-    coo_array[_ScalarT, _ShapeT] | csr_array[_ScalarT, _ShapeT] | dok_array[_ScalarT, _ShapeT],
+    coo_array[_ScalarT, _ShapeT] | csr_array[_ScalarT, _ShapeT] | dok_array[_ScalarT, _ShapeT],  # ty: ignore[invalid-type-arguments]
     type_params=(_ShapeT, _ScalarT),
 )
 
@@ -930,7 +930,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def tocsc(self: spmatrix, /, copy: bool = False) -> csc_matrix[_ScalarT_co]: ...
     #
     @overload
-    def tocsr(self: sparray[Any, _ShapeT], /, copy: bool = False) -> csr_array[_ScalarT_co, _ShapeT]: ...
+    def tocsr(self: sparray[Any, _ShapeT], /, copy: bool = False) -> csr_array[_ScalarT_co, _ShapeT]: ...  # ty: ignore[invalid-type-arguments]
     @overload
     def tocsr(self: spmatrix, /, copy: bool = False) -> csr_matrix[_ScalarT_co]: ...
     #
@@ -940,7 +940,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def todia(self: spmatrix, /, copy: bool = False) -> dia_matrix[_ScalarT_co]: ...
     #
     @overload
-    def todok(self: sparray[Any, _ShapeT], /, copy: bool = False) -> dok_array[_ScalarT_co, _ShapeT]: ...
+    def todok(self: sparray[Any, _ShapeT], /, copy: bool = False) -> dok_array[_ScalarT_co, _ShapeT]: ...  # ty: ignore[invalid-type-arguments]
     @overload
     def todok(self: spmatrix, /, copy: bool = False) -> dok_matrix[_ScalarT_co]: ...
     #

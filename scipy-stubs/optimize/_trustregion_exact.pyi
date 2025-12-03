@@ -60,4 +60,4 @@ class IterativeSubproblem(BaseQuadraticSubproblem):
     ) -> None: ...
     @override
     # pyrefly: ignore[bad-param-name-override]
-    def solve(self, /, tr_radius: onp.ToFloat) -> tuple[onp.ArrayND[np.float64], bool]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def solve(self, /, tr_radius: onp.ToFloat) -> tuple[onp.ArrayND[np.float64], bool]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]

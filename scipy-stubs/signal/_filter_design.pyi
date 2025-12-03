@@ -1,6 +1,6 @@
 from collections.abc import Callable, Sequence
 from typing import Literal as L, TypeAlias, overload
-from typing_extensions import TypeVar
+from typing_extensions import TypeAliasType, TypeVar
 
 import numpy as np
 import optype as op
@@ -73,11 +73,11 @@ _InexactND: TypeAlias = onp.ArrayND[np.float64 | np.complex128]
 _SCT_z = TypeVar("_SCT_z", bound=np.generic)
 _SCT_p = TypeVar("_SCT_p", bound=np.generic, default=np.complex128)
 _SCT_k = TypeVar("_SCT_k", bound=np.generic | float, default=np.float64)
-_ZPK: TypeAlias = tuple[onp.Array1D[_SCT_z], onp.Array1D[_SCT_p], _SCT_k]
+_ZPK = TypeAliasType("_ZPK", tuple[onp.Array1D[_SCT_z], onp.Array1D[_SCT_p], _SCT_k], type_params=(_SCT_z, _SCT_p, _SCT_k))
 
 _SCT_ba = TypeVar("_SCT_ba", bound=npc.floating, default=np.float64)
-_Ba1D: TypeAlias = tuple[onp.Array1D[_SCT_ba], onp.Array1D[_SCT_ba]]
-_Ba2D: TypeAlias = tuple[onp.Array2D[_SCT_ba], onp.Array1D[_SCT_ba]]
+_Ba1D = TypeAliasType("_Ba1D", tuple[onp.Array1D[_SCT_ba], onp.Array1D[_SCT_ba]], type_params=(_SCT_ba,))
+_Ba2D = TypeAliasType("_Ba2D", tuple[onp.Array2D[_SCT_ba], onp.Array1D[_SCT_ba]], type_params=(_SCT_ba,))
 
 # excludes `float16` and `longdouble`
 _ToFloat: TypeAlias = float | np.float32 | np.float64 | npc.integer

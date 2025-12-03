@@ -1,6 +1,6 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Final, Generic, Literal, TypeAlias, TypeVarTuple, overload, type_check_only
-from typing_extensions import TypeVar, TypedDict, Unpack
+from typing import Any, Final, Generic, Literal, TypeAlias, overload, type_check_only
+from typing_extensions import TypeAliasType, TypeVar, TypeVarTuple, TypedDict, Unpack
 
 import numpy as np
 import optype.numpy as onp
@@ -20,10 +20,11 @@ _Float: TypeAlias = np.float64 | float
 _FloatT = TypeVar("_FloatT", bound=_Float)
 
 _FuncSol: TypeAlias = Callable[[np.float64], onp.ArrayND[_Inexact64T]] | Callable[[float], onp.ArrayND[_Inexact64T]]
-_FuncEvent: TypeAlias = (
-    Callable[[np.float64, onp.ArrayND[_Inexact64T], *_Ts], _Float]
-    | Callable[[float, onp.ArrayND[_Inexact64T], *_Ts], _Float]
-)  # fmt: skip
+_FuncEvent = TypeAliasType(
+    "_FuncEvent",
+    Callable[[np.float64, onp.ArrayND[_Inexact64T], *_Ts], _Float] | Callable[[float, onp.ArrayND[_Inexact64T], *_Ts], _Float],
+    type_params=(_Inexact64T, _Ts),
+)
 _Events: TypeAlias = Sequence[_FuncEvent[_Inexact64T, *_Ts]] | _FuncEvent[_Inexact64T, *_Ts]
 
 _Int1D: TypeAlias = onp.Array1D[np.int_]

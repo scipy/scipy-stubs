@@ -181,15 +181,15 @@ class _Interval(_Domain[_XT_co], Generic[_XT_co]):
     #
     def __init__(self, /, endpoints: _ToDomain = ..., inclusive: tuple[bool, bool] = (False, False)) -> None: ...
     @override
-    def get_numerical_endpoints(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-param-name-override]
+    def get_numerical_endpoints(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-param-name-override] # ty: ignore[invalid-method-override]
         self, /, parameter_values: _ParamValues
     ) -> tuple[onp.ArrayND[_OutFloat], onp.ArrayND[_OutFloat]]: ...
     @override
-    def contains(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-param-name-override]
+    def contains(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-param-name-override] # ty: ignore[invalid-method-override]
         self, /, item: onp.ArrayND[_Int | _Float], parameter_values: _ParamValues | None = None
     ) -> onp.ArrayND[np.bool_]: ...
     @override
-    def draw(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
+    def draw(  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
         self,
         /,
         n: int,
@@ -246,7 +246,7 @@ class _RealParameter(_Parameter[_FloatT_co], Generic[_FloatT_co]):
     # pyrefly: ignore[bad-override]
     def validate(self, /, arr: onp.ToFloat, parameter_values: _ParamValues) -> _ValidateOut0D[_FloatT_co]: ...
     @overload
-    def validate(self, /, arr: onp.ToFloatND, parameter_values: _ParamValues) -> _ValidateOutND[_FloatT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def validate(self, /, arr: onp.ToFloatND, parameter_values: _ParamValues) -> _ValidateOutND[_FloatT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
 
 class _Parameterization:
     parameters: Final[Mapping[str, _Parameter]]
@@ -1487,7 +1487,7 @@ class Mixture(_BaseDistribution[_FloatT_co, _0D], Generic[_FloatT_co]):
     def __init__(self, /, components: Sequence[_CDist0[_FloatT_co]], *, weights: onp.ToFloat1D | None = None) -> None: ...
     #
     @override
-    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> _OutFloat: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
+    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> _OutFloat: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
 
 ###
 

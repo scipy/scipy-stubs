@@ -69,6 +69,21 @@
       "cwd": "${workspaceFolder}"
     }
   }, {
+    "label": "ty",
+    "type": "shell",
+    "command": "uvx",
+    "args": ["ty", "check", "--error-on-warning"],
+    "group": {
+      "kind": "build",
+      "isDefault": false
+    },
+    "presentation": {
+      "clear": true
+    },
+    "options": {
+      "cwd": "${workspaceFolder}"
+    }
+  }, {
     "label": "stubtest",
     "type": "shell",
     "command": "uv",

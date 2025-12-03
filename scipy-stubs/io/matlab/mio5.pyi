@@ -21,7 +21,7 @@ class MatlabObject(np.ndarray[tuple[int, ...], np.dtype[np.generic]]):
     def __new__(cls, input_array: object, classname: object = None) -> Self: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
-class MatlabFunction(MatlabObject):  # pyright: ignore[reportDeprecated]
+class MatlabFunction(MatlabObject):  # pyright: ignore[reportDeprecated]  # ty: ignore[deprecated]
     def __new__(cls, input_array: object) -> Self: ...
 
 @deprecated("will be removed in SciPy v2.0.0")

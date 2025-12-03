@@ -132,7 +132,8 @@ The speed gap exists mainly because `scipy-stubs` doesn’t require compilation 
 - [Mypy](https://github.com/python/mypy),
 - [Pyright](https://github.com/microsoft/pyright) (a.k.a. Pylance),
 - [BasedPyright](https://github.com/detachhead/basedpyright), and
-- [Pyrefly](https://github.com/facebook/pyrefly) (currently in alpha, so it may not always work as expected).
+- [Pyrefly](https://github.com/facebook/pyrefly) (currently in beta, so it may not always work as expected).
+- [ty](https://github.com/astral-sh/ty) (currently in alpha, so it may not always work as expected).
 
 ### Q: Do I need to change my existing code?
 

@@ -1,10 +1,10 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 from typing_extensions import deprecated
 
-from .filter_design import cheby1  # pyrefly: ignore[deprecated]
-from .fir_filter_design import firwin  # pyrefly: ignore[deprecated]
-from .ltisys import dlti  # pyrefly: ignore[deprecated]
-from .windows.windows import get_window  # pyrefly: ignore[deprecated]
+from .filter_design import cheby1  # pyrefly: ignore[deprecated] # ty: ignore[deprecated]
+from .fir_filter_design import firwin  # pyrefly: ignore[deprecated] # ty: ignore[deprecated]
+from .ltisys import dlti  # pyrefly: ignore[deprecated] # ty: ignore[deprecated]
+from .windows.windows import get_window  # pyrefly: ignore[deprecated] # ty: ignore[deprecated]
 
 __all__ = [
     "cheby1",

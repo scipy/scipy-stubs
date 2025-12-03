@@ -63,5 +63,5 @@ def odr(
     full_output: int = 0,
 ) -> Any: ...
 
-odr_error = OdrError  # pyright: ignore[reportDeprecated]
-odr_stop = OdrStop  # pyright: ignore[reportDeprecated]
+odr_error = OdrError  # pyright: ignore[reportDeprecated]  # ty: ignore[deprecated]
+odr_stop = OdrStop  # pyright: ignore[reportDeprecated]  # ty: ignore[deprecated]
