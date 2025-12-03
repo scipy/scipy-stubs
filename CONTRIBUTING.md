@@ -76,22 +76,24 @@ uvx tox p
 <summary>Output:</summary>
 
 ```plaintext
-lint: OK ✔ in 0.79 seconds
-pyrefly: OK ✔ in 1.19 seconds
-mypy: OK ✔ in 15.16 seconds
-pyright: OK ✔ in 17.69 seconds
-3.14: OK ✔ in 17.97 seconds
-3.13: OK ✔ in 18.37 seconds
-3.12: OK ✔ in 18.61 seconds
-  lint: OK (0.79=setup[0.11]+cmd[0.43,0.06,0.14,0.04] seconds)
-  pyrefly: OK (1.19=setup[0.18]+cmd[1.01] seconds)
-  pyright: OK (17.69=setup[0.13]+cmd[17.56] seconds)
-  mypy: OK (15.16=setup[0.29]+cmd[14.86] seconds)
-  3.11: OK (18.72=setup[0.20]+cmd[18.52] seconds)
-  3.12: OK (18.61=setup[0.26]+cmd[18.35] seconds)
-  3.13: OK (18.37=setup[0.37]+cmd[18.00] seconds)
-  3.14: OK (17.97=setup[0.17]+cmd[17.80] seconds)
-  congratulations :) (18.74 seconds)
+ty: OK ✔ in 0.52 seconds
+lint: OK ✔ in 0.99 seconds
+pyrefly: OK ✔ in 2.08 seconds
+mypy: OK ✔ in 15.63 seconds
+pyright: OK ✔ in 17.06 seconds
+3.14: OK ✔ in 41.55 seconds
+3.13: OK ✔ in 42.99 seconds
+3.12: OK ✔ in 44.69 seconds
+  lint: OK (0.99=setup[0.24]+cmd[0.60,0.04,0.04,0.06] seconds)
+  ty: OK (0.52=setup[0.20]+cmd[0.32] seconds)
+  pyrefly: OK (2.08=setup[0.31]+cmd[1.77] seconds)
+  pyright: OK (17.06=setup[0.23]+cmd[16.83] seconds)
+  mypy: OK (15.63=setup[0.19]+cmd[15.44] seconds)
+  3.11: OK (45.98=setup[0.46]+cmd[18.92,26.60] seconds)
+  3.12: OK (44.69=setup[0.35]+cmd[18.91,25.42] seconds)
+  3.13: OK (42.99=setup[0.20]+cmd[18.45,24.35] seconds)
+  3.14: OK (41.55=setup[0.45]+cmd[18.65,22.45] seconds)
+  congratulations :) (46.00 seconds)
 ```
 
 </details>
