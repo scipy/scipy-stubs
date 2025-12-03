@@ -72,7 +72,7 @@
     "label": "ty",
     "type": "shell",
     "command": "uvx",
-    "args": ["ty", "check", "scipy-stubs"],
+    "args": ["ty", "check", "--error-on-warning"],
     "group": {
       "kind": "build",
       "isDefault": false
