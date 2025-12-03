@@ -53,7 +53,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
     ) -> None: ...
     @overload
     def __init__(
-        self: Bounds[Any, np.int_],
+        self: Bounds[tuple[Any, ...], np.int_],  # ty: ignore[invalid-type-arguments]
         /,
         lb: onp.SequenceND[int],
         ub: onp.SequenceND[int],
