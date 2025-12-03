@@ -64,6 +64,7 @@ type = [
   "mypy[faster-cache]==1.19.0",
   "pyrefly==0.44.0",
   "stubdefaulter>=0.1.0",
+  "ty>=0.0.1a30",
 ]
 dev = [
   { include-group = "lint" },
@@ -292,17 +293,18 @@ description = "lint"
 runner = "uv-venv-lock-runner"
 dependency_groups = ["lint"]
 commands = [
-  ["repo-review", "--show=err", "."],
-  ["dprint", "check", "--incremental=false"],
   ["ruff", "check", "--show-fixes"],
   ["ruff", "format", "--check"],
+  ["dprint", "check", "--incremental=false"],
+  ["repo-review", "--show=err", "."],
 ]
 
 [tool.tox.env.ty]
 description = "ty"
+runner = "uv-venv-lock-runner"
+dependency_groups = ["type"]
 commands = [
   [
-    "uvx",
     "ty",
     "check",
     "--error-on-warning",
