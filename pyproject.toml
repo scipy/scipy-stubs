@@ -75,6 +75,8 @@ dev = [
 git = "https://github.com/JelleZijlstra/stubdefaulter.git"
 rev = "ebe9e31"
 
+# poe
+
 [tool.poe.tasks.clean]
 cmd = """
 rm -rf
@@ -107,6 +109,8 @@ extend-exclude = ["*.pyi", ".mypyignore"]
 [tool.typos.default]
 extend-ignore-identifiers-re = ['ND|Nd|Theis']
 
+# mypy
+
 [tool.mypy]
 strict = true
 strict_equality_for_none = true
@@ -117,24 +121,7 @@ warn_unreachable = false
 local_partial_types = true
 allow_redefinition_new = true
 
-[tool.pyrefly]
-project-includes = ["scipy-stubs", "scripts", "tests"]
-
-[[tool.pyrefly.sub-config]]
-matches = "scipy-stubs/*/__init__.pyi"
-errors = { deprecated = "ignore" }
-
-[[tool.pyrefly.sub-config]]
-matches = "scipy-stubs/special/_ufuncs.pyi"
-errors = { bad-override = "ignore" }
-
-[[tool.pyrefly.sub-config]]
-matches = "scipy-stubs/special/orthogonal.pyi"
-errors = { deprecated = "ignore" }
-
-[[tool.pyrefly.sub-config]]
-matches = "scipy-stubs/stats/_distn_infrastructure.pyi"
-errors = { bad-override = "ignore" }
+# pyright / basedpyright
 
 [tool.pyright]
 exclude = [
@@ -181,6 +168,56 @@ reportInvalidStubStatement = false
 reportUnusedCallResult = false
 reportUnusedExpression = false
 
+# pyrefly
+
+[tool.pyrefly]
+project-includes = ["scipy-stubs", "scripts", "tests"]
+
+[[tool.pyrefly.sub-config]]
+matches = "scipy-stubs/*/__init__.pyi"
+errors = { deprecated = "ignore" }
+
+[[tool.pyrefly.sub-config]]
+matches = "scipy-stubs/special/_ufuncs.pyi"
+errors = { bad-override = "ignore" }
+
+[[tool.pyrefly.sub-config]]
+matches = "scipy-stubs/special/orthogonal.pyi"
+errors = { deprecated = "ignore" }
+
+[[tool.pyrefly.sub-config]]
+matches = "scipy-stubs/stats/_distn_infrastructure.pyi"
+errors = { bad-override = "ignore" }
+
+# ty
+
+[tool.ty]
+
+[tool.ty.environment]
+python-platform = "all"
+python-version = "3.11" # unlike mypy and pyright, this doesn't depend on the Python env
+
+[tool.ty.src]
+include = [
+  "scipy-stubs",
+  "scripts",
+  # "tests",  # too many false positives at the moment
+]
+
+[tool.ty.rules]
+# unused-ignore-comment = "warn"  # will also complain about mypy `# type: ignore` comments
+possibly-unresolved-reference = "error"
+
+[[tool.ty.overrides]]
+include = ["scipy-stubs/*/__init__.pyi", "scipy-stubs/special/orthogonal.pyi"]
+rules = { deprecated = "ignore" }
+
+[[tool.ty.overrides]]
+include = ["scipy-stubs/stats/_distn_infrastructure.pyi"]
+rules = { invalid-method-override = "ignore" }
+
+# repo-review
+
 [tool.repo-review]
 ignore = [
   "PY004", # no /docs
@@ -191,6 +228,8 @@ ignore = [
   "PC170", # no pygrep-hooks because no rST
   "RTD", # no RTD
 ]
+
+# ruff
 
 [tool.ruff]
 src = ["scipy-stubs", "scripts"]
@@ -231,6 +270,8 @@ extra-standard-library = ["_typeshed", "typing_extensions"]
 known-local-folder = ["scipy"]
 split-on-trailing-comma = false
 
+# tox
+
 [tool.tox]
 min_version = "4"
 requires = ["tox-uv>=1"]
@@ -260,7 +301,14 @@ commands = [
 [tool.tox.env.ty]
 description = "ty"
 commands = [
-  ["uvx", "ty", "check", { replace = "posargs", default = ["scipy-stubs"], extend = true }],
+  [
+    "uvx",
+    "ty",
+    "check",
+    "--error-on-warning",
+    "--output-format=concise",
+    { replace = "posargs", default = [], extend = true },
+  ],
 ]
 
 [tool.tox.env.pyrefly]
