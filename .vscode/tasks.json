@@ -71,8 +71,8 @@
   }, {
     "label": "ty",
     "type": "shell",
-    "command": "uvx",
-    "args": ["ty", "check", "--error-on-warning"],
+    "command": "uv",
+    "args": ["run", "ty", "check", "--error-on-warning"],
     "group": {
       "kind": "build",
       "isDefault": false
