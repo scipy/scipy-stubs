@@ -96,7 +96,7 @@ from ._stats_py import (
     energy_distance,
     expectile,
     f_oneway,
-    find_repeats,  # ty: ignore[deprecated]
+    find_repeats,
     fisher_exact,
     friedmanchisquare,
     gmean,

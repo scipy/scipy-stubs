@@ -691,7 +691,7 @@ class rv_continuous(_rv_mixin, rv_generic):
 
     #
     @override
-    def rvs(  # ty: ignore[invalid-method-override]
+    def rvs(
         self,
         /,
         *args: onp.ToFloat,
@@ -881,7 +881,7 @@ class rv_discrete(_rv_mixin, rv_generic):
 
     #
     @override
-    def rvs(  # ty: ignore[invalid-method-override]
+    def rvs(
         self,
         /,
         *args: _ToFloatOrND,
@@ -919,7 +919,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
 
     #
     @override
-    def generic_moment(self, /, n: onp.ToInt | onp.ToIntND) -> _FloatND: ...  # ty: ignore[invalid-method-override]
+    def generic_moment(self, /, n: onp.ToInt | onp.ToIntND) -> _FloatND: ...
 
 # private helper subtypes
 @type_check_only
@@ -974,7 +974,7 @@ class _rv_continuous_0(rv_continuous):
     @overload  # loc: n-d, scale: ?-d, moments: 4 (positional)
     def stats(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND, moment: _Moment4) -> _Tuple4[_FloatND]: ...
     @overload  # loc: n-d, scale: ?-d, moments: 4 (keyword)
-    def stats(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND = 1, *, moment: _Moment4) -> _Tuple4[_FloatND]: ...  # ty: ignore[invalid-method-override]
+    def stats(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND = 1, *, moment: _Moment4) -> _Tuple4[_FloatND]: ...
 
     #
     @override
@@ -985,41 +985,41 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def entropy(self, /, loc: onp.ToFloat = 0, *, scale: onp.ToFloatND) -> _FloatND: ...
     @overload
-    def entropy(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND = 1) -> _FloatND: ...  # ty: ignore[invalid-method-override]
+    def entropy(self, /, loc: onp.ToFloatND, scale: _ToFloatOrND = 1) -> _FloatND: ...
 
     #
     @override
     @overload
     def moment(self, /, order: onp.ToInt, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
-    def moment(self, /, order: onp.ToInt, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...  # ty: ignore[invalid-method-override]
+    def moment(self, /, order: onp.ToInt, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
 
     #
     @override
     @overload
     def median(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
-    def median(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...  # ty: ignore[invalid-method-override]
+    def median(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
 
     #
     @override
     @overload
     def mean(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
-    def mean(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...  # ty: ignore[invalid-method-override]
+    def mean(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
     #
     @override
     @overload
     def var(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
-    def var(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...  # ty: ignore[invalid-method-override]
+    def var(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
 
     #
     @override
     @overload
     def std(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
-    def std(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...  # ty: ignore[invalid-method-override]
+    def std(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOrND: ...
 
     #
     @override
@@ -1028,14 +1028,14 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def interval(
         self, /, confidence: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1
-    ) -> _Tuple2[_Float] | _Tuple2[_FloatND]: ...  # ty: ignore[invalid-method-override]
+    ) -> _Tuple2[_Float] | _Tuple2[_FloatND]: ...
 
     #
     @override
     @overload
     def support(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Tuple2[_Float]: ...
     @overload
-    def support(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _Tuple2[_Float] | _Tuple2[_FloatND]: ...  # ty: ignore[invalid-method-override]
+    def support(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _Tuple2[_Float] | _Tuple2[_FloatND]: ...
 
     # overrides of rv_continuous
     @override
@@ -1044,7 +1044,7 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def __call__(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
-    def __call__(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> rv_continuous_frozen[Self]: ...  # ty: ignore[invalid-method-override]
+    def __call__(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> rv_continuous_frozen[Self]: ...
 
     #
     @override
@@ -1053,7 +1053,7 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def freeze(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
-    def freeze(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> rv_continuous_frozen[Self]: ...  # ty: ignore[invalid-method-override]
+    def freeze(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> rv_continuous_frozen[Self]: ...
 
     #
     @overload
@@ -1071,7 +1071,7 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def pdf(self, /, x: onp.ToFloatND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _Float1ND: ...
     @overload
-    def pdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...  # ty: ignore[invalid-method-override]
+    def pdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...
 
     #
     @override
@@ -1082,7 +1082,7 @@ class _rv_continuous_0(rv_continuous):
         self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
-    def logpdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...  # ty: ignore[invalid-method-override]
+    def logpdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...
 
     #
     @override
@@ -1093,7 +1093,7 @@ class _rv_continuous_0(rv_continuous):
         self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
-    def cdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...  # ty: ignore[invalid-method-override]
+    def cdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...
 
     #
     @override
@@ -1104,7 +1104,7 @@ class _rv_continuous_0(rv_continuous):
         self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
-    def logcdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...  # ty: ignore[invalid-method-override]
+    def logcdf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...
 
     #
     @override
@@ -1115,7 +1115,7 @@ class _rv_continuous_0(rv_continuous):
         self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
-    def sf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...  # ty: ignore[invalid-method-override]
+    def sf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...
 
     #
     @override
@@ -1126,7 +1126,7 @@ class _rv_continuous_0(rv_continuous):
         self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
-    def logsf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...  # ty: ignore[invalid-method-override]
+    def logsf(self, /, x: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...
 
     #
     @override
@@ -1137,7 +1137,7 @@ class _rv_continuous_0(rv_continuous):
         self, /, q: onp.Array[_ShapeT, _CoFloat], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
-    def ppf(self, /, q: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...  # ty: ignore[invalid-method-override]
+    def ppf(self, /, q: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...
 
     #
     @override
@@ -1148,13 +1148,13 @@ class _rv_continuous_0(rv_continuous):
         self, /, q: onp.Array[_ShapeT, _CoFloat], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
     ) -> onp.Array[_ShapeT, np.float64]: ...
     @overload
-    def isf(self, /, q: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...  # ty: ignore[invalid-method-override]
+    def isf(self, /, q: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _FloatOr1ND: ...
 
     #
     @override
     def rvs(
         self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, size: AnyShape = 1, random_state: onp.random.ToRNG | None = None
-    ) -> _FloatOrND: ...  # ty: ignore[invalid-method-override]
+    ) -> _FloatOrND: ...
 
     #
     @overload
