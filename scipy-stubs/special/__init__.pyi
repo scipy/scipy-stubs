@@ -7,7 +7,7 @@ from ._basic import (
     bernoulli,
     berp_zeros,
     bi_zeros,
-    clpmn,
+    clpmn,  # ty: ignore[deprecated]
     comb,
     digamma,
     diric,
@@ -34,8 +34,8 @@ from ._basic import (
     kerp_zeros,
     kvp,
     lmbda,
-    lpmn,
-    lpn,
+    lpmn,  # ty: ignore[deprecated]
+    lpn,  # ty: ignore[deprecated]
     lqmn,
     lqn,
     mathieu_even_coef,

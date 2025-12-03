@@ -1,4 +1,5 @@
 from typing import Literal, TypeAlias, TypeVar, overload
+from typing_extensions import TypeAliasType
 
 import numpy as np
 import optype as op
@@ -12,7 +13,9 @@ _InexactT = TypeVar("_InexactT", bound=_Float | _Complex)
 _ScalarT = TypeVar("_ScalarT", bound=np.generic)
 _ScalarT1 = TypeVar("_ScalarT1", bound=np.generic)
 
-_SVD_ND: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[_ScalarT1], onp.ArrayND[_ScalarT]]
+_SVD_ND = TypeAliasType(
+    "_SVD_ND", tuple[onp.ArrayND[_ScalarT], onp.ArrayND[_ScalarT1], onp.ArrayND[_ScalarT]], type_params=(_ScalarT, _ScalarT1)
+)
 
 _Float: TypeAlias = np.float64 | np.float32
 _Complex: TypeAlias = np.complex128 | np.complex64

@@ -1,5 +1,5 @@
 from typing import Any, Generic, Literal, Never, TypeAlias, overload
-from typing_extensions import TypeVar, override
+from typing_extensions import TypeAliasType, TypeVar, override
 
 import numpy as np
 import optype.numpy as onp
@@ -23,13 +23,17 @@ _CubicBCName: TypeAlias = Literal["not-a-knot", "clamped", "natural"]
 _CubicBCOrder: TypeAlias = Literal[1, 2]
 _CubicBCType: TypeAlias = Literal[_CubicBCName, "periodic"] | _Tuple2[_CubicBCName | tuple[_CubicBCOrder, onp.ToComplexND]]
 
-_PreparedInput: TypeAlias = tuple[
-    onp.Array1D[np.float64],  # x
-    onp.Array1D[np.float64],  # dx
-    onp.ArrayND[_CT],  # y
-    _AxisT,  # axis
-    onp.ArrayND[_CT],  # dydx
-]
+_PreparedInput = TypeAliasType(
+    "_PreparedInput",
+    tuple[
+        onp.Array1D[np.float64],  # x
+        onp.Array1D[np.float64],  # dx
+        onp.ArrayND[_CT],  # y
+        _AxisT,  # axis
+        onp.ArrayND[_CT],  # dydx
+    ],
+    type_params=(_CT, _AxisT),
+)
 
 ###
 

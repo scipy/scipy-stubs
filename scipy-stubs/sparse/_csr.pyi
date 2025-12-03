@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 from typing import Any, ClassVar, Generic, Literal, Never, TypeAlias, overload, type_check_only
-from typing_extensions import TypeIs, TypeVar, override
+from typing_extensions import TypeAliasType, TypeIs, TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
@@ -27,11 +27,15 @@ _NeitherD: TypeAlias = tuple[Never] | tuple[Never, Never]
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 _ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
 
-_ToData2B: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer]]  # bsr
-_ToData2C: TypeAlias = tuple[onp.ArrayND[_ScalarT], tuple[onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]]  # csc, csr
-_ToData2: TypeAlias = _ToData2B[_ScalarT] | _ToData2C[_ScalarT]
-_ToData3: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]
-_ToData: TypeAlias = _ToData2[_ScalarT] | _ToData3[_ScalarT]
+_ToData2B = TypeAliasType("_ToData2B", tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer]], type_params=(_ScalarT,))  # bsr
+_ToData2C = TypeAliasType(
+    "_ToData2C", tuple[onp.ArrayND[_ScalarT], tuple[onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]], type_params=(_ScalarT,)
+)  # csc, csr
+_ToData2 = TypeAliasType("_ToData2", _ToData2B[_ScalarT] | _ToData2C[_ScalarT], type_params=(_ScalarT,))
+_ToData3 = TypeAliasType(
+    "_ToData3", tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]], type_params=(_ScalarT,)
+)
+_ToData = TypeAliasType("_ToData", _ToData2[_ScalarT] | _ToData3[_ScalarT], type_params=(_ScalarT,))
 
 ###
 
@@ -425,7 +429,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         self: csr_array[_ScalarT, tuple[int, int]], /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
     ) -> csc_array[_ScalarT]: ...
     @overload
-    def transpose(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def transpose(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
         self: csr_array[_ScalarT, tuple[int]], /, axes: None = None, copy: bool = False
     ) -> csr_array[_ScalarT, tuple[int]]: ...
 

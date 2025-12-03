@@ -18,7 +18,9 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
 
 _ToLinearOperator: TypeAlias = LinearOperator[_ScalarT] | _spbase[_ScalarT, tuple[int, int]] | onp.ArrayND[_ScalarT]
 _SparseOrDense = TypeAliasType(
-    "_SparseOrDense", sparray[_ScalarT, _ShapeT] | onp.ArrayND[_ScalarT, _ShapeT], type_params=(_ScalarT, _ShapeT)
+    "_SparseOrDense",
+    sparray[_ScalarT, _ShapeT] | onp.ArrayND[_ScalarT, _ShapeT],  # ty: ignore[invalid-type-arguments]
+    type_params=(_ScalarT, _ShapeT),
 )
 
 _AsFloat64: TypeAlias = np.float64 | npc.integer | np.bool_

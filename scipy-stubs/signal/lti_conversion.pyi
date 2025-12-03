@@ -1,7 +1,7 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 from typing_extensions import deprecated
 
-from .filter_design import normalize, tf2zpk, zpk2tf  # pyrefly: ignore[deprecated]
+from .filter_design import normalize, tf2zpk, zpk2tf  # pyrefly: ignore[deprecated] # ty: ignore[deprecated]
 
 __all__ = ["abcd_normalize", "cont2discrete", "normalize", "ss2tf", "ss2zpk", "tf2ss", "tf2zpk", "zpk2ss", "zpk2tf"]
 

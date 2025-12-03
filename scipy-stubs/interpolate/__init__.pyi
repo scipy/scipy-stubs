@@ -16,7 +16,7 @@ from ._fitpack2 import (
 )
 from ._fitpack_py import bisplev, bisplrep, insert, spalde, splantider, splder, splev, splint, splprep, splrep, sproot
 from ._fitpack_repro import generate_knots, make_splprep, make_splrep
-from ._interpolate import BPoly, NdPPoly, PPoly, interp1d, interp2d, lagrange
+from ._interpolate import BPoly, NdPPoly, PPoly, interp1d, interp2d, lagrange  # ty: ignore[deprecated]
 from ._ndbspline import NdBSpline
 from ._ndgriddata import CloughTocher2DInterpolator, LinearNDInterpolator, NearestNDInterpolator, griddata
 from ._pade import pade

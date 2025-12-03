@@ -1,6 +1,6 @@
 from collections.abc import Sequence
 from typing import Any, ClassVar, Generic, Literal, Never, TypeAlias, overload, type_check_only
-from typing_extensions import TypeIs, TypeVar, override
+from typing_extensions import TypeAliasType, TypeIs, TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
@@ -26,9 +26,11 @@ _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, c
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 _ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
 
-_ToData2: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer]]
-_ToData3: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]
-_ToData: TypeAlias = _ToData2[_ScalarT] | _ToData3[_ScalarT]
+_ToData2 = TypeAliasType("_ToData2", tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer]], type_params=(_ScalarT,))
+_ToData3 = TypeAliasType(
+    "_ToData3", tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]], type_params=(_ScalarT,)
+)
+_ToData = TypeAliasType("_ToData", _ToData2[_ScalarT] | _ToData3[_ScalarT], type_params=(_ScalarT,))
 
 ###
 

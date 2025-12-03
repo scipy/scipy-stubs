@@ -83,7 +83,7 @@ class orthopoly1d(np.poly1d):
     @overload
     def __call__(self, /, v: onp.ToFloatND) -> onp.ArrayND[npc.floating]: ...
     @overload
-    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[npc.inexact]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[npc.inexact]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
 
 @overload
 def roots_jacobi(n: onp.ToInt, alpha: onp.ToFloat, beta: onp.ToFloat, mu: onp.ToFalse = False) -> _PointsWeights: ...

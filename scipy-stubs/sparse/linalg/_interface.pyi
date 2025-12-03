@@ -495,7 +495,7 @@ class _AdjointMatrixOperator(MatrixLinearOperator[_SCT_co], Generic[_SCT_co]):
     def __new__(cls, adjoint_array: LinearOperator[_SCT_co]) -> Self: ...
     def __init__(self, /, adjoint_array: LinearOperator[_SCT_co]) -> None: ...
     @override
-    def _adjoint(self, /) -> MatrixLinearOperator[_SCT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
+    def _adjoint(self, /) -> MatrixLinearOperator[_SCT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
 
 class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     @overload

@@ -54,12 +54,12 @@ class _FullOutput(TypedDict):
 
 ###
 
-odr_error = OdrError
-odr_stop = OdrStop
-
 class OdrWarning(UserWarning): ...
 class OdrError(Exception): ...
 class OdrStop(Exception): ...
+
+odr_error = OdrError
+odr_stop = OdrStop
 
 class Data:
     x: Final[onp.ArrayND[_ToFloatScalar]]
