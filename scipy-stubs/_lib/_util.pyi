@@ -1,7 +1,7 @@
 import multiprocessing.pool as mpp
 import sys
 import types
-from collections.abc import Callable, Iterable, Sequence
+from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, Self, TypeAlias, overload
 from typing_extensions import TypeVar, override
 
@@ -18,7 +18,6 @@ _AnyRNGT = TypeVar("_AnyRNGT", np.random.RandomState, np.random.Generator)
 _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
 
-_T = TypeVar("_T", default=Any)
 _T_co = TypeVar("_T_co", default=Any, covariant=True)
 _T_contra = TypeVar("_T_contra", default=Never, contravariant=True)
 
@@ -83,10 +82,19 @@ class MapWrapper(ExitMixin):
     def join(self, /) -> None: ...
     def close(self, /) -> None: ...
 
-class _RichResult(dict[str, _T]):
-    def __getattr__(self, name: str, /) -> _T: ...
+# NOTE: At runtime this is a subclass of `dict`. But since that would require us to make this an invariant type,
+# we instead pretend this "just" a `Mapping`, so that it can be covariant in the value type.
+class _RichResult(Mapping[str, _T_co]):
+    def __getattr__(self, name: str, /) -> _T_co: ...
+
+    # These abstract methods of `Mapping` must be overridden even in stubs. And that's exactly why mixing protocols
+    # and `abc` is not a good idea, but alas...
     @override
-    def __setattr__(self, name: str, value: _T, /) -> None: ...
+    def __getitem__(self, name: str, /) -> _T_co: ...
+    @override
+    def __iter__(self, /) -> Iterator[str]: ...
+    @override
+    def __len__(self) -> int: ...
 
 #
 def float_factorial(n: op.CanIndex) -> float: ...  # will be `np.inf` if `n >= 171`
