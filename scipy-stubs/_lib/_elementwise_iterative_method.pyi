@@ -17,7 +17,7 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]])
 _FuncRealT = TypeVar("_FuncRealT", bound=Callable[Concatenate[onp.ArrayND[np.float64], ...], object])
 _ModuleT = TypeVar("_ModuleT", bound=ModuleType)
 _WorkT = TypeVar("_WorkT", bound=Mapping[str, Any])
-_ResT = TypeVar("_ResT", bound=_RichResult)
+_ResT = TypeVar("_ResT", bound=_RichResult[Any])
 _ToShapeT = TypeVar("_ToShapeT", bound=SupportsIndex | tuple[SupportsIndex, ...])
 
 _Ignored: TypeAlias = object

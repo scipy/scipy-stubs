@@ -19,5 +19,5 @@ assert_type(res.x, np.ndarray[tuple[int], np.dtype[np.float64]] | None)
 assert_type(res.success, bool)
 assert_type(res.message, str)
 
-_1: OptimizeResult = linprog(c, bounds=bound)
-_2: OptimizeResult = linprog(c, bounds=bounds)
+_1: OptimizeResult[np.float64] = linprog(c, bounds=bound)
+_2: OptimizeResult[np.float64] = linprog(c, bounds=bounds)
