@@ -67,7 +67,7 @@ _BracketInfo: TypeAlias = tuple[
 _WarnFlag: TypeAlias = Literal[0, 1, 2, 3, 4]
 _AllVecs: TypeAlias = list[_Int1D | _Float1D]
 
-_ResultValueT = TypeVar("_ResultValueT", default=Any)
+_ResultValueT_co = TypeVar("_ResultValueT_co", default=Any, covariant=True)
 _XT_contra = TypeVar("_XT_contra", bound=_ComplexCo1D, default=_Float1D, contravariant=True)
 _ValueT_co = TypeVar("_ValueT_co", bound=float | npc.floating, default=_Float, covariant=True)
 _JacT_co = TypeVar("_JacT_co", bound=onp.Array1D[npc.floating] | onp.Array2D[npc.floating], default=_Float1D, covariant=True)
@@ -81,7 +81,7 @@ class _DoesFMin(Protocol):
 # NOTE: Unlike the docs suggest, `OptimizeResult` has no attributes by default:
 #   For example, `RootResult` does not have any of the documented attributes,
 #   even though it is a subclass of `OptimizeResult`
-class OptimizeResult(_RichResult[_ResultValueT], Generic[_ResultValueT]): ...
+class OptimizeResult(_RichResult[_ResultValueT_co], Generic[_ResultValueT_co]): ...
 
 #
 class OptimizeWarning(UserWarning): ...
