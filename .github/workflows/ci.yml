@@ -34,7 +34,7 @@ jobs:
 
       - uses: astral-sh/setup-uv@v7.1.4
         with:
-          python-version: "3.13"
+          python-version: "3.14"
           activate-environment: true
 
       - name: ruff check
@@ -56,7 +56,7 @@ jobs:
       - name: setup uv
         uses: astral-sh/setup-uv@v7.1.4
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: check version literals
         run: uv run scripts/check_version_literals.py
@@ -97,7 +97,7 @@ jobs:
         run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
 
       - name: ty check scipy-stubs
-        run: uvx ty check --error-on-warning --output-format=github scipy-stubs
+        run: ty check --error-on-warning --output-format=github scipy-stubs
 
       - name: pyrefly check scipy-stubs
         run: pyrefly check scipy-stubs

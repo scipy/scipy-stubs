@@ -27,7 +27,7 @@ pre-commit:
 
     - name: ty
       glob: "scipy-stubs/*.{py,pyi}"
-      run: uvx ty check {staged_files}
+      run: uv run ty check {staged_files}
 
     - name: check-version-literals
       run: uv run scripts/check_version_literals.py
