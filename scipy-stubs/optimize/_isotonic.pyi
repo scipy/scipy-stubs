@@ -9,7 +9,7 @@ from ._optimize import OptimizeResult as _OptimizeResult
 __all__ = ["isotonic_regression"]
 
 @final
-class OptimizeResult(_OptimizeResult):
+class OptimizeResult(_OptimizeResult[onp.Array1D]):
     x: Final[onp.Array1D[np.float64]]
     weights: Final[onp.Array1D[np.float64]]
     blocks: Final[onp.Array1D[np.intp]]

@@ -88,7 +88,7 @@ class OptimizeResult(_OptimizeResult):
     nit: int
 
 @type_check_only
-class _OptimizeResultSensitivity(_OptimizeResult):
+class _OptimizeResultSensitivity(_OptimizeResult[onp.Array1D[np.float64]]):
     residual: onp.Array1D[np.float64]
     marginals: onp.Array1D[np.float64]
 
