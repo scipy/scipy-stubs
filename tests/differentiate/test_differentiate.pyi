@@ -56,7 +56,7 @@ assert_type(
         initial_step=0.1,
         step_factor=1.5,
         step_direction=1,
-        preserve_shape=True,
+        preserve_shape=False,
         callback=None,
     ),
     _DerivativeResult0D[np.float64],
