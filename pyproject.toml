@@ -199,11 +199,7 @@ python-platform = "all"
 python-version = "3.11" # unlike mypy and pyright, this doesn't depend on the Python env
 
 [tool.ty.src]
-include = [
-  "scipy-stubs",
-  "scripts",
-  # "tests",  # too many false positives at the moment
-]
+include = ["scipy-stubs", "scripts", "tests"]
 
 [tool.ty.rules]
 # unused-ignore-comment = "warn"  # will also complain about mypy `# type: ignore` comments
@@ -309,7 +305,7 @@ commands = [
     "check",
     "--error-on-warning",
     "--output-format=concise",
-    { replace = "posargs", default = [], extend = true },
+    { replace = "posargs", default = ["scipy-stubs", "scripts"], extend = true },
   ],
 ]
 
