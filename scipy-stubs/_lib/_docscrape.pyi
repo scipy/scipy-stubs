@@ -1,10 +1,13 @@
-from collections.abc import Callable, Mapping, Sequence
-from typing import ClassVar, Final, Generic, Literal, NamedTuple, TypeAlias
+from collections.abc import Callable, Iterable, Iterator, Mapping, MutableSequence, Sequence
+from typing import ClassVar, Final, Generic, Literal, LiteralString, NamedTuple, TypeAlias
 from typing_extensions import TypeVar, override
 
 import optype as op
 
-_FT = TypeVar("_FT", bound=Callable[..., object], default=Callable[..., object])
+_FunctionT = TypeVar("_FunctionT", bound=Callable[..., object], default=Callable[..., object])
+_MutableStrSequenceT = TypeVar("_MutableStrSequenceT", bound=MutableSequence[str])
+_AnyStrT = TypeVar("_AnyStrT", str, LiteralString)
+
 _SectionValue: TypeAlias = str | list[str] | Mapping[str, list[str]]
 
 ###
@@ -39,23 +42,23 @@ class NumpyDocString(Mapping[str, _SectionValue]):
     @override
     def __len__(self, /) -> int: ...
     @override
-    def __iter__(self, /) -> op.CanIterSelf[str]: ...
+    def __iter__(self, /) -> Iterator[str]: ...
     @override
     def __getitem__(self, key: str, /) -> _SectionValue: ...
     def __setitem__(self, key: str, val: _SectionValue, /) -> None: ...
 
-class FunctionDoc(NumpyDocString, Generic[_FT]):
+class FunctionDoc(NumpyDocString, Generic[_FunctionT]):
     def __init__(
         self,
         /,
-        func: _FT,
+        func: _FunctionT,
         role: Literal["func", "meth"] = "func",
         doc: str | None = None,
         config: Mapping[str, object] | None = None,
     ) -> None: ...
     @override
     def __str__(self, /) -> str: ...  # type: ignore[override]  # noqa: PYI029  # pyright: ignore[reportIncompatibleMethodOverride]
-    def get_func(self, /) -> _FT: ...
+    def get_func(self, /) -> _FunctionT: ...
 
 class ClassDoc(NumpyDocString):
     extra_public_methods: ClassVar[Sequence[str]]
@@ -79,8 +82,8 @@ class ClassDoc(NumpyDocString):
 class ObjDoc(NumpyDocString):
     def __init__(self, /, obj: object, doc: str | None = None, config: Mapping[str, object] | None = None) -> None: ...
 
-def strip_blank_lines(l: list[str]) -> list[str]: ...
-def dedent_lines(lines: op.CanIter[op.CanIterSelf[str]]) -> str: ...
+def strip_blank_lines(l: _MutableStrSequenceT) -> _MutableStrSequenceT: ...
+def dedent_lines(lines: Iterable[_AnyStrT]) -> _AnyStrT: ...
 def get_doc_object(
     obj: object,
     what: str | None = None,
