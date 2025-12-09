@@ -62,9 +62,9 @@ type = [
   "array-api-compat==1.12.0", # bundled as `scipy._lib.array_api_compat`
   "basedpyright==1.36.0",
   "mypy[faster-cache]==1.19.0",
-  "pyrefly==0.45.0",
+  "pyrefly==0.45.1",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.1a32",
+  "ty==0.0.1a33",
 ]
 dev = [
   { include-group = "lint" },
