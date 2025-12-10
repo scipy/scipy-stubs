@@ -12,7 +12,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  UV_LOCKED: 1
+  UV_PRERELEASE: allow # TODO(@jorenham): remove once scipy 1.17.0 is released
+# UV_LOCKED: 1  # TODO(@jorenham): re-enable after restoring `UV_PRERELEASE`
 
 jobs:
   lint:
