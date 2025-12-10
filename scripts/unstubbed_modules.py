@@ -3,7 +3,6 @@ Prints the names of all SciPy modules that are not stubbed.
 """
 
 # ruff: noqa: T201, S101
-
 import sys
 import types
 import warnings
@@ -40,7 +39,13 @@ def modules(
     # the `dir` + `getattr` ensures that lazily loaded modules are included in `vars`
     mod_vars: dict[str, Any] = {}
     for k in dir(mod):
-        mod_vars[k] = getattr(mod, k)
+        try:
+            mod_vars[k] = getattr(mod, k)
+        except ModuleNotFoundError as e:
+            # workaround for https://github.com/scipy/scipy/issues/24131
+            if e.name == "scipy.integrate._lsoda":
+                continue
+            raise
 
     mod_vars |= vars(mod)
 
