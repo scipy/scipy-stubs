@@ -6,12 +6,10 @@ scipy._lib._array_api.make_xp_pytest_param
 scipy._lib._array_api.make_xp_test_case
 scipy._lib._array_api.np_compat
 scipy._lib._array_api.xp_capabilities
-scipy._lib._threadsafety
 scipy._lib._util.Generator
 scipy._lib._util.broadcastable
 scipy._lib._util.ignore_warns
 scipy._lib._util.wrapped_inspect_signature
-scipy._lib.decorator
 scipy.integrate.DenseOutput.__class_getitem__
 scipy.integrate.OdeSolver.__class_getitem__
 scipy.integrate._dop.__f2py_numpy_version__
