@@ -72,7 +72,7 @@
     "label": "ty",
     "type": "shell",
     "command": "uv",
-    "args": ["run", "ty", "check", "--error-on-warning"],
+    "args": ["run", "ty", "check", "--error-on-warning", "scipy-stubs"],
     "group": {
       "kind": "build",
       "isDefault": false

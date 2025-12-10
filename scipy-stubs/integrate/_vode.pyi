@@ -1,11 +1,9 @@
 from collections.abc import Callable
-from typing import Concatenate, Final, Protocol, TypeAlias, final, type_check_only
+from typing import Concatenate, Protocol, TypeAlias, final, type_check_only
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
-
-from ._dop import types as types  # same signature, so no need to redefine
 
 _VecI32: TypeAlias = onp.Array1D[np.int32]
 _VecF64: TypeAlias = onp.Array1D[np.float64]
@@ -64,8 +62,7 @@ class _fortran_zvode(Protocol):
 
 ###
 
-__f2py_numpy_version__: Final[str] = ...
-__version__: Final[str] = ...
+class error(Exception): ...
 
 dvode: _fortran_dvode = ...
 zvode: _fortran_zvode = ...
