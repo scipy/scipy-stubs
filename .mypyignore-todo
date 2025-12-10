@@ -1,4 +1,3 @@
-scipy.interpolate._cubic.prepare_input
 scipy.interpolate._dierckx.data_matrix_periodic
 scipy.interpolate._dierckx.fpbacp
 scipy.interpolate._dierckx.init_augmented_matrices

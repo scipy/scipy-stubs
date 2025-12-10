@@ -142,13 +142,13 @@ def pchip_interpolate(
 # undocumented
 @overload
 def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToFloatND, axis: _AxisT, dydx: onp.ToFloatND | None = None
+    x: onp.ToFloat1D, y: onp.ToFloatND, axis: _AxisT, dydx: onp.ToFloatND | None = None, xp: None = None
 ) -> _PreparedInput[np.float64, _AxisT]: ...
 @overload
 def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToJustComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None
+    x: onp.ToFloat1D, y: onp.ToJustComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
 ) -> _PreparedInput[np.complex128, _AxisT]: ...
 @overload
 def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None
+    x: onp.ToFloat1D, y: onp.ToComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
 ) -> _PreparedInput[Any, _AxisT]: ...
