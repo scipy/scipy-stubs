@@ -30,6 +30,17 @@ def _norm_eq_lsq(
 def data_matrix(
     x: onp.Array1D[np.float64], t: onp.Array1D[np.float64], k: int, w: onp.Array1D[np.float64], extrapolate: bool = False, /
 ) -> onp.Array2D[np.float64]: ...  # undocumented
+def data_matrix_periodic(
+    x: onp.Array1D[np.float64], t: onp.Array1D[np.float64], k: int, w: onp.Array1D[np.float64], extrapolate: bool = False, /
+) -> tuple[
+    onp.Array2D[np.float64],  # A
+    onp.Array2D[np.float64],  # H1
+    onp.Array2D[np.float64],  # H2
+    onp.Array1D[np.int64],  # offset
+    int,  # nc
+]: ...  # undocumented
+
+#
 def evaluate_all_bspl(
     t: onp.Array1D[np.float64], k: int, xval: float, m: int, mu: int = 0, /
 ) -> onp.Array1D[np.float64]: ...  # undocumented
