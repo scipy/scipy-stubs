@@ -1,7 +1,5 @@
 scipy.integrate._dop.dop853
 scipy.integrate._dop.dopri853
-scipy.integrate._dop.types
-scipy.integrate._vode.types
 scipy.integrate._ode.dopri5._solout
 scipy.integrate._ode.lsoda.__init__
 scipy.integrate._odepack.lsoda

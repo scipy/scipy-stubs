@@ -5,8 +5,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from ._dop import types as types  # same signature, so no need to redefine
-
 _VecI32: TypeAlias = onp.Array1D[np.int32]
 _VecF64: TypeAlias = onp.Array1D[np.float64]
 _VecC128: TypeAlias = onp.Array1D[np.complex128]
