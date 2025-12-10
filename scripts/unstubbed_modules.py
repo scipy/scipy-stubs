@@ -20,6 +20,19 @@ BUNDLED = (
     "scipy.sparse.linalg._eigen.arpack",
     "scipy.sparse.linalg._propack",
 )
+# TODO(@jorenham): remove when stubs are added for these new SciPy 1.17 modules
+TODO_1_17 = (
+    "scipy._lib._array_api_override",
+    "scipy.interpolate._rbfinterp_common",
+    "scipy.interpolate._rbfinterp_np",
+    "scipy.interpolate._rbfinterp_xp",
+    "scipy.linalg._batched_linalg",
+    "scipy.sparse.linalg._funm_multiply_krylov",
+    "scipy.spatial.transform._rigid_transform_cy",
+    "scipy.spatial.transform._rigid_transform_xp",
+    "scipy.spatial.transform._rotation_cy",
+    "scipy.spatial.transform._rotation_xp",
+)
 
 
 def _check_stubs_path() -> None:
@@ -92,7 +105,7 @@ def main() -> int:
 
     exit_code = 0
     for name in module_list:
-        if any(map(name.startswith, BUNDLED)):
+        if any(map(name.startswith, BUNDLED + TODO_1_17)):
             continue
 
         if not is_stubbed(name):
