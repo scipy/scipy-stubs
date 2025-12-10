@@ -242,17 +242,7 @@ class dopri5(IntegratorBase[np.float64]):
     def set_solout(
         self, /, solout: Callable[[float, onp.Array1D[np.float64]], Literal[0, -1]] | None, complex: bool = False
     ) -> None: ...
-    def _solout(
-        self,
-        /,
-        nr: int,  # unused
-        xold: object,  # unused
-        x: float,
-        y: onp.Array1D[np.float64],
-        nd: int,  # unused
-        icomp: int,  # unused
-        con: object,  # unused
-    ) -> Literal[0, -1, 1]: ...
+    def _solout(self, /, x: float, y: onp.Array1D[np.float64]) -> Literal[0, -1, 1]: ...
 
 class dop853(dopri5):
     name: ClassVar[str] = "dop853"
