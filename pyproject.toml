@@ -9,7 +9,7 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 
 [project]
 name = "scipy-stubs"
-version = "1.16.3.4.dev0"
+version = "1.17.0.0.dev0"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
@@ -39,7 +39,7 @@ requires-python = ">=3.11"
 dependencies = ["optype[numpy]>=0.14.0,<0.16"]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.16.3,<1.17"]
+scipy = ["scipy>=1.17.0rc1,<1.18"]
 
 [project.urls]
 Homepage = "https://scipy.org/"
@@ -97,6 +97,7 @@ uv run
   stubtest
   --ignore-disjoint-bases
   --allowlist=.mypyignore
+  --allowlist=.mypyignore-todo
   scipy
 """
 
@@ -280,7 +281,13 @@ runner = "uv-venv-lock-runner"
 dependency_groups = ["type"]
 uv_sync_flags = ["--no-editable", "--reinstall-package=scipy-stubs"]
 commands = [
-  ["stubtest", "--ignore-disjoint-bases", "--allowlist=.mypyignore", "scipy"],
+  [
+    "stubtest",
+    "--ignore-disjoint-bases",
+    "--allowlist=.mypyignore",
+    "--allowlist=.mypyignore-todo",
+    "scipy",
+  ],
   ["stubdefaulter", "--packages=.", "--exit-zero", "--check"],
 ]
 

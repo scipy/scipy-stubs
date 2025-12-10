@@ -3,7 +3,6 @@ Prints the names of all SciPy modules that are not stubbed.
 """
 
 # ruff: noqa: T201, S101
-
 import sys
 import types
 import warnings
@@ -20,6 +19,19 @@ BUNDLED = (
     "scipy.optimize._highspy",
     "scipy.sparse.linalg._eigen.arpack",
     "scipy.sparse.linalg._propack",
+)
+# TODO(@jorenham): remove when stubs are added for these new SciPy 1.17 modules
+TODO_1_17 = (
+    "scipy._lib._array_api_override",
+    "scipy.interpolate._rbfinterp_common",
+    "scipy.interpolate._rbfinterp_np",
+    "scipy.interpolate._rbfinterp_xp",
+    "scipy.linalg._batched_linalg",
+    "scipy.sparse.linalg._funm_multiply_krylov",
+    "scipy.spatial.transform._rigid_transform_cy",
+    "scipy.spatial.transform._rigid_transform_xp",
+    "scipy.spatial.transform._rotation_cy",
+    "scipy.spatial.transform._rotation_xp",
 )
 
 
@@ -40,7 +52,13 @@ def modules(
     # the `dir` + `getattr` ensures that lazily loaded modules are included in `vars`
     mod_vars: dict[str, Any] = {}
     for k in dir(mod):
-        mod_vars[k] = getattr(mod, k)
+        try:
+            mod_vars[k] = getattr(mod, k)
+        except ModuleNotFoundError as e:
+            # workaround for https://github.com/scipy/scipy/issues/24131
+            if e.name == "scipy.integrate._lsoda":
+                continue
+            raise
 
     mod_vars |= vars(mod)
 
@@ -87,7 +105,7 @@ def main() -> int:
 
     exit_code = 0
     for name in module_list:
-        if any(map(name.startswith, BUNDLED)):
+        if any(map(name.startswith, BUNDLED + TODO_1_17)):
             continue
 
         if not is_stubbed(name):
