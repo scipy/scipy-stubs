@@ -1,4 +1,3 @@
-scipy.integrate._ode.lsoda.__init__
 scipy.integrate._odepack.lsoda
 scipy.integrate._odepack_py.ODE_LOCK
 
