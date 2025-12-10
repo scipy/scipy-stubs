@@ -1,4 +1,3 @@
-scipy.interpolate._dierckx.init_augmented_matrices
 scipy.interpolate._dierckx.qr_reduce_augmented_matrices
 scipy.interpolate._dierckx.qr_reduce_periodic
 scipy.interpolate._fitpack_impl.splantider

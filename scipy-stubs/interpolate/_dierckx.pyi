@@ -27,6 +27,17 @@ def _norm_eq_lsq(
 ) -> None: ...  # undocumented
 
 #
+def init_augmented_matrices(
+    a1: onp.Array2D[np.float64], a2: onp.Array2D[np.float64], b: onp.Array2D[np.float64], len_t: int, k: int, /
+) -> tuple[
+    onp.Array2D[np.float64],  # G1
+    onp.Array2D[np.float64],  # G2
+    onp.Array2D[np.float64],  # H1
+    onp.Array2D[np.float64],  # H2
+    onp.Array1D[np.float64],  # offset
+]: ...  # undocumented
+
+#
 def data_matrix(
     x: onp.Array1D[np.float64], t: onp.Array1D[np.float64], k: int, w: onp.Array1D[np.float64], extrapolate: bool = False, /
 ) -> onp.Array2D[np.float64]: ...  # undocumented
