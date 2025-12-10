@@ -1,7 +1,9 @@
+import inspect
 import multiprocessing.pool as mpp
 import sys
 import types
 from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
+from contextlib import _GeneratorContextManager
 from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, Self, TypeAlias, overload
 from typing_extensions import TypeVar, override
 
@@ -9,7 +11,6 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
-from numpy.random import Generator as Generator  # implicit re-export
 
 from scipy._typing import ExitMixin
 
@@ -29,6 +30,12 @@ np_long: Final[type[np.int32 | np.int64]] = ...  # `np.long` on `numpy>=2`, else
 np_ulong: Final[type[np.uint32 | np.uint64]] = ...  # `np.ulong` on `numpy>=2`, else `np.uint`
 copy_if_needed: Final[Literal[False] | None] = ...  # `None` on `numpy>=2`, otherwise `False`
 
+###
+
+# mypy<=1.19.0 workaround, see https://github.com/python/mypy/pull/20392
+if sys.version_info >= (3, 14):
+    __conditional_annotations__: Final[set[int]] = ...
+
 # NOTE: These aliases are implictly exported at runtime
 IntNumber: TypeAlias = int | npc.integer
 DecimalNumber: TypeAlias = float | npc.floating | npc.integer
@@ -36,12 +43,11 @@ _RNG: TypeAlias = np.random.Generator | np.random.RandomState
 SeedType: TypeAlias = IntNumber | _RNG | None
 GeneratorType = TypeVar("GeneratorType", bound=_RNG)  # noqa: PYI001  # oof
 
-###
-
-# mypy<=1.17.0 workaround
 if sys.version_info >= (3, 14):
-    # see https://github.com/python/cpython/pull/130935
-    __conditional_annotations__: Final[set[int]] = ...
+    def wrapped_inspect_signature(callable: Callable[..., object]) -> inspect.Signature: ...
+
+else:
+    wrapped_inspect_signature = inspect.signature
 
 class AxisError(ValueError, IndexError):
     __slots__ = "_msg", "axis", "ndim"
@@ -129,12 +135,17 @@ def rng_integers(
 ) -> npc.integer | onp.ArrayND[npc.integer]: ...
 
 #
+def ignore_warns(expected_warning: type[Warning], *, match: str | None = None) -> _GeneratorContextManager[None]: ...
+
+#
 @overload
 def normalize_axis_index(axis: int, ndim: onp.NDim) -> onp.NDim: ...
 @overload
 def normalize_axis_index(axis: int | _AxisT, ndim: _AxisT) -> _AxisT: ...
 @overload
 def normalize_axis_index(axis: _AxisT, ndim: onp.NDim | _AxisT) -> _AxisT: ...
+
+#
 @overload
 def np_vecdot(x1: onp.ToIntStrict1D, x2: onp.ToIntStrict1D, /, *, axis: op.CanIndex = -1) -> npc.integer: ...
 @overload
@@ -145,3 +156,6 @@ def np_vecdot(x1: onp.ToJustFloatStrict1D, x2: onp.ToFloatStrict1D, /, *, axis: 
 def np_vecdot(x1: onp.ToComplexStrict1D, x2: onp.ToJustComplexStrict1D, /, *, axis: op.CanIndex = -1) -> npc.complexfloating: ...
 @overload
 def np_vecdot(x1: onp.ToJustComplexStrict1D, x2: onp.ToComplexStrict1D, /, *, axis: op.CanIndex = -1) -> npc.complexfloating: ...
+
+#
+def broadcastable(shape_a: tuple[int, ...], shape_b: tuple[int, ...]) -> bool: ...
