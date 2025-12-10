@@ -60,11 +60,33 @@ def evaluate_ndbspline(
 def evaluate_spline(
     t: onp.Array1D[np.float64], c: onp.Array2D[np.float64], k: int, xp: onp.Array1D[np.float64], nu: int, extrapolate: bool
 ) -> onp.Array2D[np.float64]: ...  # undocumented
+
+#
 def find_interval(t: onp.Array1D[np.float64], k: int, xval: float, prev_l: int, extrapolate: bool) -> int: ...  # undocumented
+
+#
 def fpback(R: onp.Array2D[np.float64], nc: int, y: onp.Array2D[np.float64]) -> onp.Array2D[np.float64]: ...  # undocumented
+def fpbacp(
+    A1: onp.Array2D[np.float64],
+    A2: onp.Array2D[np.float64],
+    Z: onp.Array2D[np.float64],
+    k: int,
+    kp: int,
+    x: onp.Array1D[np.float64],
+    y: onp.Array2D[np.float64],
+    t: onp.Array1D[np.float64],
+    w: onp.Array1D[np.float64],
+    /,
+) -> tuple[
+    onp.Array2D[np.float64],  # a_c
+    onp.Array1D[np.float64],  # a_residuals
+    float,  # fp
+]: ...  # undocumented
 def fpknot(
     x: onp.Array1D[np.float64], t: onp.Array1D[np.float64], k: int, residuals: onp.Array2D[np.float64]
 ) -> float: ...  # undocumented
+
+#
 def qr_reduce(
     a: onp.Array2D[np.float64], offset: int, nc: int, y: onp.Array2D[np.float64], startrow: int = 1
 ) -> None: ...  # undocumented
