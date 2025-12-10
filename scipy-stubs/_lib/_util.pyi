@@ -38,9 +38,8 @@ GeneratorType = TypeVar("GeneratorType", bound=_RNG)  # noqa: PYI001  # oof
 
 ###
 
-# mypy<=1.17.0 workaround
+# mypy<=1.19.0 workaround, see https://github.com/python/mypy/pull/20392
 if sys.version_info >= (3, 14):
-    # see https://github.com/python/cpython/pull/130935
     __conditional_annotations__: Final[set[int]] = ...
 
 class AxisError(ValueError, IndexError):
