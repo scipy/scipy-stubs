@@ -1,5 +1,4 @@
 scipy.integrate._odepack.lsoda
-scipy.integrate._odepack_py.ODE_LOCK
 
 scipy.interpolate.Akima1DInterpolator.__class_getitem__
 scipy.interpolate.BSpline.__class_getitem__
