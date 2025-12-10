@@ -1,3 +1,4 @@
+import types
 from collections.abc import Callable
 from typing import Any, ClassVar, Final, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeVar
@@ -39,6 +40,10 @@ class OdeSolver(Generic[_ScalarT]):
     njev: int
     nlu: int
 
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+
+    #
     @overload
     def __init__(
         self: OdeSolver[np.float64],
@@ -72,6 +77,10 @@ class DenseOutput(Generic[_ScalarT_co]):
     t_min: Final[float]
     t_max: Final[float]
 
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+
+    #
     def __init__(self, /, t_old: float, t: float) -> None: ...
 
     #
@@ -82,4 +91,5 @@ class DenseOutput(Generic[_ScalarT_co]):
 
 class ConstantDenseOutput(DenseOutput[_ScalarT_co], Generic[_ScalarT_co]):
     value: onp.ArrayND[_ScalarT_co]
+
     def __init__(self, /, t_old: float, t: float, value: onp.ArrayND[_ScalarT_co]) -> None: ...

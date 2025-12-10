@@ -1,3 +1,4 @@
+import types
 from collections.abc import Callable
 from typing import Any, ClassVar, Final, Generic, Literal, Self, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar, TypeVarTuple, Unpack, override
@@ -50,6 +51,10 @@ class ode(Generic[_Inexact64T_co, *_Ts]):
     stiff: Literal[0, 1]
     t: float
 
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+
+    #
     def __init__(
         self,
         /,
@@ -111,6 +116,10 @@ class IntegratorBase(Generic[_Inexact64T_co]):
     integrator_classes: list[type[IntegratorBase]]
     istate: int | None = None
 
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+
+    #
     def acquire_new_handle(self, /) -> None: ...
     def check_handle(self, /) -> None: ...
     def reset(self, /, n: int, has_jac: bool) -> None: ...
@@ -185,12 +194,16 @@ class vode(IntegratorBase[_Inexact64T_co], Generic[_Inexact64T_co]):
     ) -> None: ...
 
 class zvode(vode[np.complex128]):
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+
     active_global_handle: int
     zwork: onp.Array1D[np.complex128]
     call_args: list[float | onp.ArrayND[np.complex128] | onp.ArrayND[np.float64] | onp.ArrayND[np.int32]]  # type: ignore[assignment] # pyright: ignore[reportIncompatibleVariableOverride]
     initialized: bool
 
 class dopri5(IntegratorBase[np.float64]):
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+
     name: ClassVar[str] = "dopri5"
     messages: ClassVar[dict[int, str]] = ...
 
@@ -243,6 +256,7 @@ class dopri5(IntegratorBase[np.float64]):
 
 class dop853(dopri5):
     name: ClassVar[str] = "dop853"
+
     def __init__(
         self,
         /,
@@ -260,6 +274,8 @@ class dop853(dopri5):
     ) -> None: ...
 
 class lsoda(IntegratorBase[np.float64]):
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+
     active_global_handle: ClassVar[int] = 0
     messages: ClassVar[dict[int, str]] = ...
 
@@ -280,6 +296,7 @@ class lsoda(IntegratorBase[np.float64]):
     rwork: onp.Array1D[np.float64]
     iwork: onp.Array1D[np.int32]
     call_args: list[float | onp.Array1D[np.float64] | onp.Array1D[np.int32]]
+
     def __init__(
         self,
         /,
