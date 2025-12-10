@@ -51,6 +51,17 @@ def qr_reduce_augmented_matrices(
     len_t: int | np.intp,
     k: int | np.int32,
 ) -> None: ...  # undocumented
+def qr_reduce_periodic(
+    a: onp.Array2D[np.float64],
+    h1: onp.Array2D[np.float64],
+    h2: onp.Array2D[np.float64],
+    offset: onp.Array1D[np.int64],
+    nc: int | np.intp,
+    y: onp.Array2D[np.float64],
+    k: int | np.intp,
+    len_t: int | np.intp,
+    init_p: bool = False,
+) -> None: ...  # undocumented
 
 #
 def data_matrix(

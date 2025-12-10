@@ -1,5 +1,3 @@
-scipy.interpolate._dierckx.qr_reduce_augmented_matrices
-scipy.interpolate._dierckx.qr_reduce_periodic
 scipy.interpolate._fitpack_impl.splantider
 scipy.interpolate._fitpack_impl.splder
 scipy.interpolate._fitpack_repro.Fperiodic
