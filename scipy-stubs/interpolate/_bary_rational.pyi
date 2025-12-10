@@ -126,6 +126,7 @@ class FloaterHormannInterpolator(_BarycentricRational[_SCT_co, _ShapeT_co], Gene
         values: onp.CanArrayND[_SCT_co, _ShapeT_co],
         *,
         d: int = 3,
+        axis: int = 0,
     ) -> None: ...
     @overload
     def __init__(
@@ -135,6 +136,7 @@ class FloaterHormannInterpolator(_BarycentricRational[_SCT_co, _ShapeT_co], Gene
         values: onp.ToFloatStrict1D,
         *,
         d: int = 3,
+        axis: int = 0,
     ) -> None: ...
     @overload
     def __init__(
@@ -144,6 +146,7 @@ class FloaterHormannInterpolator(_BarycentricRational[_SCT_co, _ShapeT_co], Gene
         values: onp.ToFloatStrict2D,
         *,
         d: int = 3,
+        axis: int = 0,
     ) -> None: ...
     @overload
     def __init__(
@@ -153,6 +156,7 @@ class FloaterHormannInterpolator(_BarycentricRational[_SCT_co, _ShapeT_co], Gene
         values: onp.ToComplexStrict1D,
         *,
         d: int = 3,
+        axis: int = 0,
     ) -> None: ...
     @overload
     def __init__(
@@ -162,6 +166,7 @@ class FloaterHormannInterpolator(_BarycentricRational[_SCT_co, _ShapeT_co], Gene
         values: onp.ToComplexStrict2D,
         *,
         d: int = 3,
+        axis: int = 0,
     ) -> None: ...
     @overload
-    def __init__(self, /, points: onp.ToComplex1D, values: onp.ToComplexND, *, d: int = 3) -> None: ...
+    def __init__(self, /, points: onp.ToComplex1D, values: onp.ToComplexND, *, d: int = 3, axis: int = 0) -> None: ...
