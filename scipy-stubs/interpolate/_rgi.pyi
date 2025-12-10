@@ -1,3 +1,4 @@
+import types
 from collections.abc import Iterable
 from typing import Any, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeVar
@@ -27,6 +28,11 @@ class RegularGridInterpolator(Generic[_CT_co]):
     fill_value: float | None
     bounds_error: bool
 
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+
+    #
     @overload
     def __init__(
         self: RegularGridInterpolator[np.float64],

@@ -1,3 +1,4 @@
+import types
 from typing import Any, Final, Generic, Literal, Never, Self, TypeAlias, overload
 from typing_extensions import TypeVar, deprecated
 
@@ -88,6 +89,11 @@ class _PPolyBase(Generic[_CT_co]):
     extrapolate: Final[_Extrapolate]
     axis: Final[int]
 
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+
+    #
     @classmethod
     def construct_fast(
         cls,

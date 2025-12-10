@@ -37,6 +37,7 @@ class _QueryOptions(TypedDict, total=False):
 class NearestNDInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
     tree: cKDTree
 
+    #
     @overload
     def __init__(
         self: NearestNDInterpolator[np.float64],

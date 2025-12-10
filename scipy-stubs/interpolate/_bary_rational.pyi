@@ -1,3 +1,4 @@
+import types
 from collections.abc import Sequence
 from typing import Generic, TypeAlias, overload
 from typing_extensions import TypeVar
@@ -20,6 +21,10 @@ _ToComplex128: TypeAlias = _ToFloat64 | np.complex64 | np.complex128
 ###
 
 class _BarycentricRational(Generic[_SCT_co, _ShapeT_co]):
+    @classmethod
+    def __class_getitem__(cls, arg: type | object | tuple[type | object, type | object], /) -> types.GenericAlias: ...
+
+    #
     def __init__(self, /, x: onp.ToComplex1D, y: onp.ToComplexND) -> None: ...
 
     #

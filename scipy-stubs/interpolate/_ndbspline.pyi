@@ -1,3 +1,4 @@
+import types
 from collections.abc import Callable
 from typing import Any, Concatenate, Generic, TypeAlias, overload
 from typing_extensions import TypeVar
@@ -32,6 +33,10 @@ class NdBSpline(Generic[_CT_co]):
     def k(self, /) -> tuple[np.int32, ...]: ...
     @property
     def t(self, /) -> tuple[onp.Array1D[np.float64], ...]: ...
+
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
 
     #
     @overload

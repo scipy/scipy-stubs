@@ -1,3 +1,4 @@
+import types
 from typing import Any, Generic, Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -33,6 +34,11 @@ class RBFInterpolator(Generic[_Inexact64T_co, _ShapeT_co]):
     epsilon: float
     powers: int
 
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+
+    #
     @overload
     def __init__(
         self: RBFInterpolator[np.float64, tuple[int]],

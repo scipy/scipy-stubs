@@ -1,5 +1,5 @@
 # scipy/interpolate/interpnd.pyx
-
+import types
 from typing import Any, Generic, overload
 from typing_extensions import TypeVar
 
@@ -23,6 +23,11 @@ class NDInterpolatorBase(Generic[_CT_co]):
     scale: onp.Array1D[np.float64] | None
     offset: onp.Array1D[np.float64]  # only if rescale=True
 
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+
+    #
     @overload
     def __init__(
         self: NDInterpolatorBase[np.float64],
