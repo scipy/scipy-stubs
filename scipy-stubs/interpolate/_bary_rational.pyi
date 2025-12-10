@@ -1,6 +1,6 @@
 import types
 from collections.abc import Sequence
-from typing import Generic, TypeAlias, overload
+from typing import Any, Generic, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -10,9 +10,9 @@ import optype.numpy.compat as npc
 __all__ = ["AAA", "FloaterHormannInterpolator"]
 
 _SCT = TypeVar("_SCT", bound=npc.inexact)
-_SCT_co = TypeVar("_SCT_co", bound=npc.inexact, default=npc.inexact, covariant=True)
+_SCT_co = TypeVar("_SCT_co", bound=npc.inexact, default=Any, covariant=True)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[int, ...], covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 _ToFloat16: TypeAlias = np.bool_ | npc.integer | np.float16
 _ToFloat64: TypeAlias = _ToFloat16 | np.float32 | np.float64
