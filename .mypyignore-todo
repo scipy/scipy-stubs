@@ -1,5 +1,3 @@
-scipy.integrate._dop.__f2py_numpy_version__
-scipy.integrate._vode.__f2py_numpy_version__
 scipy.integrate._dop.dop853
 scipy.integrate._dop.dopri853
 scipy.integrate._dop.types
