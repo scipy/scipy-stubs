@@ -22,7 +22,6 @@ BUNDLED = (
 )
 # TODO(@jorenham): remove when stubs are added for these new SciPy 1.17 modules
 TODO_1_17 = (
-    "scipy._lib._array_api_override",
     "scipy.interpolate._rbfinterp_common",
     "scipy.interpolate._rbfinterp_np",
     "scipy.interpolate._rbfinterp_xp",
