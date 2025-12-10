@@ -1,5 +1,3 @@
-scipy.integrate._odepack.lsoda
-
 scipy.interpolate.Akima1DInterpolator.__class_getitem__
 scipy.interpolate.BSpline.__class_getitem__
 scipy.interpolate.FloaterHormannInterpolator.__init__

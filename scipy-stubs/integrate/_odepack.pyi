@@ -75,3 +75,25 @@ def odeint(
     mxords: int = 5,
     tfirst: int = 0,
 ) -> tuple[onp.Array2D[np.float64], _InfoDict, int]: ...
+
+# undocumented low-level (C) lsoda wrapper
+def lsoda(
+    fun: Callable[..., onp.ToFloat1D | float],
+    y0: onp.ToFloatND | float,
+    t: float,
+    tout: onp.ToFloat1D,
+    rtol: onp.ToFloat1D | float,
+    atol: onp.ToFloat1D | float,
+    itask: int,
+    istate: int,
+    rwork: onp.Array1D[np.float64],
+    iwork: onp.Array1D[np.int32],
+    jac: Callable[..., onp.ToFloat2D] | None,
+    jt: int,
+    *,
+    f_params: tuple[object, ...] = (),
+    tfirst: int = 0,
+    jac_params: tuple[object, ...] = (),
+    state_doubles: onp.Array1D[np.float64] | None = None,
+    state_ints: onp.Array1D[np.int32] | None = None,
+) -> tuple[onp.ArrayND[np.float64], float, int]: ...  # (y, t, istate)
