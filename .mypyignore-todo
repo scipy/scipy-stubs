@@ -1,5 +1,3 @@
-scipy.interpolate._fitpack_impl.splantider
-scipy.interpolate._fitpack_impl.splder
 scipy.interpolate._fitpack_repro.Fperiodic
 scipy.interpolate._fitpack_repro.generate_knots
 scipy.interpolate.make_splprep
