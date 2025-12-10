@@ -2,7 +2,6 @@ scipy.integrate._ode.dopri5._solout
 scipy.integrate._ode.lsoda.__init__
 scipy.integrate._odepack.lsoda
 scipy.integrate._odepack_py.ODE_LOCK
-scipy.integrate._vode.error
 
 scipy.interpolate.Akima1DInterpolator.__class_getitem__
 scipy.interpolate.BSpline.__class_getitem__

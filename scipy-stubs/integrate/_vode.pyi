@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Concatenate, Final, Protocol, TypeAlias, final, type_check_only
+from typing import Concatenate, Protocol, TypeAlias, final, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -62,7 +62,7 @@ class _fortran_zvode(Protocol):
 
 ###
 
-__version__: Final[str] = ...
+class error(Exception): ...
 
 dvode: _fortran_dvode = ...
 zvode: _fortran_zvode = ...
