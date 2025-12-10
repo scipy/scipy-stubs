@@ -192,4 +192,4 @@ def make_smoothing_spline(
 ) -> BSpline[np.float64]: ...
 
 #
-def fpcheck(x: onp.ToFloat1D, t: onp.ToFloat1D, k: onp.ToJustInt) -> None: ...  # undocumented
+def fpcheck(x: onp.ToFloat1D, t: onp.ToFloat1D, k: int, periodic: bool = False) -> None: ...  # undocumented
