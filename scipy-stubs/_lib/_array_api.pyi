@@ -1,11 +1,12 @@
 import dataclasses
 import re
 from _typeshed import Incomplete
-from collections.abc import Generator, Sequence
-from contextlib import contextmanager
+from collections.abc import Callable, Sequence
+from contextlib import _GeneratorContextManager
 from types import ModuleType
-from typing import Any, Final, Literal, TypeAlias
+from typing import Any, Final, Literal, Never, TypeAlias
 
+import _pytest.mark
 from array_api_compat import (
     device as xp_device,  # pyright: ignore[reportUnknownVariableType]
     is_array_api_strict_namespace as is_array_api_strict,
@@ -14,8 +15,13 @@ from array_api_compat import (
     is_lazy_array as is_lazy_array,
     is_numpy_namespace as is_numpy,
     is_torch_namespace as is_torch,
+    numpy as np_compat,
     size as xp_size,
 )
+
+_CapabilitiesTable: TypeAlias = dict[Callable[..., Any], dict[str, Any]]
+
+###
 
 __all__ = [
     "SCIPY_ARRAY_API",
@@ -26,6 +32,7 @@ __all__ = [
     "assert_array_almost_equal",
     "default_xp",
     "eager_warns",
+    "get_native_namespace_name",
     "is_array_api_strict",
     "is_complex",
     "is_cupy",
@@ -34,6 +41,10 @@ __all__ = [
     "is_marray",
     "is_numpy",
     "is_torch",
+    "make_xp_pytest_marks",
+    "make_xp_pytest_param",
+    "make_xp_test_case",
+    "np_compat",
     "scipy_namespace_for",
     "xp_assert_close",
     "xp_assert_equal",
@@ -66,14 +77,13 @@ def _asarray(
     subok: bool = False,
 ) -> Array: ...
 def xp_copy(x: Array, *, xp: ModuleType | None = None) -> Array: ...
-@contextmanager
-def default_xp(xp: ModuleType) -> Generator[None]: ...
+def default_xp(xp: ModuleType) -> _GeneratorContextManager[None]: ...
 def eager_warns(
-    x: Array, warning_type: type[Warning] | tuple[type[Warning], ...], match: str | re.Pattern[str] | None = None
-) -> Incomplete: ...  # _pytest.recwarn.WarningsChecker
+    warning_type: type[Warning] | tuple[type[Warning], ...], *, match: str | re.Pattern[str] | None = None, xp: ModuleType
+) -> _GeneratorContextManager[None]: ...  # _pytest.recwarn.WarningsChecker
 def xp_assert_equal(
-    actual: Incomplete,
-    desired: Incomplete,
+    actual: object,
+    desired: object,
     *,
     check_namespace: bool = True,
     check_dtype: bool = True,
@@ -83,8 +93,8 @@ def xp_assert_equal(
     xp: ModuleType | None = None,
 ) -> None: ...
 def xp_assert_close(
-    actual: Incomplete,
-    desired: Incomplete,
+    actual: object,
+    desired: object,
     *,
     rtol: Incomplete | None = None,
     atol: int = 0,
@@ -96,8 +106,8 @@ def xp_assert_close(
     xp: ModuleType | None = None,
 ) -> None: ...
 def xp_assert_less(
-    actual: Incomplete,
-    desired: Incomplete,
+    actual: object,
+    desired: object,
     *,
     check_namespace: bool = True,
     check_dtype: bool = True,
@@ -108,13 +118,28 @@ def xp_assert_less(
     xp: ModuleType | None = None,
 ) -> None: ...
 def assert_array_almost_equal(
-    actual: Incomplete, desired: Incomplete, decimal: int = 6, *args: Incomplete, **kwds: Incomplete
+    actual: object,
+    desired: object,
+    decimal: int = 6,
+    *args: Never,
+    check_namespace: bool = True,
+    check_0d: bool = True,
+    err_msg: str = "",
+    xp: ModuleType | None = None,
 ) -> None: ...
 def assert_almost_equal(
-    actual: Incomplete, desired: Incomplete, decimal: int = 7, *args: Incomplete, **kwds: Incomplete
+    actual: object,
+    desired: object,
+    decimal: int = 7,
+    *args: Never,
+    check_namespace: bool = True,
+    check_0d: bool = True,
+    err_msg: str = "",
+    xp: ModuleType | None = None,
 ) -> None: ...
 def xp_unsupported_param_msg(param: Incomplete) -> str: ...
 def is_complex(x: Array, xp: ModuleType) -> bool: ...
+def get_native_namespace_name(xp: ModuleType) -> str: ...
 def scipy_namespace_for(xp: ModuleType) -> ModuleType | None: ...
 def xp_vector_norm(
     x: Array,
@@ -140,14 +165,31 @@ class _XPSphinxCapability:
 
 def xp_capabilities(
     *,
-    capabilities_table: Incomplete | None = None,
+    capabilities_table: _CapabilitiesTable | None = None,
     skip_backends: Sequence[tuple[str, str]] = (),
     xfail_backends: Sequence[tuple[str, str]] = (),
     cpu_only: bool = False,
     np_only: bool = False,
     reason: str | None = None,
+    out_of_scope: bool = False,
     exceptions: Sequence[str] = (),
     warnings: Sequence[tuple[str, str]] = (),
     allow_dask_compute: bool = False,
     jax_jit: bool = True,
+    extra_note: str | None = None,
 ) -> dict[str, _XPSphinxCapability]: ...
+
+#
+def make_xp_test_case(
+    *funcs: Callable[..., Any], capabilities_table: _CapabilitiesTable | None = None
+) -> Callable[[Callable[..., None]], Callable[..., None]]: ...
+def make_xp_pytest_param(
+    func: Callable[..., Any], *args: Any, capabilities_table: _CapabilitiesTable | None = None
+) -> _pytest.mark.ParameterSet: ...
+def make_xp_pytest_marks(
+    *funcs: Callable[..., Any], capabilities_table: _CapabilitiesTable | None = None
+) -> Sequence[_pytest.mark.Mark]: ...
+
+xp_capabilities_table: Final[_CapabilitiesTable] = ...
+
+def xp_device_type(a: Array) -> Literal["cpu", "cuda"] | None: ...

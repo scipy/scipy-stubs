@@ -1,8 +1,7 @@
 import enum
-from collections.abc import Callable
-from typing import Any, Final, TypeAlias
+from typing import Any, Final
 
-_CapabilitiesTable: TypeAlias = dict[Callable[..., Any], dict[str, Any]]
+from ._array_api import _CapabilitiesTable  # type-check-only
 
 ###
 
