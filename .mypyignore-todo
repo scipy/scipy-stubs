@@ -1,4 +1,3 @@
-scipy.optimize._trustregion_exact.IterativeSubproblem.MAXITER_DEFAULT
 scipy.optimize._trustregion_exact.IterativeSubproblem.__init__
 
 scipy.signal.ShortTimeFFT.__class_getitem__

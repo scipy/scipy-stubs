@@ -35,6 +35,7 @@ def singular_leading_submatrix(
 class IterativeSubproblem(BaseQuadraticSubproblem):
     UPDATE_COEFF: ClassVar[float] = 0.01
     EPS: ClassVar[float | np.float64] = ...
+    MAXITER_DEFAULT: ClassVar[float] = 25
 
     CLOSE_TO_ZERO: Final[float | np.float64]
     dimension: Final[int]
