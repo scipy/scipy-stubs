@@ -181,6 +181,10 @@ matches = "scipy-stubs/*/__init__.pyi"
 errors = { deprecated = "ignore" }
 
 [[tool.pyrefly.sub-config]]
+matches = "scipy-stubs/odr/*.pyi"
+errors = { deprecated = "ignore" }
+
+[[tool.pyrefly.sub-config]]
 matches = "scipy-stubs/special/_ufuncs.pyi"
 errors = { bad-override = "ignore" }
 
@@ -208,7 +212,11 @@ include = ["scipy-stubs", "scripts", "tests"]
 possibly-unresolved-reference = "error"
 
 [[tool.ty.overrides]]
-include = ["scipy-stubs/*/__init__.pyi", "scipy-stubs/special/orthogonal.pyi"]
+include = [
+  "scipy-stubs/*/__init__.pyi",
+  "scipy-stubs/odr/*.pyi",
+  "scipy-stubs/special/orthogonal.pyi",
+]
 rules = { deprecated = "ignore" }
 
 [[tool.ty.overrides]]
