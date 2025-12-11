@@ -1,5 +1,3 @@
-scipy.optimize._trustregion_exact.IterativeSubproblem.__init__
-
 scipy.signal.ShortTimeFFT.__class_getitem__
 scipy.signal._short_time_fft.ShortTimeFFT.__class_getitem__
 scipy.signal.besselap

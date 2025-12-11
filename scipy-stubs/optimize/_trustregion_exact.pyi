@@ -58,6 +58,7 @@ class IterativeSubproblem(BaseQuadraticSubproblem):
         hessp: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat1D] | None = None,
         k_easy: onp.ToFloat = 0.1,
         k_hard: onp.ToFloat = 0.2,
+        maxiter: float | None = None,
     ) -> None: ...
     @override
     # pyrefly: ignore[bad-param-name-override]
