@@ -1,4 +1,6 @@
+from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
+from types import ModuleType
 from typing import Literal as L, TypeAlias, overload
 from typing_extensions import TypeAliasType, TypeVar
 
@@ -69,6 +71,8 @@ _Complex1D: TypeAlias = onp.Array1D[np.complex128]
 _ComplexND: TypeAlias = onp.ArrayND[np.complex128]
 _Inexact1D: TypeAlias = onp.Array1D[np.float64 | np.complex128]
 _InexactND: TypeAlias = onp.ArrayND[np.float64 | np.complex128]
+
+_Order: TypeAlias = L[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
 _SCT_z = TypeVar("_SCT_z", bound=np.generic)
 _SCT_p = TypeVar("_SCT_p", bound=np.generic, default=np.complex128)
@@ -747,28 +751,98 @@ def ellipord(
 ) -> tuple[int, _FloatingND]: ...
 
 #
-
-def buttap(N: onp.ToJustInt) -> tuple[_Float1D, _Complex1D, L[1]]: ...
-def cheb1ap(N: onp.ToJustInt, rp: onp.ToFloat) -> tuple[_Float1D, _Complex1D, np.float64]: ...
-def cheb2ap(N: onp.ToJustInt, rs: onp.ToFloat) -> tuple[_Complex1D, _Complex1D, np.float64]: ...
-def ellipap(N: onp.ToJustInt, rp: onp.ToFloat, rs: onp.ToFloat) -> tuple[_Complex1D, _Complex1D, np.float64]: ...
-def besselap(N: onp.ToJustInt, norm: _Normalization = "phase") -> tuple[_Float1D, _Complex1D, float]: ...
+@overload
+def buttap(N: int, *, xp: None = None, device: None = None) -> tuple[_Float1D, _Complex1D, L[1]]: ...
+@overload
+def buttap(N: int, *, xp: ModuleType, device: object = None) -> tuple[Incomplete, Incomplete, L[1]]: ...
 
 #
-def iirnotch(w0: onp.ToFloat, Q: onp.ToFloat, fs: onp.ToFloat = 2.0) -> _Ba1D: ...
-def iirpeak(w0: onp.ToFloat, Q: onp.ToFloat, fs: onp.ToFloat = 2.0) -> _Ba1D: ...
+@overload
+def cheb1ap(N: int, rp: float, *, xp: None = None, device: None = None) -> tuple[_Float1D, _Complex1D, float]: ...
+@overload
+def cheb1ap(N: int, rp: float, *, xp: ModuleType, device: object = None) -> tuple[Incomplete, Incomplete, float]: ...
+
+#
+@overload
+def cheb2ap(N: int, rs: float, *, xp: None = None, device: None = None) -> tuple[_Complex1D, _Complex1D, float]: ...
+@overload
+def cheb2ap(N: int, rs: float, *, xp: ModuleType, device: object = None) -> tuple[Incomplete, Incomplete, float]: ...
+
+#
+@overload
+def ellipap(N: int, rp: float, rs: float, *, xp: None = None, device: None = None) -> tuple[_Complex1D, _Complex1D, float]: ...
+@overload
+def ellipap(N: int, rp: float, rs: float, *, xp: ModuleType, device: object = None) -> tuple[Incomplete, Incomplete, float]: ...
+
+#
+@overload
+def besselap(
+    N: int, norm: _Normalization = "phase", *, xp: None = None, device: None = None
+) -> tuple[_Float1D, _Complex1D, float]: ...
+@overload
+def besselap(
+    N: int, norm: _Normalization = "phase", *, xp: ModuleType, device: object = None
+) -> tuple[Incomplete, Incomplete, float]: ...
+
+#
+@overload
+def iirnotch(w0: float, Q: float, fs: float = 2.0, *, xp: None = None, device: None = None) -> _Ba1D: ...
+@overload
+def iirnotch(w0: float, Q: float, fs: float = 2.0, *, xp: ModuleType, device: object = None) -> tuple[Incomplete, Incomplete]: ...
+
+#
+@overload
+def iirpeak(w0: float, Q: float, fs: float = 2.0, *, xp: None = None, device: None = None) -> _Ba1D: ...
+@overload
+def iirpeak(w0: float, Q: float, fs: float = 2.0, *, xp: ModuleType, device: object = None) -> tuple[Incomplete, Incomplete]: ...
+
+#
+@overload
 def iircomb(
-    w0: onp.ToFloat, Q: onp.ToFloat, ftype: L["notch", "peak"] = "notch", fs: onp.ToFloat = 2.0, *, pass_zero: onp.ToBool = False
+    w0: float,
+    Q: float,
+    ftype: L["notch", "peak"] = "notch",
+    fs: float = 2.0,
+    *,
+    pass_zero: bool = False,
+    xp: None = None,
+    device: None = None,
 ) -> _Ba1D: ...
+@overload
+def iircomb(
+    w0: float,
+    Q: float,
+    ftype: L["notch", "peak"] = "notch",
+    fs: float = 2.0,
+    *,
+    pass_zero: bool = False,
+    xp: ModuleType,
+    device: object = None,
+) -> tuple[Incomplete, Incomplete]: ...
 
 #
+@overload
 def gammatone(
-    freq: onp.ToFloat,
+    freq: float,
     ftype: L["fir", "iir"],
-    order: L[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24] | None = None,
+    order: _Order | None = None,
     numtaps: int | None = None,
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
+    *,
+    xp: None = None,
+    device: None = None,
 ) -> _Ba1D: ...
+@overload
+def gammatone(
+    freq: float,
+    ftype: L["fir", "iir"],
+    order: _Order | None = None,
+    numtaps: int | None = None,
+    fs: float | None = None,
+    *,
+    xp: ModuleType,
+    device: object = None,
+) -> tuple[Incomplete, Incomplete]: ...
 
 # ???
 def maxflat() -> None: ...
