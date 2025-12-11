@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from typing import Literal, TypeAlias, overload
+from typing_extensions import deprecated
 
 import numpy as np
 import optype as op
@@ -20,16 +21,33 @@ _Scaling: TypeAlias = Literal["density", "spectrum"]
 _LegacyScaling: TypeAlias = Literal["psd", "spectrum"]
 _Average: TypeAlias = Literal["mean", "median"]
 _Boundary: TypeAlias = Literal["even", "odd", "constant", "zeros"] | None
+_Normalize: TypeAlias = Literal["power", "normalize", "amplitude"] | bool
 
 ###
 
+@overload
 def lombscargle(
     x: onp.ToFloat1D,
     y: onp.ToFloat1D,
     freqs: onp.ToFloat1D,
-    precenter: op.CanBool = False,
-    normalize: op.CanBool = False,
     *,
+    precenter: op.JustObject = ...,
+    normalize: _Normalize = False,
+    weights: onp.ToFloat1D | None = None,
+    floating_mean: bool = False,
+) -> _Float1D: ...
+@overload
+@deprecated(
+    "The `precenter` argument is deprecated and will be removed in SciPy 1.19.0. "
+    "The functionality can be substituted by passing `y - y.mean()` to `y`."
+)
+def lombscargle(
+    x: onp.ToFloat1D,
+    y: onp.ToFloat1D,
+    freqs: onp.ToFloat1D,
+    *,
+    precenter: bool,
+    normalize: _Normalize = False,
     weights: onp.ToFloat1D | None = None,
     floating_mean: bool = False,
 ) -> _Float1D: ...

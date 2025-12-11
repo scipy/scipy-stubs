@@ -67,9 +67,9 @@ def lombscargle(
     x: object,
     y: object,
     freqs: object,
-    precenter: object = False,
-    normalize: object = False,
     *,
+    precenter: object = ...,
+    normalize: object = False,
     weights: object | None = None,
     floating_mean: bool = False,
 ) -> object: ...
