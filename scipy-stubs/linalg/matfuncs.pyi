@@ -2,6 +2,8 @@
 
 from typing_extensions import deprecated
 
+from .basic import inv  # pyrefly:ignore[deprecated] # ty:ignore[deprecated]
+
 __all__ = [
     "coshm",
     "cosm",
@@ -48,8 +50,6 @@ def schur(
     sort: object = None,
     check_finite: object = True,
 ) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def inv(a: object, overwrite_a: object = False, check_finite: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def solve(
     a: object,
