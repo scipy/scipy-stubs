@@ -22,11 +22,16 @@ _ToPoints: TypeAlias = Iterable[onp.ToFloat1D]
 ###
 
 class RegularGridInterpolator(Generic[_CT_co]):
-    grid: tuple[onp.ArrayND[_CT_co], ...]
-    values: onp.ArrayND[_CT_co]
+    _grid: tuple[onp.ArrayND[_CT_co], ...]
+    _values: onp.ArrayND[_CT_co]
     method: _Method
     fill_value: float | None
     bounds_error: bool
+
+    @property
+    def grid(self, /) -> tuple[onp.ArrayND[_CT_co], ...]: ...
+    @property
+    def values(self, /) -> onp.ArrayND[_CT_co]: ...
 
     #
     @classmethod
