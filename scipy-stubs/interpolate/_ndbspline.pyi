@@ -26,13 +26,14 @@ _SolverFunc: TypeAlias = Callable[Concatenate[_DesignMatrix, onp.Array2D[np.floa
 ###
 
 class NdBSpline(Generic[_CT_co]):
-    c: onp.ArrayND[np.float64]
     extrapolate: bool
 
     @property
-    def k(self, /) -> tuple[np.int32, ...]: ...
+    def k(self, /) -> tuple[np.int64, ...]: ...
     @property
     def t(self, /) -> tuple[onp.Array1D[np.float64], ...]: ...
+    @property
+    def c(self, /) -> onp.ArrayND[np.float64]: ...
 
     #
     @classmethod
