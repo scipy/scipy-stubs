@@ -1,3 +1,4 @@
+import types
 from collections.abc import Callable, Mapping
 from typing import Any, Final, Generic, Literal, TypeAlias, final, overload
 from typing_extensions import TypeVar
@@ -31,6 +32,10 @@ class SuperLU(Generic[_InexactT_co]):
     L: csc_array[_InexactT_co]  # readonly
     U: csc_array[_InexactT_co]  # readonly
 
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
+
+    #
     @overload
     def solve(self, /, rhs: onp.Array1D[_Real]) -> _Float1D: ...
     @overload
