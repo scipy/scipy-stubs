@@ -22,7 +22,6 @@ BUNDLED = (
 )
 # TODO(@jorenham): remove when stubs are added for these new SciPy 1.17 modules
 TODO_1_17 = (
-    "scipy.sparse.linalg._funm_multiply_krylov",
     "scipy.spatial.transform._rigid_transform_cy",
     "scipy.spatial.transform._rigid_transform_xp",
     "scipy.spatial.transform._rotation_cy",
