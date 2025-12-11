@@ -35,6 +35,7 @@ def singular_leading_submatrix(
 class IterativeSubproblem(BaseQuadraticSubproblem):
     UPDATE_COEFF: ClassVar[float] = 0.01
     EPS: ClassVar[float | np.float64] = ...
+    MAXITER_DEFAULT: ClassVar[float] = 25
 
     CLOSE_TO_ZERO: Final[float | np.float64]
     dimension: Final[int]
@@ -57,6 +58,7 @@ class IterativeSubproblem(BaseQuadraticSubproblem):
         hessp: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat1D] | None = None,
         k_easy: onp.ToFloat = 0.1,
         k_hard: onp.ToFloat = 0.2,
+        maxiter: float | None = None,
     ) -> None: ...
     @override
     # pyrefly: ignore[bad-param-name-override]

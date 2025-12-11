@@ -1,3 +1,4 @@
+import types
 from collections.abc import Callable, Iterable, Sequence
 from typing import Any, Concatenate, Final, Generic, Literal, NotRequired, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar
@@ -43,6 +44,10 @@ class _Constraint(_BaseConstraint[_ShapeT_co], Generic[_ShapeT_co, _ScalarT_co])
 ###
 
 class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_co]):
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
+
+    #
     @overload
     def __init__(
         self: Bounds[tuple[int], np.int_],
@@ -166,6 +171,8 @@ class PreparedConstraint(_BaseConstraint[_ShapeT_co], Generic[_ShapeT_co]):  # u
     lb: onp.ArrayND[np.float64, _ShapeT_co]
     ub: onp.ArrayND[np.float64, _ShapeT_co]
 
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
     def __init__(
         self,
         /,

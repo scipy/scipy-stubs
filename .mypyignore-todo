@@ -1,15 +1,3 @@
-scipy.optimize.Bounds.__class_getitem__
-scipy.optimize._constraints.Bounds.__class_getitem__
-scipy.optimize.InverseJacobian.__class_getitem__
-scipy.optimize.nonlin.InverseJacobian.__class_getitem__
-scipy.optimize._nonlin.InverseJacobian.__class_getitem__
-scipy.optimize._constraints.PreparedConstraint.__class_getitem__
-scipy.optimize._nonlin.GenericBroyden.__class_getitem__
-scipy.optimize._nonlin.Jacobian.__class_getitem__
-scipy.optimize._nonlin.LowRankMatrix.__class_getitem__
-scipy.optimize._trustregion_exact.IterativeSubproblem.MAXITER_DEFAULT
-scipy.optimize._trustregion_exact.IterativeSubproblem.__init__
-
 scipy.signal.ShortTimeFFT.__class_getitem__
 scipy.signal._short_time_fft.ShortTimeFFT.__class_getitem__
 scipy.signal.besselap

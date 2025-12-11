@@ -134,6 +134,8 @@ class _MinimizeOptions(TypedDict, total=False):
     inexact: onp.ToBool
     # TNC (list of floats), COBYQA (bool)
     scale: Sequence[_Floating] | onp.ToBool
+    # trust-exact
+    subproblem_maxiter: float
 
 @type_check_only
 class _MinimizeScalarOptionsCommon(TypedDict, total=False):
