@@ -1,7 +1,8 @@
 # mypy: disable-error-code="explicit-override"
 
 from collections.abc import Sequence
-from typing import Any, ClassVar, Generic, Literal, SupportsIndex, TypeAlias, overload, type_check_only
+from types import EllipsisType
+from typing import Any, ClassVar, Generic, Literal, Never, Self, SupportsIndex, TypeAlias, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
@@ -37,6 +38,8 @@ _JustND: TypeAlias = onp.SequenceND[op.Just[_T]]
 
 _Axes: TypeAlias = int | tuple[Sequence[int], Sequence[int]]
 _ToShapeMin3D: TypeAlias = tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]]  # ndim > 2
+
+_IndexSlice: TypeAlias = slice | EllipsisType | list[int] | _spbase[np.intp] | onp.ArrayND[np.intp]
 
 ###
 
@@ -113,6 +116,34 @@ class _coo_base(_data_matrix[_ScalarT_co, _ShapeT_co], _minmax_mixin[_ScalarT_co
     def tensordot(self: _spbase[_SupFloatT], /, other: _JustND[float], axes: _Axes = 2) -> _ScalarOrDense[_SupFloatT]: ...
     @overload
     def tensordot(self: _spbase[_SupIntT], /, other: _JustND[int], axes: _Axes = 2) -> _ScalarOrDense[_SupIntT]: ...
+
+    #
+    @overload
+    def __getitem__(self, key: _IndexSlice | tuple[()], /) -> Self: ...
+    @overload
+    def __getitem__(self: _coo_base[_ScalarT, tuple[int]], key: int, /) -> _ScalarT: ...
+    @overload
+    def __getitem__(self: _coo_base[_ScalarT, tuple[int]], key: None, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
+    @overload
+    def __getitem__(
+        self: _coo_base[_ScalarT, tuple[int, int]], key: int | tuple[int, _IndexSlice] | tuple[_IndexSlice, int], /
+    ) -> coo_array[_ScalarT, tuple[int]]: ...
+    @overload
+    def __getitem__(self: _coo_base[_ScalarT, tuple[int, int]], key: tuple[int, int], /) -> _ScalarT: ...
+    @overload
+    def __getitem__(
+        self: _coo_base[_ScalarT, tuple[int, int, int, *tuple[int, ...]]],
+        key: tuple[int | _IndexSlice | None, *tuple[int | _IndexSlice | None, ...]] | int | None,
+        /,
+    ) -> coo_array[_ScalarT]: ...
+
+    #
+    def __setitem__(
+        self,
+        key: tuple[int | _IndexSlice | None, ...] | int | _IndexSlice | None,
+        val: onp.ToComplex | onp.ToComplexND | _spbase,
+        /,
+    ) -> None: ...
 
 class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):
     # NOTE: These four methods do not exist at runtime.
@@ -691,5 +722,13 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
 
     #
     def __setstate__(self, state: dict[str, Any], /) -> None: ...
+
+    #
+    @override
+    def __getitem__(self, key: Never, /) -> Never: ...  # type:ignore[override] # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+
+    # note the missing value parameter: https://github.com/scipy/scipy/pull/24145
+    @override
+    def __setitem__(self, key: Never, /) -> None: ...  # type:ignore[override] # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
 
 def isspmatrix_coo(x: object) -> TypeIs[coo_matrix]: ...
