@@ -1,5 +1,6 @@
+import types
 from collections.abc import Callable
-from typing import Any, Concatenate, Generic, TypeAlias, overload
+from typing import Any, Concatenate, Generic, Self, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -25,13 +26,20 @@ _SolverFunc: TypeAlias = Callable[Concatenate[_DesignMatrix, onp.Array2D[np.floa
 ###
 
 class NdBSpline(Generic[_CT_co]):
-    c: onp.ArrayND[np.float64]
     extrapolate: bool
 
     @property
-    def k(self, /) -> tuple[np.int32, ...]: ...
+    def k(self, /) -> tuple[np.int64, ...]: ...
     @property
     def t(self, /) -> tuple[onp.Array1D[np.float64], ...]: ...
+    @property
+    def c(self, /) -> onp.ArrayND[np.float64]: ...
+
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+    @classmethod
+    def design_matrix(cls, xvals: onp.ToFloat2D, t: _ToKnots, k: _ToDegrees, extrapolate: onp.ToBool = True) -> _DesignMatrix: ...
 
     #
     @overload
@@ -59,8 +67,7 @@ class NdBSpline(Generic[_CT_co]):
     ) -> onp.ArrayND[_CT_co]: ...
 
     #
-    @classmethod
-    def design_matrix(cls, xvals: onp.ToFloat2D, t: _ToKnots, k: _ToDegrees, extrapolate: onp.ToBool = True) -> _DesignMatrix: ...
+    def derivative(self, /, nu: onp.ToInt1D) -> Self: ...
 
 #
 @overload

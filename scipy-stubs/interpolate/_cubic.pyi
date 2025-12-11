@@ -1,4 +1,4 @@
-from typing import Any, Generic, Literal, Never, TypeAlias, overload
+from typing import Any, ClassVar, Generic, Literal, Never, TypeAlias, overload
 from typing_extensions import TypeAliasType, TypeVar, override
 
 import numpy as np
@@ -70,9 +70,13 @@ class CubicHermiteSpline(PPoly[_CT_co]):
     ) -> None: ...
 
 class PchipInterpolator(CubicHermiteSpline[np.float64]):
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+
     def __init__(self, /, x: onp.ToFloat1D, y: onp.ToFloatND, axis: _ToAxis = 0, extrapolate: bool | None = None) -> None: ...
 
 class Akima1DInterpolator(CubicHermiteSpline[np.float64]):
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+
     def __init__(
         self,
         /,
@@ -138,13 +142,13 @@ def pchip_interpolate(
 # undocumented
 @overload
 def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToFloatND, axis: _AxisT, dydx: onp.ToFloatND | None = None
+    x: onp.ToFloat1D, y: onp.ToFloatND, axis: _AxisT, dydx: onp.ToFloatND | None = None, xp: None = None
 ) -> _PreparedInput[np.float64, _AxisT]: ...
 @overload
 def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToJustComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None
+    x: onp.ToFloat1D, y: onp.ToJustComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
 ) -> _PreparedInput[np.complex128, _AxisT]: ...
 @overload
 def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None
+    x: onp.ToFloat1D, y: onp.ToComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
 ) -> _PreparedInput[Any, _AxisT]: ...

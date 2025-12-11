@@ -11,6 +11,8 @@ from ._bsplines import BSpline
 _Float: TypeAlias = float | np.float32 | np.float64 | np.longdouble
 _Float64: TypeAlias = float | np.float64
 
+_BCType: TypeAlias = Literal["periodic", "not-a-knot"]
+
 @type_check_only
 class _RootRatiBunch(Bunch):
     root: _Float
@@ -31,7 +33,7 @@ class F:  # undocumented
     t: onp.Array1D[np.float64]
     k: int
     w: onp.Array1D[np.float64] | None
-    s: _Float
+    s: float
 
     YY: onp.Array2D[np.float64]
     AA: onp.Array2D[np.float64]
@@ -55,7 +57,40 @@ class F:  # undocumented
         R: onp.Array2D[np.float64] | None = None,
         Y: onp.Array2D[np.float64] | None = None,
     ) -> None: ...
-    def __call__(self, /, p: onp.ToFloat) -> _Float: ...
+    def __call__(self, /, p: float) -> float: ...
+
+class Fperiodic:  # undocumented
+    x: onp.Array1D[np.float64]
+    y: onp.Array2D[np.float64]
+    t: onp.Array1D[np.float64]
+    k: int
+    s: float
+    w: onp.Array1D[np.float64] | None
+
+    G1_: onp.Array2D[np.float64]
+    G2_: onp.Array2D[np.float64]
+    H1_: onp.Array2D[np.float64]
+    H2_: onp.Array2D[np.float64]
+    Z_: onp.Array2D[np.float64]
+    offset_: onp.Array1D[np.float64]
+
+    def __init__(
+        self,
+        /,
+        x: onp.Array1D[np.float64],
+        y: onp.Array2D[np.float64],
+        t: onp.Array1D[np.float64],
+        k: int,
+        s: float,
+        w: onp.Array1D[np.float64] | None = None,
+        *,
+        R: onp.Array2D[np.float64] | None = None,
+        Y: onp.Array2D[np.float64] | None = None,
+        A1: onp.Array2D[np.float64] | None = None,
+        A2: onp.Array2D[np.float64] | None = None,
+        Z: onp.Array2D[np.float64] | None = None,
+    ) -> None: ...
+    def __call__(self, /, p: float) -> float: ...
 
 class Bunch: ...  # undocumented
 
@@ -95,6 +130,7 @@ def generate_knots(
     k: op.JustInt = 3,
     s: onp.ToFloat = 0,
     nest: op.JustInt | None = None,
+    bc_type: _BCType | None = None,
 ) -> Generator[onp.Array1D[np.float64]]: ...
 
 #
@@ -109,6 +145,7 @@ def make_splrep(
     s: onp.ToFloat = 0,
     t: onp.ToFloat1D | None = None,
     nest: op.JustInt | None = None,
+    bc_type: _BCType | None = None,
 ) -> BSpline: ...
 
 #
@@ -123,4 +160,5 @@ def make_splprep(
     s: onp.ToFloat = 0,
     t: onp.ToFloat1D | None = None,
     nest: op.JustInt | None = None,
+    bc_type: _BCType | None = None,
 ) -> tuple[BSpline, onp.Array1D[npc.floating]]: ...

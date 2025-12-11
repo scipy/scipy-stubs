@@ -1,3 +1,4 @@
+import types
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from typing import Any, ClassVar, Final, Generic, Protocol, Self, SupportsIndex, TypeAlias, final, overload, type_check_only
@@ -36,6 +37,11 @@ class _Interpolator1D(Generic[_YT_co]):  # undocumented
     _y_extra_shape: tuple[int, ...] | None
     dtype: type[_YT_co] | None
 
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+
+    #
     @overload  # no yi (default); unknown dtype
     def __init__(self, /, xi: onp.ToFloatND | None = None, yi: None = None, axis: int | None = None) -> None: ...
     @overload  # floating yi (positional)

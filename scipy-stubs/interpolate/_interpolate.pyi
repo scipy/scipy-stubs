@@ -1,3 +1,4 @@
+import types
 from typing import Any, Final, Generic, Literal, Never, Self, TypeAlias, overload
 from typing_extensions import TypeVar, deprecated
 
@@ -10,7 +11,7 @@ from ._polyint import _Interpolator1D
 
 __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
 
-_NumberT = TypeVar("_NumberT", bound=np.number[Any], default=np.float64)
+_NumberT = TypeVar("_NumberT", bound=npc.number, default=np.float64)
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
 _ToAxis: TypeAlias = int | npc.integer
@@ -81,13 +82,29 @@ class interp1d(_Interpolator1D):  # legacy
     ) -> None: ...
 
 class _PPolyBase(Generic[_CT_co]):
-    __slots__ = "axis", "c", "extrapolate", "x"
+    __slots__ = "_asarray", "_c", "_x", "axis", "extrapolate"
 
-    c: _Array2ND[_CT_co]
-    x: onp.Array1D[np.float64]
+    _c: _Array2ND[_CT_co]
+    _x: onp.Array1D[np.float64]
     extrapolate: Final[_Extrapolate]
     axis: Final[int]
 
+    @property
+    def c(self, /) -> _Array2ND[_CT_co]: ...
+    @c.setter
+    def c(self, c: onp.ToComplexND, /) -> None: ...
+
+    #
+    @property
+    def x(self, /) -> onp.Array1D[np.float64]: ...
+    @x.setter
+    def x(self, x: onp.ToFloat1D, /) -> None: ...
+
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+
+    #
     @classmethod
     def construct_fast(
         cls,

@@ -1,3 +1,4 @@
+import types
 from typing import Any, Generic, Literal, Self, TypeAlias, TypeVar, overload
 
 import numpy as np
@@ -29,6 +30,10 @@ class BSpline(Generic[_CT_co]):
 
     @property
     def tck(self, /) -> tuple[onp.Array1D[np.float64], onp.Array[onp.AtLeast1D[Any], _CT_co], int]: ...
+
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
 
     #
     @overload
@@ -187,4 +192,4 @@ def make_smoothing_spline(
 ) -> BSpline[np.float64]: ...
 
 #
-def fpcheck(x: onp.ToFloat1D, t: onp.ToFloat1D, k: onp.ToJustInt) -> None: ...  # undocumented
+def fpcheck(x: onp.ToFloat1D, t: onp.ToFloat1D, k: int, periodic: bool = False) -> None: ...  # undocumented
