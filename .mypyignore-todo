@@ -33,14 +33,10 @@ scipy.sparse.linalg._eigen.eigsh
 scipy.sparse.linalg._eigen.arpack.eigsh
 scipy.sparse.linalg._eigen.arpack.arpack.eigsh
 scipy.sparse.linalg._svdp._AProd.__call__
-scipy.sparse.linalg.LinearOperator.__class_getitem__
 scipy.sparse.linalg.SuperLU.__class_getitem__
 scipy.sparse.linalg._dsolve.SuperLU.__class_getitem__
 scipy.sparse.linalg._dsolve._superlu.SuperLU.__class_getitem__
-scipy.sparse.linalg._interface.LinearOperator.__class_getitem__
 scipy.sparse.linalg.dsolve.SuperLU.__class_getitem__
-scipy.sparse.linalg.interface.LinearOperator.__class_getitem__
-scipy.sparse.linalg.matfuncs.LinearOperator.__class_getitem__
 
 scipy.spatial.KDTree.query
 scipy.spatial.kdtree.KDTree.query

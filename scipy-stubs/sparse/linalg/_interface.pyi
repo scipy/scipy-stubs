@@ -1,5 +1,5 @@
 # mypy: disable-error-code="override"
-
+import types
 from collections.abc import Callable, Iterable
 from typing import Any, ClassVar, Final, Generic, Protocol, Self, TypeAlias, final, overload, type_check_only
 from typing_extensions import TypeVar, override
@@ -62,6 +62,9 @@ class LinearOperator(Generic[_SCT_co]):
 
     shape: Final[tuple[int, int]]
     dtype: np.dtype[_SCT_co]
+
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
 
     # keep in sync with `_CustomLinearOperator.__init__`
     @overload  # no dtype
