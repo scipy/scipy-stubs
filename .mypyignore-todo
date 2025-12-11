@@ -1,7 +1,5 @@
 scipy.sparse.__all__
 scipy.sparse._construct.__all__
-scipy.sparse.expand_dims
-scipy.sparse._construct.expand_dims
 scipy.sparse.permute_dims
 scipy.sparse._construct.permute_dims
 scipy.sparse.swapaxes

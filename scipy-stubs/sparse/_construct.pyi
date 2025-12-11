@@ -24,6 +24,7 @@ __all__ = [
     "bmat",
     "diags",
     "diags_array",
+    "expand_dims",
     "eye",
     "eye_array",
     "hstack",
@@ -82,6 +83,22 @@ _ToMatsDiagUnknown: TypeAlias = Iterable[_spbase | onp.ArrayND[_Numeric] | compl
 @type_check_only
 class _DataSampler(Protocol):
     def __call__(self, /, *, size: int) -> onp.ArrayND[_Numeric]: ...
+
+###
+#
+
+@overload  # nasty workaround for https://github.com/microsoft/pyright/issues/10232
+def expand_dims(  # type: ignore[overload-overlap]
+    A: sparray[_SCT, tuple[Never] | tuple[Never, Never]], /, *, axis: int = 0
+) -> coo_array[_SCT, tuple[int, int, *tuple[Any, ...]]]: ...
+@overload
+def expand_dims(A: sparray[_SCT, tuple[int]], /, *, axis: int = 0) -> coo_array[_SCT, tuple[int, int]]: ...
+@overload
+def expand_dims(A: sparray[_SCT, tuple[int, int]], /, *, axis: int = 0) -> coo_array[_SCT, tuple[int, int, int]]: ...
+@overload
+def expand_dims(A: sparray[_SCT, tuple[int, int, int]], /, *, axis: int = 0) -> coo_array[_SCT, tuple[int, int, int, int]]: ...
+@overload  # TODO(@jorenham): shape-typing for coo_matrix
+def expand_dims(A: spmatrix[_SCT], /, *, axis: int = 0) -> coo_matrix[_SCT]: ...
 
 ###
 @overload  # diagonals: <complex>, format: "dia" | None, dtype: None
