@@ -11,6 +11,8 @@ from ._bsplines import BSpline
 _Float: TypeAlias = float | np.float32 | np.float64 | np.longdouble
 _Float64: TypeAlias = float | np.float64
 
+_BCType: TypeAlias = Literal["periodic", "not-a-knot"]
+
 @type_check_only
 class _RootRatiBunch(Bunch):
     root: _Float
@@ -128,6 +130,7 @@ def generate_knots(
     k: op.JustInt = 3,
     s: onp.ToFloat = 0,
     nest: op.JustInt | None = None,
+    bc_type: _BCType | None = None,
 ) -> Generator[onp.Array1D[np.float64]]: ...
 
 #

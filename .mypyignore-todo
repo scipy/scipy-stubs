@@ -1,4 +1,3 @@
-scipy.interpolate._fitpack_repro.generate_knots
 scipy.interpolate.make_splprep
 scipy.interpolate._fitpack_repro.make_splprep
 scipy.interpolate.make_splrep
@@ -14,7 +13,6 @@ scipy.interpolate.interpolate.RegularGridInterpolator.grid
 scipy.interpolate.RegularGridInterpolator.values
 scipy.interpolate._rgi.RegularGridInterpolator.values
 scipy.interpolate.interpolate.RegularGridInterpolator.values
-scipy.interpolate.generate_knots
 scipy.interpolate.interpnd.GradientEstimationWarning
 scipy.interpolate.interpnd.NDInterpolatorBase
 scipy.interpolate.interpnd.__all__
