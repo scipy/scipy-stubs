@@ -16,7 +16,6 @@ __all__ = [
     "hilbert",
     "invhilbert",
     "invpascal",
-    "kron",
     "leslie",
     "pascal",
     "toeplitz",
@@ -32,8 +31,6 @@ def hankel(c: object, r: object = None) -> object: ...
 def hadamard(n: object, dtype: object = ...) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def leslie(f: object, s: object) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def kron(a: object, b: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def block_diag(*arrs: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
