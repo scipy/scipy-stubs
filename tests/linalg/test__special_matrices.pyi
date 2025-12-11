@@ -41,6 +41,6 @@ assert_type(hankel(arr_f8_1d, arr_f8_nd), onp.Array2D[np.float64])
 assert_type(hankel(arr_f8_nd, arr_f8_nd), onp.Array2D[np.float64])
 # > deprecated (raveled input)
 # https://github.com/python/mypy/issues/20354
-assert_type(hankel([[0], [1]]), onp.Array2D[np.int_])  # type: ignore[assert-type]  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
-assert_type(hankel([[[0], [1]], [[2], [3]]]), onp.Array2D[np.int_])  # type: ignore[assert-type]   # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
+assert_type(hankel([[0], [1]]), onp.Array2D[np.int_])  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
+assert_type(hankel([[[0], [1]], [[2], [3]]]), onp.Array2D[np.int_])  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
 ###
