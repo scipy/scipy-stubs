@@ -96,10 +96,9 @@ from ._special_matrices import (
     hilbert,
     invhilbert,
     invpascal,
-    kron,  # pyright: ignore[reportUnknownVariableType]
     leslie,  # pyright: ignore[reportUnknownVariableType]
     pascal,
-    toeplitz,
+    toeplitz,  # pyright: ignore[reportUnknownVariableType]
 )
 from .blas import find_best_blas_type, get_blas_funcs
 from .lapack import get_lapack_funcs
@@ -164,7 +163,6 @@ __all__ = [
     "ishermitian",
     "issymmetric",
     "khatri_rao",
-    "kron",
     "lapack",
     "ldl",
     "leslie",

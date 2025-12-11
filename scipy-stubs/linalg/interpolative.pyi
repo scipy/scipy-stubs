@@ -1,5 +1,4 @@
 from typing import SupportsIndex, TypeAlias, TypeVar
-from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
@@ -13,11 +12,9 @@ __all__ = [
     "estimate_spectral_norm_diff",
     "id_to_svd",
     "interp_decomp",
-    "rand",
     "reconstruct_interp_matrix",
     "reconstruct_matrix_from_id",
     "reconstruct_skel_matrix",
-    "seed",
     "svd",
 ]
 
@@ -26,11 +23,6 @@ _Inexact1D: TypeAlias = onp.Array1D[npc.inexact]
 _Inexact2D: TypeAlias = onp.Array2D[npc.inexact]
 
 _AnyNumber: TypeAlias = npc.number
-
-@deprecated("will be removed in SciPy 1.17.0.")
-def seed(seed: None = None) -> None: ...
-@deprecated("will be removed in SciPy 1.17.0.")
-def rand(*shape: int) -> onp.ArrayND[np.float64]: ...
 
 #
 def interp_decomp(

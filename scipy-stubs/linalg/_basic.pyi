@@ -1,7 +1,7 @@
 # mypy: disable-error-code=overload-overlap
 
 from collections.abc import Sequence
-from typing import Final, Literal, TypeAlias, TypeVar, overload
+from typing import Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op
@@ -68,8 +68,6 @@ _Singular: TypeAlias = Literal["lstsq", "raise"]
 _LapackDriver: TypeAlias = Literal["gelsd", "gelsy", "gelss"]
 
 ###
-
-lapack_cast_dict: Final[dict[str, str]] = ...
 
 @overload  # 2D ~float64, +float64
 def solve(
@@ -995,44 +993,84 @@ def solve_circulant(
 
 #
 @overload  # 2d bool sequence
-def inv(a: Sequence[Sequence[bool]], overwrite_a: bool = False, check_finite: bool = True) -> onp.Array2D[np.float32]: ...
+def inv(
+    a: Sequence[Sequence[bool]],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
+) -> onp.Array2D[np.float32]: ...
 @overload  # Nd bool sequence
-def inv(a: Sequence[onp.SequenceND[bool]], overwrite_a: bool = False, check_finite: bool = True) -> onp.ArrayND[np.float32]: ...
+def inv(
+    a: Sequence[onp.SequenceND[bool]],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
+) -> onp.ArrayND[np.float32]: ...
 @overload  # 2d float or int sequence
 def inv(
-    a: Sequence[Sequence[op.JustFloat | op.JustInt]], overwrite_a: bool = False, check_finite: bool = True
+    a: Sequence[Sequence[op.JustFloat | op.JustInt]],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
 ) -> onp.Array2D[np.float64]: ...
 @overload  # Nd float or int sequence
 def inv(
-    a: Sequence[onp.SequenceND[op.JustFloat | op.JustInt]], overwrite_a: bool = False, check_finite: bool = True
+    a: Sequence[onp.SequenceND[op.JustFloat | op.JustInt]],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # 2d complex sequence
 def inv(
-    a: Sequence[Sequence[op.JustComplex]], overwrite_a: bool = False, check_finite: bool = True
+    a: Sequence[Sequence[op.JustComplex]],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
 ) -> onp.Array2D[np.complex128]: ...
 @overload  # Nd complex sequence
 def inv(
-    a: Sequence[onp.SequenceND[op.JustComplex]], overwrite_a: bool = False, check_finite: bool = True
+    a: Sequence[onp.SequenceND[op.JustComplex]],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # generic shape, as float32
 def inv(
     a: onp.CanArrayND[np.float32 | npc.number16 | npc.integer8 | np.bool_, _ShapeT],
     overwrite_a: bool = False,
     check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
 ) -> onp.ArrayND[np.float32, _ShapeT]: ...
 @overload  # generic shape, as float64
 def inv(
     a: onp.CanArrayND[np.float64 | npc.floating80 | npc.integer64 | npc.integer32, _ShapeT],
     overwrite_a: bool = False,
     check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # generic shape, as complex64
 def inv(
-    a: onp.CanArrayND[np.complex64, _ShapeT], overwrite_a: bool = False, check_finite: bool = True
+    a: onp.CanArrayND[np.complex64, _ShapeT],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
 ) -> onp.ArrayND[np.complex64, _ShapeT]: ...
 @overload  # generic shape, as complex128
 def inv(
-    a: onp.CanArrayND[np.complex128 | npc.complexfloating160, _ShapeT], overwrite_a: bool = False, check_finite: bool = True
+    a: onp.CanArrayND[np.complex128 | npc.complexfloating160, _ShapeT],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
 ) -> onp.ArrayND[np.complex128, _ShapeT]: ...
 
 # NOTE: The order of the overloads has been carefully chosen to avoid triggering a Pyright bug.
