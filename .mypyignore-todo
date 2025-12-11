@@ -2,7 +2,6 @@ scipy.linalg.__all__
 scipy.linalg.kron
 scipy.linalg.special_matrices.kron
 scipy.linalg._special_matrices.kron
-scipy.linalg._basic.lapack_cast_dict
 scipy.linalg.special_matrices.__all__
 scipy.linalg._special_matrices.__all__
 scipy.linalg.interpolative.__all__

@@ -1,7 +1,7 @@
 # mypy: disable-error-code=overload-overlap
 
 from collections.abc import Sequence
-from typing import Final, Literal, TypeAlias, TypeVar, overload
+from typing import Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op
@@ -68,8 +68,6 @@ _Singular: TypeAlias = Literal["lstsq", "raise"]
 _LapackDriver: TypeAlias = Literal["gelsd", "gelsy", "gelss"]
 
 ###
-
-lapack_cast_dict: Final[dict[str, str]] = ...
 
 @overload  # 2D ~float64, +float64
 def solve(
