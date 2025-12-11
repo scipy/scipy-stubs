@@ -1,6 +1,6 @@
 # mypy: disable-error-code="override"
-
 import abc
+import types
 from collections.abc import Callable
 from typing import Any, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar, Unpack, override
@@ -130,6 +130,8 @@ class Jacobian(Generic[_InexactT_co]):  # undocumented
     dtype: np.dtype[_InexactT_co]
     func: Final[_ResidFunc]
 
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
     def __init__(self, /, **kw: Unpack[_JacobianKwargs[_InexactT_co]]) -> None: ...
     #
     @abc.abstractmethod
@@ -148,7 +150,10 @@ class InverseJacobian(Generic[_InexactT_co]):
     def shape(self, /) -> tuple[int, int]: ...
     @property
     def dtype(self, /) -> np.dtype[_InexactT_co]: ...
+
     #
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
     def __init__(self, /, jacobian: Jacobian[_InexactT_co]) -> None: ...
 
 class GenericBroyden(Jacobian[_InexactT_co], Generic[_InexactT_co], metaclass=abc.ABCMeta):
@@ -169,6 +174,8 @@ class LowRankMatrix(Generic[_InexactT_co]):
     ds: Final[list[_InexactND]]
     collapsed: _InexactND | None
 
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
     def __init__(self, /, alpha: float, n: int, dtype: np.dtype[_InexactT_co]) -> None: ...
     def __array__(self, /, dtype: None = None, copy: None = None) -> onp.Array2D[_InexactT_co]: ...
     def solve(self, /, v: _InexactND, tol: float = 0) -> onp.Array2D[_InexactT_co]: ...
