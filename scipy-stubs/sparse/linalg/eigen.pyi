@@ -30,6 +30,7 @@ def eigs(
     Minv: object = None,
     OPinv: object = None,
     OPpart: object = None,
+    rng: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def eigsh(
@@ -46,6 +47,7 @@ def eigsh(
     Minv: object = None,
     OPinv: object = None,
     mode: object = "normal",
+    rng: object = None,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def lobpcg(

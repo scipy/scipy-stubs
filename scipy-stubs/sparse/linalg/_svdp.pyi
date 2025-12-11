@@ -18,17 +18,7 @@ class _AProd(Generic[_NumberT_co]):
     A: LinearOperator[_NumberT_co]
 
     def __init__(self, /, A: onp.ToArray2D[_NumberT_co] | _spbase[_NumberT_co, tuple[int, int]]) -> None: ...
-    def __call__(
-        self,
-        /,
-        transa: str,
-        m: int,
-        n: int,
-        x: onp.Array1D[npc.number],
-        y: onp.Array1D[npc.number],
-        sparm: object,  # unused
-        iparm: object,  # unused
-    ) -> None: ...
+    def __call__(self, /, transa: str, m: int, n: int, x: onp.Array1D[npc.number], y: onp.Array1D[npc.number]) -> None: ...
     @property
     def shape(self) -> tuple[int, int]: ...
     @property
