@@ -66,35 +66,15 @@ def toeplitz(c: onp.ToJustComplex1D, r: onp.ToJustComplex1D | None = None) -> _C
 @overload
 def toeplitz(c: _ToStrict1D[_SCT], r: _ToStrict1D[_SCT] | None = None) -> onp.Array2D[_SCT]: ...
 @overload
-@deprecated(
-    "Beginning in SciPy 1.17, multidimensional input will be treated as a batch, not `ravel`ed. "
-    "To preserve the existing behavior and silence this warning, `ravel` aruments before passing them to `toeplitz`.",
-    category=FutureWarning,
-)
-def toeplitz(c: _ToJustIntStrict2ND, r: _ToJustIntStrict2ND | None = None) -> _Int2D: ...
+def toeplitz(c: _ToStrict2ND[_SCT], r: _ToStrict2ND[_SCT] | None = None) -> _Array3ND[_SCT]: ...
 @overload
-@deprecated(
-    "Beginning in SciPy 1.17, multidimensional input will be treated as a batch, not `ravel`ed. "
-    "To preserve the existing behavior and silence this warning, `ravel` aruments before passing them to `toeplitz`.",
-    category=FutureWarning,
-)
-def toeplitz(c: _ToJustFloatStrict2ND, r: _ToJustFloatStrict2ND | None = None) -> _Float2D: ...
+def toeplitz(c: _ToJustIntStrict2ND, r: _ToJustIntStrict2ND | None = None) -> _Int3ND: ...
 @overload
-@deprecated(
-    "Beginning in SciPy 1.17, multidimensional input will be treated as a batch, not `ravel`ed. "
-    "To preserve the existing behavior and silence this warning, `ravel` aruments before passing them to `toeplitz`.",
-    category=FutureWarning,
-)
-def toeplitz(c: _ToJustComplexStrict2ND, r: _ToJustComplexStrict2ND | None = None) -> _Complex2D: ...
+def toeplitz(c: _ToJustFloatStrict2ND, r: _ToJustFloatStrict2ND | None = None) -> _Float3ND: ...
 @overload
-@deprecated(
-    "Beginning in SciPy 1.17, multidimensional input will be treated as a batch, not `ravel`ed. "
-    "To preserve the existing behavior and silence this warning, `ravel` aruments before passing them to `toeplitz`.",
-    category=FutureWarning,
-)
-def toeplitz(c: _ToStrict2ND[_SCT], r: _ToStrict2ND[_SCT] | None = None) -> onp.Array2D[_SCT]: ...
+def toeplitz(c: _ToJustComplexStrict2ND, r: _ToJustComplexStrict2ND | None = None) -> _Complex3ND: ...
 @overload
-def toeplitz(c: _To1D[_SCT], r: _To1D[_SCT] | None = None) -> onp.Array2D[_SCT]: ...
+def toeplitz(c: _ToND[_SCT], r: _ToND[_SCT] | None = None) -> _Array2ND[_SCT]: ...
 
 #
 @overload
