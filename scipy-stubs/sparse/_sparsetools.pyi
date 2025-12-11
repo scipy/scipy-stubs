@@ -156,6 +156,7 @@ def coo_matmat_dense(a0: _l, a1: _l, a2: _I, a3: _I, a4: _T, a5: _T, a6: _T, /) 
 def coo_matmat_dense_nd(a0: _l, a1: _l, a2: _l, a3: _I, a4: _I, a5: _I, a6: _T, a7: _T, a8: _T, /) -> None: ...  # v lllIIITT*T
 
 # dia.h
+def dia_tocsr(a0: _i, a1: _i, a2: _i, a3: _i, a4: _I, a5: _T, a6: _I, r0: _T, r1: _I, r2: _I, /) -> int: ...  # i iiiiITI*T*I*I
 def dia_matmat(
     a0: _i, a1: _i, a2: _i, a3: _i, a4: _I, a5: _T, a6: _i, a7: _i, a8: _i, a9: _I, a10: _T, a11: _V, a12: _W, /
 ) -> None: ...  # v iiiiITiiiIT*V*W
