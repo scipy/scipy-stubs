@@ -1,7 +1,3 @@
-scipy.interpolate.make_splprep
-scipy.interpolate._fitpack_repro.make_splprep
-scipy.interpolate.make_splrep
-scipy.interpolate._fitpack_repro.make_splrep
 scipy.interpolate._interpolate._PPolyBase.__slots__
 scipy.interpolate.NdBSpline.c
 scipy.interpolate._ndbspline.NdBSpline.c

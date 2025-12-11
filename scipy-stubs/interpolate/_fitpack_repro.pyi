@@ -145,6 +145,7 @@ def make_splrep(
     s: onp.ToFloat = 0,
     t: onp.ToFloat1D | None = None,
     nest: op.JustInt | None = None,
+    bc_type: _BCType | None = None,
 ) -> BSpline: ...
 
 #
@@ -159,4 +160,5 @@ def make_splprep(
     s: onp.ToFloat = 0,
     t: onp.ToFloat1D | None = None,
     nest: op.JustInt | None = None,
+    bc_type: _BCType | None = None,
 ) -> tuple[BSpline, onp.Array1D[npc.floating]]: ...
