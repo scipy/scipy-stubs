@@ -1,4 +1,3 @@
-scipy.interpolate._interpolate._PPolyBase.__slots__
 scipy.interpolate.NdBSpline.c
 scipy.interpolate._ndbspline.NdBSpline.c
 scipy.interpolate.NdBSpline.derivative
