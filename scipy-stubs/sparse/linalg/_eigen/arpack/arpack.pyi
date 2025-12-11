@@ -59,6 +59,7 @@ def eigs(
     Minv: _ToComplexMatrix | None = None,
     OPinv: _ToComplexMatrix | None = None,
     OPpart: _OPpart | None = None,
+    rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array1D[np.complex128], onp.Array2D[np.complex128]]: ...
 @overload  # returns_eigenvectors: falsy (positional)
 def eigs(
@@ -75,6 +76,7 @@ def eigs(
     Minv: _ToComplexMatrix | None = None,
     OPinv: _ToComplexMatrix | None = None,
     OPpart: _OPpart | None = None,
+    rng: onp.random.ToRNG | None = None,
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # returns_eigenvectors: falsy (keyword)
 def eigs(
@@ -92,6 +94,7 @@ def eigs(
     Minv: _ToComplexMatrix | None = None,
     OPinv: _ToComplexMatrix | None = None,
     OPpart: _OPpart | None = None,
+    rng: onp.random.ToRNG | None = None,
 ) -> onp.Array1D[np.complex128]: ...
 
 #
@@ -110,6 +113,7 @@ def eigsh(
     Minv: _ToRealMatrix | None = None,
     OPinv: _ToRealMatrix | None = None,
     mode: _Mode = "normal",
+    rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
 @overload  # complex, returns_eigenvectors: truthy (default)
 def eigsh(
@@ -126,6 +130,7 @@ def eigsh(
     Minv: _ToComplexMatrix | None = None,
     OPinv: _ToComplexMatrix | None = None,
     mode: _Mode = "normal",
+    rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.complex128]]: ...
 @overload  # real or complex (catch-all), returns_eigenvectors: truthy (default)
 def eigsh(
@@ -142,6 +147,7 @@ def eigsh(
     Minv: _ToComplexMatrix | None = None,
     OPinv: _ToComplexMatrix | None = None,
     mode: _Mode = "normal",
+    rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64 | np.complex128]]: ...
 @overload  # real or complex, returns_eigenvectors: falsy (positional)
 def eigsh(
@@ -158,6 +164,7 @@ def eigsh(
     Minv: _ToComplexMatrix | None = None,
     OPinv: _ToComplexMatrix | None = None,
     mode: _Mode = "normal",
+    rng: onp.random.ToRNG | None = None,
 ) -> onp.Array1D[np.float64]: ...
 @overload  # real or complex, returns_eigenvectors: falsy (keyword)
 def eigsh(
@@ -175,4 +182,5 @@ def eigsh(
     Minv: _ToComplexMatrix | None = None,
     OPinv: _ToComplexMatrix | None = None,
     mode: _Mode = "normal",
+    rng: onp.random.ToRNG | None = None,
 ) -> onp.Array1D[np.float64]: ...
