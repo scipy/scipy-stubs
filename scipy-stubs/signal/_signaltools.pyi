@@ -992,16 +992,20 @@ def hilbert(x: onp.ToFloatND, N: int | None = None, axis: int = -1) -> onp.Array
 #
 @overload  # float64 | integer
 def hilbert2(
-    x: onp.ToArray2D[float, np.float64 | npc.integer], N: int | tuple[int, int] | None = None
+    x: onp.ToArray2D[float, np.float64 | npc.integer], N: int | tuple[int, int] | None = None, axes: tuple[int, int] = (-2, -1)
 ) -> onp.Array2D[np.complex128]: ...
 @overload  # float32 | float16
 def hilbert2(
-    x: onp.ToJustFloat32_2D | onp.ToJustFloat16_2D, N: int | tuple[int, int] | None = None
+    x: onp.ToJustFloat32_2D | onp.ToJustFloat16_2D, N: int | tuple[int, int] | None = None, axes: tuple[int, int] = (-2, -1)
 ) -> onp.Array2D[np.complex64]: ...
 @overload  # longdouble
-def hilbert2(x: onp.ToJustLongDouble2D, N: int | tuple[int, int] | None = None) -> onp.Array2D[np.clongdouble]: ...
+def hilbert2(
+    x: onp.ToJustLongDouble2D, N: int | tuple[int, int] | None = None, axes: tuple[int, int] = (-2, -1)
+) -> onp.Array2D[np.clongdouble]: ...
 @overload  # fallback
-def hilbert2(x: onp.ToFloat2D, N: int | tuple[int, int] | None = None) -> onp.Array2D[npc.complexfloating]: ...
+def hilbert2(
+    x: onp.ToFloat2D, N: int | tuple[int, int] | None = None, axes: tuple[int, int] = (-2, -1)
+) -> onp.Array2D[npc.complexfloating]: ...
 
 ###
 

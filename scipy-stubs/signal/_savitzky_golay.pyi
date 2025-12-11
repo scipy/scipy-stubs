@@ -1,12 +1,14 @@
-from typing import Literal, TypeAlias
+from _typeshed import Incomplete
+from types import ModuleType
+from typing import Literal, TypeAlias, overload
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 _Mode: TypeAlias = Literal["mirror", "constant", "nearest", "wrap", "interp"]
 
+@overload
 def savgol_coeffs(
     window_length: int,
     polyorder: int,
@@ -14,7 +16,21 @@ def savgol_coeffs(
     delta: float = 1.0,
     pos: int | None = None,
     use: Literal["conv", "dot"] = "conv",
-) -> onp.Array1D[npc.floating]: ...
+    xp: None = None,
+    device: None = None,
+) -> onp.Array1D[np.float64]: ...
+@overload
+def savgol_coeffs(
+    window_length: int,
+    polyorder: int,
+    deriv: int = 0,
+    delta: float = 1.0,
+    pos: int | None = None,
+    use: Literal["conv", "dot"] = "conv",
+    *,
+    xp: ModuleType,
+    device: object | None = None,
+) -> Incomplete: ...
 
 #
 def savgol_filter(

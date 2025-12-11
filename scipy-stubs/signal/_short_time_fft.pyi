@@ -1,3 +1,4 @@
+import types
 from collections.abc import Callable
 from typing import Any, Final, Generic, Literal, Self, TypeAlias, overload
 from typing_extensions import TypeVar
@@ -47,6 +48,8 @@ class ShortTimeFFT(Generic[_InexactT_co]):
     _cache_t: tuple[tuple[int, int | None, int | None, int, float], onp.Array1D[np.float64]] = ...
     _cache_f: tuple[tuple[_FFTMode, int, float], onp.Array1D[np.float64]] = ...
 
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
     @classmethod
     def from_dual(
         cls,

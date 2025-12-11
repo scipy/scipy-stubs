@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from typing import Literal, TypeAlias, overload
+from typing_extensions import deprecated
 
 import numpy as np
 import optype as op
@@ -20,16 +21,33 @@ _Scaling: TypeAlias = Literal["density", "spectrum"]
 _LegacyScaling: TypeAlias = Literal["psd", "spectrum"]
 _Average: TypeAlias = Literal["mean", "median"]
 _Boundary: TypeAlias = Literal["even", "odd", "constant", "zeros"] | None
+_Normalize: TypeAlias = Literal["power", "normalize", "amplitude"] | bool
 
 ###
 
+@overload
 def lombscargle(
     x: onp.ToFloat1D,
     y: onp.ToFloat1D,
     freqs: onp.ToFloat1D,
-    precenter: op.CanBool = False,
-    normalize: op.CanBool = False,
     *,
+    precenter: op.JustObject = ...,
+    normalize: _Normalize = False,
+    weights: onp.ToFloat1D | None = None,
+    floating_mean: bool = False,
+) -> _Float1D: ...
+@overload
+@deprecated(
+    "The `precenter` argument is deprecated and will be removed in SciPy 1.19.0. "
+    "The functionality can be substituted by passing `y - y.mean()` to `y`."
+)
+def lombscargle(
+    x: onp.ToFloat1D,
+    y: onp.ToFloat1D,
+    freqs: onp.ToFloat1D,
+    *,
+    precenter: bool,
+    normalize: _Normalize = False,
     weights: onp.ToFloat1D | None = None,
     floating_mean: bool = False,
 ) -> _Float1D: ...
@@ -50,7 +68,7 @@ def periodogram(
 def welch(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -66,7 +84,7 @@ def csd(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -82,7 +100,7 @@ def csd(
 def spectrogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = ("tukey", 0.25),
+    window: _ToWindow = ("tukey_periodic", 0.25),
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -110,7 +128,7 @@ def spectrogram(
 def spectrogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = ("tukey", 0.25),
+    window: _ToWindow = ("tukey_periodic", 0.25),
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -130,7 +148,7 @@ def check_NOLA(window: _ToWindow, nperseg: onp.ToInt, noverlap: onp.ToInt, tol: 
 def stft(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt = 256,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -147,7 +165,7 @@ def stft(
 def istft(
     Zxx: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -175,7 +193,7 @@ def istft(
 def istft(
     Zxx: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -192,7 +210,7 @@ def coherence(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
