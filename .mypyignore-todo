@@ -1,8 +1,3 @@
-scipy.interpolate.interpnd.GradientEstimationWarning
-scipy.interpolate.interpnd.NDInterpolatorBase
-scipy.interpolate.interpnd.__all__
-scipy.interpolate.interpnd.estimate_gradients_2d_global
-
 scipy.linalg.__all__
 scipy.linalg._basic.inv
 scipy.linalg._basic.lapack_cast_dict
