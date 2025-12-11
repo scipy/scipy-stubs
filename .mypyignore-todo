@@ -1,7 +1,3 @@
-scipy.sparse.__all__
-scipy.sparse._construct.__all__
-scipy.sparse.swapaxes
-scipy.sparse._construct.swapaxes
 scipy.sparse._coo._coo_base.__getitem__
 scipy.sparse._coo._coo_base.__setitem__
 scipy.sparse._coo.coo_matrix.__getitem__

@@ -19,6 +19,7 @@ from ._construct import (
     random,
     random_array,
     spdiags,
+    swapaxes,
     vstack,
 )
 from ._coo import coo_array, coo_matrix, isspmatrix_coo
@@ -98,6 +99,7 @@ __all__ = [
     "spdiags",
     "spmatrix",
     "sputils",
+    "swapaxes",
     "tril",
     "triu",
     "vstack",

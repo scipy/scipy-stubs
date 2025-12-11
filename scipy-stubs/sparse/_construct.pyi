@@ -36,6 +36,7 @@ __all__ = [
     "random",
     "random_array",
     "spdiags",
+    "swapaxes",
     "vstack",
 ]
 
@@ -103,6 +104,12 @@ def expand_dims(A: spmatrix[_SCT0], /, *, axis: int = 0) -> coo_matrix[_SCT0]: .
 
 #
 @overload
+def swapaxes(A: sparray[_SCT0, _ShapeT], axis1: int, axis2: int) -> coo_array[_SCT0, _ShapeT]: ...
+@overload  # TODO(@jorenham): shape-typing for coo_matrix
+def swapaxes(A: spmatrix[_SCT0], axis1: int, axis2: int) -> coo_matrix[_SCT0]: ...
+
+#
+@overload
 def permute_dims(A: sparray[_SCT0, _ShapeT], axes: Seq[int] | None = None, copy: bool = False) -> coo_array[_SCT0, _ShapeT]: ...
 @overload  # TODO(@jorenham): shape-typing for coo_matrix
 def permute_dims(A: spmatrix[_SCT0], axes: Seq[int] | None = None, copy: bool = False) -> coo_matrix[_SCT0]: ...
@@ -116,7 +123,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtDIA | None = None,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> dia_array[np.float64] | dia_array[np.complex128]: ...
 @overload  # diagonals: <complex>, format: "bsr", dtype: None
 def diags_array(
