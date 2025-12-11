@@ -1,5 +1,8 @@
+# pyright: reportDeprecated=false
+
 from collections.abc import Callable, Iterable
 from typing import Any, Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
@@ -54,13 +57,19 @@ class _FullOutput(TypedDict):
 
 ###
 
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class OdrWarning(UserWarning): ...
+
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class OdrError(Exception): ...
+
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class OdrStop(Exception): ...
 
 odr_error = OdrError
 odr_stop = OdrStop
 
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class Data:
     x: Final[onp.ArrayND[_ToFloatScalar]]
     y: Final[onp.ArrayND[_ToFloatScalar] | _ToFloatScalar | None]
@@ -81,6 +90,7 @@ class Data:
     ) -> None: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class RealData(Data):
     sx: Final[onp.ArrayND[_ToFloatScalar] | None]
     sy: Final[onp.ArrayND[_ToFloatScalar] | None]
@@ -186,6 +196,7 @@ class RealData(Data):
         meta: dict[str, Any] | None = None,
     ) -> None: ...
 
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class Model:
     fcn: Final[_FCN]
     fjacb: Final[_FCN]
@@ -207,6 +218,7 @@ class Model:
     ) -> None: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class Output:
     beta: Final[onp.Array1D[np.float64]]
     sd_beta: Final[onp.Array1D[np.float64]]
@@ -231,6 +243,7 @@ class Output:
     def __init__(self, /, output: _RawOutput | _RawOutputFull) -> None: ...
     def pprint(self, /) -> None: ...
 
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class ODR:
     data: Final[Data]
     model: Final[Model]
@@ -307,6 +320,7 @@ class ODR:
     def restart(self, /, iter: int | None = None) -> Output: ...
 
 @overload
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 def odr(
     fcn: _FCN,
     beta0: onp.ToFloat1D,
@@ -337,6 +351,7 @@ def odr(
     full_output: onp.ToFalse = 0,
 ) -> _RawOutput: ...
 @overload
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 def odr(
     fcn: _FCN,
     beta0: onp.ToFloat1D,

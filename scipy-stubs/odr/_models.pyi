@@ -1,4 +1,7 @@
+# pyright: reportDeprecated=false
+
 from typing import Final, type_check_only
+from typing_extensions import deprecated
 
 import optype.numpy as onp
 
@@ -18,11 +21,19 @@ class _SimpleModel(_NamedModel):
 
 ###
 
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class _MultilinearModel(_SimpleModel): ...
+
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class _ExponentialModel(_SimpleModel): ...
+
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class _UnilinearModel(_SimpleModel): ...
+
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 class _QuadraticModel(_SimpleModel): ...
 
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
 def polynomial(order: onp.ToInt | onp.ToInt1D) -> _NamedModel: ...
 
 multilinear: Final[_MultilinearModel] = ...
