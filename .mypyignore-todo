@@ -1,4 +1,3 @@
-scipy.signal._polyutils.polyfit
 scipy.signal.coherence
 scipy.signal.spectral.coherence
 scipy.signal._spectral_py.coherence
