@@ -62,8 +62,6 @@ class _lil_base(_spbase[_ScalarT_co, tuple[int, int]], IndexMixin[_ScalarT_co, t
     def __imul__(self, other: onp.ToComplex, /) -> Self: ...  # type: ignore[override]
     @override
     def __itruediv__(self, other: onp.ToComplex, /) -> Self: ...  # type: ignore[override]
-    @override
-    def __idiv__(self, other: onp.ToComplex, /) -> Self: ...
 
     #
     @override

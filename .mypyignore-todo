@@ -18,7 +18,6 @@ scipy.sparse.coo_matrix.__getitem__
 scipy.sparse.coo_matrix.__setitem__
 scipy.sparse.extract.coo_matrix.__getitem__
 scipy.sparse.extract.coo_matrix.__setitem__
-scipy.sparse._lil._lil_base.__idiv__
 scipy.sparse._sparsetools.dia_tocsr
 
 scipy.spatial.KDTree.query
