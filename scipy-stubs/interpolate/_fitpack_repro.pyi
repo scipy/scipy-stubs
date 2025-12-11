@@ -31,7 +31,7 @@ class F:  # undocumented
     t: onp.Array1D[np.float64]
     k: int
     w: onp.Array1D[np.float64] | None
-    s: _Float
+    s: float
 
     YY: onp.Array2D[np.float64]
     AA: onp.Array2D[np.float64]
@@ -55,7 +55,40 @@ class F:  # undocumented
         R: onp.Array2D[np.float64] | None = None,
         Y: onp.Array2D[np.float64] | None = None,
     ) -> None: ...
-    def __call__(self, /, p: onp.ToFloat) -> _Float: ...
+    def __call__(self, /, p: float) -> float: ...
+
+class Fperiodic:  # undocumented
+    x: onp.Array1D[np.float64]
+    y: onp.Array2D[np.float64]
+    t: onp.Array1D[np.float64]
+    k: int
+    s: float
+    w: onp.Array1D[np.float64] | None
+
+    G1_: onp.Array2D[np.float64]
+    G2_: onp.Array2D[np.float64]
+    H1_: onp.Array2D[np.float64]
+    H2_: onp.Array2D[np.float64]
+    Z_: onp.Array2D[np.float64]
+    offset_: onp.Array1D[np.float64]
+
+    def __init__(
+        self,
+        /,
+        x: onp.Array1D[np.float64],
+        y: onp.Array2D[np.float64],
+        t: onp.Array1D[np.float64],
+        k: int,
+        s: float,
+        w: onp.Array1D[np.float64] | None = None,
+        *,
+        R: onp.Array2D[np.float64] | None = None,
+        Y: onp.Array2D[np.float64] | None = None,
+        A1: onp.Array2D[np.float64] | None = None,
+        A2: onp.Array2D[np.float64] | None = None,
+        Z: onp.Array2D[np.float64] | None = None,
+    ) -> None: ...
+    def __call__(self, /, p: float) -> float: ...
 
 class Bunch: ...  # undocumented
 
