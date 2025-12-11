@@ -32,7 +32,6 @@ scipy.sparse.linalg.eigen.eigsh
 scipy.sparse.linalg._eigen.eigsh
 scipy.sparse.linalg._eigen.arpack.eigsh
 scipy.sparse.linalg._eigen.arpack.arpack.eigsh
-scipy.sparse.linalg._svdp._AProd.__call__
 
 scipy.spatial.KDTree.query
 scipy.spatial.kdtree.KDTree.query
