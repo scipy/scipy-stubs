@@ -1,5 +1,3 @@
-scipy.interpolate.NdBSpline.derivative
-scipy.interpolate._ndbspline.NdBSpline.derivative
 scipy.interpolate.RegularGridInterpolator.grid
 scipy.interpolate._rgi.RegularGridInterpolator.grid
 scipy.interpolate.interpolate.RegularGridInterpolator.grid

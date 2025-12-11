@@ -1,6 +1,6 @@
 import types
 from collections.abc import Callable
-from typing import Any, Concatenate, Generic, TypeAlias, overload
+from typing import Any, Concatenate, Generic, Self, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -38,6 +38,8 @@ class NdBSpline(Generic[_CT_co]):
     #
     @classmethod
     def __class_getitem__(cls, arg: type | object, /) -> types.GenericAlias: ...
+    @classmethod
+    def design_matrix(cls, xvals: onp.ToFloat2D, t: _ToKnots, k: _ToDegrees, extrapolate: onp.ToBool = True) -> _DesignMatrix: ...
 
     #
     @overload
@@ -65,8 +67,7 @@ class NdBSpline(Generic[_CT_co]):
     ) -> onp.ArrayND[_CT_co]: ...
 
     #
-    @classmethod
-    def design_matrix(cls, xvals: onp.ToFloat2D, t: _ToKnots, k: _ToDegrees, extrapolate: onp.ToBool = True) -> _DesignMatrix: ...
+    def derivative(self, /, nu: onp.ToInt1D) -> Self: ...
 
 #
 @overload
