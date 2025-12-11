@@ -50,7 +50,7 @@ def periodogram(
 def welch(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -66,7 +66,7 @@ def csd(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -130,7 +130,7 @@ def check_NOLA(window: _ToWindow, nperseg: onp.ToInt, noverlap: onp.ToInt, tol: 
 def stft(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt = 256,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -147,7 +147,7 @@ def stft(
 def istft(
     Zxx: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -175,7 +175,7 @@ def istft(
 def istft(
     Zxx: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -192,7 +192,7 @@ def coherence(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = "hann",
+    window: _ToWindow = "hann_periodic",
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
