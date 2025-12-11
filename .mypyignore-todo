@@ -1,7 +1,6 @@
 scipy.signal.lombscargle
 scipy.signal.spectral.lombscargle
 scipy.signal._spectral_py.lombscargle
-scipy.signal.spectral.spectrogram
 scipy.signal.ShortTimeFFT.__class_getitem__
 scipy.signal._short_time_fft.ShortTimeFFT.__class_getitem__
 

@@ -82,7 +82,7 @@ def csd(
 def spectrogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = ("tukey", 0.25),
+    window: _ToWindow = ("tukey_periodic", 0.25),
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,
@@ -110,7 +110,7 @@ def spectrogram(
 def spectrogram(
     x: onp.ToComplexND,
     fs: onp.ToFloat = 1.0,
-    window: _ToWindow = ("tukey", 0.25),
+    window: _ToWindow = ("tukey_periodic", 0.25),
     nperseg: onp.ToInt | None = None,
     noverlap: onp.ToInt | None = None,
     nfft: onp.ToInt | None = None,

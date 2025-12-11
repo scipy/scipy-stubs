@@ -117,7 +117,7 @@ def stft(
 def spectrogram(
     x: object,
     fs: object = 1.0,
-    window: object = ("tukey", 0.25),
+    window: object = ("tukey_periodic", 0.25),
     nperseg: object = None,
     noverlap: object = None,
     nfft: object = None,
