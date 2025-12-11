@@ -13,6 +13,7 @@ from ._dsolve import (
 )
 from ._eigen import ArpackError, ArpackNoConvergence, eigs, eigsh, lobpcg, svds
 from ._expm_multiply import expm_multiply
+from ._funm_multiply_krylov import funm_multiply_krylov
 from ._interface import LinearOperator, aslinearoperator
 from ._isolve import bicg, bicgstab, cg, cgs, gcrotmk, gmres, lgmres, lsmr, lsqr, minres, qmr, tfqmr
 from ._matfuncs import expm, inv, matrix_power
@@ -39,6 +40,7 @@ __all__ = [
     "expm",
     "expm_multiply",
     "factorized",
+    "funm_multiply_krylov",
     "gcrotmk",
     "gmres",
     "interface",

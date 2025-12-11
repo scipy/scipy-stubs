@@ -15,7 +15,7 @@ _MatrixT = TypeVar(
 _ScalarT = TypeVar("_ScalarT", bound=npc.inexact)
 
 def funm_multiply_krylov(
-    f: Callable[[_MatrixT], onp.Array2D[_ScalarT]],
+    f: Callable[[_MatrixT], onp.ArrayND[_ScalarT]],
     A: _MatrixT,
     b: onp.Array1D[_ScalarT],
     *,
