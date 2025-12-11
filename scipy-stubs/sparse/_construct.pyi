@@ -3,6 +3,7 @@ from collections.abc import Callable, Iterable, Sequence as Seq
 from typing import Any, Literal, Never, Protocol, TypeAlias, TypeVar, overload, type_check_only
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -101,8 +102,8 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtBSR,
-    dtype: None = None,
-) -> bsr_array[np.float64] | bsr_array[np.complex128]: ...
+    dtype: op.JustObject | None = ...,
+) -> _BSRArray[np.float64] | _BSRArray[np.complex128]: ...
 @overload  # diagonals: <complex>, format: "coo", dtype: None
 def diags_array(
     diagonals: _ComplexSeq1D2D,
@@ -111,7 +112,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtCOO,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> _COOArray2D[np.float64] | _COOArray2D[np.complex128]: ...
 @overload  # diagonals: <complex>, format: "csc", dtype: None
 def diags_array(
@@ -121,8 +122,8 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtCSC,
-    dtype: None = None,
-) -> csc_array[np.float64] | csc_array[np.complex128]: ...
+    dtype: op.JustObject | None = ...,
+) -> _CSCArray[np.float64] | _CSCArray[np.complex128]: ...
 @overload  # diagonals: <complex>, format: "csr", dtype: None
 def diags_array(
     diagonals: _ComplexSeq1D2D,
@@ -131,7 +132,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtCSR,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> _CSRArray2D[np.float64] | _CSRArray2D[np.complex128]: ...
 @overload  # diagonals: <complex>, format: "dok", dtype: None
 def diags_array(
@@ -141,7 +142,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtDOK,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> _DOKArray2D[np.float64] | _DOKArray2D[np.complex128]: ...
 @overload  # diagonals: <complex>, format: "lil", dtype: None
 def diags_array(
@@ -151,8 +152,8 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtLIL,
-    dtype: None = None,
-) -> lil_array[np.float64] | lil_array[np.complex128]: ...
+    dtype: op.JustObject | None = ...,
+) -> _LILArray[np.float64] | _LILArray[np.complex128]: ...
 
 #
 @overload  # diagonals: <known>, format: "dia" | None, dtype: None
@@ -163,7 +164,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtDIA | None = None,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> dia_array[_SCT]: ...
 @overload  # diagonals: <known>, format: "bsr", dtype: None
 def diags_array(
@@ -173,7 +174,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtBSR,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> bsr_array[_SCT]: ...
 @overload  # diagonals: <known>, format: "coo", dtype: None
 def diags_array(
@@ -183,7 +184,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtCOO,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> _COOArray2D[_SCT]: ...
 @overload  # diagonals: <known>, format: "csc", dtype: None
 def diags_array(
@@ -193,7 +194,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtCSC,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> csc_array[_SCT]: ...
 @overload  # diagonals: <known>, format: "csr", dtype: None
 def diags_array(
@@ -203,7 +204,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtCSR,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> _CSRArray2D[_SCT]: ...
 @overload  # diagonals: <known>, format: "dok", dtype: None
 def diags_array(
@@ -213,7 +214,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtDOK,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> _DOKArray2D[_SCT]: ...
 @overload  # diagonals: <known>, format: "lil", dtype: None
 def diags_array(
@@ -223,7 +224,7 @@ def diags_array(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtLIL,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> lil_array[_SCT]: ...
 
 #
@@ -630,7 +631,7 @@ def diags(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtDIA | None = None,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> dia_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "bsr", dtype: None
 def diags(
@@ -639,7 +640,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtBSR,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> bsr_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "coo", dtype: None
 def diags(
@@ -648,7 +649,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtCOO,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> coo_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "csc", dtype: None
 def diags(
@@ -657,7 +658,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtCSC,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> csc_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "csr", dtype: None
 def diags(
@@ -666,7 +667,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtCSR,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> csr_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "dok", dtype: None
 def diags(
@@ -675,7 +676,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtDOK,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> dok_matrix[_SCT]: ...
 @overload  # diagonals: <known>, format: "lil", dtype: None
 def diags(
@@ -684,7 +685,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtLIL,
-    dtype: None = None,
+    dtype: op.JustObject | None = ...,
 ) -> lil_matrix[_SCT]: ...
 
 #
@@ -759,7 +760,7 @@ def diags(
     offsets: _Offsets = 0,
     shape: tuple[int, int] | None = None,
     format: _FmtDIA | None = None,
-    dtype: _ToDType | None = None,
+    dtype: _ToDType | op.JustObject | None = ...,
 ) -> dia_matrix: ...
 @overload  # diagonals: <unknown>, format: "bsr", dtype: <unknown>
 def diags(
@@ -768,7 +769,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtBSR,
-    dtype: _ToDType | None = None,
+    dtype: _ToDType | op.JustObject | None = ...,
 ) -> bsr_matrix: ...
 @overload  # diagonals: <unknown>, format: "coo", dtype: <unknown>
 def diags(
@@ -777,7 +778,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtCOO,
-    dtype: _ToDType | None = None,
+    dtype: _ToDType | op.JustObject | None = ...,
 ) -> coo_matrix: ...
 @overload  # diagonals: <unknown>, format: "csr", dtype: <unknown>
 def diags(
@@ -786,7 +787,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtCSR,
-    dtype: _ToDType | None = None,
+    dtype: _ToDType | op.JustObject | None = ...,
 ) -> csr_matrix: ...
 @overload  # diagonals: <unknown>, format: "csc", dtype: <unknown>
 def diags(
@@ -795,7 +796,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtCSC,
-    dtype: _ToDType | None = None,
+    dtype: _ToDType | op.JustObject | None = ...,
 ) -> csc_matrix: ...
 @overload  # diagonals: <unknown>, format: "dok", dtype: <unknown>
 def diags(
@@ -804,7 +805,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtDOK,
-    dtype: _ToDType | None = None,
+    dtype: _ToDType | op.JustObject | None = ...,
 ) -> dok_matrix: ...
 @overload  # diagonals: <unknown>, format: "lil", dtype: <unknown>
 def diags(
@@ -813,7 +814,7 @@ def diags(
     shape: tuple[int, int] | None = None,
     *,
     format: _FmtLIL,
-    dtype: _ToDType | None = None,
+    dtype: _ToDType | op.JustObject | None = ...,
 ) -> lil_matrix: ...
 
 ###
