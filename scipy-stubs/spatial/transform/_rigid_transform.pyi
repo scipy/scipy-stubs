@@ -1,5 +1,3 @@
-# https://github.com/scipy/scipy/blob/maintenance/1.16.x/scipy/spatial/transform/_rigid_transform.pyx
-
 from collections.abc import Iterable, Iterator
 from typing import Any, Self, TypeAlias, overload
 
