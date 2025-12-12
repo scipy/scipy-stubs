@@ -1,6 +1,3 @@
-scipy.spatial.KDTree.query
-scipy.spatial.kdtree.KDTree.query
-scipy.spatial._kdtree.KDTree.query
 scipy.spatial.distance.sokalmichener
 scipy.spatial._distance_pybind.cdist_sokalmichener
 scipy.spatial._distance_wrap.cdist_sokalmichener_bool_wrap
