@@ -117,33 +117,30 @@ class Rotation:
     ) -> Self: ...
     #
     @overload
-    @classmethod
+    @staticmethod
     def align_vectors(
-        cls,
         a: onp.ToFloat1D | onp.ToFloat2D,
         b: onp.ToFloat1D | onp.ToFloat2D,
         weights: onp.ToFloat1D | None = None,
         return_sensitivity: L[False] = False,
-    ) -> tuple[Self, float]: ...
+    ) -> tuple[Rotation, float]: ...
     @overload
-    @classmethod
+    @staticmethod
     def align_vectors(
-        cls,
         a: onp.ToFloat1D | onp.ToFloat2D,
         b: onp.ToFloat1D | onp.ToFloat2D,
         weights: onp.ToFloat1D | None = None,
         *,
         return_sensitivity: L[True],
-    ) -> tuple[Self, float, _Float2D]: ...
+    ) -> tuple[Rotation, float, _Float2D]: ...
     @overload
-    @classmethod
+    @staticmethod
     def align_vectors(
-        cls,
         a: onp.ToFloat1D | onp.ToFloat2D,
         b: onp.ToFloat1D | onp.ToFloat2D,
         weights: onp.ToFloat1D | None,
         return_sensitivity: L[True],
-    ) -> tuple[Self, float, _Float2D]: ...
+    ) -> tuple[Rotation, float, _Float2D]: ...
 
 class Slerp:
     times: Final[onp.Array1D[np.int32 | np.int64 | np.float32 | np.float64]]
