@@ -2,7 +2,7 @@
 
 from collections.abc import Callable, Sequence as Seq
 from typing import Literal, TypeAlias, overload
-from typing_extensions import TypeVar, deprecated
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -24,7 +24,6 @@ __all__ = [
     "is_valid_y",
     "jaccard",
     "jensenshannon",
-    "kulczynski1",
     "mahalanobis",
     "minkowski",
     "num_obs_dm",
@@ -33,7 +32,6 @@ __all__ = [
     "rogerstanimoto",
     "russellrao",
     "seuclidean",
-    "sokalmichener",
     "sokalsneath",
     "sqeuclidean",
     "squareform",
@@ -75,7 +73,6 @@ _MetricName: TypeAlias = Literal[
     "j",
     "jensenshannon",
     "js",
-    "kulczynski1",
     "mahalanobis",
     "mahal",
     "mah",
@@ -84,7 +81,6 @@ _MetricName: TypeAlias = Literal[
     "seuclidean",
     "se",
     "s",
-    "sokalmichener",
     "sokalsneath",
     "sqeuclidean",
     "sqe",
@@ -218,18 +214,10 @@ def squareform(
 ) -> onp.Array1D[_NumberT] | onp.Array2D[_NumberT]: ...
 
 #
-@overload
 def correlation(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None, centered: bool = True) -> np.float64: ...
-@overload
-@deprecated("Complex `u` and `v` are deprecated and will raise an error in SciPy 1.17.0.")
-def correlation(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None, centered: bool = True) -> np.float64: ...
 
 #
-@overload
 def cosine(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
-@overload
-@deprecated("Complex `u` and `v` are deprecated and will raise an error in SciPy 1.17.0.")
-def cosine(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
 
 #
 @overload
@@ -280,20 +268,10 @@ def directed_hausdorff(
 def hamming(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
 def euclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
 def jaccard(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToBool1D | None = None) -> np.float64: ...
-@deprecated(
-    "The `kulczynski1` metric is deprecated since SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Replace usage of `kulczynski1(u, v)` with `1 / jaccard(u, v) - 1`."
-)
-def kulczynski1(u: onp.ToComplex1D, v: onp.ToFloat1D, *, w: onp.ToFloat1D | None = None) -> np.float64: ...
 def minkowski(u: onp.ToComplex1D, v: onp.ToComplex1D, p: float = 2, w: onp.ToFloat1D | None = None) -> float: ...
 def rogerstanimoto(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
 def russellrao(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
 def seuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, V: onp.ToFloat1D) -> float: ...
-@deprecated(
-    "The `sokalmichener` metric is deprecated since SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Replace usage of `sokalmichener(u, v)` with `rogerstanimoto(u, v)`."
-)
-def sokalmichener(u: onp.ToComplex1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> float: ...
 def yule(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
 
 #
