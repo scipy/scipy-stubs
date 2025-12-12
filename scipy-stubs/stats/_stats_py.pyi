@@ -2,7 +2,7 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from types import ModuleType
 from typing import Any, Generic, Literal as L, Never, Protocol, Self, TypeAlias, overload, type_check_only
-from typing_extensions import NamedTuple, TypeVar, deprecated
+from typing_extensions import NamedTuple, TypeVar
 
 import numpy as np
 import numpy.typing as npt
@@ -1255,7 +1255,6 @@ def ttest_ind_from_stats(
 ) -> Ttest_indResult: ...
 
 #
-@overload
 def ttest_ind(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
@@ -1263,65 +1262,6 @@ def ttest_ind(
     axis: int | None = 0,
     equal_var: bool = True,
     nan_policy: NanPolicy = "propagate",
-    permutations: None = None,
-    random_state: None = None,
-    alternative: Alternative = "two-sided",
-    trim: onp.ToFloat = 0,
-    method: ResamplingMethod | None = None,
-    keepdims: bool = False,
-) -> TtestResult: ...
-@overload
-@deprecated(
-    "Argument `random_state` is deprecated, and will be removed in SciPy 1.17. "
-    "Use `method to perform a permutation test."
-)  # fmt: skip
-def ttest_ind(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND,
-    *,
-    axis: int | None = 0,
-    equal_var: bool = True,
-    nan_policy: NanPolicy = "propagate",
-    permutations: None = None,
-    random_state: onp.random.ToRNG | None,
-    alternative: Alternative = "two-sided",
-    trim: onp.ToFloat = 0,
-    method: ResamplingMethod | None = None,
-    keepdims: bool = False,
-) -> TtestResult: ...
-@overload
-@deprecated(
-    "Argument `permutations` is deprecated, and will be removed in SciPy 1.17. "
-    "Use method` to perform a permutation test."
-)  # fmt: skip
-def ttest_ind(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND,
-    *,
-    axis: int | None = 0,
-    equal_var: bool = True,
-    nan_policy: NanPolicy = "propagate",
-    permutations: onp.ToFloat,
-    random_state: None = None,
-    alternative: Alternative = "two-sided",
-    trim: onp.ToFloat = 0,
-    method: ResamplingMethod | None = None,
-    keepdims: bool = False,
-) -> TtestResult: ...
-@overload
-@deprecated(
-    "Arguments {'random_state', 'permutations'} are deprecated, and will be removed in SciPy 1.17. "
-    "Use `method` to perform a permutation test."
-)
-def ttest_ind(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND,
-    *,
-    axis: int | None = 0,
-    equal_var: bool = True,
-    nan_policy: NanPolicy = "propagate",
-    permutations: onp.ToFloat,
-    random_state: onp.random.ToRNG | None,
     alternative: Alternative = "two-sided",
     trim: onp.ToFloat = 0,
     method: ResamplingMethod | None = None,

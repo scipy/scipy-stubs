@@ -346,8 +346,6 @@ def ttest_ind(
     axis: object = 0,
     equal_var: object = True,
     nan_policy: object = "propagate",
-    permutations: object = None,
-    random_state: object = None,
     alternative: object = "two-sided",
     trim: object = 0,
     method: object = None,
