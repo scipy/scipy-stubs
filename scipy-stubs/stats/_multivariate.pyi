@@ -639,7 +639,6 @@ class ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[ortho_group_gen
 class unitary_group_gen(_group_rv_gen_mixin[unitary_group_frozen, np.complex128], multi_rv_generic): ...
 class unitary_group_frozen(_group_rv_frozen_mixin[np.complex128], multi_rv_frozen[unitary_group_gen]): ...  # type: ignore[misc]
 
-# q
 class uniform_direction_gen(multi_rv_generic):
     def __call__(self, /, dim: int | None = None, seed: onp.random.ToRNG | None = None) -> uniform_direction_frozen: ...
 
