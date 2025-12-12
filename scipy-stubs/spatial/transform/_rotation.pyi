@@ -1,6 +1,6 @@
 # https://github.com/scipy/scipy/blob/maintenance/1.16.x/scipy/spatial/transform/_rotation.pyx
 from collections.abc import Iterator, Sequence
-from types import EllipsisType
+from types import EllipsisType, ModuleType
 from typing import Final, Literal as L, Self, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -28,6 +28,8 @@ _RotAxis: TypeAlias = L["X", "Y", "Z"]
 _RotationT = TypeVar("_RotationT", bound=Rotation)
 
 ###
+
+def select_backend(xp: ModuleType, cython_compatible: bool) -> ModuleType: ...  # either `._rotation_cy` or `._rotation_xp`
 
 class Rotation:
     @property
