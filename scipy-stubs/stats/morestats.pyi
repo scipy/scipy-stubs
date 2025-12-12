@@ -18,7 +18,6 @@ __all__ = [
     "circstd",
     "circvar",
     "distributions",
-    "find_repeats",
     "fligner",
     "kstat",
     "kstatvar",
@@ -36,10 +35,6 @@ __all__ = [
     "yeojohnson_normmax",
     "yeojohnson_normplot",
 ]
-
-# mstats_basic
-@deprecated("will be removed in SciPy v2.0.0")
-def find_repeats(arr: object) -> object: ...
 
 # contingency
 @deprecated("will be removed in SciPy v2.0.0")

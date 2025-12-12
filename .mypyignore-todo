@@ -1,7 +1,3 @@
-scipy.stats.find_repeats
-scipy.stats.morestats.find_repeats
-scipy.stats.stats.find_repeats
-scipy.stats._stats_py.find_repeats
 scipy.stats.spearmanrho
 scipy.stats._correlation.spearmanrho
 scipy.stats.median_abs_deviation
@@ -13,9 +9,5 @@ scipy.stats._stats_py.trim_mean
 scipy.stats.ttest_ind
 scipy.stats.stats.ttest_ind
 scipy.stats._stats_py.ttest_ind
-scipy.stats._stats_py.RepeatedResults
 scipy.stats.__all__
-scipy.stats.morestats.__all__
 scipy.stats._correlation.__all__
-scipy.stats._stats_py.__all__
-scipy.stats.stats.__all__

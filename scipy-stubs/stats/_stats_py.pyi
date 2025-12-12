@@ -25,7 +25,6 @@ __all__ = [
     "energy_distance",
     "expectile",
     "f_oneway",
-    "find_repeats",
     "fisher_exact",
     "friedmanchisquare",
     "gmean",
@@ -202,10 +201,6 @@ class SigmaclipResult(NamedTuple, Generic[_RealT_co, _FloatOrArrayT_co]):
     clipped: onp.Array1D[_RealT_co]
     lower: _FloatOrArrayT_co
     upper: _FloatOrArrayT_co
-
-class RepeatedResults(NamedTuple):
-    values: onp.Array1D[np.float64]
-    counts: onp.Array1D[np.intp]
 
 @dataclass
 class AlexanderGovernResult:
@@ -1590,13 +1585,6 @@ def linregress(
     keepdims: bool = False,
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[np.float64 | Any]: ...
-
-#
-@deprecated(
-    "`scipy.stats.find_repeats` is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `numpy.unique`/`numpy.unique_counts` instead."
-)
-def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
 
 # NOTE: `lmoment` is currently numerically unstable after `order > 16`.
 # See https://github.com/jorenham/Lmo/ for a more stable implementation that additionally supports generalized trimmed TL-moments,

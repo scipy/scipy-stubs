@@ -13,7 +13,6 @@ __all__ = [
     "distributions",
     "energy_distance",
     "f_oneway",
-    "find_repeats",
     "fisher_exact",
     "friedmanchisquare",
     "gmean",
@@ -457,8 +456,6 @@ def combine_pvalues(
 def wasserstein_distance(u_values: object, v_values: object, u_weights: object = None, v_weights: object = None) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def energy_distance(u_values: object, v_values: object, u_weights: object = None, v_weights: object = None) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def find_repeats(arr: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def rankdata(a: object, method: object = "average", *, axis: object = None, nan_policy: object = "propagate") -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
