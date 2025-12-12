@@ -1,4 +1,3 @@
-# https://github.com/scipy/scipy/blob/maintenance/1.16.x/scipy/spatial/transform/_rotation.pyx
 from collections.abc import Iterator, Sequence
 from types import EllipsisType, ModuleType
 from typing import Final, Literal as L, Self, TypeAlias, overload
