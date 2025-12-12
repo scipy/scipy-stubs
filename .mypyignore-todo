@@ -8,9 +8,6 @@ scipy.spatial._distance_pybind.cdist_kulczynski1
 scipy.spatial._distance_wrap.cdist_kulczynski1_bool_wrap
 scipy.spatial._distance_pybind.pdist_kulczynski1
 scipy.spatial._distance_wrap.pdist_kulczynski1_bool_wrap
-scipy.spatial.minkowski_distance_p
-scipy.spatial.kdtree.minkowski_distance_p
-scipy.spatial._kdtree.minkowski_distance_p
 scipy.spatial.distance.__all__
 
 scipy.special.clpmn
