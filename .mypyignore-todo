@@ -1,5 +1,3 @@
-scipy.stats.spearmanrho
-scipy.stats._correlation.spearmanrho
 scipy.stats.median_abs_deviation
 scipy.stats.stats.median_abs_deviation
 scipy.stats._stats_py.median_abs_deviation
@@ -9,5 +7,3 @@ scipy.stats._stats_py.trim_mean
 scipy.stats.ttest_ind
 scipy.stats.stats.ttest_ind
 scipy.stats._stats_py.ttest_ind
-scipy.stats.__all__
-scipy.stats._correlation.__all__
