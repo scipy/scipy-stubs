@@ -3,13 +3,15 @@ from typing import Any, Final, Literal, LiteralString, Protocol, TypeAlias, Type
 from typing_extensions import CapsuleType, ReadOnly
 
 import numpy as np
+import optype.numpy as onp
+import optype.numpy.compat as npc
 
-_X_b: TypeAlias = bool | np.bool_ | Literal[0, 1]
+_X_b: TypeAlias = onp.ToBool
 _X_i: TypeAlias = int | np.intp
 _X_f: TypeAlias = float | np.float64
 _X_c: TypeAlias = complex | np.complex128
-_X_if: TypeAlias = int | float | np.intp | np.float64
-_X_fc: TypeAlias = float | complex | np.float64 | np.complex128
+_X_if: TypeAlias = float | np.intp | np.float64
+_X_fc: TypeAlias = complex | npc.inexact64
 
 @type_check_only
 class _BaseCythonFunctionOrMethod(Protocol):
