@@ -1,7 +1,6 @@
 from typing import Literal, TypeAlias, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 from ._typing import NanPolicy
@@ -20,9 +19,6 @@ _QuantileMethod: TypeAlias = Literal[
 
 ###
 
-# NOTE: There is a false positive `overload-overlap` mypy error that only occurs with `numpy<2.2`
-# mypy: disable-error-code=overload-overlap
-
 @overload
 def quantile(
     x: onp.ToFloatStrict1D,
@@ -31,7 +27,8 @@ def quantile(
     method: _QuantileMethod = "linear",
     axis: Literal[-1, 0] | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: op.CanBool | None = None,
+    keepdims: bool | None = None,
+    weights: onp.ToJustFloatStrict1D | None = None,
 ) -> np.float64: ...
 @overload
 def quantile(
@@ -39,9 +36,10 @@ def quantile(
     p: onp.ToJustFloat,
     *,
     method: _QuantileMethod = "linear",
-    axis: op.CanIndex | None = 0,
+    axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse | None = None,
+    weights: onp.ToJustFloatND | None = None,
 ) -> np.float64: ...
 @overload
 def quantile(
@@ -49,9 +47,10 @@ def quantile(
     p: onp.ToJustFloatND,
     *,
     method: _QuantileMethod = "linear",
-    axis: op.CanIndex = 0,
+    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: op.CanBool | None = None,
+    keepdims: bool | None = None,
+    weights: onp.ToJustFloatND | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def quantile(
@@ -59,7 +58,8 @@ def quantile(
     p: onp.ToJustFloat | onp.ToJustFloatND,
     *,
     method: _QuantileMethod = "linear",
-    axis: op.CanIndex | None = 0,
+    axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToTrue,
+    weights: onp.ToJustFloatND | None = None,
 ) -> onp.ArrayND[np.float64]: ...

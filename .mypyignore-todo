@@ -1,5 +1,3 @@
-scipy.stats.quantile
-scipy.stats._quantile.quantile
 scipy.stats.yeojohnson_llf
 scipy.stats.morestats.yeojohnson_llf
 scipy.stats._morestats.yeojohnson_llf
