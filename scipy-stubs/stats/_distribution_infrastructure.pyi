@@ -1,6 +1,6 @@
 # mypy: disable-error-code="override, explicit-override"
-
 import abc
+import types
 from collections.abc import Callable, Iterable, Mapping, Sequence, Set as AbstractSet
 from typing import (
     Any,
@@ -218,6 +218,9 @@ _ValidateOutND = TypeAliasType(
 
 #
 class _Parameter(abc.ABC, Generic[_RealT_co]):
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
+    #
     def __init__(
         self, /, name: str, *, domain: _Domain, symbol: str | None = None, typical: _Domain | _ToDomain | None = None
     ) -> None: ...
