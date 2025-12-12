@@ -24,10 +24,6 @@ scipy.spatial.distance.__all__
 
 scipy.spatial.transform.RigidTransform.__iter__
 scipy.spatial.transform._rigid_transform.RigidTransform.__iter__
-scipy.spatial.transform.RigidTransform.__reduce_cython__
-scipy.spatial.transform._rigid_transform.RigidTransform.__reduce_cython__
-scipy.spatial.transform.RigidTransform.__setstate_cython__
-scipy.spatial.transform._rigid_transform.RigidTransform.__setstate_cython__
 scipy.spatial.transform.RigidTransform.concatenate
 scipy.spatial.transform._rigid_transform.RigidTransform.concatenate
 scipy.spatial.transform.RigidTransform.from_components
