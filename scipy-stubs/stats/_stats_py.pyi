@@ -830,7 +830,7 @@ def iqr(
 @overload
 def median_abs_deviation(
     x: onp.ToFloatStrict1D,
-    axis: int | None = 0,
+    axis: int = 0,
     center: np.ufunc | _MADCenterFunc | None = None,
     scale: L["normal"] | float = 1.0,
     nan_policy: NanPolicy = "propagate",

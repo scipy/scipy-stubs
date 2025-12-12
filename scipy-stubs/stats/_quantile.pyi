@@ -19,6 +19,9 @@ _QuantileMethod: TypeAlias = Literal[
 
 ###
 
+# NOTE: There is a false positive `overload-overlap` mypy error that only occurs with `numpy<2.2`
+# mypy: disable-error-code=overload-overlap
+
 @overload
 def quantile(
     x: onp.ToFloatStrict1D,
