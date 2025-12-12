@@ -46,9 +46,6 @@ def cdist_rogerstanimoto(
 def cdist_russellrao(
     x: onp.ToComplex2D, y: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
 ) -> onp.ArrayND[np.float64 | Any]: ...
-def cdist_sokalmichener(
-    x: onp.ToComplex2D, y: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
-) -> onp.ArrayND[np.float64 | Any]: ...
 def cdist_sokalsneath(
     x: onp.ToComplex2D, y: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
 ) -> onp.ArrayND[np.float64 | Any]: ...
@@ -94,9 +91,6 @@ def pdist_rogerstanimoto(
     x: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
 ) -> onp.ArrayND[np.float64 | Any]: ...
 def pdist_russellrao(
-    x: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
-) -> onp.ArrayND[np.float64 | Any]: ...
-def pdist_sokalmichener(
     x: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
 ) -> onp.ArrayND[np.float64 | Any]: ...
 def pdist_sokalsneath(
