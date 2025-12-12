@@ -73,7 +73,7 @@ from ._multivariate import (
     vonmises_fisher,
     wishart,
 )
-from ._new_distributions import Binomial, Normal, Uniform
+from ._new_distributions import Binomial, Logistic, Normal, Uniform
 from ._page_trend_test import page_trend_test
 from ._quantile import quantile
 from ._resampling import (
@@ -305,6 +305,7 @@ __all__ = [
     "Covariance",
     "DegenerateDataWarning",
     "FitError",
+    "Logistic",
     "Mixture",
     "MonteCarloMethod",
     "NearConstantInputWarning",

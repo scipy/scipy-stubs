@@ -1,5 +1,3 @@
-scipy.stats.Logistic
-scipy.stats._new_distributions.Logistic
 scipy.stats.matrix_t
 scipy.stats._multivariate.matrix_t
 scipy.stats.quantile
@@ -26,7 +24,6 @@ scipy.stats.__all__
 scipy.stats.morestats.__all__
 scipy.stats._correlation.__all__
 scipy.stats._multivariate.__all__
-scipy.stats._new_distributions.__all__
 scipy.stats._stats_py.__all__
 scipy.stats.stats.__all__
 scipy.stats._stats_py.RepeatedResults
