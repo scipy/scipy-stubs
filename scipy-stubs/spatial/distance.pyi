@@ -24,7 +24,6 @@ __all__ = [
     "is_valid_y",
     "jaccard",
     "jensenshannon",
-    "kulczynski1",
     "mahalanobis",
     "minkowski",
     "num_obs_dm",
@@ -75,7 +74,6 @@ _MetricName: TypeAlias = Literal[
     "j",
     "jensenshannon",
     "js",
-    "kulczynski1",
     "mahalanobis",
     "mahal",
     "mah",
@@ -272,11 +270,6 @@ def directed_hausdorff(
 def hamming(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
 def euclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
 def jaccard(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToBool1D | None = None) -> np.float64: ...
-@deprecated(
-    "The `kulczynski1` metric is deprecated since SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Replace usage of `kulczynski1(u, v)` with `1 / jaccard(u, v) - 1`."
-)
-def kulczynski1(u: onp.ToComplex1D, v: onp.ToFloat1D, *, w: onp.ToFloat1D | None = None) -> np.float64: ...
 def minkowski(u: onp.ToComplex1D, v: onp.ToComplex1D, p: float = 2, w: onp.ToFloat1D | None = None) -> float: ...
 def rogerstanimoto(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
 def russellrao(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
