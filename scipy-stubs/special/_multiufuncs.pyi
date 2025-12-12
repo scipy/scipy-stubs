@@ -259,6 +259,7 @@ class MultiUFunc(Generic[_UFuncT_co]):
         self,
         /,
         ufunc_or_ufuncs: _UFuncT_co | Iterable[_UFuncT_co],
+        name: str | None = None,
         doc: str | None = None,
         *,
         force_complex_output: bool = False,

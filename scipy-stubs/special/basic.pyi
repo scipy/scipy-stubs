@@ -13,7 +13,6 @@ __all__ = [
     "bernoulli",
     "berp_zeros",
     "bi_zeros",
-    "clpmn",
     "comb",
     "digamma",
     "diric",
@@ -46,8 +45,6 @@ __all__ = [
     "kv",
     "kvp",
     "lmbda",
-    "lpmn",
-    "lpn",
     "lqmn",
     "lqn",
     "mathieu_a",
@@ -128,17 +125,11 @@ def mathieu_even_coef(m: object, q: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def mathieu_odd_coef(m: object, q: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def lpmn(m: object, n: object, z: object) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def clpmn(m: object, n: object, z: object, type: object = 3) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
 def lqmn(m: object, n: object, z: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def bernoulli(n: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def euler(n: object) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def lpn(n: object, z: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def lqn(n: object, z: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")

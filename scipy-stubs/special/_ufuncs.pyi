@@ -230,7 +230,6 @@ __all__ = [
     "smirnov",
     "smirnovi",
     "spence",
-    "sph_harm",
     "stdtr",
     "stdtridf",
     "stdtrit",
@@ -530,17 +529,6 @@ class _Kw32f(_KwBase, TypedDict, total=False):
 class _Kw41f(_KwBase, TypedDict, total=False):
     dtype: _ToDType_fd
     signature: L["ffff->f", "dddd->d"] | _ToDTypes_fffff | _ToDTypes_ddddd
-
-@type_check_only
-class _Kw41fc0(_KwBase, TypedDict, total=False):
-    dtype: _ToDType_FD
-    signature: (
-        L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]
-        | _ToDTypes_qqffF
-        | _ToDTypes_ffffF
-        | _ToDTypes_qqddD
-        | _ToDTypes_ddddD
-    )  # fmt: skip
 
 @type_check_only
 class _Kw41fc1(_KwBase, TypedDict, total=False):
@@ -1954,77 +1942,6 @@ class _UFunc41f(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 @final
 @type_check_only
-class _UFuncSphHarm(_UFunc41[L["sph_harm"], None]):  # type: ignore[misc]
-    @property
-    @override
-    def ntypes(self, /) -> L[4]: ...
-    @property
-    @override
-    def types(self, /) -> list[L["qqff->F", "ffff->F", "qqdd->D", "dddd->D"]]: ...
-    #
-    @overload
-    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
-    def __call__(
-        self,
-        m: onp.ToFloat64,
-        n: onp.ToFloat64,
-        theta: onp.ToFloat64,
-        phi: onp.ToFloat64,
-        /,
-        out: _Out1 = None,
-        **kw: Unpack[_Kw41fc0],
-    ) -> _Complex: ...
-    @overload
-    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
-    def __call__(
-        self,
-        m: _ToFloat64OrND,
-        n: _ToFloat64OrND,
-        theta: _ToFloat64OrND,
-        phi: onp.ToFloat64_ND,
-        /,
-        out: _Out1 = None,
-        **kw: Unpack[_Kw41fc0],
-    ) -> _ComplexND: ...
-    @overload
-    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
-    def __call__(
-        self,
-        m: _ToFloat64OrND,
-        n: _ToFloat64OrND,
-        theta: onp.ToFloat64_ND,
-        phi: _ToFloat64OrND,
-        /,
-        out: _Out1 = None,
-        **kw: Unpack[_Kw41fc0],
-    ) -> _ComplexND: ...
-    @overload
-    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
-    def __call__(
-        self,
-        m: _ToFloat64OrND,
-        n: onp.ToFloat64_ND,
-        theta: _ToFloat64OrND,
-        phi: _ToFloat64OrND,
-        /,
-        out: _Out1 = None,
-        **kw: Unpack[_Kw41fc0],
-    ) -> _ComplexND: ...
-    @overload
-    @deprecated("This function is deprecated and will be removed in SciPy 1.17.0. Use `scipy.special.sph_harm_y` instead.")
-    def __call__(
-        self,
-        m: _ToFloat64OrND,
-        n: _ToFloat64OrND,
-        theta: _ToFloat64OrND,
-        phi: _ToFloat64OrND,
-        /,
-        out: _Out1[_OutT],
-        **kw: Unpack[_Kw41fc0],
-    ) -> _OutT: ...
-
-@final
-@type_check_only
 class _UFunc41fc1(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     # `eval_[sh_]jacobi` and `hyp2f1`
     @property
@@ -3017,10 +2934,6 @@ ncfdtri: _UFunc41f[L["ncfdtri"], L[0]] = ...
 ncfdtridfd: _UFunc41f[L["ncfdtridfd"], L[0]] = ...
 ncfdtridfn: _UFunc41f[L["ncfdtridfn"], L[0]] = ...
 ncfdtrinc: _UFunc41f[L["ncfdtrinc"], L[0]] = ...
-
-# (qq|ff)ff->F; (qq|dd)dd->D
-# NOTE: Deprecated in SciPy 1.15.0
-sph_harm: _UFuncSphHarm = ...
 
 # ffff->f; (l|d)ddd->d; fffF->F; dddD->D
 eval_jacobi: _UFunc41fc1[L["eval_jacobi"], L[0]] = ...

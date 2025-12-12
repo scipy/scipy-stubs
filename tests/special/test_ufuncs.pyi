@@ -104,7 +104,6 @@ sp.logit.at(_c16, _i)  # type:ignore[arg-type]  # pyright: ignore[reportArgument
 
 ###
 
-# _UFunc41 - TODO + sph_harm deprecation test
 # _UFunc42 - TODO
 
 ###
