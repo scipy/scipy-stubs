@@ -3,6 +3,7 @@ from typing import Literal, Never, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 _bint: TypeAlias = bool | Literal[0, 1]  # noqa: PYI042
 
@@ -24,7 +25,7 @@ def from_quat(quat: _f64_2d, normalize: _bint = True, copy: _bint = True, scalar
 
 #
 @overload  # workaround for https://github.com/microsoft/pyright/issues/10232
-def from_euler(seq: str, angles: onp.Array[tuple[Never, ...], np.floating], degrees: _bint = False) -> _f64_nd: ...
+def from_euler(seq: str, angles: onp.Array[tuple[Never, ...], npc.floating], degrees: _bint = False) -> _f64_nd: ...
 @overload
 def from_euler(seq: str, angles: onp.ToFloat | onp.ToFloatStrict1D, degrees: _bint = False) -> _f64_1d: ...
 @overload
@@ -32,7 +33,7 @@ def from_euler(seq: str, angles: onp.ToFloatStrict2D, degrees: _bint = False) ->
 
 #
 @overload  # workaround for https://github.com/microsoft/pyright/issues/10232
-def from_matrix(matrix: onp.Array[tuple[Never, ...], np.floating], assume_valid: _bint = False) -> _f64_nd: ...
+def from_matrix(matrix: onp.Array[tuple[Never, ...], npc.floating], assume_valid: _bint = False) -> _f64_nd: ...
 @overload
 def from_matrix(matrix: onp.ToFloatStrict2D, assume_valid: _bint = False) -> _f64_1d: ...
 @overload
@@ -154,7 +155,7 @@ def pow(quat: _f64_2d, n: int) -> _f64_2d: ...
 def from_davenport(
     axes: onp.ToIntStrict1D | onp.ToIntStrict2D,
     order: _Order,
-    angles: onp.Array[tuple[Never, ...], np.floating],
+    angles: onp.Array[tuple[Never, ...], npc.floating],
     degrees: _bint = False,
 ) -> _f64_1d: ...
 @overload
