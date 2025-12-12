@@ -22,9 +22,6 @@ scipy.spatial.kdtree.minkowski_distance_p
 scipy.spatial._kdtree.minkowski_distance_p
 scipy.spatial.distance.__all__
 
-scipy.spatial.transform.RigidTransform.shape
-scipy.spatial.transform._rigid_transform.RigidTransform.shape
-
 scipy.special.clpmn
 scipy.special.basic.clpmn
 scipy.special._basic.clpmn
