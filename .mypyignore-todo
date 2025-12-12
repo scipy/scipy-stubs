@@ -50,7 +50,6 @@ scipy.spatial.transform.RigidTransform.shape
 scipy.spatial.transform._rigid_transform.RigidTransform.shape
 scipy.spatial.transform._rigid_transform.compose_quat
 scipy.spatial.transform._rigid_transform.__all__
-scipy.spatial.transform._rotation.compose_quat
 scipy.spatial.transform._rotation.backend_registry
 
 scipy.special.clpmn
