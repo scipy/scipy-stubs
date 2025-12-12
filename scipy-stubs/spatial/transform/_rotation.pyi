@@ -32,6 +32,8 @@ _RotationT = TypeVar("_RotationT", bound=Rotation)
 class Rotation:
     @property
     def single(self, /) -> bool: ...
+    @property
+    def shape(self, /) -> tuple[int, ...]: ...
 
     #
     def __init__(
