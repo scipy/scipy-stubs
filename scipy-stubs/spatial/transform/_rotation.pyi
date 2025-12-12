@@ -110,8 +110,8 @@ class Rotation:
     #
     @classmethod
     def create_group(cls, group: _RotGroup, axis: _RotAxis = "Z") -> Self: ...
-    @classmethod
-    def identity(cls, num: int | None = None) -> Self: ...
+    @staticmethod
+    def identity(num: int | None = None) -> Rotation: ...
     @classmethod
     def random(
         cls, num: int | None = None, rng: onp.random.ToRNG | None = None, *, random_state: onp.random.ToRNG | None = None
