@@ -6,10 +6,6 @@ scipy.special.lpmn
 scipy.special.basic.lpmn
 scipy.special._basic.lpmn
 scipy.special.specfun.lpmn
-scipy.special.lpn
-scipy.special.basic.lpn
-scipy.special._basic.lpn
-scipy.special.specfun.lpn
 scipy.special._multiufuncs.MultiUFunc.__init__
 scipy.special.__all__
 scipy.special._basic.__all__

@@ -45,7 +45,6 @@ __all__ = [
     "kvp",
     "lmbda",
     "lpmn",
-    "lpn",
     "lqmn",
     "lqn",
     "mathieu_even_coef",
@@ -360,11 +359,6 @@ def pro_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> _f8_1d: ...
 def obl_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> _f8_1d: ...
 
 #
-@deprecated(
-    "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `scipy.special.legendre_p_all` instead."
-)
-def lpn(n: onp.ToInt, z: onp.ToComplex) -> onp.ArrayND[npc.inexact]: ...
 @deprecated(
     "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
     "Please use `scipy.special.assoc_legendre_p_all` instead."
