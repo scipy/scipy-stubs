@@ -3,14 +3,14 @@ from types import EllipsisType, ModuleType
 from typing import Protocol, TypeVar, overload, type_check_only
 
 @type_check_only
-class _HasArraytNamespace(Protocol):
+class _HasArrayNamespace(Protocol):
     def __array_namespace__(self, /) -> Incomplete: ...
 
-_ArrayT = TypeVar("_ArrayT", bound=_HasArraytNamespace)
+_ArrayT = TypeVar("_ArrayT", bound=_HasArrayNamespace)
 
 ###
 # for the sake of simplicity, we assume that the array types do no include shape-typing information,
-# and have the same intput/output dtype
+# and have the same input/output dtype
 
 def from_quat(quat: _ArrayT, normalize: bool = True, copy: bool = True, *, scalar_first: bool = False) -> _ArrayT: ...
 def from_matrix(matrix: _ArrayT, assume_valid: bool = False) -> _ArrayT: ...
