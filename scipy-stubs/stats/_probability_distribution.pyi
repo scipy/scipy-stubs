@@ -1,4 +1,5 @@
 import abc
+import types
 from typing import Any, Generic, Literal as L, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -30,6 +31,10 @@ _ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
 ###
 
 class _ProbabilityDistribution(Generic[_XT_co], metaclass=abc.ABCMeta):
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
+
+    #
     @abc.abstractmethod
     def support(self, /) -> tuple[_XT_co | onp.ArrayND[_XT_co], _XT_co | onp.ArrayND[_XT_co]]: ...
     @abc.abstractmethod
