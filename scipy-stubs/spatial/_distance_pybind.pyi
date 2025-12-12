@@ -30,9 +30,6 @@ def cdist_hamming(
 def cdist_jaccard(
     x: onp.ToComplex2D, y: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
 ) -> onp.ArrayND[np.float64 | Any]: ...
-def cdist_kulczynski1(
-    x: onp.ToComplex2D, y: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
-) -> onp.ArrayND[np.float64 | Any]: ...
 def cdist_minkowski(
     x: onp.ToComplex2D,
     y: onp.ToComplex2D,
@@ -79,9 +76,6 @@ def pdist_hamming(
     x: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
 ) -> onp.ArrayND[np.float64 | Any]: ...
 def pdist_jaccard(
-    x: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
-) -> onp.ArrayND[np.float64 | Any]: ...
-def pdist_kulczynski1(
     x: onp.ToComplex2D, w: onp.ToFloat1D | None = None, out: onp.ArrayND[npc.inexact] | None = None
 ) -> onp.ArrayND[np.float64 | Any]: ...
 def pdist_minkowski(
