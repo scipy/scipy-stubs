@@ -29,7 +29,10 @@ _RotationT = TypeVar("_RotationT", bound=Rotation)
 
 ###
 
-def select_backend(xp: ModuleType, cython_compatible: bool) -> ModuleType: ...  # either `._rotation_cy` or `._rotation_xp`
+backend_registry: Final[dict[ModuleType, ModuleType]] = ...  # undocumented
+
+# either `._rotation_cy` or `._rotation_xp`
+def select_backend(xp: ModuleType, cython_compatible: bool) -> ModuleType: ...  # undocumented
 
 class Rotation:
     @property

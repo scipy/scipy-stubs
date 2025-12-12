@@ -49,7 +49,6 @@ scipy.spatial.transform._rigid_transform.RigidTransform.mean
 scipy.spatial.transform.RigidTransform.shape
 scipy.spatial.transform._rigid_transform.RigidTransform.shape
 scipy.spatial.transform._rigid_transform.__all__
-scipy.spatial.transform._rotation.backend_registry
 
 scipy.special.clpmn
 scipy.special.basic.clpmn
