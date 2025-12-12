@@ -1,6 +1,3 @@
-scipy.stats.yeojohnson_llf
-scipy.stats.morestats.yeojohnson_llf
-scipy.stats._morestats.yeojohnson_llf
 scipy.stats.find_repeats
 scipy.stats.morestats.find_repeats
 scipy.stats.stats.find_repeats
