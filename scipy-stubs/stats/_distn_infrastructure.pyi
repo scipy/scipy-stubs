@@ -1,7 +1,7 @@
 # NOTE: this is needed because of the >50 LSP violations...
 # mypy: disable-error-code="override"
 # pyright: reportIncompatibleMethodOverride = false
-
+import types
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from typing import Any, Final, Generic, Literal as L, Self, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar, Unpack, override
@@ -110,6 +110,10 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     def random_state(self, /) -> onp.random.RNG: ...
     @random_state.setter
     def random_state(self, seed: onp.random.ToRNG | None, /) -> None: ...
+
+    #
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
 
     #
     @overload

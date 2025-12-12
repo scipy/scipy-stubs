@@ -504,7 +504,14 @@ def boxcox_normplot(
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...
 
 #
-def yeojohnson_llf(lmb: onp.ToFloat, data: onp.ToFloatND) -> onp.Array0D[np.float64]: ...
+@overload
+def yeojohnson_llf(
+    lmb: onp.ToFloat, data: onp.ToFloatND, *, axis: int = 0, nan_policy: NanPolicy = "propagate", keepdims: Literal[False] = False
+) -> np.float64: ...
+@overload
+def yeojohnson_llf(
+    lmb: onp.ToFloat, data: onp.ToFloatND, *, axis: int = 0, nan_policy: NanPolicy = "propagate", keepdims: Literal[True]
+) -> onp.ArrayND[np.float64]: ...
 
 #
 @overload

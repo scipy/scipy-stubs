@@ -18,7 +18,6 @@ __all__ = [
     "circstd",
     "circvar",
     "distributions",
-    "find_repeats",
     "fligner",
     "kstat",
     "kstatvar",
@@ -36,10 +35,6 @@ __all__ = [
     "yeojohnson_normmax",
     "yeojohnson_normplot",
 ]
-
-# mstats_basic
-@deprecated("will be removed in SciPy v2.0.0")
-def find_repeats(arr: object) -> object: ...
 
 # contingency
 @deprecated("will be removed in SciPy v2.0.0")
@@ -81,7 +76,9 @@ def boxcox_normplot(x: object, la: object, lb: object, plot: object = None, N: o
 @deprecated("will be removed in SciPy v2.0.0")
 def yeojohnson(x: object, lmbda: object = None) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def yeojohnson_llf(lmb: object, data: object) -> object: ...
+def yeojohnson_llf(
+    lmb: object, data: object, *, axis: object = 0, nan_policy: object = "propagate", keepdims: object = False
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def yeojohnson_normmax(x: object, brack: object = None) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")

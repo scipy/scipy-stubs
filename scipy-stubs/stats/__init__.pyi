@@ -3,7 +3,7 @@ from ._binned_statistic import binned_statistic, binned_statistic_2d, binned_sta
 from ._binomtest import binomtest
 from ._bws_test import bws_test
 from ._censored_data import CensoredData
-from ._correlation import chatterjeexi
+from ._correlation import chatterjeexi, spearmanrho
 from ._covariance import Covariance
 from ._distribution_infrastructure import Mixture, abs, exp, log, make_distribution, order_statistic, truncate
 from ._entropy import differential_entropy, entropy
@@ -59,6 +59,7 @@ from ._multivariate import (
     dirichlet_multinomial,
     invwishart,
     matrix_normal,
+    matrix_t,
     multinomial,
     multivariate_hypergeom,
     multivariate_normal,
@@ -73,7 +74,7 @@ from ._multivariate import (
     vonmises_fisher,
     wishart,
 )
-from ._new_distributions import Binomial, Normal, Uniform
+from ._new_distributions import Binomial, Logistic, Normal, Uniform
 from ._page_trend_test import page_trend_test
 from ._quantile import quantile
 from ._resampling import (
@@ -96,7 +97,6 @@ from ._stats_py import (
     energy_distance,
     expectile,
     f_oneway,
-    find_repeats,
     fisher_exact,
     friedmanchisquare,
     gmean,
@@ -305,6 +305,7 @@ __all__ = [
     "Covariance",
     "DegenerateDataWarning",
     "FitError",
+    "Logistic",
     "Mixture",
     "MonteCarloMethod",
     "NearConstantInputWarning",
@@ -388,7 +389,6 @@ __all__ = [
     "f_oneway",
     "false_discovery_control",
     "fatiguelife",
-    "find_repeats",
     "fisher_exact",
     "fisk",
     "fit",
@@ -470,6 +470,7 @@ __all__ = [
     "make_distribution",
     "mannwhitneyu",
     "matrix_normal",
+    "matrix_t",
     "maxwell",
     "median_abs_deviation",
     "median_test",
@@ -557,6 +558,7 @@ __all__ = [
     "sobol_indices",
     "somersd",
     "spearmanr",
+    "spearmanrho",
     "special_ortho_group",
     "stats",
     "studentized_range",

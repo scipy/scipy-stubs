@@ -14,7 +14,7 @@ from ._distribution_infrastructure import (
     _RealParameter,
 )
 
-__all__ = ["Binomial", "Normal", "Uniform"]
+__all__ = ["Binomial", "Logistic", "Normal", "Uniform"]
 
 ###
 
@@ -117,6 +117,11 @@ class StandardNormal(Normal[tuple[()], np.float64]):  # undocumented
     sigma: ClassVar[np.float64] = ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     def __init__(self, /, **kw: Unpack[_DistOpts]) -> None: ...
+
+class Logistic(ContinuousDistribution[np.float64, tuple[()]]):
+    _x_support: ClassVar[_RealInterval] = ...
+    _x_param: ClassVar[_RealParameter] = ...
+    _scale: ClassVar[np.float64] = ...
 
 class Uniform(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co, _FloatT_co]):
     _a_domain: ClassVar[_RealInterval] = ...

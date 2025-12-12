@@ -2,7 +2,7 @@ from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from types import ModuleType
 from typing import Any, Generic, Literal as L, Never, Protocol, Self, TypeAlias, overload, type_check_only
-from typing_extensions import NamedTuple, TypeVar, deprecated
+from typing_extensions import NamedTuple, TypeVar
 
 import numpy as np
 import numpy.typing as npt
@@ -25,7 +25,6 @@ __all__ = [
     "energy_distance",
     "expectile",
     "f_oneway",
-    "find_repeats",
     "fisher_exact",
     "friedmanchisquare",
     "gmean",
@@ -202,10 +201,6 @@ class SigmaclipResult(NamedTuple, Generic[_RealT_co, _FloatOrArrayT_co]):
     clipped: onp.Array1D[_RealT_co]
     lower: _FloatOrArrayT_co
     upper: _FloatOrArrayT_co
-
-class RepeatedResults(NamedTuple):
-    values: onp.Array1D[np.float64]
-    counts: onp.Array1D[np.intp]
 
 @dataclass
 class AlexanderGovernResult:
@@ -831,14 +826,47 @@ def iqr(
     keepdims: bool = False,
 ) -> _FloatOrND: ...
 
-# TODO(jorenham): improve
+#
+@overload
+def median_abs_deviation(
+    x: onp.ToFloatStrict1D,
+    axis: int = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload
+def median_abs_deviation(
+    x: onp.ToFloatND,
+    axis: None,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def median_abs_deviation(
+    x: onp.ToFloatND,
+    axis: int = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload
 def median_abs_deviation(
     x: onp.ToFloatND,
     axis: int | None = 0,
-    center: np.ufunc | _MADCenterFunc = ...,
-    scale: L["normal"] | onp.ToFloat = 1.0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
     nan_policy: NanPolicy = "propagate",
-) -> _FloatOrND: ...
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
 
 #
 def sigmaclip(a: onp.ToFloatND, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...
@@ -849,8 +877,28 @@ def trimboth(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> 
 # TODO(jorenham): improve
 def trim1(a: onp.ToFloatND, proportiontocut: float, tail: _TrimTail = "right", axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
 
-# TODO(jorenham): improve
-def trim_mean(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> _FloatOrND: ...
+#
+@overload
+def trim_mean(
+    a: onp.ToFloatStrict1D,
+    proportiontocut: float,
+    axis: int | None = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload
+def trim_mean(
+    a: onp.ToFloatND, proportiontocut: float, axis: None, *, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> np.float64: ...
+@overload
+def trim_mean(
+    a: onp.ToFloatND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> _FloatOrND: ...
+@overload
+def trim_mean(
+    a: onp.ToFloatND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> onp.ArrayND[np.float64]: ...
 
 # TODO(jorenham): improve
 def f_oneway(
@@ -1207,7 +1255,6 @@ def ttest_ind_from_stats(
 ) -> Ttest_indResult: ...
 
 #
-@overload
 def ttest_ind(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
@@ -1215,65 +1262,6 @@ def ttest_ind(
     axis: int | None = 0,
     equal_var: bool = True,
     nan_policy: NanPolicy = "propagate",
-    permutations: None = None,
-    random_state: None = None,
-    alternative: Alternative = "two-sided",
-    trim: onp.ToFloat = 0,
-    method: ResamplingMethod | None = None,
-    keepdims: bool = False,
-) -> TtestResult: ...
-@overload
-@deprecated(
-    "Argument `random_state` is deprecated, and will be removed in SciPy 1.17. "
-    "Use `method to perform a permutation test."
-)  # fmt: skip
-def ttest_ind(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND,
-    *,
-    axis: int | None = 0,
-    equal_var: bool = True,
-    nan_policy: NanPolicy = "propagate",
-    permutations: None = None,
-    random_state: onp.random.ToRNG | None,
-    alternative: Alternative = "two-sided",
-    trim: onp.ToFloat = 0,
-    method: ResamplingMethod | None = None,
-    keepdims: bool = False,
-) -> TtestResult: ...
-@overload
-@deprecated(
-    "Argument `permutations` is deprecated, and will be removed in SciPy 1.17. "
-    "Use method` to perform a permutation test."
-)  # fmt: skip
-def ttest_ind(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND,
-    *,
-    axis: int | None = 0,
-    equal_var: bool = True,
-    nan_policy: NanPolicy = "propagate",
-    permutations: onp.ToFloat,
-    random_state: None = None,
-    alternative: Alternative = "two-sided",
-    trim: onp.ToFloat = 0,
-    method: ResamplingMethod | None = None,
-    keepdims: bool = False,
-) -> TtestResult: ...
-@overload
-@deprecated(
-    "Arguments {'random_state', 'permutations'} are deprecated, and will be removed in SciPy 1.17. "
-    "Use `method` to perform a permutation test."
-)
-def ttest_ind(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND,
-    *,
-    axis: int | None = 0,
-    equal_var: bool = True,
-    nan_policy: NanPolicy = "propagate",
-    permutations: onp.ToFloat,
-    random_state: onp.random.ToRNG | None,
     alternative: Alternative = "two-sided",
     trim: onp.ToFloat = 0,
     method: ResamplingMethod | None = None,
@@ -1590,13 +1578,6 @@ def linregress(
     keepdims: bool = False,
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[np.float64 | Any]: ...
-
-#
-@deprecated(
-    "`scipy.stats.find_repeats` is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `numpy.unique`/`numpy.unique_counts` instead."
-)
-def find_repeats(arr: onp.ToFloatND) -> RepeatedResults: ...
 
 # NOTE: `lmoment` is currently numerically unstable after `order > 16`.
 # See https://github.com/jorenham/Lmo/ for a more stable implementation that additionally supports generalized trimmed TL-moments,

@@ -1,4 +1,5 @@
-from typing import Final, Generic, Protocol, overload, type_check_only
+import types
+from typing import ClassVar, Final, Generic, Protocol, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,6 +12,10 @@ _ScalarT = TypeVar("_ScalarT", bound=npc.floating | npc.integer)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.floating | npc.integer, default=np.float64, covariant=True)
 
 class Covariance(Generic[_ScalarT_co]):
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
+
+    #
     @staticmethod
     @overload
     def from_diagonal(diagonal: onp.ToJustFloat64_1D) -> CovViaDiagonal[np.float64]: ...
@@ -52,12 +57,18 @@ class CovViaDiagonal(Covariance[_ScalarT_co], Generic[_ScalarT_co]):
     def __init__(self, /, diagonal: onp.ToArray1D[_ScalarT_co, _ScalarT_co]) -> None: ...
 
 class CovViaPrecision(Covariance[np.float64]):
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+
     def __init__(self, /, precision: onp.ToFloat2D, covariance: onp.ToFloat2D | None = None) -> None: ...
 
 class CovViaCholesky(Covariance[np.float64]):
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+
     def __init__(self, /, cholesky: onp.ToFloat2D) -> None: ...
 
 class CovViaEigendecomposition(Covariance[np.float64]):
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+
     def __init__(self, /, eigendecomposition: tuple[onp.ToFloat1D, onp.ToFloat2D]) -> None: ...
 
 @type_check_only
@@ -74,6 +85,8 @@ class _PSD(Protocol):
     def pinv(self, /) -> onp.ArrayND[npc.floating]: ...
 
 class CovViaPSD(Covariance[np.float64]):
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+
     _LP: Final[onp.ArrayND[np.float64]]
     _log_pdet: Final[float]
     _rank: Final[int]

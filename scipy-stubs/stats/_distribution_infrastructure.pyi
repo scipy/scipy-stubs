@@ -1,6 +1,6 @@
 # mypy: disable-error-code="override, explicit-override"
-
 import abc
+import types
 from collections.abc import Callable, Iterable, Mapping, Sequence, Set as AbstractSet
 from typing import (
     Any,
@@ -159,6 +159,9 @@ _null: Final[_Null] = ...
 def _isnull(x: object) -> TypeIs[_Null | None]: ...
 
 class _Domain(abc.ABC, Generic[_XT_co]):
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
+
     # NOTE: This is a `ClassVar[dict[str, float]]` that's overridden as instance attribute in `_SimpleDomain`.
     # https://github.com/scipy/scipy/pull/22139
     symbols: Mapping[str, str] = ...
@@ -218,6 +221,9 @@ _ValidateOutND = TypeAliasType(
 
 #
 class _Parameter(abc.ABC, Generic[_RealT_co]):
+    @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
+    #
     def __init__(
         self, /, name: str, *, domain: _Domain, symbol: str | None = None, typical: _Domain | _ToDomain | None = None
     ) -> None: ...
