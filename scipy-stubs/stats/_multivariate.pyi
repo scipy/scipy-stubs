@@ -708,6 +708,16 @@ class multivariate_t_gen(multi_rv_generic):
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array3ND: ...
 
+    #
+    def marginal(
+        self,
+        dimensions: int | onp.ToInt1D,
+        loc: onp.ToFloat1D | None = None,
+        shape: onp.ToFloat | onp.ToFloat2D = 1,
+        df: int = 1,
+        allow_singular: bool = False,
+    ) -> multivariate_t_frozen: ...
+
 class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
 
@@ -750,6 +760,9 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
     def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
     @overload
     def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND: ...
+
+    #
+    def marginal(self, dimensions: int | onp.ToInt1D) -> multivariate_t_frozen: ...
 
 # NOTE: `m` and `n` are broadcastable (but doing so will break `.rvs()` at runtime...)
 class multivariate_hypergeom_gen(multi_rv_generic):

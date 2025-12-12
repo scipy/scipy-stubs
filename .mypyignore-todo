@@ -30,7 +30,5 @@ scipy.stats._new_distributions.__all__
 scipy.stats._stats_py.__all__
 scipy.stats.stats.__all__
 scipy.stats._stats_py.RepeatedResults
-scipy.stats._multivariate.multivariate_t_gen.marginal
-scipy.stats._multivariate.multivariate_t_frozen.marginal
 scipy.stats._multivariate.multivariate_normal_gen.marginal
 scipy.stats._multivariate.multivariate_normal_frozen.marginal
