@@ -1,6 +1,3 @@
-scipy.stats.median_abs_deviation
-scipy.stats.stats.median_abs_deviation
-scipy.stats._stats_py.median_abs_deviation
 scipy.stats.trim_mean
 scipy.stats.stats.trim_mean
 scipy.stats._stats_py.trim_mean

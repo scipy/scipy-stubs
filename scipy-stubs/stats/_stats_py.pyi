@@ -826,14 +826,47 @@ def iqr(
     keepdims: bool = False,
 ) -> _FloatOrND: ...
 
-# TODO(jorenham): improve
+#
+@overload
+def median_abs_deviation(
+    x: onp.ToFloatStrict1D,
+    axis: int | None = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload
+def median_abs_deviation(
+    x: onp.ToFloatND,
+    axis: None,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def median_abs_deviation(
+    x: onp.ToFloatND,
+    axis: int = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload
 def median_abs_deviation(
     x: onp.ToFloatND,
     axis: int | None = 0,
     center: np.ufunc | _MADCenterFunc | None = None,
-    scale: L["normal"] | onp.ToFloat = 1.0,
+    scale: L["normal"] | float = 1.0,
     nan_policy: NanPolicy = "propagate",
-) -> _FloatOrND: ...
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
 
 #
 def sigmaclip(a: onp.ToFloatND, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...

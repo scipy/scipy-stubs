@@ -257,7 +257,13 @@ def iqr(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def median_abs_deviation(
-    x: object, axis: object = 0, center: object = ..., scale: object = 1.0, nan_policy: object = "propagate"
+    x: object,
+    axis: object = 0,
+    center: object = ...,
+    scale: object = 1.0,
+    nan_policy: object = "propagate",
+    *,
+    keepdims: bool = False,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def sigmaclip(a: object, low: object = 4.0, high: object = 4.0) -> object: ...
