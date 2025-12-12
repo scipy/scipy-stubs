@@ -48,13 +48,9 @@ scipy.spatial.transform.RigidTransform.mean
 scipy.spatial.transform._rigid_transform.RigidTransform.mean
 scipy.spatial.transform.RigidTransform.shape
 scipy.spatial.transform._rigid_transform.RigidTransform.shape
-scipy.spatial.transform.Rotation.random
 scipy.spatial.transform.Rotation.shape
-scipy.spatial.transform._rigid_transform.Rotation.random
 scipy.spatial.transform._rigid_transform.Rotation.shape
-scipy.spatial.transform._rotation.Rotation.random
 scipy.spatial.transform._rotation.Rotation.shape
-scipy.spatial.transform.rotation.Rotation.random
 scipy.spatial.transform.rotation.Rotation.shape
 scipy.spatial.transform._rigid_transform.__all__
 scipy.spatial.transform._rotation.compose_quat

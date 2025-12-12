@@ -114,8 +114,13 @@ class Rotation:
     def identity(num: int | None = None, *, shape: int | tuple[int, ...] | None = None) -> Rotation: ...
     @staticmethod
     def random(
-        num: int | None = None, rng: onp.random.ToRNG | None = None, *, random_state: onp.random.ToRNG | None = None
+        num: int | None = None,
+        rng: onp.random.ToRNG | None = None,
+        *,
+        shape: tuple[int, ...] | None = None,
+        random_state: onp.random.ToRNG | None = None,
     ) -> Rotation: ...
+
     #
     @overload
     @staticmethod
