@@ -21,8 +21,8 @@ def _create_transformation_matrix(
 ) -> onp.ArrayND[np.float64]: ...  # undocumented
 
 class RigidTransform:
-    @classmethod
-    def from_matrix(cls, /, matrix: onp.ToFloat2D | onp.ToFloat3D) -> Self: ...
+    @staticmethod
+    def from_matrix(matrix: onp.ToFloat2D | onp.ToFloat3D) -> RigidTransform: ...
     @classmethod
     def from_rotation(cls, /, rotation: Rotation) -> Self: ...
     @classmethod
