@@ -155,7 +155,7 @@ def pow(quat: _f64_2d, n: int) -> _f64_2d: ...
 def from_davenport(
     axes: onp.ToIntStrict1D | onp.ToIntStrict2D,
     order: _Order,
-    angles: onp.Array[tuple[Never, ...], npc.floating],
+    angles: onp.Array[tuple[Never, Never, Never], npc.floating],
     degrees: _bint = False,
 ) -> _f64_1d: ...
 @overload
