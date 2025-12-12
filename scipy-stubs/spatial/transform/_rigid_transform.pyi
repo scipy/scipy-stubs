@@ -7,7 +7,7 @@ import numpy as np
 import optype as op
 import optype.numpy as onp
 
-from ._rotation import Rotation as Rotation, compose_quat as compose_quat
+from ._rotation import Rotation as Rotation
 
 _Indexer: TypeAlias = op.CanIndex | onp.ToInt1D | slice
 
