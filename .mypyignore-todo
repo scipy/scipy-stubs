@@ -22,8 +22,6 @@ scipy.spatial.kdtree.minkowski_distance_p
 scipy.spatial._kdtree.minkowski_distance_p
 scipy.spatial.distance.__all__
 
-scipy.spatial.transform.RigidTransform.from_dual_quat
-scipy.spatial.transform._rigid_transform.RigidTransform.from_dual_quat
 scipy.spatial.transform.RigidTransform.from_exp_coords
 scipy.spatial.transform._rigid_transform.RigidTransform.from_exp_coords
 scipy.spatial.transform.RigidTransform.from_matrix
