@@ -112,10 +112,10 @@ class Rotation:
     def create_group(cls, group: _RotGroup, axis: _RotAxis = "Z") -> Self: ...
     @staticmethod
     def identity(num: int | None = None, *, shape: int | tuple[int, ...] | None = None) -> Rotation: ...
-    @classmethod
+    @staticmethod
     def random(
-        cls, num: int | None = None, rng: onp.random.ToRNG | None = None, *, random_state: onp.random.ToRNG | None = None
-    ) -> Self: ...
+        num: int | None = None, rng: onp.random.ToRNG | None = None, *, random_state: onp.random.ToRNG | None = None
+    ) -> Rotation: ...
     #
     @overload
     @staticmethod
