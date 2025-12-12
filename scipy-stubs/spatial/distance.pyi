@@ -225,11 +225,7 @@ def correlation(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = No
 def correlation(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None, centered: bool = True) -> np.float64: ...
 
 #
-@overload
 def cosine(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
-@overload
-@deprecated("Complex `u` and `v` are deprecated and will raise an error in SciPy 1.17.0.")
-def cosine(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
 
 #
 @overload
