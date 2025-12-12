@@ -1,12 +1,4 @@
-scipy.special.clpmn
-scipy.special.basic.clpmn
-scipy.special._basic.clpmn
-scipy.special.specfun.clpmn
 scipy.special._multiufuncs.MultiUFunc.__init__
-scipy.special.__all__
-scipy.special._basic.__all__
-scipy.special.basic.__all__
-scipy.special.specfun.__all__
 
 scipy.stats.Logistic
 scipy.stats._new_distributions.Logistic

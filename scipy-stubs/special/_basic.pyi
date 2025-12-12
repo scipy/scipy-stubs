@@ -1,5 +1,5 @@
 from typing import Literal as L, TypeAlias, overload
-from typing_extensions import TypeVar, Unpack, deprecated
+from typing_extensions import TypeVar, Unpack
 
 import numpy as np
 import optype as op
@@ -17,7 +17,6 @@ __all__ = [
     "bernoulli",
     "berp_zeros",
     "bi_zeros",
-    "clpmn",
     "comb",
     "digamma",
     "diric",
@@ -356,13 +355,6 @@ def kelvin_zeros(nt: onp.ToInt) -> _tuple8[_f8_1d, _f8_1d]: ...
 #
 def pro_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> _f8_1d: ...
 def obl_cv_seq(m: onp.ToInt, n: onp.ToInt, c: onp.ToFloat) -> _f8_1d: ...
-
-#
-@deprecated(
-    "This function is deprecated as of SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Please use `scipy.special.assoc_legendre_p_all` instead."
-)
-def clpmn(m: onp.ToInt, n: onp.ToInt, z: _ToComplexOrND, type: L[2, 3] = 3) -> _tuple2[_c8_nd]: ...
 
 #
 @overload

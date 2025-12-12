@@ -13,7 +13,6 @@ __all__ = [
     "bernoulli",
     "berp_zeros",
     "bi_zeros",
-    "clpmn",
     "comb",
     "digamma",
     "diric",
@@ -125,8 +124,6 @@ def polygamma(n: object, x: object) -> object: ...
 def mathieu_even_coef(m: object, q: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def mathieu_odd_coef(m: object, q: object) -> object: ...
-@deprecated("will be removed in SciPy v2.0.0")
-def clpmn(m: object, n: object, z: object, type: object = 3) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def lqmn(m: object, n: object, z: object) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
