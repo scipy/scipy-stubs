@@ -877,8 +877,28 @@ def trimboth(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> 
 # TODO(jorenham): improve
 def trim1(a: onp.ToFloatND, proportiontocut: float, tail: _TrimTail = "right", axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
 
-# TODO(jorenham): improve
-def trim_mean(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> _FloatOrND: ...
+#
+@overload
+def trim_mean(
+    a: onp.ToFloatStrict1D,
+    proportiontocut: float,
+    axis: int | None = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload
+def trim_mean(
+    a: onp.ToFloatND, proportiontocut: float, axis: None, *, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> np.float64: ...
+@overload
+def trim_mean(
+    a: onp.ToFloatND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> _FloatOrND: ...
+@overload
+def trim_mean(
+    a: onp.ToFloatND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> onp.ArrayND[np.float64]: ...
 
 # TODO(jorenham): improve
 def f_oneway(

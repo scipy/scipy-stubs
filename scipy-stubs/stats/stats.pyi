@@ -272,7 +272,9 @@ def trimboth(a: object, proportiontocut: object, axis: object = 0) -> object: ..
 @deprecated("will be removed in SciPy v2.0.0")
 def trim1(a: object, proportiontocut: object, tail: object = "right", axis: object = 0) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def trim_mean(a: object, proportiontocut: object, axis: object = 0) -> object: ...
+def trim_mean(
+    a: object, proportiontocut: object, axis: object = 0, *, nan_policy: object = "propagate", keepdims: object = False
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def f_oneway(
     *samples: object, axis: object = 0, equal_var: object = True, nan_policy: object = "propagate", keepdims: object = False
