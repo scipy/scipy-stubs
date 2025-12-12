@@ -48,7 +48,6 @@ scipy.spatial.transform.RigidTransform.mean
 scipy.spatial.transform._rigid_transform.RigidTransform.mean
 scipy.spatial.transform.RigidTransform.shape
 scipy.spatial.transform._rigid_transform.RigidTransform.shape
-scipy.spatial.transform.Rotation.from_euler
 scipy.spatial.transform.Rotation.from_matrix
 scipy.spatial.transform.Rotation.from_mrp
 scipy.spatial.transform.Rotation.from_quat
@@ -57,7 +56,6 @@ scipy.spatial.transform.Rotation.identity
 scipy.spatial.transform.Rotation.mean
 scipy.spatial.transform.Rotation.random
 scipy.spatial.transform.Rotation.shape
-scipy.spatial.transform._rigid_transform.Rotation.from_euler
 scipy.spatial.transform._rigid_transform.Rotation.from_matrix
 scipy.spatial.transform._rigid_transform.Rotation.from_mrp
 scipy.spatial.transform._rigid_transform.Rotation.from_quat
@@ -66,7 +64,6 @@ scipy.spatial.transform._rigid_transform.Rotation.identity
 scipy.spatial.transform._rigid_transform.Rotation.mean
 scipy.spatial.transform._rigid_transform.Rotation.random
 scipy.spatial.transform._rigid_transform.Rotation.shape
-scipy.spatial.transform._rotation.Rotation.from_euler
 scipy.spatial.transform._rotation.Rotation.from_matrix
 scipy.spatial.transform._rotation.Rotation.from_mrp
 scipy.spatial.transform._rotation.Rotation.from_quat
