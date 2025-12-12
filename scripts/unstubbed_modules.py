@@ -24,7 +24,6 @@ BUNDLED = (
 TODO_1_17 = (
     "scipy.spatial.transform._rigid_transform_cy",
     "scipy.spatial.transform._rigid_transform_xp",
-    "scipy.spatial.transform._rotation_cy",
     "scipy.spatial.transform._rotation_xp",
 )
 
