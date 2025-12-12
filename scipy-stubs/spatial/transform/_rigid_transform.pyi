@@ -13,6 +13,8 @@ _Indexer: TypeAlias = op.CanIndex | onp.ToInt1D | slice
 
 ###
 
+__all__ = ["RigidTransform"]
+
 def normalize_dual_quaternion(dual_quat: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
 def _create_transformation_matrix(
     translations: onp.ToFloat1D | onp.ToFloat2D, rotation_matrices: onp.ToFloat2D | onp.ToFloat3D, single: bool
