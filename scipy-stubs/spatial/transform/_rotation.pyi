@@ -37,8 +37,6 @@ class Rotation:
     def __init__(
         self, /, quat: onp.ToFloat1D | onp.ToFloat2D, normalize: bool = True, copy: bool = True, scalar_first: bool = False
     ) -> None: ...
-    def __setstate_cython__(self, pyx_state: object, /) -> None: ...  # undocumented
-    def __reduce_cython__(self, /) -> None: ...  # undocumented
 
     #
     def __bool__(self, /) -> L[True]: ...

@@ -48,9 +48,7 @@ scipy.spatial.transform.RigidTransform.mean
 scipy.spatial.transform._rigid_transform.RigidTransform.mean
 scipy.spatial.transform.RigidTransform.shape
 scipy.spatial.transform._rigid_transform.RigidTransform.shape
-scipy.spatial.transform.Rotation.__reduce_cython__
 scipy.spatial.transform.Rotation.__setitem__
-scipy.spatial.transform.Rotation.__setstate_cython__
 scipy.spatial.transform.Rotation.align_vectors
 scipy.spatial.transform.Rotation.as_davenport
 scipy.spatial.transform.Rotation.as_euler
@@ -65,9 +63,7 @@ scipy.spatial.transform.Rotation.identity
 scipy.spatial.transform.Rotation.mean
 scipy.spatial.transform.Rotation.random
 scipy.spatial.transform.Rotation.shape
-scipy.spatial.transform._rigid_transform.Rotation.__reduce_cython__
 scipy.spatial.transform._rigid_transform.Rotation.__setitem__
-scipy.spatial.transform._rigid_transform.Rotation.__setstate_cython__
 scipy.spatial.transform._rigid_transform.Rotation.align_vectors
 scipy.spatial.transform._rigid_transform.Rotation.as_davenport
 scipy.spatial.transform._rigid_transform.Rotation.as_euler
@@ -82,9 +78,7 @@ scipy.spatial.transform._rigid_transform.Rotation.identity
 scipy.spatial.transform._rigid_transform.Rotation.mean
 scipy.spatial.transform._rigid_transform.Rotation.random
 scipy.spatial.transform._rigid_transform.Rotation.shape
-scipy.spatial.transform._rotation.Rotation.__reduce_cython__
 scipy.spatial.transform._rotation.Rotation.__setitem__
-scipy.spatial.transform._rotation.Rotation.__setstate_cython__
 scipy.spatial.transform._rotation.Rotation.align_vectors
 scipy.spatial.transform._rotation.Rotation.as_davenport
 scipy.spatial.transform._rotation.Rotation.as_euler
