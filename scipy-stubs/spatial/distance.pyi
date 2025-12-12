@@ -2,7 +2,7 @@
 
 from collections.abc import Callable, Sequence as Seq
 from typing import Literal, TypeAlias, overload
-from typing_extensions import TypeVar, deprecated
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -32,7 +32,6 @@ __all__ = [
     "rogerstanimoto",
     "russellrao",
     "seuclidean",
-    "sokalmichener",
     "sokalsneath",
     "sqeuclidean",
     "squareform",
@@ -82,7 +81,6 @@ _MetricName: TypeAlias = Literal[
     "seuclidean",
     "se",
     "s",
-    "sokalmichener",
     "sokalsneath",
     "sqeuclidean",
     "sqe",
@@ -274,11 +272,6 @@ def minkowski(u: onp.ToComplex1D, v: onp.ToComplex1D, p: float = 2, w: onp.ToFlo
 def rogerstanimoto(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
 def russellrao(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
 def seuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, V: onp.ToFloat1D) -> float: ...
-@deprecated(
-    "The `sokalmichener` metric is deprecated since SciPy 1.15.0 and will be removed in SciPy 1.17.0. "
-    "Replace usage of `sokalmichener(u, v)` with `rogerstanimoto(u, v)`."
-)
-def sokalmichener(u: onp.ToComplex1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> float: ...
 def yule(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
 
 #
