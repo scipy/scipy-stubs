@@ -1,5 +1,3 @@
-scipy.stats.matrix_t
-scipy.stats._multivariate.matrix_t
 scipy.stats.quantile
 scipy.stats._quantile.quantile
 scipy.stats.yeojohnson_llf
@@ -20,10 +18,9 @@ scipy.stats._stats_py.trim_mean
 scipy.stats.ttest_ind
 scipy.stats.stats.ttest_ind
 scipy.stats._stats_py.ttest_ind
+scipy.stats._stats_py.RepeatedResults
 scipy.stats.__all__
 scipy.stats.morestats.__all__
 scipy.stats._correlation.__all__
-scipy.stats._multivariate.__all__
 scipy.stats._stats_py.__all__
 scipy.stats.stats.__all__
-scipy.stats._stats_py.RepeatedResults

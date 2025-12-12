@@ -14,6 +14,7 @@ __all__ = [
     "dirichlet_multinomial",
     "invwishart",
     "matrix_normal",
+    "matrix_t",
     "multinomial",
     "multivariate_hypergeom",
     "multivariate_normal",
@@ -317,6 +318,89 @@ class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen]):
 
     #
     def entropy(self, /) -> np.float64: ...
+
+class matrix_t_gen(multi_rv_generic):
+    def __call__(
+        self,
+        /,
+        mean: onp.ToFloat2D | None = None,
+        row_spread: onp.ToFloat2D | float = 1,
+        col_spread: onp.ToFloat2D | float = 1,
+        df: float | None = None,
+        seed: onp.random.ToRNG | None = None,
+    ) -> matrix_t_frozen: ...
+
+    #
+    def logpdf(
+        self,
+        /,
+        X: onp.ToFloatND,
+        mean: onp.ToFloat2D | None = None,
+        row_spread: onp.ToFloat2D | float = 1,
+        col_spread: onp.ToFloat2D | float = 1,
+        df: float = 1,
+    ) -> _ScalarOrArray_f8: ...
+    def pdf(
+        self,
+        /,
+        X: onp.ToFloatND,
+        mean: onp.ToFloat2D | None = None,
+        row_spread: onp.ToFloat2D | float = 1,
+        col_spread: onp.ToFloat2D | float = 1,
+        df: float = 1,
+    ) -> _ScalarOrArray_f8: ...
+
+    # If `size > 1` the output is 3-D, otherwise 2-D.
+    @overload
+    def rvs(
+        self,
+        /,
+        mean: onp.ToFloat2D | None = None,
+        row_spread: onp.ToFloat2D | float = 1,
+        col_spread: onp.ToFloat2D | float = 1,
+        df: float = 1,
+        size: Literal[1] = 1,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.Array2D[np.float64]: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        mean: onp.ToFloat2D | None = None,
+        row_spread: onp.ToFloat2D | float = 1,
+        col_spread: onp.ToFloat2D | float = 1,
+        df: float = 1,
+        *,
+        size: int,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> _Array2ND[np.float64]: ...
+
+class matrix_t_frozen(multi_rv_frozen[matrix_t_gen]):
+    rowpsd: Final[_PSD]
+    colpsd: Final[_PSD]
+
+    mean: Final[onp.Array2D[np.float64]]
+    df: Final[float]
+
+    def __init__(
+        self,
+        /,
+        mean: onp.ToFloat2D,
+        row_spread: onp.ToFloat2D | float,
+        col_spread: onp.ToFloat2D | float,
+        df: float,
+        seed: onp.random.ToRNG | None = None,
+    ) -> None: ...
+
+    #
+    def logpdf(self, /, X: onp.ToFloatND) -> _ScalarOrArray_f8: ...
+    def pdf(self, /, X: onp.ToFloatND) -> _ScalarOrArray_f8: ...
+
+    #
+    @overload
+    def rvs(self, /, size: Literal[1] = 1, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
+    @overload
+    def rvs(self, /, size: int, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
 
 class dirichlet_gen(multi_rv_generic):
     def __call__(self, /, alpha: onp.ToFloat1D, seed: onp.random.ToRNG | None = None) -> dirichlet_frozen: ...
@@ -1011,6 +1095,7 @@ class normal_inverse_gamma_frozen(multi_rv_frozen[normal_inverse_gamma_gen]):
 
 multivariate_normal: Final[multivariate_normal_gen] = ...
 matrix_normal: Final[matrix_normal_gen] = ...
+matrix_t: Final[matrix_t_gen] = ...
 dirichlet: Final[dirichlet_gen] = ...
 wishart: Final[wishart_gen] = ...
 invwishart: Final[invwishart_gen] = ...
