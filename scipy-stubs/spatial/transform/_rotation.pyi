@@ -91,14 +91,13 @@ class Rotation:
     def from_rotvec(cls, rotvec: onp.ToFloat1D | onp.ToFloat2D, degrees: bool = False) -> Self: ...
     @classmethod
     def from_euler(cls, seq: str, angles: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D, degrees: bool = False) -> Self: ...
-    @classmethod
+    @staticmethod
     def from_davenport(
-        cls,
         axes: onp.ToFloat1D | onp.ToFloat2D,
         order: _RotOrder,
         angles: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D,
         degrees: bool = False,
-    ) -> Self: ...
+    ) -> Rotation: ...
 
     #
     @overload
