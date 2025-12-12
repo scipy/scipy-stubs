@@ -85,7 +85,6 @@ scipy\.special\.(_support_alternative_backends\.|_ufuncs\.)?round
 scipy\.special\.(_support_alternative_backends\.|_ufuncs\.)?kolmog(i|orov)
 scipy\.special\.(_support_alternative_backends\.|_ufuncs\.)?smirnovi?
 scipy\.special\.(_support_alternative_backends\.|_ufuncs\.)?spence
-scipy\.special\.(_support_alternative_backends\.|_ufuncs\.)?sph_harm
 scipy\.special\.(_support_alternative_backends\.|_ufuncs\.)?tklmbda
 scipy\.special\.(_support_alternative_backends\.|_ufuncs\.)?voigt_profile
 scipy\.special\.(_support_alternative_backends\.|_ufuncs\.)?dawsn

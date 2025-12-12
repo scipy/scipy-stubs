@@ -11,11 +11,8 @@ scipy.special.basic.lpn
 scipy.special._basic.lpn
 scipy.special.specfun.lpn
 scipy.special._multiufuncs.MultiUFunc.__init__
-scipy.special.cython_special.sph_harm
-scipy.special._special_ufuncs.sph_harm
 scipy.special.__all__
 scipy.special._basic.__all__
-scipy.special._ufuncs.__all__
 scipy.special.basic.__all__
 scipy.special.specfun.__all__
 
