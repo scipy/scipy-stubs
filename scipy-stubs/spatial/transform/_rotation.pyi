@@ -102,11 +102,11 @@ class Rotation:
 
     #
     @overload
-    @classmethod
-    def concatenate(cls, rotations: _RotationT) -> _RotationT: ...
+    @staticmethod
+    def concatenate(rotations: _RotationT) -> _RotationT: ...
     @overload
-    @classmethod
-    def concatenate(cls, rotations: Sequence[Rotation]) -> Self: ...
+    @staticmethod
+    def concatenate(rotations: Sequence[Rotation]) -> Rotation: ...
 
     #
     @classmethod
