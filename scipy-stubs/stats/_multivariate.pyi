@@ -170,6 +170,13 @@ class multivariate_normal_gen(multi_rv_generic):
     def fit(
         self, /, x: onp.ToFloatND, fix_mean: onp.ToFloat1D | None = None, fix_cov: onp.ToFloat2D | None = None
     ) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
+    def marginal(
+        self,
+        dimensions: int | onp.ToInt1D,
+        mean: onp.ToFloat1D | None = None,
+        cov: onp.ToFloat | onp.ToFloat2D = 1,
+        allow_singular: bool = False,
+    ) -> multivariate_normal_frozen: ...
 
 # TODO(@jorenham): Generic shape-type for mean and cov, so that we can determine whether the methods return scalars or arrays.
 # https://github.com/scipy/scipy-stubs/issues/406
@@ -219,6 +226,7 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
 
     #
     def entropy(self, /) -> np.float64: ...
+    def marginal(self, dimensions: int | onp.ToInt1D) -> multivariate_normal_frozen: ...
 
 class matrix_normal_gen(multi_rv_generic):
     def __call__(
