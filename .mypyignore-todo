@@ -2,10 +2,6 @@ scipy.special.clpmn
 scipy.special.basic.clpmn
 scipy.special._basic.clpmn
 scipy.special.specfun.clpmn
-scipy.special.lpmn
-scipy.special.basic.lpmn
-scipy.special._basic.lpmn
-scipy.special.specfun.lpmn
 scipy.special._multiufuncs.MultiUFunc.__init__
 scipy.special.__all__
 scipy.special._basic.__all__
