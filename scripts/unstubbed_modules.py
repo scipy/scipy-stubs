@@ -21,10 +21,7 @@ BUNDLED = (
     "scipy.sparse.linalg._propack",
 )
 # TODO(@jorenham): remove when stubs are added for these new SciPy 1.17 modules
-TODO_1_17 = (
-    "scipy.spatial.transform._rigid_transform_xp",
-    "scipy.spatial.transform._rotation_xp",
-)
+TODO_1_17 = ("scipy.spatial.transform._rotation_xp",)
 
 
 def _check_stubs_path() -> None:
