@@ -98,7 +98,6 @@ uv run
   stubtest
   --ignore-disjoint-bases
   --allowlist=.mypyignore
-  --allowlist=.mypyignore-todo
   scipy
 """
 
@@ -290,13 +289,7 @@ runner = "uv-venv-lock-runner"
 dependency_groups = ["type"]
 uv_sync_flags = ["--no-editable", "--reinstall-package=scipy-stubs"]
 commands = [
-  [
-    "stubtest",
-    "--ignore-disjoint-bases",
-    "--allowlist=.mypyignore",
-    "--allowlist=.mypyignore-todo",
-    "scipy",
-  ],
+  ["stubtest", "--ignore-disjoint-bases", "--allowlist=.mypyignore", "scipy"],
   ["stubdefaulter", "--packages=.", "--exit-zero", "--check"],
 ]
 
