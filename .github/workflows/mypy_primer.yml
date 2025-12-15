@@ -27,7 +27,7 @@ jobs:
           path: new
           fetch-depth: 0
 
-      - uses: astral-sh/setup-uv@v7.1.5
+      - uses: astral-sh/setup-uv@v7.1.6
 
       - name: run mypy_primer
         shell: bash
@@ -68,13 +68,13 @@ jobs:
           echo ${{ github.event.number }} > pr-number
 
       - name: upload mypy_primer.diff
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: mypy_primer-diff
           path: mypy_primer.diff
 
       - name: upload pr-number
-        uses: actions/upload-artifact@v5.0.0
+        uses: actions/upload-artifact@v6.0.0
         with:
           name: pr-number
           path: pr-number
