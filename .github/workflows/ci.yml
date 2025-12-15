@@ -110,7 +110,7 @@ jobs:
         run: mypy --no-incremental --cache-dir=/dev/null scipy-stubs
 
       - name: stubtest scipy
-        run: stubtest --ignore-disjoint-bases --allowlist=.mypyignore --allowlist=.mypyignore-todo scipy
+        run: stubtest --ignore-disjoint-bases --allowlist=.mypyignore scipy
 
   typetest:
     runs-on: ubuntu-latest
