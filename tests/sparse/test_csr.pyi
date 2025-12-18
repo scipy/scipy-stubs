@@ -1,4 +1,4 @@
-from typing import Literal, TypeAlias, assert_type
+from typing import Any, Literal, TypeAlias, assert_type
 
 import numpy as np
 
@@ -16,6 +16,9 @@ seq_seq_bool: list[list[bool]]
 seq_seq_int: list[list[int]]
 seq_seq_float: list[list[float]]
 seq_seq_complex: list[list[complex]]
+
+arr_f32_nd: np.ndarray[tuple[Any, ...], np.dtype[np.float32]]
+arr_f32_1d: np.ndarray[tuple[int], np.dtype[np.float32]]
 
 ###
 # NOTE: Keep these tests in sync with the `dok` tests.
@@ -75,6 +78,30 @@ assert_type(csr_matrix(seq_seq_bool), csr_matrix[np.bool_])
 assert_type(csr_matrix(seq_seq_int), csr_matrix[np.int64])
 assert_type(csr_matrix(seq_seq_float), csr_matrix[np.float64])
 assert_type(csr_matrix(seq_seq_complex), csr_matrix[np.complex128])
+
+# https://github.com/scipy/scipy-stubs/issues/1060
+
+assert_type(csr_array((arr_f32_nd, (seq_int, seq_int))), csr_array[np.float32])
+assert_type(csr_array((arr_f32_1d, (seq_int, seq_int))), csr_array[np.float32])
+assert_type(csr_array((seq_bool, (seq_int, seq_int))), csr_array[np.bool_])
+assert_type(csr_array((seq_int, (seq_int, seq_int))), csr_array[np.int64])
+assert_type(csr_array((seq_float, (seq_int, seq_int))), csr_array[np.float64])
+assert_type(csr_array((seq_complex, (seq_int, seq_int))), csr_array[np.complex128])
+csr_array((seq_seq_bool, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_array((seq_seq_int, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_array((seq_seq_float, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_array((seq_seq_complex, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+
+assert_type(csr_matrix((arr_f32_nd, (seq_int, seq_int))), csr_matrix[np.float32])
+assert_type(csr_matrix((arr_f32_1d, (seq_int, seq_int))), csr_matrix[np.float32])
+assert_type(csr_matrix((seq_bool, (seq_int, seq_int))), csr_matrix[np.bool_])
+assert_type(csr_matrix((seq_int, (seq_int, seq_int))), csr_matrix[np.int64])
+assert_type(csr_matrix((seq_float, (seq_int, seq_int))), csr_matrix[np.float64])
+assert_type(csr_matrix((seq_complex, (seq_int, seq_int))), csr_matrix[np.complex128])
+csr_matrix((seq_seq_bool, (seq_int, seq_int)))  # type: ignore[arg-type] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((seq_seq_int, (seq_int, seq_int)))  # type: ignore[arg-type] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((seq_seq_float, (seq_int, seq_int)))  # type: ignore[arg-type] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((seq_seq_complex, (seq_int, seq_int)))  # type: ignore[arg-type] # pyright: ignore[reportArgumentType, reportCallIssue]
 
 ###
 # CSR-specific tests
