@@ -61,7 +61,7 @@ type = [
   { include-group = "ci" },
   "array-api-compat==1.12.0", # bundled as `scipy._lib.array_api_compat`
   "pytest==9.0.2", # needed for `scipy._lib._array_api.make_xp_pytest_*`
-  "basedpyright==1.36.1",
+  "basedpyright==1.36.2",
   "mypy[faster-cache]==1.19.1",
   "pyrefly==0.46.0",
   "stubdefaulter>=0.1.0",
