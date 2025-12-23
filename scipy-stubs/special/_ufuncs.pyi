@@ -1,3 +1,5 @@
+# LSP violations that won't cause type-unsafe behavior, some of which depend on numpy versions
+
 # pyright: reportIncompatibleMethodOverride=false
 # mypy: disable-error-code="overload-overlap, override"
 
@@ -758,6 +760,7 @@ class _UFunc11f(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def __call__(self, x: onp.ToFloat64_ND, /, out: _Out1 = None, **kw: Unpack[_Kw11f]) -> _FloatND: ...
     @overload
     def __call__(self, x: _ToFloat64OrND, /, out: _Out1[_OutT], **kw: Unpack[_Kw11f]) -> _OutT: ...
+
     #
     @override
     def at(self, a: _CoFloat64ND, indices: _Indices, /) -> None: ...
