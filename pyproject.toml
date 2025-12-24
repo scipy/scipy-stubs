@@ -63,9 +63,9 @@ type = [
   "pytest==9.0.2", # needed for `scipy._lib._array_api.make_xp_pytest_*`
   "basedpyright==1.36.2",
   "mypy[faster-cache]==1.19.1",
-  "pyrefly==0.46.0",
+  "pyrefly==0.46.1",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.5",
+  "ty==0.0.6",
 ]
 dev = [
   { include-group = "lint" },
