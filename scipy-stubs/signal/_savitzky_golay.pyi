@@ -16,6 +16,7 @@ def savgol_coeffs(
     delta: float = 1.0,
     pos: int | None = None,
     use: Literal["conv", "dot"] = "conv",
+    *,
     xp: None = None,
     device: None = None,
 ) -> onp.Array1D[np.float64]: ...
