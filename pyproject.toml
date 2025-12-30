@@ -206,8 +206,11 @@ python-version = "3.11" # unlike mypy and pyright, this doesn't depend on the Py
 [tool.ty.src]
 include = ["scipy-stubs", "scripts", "tests"]
 
+[tool.ty.analysis]
+respect-type-ignore-comments = false # for mypy compat
+
 [tool.ty.rules]
-# unused-ignore-comment = "warn"  # will also complain about mypy `# type: ignore` comments
+unused-ignore-comment = "warn"
 possibly-unresolved-reference = "error"
 
 [[tool.ty.overrides]]
