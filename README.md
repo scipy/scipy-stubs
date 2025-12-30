@@ -312,6 +312,7 @@ Colour ([Colour](https://github.com/colour-science/colour),
 [Visuals](https://github.com/colour-science/colour-visuals)) |
 [CSAPS](https://github.com/espdev/csaps) |
 [cuPyNumeric](https://github.com/nv-legate/cupynumeric) |
+derwen.ai ([kglab](https://github.com/DerwenAI/kglab)) |
 [Efax](https://github.com/NeilGirdhar/efax) |
 [Fast GraphRAG](https://github.com/circlemind-ai/fast-graphrag) |
 [foamlib](https://github.com/gerlero/foamlib) |
