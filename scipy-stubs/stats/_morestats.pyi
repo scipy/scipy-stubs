@@ -1,7 +1,7 @@
 from collections.abc import Callable, Sequence
 from types import ModuleType
 from typing import Any, Generic, Literal, NamedTuple, Protocol, Self, TypeAlias, final, overload, type_check_only
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype as op
@@ -10,7 +10,7 @@ import optype.numpy.compat as npc
 
 from ._distn_infrastructure import rv_continuous_frozen
 from ._fit import FitResult
-from ._resampling import PermutationMethod
+from ._resampling import MonteCarloMethod, PermutationMethod
 from ._stats_py import SignificanceResult
 from ._typing import Alternative, BaseBunch, NanPolicy
 from scipy.optimize import OptimizeResult
@@ -532,7 +532,22 @@ def yeojohnson_normplot(
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...
 
 #
-def anderson(x: onp.ToFloat | onp.ToFloatND, dist: _RVCAnderson = "norm") -> AndersonResult: ...
+@overload
+@deprecated(
+    "As of SciPy 1.17, users must choose a p-value calculation method by providing the `method` parameter. "
+    "`method='interpolate'` interpolates the p-value from pre-calculated tables; `method` may also be an instance of "
+    "`MonteCarloMethod` to approximate the p-value via Monte Carlo simulation. "
+    "When `method` is specified, the result object will include a `pvalue` attribute and not attributes `critical_value`, "
+    "`significance_level`, or `fit_result`. "
+    "Beginning in 1.19.0, these other attributes will no longer be available, "
+    "and a p-value will always be computed according to one of the available `method` options.",
+    category=FutureWarning,
+)
+def anderson(x: onp.ToFloatND, dist: _RVCAnderson = "norm", *, method: None = None) -> AndersonResult: ...
+@overload
+def anderson(
+    x: onp.ToFloatND, dist: _RVCAnderson = "norm", *, method: MonteCarloMethod | Literal["interpolated"]
+) -> AndersonResult: ...
 
 #
 def anderson_ksamp(
