@@ -556,10 +556,16 @@ def anderson(
     "`midrank` will be removed in SciPy 1.19.0. Specify `variant` to silence this warning. "
     "Note that the returned object will no longer be unpackable as a tuple, and `critical_values` will be omitted."
 )
-def anderson_ksamp(samples: onp.ToFloatND, midrank: bool, *, method: PermutationMethod | None = None) -> Anderson_ksampResult: ...
+def anderson_ksamp(
+    samples: onp.ToFloatND, midrank: bool, *, variant: op.JustObject = ..., method: PermutationMethod | None = None
+) -> Anderson_ksampResult: ...
 @overload
 def anderson_ksamp(
-    samples: onp.ToFloatND, midrank: op.JustObject = ..., *, method: PermutationMethod | None = None
+    samples: onp.ToFloatND,
+    midrank: op.JustObject = ...,
+    *,
+    variant: Literal["midrank", "right", "continuous"] | op.JustObject = ...,
+    method: PermutationMethod | None = None,
 ) -> Anderson_ksampResult: ...
 
 #
