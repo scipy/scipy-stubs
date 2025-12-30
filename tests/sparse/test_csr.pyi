@@ -161,7 +161,7 @@ assert_type(csr_arr[seq_bool], csr_array[ScalarType, tuple[int, int]])
 assert_type(csr_arr[seq_int], csr_array[ScalarType, tuple[int, int]])
 assert_type(csr_arr[0, None], csr_array[ScalarType, tuple[int, int]])
 assert_type(csr_arr[None, 0], csr_array[ScalarType, tuple[int, int]])
-assert_type(csr_arr[seq_int, seq_int], np.ndarray[tuple[int], np.dtype[ScalarType]])  # pyrefly: ignore[assert-type]
+assert_type(csr_arr[seq_int, seq_int], np.ndarray[tuple[int], np.dtype[ScalarType]])
 
 csr_mat[None]  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(csr_mat[0, 0], ScalarType)
@@ -175,7 +175,7 @@ assert_type(csr_mat[seq_bool], csr_matrix[ScalarType])
 assert_type(csr_mat[seq_int], csr_matrix[ScalarType])
 assert_type(csr_mat[0, None], csr_matrix[ScalarType])
 assert_type(csr_mat[None, 0], csr_matrix[ScalarType])
-assert_type(csr_mat[seq_int, seq_int], np.matrix[tuple[int, int], np.dtype[ScalarType]])  # pyrefly: ignore[assert-type]
+assert_type(csr_mat[seq_int, seq_int], np.matrix[tuple[int, int], np.dtype[ScalarType]])
 
 # T
 assert_type(csr_vec.T, csr_array[ScalarType, tuple[int]])  # pyrefly: ignore[assert-type]

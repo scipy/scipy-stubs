@@ -16,7 +16,7 @@ __all__ = ["LinearOperator", "aslinearoperator"]
 _SCT = TypeVar("_SCT", bound=npc.number | np.bool_)
 _SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
 _SCT1_co = TypeVar("_SCT1_co", bound=npc.number | np.bool_, default=Any, covariant=True)
-_SCT2_co = TypeVar("_SCT2_co", bound=npc.number | np.bool_, default=_SCT1_co, covariant=True)  # pyrefly: ignore[invalid-type-var]
+_SCT2_co = TypeVar("_SCT2_co", bound=npc.number | np.bool_, default=_SCT1_co, covariant=True)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec, covariant=True)
 
