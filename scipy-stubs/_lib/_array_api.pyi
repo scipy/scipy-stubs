@@ -8,11 +8,9 @@ from typing import Any, Final, Literal, Never, TypeAlias
 
 import _pytest.mark
 from array_api_compat import (
-    device as xp_device,  # pyright: ignore[reportUnknownVariableType]
     is_array_api_strict_namespace as is_array_api_strict,
     is_cupy_namespace as is_cupy,
     is_jax_namespace as is_jax,
-    is_lazy_array as is_lazy_array,
     is_numpy_namespace as is_numpy,
     is_torch_namespace as is_torch,
     numpy as np_compat,
@@ -193,3 +191,7 @@ def make_xp_pytest_marks(
 xp_capabilities_table: Final[_CapabilitiesTable] = ...
 
 def xp_device_type(a: Array) -> Literal["cpu", "cuda"] | None: ...
+
+# we can't import these from `array_api_compat` due to incomplete annotations, which pyright will complain about
+def xp_device(x: object, /) -> Incomplete: ...
+def is_lazy_array(x: object) -> bool: ...
