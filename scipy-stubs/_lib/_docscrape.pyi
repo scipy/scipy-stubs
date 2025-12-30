@@ -57,7 +57,7 @@ class FunctionDoc(NumpyDocString, Generic[_FunctionT]):
         config: Mapping[str, object] | None = None,
     ) -> None: ...
     @override
-    def __str__(self, /) -> str: ...  # type: ignore[override]  # noqa: PYI029  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __str__(self, /) -> str: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]  # noqa: PYI029
     def get_func(self, /) -> _FunctionT: ...
 
 class ClassDoc(NumpyDocString):

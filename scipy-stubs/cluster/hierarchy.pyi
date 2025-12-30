@@ -91,7 +91,7 @@ class ClusterNode:
 
     # NOTE: These raise a `ValueError` if passed anything other than `ClusterNode`
     @override
-    def __eq__(self, node: ClusterNode, /) -> bool: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __eq__(self, node: ClusterNode, /) -> bool: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
     def __lt__(self, node: ClusterNode, /) -> bool: ...
     def __gt__(self, node: ClusterNode, /) -> bool: ...
 

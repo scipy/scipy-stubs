@@ -10,7 +10,7 @@ from array_api_compat import (
     is_dask_namespace as is_dask_namespace,
     is_jax_array as is_jax_array,  # pyright: ignore[reportUnknownVariableType]
     is_jax_namespace as is_jax_namespace,
-    is_lazy_array as is_lazy_array,
+    is_lazy_array as is_lazy_array,  # pyright: ignore[reportUnknownVariableType]
     is_ndonnx_array as is_ndonnx_array,  # pyright: ignore[reportUnknownVariableType]
     is_ndonnx_namespace as is_ndonnx_namespace,
     is_numpy_array as is_numpy_array,
@@ -19,7 +19,7 @@ from array_api_compat import (
     is_pydata_sparse_namespace as is_pydata_sparse_namespace,
     is_torch_array as is_torch_array,  # pyright: ignore[reportUnknownVariableType]
     is_torch_namespace as is_torch_namespace,
-    is_writeable_array as is_writeable_array,
+    is_writeable_array as is_writeable_array,  # pyright: ignore[reportUnknownVariableType]
     size as size,
     to_device as to_device,
 )

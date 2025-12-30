@@ -725,10 +725,10 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
 
     #
     @override
-    def __getitem__(self, key: Never, /) -> Never: ...  # type:ignore[override] # pyright:ignore[reportIncompatibleMethodOverride]
+    def __getitem__(self, key: Never, /) -> Never: ...  # type:ignore[override] # pyright:ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
 
     # note the missing value parameter: https://github.com/scipy/scipy/pull/24145
     @override
-    def __setitem__(self, key: Never, /) -> None: ...  # type:ignore[override] # pyright:ignore[reportIncompatibleMethodOverride]
+    def __setitem__(self, key: Never, /) -> None: ...  # type:ignore[override] # pyright:ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
 
 def isspmatrix_coo(x: object) -> TypeIs[coo_matrix]: ...

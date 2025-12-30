@@ -94,7 +94,6 @@
       "stubtest",
       "--ignore-disjoint-bases",
       "--allowlist=.mypyignore",
-      "--allowlist=.mypyignore-todo",
       "scipy"
     ],
     "group": {

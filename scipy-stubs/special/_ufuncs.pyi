@@ -565,8 +565,8 @@ class _Kw52f(_KwBase, TypedDict, total=False):
 
 ###
 
-@type_check_only
-class _UFunc(np.ufunc, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]
+@type_check_only  # https://github.com/astral-sh/ty/issues/2275
+class _UFunc(np.ufunc, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]  # ty: ignore[subclass-of-final-class]
     @property
     @override
     def __class__(self, /) -> type[np.ufunc]: ...
