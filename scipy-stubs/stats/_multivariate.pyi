@@ -526,7 +526,7 @@ class invwishart_gen(wishart_gen):
     @override
     def __call__(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
         self, /, df: onp.ToFloat | None = None, scale: _ToFloatMax2D | None = None, seed: onp.random.ToRNG | None = None
-    ) -> invwishart_frozen: ...
+    ) -> invwishart_frozen: ...  # ty: ignore[invalid-method-override]
     @override
     def mean(self, /, df: onp.ToFloat, scale: _ToFloatMax2D) -> np.float64 | None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     @override

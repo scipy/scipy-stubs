@@ -66,9 +66,9 @@ class _bsr_base(_cs_matrix[_ScalarT_co, tuple[int, int]], _minmax_mixin[_ScalarT
 
     # These raise `NotImplementedError` at runtime (so why inherit from `IndexMixin` then...?)
     @override
-    def __getitem__(self, key: Never, /) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __getitem__(self, key: Never, /) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
     @override
-    def __setitem__(self, key: Never, val: object, /) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __setitem__(self, key: Never, val: object, /) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
 
 class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     # NOTE: These four methods do not exist at runtime.

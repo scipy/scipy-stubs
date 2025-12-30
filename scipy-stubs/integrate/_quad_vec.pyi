@@ -36,7 +36,7 @@ class _InfiniteFunc(Protocol[_NDT_co]):
 class LRUDict(collections.OrderedDict[tuple[float, float], _VT], Generic[_VT]):
     def __init__(self, /, max_size: int) -> None: ...
     @override
-    def update(self, other: Never) -> NoReturn: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def update(self, other: Never) -> NoReturn: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
 
 class SemiInfiniteFunc(_InfiniteFunc[_NDT_co], Generic[_NDT_co]):
     def __init__(self, /, func: Callable[[float], _NDT_co], start: float, infty: bool) -> None: ...
