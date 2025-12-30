@@ -295,7 +295,7 @@ class lsoda(IntegratorBase[np.float64]):
         atol: float = 1e-12,
         lband: float | None = None,
         uband: float | None = None,
-        nsteps: int = 5_000,
+        nsteps: int = 500,
         max_step: float = 0.0,
         min_step: float = 0.0,
         first_step: float = 0.0,

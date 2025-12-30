@@ -1,7 +1,7 @@
 from collections.abc import Callable, Sequence
 from types import ModuleType
 from typing import Any, Generic, Literal, NamedTuple, Protocol, Self, TypeAlias, final, overload, type_check_only
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype as op
@@ -10,7 +10,7 @@ import optype.numpy.compat as npc
 
 from ._distn_infrastructure import rv_continuous_frozen
 from ._fit import FitResult
-from ._resampling import PermutationMethod
+from ._resampling import MonteCarloMethod, PermutationMethod
 from ._stats_py import SignificanceResult
 from ._typing import Alternative, BaseBunch, NanPolicy
 from scipy.optimize import OptimizeResult
@@ -210,6 +210,7 @@ class Anderson_ksampResult(BaseBunch[np.float64, _Float1D, np.float64]):
     @property
     def statistic(self, /) -> np.float64: ...
     @property
+    @deprecated("Present only when `variant` is unspecified.")
     def critical_values(self, /) -> _Float1D: ...
     @property
     def pvalue(self, /) -> np.float64: ...
@@ -532,11 +533,40 @@ def yeojohnson_normplot(
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...
 
 #
-def anderson(x: onp.ToFloat | onp.ToFloatND, dist: _RVCAnderson = "norm") -> AndersonResult: ...
+@overload
+@deprecated(
+    "As of SciPy 1.17, users must choose a p-value calculation method by providing the `method` parameter. "
+    "`method='interpolate'` interpolates the p-value from pre-calculated tables; `method` may also be an instance of "
+    "`MonteCarloMethod` to approximate the p-value via Monte Carlo simulation. "
+    "When `method` is specified, the result object will include a `pvalue` attribute and not attributes `critical_value`, "
+    "`significance_level`, or `fit_result`. "
+    "Beginning in 1.19.0, these other attributes will no longer be available, "
+    "and a p-value will always be computed according to one of the available `method` options.",
+    category=FutureWarning,
+)
+def anderson(x: onp.ToFloatND, dist: _RVCAnderson = "norm", *, method: None = None) -> AndersonResult: ...
+@overload
+def anderson(
+    x: onp.ToFloatND, dist: _RVCAnderson = "norm", *, method: MonteCarloMethod | Literal["interpolated"]
+) -> AndersonResult: ...
 
 #
+@overload
+@deprecated(
+    "Parameter `variant` has been introduced to replace `midrank`; "
+    "`midrank` will be removed in SciPy 1.19.0. Specify `variant` to silence this warning. "
+    "Note that the returned object will no longer be unpackable as a tuple, and `critical_values` will be omitted."
+)
 def anderson_ksamp(
-    samples: onp.ToFloatND, midrank: bool = True, *, method: PermutationMethod | None = None
+    samples: onp.ToFloatND, midrank: bool, *, variant: op.JustObject = ..., method: PermutationMethod | None = None
+) -> Anderson_ksampResult: ...
+@overload
+def anderson_ksamp(
+    samples: onp.ToFloatND,
+    midrank: op.JustObject = ...,
+    *,
+    variant: Literal["midrank", "right", "continuous"] | op.JustObject = ...,
+    method: PermutationMethod | None = None,
 ) -> Anderson_ksampResult: ...
 
 #

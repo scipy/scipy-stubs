@@ -1,5 +1,6 @@
 # mypy: disable-error-code="explicit-override"
 import abc
+import types
 from typing import Any, ClassVar, Final, Generic, Literal, Never, Self, TypeAlias, final, overload, type_check_only
 from typing_extensions import TypeVar, override
 
@@ -91,6 +92,10 @@ class LinearTimeInvariant(Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     inputs: Final[int]
     outputs: Final[int]
 
+    @classmethod
+    def __class_getitem__(cls, args: object | tuple[object, ...], /) -> types.GenericAlias: ...
+
+    #
     def __new__(cls, *system: Never, **kwargs: Never) -> Self: ...
 
     #
