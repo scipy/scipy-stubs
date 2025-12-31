@@ -9,7 +9,7 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 
 [project]
 name = "scipy-stubs"
-version = "1.17.0.0.dev1"
+version = "1.17.0.0"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
