@@ -337,6 +337,7 @@ Pandas ([pandas](https://github.com/pandas-dev/pandas),
 [Ptera Software](https://github.com/camUrban/PteraSoftware) |
 PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 [pysmo](https://github.com/pysmo/pysmo) |
+[python-hvac](https://github.com/TomLXXVI/python-hvac) |
 [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay) |
 scverse ([scanpy](https://github.com/scverse/scanpy)) |
 [Skore](https://github.com/probabl-ai/skore) |
