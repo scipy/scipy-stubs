@@ -1,11 +1,10 @@
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Literal as L, TypeAlias, overload
+from typing import Literal as L, SupportsIndex, TypeAlias, overload
 from typing_extensions import TypeAliasType, TypeVar
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -69,8 +68,6 @@ _Float2D: TypeAlias = onp.Array2D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 _Complex1D: TypeAlias = onp.Array1D[np.complex128]
 _ComplexND: TypeAlias = onp.ArrayND[np.complex128]
-_Inexact1D: TypeAlias = onp.Array1D[np.float64 | np.complex128]
-_InexactND: TypeAlias = onp.ArrayND[np.float64 | np.complex128]
 
 _Order: TypeAlias = L[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
@@ -93,62 +90,62 @@ _FType: TypeAlias = _FType0 | L["bessel"]
 _BType0: TypeAlias = L["bandpass", "lowpass", "highpass", "bandstop"]
 _BType: TypeAlias = _BType0 | L["band", "pass", "bp", "bands", "stop", "bs", "low", "lp", "l", "high", "hp", "h"]
 _Pairing: TypeAlias = L["nearest", "keep_odd", "minimal"]
-_Normalization: TypeAlias = L["phase", "delay", "mag"]
+_Norm: TypeAlias = L["phase", "delay", "mag"]
+
+_WorNReal: TypeAlias = SupportsIndex | onp.ToFloat1D | None
 
 ###
 
 class BadCoefficients(UserWarning): ...
 
 #
-def findfreqs(num: onp.ToComplex1D, den: onp.ToComplex1D, N: op.CanIndex, kind: L["ba", "zp"] = "ba") -> _Float1D: ...
+def findfreqs(num: onp.ToComplex1D, den: onp.ToComplex1D, N: SupportsIndex, kind: L["ba", "zp"] = "ba") -> _Float1D: ...
 
 #
 @overload  # worN: real
 def freqs(
-    b: onp.ToComplex1D,
-    a: onp.ToComplex1D,
-    worN: op.CanIndex | onp.ToFloat1D = 200,
-    plot: Callable[[_Float1D, _Complex1D], object] | None = None,
+    b: onp.ToComplex1D, a: onp.ToComplex1D, worN: _WorNReal = 200, plot: Callable[[_Float1D, _Complex1D], object] | None = None
 ) -> tuple[_Float1D, _Complex1D]: ...
 @overload  # worN: complex
 def freqs(
     b: onp.ToComplex1D,
     a: onp.ToComplex1D,
-    worN: onp.ToComplex1D,
+    worN: onp.ToJustComplex1D,
     plot: Callable[[_Float1D, _Complex1D], object] | Callable[[_Complex1D, _Complex1D], object] | None = None,
-) -> tuple[_Inexact1D, _Complex1D]: ...
+) -> tuple[_Complex1D, _Complex1D]: ...
 
 #
 @overload  # worN: real
 def freqs_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToComplex1D, worN: op.CanIndex | onp.ToFloat1D = 200
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToComplex1D, worN: _WorNReal = 200
 ) -> tuple[_Float1D, _Complex1D]: ...
 @overload  # worN: complex
 def freqs_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToComplex1D, worN: onp.ToComplex1D
-) -> tuple[_Inexact1D, _Complex1D]: ...
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToComplex1D, worN: onp.ToJustComplex1D
+) -> tuple[_Complex1D, _Complex1D]: ...
 
 #
 @overload  # worN: real
 def freqz(
     b: onp.ToComplex | onp.ToComplexND,
     a: onp.ToComplex | onp.ToComplexND = 1,
-    worN: op.CanIndex | onp.ToFloat1D = 512,
-    whole: op.CanBool = False,
+    worN: _WorNReal = 512,
+    whole: bool = False,
     plot: Callable[[_FloatND, _ComplexND], object] | None = None,
-    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
+    fs: float = 6.283185307179586,
     include_nyquist: bool = False,
 ) -> tuple[_FloatND, _ComplexND]: ...
-@overload  # worN: complex
+@overload  # worN: complex  (keyword)
 def freqz(
     b: onp.ToComplex | onp.ToComplexND,
     a: onp.ToComplex | onp.ToComplexND = 1,
-    worN: op.CanIndex | onp.ToComplex1D = 512,
-    whole: op.CanBool = False,
+    *,
+    worN: onp.ToJustComplex1D,
+    whole: bool = False,
     plot: Callable[[_FloatND, _ComplexND], object] | None = None,
-    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
+    fs: float = 6.283185307179586,
     include_nyquist: bool = False,
-) -> tuple[_InexactND, _ComplexND]: ...
+) -> tuple[_ComplexND, _ComplexND]: ...
 
 #
 @overload  # worN: real
@@ -156,65 +153,53 @@ def freqz_zpk(
     z: onp.ToComplex1D,
     p: onp.ToComplex1D,
     k: onp.ToComplex1D,
-    worN: op.CanIndex | onp.ToFloat1D = 512,
-    whole: op.CanBool = False,
-    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
+    worN: _WorNReal = 512,
+    whole: bool = False,
+    fs: float = 6.283185307179586,
 ) -> tuple[_FloatND, _ComplexND]: ...
 @overload  # worN: complex
 def freqz_zpk(
     z: onp.ToComplex1D,
     p: onp.ToComplex1D,
     k: onp.ToComplex1D,
-    worN: onp.ToComplex1D,
-    whole: op.CanBool = False,
-    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
-) -> tuple[_InexactND, _ComplexND]: ...
+    worN: onp.ToJustComplex1D,
+    whole: bool = False,
+    fs: float = 6.283185307179586,
+) -> tuple[_ComplexND, _ComplexND]: ...
 
 #
 @overload  # w: real
 def group_delay(
-    system: tuple[onp.ToComplex1D, onp.ToComplex1D],
-    w: op.CanIndex | onp.ToFloat1D | None = 512,
-    whole: op.CanBool = False,
-    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
+    system: tuple[onp.ToComplex1D, onp.ToComplex1D], w: _WorNReal = 512, whole: bool = False, fs: float = 6.283185307179586
 ) -> _Ba1D: ...
 @overload  # w: complex
 def group_delay(
-    system: tuple[onp.ToComplex1D, onp.ToComplex1D],
-    w: onp.ToComplex1D,
-    whole: op.CanBool = False,
-    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
-) -> tuple[_Inexact1D, _Float1D]: ...
+    system: tuple[onp.ToComplex1D, onp.ToComplex1D], w: onp.ToJustComplex1D, whole: bool = False, fs: float = 6.283185307179586
+) -> tuple[_Complex1D, _Float1D]: ...
 
 #
 @overload  # worN: real
 def freqz_sos(
-    sos: onp.ToFloat2D,
-    worN: op.CanIndex | onp.ToFloat1D = 512,
-    whole: op.CanBool = False,
-    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
+    sos: onp.ToFloat2D, worN: _WorNReal = 512, whole: bool = False, fs: float = 6.283185307179586
 ) -> tuple[_Float1D, _Complex1D]: ...
 @overload  # worN: real
 def freqz_sos(
-    sos: onp.ToFloat2D,
-    worN: onp.ToComplex1D,
-    whole: op.CanBool = False,
-    fs: onp.ToFloat = 6.283185307179586,  # 2 * pi
-) -> tuple[_Inexact1D, _Complex1D]: ...
+    sos: onp.ToFloat2D, worN: onp.ToJustComplex1D, whole: bool = False, fs: float = 6.283185307179586
+) -> tuple[_Complex1D, _Complex1D]: ...
 
 sosfreqz = freqz_sos
 
 #
 def tf2zpk(b: _ToFloat1D, a: _ToFloat1D) -> _ZPK[np.float64 | np.complex128] | _ZPK[np.complex64, np.complex64, np.float32]: ...
-def tf2sos(b: _ToFloat1D, a: _ToFloat1D, pairing: _Pairing | None = None, *, analog: onp.ToBool = False) -> _Float2D: ...
+def tf2sos(b: _ToFloat1D, a: _ToFloat1D, pairing: _Pairing | None = None, *, analog: bool = False) -> _Float2D: ...
 
 #
-def zpk2tf(z: onp.ToFloat1D, p: onp.ToFloat1D, k: onp.ToFloat) -> _Ba1D: ...
+def zpk2tf(z: onp.ToFloat1D, p: onp.ToFloat1D, k: float) -> _Ba1D: ...
 def zpk2sos(
-    z: onp.ToFloat1D, p: onp.ToFloat1D, k: onp.ToFloat, pairing: _Pairing | None = None, *, analog: onp.ToBool = False
+    z: onp.ToFloat1D, p: onp.ToFloat1D, k: float, pairing: _Pairing | None = None, *, analog: bool = False
 ) -> _Float2D: ...
 
-#
+# TODO: better overloads
 @overload
 def normalize(b: onp.ToFloatStrict1D, a: onp.ToFloat1D) -> _Ba1D[_Floating]: ...
 @overload
@@ -222,532 +207,452 @@ def normalize(b: onp.ToFloatStrict2D, a: onp.ToFloat1D) -> _Ba2D[_Floating]: ...
 @overload
 def normalize(b: onp.ToFloat1D | onp.ToFloat2D, a: onp.ToFloat1D) -> _Ba1D[_Floating] | _Ba2D[_Floating]: ...
 
-#
+# TODO: overloads
 def sos2tf(sos: onp.ToFloat2D) -> tuple[_Floating1D, _Floating1D]: ...
+
+# TODO: overloads
 def sos2zpk(sos: _ToFloat2D) -> _ZPK[np.complex128, np.complex128, np.float32 | np.float64]: ...
 
-#
+#  # TODO: better overloads
 @overload
-def lp2lp(b: onp.ToFloatStrict1D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0) -> _Ba1D | _Ba1D[np.longdouble]: ...
+def lp2lp(b: onp.ToFloatStrict1D, a: onp.ToFloat1D, wo: float = 1.0) -> _Ba1D | _Ba1D[np.longdouble]: ...
 @overload
-def lp2lp(b: onp.ToFloatStrict2D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0) -> _Ba2D | _Ba2D[np.longdouble]: ...
+def lp2lp(b: onp.ToFloatStrict2D, a: onp.ToFloat1D, wo: float = 1.0) -> _Ba2D | _Ba2D[np.longdouble]: ...
 @overload
 def lp2lp(
-    b: onp.ToFloat1D | onp.ToFloat2D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0
+    b: onp.ToFloat1D | onp.ToFloat2D, a: onp.ToFloat1D, wo: float = 1.0
 ) -> _Ba1D | _Ba1D[np.longdouble] | _Ba2D | _Ba2D[np.longdouble]: ...
 
-#
+# TODO: overloads
 def lp2hp(
-    b: onp.ToFloat1D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0
+    b: onp.ToFloat1D, a: onp.ToFloat1D, wo: float = 1.0
 ) -> _Ba1D | _Ba1D[np.float16] | _Ba1D[np.float32] | _Ba1D[np.longdouble]: ...
 
-#
+# TODO: overloads
 def lp2bp(
-    b: onp.ToFloat1D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0, bw: onp.ToFloat = 1.0
+    b: onp.ToFloat1D, a: onp.ToFloat1D, wo: float = 1.0, bw: float = 1.0
 ) -> _Ba1D | _Ba1D[np.float32] | _Ba1D[np.longdouble]: ...
 
-#
+# TODO: overloads
 def lp2bs(
-    b: onp.ToFloat1D, a: onp.ToFloat1D, wo: onp.ToFloat = 1.0, bw: onp.ToFloat = 1.0
+    b: onp.ToFloat1D, a: onp.ToFloat1D, wo: float = 1.0, bw: float = 1.0
 ) -> _Ba1D | _Ba1D[np.float32] | _Ba1D[np.longdouble]: ...
 
-#
-def lp2lp_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0
-) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
+# TODO: overloads
+def lp2lp_zpk(z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, wo: float = 1.0) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
+def lp2hp_zpk(z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, wo: float = 1.0) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
 
-#
-def lp2hp_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0
-) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
-
-#
+# TODO: overloads
 def lp2bp_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0, bw: onp.ToFloat = 1.0
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, wo: float = 1.0, bw: float = 1.0
 ) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
 
-#
+# TODO: overloads
 def lp2bs_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: onp.ToFloat = 1.0, bw: onp.ToFloat = 1.0
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, wo: float = 1.0, bw: float = 1.0
 ) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
 
 #
-def bilinear(b: onp.ToFloat1D, a: onp.ToFloat1D, fs: onp.ToFloat = 1.0) -> _Ba1D: ...
+def bilinear(b: onp.ToFloat1D, a: onp.ToFloat1D, fs: float = 1.0) -> _Ba1D: ...
 
-#
+# TODO: better overloads
 @overload
 def bilinear_zpk(
-    z: onp.ToFloat1D, p: onp.ToComplex1D, k: onp.ToFloat, fs: onp.ToFloat
+    z: onp.ToFloat1D, p: onp.ToComplex1D, k: float, fs: float
 ) -> _ZPK[np.float64, _CFloating] | _ZPK[np.longdouble, _CFloating, np.longdouble]: ...
 @overload
 def bilinear_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, fs: onp.ToFloat
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, fs: float
 ) -> _ZPK[np.float64 | np.complex128, _CFloating] | _ZPK[np.longdouble | np.clongdouble, _CFloating, np.longdouble]: ...
 
 #
 @overload  # output="ba" (default)
 def iirdesign(
-    wp: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    ws: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
+    wp: float | onp.ToFloat1D,
+    ws: float | onp.ToFloat1D,
+    gpass: float,
+    gstop: float,
+    analog: bool = False,
     ftype: _FType0 = "ellip",
     output: L["ba"] = "ba",
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Ba1D: ...
 @overload  # output="zpk" (positional)
 def iirdesign(
-    wp: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    ws: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool,
+    wp: float | onp.ToFloat1D,
+    ws: float | onp.ToFloat1D,
+    gpass: float,
+    gstop: float,
+    analog: bool,
     ftype: _FType0,
     output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _ZPK[np.complex128]: ...
 @overload  # output="zpk" (keyword)
 def iirdesign(
-    wp: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    ws: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
+    wp: float | onp.ToFloat1D,
+    ws: float | onp.ToFloat1D,
+    gpass: float,
+    gstop: float,
+    analog: bool = False,
     ftype: _FType0 = "ellip",
     *,
     output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _ZPK[np.complex128]: ...
 @overload  # output="sos" (positional)
 def iirdesign(
-    wp: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    ws: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool,
+    wp: float | onp.ToFloat1D,
+    ws: float | onp.ToFloat1D,
+    gpass: float,
+    gstop: float,
+    analog: bool,
     ftype: _FType0,
     output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Float2D: ...
 @overload  # output="sos" (keyword)
 def iirdesign(
-    wp: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    ws: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
+    wp: float | onp.ToFloat1D,
+    ws: float | onp.ToFloat1D,
+    gpass: float,
+    gstop: float,
+    analog: bool = False,
     ftype: _FType0 = "ellip",
     *,
     output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Float2D: ...
 
 #
 @overload  # output="ba" (default)
 def iirfilter(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    rp: onp.ToFloat | None = None,
-    rs: onp.ToFloat | None = None,
+    N: int,
+    Wn: float | onp.ToFloat1D,
+    rp: float | None = None,
+    rs: float | None = None,
     btype: _BType = "band",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     ftype: _FType = "butter",
     output: L["ba"] = "ba",
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Ba1D: ...
 @overload  # output="zpk" (positional)
 def iirfilter(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    rp: onp.ToFloat | None,
-    rs: onp.ToFloat | None,
+    N: int,
+    Wn: float | onp.ToFloat1D,
+    rp: float | None,
+    rs: float | None,
     btype: _BType,
-    analog: onp.ToBool,
+    analog: bool,
     ftype: _FType,
     output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _ZPK[np.complex128]: ...
 @overload  # output="zpk" (keyword)
 def iirfilter(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    rp: onp.ToFloat | None = None,
-    rs: onp.ToFloat | None = None,
+    N: int,
+    Wn: float | onp.ToFloat1D,
+    rp: float | None = None,
+    rs: float | None = None,
     btype: _BType = "band",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     ftype: _FType = "butter",
     *,
     output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _ZPK[np.complex128]: ...
 @overload  # output="sos" (positional)
 def iirfilter(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    rp: onp.ToFloat | None,
-    rs: onp.ToFloat | None,
+    N: int,
+    Wn: float | onp.ToFloat1D,
+    rp: float | None,
+    rs: float | None,
     btype: _BType,
-    analog: onp.ToBool,
+    analog: bool,
     ftype: _FType,
     output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Float2D: ...
 @overload  # output="sos" (keyword)
 def iirfilter(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    rp: onp.ToFloat | None = None,
-    rs: onp.ToFloat | None = None,
+    N: int,
+    Wn: float | onp.ToFloat1D,
+    rp: float | None = None,
+    rs: float | None = None,
     btype: _BType = "band",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     ftype: _FType = "butter",
     *,
     output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Float2D: ...
 
 #
 @overload  # output="ba" (default)
 def butter(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     output: L["ba"] = "ba",
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Ba1D: ...
 @overload  # output="zpk" (keyword)
 def butter(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    btype: _BType = "low",
-    analog: onp.ToBool = False,
-    *,
-    output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    N: int, Wn: float | onp.ToFloat1D, btype: _BType = "low", analog: bool = False, *, output: L["zpk"], fs: float | None = None
 ) -> _ZPK[np.float64, np.complex128, float]: ...
 @overload  # output="sos" (keyword)
 def butter(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    btype: _BType = "low",
-    analog: onp.ToBool = False,
-    *,
-    output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    N: int, Wn: float | onp.ToFloat1D, btype: _BType = "low", analog: bool = False, *, output: L["sos"], fs: float | None = None
 ) -> _Float2D: ...
 
 #
 @overload  # output="ba" (default)
 def cheby1(
-    N: onp.ToJustInt,
-    rp: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rp: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     output: L["ba"] = "ba",
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Ba1D: ...
 @overload  # output="zpk" (positional)
 def cheby1(
-    N: onp.ToJustInt,
-    rp: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    btype: _BType,
-    analog: onp.ToBool,
-    output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    N: int, rp: float, Wn: float | onp.ToFloat1D, btype: _BType, analog: bool, output: L["zpk"], fs: float | None = None
 ) -> _ZPK[np.complex128]: ...
 @overload  # output="zpk" (keyword)
 def cheby1(
-    N: onp.ToJustInt,
-    rp: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rp: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     *,
     output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _ZPK[np.complex128]: ...
 @overload  # output="sos" (positional)
 def cheby1(
-    N: onp.ToJustInt,
-    rp: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    btype: _BType,
-    analog: onp.ToBool,
-    output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    N: int, rp: float, Wn: float | onp.ToFloat1D, btype: _BType, analog: bool, output: L["sos"], fs: float | None = None
 ) -> _Float2D: ...
 @overload  # output="sos" (keyword)
 def cheby1(
-    N: onp.ToJustInt,
-    rp: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rp: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     *,
     output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Float2D: ...
 
 #
 @overload  # output="ba" (default)
 def cheby2(
-    N: onp.ToJustInt,
-    rs: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     output: L["ba"] = "ba",
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Ba1D: ...
 @overload  # output="zpk" (positional)
 def cheby2(
-    N: onp.ToJustInt,
-    rs: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    btype: _BType,
-    analog: onp.ToBool,
-    output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    N: int, rs: float, Wn: float | onp.ToFloat1D, btype: _BType, analog: bool, output: L["zpk"], fs: float | None = None
 ) -> _ZPK[np.complex128]: ...
 @overload  # output="zpk" (keyword)
 def cheby2(
-    N: onp.ToJustInt,
-    rs: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     *,
     output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _ZPK[np.complex128]: ...
 @overload  # output="sos" (positional)
 def cheby2(
-    N: onp.ToJustInt,
-    rs: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
-    btype: _BType,
-    analog: onp.ToBool,
-    output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    N: int, rs: float, Wn: float | onp.ToFloat1D, btype: _BType, analog: bool, output: L["sos"], fs: float | None = None
 ) -> _Float2D: ...
 @overload  # output="sos" (keyword)
 def cheby2(
-    N: onp.ToJustInt,
-    rs: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     *,
     output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Float2D: ...
 
 #
 @overload  # output="ba" (default)
 def ellip(
-    N: onp.ToJustInt,
-    rp: onp.ToFloat,
-    rs: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rp: float,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     output: L["ba"] = "ba",
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Ba1D: ...
 @overload  # output="zpk" (postitional)
 def ellip(
-    N: onp.ToJustInt,
-    rp: onp.ToFloat,
-    rs: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rp: float,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType,
-    analog: onp.ToBool,
+    analog: bool,
     output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _ZPK[np.complex128]: ...
 @overload  # output="zpk" (keyword)
 def ellip(
-    N: onp.ToJustInt,
-    rp: onp.ToFloat,
-    rs: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rp: float,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     *,
     output: L["zpk"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _ZPK[np.complex128]: ...
 @overload  # output="sos" (postitional)
 def ellip(
-    N: onp.ToJustInt,
-    rp: onp.ToFloat,
-    rs: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rp: float,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType,
-    analog: onp.ToBool,
+    analog: bool,
     output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Float2D: ...
 @overload  # output="sos" (keyword)
 def ellip(
-    N: onp.ToJustInt,
-    rp: onp.ToFloat,
-    rs: onp.ToFloat,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    rp: float,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     *,
     output: L["sos"],
-    fs: onp.ToFloat | None = None,
+    fs: float | None = None,
 ) -> _Float2D: ...
 
 #
 @overload  # output="ba" (default)
 def bessel(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     output: L["ba"] = "ba",
-    norm: _Normalization = "phase",
-    fs: onp.ToFloat | None = None,
+    norm: _Norm = "phase",
+    fs: float | None = None,
 ) -> _Ba1D: ...
 @overload  # output="zpk" (postitional)
 def bessel(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    Wn: float | onp.ToFloat1D,
     btype: _BType,
-    analog: onp.ToBool,
+    analog: bool,
     output: L["zpk"],
-    norm: _Normalization = "phase",
-    fs: onp.ToFloat | None = None,
+    norm: _Norm = "phase",
+    fs: float | None = None,
 ) -> _ZPK[np.float64]: ...
 @overload  # output="zpk" (keyword)
 def bessel(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     *,
     output: L["zpk"],
-    norm: _Normalization = "phase",
-    fs: onp.ToFloat | None = None,
+    norm: _Norm = "phase",
+    fs: float | None = None,
 ) -> _ZPK[np.float64]: ...
 @overload  # output="sos" (postitional)
 def bessel(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    Wn: float | onp.ToFloat1D,
     btype: _BType,
-    analog: onp.ToBool,
+    analog: bool,
     output: L["sos"],
-    norm: _Normalization = "phase",
-    fs: onp.ToFloat | None = None,
+    norm: _Norm = "phase",
+    fs: float | None = None,
 ) -> _Float2D: ...
 @overload  # output="sos" (keyword)
 def bessel(
-    N: onp.ToJustInt,
-    Wn: onp.ToFloat | onp.ToFloat1D,  # scalar or length-2
+    N: int,
+    Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: onp.ToBool = False,
+    analog: bool = False,
     *,
     output: L["sos"],
-    norm: _Normalization = "phase",
-    fs: onp.ToFloat | None = None,
+    norm: _Norm = "phase",
+    fs: float | None = None,
 ) -> _Float2D: ...
 
-#
+# TODO: overloads
 def band_stop_obj(
-    wp: onp.ToFloat,
+    wp: float,
     ind: L[0, 1] | npc.integer,  # bool doesn't work
     passb: onp.ArrayND[_Floating | npc.integer],  # 1-d
     stopb: onp.ArrayND[_Floating | npc.integer],  # 1-d
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
+    gpass: float,
+    gstop: float,
     type: L["butter", "cheby", "ellip"],
 ) -> np.float64 | np.longdouble: ...
 
-#
+# TODO: better overloads
 @overload
 def buttord(
-    wp: onp.ToFloat,
-    ws: onp.ToFloat | onp.ToFloatND,
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
-    fs: onp.ToFloat | None = None,
+    wp: float, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, np.float64 | np.longdouble]: ...
 @overload
 def buttord(
-    wp: onp.ToFloatND,
-    ws: onp.ToFloat | onp.ToFloatND,
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
-    fs: onp.ToFloat | None = None,
+    wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, onp.Array1D[np.float64 | np.longdouble]]: ...
 
-#
+# TODO: better overloads
 @overload
 def cheb1ord(
-    wp: onp.ToFloat,
-    ws: onp.ToFloat | onp.ToFloatND,
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
-    fs: onp.ToFloat | None = None,
+    wp: float, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, _Floating]: ...
 @overload
 def cheb1ord(
-    wp: onp.ToFloatND,
-    ws: onp.ToFloat | onp.ToFloatND,
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
-    fs: onp.ToFloat | None = None,
+    wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, _FloatingND]: ...
 
-#
+# TODO: better overloads
 @overload
 def cheb2ord(
-    wp: onp.ToFloat,
-    ws: onp.ToFloat | onp.ToFloatND,
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
-    fs: onp.ToFloat | None = None,
+    wp: float, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, _Floating]: ...
 @overload
 def cheb2ord(
-    wp: onp.ToFloatND,
-    ws: onp.ToFloat | onp.ToFloatND,
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
-    fs: onp.ToFloat | None = None,
+    wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, _FloatND]: ...  # only nd-output is cast to float64
 
-#
+# TODO: better overloads
 @overload
 def ellipord(
-    wp: onp.ToFloat,
-    ws: onp.ToFloat | onp.ToFloatND,
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
-    fs: onp.ToFloat | None = None,
+    wp: float, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, _Floating]: ...
 @overload
 def ellipord(
-    wp: onp.ToFloatND,
-    ws: onp.ToFloat | onp.ToFloatND,
-    gpass: onp.ToFloat,
-    gstop: onp.ToFloat,
-    analog: onp.ToBool = False,
-    fs: onp.ToFloat | None = None,
+    wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, _FloatingND]: ...
 
 #
@@ -776,13 +681,9 @@ def ellipap(N: int, rp: float, rs: float, *, xp: ModuleType, device: object = No
 
 #
 @overload
-def besselap(
-    N: int, norm: _Normalization = "phase", *, xp: None = None, device: None = None
-) -> tuple[_Float1D, _Complex1D, float]: ...
+def besselap(N: int, norm: _Norm = "phase", *, xp: None = None, device: None = None) -> tuple[_Float1D, _Complex1D, float]: ...
 @overload
-def besselap(
-    N: int, norm: _Normalization = "phase", *, xp: ModuleType, device: object = None
-) -> tuple[Incomplete, Incomplete, float]: ...
+def besselap(N: int, norm: _Norm = "phase", *, xp: ModuleType, device: object = None) -> tuple[Incomplete, Incomplete, float]: ...
 
 #
 @overload
