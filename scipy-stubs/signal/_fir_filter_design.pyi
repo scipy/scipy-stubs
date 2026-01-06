@@ -2,7 +2,6 @@ from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -108,9 +107,5 @@ def remez(
 
 #
 def minimum_phase(
-    h: onp.ToFloat1D,
-    method: _LinearPhaseFIRMethod = "homomorphic",
-    n_fft: onp.ToJustInt | None = None,
-    *,
-    half: op.CanBool = True,
+    h: onp.ToFloat1D, method: _LinearPhaseFIRMethod = "homomorphic", n_fft: int | None = None, *, half: bool = True
 ) -> onp.Array1D[np.float64]: ...
