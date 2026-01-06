@@ -11,6 +11,8 @@ from .windows._windows import _ToWindow
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
 
+###
+
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 _FloatingND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
@@ -364,50 +366,110 @@ def stft(
     scaling: _LegacyScaling = "spectrum",
 ) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.complexfloating]]: ...
 
-#
-@overload  # input_onesided is `True`
+# NOTE: Even though it is theoretically possible to pass `input_onesided` positionally, it's unlikely to be done in practice
+# and would significantly complicate the overloads. Thus, we only support passing it as keyword argument here (if `False`).
+@overload  # f64, input_onesided=True (default)
 def istft(
-    Zxx: onp.ToComplexND,
-    fs: onp.ToFloat = 1.0,
+    Zxx: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
-    nperseg: onp.ToInt | None = None,
-    noverlap: onp.ToInt | None = None,
-    nfft: onp.ToInt | None = None,
-    input_onesided: onp.ToTrue = True,
-    boundary: op.CanBool = True,
-    time_axis: op.CanIndex = -1,
-    freq_axis: op.CanIndex = -2,
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    input_onesided: Literal[True] = True,
+    boundary: bool = True,
+    time_axis: int = -1,
+    freq_axis: int = -2,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_FloatND, _FloatingND]: ...
-@overload  # input_onesided is `False` (positional)
+) -> tuple[_Float1D, onp.ArrayND[np.float64]]: ...
+@overload  # c128, input_onesided=False
 def istft(
-    Zxx: onp.ToComplexND,
-    fs: onp.ToFloat,
-    window: _ToWindow,
-    nperseg: onp.ToInt | None,
-    noverlap: onp.ToInt | None,
-    nfft: onp.ToInt | None,
-    input_onesided: onp.ToFalse,
-    boundary: op.CanBool = True,
-    time_axis: op.CanIndex = -1,
-    freq_axis: op.CanIndex = -2,
-    scaling: _LegacyScaling = "spectrum",
-) -> tuple[_FloatND, _CFloatingND]: ...
-@overload  # input_onesided is `False` (keyword)
-def istft(
-    Zxx: onp.ToComplexND,
-    fs: onp.ToFloat = 1.0,
+    Zxx: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
-    nperseg: onp.ToInt | None = None,
-    noverlap: onp.ToInt | None = None,
-    nfft: onp.ToInt | None = None,
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
     *,
-    input_onesided: onp.ToFalse,
-    boundary: op.CanBool = True,
-    time_axis: op.CanIndex = -1,
-    freq_axis: op.CanIndex = -2,
+    input_onesided: Literal[False],
+    boundary: bool = True,
+    time_axis: int = -1,
+    freq_axis: int = -2,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_FloatND, _CFloatingND]: ...
+) -> tuple[_Float1D, onp.ArrayND[np.complex128]]: ...
+@overload  # f32, input_onesided=True (default)
+def istft(
+    Zxx: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    input_onesided: Literal[True] = True,
+    boundary: bool = True,
+    time_axis: int = -1,
+    freq_axis: int = -2,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Float1D, onp.ArrayND[np.float32]]: ...
+@overload  # c64, input_onesided=False
+def istft(
+    Zxx: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    *,
+    input_onesided: Literal[False],
+    boundary: bool = True,
+    time_axis: int = -1,
+    freq_axis: int = -2,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Float1D, onp.ArrayND[np.complex64]]: ...
+@overload  # f80, input_onesided=True (default)
+def istft(
+    Zxx: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    input_onesided: Literal[True] = True,
+    boundary: bool = True,
+    time_axis: int = -1,
+    freq_axis: int = -2,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Float1D, onp.ArrayND[np.longdouble]]: ...
+@overload  # c160, input_onesided=False
+def istft(
+    Zxx: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    *,
+    input_onesided: Literal[False],
+    boundary: bool = True,
+    time_axis: int = -1,
+    freq_axis: int = -2,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Float1D, onp.ArrayND[np.clongdouble]]: ...
+@overload  # fallback
+def istft(
+    Zxx: onp.ToComplexND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    *,
+    input_onesided: bool,
+    boundary: bool = True,
+    time_axis: int = -1,
+    freq_axis: int = -2,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Float1D, onp.ArrayND[Any]]: ...
 
 #
 def coherence(
