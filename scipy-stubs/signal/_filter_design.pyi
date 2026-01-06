@@ -664,8 +664,8 @@ def bessel(
 def band_stop_obj(
     wp: float,
     ind: L[0, 1] | npc.integer,
-    passb: onp.ArrayND[np.float64 | np.float32 | np.float16 | np.integer],
-    stopb: onp.ArrayND[np.float64 | np.float32 | np.float16 | np.integer],
+    passb: onp.ArrayND[np.float64 | np.float32 | np.float16 | npc.integer],
+    stopb: onp.ArrayND[np.float64 | np.float32 | np.float16 | npc.integer],
     gpass: float,
     gstop: float,
     type: _BandStop,
