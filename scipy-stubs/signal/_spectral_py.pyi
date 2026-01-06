@@ -101,7 +101,7 @@ def welch(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_FloatND, onp.ArrayND[np.float64]]: ...
+) -> tuple[_Float1D, onp.ArrayND[np.float64]]: ...
 @overload  # f64
 def welch(
     x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
@@ -115,7 +115,7 @@ def welch(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_FloatND, onp.ArrayND[np.float32]]: ...
+) -> tuple[_Float1D, onp.ArrayND[np.float32]]: ...
 @overload  # f64
 def welch(
     x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
@@ -129,23 +129,70 @@ def welch(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_FloatND, onp.ArrayND[np.longdouble]]: ...
+) -> tuple[_Float1D, onp.ArrayND[np.longdouble]]: ...
 
-#
+# NOTE: We assume that `x is not y` always holds here.
+# See https://github.com/scipy/scipy/issues/24285 for details.
+@overload  # c128
+def csd(
+    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    y: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: bool = True,
+    scaling: _Scaling = "density",
+    axis: int = -1,
+    average: _Average = "mean",
+) -> tuple[_Float1D, onp.ArrayND[np.complex128]]: ...
+@overload  # c64
+def csd(
+    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    y: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: bool = True,
+    scaling: _Scaling = "density",
+    axis: int = -1,
+    average: _Average = "mean",
+) -> tuple[_Float1D, onp.ArrayND[np.complex64]]: ...
+@overload  # c160
+def csd(
+    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    y: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: bool = True,
+    scaling: _Scaling = "density",
+    axis: int = -1,
+    average: _Average = "mean",
+) -> tuple[_Float1D, onp.ArrayND[np.clongdouble]]: ...
+@overload  # fallback
 def csd(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
-    fs: onp.ToFloat = 1.0,
+    fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
-    nperseg: onp.ToInt | None = None,
-    noverlap: onp.ToInt | None = None,
-    nfft: onp.ToInt | None = None,
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
     detrend: _Detrend = "constant",
-    return_onesided: op.CanBool = True,
+    return_onesided: bool = True,
     scaling: _Scaling = "density",
-    axis: op.CanIndex = -1,
+    axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_FloatND, _CFloatingND]: ...
+) -> tuple[_Float1D, _CFloatingND]: ...
 
 #
 @overload  # non-complex mode (positional and keyword)
