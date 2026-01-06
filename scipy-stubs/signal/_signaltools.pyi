@@ -1281,15 +1281,28 @@ def resample_poly(
     cval: float | None = None,
 ) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...
 
-# TODO(jorenham): improve
-@overload
+# `float16` is upcast to `float64`, while `float32` (and `float64`) retain their dtype
+@overload  # f64
 def decimate(
-    x: onp.ToFloatND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
-) -> onp.ArrayND[npc.floating]: ...
-@overload
+    x: onp.ToArrayND[float, np.float64 | np.float16 | npc.integer | np.bool_],
+    q: int,
+    n: int | None = None,
+    ftype: _FilterType = "iir",
+    axis: int = -1,
+    zero_phase: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # f32
 def decimate(
-    x: onp.ToComplexND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
-) -> onp.ArrayND[npc.inexact]: ...
+    x: onp.ToJustFloat32_ND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
+) -> onp.ArrayND[np.float32]: ...
+@overload  # c128
+def decimate(
+    x: onp.ToJustComplex128_ND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # c64
+def decimate(
+    x: onp.ToJustComplex64_ND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
+) -> onp.ArrayND[np.complex64]: ...
 
 # TODO(jorenham): improve
 @overload
