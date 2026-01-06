@@ -85,6 +85,7 @@ _BaND = TypeAliasType("_BaND", tuple[onp.ArrayND[_SCT_ba], onp.Array1D[_SCT_ba]]
 _ToFloat: TypeAlias = float | np.float32 | np.float64 | npc.integer
 _ToFloat1D: TypeAlias = Sequence[_ToFloat] | onp.CanArrayND[np.float32 | np.float64 | npc.integer]
 
+_BandStop: TypeAlias = L["butter", "cheby", "ellip"]
 _FType0: TypeAlias = L["butter", "cheby1", "cheby2", "ellip"]
 _FType: TypeAlias = _FType0 | L["bessel"]
 _BType0: TypeAlias = L["bandpass", "lowpass", "highpass", "bandstop"]
@@ -664,16 +665,37 @@ def bessel(
     fs: float | None = None,
 ) -> _Float2D: ...
 
-# TODO: overloads
+#
+@overload  # +float64, +float64
 def band_stop_obj(
     wp: float,
-    ind: L[0, 1] | npc.integer,  # bool doesn't work
-    passb: onp.ArrayND[npc.floating | npc.integer],  # 1-d
-    stopb: onp.ArrayND[npc.floating | npc.integer],  # 1-d
+    ind: L[0, 1] | npc.integer,
+    passb: onp.ArrayND[np.float64 | np.float32 | np.float16 | np.integer],
+    stopb: onp.ArrayND[np.float64 | np.float32 | np.float16 | np.integer],
     gpass: float,
     gstop: float,
-    type: L["butter", "cheby", "ellip"],
+    type: _BandStop,
 ) -> np.float64 | np.longdouble: ...
+@overload  # ~longdouble, +longdouble
+def band_stop_obj(
+    wp: float,
+    ind: L[0, 1] | npc.integer,
+    passb: onp.ArrayND[np.longdouble],
+    stopb: onp.ArrayND[npc.floating],
+    gpass: float,
+    gstop: float,
+    type: _BandStop,
+) -> np.longdouble: ...
+@overload  # +longdouble, ~longdouble
+def band_stop_obj(
+    wp: float,
+    ind: L[0, 1] | npc.integer,
+    passb: onp.ArrayND[npc.floating],
+    stopb: onp.ArrayND[np.longdouble],
+    gpass: float,
+    gstop: float,
+    type: _BandStop,
+) -> np.longdouble: ...
 
 #
 @overload
