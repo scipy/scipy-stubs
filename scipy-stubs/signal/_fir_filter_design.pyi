@@ -86,21 +86,11 @@ def firwin2(
 #
 @overload
 def firls(
-    numtaps: onp.ToJustInt,
-    bands: onp.ToFloat1D,
-    desired: onp.ToFloat1D,
-    *,
-    weight: onp.ToFloat1D | None = None,
-    fs: onp.ToFloat | None = None,
+    numtaps: int, bands: onp.ToFloat1D, desired: onp.ToFloat1D, *, weight: onp.ToFloat1D | None = None, fs: float | None = None
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def firls(
-    numtaps: onp.ToJustInt,
-    bands: onp.ToFloat2D,
-    desired: onp.ToFloat2D,
-    *,
-    weight: onp.ToFloat1D | None = None,
-    fs: onp.ToFloat | None = None,
+    numtaps: int, bands: onp.ToFloat2D, desired: onp.ToFloat2D, *, weight: onp.ToFloat1D | None = None, fs: float | None = None
 ) -> onp.Array1D[np.float64]: ...
 
 #
