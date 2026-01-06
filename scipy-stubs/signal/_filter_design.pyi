@@ -1,7 +1,7 @@
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Literal as L, SupportsIndex, TypeAlias, overload
+from typing import Any, Literal as L, SupportsIndex, TypeAlias, overload
 from typing_extensions import TypeAliasType, TypeVar
 
 import numpy as np
@@ -88,7 +88,6 @@ _BaND = TypeAliasType("_BaND", tuple[onp.ArrayND[_SCT_ba], onp.Array1D[_SCT_ba]]
 # excludes `float16` and `longdouble`
 _ToFloat: TypeAlias = float | np.float32 | np.float64 | npc.integer
 _ToFloat1D: TypeAlias = Sequence[_ToFloat] | onp.CanArrayND[np.float32 | np.float64 | npc.integer]
-_ToFloat2D: TypeAlias = Sequence[_ToFloat1D] | onp.CanArrayND[np.float32 | np.float64 | npc.integer]
 
 _FType0: TypeAlias = L["butter", "cheby1", "cheby2", "ellip"]
 _FType: TypeAlias = _FType0 | L["bessel"]
@@ -194,8 +193,10 @@ def freqz_sos(
 
 sosfreqz = freqz_sos
 
-#
+#  TODO: overloads
 def tf2zpk(b: _ToFloat1D, a: _ToFloat1D) -> _ZPK[np.float64 | np.complex128] | _ZPK[np.complex64, np.complex64, np.float32]: ...
+
+#
 def tf2sos(b: _ToFloat1D, a: _ToFloat1D, pairing: _Pairing | None = None, *, analog: bool = False) -> _Float2D: ...
 
 #
@@ -226,8 +227,17 @@ def sos2tf(sos: onp.Array2D[_InexactT]) -> tuple[onp.Array1D[_InexactT], onp.Arr
 @overload  # fallback
 def sos2tf(sos: onp.ToComplex2D) -> tuple[onp.Array1D, onp.Array1D]: ...
 
-# TODO: overloads
-def sos2zpk(sos: _ToFloat2D) -> _ZPK[np.complex128, np.complex128, np.float32 | np.float64]: ...
+# unlike `sos2tf`, `sos2zpk` does not accept `float16` or `[c]longdouble`
+@overload  # f64
+def sos2zpk(sos: onp.ToInt2D | onp.ToJustFloat64_2D) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+@overload  # c128
+def sos2zpk(sos: onp.ToJustComplex128_2D) -> _ZPK[np.complex128, np.complex128, np.complex128]: ...
+@overload  # f32
+def sos2zpk(sos: onp.ToJustFloat32_2D) -> _ZPK[np.complex128, np.complex128, np.float32]: ...
+@overload  # c64
+def sos2zpk(sos: onp.ToJustComplex64_2D) -> _ZPK[np.complex128, np.complex128, np.complex64]: ...
+@overload  # fallback
+def sos2zpk(sos: onp.ToJustComplex2D) -> _ZPK[np.complex128, np.complex128, Any]: ...
 
 #  # TODO: better overloads
 @overload
