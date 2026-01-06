@@ -670,26 +670,16 @@ def band_stop_obj(
     gstop: float,
     type: _BandStop,
 ) -> np.float64: ...
-@overload  # ~longdouble, +longdouble
-def band_stop_obj(
-    wp: float,
-    ind: L[0, 1] | npc.integer,
-    passb: onp.ArrayND[np.longdouble],
-    stopb: onp.ArrayND[npc.floating],
-    gpass: float,
-    gstop: float,
-    type: _BandStop,
-) -> np.longdouble: ...
-@overload  # +longdouble, ~longdouble
+@overload  # +longdouble, +longdouble  (we can't have specific longdouble overloads due to numpy <2.2 compatibility)
 def band_stop_obj(
     wp: float,
     ind: L[0, 1] | npc.integer,
     passb: onp.ArrayND[npc.floating],
-    stopb: onp.ArrayND[np.longdouble],
+    stopb: onp.ArrayND[npc.floating],
     gpass: float,
     gstop: float,
     type: _BandStop,
-) -> np.longdouble: ...
+) -> np.longdouble | Any: ...
 
 #
 @overload
