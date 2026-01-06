@@ -239,15 +239,35 @@ def sos2zpk(sos: onp.ToJustComplex64_2D) -> _ZPK[np.complex128, np.complex128, n
 @overload  # fallback
 def sos2zpk(sos: onp.ToJustComplex2D) -> _ZPK[np.complex128, np.complex128, Any]: ...
 
-#  # TODO: better overloads
-@overload
-def lp2lp(b: onp.ToFloatStrict1D, a: onp.ToFloat1D, wo: float = 1.0) -> _Ba1D | _Ba1D[np.longdouble]: ...
-@overload
-def lp2lp(b: onp.ToFloatStrict2D, a: onp.ToFloat1D, wo: float = 1.0) -> _Ba2D | _Ba2D[np.longdouble]: ...
-@overload
+# upcasts to at least 64-bit inexact
+@overload  # +f64, +f64
+def lp2lp(b: onp.ToFloat64_ND, a: onp.ToFloat64_1D, wo: float = 1.0) -> tuple[_Float1D, _Float1D]: ...
+@overload  # +c128, ~c128
 def lp2lp(
-    b: onp.ToFloat1D | onp.ToFloat2D, a: onp.ToFloat1D, wo: float = 1.0
-) -> _Ba1D | _Ba1D[np.longdouble] | _Ba2D | _Ba2D[np.longdouble]: ...
+    b: onp.ToComplex128_ND, a: onp.ToJustComplex64_1D | onp.ToJustComplex128_1D, wo: float = 1.0
+) -> tuple[_ComplexND, _Complex1D]: ...
+@overload  # ~c128, +c128
+def lp2lp(
+    b: onp.ToJustComplex64_ND | onp.ToJustComplex128_ND, a: onp.ToComplex128_1D, wo: float = 1.0
+) -> tuple[_ComplexND, _Complex1D]: ...
+@overload  # +f80, ~f80
+def lp2lp(
+    b: onp.ToFloatND, a: onp.ToJustLongDouble1D, wo: float = 1.0
+) -> tuple[onp.ArrayND[np.longdouble], onp.Array1D[np.longdouble]]: ...
+@overload  # ~f80, +f80
+def lp2lp(
+    b: onp.ToJustLongDoubleND, a: onp.ToFloat1D, wo: float = 1.0
+) -> tuple[onp.ArrayND[np.longdouble], onp.Array1D[np.longdouble]]: ...
+@overload  # +c160, ~c160
+def lp2lp(
+    b: onp.ToComplexND, a: onp.ToJustCLongDouble1D, wo: float = 1.0
+) -> tuple[onp.ArrayND[np.clongdouble], onp.Array1D[np.clongdouble]]: ...
+@overload  # ~c160, +c160
+def lp2lp(
+    b: onp.ToJustCLongDoubleND, a: onp.ToComplex1D, wo: float = 1.0
+) -> tuple[onp.ArrayND[np.clongdouble], onp.Array1D[np.clongdouble]]: ...
+@overload  # fallback
+def lp2lp(b: onp.ToComplexND, a: onp.ToComplex1D, wo: float = 1.0) -> tuple[onp.Array, onp.Array1D]: ...
 
 # TODO: overloads
 def lp2hp(
