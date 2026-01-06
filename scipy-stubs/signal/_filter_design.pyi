@@ -669,7 +669,7 @@ def band_stop_obj(
     gpass: float,
     gstop: float,
     type: _BandStop,
-) -> np.float64 | np.longdouble: ...
+) -> np.float64: ...
 @overload  # ~longdouble, +longdouble
 def band_stop_obj(
     wp: float,
