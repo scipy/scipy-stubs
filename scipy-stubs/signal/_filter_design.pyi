@@ -672,15 +672,23 @@ def band_stop_obj(
     type: L["butter", "cheby", "ellip"],
 ) -> np.float64 | np.longdouble: ...
 
-# TODO: better overloads
+#
 @overload
 def buttord(
-    wp: float, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, np.float64 | np.longdouble]: ...
+    wp: float, ws: float | onp.ToFloat64_ND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, np.float64]: ...
 @overload
 def buttord(
-    wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, onp.Array1D[np.float64 | np.longdouble]]: ...
+    wp: float, ws: onp.ToJustLongDoubleND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, np.longdouble]: ...
+@overload
+def buttord(
+    wp: onp.ToFloatND, ws: float | onp.ToFloat64_ND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, onp.Array1D[np.float64]]: ...
+@overload
+def buttord(
+    wp: onp.ToFloatND, ws: onp.ToJustLongDouble, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, onp.Array1D[np.longdouble]]: ...
 
 # TODO: better overloads
 @overload
