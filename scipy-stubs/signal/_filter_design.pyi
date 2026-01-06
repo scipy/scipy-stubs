@@ -71,14 +71,19 @@ _ComplexND: TypeAlias = onp.ArrayND[np.complex128]
 
 _Order: TypeAlias = L[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
+_AnyInexactT = TypeVar(
+    "_AnyInexactT", np.float16, np.float32, np.float64, np.complex64, np.complex128, np.longdouble, np.clongdouble
+)
+
 _SCT_z = TypeVar("_SCT_z", bound=np.generic)
 _SCT_p = TypeVar("_SCT_p", bound=np.generic, default=np.complex128)
 _SCT_k = TypeVar("_SCT_k", bound=np.generic | float, default=np.float64)
 _ZPK = TypeAliasType("_ZPK", tuple[onp.Array1D[_SCT_z], onp.Array1D[_SCT_p], _SCT_k], type_params=(_SCT_z, _SCT_p, _SCT_k))
 
-_SCT_ba = TypeVar("_SCT_ba", bound=npc.floating, default=np.float64)
+_SCT_ba = TypeVar("_SCT_ba", bound=npc.inexact, default=np.float64)
 _Ba1D = TypeAliasType("_Ba1D", tuple[onp.Array1D[_SCT_ba], onp.Array1D[_SCT_ba]], type_params=(_SCT_ba,))
 _Ba2D = TypeAliasType("_Ba2D", tuple[onp.Array2D[_SCT_ba], onp.Array1D[_SCT_ba]], type_params=(_SCT_ba,))
+_BaND = TypeAliasType("_BaND", tuple[onp.ArrayND[_SCT_ba], onp.Array1D[_SCT_ba]], type_params=(_SCT_ba,))
 
 # excludes `float16` and `longdouble`
 _ToFloat: TypeAlias = float | np.float32 | np.float64 | npc.integer
@@ -199,13 +204,17 @@ def zpk2sos(
     z: onp.ToFloat1D, p: onp.ToFloat1D, k: float, pairing: _Pairing | None = None, *, analog: bool = False
 ) -> _Float2D: ...
 
-# TODO: better overloads
-@overload
-def normalize(b: onp.ToFloatStrict1D, a: onp.ToFloat1D) -> _Ba1D[_Floating]: ...
-@overload
-def normalize(b: onp.ToFloatStrict2D, a: onp.ToFloat1D) -> _Ba2D[_Floating]: ...
-@overload
-def normalize(b: onp.ToFloat1D | onp.ToFloat2D, a: onp.ToFloat1D) -> _Ba1D[_Floating] | _Ba2D[_Floating]: ...
+#
+@overload  # ~f64, ~f64
+def normalize(b: onp.ToIntND | onp.ToJustFloat64_ND, a: onp.ToIntND | onp.ToJustFloat64_ND) -> _BaND[np.float64]: ...
+@overload  # +c128, ~c128
+def normalize(b: onp.ToComplex128_ND, a: onp.ToJustComplex128_ND) -> _BaND[np.complex128]: ...
+@overload  # ~c128, +c128
+def normalize(b: onp.ToJustComplex128_ND, a: onp.ToComplex128_ND) -> _BaND[np.complex128]: ...
+@overload  # ~T, ~T
+def normalize(b: onp.ArrayND[_AnyInexactT], a: onp.ArrayND[_AnyInexactT]) -> _BaND[_AnyInexactT]: ...
+@overload  # fallback
+def normalize(b: onp.ToComplexND, a: onp.ToComplexND) -> _BaND[Incomplete]: ...
 
 # TODO: overloads
 def sos2tf(sos: onp.ToFloat2D) -> tuple[_Floating1D, _Floating1D]: ...
