@@ -303,20 +303,66 @@ def check_COLA(window: _ToWindow, nperseg: int, noverlap: int, tol: float = 1e-1
 def check_NOLA(window: _ToWindow, nperseg: int, noverlap: int, tol: float = 1e-10) -> np.bool_: ...
 
 #
+@overload  # c128
+def stft(
+    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int = 256,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = False,
+    return_onesided: bool = True,
+    boundary: _Boundary = "zeros",
+    padded: bool = True,
+    axis: int = -1,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.complex128]]: ...
+@overload  # c64
+def stft(
+    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int = 256,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = False,
+    return_onesided: bool = True,
+    boundary: _Boundary = "zeros",
+    padded: bool = True,
+    axis: int = -1,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.complex64]]: ...
+@overload  # c160
+def stft(
+    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int = 256,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = False,
+    return_onesided: bool = True,
+    boundary: _Boundary = "zeros",
+    padded: bool = True,
+    axis: int = -1,
+    scaling: _LegacyScaling = "spectrum",
+) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.clongdouble]]: ...
+@overload  # fallback
 def stft(
     x: onp.ToComplexND,
-    fs: onp.ToFloat = 1.0,
+    fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
-    nperseg: onp.ToInt = 256,
-    noverlap: onp.ToInt | None = None,
-    nfft: onp.ToInt | None = None,
+    nperseg: int = 256,
+    noverlap: int | None = None,
+    nfft: int | None = None,
     detrend: _Detrend = False,
-    return_onesided: op.CanBool = True,
+    return_onesided: bool = True,
     boundary: _Boundary = "zeros",
-    padded: op.CanBool = True,
-    axis: op.CanIndex = -1,
+    padded: bool = True,
+    axis: int = -1,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_FloatND, _FloatND, _CFloatingND]: ...
+) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.complexfloating]]: ...
 
 #
 @overload  # input_onesided is `True`
