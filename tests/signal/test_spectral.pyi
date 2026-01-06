@@ -6,8 +6,10 @@ import optype.numpy.compat as npc
 
 from scipy.signal import istft, spectrogram
 
+_Double1D: TypeAlias = onp.Array1D[np.float64]
 _DoubleND: TypeAlias = onp.ArrayND[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
+_CDoubleND: TypeAlias = onp.ArrayND[np.complex128]
 _ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
 
 array_f8_1d: onp.Array[tuple[Literal[256]], np.float64]
@@ -16,12 +18,12 @@ array_c16_1d: onp.Array[tuple[Literal[256]], np.complex128]
 spectrogram_mode_real: Literal["psd", "magnitude", "angle", "phase"]
 
 # test spectrogram function overloads
-assert_type(spectrogram(array_f8_1d), tuple[_DoubleND, _DoubleND, _FloatND])
-assert_type(spectrogram(array_f8_1d, mode=spectrogram_mode_real), tuple[_DoubleND, _DoubleND, _FloatND])
-assert_type(spectrogram(array_f8_1d, mode="complex"), tuple[_DoubleND, _DoubleND, _ComplexND])
+assert_type(spectrogram(array_f8_1d), tuple[_Double1D, _Double1D, _DoubleND])
+assert_type(spectrogram(array_f8_1d, mode=spectrogram_mode_real), tuple[_Double1D, _Double1D, _DoubleND])
+assert_type(spectrogram(array_f8_1d, mode="complex"), tuple[_Double1D, _Double1D, _CDoubleND])
 assert_type(
-    spectrogram(array_f8_1d, 1.0, ("tukey", 2.5), None, None, None, "constant", True, "density", -1, "complex"),
-    tuple[_DoubleND, _DoubleND, _ComplexND],
+    spectrogram(array_f8_1d, 1.0, ("tukey", 2.5), None, None, None, "constant", True, "density", -1, mode="complex"),
+    tuple[_Double1D, _Double1D, _CDoubleND],
 )
 
 # test isft function overloads
