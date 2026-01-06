@@ -686,13 +686,9 @@ def buttord(
     wp: float, ws: onp.ToJustLongDoubleND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, np.longdouble]: ...
 @overload
-def buttord(
-    wp: onp.ToFloatND, ws: float | onp.ToFloat64_ND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+def buttord(  # N-d longdouble gets downcast to float64 for some reason
+    wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, onp.Array1D[np.float64]]: ...
-@overload
-def buttord(
-    wp: onp.ToFloatND, ws: onp.ToJustLongDouble, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, onp.Array1D[np.longdouble]]: ...
 
 #
 @overload
@@ -703,24 +699,24 @@ def cheb1ord(
 def cheb1ord(
     wp: float, ws: onp.ToJustLongDouble1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, np.longdouble]: ...
-@overload
+@overload  # N-d longdouble gets downcast to float64 for some reason
 def cheb1ord(
-    wp: onp.ToFloatND, ws: float | onp.ToFloat64_1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+    wp: onp.ToFloatND, ws: float | onp.ToFloat1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, onp.Array1D[np.float64]]: ...
-@overload
-def cheb1ord(
-    wp: onp.ToFloatND, ws: onp.ToJustLongDouble1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, onp.Array1D[np.longdouble]]: ...
 
-# TODO: better overloads
+#
 @overload
 def cheb2ord(
-    wp: float, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, npc.floating]: ...
+    wp: float, ws: float | onp.ToFloat64_1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, np.float64]: ...
 @overload
 def cheb2ord(
-    wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, _FloatND]: ...  # only nd-output is cast to float64
+    wp: float, ws: onp.ToJustLongDouble1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, np.longdouble]: ...
+@overload  # N-d longdouble gets downcast to float64 for some reason
+def cheb2ord(
+    wp: onp.ToFloatND, ws: float | onp.ToFloat1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, onp.Array1D[np.float64]]: ...
 
 # TODO: better overloads
 @overload
