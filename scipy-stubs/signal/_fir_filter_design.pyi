@@ -38,35 +38,35 @@ def kaiser_atten(numtaps: npc.integer | float, width: npc.integer) -> np.float64
 #
 def firwin(
     numtaps: int,
-    cutoff: onp.ToFloat | onp.ToFloat1D,
+    cutoff: float | onp.ToFloat1D,
     *,
-    width: onp.ToFloat | None = None,
+    width: float | None = None,
     window: _ToWindow = "hamming",
     pass_zero: _IIRFilterType | bool = True,
-    scale: op.CanBool = True,
-    fs: onp.ToFloat | None = None,
+    scale: bool = True,
+    fs: float | None = None,
 ) -> onp.Array1D[np.float64]: ...
 
 #
-@overload  # `fc` required, `circular=False` (default)
+@overload  # `fc` required, `circular=True`
 def firwin_2d(
-    hsize: tuple[onp.ToJustInt, onp.ToJustInt],
+    hsize: tuple[int, int],
     window: _ToWindow,
     *,
-    fc: onp.ToFloat | onp.ToFloat1D,
-    fs: onp.ToFloat = 2,
-    circular: onp.ToFalse = False,
+    fc: float | onp.ToFloat1D,
+    fs: float = 2,
+    circular: Literal[True],
     pass_zero: _IIRFilterType | bool = True,
     scale: bool = True,
 ) -> onp.Array2D[np.float64]: ...
-@overload  # `fc` optional, `circular=True`
+@overload  # `fc` optional, `circular=False` (default)
 def firwin_2d(
-    hsize: tuple[onp.ToJustInt, onp.ToJustInt],
+    hsize: tuple[int, int],
     window: _ToWindow,
     *,
-    fc: onp.ToFloat | onp.ToFloat1D | None = None,
+    fc: float | onp.ToFloat1D | None = None,
     fs: float = 2,
-    circular: onp.ToTrue,
+    circular: Literal[False] = False,
     pass_zero: _IIRFilterType | bool = True,
     scale: bool = True,
 ) -> onp.Array2D[np.float64]: ...
