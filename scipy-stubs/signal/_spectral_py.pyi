@@ -5,7 +5,6 @@ from typing_extensions import deprecated
 import numpy as np
 import optype as op
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from .windows._windows import _ToWindow
 
@@ -14,9 +13,6 @@ __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle
 ###
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
-_FloatingND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]
-_CFloatingND: TypeAlias = onp.ArrayND[npc.complexfloating]
 
 _Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[onp.ArrayND], onp.ArrayND]
 _Scaling: TypeAlias = Literal["density", "spectrum"]
@@ -194,7 +190,7 @@ def csd(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_Float1D, _CFloatingND]: ...
+) -> tuple[_Float1D, onp.ArrayND[np.complexfloating]]: ...
 
 # NOTE: Even though it is theoretically possible to pass `mode` as positional argument, it's unlikely to be done in practice,
 # and would significantly complicate the overloads. Thus, we only support passing `mode` as keyword argument here (if "complex").
@@ -472,14 +468,51 @@ def istft(
 ) -> tuple[_Float1D, onp.ArrayND[Any]]: ...
 
 #
+@overload  # f64
+def coherence(
+    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    y: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    axis: int = -1,
+) -> tuple[_Float1D, onp.ArrayND[np.float64]]: ...
+@overload  # f32
+def coherence(
+    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    y: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    axis: int = -1,
+) -> tuple[_Float1D, onp.ArrayND[np.float32]]: ...
+@overload  # f80
+def coherence(
+    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    y: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    axis: int = -1,
+) -> tuple[_Float1D, onp.ArrayND[np.longdouble]]: ...
+@overload  # fallback
 def coherence(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
-    fs: onp.ToFloat = 1.0,
+    fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
-    nperseg: onp.ToInt | None = None,
-    noverlap: onp.ToInt | None = None,
-    nfft: onp.ToInt | None = None,
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
     detrend: _Detrend = "constant",
-    axis: op.CanIndex = -1,
-) -> tuple[_FloatND, _FloatingND]: ...
+    axis: int = -1,
+) -> tuple[_Float1D, onp.ArrayND[np.floating]]: ...
