@@ -11,8 +11,7 @@ __all__ = ["firls", "firwin", "firwin2", "firwin_2d", "kaiser_atten", "kaiser_be
 
 ###
 
-_InexactT_py = TypeVar("_InexactT_py", bound=complex)
-_InexactT_np = TypeVar("_InexactT_np", bound=npc.inexact)
+_InexactT = TypeVar("_InexactT", bound=float | npc.inexact)
 
 _IIRFilterType: TypeAlias = Literal["bandpass", "lowpass", "highpass", "bandstop"]
 _RemezFilterType: TypeAlias = Literal["bandpass", "differentiator", "hilbert"]
@@ -22,17 +21,8 @@ _LinearPhaseFIRMethod: TypeAlias = Literal["homomorphic", "hilbert"]
 
 #
 def kaiser_beta(a: float) -> float: ...
+def kaiser_atten(numtaps: int, width: _InexactT) -> _InexactT: ...
 def kaiserord(ripple: float, width: float) -> tuple[int, float]: ...
-
-#
-@overload
-def kaiser_atten(numtaps: _InexactT_py, width: _InexactT_py) -> _InexactT_py: ...
-@overload
-def kaiser_atten(numtaps: _InexactT_np | float, width: _InexactT_np) -> _InexactT_np: ...
-@overload
-def kaiser_atten(numtaps: npc.integer, width: npc.integer | float) -> np.float64: ...
-@overload
-def kaiser_atten(numtaps: npc.integer | float, width: npc.integer) -> np.float64: ...
 
 #
 def firwin(
