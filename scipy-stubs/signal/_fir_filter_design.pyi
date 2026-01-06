@@ -95,15 +95,15 @@ def firls(
 
 #
 def remez(
-    numtaps: onp.ToJustInt,
+    numtaps: int,
     bands: onp.ToFloat1D,
     desired: onp.ToFloat1D,
     *,
     weight: onp.ToFloat1D | None = None,
     type: _RemezFilterType = "bandpass",
-    maxiter: onp.ToJustInt = 25,
-    grid_density: onp.ToJustInt = 16,
-    fs: onp.ToFloat | None = None,
+    maxiter: int = 25,
+    grid_density: int = 16,
+    fs: float | None = None,
 ) -> onp.Array1D[np.float64]: ...
 
 #
