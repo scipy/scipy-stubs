@@ -58,7 +58,6 @@ __all__ = [
     "zpk2tf",
 ]
 
-_FloatingND: TypeAlias = onp.ArrayND[npc.floating]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
@@ -718,15 +717,15 @@ def cheb2ord(
     wp: onp.ToFloatND, ws: float | onp.ToFloat1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, onp.Array1D[np.float64]]: ...
 
-# TODO: better overloads
+# unlike the order `*ord` functions, `ellipord` does not support `longdouble` input
 @overload
 def ellipord(
-    wp: float, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, npc.floating]: ...
+    wp: float, ws: float | onp.ToFloat64_1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, np.float64]: ...
 @overload
 def ellipord(
-    wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, _FloatingND]: ...
+    wp: onp.ToFloatND, ws: float | onp.ToFloat64_1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, onp.Array1D[np.float64]]: ...
 
 #
 @overload
