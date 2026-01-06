@@ -36,20 +36,8 @@ def kaiser_atten(numtaps: npc.integer, width: npc.integer | float) -> np.float64
 def kaiser_atten(numtaps: npc.integer | float, width: npc.integer) -> np.float64: ...
 
 #
-@overload
 def firwin(
-    numtaps: onp.ToJustInt,
-    cutoff: onp.ToFloat64 | onp.ToFloat64_1D,
-    *,
-    width: onp.ToFloat64 | None = None,
-    window: _ToWindow = "hamming",
-    pass_zero: _IIRFilterType | bool = True,
-    scale: op.CanBool = True,
-    fs: onp.ToFloat64 | None = None,
-) -> onp.Array1D[np.float64]: ...
-@overload
-def firwin(
-    numtaps: onp.ToJustInt,
+    numtaps: int,
     cutoff: onp.ToFloat | onp.ToFloat1D,
     *,
     width: onp.ToFloat | None = None,
@@ -57,7 +45,7 @@ def firwin(
     pass_zero: _IIRFilterType | bool = True,
     scale: op.CanBool = True,
     fs: onp.ToFloat | None = None,
-) -> onp.Array1D[np.float64 | np.longdouble]: ...
+) -> onp.Array1D[np.float64]: ...
 
 #
 @overload  # `fc` required, `circular=False` (default)
