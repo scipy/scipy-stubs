@@ -88,19 +88,48 @@ def periodogram(
 ) -> tuple[_Float1D, onp.ArrayND[np.longdouble]]: ...
 
 #
+@overload  # f64
 def welch(
-    x: onp.ToComplexND,
-    fs: onp.ToFloat = 1.0,
+    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
-    nperseg: onp.ToInt | None = None,
-    noverlap: onp.ToInt | None = None,
-    nfft: onp.ToInt | None = None,
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
     detrend: _Detrend = "constant",
-    return_onesided: op.CanBool = True,
+    return_onesided: bool = True,
     scaling: _Scaling = "density",
-    axis: op.CanIndex = -1,
+    axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_FloatND, _FloatingND]: ...
+) -> tuple[_FloatND, onp.ArrayND[np.float64]]: ...
+@overload  # f64
+def welch(
+    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: bool = True,
+    scaling: _Scaling = "density",
+    axis: int = -1,
+    average: _Average = "mean",
+) -> tuple[_FloatND, onp.ArrayND[np.float32]]: ...
+@overload  # f64
+def welch(
+    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    fs: float = 1.0,
+    window: _ToWindow = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: bool = True,
+    scaling: _Scaling = "density",
+    axis: int = -1,
+    average: _Average = "mean",
+) -> tuple[_FloatND, onp.ArrayND[np.longdouble]]: ...
 
 #
 def csd(
