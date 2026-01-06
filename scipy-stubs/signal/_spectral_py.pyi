@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Literal, TypeAlias, overload
+from typing import Literal, TypeAlias, overload
 from typing_extensions import deprecated
 
 import numpy as np
@@ -12,7 +12,17 @@ __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle
 
 ###
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
+_float64_1d: TypeAlias = onp.Array1D[np.float64]  # noqa: PYI042
+_float32_nd: TypeAlias = onp.ArrayND[np.float32]  # noqa: PYI042
+_float64_nd: TypeAlias = onp.ArrayND[np.float64]  # noqa: PYI042
+_float80_nd: TypeAlias = onp.ArrayND[np.longdouble]  # noqa: PYI042
+_complex64_nd: TypeAlias = onp.ArrayND[np.complex64]  # noqa: PYI042
+_complex128_nd: TypeAlias = onp.ArrayND[np.complex128]  # noqa: PYI042
+_complex160_nd: TypeAlias = onp.ArrayND[np.clongdouble]  # noqa: PYI042
+
+_ToInexact32ND: TypeAlias = onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND
+_ToInexact64ND: TypeAlias = onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND
+_ToInexact80ND: TypeAlias = onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND
 
 _Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[onp.ArrayND], onp.ArrayND]
 _Scaling: TypeAlias = Literal["density", "spectrum"]
@@ -33,7 +43,7 @@ def lombscargle(
     normalize: _Normalize = False,
     weights: onp.ToFloat1D | None = None,
     floating_mean: bool = False,
-) -> _Float1D: ...
+) -> _float64_1d: ...
 @overload
 @deprecated(
     "The `precenter` argument is deprecated and will be removed in SciPy 1.19.0. "
@@ -48,12 +58,12 @@ def lombscargle(
     normalize: _Normalize = False,
     weights: onp.ToFloat1D | None = None,
     floating_mean: bool = False,
-) -> _Float1D: ...
+) -> _float64_1d: ...
 
 #
 @overload  # f64
 def periodogram(
-    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow | None = "boxcar",
     nfft: int | None = None,
@@ -61,10 +71,10 @@ def periodogram(
     return_onesided: bool = True,
     scaling: _Scaling = "density",
     axis: int = -1,
-) -> tuple[_Float1D, onp.ArrayND[np.float64]]: ...
+) -> tuple[_float64_1d, _float64_nd]: ...
 @overload  # f32
 def periodogram(
-    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    x: _ToInexact32ND,
     fs: float = 1.0,
     window: _ToWindow | None = "boxcar",
     nfft: int | None = None,
@@ -72,10 +82,10 @@ def periodogram(
     return_onesided: bool = True,
     scaling: _Scaling = "density",
     axis: int = -1,
-) -> tuple[_Float1D, onp.ArrayND[np.float32]]: ...
+) -> tuple[_float64_1d, _float32_nd]: ...
 @overload  # f80
 def periodogram(
-    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    x: _ToInexact80ND,
     fs: float = 1.0,
     window: _ToWindow | None = "boxcar",
     nfft: int | None = None,
@@ -83,12 +93,12 @@ def periodogram(
     return_onesided: bool = True,
     scaling: _Scaling = "density",
     axis: int = -1,
-) -> tuple[_Float1D, onp.ArrayND[np.longdouble]]: ...
+) -> tuple[_float64_1d, _float80_nd]: ...
 
 #
 @overload  # f64
 def welch(
-    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -99,10 +109,10 @@ def welch(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_Float1D, onp.ArrayND[np.float64]]: ...
+) -> tuple[_float64_1d, _float64_nd]: ...
 @overload  # f64
 def welch(
-    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    x: _ToInexact32ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -113,10 +123,10 @@ def welch(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_Float1D, onp.ArrayND[np.float32]]: ...
+) -> tuple[_float64_1d, _float32_nd]: ...
 @overload  # f64
 def welch(
-    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    x: _ToInexact80ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -127,14 +137,14 @@ def welch(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_Float1D, onp.ArrayND[np.longdouble]]: ...
+) -> tuple[_float64_1d, _float80_nd]: ...
 
 # NOTE: We assume that `x is not y` always holds here.
 # See https://github.com/scipy/scipy/issues/24285 for details.
 @overload  # c128
 def csd(
-    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
-    y: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    x: _ToInexact64ND,
+    y: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -145,11 +155,11 @@ def csd(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_Float1D, onp.ArrayND[np.complex128]]: ...
+) -> tuple[_float64_1d, _complex128_nd]: ...
 @overload  # c64
 def csd(
-    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
-    y: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    x: _ToInexact32ND,
+    y: _ToInexact32ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -160,11 +170,11 @@ def csd(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_Float1D, onp.ArrayND[np.complex64]]: ...
+) -> tuple[_float64_1d, _complex64_nd]: ...
 @overload  # c160
 def csd(
-    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
-    y: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    x: _ToInexact80ND,
+    y: _ToInexact80ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -175,7 +185,7 @@ def csd(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_Float1D, onp.ArrayND[np.clongdouble]]: ...
+) -> tuple[_float64_1d, _complex160_nd]: ...
 @overload  # fallback
 def csd(
     x: onp.ToComplexND,
@@ -190,13 +200,13 @@ def csd(
     scaling: _Scaling = "density",
     axis: int = -1,
     average: _Average = "mean",
-) -> tuple[_Float1D, onp.ArrayND[np.complexfloating]]: ...
+) -> tuple[_float64_1d, onp.Array]: ...
 
 # NOTE: Even though it is theoretically possible to pass `mode` as positional argument, it's unlikely to be done in practice,
 # and would significantly complicate the overloads. Thus, we only support passing `mode` as keyword argument here (if "complex").
 @overload  # f64, mode != "complex"
 def spectrogram(
-    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = ("tukey_periodic", 0.25),
     nperseg: int | None = None,
@@ -207,10 +217,10 @@ def spectrogram(
     scaling: _Scaling = "density",
     axis: int = -1,
     mode: Literal["psd", "magnitude", "angle", "phase"] = "psd",
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.float64]]: ...
+) -> tuple[_float64_1d, _float64_1d, _float64_nd]: ...
 @overload  # c128, mode == "complex"
 def spectrogram(
-    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = ("tukey_periodic", 0.25),
     nperseg: int | None = None,
@@ -222,10 +232,10 @@ def spectrogram(
     axis: int = -1,
     *,
     mode: Literal["complex"],
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.complex128]]: ...
+) -> tuple[_float64_1d, _float64_1d, _complex128_nd]: ...
 @overload  # f32, mode != "complex"
 def spectrogram(
-    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    x: _ToInexact32ND,
     fs: float = 1.0,
     window: _ToWindow = ("tukey_periodic", 0.25),
     nperseg: int | None = None,
@@ -236,10 +246,10 @@ def spectrogram(
     scaling: _Scaling = "density",
     axis: int = -1,
     mode: Literal["psd", "magnitude", "angle", "phase"] = "psd",
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.float32]]: ...
+) -> tuple[_float64_1d, _float64_1d, _float32_nd]: ...
 @overload  # c64, mode == "complex"
 def spectrogram(
-    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    x: _ToInexact32ND,
     fs: float = 1.0,
     window: _ToWindow = ("tukey_periodic", 0.25),
     nperseg: int | None = None,
@@ -251,10 +261,10 @@ def spectrogram(
     axis: int = -1,
     *,
     mode: Literal["complex"],
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.complex64]]: ...
+) -> tuple[_float64_1d, _float64_1d, _complex64_nd]: ...
 @overload  # f80, mode != "complex"
 def spectrogram(
-    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    x: _ToInexact80ND,
     fs: float = 1.0,
     window: _ToWindow = ("tukey_periodic", 0.25),
     nperseg: int | None = None,
@@ -265,10 +275,10 @@ def spectrogram(
     scaling: _Scaling = "density",
     axis: int = -1,
     mode: Literal["psd", "magnitude", "angle", "phase"] = "psd",
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.longdouble]]: ...
+) -> tuple[_float64_1d, _float64_1d, _float80_nd]: ...
 @overload  # c80, mode == "complex"
 def spectrogram(
-    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    x: _ToInexact80ND,
     fs: float = 1.0,
     window: _ToWindow = ("tukey_periodic", 0.25),
     nperseg: int | None = None,
@@ -280,7 +290,7 @@ def spectrogram(
     axis: int = -1,
     *,
     mode: Literal["complex"],
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.clongdouble]]: ...
+) -> tuple[_float64_1d, _float64_1d, _complex160_nd]: ...
 @overload  # fallback
 def spectrogram(
     x: onp.ToComplexND,
@@ -294,7 +304,7 @@ def spectrogram(
     scaling: _Scaling = "density",
     axis: int = -1,
     mode: str = "psd",
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[Any]]: ...
+) -> tuple[_float64_1d, _float64_1d, onp.Array]: ...
 
 #
 def check_COLA(window: _ToWindow, nperseg: int, noverlap: int, tol: float = 1e-10) -> np.bool_: ...
@@ -303,7 +313,7 @@ def check_NOLA(window: _ToWindow, nperseg: int, noverlap: int, tol: float = 1e-1
 #
 @overload  # c128
 def stft(
-    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int = 256,
@@ -315,10 +325,10 @@ def stft(
     padded: bool = True,
     axis: int = -1,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.complex128]]: ...
+) -> tuple[_float64_1d, _float64_1d, _complex128_nd]: ...
 @overload  # c64
 def stft(
-    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    x: _ToInexact32ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int = 256,
@@ -330,10 +340,10 @@ def stft(
     padded: bool = True,
     axis: int = -1,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.complex64]]: ...
+) -> tuple[_float64_1d, _float64_1d, _complex64_nd]: ...
 @overload  # c160
 def stft(
-    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    x: _ToInexact80ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int = 256,
@@ -345,7 +355,7 @@ def stft(
     padded: bool = True,
     axis: int = -1,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.clongdouble]]: ...
+) -> tuple[_float64_1d, _float64_1d, _complex160_nd]: ...
 @overload  # fallback
 def stft(
     x: onp.ToComplexND,
@@ -360,13 +370,13 @@ def stft(
     padded: bool = True,
     axis: int = -1,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, _Float1D, onp.ArrayND[np.complexfloating]]: ...
+) -> tuple[_float64_1d, _float64_1d, onp.Array]: ...
 
 # NOTE: Even though it is theoretically possible to pass `input_onesided` positionally, it's unlikely to be done in practice
 # and would significantly complicate the overloads. Thus, we only support passing it as keyword argument here (if `False`).
 @overload  # f64, input_onesided=True (default)
 def istft(
-    Zxx: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    Zxx: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -377,10 +387,10 @@ def istft(
     time_axis: int = -1,
     freq_axis: int = -2,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, onp.ArrayND[np.float64]]: ...
+) -> tuple[_float64_1d, _float64_nd]: ...
 @overload  # c128, input_onesided=False
 def istft(
-    Zxx: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    Zxx: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -392,10 +402,10 @@ def istft(
     time_axis: int = -1,
     freq_axis: int = -2,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, onp.ArrayND[np.complex128]]: ...
+) -> tuple[_float64_1d, _complex128_nd]: ...
 @overload  # f32, input_onesided=True (default)
 def istft(
-    Zxx: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    Zxx: _ToInexact32ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -406,10 +416,10 @@ def istft(
     time_axis: int = -1,
     freq_axis: int = -2,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, onp.ArrayND[np.float32]]: ...
+) -> tuple[_float64_1d, _float32_nd]: ...
 @overload  # c64, input_onesided=False
 def istft(
-    Zxx: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    Zxx: _ToInexact32ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -421,10 +431,10 @@ def istft(
     time_axis: int = -1,
     freq_axis: int = -2,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, onp.ArrayND[np.complex64]]: ...
+) -> tuple[_float64_1d, _complex64_nd]: ...
 @overload  # f80, input_onesided=True (default)
 def istft(
-    Zxx: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    Zxx: _ToInexact80ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -435,10 +445,10 @@ def istft(
     time_axis: int = -1,
     freq_axis: int = -2,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, onp.ArrayND[np.longdouble]]: ...
+) -> tuple[_float64_1d, _float80_nd]: ...
 @overload  # c160, input_onesided=False
 def istft(
-    Zxx: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    Zxx: _ToInexact80ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -450,7 +460,7 @@ def istft(
     time_axis: int = -1,
     freq_axis: int = -2,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, onp.ArrayND[np.clongdouble]]: ...
+) -> tuple[_float64_1d, _complex160_nd]: ...
 @overload  # fallback
 def istft(
     Zxx: onp.ToComplexND,
@@ -465,13 +475,13 @@ def istft(
     time_axis: int = -1,
     freq_axis: int = -2,
     scaling: _LegacyScaling = "spectrum",
-) -> tuple[_Float1D, onp.ArrayND[Any]]: ...
+) -> tuple[_float64_1d, onp.Array]: ...
 
 #
 @overload  # f64
 def coherence(
-    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
-    y: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    x: _ToInexact64ND,
+    y: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -479,11 +489,11 @@ def coherence(
     nfft: int | None = None,
     detrend: _Detrend = "constant",
     axis: int = -1,
-) -> tuple[_Float1D, onp.ArrayND[np.float64]]: ...
+) -> tuple[_float64_1d, _float64_nd]: ...
 @overload  # f32
 def coherence(
-    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
-    y: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    x: _ToInexact32ND,
+    y: _ToInexact32ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -491,11 +501,11 @@ def coherence(
     nfft: int | None = None,
     detrend: _Detrend = "constant",
     axis: int = -1,
-) -> tuple[_Float1D, onp.ArrayND[np.float32]]: ...
+) -> tuple[_float64_1d, _float32_nd]: ...
 @overload  # f80
 def coherence(
-    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
-    y: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    x: _ToInexact80ND,
+    y: _ToInexact80ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
     nperseg: int | None = None,
@@ -503,7 +513,7 @@ def coherence(
     nfft: int | None = None,
     detrend: _Detrend = "constant",
     axis: int = -1,
-) -> tuple[_Float1D, onp.ArrayND[np.longdouble]]: ...
+) -> tuple[_float64_1d, _float80_nd]: ...
 @overload  # fallback
 def coherence(
     x: onp.ToComplexND,
@@ -515,4 +525,4 @@ def coherence(
     nfft: int | None = None,
     detrend: _Detrend = "constant",
     axis: int = -1,
-) -> tuple[_Float1D, onp.ArrayND[np.floating]]: ...
+) -> tuple[_float64_1d, onp.Array]: ...
