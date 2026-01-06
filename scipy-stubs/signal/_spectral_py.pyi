@@ -53,16 +53,39 @@ def lombscargle(
 ) -> _Float1D: ...
 
 #
+@overload  # f64
 def periodogram(
-    x: onp.ToComplexND,
-    fs: onp.ToFloat = 1.0,
+    x: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND,
+    fs: float = 1.0,
     window: _ToWindow | None = "boxcar",
-    nfft: onp.ToInt | None = None,
+    nfft: int | None = None,
     detrend: _Detrend = "constant",
-    return_onesided: op.CanBool = True,
+    return_onesided: bool = True,
     scaling: _Scaling = "density",
-    axis: op.CanIndex = -1,
-) -> tuple[_FloatND, _FloatingND]: ...
+    axis: int = -1,
+) -> tuple[_Float1D, onp.ArrayND[np.float64]]: ...
+@overload  # f32
+def periodogram(
+    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND,
+    fs: float = 1.0,
+    window: _ToWindow | None = "boxcar",
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: bool = True,
+    scaling: _Scaling = "density",
+    axis: int = -1,
+) -> tuple[_Float1D, onp.ArrayND[np.float32]]: ...
+@overload  # f80
+def periodogram(
+    x: onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND,
+    fs: float = 1.0,
+    window: _ToWindow | None = "boxcar",
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: bool = True,
+    scaling: _Scaling = "density",
+    axis: int = -1,
+) -> tuple[_Float1D, onp.ArrayND[np.longdouble]]: ...
 
 #
 def welch(
