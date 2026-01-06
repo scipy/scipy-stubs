@@ -73,14 +73,14 @@ def firwin_2d(
 
 #
 def firwin2(
-    numtaps: onp.ToJustInt,
+    numtaps: int,
     freq: onp.ToFloat1D,
     gain: onp.ToFloat1D,
     *,
-    nfreqs: onp.ToJustInt | None = None,
-    window: _ToWindow = "hamming",
-    antisymmetric: op.CanBool = False,
-    fs: onp.ToFloat | None = None,
+    nfreqs: int | None = None,
+    window: _ToWindow | None = "hamming",
+    antisymmetric: bool = False,
+    fs: float | None = None,
 ) -> onp.Array1D[np.float64]: ...
 
 #
