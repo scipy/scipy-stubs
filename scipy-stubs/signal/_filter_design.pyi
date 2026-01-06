@@ -58,9 +58,6 @@ __all__ = [
     "zpk2tf",
 ]
 
-_Floating: TypeAlias = npc.floating
-_CFloating: TypeAlias = npc.complexfloating
-
 _FloatingND: TypeAlias = onp.ArrayND[npc.floating]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
@@ -296,18 +293,22 @@ def lp2bs(
 ) -> _Ba1D | _Ba1D[np.float32] | _Ba1D[np.longdouble]: ...
 
 # TODO: overloads
-def lp2lp_zpk(z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, wo: float = 1.0) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
-def lp2hp_zpk(z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, wo: float = 1.0) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
+def lp2lp_zpk(
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, wo: float = 1.0
+) -> _ZPK[npc.inexact, npc.complexfloating, npc.floating]: ...
+def lp2hp_zpk(
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, wo: float = 1.0
+) -> _ZPK[npc.inexact, npc.complexfloating, npc.floating]: ...
 
 # TODO: overloads
 def lp2bp_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, wo: float = 1.0, bw: float = 1.0
-) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
+) -> _ZPK[npc.inexact, npc.complexfloating, npc.floating]: ...
 
 # TODO: overloads
 def lp2bs_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, wo: float = 1.0, bw: float = 1.0
-) -> _ZPK[npc.inexact, _CFloating, _Floating]: ...
+) -> _ZPK[npc.inexact, npc.complexfloating, npc.floating]: ...
 
 #
 def bilinear(b: onp.ToFloat1D, a: onp.ToFloat1D, fs: float = 1.0) -> _Ba1D: ...
@@ -316,11 +317,14 @@ def bilinear(b: onp.ToFloat1D, a: onp.ToFloat1D, fs: float = 1.0) -> _Ba1D: ...
 @overload
 def bilinear_zpk(
     z: onp.ToFloat1D, p: onp.ToComplex1D, k: float, fs: float
-) -> _ZPK[np.float64, _CFloating] | _ZPK[np.longdouble, _CFloating, np.longdouble]: ...
+) -> _ZPK[np.float64, npc.complexfloating] | _ZPK[np.longdouble, npc.complexfloating, np.longdouble]: ...
 @overload
 def bilinear_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: float, fs: float
-) -> _ZPK[np.float64 | np.complex128, _CFloating] | _ZPK[np.longdouble | np.clongdouble, _CFloating, np.longdouble]: ...
+) -> (
+    _ZPK[np.float64 | np.complex128, npc.complexfloating]
+    | _ZPK[np.longdouble | np.clongdouble, npc.complexfloating, np.longdouble]
+): ...
 
 #
 @overload  # output="ba" (default)
@@ -665,8 +669,8 @@ def bessel(
 def band_stop_obj(
     wp: float,
     ind: L[0, 1] | npc.integer,  # bool doesn't work
-    passb: onp.ArrayND[_Floating | npc.integer],  # 1-d
-    stopb: onp.ArrayND[_Floating | npc.integer],  # 1-d
+    passb: onp.ArrayND[npc.floating | npc.integer],  # 1-d
+    stopb: onp.ArrayND[npc.floating | npc.integer],  # 1-d
     gpass: float,
     gstop: float,
     type: L["butter", "cheby", "ellip"],
@@ -690,21 +694,29 @@ def buttord(
     wp: onp.ToFloatND, ws: onp.ToJustLongDouble, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
 ) -> tuple[int, onp.Array1D[np.longdouble]]: ...
 
-# TODO: better overloads
+#
 @overload
 def cheb1ord(
-    wp: float, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, _Floating]: ...
+    wp: float, ws: float | onp.ToFloat64_1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, np.float64]: ...
 @overload
 def cheb1ord(
-    wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, _FloatingND]: ...
+    wp: float, ws: onp.ToJustLongDouble1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, np.longdouble]: ...
+@overload
+def cheb1ord(
+    wp: onp.ToFloatND, ws: float | onp.ToFloat64_1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, onp.Array1D[np.float64]]: ...
+@overload
+def cheb1ord(
+    wp: onp.ToFloatND, ws: onp.ToJustLongDouble1D, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
+) -> tuple[int, onp.Array1D[np.longdouble]]: ...
 
 # TODO: better overloads
 @overload
 def cheb2ord(
     wp: float, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, _Floating]: ...
+) -> tuple[int, npc.floating]: ...
 @overload
 def cheb2ord(
     wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
@@ -714,7 +726,7 @@ def cheb2ord(
 @overload
 def ellipord(
     wp: float, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
-) -> tuple[int, _Floating]: ...
+) -> tuple[int, npc.floating]: ...
 @overload
 def ellipord(
     wp: onp.ToFloatND, ws: float | onp.ToFloatND, gpass: float, gstop: float, analog: bool = False, fs: float | None = None
