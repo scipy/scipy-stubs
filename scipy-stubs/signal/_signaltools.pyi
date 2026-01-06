@@ -1058,15 +1058,19 @@ def detrend(
     overwrite_data: bool = False,
 ) -> onp.ArrayND[Any]: ...
 
-# TODO(jorenham): improve
-@overload
+#
+@overload  # f64
 def unique_roots(
-    p: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "min"
-) -> tuple[onp.Array1D[npc.floating], onp.Array1D[np.int_]]: ...
-@overload
+    p: onp.ToInt1D | onp.ToJustFloat64_1D, tol: float = 0.001, rtype: _ResidueType = "min"
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.int_]]: ...
+@overload  # c128
 def unique_roots(
-    p: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "min"
-) -> tuple[onp.Array1D[npc.inexact], onp.Array1D[np.int_]]: ...
+    p: onp.ToJustComplex128_1D, tol: float = 0.001, rtype: _ResidueType = "min"
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.int_]]: ...
+@overload  # T: inexact
+def unique_roots(
+    p: onp.ToArray1D[_InexactT, _InexactT], tol: float = 0.001, rtype: _ResidueType = "min"
+) -> tuple[onp.Array1D[_InexactT], onp.Array1D[np.int_]]: ...
 
 #
 def residue(
