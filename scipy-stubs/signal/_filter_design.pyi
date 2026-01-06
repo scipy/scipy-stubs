@@ -61,7 +61,6 @@ __all__ = [
 _Floating: TypeAlias = npc.floating
 _CFloating: TypeAlias = npc.complexfloating
 
-_Floating1D: TypeAlias = onp.Array1D[npc.floating]
 _FloatingND: TypeAlias = onp.ArrayND[npc.floating]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
@@ -74,6 +73,7 @@ _Order: TypeAlias = L[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 
 _AnyInexactT = TypeVar(
     "_AnyInexactT", np.float16, np.float32, np.float64, np.complex64, np.complex128, np.longdouble, np.clongdouble
 )
+_InexactT = TypeVar("_InexactT", bound=npc.inexact)
 
 _SCT_z = TypeVar("_SCT_z", bound=np.generic)
 _SCT_p = TypeVar("_SCT_p", bound=np.generic, default=np.complex128)
@@ -216,8 +216,15 @@ def normalize(b: onp.ArrayND[_AnyInexactT], a: onp.ArrayND[_AnyInexactT]) -> _Ba
 @overload  # fallback
 def normalize(b: onp.ToComplexND, a: onp.ToComplexND) -> _BaND[Incomplete]: ...
 
-# TODO: overloads
-def sos2tf(sos: onp.ToFloat2D) -> tuple[_Floating1D, _Floating1D]: ...
+#
+@overload  # f64
+def sos2tf(sos: onp.ToInt2D | onp.ToJustFloat64_2D) -> tuple[_Float1D, _Float1D]: ...
+@overload  # c128
+def sos2tf(sos: onp.ToJustComplex128_2D) -> tuple[_Complex1D, _Complex1D]: ...
+@overload  # T: inexact
+def sos2tf(sos: onp.Array2D[_InexactT]) -> tuple[onp.Array1D[_InexactT], onp.Array1D[_InexactT]]: ...
+@overload  # fallback
+def sos2tf(sos: onp.ToComplex2D) -> tuple[onp.Array1D, onp.Array1D]: ...
 
 # TODO: overloads
 def sos2zpk(sos: _ToFloat2D) -> _ZPK[np.complex128, np.complex128, np.float32 | np.float64]: ...
