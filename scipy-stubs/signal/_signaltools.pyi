@@ -79,7 +79,6 @@ _FiltFiltMethod: TypeAlias = L["pad", "gust"]
 _ResidualKind: TypeAlias = L["lowpass", "all"]
 _FilterType: TypeAlias = L["iir", "fir"] | dlti
 
-_F16_64: TypeAlias = np.float64 | np.float32 | np.float16
 _C64_128: TypeAlias = np.complex128 | np.complex64
 
 _ToResampleWindow: TypeAlias = Callable[[onp.Array1D[_InexactT]], onp.ToFloat1D] | onp.ToFloat1D | _ToWindow
@@ -1009,29 +1008,69 @@ def hilbert2(
 
 ###
 
-# TODO(jorenham): improve
-@overload
+#
+@overload  # f64
 def detrend(
-    data: onp.ToFloatND, axis: int = -1, type: _TrendType = "linear", bp: int | onp.ToJustIntND = 0, overwrite_data: bool = False
-) -> onp.ArrayND[_F16_64]: ...
-@overload
+    data: onp.ToIntND | onp.ToJustFloat64_ND,
+    axis: int = -1,
+    type: _TrendType = "linear",
+    bp: int | onp.ToJustIntND = 0,
+    overwrite_data: bool = False,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # f16
+def detrend(
+    data: onp.ToJustFloat16_ND,
+    axis: int = -1,
+    type: _TrendType = "linear",
+    bp: int | onp.ToJustIntND = 0,
+    overwrite_data: bool = False,
+) -> onp.ArrayND[np.float16]: ...
+@overload  # f32
+def detrend(
+    data: onp.ToJustFloat32_ND,
+    axis: int = -1,
+    type: _TrendType = "linear",
+    bp: int | onp.ToJustIntND = 0,
+    overwrite_data: bool = False,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # c64
+def detrend(
+    data: onp.ToJustComplex64_ND,
+    axis: int = -1,
+    type: _TrendType = "linear",
+    bp: int | onp.ToJustIntND = 0,
+    overwrite_data: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # c128
+def detrend(
+    data: onp.ToJustComplex128_ND,
+    axis: int = -1,
+    type: _TrendType = "linear",
+    bp: int | onp.ToJustIntND = 0,
+    overwrite_data: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # fallback
 def detrend(
     data: onp.ToComplexND,
     axis: int = -1,
     type: _TrendType = "linear",
     bp: int | onp.ToJustIntND = 0,
     overwrite_data: bool = False,
-) -> onp.ArrayND[_C64_128 | _F16_64]: ...
+) -> onp.ArrayND[Any]: ...
 
-# TODO(jorenham): improve
-@overload
+#
+@overload  # f64
 def unique_roots(
-    p: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "min"
-) -> tuple[onp.Array1D[npc.floating], onp.Array1D[np.int_]]: ...
-@overload
+    p: onp.ToInt1D | onp.ToJustFloat64_1D, tol: float = 0.001, rtype: _ResidueType = "min"
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.int_]]: ...
+@overload  # c128
 def unique_roots(
-    p: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "min"
-) -> tuple[onp.Array1D[npc.inexact], onp.Array1D[np.int_]]: ...
+    p: onp.ToJustComplex128_1D, tol: float = 0.001, rtype: _ResidueType = "min"
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.int_]]: ...
+@overload  # T: inexact
+def unique_roots(
+    p: onp.ToArray1D[_InexactT, _InexactT], tol: float = 0.001, rtype: _ResidueType = "min"
+) -> tuple[onp.Array1D[_InexactT], onp.Array1D[np.int_]]: ...
 
 #
 def residue(
@@ -1242,25 +1281,34 @@ def resample_poly(
     cval: float | None = None,
 ) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...
 
-# TODO(jorenham): improve
-@overload
+# `float16` is upcast to `float64`, while `float32` (and `float64`) retain their dtype
+@overload  # f64
 def decimate(
-    x: onp.ToFloatND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
-) -> onp.ArrayND[npc.floating]: ...
-@overload
+    x: onp.ToArrayND[float, np.float64 | np.float16 | npc.integer | np.bool_],
+    q: int,
+    n: int | None = None,
+    ftype: _FilterType = "iir",
+    axis: int = -1,
+    zero_phase: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # f32
 def decimate(
-    x: onp.ToComplexND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
-) -> onp.ArrayND[npc.inexact]: ...
+    x: onp.ToJustFloat32_ND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
+) -> onp.ArrayND[np.float32]: ...
+@overload  # c128
+def decimate(
+    x: onp.ToJustComplex128_ND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # c64
+def decimate(
+    x: onp.ToJustComplex64_ND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
+) -> onp.ArrayND[np.complex64]: ...
 
-# TODO(jorenham): improve
-@overload
-def vectorstrength(events: onp.ToFloat1D, period: onp.ToFloat) -> _Tuple2[npc.floating]: ...
-@overload
-def vectorstrength(events: onp.ToFloat1D, period: onp.ToFloat1D) -> _Tuple2[onp.Array1D[npc.floating]]: ...
-@overload
-def vectorstrength(events: onp.ToComplex1D, period: onp.ToComplex) -> _Tuple2[npc.inexact]: ...
-@overload
-def vectorstrength(events: onp.ToComplex1D, period: onp.ToComplex1D) -> _Tuple2[onp.Array1D[npc.inexact]]: ...
+# complex periods are always cast to float64, and therefore not supported here
+@overload  # 0d
+def vectorstrength(events: float | onp.ToFloat1D, period: float) -> _Tuple2[np.float64]: ...
+@overload  # 1d
+def vectorstrength(events: float | onp.ToFloat1D, period: onp.ToFloat1D) -> _Tuple2[onp.Array1D[np.float64]]: ...
 
 #
 @overload
