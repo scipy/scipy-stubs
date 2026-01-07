@@ -9,7 +9,8 @@ import optype.numpy.compat as npc
 
 ###
 
-_ShapeT = TypeVar("_ShapeT", bound=Any)  # the `Any` bound is necessary for compatibility with numpy<2.1
+# we use `tuple[Any, ...]` instead of `tuple[int, ...]` here to work around bugs in both mypy and pyright (sigh...)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
 
 _Mode: TypeAlias = Literal["mirror", "constant", "nearest", "wrap", "interp"]
 # savgol_filter casts everything except for `float32` to `float64` (kinda weird, but ok)
@@ -41,6 +42,12 @@ def savgol_coeffs(
     xp: ModuleType,
     device: object | None = None,
 ) -> Incomplete: ...
+
+# NOTE: On `numpy<2.1` the shape-type of `ndarray` was invariant, and pyright has a bug that incorrectly causes it to report
+# the overlapping overloads as incompatible, even though the shape-type defaults to `tuple[Any, ...]` and is therefore compatible
+# with all other shape-types. Thus, we're forced to disable pyright's overlapping overload check here.
+
+# pyright: reportOverlappingOverload=false
 
 #
 @overload  # f64, shape known
