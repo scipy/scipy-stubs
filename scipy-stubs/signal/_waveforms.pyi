@@ -4,17 +4,17 @@ from typing import Literal, TypeAlias, TypeVar, overload
 import numpy as np
 import optype as op
 import optype.numpy as onp
-import optype.numpy.compat as npc
 from numpy._typing import _DTypeLike
 
 from scipy._typing import AnyShape
 
 __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
 
+###
+
 _SCT = TypeVar("_SCT", bound=np.generic)
 
 _ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
-_FloatingND: TypeAlias = onp.ArrayND[npc.floating]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 
 _ChirpMethod: TypeAlias = Literal["linear", "quadratic", "logarithmic", "hyperbolic"]
@@ -24,55 +24,92 @@ _ChirpMethod: TypeAlias = Literal["linear", "quadratic", "logarithmic", "hyperbo
 def sawtooth(t: _ToFloat0ND, width: _ToFloat0ND = 1) -> _FloatND: ...
 def square(t: _ToFloat0ND, duty: _ToFloat0ND = 0.5) -> _FloatND: ...
 
-#
-@overload  # real scalars
+# TODO(@jorenham): refine return types based on input types
+# https://github.com/scipy/scipy-stubs/issues/756
+@overload  # t: +f64 0d, complex: False
 def chirp(
-    t: onp.ToFloat,
-    f0: onp.ToFloat,
-    t1: onp.ToFloat,
-    f1: onp.ToFloat,
+    t: onp.ToFloat64,
+    f0: float,
+    t1: float,
+    f1: float,
     method: _ChirpMethod = "linear",
-    phi: onp.ToFloat = 0,
-    vertex_zero: op.CanBool = True,
+    phi: float = 0,
+    vertex_zero: bool = True,
     *,
-    complex: onp.ToFalse = False,
-) -> npc.floating: ...
-@overload  # real arrays
+    complex: Literal[False] = False,
+) -> np.float64: ...
+@overload  # t: +f64 nd, complex: False
 def chirp(
-    t: onp.ToFloatND,
-    f0: onp.ToFloat,
-    t1: onp.ToFloat,
-    f1: onp.ToFloat,
+    t: onp.ToFloat64_ND,
+    f0: float,
+    t1: float,
+    f1: float,
     method: _ChirpMethod = "linear",
-    phi: onp.ToFloat = 0,
-    vertex_zero: op.CanBool = True,
+    phi: float = 0,
+    vertex_zero: bool = True,
     *,
-    complex: onp.ToFalse = False,
-) -> _FloatingND: ...
-@overload  # complex scalars
+    complex: Literal[False] = False,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # t: +c128 0d, complex: True
 def chirp(
-    t: onp.ToFloat,
-    f0: onp.ToFloat,
-    t1: onp.ToFloat,
-    f1: onp.ToFloat,
+    t: onp.ToComplex128,
+    f0: float,
+    t1: float,
+    f1: float,
     method: _ChirpMethod = "linear",
-    phi: onp.ToFloat = 0,
-    vertex_zero: op.CanBool = True,
+    phi: float = 0,
+    vertex_zero: bool = True,
     *,
-    complex: onp.ToTrue,
-) -> npc.complexfloating: ...
-@overload  # complex arrays
+    complex: Literal[True],
+) -> np.complex128: ...
+@overload  # t: +c128 nd, complex: True
 def chirp(
-    t: onp.ToFloatND,
-    f0: onp.ToFloat,
-    t1: onp.ToFloat,
-    f1: onp.ToFloat,
+    t: onp.ToComplex128_ND,
+    f0: float,
+    t1: float,
+    f1: float,
     method: _ChirpMethod = "linear",
-    phi: onp.ToFloat = 0,
-    vertex_zero: op.CanBool = True,
+    phi: float = 0,
+    vertex_zero: bool = True,
     *,
-    complex: onp.ToTrue,
-) -> onp.ArrayND[npc.complexfloating]: ...
+    complex: Literal[True],
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # t: ~c128 0d
+def chirp(
+    t: onp.ToJustComplex128 | np.complex64,
+    f0: float,
+    t1: float,
+    f1: float,
+    method: _ChirpMethod = "linear",
+    phi: float = 0,
+    vertex_zero: bool = True,
+    *,
+    complex: bool = False,
+) -> np.complex128: ...
+@overload  # t: ~c128 nd
+def chirp(
+    t: onp.ToJustComplex128_ND | onp.ToJustComplex64_ND,
+    f0: float,
+    t1: float,
+    f1: float,
+    method: _ChirpMethod = "linear",
+    phi: float = 0,
+    vertex_zero: bool = True,
+    *,
+    complex: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # fallback nd
+def chirp(
+    t: onp.ToComplexND,
+    f0: float,
+    t1: float,
+    f1: float,
+    method: _ChirpMethod = "linear",
+    phi: float = 0,
+    vertex_zero: bool = True,
+    *,
+    complex: bool = False,
+) -> onp.Array: ...
 
 #
 def sweep_poly(t: _ToFloat0ND, poly: onp.ToFloatND | np.poly1d, phi: onp.ToFloat = 0) -> _FloatND: ...
