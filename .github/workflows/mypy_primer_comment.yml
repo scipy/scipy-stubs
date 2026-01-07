@@ -62,14 +62,14 @@ jobs:
           echo '## `mypy_primer` results' >> comment.md
           if [ -s "${{ runner.temp }}/artifacts/mypy_primer.diff" ]; then
             echo '<details>' >> comment.md
-            echo '<summary>Changes were detected when running mypy on open source projects</summary>' >> comment.md
+            echo '<summary>⚠️ Changes were detected when running mypy on open source projects</summary>' >> comment.md
             echo '' >> comment.md
             echo '```diff' >> comment.md
             cat ${{ runner.temp }}/artifacts/mypy_primer.diff >> comment.md
             echo '```' >> comment.md
             echo '</details>' >> comment.md
           else
-            echo 'No ecosystem changes detected ✅' >> comment.md
+            echo '✅ No ecosystem changes detected' >> comment.md
           fi
 
           echo 'comment<<EOF' >> "$GITHUB_OUTPUT"
