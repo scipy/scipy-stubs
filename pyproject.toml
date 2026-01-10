@@ -184,6 +184,7 @@ matches = "scipy-stubs/odr/*.pyi"
 errors = { deprecated = "ignore" }
 
 [[tool.pyrefly.sub-config]]
+# LSP violations that won't cause type-unsafe behavior, some of which depend on numpy versions
 matches = "scipy-stubs/special/_ufuncs.pyi"
 errors = { bad-override = "ignore" }
 
@@ -222,7 +223,11 @@ include = [
 rules = { deprecated = "ignore" }
 
 [[tool.ty.overrides]]
-include = ["scipy-stubs/stats/_distn_infrastructure.pyi"]
+# LSP violations that won't cause type-unsafe behavior, some of which depend on numpy versions
+include = [
+  "scipy-stubs/stats/_distn_infrastructure.pyi",
+  "scipy-stubs/special/_ufuncs.pyi",
+]
 rules = { invalid-method-override = "ignore" }
 
 # repo-review
