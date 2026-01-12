@@ -27,7 +27,7 @@ _SCIPY_SUBPACKAGES: Final = (
     "io.matlab",
     "linalg",
     "ndimage",
-    "odr",
+    # "odr",  # deprecated
     "optimize",
     "signal",
     "signal.windows",
@@ -185,35 +185,30 @@ def main() -> int:
     package_public: int = 0
     package_tested: int = 0
 
-    def _print_package_coverage() -> None:
+    def _print_coverage(n_tested: int, n_public: int) -> None:
         if package_public:
             print()
-            print(
-                f"Coverage `{package}`: "
-                f"{package_tested} / {package_public} "
-                f"({package_tested / package_public:.2%})"
-            )
+            print(f"Coverage: {n_tested} / {n_public} ({n_tested / n_public:.1%})")
 
     for name in sorted(public):
         if not name.startswith(package):
-            _print_package_coverage()
+            _print_coverage(package_tested, package_public)
+            print("</details>")
+
             package = ".".join(name.split(".", 2)[:2])
             package_public = package_tested = 0
-            print(f"\n## `{package}`\n")
+
+            print(f"<details>\n<summary><code>{package}</code></summary>\n")
 
         package_public += 1
         package_tested += name in tested
         x = "x" if name in tested else " "
         print(f"- [{x}] `{name}`")
 
-    _print_package_coverage()
+    _print_coverage(package_tested, package_public)
+    print("</details>")
 
-    print()
-    print(
-        f"Total coverage: "
-        f"{len(tested)} / {len(public)} "
-        f"({len(tested) / len(public):.2%})"
-    )
+    _print_coverage(len(tested), len(public))
 
     return 0
 
