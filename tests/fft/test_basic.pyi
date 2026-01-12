@@ -1,7 +1,7 @@
 import numpy as np
 import optype.numpy as onp
 
-from scipy.fft import fft, hfft, ifft, ihfft, irfft, rfft
+from scipy.fft import fft, fft2, hfft, ifft, ihfft, irfft, rfft
 
 ###
 
@@ -199,3 +199,15 @@ _assert_2d_c160(ihfft(f80_2d))
 ihfft(c64_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 ihfft(c128_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 ihfft(c160_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+
+# fft2
+_assert_2d_c128(fft2(int_2d))
+_assert_2d_c128(fft2(float_2d))
+_assert_2d_c128(fft2(complex_2d))
+_assert_2d_c128(fft2(i16_2d))
+_assert_2d_c64(fft2(f32_2d))
+_assert_2d_c128(fft2(f64_2d))
+_assert_2d_c160(fft2(f80_2d))
+_assert_2d_c64(fft2(c64_2d))
+_assert_2d_c128(fft2(c128_2d))
+_assert_2d_c160(fft2(c160_2d))
