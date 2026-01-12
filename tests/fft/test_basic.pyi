@@ -13,6 +13,7 @@ from scipy.fft import (
     ifftn,
     ihfft,
     ihfft2,
+    ihfftn,
     irfft,
     irfft2,
     irfftn,
@@ -399,3 +400,25 @@ _assert_2d_f80(hfftn(f80_2d))
 _assert_2d_f32(hfftn(c64_2d))
 _assert_2d_f64(hfftn(c128_2d))
 _assert_2d_f80(hfftn(c160_2d))
+
+# ihfftn (same as rfftn)
+_assert_1d_c128(ihfftn(int_1d))
+_assert_1d_c128(ihfftn(float_1d))
+ihfftn(complex_1d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+_assert_1d_c128(ihfftn(i16_1d))
+_assert_1d_c64(ihfftn(f32_1d))
+_assert_1d_c128(ihfftn(f64_1d))
+_assert_1d_c160(ihfftn(f80_1d))
+ihfftn(c64_1d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+ihfftn(c128_1d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+ihfftn(c160_1d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+_assert_2d_c128(ihfftn(int_2d))
+_assert_2d_c128(ihfftn(float_2d))
+ihfftn(complex_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+_assert_2d_c128(ihfftn(i16_2d))
+_assert_2d_c64(ihfftn(f32_2d))
+_assert_2d_c128(ihfftn(f64_2d))
+_assert_2d_c160(ihfftn(f80_2d))
+ihfftn(c64_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+ihfftn(c128_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+ihfftn(c160_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
