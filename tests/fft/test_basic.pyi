@@ -1,7 +1,7 @@
 import numpy as np
 import optype.numpy as onp
 
-from scipy.fft import fft, ifft, ihfft, rfft
+from scipy.fft import fft, hfft, ifft, ihfft, rfft
 
 ###
 
@@ -53,12 +53,19 @@ c160_3d: onp.Array3D[np.complex256]
 # NOTE: `typing.assert_type` will work on numpy 2.1+ because of differences in shape-typing,
 # so we instead use these helper functions to assert the expected types.
 
+def _assert_1d_f32(x: onp.Array1D[np.float32], /) -> None: ...
+def _assert_1d_f64(x: onp.Array1D[np.float64], /) -> None: ...
+def _assert_1d_f80(x: onp.Array1D[np.longdouble], /) -> None: ...
 def _assert_1d_c64(x: onp.Array1D[np.complex64], /) -> None: ...
 def _assert_1d_c128(x: onp.Array1D[np.complex128], /) -> None: ...
 def _assert_1d_c160(x: onp.Array1D[np.clongdouble], /) -> None: ...
+
 def _assert_2d_c64(x: onp.Array2D[np.complex64], /) -> None: ...
 def _assert_2d_c128(x: onp.Array2D[np.complex128], /) -> None: ...
 def _assert_2d_c160(x: onp.Array2D[np.clongdouble], /) -> None: ...
+def _assert_2d_f32(x: onp.Array2D[np.float32], /) -> None: ...
+def _assert_2d_f64(x: onp.Array2D[np.float64], /) -> None: ...
+def _assert_2d_f80(x: onp.Array2D[np.longdouble], /) -> None: ...
 
 ###
 
@@ -127,6 +134,28 @@ _assert_2d_c160(rfft(f80_2d))
 rfft(c64_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 rfft(c128_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 rfft(c160_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+
+# hfft (same as irfft)
+_assert_1d_f64(hfft(int_1d))
+_assert_1d_f64(hfft(float_1d))
+_assert_1d_f64(hfft(complex_1d))
+_assert_1d_f64(hfft(i16_1d))
+_assert_1d_f32(hfft(f32_1d))
+_assert_1d_f64(hfft(f64_1d))
+_assert_1d_f80(hfft(f80_1d))
+_assert_1d_f32(hfft(c64_1d))
+_assert_1d_f64(hfft(c128_1d))
+_assert_1d_f80(hfft(c160_1d))
+_assert_2d_f64(hfft(int_2d))
+_assert_2d_f64(hfft(float_2d))
+_assert_2d_f64(hfft(complex_2d))
+_assert_2d_f64(hfft(i16_2d))
+_assert_2d_f32(hfft(f32_2d))
+_assert_2d_f64(hfft(f64_2d))
+_assert_2d_f80(hfft(f80_2d))
+_assert_2d_f32(hfft(c64_2d))
+_assert_2d_f64(hfft(c128_2d))
+_assert_2d_f80(hfft(c160_2d))
 
 # ihfft (same as rfft)
 _assert_1d_c128(ihfft(int_1d))
