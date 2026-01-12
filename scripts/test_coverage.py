@@ -223,6 +223,8 @@ def _parse_scipy_imports(tree: ast.AST) -> dict[str, str]:
 
 def _should_ignore(qualname: str) -> bool:
     """Check if a qualified name should be ignored (private or bare package)."""
+    if qualname.endswith(("Warning", "Error")):
+        return True  # exceptions
     parts = qualname.split(".")
     if any(part.startswith("_") for part in parts[1:]):
         return True  # private
