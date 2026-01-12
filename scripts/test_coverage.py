@@ -11,7 +11,7 @@ from typing import Final
 _SCIPY: Final = "scipy"
 _IGNORED_SUFFIXES: Final = {"__class__"}
 
-_SCIPY_SUBPACKAGES: Final = (
+_PACKAGES_PUBLIC: Final = (
     "cluster",
     "cluster.hierarchy",
     "cluster.vq",
@@ -19,16 +19,20 @@ _SCIPY_SUBPACKAGES: Final = (
     "datasets",
     "differentiate",
     "fft",
-    # "fftpack",  # almost the safe as fft
     "integrate",
     "interpolate",
     "io",
     "io.arff",
     "io.matlab",
     "linalg",
+    "linalg.blas",
+    "linalg.cython_blas",
+    "linalg.cython_lapack",
+    "linalg.interpolative",
+    "linalg.lapack",
     "ndimage",
-    # "odr",  # deprecated
     "optimize",
+    "optimize.elementwise",
     "signal",
     "signal.windows",
     "sparse",
@@ -37,11 +41,124 @@ _SCIPY_SUBPACKAGES: Final = (
     "spatial",
     "spatial.transform",
     "special",
+    "special.cython_special",
     "stats",
     "stats.contingency",
     "stats.mstats",
     "stats.qmc",
     "stats.sampling",
+    "version",
+)
+_PACKAGES_DEPRECATED: Final = (
+    "constants.codata",
+    "constants.constants",
+    "integrate.dop",
+    "integrate.lsoda",
+    "integrate.odepack",
+    "integrate.quadpack",
+    "integrate.vode",
+    "interpolate.dfitpack",
+    "interpolate.fitpack",
+    "interpolate.fitpack2",
+    "interpolate.interpnd",
+    "interpolate.interpolate",
+    "interpolate.ndgriddata",
+    "interpolate.polyint",
+    "interpolate.rbf",
+    "io.arff.arffread",
+    "io.harwell_boeing",
+    "io.idl",
+    "io.matlab.byteordercodes",
+    "io.matlab.mio_utils",
+    "io.matlab.mio",
+    "io.matlab.mio4",
+    "io.matlab.mio5",
+    "io.matlab.mio5_params",
+    "io.matlab.mio5_utils",
+    "io.matlab.miobase",
+    "io.matlab.streams",
+    "io.mmio",
+    "io.netcdf",
+    "linalg.basic",
+    "linalg.decomp",
+    "linalg.decomp_cholesky",
+    "linalg.decomp_lu",
+    "linalg.decomp_qr",
+    "linalg.decomp_schur",
+    "linalg.decomp_svd",
+    "linalg.matfuncs",
+    "linalg.misc",
+    "linalg.special_matrices",
+    "misc",
+    "misc.common",
+    "misc.doccer",
+    "ndimage.filters",
+    "ndimage.fourier",
+    "ndimage.interpolation",
+    "ndimage.measurements",
+    "ndimage.morphology",
+    "odr",
+    "odr.models",
+    "odr.odrpack",
+    "optimize.cobyla",
+    "optimize.lbfgsb",
+    "optimize.linesearch",
+    "optimize.minpack",
+    "optimize.minpack2",
+    "optimize.moduleTNC",
+    "optimize.nonlin",
+    "optimize.optimize",
+    "optimize.slsqp",
+    "optimize.tnc",
+    "optimize.zeros",
+    "signal.bsplines",
+    "signal.filter_design",
+    "signal.fir_filter_design",
+    "signal.lti_conversion",
+    "signal.ltisys",
+    "signal.signaltools",
+    "signal.spectral",
+    "signal.spline",
+    "signal.waveforms",
+    "signal.wavelets",
+    "signal.windows.windows",
+    "sparse.base",
+    "sparse.compressed",
+    "sparse.construct",
+    "sparse.coo",
+    "sparse.csc",
+    "sparse.csr",
+    "sparse.data",
+    "sparse.dia",
+    "sparse.dok",
+    "sparse.extract",
+    "sparse.lil",
+    "sparse.linalg.dsolve",
+    "sparse.linalg.eigen",
+    "sparse.linalg.interface",
+    "sparse.linalg.isolve",
+    "sparse.linalg.matfuncs",
+    "sparse.sparsetools",
+    "sparse.spfuncs",
+    "sparse.sputils",
+    "spatial.ckdtree",
+    "spatial.kdtree",
+    "spatial.qhull",
+    "spatial.transform.rotation",
+    "special.add_newdocs",
+    "special.basic",
+    "special.orthogonal",
+    "special.sf_error",
+    "special.specfun",
+    "special.spfun_stats",
+    "stats.biasedurn",
+    "stats.distributions",  # not deprecated, but only re-exports from `scipy.stats`
+    "stats.kde",
+    "stats.morestats",
+    "stats.mstats_basic",
+    "stats.mstats_extras",
+    "stats.mvn",
+    "stats.stats",
 )
 
 
@@ -106,12 +223,18 @@ def _parse_scipy_imports(tree: ast.AST) -> dict[str, str]:
 
 def _should_ignore(qualname: str) -> bool:
     """Check if a qualified name should be ignored (private or bare package)."""
-    if qualname.startswith("scipy.constants"):
-        return False
     parts = qualname.split(".")
-    is_private = any(part.startswith("_") for part in parts[1:])
-    is_bare_package = len(parts) < 3 or qualname.endswith(_SCIPY_SUBPACKAGES)  # noqa: PLR2004
-    return is_private or is_bare_package
+    if any(part.startswith("_") for part in parts[1:]):
+        return True  # private
+    if len(parts) < 3 or qualname.endswith(_PACKAGES_PUBLIC):  # noqa: PLR2004
+        return True  # bare package
+    for deprecated_pkg in _PACKAGES_DEPRECATED:
+        if (
+            qualname.startswith(f"scipy.{deprecated_pkg}.")
+            or qualname == f"scipy.{deprecated_pkg}"
+        ):
+            return True  # deprecated
+    return False
 
 
 def _find_scipy_names_in_tree(tree: ast.AST, imports: dict[str, str]) -> set[str]:
@@ -165,7 +288,7 @@ def names_public() -> set[str]:
     """
     all_names: set[str] = set()
 
-    for subpkg in _SCIPY_SUBPACKAGES:
+    for subpkg in _PACKAGES_PUBLIC:
         qualname = f"scipy.{subpkg}"
         try:
             module = importlib.import_module(qualname)
