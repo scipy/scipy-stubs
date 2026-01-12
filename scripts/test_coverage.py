@@ -8,8 +8,8 @@ import sys
 from pathlib import Path
 from typing import Final
 
-_SCIPY_PREFIX: Final = "scipy."
-_IGNORED_SUFFIXES: Final = (".__class__",)
+_SCIPY: Final = "scipy"
+_IGNORED_SUFFIXES: Final = {"__class__"}
 
 _SCIPY_SUBPACKAGES: Final = (
     "cluster",
@@ -61,6 +61,9 @@ def _extract_attribute_chain(node: ast.Attribute) -> list[str]:
         parts.append(current.id)
         parts.reverse()
 
+    if parts and parts[-1] in _IGNORED_SUFFIXES:
+        _ = parts.pop()
+
     return parts
 
 
@@ -69,11 +72,9 @@ def _resolve_to_qualname(parts: list[str], imports: dict[str, str]) -> str | Non
     if not parts:
         return None
 
-    full_name = ".".join(parts)
-
     # direct scipy.* access
-    if full_name.startswith(_SCIPY_PREFIX):
-        return full_name
+    if parts[0] == _SCIPY:
+        return ".".join(parts)
 
     # resolve through imports
     if parts[0] in imports:
@@ -88,15 +89,13 @@ def _parse_scipy_imports(tree: ast.AST) -> dict[str, str]:
 
     for node in ast.walk(tree):
         match node:
-            case ast.ImportFrom(module=str(m), names=aliases) if m.startswith(
-                _SCIPY_PREFIX
-            ):
+            case ast.ImportFrom(module=str(m), names=aliases) if m.startswith(_SCIPY):
                 for alias in aliases:
                     imports[alias.asname or alias.name] = f"{m}.{alias.name}"
 
             case ast.Import(names=aliases):
                 for alias in aliases:
-                    if alias.name.startswith(_SCIPY_PREFIX):
+                    if alias.name.startswith(_SCIPY):
                         imports[alias.asname or alias.name] = alias.name
 
             case _:
@@ -107,10 +106,12 @@ def _parse_scipy_imports(tree: ast.AST) -> dict[str, str]:
 
 def _should_ignore(qualname: str) -> bool:
     """Check if a qualified name should be ignored (private or bare package)."""
+    if qualname.startswith("scipy.constants"):
+        return False
     parts = qualname.split(".")
     is_private = any(part.startswith("_") for part in parts[1:])
     is_bare_package = len(parts) < 3  # noqa: PLR2004
-    return qualname.endswith(_IGNORED_SUFFIXES) or is_private or is_bare_package
+    return is_private or is_bare_package
 
 
 def _find_scipy_names_in_tree(tree: ast.AST, imports: dict[str, str]) -> set[str]:
@@ -119,13 +120,14 @@ def _find_scipy_names_in_tree(tree: ast.AST, imports: dict[str, str]) -> set[str
 
     for node in ast.walk(tree):
         qualname: str | None = None
-
         if isinstance(node, ast.Name) and node.id in imports:
             qualname = imports[node.id]
         elif isinstance(node, ast.Attribute):
             qualname = _resolve_to_qualname(_extract_attribute_chain(node), imports)
+        if qualname is None:
+            continue
 
-        if qualname and not _should_ignore(qualname):
+        if not _should_ignore(qualname):
             used.add(qualname)
 
     return used
