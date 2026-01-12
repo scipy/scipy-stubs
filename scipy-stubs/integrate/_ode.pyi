@@ -10,7 +10,7 @@ import optype.numpy.compat as npc
 __all__ = ["complex_ode", "ode"]
 
 _Ts = TypeVarTuple("_Ts", default=Unpack[tuple[Any, ...]])
-_Inexact64T_co = TypeVar("_Inexact64T_co", bound=npc.inexact, default=np.float64 | np.complex128, covariant=True)
+_Inexact64T_co = TypeVar("_Inexact64T_co", bound=npc.inexact, default=Any, covariant=True)
 
 _IntegratorReal: TypeAlias = Literal["vode", "dopri5", "dop853", "lsoda"]
 _IntegratorComplex: TypeAlias = Literal["vode", "zvode"]
