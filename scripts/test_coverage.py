@@ -19,7 +19,7 @@ _SCIPY_SUBPACKAGES: Final = (
     "datasets",
     "differentiate",
     "fft",
-    "fftpack",
+    # "fftpack",  # almost the safe as fft
     "integrate",
     "interpolate",
     "io",
