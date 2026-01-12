@@ -1,7 +1,25 @@
 import numpy as np
 import optype.numpy as onp
 
-from scipy.fft import fft, fft2, fftn, hfft, hfft2, ifft, ifft2, ifftn, ihfft, ihfft2, irfft, irfft2, irfftn, rfft, rfft2, rfftn
+from scipy.fft import (
+    fft,
+    fft2,
+    fftn,
+    hfft,
+    hfft2,
+    hfftn,
+    ifft,
+    ifft2,
+    ifftn,
+    ihfft,
+    ihfft2,
+    irfft,
+    irfft2,
+    irfftn,
+    rfft,
+    rfft2,
+    rfftn,
+)
 
 ###
 
@@ -359,3 +377,25 @@ _assert_2d_f80(irfftn(f80_2d))
 _assert_2d_f32(irfftn(c64_2d))
 _assert_2d_f64(irfftn(c128_2d))
 _assert_2d_f80(irfftn(c160_2d))
+
+# hfftn (same as irfftn)
+_assert_1d_f64(hfftn(int_1d))
+_assert_1d_f64(hfftn(float_1d))
+_assert_1d_f64(hfftn(complex_1d))
+_assert_1d_f64(hfftn(i16_1d))
+_assert_1d_f32(hfftn(f32_1d))
+_assert_1d_f64(hfftn(f64_1d))
+_assert_1d_f80(hfftn(f80_1d))
+_assert_1d_f32(hfftn(c64_1d))
+_assert_1d_f64(hfftn(c128_1d))
+_assert_1d_f80(hfftn(c160_1d))
+_assert_2d_f64(hfftn(int_2d))
+_assert_2d_f64(hfftn(float_2d))
+_assert_2d_f64(hfftn(complex_2d))
+_assert_2d_f64(hfftn(i16_2d))
+_assert_2d_f32(hfftn(f32_2d))
+_assert_2d_f64(hfftn(f64_2d))
+_assert_2d_f80(hfftn(f80_2d))
+_assert_2d_f32(hfftn(c64_2d))
+_assert_2d_f64(hfftn(c128_2d))
+_assert_2d_f80(hfftn(c160_2d))
