@@ -1,7 +1,7 @@
 import numpy as np
 import optype.numpy as onp
 
-from scipy.fft import fft, fft2, hfft, hfft2, ifft, ifft2, ihfft, ihfft2, irfft, irfft2, rfft, rfft2
+from scipy.fft import fft, fft2, fftn, hfft, hfft2, ifft, ifft2, ihfft, ihfft2, irfft, irfft2, rfft, rfft2
 
 ###
 
@@ -271,3 +271,25 @@ _assert_2d_c160(ihfft2(f80_2d))
 ihfft2(c64_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 ihfft2(c128_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 ihfft2(c160_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+
+# fftn (same as ifftn)
+_assert_1d_c128(fftn(int_1d))
+_assert_1d_c128(fftn(float_1d))
+_assert_1d_c128(fftn(complex_1d))
+_assert_1d_c128(fftn(i16_1d))
+_assert_1d_c64(fftn(f32_1d))
+_assert_1d_c128(fftn(f64_1d))
+_assert_1d_c160(fftn(f80_1d))
+_assert_1d_c64(fftn(c64_1d))
+_assert_1d_c128(fftn(c128_1d))
+_assert_1d_c160(fftn(c160_1d))
+_assert_2d_c128(fftn(int_2d))
+_assert_2d_c128(fftn(float_2d))
+_assert_2d_c128(fftn(complex_2d))
+_assert_2d_c128(fftn(i16_2d))
+_assert_2d_c64(fftn(f32_2d))
+_assert_2d_c128(fftn(f64_2d))
+_assert_2d_c160(fftn(f80_2d))
+_assert_2d_c64(fftn(c64_2d))
+_assert_2d_c128(fftn(c128_2d))
+_assert_2d_c160(fftn(c160_2d))
