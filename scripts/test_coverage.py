@@ -21,7 +21,6 @@ _SCIPY_SUBPACKAGES: Final = (
     "fft",
     "fftpack",
     "integrate",
-    "integrate._rules",
     "interpolate",
     "io",
     "io.arff",
