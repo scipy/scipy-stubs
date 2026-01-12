@@ -1,7 +1,7 @@
 import numpy as np
 import optype.numpy as onp
 
-from scipy.fft import fft, fft2, hfft, ifft, ifft2, ihfft, irfft, irfft2, rfft, rfft2
+from scipy.fft import fft, fft2, hfft, hfft2, ifft, ifft2, ihfft, irfft, irfft2, rfft, rfft2
 
 ###
 
@@ -247,3 +247,15 @@ _assert_2d_f80(irfft2(f80_2d))
 _assert_2d_f32(irfft2(c64_2d))
 _assert_2d_f64(irfft2(c128_2d))
 _assert_2d_f80(irfft2(c160_2d))
+
+# hfft2 (same as irfft2)
+_assert_2d_f64(hfft2(int_2d))
+_assert_2d_f64(hfft2(float_2d))
+_assert_2d_f64(hfft2(complex_2d))
+_assert_2d_f64(hfft2(i16_2d))
+_assert_2d_f32(hfft2(f32_2d))
+_assert_2d_f64(hfft2(f64_2d))
+_assert_2d_f80(hfft2(f80_2d))
+_assert_2d_f32(hfft2(c64_2d))
+_assert_2d_f64(hfft2(c128_2d))
+_assert_2d_f80(hfft2(c160_2d))
