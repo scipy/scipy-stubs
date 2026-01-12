@@ -325,6 +325,7 @@ Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)) |
 [linearmodels](https://github.com/bashtage/linearmodels) |
 [Lmo](https://github.com/jorenham/Lmo) |
 [MaxText](https://github.com/AI-Hypercomputer/maxtext) |
+[MolPipeline](https://github.com/basf/MolPipeline) |
 [MouseTracks](https://github.com/huntfx/MouseTracks) |
 Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis)) |
 [mypy_primer](https://github.com/hauntsaninja/mypy_primer) |
