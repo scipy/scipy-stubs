@@ -69,11 +69,11 @@ class ode(Generic[_Inexact64T_co, *_Ts]):
     #
     @overload
     def set_initial_value(
-        self: ode[np.floating, *_Ts], /, y: float | onp.ToFloat1D, t: float = 0.0
+        self: ode[npc.floating, *_Ts], /, y: float | onp.ToFloat1D, t: float = 0.0
     ) -> ode[_Inexact64T_co, *_Ts]: ...
     @overload
     def set_initial_value(
-        self: ode[np.complexfloating, *_Ts], /, y: complex | onp.ToComplex1D, t: float = 0.0
+        self: ode[npc.complexfloating, *_Ts], /, y: complex | onp.ToComplex1D, t: float = 0.0
     ) -> ode[_Inexact64T_co, *_Ts]: ...
 
     #
