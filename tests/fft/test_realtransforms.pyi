@@ -1,0 +1,218 @@
+from .test_basic import (
+    _assert_1d_c64,
+    _assert_1d_c128,
+    _assert_1d_c160,
+    _assert_1d_f32,
+    _assert_1d_f64,
+    _assert_1d_f80,
+    _assert_2d_c64,
+    _assert_2d_c128,
+    _assert_2d_c160,
+    _assert_2d_f32,
+    _assert_2d_f64,
+    _assert_2d_f80,
+    c64_1d,
+    c64_2d,
+    c128_1d,
+    c128_2d,
+    c160_1d,
+    c160_2d,
+    complex_1d,
+    complex_2d,
+    f32_1d,
+    f32_2d,
+    f64_1d,
+    f64_2d,
+    f80_1d,
+    f80_2d,
+    float_1d,
+    float_2d,
+    i16_1d,
+    i16_2d,
+    int_1d,
+    int_2d,
+)
+from scipy.fft import dct, dctn, dst, dstn, idct, idctn, idst, idstn
+
+###
+# NOTE: the signatures are practically equivalent
+
+# dct
+_assert_1d_f64(dct(int_1d))
+_assert_1d_f64(dct(float_1d))
+_assert_1d_f64(dct(float_1d))
+_assert_1d_c128(dct(complex_1d))
+_assert_1d_f64(dct(i16_1d))
+_assert_1d_f32(dct(f32_1d))
+_assert_1d_f64(dct(f64_1d))
+_assert_1d_f80(dct(f80_1d))
+_assert_1d_c64(dct(c64_1d))
+_assert_1d_c128(dct(c128_1d))
+_assert_1d_c160(dct(c160_1d))
+_assert_2d_f64(dct(int_2d))
+_assert_2d_f64(dct(float_2d))
+_assert_2d_c128(dct(complex_2d))
+_assert_2d_f64(dct(i16_2d))
+_assert_2d_f32(dct(f32_2d))
+_assert_2d_f64(dct(f64_2d))
+_assert_2d_f80(dct(f80_2d))
+_assert_2d_c64(dct(c64_2d))
+_assert_2d_c128(dct(c128_2d))
+_assert_2d_c160(dct(c160_2d))
+# idct
+_assert_1d_f64(idct(int_1d))
+_assert_1d_f64(idct(float_1d))
+_assert_1d_f64(idct(float_1d))
+_assert_1d_c128(idct(complex_1d))
+_assert_1d_f64(idct(i16_1d))
+_assert_1d_f32(idct(f32_1d))
+_assert_1d_f64(idct(f64_1d))
+_assert_1d_f80(idct(f80_1d))
+_assert_1d_c64(idct(c64_1d))
+_assert_1d_c128(idct(c128_1d))
+_assert_1d_c160(idct(c160_1d))
+_assert_2d_f64(idct(int_2d))
+_assert_2d_f64(idct(float_2d))
+_assert_2d_c128(idct(complex_2d))
+_assert_2d_f64(idct(i16_2d))
+_assert_2d_f32(idct(f32_2d))
+_assert_2d_f64(idct(f64_2d))
+_assert_2d_f80(idct(f80_2d))
+_assert_2d_c64(idct(c64_2d))
+_assert_2d_c128(idct(c128_2d))
+_assert_2d_c160(idct(c160_2d))
+
+# dst
+_assert_1d_f64(dst(int_1d))
+_assert_1d_f64(dst(float_1d))
+_assert_1d_f64(dst(float_1d))
+_assert_1d_c128(dst(complex_1d))
+_assert_1d_f64(dst(i16_1d))
+_assert_1d_f32(dst(f32_1d))
+_assert_1d_f64(dst(f64_1d))
+_assert_1d_f80(dst(f80_1d))
+_assert_1d_c64(dst(c64_1d))
+_assert_1d_c128(dst(c128_1d))
+_assert_1d_c160(dst(c160_1d))
+_assert_2d_f64(dst(int_2d))
+_assert_2d_f64(dst(float_2d))
+_assert_2d_c128(dst(complex_2d))
+_assert_2d_f64(dst(i16_2d))
+_assert_2d_f32(dst(f32_2d))
+_assert_2d_f64(dst(f64_2d))
+_assert_2d_f80(dst(f80_2d))
+_assert_2d_c64(dst(c64_2d))
+_assert_2d_c128(dst(c128_2d))
+_assert_2d_c160(dst(c160_2d))
+# idst
+_assert_1d_f64(idst(int_1d))
+_assert_1d_f64(idst(float_1d))
+_assert_1d_f64(idst(float_1d))
+_assert_1d_c128(idst(complex_1d))
+_assert_1d_f64(idst(i16_1d))
+_assert_1d_f32(idst(f32_1d))
+_assert_1d_f64(idst(f64_1d))
+_assert_1d_f80(idst(f80_1d))
+_assert_1d_c64(idst(c64_1d))
+_assert_1d_c128(idst(c128_1d))
+_assert_1d_c160(idst(c160_1d))
+_assert_2d_f64(idst(int_2d))
+_assert_2d_f64(idst(float_2d))
+_assert_2d_c128(idst(complex_2d))
+_assert_2d_f64(idst(i16_2d))
+_assert_2d_f32(idst(f32_2d))
+_assert_2d_f64(idst(f64_2d))
+_assert_2d_f80(idst(f80_2d))
+_assert_2d_c64(idst(c64_2d))
+_assert_2d_c128(idst(c128_2d))
+_assert_2d_c160(idst(c160_2d))
+
+# dctn
+_assert_1d_f64(dctn(int_1d))
+_assert_1d_f64(dctn(float_1d))
+_assert_1d_f64(dctn(float_1d))
+_assert_1d_c128(dctn(complex_1d))
+_assert_1d_f64(dctn(i16_1d))
+_assert_1d_f32(dctn(f32_1d))
+_assert_1d_f64(dctn(f64_1d))
+_assert_1d_f80(dctn(f80_1d))
+_assert_1d_c64(dctn(c64_1d))
+_assert_1d_c128(dctn(c128_1d))
+_assert_1d_c160(dctn(c160_1d))
+_assert_2d_f64(dctn(int_2d))
+_assert_2d_f64(dctn(float_2d))
+_assert_2d_c128(dctn(complex_2d))
+_assert_2d_f64(dctn(i16_2d))
+_assert_2d_f32(dctn(f32_2d))
+_assert_2d_f64(dctn(f64_2d))
+_assert_2d_f80(dctn(f80_2d))
+_assert_2d_c64(dctn(c64_2d))
+_assert_2d_c128(dctn(c128_2d))
+_assert_2d_c160(dctn(c160_2d))
+# idctn
+_assert_1d_f64(idctn(int_1d))
+_assert_1d_f64(idctn(float_1d))
+_assert_1d_f64(idctn(float_1d))
+_assert_1d_c128(idctn(complex_1d))
+_assert_1d_f64(idctn(i16_1d))
+_assert_1d_f32(idctn(f32_1d))
+_assert_1d_f64(idctn(f64_1d))
+_assert_1d_f80(idctn(f80_1d))
+_assert_1d_c64(idctn(c64_1d))
+_assert_1d_c128(idctn(c128_1d))
+_assert_1d_c160(idctn(c160_1d))
+_assert_2d_f64(idctn(int_2d))
+_assert_2d_f64(idctn(float_2d))
+_assert_2d_c128(idctn(complex_2d))
+_assert_2d_f64(idctn(i16_2d))
+_assert_2d_f32(idctn(f32_2d))
+_assert_2d_f64(idctn(f64_2d))
+_assert_2d_f80(idctn(f80_2d))
+_assert_2d_c64(idctn(c64_2d))
+_assert_2d_c128(idctn(c128_2d))
+_assert_2d_c160(idctn(c160_2d))
+
+# dstn
+_assert_1d_f64(dstn(int_1d))
+_assert_1d_f64(dstn(float_1d))
+_assert_1d_f64(dstn(float_1d))
+_assert_1d_c128(dstn(complex_1d))
+_assert_1d_f64(dstn(i16_1d))
+_assert_1d_f32(dstn(f32_1d))
+_assert_1d_f64(dstn(f64_1d))
+_assert_1d_f80(dstn(f80_1d))
+_assert_1d_c64(dstn(c64_1d))
+_assert_1d_c128(dstn(c128_1d))
+_assert_1d_c160(dstn(c160_1d))
+_assert_2d_f64(dstn(int_2d))
+_assert_2d_f64(dstn(float_2d))
+_assert_2d_c128(dstn(complex_2d))
+_assert_2d_f64(dstn(i16_2d))
+_assert_2d_f32(dstn(f32_2d))
+_assert_2d_f64(dstn(f64_2d))
+_assert_2d_f80(dstn(f80_2d))
+_assert_2d_c64(dstn(c64_2d))
+_assert_2d_c128(dstn(c128_2d))
+_assert_2d_c160(dstn(c160_2d))
+# idstn
+_assert_1d_f64(idstn(int_1d))
+_assert_1d_f64(idstn(float_1d))
+_assert_1d_f64(idstn(float_1d))
+_assert_1d_c128(idstn(complex_1d))
+_assert_1d_f64(idstn(i16_1d))
+_assert_1d_f32(idstn(f32_1d))
+_assert_1d_f64(idstn(f64_1d))
+_assert_1d_f80(idstn(f80_1d))
+_assert_1d_c64(idstn(c64_1d))
+_assert_1d_c128(idstn(c128_1d))
+_assert_1d_c160(idstn(c160_1d))
+_assert_2d_f64(idstn(int_2d))
+_assert_2d_f64(idstn(float_2d))
+_assert_2d_c128(idstn(complex_2d))
+_assert_2d_f64(idstn(i16_2d))
+_assert_2d_f32(idstn(f32_2d))
+_assert_2d_f64(idstn(f64_2d))
+_assert_2d_f80(idstn(f80_2d))
+_assert_2d_c64(idstn(c64_2d))
+_assert_2d_c128(idstn(c128_2d))
+_assert_2d_c160(idstn(c160_2d))
