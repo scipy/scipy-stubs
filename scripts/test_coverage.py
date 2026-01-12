@@ -110,7 +110,7 @@ def _should_ignore(qualname: str) -> bool:
         return False
     parts = qualname.split(".")
     is_private = any(part.startswith("_") for part in parts[1:])
-    is_bare_package = len(parts) < 3  # noqa: PLR2004
+    is_bare_package = len(parts) < 3 or qualname.endswith(_SCIPY_SUBPACKAGES)  # noqa: PLR2004
     return is_private or is_bare_package
 
 
@@ -174,7 +174,11 @@ def names_public() -> set[str]:
 
         exported = getattr(module, "__all__", None)
         if exported is not None:
-            all_names.update(f"{qualname}.{name}" for name in exported)
+            all_names.update(
+                f"{qualname}.{name}"
+                for name in exported
+                if not _should_ignore(f"{qualname}.{name}")
+            )
 
     return all_names
 
