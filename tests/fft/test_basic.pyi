@@ -1,7 +1,7 @@
 import numpy as np
 import optype.numpy as onp
 
-from scipy.fft import fft, fft2, fftn, hfft, hfft2, ifft, ifft2, ihfft, ihfft2, irfft, irfft2, rfft, rfft2
+from scipy.fft import fft, fft2, fftn, hfft, hfft2, ifft, ifft2, ifftn, ihfft, ihfft2, irfft, irfft2, rfft, rfft2
 
 ###
 
@@ -293,3 +293,25 @@ _assert_2d_c160(fftn(f80_2d))
 _assert_2d_c64(fftn(c64_2d))
 _assert_2d_c128(fftn(c128_2d))
 _assert_2d_c160(fftn(c160_2d))
+
+# ifftn (same as fftn)
+_assert_1d_c128(ifftn(int_1d))
+_assert_1d_c128(ifftn(float_1d))
+_assert_1d_c128(ifftn(complex_1d))
+_assert_1d_c128(ifftn(i16_1d))
+_assert_1d_c64(ifftn(f32_1d))
+_assert_1d_c128(ifftn(f64_1d))
+_assert_1d_c160(ifftn(f80_1d))
+_assert_1d_c64(ifftn(c64_1d))
+_assert_1d_c128(ifftn(c128_1d))
+_assert_1d_c160(ifftn(c160_1d))
+_assert_2d_c128(ifftn(int_2d))
+_assert_2d_c128(ifftn(float_2d))
+_assert_2d_c128(ifftn(complex_2d))
+_assert_2d_c128(ifftn(i16_2d))
+_assert_2d_c64(ifftn(f32_2d))
+_assert_2d_c128(ifftn(f64_2d))
+_assert_2d_c160(ifftn(f80_2d))
+_assert_2d_c64(ifftn(c64_2d))
+_assert_2d_c128(ifftn(c128_2d))
+_assert_2d_c160(ifftn(c160_2d))
