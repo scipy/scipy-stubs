@@ -3,12 +3,48 @@
 # ruff: noqa: S101, T201
 
 import ast
+import importlib
 import sys
 from pathlib import Path
 from typing import Final
 
 _SCIPY_PREFIX: Final = "scipy."
 _IGNORED_SUFFIXES: Final = (".__class__",)
+
+# scipy subpackages with public API (including nested packages)
+_SCIPY_SUBPACKAGES: Final = (
+    "cluster",
+    "cluster.hierarchy",
+    "cluster.vq",
+    "constants",
+    "datasets",
+    "differentiate",
+    "fft",
+    "fftpack",
+    "integrate",
+    "integrate._rules",
+    "interpolate",
+    "io",
+    "io.arff",
+    "io.matlab",
+    "linalg",
+    "ndimage",
+    "odr",
+    "optimize",
+    "signal",
+    "signal.windows",
+    "sparse",
+    "sparse.csgraph",
+    "sparse.linalg",
+    "spatial",
+    "spatial.transform",
+    "special",
+    "stats",
+    "stats.contingency",
+    "stats.mstats",
+    "stats.qmc",
+    "stats.sampling",
+)
 
 
 def _extract_attribute_chain(node: ast.Attribute) -> list[str]:
@@ -97,7 +133,7 @@ def _find_scipy_names_in_tree(tree: ast.AST, imports: dict[str, str]) -> set[str
     return used
 
 
-def collect_tested_scipy_names(tests_dir: Path | None = None) -> set[str]:
+def names_tested(tests_dir: Path | None = None) -> set[str]:
     """Collect all public scipy names accessed in test files.
 
     Args:
@@ -121,8 +157,39 @@ def collect_tested_scipy_names(tests_dir: Path | None = None) -> set[str]:
     return all_names
 
 
+def names_public() -> set[str]:
+    """Collect all public scipy API names by inspecting `__all__` at runtime.
+
+    Returns:
+        A set of fully qualified scipy names (e.g., "scipy.stats.pearsonr").
+    """
+    all_names: set[str] = set()
+
+    for subpkg in _SCIPY_SUBPACKAGES:
+        qualname = f"scipy.{subpkg}"
+        try:
+            module = importlib.import_module(qualname)
+        except ImportError:
+            continue
+
+        exported = getattr(module, "__all__", None)
+        if exported is not None:
+            all_names.update(f"{qualname}.{name}" for name in exported)
+
+    return all_names
+
+
 def main() -> int:
-    print(*sorted(collect_tested_scipy_names()), sep="\n")
+    public = names_public()
+    tested = names_tested() & public
+
+    for name in sorted(public):
+        x = "x" if name in tested else " "
+        print(f"- [{x}] `{name}`")
+
+    print()
+    print(f"Coverage: {len(tested)} / {len(public)} ({len(tested) / len(public):.2%})")
+
     return 0
 
 
