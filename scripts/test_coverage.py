@@ -11,7 +11,6 @@ from typing import Final
 _SCIPY_PREFIX: Final = "scipy."
 _IGNORED_SUFFIXES: Final = (".__class__",)
 
-# scipy subpackages with public API (including nested packages)
 _SCIPY_SUBPACKAGES: Final = (
     "cluster",
     "cluster.hierarchy",
@@ -183,12 +182,39 @@ def main() -> int:
     public = names_public()
     tested = names_tested() & public
 
+    package = "scipy.none"
+    package_public: int = 0
+    package_tested: int = 0
+
+    def _print_package_coverage() -> None:
+        if package_public:
+            print()
+            print(
+                f"Coverage `{package}`: "
+                f"{package_tested} / {package_public} "
+                f"({package_tested / package_public:.2%})"
+            )
+
     for name in sorted(public):
+        if not name.startswith(package):
+            _print_package_coverage()
+            package = ".".join(name.split(".", 2)[:2])
+            package_public = package_tested = 0
+            print(f"\n## `{package}`\n")
+
+        package_public += 1
+        package_tested += name in tested
         x = "x" if name in tested else " "
         print(f"- [{x}] `{name}`")
 
+    _print_package_coverage()
+
     print()
-    print(f"Coverage: {len(tested)} / {len(public)} ({len(tested) / len(public):.2%})")
+    print(
+        f"Total coverage: "
+        f"{len(tested)} / {len(public)} "
+        f"({len(tested) / len(public):.2%})"
+    )
 
     return 0
 
