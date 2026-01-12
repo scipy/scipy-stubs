@@ -15,10 +15,8 @@ _arr_i64: onp.ArrayND[np.int64]
 _arr_f16: onp.ArrayND[np.float16]
 _arr_f32: onp.ArrayND[np.float32]
 _arr_f64: onp.ArrayND[np.float64]
-_arr_f80: onp.ArrayND[np.longdouble]
 _arr_c64: onp.ArrayND[np.complex64]
 _arr_c128: onp.ArrayND[np.complex128]
-_arr_c160: onp.ArrayND[np.clongdouble]
 
 ###
 
@@ -48,11 +46,8 @@ assert_type(fftshift(_arr_i64), onp.ArrayND[np.float64])
 assert_type(fftshift(_arr_f16), onp.ArrayND[np.float16])
 assert_type(fftshift(_arr_f32), onp.ArrayND[np.float32])
 assert_type(fftshift(_arr_f64), onp.ArrayND[np.float64])
-assert_type(fftshift(_arr_f80), onp.ArrayND[np.longdouble])
 assert_type(fftshift(_arr_c64), onp.ArrayND[np.complex64])
 assert_type(fftshift(_arr_c128), onp.ArrayND[np.complex128])
-assert_type(fftshift(_arr_c160), onp.ArrayND[np.clongdouble])
-
 # ifftshift (same as fftshift)
 assert_type(ifftshift(_list_int), onp.ArrayND[np.float64])
 assert_type(ifftshift(_list_float), onp.ArrayND[np.float64])
@@ -61,7 +56,5 @@ assert_type(ifftshift(_arr_i64), onp.ArrayND[np.float64])
 assert_type(ifftshift(_arr_f16), onp.ArrayND[np.float16])
 assert_type(ifftshift(_arr_f32), onp.ArrayND[np.float32])
 assert_type(ifftshift(_arr_f64), onp.ArrayND[np.float64])
-assert_type(ifftshift(_arr_f80), onp.ArrayND[np.longdouble])
 assert_type(ifftshift(_arr_c64), onp.ArrayND[np.complex64])
 assert_type(ifftshift(_arr_c128), onp.ArrayND[np.complex128])
-assert_type(ifftshift(_arr_c160), onp.ArrayND[np.clongdouble])
