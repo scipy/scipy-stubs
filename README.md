@@ -344,6 +344,7 @@ PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 scverse ([scanpy](https://github.com/scverse/scanpy)) |
 [Skore](https://github.com/probabl-ai/skore) |
 Theis Lab ([anndata2ri](https://github.com/theislab/anndata2ri)) |
+[TorchFX](https://github.com/matteospanio/torchfx) |
 [TQEC](https://github.com/tqec/tqec) |
 [traccuracy](https://github.com/live-image-tracking-tools/traccuracy) |
 [Ultralytics](https://github.com/ultralytics/ultralytics) |
