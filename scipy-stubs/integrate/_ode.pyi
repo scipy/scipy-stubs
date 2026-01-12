@@ -40,9 +40,6 @@ class _IntegratorParams(TypedDict, total=False):
 
 ###
 
-class IntegratorConcurrencyError(RuntimeError):
-    def __init__(self, /, name: str) -> None: ...
-
 class ode(Generic[_Inexact64T_co, *_Ts]):
     f: Callable[[float, onp.Array1D[_Inexact64T_co], *_Ts], complex | onp.ToComplex1D]
     jac: Callable[[float, onp.Array1D[_Inexact64T_co], *_Ts], complex | onp.ToComplex2D] | None
@@ -104,6 +101,11 @@ class complex_ode(ode[np.complex128, *_Ts], Generic[*_Ts]):
     @override
     def set_initial_value(self, /, y: complex | onp.ToComplex1D, t: float = 0.0) -> Self: ...
 
+# undocumented
+class IntegratorConcurrencyError(RuntimeError):
+    def __init__(self, /, name: str) -> None: ...
+
+# undocumented
 class IntegratorBase(Generic[_Inexact64T_co]):
     runner: ClassVar[Callable[..., tuple[Any, ...]] | None]  # fortran function or unavailable
     supports_run_relax: ClassVar[Literal[0, 1] | None] = None
@@ -157,6 +159,7 @@ class IntegratorBase(Generic[_Inexact64T_co]):
         jac_params: tuple[object, ...],
     ) -> tuple[_Inexact64T_co, float]: ...
 
+# undocumented
 class vode(IntegratorBase[_Inexact64T_co], Generic[_Inexact64T_co]):
     messages: ClassVar[dict[int, str]] = ...
 
@@ -193,6 +196,7 @@ class vode(IntegratorBase[_Inexact64T_co], Generic[_Inexact64T_co]):
         first_step: float = 0.0,
     ) -> None: ...
 
+# undocumented
 class zvode(vode[np.complex128]):
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
 
@@ -201,6 +205,7 @@ class zvode(vode[np.complex128]):
     call_args: list[float | onp.ArrayND[np.complex128] | onp.ArrayND[np.float64] | onp.ArrayND[np.int32]]  # type: ignore[assignment] # pyright: ignore[reportIncompatibleVariableOverride]
     initialized: bool
 
+# undocumented
 class dopri5(IntegratorBase[np.float64]):
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
 
@@ -244,6 +249,7 @@ class dopri5(IntegratorBase[np.float64]):
     ) -> None: ...
     def _solout(self, /, x: float, y: onp.Array1D[np.float64]) -> Literal[0, -1, 1]: ...
 
+# undocumented
 class dop853(dopri5):
     name: ClassVar[str] = "dop853"
 
@@ -263,6 +269,7 @@ class dop853(dopri5):
         verbosity: int = -1,
     ) -> None: ...
 
+# undocumented
 class lsoda(IntegratorBase[np.float64]):
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
 
@@ -306,6 +313,7 @@ class lsoda(IntegratorBase[np.float64]):
         method: None = None,  # ignored
     ) -> None: ...
 
+# undocumented
 @overload
 def find_integrator(name: Literal["vode"]) -> type[vode]: ...
 @overload
