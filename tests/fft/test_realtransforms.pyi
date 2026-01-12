@@ -37,7 +37,7 @@ from .test_basic import (
     int_1d,
     int_2d,
 )
-from scipy.fft import dct, dctn, dstn, idct, idctn, idstn
+from scipy.fft import dct, dctn, dst, dstn, idct, idctn, idst, idstn
 
 ###
 # NOTE: the signatures are practically equivalent
@@ -86,6 +86,51 @@ _assert_2d_f80(idct(f80_2d))
 _assert_2d_c64(idct(c64_2d))
 _assert_2d_c128(idct(c128_2d))
 _assert_2d_c160(idct(c160_2d))
+
+# dst
+_assert_1d_f64(dst(int_1d))
+_assert_1d_f64(dst(float_1d))
+_assert_1d_f64(dst(float_1d))
+_assert_1d_c128(dst(complex_1d))
+_assert_1d_f64(dst(i16_1d))
+_assert_1d_f32(dst(f32_1d))
+_assert_1d_f64(dst(f64_1d))
+_assert_1d_f80(dst(f80_1d))
+_assert_1d_c64(dst(c64_1d))
+_assert_1d_c128(dst(c128_1d))
+_assert_1d_c160(dst(c160_1d))
+_assert_2d_f64(dst(int_2d))
+_assert_2d_f64(dst(float_2d))
+_assert_2d_f64(dst(complex_2d))
+_assert_2d_f64(dst(i16_2d))
+_assert_2d_f32(dst(f32_2d))
+_assert_2d_f64(dst(f64_2d))
+_assert_2d_f80(dst(f80_2d))
+_assert_2d_c64(dst(c64_2d))
+_assert_2d_c128(dst(c128_2d))
+_assert_2d_c160(dst(c160_2d))
+# idst
+_assert_1d_f64(idst(int_1d))
+_assert_1d_f64(idst(float_1d))
+_assert_1d_f64(idst(float_1d))
+_assert_1d_c128(idst(complex_1d))
+_assert_1d_f64(idst(i16_1d))
+_assert_1d_f32(idst(f32_1d))
+_assert_1d_f64(idst(f64_1d))
+_assert_1d_f80(idst(f80_1d))
+_assert_1d_c64(idst(c64_1d))
+_assert_1d_c128(idst(c128_1d))
+_assert_1d_c160(idst(c160_1d))
+_assert_2d_f64(idst(int_2d))
+_assert_2d_f64(idst(float_2d))
+_assert_2d_f64(idst(complex_2d))
+_assert_2d_f64(idst(i16_2d))
+_assert_2d_f32(idst(f32_2d))
+_assert_2d_f64(idst(f64_2d))
+_assert_2d_f80(idst(f80_2d))
+_assert_2d_c64(idst(c64_2d))
+_assert_2d_c128(idst(c128_2d))
+_assert_2d_c160(idst(c160_2d))
 
 # dctn
 _assert_1d_f64(dctn(int_1d))
