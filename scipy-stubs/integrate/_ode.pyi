@@ -31,7 +31,7 @@ class _IntegratorParams(TypedDict, total=False):
     max_hnil: int
     max_order_ns: int
     max_order_s: int
-    method: Literal["adams", "bds"] | None
+    method: Literal["adams", "bdf"] | None
     safety: float
     ifactor: float
     dfactor: float
@@ -69,21 +69,21 @@ class ode(Generic[_Inexact64T_co, *_Ts]):
     #
     @overload
     def set_initial_value(
-        self: ode[np.float64, *_Ts], /, y: float | onp.ToFloat1D, t: float = 0.0
+        self: ode[npc.floating, *_Ts], /, y: float | onp.ToFloat1D, t: float = 0.0
     ) -> ode[_Inexact64T_co, *_Ts]: ...
     @overload
     def set_initial_value(
-        self: ode[np.complex128, *_Ts], /, y: complex | onp.ToComplex1D, t: float = 0.0
+        self: ode[npc.complexfloating, *_Ts], /, y: complex | onp.ToComplex1D, t: float = 0.0
     ) -> ode[_Inexact64T_co, *_Ts]: ...
 
     #
     @overload
     def set_integrator(
-        self: ode[np.float64, *_Ts], /, name: _IntegratorReal, **integrator_params: Unpack[_IntegratorParams]
+        self: ode[npc.floating, *_Ts], /, name: _IntegratorReal, **integrator_params: Unpack[_IntegratorParams]
     ) -> ode[_Inexact64T_co, *_Ts]: ...
     @overload
     def set_integrator(
-        self: ode[np.complex128, *_Ts], /, name: _IntegratorComplex, **integrator_params: Unpack[_IntegratorParams]
+        self: ode[npc.complexfloating, *_Ts], /, name: _IntegratorComplex, **integrator_params: Unpack[_IntegratorParams]
     ) -> ode[_Inexact64T_co, *_Ts]: ...
 
     #
