@@ -14,7 +14,7 @@ __all__ = ["cumulative_simpson", "cumulative_trapezoid", "fixed_quad", "newton_c
 _T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _Inexact80T = TypeVar("_Inexact80T", bound=npc.inexact80)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
 
 _FixedQuadFunc: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], _T]
 
@@ -188,11 +188,7 @@ def cumulative_trapezoid(
 ) -> onp.Array2D[np.float64]: ...
 @overload  # +float, shape unknown
 def cumulative_trapezoid(
-    y: onp.ToArrayND[float, npc.integer | np.bool_],
-    x: onp.ToFloatND | None = None,
-    dx: float = 1.0,
-    axis: int = -1,
-    initial: Literal[0] | None = None,
+    y: onp.SequenceND[float], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: Literal[0] | None = None
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # T:inexact, shape known
 def cumulative_trapezoid(
@@ -224,7 +220,11 @@ def cumulative_trapezoid(
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # fallback
 def cumulative_trapezoid(
-    y: onp.ToComplexND, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: Literal[0] | None = None
+    y: onp.ToJustFloatND | onp.ToJustComplexND,  # `ToComplexND` would overlap with the first overload
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: Literal[0] | None = None,
 ) -> onp.Array: ...
 
 # keep in sync with `cumulative_trapezoid`
@@ -257,7 +257,7 @@ def cumulative_simpson(
 ) -> onp.Array2D[np.float64]: ...
 @overload  # +float, shape unknown
 def cumulative_simpson(
-    y: onp.ToArrayND[float, npc.integer | np.bool_],
+    y: onp.SequenceND[float],
     *,
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
@@ -302,7 +302,7 @@ def cumulative_simpson(
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # fallback
 def cumulative_simpson(
-    y: onp.ToComplexND,
+    y: onp.ToJustFloatND | onp.ToJustComplexND,  # `ToComplexND` would overlap with the first overload
     *,
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
