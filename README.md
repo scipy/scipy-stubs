@@ -329,6 +329,7 @@ Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)) |
 [MolPipeline](https://github.com/basf/MolPipeline) |
 [MouseTracks](https://github.com/huntfx/MouseTracks) |
 Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis)) |
+[MTEB](https://github.com/embeddings-benchmark/mteb) |
 [mypy_primer](https://github.com/hauntsaninja/mypy_primer) |
 [Namer](https://github.com/ThePornDatabase/namer) |
 [NeuroGym](https://github.com/neurogym/neurogym) |
