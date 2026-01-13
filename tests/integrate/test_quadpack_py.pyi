@@ -3,7 +3,7 @@ from typing import Literal, assert_type
 
 import numpy as np
 
-from scipy.integrate import dblquad, quad
+from scipy.integrate import dblquad, quad, tplquad
 from scipy.integrate._quadpack_py import _QuadExplain
 from scipy.integrate._typing import QuadInfoDict
 
@@ -53,7 +53,16 @@ assert_type(quad(z0_float_complex, 0, 1, complex_func=TRUE), tuple[complex, comp
 # dblquad
 
 def _f2_0(x: float, y: float) -> float: ...
-def _f2_n(x: float, y: float, arg1: int) -> float: ...
+def _f2_1(x: float, y: float, arg1: int) -> float: ...
 
 assert_type(dblquad(_f2_0, 0, 1, 0, 1), tuple[float, float])
-assert_type(dblquad(_f2_n, 0, 1, 0, 1, args=(1,)), tuple[float, float])
+assert_type(dblquad(_f2_1, 0, 1, 0, 1, args=(1,)), tuple[float, float])
+
+###
+# tplquad
+
+def _f3_0(x: float, y: float, z: float) -> float: ...
+def _f3_1(x: float, y: float, z: float, arg1: int) -> float: ...
+
+assert_type(tplquad(_f3_0, 0, 1, 0, 1, 0, 1), tuple[float, float])
+assert_type(tplquad(_f3_1, 0, 1, 0, 1, 0, 1, args=(1,)), tuple[float, float])
