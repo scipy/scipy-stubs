@@ -23,8 +23,8 @@ _JustAnyShape: TypeAlias = tuple[Never, Never, Never]
 ###
 
 class QMCQuadResult(NamedTuple):
-    integral: float
-    standard_error: float
+    integral: np.float64
+    standard_error: np.float64
 
 # sample-based integration
 
@@ -216,12 +216,12 @@ def fixed_quad(
 
 #
 def qmc_quad(
-    func: Callable[[onp.Array2D[np.float64]], onp.ArrayND[npc.floating]],
-    a: onp.ToFloat1D,
-    b: onp.ToFloat1D,
+    func: Callable[[onp.ArrayND[np.float64]], onp.ArrayND[npc.number]],
+    a: float | onp.ToFloat1D,
+    b: float | onp.ToFloat1D,
     *,
     n_estimates: int = 8,
-    n_points: int = 1024,
+    n_points: int = 1_024,
     qrng: QMCEngine | None = None,
     log: bool = False,
 ) -> QMCQuadResult: ...
