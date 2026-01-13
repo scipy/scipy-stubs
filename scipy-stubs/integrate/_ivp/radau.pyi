@@ -32,7 +32,7 @@ NEWTON_MAXITER: Final = 6
 MIN_FACTOR: Final = 0.2
 MAX_FACTOR: Final = 10
 
-class Radau(OdeSolver):
+class Radau(OdeSolver[np.float64]):
     max_step: float
     h_abs: float
     h_abs_old: float | None

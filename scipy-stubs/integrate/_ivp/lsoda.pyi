@@ -6,7 +6,7 @@ import optype.numpy as onp
 
 from .base import DenseOutput, OdeSolver
 
-class LSODA(OdeSolver):
+class LSODA(OdeSolver[np.float64]):
     def __init__(
         self,
         /,
