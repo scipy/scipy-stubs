@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.integrate import trapezoid
+from scipy.integrate import simpson, trapezoid
 
 ###
 
@@ -63,3 +63,32 @@ assert_type(trapezoid(c64_nd), Any)
 assert_type(trapezoid(c128_1d), np.complex128)
 assert_type(trapezoid(c128_2d), onp.Array1D[np.complex128])
 assert_type(trapezoid(c128_nd), Any)
+
+###
+# simpson
+
+assert_type(simpson(float_1d), np.float64)
+assert_type(simpson(float_2d), onp.Array1D[np.float64])
+
+assert_type(simpson(complex_1d), np.complex128)
+assert_type(simpson(complex_2d), onp.Array1D[np.complex128])
+
+assert_type(simpson(i64_1d), np.float64)
+assert_type(simpson(i64_2d), onp.Array1D[np.float64])
+assert_type(simpson(i64_nd), Any)
+
+assert_type(simpson(f32_1d), np.float64)  # weird but true
+assert_type(simpson(f32_2d), onp.Array1D[np.float32])
+assert_type(simpson(f32_nd), Any)
+
+assert_type(simpson(f64_1d), np.float64)
+assert_type(simpson(f64_2d), onp.Array1D[np.float64])
+assert_type(simpson(f64_nd), Any)
+
+assert_type(simpson(c64_1d), np.complex128)  # weird but true
+assert_type(simpson(c64_2d), onp.Array1D[np.complex64])
+assert_type(simpson(c64_nd), Any)
+
+assert_type(simpson(c128_1d), np.complex128)
+assert_type(simpson(c128_2d), onp.Array1D[np.complex128])
+assert_type(simpson(c128_nd), Any)
