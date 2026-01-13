@@ -3,9 +3,10 @@
 from typing import Any, assert_type
 
 import numpy as np
+import numpy.typing as npt
 import optype.numpy as onp
 
-from scipy.integrate import newton_cotes, qmc_quad, romb, simpson, trapezoid
+from scipy.integrate import fixed_quad, newton_cotes, qmc_quad, romb, simpson, trapezoid
 
 ###
 
@@ -132,7 +133,26 @@ assert_type(romb(c128_nd), Any)
 
 ###
 # fixed_quad
-# TODO(@jorenham): tests
+
+def _f_f16(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float16]: ...
+def _f_f32(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float32]: ...
+def _f_f64(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]: ...
+def _f_f80(x: npt.NDArray[np.float64]) -> npt.NDArray[np.longdouble]: ...
+def _f_c64(x: npt.NDArray[np.float64]) -> npt.NDArray[np.complex64]: ...
+def _f_c128(x: npt.NDArray[np.float64]) -> npt.NDArray[np.complex128]: ...
+def _f_c160(x: npt.NDArray[np.float64]) -> npt.NDArray[np.clongdouble]: ...
+def _f_m64(x: npt.NDArray[np.float64]) -> npt.NDArray[np.timedelta64]: ...
+def _f_obj(x: npt.NDArray[np.float64]) -> npt.NDArray[np.object_]: ...
+
+assert_type(fixed_quad(_f_f16, 0.0, 1.0), tuple[np.float64, None])
+assert_type(fixed_quad(_f_f32, 0.0, 1.0), tuple[np.float64, None])
+assert_type(fixed_quad(_f_f64, 0.0, 1.0), tuple[np.float64, None])
+assert_type(fixed_quad(_f_f80, 0.0, 1.0), tuple[np.longdouble, None])
+assert_type(fixed_quad(_f_c64, 0.0, 1.0), tuple[np.complex128, None])
+assert_type(fixed_quad(_f_c128, 0.0, 1.0), tuple[np.complex128, None])
+assert_type(fixed_quad(_f_c160, 0.0, 1.0), tuple[np.clongdouble, None])
+assert_type(fixed_quad(_f_m64, 0.0, 1.0), tuple[np.timedelta64, None])
+assert_type(fixed_quad(_f_obj, 0.0, 1.0), tuple[Any, None])
 
 ###
 # qmc_quad
