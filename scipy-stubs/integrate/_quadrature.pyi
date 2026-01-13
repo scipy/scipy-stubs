@@ -1,4 +1,4 @@
-from collections.abc import Callable, Sequence
+from collections.abc import Callable
 from typing import Any, Concatenate, Literal, NamedTuple, Never, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -11,11 +11,11 @@ from scipy.stats.qmc import QMCEngine
 
 __all__ = ["cumulative_simpson", "cumulative_trapezoid", "fixed_quad", "newton_cotes", "qmc_quad", "romb", "simpson", "trapezoid"]
 
-_NDT_f = TypeVar("_NDT_f", bound=_QuadFuncOut)
-_QuadFuncOut: TypeAlias = onp.ArrayND[npc.floating] | Sequence[float]
-
+_T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _Inexact80T = TypeVar("_Inexact80T", bound=npc.inexact80)
+
+_FixedQuadFunc: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], _T]
 
 # workaround for mypy & pyright's failure to conform to the overload typing specification
 _JustAnyShape: TypeAlias = tuple[Never, Never, Never]
@@ -201,18 +201,30 @@ def cumulative_simpson(
 # function-based
 
 #
-@overload
+@overload  # (1d f64) -> +f64
 def fixed_quad(
-    func: Callable[[onp.Array1D[np.float64]], _NDT_f], a: onp.ToFloat, b: onp.ToFloat, args: tuple[()] = (), n: op.CanIndex = 5
-) -> _NDT_f: ...
-@overload
+    func: _FixedQuadFunc[onp.ToFloat64_ND], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[np.float64, None]: ...
+@overload  # (1d f64) -> ~c64 | ~c128
 def fixed_quad(
-    func: Callable[Concatenate[onp.Array1D[np.float64], ...], _NDT_f],
-    a: onp.ToFloat,
-    b: onp.ToFloat,
-    args: tuple[object, ...],
-    n: op.CanIndex = 5,
-) -> _NDT_f: ...
+    func: _FixedQuadFunc[onp.ToArray1D[op.JustComplex, np.complex64 | np.complex128]],
+    a: float,
+    b: float,
+    args: tuple[object, ...] = (),
+    n: int = 5,
+) -> tuple[np.complex128, None]: ...
+@overload  # (1d f64) -> ~f80 | ~c160
+def fixed_quad(
+    func: _FixedQuadFunc[onp.ArrayND[_Inexact80T]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[_Inexact80T, None]: ...
+@overload  # (1d f64) -> ~m64
+def fixed_quad(
+    func: _FixedQuadFunc[onp.ArrayND[np.timedelta64]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[np.timedelta64, None]: ...
+@overload  # (1d f64) -> ~object_
+def fixed_quad(
+    func: _FixedQuadFunc[onp.ArrayND[np.object_]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[Any, None]: ...
 
 #
 def qmc_quad(
