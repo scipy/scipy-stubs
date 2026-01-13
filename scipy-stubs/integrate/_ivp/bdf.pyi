@@ -58,7 +58,7 @@ class BDF(OdeSolver[_InexactT], Generic[_InexactT]):
 
     @overload
     def __init__(
-        self: OdeSolver[np.float64],
+        self: BDF[np.float64],
         /,
         fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND],
         t0: float,
@@ -75,7 +75,7 @@ class BDF(OdeSolver[_InexactT], Generic[_InexactT]):
     ) -> None: ...
     @overload
     def __init__(
-        self: OdeSolver[np.complex128],
+        self: BDF[np.complex128],
         /,
         fun: Callable[[float, onp.ArrayND[np.complex128]], onp.ToComplexND],
         t0: float,
