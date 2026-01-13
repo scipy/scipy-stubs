@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.integrate import simpson, trapezoid
+from scipy.integrate import romb, simpson, trapezoid
 
 ###
 
@@ -92,3 +92,32 @@ assert_type(simpson(c64_nd), Any)
 assert_type(simpson(c128_1d), np.complex128)
 assert_type(simpson(c128_2d), onp.Array1D[np.complex128])
 assert_type(simpson(c128_nd), Any)
+
+###
+# romb
+
+assert_type(romb(float_1d), np.float64)
+assert_type(romb(float_2d), onp.Array1D[np.float64])
+
+assert_type(romb(complex_1d), np.complex128)
+assert_type(romb(complex_2d), onp.Array1D[np.complex128])
+
+assert_type(romb(i64_1d), np.float64)
+assert_type(romb(i64_2d), onp.Array1D[np.float64])
+assert_type(romb(i64_nd), Any)
+
+assert_type(romb(f32_1d), np.float64)
+assert_type(romb(f32_2d), onp.Array1D[np.float64])
+assert_type(romb(f32_nd), Any)
+
+assert_type(romb(f64_1d), np.float64)
+assert_type(romb(f64_2d), onp.Array1D[np.float64])
+assert_type(romb(f64_nd), Any)
+
+assert_type(romb(c64_1d), np.complex128)
+assert_type(romb(c64_2d), onp.Array1D[np.complex128])
+assert_type(romb(c64_nd), Any)
+
+assert_type(romb(c128_1d), np.complex128)
+assert_type(romb(c128_2d), onp.Array1D[np.complex128])
+assert_type(romb(c128_nd), Any)

@@ -15,7 +15,7 @@ _NDT_f = TypeVar("_NDT_f", bound=_QuadFuncOut)
 _QuadFuncOut: TypeAlias = onp.ArrayND[npc.floating] | Sequence[float]
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_Inexact64T = TypeVar("_Inexact64T", bound=npc.inexact64 | npc.inexact80)
+_Inexact80T = TypeVar("_Inexact80T", bound=npc.inexact80)
 
 # workaround for mypy & pyright's failure to conform to the overload typing specification
 _JustAnyShape: TypeAlias = tuple[Never, Never, Never]
@@ -92,7 +92,7 @@ def simpson(
     axis: int = -1,
 ) -> np.complex128: ...
 @overload  # 1d T:inexact
-def simpson(y: onp.Array1D[_Inexact64T], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1) -> _Inexact64T: ...
+def simpson(y: onp.Array1D[_Inexact80T], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1) -> _Inexact80T: ...
 @overload  # 2d T:inexact
 def simpson(
     y: onp.Array2D[_InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
@@ -126,15 +126,37 @@ def simpson(
     y: onp.ToComplexND, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.complex128 | Any] | Any: ...
 
-# TODO(@jorenham): improve like trapezoid
-@overload
+# NOTE: like `simpson`, but this will also upcast scalars below 64-bits precision in case of array output
+@overload  # ?d +complex  (mypy & pyright workaround)
+def romb(y: onp.Array[_JustAnyShape, npc.number | np.bool_], dx: float = 1.0, axis: int = -1, show: bool = False) -> Any: ...
+@overload  # 1d +f64
+def romb(y: onp.ToFloat64Strict1D, dx: float = 1.0, axis: int = -1) -> np.float64: ...
+@overload  # 1d ~complex
 def romb(
-    y: onp.ToFloatND, dx: onp.ToFloat = 1.0, axis: op.CanIndex = -1, show: bool = False
-) -> npc.floating | onp.ArrayND[npc.floating]: ...
-@overload
+    y: onp.ToJustComplex128Strict1D | onp.ToJustComplex64Strict1D, dx: float = 1.0, axis: int = -1, show: bool = False
+) -> np.complex128: ...
+@overload  # 1d T:inexact
+def romb(y: onp.Array1D[_Inexact80T], dx: float = 1.0, axis: int = -1, show: bool = False) -> _Inexact80T: ...
+@overload  # 2d +int
+def romb(y: onp.ToFloat64Strict2D, dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~complex
 def romb(
-    y: onp.ToComplexND, dx: onp.ToFloat = 1.0, axis: op.CanIndex = -1, show: bool = False
-) -> npc.inexact | onp.ArrayND[npc.inexact]: ...
+    y: onp.ToJustComplex128Strict2D | onp.ToJustComplex64Strict2D, dx: float = 1.0, axis: int = -1, show: bool = False
+) -> onp.Array1D[np.complex128]: ...
+@overload  # 2d T:inexact
+def romb(y: onp.Array2D[_Inexact80T], dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.Array1D[_Inexact80T]: ...
+@overload  # Nd +int
+def romb(y: onp.ToFloat64_ND, dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.ArrayND[np.float64] | Any: ...
+@overload  # Nd ~complex
+def romb(
+    y: onp.ToJustComplex128_ND | onp.ToJustComplex64_ND, dx: float = 1.0, axis: int = -1, show: bool = False
+) -> onp.ArrayND[np.complex128] | Any: ...
+@overload  # Nd T:inexact
+def romb(y: onp.ArrayND[_Inexact80T], dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.ArrayND[_Inexact80T] | Any: ...
+@overload  # +float (fallback)
+def romb(y: onp.ToFloatND, dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.ArrayND[np.float64 | Any] | Any: ...
+@overload  # +complex (fallback)
+def romb(y: onp.ToComplexND, dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.ArrayND[np.complex128 | Any] | Any: ...
 
 # sample-based cumulative integration
 
@@ -177,6 +199,8 @@ def cumulative_simpson(
 ) -> onp.ArrayND[npc.inexact]: ...
 
 # function-based
+
+#
 @overload
 def fixed_quad(
     func: Callable[[onp.Array1D[np.float64]], _NDT_f], a: onp.ToFloat, b: onp.ToFloat, args: tuple[()] = (), n: op.CanIndex = 5
