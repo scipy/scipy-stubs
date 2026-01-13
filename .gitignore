@@ -15,3 +15,7 @@ dist/
 # Environments
 .env
 .venv/
+
+# Script output
+.coverage.md
+coverage.md
