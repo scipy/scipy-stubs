@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.integrate import newton_cotes, romb, simpson, trapezoid
+from scipy.integrate import newton_cotes, qmc_quad, romb, simpson, trapezoid
 
 ###
 
@@ -121,6 +121,26 @@ assert_type(romb(c64_nd), Any)
 assert_type(romb(c128_1d), np.complex128)
 assert_type(romb(c128_2d), onp.Array1D[np.complex128])
 assert_type(romb(c128_nd), Any)
+
+###
+# cumulative_trapezoid
+# TODO(@jorenham): tests
+
+###
+# cumulative_simpson
+# TODO(@jorenham): tests
+
+###
+# fixed_quad
+# TODO(@jorenham): tests
+
+###
+# qmc_quad
+
+_r = qmc_quad(lambda x: x, 0, 1)
+_r = qmc_quad(lambda x: x, [0, -1], [1, 1])
+assert_type(_r.integral, np.float64)
+assert_type(_r.standard_error, np.float64)
 
 ###
 # newton-cotes
