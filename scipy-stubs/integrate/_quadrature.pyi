@@ -81,8 +81,6 @@ def trapezoid(
 def simpson(
     y: onp.Array[_JustAnyShape, npc.number | np.bool_], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> Any: ...
-@overload  # 1d T:inexact
-def simpson(y: onp.Array1D[_Inexact64T], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1) -> _Inexact64T: ...
 @overload  # 1d +f64
 def simpson(y: onp.ToFloat64Strict1D, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1) -> np.float64: ...
 @overload  # 1d ~complex
@@ -93,6 +91,8 @@ def simpson(
     dx: float = 1.0,
     axis: int = -1,
 ) -> np.complex128: ...
+@overload  # 1d T:inexact
+def simpson(y: onp.Array1D[_Inexact64T], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1) -> _Inexact64T: ...
 @overload  # 2d T:inexact
 def simpson(
     y: onp.Array2D[_InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
