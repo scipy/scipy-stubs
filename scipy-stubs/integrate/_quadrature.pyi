@@ -161,7 +161,7 @@ def romb(y: onp.ToComplexND, dx: float = 1.0, axis: int = -1, show: bool = False
 
 # sample-based cumulative integration
 
-#
+# keep in sync with `cumulative_simpson`
 @overload  # +int, shape known
 def cumulative_trapezoid(
     y: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
@@ -227,25 +227,88 @@ def cumulative_trapezoid(
     y: onp.ToComplexND, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: Literal[0] | None = None
 ) -> onp.Array: ...
 
-# TODO(@jorenham): improve
-@overload
+# keep in sync with `cumulative_trapezoid`
+@overload  # +int, shape known
 def cumulative_simpson(
-    y: onp.ToFloatND,
+    y: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
     *,
     x: onp.ToFloatND | None = None,
-    dx: onp.ToFloat = 1.0,
-    axis: op.CanIndex = -1,
-    initial: onp.ToFloatND | None = None,
-) -> onp.ArrayND[npc.floating]: ...
-@overload
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # +float, shape 1d
+def cumulative_simpson(
+    y: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    *,
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.Array1D[np.float64]: ...
+@overload  # +float, shape 2d
+def cumulative_simpson(
+    y: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    *,
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.Array2D[np.float64]: ...
+@overload  # +float, shape unknown
+def cumulative_simpson(
+    y: onp.ToArrayND[float, npc.integer | np.bool_],
+    *,
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # T:inexact, shape known
+def cumulative_simpson(
+    y: onp.ArrayND[_InexactT, _ShapeT],
+    *,
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # ~complex, shape 1d
+def cumulative_simpson(
+    y: onp.ToJustComplex128Strict1D,
+    *,
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # ~complex, shape 2d
+def cumulative_simpson(
+    y: onp.ToJustComplex128Strict2D,
+    *,
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.Array2D[np.complex128]: ...
+@overload  # ~complex, shape unknown
+def cumulative_simpson(
+    y: onp.ToJustComplex128_ND,
+    *,
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # fallback
 def cumulative_simpson(
     y: onp.ToComplexND,
     *,
     x: onp.ToFloatND | None = None,
-    dx: onp.ToFloat = 1.0,
-    axis: op.CanIndex = -1,
-    initial: onp.ToComplexND | None = None,
-) -> onp.ArrayND[npc.inexact]: ...
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.Array: ...
 
 # function-based
 
