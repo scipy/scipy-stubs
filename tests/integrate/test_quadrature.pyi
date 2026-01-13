@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.integrate import romb, simpson, trapezoid
+from scipy.integrate import newton_cotes, romb, simpson, trapezoid
 
 ###
 
@@ -121,3 +121,12 @@ assert_type(romb(c64_nd), Any)
 assert_type(romb(c128_1d), np.complex128)
 assert_type(romb(c128_2d), onp.Array1D[np.complex128])
 assert_type(romb(c128_nd), Any)
+
+###
+# newton-cotes
+
+assert_type(newton_cotes(5), tuple[onp.Array1D[np.float64], float])
+assert_type(newton_cotes(rn=5), tuple[onp.Array1D[np.float64], float])
+assert_type(newton_cotes(5, 1), tuple[onp.Array1D[np.float64], float])
+assert_type(newton_cotes(5, equal=1), tuple[onp.Array1D[np.float64], float])
+assert_type(newton_cotes(rn=5, equal=1), tuple[onp.Array1D[np.float64], float])
