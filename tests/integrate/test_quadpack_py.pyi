@@ -3,11 +3,14 @@ from typing import Literal, assert_type
 
 import numpy as np
 
-from scipy.integrate import quad
+from scipy.integrate import dblquad, quad
 from scipy.integrate._quadpack_py import _QuadExplain
 from scipy.integrate._typing import QuadInfoDict
 
 TRUE: Literal[True] = True
+
+###
+# quad
 
 # ufunc
 assert_type(quad(np.exp, 0, 1), tuple[float, float])
@@ -45,3 +48,12 @@ assert_type(
 # NOTE: this test fails (only) in mypy due to some mypy bug
 z0_float_complex: Callable[[float], complex]
 assert_type(quad(z0_float_complex, 0, 1, complex_func=TRUE), tuple[complex, complex])
+
+###
+# dblquad
+
+def _f2_0(x: float, y: float) -> float: ...
+def _f2_n(x: float, y: float, arg1: int) -> float: ...
+
+assert_type(dblquad(_f2_0, 0, 1, 0, 1), tuple[float, float])
+assert_type(dblquad(_f2_n, 0, 1, 0, 1, args=(1,)), tuple[float, float])
