@@ -1,17 +1,17 @@
 from typing import Any, assert_type
 
 import numpy as np
-import numpy.typing as npt
+import optype.numpy as onp
 
 from scipy.integrate import BDF, DOP853, LSODA, RK23, RK45, DenseOutput, OdeSolution, OdeSolver, Radau
 
 ###
 
-def _f_f64(t: float, y: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]: ...
-def _f_c128(t: float, y: npt.NDArray[np.complex128]) -> npt.NDArray[np.complex128]: ...
+def _f_f64(t: float, y: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
+def _f_c128(t: float, y: onp.ArrayND[np.complex128]) -> onp.ArrayND[np.complex128]: ...
 
-_f64_nd: npt.NDArray[np.float64]
-_c128_nd: npt.NDArray[np.complex128]
+_f64_nd: onp.ArrayND[np.float64]
+_c128_nd: onp.ArrayND[np.complex128]
 
 ###
 # BDF
