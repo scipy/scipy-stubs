@@ -14,6 +14,7 @@ __all__ = ["cumulative_simpson", "cumulative_trapezoid", "fixed_quad", "newton_c
 _T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _Inexact80T = TypeVar("_Inexact80T", bound=npc.inexact80)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 _FixedQuadFunc: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], _T]
 
@@ -160,23 +161,71 @@ def romb(y: onp.ToComplexND, dx: float = 1.0, axis: int = -1, show: bool = False
 
 # sample-based cumulative integration
 
-# TODO(@jorenham): improve
-@overload
+#
+@overload  # +int, shape known
 def cumulative_trapezoid(
-    y: onp.ToFloatND,
+    y: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
     x: onp.ToFloatND | None = None,
-    dx: onp.ToFloat = 1.0,
-    axis: op.CanIndex = -1,
+    dx: float = 1.0,
+    axis: int = -1,
     initial: Literal[0] | None = None,
-) -> onp.ArrayND[npc.floating]: ...
-@overload
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # +float, shape 1d
 def cumulative_trapezoid(
-    y: onp.ToComplexND,
+    y: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
     x: onp.ToFloatND | None = None,
-    dx: onp.ToFloat = 1.0,
-    axis: op.CanIndex = -1,
+    dx: float = 1.0,
+    axis: int = -1,
     initial: Literal[0] | None = None,
-) -> onp.ArrayND[npc.inexact]: ...
+) -> onp.Array1D[np.float64]: ...
+@overload  # +float, shape 2d
+def cumulative_trapezoid(
+    y: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: Literal[0] | None = None,
+) -> onp.Array2D[np.float64]: ...
+@overload  # +float, shape unknown
+def cumulative_trapezoid(
+    y: onp.ToArrayND[float, npc.integer | np.bool_],
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: Literal[0] | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # T:inexact, shape known
+def cumulative_trapezoid(
+    y: onp.ArrayND[_InexactT, _ShapeT],
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: Literal[0] | None = None,
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # ~complex, shape 1d
+def cumulative_trapezoid(
+    y: onp.ToJustComplex128Strict1D,
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: Literal[0] | None = None,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # ~complex, shape 2d
+def cumulative_trapezoid(
+    y: onp.ToJustComplex128Strict2D,
+    x: onp.ToFloatND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: Literal[0] | None = None,
+) -> onp.Array2D[np.complex128]: ...
+@overload  # ~complex, shape unknown
+def cumulative_trapezoid(
+    y: onp.ToJustComplex128_ND, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: Literal[0] | None = None
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # fallback
+def cumulative_trapezoid(
+    y: onp.ToComplexND, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: Literal[0] | None = None
+) -> onp.Array: ...
 
 # TODO(@jorenham): improve
 @overload
