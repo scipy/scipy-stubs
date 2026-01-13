@@ -3,8 +3,8 @@ from typing import Literal, assert_type
 
 import numpy as np
 
-from scipy.integrate import dblquad, quad, tplquad
-from scipy.integrate._quadpack_py import _QuadExplain
+from scipy.integrate import dblquad, nquad, quad, tplquad
+from scipy.integrate._quadpack_py import _QuadExplain, _QuadOutputNC
 from scipy.integrate._typing import QuadInfoDict
 
 TRUE: Literal[True] = True
@@ -66,3 +66,16 @@ def _f3_1(x: float, y: float, z: float, arg1: int) -> float: ...
 
 assert_type(tplquad(_f3_0, 0, 1, 0, 1, 0, 1), tuple[float, float])
 assert_type(tplquad(_f3_1, 0, 1, 0, 1, 0, 1, args=(1,)), tuple[float, float])
+
+###
+# nquad
+
+assert_type(nquad(_f2_0, [(0, 1), (0, 1)]), tuple[float, float])
+assert_type(nquad(_f2_1, [(0, 1), (0, 1)], args=(2,)), tuple[float, float])
+assert_type(nquad(_f3_0, [(0, 1), (0, 1), (0, 1)]), tuple[float, float])
+assert_type(nquad(_f3_1, [(0, 1), (0, 1), (0, 1)], args=(2,)), tuple[float, float])
+
+assert_type(nquad(_f2_0, [(0, 1), (0, 1)], full_output=True), tuple[float, float, _QuadOutputNC])
+assert_type(nquad(_f2_1, [(0, 1), (0, 1)], args=(2,), full_output=True), tuple[float, float, _QuadOutputNC])
+assert_type(nquad(_f3_0, [(0, 1), (0, 1), (0, 1)], full_output=True), tuple[float, float, _QuadOutputNC])
+assert_type(nquad(_f3_1, [(0, 1), (0, 1), (0, 1)], args=(2,), full_output=True), tuple[float, float, _QuadOutputNC])
