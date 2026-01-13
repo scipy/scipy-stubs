@@ -11,7 +11,7 @@ from scipy.stats.qmc import QMCEngine
 
 __all__ = ["cumulative_simpson", "cumulative_trapezoid", "fixed_quad", "newton_cotes", "qmc_quad", "romb", "simpson", "trapezoid"]
 
-_NDT_f = TypeVar("_NDT_f", bound=_QuadFuncOut)
+_QuadFuncOutT = TypeVar("_QuadFuncOutT", bound=_QuadFuncOut)
 _QuadFuncOut: TypeAlias = onp.ArrayND[npc.floating] | Sequence[float]
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
@@ -203,16 +203,16 @@ def cumulative_simpson(
 #
 @overload
 def fixed_quad(
-    func: Callable[[onp.Array1D[np.float64]], _NDT_f], a: onp.ToFloat, b: onp.ToFloat, args: tuple[()] = (), n: op.CanIndex = 5
-) -> _NDT_f: ...
+    func: Callable[[onp.Array1D[np.float64]], _QuadFuncOutT], a: float, b: float, args: tuple[()] = (), n: int = 5
+) -> _QuadFuncOutT: ...
 @overload
 def fixed_quad(
-    func: Callable[Concatenate[onp.Array1D[np.float64], ...], _NDT_f],
-    a: onp.ToFloat,
-    b: onp.ToFloat,
+    func: Callable[Concatenate[onp.Array1D[np.float64], ...], _QuadFuncOutT],
+    a: float,
+    b: float,
     args: tuple[object, ...],
-    n: op.CanIndex = 5,
-) -> _NDT_f: ...
+    n: int = 5,
+) -> _QuadFuncOutT: ...
 
 #
 def qmc_quad(
