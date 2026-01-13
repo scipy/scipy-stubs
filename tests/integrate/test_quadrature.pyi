@@ -7,7 +7,7 @@ import numpy.typing as npt
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.integrate import fixed_quad, newton_cotes, qmc_quad, romb, simpson, trapezoid
+from scipy.integrate import cumulative_trapezoid, fixed_quad, newton_cotes, qmc_quad, romb, simpson, trapezoid
 
 ###
 
@@ -126,7 +126,32 @@ assert_type(romb(c128_nd), Any)
 
 ###
 # cumulative_trapezoid
-# TODO(@jorenham): tests
+
+assert_type(cumulative_trapezoid(float_1d), onp.Array1D[np.float64])
+assert_type(cumulative_trapezoid(float_2d), onp.Array2D[np.float64])
+
+assert_type(cumulative_trapezoid(complex_1d), onp.Array1D[np.complex128])
+assert_type(cumulative_trapezoid(complex_2d), onp.Array2D[np.complex128])
+
+assert_type(cumulative_trapezoid(i64_1d), onp.Array1D[np.float64])
+assert_type(cumulative_trapezoid(i64_2d), onp.Array2D[np.float64])
+assert_type(cumulative_trapezoid(i64_nd), onp.ArrayND[np.float64])
+
+assert_type(cumulative_trapezoid(f32_1d), onp.Array1D[np.float32])
+assert_type(cumulative_trapezoid(f32_2d), onp.Array2D[np.float32])
+assert_type(cumulative_trapezoid(f32_nd), onp.ArrayND[np.float32])
+
+assert_type(cumulative_trapezoid(f64_1d), onp.Array1D[np.float64])
+assert_type(cumulative_trapezoid(f64_2d), onp.Array2D[np.float64])
+assert_type(cumulative_trapezoid(f64_nd), onp.ArrayND[np.float64])
+
+assert_type(cumulative_trapezoid(c64_1d), onp.Array1D[np.complex64])
+assert_type(cumulative_trapezoid(c64_2d), onp.Array2D[np.complex64])
+assert_type(cumulative_trapezoid(c64_nd), onp.ArrayND[np.complex64])
+
+assert_type(cumulative_trapezoid(c128_1d), onp.Array1D[np.complex128])
+assert_type(cumulative_trapezoid(c128_2d), onp.Array2D[np.complex128])
+assert_type(cumulative_trapezoid(c128_nd), onp.ArrayND[np.complex128])
 
 ###
 # cumulative_simpson
