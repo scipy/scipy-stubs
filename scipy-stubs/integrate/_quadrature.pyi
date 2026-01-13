@@ -15,6 +15,7 @@ _NDT_f = TypeVar("_NDT_f", bound=_QuadFuncOut)
 _QuadFuncOut: TypeAlias = onp.ArrayND[npc.floating] | Sequence[float]
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
+_Inexact64T = TypeVar("_Inexact64T", bound=npc.inexact64 | npc.inexact80)
 
 # workaround for mypy & pyright's failure to conform to the overload typing specification
 _JustAnyShape: TypeAlias = tuple[Never, Never, Never]
@@ -75,15 +76,55 @@ def trapezoid(
     y: onp.ToComplexND, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.complex128 | Any] | Any: ...
 
-# TODO(@jorenham): improve like trapezoid
-@overload
+# NOTE: unlike `trapezoid`, this will upcast scalars below 64-bits precision in case of scalar output
+@overload  # ?d +complex  (mypy & pyright workaround)
 def simpson(
-    y: onp.ToFloatND, x: onp.ToFloatND | None = None, *, dx: onp.ToFloat = 1.0, axis: op.CanIndex = -1
-) -> npc.floating | onp.ArrayND[npc.floating]: ...
-@overload
+    y: onp.Array[_JustAnyShape, npc.number | np.bool_], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> Any: ...
+@overload  # 1d +f64
+def simpson(y: onp.ToFloat64Strict1D, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1) -> np.float64: ...
+@overload  # 1d ~complex
 def simpson(
-    y: onp.ToComplexND, x: onp.ToFloatND | None = None, *, dx: onp.ToFloat = 1.0, axis: op.CanIndex = -1
-) -> npc.inexact | onp.ArrayND[npc.inexact]: ...
+    y: onp.ToJustComplex128Strict1D | onp.ToJustComplex64Strict1D,
+    x: onp.ToFloatND | None = None,
+    *,
+    dx: float = 1.0,
+    axis: int = -1,
+) -> np.complex128: ...
+@overload  # 1d T:inexact
+def simpson(y: onp.Array1D[_Inexact64T], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1) -> _Inexact64T: ...
+@overload  # 2d T:inexact
+def simpson(
+    y: onp.Array2D[_InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.Array1D[_InexactT]: ...
+@overload  # 2d +int
+def simpson(
+    y: onp.ToArrayStrict2D[float, npc.integer | np.bool_], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~complex
+def simpson(
+    y: onp.ToJustComplex128Strict2D, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.Array1D[np.complex128]: ...
+@overload  # Nd T:inexact
+def simpson(
+    y: onp.ArrayND[_InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.ArrayND[_InexactT] | Any: ...
+@overload  # Nd +int
+def simpson(
+    y: onp.ToArrayND[float, npc.integer | np.bool_], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload  # Nd ~complex
+def simpson(
+    y: onp.ToJustComplex128_ND, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.ArrayND[np.complex128] | Any: ...
+@overload  # +float (fallback)
+def simpson(
+    y: onp.ToFloatND, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.ArrayND[np.float64 | Any] | Any: ...
+@overload  # +complex (fallback)
+def simpson(
+    y: onp.ToComplexND, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.ArrayND[np.complex128 | Any] | Any: ...
 
 # TODO(@jorenham): improve like trapezoid
 @overload
