@@ -1,0 +1,235 @@
+from scipy.stats import (
+    alpha,
+    anglit,
+    arcsine,
+    argus,
+    beta,
+    betaprime,
+    bradford,
+    burr,
+    burr12,
+    cauchy,
+    chi,
+    chi2,
+    cosine,
+    crystalball,
+    dgamma,
+    dpareto_lognorm,
+    dweibull,
+    erlang,
+    expon,
+    exponnorm,
+    exponpow,
+    exponweib,
+    f,
+    fatiguelife,
+    fisk,
+    foldcauchy,
+    foldnorm,
+    gamma,
+    gausshyper,
+    genexpon,
+    genextreme,
+    gengamma,
+    genhalflogistic,
+    genhyperbolic,
+    geninvgauss,
+    genlogistic,
+    gennorm,
+    genpareto,
+    gibrat,
+    gompertz,
+    gumbel_l,
+    gumbel_r,
+    halfcauchy,
+    halfgennorm,
+    halflogistic,
+    halfnorm,
+    hypsecant,
+    invgamma,
+    invgauss,
+    invweibull,
+    irwinhall,
+    jf_skew_t,
+    johnsonsb,
+    johnsonsu,
+    kappa3,
+    kappa4,
+    ksone,
+    kstwo,
+    kstwobign,
+    landau,
+    laplace,
+    laplace_asymmetric,
+    levy,
+    levy_l,
+    levy_stable,
+    loggamma,
+    logistic,
+    loglaplace,
+    lognorm,
+    loguniform,
+    lomax,
+    maxwell,
+    mielke,
+    moyal,
+    nakagami,
+    ncf,
+    nct,
+    ncx2,
+    norm,
+    norminvgauss,
+    pareto,
+    pearson3,
+    powerlaw,
+    powerlognorm,
+    powernorm,
+    rayleigh,
+    rdist,
+    recipinvgauss,
+    reciprocal,
+    rel_breitwigner,
+    rice,
+    rv_continuous,
+    semicircular,
+    skewcauchy,
+    skewnorm,
+    studentized_range,
+    t,
+    trapezoid,
+    triang,
+    truncexpon,
+    truncnorm,
+    truncpareto,
+    truncweibull_min,
+    tukeylambda,
+    uniform,
+    vonmises,
+    vonmises_line,
+    wald,
+    weibull_max,
+    weibull_min,
+    wrapcauchy,
+)
+
+def _assert_rv_continuous(distn: rv_continuous) -> None: ...
+
+_assert_rv_continuous(alpha)
+_assert_rv_continuous(anglit)
+_assert_rv_continuous(arcsine)
+_assert_rv_continuous(argus)
+_assert_rv_continuous(beta)
+_assert_rv_continuous(betaprime)
+_assert_rv_continuous(bradford)
+_assert_rv_continuous(burr)
+_assert_rv_continuous(burr12)
+_assert_rv_continuous(cauchy)
+_assert_rv_continuous(chi)
+_assert_rv_continuous(chi2)
+_assert_rv_continuous(cosine)
+_assert_rv_continuous(crystalball)
+_assert_rv_continuous(dgamma)
+_assert_rv_continuous(dpareto_lognorm)
+_assert_rv_continuous(dweibull)
+_assert_rv_continuous(erlang)
+_assert_rv_continuous(expon)
+_assert_rv_continuous(exponnorm)
+_assert_rv_continuous(exponpow)
+_assert_rv_continuous(exponweib)
+_assert_rv_continuous(f)
+_assert_rv_continuous(fatiguelife)
+_assert_rv_continuous(fisk)
+_assert_rv_continuous(foldcauchy)
+_assert_rv_continuous(foldnorm)
+_assert_rv_continuous(gamma)
+_assert_rv_continuous(gausshyper)
+_assert_rv_continuous(genexpon)
+_assert_rv_continuous(genextreme)
+_assert_rv_continuous(gengamma)
+_assert_rv_continuous(gengamma)
+_assert_rv_continuous(genhalflogistic)
+_assert_rv_continuous(genhyperbolic)
+_assert_rv_continuous(geninvgauss)
+_assert_rv_continuous(genlogistic)
+_assert_rv_continuous(gennorm)
+_assert_rv_continuous(halfgennorm)
+_assert_rv_continuous(genpareto)
+_assert_rv_continuous(gibrat)
+_assert_rv_continuous(gompertz)
+_assert_rv_continuous(gumbel_l)
+_assert_rv_continuous(gumbel_r)
+_assert_rv_continuous(halfcauchy)
+_assert_rv_continuous(halflogistic)
+_assert_rv_continuous(halfnorm)
+_assert_rv_continuous(hypsecant)
+_assert_rv_continuous(invgamma)
+_assert_rv_continuous(invgauss)
+_assert_rv_continuous(invweibull)
+_assert_rv_continuous(irwinhall)
+_assert_rv_continuous(jf_skew_t)
+_assert_rv_continuous(johnsonsb)
+_assert_rv_continuous(johnsonsu)
+_assert_rv_continuous(kappa4)
+_assert_rv_continuous(kappa4)
+_assert_rv_continuous(kappa4)
+_assert_rv_continuous(kappa4)
+_assert_rv_continuous(kappa3)
+_assert_rv_continuous(ksone)
+_assert_rv_continuous(kstwo)
+_assert_rv_continuous(kstwobign)
+_assert_rv_continuous(landau)
+_assert_rv_continuous(laplace)
+_assert_rv_continuous(laplace_asymmetric)
+_assert_rv_continuous(levy)
+_assert_rv_continuous(levy_l)
+_assert_rv_continuous(levy_stable)
+_assert_rv_continuous(loggamma)
+_assert_rv_continuous(logistic)
+_assert_rv_continuous(loglaplace)
+_assert_rv_continuous(lognorm)
+_assert_rv_continuous(loguniform)
+_assert_rv_continuous(lomax)
+_assert_rv_continuous(maxwell)
+_assert_rv_continuous(mielke)
+_assert_rv_continuous(moyal)
+_assert_rv_continuous(nakagami)
+_assert_rv_continuous(ncf)
+_assert_rv_continuous(nct)
+_assert_rv_continuous(ncx2)
+_assert_rv_continuous(norm)
+_assert_rv_continuous(norminvgauss)
+_assert_rv_continuous(pareto)
+_assert_rv_continuous(pearson3)
+_assert_rv_continuous(pearson3)
+_assert_rv_continuous(powerlaw)
+_assert_rv_continuous(powerlaw)
+_assert_rv_continuous(powerlognorm)
+_assert_rv_continuous(powernorm)
+_assert_rv_continuous(rayleigh)
+_assert_rv_continuous(rdist)
+_assert_rv_continuous(recipinvgauss)
+_assert_rv_continuous(reciprocal)
+_assert_rv_continuous(rel_breitwigner)
+_assert_rv_continuous(rice)
+_assert_rv_continuous(semicircular)
+_assert_rv_continuous(skewcauchy)
+_assert_rv_continuous(skewnorm)
+_assert_rv_continuous(studentized_range)
+_assert_rv_continuous(t)
+_assert_rv_continuous(trapezoid)
+_assert_rv_continuous(triang)
+_assert_rv_continuous(truncexpon)
+_assert_rv_continuous(truncnorm)
+_assert_rv_continuous(truncnorm)
+_assert_rv_continuous(truncpareto)
+_assert_rv_continuous(truncpareto)
+_assert_rv_continuous(truncpareto)
+_assert_rv_continuous(truncweibull_min)
+_assert_rv_continuous(tukeylambda)
+_assert_rv_continuous(uniform)
+_assert_rv_continuous(vonmises)
+_assert_rv_continuous(vonmises_line)
+_assert_rv_continuous(wald)
+_assert_rv_continuous(weibull_max)
+_assert_rv_continuous(weibull_min)
+_assert_rv_continuous(wrapcauchy)
