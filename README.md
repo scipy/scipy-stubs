@@ -288,7 +288,7 @@ We welcome contributions from the community! There are many ways to help improve
 
 - **Report issues**: Found a bug or incorrect type annotation? [Open an issue](https://github.com/scipy/scipy-stubs/issues)
 - **Improve stubs**: Fix or enhance `.pyi` files (see [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTRIBUTING.md))
-- **Add tests**: Help with type-testing (see the `README.md` in [`tests/`](https://github.com/scipy/scipy-stubs/tree/master/tests))
+- **Add tests**: Help with type-testing (see [#1099](https://github.com/scipy/scipy-stubs/issues/1099) and the `README.md` in [`tests/`](https://github.com/scipy/scipy-stubs/tree/master/tests))
 - **Documentation**: Write guides, examples, or improve existing documentation
 - **Spread the word**: Help others discover `scipy-stubs`
 
