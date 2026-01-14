@@ -1,0 +1,52 @@
+from scipy.stats import (
+    bernoulli,
+    betabinom,
+    betanbinom,
+    binom,
+    boltzmann,
+    dlaplace,
+    geom,
+    hypergeom,
+    logser,
+    nbinom,
+    nchypergeom_fisher,
+    nchypergeom_wallenius,
+    nhypergeom,
+    planck,
+    poisson,
+    poisson_binom,
+    randint,
+    rv_discrete,
+    skellam,
+    yulesimon,
+    zipf,
+    zipfian,
+)
+
+def _assert_rv_discrete(distn: rv_discrete) -> None: ...
+
+_assert_rv_discrete(bernoulli)
+_assert_rv_discrete(betabinom)
+_assert_rv_discrete(betanbinom)
+_assert_rv_discrete(binom)
+_assert_rv_discrete(boltzmann)
+_assert_rv_discrete(dlaplace)
+_assert_rv_discrete(geom)
+_assert_rv_discrete(hypergeom)
+_assert_rv_discrete(hypergeom)
+_assert_rv_discrete(hypergeom)
+_assert_rv_discrete(nchypergeom_fisher)
+_assert_rv_discrete(nchypergeom_wallenius)
+_assert_rv_discrete(logser)
+_assert_rv_discrete(nbinom)
+_assert_rv_discrete(nbinom)
+_assert_rv_discrete(planck)
+_assert_rv_discrete(poisson)
+_assert_rv_discrete(poisson_binom)
+_assert_rv_discrete(randint)
+_assert_rv_discrete(skellam)
+_assert_rv_discrete(zipf)
+_assert_rv_discrete(zipfian)
+_assert_rv_discrete(zipfian)
+_assert_rv_discrete(yulesimon)
+_assert_rv_discrete(nhypergeom)
