@@ -154,7 +154,7 @@ def dendrogram(
     color_threshold: float | None = None,
     get_leaves: bool = True,
     orientation: _Orientation = "top",
-    labels: onp.ToArray1D[str, np.str_] | np.ndarray[tuple[int], np.dtypes.StringDType] | None = None,
+    labels: onp.ToArray1D[str, np.str_] | None = None,
     count_sort: _SortOrder | bool = False,
     distance_sort: _SortOrder | bool = False,
     show_leaf_counts: bool = True,
