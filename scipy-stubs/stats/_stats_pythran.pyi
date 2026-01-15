@@ -8,6 +8,8 @@ _Method: TypeAlias = Literal["hierarchical", "separate"]
 
 ###
 
-__pythran__: Final[tuple[str, str]] = ...
+__pythran__: Final[tuple[str, str]] = ...  # undocumented
 
-def siegelslopes(y: onp.ToFloatND, x: onp.ToFloatND | None = None, method: _Method = "hierarchical") -> SiegelslopesResult: ...
+def siegelslopes(
+    y: onp.ToFloatND, x: onp.ToFloatND | None = None, method: _Method = "hierarchical"
+) -> SiegelslopesResult: ...  # undocumented

@@ -6,6 +6,7 @@ import optype.numpy.compat as npc
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
+# undocumented
 @overload
 def tukeylambda_variance(lam: onp.ToFloat) -> onp.Array0D[np.float64]: ...
 @overload
@@ -15,7 +16,7 @@ def tukeylambda_variance(
 @overload
 def tukeylambda_variance(lam: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
 
-#
+# undocumented
 @overload
 def tukeylambda_kurtosis(lam: onp.ToFloat) -> onp.Array0D[np.float64]: ...
 @overload

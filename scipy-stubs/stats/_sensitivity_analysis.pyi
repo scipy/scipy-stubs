@@ -45,16 +45,18 @@ class SobolResult:
     def bootstrap(self, /, confidence_level: onp.ToFloat = 0.95, n_resamples: onp.ToInt = 999) -> BootstrapSobolResult: ...
 
 #
-def f_ishigami(x: onp.ToFloat2D) -> onp.Array1D[npc.floating]: ...
+def f_ishigami(x: onp.ToFloat2D) -> onp.Array1D[npc.floating]: ...  # undocumented
 
 #
-def sample_A_B(n: onp.ToInt, dists: Sequence[_HasPPF], rng: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
-def sample_AB(A: onp.Array2D[np.float64], B: onp.Array2D[np.float64]) -> onp.Array3D[np.float64]: ...
+def sample_A_B(
+    n: onp.ToInt, dists: Sequence[_HasPPF], rng: onp.random.ToRNG | None = None
+) -> onp.Array2D[np.float64]: ...  # undocumented
+def sample_AB(A: onp.Array2D[np.float64], B: onp.Array2D[np.float64]) -> onp.Array3D[np.float64]: ...  # undocumented
 
 #
 def saltelli_2010(
     f_A: onp.Array2D[np.float64], f_B: onp.Array2D[np.float64], f_AB: onp.Array3D[np.float64]
-) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...  # undocumented
 
 #
 def sobol_indices(
