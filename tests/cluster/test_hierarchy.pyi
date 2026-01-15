@@ -22,6 +22,7 @@ from scipy.cluster.hierarchy import (
     maxdists,
     maxinconsts,
     median,
+    set_link_color_palette,
     single,
     to_mlab_linkage,
     ward,
@@ -104,6 +105,8 @@ assert_type(dendrogram(f64_2d)["dcoord"], list[list[int]])
 assert_type(dendrogram(f64_2d)["ivl"], list[str])
 assert_type(dendrogram(f64_2d)["leaves"], list[int] | None)
 assert_type(dendrogram(f64_2d)["leaves_color_list"], list[str])
+# set_link_color_palette
+assert_type(set_link_color_palette(["red", "green", "blue"]), None)
 
 ###
 
