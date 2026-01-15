@@ -4,7 +4,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.cluster.hierarchy import DisjointSet, fcluster, fclusterdata
+from scipy.cluster.hierarchy import DisjointSet, fcluster, fclusterdata, leaders
 
 ###
 
@@ -16,20 +16,20 @@ i64_1d: onp.Array1D[np.int64]
 f64_2d: onp.Array1D[np.int64]
 
 ###
-# fcluster
 
+# fcluster
 assert_type(fcluster(f64_2d, 1.5), onp.Array1D[np.int32])
 assert_type(fcluster(f64_2d, t=1.5), onp.Array1D[np.int32])
 assert_type(fcluster(f64_2d, 1.5, "inconsistent", R=f64_2d), onp.Array1D[np.int32])
-
-###
 # fclusterdata
-
 assert_type(fclusterdata(f64_2d, 1.5), onp.Array1D[np.int32])
 assert_type(fclusterdata(f64_2d, t=1.5), onp.Array1D[np.int32])
 assert_type(fclusterdata(f64_2d, 1.5, "inconsistent", R=f64_2d), onp.Array1D[np.int32])
+# leaders
+assert_type(leaders(f64_2d, i32_1d), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
 
 ###
+
 # DisjointSet
 
 # DisjointSet(Iterable[T]) produces a DisjointSet[T] with universal set of type T.
