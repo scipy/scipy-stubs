@@ -4,7 +4,20 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.cluster.hierarchy import DisjointSet, fcluster, fclusterdata, leaders
+from scipy.cluster.hierarchy import (
+    DisjointSet,
+    average,
+    centroid,
+    complete,
+    fcluster,
+    fclusterdata,
+    leaders,
+    linkage,
+    median,
+    single,
+    ward,
+    weighted,
+)
 
 ###
 
@@ -13,7 +26,8 @@ py_int_1d: list[int]
 
 i32_1d: onp.Array1D[np.int32]
 i64_1d: onp.Array1D[np.int64]
-f64_2d: onp.Array1D[np.int64]
+f64_1d: onp.Array1D[np.int64]
+f64_2d: onp.Array2D[np.int64]
 
 ###
 
@@ -27,6 +41,20 @@ assert_type(fclusterdata(f64_2d, t=1.5), onp.Array1D[np.int32])
 assert_type(fclusterdata(f64_2d, 1.5, "inconsistent", R=f64_2d), onp.Array1D[np.int32])
 # leaders
 assert_type(leaders(f64_2d, i32_1d), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
+
+###
+
+# linkage
+assert_type(linkage(f64_1d), onp.Array2D[np.float64])
+assert_type(linkage(f64_2d), onp.Array2D[np.float64])
+# linkage aliases
+assert_type(single(f64_2d), onp.Array2D[np.float64])
+assert_type(complete(f64_2d), onp.Array2D[np.float64])
+assert_type(average(f64_2d), onp.Array2D[np.float64])
+assert_type(weighted(f64_2d), onp.Array2D[np.float64])
+assert_type(centroid(f64_2d), onp.Array2D[np.float64])
+assert_type(median(f64_2d), onp.Array2D[np.float64])
+assert_type(ward(f64_2d), onp.Array2D[np.float64])
 
 ###
 
