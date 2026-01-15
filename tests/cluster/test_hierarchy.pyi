@@ -12,10 +12,12 @@ from scipy.cluster.hierarchy import (
     cophenet,
     fcluster,
     fclusterdata,
+    from_mlab_linkage,
     leaders,
     linkage,
     median,
     single,
+    to_mlab_linkage,
     ward,
     weighted,
 )
@@ -75,6 +77,9 @@ assert_type(cophenet(f64_2d, c128_1d), tuple[np.complex128, onp.Array1D[np.float
 assert_type(cophenet(f64_2d, c160_1d), tuple[np.clongdouble, onp.Array1D[np.float64]])
 assert_type(cophenet(f64_2d, py_float_1d), tuple[np.float64, onp.Array1D[np.float64]])
 assert_type(cophenet(f64_2d, py_complex_1d), tuple[np.complex128, onp.Array1D[np.float64]])
+# {from,to}_mlab_linkage
+assert_type(from_mlab_linkage(f64_2d), onp.Array2D[np.float64])
+assert_type(to_mlab_linkage(f64_2d), onp.Array2D[np.float64])
 
 ###
 
