@@ -165,13 +165,23 @@ def num_obs_linkage(Z: onp.ToArray2D) -> int: ...
 def correspond(Z: onp.ToArray2D, Y: onp.ToArrayND) -> bool: ...
 
 #
+@overload
 def fcluster(
-    Z: onp.ToArray2D,
+    Z: onp.ToFloat2D,
     t: onp.ToFloat,
     criterion: _ClusterCriterion = "inconsistent",
-    depth: op.JustInt = 2,
-    R: onp.ToArrayND | None = None,
-    monocrit: onp.ToArrayND | None = None,
+    depth: int = 2,
+    R: None = None,
+    monocrit: onp.ToFloat1D | None = None,
+) -> onp.Array1D[np.int32]: ...
+@overload  # criterion="inconsistent"  (default)
+def fcluster(
+    Z: onp.ToFloat2D,
+    t: onp.ToFloat,
+    criterion: Literal["inconsistent"] = "inconsistent",
+    depth: int = 2,
+    R: onp.ToFloat2D | None = None,
+    monocrit: onp.ToFloat1D | None = None,
 ) -> onp.Array1D[np.int32]: ...
 
 #
