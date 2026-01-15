@@ -304,6 +304,7 @@ Apache Spark ([PySpark](https://github.com/apache/spark)) |
 [Artisan](https://github.com/artisan-roaster-scope/artisan) |
 [Arviz](https://github.com/arviz-devs/arviz) |
 [asammdf](https://github.com/danielhrisca/asammdf) |
+[Astropy](https://github.com/astropy/astropy) |
 [Chemotools](https://github.com/paucablop/chemotools) |
 Colour ([Colour](https://github.com/colour-science/colour),
 [Checker Detection](https://github.com/colour-science/colour-checker-detection),
