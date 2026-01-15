@@ -4,7 +4,6 @@ from typing import Final, Literal, TypeAlias, TypedDict, overload, type_check_on
 from typing_extensions import TypeVar, override
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -184,15 +183,26 @@ def fcluster(
     monocrit: onp.ToFloat1D | None = None,
 ) -> onp.Array1D[np.int32]: ...
 
-#
+# keep in sync with `fcluster`
+@overload
 def fclusterdata(
-    X: onp.ToArrayND,
+    X: onp.ToFloat2D,
     t: onp.ToFloat,
     criterion: _ClusterCriterion = "inconsistent",
     metric: _Metric = "euclidean",
-    depth: op.JustInt = 2,
+    depth: int = 2,
     method: _LinkageMethod = "single",
-    R: onp.ToArrayND | None = None,
+    R: None = None,
+) -> onp.Array1D[np.int32]: ...
+@overload
+def fclusterdata(
+    X: onp.ToFloat2D,
+    t: onp.ToFloat,
+    criterion: Literal["inconsistent"] = "inconsistent",
+    metric: _Metric = "euclidean",
+    depth: int = 2,
+    method: _LinkageMethod = "single",
+    R: onp.ToFloat1D | None = None,
 ) -> onp.Array1D[np.int32]: ...
 
 #
