@@ -170,6 +170,9 @@ def dendrogram(
 ) -> _DendrogramResult: ...
 
 #
+def set_link_color_palette(palette: list[str] | tuple[str, ...] | None) -> None: ...
+
+#
 def cut_tree(
     Z: onp.ToArray2D, n_clusters: onp.ToInt1D | None = None, height: onp.ToFloat1D | None = None
 ) -> onp.Array2D[np.int64]: ...
@@ -242,6 +245,3 @@ def leaders(Z: onp.ToFloat2D, T: onp.Array1D[np.int32]) -> tuple[onp.Array1D[np.
 
 #
 def leaves_list(Z: onp.ToArray2D) -> onp.Array1D[np.int32]: ...
-
-#
-def set_link_color_palette(palette: list[str] | tuple[str, ...] | None) -> None: ...
