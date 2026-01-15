@@ -11,6 +11,7 @@ from scipy.cluster.hierarchy import (
     centroid,
     complete,
     cophenet,
+    dendrogram,
     fcluster,
     fclusterdata,
     from_mlab_linkage,
@@ -93,6 +94,16 @@ assert_type(maxinconsts(f64_2d, f64_2d), onp.Array1D[np.float64])
 assert_type(maxdists(f64_2d), onp.Array1D[np.float64])
 # maxRstat
 assert_type(maxRstat(f64_2d, f64_2d, 0), onp.Array1D[np.float64])
+
+###
+
+# dendrogram
+assert_type(dendrogram(f64_2d)["color_list"], list[str])
+assert_type(dendrogram(f64_2d)["icoord"], list[list[int]])
+assert_type(dendrogram(f64_2d)["dcoord"], list[list[int]])
+assert_type(dendrogram(f64_2d)["ivl"], list[str])
+assert_type(dendrogram(f64_2d)["leaves"], list[int] | None)
+assert_type(dendrogram(f64_2d)["leaves_color_list"], list[str])
 
 ###
 
