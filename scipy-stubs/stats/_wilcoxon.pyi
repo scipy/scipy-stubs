@@ -3,6 +3,7 @@ from typing import Final
 import numpy as np
 import optype.numpy as onp
 
+# undocumented
 class WilcoxonDistribution:
     n: Final[onp.ArrayND[np.int_]]
 
