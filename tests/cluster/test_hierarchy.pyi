@@ -3,6 +3,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.cluster.hierarchy import (
     DisjointSet,
@@ -38,9 +39,9 @@ i64_1d: onp.Array1D[np.int64]
 f32_1d: onp.Array1D[np.float32]
 f64_1d: onp.Array1D[np.float64]
 f64_2d: onp.Array2D[np.float64]
-f80_1d: onp.Array1D[np.longdouble]
+f80_1d: onp.Array1D[npc.floating80]
 c128_1d: onp.Array1D[np.complex128]
-c160_1d: onp.Array1D[np.clongdouble]
+c160_1d: onp.Array1D[npc.complexfloating160]
 
 ###
 
