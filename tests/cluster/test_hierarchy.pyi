@@ -9,6 +9,7 @@ from scipy.cluster.hierarchy import (
     average,
     centroid,
     complete,
+    cophenet,
     fcluster,
     fclusterdata,
     leaders,
@@ -23,11 +24,17 @@ from scipy.cluster.hierarchy import (
 
 py_str_1d: list[str]
 py_int_1d: list[int]
+py_float_1d: list[float]
+py_complex_1d: list[complex]
 
 i32_1d: onp.Array1D[np.int32]
 i64_1d: onp.Array1D[np.int64]
-f64_1d: onp.Array1D[np.int64]
-f64_2d: onp.Array2D[np.int64]
+f32_1d: onp.Array1D[np.float32]
+f64_1d: onp.Array1D[np.float64]
+f64_2d: onp.Array2D[np.float64]
+f80_1d: onp.Array1D[np.longdouble]
+c128_1d: onp.Array1D[np.complex128]
+c160_1d: onp.Array1D[np.clongdouble]
 
 ###
 
@@ -55,6 +62,19 @@ assert_type(weighted(f64_2d), onp.Array2D[np.float64])
 assert_type(centroid(f64_2d), onp.Array2D[np.float64])
 assert_type(median(f64_2d), onp.Array2D[np.float64])
 assert_type(ward(f64_2d), onp.Array2D[np.float64])
+
+###
+
+# cophenet
+assert_type(cophenet(f64_2d), onp.Array1D[np.float64])
+assert_type(cophenet(f64_2d, i64_1d), tuple[np.float64, onp.Array1D[np.float64]])
+assert_type(cophenet(f64_2d, f32_1d), tuple[np.float64, onp.Array1D[np.float64]])
+assert_type(cophenet(f64_2d, f64_1d), tuple[np.float64, onp.Array1D[np.float64]])
+assert_type(cophenet(f64_2d, f80_1d), tuple[np.longdouble, onp.Array1D[np.float64]])
+assert_type(cophenet(f64_2d, c128_1d), tuple[np.complex128, onp.Array1D[np.float64]])
+assert_type(cophenet(f64_2d, c160_1d), tuple[np.clongdouble, onp.Array1D[np.float64]])
+assert_type(cophenet(f64_2d, py_float_1d), tuple[np.float64, onp.Array1D[np.float64]])
+assert_type(cophenet(f64_2d, py_complex_1d), tuple[np.complex128, onp.Array1D[np.float64]])
 
 ###
 
