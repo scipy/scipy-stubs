@@ -6,25 +6,30 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from scipy.cluster.hierarchy import (
+    ClusterNode,
     DisjointSet,
     average,
     centroid,
     complete,
     cophenet,
+    cut_tree,
     dendrogram,
     fcluster,
     fclusterdata,
     from_mlab_linkage,
     inconsistent,
     leaders,
+    leaves_list,
     linkage,
     maxRstat,
     maxdists,
     maxinconsts,
     median,
+    optimal_leaf_ordering,
     set_link_color_palette,
     single,
     to_mlab_linkage,
+    to_tree,
     ward,
     weighted,
 )
@@ -107,6 +112,22 @@ assert_type(dendrogram(f64_2d)["leaves"], list[int] | None)
 assert_type(dendrogram(f64_2d)["leaves_color_list"], list[str])
 # set_link_color_palette
 assert_type(set_link_color_palette(["red", "green", "blue"]), None)
+
+###
+
+# leaves_list
+assert_type(leaves_list(f64_2d), onp.Array1D[np.int32])
+# to_tree
+assert_type(to_tree(f64_2d), ClusterNode)
+assert_type(to_tree(f64_2d, False), ClusterNode)
+assert_type(to_tree(f64_2d, True), tuple[ClusterNode, list[ClusterNode]])
+assert_type(to_tree(f64_2d, False), ClusterNode)
+# cut_tree
+assert_type(cut_tree(f64_2d), onp.Array2D[np.int64])
+assert_type(cut_tree(f64_2d, n_clusters=i32_1d), onp.Array2D[np.int64])
+assert_type(cut_tree(f64_2d, height=f64_1d), onp.Array2D[np.int64])
+# optimal_leaf_order
+assert_type(optimal_leaf_ordering(f64_2d, f64_1d), onp.Array2D[np.float64])
 
 ###
 
