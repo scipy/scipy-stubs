@@ -16,6 +16,7 @@ from scipy.cluster.hierarchy import (
     inconsistent,
     leaders,
     linkage,
+    maxdists,
     maxinconsts,
     median,
     single,
@@ -86,6 +87,8 @@ assert_type(to_mlab_linkage(f64_2d), onp.Array2D[np.float64])
 assert_type(inconsistent(f64_2d), onp.Array2D[np.float64])
 # maxinconsts
 assert_type(maxinconsts(f64_2d, f64_2d), onp.Array1D[np.float64])
+# maxdists
+assert_type(maxdists(f64_2d), onp.Array1D[np.float64])
 
 ###
 
