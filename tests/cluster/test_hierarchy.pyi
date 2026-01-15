@@ -4,7 +4,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.cluster.hierarchy import DisjointSet, fcluster
+from scipy.cluster.hierarchy import DisjointSet, fcluster, fclusterdata
 
 ###
 
@@ -21,6 +21,13 @@ f64_2d: onp.Array1D[np.int64]
 assert_type(fcluster(f64_2d, 1.5), onp.Array1D[np.int32])
 assert_type(fcluster(f64_2d, t=1.5), onp.Array1D[np.int32])
 assert_type(fcluster(f64_2d, 1.5, "inconsistent", R=f64_2d), onp.Array1D[np.int32])
+
+###
+# fclusterdata
+
+assert_type(fclusterdata(f64_2d, 1.5), onp.Array1D[np.int32])
+assert_type(fclusterdata(f64_2d, t=1.5), onp.Array1D[np.int32])
+assert_type(fclusterdata(f64_2d, 1.5, "inconsistent", R=f64_2d), onp.Array1D[np.int32])
 
 ###
 # DisjointSet
