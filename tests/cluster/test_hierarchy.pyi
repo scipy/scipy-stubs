@@ -12,12 +12,17 @@ from scipy.cluster.hierarchy import (
     centroid,
     complete,
     cophenet,
+    correspond,
     cut_tree,
     dendrogram,
     fcluster,
     fclusterdata,
     from_mlab_linkage,
     inconsistent,
+    is_isomorphic,
+    is_monotonic,
+    is_valid_im,
+    is_valid_linkage,
     leaders,
     leaves_list,
     linkage,
@@ -25,6 +30,7 @@ from scipy.cluster.hierarchy import (
     maxdists,
     maxinconsts,
     median,
+    num_obs_linkage,
     optimal_leaf_ordering,
     set_link_color_palette,
     single,
@@ -48,6 +54,7 @@ f64_1d: onp.Array1D[np.float64]
 f64_2d: onp.Array2D[np.float64]
 f80_1d: onp.Array1D[npc.floating80]
 c128_1d: onp.Array1D[np.complex128]
+c128_2d: onp.Array2D[np.complex128]
 c160_1d: onp.Array1D[npc.complexfloating160]
 
 ###
@@ -128,6 +135,29 @@ assert_type(cut_tree(f64_2d, n_clusters=i32_1d), onp.Array2D[np.int64])
 assert_type(cut_tree(f64_2d, height=f64_1d), onp.Array2D[np.int64])
 # optimal_leaf_order
 assert_type(optimal_leaf_ordering(f64_2d, f64_1d), onp.Array2D[np.float64])
+
+###
+
+# is_valid_im
+assert_type(is_valid_im(f64_2d), bool)
+assert_type(is_valid_im(c128_2d), bool)
+assert_type(is_valid_im(f64_2d, throw=True), bool)
+is_valid_im(c128_2d, throw=True)  # type:ignore[call-overload]  # pyright:ignore[reportArgumentType, reportCallIssue]
+# is_valid_linkage
+assert_type(is_valid_linkage(f64_2d), bool)
+assert_type(is_valid_linkage(c128_2d), bool)
+assert_type(is_valid_linkage(f64_2d, throw=True), bool)
+is_valid_linkage(c128_2d, throw=True)  # type:ignore[call-overload]  # pyright:ignore[reportArgumentType, reportCallIssue]
+# is_isomorphic
+assert_type(is_isomorphic(f64_1d, f64_1d), bool)
+assert_type(is_isomorphic(c128_1d, c128_1d), bool)
+assert_type(is_isomorphic(c160_1d, c160_1d), bool)
+# is_monotonic
+assert_type(is_monotonic(f64_2d), bool)
+# corresponds
+assert_type(correspond(f64_2d, f64_1d), bool)
+# num_obs_linkage
+assert_type(num_obs_linkage(f64_2d), int)
 
 ###
 
