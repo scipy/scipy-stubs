@@ -13,6 +13,7 @@ from scipy.cluster.hierarchy import (
     fcluster,
     fclusterdata,
     from_mlab_linkage,
+    inconsistent,
     leaders,
     linkage,
     median,
@@ -80,6 +81,8 @@ assert_type(cophenet(f64_2d, py_complex_1d), tuple[np.complex128, onp.Array1D[np
 # {from,to}_mlab_linkage
 assert_type(from_mlab_linkage(f64_2d), onp.Array2D[np.float64])
 assert_type(to_mlab_linkage(f64_2d), onp.Array2D[np.float64])
+# inconsistent
+assert_type(inconsistent(f64_2d), onp.Array2D[np.float64])
 
 ###
 
