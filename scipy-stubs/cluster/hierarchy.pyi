@@ -4,7 +4,6 @@ from typing import Final, Literal, TypeAlias, TypedDict, overload, type_check_on
 from typing_extensions import TypeVar, override
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -111,7 +110,7 @@ class ClusterNode:
     def pre_order(self, /, func: Callable[[ClusterNode], _T]) -> list[_T]: ...
 
 #
-def int_floor(arr: onp.ToArrayND, xp: _ArrayAPINamespace) -> int: ...
+def int_floor(arr: onp.ToArrayND, xp: _ArrayAPINamespace) -> int: ...  # undocumented
 
 #
 def single(y: onp.ToArrayND) -> _LinkageArray: ...
@@ -165,24 +164,45 @@ def num_obs_linkage(Z: onp.ToArray2D) -> int: ...
 def correspond(Z: onp.ToArray2D, Y: onp.ToArrayND) -> bool: ...
 
 #
+@overload
 def fcluster(
-    Z: onp.ToArray2D,
+    Z: onp.ToFloat2D,
     t: onp.ToFloat,
     criterion: _ClusterCriterion = "inconsistent",
-    depth: op.JustInt = 2,
-    R: onp.ToArrayND | None = None,
-    monocrit: onp.ToArrayND | None = None,
+    depth: int = 2,
+    R: None = None,
+    monocrit: onp.ToFloat1D | None = None,
+) -> onp.Array1D[np.int32]: ...
+@overload  # criterion="inconsistent"  (default)
+def fcluster(
+    Z: onp.ToFloat2D,
+    t: onp.ToFloat,
+    criterion: Literal["inconsistent"] = "inconsistent",
+    depth: int = 2,
+    R: onp.ToFloat2D | None = None,
+    monocrit: onp.ToFloat1D | None = None,
 ) -> onp.Array1D[np.int32]: ...
 
-#
+# keep in sync with `fcluster`
+@overload
 def fclusterdata(
-    X: onp.ToArrayND,
+    X: onp.ToFloat2D,
     t: onp.ToFloat,
     criterion: _ClusterCriterion = "inconsistent",
     metric: _Metric = "euclidean",
-    depth: op.JustInt = 2,
+    depth: int = 2,
     method: _LinkageMethod = "single",
-    R: onp.ToArrayND | None = None,
+    R: None = None,
+) -> onp.Array1D[np.int32]: ...
+@overload
+def fclusterdata(
+    X: onp.ToFloat2D,
+    t: onp.ToFloat,
+    criterion: Literal["inconsistent"] = "inconsistent",
+    metric: _Metric = "euclidean",
+    depth: int = 2,
+    method: _LinkageMethod = "single",
+    R: onp.ToFloat1D | None = None,
 ) -> onp.Array1D[np.int32]: ...
 
 #
