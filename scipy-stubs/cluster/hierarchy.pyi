@@ -5,7 +5,6 @@ from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from scipy._lib._disjoint_set import DisjointSet
 from scipy.spatial.distance import _Metric
@@ -148,6 +147,29 @@ def maxdists(Z: onp.ToFloat2D) -> onp.Array1D[np.float64]: ...
 def maxRstat(Z: onp.ToFloat2D, R: onp.ToFloat2D, i: int) -> onp.Array1D[np.float64]: ...
 
 #
+def dendrogram(
+    Z: onp.ToFloat2D,
+    p: int = 30,
+    truncate_mode: _TruncateMode | None = None,
+    color_threshold: float | None = None,
+    get_leaves: bool = True,
+    orientation: _Orientation = "top",
+    labels: onp.ToArray1D[str, np.str_] | np.ndarray[tuple[int], np.dtypes.StringDType] | None = None,
+    count_sort: _SortOrder | bool = False,
+    distance_sort: _SortOrder | bool = False,
+    show_leaf_counts: bool = True,
+    no_plot: bool = False,
+    no_labels: bool = False,
+    leaf_font_size: float | None = None,
+    leaf_rotation: float | None = None,
+    leaf_label_func: Callable[[int], str] | None = None,
+    show_contracted: bool = False,
+    link_color_func: Callable[[int], str] | None = None,
+    ax: _MatplotlibAxes | None = None,
+    above_threshold_color: str = "C0",
+) -> _DendrogramResult: ...
+
+#
 def cut_tree(
     Z: onp.ToArray2D, n_clusters: onp.ToInt1D | None = None, height: onp.ToFloat1D | None = None
 ) -> onp.Array2D[np.int64]: ...
@@ -223,26 +245,3 @@ def leaves_list(Z: onp.ToArray2D) -> onp.Array1D[np.int32]: ...
 
 #
 def set_link_color_palette(palette: list[str] | tuple[str, ...] | None) -> None: ...
-
-#
-def dendrogram(
-    Z: onp.ToArray2D,
-    p: int = 30,
-    truncate_mode: _TruncateMode | None = None,
-    color_threshold: float | npc.floating | None = None,
-    get_leaves: bool = True,
-    orientation: _Orientation = "top",
-    labels: onp.ToArrayND | None = None,
-    count_sort: _SortOrder | bool = False,
-    distance_sort: _SortOrder | bool = False,
-    show_leaf_counts: bool = True,
-    no_plot: bool = False,
-    no_labels: bool = False,
-    leaf_font_size: float | npc.floating | None = None,
-    leaf_rotation: float | npc.floating | None = None,
-    leaf_label_func: Callable[[int], str] | None = None,
-    show_contracted: bool = False,
-    link_color_func: Callable[[int], str] | None = None,
-    ax: _MatplotlibAxes | None = None,
-    above_threshold_color: str = "C0",
-) -> _DendrogramResult: ...
