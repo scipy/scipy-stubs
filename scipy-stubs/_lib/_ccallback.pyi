@@ -136,4 +136,4 @@ class LowLevelCallable(tuple[PyCapsule, _FuncT_co, _DataT_co], Generic[_FuncT_co
 
     # NOTE: `__getitem__` will always raise a `ValueError`
     @override
-    def __getitem__(self, idx: object, /) -> NoReturn: ...  # ty: ignore[invalid-method-override]
+    def __getitem__(self, idx: object, /) -> NoReturn: ...

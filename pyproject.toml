@@ -65,7 +65,7 @@ type = [
   "mypy[faster-cache]==1.19.1",
   "pyrefly==0.48.0",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.11",
+  "ty==0.0.12",
 ]
 dev = [
   { include-group = "lint" },
