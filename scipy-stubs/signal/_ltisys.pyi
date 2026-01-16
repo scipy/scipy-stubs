@@ -33,7 +33,6 @@ __all__ = [
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=np.generic)
-_ZerosT = TypeVar("_ZerosT", bound=npc.inexact32 | npc.inexact64)
 _ZerosT_co = TypeVar("_ZerosT_co", bound=npc.inexact32 | npc.inexact64, default=Any, covariant=True)
 _PolesT = TypeVar("_PolesT", bound=_Float)
 _PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=np.float64 | Any, covariant=True)
@@ -499,6 +498,8 @@ def place_poles(
     maxiter: int = 30,
 ) -> Bunch: ...
 
+#
+
 # keep in sync with impulse and step
 @overload
 def lsim(
@@ -597,25 +598,15 @@ def dlsim(
     system: _ToDLTI, u: _ToFloat012D | None, t: onp.ToFloat1D | None = None, x0: onp.ToFloat1D | None = None
 ) -> tuple[_Float64_1D, _Float64_1D]: ...
 
-# TODO: refine return dtype
-@overload
+#
 def dimpulse(
-    system: dlti[_ZerosT, _PolesT], x0: onp.ToComplex1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
-@overload
-def dimpulse(
-    system: _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-) -> tuple[_Float1D, _Float1D]: ...
+    system: dlti | _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
+) -> tuple[onp.Array1D[np.float64], tuple[onp.ArrayND[np.float64], ...]]: ...
 
-# TODO: refine return dtype
-@overload
+#
 def dstep(
-    system: dlti[_ZerosT, _PolesT], x0: onp.ToComplex1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
-@overload
-def dstep(
-    system: _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-) -> tuple[_Float1D, _Float1D]: ...
+    system: dlti | _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
+) -> tuple[onp.Array1D[np.float64], tuple[onp.ArrayND[np.float64], ...]]: ...
 
 #
 def dbode(system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float64]]: ...
