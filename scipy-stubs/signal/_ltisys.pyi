@@ -31,6 +31,17 @@ __all__ = [
 
 ###
 
+_T = TypeVar("_T")
+_SCT = TypeVar("_SCT", bound=np.generic)
+_ZerosT_co = TypeVar("_ZerosT_co", bound=npc.inexact32 | npc.inexact64, default=Any, covariant=True)
+_PolesT = TypeVar("_PolesT", bound=_Float)
+_PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=np.float64 | Any, covariant=True)
+_DTT = TypeVar("_DTT", bound=onp.ToComplex | None)
+_DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=Any, covariant=True)
+
+_Tuple3: TypeAlias = tuple[_T, _T, _T]
+_Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
+
 _Float: TypeAlias = np.float32 | np.float64
 _Complex: TypeAlias = np.complex64 | np.complex128
 _Inexact: TypeAlias = _Float | _Complex
@@ -39,50 +50,54 @@ _Number: TypeAlias = npc.integer | _Inexact
 _ToNumber: TypeAlias = complex | _Number
 _ToNumberOrND: TypeAlias = _ToNumber | onp.ArrayND[_Number]
 
-_SCT = TypeVar("_SCT", bound=np.generic)
 _Array12D: TypeAlias = onp.ArrayND[_SCT, tuple[int] | tuple[int, int]]
 
 _Float1D: TypeAlias = onp.Array1D[_Float]
 _Float64_1D: TypeAlias = onp.Array1D[np.float64]
 _Float64_2D: TypeAlias = onp.Array2D[np.float64]
 _Complex1D: TypeAlias = onp.Array1D[_Complex]
-_Inexact1D: TypeAlias = onp.Array1D[_Inexact]
 
 _ToFloat12D: TypeAlias = onp.ToFloat1D | onp.ToFloat2D
 _ToFloat012D: TypeAlias = onp.ToFloat | _ToFloat12D
 _ToComplex12D: TypeAlias = onp.ToComplex1D | onp.ToComplex2D
 _ToComplex012D: TypeAlias = onp.ToComplex | _ToComplex12D
 
+_ToInexact32_1D: TypeAlias = onp.ToJustFloat32_1D | onp.ToJustComplex64_1D
+_ToInexact32_2D: TypeAlias = onp.ToJustFloat32_2D | onp.ToJustComplex64_2D
+_ToInexact64_1D: TypeAlias = onp.ToArray1D[complex, npc.inexact64 | npc.integer]
+_ToInexact64_2D: TypeAlias = onp.ToArray2D[complex, npc.inexact64 | npc.integer]
+
 ###
 
 # numerator, denominator
-_ToTFContReal: TypeAlias = tuple[_ToFloat12D, onp.ToComplex1D]
-_ToTFContComplex: TypeAlias = tuple[_ToComplex12D, onp.ToComplex1D]
+_ToTFContFloat: TypeAlias = tuple[_ToFloat12D, onp.ToComplex1D]
+_ToTFContInexact: TypeAlias = tuple[_ToComplex12D, onp.ToComplex1D]
+_ToTFContInexact32: TypeAlias = tuple[_ToInexact32_1D | _ToInexact32_2D, _ToInexact32_1D]
+_ToTFContInexact64: TypeAlias = tuple[_ToInexact64_1D | _ToInexact64_2D, _ToInexact64_1D]
 # numerator, denominator, dt
-_ToTFDiscReal: TypeAlias = tuple[_ToFloat12D, onp.ToComplex1D, onp.ToFloat]
+_ToTFDisc: TypeAlias = tuple[_ToFloat12D, onp.ToComplex1D, onp.ToFloat]
 
 # zeros, poles, gain
-_ToZPKContReal: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat]
-_ToZPKContComplex: TypeAlias = tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat]
+_ToZPKContFloat: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat]
+_ToZPKContInexact: TypeAlias = tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat]
+_ToZPKContInexact32: TypeAlias = tuple[_ToInexact32_1D, _ToInexact32_1D, onp.ToFloat]
+_ToZPKContInexact64: TypeAlias = tuple[_ToInexact64_1D, _ToInexact64_1D, onp.ToFloat]
 # zeros, poles, gain, dt
-_ToZPKDiscReal: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat, onp.ToFloat]
+_ToZPKDisc: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat, onp.ToFloat]
 
 # A, B, C, D
-_ToSSContReal: TypeAlias = tuple[onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D]
-_ToSSContComplex: TypeAlias = tuple[onp.ToComplex2D, onp.ToComplex2D, onp.ToComplex2D, onp.ToComplex2D]
+_ToSSContFloat: TypeAlias = _Tuple4[onp.ToFloat2D]
+_ToSSContInexact: TypeAlias = _Tuple4[onp.ToComplex2D]
+_ToSSContInexact32: TypeAlias = _Tuple4[_ToInexact32_2D]
+_ToSSContInexact64: TypeAlias = _Tuple4[_ToInexact64_2D]
 # A, B, C, D, dt
-_ToSSDiscReal: TypeAlias = tuple[onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat]
+_ToSSDisc: TypeAlias = tuple[onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat]
 
-_ToLTIReal: TypeAlias = _ToTFContReal | _ToZPKContReal | _ToSSContReal
-_ToLTIComplex: TypeAlias = _ToTFContComplex | _ToZPKContComplex | _ToSSContComplex
-_ToDLTI: TypeAlias = _ToTFDiscReal | _ToZPKDiscReal | _ToSSDiscReal
-
-_ZerosT = TypeVar("_ZerosT", bound=_Inexact)
-_ZerosT_co = TypeVar("_ZerosT_co", bound=_Inexact, default=_Inexact, covariant=True)
-_PolesT = TypeVar("_PolesT", bound=_Float)
-_PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=_Float, covariant=True)
-_DTT = TypeVar("_DTT", bound=onp.ToComplex | None)
-_DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=Any, covariant=True)
+_ToLTIFloat: TypeAlias = _ToTFContFloat | _ToZPKContFloat | _ToSSContFloat
+_ToLTIInexact: TypeAlias = _ToTFContInexact | _ToZPKContInexact | _ToSSContInexact
+_ToLTIInexact32: TypeAlias = _ToTFContInexact32 | _ToZPKContInexact32 | _ToSSContInexact32
+_ToLTIInexact64: TypeAlias = _ToTFContInexact64 | _ToZPKContInexact64 | _ToSSContInexact64
+_ToDLTI: TypeAlias = _ToTFDisc | _ToZPKDisc | _ToSSDisc
 
 ###
 
@@ -131,17 +146,74 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
     def __init__(self, /, *system: Never) -> None: ...
 
     #
+    @overload
     def impulse(
-        self, /, X0: onp.ToFloat1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-    ) -> tuple[_Float1D, _Float1D]: ...
+        self: lti[np.float32 | np.float64],
+        /,
+        X0: onp.ToFloat1D | None = None,
+        T: onp.ToFloat1D | None = None,
+        N: int | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    @overload
+    def impulse(
+        self: lti[np.complex64 | np.complex128],
+        /,
+        X0: onp.ToComplex1D | None = None,
+        T: onp.ToFloat1D | None = None,
+        N: int | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+
+    #
+    @overload
     def step(
-        self, /, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-    ) -> tuple[_Float1D, _Inexact1D]: ...
+        self: lti[np.float32 | np.float64],
+        /,
+        X0: onp.ToFloat1D | None = None,
+        T: onp.ToFloat1D | None = None,
+        N: int | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    @overload
+    def step(
+        self: lti[np.complex64 | np.complex128],
+        /,
+        X0: onp.ToComplex1D | None = None,
+        T: onp.ToFloat1D | None = None,
+        N: int | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+
+    #
+    @overload
     def output(
-        self, /, U: _ToFloat012D | None, T: onp.ToFloat1D, X0: onp.ToComplex1D | None = None
-    ) -> tuple[_Array12D[_Float], _Inexact1D, _Array12D[_Inexact]]: ...
-    def bode(self, /, w: onp.ToFloat1D | None = None, n: int = 100) -> tuple[_Float1D, _Float1D, _Float1D]: ...
-    def freqresp(self, /, w: onp.ToFloat1D | None = None, n: int = 10_000) -> tuple[_Float1D, _Complex1D]: ...
+        self: lti[np.float32 | np.float64],
+        /,
+        U: _ToFloat012D | None,
+        T: onp.ToFloat | onp.ToFloat1D,
+        X0: onp.ToComplex1D | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload
+    def output(
+        self: lti[np.complex64 | np.complex128],
+        /,
+        U: _ToFloat012D | None,
+        T: onp.ToFloat | onp.ToFloat1D,
+        X0: onp.ToComplex1D | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], onp.ArrayND[np.complex128]]: ...
+
+    #
+    @overload
+    def bode(self: lti[npc.inexact64], /, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float64]]: ...
+    @overload
+    def bode(self: lti[npc.inexact32], /, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float32]]: ...
+
+    #
+    @overload
+    def freqresp(
+        self: lti[npc.inexact64], /, w: onp.ToFloat1D | None = None, n: int = 10_000
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+    @overload
+    def freqresp(
+        self: lti[npc.inexact32], /, w: onp.ToFloat1D | None = None, n: int = 10_000
+    ) -> tuple[onp.Array1D[np.float32], onp.Array1D[np.complex64]]: ...
 
     #
     @abc.abstractmethod
@@ -176,19 +248,20 @@ class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT
     def __init__(self, /, *system: Never, dt: float, **kwargs: Never) -> None: ...
 
     #
-    def impulse(
-        self, /, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-    ) -> tuple[_Float1D, _Float1D]: ...
-    def step(
-        self, /, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-    ) -> tuple[_Float1D, _Float1D]: ...
     def output(
         self, /, u: _ToFloat012D | None, t: onp.ToFloat1D, x0: onp.ToFloat1D | None = None
-    ) -> tuple[_Float1D, _Float1D]: ...
-    def bode(self, /, w: onp.ToFloat1D | None = None, n: int = 100) -> tuple[_Float1D, _Float1D, _Float1D]: ...
+    ) -> tuple[_Float64_1D, _Float64_2D] | tuple[_Float64_1D, _Float64_2D, _Float64_2D]: ...
+    def impulse(
+        self, /, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
+    ) -> tuple[onp.Array1D[np.float64], tuple[onp.Array2D[np.float64], ...]]: ...
+    #
+    def step(
+        self, /, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
+    ) -> tuple[onp.Array1D[np.float64], tuple[onp.Array2D[np.float64], ...]]: ...
+    def bode(self, /, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float64]]: ...
     def freqresp(
         self, /, w: onp.ToFloat1D | None = None, n: int = 10_000, whole: bool = False
-    ) -> tuple[_Float1D, _Complex1D]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
 
 #
 class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Generic[_PolesT_co, _DTT_co], metaclass=abc.ABCMeta):
@@ -244,6 +317,12 @@ class TransferFunctionDiscrete(
     def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], /) -> None: ...
     @overload
     def __init__(self, numerator: _ToFloat12D, denominator: onp.ToFloat1D, /, *, dt: _DTT_co = ...) -> None: ...
+
+    #
+    @override
+    def output(
+        self, /, u: _ToFloat012D | None, t: onp.ToFloat1D, x0: onp.ToFloat1D | None = None
+    ) -> tuple[_Float64_1D, _Float64_2D]: ...
 
 #
 class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
@@ -341,6 +420,12 @@ class ZerosPolesGainDiscrete(
         *,
         dt: _DTT = ...,
     ) -> None: ...
+
+    #
+    @override
+    def output(
+        self, /, u: _ToFloat012D | None, t: onp.ToFloat1D, x0: onp.ToFloat1D | None = None
+    ) -> tuple[_Float64_1D, _Float64_2D]: ...
 
 class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     __array_priority__: ClassVar[float] = 100.0
@@ -459,7 +544,14 @@ class StateSpaceDiscrete(
         dt: _DTT = ...,
     ) -> None: ...
 
+    #
+    @override
+    def output(
+        self, /, u: _ToFloat012D | None, t: onp.ToFloat1D, x0: onp.ToFloat1D | None = None
+    ) -> tuple[_Float64_1D, _Float64_2D, _Float64_2D]: ...
+
 # NOTE: Only used as return type of `place_poles`.
+@final
 class Bunch:
     gain_matrix: _Float64_2D
     computed_poles: _Float64_1D
@@ -481,87 +573,125 @@ def place_poles(
 ) -> Bunch: ...
 
 #
+
+# keep in sync with impulse and step
 @overload
 def lsim(
-    system: lti[_ZerosT], U: _ToFloat012D | None, T: onp.ToInt1D, X0: onp.ToComplex1D | None = None, interp: bool = True
-) -> tuple[onp.Array1D[_ZerosT], onp.Array1D[_ZerosT], onp.ArrayND[_ZerosT]]: ...
+    system: lti[np.float32 | np.float64] | _ToLTIFloat,
+    U: _ToFloat012D | None,
+    T: onp.ToFloat1D,
+    X0: onp.ToFloat1D | None = None,
+    interp: bool = True,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
 @overload
 def lsim(
-    system: _ToLTIReal, U: _ToFloat012D | None, T: onp.ToInt1D, X0: onp.ToFloat1D | None = None, interp: bool = True
-) -> tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+    system: lti[np.complex64 | np.complex128],
+    U: _ToFloat012D | None,
+    T: onp.ToFloat1D,
+    X0: onp.ToComplex1D | None = None,
+    interp: bool = True,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], onp.ArrayND[np.complex128]]: ...
 @overload
 def lsim(
-    system: _ToLTIComplex, U: _ToFloat012D | None, T: onp.ToInt1D, X0: onp.ToComplex1D | None = None, interp: bool = True
-) -> tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+    system: _ToLTIInexact, U: _ToFloat012D | None, T: onp.ToFloat1D, X0: onp.ToComplex1D | None = None, interp: bool = True
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+
+# keep in sync with lsim and step
+@overload
+def impulse(
+    system: lti[np.float32 | np.float64] | _ToLTIFloat,
+    X0: onp.ToFloat1D | None = None,
+    T: onp.ToFloat1D | None = None,
+    N: int | None = None,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+@overload
+def impulse(
+    system: lti[np.complex64 | np.complex128],
+    X0: onp.ToComplex1D | None = None,
+    T: onp.ToFloat1D | None = None,
+    N: int | None = None,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+@overload
+def impulse(
+    system: _ToLTIInexact, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]]: ...
+
+# keep in sync with lsim and impulse
+@overload
+def step(
+    system: lti[np.float32 | np.float64] | _ToLTIFloat,
+    X0: onp.ToFloat1D | None = None,
+    T: onp.ToFloat1D | None = None,
+    N: int | None = None,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+@overload
+def step(
+    system: lti[np.complex64 | np.complex128],
+    X0: onp.ToComplex1D | None = None,
+    T: onp.ToFloat1D | None = None,
+    N: int | None = None,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+@overload
+def step(
+    system: _ToLTIInexact, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]]: ...
+
+#
+@overload
+def bode(
+    system: lti[npc.inexact64] | _ToLTIInexact64, w: onp.ToFloat1D | None = None, n: int = 100
+) -> _Tuple3[onp.Array1D[np.float64]]: ...
+@overload
+def bode(
+    system: lti[npc.inexact32] | _ToLTIInexact32, w: onp.ToFloat1D | None = None, n: int = 100
+) -> _Tuple3[onp.Array1D[np.float32]]: ...
+@overload
+def bode(system: lti | _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[_Float1D]: ...
+
+#
+@overload
+def freqresp(
+    system: lti[npc.inexact64] | _ToLTIInexact64, w: onp.ToFloat1D | None = None, n: int = 10_000
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+@overload
+def freqresp(
+    system: lti[npc.inexact32] | _ToLTIInexact32, w: onp.ToFloat1D | None = None, n: int = 10_000
+) -> tuple[onp.Array1D[np.float32], onp.Array1D[np.complex64]]: ...
+@overload
+def freqresp(system: _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 10_000) -> tuple[_Float1D, _Complex1D]: ...
+
+#
 
 #
 @overload
 def dlsim(
-    system: StateSpaceDiscrete, u: _ToFloat012D | None, t: onp.ToFloat1D | None = None, x0: onp.ToFloat1D | None = None
+    system: StateSpaceDiscrete | _ToSSDisc,
+    u: _ToFloat012D | None,
+    t: onp.ToFloat1D | None = None,
+    x0: onp.ToFloat1D | None = None,
 ) -> tuple[_Float64_1D, _Float64_2D, _Float64_2D]: ...
 @overload
 def dlsim(
-    system: _ToDLTI, u: _ToFloat012D | None, t: onp.ToFloat1D | None = None, x0: onp.ToFloat1D | None = None
-) -> tuple[_Float64_1D, _Float64_1D]: ...
+    system: TransferFunctionDiscrete | ZerosPolesGainDiscrete | _ToTFDisc | _ToZPKDisc,
+    u: _ToFloat012D | None,
+    t: onp.ToFloat1D | None = None,
+    x0: onp.ToFloat1D | None = None,
+) -> tuple[_Float64_1D, _Float64_2D]: ...
 
 #
-@overload
-def impulse(
-    system: lti[_ZerosT, _PolesT], X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
-@overload
-def impulse(
-    system: _ToLTIReal, X0: onp.ToFloat1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[_Float1D, _Float1D]: ...
-@overload
-def impulse(
-    system: _ToLTIComplex, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[_Float1D, _Inexact1D]: ...
-
-#
-@overload
 def dimpulse(
-    system: dlti[_ZerosT, _PolesT], x0: onp.ToComplex1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
-@overload
-def dimpulse(
-    system: _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-) -> tuple[_Float1D, _Float1D]: ...
+    system: dlti | _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
+) -> tuple[onp.Array1D[np.float64], tuple[onp.Array2D[np.float64], ...]]: ...
 
 #
-@overload
-def step(
-    system: lti[_ZerosT, _PolesT], X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
-@overload
-def step(
-    system: _ToLTIReal, X0: onp.ToFloat1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[_Float1D, _Float1D]: ...
-@overload
-def step(
-    system: _ToLTIComplex, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[_Float1D, _Inexact1D]: ...
+def dstep(
+    system: dlti | _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
+) -> tuple[onp.Array1D[np.float64], tuple[onp.Array2D[np.float64], ...]]: ...
 
 #
-@overload
-def dstep(
-    system: dlti[_ZerosT, _PolesT], x0: onp.ToComplex1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
-@overload
-def dstep(
-    system: _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-) -> tuple[_Float1D, _Float1D]: ...
+def dbode(system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float64]]: ...
 
-# TODO: refine return dtype
-def bode(system: lti | _ToLTIComplex, w: onp.ToFloat1D | None = None, n: int = 100) -> tuple[_Float1D, _Float1D, _Float1D]: ...
-
-# TODO: refine return dtype
-def dbode(system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 100) -> tuple[_Float1D, _Float1D, _Float1D]: ...
-
-# TODO: refine return dtype
-def freqresp(system: lti | _ToLTIComplex, w: onp.ToFloat1D | None = None, n: int = 10_000) -> tuple[_Float1D, _Complex1D]: ...
-
-# TODO: refine return dtype
+#
 def dfreqresp(
     system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 10_000, whole: bool = False
-) -> tuple[_Float1D, _Complex1D]: ...
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
