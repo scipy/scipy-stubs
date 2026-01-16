@@ -56,14 +56,12 @@ _Float1D: TypeAlias = onp.Array1D[_Float]
 _Float64_1D: TypeAlias = onp.Array1D[np.float64]
 _Float64_2D: TypeAlias = onp.Array2D[np.float64]
 _Complex1D: TypeAlias = onp.Array1D[_Complex]
-_Inexact1D: TypeAlias = onp.Array1D[_Inexact]
 
 _ToFloat12D: TypeAlias = onp.ToFloat1D | onp.ToFloat2D
 _ToFloat012D: TypeAlias = onp.ToFloat | _ToFloat12D
 _ToComplex12D: TypeAlias = onp.ToComplex1D | onp.ToComplex2D
 _ToComplex012D: TypeAlias = onp.ToComplex | _ToComplex12D
 
-_ToFloat64_1D: TypeAlias = onp.ToArray1D[float, np.float64 | npc.integer]
 _ToInexact32_1D: TypeAlias = onp.ToJustFloat32_1D | onp.ToJustComplex64_1D
 _ToInexact32_2D: TypeAlias = onp.ToJustFloat32_2D | onp.ToJustComplex64_2D
 _ToInexact64_1D: TypeAlias = onp.ToArray1D[complex, npc.inexact64 | npc.integer]
@@ -148,17 +146,78 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
     def __init__(self, /, *system: Never) -> None: ...
 
     #
+    @overload
     def impulse(
-        self, /, X0: onp.ToFloat1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-    ) -> tuple[_Float1D, _Float1D]: ...
+        self: lti[np.float32 | np.float64],
+        /,
+        X0: onp.ToFloat1D | None = None,
+        T: onp.ToFloat1D | None = None,
+        N: int | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    @overload
+    def impulse(
+        self: lti[np.complex64 | np.complex128],
+        /,
+        X0: onp.ToComplex1D | None = None,
+        T: onp.ToFloat1D | None = None,
+        N: int | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+
+    #
+    @overload
     def step(
-        self, /, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-    ) -> tuple[_Float1D, _Inexact1D]: ...
+        self: lti[np.float32 | np.float64],
+        /,
+        X0: onp.ToFloat1D | None = None,
+        T: onp.ToFloat1D | None = None,
+        N: int | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    @overload
+    def step(
+        self: lti[np.complex64 | np.complex128],
+        /,
+        X0: onp.ToComplex1D | None = None,
+        T: onp.ToFloat1D | None = None,
+        N: int | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+
+    #
+    @overload
     def output(
-        self, /, U: _ToFloat012D | None, T: onp.ToFloat1D, X0: onp.ToComplex1D | None = None
-    ) -> tuple[_Array12D[_Float], _Inexact1D, _Array12D[_Inexact]]: ...
-    def bode(self, /, w: onp.ToFloat1D | None = None, n: int = 100) -> tuple[_Float1D, _Float1D, _Float1D]: ...
-    def freqresp(self, /, w: onp.ToFloat1D | None = None, n: int = 10_000) -> tuple[_Float1D, _Complex1D]: ...
+        self: lti[np.float32 | np.float64],
+        /,
+        U: _ToFloat012D | None,
+        T: onp.ToFloat | onp.ToFloat1D,
+        X0: onp.ToComplex1D | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload
+    def output(
+        self: lti[np.complex64 | np.complex128],
+        /,
+        U: _ToFloat012D | None,
+        T: onp.ToFloat | onp.ToFloat1D,
+        X0: onp.ToComplex1D | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], onp.ArrayND[np.complex128]]: ...
+
+    #
+    @overload  # this mypy `overload-overlap` error is a false positive
+    def bode(  # type: ignore[overload-overlap]
+        self: lti[np.float64 | np.complex128], /, w: onp.ToFloat1D | None = None, n: int = 100
+    ) -> _Tuple3[onp.Array1D[np.float64]]: ...
+    @overload
+    def bode(
+        self: lti[np.float32 | np.complex64], /, w: onp.ToFloat1D | None = None, n: int = 100
+    ) -> _Tuple3[onp.Array1D[np.float32]]: ...
+
+    #
+    @overload  # this mypy `overload-overlap` error is a false positive
+    def freqresp(  # type: ignore[overload-overlap]
+        self: lti[np.float64 | np.complex128], /, w: onp.ToFloat1D | None = None, n: int = 10_000
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+    @overload
+    def freqresp(
+        self: lti[np.float32 | np.complex64], /, w: onp.ToFloat1D | None = None, n: int = 10_000
+    ) -> tuple[onp.Array1D[np.float32], onp.Array1D[np.complex64]]: ...
 
     #
     @abc.abstractmethod
@@ -577,11 +636,11 @@ def bode(system: lti | _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 1
 #
 @overload  # this mypy `overload-overlap` error is a false positive
 def freqresp(  # type: ignore[overload-overlap]
-    system: lti[np.float64 | np.complex128] | _ToLTIInexact64, w: _ToFloat64_1D | None = None, n: int = 10_000
+    system: lti[np.float64 | np.complex128] | _ToLTIInexact64, w: onp.ToFloat1D | None = None, n: int = 10_000
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
 @overload
 def freqresp(
-    system: lti[np.float32 | np.complex64] | _ToLTIInexact32, w: onp.ToJustFloat32_1D | None = None, n: int = 10_000
+    system: lti[np.float32 | np.complex64] | _ToLTIInexact32, w: onp.ToFloat1D | None = None, n: int = 10_000
 ) -> tuple[onp.Array1D[np.float32], onp.Array1D[np.complex64]]: ...
 @overload
 def freqresp(system: _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 10_000) -> tuple[_Float1D, _Complex1D]: ...
