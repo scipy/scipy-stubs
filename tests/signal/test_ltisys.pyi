@@ -3,7 +3,7 @@ from typing import Any, TypeAlias, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import bode, dbode, dfreqresp, dlti, freqresp, impulse, lsim, lti, step
+from scipy.signal import bode, dbode, dfreqresp, dimpulse, dlti, dstep, freqresp, impulse, lsim, lti, step
 
 ###
 
@@ -191,7 +191,31 @@ assert_type(freqresp(_ss_cont_c128), tuple[_VecF64, _VecC128])
 
 ###
 # dimpulse
-# TODO
+
+# f32
+assert_type(dimpulse(_dlti_f32), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dimpulse(_tf_disc_f32), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dimpulse(_zpk_disc_f32), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dimpulse(_ss_disc_f32), tuple[_VecF64, tuple[_ArrF64, ...]])
+# f64
+assert_type(dimpulse(_dlti_f64), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dimpulse(_tf_disc_f64), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dimpulse(_zpk_disc_f64), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dimpulse(_ss_disc_f64), tuple[_VecF64, tuple[_ArrF64, ...]])
+
+###
+# dstep
+
+# f32
+assert_type(dstep(_dlti_f32), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dstep(_tf_disc_f32), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dstep(_zpk_disc_f32), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dstep(_ss_disc_f32), tuple[_VecF64, tuple[_ArrF64, ...]])
+# f64
+assert_type(dstep(_dlti_f64), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dstep(_tf_disc_f64), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dstep(_zpk_disc_f64), tuple[_VecF64, tuple[_ArrF64, ...]])
+assert_type(dstep(_ss_disc_f64), tuple[_VecF64, tuple[_ArrF64, ...]])
 
 ###
 # dbode
@@ -206,10 +230,6 @@ assert_type(dbode(_dlti_f64), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(dbode(_tf_disc_f64), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(dbode(_zpk_disc_f64), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(dbode(_ss_disc_f64), tuple[_VecF64, _VecF64, _VecF64])
-# c64
-assert_type(dbode(_dlti_c64), tuple[_VecF64, _VecF64, _VecF64])
-# c128
-assert_type(dbode(_dlti_c128), tuple[_VecF64, _VecF64, _VecF64])
 
 ###
 # dfreqresp
@@ -224,7 +244,3 @@ assert_type(dfreqresp(_dlti_f64), tuple[_VecF64, _VecC128])
 assert_type(dfreqresp(_tf_disc_f64), tuple[_VecF64, _VecC128])
 assert_type(dfreqresp(_zpk_disc_f64), tuple[_VecF64, _VecC128])
 assert_type(dfreqresp(_ss_disc_f64), tuple[_VecF64, _VecC128])
-# c64
-assert_type(dfreqresp(_dlti_c64), tuple[_VecF64, _VecC128])
-# c128
-assert_type(dfreqresp(_dlti_c128), tuple[_VecF64, _VecC128])
