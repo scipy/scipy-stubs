@@ -77,7 +77,7 @@ _ToTFContInexact: TypeAlias = tuple[_ToComplex12D, onp.ToComplex1D]
 _ToTFContInexact32: TypeAlias = tuple[_ToInexact32_1D | _ToInexact32_2D, _ToInexact32_1D]
 _ToTFContInexact64: TypeAlias = tuple[_ToInexact64_1D | _ToInexact64_2D, _ToInexact64_1D]
 # numerator, denominator, dt
-_ToTFDiscFloat: TypeAlias = tuple[_ToFloat12D, onp.ToComplex1D, onp.ToFloat]
+_ToTFDisc: TypeAlias = tuple[_ToFloat12D, onp.ToComplex1D, onp.ToFloat]
 
 # zeros, poles, gain
 _ToZPKContFloat: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat]
@@ -85,7 +85,7 @@ _ToZPKContInexact: TypeAlias = tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFlo
 _ToZPKContInexact32: TypeAlias = tuple[_ToInexact32_1D, _ToInexact32_1D, onp.ToFloat]
 _ToZPKContInexact64: TypeAlias = tuple[_ToInexact64_1D, _ToInexact64_1D, onp.ToFloat]
 # zeros, poles, gain, dt
-_ToZPKDiscFloat: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat, onp.ToFloat]
+_ToZPKDisc: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat, onp.ToFloat]
 
 # A, B, C, D
 _ToSSContFloat: TypeAlias = _Tuple4[onp.ToFloat2D]
@@ -93,13 +93,13 @@ _ToSSContInexact: TypeAlias = _Tuple4[onp.ToComplex2D]
 _ToSSContInexact32: TypeAlias = _Tuple4[_ToInexact32_2D]
 _ToSSContInexact64: TypeAlias = _Tuple4[_ToInexact64_2D]
 # A, B, C, D, dt
-_ToSSDiscFloat: TypeAlias = tuple[onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat]
+_ToSSDisc: TypeAlias = tuple[onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat]
 
 _ToLTIFloat: TypeAlias = _ToTFContFloat | _ToZPKContFloat | _ToSSContFloat
 _ToLTIInexact: TypeAlias = _ToTFContInexact | _ToZPKContInexact | _ToSSContInexact
 _ToLTIInexact32: TypeAlias = _ToTFContInexact32 | _ToZPKContInexact32 | _ToSSContInexact32
 _ToLTIInexact64: TypeAlias = _ToTFContInexact64 | _ToZPKContInexact64 | _ToSSContInexact64
-_ToDLTI: TypeAlias = _ToTFDiscFloat | _ToZPKDiscFloat | _ToSSDiscFloat
+_ToDLTI: TypeAlias = _ToTFDisc | _ToZPKDisc | _ToSSDisc
 
 ###
 
@@ -591,22 +591,28 @@ def freqresp(system: _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 10_
 #
 @overload
 def dlsim(
-    system: StateSpaceDiscrete, u: _ToFloat012D | None, t: onp.ToFloat1D | None = None, x0: onp.ToFloat1D | None = None
+    system: StateSpaceDiscrete | _ToSSDisc,
+    u: _ToFloat012D | None,
+    t: onp.ToFloat1D | None = None,
+    x0: onp.ToFloat1D | None = None,
 ) -> tuple[_Float64_1D, _Float64_2D, _Float64_2D]: ...
 @overload
 def dlsim(
-    system: _ToDLTI, u: _ToFloat012D | None, t: onp.ToFloat1D | None = None, x0: onp.ToFloat1D | None = None
-) -> tuple[_Float64_1D, _Float64_1D]: ...
+    system: TransferFunctionDiscrete | ZerosPolesGainDiscrete | _ToTFDisc | _ToZPKDisc,
+    u: _ToFloat012D | None,
+    t: onp.ToFloat1D | None = None,
+    x0: onp.ToFloat1D | None = None,
+) -> tuple[_Float64_1D, _Float64_2D]: ...
 
 #
 def dimpulse(
     system: dlti | _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-) -> tuple[onp.Array1D[np.float64], tuple[onp.ArrayND[np.float64], ...]]: ...
+) -> tuple[onp.Array1D[np.float64], tuple[onp.Array2D[np.float64], ...]]: ...
 
 #
 def dstep(
     system: dlti | _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-) -> tuple[onp.Array1D[np.float64], tuple[onp.ArrayND[np.float64], ...]]: ...
+) -> tuple[onp.Array1D[np.float64], tuple[onp.Array2D[np.float64], ...]]: ...
 
 #
 def dbode(system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float64]]: ...
