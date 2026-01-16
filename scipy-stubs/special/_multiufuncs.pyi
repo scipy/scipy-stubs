@@ -249,7 +249,7 @@ class _SphHarmYAll(Protocol):
 
 ###
 
-class MultiUFunc(Generic[_UFuncT_co]):
+class MultiUFunc(Generic[_UFuncT_co]):  # undocumented
     @property
     @override
     def __doc__(self, /) -> str | None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleVariableOverride]
