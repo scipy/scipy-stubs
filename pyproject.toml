@@ -53,7 +53,7 @@ ci = ["packaging>=25.0"]
 lint = [
   { include-group = "extras" },
   "dprint-py==0.51.1.0",
-  "ruff==0.14.12",
+  "ruff==0.14.13",
   "sp-repo-review[cli]==2025.11.21",
 ]
 type = [
@@ -63,7 +63,7 @@ type = [
   "pytest==9.0.2", # needed for `scipy._lib._array_api.make_xp_pytest_*`
   "basedpyright==1.37.1",
   "mypy[faster-cache]==1.19.1",
-  "pyrefly==0.48.0",
+  "pyrefly==0.48.1",
   "stubdefaulter>=0.1.0",
   "ty==0.0.12",
 ]
