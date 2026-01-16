@@ -166,23 +166,25 @@ assert_type(_lti_c128.step(), tuple[_VecF64, _VecC128])
 ###
 # bode
 
+# what's going on with mypy here...?
+
 # f32
-assert_type(bode(_lti_f32), tuple[_VecF32, _VecF32, _VecF32])
+assert_type(bode(_lti_f32), tuple[_VecF32, _VecF32, _VecF32])  # type: ignore[assert-type]
 assert_type(bode(_to_tf_cont_f32), tuple[_VecF32, _VecF32, _VecF32])
 assert_type(bode(_to_zpk_cont_f32), tuple[_VecF32, _VecF32, _VecF32])
 assert_type(bode(_to_ss_cont_f32), tuple[_VecF32, _VecF32, _VecF32])
 # c64
-assert_type(bode(_lti_c64), tuple[_VecF32, _VecF32, _VecF32])
+assert_type(bode(_lti_c64), tuple[_VecF32, _VecF32, _VecF32])  # type: ignore[assert-type]
 assert_type(bode(_to_tf_cont_c64), tuple[_VecF32, _VecF32, _VecF32])
 assert_type(bode(_to_zpk_cont_c64), tuple[_VecF32, _VecF32, _VecF32])
 assert_type(bode(_to_ss_cont_c64), tuple[_VecF32, _VecF32, _VecF32])
 # f64
-assert_type(bode(_lti_f64), tuple[_VecF64, _VecF64, _VecF64])
+assert_type(bode(_lti_f64), tuple[_VecF64, _VecF64, _VecF64])  # type: ignore[assert-type]
 assert_type(bode(_to_tf_cont_f64), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(bode(_to_zpk_cont_f64), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(bode(_to_ss_cont_f64), tuple[_VecF64, _VecF64, _VecF64])
 # c128
-assert_type(bode(_lti_c128), tuple[_VecF64, _VecF64, _VecF64])
+assert_type(bode(_lti_c128), tuple[_VecF64, _VecF64, _VecF64])  # type: ignore[assert-type]
 assert_type(bode(_to_tf_cont_c128), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(bode(_to_zpk_cont_c128), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(bode(_to_ss_cont_c128), tuple[_VecF64, _VecF64, _VecF64])
