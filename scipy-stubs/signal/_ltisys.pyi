@@ -200,23 +200,19 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
     ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], onp.ArrayND[np.complex128]]: ...
 
     #
-    @overload  # this mypy `overload-overlap` error is a false positive
-    def bode(  # type: ignore[overload-overlap]
-        self: lti[np.float64 | np.complex128], /, w: onp.ToFloat1D | None = None, n: int = 100
-    ) -> _Tuple3[onp.Array1D[np.float64]]: ...
     @overload
-    def bode(
-        self: lti[np.float32 | np.complex64], /, w: onp.ToFloat1D | None = None, n: int = 100
-    ) -> _Tuple3[onp.Array1D[np.float32]]: ...
+    def bode(self: lti[npc.inexact64], /, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float64]]: ...
+    @overload
+    def bode(self: lti[npc.inexact32], /, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float32]]: ...
 
     #
-    @overload  # this mypy `overload-overlap` error is a false positive
-    def freqresp(  # type: ignore[overload-overlap]
-        self: lti[np.float64 | np.complex128], /, w: onp.ToFloat1D | None = None, n: int = 10_000
+    @overload
+    def freqresp(
+        self: lti[npc.inexact64], /, w: onp.ToFloat1D | None = None, n: int = 10_000
     ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
     @overload
     def freqresp(
-        self: lti[np.float32 | np.complex64], /, w: onp.ToFloat1D | None = None, n: int = 10_000
+        self: lti[npc.inexact32], /, w: onp.ToFloat1D | None = None, n: int = 10_000
     ) -> tuple[onp.Array1D[np.float32], onp.Array1D[np.complex64]]: ...
 
     #
@@ -641,25 +637,25 @@ def step(
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]]: ...
 
 #
-@overload  # this mypy `overload-overlap` error is a false positive
-def bode(  # type: ignore[overload-overlap]
-    system: lti[np.float64 | np.complex128] | _ToLTIInexact64, w: onp.ToFloat1D | None = None, n: int = 100
+@overload
+def bode(
+    system: lti[npc.inexact64] | _ToLTIInexact64, w: onp.ToFloat1D | None = None, n: int = 100
 ) -> _Tuple3[onp.Array1D[np.float64]]: ...
 @overload
 def bode(
-    system: lti[np.float32 | np.complex64] | _ToLTIInexact32, w: onp.ToFloat1D | None = None, n: int = 100
+    system: lti[npc.inexact32] | _ToLTIInexact32, w: onp.ToFloat1D | None = None, n: int = 100
 ) -> _Tuple3[onp.Array1D[np.float32]]: ...
 @overload
 def bode(system: lti | _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[_Float1D]: ...
 
 #
-@overload  # this mypy `overload-overlap` error is a false positive
-def freqresp(  # type: ignore[overload-overlap]
-    system: lti[np.float64 | np.complex128] | _ToLTIInexact64, w: onp.ToFloat1D | None = None, n: int = 10_000
+@overload
+def freqresp(
+    system: lti[npc.inexact64] | _ToLTIInexact64, w: onp.ToFloat1D | None = None, n: int = 10_000
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
 @overload
 def freqresp(
-    system: lti[np.float32 | np.complex64] | _ToLTIInexact32, w: onp.ToFloat1D | None = None, n: int = 10_000
+    system: lti[npc.inexact32] | _ToLTIInexact32, w: onp.ToFloat1D | None = None, n: int = 10_000
 ) -> tuple[onp.Array1D[np.float32], onp.Array1D[np.complex64]]: ...
 @overload
 def freqresp(system: _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 10_000) -> tuple[_Float1D, _Complex1D]: ...
