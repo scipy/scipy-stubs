@@ -31,6 +31,18 @@ __all__ = [
 
 ###
 
+_T = TypeVar("_T")
+_SCT = TypeVar("_SCT", bound=np.generic)
+_ZerosT = TypeVar("_ZerosT", bound=_Inexact)
+_ZerosT_co = TypeVar("_ZerosT_co", bound=_Inexact, default=_Inexact, covariant=True)
+_PolesT = TypeVar("_PolesT", bound=_Float)
+_PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=_Float, covariant=True)
+_DTT = TypeVar("_DTT", bound=onp.ToComplex | None)
+_DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=Any, covariant=True)
+
+_Tuple3: TypeAlias = tuple[_T, _T, _T]
+_Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
+
 _Float: TypeAlias = np.float32 | np.float64
 _Complex: TypeAlias = np.complex64 | np.complex128
 _Inexact: TypeAlias = _Float | _Complex
@@ -39,7 +51,6 @@ _Number: TypeAlias = npc.integer | _Inexact
 _ToNumber: TypeAlias = complex | _Number
 _ToNumberOrND: TypeAlias = _ToNumber | onp.ArrayND[_Number]
 
-_SCT = TypeVar("_SCT", bound=np.generic)
 _Array12D: TypeAlias = onp.ArrayND[_SCT, tuple[int] | tuple[int, int]]
 
 _Float1D: TypeAlias = onp.Array1D[_Float]
@@ -78,10 +89,10 @@ _ToZPKContInexact64: TypeAlias = tuple[_ToInexact64_1D, _ToInexact64_1D, onp.ToF
 _ToZPKDiscFloat: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat, onp.ToFloat]
 
 # A, B, C, D
-_ToSSContFloat: TypeAlias = tuple[onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D]
-_ToSSContInexact: TypeAlias = tuple[onp.ToComplex2D, onp.ToComplex2D, onp.ToComplex2D, onp.ToComplex2D]
-_ToSSContInexact32: TypeAlias = tuple[_ToInexact32_2D, _ToInexact32_2D, _ToInexact32_2D, _ToInexact32_2D]
-_ToSSContInexact64: TypeAlias = tuple[_ToInexact64_2D, _ToInexact64_2D, _ToInexact64_2D, _ToInexact64_2D]
+_ToSSContFloat: TypeAlias = _Tuple4[onp.ToFloat2D]
+_ToSSContInexact: TypeAlias = _Tuple4[onp.ToComplex2D]
+_ToSSContInexact32: TypeAlias = _Tuple4[_ToInexact32_2D]
+_ToSSContInexact64: TypeAlias = _Tuple4[_ToInexact64_2D]
 # A, B, C, D, dt
 _ToSSDiscFloat: TypeAlias = tuple[onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat]
 
@@ -90,13 +101,6 @@ _ToLTIInexact: TypeAlias = _ToTFContInexact | _ToZPKContInexact | _ToSSContInexa
 _ToLTIInexact32: TypeAlias = _ToTFContInexact32 | _ToZPKContInexact32 | _ToSSContInexact32
 _ToLTIInexact64: TypeAlias = _ToTFContInexact64 | _ToZPKContInexact64 | _ToSSContInexact64
 _ToDLTI: TypeAlias = _ToTFDiscFloat | _ToZPKDiscFloat | _ToSSDiscFloat
-
-_ZerosT = TypeVar("_ZerosT", bound=_Inexact)
-_ZerosT_co = TypeVar("_ZerosT_co", bound=_Inexact, default=_Inexact, covariant=True)
-_PolesT = TypeVar("_PolesT", bound=_Float)
-_PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=_Float, covariant=True)
-_DTT = TypeVar("_DTT", bound=onp.ToComplex | None)
-_DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=Any, covariant=True)
 
 ###
 
@@ -523,31 +527,37 @@ def impulse(
     system: _ToLTIInexact, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
 ) -> tuple[_Float1D, _Inexact1D]: ...
 
-# TODO: refine return dtype
+# float32/complex64 are upcast to float64/complex128 in the output
 @overload
 def step(
-    system: lti[_ZerosT, _PolesT], X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[onp.Array1D[_PolesT], onp.Array1D[_ZerosT]]: ...
+    system: lti[np.float32 | np.float64] | _ToLTIFloat,
+    X0: onp.ToFloat1D | None = None,
+    T: onp.ToFloat1D | None = None,
+    N: int | None = None,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
 @overload
 def step(
-    system: _ToLTIFloat, X0: onp.ToFloat1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[_Float1D, _Float1D]: ...
+    system: lti[np.complex64 | np.complex128],
+    X0: onp.ToComplex1D | None = None,
+    T: onp.ToFloat1D | None = None,
+    N: int | None = None,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
 @overload
 def step(
     system: _ToLTIInexact, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[_Float1D, _Inexact1D]: ...
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]]: ...
 
 #
 @overload  # this mypy `overload-overlap` error is a false positive
 def bode(  # type: ignore[overload-overlap]
     system: lti[np.float64 | np.complex128] | _ToLTIInexact64, w: onp.ToFloat1D | None = None, n: int = 100
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+) -> _Tuple3[onp.Array1D[np.float64]]: ...
 @overload
 def bode(
     system: lti[np.float32 | np.complex64] | _ToLTIInexact32, w: onp.ToFloat1D | None = None, n: int = 100
-) -> tuple[onp.Array1D[np.float32], onp.Array1D[np.float32], onp.Array1D[np.float32]]: ...
+) -> _Tuple3[onp.Array1D[np.float32]]: ...
 @overload
-def bode(system: lti | _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 100) -> tuple[_Float1D, _Float1D, _Float1D]: ...
+def bode(system: lti | _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[_Float1D]: ...
 
 #
 @overload  # this mypy `overload-overlap` error is a false positive
