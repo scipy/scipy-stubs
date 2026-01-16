@@ -1,5 +1,6 @@
 from collections.abc import Callable
 from typing import TypeAlias, overload
+from typing_extensions import override
 
 import numpy as np
 import optype.numpy as onp
@@ -57,7 +58,8 @@ __all__ = [
 ]
 
 # mypy: disable-error-code="explicit-override"
-class orthopoly1d(np.poly1d):
+
+class orthopoly1d(np.poly1d):  # undocumented
     limits: tuple[float, float]
     weights: onp.ArrayND[np.float64]
     weight_func: Callable[[float], float]
@@ -74,7 +76,10 @@ class orthopoly1d(np.poly1d):
         monic: bool = False,
         eval_func: np.ufunc | None = None,
     ) -> None: ...
-    @overload  # type: ignore[override]
+
+    #
+    @override  # type: ignore[override]
+    @overload
     def __call__(self, /, v: np.poly1d) -> np.poly1d: ...
     @overload
     def __call__(self, /, v: onp.ToFloat) -> npc.floating: ...

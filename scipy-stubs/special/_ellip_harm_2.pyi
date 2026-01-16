@@ -14,9 +14,9 @@ class _CApiDict(TypedDict):
 
 ###
 
-__pyx_capi__: Final[_CApiDict] = ...
+__pyx_capi__: Final[_CApiDict] = ...  # undocumented
 
-nan: Final[float] = ...
+nan: Final[float] = ...  # undocumented
 
-def _ellipsoid(h2: float, k2: float, n: int, p: int, s: float) -> float: ...
-def _ellipsoid_norm(h2: float, k2: float, n: int, p: int) -> float: ...
+def _ellipsoid(h2: float, k2: float, n: int, p: int, s: float) -> float: ...  # undocumented
+def _ellipsoid_norm(h2: float, k2: float, n: int, p: int) -> float: ...  # undocumented
