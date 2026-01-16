@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Literal, Never, TypeAlias
+from typing import Final, Literal, Never, TypeAlias
 from typing_extensions import override
 
 import numpy as np
@@ -63,7 +63,7 @@ class UnivariateSpline:
     #
     def get_knots(self, /) -> _Float1D: ...
     def get_coeffs(self, /) -> _Float1D: ...
-    def get_residual(self, /) -> _Float1D: ...
+    def get_residual(self, /) -> float: ...
     def set_smoothing_factor(self, /, s: onp.ToFloat) -> None: ...
 
     #
@@ -102,7 +102,7 @@ class LSQUnivariateSpline(UnivariateSpline):
 
 class _BivariateSplineBase:  # undocumented
     def __call__(self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, grid: onp.ToBool = True) -> _Float1D: ...
-    def get_residual(self, /) -> _Float1D: ...
+    def get_residual(self, /) -> float: ...
     def get_knots(self, /) -> tuple[_Float1D, _Float1D]: ...
     def get_coeffs(self, /) -> _Float1D: ...
     def partial_derivative(self, /, dx: int, dy: int) -> _DerivedBivariateSpline: ...
@@ -114,9 +114,11 @@ class BivariateSpline(_BivariateSplineBase):
 class _DerivedBivariateSpline(_BivariateSplineBase):  # undocumented
     @property
     def fp(self, /) -> Never: ...
+    @override
+    def get_residual(self, /) -> Never: ...  # raises AttributeError
 
 class SmoothBivariateSpline(BivariateSpline):
-    fp: float
+    fp: Final[float]
     tck: tuple[_Float1D, _Float1D, int]
     degrees: tuple[int, int]
 
@@ -135,7 +137,7 @@ class SmoothBivariateSpline(BivariateSpline):
     ) -> None: ...
 
 class LSQBivariateSpline(BivariateSpline):
-    fp: float
+    fp: Final[float]
     tck: tuple[_Float1D, _Float1D, int]
     degrees: tuple[int, int]
 
@@ -155,7 +157,7 @@ class LSQBivariateSpline(BivariateSpline):
     ) -> None: ...
 
 class RectBivariateSpline(BivariateSpline):
-    fp: float
+    fp: Final[float]
     tck: tuple[_Float1D, _Float1D, int]
     degrees: tuple[int, int]
 
@@ -180,7 +182,7 @@ class SphereBivariateSpline(_BivariateSplineBase):
     def ev(self, /, theta: onp.ToFloatND, phi: onp.ToFloatND, dtheta: int = 0, dphi: int = 0) -> _FloatND: ...
 
 class SmoothSphereBivariateSpline(SphereBivariateSpline):
-    fp: float
+    fp: Final[float]
     tck: tuple[_Float1D, _Float1D, int]
     degrees: tuple[int, int]
 
@@ -196,7 +198,7 @@ class SmoothSphereBivariateSpline(SphereBivariateSpline):
     ) -> None: ...
 
 class LSQSphereBivariateSpline(SphereBivariateSpline):
-    fp: float
+    fp: Final[float]
     tck: tuple[_Float1D, _Float1D, int]
     degrees: tuple[int, int]
 
@@ -213,7 +215,7 @@ class LSQSphereBivariateSpline(SphereBivariateSpline):
     ) -> None: ...
 
 class RectSphereBivariateSpline(SphereBivariateSpline):
-    fp: float
+    fp: Final[float]
     tck: tuple[_Float1D, _Float1D, int]
     degrees: tuple[int, int]
     v0: np.float64
