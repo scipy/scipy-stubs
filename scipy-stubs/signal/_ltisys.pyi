@@ -587,7 +587,7 @@ def freqresp(system: _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 10_
 
 #
 
-# TODO: refine return dtype
+#
 @overload
 def dlsim(
     system: StateSpaceDiscrete, u: _ToFloat012D | None, t: onp.ToFloat1D | None = None, x0: onp.ToFloat1D | None = None
@@ -617,10 +617,10 @@ def dstep(
     system: _ToDLTI, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
 ) -> tuple[_Float1D, _Float1D]: ...
 
-# TODO: refine return dtype
-def dbode(system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 100) -> tuple[_Float1D, _Float1D, _Float1D]: ...
+#
+def dbode(system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float64]]: ...
 
-# TODO: refine return dtype
+#
 def dfreqresp(
     system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 10_000, whole: bool = False
-) -> tuple[_Float1D, _Complex1D]: ...
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
