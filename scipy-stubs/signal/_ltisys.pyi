@@ -33,10 +33,10 @@ __all__ = [
 
 _T = TypeVar("_T")
 _SCT = TypeVar("_SCT", bound=np.generic)
-_ZerosT = TypeVar("_ZerosT", bound=_Inexact)
-_ZerosT_co = TypeVar("_ZerosT_co", bound=_Inexact, default=_Inexact, covariant=True)
+_ZerosT = TypeVar("_ZerosT", bound=npc.inexact32 | npc.inexact64)
+_ZerosT_co = TypeVar("_ZerosT_co", bound=npc.inexact32 | npc.inexact64, default=Any, covariant=True)
 _PolesT = TypeVar("_PolesT", bound=_Float)
-_PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=_Float, covariant=True)
+_PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=np.float64 | Any, covariant=True)
 _DTT = TypeVar("_DTT", bound=onp.ToComplex | None)
 _DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=Any, covariant=True)
 
