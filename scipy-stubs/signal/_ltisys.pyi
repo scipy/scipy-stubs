@@ -252,19 +252,20 @@ class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT
     def __init__(self, /, *system: Never, dt: float, **kwargs: Never) -> None: ...
 
     #
-    def impulse(
-        self, /, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-    ) -> tuple[_Float1D, _Float1D]: ...
-    def step(
-        self, /, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
-    ) -> tuple[_Float1D, _Float1D]: ...
     def output(
         self, /, u: _ToFloat012D | None, t: onp.ToFloat1D, x0: onp.ToFloat1D | None = None
-    ) -> tuple[_Float1D, _Float1D]: ...
-    def bode(self, /, w: onp.ToFloat1D | None = None, n: int = 100) -> tuple[_Float1D, _Float1D, _Float1D]: ...
+    ) -> tuple[_Float64_1D, _Float64_2D] | tuple[_Float64_1D, _Float64_2D, _Float64_2D]: ...
+    def impulse(
+        self, /, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
+    ) -> tuple[onp.Array1D[np.float64], tuple[onp.Array2D[np.float64], ...]]: ...
+    #
+    def step(
+        self, /, x0: onp.ToFloat1D | None = None, t: onp.ToFloat1D | None = None, n: int | None = None
+    ) -> tuple[onp.Array1D[np.float64], tuple[onp.Array2D[np.float64], ...]]: ...
+    def bode(self, /, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float64]]: ...
     def freqresp(
         self, /, w: onp.ToFloat1D | None = None, n: int = 10_000, whole: bool = False
-    ) -> tuple[_Float1D, _Complex1D]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
 
 #
 class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Generic[_PolesT_co, _DTT_co], metaclass=abc.ABCMeta):
@@ -320,6 +321,12 @@ class TransferFunctionDiscrete(
     def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], /) -> None: ...
     @overload
     def __init__(self, numerator: _ToFloat12D, denominator: onp.ToFloat1D, /, *, dt: _DTT_co = ...) -> None: ...
+
+    #
+    @override
+    def output(
+        self, /, u: _ToFloat012D | None, t: onp.ToFloat1D, x0: onp.ToFloat1D | None = None
+    ) -> tuple[_Float64_1D, _Float64_2D]: ...
 
 #
 class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
@@ -417,6 +424,12 @@ class ZerosPolesGainDiscrete(
         *,
         dt: _DTT = ...,
     ) -> None: ...
+
+    #
+    @override
+    def output(
+        self, /, u: _ToFloat012D | None, t: onp.ToFloat1D, x0: onp.ToFloat1D | None = None
+    ) -> tuple[_Float64_1D, _Float64_2D]: ...
 
 class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     __array_priority__: ClassVar[float] = 100.0
@@ -534,6 +547,12 @@ class StateSpaceDiscrete(
         *,
         dt: _DTT = ...,
     ) -> None: ...
+
+    #
+    @override
+    def output(
+        self, /, u: _ToFloat012D | None, t: onp.ToFloat1D, x0: onp.ToFloat1D | None = None
+    ) -> tuple[_Float64_1D, _Float64_2D, _Float64_2D]: ...
 
 # NOTE: Only used as return type of `place_poles`.
 @final
