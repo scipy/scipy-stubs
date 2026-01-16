@@ -335,6 +335,7 @@ Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis)) |
 [Namer](https://github.com/ThePornDatabase/namer) |
 [NeuroGym](https://github.com/neurogym/neurogym) |
 [Optuna](https://github.com/optuna/optuna) |
+[pandapower](https://github.com/e2nIEE/pandapower) |
 Pandas ([pandas](https://github.com/pandas-dev/pandas),
 [pandas-stubs](https://github.com/pandas-dev/pandas-stubs)) |
 [Pandera](https://github.com/unionai-oss/pandera) |
