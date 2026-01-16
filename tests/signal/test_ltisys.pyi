@@ -3,7 +3,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import bode, freqresp, lti, step
+from scipy.signal import bode, freqresp, impulse, lti, step
 
 ###
 
@@ -39,7 +39,31 @@ _ss_cont_c128: tuple[
 ]
 
 ###
-# freqresp
+# impulse (same as step)
+
+# f32
+assert_type(impulse(_lti_f32), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(impulse(_tf_cont_f32), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(impulse(_zpk_cont_f32), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(impulse(_ss_cont_f32), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+# c64
+assert_type(impulse(_lti_c64), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]])
+assert_type(impulse(_tf_cont_c64), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]])
+assert_type(impulse(_zpk_cont_c64), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]])
+assert_type(impulse(_ss_cont_c64), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]])
+# f64
+assert_type(impulse(_lti_f64), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(impulse(_tf_cont_f64), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(impulse(_zpk_cont_f64), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(impulse(_ss_cont_f64), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+# c128
+assert_type(impulse(_lti_c128), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]])
+assert_type(impulse(_tf_cont_c128), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]])
+assert_type(impulse(_zpk_cont_c128), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]])
+assert_type(impulse(_ss_cont_c128), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]])
+
+###
+# step (same as impulse)
 
 # f32
 assert_type(step(_lti_f32), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
