@@ -344,7 +344,7 @@ PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 [pysmo](https://github.com/pysmo/pysmo) |
 [python-hvac](https://github.com/TomLXXVI/python-hvac) |
 [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay) |
-scverse ([scanpy](https://github.com/scverse/scanpy)) |
+scverse ([PyDESeq2](https://github.com/scverse/PyDESeq2), [scanpy](https://github.com/scverse/scanpy)) |
 [Skore](https://github.com/probabl-ai/skore) |
 Theis Lab ([anndata2ri](https://github.com/theislab/anndata2ri)) |
 [TorchFX](https://github.com/matteospanio/torchfx) |
