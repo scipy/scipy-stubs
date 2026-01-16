@@ -499,21 +499,29 @@ def place_poles(
     maxiter: int = 30,
 ) -> Bunch: ...
 
-# TODO: refine return dtype
+# keep in sync with impulse and step
 @overload
 def lsim(
-    system: lti[_ZerosT], U: _ToFloat012D | None, T: onp.ToInt1D, X0: onp.ToComplex1D | None = None, interp: bool = True
-) -> tuple[onp.Array1D[_ZerosT], onp.Array1D[_ZerosT], onp.ArrayND[_ZerosT]]: ...
+    system: lti[np.float32 | np.float64] | _ToLTIFloat,
+    U: _ToFloat012D | None,
+    T: onp.ToFloat1D,
+    X0: onp.ToFloat1D | None = None,
+    interp: bool = True,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
 @overload
 def lsim(
-    system: _ToLTIFloat, U: _ToFloat012D | None, T: onp.ToInt1D, X0: onp.ToFloat1D | None = None, interp: bool = True
-) -> tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+    system: lti[np.complex64 | np.complex128],
+    U: _ToFloat012D | None,
+    T: onp.ToFloat1D,
+    X0: onp.ToComplex1D | None = None,
+    interp: bool = True,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], onp.ArrayND[np.complex128]]: ...
 @overload
 def lsim(
-    system: _ToLTIInexact, U: _ToFloat012D | None, T: onp.ToInt1D, X0: onp.ToComplex1D | None = None, interp: bool = True
-) -> tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+    system: _ToLTIInexact, U: _ToFloat012D | None, T: onp.ToFloat1D, X0: onp.ToComplex1D | None = None, interp: bool = True
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
 
-# keep in sync with step
+# keep in sync with lsim and step
 @overload
 def impulse(
     system: lti[np.float32 | np.float64] | _ToLTIFloat,
@@ -524,7 +532,7 @@ def impulse(
 @overload
 def impulse(
     system: lti[np.complex64 | np.complex128],
-    X0: onp.ToFloat1D | None = None,
+    X0: onp.ToComplex1D | None = None,
     T: onp.ToFloat1D | None = None,
     N: int | None = None,
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
@@ -533,7 +541,7 @@ def impulse(
     system: _ToLTIInexact, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]]: ...
 
-# keep in sync with impulse
+# keep in sync with lsim and impulse
 @overload
 def step(
     system: lti[np.float32 | np.float64] | _ToLTIFloat,
