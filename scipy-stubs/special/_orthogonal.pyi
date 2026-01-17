@@ -6,8 +6,8 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_PointsWeights: TypeAlias = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
-_PointsWeightsMu: TypeAlias = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], np.float64]
+_PointsWeights: TypeAlias = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]
+_PointsWeightsMu: TypeAlias = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64]
 
 __all__ = [
     "c_roots",
@@ -57,8 +57,6 @@ __all__ = [
     "us_roots",
 ]
 
-# mypy: disable-error-code="explicit-override"
-
 class orthopoly1d(np.poly1d):  # undocumented
     limits: tuple[float, float]
     weights: onp.ArrayND[np.float64]
@@ -90,62 +88,91 @@ class orthopoly1d(np.poly1d):  # undocumented
     @overload
     def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[npc.inexact]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
 
+#
 @overload
 def roots_jacobi(n: onp.ToInt, alpha: onp.ToFloat, beta: onp.ToFloat, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_jacobi(n: onp.ToInt, alpha: onp.ToFloat, beta: onp.ToFloat, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_sh_jacobi(n: onp.ToInt, p1: onp.ToFloat, q1: onp.ToFloat, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_sh_jacobi(n: onp.ToInt, p1: onp.ToFloat, q1: onp.ToFloat, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_genlaguerre(n: onp.ToInt, alpha: onp.ToFloat, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_genlaguerre(n: onp.ToInt, alpha: onp.ToFloat, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_laguerre(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_laguerre(n: onp.ToInt, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_hermite(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_hermite(n: onp.ToInt, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_hermitenorm(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_hermitenorm(n: onp.ToInt, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_gegenbauer(n: onp.ToInt, alpha: onp.ToFloat, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_gegenbauer(n: onp.ToInt, alpha: onp.ToFloat, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_chebyt(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_chebyt(n: onp.ToInt, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_chebyu(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_chebyu(n: onp.ToInt, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_chebyc(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_chebyc(n: onp.ToInt, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_chebys(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_chebys(n: onp.ToInt, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_sh_chebyt(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_sh_chebyt(n: onp.ToInt, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_sh_chebyu(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_sh_chebyu(n: onp.ToInt, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_legendre(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
 def roots_legendre(n: onp.ToInt, mu: onp.ToTrue) -> _PointsWeightsMu: ...
+
+#
 @overload
 def roots_sh_legendre(n: onp.ToInt, mu: onp.ToFalse = False) -> _PointsWeights: ...
 @overload
@@ -168,9 +195,8 @@ def sh_chebyt(n: onp.ToInt, monic: bool = False) -> orthopoly1d: ...
 def sh_chebyu(n: onp.ToInt, monic: bool = False) -> orthopoly1d: ...
 def sh_jacobi(n: onp.ToInt, p: onp.ToFloat, q: onp.ToFloat, monic: bool = False) -> orthopoly1d: ...
 
-# These functions are not public, but still need stubs because they
-# get checked in the tests.
-def _roots_hermite_asy(n: onp.ToInt) -> _PointsWeights: ...
+#
+def _roots_hermite_asy(n: onp.ToInt) -> _PointsWeights: ...  # undocumented
 
 p_roots = roots_legendre
 t_roots = roots_chebyt
