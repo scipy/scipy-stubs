@@ -50,14 +50,14 @@ def mmread(source: FileLike[bytes], *, spmatrix: onp.ToTrue = True) -> onp.Array
 @overload
 def mmread(source: FileLike[bytes], *, spmatrix: onp.ToFalse) -> onp.Array2D | coo_array[Any, tuple[int, int]]: ...
 
-#
+# these defaults are different in `io._mmio`, so we don't specify them to avoid duplicate definitions
 def mmwrite(
     target: FileLike[bytes],
     a: onp.ToArray2D | spmatrix | sparray,
-    comment: str = "",
+    comment: str | None = ...,  # stubdefaulter: ignore[missing-default]
     field: _Field | None = None,
     precision: int | None = None,
-    symmetry: _Symmetry | None = None,
+    symmetry: _Symmetry | Literal["AUTO"] | None = ...,  # stubdefaulter: ignore[missing-default]
 ) -> None: ...
 
 #
