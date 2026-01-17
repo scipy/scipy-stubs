@@ -1,6 +1,6 @@
 from typing import Any, assert_type
 
-from scipy.io import loadmat
+from scipy.io import loadmat, savemat
 
 ###
 
@@ -18,3 +18,11 @@ assert_type(loadmat("file.mat", struct_as_record=True), dict[str, Any])
 assert_type(loadmat("file.mat", verify_compressed_data_integrity=True), dict[str, Any])
 assert_type(loadmat("file.mat", simplify_cells=True), dict[str, Any])
 assert_type(loadmat("file.mat", variable_names=("a", "b")), dict[str, Any])
+
+# savemat
+assert_type(savemat("file.mat", {"": ""}), None)
+assert_type(savemat("file.mat", {"": ""}, appendmat=False), None)
+assert_type(savemat("file.mat", {"": ""}, format="4"), None)
+assert_type(savemat("file.mat", {"": ""}, long_field_names=True), None)
+assert_type(savemat("file.mat", {"": ""}, do_compression=True), None)
+assert_type(savemat("file.mat", {"": ""}, oned_as="column"), None)
