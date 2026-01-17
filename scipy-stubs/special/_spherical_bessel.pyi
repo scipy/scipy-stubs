@@ -20,6 +20,7 @@ def use_reflection(
     reflection_fun: Callable[[int, complex, bool], onp.ToComplex] | None = None,  # should accept the four public functions below
 ) -> IdentityFunction: ...  # undocumented
 
+# undocumented
 # defined as `(n, z, derivative=False) -> spherical_kn(n, z, derivative=).real`
 @overload  # (int, complex) -> float
 def spherical_kn_reflection(n: onp.ToInt, z: onp.ToComplex, derivative: bool = False) -> np.float64: ...
