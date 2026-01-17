@@ -57,8 +57,6 @@ __all__ = [
     "us_roots",
 ]
 
-# mypy: disable-error-code="explicit-override"
-
 class orthopoly1d(np.poly1d):  # undocumented
     limits: tuple[float, float]
     weights: onp.ArrayND[np.float64]
