@@ -2,15 +2,11 @@ from collections.abc import Mapping
 from typing import Any, Literal, TypeAlias, TypedDict, type_check_only
 from typing_extensions import Unpack
 
-import optype.numpy as onp
-
 from ._miobase import MatFileReader
 from scipy.io._typing import ByteOrder, FileName
 
 __all__ = ["loadmat", "savemat", "whosmat"]
 
-# values can be either a 2d `ndarray`, 2d `coo_array`, or `coo_matrix`.
-_MDict: TypeAlias = Mapping[str, onp.Array2D | Any]
 _DataClass: TypeAlias = Literal[
     "int8",
     "int16",
@@ -54,17 +50,17 @@ def mat_reader_factory(
 #
 def loadmat(
     file_name: FileName,
-    mdict: _MDict | None = None,
+    mdict: Mapping[str, object] | None = None,
     appendmat: bool = True,
     *,
     spmatrix: bool = True,
     **kwargs: Unpack[_ReaderKwargs],
-) -> _MDict: ...
+) -> dict[str, Any]: ...
 
 #
 def savemat(
     file_name: FileName,
-    mdict: _MDict,
+    mdict: Mapping[str, object],
     appendmat: bool = True,
     format: Literal["5", "4"] = "5",
     long_field_names: bool = False,

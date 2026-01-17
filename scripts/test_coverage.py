@@ -23,7 +23,7 @@ _PACKAGES_PUBLIC: Final = (
     "interpolate",
     "io",
     "io.arff",
-    "io.matlab",
+    "io.wavfile",
     "linalg",
     "linalg.blas",
     "linalg.cython_blas",
