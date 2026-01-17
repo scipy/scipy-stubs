@@ -327,6 +327,7 @@ Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)) |
 [linearmodels](https://github.com/bashtage/linearmodels) |
 [Lmo](https://github.com/jorenham/Lmo) |
 [MaxText](https://github.com/AI-Hypercomputer/maxtext) |
+Metta AI ([mettagrid](https://github.com/Metta-AI/metta/tree/main/packages/mettagrid)) |
 [MolPipeline](https://github.com/basf/MolPipeline) |
 [MouseTracks](https://github.com/huntfx/MouseTracks) |
 Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis)) |
