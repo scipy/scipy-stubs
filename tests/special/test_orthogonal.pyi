@@ -6,12 +6,23 @@ import optype.numpy as onp
 from scipy.special import (
     c_roots,
     cg_roots,
+    chebyc,
+    chebys,
+    chebyt,
+    chebyu,
+    gegenbauer,
+    genlaguerre,
     h_roots,
     he_roots,
+    hermite,
+    hermitenorm,
     j_roots,
+    jacobi,
     js_roots,
     l_roots,
     la_roots,
+    laguerre,
+    legendre,
     p_roots,
     ps_roots,
     roots_chebyc,
@@ -30,13 +41,79 @@ from scipy.special import (
     roots_sh_jacobi,
     roots_sh_legendre,
     s_roots,
+    sh_chebyt,
+    sh_chebyu,
+    sh_jacobi,
+    sh_legendre,
     t_roots,
     ts_roots,
     u_roots,
     us_roots,
 )
+from scipy.special._orthogonal import orthopoly1d
 
 ###
+
+_py_f_1d: list[float]
+_py_f_2d: list[list[float]]
+
+_py_c_1d: list[complex]
+_py_c_2d: list[list[complex]]
+
+_f32: np.float32
+_f32_1d: onp.Array1D[np.float32]
+_f32_2d: onp.Array2D[np.float32]
+_f32_nd: onp.ArrayND[np.float32]
+
+_c64: np.complex64
+_c64_1d: onp.Array1D[np.complex64]
+_c64_2d: onp.Array2D[np.complex64]
+_c64_nd: onp.ArrayND[np.complex64]
+
+_orthopoly: orthopoly1d
+
+###
+# orthopoly1d
+
+assert_type(legendre(3), orthopoly1d)
+assert_type(chebyt(3), orthopoly1d)
+assert_type(chebyu(3), orthopoly1d)
+assert_type(chebyc(3), orthopoly1d)
+assert_type(chebys(3), orthopoly1d)
+assert_type(jacobi(3, 2, 1), orthopoly1d)
+assert_type(laguerre(3), orthopoly1d)
+assert_type(genlaguerre(3, 2), orthopoly1d)
+assert_type(hermite(3), orthopoly1d)
+assert_type(hermitenorm(3), orthopoly1d)
+assert_type(gegenbauer(3, 2), orthopoly1d)
+assert_type(sh_legendre(3), orthopoly1d)
+assert_type(sh_chebyt(3), orthopoly1d)
+assert_type(sh_chebyu(3), orthopoly1d)
+assert_type(sh_jacobi(3, 2, 1), orthopoly1d)
+
+assert_type(_orthopoly.limits, tuple[float, float])
+assert_type(_orthopoly.weights, onp.Array2D[np.float64])
+assert_type(_orthopoly.weight_func(1), float)
+assert_type(_orthopoly.normcoef, float)
+
+assert_type(_orthopoly(_orthopoly), np.poly1d)
+assert_type(_orthopoly(1), np.float64)
+assert_type(_orthopoly(_py_f_1d), onp.Array1D[np.float64])
+assert_type(_orthopoly(_py_f_2d), onp.Array2D[np.float64])
+assert_type(_orthopoly(1j), np.complex128)
+assert_type(_orthopoly(_py_c_1d), onp.Array1D[np.complex128])
+assert_type(_orthopoly(_py_c_2d), onp.Array2D[np.complex128])
+assert_type(_orthopoly(_f32), np.float64)
+assert_type(_orthopoly(_f32_1d), onp.Array1D[np.float64])
+assert_type(_orthopoly(_f32_2d), onp.Array2D[np.float64])
+assert_type(_orthopoly(_f32_nd), onp.ArrayND[np.float64])
+assert_type(_orthopoly(_c64), np.complex128)
+assert_type(_orthopoly(_c64_1d), onp.Array1D[np.complex128])
+assert_type(_orthopoly(_c64_2d), onp.Array2D[np.complex128])
+assert_type(_orthopoly(_c64_nd), onp.ArrayND[np.complex128])
+
+###
+# roots
 
 # jacobi
 assert_type(roots_jacobi(3, 2, 1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -127,3 +204,5 @@ assert_type(roots_sh_legendre(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.
 assert_type(roots_sh_legendre(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
 assert_type(ps_roots(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(ps_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+
+###
