@@ -1,10 +1,9 @@
 from collections.abc import Mapping, Sequence
-from typing import IO, Final, Generic, Literal, Self, TypeAlias, overload
+from typing import IO, Any, Final, Generic, Literal, Self, SupportsIndex, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt
-import optype as op
 import optype.numpy as onp
 
 from ._typing import FileLike
@@ -12,9 +11,11 @@ from scipy._typing import ExitMixin
 
 __all__ = ["netcdf_file", "netcdf_variable"]
 
-_ShapeT_co = TypeVar("_ShapeT_co", covariant=True, bound=tuple[int, ...], default=tuple[int, ...])
-_SCT = TypeVar("_SCT", bound=np.generic, default=np.generic)
-_SCT_co = TypeVar("_SCT_co", covariant=True, bound=np.generic, default=np.generic)
+###
+
+_ShapeT_co = TypeVar("_ShapeT_co", covariant=True, bound=tuple[int, ...], default=tuple[Any, ...])
+_ScalarT = TypeVar("_ScalarT", bound=np.generic)
+_ScalarT_co = TypeVar("_ScalarT_co", covariant=True, bound=np.generic, default=Any)
 
 _FileModeRWA: TypeAlias = Literal["r", "w", "a"]
 _TypeCode: TypeAlias = Literal["b", "c", "h", "i", "f", "d"]
@@ -39,6 +40,8 @@ _TypeFill: TypeAlias = Literal[
     b"\x7c\xf0\x00\x00",
     b"\x47\x9e\x00\x00\x00\x00\x00\x00",
 ]  # fmt: skip
+
+###
 
 IS_PYPY: Final[bool] = ...
 
@@ -73,6 +76,7 @@ class netcdf_file(ExitMixin):
     maskandscale: Final[bool]
     dimensions: Final[dict[str, int]]
     variables: Final[dict[str, netcdf_variable]]
+
     def __init__(
         self,
         /,
@@ -84,29 +88,39 @@ class netcdf_file(ExitMixin):
     ) -> None: ...
     def __del__(self, /) -> None: ...
     def __enter__(self, /) -> Self: ...
-    def close(self, /) -> None: ...
+
+    #
     def createDimension(self, /, name: str, length: int) -> None: ...
+
+    #
     @overload
     def createVariable(
-        self, /, name: str, type: np.dtype[_SCT] | onp.HasDType[np.dtype[_SCT]], dimensions: Sequence[str]
-    ) -> netcdf_variable[tuple[int, ...], _SCT]: ...
+        self, /, name: str, type: onp.ToDType[_ScalarT], dimensions: Sequence[str]
+    ) -> NetCDFVariable[tuple[Any, ...], _ScalarT]: ...
     @overload
-    def createVariable(self, /, name: str, type: npt.DTypeLike, dimensions: Sequence[str]) -> netcdf_variable: ...
+    def createVariable(self, /, name: str, type: npt.DTypeLike, dimensions: Sequence[str]) -> NetCDFVariable: ...
+
+    #
     def flush(self, /) -> None: ...
     def sync(self, /) -> None: ...
+    def close(self, /) -> None: ...
 
-class netcdf_variable(Generic[_ShapeT_co, _SCT_co]):
-    data: onp.Array[_ShapeT_co, _SCT_co]
+class netcdf_variable(Generic[_ShapeT_co, _ScalarT_co]):
+    data: onp.Array[_ShapeT_co, _ScalarT_co]
     dimensions: Final[Sequence[str]]
     maskandscale: Final[bool]
+
+    #
     @property
     def isrec(self, /) -> bool: ...
     @property
     def shape(self, /) -> _ShapeT_co: ...
+
+    #
     def __init__(
         self,
         /,
-        data: onp.Array[_ShapeT_co, _SCT_co],
+        data: onp.Array[_ShapeT_co, _ScalarT_co],
         typecode: str,
         size: int,
         shape: tuple[int, ...] | list[int],
@@ -114,10 +128,18 @@ class netcdf_variable(Generic[_ShapeT_co, _SCT_co]):
         attributes: Mapping[str, object] | None = None,
         maskandscale: bool = False,
     ) -> None: ...
-    def __getitem__(self, /, index: op.CanIndex | slice | tuple[op.CanIndex | slice, ...]) -> _SCT | onp.ArrayND[_SCT]: ...
-    def __setitem__(self: netcdf_variable[tuple[int, ...], _SCT], /, index: object, data: _SCT | onp.ArrayND[_SCT]) -> None: ...
-    def getValue(self, /) -> _SCT_co: ...
+
+    #
+    def __getitem__(
+        self, /, index: SupportsIndex | slice | tuple[SupportsIndex | slice, ...]
+    ) -> _ScalarT | onp.ArrayND[_ScalarT]: ...
+    def __setitem__(
+        self: netcdf_variable[tuple[int, ...], _ScalarT], /, index: object, data: _ScalarT | onp.ArrayND[_ScalarT]
+    ) -> None: ...
+
+    #
     def assignValue(self, /, value: object) -> None: ...
+    def getValue(self, /) -> _ScalarT_co: ...
     def typecode(self, /) -> str: ...
     def itemsize(self, /) -> int: ...
 
