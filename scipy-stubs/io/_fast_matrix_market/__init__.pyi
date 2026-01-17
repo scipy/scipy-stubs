@@ -53,7 +53,7 @@ def mmread(source: FileLike[bytes], *, spmatrix: onp.ToFalse) -> onp.Array2D | c
 #
 def mmwrite(
     target: FileLike[bytes],
-    a: spmatrix | sparray | onp.ToArrayND,
+    a: onp.ToArray2D | spmatrix | sparray,
     comment: str = "",
     field: _Field | None = None,
     precision: int | None = None,
