@@ -1,4 +1,4 @@
-from typing import ClassVar, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Any, ClassVar, Literal, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import Unpack
 
 import optype.numpy as onp
@@ -96,9 +96,9 @@ def asstr(s: object) -> str: ...
 
 #
 @overload
-def mmread(source: FileLike[bytes], *, spmatrix: onp.ToTrue = True) -> onp.ArrayND[npc.number] | coo_array: ...
+def mmread(source: FileLike[bytes], *, spmatrix: onp.ToTrue = True) -> onp.Array2D | coo_matrix: ...
 @overload
-def mmread(source: FileLike[bytes], *, spmatrix: onp.ToFalse) -> onp.ArrayND[npc.number] | coo_matrix: ...
+def mmread(source: FileLike[bytes], *, spmatrix: onp.ToFalse) -> onp.Array2D | coo_array[Any, tuple[int, int]]: ...
 
 #
 def mmwrite(
