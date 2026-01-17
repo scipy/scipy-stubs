@@ -59,7 +59,7 @@ def loadmat(
     *,
     spmatrix: bool = True,
     **kwargs: Unpack[_ReaderKwargs],
-) -> _MDict: ...
+) -> dict[str, Any]: ...
 
 #
 def savemat(
