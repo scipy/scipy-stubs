@@ -1,31 +1,49 @@
-from os import PathLike
-from typing import Final, Generic
+from _typeshed import StrOrBytesPath
+from typing import Any, Final, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 __all__ = ["readsav"]
 
-_VT = TypeVar("_VT", default=object)
+_VT = TypeVar("_VT", default=Any)
 
 ###
 
-DTYPE_DICT: Final[dict[int, str]] = ...
-RECTYPE_DICT: Final[dict[int, str]] = ...
-STRUCT_DICT: Final[dict[str, dict[str, object]]] = ...
+DTYPE_DICT: Final[dict[int, str]] = ...  # undocumented
+RECTYPE_DICT: Final[dict[int, str]] = ...  # undocumented
+STRUCT_DICT: Final[dict[str, dict[str, Any]]] = ...  # undocumented
 
-class Pointer:
+class Pointer:  # undocumented
     index: int
     def __init__(self, /, index: int) -> None: ...
 
-class ObjectPointer(Pointer): ...
+class ObjectPointer(Pointer): ...  # undocumented
 
-class AttrDict(dict[str, _VT], Generic[_VT]):
-    def __init__(self, /, init: dict[str, object] | None = None) -> None: ...
-    def __call__(self, /, name: str) -> object: ...
+class AttrDict(dict[str, _VT], Generic[_VT]):  # undocumented
+    def __init__(self, /, init: dict[str, Any] | None = None) -> None: ...
+    def __call__(self, /, name: str) -> Any: ...
 
+@overload
 def readsav(
-    file_name: str | bytes | PathLike[str] | PathLike[bytes],
-    idict: dict[str, object] | None = None,
-    python_dict: bool = False,
+    file_name: StrOrBytesPath,
+    idict: dict[str, Any] | None = None,
+    python_dict: Literal[False] = False,
     uncompressed_file_name: str | None = None,
     verbose: bool = False,
-) -> AttrDict[object] | dict[str, object]: ...
+) -> AttrDict[Any]: ...
+@overload
+def readsav(
+    file_name: StrOrBytesPath,
+    idict: dict[str, Any] | None = None,
+    *,
+    python_dict: Literal[True],
+    uncompressed_file_name: str | None = None,
+    verbose: bool = False,
+) -> dict[str, Any]: ...
+@overload
+def readsav(
+    file_name: StrOrBytesPath,
+    idict: dict[str, Any] | None,
+    python_dict: Literal[True],
+    uncompressed_file_name: str | None = None,
+    verbose: bool = False,
+) -> dict[str, Any]: ...
