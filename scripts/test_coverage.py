@@ -68,6 +68,7 @@ _PACKAGES_DEPRECATED: Final = (
     "io.arff.arffread",
     "io.harwell_boeing",
     "io.idl",
+    "io.matlab",  # not deprecated, but testing a bare module is not useful
     "io.matlab.byteordercodes",
     "io.matlab.mio_utils",
     "io.matlab.mio",
