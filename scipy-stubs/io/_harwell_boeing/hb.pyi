@@ -1,4 +1,4 @@
-from typing import IO, Final, Literal, LiteralString, Self, TypeAlias, overload, type_check_only
+from typing import IO, Any, Final, Literal, LiteralString, Self, TypeAlias, overload, type_check_only
 from typing_extensions import Protocol
 
 import numpy as np
@@ -7,8 +7,7 @@ import optype.numpy.compat as npc
 import optype.typing as opt
 
 from scipy.io._typing import FileLike
-from scipy.sparse import csc_array, csc_matrix
-from scipy.sparse._base import _spbase
+from scipy.sparse import csc_array, csc_matrix, sparray, spmatrix
 
 __all__ = ["hb_read", "hb_write"]
 
@@ -27,10 +26,10 @@ class _HasWidthAndRepeat(Protocol):
 
 ###
 
-class MalformedHeader(Exception): ...
-class LineOverflow(Warning): ...
+class MalformedHeader(Exception): ...  # undocumented
+class LineOverflow(Warning): ...  # undocumented
 
-class HBInfo:
+class HBInfo:  # undocumented
     title: Final[str]
     key: Final[str]
     total_nlines: Final[int]
@@ -54,7 +53,12 @@ class HBInfo:
 
     @classmethod
     def from_data(
-        cls, m: _spbase, title: str = "Default title", key: str = "0", mxtype: HBMatrixType | None = None, fmt: None = None
+        cls,
+        m: sparray | spmatrix,
+        title: str = "Default title",
+        key: str = "0",
+        mxtype: HBMatrixType | None = None,
+        fmt: None = None,
     ) -> Self: ...
     @classmethod
     def from_file(cls, fid: IO[str]) -> Self: ...
@@ -81,7 +85,7 @@ class HBInfo:
     ) -> None: ...
     def dump(self, /) -> str: ...
 
-class HBMatrixType:
+class HBMatrixType:  # undocumented
     value_type: Final[_ValueType]
     structure: Final[_Structure]
     storage: Final[_Storage]
@@ -94,7 +98,7 @@ class HBMatrixType:
     #
     def __init__(self, /, value_type: _ValueType, structure: _Structure, storage: _Storage = "assembled") -> None: ...
 
-class HBFile:
+class HBFile:  # undocumented
     @property
     def title(self, /) -> str: ...
     @property
@@ -109,18 +113,18 @@ class HBFile:
     #
     def __init__(self, /, file: IO[str], hb_info: HBMatrixType | None = None) -> None: ...
     def read_matrix(self, /) -> csc_array[_Real]: ...
-    def write_matrix(self, /, m: _spbase) -> None: ...
+    def write_matrix(self, /, m: sparray | spmatrix) -> None: ...
 
-def _nbytes_full(fmt: _HasWidthAndRepeat, nlines: int) -> int: ...
-def _expect_int(value: opt.AnyInt, msg: str | None = None) -> int: ...
-def _read_hb_data(content: IO[str], header: HBInfo) -> csc_array[_Real]: ...
-def _write_data(m: _spbase, fid: IO[str], header: HBInfo) -> None: ...
+def _nbytes_full(fmt: _HasWidthAndRepeat, nlines: int) -> int: ...  # undocumented
+def _expect_int(value: opt.AnyInt, msg: str | None = None) -> int: ...  # undocumented
+def _read_hb_data(content: IO[str], header: HBInfo) -> csc_array[_Real]: ...  # undocumented
+def _write_data(m: sparray | spmatrix, fid: IO[str], header: HBInfo) -> None: ...  # undocumented
 
 #
 @overload
-def hb_read(path_or_open_file: FileLike[str], *, spmatrix: onp.ToTrue = True) -> csc_array[_Real]: ...
+def hb_read(path_or_open_file: FileLike[str], *, spmatrix: onp.ToTrue = True) -> csc_matrix[Any]: ...
 @overload
-def hb_read(path_or_open_file: FileLike[str], *, spmatrix: onp.ToFalse) -> csc_matrix[_Real]: ...
+def hb_read(path_or_open_file: FileLike[str], *, spmatrix: onp.ToFalse) -> csc_array[Any]: ...
 
 #
-def hb_write(path_or_open_file: FileLike[str], m: _spbase, hb_info: HBInfo | None = None) -> None: ...
+def hb_write(path_or_open_file: FileLike[str], m: sparray | spmatrix, hb_info: HBInfo | None = None) -> None: ...
