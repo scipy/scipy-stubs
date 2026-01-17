@@ -52,7 +52,7 @@ jobs:
           uvx \
             --from="https://github.com/hauntsaninja/mypy_primer.git" \
             mypy_primer \
-            --project-selector "/(scikit-learn|xarray|freqtrade|jax|optuna|spark|pandera|imagehash|arviz|altair|hydpy|static-frame)/?$" \
+            --project-selector "/(altair|arviz|colour|dedupe|freqtrade|hydpy|imagehash|jax|materialize|optuna|pandas|pandas-stubs|pandera|scikit-learn|scipy|spark|static-frame|vision|xarray)/?$" \
             --new v${MYPY_VERSION} \
             --new-prepend-path new \
             --old v${MYPY_VERSION} \
