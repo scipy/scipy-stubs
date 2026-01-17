@@ -4,7 +4,6 @@ from typing_extensions import override
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 _PointsWeights: TypeAlias = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]
 _PointsWeightsMu: TypeAlias = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64]
@@ -80,13 +79,15 @@ class orthopoly1d(np.poly1d):  # undocumented
     @overload
     def __call__(self, /, v: np.poly1d) -> np.poly1d: ...
     @overload
-    def __call__(self, /, v: onp.ToFloat) -> npc.floating: ...
+    def __call__(self, /, v: onp.ToFloat) -> np.float64: ...
     @overload
-    def __call__(self, /, v: onp.ToComplex) -> npc.inexact: ...
+    def __call__(self, /, v: onp.ToJustComplex) -> np.complex128: ...
     @overload
-    def __call__(self, /, v: onp.ToFloatND) -> onp.ArrayND[npc.floating]: ...
+    def __call__(self, /, v: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
     @overload
-    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[npc.inexact]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+    def __call__(self, /, v: onp.ToJustComplexND) -> onp.ArrayND[np.complex128]: ...
+    @overload
+    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[np.float64 | np.complex128]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
 
 #
 @overload
