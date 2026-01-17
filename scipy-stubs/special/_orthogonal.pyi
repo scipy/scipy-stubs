@@ -1,6 +1,6 @@
-from collections.abc import Callable
-from typing import TypeAlias, overload
-from typing_extensions import override
+from collections.abc import Callable, Sequence
+from typing import Final, TypeAlias, overload
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype.numpy as onp
@@ -57,11 +57,19 @@ __all__ = [
     "us_roots",
 ]
 
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+
+###
+
+# we need this to avoid false positives on numpy<2.1
+# pyright: reportOverlappingOverload = false
+
 class orthopoly1d(np.poly1d):  # undocumented
-    limits: tuple[float, float]
-    weights: onp.ArrayND[np.float64]
-    weight_func: Callable[[float], float]
-    normcoef: float
+    limits: Final[tuple[float, float]]
+    weights: Final[onp.Array2D[np.float64]]
+    weight_func: Final[Callable[[float], float]]
+    normcoef: Final[float]
+
     def __init__(
         self,
         /,
@@ -80,13 +88,27 @@ class orthopoly1d(np.poly1d):  # undocumented
     @overload
     def __call__(self, /, v: np.poly1d) -> np.poly1d: ...
     @overload
-    def __call__(self, /, v: onp.ToFloat) -> npc.floating: ...
+    def __call__(self, /, v: onp.ToFloat) -> np.float64: ...
     @overload
-    def __call__(self, /, v: onp.ToComplex) -> npc.inexact: ...
+    def __call__(self, /, v: onp.ToJustComplex) -> np.complex128: ...
     @overload
-    def __call__(self, /, v: onp.ToFloatND) -> onp.ArrayND[npc.floating]: ...
+    def __call__(self, /, v: onp.ArrayND[npc.floating | npc.integer | np.bool_, _ShapeT]) -> onp.ArrayND[np.float64, _ShapeT]: ...
     @overload
-    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[npc.inexact]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+    def __call__(self, /, v: onp.ArrayND[npc.complexfloating, _ShapeT]) -> onp.ArrayND[np.complex128, _ShapeT]: ...
+    @overload
+    def __call__(self, /, v: Sequence[float]) -> onp.Array1D[np.float64]: ...
+    @overload
+    def __call__(self, /, v: Sequence[Sequence[float]]) -> onp.Array2D[np.float64]: ...
+    @overload
+    def __call__(self, /, v: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
+    @overload
+    def __call__(self, /, v: list[complex]) -> onp.Array1D[np.complex128]: ...
+    @overload
+    def __call__(self, /, v: list[list[complex]]) -> onp.Array2D[np.complex128]: ...
+    @overload
+    def __call__(self, /, v: onp.ToJustComplexND) -> onp.ArrayND[np.complex128]: ...
+    @overload
+    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[np.float64 | np.complex128]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
 
 #
 @overload
