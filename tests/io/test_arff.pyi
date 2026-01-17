@@ -13,5 +13,5 @@ str_io: io.StringIO
 
 ###
 
-assert_type(loadarff(str_literal), tuple[onp.ArrayND[np.void], MetaData])
-assert_type(loadarff(str_io), tuple[onp.ArrayND[np.void], MetaData])
+assert_type(loadarff(str_literal), tuple[onp.Array1D[np.void], MetaData])
+assert_type(loadarff(str_io), tuple[onp.Array1D[np.void], MetaData])
