@@ -326,6 +326,7 @@ Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)) |
 [librosa](https://github.com/librosa/librosa) |
 [linearmodels](https://github.com/bashtage/linearmodels) |
 [Lmo](https://github.com/jorenham/Lmo) |
+[Materialize](https://github.com/MaterializeInc/materialize) |
 [MaxText](https://github.com/AI-Hypercomputer/maxtext) |
 Metta AI ([mettagrid](https://github.com/Metta-AI/metta/tree/main/packages/mettagrid)) |
 [MolPipeline](https://github.com/basf/MolPipeline) |
