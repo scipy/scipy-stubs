@@ -1,6 +1,6 @@
-from typing import Any, assert_type
+from typing import Any, Literal, assert_type
 
-from scipy.io import loadmat, savemat
+from scipy.io import loadmat, savemat, whosmat
 
 ###
 
@@ -26,3 +26,35 @@ assert_type(savemat("file.mat", {"": ""}, format="4"), None)
 assert_type(savemat("file.mat", {"": ""}, long_field_names=True), None)
 assert_type(savemat("file.mat", {"": ""}, do_compression=True), None)
 assert_type(savemat("file.mat", {"": ""}, oned_as="column"), None)
+
+# whosmat
+assert_type(
+    whosmat("file.mat"),
+    list[
+        tuple[
+            str,
+            tuple[int, ...],
+            Literal[
+                "int8",
+                "uint8",
+                "int16",
+                "uint16",
+                "int32",
+                "uint32",
+                "int64",
+                "uint64",
+                "single",
+                "double",
+                "cell",
+                "struct",
+                "object",
+                "char",
+                "sparse",
+                "function",
+                "opaque",
+                "logical",
+                "unknown",
+            ],
+        ]
+    ],
+)
