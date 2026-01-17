@@ -4,6 +4,7 @@ from typing_extensions import Unpack
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from ._fast_matrix_market import mminfo, mmread, mmwrite
 from ._typing import FileLike
 from scipy.sparse import coo_array, coo_matrix, sparray, spmatrix
 
@@ -93,22 +94,3 @@ class MMFile:
 
 #
 def asstr(s: object) -> str: ...
-
-#
-@overload
-def mmread(source: FileLike[bytes], *, spmatrix: onp.ToTrue = True) -> onp.ArrayND[npc.number] | coo_array: ...
-@overload
-def mmread(source: FileLike[bytes], *, spmatrix: onp.ToFalse) -> onp.ArrayND[npc.number] | coo_matrix: ...
-
-#
-def mmwrite(
-    target: FileLike[bytes],
-    a: spmatrix | sparray | onp.ToArrayND,
-    comment: str = "",
-    field: _Field | None = None,
-    precision: int | None = None,
-    symmetry: _Symmetry | None = None,
-) -> None: ...
-
-#
-def mminfo(source: FileLike[bytes]) -> _Info: ...
