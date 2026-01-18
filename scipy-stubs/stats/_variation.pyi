@@ -18,6 +18,9 @@ _co_integer: TypeAlias = npc.integer | np.bool_  # noqa: PYI042
 
 ###
 
+# NOTE: Pyright reports false positives for some overloads involving gradual shape types on numpy<2.1
+# pyright: reportOverlappingOverload=false
+
 @overload  # ?d +int: inexact
 def variation(
     a: onp.ArrayND[_co_integer, _JustAnyShape],
