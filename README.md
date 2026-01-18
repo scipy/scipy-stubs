@@ -270,15 +270,16 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 
 ### `scipy.stats`
 
-| generic type                                   | `scipy-stubs` | `scipy`  |                                                                                          |
-| ---------------------------------------------- | ------------- | -------- | ---------------------------------------------------------------------------------------- |
-| `Covariance[T: real]`                          | `>=1.14.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Covariance.html) |
-| `Uniform[S: (int, ...), T: floating]`          | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Uniform.html)    |
-| `Normal[S: (int, ...), T: floating]`           | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Normal.html)     |
-| `Binomial[S: (int, ...), T: floating]`         | `>=1.16.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Binomial.html)   |
-| `Mixture[T: floating]`                         | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Mixture.html)    |
-| `rv_frozen[D: rv_generic, T: scalar or array]` | `>=1.14.0.0`  | `>=1.17` |                                                                                          |
-| `multi_rv_frozen[D: rv_generic]`               | `>=1.14.0.0`  | `>=1.17` |                                                                                          |
+| generic type                                                                   | `scipy-stubs` | `scipy`  |                                                                                            |
+| ------------------------------------------------------------------------------ | ------------- | -------- | ------------------------------------------------------------------------------------------ |
+| `Covariance[T: real]`                                                          | `>=1.14.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Covariance.html)   |
+| `Uniform[S: (int, ...), T: floating]`                                          | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Uniform.html)      |
+| `Normal[S: (int, ...), T: floating]`                                           | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Normal.html)       |
+| `Binomial[S: (int, ...), T: floating]`                                         | `>=1.16.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Binomial.html)     |
+| `Mixture[T: floating]`                                                         | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Mixture.html)      |
+| `rv_frozen[D: rv_generic, T: scalar or array]`                                 | `>=1.14.0.0`  | `>=1.17` |                                                                                            |
+| `multi_rv_frozen[D: rv_generic]`                                               | `>=1.14.0.0`  | `>=1.17` |                                                                                            |
+| `CensoredData[X: f64 \| c128, L: f64 \| c128, R: f64 \| c128, I: f64 \| c128]` | `>=1.17.0.2`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.CensoredData.html) |
 
 ## Contributing
 
