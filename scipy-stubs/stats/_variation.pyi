@@ -1,130 +1,166 @@
 from collections.abc import Sequence
-from typing import overload
+from typing import Any, Literal, Never, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
-from numpy._typing import _ArrayLike, _NestedSequence
 
 from ._typing import NanPolicy
 
-_SCT_fc = TypeVar("_SCT_fc", bound=npc.inexact)
+_FloatingT = TypeVar("_FloatingT", bound=npc.floating)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+
+# workaround for https://github.com/microsoft/pyright/issues/10232
+_JustAnyShape: TypeAlias = tuple[Never, ...]
+
+_co_integer: TypeAlias = npc.integer | np.bool_  # noqa: PYI042
 
 ###
 
-# NOTE: This demonstrates the ridiculous complexity that's required to properly annotate this simple function with "array-likes".
-# NOTE: Shape-typing hasn't even been included, as that would require even more overloads.
+# NOTE: Pyright reports false positives for some overloads involving gradual shape types on numpy<2.1
+# pyright: reportOverlappingOverload=false
 
-# sequences of `builtins.float`, that implicitly (and inevitably) also cover `builtins.int` and `builtins.bool`
-@overload
+# NOTE: Hilariously, mypy also reports false positive `overload-overlap` errors on numpy<2.1,
+# but for completely different overloads.
+# mypy: disable-error-code=overload-overlap
+
+@overload  # ?d +int: inexact
 def variation(
-    a: Sequence[float],
-    axis: op.CanIndex | None = 0,
+    a: onp.ArrayND[_co_integer, _JustAnyShape],
+    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
+    ddof: int = 0,
     *,
-    keepdims: onp.ToFalse = False,
+    keepdims: Literal[False] = False,
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload  # 1d +float64
+def variation(
+    a: onp.ToArrayStrict1D[float, _co_integer],
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    ddof: int = 0,
+    *,
+    keepdims: Literal[False] = False,
 ) -> np.float64: ...
-@overload
+@overload  # 2d +float64
 def variation(
-    a: onp.ToIntND | _NestedSequence[float],
-    axis: None,
+    a: onp.ToArrayStrict2D[float, _co_integer],
+    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
+    ddof: int = 0,
     *,
-    keepdims: onp.ToFalse = False,
-) -> np.float64: ...
-@overload
+    keepdims: Literal[False] = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # >1d +float64
 def variation(
-    a: onp.ToIntND | _NestedSequence[float],
-    axis: op.CanIndex | None = 0,
+    a: Sequence[onp.SequenceND[float]],
+    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
+    ddof: int = 0,
     *,
-    keepdims: onp.ToTrue,
+    keepdims: Literal[False] = False,
 ) -> onp.ArrayND[np.float64]: ...
-@overload
+@overload  # nd +float64
 def variation(
-    a: onp.ToIntND | _NestedSequence[float],
-    axis: op.CanIndex | None = 0,
+    a: onp.ToArrayND[float, _co_integer],
+    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
+    ddof: int = 0,
     *,
-    keepdims: onp.ToBool = False,
-) -> np.float64 | onp.ArrayND[np.float64]: ...
-
-# array-like input with known floating- or complex-floating dtypes
-@overload
+    keepdims: Literal[False] = False,
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload  # nd +float64, axis=None
 def variation(
-    a: _ArrayLike[_SCT_fc], axis: None, nan_policy: NanPolicy = "propagate", ddof: onp.ToInt = 0, *, keepdims: onp.ToFalse = False
-) -> _SCT_fc: ...
-@overload
-def variation(
-    a: _ArrayLike[_SCT_fc],
-    axis: op.CanIndex | None = 0,
-    nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
-    *,
-    keepdims: onp.ToTrue,
-) -> onp.ArrayND[_SCT_fc]: ...
-@overload
-def variation(
-    a: _ArrayLike[_SCT_fc],
-    axis: op.CanIndex | None = 0,
-    nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
-    *,
-    keepdims: onp.ToBool = False,
-) -> _SCT_fc | onp.ArrayND[_SCT_fc]: ...
-
-# sequences of `builtin.complex`, which behave as if `float <: complex` and therefore "overlaps" with the `builtins.float`
-# overloads, hence the `complex128 | float64` returns
-@overload
-def variation(
-    a: Sequence[complex],
-    axis: op.CanIndex | None = 0,
-    nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
-    *,
-    keepdims: onp.ToFalse = False,
-) -> np.complex128 | np.float64: ...
-@overload
-def variation(
-    a: _NestedSequence[complex],
+    a: onp.ToArrayND[float, _co_integer],
     axis: None,
     nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
+    ddof: int = 0,
     *,
-    keepdims: onp.ToFalse = False,
-) -> np.complex128 | np.float64: ...
-@overload
+    keepdims: Literal[False] = False,
+) -> np.float64: ...
+@overload  # T:nd +float64, keepdims=True
 def variation(
-    a: _NestedSequence[complex],
-    axis: op.CanIndex | None = 0,
+    a: onp.ArrayND[_co_integer, _ShapeT],
+    axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
+    ddof: int = 0,
     *,
-    keepdims: onp.ToTrue,
-) -> onp.ArrayND[np.complex128 | np.float64]: ...
-@overload
+    keepdims: Literal[True],
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # nd +float64, keepdims=True
 def variation(
-    a: _NestedSequence[complex],
-    axis: op.CanIndex | None = 0,
+    a: onp.ToArrayND[float, _co_integer],
+    axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
+    ddof: int = 0,
     *,
-    keepdims: onp.ToBool = False,
-) -> np.complex128 | np.float64 | onp.ArrayND[np.complex128 | np.float64]: ...
-
-# catch-all in case of broad gradual types
-@overload
+    keepdims: Literal[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d ~T:floating
 def variation(
-    a: onp.ToComplexND,
-    axis: op.CanIndex | None = 0,
+    a: onp.ArrayND[_FloatingT, _JustAnyShape],
+    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    ddof: onp.ToInt = 0,
+    ddof: int = 0,
     *,
-    keepdims: onp.ToBool = False,
-) -> npc.inexact | onp.ArrayND[npc.inexact]: ...
+    keepdims: Literal[False] = False,
+) -> onp.ArrayND[_FloatingT] | Any: ...
+@overload  # 1d ~T:floating
+def variation(
+    a: onp.ToArrayStrict1D[_FloatingT, _FloatingT],
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    ddof: int = 0,
+    *,
+    keepdims: Literal[False] = False,
+) -> _FloatingT: ...
+@overload  # 2d ~T:floating
+def variation(
+    a: onp.ToArrayStrict2D[_FloatingT, _FloatingT],
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    ddof: int = 0,
+    *,
+    keepdims: Literal[False] = False,
+) -> onp.Array1D[_FloatingT]: ...
+@overload  # nd ~T:floating
+def variation(
+    a: onp.ToArrayND[_FloatingT, _FloatingT],
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    ddof: int = 0,
+    *,
+    keepdims: Literal[False] = False,
+) -> onp.ArrayND[_FloatingT] | Any: ...
+@overload  # nd ~T:floating, axis=None
+def variation(
+    a: onp.ToArrayND[_FloatingT, _FloatingT],
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    ddof: int = 0,
+    *,
+    keepdims: Literal[False] = False,
+) -> _FloatingT: ...
+@overload  # T:nd ~T:floating, keepdims=True
+def variation(
+    a: onp.ArrayND[_FloatingT, _ShapeT],
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    ddof: int = 0,
+    *,
+    keepdims: Literal[True],
+) -> onp.ArrayND[_FloatingT, _ShapeT]: ...
+@overload  # nd ~T:floating, keepdims=True
+def variation(
+    a: onp.ToArrayND[_FloatingT, _FloatingT],
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    ddof: int = 0,
+    *,
+    keepdims: Literal[True],
+) -> onp.ArrayND[_FloatingT]: ...
+@overload  # fallback
+def variation(
+    a: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", ddof: int = 0, *, keepdims: bool = False
+) -> onp.ArrayND[np.float64 | Any] | Any: ...
