@@ -47,7 +47,7 @@ def variation(
 ) -> onp.Array1D[np.float64]: ...
 @overload  # >1d +float64
 def variation(
-    a: onp.ArrayND[_co_integer, onp.AtLeast2D] | Sequence[onp.SequenceND[float]],
+    a: Sequence[onp.SequenceND[float]],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
@@ -117,15 +117,6 @@ def variation(
     *,
     keepdims: Literal[False] = False,
 ) -> onp.Array1D[_FloatingT]: ...
-@overload  # >1d ~T:floating
-def variation(
-    a: onp.ArrayND[_FloatingT, onp.AtLeast2D],
-    axis: int = 0,
-    nan_policy: NanPolicy = "propagate",
-    ddof: int = 0,
-    *,
-    keepdims: Literal[False] = False,
-) -> onp.ArrayND[_FloatingT]: ...
 @overload  # nd ~T:floating
 def variation(
     a: onp.ToArrayND[_FloatingT, _FloatingT],

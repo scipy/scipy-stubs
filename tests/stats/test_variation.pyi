@@ -96,12 +96,13 @@ assert_type(variation(_f80_2d, keepdims=True), onp.Array2D[np.float128])
 # 3d
 
 assert_type(variation(_py_float_3d), onp.ArrayND[np.float64])
-assert_type(variation(_bool_3d), onp.ArrayND[np.float64])
-assert_type(variation(_i8_3d), onp.ArrayND[np.float64])
-assert_type(variation(_f16_3d), onp.ArrayND[np.float16])
-assert_type(variation(_f32_3d), onp.ArrayND[np.float32])
-assert_type(variation(_f64_3d), onp.ArrayND[np.float64])
-assert_type(variation(_f80_3d), onp.ArrayND[np.float128])
+# NOTE: We cannot overload on ">=2d" arrays until we drop support numpy<2.1 (invariant shape type param).
+assert_type(variation(_bool_3d), onp.ArrayND[np.float64] | Any)
+assert_type(variation(_i8_3d), onp.ArrayND[np.float64] | Any)
+assert_type(variation(_f16_3d), onp.ArrayND[np.float16] | Any)
+assert_type(variation(_f32_3d), onp.ArrayND[np.float32] | Any)
+assert_type(variation(_f64_3d), onp.ArrayND[np.float64] | Any)
+assert_type(variation(_f80_3d), onp.ArrayND[np.float128] | Any)
 
 assert_type(variation(_py_float_3d, axis=None), np.float64)
 assert_type(variation(_bool_3d, axis=None), np.float64)
@@ -123,7 +124,6 @@ assert_type(variation(_f80_3d, keepdims=True), onp.Array3D[np.float128])
 
 # NOTE: Pyrefly doesn't seem to be able to intersect the return types in case of multiple matching overloads,
 # and in this case both return types are even identical (ArrayND[*] | Any).
-
 assert_type(variation(_bool_nd), onp.ArrayND[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(variation(_i8_nd), onp.ArrayND[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(variation(_f16_nd), onp.ArrayND[np.float16] | Any)  # pyrefly:ignore[assert-type]
