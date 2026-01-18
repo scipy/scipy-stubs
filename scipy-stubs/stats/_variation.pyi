@@ -21,6 +21,10 @@ _co_integer: TypeAlias = npc.integer | np.bool_  # noqa: PYI042
 # NOTE: Pyright reports false positives for some overloads involving gradual shape types on numpy<2.1
 # pyright: reportOverlappingOverload=false
 
+# NOTE: Hilariously, mypy also reports false positive `overload-overlap` errors on numpy<2.1,
+# but for completely different overloads.
+# mypy: disable-error-code=overload-overlap
+
 @overload  # ?d +int: inexact
 def variation(
     a: onp.ArrayND[_co_integer, _JustAnyShape],
