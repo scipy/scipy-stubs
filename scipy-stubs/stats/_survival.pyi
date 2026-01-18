@@ -21,7 +21,7 @@ _KwargsT = TypeVar("_KwargsT")
 _KwargsT_contra = TypeVar("_KwargsT_contra", contravariant=True)
 _LineT = TypeVar("_LineT")
 
-_SampleData: TypeAlias = onp.ToFloatND | CensoredData
+_SampleData: TypeAlias = onp.ToFloatND | CensoredData[np.float64]
 
 @type_check_only
 class _CanStep(Protocol[_KwargsT_contra, _LineT]):

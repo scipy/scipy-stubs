@@ -13,6 +13,7 @@ import optype.numpy.compat as npc
 
 from scipy._typing import AnyShape
 from scipy.integrate._typing import QuadOpts as _QuadOpts
+from scipy.stats._censored_data import CensoredData
 
 _T = TypeVar("_T")
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
@@ -672,7 +673,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     def fit(
         self,
         /,
-        data: _ToFloatOrND,
+        data: _ToFloatOrND | CensoredData[np.float64],
         *args: onp.ToFloat,
         optimizer: Callable[[_FloatND, tuple[float, ...], tuple[float, ...], bool], tuple[onp.ToFloat, ...]] | None = ...,
         method: _FitMethod = "MLE",

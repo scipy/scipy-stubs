@@ -7,6 +7,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._distn_infrastructure import _rv_continuous_0, rv_continuous
+from scipy.stats._censored_data import CensoredData
 
 __all__ = [
     "alpha",
@@ -330,7 +331,7 @@ class norm_gen(_rv_continuous_0):
     def fit(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
         /,
-        data: onp.ToFloat64_ND,
+        data: onp.ToFloat64_ND | CensoredData[np.float64],
         *,
         floc: onp.ToFloat64 | None = None,
         fscale: onp.ToFloat64 | None = None,
