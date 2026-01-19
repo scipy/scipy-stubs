@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Literal as L, TypeAlias, overload
+from typing import Literal as L, Never, TypeAlias, overload
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
@@ -32,11 +32,17 @@ _ScalarT = TypeVar("_ScalarT", bound=np.generic, default=npc.number | np.bool_ |
 _Kind: TypeAlias = L["symmetric", "upper", "lower"]
 _ConvMode: TypeAlias = L["valid", "same", "full"]
 
+_Bool2D: TypeAlias = onp.Array2D[np.bool_]
+_Bool3D: TypeAlias = onp.Array3D[np.bool_]
+_BoolND: TypeAlias = onp.ArrayND[np.bool_]
 _Int2D: TypeAlias = onp.Array2D[np.int_]
+_Int3D: TypeAlias = onp.Array3D[np.int_]
 _IntND: TypeAlias = onp.ArrayND[np.int_]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
+_Float3D: TypeAlias = onp.Array3D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 _Complex2D: TypeAlias = onp.Array2D[np.complex128]
+_Complex3D: TypeAlias = onp.Array3D[np.complex128]
 _ComplexND: TypeAlias = onp.ArrayND[np.complex128]
 
 _To0D: TypeAlias = onp.CanArray0[_ScalarT]
@@ -45,25 +51,51 @@ _ToStrict1D: TypeAlias = Sequence[_To0D[_ScalarT]] | onp.CanArray1D[_ScalarT]
 _ToStrict2ND: TypeAlias = onp.SequenceND[_To1D[_ScalarT]] | onp.CanArrayND[_ScalarT, onp.AtLeast2D]
 _ToND: TypeAlias = onp.SequenceND[_To0D[_ScalarT]] | onp.SequenceND[_To1D[_ScalarT]] | onp.CanArrayND[_ScalarT]
 
+_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+
 ###
 
 #
 @overload
-def toeplitz(c: onp.ToJustInt1D, r: onp.ToJustInt1D | None = None) -> _Int2D: ...
+def toeplitz(
+    c: onp.ArrayND[_ScalarT, _JustAnyShape], r: onp.ToArrayND[_ScalarT, _ScalarT] | None = None
+) -> onp.ArrayND[_ScalarT]: ...
 @overload
-def toeplitz(c: onp.ToJustFloat1D, r: onp.ToJustFloat1D | None = None) -> _Float2D: ...
+def toeplitz(
+    c: onp.ToArrayStrict1D[_ScalarT, _ScalarT], r: onp.ToArrayStrict1D[_ScalarT, _ScalarT] | None = None
+) -> onp.Array2D[_ScalarT]: ...
 @overload
-def toeplitz(c: onp.ToJustComplex1D, r: onp.ToJustComplex1D | None = None) -> _Complex2D: ...
+def toeplitz(
+    c: onp.ToArrayStrict2D[_ScalarT, _ScalarT], r: onp.ToArrayStrict2D[_ScalarT, _ScalarT] | None = None
+) -> onp.Array3D[_ScalarT]: ...
 @overload
-def toeplitz(c: _ToStrict1D[_ScalarT], r: _ToStrict1D[_ScalarT] | None = None) -> onp.Array2D[_ScalarT]: ...
+def toeplitz(
+    c: onp.ToArrayND[_ScalarT, _ScalarT], r: onp.ToArrayND[_ScalarT, _ScalarT] | None = None
+) -> onp.ArrayND[_ScalarT]: ...
 @overload
-def toeplitz(c: onp.ToJustIntND, r: onp.ToJustIntND | None = None) -> _IntND: ...
+def toeplitz(c: list[int], r: onp.ToArrayStrict1D[int, npc.integer] | None = None) -> _Int2D: ...
+@overload  # this strange order works around a false positive mypy `overload-overload` error
+def toeplitz(c: list[bool], r: onp.ToBoolStrict1D | None = None) -> _Bool2D: ...
 @overload
-def toeplitz(c: onp.ToJustFloatND, r: onp.ToJustFloatND | None = None) -> _FloatND: ...
+def toeplitz(c: list[float], r: onp.ToArrayStrict1D[float, npc.floating64] | None = None) -> _Float2D: ...
 @overload
-def toeplitz(c: onp.ToJustComplexND, r: onp.ToJustComplexND | None = None) -> _ComplexND: ...
+def toeplitz(c: list[complex], r: onp.ToArrayStrict1D[complex, npc.inexact64] | None = None) -> _Complex2D: ...
 @overload
-def toeplitz(c: _ToND[_ScalarT], r: _ToND[_ScalarT] | None = None) -> onp.ArrayND[_ScalarT]: ...
+def toeplitz(c: Sequence[list[int]], r: onp.ToArrayStrict1D[int, npc.integer] | None = None) -> _Int3D: ...
+@overload  # this strange order works around a false positive mypy `overload-overload` error
+def toeplitz(c: Sequence[list[bool]], r: onp.ToBoolStrict1D | None = None) -> _Bool3D: ...
+@overload
+def toeplitz(c: Sequence[list[float]], r: onp.ToArrayStrict1D[float, npc.floating64] | None = None) -> _Float3D: ...
+@overload
+def toeplitz(c: Sequence[list[complex]], r: onp.ToArrayStrict1D[complex, npc.inexact64] | None = None) -> _Complex3D: ...
+@overload
+def toeplitz(c: onp.ToJustBoolND, r: onp.ToIntND | None = None) -> _BoolND: ...
+@overload
+def toeplitz(c: onp.ToJustInt64_ND, r: onp.ToIntND | None = None) -> _IntND: ...
+@overload
+def toeplitz(c: onp.ToJustFloat64_ND, r: onp.ToFloat64_ND | None = None) -> _FloatND: ...
+@overload
+def toeplitz(c: onp.ToJustComplex128_ND, r: onp.ToComplex128_ND | None = None) -> _ComplexND: ...
 
 #
 @overload
