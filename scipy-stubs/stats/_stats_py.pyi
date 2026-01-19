@@ -130,8 +130,8 @@ _JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for h
 _AsFloat64_1D: TypeAlias = onp.ToArrayStrict1D[float, npc.floating64 | npc.integer]
 _AsFloat64_2D: TypeAlias = onp.ToArrayStrict2D[float, npc.floating64 | npc.integer]
 _AsFloat64_ND: TypeAlias = onp.ToArrayND[float, npc.floating64 | npc.integer]
-_AsFloat32_1D: TypeAlias = onp.ToArrayStrict1D[np.float32 | np.float16, np.float32 | np.float16]
-_AsFloat32_2D: TypeAlias = onp.ToArrayStrict2D[np.float32 | np.float16, np.float32 | np.float16]
+_AsFloat32_1D: TypeAlias = onp.ToArrayStrict1D[np.float32, np.float32 | np.float16]
+_AsFloat32_2D: TypeAlias = onp.ToArrayStrict2D[np.float32, np.float32 | np.float16]
 _AsFloat32_ND: TypeAlias = onp.ToArrayND[Never, np.float32 | np.float16]
 
 @type_check_only
@@ -1667,7 +1667,7 @@ def lmoment(
     standardize: bool = True,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.Array1D[np.float64]: ...
-@overload  # 1d f64, order: 1d, keepdims=True
+@overload  # 1d f64, order: 1d, keepdims=True  # 8
 def lmoment(
     sample: _AsFloat64_1D,
     order: onp.ToInt1D | None = None,
@@ -1849,7 +1849,7 @@ def lmoment(
     order: onp.ToInt1D | None = None,
     *,
     axis: None,
-    keepdims: bool = False,
+    keepdims: L[False] = False,
     sorted: bool = False,
     standardize: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -1904,7 +1904,7 @@ def lmoment(
     order: onp.ToInt1D | None = None,
     *,
     axis: None,
-    keepdims: bool = False,
+    keepdims: L[False] = False,
     sorted: bool = False,
     standardize: bool = True,
     nan_policy: NanPolicy = "propagate",
