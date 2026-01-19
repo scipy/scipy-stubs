@@ -59,7 +59,7 @@ _NDT_co = TypeVar(
     default=np.float64 | onp.ArrayND[np.float64],
 )  # fmt: skip
 
-_JustAnyShape: TypeAlias = tuple[Never, ...]  # workaround for https://github.com/microsoft/pyright/issues/10232
+_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
