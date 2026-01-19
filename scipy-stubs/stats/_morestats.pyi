@@ -1,6 +1,6 @@
-from collections.abc import Callable, Sequence
+from collections.abc import Callable
 from types import ModuleType
-from typing import Any, Generic, Literal, NamedTuple, Protocol, Self, TypeAlias, final, overload, type_check_only
+from typing import Any, Generic, Literal, NamedTuple, Never, Protocol, Self, TypeAlias, final, overload, type_check_only
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
@@ -51,7 +51,7 @@ __all__ = [
 ###
 
 _T = TypeVar("_T")
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
+_FloatingT = TypeVar("_FloatingT", bound=npc.floating)
 _NDT_co = TypeVar(
     "_NDT_co",
     covariant=True,
@@ -59,31 +59,7 @@ _NDT_co = TypeVar(
     default=np.float64 | onp.ArrayND[np.float64],
 )  # fmt: skip
 
-@type_check_only
-class _TestResult(NamedTuple, Generic[_NDT_co]):
-    statistic: _NDT_co
-    pvalue: _NDT_co
-
-@type_check_only
-class _ConfidenceInterval(NamedTuple):
-    statistic: float
-    minmax: tuple[float, float]
-
-# represents the e.g. `matplotlib.pyplot` module and a `matplotlib.axes.Axes` object with a `plot` and `text` method
-@type_check_only
-class _CanPlotText(Protocol):
-    # NOTE: `Any` is required as return type because it's covariant, and not shouldn't be `Never`.
-    def plot(self, /, *args: float | onp.ToFloatND | str, **kwargs: object) -> Any: ...
-    def text(self, /, x: float, y: float, s: str, fontdict: dict[str, Any] | None = None, **kwargs: object) -> Any: ...
-
-@type_check_only
-class _CanPPF(Protocol):
-    def ppf(self, q: onp.ArrayND[np.float64], /) -> onp.ArrayND[np.float64]: ...
-
-@type_check_only
-class _HasX(Protocol):
-    x: float | npc.floating
-
+_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple3: TypeAlias = tuple[_T, _T, _T]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
@@ -166,6 +142,31 @@ _ObjFun1D: TypeAlias = Callable[[float], float | npc.floating]
 _MinFun1D: TypeAlias = Callable[[_ObjFun1D], _HasX] | Callable[[_ObjFun1D], OptimizeResult]
 
 _AndersonResult: TypeAlias = FitResult[Callable[[onp.ToFloat, onp.ToFloat], np.float64]]
+
+@type_check_only
+class _TestResult(NamedTuple, Generic[_NDT_co]):
+    statistic: _NDT_co
+    pvalue: _NDT_co
+
+@type_check_only
+class _ConfidenceInterval(NamedTuple):
+    statistic: float
+    minmax: tuple[float, float]
+
+# represents the e.g. `matplotlib.pyplot` module and a `matplotlib.axes.Axes` object with a `plot` and `text` method
+@type_check_only
+class _CanPlotText(Protocol):
+    # NOTE: `Any` is required as return type because it's covariant, and not shouldn't be `Never`.
+    def plot(self, /, *args: float | onp.ToFloatND | str, **kwargs: object) -> Any: ...
+    def text(self, /, x: float, y: float, s: str, fontdict: dict[str, Any] | None = None, **kwargs: object) -> Any: ...
+
+@type_check_only
+class _CanPPF(Protocol):
+    def ppf(self, q: onp.ArrayND[np.float64], /) -> onp.ArrayND[np.float64]: ...
+
+@type_check_only
+class _HasX(Protocol):
+    x: float | npc.floating
 
 ###
 
@@ -359,20 +360,38 @@ def ppcc_plot(
     N: int = 80,
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...
 
-#
+# technically this also supports conplex data, but since boxcox is only for real data, we limit to real here as well
 @overload
 def boxcox_llf(
-    lmb: onp.ToJustFloat64,
-    data: onp.ToIntStrict1D | onp.ToJustFloat64Strict1D,
+    lmb: float | np.float64,
+    data: onp.ArrayND[npc.integer, _JustAnyShape],
     *,
-    axis: Literal[0, -1] | None = 0,
+    axis: int = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64] | np.float64: ...
+@overload
+def boxcox_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayStrict1D[float, npc.integer],
+    *,
+    axis: int | None = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> np.float64: ...
 @overload
 def boxcox_llf(
-    lmb: onp.ToJustFloat64,
-    data: onp.ToIntND | onp.ToJustFloat64_ND,
+    lmb: float | np.float64,
+    data: onp.ToArrayStrict2D[float, npc.integer],
+    *,
+    axis: int = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float64]: ...
+@overload
+def boxcox_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayND[float, npc.integer],
     *,
     axis: None,
     keepdims: Literal[False] = False,
@@ -380,70 +399,94 @@ def boxcox_llf(
 ) -> np.float64: ...
 @overload
 def boxcox_llf(
-    lmb: onp.ToJustFloat64,
-    data: onp.ToIntND | onp.ToJustFloat64_ND,
+    lmb: float | np.float64,
+    data: onp.ToArrayND[float, npc.integer],
     *,
     axis: int | None = 0,
     keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64]: ...
 @overload
-def boxcox_llf(  # type: ignore[overload-overlap]
-    lmb: float | onp.ToInt | _InexactT,
-    data: onp.CanArray1D[_InexactT] | Sequence[_InexactT],
+def boxcox_llf(
+    lmb: float | np.float64,
+    data: onp.ArrayND[_FloatingT, _JustAnyShape],
     *,
-    axis: Literal[0, -1] | None = 0,
+    axis: int = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> _InexactT: ...
+) -> onp.ArrayND[_FloatingT] | _FloatingT: ...
 @overload
-def boxcox_llf(  # type: ignore[overload-overlap]
-    lmb: float | onp.ToInt | _InexactT,
-    data: onp.CanArrayND[_InexactT] | Sequence[_InexactT],
+def boxcox_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayStrict1D[_FloatingT, _FloatingT],
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> _FloatingT: ...
+@overload
+def boxcox_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayStrict2D[_FloatingT, _FloatingT],
+    *,
+    axis: int = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[_FloatingT]: ...
+@overload
+def boxcox_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayND[_FloatingT, _FloatingT],
     *,
     axis: None,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> _InexactT: ...
+) -> _FloatingT: ...
 @overload
 def boxcox_llf(
-    lmb: float | onp.ToInt | _InexactT,
-    data: onp.CanArrayND[_InexactT] | Sequence[_InexactT],
+    lmb: float | np.float64,
+    data: onp.ToArrayND[_FloatingT, _FloatingT],
     *,
     axis: int | None = 0,
     keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[_InexactT]: ...
+) -> onp.ArrayND[_FloatingT]: ...
 @overload
 def boxcox_llf(
-    lmb: onp.ToFloat,
+    lmb: float | np.float64,
     data: onp.ToFloatStrict1D,
     *,
-    axis: Literal[0, -1] | None = 0,
+    axis: int | None = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> npc.floating: ...
+) -> np.float64 | Any: ...
 @overload
 def boxcox_llf(
-    lmb: onp.ToFloat, data: onp.ToFloatND, *, axis: None, keepdims: Literal[False] = False, nan_policy: NanPolicy = "propagate"
-) -> npc.floating: ...
+    lmb: float | np.float64,
+    data: onp.ToFloatND,
+    *,
+    axis: None,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float64 | Any: ...
 @overload
 def boxcox_llf(
-    lmb: onp.ToFloat, data: onp.ToFloatND, *, axis: int | None = 0, keepdims: Literal[True], nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.floating]: ...
-@overload
-def boxcox_llf(
-    lmb: onp.ToFloat, data: onp.ToFloatND, *, axis: int | None = 0, keepdims: bool = False, nan_policy: NanPolicy = "propagate"
-) -> npc.floating | onp.ArrayND[npc.floating]: ...
-@overload
-def boxcox_llf(
-    lmb: onp.ToComplex,
-    data: onp.ToJustComplexND,
+    lmb: float | np.float64,
+    data: onp.ToFloatND,
     *,
     axis: int | None = 0,
-    keepdims: bool = False,
+    keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
-) -> npc.complexfloating | onp.ArrayND[npc.complexfloating]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload
+def boxcox_llf(
+    lmb: float | np.float64,
+    data: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64 | Any] | Any: ...
 
 #
 @overload
