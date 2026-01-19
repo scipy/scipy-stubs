@@ -488,6 +488,134 @@ def boxcox_llf(
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64 | Any] | Any: ...
 
+# keep in sync with `boxcox_llf`
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ArrayND[npc.integer, _JustAnyShape],
+    *,
+    axis: int = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64] | np.float64: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayStrict1D[float, npc.integer],
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float64: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayStrict2D[float, npc.integer],
+    *,
+    axis: int = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float64]: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayND[float, npc.integer],
+    *,
+    axis: None,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float64: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayND[float, npc.integer],
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[True],
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ArrayND[_FloatingT, _JustAnyShape],
+    *,
+    axis: int = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[_FloatingT] | _FloatingT: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayStrict1D[_FloatingT, _FloatingT],
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> _FloatingT: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayStrict2D[_FloatingT, _FloatingT],
+    *,
+    axis: int = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[_FloatingT]: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayND[_FloatingT, _FloatingT],
+    *,
+    axis: None,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> _FloatingT: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToArrayND[_FloatingT, _FloatingT],
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[True],
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[_FloatingT]: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToFloatStrict1D,
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float64 | Any: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToFloatND,
+    *,
+    axis: None,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> np.float64 | Any: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[True],
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload
+def yeojohnson_llf(
+    lmb: float | np.float64,
+    data: onp.ToFloatND,
+    *,
+    axis: int | None = 0,
+    keepdims: Literal[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64 | Any] | Any: ...
+
 #
 @overload
 def boxcox(
@@ -503,6 +631,12 @@ def boxcox(
 def boxcox(
     x: onp.ToFloat1D, lmbda: None = None, *, alpha: float, optimizer: _MinFun1D | None = None
 ) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
+
+#
+@overload
+def yeojohnson(x: onp.ToFloat1D, lmbda: None = None) -> tuple[_Float1D, np.float64]: ...
+@overload
+def yeojohnson(x: onp.ToFloat1D, lmbda: onp.ToFloat) -> _Float1D: ...
 
 #
 @overload
@@ -534,37 +668,26 @@ def boxcox_normmax(
 ) -> onp.Array1D[np.float64]: ...
 
 #
+@overload
+def yeojohnson_normmax(
+    x: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape], brack: _Tuple2[onp.ToFloat] | None = None
+) -> onp.Array1D[np.float64] | np.float64: ...
+@overload
+def yeojohnson_normmax(x: onp.ToFloatStrict1D, brack: _Tuple2[onp.ToFloat] | None = None) -> np.float64: ...
+@overload
+def yeojohnson_normmax(x: onp.ToFloatStrict2D, brack: _Tuple2[onp.ToFloat] | None = None) -> onp.Array1D[np.float64]: ...
+@overload
+def yeojohnson_normmax(x: onp.ToFloatND, brack: _Tuple2[onp.ToFloat] | None = None) -> onp.Array1D[np.float64] | np.float64: ...
+
+#
 def boxcox_normplot(
     x: onp.ToFloat1D, la: float, lb: float, plot: _CanPlotText | ModuleType | None = None, N: int = 80
 ) -> _Tuple2[onp.Array1D[np.float64]]: ...
 
 #
-@overload
-def yeojohnson_llf(
-    lmb: onp.ToFloat, data: onp.ToFloatND, *, axis: int = 0, nan_policy: NanPolicy = "propagate", keepdims: Literal[False] = False
-) -> np.float64: ...
-@overload
-def yeojohnson_llf(
-    lmb: onp.ToFloat, data: onp.ToFloatND, *, axis: int = 0, nan_policy: NanPolicy = "propagate", keepdims: Literal[True]
-) -> onp.ArrayND[np.float64]: ...
-
-#
-@overload
-def yeojohnson(x: onp.ToFloat | onp.ToFloatND, lmbda: None = None) -> tuple[_Float1D, np.float64]: ...
-@overload
-def yeojohnson(x: onp.ToFloat | onp.ToFloatND, lmbda: onp.ToFloat) -> _Float1D: ...
-
-#
-def yeojohnson_normmax(x: onp.ToFloat | onp.ToFloatND, brack: _Tuple2[onp.ToFloat] | None = None) -> np.float64: ...
-
-#
 def yeojohnson_normplot(
-    x: onp.ToFloat | onp.ToFloatND,
-    la: onp.ToFloat,
-    lb: onp.ToFloat,
-    plot: _CanPlotText | ModuleType | None = None,
-    N: onp.ToInt = 80,
-) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+    x: onp.ToFloat1D, la: float, lb: float, plot: _CanPlotText | ModuleType | None = None, N: int = 80
+) -> _Tuple2[onp.Array1D[np.float64]]: ...
 
 #
 @overload
