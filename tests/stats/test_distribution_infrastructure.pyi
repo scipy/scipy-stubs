@@ -1,10 +1,15 @@
+# type-tests for "new" distribution infrastructure functions from `stats/_distribution_infrastructure.pyi`
+
+from typing import type_check_only
+
 import numpy as np
 
 from scipy.stats import distributions, make_distribution
 from scipy.stats._distribution_infrastructure import ContinuousDistribution
 
-LogUniform: type[ContinuousDistribution] = make_distribution(distributions.loguniform)
+###
 
+@type_check_only
 class _DuckRV:
     @property
     def __make_distribution_version__(self) -> str: ...
@@ -14,6 +19,7 @@ class _DuckRV:
     def support(self) -> tuple[float, float]: ...
     def pdf(self, x: float, /, *, quack: float) -> float: ...
 
+@type_check_only
 class _MultiDuckRV:
     @property
     def __make_distribution_version__(self) -> str: ...
@@ -24,5 +30,11 @@ class _MultiDuckRV:
     def support(self) -> dict[str, tuple[float, float]]: ...
     def pdf(self, x: float, /, *, quack: float, swim: float) -> np.float64: ...
 
-DuckRV: type[ContinuousDistribution] = make_distribution(_DuckRV)
-MultiDuckRV: type[ContinuousDistribution] = make_distribution(_MultiDuckRV)
+def _assert_continuous_distribution_type(dist: type[ContinuousDistribution], /) -> None: ...
+
+###
+
+# make_distribution
+_assert_continuous_distribution_type(make_distribution(distributions.loguniform))
+_assert_continuous_distribution_type(make_distribution(_DuckRV))
+_assert_continuous_distribution_type(make_distribution(_MultiDuckRV))
