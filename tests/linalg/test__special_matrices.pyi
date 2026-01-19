@@ -3,7 +3,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.linalg import circulant, companion, convolution_matrix, fiedler, hankel, toeplitz
+from scipy.linalg import circulant, companion, convolution_matrix, fiedler, fiedler_companion, hankel, toeplitz
 
 ###
 
@@ -129,30 +129,6 @@ assert_type(convolution_matrix(_f32_2d, 4), onp.Array3D[np.float32])
 assert_type(convolution_matrix(_f32_3d, 4), onp.ArrayND[np.float32])
 assert_type(convolution_matrix(_f32_nd, 4), onp.ArrayND[np.float32])
 
-# companion
-
-assert_type(companion(_py_i_1d), onp.Array2D[np.int_])
-assert_type(companion(_py_i_2d), onp.Array3D[np.int_])
-assert_type(companion(_py_i_3d), onp.ArrayND[np.int_])
-
-assert_type(companion(_py_f_1d), onp.Array2D[np.float64])
-assert_type(companion(_py_f_2d), onp.Array3D[np.float64])
-assert_type(companion(_py_f_3d), onp.ArrayND[np.float64])
-
-assert_type(companion(_py_c_1d), onp.Array2D[np.complex128])
-assert_type(companion(_py_c_2d), onp.Array3D[np.complex128])
-assert_type(companion(_py_c_3d), onp.ArrayND[np.complex128])
-
-assert_type(companion(_i8_1d), onp.Array2D[np.int8])
-assert_type(companion(_i8_2d), onp.Array3D[np.int8])
-assert_type(companion(_i8_3d), onp.ArrayND[np.int8])
-assert_type(companion(_i8_nd), onp.ArrayND[np.int8])
-
-assert_type(companion(_f32_1d), onp.Array2D[np.float32])
-assert_type(companion(_f32_2d), onp.Array3D[np.float32])
-assert_type(companion(_f32_3d), onp.ArrayND[np.float32])
-assert_type(companion(_f32_nd), onp.ArrayND[np.float32])
-
 # fiedler
 
 assert_type(fiedler(_py_i_1d), onp.Array2D[np.int_])
@@ -176,6 +152,54 @@ assert_type(fiedler(_f32_1d), onp.Array2D[np.float32])
 assert_type(fiedler(_f32_2d), onp.Array3D[np.float32])
 assert_type(fiedler(_f32_3d), onp.ArrayND[np.float32])
 assert_type(fiedler(_f32_nd), onp.ArrayND[np.float32])
+
+# companion
+
+assert_type(companion(_py_i_1d), onp.Array2D[np.float64])
+assert_type(companion(_py_i_2d), onp.Array3D[np.float64])
+assert_type(companion(_py_i_3d), onp.ArrayND[np.float64])
+
+assert_type(companion(_py_f_1d), onp.Array2D[np.float64])
+assert_type(companion(_py_f_2d), onp.Array3D[np.float64])
+assert_type(companion(_py_f_3d), onp.ArrayND[np.float64])
+
+assert_type(companion(_py_c_1d), onp.Array2D[np.complex128])
+assert_type(companion(_py_c_2d), onp.Array3D[np.complex128])
+assert_type(companion(_py_c_3d), onp.ArrayND[np.complex128])
+
+assert_type(companion(_i8_1d), onp.Array2D[np.float64])
+assert_type(companion(_i8_2d), onp.Array3D[np.float64])
+assert_type(companion(_i8_3d), onp.ArrayND[np.float64])
+assert_type(companion(_i8_nd), onp.ArrayND[np.float64])
+
+assert_type(companion(_f32_1d), onp.Array2D[np.float32])
+assert_type(companion(_f32_2d), onp.Array3D[np.float32])
+assert_type(companion(_f32_3d), onp.ArrayND[np.float32])
+assert_type(companion(_f32_nd), onp.ArrayND[np.float32])
+
+# fiedler_companion
+
+assert_type(fiedler_companion(_py_i_1d), onp.Array2D[np.float64])
+assert_type(fiedler_companion(_py_i_2d), onp.Array3D[np.float64])
+assert_type(fiedler_companion(_py_i_3d), onp.ArrayND[np.float64])
+
+assert_type(fiedler_companion(_py_f_1d), onp.Array2D[np.float64])
+assert_type(fiedler_companion(_py_f_2d), onp.Array3D[np.float64])
+assert_type(fiedler_companion(_py_f_3d), onp.ArrayND[np.float64])
+
+assert_type(fiedler_companion(_py_c_1d), onp.Array2D[np.complex128])
+assert_type(fiedler_companion(_py_c_2d), onp.Array3D[np.complex128])
+assert_type(fiedler_companion(_py_c_3d), onp.ArrayND[np.complex128])
+
+assert_type(fiedler_companion(_i8_1d), onp.Array2D[np.float64])
+assert_type(fiedler_companion(_i8_2d), onp.Array3D[np.float64])
+assert_type(fiedler_companion(_i8_3d), onp.ArrayND[np.float64])
+assert_type(fiedler_companion(_i8_nd), onp.ArrayND[np.float64])
+
+assert_type(fiedler_companion(_f32_1d), onp.Array2D[np.float32])
+assert_type(fiedler_companion(_f32_2d), onp.Array3D[np.float32])
+assert_type(fiedler_companion(_f32_3d), onp.ArrayND[np.float32])
+assert_type(fiedler_companion(_f32_nd), onp.ArrayND[np.float32])
 
 # hankel
 
