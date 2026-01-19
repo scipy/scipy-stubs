@@ -677,12 +677,8 @@ def boxcox_normplot(
 
 #
 def yeojohnson_normplot(
-    x: onp.ToFloat | onp.ToFloatND,
-    la: onp.ToFloat,
-    lb: onp.ToFloat,
-    plot: _CanPlotText | ModuleType | None = None,
-    N: onp.ToInt = 80,
-) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+    x: onp.ToFloat1D, la: float, lb: float, plot: _CanPlotText | ModuleType | None = None, N: int = 80
+) -> _Tuple2[onp.Array1D[np.float64]]: ...
 
 #
 @overload
