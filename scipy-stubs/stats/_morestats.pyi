@@ -448,29 +448,24 @@ def boxcox_llf(
 #
 @overload
 def boxcox(
-    x: onp.ToFloat | onp.ToFloatND, lmbda: None = None, alpha: None = None, optimizer: _MinFun1D | None = None
+    x: onp.ToFloat1D, lmbda: None = None, alpha: None = None, optimizer: _MinFun1D | None = None
 ) -> tuple[_Float1D, np.float64]: ...
 @overload
-def boxcox(
-    x: onp.ToFloat | onp.ToFloatND,
-    lmbda: onp.ToFloat,
-    alpha: float | npc.floating | None = None,
-    optimizer: _MinFun1D | None = None,
-) -> _Float1D: ...
+def boxcox(x: onp.ToFloat1D, lmbda: onp.ToFloat, alpha: float | None = None, optimizer: _MinFun1D | None = None) -> _Float1D: ...
 @overload
 def boxcox(
-    x: onp.ToFloat | onp.ToFloatND, lmbda: None, alpha: float | npc.floating, optimizer: _MinFun1D | None = None
+    x: onp.ToFloat1D, lmbda: None, alpha: float, optimizer: _MinFun1D | None = None
 ) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
 @overload
 def boxcox(
-    x: onp.ToFloat | onp.ToFloatND, lmbda: None = None, *, alpha: float | npc.floating, optimizer: _MinFun1D | None = None
+    x: onp.ToFloat1D, lmbda: None = None, *, alpha: float, optimizer: _MinFun1D | None = None
 ) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
 
 #
 @overload
 def boxcox_normmax(
-    x: onp.ToFloat | onp.ToFloatND,
-    brack: _Tuple2[onp.ToFloat] | None = None,
+    x: onp.ToFloat1D,
+    brack: _Tuple2[float] | None = None,
     method: Literal["pearsonr", "mle"] = "pearsonr",
     optimizer: _MinFun1D | None = None,
     *,
@@ -478,31 +473,27 @@ def boxcox_normmax(
 ) -> np.float64: ...
 @overload
 def boxcox_normmax(
-    x: onp.ToFloat | onp.ToFloatND,
-    brack: _Tuple2[onp.ToFloat] | None = None,
-    *,
+    x: onp.ToFloat1D,
+    brack: _Tuple2[float] | None,
     method: Literal["all"],
     optimizer: _MinFun1D | None = None,
+    *,
     ymax: onp.ToFloat | _BigFloat = ...,
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def boxcox_normmax(
-    x: onp.ToFloat | onp.ToFloatND,
-    brack: _Tuple2[onp.ToFloat] | None,
+    x: onp.ToFloat1D,
+    brack: _Tuple2[float] | None = None,
+    *,
     method: Literal["all"],
     optimizer: _MinFun1D | None = None,
-    *,
     ymax: onp.ToFloat | _BigFloat = ...,
 ) -> onp.Array1D[np.float64]: ...
 
 #
 def boxcox_normplot(
-    x: onp.ToFloat | onp.ToFloatND,
-    la: onp.ToFloat,
-    lb: onp.ToFloat,
-    plot: _CanPlotText | ModuleType | None = None,
-    N: onp.ToInt = 80,
-) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+    x: onp.ToFloat1D, la: float, lb: float, plot: _CanPlotText | ModuleType | None = None, N: int = 80
+) -> _Tuple2[onp.Array1D[np.float64]]: ...
 
 #
 @overload
