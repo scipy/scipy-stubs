@@ -448,22 +448,17 @@ def boxcox_llf(
 #
 @overload
 def boxcox(
-    x: onp.ToFloat | onp.ToFloatND, lmbda: None = None, alpha: None = None, optimizer: _MinFun1D | None = None
+    x: onp.ToFloat1D, lmbda: None = None, alpha: None = None, optimizer: _MinFun1D | None = None
 ) -> tuple[_Float1D, np.float64]: ...
 @overload
-def boxcox(
-    x: onp.ToFloat | onp.ToFloatND,
-    lmbda: onp.ToFloat,
-    alpha: float | npc.floating | None = None,
-    optimizer: _MinFun1D | None = None,
-) -> _Float1D: ...
+def boxcox(x: onp.ToFloat1D, lmbda: onp.ToFloat, alpha: float | None = None, optimizer: _MinFun1D | None = None) -> _Float1D: ...
 @overload
 def boxcox(
-    x: onp.ToFloat | onp.ToFloatND, lmbda: None, alpha: float | npc.floating, optimizer: _MinFun1D | None = None
+    x: onp.ToFloat1D, lmbda: None, alpha: float, optimizer: _MinFun1D | None = None
 ) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
 @overload
 def boxcox(
-    x: onp.ToFloat | onp.ToFloatND, lmbda: None = None, *, alpha: float | npc.floating, optimizer: _MinFun1D | None = None
+    x: onp.ToFloat1D, lmbda: None = None, *, alpha: float, optimizer: _MinFun1D | None = None
 ) -> tuple[_Float1D, np.float64, _Tuple2[float]]: ...
 
 #
