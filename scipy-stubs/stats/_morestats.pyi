@@ -464,8 +464,8 @@ def boxcox(
 #
 @overload
 def boxcox_normmax(
-    x: onp.ToFloat | onp.ToFloatND,
-    brack: _Tuple2[onp.ToFloat] | None = None,
+    x: onp.ToFloat1D,
+    brack: _Tuple2[float] | None = None,
     method: Literal["pearsonr", "mle"] = "pearsonr",
     optimizer: _MinFun1D | None = None,
     *,
@@ -473,20 +473,20 @@ def boxcox_normmax(
 ) -> np.float64: ...
 @overload
 def boxcox_normmax(
-    x: onp.ToFloat | onp.ToFloatND,
-    brack: _Tuple2[onp.ToFloat] | None = None,
-    *,
+    x: onp.ToFloat1D,
+    brack: _Tuple2[float] | None,
     method: Literal["all"],
     optimizer: _MinFun1D | None = None,
+    *,
     ymax: onp.ToFloat | _BigFloat = ...,
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def boxcox_normmax(
-    x: onp.ToFloat | onp.ToFloatND,
-    brack: _Tuple2[onp.ToFloat] | None,
+    x: onp.ToFloat1D,
+    brack: _Tuple2[float] | None = None,
+    *,
     method: Literal["all"],
     optimizer: _MinFun1D | None = None,
-    *,
     ymax: onp.ToFloat | _BigFloat = ...,
 ) -> onp.Array1D[np.float64]: ...
 
