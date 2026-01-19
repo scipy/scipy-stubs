@@ -5,9 +5,10 @@ from typing import TypeAlias, assert_type, type_check_only
 import numpy as np
 import optype.numpy as onp
 
-from scipy.stats import Uniform, distributions, make_distribution, order_statistic
+from scipy.stats import Uniform, distributions, exp, log, make_distribution, order_statistic
 from scipy.stats._distribution_infrastructure import (
     ContinuousDistribution,
+    MonotonicTransformedDistribution,
     OrderStatisticDistribution,
     TruncatedDistribution,
     truncate,
@@ -18,6 +19,7 @@ from scipy.stats._distribution_infrastructure import (
 _0d: TypeAlias = tuple[()]  # noqa: PYI042
 _1d: TypeAlias = tuple[int]  # noqa: PYI042
 _2d: TypeAlias = tuple[int, int]  # noqa: PYI042
+_3d: TypeAlias = tuple[int, int, int]  # noqa: PYI042
 
 ###
 
@@ -30,6 +32,7 @@ _f64_2d: onp.Array2D[np.float64]
 _uniform_0d_f64: Uniform[_0d, np.float64]
 _uniform_1d_f64: Uniform[_1d, np.float64]
 _uniform_2d_f64: Uniform[_2d, np.float64]
+_uniform_3d_f64: Uniform[_3d, np.float64]
 
 ###
 
@@ -58,11 +61,6 @@ def _assert_continuous_distribution_type(dist: type[ContinuousDistribution], /) 
 
 ###
 
-# make_distribution
-_assert_continuous_distribution_type(make_distribution(distributions.loguniform))
-_assert_continuous_distribution_type(make_distribution(_DuckRV))
-_assert_continuous_distribution_type(make_distribution(_MultiDuckRV))
-
 # truncate
 assert_type(truncate(_uniform_0d_f64), TruncatedDistribution[Uniform[_0d, np.float64], _0d])
 assert_type(truncate(_uniform_0d_f64, 0, 1), TruncatedDistribution[Uniform[_0d, np.float64], _0d])
@@ -81,3 +79,20 @@ assert_type(order_statistic(_uniform_1d_f64, r=_i64_1d, n=_i64_1d), OrderStatist
 assert_type(order_statistic(_uniform_2d_f64, r=0, n=1), OrderStatisticDistribution[Uniform[_2d, np.float64], _2d])
 assert_type(order_statistic(_uniform_2d_f64, r=_i64_1d, n=_i64_1d), OrderStatisticDistribution[Uniform[_2d, np.float64], _2d])
 assert_type(order_statistic(_uniform_2d_f64, r=_i64_2d, n=_i64_2d), OrderStatisticDistribution[Uniform[_2d, np.float64], _2d])
+
+# exp
+assert_type(exp(_uniform_0d_f64), MonotonicTransformedDistribution[Uniform[_0d, np.float64], _0d])
+assert_type(exp(_uniform_1d_f64), MonotonicTransformedDistribution[Uniform[_1d, np.float64], _1d])
+assert_type(exp(_uniform_2d_f64), MonotonicTransformedDistribution[Uniform[_2d, np.float64], _2d])
+assert_type(exp(_uniform_3d_f64), MonotonicTransformedDistribution[Uniform[_3d, np.float64], _3d])
+
+# exp
+assert_type(log(_uniform_0d_f64), MonotonicTransformedDistribution[Uniform[_0d, np.float64], _0d])
+assert_type(log(_uniform_1d_f64), MonotonicTransformedDistribution[Uniform[_1d, np.float64], _1d])
+assert_type(log(_uniform_2d_f64), MonotonicTransformedDistribution[Uniform[_2d, np.float64], _2d])
+assert_type(log(_uniform_3d_f64), MonotonicTransformedDistribution[Uniform[_3d, np.float64], _3d])
+
+# make_distribution
+_assert_continuous_distribution_type(make_distribution(distributions.loguniform))
+_assert_continuous_distribution_type(make_distribution(_DuckRV))
+_assert_continuous_distribution_type(make_distribution(_MultiDuckRV))
