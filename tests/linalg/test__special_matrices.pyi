@@ -3,7 +3,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.linalg import hankel, toeplitz
+from scipy.linalg import circulant, hankel, toeplitz
 
 ###
 
@@ -72,6 +72,34 @@ assert_type(toeplitz(_f64_1d, _f64_1d), onp.Array2D[np.float64])
 assert_type(toeplitz(_f64_2d, _f64_2d), onp.Array3D[np.float64])
 assert_type(toeplitz(_f64_3d, _f64_3d), onp.ArrayND[np.float64])
 assert_type(toeplitz(_f64_nd, _f64_nd), onp.ArrayND[np.float64])
+
+# circulant
+
+assert_type(circulant(_py_b_1d), onp.Array2D[np.bool_])
+assert_type(circulant(_py_b_2d), onp.Array3D[np.bool_])
+assert_type(circulant(_py_b_3d), onp.ArrayND[np.bool_])
+
+assert_type(circulant(_py_i_1d), onp.Array2D[np.int_])
+assert_type(circulant(_py_i_2d), onp.Array3D[np.int_])
+assert_type(circulant(_py_i_3d), onp.ArrayND[np.int_])
+
+assert_type(circulant(_py_f_1d), onp.Array2D[np.float64])
+assert_type(circulant(_py_f_2d), onp.Array3D[np.float64])
+assert_type(circulant(_py_f_3d), onp.ArrayND[np.float64])
+
+assert_type(circulant(_py_c_1d), onp.Array2D[np.complex128])
+assert_type(circulant(_py_c_2d), onp.Array3D[np.complex128])
+assert_type(circulant(_py_c_3d), onp.ArrayND[np.complex128])
+
+assert_type(circulant(_i8_1d), onp.Array2D[np.int8])
+assert_type(circulant(_i8_2d), onp.Array3D[np.int8])
+assert_type(circulant(_i8_3d), onp.ArrayND[np.int8])
+assert_type(circulant(_i8_nd), onp.ArrayND[np.int8])
+
+assert_type(circulant(_f32_1d), onp.Array2D[np.float32])
+assert_type(circulant(_f32_2d), onp.Array3D[np.float32])
+assert_type(circulant(_f32_3d), onp.ArrayND[np.float32])
+assert_type(circulant(_f32_nd), onp.ArrayND[np.float32])
 
 # hankel
 
