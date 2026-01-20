@@ -16,6 +16,7 @@ from scipy.linalg import (
     helmert,
     hilbert,
     invhilbert,
+    invpascal,
     leslie,
     pascal,
     toeplitz,
@@ -292,3 +293,8 @@ assert_type(invhilbert(4, exact=True), onp.Array2D[np.int64 | np.object_])
 
 assert_type(pascal(4), onp.Array2D[np.int64 | np.object_])
 assert_type(pascal(4, exact=False), onp.Array2D[np.float64])
+
+# invpascal
+
+assert_type(invpascal(4), onp.Array2D[np.int64 | np.object_])
+assert_type(invpascal(4, exact=False), onp.Array2D[np.float64])
