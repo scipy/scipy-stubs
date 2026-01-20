@@ -533,16 +533,239 @@ def gstd(
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, *, keepdims: bool = False, nan_policy: NanPolicy = "propagate"
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d ~f64, order: 0d
 def moment(
-    a: onp.ToFloatND,
+    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
     order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # ?d ~T: floating, order: 0d
+def moment(
+    a: onp.ArrayND[_FloatT, _JustAnyShape],
+    order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> _FloatT | onp.ArrayND[_FloatT]: ...
+@overload  # 1d ~f64, order: 0d
+def moment(
+    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # 1d ~T: floating, order: 0d
+def moment(
+    a: onp.ToArrayStrict1D[_FloatT, _FloatT],
+    order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> _FloatT: ...
+@overload  # 2d ~f64, order: 0d
+def moment(
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~T: floating, order: 0d
+def moment(
+    a: onp.ToArrayStrict2D[_FloatT, _FloatT],
+    order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> onp.Array1D[_FloatT]: ...
+@overload  # 3d ~f64, order: 0d
+def moment(
+    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
+    order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> onp.Array2D[np.float64]: ...
+@overload  # 3d ~T: floating, order: 0d
+def moment(
+    a: onp.ToArrayStrict3D[_FloatT, _FloatT],
+    order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> onp.Array2D[_FloatT]: ...
+@overload  # nd ~f64, order: 0d
+def moment(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload  # nd ~f64, order: 0d, axis=None  (positional)
+def moment(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    order: int,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # nd ~f64, order: 0d, axis=None  (keyword)
+def moment(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    order: int = 1,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # nd ~f64, order: nd
+def moment(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    order: onp.ToIntND,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
-    center: float | npc.floating | None = None,
-    keepdims: bool = False,
-) -> _FloatOrND: ...
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # nd ~f64, keepdims=True
+def moment(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    order: int | onp.ToIntND = 1,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # nd ~T: floating, order: 0d
+def moment(
+    a: onp.ToArrayND[_FloatT, _FloatT],
+    order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[_FloatT] | Any: ...
+@overload  # nd ~T: floating, order: 0d, axis=None  (positional)
+def moment(
+    a: onp.ToArrayND[_FloatT, _FloatT],
+    order: int,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> _FloatT: ...
+@overload  # nd ~T: floating, order: 0d, axis=None  (keyword)
+def moment(
+    a: onp.ToArrayND[_FloatT, _FloatT],
+    order: int = 1,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> _FloatT: ...
+@overload  # nd ~T: floating, order: nd
+def moment(
+    a: onp.ToArrayND[_FloatT, _FloatT],
+    order: onp.ToIntND,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[_FloatT]: ...
+@overload  # nd ~T: floating, keepdims=True
+def moment(
+    a: onp.ToArrayND[_FloatT, _FloatT],
+    order: int | onp.ToIntND = 1,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[True],
+) -> onp.ArrayND[_FloatT]: ...
+
+#
+@overload  # nd +floating, order: 0d
+def moment(
+    a: onp.ToFloatND,
+    order: int = 1,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> npc.floating | onp.ArrayND[npc.floating]: ...
+@overload  # nd +floating, order: 0d, axis=None  (positional)
+def moment(
+    a: onp.ToFloatND,
+    order: int,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> npc.floating: ...
+@overload  # nd +floating, order: 0d, axis=None  (keyword)
+def moment(
+    a: onp.ToFloatND,
+    order: int = 1,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> npc.floating: ...
+@overload  # nd +floating, order: nd
+def moment(
+    a: onp.ToFloatND,
+    order: onp.ToIntND,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[npc.floating]: ...
+@overload  # nd +floating, keepdims=True
+def moment(
+    a: onp.ToFloatND,
+    order: int | onp.ToIntND = 1,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: L[True],
+) -> onp.ArrayND[npc.floating]: ...
 
 # TODO(jorenham): improve
 def skew(
