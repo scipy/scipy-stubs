@@ -40,10 +40,10 @@ _py_c_1d: list[complex]
 _py_c_2d: list[list[complex]]
 _py_c_3d: list[list[list[complex]]]
 
-_i8_1d: onp.Array1D[np.int8]
-_i8_2d: onp.Array2D[np.int8]
-_i8_3d: onp.Array3D[np.int8]
-_i8_nd: onp.ArrayND[np.int8]
+_u8_1d: onp.Array1D[np.uint8]
+_u8_2d: onp.Array2D[np.uint8]
+_u8_3d: onp.Array3D[np.uint8]
+_u8_nd: onp.ArrayND[np.uint8]
 
 _f32_1d: onp.Array1D[np.float32]
 _f32_2d: onp.Array2D[np.float32]
@@ -75,10 +75,10 @@ assert_type(toeplitz(_py_c_1d), onp.Array2D[np.complex128])
 assert_type(toeplitz(_py_c_2d), onp.Array3D[np.complex128])
 assert_type(toeplitz(_py_c_3d), onp.ArrayND[np.complex128])
 
-assert_type(toeplitz(_i8_1d), onp.Array2D[np.int8])
-assert_type(toeplitz(_i8_2d), onp.Array3D[np.int8])
-assert_type(toeplitz(_i8_3d), onp.ArrayND[np.int8])
-assert_type(toeplitz(_i8_nd), onp.ArrayND[np.int8])
+assert_type(toeplitz(_u8_1d), onp.Array2D[np.uint8])
+assert_type(toeplitz(_u8_2d), onp.Array3D[np.uint8])
+assert_type(toeplitz(_u8_3d), onp.ArrayND[np.uint8])
+assert_type(toeplitz(_u8_nd), onp.ArrayND[np.uint8])
 
 assert_type(toeplitz(_f32_1d), onp.Array2D[np.float32])
 assert_type(toeplitz(_f32_2d), onp.Array3D[np.float32])
@@ -108,10 +108,10 @@ assert_type(circulant(_py_c_1d), onp.Array2D[np.complex128])
 assert_type(circulant(_py_c_2d), onp.Array3D[np.complex128])
 assert_type(circulant(_py_c_3d), onp.ArrayND[np.complex128])
 
-assert_type(circulant(_i8_1d), onp.Array2D[np.int8])
-assert_type(circulant(_i8_2d), onp.Array3D[np.int8])
-assert_type(circulant(_i8_3d), onp.ArrayND[np.int8])
-assert_type(circulant(_i8_nd), onp.ArrayND[np.int8])
+assert_type(circulant(_u8_1d), onp.Array2D[np.uint8])
+assert_type(circulant(_u8_2d), onp.Array3D[np.uint8])
+assert_type(circulant(_u8_3d), onp.ArrayND[np.uint8])
+assert_type(circulant(_u8_nd), onp.ArrayND[np.uint8])
 
 assert_type(circulant(_f32_1d), onp.Array2D[np.float32])
 assert_type(circulant(_f32_2d), onp.Array3D[np.float32])
@@ -136,10 +136,10 @@ assert_type(convolution_matrix(_py_c_1d, 4), onp.Array2D[np.complex128])
 assert_type(convolution_matrix(_py_c_2d, 4), onp.Array3D[np.complex128])
 assert_type(convolution_matrix(_py_c_3d, 4), onp.ArrayND[np.complex128])
 
-assert_type(convolution_matrix(_i8_1d, 4), onp.Array2D[np.int8])
-assert_type(convolution_matrix(_i8_2d, 4), onp.Array3D[np.int8])
-assert_type(convolution_matrix(_i8_3d, 4), onp.ArrayND[np.int8])
-assert_type(convolution_matrix(_i8_nd, 4), onp.ArrayND[np.int8])
+assert_type(convolution_matrix(_u8_1d, 4), onp.Array2D[np.uint8])
+assert_type(convolution_matrix(_u8_2d, 4), onp.Array3D[np.uint8])
+assert_type(convolution_matrix(_u8_3d, 4), onp.ArrayND[np.uint8])
+assert_type(convolution_matrix(_u8_nd, 4), onp.ArrayND[np.uint8])
 
 assert_type(convolution_matrix(_f32_1d, 4), onp.Array2D[np.float32])
 assert_type(convolution_matrix(_f32_2d, 4), onp.Array3D[np.float32])
@@ -160,10 +160,10 @@ assert_type(fiedler(_py_c_1d), onp.Array2D[np.complex128])
 assert_type(fiedler(_py_c_2d), onp.Array3D[np.complex128])
 assert_type(fiedler(_py_c_3d), onp.ArrayND[np.complex128])
 
-assert_type(fiedler(_i8_1d), onp.Array2D[np.int8])
-assert_type(fiedler(_i8_2d), onp.Array3D[np.int8])
-assert_type(fiedler(_i8_3d), onp.ArrayND[np.int8])
-assert_type(fiedler(_i8_nd), onp.ArrayND[np.int8])
+assert_type(fiedler(_u8_1d), onp.Array2D[np.uint8])
+assert_type(fiedler(_u8_2d), onp.Array3D[np.uint8])
+assert_type(fiedler(_u8_3d), onp.ArrayND[np.uint8])
+assert_type(fiedler(_u8_nd), onp.ArrayND[np.uint8])
 
 assert_type(fiedler(_f32_1d), onp.Array2D[np.float32])
 assert_type(fiedler(_f32_2d), onp.Array3D[np.float32])
@@ -184,10 +184,10 @@ assert_type(companion(_py_c_1d), onp.Array2D[np.complex128])
 assert_type(companion(_py_c_2d), onp.Array3D[np.complex128])
 assert_type(companion(_py_c_3d), onp.ArrayND[np.complex128])
 
-assert_type(companion(_i8_1d), onp.Array2D[np.float64])
-assert_type(companion(_i8_2d), onp.Array3D[np.float64])
-assert_type(companion(_i8_3d), onp.ArrayND[np.float64])
-assert_type(companion(_i8_nd), onp.ArrayND[np.float64])
+assert_type(companion(_u8_1d), onp.Array2D[np.float64])
+assert_type(companion(_u8_2d), onp.Array3D[np.float64])
+assert_type(companion(_u8_3d), onp.ArrayND[np.float64])
+assert_type(companion(_u8_nd), onp.ArrayND[np.float64])
 
 assert_type(companion(_f32_1d), onp.Array2D[np.float32])
 assert_type(companion(_f32_2d), onp.Array3D[np.float32])
@@ -208,10 +208,10 @@ assert_type(fiedler_companion(_py_c_1d), onp.Array2D[np.complex128])
 assert_type(fiedler_companion(_py_c_2d), onp.Array3D[np.complex128])
 assert_type(fiedler_companion(_py_c_3d), onp.ArrayND[np.complex128])
 
-assert_type(fiedler_companion(_i8_1d), onp.Array2D[np.float64])
-assert_type(fiedler_companion(_i8_2d), onp.Array3D[np.float64])
-assert_type(fiedler_companion(_i8_3d), onp.ArrayND[np.float64])
-assert_type(fiedler_companion(_i8_nd), onp.ArrayND[np.float64])
+assert_type(fiedler_companion(_u8_1d), onp.Array2D[np.float64])
+assert_type(fiedler_companion(_u8_2d), onp.Array3D[np.float64])
+assert_type(fiedler_companion(_u8_3d), onp.ArrayND[np.float64])
+assert_type(fiedler_companion(_u8_nd), onp.ArrayND[np.float64])
 
 assert_type(fiedler_companion(_f32_1d), onp.Array2D[np.float32])
 assert_type(fiedler_companion(_f32_2d), onp.Array3D[np.float32])
@@ -230,7 +230,7 @@ assert_type(leslie(_py_f_1d, _py_f_1d), onp.Array2D[np.float64])
 assert_type(leslie(_py_f_1d, _py_c_1d), onp.Array2D[np.complex128])
 assert_type(leslie(_py_c_1d, _py_f_1d), onp.Array2D[np.complex128])
 assert_type(leslie(_py_c_1d, _py_c_1d), onp.Array2D[np.complex128])
-assert_type(leslie(_i8_1d, _i8_1d), onp.Array2D[np.int8])
+assert_type(leslie(_u8_1d, _u8_1d), onp.Array2D[np.uint8])
 assert_type(leslie(_f32_1d, _f32_1d), onp.Array2D[np.float32])
 
 # block_diag
@@ -243,7 +243,7 @@ assert_type(block_diag(_py_f_1d), onp.Array2D[np.float64])
 assert_type(block_diag(_py_f_1d, _py_i_1d), onp.Array2D[np.float64])
 assert_type(block_diag(_py_c_1d), onp.Array2D[np.complex128])
 assert_type(block_diag(_py_c_1d, _py_f_1d), onp.Array2D[np.complex128])
-assert_type(block_diag(_i8_1d), onp.Array2D[np.int8])
+assert_type(block_diag(_u8_1d), onp.Array2D[np.uint8])
 assert_type(block_diag(_f32_1d), onp.Array2D[np.float32])
 
 # dft
