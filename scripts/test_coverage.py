@@ -38,6 +38,7 @@ _PACKAGES_PUBLIC: Final = (
     "sparse.linalg",
     "spatial",
     "spatial.transform",
+    "spatial.distance",
     "special",
     "special.cython_special",
     "stats",
