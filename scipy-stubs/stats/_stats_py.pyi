@@ -98,7 +98,10 @@ _RealT_co = TypeVar("_RealT_co", bound=_Real0D, default=_Real0D, covariant=True)
 _IntOrArrayT_co = TypeVar("_IntOrArrayT_co", bound=_ScalarOrND[np.intp], default=_ScalarOrND[np.intp], covariant=True)
 _FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_ScalarOrND[npc.floating])
 _FloatOrArrayT_co = TypeVar(
-    "_FloatOrArrayT_co", bound=float | _ScalarOrND[npc.floating], default=float | onp.ArrayND[np.float64], covariant=True
+    "_FloatOrArrayT_co",
+    bound=float | npc.floating | onp.ArrayND[npc.floating, Any],
+    default=float | onp.ArrayND[np.float64],
+    covariant=True,
 )
 _FloatOrArrayT2_co = TypeVar(
     "_FloatOrArrayT2_co", bound=float | _ScalarOrND[npc.floating], default=float | onp.ArrayND[np.float64], covariant=True
