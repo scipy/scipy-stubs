@@ -98,7 +98,10 @@ _RealT_co = TypeVar("_RealT_co", bound=_Real0D, default=_Real0D, covariant=True)
 _IntOrArrayT_co = TypeVar("_IntOrArrayT_co", bound=_ScalarOrND[np.intp], default=_ScalarOrND[np.intp], covariant=True)
 _FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_ScalarOrND[npc.floating])
 _FloatOrArrayT_co = TypeVar(
-    "_FloatOrArrayT_co", bound=float | _ScalarOrND[npc.floating], default=float | onp.ArrayND[np.float64], covariant=True
+    "_FloatOrArrayT_co",
+    bound=float | npc.floating | onp.ArrayND[npc.floating, Any],
+    default=float | onp.ArrayND[np.float64],
+    covariant=True,
 )
 _FloatOrArrayT2_co = TypeVar(
     "_FloatOrArrayT2_co", bound=float | _ScalarOrND[npc.floating], default=float | onp.ArrayND[np.float64], covariant=True
@@ -1088,10 +1091,10 @@ def pointbiserialr(
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 #
-@overload
+@overload  # nd, axis=None (default)
 def kendalltau(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
+    x: onp.ToComplexND,
+    y: onp.ToComplexND,
     *,
     axis: None = None,
     keepdims: L[False] = False,
@@ -1100,22 +1103,34 @@ def kendalltau(
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[np.float64]: ...
-@overload
+@overload  # ?d, axis: int
 def kendalltau(
-    x: onp.ToFloatStrict1D,
-    y: onp.ToFloatStrict1D,
+    x: onp.ArrayND[npc.number | np.bool_, _JustAnyShape],
+    y: onp.ArrayND[npc.number | np.bool_, _JustAnyShape],
     *,
-    axis: int | None = None,
+    axis: int,
+    keepdims: L[False] = False,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    nan_policy: NanPolicy = "propagate",
+) -> SignificanceResult[onp.ArrayND[np.float64] | Any]: ...
+@overload  # 1d, axis: int
+def kendalltau(
+    x: onp.ToComplexStrict1D,
+    y: onp.ToComplexStrict1D,
+    *,
+    axis: int,
     keepdims: L[False] = False,
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[np.float64]: ...
-@overload
+@overload  # 2d, axis: int
 def kendalltau(
-    x: onp.ToFloatStrict2D,
-    y: onp.ToFloatStrict2D,
+    x: onp.ToComplexStrict2D,
+    y: onp.ToComplexStrict2D,
     *,
     axis: int,
     keepdims: L[False] = False,
@@ -1124,10 +1139,10 @@ def kendalltau(
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[onp.Array1D[np.float64]]: ...
-@overload
+@overload  # 3d, axis: int
 def kendalltau(
-    x: onp.ToFloatStrict3D,
-    y: onp.ToFloatStrict3D,
+    x: onp.ToComplexStrict3D,
+    y: onp.ToComplexStrict3D,
     *,
     axis: int,
     keepdims: L[False] = False,
@@ -1136,10 +1151,22 @@ def kendalltau(
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[onp.Array2D[np.float64]]: ...
-@overload
+@overload  # nd, axis: int
 def kendalltau(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
+    x: onp.ToComplexND,
+    y: onp.ToComplexND,
+    *,
+    axis: int,
+    keepdims: bool = False,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    nan_policy: NanPolicy = "propagate",
+) -> SignificanceResult[onp.ArrayND[np.float64] | Any]: ...
+@overload  # ?d, keepdims=True
+def kendalltau(
+    x: onp.ToComplexND,
+    y: onp.ToComplexND,
     *,
     axis: int | None = None,
     keepdims: L[True],
@@ -1148,18 +1175,6 @@ def kendalltau(
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
-@overload
-def kendalltau(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
-    *,
-    axis: int | None = None,
-    keepdims: bool = False,
-    method: _KendallTauMethod = "auto",
-    variant: _KendallTauVariant = "b",
-    alternative: Alternative = "two-sided",
-    nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[np.float64 | Any]: ...
 
 #
 @overload

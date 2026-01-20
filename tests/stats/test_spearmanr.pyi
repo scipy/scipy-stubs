@@ -27,7 +27,7 @@ _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
 
-####
+###
 
 assert_type(spearmanr(_py_i_1d, _py_i_1d).statistic, np.float64)
 assert_type(spearmanr(_py_f_1d, _py_f_1d).statistic, np.float64)
