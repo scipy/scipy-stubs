@@ -1013,18 +1013,38 @@ def pearsonr(
 ) -> PearsonRResult[npc.floating, np.float64] | PearsonRResult[onp.ArrayND[npc.floating], onp.ArrayND[np.float64]]: ...
 
 #
-def fisher_exact(
-    table: onp.ArrayND[_Real0D], alternative: Alternative | None = None, *, method: ResamplingMethod | None = None
-) -> SignificanceResult[float]: ...
-
-# TODO(jorenham): improve like `pearsonr` (but always return `f64`)
+@overload  # ?d, ?d
 def spearmanr(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None = None,
-    axis: int | None = 0,
+    a: onp.ArrayND[npc.floating | npc.integer | np.bool_, _JustAnyShape],
+    b: onp.ArrayND[npc.floating | npc.integer | np.bool_, _JustAnyShape],
+    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult: ...
+) -> SignificanceResult[np.float64 | onp.Array2D[np.float64]]: ...
+@overload  # 1d, 1d
+def spearmanr(
+    a: onp.ToFloatStrict1D,
+    b: onp.ToFloatStrict1D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+) -> SignificanceResult[np.float64]: ...
+@overload  # 2d, 2d
+def spearmanr(
+    a: onp.ToFloatStrict2D,
+    b: onp.ToFloatStrict2D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+@overload  # axis=None
+def spearmanr(
+    a: onp.ToFloatND, b: onp.ToFloatND, axis: None, nan_policy: NanPolicy = "propagate", alternative: Alternative = "two-sided"
+) -> SignificanceResult[np.float64]: ...
+@overload  # 2d, None
+def spearmanr(
+    a: onp.ToFloat2D, b: None = None, axis: int = 0, nan_policy: NanPolicy = "propagate", alternative: Alternative = "two-sided"
+) -> SignificanceResult[np.float64 | onp.Array2D[np.float64]]: ...
 
 # TODO(jorenham): improve like `pearsonr` (but return `SignificanceResult`, not `PearsonRResult`)
 @overload
@@ -1484,6 +1504,11 @@ def combine_pvalues(
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> SignificanceResult: ...
+
+#
+def fisher_exact(
+    table: onp.ArrayND[_Real0D], alternative: Alternative | None = None, *, method: ResamplingMethod | None = None
+) -> SignificanceResult[float]: ...
 
 #
 def quantile_test_iv(
