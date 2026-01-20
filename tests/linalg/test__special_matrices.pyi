@@ -3,7 +3,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.linalg import circulant, companion, convolution_matrix, fiedler, fiedler_companion, hankel, toeplitz
+from scipy.linalg import circulant, companion, convolution_matrix, fiedler, fiedler_companion, hankel, leslie, toeplitz
 
 ###
 
@@ -200,6 +200,21 @@ assert_type(fiedler_companion(_f32_1d), onp.Array2D[np.float32])
 assert_type(fiedler_companion(_f32_2d), onp.Array3D[np.float32])
 assert_type(fiedler_companion(_f32_3d), onp.ArrayND[np.float32])
 assert_type(fiedler_companion(_f32_nd), onp.ArrayND[np.float32])
+
+# leslie
+
+assert_type(leslie(_py_b_1d, _py_b_1d), onp.Array2D[np.bool_])
+assert_type(leslie(_py_b_1d, _py_i_1d), onp.Array2D[np.int_])
+assert_type(leslie(_py_i_1d, _py_b_1d), onp.Array2D[np.int_])
+assert_type(leslie(_py_i_1d, _py_i_1d), onp.Array2D[np.int_])
+assert_type(leslie(_py_i_1d, _py_f_1d), onp.Array2D[np.float64])
+assert_type(leslie(_py_f_1d, _py_i_1d), onp.Array2D[np.float64])
+assert_type(leslie(_py_f_1d, _py_f_1d), onp.Array2D[np.float64])
+assert_type(leslie(_py_f_1d, _py_c_1d), onp.Array2D[np.complex128])
+assert_type(leslie(_py_c_1d, _py_f_1d), onp.Array2D[np.complex128])
+assert_type(leslie(_py_c_1d, _py_c_1d), onp.Array2D[np.complex128])
+assert_type(leslie(_i8_1d, _i8_1d), onp.Array2D[np.int8])
+assert_type(leslie(_f32_1d, _f32_1d), onp.Array2D[np.float32])
 
 # hankel
 
