@@ -8,6 +8,7 @@ from scipy.linalg import (
     circulant,
     companion,
     convolution_matrix,
+    dft,
     fiedler,
     fiedler_companion,
     hankel,
@@ -238,6 +239,10 @@ assert_type(block_diag(_py_c_1d), onp.Array2D[np.complex128])
 assert_type(block_diag(_py_c_1d, _py_f_1d), onp.Array2D[np.complex128])
 assert_type(block_diag(_i8_1d), onp.Array2D[np.int8])
 assert_type(block_diag(_f32_1d), onp.Array2D[np.float32])
+
+# dft
+assert_type(dft(4), onp.Array2D[np.complex128])
+assert_type(dft(4.0), onp.Array2D[np.complex128])
 
 # hankel
 
