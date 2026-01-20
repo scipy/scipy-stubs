@@ -14,6 +14,7 @@ from scipy.linalg import (
     hadamard,
     hankel,
     helmert,
+    hilbert,
     leslie,
     toeplitz,
 )
@@ -274,3 +275,7 @@ assert_type(hankel(_py_i_3d), onp.Array2D[np.int_])  # pyright: ignore[reportDep
 assert_type(helmert(4), onp.Array2D[np.float64])
 assert_type(helmert(4, True), onp.Array2D[np.float64])
 assert_type(helmert(4, full=True), onp.Array2D[np.float64])
+
+# hilbert
+
+assert_type(hilbert(4), onp.Array2D[np.float64])
