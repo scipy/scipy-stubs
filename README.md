@@ -344,6 +344,7 @@ Pandas ([pandas](https://github.com/pandas-dev/pandas),
 [pandas-stubs](https://github.com/pandas-dev/pandas-stubs)) |
 [Pandera](https://github.com/unionai-oss/pandera) |
 [ProgressiVis](https://github.com/progressivis/progressivis) |
+[ProLIF](https://github.com/chemosim-lab/ProLIF) |
 [Ptera Software](https://github.com/camUrban/PteraSoftware) |
 PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 [pysmo](https://github.com/pysmo/pysmo) |
