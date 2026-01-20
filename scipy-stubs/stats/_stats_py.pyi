@@ -1088,10 +1088,10 @@ def pointbiserialr(
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 #
-@overload
+@overload  # nd, axis=None (default)
 def kendalltau(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
+    x: onp.ToComplexND,
+    y: onp.ToComplexND,
     *,
     axis: None = None,
     keepdims: L[False] = False,
@@ -1100,22 +1100,34 @@ def kendalltau(
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[np.float64]: ...
-@overload
+@overload  # ?d, axis: int
 def kendalltau(
-    x: onp.ToFloatStrict1D,
-    y: onp.ToFloatStrict1D,
+    x: onp.ArrayND[npc.number | np.bool_, _JustAnyShape],
+    y: onp.ArrayND[npc.number | np.bool_, _JustAnyShape],
     *,
-    axis: int | None = None,
+    axis: int,
+    keepdims: L[False] = False,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    nan_policy: NanPolicy = "propagate",
+) -> SignificanceResult[onp.ArrayND[np.float64] | Any]: ...
+@overload  # 1d, axis: int
+def kendalltau(
+    x: onp.ToComplexStrict1D,
+    y: onp.ToComplexStrict1D,
+    *,
+    axis: int,
     keepdims: L[False] = False,
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[np.float64]: ...
-@overload
+@overload  # 2d, axis: int
 def kendalltau(
-    x: onp.ToFloatStrict2D,
-    y: onp.ToFloatStrict2D,
+    x: onp.ToComplexStrict2D,
+    y: onp.ToComplexStrict2D,
     *,
     axis: int,
     keepdims: L[False] = False,
@@ -1124,10 +1136,10 @@ def kendalltau(
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[onp.Array1D[np.float64]]: ...
-@overload
+@overload  # 3d, axis: int
 def kendalltau(
-    x: onp.ToFloatStrict3D,
-    y: onp.ToFloatStrict3D,
+    x: onp.ToComplexStrict3D,
+    y: onp.ToComplexStrict3D,
     *,
     axis: int,
     keepdims: L[False] = False,
@@ -1136,10 +1148,34 @@ def kendalltau(
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[onp.Array2D[np.float64]]: ...
-@overload
+@overload  # nd, axis: int
 def kendalltau(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
+    x: onp.ToComplexND,
+    y: onp.ToComplexND,
+    *,
+    axis: int,
+    keepdims: bool = False,
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    nan_policy: NanPolicy = "propagate",
+) -> SignificanceResult[onp.ArrayND[np.float64] | Any]: ...
+@overload  # Nd, keepdims=True
+def kendalltau(
+    x: onp.ArrayND[npc.number | np.bool_, _ShapeT],
+    y: onp.ArrayND[npc.number | np.bool_, _ShapeT],
+    *,
+    axis: int | None = None,
+    keepdims: L[True],
+    method: _KendallTauMethod = "auto",
+    variant: _KendallTauVariant = "b",
+    alternative: Alternative = "two-sided",
+    nan_policy: NanPolicy = "propagate",
+) -> SignificanceResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+@overload  # ?d, keepdims=True
+def kendalltau(
+    x: onp.ToComplexND,
+    y: onp.ToComplexND,
     *,
     axis: int | None = None,
     keepdims: L[True],
@@ -1148,18 +1184,6 @@ def kendalltau(
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
-@overload
-def kendalltau(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
-    *,
-    axis: int | None = None,
-    keepdims: bool = False,
-    method: _KendallTauMethod = "auto",
-    variant: _KendallTauVariant = "b",
-    alternative: Alternative = "two-sided",
-    nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[np.float64 | Any]: ...
 
 #
 @overload
