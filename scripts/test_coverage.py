@@ -322,7 +322,9 @@ def main() -> int:
             print()
             print(f"Coverage: {n_tested} / {n_public} ({n_tested / n_public:.1%})")
 
-    for name in sorted(public):
+    for name in sorted(
+        public, key=lambda s: (s.rsplit(".", 1)[0], s.rsplit(".", 1)[1])
+    ):
         if not name.startswith(package):
             _print_coverage(package_tested, package_public)
             print("</details>")
