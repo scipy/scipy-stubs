@@ -15,6 +15,7 @@ from scipy.linalg import (
     hankel,
     helmert,
     hilbert,
+    invhilbert,
     leslie,
     toeplitz,
 )
@@ -279,3 +280,9 @@ assert_type(helmert(4, full=True), onp.Array2D[np.float64])
 # hilbert
 
 assert_type(hilbert(4), onp.Array2D[np.float64])
+
+# invhilbert
+
+assert_type(invhilbert(4), onp.Array2D[np.float64])
+assert_type(invhilbert(4, True), onp.Array2D[np.int64 | np.object_])
+assert_type(invhilbert(4, exact=True), onp.Array2D[np.int64 | np.object_])
