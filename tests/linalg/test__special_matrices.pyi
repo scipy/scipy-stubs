@@ -11,6 +11,7 @@ from scipy.linalg import (
     dft,
     fiedler,
     fiedler_companion,
+    hadamard,
     hankel,
     leslie,
     toeplitz,
@@ -241,8 +242,18 @@ assert_type(block_diag(_i8_1d), onp.Array2D[np.int8])
 assert_type(block_diag(_f32_1d), onp.Array2D[np.float32])
 
 # dft
+
 assert_type(dft(4), onp.Array2D[np.complex128])
 assert_type(dft(4.0), onp.Array2D[np.complex128])
+
+# hadamard
+
+assert_type(hadamard(4), onp.Array2D[np.int_])
+assert_type(hadamard(4, int), onp.Array2D[np.int_])
+assert_type(hadamard(4, float), onp.Array2D[np.float64])
+assert_type(hadamard(4, complex), onp.Array2D[np.complex128])
+assert_type(hadamard(4, object), onp.Array2D[np.object_])
+assert_type(hadamard(4, np.float16), onp.Array2D[np.float16])
 
 # hankel
 
