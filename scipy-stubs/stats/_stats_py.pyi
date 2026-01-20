@@ -1935,10 +1935,35 @@ def energy_distance(
     v_weights: onp.ToFloatND | None = None,
 ) -> np.float64: ...
 
-# TODO(jorenham): improve
+#
+@overload  # axix: None (default)
 def rankdata(
-    a: onp.ToFloatND, method: _RankMethod = "average", *, axis: int | None = None, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[_Real0D]: ...
+    a: onp.ToArrayND, method: _RankMethod = "average", *, axis: None = None, nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.float64]: ...
+@overload  # shape: T, axis: int
+def rankdata(
+    a: onp.Array[_ShapeT], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # shape: 1d, axis: int
+def rankdata(
+    a: Sequence[complex], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.float64]: ...
+@overload  # shape: 2d, axis: int
+def rankdata(
+    a: Sequence[Sequence[complex]], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array2D[np.float64]: ...
+@overload  # shape: 3d, axis: int
+def rankdata(
+    a: Sequence[Sequence[Sequence[complex]]],
+    method: _RankMethod = "average",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array3D[np.float64]: ...
+@overload  # shape: ?, axis: int
+def rankdata(
+    a: onp.ToArrayND, method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[np.float64]: ...
 
 #
 def expectile(a: onp.ToFloatND, alpha: float = 0.5, *, weights: onp.ToFloatND | None = None) -> np.float64: ...
