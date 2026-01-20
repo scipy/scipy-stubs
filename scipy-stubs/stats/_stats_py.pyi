@@ -714,8 +714,6 @@ def moment(
     center: float | None = None,
     keepdims: L[True],
 ) -> onp.ArrayND[_FloatT]: ...
-
-#
 @overload  # nd +floating, order: 0d
 def moment(
     a: onp.ToFloatND,
@@ -767,10 +765,145 @@ def moment(
     keepdims: L[True],
 ) -> onp.ArrayND[npc.floating]: ...
 
-# TODO(jorenham): improve
+# keep in sync with kurtosis
+@overload  # ?d ~f64
 def skew(
-    a: onp.ToFloatND, axis: int | None = 0, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
-) -> _FloatOrND: ...
+    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
+    axis: int = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # ?d ~T
+def skew(
+    a: onp.ArrayND[_FloatT, _JustAnyShape],
+    axis: int = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> _FloatT | onp.ArrayND[_FloatT]: ...
+@overload  # 1d ~f64
+def skew(
+    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    axis: int = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # 1d ~T
+def skew(
+    a: onp.ToArrayStrict1D[_FloatT, _FloatT],
+    axis: int = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> _FloatT: ...
+@overload  # 2d ~f64
+def skew(
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    axis: int = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~T
+def skew(
+    a: onp.ToArrayStrict2D[_FloatT, _FloatT],
+    axis: int = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[_FloatT]: ...
+@overload  # 3d ~f64
+def skew(
+    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
+    axis: int = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array2D[np.float64]: ...
+@overload  # 3d ~T
+def skew(
+    a: onp.ToArrayStrict3D[_FloatT, _FloatT],
+    axis: int = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array2D[_FloatT]: ...
+@overload  # nd ~f64
+def skew(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    axis: int = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload  # nd ~f64, axis=None
+def skew(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    axis: None,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # nd ~f64, keepdims=True
+def skew(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    axis: int | None = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # nd ~T
+def skew(
+    a: onp.ToArrayND[_FloatT, _FloatT],
+    axis: int = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[_FloatT] | Any: ...
+@overload  # nd ~T, axis=None
+def skew(
+    a: onp.ToArrayND[_FloatT, _FloatT],
+    axis: None,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> _FloatT: ...
+@overload  # nd ~T, keepdims=True
+def skew(
+    a: onp.ToArrayND[_FloatT, _FloatT],
+    axis: int | None = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[_FloatT]: ...
+@overload  # nd +floating
+def skew(
+    a: onp.ToFloatND, axis: int = 0, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+) -> onp.ArrayND[npc.floating] | Any: ...
+@overload  # nd +floating, axis=None
+def skew(
+    a: onp.ToFloatND, axis: None, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+) -> npc.floating: ...
+@overload  # nd +floating, keepdims=True
+def skew(
+    a: onp.ToFloatND, axis: int | None = 0, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+) -> onp.ArrayND[npc.floating]: ...
 
 # TODO(jorenham): improve
 def kurtosis(
