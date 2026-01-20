@@ -1942,7 +1942,7 @@ def rankdata(
 ) -> onp.Array1D[np.float64]: ...
 @overload  # shape: T, axis: int
 def rankdata(
-    a: onp.CanArray[_ShapeT], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
+    a: onp.Array[_ShapeT], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # shape: 1d, axis: int
 def rankdata(
