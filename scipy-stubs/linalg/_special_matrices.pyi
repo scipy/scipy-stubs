@@ -272,8 +272,8 @@ def block_diag(arr0: onp.ToJustComplex128_1D, /, *arrs: onp.ToComplex128_1D) -> 
 @overload
 def block_diag(arr0: onp.ToArray1D[_ScalarT, _ScalarT], /, *arrs: onp.ToArray1D[_ScalarT, _ScalarT]) -> onp.Array2D[_ScalarT]: ...
 
-#
-def dft(n: onp.ToInt, scale: L["sqrtn", "n"] | None = None) -> _Complex2D: ...
+# `n` should probably be an int, but floats are also accepted in practice
+def dft(n: onp.ToFloat, scale: L["sqrtn", "n"] | None = None) -> _Complex2D: ...
 
 #
 @overload
