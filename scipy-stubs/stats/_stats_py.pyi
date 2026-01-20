@@ -1549,27 +1549,27 @@ def rankdata(
 def expectile(a: onp.ToFloatND, alpha: float = 0.5, *, weights: onp.ToFloatND | None = None) -> np.float64: ...
 
 #
-@overload
+@overload  # ?d, ?d
 def linregress(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
+    x: onp.ArrayND[npc.floating | npc.integer | np.bool_, _JustAnyShape],
+    y: onp.ArrayND[npc.floating | npc.integer | np.bool_, _JustAnyShape],
     alternative: Alternative = "two-sided",
     *,
-    axis: None,
+    axis: int = 0,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> LinregressResult[np.float64]: ...
-@overload
+) -> LinregressResult[np.float64 | Any]: ...
+@overload  # 1d, 1d
 def linregress(
     x: onp.ToFloatStrict1D,
     y: onp.ToFloatStrict1D,
     alternative: Alternative = "two-sided",
     *,
-    axis: int | None = 0,
+    axis: int = 0,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[np.float64]: ...
-@overload
+@overload  # 2d, 2d
 def linregress(
     x: onp.ToFloatStrict2D,
     y: onp.ToFloatStrict2D,
@@ -1579,7 +1579,7 @@ def linregress(
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[onp.Array1D[np.float64]]: ...
-@overload
+@overload  # 3d, 3d
 def linregress(
     x: onp.ToFloatStrict3D,
     y: onp.ToFloatStrict3D,
@@ -1589,7 +1589,17 @@ def linregress(
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[onp.Array2D[np.float64]]: ...
-@overload
+@overload  # nd, nd
+def linregress(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[np.float64 | Any]: ...
+@overload  # keepdims=True
 def linregress(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -1599,16 +1609,16 @@ def linregress(
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[onp.ArrayND[np.float64]]: ...
-@overload
+@overload  # axis=None
 def linregress(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
     alternative: Alternative = "two-sided",
     *,
-    axis: int | None = 0,
-    keepdims: bool = False,
+    axis: None,
+    keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> LinregressResult[np.float64 | Any]: ...
+) -> LinregressResult[np.float64]: ...
 
 # NOTE: `lmoment` is currently numerically unstable after `order > 16`.
 # See https://github.com/jorenham/Lmo/ for a more stable implementation that additionally supports generalized trimmed TL-moments,
