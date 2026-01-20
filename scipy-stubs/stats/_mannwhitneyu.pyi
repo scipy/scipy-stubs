@@ -10,8 +10,9 @@ from ._typing import Alternative, NanPolicy
 
 ###
 
-_StatisticT_co = TypeVar("_StatisticT_co", bound=npc.floating | onp.ArrayND[npc.floating], default=Any, covariant=True)
-_PValueT_co = TypeVar("_PValueT_co", bound=np.float64 | onp.ArrayND[np.float64], default=Any, covariant=True)
+# the `Any` shapes in the bounds are workarounds for a pyrefly bug
+_StatisticT_co = TypeVar("_StatisticT_co", bound=npc.floating | onp.ArrayND[npc.floating, Any], default=Any, covariant=True)
+_PValueT_co = TypeVar("_PValueT_co", bound=np.float64 | onp.ArrayND[np.float64, Any], default=Any, covariant=True)
 _FloatT = TypeVar("_FloatT", bound=npc.floating)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
 
