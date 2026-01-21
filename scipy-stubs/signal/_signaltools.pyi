@@ -62,7 +62,7 @@ _InexactT3 = TypeVar("_InexactT3", bound=np.float32 | np.float64 | npc.floating8
 _CoFloat64T = TypeVar("_CoFloat64T", bound=np.float64 | np.float32 | npc.integer)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
-_AnyShapeT = TypeVar("_AnyShapeT", tuple[int], tuple[int, int], tuple[int, int, int], tuple[Any, ...])
+_AnyShapeT = TypeVar("_AnyShapeT", tuple[int], tuple[int, int], tuple[int, int, int])
 _AnyInexact64T = TypeVar("_AnyInexact64T", np.float64, np.complex128)
 
 _Tuple2: TypeAlias = tuple[_T, _T]
@@ -140,8 +140,8 @@ def convolve(
 ) -> onp.ArrayND[np.bool_]: ...
 @overload  # generic
 def convolve(
-    in1: onp.CanArray[_AnyShapeT, np.dtype[_NumericT]],
-    in2: onp.CanArray[_AnyShapeT, np.dtype[_NumericT]],
+    in1: nptc.CanArray[_AnyShapeT, np.dtype[_NumericT]],
+    in2: nptc.CanArray[_AnyShapeT, np.dtype[_NumericT]],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
 ) -> onp.ArrayND[_NumericT, _AnyShapeT]: ...
@@ -181,8 +181,8 @@ def correlate(
 ) -> onp.ArrayND[np.bool_]: ...
 @overload  # generic
 def correlate(
-    in1: onp.CanArray[_AnyShapeT, np.dtype[_NumericT]],
-    in2: onp.CanArray[_AnyShapeT, np.dtype[_NumericT]],
+    in1: nptc.CanArray[_AnyShapeT, np.dtype[_NumericT]],
+    in2: nptc.CanArray[_AnyShapeT, np.dtype[_NumericT]],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
 ) -> onp.ArrayND[_NumericT, _AnyShapeT]: ...
