@@ -18,6 +18,7 @@ from scipy.signal import (
     lfilter,
     lfilter_zi,
     lfiltic,
+    medfilt,
     oaconvolve,
     sosfiltfilt,
 )
@@ -230,3 +231,17 @@ assert_type(sosfiltfilt(_f32_2d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(sosfiltfilt(_c64_2d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(sosfiltfilt(_c64_2d, _c128_1d), onp.ArrayND[np.complex128])
 assert_type(sosfiltfilt(_c128_2d, _c128_1d), onp.ArrayND[np.complex128])
+
+# medfilt
+
+assert_type(medfilt(_py_i_1d), onp.ArrayND[np.int_])
+assert_type(medfilt(_py_f_1d), onp.ArrayND[np.float64])
+assert_type(medfilt(_i16_1d), onp.Array1D[np.int16])
+assert_type(medfilt(_f32_1d), onp.Array1D[np.float32])
+assert_type(medfilt(_f64_1d), onp.Array1D[np.float64])
+
+assert_type(medfilt(_py_i_2d), onp.ArrayND[np.int_])
+assert_type(medfilt(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(medfilt(_i16_2d), onp.Array2D[np.int16])
+assert_type(medfilt(_f32_2d), onp.Array2D[np.float32])
+assert_type(medfilt(_f64_2d), onp.Array2D[np.float64])
