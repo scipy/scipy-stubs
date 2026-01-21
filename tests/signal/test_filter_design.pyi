@@ -4,8 +4,14 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
-from scipy.signal import butter
+from scipy.signal import butter, buttord
+
+###
+
+_f64_1d: onp.Array1D[np.float64]
+_f80_1d: onp.Array1D[npc.floating80]
 
 ###
 
@@ -15,3 +21,10 @@ assert_type(butter(8, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float6
 assert_type(butter(8, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(butter(8, 0.1, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float])
 assert_type(butter(8, 0.1, output="sos"), onp.Array2D[np.float64])
+
+# buttord
+
+assert_type(buttord(0.2, 0.3, 3, 40), tuple[int, np.float64])
+assert_type(buttord(0.2, _f64_1d, 3, 40), tuple[int, np.float64])
+assert_type(buttord(0.2, _f80_1d, 3, 40), tuple[int, np.longdouble])
+assert_type(buttord(_f64_1d, 0.3, 3, 40), tuple[int, onp.Array1D[np.float64]])
