@@ -5,7 +5,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import firwin, firwin_2d, kaiser_atten, kaiser_beta, kaiserord
+from scipy.signal import firwin, firwin2, firwin_2d, kaiser_atten, kaiser_beta, kaiserord
 
 ###
 
@@ -56,3 +56,11 @@ assert_type(firwin_2d((3, 4), "hann", fc=_u8_1d, circular=True), onp.Array2D[np.
 assert_type(firwin_2d((3, 4), "hann", fc=_i16_1d, circular=True), onp.Array2D[np.float64])
 assert_type(firwin_2d((3, 4), "hann", fc=_f32_1d, circular=True), onp.Array2D[np.float64])
 assert_type(firwin_2d((3, 4), "hann", fc=_f64_1d, circular=True), onp.Array2D[np.float64])
+
+# firwin2
+assert_type(firwin2(9, _py_i_1d, _py_i_1d), onp.Array1D[np.float64])
+assert_type(firwin2(9, _py_f_1d, _py_f_1d), onp.Array1D[np.float64])
+assert_type(firwin2(9, _u8_1d, _u8_1d), onp.Array1D[np.float64])
+assert_type(firwin2(9, _i16_1d, _i16_1d), onp.Array1D[np.float64])
+assert_type(firwin2(9, _f32_1d, _f32_1d), onp.Array1D[np.float64])
+assert_type(firwin2(9, _f64_1d, _f64_1d), onp.Array1D[np.float64])
