@@ -447,6 +447,11 @@ def correlation_lags(in1_len: int, in2_len: int, mode: onp.ConvolveMode = "full"
 ###
 
 #
+@overload  # ~float64, ~float64
+def lfilter_zi(
+    b: onp.ToArray1D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArray1D[float, npc.floating64 | npc.integer | np.bool_],
+) -> onp.Array1D[np.float64]: ...
 @overload  # +float64, ~float64
 def lfilter_zi(b: onp.ToJustFloat64_1D, a: onp.ToFloat64_1D) -> onp.Array1D[np.float64]: ...
 @overload  # ~float64, +float64
