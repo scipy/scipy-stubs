@@ -5,7 +5,7 @@ from typing import Literal, TypeAlias, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import check_COLA, check_NOLA, csd, istft, lombscargle, periodogram, spectrogram, stft, welch
+from scipy.signal import check_COLA, check_NOLA, coherence, csd, istft, lombscargle, periodogram, spectrogram, stft, welch
 
 ###
 
@@ -118,3 +118,14 @@ assert_type(istft(_f80_1d, input_onesided=False), tuple[_F64_1D, _C160_ND])
 assert_type(istft(_c64_1d, input_onesided=False), tuple[_F64_1D, _C64_ND])
 assert_type(istft(_c128_1d, input_onesided=False), tuple[_F64_1D, _C128_ND])
 assert_type(istft(_c160_1d, input_onesided=False), tuple[_F64_1D, _C160_ND])
+
+# coherence
+
+assert_type(coherence(_i64_1d, _i64_1d), tuple[_F64_1D, _F64_ND])
+assert_type(coherence(_f16_1d, _f16_1d), tuple[_F64_1D, _F32_ND])
+assert_type(coherence(_f32_1d, _f32_1d), tuple[_F64_1D, _F32_ND])
+assert_type(coherence(_f64_1d, _f64_1d), tuple[_F64_1D, _F64_ND])
+assert_type(coherence(_f80_1d, _f80_1d), tuple[_F64_1D, _F80_ND])
+assert_type(coherence(_c64_1d, _c64_1d), tuple[_F64_1D, _F32_ND])
+assert_type(coherence(_c128_1d, _c128_1d), tuple[_F64_1D, _F64_ND])
+assert_type(coherence(_c160_1d, _c160_1d), tuple[_F64_1D, _F80_ND])
