@@ -17,6 +17,7 @@ from scipy.signal import (
     fftconvolve,
     filtfilt,
     hilbert,
+    hilbert2,
     lfilter,
     lfilter_zi,
     lfiltic,
@@ -329,3 +330,13 @@ assert_type(hilbert(_f16_nd), onp.ArrayND[np.complex64])
 assert_type(hilbert(_f32_nd), onp.ArrayND[np.complex64])
 assert_type(hilbert(_f64_nd), onp.ArrayND[np.complex128])
 assert_type(hilbert(_f80_nd), onp.ArrayND[npc.complexfloating160])
+
+# hilbert2
+
+assert_type(hilbert2(_py_i_2d), onp.Array2D[np.complex128])
+assert_type(hilbert2(_py_f_2d), onp.Array2D[np.complex128])
+assert_type(hilbert2(_u8_2d), onp.Array2D[np.complex128])
+assert_type(hilbert2(_f16_2d), onp.Array2D[np.complex64])
+assert_type(hilbert2(_f32_2d), onp.Array2D[np.complex64])
+assert_type(hilbert2(_f64_2d), onp.Array2D[np.complex128])
+assert_type(hilbert2(_f80_2d), onp.Array2D[npc.complexfloating160])
