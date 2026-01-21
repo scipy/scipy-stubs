@@ -39,7 +39,7 @@ def peak_widths(
     rel_height: float = 0.5,
     prominence_data: _PeakProminences | None = None,
     wlen: float | None = None,
-) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int_], onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 
 #
 def find_peaks_cwt(
