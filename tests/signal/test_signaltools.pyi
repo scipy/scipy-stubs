@@ -309,16 +309,16 @@ assert_type(wiener(_c160_1d), onp.ArrayND[npc.complexfloating160])
 
 # hilbert
 
-assert_type(hilbert(_py_i_1d), onp.ArrayND[np.complex128])
-assert_type(hilbert(_py_f_1d), onp.ArrayND[np.complex128])
+assert_type(hilbert(_py_i_1d), onp.Array1D[np.complex128])
+assert_type(hilbert(_py_f_1d), onp.Array1D[np.complex128])
 assert_type(hilbert(_u8_1d), onp.Array1D[np.complex128])
 assert_type(hilbert(_f16_1d), onp.Array1D[np.complex64])
 assert_type(hilbert(_f32_1d), onp.Array1D[np.complex64])
 assert_type(hilbert(_f64_1d), onp.Array1D[np.complex128])
 assert_type(hilbert(_f80_1d), onp.Array1D[npc.complexfloating160])
 
-assert_type(hilbert(_py_i_2d), onp.ArrayND[np.complex128])
-assert_type(hilbert(_py_f_2d), onp.ArrayND[np.complex128])
+assert_type(hilbert(_py_i_2d), onp.Array2D[np.complex128])
+assert_type(hilbert(_py_f_2d), onp.Array2D[np.complex128])
 assert_type(hilbert(_u8_2d), onp.Array2D[np.complex128])
 assert_type(hilbert(_f16_2d), onp.Array2D[np.complex64])
 assert_type(hilbert(_f32_2d), onp.Array2D[np.complex64])

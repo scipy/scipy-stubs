@@ -1008,7 +1008,19 @@ def hilbert(
 def hilbert(
     x: nptc.CanArray[_ShapeT, np.dtype[npc.floating80]], N: int | None = None, axis: int = -1
 ) -> onp.ArrayND[npc.complexfloating160, _ShapeT]: ...
-@overload  # float64 | integer, unknown shape
+@overload  # 1d float64 | integer, unknown shape
+def hilbert(
+    x: onp.ToArrayStrict1D[float, np.float64 | npc.integer], N: int | None = None, axis: int = -1
+) -> onp.Array1D[np.complex128]: ...
+@overload  # 2d float64 | integer, unknown shape
+def hilbert(
+    x: onp.ToArrayStrict2D[float, np.float64 | npc.integer], N: int | None = None, axis: int = -1
+) -> onp.Array2D[np.complex128]: ...
+@overload  # 3d float64 | integer, unknown shape
+def hilbert(
+    x: onp.ToArrayStrict3D[float, np.float64 | npc.integer], N: int | None = None, axis: int = -1
+) -> onp.Array3D[np.complex128]: ...
+@overload  # nd float64 | integer, unknown shape
 def hilbert(
     x: onp.ToArrayND[float, np.float64 | npc.integer], N: int | None = None, axis: int = -1
 ) -> onp.ArrayND[np.complex128]: ...
