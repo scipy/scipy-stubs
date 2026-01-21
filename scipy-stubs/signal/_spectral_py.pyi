@@ -5,6 +5,7 @@ from typing_extensions import deprecated
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from .windows._windows import _ToWindow
 
@@ -15,14 +16,14 @@ __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle
 _float64_1d: TypeAlias = onp.Array1D[np.float64]  # noqa: PYI042
 _float32_nd: TypeAlias = onp.ArrayND[np.float32]  # noqa: PYI042
 _float64_nd: TypeAlias = onp.ArrayND[np.float64]  # noqa: PYI042
-_float80_nd: TypeAlias = onp.ArrayND[np.longdouble]  # noqa: PYI042
+_float80_nd: TypeAlias = onp.ArrayND[np.float96 | np.float128]  # noqa: PYI042
 _complex64_nd: TypeAlias = onp.ArrayND[np.complex64]  # noqa: PYI042
 _complex128_nd: TypeAlias = onp.ArrayND[np.complex128]  # noqa: PYI042
-_complex160_nd: TypeAlias = onp.ArrayND[np.clongdouble]  # noqa: PYI042
+_complex160_nd: TypeAlias = onp.ArrayND[np.complex192 | np.complex256]  # noqa: PYI042
 
-_ToInexact32ND: TypeAlias = onp.ToJustFloat16_ND | onp.ToJustFloat32_ND | onp.ToJustComplex64_ND
-_ToInexact64ND: TypeAlias = onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustComplex128_ND
-_ToInexact80ND: TypeAlias = onp.ToJustLongDoubleND | onp.ToJustCLongDoubleND
+_ToInexact32ND: TypeAlias = onp.ToArrayND[npc.inexact32, npc.inexact32 | npc.floating16]
+_ToInexact64ND: TypeAlias = onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool_]
+_ToInexact80ND: TypeAlias = onp.ToArrayND[npc.inexact80, npc.inexact80]
 
 _Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[onp.ArrayND], onp.ArrayND]
 _Scaling: TypeAlias = Literal["density", "spectrum"]
@@ -62,7 +63,7 @@ def lombscargle(
 
 #
 @overload  # f64
-def periodogram(
+def periodogram(  # type: ignore[overload-overlap]
     x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow | None = "boxcar",
@@ -97,7 +98,7 @@ def periodogram(
 
 #
 @overload  # f64
-def welch(
+def welch(  # type: ignore[overload-overlap]
     x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
@@ -142,7 +143,7 @@ def welch(
 # NOTE: We assume that `x is not y` always holds here.
 # See https://github.com/scipy/scipy/issues/24285 for details.
 @overload  # c128
-def csd(
+def csd(  # type: ignore[overload-overlap]
     x: _ToInexact64ND,
     y: _ToInexact64ND,
     fs: float = 1.0,
@@ -205,7 +206,7 @@ def csd(
 # NOTE: Even though it is theoretically possible to pass `mode` as positional argument, it's unlikely to be done in practice,
 # and would significantly complicate the overloads. Thus, we only support passing `mode` as keyword argument here (if "complex").
 @overload  # f64, mode != "complex"
-def spectrogram(
+def spectrogram(  # type: ignore[overload-overlap]
     x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = ("tukey_periodic", 0.25),
@@ -219,7 +220,7 @@ def spectrogram(
     mode: Literal["psd", "magnitude", "angle", "phase"] = "psd",
 ) -> tuple[_float64_1d, _float64_1d, _float64_nd]: ...
 @overload  # c128, mode == "complex"
-def spectrogram(
+def spectrogram(  # type: ignore[overload-overlap]
     x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = ("tukey_periodic", 0.25),
@@ -312,7 +313,7 @@ def check_NOLA(window: _ToWindow, nperseg: int, noverlap: int, tol: float = 1e-1
 
 #
 @overload  # c128
-def stft(
+def stft(  # type: ignore[overload-overlap]
     x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
@@ -375,7 +376,7 @@ def stft(
 # NOTE: Even though it is theoretically possible to pass `input_onesided` positionally, it's unlikely to be done in practice
 # and would significantly complicate the overloads. Thus, we only support passing it as keyword argument here (if `False`).
 @overload  # f64, input_onesided=True (default)
-def istft(
+def istft(  # type: ignore[overload-overlap]
     Zxx: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
@@ -389,7 +390,7 @@ def istft(
     scaling: _LegacyScaling = "spectrum",
 ) -> tuple[_float64_1d, _float64_nd]: ...
 @overload  # c128, input_onesided=False
-def istft(
+def istft(  # type: ignore[overload-overlap]
     Zxx: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
@@ -479,7 +480,7 @@ def istft(
 
 #
 @overload  # f64
-def coherence(
+def coherence(  # type: ignore[overload-overlap]
     x: _ToInexact64ND,
     y: _ToInexact64ND,
     fs: float = 1.0,
