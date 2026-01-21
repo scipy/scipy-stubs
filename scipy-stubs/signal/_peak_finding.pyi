@@ -2,7 +2,6 @@ from collections.abc import Callable, Sequence
 from typing import Concatenate, Literal, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -10,59 +9,50 @@ __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_
 
 ###
 
-_SCT = TypeVar("_SCT", bound=np.generic)
-
-_Int1D: TypeAlias = onp.Array1D[np.intp]
-_IntND: TypeAlias = onp.ArrayND[np.intp]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
+_ScalarT = TypeVar("_ScalarT", bound=np.generic)
 
 _Mode: TypeAlias = Literal["clip", "wrap"]
-
-_ArgRel: TypeAlias = tuple[_IntND, ...]
-_PeakProminences: TypeAlias = tuple[_FloatND, _IntND, _IntND]
-_PeakWidths: TypeAlias = tuple[_FloatND, _FloatND, _FloatND, _FloatND]
-
-_PeakCondition: TypeAlias = onp.ToFloat | onp.ToFloatND | Sequence[onp.ToFloat | None]
-
-_WaveletFunc: TypeAlias = (
-    Callable[Concatenate[int, float, ...], onp.ToComplex1D] | Callable[Concatenate[np.intp, np.float64, ...], onp.ToComplex1D]
-)
+_PeakProminences: TypeAlias = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp], onp.ArrayND[np.intp]]
+_PeakCondition: TypeAlias = float | onp.ToFloatND | Sequence[float | None]
+_FnWavelet: TypeAlias = (
+    Callable[Concatenate[int, float, ...], onp.ToComplex1D]
+    | Callable[Concatenate[np.intp, np.float64, ...], onp.ToComplex1D]
+)  # fmt: skip
 
 ###
 
-def argrelmin(data: onp.Array, axis: op.CanIndex = 0, order: onp.ToInt = 1, mode: _Mode = "clip") -> _ArgRel: ...
-def argrelmax(data: onp.Array, axis: op.CanIndex = 0, order: onp.ToInt = 1, mode: _Mode = "clip") -> _ArgRel: ...
+def argrelmin(data: onp.Array, axis: int = 0, order: int = 1, mode: _Mode = "clip") -> tuple[onp.ArrayND[np.intp], ...]: ...
+def argrelmax(data: onp.Array, axis: int = 0, order: int = 1, mode: _Mode = "clip") -> tuple[onp.ArrayND[np.intp], ...]: ...
 def argrelextrema(
-    data: onp.ArrayND[_SCT],
-    comparator: Callable[[onp.ArrayND[_SCT], onp.ArrayND[_SCT]], onp.ToBoolND],
-    axis: op.CanIndex = 0,
-    order: onp.ToInt = 1,
+    data: onp.ArrayND[_ScalarT],
+    comparator: Callable[[onp.ArrayND[_ScalarT], onp.ArrayND[_ScalarT]], onp.ToBoolND],
+    axis: int = 0,
+    order: int = 1,
     mode: _Mode = "clip",
-) -> _ArgRel: ...
+) -> tuple[onp.ArrayND[np.intp], ...]: ...
 
 #
-def peak_prominences(x: onp.ToArray1D, peaks: onp.ToIntND, wlen: onp.ToFloat | None = None) -> _PeakProminences: ...
+def peak_prominences(x: onp.ToArray1D, peaks: onp.ToIntND, wlen: float | None = None) -> _PeakProminences: ...
 def peak_widths(
     x: onp.ToArray1D,
     peaks: onp.ToIntND,
-    rel_height: onp.ToFloat = 0.5,
+    rel_height: float = 0.5,
     prominence_data: _PeakProminences | None = None,
-    wlen: onp.ToFloat | None = None,
-) -> _PeakWidths: ...
+    wlen: float | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 
 #
 def find_peaks_cwt(
     vector: onp.Array,
-    widths: onp.ToFloat | onp.ToFloatND,
-    wavelet: _WaveletFunc | None = None,
+    widths: float | onp.ToFloatND,
+    wavelet: _FnWavelet | None = None,
     max_distances: onp.ArrayND[npc.floating | npc.integer] | None = None,
-    gap_thresh: onp.ToFloat | None = None,
-    min_length: onp.ToInt | None = None,
-    min_snr: onp.ToFloat = 1,
-    noise_perc: onp.ToFloat = 10,
-    window_size: onp.ToInt | None = None,
-) -> _Int1D: ...
+    gap_thresh: float | None = None,
+    min_length: int | None = None,
+    min_snr: float = 1,
+    noise_perc: float = 10,
+    window_size: int | None = None,
+) -> onp.Array1D[np.intp]: ...
 
 # We need these 2^5=32 (combinations of) TypedDicts for each combination of 5 optional find_peaks parameters
 # https://github.com/scipy/scipy-stubs/issues/944#issuecomment-3413406314
@@ -76,31 +66,31 @@ class _PeakProperties_0(TypedDict): ...
 
 @type_check_only  # {height}
 class _PeakProperties_h(TypedDict):
-    peak_heights: _Float1D
+    peak_heights: onp.Array1D[np.float64]
 
 @type_check_only  # {threshold}
 class _PeakProperties_t(TypedDict):
-    left_thresholds: _Float1D
-    right_thresholds: _Float1D
+    left_thresholds: onp.Array1D[np.float64]
+    right_thresholds: onp.Array1D[np.float64]
 
 @type_check_only  # {prominence}
 class _PeakProperties_p(TypedDict):
-    prominences: _Float1D
-    left_bases: _Int1D
-    right_bases: _Int1D
+    prominences: onp.Array1D[np.float64]
+    left_bases: onp.Array1D[np.intp]
+    right_bases: onp.Array1D[np.intp]
 
 @type_check_only  # {width}
 class _PeakProperties_w(TypedDict):
-    widths: _Float1D
-    width_heights: _Float1D
-    left_ips: _Float1D
-    right_ips: _Float1D
+    widths: onp.Array1D[np.float64]
+    width_heights: onp.Array1D[np.float64]
+    left_ips: onp.Array1D[np.float64]
+    right_ips: onp.Array1D[np.float64]
 
 @type_check_only  # {plateau_size}
 class _PeakProperties_s(TypedDict):
-    plateau_sizes: _Int1D
-    left_edges: _Int1D
-    right_edges: _Int1D
+    plateau_sizes: onp.Array1D[np.intp]
+    left_edges: onp.Array1D[np.intp]
+    right_edges: onp.Array1D[np.intp]
 
 # 2 (5 choose 2 = 10)
 
@@ -200,7 +190,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_0]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_0]: ...
 
 # 1
 @overload  # {height}
@@ -214,7 +204,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_h]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_h]: ...
 @overload  # {threshold}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -227,7 +217,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_t]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_t]: ...
 @overload  # {prominence}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -240,7 +230,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_p]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_p]: ...
 @overload  # {width}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -253,7 +243,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_w]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_w]: ...
 @overload  # {plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -266,7 +256,7 @@ def find_peaks(
     rel_height: float = 0.5,
     *,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_s]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_s]: ...
 
 # 2
 @overload  # {height, threshold}
@@ -281,7 +271,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_ht]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_ht]: ...
 @overload  # {height, prominence}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -294,7 +284,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_hp]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_hp]: ...
 @overload  # {height, width}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -307,7 +297,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_hw]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_hw]: ...
 @overload  # {height, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -320,7 +310,7 @@ def find_peaks(
     rel_height: float = 0.5,
     *,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_hs]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_hs]: ...
 @overload  # {threshold, prominence}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -333,7 +323,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_tp]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_tp]: ...
 @overload  # {threshold, width}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -346,7 +336,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_tw]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_tw]: ...
 @overload  # {threshold, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -359,7 +349,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_ts]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_ts]: ...
 @overload  # {prominence, width}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -372,7 +362,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_pw]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_pw]: ...
 @overload  # {prominence, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -385,7 +375,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_ps]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_ps]: ...
 @overload  # {width, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -398,7 +388,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_ws]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_ws]: ...
 
 # 3
 @overload  # {height, threshold, prominence}
@@ -413,7 +403,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_htp]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_htp]: ...
 @overload  # {height, threshold, width}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -426,7 +416,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_htw]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_htw]: ...
 @overload  # {height, threshold, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -439,7 +429,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_hts]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_hts]: ...
 @overload  # {height, prominence, width}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -452,7 +442,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_hpw]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_hpw]: ...
 @overload  # {height, prominence, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -465,7 +455,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_hps]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_hps]: ...
 @overload  # {height, width, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -478,7 +468,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_hws]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_hws]: ...
 @overload  # {threshold, prominence, width}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -491,7 +481,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_tpw]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_tpw]: ...
 @overload  # {threshold, prominence, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -504,7 +494,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_tps]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_tps]: ...
 @overload  # {threshold, width, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -517,7 +507,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_tws]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_tws]: ...
 @overload  # {prominence, width, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -530,7 +520,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_pws]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_pws]: ...
 
 # 4
 @overload  # {height, threshold, prominence, width}
@@ -545,7 +535,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: None = None,
-) -> tuple[_Int1D, _PeakProperties_htpw]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_htpw]: ...
 @overload  # {height, threshold, prominence, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -558,7 +548,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_htps]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_htps]: ...
 @overload  # {height, threshold, width, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -571,7 +561,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_htws]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_htws]: ...
 @overload  # {height, prominence, width, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -584,7 +574,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_hpws]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_hpws]: ...
 @overload  # {threshold, prominence, width, plateau_size}
 def find_peaks(
     x: onp.ToFloat1D,
@@ -597,7 +587,7 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_tpws]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_tpws]: ...
 
 # 5
 @overload  # {height, threshold, prominence, width, plateau_size}
@@ -612,4 +602,4 @@ def find_peaks(
     wlen: int | None = None,
     rel_height: float = 0.5,
     plateau_size: _PeakCondition,
-) -> tuple[_Int1D, _PeakProperties_htpws]: ...
+) -> tuple[onp.Array1D[np.intp], _PeakProperties_htpws]: ...
