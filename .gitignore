@@ -18,4 +18,4 @@ dist/
 
 # Script output
 .coverage.md
-coverage.md
+.overloads.json
