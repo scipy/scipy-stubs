@@ -6,7 +6,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.signal import butter, buttord
+from scipy.signal import butter, buttord, cheb1ord, cheb2ord
 
 ###
 
@@ -28,3 +28,17 @@ assert_type(buttord(0.2, 0.3, 3, 40), tuple[int, np.float64])
 assert_type(buttord(0.2, _f64_1d, 3, 40), tuple[int, np.float64])
 assert_type(buttord(0.2, _f80_1d, 3, 40), tuple[int, np.longdouble])
 assert_type(buttord(_f64_1d, 0.3, 3, 40), tuple[int, onp.Array1D[np.float64]])
+
+# cheb1ord
+
+assert_type(cheb1ord(0.2, 0.3, 3, 40), tuple[int, np.float64])
+assert_type(cheb1ord(0.2, _f64_1d, 3, 40), tuple[int, np.float64])
+assert_type(cheb1ord(0.2, _f80_1d, 3, 40), tuple[int, np.longdouble])
+assert_type(cheb1ord(_f64_1d, 0.3, 3, 40), tuple[int, onp.Array1D[np.float64]])
+
+# cheb2ord
+
+assert_type(cheb2ord(0.2, 0.3, 3, 40), tuple[int, np.float64])
+assert_type(cheb2ord(0.2, _f64_1d, 3, 40), tuple[int, np.float64])
+assert_type(cheb2ord(0.2, _f80_1d, 3, 40), tuple[int, np.longdouble])
+assert_type(cheb2ord(_f64_1d, 0.3, 3, 40), tuple[int, onp.Array1D[np.float64]])
