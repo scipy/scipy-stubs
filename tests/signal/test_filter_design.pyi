@@ -24,6 +24,8 @@ from scipy.signal import (
     ellipord,
     gammatone,
     iircomb,
+    iirdesign,
+    iirfilter,
     iirnotch,
     iirpeak,
 )
@@ -34,6 +36,18 @@ _f64_1d: onp.Array1D[np.float64]
 _f80_1d: onp.Array1D[npc.floating80]
 
 ###
+
+# iirdesign
+assert_type(iirdesign(0.2, 0.3, 1, 40), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirdesign(0.2, 0.3, 1, 40, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirdesign(0.2, 0.3, 1, 40, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(iirdesign(0.2, 0.3, 1, 40, output="sos"), onp.Array2D[np.float64])
+
+# iirfilter
+assert_type(iirfilter(8, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirfilter(8, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirfilter(8, 0.1, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(iirfilter(8, 0.1, output="sos"), onp.Array2D[np.float64])
 
 # butter
 assert_type(butter(8, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
