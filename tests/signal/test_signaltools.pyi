@@ -5,7 +5,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import lfilter, lfilter_zi, lfiltic
+from scipy.signal import filtfilt, lfilter, lfilter_zi, lfiltic
 
 ###
 
@@ -57,3 +57,15 @@ assert_type(lfilter(_f32_1d, _f32_1d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(lfilter(_c64_1d, _c64_1d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(lfilter(_c64_1d, _c64_1d, _c128_1d), onp.ArrayND[np.complex128])
 assert_type(lfilter(_c128_1d, _c128_1d, _c128_1d), onp.ArrayND[np.complex128])
+
+# filtfilt
+assert_type(filtfilt(_py_i_1d, _py_i_1d, _py_i_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_py_f_1d, _py_f_1d, _py_f_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_i16_1d, _i16_1d, _i16_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_f32_1d, _f32_1d, _f32_1d), onp.ArrayND[np.float32])
+assert_type(filtfilt(_f32_1d, _f32_1d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_f64_1d, _f64_1d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_f32_1d, _f32_1d, _c64_1d), onp.ArrayND[np.complex64])
+assert_type(filtfilt(_c64_1d, _c64_1d, _c64_1d), onp.ArrayND[np.complex64])
+assert_type(filtfilt(_c64_1d, _c64_1d, _c128_1d), onp.ArrayND[np.complex128])
+assert_type(filtfilt(_c128_1d, _c128_1d, _c128_1d), onp.ArrayND[np.complex128])
