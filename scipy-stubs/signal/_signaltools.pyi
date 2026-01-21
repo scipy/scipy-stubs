@@ -998,15 +998,15 @@ def wiener(im: onp.ToComplexND, mysize: int | onp.ToInt1D | None = None, noise: 
 #
 @overload  # float64 | integer, known shape
 def hilbert(
-    x: onp.CanArray[_ShapeT, np.dtype[np.float64 | npc.integer]], N: int | None = None, axis: int = -1
+    x: nptc.CanArray[_ShapeT, np.dtype[np.float64 | npc.integer]], N: int | None = None, axis: int = -1
 ) -> onp.ArrayND[np.complex128, _ShapeT]: ...
 @overload  # float32 | float16, known shape
 def hilbert(
-    x: onp.CanArray[_ShapeT, np.dtype[np.float32 | np.float16]], N: int | None = None, axis: int = -1
+    x: nptc.CanArray[_ShapeT, np.dtype[np.float32 | np.float16]], N: int | None = None, axis: int = -1
 ) -> onp.ArrayND[np.complex64, _ShapeT]: ...
 @overload  # longdouble, known shape
 def hilbert(
-    x: onp.CanArray[_ShapeT, np.dtype[npc.floating80]], N: int | None = None, axis: int = -1
+    x: nptc.CanArray[_ShapeT, np.dtype[npc.floating80]], N: int | None = None, axis: int = -1
 ) -> onp.ArrayND[npc.complexfloating160, _ShapeT]: ...
 @overload  # float64 | integer, unknown shape
 def hilbert(
