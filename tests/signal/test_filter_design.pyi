@@ -6,7 +6,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.signal import buttap, butter, buttord, cheb1ap, cheb1ord, cheb2ap, cheb2ord, ellipap, ellipord
+from scipy.signal import besselap, buttap, butter, buttord, cheb1ap, cheb1ord, cheb2ap, cheb2ord, ellipap, ellipord
 
 ###
 
@@ -68,3 +68,8 @@ assert_type(cheb2ap(4, 0.1, xp=np), tuple[Any, Any, float])
 
 assert_type(ellipap(4, 0.1, 0.2), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], float])
 assert_type(ellipap(4, 0.1, 0.2, xp=np), tuple[Any, Any, float])
+
+# besselap
+
+assert_type(besselap(4), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float])
+assert_type(besselap(4, xp=np), tuple[Any, Any, float])
