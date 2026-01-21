@@ -1,0 +1,151 @@
+# type-tests for `signal/_max_len_seq.pyi`
+
+from typing import Any, Literal, assert_type
+
+import numpy as np
+import optype.numpy as onp
+import optype.numpy.compat as npc
+
+from scipy.signal import (
+    band_stop_obj,
+    bessel,
+    besselap,
+    buttap,
+    butter,
+    buttord,
+    cheb1ap,
+    cheb1ord,
+    cheb2ap,
+    cheb2ord,
+    cheby1,
+    cheby2,
+    ellip,
+    ellipap,
+    ellipord,
+    gammatone,
+    iircomb,
+    iirdesign,
+    iirfilter,
+    iirnotch,
+    iirpeak,
+)
+
+###
+
+_f64_1d: onp.Array1D[np.float64]
+_f80_1d: onp.Array1D[npc.floating80]
+
+###
+
+# iirdesign
+assert_type(iirdesign(0.2, 0.3, 1, 40), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirdesign(0.2, 0.3, 1, 40, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirdesign(0.2, 0.3, 1, 40, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(iirdesign(0.2, 0.3, 1, 40, output="sos"), onp.Array2D[np.float64])
+
+# iirfilter
+assert_type(iirfilter(8, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirfilter(8, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirfilter(8, 0.1, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(iirfilter(8, 0.1, output="sos"), onp.Array2D[np.float64])
+
+# butter
+assert_type(butter(8, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(butter(8, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(butter(8, 0.1, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float])
+assert_type(butter(8, 0.1, output="sos"), onp.Array2D[np.float64])
+
+# cheby1
+assert_type(cheby1(8, 3, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(cheby1(8, 3, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(cheby1(8, 3, 0.1, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(cheby1(8, 3, 0.1, output="sos"), onp.Array2D[np.float64])
+
+# cheby2
+assert_type(cheby2(8, 3, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(cheby2(8, 3, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(cheby2(8, 3, 0.1, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(cheby2(8, 3, 0.1, output="sos"), onp.Array2D[np.float64])
+
+# ellip
+assert_type(ellip(8, 5, 40, 100), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(ellip(8, 5, 40, 100, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(ellip(8, 5, 40, 100, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(ellip(8, 5, 40, 100, output="sos"), onp.Array2D[np.float64])
+
+# bessel
+assert_type(bessel(3, 10), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(bessel(3, 10, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(bessel(3, 10, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(bessel(3, 10, output="sos"), onp.Array2D[np.float64])
+
+# band_stop_obj
+assert_type(band_stop_obj(2, 1, _f64_1d, _f64_1d, 3, 30, "butter"), np.float64)
+assert_type(band_stop_obj(2, 1, _f80_1d, _f80_1d, 3, 30, "butter"), np.longdouble | Any)
+
+###
+
+# buttord
+assert_type(buttord(0.2, 0.3, 3, 40), tuple[int, np.float64])
+assert_type(buttord(0.2, _f64_1d, 3, 40), tuple[int, np.float64])
+assert_type(buttord(0.2, _f80_1d, 3, 40), tuple[int, np.longdouble])
+assert_type(buttord(_f64_1d, 0.3, 3, 40), tuple[int, onp.Array1D[np.float64]])
+
+# cheb1ord
+assert_type(cheb1ord(0.2, 0.3, 3, 40), tuple[int, np.float64])
+assert_type(cheb1ord(0.2, _f64_1d, 3, 40), tuple[int, np.float64])
+assert_type(cheb1ord(0.2, _f80_1d, 3, 40), tuple[int, np.longdouble])
+assert_type(cheb1ord(_f64_1d, 0.3, 3, 40), tuple[int, onp.Array1D[np.float64]])
+
+# cheb2ord
+assert_type(cheb2ord(0.2, 0.3, 3, 40), tuple[int, np.float64])
+assert_type(cheb2ord(0.2, _f64_1d, 3, 40), tuple[int, np.float64])
+assert_type(cheb2ord(0.2, _f80_1d, 3, 40), tuple[int, np.longdouble])
+assert_type(cheb2ord(_f64_1d, 0.3, 3, 40), tuple[int, onp.Array1D[np.float64]])
+
+# ellipord
+assert_type(ellipord(0.2, 0.3, 3, 40), tuple[int, np.float64])
+assert_type(ellipord(0.2, _f64_1d, 3, 40), tuple[int, np.float64])
+assert_type(ellipord(_f64_1d, 0.3, 3, 40), tuple[int, onp.Array1D[np.float64]])
+
+###
+
+# buttap
+assert_type(buttap(4), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], Literal[1]])
+assert_type(buttap(4, xp=np), tuple[Any, Any, Literal[1]])
+
+# cheb1ap
+assert_type(cheb1ap(4, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float])
+assert_type(cheb1ap(4, 0.1, xp=np), tuple[Any, Any, float])
+
+# cheb2ap
+assert_type(cheb2ap(4, 0.1), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], float])
+assert_type(cheb2ap(4, 0.1, xp=np), tuple[Any, Any, float])
+
+# ellipap
+assert_type(ellipap(4, 0.1, 0.2), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], float])
+assert_type(ellipap(4, 0.1, 0.2, xp=np), tuple[Any, Any, float])
+
+# besselap
+assert_type(besselap(4), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float])
+assert_type(besselap(4, xp=np), tuple[Any, Any, float])
+
+###
+
+# iirnotch
+assert_type(iirnotch(60.0, 30.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirnotch(60.0, 30.0, xp=np), tuple[Any, Any])
+
+# iirpeak
+assert_type(iirpeak(60.0, 30.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirpeak(60.0, 30.0, xp=np), tuple[Any, Any])
+
+# iircomb
+assert_type(iircomb(60.0, 30.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iircomb(60.0, 30.0, xp=np), tuple[Any, Any])
+
+# gammatone
+assert_type(gammatone(1000.0, "iir"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(gammatone(1000.0, "fir"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(gammatone(1000.0, "iir", xp=np), tuple[Any, Any])
+assert_type(gammatone(1000.0, "fir", xp=np), tuple[Any, Any])
