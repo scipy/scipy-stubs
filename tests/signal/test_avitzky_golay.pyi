@@ -1,11 +1,12 @@
 # type-tests for `signal/_savitzky_golay.pyi`
 
+from _typeshed import Incomplete
 from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import savgol_filter
+from scipy.signal import savgol_coeffs, savgol_filter
 
 ###
 
@@ -32,6 +33,14 @@ _f32_nd: onp.ArrayND[np.float32]
 _f64_nd: onp.ArrayND[np.float64]
 
 ###
+
+# savgol_coeffs
+
+assert_type(savgol_coeffs(5, 3), onp.Array1D[np.float64])
+assert_type(savgol_coeffs(5, 3, deriv=2), onp.Array1D[np.float64])
+assert_type(savgol_coeffs(5, 3, deriv=2, delta=0.5), onp.Array1D[np.float64])
+assert_type(savgol_coeffs(5, 3, deriv=2, delta=0.5, pos=1), onp.Array1D[np.float64])
+assert_type(savgol_coeffs(5, 3, xp=np), Incomplete)
 
 # savgol_filter
 
