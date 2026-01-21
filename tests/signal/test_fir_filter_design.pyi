@@ -5,7 +5,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import firwin
+from scipy.signal import firwin, kaiser_atten, kaiser_beta, kaiserord
 
 ###
 
@@ -31,6 +31,11 @@ _c64_2d: onp.Array2D[np.complex64]
 _c128_2d: onp.Array2D[np.complex128]
 
 ###
+
+# kaiser*
+assert_type(kaiser_beta(5.0), float)
+assert_type(kaiser_atten(10, 0.5), float)
+assert_type(kaiserord(60.0, 0.1), tuple[int, float])
 
 # firwin
 assert_type(firwin(1, 0.5), onp.Array1D[np.float64])
