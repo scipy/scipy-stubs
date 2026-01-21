@@ -5,7 +5,7 @@ from typing import Literal, TypeAlias, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import check_COLA, check_NOLA, csd, istft, lombscargle, periodogram, spectrogram, welch
+from scipy.signal import check_COLA, check_NOLA, csd, istft, lombscargle, periodogram, spectrogram, stft, welch
 
 ###
 
@@ -62,7 +62,7 @@ assert_type(welch(_c64_1d), tuple[_F64_1D, _F32_ND])
 assert_type(welch(_c128_1d), tuple[_F64_1D, _F64_ND])
 assert_type(welch(_c160_1d), tuple[_F64_1D, _F80_ND])
 
-# cdd
+# csd
 
 assert_type(csd(_i64_1d, _i64_1d), tuple[_F64_1D, _C128_ND])
 assert_type(csd(_f16_1d, _f16_1d), tuple[_F64_1D, _C64_ND])
@@ -87,6 +87,17 @@ assert_type(
 
 assert_type(check_COLA(256, 128, 256), np.bool_)
 assert_type(check_NOLA(256, 128, 256), np.bool_)
+
+# stft
+
+assert_type(stft(_i64_1d), tuple[_F64_1D, _F64_1D, _C128_ND])
+assert_type(stft(_f16_1d), tuple[_F64_1D, _F64_1D, _C64_ND])
+assert_type(stft(_f32_1d), tuple[_F64_1D, _F64_1D, _C64_ND])
+assert_type(stft(_f64_1d), tuple[_F64_1D, _F64_1D, _C128_ND])
+assert_type(stft(_f80_1d), tuple[_F64_1D, _F64_1D, _C160_ND])
+assert_type(stft(_c64_1d), tuple[_F64_1D, _F64_1D, _C64_ND])
+assert_type(stft(_c128_1d), tuple[_F64_1D, _F64_1D, _C128_ND])
+assert_type(stft(_c160_1d), tuple[_F64_1D, _F64_1D, _C160_ND])
 
 # isft
 
