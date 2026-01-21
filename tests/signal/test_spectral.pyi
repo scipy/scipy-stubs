@@ -5,7 +5,7 @@ from typing import Literal, TypeAlias, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import istft, lombscargle, periodogram, spectrogram, welch
+from scipy.signal import csd, istft, lombscargle, periodogram, spectrogram, welch
 
 ###
 
@@ -13,7 +13,9 @@ _F64_1D: TypeAlias = onp.Array1D[np.float64]
 _F32_ND: TypeAlias = onp.ArrayND[np.float32]
 _F64_ND: TypeAlias = onp.ArrayND[np.float64]
 _F80_ND: TypeAlias = onp.ArrayND[np.float96 | np.float128]
+_C64_ND: TypeAlias = onp.ArrayND[np.complex64]
 _C128_ND: TypeAlias = onp.ArrayND[np.complex128]
+_C160_ND: TypeAlias = onp.ArrayND[np.complex192 | np.complex256]
 
 ###
 
@@ -59,6 +61,17 @@ assert_type(welch(_f80_1d), tuple[_F64_1D, _F80_ND])
 assert_type(welch(_c64_1d), tuple[_F64_1D, _F32_ND])
 assert_type(welch(_c128_1d), tuple[_F64_1D, _F64_ND])
 assert_type(welch(_c160_1d), tuple[_F64_1D, _F80_ND])
+
+# cdd
+
+assert_type(csd(_i64_1d, _i64_1d), tuple[_F64_1D, _C128_ND])
+assert_type(csd(_f16_1d, _f16_1d), tuple[_F64_1D, _C64_ND])
+assert_type(csd(_f32_1d, _f32_1d), tuple[_F64_1D, _C64_ND])
+assert_type(csd(_f64_1d, _f64_1d), tuple[_F64_1D, _C128_ND])
+assert_type(csd(_f80_1d, _f80_1d), tuple[_F64_1D, _C160_ND])
+assert_type(csd(_c64_1d, _c64_1d), tuple[_F64_1D, _C64_ND])
+assert_type(csd(_c128_1d, _c128_1d), tuple[_F64_1D, _C128_ND])
+assert_type(csd(_c160_1d, _c160_1d), tuple[_F64_1D, _C160_ND])
 
 # spectrogram
 
