@@ -7,6 +7,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from scipy.signal import (
+    bessel,
     besselap,
     buttap,
     butter,
@@ -17,6 +18,7 @@ from scipy.signal import (
     cheb2ord,
     cheby1,
     cheby2,
+    ellip,
     ellipap,
     ellipord,
 )
@@ -45,6 +47,18 @@ assert_type(cheby2(8, 3, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.flo
 assert_type(cheby2(8, 3, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(cheby2(8, 3, 0.1, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
 assert_type(cheby2(8, 3, 0.1, output="sos"), onp.Array2D[np.float64])
+
+# ellip
+assert_type(ellip(8, 5, 40, 100), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(ellip(8, 5, 40, 100, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(ellip(8, 5, 40, 100, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(ellip(8, 5, 40, 100, output="sos"), onp.Array2D[np.float64])
+
+# bessel
+assert_type(bessel(3, 10), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(bessel(3, 10, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(bessel(3, 10, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(bessel(3, 10, output="sos"), onp.Array2D[np.float64])
 
 ###
 
