@@ -5,7 +5,7 @@ from typing import Literal, TypeAlias, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import csd, istft, lombscargle, periodogram, spectrogram, welch
+from scipy.signal import check_COLA, check_NOLA, csd, istft, lombscargle, periodogram, spectrogram, welch
 
 ###
 
@@ -82,6 +82,11 @@ assert_type(
     spectrogram(_f64_1d, 1.0, ("tukey", 2.5), None, None, None, "constant", True, "density", -1, mode="complex"),
     tuple[_F64_1D, _F64_1D, _C128_ND],
 )
+
+# check_{COLA,NOLA}
+
+assert_type(check_COLA(256, 128, 256), np.bool_)
+assert_type(check_NOLA(256, 128, 256), np.bool_)
 
 # isft
 
