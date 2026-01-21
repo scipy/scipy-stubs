@@ -19,7 +19,7 @@ _float64_nd: TypeAlias = onp.ArrayND[np.float64]  # noqa: PYI042
 _float80_nd: TypeAlias = onp.ArrayND[np.float96 | np.float128]  # noqa: PYI042
 _complex64_nd: TypeAlias = onp.ArrayND[np.complex64]  # noqa: PYI042
 _complex128_nd: TypeAlias = onp.ArrayND[np.complex128]  # noqa: PYI042
-_complex160_nd: TypeAlias = onp.ArrayND[np.clongdouble]  # noqa: PYI042
+_complex160_nd: TypeAlias = onp.ArrayND[np.complex192 | np.complex256]  # noqa: PYI042
 
 _ToInexact32ND: TypeAlias = onp.ToArrayND[npc.inexact32, npc.inexact32 | npc.floating16]
 _ToInexact64ND: TypeAlias = onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool_]
