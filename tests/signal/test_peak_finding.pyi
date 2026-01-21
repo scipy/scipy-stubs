@@ -1,23 +1,27 @@
+# type-tests for `signal/_peak_finding.pyi`
+
+# ruff: noqa: ERA001
+
 from typing import TypeAlias, assert_type
 
 import numpy as np
+import optype.numpy as onp
 
 from scipy.signal import find_peaks
 
 ###
 
-_Int1D: TypeAlias = np.ndarray[tuple[int], np.dtype[np.int_]]
-_Float1D: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
+_Int1D: TypeAlias = onp.Array1D[np.int_]
+_Float1D: TypeAlias = onp.Array1D[np.float64]
 
 ###
 
 data: _Float1D
 cond: _Float1D
 
-# ruff: noqa: ERA001
-
 ###
-# 0
+
+# find_peaks
 
 # {}
 assert_type(find_peaks(data)[0], _Int1D)
@@ -27,9 +31,6 @@ props_0["left_thresholds"]  # type: ignore[typeddict-item]  # pyright: ignore[re
 props_0["prominences"]  # type: ignore[typeddict-item]  # pyright: ignore[reportGeneralTypeIssues]  # pyrefly: ignore[bad-typed-dict-key]
 props_0["widths"]  # type: ignore[typeddict-item]  # pyright: ignore[reportGeneralTypeIssues]  # pyrefly: ignore[bad-typed-dict-key]
 props_0["plateau_sizes"]  # type: ignore[typeddict-item]  # pyright: ignore[reportGeneralTypeIssues]  # pyrefly: ignore[bad-typed-dict-key]
-
-###
-# 1
 
 # {height}
 _, props_h = find_peaks(data, height=cond)
@@ -70,9 +71,6 @@ props_s["left_thresholds"]  # type: ignore[typeddict-item]  # pyright: ignore[re
 props_s["prominences"]  # type: ignore[typeddict-item]  # pyright: ignore[reportGeneralTypeIssues]  # pyrefly: ignore[bad-typed-dict-key]
 props_s["widths"]  # type: ignore[typeddict-item]  # pyright: ignore[reportGeneralTypeIssues]  # pyrefly: ignore[bad-typed-dict-key]
 assert_type(props_s["plateau_sizes"], _Int1D)
-
-###
-# 2
 
 # {height, threshold}
 _, props_ht = find_peaks(data, height=cond, threshold=cond)
@@ -154,9 +152,6 @@ props_ws["prominences"]  # type: ignore[typeddict-item]  # pyright: ignore[repor
 assert_type(props_ws["widths"], _Float1D)
 assert_type(props_ws["plateau_sizes"], _Int1D)
 
-###
-# 3
-
 # {height, threshold, prominence}
 _, props_htp = find_peaks(data, height=cond, threshold=cond, prominence=cond)
 assert_type(props_htp["peak_heights"], _Float1D)
@@ -237,9 +232,6 @@ assert_type(props_pws["prominences"], _Float1D)
 assert_type(props_pws["widths"], _Float1D)
 assert_type(props_pws["plateau_sizes"], _Int1D)
 
-###
-# 4
-
 # {height, threshold, prominence, width}
 _, props_htpw = find_peaks(data, height=cond, threshold=cond, prominence=cond, width=cond)
 assert_type(props_htpw["peak_heights"], _Float1D)
@@ -279,9 +271,6 @@ assert_type(props_tpws["left_thresholds"], _Float1D)
 assert_type(props_tpws["prominences"], _Float1D)
 assert_type(props_tpws["widths"], _Float1D)
 assert_type(props_tpws["plateau_sizes"], _Int1D)
-
-###
-# 5
 
 # {height, threshold, prominence, width, plateau_size}
 _, props_htpws = find_peaks(data, height=cond, threshold=cond, prominence=cond, width=cond, plateau_size=cond)
