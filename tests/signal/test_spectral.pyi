@@ -4,25 +4,27 @@ from typing import Literal, TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
-from scipy.signal import istft, lombscargle, spectrogram
+from scipy.signal import istft, lombscargle, periodogram, spectrogram
 
 ###
 
 _F64_1D: TypeAlias = onp.Array1D[np.float64]
+_F32_ND: TypeAlias = onp.ArrayND[np.float32]
 _F64_ND: TypeAlias = onp.ArrayND[np.float64]
+_F80_ND: TypeAlias = onp.ArrayND[np.float96 | np.float128]
 _C128_ND: TypeAlias = onp.ArrayND[np.complex128]
 
 ###
 
 _i64_1d: onp.Array1D[np.int64]
+_f16_1d: onp.Array1D[np.float16]
 _f32_1d: onp.Array1D[np.float32]
 _f64_1d: onp.Array1D[np.float64]
-_f80_1d: onp.Array1D[npc.floating80]
+_f80_1d: onp.Array1D[np.float96 | np.float128]
 _c64_1d: onp.Array1D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
-_c160_1d: onp.Array1D[npc.complexfloating160]
+_c160_1d: onp.Array1D[np.complex192 | np.complex256]
 
 _mode_real: Literal["psd", "magnitude", "angle", "phase"]
 
@@ -35,6 +37,17 @@ assert_type(lombscargle(_f32_1d, _f32_1d, _f32_1d), _F64_1D)
 assert_type(lombscargle(_f64_1d, _f64_1d, _f64_1d), _F64_1D)
 assert_type(lombscargle(_f64_1d, _f64_1d, _f64_1d, precenter=False), _F64_1D)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(lombscargle(_f64_1d, _f64_1d, _f64_1d, precenter=True), _F64_1D)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+
+# periodogram
+
+assert_type(periodogram(_i64_1d), tuple[_F64_1D, _F64_ND])
+assert_type(periodogram(_f16_1d), tuple[_F64_1D, _F32_ND])
+assert_type(periodogram(_f32_1d), tuple[_F64_1D, _F32_ND])
+assert_type(periodogram(_f64_1d), tuple[_F64_1D, _F64_ND])
+assert_type(periodogram(_f80_1d), tuple[_F64_1D, _F80_ND])
+assert_type(periodogram(_c64_1d), tuple[_F64_1D, _F32_ND])
+assert_type(periodogram(_c128_1d), tuple[_F64_1D, _F64_ND])
+assert_type(periodogram(_c160_1d), tuple[_F64_1D, _F80_ND])
 
 # spectrogram
 
