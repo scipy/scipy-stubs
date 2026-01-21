@@ -5,7 +5,18 @@ from typing import Literal, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import choose_conv_method, convolve, correlate, filtfilt, lfilter, lfilter_zi, lfiltic, sosfiltfilt
+from scipy.signal import (
+    choose_conv_method,
+    convolve,
+    convolve2d,
+    correlate,
+    correlate2d,
+    filtfilt,
+    lfilter,
+    lfilter_zi,
+    lfiltic,
+    sosfiltfilt,
+)
 
 ###
 
@@ -90,6 +101,26 @@ assert_type(correlate(_f32_1d, _f32_1d), onp.Array1D[np.float32])
 assert_type(correlate(_f64_1d, _f64_1d), onp.Array1D[np.float64])
 assert_type(correlate(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(correlate(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
+
+# convolve2d (same as correlate2d)
+
+assert_type(convolve2d(_py_i_1d, _py_i_1d), onp.Array2D[np.int64])
+assert_type(convolve2d(_py_f_1d, _py_f_1d), onp.Array2D[np.float64])
+assert_type(convolve2d(_i64_1d, _i64_1d), onp.Array2D[np.int64])
+assert_type(convolve2d(_f32_1d, _f32_1d), onp.Array2D[np.float32])
+assert_type(convolve2d(_f64_1d, _f64_1d), onp.Array2D[np.float64])
+assert_type(convolve2d(_c64_1d, _c64_1d), onp.Array2D[np.complex64])
+assert_type(convolve2d(_c128_1d, _c128_1d), onp.Array2D[np.complex128])
+
+# correlate2d (same as convolve2d)
+
+assert_type(correlate2d(_py_i_1d, _py_i_1d), onp.Array2D[np.int64])
+assert_type(correlate2d(_py_f_1d, _py_f_1d), onp.Array2D[np.float64])
+assert_type(correlate2d(_i64_1d, _i64_1d), onp.Array2D[np.int64])
+assert_type(correlate2d(_f32_1d, _f32_1d), onp.Array2D[np.float32])
+assert_type(correlate2d(_f64_1d, _f64_1d), onp.Array2D[np.float64])
+assert_type(correlate2d(_c64_1d, _c64_1d), onp.Array2D[np.complex64])
+assert_type(correlate2d(_c128_1d, _c128_1d), onp.Array2D[np.complex128])
 
 # lfilter_zi
 
