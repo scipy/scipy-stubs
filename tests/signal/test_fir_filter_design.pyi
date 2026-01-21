@@ -5,7 +5,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import firls, firwin, firwin2, firwin_2d, kaiser_atten, kaiser_beta, kaiserord
+from scipy.signal import firls, firwin, firwin2, firwin_2d, kaiser_atten, kaiser_beta, kaiserord, remez
 
 ###
 
@@ -84,3 +84,12 @@ assert_type(firls(9, _u8_2d, _u8_2d), onp.Array1D[np.float64])
 assert_type(firls(9, _i16_2d, _i16_2d), onp.Array1D[np.float64])
 assert_type(firls(9, _f32_2d, _f32_2d), onp.Array1D[np.float64])
 assert_type(firls(9, _f64_2d, _f64_2d), onp.Array1D[np.float64])
+
+# remez
+
+assert_type(remez(9, _py_i_1d, _py_i_1d), onp.Array1D[np.float64])
+assert_type(remez(9, _py_f_1d, _py_f_1d), onp.Array1D[np.float64])
+assert_type(remez(9, _u8_1d, _u8_1d), onp.Array1D[np.float64])
+assert_type(remez(9, _i16_1d, _i16_1d), onp.Array1D[np.float64])
+assert_type(remez(9, _f32_1d, _f32_1d), onp.Array1D[np.float64])
+assert_type(remez(9, _f64_1d, _f64_1d), onp.Array1D[np.float64])
