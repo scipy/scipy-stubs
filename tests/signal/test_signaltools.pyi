@@ -11,6 +11,7 @@ from scipy.signal import (
     convolve2d,
     correlate,
     correlate2d,
+    correlation_lags,
     deconvolve,
     fftconvolve,
     filtfilt,
@@ -154,6 +155,13 @@ assert_type(deconvolve(_f32_1d, _f32_1d), tuple[onp.Array1D[np.float64], onp.Arr
 assert_type(deconvolve(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(deconvolve(_c64_1d, _c64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
 assert_type(deconvolve(_c128_1d, _c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
+
+# correlation_lags
+
+assert_type(correlation_lags(5, 3), onp.Array1D[np.int_])
+assert_type(correlation_lags(5, 3, mode="valid"), onp.Array1D[np.int_])
+assert_type(correlation_lags(5, 3, mode="same"), onp.Array1D[np.int_])
+assert_type(correlation_lags(5, 3, mode="full"), onp.Array1D[np.int_])
 
 ###
 
