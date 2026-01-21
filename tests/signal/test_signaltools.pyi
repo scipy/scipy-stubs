@@ -4,6 +4,7 @@ from typing import Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.signal import (
     choose_conv_method,
@@ -15,6 +16,8 @@ from scipy.signal import (
     deconvolve,
     fftconvolve,
     filtfilt,
+    hilbert,
+    hilbert2,
     lfilter,
     lfilter_zi,
     lfiltic,
@@ -24,6 +27,7 @@ from scipy.signal import (
     order_filter,
     sosfilt_zi,
     sosfiltfilt,
+    wiener,
 )
 
 ###
@@ -35,20 +39,31 @@ _py_c_1d: list[complex]
 _u8_1d: onp.Array1D[np.uint8]
 _i16_1d: onp.Array1D[np.int16]
 _i64_1d: onp.Array1D[np.int64]
+_f16_1d: onp.Array1D[np.float16]
 _f32_1d: onp.Array1D[np.float32]
 _f64_1d: onp.Array1D[np.float64]
+_f80_1d: onp.Array1D[npc.floating80]
 _c64_1d: onp.Array1D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
+_c160_1d: onp.Array1D[npc.complexfloating160]
 
 _py_i_2d: list[list[int]]
 _py_f_2d: list[list[float]]
 _py_c_2d: list[list[complex]]
 _u8_2d: onp.Array2D[np.uint8]
 _i16_2d: onp.Array2D[np.int16]
+_f16_2d: onp.Array2D[np.float32]
 _f32_2d: onp.Array2D[np.float32]
 _f64_2d: onp.Array2D[np.float64]
+_f80_2d: onp.Array2D[npc.floating80]
 _c64_2d: onp.Array2D[np.complex64]
 _c128_2d: onp.Array2D[np.complex128]
+
+_u8_nd: onp.ArrayND[np.uint8]
+_f16_nd: onp.ArrayND[np.float32]
+_f32_nd: onp.ArrayND[np.float32]
+_f64_nd: onp.ArrayND[np.float64]
+_f80_nd: onp.ArrayND[npc.floating80]
 
 ###
 
@@ -280,3 +295,48 @@ assert_type(medfilt2d(_py_f_2d), onp.Array2D[np.float64])
 assert_type(medfilt2d(_u8_2d), onp.Array2D[np.uint8])
 assert_type(medfilt2d(_f32_2d), onp.Array2D[np.float32])
 assert_type(medfilt2d(_f64_2d), onp.Array2D[np.float64])
+
+# wiener
+
+assert_type(wiener(_py_i_1d), onp.ArrayND[np.float64])
+assert_type(wiener(_py_f_1d), onp.ArrayND[np.float64])
+assert_type(wiener(_u8_1d), onp.ArrayND[np.float64])
+assert_type(wiener(_f32_1d), onp.ArrayND[np.float64])
+assert_type(wiener(_f64_1d), onp.ArrayND[np.float64])
+assert_type(wiener(_f80_1d), onp.ArrayND[npc.floating80])
+assert_type(wiener(_c128_1d), onp.ArrayND[np.complex128])
+assert_type(wiener(_c160_1d), onp.ArrayND[npc.complexfloating160])
+
+# hilbert
+
+assert_type(hilbert(_py_i_1d), onp.Array1D[np.complex128])
+assert_type(hilbert(_py_f_1d), onp.Array1D[np.complex128])
+assert_type(hilbert(_u8_1d), onp.Array1D[np.complex128])
+assert_type(hilbert(_f16_1d), onp.Array1D[np.complex64])
+assert_type(hilbert(_f32_1d), onp.Array1D[np.complex64])
+assert_type(hilbert(_f64_1d), onp.Array1D[np.complex128])
+assert_type(hilbert(_f80_1d), onp.Array1D[npc.complexfloating160])
+
+assert_type(hilbert(_py_i_2d), onp.Array2D[np.complex128])
+assert_type(hilbert(_py_f_2d), onp.Array2D[np.complex128])
+assert_type(hilbert(_u8_2d), onp.Array2D[np.complex128])
+assert_type(hilbert(_f16_2d), onp.Array2D[np.complex64])
+assert_type(hilbert(_f32_2d), onp.Array2D[np.complex64])
+assert_type(hilbert(_f64_2d), onp.Array2D[np.complex128])
+assert_type(hilbert(_f80_2d), onp.Array2D[npc.complexfloating160])
+
+assert_type(hilbert(_u8_nd), onp.ArrayND[np.complex128])
+assert_type(hilbert(_f16_nd), onp.ArrayND[np.complex64])
+assert_type(hilbert(_f32_nd), onp.ArrayND[np.complex64])
+assert_type(hilbert(_f64_nd), onp.ArrayND[np.complex128])
+assert_type(hilbert(_f80_nd), onp.ArrayND[npc.complexfloating160])
+
+# hilbert2
+
+assert_type(hilbert2(_py_i_2d), onp.Array2D[np.complex128])
+assert_type(hilbert2(_py_f_2d), onp.Array2D[np.complex128])
+assert_type(hilbert2(_u8_2d), onp.Array2D[np.complex128])
+assert_type(hilbert2(_f16_2d), onp.Array2D[np.complex64])
+assert_type(hilbert2(_f32_2d), onp.Array2D[np.complex64])
+assert_type(hilbert2(_f64_2d), onp.Array2D[np.complex128])
+assert_type(hilbert2(_f80_2d), onp.Array2D[npc.complexfloating160])
