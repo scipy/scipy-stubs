@@ -6,7 +6,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.signal import istft, spectrogram
+from scipy.signal import istft, lombscargle, spectrogram
 
 ###
 
@@ -27,6 +27,14 @@ _c160_1d: onp.Array1D[npc.complexfloating160]
 _mode_real: Literal["psd", "magnitude", "angle", "phase"]
 
 ###
+
+# lombscargle
+
+assert_type(lombscargle(_i64_1d, _i64_1d, _i64_1d), _F64_1D)
+assert_type(lombscargle(_f32_1d, _f32_1d, _f32_1d), _F64_1D)
+assert_type(lombscargle(_f64_1d, _f64_1d, _f64_1d), _F64_1D)
+assert_type(lombscargle(_f64_1d, _f64_1d, _f64_1d, precenter=False), _F64_1D)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(lombscargle(_f64_1d, _f64_1d, _f64_1d, precenter=True), _F64_1D)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 # spectrogram
 
