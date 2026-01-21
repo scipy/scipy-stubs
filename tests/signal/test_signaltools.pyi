@@ -11,6 +11,7 @@ from scipy.signal import (
     convolve2d,
     correlate,
     correlate2d,
+    deconvolve,
     fftconvolve,
     filtfilt,
     lfilter,
@@ -143,6 +144,16 @@ assert_type(oaconvolve(_f32_1d, _f32_1d), onp.Array1D[np.float32])
 assert_type(oaconvolve(_f64_1d, _f64_1d), onp.Array1D[np.float64])
 assert_type(oaconvolve(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(oaconvolve(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
+
+# deconvolve
+
+assert_type(deconvolve(_py_i_1d, _py_i_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(deconvolve(_py_f_1d, _py_f_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(deconvolve(_i64_1d, _i64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(deconvolve(_f32_1d, _f32_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(deconvolve(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(deconvolve(_c64_1d, _c64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(deconvolve(_c128_1d, _c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
 
 ###
 
