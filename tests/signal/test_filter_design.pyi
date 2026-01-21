@@ -22,6 +22,7 @@ from scipy.signal import (
     ellip,
     ellipap,
     ellipord,
+    gammatone,
     iircomb,
     iirnotch,
     iirpeak,
@@ -128,3 +129,9 @@ assert_type(iirpeak(60.0, 30.0, xp=np), tuple[Any, Any])
 # iircomb
 assert_type(iircomb(60.0, 30.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(iircomb(60.0, 30.0, xp=np), tuple[Any, Any])
+
+# gammatone
+assert_type(gammatone(1000.0, "iir"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(gammatone(1000.0, "fir"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(gammatone(1000.0, "iir", xp=np), tuple[Any, Any])
+assert_type(gammatone(1000.0, "fir", xp=np), tuple[Any, Any])
