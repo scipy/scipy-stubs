@@ -99,43 +99,22 @@ assert_type(stft(_c64_1d), tuple[_F64_1D, _F64_1D, _C64_ND])
 assert_type(stft(_c128_1d), tuple[_F64_1D, _F64_1D, _C128_ND])
 assert_type(stft(_c160_1d), tuple[_F64_1D, _F64_1D, _C160_ND])
 
-# isft
+# istft
 
+assert_type(istft(_i64_1d), tuple[_F64_1D, _F64_ND])
+assert_type(istft(_f16_1d), tuple[_F64_1D, _F32_ND])
+assert_type(istft(_f32_1d), tuple[_F64_1D, _F32_ND])
+assert_type(istft(_f64_1d), tuple[_F64_1D, _F64_ND])
+assert_type(istft(_f80_1d), tuple[_F64_1D, _F80_ND])
+assert_type(istft(_c64_1d), tuple[_F64_1D, _F32_ND])
 assert_type(istft(_c128_1d), tuple[_F64_1D, _F64_ND])
-assert_type(istft(_c128_1d, input_onesided=True), tuple[_F64_1D, _F64_ND])
-assert_type(istft(_c128_1d, 1.0, "hann", 256, 128, 256, input_onesided=False), tuple[_F64_1D, _C128_ND])
-assert_type(
-    istft(_c128_1d, input_onesided=False, fs=1.0, window="hann", nperseg=256, noverlap=128, nfft=256), tuple[_F64_1D, _C128_ND]
-)
-assert_type(
-    istft(
-        _c128_1d,
-        fs=2.0,
-        window=("tukey", 0.25),
-        nperseg=256,
-        noverlap=128,
-        nfft=256,
-        input_onesided=True,
-        boundary=False,
-        time_axis=-1,
-        freq_axis=0,
-        scaling="spectrum",
-    ),
-    tuple[_F64_1D, _F64_ND],
-)
-assert_type(
-    istft(
-        _c128_1d,
-        fs=2.0,
-        window=("tukey", 0.25),
-        nperseg=256,
-        noverlap=128,
-        nfft=256,
-        input_onesided=False,
-        boundary=False,
-        time_axis=0,
-        freq_axis=1,
-        scaling="spectrum",
-    ),
-    tuple[_F64_1D, _C128_ND],
-)
+assert_type(istft(_c160_1d), tuple[_F64_1D, _F80_ND])
+
+assert_type(istft(_i64_1d, input_onesided=False), tuple[_F64_1D, _C128_ND])
+assert_type(istft(_f16_1d, input_onesided=False), tuple[_F64_1D, _C64_ND])
+assert_type(istft(_f32_1d, input_onesided=False), tuple[_F64_1D, _C64_ND])
+assert_type(istft(_f64_1d, input_onesided=False), tuple[_F64_1D, _C128_ND])
+assert_type(istft(_f80_1d, input_onesided=False), tuple[_F64_1D, _C160_ND])
+assert_type(istft(_c64_1d, input_onesided=False), tuple[_F64_1D, _C64_ND])
+assert_type(istft(_c128_1d, input_onesided=False), tuple[_F64_1D, _C128_ND])
+assert_type(istft(_c160_1d, input_onesided=False), tuple[_F64_1D, _C160_ND])
