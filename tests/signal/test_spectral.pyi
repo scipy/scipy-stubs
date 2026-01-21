@@ -5,7 +5,7 @@ from typing import Literal, TypeAlias, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import istft, lombscargle, periodogram, spectrogram
+from scipy.signal import istft, lombscargle, periodogram, spectrogram, welch
 
 ###
 
@@ -48,6 +48,17 @@ assert_type(periodogram(_f80_1d), tuple[_F64_1D, _F80_ND])
 assert_type(periodogram(_c64_1d), tuple[_F64_1D, _F32_ND])
 assert_type(periodogram(_c128_1d), tuple[_F64_1D, _F64_ND])
 assert_type(periodogram(_c160_1d), tuple[_F64_1D, _F80_ND])
+
+# welch
+
+assert_type(welch(_i64_1d), tuple[_F64_1D, _F64_ND])
+assert_type(welch(_f16_1d), tuple[_F64_1D, _F32_ND])
+assert_type(welch(_f32_1d), tuple[_F64_1D, _F32_ND])
+assert_type(welch(_f64_1d), tuple[_F64_1D, _F64_ND])
+assert_type(welch(_f80_1d), tuple[_F64_1D, _F80_ND])
+assert_type(welch(_c64_1d), tuple[_F64_1D, _F32_ND])
+assert_type(welch(_c128_1d), tuple[_F64_1D, _F64_ND])
+assert_type(welch(_c160_1d), tuple[_F64_1D, _F80_ND])
 
 # spectrogram
 
