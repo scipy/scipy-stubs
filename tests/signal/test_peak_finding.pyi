@@ -7,7 +7,7 @@ from typing import TypeAlias, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import argrelextrema, argrelmax, argrelmin, find_peaks, peak_prominences
+from scipy.signal import argrelextrema, argrelmax, argrelmin, find_peaks, peak_prominences, peak_widths
 
 ###
 
@@ -42,6 +42,13 @@ assert_type(argrelextrema(_f64_1d, _cmp_f64), tuple[onp.ArrayND[np.intp], ...])
 # peak_prominences
 
 assert_type(peak_prominences(_f64_1d, _i64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp], onp.ArrayND[np.intp]])
+
+# peak_widths
+
+assert_type(
+    peak_widths(_f64_1d, _i64_1d),
+    tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int_], onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
+)
 
 # find_peaks
 
