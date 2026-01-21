@@ -20,18 +20,39 @@ class _UpFIRDn:  # undocumented
         self, /, x: onp.ArrayND[npc.number], axis: int = -1, mode: _FIRMode = "constant", cval: int = 0
     ) -> onp.ArrayND[npc.floating]: ...
 
+# The mypy `overload-overlap` errors are false positives
 @overload  # ~f64, ~f64
-def upfirdn(
-    h: onp.ToInt1D | onp.ToJustFloat64_1D,
-    x: onp.ToIntND | onp.ToJustFloat64_ND,
+def upfirdn(  # type: ignore[overload-overlap]
+    h: onp.ToJustFloat64_1D | onp.ToInt1D,
+    x: onp.ToJustFloat64_ND | onp.ToIntND,
     up: int = 1,
     down: int = 1,
     axis: int = -1,
     mode: _FIRMode = "constant",
     cval: float = 0,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # +c128, ~c128
+@overload  # +f32, ~f32
 def upfirdn(
+    h: onp.ToFloat32_1D,
+    x: onp.ToJustFloat32_1D | onp.ToJustFloat16_1D,
+    up: int = 1,
+    down: int = 1,
+    axis: int = -1,
+    mode: _FIRMode = "constant",
+    cval: float = 0,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~f32, +f32
+def upfirdn(
+    h: onp.ToJustFloat32_1D | onp.ToJustFloat16_1D,
+    x: onp.ToFloat32_ND,
+    up: int = 1,
+    down: int = 1,
+    axis: int = -1,
+    mode: _FIRMode = "constant",
+    cval: float = 0,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +c128, ~c128
+def upfirdn(  # type: ignore[overload-overlap]
     h: onp.ToComplex128_1D,
     x: onp.ToJustComplex128_ND,
     up: int = 1,
@@ -41,7 +62,7 @@ def upfirdn(
     cval: float = 0,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~c128, +c128
-def upfirdn(
+def upfirdn(  # type: ignore[overload-overlap]
     h: onp.ToJustComplex128_1D,
     x: onp.ToComplex128_ND,
     up: int = 1,
@@ -50,16 +71,26 @@ def upfirdn(
     mode: _FIRMode = "constant",
     cval: float = 0,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # ~f32, ~f32
+@overload  # +c64, ~c64
 def upfirdn(
-    h: onp.ToJustFloat16_1D | onp.ToJustFloat32_1D,
-    x: onp.ToJustFloat16_ND | onp.ToJustFloat32_ND,
+    h: onp.ToComplex64_1D,
+    x: onp.ToJustComplex64_ND,
     up: int = 1,
     down: int = 1,
     axis: int = -1,
     mode: _FIRMode = "constant",
     cval: float = 0,
-) -> onp.ArrayND[np.float64]: ...
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # ~c64, +c64
+def upfirdn(
+    h: onp.ToJustComplex64_1D,
+    x: onp.ToComplex64_ND,
+    up: int = 1,
+    down: int = 1,
+    axis: int = -1,
+    mode: _FIRMode = "constant",
+    cval: float = 0,
+) -> onp.ArrayND[np.complex64]: ...
 @overload  # fallback
 def upfirdn(
     h: onp.ToComplex1D,
