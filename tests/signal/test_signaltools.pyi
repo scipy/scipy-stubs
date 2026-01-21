@@ -1,11 +1,11 @@
 # type-tests for `signal/_signaltools.pyi`
 
-from typing import assert_type
+from typing import Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import filtfilt, lfilter, lfilter_zi, lfiltic, sosfiltfilt
+from scipy.signal import choose_conv_method, filtfilt, lfilter, lfilter_zi, lfiltic, sosfiltfilt
 
 ###
 
@@ -28,6 +28,44 @@ _c64_2d: onp.Array2D[np.complex64]
 _c128_2d: onp.Array2D[np.complex128]
 
 ###
+
+# choose_conv_method
+
+assert_type(choose_conv_method(_py_i_1d, _py_i_1d), Literal["direct"])
+assert_type(choose_conv_method(_py_f_1d, _py_f_1d), Literal["direct", "fft"])
+assert_type(choose_conv_method(_py_c_1d, _py_c_1d), Literal["direct", "fft"])
+assert_type(choose_conv_method(_i16_1d, _i16_1d), Literal["direct"])
+assert_type(choose_conv_method(_f32_1d, _f32_1d), Literal["direct", "fft"])
+assert_type(choose_conv_method(_f64_1d, _f64_1d), Literal["direct", "fft"])
+assert_type(choose_conv_method(_c64_1d, _c64_1d), Literal["direct", "fft"])
+assert_type(choose_conv_method(_c128_1d, _c128_1d), Literal["direct", "fft"])
+
+assert_type(choose_conv_method(_py_i_1d, _py_i_1d, measure=True)[0], Literal["direct", "fft"])
+assert_type(choose_conv_method(_py_f_1d, _py_f_1d, measure=True)[0], Literal["direct", "fft"])
+assert_type(choose_conv_method(_py_c_1d, _py_c_1d, measure=True)[0], Literal["direct", "fft"])
+assert_type(choose_conv_method(_i16_1d, _i16_1d, measure=True)[0], Literal["direct", "fft"])
+assert_type(choose_conv_method(_f32_1d, _f32_1d, measure=True)[0], Literal["direct", "fft"])
+assert_type(choose_conv_method(_f64_1d, _f64_1d, measure=True)[0], Literal["direct", "fft"])
+assert_type(choose_conv_method(_c64_1d, _c64_1d, measure=True)[0], Literal["direct", "fft"])
+assert_type(choose_conv_method(_c128_1d, _c128_1d, measure=True)[0], Literal["direct", "fft"])
+
+assert_type(choose_conv_method(_py_i_1d, _py_i_1d, measure=True)[1]["direct"], float)
+assert_type(choose_conv_method(_py_f_1d, _py_f_1d, measure=True)[1]["direct"], float)
+assert_type(choose_conv_method(_py_c_1d, _py_c_1d, measure=True)[1]["direct"], float)
+assert_type(choose_conv_method(_i16_1d, _i16_1d, measure=True)[1]["direct"], float)
+assert_type(choose_conv_method(_f32_1d, _f32_1d, measure=True)[1]["direct"], float)
+assert_type(choose_conv_method(_f64_1d, _f64_1d, measure=True)[1]["direct"], float)
+assert_type(choose_conv_method(_c64_1d, _c64_1d, measure=True)[1]["direct"], float)
+assert_type(choose_conv_method(_c128_1d, _c128_1d, measure=True)[1]["direct"], float)
+
+assert_type(choose_conv_method(_py_i_1d, _py_i_1d, measure=True)[1]["fft"], float)
+assert_type(choose_conv_method(_py_f_1d, _py_f_1d, measure=True)[1]["fft"], float)
+assert_type(choose_conv_method(_py_c_1d, _py_c_1d, measure=True)[1]["fft"], float)
+assert_type(choose_conv_method(_i16_1d, _i16_1d, measure=True)[1]["fft"], float)
+assert_type(choose_conv_method(_f32_1d, _f32_1d, measure=True)[1]["fft"], float)
+assert_type(choose_conv_method(_f64_1d, _f64_1d, measure=True)[1]["fft"], float)
+assert_type(choose_conv_method(_c64_1d, _c64_1d, measure=True)[1]["fft"], float)
+assert_type(choose_conv_method(_c128_1d, _c128_1d, measure=True)[1]["fft"], float)
 
 # lfilter_zi
 assert_type(lfilter_zi(_py_i_1d, _py_i_1d), onp.Array1D[np.float64])
