@@ -941,13 +941,13 @@ def sosfiltfilt(
 
 #
 @overload
+def order_filter(
+    a: nptc.CanArray[_ShapeT, np.dtype[_CoFloat64T]], domain: int | onp.ToIntND, rank: int
+) -> onp.ArrayND[_CoFloat64T, _ShapeT]: ...
+@overload
 def order_filter(a: onp.ToJustInt64_ND, domain: int | onp.ToIntND, rank: int) -> onp.ArrayND[np.int_]: ...
 @overload
 def order_filter(a: onp.ToJustFloat64_ND, domain: int | onp.ToIntND, rank: int) -> onp.ArrayND[np.float64]: ...
-@overload
-def order_filter(
-    a: onp.CanArray[_ShapeT, np.dtype[_CoFloat64T]], domain: int | onp.ToIntND, rank: int
-) -> onp.ArrayND[_CoFloat64T, _ShapeT]: ...
 @overload
 def order_filter(a: onp.ToFloatND, domain: int | onp.ToIntND, rank: int) -> onp.ArrayND[Any]: ...
 
