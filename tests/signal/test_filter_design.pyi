@@ -22,6 +22,9 @@ from scipy.signal import (
     ellip,
     ellipap,
     ellipord,
+    iircomb,
+    iirnotch,
+    iirpeak,
 )
 
 ###
@@ -111,3 +114,17 @@ assert_type(ellipap(4, 0.1, 0.2, xp=np), tuple[Any, Any, float])
 # besselap
 assert_type(besselap(4), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float])
 assert_type(besselap(4, xp=np), tuple[Any, Any, float])
+
+###
+
+# iirnotch
+assert_type(iirnotch(60.0, 30.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirnotch(60.0, 30.0, xp=np), tuple[Any, Any])
+
+# iirpeak
+assert_type(iirpeak(60.0, 30.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iirpeak(60.0, 30.0, xp=np), tuple[Any, Any])
+
+# iircomb
+assert_type(iircomb(60.0, 30.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(iircomb(60.0, 30.0, xp=np), tuple[Any, Any])
