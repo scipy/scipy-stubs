@@ -7,6 +7,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from scipy.signal import (
+    band_stop_obj,
     bessel,
     besselap,
     buttap,
@@ -59,6 +60,10 @@ assert_type(bessel(3, 10), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64
 assert_type(bessel(3, 10, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(bessel(3, 10, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
 assert_type(bessel(3, 10, output="sos"), onp.Array2D[np.float64])
+
+# band_stop_obj
+assert_type(band_stop_obj(2, 1, _f64_1d, _f64_1d, 3, 30, "butter"), np.float64)
+assert_type(band_stop_obj(2, 1, _f80_1d, _f80_1d, 3, 30, "butter"), np.longdouble | Any)
 
 ###
 
