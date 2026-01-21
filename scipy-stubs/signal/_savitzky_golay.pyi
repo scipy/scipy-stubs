@@ -93,7 +93,7 @@ def savgol_filter(
     axis: int = -1,
     mode: _Mode = "interp",
     cval: float = 0.0,
-) -> onp.Array2D[np.float64]: ...
+) -> onp.Array3D[np.float64]: ...
 @overload  # f64, shape unknown
 def savgol_filter(
     x: onp.ToArrayND[float, _ToFloat64Savgol],
