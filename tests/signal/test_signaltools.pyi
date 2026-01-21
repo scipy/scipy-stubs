@@ -19,6 +19,7 @@ from scipy.signal import (
     lfilter_zi,
     lfiltic,
     medfilt,
+    medfilt2d,
     oaconvolve,
     order_filter,
     sosfiltfilt,
@@ -260,3 +261,11 @@ assert_type(medfilt(_py_f_2d), onp.ArrayND[np.float64])
 assert_type(medfilt(_i16_2d), onp.Array2D[np.int16])
 assert_type(medfilt(_f32_2d), onp.Array2D[np.float32])
 assert_type(medfilt(_f64_2d), onp.Array2D[np.float64])
+
+# medfilt2d
+
+assert_type(medfilt2d(_py_i_2d), onp.Array2D[np.int_])
+assert_type(medfilt2d(_py_f_2d), onp.Array2D[np.float64])
+assert_type(medfilt2d(_i16_2d), onp.Array2D[np.int16])
+assert_type(medfilt2d(_f32_2d), onp.Array2D[np.float32])
+assert_type(medfilt2d(_f64_2d), onp.Array2D[np.float64])
