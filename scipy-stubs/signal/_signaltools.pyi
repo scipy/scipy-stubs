@@ -953,13 +953,13 @@ def order_filter(a: onp.ToFloatND, domain: int | onp.ToIntND, rank: int) -> onp.
 
 #
 @overload
+def medfilt(
+    volume: nptc.CanArray[_ShapeT, np.dtype[_CoFloat64T]], kernel_size: int | onp.ToInt1D | None = None
+) -> onp.ArrayND[_CoFloat64T, _ShapeT]: ...
+@overload
 def medfilt(volume: onp.ToJustInt64_ND, kernel_size: int | onp.ToInt1D | None = None) -> onp.ArrayND[np.int_]: ...
 @overload
 def medfilt(volume: onp.ToJustFloat64_ND, kernel_size: int | onp.ToInt1D | None = None) -> onp.ArrayND[np.float64]: ...
-@overload
-def medfilt(
-    volume: onp.CanArray[_ShapeT, np.dtype[_CoFloat64T]], kernel_size: int | onp.ToInt1D | None = None
-) -> onp.ArrayND[_CoFloat64T, _ShapeT]: ...
 @overload
 def medfilt(volume: onp.ToFloatND, kernel_size: int | onp.ToInt1D | None = None) -> onp.ArrayND[Any]: ...
 
