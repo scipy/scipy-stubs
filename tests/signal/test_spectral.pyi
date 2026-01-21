@@ -75,13 +75,23 @@ assert_type(csd(_c160_1d, _c160_1d), tuple[_F64_1D, _C160_ND])
 
 # spectrogram
 
+assert_type(spectrogram(_i64_1d), tuple[_F64_1D, _F64_1D, _F64_ND])
+assert_type(spectrogram(_f16_1d), tuple[_F64_1D, _F64_1D, _F32_ND])
+assert_type(spectrogram(_f32_1d), tuple[_F64_1D, _F64_1D, _F32_ND])
 assert_type(spectrogram(_f64_1d), tuple[_F64_1D, _F64_1D, _F64_ND])
-assert_type(spectrogram(_f64_1d, mode=_mode_real), tuple[_F64_1D, _F64_1D, _F64_ND])
+assert_type(spectrogram(_f80_1d), tuple[_F64_1D, _F64_1D, _F80_ND])
+assert_type(spectrogram(_c64_1d), tuple[_F64_1D, _F64_1D, _F32_ND])
+assert_type(spectrogram(_c128_1d), tuple[_F64_1D, _F64_1D, _F64_ND])
+assert_type(spectrogram(_c160_1d), tuple[_F64_1D, _F64_1D, _F80_ND])
+
+assert_type(spectrogram(_i64_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C128_ND])
+assert_type(spectrogram(_f16_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C64_ND])
+assert_type(spectrogram(_f32_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C64_ND])
 assert_type(spectrogram(_f64_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C128_ND])
-assert_type(
-    spectrogram(_f64_1d, 1.0, ("tukey", 2.5), None, None, None, "constant", True, "density", -1, mode="complex"),
-    tuple[_F64_1D, _F64_1D, _C128_ND],
-)
+assert_type(spectrogram(_f80_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C160_ND])
+assert_type(spectrogram(_c64_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C64_ND])
+assert_type(spectrogram(_c128_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C128_ND])
+assert_type(spectrogram(_c160_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C160_ND])
 
 # check_{COLA,NOLA}
 
