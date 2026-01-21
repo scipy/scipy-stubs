@@ -348,6 +348,13 @@ def correlate2d(
 ) -> onp.Array2D[Any]: ...
 
 # NOTE: keep in sync with `oaconvolve`
+@overload  # float64 | integer | bool, float64 | integer | bool, generic shape
+def fftconvolve(
+    in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _AnyShapeT],
+    in2: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _AnyShapeT],
+    mode: onp.ConvolveMode = "full",
+    axes: None = None,
+) -> onp.ArrayND[np.float64, _AnyShapeT]: ...
 @overload  # float32 | float16, float32 | float16, generic shape
 def fftconvolve(
     in1: onp.ArrayND[np.float16 | np.float32, _AnyShapeT],
@@ -362,6 +369,13 @@ def fftconvolve(
     mode: onp.ConvolveMode = "full",
     axes: None = None,
 ) -> onp.ArrayND[_InexactT3, _AnyShapeT]: ...
+@overload  # ~float64, ~float64
+def fftconvolve(
+    in1: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    in2: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    mode: onp.ConvolveMode = "full",
+    axes: AnyShape | None = None,
+) -> onp.ArrayND[np.float64]: ...
 @overload  # ~float64, +float64
 def fftconvolve(
     in1: onp.ToJustFloat64_ND, in2: onp.ToFloat64_ND, mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
@@ -384,6 +398,13 @@ def fftconvolve(
 ) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...
 
 # NOTE: keep in sync with `fftconvolve`
+@overload  # float64 | integer | bool, float64 | integer | bool, generic shape
+def oaconvolve(
+    in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _AnyShapeT],
+    in2: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _AnyShapeT],
+    mode: onp.ConvolveMode = "full",
+    axes: None = None,
+) -> onp.ArrayND[np.float64, _AnyShapeT]: ...
 @overload  # float32 | float16, float32 | float16, generic shape
 def oaconvolve(
     in1: onp.ArrayND[np.float16 | np.float32, _AnyShapeT],
@@ -398,6 +419,13 @@ def oaconvolve(
     mode: onp.ConvolveMode = "full",
     axes: None = None,
 ) -> onp.ArrayND[_InexactT3, _AnyShapeT]: ...
+@overload  # ~float64, ~float64
+def oaconvolve(
+    in1: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    in2: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    mode: onp.ConvolveMode = "full",
+    axes: AnyShape | None = None,
+) -> onp.ArrayND[np.float64]: ...
 @overload  # ~float64, +float64
 def oaconvolve(
     in1: onp.ToJustFloat64_ND, in2: onp.ToFloat64_ND, mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
