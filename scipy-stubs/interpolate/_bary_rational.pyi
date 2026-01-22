@@ -201,6 +201,16 @@ class AAA(_BarycentricRational[_ScalarT_co, tuple[int]], Generic[_ScalarT_co]):
 class FloaterHormannInterpolator(_BarycentricRational[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):
     @overload
     def __init__(
+        self: FloaterHormannInterpolator[np.float64, tuple[int]],
+        /,
+        points: onp.ToArray1D[float, npc.floating64 | npc.floating16 | npc.integer | np.bool_],
+        values: onp.ToArrayStrict1D[float, npc.floating64 | npc.floating16 | npc.integer | np.bool_],
+        *,
+        d: int = 3,
+        axis: int = 0,
+    ) -> None: ...
+    @overload
+    def __init__(
         self,
         /,
         points: onp.ToArray1D[int, _ScalarT_co | _ToFloat16],
