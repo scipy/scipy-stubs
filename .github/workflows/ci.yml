@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 2
 
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
 
       - uses: scientific-python/repo-review@v0.12.3
         with:
@@ -52,7 +52,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
 
       - name: setup uv
         uses: astral-sh/setup-uv@v7.2.0
@@ -83,7 +83,7 @@ jobs:
         np: ["1.26", "2.0", "2.1", "2.2", "2.3", "2.4"]
 
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
 
       # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
       # manually (re)install the desired version directly in the environment.
@@ -136,7 +136,7 @@ jobs:
             np: "2.2"
 
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
 
       - uses: astral-sh/setup-uv@v7.2.0
         with:
