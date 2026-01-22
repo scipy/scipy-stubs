@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.9.25,<0.10.0"]
+requires = ["uv_build>=0.9.26,<0.10.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -49,7 +49,7 @@ Changelog = "https://github.com/scipy/scipy-stubs/releases"
 
 [dependency-groups]
 extras = ["scipy-stubs[scipy]"]
-ci = ["packaging>=25.0"]
+ci = ["packaging>=26.0"]
 lint = [
   { include-group = "extras" },
   "dprint-py==0.51.1.0",
