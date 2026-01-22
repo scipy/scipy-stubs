@@ -1,3 +1,5 @@
+from _typeshed import Incomplete
+from types import ModuleType
 from typing import Any, ClassVar, Generic, Literal, Never, TypeAlias, overload
 from typing_extensions import TypeAliasType, TypeVar, override
 
@@ -152,3 +154,7 @@ def prepare_input(
 def prepare_input(
     x: onp.ToFloat1D, y: onp.ToComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
 ) -> _PreparedInput[Any, _AxisT]: ...
+@overload
+def prepare_input(
+    x: onp.ToFloat1D, y: onp.ToComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, *, xp: ModuleType
+) -> tuple[Incomplete, Incomplete, Incomplete, _AxisT, Incomplete]: ...
