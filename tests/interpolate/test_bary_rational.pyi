@@ -53,11 +53,9 @@ assert_type(FloaterHormannInterpolator(_i64_1d, _i64_1d), FloaterHormannInterpol
 assert_type(FloaterHormannInterpolator(_f16_1d, _f16_1d), FloaterHormannInterpolator[np.float64, tuple[int]])
 assert_type(FloaterHormannInterpolator(_f32_1d, _f32_1d), FloaterHormannInterpolator[np.float32, tuple[int]])
 assert_type(FloaterHormannInterpolator(_f64_1d, _f64_1d), FloaterHormannInterpolator[np.float64, tuple[int]])
-# pyrefly: ignore[assert-type]
 assert_type(FloaterHormannInterpolator(_f80_1d, _f80_1d), FloaterHormannInterpolator[npc.floating80, tuple[int]])
 assert_type(FloaterHormannInterpolator(_c64_1d, _c64_1d), FloaterHormannInterpolator[np.complex64, tuple[int]])
 assert_type(FloaterHormannInterpolator(_c128_1d, _c128_1d), FloaterHormannInterpolator[np.complex128, tuple[int]])
-# pyrefly: ignore[assert-type]
 assert_type(FloaterHormannInterpolator(_c160_1d, _c160_1d), FloaterHormannInterpolator[npc.complexfloating160, tuple[int]])
 
 assert_type(_fhi(1), onp.Array2D[np.float32])

@@ -1,5 +1,5 @@
 import types
-from typing import Any, Generic, TypeAlias, overload
+from typing import Any, Generic, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -12,8 +12,6 @@ _ScalarT = TypeVar("_ScalarT", bound=npc.inexact)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.inexact, default=Any, covariant=True)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
-
-_ToFloat16: TypeAlias = np.bool_ | npc.integer | np.float16
 
 ###
 
@@ -214,10 +212,10 @@ class FloaterHormannInterpolator(_BarycentricRational[_ScalarT_co, _ShapeT_co], 
     ) -> None: ...
     @overload
     def __init__(
-        self,
+        self: FloaterHormannInterpolator[_ScalarT, _ShapeT],
         /,
-        points: onp.ToArray1D[int, _ScalarT_co | _ToFloat16],
-        values: onp.CanArrayND[_ScalarT_co, _ShapeT_co],
+        points: onp.ToArray1D[int, _ScalarT],
+        values: onp.ArrayND[_ScalarT, _ShapeT],
         *,
         d: int = 3,
         axis: int = 0,
