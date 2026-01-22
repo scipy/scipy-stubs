@@ -1,4 +1,6 @@
+from _typeshed import Incomplete
 from collections.abc import Sequence
+from types import ModuleType
 from typing import Literal, LiteralString, TypeAlias, overload
 
 import numpy as np
@@ -219,5 +221,15 @@ def dblint(xa: onp.ToFloat, xb: onp.ToFloat, ya: onp.ToFloat, yb: onp.ToFloat, t
 
 # requires `len(tck) == 3`
 def insert(x: onp.ToFloat, tck: _ToTCK, m: int = 1, per: onp.ToBool = 0) -> _OutTCK1: ...
+
+#
+@overload
 def splder(tck: _ToTCK, n: int = 1, xp: None = None) -> _OutTCK1: ...
+@overload
+def splder(tck: _ToTCK, n: int = 1, *, xp: ModuleType) -> tuple[Incomplete, Incomplete, int]: ...
+
+#
+@overload
 def splantider(tck: _ToTCK, n: int = 1, *, xp: None = None) -> _OutTCK1: ...
+@overload
+def splantider(tck: _ToTCK, n: int = 1, *, xp: ModuleType) -> tuple[Incomplete, Incomplete, int]: ...
