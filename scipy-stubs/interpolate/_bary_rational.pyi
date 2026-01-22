@@ -17,6 +17,9 @@ _ToFloat16: TypeAlias = np.bool_ | npc.integer | np.float16
 
 ###
 
+# NOTE: We disable `overload-overlap` here because these false positives only occur with numpy>=2.2
+# mypy: disable-error-code="overload-overlap"
+
 class _BarycentricRational(Generic[_ScalarT_co, _ShapeT_co]):
     @classmethod
     def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
@@ -24,7 +27,7 @@ class _BarycentricRational(Generic[_ScalarT_co, _ShapeT_co]):
     #
     def __init__(self, /, x: onp.ToComplex1D, y: onp.ToComplexND, axis: int = 0) -> None: ...
 
-    # NOTE: The mypy overload-overlap errors are false positives.
+    #
     @overload
     def __call__(
         self: _BarycentricRational[_ScalarT, tuple[int]], /, z: onp.ArrayND[_ScalarT, _ShapeT]
@@ -32,9 +35,9 @@ class _BarycentricRational(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
     def __call__(self, /, z: onp.ToInt) -> onp.ArrayND[_ScalarT_co, _ShapeT_co]: ...
     @overload
-    def __call__(self: _BarycentricRational[np.float64], /, z: onp.ToFloat64) -> onp.ArrayND[np.float64, _ShapeT_co]: ...  # type: ignore[overload-overlap]
+    def __call__(self: _BarycentricRational[np.float64], /, z: onp.ToFloat64) -> onp.ArrayND[np.float64, _ShapeT_co]: ...
     @overload
-    def __call__(self: _BarycentricRational[np.float32], /, z: onp.ToFloat32) -> onp.ArrayND[np.float32, _ShapeT_co]: ...  # type: ignore[overload-overlap]
+    def __call__(self: _BarycentricRational[np.float32], /, z: onp.ToFloat32) -> onp.ArrayND[np.float32, _ShapeT_co]: ...
     @overload
     def __call__(self: _BarycentricRational[np.float32], /, z: onp.ToJustFloat64) -> onp.ArrayND[np.float64, _ShapeT_co]: ...
     @overload
@@ -44,9 +47,9 @@ class _BarycentricRational(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
     def __call__(self: _BarycentricRational[npc.floating80], /, z: onp.ToFloat) -> onp.ArrayND[np.longdouble, _ShapeT_co]: ...
     @overload
-    def __call__(self: _BarycentricRational[np.complex128], /, z: onp.ToComplex128) -> onp.ArrayND[np.complex128, _ShapeT_co]: ...  # type: ignore[overload-overlap]
+    def __call__(self: _BarycentricRational[np.complex128], /, z: onp.ToComplex128) -> onp.ArrayND[np.complex128, _ShapeT_co]: ...
     @overload
-    def __call__(self: _BarycentricRational[np.complex64], /, z: onp.ToComplex64) -> onp.ArrayND[np.complex64, _ShapeT_co]: ...  # type: ignore[overload-overlap]
+    def __call__(self: _BarycentricRational[np.complex64], /, z: onp.ToComplex64) -> onp.ArrayND[np.complex64, _ShapeT_co]: ...
     @overload
     def __call__(
         self: _BarycentricRational[np.complex64], /, z: onp.ToJustComplex128
@@ -66,9 +69,9 @@ class _BarycentricRational(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
     def __call__(self, /, z: onp.ToIntND) -> onp.ArrayND[_ScalarT_co]: ...
     @overload
-    def __call__(self: _BarycentricRational[np.float64], /, z: onp.ToFloat64_ND) -> onp.ArrayND[np.float64]: ...  # type: ignore[overload-overlap]
+    def __call__(self: _BarycentricRational[np.float64], /, z: onp.ToFloat64_ND) -> onp.ArrayND[np.float64]: ...
     @overload
-    def __call__(self: _BarycentricRational[np.float32], /, z: onp.ToFloat32_ND) -> onp.ArrayND[np.float32]: ...  # type: ignore[overload-overlap]
+    def __call__(self: _BarycentricRational[np.float32], /, z: onp.ToFloat32_ND) -> onp.ArrayND[np.float32]: ...
     @overload
     def __call__(self: _BarycentricRational[np.float32], /, z: onp.ToJustFloat64_ND) -> onp.ArrayND[np.float64]: ...
     @overload
@@ -76,9 +79,9 @@ class _BarycentricRational(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
     def __call__(self: _BarycentricRational[npc.floating80], /, z: onp.ToFloatND) -> onp.ArrayND[np.longdouble]: ...
     @overload
-    def __call__(self: _BarycentricRational[np.complex128], /, z: onp.ToComplex128_ND) -> onp.ArrayND[np.complex128]: ...  # type: ignore[overload-overlap]
+    def __call__(self: _BarycentricRational[np.complex128], /, z: onp.ToComplex128_ND) -> onp.ArrayND[np.complex128]: ...
     @overload
-    def __call__(self: _BarycentricRational[np.complex64], /, z: onp.ToComplex64_ND) -> onp.ArrayND[np.complex64]: ...  # type: ignore[overload-overlap]
+    def __call__(self: _BarycentricRational[np.complex64], /, z: onp.ToComplex64_ND) -> onp.ArrayND[np.complex64]: ...
     @overload
     def __call__(self: _BarycentricRational[np.complex64], /, z: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
     @overload
