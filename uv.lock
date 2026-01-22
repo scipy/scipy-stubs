@@ -651,16 +651,16 @@ wheels = [
 
 [[package]]
 name = "rich-click"
-version = "1.9.5"
+version = "1.9.6"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "colorama", marker = "sys_platform == 'win32'" },
     { name = "rich" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/6b/d1/b60ca6a8745e76800b50c7ee246fd73f08a3be5d8e0b551fc93c19fa1203/rich_click-1.9.5.tar.gz", hash = "sha256:48120531493f1533828da80e13e839d471979ec8d7d0ca7b35f86a1379cc74b6", size = 73927, upload-time = "2025-12-21T14:49:44.167Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/4b/50/1497dbc52297d6759451bf5a991e9b2d0a122a5d33ac8cd057f81cb9910a/rich_click-1.9.6.tar.gz", hash = "sha256:463bd3dbef54a812282bfa93dde80c471bce359823fc1301be368eab63391cb2", size = 74777, upload-time = "2026-01-22T02:43:58.374Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/25/0a/d865895e1e5d88a60baee0fc3703eb111c502ee10c8c107516bc7623abf8/rich_click-1.9.5-py3-none-any.whl", hash = "sha256:9b195721a773b1acf0e16ff9ec68cef1e7d237e53471e6e3f7ade462f86c403a", size = 70580, upload-time = "2025-12-21T14:49:42.905Z" },
+    { url = "https://files.pythonhosted.org/packages/47/87/508930def644be9fb86fec63520151921061c152289b98798017a498d678/rich_click-1.9.6-py3-none-any.whl", hash = "sha256:e78d71e3f73a55548e573ccfd964e18503936e2e736a4a1f74c6c29479a2a054", size = 71430, upload-time = "2026-01-22T02:43:56.939Z" },
 ]
 
 [[package]]
@@ -820,13 +820,13 @@ requires-dist = [
 provides-extras = ["scipy"]
 
 [package.metadata.requires-dev]
-ci = [{ name = "packaging", specifier = ">=25.0" }]
+ci = [{ name = "packaging", specifier = ">=26.0" }]
 dev = [
     { name = "array-api-compat", specifier = "==1.13.0" },
     { name = "basedpyright", specifier = "==1.37.1" },
     { name = "dprint-py", specifier = "==0.51.1.0" },
     { name = "mypy", extras = ["faster-cache"], specifier = "==1.19.1" },
-    { name = "packaging", specifier = ">=25.0" },
+    { name = "packaging", specifier = ">=26.0" },
     { name = "pyrefly", specifier = "==0.49.0" },
     { name = "pytest", specifier = "==9.0.2" },
     { name = "ruff", specifier = "==0.14.13" },
@@ -846,7 +846,7 @@ type = [
     { name = "array-api-compat", specifier = "==1.13.0" },
     { name = "basedpyright", specifier = "==1.37.1" },
     { name = "mypy", extras = ["faster-cache"], specifier = "==1.19.1" },
-    { name = "packaging", specifier = ">=25.0" },
+    { name = "packaging", specifier = ">=26.0" },
     { name = "pyrefly", specifier = "==0.49.0" },
     { name = "pytest", specifier = "==9.0.2" },
     { name = "scipy-stubs", extras = ["scipy"] },
