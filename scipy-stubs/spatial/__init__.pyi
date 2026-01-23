@@ -21,7 +21,6 @@ __all__ = [
     "convex_hull_plot_2d",
     "delaunay_plot_2d",
     "distance",
-    "distance",
     "distance_matrix",
     "geometric_slerp",
     "kdtree",
