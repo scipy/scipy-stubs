@@ -326,6 +326,7 @@ derwen.ai ([kglab](https://github.com/DerwenAI/kglab)) |
 [graphix](https://github.com/TeamGraphix/graphix) |
 Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)) |
 [JAX](https://github.com/jax-ml/jax) |
+[LensKit](https://github.com/lenskit/lkpy) |
 [librosa](https://github.com/librosa/librosa) |
 [linearmodels](https://github.com/bashtage/linearmodels) |
 [Lmo](https://github.com/jorenham/Lmo) |
