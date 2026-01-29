@@ -317,6 +317,7 @@ Colour ([Colour](https://github.com/colour-science/colour),
 [cuPyNumeric](https://github.com/nv-legate/cupynumeric) |
 derwen.ai ([kglab](https://github.com/DerwenAI/kglab)) |
 [Dify](https://github.com/langgenius/dify) |
+[Dify-Plus](https://github.com/YFGaia/dify-plus) |
 [Dingo](https://github.com/dingo-gw/dingo) |
 [Efax](https://github.com/NeilGirdhar/efax) |
 [Fast GraphRAG](https://github.com/circlemind-ai/fast-graphrag) |
