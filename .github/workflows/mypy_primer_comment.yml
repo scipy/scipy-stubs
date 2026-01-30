@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 2
 
     steps:
-      - uses: dawidd6/action-download-artifact@v12
+      - uses: dawidd6/action-download-artifact@v13
         name: download pr-number
         with:
           name: pr-number
@@ -31,7 +31,7 @@ jobs:
             echo "pr-number=$(<${{ runner.temp }}/artifacts/pr-number)" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: dawidd6/action-download-artifact@v12
+      - uses: dawidd6/action-download-artifact@v13
         name: download mypy_primer.diff
         id: download-mypy_primer-diff
         if: steps.pr-number.outputs.pr-number
