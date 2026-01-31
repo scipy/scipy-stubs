@@ -51,6 +51,7 @@ class MonteCarloTestResult(Generic[_FloatNDT, _DistT]):
     statistic: _FloatNDT
     pvalue: _FloatNDT
     null_distribution: _DistT
+
 @dataclass
 class ResamplingMethod:
     n_resamples: int = 9_999
@@ -323,7 +324,6 @@ def monte_carlo_test(
     alternative: Alternative = "two-sided",
     axis: Literal[0, -1] = 0,
 ) -> MonteCarloTestResult[float | np.float64, onp.Array1D[np.float64]]: ...
-
 @overload
 def monte_carlo_test(
     data: onp.ToFloatStrict2D,
