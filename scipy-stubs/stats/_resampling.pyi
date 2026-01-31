@@ -33,7 +33,7 @@ class PowerResult(Generic[_FloatNDT]):
 
 @dataclass
 class BootstrapResult(Generic[_FloatNDT, _DistT]):
-    confidence_interval: ConfidenceInterval
+    confidence_interval: ConfidenceInterval[_FloatNDT]
     bootstrap_distribution: _DistT
     standard_error: _FloatNDT
 
