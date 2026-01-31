@@ -50,8 +50,7 @@ _DistT = TypeVar("_DistT", bound=onp.ArrayND[np.float64], default=onp.ArrayND[np
 class MonteCarloTestResult(Generic[_FloatNDT, _DistT]):
     statistic: _FloatNDT
     pvalue: _FloatNDT
-    null_distribution: _DistT  
-
+    null_distribution: _DistT
 @dataclass
 class ResamplingMethod:
     n_resamples: int = 9_999
