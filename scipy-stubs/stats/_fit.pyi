@@ -1,15 +1,13 @@
-from __future__ import annotations
-
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any, Concatenate, Generic, Literal, Protocol, TypeAlias, TypeVar, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
-from scipy.optimize import OptimizeResult
 
-from ._typing import _FloatNDT
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
+from ._typing import _FloatNDT
+from scipy.optimize import OptimizeResult
 
 _Params: TypeAlias = Mapping[str, onp.ToFloat]
 _Bounds: TypeAlias = Mapping[str, tuple[onp.ToFloat, onp.ToFloat]] | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
@@ -67,30 +65,27 @@ class GoodnessOfFitResult(Generic[_ST, _DT]):
 @overload
 def fit(
     dist: rv_discrete,
-    data: onp.Array1D[np.float64], # Strict 1D Array
+    data: onp.Array1D[np.float64],  # Strict 1D Array
     bounds: _Bounds | None = None,
     *,
     guess: _Params | onp.ToFloat1D | None = None,
     method: _FitMethod = "mle",
     optimizer: _Optimizer = ...,
 ) -> FitResult[_PXF1n]: ...
-
 @overload
 def fit(
     dist: rv_continuous,
-    data: onp.ArrayND[np.float64], # Strict ND Array (2D, 3D, etc)
+    data: onp.ArrayND[np.float64],  # Strict ND Array (2D, 3D, etc)
     bounds: _Bounds | None = None,
     *,
     guess: _Params | onp.ToFloat1D | None = None,
     method: _FitMethod = "mle",
     optimizer: _Optimizer = ...,
 ) -> FitResult[_PXF2n]: ...
-
-
 @overload
 def goodness_of_fit(
     dist: rv_continuous,
-    data: onp.Array1D[np.float64], # Strict 1D Array
+    data: onp.Array1D[np.float64],  # Strict 1D Array
     *,
     known_params: _Params | None = None,
     fit_params: _Params | None = None,
@@ -100,11 +95,10 @@ def goodness_of_fit(
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> GoodnessOfFitResult[np.float64, onp.Array1D[np.float64]]: ...
-
 @overload
 def goodness_of_fit(
     dist: rv_continuous,
-    data: onp.ArrayND[np.float64], # Strict ND Array
+    data: onp.ArrayND[np.float64],  # Strict ND Array
     *,
     known_params: _Params | None = None,
     fit_params: _Params | None = None,
