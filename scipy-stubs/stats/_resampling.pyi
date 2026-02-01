@@ -4,6 +4,7 @@ from typing import Any, ClassVar, Generic, Literal, Protocol, TypeAlias, TypeVar
 from typing_extensions import deprecated
 
 import numpy as np
+import numpy.typing as npt
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -12,8 +13,8 @@ from ._typing import Alternative
 
 __all__ = ["bootstrap", "monte_carlo_test", "permutation_test"]
 
-_FloatND: TypeAlias = float | np.float64 | onp.Array[Any, np.float64]
-_FloatNDT = TypeVar("_FloatNDT", bound=_FloatND, default=Any)
+_FloatNDT = TypeVar("_FloatNDT", bound=float | np.float64 | npt.NDArray[np.float64])
+_DistT = TypeVar("_DistT", bound=onp.ArrayND[np.float64])
 
 _BootstrapMethod: TypeAlias = Literal["percentile", "basic", "bca", "BCa"]
 _PermutationType: TypeAlias = Literal["independent", "samples", "pairings"]
@@ -42,8 +43,6 @@ class PermutationTestResult(Generic[_FloatNDT, _DistT]):
     statistic: _FloatNDT
     pvalue: _FloatNDT
     null_distribution: _DistT
-
-_DistT = TypeVar("_DistT", bound=onp.ArrayND[np.float64], default=onp.ArrayND[np.float64])
 
 # . Updated the class to use two generics.
 @dataclass
@@ -179,7 +178,7 @@ def power(
     vectorized: bool | None = None,
     n_resamples: int = 10_000,
     batch: int | None = None,
-) -> PowerResult: ...  # undocumented
+) -> PowerResult[Any]: ...  # undocumented
 
 ###
 
@@ -197,7 +196,7 @@ def bootstrap(
     confidence_level: float = 0.95,
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
-    bootstrap_result: BootstrapResult | None = None,
+    bootstrap_result: BootstrapResult[Any, Any] | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> BootstrapResult[float | np.float64, onp.Array1D[np.float64]]: ...
@@ -214,7 +213,7 @@ def bootstrap(
     confidence_level: float = 0.95,
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
-    bootstrap_result: BootstrapResult | None = None,
+    bootstrap_result: BootstrapResult[Any, Any] | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> BootstrapResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
@@ -231,7 +230,7 @@ def bootstrap(
     confidence_level: float = 0.95,
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
-    bootstrap_result: BootstrapResult | None = None,
+    bootstrap_result: BootstrapResult[Any, Any] | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> BootstrapResult[onp.Array2D[np.float64], onp.Array3D[np.float64]]: ...
@@ -248,10 +247,10 @@ def bootstrap(
     confidence_level: float = 0.95,
     alternative: Alternative = "two-sided",
     method: _BootstrapMethod = "BCa",
-    bootstrap_result: BootstrapResult | None = None,
+    bootstrap_result: BootstrapResult[Any, Any] | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> BootstrapResult: ...
+) -> BootstrapResult[Any, Any]: ...
 
 #
 @overload
@@ -309,7 +308,7 @@ def permutation_test(
     axis: int = 0,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> PermutationTestResult: ...
+) -> PermutationTestResult[Any, Any]: ...
 
 #
 @overload
@@ -359,4 +358,4 @@ def monte_carlo_test(
     batch: int | None = None,
     alternative: Alternative = "two-sided",
     axis: int = 0,
-) -> MonteCarloTestResult: ...
+) -> MonteCarloTestResult[Any, Any]: ...

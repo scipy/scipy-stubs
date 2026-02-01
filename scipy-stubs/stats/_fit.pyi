@@ -6,7 +6,6 @@ import numpy as np
 import optype.numpy as onp
 
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
-from ._typing import _FloatNDT
 from scipy.optimize import OptimizeResult
 
 _Params: TypeAlias = Mapping[str, onp.ToFloat]
@@ -108,3 +107,4 @@ def goodness_of_fit(
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> GoodnessOfFitResult[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+# Force git update
