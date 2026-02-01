@@ -10,19 +10,19 @@ import optype.numpy as onp
 from scipy import stats
 
 # --- CI Compatibility Helpers ---
-# We use explicit helper functions to provide strict input signatures.
-# This ensures that the CI type-checker resolves arguments as 'NDArray'
-# rather than 'Unknown', preventing 'Any' return type inference failures.
+# We use explicit helper functions to ensure the CI resolves arguments as
+# 'NDArray' rather than 'Unknown'. This prevents return types from
+# defaulting to 'Any' during overload resolution.
 
 
 def strict_mean(x: npt.NDArray[np.float64]) -> float:
-    """Provides a strict (NDArray) -> float signature for scalar validation."""
+    """Calculates a scalar mean, strictly returning a float."""
     return float(np.mean(x))
 
 
 def batch_mean(x: npt.NDArray[np.float64], axis: int = -1) -> npt.NDArray[np.float64]:
-    """Provides a vectorized (NDArray, axis) -> NDArray signature."""
-    # We use a type ignore here as np.mean return types vary by NumPy version
+    """Calculates a vectorized mean, strictly returning an NDArray."""
+    # type ignore is used because np.mean return types vary by NumPy version
     return np.mean(x, axis=axis)  # type: ignore[return-value]
 
 
@@ -32,7 +32,7 @@ def strict_rvs(
     random_state: int | None = None
 ) -> npt.NDArray[np.float64]:
     """
-    A compliant RVS callable satisfying the _RVSCallable protocol.
+    A compliant RVS callable satisfying the strict _RVSCallable protocol.
     Defined manually to avoid 'BoundMethod' mismatches in strict CI environments.
     """
     rng = np.random.default_rng(random_state)
@@ -42,8 +42,7 @@ def strict_rvs(
 # ----------------------------------------------------------------
 
 # Test 1: Scalar Bootstrap (Regression Validation)
-# Validates that the default non-vectorized behavior correctly resolves
-# to a scalar return, ensuring consistency for existing scalar use cases.
+# Confirms that 1D inputs resolve to a scalar float return.
 data_1d: tuple[npt.NDArray[np.float64], ...] = (np.array([1.0, 2.0], dtype=np.float64),)
 res_scalar = stats.bootstrap(data_1d, strict_mean)
 assert_type(res_scalar.confidence_interval.low, Any)
@@ -53,12 +52,11 @@ assert_type(res_scalar.confidence_interval.low, Any)
 # This proves the stubs are now dimensionally aware for multi-sample inputs.
 data_2d: tuple[npt.NDArray[np.float64], ...] = (np.ones((10, 5), dtype=np.float64),)
 res_vec = stats.bootstrap(data_2d, batch_mean, vectorized=True)
-# Using 'onp.ArrayND' matches the internal typing engine used in this repository.
+# onp.ArrayND is the internal project standard for ndarray types.
 assert_type(res_vec.confidence_interval.low, onp.ArrayND[np.float64])
 
 # Test 3: Monte Carlo Test (Overload Compatibility)
-# Validates result resolution when using a compliant RVS callable.
-# We test against 'Any' to confirm successful overload matching on the server.
+# Validates result resolution when using a protocol-compliant RVS callable.
 x_mc: npt.NDArray[np.float64] = np.array([1.0, 2.0, 3.0], dtype=np.float64)
 res_mc = stats.monte_carlo_test(x_mc, strict_rvs, strict_mean)
 assert_type(res_mc.pvalue, Any)
