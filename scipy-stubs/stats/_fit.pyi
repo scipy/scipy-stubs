@@ -108,3 +108,4 @@ def goodness_of_fit(
     random_state: onp.random.ToRNG | None = None,
 ) -> GoodnessOfFitResult[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 # Force git update
+# Force git sync
