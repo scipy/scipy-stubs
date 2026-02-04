@@ -18,14 +18,14 @@ wheels = [
 
 [[package]]
 name = "basedpyright"
-version = "1.37.3"
+version = "1.37.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "nodejs-wheel-binaries" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/e2/9f/aaaa202f2d7eaefaf5a4f297c80943d060c64db4753acb8003111d575c94/basedpyright-1.37.3.tar.gz", hash = "sha256:4cb4717a5686fba0c1e3156fe25e729d07e6912b68f9f67c33ea490d3f0d2a46", size = 25245208, upload-time = "2026-02-01T08:45:42.355Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/5a/15/8f335ed50b5fed4d7587e293c200bb498049f4a74d9913c58c26a42d3503/basedpyright-1.37.4.tar.gz", hash = "sha256:f818d8b56c1e7f639dfbdaf875aa6b0bd53eef08204389959027d3d7fb2017ed", size = 25238593, upload-time = "2026-02-04T02:57:15.893Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f3/4f/b8fd24714cda878fd6b95e7ffc6051a864ac04bf2520d4622252df0abc9c/basedpyright-1.37.3-py3-none-any.whl", hash = "sha256:7064b2c811d9d79ebaa60ef65a2cdf292a9eb3c32dba9dee32660de2dbdd71e1", size = 12299378, upload-time = "2026-02-01T08:45:45.947Z" },
+    { url = "https://files.pythonhosted.org/packages/20/b6/f075ecdc60a3e389c32934a98171b7f5c6f12250fc0030e12efc1102a557/basedpyright-1.37.4-py3-none-any.whl", hash = "sha256:bcf61d7d8dbd4570f346008fa591585bd605ce47a0561509899c276f2e53a450", size = 12299643, upload-time = "2026-02-04T02:57:19.915Z" },
 ]
 
 [[package]]
@@ -822,7 +822,7 @@ provides-extras = ["scipy"]
 ci = [{ name = "packaging", specifier = ">=26.0" }]
 dev = [
     { name = "array-api-compat", specifier = "==1.13.0" },
-    { name = "basedpyright", specifier = "==1.37.3" },
+    { name = "basedpyright", specifier = "==1.37.4" },
     { name = "dprint-py", specifier = "==0.51.1.0" },
     { name = "mypy", extras = ["faster-cache"], specifier = "==1.19.1" },
     { name = "packaging", specifier = ">=26.0" },
@@ -843,7 +843,7 @@ lint = [
 ]
 type = [
     { name = "array-api-compat", specifier = "==1.13.0" },
-    { name = "basedpyright", specifier = "==1.37.3" },
+    { name = "basedpyright", specifier = "==1.37.4" },
     { name = "mypy", extras = ["faster-cache"], specifier = "==1.19.1" },
     { name = "packaging", specifier = ">=26.0" },
     { name = "pyrefly", specifier = "==0.51.0" },
