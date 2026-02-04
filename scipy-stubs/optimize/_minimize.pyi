@@ -34,7 +34,7 @@ _Fun1Dp: TypeAlias = Callable[Concatenate[_Float1D, _Float1D, ...], _RT]
 
 _FDMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
 
-_ToBracket: TypeAlias = Sequence[_Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat]]
+_ToBracket: TypeAlias = _Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat]
 _ToBound: TypeAlias = _Tuple2[onp.ToFloat]
 _Ignored: TypeAlias = object
 
