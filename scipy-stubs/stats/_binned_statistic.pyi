@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Literal, NamedTuple, TypeAlias
+from typing import Literal, NamedTuple, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -28,6 +28,14 @@ class BinnedStatistic2dResult(NamedTuple):
     y_edge: onp.Array1D[np.float64]
     binnumber: onp.Array1D[np.intp]
 
+class BinnedStatistic2dResultExpandedBinNumber(NamedTuple):
+    statistic: onp.Array2D[npc.inexact]
+    x_edge: onp.Array1D[np.float64]
+    y_edge: onp.Array1D[np.float64]
+    binnumber: onp.Array2D[np.intp]
+
+#
+@overload
 def binned_statistic_2d(
     x: onp.ToComplex1D,
     y: onp.ToComplex1D,
@@ -35,8 +43,19 @@ def binned_statistic_2d(
     statistic: _Statistic | Callable[[onp.ArrayND[np.float64]], onp.ToFloat] = "mean",
     bins: onp.ToInt | onp.ToFloat1D | Sequence[onp.ToFloat1D] = 10,
     range: tuple[int, int] | None = None,
-    expand_binnumbers: bool = False,
+    expand_binnumbers: Literal[False] = False,
 ) -> BinnedStatistic2dResult: ...
+@overload
+def binned_statistic_2d(
+    x: onp.ToComplex1D,
+    y: onp.ToComplex1D,
+    values: onp.ToComplex1D | Sequence[onp.ToComplex1D],
+    statistic: _Statistic | Callable[[onp.ArrayND[np.float64]], onp.ToFloat] = "mean",
+    bins: onp.ToInt | onp.ToFloat1D | Sequence[onp.ToFloat1D] = 10,
+    range: tuple[int, int] | None = None,
+    *,
+    expand_binnumbers: Literal[True],
+) -> BinnedStatistic2dResultExpandedBinNumber: ...
 
 class BinnedStatisticddResult(NamedTuple):
     statistic: onp.ArrayND[npc.inexact]
