@@ -60,14 +60,32 @@ def binned_statistic_2d(
 class BinnedStatisticddResult(NamedTuple):
     statistic: onp.ArrayND[npc.inexact]
     bin_edges: list[onp.Array1D[np.float64]]
-    binnumber: onp.Array1D[np.intp] | onp.Array2D[np.intp]
+    binnumber: onp.Array1D[np.intp]
 
+class BinnedStatisticddResultExpandedBinNumber(NamedTuple):
+    statistic: onp.ArrayND[npc.inexact]
+    bin_edges: list[onp.Array1D[np.float64]]
+    binnumber: onp.Array2D[np.intp]
+
+#
+@overload
 def binned_statistic_dd(
     sample: onp.ToComplex2D,
     values: onp.ToComplex1D | Sequence[onp.ToComplex1D],
     statistic: _Statistic | Callable[[onp.ArrayND[np.float64]], onp.ToFloat] = "mean",
     bins: onp.ToInt | onp.ToFloat1D = 10,
     range: tuple[int, int] | None = None,
-    expand_binnumbers: bool = False,
+    expand_binnumbers: Literal[False] = False,
     binned_statistic_result: BinnedStatisticddResult | None = None,
 ) -> BinnedStatisticddResult: ...
+@overload
+def binned_statistic_dd(
+    sample: onp.ToComplex2D,
+    values: onp.ToComplex1D | Sequence[onp.ToComplex1D],
+    statistic: _Statistic | Callable[[onp.ArrayND[np.float64]], onp.ToFloat] = "mean",
+    bins: onp.ToInt | onp.ToFloat1D = 10,
+    range: tuple[int, int] | None = None,
+    binned_statistic_result: BinnedStatisticddResult | None = None,
+    *,
+    expand_binnumbers: Literal[True],
+) -> BinnedStatisticddResultExpandedBinNumber: ...
