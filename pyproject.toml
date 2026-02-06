@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.9.26,<0.10.0"]
+requires = ["uv_build>=0.9.26,<0.11.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -63,7 +63,7 @@ type = [
   "pytest==9.0.2", # needed for `scipy._lib._array_api.make_xp_pytest_*`
   "basedpyright==1.37.4",
   "mypy[faster-cache]==1.19.1",
-  "pyrefly==0.51.0",
+  "pyrefly==0.51.1",
   "stubdefaulter>=0.1.0",
   "ty==0.0.15",
 ]
