@@ -32,22 +32,25 @@ class PowerResult(Generic[_FloatNDT]):
     pvalues: _FloatNDT
 
 @dataclass
-class BootstrapResult(Generic[_FloatNDT]):
+class BootstrapResult(Generic[_FloatNDT, _DistT]):
     confidence_interval: ConfidenceInterval
-    bootstrap_distribution: onp.ArrayND[np.float64]
+    bootstrap_distribution: _DistT
     standard_error: _FloatNDT
 
 @dataclass
-class PermutationTestResult(Generic[_FloatNDT]):
+class PermutationTestResult(Generic[_FloatNDT, _DistT]):
     statistic: _FloatNDT
     pvalue: _FloatNDT
-    null_distribution: onp.ArrayND[np.float64]
+    null_distribution: _DistT
 
+_DistT = TypeVar("_DistT", bound=onp.ArrayND[np.float64], default=onp.ArrayND[np.float64])
+
+# . Updated the class to use two generics.
 @dataclass
-class MonteCarloTestResult(Generic[_FloatNDT]):
+class MonteCarloTestResult(Generic[_FloatNDT, _DistT]):
     statistic: _FloatNDT
     pvalue: _FloatNDT
-    null_distribution: onp.ArrayND[np.float64]
+    null_distribution: _DistT
 
 @dataclass
 class ResamplingMethod:
@@ -197,7 +200,7 @@ def bootstrap(
     bootstrap_result: BootstrapResult | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> BootstrapResult[float | np.float64]: ...
+) -> BootstrapResult[float | np.float64, onp.Array1D[np.float64]]: ...
 @overload
 def bootstrap(
     data: onp.ToFloatStrict2D,
@@ -214,7 +217,7 @@ def bootstrap(
     bootstrap_result: BootstrapResult | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> BootstrapResult[onp.Array1D[np.float64]]: ...
+) -> BootstrapResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
 @overload
 def bootstrap(
     data: onp.ToFloatStrict3D,
@@ -231,7 +234,7 @@ def bootstrap(
     bootstrap_result: BootstrapResult | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> BootstrapResult[onp.Array2D[np.float64]]: ...
+) -> BootstrapResult[onp.Array2D[np.float64], onp.Array3D[np.float64]]: ...
 @overload
 def bootstrap(
     data: onp.ToFloatND,
@@ -264,7 +267,7 @@ def permutation_test(
     axis: Literal[0, -1] = 0,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> PermutationTestResult[float | np.float64]: ...
+) -> PermutationTestResult[float | np.float64, onp.Array1D[np.float64]]: ...
 @overload
 def permutation_test(
     data: onp.ToFloatStrict2D,
@@ -278,7 +281,7 @@ def permutation_test(
     axis: Literal[0, 1, -1, -2] = 0,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> PermutationTestResult[onp.Array1D[np.float64]]: ...
+) -> PermutationTestResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
 @overload
 def permutation_test(
     data: onp.ToFloatStrict3D,
@@ -292,7 +295,7 @@ def permutation_test(
     axis: Literal[0, 1, 2, -1, -2, -3] = 0,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> PermutationTestResult[onp.Array2D[np.float64]]: ...
+) -> PermutationTestResult[onp.Array2D[np.float64], onp.Array3D[np.float64]]: ...
 @overload
 def permutation_test(
     data: onp.ToFloatND,
@@ -320,7 +323,7 @@ def monte_carlo_test(
     batch: int | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, -1] = 0,
-) -> MonteCarloTestResult[float | np.float64]: ...
+) -> MonteCarloTestResult[float | np.float64, onp.Array1D[np.float64]]: ...
 @overload
 def monte_carlo_test(
     data: onp.ToFloatStrict2D,
@@ -332,7 +335,7 @@ def monte_carlo_test(
     batch: int | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, 1, -1, -2] = 0,
-) -> MonteCarloTestResult[onp.Array1D[np.float64]]: ...
+) -> MonteCarloTestResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
 @overload
 def monte_carlo_test(
     data: onp.ToFloatStrict3D,
@@ -344,7 +347,7 @@ def monte_carlo_test(
     batch: int | None = None,
     alternative: Alternative = "two-sided",
     axis: Literal[0, 1, 2, -1, -2, -3] = 0,
-) -> MonteCarloTestResult[onp.Array2D[np.float64]]: ...
+) -> MonteCarloTestResult[onp.Array2D[np.float64], onp.Array3D[np.float64]]: ...
 @overload
 def monte_carlo_test(
     data: onp.ToFloatND,
