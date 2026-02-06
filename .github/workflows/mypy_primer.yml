@@ -27,7 +27,7 @@ jobs:
           path: new
           fetch-depth: 0
 
-      - uses: astral-sh/setup-uv@v7.2.1
+      - uses: astral-sh/setup-uv@v7.3.0
 
       - name: run mypy_primer
         shell: bash
