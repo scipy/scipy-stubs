@@ -175,6 +175,13 @@ reportUnusedExpression = false
 [tool.pyrefly]
 project-includes = ["scipy-stubs", "scripts", "tests"]
 
+[tool.pyrefly.errors]
+implicit-any = "error"
+# https://github.com/facebook/pyrefly/issues/2327
+# unannotated-parameter = "error"
+unannotated-return = "error"
+unused-ignore = "error"
+
 [[tool.pyrefly.sub-config]]
 matches = "scipy-stubs/*/__init__.pyi"
 errors = { deprecated = "ignore" }
