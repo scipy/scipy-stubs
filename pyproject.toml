@@ -180,6 +180,7 @@ implicit-any = "error"
 # https://github.com/facebook/pyrefly/issues/2327
 # unannotated-parameter = "error"
 unannotated-return = "error"
+unused-ignore = "error"
 
 [[tool.pyrefly.sub-config]]
 matches = "scipy-stubs/*/__init__.pyi"
