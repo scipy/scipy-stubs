@@ -174,7 +174,12 @@ reportUnusedExpression = false
 
 [tool.pyrefly]
 project-includes = ["scipy-stubs", "scripts", "tests"]
-errors = { implicit-any = "error", unannotated-parameter = "error", unannotated-return = "error" }
+
+[tool.pyrefly.errors]
+implicit-any = "error"
+# https://github.com/facebook/pyrefly/issues/2327
+# unannotated-parameter = "error"
+unannotated-return = "error"
 
 [[tool.pyrefly.sub-config]]
 matches = "scipy-stubs/*/__init__.pyi"
