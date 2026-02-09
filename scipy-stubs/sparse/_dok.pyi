@@ -50,7 +50,7 @@ _C2T = TypeVar("_C2T", bound=_dok_base[np.float64, _2D])
 class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     _spbase[_ScalarT_co, _ShapeT_co],
     IndexMixin[_ScalarT_co, _ShapeT_co],
-    dict[tuple[Any, ...], _ScalarT_co | Any],
+    dict[tuple[Any, ...], _ScalarT_co | Any],  # pyrefly: ignore[invalid-variance]
     Generic[_ScalarT_co, _ShapeT_co],
 ):
     _format: ClassVar = "dok"
