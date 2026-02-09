@@ -134,9 +134,9 @@ assert_type(csr_mat.getnnz(-2), _Index1D)
 csr_mat.getnnz(2)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 csr_mat.getnnz(-3)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 
-assert_type(isspmatrix(csr_arr), bool)  # pyrefly: ignore[assert-type]
-assert_type(isspmatrix(csr_mat), bool)  # pyrefly: ignore[assert-type]
-assert_type(isspmatrix(object()), bool)  # pyrefly: ignore[assert-type]
+assert_type(isspmatrix(csr_arr), bool)
+assert_type(isspmatrix(csr_mat), bool)
+assert_type(isspmatrix(object()), bool)
 
 # __getitem__
 assert_type(csr_vec[0], ScalarType)

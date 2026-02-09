@@ -151,7 +151,10 @@ class _TestResultTuple(NamedTuple, Generic[_FloatOrArrayT_co]):
     pvalue: _FloatOrArrayT_co
 
 @type_check_only
-class _TestResultBunch(BaseBunch[_FloatOrArrayT_co, _FloatOrArrayT2_co], Generic[_FloatOrArrayT_co, _FloatOrArrayT2_co]):
+class _TestResultBunch(
+    BaseBunch[_FloatOrArrayT_co, _FloatOrArrayT2_co],  # pyrefly: ignore[invalid-variance]
+    Generic[_FloatOrArrayT_co, _FloatOrArrayT2_co],
+):
     @property
     def statistic(self, /) -> _FloatOrArrayT_co: ...
     @property
