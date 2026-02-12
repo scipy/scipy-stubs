@@ -47,11 +47,17 @@ _Coord1D: TypeAlias = list[_Coord0D]
 _CoordND: TypeAlias = list[tuple[onp.ArrayND[np.float64], ...]]
 
 #
+@overload
 def label(
     input: onp.ToComplex | onp.ToComplexND,
     structure: onp.ToComplex | onp.ToComplexND | None = None,
-    output: onp.ArrayND[np.int32 | np.intp] | None = None,
-) -> int | tuple[onp.ArrayND[np.int32 | np.intp], int]: ...
+    *,
+    output: onp.ArrayND[np.int32 | np.intp],
+) -> int: ...
+@overload
+def label(
+    input: onp.ToComplex | onp.ToComplexND, structure: onp.ToComplex | onp.ToComplexND | None = None, output: None = None
+) -> tuple[onp.ArrayND[np.int32 | np.intp], int]: ...
 
 #
 def find_objects(input: onp.ToInt | onp.ToIntND, max_label: int = 0) -> list[tuple[slice, ...]]: ...
