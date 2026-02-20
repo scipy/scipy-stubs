@@ -72,10 +72,9 @@ dev = [
   { include-group = "type" },
 ]
 
+[tool.uv.sources]
 # the required stubdefaulter features not released yet (>0.1.0)
-[tool.uv.sources.stubdefaulter]
-git = "https://github.com/JelleZijlstra/stubdefaulter.git"
-rev = "ebe9e31"
+stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "ebe9e31" }
 
 # poe
 
@@ -105,11 +104,9 @@ uv run
 cmd = "stubdefaulter --packages=. --exit-zero --check"
 executor.type = "uv"
 
-[tool.typos.files]
-extend-exclude = ["*.pyi", ".mypyignore"]
-
-[tool.typos.default]
-extend-ignore-identifiers-re = ['ND|Nd|Theis|TtestResult']
+[tool.typos]
+files = { extend-exclude = ["*.pyi", ".mypyignore"] }
+default = { extend-ignore-identifiers-re = ['ND|Nd|Theis|TtestResult'] }
 
 # mypy
 
@@ -181,7 +178,7 @@ implicit-abstract-class = "error"
 implicit-any = "error"
 implicitly-defined-attribute = "error"
 missing-override-decorator = "error"
-# missing-source = "error"  # bugged?
+missing-source = "ignore"
 not-required-key-access = "error"
 open-unpacking = "error"
 unannotated-attribute = "error"
@@ -215,20 +212,17 @@ errors = { bad-override = "ignore" }
 # ty
 
 [tool.ty]
-
-[tool.ty.environment]
-python-platform = "all"
-python-version = "3.11" # unlike mypy and pyright, this doesn't depend on the Python env
-
-[tool.ty.src]
-include = ["scipy-stubs", "scripts", "tests"]
-
-[tool.ty.analysis]
-respect-type-ignore-comments = false # for mypy compat
+src = { include = ["scipy-stubs", "scripts", "tests"] }
+environment = { python-platform = "all" }
+terminal = { error-on-warning = true }
+analysis = { respect-type-ignore-comments = false }
 
 [tool.ty.rules]
-unused-ignore-comment = "warn"
+division-by-zero = "error"
+possibly-missing-import = "error"
 possibly-unresolved-reference = "error"
+unsupported-dynamic-base = "error"
+unused-ignore-comment = "error"
 
 [[tool.ty.overrides]]
 include = [
