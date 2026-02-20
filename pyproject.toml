@@ -36,7 +36,7 @@ classifiers = [
   "Typing :: Stubs Only",
 ]
 requires-python = ">=3.11"
-dependencies = ["optype[numpy]>=0.14.0,<0.16"]
+dependencies = ["optype[numpy]>=0.14.0,<0.17"]
 
 [project.optional-dependencies]
 scipy = ["scipy>=1.17.0,<1.18"]
