@@ -4,6 +4,7 @@ from typing import TypeAlias, assert_type, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.stats import Uniform, distributions, exp, log, make_distribution, order_statistic
 from scipy.stats._distribution_infrastructure import (
@@ -57,8 +58,6 @@ class _MultiDuckRV:
     def support(self) -> dict[str, tuple[float, float]]: ...
     def pdf(self, x: float, /, *, quack: float, swim: float) -> np.float64: ...
 
-def _assert_continuous_distribution_type(dist: type[ContinuousDistribution], /) -> None: ...
-
 ###
 
 # truncate
@@ -93,6 +92,6 @@ assert_type(log(_uniform_2d_f64), MonotonicTransformedDistribution[Uniform[_2d, 
 assert_type(log(_uniform_3d_f64), MonotonicTransformedDistribution[Uniform[_3d, np.float64], _3d])
 
 # make_distribution
-_assert_continuous_distribution_type(make_distribution(distributions.loguniform))
-_assert_continuous_distribution_type(make_distribution(_DuckRV))
-_assert_continuous_distribution_type(make_distribution(_MultiDuckRV))
+assert_subtype[type[ContinuousDistribution]](make_distribution(distributions.loguniform))
+assert_subtype[type[ContinuousDistribution]](make_distribution(_DuckRV))
+assert_subtype[type[ContinuousDistribution]](make_distribution(_MultiDuckRV))
