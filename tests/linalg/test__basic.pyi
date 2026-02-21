@@ -5,6 +5,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+from optype.test import assert_subtype
 
 from scipy.linalg import det, inv, lstsq, solve, solve_banded, solve_circulant, solve_toeplitz, solve_triangular
 
@@ -73,22 +74,6 @@ py_c_2d: list[list[complex]]
 py_c_3d: list[list[list[complex]]]
 
 ###
-
-# NOTE: `typing.assert_type` will work on numpy 2.1+ because of differences in shape-typing,
-# so we instead use these helper functions to assert the expected types.
-
-def _assert_2d_f32(x: onp.Array2D[np.float32], /) -> None: ...
-def _assert_3d_f32(x: onp.Array3D[np.float32], /) -> None: ...
-def _assert_nd_f32(x: onp.ArrayND[np.float32], /) -> None: ...
-def _assert_2d_f64(x: onp.Array2D[np.float64], /) -> None: ...
-def _assert_3d_f64(x: onp.Array3D[np.float64], /) -> None: ...
-def _assert_nd_f64(x: onp.ArrayND[np.float64], /) -> None: ...
-def _assert_2d_c64(x: onp.Array2D[np.complex64], /) -> None: ...
-def _assert_3d_c64(x: onp.Array3D[np.complex64], /) -> None: ...
-def _assert_nd_c64(x: onp.ArrayND[np.complex64], /) -> None: ...
-def _assert_2d_c128(x: onp.Array2D[np.complex128], /) -> None: ...
-def _assert_3d_c128(x: onp.Array3D[np.complex128], /) -> None: ...
-def _assert_nd_c128(x: onp.ArrayND[np.complex128], /) -> None: ...
 
 ###
 # solve
@@ -358,36 +343,36 @@ assert_type(solve_circulant(py_c_2d, py_c_1d), onp.ArrayND[np.complex128])
 ###
 # inv
 
-_assert_2d_f32(inv(f32_2d))
-_assert_2d_f64(inv(f64_2d))
-_assert_2d_c64(inv(c64_2d))
-_assert_2d_c128(inv(c128_2d))
+assert_subtype[onp.Array2D[np.float32]](inv(f32_2d))
+assert_subtype[onp.Array2D[np.float64]](inv(f64_2d))
+assert_subtype[onp.Array2D[np.complex64]](inv(c64_2d))
+assert_subtype[onp.Array2D[np.complex128]](inv(c128_2d))
 
 assert_type(inv(py_b_2d), onp.Array2D[np.float32])
 assert_type(inv(py_i_2d), onp.Array2D[np.float64])
 assert_type(inv(py_f_2d), onp.Array2D[np.float64])
 assert_type(inv(py_c_2d), onp.Array2D[np.complex128])
 
-_assert_3d_f32(inv(f32_3d))
-_assert_3d_f64(inv(f64_3d))
-_assert_3d_c64(inv(c64_3d))
-_assert_3d_c128(inv(c128_3d))
+assert_subtype[onp.Array3D[np.float32]](inv(f32_3d))
+assert_subtype[onp.Array3D[np.float64]](inv(f64_3d))
+assert_subtype[onp.Array3D[np.complex64]](inv(c64_3d))
+assert_subtype[onp.Array3D[np.complex128]](inv(c128_3d))
 
 assert_type(inv(py_b_3d), onp.ArrayND[np.float32])
 assert_type(inv(py_i_3d), onp.ArrayND[np.float64])
 assert_type(inv(py_f_3d), onp.ArrayND[np.float64])
 assert_type(inv(py_c_3d), onp.ArrayND[np.complex128])
 
-_assert_nd_f32(inv(b1_nd))
-_assert_nd_f32(inv(i8_nd))
-_assert_nd_f32(inv(f16_nd))
-_assert_nd_f32(inv(f32_nd))
-_assert_nd_f64(inv(i32_nd))
-_assert_nd_f64(inv(f64_nd))
-_assert_nd_f64(inv(f80_nd))
-_assert_nd_c64(inv(c64_nd))
-_assert_nd_c128(inv(c128_nd))
-_assert_nd_c128(inv(c160_nd))
+assert_subtype[onp.ArrayND[np.float32]](inv(b1_nd))
+assert_subtype[onp.ArrayND[np.float32]](inv(i8_nd))
+assert_subtype[onp.ArrayND[np.float32]](inv(f16_nd))
+assert_subtype[onp.ArrayND[np.float32]](inv(f32_nd))
+assert_subtype[onp.ArrayND[np.float64]](inv(i32_nd))
+assert_subtype[onp.ArrayND[np.float64]](inv(f64_nd))
+assert_subtype[onp.ArrayND[np.float64]](inv(f80_nd))
+assert_subtype[onp.ArrayND[np.complex64]](inv(c64_nd))
+assert_subtype[onp.ArrayND[np.complex128]](inv(c128_nd))
+assert_subtype[onp.ArrayND[np.complex128]](inv(c160_nd))
 
 ###
 # det
