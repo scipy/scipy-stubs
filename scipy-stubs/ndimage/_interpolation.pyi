@@ -20,6 +20,7 @@ _SCT = TypeVar("_SCT", bound=np.generic)
 _Order: TypeAlias = Literal[0, 1, 2, 3, 4, 5]
 _Mode: TypeAlias = Literal["reflect", "grid-mirror", "constant", "grid-constant", "nearest", "mirror", "wrap", "grid-wrap"]
 _MappingFunc: TypeAlias = Callable[Concatenate[tuple[int, ...], ...], tuple[onp.ToFloat, ...]]
+_ArrayOrDType: TypeAlias = onp.ArrayND[_SCT] | type[_SCT] | np.dtype[_SCT]
 
 _FloatArrayOut: TypeAlias = onp.ArrayND[np.float64 | np.float32]
 _ComplexArrayOut: TypeAlias = onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32]
@@ -43,11 +44,7 @@ def spline_filter1d(
 ) -> onp.ArrayND[np.complex128 | np.float64]: ...
 @overload
 def spline_filter1d(
-    input: onp.ToScalar | onp.ToArrayND,
-    order: _Order,
-    axis: onp.ToInt,
-    output: onp.ArrayND[_SCT] | type[_SCT],
-    mode: _Mode = "mirror",
+    input: onp.ToScalar | onp.ToArrayND, order: _Order, axis: onp.ToInt, output: _ArrayOrDType[_SCT], mode: _Mode = "mirror"
 ) -> onp.ArrayND[_SCT]: ...
 @overload
 def spline_filter1d(
@@ -55,7 +52,7 @@ def spline_filter1d(
     order: _Order = 3,
     axis: onp.ToInt = -1,
     *,
-    output: onp.ArrayND[_SCT] | type[_SCT],
+    output: _ArrayOrDType[_SCT],
     mode: _Mode = "mirror",
 ) -> onp.ArrayND[_SCT]: ...
 
@@ -70,11 +67,11 @@ def spline_filter(
 ) -> onp.ArrayND[np.complex128 | np.float64]: ...
 @overload
 def spline_filter(
-    input: onp.ToScalar | onp.ToArrayND, order: _Order, output: onp.ArrayND[_SCT] | type[_SCT], mode: _Mode = "mirror"
+    input: onp.ToScalar | onp.ToArrayND, order: _Order, output: _ArrayOrDType[_SCT], mode: _Mode = "mirror"
 ) -> onp.ArrayND[_SCT]: ...
 @overload
 def spline_filter(
-    input: onp.ToScalar | onp.ToArrayND, order: _Order = 3, *, output: onp.ArrayND[_SCT] | type[_SCT], mode: _Mode = "mirror"
+    input: onp.ToScalar | onp.ToArrayND, order: _Order = 3, *, output: _ArrayOrDType[_SCT], mode: _Mode = "mirror"
 ) -> onp.ArrayND[_SCT]: ...
 
 #
@@ -109,7 +106,7 @@ def geometric_transform(
     input: onp.ToScalar | onp.ToArrayND,
     mapping: _MappingFunc,
     output_shape: tuple[int, ...] | None,
-    output: onp.ArrayND[_SCT] | type[_SCT],
+    output: _ArrayOrDType[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
@@ -123,7 +120,7 @@ def geometric_transform(
     mapping: _MappingFunc,
     output_shape: tuple[int, ...] | None = None,
     *,
-    output: onp.ArrayND[_SCT] | type[_SCT],
+    output: _ArrayOrDType[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
@@ -199,7 +196,7 @@ def map_coordinates(
 def map_coordinates(
     input: onp.ToScalar | onp.ToArrayND,
     coordinates: onp.ToFloat | onp.ToFloatND,
-    output: onp.ArrayND[_SCT] | type[_SCT],
+    output: _ArrayOrDType[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
@@ -278,7 +275,7 @@ def affine_transform(
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
     output_shape: tuple[int, ...] | None = None,
     *,
-    output: onp.ArrayND[_SCT] | type[_SCT],
+    output: _ArrayOrDType[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
@@ -349,7 +346,7 @@ def shift(
 def shift(
     input: onp.ToScalar | onp.ToArrayND,
     shift: onp.ToFloat | onp.ToFloatND,
-    output: onp.ArrayND[_SCT] | type[_SCT],
+    output: _ArrayOrDType[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
@@ -415,7 +412,7 @@ def zoom(
 def zoom(
     input: onp.ToScalar | onp.ToArrayND,
     zoom: onp.ToFloat | onp.ToFloatND,
-    output: onp.ArrayND[_SCT] | type[_SCT],
+    output: _ArrayOrDType[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
@@ -492,7 +489,7 @@ def rotate(
     axes: tuple[onp.ToInt, onp.ToInt] = (1, 0),
     reshape: bool = True,
     *,
-    output: onp.ArrayND[_SCT] | type[_SCT],
+    output: _ArrayOrDType[_SCT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
