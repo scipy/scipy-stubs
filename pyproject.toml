@@ -52,20 +52,20 @@ extras = ["scipy-stubs[scipy]"]
 ci = ["packaging>=26.0"]
 lint = [
   { include-group = "extras" },
-  "dprint-py==0.51.1.0",
-  "ruff==0.15.2",
+  "dprint-py==0.52.0.0",
+  "ruff==0.15.4",
   "sp-repo-review[cli]==2025.11.21",
 ]
 type = [
   { include-group = "extras" },
   { include-group = "ci" },
-  "array-api-compat==1.13.0", # bundled as `scipy._lib.array_api_compat`
+  "array-api-compat==1.14.0", # bundled as `scipy._lib.array_api_compat`
   "pytest==9.0.2", # needed for `scipy._lib._array_api.make_xp_pytest_*`
-  "basedpyright==1.38.1",
+  "basedpyright==1.38.2",
   "mypy[faster-cache]==1.19.1",
-  "pyrefly==0.53.0",
+  "pyrefly==0.54.0",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.18",
+  "ty==0.0.19",
 ]
 dev = [
   { include-group = "lint" },
