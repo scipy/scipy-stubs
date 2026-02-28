@@ -3,6 +3,7 @@ from typing import Any, Concatenate, Literal, TypeAlias, TypedDict, overload, ty
 from typing_extensions import TypeVar, Unpack
 
 import numpy as np
+import numpy_typing_compat as nptc
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
@@ -62,6 +63,8 @@ class _GaussianKwargs(TypedDict, total=False):
     radius: _Ints
 
 ###
+# On numpy<2.1, pyright reports 40 false positive incompatible overload errors here.
+# pyright: reportOverlappingOverload=false
 
 @overload
 def vectorized_filter(
@@ -95,7 +98,7 @@ def vectorized_filter(
 # keep roughly in sync with sobel
 @overload
 def correlate1d(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     weights: onp.ToFloat1D,
     axis: int = -1,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
@@ -157,7 +160,7 @@ def correlate1d(
 # keep in sync with correlate1d
 @overload
 def correlate(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     weights: onp.ToFloatND,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
     mode: _Modes = "reflect",
@@ -225,7 +228,7 @@ def correlate(
 # keep in sync with correlate1d
 @overload
 def convolve1d(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     weights: onp.ToFloat1D,
     axis: int = -1,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
@@ -287,7 +290,7 @@ def convolve1d(
 # keep in sync with correlate
 @overload
 def convolve(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     weights: onp.ToFloatND,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
     mode: _Modes = "reflect",
@@ -355,7 +358,7 @@ def convolve(
 # keep in sync with sobel
 @overload
 def prewitt(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     axis: int = -1,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
     mode: _Modes = "reflect",
@@ -405,7 +408,7 @@ def prewitt(
 # keep in sync with prewitt
 @overload
 def sobel(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     axis: int = -1,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
     mode: _Modes = "reflect",
@@ -455,7 +458,7 @@ def sobel(
 #
 @overload
 def laplace(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
@@ -511,7 +514,7 @@ def laplace(
 # keep in sync with laplace
 @overload
 def gaussian_laplace(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     sigma: onp.ToFloat | onp.ToFloatND,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
     mode: _Modes = "reflect",
@@ -579,7 +582,7 @@ def gaussian_laplace(
 # keep in sync with laplace
 @overload
 def generic_laplace(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     derivative2: _Derivative[_DTypeT, Any],
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
     mode: _Modes = "reflect",
@@ -653,7 +656,7 @@ def generic_laplace(
 # keep in sync with gaussian_laplace
 @overload
 def gaussian_gradient_magnitude(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     sigma: onp.ToFloat | onp.ToFloatND,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
     mode: _Modes = "reflect",
@@ -721,7 +724,7 @@ def gaussian_gradient_magnitude(
 #
 @overload
 def generic_gradient_magnitude(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     derivative: _Derivative[_DTypeT, Any],
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
     mode: _Modes = "reflect",
@@ -795,7 +798,7 @@ def generic_gradient_magnitude(
 #
 @overload
 def gaussian_filter1d(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     sigma: onp.ToFloat,
     axis: int = -1,
     order: int = 0,
@@ -875,7 +878,7 @@ def gaussian_filter1d(
 # keep in sync with generic_laplace
 @overload
 def gaussian_filter(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     sigma: onp.ToFloat | onp.ToFloatND,
     order: _Ints = 0,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
@@ -955,7 +958,7 @@ def gaussian_filter(
 #
 @overload
 def generic_filter1d(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     function: _FilterFunc1D | LowLevelCallable,
     filter_size: float,
     axis: int = -1,
@@ -1022,7 +1025,7 @@ def generic_filter1d(
 # keep in sync with generic_filter1d
 @overload
 def generic_filter(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     function: _FilterFuncND | LowLevelCallable,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
@@ -1099,7 +1102,7 @@ def generic_filter(
 #
 @overload
 def uniform_filter1d(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     size: int,
     axis: int = -1,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
@@ -1161,7 +1164,7 @@ def uniform_filter1d(
 # keep roughly in sync with uniform_filter1d
 @overload
 def uniform_filter(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     size: _Ints = 3,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
     mode: _Modes = "reflect",
@@ -1229,7 +1232,7 @@ def uniform_filter(
 # keep in sync with uniform_filter1d
 @overload
 def minimum_filter1d(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     size: int,
     axis: int = -1,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
@@ -1291,7 +1294,7 @@ def minimum_filter1d(
 # keep in sync with uniform_filter (plus `footprint`)
 @overload
 def minimum_filter(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
@@ -1365,7 +1368,7 @@ def minimum_filter(
 # keep in sync with uniform_filter1d
 @overload
 def maximum_filter1d(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     size: int,
     axis: int = -1,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
@@ -1427,7 +1430,7 @@ def maximum_filter1d(
 # keep in sync with minimum_filter
 @overload
 def maximum_filter(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
@@ -1501,7 +1504,7 @@ def maximum_filter(
 # keep in sync with maximum_filter
 @overload
 def median_filter(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
     output: np.ndarray[_ShapeT, _DTypeT] | _DTypeT | None = None,
@@ -1575,7 +1578,7 @@ def median_filter(
 # keep in sync with median_filter (plus `rank`)
 @overload
 def rank_filter(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     rank: int,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,
@@ -1655,7 +1658,7 @@ def rank_filter(
 # keep in sync with median_filter (plus `percentile` and minus `rank`)
 @overload
 def percentile_filter(
-    input: onp.CanArray[_ShapeT, _DTypeT],
+    input: nptc.CanArray[_ShapeT, _DTypeT],
     percentile: onp.ToFloat,
     size: _Ints | None = None,
     footprint: onp.ToInt | onp.ToIntND | None = None,

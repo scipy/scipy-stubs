@@ -22,7 +22,7 @@ _f64_3d: onp.Array3D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]  # unknown dimensionality at type-check time
 
 # typed statistic helpers for permutation_test (lambdas can't be annotated in .pyi files)
-# the statistic reduces dimensionality by 1 (e.g. 2D input → 1D output)
+# the statistic reduces dimensionality by 1 (e.g. 2D input -> 1D output)
 def _statistic_1d(x: onp.Array1D[np.float64], y: onp.Array1D[np.float64]) -> np.float64: ...
 def _statistic_2d(x: onp.Array2D[np.float64], y: onp.Array2D[np.float64]) -> onp.Array1D[np.float64]: ...
 def _statistic_3d(x: onp.Array3D[np.float64], y: onp.Array3D[np.float64]) -> onp.Array2D[np.float64]: ...
@@ -32,8 +32,8 @@ def _statistic_nd(x: onp.ArrayND[np.float64], y: onp.ArrayND[np.float64]) -> onp
 
 # bootstrap
 # the distribution array is always 1 dimension higher than the input data
-# e.g. 1D input → scalar statistic + 1D bootstrap distribution
-#      2D input → 1D statistic + 2D bootstrap distribution
+# e.g. 1D input -> scalar statistic + 1D bootstrap distribution
+#      2D input -> 1D statistic + 2D bootstrap distribution
 
 assert_type(bootstrap(_py_f_1d, np.mean), BootstrapResult[float | np.float64, onp.Array1D[np.float64]])
 assert_type(bootstrap(_f64_1d, np.mean), BootstrapResult[float | np.float64, onp.Array1D[np.float64]])
@@ -50,7 +50,7 @@ assert_type(  # pyrefly:ignore[assert-type]
 
 # permutation_test
 # unlike bootstrap, pyright infers _FloatNDT from the statistic's return type, not
-# from the input data shape — so the result type is driven by what the statistic returns
+# from the input data shape -- so the result type is driven by what the statistic returns
 
 assert_type(
     permutation_test((_py_f_1d, _py_f_1d), _statistic_1d), PermutationTestResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]
@@ -65,7 +65,7 @@ assert_type(
 # pyright loses track of the exact shape here and falls back to ArrayND
 assert_type(permutation_test((_f64_3d, _f64_3d), _statistic_3d), PermutationTestResult[Any, onp.ArrayND[np.float64]])
 
-# same overload resolution behavior as bootstrap — resolves to first matching overload
+# same overload resolution behavior as bootstrap -- resolves to first matching overload
 assert_type(  # pyrefly:ignore[assert-type]
     permutation_test((_f64_nd, _f64_nd), _statistic_nd), PermutationTestResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]
 )
@@ -74,7 +74,7 @@ assert_type(  # pyrefly:ignore[assert-type]
 
 # monte_carlo_test
 # same dimension-shifting pattern as bootstrap:
-# 1D input → scalar statistic + 1D null distribution, and so on
+# 1D input -> scalar statistic + 1D null distribution, and so on
 
 assert_type(
     monte_carlo_test(_py_f_1d, np.random.standard_normal, np.mean),
