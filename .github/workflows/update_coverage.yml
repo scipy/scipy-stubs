@@ -12,6 +12,10 @@ on:
       - scripts/test_coverage.py
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
 jobs:
   update-coverage:
     runs-on: ubuntu-latest
