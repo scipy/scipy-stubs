@@ -1,6 +1,6 @@
 # NOTE: Scipy already has a `distance.pyi` stub, but it has several errors, which are fixed here
 
-from collections.abc import Callable, Sequence as Seq
+from collections.abc import Callable
 from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -92,11 +92,9 @@ _Metric: TypeAlias = _MetricName | _MetricFunc  # noqa: PYI047
 
 _Force: TypeAlias = Literal["NO", "No", "no", "TOMATRIX", "ToMatrix", "tomatrix", "TOVECTOR", "ToVector", "tovector"]
 
-_Seq2D: TypeAlias = Seq[Seq[_T]]
 _FloatingND: TypeAlias = onp.ArrayND[npc.floating]
 _InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
-_T = TypeVar("_T")
 _NumberT = TypeVar("_NumberT", bound=npc.number)
 _ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[npc.number])
 
@@ -196,7 +194,7 @@ def squareform(X: onp.ToJustFloatStrict1D, force: _Force = "no", checks: bool = 
 def squareform(X: onp.ToJustComplexStrict1D, force: _Force = "no", checks: bool = True) -> onp.Array2D[np.complex128]: ...
 @overload  # 1-d array-like
 def squareform(
-    X: Seq[_NumberT] | onp.CanArray1D[_NumberT], force: _Force = "no", checks: bool = True
+    X: onp.ToArrayStrict1D[_NumberT, _NumberT], force: _Force = "no", checks: bool = True
 ) -> onp.Array2D[_NumberT]: ...
 @overload  # 2-d int
 def squareform(X: onp.ToJustIntStrict2D, force: _Force = "no", checks: bool = True) -> onp.Array1D[np.int_]: ...
@@ -206,11 +204,11 @@ def squareform(X: onp.ToJustFloatStrict2D, force: _Force = "no", checks: bool = 
 def squareform(X: onp.ToJustComplexStrict2D, force: _Force = "no", checks: bool = True) -> onp.Array1D[np.complex128]: ...
 @overload  # 2-d array-like
 def squareform(
-    X: _Seq2D[_NumberT] | Seq[onp.Array1D[_NumberT]] | onp.CanArray2D[_NumberT], force: _Force = "no", checks: bool = True
+    X: onp.ToArrayStrict2D[_NumberT, _NumberT], force: _Force = "no", checks: bool = True
 ) -> onp.Array1D[_NumberT]: ...
 @overload  # ?-d array-like
 def squareform(
-    X: Seq[onp.CanArrayND[_NumberT]] | onp.CanArrayND[_NumberT], force: _Force = "no", checks: bool = True
+    X: onp.ToArrayND[_NumberT, _NumberT], force: _Force = "no", checks: bool = True
 ) -> onp.Array1D[_NumberT] | onp.Array2D[_NumberT]: ...
 
 #
