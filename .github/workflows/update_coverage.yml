@@ -1,0 +1,31 @@
+name: Update test coverage
+
+permissions:
+  contents: read
+  issues: write
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - tests/**
+      - scripts/test_coverage.py
+  workflow_dispatch:
+
+jobs:
+  update-coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      - uses: astral-sh/setup-uv@v7.3.1
+
+      - name: generate coverage report
+        run: uv run scripts/test_coverage.py > .coverage.md
+
+      - name: "update issue #1099"
+        run: gh issue edit 1099 --repo scipy/scipy-stubs --body-file .coverage.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
