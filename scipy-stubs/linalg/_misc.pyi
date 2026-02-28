@@ -42,7 +42,7 @@ def norm(
 ) -> np.longdouble: ...
 @overload  # scalar array, axis: None = ..., keepdims: False = ...
 def norm(
-    a: onp.CanArrayND[_SubScalar] | onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[_SubScalar],
+    a: onp.ToArrayND[_SubScalar, _SubScalar],
     ord: _Order | None = None,
     axis: None = None,
     keepdims: onp.ToFalse = False,
@@ -67,7 +67,7 @@ def norm(
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # float64-coercible array-like, keepdims: True (positional)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[complex | _SubScalar],
+    a: onp.ToArrayND[complex, _SubScalar],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: onp.ToTrue,
@@ -75,7 +75,7 @@ def norm(
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # float64-coercible array-like, keepdims: True (keyword)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[_SubScalar]] | onp.SequenceND[complex | _SubScalar],
+    a: onp.ToArrayND[complex, _SubScalar],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
@@ -118,7 +118,7 @@ def norm(
 ) -> onp.ArrayND[np.longdouble, _ShapeT]: ...
 @overload  # scalar array-like, keepdims: True (positional)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[npc.inexact32]] | onp.SequenceND[npc.inexact32],
+    a: onp.ToArrayND[npc.inexact32, npc.inexact32],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: onp.ToTrue,
@@ -126,7 +126,7 @@ def norm(
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # scalar array-like, keepdims: True (positional)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[npc.inexact80]] | onp.SequenceND[npc.inexact80],
+    a: onp.ToArrayND[npc.inexact80, npc.inexact80],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: onp.ToTrue,
@@ -134,7 +134,7 @@ def norm(
 ) -> onp.ArrayND[np.longdouble]: ...
 @overload  # scalar array-like, keepdims: True (keyword)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[npc.inexact32]] | onp.SequenceND[npc.inexact32],
+    a: onp.ToArrayND[npc.inexact32, npc.inexact32],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
@@ -143,7 +143,7 @@ def norm(
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # scalar array-like, keepdims: True (keyword)
 def norm(
-    a: onp.SequenceND[onp.CanArrayND[npc.inexact80]] | onp.SequenceND[npc.inexact80],
+    a: onp.ToArrayND[npc.inexact80, npc.inexact80],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,

@@ -42,9 +42,9 @@ assert_type(norm(c128_nd), np.float64)
 assert_type(norm(py_f_1d), np.float64)
 assert_type(norm(py_f_2d), np.float64)
 
-assert_type(norm(f64_nd, None, None, True), onp.ArrayND[np.float64])  # pyrefly: ignore[assert-type]
-assert_type(norm(f64_nd, None, 0, True), onp.ArrayND[np.float64])  # pyrefly: ignore[assert-type]
-assert_type(norm(f64_nd, keepdims=True), onp.ArrayND[np.float64])  # pyrefly: ignore[assert-type]
+assert_type(norm(f64_nd, None, None, True), onp.ArrayND[np.float64])
+assert_type(norm(f64_nd, None, 0, True), onp.ArrayND[np.float64])
+assert_type(norm(f64_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(norm(f32_nd, None, None, True), onp.ArrayND[np.float32])
 assert_type(norm(f32_nd, keepdims=True), onp.ArrayND[np.float32])
 assert_type(norm(f80_nd, None, None, True), onp.ArrayND[np.longdouble])
