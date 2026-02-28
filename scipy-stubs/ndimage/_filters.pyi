@@ -63,6 +63,8 @@ class _GaussianKwargs(TypedDict, total=False):
     radius: _Ints
 
 ###
+# On numpy<2.1, pyright reports 40 false positive incompatible overload errors here.
+# pyright: reportOverlappingOverload=false
 
 @overload
 def vectorized_filter(
