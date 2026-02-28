@@ -66,7 +66,7 @@ def norm(
     check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # float64-coercible array-like, keepdims: True (positional)
-def norm(
+def norm(  # type: ignore[overload-overlap]  # mypy false positive
     a: onp.ToArrayND[complex, _SubScalar],
     ord: _Order | None,
     axis: _Axis | None,
@@ -74,7 +74,7 @@ def norm(
     check_finite: onp.ToBool = True,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # float64-coercible array-like, keepdims: True (keyword)
-def norm(
+def norm(  # type: ignore[overload-overlap]  # mypy false positive
     a: onp.ToArrayND[complex, _SubScalar],
     ord: _Order | None = None,
     axis: _Axis | None = None,
