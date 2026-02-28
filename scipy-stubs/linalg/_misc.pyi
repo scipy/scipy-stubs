@@ -20,6 +20,9 @@ _WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
 
 ###
 
+# On numpy<2.1, pyright reports 6 false positive incompatible overload errors here.
+# pyright: reportOverlappingOverload=false
+
 class LinAlgWarning(RuntimeWarning): ...
 
 # NOTE: the mypy errors are false positives (join vs union)
