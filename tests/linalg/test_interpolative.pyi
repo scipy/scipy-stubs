@@ -43,7 +43,7 @@ assert_type(interp.reconstruct_interp_matrix(intp_1d, f64_proj), onp.ArrayND[np.
 ###
 # reconstruct_skel_matrix
 
-assert_type(interp.reconstruct_skel_matrix(f64_2d, 3, intp_1d), np.ndarray[tuple[int, ...], np.dtype[np.float64]])
+assert_type(interp.reconstruct_skel_matrix(f64_2d, 3, intp_1d), onp.ArrayND[np.float64])
 
 ###
 # id_to_svd

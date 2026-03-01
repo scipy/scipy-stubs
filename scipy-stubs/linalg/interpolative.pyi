@@ -37,8 +37,8 @@ def reconstruct_interp_matrix(
 
 #
 def reconstruct_skel_matrix(
-    A: np.ndarray[tuple[int, ...], _DTypeT], k: SupportsIndex, idx: onp.ArrayND[npc.integer]
-) -> np.ndarray[tuple[int, ...], _DTypeT]: ...
+    A: np.ndarray[tuple[Any, ...], _DTypeT], k: SupportsIndex, idx: onp.ArrayND[npc.integer]
+) -> np.ndarray[tuple[Any, ...], _DTypeT]: ...
 
 #
 def id_to_svd(
