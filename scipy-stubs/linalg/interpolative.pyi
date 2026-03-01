@@ -1,4 +1,4 @@
-from typing import SupportsIndex, TypeAlias, TypeVar
+from typing import Any, SupportsIndex, TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -18,9 +18,7 @@ __all__ = [
     "svd",
 ]
 
-_DT = TypeVar("_DT", bound=np.dtype[np.generic])
-_Inexact1D: TypeAlias = onp.Array1D[npc.inexact]
-_Inexact2D: TypeAlias = onp.Array2D[npc.inexact]
+_DTypeT = TypeVar("_DTypeT", bound=np.dtype[Any])
 
 #
 def interp_decomp(
@@ -39,18 +37,18 @@ def reconstruct_interp_matrix(
 
 #
 def reconstruct_skel_matrix(
-    A: np.ndarray[tuple[int, ...], _DT], k: SupportsIndex, idx: onp.ArrayND[npc.integer]
-) -> np.ndarray[tuple[int, ...], _DT]: ...
+    A: np.ndarray[tuple[int, ...], _DTypeT], k: SupportsIndex, idx: onp.ArrayND[npc.integer]
+) -> np.ndarray[tuple[int, ...], _DTypeT]: ...
 
 #
 def id_to_svd(
     B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
-) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
+) -> tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact], onp.Array2D[npc.inexact]]: ...
 
 #
 def svd(
     A: onp.ArrayND[npc.number] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
-) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
+) -> tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact], onp.Array2D[npc.inexact]]: ...
 
 #
 def estimate_spectral_norm(A: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None) -> float | np.float64: ...
