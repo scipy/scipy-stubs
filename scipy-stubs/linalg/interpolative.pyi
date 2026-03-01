@@ -22,21 +22,19 @@ _DT = TypeVar("_DT", bound=np.dtype[np.generic])
 _Inexact1D: TypeAlias = onp.Array1D[npc.inexact]
 _Inexact2D: TypeAlias = onp.Array2D[npc.inexact]
 
-_AnyNumber: TypeAlias = npc.number
-
 #
 def interp_decomp(
-    A: onp.ArrayND[_AnyNumber] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
+    A: onp.ArrayND[npc.number] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[int, onp.ArrayND[np.intp], onp.ArrayND[np.float64]]: ...
 
 #
 def reconstruct_matrix_from_id(
-    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[_AnyNumber]
-) -> onp.ArrayND[_AnyNumber]: ...
+    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
+) -> onp.ArrayND[npc.number]: ...
 
 #
 def reconstruct_interp_matrix(
-    idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[_AnyNumber]
+    idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
 ) -> onp.ArrayND[np.float64 | np.complex128]: ...
 
 #
@@ -46,12 +44,12 @@ def reconstruct_skel_matrix(
 
 #
 def id_to_svd(
-    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[_AnyNumber]
+    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
 ) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
 
 #
 def svd(
-    A: onp.ArrayND[_AnyNumber] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
+    A: onp.ArrayND[npc.number] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
 
 #
@@ -59,4 +57,4 @@ def estimate_spectral_norm(A: LinearOperator, its: int = 20, rng: onp.random.ToR
 def estimate_spectral_norm_diff(
     A: LinearOperator, B: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None
 ) -> float | np.float64: ...
-def estimate_rank(A: onp.ArrayND[_AnyNumber] | LinearOperator, eps: onp.ToFloat, rng: onp.random.ToRNG | None = None) -> int: ...
+def estimate_rank(A: onp.ArrayND[npc.number] | LinearOperator, eps: onp.ToFloat, rng: onp.random.ToRNG | None = None) -> int: ...
