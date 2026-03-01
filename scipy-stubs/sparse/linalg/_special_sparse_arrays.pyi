@@ -27,6 +27,18 @@ class LaplacianNd(LinearOperator[_SCT], Generic[_SCT]):
     boundary_conditions: Final[_BCs]
 
     @overload  # default dtype (int8)
+    def __new__(cls, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann") -> LaplacianNd[np.int8]: ...
+    @overload  # know dtype
+    def __new__(
+        cls, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann", dtype: onp.ToDType[_SCT]
+    ) -> LaplacianNd[_SCT]: ...
+    @overload  # unknow dtype
+    def __new__(
+        cls, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann", dtype: npt.DTypeLike
+    ) -> LaplacianNd[Any]: ...
+
+    #
+    @overload  # default dtype (int8)
     def __init__(self: LaplacianNd[np.int8], /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann") -> None: ...
     @overload  # know dtype
     def __init__(
