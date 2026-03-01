@@ -11,7 +11,8 @@ from ._dsolve import (
     spsolve_triangular,
     use_solver,
 )
-from ._eigen import ArpackError, ArpackNoConvergence, eigs, eigsh, lobpcg, svds
+from ._eigen import ArpackError, ArpackNoConvergence, eigs, eigsh, svds
+from ._eigen.lobpcg import lobpcg  # type: ignore[no-redef]
 from ._expm_multiply import expm_multiply
 from ._funm_multiply_krylov import funm_multiply_krylov
 from ._interface import LinearOperator, aslinearoperator
