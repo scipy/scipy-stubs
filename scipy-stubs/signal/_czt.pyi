@@ -1,12 +1,16 @@
-from typing import Final, TypeAlias, overload
+from typing import Final, Never, TypeAlias, overload
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["CZT", "ZoomFFT", "czt", "czt_points", "zoom_fft"]
 
 _Complex: TypeAlias = np.complex128 | np.clongdouble
+# workaround for non-overload-spec-compliant type-checkers
+_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
+_ToComplexStrictND: TypeAlias = onp.ArrayND[npc.number | np.bool_, _JustAnyShape]
 
 ###
 
@@ -19,6 +23,10 @@ class CZT:
     def __init__(
         self, /, n: int, m: int | None = None, w: complex | np.complex128 | None = None, a: complex | np.complex128 = 1 + 0j
     ) -> None: ...
+
+    #
+    @overload
+    def __call__(self, /, x: _ToComplexStrictND, *, axis: op.CanIndex = -1) -> onp.ArrayND[_Complex]: ...
     @overload
     def __call__(self, /, x: onp.ToComplexStrict1D, *, axis: op.CanIndex = -1) -> onp.Array1D[_Complex]: ...
     @overload
@@ -27,6 +35,8 @@ class CZT:
     def __call__(self, /, x: onp.ToComplexStrict3D, *, axis: op.CanIndex = -1) -> onp.Array3D[_Complex]: ...
     @overload
     def __call__(self, /, x: onp.ToComplexND, *, axis: op.CanIndex = -1) -> onp.ArrayND[_Complex]: ...
+
+    #
     def points(self, /) -> onp.Array1D[np.complex128]: ...
 
 class ZoomFFT(CZT):
@@ -54,6 +64,15 @@ def czt_points(
 ) -> onp.Array1D[np.complex128]: ...
 
 #
+@overload
+def czt(
+    x: _ToComplexStrictND,
+    m: int | None = None,
+    w: complex | np.complex128 | None = None,
+    a: complex | np.complex128 = 1 + 0j,
+    *,
+    axis: op.CanIndex = -1,
+) -> onp.ArrayND[_Complex]: ...
 @overload
 def czt(
     x: onp.ToComplexStrict1D,
@@ -92,6 +111,16 @@ def czt(
 ) -> onp.ArrayND[_Complex]: ...
 
 #
+@overload
+def zoom_fft(
+    x: _ToComplexStrictND,
+    fn: float | np.float64 | onp.ToFloat1D,
+    m: int | None = None,
+    *,
+    fs: float | np.float64 = 2,
+    endpoint: onp.ToBool = False,
+    axis: op.CanIndex = -1,
+) -> onp.ArrayND[_Complex]: ...
 @overload
 def zoom_fft(
     x: onp.ToComplexStrict1D,
