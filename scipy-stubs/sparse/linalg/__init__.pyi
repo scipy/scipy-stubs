@@ -12,7 +12,7 @@ from ._dsolve import (
     use_solver,
 )
 from ._eigen import ArpackError, ArpackNoConvergence, eigs, eigsh, svds
-from ._eigen.lobpcg import lobpcg  # type: ignore[no-redef]
+from ._eigen.lobpcg.lobpcg import lobpcg
 from ._expm_multiply import expm_multiply
 from ._funm_multiply_krylov import funm_multiply_krylov
 from ._interface import LinearOperator, aslinearoperator
