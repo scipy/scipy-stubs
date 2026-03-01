@@ -1,7 +1,8 @@
-from typing import Literal, TypeAlias, overload
+from typing import Literal, Never, TypeAlias, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["expm_cond", "expm_frechet"]
 
@@ -29,6 +30,10 @@ def expm_frechet(
 ) -> tuple[_ArrayF64, _ArrayF64] | tuple[_ArrayF64 | _ArrayC128, _ArrayC128]: ...
 
 #
+@overload
+def expm_cond(
+    A: onp.ArrayND[npc.number, tuple[Never, Never, Never, Never]], check_finite: bool = True
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload
 def expm_cond(A: onp.ToComplexStrict2D, check_finite: bool = True) -> np.float64: ...
 @overload
