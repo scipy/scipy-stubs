@@ -1,4 +1,4 @@
-from typing import SupportsIndex, TypeAlias, TypeVar
+from typing import Any, SupportsIndex, TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -18,45 +18,41 @@ __all__ = [
     "svd",
 ]
 
-_DT = TypeVar("_DT", bound=np.dtype[np.generic])
-_Inexact1D: TypeAlias = onp.Array1D[npc.inexact]
-_Inexact2D: TypeAlias = onp.Array2D[npc.inexact]
-
-_AnyNumber: TypeAlias = npc.number
+_DTypeT = TypeVar("_DTypeT", bound=np.dtype[Any])
 
 #
 def interp_decomp(
-    A: onp.ArrayND[_AnyNumber] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
+    A: onp.ArrayND[npc.number] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[int, onp.ArrayND[np.intp], onp.ArrayND[np.float64]]: ...
 
 #
 def reconstruct_matrix_from_id(
-    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[_AnyNumber]
-) -> onp.ArrayND[_AnyNumber]: ...
+    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
+) -> onp.ArrayND[npc.number]: ...
 
 #
 def reconstruct_interp_matrix(
-    idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[_AnyNumber]
+    idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
 ) -> onp.ArrayND[np.float64 | np.complex128]: ...
 
 #
 def reconstruct_skel_matrix(
-    A: np.ndarray[tuple[int, ...], _DT], k: SupportsIndex, idx: onp.ArrayND[npc.integer]
-) -> np.ndarray[tuple[int, ...], _DT]: ...
+    A: np.ndarray[tuple[Any, ...], _DTypeT], k: SupportsIndex, idx: onp.ArrayND[npc.integer]
+) -> np.ndarray[tuple[Any, ...], _DTypeT]: ...
 
 #
 def id_to_svd(
-    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[_AnyNumber]
-) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
+    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
+) -> tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact], onp.Array2D[npc.inexact]]: ...
 
 #
 def svd(
-    A: onp.ArrayND[_AnyNumber] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
-) -> tuple[_Inexact2D, _Inexact1D, _Inexact2D]: ...
+    A: onp.ArrayND[npc.number] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
+) -> tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact], onp.Array2D[npc.inexact]]: ...
 
 #
 def estimate_spectral_norm(A: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None) -> float | np.float64: ...
 def estimate_spectral_norm_diff(
     A: LinearOperator, B: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None
 ) -> float | np.float64: ...
-def estimate_rank(A: onp.ArrayND[_AnyNumber] | LinearOperator, eps: onp.ToFloat, rng: onp.random.ToRNG | None = None) -> int: ...
+def estimate_rank(A: onp.ArrayND[npc.number] | LinearOperator, eps: onp.ToFloat, rng: onp.random.ToRNG | None = None) -> int: ...
