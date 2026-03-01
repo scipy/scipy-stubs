@@ -4,11 +4,16 @@ import numpy as np
 import optype.numpy as onp
 
 from scipy.sparse import csr_array
-from scipy.sparse.linalg import eigs, eigsh
+from scipy.sparse.linalg import ArpackNoConvergence, eigs, eigsh
 
 a_f: csr_array[np.float64]
 a_c: csr_array[np.complex128]
 a_fc: csr_array[np.float64] | csr_array[np.complex128]
+
+# ArpackNoConvergence
+exc: ArpackNoConvergence
+assert_type(exc.eigenvalues, onp.Array1D[np.float64 | np.complex128])
+assert_type(exc.eigenvectors, onp.Array2D[np.float64 | np.complex128])
 
 # eigs
 assert_type(eigs(a_f), tuple[onp.Array1D[np.complex128], onp.Array2D[np.complex128]])

@@ -3,7 +3,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.sparse.linalg._eigen.lobpcg.lobpcg import lobpcg
+from scipy.sparse.linalg import lobpcg
 
 a: onp.Array2D[np.float64]
 x: onp.Array2D[np.float64]
