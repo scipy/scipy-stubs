@@ -312,36 +312,32 @@ def main() -> int:
     public = names_public()
     tested = names_tested() & public
 
-    package = "scipy.none"
-    package_public: int = 0
-    package_tested: int = 0
-
-    def _print_coverage(n_tested: int, n_public: int) -> None:
-        if package_public:
-            print()
-            print(f"Coverage: {n_tested} / {n_public} ({n_tested / n_public:.1%})")
-
+    groups: dict[str, list[str]] = {}
     for name in sorted(
         public, key=lambda s: (s.rsplit(".", 1)[0], s.rsplit(".", 1)[1])
     ):
-        if not name.startswith(package):
-            _print_coverage(package_tested, package_public)
-            print("</details>")
+        pkg = ".".join(name.split(".", 2)[:2])
+        if pkg not in groups:
+            groups[pkg] = []
+        groups[pkg].append(name)
 
-            package = ".".join(name.split(".", 2)[:2])
-            package_public = package_tested = 0
+    total_public = len(public)
+    total_tested = len(tested)
 
-            print(f"<details>\n<summary><code>{package}</code></summary>\n")
+    for pkg, names in groups.items():
+        pkg_public = len(names)
+        pkg_tested = sum(1 for n in names if n in tested)
+        pct = f"{pkg_tested / pkg_public:.1%}" if pkg_public else "N/A"
+        summary = f"<code>{pkg}</code> &mdash; {pkg_tested} / {pkg_public} ({pct})"
+        print(f"<details>\n<summary>{summary}</summary>\n")
+        for name in names:
+            x = "x" if name in tested else " "
+            print(f"- [{x}] `{name}`")
+        print("\n</details>\n")
 
-        package_public += 1
-        package_tested += name in tested
-        x = "x" if name in tested else " "
-        print(f"- [{x}] `{name}`")
-
-    _print_coverage(package_tested, package_public)
-    print("</details>")
-
-    _print_coverage(len(tested), len(public))
+    print()
+    total_pct = f"{total_tested / total_public:.1%}" if total_public else "N/A"
+    print(f"Total: {total_tested} / {total_public} ({total_pct})")
 
     return 0
 
