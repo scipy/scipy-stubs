@@ -1,12 +1,14 @@
-from typing import Any, TypeAlias, TypedDict
+from typing import TypedDict
 from typing_extensions import Unpack
+
+from matplotlib.axes import Axes as _Axes
+from matplotlib.figure import Figure as _Figure
 
 from ._qhull import ConvexHull, Delaunay, Voronoi
 
 __all__ = ["convex_hull_plot_2d", "delaunay_plot_2d", "voronoi_plot_2d"]
 
-_Axes: TypeAlias = object
-_Figure: TypeAlias = Any
+def _get_axes() -> _Axes: ...
 
 class _VoronoiPlotKwargs(TypedDict, total=False):
     show_points: bool

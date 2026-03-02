@@ -4,6 +4,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+from matplotlib.axes import Axes as _Axes
 
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
 from scipy.optimize import OptimizeResult
@@ -28,7 +29,6 @@ class _PXF2n(Protocol):
     def __call__(self, x: onp.ToFloat, arg0: onp.ToFloat, arg1: onp.ToFloat, /, *args: onp.ToFloat) -> np.float64: ...
 
 _PXFT_co = TypeVar("_PXFT_co", bound=Callable[Concatenate[onp.ToFloat, ...], np.float64], default=_PXF1n | _PXF2n, covariant=True)
-_AxesT = TypeVar("_AxesT", default=Any)  # represents a `matplotlib.lines.Axes`
 
 ###
 
@@ -51,7 +51,7 @@ class FitResult(Generic[_PXFT_co]):
 
     #
     def nllf(self, /, params: tuple[onp.ToFloat, ...] | None = None, data: onp.ToFloatND | None = None) -> np.float64: ...
-    def plot(self, /, ax: _AxesT | None = None, *, plot_type: _PlotType = "hist") -> _AxesT: ...
+    def plot(self, /, ax: _Axes | None = None, *, plot_type: _PlotType = "hist") -> _Axes: ...
 
 class GoodnessOfFitResult(NamedTuple):
     fit_result: FitResult[_PXF2n]  # always continuous

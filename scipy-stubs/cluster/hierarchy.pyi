@@ -5,6 +5,7 @@ from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype.numpy as onp
+from matplotlib.axes import Axes as _Axes
 
 from scipy._lib._disjoint_set import DisjointSet
 from scipy.spatial.distance import _Metric
@@ -53,7 +54,6 @@ _TruncateMode: TypeAlias = Literal["lastp", "level"]
 _Orientation: TypeAlias = Literal["top", "bottom", "left", "right"]
 
 # for the lack of better types
-_MatplotlibAxes: TypeAlias = object
 _ArrayAPINamespace: TypeAlias = ModuleType
 
 @type_check_only
@@ -166,7 +166,7 @@ def dendrogram(
     leaf_label_func: Callable[[int], str] | None = None,
     show_contracted: bool = False,
     link_color_func: Callable[[int], str] | None = None,
-    ax: _MatplotlibAxes | None = None,
+    ax: _Axes | None = None,
     above_threshold_color: str = "C0",
 ) -> _DendrogramResult: ...
 
