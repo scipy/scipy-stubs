@@ -67,7 +67,7 @@ class _lil_base(_spbase[_ScalarT_co, tuple[int, int]], IndexMixin[_ScalarT_co, t
     @override
     def tolil(self, /, copy: bool = False) -> Self: ...  # type: ignore[override] # pyrefly: ignore [bad-override] # ty: ignore[invalid-method-override]
     @override
-    def resize(self, /, *shape: int) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override]
+    def resize(self, /, *shape: int) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
 
     #
     @override
