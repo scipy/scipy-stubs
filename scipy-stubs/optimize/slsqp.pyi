@@ -1,7 +1,6 @@
 # This file is not meant for public use and will be removed in SciPy v2.0.0.
 
 from collections.abc import Callable
-from typing import Any
 from typing_extensions import deprecated
 
 from ._optimize import OptimizeResult as _OptimizeResult
@@ -31,6 +30,6 @@ def fmin_slsqp(
     full_output: object = 0,
     epsilon: object = ...,
     callback: object = None,
-) -> Any: ...
+) -> object: ...
 
-slsqp: Callable[..., Any] = ...  # deprecated
+slsqp: Callable[..., object] = ...  # deprecated

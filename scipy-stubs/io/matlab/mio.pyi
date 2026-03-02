@@ -1,6 +1,5 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 
-from typing import Any
 from typing_extensions import deprecated
 
 __all__ = ["loadmat", "savemat", "whosmat"]
@@ -8,7 +7,7 @@ __all__ = ["loadmat", "savemat", "whosmat"]
 @deprecated("will be removed in SciPy v2.0.0")
 def loadmat(
     file_name: object, mdict: object = None, appendmat: object = True, *, spmatrix: bool = True, **kwargs: object
-) -> Any: ...
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def savemat(
     file_name: object,
@@ -20,4 +19,4 @@ def savemat(
     oned_as: object = "row",
 ) -> None: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def whosmat(file_name: object, appendmat: object = True, **kwargs: object) -> Any: ...
+def whosmat(file_name: object, appendmat: object = True, **kwargs: object) -> object: ...
