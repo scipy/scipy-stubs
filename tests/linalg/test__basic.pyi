@@ -7,7 +7,21 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 from optype.test import assert_subtype
 
-from scipy.linalg import det, inv, lstsq, solve, solve_banded, solve_circulant, solve_toeplitz, solve_triangular
+from scipy.linalg import (
+    det,
+    inv,
+    lstsq,
+    matmul_toeplitz,
+    matrix_balance,
+    pinv,
+    pinvh,
+    solve,
+    solve_banded,
+    solve_circulant,
+    solve_toeplitz,
+    solve_triangular,
+    solveh_banded,
+)
 
 ###
 
@@ -429,10 +443,97 @@ assert_type(
 )
 
 ###
-# TODO(jorenham): pinv[h]
+# solveh_banded
+
+assert_type(solveh_banded(i8_2d, i8_1d), onp.Array1D[np.float64])
+assert_type(solveh_banded(i8_2d, i8_2d), onp.Array2D[np.float64])
+assert_type(solveh_banded(i8_2d, i8_3d), onp.ArrayND[np.float64])
+assert_type(solveh_banded(i8_3d, i8_1d), onp.ArrayND[np.float64])
+
+assert_type(solveh_banded(f32_2d, f32_1d), onp.Array1D[np.float32 | np.float64])
+assert_type(solveh_banded(f32_2d, f32_2d), onp.Array2D[np.float32 | np.float64])
+assert_type(solveh_banded(f32_2d, f32_3d), onp.ArrayND[np.float32 | np.float64])
+assert_type(solveh_banded(f32_3d, f32_1d), onp.ArrayND[np.float32 | np.float64])
+
+assert_type(solveh_banded(f64_2d, f64_1d), onp.Array1D[np.float64])
+assert_type(solveh_banded(f64_2d, f64_2d), onp.Array2D[np.float64])
+assert_type(solveh_banded(f64_2d, f64_3d), onp.ArrayND[np.float64])
+assert_type(solveh_banded(f64_3d, f64_1d), onp.ArrayND[np.float64])
+
+assert_type(solveh_banded(f80_2d, f80_1d), onp.Array1D[np.float64])
+assert_type(solveh_banded(f80_2d, f80_2d), onp.Array2D[np.float64])
+assert_type(solveh_banded(f80_2d, f80_3d), onp.ArrayND[np.float64])
+assert_type(solveh_banded(f80_3d, f80_1d), onp.ArrayND[np.float64])
+
+assert_type(solveh_banded(c64_2d, c64_1d), onp.Array1D[np.complex64 | np.complex128])
+assert_type(solveh_banded(c64_2d, c64_2d), onp.Array2D[np.complex64 | np.complex128])
+assert_type(solveh_banded(c64_2d, c64_3d), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(solveh_banded(c64_3d, c64_1d), onp.ArrayND[np.complex64 | np.complex128])
+
+assert_type(solveh_banded(c128_2d, c128_1d), onp.Array1D[np.complex128])
+assert_type(solveh_banded(c128_2d, c128_2d), onp.Array2D[np.complex128])
+assert_type(solveh_banded(c128_2d, c128_3d), onp.ArrayND[np.complex128])
+assert_type(solveh_banded(c128_3d, c128_1d), onp.ArrayND[np.complex128])
+
+assert_type(solveh_banded(c160_2d, c160_1d), onp.Array1D[np.complex128])
+assert_type(solveh_banded(c160_2d, c160_2d), onp.Array2D[np.complex128])
+assert_type(solveh_banded(c160_2d, c160_3d), onp.ArrayND[np.complex128])
+assert_type(solveh_banded(c160_3d, c160_1d), onp.ArrayND[np.complex128])
+
+assert_type(solveh_banded(py_f_2d, py_f_1d), onp.Array1D[np.float64])
+assert_type(solveh_banded(py_f_2d, py_f_2d), onp.Array2D[np.float64])
+assert_type(solveh_banded(py_f_2d, py_f_3d), onp.ArrayND[np.float64])
+assert_type(solveh_banded(py_f_3d, py_f_1d), onp.ArrayND[np.float64])
+
+assert_type(solveh_banded(py_c_2d, py_c_1d), onp.Array1D[np.complex128])
+assert_type(solveh_banded(py_c_2d, py_c_2d), onp.Array2D[np.complex128])
+assert_type(solveh_banded(py_c_2d, py_c_3d), onp.ArrayND[np.complex128])
+assert_type(solveh_banded(py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
 
 ###
-# TODO(jorenham): matrix_balance
+# pinv
+
+assert_type(pinv(f64_nd), onp.ArrayND[npc.floating])
+assert_type(pinv(f64_nd, return_rank=True), tuple[onp.ArrayND[npc.floating], int])
+assert_type(pinv(c128_nd), onp.ArrayND[npc.inexact])
+assert_type(pinv(c128_nd, return_rank=True), tuple[onp.ArrayND[npc.inexact], int])
 
 ###
-# TODO(jorenham): matmul_toeplitz
+# pinvh
+
+assert_type(pinvh(f64_nd), onp.ArrayND[npc.floating])
+assert_type(pinvh(f64_nd, None, None, True, True), tuple[onp.ArrayND[npc.floating], int])
+assert_type(pinvh(f64_nd, return_rank=True), tuple[onp.ArrayND[npc.floating], int])
+assert_type(pinvh(c128_nd), onp.ArrayND[npc.inexact])
+assert_type(pinvh(c128_nd, None, None, True, True), tuple[onp.ArrayND[npc.inexact], int])
+assert_type(pinvh(c128_nd, return_rank=True), tuple[onp.ArrayND[npc.inexact], int])
+
+###
+# matrix_balance
+
+assert_type(matrix_balance(f64_nd), tuple[onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]])
+assert_type(
+    matrix_balance(f64_nd, True, True, True),
+    tuple[onp.ArrayND[npc.floating], tuple[onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]]],
+)
+assert_type(
+    matrix_balance(f64_nd, separate=True),
+    tuple[onp.ArrayND[npc.floating], tuple[onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]]],
+)
+assert_type(matrix_balance(c128_nd), tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.inexact]])
+assert_type(
+    matrix_balance(c128_nd, True, True, True),
+    tuple[onp.ArrayND[npc.inexact], tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.inexact]]],
+)
+assert_type(
+    matrix_balance(c128_nd, separate=True),
+    tuple[onp.ArrayND[npc.inexact], tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.inexact]]],
+)
+
+###
+# matmul_toeplitz
+
+assert_type(matmul_toeplitz(f64_1d, f64_1d), onp.Array1D[npc.floating])
+assert_type(matmul_toeplitz(f64_2d, f64_2d), onp.ArrayND[npc.floating])
+assert_type(matmul_toeplitz(c128_1d, c128_1d), onp.Array1D[npc.inexact])
+assert_type(matmul_toeplitz(c128_2d, c128_2d), onp.ArrayND[npc.inexact])

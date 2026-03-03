@@ -10,6 +10,7 @@ from scipy.linalg import (
     solve_continuous_lyapunov,
     solve_discrete_are,
     solve_discrete_lyapunov,
+    solve_lyapunov,
     solve_sylvester,
 )
 
@@ -61,3 +62,10 @@ assert_type(solve_discrete_are(f64_nd, f64_nd, c128_nd, f64_nd), _ComplexND)
 assert_type(solve_discrete_are(f64_nd, f64_nd, f64_nd, c128_nd), _ComplexND)
 assert_type(solve_discrete_are(f64_nd, f64_nd, f64_nd, f64_nd, c128_nd), _ComplexND)
 assert_type(solve_discrete_are(f64_nd, f64_nd, f64_nd, f64_nd, s=c128_nd), _ComplexND)
+
+###
+# solve_lyapunov  (alias for solve_continuous_lyapunov)
+
+assert_type(solve_lyapunov(f64_nd, f64_nd), _FloatND)
+assert_type(solve_lyapunov(c128_nd, f64_nd), _ComplexND)
+assert_type(solve_lyapunov(f64_nd, c128_nd), _ComplexND)
