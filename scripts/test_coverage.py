@@ -80,12 +80,14 @@ _PACKAGES_DEPRECATED: Final = (
     "io.mmio",
     "io.netcdf",
     "linalg.basic",
+    "linalg.blas",  # not deprecated, but its members are already tested
     "linalg.decomp",
     "linalg.decomp_cholesky",
     "linalg.decomp_lu",
     "linalg.decomp_qr",
     "linalg.decomp_schur",
     "linalg.decomp_svd",
+    "linalg.lapack",  # not deprecated, but its members are already tested
     "linalg.matfuncs",
     "linalg.misc",
     "linalg.special_matrices",
