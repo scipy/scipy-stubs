@@ -54,17 +54,17 @@ lint = [
   { include-group = "extras" },
   "dprint-py==0.52.0.0",
   "ruff==0.15.4",
-  "sp-repo-review[cli]==2025.11.21",
+  "sp-repo-review[cli]==2026.3.2",
 ]
 type = [
   { include-group = "extras" },
   { include-group = "ci" },
-  "array-api-compat==1.13.0", # bundled as `_lib.array_api_compat`
+  "array-api-compat==1.14.0", # bundled as `_lib.array_api_compat`
   "pytest==9.0.2", # needed for `_lib._array_api.make_xp_pytest_*`
   "matplotlib==3.10.8", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
   "basedpyright==1.38.2",
   "mypy[faster-cache]==1.19.1",
-  "pyrefly==0.53.0",
+  "pyrefly==0.55.0",
   "stubdefaulter>=0.1.0",
   "ty==0.0.20",
 ]
