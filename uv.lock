@@ -9,11 +9,11 @@ resolution-markers = [
 
 [[package]]
 name = "array-api-compat"
-version = "1.13.0"
+version = "1.14.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/68/36/f799b36d7025a92a23819f9f06541babdb84b6fd0bd4253f8be2eca348a4/array_api_compat-1.13.0.tar.gz", hash = "sha256:8b83a56aa8b9477472fee37f7731968dd213e20c198a05ac49caeff9b03f48a6", size = 103065, upload-time = "2025-12-28T11:26:57.734Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/89/e5/9a12dd1c2b0ad61f3c3ad0fc14b888c65fd735dd9d26805f77317303cbe5/array_api_compat-1.14.0.tar.gz", hash = "sha256:c819ba707f5c507800cb545f7e6348ff1ecc46538381d9ad9b371ffc9cd6d784", size = 106369, upload-time = "2026-02-26T12:02:42.452Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/df/5d/493b1b5528ab5072feae30821ff3a07b7a0474213d548efb1fdf135f85c1/array_api_compat-1.13.0-py3-none-any.whl", hash = "sha256:c15026a0ddec42815383f07da285472e1b1ff2e632eb7afbcfe9b08fcbad9bf1", size = 58585, upload-time = "2025-12-28T11:26:56.081Z" },
+    { url = "https://files.pythonhosted.org/packages/a0/d3/54cd560804a8c2b898824778e86c13c2a14600bc83532a9c4f69f2f469c3/array_api_compat-1.14.0-py3-none-any.whl", hash = "sha256:ed5af1f9b6595a199c942505f281ec994892556b6efc24679a0501e87a7d6279", size = 60124, upload-time = "2026-02-26T12:02:41.127Z" },
 ]
 
 [[package]]
@@ -1235,7 +1235,7 @@ provides-extras = ["scipy"]
 [package.metadata.requires-dev]
 ci = [{ name = "packaging", specifier = ">=26.0" }]
 dev = [
-    { name = "array-api-compat", specifier = "==1.13.0" },
+    { name = "array-api-compat", specifier = "==1.14.0" },
     { name = "basedpyright", specifier = "==1.38.2" },
     { name = "dprint-py", specifier = "==0.52.0.0" },
     { name = "matplotlib", specifier = "==3.10.8" },
@@ -1245,7 +1245,7 @@ dev = [
     { name = "pytest", specifier = "==9.0.2" },
     { name = "ruff", specifier = "==0.15.4" },
     { name = "scipy-stubs", extras = ["scipy"] },
-    { name = "sp-repo-review", extras = ["cli"], specifier = "==2025.11.21" },
+    { name = "sp-repo-review", extras = ["cli"], specifier = "==2026.3.2" },
     { name = "stubdefaulter", git = "https://github.com/JelleZijlstra/stubdefaulter.git?rev=ebe9e31" },
     { name = "ty", specifier = "==0.0.20" },
 ]
@@ -1254,10 +1254,10 @@ lint = [
     { name = "dprint-py", specifier = "==0.52.0.0" },
     { name = "ruff", specifier = "==0.15.4" },
     { name = "scipy-stubs", extras = ["scipy"] },
-    { name = "sp-repo-review", extras = ["cli"], specifier = "==2025.11.21" },
+    { name = "sp-repo-review", extras = ["cli"], specifier = "==2026.3.2" },
 ]
 type = [
-    { name = "array-api-compat", specifier = "==1.13.0" },
+    { name = "array-api-compat", specifier = "==1.14.0" },
     { name = "basedpyright", specifier = "==1.38.2" },
     { name = "matplotlib", specifier = "==3.10.8" },
     { name = "mypy", extras = ["faster-cache"], specifier = "==1.19.1" },
@@ -1280,15 +1280,15 @@ wheels = [
 
 [[package]]
 name = "sp-repo-review"
-version = "2025.11.21"
+version = "2026.3.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "pyyaml" },
     { name = "repo-review" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/83/6d/49fa92bc996068cba549eb9ab32934bff5ff7ac3f955efc2fd131489c248/sp_repo_review-2025.11.21.tar.gz", hash = "sha256:1198e7fd55bb4ecfbc05db6fa5e28d0a2b4707da32a97c07d8ecc114892c8c1b", size = 186340, upload-time = "2025-11-22T03:07:35.88Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/eb/c1/bf855759210ac10562cd83744e2f9671bc9a37b9fe7b581996d722415cb5/sp_repo_review-2026.3.2.tar.gz", hash = "sha256:44edc5e7dd91ea92c663a7406a74b075f754fe8056939e82c1087ede58389e09", size = 194935, upload-time = "2026-03-02T17:13:03.449Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/25/4d/2bedfc7fb6689b92412b58fdb84ec3920d0fccc52cfd8cb25dab40f9a1f0/sp_repo_review-2025.11.21-py3-none-any.whl", hash = "sha256:e19b1dcca1d0967bdc97544f15d2a6b44cde3df432aa39d0a36751c734f37539", size = 31125, upload-time = "2025-11-22T03:07:34.35Z" },
+    { url = "https://files.pythonhosted.org/packages/c7/98/ab977367dd433aa5f670d85e776a544b89b0f39b8eb61b2b3cba1368bd87/sp_repo_review-2026.3.2-py3-none-any.whl", hash = "sha256:8216024b5862a0f18b466c73a5945a1ff51657c91b37d6143dbb76786e70fb67", size = 31243, upload-time = "2026-03-02T17:13:02.262Z" },
 ]
 
 [package.optional-dependencies]
