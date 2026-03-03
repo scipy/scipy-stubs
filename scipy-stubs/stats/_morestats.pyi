@@ -8,6 +8,7 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from ._continuous_distns import gengamma_gen, invgamma_gen, norm_gen, t_gen
 from ._distn_infrastructure import rv_continuous_frozen
 from ._fit import FitResult
 from ._resampling import MonteCarloMethod, PermutationMethod
@@ -243,7 +244,20 @@ class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onp.Array2D
 def bayes_mvs(data: onp.ToFloatND, alpha: onp.ToFloat = 0.9) -> tuple[Mean, Variance, Std_dev]: ...
 
 #
-def mvsdist(data: onp.ToFloatND) -> _Tuple3[rv_continuous_frozen]: ...
+def mvsdist(
+    data: onp.ToFloatND,
+) -> (
+    tuple[
+        rv_continuous_frozen[norm_gen, np.float64],
+        rv_continuous_frozen[norm_gen, np.float64],
+        rv_continuous_frozen[norm_gen, np.float64],
+    ]
+    | tuple[
+        rv_continuous_frozen[t_gen, np.float64],
+        rv_continuous_frozen[invgamma_gen, np.float64],
+        rv_continuous_frozen[gengamma_gen, np.float64],
+    ]
+): ...
 
 #
 @overload
