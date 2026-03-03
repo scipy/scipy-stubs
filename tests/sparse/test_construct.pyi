@@ -269,7 +269,10 @@ assert_type(sparse.block_array([[coo_arr]], dtype=int), sparse.coo_array[np.int6
 assert_type(sparse.block_array([[csr_arr]], dtype=sctype), sparse.csr_array[ScalarType, tuple[int, int]])
 assert_type(sparse.block_array([[lil_arr]], dtype=np.complex64), sparse.coo_array[np.complex64, tuple[int, int]])
 assert_type(sparse.block_array([[csr_arr]], format="lil"), sparse.lil_array[ScalarType])
+# https://github.com/facebook/pyrefly/issues/2527
+# pyrefly: ignore[assert-type, no-matching-overload]
 assert_type(sparse.block_array([[coo_arr, None]], format="bsr", dtype="float"), sparse.bsr_array[np.float64])
+# pyrefly: ignore[assert-type, no-matching-overload]
 assert_type(sparse.block_array([[dia_arr], [None]], format="dok", dtype=complex), sparse.dok_array[np.complex128])
 # NOTE: mypy reports false positive errors here, because of join vs. union approach
 assert_type(sparse.block_array([[csr_arr, None], [None, dok_arr]], format="dia"), sparse.dia_array[ScalarType])  # type: ignore[assert-type]
