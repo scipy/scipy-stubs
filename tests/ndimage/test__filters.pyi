@@ -1,6 +1,6 @@
 # type-tests for `ndimage/_filters.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -14,6 +14,10 @@ from scipy.ndimage import (
     gaussian_filter1d,
     gaussian_gradient_magnitude,
     gaussian_laplace,
+    generic_filter,
+    generic_filter1d,
+    generic_gradient_magnitude,
+    generic_laplace,
     laplace,
     maximum_filter,
     maximum_filter1d,
@@ -26,6 +30,7 @@ from scipy.ndimage import (
     sobel,
     uniform_filter,
     uniform_filter1d,
+    vectorized_filter,
 )
 
 ###
@@ -274,3 +279,45 @@ assert_type(percentile_filter(f64_nd, percentile=50, size=3), onp.ArrayND[np.flo
 
 assert_type(gaussian_filter(f64_nd, sigma=1, output=np.float32), onp.ArrayND[np.float32])
 assert_type(uniform_filter(f64_nd, output=np.float32), onp.ArrayND[np.float32])
+
+###
+# Callback-based filters: helper callables
+
+def _deriv(a: np.ndarray[Any, np.dtype[np.float64]], axis: int, output: Any, mode: Any, cval: Any) -> onp.ArrayND[Any]: ...
+def _filter1d(iline: onp.Array1D[np.float64], oline: onp.Array1D[np.float64]) -> None: ...
+def _filternd(buffer: onp.Array1D[np.float64]) -> float: ...
+def _vf_func(arr: onp.Array1D[Any]) -> np.float64: ...
+
+###
+# generic_laplace
+
+assert_type(generic_laplace(f64_2d, _deriv), onp.Array2D[np.float64])  # type: ignore[assert-type]  # mypy bug
+assert_type(generic_laplace(float_2d, _deriv), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
+assert_type(generic_laplace(complex_2d, _deriv), onp.ArrayND[Any])
+
+###
+# generic_gradient_magnitude
+
+assert_type(generic_gradient_magnitude(f64_2d, _deriv), onp.Array2D[np.float64])  # type: ignore[assert-type]  # mypy bug
+assert_type(generic_gradient_magnitude(float_2d, _deriv), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
+assert_type(generic_gradient_magnitude(complex_2d, _deriv), onp.ArrayND[Any])
+
+###
+# generic_filter1d
+
+assert_type(generic_filter1d(f64_2d, _filter1d, 3), onp.Array2D[np.float64])
+assert_type(generic_filter1d(float_2d, _filter1d, 3), onp.ArrayND[np.float64])
+assert_type(generic_filter1d(f64_nd, _filter1d, 3), onp.ArrayND[np.float64])
+
+###
+# generic_filter
+
+assert_type(generic_filter(f64_2d, _filternd, size=3), onp.Array2D[np.float64])
+assert_type(generic_filter(float_2d, _filternd, size=3), onp.ArrayND[np.float64])
+assert_type(generic_filter(f64_nd, _filternd, size=3), onp.ArrayND[np.float64])
+
+###
+# vectorized_filter
+
+assert_type(vectorized_filter(f64_2d, _vf_func, size=3), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
+assert_type(vectorized_filter(float_2d, _vf_func, size=3), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
