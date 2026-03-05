@@ -137,6 +137,8 @@ _AsFloat32_1D: TypeAlias = onp.ToArrayStrict1D[np.float32, np.float32 | np.float
 _AsFloat32_2D: TypeAlias = onp.ToArrayStrict2D[np.float32, np.float32 | np.float16]
 _AsFloat32_ND: TypeAlias = onp.ToArrayND[Never, np.float32 | np.float16]
 
+_ToFloatStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer | np.bool_, _JustAnyShape]
+
 @type_check_only
 class _RVSCallable(Protocol):
     def __call__(self, /, *, size: int | tuple[int, ...]) -> onp.ArrayND[npc.floating]: ...
@@ -516,6 +518,10 @@ def tsem(
 ) -> _FloatOrND: ...
 
 #
+@overload
+def gstd(
+    a: _ToFloatStrictND, axis: int = 0, ddof: int = 1, *, keepdims: L[False] = False, nan_policy: NanPolicy = "propagate"
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload
 def gstd(
     a: onp.ToFloatND, axis: None, ddof: int = 1, *, keepdims: L[False] = False, nan_policy: NanPolicy = "propagate"
@@ -1305,6 +1311,10 @@ def gzscore(
 ) -> onp.ArrayND[npc.complexfloating]: ...
 
 # TODO(jorenham): improve like zscore
+@overload
+def zmap(
+    scores: _ToFloatStrictND, compare: onp.ToFloatND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[npc.floating]: ...
 @overload  # (real vector-like, real vector-like) -> floating vector
 def zmap(
     scores: onp.ToFloat1D, compare: onp.ToFloat1D, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
@@ -1411,6 +1421,10 @@ def trim1(a: onp.ToFloatND, proportiontocut: float, tail: _TrimTail = "right", a
 #
 @overload
 def trim_mean(
+    a: _ToFloatStrictND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload
+def trim_mean(
     a: onp.ToFloatStrict1D,
     proportiontocut: float,
     axis: int | None = 0,
@@ -1425,7 +1439,7 @@ def trim_mean(
 @overload
 def trim_mean(
     a: onp.ToFloatND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
-) -> _FloatOrND: ...
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload
 def trim_mean(
     a: onp.ToFloatND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[True]
@@ -1540,8 +1554,8 @@ def pearsonr(
 #
 @overload  # ?d, ?d
 def spearmanr(
-    a: onp.ArrayND[npc.floating | npc.integer | np.bool_, _JustAnyShape],
-    b: onp.ArrayND[npc.floating | npc.integer | np.bool_, _JustAnyShape],
+    a: _ToFloatStrictND,
+    b: _ToFloatStrictND,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -2508,8 +2522,8 @@ def expectile(a: onp.ToFloatND, alpha: float = 0.5, *, weights: onp.ToFloatND | 
 #
 @overload  # ?d, ?d
 def linregress(
-    x: onp.ArrayND[npc.floating | npc.integer | np.bool_, _JustAnyShape],
-    y: onp.ArrayND[npc.floating | npc.integer | np.bool_, _JustAnyShape],
+    x: _ToFloatStrictND,
+    y: _ToFloatStrictND,
     alternative: Alternative = "two-sided",
     *,
     axis: int = 0,
