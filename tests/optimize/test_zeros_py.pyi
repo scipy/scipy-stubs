@@ -3,9 +3,7 @@ from typing import TypeAlias, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.optimize import bisect, brenth, brentq, newton, ridder, toms748
-from scipy.optimize._root_scalar import root_scalar
-from scipy.optimize._zeros_py import RootResults
+from scipy.optimize import RootResults, bisect, brenth, brentq, newton, ridder, root_scalar, toms748
 
 _Float: TypeAlias = float | np.float64
 _RR: TypeAlias = RootResults[float | np.float64]
