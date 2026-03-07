@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Final, Literal, TypeAlias, TypedDict, Unpack, overload, type_check_only
+from typing import Final, Literal, Self, TypeAlias, TypedDict, Unpack, overload, type_check_only
 from typing_extensions import TypeAliasType, TypeVar, TypeVarTuple, deprecated
 
 import numpy as np
@@ -43,6 +43,7 @@ class LbfgsInvHessProduct(LinearOperator[np.float64]):
     n_corrs: Final[int]
     rho: Final[float]
 
+    def __new__(cls, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> Self: ...
     def __init__(self, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> None: ...
     def todense(self, /) -> onp.Array2D[np.float64]: ...
 
