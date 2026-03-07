@@ -3,8 +3,9 @@
 from typing import Any, assert_type
 
 import numpy as np
+import optype.numpy as onp
 
-from scipy.optimize import Bounds
+from scipy.optimize import Bounds, LinearConstraint, NonlinearConstraint
 
 ints_1d: list[int]
 ints_2d: list[list[int]]
@@ -34,8 +35,13 @@ _1: Bounds[tuple[int, int], np.float32] = Bounds(f32_2d, f32_2d)
 
 ###
 # LinearConstraint
-# TODO(joreham): type tests
+
+assert_type(LinearConstraint([[1.0, 2.0]], 0.0, 1.0), LinearConstraint)
+assert_type(LinearConstraint([[1.0, 2.0]]), LinearConstraint)
 
 ###
 # NonlinearConstraint
-# TODO(joreham): type tests
+
+def _con(x: onp.Array1D[np.float64]) -> onp.Array1D[np.float64]: ...
+
+assert_type(NonlinearConstraint(_con, 0.0, 1.0), NonlinearConstraint)
