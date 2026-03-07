@@ -1,5 +1,6 @@
 from collections.abc import Callable, Mapping
-from typing import Concatenate, Generic, Literal, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import Any, Concatenate, Generic, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -11,154 +12,165 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["root"]
 
-_RootMethod: TypeAlias = Literal[
-    "hybr",
-    "lm",
-    "broyden1",
-    "broyden2",
-    "anderson",
-    "linearmixing",
-    "diagbroyden",
-    "excitingmixing",
-    "krylov",
-    "df-sane",
-]  # fmt: skip
-
+_ScalarT = TypeVar("_ScalarT", bound=npc.inexact)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.inexact, default=np.float64 | Any, covariant=True)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 _JacOptionsT = TypeVar("_JacOptionsT", bound=Mapping[str, object])
+
+_Ignored: TypeAlias = object
 
 @type_check_only
 class _RootOptionsHybr(TypedDict, total=False):
-    col_deriv: onp.ToBool
-    xtol: onp.ToFloat
-    maxffev: onp.ToJustInt
-    band: tuple[onp.ToJustInt, onp.ToJustInt]
-    eps: onp.ToFloat
-    factor: onp.ToFloat
+    col_deriv: bool
+    xtol: float
+    maxffev: int
+    band: tuple[int, int]
+    eps: float
+    factor: float
     diag: onp.ToFloat1D
 
 @type_check_only
 class _RootOptionsLM(TypedDict, total=False):
-    col_deriv: onp.ToBool
-    ftol: onp.ToFloat
-    xtol: onp.ToFloat
-    gtol: onp.ToFloat
-    maxiter: onp.ToJustInt
-    eps: onp.ToFloat
-    factor: onp.ToFloat
+    col_deriv: bool
+    ftol: float
+    xtol: float
+    gtol: float
+    maxiter: int
+    eps: float
+    factor: float
     diag: onp.ToFloat1D
 
 @type_check_only
-class _RootOptionsJacBase(TypedDict, Generic[_JacOptionsT], total=False):
-    nit: onp.ToJustInt
-    disp: onp.ToBool
-    maxiter: onp.ToJustInt
-    ftol: onp.ToFloat
-    fatol: onp.ToFloat
-    xtol: onp.ToFloat
-    xatol: onp.ToFloat
-    tol_norm: Callable[[onp.Array1D[np.float64]], onp.ToFloat]
+class _RootOptionsNonlin(TypedDict, Generic[_JacOptionsT], total=False):
+    nit: int
+    disp: bool
+    maxiter: int
+    ftol: float
+    fatol: float
+    xtol: float
+    xatol: float
+    tol_norm: Callable[[onp.Array1D[np.float64]], float]
     line_search: Literal["armijo", "wolfe"] | None
     jac_options: _JacOptionsT
 
 @type_check_only
 class _JacOptionsBase(TypedDict, total=False):
-    alpha: onp.ToFloat
+    alpha: float
 
 @type_check_only
 class _JacOptionsBroyden(_JacOptionsBase, total=False):
-    reduction_method: Literal["restart", "simple", "svd"] | tuple[Literal["svd"], onp.ToJustInt]
-    max_rank: onp.ToJustInt
+    reduction_method: Literal["restart", "simple", "svd"] | tuple[Literal["svd"], int]
+    max_rank: int
 
 @type_check_only
 class _JacOptionsAnderson(_JacOptionsBase, total=False):
-    M: onp.ToFloat
-    w0: onp.ToFloat
+    M: float
+    w0: float
 
 @type_check_only
 class _JacOptionsExcitingMixing(_JacOptionsBase, total=False):
-    alphamax: onp.ToFloat
+    alphamax: float
 
 @type_check_only
 class _JacOptionsKrylov(TypedDict, total=False):
-    rdiff: onp.ToFloat
+    rdiff: float
     method: Literal["lgmres", "gmres", "bicgstab", "cgs", "minres", "tfqmr"] | Callable[..., onp.ToFloatND]
     inner_M: LinearOperator | InverseJacobian
-    inner_rtol: onp.ToFloat
-    inner_atol: onp.ToFloat
-    inner_maxiter: onp.ToJustInt
-    outer_k: onp.ToJustInt
+    inner_rtol: float
+    inner_atol: float
+    inner_maxiter: int
+    outer_k: int
 
-_RootOptionsBroyden: TypeAlias = _RootOptionsJacBase[_JacOptionsBroyden]
-_RootOptionsAnderson: TypeAlias = _RootOptionsJacBase[_JacOptionsAnderson]
-_RootOptionsLinearMixing: TypeAlias = _RootOptionsJacBase[_JacOptionsBase]
-_RootOptionsDiagBroyden: TypeAlias = _RootOptionsJacBase[_JacOptionsBase]
-_RootOptionsExcitingMixing: TypeAlias = _RootOptionsJacBase[_JacOptionsExcitingMixing]
-_RootOptionsKrylov: TypeAlias = _RootOptionsJacBase[_JacOptionsKrylov]
+_JacOptionsNonlin: TypeAlias = _JacOptionsBroyden | _JacOptionsAnderson | _JacOptionsExcitingMixing | _JacOptionsKrylov
 
 @type_check_only
 class _RootOptionsDFSane(TypedDict, total=False):
-    ftol: onp.ToFloat
-    fatol: onp.ToFloat
-    fnorm: Callable[[onp.ArrayND[np.float64]], onp.ToFloat]
-    maxfev: onp.ToJustInt
-    disp: onp.ToBool
+    ftol: float
+    fatol: float
+    fnorm: Callable[[onp.ArrayND[np.float64]], float]
+    maxfev: int
+    disp: bool
     eta_strategy: Callable[[int, onp.ArrayND[np.float64], onp.ArrayND[np.float64]], onp.ToFloat1D]
-    sigma_eps: onp.ToFloat
-    sigma_0: onp.ToFloat
-    M: onp.ToJustInt
+    sigma_eps: float
+    sigma_0: float
+    M: int
     line_search: Literal["cruz", "cheng"]
 
-_RootOptions: TypeAlias = (
-    _RootOptionsHybr
-    | _RootOptionsLM
-    | _RootOptionsBroyden
-    | _RootOptionsAnderson
-    | _RootOptionsLinearMixing
-    | _RootOptionsDiagBroyden
-    | _RootOptionsExcitingMixing
-    | _RootOptionsKrylov
-    | _RootOptionsDFSane
-)
+_MethodNonlin: TypeAlias = Literal["broyden1", "broyden2", "anderson", "linearmixing", "diagbroyden", "excitingmixing", "krylov"]
+_Method: TypeAlias = Literal["hybr", "lm", "df-sane", _MethodNonlin]
+
+_CallbackFn: TypeAlias = Callable[[onp.ArrayND[_ScalarT, _ShapeT], onp.ArrayND[_ScalarT, _ShapeT]], _Ignored]
+
+_ToFloatOrND: TypeAlias = onp.ToFloat | onp.ToFloatND
+_ToComplexOrND: TypeAlias = onp.ToComplex | onp.ToComplexND
 
 ###
 
-class OptimizeResult(_OptimizeResult):
-    x: onp.ArrayND[npc.floating]
-    success: bool
+class OptimizeResult(_OptimizeResult, Generic[_ScalarT_co, _ShapeT_co]):
     message: str
+    success: bool
+    fun: onp.ArrayND[_ScalarT_co, _ShapeT_co]
+    x: onp.ArrayND[_ScalarT_co, _ShapeT_co]
     nfev: int
+    method: _Method
 
-@overload  # `jac` not given (None), False, or a callable
+@overload  # hybr | lm
 def root(
-    fun: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloatND],
-    x0: onp.ToFloatND,
+    fun: Callable[Concatenate[onp.Array1D[np.float64], ...], _ToFloatOrND],
+    x0: _ToFloatOrND,
     args: tuple[object, ...] = (),
-    method: _RootMethod = "hybr",
-    jac: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloatND] | onp.ToFalse | None = None,
-    tol: onp.ToFloat | None = None,
-    callback: Callable[[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], None] | None = None,
-    options: _RootOptions | None = None,
-) -> OptimizeResult: ...
-@overload  # `jac` truthy (positional)
+    method: Literal["hybr", "lm"] = "hybr",
+    jac: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat2D] | Literal[False] | None = None,
+    tol: float | None = None,
+    callback: _CallbackFn[np.float64, tuple[int]] | None = None,
+    options: _RootOptionsHybr | _RootOptionsLM | None = None,
+) -> OptimizeResult[np.float64, tuple[int]]: ...
+@overload  # hybr | lm, jac=True
 def root(
-    fun: Callable[Concatenate[onp.ArrayND[np.float64], ...], tuple[onp.ToFloatND, onp.ToFloatND]],
-    x0: onp.ToFloatND,
-    args: tuple[object, ...],
-    method: _RootMethod,
-    jac: onp.ToTrue,
-    tol: onp.ToFloat | None = None,
-    callback: Callable[[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], None] | None = None,
-    options: _RootOptions | None = None,
-) -> OptimizeResult: ...
-@overload  # `jac` truthy (keyword)
-def root(
-    fun: Callable[Concatenate[onp.ArrayND[np.float64], ...], tuple[onp.ToFloatND, onp.ToFloatND]],
-    x0: onp.ToFloatND,
+    fun: Callable[Concatenate[onp.Array1D[np.float64], ...], tuple[_ToFloatOrND, _ToFloatOrND]],
+    x0: _ToFloatOrND,
     args: tuple[object, ...] = (),
-    method: _RootMethod = "hybr",
+    method: Literal["hybr", "lm"] = "hybr",
     *,
-    jac: onp.ToTrue,
-    tol: onp.ToFloat | None = None,
-    callback: Callable[[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], None] | None = None,
-    options: _RootOptions | None = None,
-) -> OptimizeResult: ...
+    jac: Literal[True],
+    tol: float | None = None,
+    callback: _CallbackFn[np.float64, tuple[int]] | None = None,
+    options: _RootOptionsHybr | _RootOptionsLM | None = None,
+) -> OptimizeResult[np.float64, tuple[int]]: ...
+@overload  # df-sane, complex
+def root(
+    fun: Callable[Concatenate[onp.ArrayND[_ScalarT, _ShapeT], ...], _ToComplexOrND],
+    x0: _ToComplexOrND,
+    args: tuple[object, ...] = (),
+    *,
+    method: Literal["df-sane"],
+    jac: None = None,
+    tol: float | None = None,
+    callback: _CallbackFn[_ScalarT, _ShapeT] | None = None,
+    options: _RootOptionsDFSane | None = None,
+) -> OptimizeResult[_ScalarT, _ShapeT]: ...
+@overload  # broyden1 | broyden2 | anderson | linearmixing | diagbroyden | excitingmixing | krylov
+def root(
+    fun: Callable[Concatenate[onp.ArrayND[_ScalarT, _ShapeT], ...], _ToComplexOrND],
+    x0: _ToComplexOrND,
+    args: tuple[object, ...] = (),
+    *,
+    method: _MethodNonlin,
+    jac: Callable[Concatenate[onp.ArrayND[_ScalarT, _ShapeT], ...], _ToComplexOrND] | Literal[False] | None = None,
+    tol: float | None = None,
+    callback: _CallbackFn[_ScalarT, _ShapeT] | None = None,
+    options: _RootOptionsNonlin[_JacOptionsNonlin] | None = None,
+) -> OptimizeResult[_ScalarT, _ShapeT]: ...
+@overload  # broyden1 | broyden2 | anderson | linearmixing | diagbroyden | excitingmixing | krylov, jac=True
+def root(
+    fun: Callable[Concatenate[onp.ArrayND[_ScalarT, _ShapeT], ...], tuple[_ToComplexOrND, _ToComplexOrND]],
+    x0: _ToComplexOrND,
+    args: tuple[object, ...] = (),
+    *,
+    method: _MethodNonlin,
+    jac: Literal[True],
+    tol: float | None = None,
+    callback: _CallbackFn[_ScalarT, _ShapeT] | None = None,
+    options: _RootOptionsNonlin[_JacOptionsNonlin] | None = None,
+) -> OptimizeResult[_ScalarT, _ShapeT]: ...
