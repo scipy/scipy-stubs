@@ -3,8 +3,7 @@ from typing import assert_type
 
 import numpy as np
 
-from scipy.optimize import OptimizeResult, linprog
-from scipy.optimize._linprog import linprog_verbose_callback
+from scipy.optimize import OptimizeResult, linprog, linprog_verbose_callback
 from scipy.optimize._typing import Bound
 
 c: list[float]
