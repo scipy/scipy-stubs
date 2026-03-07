@@ -105,13 +105,9 @@ assert_type(fmin(_f, _x0, full_output=True, retall=True), tuple[_Float1D, onp.To
 
 assert_type(fmin_bfgs(_f, _x0), _Float1D)
 assert_type(fmin_bfgs(_f, _x0, retall=True), tuple[_Float1D, _AllVecs])
+assert_type(fmin_bfgs(_f, _x0, full_output=True), tuple[_Float1D, _Float, _Float1D, _Float2D, int, int, _WarnFlag])
 assert_type(
-    fmin_bfgs(_f, _x0, full_output=True),
-    tuple[_Float1D, _Float, _Float1D, _Float2D, int, int, _WarnFlag],
-)
-assert_type(
-    fmin_bfgs(_f, _x0, full_output=True, retall=True),
-    tuple[_Float1D, _Float, _Float1D, _Float2D, int, int, _WarnFlag, _AllVecs],
+    fmin_bfgs(_f, _x0, full_output=True, retall=True), tuple[_Float1D, _Float, _Float1D, _Float2D, int, int, _WarnFlag, _AllVecs]
 )
 
 ###
@@ -120,10 +116,7 @@ assert_type(
 assert_type(fmin_cg(_f, _x0), _Float1D)
 assert_type(fmin_cg(_f, _x0, retall=True), tuple[_Float1D, _AllVecs])
 assert_type(fmin_cg(_f, _x0, full_output=True), tuple[_Float1D, _Float, int, int, _WarnFlag])
-assert_type(
-    fmin_cg(_f, _x0, full_output=True, retall=True),
-    tuple[_Float1D, _Float, int, int, _WarnFlag, _AllVecs],
-)
+assert_type(fmin_cg(_f, _x0, full_output=True, retall=True), tuple[_Float1D, _Float, int, int, _WarnFlag, _AllVecs])
 
 ###
 # fmin_ncg
@@ -132,8 +125,7 @@ assert_type(fmin_ncg(_f, _x0, _fprime), _Float1D)
 assert_type(fmin_ncg(_f, _x0, _fprime, retall=True), tuple[_Float1D, _AllVecs])
 assert_type(fmin_ncg(_f, _x0, _fprime, full_output=True), tuple[_Float1D, _Float, int, int, int, _WarnFlag])
 assert_type(
-    fmin_ncg(_f, _x0, _fprime, full_output=True, retall=True),
-    tuple[_Float1D, _Float, int, int, int, _WarnFlag, _AllVecs],
+    fmin_ncg(_f, _x0, _fprime, full_output=True, retall=True), tuple[_Float1D, _Float, int, int, int, _WarnFlag, _AllVecs]
 )
 
 ###
@@ -141,14 +133,8 @@ assert_type(
 
 assert_type(fmin_powell(_f, _x0), _Float1D)
 assert_type(fmin_powell(_f, _x0, retall=True), tuple[_Float1D, _AllVecs])
-assert_type(
-    fmin_powell(_f, _x0, full_output=True),
-    tuple[_Float1D, _Float, _Float2D, int, int, _WarnFlag],
-)
-assert_type(
-    fmin_powell(_f, _x0, full_output=True, retall=True),
-    tuple[_Float1D, _Float, _Float2D, int, int, _WarnFlag, _AllVecs],
-)
+assert_type(fmin_powell(_f, _x0, full_output=True), tuple[_Float1D, _Float, _Float2D, int, int, _WarnFlag])
+assert_type(fmin_powell(_f, _x0, full_output=True, retall=True), tuple[_Float1D, _Float, _Float2D, int, int, _WarnFlag, _AllVecs])
 
 ###
 # show_options
@@ -161,6 +147,5 @@ assert_type(show_options(disp=False), str)
 # line_search
 
 assert_type(
-    line_search(_f, _fprime, _arr_1d, _arr_1d, _arr_1d),
-    tuple[_Float | None, int, int, _Float | None, _Float, _Float | None],
+    line_search(_f, _fprime, _arr_1d, _arr_1d, _arr_1d), tuple[_Float | None, int, int, _Float | None, _Float, _Float | None]
 )
