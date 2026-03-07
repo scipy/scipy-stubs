@@ -138,7 +138,7 @@ def root(
     tol: onp.ToFloat | None = None,
     callback: Callable[[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], None] | None = None,
     options: _RootOptions | None = None,
-) -> _OptimizeResult: ...
+) -> OptimizeResult: ...
 @overload  # `jac` truthy (positional)
 def root(
     fun: Callable[Concatenate[onp.ArrayND[np.float64], ...], tuple[onp.ToFloatND, onp.ToFloatND]],
@@ -149,7 +149,7 @@ def root(
     tol: onp.ToFloat | None = None,
     callback: Callable[[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], None] | None = None,
     options: _RootOptions | None = None,
-) -> _OptimizeResult: ...
+) -> OptimizeResult: ...
 @overload  # `jac` truthy (keyword)
 def root(
     fun: Callable[Concatenate[onp.ArrayND[np.float64], ...], tuple[onp.ToFloatND, onp.ToFloatND]],
@@ -161,4 +161,4 @@ def root(
     tol: onp.ToFloat | None = None,
     callback: Callable[[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], None] | None = None,
     options: _RootOptions | None = None,
-) -> _OptimizeResult: ...
+) -> OptimizeResult: ...
