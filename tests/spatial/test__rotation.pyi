@@ -215,9 +215,21 @@ assert_type(_aligned_sens[2], onp.Array2D[np.float64])
 ###
 # Slerp
 
-_slerp = Slerp(_f64_1d, _rot_nd)
-assert_type(_slerp.times, onp.Array1D[np.int32 | np.int64 | np.float32 | np.float64])
-assert_type(_slerp.timedelta, onp.Array1D[np.int32 | np.int64 | np.float32 | np.float64])
-assert_type(_slerp.rotations, Rotation)
+_slerp: Slerp
+
+# __init__
+
+assert_type(Slerp(_f64_1d, _rot_1d), Slerp)
+assert_type(Slerp(_f64_1d, _rot_nd), Slerp)
+
+# __call__
+
+assert_type(_slerp(2), Rotation[tuple[()]])
+assert_type(_slerp(_f64_1d), Rotation[tuple[int]])
+
+# properties
+
+assert_type(_slerp.times, onp.Array1D[np.float64])
+assert_type(_slerp.timedelta, onp.Array1D[np.float64])
+assert_type(_slerp.rotations, Rotation[tuple[int]])
 assert_type(_slerp.rotvecs, onp.Array2D[np.float64])
-assert_type(_slerp(_f64_1d), Rotation)

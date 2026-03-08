@@ -388,10 +388,15 @@ class Rotation(Generic[_ShapeT_co]):
     ) -> tuple[Rotation[tuple[()]], float, onp.Array2D[np.float64]]: ...
 
 class Slerp:
-    times: Final[onp.Array1D[np.int32 | np.int64 | np.float32 | np.float64]]
-    timedelta: Final[onp.Array1D[np.int32 | np.int64 | np.float32 | np.float64]]
-    rotations: Final[Rotation]
+    times: Final[onp.Array1D[np.float64]]
+    timedelta: Final[onp.Array1D[np.float64]]
+    rotations: Final[Rotation[tuple[int]]]
     rotvecs: Final[onp.Array2D[np.float64]]
 
-    def __init__(self, /, times: onp.ToFloat1D, rotations: Rotation) -> None: ...
-    def __call__(self, /, times: onp.ToFloat1D) -> Rotation: ...
+    def __init__(self, /, times: onp.ToFloat1D, rotations: Rotation[tuple[int]]) -> None: ...
+
+    #
+    @overload
+    def __call__(self, /, times: onp.ToFloat) -> Rotation[tuple[()]]: ...
+    @overload
+    def __call__(self, /, times: onp.ToFloat1D) -> Rotation[tuple[int]]: ...
