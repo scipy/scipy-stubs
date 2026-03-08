@@ -1173,7 +1173,7 @@ wheels = [
 
 [[package]]
 name = "scipy-stubs"
-version = "1.17.1.1"
+version = "1.17.1.2.dev0"
 source = { editable = "." }
 dependencies = [
     { name = "optype", extra = ["numpy"] },
