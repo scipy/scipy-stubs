@@ -268,6 +268,12 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | `LinearOperator[T: scalar]` | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
 | `SuperLU[T: inexact]`       | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.SuperLU.html)        |
 
+### `scipy.spatial.transform`
+
+| generic type              | `scipy-stubs` | `scipy`  |                                                                                                    |
+| ------------------------- | ------------- | -------- | -------------------------------------------------------------------------------------------------- |
+| `Rotation[S: (int, ...)]` | `>=1.17.1.1`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html) |
+
 ### `scipy.stats`
 
 | generic type                                                                   | `scipy-stubs` | `scipy`  |                                                                                                              |
