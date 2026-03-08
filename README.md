@@ -270,9 +270,10 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 
 ### `scipy.spatial.transform`
 
-| generic type              | `scipy-stubs` | `scipy`  |                                                                                                    |
-| ------------------------- | ------------- | -------- | -------------------------------------------------------------------------------------------------- |
-| `Rotation[S: (int, ...)]` | `>=1.17.1.1`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html) |
+| generic type                    | `scipy-stubs` | `scipy`  |                                                                                                          |
+| ------------------------------- | ------------- | -------- | -------------------------------------------------------------------------------------------------------- |
+| `Rotation[S: (int, ...)]`       | `>=1.17.1.1`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.Rotation.html)       |
+| `RigidTransform[S: (int, ...)]` | `>=1.17.1.1`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.transform.RigidTransform.html) |
 
 ### `scipy.stats`
 
@@ -287,7 +288,7 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | `multi_rv_frozen[D: rv_generic]`                                               | `>=1.14.0.0`  | `>=1.17` |                                                                                                              |
 | `CensoredData[X: f64 \| c128, L: f64 \| c128, R: f64 \| c128, I: f64 \| c128]` | `>=1.17.0.2`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.CensoredData.html)                   |
 | `gaussian_kde[T: floating]`                                                    | `>=1.17.0.2`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html)                   |
-| `FitResult[F: (float, *) -> f64]`                                              | `>=15.0.0.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.FitResult.html)      |
+| `FitResult[F: (float, *) -> f64]`                                              | `>=1.15.0.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.FitResult.html)      |
 | `PearsonRResult[T: floating scalar/array, P: f64 scalar/array]`                | `>=1.14.1.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.PearsonRResult.html) |
 | `TtestResult[T: floating scalar/array]`                                        | `>=1.14.1.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.TtestResult.html)    |
 
