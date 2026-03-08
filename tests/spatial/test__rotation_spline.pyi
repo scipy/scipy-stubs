@@ -1,6 +1,6 @@
 # type-tests for `spatial/transform/_rotation_spline.pyi`
 
-from typing import assert_type
+from typing import Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -10,20 +10,43 @@ from scipy.spatial.transform import Rotation, RotationSpline
 
 ###
 
-_times: onp.Array1D[np.float64]
-_rots: Rotation
+_f64_1d: onp.Array1D[np.float64]
+_f64_nd: onp.ArrayND[np.float64]
 
-_spline = RotationSpline(_times, _rots)
+_R_1d: Rotation[tuple[int]]
+_R_nd: Rotation
 
-assert_type(RotationSpline.MAX_ITER, int)
+###
+# RotationSpline
+
+# __init__
+
+_spline = RotationSpline(_f64_1d, _R_1d)
+_spline = RotationSpline(_f64_1d, _R_nd)
+_spline = RotationSpline(_f64_nd, _R_1d)
+_spline = RotationSpline(_f64_nd, _R_nd)
+
+# class attributes
+
+assert_type(RotationSpline.MAX_ITER, Literal[10])
 assert_type(RotationSpline.TOL, float)
 
-assert_type(_spline.times, onp.Array1D[np.int32 | np.int64 | np.float32 | np.float64])
-assert_type(_spline.rotations, Rotation)
-assert_type(_spline.interpolator, PPoly)
+# instance attributes
 
-assert_type(_spline(_times), Rotation | onp.ArrayND[np.float64])
-assert_type(_spline(_times, order=0), Rotation | onp.ArrayND[np.float64])
+assert_type(_spline.times, onp.Array1D[np.float64])
+assert_type(_spline.rotations, Rotation[tuple[int]])
+assert_type(_spline.interpolator, PPoly[np.float64])
 
-assert_type(_spline(_times, order=1), onp.ArrayND[np.float64])
-assert_type(_spline(_times, order=2), onp.ArrayND[np.float64])
+# __call__
+
+assert_type(_spline(1), Rotation[tuple[()]])
+assert_type(_spline(1, 0), Rotation[tuple[()]])
+assert_type(_spline(1, order=0), Rotation[tuple[()]])
+assert_type(_spline(1, order=1), onp.Array1D[np.float64])
+assert_type(_spline(1, order=2), onp.Array1D[np.float64])
+
+assert_type(_spline(_f64_1d), Rotation[tuple[int]])
+assert_type(_spline(_f64_1d, 0), Rotation[tuple[int]])
+assert_type(_spline(_f64_1d, order=0), Rotation[tuple[int]])
+assert_type(_spline(_f64_1d, order=1), onp.Array2D[np.float64])
+assert_type(_spline(_f64_1d, order=2), onp.Array2D[np.float64])
