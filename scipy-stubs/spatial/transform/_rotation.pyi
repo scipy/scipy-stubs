@@ -132,7 +132,7 @@ class Rotation(Generic[_ShapeT_co]):
         self, /, seq: _RotAxisSeq, degrees: bool = False, *, suppress_warnings: bool = False
     ) -> onp.ArrayND[np.float64]: ...
 
-    # TODO: overloads
+    #
     @overload
     def as_quat(
         self: Rotation[_JustAnyShape], /, canonical: bool = False, *, scalar_first: bool = False
