@@ -125,6 +125,8 @@ _int_1d: onp.Array1D[np.int64]
 _bool_1d: onp.Array1D[np.bool_]
 _int_list: list[int]
 
+assert_type(_csc_arr[0, 0], ScalarType)
+
 assert_type(_csc_arr[_int_1d], csc_array[ScalarType])
 assert_type(_csc_arr[:, _int_1d], csc_array[ScalarType])
 
