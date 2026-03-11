@@ -49,7 +49,7 @@ class IndexMixin(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
     def __getitem__(self: _SelfMatrixT, ixs: _ToIndex1Of2, /) -> _SelfMatrixT: ...  # type: ignore[misc]
     @overload
-    def __getitem__(self: sparray, ixs: _ToIndex1Of2, /) -> coo_array[_ScalarT_co, tuple[int]]: ...  # type: ignore[misc]
+    def __getitem__(self: sparray[_ScalarT], ixs: _ToIndex1Of2, /) -> coo_array[_ScalarT, tuple[int]]: ...  # type: ignore[misc]
     @overload
     def __getitem__(self: spmatrix, ixs: _ToIndex2Of2, /) -> onp.Matrix[_ScalarT_co]: ...  # type: ignore[misc]
     @overload

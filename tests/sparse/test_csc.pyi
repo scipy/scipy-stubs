@@ -5,7 +5,7 @@ import numpy as np
 import optype.numpy as onp
 
 from ._types import ScalarType, csr_arr, csr_mat
-from scipy.sparse import csc_array, csc_matrix
+from scipy.sparse import coo_array, csc_array, csc_matrix
 
 dtype: np.dtype[ScalarType]
 
@@ -135,3 +135,6 @@ assert_type(_csc_arr[_int_list, _int_list], onp.Array1D[ScalarType])
 assert_type(_csc_arr[_bool_1d], csc_array[ScalarType])
 assert_type(_csc_arr[:, _bool_1d], csc_array[ScalarType])
 assert_type(_csc_arr[_bool_1d, _bool_1d], onp.Array1D[ScalarType])
+
+assert_type(_csc_arr[_int_1d, 0], coo_array[ScalarType, tuple[int]])
+assert_type(_csc_arr[0, _int_1d], coo_array[ScalarType, tuple[int]])
