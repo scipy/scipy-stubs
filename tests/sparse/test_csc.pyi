@@ -2,9 +2,10 @@
 from typing import assert_type
 
 import numpy as np
+import optype.numpy as onp
 
 from ._types import ScalarType, csr_arr, csr_mat
-from scipy.sparse import csc_array, csc_matrix
+from scipy.sparse import coo_array, csc_array, csc_matrix
 
 dtype: np.dtype[ScalarType]
 
@@ -115,3 +116,27 @@ assert_type(csc_array(csc_spec3, dtype=bool), csc_array[np.bool_])
 assert_type(csc_array(csc_spec3, dtype=int), csc_array[np.int_])
 assert_type(csc_array(csc_spec3, dtype=float), csc_array[np.float64])
 assert_type(csc_array(csc_spec3, dtype=complex), csc_array[np.complex128])
+
+###
+# regression tests for https://github.com/scipy/scipy-stubs/issues/1412
+
+_csc_arr: csc_array[ScalarType]
+_int_1d: onp.Array1D[np.int64]
+_bool_1d: onp.Array1D[np.bool_]
+_int_list: list[int]
+
+assert_type(_csc_arr[0, 0], ScalarType)
+
+assert_type(_csc_arr[_int_1d], csc_array[ScalarType])
+assert_type(_csc_arr[:, _int_1d], csc_array[ScalarType])
+
+assert_type(_csc_arr[_int_list], csc_array[ScalarType])
+assert_type(_csc_arr[:, _int_list], csc_array[ScalarType])
+assert_type(_csc_arr[_int_list, _int_list], onp.Array1D[ScalarType])
+
+assert_type(_csc_arr[_bool_1d], csc_array[ScalarType])
+assert_type(_csc_arr[:, _bool_1d], csc_array[ScalarType])
+assert_type(_csc_arr[_bool_1d, _bool_1d], onp.Array1D[ScalarType])
+
+assert_type(_csc_arr[_int_1d, 0], coo_array[ScalarType, tuple[int]])
+assert_type(_csc_arr[0, _int_1d], coo_array[ScalarType, tuple[int]])
