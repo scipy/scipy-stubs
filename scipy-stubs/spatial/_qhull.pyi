@@ -9,6 +9,9 @@ __all__ = ["ConvexHull", "Delaunay", "HalfspaceIntersection", "QhullError", "Vor
 
 ###
 
+# on numpy<2.1 pyright reports false positive incompatible overload errors for `plane_distance` and `lift_points` in `Delaunay`
+# pyright: reportOverlappingOverload=false
+
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 # workaround for type-checkers that don't comply to the overload spec
