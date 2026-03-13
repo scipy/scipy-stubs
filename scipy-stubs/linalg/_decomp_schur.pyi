@@ -28,6 +28,9 @@ _as_c128: TypeAlias = npc.complexfloating128 | npc.complexfloating160  # noqa: P
 
 ###
 
+# NOTE: On numpy<2.1, pyright reports 12 false positive incompatible overload errors here.
+# pyright: reportOverlappingOverload=false
+
 # NOTE: The ignored `overload-overlap` mypy errors are false positives
 
 #
