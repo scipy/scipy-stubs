@@ -66,44 +66,44 @@ def cholesky(
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
 
-# keep in sync with `cholesky`
+# keep in sync with `cholesky` (but swap `lower` and `overwrite_*`)
 @overload  # Nd +f64
 def cholesky_banded(  # type: ignore[overload-overlap]
-    ab: nptc.CanArray[_Shape2T, np.dtype[_as_f64]], lower: bool = False, overwrite_ab: bool = False, check_finite: bool = True
+    ab: nptc.CanArray[_Shape2T, np.dtype[_as_f64]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
 ) -> onp.ArrayND[np.float64, _Shape2T]: ...
 @overload  # Nd +f32
 def cholesky_banded(
-    ab: nptc.CanArray[_Shape2T, np.dtype[_as_f32]], lower: bool = False, overwrite_ab: bool = False, check_finite: bool = True
+    ab: nptc.CanArray[_Shape2T, np.dtype[_as_f32]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
 ) -> onp.ArrayND[np.float32, _Shape2T]: ...
 @overload  # Nd +c128
 def cholesky_banded(
-    ab: nptc.CanArray[_Shape2T, np.dtype[_as_c128]], lower: bool = False, overwrite_ab: bool = False, check_finite: bool = True
+    ab: nptc.CanArray[_Shape2T, np.dtype[_as_c128]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
 ) -> onp.ArrayND[np.complex128, _Shape2T]: ...
 @overload  # Nd ~c64
 def cholesky_banded(
-    ab: nptc.CanArray[_Shape2T, np.dtype[_as_c64]], lower: bool = False, overwrite_ab: bool = False, check_finite: bool = True
+    ab: nptc.CanArray[_Shape2T, np.dtype[_as_c64]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
 ) -> onp.ArrayND[np.complex64, _Shape2T]: ...
 @overload  # Nd ~number
 def cholesky_banded(
-    ab: nptc.CanArray[_Shape2T, np.dtype[npc.number]], lower: bool = False, overwrite_ab: bool = False, check_finite: bool = True
+    ab: nptc.CanArray[_Shape2T, np.dtype[npc.number]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
 ) -> onp.ArrayND[Any, _Shape2T]: ...
 @overload  # 2d +f64
 def cholesky_banded(
-    ab: _Sequence2D[float], lower: bool = False, overwrite_ab: bool = False, check_finite: bool = True
+    ab: _Sequence2D[float], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
 ) -> onp.Array2D[np.float64]: ...
 @overload  # 2d ~c128
 def cholesky_banded(
-    ab: Sequence[MutableSequence[complex]], lower: bool = False, overwrite_ab: bool = False, check_finite: bool = True
+    ab: Sequence[MutableSequence[complex]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
 ) -> onp.Array2D[np.complex128]: ...
 @overload  # ?d +f64
 def cholesky_banded(
-    ab: onp.SequenceND[_Sequence2D[float]], lower: bool = False, overwrite_ab: bool = False, check_finite: bool = True
+    ab: onp.SequenceND[_Sequence2D[float]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # ?d ~c128
 def cholesky_banded(
     ab: onp.SequenceND[Sequence[MutableSequence[complex]]],
-    lower: bool = False,
     overwrite_ab: bool = False,
+    lower: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
 
