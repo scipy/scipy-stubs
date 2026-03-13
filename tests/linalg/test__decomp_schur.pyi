@@ -10,22 +10,75 @@ from scipy.linalg import rsf2csf, schur
 
 ###
 
-f64_2d: onp.Array2D[np.float64]
-c128_2d: onp.Array2D[np.complex128]
+_bool_2d: onp.Array2D[np.bool_]
+_i8_2d: onp.Array2D[np.int8]
+_i16_2d: onp.Array2D[np.int16]
+_i32_2d: onp.Array2D[np.int32]
+_i64_2d: onp.Array2D[np.int64]
+_f16_2d: onp.Array2D[np.float16]
+_f32_2d: onp.Array2D[np.float32]
+_f64_2d: onp.Array2D[np.float64]
+_f80_2d: onp.Array2D[np.float128]
+_c64_2d: onp.Array2D[np.complex64]
+_c128_2d: onp.Array2D[np.complex128]
+_c160_2d: onp.Array2D[np.complex256]
 
 ###
 # schur
 
-assert_type(schur(f64_2d), tuple[onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]])
-assert_type(schur(f64_2d, sort="lhp"), tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.inexact], int])
+assert_type(schur(_bool_2d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(schur(_i8_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(schur(_i16_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(schur(_i32_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(schur(_i64_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(schur(_f16_2d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(schur(_f32_2d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(schur(_f64_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(schur(_f80_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(schur(_c64_2d), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(schur(_c128_2d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(schur(_c160_2d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 
-assert_type(schur(c128_2d), tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.inexact]])
-assert_type(schur(c128_2d, sort="lhp"), tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.inexact], int])
+assert_type(schur(_bool_2d, sort="lhp"), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], int])
+assert_type(schur(_i8_2d, sort="lhp"), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int])
+assert_type(schur(_i16_2d, sort="lhp"), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int])
+assert_type(schur(_i32_2d, sort="lhp"), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int])
+assert_type(schur(_i64_2d, sort="lhp"), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int])
+assert_type(schur(_f16_2d, sort="lhp"), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], int])
+assert_type(schur(_f32_2d, sort="lhp"), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], int])
+assert_type(schur(_f64_2d, sort="lhp"), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int])
+assert_type(schur(_f80_2d, sort="lhp"), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int])
+assert_type(schur(_c64_2d, sort="lhp"), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64], int])
+assert_type(schur(_c128_2d, sort="lhp"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], int])
+assert_type(schur(_c160_2d, sort="lhp"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], int])
 
-assert_type(schur(c128_2d, "complex"), tuple[onp.ArrayND[npc.complexfloating], onp.ArrayND[npc.complexfloating]])
-assert_type(schur(c128_2d, "complex", sort="lhp"), tuple[onp.ArrayND[npc.complexfloating], onp.ArrayND[npc.complexfloating], int])
+assert_type(schur(_bool_2d, output="c"), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(schur(_i8_2d, output="c"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(schur(_i16_2d, output="c"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(schur(_i32_2d, output="c"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(schur(_i64_2d, output="c"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(schur(_f16_2d, output="c"), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(schur(_f32_2d, output="c"), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(schur(_f64_2d, output="c"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(schur(_f80_2d, output="c"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(schur(_c64_2d, output="c"), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(schur(_c128_2d, output="c"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(schur(_c160_2d, output="c"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+
+assert_type(schur(_bool_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64], int])
+assert_type(schur(_i8_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], int])
+assert_type(schur(_i16_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], int])
+assert_type(schur(_i32_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], int])
+assert_type(schur(_i64_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], int])
+assert_type(schur(_f16_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64], int])
+assert_type(schur(_f32_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64], int])
+assert_type(schur(_f64_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], int])
+assert_type(schur(_f80_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], int])
+assert_type(schur(_c64_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64], int])
+assert_type(schur(_c128_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], int])
+assert_type(schur(_c160_2d, output="c", sort="lhp"), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], int])
 
 ###
 # rsf2csf
 
-assert_type(rsf2csf(f64_2d, c128_2d), tuple[onp.ArrayND[npc.complexfloating], onp.ArrayND[npc.complexfloating]])
+assert_type(rsf2csf(_f64_2d, _c128_2d), tuple[onp.ArrayND[npc.complexfloating], onp.ArrayND[npc.complexfloating]])
