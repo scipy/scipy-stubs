@@ -1,6 +1,6 @@
 # type-tests for `linalg/_decomp_cholesky.pyi`
 
-from typing import TypeAlias, assert_type
+from typing import Any, TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -14,49 +14,89 @@ _Complex2D: TypeAlias = onp.Array2D[npc.inexact]
 _ComplexND: TypeAlias = onp.ArrayND[npc.inexact]
 
 ###
-# Input arrays
 
-f64_1d: onp.Array1D[np.float64]
-f64_2d: onp.Array2D[np.float64]
-f64_3d: onp.Array3D[np.float64]
-c128_1d: onp.Array1D[np.complex128]
-c128_2d: onp.Array2D[np.complex128]
-c128_3d: onp.Array3D[np.complex128]
+_bool_2d: onp.Array2D[np.bool_]
+_i8_2d: onp.Array2D[np.int8]
+_i16_2d: onp.Array2D[np.int16]
+_i32_2d: onp.Array2D[np.int32]
+_i64_2d: onp.Array2D[np.int64]
+_f16_2d: onp.Array2D[np.float16]
+_f32_2d: onp.Array2D[np.float32]
+_f80_2d: onp.Array2D[np.float128]
+
+_f64_1d: onp.Array1D[np.float64]
+_f64_2d: onp.Array2D[np.float64]
+_f64_3d: onp.Array3D[np.float64]
+_f64_nd: onp.ArrayND[np.float64]
+
+_c64_2d: onp.Array2D[np.complex64]
+_c160_2d: onp.Array2D[np.complex256]
+
+_c128_1d: onp.Array1D[np.complex128]
+_c128_2d: onp.Array2D[np.complex128]
+_c128_3d: onp.Array3D[np.complex128]
+_c128_nd: onp.ArrayND[np.complex128]
+
+_number_2d: onp.Array2D[npc.number]
+
+_py_f_2d: list[list[float]]
+_py_f_3d: list[list[list[float]]]
+_py_c_2d: list[list[complex]]
+_py_c_3d: list[list[list[complex]]]
 
 ###
 # cholesky
 
-assert_type(cholesky(f64_2d), _Float2D)
-assert_type(cholesky(f64_3d), _FloatND)
-assert_type(cholesky(c128_2d), _Complex2D)
-assert_type(cholesky(c128_3d), _ComplexND)
+assert_type(cholesky(_bool_2d), onp.Array2D[np.float32])
+assert_type(cholesky(_i8_2d), onp.Array2D[np.float32])
+assert_type(cholesky(_i16_2d), onp.Array2D[np.float32])
+assert_type(cholesky(_i32_2d), onp.Array2D[np.float64])
+assert_type(cholesky(_i64_2d), onp.Array2D[np.float64])
+assert_type(cholesky(_f32_2d), onp.Array2D[np.float32])
+assert_type(cholesky(_f64_2d), onp.Array2D[np.float64])
+assert_type(cholesky(_f80_2d), onp.Array2D[np.float64])
+
+assert_type(cholesky(_c64_2d), onp.Array2D[np.complex64])
+assert_type(cholesky(_c128_2d), onp.Array2D[np.complex128])
+assert_type(cholesky(_c160_2d), onp.Array2D[np.complex128])
+
+assert_type(cholesky(_number_2d), onp.Array2D[Any])
+
+cholesky(_f64_1d)  # type:ignore[type-var] # pyright:ignore[reportArgumentType,reportCallIssue] # pyrefly:ignore[no-matching-overload]
+assert_type(cholesky(_f64_3d), onp.Array3D[np.float64])
+assert_type(cholesky(_f64_nd), onp.ArrayND[np.float64])
+
+assert_type(cholesky(_py_f_2d), onp.Array2D[np.float64])
+assert_type(cholesky(_py_f_3d), onp.ArrayND[np.float64])
+assert_type(cholesky(_py_c_2d), onp.Array2D[np.complex128])
+assert_type(cholesky(_py_c_3d), onp.ArrayND[np.complex128])
 
 ###
 # cho_factor
 
-assert_type(cho_factor(f64_2d), tuple[_FloatND, bool])
-assert_type(cho_factor(c128_2d), tuple[_ComplexND, bool])
+assert_type(cho_factor(_f64_2d), tuple[_FloatND, bool])
+assert_type(cho_factor(_c128_2d), tuple[_ComplexND, bool])
 
 ###
 # cho_solve
 
-assert_type(cho_solve((f64_2d, False), f64_1d), _Float2D)
-assert_type(cho_solve((f64_3d, False), f64_3d), _FloatND)
-assert_type(cho_solve((c128_2d, False), c128_1d), _Complex2D)
-assert_type(cho_solve((c128_3d, False), c128_3d), _ComplexND)
+assert_type(cho_solve((_f64_2d, False), _f64_1d), _Float2D)
+assert_type(cho_solve((_f64_3d, False), _f64_3d), _FloatND)
+assert_type(cho_solve((_c128_2d, False), _c128_1d), _Complex2D)
+assert_type(cho_solve((_c128_3d, False), _c128_3d), _ComplexND)
 
 ###
 # cholesky_banded
 
-assert_type(cholesky_banded(f64_2d), _Float2D)
-assert_type(cholesky_banded(f64_3d), _FloatND)
-assert_type(cholesky_banded(c128_2d), _Complex2D)
-assert_type(cholesky_banded(c128_3d), _ComplexND)
+assert_type(cholesky_banded(_f64_2d), _Float2D)
+assert_type(cholesky_banded(_f64_3d), _FloatND)
+assert_type(cholesky_banded(_c128_2d), _Complex2D)
+assert_type(cholesky_banded(_c128_3d), _ComplexND)
 
 ###
 # cho_solve_banded
 
-assert_type(cho_solve_banded((f64_2d, False), c128_1d), _Complex2D)
-assert_type(cho_solve_banded((f64_3d, False), c128_3d), _ComplexND)
-assert_type(cho_solve_banded((c128_2d, False), c128_1d), _Complex2D)
-assert_type(cho_solve_banded((c128_3d, False), c128_3d), _ComplexND)
+assert_type(cho_solve_banded((_f64_2d, False), _c128_1d), _Complex2D)
+assert_type(cho_solve_banded((_f64_3d, False), _c128_3d), _ComplexND)
+assert_type(cho_solve_banded((_c128_2d, False), _c128_1d), _Complex2D)
+assert_type(cho_solve_banded((_c128_3d, False), _c128_3d), _ComplexND)
