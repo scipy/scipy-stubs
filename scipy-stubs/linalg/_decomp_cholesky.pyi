@@ -28,6 +28,7 @@ _Sequence2D: TypeAlias = Sequence[Sequence[_T]]
 
 ###
 
+# keep in sync with `cho_factor`
 @overload  # Nd +f64
 def cholesky(  # type: ignore[overload-overlap]
     a: nptc.CanArray[_Shape2T, np.dtype[_as_f64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
@@ -68,15 +69,46 @@ def cholesky(
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
 
-#
-@overload
+# keep in sync with `cholesky`
+@overload  # Nd +f64
+def cho_factor(  # type: ignore[overload-overlap]
+    a: nptc.CanArray[_Shape2T, np.dtype[_as_f64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float64, _Shape2T], bool]: ...
+@overload  # Nd +f32
 def cho_factor(
-    a: onp.ToFloatND, lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[_FloatND, bool]: ...
-@overload
+    a: nptc.CanArray[_Shape2T, np.dtype[_as_f32]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float32, _Shape2T], bool]: ...
+@overload  # Nd +c128
 def cho_factor(
-    a: onp.ToComplexND, lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[_ComplexND, bool]: ...
+    a: nptc.CanArray[_Shape2T, np.dtype[_as_c128]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex128, _Shape2T], bool]: ...
+@overload  # Nd ~c64
+def cho_factor(
+    a: nptc.CanArray[_Shape2T, np.dtype[_as_c64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex64, _Shape2T], bool]: ...
+@overload  # Nd ~number
+def cho_factor(
+    a: nptc.CanArray[_Shape2T, np.dtype[npc.number]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[Any, _Shape2T], bool]: ...
+@overload  # 2d +f64
+def cho_factor(
+    a: _Sequence2D[float], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.Array2D[np.float64], bool]: ...
+@overload  # 2d ~c128
+def cho_factor(
+    a: Sequence[MutableSequence[complex]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.Array2D[np.complex128], bool]: ...
+@overload  # ?d +f64
+def cho_factor(
+    a: onp.SequenceND[_Sequence2D[float]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float64], bool]: ...
+@overload  # ?d ~c128
+def cho_factor(
+    a: onp.SequenceND[Sequence[MutableSequence[complex]]],
+    lower: bool = False,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex128], bool]: ...
 
 #
 @overload

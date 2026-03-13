@@ -55,11 +55,9 @@ assert_type(cholesky(_i64_2d), onp.Array2D[np.float64])
 assert_type(cholesky(_f32_2d), onp.Array2D[np.float32])
 assert_type(cholesky(_f64_2d), onp.Array2D[np.float64])
 assert_type(cholesky(_f80_2d), onp.Array2D[np.float64])
-
 assert_type(cholesky(_c64_2d), onp.Array2D[np.complex64])
 assert_type(cholesky(_c128_2d), onp.Array2D[np.complex128])
 assert_type(cholesky(_c160_2d), onp.Array2D[np.complex128])
-
 assert_type(cholesky(_number_2d), onp.Array2D[Any])
 
 cholesky(_f64_1d)  # type:ignore[type-var] # pyright:ignore[reportArgumentType,reportCallIssue] # pyrefly:ignore[no-matching-overload]
@@ -72,10 +70,29 @@ assert_type(cholesky(_py_c_2d), onp.Array2D[np.complex128])
 assert_type(cholesky(_py_c_3d), onp.ArrayND[np.complex128])
 
 ###
-# cho_factor
+# cho_factor (congruent with cholesky)
 
-assert_type(cho_factor(_f64_2d), tuple[_FloatND, bool])
-assert_type(cho_factor(_c128_2d), tuple[_ComplexND, bool])
+assert_type(cho_factor(_bool_2d), tuple[onp.Array2D[np.float32], bool])
+assert_type(cho_factor(_i8_2d), tuple[onp.Array2D[np.float32], bool])
+assert_type(cho_factor(_i16_2d), tuple[onp.Array2D[np.float32], bool])
+assert_type(cho_factor(_i32_2d), tuple[onp.Array2D[np.float64], bool])
+assert_type(cho_factor(_i64_2d), tuple[onp.Array2D[np.float64], bool])
+assert_type(cho_factor(_f32_2d), tuple[onp.Array2D[np.float32], bool])
+assert_type(cho_factor(_f64_2d), tuple[onp.Array2D[np.float64], bool])
+assert_type(cho_factor(_f80_2d), tuple[onp.Array2D[np.float64], bool])
+assert_type(cho_factor(_c64_2d), tuple[onp.Array2D[np.complex64], bool])
+assert_type(cho_factor(_c128_2d), tuple[onp.Array2D[np.complex128], bool])
+assert_type(cho_factor(_c160_2d), tuple[onp.Array2D[np.complex128], bool])
+assert_type(cho_factor(_number_2d), tuple[onp.Array2D[Any], bool])
+
+cho_factor(_f64_1d)  # type:ignore[type-var] # pyright:ignore[reportArgumentType,reportCallIssue] # pyrefly:ignore[no-matching-overload]
+assert_type(cho_factor(_f64_3d), tuple[onp.Array3D[np.float64], bool])
+assert_type(cho_factor(_f64_nd), tuple[onp.ArrayND[np.float64], bool])
+
+assert_type(cho_factor(_py_f_2d), tuple[onp.Array2D[np.float64], bool])
+assert_type(cho_factor(_py_f_3d), tuple[onp.ArrayND[np.float64], bool])
+assert_type(cho_factor(_py_c_2d), tuple[onp.Array2D[np.complex128], bool])
+assert_type(cho_factor(_py_c_3d), tuple[onp.ArrayND[np.complex128], bool])
 
 ###
 # cho_solve
