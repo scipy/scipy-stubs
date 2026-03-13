@@ -15,8 +15,6 @@ _T = TypeVar("_T")
 _Tuple2: TypeAlias = tuple[_T, _T]
 _Tuple2i: TypeAlias = tuple[_T, _T, int]
 
-_ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
-
 _OutputReal: TypeAlias = Literal["real", "r"]
 _OutputComplex: TypeAlias = Literal["complex", "c"]
 
@@ -28,6 +26,9 @@ _as_c128: TypeAlias = npc.complexfloating128 | npc.complexfloating160  # noqa: P
 
 ###
 
+# NOTE: The ignored `overload-overlap` mypy errors are false positives
+
+# TODO(@jorenham): shape-typing
 @overload  # f64
 def schur(  # type: ignore[overload-overlap]
     a: onp.ToArrayND[float, _as_f64],
@@ -143,5 +144,14 @@ def schur(
     check_finite: bool = True,
 ) -> _Tuple2i[onp.ArrayND[np.complex64]]: ...
 
-# TODO(@jorenham)
-def rsf2csf(T: onp.ToFloatND, Z: onp.ToComplexND, check_finite: bool = True) -> tuple[_ComplexND, _ComplexND]: ...
+# will raise for dtypes that don't have character code in `ilfdFD`
+@overload  # (c128|f64|i64|i32, c128|f64|i64|i32) -> c128
+def rsf2csf(  # type: ignore[overload-overlap]
+    T: onp.ToArrayND[complex, npc.inexact64 | npc.integer64 | npc.integer32],
+    Z: onp.ToArrayND[complex, npc.inexact64 | npc.integer64 | npc.integer32],
+    check_finite: bool = True,
+) -> _Tuple2[onp.ArrayND[np.complex128]]: ...
+@overload  # (f32|c64, f32|c64) -> c64
+def rsf2csf(
+    T: onp.ToArrayND[npc.inexact32, npc.inexact32], Z: onp.ToArrayND[npc.inexact32, npc.inexact32], check_finite: bool = True
+) -> _Tuple2[onp.ArrayND[np.complex64]]: ...
