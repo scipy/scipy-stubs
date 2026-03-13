@@ -95,20 +95,37 @@ assert_type(cho_factor(_py_c_2d), tuple[onp.Array2D[np.complex128], bool])
 assert_type(cho_factor(_py_c_3d), tuple[onp.ArrayND[np.complex128], bool])
 
 ###
+# cholesky_banded (same signature as cholesky)
+
+assert_type(cholesky_banded(_bool_2d), onp.Array2D[np.float32])
+assert_type(cholesky_banded(_i8_2d), onp.Array2D[np.float32])
+assert_type(cholesky_banded(_i16_2d), onp.Array2D[np.float32])
+assert_type(cholesky_banded(_i32_2d), onp.Array2D[np.float64])
+assert_type(cholesky_banded(_i64_2d), onp.Array2D[np.float64])
+assert_type(cholesky_banded(_f32_2d), onp.Array2D[np.float32])
+assert_type(cholesky_banded(_f64_2d), onp.Array2D[np.float64])
+assert_type(cholesky_banded(_f80_2d), onp.Array2D[np.float64])
+assert_type(cholesky_banded(_c64_2d), onp.Array2D[np.complex64])
+assert_type(cholesky_banded(_c128_2d), onp.Array2D[np.complex128])
+assert_type(cholesky_banded(_c160_2d), onp.Array2D[np.complex128])
+assert_type(cholesky_banded(_number_2d), onp.Array2D[Any])
+
+cholesky_banded(_f64_1d)  # type:ignore[type-var] # pyright:ignore[reportArgumentType,reportCallIssue] # pyrefly:ignore[no-matching-overload]
+assert_type(cholesky_banded(_f64_3d), onp.Array3D[np.float64])
+assert_type(cholesky_banded(_f64_nd), onp.ArrayND[np.float64])
+
+assert_type(cholesky_banded(_py_f_2d), onp.Array2D[np.float64])
+assert_type(cholesky_banded(_py_f_3d), onp.ArrayND[np.float64])
+assert_type(cholesky_banded(_py_c_2d), onp.Array2D[np.complex128])
+assert_type(cholesky_banded(_py_c_3d), onp.ArrayND[np.complex128])
+
+###
 # cho_solve
 
 assert_type(cho_solve((_f64_2d, False), _f64_1d), _Float2D)
 assert_type(cho_solve((_f64_3d, False), _f64_3d), _FloatND)
 assert_type(cho_solve((_c128_2d, False), _c128_1d), _Complex2D)
 assert_type(cho_solve((_c128_3d, False), _c128_3d), _ComplexND)
-
-###
-# cholesky_banded
-
-assert_type(cholesky_banded(_f64_2d), _Float2D)
-assert_type(cholesky_banded(_f64_3d), _FloatND)
-assert_type(cholesky_banded(_c128_2d), _Complex2D)
-assert_type(cholesky_banded(_c128_3d), _ComplexND)
 
 ###
 # cho_solve_banded
