@@ -364,6 +364,7 @@ PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay) |
 [scikit-fingerprints](https://github.com/scikit-fingerprints/scikit-fingerprints) |
 scverse ([PyDESeq2](https://github.com/scverse/PyDESeq2), [scanpy](https://github.com/scverse/scanpy)) |
+[SeQUeNCe](https://github.com/sequence-toolbox/SeQUeNCe) |
 [Skore](https://github.com/probabl-ai/skore) |
 Theis Lab ([anndata2ri](https://github.com/theislab/anndata2ri)) |
 [TorchFX](https://github.com/matteospanio/torchfx) |
