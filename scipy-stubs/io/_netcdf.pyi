@@ -74,7 +74,7 @@ class netcdf_file(ExitMixin):
     mode: Final[_FileModeRWA]
     version_byte: Final[int]
     maskandscale: Final[bool]
-    dimensions: Final[dict[str, int]]
+    dimensions: Final[dict[str, int | None]]
     variables: Final[dict[str, netcdf_variable]]
 
     def __init__(
