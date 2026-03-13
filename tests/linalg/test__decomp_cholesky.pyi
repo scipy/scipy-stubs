@@ -1,15 +1,12 @@
 # type-tests for `linalg/_decomp_cholesky.pyi`
 
-from typing import Any, TypeAlias, assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from scipy.linalg import cho_factor, cho_solve, cho_solve_banded, cholesky, cholesky_banded
-
-_Complex2D: TypeAlias = onp.Array2D[npc.inexact]
-_ComplexND: TypeAlias = onp.ArrayND[npc.inexact]
 
 ###
 
@@ -168,9 +165,48 @@ assert_type(cho_solve((_py_c_2d, False), _py_f_2d), onp.ArrayND[np.complex128])
 assert_type(cho_solve((_py_c_2d, False), _py_c_2d), onp.ArrayND[np.complex128])
 
 ###
-# cho_solve_banded
+# cho_solve_banded (same signature as cho_solve)
 
-assert_type(cho_solve_banded((_f64_2d, False), _c128_1d), _Complex2D)
-assert_type(cho_solve_banded((_f64_3d, False), _c128_3d), _ComplexND)
-assert_type(cho_solve_banded((_c128_2d, False), _c128_1d), _Complex2D)
-assert_type(cho_solve_banded((_c128_3d, False), _c128_3d), _ComplexND)
+assert_type(cho_solve_banded((_bool_2d, False), _bool_2d), onp.ArrayND[np.float32])
+assert_type(cho_solve_banded((_i8_2d, False), _i8_2d), onp.ArrayND[np.float32])
+assert_type(cho_solve_banded((_i16_2d, False), _i16_2d), onp.ArrayND[np.float32])
+assert_type(cho_solve_banded((_i32_2d, False), _i32_2d), onp.ArrayND[np.float64])
+assert_type(cho_solve_banded((_i64_2d, False), _i64_2d), onp.ArrayND[np.float64])
+assert_type(cho_solve_banded((_f16_2d, False), _f16_2d), onp.ArrayND[np.float32])
+assert_type(cho_solve_banded((_f32_2d, False), _f32_2d), onp.ArrayND[np.float32])
+assert_type(cho_solve_banded((_f64_2d, False), _f64_2d), onp.ArrayND[np.float64])
+assert_type(cho_solve_banded((_f80_2d, False), _f80_2d), onp.ArrayND[np.float64])
+assert_type(cho_solve_banded((_c64_2d, False), _c64_2d), onp.ArrayND[np.complex64])
+assert_type(cho_solve_banded((_c128_2d, False), _c128_2d), onp.ArrayND[np.complex128])
+assert_type(cho_solve_banded((_c160_2d, False), _c160_2d), onp.ArrayND[np.complex128])
+assert_type(cho_solve_banded((_number_2d, False), _number_2d), onp.ArrayND[Any])
+
+assert_type(cho_solve_banded((_i16_2d, False), _f32_2d), onp.ArrayND[np.float32])
+assert_type(cho_solve_banded((_i16_2d, False), _f64_2d), onp.ArrayND[np.float64])
+assert_type(cho_solve_banded((_i16_2d, False), _c64_2d), onp.ArrayND[np.complex64])
+assert_type(cho_solve_banded((_i16_2d, False), _c128_2d), onp.ArrayND[np.complex128])
+
+assert_type(cho_solve_banded((_f32_2d, False), _i16_2d), onp.ArrayND[np.float32])
+assert_type(cho_solve_banded((_f32_2d, False), _f64_2d), onp.ArrayND[np.float64])
+assert_type(cho_solve_banded((_f32_2d, False), _c64_2d), onp.ArrayND[np.complex64])
+assert_type(cho_solve_banded((_f32_2d, False), _c128_2d), onp.ArrayND[np.complex128])
+
+assert_type(cho_solve_banded((_f64_2d, False), _i16_2d), onp.ArrayND[np.float64])
+assert_type(cho_solve_banded((_f64_2d, False), _f32_2d), onp.ArrayND[np.float64])
+assert_type(cho_solve_banded((_f64_2d, False), _c64_2d), onp.ArrayND[Any])
+assert_type(cho_solve_banded((_f64_2d, False), _c128_2d), onp.ArrayND[np.complex128])
+
+assert_type(cho_solve_banded((_c64_2d, False), _i16_2d), onp.ArrayND[np.complex64])
+assert_type(cho_solve_banded((_c64_2d, False), _f32_2d), onp.ArrayND[np.complex64])
+assert_type(cho_solve_banded((_c64_2d, False), _f64_2d), onp.ArrayND[Any])
+assert_type(cho_solve_banded((_c64_2d, False), _c128_2d), onp.ArrayND[np.complex128])
+
+assert_type(cho_solve_banded((_c128_2d, False), _i16_2d), onp.ArrayND[np.complex128])
+assert_type(cho_solve_banded((_c128_2d, False), _f32_2d), onp.ArrayND[np.complex128])
+assert_type(cho_solve_banded((_c128_2d, False), _f64_2d), onp.ArrayND[np.complex128])
+assert_type(cho_solve_banded((_c128_2d, False), _c64_2d), onp.ArrayND[np.complex128])
+
+assert_type(cho_solve_banded((_py_f_2d, False), _py_f_2d), onp.ArrayND[np.float64])
+assert_type(cho_solve_banded((_py_f_2d, False), _py_c_2d), onp.ArrayND[np.complex128])
+assert_type(cho_solve_banded((_py_c_2d, False), _py_f_2d), onp.ArrayND[np.complex128])
+assert_type(cho_solve_banded((_py_c_2d, False), _py_c_2d), onp.ArrayND[np.complex128])
