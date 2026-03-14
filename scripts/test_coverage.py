@@ -330,7 +330,10 @@ def main() -> int:
         pkg_public = len(names)
         pkg_tested = sum(1 for n in names if n in tested)
         pct = f"{pkg_tested / pkg_public:.1%}" if pkg_public else "N/A"
-        summary = f"<code>{pkg}</code> &mdash; {pkg_tested} / {pkg_public} ({pct})"
+        marker = " \N{CHECK MARK}" if pkg_tested == pkg_public else ""
+        summary = (
+            f"<code>{pkg}</code> {marker}<br>-> {pkg_tested} / {pkg_public} ({pct})"
+        )
         print(f"<details>\n<summary>{summary}</summary>\n")
         for name in names:
             x = "x" if name in tested else " "
@@ -339,7 +342,7 @@ def main() -> int:
 
     print()
     total_pct = f"{total_tested / total_public:.1%}" if total_public else "N/A"
-    print(f"Total: {total_tested} / {total_public} ({total_pct})")
+    print(f"**Total: {total_tested} / {total_public} ({total_pct})**")
 
     return 0
 
