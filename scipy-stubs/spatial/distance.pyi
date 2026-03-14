@@ -1,7 +1,5 @@
-# NOTE: Scipy already has a `distance.pyi` stub, but it has several errors, which are fixed here
-
-from collections.abc import Callable
-from typing import Literal, TypeAlias, overload
+from collections.abc import Callable, Sequence
+from typing import Literal, Never, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -87,129 +85,90 @@ _MetricName: TypeAlias = Literal[
     "sqeuclid",
     "yule",
 ]
+
+###
+
+_NumberT = TypeVar("_NumberT", bound=npc.number)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+
 _MetricFunc: TypeAlias = Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat | None]
 _Metric: TypeAlias = _MetricName | _MetricFunc  # noqa: PYI047
 
 _Force: TypeAlias = Literal["NO", "No", "no", "TOMATRIX", "ToMatrix", "tomatrix", "TOVECTOR", "ToVector", "tovector"]
 
-_FloatingND: TypeAlias = onp.ArrayND[npc.floating]
-_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
+# workaround for mypy & pyright's failure to conform to the overload typing specification
+_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
 
-_NumberT = TypeVar("_NumberT", bound=npc.number)
-_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[npc.number])
+_ToFloatStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
 
 ###
 
-#
+# NOTE: on numpy<2.1, both mypy and pyright reports false positive overload-overlap errors for overload 2 of `jensenshannon`
+# pyright: reportOverlappingOverload=false
+# mypy: disable-error-code=overload-overlap
+
+# TODO(@jorenham): metric-specific overloads
+# https://github.com/scipy/scipy-stubs/issues/404
 @overload
 def cdist(
     XA: onp.ToFloat2D,
     XB: onp.ToFloat2D,
     metric: _MetricName = "euclidean",
     *,
-    out: None = None,
+    out: onp.Array2D[np.float64] | None = None,
     p: float = 2,
     w: onp.ToFloat1D | None = None,
     V: onp.ToFloat2D | None = None,
     VI: onp.ToFloat2D | None = None,
-) -> _FloatingND: ...
+) -> onp.Array2D[np.float64]: ...
 @overload
 def cdist(
-    XA: onp.ToComplex2D,
-    XB: onp.ToComplex2D,
-    metric: _MetricName = "euclidean",
-    *,
-    out: None = None,
-    p: float = 2,
-    w: onp.ToFloat1D | None = None,
-    V: onp.ToFloat2D | None = None,
-    VI: onp.ToFloat2D | None = None,
-) -> _InexactND: ...
-@overload
-def cdist(
-    XA: onp.ToComplex2D,
-    XB: onp.ToComplex2D,
-    metric: _MetricName = "euclidean",
-    *,
-    out: _ArrayT,
-    p: float = 2,
-    w: onp.ToFloat1D | None = None,
-    V: onp.ToFloat2D | None = None,
-    VI: onp.ToFloat2D | None = None,
-) -> _ArrayT: ...
-@overload
-def cdist(XA: onp.ToFloat2D, XB: onp.ToFloat2D, metric: _MetricFunc, *, out: None = None, **kwds: object) -> _FloatingND: ...
-@overload
-def cdist(XA: onp.ToComplex2D, XB: onp.ToComplex2D, metric: _MetricFunc, *, out: None = None, **kwds: object) -> _InexactND: ...
-@overload
-def cdist(XA: onp.ToComplex2D, XB: onp.ToComplex2D, metric: _MetricFunc, *, out: _ArrayT, **kwds: object) -> _ArrayT: ...
+    XA: onp.ToFloat2D, XB: onp.ToFloat2D, metric: _MetricFunc, *, out: onp.Array2D[np.float64] | None = None, **kwds: object
+) -> onp.Array2D[np.float64]: ...
 
-#
+# TODO(@jorenham): metric-specific overloads
+# https://github.com/scipy/scipy-stubs/issues/404
 @overload
 def pdist(
     X: onp.ToFloat2D,
     metric: _MetricName = "euclidean",
     *,
-    out: None = None,
+    out: onp.Array1D[np.float64] | None = None,
     p: float = 2,
     w: onp.ToFloat1D | None = None,
     V: onp.ToFloat2D | None = None,
     VI: onp.ToFloat2D | None = None,
-) -> _FloatingND: ...
+) -> onp.Array1D[np.float64]: ...
 @overload
 def pdist(
-    X: onp.ToComplex2D,
-    metric: _MetricName = "euclidean",
-    *,
-    out: None = None,
-    p: float = 2,
-    w: onp.ToFloat1D | None = None,
-    V: onp.ToFloat2D | None = None,
-    VI: onp.ToFloat2D | None = None,
-) -> _InexactND: ...
-@overload
-def pdist(
-    X: onp.ToComplex2D,
-    metric: _MetricName = "euclidean",
-    *,
-    out: _ArrayT,
-    p: float = 2,
-    w: onp.ToFloat1D | None = None,
-    V: onp.ToFloat2D | None = None,
-    VI: onp.ToFloat2D | None = None,
-) -> _ArrayT: ...
-@overload
-def pdist(X: onp.ToFloat2D, metric: _MetricFunc, *, out: None = None, **kwargs: object) -> _FloatingND: ...
-@overload
-def pdist(X: onp.ToComplex2D, metric: _MetricFunc, *, out: None = None, **kwargs: object) -> _InexactND: ...
-@overload
-def pdist(X: onp.ToComplex2D, metric: _MetricFunc, *, out: _ArrayT, **kwargs: object) -> _ArrayT: ...
+    X: onp.ToFloat2D, metric: _MetricFunc, *, out: onp.Array1D[np.float64] | None = None, **kwargs: object
+) -> onp.Array1D[np.float64]: ...
 
 #
-@overload  # 1-d int
-def squareform(X: onp.ToJustIntStrict1D, force: _Force = "no", checks: bool = True) -> onp.Array2D[np.int_]: ...
-@overload  # 1-d float
-def squareform(X: onp.ToJustFloatStrict1D, force: _Force = "no", checks: bool = True) -> onp.Array2D[np.float64]: ...
-@overload  # 1-d complex
-def squareform(X: onp.ToJustComplexStrict1D, force: _Force = "no", checks: bool = True) -> onp.Array2D[np.complex128]: ...
-@overload  # 1-d array-like
+@overload  # ?d T@number
+def squareform(X: onp.ArrayND[_NumberT, _JustAnyShape], force: _Force = "no", checks: bool = True) -> onp.ArrayND[_NumberT]: ...
+@overload  # 1d +int
+def squareform(X: Sequence[int], force: _Force = "no", checks: bool = True) -> onp.Array2D[np.int_]: ...
+@overload  # 1d ~float
+def squareform(X: list[float], force: _Force = "no", checks: bool = True) -> onp.Array2D[np.float64]: ...
+@overload  # 1d ~complex
+def squareform(X: list[complex], force: _Force = "no", checks: bool = True) -> onp.Array2D[np.complex128]: ...
+@overload  # 1d T@number
 def squareform(
     X: onp.ToArrayStrict1D[_NumberT, _NumberT], force: _Force = "no", checks: bool = True
 ) -> onp.Array2D[_NumberT]: ...
-@overload  # 2-d int
-def squareform(X: onp.ToJustIntStrict2D, force: _Force = "no", checks: bool = True) -> onp.Array1D[np.int_]: ...
-@overload  # 2-d float
-def squareform(X: onp.ToJustFloatStrict2D, force: _Force = "no", checks: bool = True) -> onp.Array1D[np.float64]: ...
-@overload  # 2-d complex
-def squareform(X: onp.ToJustComplexStrict2D, force: _Force = "no", checks: bool = True) -> onp.Array1D[np.complex128]: ...
-@overload  # 2-d array-like
+@overload  # 2d +int
+def squareform(X: Sequence[Sequence[int]], force: _Force = "no", checks: bool = True) -> onp.Array1D[np.int_]: ...
+@overload  # 2d ~float
+def squareform(X: Sequence[list[float]], force: _Force = "no", checks: bool = True) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~complex
+def squareform(X: Sequence[list[complex]], force: _Force = "no", checks: bool = True) -> onp.Array1D[np.complex128]: ...
+@overload  # 2d T@number
 def squareform(
     X: onp.ToArrayStrict2D[_NumberT, _NumberT], force: _Force = "no", checks: bool = True
 ) -> onp.Array1D[_NumberT]: ...
-@overload  # ?-d array-like
-def squareform(
-    X: onp.ToArrayND[_NumberT, _NumberT], force: _Force = "no", checks: bool = True
-) -> onp.Array1D[_NumberT] | onp.Array2D[_NumberT]: ...
+@overload  # fallback
+def squareform(X: onp.ToComplexND, force: _Force = "no", checks: bool = True) -> onp.ArrayND: ...
 
 #
 def correlation(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None, centered: bool = True) -> np.float64: ...
@@ -221,56 +180,90 @@ def cosine(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -
 @overload
 def mahalanobis(u: onp.ToFloat1D, v: onp.ToFloat1D, VI: onp.ToFloat2D) -> np.float64: ...
 @overload
-def mahalanobis(u: onp.ToComplex1D, v: onp.ToComplex1D, VI: onp.ToComplex1D) -> np.float64 | np.complex128: ...
+def mahalanobis(u: onp.ToJustComplex1D, v: onp.ToComplex1D, VI: onp.ToComplex2D) -> np.complex128: ...
+@overload
+def mahalanobis(u: onp.ToComplex1D, v: onp.ToJustComplex1D, VI: onp.ToComplex2D) -> np.complex128: ...
+@overload
+def mahalanobis(u: onp.ToComplex1D, v: onp.ToComplex1D, VI: onp.ToJustComplex2D) -> np.complex128: ...
+@overload
+def mahalanobis(u: onp.ToComplex1D, v: onp.ToComplex1D, VI: onp.ToComplex2D) -> np.float64 | np.complex128: ...
 
 #
 @overload
 def sokalsneath(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
 @overload
+def sokalsneath(u: onp.ToJustComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.complex128: ...
+@overload
+def sokalsneath(u: onp.ToComplex1D, v: onp.ToJustComplex1D, w: onp.ToFloat1D | None = None) -> np.complex128: ...
+@overload
 def sokalsneath(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64 | np.complex128: ...
 
 #
 @overload
-def sqeuclidean(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> npc.floating: ...
+def sqeuclidean(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
 @overload
-def sqeuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> npc.inexact: ...
+def sqeuclidean(u: onp.ToJustComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.complex128: ...
+@overload
+def sqeuclidean(u: onp.ToComplex1D, v: onp.ToJustComplex1D, w: onp.ToFloat1D | None = None) -> np.complex128: ...
+@overload
+def sqeuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64 | np.complex128: ...
 
 #
-@overload
+@overload  # ?d, keepdims=False
 def jensenshannon(
-    p: onp.ToFloatStrict1D,
-    q: onp.ToFloatStrict1D,
-    base: onp.ToFloat | None = None,
+    p: _ToFloatStrictND, q: _ToFloatStrictND, base: float | None = None, *, axis: int = 0, keepdims: Literal[False] = False
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # ?d, keepdims=True
+def jensenshannon(
+    p: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+    q: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+    base: float | None = None,
     *,
     axis: int = 0,
-    keepdims: onp.ToFalse = False,
-) -> np.float32 | np.float64: ...
-@overload
+    keepdims: Literal[True],
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # 1d, keepdims=False
 def jensenshannon(
-    p: onp.ToFloatStrict1D, q: onp.ToFloatStrict1D, base: onp.ToFloat | None = None, *, axis: int = 0, keepdims: onp.ToTrue
-) -> onp.Array1D[np.float32 | np.float64]: ...
-@overload
+    p: onp.ToFloatStrict1D, q: onp.ToFloatStrict1D, base: float | None = None, *, axis: int = 0, keepdims: Literal[False] = False
+) -> np.float64: ...
+@overload  # 1d, keepdims=True
 def jensenshannon(
-    p: onp.ToFloatND, q: onp.ToFloatND, base: onp.ToFloat | None = None, *, axis: int = 0, keepdims: bool = False
-) -> np.float32 | np.float64 | onp.ArrayND[np.float32 | np.float64]: ...
+    p: onp.ToFloatStrict1D, q: onp.ToFloatStrict1D, base: float | None = None, *, axis: int = 0, keepdims: Literal[True]
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d, keepdims=False
+def jensenshannon(
+    p: onp.ToFloatStrict2D, q: onp.ToFloatStrict2D, base: float | None = None, *, axis: int = 0, keepdims: Literal[False] = False
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d, keepdims=True
+def jensenshannon(
+    p: onp.ToFloatStrict2D, q: onp.ToFloatStrict2D, base: float | None = None, *, axis: int = 0, keepdims: Literal[True]
+) -> onp.Array2D[np.float64]: ...
+@overload  # nd, keepdims=False
+def jensenshannon(
+    p: onp.ToFloatND, q: onp.ToFloatND, base: float | None = None, *, axis: int = 0, keepdims: Literal[False] = False
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # nd, keepdims=True
+def jensenshannon(
+    p: onp.ToFloatND, q: onp.ToFloatND, base: float | None = None, *, axis: int = 0, keepdims: Literal[True]
+) -> onp.ArrayND[np.float64]: ...
 
-# NOTE: The output of the following functions is always real, but complex input usually results in a `ComplexWarning` at runtime.
-def braycurtis(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
-def canberra(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
-def chebyshev(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> npc.floating: ...
-def cityblock(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> npc.floating: ...
-def dice(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
+# NOTE: These technically also accept complex inputs, but will unsafely downcast to float and emit a warning, so we disallow it.
+def braycurtis(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
+def canberra(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
+def chebyshev(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
+def cityblock(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
+def dice(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> float: ...
 def directed_hausdorff(
-    u: onp.ToComplex2D, v: onp.ToComplex2D, rng: onp.random.ToRNG | None = 0, *, seed: onp.random.ToRNG | None = None
+    u: onp.ToFloat2D, v: onp.ToFloat2D, rng: onp.random.ToRNG | None = 0, *, seed: onp.random.ToRNG | None = None
 ) -> tuple[float, int, int]: ...
-def hamming(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
-def euclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
-def jaccard(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToBool1D | None = None) -> np.float64: ...
-def minkowski(u: onp.ToComplex1D, v: onp.ToComplex1D, p: float = 2, w: onp.ToFloat1D | None = None) -> float: ...
-def rogerstanimoto(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
-def russellrao(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
-def seuclidean(u: onp.ToComplex1D, v: onp.ToComplex1D, V: onp.ToFloat1D) -> float: ...
-def yule(u: onp.ToComplex1D, v: onp.ToComplex1D, w: onp.ToFloat1D | None = None) -> float: ...
+def hamming(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> np.float64: ...
+def euclidean(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> float: ...
+def jaccard(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToBool1D | None = None) -> np.float64: ...
+def minkowski(u: onp.ToFloat1D, v: onp.ToFloat1D, p: float = 2, w: onp.ToFloat1D | None = None) -> float: ...
+def rogerstanimoto(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> float: ...
+def russellrao(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> float: ...
+def seuclidean(u: onp.ToFloat1D, v: onp.ToFloat1D, V: onp.ToFloat1D) -> float: ...
+def yule(u: onp.ToFloat1D, v: onp.ToFloat1D, w: onp.ToFloat1D | None = None) -> float: ...
 
 #
 def num_obs_dm(d: onp.ToArray2D) -> int: ...
