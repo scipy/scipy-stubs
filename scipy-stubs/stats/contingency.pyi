@@ -23,6 +23,9 @@ _to_floating: TypeAlias = npc.floating | npc.integer | np.bool_  # noqa: PYI042
 
 ###
 
+# NOTE: On numpy<2.1, pyright reports 12 false positive incompatible overload errors here.
+# pyright: reportOverlappingOverload=false
+
 class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, int, onp.ArrayND[np.float64]], Generic[_ShapeT_co]):
     @property
     def statistic(self, /) -> np.float64: ...
