@@ -148,7 +148,7 @@ def cho_factor(
     check_finite: bool = True,
 ) -> tuple[onp.ArrayND[np.complex128], bool]: ...
 
-# keep in sync with `cho_solve_banded`
+# keep in sync with `cho_solve_banded` and `lu_solve` in `_decomp_lu`
 @overload  # ?d +f64\+f32, ?d +f64
 def cho_solve(  # type: ignore[overload-overlap]
     c_and_lower: tuple[onp.ToArrayND[float, _as_f64], bool],
