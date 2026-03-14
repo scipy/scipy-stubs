@@ -103,6 +103,9 @@ _ToFloatStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer, _JustAnySh
 
 ###
 
+# NOTE: on numpy<2.1 pyright reports a false positive error for overload 2 of `jensenshannon`
+# pyright: reportOverlappingOverload=false
+
 # TODO(@jorenham): metric-specific overloads
 # https://github.com/scipy/scipy-stubs/issues/404
 @overload
