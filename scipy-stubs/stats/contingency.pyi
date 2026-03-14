@@ -16,13 +16,14 @@ __all__ = ["association", "chi2_contingency", "crosstab", "expected_freq", "marg
 ###
 
 _NumericScalarT = TypeVar("_NumericScalarT", bound=npc.number | np.timedelta64)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 _to_floating: TypeAlias = npc.floating | npc.integer | np.bool_  # noqa: PYI042
 
 ###
 
-class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, int, onp.ArrayND[np.float64, _ShapeT]], Generic[_ShapeT]):
+class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, int, onp.ArrayND[np.float64]], Generic[_ShapeT_co]):
     @property
     def statistic(self, /) -> np.float64: ...
     @property
@@ -30,14 +31,14 @@ class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, int, onp.ArrayND[n
     @property
     def dof(self, /) -> int: ...
     @property
-    def expected_freq(self, /) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    def expected_freq(self, /) -> onp.ArrayND[np.float64, _ShapeT_co]: ...
 
     #
     def __new__(
-        _cls, statistic: np.float64, pvalue: np.float64, dof: int, expected_freq: onp.ArrayND[np.float64, _ShapeT]
+        _cls, statistic: np.float64, pvalue: np.float64, dof: int, expected_freq: onp.ArrayND[np.float64, _ShapeT_co]
     ) -> Self: ...
     def __init__(
-        self, /, statistic: np.float64, pvalue: np.float64, dof: int, expected_freq: onp.ArrayND[np.float64, _ShapeT]
+        self, /, statistic: np.float64, pvalue: np.float64, dof: int, expected_freq: onp.ArrayND[np.float64, _ShapeT_co]
     ) -> None: ...
 
 #
@@ -54,7 +55,7 @@ def expected_freq(observed: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
 
 #
 @overload
-def chi2_contingency(  # pyright: ignore[reportOverlappingOverload]
+def chi2_contingency(
     observed: onp.ArrayND[_to_floating, _ShapeT],
     correction: bool = True,
     lambda_: PowerDivergenceStatistic | float | None = None,
