@@ -105,21 +105,54 @@ assert_type(lu_solve((_c128_3d, _c128_3d), _c128_3d), onp.ArrayND[npc.complexflo
 ###
 # lu
 
-assert_type(lu(_f64_2d), tuple[onp.ArrayND[npc.floating], onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]])
-assert_type(
-    lu(_f64_2d, False, False, True, True), tuple[onp.ArrayND[np.intp], onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]]
-)
-assert_type(lu(_f64_2d, p_indices=True), tuple[onp.ArrayND[np.intp], onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]])
-assert_type(lu(_f64_2d, True), tuple[onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]])
+assert_type(lu(_bool_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i8_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i16_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i32_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_i64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_f16_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_f80_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_c64_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(lu(_c128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lu(_c160_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 
-assert_type(
-    lu(_c128_2d), tuple[onp.ArrayND[npc.complexfloating], onp.ArrayND[npc.complexfloating], onp.ArrayND[npc.complexfloating]]
-)
-assert_type(
-    lu(_c128_2d, False, False, True, True),
-    tuple[onp.ArrayND[np.intp], onp.ArrayND[npc.complexfloating], onp.ArrayND[npc.complexfloating]],
-)
-assert_type(
-    lu(_c128_2d, p_indices=True), tuple[onp.ArrayND[np.intp], onp.ArrayND[npc.complexfloating], onp.ArrayND[npc.complexfloating]]
-)
-assert_type(lu(_c128_2d, True), tuple[onp.ArrayND[npc.complexfloating], onp.ArrayND[npc.complexfloating]])
+assert_type(lu(_bool_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i8_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i16_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i32_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_i64_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_f16_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_f32_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_f64_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_f80_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_c64_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(lu(_c128_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lu(_c160_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+
+assert_type(lu(_bool_nd, permute_l=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i8_nd, permute_l=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i16_nd, permute_l=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i32_nd, permute_l=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_i64_nd, permute_l=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_f16_nd, permute_l=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_f32_nd, permute_l=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_f64_nd, permute_l=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_f80_nd, permute_l=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_c64_nd, permute_l=True), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(lu(_c128_nd, permute_l=True), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lu(_c160_nd, permute_l=True), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+
+assert_type(lu(_bool_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i8_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i16_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_i32_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_i64_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_f16_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_f32_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lu(_f64_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_f80_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lu(_c64_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(lu(_c128_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lu(_c160_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
