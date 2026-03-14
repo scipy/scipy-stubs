@@ -292,6 +292,12 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | `PearsonRResult[T: floating scalar/array, P: f64 scalar/array]`                | `>=1.14.1.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.PearsonRResult.html) |
 | `TtestResult[T: floating scalar/array]`                                        | `>=1.14.1.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.TtestResult.html)    |
 
+#### `scipy.stats.contingency`
+
+| generic type                           | `scipy-stubs` | `scipy` |                                                                                                |
+| -------------------------------------- | ------------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `Chi2ContingencyResult[S: (int, ...)]` | `>=1.17.1.2`  | `*`     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html) |
+
 ## Contributing
 
 We welcome contributions from the community! There are many ways to help improve `scipy-stubs`:
