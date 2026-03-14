@@ -3,7 +3,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.interpolate import BarycentricInterpolator, KroghInterpolator
+from scipy.interpolate import BarycentricInterpolator, KroghInterpolator, approximate_taylor_polynomial
 
 py_int_1d: list[float]
 py_int_2d: list[list[float]]
@@ -76,6 +76,6 @@ assert_type(bary_f_f32.derivatives(0), np.ndarray[tuple[Any, ...], np.dtype[np.f
 assert_type(bary_c_f32.derivatives(0), np.ndarray[tuple[Any, ...], np.dtype[np.complex128]])
 
 ###
-# TODO: test krogh_interpolate
-# TODO: test barycentric_interpolate
-# TODO: test approximate_taylor_polynomial
+# approximate_taylor_polynomial
+
+assert_type(approximate_taylor_polynomial(np.sin, 0.0, 3, 1.0), np.poly1d)
