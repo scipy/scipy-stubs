@@ -294,9 +294,9 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 
 #### `scipy.stats.contingency`
 
-| generic type                           | `scipy-stubs` | `scipy`  |                                                                                                |
-| -------------------------------------- | ------------- | -------- | ---------------------------------------------------------------------------------------------- |
-| `Chi2ContingencyResult[S: (int, ...)]` | `>=1.17.1.2`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html) |
+| generic type                           | `scipy-stubs` | `scipy` |                                                                                                |
+| -------------------------------------- | ------------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `Chi2ContingencyResult[S: (int, ...)]` | `>=1.17.1.2`  | `*`     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html) |
 
 ## Contributing
 
