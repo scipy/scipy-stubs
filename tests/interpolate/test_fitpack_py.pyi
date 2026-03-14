@@ -5,13 +5,25 @@ from typing import LiteralString, TypeAlias, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.interpolate import BSpline, bisplev, bisplrep, splantider, splder, splev, splint, splprep, splrep, sproot
-from scipy.interpolate._fitpack_py import insert, spalde
+from scipy.interpolate import (
+    BSpline,
+    bisplev,
+    bisplrep,
+    insert,
+    spalde,
+    splantider,
+    splder,
+    splev,
+    splint,
+    splprep,
+    splrep,
+    sproot,
+)
 
 ###
 
-f64_1d: onp.Array1D[np.float64]
-f64_2d: onp.Array2D[np.float64]
+_f64_1d: onp.Array1D[np.float64]
+_f64_2d: onp.Array2D[np.float64]
 
 _Float: TypeAlias = float | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
@@ -29,9 +41,9 @@ bspl: BSpline[np.float64]
 ###
 # splev
 
-assert_type(splev(f64_1d, bspl), _FloatND)
-assert_type(splev(f64_1d, tck_1d), _FloatND)
-assert_type(splev(f64_1d, tck_2d), list[_FloatND])
+assert_type(splev(_f64_1d, bspl), _FloatND)
+assert_type(splev(_f64_1d, tck_1d), _FloatND)
+assert_type(splev(_f64_1d, tck_2d), list[_FloatND])
 
 ###
 # splint
@@ -55,10 +67,10 @@ assert_type(sproot(tck_2d), list[_Float1D])
 
 assert_type(spalde(0.5, tck_1d), _Float1D)
 assert_type(spalde(0.5, tck_2d), list[_Float1D])
-assert_type(spalde(f64_1d, tck_1d), list[_Float1D])
-assert_type(spalde(f64_1d, tck_2d), list[list[_Float1D]])
-assert_type(spalde(f64_2d, tck_1d), list[list[_Float1D]])
-assert_type(spalde(f64_2d, tck_2d), list[list[list[_Float1D]]])
+assert_type(spalde(_f64_1d, tck_1d), list[_Float1D])
+assert_type(spalde(_f64_1d, tck_2d), list[list[_Float1D]])
+assert_type(spalde(_f64_2d, tck_1d), list[list[_Float1D]])
+assert_type(spalde(_f64_2d, tck_2d), list[list[list[_Float1D]]])
 
 ###
 # insert
@@ -81,22 +93,22 @@ assert_type(splantider(tck_2d), _TCK2D)
 ###
 # splrep
 
-assert_type(splrep(f64_1d, f64_1d), _TCK1D)
-assert_type(splrep(f64_1d, f64_1d, full_output=True), tuple[_TCK1D, float, int, LiteralString])
+assert_type(splrep(_f64_1d, _f64_1d), _TCK1D)
+assert_type(splrep(_f64_1d, _f64_1d, full_output=True), tuple[_TCK1D, float, int, LiteralString])
 
 ###
 # splprep
 
-assert_type(splprep(f64_2d), _OutTCKU1)
-assert_type(splprep(f64_2d, full_output=True), tuple[_OutTCKU1, float, int, LiteralString])
+assert_type(splprep(_f64_2d), _OutTCKU1)
+assert_type(splprep(_f64_2d, full_output=True), tuple[_OutTCKU1, float, int, LiteralString])
 
 ###
 # bisplrep
 
-assert_type(bisplrep(f64_1d, f64_1d, f64_1d), _OutTCK2)
-assert_type(bisplrep(f64_1d, f64_1d, f64_1d, full_output=True), tuple[_OutTCK2, float, int, LiteralString])
+assert_type(bisplrep(_f64_1d, _f64_1d, _f64_1d), _OutTCK2)
+assert_type(bisplrep(_f64_1d, _f64_1d, _f64_1d, full_output=True), tuple[_OutTCK2, float, int, LiteralString])
 
 ###
 # bisplev
 
-assert_type(bisplev(f64_1d, f64_1d, tck_1d), _Float2D)
+assert_type(bisplev(_f64_1d, _f64_1d, tck_1d), _Float2D)
