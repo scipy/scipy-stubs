@@ -4,11 +4,23 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from scipy.linalg import lu, lu_factor, lu_solve
 
 ###
+
+_bool_1d: onp.Array1D[np.bool_]
+_i8_1d: onp.Array1D[np.int8]
+_i16_1d: onp.Array1D[np.int16]
+_i32_1d: onp.Array1D[np.int32]
+_i64_1d: onp.Array1D[np.int64]
+_f16_1d: onp.Array1D[np.float16]
+_f32_1d: onp.Array1D[np.float32]
+_f64_1d: onp.Array1D[np.float64]
+_f80_1d: onp.Array1D[np.float128]
+_c64_1d: onp.Array1D[np.complex64]
+_c128_1d: onp.Array1D[np.complex128]
+_c160_1d: onp.Array1D[np.complex256]
 
 _bool_2d: onp.Array2D[np.bool_]
 _i8_2d: onp.Array2D[np.int8]
@@ -48,9 +60,6 @@ _f80_nd: onp.ArrayND[np.float128]
 _c64_nd: onp.ArrayND[np.complex64]
 _c128_nd: onp.ArrayND[np.complex128]
 _c160_nd: onp.ArrayND[np.complex256]
-
-_f64_1d: onp.Array1D[np.float64]
-_c128_1d: onp.Array1D[np.complex128]
 
 ###
 # lu_factor
@@ -97,10 +106,19 @@ assert_type(lu_factor(_c160_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[n
 ###
 # lu_solve
 
-assert_type(lu_solve((_f64_2d, _f64_1d), _f64_1d), onp.Array2D[npc.floating])
-assert_type(lu_solve((_f64_3d, _f64_3d), _f64_3d), onp.ArrayND[npc.floating])
-assert_type(lu_solve((_c128_2d, _c128_1d), _c128_1d), onp.Array2D[npc.complexfloating])
-assert_type(lu_solve((_c128_3d, _c128_3d), _c128_3d), onp.ArrayND[npc.complexfloating])
+assert_type(lu_solve((_bool_2d, _i32_1d), _bool_1d), onp.ArrayND[np.float32])
+assert_type(lu_solve((_i8_2d, _i32_1d), _i8_1d), onp.ArrayND[np.float32])
+assert_type(lu_solve((_i16_2d, _i32_1d), _i16_1d), onp.ArrayND[np.float32])
+assert_type(lu_solve((_i32_2d, _i32_1d), _i32_1d), onp.ArrayND[np.float64])
+assert_type(lu_solve((_i64_2d, _i32_1d), _i64_1d), onp.ArrayND[np.float64])
+assert_type(lu_solve((_i64_2d, _i32_1d), _i64_1d), onp.ArrayND[np.float64])
+assert_type(lu_solve((_f16_2d, _i32_1d), _f16_1d), onp.ArrayND[np.float32])
+assert_type(lu_solve((_f32_2d, _i32_1d), _f32_1d), onp.ArrayND[np.float32])
+assert_type(lu_solve((_f64_2d, _i32_1d), _f64_1d), onp.ArrayND[np.float64])
+assert_type(lu_solve((_f80_2d, _i32_1d), _f80_1d), onp.ArrayND[np.float64])
+assert_type(lu_solve((_c64_2d, _i32_1d), _c64_1d), onp.ArrayND[np.complex64])
+assert_type(lu_solve((_c128_2d, _i32_1d), _c128_1d), onp.ArrayND[np.complex128])
+assert_type(lu_solve((_c160_2d, _i32_1d), _c160_1d), onp.ArrayND[np.complex128])
 
 ###
 # lu
