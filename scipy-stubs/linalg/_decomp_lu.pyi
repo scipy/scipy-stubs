@@ -17,7 +17,7 @@ _PivND: TypeAlias = onp.ToArrayND[int, npc.integer]
 _Trans: TypeAlias = Literal[0, 1, 2]
 
 # workaround for mypy & pyright's failure to conform to the overload typing specification
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never]
+_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
 
 ###
 
