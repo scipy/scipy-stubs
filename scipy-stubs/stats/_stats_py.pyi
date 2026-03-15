@@ -90,6 +90,7 @@ __all__ = [
 _SCT = TypeVar("_SCT", bound=np.generic)
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_IntegerT = TypeVar("_IntegerT", bound=npc.integer)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _FloatT = TypeVar("_FloatT", bound=npc.floating, default=npc.floating)
 _RealT = TypeVar("_RealT", bound=_Real0D, default=_Real0D)
@@ -186,7 +187,7 @@ class ConfidenceInterval(NamedTuple, Generic[_FloatOrArrayT_co]):
     high: _FloatOrArrayT_co
 
 class DescribeResult(NamedTuple, Generic[_RealOrArrayT_co, _FloatOrArrayT_co]):
-    nobs: int
+    nobs: np.int64
     minmax: tuple[_RealOrArrayT_co, _RealOrArrayT_co]
     mean: _FloatOrArrayT_co
     variance: _FloatOrArrayT_co
@@ -1092,10 +1093,67 @@ def kurtosis(
     keepdims: L[True],
 ) -> onp.ArrayND[npc.floating]: ...
 
-# TODO(@jorenham): improve
+#
+@overload  # ?d T@integer, axis=None
+def describe(
+    a: onp.ArrayND[_IntegerT], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_IntegerT, np.float64]: ...
+@overload  # ?d T@floating, axis=None
+def describe(
+    a: onp.ArrayND[_FloatT], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_FloatT, _FloatT]: ...
+@overload  # ?d T@integer
+def describe(
+    a: onp.ArrayND[_IntegerT, _JustAnyShape], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_IntegerT | onp.ArrayND[_IntegerT], np.float64 | onp.ArrayND[np.float64]]: ...
+@overload  # ?d T@floating
+def describe(
+    a: onp.ArrayND[_FloatT, _JustAnyShape], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_FloatT | onp.ArrayND[_FloatT], _FloatT | onp.ArrayND[_FloatT]]: ...
+@overload  # 1d int
+def describe(
+    a: Sequence[int], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[np.int_, np.float64]: ...
+@overload  # 1d float
+def describe(
+    a: list[float], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[np.float64, np.float64]: ...
+@overload  # 1d T@integer
+def describe(
+    a: onp.Array1D[_IntegerT], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_IntegerT, np.float64]: ...
+@overload  # 1d T@floating
+def describe(
+    a: onp.Array1D[_FloatT], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_FloatT, _FloatT]: ...
+@overload  # 2d int
+def describe(
+    a: Sequence[Sequence[int]], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[onp.Array1D[np.int_], onp.Array1D[np.float64]]: ...
+@overload  # 2d int, axis=None
+def describe(
+    a: Sequence[Sequence[int]], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[np.int_, np.float64]: ...
+@overload  # 2d float
+def describe(
+    a: Sequence[list[float]], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+@overload  # 2d float, axis=None
+def describe(
+    a: Sequence[list[float]], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[np.float64, np.float64]: ...
+@overload  # 2d T@integer
+def describe(
+    a: onp.Array2D[_IntegerT], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[onp.Array1D[_IntegerT], onp.Array1D[np.float64]]: ...
+@overload  # 2d T@floating
+def describe(
+    a: onp.Array2D[_FloatT], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[onp.Array1D[_FloatT], onp.Array1D[_FloatT]]: ...
+@overload  # fallback
 def describe(
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
-) -> DescribeResult: ...
+) -> DescribeResult[Any, Any]: ...
 
 # keep in sync with `kurtosistest`, `normaltest`, and `jarque_bera`
 @overload  # ?d ~f64, axis=None (default)

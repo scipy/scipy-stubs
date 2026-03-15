@@ -101,6 +101,7 @@ _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
 
+_py_i_1d: list[int]
 _py_f_1d: list[float]
 
 ###
@@ -129,7 +130,19 @@ assert_type(gstd(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:igno
 
 # describe
 
-assert_type(describe(_f64_1d), DescribeResult)
+assert_type(describe(_py_i_1d), DescribeResult[np.int_, np.float64])
+assert_type(describe(_py_f_1d), DescribeResult[np.float64, np.float64])
+assert_type(describe(_intp_1d), DescribeResult[np.int_, np.float64])
+assert_type(describe(_f32_1d), DescribeResult[np.float32, np.float32])
+assert_type(describe(_f64_1d), DescribeResult[np.float64, np.float64])
+assert_type(describe(_f64_2d), DescribeResult[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+
+assert_type(describe(_py_i_1d, axis=None), DescribeResult[np.int_, np.float64])
+assert_type(describe(_py_f_1d, axis=None), DescribeResult[np.float64, np.float64])
+assert_type(describe(_intp_1d, axis=None), DescribeResult[np.int_, np.float64])
+assert_type(describe(_f32_1d, axis=None), DescribeResult[np.float32, np.float32])
+assert_type(describe(_f64_1d, axis=None), DescribeResult[np.float64, np.float64])
+assert_type(describe(_f64_2d, axis=None), DescribeResult[np.float64, np.float64])
 
 # skewtest
 
