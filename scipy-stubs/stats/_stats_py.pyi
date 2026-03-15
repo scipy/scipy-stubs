@@ -163,6 +163,8 @@ class _TestResultBunch(
     def statistic(self, /) -> _FloatOrArrayT_co: ...
     @property
     def pvalue(self, /) -> _FloatOrArrayT2_co: ...
+
+    #
     def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT2_co) -> Self: ...
     def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT2_co) -> None: ...
 
@@ -1120,10 +1122,79 @@ def normaltest(
     a: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
 ) -> NormaltestResult: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d ~f64, axis=None (default)
 def jarque_bera(
-    x: onp.ToFloatND, *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: bool = False
-) -> SignificanceResult: ...
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    *,
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload  # ?d ~f64, axis=<given>
+def jarque_bera(
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    *,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload  # Nd ~f64, keepdims=True
+def jarque_bera(
+    x: onp.ArrayND[npc.floating64 | npc.integer, _ShapeT],
+    *,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+@overload  # ?d ~f64, keepdims=True
+def jarque_bera(
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    *,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~f32, axis=None (default)
+def jarque_bera(
+    x: onp.ToJustFloat32_ND, *, axis: None = None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> SignificanceResult[np.float32]: ...
+@overload  # ?d ~f32, axis=<given>
+def jarque_bera(
+    x: onp.ToJustFloat32_ND, *, axis: int, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
+@overload  # Nd ~f32, keepdims=True
+def jarque_bera(
+    x: onp.ArrayND[np.float32, _ShapeT], *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> SignificanceResult[onp.ArrayND[np.float32, _ShapeT]]: ...
+@overload  # ?d ~f32, keepdims=True
+def jarque_bera(
+    x: onp.ToJustFloat32_ND, *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d floating, axis=None (default)
+def jarque_bera(
+    x: onp.ToArrayND[npc.floating, npc.floating],
+    *,
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64 | Any]: ...
+@overload  # ?d floating, axis=<given>
+def jarque_bera(
+    x: onp.ToArrayND[npc.floating, npc.floating], *, axis: int, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # Nd floating, keepdims=True
+def jarque_bera(
+    x: onp.ArrayND[npc.floating, _ShapeT], *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> SignificanceResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
+@overload  # ?d floating, keepdims=True
+def jarque_bera(
+    x: onp.ToArrayND[npc.floating, npc.floating],
+    *,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 
 #
 @overload
@@ -1184,6 +1255,8 @@ def percentileofscore(
 def cumfreq(
     a: onp.ToFloatND, numbins: int = 10, defaultreallimits: _RealLimits | None = None, weights: onp.ToFloatND | None = None
 ) -> CumfreqResult: ...
+
+#
 def relfreq(
     a: onp.ToFloatND, numbins: int = 10, defaultreallimits: _RealLimits | None = None, weights: onp.ToFloatND | None = None
 ) -> RelfreqResult: ...
