@@ -131,11 +131,33 @@ assert_type(gstd(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:igno
 
 assert_type(describe(_f64_1d), DescribeResult)
 
-# skewtest, kurtosistest, normaltest
+# skewtest
 
 assert_type(skewtest(_f64_1d), SkewtestResult)
+
+# kurtosistest
+
 assert_type(kurtosistest(_f64_1d), KurtosistestResult)
-assert_type(normaltest(_f64_1d), NormaltestResult)
+
+# normaltest
+
+assert_type(normaltest(_py_f_1d), NormaltestResult[np.float64])
+assert_type(normaltest(_intp_1d), NormaltestResult[np.float64])
+assert_type(normaltest(_f32_1d), NormaltestResult[np.float32])
+assert_type(normaltest(_f64_1d), NormaltestResult[np.float64])
+assert_type(normaltest(_f64_2d), NormaltestResult[np.float64])
+
+assert_type(normaltest(_py_f_1d, axis=1), NormaltestResult[onp.ArrayND[np.float64]])
+assert_type(normaltest(_intp_1d, axis=1), NormaltestResult[onp.ArrayND[np.float64]])
+assert_type(normaltest(_f32_1d, axis=1), NormaltestResult[onp.ArrayND[np.float32]])
+assert_type(normaltest(_f64_1d, axis=1), NormaltestResult[onp.ArrayND[np.float64]])
+assert_type(normaltest(_f64_2d, axis=1), NormaltestResult[onp.ArrayND[np.float64]])
+
+assert_type(normaltest(_py_f_1d, keepdims=True), NormaltestResult[onp.ArrayND[np.float64]])
+assert_type(normaltest(_intp_1d, keepdims=True), NormaltestResult[onp.Array1D[np.float64]])
+assert_type(normaltest(_f32_1d, keepdims=True), NormaltestResult[onp.Array1D[np.float32]])
+assert_type(normaltest(_f64_1d, keepdims=True), NormaltestResult[onp.Array1D[np.float64]])
+assert_type(normaltest(_f64_2d, keepdims=True), NormaltestResult[onp.Array2D[np.float64]])
 
 # jarque_bera
 
