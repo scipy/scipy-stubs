@@ -1137,7 +1137,15 @@ def scoreatpercentile(
 @overload
 def scoreatpercentile(
     a: onp.ToFloat1D,
-    per: onp.ArrayND[npc.floating, _ShapeT],
+    per: Sequence[onp.ToFloat],
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    axis: int | None = None,
+) -> onp.Array1D[np.float64]: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloat1D,
+    per: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: _QuantileInterpolation = "fraction",
     axis: int | None = None,
@@ -1158,8 +1166,12 @@ def percentileofscore(
 ) -> np.float64: ...
 @overload
 def percentileofscore(
+    a: onp.ToFloat1D, score: Sequence[onp.ToFloat], kind: _PercentileInterpolation = "rank", nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.float64]: ...
+@overload
+def percentileofscore(
     a: onp.ToFloat1D,
-    score: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+    score: onp.ArrayND[npc.floating, _ShapeT],
     kind: _PercentileInterpolation = "rank",
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
