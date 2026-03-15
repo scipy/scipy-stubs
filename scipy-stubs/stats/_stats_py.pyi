@@ -118,6 +118,8 @@ _FloatOrND: TypeAlias = _ScalarOrND[_FloatT]
 _RealOrND: TypeAlias = _ScalarOrND[_RealT]
 
 _InterpolationMethod: TypeAlias = L["linear", "lower", "higher", "nearest", "midpoint"]
+_QuantileInterpolation: TypeAlias = L["fraction", "lower", "higher"]
+_PercentileInterpolation: TypeAlias = L["rank", "weak", "strict", "mean"]
 _TrimTail: TypeAlias = L["left", "right"]
 _KendallTauMethod: TypeAlias = L["auto", "asymptotic", "exact"]
 _KendallTauVariant: TypeAlias = L["b", "c"]
@@ -1127,17 +1129,17 @@ def jarque_bera(
 @overload
 def scoreatpercentile(
     a: onp.ToFloat1D,
-    per: float,
+    per: onp.ToFloat,
     limit: _RealLimits | tuple[()] = (),
-    interpolation_method: L["fraction", "lower", "higher"] = "fraction",
+    interpolation_method: _QuantileInterpolation = "fraction",
     axis: int | None = None,
 ) -> np.float64: ...
 @overload
 def scoreatpercentile(
     a: onp.ToFloat1D,
-    per: onp.ArrayND[np.floating, _ShapeT],
+    per: onp.ArrayND[npc.floating, _ShapeT],
     limit: _RealLimits | tuple[()] = (),
-    interpolation_method: L["fraction", "lower", "higher"] = "fraction",
+    interpolation_method: _QuantileInterpolation = "fraction",
     axis: int | None = None,
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload
@@ -1145,17 +1147,26 @@ def scoreatpercentile(
     a: onp.ToFloat1D,
     per: onp.ToFloatND,
     limit: _RealLimits | tuple[()] = (),
-    interpolation_method: L["fraction", "lower", "higher"] = "fraction",
+    interpolation_method: _QuantileInterpolation = "fraction",
     axis: int | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 
 #
+@overload
+def percentileofscore(
+    a: onp.ToFloat1D, score: onp.ToFloat, kind: _PercentileInterpolation = "rank", nan_policy: NanPolicy = "propagate"
+) -> np.float64: ...
+@overload
 def percentileofscore(
     a: onp.ToFloat1D,
-    score: onp.ToFloat | onp.ToFloatND,
-    kind: L["rank", "weak", "strict", "mean"] = "rank",
+    score: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+    kind: _PercentileInterpolation = "rank",
     nan_policy: NanPolicy = "propagate",
-) -> np.float64: ...
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload
+def percentileofscore(
+    a: onp.ToFloat1D, score: onp.ToFloatND, kind: _PercentileInterpolation = "rank", nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[np.float64]: ...
 
 #
 def cumfreq(
