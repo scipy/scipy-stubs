@@ -30,7 +30,7 @@ __all__ = [
 ]
 
 _SCT = TypeVar("_SCT", bound=npc.number | np.bool_)
-_ISCT = TypeVar("_ISCT", bound=npc.inexact, default=npc.inexact)
+_ISCT = TypeVar("_ISCT", bound=npc.inexact)
 
 __Func1: TypeAlias = Callable[[onp.ToComplex | onp.ToComplexND], onp.ToComplex]
 __Func2: TypeAlias = Callable[[onp.ToComplex | onp.ToComplexND, onp.ToComplex | onp.ToComplexND], onp.ToComplex]
