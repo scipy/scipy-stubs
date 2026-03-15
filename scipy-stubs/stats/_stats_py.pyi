@@ -632,29 +632,9 @@ def tvar(
     keepdims: L[True],
 ) -> onp.ArrayND[np.complex128]: ...
 
-# TODO(jorenham): improve like `tvar`
-def tstd(
-    a: onp.ToFloatND,
-    limits: _RealLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int | None = 0,
-    ddof: int = 1,
-    *,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> _FloatOrND: ...
-
-# TODO(jorenham): improve like `tvar`
-def tsem(
-    a: onp.ToFloatND,
-    limits: _RealLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int | None = 0,
-    ddof: int = 1,
-    *,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> _FloatOrND: ...
+# same signatures, different implementations
+tstd = tvar
+tsem = tvar
 
 # TODO(jorenham): improve like `tvar`
 def tmin(
