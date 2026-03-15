@@ -91,6 +91,8 @@ _bool_2d: onp.Array2D[np.bool_]
 _bool_nd: onp.ArrayND[np.bool_]
 
 _intp_1d: onp.Array1D[np.intp]
+_intp_2d: onp.Array2D[np.intp]
+_intp_nd: onp.ArrayND[np.intp]
 
 _f32_1d: onp.Array1D[np.float32]
 _f32_2d: onp.Array2D[np.float32]
@@ -101,8 +103,21 @@ _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
 
+_c64_1d: onp.Array1D[np.complex64]
+_c64_2d: onp.Array2D[np.complex64]
+_c64_nd: onp.ArrayND[np.complex64]
+
+_c128_1d: onp.Array1D[np.complex128]
+_c128_2d: onp.Array2D[np.complex128]
+_c128_nd: onp.ArrayND[np.complex128]
+
 _py_i_1d: list[int]
 _py_f_1d: list[float]
+_py_c_1d: list[complex]
+
+_py_i_2d: list[list[int]]
+_py_f_2d: list[list[float]]
+_py_c_2d: list[list[complex]]
 
 ###
 
@@ -112,14 +127,93 @@ assert_type(gmean(_f64_1d), npc.integer | npc.floating | onp.ArrayND[npc.integer
 assert_type(hmean(_f64_1d), npc.integer | npc.floating | onp.ArrayND[npc.integer | npc.floating])
 assert_type(pmean(_f64_1d, 2), npc.integer | npc.floating | onp.ArrayND[npc.integer | npc.floating])
 
-# tmean, tvar, tmin, tmax, tstd, tsem
+# tmean
 
 assert_type(tmean(_f64_1d), npc.floating | onp.ArrayND[npc.floating])
-assert_type(tvar(_f64_1d), npc.floating | onp.ArrayND[npc.floating])
-assert_type(tmin(_f64_1d), npc.integer | npc.floating | onp.ArrayND[npc.integer | npc.floating])
-assert_type(tmax(_f64_1d), npc.integer | npc.floating | onp.ArrayND[npc.integer | npc.floating])
+
+# tvar
+
+assert_type(tvar(_py_i_1d), np.float64)
+assert_type(tvar(_py_f_1d), np.float64)
+assert_type(tvar(_py_c_1d), np.complex128)
+assert_type(tvar(_intp_1d), np.float64)
+assert_type(tvar(_f32_1d), np.float32)
+assert_type(tvar(_f64_1d), np.float64)
+assert_type(tvar(_c64_1d), np.complex64)
+assert_type(tvar(_c128_1d), np.complex128)
+assert_type(tvar(_py_i_2d), onp.Array1D[np.float64])
+assert_type(tvar(_py_f_2d), onp.Array1D[np.float64])
+assert_type(tvar(_py_c_2d), onp.Array1D[np.complex128])
+assert_type(tvar(_intp_2d), onp.Array1D[np.float64])
+assert_type(tvar(_f32_2d), onp.Array1D[np.float32])
+assert_type(tvar(_f64_2d), onp.Array1D[np.float64])
+assert_type(tvar(_c64_2d), onp.Array1D[np.complex64])
+assert_type(tvar(_c128_2d), onp.Array1D[np.complex128])
+assert_type(tvar(_intp_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(tvar(_f32_nd), np.float32 | onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
+assert_type(tvar(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(tvar(_c64_nd), np.complex64 | onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
+assert_type(tvar(_c128_nd), np.complex128 | onp.ArrayND[np.complex128])  # pyrefly:ignore[assert-type]
+
+assert_type(tvar(_py_i_1d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(tvar(_py_f_1d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(tvar(_py_c_1d, keepdims=True), onp.ArrayND[np.complex128])
+assert_type(tvar(_intp_1d, keepdims=True), onp.Array1D[np.float64])
+assert_type(tvar(_f32_1d, keepdims=True), onp.Array1D[np.float32])
+assert_type(tvar(_f64_1d, keepdims=True), onp.Array1D[np.float64])
+assert_type(tvar(_c64_1d, keepdims=True), onp.Array1D[np.complex64])
+assert_type(tvar(_c128_1d, keepdims=True), onp.Array1D[np.complex128])
+assert_type(tvar(_py_i_2d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(tvar(_py_f_2d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(tvar(_py_c_2d, keepdims=True), onp.ArrayND[np.complex128])
+assert_type(tvar(_intp_2d, keepdims=True), onp.Array2D[np.float64])
+assert_type(tvar(_f32_2d, keepdims=True), onp.Array2D[np.float32])
+assert_type(tvar(_f64_2d, keepdims=True), onp.Array2D[np.float64])
+assert_type(tvar(_c64_2d, keepdims=True), onp.Array2D[np.complex64])
+assert_type(tvar(_c128_2d, keepdims=True), onp.Array2D[np.complex128])
+assert_type(tvar(_intp_nd, keepdims=True), onp.ArrayND[np.float64])
+assert_type(tvar(_f32_nd, keepdims=True), onp.ArrayND[np.float32])
+assert_type(tvar(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
+assert_type(tvar(_c64_nd, keepdims=True), onp.ArrayND[np.complex64])
+assert_type(tvar(_c128_nd, keepdims=True), onp.ArrayND[np.complex128])
+
+assert_type(tvar(_py_i_1d, axis=None), np.float64)
+assert_type(tvar(_py_f_1d, axis=None), np.float64)
+assert_type(tvar(_py_c_1d, axis=None), np.complex128)
+assert_type(tvar(_intp_1d, axis=None), np.float64)
+assert_type(tvar(_f32_1d, axis=None), np.float32)
+assert_type(tvar(_f64_1d, axis=None), np.float64)
+assert_type(tvar(_c64_1d, axis=None), np.complex64)
+assert_type(tvar(_c128_1d, axis=None), np.complex128)
+assert_type(tvar(_py_i_2d, axis=None), np.float64)
+assert_type(tvar(_py_f_2d, axis=None), np.float64)
+assert_type(tvar(_py_c_2d, axis=None), np.complex128)
+assert_type(tvar(_intp_2d, axis=None), np.float64)
+assert_type(tvar(_f32_2d, axis=None), np.float32)
+assert_type(tvar(_f64_2d, axis=None), np.float64)
+assert_type(tvar(_c64_2d, axis=None), np.complex64)
+assert_type(tvar(_c128_2d, axis=None), np.complex128)
+assert_type(tvar(_intp_nd, axis=None), np.float64)
+assert_type(tvar(_f32_nd, axis=None), np.float32)
+assert_type(tvar(_f64_nd, axis=None), np.float64)
+assert_type(tvar(_c64_nd, axis=None), np.complex64)
+assert_type(tvar(_c128_nd, axis=None), np.complex128)
+
+# tstd
+
 assert_type(tstd(_f64_1d), npc.floating | onp.ArrayND[npc.floating])
+
+# tsem
+
 assert_type(tsem(_f64_1d), npc.floating | onp.ArrayND[npc.floating])
+
+# tmin
+
+assert_type(tmin(_f64_1d), npc.integer | npc.floating | onp.ArrayND[npc.integer | npc.floating])
+
+# tmax
+
+assert_type(tmax(_f64_1d), npc.integer | npc.floating | onp.ArrayND[npc.integer | npc.floating])
 
 # gstd
 
