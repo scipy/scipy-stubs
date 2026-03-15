@@ -90,8 +90,9 @@ __all__ = [
 _SCT = TypeVar("_SCT", bound=np.generic)
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_IntegerT = TypeVar("_IntegerT", bound=npc.integer)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_FloatT = TypeVar("_FloatT", bound=npc.floating, default=npc.floating)
+_FloatT = TypeVar("_FloatT", bound=npc.floating)
 _RealT = TypeVar("_RealT", bound=_Real0D, default=_Real0D)
 _RealT_co = TypeVar("_RealT_co", bound=_Real0D, default=_Real0D, covariant=True)
 
@@ -114,10 +115,12 @@ _RealOrArrayT_co = TypeVar("_RealOrArrayT_co", bound=_ScalarOrND[_Real0D], defau
 _Real0D: TypeAlias = npc.integer | npc.floating
 
 _ScalarOrND: TypeAlias = _SCT | onp.ArrayND[_SCT]
-_FloatOrND: TypeAlias = _ScalarOrND[_FloatT]
+_FloatOrND: TypeAlias = _ScalarOrND[npc.floating]
 _RealOrND: TypeAlias = _ScalarOrND[_RealT]
 
 _InterpolationMethod: TypeAlias = L["linear", "lower", "higher", "nearest", "midpoint"]
+_QuantileInterpolation: TypeAlias = L["fraction", "lower", "higher"]
+_PercentileInterpolation: TypeAlias = L["rank", "weak", "strict", "mean"]
 _TrimTail: TypeAlias = L["left", "right"]
 _KendallTauMethod: TypeAlias = L["auto", "asymptotic", "exact"]
 _KendallTauVariant: TypeAlias = L["b", "c"]
@@ -126,7 +129,11 @@ _KS2TestMethod: TypeAlias = L["auto", "exact", "asymp"]
 _CombinePValuesMethod: TypeAlias = L["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"]
 _RankMethod: TypeAlias = L["average", "min", "max", "dense", "ordinal"]
 
-_RealLimits: TypeAlias = tuple[float | _Real0D, float | _Real0D]
+_RealLimit: TypeAlias = float | _Real0D
+_RealLimits: TypeAlias = tuple[_RealLimit, _RealLimit]
+_ComplexLimit: TypeAlias = complex | npc.number
+_ComplexLimits: TypeAlias = tuple[_ComplexLimit, _ComplexLimit]
+
 _Weigher: TypeAlias = Callable[[int], float | _Real0D]
 
 _JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
@@ -161,10 +168,15 @@ class _TestResultBunch(
     def statistic(self, /) -> _FloatOrArrayT_co: ...
     @property
     def pvalue(self, /) -> _FloatOrArrayT2_co: ...
+
+    #
     def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT2_co) -> Self: ...
     def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT2_co) -> None: ...
 
 ###
+
+# NOTE: On numpy<2.1, pyright reports 15 false positive incompatible overload errors here.
+# pyright: reportOverlappingOverload=false
 
 class SkewtestResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
 class KurtosistestResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
@@ -182,7 +194,7 @@ class ConfidenceInterval(NamedTuple, Generic[_FloatOrArrayT_co]):
     high: _FloatOrArrayT_co
 
 class DescribeResult(NamedTuple, Generic[_RealOrArrayT_co, _FloatOrArrayT_co]):
-    nobs: int
+    nobs: np.int64
     minmax: tuple[_RealOrArrayT_co, _RealOrArrayT_co]
     mean: _FloatOrArrayT_co
     variance: _FloatOrArrayT_co
@@ -448,74 +460,632 @@ def mode(
     a: onp.ToFloat | onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
 ) -> ModeResult: ...
 
-# TODO(jorenham): improve
+# keep in sync with `tvar`
+@overload  # ?d T@inexact
 def tmean(
-    a: onp.ToFloatND,
-    limits: _RealLimits | None = None,
+    a: onp.ArrayND[_InexactT, _JustAnyShape],
+    limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int | None = None,
+    axis: int = 0,
     *,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> _FloatOrND: ...
+    keepdims: L[False] = False,
+) -> _InexactT | onp.ArrayND[_InexactT]: ...
+@overload  # ?d +integer
+def tmean(
+    a: onp.ArrayND[npc.integer | np.bool_, _JustAnyShape],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # 1d T@inexact
+def tmean(
+    a: onp.ToArrayStrict1D[_InexactT, _InexactT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # 1d +float|integer
+def tmean(
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # 1d ~complex
+def tmean(
+    a: list[complex],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # 2d T@inexact
+def tmean(
+    a: onp.ToArrayStrict2D[_InexactT, _InexactT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[_InexactT]: ...
+@overload  # 2d +float|integer
+def tmean(
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~complex
+def tmean(
+    a: Sequence[list[complex]],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # ?d T@inexact, axis=None
+def tmean(
+    a: onp.ArrayND[_InexactT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # ?d +f64, axis=None
+def tmean(
+    a: onp.ToArrayND[float, npc.integer | np.bool_],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # ?d ~complex, axis=None
+def tmean(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # S@Nd T@inexact, keepdims=True
+def tmean(
+    a: onp.ArrayND[_InexactT, _ShapeT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # S@Nd +integer, keepdims=True
+def tmean(
+    a: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # ?d +float, keepdims=True
+def tmean(
+    a: onp.SequenceND[float],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d ~complex, keepdims=True
+def tmean(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> onp.ArrayND[np.complex128]: ...
 
-# TODO(jorenham): improve
+# keep in sync with `tmean`
+@overload  # ?d T@inexact
 def tvar(
-    a: onp.ToFloatND,
-    limits: _RealLimits | None = None,
+    a: onp.ArrayND[_InexactT, _JustAnyShape],
+    limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int | None = 0,
+    axis: int = 0,
     ddof: int = 1,
     *,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> _FloatOrND: ...
+    keepdims: L[False] = False,
+) -> _InexactT | onp.ArrayND[_InexactT]: ...
+@overload  # ?d +integer
+def tvar(
+    a: onp.ArrayND[npc.integer | np.bool_, _JustAnyShape],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # 1d T@inexact
+def tvar(
+    a: onp.ToArrayStrict1D[_InexactT, _InexactT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # 1d +float|integer
+def tvar(
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # 1d ~complex
+def tvar(
+    a: list[complex],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # 2d T@inexact
+def tvar(
+    a: onp.ToArrayStrict2D[_InexactT, _InexactT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[_InexactT]: ...
+@overload  # 2d +float|integer
+def tvar(
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~complex
+def tvar(
+    a: Sequence[list[complex]],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # ?d T@inexact, axis=None
+def tvar(
+    a: onp.ArrayND[_InexactT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: None,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # ?d +f64, axis=None
+def tvar(
+    a: onp.ToArrayND[float, npc.integer | np.bool_],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: None,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # ?d ~complex, axis=None
+def tvar(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: None,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # S@Nd T@inexact, keepdims=True
+def tvar(
+    a: onp.ArrayND[_InexactT, _ShapeT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # S@Nd +integer, keepdims=True
+def tvar(
+    a: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # ?d +float, keepdims=True
+def tvar(
+    a: onp.SequenceND[float],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d ~complex, keepdims=True
+def tvar(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> onp.ArrayND[np.complex128]: ...
 
-# TODO(jorenham): improve
+# NOTE: These have actually different implementations, but the same signature, so we're just being lazy (and slightly incorrect)
+tstd = tvar
+tsem = tvar
+
+# keep in sync with `tmax`, and structurally with `tvar` and `tmean`
+@overload  # ?d T@inexact
 def tmin(
-    a: onp.ToFloatND,
-    lowerlimit: float | _Real0D | None = None,
-    axis: int | None = 0,
+    a: onp.ArrayND[_InexactT, _JustAnyShape],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: bool = False,
-) -> _RealOrND: ...
+    keepdims: L[False] = False,
+) -> _InexactT | onp.ArrayND[_InexactT]: ...
+@overload  # ?d +integer
+def tmin(
+    a: onp.ArrayND[npc.integer | np.bool_, _JustAnyShape],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # 1d T@inexact
+def tmin(
+    a: onp.ToArrayStrict1D[_InexactT, _InexactT],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # 1d +float|integer
+def tmin(
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # 1d ~complex
+def tmin(
+    a: list[complex],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # 2d T@inexact
+def tmin(
+    a: onp.ToArrayStrict2D[_InexactT, _InexactT],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[_InexactT]: ...
+@overload  # 2d +float|integer
+def tmin(
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~complex
+def tmin(
+    a: Sequence[list[complex]],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # ?d T@inexact, axis=None
+def tmin(
+    a: onp.ArrayND[_InexactT],
+    lowerlimit: _ComplexLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # ?d +f64, axis=None
+def tmin(
+    a: onp.ToArrayND[float, npc.integer | np.bool_],
+    lowerlimit: _RealLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # ?d ~complex, axis=None
+def tmin(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    lowerlimit: _ComplexLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # S@Nd T@inexact, keepdims=True
+def tmin(
+    a: onp.ArrayND[_InexactT, _ShapeT],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # S@Nd +integer, keepdims=True
+def tmin(
+    a: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # ?d +float, keepdims=True
+def tmin(
+    a: onp.SequenceND[float],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d ~complex, keepdims=True
+def tmin(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.complex128]: ...
 
-# TODO(jorenham): improve
+# keep in sync with `tmin`, and structurally with `tvar` and `tmean`
+@overload  # ?d T@inexact
 def tmax(
-    a: onp.ToFloatND,
-    upperlimit: float | _Real0D | None = None,
-    axis: int | None = 0,
+    a: onp.ArrayND[_InexactT, _JustAnyShape],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: bool = False,
-) -> _RealOrND: ...
-
-# TODO(jorenham): improve
-def tstd(
-    a: onp.ToFloatND,
-    limits: _RealLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int | None = 0,
-    ddof: int = 1,
-    *,
+    keepdims: L[False] = False,
+) -> _InexactT | onp.ArrayND[_InexactT]: ...
+@overload  # ?d +integer
+def tmax(
+    a: onp.ArrayND[npc.integer | np.bool_, _JustAnyShape],
+    upperlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> _FloatOrND: ...
-
-# TODO(jorenham): improve
-def tsem(
-    a: onp.ToFloatND,
-    limits: _RealLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int | None = 0,
-    ddof: int = 1,
     *,
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # 1d T@inexact
+def tmax(
+    a: onp.ToArrayStrict1D[_InexactT, _InexactT],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> _FloatOrND: ...
+    *,
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # 1d +float|integer
+def tmax(
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    upperlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # 1d ~complex
+def tmax(
+    a: list[complex],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # 2d T@inexact
+def tmax(
+    a: onp.ToArrayStrict2D[_InexactT, _InexactT],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[_InexactT]: ...
+@overload  # 2d +float|integer
+def tmax(
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    upperlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~complex
+def tmax(
+    a: Sequence[list[complex]],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # ?d T@inexact, axis=None
+def tmax(
+    a: onp.ArrayND[_InexactT],
+    upperlimit: _ComplexLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # ?d +f64, axis=None
+def tmax(
+    a: onp.ToArrayND[float, npc.integer | np.bool_],
+    upperlimit: _RealLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # ?d ~complex, axis=None
+def tmax(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    upperlimit: _ComplexLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # S@Nd T@inexact, keepdims=True
+def tmax(
+    a: onp.ArrayND[_InexactT, _ShapeT],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # S@Nd +integer, keepdims=True
+def tmax(
+    a: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    upperlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # ?d +float, keepdims=True
+def tmax(
+    a: onp.SequenceND[float],
+    upperlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d ~complex, keepdims=True
+def tmax(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.complex128]: ...
 
 #
 @overload
@@ -1089,67 +1659,501 @@ def kurtosis(
 ) -> onp.ArrayND[npc.floating]: ...
 
 #
+@overload  # ?d T@integer, axis=None
+def describe(
+    a: onp.ArrayND[_IntegerT], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_IntegerT, np.float64]: ...
+@overload  # ?d T@floating, axis=None
+def describe(
+    a: onp.ArrayND[_FloatT], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_FloatT, _FloatT]: ...
+@overload  # ?d T@integer
+def describe(
+    a: onp.ArrayND[_IntegerT, _JustAnyShape], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_IntegerT | onp.ArrayND[_IntegerT], np.float64 | onp.ArrayND[np.float64]]: ...
+@overload  # ?d T@floating
+def describe(
+    a: onp.ArrayND[_FloatT, _JustAnyShape], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_FloatT | onp.ArrayND[_FloatT], _FloatT | onp.ArrayND[_FloatT]]: ...
+@overload  # 1d int
+def describe(
+    a: Sequence[int], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[np.int_, np.float64]: ...
+@overload  # 1d float
+def describe(
+    a: list[float], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[np.float64, np.float64]: ...
+@overload  # 1d T@integer
+def describe(
+    a: onp.Array1D[_IntegerT], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_IntegerT, np.float64]: ...
+@overload  # 1d T@floating
+def describe(
+    a: onp.Array1D[_FloatT], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[_FloatT, _FloatT]: ...
+@overload  # 2d int
+def describe(
+    a: Sequence[Sequence[int]], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[onp.Array1D[np.int_], onp.Array1D[np.float64]]: ...
+@overload  # 2d int, axis=None
+def describe(
+    a: Sequence[Sequence[int]], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[np.int_, np.float64]: ...
+@overload  # 2d float
+def describe(
+    a: Sequence[list[float]], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+@overload  # 2d float, axis=None
+def describe(
+    a: Sequence[list[float]], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[np.float64, np.float64]: ...
+@overload  # 2d T@integer
+def describe(
+    a: onp.Array2D[_IntegerT], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[onp.Array1D[_IntegerT], onp.Array1D[np.float64]]: ...
+@overload  # 2d T@floating
+def describe(
+    a: onp.Array2D[_FloatT], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[onp.Array1D[_FloatT], onp.Array1D[_FloatT]]: ...
+@overload  # fallback
 def describe(
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
-) -> DescribeResult: ...
+) -> DescribeResult[Any, Any]: ...
 
-# TODO(jorenham): improve
+# keep in sync with `kurtosistest`, `normaltest`, and `jarque_bera`
+@overload  # ?d ~f64, axis=None (default)
 def skewtest(
-    a: onp.ToFloatND,
-    axis: int | None = 0,
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
-    keepdims: bool = False,
-) -> SkewtestResult: ...
+    keepdims: L[False] = False,
+) -> SkewtestResult[np.float64]: ...
+@overload  # ?d ~f64, axis=<given>
+def skewtest(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> SkewtestResult[onp.ArrayND[np.float64]]: ...
+@overload  # Nd ~f64, keepdims=True
+def skewtest(
+    a: onp.ArrayND[npc.floating64 | npc.integer, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+@overload  # ?d ~f64, keepdims=True
+def skewtest(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~f32, axis=None (default)
+def skewtest(
+    a: onp.ToJustFloat32_ND,
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> SkewtestResult[np.float32]: ...
+@overload  # ?d ~f32, axis=<given>
+def skewtest(
+    a: onp.ToJustFloat32_ND,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> SkewtestResult[onp.ArrayND[np.float32]]: ...
+@overload  # Nd ~f32, keepdims=True
+def skewtest(
+    a: onp.ArrayND[np.float32, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float32, _ShapeT]]: ...
+@overload  # ?d ~f32, keepdims=True
+def skewtest(
+    a: onp.ToJustFloat32_ND,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d floating, axis=None (default)
+def skewtest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> SkewtestResult[np.float64 | Any]: ...
+@overload  # ?d floating, axis=<given>
+def skewtest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> SkewtestResult[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # Nd floating, keepdims=True
+def skewtest(
+    a: onp.ArrayND[npc.floating, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
+@overload  # ?d floating, keepdims=True
+def skewtest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float64 | Any]]: ...
 
-# TODO(jorenham): improve
+# keep in sync with `skewtest`, `normaltest`, and `jarque_bera`
+@overload  # ?d ~f64, axis=None (default)
 def kurtosistest(
-    a: onp.ToFloatND,
-    axis: int | None = 0,
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
-    keepdims: bool = False,
-) -> KurtosistestResult: ...
+    keepdims: L[False] = False,
+) -> KurtosistestResult[np.float64]: ...
+@overload  # ?d ~f64, axis=<given>
+def kurtosistest(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> KurtosistestResult[onp.ArrayND[np.float64]]: ...
+@overload  # Nd ~f64, keepdims=True
+def kurtosistest(
+    a: onp.ArrayND[npc.floating64 | npc.integer, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> KurtosistestResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+@overload  # ?d ~f64, keepdims=True
+def kurtosistest(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> KurtosistestResult[onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~f32, axis=None (default)
+def kurtosistest(
+    a: onp.ToJustFloat32_ND,
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> KurtosistestResult[np.float32]: ...
+@overload  # ?d ~f32, axis=<given>
+def kurtosistest(
+    a: onp.ToJustFloat32_ND,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> KurtosistestResult[onp.ArrayND[np.float32]]: ...
+@overload  # Nd ~f32, keepdims=True
+def kurtosistest(
+    a: onp.ArrayND[np.float32, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> KurtosistestResult[onp.ArrayND[np.float32, _ShapeT]]: ...
+@overload  # ?d ~f32, keepdims=True
+def kurtosistest(
+    a: onp.ToJustFloat32_ND,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> KurtosistestResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d floating, axis=None (default)
+def kurtosistest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> KurtosistestResult[np.float64 | Any]: ...
+@overload  # ?d floating, axis=<given>
+def kurtosistest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> KurtosistestResult[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # Nd floating, keepdims=True
+def kurtosistest(
+    a: onp.ArrayND[npc.floating, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> KurtosistestResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
+@overload  # ?d floating, keepdims=True
+def kurtosistest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> KurtosistestResult[onp.ArrayND[np.float64 | Any]]: ...
 
-# TODO(jorenham): improve
+# keep in sync with `skewtest`, `kurtosistest`, and `jarque_bera`
+@overload  # ?d ~f64, axis=None (default)
 def normaltest(
-    a: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
-) -> NormaltestResult: ...
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> NormaltestResult[np.float64]: ...
+@overload  # ?d ~f64, axis=<given>
+def normaltest(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> NormaltestResult[onp.ArrayND[np.float64]]: ...
+@overload  # Nd ~f64, keepdims=True
+def normaltest(
+    a: onp.ArrayND[npc.floating64 | npc.integer, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> NormaltestResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+@overload  # ?d ~f64, keepdims=True
+def normaltest(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> NormaltestResult[onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~f32, axis=None (default)
+def normaltest(
+    a: onp.ToJustFloat32_ND, axis: None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+) -> NormaltestResult[np.float32]: ...
+@overload  # ?d ~f32, axis=<given>
+def normaltest(
+    a: onp.ToJustFloat32_ND, axis: int, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+) -> NormaltestResult[onp.ArrayND[np.float32]]: ...
+@overload  # Nd ~f32, keepdims=True
+def normaltest(
+    a: onp.ArrayND[np.float32, _ShapeT], axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+) -> NormaltestResult[onp.ArrayND[np.float32, _ShapeT]]: ...
+@overload  # ?d ~f32, keepdims=True
+def normaltest(
+    a: onp.ToJustFloat32_ND, axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+) -> NormaltestResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d floating, axis=None (default)
+def normaltest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> NormaltestResult[np.float64 | Any]: ...
+@overload  # ?d floating, axis=<given>
+def normaltest(
+    a: onp.ToArrayND[npc.floating, npc.floating], axis: int, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+) -> NormaltestResult[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # Nd floating, keepdims=True
+def normaltest(
+    a: onp.ArrayND[npc.floating, _ShapeT], axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+) -> NormaltestResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
+@overload  # ?d floating, keepdims=True
+def normaltest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> NormaltestResult[onp.ArrayND[np.float64 | Any]]: ...
 
-# TODO(jorenham): improve
+# keep in sync with `skewtest`, `kurtosistest`, and `normaltest`
+@overload  # ?d ~f64, axis=None (default)
 def jarque_bera(
-    x: onp.ToFloatND, *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: bool = False
-) -> SignificanceResult: ...
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    *,
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload  # ?d ~f64, axis=<given>
+def jarque_bera(
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    *,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload  # Nd ~f64, keepdims=True
+def jarque_bera(
+    x: onp.ArrayND[npc.floating64 | npc.integer, _ShapeT],
+    *,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+@overload  # ?d ~f64, keepdims=True
+def jarque_bera(
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    *,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~f32, axis=None (default)
+def jarque_bera(
+    x: onp.ToJustFloat32_ND, *, axis: None = None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> SignificanceResult[np.float32]: ...
+@overload  # ?d ~f32, axis=<given>
+def jarque_bera(
+    x: onp.ToJustFloat32_ND, *, axis: int, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
+@overload  # Nd ~f32, keepdims=True
+def jarque_bera(
+    x: onp.ArrayND[np.float32, _ShapeT], *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> SignificanceResult[onp.ArrayND[np.float32, _ShapeT]]: ...
+@overload  # ?d ~f32, keepdims=True
+def jarque_bera(
+    x: onp.ToJustFloat32_ND, *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d floating, axis=None (default)
+def jarque_bera(
+    x: onp.ToArrayND[npc.floating, npc.floating],
+    *,
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64 | Any]: ...
+@overload  # ?d floating, axis=<given>
+def jarque_bera(
+    x: onp.ToArrayND[npc.floating, npc.floating], *, axis: int, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # Nd floating, keepdims=True
+def jarque_bera(
+    x: onp.ArrayND[npc.floating, _ShapeT], *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> SignificanceResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
+@overload  # ?d floating, keepdims=True
+def jarque_bera(
+    x: onp.ToArrayND[npc.floating, npc.floating],
+    *,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 
-# TODO(jorenham): improve
+# keep in sync with `percentileofscore`
+@overload
 def scoreatpercentile(
     a: onp.ToFloat1D,
-    per: onp.ToFloat | onp.ToFloatND,
+    per: onp.ToFloat,
     limit: _RealLimits | tuple[()] = (),
-    interpolation_method: L["fraction", "lower", "higher"] = "fraction",
+    interpolation_method: _QuantileInterpolation = "fraction",
     axis: int | None = None,
-) -> _FloatOrND: ...
+) -> np.float64: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloat1D,
+    per: Sequence[onp.ToFloat],
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    axis: int | None = None,
+) -> onp.Array1D[np.float64]: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloat1D,
+    per: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    axis: int | None = None,
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloat1D,
+    per: onp.ToFloatND,
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    axis: int | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
-#
+# keep in sync with `scoreatpercentile`
+@overload
+def percentileofscore(
+    a: onp.ToFloat1D, score: onp.ToFloat, kind: _PercentileInterpolation = "rank", nan_policy: NanPolicy = "propagate"
+) -> np.float64: ...
+@overload
+def percentileofscore(
+    a: onp.ToFloat1D, score: Sequence[onp.ToFloat], kind: _PercentileInterpolation = "rank", nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.float64]: ...
+@overload
 def percentileofscore(
     a: onp.ToFloat1D,
-    score: onp.ToFloat | onp.ToFloatND,
-    kind: L["rank", "weak", "strict", "mean"] = "rank",
+    score: onp.ArrayND[npc.floating, _ShapeT],
+    kind: _PercentileInterpolation = "rank",
     nan_policy: NanPolicy = "propagate",
-) -> np.float64: ...
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload
+def percentileofscore(
+    a: onp.ToFloat1D, score: onp.ToFloatND, kind: _PercentileInterpolation = "rank", nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[np.float64]: ...
 
 #
 def cumfreq(
     a: onp.ToFloatND, numbins: int = 10, defaultreallimits: _RealLimits | None = None, weights: onp.ToFloatND | None = None
 ) -> CumfreqResult: ...
+
+#
 def relfreq(
     a: onp.ToFloatND, numbins: int = 10, defaultreallimits: _RealLimits | None = None, weights: onp.ToFloatND | None = None
 ) -> RelfreqResult: ...
 
 #
-def obrientransform(*samples: onp.ToFloatND) -> onp.Array2D[npc.floating] | onp.Array1D[np.object_]: ...
+def obrientransform(*samples: onp.ToFloatND) -> onp.Array2D[np.float64] | onp.Array1D[np.object_]: ...
 
 #
 @overload  # 1d ~inexact64 | +integer, keepdims=False (default)
@@ -1409,7 +2413,7 @@ def median_abs_deviation(
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64]: ...
 
-#
+# TODO(@jorenham): use the generic type args of SigmaclipResult
 def sigmaclip(a: onp.ToFloatND, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...
 
 # TODO(jorenham): improve
@@ -2440,7 +3444,118 @@ def brunnermunzel(
     axis: int | None = 0,
 ) -> BrunnerMunzelResult: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d T@floating
+def combine_pvalues(
+    pvalues: onp.ArrayND[_FloatT, _JustAnyShape],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[_FloatT | onp.ArrayND[_FloatT]]: ...
+@overload  # 1d float
+def combine_pvalues(
+    pvalues: Sequence[float],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloat1D | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload  # 1d T@floating
+def combine_pvalues(
+    pvalues: onp.Array1D[_FloatT],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloat1D | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[_FloatT]: ...
+@overload  # 2d float
+def combine_pvalues(
+    pvalues: Sequence[Sequence[float]],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloat1D | onp.ToFloat2D | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array1D[np.float64]]: ...
+@overload  # 2d T@floating
+def combine_pvalues(
+    pvalues: onp.Array2D[_FloatT],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloat1D | onp.ToFloat2D | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array1D[_FloatT]]: ...
+@overload  # Nd T@floating
+def combine_pvalues(
+    pvalues: onp.ArrayND[_FloatT],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[_FloatT | onp.ArrayND[_FloatT]]: ...
+@overload  # Nd T@floating, axis=None
+def combine_pvalues(
+    pvalues: onp.ArrayND[_FloatT],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[_FloatT]: ...
+@overload  # Nd float, axis=None
+def combine_pvalues(
+    pvalues: onp.SequenceND[float],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload  # Nd floating, axis=None
+def combine_pvalues(
+    pvalues: onp.ToFloatND,
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64 | Any]: ...
+@overload  # Nd T@floating, keepdims=True
+def combine_pvalues(
+    pvalues: onp.ArrayND[_FloatT, _ShapeT],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[_FloatT, _ShapeT]]: ...
+@overload  # Nd float, keepdims=True
+def combine_pvalues(
+    pvalues: onp.SequenceND[float],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload  # ?d floating, keepdims=True
 def combine_pvalues(
     pvalues: onp.ToFloatND,
     method: _CombinePValuesMethod = "fisher",
@@ -2448,18 +3563,18 @@ def combine_pvalues(
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> SignificanceResult: ...
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 
 #
 def fisher_exact(
     table: onp.ArrayND[_Real0D], alternative: Alternative | None = None, *, method: ResamplingMethod | None = None
 ) -> SignificanceResult[float]: ...
 
-#
+# undocumented
 def quantile_test_iv(
     x: onp.ToFloatND, q: float | _Real0D, p: float | npc.floating, alternative: Alternative
-) -> tuple[onp.ArrayND[_Real0D], _Real0D, npc.floating, Alternative]: ...  # undocumented
+) -> tuple[onp.ArrayND[_Real0D], _Real0D, npc.floating, Alternative]: ...
 
 #
 def quantile_test(
