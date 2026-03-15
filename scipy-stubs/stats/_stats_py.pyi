@@ -175,6 +175,9 @@ class _TestResultBunch(
 
 ###
 
+# NOTE: On numpy<2.1, pyright reports 15 false positive incompatible overload errors here.
+# pyright: reportOverlappingOverload=false
+
 class SkewtestResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
 class KurtosistestResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
 class NormaltestResult(_TestResultTuple[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
