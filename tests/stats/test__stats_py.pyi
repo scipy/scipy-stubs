@@ -750,7 +750,26 @@ assert_type(brunnermunzel(_f64_1d, _f64_1d), BrunnerMunzelResult)
 
 # combine_pvalues
 
-assert_type(combine_pvalues(_f64_1d), SignificanceResult)
+assert_type(combine_pvalues(_py_f_1d), SignificanceResult[np.float64])
+assert_type(combine_pvalues(_f32_1d), SignificanceResult[np.float32])
+assert_type(combine_pvalues(_f64_1d), SignificanceResult[np.float64])
+assert_type(combine_pvalues(_py_f_2d), SignificanceResult[onp.Array1D[np.float64]])
+assert_type(combine_pvalues(_f32_2d), SignificanceResult[onp.Array1D[np.float32]])
+assert_type(combine_pvalues(_f64_2d), SignificanceResult[onp.Array1D[np.float64]])
+
+assert_type(combine_pvalues(_py_f_1d, axis=None), SignificanceResult[np.float64])
+assert_type(combine_pvalues(_f32_1d, axis=None), SignificanceResult[np.float32])
+assert_type(combine_pvalues(_f64_1d, axis=None), SignificanceResult[np.float64])
+assert_type(combine_pvalues(_py_f_2d, axis=None), SignificanceResult[np.float64])
+assert_type(combine_pvalues(_f32_2d, axis=None), SignificanceResult[np.float32])
+assert_type(combine_pvalues(_f64_2d, axis=None), SignificanceResult[np.float64])
+
+assert_type(combine_pvalues(_py_f_1d, keepdims=True), SignificanceResult[onp.ArrayND[np.float64]])
+assert_type(combine_pvalues(_f32_1d, keepdims=True), SignificanceResult[onp.Array1D[np.float32]])
+assert_type(combine_pvalues(_f64_1d, keepdims=True), SignificanceResult[onp.Array1D[np.float64]])
+assert_type(combine_pvalues(_py_f_2d, keepdims=True), SignificanceResult[onp.ArrayND[np.float64]])
+assert_type(combine_pvalues(_f32_2d, keepdims=True), SignificanceResult[onp.Array2D[np.float32]])
+assert_type(combine_pvalues(_f64_2d, keepdims=True), SignificanceResult[onp.Array2D[np.float64]])
 
 # fisher_exact
 

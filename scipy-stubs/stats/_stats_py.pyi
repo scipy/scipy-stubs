@@ -92,7 +92,7 @@ _SCT = TypeVar("_SCT", bound=np.generic)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _IntegerT = TypeVar("_IntegerT", bound=npc.integer)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_FloatT = TypeVar("_FloatT", bound=npc.floating, default=npc.floating)
+_FloatT = TypeVar("_FloatT", bound=npc.floating)
 _RealT = TypeVar("_RealT", bound=_Real0D, default=_Real0D)
 _RealT_co = TypeVar("_RealT_co", bound=_Real0D, default=_Real0D, covariant=True)
 
@@ -115,7 +115,7 @@ _RealOrArrayT_co = TypeVar("_RealOrArrayT_co", bound=_ScalarOrND[_Real0D], defau
 _Real0D: TypeAlias = npc.integer | npc.floating
 
 _ScalarOrND: TypeAlias = _SCT | onp.ArrayND[_SCT]
-_FloatOrND: TypeAlias = _ScalarOrND[_FloatT]
+_FloatOrND: TypeAlias = _ScalarOrND[npc.floating]
 _RealOrND: TypeAlias = _ScalarOrND[_RealT]
 
 _InterpolationMethod: TypeAlias = L["linear", "lower", "higher", "nearest", "midpoint"]
@@ -3441,7 +3441,118 @@ def brunnermunzel(
     axis: int | None = 0,
 ) -> BrunnerMunzelResult: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d T@floating
+def combine_pvalues(
+    pvalues: onp.ArrayND[_FloatT, _JustAnyShape],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[_FloatT | onp.ArrayND[_FloatT]]: ...
+@overload  # 1d float
+def combine_pvalues(
+    pvalues: Sequence[float],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloat1D | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload  # 1d T@floating
+def combine_pvalues(
+    pvalues: onp.Array1D[_FloatT],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloat1D | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[_FloatT]: ...
+@overload  # 2d float
+def combine_pvalues(
+    pvalues: Sequence[Sequence[float]],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloat1D | onp.ToFloat2D | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array1D[np.float64]]: ...
+@overload  # 2d T@floating
+def combine_pvalues(
+    pvalues: onp.Array2D[_FloatT],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloat1D | onp.ToFloat2D | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array1D[_FloatT]]: ...
+@overload  # Nd T@floating
+def combine_pvalues(
+    pvalues: onp.ArrayND[_FloatT],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[_FloatT | onp.ArrayND[_FloatT]]: ...
+@overload  # Nd T@floating, axis=None
+def combine_pvalues(
+    pvalues: onp.ArrayND[_FloatT],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[_FloatT]: ...
+@overload  # Nd float, axis=None
+def combine_pvalues(
+    pvalues: onp.SequenceND[float],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64]: ...
+@overload  # Nd floating, axis=None
+def combine_pvalues(
+    pvalues: onp.ToFloatND,
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64 | Any]: ...
+@overload  # Nd T@floating, keepdims=True
+def combine_pvalues(
+    pvalues: onp.ArrayND[_FloatT, _ShapeT],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[_FloatT, _ShapeT]]: ...
+@overload  # Nd float, keepdims=True
+def combine_pvalues(
+    pvalues: onp.SequenceND[float],
+    method: _CombinePValuesMethod = "fisher",
+    weights: onp.ToFloatND | None = None,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload  # ?d floating, keepdims=True
 def combine_pvalues(
     pvalues: onp.ToFloatND,
     method: _CombinePValuesMethod = "fisher",
@@ -3449,18 +3560,18 @@ def combine_pvalues(
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> SignificanceResult: ...
+    keepdims: L[True],
+) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 
 #
 def fisher_exact(
     table: onp.ArrayND[_Real0D], alternative: Alternative | None = None, *, method: ResamplingMethod | None = None
 ) -> SignificanceResult[float]: ...
 
-# TODO(@jorenham): improve
+# undocumented
 def quantile_test_iv(
     x: onp.ToFloatND, q: float | _Real0D, p: float | npc.floating, alternative: Alternative
-) -> tuple[onp.ArrayND[_Real0D], _Real0D, npc.floating, Alternative]: ...  # undocumented
+) -> tuple[onp.ArrayND[_Real0D], _Real0D, npc.floating, Alternative]: ...
 
 #
 def quantile_test(
