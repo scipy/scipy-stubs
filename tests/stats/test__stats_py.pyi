@@ -137,7 +137,23 @@ assert_type(skewtest(_f64_1d), SkewtestResult)
 
 # kurtosistest
 
-assert_type(kurtosistest(_f64_1d), KurtosistestResult)
+assert_type(kurtosistest(_py_f_1d), KurtosistestResult[np.float64])
+assert_type(kurtosistest(_intp_1d), KurtosistestResult[np.float64])
+assert_type(kurtosistest(_f32_1d), KurtosistestResult[np.float32])
+assert_type(kurtosistest(_f64_1d), KurtosistestResult[np.float64])
+assert_type(kurtosistest(_f64_2d), KurtosistestResult[np.float64])
+
+assert_type(kurtosistest(_py_f_1d, axis=1), KurtosistestResult[onp.ArrayND[np.float64]])
+assert_type(kurtosistest(_intp_1d, axis=1), KurtosistestResult[onp.ArrayND[np.float64]])
+assert_type(kurtosistest(_f32_1d, axis=1), KurtosistestResult[onp.ArrayND[np.float32]])
+assert_type(kurtosistest(_f64_1d, axis=1), KurtosistestResult[onp.ArrayND[np.float64]])
+assert_type(kurtosistest(_f64_2d, axis=1), KurtosistestResult[onp.ArrayND[np.float64]])
+
+assert_type(kurtosistest(_py_f_1d, keepdims=True), KurtosistestResult[onp.ArrayND[np.float64]])
+assert_type(kurtosistest(_intp_1d, keepdims=True), KurtosistestResult[onp.Array1D[np.float64]])
+assert_type(kurtosistest(_f32_1d, keepdims=True), KurtosistestResult[onp.Array1D[np.float32]])
+assert_type(kurtosistest(_f64_1d, keepdims=True), KurtosistestResult[onp.Array1D[np.float64]])
+assert_type(kurtosistest(_f64_2d, keepdims=True), KurtosistestResult[onp.Array2D[np.float64]])
 
 # normaltest
 
