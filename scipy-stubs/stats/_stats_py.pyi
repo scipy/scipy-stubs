@@ -1322,6 +1322,7 @@ def normaltest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
+    *,
     keepdims: L[False] = False,
 ) -> NormaltestResult[np.float64]: ...
 @overload  # ?d ~f64, axis=<given>
@@ -1329,6 +1330,7 @@ def normaltest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
     axis: int,
     nan_policy: NanPolicy = "propagate",
+    *,
     keepdims: L[False] = False,
 ) -> NormaltestResult[onp.ArrayND[np.float64]]: ...
 @overload  # Nd ~f64, keepdims=True
@@ -1349,11 +1351,11 @@ def normaltest(
 ) -> NormaltestResult[onp.ArrayND[np.float64]]: ...
 @overload  # ?d ~f32, axis=None (default)
 def normaltest(
-    a: onp.ToJustFloat32_ND, axis: None = None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+    a: onp.ToJustFloat32_ND, axis: None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
 ) -> NormaltestResult[np.float32]: ...
 @overload  # ?d ~f32, axis=<given>
 def normaltest(
-    a: onp.ToJustFloat32_ND, axis: int, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+    a: onp.ToJustFloat32_ND, axis: int, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
 ) -> NormaltestResult[onp.ArrayND[np.float32]]: ...
 @overload  # Nd ~f32, keepdims=True
 def normaltest(
@@ -1368,11 +1370,12 @@ def normaltest(
     a: onp.ToArrayND[npc.floating, npc.floating],
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
+    *,
     keepdims: L[False] = False,
 ) -> NormaltestResult[np.float64 | Any]: ...
 @overload  # ?d floating, axis=<given>
 def normaltest(
-    a: onp.ToArrayND[npc.floating, npc.floating], axis: int, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+    a: onp.ToArrayND[npc.floating, npc.floating], axis: int, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
 ) -> NormaltestResult[onp.ArrayND[np.float64 | Any]]: ...
 @overload  # Nd floating, keepdims=True
 def normaltest(
@@ -1461,7 +1464,7 @@ def jarque_bera(
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 
-#
+# keep in sync with `percentileofscore`
 @overload
 def scoreatpercentile(
     a: onp.ToFloat1D,
@@ -1495,7 +1498,7 @@ def scoreatpercentile(
     axis: int | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 
-#
+# keep in sync with `scoreatpercentile`
 @overload
 def percentileofscore(
     a: onp.ToFloat1D, score: onp.ToFloat, kind: _PercentileInterpolation = "rank", nan_policy: NanPolicy = "propagate"
