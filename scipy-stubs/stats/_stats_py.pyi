@@ -1123,14 +1123,31 @@ def jarque_bera(
     x: onp.ToFloatND, *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: bool = False
 ) -> SignificanceResult: ...
 
-# TODO(jorenham): improve
+#
+@overload
 def scoreatpercentile(
     a: onp.ToFloat1D,
-    per: onp.ToFloat | onp.ToFloatND,
+    per: float,
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: L["fraction", "lower", "higher"] = "fraction",
     axis: int | None = None,
-) -> _FloatOrND: ...
+) -> np.float64: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloat1D,
+    per: onp.ArrayND[np.floating, _ShapeT],
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: L["fraction", "lower", "higher"] = "fraction",
+    axis: int | None = None,
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloat1D,
+    per: onp.ToFloatND,
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: L["fraction", "lower", "higher"] = "fraction",
+    axis: int | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
 #
 def percentileofscore(
@@ -1149,7 +1166,7 @@ def relfreq(
 ) -> RelfreqResult: ...
 
 #
-def obrientransform(*samples: onp.ToFloatND) -> onp.Array2D[npc.floating] | onp.Array1D[np.object_]: ...
+def obrientransform(*samples: onp.ToFloatND) -> onp.Array2D[np.float64] | onp.Array1D[np.object_]: ...
 
 #
 @overload  # 1d ~inexact64 | +integer, keepdims=False (default)
@@ -1409,7 +1426,7 @@ def median_abs_deviation(
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64]: ...
 
-#
+# TODO(@jorenham): use the generic type args of SigmaclipResult
 def sigmaclip(a: onp.ToFloatND, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...
 
 # TODO(jorenham): improve
@@ -2456,7 +2473,7 @@ def fisher_exact(
     table: onp.ArrayND[_Real0D], alternative: Alternative | None = None, *, method: ResamplingMethod | None = None
 ) -> SignificanceResult[float]: ...
 
-#
+# TODO(@jorenham): improve
 def quantile_test_iv(
     x: onp.ToFloatND, q: float | _Real0D, p: float | npc.floating, alternative: Alternative
 ) -> tuple[onp.ArrayND[_Real0D], _Real0D, npc.floating, Alternative]: ...  # undocumented
