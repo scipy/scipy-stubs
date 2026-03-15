@@ -1097,15 +1097,115 @@ def describe(
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
 ) -> DescribeResult: ...
 
-# TODO(jorenham): improve
+# keep in sync with `kurtosistest`, `normaltest`, and `jarque_bera`
+@overload  # ?d ~f64, axis=None (default)
 def skewtest(
-    a: onp.ToFloatND,
-    axis: int | None = 0,
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
-    keepdims: bool = False,
-) -> SkewtestResult: ...
+    keepdims: L[False] = False,
+) -> SkewtestResult[np.float64]: ...
+@overload  # ?d ~f64, axis=<given>
+def skewtest(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> SkewtestResult[onp.ArrayND[np.float64]]: ...
+@overload  # Nd ~f64, keepdims=True
+def skewtest(
+    a: onp.ArrayND[npc.floating64 | npc.integer, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+@overload  # ?d ~f64, keepdims=True
+def skewtest(
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~f32, axis=None (default)
+def skewtest(
+    a: onp.ToJustFloat32_ND,
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> SkewtestResult[np.float32]: ...
+@overload  # ?d ~f32, axis=<given>
+def skewtest(
+    a: onp.ToJustFloat32_ND,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> SkewtestResult[onp.ArrayND[np.float32]]: ...
+@overload  # Nd ~f32, keepdims=True
+def skewtest(
+    a: onp.ArrayND[np.float32, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float32, _ShapeT]]: ...
+@overload  # ?d ~f32, keepdims=True
+def skewtest(
+    a: onp.ToJustFloat32_ND,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d floating, axis=None (default)
+def skewtest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> SkewtestResult[np.float64 | Any]: ...
+@overload  # ?d floating, axis=<given>
+def skewtest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> SkewtestResult[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # Nd floating, keepdims=True
+def skewtest(
+    a: onp.ArrayND[npc.floating, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
+@overload  # ?d floating, keepdims=True
+def skewtest(
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> SkewtestResult[onp.ArrayND[np.float64 | Any]]: ...
 
 # keep in sync with `skewtest`, `normaltest`, and `jarque_bera`
 @overload  # ?d ~f64, axis=None (default)
@@ -1113,6 +1213,7 @@ def kurtosistest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
 ) -> KurtosistestResult[np.float64]: ...
@@ -1121,6 +1222,7 @@ def kurtosistest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
     axis: int,
     nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
 ) -> KurtosistestResult[onp.ArrayND[np.float64]]: ...
@@ -1137,46 +1239,79 @@ def kurtosistest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
 ) -> KurtosistestResult[onp.ArrayND[np.float64]]: ...
 @overload  # ?d ~f32, axis=None (default)
 def kurtosistest(
-    a: onp.ToJustFloat32_ND, axis: None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+    a: onp.ToJustFloat32_ND,
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
 ) -> KurtosistestResult[np.float32]: ...
 @overload  # ?d ~f32, axis=<given>
 def kurtosistest(
-    a: onp.ToJustFloat32_ND, axis: int, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+    a: onp.ToJustFloat32_ND,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
 ) -> KurtosistestResult[onp.ArrayND[np.float32]]: ...
 @overload  # Nd ~f32, keepdims=True
 def kurtosistest(
-    a: onp.ArrayND[np.float32, _ShapeT], axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: onp.ArrayND[np.float32, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
 ) -> KurtosistestResult[onp.ArrayND[np.float32, _ShapeT]]: ...
 @overload  # ?d ~f32, keepdims=True
 def kurtosistest(
-    a: onp.ToJustFloat32_ND, axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: onp.ToJustFloat32_ND,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
 ) -> KurtosistestResult[onp.ArrayND[np.float32]]: ...
 @overload  # ?d floating, axis=None (default)
 def kurtosistest(
     a: onp.ToArrayND[npc.floating, npc.floating],
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
 ) -> KurtosistestResult[np.float64 | Any]: ...
 @overload  # ?d floating, axis=<given>
 def kurtosistest(
-    a: onp.ToArrayND[npc.floating, npc.floating], axis: int, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
 ) -> KurtosistestResult[onp.ArrayND[np.float64 | Any]]: ...
 @overload  # Nd floating, keepdims=True
 def kurtosistest(
-    a: onp.ArrayND[npc.floating, _ShapeT], axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: onp.ArrayND[npc.floating, _ShapeT],
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
 ) -> KurtosistestResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
 @overload  # ?d floating, keepdims=True
 def kurtosistest(
     a: onp.ToArrayND[npc.floating, npc.floating],
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
 ) -> KurtosistestResult[onp.ArrayND[np.float64 | Any]]: ...

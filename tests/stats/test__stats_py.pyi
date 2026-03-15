@@ -133,7 +133,23 @@ assert_type(describe(_f64_1d), DescribeResult)
 
 # skewtest
 
-assert_type(skewtest(_f64_1d), SkewtestResult)
+assert_type(skewtest(_py_f_1d), SkewtestResult[np.float64])
+assert_type(skewtest(_intp_1d), SkewtestResult[np.float64])
+assert_type(skewtest(_f32_1d), SkewtestResult[np.float32])
+assert_type(skewtest(_f64_1d), SkewtestResult[np.float64])
+assert_type(skewtest(_f64_2d), SkewtestResult[np.float64])
+
+assert_type(skewtest(_py_f_1d, axis=1), SkewtestResult[onp.ArrayND[np.float64]])
+assert_type(skewtest(_intp_1d, axis=1), SkewtestResult[onp.ArrayND[np.float64]])
+assert_type(skewtest(_f32_1d, axis=1), SkewtestResult[onp.ArrayND[np.float32]])
+assert_type(skewtest(_f64_1d, axis=1), SkewtestResult[onp.ArrayND[np.float64]])
+assert_type(skewtest(_f64_2d, axis=1), SkewtestResult[onp.ArrayND[np.float64]])
+
+assert_type(skewtest(_py_f_1d, keepdims=True), SkewtestResult[onp.ArrayND[np.float64]])
+assert_type(skewtest(_intp_1d, keepdims=True), SkewtestResult[onp.Array1D[np.float64]])
+assert_type(skewtest(_f32_1d, keepdims=True), SkewtestResult[onp.Array1D[np.float32]])
+assert_type(skewtest(_f64_1d, keepdims=True), SkewtestResult[onp.Array1D[np.float64]])
+assert_type(skewtest(_f64_2d, keepdims=True), SkewtestResult[onp.Array2D[np.float64]])
 
 # kurtosistest
 
