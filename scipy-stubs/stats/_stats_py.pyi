@@ -129,8 +129,11 @@ _KS2TestMethod: TypeAlias = L["auto", "exact", "asymp"]
 _CombinePValuesMethod: TypeAlias = L["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"]
 _RankMethod: TypeAlias = L["average", "min", "max", "dense", "ordinal"]
 
-_RealLimits: TypeAlias = tuple[float | _Real0D, float | _Real0D]
-_ComplexLimits: TypeAlias = tuple[complex | npc.number, complex | npc.number]
+_RealLimit: TypeAlias = float | _Real0D
+_RealLimits: TypeAlias = tuple[_RealLimit, _RealLimit]
+_ComplexLimit: TypeAlias = complex | npc.number
+_ComplexLimits: TypeAlias = tuple[_ComplexLimit, _ComplexLimit]
+
 _Weigher: TypeAlias = Callable[[int], float | _Real0D]
 
 _JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
@@ -777,27 +780,309 @@ def tvar(
 tstd = tvar
 tsem = tvar
 
-# TODO(jorenham): improve like `tvar`
+# keep in sync with `tmax`, and structurally with `tvar` and `tmean`
+@overload  # ?d T@inexact
 def tmin(
-    a: onp.ToFloatND,
-    lowerlimit: float | _Real0D | None = None,
-    axis: int | None = 0,
+    a: onp.ArrayND[_InexactT, _JustAnyShape],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: bool = False,
-) -> _RealOrND: ...
+    keepdims: L[False] = False,
+) -> _InexactT | onp.ArrayND[_InexactT]: ...
+@overload  # ?d +integer
+def tmin(
+    a: onp.ArrayND[npc.integer | np.bool_, _JustAnyShape],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # 1d T@inexact
+def tmin(
+    a: onp.ToArrayStrict1D[_InexactT, _InexactT],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # 1d +float|integer
+def tmin(
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # 1d ~complex
+def tmin(
+    a: list[complex],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # 2d T@inexact
+def tmin(
+    a: onp.ToArrayStrict2D[_InexactT, _InexactT],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[_InexactT]: ...
+@overload  # 2d +float|integer
+def tmin(
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~complex
+def tmin(
+    a: Sequence[list[complex]],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # ?d T@inexact, axis=None
+def tmin(
+    a: onp.ArrayND[_InexactT],
+    lowerlimit: _ComplexLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # ?d +f64, axis=None
+def tmin(
+    a: onp.ToArrayND[float, npc.integer | np.bool_],
+    lowerlimit: _RealLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # ?d ~complex, axis=None
+def tmin(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    lowerlimit: _ComplexLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # S@Nd T@inexact, keepdims=True
+def tmin(
+    a: onp.ArrayND[_InexactT, _ShapeT],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # S@Nd +integer, keepdims=True
+def tmin(
+    a: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # ?d +float, keepdims=True
+def tmin(
+    a: onp.SequenceND[float],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d ~complex, keepdims=True
+def tmin(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.complex128]: ...
 
-# TODO(jorenham): improve like `tvar`
+# keep in sync with `tmin`, and structurally with `tvar` and `tmean`
+@overload  # ?d T@inexact
 def tmax(
-    a: onp.ToFloatND,
-    upperlimit: float | _Real0D | None = None,
-    axis: int | None = 0,
+    a: onp.ArrayND[_InexactT, _JustAnyShape],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: bool = False,
-) -> _RealOrND: ...
+    keepdims: L[False] = False,
+) -> _InexactT | onp.ArrayND[_InexactT]: ...
+@overload  # ?d +integer
+def tmax(
+    a: onp.ArrayND[npc.integer | np.bool_, _JustAnyShape],
+    upperlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # 1d T@inexact
+def tmax(
+    a: onp.ToArrayStrict1D[_InexactT, _InexactT],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # 1d +float|integer
+def tmax(
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    upperlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # 1d ~complex
+def tmax(
+    a: list[complex],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # 2d T@inexact
+def tmax(
+    a: onp.ToArrayStrict2D[_InexactT, _InexactT],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[_InexactT]: ...
+@overload  # 2d +float|integer
+def tmax(
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    upperlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~complex
+def tmax(
+    a: Sequence[list[complex]],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # ?d T@inexact, axis=None
+def tmax(
+    a: onp.ArrayND[_InexactT],
+    upperlimit: _ComplexLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _InexactT: ...
+@overload  # ?d +f64, axis=None
+def tmax(
+    a: onp.ToArrayND[float, npc.integer | np.bool_],
+    upperlimit: _RealLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # ?d ~complex, axis=None
+def tmax(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    upperlimit: _ComplexLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # S@Nd T@inexact, keepdims=True
+def tmax(
+    a: onp.ArrayND[_InexactT, _ShapeT],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # S@Nd +integer, keepdims=True
+def tmax(
+    a: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    upperlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # ?d +float, keepdims=True
+def tmax(
+    a: onp.SequenceND[float],
+    upperlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d ~complex, keepdims=True
+def tmax(
+    a: onp.SequenceND[list[complex]] | list[complex],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.complex128]: ...
 
 #
 @overload
