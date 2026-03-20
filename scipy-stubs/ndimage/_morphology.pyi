@@ -518,33 +518,139 @@ def grey_closing(
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 
-# TODO
+# keep in sync with `grey_erosion`
+@overload
 def morphological_gradient(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
+    footprint: onp.ToIntND | None = None,
     structure: onp.ToIntND | None = None,
-    output: onp.ArrayND[npc.number | np.bool_] | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[npc.number | np.bool_]: ...
+) -> _OutputArrayT: ...
+@overload
+def morphological_gradient(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def morphological_gradient(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def morphological_gradient(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def morphological_gradient(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
-# TODO
+# keep in sync with `grey_erosion`
+@overload
 def morphological_laplace(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
+    footprint: onp.ToIntND | None = None,
     structure: onp.ToIntND | None = None,
-    output: onp.ArrayND[npc.number | np.bool_] | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[npc.number | np.bool_]: ...
+) -> _OutputArrayT: ...
+@overload
+def morphological_laplace(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def morphological_laplace(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def morphological_laplace(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def morphological_laplace(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
 # TODO
 def white_tophat(
