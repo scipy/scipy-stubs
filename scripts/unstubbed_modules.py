@@ -68,8 +68,7 @@ def module_to_path(mod: str) -> Path | None:
     if (path := STUBS_PATH.joinpath(*submods, "__init__.pyi")).is_file():
         return path
 
-    # https://github.com/facebook/pyrefly/issues/913#issuecomment-3367579203
-    assert submods, path  # pyrefly: ignore[unbound-name]
+    assert submods, path
 
     if (path := STUBS_PATH.joinpath(*submods[:-1], f"{submods[-1]}.pyi")).is_file():
         return path
