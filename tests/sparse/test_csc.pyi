@@ -106,7 +106,7 @@ assert_type(csc_array(csc_spec2, dtype=float), csc_array[np.float64])
 assert_type(csc_array(csc_spec2, dtype=complex), csc_array[np.complex128])
 
 # csc_array((data, indices, indptr), [shape=(M, N)])
-# NOTE: mypy incorrectly infers `csc_array[Any]` here, but it is correct in pyright.
+# NOTE: mypy incorrectly infers `csc_array[Any]` here, but it is correct in pyright and pyrefly.
 assert_type(csc_array(csc_spec3), csc_array[ScalarType])  # type: ignore[assert-type]
 assert_type(csc_array(csc_spec3, shape2), csc_array[ScalarType])  # type: ignore[assert-type]
 assert_type(csc_array(csc_spec3, shape=shape2), csc_array[ScalarType])  # type: ignore[assert-type]
@@ -140,3 +140,19 @@ assert_type(_csc_arr[_bool_1d, _bool_1d], onp.Array1D[ScalarType])
 
 assert_type(_csc_arr[_int_1d, 0], coo_array[ScalarType, tuple[int]])
 assert_type(_csc_arr[0, _int_1d], coo_array[ScalarType, tuple[int]])
+
+###
+# regression tests for https://github.com/scipy/scipy-stubs/issues/1454
+
+_arr_2d: onp.Array1D[ScalarType]
+
+assert_type(_csc_arr[:, :], csc_array[ScalarType])
+_csc_arr[0] = 1.0
+_csc_arr[:] = 1.0
+_csc_arr[:] = _arr_2d
+_csc_arr[0, :] = 1.0
+_csc_arr[0, :] = _arr_2d
+_csc_arr[:, 0] = 1.0
+_csc_arr[:, 0] = _arr_2d
+_csc_arr[:, :] = 1.0
+_csc_arr[:, :] = _arr_2d
