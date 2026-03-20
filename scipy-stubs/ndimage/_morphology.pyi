@@ -44,6 +44,9 @@ _Origin: TypeAlias = int | tuple[int, ...]
 
 ###
 
+# NOTE: On numpy<2.1, pyright reports 2 false positive incompatible overload errors here.
+# pyright: reportOverlappingOverload=false
+
 @overload  # known shape
 def iterate_structure(
     structure: onp.ArrayND[np.bool_ | npc.integer, _ShapeT], iterations: int, origin: None = None
