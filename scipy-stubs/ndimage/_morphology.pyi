@@ -1,4 +1,6 @@
-from typing import Literal, TypeAlias
+from collections.abc import Iterable
+from typing import Any, Literal, SupportsIndex, TypeAlias, overload
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -27,225 +29,995 @@ __all__ = [
     "white_tophat",
 ]
 
+###
+
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
+_OutputArrayT = TypeVar("_OutputArrayT", bound=onp.ArrayND[np.bool_ | npc.integer | npc.floating])
+_OriginScalarT = TypeVar("_OriginScalarT", bound=int | npc.integer, default=int)
+
 _Mode: TypeAlias = Literal["reflect", "constant", "nearest", "mirror", "wrap"]
-_MetricCDT: TypeAlias = Literal["chessboard", "taxicab"]
-_MetricBF: TypeAlias = Literal["euclidean", _MetricCDT]
-_BorderValue: TypeAlias = onp.ToInt | np.bool_
+_Metric1: TypeAlias = Literal["euclidean"]
+_Metric2: TypeAlias = Literal["taxicab", "cityblock", "manhattan"]
+_Metric3: TypeAlias = Literal["chessboard"]
 
-_BoolArrayOut: TypeAlias = onp.ArrayND[np.bool_]
 _Origin: TypeAlias = int | tuple[int, ...]
-_ScalarArrayOut: TypeAlias = onp.ArrayND[npc.number | np.bool_]
 
+###
+
+# NOTE: On numpy<2.1, pyright reports 2 false positive incompatible overload errors here.
+# pyright: reportOverlappingOverload=false
+
+@overload  # known shape
 def iterate_structure(
-    structure: onp.ToInt | onp.ToIntND, iterations: onp.ToInt, origin: _Origin | None = None
-) -> _BoolArrayOut: ...
-def generate_binary_structure(rank: int, connectivity: int) -> _BoolArrayOut: ...
+    structure: onp.ArrayND[np.bool_ | npc.integer, _ShapeT], iterations: int, origin: None = None
+) -> onp.ArrayND[np.bool_, _ShapeT]: ...
+@overload  # known shape, origin=<given>
+def iterate_structure(
+    structure: onp.ArrayND[np.bool_ | npc.integer, _ShapeT], iterations: int, origin: _OriginScalarT | Iterable[_OriginScalarT]
+) -> tuple[onp.ArrayND[np.bool_, _ShapeT], list[_OriginScalarT]]: ...
+@overload  # unknown shape
+def iterate_structure(structure: onp.ToIntND, iterations: int, origin: None = None) -> onp.ArrayND[np.bool_]: ...
+@overload  # unknown shape, origin=<given>
+def iterate_structure(
+    structure: onp.ToIntND, iterations: int, origin: _OriginScalarT | Iterable[_OriginScalarT]
+) -> tuple[onp.ArrayND[np.bool_], list[_OriginScalarT]]: ...
 
 #
+@overload
+def generate_binary_structure(rank: Literal[0, -1, -2, -3], connectivity: int) -> onp.Array0D[np.bool_]: ...
+@overload
+def generate_binary_structure(rank: Literal[1], connectivity: int) -> onp.Array1D[np.bool_]: ...
+@overload
+def generate_binary_structure(rank: Literal[2], connectivity: int) -> onp.Array2D[np.bool_]: ...
+@overload
+def generate_binary_structure(rank: Literal[3], connectivity: int) -> onp.Array3D[np.bool_]: ...
+@overload
+def generate_binary_structure(rank: int, connectivity: int) -> onp.ArrayND[np.bool_]: ...
+
+#
+@overload
 def binary_erosion(
-    input: onp.ToComplex | onp.ToComplexND,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    iterations: onp.ToInt = 1,
-    mask: onp.ToInt | onp.ToIntND | None = None,
-    output: _BoolArrayOut | type[bool | np.bool_] | None = None,
-    border_value: _BorderValue = 0,
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    output: None = None,
+    border_value: int = 0,
     origin: _Origin = 0,
-    brute_force: onp.ToBool = False,
+    brute_force: bool = False,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _BoolArrayOut: ...
-def binary_dilation(
-    input: onp.ToComplex | onp.ToComplexND,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    iterations: onp.ToInt = 1,
-    mask: onp.ToInt | onp.ToIntND | None = None,
-    output: _BoolArrayOut | type[bool | np.bool_] | None = None,
-    border_value: _BorderValue = 0,
-    origin: _Origin = 0,
-    brute_force: onp.ToBool = False,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_erosion(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
     *,
-    axes: tuple[int, ...] | None = None,
-) -> _BoolArrayOut: ...
-def binary_opening(
-    input: onp.ToComplex | onp.ToComplexND,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    iterations: onp.ToInt = 1,
-    output: _BoolArrayOut | type[bool | np.bool_] | None = None,
+    output: _OutputArrayT,
+    border_value: int = 0,
     origin: _Origin = 0,
-    mask: onp.ToInt | onp.ToIntND | None = None,
-    border_value: _BorderValue = 0,
-    brute_force: onp.ToBool = False,
-    *,
+    brute_force: bool = False,
     axes: tuple[int, ...] | None = None,
-) -> _BoolArrayOut: ...
-def binary_closing(
-    input: onp.ToComplex | onp.ToComplexND,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    iterations: onp.ToInt = 1,
-    output: _BoolArrayOut | type[bool | np.bool_] | None = None,
-    origin: _Origin = 0,
-    mask: onp.ToInt | onp.ToIntND | None = None,
-    border_value: _BorderValue = 0,
-    brute_force: onp.ToBool = False,
-    *,
-    axes: tuple[int, ...] | None = None,
-) -> _BoolArrayOut: ...
+) -> _OutputArrayT: ...
 
-#
+# keep in sync with `binary_erosion`
+@overload
+def binary_dilation(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    output: None = None,
+    border_value: int = 0,
+    origin: _Origin = 0,
+    brute_force: bool = False,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_dilation(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    border_value: int = 0,
+    origin: _Origin = 0,
+    brute_force: bool = False,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+
+# keep in sync with `binary_erosion` (but with shuffled `mask`, `output` and `origin`)
+@overload
+def binary_opening(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    output: None = None,
+    origin: _Origin = 0,
+    mask: onp.ToIntND | None = None,
+    border_value: int = 0,
+    brute_force: bool = False,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_opening(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    *,
+    output: _OutputArrayT,
+    origin: _Origin = 0,
+    mask: onp.ToIntND | None = None,
+    border_value: int = 0,
+    brute_force: bool = False,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+
+# keep in sync with `binary_erosion`
+@overload
+def binary_closing(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    output: None = None,
+    origin: _Origin = 0,
+    mask: onp.ToIntND | None = None,
+    border_value: int = 0,
+    brute_force: bool = False,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_closing(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    *,
+    output: _OutputArrayT,
+    origin: _Origin = 0,
+    mask: onp.ToIntND | None = None,
+    border_value: int = 0,
+    brute_force: bool = False,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+
+# keep roughly in sync with `binary_erosion`
+@overload
 def binary_hit_or_miss(
-    input: onp.ToComplex | onp.ToComplexND,
-    structure1: onp.ToInt | onp.ToIntND | None = None,
-    structure2: onp.ToInt | onp.ToIntND | None = None,
-    output: _BoolArrayOut | type[bool | np.bool_] | None = None,
+    input: onp.ToFloatND,
+    structure1: onp.ToIntND | None = None,
+    structure2: onp.ToIntND | None = None,
+    output: None = None,
     origin1: _Origin = 0,
     origin2: _Origin | None = None,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _BoolArrayOut: ...
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_hit_or_miss(
+    input: onp.ToFloatND,
+    structure1: onp.ToIntND | None = None,
+    structure2: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    origin1: _Origin = 0,
+    origin2: _Origin | None = None,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+
+# keep roughly in sync with `binary_erosion`
+@overload
 def binary_propagation(
-    input: onp.ToComplex | onp.ToComplexND,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    mask: onp.ToInt | onp.ToIntND | None = None,
-    output: _BoolArrayOut | type[bool | np.bool_] | None = None,
-    border_value: _BorderValue = 0,
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    mask: onp.ToIntND | None = None,
+    output: None = None,
+    border_value: int = 0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _BoolArrayOut: ...
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_propagation(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    mask: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    border_value: int = 0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+
+# keep roughly in sync with `binary_erosion`
+@overload
 def binary_fill_holes(
-    input: onp.ToComplex | onp.ToComplexND,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    output: _BoolArrayOut | None = None,
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _BoolArrayOut: ...
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_fill_holes(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
 
 #
+@overload
 def grey_erosion(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _ScalarArrayOut: ...
+) -> _OutputArrayT: ...
+@overload
+def grey_erosion(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def grey_erosion(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def grey_erosion(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def grey_erosion(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
+
+# keep in sync with `grey_erosion`
+@overload
 def grey_dilation(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _ScalarArrayOut: ...
+) -> _OutputArrayT: ...
+@overload
+def grey_dilation(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def grey_dilation(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def grey_dilation(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def grey_dilation(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
+
+# keep in sync with `grey_erosion`
+@overload
 def grey_opening(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _ScalarArrayOut: ...
+) -> _OutputArrayT: ...
+@overload
+def grey_opening(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def grey_opening(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def grey_opening(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def grey_opening(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
+
+# keep in sync with `grey_erosion`
+@overload
 def grey_closing(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _ScalarArrayOut: ...
+) -> _OutputArrayT: ...
+@overload
+def grey_closing(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def grey_closing(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def grey_closing(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def grey_closing(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
-#
+# keep in sync with `grey_erosion`
+@overload
 def morphological_gradient(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _ScalarArrayOut: ...
+) -> _OutputArrayT: ...
+@overload
+def morphological_gradient(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def morphological_gradient(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def morphological_gradient(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def morphological_gradient(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
+
+# keep in sync with `grey_erosion`
+@overload
 def morphological_laplace(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _ScalarArrayOut: ...
+) -> _OutputArrayT: ...
+@overload
+def morphological_laplace(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def morphological_laplace(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def morphological_laplace(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def morphological_laplace(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
-#
+# keep in sync with `grey_erosion`
+@overload
 def white_tophat(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _ScalarArrayOut: ...
-def black_tophat(
-    input: onp.ToComplex | onp.ToComplexND,
+) -> _OutputArrayT: ...
+@overload
+def white_tophat(
+    input: onp.ToFloatND,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
-    structure: onp.ToInt | onp.ToIntND | None = None,
-    output: _ScalarArrayOut | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
-    origin: onp.ToComplex = 0,
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def white_tophat(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> _ScalarArrayOut: ...
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def white_tophat(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def white_tophat(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
+
+# keep in sync with `grey_erosion`
+@overload
+def black_tophat(
+    input: _OutputArrayT,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def black_tophat(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def black_tophat(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def black_tophat(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def black_tophat(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
 #
+@overload  # return_distances=False, return_indices=False (default)
+def distance_transform_bf(
+    input: onp.ToFloatND,
+    metric: _Metric1 | _Metric2 | _Metric3 = "euclidean",
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    *,
+    return_distances: Literal[False],
+    return_indices: Literal[False] = False,
+    distances: None = None,
+    indices: onp.ArrayND[np.int32] | None = None,
+) -> None: ...
+@overload  # return_distances=False, return_indices=True
+def distance_transform_bf(
+    input: onp.ToFloatND,
+    metric: _Metric1 | _Metric2 | _Metric3 = "euclidean",
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    *,
+    return_distances: Literal[False],
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: onp.ArrayND[np.int32] | None = None,
+) -> onp.ArrayND[np.int32]: ...
+@overload  # metric == "euclidean" (default), distances=<given>, return_indices=False (default)
+def distance_transform_bf(
+    input: onp.ToFloatND,
+    metric: _Metric1 = "euclidean",
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: bool = True,
+    return_indices: Literal[False] = False,
+    *,
+    distances: onp.ArrayND[np.float64],
+    indices: onp.ArrayND[np.int32] | None = None,
+) -> None: ...
+@overload  # metric == "euclidean" (default), distances=<given>, return_indices=True
+def distance_transform_bf(
+    input: onp.ToFloatND,
+    metric: _Metric1 = "euclidean",
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: bool = True,
+    *,
+    return_indices: Literal[True],
+    distances: onp.ArrayND[np.float64, _ShapeT],
+    indices: None = None,
+) -> onp.ArrayND[np.int32, _ShapeT]: ...
+@overload  # metric == "euclidean" (default), return_distances=True (default), return_indices=False (default)
+def distance_transform_bf(
+    input: onp.ToFloatND,
+    metric: _Metric1 = "euclidean",
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: Literal[True] = True,
+    return_indices: Literal[False] = False,
+    distances: None = None,
+    indices: onp.ArrayND[np.int32, _ShapeT] | None = None,
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # metric == "euclidean" (default), return_distances=True (default), return_indices=True
+def distance_transform_bf(
+    input: onp.ToFloatND,
+    metric: _Metric1 = "euclidean",
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: Literal[True] = True,
+    *,
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]]: ...
+@overload  # metric != "euclidean", distances=<given>, return_indices=False (default)
 def distance_transform_bf(
     input: onp.ToComplex | onp.ToComplexND,
-    metric: _MetricBF = "euclidean",
-    sampling: onp.ToFloat | onp.ToFloatND | None = None,
-    return_distances: onp.ToBool = True,
-    return_indices: onp.ToBool = False,
-    distances: onp.ArrayND[np.float64 | np.uint32] | None = None,
+    metric: _Metric2 | _Metric3,
+    sampling: None = None,
+    return_distances: bool = True,
+    return_indices: Literal[False] = False,
+    *,
+    distances: onp.ArrayND[np.uint32],
     indices: onp.ArrayND[np.int32] | None = None,
-) -> _ScalarArrayOut | onp.ArrayND[np.int32] | tuple[_ScalarArrayOut, onp.ArrayND[np.int32]]: ...
+) -> None: ...
+@overload  # metric != "euclidean", distances=<given>, return_indices=True
+def distance_transform_bf(
+    input: onp.ToComplex | onp.ToComplexND,
+    metric: _Metric2 | _Metric3,
+    sampling: None = None,
+    return_distances: bool = True,
+    *,
+    return_indices: Literal[True],
+    distances: onp.ArrayND[np.uint32, _ShapeT],
+    indices: None = None,
+) -> onp.ArrayND[np.int32, _ShapeT]: ...
+@overload  # metric != "euclidean", return_distances=True (default), return_indices=False (default)
+def distance_transform_bf(
+    input: onp.ToComplex | onp.ToComplexND,
+    metric: _Metric2 | _Metric3,
+    sampling: None = None,
+    return_distances: Literal[True] = True,
+    return_indices: Literal[False] = False,
+    distances: None = None,
+    indices: onp.ArrayND[np.int32, _ShapeT] | None = None,
+) -> onp.ArrayND[np.uint32, _ShapeT]: ...
+@overload  # metric != "euclidean", return_distances=True (default), return_indices=True
+def distance_transform_bf(
+    input: onp.ToComplex | onp.ToComplexND,
+    metric: _Metric2 | _Metric3,
+    sampling: None = None,
+    return_distances: Literal[True] = True,
+    *,
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: None = None,
+) -> tuple[onp.ArrayND[np.uint32], onp.ArrayND[np.int32]]: ...
+
+#
+@overload  # return_distances=False, return_indices=False (default)
 def distance_transform_cdt(
-    input: onp.ToComplex | onp.ToComplexND,
-    metric: _MetricCDT | onp.ToScalar | onp.ToArrayND = "chessboard",
-    return_distances: onp.ToBool = True,
-    return_indices: onp.ToBool = False,
-    distances: onp.ArrayND[np.int32] | None = None,
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    *,
+    return_distances: Literal[False],
+    return_indices: Literal[False] = False,
+    distances: None = None,
     indices: onp.ArrayND[np.int32] | None = None,
-) -> onp.ArrayND[np.int32] | tuple[onp.ArrayND[np.int32], onp.ArrayND[np.int32]]: ...
+) -> None: ...
+@overload  # return_distances=False, return_indices=True
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    *,
+    return_distances: Literal[False],
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: None = None,
+) -> onp.ArrayND[np.int32]: ...
+@overload  # distances=<given>, return_indices=False (default)
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    return_distances: bool = True,
+    return_indices: Literal[False] = False,
+    *,
+    distances: onp.ArrayND[np.int32],
+    indices: onp.ArrayND[np.int32] | None = None,
+) -> None: ...
+@overload  # distances=<given>, return_indices=True
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    return_distances: bool = True,
+    *,
+    return_indices: Literal[True],
+    distances: onp.ArrayND[np.int32, _ShapeT],
+    indices: None = None,
+) -> onp.ArrayND[np.int32, _ShapeT]: ...
+@overload  # return_distances=True (default), return_indices=False (default)
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    return_distances: Literal[True] = True,
+    return_indices: Literal[False] = False,
+    distances: None = None,
+    indices: onp.ArrayND[np.int32, _ShapeT] | None = None,
+) -> onp.ArrayND[np.int32, _ShapeT]: ...
+@overload  # return_distances=True (default), return_indices=True
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    return_distances: Literal[True] = True,
+    *,
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: None = None,
+) -> tuple[onp.ArrayND[np.int32], onp.ArrayND[np.int32]]: ...
+
+#
+@overload  # return_distances=False, return_indices=False (default)
 def distance_transform_edt(
-    input: onp.ToComplex | onp.ToComplexND,
-    sampling: onp.ToScalar | onp.ToArrayND | None = None,
-    return_distances: onp.ToBool = True,
-    return_indices: onp.ToBool = False,
-    distances: onp.ArrayND[np.float64] | None = None,
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    *,
+    return_distances: Literal[False],
+    return_indices: Literal[False] = False,
+    distances: None = None,
     indices: onp.ArrayND[np.int32] | None = None,
-) -> onp.ArrayND[np.float64] | onp.ArrayND[np.int32] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]]: ...
+) -> None: ...
+@overload  # return_distances=False, return_indices=True
+def distance_transform_edt(
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    *,
+    return_distances: Literal[False],
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: None = None,
+) -> onp.ArrayND[np.int32]: ...
+@overload  # distances=<given>, return_indices=False (default)
+def distance_transform_edt(
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: bool = True,
+    return_indices: Literal[False] = False,
+    *,
+    distances: onp.ArrayND[np.float64],
+    indices: onp.ArrayND[np.int32] | None = None,
+) -> None: ...
+@overload  # distances=<given>, return_indices=True
+def distance_transform_edt(
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: bool = True,
+    *,
+    return_indices: Literal[True],
+    distances: onp.ArrayND[np.float64, _ShapeT],
+    indices: None = None,
+) -> onp.ArrayND[np.int32, _ShapeT]: ...
+@overload  # return_distances=True (default), return_indices=False (default)
+def distance_transform_edt(
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: Literal[True] = True,
+    return_indices: Literal[False] = False,
+    distances: None = None,
+    indices: onp.ArrayND[np.int32, _ShapeT] | None = None,
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # return_distances=True (default), return_indices=True
+def distance_transform_edt(
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: Literal[True] = True,
+    *,
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]]: ...
