@@ -230,15 +230,25 @@ def binary_propagation(
     axes: tuple[int, ...] | None = None,
 ) -> _OutputArrayT: ...
 
-# TODO
+# keep roughly in sync with `binary_erosion`
+@overload
 def binary_fill_holes(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: onp.ToFloatND,
     structure: onp.ToIntND | None = None,
-    output: onp.ArrayND[np.bool_] | None = None,
+    output: None = None,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_fill_holes(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
 
 # TODO
 def grey_erosion(
