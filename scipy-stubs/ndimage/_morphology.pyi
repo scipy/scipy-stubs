@@ -958,12 +958,63 @@ def distance_transform_cdt(
     indices: None = None,
 ) -> tuple[onp.ArrayND[np.int32], onp.ArrayND[np.int32]]: ...
 
-# TODO
+#
+@overload  # return_distances=False, return_indices=False (default)
 def distance_transform_edt(
     input: onp.ToFloatND,
-    sampling: onp.ToScalar | onp.ToArrayND | None = None,
-    return_distances: bool = True,
-    return_indices: bool = False,
-    distances: onp.ArrayND[np.float64] | None = None,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    *,
+    return_distances: Literal[False],
+    return_indices: Literal[False] = False,
+    distances: None = None,
     indices: onp.ArrayND[np.int32] | None = None,
-) -> onp.ArrayND[np.float64] | onp.ArrayND[np.int32] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]]: ...
+) -> None: ...
+@overload  # return_distances=False, return_indices=True
+def distance_transform_edt(
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    *,
+    return_distances: Literal[False],
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: None = None,
+) -> onp.ArrayND[np.int32]: ...
+@overload  # distances=<given>, return_indices=False (default)
+def distance_transform_edt(
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: bool = True,
+    return_indices: Literal[False] = False,
+    *,
+    distances: onp.ArrayND[np.float64],
+    indices: onp.ArrayND[np.int32] | None = None,
+) -> None: ...
+@overload  # distances=<given>, return_indices=True
+def distance_transform_edt(
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: bool = True,
+    *,
+    return_indices: Literal[True],
+    distances: onp.ArrayND[np.float64, _ShapeT],
+    indices: None = None,
+) -> onp.ArrayND[np.int32, _ShapeT]: ...
+@overload  # return_distances=True (default), return_indices=False (default)
+def distance_transform_edt(
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: Literal[True] = True,
+    return_indices: Literal[False] = False,
+    distances: None = None,
+    indices: onp.ArrayND[np.int32, _ShapeT] | None = None,
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # return_distances=True (default), return_indices=True
+def distance_transform_edt(
+    input: onp.ToFloatND,
+    sampling: onp.ToFloat | onp.ToFloat1D | None = None,
+    return_distances: Literal[True] = True,
+    *,
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]]: ...
