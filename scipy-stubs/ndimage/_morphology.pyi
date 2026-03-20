@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Literal, TypeAlias, overload
+from typing import Literal, SupportsIndex, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -32,6 +32,7 @@ __all__ = [
 ###
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+_OutputArrayT = TypeVar("_OutputArrayT", bound=onp.ArrayND[np.bool_ | npc.integer | npc.floating])
 _OriginScalarT = TypeVar("_OriginScalarT", bound=int | npc.integer)
 
 _Mode: TypeAlias = Literal["reflect", "constant", "nearest", "mirror", "wrap"]
@@ -70,56 +71,118 @@ def generate_binary_structure(rank: Literal[3], connectivity: int) -> onp.Array3
 def generate_binary_structure(rank: int, connectivity: int) -> onp.ArrayND[np.bool_]: ...
 
 #
+@overload
 def binary_erosion(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: onp.ToFloatND,
     structure: onp.ToIntND | None = None,
-    iterations: int = 1,
-    mask: onp.ToInt | onp.ToIntND | None = None,
-    output: onp.ArrayND[np.bool_] | type[bool | np.bool_] | None = None,
-    border_value: onp.ToInt = 0,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    output: None = None,
+    border_value: int = 0,
     origin: _Origin = 0,
     brute_force: bool = False,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.bool_]: ...
-def binary_dilation(
-    input: onp.ToComplex | onp.ToComplexND,
+@overload
+def binary_erosion(
+    input: onp.ToFloatND,
     structure: onp.ToIntND | None = None,
-    iterations: int = 1,
-    mask: onp.ToInt | onp.ToIntND | None = None,
-    output: onp.ArrayND[np.bool_] | type[bool | np.bool_] | None = None,
-    border_value: onp.ToInt = 0,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    border_value: int = 0,
     origin: _Origin = 0,
     brute_force: bool = False,
-    *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
-def binary_opening(
-    input: onp.ToComplex | onp.ToComplexND,
-    structure: onp.ToIntND | None = None,
-    iterations: int = 1,
-    output: onp.ArrayND[np.bool_] | type[bool | np.bool_] | None = None,
-    origin: _Origin = 0,
-    mask: onp.ToInt | onp.ToIntND | None = None,
-    border_value: onp.ToInt = 0,
-    brute_force: bool = False,
-    *,
-    axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
-def binary_closing(
-    input: onp.ToComplex | onp.ToComplexND,
-    structure: onp.ToIntND | None = None,
-    iterations: int = 1,
-    output: onp.ArrayND[np.bool_] | type[bool | np.bool_] | None = None,
-    origin: _Origin = 0,
-    mask: onp.ToInt | onp.ToIntND | None = None,
-    border_value: onp.ToInt = 0,
-    brute_force: bool = False,
-    *,
-    axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> _OutputArrayT: ...
 
-#
+# keep in sync with `binary_erosion`
+@overload
+def binary_dilation(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    output: None = None,
+    border_value: int = 0,
+    origin: _Origin = 0,
+    brute_force: bool = False,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_dilation(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    border_value: int = 0,
+    origin: _Origin = 0,
+    brute_force: bool = False,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+
+# keep in sync with `binary_erosion`
+@overload
+def binary_opening(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    output: None = None,
+    border_value: int = 0,
+    origin: _Origin = 0,
+    brute_force: bool = False,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_opening(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    border_value: int = 0,
+    origin: _Origin = 0,
+    brute_force: bool = False,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+
+# keep in sync with `binary_erosion`
+@overload
+def binary_closing(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    output: None = None,
+    border_value: int = 0,
+    origin: _Origin = 0,
+    brute_force: bool = False,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_closing(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    iterations: SupportsIndex = 1,
+    mask: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    border_value: int = 0,
+    origin: _Origin = 0,
+    brute_force: bool = False,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+
+# TODO
 def binary_hit_or_miss(
     input: onp.ToComplex | onp.ToComplexND,
     structure1: onp.ToInt | onp.ToIntND | None = None,
@@ -130,16 +193,20 @@ def binary_hit_or_miss(
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.bool_]: ...
+
+# TODO
 def binary_propagation(
     input: onp.ToComplex | onp.ToComplexND,
     structure: onp.ToIntND | None = None,
     mask: onp.ToInt | onp.ToIntND | None = None,
     output: onp.ArrayND[np.bool_] | type[bool | np.bool_] | None = None,
-    border_value: onp.ToInt = 0,
+    border_value: int = 0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.bool_]: ...
+
+# TODO
 def binary_fill_holes(
     input: onp.ToComplex | onp.ToComplexND,
     structure: onp.ToIntND | None = None,
@@ -149,7 +216,7 @@ def binary_fill_holes(
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.bool_]: ...
 
-#
+# TODO
 def grey_erosion(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -162,6 +229,7 @@ def grey_erosion(
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[npc.number | np.bool_]: ...
+# TODO
 def grey_dilation(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -174,6 +242,8 @@ def grey_dilation(
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[npc.number | np.bool_]: ...
+
+# TODO
 def grey_opening(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -186,6 +256,8 @@ def grey_opening(
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[npc.number | np.bool_]: ...
+
+# TODO
 def grey_closing(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -199,7 +271,7 @@ def grey_closing(
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[npc.number | np.bool_]: ...
 
-#
+# TODO
 def morphological_gradient(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -212,6 +284,8 @@ def morphological_gradient(
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[npc.number | np.bool_]: ...
+
+# TODO
 def morphological_laplace(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -225,7 +299,7 @@ def morphological_laplace(
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[npc.number | np.bool_]: ...
 
-#
+# TODO
 def white_tophat(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -238,6 +312,8 @@ def white_tophat(
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[npc.number | np.bool_]: ...
+
+# TODO
 def black_tophat(
     input: onp.ToComplex | onp.ToComplexND,
     size: tuple[int, ...] | None = None,
@@ -251,7 +327,7 @@ def black_tophat(
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[npc.number | np.bool_]: ...
 
-#
+# TODO
 def distance_transform_bf(
     input: onp.ToComplex | onp.ToComplexND,
     metric: _MetricBF = "euclidean",
@@ -264,7 +340,7 @@ def distance_transform_bf(
     onp.ArrayND[npc.number | np.bool_] | onp.ArrayND[np.int32] | tuple[onp.ArrayND[npc.number | np.bool_], onp.ArrayND[np.int32]]
 ): ...
 
-#
+# TODO
 def distance_transform_cdt(
     input: onp.ToComplex | onp.ToComplexND,
     metric: _MetricCDT | onp.ToScalar | onp.ToArrayND = "chessboard",
@@ -274,7 +350,7 @@ def distance_transform_cdt(
     indices: onp.ArrayND[np.int32] | None = None,
 ) -> onp.ArrayND[np.int32] | tuple[onp.ArrayND[np.int32], onp.ArrayND[np.int32]]: ...
 
-#
+# TODO
 def distance_transform_edt(
     input: onp.ToComplex | onp.ToComplexND,
     sampling: onp.ToScalar | onp.ToArrayND | None = None,
