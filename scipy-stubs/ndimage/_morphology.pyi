@@ -250,61 +250,273 @@ def binary_fill_holes(
     axes: tuple[int, ...] | None = None,
 ) -> _OutputArrayT: ...
 
-# TODO
+#
+@overload
 def grey_erosion(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
+    footprint: onp.ToIntND | None = None,
     structure: onp.ToIntND | None = None,
-    output: onp.ArrayND[npc.number | np.bool_] | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[npc.number | np.bool_]: ...
+) -> _OutputArrayT: ...
+@overload
+def grey_erosion(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def grey_erosion(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def grey_erosion(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def grey_erosion(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
-# TODO
+# keep in sync with `grey_erosion`
+@overload
 def grey_dilation(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
+    footprint: onp.ToIntND | None = None,
     structure: onp.ToIntND | None = None,
-    output: onp.ArrayND[npc.number | np.bool_] | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[npc.number | np.bool_]: ...
+) -> _OutputArrayT: ...
+@overload
+def grey_dilation(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def grey_dilation(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def grey_dilation(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def grey_dilation(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
-# TODO
+# keep in sync with `grey_erosion`
+@overload
 def grey_opening(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
+    footprint: onp.ToIntND | None = None,
     structure: onp.ToIntND | None = None,
-    output: onp.ArrayND[npc.number | np.bool_] | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[npc.number | np.bool_]: ...
+) -> _OutputArrayT: ...
+@overload
+def grey_opening(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def grey_opening(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def grey_opening(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def grey_opening(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
-# TODO
+# keep in sync with `grey_erosion`
+@overload
 def grey_closing(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: _OutputArrayT,
     size: tuple[int, ...] | None = None,
-    footprint: onp.ToScalar | onp.ToArrayND | None = None,
+    footprint: onp.ToIntND | None = None,
     structure: onp.ToIntND | None = None,
-    output: onp.ArrayND[npc.number | np.bool_] | None = None,
+    output: None = None,
     mode: _Mode = "reflect",
-    cval: onp.ToComplex = 0.0,
+    cval: float = 0.0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[npc.number | np.bool_]: ...
+) -> _OutputArrayT: ...
+@overload
+def grey_closing(
+    input: onp.ToFloatND,
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
+@overload
+def grey_closing(
+    input: onp.SequenceND[bool],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.bool_]: ...
+@overload
+def grey_closing(
+    input: onp.SequenceND[list[int]] | list[int],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def grey_closing(
+    input: onp.SequenceND[list[float]] | list[float],
+    size: tuple[int, ...] | None = None,
+    footprint: onp.ToIntND | None = None,
+    structure: onp.ToIntND | None = None,
+    output: None = None,
+    mode: _Mode = "reflect",
+    cval: float = 0.0,
+    origin: _Origin = 0,
+    *,
+    axes: tuple[int, ...] | None = None,
+) -> onp.ArrayND[np.float64]: ...
 
 # TODO
 def morphological_gradient(
