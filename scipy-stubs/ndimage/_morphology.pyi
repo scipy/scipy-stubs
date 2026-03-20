@@ -126,16 +126,16 @@ def binary_dilation(
     axes: tuple[int, ...] | None = None,
 ) -> _OutputArrayT: ...
 
-# keep in sync with `binary_erosion`
+# keep in sync with `binary_erosion` (but with shuffled `mask`, `output` and `origin`)
 @overload
 def binary_opening(
     input: onp.ToFloatND,
     structure: onp.ToIntND | None = None,
     iterations: SupportsIndex = 1,
-    mask: onp.ToIntND | None = None,
     output: None = None,
-    border_value: int = 0,
     origin: _Origin = 0,
+    mask: onp.ToIntND | None = None,
+    border_value: int = 0,
     brute_force: bool = False,
     *,
     axes: tuple[int, ...] | None = None,
@@ -145,11 +145,11 @@ def binary_opening(
     input: onp.ToFloatND,
     structure: onp.ToIntND | None = None,
     iterations: SupportsIndex = 1,
-    mask: onp.ToIntND | None = None,
     *,
     output: _OutputArrayT,
-    border_value: int = 0,
     origin: _Origin = 0,
+    mask: onp.ToIntND | None = None,
+    border_value: int = 0,
     brute_force: bool = False,
     axes: tuple[int, ...] | None = None,
 ) -> _OutputArrayT: ...
@@ -160,10 +160,10 @@ def binary_closing(
     input: onp.ToFloatND,
     structure: onp.ToIntND | None = None,
     iterations: SupportsIndex = 1,
-    mask: onp.ToIntND | None = None,
     output: None = None,
-    border_value: int = 0,
     origin: _Origin = 0,
+    mask: onp.ToIntND | None = None,
+    border_value: int = 0,
     brute_force: bool = False,
     *,
     axes: tuple[int, ...] | None = None,
@@ -173,38 +173,62 @@ def binary_closing(
     input: onp.ToFloatND,
     structure: onp.ToIntND | None = None,
     iterations: SupportsIndex = 1,
-    mask: onp.ToIntND | None = None,
     *,
     output: _OutputArrayT,
-    border_value: int = 0,
     origin: _Origin = 0,
+    mask: onp.ToIntND | None = None,
+    border_value: int = 0,
     brute_force: bool = False,
     axes: tuple[int, ...] | None = None,
 ) -> _OutputArrayT: ...
 
-# TODO
+# keep roughly in sync with `binary_erosion`
+@overload
 def binary_hit_or_miss(
-    input: onp.ToComplex | onp.ToComplexND,
-    structure1: onp.ToInt | onp.ToIntND | None = None,
-    structure2: onp.ToInt | onp.ToIntND | None = None,
-    output: onp.ArrayND[np.bool_] | type[bool | np.bool_] | None = None,
+    input: onp.ToFloatND,
+    structure1: onp.ToIntND | None = None,
+    structure2: onp.ToIntND | None = None,
+    output: None = None,
     origin1: _Origin = 0,
     origin2: _Origin | None = None,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_hit_or_miss(
+    input: onp.ToFloatND,
+    structure1: onp.ToIntND | None = None,
+    structure2: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    origin1: _Origin = 0,
+    origin2: _Origin | None = None,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
 
-# TODO
+# keep roughly in sync with `binary_erosion`
+@overload
 def binary_propagation(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: onp.ToFloatND,
     structure: onp.ToIntND | None = None,
-    mask: onp.ToInt | onp.ToIntND | None = None,
-    output: onp.ArrayND[np.bool_] | type[bool | np.bool_] | None = None,
+    mask: onp.ToIntND | None = None,
+    output: None = None,
     border_value: int = 0,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.bool_]: ...
+@overload
+def binary_propagation(
+    input: onp.ToFloatND,
+    structure: onp.ToIntND | None = None,
+    mask: onp.ToIntND | None = None,
+    *,
+    output: _OutputArrayT,
+    border_value: int = 0,
+    origin: _Origin = 0,
+    axes: tuple[int, ...] | None = None,
+) -> _OutputArrayT: ...
 
 # TODO
 def binary_fill_holes(
@@ -229,6 +253,7 @@ def grey_erosion(
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[npc.number | np.bool_]: ...
+
 # TODO
 def grey_dilation(
     input: onp.ToComplex | onp.ToComplexND,
