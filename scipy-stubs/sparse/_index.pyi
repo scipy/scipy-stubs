@@ -28,7 +28,9 @@ _ToIndex1Of2: TypeAlias = _ToIndex1 | tuple[int, _ToSlice | onp.ToInt1D] | tuple
 _ToIndex2Of2: TypeAlias = tuple[onp.ToInt1D, onp.ToInt1D]
 
 _ToSlice: TypeAlias = slice[int | None, int | None, int | None] | EllipsisType
-_ToSlice1: TypeAlias = _ToSlice | onp.ToInt1D | tuple[int, None] | tuple[None, int] | tuple[slice, onp.ToInt1D]
+_ToSlice1: TypeAlias = (
+    _ToSlice | onp.ToInt1D | tuple[int, None] | tuple[None, int] | tuple[slice, onp.ToInt1D] | tuple[onp.ToInt1D, slice]
+)
 _ToSlice2: TypeAlias = _ToSlice | tuple[_ToSlice, _ToSlice] | _spbase[np.bool_, _2D] | list[np.bool_] | list[bool] | list[int]
 
 ###
@@ -59,4 +61,6 @@ class IndexMixin(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
     def __setitem__(self: IndexMixin[Any, _1D], ix: _ToIndex1, x: _ToNumber, /) -> None: ...
     @overload
-    def __setitem__(self: IndexMixin[Any, _2D], ix: _ToIndex1Of2 | _ToIndex2 | _ToSlice2, x: _ToNumber, /) -> None: ...
+    def __setitem__(
+        self: IndexMixin[Any, _2D], ix: _ToIndex1Of2 | _ToIndex2Of2 | _ToIndex2 | _ToSlice1 | _ToSlice2, x: _ToNumber, /
+    ) -> None: ...

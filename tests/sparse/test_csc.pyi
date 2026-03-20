@@ -150,9 +150,15 @@ assert_type(_csc_arr[:, :], csc_array[ScalarType])
 _csc_arr[0] = 1.0
 _csc_arr[:] = 1.0
 _csc_arr[:] = _arr_2d
+_csc_arr[:, :] = 1.0
+_csc_arr[:, :] = _arr_2d
 _csc_arr[0, :] = 1.0
 _csc_arr[0, :] = _arr_2d
 _csc_arr[:, 0] = 1.0
 _csc_arr[:, 0] = _arr_2d
-_csc_arr[:, :] = 1.0
-_csc_arr[:, :] = _arr_2d
+_csc_arr[:, _int_list] = 1.0
+_csc_arr[:, _int_list] = _arr_2d
+_csc_arr[_int_list, :] = 1.0
+_csc_arr[_int_list, :] = _arr_2d
+_csc_arr[_int_list, _int_list] = 1.0
+_csc_arr[_int_list, _int_list] = _arr_2d
