@@ -4,7 +4,6 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from scipy.ndimage import (
     binary_closing,
@@ -30,116 +29,239 @@ from scipy.ndimage import (
 )
 
 ###
-# Test variables
 
-f64_nd: onp.ArrayND[np.float64]
-c128_nd: onp.ArrayND[np.complex128]
-b_nd: onp.ArrayND[np.bool_]
+_b_1d: onp.Array1D[np.bool_]
+_b_2d: onp.Array2D[np.bool_]
+_b_nd: onp.ArrayND[np.bool_]
 
-int_nd: list[list[int]]
-float_nd: list[list[float]]
+_u32_2d: onp.Array2D[np.uint32]
+_i32_2d: onp.Array2D[np.int32]
 
-###
-# generate_binary_structure / iterate_structure
+_f64_1d: onp.Array1D[np.float64]
+_f64_2d: onp.Array2D[np.float64]
+_f64_nd: onp.ArrayND[np.float64]
 
-assert_type(generate_binary_structure(2, 1), onp.ArrayND[np.bool_])
-assert_type(generate_binary_structure(3, 2), onp.ArrayND[np.bool_])
+_py_b_2d: list[list[bool]]
+_py_i_2d: list[list[int]]
+_py_f_2d: list[list[float]]
 
-assert_type(iterate_structure(b_nd, 2), onp.ArrayND[np.bool_])
-
-###
-# binary_erosion / binary_dilation / binary_opening / binary_closing
-
-assert_type(binary_erosion(f64_nd), onp.ArrayND[np.bool_])
-assert_type(binary_erosion(c128_nd), onp.ArrayND[np.bool_])
-assert_type(binary_erosion(int_nd), onp.ArrayND[np.bool_])
-assert_type(binary_erosion(float_nd), onp.ArrayND[np.bool_])
-assert_type(binary_erosion(f64_nd, structure=b_nd, iterations=2), onp.ArrayND[np.bool_])
-
-assert_type(binary_dilation(f64_nd), onp.ArrayND[np.bool_])
-assert_type(binary_dilation(c128_nd), onp.ArrayND[np.bool_])
-assert_type(binary_dilation(int_nd), onp.ArrayND[np.bool_])
-assert_type(binary_dilation(f64_nd, structure=b_nd, iterations=2), onp.ArrayND[np.bool_])
-
-assert_type(binary_opening(f64_nd), onp.ArrayND[np.bool_])
-assert_type(binary_opening(c128_nd), onp.ArrayND[np.bool_])
-assert_type(binary_opening(int_nd), onp.ArrayND[np.bool_])
-
-assert_type(binary_closing(f64_nd), onp.ArrayND[np.bool_])
-assert_type(binary_closing(c128_nd), onp.ArrayND[np.bool_])
-assert_type(binary_closing(int_nd), onp.ArrayND[np.bool_])
+_i32: np.int32
 
 ###
-# binary_hit_or_miss / binary_propagation / binary_fill_holes
 
-assert_type(binary_hit_or_miss(f64_nd), onp.ArrayND[np.bool_])
-assert_type(binary_hit_or_miss(int_nd), onp.ArrayND[np.bool_])
+# iterate_structure
+assert_type(iterate_structure(_b_1d, 1), onp.Array1D[np.bool_])
+assert_type(iterate_structure(_b_2d, 1), onp.Array2D[np.bool_])
+assert_type(iterate_structure(_b_nd, 1), onp.ArrayND[np.bool_])
+assert_type(iterate_structure(_b_1d, 1, origin=0), tuple[onp.Array1D[np.bool_], list[int]])
+assert_type(iterate_structure(_b_2d, 1, origin=0), tuple[onp.Array2D[np.bool_], list[int]])
+assert_type(iterate_structure(_b_nd, 1, origin=0), tuple[onp.ArrayND[np.bool_], list[int]])
+assert_type(iterate_structure(_b_nd, 1, origin=_i32), tuple[onp.ArrayND[np.bool_], list[np.int32]])
 
-assert_type(binary_propagation(f64_nd), onp.ArrayND[np.bool_])
-assert_type(binary_propagation(int_nd), onp.ArrayND[np.bool_])
+# generate_binary_structure
+assert_type(generate_binary_structure(-3, 1), onp.Array0D[np.bool_])
+assert_type(generate_binary_structure(-2, 1), onp.Array0D[np.bool_])
+assert_type(generate_binary_structure(-1, 1), onp.Array0D[np.bool_])
+assert_type(generate_binary_structure(0, 1), onp.Array0D[np.bool_])
+assert_type(generate_binary_structure(1, 1), onp.Array1D[np.bool_])
+assert_type(generate_binary_structure(2, 1), onp.Array2D[np.bool_])
+assert_type(generate_binary_structure(3, 2), onp.Array3D[np.bool_])
+assert_type(generate_binary_structure(42, 2), onp.ArrayND[np.bool_])
 
-assert_type(binary_fill_holes(f64_nd), onp.ArrayND[np.bool_])
-assert_type(binary_fill_holes(int_nd), onp.ArrayND[np.bool_])
+# binary_erosion
+assert_type(binary_erosion(_py_i_2d), onp.ArrayND[np.bool_])
+assert_type(binary_erosion(_py_f_2d), onp.ArrayND[np.bool_])
+assert_type(binary_erosion(_f64_2d), onp.ArrayND[np.bool_])
+assert_type(binary_erosion(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_erosion(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_erosion(_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-###
-# grey_erosion / grey_dilation / grey_opening / grey_closing
+# binary_dilation (same as above)
+assert_type(binary_dilation(_py_i_2d), onp.ArrayND[np.bool_])
+assert_type(binary_dilation(_py_f_2d), onp.ArrayND[np.bool_])
+assert_type(binary_dilation(_f64_2d), onp.ArrayND[np.bool_])
+assert_type(binary_dilation(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_dilation(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_dilation(_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-assert_type(grey_erosion(f64_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
-assert_type(grey_erosion(c128_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
-assert_type(grey_erosion(int_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
+# binary_opening (same as above)
+assert_type(binary_opening(_py_i_2d), onp.ArrayND[np.bool_])
+assert_type(binary_opening(_py_f_2d), onp.ArrayND[np.bool_])
+assert_type(binary_opening(_f64_2d), onp.ArrayND[np.bool_])
+assert_type(binary_opening(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_opening(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_opening(_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-assert_type(grey_dilation(f64_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
-assert_type(grey_dilation(c128_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
+# binary_closing (same as above)
+assert_type(binary_closing(_py_i_2d), onp.ArrayND[np.bool_])
+assert_type(binary_closing(_py_f_2d), onp.ArrayND[np.bool_])
+assert_type(binary_closing(_f64_2d), onp.ArrayND[np.bool_])
+assert_type(binary_closing(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_closing(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_closing(_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-assert_type(grey_opening(f64_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
-assert_type(grey_opening(c128_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
+# binary_hit_or_miss (same as above)
+assert_type(binary_hit_or_miss(_py_i_2d), onp.ArrayND[np.bool_])
+assert_type(binary_hit_or_miss(_py_f_2d), onp.ArrayND[np.bool_])
+assert_type(binary_hit_or_miss(_f64_2d), onp.ArrayND[np.bool_])
+assert_type(binary_hit_or_miss(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_hit_or_miss(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_hit_or_miss(_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-assert_type(grey_closing(f64_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
-assert_type(grey_closing(c128_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
+# binary_propagation (same as above)
+assert_type(binary_propagation(_py_i_2d), onp.ArrayND[np.bool_])
+assert_type(binary_propagation(_py_f_2d), onp.ArrayND[np.bool_])
+assert_type(binary_propagation(_f64_2d), onp.ArrayND[np.bool_])
+assert_type(binary_propagation(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_propagation(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_propagation(_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-###
-# morphological_gradient / morphological_laplace
+# binary_fill_holes (same as above)
+assert_type(binary_fill_holes(_py_i_2d), onp.ArrayND[np.bool_])
+assert_type(binary_fill_holes(_py_f_2d), onp.ArrayND[np.bool_])
+assert_type(binary_fill_holes(_f64_2d), onp.ArrayND[np.bool_])
+assert_type(binary_fill_holes(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_fill_holes(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_fill_holes(_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-assert_type(morphological_gradient(f64_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
-assert_type(morphological_gradient(c128_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
+# grey_erosion
+assert_type(grey_erosion(_b_1d), onp.Array1D[np.bool_])
+assert_type(grey_erosion(_b_2d), onp.Array2D[np.bool_])
+assert_type(grey_erosion(_b_nd), onp.ArrayND[np.bool_])
+assert_type(grey_erosion(_f64_1d), onp.Array1D[np.float64])
+assert_type(grey_erosion(_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_erosion(_f64_nd), onp.ArrayND[np.float64])
+assert_type(grey_erosion(_py_b_2d), onp.ArrayND[np.bool_])
+assert_type(grey_erosion(_py_i_2d), onp.ArrayND[np.int_])
+assert_type(grey_erosion(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(grey_erosion(_py_b_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_erosion(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_erosion(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-assert_type(morphological_laplace(f64_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
-assert_type(morphological_laplace(c128_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
+# grey_dilation (same as above)
+assert_type(grey_dilation(_b_1d), onp.Array1D[np.bool_])
+assert_type(grey_dilation(_b_2d), onp.Array2D[np.bool_])
+assert_type(grey_dilation(_b_nd), onp.ArrayND[np.bool_])
+assert_type(grey_dilation(_f64_1d), onp.Array1D[np.float64])
+assert_type(grey_dilation(_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_dilation(_f64_nd), onp.ArrayND[np.float64])
+assert_type(grey_dilation(_py_b_2d), onp.ArrayND[np.bool_])
+assert_type(grey_dilation(_py_i_2d), onp.ArrayND[np.int_])
+assert_type(grey_dilation(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(grey_dilation(_py_b_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_dilation(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_dilation(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-###
-# white_tophat / black_tophat
+# grey_opening (same as above)
+assert_type(grey_opening(_b_1d), onp.Array1D[np.bool_])
+assert_type(grey_opening(_b_2d), onp.Array2D[np.bool_])
+assert_type(grey_opening(_b_nd), onp.ArrayND[np.bool_])
+assert_type(grey_opening(_f64_1d), onp.Array1D[np.float64])
+assert_type(grey_opening(_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_opening(_f64_nd), onp.ArrayND[np.float64])
+assert_type(grey_opening(_py_b_2d), onp.ArrayND[np.bool_])
+assert_type(grey_opening(_py_i_2d), onp.ArrayND[np.int_])
+assert_type(grey_opening(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(grey_opening(_py_b_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_opening(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_opening(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-assert_type(white_tophat(f64_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
-assert_type(white_tophat(c128_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
+# grey_closing (same as above)
+assert_type(grey_closing(_b_1d), onp.Array1D[np.bool_])
+assert_type(grey_closing(_b_2d), onp.Array2D[np.bool_])
+assert_type(grey_closing(_b_nd), onp.ArrayND[np.bool_])
+assert_type(grey_closing(_f64_1d), onp.Array1D[np.float64])
+assert_type(grey_closing(_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_closing(_f64_nd), onp.ArrayND[np.float64])
+assert_type(grey_closing(_py_b_2d), onp.ArrayND[np.bool_])
+assert_type(grey_closing(_py_i_2d), onp.ArrayND[np.int_])
+assert_type(grey_closing(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(grey_closing(_py_b_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_closing(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(grey_closing(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-assert_type(black_tophat(f64_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
-assert_type(black_tophat(c128_nd, size=(3, 3)), onp.ArrayND[npc.number | np.bool_])
+# morphological_gradient (same as above)
+assert_type(morphological_gradient(_b_1d), onp.Array1D[np.bool_])
+assert_type(morphological_gradient(_b_2d), onp.Array2D[np.bool_])
+assert_type(morphological_gradient(_b_nd), onp.ArrayND[np.bool_])
+assert_type(morphological_gradient(_f64_1d), onp.Array1D[np.float64])
+assert_type(morphological_gradient(_f64_2d), onp.Array2D[np.float64])
+assert_type(morphological_gradient(_f64_nd), onp.ArrayND[np.float64])
+assert_type(morphological_gradient(_py_b_2d), onp.ArrayND[np.bool_])
+assert_type(morphological_gradient(_py_i_2d), onp.ArrayND[np.int_])
+assert_type(morphological_gradient(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(morphological_gradient(_py_b_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(morphological_gradient(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(morphological_gradient(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-###
-# distance_transform_edt
+# morphological_laplace (same as above)
+assert_type(morphological_laplace(_b_1d), onp.Array1D[np.bool_])
+assert_type(morphological_laplace(_b_2d), onp.Array2D[np.bool_])
+assert_type(morphological_laplace(_b_nd), onp.ArrayND[np.bool_])
+assert_type(morphological_laplace(_f64_1d), onp.Array1D[np.float64])
+assert_type(morphological_laplace(_f64_2d), onp.Array2D[np.float64])
+assert_type(morphological_laplace(_f64_nd), onp.ArrayND[np.float64])
+assert_type(morphological_laplace(_py_b_2d), onp.ArrayND[np.bool_])
+assert_type(morphological_laplace(_py_i_2d), onp.ArrayND[np.int_])
+assert_type(morphological_laplace(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(morphological_laplace(_py_b_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(morphological_laplace(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(morphological_laplace(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-assert_type(
-    distance_transform_edt(f64_nd),
-    onp.ArrayND[np.float64] | onp.ArrayND[np.int32] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]],
-)
-assert_type(
-    distance_transform_edt(int_nd),
-    onp.ArrayND[np.float64] | onp.ArrayND[np.int32] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]],
-)
-assert_type(
-    distance_transform_edt(f64_nd, return_indices=True),
-    onp.ArrayND[np.float64] | onp.ArrayND[np.int32] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]],
-)
+# white_tophat (same as above)
+assert_type(white_tophat(_b_1d), onp.Array1D[np.bool_])
+assert_type(white_tophat(_b_2d), onp.Array2D[np.bool_])
+assert_type(white_tophat(_b_nd), onp.ArrayND[np.bool_])
+assert_type(white_tophat(_f64_1d), onp.Array1D[np.float64])
+assert_type(white_tophat(_f64_2d), onp.Array2D[np.float64])
+assert_type(white_tophat(_f64_nd), onp.ArrayND[np.float64])
+assert_type(white_tophat(_py_b_2d), onp.ArrayND[np.bool_])
+assert_type(white_tophat(_py_i_2d), onp.ArrayND[np.int_])
+assert_type(white_tophat(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(white_tophat(_py_b_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(white_tophat(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(white_tophat(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
 
-###
+# black_tophat (same as above)
+assert_type(black_tophat(_b_1d), onp.Array1D[np.bool_])
+assert_type(black_tophat(_b_2d), onp.Array2D[np.bool_])
+assert_type(black_tophat(_b_nd), onp.ArrayND[np.bool_])
+assert_type(black_tophat(_f64_1d), onp.Array1D[np.float64])
+assert_type(black_tophat(_f64_2d), onp.Array2D[np.float64])
+assert_type(black_tophat(_f64_nd), onp.ArrayND[np.float64])
+assert_type(black_tophat(_py_b_2d), onp.ArrayND[np.bool_])
+assert_type(black_tophat(_py_i_2d), onp.ArrayND[np.int_])
+assert_type(black_tophat(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(black_tophat(_py_b_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(black_tophat(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(black_tophat(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
+
 # distance_transform_bf
+assert_type(distance_transform_bf(_f64_2d), onp.ArrayND[np.float64])
+assert_type(distance_transform_bf(_f64_2d, return_distances=False), None)
+assert_type(distance_transform_bf(_f64_2d, distances=_f64_2d), None)
+assert_type(distance_transform_bf(_f64_2d, return_distances=False, return_indices=True), onp.ArrayND[np.int32])
+assert_type(distance_transform_bf(_f64_2d, distances=_f64_2d, return_indices=True), onp.Array2D[np.int32])
+assert_type(distance_transform_bf(_f64_2d, return_indices=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]])
+assert_type(distance_transform_bf(_f64_2d, "taxicab"), onp.ArrayND[np.uint32])
+assert_type(distance_transform_bf(_f64_2d, "taxicab", return_distances=False), None)
+assert_type(distance_transform_bf(_f64_2d, "taxicab", distances=_u32_2d), None)
+assert_type(distance_transform_bf(_f64_2d, "taxicab", return_distances=False, return_indices=True), onp.ArrayND[np.int32])
+assert_type(distance_transform_bf(_f64_2d, "taxicab", distances=_u32_2d, return_indices=True), onp.Array2D[np.int32])
+assert_type(distance_transform_bf(_f64_2d, "taxicab", return_indices=True), tuple[onp.ArrayND[np.uint32], onp.ArrayND[np.int32]])
 
-assert_type(
-    distance_transform_bf(f64_nd),
-    onp.ArrayND[npc.number | np.bool_] | onp.ArrayND[np.int32] | tuple[onp.ArrayND[npc.number | np.bool_], onp.ArrayND[np.int32]],
-)
-
-###
 # distance_transform_cdt
+assert_type(distance_transform_cdt(_f64_2d), onp.ArrayND[np.int32])
+assert_type(distance_transform_cdt(_f64_2d, return_distances=False), None)
+assert_type(distance_transform_cdt(_f64_2d, distances=_i32_2d), None)
+assert_type(distance_transform_cdt(_f64_2d, return_distances=False, return_indices=True), onp.ArrayND[np.int32])
+assert_type(distance_transform_cdt(_f64_2d, distances=_i32_2d, return_indices=True), onp.Array2D[np.int32])
+assert_type(distance_transform_cdt(_f64_2d, return_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.int32]])
 
-assert_type(distance_transform_cdt(f64_nd), onp.ArrayND[np.int32] | tuple[onp.ArrayND[np.int32], onp.ArrayND[np.int32]])
+# distance_transform_edt
+assert_type(distance_transform_edt(_f64_2d), onp.ArrayND[np.float64])
+assert_type(distance_transform_edt(_f64_2d, return_distances=False), None)
+assert_type(distance_transform_edt(_f64_2d, distances=_f64_2d), None)
+assert_type(distance_transform_edt(_f64_2d, return_distances=False, return_indices=True), onp.ArrayND[np.int32])
+assert_type(distance_transform_edt(_f64_2d, distances=_f64_2d, return_indices=True), onp.Array2D[np.int32])
+assert_type(distance_transform_edt(_f64_2d, return_indices=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]])
