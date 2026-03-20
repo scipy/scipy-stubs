@@ -22,13 +22,22 @@ _ToNumber: TypeAlias = SupportsIndex | SupportsInt | SupportsFloat | SupportsCom
 _1D: TypeAlias = tuple[int]  # noqa: PYI042
 _2D: TypeAlias = tuple[int, int]  # noqa: PYI042
 
+# 1d simple index
 _ToIndex1: TypeAlias = int | tuple[int]
+# 2d simple index
 _ToIndex2: TypeAlias = tuple[int, int]
+# 1d multi-index of a 2d array
 _ToIndex1Of2: TypeAlias = _ToIndex1 | tuple[int, _ToSlice | onp.ToInt1D] | tuple[_ToSlice | onp.ToInt1D, int]
+# 2d multi-index of a 2d array
 _ToIndex2Of2: TypeAlias = tuple[onp.ToInt1D, onp.ToInt1D]
 
+# single slice-like index (maintains axis)
 _ToSlice: TypeAlias = slice[int | None, int | None, int | None] | EllipsisType
-_ToSlice1: TypeAlias = _ToSlice | onp.ToInt1D | tuple[int, None] | tuple[None, int] | tuple[slice, onp.ToInt1D]
+# axis-wise slice (maintains 1d or 2d shape)
+_ToSlice1: TypeAlias = (
+    _ToSlice | onp.ToInt1D | tuple[int, None] | tuple[None, int] | tuple[_ToSlice, onp.ToInt1D] | tuple[onp.ToInt1D, _ToSlice]
+)
+# axis-wise slice for 2d arrays (maintains only 2d shape)
 _ToSlice2: TypeAlias = _ToSlice | tuple[_ToSlice, _ToSlice] | _spbase[np.bool_, _2D] | list[np.bool_] | list[bool] | list[int]
 
 ###
@@ -59,4 +68,6 @@ class IndexMixin(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
     def __setitem__(self: IndexMixin[Any, _1D], ix: _ToIndex1, x: _ToNumber, /) -> None: ...
     @overload
-    def __setitem__(self: IndexMixin[Any, _2D], ix: _ToIndex1Of2 | _ToIndex2 | _ToSlice2, x: _ToNumber, /) -> None: ...
+    def __setitem__(
+        self: IndexMixin[Any, _2D], ix: _ToIndex1Of2 | _ToIndex2Of2 | _ToIndex2 | _ToSlice1 | _ToSlice2, x: _ToNumber, /
+    ) -> None: ...
