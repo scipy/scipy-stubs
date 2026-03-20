@@ -897,21 +897,70 @@ def distance_transform_bf(
     indices: None = None,
 ) -> tuple[onp.ArrayND[np.uint32], onp.ArrayND[np.int32]]: ...
 
-###
-# TODO
-
-def distance_transform_cdt(
-    input: onp.ToComplex | onp.ToComplexND,
-    metric: _Metric2 | _Metric3 | onp.ToScalar | onp.ToArrayND = "chessboard",
-    return_distances: bool = True,
-    return_indices: bool = False,
-    distances: onp.ArrayND[np.int32] | None = None,
-    indices: onp.ArrayND[np.int32] | None = None,
-) -> onp.ArrayND[np.int32] | tuple[onp.ArrayND[np.int32], onp.ArrayND[np.int32]]: ...
-
 #
+@overload  # return_distances=False, return_indices=False (default)
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    *,
+    return_distances: Literal[False],
+    return_indices: Literal[False] = False,
+    distances: None = None,
+    indices: onp.ArrayND[np.int32] | None = None,
+) -> None: ...
+@overload  # return_distances=False, return_indices=True
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    *,
+    return_distances: Literal[False],
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: None = None,
+) -> onp.ArrayND[np.int32]: ...
+@overload  # distances=<given>, return_indices=False (default)
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    return_distances: bool = True,
+    return_indices: Literal[False] = False,
+    *,
+    distances: onp.ArrayND[np.int32],
+    indices: onp.ArrayND[np.int32] | None = None,
+) -> None: ...
+@overload  # distances=<given>, return_indices=True
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    return_distances: bool = True,
+    *,
+    return_indices: Literal[True],
+    distances: onp.ArrayND[np.int32, _ShapeT],
+    indices: None = None,
+) -> onp.ArrayND[np.int32, _ShapeT]: ...
+@overload  # return_distances=True (default), return_indices=False (default)
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    return_distances: Literal[True] = True,
+    return_indices: Literal[False] = False,
+    distances: None = None,
+    indices: onp.ArrayND[np.int32, _ShapeT] | None = None,
+) -> onp.ArrayND[np.int32, _ShapeT]: ...
+@overload  # return_distances=True (default), return_indices=True
+def distance_transform_cdt(
+    input: onp.ToFloatND,
+    metric: _Metric2 | _Metric3 | onp.ToFloatND = "chessboard",
+    return_distances: Literal[True] = True,
+    *,
+    return_indices: Literal[True],
+    distances: None = None,
+    indices: None = None,
+) -> tuple[onp.ArrayND[np.int32], onp.ArrayND[np.int32]]: ...
+
+# TODO
 def distance_transform_edt(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: onp.ToFloatND,
     sampling: onp.ToScalar | onp.ToArrayND | None = None,
     return_distances: bool = True,
     return_indices: bool = False,
