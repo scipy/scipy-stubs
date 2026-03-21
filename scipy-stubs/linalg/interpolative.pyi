@@ -116,9 +116,20 @@ def id_to_svd(
 ) -> tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], onp.Array2D[np.complex128]]: ...
 
 #
+@overload
 def svd(
-    A: onp.ArrayND[npc.number] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
-) -> tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact], onp.Array2D[npc.inexact]]: ...
+    A: onp.Array2D[np.float64] | LinearOperator[np.float64],
+    eps_or_k: float,
+    rand: bool = True,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
+@overload
+def svd(
+    A: onp.Array2D[np.complex128] | LinearOperator[np.complex128],
+    eps_or_k: float,
+    rand: bool = True,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], onp.Array2D[np.complex128]]: ...
 
 #
 def estimate_spectral_norm(A: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None) -> float | np.float64: ...
