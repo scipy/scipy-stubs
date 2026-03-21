@@ -207,9 +207,91 @@ assert_type(gmean(_py_f_2d, dtype=np.float16, keepdims=True), onp.ArrayND[np.flo
 assert_type(gmean(_f64_2d, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
 assert_type(gmean(_f64_nd, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
 
-# hmean
+# hmean  (same as above)
 
-assert_type(hmean(_f64_1d), npc.integer | npc.floating | onp.ArrayND[npc.integer | npc.floating])
+assert_type(hmean(_py_i_1d), np.float64)
+assert_type(hmean(_py_f_1d), np.float64)
+assert_type(hmean(_py_c_1d), np.complex128)
+assert_type(hmean(_intp_1d), np.float64)
+assert_type(hmean(_f32_1d), np.float32)
+assert_type(hmean(_f64_1d), np.float64)
+assert_type(hmean(_c64_1d), np.complex64)
+assert_type(hmean(_c128_1d), np.complex128)
+assert_type(hmean(_py_i_2d), onp.Array1D[np.float64])
+assert_type(hmean(_py_f_2d), onp.Array1D[np.float64])
+assert_type(hmean(_py_c_2d), onp.Array1D[np.complex128])
+assert_type(hmean(_intp_2d), onp.Array1D[np.float64])
+assert_type(hmean(_f32_2d), onp.Array1D[np.float32])
+assert_type(hmean(_f64_2d), onp.Array1D[np.float64])
+assert_type(hmean(_c64_2d), onp.Array1D[np.complex64])
+assert_type(hmean(_c128_2d), onp.Array1D[np.complex128])
+assert_type(hmean(_intp_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(hmean(_f32_nd), np.float32 | onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
+assert_type(hmean(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(hmean(_c64_nd), np.complex64 | onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
+assert_type(hmean(_c128_nd), np.complex128 | onp.ArrayND[np.complex128])  # pyrefly:ignore[assert-type]
+
+assert_type(hmean(_py_i_1d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(hmean(_py_f_1d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(hmean(_py_c_1d, keepdims=True), onp.ArrayND[np.complex128])
+assert_type(hmean(_intp_1d, keepdims=True), onp.Array1D[np.float64])
+assert_type(hmean(_f32_1d, keepdims=True), onp.Array1D[np.float32])
+assert_type(hmean(_f64_1d, keepdims=True), onp.Array1D[np.float64])
+assert_type(hmean(_c64_1d, keepdims=True), onp.Array1D[np.complex64])
+assert_type(hmean(_c128_1d, keepdims=True), onp.Array1D[np.complex128])
+assert_type(hmean(_py_i_2d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(hmean(_py_f_2d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(hmean(_py_c_2d, keepdims=True), onp.ArrayND[np.complex128])
+assert_type(hmean(_intp_2d, keepdims=True), onp.Array2D[np.float64])
+assert_type(hmean(_f32_2d, keepdims=True), onp.Array2D[np.float32])
+assert_type(hmean(_f64_2d, keepdims=True), onp.Array2D[np.float64])
+assert_type(hmean(_c64_2d, keepdims=True), onp.Array2D[np.complex64])
+assert_type(hmean(_c128_2d, keepdims=True), onp.Array2D[np.complex128])
+assert_type(hmean(_intp_nd, keepdims=True), onp.ArrayND[np.float64])
+assert_type(hmean(_f32_nd, keepdims=True), onp.ArrayND[np.float32])
+assert_type(hmean(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
+assert_type(hmean(_c64_nd, keepdims=True), onp.ArrayND[np.complex64])
+assert_type(hmean(_c128_nd, keepdims=True), onp.ArrayND[np.complex128])
+
+assert_type(hmean(_py_i_1d, axis=None), np.float64)
+assert_type(hmean(_py_f_1d, axis=None), np.float64)
+assert_type(hmean(_py_c_1d, axis=None), np.complex128)
+assert_type(hmean(_intp_1d, axis=None), np.float64)
+assert_type(hmean(_f32_1d, axis=None), np.float32)
+assert_type(hmean(_f64_1d, axis=None), np.float64)
+assert_type(hmean(_c64_1d, axis=None), np.complex64)
+assert_type(hmean(_c128_1d, axis=None), np.complex128)
+assert_type(hmean(_py_i_2d, axis=None), np.float64)
+assert_type(hmean(_py_f_2d, axis=None), np.float64)
+assert_type(hmean(_py_c_2d, axis=None), np.complex128)
+assert_type(hmean(_intp_2d, axis=None), np.float64)
+assert_type(hmean(_f32_2d, axis=None), np.float32)
+assert_type(hmean(_f64_2d, axis=None), np.float64)
+assert_type(hmean(_c64_2d, axis=None), np.complex64)
+assert_type(hmean(_c128_2d, axis=None), np.complex128)
+assert_type(hmean(_intp_nd, axis=None), np.float64)
+assert_type(hmean(_f32_nd, axis=None), np.float32)
+assert_type(hmean(_f64_nd, axis=None), np.float64)
+assert_type(hmean(_c64_nd, axis=None), np.complex64)
+assert_type(hmean(_c128_nd, axis=None), np.complex128)
+
+assert_type(hmean(_py_f_1d, dtype=np.float16), np.float16)
+assert_type(hmean(_f64_1d, dtype=np.float16), np.float16)
+assert_type(hmean(_py_f_2d, dtype=np.float16), onp.Array1D[np.float16])
+assert_type(hmean(_f64_2d, dtype=np.float16), onp.Array1D[np.float16])
+assert_type(hmean(_f64_nd, dtype=np.float16), np.float16 | onp.ArrayND[np.float16])  # pyrefly:ignore[assert-type]
+
+assert_type(hmean(_py_f_1d, dtype=np.float16, axis=None), np.float16)
+assert_type(hmean(_f64_1d, dtype=np.float16, axis=None), np.float16)
+assert_type(hmean(_py_f_2d, dtype=np.float16, axis=None), np.float16)
+assert_type(hmean(_f64_2d, dtype=np.float16, axis=None), np.float16)
+assert_type(hmean(_f64_nd, dtype=np.float16, axis=None), np.float16)
+
+assert_type(hmean(_py_f_1d, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
+assert_type(hmean(_f64_1d, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
+assert_type(hmean(_py_f_2d, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
+assert_type(hmean(_f64_2d, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
+assert_type(hmean(_f64_nd, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
 
 # pmean
 
