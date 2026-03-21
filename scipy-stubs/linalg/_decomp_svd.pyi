@@ -150,4 +150,18 @@ def null_space(
 ) -> onp.ArrayND[_InexactT]: ...
 
 #
-def subspace_angles(A: onp.ToComplexND, B: onp.ToComplexND) -> onp.ArrayND[np.float64 | np.float32]: ...
+@overload
+def subspace_angles(  # type: ignore[overload-overlap]
+    A: onp.ToArray2D[complex, npc.number64 | npc.inexact80 | npc.integer32], B: onp.ToComplex2D
+) -> onp.Array1D[np.float64]: ...
+@overload
+def subspace_angles(  # type: ignore[overload-overlap]
+    A: onp.ToComplex2D, B: onp.ToArray2D[complex, npc.number64 | npc.inexact80 | npc.integer32]
+) -> onp.Array1D[np.float64]: ...
+@overload
+def subspace_angles(
+    A: onp.ToArray2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool_],
+    B: onp.ToArray2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool_],
+) -> onp.Array1D[np.float32]: ...
+@overload
+def subspace_angles(A: onp.ToComplex2D, B: onp.ToComplex2D) -> onp.Array1D[np.float64 | np.float32]: ...

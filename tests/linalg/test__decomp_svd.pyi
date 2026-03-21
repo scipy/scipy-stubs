@@ -25,6 +25,7 @@ _c128_nd: onp.ArrayND[np.complex128]
 _c160_nd: onp.ArrayND[np.complex256]
 
 ###
+
 # svd
 
 assert_type(svd(_py_i_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
@@ -49,7 +50,6 @@ assert_type(svd(_c64_nd, compute_uv=False), onp.ArrayND[np.float32])
 assert_type(svd(_c128_nd, compute_uv=False), onp.ArrayND[np.float64])
 assert_type(svd(_c160_nd, compute_uv=False), onp.ArrayND[np.float64])
 
-###
 # svdvals
 
 assert_type(svdvals(_bool_nd), onp.ArrayND[np.float32])
@@ -65,7 +65,6 @@ assert_type(svdvals(_c128_nd), onp.ArrayND[np.float64])
 assert_type(svdvals(_py_f_2d), onp.ArrayND[np.float64])
 assert_type(svdvals(_py_c_2d), onp.ArrayND[np.float64])
 
-###
 # diagsvd
 
 assert_type(diagsvd(_f64_nd, 3, 4), onp.ArrayND[np.float64])
@@ -74,7 +73,6 @@ assert_type(diagsvd([True, False], 2, 3), onp.ArrayND[np.bool_])  # type: ignore
 assert_type(diagsvd([1, 2], 2, 3), onp.ArrayND[np.intp])  # type: ignore[assert-type]  # mypy bug
 assert_type(diagsvd([1.0, 2.0], 2, 3), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
 
-###
 # orth
 
 assert_type(orth(_f64_nd), onp.ArrayND[np.float64])
@@ -83,7 +81,6 @@ assert_type(orth(_py_c_2d), onp.ArrayND[np.complex128])
 assert_type(orth(_f32_nd), onp.ArrayND[np.float32])
 assert_type(orth(_c64_nd), onp.ArrayND[np.complex64])
 
-###
 # null_space
 
 assert_type(null_space(_f64_nd), onp.ArrayND[np.float64])
@@ -92,9 +89,17 @@ assert_type(null_space(_py_c_2d), onp.ArrayND[np.complex128])
 assert_type(null_space(_f32_nd), onp.ArrayND[np.float32])
 assert_type(null_space(_c64_nd), onp.ArrayND[np.complex64])
 
-###
 # subspace_angles
 
-assert_type(subspace_angles(_f64_nd, _f64_nd), onp.ArrayND[np.float64 | np.float32])
-assert_type(subspace_angles(_c128_nd, _c128_nd), onp.ArrayND[np.float64 | np.float32])
-assert_type(subspace_angles(_py_f_2d, _py_f_2d), onp.ArrayND[np.float64 | np.float32])
+assert_type(subspace_angles(_bool_nd, _bool_nd), onp.Array1D[np.float32])
+assert_type(subspace_angles(_i8_nd, _i8_nd), onp.Array1D[np.float32])
+assert_type(subspace_angles(_i16_nd, _i16_nd), onp.Array1D[np.float32])
+assert_type(subspace_angles(_i32_nd, _i32_nd), onp.Array1D[np.float64])
+assert_type(subspace_angles(_i64_nd, _i64_nd), onp.Array1D[np.float64])
+assert_type(subspace_angles(_f16_nd, _f16_nd), onp.Array1D[np.float32])
+assert_type(subspace_angles(_f32_nd, _f32_nd), onp.Array1D[np.float32])
+assert_type(subspace_angles(_f64_nd, _f64_nd), onp.Array1D[np.float64])
+assert_type(subspace_angles(_c64_nd, _c64_nd), onp.Array1D[np.float32])
+assert_type(subspace_angles(_c128_nd, _c128_nd), onp.Array1D[np.float64])
+assert_type(subspace_angles(_py_f_2d, _py_f_2d), onp.Array1D[np.float64])
+assert_type(subspace_angles(_py_c_2d, _py_c_2d), onp.Array1D[np.float64])
