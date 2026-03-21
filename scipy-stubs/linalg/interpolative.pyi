@@ -27,6 +27,7 @@ _ArrayT = TypeVar("_ArrayT", bound=np.ndarray[Any, Any])
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 _IndexArray: TypeAlias = onp.Array1D[npc.integer] | Sequence[int]
+_LinOp: TypeAlias = onp.Array2D[_NumberT] | LinearOperator[_NumberT]
 
 ###
 
@@ -47,45 +48,27 @@ def _is_real(A: onp.ArrayND[np.float64 | np.complex128, _ShapeT]) -> TypeIs[onp.
 #
 @overload  # f64, eps_or_k<1
 def interp_decomp(
-    A: onp.Array2D[np.float64] | LinearOperator[np.float64],
-    eps_or_k: Literal[0, -1, -2, -3, -4],
-    rand: bool = True,
-    rng: onp.random.ToRNG | None = None,
+    A: _LinOp[np.float64], eps_or_k: Literal[0, -1, -2, -3, -4], rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
 @overload  # f64, eps_or_k>=1
 def interp_decomp(
-    A: onp.Array2D[np.float64] | LinearOperator[np.float64],
-    eps_or_k: Literal[1, 2, 3, 4, 5],
-    rand: bool = True,
-    rng: onp.random.ToRNG | None = None,
+    A: _LinOp[np.float64], eps_or_k: Literal[1, 2, 3, 4, 5], rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
 @overload  # f64, eps_or_k unknown
 def interp_decomp(
-    A: onp.Array2D[np.float64] | LinearOperator[np.float64],
-    eps_or_k: float,
-    rand: bool = True,
-    rng: onp.random.ToRNG | None = None,
+    A: _LinOp[np.float64], eps_or_k: float, rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
 @overload  # c128, eps_or_k<1
 def interp_decomp(
-    A: onp.Array2D[np.complex128] | LinearOperator[np.complex128],
-    eps_or_k: Literal[0, -1, -2, -3, -4],
-    rand: bool = True,
-    rng: onp.random.ToRNG | None = None,
+    A: _LinOp[np.complex128], eps_or_k: Literal[0, -1, -2, -3, -4], rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
 @overload  # c128, eps_or_k>=1
 def interp_decomp(
-    A: onp.Array2D[np.complex128] | LinearOperator[np.complex128],
-    eps_or_k: Literal[1, 2, 3, 4, 5],
-    rand: bool = True,
-    rng: onp.random.ToRNG | None = None,
+    A: _LinOp[np.complex128], eps_or_k: Literal[1, 2, 3, 4, 5], rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
 @overload  # c128, eps_or_k unknown
 def interp_decomp(
-    A: onp.Array2D[np.complex128] | LinearOperator[np.complex128],
-    eps_or_k: float,
-    rand: bool = True,
-    rng: onp.random.ToRNG | None = None,
+    A: _LinOp[np.complex128], eps_or_k: float, rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
 
 #
@@ -118,30 +101,27 @@ def id_to_svd(
 #
 @overload
 def svd(
-    A: onp.Array2D[np.float64] | LinearOperator[np.float64],
-    eps_or_k: float,
-    rand: bool = True,
-    rng: onp.random.ToRNG | None = None,
+    A: _LinOp[np.float64], eps_or_k: float, rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
 @overload
 def svd(
-    A: onp.Array2D[np.complex128] | LinearOperator[np.complex128],
-    eps_or_k: float,
-    rand: bool = True,
-    rng: onp.random.ToRNG | None = None,
+    A: _LinOp[np.complex128], eps_or_k: float, rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], onp.Array2D[np.complex128]]: ...
 
 #
 def estimate_spectral_norm(
-    A: onp.Array2D[np.float64 | np.complex128] | LinearOperator[np.float64 | np.complex128],
-    its: int = 20,
-    rng: onp.random.ToRNG | None = None,
+    A: _LinOp[np.float64 | np.complex128], its: int = 20, rng: onp.random.ToRNG | None = None
 ) -> float: ...
 
 #
+@overload
 def estimate_spectral_norm_diff(
-    A: LinearOperator, B: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None
-) -> float | np.float64: ...
+    A: _LinOp[np.float64], B: _LinOp[np.float64], its: int = 20, rng: onp.random.ToRNG | None = None
+) -> float: ...
+@overload
+def estimate_spectral_norm_diff(
+    A: _LinOp[np.complex128], B: _LinOp[np.complex128], its: int = 20, rng: onp.random.ToRNG | None = None
+) -> float: ...
 
 #
 def estimate_rank(A: onp.ArrayND[npc.number] | LinearOperator, eps: onp.ToFloat, rng: onp.random.ToRNG | None = None) -> int: ...

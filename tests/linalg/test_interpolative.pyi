@@ -102,7 +102,14 @@ assert_type(estimate_spectral_norm(_c128_2d), float)
 assert_type(estimate_spectral_norm(_lo_c128), float)
 
 # estimate_spectral_norm_diff
-assert_type(estimate_spectral_norm_diff(_lo_f64, _lo_f64), float | np.float64)
+assert_type(estimate_spectral_norm_diff(_f64_2d, _f64_2d), float)
+assert_type(estimate_spectral_norm_diff(_f64_2d, _lo_f64), float)
+assert_type(estimate_spectral_norm_diff(_lo_f64, _f64_2d), float)
+assert_type(estimate_spectral_norm_diff(_lo_f64, _lo_f64), float)
+assert_type(estimate_spectral_norm_diff(_c128_2d, _c128_2d), float)
+assert_type(estimate_spectral_norm_diff(_c128_2d, _lo_c128), float)
+assert_type(estimate_spectral_norm_diff(_lo_c128, _c128_2d), float)
+assert_type(estimate_spectral_norm_diff(_lo_c128, _lo_c128), float)
 
 # estimate_rank
 assert_type(estimate_rank(_f64_2d, 1e-6), int)
