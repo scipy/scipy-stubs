@@ -1,4 +1,6 @@
-from typing import Any, SupportsIndex, TypeVar
+from collections.abc import Sequence
+from typing import Any, Final, Literal, SupportsIndex, TypeAlias, TypeVar, overload
+from typing_extensions import TypeIs
 
 import numpy as np
 import optype.numpy as onp
@@ -18,41 +20,111 @@ __all__ = [
     "svd",
 ]
 
-_DTypeT = TypeVar("_DTypeT", bound=np.dtype[Any])
+###
+
+_NumberT = TypeVar("_NumberT", bound=npc.number)
+_ArrayT = TypeVar("_ArrayT", bound=np.ndarray[Any, Any])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+
+_IndexArray: TypeAlias = onp.Array1D[npc.integer] | Sequence[int]
+_ToLinOp: TypeAlias = onp.Array2D[_NumberT] | LinearOperator[_NumberT]
+
+###
+
+_DTYPE_ERROR: Final[ValueError] = ...  # undocumented
+_TYPE_ERROR: Final[TypeError] = ...  # undocumented
+
+# undocumented
+@overload
+def _C_contiguous_copy(A: _ArrayT) -> _ArrayT: ...
+@overload
+def _C_contiguous_copy(A: onp.ToJustFloat64_ND) -> onp.ArrayND[np.float64]: ...
+@overload
+def _C_contiguous_copy(A: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
+
+# undocumented
+def _is_real(A: onp.ArrayND[npc.inexact64, _ShapeT]) -> TypeIs[onp.ArrayND[np.float64, _ShapeT]]: ...
 
 #
+@overload  # f64, eps_or_k<1
 def interp_decomp(
-    A: onp.ArrayND[npc.number] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
-) -> tuple[int, onp.ArrayND[np.intp], onp.ArrayND[np.float64]]: ...
+    A: _ToLinOp[npc.floating64], eps_or_k: Literal[0, -1, -2, -3, -4], rand: bool = True, rng: onp.random.ToRNG | None = None
+) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
+@overload  # f64, eps_or_k>=1
+def interp_decomp(
+    A: _ToLinOp[npc.floating64], eps_or_k: Literal[1, 2, 3, 4, 5], rand: bool = True, rng: onp.random.ToRNG | None = None
+) -> tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
+@overload  # f64, eps_or_k unknown
+def interp_decomp(
+    A: _ToLinOp[npc.floating64], eps_or_k: float, rand: bool = True, rng: onp.random.ToRNG | None = None
+) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
+@overload  # c128, eps_or_k<1
+def interp_decomp(
+    A: _ToLinOp[npc.complexfloating128],
+    eps_or_k: Literal[0, -1, -2, -3, -4],
+    rand: bool = True,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
+@overload  # c128, eps_or_k>=1
+def interp_decomp(
+    A: _ToLinOp[npc.complexfloating128], eps_or_k: Literal[1, 2, 3, 4, 5], rand: bool = True, rng: onp.random.ToRNG | None = None
+) -> tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
+@overload  # c128, eps_or_k unknown
+def interp_decomp(
+    A: _ToLinOp[npc.complexfloating128], eps_or_k: float, rand: bool = True, rng: onp.random.ToRNG | None = None
+) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
 
 #
+@overload
 def reconstruct_matrix_from_id(
-    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
-) -> onp.ArrayND[npc.number]: ...
+    B: onp.Array2D[npc.floating64], idx: _IndexArray, proj: onp.ToFloat2D
+) -> onp.Array2D[np.float64]: ...
+@overload
+def reconstruct_matrix_from_id(
+    B: onp.Array2D[npc.complexfloating128], idx: _IndexArray, proj: onp.ToComplex2D
+) -> onp.Array2D[np.complex128]: ...
 
 #
-def reconstruct_interp_matrix(
-    idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
-) -> onp.ArrayND[np.float64 | np.complex128]: ...
+@overload
+def reconstruct_interp_matrix(idx: _IndexArray, proj: onp.Array2D[npc.floating64]) -> onp.Array2D[np.float64]: ...
+@overload
+def reconstruct_interp_matrix(idx: _IndexArray, proj: onp.Array2D[npc.complexfloating128]) -> onp.Array2D[np.complex128]: ...
 
 #
-def reconstruct_skel_matrix(
-    A: np.ndarray[tuple[Any, ...], _DTypeT], k: SupportsIndex, idx: onp.ArrayND[npc.integer]
-) -> np.ndarray[tuple[Any, ...], _DTypeT]: ...
+def reconstruct_skel_matrix(A: onp.Array2D[_NumberT], k: SupportsIndex, idx: _IndexArray) -> onp.Array2D[_NumberT]: ...
 
 #
+@overload
 def id_to_svd(
-    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
-) -> tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact], onp.Array2D[npc.inexact]]: ...
+    B: onp.Array2D[npc.floating64], idx: onp.Array1D[np.int64], proj: onp.Array2D[npc.floating64]
+) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
+@overload
+def id_to_svd(
+    B: onp.Array2D[npc.complexfloating128], idx: onp.Array1D[np.int64], proj: onp.Array2D[npc.complexfloating128]
+) -> tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], onp.Array2D[np.complex128]]: ...
 
 #
+@overload
 def svd(
-    A: onp.ArrayND[npc.number] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
-) -> tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact], onp.Array2D[npc.inexact]]: ...
+    A: _ToLinOp[npc.floating64], eps_or_k: float, rand: bool = True, rng: onp.random.ToRNG | None = None
+) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
+@overload
+def svd(
+    A: _ToLinOp[npc.complexfloating128], eps_or_k: float, rand: bool = True, rng: onp.random.ToRNG | None = None
+) -> tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], onp.Array2D[np.complex128]]: ...
 
 #
-def estimate_spectral_norm(A: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None) -> float | np.float64: ...
+def estimate_spectral_norm(A: _ToLinOp[npc.inexact64], its: int = 20, rng: onp.random.ToRNG | None = None) -> float: ...
+
+#
+@overload
 def estimate_spectral_norm_diff(
-    A: LinearOperator, B: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None
-) -> float | np.float64: ...
-def estimate_rank(A: onp.ArrayND[npc.number] | LinearOperator, eps: onp.ToFloat, rng: onp.random.ToRNG | None = None) -> int: ...
+    A: _ToLinOp[npc.floating64], B: _ToLinOp[npc.floating64], its: int = 20, rng: onp.random.ToRNG | None = None
+) -> float: ...
+@overload
+def estimate_spectral_norm_diff(
+    A: _ToLinOp[npc.complexfloating128], B: _ToLinOp[npc.complexfloating128], its: int = 20, rng: onp.random.ToRNG | None = None
+) -> float: ...
+
+#
+def estimate_rank(A: _ToLinOp[npc.inexact64], eps: float, rng: onp.random.ToRNG | None = None) -> int: ...
