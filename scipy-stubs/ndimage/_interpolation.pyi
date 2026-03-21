@@ -516,7 +516,7 @@ def shift(
 #
 @overload
 def zoom(
-    input: onp.ToFloat | onp.ToFloatND,
+    input: _ArrayT,
     zoom: onp.ToFloat | onp.ToFloatND,
     output: None = None,
     order: _Order = 3,
@@ -525,10 +525,46 @@ def zoom(
     prefilter: bool = True,
     *,
     grid_mode: bool = False,
-) -> onp.ArrayND[np.float64 | np.float32]: ...
+) -> _ArrayT: ...
 @overload
 def zoom(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: onp.SequenceND[int],
+    zoom: onp.ToFloat | onp.ToFloatND,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+    *,
+    grid_mode: bool = False,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def zoom(
+    input: onp.SequenceND[list[float]] | list[float],
+    zoom: onp.ToFloat | onp.ToFloatND,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+    *,
+    grid_mode: bool = False,
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def zoom(
+    input: onp.SequenceND[list[complex]] | list[complex],
+    zoom: onp.ToFloat | onp.ToFloatND,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+    *,
+    grid_mode: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload
+def zoom(
+    input: onp.ToComplexND,
     zoom: onp.ToFloat | onp.ToFloatND,
     output: None = None,
     order: _Order = 3,
@@ -537,10 +573,10 @@ def zoom(
     prefilter: bool = True,
     *,
     grid_mode: bool = False,
-) -> onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32]: ...
+) -> onp.ArrayND[Any]: ...
 @overload
 def zoom(
-    input: onp.ToScalar | onp.ToArrayND,
+    input: onp.ToComplexND,
     zoom: onp.ToFloat | onp.ToFloatND,
     output: _ArrayOrDType[_ScalarT],
     order: _Order = 3,
@@ -552,7 +588,7 @@ def zoom(
 ) -> onp.ArrayND[_ScalarT]: ...
 @overload
 def zoom(
-    input: onp.ToScalar | onp.ToArrayND,
+    input: onp.ToComplexND,
     zoom: onp.ToFloat | onp.ToFloatND,
     output: type[int],
     order: _Order = 3,
@@ -564,28 +600,28 @@ def zoom(
 ) -> onp.ArrayND[np.int_]: ...
 @overload
 def zoom(
-    input: onp.ToScalar | onp.ToArrayND,
+    input: onp.ToComplexND,
     zoom: onp.ToFloat | onp.ToFloatND,
-    output: type[float],
+    output: type[op.JustFloat],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
     *,
     grid_mode: bool = False,
-) -> onp.ArrayND[np.float64 | np.int_]: ...
+) -> onp.ArrayND[np.float64]: ...
 @overload
 def zoom(
-    input: onp.ToScalar | onp.ToArrayND,
+    input: onp.ToComplexND,
     zoom: onp.ToFloat | onp.ToFloatND,
-    output: type[complex],
+    output: type[op.JustComplex],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
     *,
     grid_mode: bool = False,
-) -> onp.ArrayND[np.complex128 | np.float64 | np.int_]: ...
+) -> onp.ArrayND[np.complex128]: ...
 
 #
 @overload
