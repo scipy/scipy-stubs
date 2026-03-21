@@ -116,7 +116,22 @@ _Real0D: TypeAlias = npc.integer | npc.floating
 _ScalarOrND: TypeAlias = _SCT | onp.ArrayND[_SCT]
 _FloatOrND: TypeAlias = _ScalarOrND[npc.floating]
 
-_InterpolationMethod: TypeAlias = L["linear", "lower", "higher", "nearest", "midpoint"]
+_InterpolationMethod: TypeAlias = L[
+    "linear",
+    "lower",
+    "higher",
+    "nearest",
+    "midpoint",
+    # from numpy.percentile:
+    "inverted_cdf",
+    "averaged_inverted_cdf",
+    "closest_observation",
+    "interpolated_inverted_cdf",
+    "hazen",
+    "weibull",
+    "median_unbiased",
+    "normal_unbiased",
+]
 _QuantileInterpolation: TypeAlias = L["fraction", "lower", "higher"]
 _PercentileInterpolation: TypeAlias = L["rank", "weak", "strict", "mean"]
 _TrimTail: TypeAlias = L["left", "right"]
@@ -3136,16 +3151,69 @@ def zmap(
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[npc.complexfloating]: ...
 
-# TODO(jorenham): improve
+#
+@overload  # T@floating, axis=None (default)
 def iqr(
-    x: onp.ToFloatND,
+    x: onp.ToArrayND[_FloatT, _FloatT],
+    axis: None = None,
+    rng: tuple[float, float] = (25, 75),
+    scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    interpolation: _InterpolationMethod = "linear",
+    keepdims: L[False] = False,
+) -> _FloatT: ...
+@overload  # T@floating, keepdims=True
+def iqr(
+    x: onp.ToArrayND[_FloatT, _FloatT],
     axis: int | Sequence[int] | None = None,
     rng: tuple[float, float] = (25, 75),
     scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
     nan_policy: NanPolicy = "propagate",
     interpolation: _InterpolationMethod = "linear",
-    keepdims: bool = False,
-) -> _FloatOrND: ...
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[_FloatT]: ...
+@overload  # T@floating, axis=<given>
+def iqr(
+    x: onp.ToArrayND[_FloatT, _FloatT],
+    axis: int | Sequence[int],
+    rng: tuple[float, float] = (25, 75),
+    scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    interpolation: _InterpolationMethod = "linear",
+    keepdims: L[False] = False,
+) -> onp.ArrayND[_FloatT]: ...
+@overload  # +f64, axis=None (default)
+def iqr(
+    x: onp.ToArrayND[float, npc.integer],
+    axis: None = None,
+    rng: tuple[float, float] = (25, 75),
+    scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    interpolation: _InterpolationMethod = "linear",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # +f64, keepdims=True
+def iqr(
+    x: onp.ToArrayND[float, npc.integer],
+    axis: int | Sequence[int] | None = None,
+    rng: tuple[float, float] = (25, 75),
+    scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    interpolation: _InterpolationMethod = "linear",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, axis=<given>
+def iqr(
+    x: onp.ToArrayND[float, npc.integer],
+    axis: int | Sequence[int],
+    rng: tuple[float, float] = (25, 75),
+    scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    interpolation: _InterpolationMethod = "linear",
+    keepdims: L[False] = False,
+) -> onp.ArrayND[np.float64]: ...
 
 #
 @overload
