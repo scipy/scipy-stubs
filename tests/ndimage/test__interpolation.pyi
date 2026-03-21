@@ -18,9 +18,13 @@ from scipy.ndimage import (
 
 ###
 
+_i16_2d: onp.Array2D[np.int16]
+_f32_2d: onp.Array2D[np.float32]
 _f64_2d: onp.Array2D[np.float64]
+_c64_2d: onp.Array2D[np.complex64]
 _c128_2d: onp.Array2D[np.complex128]
 
+_py_i_2d: list[list[int]]
 _py_f_2d: list[list[float]]
 _py_c_2d: list[list[complex]]
 
@@ -50,15 +54,18 @@ assert_type(spline_filter(_f64_2d, output=np.dtype(np.complex64)), onp.ArrayND[n
 
 # geometric_transform
 
-assert_type(geometric_transform(_f64_2d, _mapping), onp.ArrayND[np.float64 | np.float32])
-assert_type(geometric_transform(_py_f_2d, _mapping), onp.ArrayND[np.float64 | np.float32])
-
-assert_type(geometric_transform(_c128_2d, _mapping), onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32])
-assert_type(geometric_transform(_py_c_2d, _mapping), onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32])
+assert_type(geometric_transform(_i16_2d, _mapping), onp.Array2D[np.int16])
+assert_type(geometric_transform(_f32_2d, _mapping), onp.Array2D[np.float32])
+assert_type(geometric_transform(_f64_2d, _mapping), onp.Array2D[np.float64])
+assert_type(geometric_transform(_c64_2d, _mapping), onp.Array2D[np.complex64])
+assert_type(geometric_transform(_c128_2d, _mapping), onp.Array2D[np.complex128])
+assert_type(geometric_transform(_py_i_2d, _mapping), onp.ArrayND[np.int_])
+assert_type(geometric_transform(_py_f_2d, _mapping), onp.ArrayND[np.float64])
+assert_type(geometric_transform(_py_c_2d, _mapping), onp.ArrayND[np.complex128])
 
 assert_type(geometric_transform(_f64_2d, _mapping, output=int), onp.ArrayND[np.int_])
-assert_type(geometric_transform(_f64_2d, _mapping, output=float), onp.ArrayND[np.float64 | np.int_])
-assert_type(geometric_transform(_f64_2d, _mapping, output=complex), onp.ArrayND[np.complex128 | np.float64 | np.int_])
+assert_type(geometric_transform(_f64_2d, _mapping, output=float), onp.ArrayND[np.float64])
+assert_type(geometric_transform(_f64_2d, _mapping, output=complex), onp.ArrayND[np.complex128])
 
 assert_type(geometric_transform(_f64_2d, _mapping, None, np.dtype(np.float32)), onp.ArrayND[np.float32])
 assert_type(geometric_transform(_f64_2d, _mapping, output=np.dtype(np.float32)), onp.ArrayND[np.float32])
