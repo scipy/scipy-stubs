@@ -207,7 +207,7 @@ assert_type(gmean(_py_f_2d, dtype=np.float16, keepdims=True), onp.ArrayND[np.flo
 assert_type(gmean(_f64_2d, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
 assert_type(gmean(_f64_nd, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
 
-# hmean  (same as above)
+# hmean (same as above)
 
 assert_type(hmean(_py_i_1d), np.float64)
 assert_type(hmean(_py_f_1d), np.float64)
@@ -293,9 +293,91 @@ assert_type(hmean(_py_f_2d, dtype=np.float16, keepdims=True), onp.ArrayND[np.flo
 assert_type(hmean(_f64_2d, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
 assert_type(hmean(_f64_nd, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
 
-# pmean
+# pmean (same as above)
 
-assert_type(pmean(_f64_1d, 2), npc.integer | npc.floating | onp.ArrayND[npc.integer | npc.floating])
+assert_type(pmean(_py_i_1d, 2), np.float64)
+assert_type(pmean(_py_f_1d, 2), np.float64)
+assert_type(pmean(_py_c_1d, 2), np.complex128)
+assert_type(pmean(_intp_1d, 2), np.float64)
+assert_type(pmean(_f32_1d, 2), np.float32)
+assert_type(pmean(_f64_1d, 2), np.float64)
+assert_type(pmean(_c64_1d, 2), np.complex64)
+assert_type(pmean(_c128_1d, 2), np.complex128)
+assert_type(pmean(_py_i_2d, 2), onp.Array1D[np.float64])
+assert_type(pmean(_py_f_2d, 2), onp.Array1D[np.float64])
+assert_type(pmean(_py_c_2d, 2), onp.Array1D[np.complex128])
+assert_type(pmean(_intp_2d, 2), onp.Array1D[np.float64])
+assert_type(pmean(_f32_2d, 2), onp.Array1D[np.float32])
+assert_type(pmean(_f64_2d, 2), onp.Array1D[np.float64])
+assert_type(pmean(_c64_2d, 2), onp.Array1D[np.complex64])
+assert_type(pmean(_c128_2d, 2), onp.Array1D[np.complex128])
+assert_type(pmean(_intp_nd, 2), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(pmean(_f32_nd, 2), np.float32 | onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
+assert_type(pmean(_f64_nd, 2), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(pmean(_c64_nd, 2), np.complex64 | onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
+assert_type(pmean(_c128_nd, 2), np.complex128 | onp.ArrayND[np.complex128])  # pyrefly:ignore[assert-type]
+
+assert_type(pmean(_py_i_1d, 2, keepdims=True), onp.ArrayND[np.float64])
+assert_type(pmean(_py_f_1d, 2, keepdims=True), onp.ArrayND[np.float64])
+assert_type(pmean(_py_c_1d, 2, keepdims=True), onp.ArrayND[np.complex128])
+assert_type(pmean(_intp_1d, 2, keepdims=True), onp.Array1D[np.float64])
+assert_type(pmean(_f32_1d, 2, keepdims=True), onp.Array1D[np.float32])
+assert_type(pmean(_f64_1d, 2, keepdims=True), onp.Array1D[np.float64])
+assert_type(pmean(_c64_1d, 2, keepdims=True), onp.Array1D[np.complex64])
+assert_type(pmean(_c128_1d, 2, keepdims=True), onp.Array1D[np.complex128])
+assert_type(pmean(_py_i_2d, 2, keepdims=True), onp.ArrayND[np.float64])
+assert_type(pmean(_py_f_2d, 2, keepdims=True), onp.ArrayND[np.float64])
+assert_type(pmean(_py_c_2d, 2, keepdims=True), onp.ArrayND[np.complex128])
+assert_type(pmean(_intp_2d, 2, keepdims=True), onp.Array2D[np.float64])
+assert_type(pmean(_f32_2d, 2, keepdims=True), onp.Array2D[np.float32])
+assert_type(pmean(_f64_2d, 2, keepdims=True), onp.Array2D[np.float64])
+assert_type(pmean(_c64_2d, 2, keepdims=True), onp.Array2D[np.complex64])
+assert_type(pmean(_c128_2d, 2, keepdims=True), onp.Array2D[np.complex128])
+assert_type(pmean(_intp_nd, 2, keepdims=True), onp.ArrayND[np.float64])
+assert_type(pmean(_f32_nd, 2, keepdims=True), onp.ArrayND[np.float32])
+assert_type(pmean(_f64_nd, 2, keepdims=True), onp.ArrayND[np.float64])
+assert_type(pmean(_c64_nd, 2, keepdims=True), onp.ArrayND[np.complex64])
+assert_type(pmean(_c128_nd, 2, keepdims=True), onp.ArrayND[np.complex128])
+
+assert_type(pmean(_py_i_1d, 2, axis=None), np.float64)
+assert_type(pmean(_py_f_1d, 2, axis=None), np.float64)
+assert_type(pmean(_py_c_1d, 2, axis=None), np.complex128)
+assert_type(pmean(_intp_1d, 2, axis=None), np.float64)
+assert_type(pmean(_f32_1d, 2, axis=None), np.float32)
+assert_type(pmean(_f64_1d, 2, axis=None), np.float64)
+assert_type(pmean(_c64_1d, 2, axis=None), np.complex64)
+assert_type(pmean(_c128_1d, 2, axis=None), np.complex128)
+assert_type(pmean(_py_i_2d, 2, axis=None), np.float64)
+assert_type(pmean(_py_f_2d, 2, axis=None), np.float64)
+assert_type(pmean(_py_c_2d, 2, axis=None), np.complex128)
+assert_type(pmean(_intp_2d, 2, axis=None), np.float64)
+assert_type(pmean(_f32_2d, 2, axis=None), np.float32)
+assert_type(pmean(_f64_2d, 2, axis=None), np.float64)
+assert_type(pmean(_c64_2d, 2, axis=None), np.complex64)
+assert_type(pmean(_c128_2d, 2, axis=None), np.complex128)
+assert_type(pmean(_intp_nd, 2, axis=None), np.float64)
+assert_type(pmean(_f32_nd, 2, axis=None), np.float32)
+assert_type(pmean(_f64_nd, 2, axis=None), np.float64)
+assert_type(pmean(_c64_nd, 2, axis=None), np.complex64)
+assert_type(pmean(_c128_nd, 2, axis=None), np.complex128)
+
+assert_type(pmean(_py_f_1d, 2, dtype=np.float16), np.float16)
+assert_type(pmean(_f64_1d, 2, dtype=np.float16), np.float16)
+assert_type(pmean(_py_f_2d, 2, dtype=np.float16), onp.Array1D[np.float16])
+assert_type(pmean(_f64_2d, 2, dtype=np.float16), onp.Array1D[np.float16])
+assert_type(pmean(_f64_nd, 2, dtype=np.float16), np.float16 | onp.ArrayND[np.float16])  # pyrefly:ignore[assert-type]
+
+assert_type(pmean(_py_f_1d, 2, dtype=np.float16, axis=None), np.float16)
+assert_type(pmean(_f64_1d, 2, dtype=np.float16, axis=None), np.float16)
+assert_type(pmean(_py_f_2d, 2, dtype=np.float16, axis=None), np.float16)
+assert_type(pmean(_f64_2d, 2, dtype=np.float16, axis=None), np.float16)
+assert_type(pmean(_f64_nd, 2, dtype=np.float16, axis=None), np.float16)
+
+assert_type(pmean(_py_f_1d, 2, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
+assert_type(pmean(_f64_1d, 2, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
+assert_type(pmean(_py_f_2d, 2, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
+assert_type(pmean(_f64_2d, 2, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
+assert_type(pmean(_f64_nd, 2, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
 
 # tmean
 
