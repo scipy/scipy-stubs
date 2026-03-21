@@ -16,7 +16,7 @@ _rng: np.random.Generator
 _lo_f64: LinearOperator[np.float64]
 _lo_c128: LinearOperator[np.complex128]
 
-_intp_1d: onp.Array1D[np.intp]
+_i64_1d: onp.Array1D[np.int64]
 
 _f64_2d: onp.Array2D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
@@ -57,29 +57,28 @@ assert_type(
 )
 
 # reconstruct_matrix_from_id
-assert_type(interp.reconstruct_matrix_from_id(_f64_2d, _intp_1d, _f64_2d), onp.Array2D[np.float64])
-assert_type(interp.reconstruct_matrix_from_id(_f64_2d, _intp_1d, _py_f_2d), onp.Array2D[np.float64])
-assert_type(interp.reconstruct_matrix_from_id(_c128_2d, _intp_1d, _c128_2d), onp.Array2D[np.complex128])
-assert_type(interp.reconstruct_matrix_from_id(_c128_2d, _intp_1d, _py_c_2d), onp.Array2D[np.complex128])
+assert_type(interp.reconstruct_matrix_from_id(_f64_2d, _i64_1d, _f64_2d), onp.Array2D[np.float64])
+assert_type(interp.reconstruct_matrix_from_id(_f64_2d, _i64_1d, _py_f_2d), onp.Array2D[np.float64])
+assert_type(interp.reconstruct_matrix_from_id(_c128_2d, _i64_1d, _c128_2d), onp.Array2D[np.complex128])
+assert_type(interp.reconstruct_matrix_from_id(_c128_2d, _i64_1d, _py_c_2d), onp.Array2D[np.complex128])
 
 # reconstruct_interp_matrix
-assert_type(interp.reconstruct_interp_matrix(_intp_1d, _f64_2d), onp.Array2D[np.float64])
+assert_type(interp.reconstruct_interp_matrix(_i64_1d, _f64_2d), onp.Array2D[np.float64])
 assert_type(interp.reconstruct_interp_matrix(_py_i_1d, _f64_2d), onp.Array2D[np.float64])
-assert_type(interp.reconstruct_interp_matrix(_intp_1d, _c128_2d), onp.Array2D[np.complex128])
+assert_type(interp.reconstruct_interp_matrix(_i64_1d, _c128_2d), onp.Array2D[np.complex128])
 assert_type(interp.reconstruct_interp_matrix(_py_i_1d, _c128_2d), onp.Array2D[np.complex128])
 
 # reconstruct_skel_matrix
-assert_type(interp.reconstruct_skel_matrix(_f64_2d, 3, _intp_1d), onp.Array2D[np.float64])
-assert_type(interp.reconstruct_skel_matrix(_c128_2d, 3, _intp_1d), onp.Array2D[np.complex128])
+assert_type(interp.reconstruct_skel_matrix(_f64_2d, 3, _i64_1d), onp.Array2D[np.float64])
+assert_type(interp.reconstruct_skel_matrix(_c128_2d, 3, _i64_1d), onp.Array2D[np.complex128])
 
 # id_to_svd
 assert_type(
-    interp.id_to_svd(_f64_nd, _intp_1d, _f64_nd),
-    tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact], onp.Array2D[npc.inexact]],
+    interp.id_to_svd(_f64_2d, _i64_1d, _f64_2d), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], onp.Array2D[np.float64]]
 )
 assert_type(
-    interp.id_to_svd(_c128_2d, _intp_1d, _c128_nd),
-    tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact], onp.Array2D[npc.inexact]],
+    interp.id_to_svd(_c128_2d, _i64_1d, _c128_2d),
+    tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], onp.Array2D[np.complex128]],
 )
 
 # svd

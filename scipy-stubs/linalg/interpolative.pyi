@@ -106,9 +106,14 @@ def reconstruct_interp_matrix(idx: _IndexArray, proj: onp.Array2D[np.complex128]
 def reconstruct_skel_matrix(A: onp.Array2D[_NumberT], k: SupportsIndex, idx: _IndexArray) -> onp.Array2D[_NumberT]: ...
 
 #
+@overload
 def id_to_svd(
-    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
-) -> tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact], onp.Array2D[npc.inexact]]: ...
+    B: onp.Array2D[np.float64], idx: onp.Array1D[np.int64], proj: onp.Array2D[np.float64]
+) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
+@overload
+def id_to_svd(
+    B: onp.Array2D[np.complex128], idx: onp.Array1D[np.int64], proj: onp.Array2D[np.complex128]
+) -> tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], onp.Array2D[np.complex128]]: ...
 
 #
 def svd(
