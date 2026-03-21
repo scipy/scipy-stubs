@@ -96,7 +96,10 @@ assert_type(svd(_c128_2d, 1), tuple[onp.Array2D[np.complex128], onp.Array1D[np.f
 assert_type(svd(_lo_c128, 1), tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], onp.Array2D[np.complex128]])
 
 # estimate_spectral_norm
-assert_type(estimate_spectral_norm(_lo_f64), float | np.float64)
+assert_type(estimate_spectral_norm(_f64_2d), float)
+assert_type(estimate_spectral_norm(_lo_f64), float)
+assert_type(estimate_spectral_norm(_c128_2d), float)
+assert_type(estimate_spectral_norm(_lo_c128), float)
 
 # estimate_spectral_norm_diff
 assert_type(estimate_spectral_norm_diff(_lo_f64, _lo_f64), float | np.float64)

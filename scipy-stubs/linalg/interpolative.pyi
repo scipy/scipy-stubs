@@ -132,8 +132,16 @@ def svd(
 ) -> tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], onp.Array2D[np.complex128]]: ...
 
 #
-def estimate_spectral_norm(A: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None) -> float | np.float64: ...
+def estimate_spectral_norm(
+    A: onp.Array2D[np.float64 | np.complex128] | LinearOperator[np.float64 | np.complex128],
+    its: int = 20,
+    rng: onp.random.ToRNG | None = None,
+) -> float: ...
+
+#
 def estimate_spectral_norm_diff(
     A: LinearOperator, B: LinearOperator, its: int = 20, rng: onp.random.ToRNG | None = None
 ) -> float | np.float64: ...
+
+#
 def estimate_rank(A: onp.ArrayND[npc.number] | LinearOperator, eps: onp.ToFloat, rng: onp.random.ToRNG | None = None) -> int: ...
