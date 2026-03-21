@@ -626,33 +626,69 @@ def zoom(
 #
 @overload
 def rotate(
-    input: onp.ToFloat | onp.ToFloatND,
+    input: _ArrayT,
     angle: onp.ToFloat,
-    axes: tuple[onp.ToInt, onp.ToInt] = (1, 0),
+    axes: tuple[int, int] = (1, 0),
     reshape: bool = True,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.float64 | np.float32]: ...
+) -> _ArrayT: ...
 @overload
 def rotate(
-    input: onp.ToComplex | onp.ToComplexND,
+    input: onp.SequenceND[int],
     angle: onp.ToFloat,
-    axes: tuple[onp.ToInt, onp.ToInt] = (1, 0),
+    axes: tuple[int, int] = (1, 0),
+    reshape: bool = True,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def rotate(
+    input: onp.SequenceND[list[float]] | list[float],
+    angle: onp.ToFloat,
+    axes: tuple[int, int] = (1, 0),
+    reshape: bool = True,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def rotate(
+    input: onp.SequenceND[list[complex]] | list[complex],
+    angle: onp.ToFloat,
+    axes: tuple[int, int] = (1, 0),
+    reshape: bool = True,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+) -> onp.ArrayND[np.complex128]: ...
+@overload
+def rotate(
+    input: onp.ToComplexND,
+    angle: onp.ToFloat,
+    axes: tuple[int, int] = (1, 0),
     reshape: bool = True,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32]: ...
+) -> onp.ArrayND[Any]: ...
 @overload
 def rotate(
-    input: onp.ToScalar | onp.ToArrayND,
+    input: onp.ToComplexND,
     angle: onp.ToFloat,
-    axes: tuple[onp.ToInt, onp.ToInt] = (1, 0),
+    axes: tuple[int, int] = (1, 0),
     reshape: bool = True,
     *,
     output: _ArrayOrDType[_ScalarT],
@@ -663,9 +699,9 @@ def rotate(
 ) -> onp.ArrayND[_ScalarT]: ...
 @overload
 def rotate(
-    input: onp.ToScalar | onp.ToArrayND,
+    input: onp.ToComplexND,
     angle: onp.ToFloat,
-    axes: tuple[onp.ToInt, onp.ToInt] = (1, 0),
+    axes: tuple[int, int] = (1, 0),
     reshape: bool = True,
     *,
     output: type[int],
@@ -676,27 +712,27 @@ def rotate(
 ) -> onp.ArrayND[np.int_]: ...
 @overload
 def rotate(
-    input: onp.ToScalar | onp.ToArrayND,
+    input: onp.ToComplexND,
     angle: onp.ToFloat,
-    axes: tuple[onp.ToInt, onp.ToInt] = (1, 0),
+    axes: tuple[int, int] = (1, 0),
     reshape: bool = True,
     *,
-    output: type[float],
+    output: type[op.JustFloat],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.float64 | np.int_]: ...
+) -> onp.ArrayND[np.float64]: ...
 @overload
 def rotate(
-    input: onp.ToScalar | onp.ToArrayND,
+    input: onp.ToComplexND,
     angle: onp.ToFloat,
-    axes: tuple[onp.ToInt, onp.ToInt] = (1, 0),
+    axes: tuple[int, int] = (1, 0),
     reshape: bool = True,
     *,
-    output: type[complex],
+    output: type[op.JustComplex],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.complex128 | np.float64 | np.int_]: ...
+) -> onp.ArrayND[np.complex128]: ...
