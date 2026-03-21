@@ -351,6 +351,7 @@ Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)) |
 Metta AI ([mettagrid](https://github.com/Metta-AI/metta/tree/main/packages/mettagrid)) |
 [MolPipeline](https://github.com/basf/MolPipeline) |
 [MouseTracks](https://github.com/huntfx/MouseTracks) |
+[movement](https://github.com/neuroinformatics-unit/movement) |
 Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis)) |
 [MTEB](https://github.com/embeddings-benchmark/mteb) |
 [mypy_primer](https://github.com/hauntsaninja/mypy_primer) |
