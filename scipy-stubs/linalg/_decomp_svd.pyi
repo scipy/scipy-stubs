@@ -89,6 +89,17 @@ def svd(
 ) -> onp.ArrayND[np.float32]: ...
 
 #
+@overload
+def svdvals(  # type: ignore[overload-overlap]
+    a: onp.ToArrayND[complex, npc.number64 | npc.inexact80 | npc.integer32], overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def svdvals(
+    a: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool_],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
+@overload
 def svdvals(a: onp.ToComplexND, overwrite_a: bool = False, check_finite: bool = True) -> onp.ArrayND[np.float64 | np.float32]: ...
 
 #
