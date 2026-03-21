@@ -18,6 +18,8 @@ __all__ = [
 ]
 
 _ScalarT = TypeVar("_ScalarT", bound=np.generic)
+_NumberT = TypeVar("_NumberT", bound=npc.number)
+_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[np.bool_ | npc.integer | npc.inexact32 | npc.inexact64])
 
 _Order: TypeAlias = Literal[0, 1, 2, 3, 4, 5]
 _Mode: TypeAlias = Literal["reflect", "grid-mirror", "constant", "grid-constant", "nearest", "mirror", "wrap", "grid-wrap"]
@@ -66,8 +68,6 @@ def spline_filter(
 def spline_filter(
     input: onp.ToComplexND, order: _Order = 3, *, output: _ArrayOrDType[_ScalarT], mode: _Mode = "mirror"
 ) -> onp.ArrayND[_ScalarT]: ...
-
-_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[np.bool_ | npc.integer | npc.inexact32 | npc.inexact64])
 
 #
 @overload
@@ -208,28 +208,58 @@ def geometric_transform(
 #
 @overload
 def map_coordinates(
-    input: onp.ToFloat | onp.ToFloatND,
-    coordinates: onp.ToFloat | onp.ToFloatND,
+    input: onp.ArrayND[_NumberT],
+    coordinates: onp.ToFloatND,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.float64 | np.float32]: ...
+) -> onp.ArrayND[_NumberT]: ...
 @overload
 def map_coordinates(
-    input: onp.ToComplex | onp.ToComplexND,
-    coordinates: onp.ToFloat | onp.ToFloatND,
+    input: onp.SequenceND[int],
+    coordinates: onp.ToFloatND,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def map_coordinates(
+    input: onp.SequenceND[list[float]] | list[float],
+    coordinates: onp.ToFloatND,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def map_coordinates(
+    input: onp.SequenceND[list[complex]] | list[complex],
+    coordinates: onp.ToFloatND,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+) -> onp.ArrayND[np.complex128]: ...
+@overload
+def map_coordinates(
+    input: onp.ToComplexND,
+    coordinates: onp.ToFloatND,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32]: ...
+) -> onp.ArrayND[Any]: ...
 @overload
 def map_coordinates(
-    input: onp.ToScalar | onp.ToArrayND,
-    coordinates: onp.ToFloat | onp.ToFloatND,
+    input: onp.ToComplexND,
+    coordinates: onp.ToFloatND,
     output: _ArrayOrDType[_ScalarT],
     order: _Order = 3,
     mode: _Mode = "constant",
@@ -238,8 +268,8 @@ def map_coordinates(
 ) -> onp.ArrayND[_ScalarT]: ...
 @overload
 def map_coordinates(
-    input: onp.ToScalar | onp.ToArrayND,
-    coordinates: onp.ToFloat | onp.ToFloatND,
+    input: onp.ToComplexND,
+    coordinates: onp.ToFloatND,
     output: type[bool],
     order: _Order = 3,
     mode: _Mode = "constant",
@@ -248,34 +278,34 @@ def map_coordinates(
 ) -> onp.ArrayND[np.bool_]: ...
 @overload
 def map_coordinates(
-    input: onp.ToScalar | onp.ToArrayND,
-    coordinates: onp.ToFloat | onp.ToFloatND,
-    output: type[int],
+    input: onp.ToComplexND,
+    coordinates: onp.ToFloatND,
+    output: type[op.JustInt],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.int_ | np.bool_]: ...
+) -> onp.ArrayND[np.int_]: ...
 @overload
 def map_coordinates(
-    input: onp.ToScalar | onp.ToArrayND,
-    coordinates: onp.ToFloat | onp.ToFloatND,
-    output: type[float],
+    input: onp.ToComplexND,
+    coordinates: onp.ToFloatND,
+    output: type[op.JustFloat],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.float64 | np.int_ | np.bool_]: ...
+) -> onp.ArrayND[np.float64]: ...
 @overload
 def map_coordinates(
-    input: onp.ToScalar | onp.ToArrayND,
-    coordinates: onp.ToFloat | onp.ToFloatND,
-    output: type[complex],
+    input: onp.ToComplexND,
+    coordinates: onp.ToFloatND,
+    output: type[op.JustComplex],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
+) -> onp.ArrayND[np.complex128]: ...
 
 #
 @overload
