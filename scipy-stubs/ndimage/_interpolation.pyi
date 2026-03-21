@@ -310,8 +310,8 @@ def map_coordinates(
 #
 @overload
 def affine_transform(
-    input: onp.ToFloat | onp.ToFloatND,
-    matrix: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D,
+    input: onp.ArrayND[_NumberT],
+    matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
     output_shape: tuple[int, ...] | None = None,
     output: None = None,
@@ -319,11 +319,47 @@ def affine_transform(
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.float64 | np.float32]: ...
+) -> onp.ArrayND[_NumberT]: ...
 @overload
 def affine_transform(
-    input: onp.ToComplex | onp.ToComplexND,
-    matrix: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D,
+    input: onp.SequenceND[int],
+    matrix: onp.ToFloat1D | onp.ToFloat2D,
+    offset: onp.ToFloat | onp.ToFloat1D = 0.0,
+    output_shape: tuple[int, ...] | None = None,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+) -> onp.ArrayND[np.int_]: ...
+@overload
+def affine_transform(
+    input: onp.SequenceND[list[float]] | list[float],
+    matrix: onp.ToFloat1D | onp.ToFloat2D,
+    offset: onp.ToFloat | onp.ToFloat1D = 0.0,
+    output_shape: tuple[int, ...] | None = None,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def affine_transform(
+    input: onp.SequenceND[list[complex]] | list[complex],
+    matrix: onp.ToFloat1D | onp.ToFloat2D,
+    offset: onp.ToFloat | onp.ToFloat1D = 0.0,
+    output_shape: tuple[int, ...] | None = None,
+    output: None = None,
+    order: _Order = 3,
+    mode: _Mode = "constant",
+    cval: onp.ToFloat = 0.0,
+    prefilter: bool = True,
+) -> onp.ArrayND[np.complex128]: ...
+@overload
+def affine_transform(
+    input: onp.ToComplexND,
+    matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
     output_shape: tuple[int, ...] | None = None,
     output: None = None,
@@ -331,11 +367,11 @@ def affine_transform(
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32]: ...
+) -> onp.ArrayND[Any]: ...
 @overload
 def affine_transform(
-    input: onp.ToScalar | onp.ToArrayND,
-    matrix: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D,
+    input: onp.ToComplexND,
+    matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
     output_shape: tuple[int, ...] | None = None,
     *,
@@ -347,8 +383,8 @@ def affine_transform(
 ) -> onp.ArrayND[_ScalarT]: ...
 @overload
 def affine_transform(
-    input: onp.ToScalar | onp.ToArrayND,
-    matrix: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D,
+    input: onp.ToComplexND,
+    matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
     output_shape: tuple[int, ...] | None = None,
     *,
@@ -360,30 +396,30 @@ def affine_transform(
 ) -> onp.ArrayND[np.int_]: ...
 @overload
 def affine_transform(
-    input: onp.ToScalar | onp.ToArrayND,
-    matrix: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D,
+    input: onp.ToComplexND,
+    matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
     output_shape: tuple[int, ...] | None = None,
     *,
-    output: type[float],
+    output: type[op.JustFloat],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.float64 | np.int_]: ...
+) -> onp.ArrayND[np.float64]: ...
 @overload
 def affine_transform(
-    input: onp.ToScalar | onp.ToArrayND,
-    matrix: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D,
+    input: onp.ToComplexND,
+    matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
     output_shape: tuple[int, ...] | None = None,
     *,
-    output: type[complex],
+    output: type[op.JustComplex],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.complex128 | np.float64 | np.int_]: ...
+) -> onp.ArrayND[np.complex128]: ...
 
 #
 @overload
