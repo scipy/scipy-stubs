@@ -24,6 +24,7 @@ __all__ = [
 
 _DTypeT = TypeVar("_DTypeT", bound=np.dtype[Any])
 _ArrayT = TypeVar("_ArrayT", bound=np.ndarray[Any, Any])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 ###
 
@@ -39,7 +40,7 @@ def _C_contiguous_copy(A: onp.ToJustFloat64_ND) -> onp.ArrayND[np.float64]: ...
 def _C_contiguous_copy(A: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
 
 # undocumented
-def _is_real(A: onp.ArrayND[np.float64 | np.complex128]) -> TypeIs[onp.ArrayND[np.float64]]: ...
+def _is_real(A: onp.ArrayND[np.float64 | np.complex128, _ShapeT]) -> TypeIs[onp.ArrayND[np.float64, _ShapeT]]: ...
 
 #
 @overload  # f64, eps_or_k<1
