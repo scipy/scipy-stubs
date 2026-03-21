@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from typing import Any, Final, Literal, SupportsIndex, TypeVar, overload
 from typing_extensions import TypeIs
 
@@ -29,7 +30,7 @@ _DTYPE_ERROR: Final[ValueError] = ...  # undocumented
 _TYPE_ERROR: Final[TypeError] = ...  # undocumented
 
 # undocumented
-def _is_real(a: onp.ArrayND[np.float64 | np.complex128]) -> TypeIs[onp.ArrayND[np.float64]]: ...
+def _is_real(A: onp.ArrayND[np.float64 | np.complex128]) -> TypeIs[onp.ArrayND[np.float64]]: ...
 
 #
 @overload  # f64, eps_or_k<1
@@ -78,17 +79,22 @@ def interp_decomp(
 #
 @overload
 def reconstruct_matrix_from_id(
-    B: onp.Array2D[np.float64], idx: onp.ArrayND[npc.integer, tuple[int] | tuple[int, int]], proj: onp.ToFloat2D
+    B: onp.Array2D[np.float64], idx: onp.Array1D[npc.integer] | Sequence[int], proj: onp.ToFloat2D
 ) -> onp.Array2D[np.float64]: ...
 @overload
 def reconstruct_matrix_from_id(
-    B: onp.Array2D[np.complex128], idx: onp.ArrayND[npc.integer, tuple[int] | tuple[int, int]], proj: onp.ToComplex2D
+    B: onp.Array2D[np.complex128], idx: onp.Array1D[npc.integer] | Sequence[int], proj: onp.ToComplex2D
 ) -> onp.Array2D[np.complex128]: ...
 
 #
+@overload
 def reconstruct_interp_matrix(
-    idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
-) -> onp.ArrayND[np.float64 | np.complex128]: ...
+    idx: onp.Array1D[npc.integer] | Sequence[int], proj: onp.Array2D[np.float64]
+) -> onp.Array2D[np.float64]: ...
+@overload
+def reconstruct_interp_matrix(
+    idx: onp.Array1D[npc.integer] | Sequence[int], proj: onp.Array2D[np.complex128]
+) -> onp.Array2D[np.complex128]: ...
 
 #
 def reconstruct_skel_matrix(
