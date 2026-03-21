@@ -69,7 +69,8 @@ assert_type(interp.reconstruct_interp_matrix(_intp_1d, _c128_2d), onp.Array2D[np
 assert_type(interp.reconstruct_interp_matrix(_py_i_1d, _c128_2d), onp.Array2D[np.complex128])
 
 # reconstruct_skel_matrix
-assert_type(interp.reconstruct_skel_matrix(_f64_2d, 3, _intp_1d), onp.ArrayND[np.float64])
+assert_type(interp.reconstruct_skel_matrix(_f64_2d, 3, _intp_1d), onp.Array2D[np.float64])
+assert_type(interp.reconstruct_skel_matrix(_c128_2d, 3, _intp_1d), onp.Array2D[np.complex128])
 
 # id_to_svd
 assert_type(

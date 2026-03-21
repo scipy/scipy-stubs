@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, Final, Literal, SupportsIndex, TypeVar, overload
+from typing import Any, Final, Literal, SupportsIndex, TypeAlias, TypeVar, overload
 from typing_extensions import TypeIs
 
 import numpy as np
@@ -22,9 +22,11 @@ __all__ = [
 
 ###
 
-_DTypeT = TypeVar("_DTypeT", bound=np.dtype[Any])
+_NumberT = TypeVar("_NumberT", bound=npc.number)
 _ArrayT = TypeVar("_ArrayT", bound=np.ndarray[Any, Any])
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+
+_IndexArray: TypeAlias = onp.Array1D[npc.integer] | Sequence[int]
 
 ###
 
@@ -88,28 +90,20 @@ def interp_decomp(
 
 #
 @overload
-def reconstruct_matrix_from_id(
-    B: onp.Array2D[np.float64], idx: onp.Array1D[npc.integer] | Sequence[int], proj: onp.ToFloat2D
-) -> onp.Array2D[np.float64]: ...
+def reconstruct_matrix_from_id(B: onp.Array2D[np.float64], idx: _IndexArray, proj: onp.ToFloat2D) -> onp.Array2D[np.float64]: ...
 @overload
 def reconstruct_matrix_from_id(
-    B: onp.Array2D[np.complex128], idx: onp.Array1D[npc.integer] | Sequence[int], proj: onp.ToComplex2D
+    B: onp.Array2D[np.complex128], idx: _IndexArray, proj: onp.ToComplex2D
 ) -> onp.Array2D[np.complex128]: ...
 
 #
 @overload
-def reconstruct_interp_matrix(
-    idx: onp.Array1D[npc.integer] | Sequence[int], proj: onp.Array2D[np.float64]
-) -> onp.Array2D[np.float64]: ...
+def reconstruct_interp_matrix(idx: _IndexArray, proj: onp.Array2D[np.float64]) -> onp.Array2D[np.float64]: ...
 @overload
-def reconstruct_interp_matrix(
-    idx: onp.Array1D[npc.integer] | Sequence[int], proj: onp.Array2D[np.complex128]
-) -> onp.Array2D[np.complex128]: ...
+def reconstruct_interp_matrix(idx: _IndexArray, proj: onp.Array2D[np.complex128]) -> onp.Array2D[np.complex128]: ...
 
 #
-def reconstruct_skel_matrix(
-    A: np.ndarray[tuple[Any, ...], _DTypeT], k: SupportsIndex, idx: onp.ArrayND[npc.integer]
-) -> np.ndarray[tuple[Any, ...], _DTypeT]: ...
+def reconstruct_skel_matrix(A: onp.Array2D[_NumberT], k: SupportsIndex, idx: _IndexArray) -> onp.Array2D[_NumberT]: ...
 
 #
 def id_to_svd(
