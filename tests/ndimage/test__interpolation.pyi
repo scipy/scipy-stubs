@@ -104,15 +104,18 @@ assert_type(affine_transform(_f64_2d, _f64_2d, output=np.dtype(np.float32)), onp
 
 # shift
 
-assert_type(shift(_f64_2d, 1.0), onp.ArrayND[np.float64 | np.float32])
-assert_type(shift(_py_f_2d, 1.0), onp.ArrayND[np.float64 | np.float32])
-
-assert_type(shift(_c128_2d, 1.0), onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32])
-assert_type(shift(_py_c_2d, 1.0), onp.ArrayND[np.complex128 | np.float64 | np.complex64 | np.float32])
+assert_type(shift(_i16_2d, 1.0), onp.Array2D[np.int16])
+assert_type(shift(_f32_2d, 1.0), onp.Array2D[np.float32])
+assert_type(shift(_f64_2d, 1.0), onp.Array2D[np.float64])
+assert_type(shift(_c64_2d, 1.0), onp.Array2D[np.complex64])
+assert_type(shift(_c128_2d, 1.0), onp.Array2D[np.complex128])
+assert_type(shift(_py_i_2d, 1.0), onp.ArrayND[np.int_])
+assert_type(shift(_py_f_2d, 1.0), onp.ArrayND[np.float64])
+assert_type(shift(_py_c_2d, 1.0), onp.ArrayND[np.complex128])
 
 assert_type(shift(_f64_2d, 1.0, output=int), onp.ArrayND[np.int_])
-assert_type(shift(_f64_2d, 1.0, output=float), onp.ArrayND[np.float64 | np.int_])
-assert_type(shift(_f64_2d, 1.0, output=complex), onp.ArrayND[np.complex128 | np.float64 | np.int_])
+assert_type(shift(_f64_2d, 1.0, output=float), onp.ArrayND[np.float64])
+assert_type(shift(_f64_2d, 1.0, output=complex), onp.ArrayND[np.complex128])
 assert_type(shift(_f64_2d, 1.0, np.dtype(np.float32)), onp.ArrayND[np.float32])
 
 # zoom
