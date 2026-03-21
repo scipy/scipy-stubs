@@ -1,4 +1,5 @@
-from typing import Any, SupportsIndex, TypeVar
+from typing import Any, Final, Literal, SupportsIndex, TypeVar, overload
+from typing_extensions import TypeIs
 
 import numpy as np
 import optype.numpy as onp
@@ -18,12 +19,61 @@ __all__ = [
     "svd",
 ]
 
+###
+
 _DTypeT = TypeVar("_DTypeT", bound=np.dtype[Any])
 
+###
+
+_DTYPE_ERROR: Final[ValueError] = ...  # undocumented
+_TYPE_ERROR: Final[TypeError] = ...  # undocumented
+
+# undocumented
+def _is_real(a: onp.ArrayND[np.float64 | np.complex128]) -> TypeIs[onp.ArrayND[np.float64]]: ...
+
 #
+@overload  # f64, eps_or_k<1
 def interp_decomp(
-    A: onp.ArrayND[npc.number] | LinearOperator, eps_or_k: onp.ToFloat, rand: bool = True, rng: onp.random.ToRNG | None = None
-) -> tuple[int, onp.ArrayND[np.intp], onp.ArrayND[np.float64]]: ...
+    A: onp.Array2D[np.float64] | LinearOperator[np.float64],
+    eps_or_k: Literal[0, -1, -2, -3, -4],
+    rand: bool = True,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
+@overload  # f64, eps_or_k>=1
+def interp_decomp(
+    A: onp.Array2D[np.float64] | LinearOperator[np.float64],
+    eps_or_k: Literal[1, 2, 3, 4, 5],
+    rand: bool = True,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
+@overload  # f64, eps_or_k unknown
+def interp_decomp(
+    A: onp.Array2D[np.float64] | LinearOperator[np.float64],
+    eps_or_k: float,
+    rand: bool = True,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
+@overload  # c128, eps_or_k<1
+def interp_decomp(
+    A: onp.Array2D[np.complex128] | LinearOperator[np.complex128],
+    eps_or_k: Literal[0, -1, -2, -3, -4],
+    rand: bool = True,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
+@overload  # c128, eps_or_k>=1
+def interp_decomp(
+    A: onp.Array2D[np.complex128] | LinearOperator[np.complex128],
+    eps_or_k: Literal[1, 2, 3, 4, 5],
+    rand: bool = True,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
+@overload  # c128, eps_or_k unknown
+def interp_decomp(
+    A: onp.Array2D[np.complex128] | LinearOperator[np.complex128],
+    eps_or_k: float,
+    rand: bool = True,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
 
 #
 def reconstruct_matrix_from_id(
