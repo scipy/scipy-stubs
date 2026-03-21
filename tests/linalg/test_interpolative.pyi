@@ -24,6 +24,9 @@ _f64_nd: onp.ArrayND[np.float64]
 _c128_2d: onp.Array2D[np.complex128]
 _c128_nd: onp.ArrayND[np.complex128]
 
+_py_f_2d: list[list[float]]
+_py_c_2d: list[list[complex]]
+
 ###
 
 # interp_decomp
@@ -53,8 +56,10 @@ assert_type(
 )
 
 # reconstruct_matrix_from_id
-assert_type(interp.reconstruct_matrix_from_id(_f64_nd, _intp_1d, _f64_nd), onp.ArrayND[npc.number])
-assert_type(interp.reconstruct_matrix_from_id(_c128_2d, _intp_1d, _c128_nd), onp.ArrayND[npc.number])
+assert_type(interp.reconstruct_matrix_from_id(_f64_2d, _intp_1d, _f64_2d), onp.Array2D[np.float64])
+assert_type(interp.reconstruct_matrix_from_id(_f64_2d, _intp_1d, _py_f_2d), onp.Array2D[np.float64])
+assert_type(interp.reconstruct_matrix_from_id(_c128_2d, _intp_1d, _c128_2d), onp.Array2D[np.complex128])
+assert_type(interp.reconstruct_matrix_from_id(_c128_2d, _intp_1d, _py_c_2d), onp.Array2D[np.complex128])
 
 # reconstruct_interp_matrix
 assert_type(interp.reconstruct_interp_matrix(_intp_1d, _f64_nd), onp.ArrayND[np.float64 | np.complex128])

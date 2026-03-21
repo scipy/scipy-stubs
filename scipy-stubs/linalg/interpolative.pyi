@@ -76,9 +76,14 @@ def interp_decomp(
 ) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
 
 #
+@overload
 def reconstruct_matrix_from_id(
-    B: onp.ArrayND, idx: onp.ArrayND[npc.integer], proj: onp.ArrayND[npc.number]
-) -> onp.ArrayND[npc.number]: ...
+    B: onp.Array2D[np.float64], idx: onp.ArrayND[npc.integer, tuple[int] | tuple[int, int]], proj: onp.ToFloat2D
+) -> onp.Array2D[np.float64]: ...
+@overload
+def reconstruct_matrix_from_id(
+    B: onp.Array2D[np.complex128], idx: onp.ArrayND[npc.integer, tuple[int] | tuple[int, int]], proj: onp.ToComplex2D
+) -> onp.Array2D[np.complex128]: ...
 
 #
 def reconstruct_interp_matrix(
