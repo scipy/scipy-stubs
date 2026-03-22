@@ -1,18 +1,19 @@
-# type-tests for "new" distribution infrastructure functions from `stats/_distribution_infrastructure.pyi`
+# type-tests for `stats/_distribution_infrastructure.pyi`
 
 from typing import TypeAlias, assert_type, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 from optype.test import assert_subtype
 
-from scipy.stats import Uniform, distributions, exp, log, make_distribution, order_statistic
+from scipy.stats import Mixture, Uniform, abs, distributions, exp, log, make_distribution, order_statistic, truncate
 from scipy.stats._distribution_infrastructure import (
     ContinuousDistribution,
+    FoldedDistribution,
     MonotonicTransformedDistribution,
     OrderStatisticDistribution,
     TruncatedDistribution,
-    truncate,
 )
 
 ###
@@ -85,13 +86,22 @@ assert_type(exp(_uniform_1d_f64), MonotonicTransformedDistribution[Uniform[_1d, 
 assert_type(exp(_uniform_2d_f64), MonotonicTransformedDistribution[Uniform[_2d, np.float64], _2d])
 assert_type(exp(_uniform_3d_f64), MonotonicTransformedDistribution[Uniform[_3d, np.float64], _3d])
 
-# exp
+# log
 assert_type(log(_uniform_0d_f64), MonotonicTransformedDistribution[Uniform[_0d, np.float64], _0d])
 assert_type(log(_uniform_1d_f64), MonotonicTransformedDistribution[Uniform[_1d, np.float64], _1d])
 assert_type(log(_uniform_2d_f64), MonotonicTransformedDistribution[Uniform[_2d, np.float64], _2d])
 assert_type(log(_uniform_3d_f64), MonotonicTransformedDistribution[Uniform[_3d, np.float64], _3d])
 
+# abs
+assert_type(abs(_uniform_0d_f64), FoldedDistribution[Uniform[_0d, np.float64], npc.floating, _0d])
+assert_type(abs(_uniform_1d_f64), FoldedDistribution[Uniform[_1d, np.float64], npc.floating, _1d])
+assert_type(abs(_uniform_2d_f64), FoldedDistribution[Uniform[_2d, np.float64], npc.floating, _2d])
+assert_type(abs(_uniform_3d_f64), FoldedDistribution[Uniform[_3d, np.float64], npc.floating, _3d])
+
 # make_distribution
 assert_subtype[type[ContinuousDistribution]](make_distribution(distributions.loguniform))
 assert_subtype[type[ContinuousDistribution]](make_distribution(_DuckRV))
 assert_subtype[type[ContinuousDistribution]](make_distribution(_MultiDuckRV))
+
+# Mixture
+assert_type(Mixture([_uniform_0d_f64, _uniform_0d_f64]), Mixture[np.float64])
