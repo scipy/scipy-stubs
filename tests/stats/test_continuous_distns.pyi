@@ -93,6 +93,7 @@ from scipy.stats import (
     rel_breitwigner,
     rice,
     rv_continuous,
+    rv_histogram,
     semicircular,
     skewcauchy,
     skewnorm,
@@ -233,3 +234,5 @@ assert_subtype[rv_continuous](wald)
 assert_subtype[rv_continuous](weibull_max)
 assert_subtype[rv_continuous](weibull_min)
 assert_subtype[rv_continuous](wrapcauchy)
+
+assert_subtype[type[rv_continuous]](rv_histogram)
