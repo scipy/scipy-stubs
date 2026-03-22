@@ -4,7 +4,6 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from scipy.signal import abcd_normalize, cont2discrete, dlti, lti, ss2tf, ss2zpk, tf2ss, zpk2ss
 from scipy.signal._ltisys import (
@@ -83,11 +82,9 @@ assert_type(
 
 # ss2zpk
 
+assert_type(ss2zpk(_f64_2d, _f64_2d, _f64_2d, _f64_2d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64], np.float64])
 assert_type(
-    ss2zpk(_f64_2d, _f64_2d, _f64_2d, _f64_2d), tuple[onp.Array1D[npc.floating], onp.Array1D[npc.floating], float | np.float64]
-)
-assert_type(
-    ss2zpk(_c128_2d, _c128_2d, _c128_2d, _c128_2d), tuple[onp.Array1D[npc.inexact], onp.Array1D[npc.inexact], float | np.float64]
+    ss2zpk(_c128_2d, _c128_2d, _c128_2d, _c128_2d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.complex128]
 )
 
 # cont2discrete

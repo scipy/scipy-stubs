@@ -32,7 +32,6 @@ _T = TypeVar("_T")
 _Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
 
 _SystemTF: TypeAlias = tuple[onp.Array2D[_InexactT], onp.Array1D[_InexactT]]
-_SystemZPK: TypeAlias = tuple[onp.Array1D[_InexactT], onp.Array1D[_InexactT], float | np.float64]
 _SystemSS: TypeAlias = tuple[onp.Array2D[_InexactT], onp.Array2D[_InexactT], onp.Array2D[_InexactT], onp.Array2D[_InexactT]]
 
 _DiscretizeMethod: TypeAlias = Literal["gbt", "bilinear", "euler", "backward_diff", "foh", "impulse", "zoh"]
@@ -176,15 +175,63 @@ def zpk2ss(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: float
 ) -> tuple[onp.Array2D[Any], onp.Array2D[np.float64], onp.Array2D[Any], onp.Array2D[Any]]: ...
 
-# TODO(@jorenham): refine return dtypes
-@overload
+#
+@overload  # ~f64, +f64, +f64, +f64
 def ss2zpk(
-    A: onp.ToFloat2D, B: onp.ToFloat2D, C: onp.ToFloat2D, D: onp.ToFloat2D, input: onp.ToInt = 0
-) -> _SystemZPK[npc.floating]: ...
-@overload
+    A: onp.ToArray2D[float, npc.floating64 | npc.integer],
+    B: onp.ToFloat64_2D,
+    C: onp.ToFloat64_2D,
+    D: onp.ToFloat64_2D,
+    input: int = 0,
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64], np.float64]: ...
+@overload  # +f64, ~f64, +f64, +f64
 def ss2zpk(
-    A: onp.ToComplex2D, B: onp.ToComplex2D, C: onp.ToComplex2D, D: onp.ToComplex2D, input: onp.ToInt = 0
-) -> _SystemZPK: ...
+    A: onp.ToFloat64_2D,
+    B: onp.ToArray2D[float, npc.floating64 | npc.integer],
+    C: onp.ToFloat64_2D,
+    D: onp.ToFloat64_2D,
+    input: int = 0,
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64], np.float64]: ...
+@overload  # +f64, +f64, ~f64, +f64
+def ss2zpk(
+    A: onp.ToFloat64_2D,
+    B: onp.ToFloat64_2D,
+    C: onp.ToArray2D[float, npc.floating64 | npc.integer],
+    D: onp.ToFloat64_2D,
+    input: int = 0,
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64], np.float64]: ...
+@overload  # +f64, +f64, +f64, ~f64
+def ss2zpk(
+    A: onp.ToFloat64_2D,
+    B: onp.ToFloat64_2D,
+    C: onp.ToFloat64_2D,
+    D: onp.ToArray2D[float, npc.floating64 | npc.integer],
+    input: int = 0,
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64], np.float64]: ...
+@overload  # +floating, +floating, +floating, +floating
+def ss2zpk(
+    A: onp.ToFloat2D, B: onp.ToFloat2D, C: onp.ToFloat2D, D: onp.ToFloat2D, input: int = 0
+) -> tuple[onp.Array1D[np.complex128 | Any], onp.Array1D[np.float64 | Any], np.float64 | Any]: ...
+@overload  # ~c128, +c128, +c128, +c128
+def ss2zpk(
+    A: onp.ToJustComplex128_2D, B: onp.ToComplex128_2D, C: onp.ToComplex128_2D, D: onp.ToComplex128_2D, input: int = 0
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.complex128]: ...
+@overload  # +c128, ~c128, +c128, +c128
+def ss2zpk(
+    A: onp.ToComplex128_2D, B: onp.ToJustComplex128_2D, C: onp.ToComplex128_2D, D: onp.ToComplex128_2D, input: int = 0
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.complex128]: ...
+@overload  # +c128, +c128, ~c128, +c128
+def ss2zpk(
+    A: onp.ToComplex128_2D, B: onp.ToComplex128_2D, C: onp.ToJustComplex128_2D, D: onp.ToComplex128_2D, input: int = 0
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.complex128]: ...
+@overload  # +c128, +c128, +c128, ~c128
+def ss2zpk(
+    A: onp.ToComplex128_2D, B: onp.ToComplex128_2D, C: onp.ToComplex128_2D, D: onp.ToJustComplex128_2D, input: int = 0
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.complex128]: ...
+@overload  # +complexfloating, +complexfloating, +complexfloating, +complexfloating
+def ss2zpk(
+    A: onp.ToComplex2D, B: onp.ToComplex2D, C: onp.ToComplex2D, D: onp.ToComplex2D, input: int = 0
+) -> tuple[onp.Array1D[np.complex128 | Any], onp.Array1D[np.complex128 | Any], np.complex128 | Any]: ...
 
 #
 @overload  # TransferFunction
