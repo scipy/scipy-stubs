@@ -49,7 +49,7 @@ _DiscreteSS = TypeAliasType(
 def tf2ss(
     num: onp.ToArray1D[float, npc.floating64 | npc.integer] | onp.ToArray2D[float, npc.floating64 | npc.integer],
     den: onp.ToFloat64_1D,
-) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+) -> _SystemSS[np.float64]: ...
 @overload  # +floating, +floating
 def tf2ss(
     num: onp.ToFloat1D | onp.ToFloat2D, den: onp.ToFloat1D
@@ -152,11 +152,29 @@ def ss2tf(
     A: onp.ToComplex2D, B: onp.ToComplex2D, C: onp.ToComplex2D, D: onp.ToComplex2D, input: int = 0
 ) -> _SystemTF[np.complex128 | Any]: ...
 
-# TODO(@jorenham): refine return dtypes
-@overload
-def zpk2ss(z: onp.ToFloat1D, p: onp.ToFloat1D, k: onp.ToFloat) -> _SystemSS[npc.floating]: ...
-@overload
-def zpk2ss(z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat) -> _SystemSS: ...
+#
+@overload  # ~f64, +f64
+def zpk2ss(z: onp.ToArray1D[float, npc.floating64 | npc.integer], p: onp.ToFloat64_1D, k: float) -> _SystemSS[np.float64]: ...
+@overload  # +f64, ~f64
+def zpk2ss(z: onp.ToFloat64_1D, p: onp.ToArray1D[float, npc.floating64 | npc.integer], k: float) -> _SystemSS[np.float64]: ...
+@overload  # +floating, +floating
+def zpk2ss(
+    z: onp.ToFloat1D, p: onp.ToFloat1D, k: float
+) -> tuple[
+    onp.Array2D[np.float64 | Any], onp.Array2D[np.float64], onp.Array2D[np.float64 | Any], onp.Array2D[np.float64 | Any]
+]: ...
+@overload  # ~c128, +c128
+def zpk2ss(
+    z: onp.ToJustComplex128_1D, p: onp.ToComplex128_1D, k: float
+) -> tuple[onp.Array2D[np.complex128], onp.Array2D[np.float64], onp.Array2D[np.complex128], onp.Array2D[np.complex128]]: ...
+@overload  # +c128, ~c128
+def zpk2ss(
+    z: onp.ToComplex128_1D, p: onp.ToJustComplex128_1D, k: float
+) -> tuple[onp.Array2D[np.complex128], onp.Array2D[np.float64], onp.Array2D[np.complex128], onp.Array2D[np.complex128]]: ...
+@overload  # +complexfloating, +complexfloating
+def zpk2ss(
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: float
+) -> tuple[onp.Array2D[Any], onp.Array2D[np.float64], onp.Array2D[Any], onp.Array2D[Any]]: ...
 
 # TODO(@jorenham): refine return dtypes
 @overload
