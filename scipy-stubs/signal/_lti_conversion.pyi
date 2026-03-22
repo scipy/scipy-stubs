@@ -54,11 +54,32 @@ def abcd_normalize(
     D: onp.ToComplex2D | None = None,
 ) -> _SystemTF: ...
 
-# TODO(@jorenham): refine return dtypes
-@overload
-def tf2ss(num: onp.ToFloat2D, den: onp.ToFloat1D) -> _SystemSS[npc.floating]: ...
-@overload
-def tf2ss(num: onp.ToComplex2D, den: onp.ToComplex1D) -> _SystemSS: ...
+#
+@overload  # ~f64, +f64
+def tf2ss(
+    num: onp.ToArray1D[float, npc.floating64 | npc.integer] | onp.ToArray2D[float, npc.floating64 | npc.integer],
+    den: onp.ToFloat64_1D,
+) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+@overload  # +floating, +floating
+def tf2ss(
+    num: onp.ToFloat1D | onp.ToFloat2D, den: onp.ToFloat1D
+) -> tuple[
+    onp.Array2D[np.float64 | Any], onp.Array2D[np.float64], onp.Array2D[np.float64 | Any], onp.Array2D[np.float64 | Any]
+]: ...
+@overload  # ~c128, +c128
+def tf2ss(
+    num: onp.ToJustComplex128_1D | onp.ToJustComplex128_2D, den: onp.ToComplex128_1D
+) -> tuple[onp.Array2D[np.complex128], onp.Array2D[np.float64], onp.Array2D[np.complex128], onp.Array2D[np.complex128]]: ...
+@overload  # ~complexfloating, ~complexfloating
+def tf2ss(
+    num: onp.ToJustComplex1D | onp.ToJustComplex2D, den: onp.ToJustComplex1D
+) -> tuple[
+    onp.Array2D[np.complex128 | Any], onp.Array2D[np.float64], onp.Array2D[np.complex128 | Any], onp.Array2D[np.complex128 | Any]
+]: ...
+@overload  # +complexfloating, +complexfloating
+def tf2ss(
+    num: onp.ToComplex1D | onp.ToComplex2D, den: onp.ToComplex1D
+) -> tuple[onp.Array2D[Any], onp.Array2D[np.float64], onp.Array2D[Any], onp.Array2D[Any]]: ...
 
 # TODO(@jorenham): refine return dtypes
 @overload
