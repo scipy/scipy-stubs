@@ -13,11 +13,16 @@ from scipy.signal import (
     correlate,
     correlate2d,
     correlation_lags,
+    decimate,
     deconvolve,
+    detrend,
+    envelope,
     fftconvolve,
     filtfilt,
     hilbert,
     hilbert2,
+    invres,
+    invresz,
     lfilter,
     lfilter_zi,
     lfiltic,
@@ -25,8 +30,15 @@ from scipy.signal import (
     medfilt2d,
     oaconvolve,
     order_filter,
+    resample,
+    resample_poly,
+    residue,
+    residuez,
+    sosfilt,
     sosfilt_zi,
     sosfiltfilt,
+    unique_roots,
+    vectorstrength,
     wiener,
 )
 
@@ -36,6 +48,7 @@ _py_b_1d: list[bool]
 _py_i_1d: list[int]
 _py_f_1d: list[float]
 _py_c_1d: list[complex]
+_i8_1d: onp.Array1D[np.int8]
 _u8_1d: onp.Array1D[np.uint8]
 _i16_1d: onp.Array1D[np.int16]
 _i64_1d: onp.Array1D[np.int64]
@@ -50,20 +63,24 @@ _c160_1d: onp.Array1D[npc.complexfloating160]
 _py_i_2d: list[list[int]]
 _py_f_2d: list[list[float]]
 _py_c_2d: list[list[complex]]
+_i8_2d: onp.Array2D[np.int8]
 _u8_2d: onp.Array2D[np.uint8]
 _i16_2d: onp.Array2D[np.int16]
-_f16_2d: onp.Array2D[np.float32]
+_f16_2d: onp.Array2D[np.float16]
 _f32_2d: onp.Array2D[np.float32]
 _f64_2d: onp.Array2D[np.float64]
 _f80_2d: onp.Array2D[npc.floating80]
 _c64_2d: onp.Array2D[np.complex64]
 _c128_2d: onp.Array2D[np.complex128]
+_c160_2d: onp.Array2D[npc.complexfloating160]
 
 _u8_nd: onp.ArrayND[np.uint8]
 _f16_nd: onp.ArrayND[np.float32]
 _f32_nd: onp.ArrayND[np.float32]
 _f64_nd: onp.ArrayND[np.float64]
 _f80_nd: onp.ArrayND[npc.floating80]
+_c64_nd: onp.ArrayND[np.complex64]
+_c128_nd: onp.ArrayND[np.complex128]
 
 ###
 
@@ -183,8 +200,6 @@ assert_type(correlation_lags(5, 3), onp.Array1D[np.int_])
 assert_type(correlation_lags(5, 3, mode="valid"), onp.Array1D[np.int_])
 assert_type(correlation_lags(5, 3, mode="same"), onp.Array1D[np.int_])
 assert_type(correlation_lags(5, 3, mode="full"), onp.Array1D[np.int_])
-
-###
 
 # lfilter_zi
 
@@ -340,3 +355,123 @@ assert_type(hilbert2(_f16_2d), onp.Array2D[np.complex64])
 assert_type(hilbert2(_f32_2d), onp.Array2D[np.complex64])
 assert_type(hilbert2(_f64_2d), onp.Array2D[np.complex128])
 assert_type(hilbert2(_f80_2d), onp.Array2D[npc.complexfloating160])
+
+# detrend
+
+assert_type(detrend(_py_i_1d), onp.ArrayND[np.float64])
+assert_type(detrend(_f64_1d), onp.ArrayND[np.float64])
+assert_type(detrend(_f16_1d), onp.ArrayND[np.float16])
+assert_type(detrend(_f32_1d), onp.ArrayND[np.float32])
+assert_type(detrend(_c64_1d), onp.ArrayND[np.complex128])
+assert_type(detrend(_c128_1d), onp.ArrayND[np.complex128])
+
+# unique_roots
+
+assert_type(unique_roots(_py_f_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.int_]])
+assert_type(unique_roots(_f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.int_]])
+assert_type(unique_roots(_c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.int_]])
+
+# residue
+
+assert_type(residue(_f64_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64]])
+
+# residuez
+
+assert_type(residuez(_f64_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64]])
+
+# invres
+
+assert_type(invres(_f64_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
+
+# invresz
+
+assert_type(invresz(_f64_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
+
+# resample
+
+assert_type(resample(_py_i_1d, 1), onp.ArrayND[np.float64])
+assert_type(resample(_py_f_1d, 1), onp.ArrayND[np.float64])
+assert_type(resample(_i8_1d, 1), onp.Array1D[np.float64])
+assert_type(resample(_f16_1d, 1), onp.Array1D[np.float32])
+assert_type(resample(_f32_1d, 1), onp.Array1D[np.float32])
+assert_type(resample(_f64_1d, 1), onp.Array1D[np.float64])
+assert_type(resample(_f80_1d, 1), onp.Array1D[npc.floating80])
+assert_type(resample(_c64_1d, 1), onp.Array1D[np.complex64])
+assert_type(resample(_c128_1d, 1), onp.Array1D[np.complex128])
+assert_type(resample(_c160_1d, 1), onp.Array1D[npc.complexfloating160])
+
+assert_type(resample(_py_i_2d, 1), onp.ArrayND[np.float64])
+assert_type(resample(_py_f_2d, 1), onp.ArrayND[np.float64])
+assert_type(resample(_i8_2d, 1), onp.Array2D[np.float64])
+assert_type(resample(_f16_2d, 1), onp.Array2D[np.float32])
+assert_type(resample(_f32_2d, 1), onp.Array2D[np.float32])
+assert_type(resample(_f64_2d, 1), onp.Array2D[np.float64])
+assert_type(resample(_f80_2d, 1), onp.Array2D[npc.floating80])
+assert_type(resample(_c64_2d, 1), onp.Array2D[np.complex64])
+assert_type(resample(_c128_2d, 1), onp.Array2D[np.complex128])
+assert_type(resample(_c160_2d, 1), onp.Array2D[npc.complexfloating160])
+
+# resample_poly
+
+assert_type(resample_poly(_py_i_1d, 1, 1), onp.Array1D[np.float64])
+assert_type(resample_poly(_py_f_1d, 1, 1), onp.Array1D[np.float64])
+assert_type(resample_poly(_i8_1d, 1, 1), onp.Array1D[np.float64])
+assert_type(resample_poly(_f16_1d, 1, 1), onp.Array1D[np.float32])
+assert_type(resample_poly(_f32_1d, 1, 1), onp.Array1D[np.float32])
+assert_type(resample_poly(_f64_1d, 1, 1), onp.Array1D[np.float64])
+# pyrefly: ignore [no-matching-overload]
+resample_poly(_f80_1d, 1, 1)  # type: ignore[type-var]  # pyright: ignore[reportArgumentType, reportCallIssue]
+assert_type(resample_poly(_c64_1d, 1, 1), onp.Array1D[np.complex64])
+assert_type(resample_poly(_c128_1d, 1, 1), onp.Array1D[np.complex128])
+# pyrefly: ignore [no-matching-overload]
+resample_poly(_c160_1d, 1, 1)  # type: ignore[type-var]  # pyright: ignore[reportArgumentType, reportCallIssue]
+
+assert_type(resample_poly(_py_i_2d, 1, 1), onp.ArrayND[np.float64])
+assert_type(resample_poly(_py_f_2d, 1, 1), onp.ArrayND[np.float64])
+assert_type(resample_poly(_i8_2d, 1, 1), onp.Array2D[np.float64])
+assert_type(resample_poly(_f16_2d, 1, 1), onp.Array2D[np.float32])
+assert_type(resample_poly(_f32_2d, 1, 1), onp.Array2D[np.float32])
+# pyrefly: ignore [no-matching-overload]
+resample_poly(_f80_2d, 1, 1)  # type: ignore[type-var]  # pyright: ignore[reportArgumentType, reportCallIssue]
+assert_type(resample_poly(_f64_2d, 1, 1), onp.Array2D[np.float64])
+assert_type(resample_poly(_c64_2d, 1, 1), onp.Array2D[np.complex64])
+assert_type(resample_poly(_c128_2d, 1, 1), onp.Array2D[np.complex128])
+# pyrefly: ignore [no-matching-overload]
+resample_poly(_c160_2d, 1, 1)  # type: ignore[type-var]  # pyright: ignore[reportArgumentType, reportCallIssue]
+
+# sosfilt
+
+assert_type(sosfilt(_py_i_2d, _py_i_1d), onp.ArrayND[np.float64])
+assert_type(sosfilt(_py_f_2d, _py_f_1d), onp.ArrayND[np.float64])
+assert_type(sosfilt(_i16_2d, _i16_1d), onp.ArrayND[np.float64])
+assert_type(sosfilt(_f32_2d, _f32_1d), onp.ArrayND[np.float32])
+assert_type(sosfilt(_f64_2d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(sosfilt(_c64_2d, _c64_1d), onp.ArrayND[np.complex64])
+assert_type(sosfilt(_c128_2d, _c128_1d), onp.ArrayND[np.complex128])
+
+assert_type(sosfilt(_f64_2d, _f64_1d, zi=_f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(sosfilt(_f32_2d, _f32_1d, zi=_f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(sosfilt(_c128_2d, _c128_1d, zi=_c128_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(sosfilt(_c64_2d, _c64_1d, zi=_c64_nd), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+
+# decimate
+
+assert_type(decimate(_py_i_1d, 2), onp.ArrayND[np.float64])
+assert_type(decimate(_f64_1d, 2), onp.ArrayND[np.float64])
+assert_type(decimate(_f32_1d, 2), onp.ArrayND[np.float32])
+assert_type(decimate(_c128_1d, 2), onp.ArrayND[np.complex128])
+assert_type(decimate(_c64_1d, 2), onp.ArrayND[np.complex64])
+
+# vectorstrength
+
+assert_type(vectorstrength(_f64_1d, 1.0), tuple[np.float64, np.float64])
+assert_type(vectorstrength(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+
+# envelope
+
+assert_type(envelope(_f16_1d), onp.Array2D[np.float32])
+assert_type(envelope(_f16_2d), onp.Array3D[np.float32])
+assert_type(envelope(_f32_1d), onp.Array2D[np.float32])
+assert_type(envelope(_f32_2d), onp.Array3D[np.float32])
+assert_type(envelope(_f64_1d), onp.Array2D[np.float64])
+assert_type(envelope(_f64_2d), onp.Array3D[np.float64])
