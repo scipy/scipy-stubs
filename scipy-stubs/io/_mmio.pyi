@@ -78,7 +78,7 @@ class MMFile:
         self,
         /,
         target: FileLike[bytes],
-        a: spmatrix | sparray | onp.ToArrayND,
+        a: spmatrix | sparray | onp.ToArray2D,
         comment: str = "",
         field: _Field | None = None,
         precision: int | None = None,
