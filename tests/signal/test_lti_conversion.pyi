@@ -37,8 +37,14 @@ _lti_c_f64: lti[np.float64, np.float64]
 
 # abcd_normalize
 
-assert_type(abcd_normalize(_f64_2d, _f64_2d, _f64_2d, _f64_2d), tuple[onp.Array2D[npc.floating], onp.Array1D[npc.floating]])
-assert_type(abcd_normalize(_c128_2d, _c128_2d, _c128_2d, _c128_2d), tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact]])
+assert_type(
+    abcd_normalize(_f64_2d, _f64_2d, _f64_2d, _f64_2d),
+    tuple[onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array2D[np.float64]],
+)
+assert_type(
+    abcd_normalize(_c128_2d, _c128_2d, _c128_2d, _c128_2d),
+    tuple[onp.Array2D[np.complex128], onp.Array2D[np.complex128], onp.Array2D[np.complex128], onp.Array2D[np.complex128]],
+)
 
 # tf2ss
 

@@ -23,6 +23,10 @@ __all__ = ["abcd_normalize", "cont2discrete", "ss2tf", "ss2zpk", "tf2ss", "zpk2s
 _SafeFloatT = TypeVar("_SafeFloatT", bound=np.float32 | np.float64)
 _SafeInexactT = TypeVar("_SafeInexactT", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact, default=npc.inexact)
+_InexactAT = TypeVar("_InexactAT", bound=npc.inexact, default=np.float64)
+_InexactBT = TypeVar("_InexactBT", bound=npc.inexact, default=np.float64)
+_InexactCT = TypeVar("_InexactCT", bound=npc.inexact, default=np.float64)
+_InexactDT = TypeVar("_InexactDT", bound=npc.inexact, default=np.float64)
 
 _T = TypeVar("_T")
 _Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
@@ -67,18 +71,28 @@ def tf2ss(
     num: onp.ToComplex1D | onp.ToComplex2D, den: onp.ToComplex1D
 ) -> tuple[onp.Array2D[Any], onp.Array2D[np.float64], onp.Array2D[Any], onp.Array2D[Any]]: ...
 
-# TODO(@jorenham): refine return dtypes
+#
 @overload
 def abcd_normalize(
-    A: onp.ToFloat2D | None = None, B: onp.ToFloat2D | None = None, C: onp.ToFloat2D | None = None, D: onp.ToFloat2D | None = None
-) -> _SystemTF[npc.floating]: ...
+    A: onp.ArrayND[_InexactAT] | _InexactAT | onp.ToIntND | float | None = None,
+    B: onp.ArrayND[_InexactBT] | _InexactAT | onp.ToIntND | float | None = None,
+    C: onp.ArrayND[_InexactCT] | _InexactAT | onp.ToIntND | float | None = None,
+    D: onp.ArrayND[_InexactDT] | _InexactAT | onp.ToIntND | float | None = None,
+) -> tuple[onp.Array2D[_InexactAT], onp.Array2D[_InexactBT], onp.Array2D[_InexactCT], onp.Array2D[_InexactDT]]: ...
 @overload
 def abcd_normalize(
-    A: onp.ToComplex2D | None = None,
-    B: onp.ToComplex2D | None = None,
-    C: onp.ToComplex2D | None = None,
-    D: onp.ToComplex2D | None = None,
-) -> _SystemTF: ...
+    A: onp.ToFloatND | onp.ToFloat | None = None,
+    B: onp.ToFloatND | onp.ToFloat | None = None,
+    C: onp.ToFloatND | onp.ToFloat | None = None,
+    D: onp.ToFloatND | onp.ToFloat | None = None,
+) -> _SystemSS[np.float64 | Any]: ...
+@overload
+def abcd_normalize(
+    A: onp.ToComplexND | onp.ToComplex | None = None,
+    B: onp.ToComplexND | onp.ToComplex | None = None,
+    C: onp.ToComplexND | onp.ToComplex | None = None,
+    D: onp.ToComplexND | onp.ToComplex | None = None,
+) -> _SystemSS[Any]: ...
 
 #
 @overload  # ~f64, +f64, +f64, +f64
