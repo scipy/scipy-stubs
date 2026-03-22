@@ -24,8 +24,7 @@ _ChirpMethod: TypeAlias = Literal["linear", "quadratic", "logarithmic", "hyperbo
 def sawtooth(t: _ToFloat0ND, width: _ToFloat0ND = 1) -> _FloatND: ...
 def square(t: _ToFloat0ND, duty: _ToFloat0ND = 0.5) -> _FloatND: ...
 
-# TODO(@jorenham): refine return types based on input types
-# https://github.com/scipy/scipy-stubs/issues/756
+#
 @overload  # t: +f64 0d, complex: False
 def chirp(
     t: onp.ToFloat64,
