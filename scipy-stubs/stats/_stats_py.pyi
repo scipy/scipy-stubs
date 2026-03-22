@@ -3014,7 +3014,7 @@ def sem(
     a: onp.ToComplexND, axis: int | None = 0, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
 ) -> _FloatOrND: ...
 
-# NOTE: keep in sync with `gzscore`
+# NOTE: keep in sync with `gzscore` and `zmap`
 @overload  # +integer, known shape
 def zscore(
     a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
@@ -3059,7 +3059,7 @@ def zscore(
     a: onp.ToJustComplexND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
 ) -> onp.ArrayND[npc.complexfloating]: ...
 
-# NOTE: keep in sync with `zscore`
+# NOTE: keep in sync with `zscore` and `zmap`
 @overload  # +integer, known shape
 def gzscore(
     a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
@@ -3105,47 +3105,103 @@ def gzscore(
     a: onp.ToJustComplexND, *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
 ) -> onp.ArrayND[npc.complexfloating]: ...
 
-# TODO(jorenham): improve like zscore
-@overload
+# keep roughly in sync with `zscore` and `gzscore`
+@overload  # +integer, known shape
+def zmap(  # type: ignore[overload-overlap]
+    scores: nptc.CanArray[_ShapeT, np.dtype[npc.floating64 | npc.integer | np.bool_]],
+    compare: nptc.CanArray[_ShapeT, np.dtype[npc.floating64 | npc.integer | np.bool_]],
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64, _ShapeT]: ...
+@overload  # known inexact dtype, known shape
 def zmap(
-    scores: _ToFloatStrictND, compare: onp.ToFloatND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.floating]: ...
-@overload  # (real vector-like, real vector-like) -> floating vector
+    scores: nptc.CanArray[_ShapeT, np.dtype[_InexactT]],
+    compare: nptc.CanArray[_ShapeT, np.dtype[_InexactT]],
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+@overload  # float 1d
 def zmap(
-    scores: onp.ToFloat1D, compare: onp.ToFloat1D, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.Array1D[npc.floating]: ...
-@overload  # (real array-like, real array-like) -> floating array
+    scores: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    compare: onp.ToFloat64Strict1D,
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float64]: ...
+@overload  # float 1d
 def zmap(
+    scores: onp.ToFloat64Strict1D,
+    compare: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float64]: ...
+@overload  # float 2d
+def zmap(
+    scores: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    compare: onp.ToFloat64Strict2D | onp.ToFloat64Strict1D,
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.float64]: ...
+@overload  # float 2d
+def zmap(
+    scores: onp.ToFloat64Strict2D | onp.ToFloat64Strict1D,
+    compare: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.float64]: ...
+@overload  # complex 1d
+def zmap(
+    scores: onp.ToJustComplex128Strict1D,
+    compare: onp.ToComplex128Strict1D,
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.complex128]: ...
+@overload  # complex 1d
+def zmap(
+    scores: onp.ToComplex128Strict1D,
+    compare: onp.ToJustComplex128Strict1D,
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.complex128]: ...
+@overload  # complex 2d
+def zmap(
+    scores: onp.ToJustComplex128Strict2D,
+    compare: onp.ToComplex128Strict2D | onp.ToComplex128Strict1D,
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.complex128]: ...
+@overload  # complex 2d
+def zmap(
+    scores: onp.ToComplex128Strict2D | onp.ToComplex128Strict1D,
+    compare: onp.ToJustComplex128Strict2D,
+    axis: int | None = 0,
+    ddof: int = 0,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array2D[np.complex128]: ...
+@overload  # floating fallback
+def zmap(  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection on numpy<2.1
     scores: onp.ToFloatND, compare: onp.ToFloatND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.floating]: ...
-@overload  # (just complex vector-like, complex vector-like) -> floating vector
+) -> onp.ArrayND[npc.floating, tuple[int] | tuple[Any, ...]]: ...
+@overload  # complex fallback
 def zmap(
-    scores: onp.ToJustComplex1D,
-    compare: onp.ToComplex1D,
-    axis: int | None = 0,
-    ddof: int = 0,
-    nan_policy: NanPolicy = "propagate",
-) -> onp.Array1D[npc.complexfloating]: ...
-@overload  # (complex vector-like, just complex vector-like) -> floating vector
-def zmap(
-    scores: onp.ToComplex1D,
-    compare: onp.ToJustComplex1D,
-    axis: int | None = 0,
-    ddof: int = 0,
-    nan_policy: NanPolicy = "propagate",
-) -> onp.Array1D[npc.complexfloating]: ...
-@overload  # (just complex array-like, complex array-like) -> floating array
-def zmap(
-    scores: onp.ToJustComplexND,
-    compare: onp.ToComplexND,
+    scores: onp.ToComplexND,
+    compare: onp.ToJustComplexND,
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[npc.complexfloating]: ...
-@overload  # (complex array-like, just complex array-like) -> floating array
+@overload  # complex fallback
 def zmap(
-    scores: onp.ToComplexND,
-    compare: onp.ToJustComplexND,
+    scores: onp.ToJustComplexND,
+    compare: onp.ToComplexND,
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
