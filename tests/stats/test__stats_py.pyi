@@ -21,6 +21,7 @@ from scipy.stats import (
     friedmanchisquare,
     gmean,
     gstd,
+    gzscore,
     hmean,
     iqr,
     jarque_bera,
@@ -60,6 +61,7 @@ from scipy.stats import (
     wasserstein_distance_nd,
     weightedtau,
     zmap,
+    zscore,
 )
 from scipy.stats._stats_mstats_common import SiegelslopesResult, TheilslopesResult
 from scipy.stats._stats_py import (
@@ -89,6 +91,9 @@ from scipy.stats._stats_py import (
 _bool_1d: onp.Array1D[np.bool_]
 _bool_2d: onp.Array2D[np.bool_]
 _bool_nd: onp.ArrayND[np.bool_]
+
+_i16_1d: onp.Array1D[np.int16]
+_i16_2d: onp.Array2D[np.int16]
 
 _i64_1d: onp.Array1D[np.int64]
 _i64_2d: onp.Array2D[np.int64]
@@ -1091,10 +1096,119 @@ assert_type(median_abs_deviation(_f64_1d), np.float64)
 assert_type(median_abs_deviation(_f64_nd, axis=None), onp.ArrayND[np.float64])
 assert_type(median_abs_deviation(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 
+# zscore
+
+assert_type(zscore(_py_i_1d), onp.Array1D[np.float64])
+assert_type(zscore(_py_f_1d), onp.Array1D[np.float64])
+assert_type(zscore(_bool_1d), onp.Array1D[np.float64])
+assert_type(zscore(_i16_1d), onp.Array1D[np.float64])
+assert_type(zscore(_f32_1d), onp.Array1D[np.float32])
+assert_type(zscore(_f64_1d), onp.Array1D[np.float64])
+assert_type(zscore(_c64_1d), onp.Array1D[np.complex64])
+assert_type(zscore(_c128_1d), onp.Array1D[np.complex128])
+
+assert_type(zscore(_py_i_2d), onp.Array2D[np.float64])
+assert_type(zscore(_py_f_2d), onp.Array2D[np.float64])
+assert_type(zscore(_bool_2d), onp.Array2D[np.float64])
+assert_type(zscore(_i16_2d), onp.Array2D[np.float64])
+assert_type(zscore(_f32_2d), onp.Array2D[np.float32])
+assert_type(zscore(_f64_2d), onp.Array2D[np.float64])
+assert_type(zscore(_c64_2d), onp.Array2D[np.complex64])
+assert_type(zscore(_c128_2d), onp.Array2D[np.complex128])
+
+assert_type(zscore(_py_i_1d, axis=None), onp.Array1D[np.float64])
+assert_type(zscore(_py_f_1d, axis=None), onp.Array1D[np.float64])
+assert_type(zscore(_bool_1d, axis=None), onp.Array1D[np.float64])
+assert_type(zscore(_i16_1d, axis=None), onp.Array1D[np.float64])
+assert_type(zscore(_f32_1d, axis=None), onp.Array1D[np.float32])
+assert_type(zscore(_f64_1d, axis=None), onp.Array1D[np.float64])
+assert_type(zscore(_c64_1d, axis=None), onp.Array1D[np.complex64])
+assert_type(zscore(_c128_1d, axis=None), onp.Array1D[np.complex128])
+
+assert_type(zscore(_py_i_2d, axis=None), onp.Array2D[np.float64])
+assert_type(zscore(_py_f_2d, axis=None), onp.Array2D[np.float64])
+assert_type(zscore(_bool_2d, axis=None), onp.Array2D[np.float64])
+assert_type(zscore(_i16_2d, axis=None), onp.Array2D[np.float64])
+assert_type(zscore(_f32_2d, axis=None), onp.Array2D[np.float32])
+assert_type(zscore(_f64_2d, axis=None), onp.Array2D[np.float64])
+assert_type(zscore(_c64_2d, axis=None), onp.Array2D[np.complex64])
+assert_type(zscore(_c128_2d, axis=None), onp.Array2D[np.complex128])
+
+# gzscore
+
+assert_type(gzscore(_py_i_1d), onp.Array1D[np.float64])
+assert_type(gzscore(_py_f_1d), onp.Array1D[np.float64])
+assert_type(gzscore(_bool_1d), onp.Array1D[np.float64])
+assert_type(gzscore(_i16_1d), onp.Array1D[np.float64])
+assert_type(gzscore(_f32_1d), onp.Array1D[np.float32])
+assert_type(gzscore(_f64_1d), onp.Array1D[np.float64])
+assert_type(gzscore(_c64_1d), onp.Array1D[np.complex64])
+assert_type(gzscore(_c128_1d), onp.Array1D[np.complex128])
+
+assert_type(gzscore(_py_i_2d), onp.Array2D[np.float64])
+assert_type(gzscore(_py_f_2d), onp.Array2D[np.float64])
+assert_type(gzscore(_bool_2d), onp.Array2D[np.float64])
+assert_type(gzscore(_i16_2d), onp.Array2D[np.float64])
+assert_type(gzscore(_f32_2d), onp.Array2D[np.float32])
+assert_type(gzscore(_f64_2d), onp.Array2D[np.float64])
+assert_type(gzscore(_c64_2d), onp.Array2D[np.complex64])
+assert_type(gzscore(_c128_2d), onp.Array2D[np.complex128])
+
+assert_type(gzscore(_py_i_1d, axis=None), onp.Array1D[np.float64])
+assert_type(gzscore(_py_f_1d, axis=None), onp.Array1D[np.float64])
+assert_type(gzscore(_bool_1d, axis=None), onp.Array1D[np.float64])
+assert_type(gzscore(_i16_1d, axis=None), onp.Array1D[np.float64])
+assert_type(gzscore(_f32_1d, axis=None), onp.Array1D[np.float32])
+assert_type(gzscore(_f64_1d, axis=None), onp.Array1D[np.float64])
+assert_type(gzscore(_c64_1d, axis=None), onp.Array1D[np.complex64])
+assert_type(gzscore(_c128_1d, axis=None), onp.Array1D[np.complex128])
+
+assert_type(gzscore(_py_i_2d, axis=None), onp.Array2D[np.float64])
+assert_type(gzscore(_py_f_2d, axis=None), onp.Array2D[np.float64])
+assert_type(gzscore(_bool_2d, axis=None), onp.Array2D[np.float64])
+assert_type(gzscore(_i16_2d, axis=None), onp.Array2D[np.float64])
+assert_type(gzscore(_f32_2d, axis=None), onp.Array2D[np.float32])
+assert_type(gzscore(_f64_2d, axis=None), onp.Array2D[np.float64])
+assert_type(gzscore(_c64_2d, axis=None), onp.Array2D[np.complex64])
+assert_type(gzscore(_c128_2d, axis=None), onp.Array2D[np.complex128])
+
 # zmap
 
-assert_type(zmap(_f64_1d, _f64_1d), onp.Array1D[npc.floating])
-assert_type(zmap(_f64_nd, _f64_nd), onp.ArrayND[npc.floating])
+assert_type(zmap(_py_i_1d, _py_i_1d), onp.Array1D[np.float64])
+assert_type(zmap(_py_f_1d, _py_f_1d), onp.Array1D[np.float64])
+assert_type(zmap(_bool_1d, _bool_1d), onp.Array1D[np.float64])
+assert_type(zmap(_i16_1d, _i16_1d), onp.Array1D[np.float64])
+assert_type(zmap(_f32_1d, _f32_1d), onp.Array1D[np.float32])
+assert_type(zmap(_f64_1d, _f64_1d), onp.Array1D[np.float64])
+assert_type(zmap(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
+assert_type(zmap(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
+
+assert_type(zmap(_py_i_2d, _py_i_2d), onp.Array2D[np.float64])
+assert_type(zmap(_py_f_2d, _py_f_2d), onp.Array2D[np.float64])
+assert_type(zmap(_bool_2d, _bool_2d), onp.Array2D[np.float64])
+assert_type(zmap(_i16_2d, _i16_2d), onp.Array2D[np.float64])
+assert_type(zmap(_f32_2d, _f32_2d), onp.Array2D[np.float32])
+assert_type(zmap(_f64_2d, _f64_2d), onp.Array2D[np.float64])
+assert_type(zmap(_c64_2d, _c64_2d), onp.Array2D[np.complex64])
+assert_type(zmap(_c128_2d, _c128_2d), onp.Array2D[np.complex128])
+
+assert_type(zmap(_py_i_1d, _py_i_1d, axis=None), onp.Array1D[np.float64])
+assert_type(zmap(_py_f_1d, _py_f_1d, axis=None), onp.Array1D[np.float64])
+assert_type(zmap(_bool_1d, _bool_1d, axis=None), onp.Array1D[np.float64])
+assert_type(zmap(_i16_1d, _i16_1d, axis=None), onp.Array1D[np.float64])
+assert_type(zmap(_f32_1d, _f32_1d, axis=None), onp.Array1D[np.float32])
+assert_type(zmap(_f64_1d, _f64_1d, axis=None), onp.Array1D[np.float64])
+assert_type(zmap(_c64_1d, _c64_1d, axis=None), onp.Array1D[np.complex64])
+assert_type(zmap(_c128_1d, _c128_1d, axis=None), onp.Array1D[np.complex128])
+
+assert_type(zmap(_py_i_2d, _py_i_2d, axis=None), onp.Array2D[np.float64])
+assert_type(zmap(_py_f_2d, _py_f_2d, axis=None), onp.Array2D[np.float64])
+assert_type(zmap(_bool_2d, _bool_2d, axis=None), onp.Array2D[np.float64])
+assert_type(zmap(_i16_2d, _i16_2d, axis=None), onp.Array2D[np.float64])
+assert_type(zmap(_f32_2d, _f32_2d, axis=None), onp.Array2D[np.float32])
+assert_type(zmap(_f64_2d, _f64_2d, axis=None), onp.Array2D[np.float64])
+assert_type(zmap(_c64_2d, _c64_2d, axis=None), onp.Array2D[np.complex64])
+assert_type(zmap(_c128_2d, _c128_2d, axis=None), onp.Array2D[np.complex128])
 
 # siegelslopes
 
