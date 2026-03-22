@@ -3117,7 +3117,7 @@ def zmap(  # type: ignore[overload-overlap]
 @overload  # known inexact dtype, known shape
 def zmap(
     scores: nptc.CanArray[_ShapeT, np.dtype[_InexactT]],
-    compare: nptc.CanArray[_ShapeT | tuple[int], np.dtype[_InexactT]],
+    compare: nptc.CanArray[_ShapeT, np.dtype[_InexactT]],
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
