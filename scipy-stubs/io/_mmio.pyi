@@ -1,8 +1,7 @@
-from typing import ClassVar, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Any, ClassVar, Literal, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import Unpack
 
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from ._fast_matrix_market import mminfo, mmread, mmwrite
 from ._typing import FileLike
@@ -66,18 +65,20 @@ class MMFile:
     #
     def __init__(self, /, **kwargs: Unpack[_MMFileKwargs]) -> None: ...
 
-    #
+    # dtype is either intp, uint64, float64, or complex128, depending on the field
     @overload
-    def read(self, /, source: FileLike[bytes], *, spmatrix: onp.ToTrue = True) -> onp.ArrayND[npc.number] | coo_array: ...
+    def read(self, /, source: FileLike[bytes], *, spmatrix: Literal[True] = True) -> onp.Array2D[Any] | coo_matrix[Any]: ...
     @overload
-    def read(self, /, source: FileLike[bytes], *, spmatrix: onp.ToFalse) -> onp.ArrayND[npc.number] | coo_matrix: ...
+    def read(
+        self, /, source: FileLike[bytes], *, spmatrix: Literal[False]
+    ) -> onp.Array2D[Any] | coo_array[Any, tuple[int, int]]: ...
 
     #
     def write(
         self,
         /,
         target: FileLike[bytes],
-        a: spmatrix | sparray | onp.ToArrayND,
+        a: spmatrix | sparray | onp.ToArray2D,
         comment: str = "",
         field: _Field | None = None,
         precision: int | None = None,
