@@ -67,7 +67,16 @@ _ComplexND: TypeAlias = onp.ArrayND[np.complex128]
 _Order: TypeAlias = L[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
 _AnyInexactT = TypeVar(
-    "_AnyInexactT", np.float16, np.float32, np.float64, np.complex64, np.complex128, np.longdouble, np.clongdouble
+    "_AnyInexactT",
+    np.float16,
+    np.float32,
+    np.float64,
+    np.float96,
+    np.float128,
+    np.complex64,
+    np.complex128,
+    np.complex192,
+    np.complex256,
 )
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 
