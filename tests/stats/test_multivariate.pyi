@@ -1,11 +1,14 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
+import optype.numpy as onp
 
 from scipy.stats import (
     dirichlet,
+    dirichlet_multinomial,
     invwishart,
     matrix_normal,
+    matrix_t,
     multinomial,
     multivariate_hypergeom,
     multivariate_normal,
@@ -22,7 +25,6 @@ from scipy.stats import (
 )
 
 ###
-# rvs dtype checks
 
 # this pyright ignore is needed because of https://github.com/microsoft/pyright/issues/11127
 # pyright: reportUnknownMemberType=false
@@ -69,7 +71,11 @@ assert_type(multivariate_hypergeom([1], 1).rvs().dtype, np.dtype[np.float64])
 assert_type(random_table.rvs([1, 2], [2, 1]).dtype, np.dtype[np.float64])
 assert_type(random_table([1, 2], [2, 1]).rvs().dtype, np.dtype[np.float64])
 
-# `dirichlet_multinomial` has no `rvs` method
+assert_type(dirichlet_multinomial.pmf([1, 2], [0.5, 0.5], [3]), np.float64 | onp.Array[tuple[int, *tuple[Any, ...]], np.float64])
+assert_type(dirichlet_multinomial([0.5, 0.5], [3]).pmf([1, 2]), np.float64 | onp.Array[tuple[int, *tuple[Any, ...]], np.float64])
+
+assert_type(matrix_t.rvs(df=1).dtype, np.dtype[np.float64])
+assert_type(matrix_t(df=1).rvs().dtype, np.dtype[np.float64])
 
 assert_type(vonmises_fisher.rvs([0.8, 0.6]).dtype, np.dtype[np.float64])
 assert_type(vonmises_fisher([0.8, 0.6]).rvs().dtype, np.dtype[np.float64])
