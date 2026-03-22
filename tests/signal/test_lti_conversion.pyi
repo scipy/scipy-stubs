@@ -61,8 +61,8 @@ assert_type(
 
 # ss2tf
 
-assert_type(ss2tf(_f64_2d, _f64_2d, _f64_2d, _f64_2d), tuple[onp.Array2D[npc.floating], onp.Array1D[npc.floating]])
-assert_type(ss2tf(_c128_2d, _c128_2d, _c128_2d, _c128_2d), tuple[onp.Array2D[npc.inexact], onp.Array1D[npc.inexact]])
+assert_type(ss2tf(_f64_2d, _f64_2d, _f64_2d, _f64_2d), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64]])
+assert_type(ss2tf(_c128_2d, _c128_2d, _c128_2d, _c128_2d), tuple[onp.Array2D[np.complex128], onp.Array1D[np.complex128]])
 
 # zpk2ss
 
