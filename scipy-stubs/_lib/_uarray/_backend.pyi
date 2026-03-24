@@ -147,28 +147,22 @@ def all_of_type(
 #
 @overload
 def wrap_single_convertor(
-    convert_single: Callable[[_V, _DispatchType[_V], bool], _C],
-) -> Callable[[Iterable[Dispatchable[_V]], onp.ToBool], list[_C]]: ...
-@overload
-def wrap_single_convertor(
     convert_single: Callable[[_V, _DispatchType[_V], bool], NotImplementedType],
 ) -> Callable[[Iterable[Dispatchable[_V]], onp.ToBool], NotImplementedType]: ...
 @overload
 def wrap_single_convertor(
-    convert_single: Callable[[_V, _DispatchType[_V], bool], _C | NotImplementedType],
-) -> Callable[[Iterable[Dispatchable[_V]], onp.ToBool], list[_C] | NotImplementedType]: ...
-@overload
-def wrap_single_convertor_instance(
-    convert_single: Callable[[_S, _V, _DispatchType[_V], bool], _C],
-) -> Callable[[_S, Iterable[Dispatchable[_V]], onp.ToBool], list[_C]]: ...
+    convert_single: Callable[[_V, _DispatchType[_V], bool], _C],
+) -> Callable[[Iterable[Dispatchable[_V]], onp.ToBool], list[_C]]: ...
+
+#
 @overload
 def wrap_single_convertor_instance(
     convert_single: Callable[[_S, _V, _DispatchType[_V], bool], NotImplementedType],
 ) -> Callable[[_S, Iterable[Dispatchable[_V]], onp.ToBool], NotImplementedType]: ...
 @overload
 def wrap_single_convertor_instance(
-    convert_single: Callable[[_S, _V, _DispatchType[_V], bool], _C | NotImplementedType],
-) -> Callable[[_S, Iterable[Dispatchable[_V]], onp.ToBool], list[_C] | NotImplementedType]: ...
+    convert_single: Callable[[_S, _V, _DispatchType[_V], bool], _C],
+) -> Callable[[_S, Iterable[Dispatchable[_V]], onp.ToBool], list[_C]]: ...
 
 #
 def determine_backend(
