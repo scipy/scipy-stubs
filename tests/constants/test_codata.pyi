@@ -26,7 +26,6 @@ assert_type(constants.find("boltzmann", False), list[str])
 assert_type(constants.find("boltzmann", disp=False), list[str])
 assert_type(constants.find("boltzmann", True), None)
 assert_type(constants.find("boltzmann", disp=True), None)
-# pyrefly: ignore [no-matching-overload]
-constants.find(b"boltzmann")  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType]
+constants.find(b"boltzmann")  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType]  # pyrefly: ignore [bad-argument-type]
 
 assert_type(constants.physical_constants, dict[str, tuple[float, str, float]])

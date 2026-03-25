@@ -84,11 +84,8 @@ dok_arr.count_nonzero(axis=0)  # type: ignore[arg-type]  # pyright: ignore[repor
 
 # .get()
 assert_type(dok_vec.get((0,)), ScalarType | float)
-# pyrefly: ignore [no-matching-overload]
 dok_arr.get((0,))  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
-# pyrefly: ignore [no-matching-overload]
 dok_mat.get((0,))  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
-# pyrefly: ignore [no-matching-overload]
 dok_vec.get((0, 1))  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
 assert_type(dok_arr.get((0, 0)), ScalarType | float)
 assert_type(dok_mat.get((0, 0)), ScalarType | float)
