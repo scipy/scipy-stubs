@@ -1,4 +1,3 @@
-from collections.abc import Sequence
 from typing import Any, ClassVar, Generic, Literal, Never, TypeAlias, overload, type_check_only
 from typing_extensions import TypeAliasType, TypeIs, TypeVar, override
 
@@ -24,8 +23,8 @@ _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=t
 # workaround for the typing-spec non-conformance regarding overload behavior of mypy and pyright
 _NeitherD: TypeAlias = tuple[Never] | tuple[Never, Never]
 
-_ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
-_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
+_ToMatrixPy: TypeAlias = list[_T] | list[list[_T]]
+_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | list[onp.ArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
 
 _ToData = TypeAliasType(
     "_ToData",
@@ -79,46 +78,57 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __assoc_as_float64__(self, /) -> csr_array[np.float64, _ShapeT_co]: ...
 
     #
-    @overload  # sparse or dense (know dtype & shape), dtype: None
+    @overload  # sparse or dense (know dtype & shape)
     def __init__(
         self,
         /,
         arg1: _spbase[_ScalarT_co, _ShapeT_co] | onp.CanArrayND[_ScalarT_co, _ShapeT_co],
-        shape: _ShapeT_co | None = None,
-        dtype: onp.ToDType[_ScalarT_co] | None = None,
+        shape: None = None,
+        dtype: None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d array-like (know dtype), dtype: None
+    @overload  # 1-d array-like (know dtype)
     def __init__(
         self: csr_array[_ScalarT, tuple[int]],
         /,
-        arg1: Sequence[_ScalarT],
+        arg1: list[_ScalarT],
         shape: _ToShape1D | None = None,
-        dtype: onp.ToDType[_ScalarT] | None = None,
+        dtype: None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d array-like (know dtype), dtype: None
+    @overload  # 2-d array-like (know dtype)
     def __init__(
         self: csr_array[_ScalarT, tuple[int, int]],
         /,
-        arg1: onp.ToArray2D[_ScalarT, _ScalarT] | _ToData[onp.ToArray1D[_ScalarT, _ScalarT]],
+        arg1: onp.ToArray2D[_ScalarT, _ScalarT],
         shape: _ToShape2D | None = None,
-        dtype: onp.ToDType[_ScalarT] | None = None,
+        dtype: None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # matrix-like (known dtype), dtype: None
+    @overload  # 2-d array-like (know dtype)
+    def __init__(
+        self: csr_array[_ScalarT, tuple[int, int]],
+        /,
+        arg1: _ToData[onp.ToArray1D[_ScalarT, _ScalarT]],
+        shape: _ToShape2D | None = None,
+        dtype: None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # matrix-like (known dtype)
     def __init__(
         self: csr_array[_ScalarT, tuple[Any, ...]],
         /,
         arg1: _ToMatrix[_ScalarT],
         shape: _ToShape1D | _ToShape2D | None = None,
-        dtype: onp.ToDType[_ScalarT] | None = None,
+        dtype: None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -292,7 +302,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.bool_, tuple[int, int]],
         /,
-        arg1: onp.ToJustBoolStrict2D | _ToData[Sequence[bool]],
+        arg1: onp.ToJustBoolStrict2D | _ToData[list[bool]],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
@@ -449,18 +459,29 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __assoc_as_float64__(self, /) -> csr_matrix[np.float64]: ...
 
     # NOTE: keep in sync with `csc_matrix.__init__`
-    @overload  # matrix-like (known dtype), dtype: None
+    @overload  # matrix-like (known dtype)
     def __init__(
         self: csr_matrix[_ScalarT],  # this self annotation works around a mypy bug
         /,
-        arg1: _ToMatrix[_ScalarT] | _ToData[onp.ToArray1D[_ScalarT, _ScalarT]],
+        arg1: _ToMatrix[_ScalarT],
         shape: _ToShape2D | None = None,
         dtype: onp.ToDType[_ScalarT] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: None
+    @overload  # matrix-like (known dtype)
+    def __init__(
+        self: csr_matrix[_ScalarT],  # this self annotation works around a mypy bug
+        /,
+        arg1: _ToData[onp.ToArray1D[_ScalarT, _ScalarT]],
+        shape: _ToShape2D | None = None,
+        dtype: onp.ToDType[_ScalarT] | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like
     def __init__(
         self: csr_matrix[np.float64],
         /,
@@ -475,7 +496,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.bool_],
         /,
-        arg1: onp.ToJustBoolStrict2D | _ToData[Sequence[bool]],
+        arg1: onp.ToJustBoolStrict2D | _ToData[list[bool]],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
