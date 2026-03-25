@@ -1519,7 +1519,7 @@ class Mixture(_BaseDistribution[_FloatT_co, _0D], Generic[_FloatT_co]):
     def __init__(self, /, components: Sequence[_CDist0[_FloatT_co]], *, weights: onp.ToFloat1D | None = None) -> None: ...
     #
     @override
-    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> _OutFloat: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
+    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> _OutFloat: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
 
 ###
 

@@ -122,9 +122,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
     @overload
     @classmethod
-    def fromkeys(  # pyrefly: ignore[bad-override]
-        cls: type[_dok_base[np.bool_, _2D]], iterable: _ToKeys2, v: onp.ToBool, /
-    ) -> _dok_base[np.bool_, _2D]: ...
+    def fromkeys(cls: type[_dok_base[np.bool_, _2D]], iterable: _ToKeys2, v: onp.ToBool, /) -> _dok_base[np.bool_, _2D]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[_dok_base[np.bool_, _1D]], iterable: _ToKeys1, v: onp.ToBool, /) -> _dok_base[np.bool_, _1D]: ...
@@ -540,9 +538,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     @override
     @overload
     @classmethod
-    def fromkeys(  # pyrefly: ignore[bad-override]
-        cls: type[dok_array[np.bool_, _NoD]], iterable: _ToKeys, v: onp.ToBool, /
-    ) -> dok_array[np.bool_, _AnyD]: ...
+    def fromkeys(cls: type[dok_array[np.bool_, _NoD]], iterable: _ToKeys, v: onp.ToBool, /) -> dok_array[np.bool_, _AnyD]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[dok_array[np.bool_, _2D]], iterable: _ToKeys2, v: onp.ToBool, /) -> dok_array[np.bool_, _2D]: ...
@@ -728,9 +724,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     @override
     @overload
     @classmethod
-    def fromkeys(  # pyrefly: ignore[bad-override]
-        cls: type[dok_matrix[np.bool_]], iterable: _ToKeys2, v: onp.ToBool, /
-    ) -> dok_matrix[np.bool_]: ...
+    def fromkeys(cls: type[dok_matrix[np.bool_]], iterable: _ToKeys2, v: onp.ToBool, /) -> dok_matrix[np.bool_]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[dok_matrix[_ScalarT]], iterable: _ToKeys2, v: _ScalarT, /) -> dok_matrix[_ScalarT]: ...
