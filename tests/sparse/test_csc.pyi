@@ -11,19 +11,12 @@ dtype: np.dtype[ScalarType]
 
 shape2: tuple[int, int]
 
-ind1: np.ndarray[tuple[int], np.dtype[np.intp]]
-data1: np.ndarray[tuple[int], np.dtype[ScalarType]]
-data2: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
+ind1: onp.Array1D[np.intp]
+data1: onp.Array1D[ScalarType]
+data2: onp.Array2D[ScalarType]
 
-csc_spec2: tuple[
-    np.ndarray[tuple[int], np.dtype[ScalarType]],
-    tuple[np.ndarray[tuple[int], np.dtype[np.intp]], np.ndarray[tuple[int], np.dtype[np.intp]]],
-]
-csc_spec3: tuple[
-    np.ndarray[tuple[int], np.dtype[ScalarType]],
-    np.ndarray[tuple[int], np.dtype[np.intp]],
-    np.ndarray[tuple[int], np.dtype[np.intp]],
-]
+csc_spec2: tuple[onp.Array1D[ScalarType], tuple[onp.Array1D[np.intp], onp.Array1D[np.intp]]]
+csc_spec3: tuple[onp.Array1D[ScalarType], onp.Array1D[np.intp], onp.Array1D[np.intp]]
 
 ###
 # CSC matrix constructor
@@ -60,10 +53,9 @@ assert_type(csc_matrix(csc_spec2, dtype=float), csc_matrix[np.float64])
 assert_type(csc_matrix(csc_spec2, dtype=complex), csc_matrix[np.complex128])
 
 # csc_matrix((data, indices, indptr), [shape=(M, N)])
-# NOTE: mypy incorrectly infers `csc_array[Any]` here, but it is correct in pyright.
-assert_type(csc_matrix(csc_spec3), csc_matrix[ScalarType])  # type: ignore[assert-type]
-assert_type(csc_matrix(csc_spec3, shape2), csc_matrix[ScalarType])  # type: ignore[assert-type]
-assert_type(csc_matrix(csc_spec3, shape=shape2), csc_matrix[ScalarType])  # type: ignore[assert-type]
+assert_type(csc_matrix(csc_spec3), csc_matrix[ScalarType])
+assert_type(csc_matrix(csc_spec3, shape2), csc_matrix[ScalarType])
+assert_type(csc_matrix(csc_spec3, shape=shape2), csc_matrix[ScalarType])
 
 assert_type(csc_matrix(csc_spec3, dtype=dtype), csc_matrix[ScalarType])
 assert_type(csc_matrix(csc_spec3, dtype=bool), csc_matrix[np.bool_])
@@ -106,10 +98,9 @@ assert_type(csc_array(csc_spec2, dtype=float), csc_array[np.float64])
 assert_type(csc_array(csc_spec2, dtype=complex), csc_array[np.complex128])
 
 # csc_array((data, indices, indptr), [shape=(M, N)])
-# NOTE: mypy incorrectly infers `csc_array[Any]` here, but it is correct in pyright and pyrefly.
-assert_type(csc_array(csc_spec3), csc_array[ScalarType])  # type: ignore[assert-type]
-assert_type(csc_array(csc_spec3, shape2), csc_array[ScalarType])  # type: ignore[assert-type]
-assert_type(csc_array(csc_spec3, shape=shape2), csc_array[ScalarType])  # type: ignore[assert-type]
+assert_type(csc_array(csc_spec3), csc_array[ScalarType])
+assert_type(csc_array(csc_spec3, shape2), csc_array[ScalarType])
+assert_type(csc_array(csc_spec3, shape=shape2), csc_array[ScalarType])
 
 assert_type(csc_array(csc_spec3, dtype=dtype), csc_array[ScalarType])
 assert_type(csc_array(csc_spec3, dtype=bool), csc_array[np.bool_])

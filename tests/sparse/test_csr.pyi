@@ -1,6 +1,7 @@
-from typing import Any, Literal, TypeAlias, assert_type
+from typing import Literal, TypeAlias, assert_type
 
 import numpy as np
+import optype.numpy as onp
 
 from ._types import ScalarType, csr_arr, csr_mat, csr_vec
 from scipy.sparse import coo_array, csc_array, csc_matrix, csr_array, csr_matrix, isspmatrix
@@ -17,8 +18,8 @@ seq_seq_int: list[list[int]]
 seq_seq_float: list[list[float]]
 seq_seq_complex: list[list[complex]]
 
-arr_f32_nd: np.ndarray[tuple[Any, ...], np.dtype[np.float32]]
-arr_f32_1d: np.ndarray[tuple[int], np.dtype[np.float32]]
+arr_f32_nd: onp.ArrayND[np.float32]
+arr_f32_1d: onp.Array1D[np.float32]
 
 ###
 # NOTE: Keep these tests in sync with the `dok` tests.
@@ -105,13 +106,13 @@ assert_type(csr_matrix((seq_int, (seq_int, seq_int))), csr_matrix[np.int64])
 assert_type(csr_matrix((seq_float, (seq_int, seq_int))), csr_matrix[np.float64])
 assert_type(csr_matrix((seq_complex, (seq_int, seq_int))), csr_matrix[np.complex128])
 # pyrefly: ignore [no-matching-overload]
-csr_matrix((seq_seq_bool, (seq_int, seq_int)))  # type: ignore[arg-type] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((seq_seq_bool, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
-csr_matrix((seq_seq_int, (seq_int, seq_int)))  # type: ignore[arg-type] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((seq_seq_int, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
-csr_matrix((seq_seq_float, (seq_int, seq_int)))  # type: ignore[arg-type] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((seq_seq_float, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
-csr_matrix((seq_seq_complex, (seq_int, seq_int)))  # type: ignore[arg-type] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((seq_seq_complex, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 
 ###
 # CSR-specific tests
