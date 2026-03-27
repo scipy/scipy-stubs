@@ -1,5 +1,5 @@
 from collections.abc import Callable, Generator, Sequence
-from typing import Concatenate, Final, Generic, Protocol, TypeAlias, type_check_only
+from typing import Concatenate, Final, Generic, Protocol, SupportsIndex, TypeAlias, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -19,7 +19,7 @@ _Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]
 
 _Location: TypeAlias = _FloatingND | Sequence[float]
 _Bounds: TypeAlias = _FloatingND | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
-_Symmetry: TypeAlias = onp.ArrayND[npc.integer] | op.CanGetitem[int, op.CanIndex]
+_Symmetry: TypeAlias = onp.ArrayND[npc.integer] | op.CanGetitem[int, SupportsIndex]
 
 _HT = TypeVar("_HT", bound=VertexCacheBase, default=VertexCacheBase)
 

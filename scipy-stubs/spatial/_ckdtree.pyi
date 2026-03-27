@@ -2,7 +2,6 @@ from typing import Generic, Literal as L, Protocol, TypeAlias, overload, type_ch
 from typing_extensions import TypeVar, override
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 from scipy.sparse import coo_matrix, dok_matrix
@@ -142,9 +141,9 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
         eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
-        workers: op.CanIndex | None = None,
-        return_sorted: onp.ToBool | None = None,
-        return_length: onp.ToFalse = False,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
+        return_length: L[False] = False,
     ) -> list[int]: ...
     @overload
     def query_ball_point(
@@ -154,9 +153,9 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         r: onp.ToFloat,
         p: onp.ToFloat,
         eps: onp.ToFloat,
-        workers: op.CanIndex | None,
-        return_sorted: onp.ToBool | None,
-        return_length: onp.ToTrue,
+        workers: int | None,
+        return_sorted: bool | None,
+        return_length: L[True],
     ) -> np.intp: ...
     @overload
     def query_ball_point(
@@ -166,10 +165,10 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
         eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
-        workers: op.CanIndex | None = None,
-        return_sorted: onp.ToBool | None = None,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
         *,
-        return_length: onp.ToTrue,
+        return_length: L[True],
     ) -> np.intp: ...
     @overload
     def query_ball_point(
@@ -179,9 +178,9 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
         eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
-        workers: op.CanIndex | None = None,
-        return_sorted: onp.ToBool | None = None,
-        return_length: onp.ToFalse = False,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
+        return_length: L[False] = False,
     ) -> onp.ArrayND[np.object_]: ...
     @overload
     def query_ball_point(
@@ -191,9 +190,9 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         r: onp.ToFloatND,
         p: onp.ToFloat,
         eps: onp.ToFloat,
-        workers: op.CanIndex | None,
-        return_sorted: onp.ToBool | None,
-        return_length: onp.ToTrue,
+        workers: int | None,
+        return_sorted: bool | None,
+        return_length: L[True],
     ) -> onp.ArrayND[np.intp]: ...
     @overload
     def query_ball_point(
@@ -203,10 +202,10 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
         eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
-        workers: op.CanIndex | None = None,
-        return_sorted: onp.ToBool | None = None,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
         *,
-        return_length: onp.ToTrue,
+        return_length: L[True],
     ) -> onp.ArrayND[np.intp]: ...
     @overload
     def query_ball_point(
@@ -216,9 +215,9 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat = 2.0,
         eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
-        workers: op.CanIndex | None = None,
-        return_sorted: onp.ToBool | None = None,
-        return_length: onp.ToFalse = False,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
+        return_length: L[False] = False,
     ) -> list[int] | onp.ArrayND[np.object_]: ...
     @overload
     def query_ball_point(
@@ -228,9 +227,9 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat,
         eps: onp.ToFloat,
-        workers: op.CanIndex | None,
-        return_sorted: onp.ToBool | None,
-        return_length: onp.ToTrue,
+        workers: int | None,
+        return_sorted: bool | None,
+        return_length: L[True],
     ) -> np.intp | onp.ArrayND[np.intp]: ...
     @overload
     def query_ball_point(
@@ -240,10 +239,10 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat = 2.0,
         eps: onp.ToFloat = ...,  # # stubdefaulter: ignore[missing-default]
-        workers: op.CanIndex | None = None,
-        return_sorted: onp.ToBool | None = None,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
         *,
-        return_length: onp.ToTrue,
+        return_length: L[True],
     ) -> np.intp | onp.ArrayND[np.intp]: ...
 
     #

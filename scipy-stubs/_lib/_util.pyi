@@ -4,11 +4,10 @@ import sys
 import types
 from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 from contextlib import _GeneratorContextManager
-from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, Self, TypeAlias, overload
+from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, Self, SupportsIndex, TypeAlias, overload
 from typing_extensions import TypeVar, override
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -103,7 +102,7 @@ class _RichResult(Mapping[str, _T_co]):
     def __len__(self) -> int: ...
 
 #
-def float_factorial(n: op.CanIndex) -> float: ...  # will be `np.inf` if `n >= 171`
+def float_factorial(n: SupportsIndex) -> float: ...  # will be `np.inf` if `n >= 171`
 
 #
 def getfullargspec_no_self(func: Callable[..., object]) -> FullArgSpec: ...
@@ -122,16 +121,16 @@ def rng_integers(
     high: onp.ToInt | None = None,
     size: tuple[()] | None = None,
     dtype: onp.AnyIntegerDType = "int64",
-    endpoint: op.CanBool = False,
+    endpoint: bool = False,
 ) -> npc.integer: ...
 @overload
 def rng_integers(
     gen: onp.random.RNG | None,
     low: onp.ToInt | onp.ToIntND,
     high: onp.ToInt | onp.ToIntND | None = None,
-    size: op.CanIndex | Sequence[op.CanIndex] | None = None,
+    size: SupportsIndex | Sequence[SupportsIndex] | None = None,
     dtype: onp.AnyIntegerDType = "int64",
-    endpoint: op.CanBool = False,
+    endpoint: bool = False,
 ) -> npc.integer | onp.ArrayND[npc.integer]: ...
 
 #
@@ -147,15 +146,19 @@ def normalize_axis_index(axis: _AxisT, ndim: onp.NDim | _AxisT) -> _AxisT: ...
 
 #
 @overload
-def np_vecdot(x1: onp.ToIntStrict1D, x2: onp.ToIntStrict1D, /, *, axis: op.CanIndex = -1) -> npc.integer: ...
+def np_vecdot(x1: onp.ToIntStrict1D, x2: onp.ToIntStrict1D, /, *, axis: SupportsIndex = -1) -> npc.integer: ...
 @overload
-def np_vecdot(x1: onp.ToFloatStrict1D, x2: onp.ToJustFloatStrict1D, /, *, axis: op.CanIndex = -1) -> npc.floating: ...
+def np_vecdot(x1: onp.ToFloatStrict1D, x2: onp.ToJustFloatStrict1D, /, *, axis: SupportsIndex = -1) -> npc.floating: ...
 @overload
-def np_vecdot(x1: onp.ToJustFloatStrict1D, x2: onp.ToFloatStrict1D, /, *, axis: op.CanIndex = -1) -> npc.floating: ...
+def np_vecdot(x1: onp.ToJustFloatStrict1D, x2: onp.ToFloatStrict1D, /, *, axis: SupportsIndex = -1) -> npc.floating: ...
 @overload
-def np_vecdot(x1: onp.ToComplexStrict1D, x2: onp.ToJustComplexStrict1D, /, *, axis: op.CanIndex = -1) -> npc.complexfloating: ...
+def np_vecdot(
+    x1: onp.ToComplexStrict1D, x2: onp.ToJustComplexStrict1D, /, *, axis: SupportsIndex = -1
+) -> npc.complexfloating: ...
 @overload
-def np_vecdot(x1: onp.ToJustComplexStrict1D, x2: onp.ToComplexStrict1D, /, *, axis: op.CanIndex = -1) -> npc.complexfloating: ...
+def np_vecdot(
+    x1: onp.ToJustComplexStrict1D, x2: onp.ToComplexStrict1D, /, *, axis: SupportsIndex = -1
+) -> npc.complexfloating: ...
 
 #
 def broadcastable(shape_a: tuple[int, ...], shape_b: tuple[int, ...]) -> bool: ...

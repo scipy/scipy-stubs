@@ -1,8 +1,7 @@
 from collections.abc import Callable, Iterable
-from typing import Self, TypeAlias, TypeVar
+from typing import Self, SupportsIndex, TypeAlias, TypeVar
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 from scipy.optimize._constraints import PreparedConstraint
@@ -36,15 +35,15 @@ class CanonicalConstraint:
     @classmethod
     def from_PreparedConstraint(cls, constraint: PreparedConstraint) -> Self: ...
     @classmethod
-    def empty(cls, n: op.CanIndex) -> Self: ...
+    def empty(cls, n: SupportsIndex) -> Self: ...
     @classmethod
-    def concatenate(cls, canonical_constraints: _PreparedConstraints, sparse_jacobian: bool | np.bool_) -> Self: ...
+    def concatenate(cls, canonical_constraints: _PreparedConstraints, sparse_jacobian: bool) -> Self: ...
 
 def initial_constraints_as_canonical(
-    n: op.CanIndex, prepared_constraints: _PreparedConstraints, sparse_jacobian: bool | np.bool_
+    n: SupportsIndex, prepared_constraints: _PreparedConstraints, sparse_jacobian: bool
 ) -> tuple[
     onp.Array[onp.AtMost2D, np.float64],
     onp.Array[onp.AtMost2D, np.float64],
-    onp.Array2D[np.float64] | csr_matrix,
-    onp.Array2D[np.float64] | csr_matrix,
+    onp.Array2D[np.float64] | csr_matrix[np.float64],
+    onp.Array2D[np.float64] | csr_matrix[np.float64],
 ]: ...

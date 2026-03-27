@@ -4,7 +4,6 @@ from typing import Any, Concatenate, Final, SupportsIndex, TypeAlias
 from typing_extensions import TypeVar
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -54,7 +53,7 @@ def _initialize(
 def _loop(
     work: _ResT,
     callback: Callable[[_ResT], _Ignored],
-    shape: Sequence[op.CanIndex],
+    shape: Sequence[SupportsIndex],
     maxiter: int,
     func: Callable[[onp.Array[_ShapeT, _FloatT]], onp.ToComplexND],
     args: tuple[onp.ArrayND[npc.floating], ...],

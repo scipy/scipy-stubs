@@ -1,7 +1,19 @@
 import abc
 import numbers
 from collections.abc import Callable, Mapping
-from typing import ClassVar, Concatenate, Final, Generic, Literal, Protocol, Self, TypeAlias, overload, type_check_only
+from typing import (
+    ClassVar,
+    Concatenate,
+    Final,
+    Generic,
+    Literal,
+    Protocol,
+    Self,
+    SupportsIndex,
+    TypeAlias,
+    overload,
+    type_check_only,
+)
 from typing_extensions import TypeVar, override
 
 import numpy as np
@@ -92,7 +104,7 @@ class QMCEngine(abc.ABC, Generic[_InexactT_co]):
         *,
         u_bounds: onp.ToInt | onp.ToIntND | None = None,
         n: onp.ToJustInt = 1,
-        endpoint: op.CanBool = False,
+        endpoint: bool = False,
         workers: onp.ToJustInt = 1,
     ) -> onp.Array2D[np.int64]: ...
 
@@ -262,7 +274,7 @@ class MultivariateNormalQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co])
         cov: onp.ToFloat2D | None = None,
         *,
         cov_root: onp.ToFloat2D | None = None,
-        inv_transform: op.CanBool = True,
+        inv_transform: bool = True,
         engine: None = None,
         rng: onp.random.ToRNG | None = None,
     ) -> None: ...
@@ -274,7 +286,7 @@ class MultivariateNormalQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co])
         cov: onp.ToFloat2D | None = None,
         *,
         cov_root: onp.ToFloat2D | None = None,
-        inv_transform: op.CanBool = True,
+        inv_transform: bool = True,
         engine: _EngineT_co,
         rng: onp.random.ToRNG | None = None,
     ) -> None: ...
@@ -286,7 +298,7 @@ class MultivariateNormalQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co])
         cov: onp.ToFloat2D | None = None,
         *,
         cov_root: onp.ToFloat2D | None = None,
-        inv_transform: op.CanBool = True,
+        inv_transform: bool = True,
         engine: None = None,
         seed: onp.random.ToRNG | None,
     ) -> None: ...
@@ -298,7 +310,7 @@ class MultivariateNormalQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co])
         cov: onp.ToFloat2D | None = None,
         *,
         cov_root: onp.ToFloat2D | None = None,
-        inv_transform: op.CanBool = True,
+        inv_transform: bool = True,
         engine: _EngineT_co,
         seed: onp.random.ToRNG | None,
     ) -> None: ...
@@ -363,16 +375,12 @@ def check_random_state(seed: _AnyRNG) -> _AnyRNG: ...
 
 #
 def scale(
-    sample: onp.ToFloat2D,
-    l_bounds: onp.ToFloat1D | onp.ToFloat,
-    u_bounds: onp.ToFloat1D | onp.ToFloat,
-    *,
-    reverse: op.CanBool = False,
+    sample: onp.ToFloat2D, l_bounds: onp.ToFloat1D | onp.ToFloat, u_bounds: onp.ToFloat1D | onp.ToFloat, *, reverse: bool = False
 ) -> onp.Array2D[np.float64]: ...
 
 #
 def discrepancy(
-    sample: onp.ToFloat2D, *, iterative: op.CanBool = False, method: _MethodDisc = "CD", workers: onp.ToJustInt = 1
+    sample: onp.ToFloat2D, *, iterative: bool = False, method: _MethodDisc = "CD", workers: onp.ToJustInt = 1
 ) -> float | np.float64: ...
 
 #
@@ -398,11 +406,11 @@ def _ensure_in_unit_hypercube(sample: onp.ToJustFloat2D) -> onp.Array2D[np.float
 #
 @overload
 def _perturb_discrepancy(
-    sample: onp.Array2D[npc.integer | np.bool_], i1: op.CanIndex, i2: op.CanIndex, k: op.CanIndex, disc: onp.ToFloat
+    sample: onp.Array2D[npc.integer | np.bool_], i1: SupportsIndex, i2: SupportsIndex, k: SupportsIndex, disc: onp.ToFloat
 ) -> float | np.float64: ...
 @overload
 def _perturb_discrepancy(
-    sample: onp.Array2D[_InexactT], i1: op.CanIndex, i2: op.CanIndex, k: op.CanIndex, disc: onp.ToFloat
+    sample: onp.Array2D[_InexactT], i1: SupportsIndex, i2: SupportsIndex, k: SupportsIndex, disc: onp.ToFloat
 ) -> _InexactT: ...
 
 #
@@ -411,7 +419,7 @@ def van_der_corput(
     base: onp.ToJustInt = 2,
     *,
     start_index: onp.ToJustInt = 0,
-    scramble: op.CanBool = False,
+    scramble: bool = False,
     permutations: onp.ToInt | onp.ToIntND | None = None,
     rng: onp.random.ToRNG | None = None,
     workers: onp.ToJustInt = 1,
@@ -419,7 +427,7 @@ def van_der_corput(
 
 #
 @overload
-def _van_der_corput_permutation(base: op.CanIndex, *, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.int_]: ...
+def _van_der_corput_permutation(base: SupportsIndex, *, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.int_]: ...
 @overload
 def _van_der_corput_permutation(
     base: op.CanFloat, *, random_state: onp.random.ToRNG | None = None

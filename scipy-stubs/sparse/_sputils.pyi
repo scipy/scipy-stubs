@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Any, Final, Literal as L, Protocol, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import Any, Final, Literal as L, Protocol, SupportsIndex, TypeAlias, TypeVar, TypedDict, overload, type_check_only
 from typing_extensions import TypeIs
 
 import numpy as np
@@ -41,8 +41,8 @@ _ScalarT = TypeVar("_ScalarT", bound=np.generic, default=Any)
 _IntT = TypeVar("_IntT", bound=npc.integer)
 _NonIntDTypeT = TypeVar("_NonIntDTypeT", bound=np.dtype[npc.inexact | np.flexible | np.datetime64 | np.timedelta64 | np.object_])
 
-_Axis: TypeAlias = L[-2, -1, 0, 1] | bool | np.bool_ | npc.integer
-_ShapeLike: TypeAlias = Iterable[op.CanIndex]
+_Axis: TypeAlias = L[-2, -1, 0, 1] | npc.integer
+_ShapeLike: TypeAlias = Iterable[SupportsIndex]
 _ScalarLike: TypeAlias = complex | bytes | str | np.generic | onp.Array0D
 _SequenceLike: TypeAlias = tuple[_ScalarLike, ...] | list[_ScalarLike] | onp.Array1D
 _MatrixLike: TypeAlias = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array2D
@@ -58,7 +58,7 @@ class _ReshapeKwargs(TypedDict, total=False):
 @type_check_only
 class _SizedIndexIterable(Protocol):
     def __len__(self, /) -> int: ...
-    def __iter__(self, /) -> op.CanNext[op.CanIndex]: ...
+    def __iter__(self, /) -> op.CanNext[SupportsIndex]: ...
 
 ###
 
@@ -115,23 +115,23 @@ _ContraInt32: TypeAlias = np.uint32 | np.int64 | np.uint64
 #
 @overload
 def get_index_dtype(
-    arrays: tuple[()] = (), maxval: onp.ToFloat | None = None, check_contents: op.CanBool = False
+    arrays: tuple[()] = (), maxval: onp.ToFloat | None = None, check_contents: bool = False
 ) -> type[np.int32]: ...
 @overload
 def get_index_dtype(
     arrays: tuple[onp.CanArrayND[_CoInt32], *tuple[onp.CanArrayND[_CoInt32], ...]],
     maxval: onp.ToFloat | None = None,
-    check_contents: op.CanBool = False,
+    check_contents: bool = False,
 ) -> type[np.int32]: ...
 @overload
 def get_index_dtype(
     arrays: tuple[onp.CanArrayND[_ContraInt32], *tuple[onp.CanArrayND[_ContraInt32], ...]],
     maxval: onp.ToFloat | None = None,
-    check_contents: op.CanBool = False,
+    check_contents: bool = False,
 ) -> type[np.int64]: ...
 @overload
 def get_index_dtype(
-    arrays: tuple[onp.ToInt | onp.ToIntND, ...], maxval: onp.ToFloat | None = None, check_contents: op.CanBool = False
+    arrays: tuple[onp.ToInt | onp.ToIntND, ...], maxval: onp.ToFloat | None = None, check_contents: bool = False
 ) -> type[_IntP]: ...
 
 # NOTE: The inline annotations (`(np.dtype) -> np.dtype`) are incorrect.
@@ -144,7 +144,7 @@ def get_sum_dtype(dtype: _NonIntDTypeT) -> _NonIntDTypeT: ...
 
 #
 # NOTE: all arrays implement `__index__` but if it raises this returns `False`, so `TypeIs` can't be used here
-def isintlike(x: object) -> TypeIs[op.CanIndex]: ...
+def isintlike(x: object) -> TypeIs[SupportsIndex]: ...
 def isscalarlike(x: object) -> TypeIs[_ScalarLike]: ...
 def isshape(x: _SizedIndexIterable, nonneg: bool = False, *, allow_nd: tuple[int, ...] = (2,)) -> bool: ...
 def issequence(t: object) -> TypeIs[_SequenceLike]: ...  # undocumented

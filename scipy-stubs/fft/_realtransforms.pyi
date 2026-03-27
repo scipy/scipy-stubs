@@ -1,7 +1,6 @@
-from typing import Any, TypeAlias, TypeVar, overload
+from typing import Any, SupportsIndex, TypeAlias, TypeVar, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -29,10 +28,10 @@ def dctn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def dctn(
@@ -41,10 +40,10 @@ def dctn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def dctn(
@@ -53,10 +52,10 @@ def dctn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> np.ndarray[_ShapeT, _DTypeT]: ...
 @overload
 def dctn(
@@ -65,22 +64,22 @@ def dctn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def dctn(
-    x: onp.SequenceND[op.JustComplex],
+    x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
 def dctn(
@@ -89,10 +88,10 @@ def dctn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> _FloatND: ...
 
 #
@@ -103,9 +102,9 @@ def idctn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def idctn(
@@ -114,9 +113,9 @@ def idctn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def idctn(
@@ -125,9 +124,9 @@ def idctn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> np.ndarray[_ShapeT, _DTypeT]: ...
 @overload
 def idctn(
@@ -136,20 +135,20 @@ def idctn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def idctn(
-    x: onp.SequenceND[op.JustComplex],
+    x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
 def idctn(
@@ -158,9 +157,9 @@ def idctn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> _FloatND: ...
 
 #
@@ -171,9 +170,9 @@ def dstn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def dstn(
@@ -182,9 +181,9 @@ def dstn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def dstn(
@@ -193,9 +192,9 @@ def dstn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> np.ndarray[_ShapeT, _DTypeT]: ...
 @overload
 def dstn(
@@ -204,20 +203,20 @@ def dstn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def dstn(
-    x: onp.SequenceND[op.JustComplex],
+    x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
 def dstn(
@@ -226,9 +225,9 @@ def dstn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> _FloatND: ...
 
 #
@@ -239,9 +238,9 @@ def idstn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def idstn(
@@ -250,9 +249,9 @@ def idstn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def idstn(
@@ -261,9 +260,9 @@ def idstn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> np.ndarray[_ShapeT, _DTypeT]: ...
 @overload
 def idstn(
@@ -272,20 +271,20 @@ def idstn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def idstn(
-    x: onp.SequenceND[op.JustComplex],
+    x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
 def idstn(
@@ -294,9 +293,9 @@ def idstn(
     s: _ToIntOrND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> _FloatND: ...
 
 #
@@ -304,67 +303,67 @@ def idstn(
 def dct(
     x: onp.CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def dct(
     x: onp.CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def dct(
     x: onp.CanArray[_ShapeT, _DTypeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> np.ndarray[_ShapeT, _DTypeT]: ...
 @overload
 def dct(
     x: onp.SequenceND[float],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def dct(
-    x: onp.SequenceND[op.JustComplex],
+    x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
 def dct(
     x: onp.ToFloatND,
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> _FloatND: ...
 
 #
@@ -372,67 +371,67 @@ def dct(
 def idct(
     x: onp.CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def idct(
     x: onp.CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def idct(
     x: onp.CanArray[_ShapeT, _DTypeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> np.ndarray[_ShapeT, _DTypeT]: ...
 @overload
 def idct(
     x: onp.SequenceND[float],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def idct(
-    x: onp.SequenceND[op.JustComplex],
+    x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
 def idct(
     x: onp.ToFloatND,
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> _FloatND: ...
 
 #
@@ -440,67 +439,67 @@ def idct(
 def dst(
     x: onp.CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def dst(
     x: onp.CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def dst(
     x: onp.CanArray[_ShapeT, _DTypeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> np.ndarray[_ShapeT, _DTypeT]: ...
 @overload
 def dst(
     x: onp.SequenceND[float],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def dst(
-    x: onp.SequenceND[op.JustComplex],
+    x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
 def dst(
     x: onp.ToFloatND,
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> _FloatND: ...
 
 #
@@ -508,65 +507,65 @@ def dst(
 def idst(
     x: onp.CanArrayND[npc.integer, _ShapeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def idst(
     x: onp.CanArrayND[np.float16, _ShapeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def idst(
     x: onp.CanArray[_ShapeT, _DTypeT],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> np.ndarray[_ShapeT, _DTypeT]: ...
 @overload
 def idst(
     x: onp.SequenceND[float],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def idst(
-    x: onp.SequenceND[op.JustComplex],
+    x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
 def idst(
     x: onp.ToFloatND,
     type: DCTType = 2,
-    n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    n: int | None = None,
+    axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
-    workers: onp.ToInt | None = None,
-    orthogonalize: op.CanBool | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    orthogonalize: bool | None = None,
 ) -> _FloatND: ...

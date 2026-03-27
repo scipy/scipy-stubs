@@ -2,7 +2,7 @@
 
 from _typeshed import Incomplete
 from collections.abc import Sequence
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing import Any, Literal, SupportsIndex, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype as op
@@ -930,9 +930,9 @@ def solve_circulant(
     b: onp.ToFloatStrict1D,
     singular: _Singular = "raise",
     tol: onp.ToFloat | None = None,
-    caxis: op.CanIndex = -1,
-    baxis: op.CanIndex = 0,
-    outaxis: op.CanIndex = 0,
+    caxis: SupportsIndex = -1,
+    baxis: SupportsIndex = 0,
+    outaxis: SupportsIndex = 0,
 ) -> onp.Array1D[npc.floating]: ...
 @overload  # 2d +floating, +floating
 def solve_circulant(
@@ -940,9 +940,9 @@ def solve_circulant(
     b: onp.ToFloatStrict2D,
     singular: _Singular = "raise",
     tol: onp.ToFloat | None = None,
-    caxis: op.CanIndex = -1,
-    baxis: op.CanIndex = 0,
-    outaxis: op.CanIndex = 0,
+    caxis: SupportsIndex = -1,
+    baxis: SupportsIndex = 0,
+    outaxis: SupportsIndex = 0,
 ) -> onp.Array2D[npc.floating]: ...
 @overload  # Nd +floating, +floating
 def solve_circulant(
@@ -960,9 +960,9 @@ def solve_circulant(
     b: onp.ToJustComplexStrict1D,
     singular: _Singular = "raise",
     tol: onp.ToFloat | None = None,
-    caxis: op.CanIndex = -1,
-    baxis: op.CanIndex = 0,
-    outaxis: op.CanIndex = 0,
+    caxis: SupportsIndex = -1,
+    baxis: SupportsIndex = 0,
+    outaxis: SupportsIndex = 0,
 ) -> onp.Array1D[npc.complexfloating]: ...
 @overload  # 2d +complexfloating, ~complexfloating
 def solve_circulant(
@@ -970,9 +970,9 @@ def solve_circulant(
     b: onp.ToJustComplexStrict2D,
     singular: _Singular = "raise",
     tol: onp.ToFloat | None = None,
-    caxis: op.CanIndex = -1,
-    baxis: op.CanIndex = 0,
-    outaxis: op.CanIndex = 0,
+    caxis: SupportsIndex = -1,
+    baxis: SupportsIndex = 0,
+    outaxis: SupportsIndex = 0,
 ) -> onp.Array2D[npc.complexfloating]: ...
 @overload  # Nd +complexfloating, ~complexfloating
 def solve_circulant(

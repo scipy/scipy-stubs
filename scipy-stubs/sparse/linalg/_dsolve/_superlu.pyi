@@ -1,10 +1,9 @@
 import types
 from collections.abc import Callable, Mapping
-from typing import Any, Final, Generic, Literal, TypeAlias, final, overload
+from typing import Any, Final, Generic, Literal, SupportsIndex, TypeAlias, final, overload
 from typing_extensions import TypeVar
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -52,8 +51,8 @@ class SuperLU(Generic[_InexactT_co]):
     def solve(self, /, rhs: onp.ArrayND[npc.number]) -> onp.ArrayND[np.float64 | np.complex128]: ...
 
 def gssv(
-    N: op.CanIndex,
-    nnz: op.CanIndex,
+    N: SupportsIndex,
+    nnz: SupportsIndex,
     nzvals: _Inexact2D,
     colind: _Int1D,
     rowptr: _Int1D,
@@ -64,8 +63,8 @@ def gssv(
 
 #
 def gstrf(
-    N: op.CanIndex,
-    nnz: op.CanIndex,
+    N: SupportsIndex,
+    nnz: SupportsIndex,
     nzvals: _Inexact2D,
     colind: _Int1D,
     rowptr: _Int1D,
@@ -77,13 +76,13 @@ def gstrf(
 #
 def gstrs(
     trans: Literal["N", "T"],
-    L_n: op.CanIndex,
-    L_nnz: op.CanIndex,
+    L_n: SupportsIndex,
+    L_nnz: SupportsIndex,
     L_nzvals: _Inexact2D,
     L_rowind: _Int1D,
     L_colptr: _Int1D,
-    U_n: op.CanIndex,
-    U_nnz: op.CanIndex,
+    U_n: SupportsIndex,
+    U_nnz: SupportsIndex,
     U_nzvals: _Inexact2D,
     U_rowind: _Int1D,
     U_colptr: _Int1D,

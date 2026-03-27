@@ -1,7 +1,6 @@
 from typing import Final, Literal, TypeAlias, TypeVar
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 from scipy.sparse import sparray, spmatrix
@@ -37,11 +36,7 @@ def solve_lsq_trust_region(
     max_iter: onp.ToInt = 10,
 ) -> tuple[_Float1D, _Float, int]: ...
 def update_tr_radius(
-    Delta: onp.ToFloat,
-    actual_reduction: onp.ToFloat,
-    predicted_reduction: onp.ToFloat,
-    step_norm: onp.ToFloat,
-    bound_hit: op.CanBool,
+    Delta: onp.ToFloat, actual_reduction: onp.ToFloat, predicted_reduction: onp.ToFloat, step_norm: onp.ToFloat, bound_hit: bool
 ) -> tuple[_Float, _Float]: ...
 
 #

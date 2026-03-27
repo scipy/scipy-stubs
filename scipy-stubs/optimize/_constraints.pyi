@@ -1,6 +1,18 @@
 import types
 from collections.abc import Callable, Iterable, Sequence
-from typing import Any, Concatenate, Final, Generic, Literal, NotRequired, TypeAlias, TypedDict, overload, type_check_only
+from typing import (
+    Any,
+    Concatenate,
+    Final,
+    Generic,
+    Literal,
+    NotRequired,
+    SupportsIndex,
+    TypeAlias,
+    TypedDict,
+    overload,
+    type_check_only,
+)
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -183,10 +195,10 @@ class PreparedConstraint(_BaseConstraint[_ShapeT_co], Generic[_ShapeT_co]):  # u
     ) -> None: ...
     def violation(self, /, x: onp.ToFloat1D) -> onp.Array1D[np.float64]: ...
 
-def new_bounds_to_old(lb: onp.ToFloat1D, ub: onp.ToFloat1D, n: op.CanIndex) -> list[_Tuple2[float]]: ...  # undocumented
+def new_bounds_to_old(lb: onp.ToFloat1D, ub: onp.ToFloat1D, n: SupportsIndex) -> list[_Tuple2[float]]: ...  # undocumented
 def old_bound_to_new(bounds: Iterable[_Tuple2[float]]) -> _Tuple2[onp.Array1D[np.float64]]: ...  # undocumented
 def strict_bounds(
-    lb: onp.ToFloat1D, ub: onp.ToFloat1D, keep_feasible: onp.ToBool1D, n_vars: op.CanIndex
+    lb: onp.ToFloat1D, ub: onp.ToFloat1D, keep_feasible: onp.ToBool1D, n_vars: SupportsIndex
 ) -> _Tuple2[onp.Array1D[np.float64]]: ...  # undocumented
 def new_constraint_to_old(con: _BaseConstraint, x0: onp.ToFloatND) -> list[_OldConstraint]: ...  # undocumented
 def old_constraint_to_new(ic: int, con: _OldConstraint) -> NonlinearConstraint: ...  # undocumented

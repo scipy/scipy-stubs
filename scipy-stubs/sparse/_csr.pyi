@@ -1,9 +1,8 @@
-from typing import Any, ClassVar, Generic, Literal, Never, TypeAlias, overload, type_check_only
+from typing import Any, ClassVar, Generic, Literal, Never, SupportsIndex, TypeAlias, overload, type_check_only
 from typing_extensions import TypeAliasType, TypeIs, TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -53,13 +52,13 @@ class _csr_base(_cs_matrix[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _Shape
     @overload
     def count_nonzero(self, /, axis: None = None) -> np.intp: ...
     @overload
-    def count_nonzero(self: _csr_base[Any, _NeitherD], /, axis: op.CanIndex) -> onp.Array1D[np.intp] | Any: ...
+    def count_nonzero(self: _csr_base[Any, _NeitherD], /, axis: SupportsIndex) -> onp.Array1D[np.intp] | Any: ...
     @overload
-    def count_nonzero(self: csr_array[Any, tuple[int]], /, axis: op.CanIndex) -> np.intp: ...  # type: ignore[misc]
+    def count_nonzero(self: csr_array[Any, tuple[int]], /, axis: SupportsIndex) -> np.intp: ...  # type: ignore[misc]
     @overload
-    def count_nonzero(self: _csr_base[Any, tuple[int, int]], /, axis: op.CanIndex) -> onp.Array1D[np.intp]: ...
+    def count_nonzero(self: _csr_base[Any, tuple[int, int]], /, axis: SupportsIndex) -> onp.Array1D[np.intp]: ...
     @overload
-    def count_nonzero(self: csr_array[Any, Any], /, axis: op.CanIndex) -> onp.Array1D[np.intp] | Any: ...  # type: ignore[misc]
+    def count_nonzero(self: csr_array[Any, Any], /, axis: SupportsIndex) -> onp.Array1D[np.intp] | Any: ...  # type: ignore[misc]
 
 class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):
     # NOTE: These four methods do not exist at runtime.

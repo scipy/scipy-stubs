@@ -1,11 +1,10 @@
 # mypy: disable-error-code="override"
 import types
 from collections.abc import Callable, Iterable
-from typing import Any, ClassVar, Final, Generic, Protocol, Self, TypeAlias, final, overload, type_check_only
+from typing import Any, ClassVar, Final, Generic, Protocol, Self, SupportsIndex, TypeAlias, final, overload, type_check_only
 from typing_extensions import TypeVar, override
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -23,7 +22,7 @@ _FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec,
 _LinearOperatorT = TypeVar("_LinearOperatorT", bound=LinearOperator[Any])
 _LinearOperatorT_co = TypeVar("_LinearOperatorT_co", bound=LinearOperator[Any], covariant=True)
 
-_ToShape: TypeAlias = Iterable[op.CanIndex]
+_ToShape: TypeAlias = Iterable[SupportsIndex]
 _Real: TypeAlias = np.bool_ | npc.integer | npc.floating
 _FunMatVec: TypeAlias = Callable[[onp.ArrayND[Any]], onp.ToComplex1D | onp.ToComplex2D]
 _FunMatMat: TypeAlias = Callable[[onp.Array2D[Any]], onp.ToComplex2D]
@@ -470,10 +469,10 @@ class _ScaledLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
 
 @final
 class _PowerLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
-    args: tuple[LinearOperator[_SCT_co], op.CanIndex]
+    args: tuple[LinearOperator[_SCT_co], SupportsIndex]
 
-    def __new__(cls, A: LinearOperator[_SCT_co], p: op.CanIndex) -> Self: ...
-    def __init__(self, /, A: LinearOperator[_SCT_co], p: op.CanIndex) -> None: ...
+    def __new__(cls, A: LinearOperator[_SCT_co], p: SupportsIndex) -> Self: ...
+    def __init__(self, /, A: LinearOperator[_SCT_co], p: SupportsIndex) -> None: ...
     @override
     def _adjoint(self, /) -> Self: ...
 

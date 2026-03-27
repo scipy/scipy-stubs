@@ -2,7 +2,6 @@ from collections.abc import Callable
 from typing import Concatenate, Final, Generic, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -91,7 +90,7 @@ class TOMS748Solver:
         rtol: _Float = ...,
         k: int = 2,
         maxiter: int = 100,
-        disp: op.CanBool = True,
+        disp: bool = True,
     ) -> _State: ...
 
 # undocumented
@@ -176,7 +175,7 @@ def bisect(
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
     full_output: onp.ToFalse = False,
-    disp: op.CanBool = True,
+    disp: bool = True,
 ) -> float: ...
 @overload
 def bisect(
@@ -189,7 +188,7 @@ def bisect(
     maxiter: onp.ToJustInt = 100,
     *,
     full_output: onp.ToTrue,
-    disp: op.CanBool = True,
+    disp: bool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
 
 #
@@ -203,7 +202,7 @@ def ridder(
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
     full_output: onp.ToFalse = False,
-    disp: op.CanBool = True,
+    disp: bool = True,
 ) -> float: ...
 @overload
 def ridder(
@@ -216,7 +215,7 @@ def ridder(
     maxiter: onp.ToJustInt = 100,
     *,
     full_output: onp.ToTrue,
-    disp: op.CanBool = True,
+    disp: bool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
 
 #
@@ -230,7 +229,7 @@ def brentq(
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
     full_output: onp.ToFalse = False,
-    disp: op.CanBool = True,
+    disp: bool = True,
 ) -> float: ...
 @overload
 def brentq(
@@ -243,7 +242,7 @@ def brentq(
     maxiter: onp.ToJustInt = 100,
     *,
     full_output: onp.ToTrue,
-    disp: op.CanBool = True,
+    disp: bool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
 
 #
@@ -257,7 +256,7 @@ def brenth(
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
     full_output: onp.ToFalse = False,
-    disp: op.CanBool = True,
+    disp: bool = True,
 ) -> float: ...
 @overload
 def brenth(
@@ -270,7 +269,7 @@ def brenth(
     maxiter: onp.ToJustInt = 100,
     *,
     full_output: onp.ToTrue,
-    disp: op.CanBool = True,
+    disp: bool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
 
 #
@@ -285,7 +284,7 @@ def toms748(
     rtol: onp.ToFloat = ...,
     maxiter: onp.ToJustInt = 100,
     full_output: onp.ToFalse = False,
-    disp: op.CanBool = True,
+    disp: bool = True,
 ) -> np.float64: ...
 @overload
 def toms748(
@@ -299,5 +298,5 @@ def toms748(
     maxiter: onp.ToJustInt = 100,
     *,
     full_output: onp.ToTrue,
-    disp: op.CanBool = True,
+    disp: bool = True,
 ) -> tuple[np.float64, RootResults[_Float]]: ...

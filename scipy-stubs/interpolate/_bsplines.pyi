@@ -1,8 +1,7 @@
 import types
-from typing import Any, Generic, Literal, Self, TypeAlias, TypeVar, overload
+from typing import Any, Generic, Literal, Self, SupportsIndex, TypeAlias, TypeVar, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 from scipy.interpolate import CubicSpline
@@ -42,9 +41,9 @@ class BSpline(Generic[_CT_co]):
         /,
         t: onp.ToFloat1D,
         c: onp.ToFloatND,
-        k: op.CanIndex,
+        k: SupportsIndex,
         extrapolate: _Extrapolate = True,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
     ) -> None: ...
     @overload
     def __init__(
@@ -52,9 +51,9 @@ class BSpline(Generic[_CT_co]):
         /,
         t: onp.ToFloat1D,
         c: onp.ToJustComplexND,
-        k: op.CanIndex,
+        k: SupportsIndex,
         extrapolate: _Extrapolate = True,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
     ) -> None: ...
     @overload
     def __init__(
@@ -62,9 +61,9 @@ class BSpline(Generic[_CT_co]):
         /,
         t: onp.ToFloat1D,
         c: onp.ToComplex1D,
-        k: op.CanIndex,
+        k: SupportsIndex,
         extrapolate: _Extrapolate = True,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
     ) -> None: ...
 
     # NOTE: Complex `x` will unsafely be cast to `float64`, even if the coefficients are complex
@@ -77,7 +76,7 @@ class BSpline(Generic[_CT_co]):
     def antiderivative(self, /, nu: int = 1) -> Self: ...
 
     #
-    def insert_knot(self, /, x: onp.ToFloat, m: op.CanIndex = 1) -> Self: ...
+    def insert_knot(self, /, x: onp.ToFloat, m: SupportsIndex = 1) -> Self: ...
 
     # NOTE: `integrate` will raise a (cryptic) `ValueError` for complex coefficients
     def integrate(
@@ -108,7 +107,7 @@ class BSpline(Generic[_CT_co]):
     #
     @classmethod
     def design_matrix(
-        cls, x: onp.ToFloat1D, t: onp.ToFloat1D, k: op.CanIndex, extrapolate: _Extrapolate = False
+        cls, x: onp.ToFloat1D, t: onp.ToFloat1D, k: SupportsIndex, extrapolate: _Extrapolate = False
     ) -> csr_array[np.float64, tuple[int, int]]: ...
 
 #
@@ -116,31 +115,31 @@ class BSpline(Generic[_CT_co]):
 def make_interp_spline(
     x: onp.ToFloat1D,
     y: onp.ToFloatND,
-    k: op.CanIndex = 3,
+    k: SupportsIndex = 3,
     t: onp.ToFloat1D | None = None,
     bc_type: _ToBCType | None = None,
-    axis: op.CanIndex = 0,
-    check_finite: onp.ToBool = True,
+    axis: SupportsIndex = 0,
+    check_finite: bool = True,
 ) -> BSpline[np.float64]: ...
 @overload
 def make_interp_spline(
     x: onp.ToFloat1D,
     y: onp.ToJustComplexND,
-    k: op.CanIndex = 3,
+    k: SupportsIndex = 3,
     t: onp.ToFloat1D | None = None,
     bc_type: _ToBCType | None = None,
-    axis: op.CanIndex = 0,
-    check_finite: onp.ToBool = True,
+    axis: SupportsIndex = 0,
+    check_finite: bool = True,
 ) -> BSpline[np.complex128]: ...
 @overload
 def make_interp_spline(
     x: onp.ToFloat1D,
     y: onp.ToComplexND,
-    k: op.CanIndex = 3,
+    k: SupportsIndex = 3,
     t: onp.ToFloat1D | None = None,
     bc_type: _ToBCType | None = None,
-    axis: op.CanIndex = 0,
-    check_finite: onp.ToBool = True,
+    axis: SupportsIndex = 0,
+    check_finite: bool = True,
 ) -> BSpline[Any]: ...
 
 #
@@ -149,10 +148,10 @@ def make_lsq_spline(
     x: onp.ToFloat1D,
     y: onp.ToFloatND,
     t: onp.ToFloat1D,
-    k: op.CanIndex = 3,
+    k: SupportsIndex = 3,
     w: onp.ToFloat1D | None = None,
-    axis: op.CanIndex = 0,
-    check_finite: onp.ToBool = True,
+    axis: SupportsIndex = 0,
+    check_finite: bool = True,
     *,
     method: _LSQMethod = "qr",
 ) -> BSpline[np.float64]: ...
@@ -161,10 +160,10 @@ def make_lsq_spline(
     x: onp.ToFloat1D,
     y: onp.ToJustComplexND,
     t: onp.ToFloat1D,
-    k: op.CanIndex = 3,
+    k: SupportsIndex = 3,
     w: onp.ToFloat1D | None = None,
-    axis: op.CanIndex = 0,
-    check_finite: onp.ToBool = True,
+    axis: SupportsIndex = 0,
+    check_finite: bool = True,
     *,
     method: _LSQMethod = "qr",
 ) -> BSpline[np.complex128]: ...
@@ -173,10 +172,10 @@ def make_lsq_spline(
     x: onp.ToFloat1D,
     y: onp.ToComplexND,
     t: onp.ToFloat1D,
-    k: op.CanIndex = 3,
+    k: SupportsIndex = 3,
     w: onp.ToFloat1D | None = None,
-    axis: op.CanIndex = 0,
-    check_finite: onp.ToBool = True,
+    axis: SupportsIndex = 0,
+    check_finite: bool = True,
     *,
     method: _LSQMethod = "qr",
 ) -> BSpline[Any]: ...
@@ -188,7 +187,7 @@ def make_smoothing_spline(
     w: onp.ToFloat1D | None = None,
     lam: onp.ToFloat | None = None,
     *,
-    axis: op.CanIndex = 0,
+    axis: SupportsIndex = 0,
 ) -> BSpline[np.float64]: ...
 
 #
