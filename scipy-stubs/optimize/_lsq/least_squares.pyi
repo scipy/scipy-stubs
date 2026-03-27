@@ -1,8 +1,7 @@
 from collections.abc import Callable, Iterable, Mapping
-from typing import Any, Concatenate, Final, Literal, Protocol, TypeAlias, type_check_only
+from typing import Any, Concatenate, Final, Literal, Protocol, SupportsIndex, TypeAlias, type_check_only
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -74,16 +73,16 @@ def call_minpack(
     ftol: onp.ToFloat,
     xtol: onp.ToFloat,
     gtol: onp.ToFloat,
-    max_nfev: onp.ToInt | None,
+    max_nfev: int | None,
     x_scale: onp.ToFloat | _Float1ND,
     jac_method: _ToJac | None = None,
 ) -> _BaseOptimizeResult: ...
-def prepare_bounds(bounds: Iterable[onp.ToFloat | onp.ToFloat1D], n: op.CanIndex) -> tuple[_Float1D, _Float1D]: ...
+def prepare_bounds(bounds: Iterable[onp.ToFloat | onp.ToFloat1D], n: SupportsIndex) -> tuple[_Float1D, _Float1D]: ...
 def check_tolerance(
     ftol: onp.ToFloat | None, xtol: onp.ToFloat | None, gtol: onp.ToFloat | None, method: _LeastSquaresMethod
 ) -> tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]: ...
 def check_x_scale(x_scale: _XScale, x0: onp.ArrayND[npc.floating], method: _LeastSquaresMethod) -> _Float1ND: ...
-def check_jac_sparsity(jac_sparsity: _ToJac2D | None, m: onp.ToInt, n: onp.ToInt) -> _Float1D: ...
+def check_jac_sparsity(jac_sparsity: _ToJac2D | None, m: int, n: int) -> _Float1D: ...
 
 #
 def huber(z: onp.Array1D[np.float64], rho: onp.Array2D[np.float64], cost_only: bool) -> None: ...
@@ -93,7 +92,7 @@ def arctan(z: onp.Array1D[np.float64], rho: onp.Array2D[np.float64], cost_only: 
 
 IMPLEMENTED_LOSSES: Final[dict[Literal["linear", "huber", "soft_l1", "cauchy", "arctan"], _ImplementedLossFunction]] = ...
 
-def construct_loss_function(m: op.CanIndex, loss: _Loss, f_scale: onp.ToFloat) -> _UserLossFunction: ...
+def construct_loss_function(m: SupportsIndex, loss: _Loss, f_scale: onp.ToFloat) -> _UserLossFunction: ...
 
 ###
 # public API
@@ -118,7 +117,7 @@ def least_squares(
     tr_solver: Literal["exact", "lsmr"] | None = None,
     tr_options: Mapping[str, object] | None = None,
     jac_sparsity: _ToJac2D | None = None,
-    max_nfev: onp.ToInt | None = None,
+    max_nfev: int | None = None,
     verbose: Literal[0, 1, 2] = 0,
     args: Iterable[object] = (),
     kwargs: Mapping[str, object] | None = None,

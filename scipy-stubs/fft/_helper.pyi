@@ -1,9 +1,8 @@
 from _typeshed import Incomplete
 from types import ModuleType
-from typing import Literal, TypeVar, overload
+from typing import Literal, SupportsIndex, TypeVar, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -11,8 +10,8 @@ from scipy._typing import AnyShape
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 
-def next_fast_len(target: op.CanIndex, real: op.CanBool = False) -> int: ...
-def prev_fast_len(target: op.CanIndex, real: op.CanBool = False) -> int: ...
+def next_fast_len(target: SupportsIndex, real: bool = False) -> int: ...
+def prev_fast_len(target: SupportsIndex, real: bool = False) -> int: ...
 
 #
 @overload  # xp: None -> np.fft.fftfreq

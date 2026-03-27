@@ -41,7 +41,7 @@ class _KwargsCurveFit(TypedDict, total=False):
     gtol: float | None  # = 0.0
 
     # leastsq
-    col_deriv: op.CanBool  # = False
+    col_deriv: bool  # = False
     maxfev: int  # = 0
     epsfcn: float | None  # = finfo(dtype).eps
     factor: float | None  # = 100.0

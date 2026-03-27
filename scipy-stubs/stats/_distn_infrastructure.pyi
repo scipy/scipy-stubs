@@ -7,7 +7,6 @@ from typing import Any, Final, Generic, Literal as L, Self, SupportsIndex, TypeA
 from typing_extensions import TypeVar, Unpack, override
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -165,7 +164,10 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     def rvs(self, /, size: tuple[()] | None = None, random_state: onp.random.ToRNG | None = None) -> _FloatNDT_co: ...
     @overload
     def rvs(
-        self, /, size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]], random_state: onp.random.ToRNG | None = None
+        self,
+        /,
+        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]],
+        random_state: onp.random.ToRNG | None = None,
     ) -> _FloatND: ...
     @overload
     def rvs(self, /, size: AnyShape | None = None, random_state: onp.random.ToRNG | None = None) -> _FloatOrND: ...
@@ -690,7 +692,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         scale: onp.ToFloat = 1,
         lb: onp.ToFloat | None = None,
         ub: onp.ToFloat | None = None,
-        conditional: op.CanBool = False,
+        conditional: bool = False,
         **kwds: Unpack[_QuadOpts],
     ) -> _Float: ...
 
@@ -984,7 +986,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         loc: onp.ToFloat = 0,
         lb: onp.ToInt | None = None,
         ub: onp.ToInt | None = None,
-        conditional: op.CanBool = False,
+        conditional: bool = False,
         maxcount: onp.ToInt = 1000,
         tolerance: onp.ToFloat = 1e-10,
         chunksize: onp.ToInt = 32,

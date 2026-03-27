@@ -6,7 +6,6 @@ from typing import Any, Final, Generic, Literal, Protocol, TypeAlias, TypedDict,
 from typing_extensions import TypeVar, Unpack, override
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 from scipy.sparse._base import _spbase
@@ -297,7 +296,7 @@ def nonlin_solve(
     x0: onp.ToComplexND,
     jacobian: _JacobianMethod | _JacobianLike = "krylov",
     iter: onp.ToInt | None = None,
-    verbose: op.CanBool = False,
+    verbose: bool = False,
     maxiter: onp.ToInt | None = None,
     f_tol: onp.ToFloat | None = None,
     f_rtol: onp.ToFloat | None = None,
@@ -306,8 +305,8 @@ def nonlin_solve(
     tol_norm: onp.ToFloat | None = None,
     line_search: _LineSearch = "armijo",
     callback: _Callback | None = None,
-    full_output: onp.ToFalse = False,
-    raise_exception: op.CanBool = True,
+    full_output: Literal[False] = False,
+    raise_exception: bool = True,
 ) -> _InexactND: ...
 @overload
 def nonlin_solve(
@@ -315,7 +314,7 @@ def nonlin_solve(
     x0: onp.ToComplexND,
     jacobian: _JacobianMethod | _JacobianLike = "krylov",
     iter: onp.ToInt | None = None,
-    verbose: op.CanBool = False,
+    verbose: bool = False,
     maxiter: onp.ToInt | None = None,
     f_tol: onp.ToFloat | None = None,
     f_rtol: onp.ToFloat | None = None,
@@ -325,8 +324,8 @@ def nonlin_solve(
     line_search: _LineSearch = "armijo",
     callback: _Callback | None = None,
     *,
-    full_output: onp.ToTrue,
-    raise_exception: op.CanBool = True,
+    full_output: Literal[True],
+    raise_exception: bool = True,
 ) -> tuple[_InexactND, _NonlinInfoDict]: ...
 
 #
@@ -337,7 +336,7 @@ def broyden1(
     alpha: onp.ToFloat | None = None,
     reduction_method: _ReductionMethod = "restart",
     max_rank: onp.ToInt | None = None,
-    verbose: op.CanBool = False,
+    verbose: bool = False,
     maxiter: onp.ToInt | None = None,
     f_tol: onp.ToFloat | None = None,
     f_rtol: onp.ToFloat | None = None,
@@ -354,7 +353,7 @@ def broyden2(
     alpha: onp.ToFloat | None = None,
     reduction_method: _ReductionMethod = "restart",
     max_rank: onp.ToInt | None = None,
-    verbose: op.CanBool = False,
+    verbose: bool = False,
     maxiter: onp.ToInt | None = None,
     f_tol: onp.ToFloat | None = None,
     f_rtol: onp.ToFloat | None = None,
@@ -371,7 +370,7 @@ def anderson(
     alpha: onp.ToFloat | None = None,
     w0: onp.ToFloat = 0.01,
     M: onp.ToInt = 5,
-    verbose: op.CanBool = False,
+    verbose: bool = False,
     maxiter: onp.ToInt | None = None,
     f_tol: onp.ToFloat | None = None,
     f_rtol: onp.ToFloat | None = None,
@@ -386,7 +385,7 @@ def linearmixing(
     xin: onp.ToComplexND,
     iter: onp.ToInt | None = None,
     alpha: onp.ToFloat | None = None,
-    verbose: op.CanBool = False,
+    verbose: bool = False,
     maxiter: int | None = None,
     f_tol: onp.ToInt | None = None,
     f_rtol: onp.ToFloat | None = None,
@@ -401,7 +400,7 @@ def diagbroyden(
     xin: onp.ToComplexND,
     iter: onp.ToInt | None = None,
     alpha: onp.ToFloat | None = None,
-    verbose: op.CanBool = False,
+    verbose: bool = False,
     maxiter: onp.ToInt | None = None,
     f_tol: onp.ToFloat | None = None,
     f_rtol: onp.ToFloat | None = None,
@@ -417,7 +416,7 @@ def excitingmixing(
     iter: onp.ToInt | None = None,
     alpha: onp.ToFloat | None = None,
     alphamax: onp.ToFloat = 1.0,
-    verbose: op.CanBool = False,
+    verbose: bool = False,
     maxiter: onp.ToInt | None = None,
     f_tol: onp.ToFloat | None = None,
     f_rtol: onp.ToFloat | None = None,
@@ -436,7 +435,7 @@ def newton_krylov(
     inner_maxiter: onp.ToInt = 20,
     inner_M: LinearOperator | InverseJacobian | None = None,
     outer_k: onp.ToInt = 10,
-    verbose: op.CanBool = False,
+    verbose: bool = False,
     maxiter: onp.ToInt | None = None,
     f_tol: onp.ToFloat | None = None,
     f_rtol: onp.ToFloat | None = None,

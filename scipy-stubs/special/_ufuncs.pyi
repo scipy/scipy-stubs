@@ -4,7 +4,18 @@
 # mypy: disable-error-code="overload-overlap, override"
 
 from types import EllipsisType
-from typing import Generic, Literal as L, LiteralString, Never, TypeAlias, TypedDict, final, overload, type_check_only
+from typing import (
+    Generic,
+    Literal as L,
+    LiteralString,
+    Never,
+    SupportsIndex,
+    TypeAlias,
+    TypedDict,
+    final,
+    overload,
+    type_check_only,
+)
 from typing_extensions import TypeAliasType, TypeVar, Unpack, deprecated, override
 
 import numpy as np
@@ -326,7 +337,7 @@ _ToComplex128ND = TypeAliasType("_ToComplex128ND", _ToND[_CoComplex128, _ToCompl
 _ToComplex128_D: TypeAlias = _ToComplex128 | _ToComplex128ND
 
 _Axis: TypeAlias = AnyShape | None
-_Indices = TypeAliasType("_Indices", _OneOrMany[op.CanIndex | slice | EllipsisType] | onp.ToIntND)
+_Indices = TypeAliasType("_Indices", _OneOrMany[SupportsIndex | slice | EllipsisType] | onp.ToIntND)
 
 ###
 
@@ -1054,7 +1065,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         self,
         /,
         array: onp.ToFloat64_ND,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
         dtype: _ToDType_fd | None = None,
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
@@ -1128,7 +1139,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         /,
         array: onp.ToFloat64_ND,
         indices: _Indices,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
         dtype: _ToDType_fd | None = None,
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
@@ -1215,7 +1226,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         self,
         /,
         array: onp.ToFloat64_ND,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
         dtype: _ToDType_fd | None = None,
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
@@ -1289,7 +1300,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         /,
         array: onp.ToFloat64_ND,
         indices: _Indices,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
         dtype: _ToDType_fd | None = None,
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
@@ -1348,7 +1359,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         self,
         /,
         array: onp.ToFloat64_ND,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
         dtype: _ToDType_fd | None = None,
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
@@ -1357,7 +1368,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         self,
         /,
         array: _ToComplex128ND,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
         dtype: _ToDType_fdFD | None = None,
         out: _Out1[_InexactND | None] = None,
     ) -> _InexactND: ...
@@ -1456,7 +1467,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         /,
         array: onp.ToFloat64_ND,
         indices: _Indices,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
         dtype: _ToDType_fd | None = None,
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
@@ -1466,7 +1477,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         /,
         array: _ToComplex128ND,
         indices: _Indices,
-        axis: op.CanIndex = 0,
+        axis: SupportsIndex = 0,
         dtype: _ToDType_fdFD | None = None,
         out: _Out1[_InexactND | None] = None,
     ) -> _InexactND: ...

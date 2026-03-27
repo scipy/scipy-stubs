@@ -36,7 +36,7 @@ class OdeSolution(Generic[_InterpT_co]):
     side: Literal["left", "right"]
     n_segments: int
 
-    def __init__(self, /, ts: onp.ToFloat1D, interpolants: list[_InterpT_co], alt_segment: op.CanBool = False) -> None: ...
+    def __init__(self, /, ts: onp.ToFloat1D, interpolants: list[_InterpT_co], alt_segment: bool = False) -> None: ...
 
     #
     @overload

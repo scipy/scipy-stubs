@@ -1,8 +1,7 @@
-from typing import TypeAlias, overload
+from typing import SupportsIndex, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 __all__ = [
@@ -23,7 +22,7 @@ _Tuple2: TypeAlias = tuple[_T, _T]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 
 _ToProb: TypeAlias = onp.ToFloat | onp.ToFloatND
-_ToAxis: TypeAlias = op.CanIndex | None
+_ToAxis: TypeAlias = SupportsIndex | None
 
 ###
 
@@ -57,7 +56,7 @@ def hdquantiles_sd(data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis:
 def trimmed_mean_ci(
     data: onp.ToFloatND,
     limits: _Tuple2[onp.ToFloat] | None = (0.2, 0.2),
-    inclusive: _Tuple2[op.CanBool] = (True, True),
+    inclusive: _Tuple2[bool] = (True, True),
     alpha: onp.ToJustFloat = 0.05,
     axis: _ToAxis = None,
 ) -> _FloatND: ...
@@ -74,21 +73,21 @@ def mquantiles_cimj(
 @overload
 def median_cihs(data: onp.ToFloatND, alpha: onp.ToJustFloat = 0.05, axis: None = None) -> _Tuple2[np.float64]: ...
 @overload
-def median_cihs(data: onp.ToFloatND, alpha: onp.ToJustFloat, axis: op.CanIndex) -> _Tuple2[np.float64 | _FloatND]: ...
+def median_cihs(data: onp.ToFloatND, alpha: onp.ToJustFloat, axis: SupportsIndex) -> _Tuple2[np.float64 | _FloatND]: ...
 @overload
-def median_cihs(data: onp.ToFloatND, alpha: onp.ToJustFloat = 0.05, *, axis: op.CanIndex) -> _Tuple2[np.float64 | _FloatND]: ...
+def median_cihs(data: onp.ToFloatND, alpha: onp.ToJustFloat = 0.05, *, axis: SupportsIndex) -> _Tuple2[np.float64 | _FloatND]: ...
 
 #
 @overload
 def compare_medians_ms(group_1: onp.ToFloatND, group_2: onp.ToFloatND, axis: None = None) -> np.float64: ...
 @overload
-def compare_medians_ms(group_1: onp.ToFloatND, group_2: onp.ToFloatND, axis: op.CanIndex) -> _FloatND: ...
+def compare_medians_ms(group_1: onp.ToFloatND, group_2: onp.ToFloatND, axis: SupportsIndex) -> _FloatND: ...
 
 #
 @overload
 def idealfourths(data: onp.ToFloatND, axis: None = None) -> list[np.float64]: ...
 @overload
-def idealfourths(data: onp.ToFloatND, axis: op.CanIndex) -> onp.MArray[np.float64]: ...
+def idealfourths(data: onp.ToFloatND, axis: SupportsIndex) -> onp.MArray[np.float64]: ...
 
 #
 def rsh(data: onp.ToFloatND, points: onp.ToFloatND | None = None) -> np.float64: ...

@@ -1,9 +1,8 @@
 __all__ = ["chatterjeexi", "spearmanrho"]
 
-from typing import Literal as L, TypeAlias, overload
+from typing import Literal as L, SupportsIndex, TypeAlias, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 from . import _resampling
@@ -20,7 +19,7 @@ def chatterjeexi(
     x: onp.ToComplexStrict1D,
     y: onp.ToComplexStrict1D,
     *,
-    axis: op.CanIndex = 0,
+    axis: SupportsIndex = 0,
     y_continuous: bool = False,
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
@@ -31,7 +30,7 @@ def chatterjeexi(
     x: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
     y: onp.ToComplexStrict2D,
     *,
-    axis: op.CanIndex = 0,
+    axis: SupportsIndex = 0,
     y_continuous: bool = False,
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
@@ -42,7 +41,7 @@ def chatterjeexi(
     x: onp.ToComplexStrict2D,
     y: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
     *,
-    axis: op.CanIndex = 0,
+    axis: SupportsIndex = 0,
     y_continuous: bool = False,
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
@@ -53,7 +52,7 @@ def chatterjeexi(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
     *,
-    axis: op.CanIndex = 0,
+    axis: SupportsIndex = 0,
     y_continuous: bool = False,
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
@@ -64,7 +63,7 @@ def chatterjeexi(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
     *,
-    axis: op.CanIndex = 0,
+    axis: SupportsIndex = 0,
     y_continuous: bool = False,
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",

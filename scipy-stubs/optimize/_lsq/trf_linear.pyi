@@ -1,7 +1,6 @@
 from typing import Literal, TypeAlias
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 from scipy.optimize import OptimizeResult as _OptimizeResult
@@ -29,7 +28,7 @@ def regularized_lsq_with_qr(
     QTb: onp.ToFloat1D,
     perm: onp.ToFloat1D,
     diag: onp.ToFloat1D,
-    copy_R: op.CanBool = True,
+    copy_R: bool = True,
 ) -> _Float1D: ...
 
 # undocumented

@@ -1,8 +1,7 @@
 from collections.abc import Iterable
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing import Any, Literal, SupportsIndex, TypeAlias, TypeVar, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -46,7 +45,7 @@ def _get_output(
 ) -> onp.ArrayND[npc.complexfloating]: ...
 
 #
-def _check_axes(axes: op.CanIndex | Iterable[op.CanIndex], ndim: int) -> tuple[int, ...]: ...
+def _check_axes(axes: SupportsIndex | Iterable[SupportsIndex], ndim: int) -> tuple[int, ...]: ...
 
 #
 @overload

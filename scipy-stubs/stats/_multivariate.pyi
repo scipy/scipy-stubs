@@ -1,9 +1,8 @@
 import types
-from typing import Any, ClassVar, Final, Generic, Literal, TypeAlias, overload, type_check_only
+from typing import Any, ClassVar, Final, Generic, Literal, SupportsIndex, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar, override
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -418,18 +417,22 @@ class dirichlet_gen(multi_rv_generic):
     ) -> onp.Array1D[np.float64]: ...
     @overload
     def rvs(
-        self, /, alpha: onp.ToFloat1D, size: op.CanIndex | tuple[op.CanIndex] = 1, random_state: onp.random.ToRNG | None = None
+        self,
+        /,
+        alpha: onp.ToFloat1D,
+        size: SupportsIndex | tuple[SupportsIndex] = 1,
+        random_state: onp.random.ToRNG | None = None,
     ) -> onp.Array2D[np.float64]: ...
     @overload
     def rvs(
-        self, /, alpha: onp.ToFloat1D, size: tuple[op.CanIndex, op.CanIndex], random_state: onp.random.ToRNG | None = None
+        self, /, alpha: onp.ToFloat1D, size: tuple[SupportsIndex, SupportsIndex], random_state: onp.random.ToRNG | None = None
     ) -> onp.Array3D[np.float64]: ...
     @overload
     def rvs(
         self,
         /,
         alpha: onp.ToFloat1D,
-        size: tuple[op.CanIndex, op.CanIndex, op.CanIndex, *tuple[op.CanIndex, ...]],
+        size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array3ND: ...
 
@@ -450,17 +453,17 @@ class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
     def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
     @overload
     def rvs(
-        self, /, size: op.CanIndex | tuple[op.CanIndex] = 1, random_state: onp.random.ToRNG | None = None
+        self, /, size: SupportsIndex | tuple[SupportsIndex] = 1, random_state: onp.random.ToRNG | None = None
     ) -> onp.Array2D[np.float64]: ...
     @overload
     def rvs(
-        self, /, size: tuple[op.CanIndex, op.CanIndex], random_state: onp.random.ToRNG | None = None
+        self, /, size: tuple[SupportsIndex, SupportsIndex], random_state: onp.random.ToRNG | None = None
     ) -> onp.Array3D[np.float64]: ...
     @overload
     def rvs(
         self,
         /,
-        size: tuple[op.CanIndex, op.CanIndex, op.CanIndex, *tuple[op.CanIndex, ...]],
+        size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array3ND: ...
 
@@ -1016,7 +1019,7 @@ class vonmises_fisher_gen(multi_rv_generic):
         /,
         mu: onp.ToFloat1D | None = None,
         kappa: int = 1,
-        size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]] = 1,
+        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]] = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array2ND: ...
     def fit(self, /, x: onp.ToFloatND) -> tuple[onp.Array1D[np.float64], float]: ...
@@ -1029,7 +1032,7 @@ class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
     def rvs(
         self,
         /,
-        size: op.CanIndex | tuple[op.CanIndex, *tuple[op.CanIndex, ...]] = 1,
+        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]] = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array2ND: ...
 
@@ -1086,7 +1089,7 @@ class normal_inverse_gamma_gen(multi_rv_generic):
         lmbda: onp.ToFloat | onp.ToFloatND = 1,
         a: onp.ToFloat | onp.ToFloatND = 1,
         b: onp.ToFloat | onp.ToFloatND = 1,
-        size: op.CanIndex | tuple[op.CanIndex, ...] | None = None,
+        size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
         random_state: onp.random.ToRNG | None = None,
     ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
 
@@ -1106,7 +1109,7 @@ class normal_inverse_gamma_frozen(multi_rv_frozen[normal_inverse_gamma_gen]):
     def mean(self, /) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
     def var(self, /) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
     def rvs(
-        self, /, size: op.CanIndex | tuple[op.CanIndex, ...] | None = None, random_state: onp.random.ToRNG | None = None
+        self, /, size: SupportsIndex | tuple[SupportsIndex, ...] | None = None, random_state: onp.random.ToRNG | None = None
     ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
 
 multivariate_normal: Final[multivariate_normal_gen] = ...

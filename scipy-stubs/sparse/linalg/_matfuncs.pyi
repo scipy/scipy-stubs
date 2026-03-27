@@ -1,8 +1,7 @@
-from typing import Any, Final, Generic, Literal, Self, TypeAlias
+from typing import Any, Final, Generic, Literal, Self, SupportsIndex, TypeAlias
 from typing_extensions import TypeVar, override
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -36,4 +35,4 @@ class ProductOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
 
 def inv(A: _SparseT) -> _SparseT: ...
 def expm(A: _SparseT) -> _SparseT: ...
-def matrix_power(A: _SparseT, power: op.CanIndex) -> _SparseT: ...
+def matrix_power(A: _SparseT, power: SupportsIndex) -> _SparseT: ...

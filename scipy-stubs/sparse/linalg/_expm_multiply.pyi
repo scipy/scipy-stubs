@@ -1,9 +1,8 @@
 from _typeshed import Incomplete
-from typing import Any, Never, TypeAlias, TypeVar, overload
+from typing import Any, Never, SupportsIndex, TypeAlias, TypeVar, overload
 from typing_extensions import TypeAliasType
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -32,7 +31,7 @@ def expm_multiply(
     B: _SparseOrDense[_ToFloat64, tuple[Never] | tuple[Never, Never]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
-    num: op.CanIndex | None = None,
+    num: SupportsIndex | None = None,
     endpoint: bool | None = None,
     traceA: onp.ToComplex | None = None,
 ) -> onp.ArrayND[np.float64]: ...
@@ -42,7 +41,7 @@ def expm_multiply(
     B: _SparseOrDense[_InexactT | npc.integer | np.bool_, tuple[Never] | tuple[Never, Never]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
-    num: op.CanIndex | None = None,
+    num: SupportsIndex | None = None,
     endpoint: bool | None = None,
     traceA: onp.ToComplex | None = None,
 ) -> onp.ArrayND[_InexactT]: ...
@@ -52,7 +51,7 @@ def expm_multiply(
     B: _SparseOrDense[_ToFloat64, tuple[int]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
-    num: op.CanIndex | None = None,
+    num: SupportsIndex | None = None,
     endpoint: bool | None = None,
     traceA: onp.ToComplex | None = None,
 ) -> onp.Array1D[np.float64]: ...
@@ -62,7 +61,7 @@ def expm_multiply(
     B: _SparseOrDense[_InexactT | npc.integer | np.bool_, tuple[int]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
-    num: op.CanIndex | None = None,
+    num: SupportsIndex | None = None,
     endpoint: bool | None = None,
     traceA: onp.ToComplex | None = None,
 ) -> onp.Array1D[_InexactT]: ...
@@ -72,7 +71,7 @@ def expm_multiply(
     B: _SparseOrDense[_ToFloat64, tuple[int, int]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
-    num: op.CanIndex | None = None,
+    num: SupportsIndex | None = None,
     endpoint: bool | None = None,
     traceA: onp.ToComplex | None = None,
 ) -> onp.Array2D[np.float64]: ...
@@ -82,7 +81,7 @@ def expm_multiply(
     B: _SparseOrDense[_InexactT | npc.integer | np.bool_, tuple[int, int]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
-    num: op.CanIndex | None = None,
+    num: SupportsIndex | None = None,
     endpoint: bool | None = None,
     traceA: onp.ToComplex | None = None,
 ) -> onp.Array2D[_InexactT]: ...
@@ -92,7 +91,7 @@ def expm_multiply(
     B: _SparseOrDense[_ToFloat64, tuple[Any, ...]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
-    num: op.CanIndex | None = None,
+    num: SupportsIndex | None = None,
     endpoint: bool | None = None,
     traceA: onp.ToComplex | None = None,
 ) -> onp.ArrayND[np.float64]: ...
@@ -102,7 +101,7 @@ def expm_multiply(
     B: _SparseOrDense[_InexactT | npc.integer | np.bool_, tuple[Any, ...]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
-    num: op.CanIndex | None = None,
+    num: SupportsIndex | None = None,
     endpoint: bool | None = None,
     traceA: onp.ToComplex | None = None,
 ) -> onp.ArrayND[_InexactT]: ...
@@ -112,7 +111,7 @@ def expm_multiply(
     B: _SparseOrDense[npc.number, tuple[Any, ...]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
-    num: op.CanIndex | None = None,
+    num: SupportsIndex | None = None,
     endpoint: bool | None = None,
     traceA: onp.ToComplex | None = None,
 ) -> onp.ArrayND[Incomplete]: ...

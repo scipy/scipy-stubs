@@ -2,7 +2,6 @@ from _typeshed import Incomplete
 from typing import Final, Literal, TypeAlias, TypeVar, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 __all__ = [
@@ -64,7 +63,7 @@ def solve_continuous_are(
     r: onp.ToFloatND,
     e: onp.ToFloatND | None = None,
     s: onp.ToFloatND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _FloatND: ...
 @overload  # ~complex, +complex, +complex, +complex, +complex?, +complex?
 def solve_continuous_are(
@@ -74,7 +73,7 @@ def solve_continuous_are(
     r: onp.ToComplexND,
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, ~complex, +complex, +complex, +complex?, +complex?
 def solve_continuous_are(
@@ -84,7 +83,7 @@ def solve_continuous_are(
     r: onp.ToComplexND,
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, +complex, ~complex, +complex, +complex?, +complex?
 def solve_continuous_are(
@@ -94,7 +93,7 @@ def solve_continuous_are(
     r: onp.ToComplexND,
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, +complex, +complex, ~complex, +complex?, +complex?
 def solve_continuous_are(
@@ -104,7 +103,7 @@ def solve_continuous_are(
     r: onp.ToJustComplexND,
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, +complex, +complex, +complex, ~complex, +complex?
 def solve_continuous_are(
@@ -114,7 +113,7 @@ def solve_continuous_are(
     r: onp.ToComplexND,
     e: onp.ToJustComplexND,
     s: onp.ToComplexND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, +complex, +complex, +complex, +complex, ~complex
 def solve_continuous_are(
@@ -124,7 +123,7 @@ def solve_continuous_are(
     r: onp.ToComplexND,
     e: onp.ToComplexND | None,
     s: onp.ToJustComplexND,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, +complex, +complex, +complex, +complex?, *, ~complex
 def solve_continuous_are(
@@ -135,7 +134,7 @@ def solve_continuous_are(
     e: onp.ToComplexND | None = None,
     *,
     s: onp.ToJustComplexND,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 
 #
@@ -147,7 +146,7 @@ def solve_discrete_are(
     r: onp.ToFloatND,
     e: onp.ToFloatND | None = None,
     s: onp.ToFloatND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _FloatND: ...
 @overload  # ~complex, +complex, +complex, +complex, +complex?, +complex?
 def solve_discrete_are(
@@ -157,7 +156,7 @@ def solve_discrete_are(
     r: onp.ToComplexND,
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, ~complex, +complex, +complex, +complex?, +complex?
 def solve_discrete_are(
@@ -167,7 +166,7 @@ def solve_discrete_are(
     r: onp.ToComplexND,
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, +complex, ~complex, +complex, +complex?, +complex?
 def solve_discrete_are(
@@ -177,7 +176,7 @@ def solve_discrete_are(
     r: onp.ToComplexND,
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, +complex, +complex, ~complex, +complex?, +complex?
 def solve_discrete_are(
@@ -187,7 +186,7 @@ def solve_discrete_are(
     r: onp.ToJustComplexND,
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, +complex, +complex, +complex, ~complex, +complex?
 def solve_discrete_are(
@@ -197,7 +196,7 @@ def solve_discrete_are(
     r: onp.ToComplexND,
     e: onp.ToJustComplexND,
     s: onp.ToComplexND | None = None,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, +complex, +complex, +complex, +complex, ~complex
 def solve_discrete_are(
@@ -207,7 +206,7 @@ def solve_discrete_are(
     r: onp.ToComplexND,
     e: onp.ToComplexND | None,
     s: onp.ToJustComplexND,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 @overload  # +complex, +complex, +complex, +complex, +complex?, *, ~complex
 def solve_discrete_are(
@@ -218,7 +217,7 @@ def solve_discrete_are(
     e: onp.ToComplexND | None = None,
     *,
     s: onp.ToJustComplexND,
-    balanced: op.CanBool = True,
+    balanced: bool = True,
 ) -> _ComplexND: ...
 
 #

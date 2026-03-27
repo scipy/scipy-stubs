@@ -1,7 +1,6 @@
-from typing import Literal, TypeAlias, overload
+from typing import Literal, SupportsIndex, TypeAlias, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -25,7 +24,7 @@ def dctn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal: ...
 @overload
 def dctn(
@@ -34,7 +33,7 @@ def dctn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -45,7 +44,7 @@ def idctn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal: ...
 @overload
 def idctn(
@@ -54,7 +53,7 @@ def idctn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -65,7 +64,7 @@ def dstn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal: ...
 @overload
 def dstn(
@@ -74,7 +73,7 @@ def dstn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -85,7 +84,7 @@ def idstn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal: ...
 @overload
 def idstn(
@@ -94,7 +93,7 @@ def idstn(
     shape: AnyShape | None = None,
     axes: AnyShape | None = None,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -103,18 +102,18 @@ def dct(
     x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    axis: SupportsIndex = -1,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal: ...
 @overload
 def dct(
     x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    axis: SupportsIndex = -1,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -123,18 +122,18 @@ def idct(
     x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    axis: SupportsIndex = -1,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal: ...
 @overload
 def idct(
     x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    axis: SupportsIndex = -1,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -143,18 +142,18 @@ def dst(
     x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    axis: SupportsIndex = -1,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal: ...
 @overload
 def dst(
     x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    axis: SupportsIndex = -1,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal | _ArrayComplex: ...
 
 #
@@ -163,16 +162,16 @@ def idst(
     x: onp.ToFloatND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    axis: SupportsIndex = -1,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal: ...
 @overload
 def idst(
     x: onp.ToComplexND,
     type: DCTType = 2,
     n: onp.ToInt | None = None,
-    axis: op.CanIndex = -1,
+    axis: SupportsIndex = -1,
     norm: _NormKind = None,
-    overwrite_x: onp.ToBool = False,
+    overwrite_x: bool = False,
 ) -> _ArrayReal | _ArrayComplex: ...

@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Concatenate, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Any, Concatenate, Literal, SupportsIndex, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar, Unpack
 
 import numpy as np
@@ -71,13 +71,13 @@ def vectorized_filter(
     input: onp.ToComplexND,
     function: Callable[..., _ScalarT],
     *,
-    size: op.CanIndex | tuple[op.CanIndex, ...] | None = None,
+    size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
     footprint: onp.Array | None = None,
     output: None = None,
     mode: Literal["reflect", "constant", "nearest", "mirror", "wrap"] = "reflect",
     cval: onp.ToFloat | None = None,
     origin: onp.ToInt | onp.ToInt1D | None = None,
-    axes: tuple[op.CanIndex, ...] | None = None,
+    axes: tuple[SupportsIndex, ...] | None = None,
     batch_memory: int = 1_073_741_824,
 ) -> onp.ArrayND[_ScalarT]: ...
 @overload
@@ -85,13 +85,13 @@ def vectorized_filter(
     input: onp.ToComplexND,
     function: Callable[..., onp.ToComplex],
     *,
-    size: op.CanIndex | tuple[op.CanIndex, ...] | None = None,
+    size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
     footprint: onp.Array | None = None,
     output: onp.ArrayND[_ScalarT] | np.dtype[_ScalarT] | type[_ScalarT] | None = None,
     mode: Literal["reflect", "constant", "nearest", "mirror", "wrap"] = "reflect",
     cval: onp.ToFloat | None = None,
     origin: onp.ToInt | onp.ToInt1D | None = None,
-    axes: tuple[op.CanIndex, ...] | None = None,
+    axes: tuple[SupportsIndex, ...] | None = None,
     batch_memory: int = 1_073_741_824,
 ) -> onp.ArrayND[_ScalarT]: ...
 

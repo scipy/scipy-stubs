@@ -1,7 +1,6 @@
 from typing import Any, TypeAlias, TypeVar, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -27,10 +26,10 @@ def idctn(
     s: onp.ToInt | onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
+    overwrite_x: bool = False,
     workers: onp.ToInt | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def idctn(
@@ -39,10 +38,10 @@ def idctn(
     s: onp.ToInt | onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
+    overwrite_x: bool = False,
     workers: onp.ToInt | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def idctn(
@@ -51,10 +50,10 @@ def idctn(
     s: onp.ToInt | onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
+    overwrite_x: bool = False,
     workers: onp.ToInt | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> np.ndarray[_ShapeT, _DTypeT]: ...
 @overload
 def idctn(
@@ -63,10 +62,10 @@ def idctn(
     s: onp.ToInt | onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
+    overwrite_x: bool = False,
     workers: onp.ToInt | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def idctn(
@@ -75,10 +74,10 @@ def idctn(
     s: onp.ToInt | onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
+    overwrite_x: bool = False,
     workers: onp.ToInt | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_WorkaroundForPyright, npc.floating]: ...
 
 #
@@ -89,10 +88,10 @@ def idstn(
     s: onp.ToInt | onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
+    overwrite_x: bool = False,
     workers: onp.ToInt | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def idstn(
@@ -101,10 +100,10 @@ def idstn(
     s: onp.ToInt | onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
+    overwrite_x: bool = False,
     workers: onp.ToInt | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_ShapeT, np.float32]: ...
 @overload
 def idstn(
@@ -113,10 +112,10 @@ def idstn(
     s: onp.ToInt | onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
+    overwrite_x: bool = False,
     workers: onp.ToInt | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> np.ndarray[_ShapeT, _DTypeT]: ...
 @overload
 def idstn(
@@ -125,10 +124,10 @@ def idstn(
     s: onp.ToInt | onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
+    overwrite_x: bool = False,
     workers: onp.ToInt | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def idstn(
@@ -137,8 +136,8 @@ def idstn(
     s: onp.ToInt | onp.ToIntND | None = None,
     axes: AnyShape | None = None,
     norm: NormalizationMode | None = None,
-    overwrite_x: op.CanBool = False,
+    overwrite_x: bool = False,
     workers: onp.ToInt | None = None,
     *,
-    orthogonalize: op.CanBool | None = None,
+    orthogonalize: bool | None = None,
 ) -> onp.Array[_WorkaroundForPyright, npc.floating]: ...

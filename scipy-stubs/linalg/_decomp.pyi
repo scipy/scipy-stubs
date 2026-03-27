@@ -3,7 +3,6 @@ from typing import Literal, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 import optype.typing as opt
@@ -65,306 +64,306 @@ _InexactND: TypeAlias = onp.ArrayND[_Float | _Complex]
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None,
-    left: onp.ToTrue,
-    right: onp.ToTrue = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _FloatND]: ...
 @overload  # float, left: True (positional), right: True = ..., homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None,
-    left: onp.ToTrue,
-    right: onp.ToTrue = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
     *,
-    homogeneous_eigvals: onp.ToTrue,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _FloatND]: ...
 @overload  # float, left: True (keyword), right: True = ..., homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
     *,
-    left: onp.ToTrue,
-    right: onp.ToTrue = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _FloatND]: ...
 @overload  # float, left: True (keyword), right: True = ..., homogeneous_eigvals: True
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
     *,
-    left: onp.ToTrue,
-    right: onp.ToTrue = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToTrue,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _FloatND]: ...
 @overload  # float, left: False, right: False (positional), homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None,
-    left: onp.ToFalse,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[False],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _FloatND]: ...
 @overload  # float, left: False, right: False (positional), homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None,
-    left: onp.ToFalse,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    left: Literal[False],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
     *,
-    homogeneous_eigvals: onp.ToTrue,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _FloatND]: ...
 @overload  # float, left: False = ..., right: False (keyword), homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
-    left: onp.ToFalse = False,
+    left: Literal[False] = False,
     *,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _FloatND]: ...
 @overload  # float, left: False = ..., right: False (keyword), homogeneous_eigvals: True
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
-    left: onp.ToFalse = False,
+    left: Literal[False] = False,
     *,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToTrue,
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _FloatND]: ...
 @overload  # float, left: True (positional), right: False, homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None,
-    left: onp.ToTrue,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _FloatND, _FloatND]: ...
 @overload  # float, left: True (positional), right: False, homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None,
-    left: onp.ToTrue,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
     *,
-    homogeneous_eigvals: onp.ToTrue,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _FloatND, _FloatND]: ...
 @overload  # float, left: True (keyword), right: False, homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
     *,
-    left: onp.ToTrue,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _FloatND, _FloatND]: ...
 @overload  # float, left: True (keyword), right: False, homogeneous_eigvals: True
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
     *,
-    left: onp.ToTrue,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToTrue,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _FloatND, _FloatND]: ...
 @overload  # complex, left: False = ..., right: True = ..., homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
-    left: onp.ToFalse = False,
-    right: onp.ToTrue = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[False] = False,
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> _ComplexND: ...
 @overload  # complex, left: False = ..., right: True = ..., homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
-    left: onp.ToFalse = False,
-    right: onp.ToTrue = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    left: Literal[False] = False,
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
     *,
-    homogeneous_eigvals: onp.ToTrue,
+    homogeneous_eigvals: Literal[True],
 ) -> _ComplexND: ...
 @overload  # complex, left: True (positional), right: True = ..., homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None,
-    left: onp.ToTrue,
-    right: onp.ToTrue = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _InexactND]: ...
 @overload  # complex, left: True (positional), right: True = ..., homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None,
-    left: onp.ToTrue,
-    right: onp.ToTrue = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
     *,
-    homogeneous_eigvals: onp.ToTrue,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _InexactND]: ...
 @overload  # complex, left: True (keyword), right: True = ..., homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
     *,
-    left: onp.ToTrue,
-    right: onp.ToTrue = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _InexactND]: ...
 @overload  # complex, left: True (keyword), right: True = ..., homogeneous_eigvals: True
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
     *,
-    left: onp.ToTrue,
-    right: onp.ToTrue = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToTrue,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _InexactND]: ...
 @overload  # complex, left: False, right: False (positional), homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None,
-    left: onp.ToFalse,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[False],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _InexactND]: ...
 @overload  # complex, left: False, right: False (positional), homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None,
-    left: onp.ToFalse,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    left: Literal[False],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
     *,
-    homogeneous_eigvals: onp.ToTrue,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _InexactND]: ...
 @overload  # complex, left: False = ..., right: False (keyword), homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
-    left: onp.ToFalse = False,
+    left: Literal[False] = False,
     *,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _InexactND]: ...
 @overload  # complex, left: False = ..., right: False (keyword), homogeneous_eigvals: True
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
-    left: onp.ToFalse = False,
+    left: Literal[False] = False,
     *,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToTrue,
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _InexactND]: ...
 @overload  # complex, left: True (positional), right: False, homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None,
-    left: onp.ToTrue,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _InexactND, _InexactND]: ...
 @overload  # complex, left: True (positional), right: False, homogeneous_eigvals: True (keyword)
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None,
-    left: onp.ToTrue,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
     *,
-    homogeneous_eigvals: onp.ToTrue,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _InexactND, _InexactND]: ...
 @overload  # complex, left: True (keyword), right: False (keyword), homogeneous_eigvals: False = ...
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
     *,
-    left: onp.ToTrue,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> tuple[_ComplexND, _InexactND, _InexactND]: ...
 @overload  # complex, left: True (keyword), right: False (keyword), homogeneous_eigvals: True
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
     *,
-    left: onp.ToTrue,
-    right: onp.ToFalse,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToTrue,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[True],
 ) -> tuple[_ComplexND, _InexactND, _InexactND]: ...
 @overload  # catch-all
 def eig(
@@ -372,9 +371,9 @@ def eig(
     b: onp.ToComplexND | None = None,
     left: onp.ToBool = False,
     right: onp.ToBool = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
     homogeneous_eigvals: onp.ToBool = False,
 ) -> (
     _ComplexND
@@ -389,12 +388,12 @@ def eigh(  #
     a: onp.ToArrayND[float, np.float64 | npc.floating80 | npc.integer64 | npc.integer32],
     b: onp.ToFloat64_ND | None = None,
     *,
-    lower: op.CanBool = True,
-    eigvals_only: onp.ToFalse = False,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
     type: _EigHType = 1,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
@@ -404,12 +403,12 @@ def eigh(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
     *,
-    lower: op.CanBool = True,
-    eigvals_only: onp.ToFalse = False,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
     type: _EigHType = 1,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
@@ -419,12 +418,12 @@ def eigh(
     a: onp.ToJustComplexND,
     b: onp.ToComplexND | None = None,
     *,
-    lower: op.CanBool = True,
-    eigvals_only: onp.ToFalse = False,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
     type: _EigHType = 1,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
@@ -434,12 +433,12 @@ def eigh(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
     *,
-    lower: op.CanBool = True,
-    eigvals_only: onp.ToFalse = False,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
     type: _EigHType = 1,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
@@ -449,12 +448,12 @@ def eigh(
     a: onp.ToArrayND[float, npc.inexact80 | npc.number64 | npc.integer32],
     b: onp.ToComplex128_ND | None = None,
     *,
-    lower: op.CanBool = True,
-    eigvals_only: onp.ToTrue,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
     type: _EigHType = 1,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _EigHSubsetByValue | None = None,
@@ -464,12 +463,12 @@ def eigh(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
     *,
-    lower: op.CanBool = True,
-    eigvals_only: onp.ToTrue,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
     type: _EigHType = 1,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _EigHSubsetByValue | None = None,
@@ -479,143 +478,143 @@ def eigh(
 @overload  # float, eigvals_only: False = ..., select: _SelectA = ...
 def eig_banded(
     a_band: onp.ToFloatND,
-    lower: op.CanBool = False,
-    eigvals_only: onp.ToFalse = False,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> tuple[_FloatND, _FloatND]: ...
 @overload  # float, eigvals_only: False = ..., select: _SelectV (keyword)
 def eig_banded(
     a_band: onp.ToFloatND,
-    lower: op.CanBool = False,
-    eigvals_only: onp.ToFalse = False,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
     *,
     select: _SelectV,
     select_range: _SelectRange,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> tuple[_FloatND, _FloatND]: ...
 @overload  # float, eigvals_only: False = ..., select: _SelectI (keyword)
 def eig_banded(
     a_band: onp.ToFloatND,
-    lower: op.CanBool = False,
-    eigvals_only: onp.ToFalse = False,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
     *,
     select: _SelectI,
     select_range: _SelectRangeI,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> tuple[_FloatND, _FloatND]: ...
 @overload  # complex, eigvals_only: False = ..., select: _SelectA = ...
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = False,
-    eigvals_only: onp.ToFalse = False,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> tuple[_FloatND, _InexactND]: ...
 @overload  # complex, eigvals_only: False = ..., select: _SelectV (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = False,
-    eigvals_only: onp.ToFalse = False,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
     *,
     select: _SelectV,
     select_range: _SelectRange,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> tuple[_FloatND, _InexactND]: ...
 @overload  # complex, eigvals_only: False = ..., select: _SelectI (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = False,
-    eigvals_only: onp.ToFalse = False,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
     *,
     select: _SelectI,
     select_range: _SelectRangeI,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> tuple[_FloatND, _InexactND]: ...
 @overload  # eigvals_only: True  (positional), select: _SelectA = ...
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool,
-    eigvals_only: onp.ToTrue,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # eigvals_only: True  (keyword), select: _SelectA = ... (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = False,
+    lower: bool = False,
     *,
-    eigvals_only: onp.ToTrue,
-    overwrite_a_band: op.CanBool = False,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # eigvals_only: True  (positional), select: _SelectV (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool,
-    eigvals_only: onp.ToTrue,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
     *,
     select: _SelectV,
     select_range: _SelectRange,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # eigvals_only: True  (keyword), select: _SelectV (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = False,
+    lower: bool = False,
     *,
-    eigvals_only: onp.ToTrue,
-    overwrite_a_band: op.CanBool = False,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
     select: _SelectV,
     select_range: _SelectRange,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # eigvals_only: True (positional), select: _SelectI (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool,
-    eigvals_only: onp.ToTrue,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
     *,
     select: _SelectI,
     select_range: _SelectRangeI,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # eigvals_only: True (keyword), select: _SelectI (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = False,
+    lower: bool = False,
     *,
-    eigvals_only: onp.ToTrue,
-    overwrite_a_band: op.CanBool = False,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
     select: _SelectI,
     select_range: _SelectRangeI,
     max_ev: onp.ToInt = 0,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 
 #
@@ -623,34 +622,30 @@ def eig_banded(
 def eigvals(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
-    overwrite_a: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: onp.ToFalse = False,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: Literal[False] = False,
 ) -> _ComplexND: ...
 @overload  # homogeneous_eigvals: True (positional)
 def eigvals(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None,
-    overwrite_a: op.CanBool,
-    check_finite: op.CanBool,
-    homogeneous_eigvals: onp.ToTrue,
+    a: onp.ToComplexND, b: onp.ToComplexND | None, overwrite_a: bool, check_finite: bool, homogeneous_eigvals: Literal[True]
 ) -> _ComplexND: ...
 @overload  # homogeneous_eigvals: True (keyword)
 def eigvals(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
-    overwrite_a: op.CanBool = False,
-    check_finite: op.CanBool = True,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
     *,
-    homogeneous_eigvals: onp.ToTrue,
+    homogeneous_eigvals: Literal[True],
 ) -> _ComplexND: ...
 @overload  # catch-all
 def eigvals(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
-    overwrite_a: op.CanBool = False,
-    check_finite: op.CanBool = True,
-    homogeneous_eigvals: op.CanBool = False,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
 ) -> _ComplexND: ...
 
 #
@@ -658,11 +653,11 @@ def eigvalsh(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
     *,
-    lower: op.CanBool = True,
-    overwrite_a: op.CanBool = False,
-    overwrite_b: op.CanBool = False,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
     type: _EigHType = 1,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _EigHSubsetByValue | None = None,
@@ -672,49 +667,49 @@ def eigvalsh(
 @overload  # select: _SelectA = ...
 def eigvals_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = False,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # select: _SelectV (positional)
 def eigvals_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool,
-    overwrite_a_band: op.CanBool,
+    lower: bool,
+    overwrite_a_band: bool,
     select: _SelectV,
     select_range: _SelectRange,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # select: _SelectV (keyword)
 def eigvals_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = False,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
     *,
     select: _SelectV,
     select_range: _SelectRange,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # select: _SelectI (positional)
 def eigvals_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool,
-    overwrite_a_band: op.CanBool,
+    lower: bool,
+    overwrite_a_band: bool,
     select: _SelectI,
     select_range: _SelectRangeI,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # select: _SelectI (keyword)
 def eigvals_banded(
     a_band: onp.ToComplexND,
-    lower: op.CanBool = False,
-    overwrite_a_band: op.CanBool = False,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
     *,
     select: _SelectI,
     select_range: _SelectRangeI,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
 ) -> _FloatND: ...
 
 #
@@ -724,7 +719,7 @@ def eigvalsh_tridiagonal(
     e: onp.ToComplexND,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _FloatND: ...
@@ -734,7 +729,7 @@ def eigvalsh_tridiagonal(
     e: onp.ToComplexND,
     select: _SelectV,
     select_range: _SelectRange,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _FloatND: ...
@@ -744,7 +739,7 @@ def eigvalsh_tridiagonal(
     e: onp.ToComplexND,
     select: _SelectI,
     select_range: _SelectRangeI,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _FloatND: ...
@@ -754,10 +749,10 @@ def eigvalsh_tridiagonal(
 def eigh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
-    eigvals_only: onp.ToFalse = False,
+    eigvals_only: Literal[False] = False,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> tuple[_FloatND, _FloatND]: ...
@@ -765,10 +760,10 @@ def eigh_tridiagonal(
 def eigh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
-    eigvals_only: onp.ToFalse,
+    eigvals_only: Literal[False],
     select: _SelectV,
     select_range: _SelectRange,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> tuple[_FloatND, _FloatND]: ...
@@ -776,11 +771,11 @@ def eigh_tridiagonal(
 def eigh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
-    eigvals_only: onp.ToFalse = False,
+    eigvals_only: Literal[False] = False,
     *,
     select: _SelectV,
     select_range: _SelectRange,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> tuple[_FloatND, _FloatND]: ...
@@ -788,10 +783,10 @@ def eigh_tridiagonal(
 def eigh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
-    eigvals_only: onp.ToFalse,
+    eigvals_only: Literal[False],
     select: _SelectI,
     select_range: _SelectRangeI,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> tuple[_FloatND, _FloatND]: ...
@@ -799,11 +794,11 @@ def eigh_tridiagonal(
 def eigh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
-    eigvals_only: onp.ToFalse = False,
+    eigvals_only: Literal[False] = False,
     *,
     select: _SelectI,
     select_range: _SelectRangeI,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> tuple[_FloatND, _FloatND]: ...
@@ -811,10 +806,10 @@ def eigh_tridiagonal(
 def eigh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
-    eigvals_only: onp.ToTrue,
+    eigvals_only: Literal[True],
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _FloatND: ...
@@ -822,10 +817,10 @@ def eigh_tridiagonal(
 def eigh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
-    eigvals_only: onp.ToTrue,
+    eigvals_only: Literal[True],
     select: _SelectV,
     select_range: _SelectRange,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _FloatND: ...
@@ -833,10 +828,10 @@ def eigh_tridiagonal(
 def eigh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
-    eigvals_only: onp.ToTrue,
+    eigvals_only: Literal[True],
     select: _SelectI,
     select_range: _SelectRangeI,
-    check_finite: op.CanBool = True,
+    check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> _FloatND: ...
@@ -844,23 +839,23 @@ def eigh_tridiagonal(
 #
 @overload  # float, calc_q: False = ...
 def hessenberg(
-    a: onp.ToFloatND, calc_q: onp.ToFalse = False, overwrite_a: op.CanBool = False, check_finite: op.CanBool = True
+    a: onp.ToFloatND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
 ) -> _FloatND: ...
 @overload  # float, calc_q: True
 def hessenberg(
-    a: onp.ToFloatND, calc_q: onp.ToTrue, overwrite_a: op.CanBool = False, check_finite: op.CanBool = True
+    a: onp.ToFloatND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_FloatND, _FloatND]: ...
 @overload  # complex, calc_q: False = ...
 def hessenberg(
-    a: onp.ToComplexND, calc_q: onp.ToFalse = False, overwrite_a: op.CanBool = False, check_finite: op.CanBool = True
+    a: onp.ToComplexND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
 ) -> _InexactND: ...
 @overload  # complex, calc_q: True
 def hessenberg(
-    a: onp.ToComplexND, calc_q: onp.ToTrue, overwrite_a: op.CanBool = False, check_finite: op.CanBool = True
+    a: onp.ToComplexND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_InexactND, _InexactND]: ...
 @overload  # complex, calc_q: CanBool (catch-all)
 def hessenberg(
-    a: onp.ToComplexND, calc_q: op.CanBool, overwrite_a: op.CanBool = False, check_finite: op.CanBool = True
+    a: onp.ToComplexND, calc_q: bool, overwrite_a: bool = False, check_finite: bool = True
 ) -> _InexactND | tuple[_InexactND, _InexactND]: ...
 
 #

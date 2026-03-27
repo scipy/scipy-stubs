@@ -1,8 +1,7 @@
 from collections.abc import Iterable
-from typing import Literal, TypeAlias, TypeVar, overload
+from typing import Literal, SupportsIndex, TypeAlias, TypeVar, overload
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 from numpy._typing import _DTypeLike
 
@@ -116,11 +115,11 @@ def sweep_poly(t: _ToFloat0ND, poly: onp.ToFloatND | np.poly1d, phi: onp.ToFloat
 #
 @overload  # dtype is not given
 def unit_impulse(
-    shape: AnyShape, idx: op.CanIndex | Iterable[op.CanIndex] | Literal["mid"] | None = None, dtype: type[float] = ...
+    shape: AnyShape, idx: SupportsIndex | Iterable[SupportsIndex] | Literal["mid"] | None = None, dtype: type[float] = ...
 ) -> _FloatND: ...
 @overload  # dtype is given
 def unit_impulse(
-    shape: AnyShape, idx: op.CanIndex | Iterable[op.CanIndex] | Literal["mid"] | None, dtype: _DTypeLike[_SCT]
+    shape: AnyShape, idx: SupportsIndex | Iterable[SupportsIndex] | Literal["mid"] | None, dtype: _DTypeLike[_SCT]
 ) -> onp.ArrayND[_SCT]: ...
 
 # Overloads for gausspulse when `t` is `"cutoff"`
@@ -131,8 +130,8 @@ def gausspulse(
     bw: onp.ToFloat = 0.5,
     bwr: onp.ToFloat = -6,
     tpr: onp.ToFloat = -60,
-    retquad: op.CanBool = False,
-    retenv: op.CanBool = False,
+    retquad: bool = False,
+    retenv: bool = False,
 ) -> np.float64: ...
 
 # Overloads for gausspulse when `t` is scalar
