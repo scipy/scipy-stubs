@@ -3,7 +3,6 @@ from typing import Any, Literal, Never, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
-import numpy_typing_compat as nptc
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -16,13 +15,13 @@ _Unused: TypeAlias = Never  # not used by scipy
 
 _CoInteger: TypeAlias = npc.integer | np.bool_
 
-_AsFloat32: TypeAlias = nptc.CanArray[_ShapeT, np.dtype[npc.floating32]]
-_AsFloat64: TypeAlias = nptc.CanArray[_ShapeT, np.dtype[npc.floating64 | _CoInteger]]
-_AsFloat80: TypeAlias = nptc.CanArray[_ShapeT, np.dtype[npc.floating80]]
+_AsFloat32: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.floating32]]
+_AsFloat64: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.floating64 | _CoInteger]]
+_AsFloat80: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.floating80]]
 
-_AsComplex64: TypeAlias = nptc.CanArray[_ShapeT, np.dtype[npc.inexact32]]
-_AsComplex128: TypeAlias = nptc.CanArray[_ShapeT, np.dtype[npc.inexact64 | _CoInteger]]
-_AsComplex160: TypeAlias = nptc.CanArray[_ShapeT, np.dtype[npc.inexact80]]
+_AsComplex64: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.inexact32]]
+_AsComplex128: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.inexact64 | _CoInteger]]
+_AsComplex160: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.inexact80]]
 
 _ToFloat64_ND: TypeAlias = onp.ToArrayND[float, npc.floating64 | _CoInteger]
 _ToComplex128_ND: TypeAlias = onp.ToArrayND[complex, npc.inexact64 | _CoInteger]
