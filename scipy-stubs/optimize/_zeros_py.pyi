@@ -117,7 +117,7 @@ def newton(
     x1: onp.ToFloat | None = None,
     rtol: onp.ToFloat = 0.0,
     full_output: onp.ToFalse = False,
-    disp: onp.ToBool = True,
+    disp: bool = True,
 ) -> _Float: ...
 @overload
 def newton(
@@ -132,7 +132,7 @@ def newton(
     rtol: onp.ToFloat = 0.0,
     *,
     full_output: onp.ToTrue,
-    disp: onp.ToBool = True,
+    disp: bool = True,
 ) -> tuple[_Float, RootResults[_Float]]: ...
 @overload
 def newton(
@@ -146,7 +146,7 @@ def newton(
     x1: onp.ToFloat1D | None = None,
     rtol: onp.ToFloat = 0.0,
     full_output: onp.ToFalse = False,
-    disp: onp.ToBool = True,
+    disp: bool = True,
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def newton(
@@ -161,7 +161,7 @@ def newton(
     rtol: onp.ToFloat = 0.0,
     *,
     full_output: onp.ToTrue,
-    disp: onp.ToBool = True,
+    disp: bool = True,
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.bool_], onp.Array1D[np.bool_]]: ...
 
 #

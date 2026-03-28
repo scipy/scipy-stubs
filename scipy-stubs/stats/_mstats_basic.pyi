@@ -500,25 +500,19 @@ def tmin(
     a: onp.SequenceND[op.JustInt | np.int_],
     lowerlimit: onp.ToFloat | None = None,
     axis: SupportsIndex | None = 0,
-    inclusive: onp.ToBool = True,
+    inclusive: bool = True,
 ) -> _MArrayOrND[np.int_]: ...
 @overload
 def tmin(
-    a: onp.SequenceND[float], lowerlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: onp.ToBool = True
+    a: onp.SequenceND[float], lowerlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
 ) -> _MArrayOrND[np.float64 | np.int_]: ...
 @overload
 def tmin(
-    a: onp.SequenceND[complex],
-    lowerlimit: onp.ToComplex | None = None,
-    axis: SupportsIndex | None = 0,
-    inclusive: onp.ToBool = True,
+    a: onp.SequenceND[complex], lowerlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
 ) -> _MArrayOrND[np.complex128 | np.float64 | np.int_]: ...
 @overload
 def tmin(
-    a: _ArrayLike[_SCT_bifc],
-    lowerlimit: onp.ToComplex | None = None,
-    axis: SupportsIndex | None = 0,
-    inclusive: onp.ToBool = True,
+    a: _ArrayLike[_SCT_bifc], lowerlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
 ) -> _MArrayOrND[_SCT_bifc]: ...
 
 #
@@ -527,25 +521,19 @@ def tmax(
     a: onp.SequenceND[op.JustInt | np.int_],
     upperlimit: onp.ToFloat | None = None,
     axis: SupportsIndex | None = 0,
-    inclusive: onp.ToBool = True,
+    inclusive: bool = True,
 ) -> _MArrayOrND[np.int_]: ...
 @overload
 def tmax(
-    a: onp.SequenceND[float], upperlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: onp.ToBool = True
+    a: onp.SequenceND[float], upperlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
 ) -> _MArrayOrND[np.float64 | np.int_]: ...
 @overload
 def tmax(
-    a: onp.SequenceND[complex],
-    upperlimit: onp.ToComplex | None = None,
-    axis: SupportsIndex | None = 0,
-    inclusive: onp.ToBool = True,
+    a: onp.SequenceND[complex], upperlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
 ) -> _MArrayOrND[np.complex128 | np.float64 | np.int_]: ...
 @overload
 def tmax(
-    a: _ArrayLike[_SCT_bifc],
-    upperlimit: onp.ToComplex | None = None,
-    axis: SupportsIndex | None = 0,
-    inclusive: onp.ToBool = True,
+    a: _ArrayLike[_SCT_bifc], upperlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
 ) -> _MArrayOrND[_SCT_bifc]: ...
 
 #
@@ -563,7 +551,7 @@ def winsorize(
     a: onp.ToIntND,
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    inplace: onp.ToBool = False,
+    inplace: bool = False,
     axis: SupportsIndex | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.MArray[np.int_]: ...
@@ -572,7 +560,7 @@ def winsorize(
     a: _ArrayLike[_SCT_f],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    inplace: onp.ToBool = False,
+    inplace: bool = False,
     axis: SupportsIndex | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.MArray[_SCT_f]: ...
@@ -581,7 +569,7 @@ def winsorize(
     a: onp.ToFloatND,
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    inplace: onp.ToBool = False,
+    inplace: bool = False,
     axis: SupportsIndex | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.MArray[npc.floating | np.int_]: ...
@@ -590,7 +578,7 @@ def winsorize(
     a: onp.ToComplexND,
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    inplace: onp.ToBool = False,
+    inplace: bool = False,
     axis: SupportsIndex | None = None,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.MArray[np.complex128 | npc.floating | np.int_]: ...

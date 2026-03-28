@@ -20,9 +20,9 @@ _ToXi: TypeAlias = onp.ToFloat2D | tuple[onp.ToFloat1D | onp.ToFloat2D, ...]
 @type_check_only
 class _TreeOptions(TypedDict, total=False):
     leafsize: onp.ToJustInt
-    compact_nodes: onp.ToBool
-    copy_data: onp.ToBool
-    balanced_tree: onp.ToBool
+    compact_nodes: bool
+    copy_data: bool
+    balanced_tree: bool
     boxsize: onp.ToFloatND | None
 
 @type_check_only
@@ -80,7 +80,7 @@ def griddata(
     xi: _ToXi,
     method: _Method = "linear",
     fill_value: onp.ToFloat = ...,  # np.nan
-    rescale: onp.ToBool = False,
+    rescale: bool = False,
 ) -> onp.Array[onp.AtLeast1D[Any], np.float64]: ...
 @overload
 def griddata(
@@ -89,7 +89,7 @@ def griddata(
     xi: _ToXi,
     method: _Method = "linear",
     fill_value: onp.ToComplex = ...,  # np.nan
-    rescale: onp.ToBool = False,
+    rescale: bool = False,
 ) -> onp.Array[onp.AtLeast1D[Any], np.complex128]: ...
 @overload
 def griddata(
@@ -98,5 +98,5 @@ def griddata(
     xi: _ToXi,
     method: _Method = "linear",
     fill_value: onp.ToComplex = ...,  # np.nan
-    rescale: onp.ToBool = False,
+    rescale: bool = False,
 ) -> onp.Array[onp.AtLeast1D[Any], Incomplete]: ...

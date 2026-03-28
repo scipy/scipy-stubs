@@ -62,9 +62,9 @@ class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
 @type_check_only
 class _MinimizeOptions(TypedDict, total=False):
     # Nelder-Mead, Powell, CG, BFGS, Newton-CG
-    return_all: onp.ToBool
+    return_all: bool
     # Nelder-Mead, Powell, CG, BFGS, L-BFGS-B, Newton-CG, TNC, COBYLA, COBYQA, SLSQP, trust-constr
-    disp: onp.ToBool
+    disp: bool
     # Nelder-Mead, Powell, CG, BFGS, L-BFGS-B, Newton-CG, COBYLA, SLSQP, trust-constr
     maxiter: int
     # Nelder-Mead, Powell, COBYQA
@@ -84,7 +84,7 @@ class _MinimizeOptions(TypedDict, total=False):
     maxls: int
     # Nelder-Mead
     initial_simplex: onp.ToFloatND
-    adaptive: onp.ToBool
+    adaptive: bool
     xatol: _Floating
     fatol: _Floating
     # CG, BFGS, L-BFGS-B, dogleg, trust-ncg, trust-exact, TNC, trust-constr
@@ -122,7 +122,7 @@ class _MinimizeOptions(TypedDict, total=False):
     initial_tr_radius: _Floating
     # trust-constr
     barrier_tol: _Floating
-    sparse_jacobian: onp.ToBool
+    sparse_jacobian: bool
     initial_constr_penalty: _Floating
     initial_barrier_parameter: _Floating
     initial_barrier_tolerance: _Floating
@@ -131,9 +131,9 @@ class _MinimizeOptions(TypedDict, total=False):
     # dogleg, trust-ncg, trust-exact, TNC
     eta: _Floating
     # trust-krylov
-    inexact: onp.ToBool
+    inexact: bool
     # TNC (list of floats), COBYQA (bool)
-    scale: Sequence[_Floating] | onp.ToBool
+    scale: Sequence[_Floating] | bool
     # trust-exact
     subproblem_maxiter: float
 

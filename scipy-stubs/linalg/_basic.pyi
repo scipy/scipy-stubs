@@ -1262,7 +1262,7 @@ def pinv(  # (float[:, :], return_rank=False) -> float[:, :]
     *,
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
-    return_rank: onp.ToFalse = False,
+    return_rank: Literal[False] = False,
     check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # (float[:, :], return_rank=True) -> (float[:, :], int)
@@ -1271,7 +1271,7 @@ def pinv(
     *,
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
-    return_rank: onp.ToTrue,
+    return_rank: Literal[True],
     check_finite: bool = True,
 ) -> tuple[_FloatND, int]: ...
 @overload  # (complex[:, :], return_rank=False) -> complex[:, :]
@@ -1280,7 +1280,7 @@ def pinv(
     *,
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
-    return_rank: onp.ToFalse = False,
+    return_rank: Literal[False] = False,
     check_finite: bool = True,
 ) -> _InexactND: ...
 @overload  # (complex[:, :], return_rank=True) -> (complex[:, :], int)
@@ -1289,7 +1289,7 @@ def pinv(
     *,
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
-    return_rank: onp.ToTrue,
+    return_rank: Literal[True],
     check_finite: bool = True,
 ) -> tuple[_InexactND, int]: ...
 
@@ -1300,7 +1300,7 @@ def pinvh(
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
     lower: bool = True,
-    return_rank: onp.ToFalse = False,
+    return_rank: Literal[False] = False,
     check_finite: bool = True,
 ) -> _FloatND: ...
 @overload  # (float[:, :], return_rank=True, /) -> (float[:, :], int)
@@ -1309,7 +1309,7 @@ def pinvh(
     atol: onp.ToFloat | None,
     rtol: onp.ToFloat | None,
     lower: bool,
-    return_rank: onp.ToTrue,
+    return_rank: Literal[True],
     check_finite: bool = True,
 ) -> tuple[_FloatND, int]: ...
 @overload  # (float[:, :], *, return_rank=True) -> (float[:, :], int)
@@ -1319,7 +1319,7 @@ def pinvh(
     rtol: onp.ToFloat | None = None,
     lower: bool = True,
     *,
-    return_rank: onp.ToTrue,
+    return_rank: Literal[True],
     check_finite: bool = True,
 ) -> tuple[_FloatND, int]: ...
 @overload  # (complex[:, :], return_rank=False) -> complex[:, :]
@@ -1328,7 +1328,7 @@ def pinvh(
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
     lower: bool = True,
-    return_rank: onp.ToFalse = False,
+    return_rank: Literal[False] = False,
     check_finite: bool = True,
 ) -> _InexactND: ...
 @overload  # (complex[:, :], return_rank=True, /) -> (complex[:, :], int)
@@ -1337,7 +1337,7 @@ def pinvh(
     atol: onp.ToFloat | None,
     rtol: onp.ToFloat | None,
     lower: bool,
-    return_rank: onp.ToTrue,
+    return_rank: Literal[True],
     check_finite: bool = True,
 ) -> tuple[_InexactND, int]: ...
 @overload  # (complex[:, :], *, return_rank=True) -> (complex[:, :], int)
@@ -1347,42 +1347,34 @@ def pinvh(
     rtol: onp.ToFloat | None = None,
     lower: bool = True,
     *,
-    return_rank: onp.ToTrue,
+    return_rank: Literal[True],
     check_finite: bool = True,
 ) -> tuple[_InexactND, int]: ...
 
 # TODO(jorenham): improve this
 @overload  # (float[:, :], separate=True) -> (float[:, :], float[:, :])
 def matrix_balance(
-    A: onp.ToFloatND,
-    permute: onp.ToBool = True,
-    scale: onp.ToBool = True,
-    separate: onp.ToFalse = False,
-    overwrite_a: bool = False,
+    A: onp.ToFloatND, permute: bool = True, scale: bool = True, separate: Literal[False] = False, overwrite_a: bool = False
 ) -> _Tuple2[_FloatND]: ...
 @overload  # (float[:, :], separate=False, /) -> (float[:, :], (float[:], float[:]))
 def matrix_balance(
-    A: onp.ToFloatND, permute: onp.ToBool, scale: onp.ToBool, separate: onp.ToTrue, overwrite_a: bool = False
+    A: onp.ToFloatND, permute: bool, scale: bool, separate: Literal[True], overwrite_a: bool = False
 ) -> tuple[_FloatND, _Tuple2[_FloatND]]: ...
 @overload  # (float[:, :], *, separate=False) -> (float[:, :], (float[:], float[:]))
 def matrix_balance(
-    A: onp.ToFloatND, permute: onp.ToBool = True, scale: onp.ToBool = True, *, separate: onp.ToTrue, overwrite_a: bool = False
+    A: onp.ToFloatND, permute: bool = True, scale: bool = True, *, separate: Literal[True], overwrite_a: bool = False
 ) -> tuple[_FloatND, _Tuple2[_FloatND]]: ...
 @overload  # (complex[:, :], separate=True) -> (complex[:, :], complex[:, :])
 def matrix_balance(
-    A: onp.ToComplexND,
-    permute: onp.ToBool = True,
-    scale: onp.ToBool = True,
-    separate: onp.ToFalse = False,
-    overwrite_a: bool = False,
+    A: onp.ToComplexND, permute: bool = True, scale: bool = True, separate: Literal[False] = False, overwrite_a: bool = False
 ) -> _Tuple2[_InexactND]: ...
 @overload  # (complex[:, :], separate=False, /) -> (complex[:, :], (complex[:], complex[:]))
 def matrix_balance(
-    A: onp.ToComplexND, permute: onp.ToBool, scale: onp.ToBool, separate: onp.ToTrue, overwrite_a: bool = False
+    A: onp.ToComplexND, permute: bool, scale: bool, separate: Literal[True], overwrite_a: bool = False
 ) -> tuple[_InexactND, _Tuple2[_InexactND]]: ...
 @overload  # (complex[:, :], *, separate=False) -> (complex[:, :], (complex[:], complex[:]))
 def matrix_balance(
-    A: onp.ToComplexND, permute: onp.ToBool = True, scale: onp.ToBool = True, *, separate: onp.ToTrue, overwrite_a: bool = False
+    A: onp.ToComplexND, permute: bool = True, scale: bool = True, *, separate: Literal[True], overwrite_a: bool = False
 ) -> tuple[_InexactND, _Tuple2[_InexactND]]: ...
 
 # TODO(jorenham): improve this
@@ -1391,26 +1383,23 @@ def matmul_toeplitz(
     c_or_cr: onp.ToFloatStrict1D | _Tuple2[onp.ToFloatStrict1D],
     x: onp.ToFloatStrict1D,
     check_finite: bool = False,
-    workers: onp.ToJustInt | None = None,
+    workers: int | None = None,
 ) -> _Float1D: ...
 @overload  # floating
 def matmul_toeplitz(
-    c_or_cr: onp.ToFloatND | _Tuple2[onp.ToFloatND],
-    x: onp.ToFloatND,
-    check_finite: bool = False,
-    workers: onp.ToJustInt | None = None,
+    c_or_cr: onp.ToFloatND | _Tuple2[onp.ToFloatND], x: onp.ToFloatND, check_finite: bool = False, workers: int | None = None
 ) -> _FloatND: ...
 @overload  # complexfloating 1d, 1d
 def matmul_toeplitz(
     c_or_cr: onp.ToComplexStrict1D | _Tuple2[onp.ToComplexStrict1D],
     x: onp.ToComplexStrict1D,
     check_finite: bool = False,
-    workers: onp.ToJustInt | None = None,
+    workers: int | None = None,
 ) -> _Inexact1D: ...
 @overload  # complexfloating
 def matmul_toeplitz(
     c_or_cr: onp.ToComplexND | _Tuple2[onp.ToComplexND],
     x: onp.ToComplexND,
     check_finite: bool = False,
-    workers: onp.ToJustInt | None = None,
+    workers: int | None = None,
 ) -> _InexactND: ...

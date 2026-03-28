@@ -26,14 +26,14 @@ class _SHGOOptions(TypedDict, total=False):
     maxev: int
     mmaxtime: _Float
     minhgrd: int
-    symmetry: Sequence[int] | onp.ToBool
-    jac: _Fun1D[onp.ToFloat1D] | onp.ToBool  # gradient
+    symmetry: Sequence[int] | bool
+    jac: _Fun1D[onp.ToFloat1D] | bool  # gradient
     hess: _Fun1D[onp.ToFloat2D]
     hessp: Callable[Concatenate[_Float1D, _Float1D, ...], onp.ToFloat1D]
-    minimize_every_iter: onp.ToBool
+    minimize_every_iter: bool
     local_iter: int
-    infty_constraints: onp.ToBool
-    disp: onp.ToBool
+    infty_constraints: bool
+    disp: bool
 
 ###
 

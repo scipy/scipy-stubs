@@ -22,8 +22,8 @@ _Float: TypeAlias = float | np.float64
 @type_check_only
 class _OptionsCommon(TypedDict, total=False):
     maxiter: _Int  # default: method-specific
-    disp: onp.ToBool  # default: False
-    presolve: onp.ToBool  # default: True
+    disp: bool  # default: False
+    presolve: bool  # default: True
 
 # highs-ds
 @type_check_only
@@ -46,8 +46,8 @@ class _OptionsHighs(_OptionsHighsIPM, TypedDict, total=False):
 @type_check_only
 class _OptionsCommonLegacy(_OptionsCommon, TypedDict, total=False):
     tol: _Float
-    autoscale: onp.ToBool  # default: False
-    rr: onp.ToBool  # default: True
+    autoscale: bool  # default: False
+    rr: bool  # default: True
     rr_method: Literal["SVD", "pivot", "ID", "None"] | None  # default: None
 
 # interior-point (legacy, see https://github.com/scipy/scipy/issues/15707)
@@ -55,25 +55,25 @@ class _OptionsCommonLegacy(_OptionsCommon, TypedDict, total=False):
 class _OptionsInteriorPoint(_OptionsCommonLegacy, TypedDict, total=False):
     alpha0: _Float  # default: 0.99995
     beta: _Float  # default: 0.1
-    sparse: onp.ToBool  # default: False
-    lstq: onp.ToBool  # default: False
-    sym_pos: onp.ToBool  # default: True
-    cholsky: onp.ToBool  # default: True
-    pc: onp.ToBool  # default: True
-    ip: onp.ToBool  # default: False
+    sparse: bool  # default: False
+    lstq: bool  # default: False
+    sym_pos: bool  # default: True
+    cholsky: bool  # default: True
+    pc: bool  # default: True
+    ip: bool  # default: False
     perm_spec: Literal["NATURAL", "MMD_ATA", "MMD_AT_PLUS_A", "COLAMD"] | None  # default: "MMD_AT_PLUS_A"
 
 # revised simplex (legacy, see https://github.com/scipy/scipy/issues/15707)
 @type_check_only
 class _OptionsRevisedSimplex(_OptionsCommonLegacy, TypedDict, total=False):
     maxupdate: _Int  # default: 10
-    mast: onp.ToBool  # default: False
+    mast: bool  # default: False
     pivot: Literal["mrc", "bland"]
 
 # simplex (legacy, see https://github.com/scipy/scipy/issues/15707)
 @type_check_only
 class _OptionsSimplex(_OptionsCommonLegacy, TypedDict, total=False):
-    bland: onp.ToBool  # default: False
+    bland: bool  # default: False
 
 ###
 

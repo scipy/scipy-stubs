@@ -28,12 +28,12 @@ def tfqmr(
     b: onp.ToFloat1D,
     x0: onp.ToFloat1D | None = None,
     *,
-    rtol: onp.ToFloat = 1e-5,
-    atol: onp.ToFloat = 0.0,
+    rtol: float = 1e-5,
+    atol: float = 0.0,
     maxiter: int | None = None,
     M: _ToLinearOperator[_FloatT] | None = None,
     callback: _Callback[_FloatT] | None = None,
-    show: onp.ToBool = False,
+    show: bool = False,
 ) -> tuple[onp.Array1D[_FloatT], int]: ...
 @overload  # complex
 def tfqmr(
@@ -41,10 +41,10 @@ def tfqmr(
     b: onp.ToComplex1D,
     x0: onp.ToComplex1D | None = None,
     *,
-    rtol: onp.ToFloat = 1e-5,
-    atol: onp.ToFloat = 0.0,
+    rtol: float = 1e-5,
+    atol: float = 0.0,
     maxiter: int | None = None,
     M: _ToLinearOperator[_ComplexT] | None = None,
     callback: _Callback[_ComplexT] | None = None,
-    show: onp.ToBool = False,
+    show: bool = False,
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...

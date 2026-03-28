@@ -31,7 +31,7 @@ def direct(
     eps: onp.ToFloat = 1e-4,
     maxfun: onp.ToJustInt | None = None,
     maxiter: onp.ToJustInt = 1000,
-    locally_biased: onp.ToBool = True,
+    locally_biased: bool = True,
     f_min: onp.ToFloat = ...,
     f_min_rtol: onp.ToFloat = 0.0001,
     vol_tol: onp.ToFloat = 1e-16,

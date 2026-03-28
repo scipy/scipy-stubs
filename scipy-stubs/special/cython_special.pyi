@@ -6,7 +6,6 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_X_b: TypeAlias = onp.ToBool
 _X_i: TypeAlias = int | np.intp
 _X_f: TypeAlias = float | np.float64
 _X_c: TypeAlias = complex | np.complex128
@@ -70,9 +69,9 @@ class _CythonFunctionOrMethod_2_hankel(_BaseCythonFunctionOrMethod, Protocol):
 @type_check_only
 class _CythonFunctionOrMethod_2_spherical(_BaseCythonFunctionOrMethod, Protocol):
     @overload
-    def __call__(self, /, n: _X_i, z: _X_f, derivative: _X_b = 0) -> float: ...
+    def __call__(self, /, n: _X_i, z: _X_f, derivative: onp.ToBool = 0) -> float: ...
     @overload
-    def __call__(self, /, n: _X_i, z: _X_c, derivative: _X_b = 0) -> complex: ...
+    def __call__(self, /, n: _X_i, z: _X_c, derivative: onp.ToBool = 0) -> complex: ...
 
 @type_check_only
 class _CythonFunctionOrMethod_3f(_BaseCythonFunctionOrMethod, Protocol):

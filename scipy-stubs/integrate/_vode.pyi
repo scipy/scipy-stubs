@@ -1,17 +1,13 @@
 from collections.abc import Callable
-from typing import Concatenate, Protocol, TypeAlias, final, type_check_only
+from typing import Concatenate, Final, Literal, Protocol, TypeAlias, final, type_check_only
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_VecI32: TypeAlias = onp.Array1D[np.int32]
-_VecF64: TypeAlias = onp.Array1D[np.float64]
-_VecC128: TypeAlias = onp.Array1D[np.complex128]
-
 # (t, y) -> ydot or jac
-_FnCallbackD: TypeAlias = Callable[Concatenate[float, _VecF64, ...], onp.ArrayND[npc.floating]]
-_FnCallbackZ: TypeAlias = Callable[Concatenate[float, _VecC128, ...], onp.ArrayND[npc.complexfloating]]
+_FnCallbackD: TypeAlias = Callable[Concatenate[float, onp.Array1D[np.float64], ...], onp.ArrayND[npc.floating]]
+_FnCallbackZ: TypeAlias = Callable[Concatenate[float, onp.Array1D[np.complex128], ...], onp.ArrayND[npc.complexfloating]]
 
 @type_check_only
 @final
@@ -21,20 +17,20 @@ class _fortran_dvode(Protocol):
         /,
         f: _FnCallbackD,
         jac: _FnCallbackD,
-        y: _VecF64,
+        y: onp.Array1D[np.float64],
         t: float,
         tout: float,
-        rtol: _VecF64,
-        atol: _VecF64,
+        rtol: onp.Array1D[np.float64],
+        atol: onp.Array1D[np.float64],
         itask: int,
         istate: int,
-        rwork: _VecF64,
-        iwork: _VecI32,
+        rwork: onp.Array1D[np.float64],
+        iwork: onp.Array1D[np.int32],
         mf: int,
         f_extra_args: tuple[object, ...] = (),
         jac_extra_args: tuple[object, ...] = (),
-        overwrite_y: onp.ToBool = 0,
-    ) -> tuple[_VecF64, float, int]: ...  # (y, t, istate)
+        overwrite_y: bool | Literal[0, 1] = 0,
+    ) -> tuple[onp.Array1D[np.float64], float, int]: ...  # (y, t, istate)
 
 @type_check_only
 @final
@@ -44,25 +40,25 @@ class _fortran_zvode(Protocol):
         /,
         f: _FnCallbackZ,
         jac: _FnCallbackZ,
-        y: _VecC128,
+        y: onp.Array1D[np.complex128],
         t: float,
         tout: float,
-        rtol: _VecF64,
-        atol: _VecF64,
+        rtol: onp.Array1D[np.float64],
+        atol: onp.Array1D[np.float64],
         itask: int,
         istate: int,
-        zwork: _VecC128,
-        rwork: _VecF64,
-        iwork: _VecI32,
+        zwork: onp.Array1D[np.complex128],
+        rwork: onp.Array1D[np.float64],
+        iwork: onp.Array1D[np.int32],
         mf: int,
         f_extra_args: tuple[object, ...] = (),
         jac_extra_args: tuple[object, ...] = (),
-        overwrite_y: onp.ToBool = 0,
-    ) -> tuple[_VecF64, float, int]: ...  # (y, t, istate)
+        overwrite_y: bool | Literal[0, 1] = 0,
+    ) -> tuple[onp.Array1D[np.float64], float, int]: ...  # (y, t, istate)
 
 ###
 
 class error(Exception): ...
 
-dvode: _fortran_dvode = ...
-zvode: _fortran_zvode = ...
+dvode: Final[_fortran_dvode] = ...
+zvode: Final[_fortran_zvode] = ...

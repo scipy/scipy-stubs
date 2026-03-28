@@ -25,7 +25,6 @@ from scipy.interpolate import (
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 
-_Float: TypeAlias = float | np.float64
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
@@ -48,12 +47,12 @@ assert_type(splev(_f64_1d, tck_2d), list[_FloatND])
 ###
 # splint
 
-assert_type(splint(0.0, 1.0, bspl), _Float | _Float1D)
-assert_type(splint(0.0, 1.0, bspl, full_output=True), tuple[_Float | _Float1D, _Float1D])
-assert_type(splint(0.0, 1.0, tck_1d), _Float)
-assert_type(splint(0.0, 1.0, tck_1d, full_output=True), tuple[_Float, _Float1D])
-assert_type(splint(0.0, 1.0, tck_2d), list[_Float])
-assert_type(splint(0.0, 1.0, tck_2d, full_output=True), tuple[list[_Float], _Float1D])
+assert_type(splint(0.0, 1.0, bspl), float | _Float1D)
+assert_type(splint(0.0, 1.0, bspl, full_output=True), tuple[float, _Float1D] | tuple[_Float1D, _Float1D])
+assert_type(splint(0.0, 1.0, tck_1d), float)
+assert_type(splint(0.0, 1.0, tck_1d, full_output=True), tuple[float, _Float1D])
+assert_type(splint(0.0, 1.0, tck_2d), list[float])
+assert_type(splint(0.0, 1.0, tck_2d, full_output=True), tuple[list[float], _Float1D])
 
 ###
 # sproot

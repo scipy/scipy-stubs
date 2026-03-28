@@ -16,7 +16,7 @@ class _TrustRegionOptions(TypedDict, total=False):
     eta: onp.ToFloat
     gtol: onp.ToFloat
     maxiter: onp.ToJustInt
-    disp: onp.ToBool
+    disp: bool
 
 ###
 
@@ -27,6 +27,6 @@ def _minimize_trust_krylov(
     jac: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat1D] | None = None,
     hess: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat2D] | None = None,
     hessp: Callable[Concatenate[onp.Array1D[np.float64], onp.Array1D[np.float64], ...], onp.ToFloat1D] | None = None,
-    inexact: onp.ToBool = True,
+    inexact: bool = True,
     **trust_region_options: Unpack[_TrustRegionOptions],
 ) -> OptimizeResult: ...

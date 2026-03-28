@@ -51,9 +51,9 @@ class OdeSolver(Generic[_ScalarT]):
         fun: _ToFunReal,
         t0: float,
         y0: onp.ToFloatND,
-        t_bound: float,
+        t_bound: onp.ToFloat,
         vectorized: bool,
-        support_complex: onp.ToBool = False,
+        support_complex: bool = False,
     ) -> None: ...
     @overload
     def __init__(
@@ -64,7 +64,7 @@ class OdeSolver(Generic[_ScalarT]):
         y0: onp.ToJustComplexND,
         t_bound: onp.ToFloat,
         vectorized: bool,
-        support_complex: onp.ToTrue,
+        support_complex: Literal[True],
     ) -> None: ...
     @property
     def step_size(self, /) -> np.float64 | None: ...

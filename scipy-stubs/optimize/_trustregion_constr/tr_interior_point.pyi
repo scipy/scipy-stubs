@@ -38,7 +38,7 @@ def tr_interior_point(
             np.float64,  # penalty
             dict[str, int],  # cg_info
         ],
-        onp.ToBool,
+        bool,
     ],
     enforce_feasibility: onp.ToArray1D,
     xtol: float,

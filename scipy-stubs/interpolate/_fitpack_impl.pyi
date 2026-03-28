@@ -41,8 +41,8 @@ def splprep(
     t: onp.ToFloat1D | None = None,
     full_output: onp.ToFalse = 0,
     nest: int | None = None,
-    per: onp.ToBool = 0,
-    quiet: onp.ToBool = 1,
+    per: bool | Literal[0, 1] = 0,
+    quiet: bool | Literal[0, 1] = 1,
 ) -> _OutTCKU1: ...
 @overload  # full_output: truthy (positional)
 def splprep(
@@ -57,8 +57,8 @@ def splprep(
     t: onp.ToFloat1D | None,
     full_output: onp.ToTrue,
     nest: int | None = None,
-    per: onp.ToBool = 0,
-    quiet: onp.ToBool = 1,
+    per: bool | Literal[0, 1] = 0,
+    quiet: bool | Literal[0, 1] = 1,
 ) -> tuple[_OutTCKU1, float, int, LiteralString]: ...
 @overload  # full_output: truthy (keyword)
 def splprep(
@@ -74,8 +74,8 @@ def splprep(
     *,
     full_output: onp.ToTrue,
     nest: int | None = None,
-    per: onp.ToBool = 0,
-    quiet: onp.ToBool = 1,
+    per: bool | Literal[0, 1] = 0,
+    quiet: bool | Literal[0, 1] = 1,
 ) -> tuple[_OutTCKU1, float, int, LiteralString]: ...
 
 #
@@ -91,8 +91,8 @@ def splrep(
     s: onp.ToFloat | None = None,
     t: onp.ToFloat1D | None = None,
     full_output: onp.ToFalse = 0,
-    per: onp.ToBool = 0,
-    quiet: onp.ToBool = 1,
+    per: bool | Literal[0, 1] = 0,
+    quiet: bool | Literal[0, 1] = 1,
 ) -> _OutTCK1: ...
 @overload  # full_output: truthy (positional)
 def splrep(
@@ -106,8 +106,8 @@ def splrep(
     s: onp.ToFloat | None,
     t: onp.ToFloat1D | None,
     full_output: onp.ToTrue,
-    per: onp.ToBool = 0,
-    quiet: onp.ToBool = 1,
+    per: bool | Literal[0, 1] = 0,
+    quiet: bool | Literal[0, 1] = 1,
 ) -> tuple[_OutTCK1, float, int, LiteralString]: ...
 @overload  # full_output: truthy (keyword)
 def splrep(
@@ -122,8 +122,8 @@ def splrep(
     t: onp.ToFloat1D | None = None,
     *,
     full_output: onp.ToTrue,
-    per: onp.ToBool = 0,
-    quiet: onp.ToBool = 1,
+    per: bool | Literal[0, 1] = 0,
+    quiet: bool | Literal[0, 1] = 1,
 ) -> tuple[_OutTCK1, float, int, LiteralString]: ...
 
 #
@@ -167,7 +167,7 @@ def bisplrep(
     full_output: onp.ToFalse = 0,
     nxest: onp.ToFloat | None = None,
     nyest: onp.ToFloat | None = None,
-    quiet: onp.ToBool = 1,
+    quiet: bool | Literal[0, 1] = 1,
 ) -> _OutTCK2: ...
 @overload  # full_output: truthy (positional)
 def bisplrep(
@@ -189,7 +189,7 @@ def bisplrep(
     full_output: onp.ToTrue,
     nxest: onp.ToFloat | None = None,
     nyest: onp.ToFloat | None = None,
-    quiet: onp.ToBool = 1,
+    quiet: bool | Literal[0, 1] = 1,
 ) -> tuple[_OutTCK2, float, int, LiteralString]: ...
 @overload  # full_output: truthy (keyword)
 def bisplrep(
@@ -212,7 +212,7 @@ def bisplrep(
     full_output: onp.ToTrue,
     nxest: onp.ToFloat | None = None,
     nyest: onp.ToFloat | None = None,
-    quiet: onp.ToBool = 1,
+    quiet: bool | Literal[0, 1] = 1,
 ) -> tuple[_OutTCK2, float, int, LiteralString]: ...
 
 # requires `len(tck) == 5`
@@ -220,7 +220,7 @@ def bisplev(x: onp.ToFloat1D, y: onp.ToFloat1D, tck: _ToTCK, dx: int = 0, dy: in
 def dblint(xa: onp.ToFloat, xb: onp.ToFloat, ya: onp.ToFloat, yb: onp.ToFloat, tck: _ToTCK) -> float: ...
 
 # requires `len(tck) == 3`
-def insert(x: onp.ToFloat, tck: _ToTCK, m: int = 1, per: onp.ToBool = 0) -> _OutTCK1: ...
+def insert(x: onp.ToFloat, tck: _ToTCK, m: int = 1, per: bool | Literal[0, 1] = 0) -> _OutTCK1: ...
 
 #
 @overload

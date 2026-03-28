@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Concatenate, Final, Protocol, TypeAlias, final, type_check_only
+from typing import Concatenate, Final, Literal, Protocol, TypeAlias, final, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -30,7 +30,7 @@ class _fortran_dop(Protocol):
         work: _VecF64,
         iwork: _VecI32,
         fcn_extra_args: tuple[object, ...] = (),
-        overwrite_y: onp.ToBool = 0,
+        overwrite_y: bool | Literal[0, 1] = 0,
         solout_extra_args: tuple[object, ...] = (),
     ) -> tuple[float, _VecF64, _VecI32, int]: ...  # (x, y, iwork, idid)
 

@@ -43,7 +43,7 @@ def gcrotmk(
     m: int = 20,
     k: int | None = None,
     CU: Sequence[tuple[Sequence[onp.ArrayND[_Float]], Sequence[onp.ArrayND[_Float]] | None]] | None = None,
-    discard_C: onp.ToBool = False,
+    discard_C: bool = False,
     truncate: _Truncate = "oldest",
 ) -> tuple[onp.Array1D[_FloatT], int]: ...
 @overload
@@ -60,6 +60,6 @@ def gcrotmk(
     m: int = 20,
     k: int | None = None,
     CU: Sequence[tuple[Sequence[onp.ArrayND[_Inexact]], Sequence[onp.ArrayND[_Inexact]] | None]] | None = None,
-    discard_C: onp.ToBool = False,
+    discard_C: bool = False,
     truncate: _Truncate = "oldest",
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...

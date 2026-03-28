@@ -56,8 +56,8 @@ def differential_evolution(
     recombination: onp.ToFloat = 0.7,
     rng: onp.random.ToRNG | None = None,
     callback: Callable[[OptimizeResult], None] | Callable[[_Float1D, onp.ToFloat], None] | None = None,
-    disp: onp.ToBool = False,
-    polish: onp.ToBool = True,
+    disp: bool = False,
+    polish: bool = True,
     init: onp.ToFloat2D | Literal["sobol", "halton", "random", "latinhypercube"] = "latinhypercube",
     atol: onp.ToFloat = 0,
     updating: Literal["immediate", "deferred"] = "immediate",
@@ -66,6 +66,6 @@ def differential_evolution(
     x0: onp.ToArray1D | None = None,
     *,
     integrality: onp.ToBool1D | None = None,
-    vectorized: onp.ToBool = False,
+    vectorized: bool = False,
     seed: onp.random.ToRNG | None = None,
 ) -> OptimizeResult: ...

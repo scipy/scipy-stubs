@@ -22,8 +22,8 @@ def qr_delete(
     k: onp.ToJustInt,
     p: onp.ToJustInt = 1,
     which: _Which = "row",
-    overwrite_qr: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_qr: bool = False,
+    check_finite: bool = True,
 ) -> _FloatQR: ...
 @overload
 def qr_delete(
@@ -32,8 +32,8 @@ def qr_delete(
     k: onp.ToJustInt,
     p: onp.ToJustInt = 1,
     which: _Which = "row",
-    overwrite_qr: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_qr: bool = False,
+    check_finite: bool = True,
 ) -> _ComplexQR: ...
 
 #
@@ -45,8 +45,8 @@ def qr_insert(
     k: onp.ToJustInt,
     which: _Which = "row",
     rcond: onp.ToFloat | None = None,
-    overwrite_qru: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_qru: bool = False,
+    check_finite: bool = True,
 ) -> _FloatQR: ...
 @overload
 def qr_insert(
@@ -56,8 +56,8 @@ def qr_insert(
     k: onp.ToJustInt,
     which: _Which = "row",
     rcond: onp.ToFloat | None = None,
-    overwrite_qru: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_qru: bool = False,
+    check_finite: bool = True,
 ) -> _ComplexQR: ...
 
 #
@@ -67,8 +67,8 @@ def qr_update(
     R: onp.ToFloatND,
     u: onp.ToFloatND,
     v: onp.ToFloatND,
-    overwrite_qruv: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_qruv: bool = False,
+    check_finite: bool = True,
 ) -> _FloatQR: ...
 @overload
 def qr_update(
@@ -76,6 +76,6 @@ def qr_update(
     R: onp.ToComplexND,
     u: onp.ToComplexND,
     v: onp.ToComplexND,
-    overwrite_qruv: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_qruv: bool = False,
+    check_finite: bool = True,
 ) -> _ComplexQR: ...
