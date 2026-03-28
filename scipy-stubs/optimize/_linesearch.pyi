@@ -52,7 +52,7 @@ def line_search_wolfe2(
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
     amax: onp.ToFloat | None = None,
-    extra_condition: Callable[[float, _Float1D, float, _Float1D], onp.ToBool] | None = None,
+    extra_condition: Callable[[float, _Float1D, float, _Float1D], bool] | None = None,
     maxiter: onp.ToJustInt = 10,
 ) -> tuple[_Float | None, int, int, _Float | None, _Float, _Float | None]: ...
 
@@ -104,7 +104,7 @@ def scalar_search_wolfe2(
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
     amax: onp.ToFloat | None = None,
-    extra_condition: Callable[[float, float], onp.ToBool] | None = None,
+    extra_condition: Callable[[float, float], bool] | None = None,
     maxiter: onp.ToJustInt = 10,
 ) -> tuple[_Float | None, _Float, _Float, _Float | None]: ...
 

@@ -32,7 +32,7 @@ def equality_constrained_sqp(
             np.float64,  # penalty
             dict[str, int],  # cg_info
         ],
-        onp.ToBool,
+        bool,
     ],
     state: _StateT,
     initial_penalty: onp.ToFloat,

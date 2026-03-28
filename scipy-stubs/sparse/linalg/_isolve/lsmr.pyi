@@ -24,7 +24,7 @@ def lsmr(
     btol: float | npc.floating = 1e-6,
     conlim: onp.ToFloat = 1e8,
     maxiter: int | None = None,
-    show: onp.ToBool = False,
+    show: bool = False,
     x0: onp.ToFloat1D | None = None,
 ) -> tuple[
     onp.Array1D[np.float64],  # x

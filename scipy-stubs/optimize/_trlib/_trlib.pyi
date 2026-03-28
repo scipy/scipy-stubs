@@ -23,5 +23,5 @@ class TRLIBQuadraticSubproblem(BaseQuadraticSubproblem):  # undocumented
         hessp: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat1D] | None,
         tol_rel_i: onp.ToFloat = -2.0,
         tol_rel_b: onp.ToFloat = -3.0,
-        disp: onp.ToBool = False,
+        disp: bool = False,
     ) -> None: ...

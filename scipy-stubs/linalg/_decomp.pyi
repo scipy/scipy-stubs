@@ -369,12 +369,12 @@ def eig(
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
-    left: onp.ToBool = False,
-    right: onp.ToBool = True,
+    left: bool = False,
+    right: bool = True,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: onp.ToBool = False,
+    homogeneous_eigvals: bool = False,
 ) -> (
     _ComplexND
     | tuple[_ComplexND, _InexactND]

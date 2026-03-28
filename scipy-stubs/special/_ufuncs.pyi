@@ -283,7 +283,7 @@ _Out1: TypeAlias = tuple[_MaybeOutT] | _MaybeOutT
 _OneOrMany: TypeAlias = _T | tuple[_T, ...]
 
 # NOTE: The `TypeAliasType` helps with readability of error messages
-_ToBool_D = TypeAliasType("_ToBool_D", onp.ToBool | onp.ToBoolND)
+_ToBool_D = TypeAliasType("_ToBool_D", bool | onp.ToBoolND)
 _ToInt_D = TypeAliasType("_ToInt_D", onp.ToInt | onp.ToIntND)
 
 _Float64ND: TypeAlias = onp.ArrayND[np.float64]
@@ -410,7 +410,7 @@ _ToDTypes_d7 = TypeAliasType("_ToDTypes_d7", _Tuple7[_ToDType_d])
 class _KwBase(TypedDict, total=False):
     order: L["K", "A", "C", "F"]
     casting: L["no", "equiv", "safe", "same_kind", "unsafe"]
-    subok: onp.ToBool
+    subok: bool
     where: _ToBool_D
 
 @type_check_only

@@ -66,7 +66,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
         /,
         lb: int | Sequence[int],
         ub: int | Sequence[int],
-        keep_feasible: onp.ToBool | onp.ToBoolStrict1D = False,
+        keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload
     def __init__(
@@ -74,7 +74,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
         /,
         lb: onp.SequenceND[int],
         ub: onp.SequenceND[int],
-        keep_feasible: onp.ToBool | onp.ToBoolStrict1D = False,
+        keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload
     def __init__(
@@ -82,7 +82,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
         /,
         lb: op.JustFloat | Sequence[op.JustFloat] = ...,  # = np.inf
         ub: op.JustFloat | Sequence[op.JustFloat] = ...,  # = -np.inf
-        keep_feasible: onp.ToBool | onp.ToBoolStrict1D = False,
+        keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload
     def __init__(  # pyright: ignore[reportOverlappingOverload]
@@ -90,7 +90,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
         /,
         lb: float | Sequence[float] = ...,  # = np.inf
         ub: float | Sequence[float] = ...,  # = -np.inf
-        keep_feasible: onp.ToBool | onp.ToBoolStrict1D = False,
+        keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload
     def __init__(
@@ -98,7 +98,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
         /,
         lb: onp.CanArray[_ShapeT_co, np.dtype[_ScalarT_co]],
         ub: onp.CanArray[tuple[()] | tuple[int] | _ShapeT_co, np.dtype[_ScalarT_co]],
-        keep_feasible: onp.ToBool | onp.ToBool1D | onp.CanArray[_ShapeT_co, np.dtype[np.bool_]] = False,
+        keep_feasible: bool | onp.ToBool1D | onp.CanArray[_ShapeT_co, np.dtype[np.bool_]] = False,
     ) -> None: ...
     @overload
     def __init__(
@@ -106,7 +106,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
         /,
         lb: onp.CanArray[tuple[()] | tuple[int] | _ShapeT_co, np.dtype[_ScalarT_co]],
         ub: onp.CanArray[_ShapeT_co, np.dtype[_ScalarT_co]],
-        keep_feasible: onp.ToBool | onp.ToBool1D | onp.CanArray[_ShapeT_co, np.dtype[np.bool_]] = False,
+        keep_feasible: bool | onp.ToBool1D | onp.CanArray[_ShapeT_co, np.dtype[np.bool_]] = False,
     ) -> None: ...
     @overload
     def __init__(
@@ -114,7 +114,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
         /,
         lb: onp.ToFloat | onp.ToFloatND = ...,  # = -np.inf
         ub: onp.ToFloat | onp.ToFloatND = ...,  # = np.inf
-        keep_feasible: onp.ToBool | onp.ToBoolND = False,
+        keep_feasible: bool | onp.ToBoolND = False,
     ) -> None: ...
 
     #
@@ -152,7 +152,7 @@ class LinearConstraint(_Constraint[tuple[int], np.float64]):
         A: _ToFloat2D,
         lb: onp.ToFloat | onp.ToFloat1D = ...,
         ub: onp.ToFloat | onp.ToFloat1D = ...,
-        keep_feasible: onp.ToBool | onp.ToBool1D = False,
+        keep_feasible: bool | onp.ToBool1D = False,
     ) -> None: ...
     def residual(self, /, x: onp.ToFloat1D) -> _Tuple2[onp.Array1D[np.float64]]: ...
 
@@ -171,7 +171,7 @@ class NonlinearConstraint(_Constraint[tuple[int], np.float64]):
         ub: onp.ToFloat | onp.ToFloat1D,
         jac: Callable[[onp.Array1D[np.float64]], _ToFloat2D] | _MethodJac = "2-point",
         hess: Callable[[onp.Array1D[np.float64]], _ToFloat2D | LinearOperator] | _MethodJac | HessianUpdateStrategy | None = None,
-        keep_feasible: onp.ToBool | onp.ToBool1D = False,
+        keep_feasible: bool | onp.ToBool1D = False,
         finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None = None,
         finite_diff_jac_sparsity: _ToFloat2D | None = None,
     ) -> None: ...

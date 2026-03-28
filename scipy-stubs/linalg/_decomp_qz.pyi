@@ -18,7 +18,7 @@ _InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 _OutputReal: TypeAlias = Literal["real", "r"]
 _OutputComplex: TypeAlias = Literal["complex", "c"]
 
-_Sort: TypeAlias = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], onp.ToBool]
+_Sort: TypeAlias = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], bool]
 
 ###
 
@@ -30,9 +30,9 @@ def qz(
     output: _OutputReal = "real",
     lwork: onp.ToJustInt | None = None,
     sort: None = None,
-    overwrite_a: onp.ToBool = False,
-    overwrite_b: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> _Tuple4[_FloatND]: ...
 @overload  # complex, {"real"}
 def qz(
@@ -41,9 +41,9 @@ def qz(
     output: _OutputReal = "real",
     lwork: onp.ToJustInt | None = None,
     sort: None = None,
-    overwrite_a: onp.ToBool = False,
-    overwrite_b: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> _Tuple4[_InexactND]: ...
 @overload  # complex, {"complex"}
 def qz(
@@ -52,9 +52,9 @@ def qz(
     output: _OutputComplex,
     lwork: onp.ToJustInt | None = None,
     sort: None = None,
-    overwrite_a: onp.ToBool = False,
-    overwrite_b: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> _Tuple4[_ComplexND]: ...
 
 #
@@ -64,9 +64,9 @@ def ordqz(
     B: onp.ToFloatND,
     sort: _Sort = "lhp",
     output: _OutputReal = "real",
-    overwrite_a: onp.ToBool = False,
-    overwrite_b: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> _Tuple222[_FloatND, _FloatND]: ...
 @overload  # complex, {"real"}
 def ordqz(
@@ -74,9 +74,9 @@ def ordqz(
     B: onp.ToComplexND,
     sort: _Sort = "lhp",
     output: _OutputReal = "real",
-    overwrite_a: onp.ToBool = False,
-    overwrite_b: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> _Tuple222[_InexactND, _InexactND]: ...
 @overload  # complex, {"complex"} (positional)
 def ordqz(
@@ -84,9 +84,9 @@ def ordqz(
     B: onp.ToComplexND,
     sort: _Sort,
     output: _OutputComplex,
-    overwrite_a: onp.ToBool = False,
-    overwrite_b: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> _Tuple222[_ComplexND, _ComplexND]: ...
 @overload  # complex, {"complex"} (keyword)
 def ordqz(
@@ -95,7 +95,7 @@ def ordqz(
     sort: _Sort = "lhp",
     *,
     output: _OutputComplex,
-    overwrite_a: onp.ToBool = False,
-    overwrite_b: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> _Tuple222[_ComplexND, _ComplexND]: ...

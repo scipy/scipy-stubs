@@ -37,7 +37,7 @@ def dual_annealing(
     accept: onp.ToFloat = -5.0,
     maxfun: onp.ToFloat = 10_000_000.0,
     rng: onp.random.ToRNG | None = None,
-    no_local_search: onp.ToBool = False,
+    no_local_search: bool = False,
     callback: Callable[[_Float1D, float, Literal[0, 1, 2]], bool | None] | None = None,
     x0: onp.ToFloat1D | None = None,
     *,

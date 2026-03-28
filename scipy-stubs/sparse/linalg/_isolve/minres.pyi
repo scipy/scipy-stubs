@@ -30,6 +30,6 @@ def minres(
     maxiter: int | None = None,
     M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
     callback: Callable[[onp.Array1D[_FloatT]], _Ignored] | None = None,
-    show: onp.ToBool = False,
-    check: onp.ToBool = False,
+    show: bool = False,
+    check: bool = False,
 ) -> tuple[onp.Array1D[_FloatT], int]: ...

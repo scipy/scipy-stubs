@@ -89,7 +89,7 @@ class Akima1DInterpolator(CubicHermiteSpline[np.float64]):
         axis: _ToAxis = 0,
         *,
         method: _Akima1DMethod = "akima",
-        extrapolate: onp.ToBool | None = None,
+        extrapolate: bool | None = None,
     ) -> None: ...
 
     # the following (class)methods will raise `NotImplementedError` when called

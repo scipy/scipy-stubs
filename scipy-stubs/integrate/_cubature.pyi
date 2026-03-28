@@ -47,7 +47,7 @@ def cubature(
     rule: _Rule = "gk21",
     rtol: float = 1e-8,
     atol: float = 0,
-    max_subdivisions: onp.ToJustInt = 10_000,
+    max_subdivisions: int = 10_000,
     args: tuple[object, ...] = (),
     workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
     points: Sequence[onp.ToFloat1D] | None = None,

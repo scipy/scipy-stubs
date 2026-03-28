@@ -19,13 +19,13 @@ _IStop: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7]
 def lsqr(
     A: _ToRealMatrix,
     b: onp.ToFloat1D,
-    damp: float | npc.floating = 0.0,
-    atol: float | npc.floating = 1e-6,
-    btol: float | npc.floating = 1e-6,
-    conlim: onp.ToFloat = 1e8,
+    damp: float = 0.0,
+    atol: float = 1e-6,
+    btol: float = 1e-6,
+    conlim: float = 1e8,
     iter_lim: int | None = None,
-    show: onp.ToBool = False,
-    calc_var: onp.ToBool = False,
+    show: bool = False,
+    calc_var: bool = False,
     x0: onp.ToFloat1D | None = None,
 ) -> tuple[
     onp.Array1D[np.float64],  # x

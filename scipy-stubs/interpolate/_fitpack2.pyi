@@ -19,7 +19,7 @@ __all__ = [
 ]
 
 _Float1D: TypeAlias = onp.Array1D[np.float64]
-_FloatND: TypeAlias = onp.Array2D[np.float64]
+_FloatND: TypeAlias = onp.ArrayND[np.float64]
 
 _Degree: TypeAlias = Literal[1, 2, 3, 4, 5]
 
@@ -27,7 +27,6 @@ _ExtInt: TypeAlias = Literal[0, 1, 2, 3]
 _ExtStr: TypeAlias = Literal["extrapolate", "zeros", "raise", "const"]
 _Ext: TypeAlias = _ExtInt | _ExtStr
 
-_BBox: TypeAlias = onp.Array[tuple[Literal[2]], np.float64]
 _ToBBox: TypeAlias = Sequence[onp.ToFloat | None]
 
 ###
@@ -40,10 +39,10 @@ class UnivariateSpline:
         w: onp.ToFloat1D,
         bbox: _ToBBox,
         k: _Degree,
-        s: onp.ToFloat | None,
+        s: float | None,
         ext: _Ext,
-        check_finite: onp.ToBool,
-    ) -> tuple[_Float1D, _Float1D, _Float1D, _BBox, _ExtInt]: ...
+        check_finite: bool,
+    ) -> tuple[_Float1D, _Float1D, _Float1D, _Float1D, _ExtInt]: ...
 
     # at runtime the `__init__` might change the `__class__` attribute...
     def __init__(
@@ -54,9 +53,9 @@ class UnivariateSpline:
         w: onp.ToFloat1D | None = None,
         bbox: _ToBBox = [None, None],  # size 2
         k: _Degree = 3,
-        s: onp.ToFloat | None = None,
+        s: float | None = None,
         ext: _Ext = 0,
-        check_finite: onp.ToBool = False,
+        check_finite: bool = False,
     ) -> None: ...
     def __call__(self, /, x: onp.ToFloat1D, nu: int = 0, ext: _Ext | None = None) -> _Float1D: ...
 
@@ -64,7 +63,7 @@ class UnivariateSpline:
     def get_knots(self, /) -> _Float1D: ...
     def get_coeffs(self, /) -> _Float1D: ...
     def get_residual(self, /) -> float: ...
-    def set_smoothing_factor(self, /, s: onp.ToFloat) -> None: ...
+    def set_smoothing_factor(self, /, s: float) -> None: ...
 
     #
     def roots(self, /) -> _Float1D: ...  # requires `self.k == 3`
@@ -83,7 +82,7 @@ class InterpolatedUnivariateSpline(UnivariateSpline):
         bbox: _ToBBox = [None, None],  # size 2
         k: _Degree = 3,
         ext: _Ext = 0,
-        check_finite: onp.ToBool = False,
+        check_finite: bool = False,
     ) -> None: ...
 
 class LSQUnivariateSpline(UnivariateSpline):
@@ -97,11 +96,11 @@ class LSQUnivariateSpline(UnivariateSpline):
         bbox: _ToBBox = [None, None],  # size 2
         k: _Degree = 3,
         ext: _Ext = 0,
-        check_finite: onp.ToBool = False,
+        check_finite: bool = False,
     ) -> None: ...
 
 class _BivariateSplineBase:  # undocumented
-    def __call__(self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, grid: onp.ToBool = True) -> _Float1D: ...
+    def __call__(self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, grid: bool = True) -> _Float1D: ...
     def get_residual(self, /) -> float: ...
     def get_knots(self, /) -> tuple[_Float1D, _Float1D]: ...
     def get_coeffs(self, /) -> _Float1D: ...
@@ -132,8 +131,8 @@ class SmoothBivariateSpline(BivariateSpline):
         bbox: _ToBBox = [None, None, None, None],
         kx: int = 3,
         ky: int = 3,
-        s: onp.ToFloat | None = None,
-        eps: onp.ToFloat = 1e-16,
+        s: float | None = None,
+        eps: float = 1e-16,
     ) -> None: ...
 
 class LSQBivariateSpline(BivariateSpline):
@@ -153,7 +152,7 @@ class LSQBivariateSpline(BivariateSpline):
         bbox: _ToBBox = [None, None, None, None],
         kx: int = 3,
         ky: int = 3,
-        eps: onp.ToFloat | None = None,
+        eps: float | None = None,
     ) -> None: ...
 
 class RectBivariateSpline(BivariateSpline):
@@ -170,14 +169,14 @@ class RectBivariateSpline(BivariateSpline):
         bbox: _ToBBox = [None, None, None, None],
         kx: int = 3,
         ky: int = 3,
-        s: onp.ToFloat = 0,
+        s: float = 0,
         maxit: int = 20,
     ) -> None: ...
 
 class SphereBivariateSpline(_BivariateSplineBase):
     @override
     def __call__(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
-        self, /, theta: onp.ToFloat1D, phi: onp.ToFloat1D, dtheta: int = 0, dphi: int = 0, grid: onp.ToBool = True
+        self, /, theta: onp.ToFloat1D, phi: onp.ToFloat1D, dtheta: int = 0, dphi: int = 0, grid: bool = True
     ) -> _FloatND: ...
     def ev(self, /, theta: onp.ToFloatND, phi: onp.ToFloatND, dtheta: int = 0, dphi: int = 0) -> _FloatND: ...
 
@@ -193,8 +192,8 @@ class SmoothSphereBivariateSpline(SphereBivariateSpline):
         phi: onp.ToFloat1D,
         r: onp.ToFloat1D,
         w: onp.ToFloat1D | None = None,
-        s: onp.ToFloat = 0.0,
-        eps: onp.ToFloat = 1e-16,
+        s: float = 0.0,
+        eps: float = 1e-16,
     ) -> None: ...
 
 class LSQSphereBivariateSpline(SphereBivariateSpline):
@@ -211,7 +210,7 @@ class LSQSphereBivariateSpline(SphereBivariateSpline):
         tt: onp.ToFloat1D,
         tp: onp.ToFloat1D,
         w: onp.ToFloat1D | None = None,
-        eps: onp.ToFloat = 1e-16,
+        eps: float = 1e-16,
     ) -> None: ...
 
 class RectSphereBivariateSpline(SphereBivariateSpline):
@@ -226,9 +225,9 @@ class RectSphereBivariateSpline(SphereBivariateSpline):
         u: onp.ToFloat1D,
         v: onp.ToFloat1D,
         r: onp.ToFloat2D,
-        s: onp.ToFloat = 0.0,
-        pole_continuity: onp.ToBool | tuple[onp.ToBool, onp.ToBool] = False,
+        s: float = 0.0,
+        pole_continuity: bool | tuple[bool, bool] = False,
         pole_values: onp.ToFloat | tuple[onp.ToFloat, onp.ToFloat] | None = None,
-        pole_exact: onp.ToBool | tuple[onp.ToBool, onp.ToBool] = False,
-        pole_flat: onp.ToBool | tuple[onp.ToBool, onp.ToBool] = False,
+        pole_exact: bool | tuple[bool, bool] = False,
+        pole_flat: bool | tuple[bool, bool] = False,
     ) -> None: ...

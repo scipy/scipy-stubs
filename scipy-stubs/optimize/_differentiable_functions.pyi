@@ -158,7 +158,7 @@ class VectorFunction(Generic[_XT_contra]):
         finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None = None,
         finite_diff_jac_sparsity: _ToJac | None = None,
         finite_diff_bounds: _FDBounds = ...,
-        sparse_jacobian: onp.ToBool | None = None,
+        sparse_jacobian: bool | None = None,
         workers: _Workers | None = None,
     ) -> None: ...
     @overload
@@ -172,7 +172,7 @@ class VectorFunction(Generic[_XT_contra]):
         finite_diff_rel_step: onp.ToFloat | onp.ToFloat1D | None = None,
         finite_diff_jac_sparsity: _ToJac | None = None,
         finite_diff_bounds: _FDBounds = ...,
-        sparse_jacobian: onp.ToBool | None = None,
+        sparse_jacobian: bool | None = None,
         workers: int | _DoesMap | None = None,
     ) -> None: ...
 
@@ -219,11 +219,11 @@ class LinearVectorFunction(Generic[_XT_contra]):
         /,
         A: onp.ToFloat2D | spmatrix | sparray,
         x0: _ToFloat64Vec,
-        sparse_jacobian: onp.ToBool | None,
+        sparse_jacobian: bool | None,
     ) -> None: ...
     @overload
     def __init__(
-        self, /, A: onp.ToFloat2D | spmatrix | sparray, x0: _Vec[_XT_contra] | onp.ToFloat1D, sparse_jacobian: onp.ToBool | None
+        self, /, A: onp.ToFloat2D | spmatrix | sparray, x0: _Vec[_XT_contra] | onp.ToFloat1D, sparse_jacobian: bool | None
     ) -> None: ...
 
     #
@@ -236,6 +236,6 @@ class LinearVectorFunction(Generic[_XT_contra]):
 
 class IdentityVectorFunction(LinearVectorFunction[_XT_contra]):
     @overload
-    def __init__(self: IdentityVectorFunction[np.float64], /, x0: _ToFloat64Vec, sparse_jacobian: onp.ToBool | None) -> None: ...
+    def __init__(self: IdentityVectorFunction[np.float64], /, x0: _ToFloat64Vec, sparse_jacobian: bool | None) -> None: ...
     @overload
-    def __init__(self, /, x0: onp.CanArrayND[_XT_contra] | onp.ToFloat1D, sparse_jacobian: onp.ToBool | None) -> None: ...
+    def __init__(self, /, x0: onp.CanArrayND[_XT_contra] | onp.ToFloat1D, sparse_jacobian: bool | None) -> None: ...

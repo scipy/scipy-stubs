@@ -53,7 +53,7 @@ def basinhopping(
     accept_test: _AcceptTestFun[onp.ToFloat] | None = None,
     callback: _CallbackFun[float] | _CallbackFun[np.float64] | None = None,
     interval: onp.ToJustInt = 50,
-    disp: onp.ToBool = False,
+    disp: bool = False,
     niter_success: onp.ToJustInt | None = None,
     rng: onp.random.ToRNG | None = None,
     *,

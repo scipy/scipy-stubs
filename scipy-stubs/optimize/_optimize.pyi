@@ -551,7 +551,7 @@ def brute(
     Ns: int = 20,
     full_output: onp.ToFalse = 0,
     finish: _DoesFMin | None = ...,  # default: `fmin`
-    disp: onp.ToBool = False,
+    disp: bool = False,
     workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
 ) -> _Float1D: ...
 @overload  # full_output: True (keyword)
@@ -563,7 +563,7 @@ def brute(
     *,
     full_output: onp.ToTrue,
     finish: _DoesFMin | None = ...,  # default: `fmin`
-    disp: onp.ToBool = False,
+    disp: bool = False,
     workers: int | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
 ) -> tuple[_Float1D, np.float64, onp.Array3D[np.float64], onp.Array2D[npc.floating]]: ...
 

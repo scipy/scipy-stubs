@@ -18,41 +18,21 @@ _InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
 @overload
 def ldl(
-    A: onp.ToFloatStrict2D,
-    lower: onp.ToBool = True,
-    hermitian: onp.ToBool = True,
-    overwrite_a: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    A: onp.ToFloatStrict2D, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_Float2D, _Float2D, _ISize1D]: ...
 @overload
 def ldl(
-    A: onp.ToFloatND,
-    lower: onp.ToBool = True,
-    hermitian: onp.ToBool = True,
-    overwrite_a: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    A: onp.ToFloatND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_FloatND, _FloatND, _ISizeND]: ...
 @overload
 def ldl(
-    A: onp.ToJustComplexStrict2D,
-    lower: onp.ToBool = True,
-    hermitian: onp.ToBool = True,
-    overwrite_a: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    A: onp.ToJustComplexStrict2D, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_Complex2D, _Complex2D, _ISize1D]: ...
 @overload
 def ldl(
-    A: onp.ToJustComplexND,
-    lower: onp.ToBool = True,
-    hermitian: onp.ToBool = True,
-    overwrite_a: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    A: onp.ToJustComplexND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_ComplexND, _ComplexND, _ISizeND]: ...
 @overload
 def ldl(
-    A: onp.ToComplexND,
-    lower: onp.ToBool = True,
-    hermitian: onp.ToBool = True,
-    overwrite_a: onp.ToBool = False,
-    check_finite: onp.ToBool = True,
+    A: onp.ToComplexND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_InexactND, _InexactND, _ISizeND]: ...

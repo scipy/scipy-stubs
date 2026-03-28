@@ -45,7 +45,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
         points: _ToPoints,
         values: onp.ToFloatND,
         method: _Method = "linear",
-        bounds_error: onp.ToBool = True,
+        bounds_error: bool = True,
         fill_value: onp.ToFloat | None = ...,  # np.nan
         *,
         solver: _SolverFunc[npc.floating | npc.integer] | None = None,
@@ -58,7 +58,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
         points: _ToPoints,
         values: onp.ToJustComplexND,
         method: _MethodReal = "linear",
-        bounds_error: onp.ToBool = True,
+        bounds_error: bool = True,
         fill_value: onp.ToComplex | None = ...,  # np.nan
         *,
         solver: _SolverFunc[npc.number] | None = None,
@@ -71,7 +71,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
         points: _ToPoints,
         values: onp.ToComplexND,
         method: _MethodReal = "linear",
-        bounds_error: onp.ToBool = True,
+        bounds_error: bool = True,
         fill_value: onp.ToComplex | None = ...,  # np.nan
         *,
         solver: _SolverFunc[npc.number] | None = None,
@@ -89,7 +89,7 @@ def interpn(
     values: onp.ToFloatND,
     xi: onp.ToFloatND,
     method: _Method = "linear",
-    bounds_error: onp.ToBool = True,
+    bounds_error: bool = True,
     fill_value: onp.ToFloat = ...,  # np.nan
 ) -> onp.ArrayND[np.float64]: ...
 @overload
@@ -98,7 +98,7 @@ def interpn(
     values: onp.ToJustComplex1D,
     xi: onp.ToFloatND,
     method: _Method = "linear",
-    bounds_error: onp.ToBool = True,
+    bounds_error: bool = True,
     fill_value: onp.ToComplex = ...,  # np.nan
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
@@ -107,6 +107,6 @@ def interpn(
     values: onp.ToComplex1D,
     xi: onp.ToFloatND,
     method: _Method = "linear",
-    bounds_error: onp.ToBool = True,
+    bounds_error: bool = True,
     fill_value: onp.ToComplex = ...,  # np.nan
 ) -> onp.ArrayND[Any]: ...

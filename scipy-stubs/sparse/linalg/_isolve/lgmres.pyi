@@ -40,8 +40,8 @@ def lgmres(
     inner_m: int = 30,
     outer_k: int = 3,
     outer_v: list[tuple[onp.ArrayND[_Float], onp.ArrayND[_Float] | None]] | None = None,
-    store_outer_Av: onp.ToBool = True,
-    prepend_outer_v: onp.ToBool = False,
+    store_outer_Av: bool = True,
+    prepend_outer_v: bool = False,
 ) -> tuple[onp.Array1D[_FloatT], int]: ...
 @overload
 def lgmres(
@@ -57,6 +57,6 @@ def lgmres(
     inner_m: int = 30,
     outer_k: int = 3,
     outer_v: list[tuple[onp.ArrayND[_Float | _Complex], onp.ArrayND[_Complex] | None]] | None = None,
-    store_outer_Av: onp.ToBool = True,
-    prepend_outer_v: onp.ToBool = False,
+    store_outer_Av: bool = True,
+    prepend_outer_v: bool = False,
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...

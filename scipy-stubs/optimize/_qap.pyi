@@ -7,14 +7,14 @@ from ._optimize import OptimizeResult as _OptimizeResult
 
 @type_check_only
 class _CommonOptions(TypedDict, total=False):
-    maximize: onp.ToBool
+    maximize: bool
     rng: onp.random.ToRNG | None
     partial_match: onp.ToInt2D | None
 
 @type_check_only
 class _FAQOptions(_CommonOptions, TypedDict, total=False):
     P0: onp.ToFloat2D | Literal["barycenter", "randomized"]
-    shuffle: onp.ToBool
+    shuffle: bool
     maxiter: onp.ToJustInt
     tol: onp.ToFloat
 

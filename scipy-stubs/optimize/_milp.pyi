@@ -28,8 +28,8 @@ _ToLinearConstraint = TypeAliasType(
 
 @type_check_only
 class _OptionsMILP(TypedDict, total=False):
-    disp: onp.ToBool  # default: False
-    presolve: onp.ToBool  # default: True
+    disp: bool  # default: False
+    presolve: bool  # default: True
     node_limit: int  # default: no limit
     time_limit: onp.ToFloat  # default: no limit
     mip_rel_gap: onp.ToFloat  # default: ?
