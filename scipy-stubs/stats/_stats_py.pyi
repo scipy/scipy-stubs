@@ -89,7 +89,6 @@ __all__ = [
 _SCT = TypeVar("_SCT", bound=np.generic)
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_ShapeT0 = TypeVar("_ShapeT0", bound=tuple[int, ...], default=tuple[Any, ...])
 _IntegerT = TypeVar("_IntegerT", bound=npc.integer)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _FloatT = TypeVar("_FloatT", bound=npc.floating)
@@ -344,7 +343,10 @@ class KstestResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Gener
 Ks_2sampResult = KstestResult
 
 _KstestResult0: TypeAlias = KstestResult[np.float64, np.int8]
-_KstestResultN: TypeAlias = KstestResult[onp.ArrayND[np.float64, _ShapeT0], onp.ArrayND[np.int8, _ShapeT0]]
+# we can't use a generic shape-type here due to a variance bug in pyright
+_KstestResult1: TypeAlias = KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]]
+_KstestResult2: TypeAlias = KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]]
+_KstestResultN: TypeAlias = KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]]
 
 class LinregressResult(
     BunchMixin[
@@ -4368,7 +4370,7 @@ def ks_2samp(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _KstestResultN[tuple[int]]: ...
+) -> _KstestResult1: ...
 @overload  # <=2d, 2d
 def ks_2samp(
     data1: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
@@ -4379,7 +4381,7 @@ def ks_2samp(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _KstestResultN[tuple[int]]: ...
+) -> _KstestResult1: ...
 @overload  # 3d, <=3d
 def ks_2samp(
     data1: onp.ToFloatStrict3D,
@@ -4390,7 +4392,7 @@ def ks_2samp(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _KstestResultN[tuple[int, int]]: ...
+) -> _KstestResult2: ...
 @overload  # <=3d, 3d
 def ks_2samp(
     data1: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
@@ -4401,7 +4403,7 @@ def ks_2samp(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _KstestResultN[tuple[int, int]]: ...
+) -> _KstestResult2: ...
 @overload  # Nd
 def ks_2samp(
     data1: onp.ToFloatND,
