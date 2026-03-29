@@ -103,6 +103,9 @@ _FloatOrArrayT_co = TypeVar(
     default=float | onp.ArrayND[np.float64],
     covariant=True,
 )
+_SignOrArrayT_co = TypeVar(
+    "_SignOrArrayT_co", bound=np.int8 | onp.ArrayND[np.int8], default=np.int8 | onp.ArrayND[np.int8], covariant=True
+)
 _FloatOrArrayT2_co = TypeVar(
     "_FloatOrArrayT2_co", bound=float | _ScalarOrND[npc.floating], default=float | onp.ArrayND[np.float64], covariant=True
 )
@@ -290,7 +293,7 @@ class TtestResultBase(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Ge
     def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co, *, df: _FloatOrArrayT_co) -> Self: ...
     def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co, *, df: _FloatOrArrayT_co) -> None: ...
 
-class TtestResult(TtestResultBase[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):
+class TtestResult(TtestResultBase[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co,]):
     _alternative: Alternative
     _standard_error: _FloatOrArrayT_co
     _estimate: _FloatOrArrayT_co
@@ -312,19 +315,38 @@ class TtestResult(TtestResultBase[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]
     ) -> None: ...
     def confidence_interval(self, /, confidence_level: float = 0.95) -> ConfidenceInterval[_FloatOrArrayT_co]: ...
 
-class KstestResult(_TestResultBunch[np.float64, np.float64]):
+class KstestResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co, _SignOrArrayT_co]):
     @property
-    def statistic_location(self, /) -> np.float64: ...
+    def statistic_location(self, /) -> _FloatOrArrayT_co: ...
     @property
-    def statistic_sign(self, /) -> np.int8: ...
+    def statistic_sign(self, /) -> _SignOrArrayT_co: ...
+
+    #
     def __new__(
-        _cls, statistic: np.float64, pvalue: np.float64, *, statistic_location: np.float64, statistic_sign: np.int8
+        _cls,
+        statistic: _FloatOrArrayT_co,
+        pvalue: _FloatOrArrayT_co,
+        *,
+        statistic_location: _FloatOrArrayT_co,
+        statistic_sign: _SignOrArrayT_co,
     ) -> Self: ...
     def __init__(
-        self, /, statistic: np.float64, pvalue: np.float64, *, statistic_location: np.float64, statistic_sign: np.int8
+        self,
+        /,
+        statistic: _FloatOrArrayT_co,
+        pvalue: _FloatOrArrayT_co,
+        *,
+        statistic_location: _FloatOrArrayT_co,
+        statistic_sign: _SignOrArrayT_co,
     ) -> None: ...
 
 Ks_2sampResult = KstestResult
+
+_KstestResult0: TypeAlias = KstestResult[np.float64, np.int8]
+# we can't use a generic shape-type here due to a variance bug in pyright
+_KstestResult1: TypeAlias = KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]]
+_KstestResult2: TypeAlias = KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]]
+_KstestResultN: TypeAlias = KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]]
 
 class LinregressResult(
     BunchMixin[
@@ -4282,7 +4304,118 @@ def ks_1samp(
     keepdims: bool = False,
 ) -> KstestResult: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d, ?d|1d
+def ks_2samp(
+    data1: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    data2: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape] | onp.ToFloatStrict1D,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
+@overload  # ?d|1d, ?d
+def ks_2samp(
+    data1: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape] | onp.ToFloatStrict1D,
+    data2: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
+@overload  # ?d, 2d|3d
+def ks_2samp(
+    data1: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    data2: onp.ToFloatStrict2D | onp.ToFloatStrict3D,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResultN: ...
+@overload  # 2d, ?d
+def ks_2samp(
+    data1: onp.ToFloatStrict2D | onp.ToFloatStrict3D,
+    data2: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResultN: ...
+@overload  # 1d, 1d
+def ks_2samp(
+    data1: onp.ToFloatStrict1D,
+    data2: onp.ToFloatStrict1D,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult0: ...
+@overload  # 2d, <=2d
+def ks_2samp(
+    data1: onp.ToFloatStrict2D,
+    data2: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult1: ...
+@overload  # <=2d, 2d
+def ks_2samp(
+    data1: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    data2: onp.ToFloatStrict2D,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult1: ...
+@overload  # 3d, <=3d
+def ks_2samp(
+    data1: onp.ToFloatStrict3D,
+    data2: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult2: ...
+@overload  # <=3d, 3d
+def ks_2samp(
+    data1: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    data2: onp.ToFloatStrict3D,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult2: ...
+@overload  # Nd
+def ks_2samp(
+    data1: onp.ToFloatND,
+    data2: onp.ToFloatND,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
+@overload  # keepdims=True
 def ks_2samp(
     data1: onp.ToFloatND,
     data2: onp.ToFloatND,
@@ -4291,8 +4424,19 @@ def ks_2samp(
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> KstestResult: ...
+    keepdims: L[True],
+) -> _KstestResultN: ...
+@overload  # axis=None
+def ks_2samp(
+    data1: onp.ToFloatND,
+    data2: onp.ToFloatND,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult0: ...
 
 # TODO(jorenham): improve
 def kstest(

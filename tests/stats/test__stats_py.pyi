@@ -1,7 +1,7 @@
 # type-tests for `stats/_stats_py.pyi`
 # (functions not already covered by other test files)
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -979,10 +979,34 @@ assert_type(chisquare(_f64_1d), Power_divergenceResult[np.float64])
 assert_type(chisquare(_f64_nd, axis=None), Power_divergenceResult[np.float64])
 assert_type(chisquare(_f64_nd, keepdims=True), Power_divergenceResult[onp.ArrayND[np.float64]])
 
-# ks_1samp, ks_2samp, kstest
+# ks_1samp
 
 assert_type(ks_1samp(_f64_1d, lambda x: x), KstestResult)
-assert_type(ks_2samp(_f64_1d, _f64_1d), KstestResult)
+
+# ks_2samp
+
+assert_type(ks_2samp(_f64_1d, _f64_1d), KstestResult[np.float64, np.int8])
+assert_type(ks_2samp(_f64_1d, _f64_2d), KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]])
+assert_type(ks_2samp(_f64_1d, _f64_3d), KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]])
+assert_type(ks_2samp(_f64_1d, _f64_nd), KstestResult[np.float64 | Any, np.int8 | Any])  # pyrefly:ignore[assert-type]
+
+assert_type(ks_2samp(_f64_2d, _f64_1d), KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]])
+assert_type(ks_2samp(_f64_2d, _f64_2d), KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]])
+assert_type(ks_2samp(_f64_2d, _f64_3d), KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]])
+assert_type(ks_2samp(_f64_2d, _f64_nd), KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]])  # pyrefly:ignore[assert-type]
+
+assert_type(ks_2samp(_f64_3d, _f64_1d), KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]])
+assert_type(ks_2samp(_f64_3d, _f64_2d), KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]])
+assert_type(ks_2samp(_f64_3d, _f64_3d), KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]])
+assert_type(ks_2samp(_f64_3d, _f64_nd), KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]])  # pyrefly:ignore[assert-type]
+
+assert_type(ks_2samp(_f64_nd, _f64_1d), KstestResult[np.float64 | Any, np.int8 | Any])  # pyrefly:ignore[assert-type]
+assert_type(ks_2samp(_f64_nd, _f64_2d), KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]])  # pyrefly:ignore[assert-type]
+assert_type(ks_2samp(_f64_nd, _f64_3d), KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]])  # pyrefly:ignore[assert-type]
+assert_type(ks_2samp(_f64_nd, _f64_nd), KstestResult[np.float64 | Any, np.int8 | Any])  # pyrefly:ignore[assert-type]
+
+# kstest
+
 assert_type(kstest(_f64_1d, "norm"), KstestResult)
 
 # tiecorrect
