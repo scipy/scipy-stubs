@@ -4414,7 +4414,7 @@ def ks_2samp(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _KstestResultN: ...
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
 @overload  # keepdims=True
 def ks_2samp(
     data1: onp.ToFloatND,
@@ -4433,7 +4433,7 @@ def ks_2samp(
     alternative: Alternative = "two-sided",
     method: _KS2TestMethod = "auto",
     *,
-    axis: None = None,
+    axis: None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> _KstestResult0: ...
