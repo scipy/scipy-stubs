@@ -350,6 +350,7 @@ Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)) |
 [MaxText](https://github.com/AI-Hypercomputer/maxtext) |
 Metta AI ([mettagrid](https://github.com/Metta-AI/metta/tree/main/packages/mettagrid)) |
 [MolPipeline](https://github.com/basf/MolPipeline) |
+[Monad](https://github.com/category-labs/monad) |
 [MouseTracks](https://github.com/huntfx/MouseTracks) |
 [movement](https://github.com/neuroinformatics-unit/movement) |
 Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis)) |
