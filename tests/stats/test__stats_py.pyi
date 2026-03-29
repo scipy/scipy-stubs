@@ -1027,7 +1027,25 @@ assert_type(friedmanchisquare(_f64_1d, _f64_1d, _f64_1d), FriedmanchisquareResul
 
 # brunnermunzel
 
-assert_type(brunnermunzel(_f64_1d, _f64_1d), BrunnerMunzelResult)
+assert_type(brunnermunzel(_f64_1d, _f64_1d), BrunnerMunzelResult[np.float64])
+assert_type(brunnermunzel(_f64_1d, _f64_2d), BrunnerMunzelResult[onp.Array1D[np.float64]])
+assert_type(brunnermunzel(_f64_1d, _f64_3d), BrunnerMunzelResult[onp.Array2D[np.float64]])
+assert_type(brunnermunzel(_f64_1d, _f64_nd), BrunnerMunzelResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
+
+assert_type(brunnermunzel(_f64_2d, _f64_1d), BrunnerMunzelResult[onp.Array1D[np.float64]])
+assert_type(brunnermunzel(_f64_2d, _f64_2d), BrunnerMunzelResult[onp.Array1D[np.float64]])
+assert_type(brunnermunzel(_f64_2d, _f64_3d), BrunnerMunzelResult[onp.Array2D[np.float64]])
+assert_type(brunnermunzel(_f64_2d, _f64_nd), BrunnerMunzelResult[onp.ArrayND[np.float64]])
+
+assert_type(brunnermunzel(_f64_3d, _f64_1d), BrunnerMunzelResult[onp.Array2D[np.float64]])
+assert_type(brunnermunzel(_f64_3d, _f64_2d), BrunnerMunzelResult[onp.Array2D[np.float64]])
+assert_type(brunnermunzel(_f64_3d, _f64_3d), BrunnerMunzelResult[onp.Array2D[np.float64]])
+assert_type(brunnermunzel(_f64_3d, _f64_nd), BrunnerMunzelResult[onp.ArrayND[np.float64]])
+
+assert_type(brunnermunzel(_f64_nd, _f64_1d), BrunnerMunzelResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
+assert_type(brunnermunzel(_f64_nd, _f64_2d), BrunnerMunzelResult[onp.ArrayND[np.float64]])
+assert_type(brunnermunzel(_f64_nd, _f64_3d), BrunnerMunzelResult[onp.ArrayND[np.float64]])
+assert_type(brunnermunzel(_f64_nd, _f64_nd), BrunnerMunzelResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
 
 # combine_pvalues
 

@@ -4476,7 +4476,107 @@ def friedmanchisquare(
     *samples: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
 ) -> FriedmanchisquareResult: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d, ?d|1d
+def brunnermunzel(
+    x: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    y: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape] | onp.ToFloatStrict1D,
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[np.float64 | Any]: ...
+@overload  # ?d|1d, ?d
+def brunnermunzel(
+    x: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape] | onp.ToFloatStrict1D,
+    y: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[np.float64 | Any]: ...
+@overload  # ?d, 2d|3d
+def brunnermunzel(
+    x: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    y: onp.ToFloatStrict2D | onp.ToFloatStrict3D,
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[onp.ArrayND[np.float64]]: ...
+@overload  # 2d|3d, ?d
+def brunnermunzel(
+    x: onp.ToFloatStrict2D | onp.ToFloatStrict3D,
+    y: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[onp.ArrayND[np.float64]]: ...
+@overload  # 1d, 1d
+def brunnermunzel(
+    x: onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict1D,
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[np.float64]: ...
+@overload  # 2d, <=2d
+def brunnermunzel(
+    x: onp.ToFloatStrict2D,
+    y: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[onp.Array1D[np.float64]]: ...
+@overload  # <=2d, 2d
+def brunnermunzel(
+    x: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict2D,
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[onp.Array1D[np.float64]]: ...
+@overload  # 3d, <=3d
+def brunnermunzel(
+    x: onp.ToFloatStrict3D,
+    y: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[onp.Array2D[np.float64]]: ...
+@overload  # <=3d, 3d
+def brunnermunzel(
+    x: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict3D,
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[onp.Array2D[np.float64]]: ...
+@overload  # Nd, Nd
 def brunnermunzel(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -4484,9 +4584,31 @@ def brunnermunzel(
     distribution: L["t", "normal"] = "t",
     nan_policy: NanPolicy = "propagate",
     *,
-    keepdims: bool = False,
+    axis: int = 0,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[onp.ArrayND[np.float64] | Any]: ...
+@overload  # axis=None
+def brunnermunzel(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
+    axis: None,
+    keepdims: L[False] = False,
+) -> BrunnerMunzelResult[np.float64]: ...
+@overload  # keepdims=True
+def brunnermunzel(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    alternative: Alternative = "two-sided",
+    distribution: L["t", "normal"] = "t",
+    nan_policy: NanPolicy = "propagate",
+    *,
     axis: int | None = 0,
-) -> BrunnerMunzelResult: ...
+    keepdims: L[True],
+) -> BrunnerMunzelResult[onp.ArrayND[np.float64]]: ...
 
 #
 @overload  # ?d T@floating
