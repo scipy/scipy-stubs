@@ -938,7 +938,25 @@ assert_type(trim_mean(_f64_nd, 0.1), np.float64 | onp.ArrayND[np.float64])  # py
 
 # f_oneway
 
-assert_type(f_oneway(_f64_1d, _f64_1d), F_onewayResult)
+assert_type(f_oneway(_f64_1d, _f64_1d), F_onewayResult[np.float64])
+assert_type(f_oneway(_f64_1d, _f64_2d), F_onewayResult[onp.Array1D[np.float64]])
+assert_type(f_oneway(_f64_1d, _f64_3d), F_onewayResult[onp.Array2D[np.float64]])
+assert_type(f_oneway(_f64_1d, _f64_nd), F_onewayResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
+
+assert_type(f_oneway(_f64_2d, _f64_1d), F_onewayResult[onp.Array1D[np.float64]])
+assert_type(f_oneway(_f64_2d, _f64_2d), F_onewayResult[onp.Array1D[np.float64]])
+assert_type(f_oneway(_f64_2d, _f64_3d), F_onewayResult[onp.Array2D[np.float64]])
+assert_type(f_oneway(_f64_2d, _f64_nd), F_onewayResult[onp.ArrayND[np.float64]])
+
+assert_type(f_oneway(_f64_3d, _f64_1d), F_onewayResult[onp.Array2D[np.float64]])
+assert_type(f_oneway(_f64_3d, _f64_2d), F_onewayResult[onp.Array2D[np.float64]])
+assert_type(f_oneway(_f64_3d, _f64_3d), F_onewayResult[onp.Array2D[np.float64]])
+assert_type(f_oneway(_f64_3d, _f64_nd), F_onewayResult[onp.ArrayND[np.float64]])
+
+assert_type(f_oneway(_f64_nd, _f64_1d), F_onewayResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
+assert_type(f_oneway(_f64_nd, _f64_2d), F_onewayResult[onp.ArrayND[np.float64]])
+assert_type(f_oneway(_f64_nd, _f64_3d), F_onewayResult[onp.ArrayND[np.float64]])
+assert_type(f_oneway(_f64_nd, _f64_nd), F_onewayResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
 
 # alexandergovern
 
