@@ -92,8 +92,9 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _IntegerT = TypeVar("_IntegerT", bound=npc.integer)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _FloatT = TypeVar("_FloatT", bound=npc.floating)
+_FloatT_co = TypeVar("_FloatT_co", bound=npc.floating, default=np.float64 | Any, covariant=True)
 _RealT = TypeVar("_RealT", bound=_Real0D, default=_Real0D)
-_RealT_co = TypeVar("_RealT_co", bound=_Real0D, default=_Real0D, covariant=True)
+_RealT_co = TypeVar("_RealT_co", bound=_Real0D, default=np.float64 | Any, covariant=True)
 
 _IntOrArrayT_co = TypeVar("_IntOrArrayT_co", bound=_ScalarOrND[np.intp], default=_ScalarOrND[np.intp], covariant=True)
 _FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_ScalarOrND[npc.floating])
@@ -241,10 +242,10 @@ class RelfreqResult(NamedTuple):
     binsize: onp.Array1D[np.float64]
     extrapoints: int
 
-class SigmaclipResult(NamedTuple, Generic[_RealT_co, _FloatOrArrayT_co]):
+class SigmaclipResult(NamedTuple, Generic[_RealT_co, _FloatT_co]):
     clipped: onp.Array1D[_RealT_co]
-    lower: _FloatOrArrayT_co
-    upper: _FloatOrArrayT_co
+    lower: _FloatT_co
+    upper: _FloatT_co
 
 @dataclass
 class AlexanderGovernResult:
@@ -3335,7 +3336,18 @@ def median_abs_deviation(
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64]: ...
 
-# TODO(@jorenham): use the generic type args of SigmaclipResult
+#
+@overload
+def sigmaclip(a: onp.ArrayND[_IntegerT], low: float = 4.0, high: float = 4.0) -> SigmaclipResult[_IntegerT, np.float64]: ...
+@overload
+def sigmaclip(a: onp.ArrayND[_FloatT], low: float = 4.0, high: float = 4.0) -> SigmaclipResult[_FloatT, _FloatT]: ...
+@overload
+def sigmaclip(a: onp.SequenceND[int], low: float = 4.0, high: float = 4.0) -> SigmaclipResult[np.int_, np.float64]: ...
+@overload
+def sigmaclip(
+    a: onp.SequenceND[list[float]] | list[float], low: float = 4.0, high: float = 4.0
+) -> SigmaclipResult[np.float64, np.float64]: ...
+@overload
 def sigmaclip(a: onp.ToFloatND, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...
 
 # TODO(jorenham): improve

@@ -922,7 +922,11 @@ assert_type(obrientransform(_f64_1d, _f64_1d), onp.Array2D[np.float64] | onp.Arr
 
 # sigmaclip
 
-assert_type(sigmaclip(_f64_1d), SigmaclipResult)
+assert_type(sigmaclip(_i16_1d), SigmaclipResult[np.int16, np.float64])
+assert_type(sigmaclip(_f32_1d), SigmaclipResult[np.float32, np.float32])
+assert_type(sigmaclip(_f64_1d), SigmaclipResult[np.float64, np.float64])
+assert_type(sigmaclip(_py_i_1d), SigmaclipResult[np.int_, np.float64])
+assert_type(sigmaclip(_py_f_1d), SigmaclipResult[np.float64, np.float64])
 
 # trimboth, trim1
 
