@@ -3371,7 +3371,7 @@ def trim_mean(
     a: onp.ToFloatND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[True]
 ) -> onp.ArrayND[np.float64]: ...
 
-# TODO(jorenham): improve
+#
 @overload  # ?d, ?d|1d
 def f_oneway(
     sample1: _ToFloatStrictND,
@@ -4591,10 +4591,127 @@ def ranksums(
     keepdims: bool = False,
 ) -> RanksumsResult: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d, ?d|1d
 def kruskal(
-    *samples: onp.ToFloatND, nan_policy: NanPolicy = "propagate", axis: int | None = 0, keepdims: bool = False
-) -> KruskalResult: ...
+    sample1: _ToFloatStrictND,
+    sample2: _ToFloatStrictND | onp.ToFloatStrict1D,
+    /,
+    *samples: _ToFloatStrictND | onp.ToFloatStrict1D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[np.float64 | Any]: ...
+@overload  # ?d|1d, ?d
+def kruskal(
+    sample1: _ToFloatStrictND | onp.ToFloatStrict1D,
+    sample2: _ToFloatStrictND,
+    /,
+    *samples: _ToFloatStrictND | onp.ToFloatStrict1D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[np.float64 | Any]: ...
+@overload  # ?d, 2d|3d
+def kruskal(
+    sample1: _ToFloatStrictND,
+    sample2: onp.ToFloatStrict2D | onp.ToFloatStrict3D,
+    /,
+    *samples: _ToFloatStrictND | onp.ToFloatStrict1D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[onp.ArrayND[np.float64]]: ...
+@overload  # 2d|3d, ?d
+def kruskal(
+    sample1: onp.ToFloatStrict2D | onp.ToFloatStrict3D,
+    sample2: _ToFloatStrictND,
+    /,
+    *samples: _ToFloatStrictND | onp.ToFloatStrict1D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[onp.ArrayND[np.float64]]: ...
+@overload  # 1d, 1d
+def kruskal(
+    sample1: onp.ToFloatStrict1D,
+    sample2: onp.ToFloatStrict1D,
+    /,
+    *samples: onp.ToFloatStrict1D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[np.float64]: ...
+@overload  # 2d, <=2d
+def kruskal(
+    sample1: onp.ToFloatStrict2D,
+    sample2: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    /,
+    *samples: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[onp.Array1D[np.float64]]: ...
+@overload  # <=2d, 2d
+def kruskal(
+    sample1: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    sample2: onp.ToFloatStrict2D,
+    /,
+    *samples: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[onp.Array1D[np.float64]]: ...
+@overload  # 3d, <=3d
+def kruskal(
+    sample1: onp.ToFloatStrict3D,
+    sample2: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    /,
+    *samples: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[onp.Array2D[np.float64]]: ...
+@overload  # <=3d, 3d
+def kruskal(
+    sample1: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    sample2: onp.ToFloatStrict3D,
+    /,
+    *samples: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[onp.Array2D[np.float64]]: ...
+@overload  # Nd, Nd
+def kruskal(
+    sample1: onp.ToFloatND,
+    sample2: onp.ToFloatND,
+    /,
+    *samples: onp.ToFloatND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[onp.ArrayND[np.float64] | Any]: ...
+@overload  # axis=None
+def kruskal(
+    sample1: onp.ToFloatND,
+    sample2: onp.ToFloatND,
+    /,
+    *samples: onp.ToFloatND,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KruskalResult[np.float64]: ...
+@overload  # keepdims=True
+def kruskal(
+    sample1: onp.ToFloatND,
+    sample2: onp.ToFloatND,
+    /,
+    *samples: onp.ToFloatND,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> KruskalResult[onp.ArrayND[np.float64]]: ...
 
 # TODO(jorenham): improve
 def friedmanchisquare(

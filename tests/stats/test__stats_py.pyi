@@ -1037,7 +1037,25 @@ assert_type(ranksums(_f64_1d, _f64_1d), RanksumsResult)
 
 # kruskal
 
-assert_type(kruskal(_f64_1d, _f64_1d), KruskalResult)
+assert_type(kruskal(_f64_1d, _f64_1d), KruskalResult[np.float64])
+assert_type(kruskal(_f64_1d, _f64_2d), KruskalResult[onp.Array1D[np.float64]])
+assert_type(kruskal(_f64_1d, _f64_3d), KruskalResult[onp.Array2D[np.float64]])
+assert_type(kruskal(_f64_1d, _f64_nd), KruskalResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
+
+assert_type(kruskal(_f64_2d, _f64_1d), KruskalResult[onp.Array1D[np.float64]])
+assert_type(kruskal(_f64_2d, _f64_2d), KruskalResult[onp.Array1D[np.float64]])
+assert_type(kruskal(_f64_2d, _f64_3d), KruskalResult[onp.Array2D[np.float64]])
+assert_type(kruskal(_f64_2d, _f64_nd), KruskalResult[onp.ArrayND[np.float64]])
+
+assert_type(kruskal(_f64_3d, _f64_1d), KruskalResult[onp.Array2D[np.float64]])
+assert_type(kruskal(_f64_3d, _f64_2d), KruskalResult[onp.Array2D[np.float64]])
+assert_type(kruskal(_f64_3d, _f64_3d), KruskalResult[onp.Array2D[np.float64]])
+assert_type(kruskal(_f64_3d, _f64_nd), KruskalResult[onp.ArrayND[np.float64]])
+
+assert_type(kruskal(_f64_nd, _f64_1d), KruskalResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
+assert_type(kruskal(_f64_nd, _f64_2d), KruskalResult[onp.ArrayND[np.float64]])
+assert_type(kruskal(_f64_nd, _f64_3d), KruskalResult[onp.ArrayND[np.float64]])
+assert_type(kruskal(_f64_nd, _f64_nd), KruskalResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
 
 # friedmanchisquare
 
