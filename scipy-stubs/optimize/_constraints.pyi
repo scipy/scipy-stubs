@@ -17,7 +17,6 @@ from typing import (
 from typing_extensions import TypeVar
 
 import numpy as np
-import numpy_typing_compat as nptc
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
@@ -118,40 +117,40 @@ class Bounds(_Constraint[_ShapeT_co, _NumberT_co], Generic[_ShapeT_co, _NumberT_
     def __init__(
         self: Bounds[_AnyShape, _NumberT],
         /,
-        lb: nptc.CanArray[_JustAnyShape, np.dtype[_NumberT]],
-        ub: nptc.CanArray[tuple[int, ...], np.dtype[_NumberT]],
+        lb: onp.ArrayND[_NumberT, _JustAnyShape],
+        ub: onp.ArrayND[_NumberT],
         keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload  # Nd, ?d
     def __init__(
         self: Bounds[_AnyShape, _NumberT],
         /,
-        lb: nptc.CanArray[tuple[int, ...], np.dtype[_NumberT]],
-        ub: nptc.CanArray[_JustAnyShape, np.dtype[_NumberT]],
+        lb: onp.ArrayND[_NumberT],
+        ub: onp.ArrayND[_NumberT, _JustAnyShape],
         keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload  # 1d, 1d
     def __init__(
         self: Bounds[tuple[int], _NumberT],
         /,
-        lb: _NumberT | nptc.CanArray[tuple[int], np.dtype[_NumberT]],
-        ub: _NumberT | nptc.CanArray[tuple[int], np.dtype[_NumberT]],
+        lb: _NumberT | onp.Array1D[_NumberT],
+        ub: _NumberT | onp.Array1D[_NumberT],
         keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload  # 2d, <=2d
     def __init__(
         self: Bounds[tuple[int, int], _NumberT],
         /,
-        lb: nptc.CanArray[tuple[int, int], np.dtype[_NumberT]],
-        ub: nptc.CanArray[tuple[int, int], np.dtype[_NumberT]] | nptc.CanArray[tuple[int], np.dtype[_NumberT]],
+        lb: onp.Array2D[_NumberT],
+        ub: onp.Array2D[_NumberT] | onp.Array1D[_NumberT],
         keep_feasible: bool | onp.ToBoolStrict1D | onp.ToBoolStrict2D = False,
     ) -> None: ...
     @overload  # <=2d, 2d
     def __init__(
         self: Bounds[tuple[int, int], _NumberT],
         /,
-        lb: nptc.CanArray[tuple[int, int], np.dtype[_NumberT]] | nptc.CanArray[tuple[int], np.dtype[_NumberT]],
-        ub: nptc.CanArray[tuple[int, int], np.dtype[_NumberT]],
+        lb: onp.Array2D[_NumberT] | onp.Array1D[_NumberT],
+        ub: onp.Array2D[_NumberT],
         keep_feasible: bool | onp.ToBoolStrict1D | onp.ToBoolStrict2D = False,
     ) -> None: ...
     @overload  # Nd
