@@ -291,15 +291,15 @@ def _vf_func(arr: onp.Array1D[Any]) -> np.float64: ...
 ###
 # generic_laplace
 
-assert_type(generic_laplace(f64_2d, _deriv), onp.Array2D[np.float64])  # type: ignore[assert-type]  # mypy bug
-assert_type(generic_laplace(float_2d, _deriv), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
+assert_type(generic_laplace(f64_2d, _deriv), onp.Array2D[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
+assert_type(generic_laplace(float_2d, _deriv), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
 assert_type(generic_laplace(complex_2d, _deriv), onp.ArrayND[Any])
 
 ###
 # generic_gradient_magnitude
 
-assert_type(generic_gradient_magnitude(f64_2d, _deriv), onp.Array2D[np.float64])  # type: ignore[assert-type]  # mypy bug
-assert_type(generic_gradient_magnitude(float_2d, _deriv), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
+assert_type(generic_gradient_magnitude(f64_2d, _deriv), onp.Array2D[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
+assert_type(generic_gradient_magnitude(float_2d, _deriv), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
 assert_type(generic_gradient_magnitude(complex_2d, _deriv), onp.ArrayND[Any])
 
 ###

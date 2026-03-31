@@ -950,16 +950,16 @@ assert_type(f_oneway(_f64_1d, _f64_nd), F_onewayResult[np.float64 | Any])
 assert_type(f_oneway(_f64_2d, _f64_1d), F_onewayResult[onp.Array1D[np.float64]])
 assert_type(f_oneway(_f64_2d, _f64_2d), F_onewayResult[onp.Array1D[np.float64]])
 assert_type(f_oneway(_f64_2d, _f64_3d), F_onewayResult[onp.Array2D[np.float64]])
-assert_type(f_oneway(_f64_2d, _f64_nd), F_onewayResult[onp.ArrayND[np.float64]])
+assert_type(f_oneway(_f64_2d, _f64_nd), F_onewayResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
 
 assert_type(f_oneway(_f64_3d, _f64_1d), F_onewayResult[onp.Array2D[np.float64]])
 assert_type(f_oneway(_f64_3d, _f64_2d), F_onewayResult[onp.Array2D[np.float64]])
 assert_type(f_oneway(_f64_3d, _f64_3d), F_onewayResult[onp.Array2D[np.float64]])
-assert_type(f_oneway(_f64_3d, _f64_nd), F_onewayResult[onp.ArrayND[np.float64]])
+assert_type(f_oneway(_f64_3d, _f64_nd), F_onewayResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
 
 assert_type(f_oneway(_f64_nd, _f64_1d), F_onewayResult[np.float64 | Any])
-assert_type(f_oneway(_f64_nd, _f64_2d), F_onewayResult[onp.ArrayND[np.float64]])
-assert_type(f_oneway(_f64_nd, _f64_3d), F_onewayResult[onp.ArrayND[np.float64]])
+assert_type(f_oneway(_f64_nd, _f64_2d), F_onewayResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
+assert_type(f_oneway(_f64_nd, _f64_3d), F_onewayResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
 assert_type(f_oneway(_f64_nd, _f64_nd), F_onewayResult[np.float64 | Any])
 
 # alexandergovern
@@ -1049,16 +1049,16 @@ assert_type(kruskal(_f64_1d, _f64_nd), KruskalResult[np.float64 | Any])
 assert_type(kruskal(_f64_2d, _f64_1d), KruskalResult[onp.Array1D[np.float64]])
 assert_type(kruskal(_f64_2d, _f64_2d), KruskalResult[onp.Array1D[np.float64]])
 assert_type(kruskal(_f64_2d, _f64_3d), KruskalResult[onp.Array2D[np.float64]])
-assert_type(kruskal(_f64_2d, _f64_nd), KruskalResult[onp.ArrayND[np.float64]])
+assert_type(kruskal(_f64_2d, _f64_nd), KruskalResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
 
 assert_type(kruskal(_f64_3d, _f64_1d), KruskalResult[onp.Array2D[np.float64]])
 assert_type(kruskal(_f64_3d, _f64_2d), KruskalResult[onp.Array2D[np.float64]])
 assert_type(kruskal(_f64_3d, _f64_3d), KruskalResult[onp.Array2D[np.float64]])
-assert_type(kruskal(_f64_3d, _f64_nd), KruskalResult[onp.ArrayND[np.float64]])
+assert_type(kruskal(_f64_3d, _f64_nd), KruskalResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
 
 assert_type(kruskal(_f64_nd, _f64_1d), KruskalResult[np.float64 | Any])
-assert_type(kruskal(_f64_nd, _f64_2d), KruskalResult[onp.ArrayND[np.float64]])
-assert_type(kruskal(_f64_nd, _f64_3d), KruskalResult[onp.ArrayND[np.float64]])
+assert_type(kruskal(_f64_nd, _f64_2d), KruskalResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
+assert_type(kruskal(_f64_nd, _f64_3d), KruskalResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
 assert_type(kruskal(_f64_nd, _f64_nd), KruskalResult[np.float64 | Any])
 
 # friedmanchisquare
@@ -1075,16 +1075,16 @@ assert_type(brunnermunzel(_f64_1d, _f64_nd), BrunnerMunzelResult[np.float64 | An
 assert_type(brunnermunzel(_f64_2d, _f64_1d), BrunnerMunzelResult[onp.Array1D[np.float64]])
 assert_type(brunnermunzel(_f64_2d, _f64_2d), BrunnerMunzelResult[onp.Array1D[np.float64]])
 assert_type(brunnermunzel(_f64_2d, _f64_3d), BrunnerMunzelResult[onp.Array2D[np.float64]])
-assert_type(brunnermunzel(_f64_2d, _f64_nd), BrunnerMunzelResult[onp.ArrayND[np.float64]])
+assert_type(brunnermunzel(_f64_2d, _f64_nd), BrunnerMunzelResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
 
 assert_type(brunnermunzel(_f64_3d, _f64_1d), BrunnerMunzelResult[onp.Array2D[np.float64]])
 assert_type(brunnermunzel(_f64_3d, _f64_2d), BrunnerMunzelResult[onp.Array2D[np.float64]])
 assert_type(brunnermunzel(_f64_3d, _f64_3d), BrunnerMunzelResult[onp.Array2D[np.float64]])
-assert_type(brunnermunzel(_f64_3d, _f64_nd), BrunnerMunzelResult[onp.ArrayND[np.float64]])
+assert_type(brunnermunzel(_f64_3d, _f64_nd), BrunnerMunzelResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
 
 assert_type(brunnermunzel(_f64_nd, _f64_1d), BrunnerMunzelResult[np.float64 | Any])
-assert_type(brunnermunzel(_f64_nd, _f64_2d), BrunnerMunzelResult[onp.ArrayND[np.float64]])
-assert_type(brunnermunzel(_f64_nd, _f64_3d), BrunnerMunzelResult[onp.ArrayND[np.float64]])
+assert_type(brunnermunzel(_f64_nd, _f64_2d), BrunnerMunzelResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
+assert_type(brunnermunzel(_f64_nd, _f64_3d), BrunnerMunzelResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
 assert_type(brunnermunzel(_f64_nd, _f64_nd), BrunnerMunzelResult[np.float64 | Any])
 
 # combine_pvalues
