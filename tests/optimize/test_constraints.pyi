@@ -1,5 +1,3 @@
-# ruff: noqa: ERA001
-
 from typing import Any, assert_type
 
 import numpy as np
@@ -13,8 +11,9 @@ ints_2d: list[list[int]]
 floats_1d: list[float]
 floats_2d: list[list[float]]
 
-f32_1d: np.ndarray[tuple[int], np.dtype[np.float32]]
-f32_2d: np.ndarray[tuple[int, int], np.dtype[np.float32]]
+f32_1d: onp.Array1D[np.float32]
+f32_2d: onp.Array2D[np.float32]
+f32_nd: onp.ArrayND[np.float32]
 
 ###
 # Bounds
@@ -27,11 +26,17 @@ assert_type(Bounds(0.0, 1.0), Bounds[tuple[int], np.float64])
 assert_type(Bounds(floats_1d, floats_1d), Bounds[tuple[int], np.float64])
 assert_type(Bounds(floats_2d, floats_2d), Bounds[tuple[Any, ...], np.float64])
 
-# NOTE: these two assertions only pass on numpy 2.1+, so we instead check for assignability
-# assert_type(Bounds(f32_1d, f32_1d), Bounds[tuple[int], np.float32])
-# assert_type(Bounds(f32_2d, f32_2d), Bounds[tuple[int, int], np.float32])
-_0: Bounds[tuple[int], np.float32] = Bounds(f32_1d, f32_1d)
-_1: Bounds[tuple[int, int], np.float32] = Bounds(f32_2d, f32_2d)
+assert_type(Bounds(f32_1d, f32_1d), Bounds[tuple[int], np.float32])
+assert_type(Bounds(f32_1d, f32_2d), Bounds[tuple[int, int], np.float32])
+assert_type(Bounds(f32_1d, f32_nd), Bounds[tuple[Any, ...], np.float32])
+
+assert_type(Bounds(f32_2d, f32_1d), Bounds[tuple[int, int], np.float32])
+assert_type(Bounds(f32_2d, f32_2d), Bounds[tuple[int, int], np.float32])
+assert_type(Bounds(f32_2d, f32_nd), Bounds[tuple[Any, ...], np.float32])
+
+assert_type(Bounds(f32_nd, f32_1d), Bounds[tuple[Any, ...], np.float32])
+assert_type(Bounds(f32_nd, f32_2d), Bounds[tuple[Any, ...], np.float32])
+assert_type(Bounds(f32_nd, f32_nd), Bounds[tuple[Any, ...], np.float32])
 
 ###
 # LinearConstraint

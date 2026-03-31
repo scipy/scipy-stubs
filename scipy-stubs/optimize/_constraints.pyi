@@ -6,6 +6,7 @@ from typing import (
     Final,
     Generic,
     Literal,
+    Never,
     NotRequired,
     SupportsIndex,
     TypeAlias,
@@ -25,17 +26,21 @@ from scipy.optimize._hessian_update_strategy import HessianUpdateStrategy
 from scipy.sparse._typing import _Sparse2D
 from scipy.sparse.linalg import LinearOperator
 
+###
+
 _T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_ScalarT = TypeVar("_ScalarT", bound=npc.number)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number, default=np.float64, covariant=True)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
+_NumberT = TypeVar("_NumberT", bound=npc.number)
+_NumberT_co = TypeVar("_NumberT_co", bound=npc.number, default=np.float64 | Any, covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=_AnyShape, covariant=True)
 
 _Tuple2: TypeAlias = tuple[_T, _T]
-
+_MethodJac: TypeAlias = Literal["2-point", "3-point", "cs"]
 _ToFloat2D: TypeAlias = onp.ToFloat2D | _Sparse2D[npc.floating | npc.integer]
 
-_MethodJac: TypeAlias = Literal["2-point", "3-point", "cs"]
+_AnyShape: TypeAlias = tuple[Any, ...]
+# workaround for mypy & pyright's failure to conform to the overload typing specification
+_JustAnyShape: TypeAlias = tuple[Never, Never, Never]
 
 @type_check_only
 class _OldConstraint(TypedDict):
@@ -49,13 +54,13 @@ class _BaseConstraint(Generic[_ShapeT_co]):
     keep_feasible: onp.ArrayND[np.bool_, _ShapeT_co]
 
 @type_check_only
-class _Constraint(_BaseConstraint[_ShapeT_co], Generic[_ShapeT_co, _ScalarT_co]):
-    lb: onp.ArrayND[_ScalarT_co, _ShapeT_co]
-    ub: onp.ArrayND[_ScalarT_co, _ShapeT_co]
+class _Constraint(_BaseConstraint[_ShapeT_co], Generic[_ShapeT_co, _NumberT_co]):
+    lb: onp.ArrayND[_NumberT_co, _ShapeT_co]
+    ub: onp.ArrayND[_NumberT_co, _ShapeT_co]
 
 ###
 
-class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_co]):
+class Bounds(_Constraint[_ShapeT_co, _NumberT_co], Generic[_ShapeT_co, _NumberT_co]):
     @classmethod
     def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
 
@@ -70,7 +75,7 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
     ) -> None: ...
     @overload
     def __init__(
-        self: Bounds[tuple[Any, ...], np.int_],
+        self: Bounds[_AnyShape, np.int_],
         /,
         lb: onp.SequenceND[int],
         ub: onp.SequenceND[int],
@@ -80,35 +85,75 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
     def __init__(
         self: Bounds[tuple[int], np.float64],
         /,
-        lb: op.JustFloat | Sequence[op.JustFloat] = ...,  # = np.inf
-        ub: op.JustFloat | Sequence[op.JustFloat] = ...,  # = -np.inf
-        keep_feasible: bool | onp.ToBoolStrict1D = False,
-    ) -> None: ...
-    @overload
-    def __init__(  # pyright: ignore[reportOverlappingOverload]
-        self: Bounds[tuple[int], np.float64 | np.int_],
-        /,
-        lb: float | Sequence[float] = ...,  # = np.inf
+        lb: op.JustFloat | list[float] = ...,  # = np.inf
         ub: float | Sequence[float] = ...,  # = -np.inf
         keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload
     def __init__(
-        self,
+        self: Bounds[tuple[int], np.float64],
         /,
-        lb: onp.CanArray[_ShapeT_co, np.dtype[_ScalarT_co]],
-        ub: onp.CanArray[tuple[()] | tuple[int] | _ShapeT_co, np.dtype[_ScalarT_co]],
-        keep_feasible: bool | onp.ToBool1D | onp.CanArray[_ShapeT_co, np.dtype[np.bool_]] = False,
+        lb: float | Sequence[float] = ...,  # = -np.inf
+        ub: op.JustFloat | list[float] = ...,  # = np.inf
+        keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload
     def __init__(
-        self,
+        self: Bounds[_AnyShape, np.float64],
         /,
-        lb: onp.CanArray[tuple[()] | tuple[int] | _ShapeT_co, np.dtype[_ScalarT_co]],
-        ub: onp.CanArray[_ShapeT_co, np.dtype[_ScalarT_co]],
-        keep_feasible: bool | onp.ToBool1D | onp.CanArray[_ShapeT_co, np.dtype[np.bool_]] = False,
+        lb: onp.SequenceND[list[float]],
+        ub: float | onp.SequenceND[float] = ...,  # = -np.inf
+        keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload
+    def __init__(
+        self: Bounds[_AnyShape, np.float64],
+        /,
+        lb: float | onp.SequenceND[float],
+        ub: onp.SequenceND[list[float]],
+        keep_feasible: bool | onp.ToBoolStrict1D = False,
+    ) -> None: ...
+    @overload  # ?d, Nd
+    def __init__(
+        self: Bounds[_AnyShape, _NumberT],
+        /,
+        lb: onp.ArrayND[_NumberT, _JustAnyShape],
+        ub: onp.ArrayND[_NumberT],
+        keep_feasible: bool | onp.ToBoolStrict1D = False,
+    ) -> None: ...
+    @overload  # Nd, ?d
+    def __init__(
+        self: Bounds[_AnyShape, _NumberT],
+        /,
+        lb: onp.ArrayND[_NumberT],
+        ub: onp.ArrayND[_NumberT, _JustAnyShape],
+        keep_feasible: bool | onp.ToBoolStrict1D = False,
+    ) -> None: ...
+    @overload  # 1d, 1d
+    def __init__(
+        self: Bounds[tuple[int], _NumberT],
+        /,
+        lb: _NumberT | onp.Array1D[_NumberT],
+        ub: _NumberT | onp.Array1D[_NumberT],
+        keep_feasible: bool | onp.ToBoolStrict1D = False,
+    ) -> None: ...
+    @overload  # 2d, <=2d
+    def __init__(
+        self: Bounds[tuple[int, int], _NumberT],
+        /,
+        lb: onp.Array2D[_NumberT],
+        ub: onp.Array2D[_NumberT] | onp.Array1D[_NumberT],
+        keep_feasible: bool | onp.ToBoolStrict1D | onp.ToBoolStrict2D = False,
+    ) -> None: ...
+    @overload  # <=2d, 2d
+    def __init__(
+        self: Bounds[tuple[int, int], _NumberT],
+        /,
+        lb: onp.Array2D[_NumberT] | onp.Array1D[_NumberT],
+        ub: onp.Array2D[_NumberT],
+        keep_feasible: bool | onp.ToBoolStrict1D | onp.ToBoolStrict2D = False,
+    ) -> None: ...
+    @overload  # Nd
     def __init__(
         self,
         /,
@@ -119,29 +164,33 @@ class Bounds(_Constraint[_ShapeT_co, _ScalarT_co], Generic[_ShapeT_co, _ScalarT_
 
     #
     @overload  # known scalar type
-    def residual(self: Bounds[Any, _ScalarT], /, x: onp.ToInt | onp.ToInt1D) -> _Tuple2[onp.ArrayND[_ScalarT, _ShapeT_co]]: ...
+    def residual(
+        self: Bounds[_AnyShape, _NumberT], /, x: onp.ToInt | onp.ToInt1D
+    ) -> _Tuple2[onp.ArrayND[_NumberT, _ShapeT_co]]: ...
     @overload  # known inexact scalar type
     def residual(
-        self: Bounds[Any, npc.integer], /, x: onp.CanArray[tuple[()] | tuple[int], np.dtype[_InexactT]] | Sequence[_InexactT]
+        self: Bounds[_AnyShape, npc.integer],
+        /,
+        x: onp.CanArray[tuple[()] | tuple[int], np.dtype[_InexactT]] | Sequence[_InexactT],
     ) -> _Tuple2[onp.ArrayND[_InexactT, _ShapeT_co]]: ...
     @overload  # c64 scalar type
     def residual(
-        self: Bounds[Any, npc.integer | np.float64], /, x: onp.ToJustFloat64 | onp.ToJustFloat64_1D
+        self: Bounds[_AnyShape, npc.integer | np.float64], /, x: onp.ToJustFloat64 | onp.ToJustFloat64_1D
     ) -> _Tuple2[onp.ArrayND[np.float64, _ShapeT_co]]: ...
     @overload  # known floating type
     def residual(
-        self: Bounds[Any, npc.inexact64 | npc.inexact80], /, x: onp.ToFloat64 | onp.ToFloat64_1D
-    ) -> _Tuple2[onp.ArrayND[_ScalarT_co, _ShapeT_co]]: ...
+        self: Bounds[_AnyShape, npc.inexact64 | npc.inexact80], /, x: onp.ToFloat64 | onp.ToFloat64_1D
+    ) -> _Tuple2[onp.ArrayND[_NumberT_co, _ShapeT_co]]: ...
     @overload  # c128 scalar type
     def residual(
-        self: Bounds[Any, npc.integer | np.float16 | np.float32 | np.float64 | np.complex128],
+        self: Bounds[_AnyShape, npc.integer | np.float16 | npc.inexact32 | npc.inexact64],
         /,
         x: onp.ToJustComplex128 | onp.ToJustComplex128_1D,
     ) -> _Tuple2[onp.ArrayND[np.complex128, _ShapeT_co]]: ...
     @overload  # known complex type
     def residual(
-        self: Bounds[Any, np.complex128 | npc.complexfloating160], /, x: onp.ToComplex128 | onp.ToComplex128_1D
-    ) -> _Tuple2[onp.ArrayND[_ScalarT_co, _ShapeT_co]]: ...
+        self: Bounds[_AnyShape, np.complex128 | npc.complexfloating160], /, x: onp.ToComplex128 | onp.ToComplex128_1D
+    ) -> _Tuple2[onp.ArrayND[_NumberT_co, _ShapeT_co]]: ...
 
 class LinearConstraint(_Constraint[tuple[int], np.float64]):
     A: Final[onp.Array2D[np.float64] | _Sparse2D[np.float64]]
