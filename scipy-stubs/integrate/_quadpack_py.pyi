@@ -74,7 +74,7 @@ class _QuadOutputNC(TypedDict):
 
 _QuadComplexFullOutput: TypeAlias = _QuadOutput1C_1 | _QuadOutput1C_2 | _QuadOutput1C_3
 # pyrefly: ignore [invalid-argument]
-_QuadExplain = TypedDict("_QuadExplain", {0: str, 1: str, 2: str, 3: str, 4: str, 5: str})  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]
+_QuadExplain = TypedDict("_QuadExplain", {0: str, 1: str, 2: str, 3: str, 4: str, 5: str})  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]  # ty: ignore[invalid-argument-type]
 
 @type_check_only
 class _CanLenAndIter(Protocol[_T_co]):
