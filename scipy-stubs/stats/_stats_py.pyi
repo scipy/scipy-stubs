@@ -220,11 +220,9 @@ class DescribeResult(NamedTuple, Generic[_RealOrArrayT_co, _FloatOrArrayT_co]):
 
 class ModeResult(NamedTuple, Generic[_RealOrArrayT_co, _IntOrArrayT_co]):
     mode: _RealOrArrayT_co
-    # pyrefly: ignore [bad-override]
     count: _IntOrArrayT_co  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 class HistogramResult(NamedTuple):
-    # pyrefly: ignore [bad-override]
     count: onp.Array1D[np.float64]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
     lowerlimit: L[0] | npc.floating
     binsize: onp.Array1D[np.float64]

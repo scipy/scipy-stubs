@@ -124,12 +124,12 @@ assert_type(variation(_f80_3d, keepdims=True), onp.Array3D[np.float128])
 
 # NOTE: Pyrefly doesn't seem to be able to intersect the return types in case of multiple matching overloads,
 # and in this case both return types are even identical (ArrayND[*] | Any).
-assert_type(variation(_bool_nd), onp.ArrayND[np.float64] | Any)  # pyrefly:ignore[assert-type]
-assert_type(variation(_i8_nd), onp.ArrayND[np.float64] | Any)  # pyrefly:ignore[assert-type]
-assert_type(variation(_f16_nd), onp.ArrayND[np.float16] | Any)  # pyrefly:ignore[assert-type]
-assert_type(variation(_f32_nd), onp.ArrayND[np.float32] | Any)  # pyrefly:ignore[assert-type]
-assert_type(variation(_f64_nd), onp.ArrayND[np.float64] | Any)  # pyrefly:ignore[assert-type]
-assert_type(variation(_f80_nd), onp.ArrayND[np.float128] | Any)  # pyrefly:ignore[assert-type]
+assert_type(variation(_bool_nd), onp.ArrayND[np.float64] | Any)
+assert_type(variation(_i8_nd), onp.ArrayND[np.float64] | Any)
+assert_type(variation(_f16_nd), onp.ArrayND[np.float16] | Any)
+assert_type(variation(_f32_nd), onp.ArrayND[np.float32] | Any)
+assert_type(variation(_f64_nd), onp.ArrayND[np.float64] | Any)
+assert_type(variation(_f80_nd), onp.ArrayND[np.float128] | Any)
 
 assert_type(variation(_bool_nd, axis=None), np.float64)
 assert_type(variation(_i8_nd, axis=None), np.float64)

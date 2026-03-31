@@ -132,7 +132,6 @@ trimdoc: Final[str] = ...
 
 class ModeResult(NamedTuple):
     mode: onp.MArray[np.float64]
-    # pyrefly: ignore [bad-override]
     count: onp.MArray[np.float64]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 class DescribeResult(NamedTuple):

@@ -53,6 +53,6 @@ assert_type(linregress(_f16_3d, _f16_3d).slope, onp.Array2D[np.float64])
 assert_type(linregress(_f64_3d, _f64_3d).slope, onp.Array2D[np.float64])
 
 # NOTE: Pyrefly doesn't seem to be able to intersect the return types in case of multiple matching overloads.
-assert_type(linregress(_i8_nd, _i8_nd).slope, np.float64 | Any)  # pyrefly:ignore[assert-type]
-assert_type(linregress(_f16_nd, _f16_nd).slope, np.float64 | Any)  # pyrefly:ignore[assert-type]
-assert_type(linregress(_f64_nd, _f64_nd).slope, np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(linregress(_i8_nd, _i8_nd).slope, np.float64 | Any)
+assert_type(linregress(_f16_nd, _f16_nd).slope, np.float64 | Any)
+assert_type(linregress(_f64_nd, _f64_nd).slope, np.float64 | Any)

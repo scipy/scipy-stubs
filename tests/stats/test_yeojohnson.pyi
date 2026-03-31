@@ -93,10 +93,10 @@ assert_type(yeojohnson_normmax(_f64_2d), onp.Array1D[np.float64])
 
 # NOTE: Pyrefly doesn't seem to be able to intersect the return types in case of multiple matching overloads,
 # and in this case both return types are even identical (Array1D[float64] | float64).
-assert_type(yeojohnson_normmax(_i8_nd), onp.Array1D[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
-assert_type(yeojohnson_normmax(_f16_nd), onp.Array1D[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
-assert_type(yeojohnson_normmax(_f32_nd), onp.Array1D[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
-assert_type(yeojohnson_normmax(_f64_nd), onp.Array1D[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
+assert_type(yeojohnson_normmax(_i8_nd), onp.Array1D[np.float64] | np.float64)
+assert_type(yeojohnson_normmax(_f16_nd), onp.Array1D[np.float64] | np.float64)
+assert_type(yeojohnson_normmax(_f32_nd), onp.Array1D[np.float64] | np.float64)
+assert_type(yeojohnson_normmax(_f64_nd), onp.Array1D[np.float64] | np.float64)
 
 # yeojohnson_plot
 
