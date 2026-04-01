@@ -23,12 +23,14 @@ _SparseOrDense = TypeAliasType(
 _AsFloat64: TypeAlias = np.float64 | npc.integer | np.bool_
 _ToFloat64: TypeAlias = _AsFloat64 | np.float32 | np.float16
 
+_JustAnyShape: TypeAlias = tuple[Never, Never, Never]
+
 ###
 
 @overload  # workaround for mypy's and pyright's typing spec non-compliance regarding overloads
 def expm_multiply(
     A: _ToLinearOperator[_AsFloat64],
-    B: _SparseOrDense[_ToFloat64, tuple[Never] | tuple[Never, Never]],
+    B: _SparseOrDense[_ToFloat64, _JustAnyShape],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
     num: SupportsIndex | None = None,
@@ -38,7 +40,7 @@ def expm_multiply(
 @overload
 def expm_multiply(
     A: _ToLinearOperator[_InexactT],
-    B: _SparseOrDense[_InexactT | npc.integer | np.bool_, tuple[Never] | tuple[Never, Never]],
+    B: _SparseOrDense[_InexactT | npc.integer | np.bool_, _JustAnyShape],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
     num: SupportsIndex | None = None,
