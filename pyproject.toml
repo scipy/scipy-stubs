@@ -64,7 +64,7 @@ type = [
   "matplotlib==3.10.8", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
   "basedpyright==1.38.4",
   "mypy[faster-cache]==1.20.0",
-  "pyrefly==0.59.0",
+  "pyrefly==0.59.1",
   "stubdefaulter>=0.1.0",
   "ty==0.0.27",
 ]
