@@ -106,10 +106,10 @@ assert_type(lmoment(_f16_2d, keepdims=True), onp.Array3D[np.float32])
 assert_type(lmoment(_py_f_nd, 4), onp.ArrayND[np.float64] | np.float64)
 # NOTE: Pyrefly doesn't seem to be able to intersect the return types in case of multiple matching overloads,
 # and in this case both return types are even identical (viz. `ArrayND[*] | *`).
-assert_type(lmoment(_i64_nd, 4), onp.ArrayND[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
-assert_type(lmoment(_f64_nd, 4), onp.ArrayND[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
-assert_type(lmoment(_f32_nd, 4), onp.ArrayND[np.float32] | np.float32)  # pyrefly:ignore[assert-type]
-assert_type(lmoment(_f16_nd, 4), onp.ArrayND[np.float32] | np.float32)  # pyrefly:ignore[assert-type]
+assert_type(lmoment(_i64_nd, 4), onp.ArrayND[np.float64] | np.float64)
+assert_type(lmoment(_f64_nd, 4), onp.ArrayND[np.float64] | np.float64)
+assert_type(lmoment(_f32_nd, 4), onp.ArrayND[np.float32] | np.float32)
+assert_type(lmoment(_f16_nd, 4), onp.ArrayND[np.float32] | np.float32)
 assert_type(lmoment(_py_f_nd, 4, axis=None), np.float64)
 assert_type(lmoment(_i64_nd, 4, axis=None), np.float64)
 assert_type(lmoment(_f64_nd, 4, axis=None), np.float64)

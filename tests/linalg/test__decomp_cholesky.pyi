@@ -58,7 +58,7 @@ assert_type(cholesky(_number_2d), onp.Array2D[Any])
 
 cholesky(_f64_1d)  # type:ignore[type-var] # pyright:ignore[reportArgumentType,reportCallIssue] # pyrefly:ignore[no-matching-overload]
 assert_type(cholesky(_f64_3d), onp.Array3D[np.float64])
-assert_type(cholesky(_f64_nd), onp.ArrayND[np.float64])
+assert_type(cholesky(_f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
 assert_type(cholesky(_py_f_2d), onp.Array2D[np.float64])
 assert_type(cholesky(_py_f_3d), onp.ArrayND[np.float64])
@@ -84,7 +84,7 @@ assert_type(cho_factor(_number_2d), tuple[onp.Array2D[Any], bool])
 
 cho_factor(_f64_1d)  # type:ignore[type-var] # pyright:ignore[reportArgumentType,reportCallIssue] # pyrefly:ignore[no-matching-overload]
 assert_type(cho_factor(_f64_3d), tuple[onp.Array3D[np.float64], bool])
-assert_type(cho_factor(_f64_nd), tuple[onp.ArrayND[np.float64], bool])
+assert_type(cho_factor(_f64_nd), tuple[onp.ArrayND[np.float64], bool])  # pyrefly:ignore[assert-type]
 
 assert_type(cho_factor(_py_f_2d), tuple[onp.Array2D[np.float64], bool])
 assert_type(cho_factor(_py_f_3d), tuple[onp.ArrayND[np.float64], bool])
@@ -110,7 +110,7 @@ assert_type(cholesky_banded(_number_2d), onp.Array2D[Any])
 
 cholesky_banded(_f64_1d)  # type:ignore[type-var] # pyright:ignore[reportArgumentType,reportCallIssue] # pyrefly:ignore[no-matching-overload]
 assert_type(cholesky_banded(_f64_3d), onp.Array3D[np.float64])
-assert_type(cholesky_banded(_f64_nd), onp.ArrayND[np.float64])
+assert_type(cholesky_banded(_f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
 assert_type(cholesky_banded(_py_f_2d), onp.Array2D[np.float64])
 assert_type(cholesky_banded(_py_f_3d), onp.ArrayND[np.float64])

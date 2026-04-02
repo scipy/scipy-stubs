@@ -63,10 +63,10 @@ assert_type(ttest_ind(_f32_3d, _f32_3d).statistic, onp.Array2D[np.float32])
 assert_type(ttest_ind(_f64_3d, _f64_3d).statistic, onp.Array2D[np.float64])
 
 # NOTE: Pyrefly doesn't seem to be able to intersect the return types in case of multiple matching overloads.
-assert_type(ttest_ind(_i8_nd, _i8_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
-assert_type(ttest_ind(_f16_nd, _f16_nd).statistic, np.float16 | Any)  # pyrefly:ignore[assert-type]
-assert_type(ttest_ind(_f32_nd, _f32_nd).statistic, np.float32 | Any)  # pyrefly:ignore[assert-type]
-assert_type(ttest_ind(_f64_nd, _f64_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(ttest_ind(_i8_nd, _i8_nd).statistic, np.float64 | Any)
+assert_type(ttest_ind(_f16_nd, _f16_nd).statistic, np.float16 | Any)
+assert_type(ttest_ind(_f32_nd, _f32_nd).statistic, np.float32 | Any)
+assert_type(ttest_ind(_f64_nd, _f64_nd).statistic, np.float64 | Any)
 
 # ttest_rel
 
@@ -92,7 +92,7 @@ assert_type(ttest_rel(_f32_3d, _f32_3d).statistic, onp.Array2D[np.float32])
 assert_type(ttest_rel(_f64_3d, _f64_3d).statistic, onp.Array2D[np.float64])
 
 # NOTE: Pyrefly doesn't seem to be able to intersect the return types in case of multiple matching overloads.
-assert_type(ttest_rel(_i8_nd, _i8_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
-assert_type(ttest_rel(_f16_nd, _f16_nd).statistic, np.float16 | Any)  # pyrefly:ignore[assert-type]
-assert_type(ttest_rel(_f32_nd, _f32_nd).statistic, np.float32 | Any)  # pyrefly:ignore[assert-type]
-assert_type(ttest_rel(_f64_nd, _f64_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(ttest_rel(_i8_nd, _i8_nd).statistic, np.float64 | Any)
+assert_type(ttest_rel(_f16_nd, _f16_nd).statistic, np.float16 | Any)
+assert_type(ttest_rel(_f32_nd, _f32_nd).statistic, np.float32 | Any)
+assert_type(ttest_rel(_f64_nd, _f64_nd).statistic, np.float64 | Any)

@@ -49,9 +49,9 @@ assert_type(spearmanr(_f64_2d).statistic, np.float64 | onp.Array2D[np.float64])
 
 # NOTE: Pyrefly doesn't seem to be able to intersect the return types in case of multiple matching overloads,
 # and in this case both return types are even identical (float64 | Array2D[float64]).
-assert_type(spearmanr(_i8_nd, _i8_nd).statistic, np.float64 | onp.Array2D[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(spearmanr(_f16_nd, _f16_nd).statistic, np.float64 | onp.Array2D[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(spearmanr(_f64_nd, _f64_nd).statistic, np.float64 | onp.Array2D[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(spearmanr(_i8_nd, _i8_nd).statistic, np.float64 | onp.Array2D[np.float64])
+assert_type(spearmanr(_f16_nd, _f16_nd).statistic, np.float64 | onp.Array2D[np.float64])
+assert_type(spearmanr(_f64_nd, _f64_nd).statistic, np.float64 | onp.Array2D[np.float64])
 
 assert_type(spearmanr(_i8_nd).statistic, np.float64 | onp.Array2D[np.float64])
 assert_type(spearmanr(_f16_nd).statistic, np.float64 | onp.Array2D[np.float64])

@@ -3,6 +3,7 @@ from typing_extensions import TypeAliasType, TypeIs, TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
+import numpy_typing_compat as nptc
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -81,7 +82,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self,
         /,
-        arg1: _spbase[_ScalarT_co, _ShapeT_co] | onp.CanArrayND[_ScalarT_co, _ShapeT_co],
+        arg1: _spbase[_ScalarT_co, _ShapeT_co] | nptc.CanArray[_ShapeT_co, np.dtype[_ScalarT_co]],
         shape: None = None,
         dtype: None = None,
         copy: bool = False,

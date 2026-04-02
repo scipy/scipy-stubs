@@ -88,9 +88,9 @@ assert_type(mannwhitneyu(_f32_3d, _f32_3d, keepdims=True).statistic, onp.ArrayND
 assert_type(mannwhitneyu(_f64_3d, _f64_3d, keepdims=True).statistic, onp.ArrayND[np.float64])
 
 # nd
-assert_type(mannwhitneyu(_i16_nd, _i16_nd).statistic, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(mannwhitneyu(_f32_nd, _f32_nd).statistic, np.float32 | onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
-assert_type(mannwhitneyu(_f64_nd, _f64_nd).statistic, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(mannwhitneyu(_i16_nd, _i16_nd).statistic, np.float64 | onp.ArrayND[np.float64])
+assert_type(mannwhitneyu(_f32_nd, _f32_nd).statistic, np.float32 | onp.ArrayND[np.float32])
+assert_type(mannwhitneyu(_f64_nd, _f64_nd).statistic, np.float64 | onp.ArrayND[np.float64])
 assert_type(mannwhitneyu(_i16_nd, _i16_nd, axis=None).statistic, np.float64)
 assert_type(mannwhitneyu(_f32_nd, _f32_nd, axis=None).statistic, np.float32)
 assert_type(mannwhitneyu(_f64_nd, _f64_nd, axis=None).statistic, np.float64)
@@ -152,9 +152,9 @@ assert_type(mannwhitneyu(_f32_3d, _f32_3d, keepdims=True).pvalue, onp.ArrayND[np
 assert_type(mannwhitneyu(_f64_3d, _f64_3d, keepdims=True).pvalue, onp.ArrayND[np.float64])
 
 # nd
-assert_type(mannwhitneyu(_i16_nd, _i16_nd).pvalue, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(mannwhitneyu(_f32_nd, _f32_nd).pvalue, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(mannwhitneyu(_f64_nd, _f64_nd).pvalue, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(mannwhitneyu(_i16_nd, _i16_nd).pvalue, np.float64 | onp.ArrayND[np.float64])
+assert_type(mannwhitneyu(_f32_nd, _f32_nd).pvalue, np.float64 | onp.ArrayND[np.float64])
+assert_type(mannwhitneyu(_f64_nd, _f64_nd).pvalue, np.float64 | onp.ArrayND[np.float64])
 assert_type(mannwhitneyu(_i16_nd, _i16_nd, axis=None).pvalue, np.float64)
 assert_type(mannwhitneyu(_f32_nd, _f32_nd, axis=None).pvalue, np.float64)
 assert_type(mannwhitneyu(_f64_nd, _f64_nd, axis=None).pvalue, np.float64)

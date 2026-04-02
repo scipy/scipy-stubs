@@ -7,6 +7,7 @@ from typing_extensions import TypeIs, TypeVar, override
 
 import numpy as np
 import numpy.typing as npt
+import numpy_typing_compat as nptc
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
@@ -166,7 +167,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self,
         /,
-        arg1: _spbase[_ScalarT_co, _ShapeT_co] | onp.CanArray[_ShapeT_co, np.dtype[_ScalarT_co]],
+        arg1: _spbase[_ScalarT_co, _ShapeT_co] | nptc.CanArray[_ShapeT_co, np.dtype[_ScalarT_co]],
         shape: _ShapeT_co | None = None,
         dtype: onp.ToDType[_ScalarT_co] | None = None,
         copy: bool = False,

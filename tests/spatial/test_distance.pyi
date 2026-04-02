@@ -152,7 +152,7 @@ assert_type(jensenshannon(_py_f_1d, _py_f_1d), np.float64)
 assert_type(jensenshannon(_py_f_2d, _py_f_2d), onp.Array1D[np.float64])
 assert_type(jensenshannon(_f64_1d, _f64_1d), np.float64)
 assert_type(jensenshannon(_f64_2d, _f64_2d), onp.Array1D[np.float64])
-assert_type(jensenshannon(_f64_nd, _f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(jensenshannon(_f64_nd, _f64_nd), np.float64 | onp.ArrayND[np.float64])
 assert_type(jensenshannon(_f64_1d, _f64_1d, keepdims=True), onp.Array1D[np.float64])
 assert_type(jensenshannon(_f64_2d, _f64_2d, keepdims=True), onp.Array2D[np.float64])
 assert_type(jensenshannon(_f64_nd, _f64_nd, keepdims=True), onp.ArrayND[np.float64])
