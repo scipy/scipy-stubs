@@ -12,7 +12,7 @@ from typing import (
     overload,
     type_check_only,
 )
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype as op
@@ -159,8 +159,12 @@ class FriedmanchisquareResult(_TestResult[np.float64, np.float64]): ...
 class BrunnerMunzelResult(_TestResult[np.float64, np.float64]): ...
 
 class SenSeasonalSlopesResult(BaseBunch[onp.MArray[np.float64], np.float64]):
-    def __new__(_cls, intra_slope: float, inter_slope: float) -> Self: ...
-    def __init__(self, /, intra_slope: float, inter_slope: float) -> None: ...
+    @override
+    def __new__(_cls, intra_slope: float, inter_slope: float) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(self, /, intra_slope: float, inter_slope: float) -> None: ...  # pyrefly:ignore[bad-override]
+
+    #
     @property
     def intra_slope(self, /) -> onp.MArray[np.float64]: ...
     @property

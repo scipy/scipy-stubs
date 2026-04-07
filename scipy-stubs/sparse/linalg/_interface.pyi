@@ -428,8 +428,10 @@ class _UnaryLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     args: tuple[LinearOperator[_SCT_co]]
 
     #
-    def __new__(cls, A: LinearOperator[_SCT_co]) -> Self: ...
-    def __init__(self, /, A: LinearOperator[_SCT_co]) -> None: ...
+    @override
+    def __new__(cls, A: LinearOperator[_SCT_co]) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(self, /, A: LinearOperator[_SCT_co]) -> None: ...  # pyrefly:ignore[bad-override]
     @override
     def _adjoint(self, /) -> _AdjointLinearOperator[_SCT_co]: ...
 
@@ -443,8 +445,10 @@ class _TransposedLinearOperator(_UnaryLinearOperator[_SCT_co], Generic[_SCT_co])
 class _SumLinearOperator(LinearOperator[_SCT1_co | _SCT2_co], Generic[_SCT1_co, _SCT2_co]):
     args: tuple[LinearOperator[_SCT1_co], LinearOperator[_SCT2_co]]
 
-    def __new__(cls, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co]) -> Self: ...
-    def __init__(self, /, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co]) -> None: ...
+    @override
+    def __new__(cls, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co]) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(self, /, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co]) -> None: ...  # pyrefly:ignore[bad-override]
     @override
     def _adjoint(self, /) -> Self: ...
 
@@ -453,8 +457,10 @@ class _ProductLinearOperator(LinearOperator[_SCT1_co | _SCT2_co], Generic[_SCT1_
     args: tuple[LinearOperator[_SCT1_co], LinearOperator[_SCT2_co]]
 
     #
-    def __new__(cls, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co]) -> Self: ...
-    def __init__(self, /, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co]) -> None: ...
+    @override
+    def __new__(cls, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co]) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(self, /, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co]) -> None: ...  # pyrefly:ignore[bad-override]
     @override
     def _adjoint(self, /) -> Self: ...
 
@@ -463,16 +469,18 @@ class _ScaledLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     args: tuple[LinearOperator[_SCT_co], _SCT_co | complex]
 
     #
+    @override
     @overload
-    def __new__(cls, A: LinearOperator[_SCT_co], alpha: _SCT_co | complex) -> Self: ...  # type: ignore[overload-overlap]
+    def __new__(cls, A: LinearOperator[_SCT_co], alpha: _SCT_co | complex) -> Self: ...  # type:ignore[overload-overlap]  # pyrefly:ignore[bad-override]
     @overload
     def __new__(cls, A: LinearOperator[npc.floating], alpha: onp.ToFloat64) -> _ScaledLinearOperator[np.float64]: ...
     @overload
     def __new__(cls, A: LinearOperator[npc.complexfloating], alpha: onp.ToComplex128) -> _ScaledLinearOperator[np.complex128]: ...
 
     #
+    @override
     @overload
-    def __init__(self, /, A: LinearOperator[_SCT_co], alpha: _SCT_co | complex) -> None: ...
+    def __init__(self, /, A: LinearOperator[_SCT_co], alpha: _SCT_co | complex) -> None: ...  # pyrefly:ignore[bad-override]
     @overload
     def __init__(self: _ScaledLinearOperator[np.float64], /, A: LinearOperator[npc.floating], alpha: onp.ToFloat64) -> None: ...
     @overload
@@ -486,8 +494,10 @@ class _ScaledLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
 class _PowerLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     args: tuple[LinearOperator[_SCT_co], SupportsIndex]
 
-    def __new__(cls, A: LinearOperator[_SCT_co], p: SupportsIndex) -> Self: ...
-    def __init__(self, /, A: LinearOperator[_SCT_co], p: SupportsIndex) -> None: ...
+    @override
+    def __new__(cls, A: LinearOperator[_SCT_co], p: SupportsIndex) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(self, /, A: LinearOperator[_SCT_co], p: SupportsIndex) -> None: ...  # pyrefly:ignore[bad-override]
     @override
     def _adjoint(self, /) -> Self: ...
 
@@ -495,8 +505,10 @@ class MatrixLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     A: _spbase | onp.Array2D[_SCT_co]
     args: tuple[_spbase | onp.Array2D[_SCT_co]]
 
-    def __new__(cls, A: _spbase | onp.ArrayND[_SCT_co]) -> Self: ...
-    def __init__(self, /, A: _spbase | onp.ArrayND[_SCT_co]) -> None: ...
+    @override
+    def __new__(cls, A: _spbase | onp.ArrayND[_SCT_co]) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(self, /, A: _spbase | onp.ArrayND[_SCT_co]) -> None: ...  # pyrefly:ignore[bad-override]
     @override
     def _adjoint(self, /) -> _AdjointMatrixOperator[_SCT_co]: ...
 
@@ -510,14 +522,17 @@ class _AdjointMatrixOperator(MatrixLinearOperator[_SCT_co], Generic[_SCT_co]):
     def dtype(self, /) -> np.dtype[_SCT_co]: ...  # pyright: ignore[reportIncompatibleVariableOverride]  # pyrefly: ignore[bad-override]
 
     #
-    def __new__(cls, adjoint_array: LinearOperator[_SCT_co]) -> Self: ...
-    def __init__(self, /, adjoint_array: LinearOperator[_SCT_co]) -> None: ...
+    @override
+    def __new__(cls, adjoint_array: LinearOperator[_SCT_co]) -> Self: ...  # pyrefly:ignore[bad-param-name-override]
+    @override
+    def __init__(self, /, adjoint_array: LinearOperator[_SCT_co]) -> None: ...  # pyrefly:ignore[bad-param-name-override]
     @override
     def _adjoint(self, /) -> MatrixLinearOperator[_SCT_co]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
 
 class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
+    @override
     @overload
-    def __new__(cls, shape: _ToShape, dtype: onp.ToDType[_SCT_co]) -> Self: ...
+    def __new__(cls, shape: _ToShape, dtype: onp.ToDType[_SCT_co]) -> Self: ...  # pyrefly:ignore[bad-override]
     @overload
     def __new__(cls, shape: _ToShape, dtype: onp.AnyFloat64DType | None = None) -> IdentityOperator[np.float64]: ...
     @overload
@@ -526,8 +541,9 @@ class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     def __new__(cls, shape: _ToShape, dtype: str) -> IdentityOperator[Any]: ...
 
     #
+    @override
     @overload
-    def __init__(self, /, shape: _ToShape, dtype: onp.ToDType[_SCT_co]) -> None: ...
+    def __init__(self, /, shape: _ToShape, dtype: onp.ToDType[_SCT_co]) -> None: ...  # pyrefly:ignore[bad-override]
     @overload
     def __init__(self: IdentityOperator[np.float64], /, shape: _ToShape, dtype: onp.AnyFloat64DType | None = None) -> None: ...
     @overload

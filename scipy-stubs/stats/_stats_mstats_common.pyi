@@ -1,5 +1,5 @@
 from typing import Any, Generic, Literal, Self, TypeAlias, overload
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, override
 
 import numpy as np
 import optype.numpy as onp
@@ -29,10 +29,14 @@ class TheilslopesResult(
     tuple[_ResultT_co, _ResultT_co, _ResultT_co, _ResultT_co],
     Generic[_ResultT_co],
 ):
-    def __new__(_cls, slope: _ResultT_co, intercept: _ResultT_co, low_slope: _ResultT_co, high_slope: _ResultT_co) -> Self: ...
-    def __init__(
+    @override
+    def __new__(_cls, slope: _ResultT_co, intercept: _ResultT_co, low_slope: _ResultT_co, high_slope: _ResultT_co) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(  # pyrefly:ignore[bad-override]
         self, /, slope: _ResultT_co, intercept: _ResultT_co, low_slope: _ResultT_co, high_slope: _ResultT_co
     ) -> None: ...
+
+    #
     @property
     def slope(self, /) -> _ResultT_co: ...
     @property

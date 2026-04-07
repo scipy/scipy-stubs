@@ -131,8 +131,9 @@ class LinearTimeInvariant(Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     def dt(self, /) -> _DTT_co: ...
 
 class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co, _PolesT_co], metaclass=abc.ABCMeta):
+    @override
     @overload
-    def __new__(cls, *system: *tuple[_ToFloat12D, onp.ToFloat1D]) -> TransferFunctionContinuous[_Float]: ...
+    def __new__(cls, *system: *tuple[_ToFloat12D, onp.ToFloat1D]) -> TransferFunctionContinuous[_Float]: ...  # pyrefly:ignore[bad-override]
     @overload
     def __new__(cls, *system: *tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat]) -> ZerosPolesGainContinuous[_Float]: ...
     @overload
@@ -223,8 +224,9 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
 
 #
 class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co], metaclass=abc.ABCMeta):
+    @override
     @overload
-    def __new__(
+    def __new__(  # pyrefly:ignore[bad-override]
         cls, *system: *tuple[_ToFloat12D, onp.ToFloat1D], dt: _DTT_co = ...
     ) -> TransferFunctionDiscrete[_Float, _DTT_co]: ...
     @overload
@@ -265,8 +267,9 @@ class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT
 
 #
 class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Generic[_PolesT_co, _DTT_co], metaclass=abc.ABCMeta):
+    @override
     @overload
-    def __new__(cls, *system: *tuple[lti[_PolesT, _PolesT]]) -> TransferFunctionContinuous[_PolesT]: ...
+    def __new__(cls, *system: *tuple[lti[_PolesT, _PolesT]]) -> TransferFunctionContinuous[_PolesT]: ...  # pyrefly:ignore[bad-override]
     @overload
     def __new__(cls, *system: *tuple[dlti[_PolesT, _PolesT, _DTT]]) -> TransferFunctionDiscrete[_PolesT, _DTT]: ...
     @overload
@@ -326,8 +329,9 @@ class TransferFunctionDiscrete(
 
 #
 class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
+    @override
     @overload
-    def __new__(cls, *system: *tuple[lti[_ZerosT_co, _PolesT_co]]) -> ZerosPolesGainContinuous[_ZerosT_co, _PolesT_co]: ...
+    def __new__(cls, *system: *tuple[lti[_ZerosT_co, _PolesT_co]]) -> ZerosPolesGainContinuous[_ZerosT_co, _PolesT_co]: ...  # pyrefly:ignore[bad-override]
     @overload
     def __new__(
         cls, *system: *tuple[dlti[_ZerosT_co, _PolesT_co, _DTT_co]]
@@ -433,8 +437,9 @@ class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_
     __array_priority__: ClassVar[float] = 100.0
     __array_ufunc__: ClassVar[None] = None
 
+    @override
     @overload
-    def __new__(cls, *system: *tuple[lti[_ZerosT_co, _PolesT_co]]) -> StateSpaceContinuous[_ZerosT_co, _PolesT_co]: ...
+    def __new__(cls, *system: *tuple[lti[_ZerosT_co, _PolesT_co]]) -> StateSpaceContinuous[_ZerosT_co, _PolesT_co]: ...  # pyrefly:ignore[bad-override]
     @overload
     def __new__(
         cls, *system: *tuple[dlti[_ZerosT_co, _PolesT_co, _DTT_co]]

@@ -1,6 +1,6 @@
 from collections.abc import Callable, Sequence
 from typing import Final, Literal, Self, TypeAlias, TypedDict, Unpack, overload, type_check_only
-from typing_extensions import TypeAliasType, TypeVar, TypeVarTuple, deprecated
+from typing_extensions import TypeAliasType, TypeVar, TypeVarTuple, deprecated, override
 
 import numpy as np
 import optype as op
@@ -43,8 +43,12 @@ class LbfgsInvHessProduct(LinearOperator[np.float64]):
     n_corrs: Final[int]
     rho: Final[float]
 
-    def __new__(cls, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> Self: ...
-    def __init__(self, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> None: ...
+    @override
+    def __new__(cls, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(self, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> None: ...  # pyrefly:ignore[bad-override]
+
+    #
     def todense(self, /) -> onp.Array2D[np.float64]: ...
 
 @overload  # no args, no fprime, no approx_grad
