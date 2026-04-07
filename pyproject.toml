@@ -67,6 +67,7 @@ type = [
   "pyrefly==0.60.0",
   "stubdefaulter>=0.1.0",
   "ty==0.0.29",
+  "zuban==0.7.0",
 ]
 dev = [
   { include-group = "lint" },
