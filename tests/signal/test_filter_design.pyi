@@ -193,22 +193,10 @@ assert_type(lp2bs_zpk(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], 
 assert_type(bilinear(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 
 # bilinear_zpk
-assert_type(
-    bilinear_zpk(_f64_1d, _f64_1d, 1.0, 1.0),
-    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
-)
-assert_type(
-    bilinear_zpk(_f64_1d, _c128_1d, 1.0, 1.0),
-    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
-)
-assert_type(
-    bilinear_zpk(_c128_1d, _f64_1d, 1.0, 1.0),
-    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
-)
-assert_type(
-    bilinear_zpk(_c128_1d, _c128_1d, 1.0, 1.0),
-    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
-)
+assert_type(bilinear_zpk(_f64_1d, _f64_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(bilinear_zpk(_f64_1d, _c128_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(bilinear_zpk(_c128_1d, _f64_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(bilinear_zpk(_c128_1d, _c128_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
 
 # iirdesign
 assert_type(iirdesign(0.2, 0.3, 1, 40), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])

@@ -420,9 +420,7 @@ def lp2lp_zpk(
     wo: float = 1.0,
 ) -> _ZPK[np.complex64, np.complex64, np.float32]: ...
 @overload
-def lp2lp_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: float = 1.0
-) -> _ZPK[Any, Any, Any]: ...
+def lp2lp_zpk(z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: float = 1.0) -> _ZPK[Any, Any, Any]: ...
 
 #
 @overload
@@ -440,9 +438,7 @@ def lp2hp_zpk(
     wo: float = 1.0,
 ) -> _ZPK[np.complex64, np.complex64, np.float32]: ...
 @overload
-def lp2hp_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: float = 1.0
-) -> _ZPK[Any, Any, Any]: ...
+def lp2hp_zpk(z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: float = 1.0) -> _ZPK[Any, Any, Any]: ...
 
 # lp2bp_zpk
 @overload
@@ -474,7 +470,6 @@ def lp2bs_zpk(
 
 #
 def bilinear(b: onp.ToFloat1D, a: onp.ToFloat1D, fs: float = 1.0) -> _Ba1D: ...
-
 @overload
 def bilinear_zpk(
     z: onp.ToInt1D | onp.ToJustFloat64_1D | onp.ToJustComplex128_1D,
@@ -483,9 +478,7 @@ def bilinear_zpk(
     fs: float,
 ) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
 @overload
-def bilinear_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, fs: float
-) -> _ZPK[Any, Any, Any]: ...
+def bilinear_zpk(z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, fs: float) -> _ZPK[Any, Any, Any]: ...
 
 #
 @overload  # output="ba" (default)
