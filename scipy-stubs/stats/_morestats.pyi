@@ -14,7 +14,7 @@ from typing import (
     overload,
     type_check_only,
 )
-from typing_extensions import TypeVar, deprecated
+from typing_extensions import TypeVar, deprecated, override
 
 import numpy as np
 import optype as op
@@ -214,10 +214,12 @@ class AndersonResult(BaseBunch[np.float64, _Float1D, _Float1D]):
     def fit_result(self, /) -> _AndersonResult: ...
 
     #
-    def __new__(
+    @override
+    def __new__(  # pyrefly:ignore[bad-override]
         _cls, statistic: np.float64, critical_values: _Float1D, significance_level: _Float1D, *, fit_result: _AndersonResult
     ) -> Self: ...
-    def __init__(
+    @override
+    def __init__(  # pyrefly:ignore[bad-override]
         self, /, statistic: np.float64, critical_values: _Float1D, significance_level: _Float1D, *, fit_result: _AndersonResult
     ) -> None: ...
 
@@ -229,16 +231,24 @@ class Anderson_ksampResult(BaseBunch[np.float64, _Float1D, np.float64]):
     def critical_values(self, /) -> _Float1D: ...
     @property
     def pvalue(self, /) -> np.float64: ...
-    def __new__(_cls, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> Self: ...
-    def __init__(self, /, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> None: ...
+
+    #
+    @override
+    def __new__(_cls, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(self, /, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> None: ...  # pyrefly:ignore[bad-override]
 
 class WilcoxonResult(BaseBunch[_NDT_co, _NDT_co], Generic[_NDT_co]):  # pyright: ignore[reportInvalidTypeArguments]  # pyrefly: ignore[invalid-variance]
     @property
     def statistic(self, /) -> _NDT_co: ...
     @property
     def pvalue(self, /) -> _NDT_co: ...
-    def __new__(_cls, statistic: _NDT_co, pvalue: _NDT_co) -> Self: ...
-    def __init__(self, /, statistic: _NDT_co, pvalue: _NDT_co) -> None: ...
+
+    #
+    @override
+    def __new__(_cls, statistic: _NDT_co, pvalue: _NDT_co) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(self, /, statistic: _NDT_co, pvalue: _NDT_co) -> None: ...  # pyrefly:ignore[bad-override]
 
 class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onp.Array2D[np.float64]]):
     @property
@@ -249,8 +259,12 @@ class MedianTestResult(BaseBunch[np.float64, np.float64, np.float64, onp.Array2D
     def median(self, /) -> np.float64: ...
     @property
     def table(self, /) -> onp.Array2D[np.float64]: ...
-    def __new__(_cls, statistic: np.float64, pvalue: np.float64, median: np.float64, table: onp.Array2D[np.float64]) -> Self: ...
-    def __init__(
+
+    #
+    @override
+    def __new__(_cls, statistic: np.float64, pvalue: np.float64, median: np.float64, table: onp.Array2D[np.float64]) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(  # pyrefly:ignore[bad-override]
         self, /, statistic: np.float64, pvalue: np.float64, median: np.float64, table: onp.Array2D[np.float64]
     ) -> None: ...
 

@@ -190,16 +190,17 @@ class mat_struct: ...
 class MatlabObject(np.ndarray[_ShapeT, np.dtype[np.void]], Generic[_ShapeT]):
     classname: Final[str | None]
 
-    def __new__(cls, input_array: onp.AnyVoidArray, classname: str | None = None) -> Self: ...
+    @override
+    def __new__(cls, input_array: onp.AnyVoidArray, classname: str | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
     @override
     def __array_finalize__(self, /, obj: onp.ArrayND[np.void] | None) -> None: ...
 
 class MatlabFunction(np.ndarray[_ShapeT, np.dtype[np.void]], Generic[_ShapeT]):
     @override
-    def __new__(cls, input_array: onp.AnyVoidArray) -> Self: ...
+    def __new__(cls, input_array: onp.AnyVoidArray) -> Self: ...  # pyrefly:ignore[bad-override]
 
 class MatlabOpaque(np.ndarray[_ShapeT, np.dtype[np.void]], Generic[_ShapeT]):
     @override
-    def __new__(cls, input_array: onp.AnyVoidArray) -> Self: ...
+    def __new__(cls, input_array: onp.AnyVoidArray) -> Self: ...  # pyrefly:ignore[bad-override]
 
 def _convert_codecs(template: _CodecsTemplate, byte_order: _ByteOrder) -> dict[_MCodec, _CodecBO]: ...

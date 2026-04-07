@@ -34,14 +34,14 @@ class NestedFixedRule(FixedRule[_XPT_co, _NumberT_co], Generic[_XPT_co, _NumberT
     higher: FixedRule[_XPT_co, _NumberT_co]
     lower: FixedRule[_XPT_co, _NumberT_co]
     @override
-    def __init__(self, /, higher: FixedRule[_XPT_co, _NumberT_co], lower: FixedRule[_XPT_co, _NumberT_co]) -> None: ...
+    def __init__(self, /, higher: FixedRule[_XPT_co, _NumberT_co], lower: FixedRule[_XPT_co, _NumberT_co]) -> None: ...  # pyrefly:ignore[bad-override]
     @property
     def lower_nodes_and_weights(self) -> tuple[onp.ArrayND[_NumberT_co], onp.ArrayND[_NumberT_co]]: ...  # semi-abstract
 
 class ProductNestedFixed(NestedFixedRule[_XPT_co, _NumberT_co], Generic[_XPT_co, _NumberT_co]):
     base_rules: Sequence[NestedFixedRule[_XPT_co, _NumberT_co]]
     @override
-    def __init__(self, /, base_rules: Sequence[NestedFixedRule[_XPT_co, _NumberT_co]]) -> None: ...
+    def __init__(self, /, base_rules: Sequence[NestedFixedRule[_XPT_co, _NumberT_co]]) -> None: ...  # pyrefly:ignore[bad-override]
 
 def _cartesian_product(arrays: Iterable[onp.ArrayND[_NumberT]]) -> onp.Array2D[_NumberT]: ...  # undocumented
 def _split_subregion(
