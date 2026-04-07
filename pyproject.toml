@@ -301,7 +301,7 @@ split-on-trailing-comma = false
 [tool.tox]
 min_version = "4"
 requires = ["tox-uv>=1"]
-env_list = ["lint", "ty", "pyrefly", "pyright", "mypy", "3.11", "3.12", "3.13", "3.14"]
+env_list = ["lint", "ty", "zuban", "pyrefly", "pyright", "mypy", "3.11", "3.12", "3.13", "3.14"]
 
 [tool.tox.env_run_base]
 description = "stubtest with {base_python}"
@@ -336,6 +336,14 @@ commands = [
     "--output-format=concise",
     { replace = "posargs", default = ["scipy-stubs", "scripts"], extend = true },
   ],
+]
+
+[tool.tox.env.zuban]
+description = "zuban"
+runner = "uv-venv-lock-runner"
+dependency_groups = ["type"]
+commands = [
+  ["zuban", "check", { replace = "posargs", default = ["scipy-stubs", "scripts"], extend = true }],
 ]
 
 [tool.tox.env.pyrefly]
