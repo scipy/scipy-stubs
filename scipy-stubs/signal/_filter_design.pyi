@@ -561,7 +561,7 @@ def bilinear_zpk(
 @overload
 def bilinear_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, fs: float
-) -> _ZPK[np.floating[Any] | np.complexfloating[Any, Any], np.floating[Any] | np.complexfloating[Any, Any], np.floating[Any]]: ...
+) -> _ZPK[npc.inexact, npc.inexact, npc.floating]: ...
 
 #
 @overload  # output="ba" (default)
