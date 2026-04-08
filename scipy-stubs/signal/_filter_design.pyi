@@ -478,7 +478,7 @@ def lp2hp_zpk(
 @overload
 def lp2hp_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: float = 1.0
-) -> _ZPK[np.floating[Any] | np.complexfloating[Any, Any], np.floating[Any] | np.complexfloating[Any, Any], np.floating[Any]]: ...
+) -> _ZPK[npc.inexact, npc.inexact, npc.floating]: ...
 
 # lp2bp_zpk
 @overload
