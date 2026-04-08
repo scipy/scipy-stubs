@@ -169,33 +169,45 @@ assert_type(lp2lp(_c128_1d, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.Arr
 assert_type(lp2lp(_c160_1d, _c160_1d), tuple[onp.ArrayND[np.clongdouble], onp.Array1D[np.clongdouble]])
 
 # lp2hp
-assert_type(lp2hp(_f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]])
+assert_type(lp2hp(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 
 # lp2bp
-assert_type(lp2bp(_f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]])
+assert_type(lp2bp(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 
 # lp2bs
-assert_type(lp2bs(_f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]])
+assert_type(lp2bs(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 
 # lp2lp_zpk
-assert_type(lp2lp_zpk(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(lp2lp_zpk(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
+assert_type(lp2lp_zpk(_f64_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float])
+assert_type(lp2lp_zpk(_c128_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64], float])
+assert_type(lp2lp_zpk(_c128_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], float])
 
 # lp2hp_zpk
-assert_type(lp2hp_zpk(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(lp2hp_zpk(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(lp2hp_zpk(_f64_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(lp2hp_zpk(_c128_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64], np.float64])
+assert_type(lp2hp_zpk(_c128_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
 
 # lp2bp_zpk
-assert_type(lp2bp_zpk(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(lp2bp_zpk(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], float])
+assert_type(lp2bp_zpk(_f64_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], float])
+assert_type(lp2bp_zpk(_c128_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], float])
+assert_type(lp2bp_zpk(_c128_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], float])
 
 # lp2bs_zpk
 assert_type(lp2bs_zpk(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(lp2bs_zpk(_f64_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(lp2bs_zpk(_c128_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(lp2bs_zpk(_c128_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
 
 # bilinear
 assert_type(bilinear(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 
 # bilinear_zpk
-assert_type(bilinear_zpk(_f64_1d, _f64_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
-assert_type(bilinear_zpk(_f64_1d, _c128_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
-assert_type(bilinear_zpk(_c128_1d, _f64_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(bilinear_zpk(_f64_1d, _f64_1d, 1.0, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(bilinear_zpk(_f64_1d, _c128_1d, 1.0, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(bilinear_zpk(_c128_1d, _f64_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64], np.float64])
 assert_type(bilinear_zpk(_c128_1d, _c128_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
 
 # iirdesign
