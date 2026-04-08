@@ -482,7 +482,7 @@ def lp2hp_zpk(
 
 # lp2bp_zpk
 @overload
-def lp2bp_zpk(  # type: ignore[overload-overlap]
+def lp2bp_zpk(
     z: onp.ToInt1D | onp.ToJustFloat64_1D | onp.ToJustComplex128_1D,
     p: onp.ToInt1D | onp.ToJustFloat64_1D | onp.ToJustComplex128_1D,
     k: onp.ToFloat64,
@@ -490,7 +490,7 @@ def lp2bp_zpk(  # type: ignore[overload-overlap]
     bw: float = 1.0,
 ) -> _ZPK[np.complex128, np.complex128, float]: ...
 @overload
-def lp2bp_zpk(  # type: ignore[overload-overlap]
+def lp2bp_zpk(
     z: onp.ToJustFloat32_1D | onp.ToJustComplex64_1D,
     p: onp.ToJustFloat32_1D | onp.ToJustComplex64_1D,
     k: onp.ToFloat32,
