@@ -373,7 +373,7 @@ def lp2bp(
     b: onp.ToComplex1D, a: onp.ToComplex1D, wo: float = 1.0, bw: float = 1.0
 ) -> tuple[onp.Array1D[Any], onp.Array1D[Any]]: ...
 
-# lp2bs
+# keep in sync with `lp2bp` (above)
 # keep in sync with `lp2bp` (above)
 @overload  # +f64, +f64
 def lp2bs(b: onp.ToFloat64_1D, a: onp.ToFloat64_1D, wo: float = 1.0, bw: float = 1.0) -> tuple[_Float1D, _Float1D]: ...
