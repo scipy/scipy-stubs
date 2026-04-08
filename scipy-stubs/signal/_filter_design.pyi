@@ -500,7 +500,7 @@ def lp2bp_zpk(
 @overload
 def lp2bp_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: float = 1.0, bw: float = 1.0
-) -> _ZPK[np.complexfloating[Any, Any], np.complexfloating[Any, Any], float]: ...
+) -> _ZPK[npc.complexfloating, npc.complexfloating, float]: ...
 
 # lp2bs_zpk
 @overload
