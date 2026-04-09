@@ -48,12 +48,22 @@ def dunnett(  # type: ignore[overload-overlap]
 ) -> DunnettResult[np.longdouble]: ...
 @overload
 def dunnett(  # type: ignore[overload-overlap]
+    sample: _ToFloatNoLong1D,
+    sample1: _ToLongDouble1D,
+    *samples: onp.ToFloat1D,
+    control: onp.ToFloat1D,
+    alternative: Alternative = "two-sided",
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> DunnettResult[np.longdouble]: ...
+@overload
+def dunnett(
     *samples: onp.ToFloat1D,
     control: _ToLongDouble1D,
     alternative: Alternative = "two-sided",
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> DunnettResult[np.longdouble]: ...
+) -> DunnettResult[np.float64]: ...
 @overload
 def dunnett(
     *samples: _ToFloatNoLong1D,
@@ -62,11 +72,3 @@ def dunnett(
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> DunnettResult[np.float64]: ...
-@overload
-def dunnett(
-    *samples: onp.ToFloat1D,
-    control: onp.ToFloat1D,
-    alternative: Alternative = "two-sided",
-    rng: onp.random.ToRNG | None = None,
-    random_state: onp.random.ToRNG | None = None,
-) -> DunnettResult[np.float64 | np.longdouble]: ...
