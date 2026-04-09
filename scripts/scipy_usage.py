@@ -175,14 +175,6 @@ def parse_scipy_usage(file_path: Path) -> tuple[set[str], set[str]]:
     calls = {name for name in visitor.calls if not is_scipy_module(name)}
     modules = {name for name in visitor.imports if is_scipy_module(name)}
 
-    # for call_name in calls:
-    #     parts = call_name.split(".")
-
-    #     for i in range(1, len(parts)):
-    #         module = ".".join(parts[: i + 1])
-    #         if is_scipy_module(module):
-    #             modules.add(module)
-
     return calls, modules
 
 
