@@ -34,7 +34,7 @@ class DunnettResult(Generic[_StatT_co]):
     def confidence_interval(self, /, confidence_level: float | npc.floating = 0.95) -> ConfidenceInterval[_StatT_co]: ...
 
 @overload
-def dunnett(  # type: ignore[overload-overlap]
+def dunnett(
     sample: onp.ToJustLongDouble1D,
     *samples: onp.ToFloat1D,
     control: onp.ToFloat1D,
@@ -43,7 +43,7 @@ def dunnett(  # type: ignore[overload-overlap]
     random_state: onp.random.ToRNG | None = None,
 ) -> DunnettResult[np.longdouble]: ...
 @overload
-def dunnett(  # type: ignore[overload-overlap]
+def dunnett(
     sample: onp.ToFloat64_1D,
     sample1: onp.ToJustLongDouble1D,
     *samples: onp.ToFloat1D,
