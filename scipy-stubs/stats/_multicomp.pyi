@@ -57,6 +57,7 @@ def dunnett(
 @overload
 def dunnett(
     sample: onp.ToFloat64_1D,
+    /,
     *samples: onp.ToFloat64_1D,
     control: onp.ToFloat1D,
     alternative: Alternative = "two-sided",
