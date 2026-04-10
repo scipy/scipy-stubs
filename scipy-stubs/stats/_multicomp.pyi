@@ -1,6 +1,5 @@
-from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Generic, TypeAlias, overload
+from typing import Generic, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -13,9 +12,6 @@ from ._typing import Alternative
 __all__ = ["dunnett"]
 
 _StatT_co = TypeVar("_StatT_co", bound=npc.floating, default=np.float64, covariant=True)
-_ToFloatNoLong: TypeAlias = float | np.float16 | np.float32 | np.float64 | npc.integer
-_ToFloatNoLong1D: TypeAlias = Sequence[_ToFloatNoLong] | onp.CanArrayND[np.float16 | np.float32 | np.float64 | npc.integer]
-_ToLongDouble1D: TypeAlias = Sequence[np.longdouble] | onp.CanArrayND[np.longdouble]
 
 @dataclass
 class DunnettResult(Generic[_StatT_co]):
@@ -39,7 +35,7 @@ class DunnettResult(Generic[_StatT_co]):
 
 @overload
 def dunnett(  # type: ignore[overload-overlap]
-    sample: _ToLongDouble1D,
+    sample: onp.ToJustLongDouble1D,
     *samples: onp.ToFloat1D,
     control: onp.ToFloat1D,
     alternative: Alternative = "two-sided",
@@ -48,8 +44,8 @@ def dunnett(  # type: ignore[overload-overlap]
 ) -> DunnettResult[np.longdouble]: ...
 @overload
 def dunnett(  # type: ignore[overload-overlap]
-    sample: _ToFloatNoLong1D,
-    sample1: _ToLongDouble1D,
+    sample: onp.ToFloat64_1D,
+    sample1: onp.ToJustLongDouble1D,
     *samples: onp.ToFloat1D,
     control: onp.ToFloat1D,
     alternative: Alternative = "two-sided",
@@ -58,16 +54,18 @@ def dunnett(  # type: ignore[overload-overlap]
 ) -> DunnettResult[np.longdouble]: ...
 @overload
 def dunnett(
+    sample: onp.ToFloat1D,
     *samples: onp.ToFloat1D,
-    control: _ToLongDouble1D,
+    control: onp.ToJustLongDouble1D,
     alternative: Alternative = "two-sided",
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> DunnettResult[np.float64]: ...
 @overload
 def dunnett(
-    *samples: _ToFloatNoLong1D,
-    control: _ToFloatNoLong1D,
+    sample: onp.ToFloat64_1D,
+    *samples: onp.ToFloat64_1D,
+    control: onp.ToFloat64_1D,
     alternative: Alternative = "two-sided",
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
