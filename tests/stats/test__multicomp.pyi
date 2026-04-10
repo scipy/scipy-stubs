@@ -12,7 +12,7 @@ from scipy.stats._multicomp import DunnettResult
 ###
 
 _f1d: onp.Array1D[np.float64]
-_f80_1d: onp.Array1D[np.longdouble]
+_f80_1d: onp.Array1D[np.float128]
 _py_f_1d: list[float]
 
 ###
