@@ -36,6 +36,7 @@ class DunnettResult(Generic[_StatT_co]):
 @overload
 def dunnett(
     sample: onp.ToJustLongDouble1D,
+    /,
     *samples: onp.ToFloat1D,
     control: onp.ToFloat1D,
     alternative: Alternative = "two-sided",
