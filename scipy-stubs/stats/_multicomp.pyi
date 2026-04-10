@@ -35,6 +35,16 @@ class DunnettResult(Generic[_StatT_co]):
 
 @overload
 def dunnett(
+    sample: onp.ToFloat64_1D,
+    /,
+    *samples: onp.ToFloat64_1D,
+    control: onp.ToFloat1D,
+    alternative: Alternative = "two-sided",
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> DunnettResult[np.float64]: ...
+@overload
+def dunnett(
     sample: onp.ToJustLongDouble1D,
     /,
     *samples: onp.ToFloat1D,
@@ -54,13 +64,3 @@ def dunnett(
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> DunnettResult[np.longdouble]: ...
-@overload
-def dunnett(
-    sample: onp.ToFloat64_1D,
-    /,
-    *samples: onp.ToFloat64_1D,
-    control: onp.ToFloat1D,
-    alternative: Alternative = "two-sided",
-    rng: onp.random.ToRNG | None = None,
-    random_state: onp.random.ToRNG | None = None,
-) -> DunnettResult[np.float64]: ...
