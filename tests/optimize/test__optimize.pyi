@@ -35,6 +35,7 @@ _x0: list[float]
 _arr_1d: _Float1D
 
 def _f(x: _Float1D, /) -> float: ...
+def _f_vec(x: _Float1D, /) -> _Float1D: ...
 def _f0d(x: float, /) -> float: ...
 def _fprime(x: _Float1D, /) -> _Float1D: ...
 
@@ -50,6 +51,7 @@ assert_type(rosen_hess_prod([1.0, 2.0, 3.0], [1.0, 0.0, 0.0]), _Float1D)
 # approx_fprime
 
 assert_type(approx_fprime([1.0, 2.0], _f, 1e-8), _Float1D)
+assert_type(approx_fprime([1.0, 2.0], _f_vec, 1e-8), _Float2D)
 
 ###
 # check_grad

@@ -642,7 +642,14 @@ def show_options(solver: Solver | None, method: MethodAll | None, disp: onp.ToFa
 def show_options(solver: Solver | None = None, method: MethodAll | None = None, *, disp: onp.ToFalse) -> str: ...
 
 #
-def approx_fprime(xk: onp.ToFloat1D, f: _Fn1_1d, epsilon: onp.ToFloat | _FloatingCoND = ..., *args: object) -> _Float1D: ...
+@overload
+def approx_fprime(
+    xk: onp.ToFloat1D, f: _Fn1_1d[_Float], epsilon: onp.ToFloat | _FloatingCoND = ..., *args: object
+) -> _Float1D: ...
+@overload
+def approx_fprime(
+    xk: onp.ToFloat1D, f: _Fn1_1d[_Float1D], epsilon: onp.ToFloat | _FloatingCoND = ..., *args: object
+) -> _Float2D: ...
 
 #
 def check_grad(
