@@ -55,18 +55,9 @@ def dunnett(
 ) -> DunnettResult[np.longdouble]: ...
 @overload
 def dunnett(
-    sample: onp.ToFloat1D,
-    *samples: onp.ToFloat1D,
-    control: onp.ToJustLongDouble1D,
-    alternative: Alternative = "two-sided",
-    rng: onp.random.ToRNG | None = None,
-    random_state: onp.random.ToRNG | None = None,
-) -> DunnettResult[np.float64]: ...
-@overload
-def dunnett(
     sample: onp.ToFloat64_1D,
     *samples: onp.ToFloat64_1D,
-    control: onp.ToFloat64_1D,
+    control: onp.ToFloat1D,
     alternative: Alternative = "two-sided",
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
