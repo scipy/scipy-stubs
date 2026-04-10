@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: PLR6301, ERA001
+# ruff: noqa: PLR6301
 
 import argparse
 import ast
