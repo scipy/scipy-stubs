@@ -9,6 +9,8 @@ import optype.numpy.compat as npc
 from scipy._typing import AnyShape
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
+_ScalarT = TypeVar("_ScalarT", bound=np.generic)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 def next_fast_len(target: SupportsIndex, real: bool = False) -> int: ...
 def prev_fast_len(target: SupportsIndex, real: bool = False) -> int: ...
@@ -31,6 +33,10 @@ def rfftfreq(n: int, d: float = 1.0, *, xp: ModuleType, device: object | None = 
 
 #
 @overload
+def fftshift(
+    x: np.ndarray[_ShapeT, np.dtype[_ScalarT]], axes: AnyShape | None = None
+) -> np.ndarray[_ShapeT, np.dtype[_ScalarT]]: ...
+@overload
 def fftshift(x: onp.ToJustBoolND, axes: AnyShape | None = None) -> onp.ArrayND[np.bool_]: ...
 @overload
 def fftshift(x: onp.ToJustInt64_ND, axes: AnyShape | None = None) -> onp.ArrayND[np.int_]: ...
@@ -44,6 +50,10 @@ def fftshift(x: onp.ToArrayND[_InexactT, _InexactT], axes: AnyShape | None = Non
 def fftshift(x: onp.ToComplexND, axes: AnyShape | None = None) -> onp.ArrayND[Any]: ...
 
 #
+@overload
+def ifftshift(
+    x: np.ndarray[_ShapeT, np.dtype[_ScalarT]], axes: AnyShape | None = None
+) -> np.ndarray[_ShapeT, np.dtype[_ScalarT]]: ...
 @overload
 def ifftshift(x: onp.ToJustBoolND, axes: AnyShape | None = None) -> onp.ArrayND[np.bool_]: ...
 @overload
