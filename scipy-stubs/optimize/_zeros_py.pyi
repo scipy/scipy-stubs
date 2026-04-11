@@ -20,10 +20,9 @@ _T = TypeVar("_T")
 _KT = TypeVar("_KT", bound=_FlagKey)
 _RT = TypeVar("_RT", bound=_Floating)
 _RT_co = TypeVar("_RT_co", bound=_Floating, default=_Float, covariant=True)
-_ToFloatT = TypeVar("_ToFloatT", bound=onp.ToFloat | onp.ToFloatND, default=onp.ToFloat)
-
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _Fun0D: TypeAlias = Callable[Concatenate[float, ...], onp.ToFloat] | Callable[Concatenate[np.float64, ...], onp.ToFloat]
-_Fun1D: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], _ToFloatT]
+_FunND: TypeAlias = Callable[Concatenate[onp.Array[_ShapeT, np.float64], ...], onp.Array[_ShapeT, np.float64]]
 
 _State: TypeAlias = tuple[_FlagKey, _Float]
 _Bracket: TypeAlias = tuple[_Float, _Float]
@@ -136,33 +135,33 @@ def newton(
 ) -> tuple[_Float, RootResults[_Float]]: ...
 @overload
 def newton(
-    func: _Fun1D,
-    x0: onp.ToFloat1D,
-    fprime: _Fun1D[onp.ToFloat1D] | None = None,
+    func: _FunND[_ShapeT],
+    x0: onp.Array[_ShapeT, np.float64],
+    fprime: _FunND[_ShapeT] | None = None,
     args: tuple[object, ...] = (),
     tol: onp.ToFloat = 1.48e-08,
     maxiter: onp.ToJustInt = 50,
-    fprime2: _Fun1D[onp.ToFloat2D] | None = None,
-    x1: onp.ToFloat1D | None = None,
+    fprime2: _FunND[_ShapeT] | None = None,
+    x1: onp.Array[_ShapeT, np.float64] | None = None,
     rtol: onp.ToFloat = 0.0,
     full_output: onp.ToFalse = False,
     disp: bool = True,
-) -> onp.Array1D[np.float64]: ...
+) -> onp.Array[_ShapeT, np.float64]: ...
 @overload
 def newton(
-    func: _Fun1D,
-    x0: onp.ToFloat1D,
-    fprime: _Fun1D[onp.ToFloat1D] | None = None,
+    func: _FunND[_ShapeT],
+    x0: onp.Array[_ShapeT, np.float64],
+    fprime: _FunND[_ShapeT] | None = None,
     args: tuple[object, ...] = (),
     tol: onp.ToFloat = 1.48e-08,
     maxiter: onp.ToJustInt = 50,
-    fprime2: _Fun1D[onp.ToFloat2D] | None = None,
-    x1: onp.ToFloat1D | None = None,
+    fprime2: _FunND[_ShapeT] | None = None,
+    x1: onp.Array[_ShapeT, np.float64] | None = None,
     rtol: onp.ToFloat = 0.0,
     *,
     full_output: onp.ToTrue,
     disp: bool = True,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.bool_], onp.Array1D[np.bool_]]: ...
+) -> tuple[onp.Array[_ShapeT, np.float64], onp.Array[_ShapeT, np.bool_], onp.Array[_ShapeT, np.bool_]]: ...
 
 #
 @overload
