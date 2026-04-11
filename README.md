@@ -289,6 +289,8 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | `CensoredData[X: f64 \| c128, L: f64 \| c128, R: f64 \| c128, I: f64 \| c128]` | `>=1.17.0.2`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.CensoredData.html)                   |
 | `gaussian_kde[T: floating]`                                                    | `>=1.17.0.2`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.gaussian_kde.html)                   |
 | `FitResult[F: (float, *) -> f64]`                                              | `>=1.15.0.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.FitResult.html)      |
+| `DunnettResult[T: f64 \| ld]`                                                  | `>=1.17.1.4`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.DunnettResult.html)  |
+| `ConfidenceInterval[T: floating]`                                               | `>=1.17.1.4`  |          |                                                                                                              |
 | `PearsonRResult[T: floating scalar/array, P: f64 scalar/array]`                | `>=1.14.1.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.PearsonRResult.html) |
 | `TtestResult[T: floating scalar/array]`                                        | `>=1.14.1.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.TtestResult.html)    |
 
