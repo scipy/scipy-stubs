@@ -4,7 +4,7 @@ permissions:
   contents: read
   pull-requests: write
 
-on:
+on: # zizmor: ignore[dangerous-triggers] -- workflow_run is needed to post PR comments from fork PRs
   workflow_run:
     workflows: [mypy_primer run]
     types: [completed]
