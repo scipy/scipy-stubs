@@ -22,6 +22,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
 
       - uses: scientific-python/repo-review@v1.0.3
         with:
@@ -53,6 +55,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
 
       - name: setup uv
         uses: astral-sh/setup-uv@v8.0.0
@@ -84,6 +88,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
 
       # NOTE: mypy ignores `uv run --with=...` (and `--isolated` does not help), so we
       # manually (re)install the desired version directly in the environment.
@@ -137,6 +143,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
 
       - uses: astral-sh/setup-uv@v8.0.0
         with:
