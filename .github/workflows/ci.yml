@@ -26,20 +26,24 @@ jobs:
         with:
           persist-credentials: false
 
-      - uses: scientific-python/repo-review@282a2fe3517b03c6b2a74bbe78e8fe0b58cf9922 # v1.0.3
+      - uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57 # v8.0.0
         with:
-          plugins: sp-repo-review
+          python-version: "3.14"
+          activate-environment: true
+
+      # the `scientific-python/repo-review` action (v1.0.3) internally uses an unpinned
+      # `actions/setup-python@v6`, so we use `uvx` instead.
+      - name: repo-review
+        run: >
+          uvx --from='repo-review[cli]' --with=sp-repo-review
+          repo-review --format html --stderr rich .
+          >> $GITHUB_STEP_SUMMARY
 
       - name: dprint
         uses: dprint/check@9cb3a2b17a8e606d37aae341e49df3654933fc23 # v2.3
 
       - name: typos
         uses: crate-ci/typos@02ea592e44b3a53c302f697cddca7641cd051c3d # v1.45.0
-
-      - uses: astral-sh/setup-uv@cec208311dfd045dd5311c1add060b2062131d57 # v8.0.0
-        with:
-          python-version: "3.14"
-          activate-environment: true
 
       - name: ruff check
         run: uv run ruff check --output-format=github
