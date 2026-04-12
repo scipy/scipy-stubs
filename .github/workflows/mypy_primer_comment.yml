@@ -16,7 +16,7 @@ jobs:
     timeout-minutes: 2
 
     steps:
-      - uses: dawidd6/action-download-artifact@v20
+      - uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
         name: download pr-number
         with:
           name: pr-number
@@ -31,7 +31,7 @@ jobs:
             echo "pr-number=$(<${{ runner.temp }}/artifacts/pr-number)" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: dawidd6/action-download-artifact@v20
+      - uses: dawidd6/action-download-artifact@8305c0f1062bb0d184d09ef4493ecb9288447732 # v20
         name: download mypy_primer.diff
         id: download-mypy_primer-diff
         if: steps.pr-number.outputs.pr-number
@@ -77,7 +77,7 @@ jobs:
           echo 'EOF' >> "$GITHUB_OUTPUT"
 
       - name: find existing comment
-        uses: peter-evans/find-comment@v4.0.0
+        uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4.0.0
         if: steps.generate-comment.outcome == 'success'
         id: find-comment
         with:
@@ -87,7 +87,7 @@ jobs:
 
       - name: create or update comment
         if: steps.find-comment.outcome == 'success'
-        uses: peter-evans/create-or-update-comment@v5.0.0
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5.0.0
         with:
           comment-id: ${{ steps.find-comment.outputs.comment-id }}
           issue-number: ${{ steps.pr-number.outputs.pr-number }}
