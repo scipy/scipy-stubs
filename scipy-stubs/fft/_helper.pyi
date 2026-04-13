@@ -49,9 +49,7 @@ def fftshift(x: onp.ToComplexND, axes: AnyShape | None = None) -> onp.ArrayND[An
 
 #
 @overload
-def ifftshift(
-    x: np.ndarray[_ShapeT, np.dtype[_ScalarT]], axes: AnyShape | None = None
-) -> np.ndarray[_ShapeT, np.dtype[_ScalarT]]: ...
+def ifftshift(x: onp.ArrayND[_ScalarT, _ShapeT], axes: AnyShape | None = None) -> onp.ArrayND[_ScalarT, _ShapeT]: ...
 @overload
 def ifftshift(x: onp.ToJustBoolND, axes: AnyShape | None = None) -> onp.ArrayND[np.bool_]: ...
 @overload
