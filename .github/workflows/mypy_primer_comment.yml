@@ -37,11 +37,8 @@ jobs:
         if: steps.pr-number.outputs.pr-number
         with:
           name: mypy_primer-diff
-          workflow: mypy_primer.yml
           path: ${{ runner.temp }}/artifacts
-          pr: ${{ steps.pr-number.outputs.pr-number }}
-          workflow_conclusion: completed
-          allow_forks: true
+          run_id: ${{ github.event.workflow_run.id }}
 
       - name: generate comment content
         id: generate-comment
