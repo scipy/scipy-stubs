@@ -33,9 +33,7 @@ def rfftfreq(n: int, d: float = 1.0, *, xp: ModuleType, device: object | None = 
 
 #
 @overload
-def fftshift(
-    x: np.ndarray[_ShapeT, np.dtype[_ScalarT]], axes: AnyShape | None = None
-) -> np.ndarray[_ShapeT, np.dtype[_ScalarT]]: ...
+def fftshift(x: onp.ArrayND[_ScalarT, _ShapeT], axes: AnyShape | None = None) -> onp.ArrayND[_ScalarT, _ShapeT]: ...
 @overload
 def fftshift(x: onp.ToJustBoolND, axes: AnyShape | None = None) -> onp.ArrayND[np.bool_]: ...
 @overload
