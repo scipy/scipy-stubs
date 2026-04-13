@@ -63,8 +63,8 @@ type = [
   "pytest==9.0.3", # needed for `_lib._array_api.make_xp_pytest_*`
   "matplotlib==3.10.8", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
   "basedpyright==1.39.0",
-  "mypy[faster-cache]==1.20.0",
-  "pyrefly==0.60.1",
+  "mypy[faster-cache]==1.20.1",
+  "pyrefly==0.60.2",
   "stubdefaulter>=0.1.0",
   "ty==0.0.29",
 ]
