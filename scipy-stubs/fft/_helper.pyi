@@ -10,7 +10,7 @@ from scipy._typing import AnyShape
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _ScalarT = TypeVar("_ScalarT", bound=np.generic)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 def next_fast_len(target: SupportsIndex, real: bool = False) -> int: ...
 def prev_fast_len(target: SupportsIndex, real: bool = False) -> int: ...
