@@ -1,9 +1,11 @@
+# type-tests for `signal/_ltisys.pyi`
+
 from typing import Any, TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import bode, dbode, dfreqresp, dimpulse, dlsim, dlti, dstep, freqresp, impulse, lsim, lti, step
+from scipy.signal import StateSpace, bode, dbode, dfreqresp, dimpulse, dlsim, dlti, dstep, freqresp, impulse, lsim, lti, step
 from scipy.signal._ltisys import StateSpaceDiscrete, TransferFunctionDiscrete, ZerosPolesGainDiscrete
 
 ###
@@ -72,6 +74,10 @@ _to_ss_disc_c64: tuple[
 _to_ss_disc_c128: tuple[
     onp.Array2D[np.complex128], onp.Array2D[np.complex128], onp.Array2D[np.complex128], onp.Array2D[np.complex128], float
 ]
+
+###
+# StateSpace
+_state_space_cls: type[StateSpace[Any, Any, Any]] = StateSpace
 
 ###
 # lsim (same as impulse and step)
