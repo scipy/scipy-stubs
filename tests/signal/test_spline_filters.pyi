@@ -18,7 +18,6 @@ from scipy.signal import (
     symiirorder1,
     symiirorder2,
 )
-from scipy.signal._spline_filters import _ComplexQ, _FloatQ
 
 ###
 
@@ -26,19 +25,19 @@ _F64_1D: TypeAlias = onp.Array1D[np.float64]
 _F64_2D: TypeAlias = onp.Array2D[np.float64]
 _F32_1D: TypeAlias = onp.Array1D[np.float32]
 _F32_2D: TypeAlias = onp.Array2D[np.float32]
-_FQ_1D: TypeAlias = onp.Array1D[_FloatQ]
-_FQ_2D: TypeAlias = onp.Array2D[_FloatQ]
-_FQ_3D: TypeAlias = onp.Array3D[_FloatQ]
-_FQ_ND: TypeAlias = onp.ArrayND[_FloatQ, tuple[int] | tuple[Any, ...]]
+_FQ_1D: TypeAlias = onp.Array1D[np.float64 | np.longdouble]
+_FQ_2D: TypeAlias = onp.Array2D[np.float64 | np.longdouble]
+_FQ_3D: TypeAlias = onp.Array3D[np.float64 | np.longdouble]
+_FQ_ND: TypeAlias = onp.ArrayND[np.float64 | np.longdouble, tuple[int] | tuple[Any, ...]]
 _F80_1D: TypeAlias = onp.Array1D[npc.floating80]
 _C64_1D: TypeAlias = onp.Array1D[np.complex64]
 _C64_2D: TypeAlias = onp.Array2D[np.complex64]
 _C128_1D: TypeAlias = onp.Array1D[np.complex128]
 _C128_2D: TypeAlias = onp.Array2D[np.complex128]
-_CQ_1D: TypeAlias = onp.Array1D[_ComplexQ]
-_CQ_2D: TypeAlias = onp.Array2D[_ComplexQ]
-_CQ_3D: TypeAlias = onp.Array3D[_ComplexQ]
-_CQ_ND: TypeAlias = onp.ArrayND[_ComplexQ]
+_CQ_1D: TypeAlias = onp.Array1D[np.complex128 | np.clongdouble]
+_CQ_2D: TypeAlias = onp.Array2D[np.complex128 | np.clongdouble]
+_CQ_3D: TypeAlias = onp.Array3D[np.complex128 | np.clongdouble]
+_CQ_ND: TypeAlias = onp.ArrayND[np.complex128 | np.clongdouble]
 _C160_1D: TypeAlias = onp.Array1D[npc.complexfloating160]
 
 ###
