@@ -6,13 +6,20 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.signal import cspline1d, cspline1d_eval, cspline2d, gauss_spline
+from scipy.signal import (
+    cspline1d,
+    cspline1d_eval,
+    cspline2d,
+    gauss_spline,
+    spline_filter,
+)
 from scipy.signal._spline_filters import _ComplexQ, _FloatQ
 
 ###
 
 _F64_1D: TypeAlias = onp.Array1D[np.float64]
 _F64_2D: TypeAlias = onp.Array2D[np.float64]
+_F32_2D: TypeAlias = onp.Array2D[np.float32]
 _FQ_1D: TypeAlias = onp.Array1D[_FloatQ]
 _FQ_2D: TypeAlias = onp.Array2D[_FloatQ]
 _FQ_3D: TypeAlias = onp.Array3D[_FloatQ]
@@ -29,6 +36,8 @@ _C160_1D: TypeAlias = onp.Array1D[npc.complexfloating160]
 ###
 
 _i64_1d: onp.Array1D[np.int64]
+_f32_1d: onp.Array1D[np.float32]
+_f32_2d: onp.Array2D[np.float32]
 _f64_1d: _F64_1D
 _f80_1d: _F80_1D
 _c128_1d: _C128_1D
@@ -89,3 +98,10 @@ assert_type(gauss_spline(_py_c_1d, _n), _CQ_1D)
 assert_type(gauss_spline(_py_c_2d, _n), _CQ_2D)
 assert_type(gauss_spline(_py_c_3d, _n), _CQ_3D)
 assert_type(gauss_spline(_c_nd_like, _n), _CQ_ND)
+
+# spline_filter
+
+assert_type(spline_filter(_f32_1d, _n), _F32_2D)
+assert_type(spline_filter(_f32_2d, _n), _F32_2D)
+assert_type(spline_filter(_f64_1d, _n), _F64_2D)
+assert_type(spline_filter(_f64_2d, _n), _F64_2D)
