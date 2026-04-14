@@ -5,7 +5,22 @@ from typing import Any, TypeAlias, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.signal import StateSpace, bode, dbode, dfreqresp, dimpulse, dlsim, dlti, dstep, freqresp, impulse, lsim, lti, step
+from scipy.signal import (
+    StateSpace,
+    TransferFunction,
+    bode,
+    dbode,
+    dfreqresp,
+    dimpulse,
+    dlsim,
+    dlti,
+    dstep,
+    freqresp,
+    impulse,
+    lsim,
+    lti,
+    step,
+)
 from scipy.signal._ltisys import StateSpaceDiscrete, TransferFunctionDiscrete, ZerosPolesGainDiscrete
 
 ###
@@ -78,6 +93,8 @@ _to_ss_disc_c128: tuple[
 ###
 # StateSpace
 _state_space_cls: type[StateSpace[Any, Any, Any]] = StateSpace
+# TransferFunction
+_transfer_function_cls: type[TransferFunction[Any, Any]] = TransferFunction
 
 ###
 # lsim (same as impulse and step)
