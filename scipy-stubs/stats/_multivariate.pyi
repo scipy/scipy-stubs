@@ -296,7 +296,7 @@ class matrix_normal_gen(multi_rv_generic):
     def entropy(self, /, rowcov: _AnyCov = 1, colcov: _AnyCov = 1) -> np.float64: ...
 
 class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen], Generic[_M, _N]):
-    mean: Final[onp.Array[tuple[_M, _N], np.float64]]
+    mean: onp.Array[tuple[_M, _N], np.float64]
     rowpsd: Final[_PSD]
     colpsd: Final[_PSD]
 
@@ -834,8 +834,8 @@ class multivariate_t_gen(multi_rv_generic):
 class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen], Generic[_P]):
     dim: Final[int]
     df: Final[int]
-    loc: Final[onp.Array[tuple[_P], np.float64]]
-    shape: Final[onp.Array[tuple[_P, _P], np.float64]]
+    loc: onp.Array[tuple[_P], np.float64]
+    shape: onp.Array[tuple[_P, _P], np.float64]
     shape_info: Final[_PSD]
 
     def __init__(
