@@ -31,6 +31,11 @@ __all__ = [
 
 _ScalarT = TypeVar("_ScalarT", bound=np.generic, default=np.float64)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=np.generic, default=np.float64, covariant=True)
+_K = TypeVar("_K", bound=int, default=int)
+_M = TypeVar("_M", bound=int, default=int)
+_N = TypeVar("_N", bound=int, default=int)
+_P = TypeVar("_P", bound=int, default=int)
+_D = TypeVar("_D", bound=int, default=int)
 
 # TODO(@jorenham): rename as {}T_co
 _RVG_co = TypeVar("_RVG_co", bound=multi_rv_generic, default=multi_rv_generic, covariant=True)
@@ -180,27 +185,24 @@ class multivariate_normal_gen(multi_rv_generic):
 
 # TODO(@jorenham): Generic shape-type for mean and cov, so that we can determine whether the methods return scalars or arrays.
 # https://github.com/scipy/scipy-stubs/issues/406
-class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
-    # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
-
+class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Generic[_K]):
     dim: Final[int]
     allow_singular: Final[bool]
     maxpts: Final[int]
     abseps: Final[float]
     releps: Final[float]
     cov_object: Final[Covariance]
-    mean: onp.Array1D[np.float64]
+    mean: onp.Array[tuple[_K], np.float64]
 
     @property
-    def cov(self, /) -> onp.Array2D[np.float64]: ...
+    def cov(self, /) -> onp.Array[tuple[_K, _K], np.float64]: ...
 
     #
     def __init__(
         self,
         /,
-        mean: onp.ToFloat1D | None = None,
-        cov: _AnyCov = 1,
+        mean: onp.Array[tuple[_K], npc.floating] | None = None,
+        cov: Covariance | onp.ToFloat | onp.Array[tuple[_K, _K], npc.floating] = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
         maxpts: onp.ToJustInt | None = None,
@@ -227,7 +229,7 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen]):
 
     #
     def entropy(self, /) -> np.float64: ...
-    def marginal(self, dimensions: int | onp.ToInt1D) -> multivariate_normal_frozen: ...
+    def marginal(self, dimensions: int | onp.ToInt1D) -> multivariate_normal_frozen[int]: ...
 
 class matrix_normal_gen(multi_rv_generic):
     def __call__(
@@ -293,19 +295,17 @@ class matrix_normal_gen(multi_rv_generic):
     #
     def entropy(self, /, rowcov: _AnyCov = 1, colcov: _AnyCov = 1) -> np.float64: ...
 
-class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen]):
-    # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
-
+class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen], Generic[_M, _N]):
+    mean: Final[onp.Array[tuple[_M, _N], np.float64]]
     rowpsd: Final[_PSD]
     colpsd: Final[_PSD]
 
     def __init__(
         self,
         /,
-        mean: onp.ToFloat2D | None = None,
-        rowcov: onp.ToFloat2D | onp.ToFloat = 1,
-        colcov: onp.ToFloat2D | onp.ToFloat = 1,
+        mean: onp.Array[tuple[_M, _N], npc.floating] | None = None,
+        rowcov: onp.ToFloat | onp.Array[tuple[_M], npc.floating] | onp.Array[tuple[_M, _M], npc.floating] = 1,
+        colcov: onp.ToFloat | onp.Array[tuple[_N], npc.floating] | onp.Array[tuple[_N, _N], npc.floating] = 1,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
     def logpdf(self, /, X: onp.ToFloatND) -> _ScalarOrArray_f8: ...
@@ -597,21 +597,23 @@ class multinomial_gen(multi_rv_generic):
     ) -> _Array2ND: ...
 
 #
-class multinomial_frozen(multi_rv_frozen[multinomial_gen]):
-    def __init__(self, /, n: onp.ToJustIntND, p: onp.ToJustFloatND, seed: onp.random.ToRNG | None = None) -> None: ...
+class multinomial_frozen(multi_rv_frozen[multinomial_gen], Generic[_K]):
+    def __init__(
+        self, /, n: onp.ToJustInt, p: onp.Array[tuple[_K], npc.floating], seed: onp.random.ToRNG | None = None
+    ) -> None: ...
 
     #
     def logpmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
 
     #
-    def mean(self, /) -> _Array1ND: ...
-    def cov(self, /) -> _Array2ND: ...
+    def mean(self, /) -> onp.Array[tuple[_K, *tuple[Any, ...]], np.float64]: ...
+    def cov(self, /) -> onp.Array[tuple[_K, _K, *tuple[Any, ...]], np.float64]: ...  # pyright: ignore[reportInvalidTypeForm]
     def entropy(self, /) -> _ScalarOrArray_f8: ...
 
     #
     @overload
-    def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> _Array1ND: ...
+    def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> onp.Array[tuple[_K], np.float64]: ...
     @overload
     def rvs(self, /, size: onp.AtLeast1D | int = 1, random_state: onp.random.ToRNG | None = None) -> _Array2ND: ...
 
@@ -669,16 +671,18 @@ class uniform_direction_gen(multi_rv_generic):
     @overload
     def rvs(self, /, dim: int, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND[np.float64]: ...
 
-class uniform_direction_frozen(multi_rv_frozen[uniform_direction_gen]):
+class uniform_direction_frozen(multi_rv_frozen[uniform_direction_gen], Generic[_D]):
     dim: Final[int]
 
     def __init__(self, /, dim: int | None = None, seed: onp.random.ToRNG | None = None) -> None: ...
 
     #
     @overload
-    def rvs(self, /, size: None = None, random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
+    def rvs(self, /, size: None = None, random_state: onp.random.ToRNG | None = None) -> onp.Array[tuple[_D], np.float64]: ...
     @overload
-    def rvs(self, /, size: int | tuple[int], random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
+    def rvs(
+        self, /, size: int | tuple[int], random_state: onp.random.ToRNG | None = None
+    ) -> onp.Array[tuple[int, _D], np.float64]: ...
     @overload
     def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
 
@@ -827,21 +831,18 @@ class multivariate_t_gen(multi_rv_generic):
         allow_singular: bool = False,
     ) -> multivariate_t_frozen: ...
 
-class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
-    # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
-
+class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen], Generic[_P]):
     dim: Final[int]
     df: Final[int]
-    loc: Final[onp.Array1D[np.float64]]
-    shape: Final[onp.Array2D[np.float64]]
+    loc: Final[onp.Array[tuple[_P], np.float64]]
+    shape: Final[onp.Array[tuple[_P, _P], np.float64]]
     shape_info: Final[_PSD]
 
     def __init__(
         self,
         /,
-        loc: onp.ToFloat1D | None = None,
-        shape: onp.ToFloat | onp.ToFloat2D = 1,
+        loc: onp.Array[tuple[_P], npc.floating] | None = None,
+        shape: onp.ToFloat | onp.Array[tuple[_P, _P], npc.floating] = 1,
         df: int = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
@@ -872,7 +873,7 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
     def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND: ...
 
     #
-    def marginal(self, dimensions: int | onp.ToInt1D) -> multivariate_t_frozen: ...
+    def marginal(self, dimensions: int | onp.ToInt1D) -> multivariate_t_frozen[int]: ...
 
 # NOTE: `m` and `n` are broadcastable (but doing so will break `.rvs()` at runtime...)
 class multivariate_hypergeom_gen(multi_rv_generic):
@@ -898,15 +899,17 @@ class multivariate_hypergeom_gen(multi_rv_generic):
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array2ND: ...
 
-class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen]):
-    def __init__(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND, seed: onp.random.ToRNG | None = None) -> None: ...
+class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen], Generic[_K]):
+    def __init__(
+        self, /, m: onp.Array[tuple[_K], npc.integer], n: onp.ToJustInt, seed: onp.random.ToRNG | None = None
+    ) -> None: ...
     def logpmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
-    def mean(self, /) -> _Array1ND: ...
-    def var(self, /) -> _Array1ND: ...
-    def cov(self, /) -> _Array2ND: ...
+    def mean(self, /) -> onp.Array[tuple[_K, *tuple[Any, ...]], np.float64]: ...
+    def var(self, /) -> onp.Array[tuple[_K, *tuple[Any, ...]], np.float64]: ...
+    def cov(self, /) -> onp.Array[tuple[_K, _K, *tuple[Any, ...]], np.float64]: ...  # pyright: ignore[reportInvalidTypeForm]
     @overload
-    def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> _Array1ND: ...
+    def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> onp.Array[tuple[_K], np.float64]: ...
     @overload
     def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> _Array2ND: ...
 
@@ -996,11 +999,13 @@ class dirichlet_multinomial_gen(multi_rv_generic):
     def var(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> _Array1ND: ...
     def cov(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> _Array2ND: ...
 
-class dirichlet_multinomial_frozen(multi_rv_frozen[dirichlet_multinomial_gen]):
-    alpha: _Array1ND
-    n: _Array1ND[np.int_]  # broadcasted against alpha
+class dirichlet_multinomial_frozen(multi_rv_frozen[dirichlet_multinomial_gen], Generic[_K]):
+    alpha: onp.Array[tuple[_K], np.float64]
+    n: onp.ArrayND[np.int_]
 
-    def __init__(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND, seed: onp.random.ToRNG | None = None) -> None: ...
+    def __init__(
+        self, /, alpha: onp.Array[tuple[_K], npc.floating], n: onp.ToJustIntND, seed: onp.random.ToRNG | None = None
+    ) -> None: ...
     def logpmf(self, /, x: onp.ToIntND) -> _ScalarOrArray_f8: ...
     def pmf(self, /, x: onp.ToIntND) -> _ScalarOrArray_f8: ...
     def mean(self, /) -> _Array1ND: ...
@@ -1024,8 +1029,10 @@ class vonmises_fisher_gen(multi_rv_generic):
     ) -> _Array2ND: ...
     def fit(self, /, x: onp.ToFloatND) -> tuple[onp.Array1D[np.float64], float]: ...
 
-class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
-    def __init__(self, /, mu: onp.ToFloat1D | None = None, kappa: int = 1, seed: onp.random.ToRNG | None = None) -> None: ...
+class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen], Generic[_D]):
+    def __init__(
+        self, /, mu: onp.Array[tuple[_D], npc.floating] | None = None, kappa: int = 1, seed: onp.random.ToRNG | None = None
+    ) -> None: ...
     def logpdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def entropy(self, /) -> np.float64: ...
