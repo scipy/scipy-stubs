@@ -7,6 +7,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from scipy.signal import (
+    BadCoefficients,
     band_stop_obj,
     bessel,
     besselap,
@@ -72,6 +73,12 @@ _c64_2d: onp.Array2D[np.complex64]
 _c128_2d: onp.Array2D[np.complex128]
 
 ###
+
+# BadCoefficients
+assert_type(BadCoefficients(), BadCoefficients)
+
+_bad_coefficients_cls: type[UserWarning] = BadCoefficients
+_bad_coefficients: UserWarning = BadCoefficients()
 
 # findfreqs
 assert_type(findfreqs(_f64_1d, _f64_1d, 10), onp.Array1D[np.float64])
