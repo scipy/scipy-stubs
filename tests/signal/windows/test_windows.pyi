@@ -1,8 +1,11 @@
+# type-tests for `signal/windows/_windows.pyi`
+
 from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
 
+from scipy.signal import get_window as signal_get_window
 from scipy.signal.windows import (
     barthann,
     bartlett,
@@ -35,7 +38,23 @@ from scipy.signal.windows import (
 ###
 
 # get_window
+assert_type(signal_get_window("hann", 64), onp.Array1D[np.float64])
+assert_type(signal_get_window(4.0, 64), onp.Array1D[np.float64])
+assert_type(signal_get_window(("hann",), 64), onp.Array1D[np.float64])
+assert_type(signal_get_window(("kaiser", 4.0), 64), onp.Array1D[np.float64])
+assert_type(signal_get_window(("gaussian", 3.0), 64), onp.Array1D[np.float64])
+assert_type(signal_get_window(("general_gaussian", 1.5, 3.0), 64), onp.Array1D[np.float64])
+assert_type(signal_get_window(("dpss", 2, 4, True), 64), onp.Array1D[np.float64])
+assert_type(signal_get_window("hann", 64, fftbins=False), onp.Array1D[np.float64])
+assert_type(signal_get_window("hann", 64, xp=np), Any)
 assert_type(get_window("hann", 64), onp.Array1D[np.float64])
+assert_type(get_window(4.0, 64), onp.Array1D[np.float64])
+assert_type(get_window(("hann",), 64), onp.Array1D[np.float64])
+assert_type(get_window(("kaiser", 4.0), 64), onp.Array1D[np.float64])
+assert_type(get_window(("gaussian", 3.0), 64), onp.Array1D[np.float64])
+assert_type(get_window(("general_gaussian", 1.5, 3.0), 64), onp.Array1D[np.float64])
+assert_type(get_window(("dpss", 2, 4, True), 64), onp.Array1D[np.float64])
+assert_type(get_window("hann", 64, fftbins=False), onp.Array1D[np.float64])
 assert_type(get_window("hann", 64, xp=np), Any)
 
 # barthann
