@@ -1,4 +1,3 @@
-import types
 from typing import Any, ClassVar, Final, Generic, Literal, SupportsIndex, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar, override
 
@@ -68,9 +67,6 @@ class multi_rv_generic(rng_mixin):
     def _get_random_state(self, /, random_state: onp.random.ToRNG | None) -> onp.random.RNG: ...
 
 class multi_rv_frozen(rng_mixin, Generic[_RVG_co]):
-    @classmethod
-    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
-
     _dist: _RVG_co
 
 class multivariate_normal_gen(multi_rv_generic):
@@ -183,8 +179,6 @@ class multivariate_normal_gen(multi_rv_generic):
         allow_singular: bool = False,
     ) -> multivariate_normal_frozen: ...
 
-# TODO(@jorenham): Generic shape-type for mean and cov, so that we can determine whether the methods return scalars or arrays.
-# https://github.com/scipy/scipy-stubs/issues/406
 class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Generic[_K]):
     dim: Final[int]
     allow_singular: Final[bool]
@@ -438,7 +432,7 @@ class dirichlet_gen(multi_rv_generic):
 
 class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None
 
     alpha: Final[onp.Array1D[_Scalar_uif]]
 
@@ -503,7 +497,7 @@ class wishart_gen(multi_rv_generic):
 
 class wishart_frozen(multi_rv_frozen[wishart_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None
 
     dim: Final[int]
     df: Final[onp.ToFloat]
@@ -546,7 +540,7 @@ class invwishart_gen(wishart_gen):
 
 class invwishart_frozen(multi_rv_frozen[invwishart_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None
 
     def __init__(self, /, df: onp.ToFloat, scale: _ToFloatMax2D, seed: onp.random.ToRNG | None = None) -> None: ...
 
@@ -648,15 +642,15 @@ class _group_rv_frozen_mixin(Generic[_ScalarT_co]):
 class special_ortho_group_gen(_group_rv_gen_mixin[special_ortho_group_frozen], multi_rv_generic): ...
 
 # pyrefly: ignore [inconsistent-inheritance]
-class special_ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[special_ortho_group_gen]): ...  # type: ignore[misc]
+class special_ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[special_ortho_group_gen]): ...
 class ortho_group_gen(_group_rv_gen_mixin[ortho_group_frozen], multi_rv_generic): ...
 
 # pyrefly: ignore [inconsistent-inheritance]
-class ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[ortho_group_gen]): ...  # type: ignore[misc]
+class ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[ortho_group_gen]): ...
 class unitary_group_gen(_group_rv_gen_mixin[unitary_group_frozen, np.complex128], multi_rv_generic): ...
 
 # pyrefly: ignore [inconsistent-inheritance]
-class unitary_group_frozen(_group_rv_frozen_mixin[np.complex128], multi_rv_frozen[unitary_group_gen]): ...  # type: ignore[misc]
+class unitary_group_frozen(_group_rv_frozen_mixin[np.complex128], multi_rv_frozen[unitary_group_gen]): ...
 
 class uniform_direction_gen(multi_rv_generic):
     def __call__(self, /, dim: int | None = None, seed: onp.random.ToRNG | None = None) -> uniform_direction_frozen: ...
@@ -708,7 +702,7 @@ class random_correlation_gen(multi_rv_generic):
 
 class random_correlation_frozen(multi_rv_frozen[random_correlation_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None
 
     eigs: Final[onp.Array1D[np.float64]]
     tol: Final[float]
@@ -964,7 +958,7 @@ class random_table_gen(multi_rv_generic):
 
 class random_table_frozen(multi_rv_frozen[random_table_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None
 
     def __init__(self, /, row: onp.ToJustIntND, col: onp.ToJustIntND, *, seed: onp.random.ToRNG | None = None) -> None: ...
 
