@@ -4,10 +4,12 @@ from typing import Any, TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.signal import (
     StateSpace,
     TransferFunction,
+    ZerosPolesGain,
     bode,
     dbode,
     dfreqresp,
@@ -92,9 +94,13 @@ _to_ss_disc_c128: tuple[
 
 ###
 # StateSpace
-_state_space_cls: type[StateSpace[Any, Any, Any]] = StateSpace
+_state_space_cls: type[StateSpace[npc.inexact32 | npc.inexact64, np.float32 | np.float64, complex | None]] = StateSpace
 # TransferFunction
-_transfer_function_cls: type[TransferFunction[Any, Any]] = TransferFunction
+_transfer_function_cls: type[TransferFunction[np.float32 | np.float64, complex | None]] = TransferFunction
+# ZerosPolesGain
+_zeros_poles_gain_cls: type[ZerosPolesGain[npc.inexact32 | npc.inexact64, np.float32 | np.float64, complex | None]] = (
+    ZerosPolesGain
+)
 
 ###
 # lsim (same as impulse and step)
