@@ -20,9 +20,11 @@ from scipy.signal import (
     impulse,
     lsim,
     lti,
+    place_poles,
     step,
 )
 from scipy.signal._ltisys import (
+    Bunch,
     StateSpaceContinuous,
     StateSpaceDiscrete,
     TransferFunctionContinuous,
@@ -53,6 +55,7 @@ _c64_1d: _VecC64
 _c64_2d: onp.Array2D[np.complex64]
 _c128_1d: _VecC128
 _c128_2d: onp.Array2D[np.complex128]
+_i64_1d: onp.Array1D[np.int64]
 
 _lti_f32: lti[np.float32]
 _lti_f64: lti[np.float64]
@@ -274,6 +277,18 @@ assert_type(_lti_f32.freqresp(), tuple[_VecF32, _VecC64])
 assert_type(_lti_c64.freqresp(), tuple[_VecF32, _VecC64])
 assert_type(_lti_f64.freqresp(), tuple[_VecF64, _VecC128])
 assert_type(_lti_c128.freqresp(), tuple[_VecF64, _VecC128])
+
+###
+# place_poles
+
+place_poles_result = place_poles(_f64_2d, _f64_2d, _i64_1d)
+assert_type(place_poles_result, Bunch)
+assert_type(place_poles_result.gain_matrix, _MatF64)
+assert_type(place_poles_result.computed_poles, _VecF64)
+assert_type(place_poles_result.requested_poles, _VecF64)
+assert_type(place_poles_result.X, onp.Array2D[np.complex128])
+assert_type(place_poles_result.rtol, float)
+assert_type(place_poles_result.nb_iter, int)
 
 ###
 # dlsim
