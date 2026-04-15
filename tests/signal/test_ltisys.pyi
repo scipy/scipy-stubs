@@ -4,7 +4,6 @@ from typing import Any, TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from scipy.signal import (
     StateSpace,
@@ -23,7 +22,14 @@ from scipy.signal import (
     lti,
     step,
 )
-from scipy.signal._ltisys import StateSpaceDiscrete, TransferFunctionDiscrete, ZerosPolesGainDiscrete
+from scipy.signal._ltisys import (
+    StateSpaceContinuous,
+    StateSpaceDiscrete,
+    TransferFunctionContinuous,
+    TransferFunctionDiscrete,
+    ZerosPolesGainContinuous,
+    ZerosPolesGainDiscrete,
+)
 
 ###
 
@@ -56,12 +62,18 @@ _dlti_f32: dlti[np.float32]
 _dlti_f64: dlti[np.float64]
 _dlti_c64: dlti[np.complex64]
 _dlti_c128: dlti[np.complex128]
-_tf_disc_f32: TransferFunctionDiscrete[np.float32]
-_tf_disc_f64: TransferFunctionDiscrete[np.float64]
-_zpk_disc_f32: ZerosPolesGainDiscrete[np.float32]
-_zpk_disc_f64: ZerosPolesGainDiscrete[np.float64]
-_ss_disc_f32: StateSpaceDiscrete[np.float32]
-_ss_disc_f64: StateSpaceDiscrete[np.float64]
+_ss_cont_f32: StateSpaceContinuous[np.float32, np.float32]
+_ss_cont_f64: StateSpaceContinuous[np.float64, np.float64]
+_ss_disc_f32: StateSpaceDiscrete[np.float32, np.float32, float]
+_ss_disc_f64: StateSpaceDiscrete[np.float64, np.float64, float]
+_tf_cont_f32: TransferFunctionContinuous[np.float32]
+_tf_cont_f64: TransferFunctionContinuous[np.float64]
+_tf_disc_f32: TransferFunctionDiscrete[np.float32, float]
+_tf_disc_f64: TransferFunctionDiscrete[np.float64, float]
+_zpk_cont_f32: ZerosPolesGainContinuous[np.float32, np.float32]
+_zpk_cont_f64: ZerosPolesGainContinuous[np.float64, np.float64]
+_zpk_disc_f32: ZerosPolesGainDiscrete[np.float32, np.float32, float]
+_zpk_disc_f64: ZerosPolesGainDiscrete[np.float64, np.float64, float]
 
 _to_tf_cont_f32: tuple[onp.ArrayND[np.float32], _VecF32]
 _to_tf_cont_f64: tuple[_ArrF64, _VecF64]
@@ -94,13 +106,22 @@ _to_ss_disc_c128: tuple[
 
 ###
 # StateSpace
-_state_space_cls: type[StateSpace[npc.inexact32 | npc.inexact64, np.float32 | np.float64, complex | None]] = StateSpace
+ss_f32 = StateSpace(_ss_cont_f32)  # pyrefly: ignore[bad-argument-type]
+assert_type(ss_f32, StateSpaceContinuous[np.float32, np.float32])  # type: ignore[assert-type]
+ss_disc_f64 = StateSpace(_ss_disc_f64)  # pyrefly: ignore[bad-argument-type]
+assert_type(ss_disc_f64, StateSpaceDiscrete[np.float64, np.float64, float])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
+
 # TransferFunction
-_transfer_function_cls: type[TransferFunction[np.float32 | np.float64, complex | None]] = TransferFunction
+tf_f32 = TransferFunction(_tf_cont_f32)  # pyrefly: ignore[bad-argument-type]
+assert_type(tf_f32, TransferFunctionContinuous[np.float32])  # type: ignore[assert-type]
+tf_disc_f64 = TransferFunctionDiscrete(_f64_2d, _f64_1d, dt=0.1)  # pyrefly: ignore[bad-argument-type]
+assert_type(tf_disc_f64, TransferFunctionDiscrete[np.float32 | np.float64, float])  # type: ignore[assert-type]
+
 # ZerosPolesGain
-_zeros_poles_gain_cls: type[ZerosPolesGain[npc.inexact32 | npc.inexact64, np.float32 | np.float64, complex | None]] = (
-    ZerosPolesGain
-)
+zpk_f32 = ZerosPolesGain(_f32_1d, _f32_1d, 1.0)  # pyrefly: ignore[bad-argument-type]
+assert_type(zpk_f32, ZerosPolesGainContinuous[np.float32 | np.float64, np.float32 | np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
+zpk_disc_f64 = ZerosPolesGainDiscrete(_f64_1d, _f64_1d, 1.0, dt=0.1)  # pyrefly: ignore[bad-argument-type]
+assert_type(zpk_disc_f64, ZerosPolesGainDiscrete[np.float32 | np.float64, np.float32 | np.float64, float])
 
 ###
 # lsim (same as impulse and step)
