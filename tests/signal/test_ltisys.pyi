@@ -57,14 +57,14 @@ _c128_1d: _VecC128
 _c128_2d: onp.Array2D[np.complex128]
 _i64_1d: onp.Array1D[np.int64]
 
-_lti_f32: lti[np.float32]
-_lti_f64: lti[np.float64]
-_lti_c64: lti[np.complex64]
-_lti_c128: lti[np.complex128]
-_dlti_f32: dlti[np.float32]
-_dlti_f64: dlti[np.float64]
-_dlti_c64: dlti[np.complex64]
-_dlti_c128: dlti[np.complex128]
+_lti_f32: lti[np.float32, np.float32]
+_lti_f64: lti[np.float64, np.float64]
+_lti_c64: lti[np.complex64, np.float32]
+_lti_c128: lti[np.complex128, np.float64]
+_dlti_f32: dlti[np.float32, np.float32, float]
+_dlti_f64: dlti[np.float64, np.float64, float]
+_dlti_c64: dlti[np.complex64, np.float32, float]
+_dlti_c128: dlti[np.complex128, np.float64, float]
 _ss_cont_f32: StateSpaceContinuous[np.float32, np.float32]
 _ss_cont_f64: StateSpaceContinuous[np.float64, np.float64]
 _ss_disc_f32: StateSpaceDiscrete[np.float32, np.float32, float]
@@ -108,23 +108,49 @@ _to_ss_disc_c128: tuple[
 ]
 
 ###
-# StateSpace
-ss_f32 = StateSpace(_ss_cont_f32)  # pyrefly: ignore[bad-argument-type]
-assert_type(ss_f32, StateSpaceContinuous[np.float32, np.float32])  # type: ignore[assert-type]
-ss_disc_f64 = StateSpace(_ss_disc_f64)  # pyrefly: ignore[bad-argument-type]
-assert_type(ss_disc_f64, StateSpaceDiscrete[np.float64, np.float64, float])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
+
+# mypy (still) doesn't support `__new__` methods that return a different type
 
 # TransferFunction
-tf_f32 = TransferFunction(_tf_cont_f32)  # pyrefly: ignore[bad-argument-type]
-assert_type(tf_f32, TransferFunctionContinuous[np.float32])  # type: ignore[assert-type]
-tf_disc_f64 = TransferFunctionDiscrete(_f64_2d, _f64_1d, dt=0.1)  # pyrefly: ignore[bad-argument-type]
-assert_type(tf_disc_f64, TransferFunctionDiscrete[np.float32 | np.float64, float])  # type: ignore[assert-type]
+assert_type(TransferFunction(_tf_cont_f32), TransferFunctionContinuous[np.float32])  # type: ignore[assert-type]
+assert_type(TransferFunction(_tf_disc_f32), TransferFunctionDiscrete[np.float32, float])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f64_1d, _f64_1d), TransferFunctionContinuous[np.float32 | np.float64])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f64_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[np.float32 | np.float64, float])  # type: ignore[assert-type]
 
 # ZerosPolesGain
-zpk_f32 = ZerosPolesGain(_f32_1d, _f32_1d, 1.0)  # pyrefly: ignore[bad-argument-type]
-assert_type(zpk_f32, ZerosPolesGainContinuous[np.float32 | np.float64, np.float32 | np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
-zpk_disc_f64 = ZerosPolesGainDiscrete(_f64_1d, _f64_1d, 1.0, dt=0.1)  # pyrefly: ignore[bad-argument-type]
-assert_type(zpk_disc_f64, ZerosPolesGainDiscrete[np.float32 | np.float64, np.float32 | np.float64, float])
+assert_type(ZerosPolesGain(_zpk_cont_f32), ZerosPolesGainContinuous[np.float32, np.float32])  # type: ignore[assert-type]
+assert_type(ZerosPolesGain(_zpk_disc_f32), ZerosPolesGainDiscrete[np.float32, np.float32, float])  # type: ignore[assert-type]
+assert_type(ZerosPolesGain(_f64_1d, _f64_1d, 5), ZerosPolesGainContinuous[np.float32 | np.float64, np.float32 | np.float64])  # type: ignore[assert-type]
+assert_type(  # type: ignore[assert-type]
+    ZerosPolesGain(_c128_1d, _f64_1d, 5),
+    ZerosPolesGainContinuous[np.float32 | np.float64 | np.complex64 | np.complex128, np.float32 | np.float64],
+)
+assert_type(  # type: ignore[assert-type]
+    ZerosPolesGain(_f64_1d, _f64_1d, 5, dt=0.1), ZerosPolesGainDiscrete[np.float32 | np.float64, np.float32 | np.float64, float]
+)
+assert_type(  # type: ignore[assert-type]
+    ZerosPolesGain(_c128_1d, _f64_1d, 5, dt=0.1),
+    ZerosPolesGainDiscrete[np.float32 | np.float64 | np.complex64 | np.complex128, np.float32 | np.float64, float],
+)
+
+# StateSpace
+assert_type(StateSpace(_ss_cont_f32), StateSpaceContinuous[np.float32, np.float32])  # type: ignore[assert-type]
+assert_type(StateSpace(_ss_disc_f32), StateSpaceDiscrete[np.float32, np.float32, float])  # type: ignore[assert-type]
+assert_type(  # type: ignore[assert-type]
+    StateSpace(_f64_2d, _f64_2d, _f64_2d, _f64_2d), StateSpaceContinuous[np.float32 | np.float64, np.float32 | np.float64]
+)
+assert_type(  # type: ignore[assert-type]
+    StateSpace(_c128_2d, _c128_2d, _c128_2d, _c128_2d),
+    StateSpaceContinuous[np.float32 | np.float64 | np.complex64 | np.complex128, np.float32 | np.float64],
+)
+assert_type(  # type: ignore[assert-type]
+    StateSpace(_f64_2d, _f64_2d, _f64_2d, _f64_2d, dt=0.1),
+    StateSpaceDiscrete[np.float32 | np.float64, np.float32 | np.float64, float],
+)
+assert_type(  # type: ignore[assert-type]
+    StateSpace(_c128_2d, _c128_2d, _c128_2d, _c128_2d, dt=0.1),
+    StateSpaceDiscrete[np.float32 | np.float64 | np.complex64 | np.complex128, np.float32 | np.float64, float],
+)
 
 ###
 # lsim (same as impulse and step)
@@ -222,22 +248,22 @@ assert_type(_lti_c128.step(), tuple[_VecF64, _VecC128])
 # what's going on with mypy here...?
 
 # f32
-assert_type(bode(_lti_f32), tuple[_VecF32, _VecF32, _VecF32])  # type: ignore[assert-type]
+assert_type(bode(_lti_f32), tuple[_VecF32, _VecF32, _VecF32])
 assert_type(bode(_to_tf_cont_f32), tuple[_VecF32, _VecF32, _VecF32])
 assert_type(bode(_to_zpk_cont_f32), tuple[_VecF32, _VecF32, _VecF32])
 assert_type(bode(_to_ss_cont_f32), tuple[_VecF32, _VecF32, _VecF32])
 # c64
-assert_type(bode(_lti_c64), tuple[_VecF32, _VecF32, _VecF32])  # type: ignore[assert-type]
+assert_type(bode(_lti_c64), tuple[_VecF32, _VecF32, _VecF32])
 assert_type(bode(_to_tf_cont_c64), tuple[_VecF32, _VecF32, _VecF32])
 assert_type(bode(_to_zpk_cont_c64), tuple[_VecF32, _VecF32, _VecF32])
 assert_type(bode(_to_ss_cont_c64), tuple[_VecF32, _VecF32, _VecF32])
 # f64
-assert_type(bode(_lti_f64), tuple[_VecF64, _VecF64, _VecF64])  # type: ignore[assert-type]
+assert_type(bode(_lti_f64), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(bode(_to_tf_cont_f64), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(bode(_to_zpk_cont_f64), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(bode(_to_ss_cont_f64), tuple[_VecF64, _VecF64, _VecF64])
 # c128
-assert_type(bode(_lti_c128), tuple[_VecF64, _VecF64, _VecF64])  # type: ignore[assert-type]
+assert_type(bode(_lti_c128), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(bode(_to_tf_cont_c128), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(bode(_to_zpk_cont_c128), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(bode(_to_ss_cont_c128), tuple[_VecF64, _VecF64, _VecF64])
