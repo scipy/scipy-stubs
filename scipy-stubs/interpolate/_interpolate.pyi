@@ -19,8 +19,7 @@ _Extrapolate: TypeAlias = Literal["periodic"] | bool
 _Interp1dKind: TypeAlias = Literal["linear", "nearest", "nearest-up", "zero", "slinear", "quadratic", "cubic", "previous", "next"]
 _Interp1dFillValue: TypeAlias = onp.ToFloat | onp.ToFloatND | tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND]
 
-# https://github.com/microsoft/pyright/issues/11127
-_Array2ND: TypeAlias = onp.Array[tuple[int, int, *tuple[Any, ...]], _NumberT]  # pyright: ignore[reportInvalidTypeForm]
+_Array2ND: TypeAlias = onp.Array[tuple[int, int, *tuple[Any, ...]], _NumberT]
 
 ###
 
