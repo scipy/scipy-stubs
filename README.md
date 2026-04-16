@@ -359,6 +359,7 @@ Mozilla ([mozanalysis](https://github.com/mozilla/mozanalysis)) |
 [mypy_primer](https://github.com/hauntsaninja/mypy_primer) |
 [Namer](https://github.com/ThePornDatabase/namer) |
 [NeuroGym](https://github.com/neurogym/neurogym) |
+[Numba](https://github.com/numba/numba) |
 [Optuna](https://github.com/optuna/optuna) |
 [pandapower](https://github.com/e2nIEE/pandapower) |
 Pandas ([pandas](https://github.com/pandas-dev/pandas),
