@@ -42,9 +42,8 @@ _ToFloatMax2D: TypeAlias = onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D
 _ToJustFloat: TypeAlias = float | _Scalar_f
 
 _Array1ND: TypeAlias = onp.Array[tuple[int, *tuple[Any, ...]], _ScalarT]
-# https://github.com/microsoft/pyright/issues/11127
-_Array2ND: TypeAlias = onp.Array[tuple[int, int, *tuple[Any, ...]], _ScalarT]  # pyright: ignore[reportInvalidTypeForm]
-_Array3ND: TypeAlias = onp.Array[tuple[int, int, int, *tuple[Any, ...]], _ScalarT]  # pyright: ignore[reportInvalidTypeForm]
+_Array2ND: TypeAlias = onp.Array[tuple[int, int, *tuple[Any, ...]], _ScalarT]
+_Array3ND: TypeAlias = onp.Array[tuple[int, int, int, *tuple[Any, ...]], _ScalarT]
 
 _ScalarOrArray_f8: TypeAlias = np.float64 | _Array1ND
 _AnyCov: TypeAlias = Covariance | onp.ToFloat2D | onp.ToFloat

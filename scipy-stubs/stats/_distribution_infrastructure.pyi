@@ -304,9 +304,8 @@ _Float3D: TypeAlias = onp.Array3D[_Float]
 _FloatND: TypeAlias = onp.ArrayND[_Float, _ShapeT1]
 
 _Float1ND: TypeAlias = onp.Array[tuple[int, *tuple[Any, ...]], _Float]
-# https://github.com/microsoft/pyright/issues/11127
-_Float2ND: TypeAlias = onp.Array[tuple[int, int, *tuple[Any, ...]], _Float]  # pyright: ignore[reportInvalidTypeForm]
-_Float3ND: TypeAlias = onp.Array[tuple[int, int, int, *tuple[Any, ...]], _Float]  # pyright: ignore[reportInvalidTypeForm]
+_Float2ND: TypeAlias = onp.Array[tuple[int, int, *tuple[Any, ...]], _Float]
+_Float3ND: TypeAlias = onp.Array[tuple[int, int, int, *tuple[Any, ...]], _Float]
 
 _Complex: TypeAlias = np.complex128 | np.clongdouble
 _ComplexND: TypeAlias = onp.ArrayND[_Complex, _ShapeT1]
