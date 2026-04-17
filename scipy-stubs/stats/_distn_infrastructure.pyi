@@ -471,6 +471,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> rv_continuous_frozen[Self]: ...
 
     #
+    @override
     @overload
     def freeze(self, /) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
@@ -890,6 +891,7 @@ class rv_discrete(_rv_mixin, rv_generic):
     def __call__(self, /, *args: _ToFloatOrND, loc: _ToFloatOrND = 0, **kwds: _ToFloatOrND) -> rv_discrete_frozen[Self]: ...
 
     #
+    @override
     @overload
     def freeze(self, /) -> rv_discrete_frozen[Self, _Float]: ...
     @overload
@@ -1038,6 +1040,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
 @type_check_only
 class _rv_continuous_0(rv_continuous):
     # overrides of rv_generic
+    @override
     @overload  # loc: 0-d, scale: 0-d, moments: 1 (positional)
     def stats(self, /, loc: onp.ToFloat, scale: onp.ToFloat, moment: _Moment1) -> _Float: ...
     @overload  # loc: 0-d, scale: 0-d, moments: 1 (keyword)
@@ -1169,6 +1172,7 @@ class _rv_continuous_0(rv_continuous):
     def freeze(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> rv_continuous_frozen[Self]: ...
 
     #
+    @override
     @overload
     def pdf(self, /, x: onp.ToFloat, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Float: ...
     @overload
@@ -1270,6 +1274,7 @@ class _rv_continuous_0(rv_continuous):
     ) -> _FloatOrND: ...
 
     #
+    @override
     @overload
     def _unpack_loc_scale(self, /, theta: Sequence[onp.ToFloat]) -> tuple[onp.ToFloat, onp.ToFloat, tuple[()]]: ...
     @overload

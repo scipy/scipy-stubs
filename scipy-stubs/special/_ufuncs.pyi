@@ -585,6 +585,7 @@ class _UFunc(np.ufunc, Generic[_NameT_co, _IdentityT_co]):  # type: ignore[misc]
     @override
     def __class__(self, /) -> type[np.ufunc]: ...
     @__class__.setter
+    @override
     def __class__(self, t: type[np.ufunc], /) -> None: ...
     @property
     @override
@@ -1025,6 +1026,7 @@ class _UFunc21ld(_UFuncWithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Gene
     @override
     def at(self, a: _CoIntND, indices: _Indices, b: _ToFloat64OrND, /) -> None: ...
     #
+    @override
     @overload
     def outer(self, n: onp.ToInt, x: onp.ToFloat64, /, **kw: Unpack[_Kw21ld]) -> np.float64: ...
     @overload
@@ -1070,6 +1072,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
     #
+    @override
     @overload
     def reduce(
         self,
@@ -1144,6 +1147,7 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
     #
+    @override
     @overload
     def outer(self, a: onp.ToFloat64, b: onp.ToFloat64, /, *, out: _Out1 = None, **kw: Unpack[_Kw21f]) -> _Float: ...
     @overload
@@ -1180,6 +1184,7 @@ class _UFunc21c1(_UFuncWithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Gene
     def at(self, a: _CoFloat64ND, indices: _Indices, b: onp.ToFloat64_ND, /) -> None: ...
 
     #
+    @override
     @overload
     def outer(self, a: onp.ToFloat64, b: _ToComplex128, /, **kw: Unpack[_Kw21c1]) -> _Complex: ...
     @overload
@@ -1231,6 +1236,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
     #
+    @override
     @overload
     def reduce(
         self,
@@ -1305,6 +1311,7 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         out: _Out1[_FloatND | None] = None,
     ) -> _FloatND: ...
     #
+    @override
     @overload
     def outer(self, a: onp.ToFloat64, b: onp.ToFloat64, /, **kw: Unpack[_Kw21fc1]) -> _Float: ...
     @overload
@@ -1349,11 +1356,13 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @overload
     def __call__(self, a: _ToComplex128_D, b: _ToComplex128_D, /, out: _Out1[_OutT], **kw: Unpack[_Kw21fc2]) -> _OutT: ...
     #
+    @override
     @overload
     def at(self, x: _CoFloat64ND, indices: _Indices, y: onp.ToFloat64_ND, /) -> None: ...
     @overload
     def at(self, x: _CoComplex128ND, indices: _Indices, y: _ToComplex128ND, /) -> None: ...
     #
+    @override
     @overload
     def accumulate(
         self,
@@ -1373,6 +1382,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         out: _Out1[_InexactND | None] = None,
     ) -> _InexactND: ...
     #
+    @override
     @overload
     def reduce(
         self,
@@ -1461,6 +1471,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         where: _ToBool_D = True,
     ) -> _OutT: ...
     #
+    @override
     @overload
     def reduceat(
         self,
@@ -1482,6 +1493,7 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
         out: _Out1[_InexactND | None] = None,
     ) -> _InexactND: ...
     #
+    @override
     @overload
     def outer(self, a: onp.ToFloat64, b: onp.ToFloat64, /, **kw: Unpack[_Kw21fc2]) -> _Float: ...
     @overload
@@ -1535,6 +1547,7 @@ class _UFunc22f(_UFunc22[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         self, v: _ToFloat64OrND, x: _ToFloat64OrND, out1: _OutT1, out2: _OutT2, /, **kw: Unpack[_Kw22f]
     ) -> tuple[_OutT1, _OutT2]: ...
     #
+    @override
     @overload
     def outer(self, v: onp.ToFloat64, x: onp.ToFloat64, /, *, out: _None2 = ..., **kw: Unpack[_Kw22f]) -> _Tuple2[_Float]: ...
     @overload
@@ -1596,6 +1609,7 @@ class _UFunc24f(_UFunc24[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
         **kw: Unpack[_Kw24f],
     ) -> tuple[_OutT1, _OutT2, _OutT3, _OutT4]: ...
     #
+    @override
     @overload
     def outer(self, u: onp.ToFloat64, m: onp.ToFloat64, /, *, out: _None2 = ..., **kw: Unpack[_Kw24f]) -> _Tuple4[_Float]: ...
     @overload
