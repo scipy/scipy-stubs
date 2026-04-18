@@ -377,20 +377,56 @@ class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Gener
     ) -> ZerosPolesGainDiscrete[_ZerosT_co, _PolesT_co, _DTT_co]: ...
     @overload
     def __new__(
-        cls, zeros: _ToFloat12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /
-    ) -> ZerosPolesGainContinuous[_Float, _Float]: ...
+        cls,
+        zeros: onp.ToArray1D[float, npc.integer | npc.floating64] | onp.ToArray2D[float, npc.integer | npc.floating64],
+        poles: onp.ToArray1D[float, npc.integer | npc.floating64],
+        gain: onp.ToFloat,
+        /,
+    ) -> ZerosPolesGainContinuous[np.float64, np.float64]: ...
     @overload
     def __new__(
-        cls, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /
-    ) -> ZerosPolesGainContinuous[_Inexact, _Float]: ...
+        cls,
+        zeros: onp.ToArray1D[float, npc.integer | npc.floating64] | onp.ToArray2D[float, npc.integer | npc.floating64],
+        poles: onp.ToArray1D[float, npc.integer | npc.floating64],
+        gain: onp.ToFloat,
+        /,
+        *,
+        dt: _DTT,
+    ) -> ZerosPolesGainDiscrete[np.float64, np.float64, _DTT]: ...
+    @overload
+    def __new__(
+        cls, zeros: _ToFloat12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /
+    ) -> ZerosPolesGainContinuous[_Float, _Float]: ...
     @overload
     def __new__(
         cls, zeros: _ToFloat12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: _DTT
     ) -> ZerosPolesGainDiscrete[_Float, _Float, _DTT]: ...
     @overload
     def __new__(
+        cls,
+        zeros: onp.ToJustComplex128_1D | onp.ToJustComplex128_2D,
+        poles: onp.ToArray1D[float, npc.integer | npc.floating64],
+        gain: onp.ToFloat,
+        /,
+    ) -> ZerosPolesGainContinuous[np.complex128, np.float64]: ...
+    @overload
+    def __new__(
+        cls,
+        zeros: onp.ToJustComplex128_1D | onp.ToJustComplex128_2D,
+        poles: onp.ToArray1D[float, npc.integer | npc.floating64],
+        gain: onp.ToFloat,
+        /,
+        *,
+        dt: _DTT,
+    ) -> ZerosPolesGainDiscrete[np.complex128, np.float64, _DTT]: ...
+    @overload
+    def __new__(
+        cls, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /
+    ) -> ZerosPolesGainContinuous[Any, _Float]: ...
+    @overload
+    def __new__(
         cls, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: _DTT
-    ) -> ZerosPolesGainDiscrete[_Inexact, _Float, _DTT]: ...
+    ) -> ZerosPolesGainDiscrete[Any, _Float, _DTT]: ...
 
     #
     @overload
@@ -449,6 +485,16 @@ class ZerosPolesGainDiscrete(
     def __init__(self, system: ZerosPolesGain[_ZerosT_co, _PolesT_co, _DTT_co], /) -> None: ...
     @overload
     def __init__(
+        self: ZerosPolesGainDiscrete[np.float64, np.float64, _DTT],
+        zeros: onp.ToArray1D[float, npc.integer | npc.floating64] | onp.ToArray2D[float, npc.integer | npc.floating64],
+        poles: onp.ToArray1D[float, npc.integer | npc.floating64],
+        gain: onp.ToFloat,
+        /,
+        *,
+        dt: _DTT = ...,
+    ) -> None: ...
+    @overload
+    def __init__(
         self: ZerosPolesGainDiscrete[_Float, _Float, _DTT],
         zeros: _ToFloat12D,
         poles: onp.ToFloat1D,
@@ -459,7 +505,17 @@ class ZerosPolesGainDiscrete(
     ) -> None: ...
     @overload
     def __init__(
-        self: ZerosPolesGainDiscrete[_Inexact, _Float, _DTT],
+        self: ZerosPolesGainDiscrete[np.complex128, np.float64, _DTT],
+        zeros: onp.ToJustComplex128_1D | onp.ToJustComplex128_2D,
+        poles: onp.ToArray1D[float, npc.integer | npc.floating64],
+        gain: onp.ToFloat,
+        /,
+        *,
+        dt: _DTT = ...,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: ZerosPolesGainDiscrete[Any, _Float, _DTT],
         zeros: _ToComplex12D,
         poles: onp.ToFloat1D,
         gain: onp.ToFloat,
