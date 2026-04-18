@@ -114,8 +114,14 @@ _to_ss_disc_c128: tuple[
 # TransferFunction
 assert_type(TransferFunction(_tf_cont_f32), TransferFunctionContinuous[np.float32])  # type: ignore[assert-type]
 assert_type(TransferFunction(_tf_disc_f32), TransferFunctionDiscrete[np.float32, float])  # type: ignore[assert-type]
-assert_type(TransferFunction(_f64_1d, _f64_1d), TransferFunctionContinuous[np.float32 | np.float64])  # type: ignore[assert-type]
-assert_type(TransferFunction(_f64_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[np.float32 | np.float64, float])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f32_1d, _f32_1d), TransferFunctionContinuous[np.float32])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f32_1d, _f64_1d), TransferFunctionContinuous[np.float64])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f64_1d, _f32_1d), TransferFunctionContinuous[np.float64])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f64_1d, _f64_1d), TransferFunctionContinuous[np.float64])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f32_1d, _f32_1d, dt=0.1), TransferFunctionDiscrete[np.float32, float])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f32_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f64_1d, _f32_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f64_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])  # type: ignore[assert-type]
 
 # ZerosPolesGain
 assert_type(ZerosPolesGain(_zpk_cont_f32), ZerosPolesGainContinuous[np.float32, np.float32])  # type: ignore[assert-type]
