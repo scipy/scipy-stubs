@@ -60,7 +60,10 @@ _ToFloatStrict2D: TypeAlias = onp.ToArrayStrict2D[float, npc.floating]
 _ToFloatStrict3D: TypeAlias = onp.ToArrayStrict3D[float, npc.floating]
 _ToFloatND: TypeAlias = onp.ToArrayND[float, npc.floating]
 
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+# workaround for https://github.com/microsoft/pyright/issues/10232
+_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
+# workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
+_WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
 
 @type_check_only
 class rng_mixin:
@@ -763,7 +766,7 @@ class multinomial_gen(multi_rv_generic):
         self, /, n: _ToIntStrict2D, p: _ToFloatStrict1D | _ToFloatStrict2D | _ToFloatStrict3D
     ) -> onp.Array3D[np.float64]: ...
     @overload  # ?d, ?d -> ?d  (fallback)
-    def mean(self, /, n: int | _ToIntND, p: _ToFloatND) -> onp.ArrayND[np.float64]: ...
+    def mean(self, /, n: int | _ToIntND, p: _ToFloatND) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
 
     #
     @overload  # n: 0d, p: ?d -> ?d  (pyright workaround)
