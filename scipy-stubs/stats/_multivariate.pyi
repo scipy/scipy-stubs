@@ -1,3 +1,6 @@
+# there are `overload-overlap` false positivies on `numpy<2.1` that can't selectively be ignored or worked around
+# mypy: disable-error-code=overload-overlap
+
 import types
 from typing import Any, ClassVar, Final, Generic, Literal, Never, SupportsIndex, TypeAlias, overload, type_check_only
 from typing_extensions import TypeVar, override
