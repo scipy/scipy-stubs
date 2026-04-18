@@ -1,34 +1,102 @@
-from typing import TypeAlias, overload
+from typing import overload
 
 import numpy as np
 import optype.numpy as onp
-
-_Float: TypeAlias = np.float32 | np.float64
-_Complex: TypeAlias = np.complex64 | np.complex128
-
-_ToFloat: TypeAlias = float | _Float
-
-_FloatND: TypeAlias = onp.ArrayND[_Float]
-_ComplexND: TypeAlias = onp.ArrayND[_Complex]
-_InexactND: TypeAlias = onp.ArrayND[_Float | _Complex]
+import optype.numpy.compat as npc
 
 ###
 
-@overload
-def sepfir2d(input: _FloatND, hrow: _FloatND, hcol: _FloatND) -> _FloatND: ...
-@overload
-def sepfir2d(input: _ComplexND, hrow: _ComplexND, hcol: _ComplexND) -> _ComplexND: ...
-@overload
-def sepfir2d(input: _InexactND, hrow: _InexactND, hcol: _InexactND) -> _InexactND: ...
+@overload  # f64
+def sepfir2d(
+    input: onp.Array2D[npc.floating64 | npc.integer],
+    hrow: onp.Array1D[npc.floating | npc.integer],
+    hcol: onp.Array1D[npc.floating | npc.integer],
+) -> onp.Array2D[np.float64]: ...
+@overload  # f32
+def sepfir2d(
+    input: onp.Array2D[npc.floating32 | npc.floating16],
+    hrow: onp.Array1D[npc.floating32 | npc.floating16],
+    hcol: onp.Array1D[npc.floating32 | npc.floating16],
+) -> onp.Array2D[np.float32]: ...
+@overload  # c128
+def sepfir2d(
+    input: onp.Array2D[npc.complexfloating128], hrow: onp.Array1D[npc.number], hcol: onp.Array1D[npc.number]
+) -> onp.Array2D[np.complex128]: ...
+@overload  # c64
+def sepfir2d(
+    input: onp.Array2D[npc.complexfloating64],
+    hrow: onp.Array1D[npc.inexact32 | np.float16],
+    hcol: onp.Array1D[npc.inexact32 | np.float16],
+) -> onp.Array2D[np.complex64]: ...
+@overload  # fallback
+def sepfir2d(input: onp.Array2D[npc.number], hrow: onp.Array1D[npc.number], hcol: onp.Array1D[npc.number]) -> onp.Array2D: ...
 
-#
+# undocumented
 @overload
-def symiirorder1_ic(signal: _FloatND, c0: _ToFloat, z1: _ToFloat, precision: _ToFloat) -> _FloatND: ...
+def symiirorder1_ic(
+    input: onp.ArrayND[npc.floating64 | npc.integer, tuple[int] | tuple[int, int]], z1: float, precision: float = -1.0, /
+) -> onp.Array2D[np.float64]: ...
 @overload
-def symiirorder1_ic(signal: _ComplexND, c0: _ToFloat, z1: _ToFloat, precision: _ToFloat) -> _ComplexND: ...
+def symiirorder1_ic(
+    input: onp.ArrayND[npc.floating32 | npc.floating16, tuple[int] | tuple[int, int]], z1: float, precision: float = -1.0, /
+) -> onp.Array2D[np.float32]: ...
 @overload
-def symiirorder1_ic(signal: _InexactND, c0: _ToFloat, z1: _ToFloat, precision: _ToFloat) -> _InexactND: ...
+def symiirorder1_ic(
+    input: onp.ArrayND[npc.complexfloating128, tuple[int] | tuple[int, int]], z1: float, precision: float = -1.0, /
+) -> onp.Array2D[np.complex128]: ...
+@overload
+def symiirorder1_ic(
+    input: onp.ArrayND[npc.complexfloating64, tuple[int] | tuple[int, int]], z1: float, precision: float = -1.0, /
+) -> onp.Array2D[np.complex64]: ...
 
-#
-def symiirorder2_ic_fwd(signal: _FloatND, r: _ToFloat, omega: _ToFloat, precision: _ToFloat) -> _FloatND: ...
-def symiirorder2_ic_bwd(signal: _FloatND, r: _ToFloat, omega: _ToFloat, precision: _ToFloat) -> _FloatND: ...
+# undocumented
+@overload
+def symiirorder2_ic_fwd(
+    input: onp.ArrayND[npc.floating64 | npc.integer, tuple[int] | tuple[int, int]],
+    r: float,
+    omega: float,
+    precision: float = -1.0,
+    /,
+) -> onp.Array2D[np.float64]: ...
+@overload
+def symiirorder2_ic_fwd(
+    input: onp.ArrayND[npc.floating32 | npc.floating16, tuple[int] | tuple[int, int]],
+    r: float,
+    omega: float,
+    precision: float = -1.0,
+    /,
+) -> onp.Array2D[np.float32]: ...
+@overload
+def symiirorder2_ic_fwd(
+    input: onp.ArrayND[npc.complexfloating128, tuple[int] | tuple[int, int]], r: float, omega: float, precision: float = -1.0, /
+) -> onp.Array2D[np.complex128]: ...
+@overload
+def symiirorder2_ic_fwd(
+    input: onp.ArrayND[npc.complexfloating64, tuple[int] | tuple[int, int]], r: float, omega: float, precision: float = -1.0, /
+) -> onp.Array2D[np.complex64]: ...
+
+# undocumented
+@overload
+def symiirorder2_ic_bwd(
+    input: onp.ArrayND[npc.floating64 | npc.integer, tuple[int] | tuple[int, int]],
+    r: float,
+    omega: float,
+    precision: float = -1.0,
+    /,
+) -> onp.Array2D[np.float64]: ...
+@overload
+def symiirorder2_ic_bwd(
+    input: onp.ArrayND[npc.floating32 | npc.floating16, tuple[int] | tuple[int, int]],
+    r: float,
+    omega: float,
+    precision: float = -1.0,
+    /,
+) -> onp.Array2D[np.float32]: ...
+@overload
+def symiirorder2_ic_bwd(
+    input: onp.ArrayND[npc.complexfloating128, tuple[int] | tuple[int, int]], r: float, omega: float, precision: float = -1.0, /
+) -> onp.Array2D[np.complex128]: ...
+@overload
+def symiirorder2_ic_bwd(
+    input: onp.ArrayND[npc.complexfloating64, tuple[int] | tuple[int, int]], r: float, omega: float, precision: float = -1.0, /
+) -> onp.Array2D[np.complex64]: ...
