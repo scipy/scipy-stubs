@@ -294,12 +294,7 @@ class matrix_normal_gen(multi_rv_generic):
     ) -> _Array2ND[np.float64]: ...
 
     #
-    def entropy(
-        self,
-        /,
-        rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
-        colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
-    ) -> np.float64: ...
+    def entropy(self, /, rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1, colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1) -> np.float64: ...
 
 class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen], Generic[_M, _N]):
     # pyrefly: ignore [bad-override]
@@ -641,8 +636,6 @@ class _group_rv_gen_mixin(Generic[_RVF_co, _ScalarT_co]):
 
 @type_check_only
 class _group_rv_frozen_mixin(Generic[_ScalarT_co]):
-    __class_getitem__: ClassVar[None] = None
-
     dim: Final[int]
 
     # NOTE: Contrary to what the `dim` default suggests, it is required.
@@ -655,10 +648,13 @@ class _group_rv_frozen_mixin(Generic[_ScalarT_co]):
     def rvs(self, /, size: int, random_state: onp.random.ToRNG | None = None) -> _Array2ND[_ScalarT_co]: ...
 
 class special_ortho_group_gen(_group_rv_gen_mixin[special_ortho_group_frozen], multi_rv_generic): ...
+# pyrefly: ignore [inconsistent-inheritance]
 class special_ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[special_ortho_group_gen]): ...  # type: ignore[misc]
 class ortho_group_gen(_group_rv_gen_mixin[ortho_group_frozen], multi_rv_generic): ...
+# pyrefly: ignore [inconsistent-inheritance]
 class ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[ortho_group_gen]): ...  # type: ignore[misc]
 class unitary_group_gen(_group_rv_gen_mixin[unitary_group_frozen, np.complex128], multi_rv_generic): ...
+# pyrefly: ignore [inconsistent-inheritance]
 class unitary_group_frozen(_group_rv_frozen_mixin[np.complex128], multi_rv_frozen[unitary_group_gen]): ...  # type: ignore[misc]
 
 class uniform_direction_gen(multi_rv_generic):
