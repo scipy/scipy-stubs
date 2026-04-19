@@ -119,7 +119,7 @@ class multivariate_normal_gen(multi_rv_generic):
     @overload
     def logpdf(
         self, /, x: onp.ToFloatND, mean: onp.ToFloat | None = None, cov: _AnyCov = 1, allow_singular: bool = False
-    ) -> onp.ArrayND[np.float64]: ...
+    ) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
     @overload
     def logpdf(
         self,
@@ -163,7 +163,7 @@ class multivariate_normal_gen(multi_rv_generic):
     @overload
     def pdf(
         self, /, x: onp.ToFloatND, mean: onp.ToFloat | None = None, cov: _AnyCov = 1, allow_singular: bool = False
-    ) -> onp.ArrayND[np.float64]: ...
+    ) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
     @overload
     def pdf(
         self,
@@ -235,7 +235,7 @@ class multivariate_normal_gen(multi_rv_generic):
         *,
         lower_limit: onp.ToFloat | onp.ToFloatND | None = None,
         rng: onp.random.ToRNG | None = None,
-    ) -> onp.ArrayND[np.float64]: ...
+    ) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
     @overload
     def logcdf(
         self,
@@ -357,7 +357,7 @@ class multivariate_normal_gen(multi_rv_generic):
         *,
         lower_limit: onp.ToFloat | onp.ToFloatND | None = None,
         rng: onp.random.ToRNG | None = None,
-    ) -> onp.ArrayND[np.float64]: ...
+    ) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
     @overload
     def cdf(
         self,
@@ -559,7 +559,9 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Gener
         self: multivariate_normal_frozen[tuple[()]], /, x: onp.ArrayND[npc.floating | npc.integer, _ShapeT]
     ) -> onp.ArrayND[np.float64, _ShapeT]: ...
     @overload
-    def logpdf(self: multivariate_normal_frozen[tuple[()]], /, x: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
+    def logpdf(
+        self: multivariate_normal_frozen[tuple[()]], /, x: onp.ToFloatND
+    ) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
     @overload
     def logpdf(
         self: multivariate_normal_frozen[tuple[int]], /, x: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
@@ -581,7 +583,9 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Gener
         self: multivariate_normal_frozen[tuple[()]], /, x: onp.ArrayND[npc.floating | npc.integer, _ShapeT]
     ) -> onp.ArrayND[np.float64, _ShapeT]: ...
     @overload
-    def pdf(self: multivariate_normal_frozen[tuple[()]], /, x: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
+    def pdf(
+        self: multivariate_normal_frozen[tuple[()]], /, x: onp.ToFloatND
+    ) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
     @overload
     def pdf(
         self: multivariate_normal_frozen[tuple[int]], /, x: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
@@ -617,7 +621,7 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Gener
         *,
         lower_limit: onp.ToFloat | onp.ToFloatND | None = None,
         rng: onp.random.ToRNG | None = None,
-    ) -> onp.ArrayND[np.float64]: ...
+    ) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
     @overload
     def logcdf(
         self: multivariate_normal_frozen[tuple[int]],
@@ -686,7 +690,7 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Gener
         *,
         lower_limit: onp.ToFloat | onp.ToFloatND | None = None,
         rng: onp.random.ToRNG | None = None,
-    ) -> onp.ArrayND[np.float64]: ...
+    ) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
     @overload
     def cdf(
         self: multivariate_normal_frozen[tuple[int]],
