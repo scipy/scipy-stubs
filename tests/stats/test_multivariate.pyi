@@ -35,12 +35,89 @@ _f_2d: list[list[float]] | onp.Array2D[np.float64]
 _f_3d: list[list[list[float]]] | onp.Array3D[np.float64]
 _f_nd: onp.ArrayND[np.float64]
 
+_f64_1d: onp.Array1D[np.float64]
+_f64_2d: onp.Array2D[np.float64]
+_f64_nd: onp.ArrayND[np.float64]
+
 ###
 
 # multivariate_normal
 
-assert_type(multivariate_normal.rvs().dtype, np.dtype[np.float64])
-assert_type(multivariate_normal().rvs().dtype, np.dtype[np.float64])
+assert_type(multivariate_normal.logpdf(1.0), np.float64)
+assert_type(multivariate_normal.logpdf(_f64_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.logpdf(_f64_2d), onp.Array2D[np.float64])
+assert_type(multivariate_normal.logpdf(_f64_nd), onp.ArrayND[np.float64])
+assert_type(multivariate_normal.logpdf(1.0, _f_1d), np.float64)
+assert_type(multivariate_normal.logpdf(_f_1d, _f_1d), np.float64)
+assert_type(multivariate_normal.logpdf(_f_2d, _f_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.logpdf(_f_3d, _f_1d), onp.Array2D[np.float64])
+assert_type(multivariate_normal.logpdf(_f_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_normal().logpdf(1.0), np.float64)
+assert_type(multivariate_normal().logpdf(_f64_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal().logpdf(_f64_2d), onp.Array2D[np.float64])
+assert_type(multivariate_normal().logpdf(_f64_nd), onp.ArrayND[np.float64])
+assert_type(multivariate_normal(_f_1d).logpdf(1.0), np.float64)
+assert_type(multivariate_normal(_f_1d).logpdf(_f_1d), np.float64)
+assert_type(multivariate_normal(_f_1d).logpdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal(_f_1d).logpdf(_f_3d), onp.Array2D[np.float64])
+assert_type(multivariate_normal(_f_1d).logpdf(_f_nd), np.float64 | onp.ArrayND[np.float64])
+
+assert_type(multivariate_normal.pdf(1.0), np.float64)
+assert_type(multivariate_normal.pdf(_f64_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.pdf(_f64_2d), onp.Array2D[np.float64])
+assert_type(multivariate_normal.pdf(_f64_nd), onp.ArrayND[np.float64])
+assert_type(multivariate_normal.pdf(1.0, _f_1d), np.float64)
+assert_type(multivariate_normal.pdf(_f_1d, _f_1d), np.float64)
+assert_type(multivariate_normal.pdf(_f_2d, _f_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.pdf(_f_3d, _f_1d), onp.Array2D[np.float64])
+assert_type(multivariate_normal.pdf(_f_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_normal().pdf(1.0), np.float64)
+assert_type(multivariate_normal().pdf(_f64_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal().pdf(_f64_2d), onp.Array2D[np.float64])
+assert_type(multivariate_normal().pdf(_f64_nd), onp.ArrayND[np.float64])
+assert_type(multivariate_normal(_f_1d).pdf(1.0), np.float64)
+assert_type(multivariate_normal(_f_1d).pdf(_f_1d), np.float64)
+assert_type(multivariate_normal(_f_1d).pdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal(_f_1d).pdf(_f_3d), onp.Array2D[np.float64])
+assert_type(multivariate_normal(_f_1d).pdf(_f_nd), np.float64 | onp.ArrayND[np.float64])
+
+assert_type(multivariate_normal.logcdf(1.0), np.float64)
+assert_type(multivariate_normal.logcdf(_f64_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.logcdf(_f64_2d), onp.Array2D[np.float64])
+assert_type(multivariate_normal.logcdf(_f64_nd), onp.ArrayND[np.float64])
+assert_type(multivariate_normal.logcdf(1.0, _f_1d), np.float64)
+assert_type(multivariate_normal.logcdf(_f_1d, _f_1d), np.float64)
+assert_type(multivariate_normal.logcdf(_f_2d, _f_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.logcdf(_f_3d, _f_1d), onp.Array2D[np.float64])
+assert_type(multivariate_normal.logcdf(_f_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_normal().logcdf(1.0), np.float64)
+assert_type(multivariate_normal().logcdf(_f64_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal().logcdf(_f64_2d), onp.Array2D[np.float64])
+assert_type(multivariate_normal().logcdf(_f64_nd), onp.ArrayND[np.float64])
+assert_type(multivariate_normal(_f_1d).logcdf(1.0), np.float64)
+assert_type(multivariate_normal(_f_1d).logcdf(_f_1d), np.float64)
+assert_type(multivariate_normal(_f_1d).logcdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal(_f_1d).logcdf(_f_3d), onp.Array2D[np.float64])
+assert_type(multivariate_normal(_f_1d).logcdf(_f_nd), np.float64 | onp.ArrayND[np.float64])
+
+assert_type(multivariate_normal.cdf(1.0), np.float64)
+assert_type(multivariate_normal.cdf(_f64_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.cdf(_f64_2d), onp.Array2D[np.float64])
+assert_type(multivariate_normal.cdf(_f64_nd), onp.ArrayND[np.float64])
+assert_type(multivariate_normal.cdf(1.0, _f_1d), np.float64)
+assert_type(multivariate_normal.cdf(_f_1d, _f_1d), np.float64)
+assert_type(multivariate_normal.cdf(_f_2d, _f_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.cdf(_f_3d, _f_1d), onp.Array2D[np.float64])
+assert_type(multivariate_normal.cdf(_f_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_normal().cdf(1.0), np.float64)
+assert_type(multivariate_normal().cdf(_f64_1d), onp.Array1D[np.float64])
+assert_type(multivariate_normal().cdf(_f64_2d), onp.Array2D[np.float64])
+assert_type(multivariate_normal().cdf(_f64_nd), onp.ArrayND[np.float64])
+assert_type(multivariate_normal(_f_1d).cdf(1.0), np.float64)
+assert_type(multivariate_normal(_f_1d).cdf(_f_1d), np.float64)
+assert_type(multivariate_normal(_f_1d).cdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal(_f_1d).cdf(_f_3d), onp.Array2D[np.float64])
+assert_type(multivariate_normal(_f_1d).cdf(_f_nd), np.float64 | onp.ArrayND[np.float64])
 
 # matrix_normal
 
