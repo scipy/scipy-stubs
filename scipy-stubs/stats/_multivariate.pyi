@@ -234,8 +234,8 @@ class matrix_normal_gen(multi_rv_generic):
         self,
         /,
         mean: onp.ToFloat2D | None = None,
-        rowcov: onp.ToFloat2D | onp.ToFloat = 1,
-        colcov: onp.ToFloat2D | onp.ToFloat = 1,
+        rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
+        colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
         seed: onp.random.ToRNG | None = None,
     ) -> matrix_normal_frozen: ...
 
@@ -245,16 +245,16 @@ class matrix_normal_gen(multi_rv_generic):
         /,
         X: onp.ToFloatND,
         mean: onp.ToFloat2D | None = None,
-        rowcov: onp.ToFloat2D | onp.ToFloat = 1,
-        colcov: onp.ToFloat2D | onp.ToFloat = 1,
+        rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
+        colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
     ) -> _ScalarOrArray_f8: ...
     def pdf(
         self,
         /,
         X: onp.ToFloatND,
         mean: onp.ToFloat2D | None = None,
-        rowcov: onp.ToFloat2D | onp.ToFloat = 1,
-        colcov: onp.ToFloat2D | onp.ToFloat = 1,
+        rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
+        colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
     ) -> _ScalarOrArray_f8: ...
 
     # If `size > 1` the output is 3-D, otherwise 2-D.
@@ -263,8 +263,8 @@ class matrix_normal_gen(multi_rv_generic):
         self,
         /,
         mean: onp.ToFloat2D | None = None,
-        rowcov: onp.ToFloat2D | onp.ToFloat = 1,
-        colcov: onp.ToFloat2D | onp.ToFloat = 1,
+        rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
+        colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
         size: Literal[1] = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> onp.Array2D[np.float64]: ...
@@ -273,8 +273,8 @@ class matrix_normal_gen(multi_rv_generic):
         self,
         /,
         mean: onp.ToFloat2D | None,
-        rowcov: onp.ToFloat2D | onp.ToFloat,
-        colcov: onp.ToFloat2D | onp.ToFloat,
+        rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D,
+        colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D,
         size: int,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array2ND[np.float64]: ...
@@ -283,15 +283,20 @@ class matrix_normal_gen(multi_rv_generic):
         self,
         /,
         mean: onp.ToFloat2D | None = None,
-        rowcov: onp.ToFloat2D | onp.ToFloat = 1,
-        colcov: onp.ToFloat2D | onp.ToFloat = 1,
+        rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
+        colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
         *,
         size: int,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array2ND[np.float64]: ...
 
     #
-    def entropy(self, /, rowcov: _AnyCov = 1, colcov: _AnyCov = 1) -> np.float64: ...
+    def entropy(
+        self,
+        /,
+        rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
+        colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
+    ) -> np.float64: ...
 
 class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen]):
     # pyrefly: ignore [bad-override]
@@ -304,8 +309,8 @@ class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen]):
         self,
         /,
         mean: onp.ToFloat2D | None = None,
-        rowcov: onp.ToFloat2D | onp.ToFloat = 1,
-        colcov: onp.ToFloat2D | onp.ToFloat = 1,
+        rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
+        colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
     def logpdf(self, /, X: onp.ToFloatND) -> _ScalarOrArray_f8: ...
