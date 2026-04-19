@@ -10,6 +10,12 @@ from typing import Final
 
 _SCIPY: Final = "scipy"
 _IGNORED_SUFFIXES: Final = {"__class__"}
+_IGNORED_QUALNAMES: Final = {
+    # `scipy.stats.chi2_contingency` is a re-export of
+    # `scipy.stats.contingency.chi2_contingency`, which is already tested in
+    # `tests/stats/test_contingency.pyi`.
+    "scipy.stats.chi2_contingency"
+}
 
 _PACKAGES_PUBLIC: Final = (
     "cluster",
@@ -225,6 +231,8 @@ def _parse_scipy_imports(tree: ast.AST) -> dict[str, str]:
 
 def _should_ignore(qualname: str) -> bool:
     """Check if a qualified name should be ignored (private or bare package)."""
+    if qualname in _IGNORED_QUALNAMES:
+        return True  # explicitly ignored public re-exports
     if qualname.endswith(("Warning", "Error")):
         return True  # exceptions
     parts = qualname.split(".")
