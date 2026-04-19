@@ -292,10 +292,7 @@ class matrix_normal_gen(multi_rv_generic):
 
     #
     def entropy(
-        self,
-        /,
-        rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
-        colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1,
+        self, /, rowcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1, colcov: onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D = 1
     ) -> np.float64: ...
 
 class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen]):
