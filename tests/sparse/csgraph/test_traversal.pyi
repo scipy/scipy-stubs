@@ -5,7 +5,7 @@ import numpy as np
 import optype.numpy as onp
 
 import scipy.sparse as sparse
-from ._types import ScalarType, csr_arr
+from .._types import ScalarType, csr_arr
 from scipy.sparse.csgraph import breadth_first_order, breadth_first_tree, depth_first_order, depth_first_tree
 
 assert_type(breadth_first_order(csr_arr, 0, return_predecessors=True), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])

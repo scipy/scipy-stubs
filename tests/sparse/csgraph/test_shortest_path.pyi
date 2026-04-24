@@ -5,7 +5,7 @@ import numpy as np
 import optype.numpy as onp
 
 import scipy.sparse as sparse
-from ._types import ScalarType, csr_arr
+from .._types import ScalarType, csr_arr
 from scipy.sparse.csgraph import bellman_ford, dijkstra, floyd_warshall, minimum_spanning_tree, shortest_path
 
 assert_type(bellman_ford(csr_arr), onp.Array2D[np.float64])
