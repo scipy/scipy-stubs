@@ -1,4 +1,4 @@
-# Type tests for scipy.sparse.csgraph
+# Type tests for scipy.sparse.csgraph._traversal
 from typing import assert_type
 
 import numpy as np
