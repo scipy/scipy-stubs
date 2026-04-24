@@ -3,7 +3,7 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
-from tests.sparse._types import ScalarType, csr_arr
+from sparse._types import ScalarType, csr_arr
 
 import scipy.sparse as sparse
 from scipy.sparse.csgraph import breadth_first_order, breadth_first_tree, depth_first_order, depth_first_tree
