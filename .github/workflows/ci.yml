@@ -3,8 +3,14 @@ permissions: read-all
 
 on:
   pull_request:
+    paths:
+      - '**/*.py'
+      - '**/*.pyi'
   push:
     branches: [master]
+    paths:
+      - '**/*.py'
+      - '**/*.pyi'
   workflow_dispatch:
 
 concurrency:
@@ -16,30 +22,6 @@ env:
 # UV_LOCKED: 1  # TODO(@jorenham): re-enable after restoring `UV_PRERELEASE`
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    permissions:
-      pull-requests: read
-    outputs:
-      typecheck: ${{ steps.filter.outputs.typecheck }}
-      stubtest: ${{ steps.filter.outputs.stubtest }}
-    steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd  # v6.0.2
-
-      - name: detect changes
-        id: filter
-        uses: dorny/paths-filter@fbd0ab8f3e69293af611ebaee6363fc25e6d187d  # v4.0.1
-        with:
-          filters: |
-            typecheck:
-              - '**/*.py'
-              - '**/*.pyi'
-            stubtest:
-              - 'scipy-stubs/**/*.pyi'
-              - '.mypyignore'
-              - 'uv.lock'
-              - 'pyproject.toml'
-
   lint:
     runs-on: ubuntu-latest
     timeout-minutes: 2
@@ -97,8 +79,6 @@ jobs:
         run: uv run stubdefaulter --check --exit-zero --packages .
 
   typecheck:
-    needs: changes
-    if: ${{ needs.changes.outputs.typecheck == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -135,13 +115,7 @@ jobs:
       - name: mypy scipy-stubs
         run: mypy --no-incremental --cache-dir=/dev/null scipy-stubs
 
-      - name: stubtest scipy
-        if: ${{ needs.changes.outputs.stubtest == 'true' }}
-        run: stubtest --ignore-disjoint-bases --allowlist=.mypyignore scipy
-
   typetest:
-    needs: changes
-    if: ${{ needs.changes.outputs.typecheck == 'true' }}
     runs-on: ubuntu-latest
     timeout-minutes: 5
 

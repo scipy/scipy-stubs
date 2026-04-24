@@ -1,0 +1,52 @@
+name: Stubtest
+permissions: read-all
+
+on:
+  pull_request:
+    paths:
+      - 'scipy-stubs/**/*.pyi'
+      - '.mypyignore'
+      - 'uv.lock'
+      - 'pyproject.toml'
+  push:
+    branches: [master]
+    paths:
+      - 'scipy-stubs/**/*.pyi'
+      - '.mypyignore'
+      - 'uv.lock'
+      - 'pyproject.toml'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  UV_PRERELEASE: allow # TODO(@jorenham): remove once scipy 1.17.0 is released
+# UV_LOCKED: 1  # TODO(@jorenham): re-enable after restoring `UV_PRERELEASE`
+
+jobs:
+  stubtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    strategy:
+      fail-fast: false
+      matrix:
+        py: ["3.11"]
+        np: ["1.26", "2.0", "2.1", "2.2", "2.3", "2.4"]
+
+    steps:
+      - uses: actions/checkout@v6.0.2
+
+      - name: setup uv
+        uses: astral-sh/setup-uv@v8.0.0
+        with:
+          activate-environment: true
+          python-version: ${{ matrix.py }}
+
+      - name: install dependencies
+        run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
+
+      - name: stubtest scipy
+        run: stubtest --ignore-disjoint-bases --allowlist=.mypyignore scipy
