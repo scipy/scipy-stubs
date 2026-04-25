@@ -1,12 +1,14 @@
 # Type tests for scipy.sparse.csgraph._traversal
-from typing import assert_type
+from typing import TypeAlias, assert_type
 
 import numpy as np
 import optype.numpy as onp
-from sparse._types import ScalarType, csr_arr
 
 import scipy.sparse as sparse
 from scipy.sparse.csgraph import breadth_first_order, breadth_first_tree, depth_first_order, depth_first_tree
+
+ScalarType: TypeAlias = np.float32
+csr_arr: sparse.csr_array[ScalarType, tuple[int, int]]
 
 assert_type(breadth_first_order(csr_arr, 0, return_predecessors=True), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
 
