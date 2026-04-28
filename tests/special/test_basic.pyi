@@ -13,8 +13,8 @@ from scipy.special import (
     bi_zeros,
     comb,
     digamma,
-    euler,
     erf_zeros,
+    euler,
     factorial,
     factorial2,
     factorialk,
@@ -112,13 +112,7 @@ assert_type(zeta(c_arr), onp.ArrayND[np.complex128])
 
 # ai_zeros
 assert_type(
-    ai_zeros(5),
-    tuple[
-        onp.Array1D[np.float64],
-        onp.Array1D[np.float64],
-        onp.Array1D[np.float64],
-        onp.Array1D[np.float64],
-    ],
+    ai_zeros(5), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64]]
 )
 
 # bei_zeros
@@ -139,13 +133,7 @@ assert_type(berp_zeros(5), onp.Array1D[np.float64])
 
 # bi_zeros
 assert_type(
-    bi_zeros(5),
-    tuple[
-        onp.Array1D[np.float64],
-        onp.Array1D[np.float64],
-        onp.Array1D[np.float64],
-        onp.Array1D[np.float64],
-    ],
+    bi_zeros(5), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64]]
 )
 
 # erf_zeros
