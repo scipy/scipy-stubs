@@ -14,7 +14,9 @@ _IGNORED_QUALNAMES: Final = {
     # `scipy.stats.chi2_contingency` is a re-export of
     # `scipy.stats.contingency.chi2_contingency`, which is already tested in
     # `tests/stats/test_contingency.pyi`.
-    "scipy.stats.chi2_contingency"
+    "scipy.stats.chi2_contingency",
+    # `scipy.special.digamma` is an alias of `scipy.special.psi`.
+    "scipy.special.digamma",
 }
 
 _PACKAGES_PUBLIC: Final = (
