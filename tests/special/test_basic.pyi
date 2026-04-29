@@ -12,7 +12,6 @@ from scipy.special import (
     berp_zeros,
     bi_zeros,
     comb,
-    digamma,
     erf_zeros,
     euler,
     factorial,
@@ -97,10 +96,6 @@ assert_type(stirling2(i_arr, 2), onp.ArrayND[np.float64])
 assert_type(polygamma(1, 1.0), np.float64)
 assert_type(polygamma(1, f_arr), onp.ArrayND[np.float64])
 assert_type(polygamma(i_arr, 1.0), onp.ArrayND[np.float64])
-
-# digamma
-assert_type(digamma(1.0), np.float64)
-assert_type(digamma(f_arr), onp.ArrayND[np.float64])
 
 # zeta
 assert_type(zeta(2.0), np.float64)
