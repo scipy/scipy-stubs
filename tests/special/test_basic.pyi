@@ -69,7 +69,7 @@ f64_1d: onp.Array1D[np.float64]
 f64_2d: onp.Array2D[np.float64]
 i_arr: onp.ArrayND[np.intp]
 c_arr: onp.ArrayND[np.complex128]
-where: onp.ArrayND[np.bool_]
+bool_nd: onp.ArrayND[np.bool_]
 
 # sinc
 assert_type(sinc(np.float32(1.0)), np.float32)
@@ -343,7 +343,7 @@ assert_type(softplus(1.0), np.float64)
 assert_type(softplus(1, out=None), np.float64)
 assert_type(softplus(np.float32(1.0)), np.float32)
 assert_type(softplus(np.float32(1.0), dtype=np.float32), np.float32)
-assert_type(softplus(1.0, where=where), np.float64)
+assert_type(softplus(1.0, where=bool_nd), np.float64)
 assert_type(softplus(i_arr, out=None), onp.ArrayND[np.float32 | np.float64])
 assert_type(softplus(f32_1d), onp.Array1D[np.float32])
 assert_type(softplus(f64_1d), onp.Array1D[np.float64])
