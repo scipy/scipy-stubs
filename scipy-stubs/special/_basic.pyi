@@ -509,7 +509,7 @@ def softplus(
 ) -> _f8_nd: ...
 @overload
 def softplus(
-    x: onp.CanArrayND[_SCT_f, _ShapeT], *, out: None = None, dtype: onp.ToDType[_SCT_f] | None = None, **kwds: Unpack[_KwBase]
+    x: onp.ArrayND[_SCT_f, _ShapeT], *, out: None = None, dtype: onp.ToDType[_SCT_f] | None = None, **kwds: Unpack[_KwBase]
 ) -> onp.ArrayND[_SCT_f, _ShapeT]: ...
 @overload
 def softplus(
