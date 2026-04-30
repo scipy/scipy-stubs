@@ -64,12 +64,12 @@ from scipy.special import (
 )
 
 f_arr: onp.ArrayND[np.float64]
-f32_arr: onp.ArrayND[np.float32]
+f32_1d: onp.Array1D[np.float32]
 f64_1d: onp.Array1D[np.float64]
 f64_2d: onp.Array2D[np.float64]
 i_arr: onp.ArrayND[np.intp]
 c_arr: onp.ArrayND[np.complex128]
-where: onp.ArrayND[np.bool]
+where: onp.ArrayND[np.bool_]
 
 # sinc
 assert_type(sinc(np.float32(1.0)), np.float32)
@@ -345,8 +345,8 @@ assert_type(softplus(np.float32(1.0)), np.float32)
 assert_type(softplus(np.float32(1.0), dtype=np.float32), np.float32)
 assert_type(softplus(1.0, where=where), np.float64)
 assert_type(softplus(i_arr, out=None), onp.ArrayND[np.float32 | np.float64])
-assert_type(softplus(f32_arr), onp.ArrayND[np.float32])
+assert_type(softplus(f32_1d), onp.Array1D[np.float32])
 assert_type(softplus(f64_1d), onp.Array1D[np.float64])
 assert_type(softplus(f64_2d, dtype=np.float64), onp.Array2D[np.float64])
 assert_type(softplus(f_arr, out=f_arr), onp.ArrayND[np.float64])
-assert_type(softplus(f32_arr, out=f_arr), onp.ArrayND[np.float64])
+assert_type(softplus(f32_1d, out=f_arr), onp.ArrayND[np.float64])
