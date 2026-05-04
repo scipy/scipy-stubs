@@ -11,6 +11,7 @@ _Float32ND: TypeAlias = onp.ArrayND[np.float32]
 _Float64ND: TypeAlias = onp.ArrayND[np.float64]
 _Complex64ND: TypeAlias = onp.ArrayND[np.complex64]
 _Complex128ND: TypeAlias = onp.ArrayND[np.complex128]
+_ErrOption: TypeAlias = L["ignored", "warn", "raise"]
 
 _b1: np.bool_
 _i: npc.integer
@@ -34,6 +35,11 @@ _c16_nd: _Complex128ND
 # _UFunc
 assert_type(sp.cbrt.__name__, L["cbrt"])
 assert_type(sp.cbrt.identity, L[0])
+assert_type(sp.geterr()["singular"], _ErrOption)
+assert_type(sp.geterr()["underflow"], _ErrOption)
+assert_type(sp.seterr()["overflow"], _ErrOption)
+assert_type(sp.seterr(all="warn", singular="raise", underflow="raise")["singular"], _ErrOption)
+assert_type(sp.errstate(all="warn", singular="raise"), sp.errstate)
 
 # _UFunc11
 assert_type(sp.cbrt.nin, L[1])
