@@ -37,6 +37,7 @@ from scipy.special import (
     ker_zeros,
     kerp_zeros,
     kvp,
+    legendre_p,
     lmbda,
     lqmn,
     lqn,
@@ -357,3 +358,9 @@ assert_type(multigammaln(1.0, 2), np.float64)
 assert_type(multigammaln(1.0, np.uint8(2)), np.float64)
 assert_type(multigammaln(f_arr, 2), onp.ArrayND[np.float64])
 assert_type(multigammaln(f_arr, np.uint8(2)), onp.ArrayND[np.float64])
+
+# legendre_p
+assert_type(legendre_p(1, 1.0), onp.Array1D[np.float64])
+assert_type(legendre_p(1, np.float32(1.0)), onp.Array1D[np.float64])
+assert_type(legendre_p(1, 1.0, diff_n=True), onp.Array1D[np.float64])
+assert_type(legendre_p(1, 1.0, diff_n=1), onp.Array1D[np.float64])
