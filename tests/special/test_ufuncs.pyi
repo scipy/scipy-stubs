@@ -6,6 +6,7 @@ import optype.numpy.compat as npc
 from optype.test import assert_subtype
 
 import scipy.special as sp
+from scipy.special._ufuncs import _ErrDict
 
 _Float32ND: TypeAlias = onp.ArrayND[np.float32]
 _Float64ND: TypeAlias = onp.ArrayND[np.float64]
@@ -34,6 +35,9 @@ _c16_nd: _Complex128ND
 # _UFunc
 assert_type(sp.cbrt.__name__, L["cbrt"])
 assert_type(sp.cbrt.identity, L[0])
+assert_type(sp.geterr(), _ErrDict)
+assert_type(sp.seterr(), _ErrDict)
+assert_type(sp.seterr(all="warn", singular="raise", underflow="raise"), _ErrDict)
 
 # _UFunc11
 assert_type(sp.cbrt.nin, L[1])
