@@ -38,6 +38,7 @@ assert_type(sp.cbrt.identity, L[0])
 assert_type(sp.geterr(), _ErrDict)
 assert_type(sp.seterr(), _ErrDict)
 assert_type(sp.seterr(all="warn", singular="raise", underflow="raise"), _ErrDict)
+assert_type(sp.errstate(all="warn", singular="raise"), sp.errstate)
 
 # _UFunc11
 assert_type(sp.cbrt.nin, L[1])
