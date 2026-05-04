@@ -42,6 +42,7 @@ from scipy.special import (
     lqn,
     mathieu_even_coef,
     mathieu_odd_coef,
+    multigammaln,
     obl_cv_seq,
     pbdn_seq,
     pbdv_seq,
@@ -350,3 +351,9 @@ assert_type(softplus(f64_1d), onp.Array1D[np.float64])
 assert_type(softplus(f64_2d, dtype=np.float64), onp.Array2D[np.float64])
 assert_type(softplus(f_arr, out=f_arr), onp.ArrayND[np.float64])
 assert_type(softplus(f32_1d, out=f_arr), onp.ArrayND[np.float64])
+
+# multigammaln
+assert_type(multigammaln(1.0, 2), np.float64)
+assert_type(multigammaln(1.0, np.uint8(2)), np.float64)
+assert_type(multigammaln(f_arr, 2), onp.ArrayND[np.float64])
+assert_type(multigammaln(f_arr, np.uint8(2)), onp.ArrayND[np.float64])
