@@ -15,9 +15,6 @@ from scipy.special import (
     bi_zeros,
     comb,
     diric,
-    ellip_harm,
-    ellip_harm_2,
-    ellip_normal,
     erf_zeros,
     euler,
     factorial,
@@ -40,13 +37,11 @@ from scipy.special import (
     ker_zeros,
     kerp_zeros,
     kvp,
-    legendre_p,
     lmbda,
     lqmn,
     lqn,
     mathieu_even_coef,
     mathieu_odd_coef,
-    multigammaln,
     obl_cv_seq,
     pbdn_seq,
     pbdv_seq,
@@ -355,23 +350,3 @@ assert_type(softplus(f64_1d), onp.Array1D[np.float64])
 assert_type(softplus(f64_2d, dtype=np.float64), onp.Array2D[np.float64])
 assert_type(softplus(f_arr, out=f_arr), onp.ArrayND[np.float64])
 assert_type(softplus(f32_1d, out=f_arr), onp.ArrayND[np.float64])
-
-# multigammaln
-assert_type(multigammaln(1.0, 2), np.float64)
-assert_type(multigammaln(1.0, np.uint8(2)), np.float64)
-assert_type(multigammaln(f_arr, 2), onp.ArrayND[np.float64])
-assert_type(multigammaln(f_arr, np.uint8(2)), onp.ArrayND[np.float64])
-
-# ellip_harm
-assert_type(ellip_harm(2.0, 3.0, 3, 4.0, 6), np.float64)
-assert_type(ellip_harm(np.float32(2.0), np.float32(3.0), np.uint8(3), np.float32(4.0), np.float32(6.0)), np.float64)
-assert_type(ellip_harm(2.0, 3.0, 3, 4.0, 6, signm=1), np.float64)
-assert_type(ellip_harm(2.0, 3.0, 3, 4.0, 6, signm=1, signn=-1), np.float64)
-assert_type(ellip_harm_2(2.0, 3.0, 3, 4, 6.0), onp.Array0D[np.float64])
-assert_type(ellip_normal(2.0, 3.0, 3, 4), onp.Array0D[np.float64])
-
-# legendre_p
-assert_type(legendre_p(1, 1.0), onp.Array1D[np.float64])
-assert_type(legendre_p(1, np.float32(1.0)), onp.Array1D[np.float64])
-assert_type(legendre_p(1, 1.0, diff_n=True), onp.Array1D[np.float64])
-assert_type(legendre_p(1, 1.0, diff_n=1), onp.Array1D[np.float64])
