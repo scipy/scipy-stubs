@@ -208,7 +208,12 @@ class _minmax_mixin(Generic[_ScalarT_co, _ShapeT_co]):
     ) -> _ScalarT_co: ...
     @overload  # sparray, axis: int, out: None = ...
     def max(  # type: ignore[misc]
-        self: sparray, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False
+        self: sparray,  # zuban: ignore[misc]
+        /,
+        axis: onp.ToInt,
+        out: None = None,
+        *,
+        explicit: bool = False,
     ) -> coo_array[_ScalarT_co, tuple[int]]: ...
     @overload  # spmatrix, axis: int, out: None = ...
     def max(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> coo_matrix[_ScalarT_co]: ...  # type: ignore[misc]
@@ -221,7 +226,12 @@ class _minmax_mixin(Generic[_ScalarT_co, _ShapeT_co]):
     ) -> _ScalarT_co: ...
     @overload  # sparray, axis: int, out: None = ...
     def nanmax(  # type: ignore[misc]
-        self: sparray, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False
+        self: sparray,  # zuban: ignore[misc]
+        /,
+        axis: onp.ToInt,
+        out: None = None,
+        *,
+        explicit: bool = False,
     ) -> coo_array[_ScalarT_co, tuple[int]]: ...
     @overload  # spmatrix, axis: int, out: None = ...
     def nanmax(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> coo_matrix[_ScalarT_co]: ...  # type: ignore[misc]
@@ -234,7 +244,12 @@ class _minmax_mixin(Generic[_ScalarT_co, _ShapeT_co]):
     ) -> _ScalarT_co: ...
     @overload  # sparray, axis: int, out: None = ...
     def min(  # type: ignore[misc]
-        self: sparray, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False
+        self: sparray,  # zuban: ignore[misc]
+        /,
+        axis: onp.ToInt,
+        out: None = None,
+        *,
+        explicit: bool = False,
     ) -> coo_array[_ScalarT_co, tuple[int]]: ...
     @overload  # spmatrix, axis: int, out: None = ...
     def min(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> coo_matrix[_ScalarT_co]: ...  # type: ignore[misc]
@@ -247,7 +262,12 @@ class _minmax_mixin(Generic[_ScalarT_co, _ShapeT_co]):
     ) -> _ScalarT_co: ...
     @overload  # sparray, axis: int, out: None = ...
     def nanmin(  # type: ignore[misc]
-        self: sparray, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False
+        self: sparray,  # zuban: ignore[misc]
+        /,
+        axis: onp.ToInt,
+        out: None = None,
+        *,
+        explicit: bool = False,
     ) -> coo_array[_ScalarT_co, tuple[int]]: ...
     @overload  # spmatrix, axis: int, out: None = ...
     def nanmin(self: spmatrix, /, axis: onp.ToInt, out: None = None, *, explicit: bool = False) -> coo_matrix[_ScalarT_co]: ...  # type: ignore[misc]
