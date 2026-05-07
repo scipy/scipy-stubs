@@ -63,7 +63,7 @@ type = [
   "pytest==9.0.3", # needed for `_lib._array_api.make_xp_pytest_*`
   "matplotlib==3.10.9", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
   "basedpyright==1.39.3",
-  "mypy[faster-cache]==1.20.2",
+  "mypy[faster-cache]==2.0.0",
   "pyrefly==0.63.1",
   "stubdefaulter>=0.1.0",
   "ty==0.0.33",
@@ -114,12 +114,10 @@ default = { extend-ignore-identifiers-re = ['ND|Nd|Theis|TtestResult|SeQUeNCe'] 
 [tool.mypy]
 strict = true
 strict_equality_for_none = true
+allow_redefinition = true
 # required by repo-review
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 warn_unreachable = false
-# experimental
-local_partial_types = true
-allow_redefinition_new = true
 
 # pyright / basedpyright
 
