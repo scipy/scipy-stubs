@@ -110,6 +110,9 @@ jobs:
       - name: ty check scipy-stubs
         run: ty check --error-on-warning --output-format=github scipy-stubs
 
+      - name: zuban check scipy-stubs
+        run: zuban check scipy-stubs
+
       - name: pyrefly check scipy-stubs
         run: pyrefly check scipy-stubs
 

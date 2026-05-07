@@ -238,7 +238,7 @@ class Anderson_ksampResult(BaseBunch[np.float64, _Float1D, np.float64]):
     @override
     def __init__(self, /, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> None: ...  # pyrefly:ignore[bad-override]
 
-class WilcoxonResult(BaseBunch[_NDT_co, _NDT_co], Generic[_NDT_co]):  # pyright: ignore[reportInvalidTypeArguments]  # pyrefly: ignore[invalid-variance]
+class WilcoxonResult(BaseBunch[_NDT_co, _NDT_co], Generic[_NDT_co]):  # pyright: ignore[reportInvalidTypeArguments]  # pyrefly: ignore[invalid-variance]  # zuban: ignore[type-var]
     @property
     def statistic(self, /) -> _NDT_co: ...
     @property

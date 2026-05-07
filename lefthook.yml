@@ -29,6 +29,10 @@ pre-commit:
       glob: "scipy-stubs/*.{py,pyi}"
       run: uv run ty check {staged_files}
 
+    - name: zuban
+      glob: "*.{py,pyi}"
+      run: uv run zuban check {staged_files}
+
     - name: check-version-literals
       run: uv run scripts/check_version_literals.py
 
