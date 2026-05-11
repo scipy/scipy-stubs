@@ -9,10 +9,10 @@ from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
 _LaplacianFunction: TypeAlias = Callable[[onp.ToComplex2D], onp.Array2D[npc.number]]
-_LaplacianMatrix: TypeAlias = onp.Array2D[npc.number] | _spbase | LinearOperator | _LaplacianFunction
+_LaplacianMatrix: TypeAlias = onp.Array2D[npc.number] | _spbase | LinearOperator
 _LaplacianDiag: TypeAlias = onp.Array1D[npc.number]
 _ToCSGraph: TypeAlias = onp.ToComplex2D | _spbase
-_Form: TypeAlias = Literal["array", "function", "lo"]
+_Form: TypeAlias = Literal["array", "lo"]
 
 ###
 
