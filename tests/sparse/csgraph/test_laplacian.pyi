@@ -1,19 +1,18 @@
-from typing import reveal_type
+from collections.abc import Callable
 
 import numpy as np
 import numpy.typing as npt
+import optype as op
+import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.sparse.csgraph import laplacian
 
-G: npt.NDArray[np.float64]
-v: npt.NDArray[np.float64]
+_f64_nd: npt.NDArray[np.float64]
 
-fn = laplacian(G, form="function")
-reveal_type(fn)  # Callable
+fn = laplacian(_f64_nd, form="function")
+op.test.assert_subtype[Callable[[onp.ToComplex2D], onp.Array2D[npc.number]]](fn)
 
-result = fn(v)
-reveal_type(result)
-
-fn2, diag = laplacian(G, form="function", return_diag=True)
-reveal_type(fn2)
-reveal_type(diag)
+fn2, diag = laplacian(_f64_nd, form="function", return_diag=True)
+op.test.assert_subtype[Callable[[onp.ToComplex2D], onp.Array2D[npc.number]]](fn2)
+op.test.assert_subtype[onp.Array1D[npc.number]](diag)
