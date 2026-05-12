@@ -29,7 +29,7 @@ _f64_2d: onp.Array2D[np.float64]
 # legendre_p
 assert_type(legendre_p(1, 1.0), onp.Array1D[np.float64])
 assert_type(legendre_p(1, np.float32(1.0)), onp.Array1D[np.float64])
-assert_type(legendre_p(1, _f64_2d), _Float2_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly: ignore [assert-type, bad-argument-type]  # TODO: fix MultiUFunc array overloads
+assert_type(legendre_p(1, _f64_2d), _Float2_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly:ignore[assert-type]  # TODO: fix MultiUFunc array overloads
 assert_type(legendre_p(1, 1.0, diff_n=True), onp.Array1D[np.float64])
 assert_type(legendre_p(1, 1.0, diff_n=1), onp.Array1D[np.float64])
 
@@ -51,36 +51,36 @@ assert_type(assoc_legendre_p(3, 2, 1.0, branch_cut=3, norm=True, diff_n=1), _Flo
 assert_type(assoc_legendre_p(3, 2, _f64_1d, branch_cut=_i64_1d, diff_n=2), _Float1_D)
 
 # assoc_legendre_p_all
-assert_type(assoc_legendre_p_all(3, 2, 1.0), _Float3_D)  # type: ignore[assert-type]  # pyright: ignore[reportAssertTypeFailure]  # pyrefly: ignore [assert-type]  # TODO: fix MultiUFunc array overloads
-assert_type(assoc_legendre_p_all(n=3, m=2, z=np.float32(1.0)), _Float3_D)  # type: ignore[assert-type]  # pyright: ignore[reportAssertTypeFailure]  # pyrefly: ignore [assert-type]  # TODO: fix MultiUFunc array overloads
-assert_type(assoc_legendre_p_all(n=3, m=2, z=_f64_1d), _Float3_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly: ignore [assert-type, bad-argument-type]  # TODO: fix MultiUFunc array overloads
-assert_type(assoc_legendre_p_all(3, 2, 1.0, branch_cut=3, norm=True, diff_n=1), _Float3_D)  # type: ignore[assert-type]  # pyright: ignore[reportAssertTypeFailure]  # pyrefly: ignore [assert-type]  # TODO: fix MultiUFunc array overloads
-assert_type(assoc_legendre_p_all(3, 2, np.float64(1.0), branch_cut=2, diff_n=2), _Float3_D)  # type: ignore[assert-type]  # pyright: ignore[reportAssertTypeFailure]  # pyrefly: ignore [assert-type]  # TODO: fix MultiUFunc array overloads
+assert_type(assoc_legendre_p_all(3, 2, 1.0), _Float3_D)  # type: ignore[assert-type]  # pyright: ignore[reportAssertTypeFailure]  # pyrefly:ignore[assert-type]  # TODO: fix MultiUFunc array overloads
+assert_type(assoc_legendre_p_all(n=3, m=2, z=np.float32(1.0)), _Float3_D)  # type: ignore[assert-type]  # pyright: ignore[reportAssertTypeFailure]  # pyrefly:ignore[assert-type]  # TODO: fix MultiUFunc array overloads
+assert_type(assoc_legendre_p_all(n=3, m=2, z=_f64_1d), _Float3_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly:ignore[assert-type]  # TODO: fix MultiUFunc array overloads
+assert_type(assoc_legendre_p_all(3, 2, 1.0, branch_cut=3, norm=True, diff_n=1), _Float3_D)  # type: ignore[assert-type]  # pyright: ignore[reportAssertTypeFailure]  # pyrefly:ignore[assert-type]  # TODO: fix MultiUFunc array overloads
+assert_type(assoc_legendre_p_all(3, 2, np.float64(1.0), branch_cut=2, diff_n=2), _Float3_D)  # type: ignore[assert-type]  # pyright: ignore[reportAssertTypeFailure]  # pyrefly:ignore[assert-type]  # TODO: fix MultiUFunc array overloads
 
 # sph_legendre_p
 assert_type(sph_legendre_p(3, 2, 1.0), onp.Array1D[np.float64])
 assert_type(sph_legendre_p(n=3, m=2, theta=np.float32(1.0)), onp.Array1D[np.float64])
-assert_type(sph_legendre_p(n=3, m=2, theta=_f64_1d), _Float2_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly: ignore [assert-type, bad-argument-type]  # TODO: fix MultiUFunc array overloads
+assert_type(sph_legendre_p(n=3, m=2, theta=_f64_1d), _Float2_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly:ignore[assert-type]  # TODO: fix MultiUFunc array overloads
 assert_type(sph_legendre_p(3, 2, 1.0, diff_n=True), onp.Array1D[np.float64])
 assert_type(sph_legendre_p(3, 2, 1.0, diff_n=2), onp.Array1D[np.float64])
 
 # sph_legendre_p_all
 assert_type(sph_legendre_p_all(3, 2, 1.0), onp.Array3D[np.float64])
 assert_type(sph_legendre_p_all(n=3, m=2, theta=np.float32(1.0)), onp.Array3D[np.float64])
-assert_type(sph_legendre_p_all(n=3, m=2, theta=_f64_1d), _Float3_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly: ignore [assert-type, bad-argument-type]  # TODO: fix MultiUFunc array overloads
+assert_type(sph_legendre_p_all(n=3, m=2, theta=_f64_1d), _Float3_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # TODO: fix MultiUFunc array overloads
 assert_type(sph_legendre_p_all(3, 2, 1.0, diff_n=True), onp.Array3D[np.float64])
 assert_type(sph_legendre_p_all(3, 2, 1.0, diff_n=2), onp.Array3D[np.float64])
 
 # sph_harm_y
 assert_type(sph_harm_y(3, 2, 1.0, 2.0), _Complex0D)
 assert_type(sph_harm_y(n=3, m=2, theta=np.float32(1.0), phi=np.float32(2.0)), _Complex0D)
-assert_type(sph_harm_y(3, 2, 1.0, _f64_1d), _Complex1_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly: ignore [assert-type, bad-argument-type]  # TODO: fix MultiUFunc array overloads
+assert_type(sph_harm_y(3, 2, 1.0, _f64_1d), _Complex1_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly:ignore[assert-type]  # TODO: fix MultiUFunc array overloads
 assert_type(sph_harm_y(3, 2, 1.0, 2.0, diff_n=False), _Complex0D)
 assert_type(sph_harm_y(3, 2, 1.0, 2.0, diff_n=0), _Complex0D)
 
 # sph_harm_y_all
 assert_type(sph_harm_y_all(3, 2, 1.0, 2.0), _Complex2D)
 assert_type(sph_harm_y_all(n=3, m=2, theta=np.float32(1.0), phi=np.float32(2.0)), _Complex2D)
-assert_type(sph_harm_y_all(3, 2, 1.0, _f64_1d), _Complex3_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly: ignore [assert-type, bad-argument-type]  # TODO: fix MultiUFunc array overloads
+assert_type(sph_harm_y_all(3, 2, 1.0, _f64_1d), _Complex3_D)  # type: ignore[assert-type,arg-type]  # pyright: ignore[reportAssertTypeFailure, reportArgumentType]  # pyrefly:ignore[assert-type]  # TODO: fix MultiUFunc array overloads
 assert_type(sph_harm_y_all(3, 2, 1.0, 2.0, diff_n=False), _Complex2D)
 assert_type(sph_harm_y_all(3, 2, 1.0, 2.0, diff_n=0), _Complex2D)
