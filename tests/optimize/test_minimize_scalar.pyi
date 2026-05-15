@@ -20,5 +20,6 @@ res = minimize_scalar(f, bracket, bounds)
 
 # https://github.com/scipy/scipy-stubs/issues/465
 p = npp.Polynomial([3, -2, 1, 1, 0.2])
-res_poly = minimize_scalar(p)
+# https://github.com/facebook/pyrefly/issues/3329
+res_poly = minimize_scalar(p)  # pyrefly: ignore [bad-specialization]
 assert_type(res.success, bool)
