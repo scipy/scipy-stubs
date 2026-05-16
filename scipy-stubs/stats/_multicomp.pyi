@@ -1,3 +1,14 @@
+# Locally, mypy reports:
+#
+# > error: Cannot use a covariant type variable as a parameter  [misc]
+#
+# for `_mean_control: _StatT_co`. But for some reason, this isn't reported in any of
+# the CI jobs. We therefore cannot use `# type:ignore[misc]` here, because that would
+# then be reported as an unused ignore in those CI jobs, and are forced to disable
+# [misc] for the entire module.
+#
+# mypy: disable-error-code=misc
+
 from dataclasses import dataclass
 from typing import Generic, overload
 from typing_extensions import TypeVar
