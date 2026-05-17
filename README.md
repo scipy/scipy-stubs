@@ -377,6 +377,7 @@ PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 scverse ([PyDESeq2](https://github.com/scverse/PyDESeq2), [scanpy](https://github.com/scverse/scanpy)) |
 [SeQUeNCe](https://github.com/sequence-toolbox/SeQUeNCe) |
 [Skore](https://github.com/probabl-ai/skore) |
+[Splipy](https://github.com/SINTEF/Splipy) |
 Theis Lab ([anndata2ri](https://github.com/theislab/anndata2ri)) |
 [TorchFX](https://github.com/matteospanio/torchfx) |
 [TQEC](https://github.com/tqec/tqec) |
