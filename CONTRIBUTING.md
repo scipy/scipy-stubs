@@ -24,10 +24,10 @@ Ensure you have [`uv`](https://docs.astral.sh/uv/getting-started/installation/)
 installed. Now you can install the project with the dev dependencies:
 
 ```shell
-uv sync --exact --python 3.11
+uv sync --exact --python 3.12
 ```
 
-Installing the lowest supported Python version (3.11 in this example) prevents
+Installing the lowest supported Python version (3.12 in this example) prevents
 your IDE from e.g. auto-importing unsupported `typing` features.
 
 ## Lefthook
@@ -89,7 +89,6 @@ pyright: OK ✔ in 17.06 seconds
   pyrefly: OK (2.08=setup[0.31]+cmd[1.77] seconds)
   pyright: OK (17.06=setup[0.23]+cmd[16.83] seconds)
   mypy: OK (15.63=setup[0.19]+cmd[15.44] seconds)
-  3.11: OK (45.98=setup[0.46]+cmd[18.92,26.60] seconds)
   3.12: OK (44.69=setup[0.35]+cmd[18.91,25.42] seconds)
   3.13: OK (42.99=setup[0.20]+cmd[18.45,24.35] seconds)
   3.14: OK (41.55=setup[0.45]+cmd[18.65,22.45] seconds)

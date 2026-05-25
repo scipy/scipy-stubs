@@ -10,7 +10,6 @@ Import `Sequence`, `Mapping`, `Iterable`, `Iterator`, `Generator`, and `Callable
 The `typing_extensions` module is used for type annotations that are not yet available
 in the standard library, which is needed for `T = TypeAlias("T", default=...)`,
 `Alias = TypeAliasType("Alias", ...)`, `@deprecated`, etc.
-We currently require Python 3.11 or higher.
 
 ## Environment Setup
 
