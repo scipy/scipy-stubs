@@ -71,6 +71,9 @@ jobs:
           fi
 
           git commit --signoff -m "update dprint plugins"
+
+          # fetch the remote branch (if it exists) so --force-with-lease has a baseline
+          git fetch origin "$BRANCH" || true
           git push --force-with-lease origin "$BRANCH"
 
           BODY=$(cat <<EOF
