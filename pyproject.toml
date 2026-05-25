@@ -268,6 +268,8 @@ skip-magic-trailing-comma = true
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = ["D", "FBT", "ANN401", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
+# TODO
+extend-ignore = ["UP040", "UP046", "UP047"]
 
 [tool.ruff.lint.per-file-ignores]
 "*.pyi" = ["F", "E741", "N", "A", "PYI054", "PLC2701", "PLW3201", "PLR", "FURB"]
