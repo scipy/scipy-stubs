@@ -2,8 +2,8 @@
 # mypy: disable-error-code=overload-overlap
 
 import types
-from typing import Any, ClassVar, Final, Generic, Literal, Never, SupportsIndex, TypeAlias, overload, type_check_only
-from typing_extensions import TypeVar, override
+from typing import Any, ClassVar, Final, Generic, Literal, Never, SupportsIndex, TypeAlias, overload, override, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

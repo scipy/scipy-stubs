@@ -4,8 +4,21 @@ import sys
 import types
 from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 from contextlib import _GeneratorContextManager
-from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, Self, SupportsIndex, TypeAlias, overload
-from typing_extensions import TypeVar, override
+from typing import (
+    Any,
+    Concatenate,
+    Final,
+    Generic,
+    Literal,
+    NamedTuple,
+    Never,
+    Self,
+    SupportsIndex,
+    TypeAlias,
+    overload,
+    override,
+)
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

@@ -1,6 +1,6 @@
 from collections.abc import Sequence
-from typing import Any, Generic, Literal, Never, Protocol, Self, SupportsIndex, final, overload, type_check_only
-from typing_extensions import TypeVar, override
+from typing import Any, Generic, Literal, Never, Protocol, Self, SupportsIndex, final, overload, override, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

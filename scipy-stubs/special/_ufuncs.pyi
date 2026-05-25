@@ -11,12 +11,15 @@ from typing import (
     Never,
     SupportsIndex,
     TypeAlias,
+    TypeAliasType,
     TypedDict,
+    Unpack,
     final,
     overload,
+    override,
     type_check_only,
 )
-from typing_extensions import TypeAliasType, TypeVar, Unpack, deprecated, override
+from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype as op

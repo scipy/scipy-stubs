@@ -1,7 +1,6 @@
 from _typeshed import Incomplete
 from types import ModuleType
-from typing import Literal, TypeAlias, overload
-from typing_extensions import TypeAliasType
+from typing import Literal, TypeAlias, TypeAliasType, overload
 
 import numpy as np
 import optype.numpy as onp

@@ -1,5 +1,5 @@
-from typing import Literal as L, TypeAlias, overload
-from typing_extensions import TypeVar, Unpack
+from typing import Literal as L, TypeAlias, Unpack, overload
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op

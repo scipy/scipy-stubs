@@ -1,7 +1,7 @@
 from collections.abc import Callable
 from types import ModuleType
-from typing import Any, TypeAlias, overload
-from typing_extensions import TypeAliasType, TypeVar
+from typing import Any, TypeAlias, TypeAliasType, overload
+from typing_extensions import TypeVar
 
 import numpy as np
 

@@ -1,7 +1,6 @@
 # scipy/linalg/_decomp_interpolative.pyx
 
-from typing import TypeAlias
-from typing_extensions import TypeAliasType
+from typing import TypeAlias, TypeAliasType
 
 import numpy as np
 import optype.numpy as onp

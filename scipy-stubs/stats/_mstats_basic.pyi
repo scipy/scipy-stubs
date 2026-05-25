@@ -10,9 +10,10 @@ from typing import (
     TypeAlias,
     TypedDict,
     overload,
+    override,
     type_check_only,
 )
-from typing_extensions import TypeVar, override
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op

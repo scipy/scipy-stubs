@@ -1,5 +1,4 @@
-from typing import IO, Any, Final, Literal, LiteralString, Self, TypeAlias, overload, type_check_only
-from typing_extensions import Protocol
+from typing import IO, Any, Final, Literal, LiteralString, Protocol, Self, TypeAlias, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp

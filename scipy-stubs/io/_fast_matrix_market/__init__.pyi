@@ -1,6 +1,6 @@
 import io
-from typing import Any, Final, Literal, TypeAlias, overload, type_check_only
-from typing_extensions import TypedDict, Unpack, override
+from typing import Any, Final, Literal, TypeAlias, Unpack, overload, override, type_check_only
+from typing_extensions import TypedDict
 
 import optype.numpy as onp
 

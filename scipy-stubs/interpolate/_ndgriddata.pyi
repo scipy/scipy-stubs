@@ -1,6 +1,6 @@
 from _typeshed import Incomplete
-from typing import Any, Generic, Literal, TypeAlias, TypedDict, overload, type_check_only
-from typing_extensions import TypeVar, Unpack, override
+from typing import Any, Generic, Literal, TypeAlias, TypedDict, Unpack, overload, override, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

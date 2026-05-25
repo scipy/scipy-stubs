@@ -1,6 +1,5 @@
 from collections.abc import Callable
-from typing import ClassVar, Concatenate, Final, TypedDict
-from typing_extensions import Unpack, override
+from typing import ClassVar, Concatenate, Final, TypedDict, Unpack, override
 
 import numpy as np
 import optype.numpy as onp

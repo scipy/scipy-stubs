@@ -1,6 +1,5 @@
 from collections.abc import Callable
-from typing import Concatenate, TypedDict, type_check_only
-from typing_extensions import Unpack
+from typing import Concatenate, TypedDict, Unpack, type_check_only
 
 import numpy as np
 import optype.numpy as onp

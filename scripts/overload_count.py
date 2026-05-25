@@ -7,7 +7,7 @@ import argparse
 import ast
 import json
 from pathlib import Path
-from typing_extensions import override
+from typing import override
 
 STUBS_PATH = Path(__file__).parent.parent / "scipy-stubs"
 

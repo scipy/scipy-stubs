@@ -14,10 +14,11 @@ from typing import (
     Self,
     SupportsIndex,
     TypeAlias,
+    TypeAliasType,
     overload,
     type_check_only,
 )
-from typing_extensions import TypeAliasType, TypeIs, TypeVar
+from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
 import numpy.typing as npt

@@ -2,8 +2,8 @@
 import abc
 import types
 from collections.abc import Callable
-from typing import Any, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
-from typing_extensions import TypeVar, Unpack, override
+from typing import Any, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, Unpack, overload, override, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

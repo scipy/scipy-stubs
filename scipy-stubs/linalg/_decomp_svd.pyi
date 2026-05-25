@@ -1,5 +1,4 @@
-from typing import Literal, SupportsIndex, TypeAlias, TypeVar, overload
-from typing_extensions import TypeAliasType
+from typing import Literal, SupportsIndex, TypeAlias, TypeAliasType, TypeVar, overload
 
 import numpy as np
 import optype as op

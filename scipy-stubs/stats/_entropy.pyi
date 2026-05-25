@@ -1,5 +1,5 @@
-from typing import Literal, TypeAlias, overload
-from typing_extensions import TypeAliasType, TypeVar
+from typing import Literal, TypeAlias, TypeAliasType, overload
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

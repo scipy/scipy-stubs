@@ -12,9 +12,10 @@ from typing import (
     TypeAlias,
     final,
     overload,
+    override,
     type_check_only,
 )
-from typing_extensions import TypeVar, deprecated, override
+from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype as op

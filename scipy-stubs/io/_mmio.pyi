@@ -1,5 +1,4 @@
-from typing import Any, ClassVar, Literal, TypeAlias, TypedDict, overload, type_check_only
-from typing_extensions import Unpack
+from typing import Any, ClassVar, Literal, TypeAlias, TypedDict, Unpack, overload, type_check_only
 
 import optype.numpy as onp
 
