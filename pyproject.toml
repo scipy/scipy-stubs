@@ -9,7 +9,7 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 
 [project]
 name = "scipy-stubs"
-version = "1.17.1.6.dev0"
+version = "1.18.0.0.dev0"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
@@ -29,17 +29,16 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
   "Typing :: Stubs Only",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = ["optype[numpy]>=0.14.0,<0.18"]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.17.1,<1.18"]
+scipy = ["scipy>=1.18.0rc1,<1.19"]
 
 [project.urls]
 Homepage = "https://scipy.org/"
