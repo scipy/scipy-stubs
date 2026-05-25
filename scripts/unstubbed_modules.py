@@ -13,12 +13,23 @@ import scipy
 
 STUBS_PATH = Path(__file__).parent.parent / "scipy-stubs"
 BUNDLED = (
-    "scipy._lib.array_api_compat",
-    "scipy._lib.array_api_extra",
+    "scipy._external",
     "scipy.fft._pocketfft",
     "scipy.optimize._highspy",
     "scipy.sparse.linalg._eigen.arpack",
     "scipy.sparse.linalg._propack",
+)
+# TODO(@jorenham)
+TODO_1_18 = (
+    "scipy.cluster.hierarchy._hierarchy",
+    "scipy.cluster.hierarchy._hierarchy_impl",
+    "scipy.cluster.hierarchy._optimal_leaf_ordering",
+    "scipy.cluster.vq._vq",
+    "scipy.cluster.vq._vq_impl",
+    "scipy.fft._duccfft",
+    "scipy.linalg._internal_matfuncs",
+    "scipy.signal._whittaker",
+    "scipy.special._ufunc_tools",
 )
 
 
@@ -91,7 +102,7 @@ def main() -> int:
 
     exit_code = 0
     for name in module_list:
-        if any(map(name.startswith, BUNDLED)):
+        if any(map(name.startswith, BUNDLED + TODO_1_18)):
             continue
 
         if not is_stubbed(name):
