@@ -1,11 +1,11 @@
-from typing import Any, Literal, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import Any, Literal, Never, SupportsIndex, TypeAlias, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 from numpy.linalg import LinAlgError
 
-__all__ = ["LinAlgError", "LinAlgWarning", "norm"]
+__all__ = ["LinAlgError", "LinAlgWarning", "bandwidth", "norm"]
 
 _Inf: TypeAlias = float
 _Order: TypeAlias = Literal["fro", "nuc", 0, 1, -1, 2, -2] | _Inf
@@ -172,3 +172,13 @@ def norm(
 
 #
 def _datacopied(arr: onp.ArrayND[Any], original: onp.CanArrayND[Any]) -> bool: ...  # undocumented
+
+#
+@overload  # pyright workaround
+def bandwidth(a: onp.ArrayND[npc.number, tuple[Never, Never, Never, Never]]) -> tuple[np.int64 | Any, np.int64 | Any]: ...
+@overload
+def bandwidth(a: onp.ToComplexStrict2D) -> tuple[np.int64, np.int64]: ...
+@overload
+def bandwidth(a: onp.ToComplexStrict3D) -> tuple[onp.Array1D[np.int64], onp.Array1D[np.int64]]: ...
+@overload
+def bandwidth(a: onp.ToComplexND) -> tuple[onp.ArrayND[np.int64] | Any, onp.ArrayND[np.int64] | Any]: ...

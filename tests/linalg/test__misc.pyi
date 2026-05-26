@@ -5,7 +5,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.linalg import norm
+from scipy.linalg import bandwidth, norm
 
 ###
 
@@ -16,6 +16,12 @@ py_c: complex
 f32: np.float32
 f80: np.float128
 
+f64_2d: onp.Array2D[np.float64]
+c128_2d: onp.Array2D[np.complex128]
+
+f64_3d: onp.Array3D[np.float64]
+c128_3d: onp.Array3D[np.complex128]
+
 f64_nd: onp.ArrayND[np.float64]
 f32_nd: onp.ArrayND[np.float32]
 f80_nd: onp.ArrayND[np.float128]
@@ -24,6 +30,14 @@ c128_nd: onp.ArrayND[np.complex128]
 
 py_f_1d: list[float]
 py_f_2d: list[list[float]]
+
+###
+# bandwidth
+
+assert_type(bandwidth(f64_2d), tuple[np.int64, np.int64])
+assert_type(bandwidth(f64_3d), tuple[onp.Array1D[np.int64], onp.Array1D[np.int64]])
+assert_type(bandwidth(c128_2d), tuple[np.int64, np.int64])
+assert_type(bandwidth(c128_3d), tuple[onp.Array1D[np.int64], onp.Array1D[np.int64]])
 
 ###
 # norm
