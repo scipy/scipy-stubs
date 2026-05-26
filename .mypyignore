@@ -17,7 +17,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy._lib._gcutils.IS_PYPY
 scipy._lib._util.DecimalNumber
 scipy._lib._util.IntNumber
 scipy._lib._util.SeedType
