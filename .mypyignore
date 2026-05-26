@@ -209,11 +209,6 @@ scipy.stats._distribution_infrastructure.OrderStatisticDistribution._n_domain
 scipy.stats._distribution_infrastructure.OrderStatisticDistribution._r_domain
 scipy.stats._distribution_infrastructure.UnivariateDistribution.lmoment
 scipy.stats._kde.gaussian_kde.__class_getitem__
-scipy.stats._mannwhitneyu.MannwhitneyuResult.__getnewargs_ex__
-scipy.stats._mannwhitneyu.MannwhitneyuResult.__init__
-scipy.stats._mannwhitneyu.MannwhitneyuResult.__replace__
-scipy.stats._mannwhitneyu.MannwhitneyuResult._make
-scipy.stats._mannwhitneyu.MannwhitneyuResult._replace
 scipy.stats._mannwhitneyu.mwu_result_object
 scipy.stats._morestats.ansari
 scipy.stats._morestats.boxcox
