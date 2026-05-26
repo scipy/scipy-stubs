@@ -80,7 +80,7 @@ class interp1d(_Interpolator1D):  # legacy
     ) -> None: ...
 
 class _PPolyBase(Generic[_CT_co]):
-    __slots__ = "_asarray", "_c", "_x", "axis", "extrapolate"
+    __slots__ = "_c", "_x", "axis", "extrapolate"
 
     _c: _Array2ND[_CT_co]
     _x: onp.Array1D[np.float64]
@@ -160,7 +160,7 @@ class PPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
     def antiderivative(self, /, nu: _ToAxis = 1) -> Self: ...
     def integrate(self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_CT_co]: ...
     def solve(
-        self, /, y: onp.ToFloat = 0.0, discontinuity: bool = True, extrapolate: _Extrapolate | None = None
+        self, /, y: onp.ToFloat = 0, discontinuity: bool = True, extrapolate: _Extrapolate | None = None
     ) -> onp.ArrayND[_CT_co]: ...
     def roots(self, /, discontinuity: bool = True, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_CT_co]: ...
 
