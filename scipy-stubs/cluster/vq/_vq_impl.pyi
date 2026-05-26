@@ -1,13 +1,13 @@
 from collections.abc import Callable, Sequence
 from types import ModuleType
 from typing import Final, Literal, TypeAlias, overload
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-__all__ = ["kmeans", "kmeans2", "vq", "whiten"]
+__all__ = ["ClusterError", "kmeans", "kmeans2", "py_vq", "vq", "whiten"]
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 
@@ -45,10 +45,16 @@ def vq(
 
 #
 @overload  # float64
+@deprecated(
+    "`scipy.cluster.vq.py_vq` was unintentionally public, and will be removed in SciPy 1.20.0, use `scipy.cluster.vq.vq` instead."
+)
 def py_vq(
     obs: onp.ToFloat64_2D, code_book: onp.ToFloat64_2D, check_finite: bool = True
 ) -> tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]]: ...
 @overload  # floating
+@deprecated(
+    "`scipy.cluster.vq.py_vq` was unintentionally public, and will be removed in SciPy 1.20.0, use `scipy.cluster.vq.vq` instead."
+)
 def py_vq(
     obs: onp.ToFloat2D, code_book: onp.ToFloat2D, check_finite: bool = True
 ) -> tuple[onp.Array1D[np.intp], onp.Array1D[npc.floating]]: ...

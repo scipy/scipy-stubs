@@ -21,11 +21,6 @@ BUNDLED = (
 )
 # TODO(@jorenham)
 TODO_1_18 = (
-    "scipy.cluster.hierarchy._hierarchy",
-    "scipy.cluster.hierarchy._hierarchy_impl",
-    "scipy.cluster.hierarchy._optimal_leaf_ordering",
-    "scipy.cluster.vq._vq",
-    "scipy.cluster.vq._vq_impl",
     "scipy.fft._duccfft",
     "scipy.linalg._internal_matfuncs",
     "scipy.signal._whittaker",
