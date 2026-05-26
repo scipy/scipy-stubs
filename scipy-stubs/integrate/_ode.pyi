@@ -139,7 +139,6 @@ class IntegratorBase(Generic[_Inexact64T_co]):
     ) -> tuple[_Inexact64T_co, float]: ...
     def step(
         self,
-        /,
         f: Callable[..., _Inexact64T_co],
         jac: Callable[..., onp.ArrayND[_Inexact64T_co]],
         y0: complex,
@@ -147,10 +146,10 @@ class IntegratorBase(Generic[_Inexact64T_co]):
         t1: float,
         f_params: tuple[object, ...],
         jac_params: tuple[object, ...],
+        /,
     ) -> tuple[_Inexact64T_co, float]: ...
     def run_relax(
         self,
-        /,
         f: Callable[..., _Inexact64T_co],
         jac: Callable[..., onp.ArrayND[_Inexact64T_co]],
         y0: complex,
@@ -158,6 +157,7 @@ class IntegratorBase(Generic[_Inexact64T_co]):
         t1: float,
         f_params: tuple[object, ...],
         jac_params: tuple[object, ...],
+        /,
     ) -> tuple[_Inexact64T_co, float]: ...
 
 # undocumented

@@ -20,12 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.integrate._ode.IntegratorBase.run_relax
-scipy.integrate._ode.IntegratorBase.step
-scipy.integrate._quad_vec.LRUDict.update
-scipy.integrate._tanhsinh.nsum
-scipy.integrate._tanhsinh.tanhsinh
-
 scipy.interpolate._dfitpack
 scipy.interpolate._fitpack.bispeu
 scipy.interpolate._fitpack.bispev
