@@ -20,30 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.interpolate._dfitpack
-scipy.interpolate._fitpack.bispeu
-scipy.interpolate._fitpack.bispev
-scipy.interpolate._fitpack.curfit
-scipy.interpolate._fitpack.dblint
-scipy.interpolate._fitpack.error
-scipy.interpolate._fitpack.fpchec
-scipy.interpolate._fitpack.insert
-scipy.interpolate._fitpack.parcur
-scipy.interpolate._fitpack.parder
-scipy.interpolate._fitpack.pardeu
-scipy.interpolate._fitpack.pardtc
-scipy.interpolate._fitpack.percur
-scipy.interpolate._fitpack.regrid
-scipy.interpolate._fitpack.spalde
-scipy.interpolate._fitpack.spgrid
-scipy.interpolate._fitpack.sphere
-scipy.interpolate._fitpack.splder
-scipy.interpolate._fitpack.splev
-scipy.interpolate._fitpack.splint
-scipy.interpolate._fitpack.sproot
-scipy.interpolate._fitpack.surfit
-scipy.interpolate._fitpack.surfit_lsq
-scipy.interpolate._fitpack.surfit_smth
 scipy.interpolate._fitpack_repro.root_rati
 scipy.interpolate._interpnd.NDInterpolatorBase.__call__
 scipy.interpolate._interpolate.PPoly.solve
