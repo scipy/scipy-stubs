@@ -1,6 +1,5 @@
 from collections.abc import Callable
-from types import ModuleType
-from typing import Final, Literal, TypeAlias, TypedDict, overload, override, type_check_only
+from typing import Final, Literal, TypedDict, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -12,6 +11,7 @@ from scipy.spatial.distance import _Metric
 
 __all__ = [
     "ClusterNode",
+    "ClusterWarning",
     "DisjointSet",
     "average",
     "centroid",
@@ -47,14 +47,11 @@ __all__ = [
 
 _T = TypeVar("_T")
 
-_LinkageMethod: TypeAlias = Literal["single", "complete", "average", "weighted", "centroid", "median", "ward"]
-_ClusterCriterion: TypeAlias = Literal["inconsistent", "distance", "maxclust", "monocrit", "maxclust_monocrit"]
-_SortOrder: TypeAlias = Literal["ascending", "descending"]
-_TruncateMode: TypeAlias = Literal["lastp", "level"]
-_Orientation: TypeAlias = Literal["top", "bottom", "left", "right"]
-
-# for the lack of better types
-_ArrayAPINamespace: TypeAlias = ModuleType
+type _LinkageMethod = Literal["single", "complete", "average", "weighted", "centroid", "median", "ward"]
+type _ClusterCriterion = Literal["inconsistent", "distance", "maxclust", "monocrit", "maxclust_monocrit"]
+type _SortOrder = Literal["ascending", "descending"]
+type _TruncateMode = Literal["lastp", "level"]
+type _Orientation = Literal["top", "bottom", "left", "right"]
 
 @type_check_only
 class _DendrogramResult(TypedDict):
@@ -106,9 +103,6 @@ class ClusterNode:
     def pre_order(self, /, func: Callable[[ClusterNode], int] = ...) -> list[int]: ...
     @overload
     def pre_order(self, /, func: Callable[[ClusterNode], _T]) -> list[_T]: ...
-
-#
-def int_floor(arr: onp.ToArrayND, xp: _ArrayAPINamespace) -> int: ...  # undocumented
 
 #
 def linkage(

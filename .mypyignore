@@ -17,10 +17,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.cluster._optimal_leaf_ordering
-scipy.cluster._hierarchy
-scipy.cluster.hierarchy.__all__
-scipy.cluster.hierarchy.int_floor
 scipy.cluster._vq
 scipy.cluster.vq.__all__
 
