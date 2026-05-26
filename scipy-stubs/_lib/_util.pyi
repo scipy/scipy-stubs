@@ -4,25 +4,13 @@ import sys
 import types
 from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 from contextlib import _GeneratorContextManager
-from typing import (
-    Any,
-    Concatenate,
-    Final,
-    Generic,
-    Literal,
-    NamedTuple,
-    Never,
-    Self,
-    SupportsIndex,
-    TypeAlias,
-    overload,
-    override,
-)
+from typing import Any, Concatenate, Final, Generic, NamedTuple, Never, Self, SupportsIndex, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+from numpy import long as np_long, ulong as np_ulong  # pyright: ignore[reportUnusedImport]  # noqa: ICN003
 
 from scipy._typing import ExitMixin
 
@@ -38,22 +26,17 @@ _AxisT = TypeVar("_AxisT", bound=npc.integer)
 
 ###
 
-np_long: Final[type[np.int32 | np.int64]] = ...  # `np.long` on `numpy>=2`, else `np.int_`
-np_ulong: Final[type[np.uint32 | np.uint64]] = ...  # `np.ulong` on `numpy>=2`, else `np.uint`
-copy_if_needed: Final[Literal[False] | None] = ...  # `None` on `numpy>=2`, otherwise `False`
+copy_if_needed: Final = None
 
-###
+# NOTE: These aliases are implictly exported at runtime (I don't like this).
+# NOTE: We can't use unions here because of a bug in mypy/stubtest
+type IntNumber = Any
+type DecimalNumber = Any
+type _RNG = Any
+type SeedType = Any
 
-# mypy<=1.19.0 workaround, see https://github.com/python/mypy/pull/20392
-if sys.version_info >= (3, 14):
-    __conditional_annotations__: Final[set[int]] = ...
-
-# NOTE: These aliases are implictly exported at runtime
-IntNumber: TypeAlias = int | npc.integer
-DecimalNumber: TypeAlias = float | npc.floating | npc.integer
-_RNG: TypeAlias = np.random.Generator | np.random.RandomState
-SeedType: TypeAlias = IntNumber | _RNG | None
-GeneratorType = TypeVar("GeneratorType", bound=_RNG)  # noqa: PYI001  # oof
+# see https://github.com/scipy/scipy/pull/25225
+GeneratorType = TypeVar("GeneratorType", bound=_RNG)  # noqa: PYI001
 
 if sys.version_info >= (3, 14):
     def wrapped_inspect_signature(callable: Callable[..., object]) -> inspect.Signature: ...
@@ -156,22 +139,6 @@ def normalize_axis_index(axis: int, ndim: onp.NDim) -> onp.NDim: ...
 def normalize_axis_index(axis: int | _AxisT, ndim: _AxisT) -> _AxisT: ...
 @overload
 def normalize_axis_index(axis: _AxisT, ndim: onp.NDim | _AxisT) -> _AxisT: ...
-
-#
-@overload
-def np_vecdot(x1: onp.ToIntStrict1D, x2: onp.ToIntStrict1D, /, *, axis: SupportsIndex = -1) -> npc.integer: ...
-@overload
-def np_vecdot(x1: onp.ToFloatStrict1D, x2: onp.ToJustFloatStrict1D, /, *, axis: SupportsIndex = -1) -> npc.floating: ...
-@overload
-def np_vecdot(x1: onp.ToJustFloatStrict1D, x2: onp.ToFloatStrict1D, /, *, axis: SupportsIndex = -1) -> npc.floating: ...
-@overload
-def np_vecdot(
-    x1: onp.ToComplexStrict1D, x2: onp.ToJustComplexStrict1D, /, *, axis: SupportsIndex = -1
-) -> npc.complexfloating: ...
-@overload
-def np_vecdot(
-    x1: onp.ToJustComplexStrict1D, x2: onp.ToComplexStrict1D, /, *, axis: SupportsIndex = -1
-) -> npc.complexfloating: ...
 
 #
 def broadcastable(shape_a: tuple[int, ...], shape_b: tuple[int, ...]) -> bool: ...

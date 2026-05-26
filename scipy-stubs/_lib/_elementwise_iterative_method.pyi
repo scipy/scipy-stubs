@@ -1,25 +1,13 @@
+from _typeshed import Unused
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from types import ModuleType
-from typing import Any, Concatenate, Final, SupportsIndex, TypeAlias
-from typing_extensions import TypeVar
+from typing import Any, Concatenate, Final, Literal, SupportsIndex
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._util import _RichResult
-
-###
-
-_FloatT = TypeVar("_FloatT", bound=npc.floating)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]])
-_FuncRealT = TypeVar("_FuncRealT", bound=Callable[Concatenate[onp.ArrayND[np.float64], ...], object])
-_ModuleT = TypeVar("_ModuleT", bound=ModuleType)
-_WorkT = TypeVar("_WorkT", bound=Mapping[str, Any])
-_ResT = TypeVar("_ResT", bound=_RichResult[Any])
-_ToShapeT = TypeVar("_ToShapeT", bound=SupportsIndex | tuple[SupportsIndex, ...])
-
-_Ignored: TypeAlias = object
 
 ###
 
@@ -32,72 +20,76 @@ _ECONVERGED: Final = 0
 _EINPROGRESS: Final = 1
 
 # TODO: complex
-def _initialize(
-    func: _FuncRealT,
+def _initialize[FuncT: Callable[Concatenate[onp.ArrayND[np.float64], ...], object], ModuleT: ModuleType, FloatT: npc.floating](
+    func: FuncT,
     xs: Sequence[onp.ToFloat1D],
     args: tuple[onp.ToFloat1D, ...],
-    complex_ok: onp.ToFalse = False,
+    kwargs: dict[str, Any] | None = None,
+    complex_ok: Literal[False] = False,
     preserve_shape: bool | None = None,
-    xp: _ModuleT | None = None,
+    xp: ModuleT | None = None,
 ) -> tuple[
-    _FuncRealT,  # func
-    list[onp.Array1D[_FloatT]],  # xs
-    list[onp.Array1D[_FloatT]],  # fs
+    FuncT,  # func
+    list[onp.Array1D[FloatT]],  # xs
+    list[onp.Array1D[FloatT]],  # fs
     list[onp.Array1D[npc.floating]],  # args
     onp.AtLeast1D,  # shape
-    _FloatT,  # xfat
-    _ModuleT,  # xp
+    FloatT,  # xfat
+    ModuleT,  # xp
 ]: ...
-
-# TODO: `_RichResult` subtype
-def _loop(
-    work: _ResT,
-    callback: Callable[[_ResT], _Ignored],
+def _loop[ResT: _RichResult[Any], ShapeT: tuple[int, ...], FloatT: npc.floating](
+    work: ResT,
+    callback: Callable[[ResT], Unused],
     shape: Sequence[SupportsIndex],
     maxiter: int,
-    func: Callable[[onp.Array[_ShapeT, _FloatT]], onp.ToComplexND],
+    func: Callable[[onp.Array[ShapeT, FloatT]], onp.ToComplexND],
     args: tuple[onp.ArrayND[npc.floating], ...],
     dtype: npc.inexact,
-    pre_func_eval: Callable[[_ResT], onp.Array[_ShapeT, _FloatT]],
-    post_func_eval: Callable[[onp.Array[_ShapeT, _FloatT], onp.Array[_ShapeT, npc.floating], _ResT], _Ignored],
-    check_termination: Callable[[_ResT], onp.Array[_ShapeT, np.bool_]],
-    post_termination_check: Callable[[_ResT], _Ignored],
-    customize_result: Callable[[_ResT, tuple[int, ...]], tuple[int, ...]],
+    pre_func_eval: Callable[[ResT], onp.Array[ShapeT, FloatT]],
+    post_func_eval: Callable[[onp.Array[ShapeT, FloatT], onp.Array[ShapeT, npc.floating], ResT], Unused],
+    check_termination: Callable[[ResT], onp.Array[ShapeT, np.bool_]],
+    post_termination_check: Callable[[ResT], Unused],
+    customize_result: Callable[[ResT, tuple[int, ...]], tuple[int, ...]],
     res_work_pairs: Iterable[tuple[str, str]],
     xp: ModuleType,
     preserve_shape: bool | None = False,
-) -> _ResT: ...
+) -> ResT: ...
 
 #
-def _check_termination(
-    work: _WorkT,
-    res: Mapping[str, onp.Array[_ShapeT, _FloatT]],
+def _check_termination[WorkT: Mapping[str, Any], ShapeT: tuple[int, ...], FloatT: npc.floating](
+    work: WorkT,
+    res: Mapping[str, onp.Array[ShapeT, FloatT]],
     res_work_pairs: Iterable[tuple[str, str]],
-    active: onp.Array[_ShapeT, npc.integer],
-    check_termination: Callable[[_WorkT], onp.Array[_ShapeT, np.bool_]],
+    active: onp.Array[ShapeT, npc.integer],
+    check_termination: Callable[[WorkT], onp.Array[ShapeT, np.bool_]],
     preserve_shape: bool | None,
     xp: ModuleType,
 ) -> onp.Array1D[np.intp]: ...
 
 #
-def _update_active(
-    work: Mapping[str, onp.Array[_ShapeT, _FloatT]],
-    res: Mapping[str, onp.Array[_ShapeT, _FloatT]],
+def _update_active[ShapeT: tuple[int, ...], FloatT: npc.floating](
+    work: Mapping[str, onp.Array[ShapeT, FloatT]],
+    res: Mapping[str, onp.Array[ShapeT, FloatT]],
     res_work_pairs: Iterable[tuple[str, str]],
-    active: onp.Array[_ShapeT, npc.integer],
-    mask: onp.Array[_ShapeT, np.bool_] | None,
+    active: onp.Array[ShapeT, npc.integer],
+    mask: onp.Array[ShapeT, np.bool_] | None,
     preserve_shape: bool | None,
     xp: ModuleType,
 ) -> None: ...
 
 #
-def _prepare_result(
-    work: Mapping[str, onp.Array[_ShapeT, _FloatT]],
-    res: _ResT,
+def _prepare_result[
+    ResT: _RichResult[Any],
+    ShapeT: tuple[int, ...],
+    ToShapeT: SupportsIndex | tuple[SupportsIndex, ...],
+    FloatT: npc.floating,
+](
+    work: Mapping[str, onp.Array[ShapeT, FloatT]],
+    res: ResT,
     res_work_pairs: Iterable[tuple[str, str]],
-    active: onp.Array[_ShapeT, npc.integer],
-    shape: _ToShapeT,
-    customize_result: Callable[[_ResT, _ToShapeT], tuple[int, ...]],
+    active: onp.Array[ShapeT, npc.integer],
+    shape: ToShapeT,
+    customize_result: Callable[[ResT, ToShapeT], tuple[int, ...]],
     preserve_shape: bool | None,
     xp: ModuleType,
-) -> _ResT: ...
+) -> ResT: ...
