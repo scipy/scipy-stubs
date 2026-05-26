@@ -1133,7 +1133,7 @@ dev = [
     { name = "sp-repo-review", extras = ["cli"], specifier = "==2026.4.4" },
     { name = "stubdefaulter", git = "https://github.com/JelleZijlstra/stubdefaulter.git?rev=ebe9e31" },
     { name = "ty", specifier = "==0.0.39" },
-    { name = "typeshed-client", git = "https://github.com/jorenham/typeshed_client.git?rev=gh-144" },
+    { name = "typeshed-client", git = "https://github.com/JelleZijlstra/typeshed_client.git?rev=d07fd47" },
 ]
 extras = [{ name = "scipy-stubs", extras = ["scipy"] }]
 lint = [
@@ -1153,7 +1153,7 @@ type = [
     { name = "scipy-stubs", extras = ["scipy"] },
     { name = "stubdefaulter", git = "https://github.com/JelleZijlstra/stubdefaulter.git?rev=ebe9e31" },
     { name = "ty", specifier = "==0.0.39" },
-    { name = "typeshed-client", git = "https://github.com/jorenham/typeshed_client.git?rev=gh-144" },
+    { name = "typeshed-client", git = "https://github.com/JelleZijlstra/typeshed_client.git?rev=d07fd47" },
 ]
 
 [[package]]
@@ -1276,7 +1276,7 @@ wheels = [
 [[package]]
 name = "typeshed-client"
 version = "2.11.0"
-source = { git = "https://github.com/jorenham/typeshed_client.git?rev=gh-144#6f3d6615ccf6838ef905b6f30aa71a1d231be078" }
+source = { git = "https://github.com/JelleZijlstra/typeshed_client.git?rev=d07fd47#d07fd47fe9db0172913ed1f38d4b52e8a103f97f" }
 dependencies = [
     { name = "importlib-resources" },
     { name = "typing-extensions" },
