@@ -4,9 +4,10 @@ from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from contextlib import _GeneratorContextManager
 from types import ModuleType
-from typing import Any, Final, Literal, Never, TypeAlias
+from typing import Any, Final, Literal, Never
 
 import _pytest.mark
+import pytest
 from array_api_compat import (
     is_array_api_strict_namespace as is_array_api_strict,
     is_cupy_namespace as is_cupy,
@@ -17,7 +18,9 @@ from array_api_compat import (
     size as xp_size,
 )
 
-_CapabilitiesTable: TypeAlias = dict[Callable[..., Any], dict[str, Any]]
+from ._array_api_override import array_namespace
+
+type _CapabilitiesTable = dict[Callable[..., Any], dict[str, Any]]
 
 ###
 
@@ -38,6 +41,7 @@ __all__ = [
     "is_lazy_array",
     "is_marray",
     "is_numpy",
+    "is_pydata_sparse_array",
     "is_torch",
     "make_xp_pytest_marks",
     "make_xp_pytest_param",
@@ -61,9 +65,8 @@ __all__ = [
 SCIPY_ARRAY_API: Final[str | Literal[False]] = ...
 SCIPY_DEVICE: Final[str] = ...
 
-Array: TypeAlias = Incomplete
+type Array = Incomplete
 
-def array_namespace(*arrays: Array) -> ModuleType: ...
 def _asarray(
     array: Any,
     dtype: Any = None,
@@ -175,6 +178,8 @@ def xp_capabilities(
     allow_dask_compute: bool = False,
     jax_jit: bool = True,
     extra_note: str | None = None,
+    method_capabilities: dict[str, dict[str, Any]] | None = None,
+    marray: bool = False,
 ) -> dict[str, _XPSphinxCapability]: ...
 
 #
@@ -182,11 +187,14 @@ def make_xp_test_case(
     *funcs: Callable[..., Any], capabilities_table: _CapabilitiesTable | None = None
 ) -> Callable[[Callable[..., None]], Callable[..., None]]: ...
 def make_xp_pytest_param(
-    func: Callable[..., Any], *args: Any, capabilities_table: _CapabilitiesTable | None = None
+    func: Callable[..., Any],
+    *args: Any,
+    additional_marks: pytest.MarkDecorator | Sequence[pytest.MarkDecorator] | None = None,
+    capabilities_table: _CapabilitiesTable | None = None,
 ) -> _pytest.mark.ParameterSet: ...
 def make_xp_pytest_marks(
     *funcs: Callable[..., Any], capabilities_table: _CapabilitiesTable | None = None
-) -> Sequence[_pytest.mark.Mark]: ...
+) -> Sequence[pytest.MarkDecorator]: ...
 
 xp_capabilities_table: Final[_CapabilitiesTable] = ...
 
@@ -195,3 +203,4 @@ def xp_device_type(a: Array) -> Literal["cpu", "cuda"] | None: ...
 # we can't import these from `array_api_compat` due to incomplete annotations, which pyright will complain about
 def xp_device(x: object, /) -> Incomplete: ...
 def is_lazy_array(x: object) -> bool: ...
+def is_pydata_sparse_array(x: object) -> bool: ...
