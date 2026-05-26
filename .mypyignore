@@ -22,7 +22,6 @@ scipy._lib._array_api.array_namespace
 scipy._lib._array_api.is_pydata_sparse_array
 scipy._lib._array_api.make_xp_pytest_param
 scipy._lib._array_api.xp_capabilities
-scipy._lib._array_api_compat_vendor
 scipy._lib._array_api_docs_tables.is_inherently_out_of_scope
 scipy._lib._array_api_docs_tables.is_named_function_like_object
 scipy._lib._array_api_no_0d.assert_almost_equal
@@ -31,8 +30,6 @@ scipy._lib._array_api_override._validate_array_cls
 scipy._lib._array_api_override.array_namespace
 scipy._lib._elementwise_iterative_method._initialize
 scipy._lib._gcutils.IS_PYPY
-scipy._lib._pep440
-scipy._lib._tmpdirs
 scipy._lib._util.DecimalNumber
 scipy._lib._util.IntNumber
 scipy._lib._util.SeedType
