@@ -22,8 +22,6 @@ scipy._lib._array_api.array_namespace
 scipy._lib._array_api.is_pydata_sparse_array
 scipy._lib._array_api.make_xp_pytest_param
 scipy._lib._array_api.xp_capabilities
-scipy._lib._array_api_override._validate_array_cls
-scipy._lib._array_api_override.array_namespace
 scipy._lib._elementwise_iterative_method._initialize
 scipy._lib._gcutils.IS_PYPY
 scipy._lib._util.DecimalNumber
