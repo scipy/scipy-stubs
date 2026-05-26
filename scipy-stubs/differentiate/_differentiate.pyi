@@ -1,5 +1,5 @@
 from _typeshed import ConvertibleToInt
-from collections.abc import Callable
+from collections.abc import Callable, Mapping
 from typing import Any, Concatenate, Generic, Literal, TypeAlias, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar
 
@@ -70,6 +70,7 @@ def derivative(
     x: float | onp.CanArray0[np.float64 | npc.integer],
     *,
     args: tuple[onp.ToScalar, ...] = (),
+    kwargs: Mapping[str, onp.ToScalar] | None = None,
     tolerances: _Tolerances | None = None,
     maxiter: ConvertibleToInt = 10,
     order: ConvertibleToInt = 8,
@@ -85,6 +86,7 @@ def derivative(
     x: onp.CanArray0[_FloatT],
     *,
     args: tuple[onp.ToScalar, ...] = (),
+    kwargs: Mapping[str, onp.ToScalar] | None = None,
     tolerances: _Tolerances | None = None,
     maxiter: ConvertibleToInt = 10,
     order: ConvertibleToInt = 8,
@@ -100,6 +102,7 @@ def derivative(
     x: onp.ToFloatStrict1D,
     *,
     args: tuple[onp.ToScalar | onp.ToArrayStrict1D, ...] = (),
+    kwargs: Mapping[str, onp.ToScalar | onp.ToArrayStrict1D] | None = None,
     tolerances: _Tolerances | None = None,
     maxiter: ConvertibleToInt = 10,
     order: ConvertibleToInt = 8,
@@ -115,6 +118,7 @@ def derivative(
     x: _FloatT | onp.ToArrayND[_FloatT],
     *,
     args: tuple[onp.ToScalar | onp.ToArrayND, ...] = (),
+    kwargs: Mapping[str, onp.ToScalar | onp.ToArrayND] | None = None,
     tolerances: _Tolerances | None = None,
     maxiter: ConvertibleToInt = 10,
     order: ConvertibleToInt = 8,
@@ -130,6 +134,7 @@ def derivative(
     x: onp.ToFloat | onp.ToFloatND,
     *,
     args: tuple[onp.ToScalar | onp.ToArrayND, ...] = (),
+    kwargs: Mapping[str, onp.ToScalar | onp.ToArrayND] | None = None,
     tolerances: _Tolerances | None = None,
     maxiter: ConvertibleToInt = 10,
     order: ConvertibleToInt = 8,
