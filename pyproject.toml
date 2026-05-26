@@ -72,6 +72,10 @@ dev = [
   { include-group = "type" },
 ]
 
+[tool.uv]
+# TODO(@jorenham): remove after scipy==1.18.0 final
+prerelease = "allow"
+
 [tool.uv.sources]
 # the required stubdefaulter features not released yet (>0.1.0)
 stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "ebe9e31" }
