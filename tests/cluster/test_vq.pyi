@@ -29,10 +29,10 @@ assert_type(vq.vq(floating_2d, floating_2d), tuple[onp.Array1D[np.int32], onp.Ar
 vq.vq(c128_2d, f64_2d)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 
 # py_vq
-assert_type(vq.py_vq(i64_2d, i64_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])
-assert_type(vq.py_vq(f32_2d, f32_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])
-assert_type(vq.py_vq(f64_2d, f64_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])
-assert_type(vq.py_vq(floating_2d, floating_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])
+assert_type(vq.py_vq(i64_2d, i64_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(vq.py_vq(f32_2d, f32_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(vq.py_vq(f64_2d, f64_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(vq.py_vq(floating_2d, floating_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 # pyrefly: ignore [no-matching-overload]
 vq.py_vq(c128_2d, f64_2d)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 
