@@ -19,9 +19,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 
 scipy.__all__
 
-scipy.np_maxversion
-scipy.np_minversion
-
 scipy._lib._array_api.__all__
 scipy._lib._array_api.array_namespace
 scipy._lib._array_api.is_pydata_sparse_array
