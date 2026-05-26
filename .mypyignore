@@ -20,7 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.interpolate._interpnd.NDInterpolatorBase.__call__
 scipy.interpolate._interpolate.PPoly.solve
 scipy.interpolate._interpolate._PPolyBase.__slots__
 scipy.interpolate._ndgriddata.griddata

@@ -1,4 +1,4 @@
-# scipy/interpolate/interpnd.pyx
+# scipy/interpolate/_interpnd.pyx
 import types
 from typing import Any, Generic, overload
 from typing_extensions import TypeVar
@@ -66,7 +66,7 @@ class NDInterpolatorBase(Generic[_CT_co]):
     ) -> None: ...
 
     #
-    def __call__(self, /, *args: onp.ToFloatND) -> onp.ArrayND[_CT_co]: ...
+    def __call__(self, /, *args: onp.ToFloatND, simplex_tolerance: float = 1.0) -> onp.ArrayND[_CT_co]: ...
 
 class LinearNDInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
     @overload

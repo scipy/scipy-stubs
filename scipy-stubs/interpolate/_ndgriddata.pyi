@@ -31,6 +31,7 @@ class _QueryOptions(TypedDict, total=False):
     p: onp.ToFloat
     distance_upper_bound: onp.ToFloat
     workers: int
+    simplex_tolerance: float
 
 ###
 
