@@ -66,6 +66,7 @@ type = [
   "pyrefly==0.63.1",
   "stubdefaulter>=0.1.0",
   "ty==0.0.39",
+  "typeshed-client>=2.11.0",
 ]
 dev = [
   { include-group = "lint" },
@@ -79,6 +80,8 @@ prerelease = "allow"
 [tool.uv.sources]
 # the required stubdefaulter features not released yet (>0.1.0)
 stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "ebe9e31" }
+# TODO(@jorenham): remove once https://github.com/JelleZijlstra/typeshed_client/pull/145 is released
+typeshed-client = { git = "https://github.com/jorenham/typeshed_client.git", rev = "gh-144" }
 
 # poe
 
