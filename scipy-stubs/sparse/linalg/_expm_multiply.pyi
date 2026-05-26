@@ -1,6 +1,5 @@
 from _typeshed import Incomplete
-from typing import Any, Never, SupportsIndex, TypeAlias, TypeVar, overload
-from typing_extensions import TypeAliasType
+from typing import Any, Never, SupportsIndex, TypeAlias, TypeAliasType, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp

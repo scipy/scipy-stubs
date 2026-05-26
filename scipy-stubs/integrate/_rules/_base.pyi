@@ -1,7 +1,7 @@
 from collections.abc import Callable, Generator, Iterable, Sequence
 from types import ModuleType
-from typing import Concatenate, Generic, TypeAlias
-from typing_extensions import TypeVar, override
+from typing import Concatenate, Generic, TypeAlias, override
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

@@ -1,5 +1,4 @@
-from typing import TypedDict
-from typing_extensions import Unpack
+from typing import TypedDict, Unpack
 
 from matplotlib.axes import Axes as _Axes
 from matplotlib.figure import Figure as _Figure

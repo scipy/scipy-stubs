@@ -1,6 +1,6 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Concatenate, Literal, SupportsIndex, TypeAlias, TypedDict, overload, type_check_only
-from typing_extensions import TypeVar, Unpack
+from typing import Any, Concatenate, Literal, SupportsIndex, TypeAlias, TypedDict, Unpack, overload, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import numpy_typing_compat as nptc

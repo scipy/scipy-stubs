@@ -1,5 +1,5 @@
-from typing import Any, Final, Generic, Literal, TypeAlias, overload
-from typing_extensions import TypeVar, override
+from typing import Any, Final, Generic, Literal, TypeAlias, overload, override
+from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt

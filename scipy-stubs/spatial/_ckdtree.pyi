@@ -1,5 +1,5 @@
-from typing import Generic, Literal as L, Protocol, TypeAlias, overload, type_check_only
-from typing_extensions import TypeVar, override
+from typing import Generic, Literal as L, Protocol, TypeAlias, overload, override, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

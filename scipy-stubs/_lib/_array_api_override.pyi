@@ -1,14 +1,9 @@
 import enum
-import sys
 import types
-from typing import Any, Final, Literal, TypeAlias
+from typing import Any, Final, Literal
 
-# mypy<=1.19.0 workaround, see https://github.com/python/mypy/pull/20392
-if sys.version_info >= (3, 14):
-    __conditional_annotations__: Final[set[int]] = ...
-
-Array: TypeAlias = Any
-ArrayLike: TypeAlias = Any
+type Array = Any  # evil; do not use
+type ArrayLike = Any  # evil; do not use
 
 SCIPY_ARRAY_API: Final[str | Literal[False]] = ...
 SCIPY_DEVICE: Final[str] = ...
@@ -19,5 +14,5 @@ class _ArrayClsInfo(enum.Enum):
     array_like = 2
     unknown = 3
 
-def _validate_array_cls(cls: type) -> _ArrayClsInfo: ...
-def array_namespace(*arrays: Array) -> types.ModuleType: ...
+def _validate_array_cls(cls: type, sparse_ok: bool = False) -> _ArrayClsInfo: ...
+def array_namespace(*arrays: Any, sparse_ok: bool = False) -> types.ModuleType: ...

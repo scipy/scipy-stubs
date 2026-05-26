@@ -1,6 +1,5 @@
 from collections.abc import Mapping
-from typing import Any, Literal, TypeAlias, TypedDict, type_check_only
-from typing_extensions import Unpack
+from typing import Any, Literal, TypeAlias, TypedDict, Unpack, type_check_only
 
 from ._miobase import MatFileReader
 from scipy.io._typing import ByteOrder, FileName

@@ -1,5 +1,5 @@
-from typing import Final, Generic, Self, SupportsIndex, TypeAlias, overload
-from typing_extensions import TypeVar, override
+from typing import Final, Generic, Self, SupportsIndex, TypeAlias, overload, override
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

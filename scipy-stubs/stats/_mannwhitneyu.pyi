@@ -1,4 +1,4 @@
-from typing import Any, Generic, Literal as L, NamedTuple, Never, TypeAlias, overload
+from typing import Any, Generic, Literal as L, Never, Self, TypeAlias, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -25,9 +25,19 @@ _JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for h
 
 ###
 
-class MannwhitneyuResult(NamedTuple, Generic[_StatisticT_co, _PValueT_co]):
-    statistic: _StatisticT_co
-    pvalue: _PValueT_co
+# at runtime this is a dynamically created tuple subclass from `_make_tuple_bunch`, but its `extra_fields` aren't used.
+class MannwhitneyuResult(tuple[_StatisticT_co, _PValueT_co], Generic[_StatisticT_co, _PValueT_co]):
+    def __new__(_cls, /, statistic: _StatisticT_co, pvalue: _PValueT_co) -> Self: ...
+    def __init__(self, /, statistic: _StatisticT_co, pvalue: _PValueT_co) -> None: ...
+
+    #
+    @property
+    def statistic(self) -> _StatisticT_co: ...
+    @property
+    def pvalue(self) -> _PValueT_co: ...
+
+    #
+    def __getnewargs_ex__(self) -> tuple[tuple[_StatisticT_co, _PValueT_co], dict[str, Never]]: ...
 
 #
 @overload  # ?d ~f64

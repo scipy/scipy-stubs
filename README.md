@@ -167,7 +167,7 @@ Even though `scipy-stubs` doesn't enforce an upper bound on the `scipy` version,
 fully compatible.
 
 There are no additional restrictions enforced by `scipy-stubs` on the `numpy` requirements.
-For `scipy-stubs==1.16.*` that is `numpy >= 1.25.2`.
+For `scipy-stubs==1.18.*` that is `numpy >= 2.0.0`.
 
 Currently, `scipy-stubs` has one required dependency: [`optype`](https://github.com/jorenham/optype).
 This is essential for `scipy-stubs` to work properly, as it relies heavily on it for annotating (shaped) array-likes,

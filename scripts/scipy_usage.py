@@ -17,8 +17,7 @@ import zipfile
 from collections import Counter
 from collections.abc import Generator
 from pathlib import Path
-from typing import cast
-from typing_extensions import override
+from typing import cast, override
 
 # List of repositories from the README
 DEFAULT_REPOS = [

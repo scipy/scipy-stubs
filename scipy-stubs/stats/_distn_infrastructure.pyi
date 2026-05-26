@@ -3,8 +3,8 @@
 # pyright: reportIncompatibleMethodOverride = false
 import types
 from collections.abc import Callable, Iterable, Mapping, Sequence
-from typing import Any, Final, Generic, Literal as L, Self, SupportsIndex, TypeAlias, overload, type_check_only
-from typing_extensions import TypeVar, Unpack, override
+from typing import Any, Final, Generic, Literal as L, Self, SupportsIndex, TypeAlias, Unpack, overload, override, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

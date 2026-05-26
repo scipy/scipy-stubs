@@ -9,7 +9,7 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 
 [project]
 name = "scipy-stubs"
-version = "1.17.1.6.dev0"
+version = "1.18.0.0.dev0"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
@@ -29,17 +29,16 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
   "Typing :: Stubs Only",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.12"
 dependencies = ["optype[numpy]>=0.14.0,<0.18"]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.17.1,<1.18"]
+scipy = ["scipy>=1.18.0rc1,<1.19"]
 
 [project.urls]
 Homepage = "https://scipy.org/"
@@ -67,15 +66,22 @@ type = [
   "pyrefly==0.63.1",
   "stubdefaulter>=0.1.0",
   "ty==0.0.39",
+  "typeshed-client>=2.11.0",
 ]
 dev = [
   { include-group = "lint" },
   { include-group = "type" },
 ]
 
+[tool.uv]
+# TODO(@jorenham): remove after scipy==1.18.0 final
+prerelease = "allow"
+
 [tool.uv.sources]
 # the required stubdefaulter features not released yet (>0.1.0)
 stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "ebe9e31" }
+# TODO(@jorenham): remove once https://github.com/JelleZijlstra/typeshed_client/pull/145 is released
+typeshed-client = { git = "https://github.com/jorenham/typeshed_client.git", rev = "gh-144" }
 
 # poe
 
@@ -268,7 +274,21 @@ skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D", "FBT", "ANN401", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
+ignore = [
+  "D",
+  "FBT",
+  "ANN401",
+  "COM812",
+  "CPY",
+  "EM",
+  "TD",
+  "FIX",
+  "DOC",
+  # TODO(@jorenham): https://github.com/scipy/scipy-stubs/pull/1615
+  "UP040",
+  "UP046",
+  "UP047",
+]
 
 [tool.ruff.lint.per-file-ignores]
 "*.pyi" = ["F", "E741", "N", "A", "PYI054", "PLC2701", "PLW3201", "PLR", "FURB"]
@@ -298,7 +318,7 @@ split-on-trailing-comma = false
 [tool.tox]
 min_version = "4"
 requires = ["tox-uv>=1"]
-env_list = ["lint", "ty", "pyrefly", "pyright", "mypy", "3.11", "3.12", "3.13", "3.14"]
+env_list = ["lint", "ty", "pyrefly", "pyright", "mypy", "3.12", "3.13", "3.14"]
 
 [tool.tox.env_run_base]
 description = "stubtest with {base_python}"

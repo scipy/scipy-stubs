@@ -1,8 +1,8 @@
 from collections.abc import Callable, Iterable
 from contextlib import _GeneratorContextManager
 from types import NotImplementedType
-from typing import Any, ClassVar, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, final, overload, type_check_only
-from typing_extensions import ParamSpec, TypeVar, Unpack
+from typing import Any, ClassVar, Final, Generic, Literal, Protocol, TypedDict, Unpack, final, overload, type_check_only
+from typing_extensions import ParamSpec, TypeVar
 
 from scipy._typing import ExitMixin
 
@@ -31,21 +31,16 @@ __all__ = [
     "wrap_single_convertor_instance",
 ]
 
-_V = TypeVar("_V")
-_T = TypeVar("_T", default=object)
-_T2 = TypeVar("_T2", default=object)
-_S = TypeVar("_S")
-_C = TypeVar("_C")
 _T_co = TypeVar("_T_co", covariant=True, default=Any)
 _Tss = ParamSpec("_Tss", default=...)
 
-_DispatchType: TypeAlias = type[_T] | str
-_DispatchTypeSlice: TypeAlias = (
+type _DispatchType[T] = type[T] | str
+type _DispatchTypeSlice[T] = (
     tuple[()]
-    | tuple[_T]
-    | tuple[_DispatchType[_T]]
-    | tuple[_DispatchType[_T], _T]
-    | tuple[_T, _DispatchType[_T]]
+    | tuple[T]
+    | tuple[_DispatchType[T]]
+    | tuple[_DispatchType[T], T]
+    | tuple[T, _DispatchType[T]]
 )  # fmt: skip
 
 @type_check_only
@@ -56,13 +51,13 @@ class _Backend(Protocol[_T_co]):
 
 @final
 @type_check_only
-class _DetermineBackendMultiKwargs(TypedDict, Generic[_T], total=False):
-    dispatch_type: type[_T] | str
+class _DetermineBackendMultiKwargs[T](TypedDict, total=False):
+    dispatch_type: type[T] | str
 
 ###
 
-ArgumentExtractorType: TypeAlias = Callable[..., tuple[Dispatchable, ...]]
-ArgumentReplacerType: TypeAlias = Callable[
+type ArgumentExtractorType = Callable[..., tuple[Dispatchable, ...]]
+type ArgumentReplacerType = Callable[
     [tuple[Any, ...], dict[str, Any], tuple[Dispatchable, ...]],
     tuple[tuple[Any, ...], dict[str, Any]],
 ]  # fmt: skip
@@ -113,17 +108,17 @@ def reset_state() -> _GeneratorContextManager[None]: ...
 def set_state(state: _BackendState) -> _GeneratorContextManager[None]: ...
 
 #
-def create_multimethod(
-    *args: ArgumentReplacerType | str | Callable[_Tss, _T], **kwargs: ArgumentReplacerType | str | Callable[_Tss, _T]
-) -> Callable[[ArgumentExtractorType], _Function[_Tss, _T]]: ...
+def create_multimethod[**Tss, T](
+    *args: ArgumentReplacerType | str | Callable[Tss, T], **kwargs: ArgumentReplacerType | str | Callable[Tss, T]
+) -> Callable[[ArgumentExtractorType], _Function[Tss, T]]: ...
 @overload
 def generate_multimethod(
     argument_extractor: ArgumentExtractorType, argument_replacer: ArgumentReplacerType, domain: str, default: None = None
 ) -> _Function: ...
 @overload
-def generate_multimethod(
-    argument_extractor: ArgumentExtractorType, argument_replacer: ArgumentReplacerType, domain: str, default: Callable[_Tss, _T]
-) -> _Function[_Tss, _T]: ...
+def generate_multimethod[**Tss, T](
+    argument_extractor: ArgumentExtractorType, argument_replacer: ArgumentReplacerType, domain: str, default: Callable[Tss, T]
+) -> _Function[Tss, T]: ...
 
 #
 def set_backend(backend: _Backend, coerce: bool = False, only: bool = False) -> _SetBackendContext: ...
@@ -135,40 +130,47 @@ def register_backend(backend: _Backend) -> None: ...
 def clear_backends(domain: str | None, registered: bool = True, globals: bool = False) -> None: ...
 
 #
-def mark_as(dispatch_type: type[_T] | str) -> Callable[[_T], Dispatchable[_T]]: ...
-def all_of_type(
-    arg_type: type[_T] | str,
-) -> Callable[[Callable[_Tss, Iterable[_T | Dispatchable[_T2]]]], Callable[_Tss, tuple[Dispatchable[_T | _T2], ...]]]: ...
+def mark_as[T](dispatch_type: type[T] | str) -> Callable[[T], Dispatchable[T]]: ...
+
+#
+@type_check_only
+class _AllOfTypeCallable[T](Protocol):
+    def __call__[**Tss, T2](
+        self, arg: Callable[Tss, Iterable[T | Dispatchable[T2]]], /
+    ) -> Callable[Tss, tuple[Dispatchable[T | T2], ...]]: ...
+
+#
+def all_of_type[T](arg_type: type[T] | str) -> _AllOfTypeCallable[T]: ...
 
 #
 @overload
-def wrap_single_convertor(
-    convert_single: Callable[[_V, _DispatchType[_V], bool], NotImplementedType],
-) -> Callable[[Iterable[Dispatchable[_V]], bool], NotImplementedType]: ...
+def wrap_single_convertor[V](
+    convert_single: Callable[[V, _DispatchType[V], bool], NotImplementedType],
+) -> Callable[[Iterable[Dispatchable[V]], bool], NotImplementedType]: ...
 @overload
-def wrap_single_convertor(
-    convert_single: Callable[[_V, _DispatchType[_V], bool], _C],
-) -> Callable[[Iterable[Dispatchable[_V]], bool], list[_C]]: ...
+def wrap_single_convertor[V, C](
+    convert_single: Callable[[V, _DispatchType[V], bool], C],
+) -> Callable[[Iterable[Dispatchable[V]], bool], list[C]]: ...
 
 #
 @overload
-def wrap_single_convertor_instance(
-    convert_single: Callable[[_S, _V, _DispatchType[_V], bool], NotImplementedType],
-) -> Callable[[_S, Iterable[Dispatchable[_V]], bool], NotImplementedType]: ...
+def wrap_single_convertor_instance[S, V](
+    convert_single: Callable[[S, V, _DispatchType[V], bool], NotImplementedType],
+) -> Callable[[S, Iterable[Dispatchable[V]], bool], NotImplementedType]: ...
 @overload
-def wrap_single_convertor_instance(
-    convert_single: Callable[[_S, _V, _DispatchType[_V], bool], _C],
-) -> Callable[[_S, Iterable[Dispatchable[_V]], bool], list[_C]]: ...
+def wrap_single_convertor_instance[S, V, C](
+    convert_single: Callable[[S, V, _DispatchType[V], bool], C],
+) -> Callable[[S, Iterable[Dispatchable[V]], bool], list[C]]: ...
 
 #
-def determine_backend(
-    value: _V, dispatch_type: _DispatchType[_V], *, domain: str, only: bool = True, coerce: bool = False
+def determine_backend[V](
+    value: V, dispatch_type: _DispatchType[V], *, domain: str, only: bool = True, coerce: bool = False
 ) -> _SetBackendContext: ...
-def determine_backend_multi(
-    dispatchables: Iterable[_V | Dispatchable[_V]],
+def determine_backend_multi[V, T](
+    dispatchables: Iterable[V | Dispatchable[V]],
     *,
     domain: str,
     only: bool = True,
     coerce: bool = False,
-    **kwargs: Unpack[_DetermineBackendMultiKwargs[_T]],
+    **kwargs: Unpack[_DetermineBackendMultiKwargs[T]],
 ) -> _SetBackendContext: ...

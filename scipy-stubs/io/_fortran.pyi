@@ -1,5 +1,5 @@
-from typing import Literal, Self, TypeAlias, TypedDict, final, overload, type_check_only
-from typing_extensions import TypeVar, Unpack
+from typing import Literal, Self, TypeAlias, TypedDict, Unpack, final, overload, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt

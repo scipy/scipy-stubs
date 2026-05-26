@@ -1,5 +1,5 @@
-from typing import Any, Generic, Literal, Self, SupportsIndex
-from typing_extensions import TypeVar, override
+from typing import Any, Generic, Literal, Self, SupportsIndex, override
+from typing_extensions import TypeVar
 
 import numpy as np
 import numpy.typing as npt

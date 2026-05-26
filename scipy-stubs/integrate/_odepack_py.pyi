@@ -1,6 +1,6 @@
 from collections.abc import Callable
-from typing import Literal, TypedDict, overload, type_check_only
-from typing_extensions import TypeAliasType, TypeVar, TypeVarTuple
+from typing import Literal, TypeAliasType, TypedDict, overload, type_check_only
+from typing_extensions import TypeVar, TypeVarTuple
 
 import numpy as np
 import optype.numpy as onp

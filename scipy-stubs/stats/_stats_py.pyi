@@ -1,8 +1,8 @@
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from types import ModuleType
-from typing import Any, Generic, Literal as L, Never, Protocol, Self, TypeAlias, overload, type_check_only
-from typing_extensions import NamedTuple, TypeVar, override
+from typing import Any, Generic, Literal as L, NamedTuple, Never, Protocol, Self, TypeAlias, overload, override, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import numpy_typing_compat as nptc

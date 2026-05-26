@@ -2,8 +2,8 @@
 # mypy: disable-error-code="misc, override"
 
 from collections.abc import Iterable, Sequence
-from typing import Any, ClassVar, Generic, Literal, Never, Self, TypeAlias, overload, type_check_only
-from typing_extensions import TypeIs, TypeVar, override
+from typing import Any, ClassVar, Generic, Literal, Never, Self, TypeAlias, overload, override, type_check_only
+from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
 import numpy.typing as npt

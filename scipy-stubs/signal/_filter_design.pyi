@@ -1,8 +1,8 @@
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Any, Literal as L, SupportsIndex, TypeAlias, overload
-from typing_extensions import TypeAliasType, TypeVar
+from typing import Any, Literal as L, SupportsIndex, TypeAlias, TypeAliasType, overload
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp

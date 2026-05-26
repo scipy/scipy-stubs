@@ -1,7 +1,6 @@
 # NOTE(scipy-stubs): This module only exists `if typing.TYPE_CHECKING: ...`, and has no stable API.
 
-from typing import Literal, Protocol, SupportsIndex, TypeAlias, TypeVar, final, type_check_only
-from typing_extensions import TypeAliasType
+from typing import Literal, Protocol, SupportsIndex, TypeAlias, TypeAliasType, TypeVar, final, type_check_only
 
 import numpy as np
 import optype.numpy.compat as npc

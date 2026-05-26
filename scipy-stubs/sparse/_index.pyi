@@ -1,6 +1,7 @@
+from collections.abc import Buffer
 from types import EllipsisType
 from typing import Any, Generic, Self, SupportsComplex, SupportsFloat, SupportsIndex, SupportsInt, TypeAlias, overload
-from typing_extensions import Buffer, TypeVar
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
