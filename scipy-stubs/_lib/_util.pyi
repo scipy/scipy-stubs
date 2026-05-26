@@ -10,6 +10,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+from numpy import long as np_long, ulong as np_ulong  # pyright: ignore[reportUnusedImport]  # noqa: ICN003
 
 from scipy._typing import ExitMixin
 
@@ -25,9 +26,6 @@ _AxisT = TypeVar("_AxisT", bound=npc.integer)
 
 ###
 
-np_long = np.long
-np_ulong = np.ulong
-
 copy_if_needed: Final = None
 
 # NOTE: These aliases are implictly exported at runtime (I don't like this).
@@ -37,7 +35,7 @@ type DecimalNumber = Any
 type _RNG = Any
 type SeedType = Any
 
-# yikes...
+# see https://github.com/scipy/scipy/pull/25225
 GeneratorType = TypeVar("GeneratorType", bound=_RNG)  # noqa: PYI001
 
 if sys.version_info >= (3, 14):
