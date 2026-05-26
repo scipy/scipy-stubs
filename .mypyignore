@@ -20,7 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.linalg._decomp.eigvals
 scipy.linalg._decomp_lu_cython
 scipy.linalg._matfuncs.logm
 scipy.linalg._matfuncs.signm
@@ -30,7 +29,6 @@ scipy.linalg._matfuncs_schur_sqrtm
 scipy.linalg._testutils._FakeMatrix.shape
 scipy.linalg._testutils._FakeMatrix2.shape
 scipy.linalg.basic.get_lapack_funcs
-scipy.linalg.decomp.eigvals
 scipy.linalg.decomp.get_lapack_funcs
 scipy.linalg.decomp_cholesky.get_lapack_funcs
 scipy.linalg.decomp_lu.get_lapack_funcs

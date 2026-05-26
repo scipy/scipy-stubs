@@ -1,12 +1,11 @@
 from collections.abc import Iterable, Sequence
-from typing import Literal, TypeAlias, overload
-from typing_extensions import TypeVar
+from typing import Any, Literal, overload
 
 import numpy as np
+import numpy_typing_compat as nptc
 import optype.numpy as onp
 import optype.numpy.compat as npc
 import optype.typing as opt
-from numpy._typing import _ArrayLike
 
 __all__ = [
     "cdf2rdf",
@@ -21,41 +20,32 @@ __all__ = [
     "hessenberg",
 ]
 
-_FloatT = TypeVar("_FloatT", bound=_Floating, default=_Float)
-_FloatT2 = TypeVar("_FloatT2", bound=_Floating, default=_Float)
-
-# scalar types
-_Integer: TypeAlias = npc.integer
-_Floating: TypeAlias = npc.floating
-_Float: TypeAlias = np.float32 | np.float64
-_Complex: TypeAlias = np.complex64 | np.complex128
-
 # input types
 # NOTE: only "a", "v" and "i" are documented for the `select` params, but internally 0, 1, and 2 are used, respectively.
-_SelectA: TypeAlias = Literal["a", "all", 0]
-_SelectV: TypeAlias = Literal["v", "value", 1]
-_SelectI: TypeAlias = Literal["i", "index", 2]
+type _SelectA = Literal["a", "all", 0]
+type _SelectV = Literal["v", "value", 1]
+type _SelectI = Literal["i", "index", 2]
 
 # NOTE: `_check_select()` requires the `select_range` array-like to be of `int{16,32,64}` when `select: _SelectIndex`
 # https://github.com/scipy/scipy-stubs/issues/154
 # NOTE: This `select_range` parameter type must be of shape `(2,)` and in nondescending order
-_SelectRange: TypeAlias = Sequence[float | _Integer | _Floating]
-_SelectRangeI: TypeAlias = Sequence[int | np.int16 | np.int32 | np.int64]  # no bool, int8 or unsigned ints
+type _SelectRange = Sequence[float | npc.integer | npc.floating]
+type _SelectRangeI = Sequence[int | np.int16 | np.int32 | np.int64]  # no bool, int8 or unsigned ints
 
-_EigHType: TypeAlias = Literal[1, 2, 3]
-_EigHSubsetByIndex: TypeAlias = Iterable[opt.AnyInt]
-_EigHSubsetByValue: TypeAlias = Iterable[onp.ToFloat]
+type _EigHType = Literal[1, 2, 3]
+type _EigHSubsetByIndex = Iterable[opt.AnyInt]
+type _EigHSubsetByValue = Iterable[onp.ToFloat]
 
 # LAPACK drivers
-_DriverGV: TypeAlias = Literal["gv", "gvd", "gvx"]
-_DriverEV: TypeAlias = Literal["ev", "evd", "evx", "evr"]
-_DriverSTE: TypeAlias = Literal["stemr", "stebz", "sterf", "stev"]
-_DriverAuto: TypeAlias = Literal["auto"]
+type _DriverGV = Literal["gv", "gvd", "gvx"]
+type _DriverEV = Literal["ev", "evd", "evx", "evr"]
+type _DriverSTE = Literal["stemr", "stebz", "sterf", "stev"]
+type _DriverAuto = Literal["auto"]
 
 # output types
-_FloatND: TypeAlias = onp.ArrayND[_Float]
-_ComplexND: TypeAlias = onp.ArrayND[_Complex]
-_InexactND: TypeAlias = onp.ArrayND[_Float | _Complex]
+type _FloatND = onp.ArrayND[np.float32 | np.float64]
+type _ComplexND = onp.ArrayND[np.complex64 | np.complex128]
+type _InexactND = onp.ArrayND[np.float32 | np.float64 | np.complex64 | np.complex128]
 
 ###
 
@@ -618,32 +608,11 @@ def eig_banded(
 ) -> _FloatND: ...
 
 #
-@overload  # homogeneous_eigvals: False = ...
 def eigvals(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
     overwrite_a: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
-) -> _ComplexND: ...
-@overload  # homogeneous_eigvals: True (positional)
-def eigvals(
-    a: onp.ToComplexND, b: onp.ToComplexND | None, overwrite_a: bool, check_finite: bool, homogeneous_eigvals: Literal[True]
-) -> _ComplexND: ...
-@overload  # homogeneous_eigvals: True (keyword)
-def eigvals(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None = None,
-    overwrite_a: bool = False,
-    check_finite: bool = True,
-    *,
-    homogeneous_eigvals: Literal[True],
-) -> _ComplexND: ...
-@overload  # catch-all
-def eigvals(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None = None,
-    overwrite_a: bool = False,
+    overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> _ComplexND: ...
@@ -860,10 +829,16 @@ def hessenberg(
 
 #
 @overload
-def cdf2rdf(w: _ArrayLike[_FloatT], v: _ArrayLike[_FloatT2]) -> tuple[onp.ArrayND[_FloatT], onp.ArrayND[_FloatT2]]: ...
+def cdf2rdf[FloatVT: npc.floating, FloatWT: npc.floating](
+    w: nptc.CanArray[Any, np.dtype[FloatVT]], v: nptc.CanArray[Any, np.dtype[FloatWT]]
+) -> tuple[onp.ArrayND[FloatVT], onp.ArrayND[FloatWT]]: ...
 @overload
-def cdf2rdf(w: _ArrayLike[_FloatT], v: onp.ToComplexND) -> tuple[onp.ArrayND[_FloatT], _FloatND]: ...
+def cdf2rdf[FloatT: npc.floating](
+    w: nptc.CanArray[Any, np.dtype[FloatT]], v: onp.ToComplexND
+) -> tuple[onp.ArrayND[FloatT], _FloatND]: ...
 @overload
-def cdf2rdf(w: onp.ToComplexND, v: _ArrayLike[_FloatT2]) -> tuple[_FloatND, onp.ArrayND[_FloatT2]]: ...
+def cdf2rdf[FloatT: npc.floating](
+    w: onp.ToComplexND, v: nptc.CanArray[Any, np.dtype[FloatT]]
+) -> tuple[_FloatND, onp.ArrayND[FloatT]]: ...
 @overload
 def cdf2rdf(w: onp.ToComplexND, v: onp.ToComplexND) -> tuple[_FloatND, _FloatND]: ...
