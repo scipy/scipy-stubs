@@ -6,7 +6,7 @@ __all__ = ["loadmat", "savemat", "whosmat"]
 
 @deprecated("will be removed in SciPy v2.0.0")
 def loadmat(
-    file_name: object, mdict: object = None, appendmat: object = True, *, spmatrix: bool = True, **kwargs: object
+    file_name: object, mdict: object = None, appendmat: object = True, *, spmatrix: object = ..., **kwargs: object
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def savemat(

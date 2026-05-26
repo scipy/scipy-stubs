@@ -27,7 +27,7 @@ assert_type(
 )
 
 # mmread
-assert_type(mmread("file.mtx"), onp.Array2D | coo_matrix)
+assert_type(mmread("file.mtx"), onp.Array2D | coo_matrix)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(mmread("file.mtx", spmatrix=True), onp.Array2D | coo_matrix)
 assert_type(mmread("file.mtx", spmatrix=False), onp.Array2D | coo_array[Any, tuple[int, int]])
 

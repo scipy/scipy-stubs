@@ -1,7 +1,8 @@
 import io
-from typing import Any, Final, Literal, TypeAlias, Unpack, overload, override, type_check_only
-from typing_extensions import TypedDict
+from typing import Any, Final, Literal, Unpack, overload, override, type_check_only
+from typing_extensions import TypedDict, deprecated
 
+import optype as op
 import optype.numpy as onp
 
 from scipy.io._typing import FileLike
@@ -9,10 +10,12 @@ from scipy.sparse import coo_array, coo_matrix, sparray, spmatrix
 
 __all__ = ["mminfo", "mmread", "mmwrite"]
 
-_Format: TypeAlias = Literal["coordinate", "array"]
-_Field: TypeAlias = Literal["real", "complex", "pattern", "integer"]
-_Symmetry: TypeAlias = Literal["general", "symmetric", "skew-symmetric", "hermitian"]
-_Info: TypeAlias = tuple[int, int, int, _Format, _Field, _Symmetry]
+type _NoValueType = op.JustObject
+
+type _Format = Literal["coordinate", "array"]
+type _Field = Literal["real", "complex", "pattern", "integer"]
+type _Symmetry = Literal["general", "symmetric", "skew-symmetric", "hermitian"]
+type _Info = tuple[int, int, int, _Format, _Field, _Symmetry]
 
 @type_check_only
 class _TextToBytesWrapperKwargs(TypedDict, total=False):
@@ -47,9 +50,17 @@ class _TextToBytesWrapper(io.BufferedReader):
 
 #
 @overload
-def mmread(source: FileLike[bytes], *, spmatrix: onp.ToTrue = True) -> onp.Array2D | coo_matrix: ...
+@deprecated(
+    "The default value for `spmatrix` is changing to `False` in v1.20. That means the default return type will be a sparse "
+    "array. Unless you use * instead of @, ** for matrix power, or you depend on 2D shapes from e.g. `A.sum(axis=0)` it may not "
+    "matter to you. See the spmatrix to sparray migration guide for details. "
+    "https://docs.scipy.org/doc/scipy/reference/sparse.migration_to_sparray.html"
+)
+def mmread(source: FileLike[bytes], *, spmatrix: _NoValueType = ...) -> onp.Array2D | coo_matrix: ...
 @overload
-def mmread(source: FileLike[bytes], *, spmatrix: onp.ToFalse) -> onp.Array2D | coo_array[Any, tuple[int, int]]: ...
+def mmread(source: FileLike[bytes], *, spmatrix: Literal[True]) -> onp.Array2D | coo_matrix: ...
+@overload
+def mmread(source: FileLike[bytes], *, spmatrix: Literal[False]) -> onp.Array2D | coo_array[Any, tuple[int, int]]: ...
 
 # these defaults are different in `io._mmio`, so we don't specify them to avoid duplicate definitions
 def mmwrite(

@@ -1,12 +1,15 @@
 from collections.abc import Mapping
-from typing import Any, Literal, TypeAlias, TypedDict, Unpack, type_check_only
+from typing import Any, Literal, TypedDict, Unpack, type_check_only
+
+import optype as op
 
 from ._miobase import MatFileReader
 from scipy.io._typing import ByteOrder, FileName
 
 __all__ = ["loadmat", "savemat", "whosmat"]
 
-_DataClass: TypeAlias = Literal[
+type _NoValueType = op.JustObject
+type _DataClass = Literal[
     "int8",
     "int16",
     "int32",
@@ -52,7 +55,7 @@ def loadmat(
     mdict: Mapping[str, object] | None = None,
     appendmat: bool = True,
     *,
-    spmatrix: bool = True,
+    spmatrix: bool | _NoValueType = ...,
     **kwargs: Unpack[_ReaderKwargs],
 ) -> dict[str, Any]: ...
 
