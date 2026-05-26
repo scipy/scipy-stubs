@@ -82,6 +82,7 @@ def griddata(
     method: _Method = "linear",
     fill_value: onp.ToFloat = ...,  # np.nan
     rescale: bool = False,
+    simplex_tolerance: float = 1.0,
 ) -> onp.Array[onp.AtLeast1D[Any], np.float64]: ...
 @overload
 def griddata(
@@ -91,6 +92,7 @@ def griddata(
     method: _Method = "linear",
     fill_value: onp.ToComplex = ...,  # np.nan
     rescale: bool = False,
+    simplex_tolerance: float = 1.0,
 ) -> onp.Array[onp.AtLeast1D[Any], np.complex128]: ...
 @overload
 def griddata(
@@ -100,4 +102,5 @@ def griddata(
     method: _Method = "linear",
     fill_value: onp.ToComplex = ...,  # np.nan
     rescale: bool = False,
+    simplex_tolerance: float = 1.0,
 ) -> onp.Array[onp.AtLeast1D[Any], Incomplete]: ...
