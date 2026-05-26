@@ -17,9 +17,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.cluster._vq
-scipy.cluster.vq.__all__
-
 scipy.differentiate._differentiate.derivative
 
 scipy.fft._duccfft.basic

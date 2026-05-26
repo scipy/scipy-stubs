@@ -21,8 +21,6 @@ BUNDLED = (
 )
 # TODO(@jorenham)
 TODO_1_18 = (
-    "scipy.cluster.vq._vq",
-    "scipy.cluster.vq._vq_impl",
     "scipy.fft._duccfft",
     "scipy.linalg._internal_matfuncs",
     "scipy.signal._whittaker",
