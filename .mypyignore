@@ -20,8 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.io.mmio.mmread
-
 scipy.linalg._cythonized_array_utils.__all__
 scipy.linalg._cythonized_array_utils.bandwidth
 scipy.linalg._decomp.eigvals
