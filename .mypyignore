@@ -20,7 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.integrate._quad_vec.LRUDict.update
 scipy.integrate._tanhsinh.nsum
 scipy.integrate._tanhsinh.tanhsinh
 

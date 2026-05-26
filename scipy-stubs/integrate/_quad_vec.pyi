@@ -53,7 +53,7 @@ class LRUDict(collections.OrderedDict[tuple[float, float], _VT], Generic[_VT]):
     def __init__(self, /, max_size: int) -> None: ...
     @override
     # pyrefly: ignore [bad-override]
-    def update(self, other: Never) -> NoReturn: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+    def update(self, other: Never, /, **kwargs: Never) -> NoReturn: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
 
 # undocumented
 class SemiInfiniteFunc(_InfiniteFunc[_NDT_co], Generic[_NDT_co]):
