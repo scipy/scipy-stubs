@@ -29,7 +29,7 @@ from ._basic import (
     solve_triangular,
     solveh_banded,
 )
-from ._cythonized_array_utils import bandwidth, ishermitian, issymmetric
+from ._cythonized_array_utils import ishermitian, issymmetric
 from ._decomp import (
     cdf2rdf,
     eig,
@@ -69,7 +69,7 @@ from ._matfuncs import (
     tanhm,
     tanm,
 )
-from ._misc import LinAlgError, LinAlgWarning, norm
+from ._misc import LinAlgError, LinAlgWarning, bandwidth, norm
 from ._procrustes import orthogonal_procrustes
 from ._sketches import clarkson_woodruff_transform
 from ._solvers import (

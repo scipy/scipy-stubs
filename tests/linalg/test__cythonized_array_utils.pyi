@@ -5,18 +5,12 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.linalg import bandwidth, ishermitian, issymmetric
+from scipy.linalg import ishermitian, issymmetric
 
 ###
 
 f64_2d: onp.Array2D[np.float64]
 c128_2d: onp.Array2D[np.complex128]
-
-###
-# bandwidth
-
-assert_type(bandwidth(f64_2d), tuple[int, int])
-assert_type(bandwidth(c128_2d), tuple[int, int])
 
 ###
 # issymmetric
