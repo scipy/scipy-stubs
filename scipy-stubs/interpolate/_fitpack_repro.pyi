@@ -116,6 +116,7 @@ def root_rati(
     p0: onp.ToFloat,
     bracket: tuple[tuple[onp.ToFloat, onp.ToFloat], tuple[onp.ToFloat, onp.ToFloat]],
     acc: onp.ToFloat,
+    maxit: int = 20,
 ) -> _RootRatiBunch: ...  # undocumented
 
 # public api
