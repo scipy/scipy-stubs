@@ -20,7 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.io.matlab._mio5.VarWriter5.write_opaque
 scipy.io.mmio.mmread
 
 scipy.linalg._cythonized_array_utils.__all__
