@@ -8,6 +8,9 @@ scipy\.sparse\.linalg(\._?interface|\.matfuncs)?\.LinearOperator\.__init__
 scipy\.conftest
 scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
 
+# bundled external packages
+scipy\.fft\._duccfft\..*
+
 # should this be packaged?
 scipy\.special\._precompute\..*
 
@@ -16,11 +19,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 
 ###
 # TODO: 1.18.0rc1
-
-scipy.fft._duccfft.basic
-scipy.fft._duccfft.helper
-scipy.fft._duccfft.pyduccfft
-scipy.fft._duccfft.realtransforms
 
 scipy.integrate._ode.IntegratorBase.run_relax
 scipy.integrate._ode.IntegratorBase.step

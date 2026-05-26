@@ -14,14 +14,13 @@ import scipy
 STUBS_PATH = Path(__file__).parent.parent / "scipy-stubs"
 BUNDLED = (
     "scipy._external",
-    "scipy.fft._pocketfft",
+    "scipy.fft._duccfft",
     "scipy.optimize._highspy",
     "scipy.sparse.linalg._eigen.arpack",
     "scipy.sparse.linalg._propack",
 )
 # TODO(@jorenham)
 TODO_1_18 = (
-    "scipy.fft._duccfft",
     "scipy.linalg._internal_matfuncs",
     "scipy.signal._whittaker",
     "scipy.special._ufunc_tools",
