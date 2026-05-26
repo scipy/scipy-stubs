@@ -1,9 +1,8 @@
 from collections.abc import Mapping, Sequence
-from typing import IO, Any, Final, Generic, Literal, Self, SupportsIndex, TypeAlias, overload
+from typing import IO, Any, Final, Generic, Literal, Self, SupportsIndex, overload
 from typing_extensions import TypeVar
 
 import numpy as np
-import numpy.typing as npt
 import optype.numpy as onp
 
 from ._typing import FileLike
@@ -14,14 +13,13 @@ __all__ = ["netcdf_file", "netcdf_variable"]
 ###
 
 _ShapeT_co = TypeVar("_ShapeT_co", covariant=True, bound=tuple[int, ...], default=tuple[Any, ...])
-_ScalarT = TypeVar("_ScalarT", bound=np.generic)
 _ScalarT_co = TypeVar("_ScalarT_co", covariant=True, bound=np.generic, default=Any)
 
-_FileModeRWA: TypeAlias = Literal["r", "w", "a"]
-_TypeCode: TypeAlias = Literal["b", "c", "h", "i", "f", "d"]
-_TypeSize: TypeAlias = Literal[1, 2, 4, 8]
-_TypeSpec: TypeAlias = tuple[_TypeCode, _TypeSize]
-_TypeNC: TypeAlias = Literal[
+type _FileModeRWA = Literal["r", "w", "a"]
+type _TypeCode = Literal["b", "c", "h", "i", "f", "d"]
+type _TypeSize = Literal[1, 2, 4, 8]
+type _TypeSpec = tuple[_TypeCode, _TypeSize]
+type _TypeNC = Literal[
     b"\x00\x00\x00\x01",
     b"\x00\x00\x00\x02",
     b"\x00\x00\x00\x03",
@@ -32,7 +30,7 @@ _TypeNC: TypeAlias = Literal[
     b"\x00\x00\x00\x0b",
     b"\x00\x00\x00\x0c",
 ]
-_TypeFill: TypeAlias = Literal[
+type _TypeFill = Literal[
     b"\x81",
     b"\x00",
     b"\x80\x01",
@@ -42,8 +40,6 @@ _TypeFill: TypeAlias = Literal[
 ]  # fmt: skip
 
 ###
-
-IS_PYPY: Final[bool] = ...
 
 ABSENT: Final = b"\x00\x00\x00\x00\x00\x00\x00\x00"
 ZERO: Final = b"\x00\x00\x00\x00"
@@ -64,8 +60,8 @@ FILL_FLOAT: Final[_TypeFill] = b"\x7c\xf0\x00\x00"
 FILL_DOUBLE: Final[_TypeFill] = b"\x47\x9e\x00\x00\x00\x00\x00\x00"
 
 TYPEMAP: Final[dict[_TypeNC, _TypeSpec]] = ...
-FILLMAP: Final[dict[_TypeNC, _TypeFill]]
-REVERSE: Final[dict[_TypeSpec, _TypeNC]]
+FILLMAP: Final[dict[_TypeNC, _TypeFill]] = ...
+REVERSE: Final[dict[_TypeSpec, _TypeNC]] = ...
 
 class netcdf_file(ExitMixin):
     fp: Final[IO[bytes]]
@@ -94,11 +90,11 @@ class netcdf_file(ExitMixin):
 
     #
     @overload
-    def createVariable(
-        self, /, name: str, type: onp.ToDType[_ScalarT], dimensions: Sequence[str]
-    ) -> NetCDFVariable[tuple[Any, ...], _ScalarT]: ...
+    def createVariable[ScalarT: np.generic](
+        self, /, name: str, type: onp.ToDType[ScalarT], dimensions: Sequence[str]
+    ) -> NetCDFVariable[tuple[Any, ...], ScalarT]: ...
     @overload
-    def createVariable(self, /, name: str, type: npt.DTypeLike, dimensions: Sequence[str]) -> NetCDFVariable: ...
+    def createVariable(self, /, name: str, type: onp.AnyDType, dimensions: Sequence[str]) -> NetCDFVariable: ...
 
     #
     def flush(self, /) -> None: ...
@@ -131,10 +127,12 @@ class netcdf_variable(Generic[_ShapeT_co, _ScalarT_co]):
 
     #
     def __getitem__(
-        self, /, index: SupportsIndex | slice | tuple[SupportsIndex | slice, ...]
-    ) -> _ScalarT | onp.ArrayND[_ScalarT]: ...
-    def __setitem__(
-        self: netcdf_variable[tuple[int, ...], _ScalarT], /, index: object, data: _ScalarT | onp.ArrayND[_ScalarT]
+        self, index: SupportsIndex | slice | tuple[SupportsIndex | slice, ...], /
+    ) -> _ScalarT_co | onp.ArrayND[_ScalarT_co]: ...
+
+    #
+    def __setitem__[ScalarT: np.generic](
+        self: netcdf_variable[tuple[int, ...], ScalarT], index: object, data: ScalarT | onp.ArrayND[ScalarT], /
     ) -> None: ...
 
     #
