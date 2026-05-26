@@ -80,8 +80,8 @@ prerelease = "allow"
 [tool.uv.sources]
 # the required stubdefaulter features not released yet (>0.1.0)
 stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "ebe9e31" }
-# TODO(@jorenham): remove once https://github.com/JelleZijlstra/typeshed_client/pull/145 is released
-typeshed-client = { git = "https://github.com/jorenham/typeshed_client.git", rev = "gh-144" }
+# TODO(@jorenham): remove once a new >2.11 release has been published
+typeshed-client = { git = "https://github.com/JelleZijlstra/typeshed_client.git", rev = "d07fd47" }
 
 # poe
 
