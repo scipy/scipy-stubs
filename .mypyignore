@@ -20,8 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.interpolate._rbfinterp_np.dsysv
-
 scipy.io._fortran.FortranFile.read_record
 scipy.io._netcdf.IS_PYPY
 scipy.io.harwell_boeing.hb_read
