@@ -53,13 +53,13 @@ jobs:
           uvx \
             --from="https://github.com/hauntsaninja/mypy_primer.git" \
             mypy_primer \
-            --project-selector "/(altair|arviz|colour|dedupe|freqtrade|hydpy|imagehash|jax|materialize|optuna|pandas|pandera|scikit-learn|scipy|spark|static-frame|vision|xarray)/?$" \
+            --project-selector "/(altair|arviz|colour|dedupe|freqtrade|hydpy|imagehash|jax|materialize|optuna|pandas|pandera|scikit-learn|spark|static-frame|vision|xarray)/?$" \
             --new v${MYPY_VERSION} \
             --new-prepend-path new \
             --old v${MYPY_VERSION} \
             --old-prepend-path old \
             --output concise \
-            --additional-flags="--hide-error-context" \
+            --additional-flags="--hide-error-context --python-version=3.12" \
             --debug > mypy_primer.diff || [ $? -eq 1 ]
 
           # Remove ANSI color codes before uploading
