@@ -63,7 +63,7 @@ assert_type(
 )
 
 res_der_0d = derivative(f_f64_0d, 1.0)
-assert_type(res_der_0d.success, np.bool_)
+assert_type(res_der_0d.success, np.bool)
 assert_type(res_der_0d.status, np.int32)
 assert_type(res_der_0d.nfev, np.int32)
 assert_type(res_der_0d.nit, np.int32)
@@ -72,14 +72,14 @@ assert_type(res_der_0d.df, np.float64)
 assert_type(res_der_0d.error, np.float64)
 
 res_der_nd = derivative(f_f64_1d, f64_1d)
-# assert_type(res_der_nd.success, onp.Array1D[np.bool_])
+# assert_type(res_der_nd.success, onp.Array1D[np.bool])
 # assert_type(res_der_nd.status, onp.Array1D[np.int32])
 # assert_type(res_der_nd.nfev, onp.Array1D[np.int32])
 # assert_type(res_der_nd.nit, onp.Array1D[np.int32])
 # assert_type(res_der_nd.x, onp.Array1D[np.float64])
 # assert_type(res_der_nd.df, onp.Array1D[np.float64])
 # assert_type(res_der_nd.error, onp.Array1D[np.float64])
-_3: onp.Array1D[np.bool_] = res_der_nd.success
+_3: onp.Array1D[np.bool] = res_der_nd.success
 _4: onp.Array1D[np.int32] = res_der_nd.status
 _5: onp.Array1D[np.int32] = res_der_nd.nfev
 _6: onp.Array1D[np.int32] = res_der_nd.nit
@@ -108,7 +108,7 @@ assert_type(res_jac.df, onp.Array[onp.AtLeast1D, np.float64])
 assert_type(res_jac.error, onp.Array[onp.AtLeast1D, np.float64])
 assert_type(res_jac.nit, onp.Array[onp.AtLeast1D, np.int32])
 assert_type(res_jac.nfev, onp.Array[onp.AtLeast1D, np.int32])
-assert_type(res_jac.success, onp.Array[onp.AtLeast1D, np.bool_])
+assert_type(res_jac.success, onp.Array[onp.AtLeast1D, np.bool])
 
 ###
 # hessian
@@ -124,5 +124,5 @@ res_hes = hessian(f_f64_1nd_0d, f64_1d)
 assert_type(res_hes.status, onp.Array[onp.AtLeast2D, np.int32])
 assert_type(res_hes.error, onp.Array[onp.AtLeast2D, np.float64])
 assert_type(res_hes.nfev, onp.Array[onp.AtLeast2D, np.int32])
-assert_type(res_hes.success, onp.Array[onp.AtLeast2D, np.bool_])
+assert_type(res_hes.success, onp.Array[onp.AtLeast2D, np.bool])
 assert_type(res_hes.ddf, onp.Array[onp.AtLeast2D, np.float64])

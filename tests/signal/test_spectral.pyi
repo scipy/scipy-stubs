@@ -95,8 +95,8 @@ assert_type(spectrogram(_c160_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C160
 
 # check_{COLA,NOLA}
 
-assert_type(check_COLA(256, 128, 256), np.bool_)
-assert_type(check_NOLA(256, 128, 256), np.bool_)
+assert_type(check_COLA(256, 128, 256), np.bool)
+assert_type(check_NOLA(256, 128, 256), np.bool)
 
 # stft
 

@@ -80,7 +80,7 @@ assert_type(map_coordinates(_py_i_2d, _f64_2d), onp.ArrayND[np.int_])
 assert_type(map_coordinates(_py_f_2d, _f64_2d), onp.ArrayND[np.float64])
 assert_type(map_coordinates(_py_c_2d, _f64_2d), onp.ArrayND[np.complex128])
 
-assert_type(map_coordinates(_f64_2d, _f64_2d, output=bool), onp.ArrayND[np.bool_])
+assert_type(map_coordinates(_f64_2d, _f64_2d, output=bool), onp.ArrayND[np.bool])
 assert_type(map_coordinates(_f64_2d, _f64_2d, output=int), onp.ArrayND[np.int_])
 assert_type(map_coordinates(_f64_2d, _f64_2d, output=float), onp.ArrayND[np.float64])
 assert_type(map_coordinates(_f64_2d, _f64_2d, output=complex), onp.ArrayND[np.complex128])

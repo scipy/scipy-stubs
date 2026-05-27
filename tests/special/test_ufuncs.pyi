@@ -13,7 +13,7 @@ _Complex64ND: TypeAlias = onp.ArrayND[np.complex64]
 _Complex128ND: TypeAlias = onp.ArrayND[np.complex128]
 _ErrOption: TypeAlias = L["ignored", "warn", "raise"]
 
-_b1: np.bool_
+_b1: np.bool
 _i: npc.integer
 _f: npc.floating
 _f2: np.float16
@@ -22,7 +22,7 @@ _f8: np.float64
 _c8: np.complex64
 _c16: np.complex128
 
-_b1_nd: onp.ArrayND[np.bool_]
+_b1_nd: onp.ArrayND[np.bool]
 _i1_nd: onp.ArrayND[np.uint8 | np.int8]
 _f2_nd: onp.ArrayND[np.float16]
 _f4_nd: _Float32ND

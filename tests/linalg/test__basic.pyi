@@ -25,7 +25,7 @@ from scipy.linalg import (
 
 ###
 
-b1_nd: onp.ArrayND[np.bool_]
+b1_nd: onp.ArrayND[np.bool]
 
 i8_1d: onp.Array1D[np.int8]
 i8_2d: onp.Array2D[np.int8]

@@ -10,7 +10,7 @@ from scipy.linalg import cho_factor, cho_solve, cho_solve_banded, cholesky, chol
 
 ###
 
-_bool_2d: onp.Array2D[np.bool_]
+_bool_2d: onp.Array2D[np.bool]
 _i8_2d: onp.Array2D[np.int8]
 _i16_2d: onp.Array2D[np.int16]
 _i32_2d: onp.Array2D[np.int32]

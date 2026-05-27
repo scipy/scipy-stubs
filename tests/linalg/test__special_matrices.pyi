@@ -59,9 +59,9 @@ _f64_nd: onp.ArrayND[np.float64]
 
 # toeplitz
 
-assert_type(toeplitz(_py_b_1d), onp.Array2D[np.bool_])
-assert_type(toeplitz(_py_b_2d), onp.Array3D[np.bool_])
-assert_type(toeplitz(_py_b_3d), onp.ArrayND[np.bool_])
+assert_type(toeplitz(_py_b_1d), onp.Array2D[np.bool])
+assert_type(toeplitz(_py_b_2d), onp.Array3D[np.bool])
+assert_type(toeplitz(_py_b_3d), onp.ArrayND[np.bool])
 
 assert_type(toeplitz(_py_i_1d), onp.Array2D[np.int_])
 assert_type(toeplitz(_py_i_2d), onp.Array3D[np.int_])
@@ -92,9 +92,9 @@ assert_type(toeplitz(_f64_nd, _f64_nd), onp.ArrayND[np.float64])
 
 # circulant
 
-assert_type(circulant(_py_b_1d), onp.Array2D[np.bool_])
-assert_type(circulant(_py_b_2d), onp.Array3D[np.bool_])
-assert_type(circulant(_py_b_3d), onp.ArrayND[np.bool_])
+assert_type(circulant(_py_b_1d), onp.Array2D[np.bool])
+assert_type(circulant(_py_b_2d), onp.Array3D[np.bool])
+assert_type(circulant(_py_b_3d), onp.ArrayND[np.bool])
 
 assert_type(circulant(_py_i_1d), onp.Array2D[np.int_])
 assert_type(circulant(_py_i_2d), onp.Array3D[np.int_])
@@ -120,9 +120,9 @@ assert_type(circulant(_f32_nd), onp.ArrayND[np.float32])
 
 # convolution_matrix
 
-assert_type(convolution_matrix(_py_b_1d, 4), onp.Array2D[np.bool_])
-assert_type(convolution_matrix(_py_b_2d, 4), onp.Array3D[np.bool_])
-assert_type(convolution_matrix(_py_b_3d, 4), onp.ArrayND[np.bool_])
+assert_type(convolution_matrix(_py_b_1d, 4), onp.Array2D[np.bool])
+assert_type(convolution_matrix(_py_b_2d, 4), onp.Array3D[np.bool])
+assert_type(convolution_matrix(_py_b_3d, 4), onp.ArrayND[np.bool])
 
 assert_type(convolution_matrix(_py_i_1d, 4), onp.Array2D[np.int_])
 assert_type(convolution_matrix(_py_i_2d, 4), onp.Array3D[np.int_])
@@ -220,7 +220,7 @@ assert_type(fiedler_companion(_f32_nd), onp.ArrayND[np.float32])
 
 # leslie
 
-assert_type(leslie(_py_b_1d, _py_b_1d), onp.Array2D[np.bool_])
+assert_type(leslie(_py_b_1d, _py_b_1d), onp.Array2D[np.bool])
 assert_type(leslie(_py_b_1d, _py_i_1d), onp.Array2D[np.int_])
 assert_type(leslie(_py_i_1d, _py_b_1d), onp.Array2D[np.int_])
 assert_type(leslie(_py_i_1d, _py_i_1d), onp.Array2D[np.int_])
@@ -236,7 +236,7 @@ assert_type(leslie(_f32_1d, _f32_1d), onp.Array2D[np.float32])
 # block_diag
 
 assert_type(block_diag(), onp.Array2D[np.float64])
-assert_type(block_diag(_py_b_1d), onp.Array2D[np.bool_])
+assert_type(block_diag(_py_b_1d), onp.Array2D[np.bool])
 assert_type(block_diag(_py_i_1d), onp.Array2D[np.int_])
 assert_type(block_diag(_py_i_1d, _py_b_1d), onp.Array2D[np.int_])
 assert_type(block_diag(_py_f_1d), onp.Array2D[np.float64])
