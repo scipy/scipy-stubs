@@ -3,7 +3,6 @@ Prints the names of all SciPy modules that are not stubbed.
 """
 
 # ruff: noqa: T201, S101
-import contextlib
 import sys
 import warnings
 from collections.abc import Iterator
@@ -74,9 +73,14 @@ def _walk(pkg_dir: Path, pkg_name: str) -> Iterator[str]:
 def modules() -> Iterator[str]:
     root = Path(scipy.__path__[0])
     for name in dict.fromkeys(_walk(root, "scipy")):
-        with contextlib.suppress(ImportError):
+        try:
             _ = import_module(name)
-            yield name
+        except ModuleNotFoundError as e:
+            if e.name == name:
+                continue
+        except ImportError:
+            pass
+        yield name
 
 
 def _walk_stubs(stubs_dir: Path, pkg_name: str) -> Iterator[str]:
