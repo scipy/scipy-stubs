@@ -20,10 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.linalg.matfuncs.logm
-scipy.linalg.matfuncs.signm
-scipy.linalg.matfuncs.sqrtm
-
 scipy.optimize._cobyqa_py.COBYQA_LOCK
 scipy.optimize._elementwise.bracket_minimum
 scipy.optimize._elementwise.bracket_root
