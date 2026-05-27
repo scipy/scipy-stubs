@@ -20,7 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.optimize._trustregion.BaseQuadraticSubproblem.solve
 scipy.optimize.minpack.fsolve
 
 scipy.signal.__all__
