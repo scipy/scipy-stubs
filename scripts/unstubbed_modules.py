@@ -45,8 +45,6 @@ IGNORED = (
     "scipy.ndimage._ndimage_api",
     "scipy.ndimage._support_alternative_backends",
     "scipy.signal._support_alternative_backends",
-    # definitely TODO
-    "scipy._lib._fpumode",
 )
 
 
