@@ -22,7 +22,7 @@ _Output: TypeAlias = Literal[_OutputReal, _OutputComplex]
 
 _Sort: TypeAlias = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], bool]
 
-_as_f32: TypeAlias = np.float32 | np.float16 | np.bool_  # noqa: PYI042
+_as_f32: TypeAlias = np.float32 | np.float16 | np.bool  # noqa: PYI042
 _as_f64: TypeAlias = npc.floating64 | npc.floating80 | npc.integer  # noqa: PYI042
 _as_c128: TypeAlias = npc.complexfloating128 | npc.complexfloating160  # noqa: PYI042
 

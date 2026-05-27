@@ -91,7 +91,7 @@ class _Bunch(Generic[_InexactT_co, _ShapeT_co]):  # undocumented
 #
 @overload  # 0d +integer
 def quad_vec(
-    f: _Fun[npc.integer | np.bool_],
+    f: _Fun[npc.integer | np.bool],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -108,7 +108,7 @@ def quad_vec(
 ) -> tuple[np.float64, float]: ...
 @overload  # 0d +integer, full_output=True
 def quad_vec(
-    f: _Fun[npc.integer | np.bool_],
+    f: _Fun[npc.integer | np.bool],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -125,7 +125,7 @@ def quad_vec(
 ) -> tuple[np.float64, float, _Bunch[np.float64, tuple[int]]]: ...
 @overload  # Nd +integer
 def quad_vec(
-    f: _Fun[onp.ArrayND[npc.integer | np.bool_]],
+    f: _Fun[onp.ArrayND[npc.integer | np.bool]],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -142,7 +142,7 @@ def quad_vec(
 ) -> tuple[onp.Array1D[np.float64], float]: ...
 @overload  # 1d +integer, full_output=True
 def quad_vec(
-    f: _Fun[onp.ArrayND[npc.integer | np.bool_]],
+    f: _Fun[onp.ArrayND[npc.integer | np.bool]],
     a: float,
     b: float,
     epsabs: float = 1e-200,

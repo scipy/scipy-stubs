@@ -407,7 +407,7 @@ def _ensure_in_unit_hypercube(sample: onp.ToJustFloat2D) -> onp.Array2D[np.float
 #
 @overload
 def _perturb_discrepancy(
-    sample: onp.Array2D[npc.integer | np.bool_], i1: SupportsIndex, i2: SupportsIndex, k: SupportsIndex, disc: onp.ToFloat
+    sample: onp.Array2D[npc.integer | np.bool], i1: SupportsIndex, i2: SupportsIndex, k: SupportsIndex, disc: onp.ToFloat
 ) -> float | np.float64: ...
 @overload
 def _perturb_discrepancy(

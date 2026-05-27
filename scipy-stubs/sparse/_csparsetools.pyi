@@ -6,11 +6,11 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 _Index: TypeAlias = int | np.intp
-_Scalar: TypeAlias = npc.number | np.bool_
+_Scalar: TypeAlias = npc.number | np.bool
 
 _FusedScalarT = TypeVar(
     "_FusedScalarT",
-    np.bool_,
+    np.bool,
     np.uint8,
     np.int8,
     np.uint16,

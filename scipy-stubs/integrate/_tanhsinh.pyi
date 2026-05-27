@@ -36,16 +36,16 @@ class _TanhSinhResult(
     nfev: _StatusT_co
     maxlevel: _MaxLevelT_co
 
-type _TanhSinhResult0[ScalarT: np.generic] = _TanhSinhResult[ScalarT, np.bool_, np.int32, np.int64]
+type _TanhSinhResult0[ScalarT: np.generic] = _TanhSinhResult[ScalarT, np.bool, np.int32, np.int64]
 type _TanhSinhResultN[ScalarT: np.generic] = _TanhSinhResult[
     onp.ArrayND[ScalarT],
-    onp.ArrayND[np.bool_],
+    onp.ArrayND[np.bool],
     onp.ArrayND[np.int32],
     onp.ArrayND[np.int64],
 ]  # fmt: skip
 type _TanhSinhResultN_[ScalarT: np.generic] = _TanhSinhResult[
     onp.ArrayND[ScalarT] | Any,
-    onp.ArrayND[np.bool_] | Any,
+    onp.ArrayND[np.bool] | Any,
     onp.ArrayND[np.int32] | Any,
     onp.ArrayND[np.int64] | Any,
 ]  # fmt: skip
@@ -56,18 +56,18 @@ class _Tolerances(TypedDict, total=False):
     atol: float
 
 @type_check_only
-class _NSumResult0(_RichResult[np.bool_ | np.int32 | np.float64]):
+class _NSumResult0(_RichResult[np.bool | np.int32 | np.float64]):
     sum: Final[np.float64]
     error: Final[np.float64]
-    success: Final[np.bool_]
+    success: Final[np.bool]
     status: Final[np.int32]
     nfev: Final[np.int32]
 
 @type_check_only
-class _NSumResultN(_RichResult[onp.ArrayND[np.bool_] | onp.ArrayND[np.int32] | onp.ArrayND[np.float64]]):
+class _NSumResultN(_RichResult[onp.ArrayND[np.bool] | onp.ArrayND[np.int32] | onp.ArrayND[np.float64]]):
     sum: Final[onp.ArrayND[np.float64]]
     error: Final[onp.ArrayND[np.float64]]
-    success: Final[onp.ArrayND[np.bool_]]
+    success: Final[onp.ArrayND[np.bool]]
     status: Final[onp.ArrayND[np.int32]]
     nfev: Final[onp.ArrayND[np.int32]]
 

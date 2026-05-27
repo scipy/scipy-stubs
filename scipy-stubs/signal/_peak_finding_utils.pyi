@@ -6,7 +6,7 @@ import optype.numpy as onp
 
 __all__ = ["_local_maxima_1d", "_peak_prominences", "_peak_widths", "_select_by_peak_distance"]
 
-_Array_b_1d: TypeAlias = onp.Array1D[np.bool_]
+_Array_b_1d: TypeAlias = onp.Array1D[np.bool]
 _Array_n_1d: TypeAlias = onp.Array1D[np.intp]
 _Array_f8_1d: TypeAlias = onp.Array1D[np.float64]
 

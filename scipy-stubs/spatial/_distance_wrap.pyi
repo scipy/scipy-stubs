@@ -8,9 +8,9 @@ import optype.numpy as onp
 _DoubleND: TypeAlias = onp.ArrayND[np.float64]
 _Double1D: TypeAlias = onp.Array1D[np.float64]
 _Double2D: TypeAlias = onp.Array2D[np.float64]
-_BoolND: TypeAlias = onp.ArrayND[np.bool_]
-_Bool1D: TypeAlias = onp.Array1D[np.bool_]
-_Bool2D: TypeAlias = onp.Array2D[np.bool_]
+_BoolND: TypeAlias = onp.ArrayND[np.bool]
+_Bool1D: TypeAlias = onp.Array1D[np.bool]
+_Bool2D: TypeAlias = onp.Array2D[np.bool]
 
 ###
 # NOTE: These all return 0.0, and write the result to `dm`.

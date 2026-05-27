@@ -14,7 +14,7 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
 
 _Mode: TypeAlias = Literal["mirror", "constant", "nearest", "wrap", "interp"]
 # savgol_filter casts everything except for `float32` to `float64` (kinda weird, but ok)
-_ToFloat64Savgol: TypeAlias = npc.floating64 | npc.floating16 | npc.floating80 | npc.integer | np.bool_
+_ToFloat64Savgol: TypeAlias = npc.floating64 | npc.floating16 | npc.floating80 | npc.integer | np.bool
 
 ###
 

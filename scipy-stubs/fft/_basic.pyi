@@ -13,7 +13,7 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _Norm: TypeAlias = Literal["backward", "ortho", "forward"]
 _Unused: TypeAlias = Never  # not used by scipy
 
-_CoInteger: TypeAlias = npc.integer | np.bool_
+_CoInteger: TypeAlias = npc.integer | np.bool
 
 _AsFloat32: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.floating32]]
 _AsFloat64: TypeAlias = onp.CanArray[_ShapeT, np.dtype[npc.floating64 | _CoInteger]]

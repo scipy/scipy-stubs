@@ -19,7 +19,7 @@ __all__ = [
 
 _ScalarT = TypeVar("_ScalarT", bound=np.generic)
 _NumberT = TypeVar("_NumberT", bound=npc.number)
-_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[np.bool_ | npc.integer | npc.inexact32 | npc.inexact64])
+_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[np.bool | npc.integer | npc.inexact32 | npc.inexact64])
 
 _Order: TypeAlias = Literal[0, 1, 2, 3, 4, 5]
 _Mode: TypeAlias = Literal["reflect", "grid-mirror", "constant", "grid-constant", "nearest", "mirror", "wrap", "grid-wrap"]
@@ -275,7 +275,7 @@ def map_coordinates(
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def map_coordinates(
     input: onp.ToComplexND,

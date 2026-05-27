@@ -9,7 +9,7 @@ __all__ = ["CZT", "ZoomFFT", "czt", "czt_points", "zoom_fft"]
 _Complex: TypeAlias = np.complex128 | np.clongdouble
 # workaround for non-overload-spec-compliant type-checkers
 _JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
-_ToComplexStrictND: TypeAlias = onp.ArrayND[npc.number | np.bool_, _JustAnyShape]
+_ToComplexStrictND: TypeAlias = onp.ArrayND[npc.number | np.bool, _JustAnyShape]
 
 ###
 

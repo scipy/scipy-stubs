@@ -54,11 +54,11 @@ def crosstab(
 @overload  # bool
 def crosstab(  # type: ignore[overload-overlap]
     arg0: list[bool], /, *args: Sequence[bool], levels: Sequence[bool] | None = None, sparse: Literal[False] = False
-) -> CrosstabResult[np.bool_, onp.ArrayND[np.intp]]: ...
+) -> CrosstabResult[np.bool, onp.ArrayND[np.intp]]: ...
 @overload  # bool, sparse=True
 def crosstab(  # type: ignore[overload-overlap]
     arg0: list[bool], arg1: Sequence[bool], /, *, levels: Sequence[bool] | None = None, sparse: Literal[True]
-) -> CrosstabResult[np.bool_, coo_matrix[np.intp]]: ...
+) -> CrosstabResult[np.bool, coo_matrix[np.intp]]: ...
 @overload  # int
 def crosstab(
     arg0: list[int], /, *args: Sequence[int], levels: Sequence[int] | None = None, sparse: Literal[False] = False

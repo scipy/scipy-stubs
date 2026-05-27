@@ -28,8 +28,8 @@ from ._typing import _ToShape1D, _ToShape2D
 __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
 _T = TypeVar("_T")
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
 
 # workaround for the typing-spec non-conformance regarding overload behavior of mypy and pyright
@@ -169,7 +169,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: bool-like (positional)
     def __init__(
-        self: csr_array[np.bool_, tuple[int]],
+        self: csr_array[np.bool, tuple[int]],
         /,
         arg1: _ToShape1D,
         shape: _ToShape1D | None,
@@ -180,7 +180,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: bool-like (keyword)
     def __init__(
-        self: csr_array[np.bool_, tuple[int]],
+        self: csr_array[np.bool, tuple[int]],
         /,
         arg1: _ToShape1D,
         shape: _ToShape1D | None = None,
@@ -191,7 +191,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: bool-like (positional)
     def __init__(
-        self: csr_array[np.bool_, tuple[int, int]],
+        self: csr_array[np.bool, tuple[int, int]],
         /,
         arg1: _ToShape2D,
         shape: _ToShape2D | None,
@@ -202,7 +202,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: bool-like (keyword)
     def __init__(
-        self: csr_array[np.bool_, tuple[int, int]],
+        self: csr_array[np.bool, tuple[int, int]],
         /,
         arg1: _ToShape2D,
         shape: _ToShape2D | None = None,
@@ -301,7 +301,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 1-d array-like bool, dtype: bool-like | None
     def __init__(
-        self: csr_array[np.bool_, tuple[int]],
+        self: csr_array[np.bool, tuple[int]],
         /,
         arg1: onp.ToJustBoolStrict1D,
         shape: _ToShape1D | None = None,
@@ -312,7 +312,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 2-d array-like bool, dtype: bool-like | None
     def __init__(
-        self: csr_array[np.bool_, tuple[int, int]],
+        self: csr_array[np.bool, tuple[int, int]],
         /,
         arg1: onp.ToJustBoolStrict2D | _ToData[list[bool]],
         shape: _ToShape2D | None = None,
@@ -506,7 +506,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     ) -> None: ...
     @overload  # 2-d array-like bool, dtype: bool-like | None
     def __init__(
-        self: csr_matrix[np.bool_],
+        self: csr_matrix[np.bool],
         /,
         arg1: onp.ToJustBoolStrict2D | _ToData[list[bool]],
         shape: _ToShape2D | None = None,

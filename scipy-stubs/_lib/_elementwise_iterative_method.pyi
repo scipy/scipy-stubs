@@ -47,7 +47,7 @@ def _loop[ResT: _RichResult[Any], ShapeT: tuple[int, ...], FloatT: npc.floating]
     dtype: npc.inexact,
     pre_func_eval: Callable[[ResT], onp.Array[ShapeT, FloatT]],
     post_func_eval: Callable[[onp.Array[ShapeT, FloatT], onp.Array[ShapeT, npc.floating], ResT], Unused],
-    check_termination: Callable[[ResT], onp.Array[ShapeT, np.bool_]],
+    check_termination: Callable[[ResT], onp.Array[ShapeT, np.bool]],
     post_termination_check: Callable[[ResT], Unused],
     customize_result: Callable[[ResT, tuple[int, ...]], tuple[int, ...]],
     res_work_pairs: Iterable[tuple[str, str]],
@@ -61,7 +61,7 @@ def _check_termination[WorkT: Mapping[str, Any], ShapeT: tuple[int, ...], FloatT
     res: Mapping[str, onp.Array[ShapeT, FloatT]],
     res_work_pairs: Iterable[tuple[str, str]],
     active: onp.Array[ShapeT, npc.integer],
-    check_termination: Callable[[WorkT], onp.Array[ShapeT, np.bool_]],
+    check_termination: Callable[[WorkT], onp.Array[ShapeT, np.bool]],
     preserve_shape: bool | None,
     xp: ModuleType,
 ) -> onp.Array1D[np.intp]: ...
@@ -72,7 +72,7 @@ def _update_active[ShapeT: tuple[int, ...], FloatT: npc.floating](
     res: Mapping[str, onp.Array[ShapeT, FloatT]],
     res_work_pairs: Iterable[tuple[str, str]],
     active: onp.Array[ShapeT, npc.integer],
-    mask: onp.Array[ShapeT, np.bool_] | None,
+    mask: onp.Array[ShapeT, np.bool] | None,
     preserve_shape: bool | None,
     xp: ModuleType,
 ) -> None: ...

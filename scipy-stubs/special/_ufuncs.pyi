@@ -311,7 +311,7 @@ _InexactND: TypeAlias = onp.ArrayND[_Inexact]
 _Inexact_D: TypeAlias = _Inexact | _InexactND
 _Inexact_DT = TypeVar("_Inexact_DT", bound=_Inexact_D)
 
-_CoInt: TypeAlias = npc.integer | np.bool_  # coercible to integer
+_CoInt: TypeAlias = npc.integer | np.bool  # coercible to integer
 _CoFloat: TypeAlias = npc.floating | _CoInt  # coercible to floating
 _CoFloat64: TypeAlias = np.float64 | np.float32 | np.float16 | _CoInt  # coercible to float64
 _CoComplex128: TypeAlias = np.complex128 | np.complex64 | _CoFloat64  # coercible to complex128

@@ -20,8 +20,8 @@ __all__ = ["bsr_array", "bsr_matrix", "isspmatrix_bsr"]
 ###
 
 _T = TypeVar("_T")
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 
 _ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
 _ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
@@ -114,7 +114,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: bool-like (positional)
     def __init__(
-        self: bsr_array[np.bool_],
+        self: bsr_array[np.bool],
         /,
         arg1: _ToShape2D,
         shape: _ToShape2D | None,
@@ -125,7 +125,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: bool-like (keyword)
     def __init__(
-        self: bsr_array[np.bool_],
+        self: bsr_array[np.bool],
         /,
         arg1: _ToShape2D,
         shape: _ToShape2D | None = None,
@@ -180,7 +180,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: bool-like | None
     def __init__(
-        self: bsr_array[np.bool_],
+        self: bsr_array[np.bool],
         /,
         arg1: _ToMatrixPy[bool],
         shape: _ToShape2D | None = None,
@@ -306,7 +306,7 @@ class bsr_matrix(_bsr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: bool-like | None
     def __init__(
-        self: bsr_matrix[np.bool_],
+        self: bsr_matrix[np.bool],
         /,
         arg1: _ToMatrixPy[bool],
         shape: _ToShape2D | None = None,

@@ -40,7 +40,7 @@ _Complex128ND: TypeAlias = onp.ArrayND[np.complex128]
 _ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
 _InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
-_AsFloat64ND: TypeAlias = onp.ToArrayND[float, np.float64 | npc.integer | np.bool_]
+_AsFloat64ND: TypeAlias = onp.ToArrayND[float, np.float64 | npc.integer | np.bool]
 
 ###
 

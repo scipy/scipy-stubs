@@ -9,7 +9,7 @@ __all__ = ["lu", "lu_factor", "lu_solve"]
 
 ###
 
-_as_f32: TypeAlias = np.float32 | np.float16 | npc.integer16 | npc.integer8 | np.bool_  # noqa: PYI042
+_as_f32: TypeAlias = np.float32 | np.float16 | npc.integer16 | npc.integer8 | np.bool  # noqa: PYI042
 _as_f64: TypeAlias = npc.floating64 | npc.floating80 | npc.integer64 | npc.integer32  # noqa: PYI042
 _as_c128: TypeAlias = npc.complexfloating160 | npc.complexfloating128  # noqa: PYI042
 

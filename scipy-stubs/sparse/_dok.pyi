@@ -22,8 +22,8 @@ __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 ###
 
 _T = TypeVar("_T")
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int] | tuple[int, int])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
 
@@ -122,10 +122,10 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
     @overload
     @classmethod
-    def fromkeys(cls: type[_dok_base[np.bool_, _2D]], iterable: _ToKeys2, v: bool, /) -> _dok_base[np.bool_, _2D]: ...
+    def fromkeys(cls: type[_dok_base[np.bool, _2D]], iterable: _ToKeys2, v: bool, /) -> _dok_base[np.bool, _2D]: ...
     @overload
     @classmethod
-    def fromkeys(cls: type[_dok_base[np.bool_, _1D]], iterable: _ToKeys1, v: bool, /) -> _dok_base[np.bool_, _1D]: ...
+    def fromkeys(cls: type[_dok_base[np.bool, _1D]], iterable: _ToKeys1, v: bool, /) -> _dok_base[np.bool, _1D]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[_dok_base[_ScalarT, _2D]], iterable: _ToKeys2, v: _ScalarT, /) -> _dok_base[_ScalarT, _2D]: ...
@@ -243,7 +243,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: bool-like (positional)
     def __init__(
-        self: dok_array[np.bool_, _1D],
+        self: dok_array[np.bool, _1D],
         /,
         arg1: _ToShape1D,
         shape: _ToShape1D | None,
@@ -254,7 +254,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: bool-like (keyword)
     def __init__(
-        self: dok_array[np.bool_, _1D],
+        self: dok_array[np.bool, _1D],
         /,
         arg1: _ToShape1D,
         shape: _ToShape1D | None = None,
@@ -265,7 +265,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: bool-like (positional)
     def __init__(
-        self: dok_array[np.bool_, _2D],
+        self: dok_array[np.bool, _2D],
         /,
         arg1: _ToShape2D,
         shape: _ToShape2D | None,
@@ -276,7 +276,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: bool-like (keyword)
     def __init__(
-        self: dok_array[np.bool_, _2D],
+        self: dok_array[np.bool, _2D],
         /,
         arg1: _ToShape2D,
         shape: _ToShape2D | None = None,
@@ -375,7 +375,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 1-d array-like bool, dtype: bool-like | None
     def __init__(
-        self: dok_array[np.bool_, _1D],
+        self: dok_array[np.bool, _1D],
         /,
         arg1: onp.ToJustBoolStrict1D,
         shape: _ToShape1D | None = None,
@@ -386,7 +386,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> None: ...
     @overload  # 2-d array-like bool, dtype: bool-like | None
     def __init__(
-        self: dok_array[np.bool_, _2D],
+        self: dok_array[np.bool, _2D],
         /,
         arg1: onp.ToJustBoolStrict2D,
         shape: _ToShape2D | None = None,
@@ -521,9 +521,9 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     @override
     @overload
     # pyrefly: ignore[bad-override]
-    def __getitem__(self, key: onp.CanArrayND[np.bool_ | npc.integer] | list[int] | slice, /) -> Self: ...
+    def __getitem__(self, key: onp.CanArrayND[np.bool | npc.integer] | list[int] | slice, /) -> Self: ...
     @overload
-    def __getitem__(self: dok_array[_ScalarT, _ShapeT], key: _spbase[np.bool_, _ShapeT], /) -> dok_array[_ScalarT, _ShapeT]: ...
+    def __getitem__(self: dok_array[_ScalarT, _ShapeT], key: _spbase[np.bool, _ShapeT], /) -> dok_array[_ScalarT, _ShapeT]: ...
     @overload
     def __getitem__(self: dok_array[_ScalarT, _NoD], key: _ToKey1D, /) -> Any: ...
     @overload
@@ -538,13 +538,13 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     @override
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_array[np.bool_, _NoD]], iterable: _ToKeys, v: bool, /) -> dok_array[np.bool_, _AnyD]: ...
+    def fromkeys(cls: type[dok_array[np.bool, _NoD]], iterable: _ToKeys, v: bool, /) -> dok_array[np.bool, _AnyD]: ...
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_array[np.bool_, _2D]], iterable: _ToKeys2, v: bool, /) -> dok_array[np.bool_, _2D]: ...
+    def fromkeys(cls: type[dok_array[np.bool, _2D]], iterable: _ToKeys2, v: bool, /) -> dok_array[np.bool, _2D]: ...
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_array[np.bool_, _1D]], iterable: _ToKeys1, v: bool, /) -> dok_array[np.bool_, _1D]: ...
+    def fromkeys(cls: type[dok_array[np.bool, _1D]], iterable: _ToKeys1, v: bool, /) -> dok_array[np.bool, _1D]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[dok_array[_ScalarT, _NoD]], iterable: _ToKeys, v: _ScalarT, /) -> dok_array[_ScalarT, _AnyD]: ...
@@ -635,7 +635,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: bool-like | None
     def __init__(
-        self: dok_matrix[np.bool_],
+        self: dok_matrix[np.bool],
         /,
         arg1: onp.ToJustBoolStrict2D,
         shape: _ToShape2D | None = None,
@@ -715,7 +715,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     @override
     @overload
     def __getitem__(  # pyrefly: ignore[bad-override]
-        self, key: _ToKey1D | onp.CanArrayND[np.bool_ | npc.integer] | _spbase[np.bool_, _2D] | list[int] | slice, /
+        self, key: _ToKey1D | onp.CanArrayND[np.bool | npc.integer] | _spbase[np.bool, _2D] | list[int] | slice, /
     ) -> Self: ...
     @overload
     def __getitem__(self, key: _ToKey2D, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
@@ -724,7 +724,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     @override
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_matrix[np.bool_]], iterable: _ToKeys2, v: bool, /) -> dok_matrix[np.bool_]: ...
+    def fromkeys(cls: type[dok_matrix[np.bool]], iterable: _ToKeys2, v: bool, /) -> dok_matrix[np.bool]: ...
     @overload
     @classmethod
     def fromkeys(cls: type[dok_matrix[_ScalarT]], iterable: _ToKeys2, v: _ScalarT, /) -> dok_matrix[_ScalarT]: ...

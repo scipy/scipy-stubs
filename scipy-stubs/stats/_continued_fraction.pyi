@@ -28,7 +28,7 @@ class _Tolerances(TypedDict, total=False):
 
 @type_check_only
 class _ContinuedFraction0D(_RichResult):
-    success: np.bool_
+    success: np.bool
     status: np.int32
     f: np.float64
     nit: np.int32
@@ -36,7 +36,7 @@ class _ContinuedFraction0D(_RichResult):
 
 @type_check_only
 class _ContinuedFractionND(_RichResult, Generic[_ShapeT_co]):
-    success: onp.ArrayND[np.bool_, _ShapeT_co]
+    success: onp.ArrayND[np.bool, _ShapeT_co]
     status: onp.ArrayND[np.int32, _ShapeT_co]
     f: onp.ArrayND[np.float64, _ShapeT_co]
     nit: onp.ArrayND[np.int32, _ShapeT_co]
@@ -87,8 +87,8 @@ def _continued_fraction(
 ) -> _ContinuedFraction0D: ...
 @overload
 def _continued_fraction(
-    a: _FnCoef[onp.ArrayND[npc.floating | npc.integer | np.bool_, _ShapeT]],
-    b: _FnCoef[onp.ArrayND[npc.floating | npc.integer | np.bool_, _ShapeT] | onp.ToFloat],
+    a: _FnCoef[onp.ArrayND[npc.floating | npc.integer | np.bool, _ShapeT]],
+    b: _FnCoef[onp.ArrayND[npc.floating | npc.integer | np.bool, _ShapeT] | onp.ToFloat],
     *,
     args: tuple[object, ...] = (),
     tolerances: _Tolerances | None = None,
@@ -97,8 +97,8 @@ def _continued_fraction(
 ) -> _ContinuedFractionND[_ShapeT]: ...
 @overload
 def _continued_fraction(
-    a: _FnCoef[onp.ArrayND[npc.floating | npc.integer | np.bool_, _ShapeT] | onp.ToFloat],
-    b: _FnCoef[onp.ArrayND[npc.floating | npc.integer | np.bool_, _ShapeT]],
+    a: _FnCoef[onp.ArrayND[npc.floating | npc.integer | np.bool, _ShapeT] | onp.ToFloat],
+    b: _FnCoef[onp.ArrayND[npc.floating | npc.integer | np.bool, _ShapeT]],
     *,
     args: tuple[object, ...] = (),
     tolerances: _Tolerances | None = None,

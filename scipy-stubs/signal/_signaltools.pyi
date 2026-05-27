@@ -56,7 +56,7 @@ __all__ = [
 
 _T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_NumericT = TypeVar("_NumericT", bound=npc.number | np.bool_)
+_NumericT = TypeVar("_NumericT", bound=npc.number | np.bool)
 _InexactT2 = TypeVar("_InexactT2", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
 _InexactT3 = TypeVar("_InexactT3", bound=np.float32 | np.float64 | npc.floating80 | npc.complexfloating)
 _CoFloat64T = TypeVar("_CoFloat64T", bound=np.float64 | np.float32 | npc.integer)
@@ -137,7 +137,7 @@ def choose_conv_method(
 @overload  # ~bool, ~bool
 def convolve(
     in1: onp.ToJustBoolND, in2: onp.ToJustBoolND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload  # generic
 def convolve(
     in1: nptc.CanArray[_AnyShapeT, np.dtype[_NumericT]],
@@ -178,7 +178,7 @@ def convolve(
 @overload  # ~bool, ~bool
 def correlate(
     in1: onp.ToJustBoolND, in2: onp.ToJustBoolND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload  # generic
 def correlate(
     in1: nptc.CanArray[_AnyShapeT, np.dtype[_NumericT]],
@@ -350,8 +350,8 @@ def correlate2d(
 # NOTE: keep in sync with `oaconvolve`
 @overload  # float64 | integer | bool, float64 | integer | bool, generic shape
 def fftconvolve(
-    in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _AnyShapeT],
-    in2: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _AnyShapeT],
+    in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _AnyShapeT],
+    in2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _AnyShapeT],
     mode: onp.ConvolveMode = "full",
     axes: None = None,
 ) -> onp.ArrayND[np.float64, _AnyShapeT]: ...
@@ -397,8 +397,8 @@ def fftconvolve(
 # NOTE: keep in sync with `fftconvolve`
 @overload  # float64 | integer | bool, float64 | integer | bool, generic shape
 def oaconvolve(
-    in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _AnyShapeT],
-    in2: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _AnyShapeT],
+    in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _AnyShapeT],
+    in2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _AnyShapeT],
     mode: onp.ConvolveMode = "full",
     axes: None = None,
 ) -> onp.ArrayND[np.float64, _AnyShapeT]: ...
@@ -471,8 +471,8 @@ def correlation_lags(in1_len: int, in2_len: int, mode: onp.ConvolveMode = "full"
 #
 @overload  # ~float64, ~float64
 def lfilter_zi(
-    b: onp.ToArray1D[float, npc.floating64 | npc.integer | np.bool_],
-    a: onp.ToArray1D[float, npc.floating64 | npc.integer | np.bool_],
+    b: onp.ToArray1D[float, npc.floating64 | npc.integer | np.bool],
+    a: onp.ToArray1D[float, npc.floating64 | npc.integer | np.bool],
 ) -> onp.Array1D[np.float64]: ...
 @overload  # +float64, ~float64
 def lfilter_zi(b: onp.ToJustFloat64_1D, a: onp.ToFloat64_1D) -> onp.Array1D[np.float64]: ...
@@ -1151,7 +1151,7 @@ def resample(
 ) -> tuple[onp.ArrayND[_InexactT3, _ShapeT], onp.Array1D[np.float64]]: ...
 @overload  # +integer, known shape, t=None (default)
 def resample(
-    x: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
+    x: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool]],
     num: int,
     t: None = None,
     axis: int = 0,
@@ -1160,7 +1160,7 @@ def resample(
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # +integer, known shape, t=<given>
 def resample(
-    x: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
+    x: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool]],
     num: int,
     t: onp.ToFloat1D,
     axis: int = 0,
@@ -1253,7 +1253,7 @@ def resample_poly(
 ) -> onp.ArrayND[_InexactT2, _ShapeT]: ...
 @overload  # +integer, known shape
 def resample_poly(
-    x: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
+    x: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool]],
     up: int,
     down: int,
     axis: int = 0,
@@ -1325,7 +1325,7 @@ def resample_poly(
 # `float16` is upcast to `float64`, while `float32` (and `float64`) retain their dtype
 @overload  # f64
 def decimate(
-    x: onp.ToArrayND[float, np.float64 | np.float16 | npc.integer | np.bool_],
+    x: onp.ToArrayND[float, np.float64 | np.float16 | npc.integer | np.bool],
     q: int,
     n: int | None = None,
     ftype: _FilterType = "iir",

@@ -10,11 +10,11 @@ from ._typing import NanPolicy
 __all__ = ["differential_entropy", "entropy"]
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 _PyScalarT = TypeVar("_PyScalarT")
 
 _AsF32: TypeAlias = np.float16 | np.float32
-_AsF64: TypeAlias = np.float64 | npc.integer | np.bool_
+_AsF64: TypeAlias = np.float64 | npc.integer | np.bool
 
 _DifferentialMethod: TypeAlias = Literal["vasicek", "van es", "ebrahimi", "correa", "auto"]
 

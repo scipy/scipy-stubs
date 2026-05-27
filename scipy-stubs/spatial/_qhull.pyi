@@ -188,7 +188,7 @@ class ConvexHull(_QhullUser):
     neighbors: onp.Array2D[np.int32]
     equations: onp.Array2D[np.float64]
     coplanar: onp.Array2D[np.int32]
-    good: onp.Array1D[np.bool_] | None
+    good: onp.Array1D[np.bool] | None
     volume: float
     area: float
     nsimplex: int

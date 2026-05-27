@@ -14,7 +14,7 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 # workaround for https://github.com/microsoft/pyright/issues/10232
 _JustAnyShape: TypeAlias = tuple[Never, ...]
 
-_co_integer: TypeAlias = npc.integer | np.bool_  # noqa: PYI042
+_co_integer: TypeAlias = npc.integer | np.bool  # noqa: PYI042
 
 ###
 

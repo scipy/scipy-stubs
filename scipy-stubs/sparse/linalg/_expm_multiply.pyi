@@ -10,7 +10,7 @@ from scipy.sparse._base import _spbase, sparray
 
 __all__ = ["expm_multiply"]
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
 
@@ -19,7 +19,7 @@ _SparseOrDense = TypeAliasType(
     "_SparseOrDense", sparray[_ScalarT, _ShapeT] | onp.ArrayND[_ScalarT, _ShapeT], type_params=(_ScalarT, _ShapeT)
 )
 
-_AsFloat64: TypeAlias = np.float64 | npc.integer | np.bool_
+_AsFloat64: TypeAlias = np.float64 | npc.integer | np.bool
 _ToFloat64: TypeAlias = _AsFloat64 | np.float32 | np.float16
 
 # workaround for mypy's and pyright's typing spec non-compliance regarding overloads
@@ -40,7 +40,7 @@ def expm_multiply(
 @overload
 def expm_multiply(
     A: _ToLinearOperator[_InexactT],
-    B: _SparseOrDense[npc.integer | np.bool_, _JustAnyShape],
+    B: _SparseOrDense[npc.integer | np.bool, _JustAnyShape],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
     num: SupportsIndex | None = None,
@@ -70,7 +70,7 @@ def expm_multiply(
 @overload
 def expm_multiply(
     A: _ToLinearOperator[_InexactT],
-    B: _SparseOrDense[npc.integer | np.bool_, tuple[int]],
+    B: _SparseOrDense[npc.integer | np.bool, tuple[int]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
     num: SupportsIndex | None = None,
@@ -100,7 +100,7 @@ def expm_multiply(
 @overload
 def expm_multiply(
     A: _ToLinearOperator[_InexactT],
-    B: _SparseOrDense[npc.integer | np.bool_, tuple[int, int]],
+    B: _SparseOrDense[npc.integer | np.bool, tuple[int, int]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
     num: SupportsIndex | None = None,
@@ -130,7 +130,7 @@ def expm_multiply(
 @overload
 def expm_multiply(
     A: _ToLinearOperator[_InexactT],
-    B: _SparseOrDense[npc.integer | np.bool_, tuple[Any, ...]],
+    B: _SparseOrDense[npc.integer | np.bool, tuple[Any, ...]],
     start: onp.ToFloat | None = None,
     stop: onp.ToFloat | None = None,
     num: SupportsIndex | None = None,

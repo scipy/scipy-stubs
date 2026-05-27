@@ -43,13 +43,13 @@ _InexactND: TypeAlias = onp.ArrayND[npc.inexact]
 
 # TODO(@jorenham): better naming
 
-_InputFloat: TypeAlias = onp.ToArrayND[float, np.float64 | npc.floating80 | npc.integer | np.bool_]
-_InputFloatStrict1D: TypeAlias = onp.ToArrayStrict1D[float, np.float64 | npc.floating80 | npc.integer | np.bool_]
-_InputFloatStrict2D: TypeAlias = onp.ToArrayStrict2D[float, np.float64 | npc.floating80 | npc.integer | np.bool_]
+_InputFloat: TypeAlias = onp.ToArrayND[float, np.float64 | npc.floating80 | npc.integer | np.bool]
+_InputFloatStrict1D: TypeAlias = onp.ToArrayStrict1D[float, np.float64 | npc.floating80 | npc.integer | np.bool]
+_InputFloatStrict2D: TypeAlias = onp.ToArrayStrict2D[float, np.float64 | npc.floating80 | npc.integer | np.bool]
 
-_InputF64: TypeAlias = onp.ToArrayND[float, np.float64 | npc.integer | np.bool_]
-_InputF64Strict1D: TypeAlias = onp.ToArrayStrict1D[float, np.float64 | npc.integer | np.bool_]
-_InputF64Strict2D: TypeAlias = onp.ToArrayStrict2D[float, np.float64 | npc.integer | np.bool_]
+_InputF64: TypeAlias = onp.ToArrayND[float, np.float64 | npc.integer | np.bool]
+_InputF64Strict1D: TypeAlias = onp.ToArrayStrict1D[float, np.float64 | npc.integer | np.bool]
+_InputF64Strict2D: TypeAlias = onp.ToArrayStrict2D[float, np.float64 | npc.integer | np.bool]
 
 _InputComplex: TypeAlias = onp.ToArrayND[op.JustComplex, np.complex128 | npc.complexfloating160]
 _InputComplexStrict1D: TypeAlias = onp.ToArrayStrict1D[op.JustComplex, np.complex128 | npc.complexfloating160]
@@ -1055,7 +1055,7 @@ def inv(
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # generic shape, as float32
 def inv(
-    a: onp.CanArrayND[np.float32 | npc.number16 | npc.integer8 | np.bool_, _ShapeT],
+    a: onp.CanArrayND[np.float32 | npc.number16 | npc.integer8 | np.bool, _ShapeT],
     overwrite_a: bool = False,
     check_finite: bool = True,
     *,
@@ -1123,7 +1123,7 @@ def det(
 # TODO(@jorenham): shape-typing for `b`
 @overload  # ~f64, +f64
 def lstsq(
-    a: onp.ToArray2D[float, np.float64 | npc.inexact80 | npc.integer | np.bool_],
+    a: onp.ToArray2D[float, np.float64 | npc.inexact80 | npc.integer | np.bool],
     b: onp.ToFloatND,
     cond: float | None = None,
     overwrite_a: bool = False,
@@ -1133,7 +1133,7 @@ def lstsq(
 ) -> _LstSqResultND[np.float64, onp.Array1D[np.float64]]: ...
 @overload  # ~f64, +f64, lapack_driver='gelsy' (keyword)
 def lstsq(
-    a: onp.ToArray2D[float, np.float64 | npc.inexact80 | npc.integer | np.bool_],
+    a: onp.ToArray2D[float, np.float64 | npc.inexact80 | npc.integer | np.bool],
     b: onp.ToFloatND,
     cond: float | None = None,
     overwrite_a: bool = False,
@@ -1145,7 +1145,7 @@ def lstsq(
 @overload  # +f64, -f64
 def lstsq(
     a: onp.ToFloat2D,
-    b: onp.ToArrayND[float, np.float64 | npc.inexact80 | npc.integer | np.bool_],
+    b: onp.ToArrayND[float, np.float64 | npc.inexact80 | npc.integer | np.bool],
     cond: float | None = None,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
@@ -1155,7 +1155,7 @@ def lstsq(
 @overload  # +f64, -f64, lapack_driver='gelsy' (keyword)
 def lstsq(
     a: onp.ToFloat2D,
-    b: onp.ToArrayND[float, np.float64 | npc.inexact80 | npc.integer | np.bool_],
+    b: onp.ToArrayND[float, np.float64 | npc.inexact80 | npc.integer | np.bool],
     cond: float | None = None,
     overwrite_a: bool = False,
     overwrite_b: bool = False,

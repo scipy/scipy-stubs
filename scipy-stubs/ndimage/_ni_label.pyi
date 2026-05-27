@@ -19,7 +19,7 @@ def get_write_line(a: onp.ArrayND[_data_t]) -> int: ...  # undocumented
 
 #
 def _label(
-    input: onp.ArrayND[_data_t | np.bool_],
-    structure: onp.ArrayND[np.bool_ | npc.integer],
-    output: onp.ArrayND[_data_t | np.bool_],
+    input: onp.ArrayND[_data_t | np.bool],
+    structure: onp.ArrayND[np.bool | npc.integer],
+    output: onp.ArrayND[_data_t | np.bool],
 ) -> int: ...  # undocumented

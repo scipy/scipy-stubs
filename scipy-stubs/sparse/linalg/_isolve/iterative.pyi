@@ -14,13 +14,13 @@ __all__ = ["bicg", "bicgstab", "cg", "cgs", "gmres", "qmr"]
 _Float: TypeAlias = np.float32 | np.float64
 _Complex: TypeAlias = np.complex64 | np.complex128
 
-_ToInt: TypeAlias = npc.integer | np.bool_
+_ToInt: TypeAlias = npc.integer | np.bool
 _ToFloat: TypeAlias = _Float | _ToInt
 _ToComplex: TypeAlias = _Complex | _ToFloat
 
 _FloatT = TypeVar("_FloatT", bound=_Float, default=np.float64)
 _ComplexT = TypeVar("_ComplexT", bound=_Complex)
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 
 _ToLinearOperator: TypeAlias = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
 

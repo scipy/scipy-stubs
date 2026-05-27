@@ -21,7 +21,7 @@ __all__ = ["find", "tril", "triu"]
 
 ###
 
-_SCT = TypeVar("_SCT", bound=npc.number | np.bool_, default=Any)
+_SCT = TypeVar("_SCT", bound=npc.number | np.bool, default=Any)
 _ToDense: TypeAlias = onp.CanArrayND[_SCT] | Seq[_SCT] | Seq[Seq[_SCT] | onp.CanArrayND[_SCT]]
 
 ###

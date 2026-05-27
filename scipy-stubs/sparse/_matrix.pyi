@@ -22,8 +22,8 @@ from ._lil import lil_matrix
 from ._typing import _Format
 
 _T = TypeVar("_T")
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 
 _SpMatrixT = TypeVar("_SpMatrixT", bound=spmatrix)
 
@@ -31,8 +31,8 @@ _SpFromInT = TypeVar("_SpFromInT", bound=spmatrix[npc.number])
 _SpFromFloatT = TypeVar("_SpFromFloatT", bound=spmatrix[npc.inexact])
 _SpFromComplexT = TypeVar("_SpFromComplexT", bound=spmatrix[npc.complexfloating])
 
-_ToInt8: TypeAlias = np.int8 | np.bool_
-_ToInt: TypeAlias = npc.integer | np.bool_
+_ToInt8: TypeAlias = np.int8 | np.bool
+_ToInt: TypeAlias = npc.integer | np.bool
 _ToFloat32: TypeAlias = np.float32 | _ToInt
 _ToFloat: TypeAlias = npc.floating | _ToInt
 _ToComplex64: TypeAlias = np.complex64 | _ToFloat
@@ -82,7 +82,7 @@ class spmatrix(Generic[_ScalarT_co]):
 
     #
     @overload  # Self[-Bool], other: scalar-like +Bool
-    def __mul__(self, other: bool | np.bool_, /) -> Self: ...
+    def __mul__(self, other: bool | np.bool, /) -> Self: ...
     @overload  # Self[-Int], other: scalar-like +Int
     def __mul__(self: _SpFromInT, other: onp.ToInt, /) -> _SpFromInT: ...
     @overload  # Self[-Float], other: scalar-like +Float
@@ -92,9 +92,9 @@ class spmatrix(Generic[_ScalarT_co]):
     @overload  # spmatrix, other: spmatrix
     def __mul__(self: _SpMatrixT, other: _SpMatrixT, /) -> _SpMatrixT: ...
     @overload  # spmatrix[-Bool], other: sparse +Bool
-    def __mul__(self: spmatrix, other: _spbase[np.bool_], /) -> _SpMatrixOut[_ScalarT_co]: ...
+    def __mul__(self: spmatrix, other: _spbase[np.bool], /) -> _SpMatrixOut[_ScalarT_co]: ...
     @overload  # spmatrix[-Bool], other: array-like +Bool
-    def __mul__(self: spmatrix, other: _DualArrayLike[bool, np.bool_], /) -> onp.Array2D[_ScalarT_co]: ...
+    def __mul__(self: spmatrix, other: _DualArrayLike[bool, np.bool], /) -> onp.Array2D[_ScalarT_co]: ...
     @overload  # spmatrix[-Int], other: sparse +Int
     def __mul__(self: spmatrix[npc.number], other: _spbase[_ToInt8], /) -> _SpMatrixOut[_ScalarT_co]: ...
     @overload  # spmatrix[-Int], other: array-like +Int
@@ -112,9 +112,9 @@ class spmatrix(Generic[_ScalarT_co]):
         self: spmatrix[npc.complexfloating], other: _DualArrayLike[float, _ToComplex64], /
     ) -> onp.Array2D[_ScalarT_co]: ...
     @overload  # spmatrix[+Bool], other: scalar- or matrix-like ~Int
-    def __mul__(self: spmatrix[np.bool_], other: _DualMatrixLike[op.JustInt, npc.integer], /) -> spmatrix[npc.integer]: ...
+    def __mul__(self: spmatrix[np.bool], other: _DualMatrixLike[op.JustInt, npc.integer], /) -> spmatrix[npc.integer]: ...
     @overload  # spmatrix[+Bool], other: array-like ~Int
-    def __mul__(self: spmatrix[np.bool_], other: _DualArrayLike[op.JustInt, npc.integer], /) -> onp.Array2D[npc.integer]: ...
+    def __mul__(self: spmatrix[np.bool], other: _DualArrayLike[op.JustInt, npc.integer], /) -> onp.Array2D[npc.integer]: ...
     @overload  # spmatrix[+Int], other: scalar- or matrix-like ~Float
     def __mul__(self: spmatrix[_ToInt], other: _DualMatrixLike[op.JustFloat, npc.floating], /) -> spmatrix[npc.floating]: ...
     @overload  # spmatrix[+Int], other: array-like ~Float
@@ -129,7 +129,7 @@ class spmatrix(Generic[_ScalarT_co]):
     ) -> onp.Array2D[npc.complexfloating]: ...
     @overload  # catch-all
     def __mul__(
-        self, other: _DualArrayLike[complex, npc.number | np.bool_] | _spbase, /
+        self, other: _DualArrayLike[complex, npc.number | np.bool] | _spbase, /
     ) -> _spbase[Any, Any] | onp.Array[Any, Any]: ...
     __rmul__ = __mul__
 
@@ -147,7 +147,7 @@ class spmatrix(Generic[_ScalarT_co]):
 
     # NOTE: mypy reports a false positive for overlapping overloads
     @overload
-    def asfptype(self: spmatrix[np.bool_ | npc.integer8 | npc.integer16], /) -> spmatrix[np.float32]: ...
+    def asfptype(self: spmatrix[np.bool | npc.integer8 | npc.integer16], /) -> spmatrix[np.float32]: ...
     @overload
     def asfptype(self: spmatrix[npc.integer32 | npc.integer64], /) -> spmatrix[np.float64]: ...
     @overload

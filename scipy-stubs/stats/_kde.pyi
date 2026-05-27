@@ -13,7 +13,7 @@ __all__ = ["gaussian_kde"]
 _FloatingT = TypeVar("_FloatingT", bound=npc.floating)
 _FloatingT_co = TypeVar("_FloatingT_co", bound=npc.floating, default=np.float64, covariant=True)
 
-_co_integer: TypeAlias = npc.integer | np.bool_  # noqa: PYI042
+_co_integer: TypeAlias = npc.integer | np.bool  # noqa: PYI042
 
 _ToFloatMax1D: TypeAlias = onp.ToFloat | onp.ToFloat1D
 _ToFloatMax2D: TypeAlias = _ToFloatMax1D | onp.ToFloat2D

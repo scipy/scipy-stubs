@@ -16,7 +16,7 @@ __all__ = ["csc_array", "csc_matrix", "isspmatrix_csc"]
 
 _T = TypeVar("_T")
 
-_Scalar: TypeAlias = npc.number | np.bool_
+_Scalar: TypeAlias = npc.number | np.bool
 _ScalarT = TypeVar("_ScalarT", bound=_Scalar)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
 
@@ -102,7 +102,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
     @overload  # 2-d array-like bool
     def __init__(
-        self: csc_array[np.bool_],
+        self: csc_array[np.bool],
         /,
         arg1: _ToBoolCSC,
         shape: _ToShape2D | None = None,
@@ -146,7 +146,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
     @overload  # dtype: bool-like (positional)
     def __init__(
-        self: csc_array[np.bool_],
+        self: csc_array[np.bool],
         /,
         arg1: _ToAnyCSC,
         shape: _ToShape2D | None,
@@ -157,7 +157,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     ) -> None: ...
     @overload  # dtype: bool-like (keyword)
     def __init__(
-        self: csc_array[np.bool_],
+        self: csc_array[np.bool],
         /,
         arg1: _ToAnyCSC,
         shape: _ToShape2D | None = None,
@@ -291,7 +291,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     ) -> None: ...
     @overload  # 2-d array-like bool
     def __init__(
-        self: csc_matrix[np.bool_],
+        self: csc_matrix[np.bool],
         /,
         arg1: _ToBoolCSC,
         shape: _ToShape2D | None = None,
@@ -335,7 +335,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     ) -> None: ...
     @overload  # dtype: bool-like (positional)
     def __init__(
-        self: csc_matrix[np.bool_],
+        self: csc_matrix[np.bool],
         /,
         arg1: _ToAnyCSC,
         shape: _ToShape2D | None,
@@ -346,7 +346,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     ) -> None: ...
     @overload  # dtype: bool-like (keyword)
     def __init__(
-        self: csc_matrix[np.bool_],
+        self: csc_matrix[np.bool],
         /,
         arg1: _ToAnyCSC,
         shape: _ToShape2D | None = None,

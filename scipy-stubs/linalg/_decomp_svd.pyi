@@ -7,7 +7,7 @@ import optype.numpy.compat as npc
 
 __all__ = ["diagsvd", "null_space", "orth", "subspace_angles", "svd", "svdvals"]
 
-_RealT = TypeVar("_RealT", bound=np.bool_ | npc.integer | npc.floating)
+_RealT = TypeVar("_RealT", bound=np.bool | npc.integer | npc.floating)
 _InexactT = TypeVar("_InexactT", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
 _ScalarT = TypeVar("_ScalarT", bound=np.generic)
 _ScalarT1 = TypeVar("_ScalarT1", bound=np.generic)
@@ -22,7 +22,7 @@ _LapackDriver: TypeAlias = Literal["gesdd", "gesvd"]
 
 @overload  # nd float64
 def svd(
-    a: onp.ToArrayND[float, npc.floating80 | npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating80 | npc.floating64 | npc.integer | np.bool],
     full_matrices: bool = True,
     compute_uv: Literal[True] = True,
     overwrite_a: bool = False,
@@ -58,7 +58,7 @@ def svd(
 ) -> _SVD_ND[np.complex64, np.float32]: ...
 @overload  # nd float64 | complex128, compute_uv=False (keyword)
 def svd(
-    a: onp.ToArrayND[complex, npc.inexact80 | npc.inexact64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[complex, npc.inexact80 | npc.inexact64 | npc.integer | np.bool],
     full_matrices: bool = True,
     *,
     compute_uv: Literal[False],
@@ -84,7 +84,7 @@ def svdvals(  # type: ignore[overload-overlap]
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def svdvals(
-    a: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool_],
+    a: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
     overwrite_a: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float32]: ...
@@ -95,7 +95,7 @@ def svdvals(a: onp.ToComplexND, overwrite_a: bool = False, check_finite: bool = 
 @overload
 def diagsvd(s: onp.ToArrayND[_RealT, _RealT], M: SupportsIndex, N: SupportsIndex) -> onp.ArrayND[_RealT]: ...
 @overload
-def diagsvd(s: onp.SequenceND[bool], M: SupportsIndex, N: SupportsIndex) -> onp.ArrayND[np.bool_]: ...
+def diagsvd(s: onp.SequenceND[bool], M: SupportsIndex, N: SupportsIndex) -> onp.ArrayND[np.bool]: ...
 @overload
 def diagsvd(s: onp.SequenceND[op.JustInt], M: SupportsIndex, N: SupportsIndex) -> onp.ArrayND[np.int_]: ...
 @overload
@@ -104,7 +104,7 @@ def diagsvd(s: onp.SequenceND[op.JustFloat], M: SupportsIndex, N: SupportsIndex)
 #
 @overload
 def orth(
-    A: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_], rcond: float | None = None
+    A: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool], rcond: float | None = None
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def orth(A: onp.ToJustComplex128_ND, rcond: float | None = None) -> onp.ArrayND[np.complex128]: ...
@@ -114,7 +114,7 @@ def orth(A: onp.ToArrayND[_InexactT, _InexactT], rcond: float | None = None) -> 
 #
 @overload
 def null_space(
-    A: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    A: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     rcond: float | None = None,
     *,
     overwrite_a: bool = False,
@@ -151,8 +151,8 @@ def subspace_angles(  # type: ignore[overload-overlap]
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def subspace_angles(
-    A: onp.ToArray2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool_],
-    B: onp.ToArray2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool_],
+    A: onp.ToArray2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
+    B: onp.ToArray2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
 ) -> onp.Array1D[np.float32]: ...
 @overload
 def subspace_angles(A: onp.ToComplex2D, B: onp.ToComplex2D) -> onp.Array1D[np.float64 | np.float32]: ...

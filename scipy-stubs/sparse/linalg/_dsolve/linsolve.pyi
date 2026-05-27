@@ -36,8 +36,8 @@ _ToF64Mat: TypeAlias = _Sparse2D[np.float64 | npc.integer] | onp.ToInt2D | onp.T
 _ToC64Mat: TypeAlias = _Sparse2D[np.complex64] | nptc.CanArray[tuple[Any, ...], np.dtype[np.complex64]]
 _ToC128Mat: TypeAlias = _Sparse2D[np.complex128] | onp.ToJustComplex128_2D
 
-_ToFloatMat: TypeAlias = _Sparse2D[npc.floating | npc.integer | np.bool_] | onp.ToFloat2D
-_ToFloatMatStrict: TypeAlias = _Sparse2D[npc.floating | npc.integer | np.bool_] | onp.ToFloatStrict2D
+_ToFloatMat: TypeAlias = _Sparse2D[npc.floating | npc.integer | np.bool] | onp.ToFloat2D
+_ToFloatMatStrict: TypeAlias = _Sparse2D[npc.floating | npc.integer | np.bool] | onp.ToFloatStrict2D
 _ToComplexMat: TypeAlias = _Sparse2D[npc.complexfloating] | onp.ToJustComplex2D
 _ToInexactMat: TypeAlias = _Sparse2D[Any] | onp.ToComplex128_2D
 _ToInexactMatStrict: TypeAlias = _Sparse2D[Any] | onp.ToComplex128Strict2D
@@ -50,11 +50,11 @@ _AsC128: TypeAlias = npc.integer | np.float16 | npc.inexact32 | npc.inexact64
 @type_check_only
 class _SuperLU_solve(Protocol[_NumberT_contra, _InexactT_co]):
     @overload
-    def __call__(self, rhs: onp.Array1D[_NumberT_contra | np.bool_]) -> onp.Array1D[_InexactT_co]: ...
+    def __call__(self, rhs: onp.Array1D[_NumberT_contra | np.bool]) -> onp.Array1D[_InexactT_co]: ...
     @overload
-    def __call__(self, rhs: onp.Array2D[_NumberT_contra | np.bool_]) -> onp.Array2D[_InexactT_co]: ...
+    def __call__(self, rhs: onp.Array2D[_NumberT_contra | np.bool]) -> onp.Array2D[_InexactT_co]: ...
     @overload
-    def __call__(self, rhs: onp.ArrayND[_NumberT_contra | np.bool_]) -> onp.ArrayND[_InexactT_co]: ...
+    def __call__(self, rhs: onp.ArrayND[_NumberT_contra | np.bool]) -> onp.ArrayND[_InexactT_co]: ...
 
 ###
 

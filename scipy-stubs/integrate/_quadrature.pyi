@@ -32,13 +32,13 @@ class QMCQuadResult(NamedTuple):
 #
 @overload  # ?d +complex  (mypy & pyright workaround)
 def trapezoid(
-    y: onp.Array[_JustAnyShape, npc.number | np.bool_], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
+    y: onp.Array[_JustAnyShape, npc.number | np.bool], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
 ) -> Any: ...
 @overload  # 1d T:inexact
 def trapezoid(y: onp.Array1D[_InexactT], x: onp.ToFloat1D | None = None, dx: float = 1.0, axis: int = -1) -> _InexactT: ...
 @overload  # 1d +int
 def trapezoid(
-    y: onp.ToArrayStrict1D[float, npc.integer | np.bool_], x: onp.ToFloat1D | None = None, dx: float = 1.0, axis: int = -1
+    y: onp.ToArrayStrict1D[float, npc.integer | np.bool], x: onp.ToFloat1D | None = None, dx: float = 1.0, axis: int = -1
 ) -> np.float64: ...
 @overload  # 1d ~complex
 def trapezoid(
@@ -50,7 +50,7 @@ def trapezoid(
 ) -> onp.Array1D[_InexactT]: ...
 @overload  # 2d +int
 def trapezoid(
-    y: onp.ToArrayStrict2D[float, npc.integer | np.bool_], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
+    y: onp.ToArrayStrict2D[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
 ) -> onp.Array1D[np.float64]: ...
 @overload  # 2d ~complex
 def trapezoid(
@@ -62,7 +62,7 @@ def trapezoid(
 ) -> onp.ArrayND[_InexactT] | Any: ...
 @overload  # Nd +int
 def trapezoid(
-    y: onp.ToArrayND[float, npc.integer | np.bool_], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
+    y: onp.ToArrayND[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.float64] | Any: ...
 @overload  # Nd ~complex
 def trapezoid(
@@ -80,7 +80,7 @@ def trapezoid(
 # NOTE: unlike `trapezoid`, this will upcast scalars below 64-bits precision in case of scalar output
 @overload  # ?d +complex  (mypy & pyright workaround)
 def simpson(
-    y: onp.Array[_JustAnyShape, npc.number | np.bool_], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+    y: onp.Array[_JustAnyShape, npc.number | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> Any: ...
 @overload  # 1d +f64
 def simpson(y: onp.ToFloat64Strict1D, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1) -> np.float64: ...
@@ -100,7 +100,7 @@ def simpson(
 ) -> onp.Array1D[_InexactT]: ...
 @overload  # 2d +int
 def simpson(
-    y: onp.ToArrayStrict2D[float, npc.integer | np.bool_], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+    y: onp.ToArrayStrict2D[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.Array1D[np.float64]: ...
 @overload  # 2d ~complex
 def simpson(
@@ -112,7 +112,7 @@ def simpson(
 ) -> onp.ArrayND[_InexactT] | Any: ...
 @overload  # Nd +int
 def simpson(
-    y: onp.ToArrayND[float, npc.integer | np.bool_], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+    y: onp.ToArrayND[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.float64] | Any: ...
 @overload  # Nd ~complex
 def simpson(
@@ -129,7 +129,7 @@ def simpson(
 
 # NOTE: like `simpson`, but this will also upcast scalars below 64-bits precision in case of array output
 @overload  # ?d +complex  (mypy & pyright workaround)
-def romb(y: onp.Array[_JustAnyShape, npc.number | np.bool_], dx: float = 1.0, axis: int = -1, show: bool = False) -> Any: ...
+def romb(y: onp.Array[_JustAnyShape, npc.number | np.bool], dx: float = 1.0, axis: int = -1, show: bool = False) -> Any: ...
 @overload  # 1d +f64
 def romb(y: onp.ToFloat64Strict1D, dx: float = 1.0, axis: int = -1) -> np.float64: ...
 @overload  # 1d ~complex
@@ -164,7 +164,7 @@ def romb(y: onp.ToComplexND, dx: float = 1.0, axis: int = -1, show: bool = False
 # keep in sync with `cumulative_simpson`
 @overload  # +int, shape known
 def cumulative_trapezoid(
-    y: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    y: onp.ArrayND[npc.integer | np.bool, _ShapeT],
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
@@ -172,7 +172,7 @@ def cumulative_trapezoid(
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # +float, shape 1d
 def cumulative_trapezoid(
-    y: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    y: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
@@ -180,7 +180,7 @@ def cumulative_trapezoid(
 ) -> onp.Array1D[np.float64]: ...
 @overload  # +float, shape 2d
 def cumulative_trapezoid(
-    y: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    y: onp.ToArrayStrict2D[float, npc.integer | np.bool],
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
@@ -230,7 +230,7 @@ def cumulative_trapezoid(
 # keep in sync with `cumulative_trapezoid`
 @overload  # +int, shape known
 def cumulative_simpson(
-    y: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    y: onp.ArrayND[npc.integer | np.bool, _ShapeT],
     *,
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
@@ -239,7 +239,7 @@ def cumulative_simpson(
 ) -> onp.ArrayND[np.float64, _ShapeT]: ...
 @overload  # +float, shape 1d
 def cumulative_simpson(
-    y: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    y: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     *,
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
@@ -248,7 +248,7 @@ def cumulative_simpson(
 ) -> onp.Array1D[np.float64]: ...
 @overload  # +float, shape 2d
 def cumulative_simpson(
-    y: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    y: onp.ToArrayStrict2D[float, npc.integer | np.bool],
     *,
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,

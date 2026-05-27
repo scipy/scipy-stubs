@@ -12,10 +12,10 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["LinearOperator", "aslinearoperator"]
 
-_SCT = TypeVar("_SCT", bound=npc.number | np.bool_)
-_SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
-_SCT1_co = TypeVar("_SCT1_co", bound=npc.number | np.bool_, default=Any, covariant=True)
-_SCT2_co = TypeVar("_SCT2_co", bound=npc.number | np.bool_, default=_SCT1_co, covariant=True)
+_SCT = TypeVar("_SCT", bound=npc.number | np.bool)
+_SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool, default=Any, covariant=True)
+_SCT1_co = TypeVar("_SCT1_co", bound=npc.number | np.bool, default=Any, covariant=True)
+_SCT2_co = TypeVar("_SCT2_co", bound=npc.number | np.bool, default=_SCT1_co, covariant=True)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec, covariant=True)
 
@@ -23,7 +23,7 @@ _LinearOperatorT = TypeVar("_LinearOperatorT", bound=LinearOperator[Any])
 _LinearOperatorT_co = TypeVar("_LinearOperatorT_co", bound=LinearOperator[Any], covariant=True)
 
 type _ToShape = Iterable[SupportsIndex]
-type _Real = np.bool_ | npc.integer | npc.floating
+type _Real = np.bool | npc.integer | npc.floating
 type _FunMatVec = Callable[[onp.ArrayND[Any]], onp.ToComplex1D | onp.ToComplex2D]
 type _FunMatMat = Callable[[onp.Array2D[Any]], onp.ToComplex2D]
 
@@ -253,7 +253,7 @@ class LinearOperator(Generic[_SCT_co]):
 
     #
     @overload
-    def dot[SCT: npc.number | np.bool_](self, /, x: LinearOperator[SCT]) -> _ProductLinearOperator[_SCT_co, SCT]: ...
+    def dot[SCT: npc.number | np.bool](self, /, x: LinearOperator[SCT]) -> _ProductLinearOperator[_SCT_co, SCT]: ...
     @overload
     def dot(self, /, x: onp.ToFloat) -> _ScaledLinearOperator[_SCT_co]: ...
     @overload
@@ -274,7 +274,7 @@ class LinearOperator(Generic[_SCT_co]):
 
     # keep in sync with `dot`
     @overload
-    def rdot[SCT: npc.number | np.bool_](self, /, x: LinearOperator[SCT]) -> _ProductLinearOperator[_SCT_co, SCT]: ...
+    def rdot[SCT: npc.number | np.bool](self, /, x: LinearOperator[SCT]) -> _ProductLinearOperator[_SCT_co, SCT]: ...
     @overload
     def rdot(self, /, x: onp.ToFloat) -> _ScaledLinearOperator[_SCT_co]: ...
     @overload
@@ -657,7 +657,7 @@ def aslinearoperator(A: onp.CanArrayND[_InexactT]) -> MatrixLinearOperator[_Inex
 def aslinearoperator(A: _spbase[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
 @overload
 def aslinearoperator(
-    A: onp.ArrayND[np.bool_ | npc.integer | np.float64] | _spbase[np.bool_ | npc.integer | np.float64],
+    A: onp.ArrayND[np.bool | npc.integer | np.float64] | _spbase[np.bool | npc.integer | np.float64],
 ) -> MatrixLinearOperator[np.float64]: ...
 @overload
 def aslinearoperator(A: _HasShapeAndDTypeAndMatVec[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...

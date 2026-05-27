@@ -13,8 +13,8 @@ __all__ = ["ArpackError", "ArpackNoConvergence", "eigs", "eigsh"]
 _KT = TypeVar("_KT")
 _SCT = TypeVar("_SCT", bound=_Numeric, default=_Numeric)
 
-_Numeric: TypeAlias = npc.number | np.bool_
-_ToFloat: TypeAlias = npc.floating | npc.integer | np.bool_
+_Numeric: TypeAlias = npc.number | np.bool
+_ToFloat: TypeAlias = npc.floating | npc.integer | np.bool
 
 _MatrixOperator: TypeAlias = spmatrix[_SCT] | sparray[_SCT, tuple[int, int]] | LinearOperator[_SCT]
 

@@ -29,7 +29,7 @@ __all__ = [
     "watershed_ift",
 ]
 
-_SCT = TypeVar("_SCT", bound=npc.number | np.bool_)
+_SCT = TypeVar("_SCT", bound=npc.number | np.bool)
 _ISCT = TypeVar("_ISCT", bound=npc.inexact)
 
 __Func1: TypeAlias = Callable[[onp.ToComplex | onp.ToComplexND], onp.ToComplex]
