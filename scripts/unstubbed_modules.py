@@ -5,22 +5,25 @@ Prints the names of all SciPy modules that are not stubbed.
 # ruff: noqa: T201, S101
 import sys
 import warnings
-from collections.abc import Iterator
+from collections.abc import Iterator, Sequence
 from importlib import import_module
 from importlib.machinery import EXTENSION_SUFFIXES, SOURCE_SUFFIXES
+from importlib.metadata import distribution
 from pathlib import Path
 
-import scipy
-
 STUBS_PATH = Path(__file__).parent.parent / "scipy-stubs"
-_INIT_FILES = tuple(f"__init__{s}" for s in (*SOURCE_SUFFIXES, *EXTENSION_SUFFIXES))
+
+_MODULE_SUFFIXES = *SOURCE_SUFFIXES, *EXTENSION_SUFFIXES
+_INIT_LEAVES = frozenset(f"__init__{s}" for s in _MODULE_SUFFIXES)
 _TYPECHECK_ONLY_STUBS = ("._typing",)
 
 IGNORED = (
     # bundled
+    "scipy._external",
     "scipy._lib._uarray",
     "scipy.fft._duccfft",
     "scipy.io._fast_matrix_market._fmm_core",
+    "scipy.odr.__odrpack",
     "scipy.optimize._highspy",
     "scipy.sparse.linalg._eigen.arpack",
     "scipy.sparse.linalg._propack",
@@ -54,25 +57,25 @@ def _check_stubs_path() -> None:
     assert (STUBS_PATH / "__init__.pyi").exists()
 
 
-def _walk(pkg_dir: Path, pkg_name: str) -> Iterator[str]:
-    for entry in sorted(pkg_dir.iterdir()):
-        if (name := entry.name).startswith((".", "__")):
-            continue
+def _path_to_module(parts: tuple[str, ...]) -> str | None:
+    name_parts: Sequence[str] = []
+    if parts and parts[0] == "scipy" and "tests" not in parts:
+        *parent, leaf = parts
+        if leaf in _INIT_LEAVES:
+            name_parts = parent
+        elif leaf != "conftest.py" and leaf.endswith(_MODULE_SUFFIXES):
+            name_parts = *parent, leaf.split(".", 1)[0]
+    return ".".join(name_parts) or None
 
-        if entry.is_dir():
-            if name == "tests" or not any((entry / f).exists() for f in _INIT_FILES):
-                continue
 
-            yield (sub := f"{pkg_name}.{name}")
-            yield from _walk(entry, sub)
-
-        elif entry.suffix in {".py", ".so", ".pyd"} and name != "conftest.py":
-            yield f"{pkg_name}.{name.split('.', 1)[0]}"
+def _candidates() -> Iterator[str]:
+    files = distribution("scipy").files
+    assert files is not None, "scipy was installed without a RECORD"
+    return (name for f in files if (name := _path_to_module(f.parts)) is not None)
 
 
 def modules() -> Iterator[str]:
-    root = Path(scipy.__path__[0])
-    for name in dict.fromkeys(_walk(root, "scipy")):
+    for name in dict.fromkeys(_candidates()):
         try:
             _ = import_module(name)
         except ModuleNotFoundError as e:
@@ -85,17 +88,17 @@ def modules() -> Iterator[str]:
 
 def _walk_stubs(stubs_dir: Path, pkg_name: str) -> Iterator[str]:
     for entry in sorted(stubs_dir.iterdir()):
-        if (name := entry.name).startswith((".", "__")):
+        if (name := entry.name).startswith("."):
             continue
 
         if entry.is_dir():
-            if not (entry / "__init__.pyi").is_file():
+            if name.startswith("__") or not (entry / "__init__.pyi").is_file():
                 continue
 
             yield (sub := f"{pkg_name}.{name}")
             yield from _walk_stubs(entry, sub)
 
-        elif entry.suffix == ".pyi":
+        elif entry.suffix == ".pyi" and name != "__init__.pyi":
             yield f"{pkg_name}.{entry.stem}"
 
 
