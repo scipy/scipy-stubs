@@ -20,19 +20,15 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.signal.__all__
 scipy.signal._ltisys.StateSpace.__new__
 scipy.signal._ltisys.TransferFunction.__new__
 scipy.signal._ltisys.ZerosPolesGain.__new__
-scipy.signal._signal_api.__all__
-scipy.signal._signal_api.whittaker_henderson
 scipy.signal._waveforms.sawtooth
 scipy.signal.ltisys.StateSpace.__new__
 scipy.signal.ltisys.TransferFunction.__new__
 scipy.signal.ltisys.ZerosPolesGain.__new__
 scipy.signal.ltisys.dlti.__new__
 scipy.signal.waveforms.sawtooth
-scipy.signal.whittaker_henderson
 
 scipy.sparse.__all__
 scipy.sparse._base._spbase.mT
