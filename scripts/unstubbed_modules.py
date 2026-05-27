@@ -47,7 +47,6 @@ IGNORED = (
     "scipy.signal._support_alternative_backends",
     # definitely TODO
     "scipy._lib._fpumode",
-    "scipy.interpolate._regrid",
 )
 
 
