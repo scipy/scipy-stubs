@@ -20,11 +20,7 @@ BUNDLED = (
     "scipy.sparse.linalg._propack",
 )
 # TODO(@jorenham)
-TODO_1_18 = (
-    "scipy.linalg._internal_matfuncs",
-    "scipy.signal._whittaker",
-    "scipy.special._ufunc_tools",
-)
+TODO_1_18 = "scipy.signal._whittaker", "scipy.special._ufunc_tools"
 
 
 def _check_stubs_path() -> None:

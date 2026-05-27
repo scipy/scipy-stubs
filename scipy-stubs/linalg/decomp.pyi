@@ -4,6 +4,8 @@ from typing_extensions import deprecated
 
 import numpy as np
 
+from .basic import get_lapack_funcs  # pyrefly:ignore[deprecated] # ty:ignore[deprecated]
+
 __all__ = [
     "LinAlgError",
     "cdf2rdf",
@@ -23,8 +25,6 @@ __all__ = [
 @deprecated("will be removed in SciPy v2.0.0")
 class LinAlgError(np.linalg.LinAlgError): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
-def get_lapack_funcs(names: object, arrays: object = (), dtype: object = None, ilp64: object = False) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def norm(a: object, ord: object = None, axis: object = None, keepdims: object = False, check_finite: object = True) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
@@ -79,7 +79,12 @@ def eigh_tridiagonal(
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def eigvals(
-    a: object, b: object = None, overwrite_a: object = False, check_finite: object = True, homogeneous_eigvals: object = False
+    a: object,
+    b: object = None,
+    overwrite_a: object = False,
+    overwrite_b: object = False,
+    check_finite: object = True,
+    homogeneous_eigvals: object = False,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def eigvals_banded(

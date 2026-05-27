@@ -1,6 +1,5 @@
 from collections.abc import Callable
 from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
-from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
@@ -88,23 +87,6 @@ def sqrtm(A: onp.ToJustComplex128_ND) -> _Complex128ND: ...
 def sqrtm(A: onp.ToJustComplexND) -> _ComplexND: ...
 @overload
 def sqrtm(A: onp.ToComplexND) -> _InexactND: ...
-@overload
-@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
-def sqrtm(A: onp.ToComplexND, disp: onp.ToTrue) -> _InexactND: ...
-@overload
-@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
-def sqrtm(A: onp.ToComplexND, disp: onp.ToFalse) -> tuple[_InexactND, np.float64]: ...
-@overload
-@deprecated("The `blocksize` argument is deprecated and will be removed in SciPy 1.18.0.")
-def sqrtm(A: onp.ToComplexND, *, blocksize: int) -> _InexactND: ...
-@overload
-@deprecated("The `blocksize` argument is deprecated and will be removed in SciPy 1.18.0.")
-@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
-def sqrtm(A: onp.ToComplexND, disp: onp.ToTrue, blocksize: int) -> _InexactND: ...
-@overload
-@deprecated("The `blocksize` argument is deprecated and will be removed in SciPy 1.18.0.")
-@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
-def sqrtm(A: onp.ToComplexND, disp: onp.ToFalse, blocksize: int) -> tuple[_InexactND, np.float64]: ...
 
 # NOTE: return dtype depends on the sign of the values
 @overload  # +integer | ~float64
@@ -117,15 +99,6 @@ def logm(A: onp.ToJustComplex128_ND) -> _Complex128ND: ...
 def logm(A: onp.ToJustComplexND) -> _ComplexND: ...
 @overload  # +complexfloating
 def logm(A: onp.ToComplexND) -> _InexactND: ...
-@overload  # +complexfloating, disp=True  (deprecated)
-@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
-def logm(A: onp.ToComplexND, disp: onp.ToTrue) -> _InexactND: ...
-@overload  # +complexfloating, disp=False  (deprecated)
-@deprecated(
-    "The `disp` argument is deprecated and will be removed in SciPy 1.18.0. "
-    "The previously returned error estimate can be computed as `norm(expm(logm(A)) - A, 1) / norm(A, 1)`."
-)
-def logm(A: onp.ToComplexND, disp: onp.ToFalse) -> tuple[_InexactND, float]: ...
 
 #
 @overload  # +integer | ~float64
@@ -239,15 +212,6 @@ def signm(A: onp.ToJustComplex128_ND) -> _Complex128ND: ...
 def signm(A: onp.ToJustComplexND) -> _ComplexND: ...
 @overload  # +complexfloating
 def signm(A: onp.ToComplexND) -> _InexactND: ...
-@overload  # +complexfloating, disp: True  (deprecated)
-@deprecated("The `disp` argument is deprecated and will be removed in SciPy 1.18.0.")
-def signm(A: onp.ToComplexND, disp: onp.ToTrue) -> _InexactND: ...
-@overload  # +complexfloating, disp: False  (deprecated)
-@deprecated(
-    "The `disp` argument is deprecated and will be removed in SciPy 1.18.0. "
-    "The previously returned error estimate can be computed as `norm(signm @ signm - signm, 1)`."
-)
-def signm(A: onp.ToComplexND, disp: onp.ToFalse) -> tuple[_InexactND, np.float64]: ...
 
 #
 @overload  # +integer | ~float64
