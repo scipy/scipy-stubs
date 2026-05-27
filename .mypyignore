@@ -20,8 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.optimize.minpack.fsolve
-
 scipy.signal.__all__
 scipy.signal._ltisys.StateSpace.__new__
 scipy.signal._ltisys.TransferFunction.__new__
