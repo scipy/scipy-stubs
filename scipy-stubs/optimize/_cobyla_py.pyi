@@ -1,12 +1,11 @@
+from _typeshed import Unused
 from collections.abc import Callable, Sequence
-from typing import Concatenate, Literal, TypeAlias
+from typing import Concatenate, Literal
 
 import numpy as np
 import optype.numpy as onp
 
 __all__ = ["fmin_cobyla"]
-
-_Ignored: TypeAlias = object
 
 ###
 
@@ -22,5 +21,5 @@ def fmin_cobyla(
     disp: Literal[0, 1, 2, 3] | None = None,
     catol: onp.ToFloat = 0.0002,
     *,
-    callback: Callable[[onp.Array1D[np.float64]], _Ignored] | None = None,
+    callback: Callable[[onp.Array1D[np.float64]], Unused] | None = None,
 ) -> onp.Array1D[np.float64]: ...

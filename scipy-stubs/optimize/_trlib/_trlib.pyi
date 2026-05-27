@@ -1,7 +1,7 @@
-# https://github.com/scipy/scipy/blob/v1.14.1/scipy/optimize/_trlib/_trlib.pyx
+# https://github.com/scipy/scipy/blob/v1.17.1/scipy/optimize/_trlib/_trlib.pyx
 
 from collections.abc import Callable, Mapping
-from typing import Final, Never
+from typing import Final, Never, override
 
 import numpy as np
 import optype.numpy as onp
@@ -25,3 +25,7 @@ class TRLIBQuadraticSubproblem(BaseQuadraticSubproblem):  # undocumented
         tol_rel_b: onp.ToFloat = -3.0,
         disp: bool = False,
     ) -> None: ...
+
+    #
+    @override
+    def solve(self, /, trust_radius: onp.ToFloat) -> tuple[onp.Array1D[np.float64], bool]: ...

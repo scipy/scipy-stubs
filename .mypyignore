@@ -20,21 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.optimize._cobyqa_py.COBYQA_LOCK
-scipy.optimize._elementwise.bracket_minimum
-scipy.optimize._elementwise.bracket_root
-scipy.optimize._elementwise.find_minimum
-scipy.optimize._elementwise.find_root
-scipy.optimize._lbfgsb_py.fmin_l_bfgs_b
-scipy.optimize._nnls.nnls
-scipy.optimize._nonlin.GenericBroyden.setup
-scipy.optimize._nonlin.Jacobian.setup
-scipy.optimize._nonlin.Jacobian.solve
-scipy.optimize._nonlin.Jacobian.update
-scipy.optimize._trustregion.BaseQuadraticSubproblem.solve
-scipy.optimize.lbfgsb.fmin_l_bfgs_b
-scipy.optimize.minpack.fsolve
-
 scipy.signal.__all__
 scipy.signal._ltisys.StateSpace.__new__
 scipy.signal._ltisys.TransferFunction.__new__

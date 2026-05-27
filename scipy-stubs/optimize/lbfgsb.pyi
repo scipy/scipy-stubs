@@ -23,11 +23,10 @@ def fmin_l_bfgs_b(
     m: object = 10,
     factr: object = 1e7,
     pgtol: object = 1e-5,
+    # *,
     epsilon: object = 1e-8,
-    iprint: object = ...,
     maxfun: object = 15_000,
     maxiter: object = 15_000,
-    disp: object = ...,
     callback: object = None,
     maxls: object = 20,
 ) -> object: ...

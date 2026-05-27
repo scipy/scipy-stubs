@@ -1,8 +1,7 @@
 from collections.abc import Callable, Mapping
-from typing import Concatenate, Literal, TypeAlias, TypeVar, TypedDict, Unpack, final, overload, type_check_only
+from typing import Concatenate, Literal, TypedDict, Unpack, final, overload, type_check_only
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -13,24 +12,22 @@ __all__ = ["curve_fit", "fixed_point", "fsolve", "leastsq"]
 
 ###
 
-_XT = TypeVar("_XT")
-_FT = TypeVar("_FT")
-_Fun: TypeAlias = Callable[Concatenate[_XT, ...], _FT]
+type _Fun[XT, FT] = Callable[Concatenate[XT, ...], FT]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
 
-_Fun1D: TypeAlias = _Fun[_Float1D, onp.ToFloat1D]
-_Fun2D: TypeAlias = _Fun[_Float2D, onp.ToFloat1D]
-_Jac1D: TypeAlias = _Fun[_Float1D, onp.ToFloat2D]
-_Jac2D: TypeAlias = _Fun[_Float2D, onp.ToFloat2D]
+type _Fun1D = _Fun[_Float1D, onp.ToFloat1D]
+type _Fun2D = _Fun[_Float2D, onp.ToFloat1D]
+type _Jac1D = _Fun[_Float1D, onp.ToFloat2D]
+type _Jac2D = _Fun[_Float2D, onp.ToFloat2D]
 
-_FloatBounds: TypeAlias = tuple[float | onp.ToFloat1D, float | onp.ToFloat1D]
+type _FloatBounds = tuple[float | onp.ToFloat1D, float | onp.ToFloat1D]
 
-_JacMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
-_CurveFitMethod: TypeAlias = Literal["lm", "trf", "dogbox"]
-_NanPolicy: TypeAlias = Literal["raise", "omit"]  # no "propagate"
-_IERFlag: TypeAlias = Literal[1, 2, 3, 4, 5, 6, 7, 8]
+type _JacMethod = Literal["2-point", "3-point", "cs"]
+type _CurveFitMethod = Literal["lm", "trf", "dogbox"]
+type _NanPolicy = Literal["raise", "omit"]  # no "propagate"
+type _IERFlag = Literal[1, 2, 3, 4, 5, 6, 7, 8]
 
 @final
 @type_check_only
@@ -76,7 +73,7 @@ class _InfoDictLSQ(_InfoDictBase, TypedDict):
     ipvt: onp.Array1D[np.int32]
     qtf: _Float1D
 
-_InfoDictCurveFit: TypeAlias = _InfoDictBase | _InfoDictLSQ
+type _InfoDictCurveFit = _InfoDictBase | _InfoDictLSQ
 
 ###
 
@@ -87,8 +84,8 @@ def fsolve(
     x0: onp.ToFloat | onp.ToFloat1D,
     args: tuple[object, ...] = (),
     fprime: _Jac1D | None = None,
-    full_output: onp.ToFalse = 0,
-    col_deriv: op.CanBool = 0,
+    full_output: onp.ToFalse = False,
+    col_deriv: bool = False,
     xtol: float | None = 1.49012e-8,
     maxfev: int = 0,
     band: tuple[int, int] | None = None,
@@ -103,7 +100,7 @@ def fsolve(
     args: tuple[object, ...],
     fprime: _Jac1D | None,
     full_output: onp.ToTrue,
-    col_deriv: op.CanBool = 0,
+    col_deriv: bool = False,
     xtol: float | None = 1.49012e-8,
     maxfev: int = 0,
     band: tuple[int, int] | None = None,
@@ -119,7 +116,7 @@ def fsolve(
     fprime: _Jac1D | None = None,
     *,
     full_output: onp.ToTrue,
-    col_deriv: op.CanBool = 0,
+    col_deriv: bool = False,
     xtol: float | None = 1.49012e-8,
     maxfev: int = 0,
     band: tuple[int, int] | None = None,
@@ -136,7 +133,7 @@ def leastsq(
     args: tuple[object, ...] = (),
     Dfun: _Jac1D | None = None,
     full_output: onp.ToFalse = False,
-    col_deriv: op.CanBool = False,
+    col_deriv: bool = False,
     ftol: float | None = 1.49012e-8,
     xtol: float | None = 1.49012e-8,
     gtol: float | None = 0.0,
@@ -152,7 +149,7 @@ def leastsq(
     args: tuple[object, ...],
     Dfun: _Jac1D | None,
     full_output: onp.ToTrue,
-    col_deriv: op.CanBool = False,
+    col_deriv: bool = False,
     ftol: float | None = 1.49012e-8,
     xtol: float | None = 1.49012e-8,
     gtol: float | None = 0.0,
@@ -169,7 +166,7 @@ def leastsq(
     Dfun: _Jac1D | None = None,
     *,
     full_output: onp.ToTrue,
-    col_deriv: op.CanBool = False,
+    col_deriv: bool = False,
     ftol: float | None = 1.49012e-8,
     xtol: float | None = 1.49012e-8,
     gtol: float | None = 0.0,
@@ -187,8 +184,8 @@ def curve_fit(
     ydata: onp.ToFloat1D,
     p0: onp.ToFloat1D | None = None,
     sigma: float | onp.ToFloat1D | onp.ToFloat2D | None = None,
-    absolute_sigma: op.CanBool = False,
-    check_finite: op.CanBool | None = None,
+    absolute_sigma: bool = False,
+    check_finite: bool | None = None,
     bounds: _FloatBounds | Bounds = ...,  # = (-np.inf, np.inf)
     method: _CurveFitMethod | None = None,
     jac: _Jac1D | _JacMethod | None = None,
@@ -204,8 +201,8 @@ def curve_fit(
     ydata: onp.ToFloat1D,
     p0: onp.ToFloat1D | None = None,
     sigma: float | onp.ToFloat1D | onp.ToFloat2D | None = None,
-    absolute_sigma: op.CanBool = False,
-    check_finite: op.CanBool | None = None,
+    absolute_sigma: bool = False,
+    check_finite: bool | None = None,
     bounds: _FloatBounds | Bounds = ...,  # = (-np.inf, np.inf)
     method: _CurveFitMethod | None = None,
     jac: _Jac1D | _JacMethod | None = None,
@@ -221,8 +218,8 @@ def curve_fit(
     ydata: onp.ToFloat1D,
     p0: onp.ToFloat1D | None = None,
     sigma: float | onp.ToFloat1D | onp.ToFloat2D | None = None,
-    absolute_sigma: op.CanBool = False,
-    check_finite: op.CanBool | None = None,
+    absolute_sigma: bool = False,
+    check_finite: bool | None = None,
     bounds: _FloatBounds | Bounds = ...,  # = (-np.inf, np.inf)
     method: _CurveFitMethod | None = None,
     jac: _Jac2D | _JacMethod | None = None,
@@ -238,8 +235,8 @@ def curve_fit(
     ydata: onp.ToFloat1D,
     p0: onp.ToFloat1D | None = None,
     sigma: float | onp.ToFloat1D | onp.ToFloat2D | None = None,
-    absolute_sigma: op.CanBool = False,
-    check_finite: op.CanBool | None = None,
+    absolute_sigma: bool = False,
+    check_finite: bool | None = None,
     bounds: _FloatBounds | Bounds = ...,  # = (-np.inf, np.inf)
     method: _CurveFitMethod | None = None,
     jac: _Jac2D | _JacMethod | None = None,
@@ -255,8 +252,8 @@ def curve_fit(
     ydata: onp.ToFloat1D,
     p0: onp.ToFloat1D | None = None,
     sigma: float | onp.ToFloat1D | onp.ToFloat2D | None = None,
-    absolute_sigma: op.CanBool = False,
-    check_finite: op.CanBool | None = None,
+    absolute_sigma: bool = False,
+    check_finite: bool | None = None,
     bounds: _FloatBounds | Bounds = ...,  # = (-np.inf, np.inf)
     method: _CurveFitMethod | None = None,
     jac: _Jac1D | _Jac2D | _JacMethod | None = None,
@@ -272,8 +269,8 @@ def curve_fit(
     ydata: onp.ToFloat1D,
     p0: onp.ToFloat1D | None = None,
     sigma: float | onp.ToFloat1D | onp.ToFloat2D | None = None,
-    absolute_sigma: op.CanBool = False,
-    check_finite: op.CanBool | None = None,
+    absolute_sigma: bool = False,
+    check_finite: bool | None = None,
     bounds: _FloatBounds | Bounds = ...,  # = (-np.inf, np.inf)
     method: _CurveFitMethod | None = None,
     jac: _Jac1D | _Jac2D | _JacMethod | None = None,
