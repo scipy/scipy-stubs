@@ -20,7 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.stats.__all__
 scipy.stats._binomtest.BinomTestResult.__init__
 scipy.stats._bws_test.bws_test
 scipy.stats._censored_data.CensoredData.__class_getitem__
@@ -45,7 +44,6 @@ scipy.stats._multicomp.DunnettResult.__class_getitem__
 scipy.stats._multicomp.DunnettResult.__init__
 scipy.stats._multicomp.DunnettResult.__match_args__
 scipy.stats._probability_distribution._ProbabilityDistribution.lmoment
-scipy.stats._quantile.estimated_cdf
 scipy.stats._stats_mstats_common.__all__
 scipy.stats._stats_mstats_common.siegelslopes
 scipy.stats._stats_mstats_common.theilslopes
@@ -60,7 +58,6 @@ scipy.stats._stats_py.sigmaclip
 scipy.stats._unuran.unuran_wrapper.NumericalInverseHermite.__new__
 scipy.stats._unuran.unuran_wrapper.SimpleRatioUniforms.__new__
 scipy.stats._unuran.unuran_wrapper.TransformedDensityRejection.__new__
-scipy.stats.estimated_cdf
 scipy.stats.kde.gaussian_kde.__class_getitem__
 scipy.stats.morestats.ansari
 scipy.stats.morestats.boxcox

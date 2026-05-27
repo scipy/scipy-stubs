@@ -76,7 +76,7 @@ from ._multivariate import (
 )
 from ._new_distributions import Binomial, Logistic, Normal, Uniform
 from ._page_trend_test import page_trend_test
-from ._quantile import quantile
+from ._quantile import estimated_cdf, quantile
 from ._resampling import (
     BootstrapMethod,
     MonteCarloMethod,
@@ -379,6 +379,7 @@ __all__ = [
     "entropy",
     "epps_singleton_2samp",
     "erlang",
+    "estimated_cdf",
     "exp",
     "expectile",
     "expon",
