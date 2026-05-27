@@ -10,8 +10,8 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from ._correlation import siegelslopes, theilslopes
 from ._resampling import BootstrapMethod, ResamplingMethod
-from ._stats_mstats_common import siegelslopes, theilslopes
 from ._typing import Alternative, BaseBunch, BunchMixin, NanPolicy, PowerDivergenceStatistic
 
 __all__ = [
