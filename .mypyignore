@@ -30,7 +30,6 @@ scipy.sparse._sputils.isshape
 scipy.sparse.matrix_transpose
 
 scipy.sparse.linalg._interface.IdentityOperator.__init__
-scipy.sparse.linalg._interface.LinearOperator.rdot
 scipy.sparse.linalg._interface.MatrixLinearOperator.__init__
 scipy.sparse.linalg._interface._AdjointLinearOperator.__init__
 scipy.sparse.linalg._interface._AdjointMatrixOperator.__init__
@@ -41,8 +40,6 @@ scipy.sparse.linalg._interface._ProductLinearOperator.__init__
 scipy.sparse.linalg._interface._ScaledLinearOperator.__init__
 scipy.sparse.linalg._interface._SumLinearOperator.__init__
 scipy.sparse.linalg._interface._TransposedLinearOperator.__init__
-scipy.sparse.linalg.interface.LinearOperator.rdot
-scipy.sparse.linalg.matfuncs.LinearOperator.rdot
 
 scipy.spatial.transform._rigid_transform.RigidTransform.__class_getitem__
 scipy.spatial.transform._rigid_transform.RigidTransform.__rmul__
