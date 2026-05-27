@@ -1,5 +1,5 @@
 from collections.abc import Iterator, Sequence
-from types import EllipsisType, ModuleType
+from types import EllipsisType, GenericAlias, ModuleType
 from typing import Any, Final, Generic, Literal as L, Never, Self, SupportsIndex, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -27,11 +27,16 @@ _RotationT = TypeVar("_RotationT", bound=Rotation)
 ###
 
 backend_registry: Final[dict[ModuleType, ModuleType]] = ...  # undocumented
+rotation_extra_note: Final[str] = ...  # undocumented
 
 # either `._rotation_cy` or `._rotation_xp`
 def select_backend(xp: ModuleType, cython_compatible: bool) -> ModuleType: ...  # undocumented
 
 class Rotation(Generic[_ShapeT_co]):
+    @classmethod
+    def __class_getitem__(cls, t: object | type, /) -> GenericAlias: ...
+
+    #
     @property
     def single(self, /) -> bool: ...
     @property

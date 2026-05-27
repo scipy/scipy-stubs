@@ -1,4 +1,5 @@
 from collections.abc import Iterator, Sequence
+from types import GenericAlias
 from typing import Any, Generic, Never, Self, SupportsIndex, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -27,6 +28,10 @@ def _create_transformation_matrix(
 ) -> onp.ArrayND[np.float64]: ...  # undocumented
 
 class RigidTransform(Generic[_ShapeT_co]):
+    @classmethod
+    def __class_getitem__(cls, t: object | type, /) -> GenericAlias: ...
+
+    #
     @property
     def single(self, /) -> bool: ...
     @property
