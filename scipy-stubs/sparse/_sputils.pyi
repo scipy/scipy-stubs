@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Any, Final, Literal as L, Protocol, SupportsIndex, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import Any, Final, Literal as L, Protocol, SupportsIndex, TypeVar, overload, type_check_only
 from typing_extensions import TypeIs
 
 import numpy as np
@@ -41,19 +41,14 @@ _ScalarT = TypeVar("_ScalarT", bound=np.generic, default=Any)
 _IntT = TypeVar("_IntT", bound=npc.integer)
 _NonIntDTypeT = TypeVar("_NonIntDTypeT", bound=np.dtype[npc.inexact | np.flexible | np.datetime64 | np.timedelta64 | np.object_])
 
-_Axis: TypeAlias = L[-2, -1, 0, 1] | npc.integer
-_ShapeLike: TypeAlias = Iterable[SupportsIndex]
-_ScalarLike: TypeAlias = complex | bytes | str | np.generic | onp.Array0D
-_SequenceLike: TypeAlias = tuple[_ScalarLike, ...] | list[_ScalarLike] | onp.Array1D
-_MatrixLike: TypeAlias = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array2D
+type _Axis = L[-2, -1, 0, 1] | npc.integer
+type _ShapeLike = Iterable[SupportsIndex]
+type _ScalarLike = complex | bytes | str | np.generic | onp.Array0D
+type _SequenceLike = tuple[_ScalarLike, ...] | list[_ScalarLike] | onp.Array1D
+type _MatrixLike = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array2D
 
-_IntP: TypeAlias = np.int32 | np.int64
-_UIntP: TypeAlias = np.uint32 | np.uint64
-
-@type_check_only
-class _ReshapeKwargs(TypedDict, total=False):
-    order: L["C", "F"]
-    copy: bool
+type _IntP = np.int32 | np.int64
+type _UIntP = np.uint32 | np.uint64
 
 @type_check_only
 class _SizedIndexIterable(Protocol):
@@ -109,8 +104,8 @@ def getdata(
     obj: onp.ToArrayND[_ScalarT, _ScalarT], dtype: onp.ToDType[_ScalarT] | None = None, copy: bool = False
 ) -> onp.ArrayND[_ScalarT]: ...
 
-_CoInt32: TypeAlias = np.bool_ | np.int8 | np.uint8 | np.int16 | np.uint16 | np.int32
-_ContraInt32: TypeAlias = np.uint32 | np.int64 | np.uint64
+type _CoInt32 = np.bool_ | np.int8 | np.uint8 | np.int16 | np.uint16 | np.int32
+type _ContraInt32 = np.uint32 | np.int64 | np.uint64
 
 #
 @overload
@@ -146,7 +141,7 @@ def get_sum_dtype(dtype: _NonIntDTypeT) -> _NonIntDTypeT: ...
 # NOTE: all arrays implement `__index__` but if it raises this returns `False`, so `TypeIs` can't be used here
 def isintlike(x: object) -> TypeIs[SupportsIndex]: ...
 def isscalarlike(x: object) -> TypeIs[_ScalarLike]: ...
-def isshape(x: _SizedIndexIterable, nonneg: bool = False, *, allow_nd: tuple[int, ...] = (2,)) -> bool: ...
+def isshape(x: _SizedIndexIterable, nonneg: bool = False, *, allow_nd: tuple[int, ...] = (2,), check_nd: bool = True) -> bool: ...
 def issequence(t: object) -> TypeIs[_SequenceLike]: ...  # undocumented
 def ismatrix(t: object) -> TypeIs[_MatrixLike]: ...  # undocumented
 def isdense(x: object) -> TypeIs[onp.Array]: ...  # undocumented
@@ -163,7 +158,6 @@ def validateaxis(
 def check_shape(
     args: _ShapeLike | tuple[_ShapeLike, ...], current_shape: tuple[int, ...] | None = None, *, allow_nd: tuple[int, ...] = (2,)
 ) -> tuple[int, ...]: ...
-def check_reshape_kwargs(kwargs: _ReshapeKwargs) -> L["C", "F"] | bool: ...
 
 #
 def matrix(

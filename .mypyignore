@@ -20,15 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.sparse.__all__
-scipy.sparse._base._spbase.mT
-scipy.sparse._construct.__all__
-scipy.sparse._construct.matrix_transpose
-scipy.sparse._coo._coo_base.mT
-scipy.sparse._sputils.check_reshape_kwargs
-scipy.sparse._sputils.isshape
-scipy.sparse.matrix_transpose
-
 scipy.spatial.transform._rigid_transform.RigidTransform.__class_getitem__
 scipy.spatial.transform._rigid_transform.RigidTransform.__rmul__
 scipy.spatial.transform._rotation.Rotation.__class_getitem__

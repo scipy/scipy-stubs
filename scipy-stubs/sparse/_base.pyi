@@ -720,6 +720,10 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     def transpose(self, /, axes: None = None, copy: bool = False) -> Self: ...
 
     #
+    @property
+    def mT[SelfT: _spbase[Any, onp.AtLeast2D]](self: SelfT) -> SelfT: ...  # noqa: PYI019
+
+    #
     def diagonal(self, /, k: int = 0) -> onp.Array1D[_ScalarT_co]: ...  # only if 2-d
     def trace(self, /, offset: int = 0) -> _ScalarT_co: ...
 

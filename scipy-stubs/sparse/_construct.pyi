@@ -31,6 +31,7 @@ __all__ = [
     "identity",
     "kron",
     "kronsum",
+    "matrix_transpose",
     "permute_dims",
     "rand",
     "random",
@@ -2341,3 +2342,11 @@ def rand(
     *,
     random_state: onp.random.ToRNG | None = None,
 ) -> spmatrix: ...
+
+@type_check_only
+class _HasMT[MT](Protocol):
+    @property
+    def mT(self) -> MT: ...
+
+#
+def matrix_transpose[MT](A: _HasMT[MT]) -> MT: ...
