@@ -10,7 +10,7 @@ __all__ = ["get_lapack_funcs", "qr", "qr_multiply", "rq"]
 def qr(
     a: object,
     overwrite_a: object = False,
-    lwork: object = None,
+    lwork: object = ...,
     mode: object = "full",
     pivoting: object = False,
     check_finite: object = True,

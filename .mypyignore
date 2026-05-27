@@ -20,7 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.linalg.decomp_qr.qr
 scipy.linalg.decomp_schur.eigvals
 scipy.linalg.matfuncs.logm
 scipy.linalg.matfuncs.signm
