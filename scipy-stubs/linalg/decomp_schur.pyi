@@ -13,7 +13,12 @@ class LinAlgError(np.linalg.LinAlgError): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 def eigvals(
-    a: object, b: object = None, overwrite_a: object = False, check_finite: object = True, homogeneous_eigvals: object = False
+    a: object,
+    b: object = None,
+    overwrite_a: object = False,
+    overwrite_b: object = False,
+    check_finite: object = True,
+    homogeneous_eigvals: object = False,
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def norm(x: object, ord: object = None, axis: object = None, keepdims: object = False) -> object: ...
