@@ -20,9 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.signal._waveforms.sawtooth
-scipy.signal.waveforms.sawtooth
-
 scipy.sparse.__all__
 scipy.sparse._base._spbase.mT
 scipy.sparse._construct.__all__
