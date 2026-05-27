@@ -20,8 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.spatial.transform._rigid_transform.RigidTransform.__rmul__
-
 scipy.stats.__all__
 scipy.stats._binomtest.BinomTestResult.__init__
 scipy.stats._bws_test.bws_test
