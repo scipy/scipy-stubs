@@ -22,8 +22,11 @@ type _QuantileMethod = Literal[
 
 ###
 
-# NOTE: There is a false positive `overload-overlap` mypy error that only occurs with `numpy<2.2`
+# NOTE: There is a false positive `overload-overlap` mypy error for `quantile` that only occurs with `numpy<2.2`
 # mypy: disable-error-code=overload-overlap
+
+# NOTE: And of course, Pyright reports a different overload error (obvously a false positive) for `estimated_cdf` on `numpy<2.1`
+# pyright: reportOverlappingOverload=false
 
 @overload
 def quantile(
