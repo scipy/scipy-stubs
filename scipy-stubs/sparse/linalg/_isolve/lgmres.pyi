@@ -16,9 +16,9 @@ _Complex: TypeAlias = np.complex64 | np.complex128
 
 _FloatT = TypeVar("_FloatT", bound=_Float, default=np.float64)
 _ComplexT = TypeVar("_ComplexT", bound=_Complex, default=np.complex128)
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 
-_ToInt: TypeAlias = npc.integer | np.bool_
+_ToInt: TypeAlias = npc.integer | np.bool
 _ToLinearOperator: TypeAlias = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
 
 _Ignored: TypeAlias = object

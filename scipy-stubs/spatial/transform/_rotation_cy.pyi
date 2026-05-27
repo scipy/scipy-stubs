@@ -7,7 +7,7 @@ import optype.numpy.compat as npc
 
 _bint: TypeAlias = bool | Literal[0, 1]  # noqa: PYI042
 
-_bool_1d: TypeAlias = onp.Array1D[np.bool_]  # noqa: PYI042
+_bool_1d: TypeAlias = onp.Array1D[np.bool]  # noqa: PYI042
 _f64_1d: TypeAlias = onp.Array1D[np.float64]  # noqa: PYI042
 _f64_2d: TypeAlias = onp.Array2D[np.float64]  # noqa: PYI042
 _f64_3d: TypeAlias = onp.Array3D[np.float64]  # noqa: PYI042

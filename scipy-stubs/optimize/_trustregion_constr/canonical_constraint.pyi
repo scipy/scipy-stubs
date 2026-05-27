@@ -27,10 +27,10 @@ class CanonicalConstraint:
     jac: _FunJac
     hess: _FunHess
 
-    keep_feasible: onp.Array1D[np.bool_]
+    keep_feasible: onp.Array1D[np.bool]
 
     def __init__(
-        self, /, n_eq: int, n_ineq: int, fun: _FunConstr, jac: _FunJac, hess: _FunHess, keep_feasible: onp.Array1D[np.bool_]
+        self, /, n_eq: int, n_ineq: int, fun: _FunConstr, jac: _FunJac, hess: _FunHess, keep_feasible: onp.Array1D[np.bool]
     ) -> None: ...
     @classmethod
     def from_PreparedConstraint(cls, constraint: PreparedConstraint) -> Self: ...

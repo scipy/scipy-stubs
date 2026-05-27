@@ -10,7 +10,7 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["clarkson_woodruff_transform"]
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 
 _ToInt: TypeAlias = int | npc.integer
 _ToSparse: TypeAlias = _spbase[_ScalarT] | sparray[_ScalarT] | spmatrix[_ScalarT]
@@ -30,7 +30,7 @@ def clarkson_woodruff_transform(
 ) -> csc_matrix[Any]: ...
 @overload
 def clarkson_woodruff_transform(
-    input_matrix: _ToSparse[npc.integer | np.bool_],
+    input_matrix: _ToSparse[npc.integer | np.bool],
     sketch_size: _ToInt,
     rng: onp.random.ToRNG | None = None,
     *,

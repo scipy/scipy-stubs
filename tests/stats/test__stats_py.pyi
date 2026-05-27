@@ -88,9 +88,9 @@ from scipy.stats._stats_py import (
 
 ###
 
-_bool_1d: onp.Array1D[np.bool_]
-_bool_2d: onp.Array2D[np.bool_]
-_bool_nd: onp.ArrayND[np.bool_]
+_bool_1d: onp.Array1D[np.bool]
+_bool_2d: onp.Array2D[np.bool]
+_bool_nd: onp.ArrayND[np.bool]
 
 _i16_1d: onp.Array1D[np.int16]
 _i16_2d: onp.Array2D[np.int16]

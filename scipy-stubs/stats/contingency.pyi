@@ -19,7 +19,7 @@ _NumericScalarT = TypeVar("_NumericScalarT", bound=npc.number | np.timedelta64)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
-_to_floating: TypeAlias = npc.floating | npc.integer | np.bool_  # noqa: PYI042
+_to_floating: TypeAlias = npc.floating | npc.integer | np.bool  # noqa: PYI042
 
 ###
 
@@ -50,7 +50,7 @@ class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, int, onp.ArrayND[n
 @overload
 def margins(a: onp.ArrayND[_NumericScalarT, _ShapeT]) -> list[onp.ArrayND[_NumericScalarT, _ShapeT]]: ...
 @overload
-def margins(a: onp.ArrayND[np.bool_]) -> list[onp.ArrayND[np.int_]]: ...
+def margins(a: onp.ArrayND[np.bool]) -> list[onp.ArrayND[np.int_]]: ...
 
 #
 @overload

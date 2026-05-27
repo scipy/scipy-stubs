@@ -51,7 +51,7 @@ class _OldConstraint(TypedDict):
 
 @type_check_only
 class _BaseConstraint(Generic[_ShapeT_co]):
-    keep_feasible: onp.ArrayND[np.bool_, _ShapeT_co]
+    keep_feasible: onp.ArrayND[np.bool, _ShapeT_co]
 
 @type_check_only
 class _Constraint(_BaseConstraint[_ShapeT_co], Generic[_ShapeT_co, _NumberT_co]):

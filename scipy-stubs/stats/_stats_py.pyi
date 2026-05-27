@@ -161,7 +161,7 @@ _AsFloat32_1D: TypeAlias = onp.ToArrayStrict1D[np.float32, np.float32 | np.float
 _AsFloat32_2D: TypeAlias = onp.ToArrayStrict2D[np.float32, np.float32 | np.float16]
 _AsFloat32_ND: TypeAlias = onp.ToArrayND[Never, np.float32 | np.float16]
 
-_ToFloatStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer | np.bool_, _JustAnyShape]
+_ToFloatStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
 
 @type_check_only
 class _RVSCallable(Protocol):
@@ -590,7 +590,7 @@ def gmean(
 ) -> np.float64: ...
 @overload  # ?d, dtype=<known>
 def gmean(
-    a: onp.ArrayND[npc.number | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     axis: int = 0,
     *,
     dtype: onp.ToDType[_InexactT],
@@ -852,7 +852,7 @@ def hmean(
 ) -> np.float64: ...
 @overload  # ?d, dtype=<known>
 def hmean(
-    a: onp.ArrayND[npc.number | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     axis: int = 0,
     *,
     dtype: onp.ToDType[_InexactT],
@@ -1133,7 +1133,7 @@ def pmean(
 ) -> np.float64: ...
 @overload  # ?d, dtype=<known>
 def pmean(
-    a: onp.ArrayND[npc.number | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     p: float,
     *,
     axis: int = 0,
@@ -1294,7 +1294,7 @@ def tmean(
 ) -> _InexactT | onp.ArrayND[_InexactT]: ...
 @overload  # ?d +integer
 def tmean(
-    a: onp.ArrayND[npc.integer | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1314,7 +1314,7 @@ def tmean(
 ) -> _InexactT: ...
 @overload  # 1d +float|integer
 def tmean(
-    a: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1344,7 +1344,7 @@ def tmean(
 ) -> onp.Array1D[_InexactT]: ...
 @overload  # 2d +float|integer
 def tmean(
-    a: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1374,7 +1374,7 @@ def tmean(
 ) -> _InexactT: ...
 @overload  # ?d +f64, axis=None
 def tmean(
-    a: onp.ToArrayND[float, npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.integer | np.bool],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     *,
@@ -1404,7 +1404,7 @@ def tmean(
 ) -> onp.ArrayND[_InexactT, _ShapeT]: ...
 @overload  # S@Nd +integer, keepdims=True
 def tmean(
-    a: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    a: onp.ArrayND[npc.integer | np.bool, _ShapeT],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1447,7 +1447,7 @@ def tvar(
 ) -> _InexactT | onp.ArrayND[_InexactT]: ...
 @overload  # ?d +integer
 def tvar(
-    a: onp.ArrayND[npc.integer | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1469,7 +1469,7 @@ def tvar(
 ) -> _InexactT: ...
 @overload  # 1d +float|integer
 def tvar(
-    a: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1502,7 +1502,7 @@ def tvar(
 ) -> onp.Array1D[_InexactT]: ...
 @overload  # 2d +float|integer
 def tvar(
-    a: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1535,7 +1535,7 @@ def tvar(
 ) -> _InexactT: ...
 @overload  # ?d +f64, axis=None
 def tvar(
-    a: onp.ToArrayND[float, npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.integer | np.bool],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     *,
@@ -1568,7 +1568,7 @@ def tvar(
 ) -> onp.ArrayND[_InexactT, _ShapeT]: ...
 @overload  # S@Nd +integer, keepdims=True
 def tvar(
-    a: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    a: onp.ArrayND[npc.integer | np.bool, _ShapeT],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1617,7 +1617,7 @@ def tmin(
 ) -> _InexactT | onp.ArrayND[_InexactT]: ...
 @overload  # ?d +integer
 def tmin(
-    a: onp.ArrayND[npc.integer | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1637,7 +1637,7 @@ def tmin(
 ) -> _InexactT: ...
 @overload  # 1d +float|integer
 def tmin(
-    a: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1667,7 +1667,7 @@ def tmin(
 ) -> onp.Array1D[_InexactT]: ...
 @overload  # 2d +float|integer
 def tmin(
-    a: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1697,7 +1697,7 @@ def tmin(
 ) -> _InexactT: ...
 @overload  # ?d +f64, axis=None
 def tmin(
-    a: onp.ToArrayND[float, npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.integer | np.bool],
     lowerlimit: _RealLimit | None = None,
     *,
     axis: None,
@@ -1727,7 +1727,7 @@ def tmin(
 ) -> onp.ArrayND[_InexactT, _ShapeT]: ...
 @overload  # S@Nd +integer, keepdims=True
 def tmin(
-    a: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    a: onp.ArrayND[npc.integer | np.bool, _ShapeT],
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1769,7 +1769,7 @@ def tmax(
 ) -> _InexactT | onp.ArrayND[_InexactT]: ...
 @overload  # ?d +integer
 def tmax(
-    a: onp.ArrayND[npc.integer | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
     upperlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1789,7 +1789,7 @@ def tmax(
 ) -> _InexactT: ...
 @overload  # 1d +float|integer
 def tmax(
-    a: onp.ToArrayStrict1D[float, npc.integer | np.bool_],
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     upperlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1819,7 +1819,7 @@ def tmax(
 ) -> onp.Array1D[_InexactT]: ...
 @overload  # 2d +float|integer
 def tmax(
-    a: onp.ToArrayStrict2D[float, npc.integer | np.bool_],
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
     upperlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1849,7 +1849,7 @@ def tmax(
 ) -> _InexactT: ...
 @overload  # ?d +f64, axis=None
 def tmax(
-    a: onp.ToArrayND[float, npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.integer | np.bool],
     upperlimit: _RealLimit | None = None,
     *,
     axis: None,
@@ -1879,7 +1879,7 @@ def tmax(
 ) -> onp.ArrayND[_InexactT, _ShapeT]: ...
 @overload  # S@Nd +integer, keepdims=True
 def tmax(
-    a: onp.ArrayND[npc.integer | np.bool_, _ShapeT],
+    a: onp.ArrayND[npc.integer | np.bool, _ShapeT],
     upperlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1938,7 +1938,7 @@ def gstd(
 #
 @overload  # ?d ~f64, order: 0d
 def moment(
-    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
     order: int = 1,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
@@ -1958,7 +1958,7 @@ def moment(
 ) -> _FloatT | onp.ArrayND[_FloatT]: ...
 @overload  # 1d ~f64, order: 0d
 def moment(
-    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
     order: int = 1,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
@@ -1978,7 +1978,7 @@ def moment(
 ) -> _FloatT: ...
 @overload  # 2d ~f64, order: 0d
 def moment(
-    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
     order: int = 1,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
@@ -1998,7 +1998,7 @@ def moment(
 ) -> onp.Array1D[_FloatT]: ...
 @overload  # 3d ~f64, order: 0d
 def moment(
-    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
     order: int = 1,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
@@ -2018,7 +2018,7 @@ def moment(
 ) -> onp.Array2D[_FloatT]: ...
 @overload  # nd ~f64, order: 0d
 def moment(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     order: int = 1,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
@@ -2028,7 +2028,7 @@ def moment(
 ) -> onp.ArrayND[np.float64] | Any: ...
 @overload  # nd ~f64, order: 0d, axis=None  (positional)
 def moment(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     order: int,
     axis: None,
     nan_policy: NanPolicy = "propagate",
@@ -2038,7 +2038,7 @@ def moment(
 ) -> np.float64: ...
 @overload  # nd ~f64, order: 0d, axis=None  (keyword)
 def moment(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     order: int = 1,
     *,
     axis: None,
@@ -2048,7 +2048,7 @@ def moment(
 ) -> np.float64: ...
 @overload  # nd ~f64, order: nd
 def moment(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     order: onp.ToIntND,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
@@ -2058,7 +2058,7 @@ def moment(
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # nd ~f64, keepdims=True
 def moment(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     order: int | onp.ToIntND = 1,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
@@ -2170,7 +2170,7 @@ def moment(
 # keep in sync with kurtosis
 @overload  # ?d ~f64
 def skew(
-    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
     axis: int = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2188,7 +2188,7 @@ def skew(
 ) -> _FloatT | onp.ArrayND[_FloatT]: ...
 @overload  # 1d ~f64
 def skew(
-    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2206,7 +2206,7 @@ def skew(
 ) -> _FloatT: ...
 @overload  # 2d ~f64
 def skew(
-    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2224,7 +2224,7 @@ def skew(
 ) -> onp.Array1D[_FloatT]: ...
 @overload  # 3d ~f64
 def skew(
-    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2242,7 +2242,7 @@ def skew(
 ) -> onp.Array2D[_FloatT]: ...
 @overload  # nd ~f64
 def skew(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2251,7 +2251,7 @@ def skew(
 ) -> onp.ArrayND[np.float64] | Any: ...
 @overload  # nd ~f64, axis=None
 def skew(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     axis: None,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2260,7 +2260,7 @@ def skew(
 ) -> np.float64: ...
 @overload  # nd ~f64, keepdims=True
 def skew(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     axis: int | None = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2310,7 +2310,7 @@ def skew(
 # keep in sync with skew
 @overload  # ?d ~f64
 def kurtosis(
-    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
     axis: int = 0,
     fisher: bool = True,
     bias: bool = True,
@@ -2330,7 +2330,7 @@ def kurtosis(
 ) -> _FloatT | onp.ArrayND[_FloatT]: ...
 @overload  # 1d ~f64
 def kurtosis(
-    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     fisher: bool = True,
     bias: bool = True,
@@ -2350,7 +2350,7 @@ def kurtosis(
 ) -> _FloatT: ...
 @overload  # 2d ~f64
 def kurtosis(
-    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     fisher: bool = True,
     bias: bool = True,
@@ -2370,7 +2370,7 @@ def kurtosis(
 ) -> onp.Array1D[_FloatT]: ...
 @overload  # 3d ~f64
 def kurtosis(
-    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     fisher: bool = True,
     bias: bool = True,
@@ -2390,7 +2390,7 @@ def kurtosis(
 ) -> onp.Array2D[_FloatT]: ...
 @overload  # nd ~f64
 def kurtosis(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     fisher: bool = True,
     bias: bool = True,
@@ -2400,7 +2400,7 @@ def kurtosis(
 ) -> onp.ArrayND[np.float64] | Any: ...
 @overload  # nd ~f64, axis=None
 def kurtosis(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     axis: None,
     fisher: bool = True,
     bias: bool = True,
@@ -2410,7 +2410,7 @@ def kurtosis(
 ) -> np.float64: ...
 @overload  # nd ~f64, keepdims=True
 def kurtosis(
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     axis: int | None = 0,
     fisher: bool = True,
     bias: bool = True,
@@ -2979,7 +2979,7 @@ def obrientransform(*samples: onp.ToFloatND) -> onp.Array2D[np.float64] | onp.Ar
 #
 @overload  # 1d ~inexact64 | +integer, keepdims=False (default)
 def sem(
-    a: onp.ToArrayStrict1D[complex, npc.inexact64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict1D[complex, npc.inexact64 | npc.integer | np.bool],
     axis: L[0, -1] | None = 0,
     ddof: int = 1,
     nan_policy: NanPolicy = "propagate",
@@ -2988,7 +2988,7 @@ def sem(
 ) -> np.float64: ...
 @overload  # >1d ~inexact64 | +integer, axis: int (default)
 def sem(
-    a: onp.CanArray[onp.AtLeast2D, np.dtype[npc.inexact64 | npc.integer | np.bool_]] | Sequence[onp.SequenceND[complex]],
+    a: onp.CanArray[onp.AtLeast2D, np.dtype[npc.inexact64 | npc.integer | np.bool]] | Sequence[onp.SequenceND[complex]],
     axis: int = 0,
     ddof: int = 1,
     nan_policy: NanPolicy = "propagate",
@@ -2997,7 +2997,7 @@ def sem(
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # ?d ~inexact64 | +integer, axis=None, keepdims=False (default)
 def sem(
-    a: onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool],
     axis: None,
     ddof: int = 1,
     nan_policy: NanPolicy = "propagate",
@@ -3006,7 +3006,7 @@ def sem(
 ) -> np.float64: ...
 @overload  # ?d ~inexact64 | +integer, keepdims=True
 def sem(
-    a: onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool],
     axis: int | None = 0,
     ddof: int = 1,
     nan_policy: NanPolicy = "propagate",
@@ -3047,7 +3047,7 @@ def sem(
 # NOTE: keep in sync with `gzscore` and `zmap`
 @overload  # +integer, known shape
 def zscore(
-    a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
+    a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool]],
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
@@ -3092,7 +3092,7 @@ def zscore(
 # NOTE: keep in sync with `zscore` and `zmap`
 @overload  # +integer, known shape
 def gzscore(
-    a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool_]],
+    a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool]],
     *,
     axis: int | None = 0,
     ddof: int = 0,
@@ -3138,8 +3138,8 @@ def gzscore(
 # keep roughly in sync with `zscore` and `gzscore`
 @overload  # +integer, known shape
 def zmap(  # type: ignore[overload-overlap]
-    scores: nptc.CanArray[_ShapeT, np.dtype[npc.floating64 | npc.integer | np.bool_]],
-    compare: nptc.CanArray[_ShapeT, np.dtype[npc.floating64 | npc.integer | np.bool_]],
+    scores: nptc.CanArray[_ShapeT, np.dtype[npc.floating64 | npc.integer | np.bool]],
+    compare: nptc.CanArray[_ShapeT, np.dtype[npc.floating64 | npc.integer | np.bool]],
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
@@ -3154,7 +3154,7 @@ def zmap(
 ) -> onp.ArrayND[_InexactT, _ShapeT]: ...
 @overload  # float 1d
 def zmap(
-    scores: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    scores: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
     compare: onp.ToFloat64Strict1D,
     axis: int | None = 0,
     ddof: int = 0,
@@ -3163,14 +3163,14 @@ def zmap(
 @overload  # float 1d
 def zmap(
     scores: onp.ToFloat64Strict1D,
-    compare: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    compare: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.Array1D[np.float64]: ...
 @overload  # float 2d
 def zmap(
-    scores: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    scores: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
     compare: onp.ToFloat64Strict2D | onp.ToFloat64Strict1D,
     axis: int | None = 0,
     ddof: int = 0,
@@ -3179,7 +3179,7 @@ def zmap(
 @overload  # float 2d
 def zmap(
     scores: onp.ToFloat64Strict2D | onp.ToFloat64Strict1D,
-    compare: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    compare: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
@@ -3711,8 +3711,8 @@ def kendalltau(
 ) -> SignificanceResult[np.float64]: ...
 @overload  # ?d, axis: int
 def kendalltau(
-    x: onp.ArrayND[npc.number | np.bool_, _JustAnyShape],
-    y: onp.ArrayND[npc.number | np.bool_, _JustAnyShape],
+    x: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
+    y: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     *,
     axis: int,
     keepdims: L[False] = False,
@@ -3906,8 +3906,8 @@ _AnyFloatSub64T = TypeVar("_AnyFloatSub64T", bound=np.float32 | np.float16)
 # keep in sync with `ttest_rel`
 @overload  # ?d ~float64
 def ttest_ind(
-    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
-    b: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    b: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
     *,
     axis: int = 0,
     equal_var: bool = True,
@@ -3932,8 +3932,8 @@ def ttest_ind(
 ) -> TtestResult[_AnyFloatSub64T | Any]: ...
 @overload  # 1d ~f64
 def ttest_ind(
-    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
-    b: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    b: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
     *,
     axis: int = 0,
     equal_var: bool = True,
@@ -3971,8 +3971,8 @@ def ttest_ind(
 ) -> TtestResult[np.float64 | Any]: ...
 @overload  # 2d ~f64
 def ttest_ind(
-    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
-    b: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
+    b: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
     *,
     axis: int = 0,
     equal_var: bool = True,
@@ -4010,8 +4010,8 @@ def ttest_ind(
 ) -> TtestResult[onp.Array1D[np.float64 | Any]]: ...
 @overload  # 3d ~f64
 def ttest_ind(
-    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
-    b: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
+    b: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
     *,
     axis: int = 0,
     equal_var: bool = True,
@@ -4049,8 +4049,8 @@ def ttest_ind(
 ) -> TtestResult[onp.Array2D[np.float64 | Any]]: ...
 @overload  # nd ~f64, axis=None
 def ttest_ind(  # type: ignore[overload-overlap]
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
-    b: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    b: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     *,
     axis: None,
     equal_var: bool = True,
@@ -4062,8 +4062,8 @@ def ttest_ind(  # type: ignore[overload-overlap]
 ) -> TtestResult[np.float64]: ...
 @overload  # nd ~f64, keepdims=True
 def ttest_ind(  # type: ignore[overload-overlap]
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
-    b: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    b: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     *,
     axis: int | None = 0,
     equal_var: bool = True,
@@ -4142,8 +4142,8 @@ def ttest_ind(
 # keep in sync with `ttest_ind`
 @overload  # ?d ~float64
 def ttest_rel(
-    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
-    b: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
+    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    b: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -4162,8 +4162,8 @@ def ttest_rel(
 ) -> TtestResult[_AnyFloatSub64T | Any]: ...
 @overload  # 1d ~f64
 def ttest_rel(
-    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
-    b: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    b: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -4192,8 +4192,8 @@ def ttest_rel(
 ) -> TtestResult[np.float64 | Any]: ...
 @overload  # 2d ~f64
 def ttest_rel(
-    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
-    b: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
+    b: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -4222,8 +4222,8 @@ def ttest_rel(
 ) -> TtestResult[onp.Array1D[np.float64 | Any]]: ...
 @overload  # 3d ~f64
 def ttest_rel(
-    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
-    b: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
+    b: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -4252,8 +4252,8 @@ def ttest_rel(
 ) -> TtestResult[onp.Array2D[np.float64 | Any]]: ...
 @overload  # nd ~f64, axis=None
 def ttest_rel(  # type: ignore[overload-overlap]
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
-    b: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    b: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     axis: None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -4262,8 +4262,8 @@ def ttest_rel(  # type: ignore[overload-overlap]
 ) -> TtestResult[np.float64]: ...
 @overload  # nd ~f64, keepdims=True
 def ttest_rel(  # type: ignore[overload-overlap]
-    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
-    b: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    b: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",

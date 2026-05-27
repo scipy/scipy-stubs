@@ -56,7 +56,7 @@ class interp1d(_Interpolator1D):  # legacy
     copy: bool
     bounds_error: bool
     axis: int
-    x: onp.Array1D[npc.floating | npc.integer | np.bool_]
+    x: onp.Array1D[npc.floating | npc.integer | np.bool]
     y: onp.ArrayND[npc.inexact]
     x_bds: onp.Array1D[npc.floating]  # only set if `kind in {"nearest", "nearest-up"}`
 

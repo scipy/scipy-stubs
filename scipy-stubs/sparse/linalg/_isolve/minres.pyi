@@ -12,10 +12,10 @@ from scipy.sparse.linalg import LinearOperator
 __all__ = ["minres"]
 
 _FloatT = TypeVar("_FloatT", bound=np.float32 | np.float64, default=np.float64)
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 
 _Ignored: TypeAlias = object
-_ToInt: TypeAlias = npc.integer | np.bool_
+_ToInt: TypeAlias = npc.integer | np.bool
 _ToLinearOperator: TypeAlias = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
 
 ###

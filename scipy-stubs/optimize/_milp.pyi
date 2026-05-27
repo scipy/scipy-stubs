@@ -15,7 +15,7 @@ _Max3: TypeAlias = Literal[0, 1, 2, 3]
 _Max4: TypeAlias = Literal[_Max3, 4]
 
 _Float: TypeAlias = float | np.float64
-_ToFloat2D: TypeAlias = onp.ToFloat2D | _spbase[np.bool_ | npc.integer | np.float32 | np.float64 | npc.floating80]
+_ToFloat2D: TypeAlias = onp.ToFloat2D | _spbase[np.bool | npc.integer | np.float32 | np.float64 | npc.floating80]
 # The `TypeAliasType` helps make error messages less unreadable
 _ToLinearConstraint = TypeAliasType(
     "_ToLinearConstraint",

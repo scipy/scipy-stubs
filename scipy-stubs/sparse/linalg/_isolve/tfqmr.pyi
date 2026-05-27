@@ -13,7 +13,7 @@ __all__ = ["tfqmr"]
 
 _FloatT = TypeVar("_FloatT", bound=np.float32 | np.float64, default=np.float64)
 _ComplexT = TypeVar("_ComplexT", bound=np.complex64 | np.complex128, default=np.complex128)
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 
 _ToLinearOperator: TypeAlias = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
 
@@ -24,7 +24,7 @@ _Callback: TypeAlias = Callable[[onp.Array1D[_ScalarT]], _Ignored]
 
 @overload  # real
 def tfqmr(
-    A: _ToLinearOperator[_FloatT | npc.integer | np.bool_],
+    A: _ToLinearOperator[_FloatT | npc.integer | np.bool],
     b: onp.ToFloat1D,
     x0: onp.ToFloat1D | None = None,
     *,

@@ -34,7 +34,7 @@ _Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
 _Floating: TypeAlias = np.float64 | np.float32 | np.float16  # longdouble often results in trouble
 _CoFloat: TypeAlias = _Floating | npc.integer
 
-_Bool: TypeAlias = bool | np.bool_
+_Bool: TypeAlias = bool | np.bool
 _Int: TypeAlias = int | np.int32 | np.int64
 _Float: TypeAlias = float | np.float64
 
@@ -42,7 +42,7 @@ _Float0D: TypeAlias = onp.Array0D[np.float64]
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
 
-_BoolND: TypeAlias = onp.ArrayND[np.bool_]
+_BoolND: TypeAlias = onp.ArrayND[np.bool]
 _IntND: TypeAlias = onp.ArrayND[np.int_]
 _FloatND: TypeAlias = onp.ArrayND[np.float64]
 _CoFloatND: TypeAlias = onp.ArrayND[_CoFloat]

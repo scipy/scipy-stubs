@@ -9,7 +9,7 @@ from scipy.optimize._typing import TRSolver
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
-_Vector_b1: TypeAlias = onp.Array1D[np.bool_]
+_Vector_b1: TypeAlias = onp.Array1D[np.bool]
 _Vector_i0: TypeAlias = onp.Array1D[np.int_]
 
 _Scalar_f8: TypeAlias = float | np.float64
@@ -52,7 +52,7 @@ def dogleg_step(
     tr_bounds: _Vector_f8,
     lb: _Vector_f8,
     ub: _Vector_f8,
-) -> tuple[_Vector_f8, _Vector_i0, np.bool_]: ...
+) -> tuple[_Vector_f8, _Vector_i0, np.bool]: ...
 
 #
 def dogbox(

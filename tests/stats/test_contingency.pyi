@@ -17,7 +17,7 @@ from scipy.stats.contingency import (
 
 ###
 
-_bool_2d: onp.Array2D[np.bool_]
+_bool_2d: onp.Array2D[np.bool]
 _i64_2d: onp.Array2D[np.int64]
 _f32_2d: onp.Array2D[np.float32]
 _f64_2d: onp.Array2D[np.float64]

@@ -47,8 +47,8 @@ assert_type(sparse.diags_array(dense_1d), sparse.dia_array[ScalarType])
 assert_type(sparse.diags_array(dense_1d.astype(np.float128)), sparse.dia_array[np.float128])
 assert_type(sparse.diags_array(dense_1d.astype(np.complex128)), sparse.dia_array[np.complex128])
 assert_type(sparse.diags_array(dense_2d, offsets=int_list), sparse.dia_array[ScalarType])
-assert_type(sparse.diags_array(dense_1d, dtype="bool"), sparse.dia_array[np.bool_])
-assert_type(sparse.diags_array(dense_2d, dtype="bool"), sparse.dia_array[np.bool_])
+assert_type(sparse.diags_array(dense_1d, dtype="bool"), sparse.dia_array[np.bool])
+assert_type(sparse.diags_array(dense_2d, dtype="bool"), sparse.dia_array[np.bool])
 assert_type(sparse.diags_array(dense_1d, dtype=int), sparse.dia_array[np.int_])
 assert_type(sparse.diags_array(dense_2d, dtype=int), sparse.dia_array[np.int_])
 assert_type(sparse.diags_array(dense_1d, dtype=np.float128), sparse.dia_array[np.float128])
@@ -289,7 +289,7 @@ assert_type(sparse.bmat([[dok_arr], [None]], dtype=np.complex64), sparse.coo_arr
 # block_diag
 assert_type(sparse.block_diag([any_arr, any_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
 assert_type(sparse.block_diag([any_arr, any_mat]), sparse.coo_matrix[ScalarType] | sparse.coo_array[ScalarType, tuple[int, int]])
-assert_type(sparse.block_diag([any_arr, any_arr], dtype="bool"), sparse.coo_array[np.bool_, tuple[int, int]])
+assert_type(sparse.block_diag([any_arr, any_arr], dtype="bool"), sparse.coo_array[np.bool, tuple[int, int]])
 assert_type(sparse.block_diag([any_arr, any_arr], dtype=int), sparse.coo_array[np.int_, tuple[int, int]])
 assert_type(
     sparse.block_diag([any_arr, any_mat], dtype=np.complex64),
@@ -299,7 +299,7 @@ assert_type(sparse.block_diag([any_arr, any_arr], format="bsr"), sparse.bsr_arra
 assert_type(sparse.block_diag([any_arr, any_arr], format="csc", dtype=float), sparse.csc_array[np.float64])
 assert_type(sparse.block_diag([any_arr, any_arr], format="csr", dtype=complex), sparse.csr_array[np.complex128, tuple[int, int]])
 assert_type(sparse.block_diag([any_arr, any_arr], format="dia", dtype="int"), sparse.dia_array[np.int_])
-assert_type(sparse.block_diag([any_arr, any_arr], format="dok", dtype="bool"), sparse.dok_array[np.bool_, tuple[int, int]])
+assert_type(sparse.block_diag([any_arr, any_arr], format="dok", dtype="bool"), sparse.dok_array[np.bool, tuple[int, int]])
 assert_type(sparse.block_diag([any_arr, any_arr], format="lil", dtype=np.complex64), sparse.lil_array[np.complex64])
 
 ###

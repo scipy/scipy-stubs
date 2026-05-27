@@ -32,7 +32,7 @@ __all__ = [
 ###
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
-_OutputArrayT = TypeVar("_OutputArrayT", bound=onp.ArrayND[np.bool_ | npc.integer | npc.floating])
+_OutputArrayT = TypeVar("_OutputArrayT", bound=onp.ArrayND[np.bool | npc.integer | npc.floating])
 _OriginScalarT = TypeVar("_OriginScalarT", bound=int | npc.integer, default=int)
 
 _Mode: TypeAlias = Literal["reflect", "constant", "nearest", "mirror", "wrap"]
@@ -49,30 +49,30 @@ _Origin: TypeAlias = int | tuple[int, ...]
 
 @overload  # known shape
 def iterate_structure(
-    structure: onp.ArrayND[np.bool_ | npc.integer, _ShapeT], iterations: int, origin: None = None
-) -> onp.ArrayND[np.bool_, _ShapeT]: ...
+    structure: onp.ArrayND[np.bool | npc.integer, _ShapeT], iterations: int, origin: None = None
+) -> onp.ArrayND[np.bool, _ShapeT]: ...
 @overload  # known shape, origin=<given>
 def iterate_structure(
-    structure: onp.ArrayND[np.bool_ | npc.integer, _ShapeT], iterations: int, origin: _OriginScalarT | Iterable[_OriginScalarT]
-) -> tuple[onp.ArrayND[np.bool_, _ShapeT], list[_OriginScalarT]]: ...
+    structure: onp.ArrayND[np.bool | npc.integer, _ShapeT], iterations: int, origin: _OriginScalarT | Iterable[_OriginScalarT]
+) -> tuple[onp.ArrayND[np.bool, _ShapeT], list[_OriginScalarT]]: ...
 @overload  # unknown shape
-def iterate_structure(structure: onp.ToIntND, iterations: int, origin: None = None) -> onp.ArrayND[np.bool_]: ...
+def iterate_structure(structure: onp.ToIntND, iterations: int, origin: None = None) -> onp.ArrayND[np.bool]: ...
 @overload  # unknown shape, origin=<given>
 def iterate_structure(
     structure: onp.ToIntND, iterations: int, origin: _OriginScalarT | Iterable[_OriginScalarT]
-) -> tuple[onp.ArrayND[np.bool_], list[_OriginScalarT]]: ...
+) -> tuple[onp.ArrayND[np.bool], list[_OriginScalarT]]: ...
 
 #
 @overload
-def generate_binary_structure(rank: Literal[0, -1, -2, -3], connectivity: int) -> onp.Array0D[np.bool_]: ...
+def generate_binary_structure(rank: Literal[0, -1, -2, -3], connectivity: int) -> onp.Array0D[np.bool]: ...
 @overload
-def generate_binary_structure(rank: Literal[1], connectivity: int) -> onp.Array1D[np.bool_]: ...
+def generate_binary_structure(rank: Literal[1], connectivity: int) -> onp.Array1D[np.bool]: ...
 @overload
-def generate_binary_structure(rank: Literal[2], connectivity: int) -> onp.Array2D[np.bool_]: ...
+def generate_binary_structure(rank: Literal[2], connectivity: int) -> onp.Array2D[np.bool]: ...
 @overload
-def generate_binary_structure(rank: Literal[3], connectivity: int) -> onp.Array3D[np.bool_]: ...
+def generate_binary_structure(rank: Literal[3], connectivity: int) -> onp.Array3D[np.bool]: ...
 @overload
-def generate_binary_structure(rank: int, connectivity: int) -> onp.ArrayND[np.bool_]: ...
+def generate_binary_structure(rank: int, connectivity: int) -> onp.ArrayND[np.bool]: ...
 
 #
 @overload
@@ -87,7 +87,7 @@ def binary_erosion(
     brute_force: bool = False,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def binary_erosion(
     input: onp.ToFloatND,
@@ -115,7 +115,7 @@ def binary_dilation(
     brute_force: bool = False,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def binary_dilation(
     input: onp.ToFloatND,
@@ -143,7 +143,7 @@ def binary_opening(
     brute_force: bool = False,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def binary_opening(
     input: onp.ToFloatND,
@@ -171,7 +171,7 @@ def binary_closing(
     brute_force: bool = False,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def binary_closing(
     input: onp.ToFloatND,
@@ -197,7 +197,7 @@ def binary_hit_or_miss(
     origin2: _Origin | None = None,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def binary_hit_or_miss(
     input: onp.ToFloatND,
@@ -221,7 +221,7 @@ def binary_propagation(
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def binary_propagation(
     input: onp.ToFloatND,
@@ -243,7 +243,7 @@ def binary_fill_holes(
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def binary_fill_holes(
     input: onp.ToFloatND,
@@ -293,7 +293,7 @@ def grey_erosion(
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def grey_erosion(
     input: onp.SequenceND[list[int]] | list[int],
@@ -360,7 +360,7 @@ def grey_dilation(
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def grey_dilation(
     input: onp.SequenceND[list[int]] | list[int],
@@ -427,7 +427,7 @@ def grey_opening(
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def grey_opening(
     input: onp.SequenceND[list[int]] | list[int],
@@ -494,7 +494,7 @@ def grey_closing(
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def grey_closing(
     input: onp.SequenceND[list[int]] | list[int],
@@ -561,7 +561,7 @@ def morphological_gradient(
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def morphological_gradient(
     input: onp.SequenceND[list[int]] | list[int],
@@ -628,7 +628,7 @@ def morphological_laplace(
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def morphological_laplace(
     input: onp.SequenceND[list[int]] | list[int],
@@ -695,7 +695,7 @@ def white_tophat(
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def white_tophat(
     input: onp.SequenceND[list[int]] | list[int],
@@ -762,7 +762,7 @@ def black_tophat(
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
-) -> onp.ArrayND[np.bool_]: ...
+) -> onp.ArrayND[np.bool]: ...
 @overload
 def black_tophat(
     input: onp.SequenceND[list[int]] | list[int],

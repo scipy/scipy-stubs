@@ -27,7 +27,7 @@ class _Tolerances(TypedDict, total=False):
 
 @type_check_only
 class _DerivativeResult0D(_RichResult, Generic[_FloatT_co]):
-    success: np.bool_
+    success: np.bool
     status: np.int32
     nfev: np.int32
     nit: np.int32
@@ -37,7 +37,7 @@ class _DerivativeResult0D(_RichResult, Generic[_FloatT_co]):
 
 @type_check_only
 class _DerivativeResultND(_RichResult, Generic[_FloatT_co, _ShapeT_co]):
-    success: onp.Array[_ShapeT_co, np.bool_]
+    success: onp.Array[_ShapeT_co, np.bool]
     status: onp.Array[_ShapeT_co, np.int32]
     nfev: onp.Array[_ShapeT_co, np.int32]
     nit: onp.Array[_ShapeT_co, np.int32]
@@ -52,14 +52,14 @@ class _JacobianResult(_RichResult, Generic[_FloatT_co, _ShapeT_co]):
     error: onp.Array[_ShapeT_co, _FloatT_co]
     nit: onp.Array[_ShapeT_co, np.int32]
     nfev: onp.Array[_ShapeT_co, np.int32]
-    success: onp.Array[_ShapeT_co, np.bool_]
+    success: onp.Array[_ShapeT_co, np.bool]
 
 @type_check_only
 class _HessianResult(_RichResult, Generic[_FloatT_co, _ShapeT2_co]):
     status: onp.Array[_ShapeT2_co, np.int32]
     error: onp.Array[_ShapeT2_co, _FloatT_co]
     nfev: onp.Array[_ShapeT2_co, np.int32]
-    success: onp.Array[_ShapeT2_co, np.bool_]
+    success: onp.Array[_ShapeT2_co, np.bool]
     ddf: onp.Array[_ShapeT2_co, _FloatT_co]
 
 ###

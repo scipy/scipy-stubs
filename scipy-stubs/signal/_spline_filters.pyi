@@ -18,7 +18,7 @@ __all__ = [
     "symiirorder2",
 ]
 
-_SubFloat64: TypeAlias = np.bool_ | npc.integer | np.float16 | np.float32
+_SubFloat64: TypeAlias = np.bool | npc.integer | np.float16 | np.float32
 
 _FloatQ: TypeAlias = np.float64 | np.longdouble
 _ComplexQ: TypeAlias = np.complex128 | np.clongdouble

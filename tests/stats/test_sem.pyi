@@ -14,8 +14,8 @@ py_i_2d: list[list[int]]
 py_f_1d: list[float]
 py_f_2d: list[list[float]]
 
-bool_1d: onp.Array1D[np.bool_]
-bool_2d: onp.Array2D[np.bool_]
+bool_1d: onp.Array1D[np.bool]
+bool_2d: onp.Array2D[np.bool]
 
 i16_1d: onp.Array1D[np.int16]
 i16_2d: onp.Array2D[np.int16]

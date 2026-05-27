@@ -156,9 +156,9 @@ assert_type(_rot_nd.apply(_f64_nd), onp.ArrayND[np.float64])
 
 # approx_equal
 
-assert_type(_rot_0d.approx_equal(_rot_0d), onp.ArrayND[np.bool_])
-assert_type(_rot_1d.approx_equal(_rot_1d), onp.ArrayND[np.bool_])
-assert_type(_rot_nd.approx_equal(_rot_nd), onp.ArrayND[np.bool_])
+assert_type(_rot_0d.approx_equal(_rot_0d), onp.ArrayND[np.bool])
+assert_type(_rot_1d.approx_equal(_rot_1d), onp.ArrayND[np.bool])
+assert_type(_rot_nd.approx_equal(_rot_nd), onp.ArrayND[np.bool])
 
 # as_* with known shapes
 

@@ -16,7 +16,7 @@ _XT_contra = TypeVar("_XT_contra", bound=npc.floating, default=npc.floating, con
 _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
 
-_ToFloat64Vec: TypeAlias = Sequence[float | np.float64 | npc.integer | np.bool_] | onp.CanArrayND[np.float64]
+_ToFloat64Vec: TypeAlias = Sequence[float | np.float64 | npc.integer | np.bool] | onp.CanArrayND[np.float64]
 _ToJac: TypeAlias = onp.ToFloat2D | spmatrix | sparray
 _ToHess: TypeAlias = _ToJac | LinearOperator
 

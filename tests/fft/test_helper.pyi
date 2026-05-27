@@ -13,7 +13,7 @@ _list_float: list[float] = ...
 _list_complex: list[complex] = ...
 
 _arr_i64: onp.ArrayND[np.int64]
-_arr_bool: onp.ArrayND[np.bool_]
+_arr_bool: onp.ArrayND[np.bool]
 _arr_f16: onp.ArrayND[np.float16]
 _arr_f32: onp.ArrayND[np.float32]
 _arr_f64: onp.ArrayND[np.float64]
@@ -43,11 +43,11 @@ assert_type(rfftfreq(8, 2.0), onp.Array1D[np.float64])
 assert_type(rfftfreq(8, d=2.0), onp.Array1D[np.float64])
 
 # fftshift (same as ifftshift)
-assert_type(fftshift(_list_bool), onp.ArrayND[np.bool_])
+assert_type(fftshift(_list_bool), onp.ArrayND[np.bool])
 assert_type(fftshift(_list_int), onp.ArrayND[np.int64])
 assert_type(fftshift(_list_float), onp.ArrayND[np.float64])
 assert_type(fftshift(_list_complex), onp.ArrayND[np.complex128])
-assert_type(fftshift(_arr_bool), onp.ArrayND[np.bool_])
+assert_type(fftshift(_arr_bool), onp.ArrayND[np.bool])
 assert_type(fftshift(_arr_i64), onp.ArrayND[np.int64])
 assert_type(fftshift(_arr_f16), onp.ArrayND[np.float16])
 assert_type(fftshift(_arr_f32), onp.ArrayND[np.float32])
@@ -57,11 +57,11 @@ assert_type(fftshift(_arr_c128), onp.ArrayND[np.complex128])
 assert_type(fftshift(_arr_f32_2d), np.ndarray[tuple[int, int], np.dtype[np.float32]])
 assert_type(fftshift(_arr_c64_3d), np.ndarray[tuple[int, int, int], np.dtype[np.complex64]])
 # ifftshift (same as fftshift)
-assert_type(ifftshift(_list_bool), onp.ArrayND[np.bool_])
+assert_type(ifftshift(_list_bool), onp.ArrayND[np.bool])
 assert_type(ifftshift(_list_int), onp.ArrayND[np.int64])
 assert_type(ifftshift(_list_float), onp.ArrayND[np.float64])
 assert_type(ifftshift(_list_complex), onp.ArrayND[np.complex128])
-assert_type(ifftshift(_arr_bool), onp.ArrayND[np.bool_])
+assert_type(ifftshift(_arr_bool), onp.ArrayND[np.bool])
 assert_type(ifftshift(_arr_i64), onp.ArrayND[np.int64])
 assert_type(ifftshift(_arr_f16), onp.ArrayND[np.float16])
 assert_type(ifftshift(_arr_f32), onp.ArrayND[np.float32])

@@ -12,7 +12,7 @@ __all__ = "_CanStack", "_CanStackAs", "_Format", "_Sparse2D", "_ToShape1D", "_To
 
 ###
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 
 # sparray and spmatrix must be included for them to be assignable to this type alias
 _Sparse2D = TypeAliasType(
@@ -30,7 +30,7 @@ _Format: TypeAlias = Literal["bsr", "coo", "csc", "csr", "dia", "dok", "lil"]
 # Interfaces for emulated dependent associated types
 
 _AssocT_co = TypeVar("_AssocT_co", covariant=True)
-_ScalarT_contra = TypeVar("_ScalarT_contra", bound=npc.number | np.bool_, contravariant=True)
+_ScalarT_contra = TypeVar("_ScalarT_contra", bound=npc.number | np.bool, contravariant=True)
 
 @final
 @type_check_only

@@ -51,14 +51,14 @@ _Int1D: TypeAlias = onp.Array1D[np.intp]
 _Float: TypeAlias = float | np.float64  # equivalent to `np.float64` in `numpy>=2.2`
 _Float1D: TypeAlias = onp.Array1D[np.float64]
 _Float2D: TypeAlias = onp.Array2D[np.float64]
-_ComplexCo1D: TypeAlias = onp.Array1D[npc.number | np.bool_]
+_ComplexCo1D: TypeAlias = onp.Array1D[npc.number | np.bool]
 _FloatingND: TypeAlias = onp.ArrayND[npc.floating]
-_FloatingCoND: TypeAlias = onp.ArrayND[npc.floating | npc.integer | np.bool_]
-_NumericND: TypeAlias = onp.ArrayND[npc.number | np.bool_ | np.timedelta64 | np.object_]
+_FloatingCoND: TypeAlias = onp.ArrayND[npc.floating | npc.integer | np.bool]
+_NumericND: TypeAlias = onp.ArrayND[npc.number | np.bool | np.timedelta64 | np.object_]
 
 _Args: TypeAlias = tuple[object, ...]
 _Brack: TypeAlias = tuple[float, float] | tuple[float, float, float]
-_Disp: TypeAlias = Literal[0, 1, 2, 3] | bool | np.bool_
+_Disp: TypeAlias = Literal[0, 1, 2, 3] | bool | np.bool
 _BracketInfo: TypeAlias = tuple[
     _Float, _Float, _Float,  # xa, xb, xc
     _Float, _Float, _Float,  # fa, fb, fx
@@ -135,9 +135,9 @@ class Brent(Generic[_ValueT_co]):
 
 # undocumented
 @overload
-def is_finite_scalar(x: onp.ToScalar) -> np.bool_: ...
+def is_finite_scalar(x: onp.ToScalar) -> np.bool: ...
 @overload  # returns a `np.ndarray` of `size = 1`, but could have any `ndim`
-def is_finite_scalar(x: _NumericND) -> Literal[False] | onp.Array[onp.AtLeast1D[Any], np.bool_]: ...
+def is_finite_scalar(x: _NumericND) -> Literal[False] | onp.Array[onp.AtLeast1D[Any], np.bool]: ...
 
 # undocumented
 @overload

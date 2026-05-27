@@ -10,7 +10,7 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["expm", "inv", "matrix_power"]
 
-_SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
+_SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 _SparseT = TypeVar("_SparseT", bound=_spbase)
 
 _Structure: TypeAlias = Literal["upper_triangular"]

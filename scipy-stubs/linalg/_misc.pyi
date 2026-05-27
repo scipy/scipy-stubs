@@ -10,7 +10,7 @@ __all__ = ["LinAlgError", "LinAlgWarning", "bandwidth", "norm"]
 _Inf: TypeAlias = float
 _Order: TypeAlias = Literal["fro", "nuc", 0, 1, -1, 2, -2] | _Inf
 _Axis: TypeAlias = SupportsIndex | tuple[SupportsIndex, SupportsIndex]
-_SubScalar: TypeAlias = npc.inexact64 | npc.integer | np.bool_
+_SubScalar: TypeAlias = npc.inexact64 | npc.integer | np.bool
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 

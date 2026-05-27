@@ -19,7 +19,7 @@ __all__ = [
     "sphere_intersections",
 ]
 
-_ScalarB1: TypeAlias = bool | np.bool_
+_ScalarB1: TypeAlias = bool | np.bool
 _ScalarF8: TypeAlias = float | np.float64
 _VectorF8: TypeAlias = onp.Array1D[np.float64]
 
@@ -92,7 +92,7 @@ def box_sphere_intersections(
 ) -> tuple[_ScalarF8, _ScalarF8, _ScalarB1, _SphereInfoDict, _SphereInfoDict]: ...
 def inside_box_boundaries(
     x: onp.Array[_ShapeT, _ScalarFloat_co], lb: onp.Array[_ShapeT, _ScalarFloat_co], ub: onp.Array[_ShapeT, _ScalarFloat_co]
-) -> np.bool_: ...
+) -> np.bool: ...
 def reinforce_box_boundaries(
     x: onp.Array[_ShapeT, _SCT_float], lb: onp.Array[_ShapeT, _SCT_float], ub: onp.Array[_ShapeT, _SCT_float]
 ) -> onp.Array[_ShapeT, _SCT_float]: ...

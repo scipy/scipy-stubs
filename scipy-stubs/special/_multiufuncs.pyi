@@ -61,7 +61,7 @@ _Branch_D: TypeAlias = _Branch | onp.SequenceND[_Branch] | onp.CanArrayND[npc.in
 _D0: TypeAlias = L[False, 0]
 _D1: TypeAlias = L[True, 1]
 _D2: TypeAlias = L[2]
-_Dn: TypeAlias = L[0, 1, 2] | bool | np.bool_
+_Dn: TypeAlias = L[0, 1, 2] | bool | np.bool
 
 class MultiUFunc:  # undocumented
     @property

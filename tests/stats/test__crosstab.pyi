@@ -25,7 +25,7 @@ _Tuple1N: TypeAlias = tuple[_T, *tuple[_T, ...]]
 
 assert_type(crosstab(_f32_2d, _f32_2d).elements, _Tuple1N[onp.Array1D[np.float32]])
 assert_type(crosstab(_f64_2d, _f64_2d).elements, _Tuple1N[onp.Array1D[np.float64]])
-assert_type(crosstab(_list_bool, _list_bool).elements, _Tuple1N[onp.Array1D[np.bool_]])
+assert_type(crosstab(_list_bool, _list_bool).elements, _Tuple1N[onp.Array1D[np.bool]])
 assert_type(crosstab(_list_int, _list_int).elements, _Tuple1N[onp.Array1D[np.int_]])
 assert_type(crosstab(_list_float, _list_float).elements, _Tuple1N[onp.Array1D[np.float64]])
 assert_type(crosstab(_list_complex, _list_complex).elements, _Tuple1N[onp.Array1D[np.complex128]])

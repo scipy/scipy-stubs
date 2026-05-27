@@ -88,8 +88,8 @@ __all__ = [
 
 _SCT = TypeVar("_SCT", bound=np.generic, default=np.float64)
 _SCT_f = TypeVar("_SCT_f", bound=npc.floating, default=np.float64)
-_SCT_bifc = TypeVar("_SCT_bifc", bound=npc.number | np.bool_, default=np.float64)
-_SCT_bifcmO = TypeVar("_SCT_bifcmO", bound=npc.number | np.timedelta64 | np.bool_ | np.object_)
+_SCT_bifc = TypeVar("_SCT_bifc", bound=npc.number | np.bool, default=np.float64)
+_SCT_bifcmO = TypeVar("_SCT_bifcmO", bound=npc.number | np.timedelta64 | np.bool | np.object_)
 
 _MArrayOrND: TypeAlias = _SCT | onp.MArray[_SCT]
 
@@ -184,7 +184,7 @@ def mode(a: onp.ToFloatND, axis: SupportsIndex | None = 0) -> ModeResult: ...
 @overload
 def msign(x: _ArrayLike[_SCT_bifcmO]) -> onp.ArrayND[_SCT_bifcmO]: ...
 @overload
-def msign(x: onp.ToComplexND) -> onp.ArrayND[npc.number | np.timedelta64 | np.bool_ | np.object_]: ...
+def msign(x: onp.ToComplexND) -> onp.ArrayND[npc.number | np.timedelta64 | np.bool | np.object_]: ...
 
 #
 def pearsonr(x: onp.ToFloatND, y: onp.ToFloatND) -> tuple[np.float64, np.float64]: ...
@@ -277,7 +277,7 @@ def kstest(
 @overload
 def trima(
     a: onp.SequenceND[bool], limits: tuple[onp.ToInt, onp.ToInt] | None = None, inclusive: tuple[bool, bool] = (True, True)
-) -> onp.MArray[np.bool_]: ...
+) -> onp.MArray[np.bool]: ...
 @overload
 def trima(
     a: onp.SequenceND[op.JustInt], limits: tuple[onp.ToInt, onp.ToInt] | None = None, inclusive: tuple[bool, bool] = (True, True)
@@ -285,13 +285,13 @@ def trima(
 @overload
 def trima(
     a: onp.SequenceND[float], limits: tuple[onp.ToFloat, onp.ToFloat] | None = None, inclusive: tuple[bool, bool] = (True, True)
-) -> onp.MArray[np.float64 | np.int_ | np.bool_]: ...
+) -> onp.MArray[np.float64 | np.int_ | np.bool]: ...
 @overload
 def trima(
     a: onp.SequenceND[complex],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-) -> onp.MArray[np.complex128 | np.float64 | np.int_ | np.bool_]: ...
+) -> onp.MArray[np.complex128 | np.float64 | np.int_ | np.bool]: ...
 @overload
 def trima(
     a: _ArrayLike[_SCT_bifc],

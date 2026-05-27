@@ -11,8 +11,8 @@ from ._base import _spbase, sparray
 from ._coo import coo_array
 from ._matrix import spmatrix
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool_, default=Any, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
 _Self2T = TypeVar("_Self2T", bound=IndexMixin[Any, _2D])
@@ -39,7 +39,7 @@ _ToSlice1: TypeAlias = (
     _ToSlice | onp.ToInt1D | tuple[int, None] | tuple[None, int] | tuple[_ToSlice, onp.ToInt1D] | tuple[onp.ToInt1D, _ToSlice]
 )
 # axis-wise slice for 2d arrays (maintains only 2d shape)
-_ToSlice2: TypeAlias = _ToSlice | tuple[_ToSlice, _ToSlice] | _spbase[np.bool_, _2D] | list[np.bool_] | list[bool] | list[int]
+_ToSlice2: TypeAlias = _ToSlice | tuple[_ToSlice, _ToSlice] | _spbase[np.bool, _2D] | list[np.bool] | list[bool] | list[int]
 
 ###
 

@@ -17,7 +17,7 @@ _Ordered: TypeAlias = np.int32 | np.int64 | np.float32 | np.float64
 _Real: TypeAlias = np.float32 | np.float64 | npc.floating80
 
 # castable to `_Real`
-_AsReal: TypeAlias = npc.floating | npc.integer | np.bool_
+_AsReal: TypeAlias = npc.floating | npc.integer | np.bool
 
 # castable to a real distance matrix
 _Dist2D: TypeAlias = onp.Array2D[_AsReal]

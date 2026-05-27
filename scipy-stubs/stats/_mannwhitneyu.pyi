@@ -42,8 +42,8 @@ class MannwhitneyuResult(tuple[_StatisticT_co, _PValueT_co], Generic[_StatisticT
 #
 @overload  # ?d ~f64
 def mannwhitneyu(
-    x: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
-    y: onp.ArrayND[npc.floating64 | npc.integer | np.bool_, _JustAnyShape],
+    x: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    y: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,
@@ -66,8 +66,8 @@ def mannwhitneyu(
 ) -> _MannwhitneyuResult0D[_FloatT] | _MannwhitneyuResultND[_FloatT]: ...
 @overload  # 1d ~f64
 def mannwhitneyu(
-    x: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
-    y: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool_],
+    x: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    y: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,
@@ -90,8 +90,8 @@ def mannwhitneyu(
 ) -> _MannwhitneyuResult0D[_FloatT]: ...
 @overload  # 2d ~f64
 def mannwhitneyu(
-    x: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
-    y: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool_],
+    x: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
+    y: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,
@@ -114,8 +114,8 @@ def mannwhitneyu(
 ) -> _MannwhitneyuResultND[_FloatT, tuple[int]]: ...
 @overload  # 3d ~f64
 def mannwhitneyu(
-    x: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
-    y: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool_],
+    x: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
+    y: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,
@@ -138,8 +138,8 @@ def mannwhitneyu(
 ) -> _MannwhitneyuResultND[_FloatT, tuple[int, int]]: ...
 @overload  # nd ~f64
 def mannwhitneyu(
-    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
-    y: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    y: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,
@@ -150,8 +150,8 @@ def mannwhitneyu(
 ) -> _MannwhitneyuResult0D[np.float64] | _MannwhitneyuResultND[np.float64]: ...
 @overload  # nd ~f64, axis=None  (keyword)
 def mannwhitneyu(
-    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
-    y: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    y: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     *,
@@ -162,8 +162,8 @@ def mannwhitneyu(
 ) -> _MannwhitneyuResult0D[np.float64]: ...
 @overload  # nd ~f64, keepdims=True
 def mannwhitneyu(
-    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
-    y: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool_],
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    y: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int | None = 0,

@@ -33,9 +33,9 @@ _InexactT = TypeVar("_InexactT", bound=npc.inexact | np.object_)
 _Kind: TypeAlias = L["symmetric", "upper", "lower"]
 _ConvMode: TypeAlias = L["valid", "same", "full"]
 
-_Bool2D: TypeAlias = onp.Array2D[np.bool_]
-_Bool3D: TypeAlias = onp.Array3D[np.bool_]
-_BoolND: TypeAlias = onp.ArrayND[np.bool_]
+_Bool2D: TypeAlias = onp.Array2D[np.bool]
+_Bool3D: TypeAlias = onp.Array3D[np.bool]
+_BoolND: TypeAlias = onp.ArrayND[np.bool]
 _Int2D: TypeAlias = onp.Array2D[np.int_]
 _Int3D: TypeAlias = onp.Array3D[np.int_]
 _IntND: TypeAlias = onp.ArrayND[np.int_]

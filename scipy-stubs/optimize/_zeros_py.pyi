@@ -161,7 +161,7 @@ def newton(
     *,
     full_output: onp.ToTrue,
     disp: bool = True,
-) -> tuple[onp.Array[_ShapeT, np.float64], onp.Array[_ShapeT, np.bool_], onp.Array[_ShapeT, np.bool_]]: ...
+) -> tuple[onp.Array[_ShapeT, np.float64], onp.Array[_ShapeT, np.bool], onp.Array[_ShapeT, np.bool]]: ...
 
 #
 @overload

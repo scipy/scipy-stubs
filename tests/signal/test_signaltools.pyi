@@ -124,7 +124,7 @@ assert_type(choose_conv_method(_c128_1d, _c128_1d, measure=True)[1]["fft"], floa
 
 # convolve (same as correlate)
 
-assert_type(convolve(_py_b_1d, _py_b_1d), onp.ArrayND[np.bool_])
+assert_type(convolve(_py_b_1d, _py_b_1d), onp.ArrayND[np.bool])
 assert_type(convolve(_py_i_1d, _py_i_1d), onp.ArrayND[np.int64])
 assert_type(convolve(_py_f_1d, _py_f_1d), onp.ArrayND[np.float64])
 assert_type(convolve(_i64_1d, _i64_1d), onp.Array1D[np.int64])
@@ -135,7 +135,7 @@ assert_type(convolve(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
 
 # correlate (same as convolve)
 
-assert_type(correlate(_py_b_1d, _py_b_1d), onp.ArrayND[np.bool_])
+assert_type(correlate(_py_b_1d, _py_b_1d), onp.ArrayND[np.bool])
 assert_type(correlate(_py_i_1d, _py_i_1d), onp.ArrayND[np.int64])
 assert_type(correlate(_py_f_1d, _py_f_1d), onp.ArrayND[np.float64])
 assert_type(correlate(_i64_1d, _i64_1d), onp.Array1D[np.int64])

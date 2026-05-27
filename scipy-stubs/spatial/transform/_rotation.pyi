@@ -212,7 +212,7 @@ class Rotation(Generic[_ShapeT_co]):
 
     # NOTE: The docstring incorrectly states that this can return a bool, but it always returns an array, even for single
     # rotations. See https://github.com/scipy/scipy/pull/24763
-    def approx_equal(self, /, other: Rotation, atol: float | None = None, degrees: bool = False) -> onp.ArrayND[np.bool_]: ...
+    def approx_equal(self, /, other: Rotation, atol: float | None = None, degrees: bool = False) -> onp.ArrayND[np.bool]: ...
 
     #
     @overload

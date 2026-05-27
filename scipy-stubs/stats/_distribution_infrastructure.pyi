@@ -174,7 +174,7 @@ class _Domain(abc.ABC, Generic[_XT_co]):
     @abc.abstractmethod
     def __str__(self, /) -> str: ...
     @abc.abstractmethod
-    def contains(self, /, x: onp.ArrayND[Any]) -> onp.ArrayND[np.bool_]: ...
+    def contains(self, /, x: onp.ArrayND[Any]) -> onp.ArrayND[np.bool]: ...
     @abc.abstractmethod
     def draw(self, /, n: int) -> onp.ArrayND[_XT_co]: ...
     @abc.abstractmethod
@@ -194,7 +194,7 @@ class _Interval(_Domain[_XT_co], Generic[_XT_co]):  # pyrefly: ignore[implicit-a
     @override
     def contains(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
         self, /, item: onp.ArrayND[_Int | _Float], parameter_values: _ParamValues | None = None
-    ) -> onp.ArrayND[np.bool_]: ...
+    ) -> onp.ArrayND[np.bool]: ...
     @override
     def draw(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
         self,
@@ -216,10 +216,10 @@ class _IntegerInterval(_Interval[_IntT_co], Generic[_IntT_co]):
     @override  # https://github.com/astral-sh/ruff/issues/18372
     def __str__(self, /) -> str: ...  # noqa: PYI029
 
-_ValidateOut0D = TypeAliasType("_ValidateOut0D", tuple[_RealT, np.dtype[_RealT], onp.Array0D[np.bool_]], type_params=(_RealT,))
+_ValidateOut0D = TypeAliasType("_ValidateOut0D", tuple[_RealT, np.dtype[_RealT], onp.Array0D[np.bool]], type_params=(_RealT,))
 _ValidateOutND = TypeAliasType(
     "_ValidateOutND",
-    tuple[onp.ArrayND[_RealT, _ShapeT1], np.dtype[_RealT], onp.ArrayND[np.bool_, _ShapeT1]],
+    tuple[onp.ArrayND[_RealT, _ShapeT1], np.dtype[_RealT], onp.ArrayND[np.bool, _ShapeT1]],
     type_params=(_RealT, _ShapeT1),
 )
 
@@ -265,7 +265,7 @@ class _Parameterization:
     def __len__(self, /) -> int: ...
     def copy(self, /) -> Self: ...
     def matches(self, /, parameters: AbstractSet[str]) -> bool: ...
-    def validation(self, /, parameter_values: Mapping[str, _Parameter]) -> tuple[onp.ArrayND[np.bool_], np.dtype[_Float]]: ...
+    def validation(self, /, parameter_values: Mapping[str, _Parameter]) -> tuple[onp.ArrayND[np.bool], np.dtype[_Float]]: ...
     def draw(
         self,
         /,
@@ -313,7 +313,7 @@ _Float3ND: TypeAlias = onp.Array[tuple[int, int, int, *tuple[Any, ...]], _Float]
 _Complex: TypeAlias = np.complex128 | np.clongdouble
 _ComplexND: TypeAlias = onp.ArrayND[_Complex, _ShapeT1]
 
-_ToFloatND: TypeAlias = onp.CanArrayND[npc.floating | npc.integer | np.bool_, _ShapeT1]
+_ToFloatND: TypeAlias = onp.CanArrayND[npc.floating | npc.integer | np.bool, _ShapeT1]
 _ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
 _ToFloatMaxND: TypeAlias = _ToFloatND[_ShapeT1] | _ToFloatMax1D
 
@@ -1240,7 +1240,7 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
 
     #
     @overload
-    def __add__(self, x: float | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __add__(self, x: float | _Int | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __add__(self, x: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
@@ -1259,7 +1259,7 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
 
     #
     @overload
-    def __sub__(self, lshift: float | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __sub__(self, lshift: float | _Int | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __sub__(self, lshift: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
@@ -1280,7 +1280,7 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
 
     #
     @overload
-    def __mul__(self, scale: float | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __mul__(self, scale: float | _Int | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __mul__(self, scale: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
@@ -1305,7 +1305,7 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
 
     #
     @overload
-    def __truediv__(self, iscale: float | _Int | np.bool_, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __truediv__(self, iscale: float | _Int | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __truediv__(self, iscale: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
