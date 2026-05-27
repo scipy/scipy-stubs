@@ -20,9 +20,7 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.stats._binomtest.BinomTestResult.__init__
 scipy.stats._bws_test.bws_test
-scipy.stats._censored_data.CensoredData.__class_getitem__
 scipy.stats._correlation.__all__
 scipy.stats._correlation.siegelslopes
 scipy.stats._correlation.theilslopes
