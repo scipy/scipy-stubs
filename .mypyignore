@@ -20,7 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.optimize._nnls.nnls
 scipy.optimize._nonlin.GenericBroyden.setup
 scipy.optimize._nonlin.Jacobian.setup
 scipy.optimize._nonlin.Jacobian.solve
