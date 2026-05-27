@@ -10,9 +10,9 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from ._censored_data import CensoredData
 from scipy._typing import AnyShape
 from scipy.integrate._typing import QuadOpts as _QuadOpts
-from scipy.stats._censored_data import CensoredData
 
 _T = TypeVar("_T")
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
@@ -95,6 +95,11 @@ _MomentType: TypeAlias = L[0, 1]
 _FitMethod: TypeAlias = L["MLE", "MM"]
 
 ###
+
+# https://github.com/scipy/scipy/pull/25237
+method_name: str = ...  # namespace pollution
+method: Any = ...  # namespace pollution
+doc: str = ...  # namespace pollution
 
 docheaders: Final[dict[str, str]] = ...
 docdict: Final[dict[str, str]] = ...
