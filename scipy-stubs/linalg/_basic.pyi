@@ -9,6 +9,9 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from ._misc import LinAlgError as LinAlgError, LinAlgWarning as LinAlgWarning
+from .lapack import get_lapack_funcs as get_lapack_funcs
+
 __all__ = [
     "det",
     "inv",

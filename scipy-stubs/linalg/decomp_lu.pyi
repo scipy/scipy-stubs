@@ -3,14 +3,13 @@
 from typing_extensions import deprecated
 
 from ._misc import LinAlgWarning as _LinAlgWarning
+from .basic import get_lapack_funcs  # pyrefly:ignore[deprecated] # ty:ignore[deprecated]
 
 __all__ = ["LinAlgWarning", "get_lapack_funcs", "lu", "lu_factor", "lu_solve"]
 
 @deprecated("will be removed in SciPy v2.0.0")
 class LinAlgWarning(_LinAlgWarning): ...
 
-@deprecated("will be removed in SciPy v2.0.0")
-def get_lapack_funcs(names: object, arrays: object = (), dtype: object = None, ilp64: object = False) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def lu(
     a: object, permute_l: object = False, overwrite_a: object = False, check_finite: object = True, p_indices: object = False
