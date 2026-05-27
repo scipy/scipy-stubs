@@ -20,10 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.optimize._elementwise.bracket_minimum
-scipy.optimize._elementwise.bracket_root
-scipy.optimize._elementwise.find_minimum
-scipy.optimize._elementwise.find_root
 scipy.optimize._lbfgsb_py.fmin_l_bfgs_b
 scipy.optimize._nnls.nnls
 scipy.optimize._nonlin.GenericBroyden.setup
