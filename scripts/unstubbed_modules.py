@@ -15,6 +15,7 @@ import scipy
 
 STUBS_PATH = Path(__file__).parent.parent / "scipy-stubs"
 _INIT_FILES = tuple(f"__init__{s}" for s in (*SOURCE_SUFFIXES, *EXTENSION_SUFFIXES))
+_TYPECHECK_ONLY_STUBS = ("._typing",)
 
 IGNORED = (
     # bundled
@@ -78,6 +79,26 @@ def modules() -> Iterator[str]:
             yield name
 
 
+def _walk_stubs(stubs_dir: Path, pkg_name: str) -> Iterator[str]:
+    for entry in sorted(stubs_dir.iterdir()):
+        if (name := entry.name).startswith((".", "__")):
+            continue
+
+        if entry.is_dir():
+            if not (entry / "__init__.pyi").is_file():
+                continue
+
+            yield (sub := f"{pkg_name}.{name}")
+            yield from _walk_stubs(entry, sub)
+
+        elif entry.suffix == ".pyi":
+            yield f"{pkg_name}.{entry.stem}"
+
+
+def stubs() -> Iterator[str]:
+    yield from _walk_stubs(STUBS_PATH, "scipy")
+
+
 def module_to_path(mod: str) -> Path | None:
     _, *submods = mod.split(".")
     if (path := STUBS_PATH.joinpath(*submods, "__init__.pyi")).is_file():
@@ -122,7 +143,19 @@ def main() -> int:
         print(f"unused IGNORED entry: {ignore}", file=sys.stderr)
         exit_code = 1
 
-    print(f"{stubbed} stubbed, {unstubbed} unstubbed modules ({ignored} ignored)")
+    orphans = sorted(
+        name
+        for name in set(stubs()) - set(module_list)
+        if not name.endswith(_TYPECHECK_ONLY_STUBS)
+    )
+    for orphan in orphans:
+        print(f"orphaned stub: {orphan}", file=sys.stderr)
+        exit_code = 1
+
+    print(
+        f"{stubbed} stubbed, {unstubbed} unstubbed, {len(orphans)} orphaned "
+        f"({ignored} ignored)"
+    )
 
     return exit_code
 
