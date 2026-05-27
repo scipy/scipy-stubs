@@ -20,8 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.linalg._matfuncs_expm
-scipy.linalg._matfuncs_schur_sqrtm
 scipy.linalg._testutils._FakeMatrix.shape
 scipy.linalg._testutils._FakeMatrix2.shape
 scipy.linalg.basic.get_lapack_funcs
