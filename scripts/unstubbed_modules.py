@@ -19,8 +19,6 @@ BUNDLED = (
     "scipy.sparse.linalg._eigen.arpack",
     "scipy.sparse.linalg._propack",
 )
-# TODO(@jorenham)
-TODO_1_18 = ("scipy.special._ufunc_tools",)
 
 
 def _check_stubs_path() -> None:
@@ -92,7 +90,7 @@ def main() -> int:
 
     exit_code = 0
     for name in module_list:
-        if any(map(name.startswith, BUNDLED + TODO_1_18)):
+        if any(map(name.startswith, BUNDLED)):
             continue
 
         if not is_stubbed(name):
