@@ -14,6 +14,7 @@ from ._spline import sepfir2d
 from ._spline_filters import *
 from ._upfirdn import upfirdn
 from ._waveforms import *
+from ._whittaker import whittaker_henderson
 from .windows import get_window
 
 __all__ = [
@@ -169,6 +170,7 @@ __all__ = [
     "upfirdn",
     "vectorstrength",
     "welch",
+    "whittaker_henderson",
     "wiener",
     "windows",
     "zoom_fft",
