@@ -21,9 +21,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 # TODO: 1.18.0rc1
 
 scipy.stats._bws_test.bws_test
-scipy.stats._correlation.__all__
-scipy.stats._correlation.siegelslopes
-scipy.stats._correlation.theilslopes
 scipy.stats._distn_infrastructure.doc
 scipy.stats._distn_infrastructure.method
 scipy.stats._distn_infrastructure.method_name
@@ -42,9 +39,6 @@ scipy.stats._multicomp.DunnettResult.__class_getitem__
 scipy.stats._multicomp.DunnettResult.__init__
 scipy.stats._multicomp.DunnettResult.__match_args__
 scipy.stats._probability_distribution._ProbabilityDistribution.lmoment
-scipy.stats._stats_mstats_common.__all__
-scipy.stats._stats_mstats_common.siegelslopes
-scipy.stats._stats_mstats_common.theilslopes
 scipy.stats._stats_py.QuantileTestResult.__init__
 scipy.stats._stats_py.QuantileTestResult.__match_args__
 scipy.stats._stats_py.__all__

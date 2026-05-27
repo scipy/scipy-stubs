@@ -1,16 +1,21 @@
-__all__ = ["chatterjeexi", "spearmanrho"]
-
-from typing import Literal as L, SupportsIndex, TypeAlias, overload
+from typing import Any, Literal as L, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
 
 from . import _resampling
+from ._stats_mstats_common import SiegelslopesResult, TheilslopesResult
 from ._stats_py import SignificanceResult
 from ._typing import NanPolicy
 
-_PermutationMethod: TypeAlias = L["asymptotic"] | _resampling.PermutationMethod
-_Alternative: TypeAlias = L["two-sided", "less", "greater"]
+__all__ = ["chatterjeexi", "siegelslopes", "spearmanrho", "theilslopes"]
+
+###
+
+type _PermutationMethod = L["asymptotic"] | _resampling.PermutationMethod
+type _Alternative = L["two-sided", "less", "greater"]
+
+type _SlopesMethod = L["hierarchical", "separate"]
 
 ###
 
@@ -131,3 +136,133 @@ def spearmanrho(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+
+#
+@overload
+def siegelslopes(
+    y: onp.ToFloatND,
+    x: onp.ToFloatND | None = None,
+    method: _SlopesMethod = "hierarchical",
+    *,
+    axis: None = None,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> SiegelslopesResult[np.float64]: ...
+@overload
+def siegelslopes(
+    y: onp.ToFloatStrict1D,
+    x: onp.ToFloatStrict1D | None = None,
+    method: _SlopesMethod = "hierarchical",
+    *,
+    axis: int | None = None,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> SiegelslopesResult[np.float64]: ...
+@overload
+def siegelslopes(
+    y: onp.ToFloatStrict2D,
+    x: onp.ToFloatStrict2D | None = None,
+    method: _SlopesMethod = "hierarchical",
+    *,
+    axis: int,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> SiegelslopesResult[onp.Array1D[np.float64]]: ...
+@overload
+def siegelslopes(
+    y: onp.ToFloatStrict3D,
+    x: onp.ToFloatStrict3D | None = None,
+    method: _SlopesMethod = "hierarchical",
+    *,
+    axis: int,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> SiegelslopesResult[onp.Array2D[np.float64]]: ...
+@overload
+def siegelslopes(
+    y: onp.ToFloatND,
+    x: onp.ToFloatND | None = None,
+    method: _SlopesMethod = "hierarchical",
+    *,
+    axis: int | None = None,
+    keepdims: L[True],
+    nan_policy: NanPolicy = "propagate",
+) -> SiegelslopesResult[onp.ArrayND[np.float64]]: ...
+@overload
+def siegelslopes(
+    y: onp.ToFloatND,
+    x: onp.ToFloatND | None = None,
+    method: _SlopesMethod = "hierarchical",
+    *,
+    axis: int | None = None,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> SiegelslopesResult[np.float64 | Any]: ...
+
+#
+@overload
+def theilslopes(
+    y: onp.ToFloatND,
+    x: onp.ToFloatND | None = None,
+    alpha: onp.ToJustFloat = 0.95,
+    method: _SlopesMethod = "separate",
+    *,
+    axis: None = None,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> TheilslopesResult[np.float64]: ...
+@overload
+def theilslopes(
+    y: onp.ToFloatStrict1D,
+    x: onp.ToFloatStrict1D | None = None,
+    alpha: onp.ToJustFloat = 0.95,
+    method: _SlopesMethod = "separate",
+    *,
+    axis: int | None = None,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> TheilslopesResult[np.float64]: ...
+@overload
+def theilslopes(
+    y: onp.ToFloatStrict2D,
+    x: onp.ToFloatStrict2D | None = None,
+    alpha: onp.ToJustFloat = 0.95,
+    method: _SlopesMethod = "separate",
+    *,
+    axis: int,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> TheilslopesResult[onp.Array1D[np.float64]]: ...
+@overload
+def theilslopes(
+    y: onp.ToFloatStrict3D,
+    x: onp.ToFloatStrict3D | None = None,
+    alpha: onp.ToJustFloat = 0.95,
+    method: _SlopesMethod = "separate",
+    *,
+    axis: int,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> TheilslopesResult[onp.Array2D[np.float64]]: ...
+@overload
+def theilslopes(
+    y: onp.ToFloatND,
+    x: onp.ToFloatND | None = None,
+    alpha: onp.ToJustFloat = 0.95,
+    method: _SlopesMethod = "separate",
+    *,
+    axis: int | None = None,
+    keepdims: L[True],
+    nan_policy: NanPolicy = "propagate",
+) -> TheilslopesResult[onp.ArrayND[np.float64]]: ...
+@overload
+def theilslopes(
+    y: onp.ToFloatND,
+    x: onp.ToFloatND | None = None,
+    alpha: onp.ToJustFloat = 0.95,
+    method: _SlopesMethod = "separate",
+    *,
+    axis: int | None = None,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> TheilslopesResult[np.float64 | Any]: ...
