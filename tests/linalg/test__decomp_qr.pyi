@@ -33,17 +33,17 @@ c128_3d: onp.Array3D[np.complex128]
 
 assert_type(qr(f64_2d), tuple[_FloatND, _FloatND])
 assert_type(qr(f64_2d, pivoting=True), tuple[_FloatND, _FloatND, _IntND])
-assert_type(qr(f64_2d, False, None, "r"), tuple[_FloatND])
-assert_type(qr(f64_2d, False, None, "r", True), tuple[_FloatND, _IntND])
-assert_type(qr(f64_2d, False, None, "raw"), tuple[tuple[_FloatND, _FloatND], _FloatND])
-assert_type(qr(f64_2d, False, None, "raw", True), tuple[tuple[_FloatND, _FloatND], _FloatND, _IntND])
+assert_type(qr(f64_2d, False, mode="r"), tuple[_FloatND])
+assert_type(qr(f64_2d, False, mode="r", pivoting=True), tuple[_FloatND, _IntND])
+assert_type(qr(f64_2d, False, mode="raw"), tuple[tuple[_FloatND, _FloatND], _FloatND])
+assert_type(qr(f64_2d, False, mode="raw", pivoting=True), tuple[tuple[_FloatND, _FloatND], _FloatND, _IntND])
 
 assert_type(qr(c128_2d), tuple[_InexactND, _InexactND])
 assert_type(qr(c128_2d, pivoting=True), tuple[_InexactND, _InexactND, _IntND])
-assert_type(qr(c128_2d, False, None, "r"), tuple[_InexactND])
-assert_type(qr(c128_2d, False, None, "r", True), tuple[_InexactND, _IntND])
-assert_type(qr(c128_2d, False, None, "raw"), tuple[tuple[_InexactND, _InexactND], _InexactND])
-assert_type(qr(c128_2d, False, None, "raw", True), tuple[tuple[_InexactND, _InexactND], _InexactND, _IntND])
+assert_type(qr(c128_2d, False, mode="r"), tuple[_InexactND])
+assert_type(qr(c128_2d, False, mode="r", pivoting=True), tuple[_InexactND, _IntND])
+assert_type(qr(c128_2d, False, mode="raw"), tuple[tuple[_InexactND, _InexactND], _InexactND])
+assert_type(qr(c128_2d, False, mode="raw", pivoting=True), tuple[tuple[_InexactND, _InexactND], _InexactND, _IntND])
 
 ###
 # qr_multiply
