@@ -5,7 +5,13 @@ import numpy as np
 import optype.numpy as onp
 
 import scipy.sparse as sparse
-from scipy.sparse.csgraph import breadth_first_order, breadth_first_tree, depth_first_order, depth_first_tree
+from scipy.sparse.csgraph import (
+    breadth_first_order,
+    breadth_first_tree,
+    connected_components,
+    depth_first_order,
+    depth_first_tree,
+)
 
 ScalarType: TypeAlias = np.float32
 csr_arr: sparse.csr_array[ScalarType, tuple[int, int]]
@@ -23,3 +29,6 @@ assert_type(depth_first_order(csr_arr, 0, True, False), onp.Array1D[np.int32])
 assert_type(depth_first_order(csr_arr, 0), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
 
 assert_type(depth_first_tree(csr_arr, 0), sparse.csr_array[ScalarType, tuple[int, int]])
+
+assert_type(connected_components(csr_arr), tuple[int, onp.Array1D[np.int32]])
+assert_type(connected_components(csr_arr, directed=False), tuple[int, onp.Array1D[np.int32]])
