@@ -1,6 +1,6 @@
 import abc
 import types
-from typing import Any, ClassVar, Final, Generic, Literal, Self, TypeAlias, final, overload, override, type_check_only
+from typing import Any, ClassVar, Final, Generic, Literal, Self, final, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -30,73 +30,69 @@ __all__ = [
 
 ###
 
-_T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=np.generic)
 _ZerosT_co = TypeVar("_ZerosT_co", bound=npc.inexact32 | npc.inexact64, default=Any, covariant=True)
-_PolesT = TypeVar("_PolesT", bound=_Float)
 _PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=np.float64 | Any, covariant=True)
-_DTT = TypeVar("_DTT", bound=onp.ToComplex | None)
 _DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=Any, covariant=True)
 
-_Tuple3: TypeAlias = tuple[_T, _T, _T]
-_Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
+type _Tuple3[T] = tuple[T, T, T]
+type _Tuple4[T] = tuple[T, T, T, T]
 
-_Float: TypeAlias = np.float32 | np.float64
-_Complex: TypeAlias = np.complex64 | np.complex128
-_Inexact: TypeAlias = _Float | _Complex
-_Number: TypeAlias = npc.integer | _Inexact
+type _Float = np.float32 | np.float64
+type _Complex = np.complex64 | np.complex128
+type _Inexact = _Float | _Complex
+type _Number = npc.integer | _Inexact
 
-_ToNumber: TypeAlias = complex | _Number
-_ToNumberOrND: TypeAlias = _ToNumber | onp.ArrayND[_Number]
+type _ToNumber = complex | _Number
+type _ToNumberOrND = _ToNumber | onp.ArrayND[_Number]
 
-_Array12D: TypeAlias = onp.ArrayND[_SCT, tuple[int] | tuple[int, int]]
+type _Array12D[ScalarT: np.generic] = onp.ArrayND[ScalarT, tuple[int] | tuple[int, int]]
 
-_Float1D: TypeAlias = onp.Array1D[_Float]
-_Float64_1D: TypeAlias = onp.Array1D[np.float64]
-_Float64_2D: TypeAlias = onp.Array2D[np.float64]
-_Complex1D: TypeAlias = onp.Array1D[_Complex]
+type _Float1D = onp.Array1D[_Float]
+type _Float64_1D = onp.Array1D[np.float64]
+type _Float64_2D = onp.Array2D[np.float64]
+type _Complex1D = onp.Array1D[_Complex]
 
-_ToFloat12D: TypeAlias = onp.ToFloat1D | onp.ToFloat2D
-_ToFloat012D: TypeAlias = onp.ToFloat | _ToFloat12D
-_ToComplex12D: TypeAlias = onp.ToComplex1D | onp.ToComplex2D
-_ToComplex012D: TypeAlias = onp.ToComplex | _ToComplex12D
+type _ToFloat12D = onp.ToFloat1D | onp.ToFloat2D
+type _ToFloat012D = onp.ToFloat | _ToFloat12D
+type _ToComplex12D = onp.ToComplex1D | onp.ToComplex2D
+type _ToComplex012D = onp.ToComplex | _ToComplex12D
 
-_ToInexact32_1D: TypeAlias = onp.ToJustFloat32_1D | onp.ToJustComplex64_1D
-_ToInexact32_2D: TypeAlias = onp.ToJustFloat32_2D | onp.ToJustComplex64_2D
-_ToInexact64_1D: TypeAlias = onp.ToArray1D[complex, npc.inexact64 | npc.integer]
-_ToInexact64_2D: TypeAlias = onp.ToArray2D[complex, npc.inexact64 | npc.integer]
+type _ToInexact32_1D = onp.ToJustFloat32_1D | onp.ToJustComplex64_1D
+type _ToInexact32_2D = onp.ToJustFloat32_2D | onp.ToJustComplex64_2D
+type _ToInexact64_1D = onp.ToArray1D[complex, npc.inexact64 | npc.integer]
+type _ToInexact64_2D = onp.ToArray2D[complex, npc.inexact64 | npc.integer]
 
 ###
 
 # numerator, denominator
-_ToTFContFloat: TypeAlias = tuple[_ToFloat12D, onp.ToComplex1D]
-_ToTFContInexact: TypeAlias = tuple[_ToComplex12D, onp.ToComplex1D]
-_ToTFContInexact32: TypeAlias = tuple[_ToInexact32_1D | _ToInexact32_2D, _ToInexact32_1D]
-_ToTFContInexact64: TypeAlias = tuple[_ToInexact64_1D | _ToInexact64_2D, _ToInexact64_1D]
+type _ToTFContFloat = tuple[_ToFloat12D, onp.ToComplex1D]
+type _ToTFContInexact = tuple[_ToComplex12D, onp.ToComplex1D]
+type _ToTFContInexact32 = tuple[_ToInexact32_1D | _ToInexact32_2D, _ToInexact32_1D]
+type _ToTFContInexact64 = tuple[_ToInexact64_1D | _ToInexact64_2D, _ToInexact64_1D]
 # numerator, denominator, dt
-_ToTFDisc: TypeAlias = tuple[_ToFloat12D, onp.ToComplex1D, onp.ToFloat]
+type _ToTFDisc = tuple[_ToFloat12D, onp.ToComplex1D, onp.ToFloat]
 
 # zeros, poles, gain
-_ToZPKContFloat: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat]
-_ToZPKContInexact: TypeAlias = tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat]
-_ToZPKContInexact32: TypeAlias = tuple[_ToInexact32_1D, _ToInexact32_1D, onp.ToFloat]
-_ToZPKContInexact64: TypeAlias = tuple[_ToInexact64_1D, _ToInexact64_1D, onp.ToFloat]
+type _ToZPKContFloat = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat]
+type _ToZPKContInexact = tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat]
+type _ToZPKContInexact32 = tuple[_ToInexact32_1D, _ToInexact32_1D, onp.ToFloat]
+type _ToZPKContInexact64 = tuple[_ToInexact64_1D, _ToInexact64_1D, onp.ToFloat]
 # zeros, poles, gain, dt
-_ToZPKDisc: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat, onp.ToFloat]
+type _ToZPKDisc = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat, onp.ToFloat]
 
 # A, B, C, D
-_ToSSContFloat: TypeAlias = _Tuple4[onp.ToFloat2D]
-_ToSSContInexact: TypeAlias = _Tuple4[onp.ToComplex2D]
-_ToSSContInexact32: TypeAlias = _Tuple4[_ToInexact32_2D]
-_ToSSContInexact64: TypeAlias = _Tuple4[_ToInexact64_2D]
+type _ToSSContFloat = _Tuple4[onp.ToFloat2D]
+type _ToSSContInexact = _Tuple4[onp.ToComplex2D]
+type _ToSSContInexact32 = _Tuple4[_ToInexact32_2D]
+type _ToSSContInexact64 = _Tuple4[_ToInexact64_2D]
 # A, B, C, D, dt
-_ToSSDisc: TypeAlias = tuple[onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat]
+type _ToSSDisc = tuple[onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat]
 
-_ToLTIFloat: TypeAlias = _ToTFContFloat | _ToZPKContFloat | _ToSSContFloat
-_ToLTIInexact: TypeAlias = _ToTFContInexact | _ToZPKContInexact | _ToSSContInexact
-_ToLTIInexact32: TypeAlias = _ToTFContInexact32 | _ToZPKContInexact32 | _ToSSContInexact32
-_ToLTIInexact64: TypeAlias = _ToTFContInexact64 | _ToZPKContInexact64 | _ToSSContInexact64
-_ToDLTI: TypeAlias = _ToTFDisc | _ToZPKDisc | _ToSSDisc
+type _ToLTIFloat = _ToTFContFloat | _ToZPKContFloat | _ToSSContFloat
+type _ToLTIInexact = _ToTFContInexact | _ToZPKContInexact | _ToSSContInexact
+type _ToLTIInexact32 = _ToTFContInexact32 | _ToZPKContInexact32 | _ToSSContInexact32
+type _ToLTIInexact64 = _ToTFContInexact64 | _ToZPKContInexact64 | _ToSSContInexact64
+type _ToDLTI = _ToTFDisc | _ToZPKDisc | _ToSSDisc
 
 ###
 
@@ -108,7 +104,7 @@ class LinearTimeInvariant(Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     def __class_getitem__(cls, args: object | tuple[object, ...], /) -> types.GenericAlias: ...
 
     #
-    def __new__(cls, /, *system: *tuple[()]) -> Self: ...
+    def __new__(cls, /, *system: *tuple[()], dt: None = None) -> Self: ...
 
     #
     @abc.abstractmethod
@@ -217,9 +213,9 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
 
     #
     @abc.abstractmethod
-    def to_discrete(
-        self, /, dt: _DTT, method: _DiscretizeMethod = "zoh", alpha: float | None = None
-    ) -> dlti[_ZerosT_co, _PolesT_co, _DTT]: ...
+    def to_discrete[DTT: onp.ToComplex | None](
+        self, /, dt: DTT, method: _DiscretizeMethod = "zoh", alpha: float | None = None
+    ) -> dlti[_ZerosT_co, _PolesT_co, DTT]: ...
 
 #
 class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co], metaclass=abc.ABCMeta):
@@ -268,30 +264,9 @@ class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT
 class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Generic[_PolesT_co, _DTT_co], metaclass=abc.ABCMeta):
     @override
     @overload
-    def __new__(cls, system: lti[_PolesT, _PolesT], /) -> TransferFunctionContinuous[_PolesT]: ...  # pyrefly:ignore[bad-override]
-    @overload
-    def __new__(
-        cls,
-        num: onp.ToArray1D[float, npc.integer | npc.floating64] | onp.ToArray2D[float, npc.integer | npc.floating64],
-        den: onp.ToFloat1D,
-        /,
-    ) -> TransferFunctionContinuous[np.float64]: ...
-    @overload
-    def __new__(
-        cls, num: onp.ToFloat1D | onp.ToFloat2D, den: onp.ToArray1D[float, npc.integer | npc.floating64], /
-    ) -> TransferFunctionContinuous[np.float64]: ...
-    @overload
-    def __new__(
-        cls, num: onp.ToJustFloat32_1D | onp.ToJustFloat32_2D, den: onp.ToFloat32_1D, /
-    ) -> TransferFunctionContinuous[np.float32]: ...
-    @overload
-    def __new__(
-        cls, num: onp.ToFloat32_1D | onp.ToFloat32_2D, den: onp.ToJustFloat32_1D, /
-    ) -> TransferFunctionContinuous[np.float32]: ...
-    @overload
-    def __new__(cls, num: _ToFloat12D, den: onp.ToFloat1D, /) -> TransferFunctionContinuous[_Float]: ...
-    @overload
-    def __new__(cls, system: dlti[_PolesT, _PolesT, _DTT], /) -> TransferFunctionDiscrete[_PolesT, _DTT]: ...
+    def __new__[PolesT: _Float](
+        cls, system: lti[PolesT, PolesT], /, *, dt: None = None
+    ) -> TransferFunctionContinuous[PolesT]: ...
     @overload
     def __new__(
         cls,
@@ -299,26 +274,55 @@ class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Gen
         den: onp.ToFloat1D,
         /,
         *,
-        dt: _DTT,
-    ) -> TransferFunctionDiscrete[np.float64, _DTT]: ...
+        dt: None = None,
+    ) -> TransferFunctionContinuous[np.float64]: ...
     @overload
     def __new__(
-        cls, num: onp.ToFloat1D | onp.ToFloat2D, den: onp.ToArray1D[float, npc.integer | npc.floating64], /, *, dt: _DTT
-    ) -> TransferFunctionDiscrete[np.float64, _DTT]: ...
+        cls, num: onp.ToFloat1D | onp.ToFloat2D, den: onp.ToArray1D[float, npc.integer | npc.floating64], /, *, dt: None = None
+    ) -> TransferFunctionContinuous[np.float64]: ...
     @overload
     def __new__(
-        cls, num: onp.ToJustFloat32_1D | onp.ToJustFloat32_2D, den: onp.ToFloat32_1D, /, *, dt: _DTT
-    ) -> TransferFunctionDiscrete[np.float32, _DTT]: ...
+        cls, num: onp.ToJustFloat32_1D | onp.ToJustFloat32_2D, den: onp.ToFloat32_1D, /, *, dt: None = None
+    ) -> TransferFunctionContinuous[np.float32]: ...
     @overload
     def __new__(
-        cls, num: onp.ToFloat32_1D | onp.ToFloat32_2D, den: onp.ToJustFloat32_1D, /, *, dt: _DTT
-    ) -> TransferFunctionDiscrete[np.float32, _DTT]: ...
+        cls, num: onp.ToFloat32_1D | onp.ToFloat32_2D, den: onp.ToJustFloat32_1D, /, *, dt: None = None
+    ) -> TransferFunctionContinuous[np.float32]: ...
     @overload
-    def __new__(cls, num: _ToFloat12D, den: onp.ToFloat1D, /, *, dt: _DTT) -> TransferFunctionDiscrete[_Float, _DTT]: ...
+    def __new__(cls, num: _ToFloat12D, den: onp.ToFloat1D, /, *, dt: None = None) -> TransferFunctionContinuous[_Float]: ...
+    @overload
+    def __new__[PolesT: _Float, DTT: onp.ToComplex | None](
+        cls, system: dlti[PolesT, PolesT, DTT], /, *, dt: None = None
+    ) -> TransferFunctionDiscrete[PolesT, DTT]: ...
+    @overload
+    def __new__[DTT: onp.ToComplex](
+        cls,
+        num: onp.ToArray1D[float, npc.integer | npc.floating64] | onp.ToArray2D[float, npc.integer | npc.floating64],
+        den: onp.ToFloat1D,
+        /,
+        *,
+        dt: DTT,
+    ) -> TransferFunctionDiscrete[np.float64, DTT]: ...
+    @overload
+    def __new__[DTT: onp.ToComplex](
+        cls, num: onp.ToFloat1D | onp.ToFloat2D, den: onp.ToArray1D[float, npc.integer | npc.floating64], /, *, dt: DTT
+    ) -> TransferFunctionDiscrete[np.float64, DTT]: ...
+    @overload
+    def __new__[DTT: onp.ToComplex](
+        cls, num: onp.ToJustFloat32_1D | onp.ToJustFloat32_2D, den: onp.ToFloat32_1D, /, *, dt: DTT
+    ) -> TransferFunctionDiscrete[np.float32, DTT]: ...
+    @overload
+    def __new__[DTT: onp.ToComplex](
+        cls, num: onp.ToFloat32_1D | onp.ToFloat32_2D, den: onp.ToJustFloat32_1D, /, *, dt: DTT
+    ) -> TransferFunctionDiscrete[np.float32, DTT]: ...
+    @overload
+    def __new__[DTT: onp.ToComplex](
+        cls, num: _ToFloat12D, den: onp.ToFloat1D, /, *, dt: DTT
+    ) -> TransferFunctionDiscrete[_Float, DTT]: ...
 
     #
     @overload
-    def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], /) -> None: ...
+    def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], /, *, dt: None = None) -> None: ...
     @overload
     def __init__(self, num: _ToFloat12D, den: onp.ToFloat1D, /, *, dt: _DTT_co = ...) -> None: ...
 
@@ -347,16 +351,16 @@ class TransferFunctionContinuous(TransferFunction[_PolesT_co, None], lti[_PolesT
     @override
     def to_tf(self, /) -> Self: ...
     @override
-    def to_discrete(
-        self, /, dt: _DTT, method: _DiscretizeMethod = "zoh", alpha: float | None = None
-    ) -> TransferFunctionDiscrete[_PolesT_co, _DTT]: ...
+    def to_discrete[DTT: onp.ToComplex | None](
+        self, /, dt: DTT, method: _DiscretizeMethod = "zoh", alpha: float | None = None
+    ) -> TransferFunctionDiscrete[_PolesT_co, DTT]: ...
 
 @final
 class TransferFunctionDiscrete(
     TransferFunction[_PolesT_co, _DTT_co], dlti[_PolesT_co, _PolesT_co, _DTT_co], Generic[_PolesT_co, _DTT_co]
 ):
     @overload
-    def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], /) -> None: ...
+    def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], /, *, dt: None = None) -> None: ...
     @overload
     def __init__(self, numerator: _ToFloat12D, denominator: onp.ToFloat1D, /, *, dt: _DTT_co = ...) -> None: ...
 
@@ -370,10 +374,12 @@ class TransferFunctionDiscrete(
 class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     @override
     @overload
-    def __new__(cls, system: lti[_ZerosT_co, _PolesT_co], /) -> ZerosPolesGainContinuous[_ZerosT_co, _PolesT_co]: ...  # pyrefly:ignore[bad-override]
+    def __new__(
+        cls, system: lti[_ZerosT_co, _PolesT_co], /, *, dt: None = None
+    ) -> ZerosPolesGainContinuous[_ZerosT_co, _PolesT_co]: ...
     @overload
     def __new__(
-        cls, system: dlti[_ZerosT_co, _PolesT_co, _DTT_co], /
+        cls, system: dlti[_ZerosT_co, _PolesT_co, _DTT_co], /, *, dt: None = None
     ) -> ZerosPolesGainDiscrete[_ZerosT_co, _PolesT_co, _DTT_co]: ...
     @overload
     def __new__(
@@ -382,33 +388,27 @@ class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Gener
         poles: onp.ToArray1D[float, npc.integer | npc.floating64],
         gain: onp.ToFloat,
         /,
+        *,
+        dt: None = None,
     ) -> ZerosPolesGainContinuous[np.float64, np.float64]: ...
     @overload
-    def __new__(
+    def __new__[DTT: onp.ToComplex](
         cls,
         zeros: onp.ToArray1D[float, npc.integer | npc.floating64] | onp.ToArray2D[float, npc.integer | npc.floating64],
         poles: onp.ToArray1D[float, npc.integer | npc.floating64],
         gain: onp.ToFloat,
         /,
         *,
-        dt: _DTT,
-    ) -> ZerosPolesGainDiscrete[np.float64, np.float64, _DTT]: ...
+        dt: DTT,
+    ) -> ZerosPolesGainDiscrete[np.float64, np.float64, DTT]: ...
     @overload
     def __new__(
-        cls, zeros: _ToFloat12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /
+        cls, zeros: _ToFloat12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: None = None
     ) -> ZerosPolesGainContinuous[_Float, _Float]: ...
     @overload
-    def __new__(
-        cls, zeros: _ToFloat12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: _DTT
-    ) -> ZerosPolesGainDiscrete[_Float, _Float, _DTT]: ...
-    @overload
-    def __new__(
-        cls,
-        zeros: onp.ToJustComplex128_1D | onp.ToJustComplex128_2D,
-        poles: onp.ToArray1D[float, npc.integer | npc.floating64],
-        gain: onp.ToFloat,
-        /,
-    ) -> ZerosPolesGainContinuous[np.complex128, np.float64]: ...
+    def __new__[DTT: onp.ToComplex](
+        cls, zeros: _ToFloat12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: DTT
+    ) -> ZerosPolesGainDiscrete[_Float, _Float, DTT]: ...
     @overload
     def __new__(
         cls,
@@ -417,20 +417,30 @@ class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Gener
         gain: onp.ToFloat,
         /,
         *,
-        dt: _DTT,
-    ) -> ZerosPolesGainDiscrete[np.complex128, np.float64, _DTT]: ...
+        dt: None = None,
+    ) -> ZerosPolesGainContinuous[np.complex128, np.float64]: ...
+    @overload
+    def __new__[DTT: onp.ToComplex](
+        cls,
+        zeros: onp.ToJustComplex128_1D | onp.ToJustComplex128_2D,
+        poles: onp.ToArray1D[float, npc.integer | npc.floating64],
+        gain: onp.ToFloat,
+        /,
+        *,
+        dt: DTT,
+    ) -> ZerosPolesGainDiscrete[np.complex128, np.float64, DTT]: ...
     @overload
     def __new__(
-        cls, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /
+        cls, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: None = None
     ) -> ZerosPolesGainContinuous[Any, _Float]: ...
     @overload
-    def __new__(
-        cls, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: _DTT
-    ) -> ZerosPolesGainDiscrete[Any, _Float, _DTT]: ...
+    def __new__[DTT: onp.ToComplex](
+        cls, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: DTT
+    ) -> ZerosPolesGainDiscrete[Any, _Float, DTT]: ...
 
     #
     @overload
-    def __init__(self, system: LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], /) -> None: ...
+    def __init__(self, system: LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], /, *, dt: None = None) -> None: ...
     @overload
     def __init__(self, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: _DTT_co = ...) -> None: ...
 
@@ -471,9 +481,9 @@ class ZerosPolesGainContinuous(
     @override
     def to_zpk(self, /) -> Self: ...
     @override
-    def to_discrete(
-        self, /, dt: _DTT, method: _DiscretizeMethod = "zoh", alpha: float | None = None
-    ) -> ZerosPolesGainDiscrete[_ZerosT_co, _PolesT_co, _DTT]: ...
+    def to_discrete[DTT: onp.ToComplex | None](
+        self, /, dt: DTT, method: _DiscretizeMethod = "zoh", alpha: float | None = None
+    ) -> ZerosPolesGainDiscrete[_ZerosT_co, _PolesT_co, DTT]: ...
 
 @final
 class ZerosPolesGainDiscrete(
@@ -484,44 +494,44 @@ class ZerosPolesGainDiscrete(
     @overload
     def __init__(self, system: ZerosPolesGain[_ZerosT_co, _PolesT_co, _DTT_co], /) -> None: ...
     @overload
-    def __init__(
-        self: ZerosPolesGainDiscrete[np.float64, np.float64, _DTT],
+    def __init__[DTT: onp.ToComplex | None](
+        self: ZerosPolesGainDiscrete[np.float64, np.float64, DTT],
         zeros: onp.ToArray1D[float, npc.integer | npc.floating64] | onp.ToArray2D[float, npc.integer | npc.floating64],
         poles: onp.ToArray1D[float, npc.integer | npc.floating64],
         gain: onp.ToFloat,
         /,
         *,
-        dt: _DTT = ...,
+        dt: DTT = ...,
     ) -> None: ...
     @overload
-    def __init__(
-        self: ZerosPolesGainDiscrete[_Float, _Float, _DTT],
+    def __init__[DTT: onp.ToComplex | None](
+        self: ZerosPolesGainDiscrete[_Float, _Float, DTT],
         zeros: _ToFloat12D,
         poles: onp.ToFloat1D,
         gain: onp.ToFloat,
         /,
         *,
-        dt: _DTT = ...,
+        dt: DTT = ...,
     ) -> None: ...
     @overload
-    def __init__(
-        self: ZerosPolesGainDiscrete[np.complex128, np.float64, _DTT],
+    def __init__[DTT: onp.ToComplex | None](
+        self: ZerosPolesGainDiscrete[np.complex128, np.float64, DTT],
         zeros: onp.ToJustComplex128_1D | onp.ToJustComplex128_2D,
         poles: onp.ToArray1D[float, npc.integer | npc.floating64],
         gain: onp.ToFloat,
         /,
         *,
-        dt: _DTT = ...,
+        dt: DTT = ...,
     ) -> None: ...
     @overload
-    def __init__(
-        self: ZerosPolesGainDiscrete[Any, _Float, _DTT],
+    def __init__[DTT: onp.ToComplex | None](
+        self: ZerosPolesGainDiscrete[Any, _Float, DTT],
         zeros: _ToComplex12D,
         poles: onp.ToFloat1D,
         gain: onp.ToFloat,
         /,
         *,
-        dt: _DTT = ...,
+        dt: DTT = ...,
     ) -> None: ...
 
     #
@@ -536,13 +546,13 @@ class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_
 
     @override
     @overload
-    def __new__(cls, system: lti[_ZerosT_co, _PolesT_co], /) -> StateSpaceContinuous[_ZerosT_co, _PolesT_co]: ...  # pyrefly:ignore[bad-override]
-    @overload
-    def __new__(cls, system: dlti[_ZerosT_co, _PolesT_co, _DTT_co], /) -> StateSpaceDiscrete[_ZerosT_co, _PolesT_co, _DTT_co]: ...
+    def __new__(
+        cls, system: lti[_ZerosT_co, _PolesT_co], /, *, dt: None = None
+    ) -> StateSpaceContinuous[_ZerosT_co, _PolesT_co]: ...
     @overload
     def __new__(
-        cls, A: onp.ToArrayND[float, npc.integer | npc.floating64], B: _ToFloat012D, C: _ToFloat012D, D: _ToFloat012D, /
-    ) -> StateSpaceContinuous[np.float64, np.float64]: ...
+        cls, system: dlti[_ZerosT_co, _PolesT_co, _DTT_co], /, *, dt: None = None
+    ) -> StateSpaceDiscrete[_ZerosT_co, _PolesT_co, _DTT_co]: ...
     @overload
     def __new__(
         cls,
@@ -552,32 +562,43 @@ class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_
         D: _ToFloat012D,
         /,
         *,
-        dt: _DTT,
-    ) -> StateSpaceDiscrete[np.float64, np.float64, _DTT]: ...
+        dt: None = None,
+    ) -> StateSpaceContinuous[np.float64, np.float64]: ...
+    @overload
+    def __new__[DTT: onp.ToComplex](
+        cls,
+        A: onp.ToArrayND[float, npc.integer | npc.floating64],
+        B: _ToFloat012D,
+        C: _ToFloat012D,
+        D: _ToFloat012D,
+        /,
+        *,
+        dt: DTT,
+    ) -> StateSpaceDiscrete[np.float64, np.float64, DTT]: ...
     @overload
     def __new__(
-        cls, A: _ToFloat012D, B: _ToFloat012D, C: _ToFloat012D, D: _ToFloat012D, /
+        cls, A: _ToFloat012D, B: _ToFloat012D, C: _ToFloat012D, D: _ToFloat012D, /, *, dt: None = None
     ) -> StateSpaceContinuous[_Float, _Float]: ...
     @overload
-    def __new__(
-        cls, A: _ToFloat012D, B: _ToFloat012D, C: _ToFloat012D, D: _ToFloat012D, /, *, dt: _DTT
-    ) -> StateSpaceDiscrete[_Float, _Float, _DTT]: ...
+    def __new__[DTT: onp.ToComplex](
+        cls, A: _ToFloat012D, B: _ToFloat012D, C: _ToFloat012D, D: _ToFloat012D, /, *, dt: DTT
+    ) -> StateSpaceDiscrete[_Float, _Float, DTT]: ...
     @overload
     def __new__(
-        cls, A: onp.ToJustComplex128_ND, B: _ToComplex012D, C: _ToComplex012D, D: _ToComplex012D, /
+        cls, A: onp.ToJustComplex128_ND, B: _ToComplex012D, C: _ToComplex012D, D: _ToComplex012D, /, *, dt: None = None
     ) -> StateSpaceContinuous[np.complex128, np.float64]: ...
     @overload
-    def __new__(
-        cls, A: onp.ToJustComplex128_ND, B: _ToComplex012D, C: _ToComplex012D, D: _ToComplex012D, /, *, dt: _DTT
-    ) -> StateSpaceDiscrete[np.complex128, np.float64, _DTT]: ...
+    def __new__[DTT: onp.ToComplex](
+        cls, A: onp.ToJustComplex128_ND, B: _ToComplex012D, C: _ToComplex012D, D: _ToComplex012D, /, *, dt: DTT
+    ) -> StateSpaceDiscrete[np.complex128, np.float64, DTT]: ...
     @overload
     def __new__(
-        cls, A: _ToComplex012D, B: _ToComplex012D, C: _ToComplex012D, D: _ToComplex012D, /
+        cls, A: _ToComplex012D, B: _ToComplex012D, C: _ToComplex012D, D: _ToComplex012D, /, *, dt: None = None
     ) -> StateSpaceContinuous[Any, _Float]: ...
     @overload
-    def __new__(
-        cls, A: _ToComplex012D, B: _ToComplex012D, C: _ToComplex012D, D: _ToComplex012D, /, *, dt: _DTT
-    ) -> StateSpaceDiscrete[Any, _Float, _DTT]: ...
+    def __new__[DTT: onp.ToComplex](
+        cls, A: _ToComplex012D, B: _ToComplex012D, C: _ToComplex012D, D: _ToComplex012D, /, *, dt: DTT
+    ) -> StateSpaceDiscrete[Any, _Float, DTT]: ...
 
     #
     @overload
@@ -672,9 +693,9 @@ class StateSpaceContinuous(
     @override
     def to_ss(self, /) -> Self: ...
     @override
-    def to_discrete(
-        self, /, dt: _DTT, method: _DiscretizeMethod = "zoh", alpha: float | None = None
-    ) -> StateSpaceDiscrete[_ZerosT_co, _PolesT_co, _DTT]: ...
+    def to_discrete[DTT: onp.ToComplex | None](
+        self, /, dt: DTT, method: _DiscretizeMethod = "zoh", alpha: float | None = None
+    ) -> StateSpaceDiscrete[_ZerosT_co, _PolesT_co, DTT]: ...
 
 @final
 class StateSpaceDiscrete(
@@ -683,48 +704,48 @@ class StateSpaceDiscrete(
     @overload
     def __init__(self, system: StateSpace[_ZerosT_co, _PolesT_co, _DTT_co], /) -> None: ...
     @overload
-    def __init__(
-        self: StateSpaceDiscrete[np.float64, np.float64, _DTT],
+    def __init__[DTT: onp.ToComplex | None](
+        self: StateSpaceDiscrete[np.float64, np.float64, DTT],
         A: onp.ToArrayND[float, npc.integer | npc.floating64],
         B: _ToFloat012D,
         C: _ToFloat012D,
         D: _ToFloat012D,
         /,
         *,
-        dt: _DTT = ...,
+        dt: DTT = ...,
     ) -> None: ...
     @overload
-    def __init__(
-        self: StateSpaceDiscrete[_Float, _Float, _DTT],
+    def __init__[DTT: onp.ToComplex | None](
+        self: StateSpaceDiscrete[_Float, _Float, DTT],
         A: _ToFloat012D,
         B: _ToFloat012D,
         C: _ToFloat012D,
         D: _ToFloat012D,
         /,
         *,
-        dt: _DTT = ...,
+        dt: DTT = ...,
     ) -> None: ...
     @overload
-    def __init__(
-        self: StateSpaceDiscrete[np.complex128, np.float64, _DTT],
+    def __init__[DTT: onp.ToComplex | None](
+        self: StateSpaceDiscrete[np.complex128, np.float64, DTT],
         A: onp.ToJustComplex128_ND,
         B: _ToComplex012D,
         C: _ToComplex012D,
         D: _ToComplex012D,
         /,
         *,
-        dt: _DTT = ...,
+        dt: DTT = ...,
     ) -> None: ...
     @overload
-    def __init__(
-        self: StateSpaceDiscrete[Any, _Float, _DTT],
+    def __init__[DTT: onp.ToComplex | None](
+        self: StateSpaceDiscrete[Any, _Float, DTT],
         A: _ToComplex012D,
         B: _ToComplex012D,
         C: _ToComplex012D,
         D: _ToComplex012D,
         /,
         *,
-        dt: _DTT = ...,
+        dt: DTT = ...,
     ) -> None: ...
 
     #
