@@ -1,20 +1,7 @@
 # mypy: disable-error-code="override"
 import types
 from collections.abc import Callable, Iterable
-from typing import (
-    Any,
-    ClassVar,
-    Final,
-    Generic,
-    Protocol,
-    Self,
-    SupportsIndex,
-    TypeAlias,
-    final,
-    overload,
-    override,
-    type_check_only,
-)
+from typing import Any, ClassVar, Final, Generic, Protocol, Self, SupportsIndex, final, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -35,10 +22,10 @@ _FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec,
 _LinearOperatorT = TypeVar("_LinearOperatorT", bound=LinearOperator[Any])
 _LinearOperatorT_co = TypeVar("_LinearOperatorT_co", bound=LinearOperator[Any], covariant=True)
 
-_ToShape: TypeAlias = Iterable[SupportsIndex]
-_Real: TypeAlias = np.bool_ | npc.integer | npc.floating
-_FunMatVec: TypeAlias = Callable[[onp.ArrayND[Any]], onp.ToComplex1D | onp.ToComplex2D]
-_FunMatMat: TypeAlias = Callable[[onp.Array2D[Any]], onp.ToComplex2D]
+type _ToShape = Iterable[SupportsIndex]
+type _Real = np.bool_ | npc.integer | npc.floating
+type _FunMatVec = Callable[[onp.ArrayND[Any]], onp.ToComplex1D | onp.ToComplex2D]
+type _FunMatMat = Callable[[onp.Array2D[Any]], onp.ToComplex2D]
 
 @type_check_only
 class _CanAdjoint(Protocol[_LinearOperatorT_co]):
@@ -244,7 +231,7 @@ class LinearOperator(Generic[_SCT_co]):
 
     #
     @overload
-    def dot(self, /, x: LinearOperator[_SCT]) -> _ProductLinearOperator[_SCT_co, _SCT]: ...
+    def dot[SCT: npc.number | np.bool_](self, /, x: LinearOperator[SCT]) -> _ProductLinearOperator[_SCT_co, SCT]: ...
     @overload
     def dot(self, /, x: onp.ToFloat) -> _ScaledLinearOperator[_SCT_co]: ...
     @overload
@@ -262,8 +249,27 @@ class LinearOperator(Generic[_SCT_co]):
     @overload
     def dot(self, /, x: onp.ToComplexND) -> onp.ArrayND[Any]: ...
     __mul__ = dot
-    __rmul__ = dot
-    __call__ = dot
+
+    # keep in sync with `dot`
+    @overload
+    def rdot[SCT: npc.number | np.bool_](self, /, x: LinearOperator[SCT]) -> _ProductLinearOperator[_SCT_co, SCT]: ...
+    @overload
+    def rdot(self, /, x: onp.ToFloat) -> _ScaledLinearOperator[_SCT_co]: ...
+    @overload
+    def rdot(self, /, x: onp.ToJustComplex128) -> _ScaledLinearOperator[np.complex128]: ...
+    @overload
+    def rdot(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
+    @overload
+    def rdot(self, /, x: onp.ToJustComplex128Strict1D) -> onp.Array1D[np.complex128]: ...
+    @overload
+    def rdot(self, /, x: onp.ToFloatStrict2D) -> onp.Array2D[_SCT_co]: ...
+    @overload
+    def rdot(self, /, x: onp.ToJustComplex128Strict2D) -> onp.Array2D[np.complex128]: ...
+    @overload
+    def rdot(self, /, x: onp.ToFloatND) -> onp.ArrayND[_SCT_co]: ...
+    @overload
+    def rdot(self, /, x: onp.ToComplexND) -> onp.ArrayND[Any]: ...
+    __rmul__ = rdot
 
     #
     @overload
@@ -280,6 +286,7 @@ class LinearOperator(Generic[_SCT_co]):
     def __matmul__(self, /, x: onp.ToFloatND) -> onp.ArrayND[_SCT_co]: ...
     @overload
     def __matmul__(self, /, x: onp.ToComplexND) -> onp.ArrayND[Any]: ...
+    __call__ = __matmul__
 
     #
     @overload
