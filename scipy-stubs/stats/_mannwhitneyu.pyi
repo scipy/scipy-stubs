@@ -10,9 +10,8 @@ from ._typing import Alternative, NanPolicy
 
 ###
 
-# the `Any` shapes in the bounds are workarounds for a pyrefly bug
-_StatisticT_co = TypeVar("_StatisticT_co", bound=npc.floating | onp.ArrayND[npc.floating, Any], default=Any, covariant=True)
-_PValueT_co = TypeVar("_PValueT_co", bound=np.float64 | onp.ArrayND[np.float64, Any], default=Any, covariant=True)
+_StatisticT_co = TypeVar("_StatisticT_co", bound=npc.floating | onp.ArrayND[npc.floating], default=Any, covariant=True)
+_PValueT_co = TypeVar("_PValueT_co", bound=np.float64 | onp.ArrayND[np.float64], default=Any, covariant=True)
 _FloatT = TypeVar("_FloatT", bound=npc.floating)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
 
@@ -38,6 +37,10 @@ class MannwhitneyuResult(tuple[_StatisticT_co, _PValueT_co], Generic[_StatisticT
 
     #
     def __getnewargs_ex__(self) -> tuple[tuple[_StatisticT_co, _PValueT_co], dict[str, Never]]: ...
+
+def mwu_result_object[StatT: npc.floating | onp.ArrayND[npc.floating], PValT: np.float64 | onp.ArrayND[np.float64]](
+    statistic: StatT, pvalue: PValT, zstatistic: object | None = None
+) -> MannwhitneyuResult[StatT, PValT]: ...
 
 #
 @overload  # ?d ~f64
