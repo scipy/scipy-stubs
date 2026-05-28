@@ -1,6 +1,5 @@
 from collections.abc import Callable
 from typing import Any, Concatenate, Literal, NamedTuple, Never, overload
-from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
@@ -11,9 +10,7 @@ from scipy.stats.qmc import QMCEngine
 
 __all__ = ["cumulative_simpson", "cumulative_trapezoid", "fixed_quad", "newton_cotes", "qmc_quad", "romb", "simpson", "trapezoid"]
 
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_Inexact80T = TypeVar("_Inexact80T", bound=npc.inexact80)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
+###
 
 type _FixedQuadFunc[T] = Callable[Concatenate[onp.Array1D[np.float64], ...], T]
 
@@ -34,7 +31,9 @@ def trapezoid(
     y: onp.Array[_JustAnyShape, npc.number | np.bool], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
 ) -> Any: ...
 @overload  # 1d T:inexact
-def trapezoid(y: onp.Array1D[_InexactT], x: onp.ToFloat1D | None = None, dx: float = 1.0, axis: int = -1) -> _InexactT: ...
+def trapezoid[InexactT: npc.inexact](
+    y: onp.Array1D[InexactT], x: onp.ToFloat1D | None = None, dx: float = 1.0, axis: int = -1
+) -> InexactT: ...
 @overload  # 1d +int
 def trapezoid(
     y: onp.ToArrayStrict1D[float, npc.integer | np.bool], x: onp.ToFloat1D | None = None, dx: float = 1.0, axis: int = -1
@@ -44,9 +43,9 @@ def trapezoid(
     y: onp.ToJustComplex128Strict1D, x: onp.ToFloat1D | None = None, dx: float = 1.0, axis: int = -1
 ) -> np.complex128: ...
 @overload  # 2d T:inexact
-def trapezoid(
-    y: onp.Array2D[_InexactT], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
-) -> onp.Array1D[_InexactT]: ...
+def trapezoid[InexactT: npc.inexact](
+    y: onp.Array2D[InexactT], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d +int
 def trapezoid(
     y: onp.ToArrayStrict2D[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
@@ -56,9 +55,9 @@ def trapezoid(
     y: onp.ToJustComplex128Strict2D, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # Nd T:inexact
-def trapezoid(
-    y: onp.ArrayND[_InexactT], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
-) -> onp.ArrayND[_InexactT] | Any: ...
+def trapezoid[InexactT: npc.inexact](
+    y: onp.ArrayND[InexactT], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
+) -> onp.ArrayND[InexactT] | Any: ...
 @overload  # Nd +int
 def trapezoid(
     y: onp.ToArrayND[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
@@ -92,11 +91,13 @@ def simpson(
     axis: int = -1,
 ) -> np.complex128: ...
 @overload  # 1d T:inexact
-def simpson(y: onp.Array1D[_Inexact80T], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1) -> _Inexact80T: ...
+def simpson[Inexact80T: npc.inexact80](
+    y: onp.Array1D[Inexact80T], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> Inexact80T: ...
 @overload  # 2d T:inexact
-def simpson(
-    y: onp.Array2D[_InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
-) -> onp.Array1D[_InexactT]: ...
+def simpson[InexactT: npc.inexact](
+    y: onp.Array2D[InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d +int
 def simpson(
     y: onp.ToArrayStrict2D[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
@@ -106,9 +107,9 @@ def simpson(
     y: onp.ToJustComplex128Strict2D, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # Nd T:inexact
-def simpson(
-    y: onp.ArrayND[_InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
-) -> onp.ArrayND[_InexactT] | Any: ...
+def simpson[InexactT: npc.inexact](
+    y: onp.ArrayND[InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.ArrayND[InexactT] | Any: ...
 @overload  # Nd +int
 def simpson(
     y: onp.ToArrayND[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
@@ -136,7 +137,9 @@ def romb(
     y: onp.ToJustComplex128Strict1D | onp.ToJustComplex64Strict1D, dx: float = 1.0, axis: int = -1, show: bool = False
 ) -> np.complex128: ...
 @overload  # 1d T:inexact
-def romb(y: onp.Array1D[_Inexact80T], dx: float = 1.0, axis: int = -1, show: bool = False) -> _Inexact80T: ...
+def romb[Inexact80T: npc.inexact80](
+    y: onp.Array1D[Inexact80T], dx: float = 1.0, axis: int = -1, show: bool = False
+) -> Inexact80T: ...
 @overload  # 2d +int
 def romb(y: onp.ToFloat64Strict2D, dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.Array1D[np.float64]: ...
 @overload  # 2d ~complex
@@ -144,7 +147,9 @@ def romb(
     y: onp.ToJustComplex128Strict2D | onp.ToJustComplex64Strict2D, dx: float = 1.0, axis: int = -1, show: bool = False
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # 2d T:inexact
-def romb(y: onp.Array2D[_Inexact80T], dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.Array1D[_Inexact80T]: ...
+def romb[Inexact80T: npc.inexact80](
+    y: onp.Array2D[Inexact80T], dx: float = 1.0, axis: int = -1, show: bool = False
+) -> onp.Array1D[Inexact80T]: ...
 @overload  # Nd +int
 def romb(y: onp.ToFloat64_ND, dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.ArrayND[np.float64] | Any: ...
 @overload  # Nd ~complex
@@ -152,7 +157,9 @@ def romb(
     y: onp.ToJustComplex128_ND | onp.ToJustComplex64_ND, dx: float = 1.0, axis: int = -1, show: bool = False
 ) -> onp.ArrayND[np.complex128] | Any: ...
 @overload  # Nd T:inexact
-def romb(y: onp.ArrayND[_Inexact80T], dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.ArrayND[_Inexact80T] | Any: ...
+def romb[Inexact80T: npc.inexact80](
+    y: onp.ArrayND[Inexact80T], dx: float = 1.0, axis: int = -1, show: bool = False
+) -> onp.ArrayND[Inexact80T] | Any: ...
 @overload  # +float (fallback)
 def romb(y: onp.ToFloatND, dx: float = 1.0, axis: int = -1, show: bool = False) -> onp.ArrayND[np.float64 | Any] | Any: ...
 @overload  # +complex (fallback)
@@ -162,13 +169,13 @@ def romb(y: onp.ToComplexND, dx: float = 1.0, axis: int = -1, show: bool = False
 
 # keep in sync with `cumulative_simpson`
 @overload  # +int, shape known
-def cumulative_trapezoid(
-    y: onp.ArrayND[npc.integer | np.bool, _ShapeT],
+def cumulative_trapezoid[ShapeT: tuple[Any, ...]](
+    y: onp.ArrayND[npc.integer | np.bool, ShapeT],
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
     initial: Literal[0] | None = None,
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # +float, shape 1d
 def cumulative_trapezoid(
     y: onp.ToArrayStrict1D[float, npc.integer | np.bool],
@@ -190,13 +197,13 @@ def cumulative_trapezoid(
     y: onp.SequenceND[float], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: Literal[0] | None = None
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # T:inexact, shape known
-def cumulative_trapezoid(
-    y: onp.ArrayND[_InexactT, _ShapeT],
+def cumulative_trapezoid[InexactT: npc.inexact, ShapeT: tuple[Any, ...]](
+    y: onp.ArrayND[InexactT, ShapeT],
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
     initial: Literal[0] | None = None,
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # ~complex, shape 1d
 def cumulative_trapezoid(
     y: onp.ToJustComplex128Strict1D,
@@ -228,14 +235,14 @@ def cumulative_trapezoid(
 
 # keep in sync with `cumulative_trapezoid`
 @overload  # +int, shape known
-def cumulative_simpson(
-    y: onp.ArrayND[npc.integer | np.bool, _ShapeT],
+def cumulative_simpson[ShapeT: tuple[Any, ...]](
+    y: onp.ArrayND[npc.integer | np.bool, ShapeT],
     *,
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
     initial: float | onp.ToFloatND | None = None,
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # +float, shape 1d
 def cumulative_simpson(
     y: onp.ToArrayStrict1D[float, npc.integer | np.bool],
@@ -264,14 +271,14 @@ def cumulative_simpson(
     initial: float | onp.ToFloatND | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # T:inexact, shape known
-def cumulative_simpson(
-    y: onp.ArrayND[_InexactT, _ShapeT],
+def cumulative_simpson[InexactT: npc.inexact, ShapeT: tuple[Any, ...]](
+    y: onp.ArrayND[InexactT, ShapeT],
     *,
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
     initial: float | onp.ToFloatND | None = None,
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # ~complex, shape 1d
 def cumulative_simpson(
     y: onp.ToJustComplex128Strict1D,
@@ -325,9 +332,9 @@ def fixed_quad(
     n: int = 5,
 ) -> tuple[np.complex128, None]: ...
 @overload  # (1d f64) -> ~f80 | ~c160
-def fixed_quad(
-    func: _FixedQuadFunc[onp.ArrayND[_Inexact80T]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
-) -> tuple[_Inexact80T, None]: ...
+def fixed_quad[Inexact80T: npc.inexact80](
+    func: _FixedQuadFunc[onp.ArrayND[Inexact80T]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[Inexact80T, None]: ...
 @overload  # (1d f64) -> ~m64
 def fixed_quad(
     func: _FixedQuadFunc[onp.ArrayND[np.timedelta64]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5

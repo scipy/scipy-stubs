@@ -14,7 +14,6 @@ import pytest
 type _ResultFunc = Callable[..., object]
 type _FilterFunc = Callable[..., bool]
 
-_FuncT = TypeVar("_FuncT", bound=Callable[..., object])
 _ScalarT_co = TypeVar("_ScalarT_co", bound=np.generic, default=Any, covariant=True)
 
 ###
@@ -27,7 +26,7 @@ class MissingModule:  # undocumented
 def check_version(module: ModuleType | MissingModule, min_ver: str) -> pytest.MarkDecorator: ...  # undocumented
 
 #
-def with_special_errors(func: _FuncT) -> _FuncT: ...  # undocumented
+def with_special_errors[FuncT: Callable[..., object]](func: FuncT) -> FuncT: ...  # undocumented
 
 #
 def assert_func_equal(

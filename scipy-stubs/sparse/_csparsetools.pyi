@@ -31,6 +31,8 @@ _FusedScalarT = TypeVar(
 
 ###
 
+# ruff: noqa: UP047
+
 #
 def lil_get1(
     M: _Index, N: _Index, rows: list[list[_FusedScalarT]], datas: list[list[_FusedScalarT]], i: int, j: int

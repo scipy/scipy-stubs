@@ -2,11 +2,11 @@ from collections.abc import Callable, Iterable, Iterator, Mapping, MutableSequen
 from typing import ClassVar, Final, Generic, Literal, LiteralString, NamedTuple, SupportsIndex, override
 from typing_extensions import TypeVar
 
-_FunctionT = TypeVar("_FunctionT", bound=Callable[..., object], default=Callable[..., object])
-_MutableStrSequenceT = TypeVar("_MutableStrSequenceT", bound=MutableSequence[str])
-_AnyStrT = TypeVar("_AnyStrT", str, LiteralString)
+###
 
 type _SectionValue = str | list[str] | Mapping[str, list[str]]
+
+_FunctionT = TypeVar("_FunctionT", bound=Callable[..., object], default=Callable[..., object])
 
 ###
 
@@ -81,8 +81,8 @@ class ClassDoc(NumpyDocString):
 class ObjDoc(NumpyDocString):
     def __init__(self, /, obj: object, doc: str | None = None, config: Mapping[str, object] | None = None) -> None: ...
 
-def strip_blank_lines(l: _MutableStrSequenceT) -> _MutableStrSequenceT: ...
-def dedent_lines(lines: Iterable[_AnyStrT]) -> _AnyStrT: ...
+def strip_blank_lines[MutableStrSequenceT: MutableSequence[str]](l: MutableStrSequenceT) -> MutableStrSequenceT: ...
+def dedent_lines[AnyStrT: (str, LiteralString)](lines: Iterable[AnyStrT]) -> AnyStrT: ...
 def get_doc_object(
     obj: object,
     what: str | None = None,

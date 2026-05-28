@@ -12,20 +12,18 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["LinearOperator", "aslinearoperator"]
 
-_SCT = TypeVar("_SCT", bound=npc.number | np.bool)
-_SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool, default=Any, covariant=True)
-_SCT1_co = TypeVar("_SCT1_co", bound=npc.number | np.bool, default=Any, covariant=True)
-_SCT2_co = TypeVar("_SCT2_co", bound=npc.number | np.bool, default=_SCT1_co, covariant=True)
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec, covariant=True)
-
-_LinearOperatorT = TypeVar("_LinearOperatorT", bound=LinearOperator[Any])
-_LinearOperatorT_co = TypeVar("_LinearOperatorT_co", bound=LinearOperator[Any], covariant=True)
+###
 
 type _ToShape = Iterable[SupportsIndex]
 type _Real = np.bool | npc.integer | npc.floating
 type _FunMatVec = Callable[[onp.ArrayND[Any]], onp.ToComplex1D | onp.ToComplex2D]
 type _FunMatMat = Callable[[onp.Array2D[Any]], onp.ToComplex2D]
+
+_SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool, default=Any, covariant=True)
+_SCT1_co = TypeVar("_SCT1_co", bound=npc.number | np.bool, default=Any, covariant=True)
+_SCT2_co = TypeVar("_SCT2_co", bound=npc.number | np.bool, default=_SCT1_co, covariant=True)
+_FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec, covariant=True)
+_LinearOperatorT_co = TypeVar("_LinearOperatorT_co", bound=LinearOperator[Any], covariant=True)
 
 @type_check_only
 class _CanAdjoint(Protocol[_LinearOperatorT_co]):
@@ -78,28 +76,28 @@ class LinearOperator(Generic[_SCT_co]):
         xp: None = None,
     ) -> _CustomLinearOperator[np.int8 | Any]: ...
     @overload  # dtype known (positional)
-    def __new__(
+    def __new__[SCT: npc.number | np.bool](
         cls,
         shape: _ToShape,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[SCT],
         rmatmat: _FunMatMat | None = None,
         xp: ModuleType | None = None,
-    ) -> _CustomLinearOperator[_SCT]: ...
+    ) -> _CustomLinearOperator[SCT]: ...
     @overload  # dtype known (keyword)
-    def __new__(
+    def __new__[SCT: npc.number | np.bool](
         cls,
         shape: _ToShape,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
         *,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[SCT],
         rmatmat: _FunMatMat | None = None,
         xp: ModuleType | None = None,
-    ) -> _CustomLinearOperator[_SCT]: ...
+    ) -> _CustomLinearOperator[SCT]: ...
     @overload  # dtype-like int_ (positional)
     def __new__(
         cls,
@@ -211,9 +209,9 @@ class LinearOperator(Generic[_SCT_co]):
 
     #
     @property
-    def H(self: _CanAdjoint[_LinearOperatorT], /) -> _LinearOperatorT: ...
+    def H[LinearOperatorT: LinearOperator[Any]](self: _CanAdjoint[LinearOperatorT], /) -> LinearOperatorT: ...
     @final
-    def adjoint(self: _CanAdjoint[_LinearOperatorT], /) -> _LinearOperatorT: ...
+    def adjoint[LinearOperatorT: LinearOperator[Any]](self: _CanAdjoint[LinearOperatorT], /) -> LinearOperatorT: ...
     def _adjoint(self, /) -> LinearOperator[_SCT_co]: ...
 
     #
@@ -295,7 +293,7 @@ class LinearOperator(Generic[_SCT_co]):
 
     #
     @overload
-    def __matmul__(self, /, x: LinearOperator[_SCT]) -> _ProductLinearOperator[_SCT_co, _SCT]: ...
+    def __matmul__[SCT: npc.number | np.bool](self, /, x: LinearOperator[SCT]) -> _ProductLinearOperator[_SCT_co, SCT]: ...
     @overload
     def __matmul__(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
     @overload
@@ -312,7 +310,7 @@ class LinearOperator(Generic[_SCT_co]):
 
     #
     @overload
-    def __rmatmul__(self, /, x: LinearOperator[_SCT]) -> _ProductLinearOperator[_SCT_co, _SCT]: ...
+    def __rmatmul__[SCT: npc.number | np.bool](self, /, x: LinearOperator[SCT]) -> _ProductLinearOperator[_SCT_co, SCT]: ...
     @overload
     def __rmatmul__(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
     @overload
@@ -336,7 +334,7 @@ class LinearOperator(Generic[_SCT_co]):
 
     #
     def __neg__(self, /) -> _ScaledLinearOperator[_SCT_co]: ...
-    def __add__(self, x: LinearOperator[_SCT], /) -> _SumLinearOperator[_SCT_co, _SCT]: ...
+    def __add__[SCT: npc.number | np.bool](self, x: LinearOperator[SCT], /) -> _SumLinearOperator[_SCT_co, SCT]: ...
     __sub__ = __add__
     def __pow__(self, p: onp.ToInt, /) -> _PowerLinearOperator[_SCT_co]: ...
 
@@ -652,14 +650,14 @@ class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
 
 #
 @overload
-def aslinearoperator(A: onp.CanArrayND[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
+def aslinearoperator[InexactT: npc.inexact](A: onp.CanArrayND[InexactT]) -> MatrixLinearOperator[InexactT]: ...
 @overload
-def aslinearoperator(A: _spbase[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
+def aslinearoperator[InexactT: npc.inexact](A: _spbase[InexactT]) -> MatrixLinearOperator[InexactT]: ...
 @overload
 def aslinearoperator(
     A: onp.ArrayND[np.bool | npc.integer | np.float64] | _spbase[np.bool | npc.integer | np.float64],
 ) -> MatrixLinearOperator[np.float64]: ...
 @overload
-def aslinearoperator(A: _HasShapeAndDTypeAndMatVec[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
+def aslinearoperator[InexactT: npc.inexact](A: _HasShapeAndDTypeAndMatVec[InexactT]) -> MatrixLinearOperator[InexactT]: ...
 @overload
-def aslinearoperator(A: _HasShapeAndMatVec[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
+def aslinearoperator[InexactT: npc.inexact](A: _HasShapeAndMatVec[InexactT]) -> MatrixLinearOperator[InexactT]: ...

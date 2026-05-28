@@ -83,16 +83,11 @@ __all__ = [
 
 ###
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_IntegerT = TypeVar("_IntegerT", bound=npc.integer)
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_FloatT = TypeVar("_FloatT", bound=npc.floating)
 _FloatT_co = TypeVar("_FloatT_co", bound=npc.floating, default=np.float64 | Any, covariant=True)
 _RealT = TypeVar("_RealT", bound=_Real0D, default=_Real0D)
 _RealT_co = TypeVar("_RealT_co", bound=_Real0D, default=np.float64 | Any, covariant=True)
 
 _IntOrArrayT_co = TypeVar("_IntOrArrayT_co", bound=_ScalarOrND[np.intp], default=_ScalarOrND[np.intp], covariant=True)
-_FloatOrArrayT = TypeVar("_FloatOrArrayT", bound=_ScalarOrND[npc.floating])
 _FloatOrArrayT_co = TypeVar(
     "_FloatOrArrayT_co",
     bound=float | npc.floating | onp.ArrayND[npc.floating, Any],
@@ -404,15 +399,15 @@ class LinregressResult(
 
 # keep in sync with `hmean` and `pmean`
 @overload  # ?d T@inexact
-def gmean(
-    a: onp.ArrayND[_InexactT, _JustAnyShape],
+def gmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT, _JustAnyShape],
     axis: int = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # ?d i64|i32
 def gmean(
     a: onp.ArrayND[npc.integer64 | npc.integer32, _JustAnyShape],
@@ -424,15 +419,15 @@ def gmean(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # 1d T@inexact
-def gmean(
-    a: onp.Array1D[_InexactT],
+def gmean[InexactT: npc.inexact](
+    a: onp.Array1D[InexactT],
     axis: int = 0,
     dtype: None = None,
     weights: onp.ToFloat1D | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 1d float|i64|i32
 def gmean(
     a: onp.ToArrayStrict1D[float, npc.integer64 | npc.integer32],
@@ -454,15 +449,15 @@ def gmean(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # 2d T@inexact
-def gmean(
-    a: onp.Array2D[_InexactT],
+def gmean[InexactT: npc.inexact](
+    a: onp.Array2D[InexactT],
     axis: int = 0,
     dtype: None = None,
     weights: onp.ToFloat1D | onp.ToFloat2D | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d float|i64|i32
 def gmean(
     a: onp.ToArrayStrict2D[float, npc.integer64 | npc.integer32],
@@ -484,35 +479,35 @@ def gmean(
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # Nd T@inexact
-def gmean(
-    a: onp.ArrayND[_InexactT],
+def gmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
     axis: int = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # Nd T@inexact, keepdims=True
-def gmean(
-    a: onp.ArrayND[_InexactT, _ShapeT],
+def gmean[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[InexactT, ShapeT],
     axis: int | None = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # Nd T@inexact, axis=None
-def gmean(
-    a: onp.ArrayND[_InexactT],
+def gmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
     axis: None,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # Nd float
 def gmean(
     a: onp.SequenceND[Sequence[float]],
@@ -574,15 +569,15 @@ def gmean(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # Nd i64|i32, keepdims=True
-def gmean(
-    a: onp.ArrayND[npc.integer64 | npc.integer32, _ShapeT],
+def gmean[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.integer64 | npc.integer32, ShapeT],
     axis: int | None = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # Nd float|i64|i32, axis=None
 def gmean(
     a: onp.ToArrayND[float, npc.integer64 | npc.integer32],
@@ -594,65 +589,65 @@ def gmean(
     keepdims: L[False] = False,
 ) -> np.float64: ...
 @overload  # ?d, dtype=<known>
-def gmean(
+def gmean[InexactT: npc.inexact](
     a: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     axis: int = 0,
     *,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # 1d, dtype=<known>
-def gmean(
+def gmean[InexactT: npc.inexact](
     a: onp.ToComplexStrict1D,
     axis: int = 0,
     *,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 2d, dtype=<known>
-def gmean(
+def gmean[InexactT: npc.inexact](
     a: onp.ToComplexStrict2D,
     axis: int = 0,
     *,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # Nd, dtype=<known>
-def gmean(
+def gmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     axis: int = 0,
     *,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # Nd, dtype=<known>, keepdims=True
-def gmean(
+def gmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     axis: int | None = 0,
     *,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[_InexactT]: ...
+) -> onp.ArrayND[InexactT]: ...
 @overload  # Nd, dtype=<known>, axis=None
-def gmean(
+def gmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     axis: None,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # dtype=? (fallback)
 def gmean(
     a: onp.ToComplexND,
@@ -666,15 +661,15 @@ def gmean(
 
 # keep in sync with `gmean` and `pmean`
 @overload  # ?d T@inexact
-def hmean(
-    a: onp.ArrayND[_InexactT, _JustAnyShape],
+def hmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT, _JustAnyShape],
     axis: int = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # ?d i64|i32
 def hmean(
     a: onp.ArrayND[npc.integer64 | npc.integer32, _JustAnyShape],
@@ -686,15 +681,15 @@ def hmean(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # 1d T@inexact
-def hmean(
-    a: onp.Array1D[_InexactT],
+def hmean[InexactT: npc.inexact](
+    a: onp.Array1D[InexactT],
     axis: int = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloat1D | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 1d float|i64|i32
 def hmean(
     a: onp.ToArrayStrict1D[float, npc.integer64 | npc.integer32],
@@ -716,15 +711,15 @@ def hmean(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # 2d T@inexact
-def hmean(
-    a: onp.Array2D[_InexactT],
+def hmean[InexactT: npc.inexact](
+    a: onp.Array2D[InexactT],
     axis: int = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloat1D | onp.ToFloat2D | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d float|i64|i32
 def hmean(
     a: onp.ToArrayStrict2D[float, npc.integer64 | npc.integer32],
@@ -746,35 +741,35 @@ def hmean(
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # Nd T@inexact
-def hmean(
-    a: onp.ArrayND[_InexactT],
+def hmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
     axis: int = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # Nd T@inexact, keepdims=True
-def hmean(
-    a: onp.ArrayND[_InexactT, _ShapeT],
+def hmean[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[InexactT, ShapeT],
     axis: int | None = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # Nd T@inexact, axis=None
-def hmean(
-    a: onp.ArrayND[_InexactT],
+def hmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
     axis: None,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # Nd float
 def hmean(
     a: onp.SequenceND[Sequence[float]],
@@ -836,15 +831,15 @@ def hmean(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # Nd i64|i32, keepdims=True
-def hmean(
-    a: onp.ArrayND[npc.integer64 | npc.integer32, _ShapeT],
+def hmean[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.integer64 | npc.integer32, ShapeT],
     axis: int | None = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # Nd float|i64|i32, axis=None
 def hmean(
     a: onp.ToArrayND[float, npc.integer64 | npc.integer32],
@@ -856,65 +851,65 @@ def hmean(
     keepdims: L[False] = False,
 ) -> np.float64: ...
 @overload  # ?d, dtype=<known>
-def hmean(
+def hmean[InexactT: npc.inexact](
     a: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     axis: int = 0,
     *,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # 1d, dtype=<known>
-def hmean(
+def hmean[InexactT: npc.inexact](
     a: onp.ToComplexStrict1D,
     axis: int = 0,
     *,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 2d, dtype=<known>
-def hmean(
+def hmean[InexactT: npc.inexact](
     a: onp.ToComplexStrict2D,
     axis: int = 0,
     *,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # Nd, dtype=<known>
-def hmean(
+def hmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     axis: int = 0,
     *,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # Nd, dtype=<known>, keepdims=True
-def hmean(
+def hmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     axis: int | None = 0,
     *,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[_InexactT]: ...
+) -> onp.ArrayND[InexactT]: ...
 @overload  # Nd, dtype=<known>, axis=None
-def hmean(
+def hmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     axis: None,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     *,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # dtype=? (fallback)
 def hmean(
     a: onp.ToComplexND,
@@ -928,8 +923,8 @@ def hmean(
 
 # keep in sync with `gmean` and `hmean`
 @overload  # ?d T@inexact
-def pmean(
-    a: onp.ArrayND[_InexactT, _JustAnyShape],
+def pmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT, _JustAnyShape],
     p: float,
     *,
     axis: int = 0,
@@ -937,7 +932,7 @@ def pmean(
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # ?d i64|i32
 def pmean(
     a: onp.ArrayND[npc.integer64 | npc.integer32, _JustAnyShape],
@@ -950,8 +945,8 @@ def pmean(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # 1d T@inexact
-def pmean(
-    a: onp.Array1D[_InexactT],
+def pmean[InexactT: npc.inexact](
+    a: onp.Array1D[InexactT],
     p: float,
     *,
     axis: int = 0,
@@ -959,7 +954,7 @@ def pmean(
     weights: onp.ToFloat1D | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 1d float|i64|i32
 def pmean(
     a: onp.ToArrayStrict1D[float, npc.integer64 | npc.integer32],
@@ -983,8 +978,8 @@ def pmean(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # 2d T@inexact
-def pmean(
-    a: onp.Array2D[_InexactT],
+def pmean[InexactT: npc.inexact](
+    a: onp.Array2D[InexactT],
     p: float,
     *,
     axis: int = 0,
@@ -992,7 +987,7 @@ def pmean(
     weights: onp.ToFloat1D | onp.ToFloat2D | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d float|i64|i32
 def pmean(
     a: onp.ToArrayStrict2D[float, npc.integer64 | npc.integer32],
@@ -1016,8 +1011,8 @@ def pmean(
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # Nd T@inexact
-def pmean(
-    a: onp.ArrayND[_InexactT],
+def pmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
     p: float,
     *,
     axis: int = 0,
@@ -1025,10 +1020,10 @@ def pmean(
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # Nd T@inexact, keepdims=True
-def pmean(
-    a: onp.ArrayND[_InexactT, _ShapeT],
+def pmean[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[InexactT, ShapeT],
     p: float,
     *,
     axis: int | None = 0,
@@ -1036,10 +1031,10 @@ def pmean(
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # Nd T@inexact, axis=None
-def pmean(
-    a: onp.ArrayND[_InexactT],
+def pmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
     p: float,
     *,
     axis: None,
@@ -1047,7 +1042,7 @@ def pmean(
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # Nd float
 def pmean(
     a: onp.SequenceND[Sequence[float]],
@@ -1115,8 +1110,8 @@ def pmean(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # Nd i64|i32, keepdims=True
-def pmean(
-    a: onp.ArrayND[npc.integer64 | npc.integer32, _ShapeT],
+def pmean[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.integer64 | npc.integer32, ShapeT],
     p: float,
     *,
     axis: int | None = 0,
@@ -1124,7 +1119,7 @@ def pmean(
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # Nd float|i64|i32, axis=None
 def pmean(
     a: onp.ToArrayND[float, npc.integer64 | npc.integer32],
@@ -1137,71 +1132,71 @@ def pmean(
     keepdims: L[False] = False,
 ) -> np.float64: ...
 @overload  # ?d, dtype=<known>
-def pmean(
+def pmean[InexactT: npc.inexact](
     a: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     p: float,
     *,
     axis: int = 0,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # 1d, dtype=<known>
-def pmean(
+def pmean[InexactT: npc.inexact](
     a: onp.ToComplexStrict1D,
     p: float,
     *,
     axis: int = 0,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 2d, dtype=<known>
-def pmean(
+def pmean[InexactT: npc.inexact](
     a: onp.ToComplexStrict2D,
     p: float,
     *,
     axis: int = 0,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # Nd, dtype=<known>
-def pmean(
+def pmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     p: float,
     *,
     axis: int = 0,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # Nd, dtype=<known>, keepdims=True
-def pmean(
+def pmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     p: float,
     *,
     axis: int | None = 0,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[_InexactT]: ...
+) -> onp.ArrayND[InexactT]: ...
 @overload  # Nd, dtype=<known>, axis=None
-def pmean(
+def pmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     p: float,
     *,
     axis: None,
-    dtype: onp.ToDType[_InexactT],
+    dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # dtype=? (fallback)
 def pmean(
     a: onp.ToComplexND,
@@ -1288,15 +1283,15 @@ def mode(
 
 # keep in sync with `tvar`
 @overload  # ?d T@inexact
-def tmean(
-    a: onp.ArrayND[_InexactT, _JustAnyShape],
+def tmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT, _JustAnyShape],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # ?d +integer
 def tmean(
     a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
@@ -1308,15 +1303,15 @@ def tmean(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # 1d T@inexact
-def tmean(
-    a: onp.ToArrayStrict1D[_InexactT, _InexactT],
+def tmean[InexactT: npc.inexact](
+    a: onp.ToArrayStrict1D[InexactT, InexactT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 1d +float|integer
 def tmean(
     a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
@@ -1338,15 +1333,15 @@ def tmean(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # 2d T@inexact
-def tmean(
-    a: onp.ToArrayStrict2D[_InexactT, _InexactT],
+def tmean[InexactT: npc.inexact](
+    a: onp.ToArrayStrict2D[InexactT, InexactT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d +float|integer
 def tmean(
     a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
@@ -1368,15 +1363,15 @@ def tmean(
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # ?d T@inexact, axis=None
-def tmean(
-    a: onp.ArrayND[_InexactT],
+def tmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # ?d +f64, axis=None
 def tmean(
     a: onp.ToArrayND[float, npc.integer | np.bool],
@@ -1398,25 +1393,25 @@ def tmean(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # S@Nd T@inexact, keepdims=True
-def tmean(
-    a: onp.ArrayND[_InexactT, _ShapeT],
+def tmean[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[InexactT, ShapeT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # S@Nd +integer, keepdims=True
-def tmean(
-    a: onp.ArrayND[npc.integer | np.bool, _ShapeT],
+def tmean[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.integer | np.bool, ShapeT],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # ?d +float, keepdims=True
 def tmean(
     a: onp.SequenceND[float],
@@ -1440,8 +1435,8 @@ def tmean(
 
 # keep in sync with `tmean`
 @overload  # ?d T@inexact
-def tvar(
-    a: onp.ArrayND[_InexactT, _JustAnyShape],
+def tvar[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT, _JustAnyShape],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1449,7 +1444,7 @@ def tvar(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # ?d +integer
 def tvar(
     a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
@@ -1462,8 +1457,8 @@ def tvar(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # 1d T@inexact
-def tvar(
-    a: onp.ToArrayStrict1D[_InexactT, _InexactT],
+def tvar[InexactT: npc.inexact](
+    a: onp.ToArrayStrict1D[InexactT, InexactT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1471,7 +1466,7 @@ def tvar(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 1d +float|integer
 def tvar(
     a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
@@ -1495,8 +1490,8 @@ def tvar(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # 2d T@inexact
-def tvar(
-    a: onp.ToArrayStrict2D[_InexactT, _InexactT],
+def tvar[InexactT: npc.inexact](
+    a: onp.ToArrayStrict2D[InexactT, InexactT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1504,7 +1499,7 @@ def tvar(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d +float|integer
 def tvar(
     a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
@@ -1528,8 +1523,8 @@ def tvar(
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # ?d T@inexact, axis=None
-def tvar(
-    a: onp.ArrayND[_InexactT],
+def tvar[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     *,
@@ -1537,7 +1532,7 @@ def tvar(
     ddof: int = 1,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # ?d +f64, axis=None
 def tvar(
     a: onp.ToArrayND[float, npc.integer | np.bool],
@@ -1561,8 +1556,8 @@ def tvar(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # S@Nd T@inexact, keepdims=True
-def tvar(
-    a: onp.ArrayND[_InexactT, _ShapeT],
+def tvar[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[InexactT, ShapeT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1570,10 +1565,10 @@ def tvar(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # S@Nd +integer, keepdims=True
-def tvar(
-    a: onp.ArrayND[npc.integer | np.bool, _ShapeT],
+def tvar[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.integer | np.bool, ShapeT],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: int = 0,
@@ -1581,7 +1576,7 @@ def tvar(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # ?d +float, keepdims=True
 def tvar(
     a: onp.SequenceND[float],
@@ -1611,15 +1606,15 @@ tsem = tvar
 
 # keep in sync with `tmax`, and structurally with `tvar` and `tmean`
 @overload  # ?d T@inexact
-def tmin(
-    a: onp.ArrayND[_InexactT, _JustAnyShape],
+def tmin[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT, _JustAnyShape],
     lowerlimit: _ComplexLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # ?d +integer
 def tmin(
     a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
@@ -1631,15 +1626,15 @@ def tmin(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # 1d T@inexact
-def tmin(
-    a: onp.ToArrayStrict1D[_InexactT, _InexactT],
+def tmin[InexactT: npc.inexact](
+    a: onp.ToArrayStrict1D[InexactT, InexactT],
     lowerlimit: _ComplexLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 1d +float|integer
 def tmin(
     a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
@@ -1661,15 +1656,15 @@ def tmin(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # 2d T@inexact
-def tmin(
-    a: onp.ToArrayStrict2D[_InexactT, _InexactT],
+def tmin[InexactT: npc.inexact](
+    a: onp.ToArrayStrict2D[InexactT, InexactT],
     lowerlimit: _ComplexLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d +float|integer
 def tmin(
     a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
@@ -1691,15 +1686,15 @@ def tmin(
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # ?d T@inexact, axis=None
-def tmin(
-    a: onp.ArrayND[_InexactT],
+def tmin[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
     lowerlimit: _ComplexLimit | None = None,
     *,
     axis: None,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # ?d +f64, axis=None
 def tmin(
     a: onp.ToArrayND[float, npc.integer | np.bool],
@@ -1721,25 +1716,25 @@ def tmin(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # S@Nd T@inexact, keepdims=True
-def tmin(
-    a: onp.ArrayND[_InexactT, _ShapeT],
+def tmin[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[InexactT, ShapeT],
     lowerlimit: _ComplexLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # S@Nd +integer, keepdims=True
-def tmin(
-    a: onp.ArrayND[npc.integer | np.bool, _ShapeT],
+def tmin[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.integer | np.bool, ShapeT],
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # ?d +float, keepdims=True
 def tmin(
     a: onp.SequenceND[float],
@@ -1763,15 +1758,15 @@ def tmin(
 
 # keep in sync with `tmin`, and structurally with `tvar` and `tmean`
 @overload  # ?d T@inexact
-def tmax(
-    a: onp.ArrayND[_InexactT, _JustAnyShape],
+def tmax[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT, _JustAnyShape],
     upperlimit: _ComplexLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # ?d +integer
 def tmax(
     a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
@@ -1783,15 +1778,15 @@ def tmax(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # 1d T@inexact
-def tmax(
-    a: onp.ToArrayStrict1D[_InexactT, _InexactT],
+def tmax[InexactT: npc.inexact](
+    a: onp.ToArrayStrict1D[InexactT, InexactT],
     upperlimit: _ComplexLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 1d +float|integer
 def tmax(
     a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
@@ -1813,15 +1808,15 @@ def tmax(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # 2d T@inexact
-def tmax(
-    a: onp.ToArrayStrict2D[_InexactT, _InexactT],
+def tmax[InexactT: npc.inexact](
+    a: onp.ToArrayStrict2D[InexactT, InexactT],
     upperlimit: _ComplexLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d +float|integer
 def tmax(
     a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
@@ -1843,15 +1838,15 @@ def tmax(
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # ?d T@inexact, axis=None
-def tmax(
-    a: onp.ArrayND[_InexactT],
+def tmax[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
     upperlimit: _ComplexLimit | None = None,
     *,
     axis: None,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # ?d +f64, axis=None
 def tmax(
     a: onp.ToArrayND[float, npc.integer | np.bool],
@@ -1873,25 +1868,25 @@ def tmax(
     keepdims: L[False] = False,
 ) -> np.complex128: ...
 @overload  # S@Nd T@inexact, keepdims=True
-def tmax(
-    a: onp.ArrayND[_InexactT, _ShapeT],
+def tmax[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[InexactT, ShapeT],
     upperlimit: _ComplexLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # S@Nd +integer, keepdims=True
-def tmax(
-    a: onp.ArrayND[npc.integer | np.bool, _ShapeT],
+def tmax[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.integer | np.bool, ShapeT],
     upperlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # ?d +float, keepdims=True
 def tmax(
     a: onp.SequenceND[float],
@@ -1952,15 +1947,15 @@ def moment(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # ?d ~T: floating, order: 0d
-def moment(
-    a: onp.ArrayND[_FloatT, _JustAnyShape],
+def moment[FloatT: npc.floating](
+    a: onp.ArrayND[FloatT, _JustAnyShape],
     order: int = 1,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
     keepdims: L[False] = False,
-) -> _FloatT | onp.ArrayND[_FloatT]: ...
+) -> FloatT | onp.ArrayND[FloatT]: ...
 @overload  # 1d ~f64, order: 0d
 def moment(
     a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
@@ -1972,15 +1967,15 @@ def moment(
     keepdims: L[False] = False,
 ) -> np.float64: ...
 @overload  # 1d ~T: floating, order: 0d
-def moment(
-    a: onp.ToArrayStrict1D[_FloatT, _FloatT],
+def moment[FloatT: npc.floating](
+    a: onp.ToArrayStrict1D[FloatT, FloatT],
     order: int = 1,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
     keepdims: L[False] = False,
-) -> _FloatT: ...
+) -> FloatT: ...
 @overload  # 2d ~f64, order: 0d
 def moment(
     a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
@@ -1992,15 +1987,15 @@ def moment(
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.float64]: ...
 @overload  # 2d ~T: floating, order: 0d
-def moment(
-    a: onp.ToArrayStrict2D[_FloatT, _FloatT],
+def moment[FloatT: npc.floating](
+    a: onp.ToArrayStrict2D[FloatT, FloatT],
     order: int = 1,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
     keepdims: L[False] = False,
-) -> onp.Array1D[_FloatT]: ...
+) -> onp.Array1D[FloatT]: ...
 @overload  # 3d ~f64, order: 0d
 def moment(
     a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
@@ -2012,15 +2007,15 @@ def moment(
     keepdims: L[False] = False,
 ) -> onp.Array2D[np.float64]: ...
 @overload  # 3d ~T: floating, order: 0d
-def moment(
-    a: onp.ToArrayStrict3D[_FloatT, _FloatT],
+def moment[FloatT: npc.floating](
+    a: onp.ToArrayStrict3D[FloatT, FloatT],
     order: int = 1,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
     keepdims: L[False] = False,
-) -> onp.Array2D[_FloatT]: ...
+) -> onp.Array2D[FloatT]: ...
 @overload  # nd ~f64, order: 0d
 def moment(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
@@ -2072,55 +2067,55 @@ def moment(
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # nd ~T: floating, order: 0d
-def moment(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def moment[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     order: int = 1,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
     keepdims: L[False] = False,
-) -> onp.ArrayND[_FloatT] | Any: ...
+) -> onp.ArrayND[FloatT] | Any: ...
 @overload  # nd ~T: floating, order: 0d, axis=None  (positional)
-def moment(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def moment[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     order: int,
     axis: None,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
     keepdims: L[False] = False,
-) -> _FloatT: ...
+) -> FloatT: ...
 @overload  # nd ~T: floating, order: 0d, axis=None  (keyword)
-def moment(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def moment[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     order: int = 1,
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
     center: float | None = None,
     keepdims: L[False] = False,
-) -> _FloatT: ...
+) -> FloatT: ...
 @overload  # nd ~T: floating, order: nd
-def moment(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def moment[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     order: onp.ToIntND,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
     keepdims: L[False] = False,
-) -> onp.ArrayND[_FloatT]: ...
+) -> onp.ArrayND[FloatT]: ...
 @overload  # nd ~T: floating, keepdims=True
-def moment(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def moment[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     order: int | onp.ToIntND = 1,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
     keepdims: L[True],
-) -> onp.ArrayND[_FloatT]: ...
+) -> onp.ArrayND[FloatT]: ...
 @overload  # nd +floating, order: 0d
 def moment(
     a: onp.ToFloatND,
@@ -2183,14 +2178,14 @@ def skew(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # ?d ~T
-def skew(
-    a: onp.ArrayND[_FloatT, _JustAnyShape],
+def skew[FloatT: npc.floating](
+    a: onp.ArrayND[FloatT, _JustAnyShape],
     axis: int = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> _FloatT | onp.ArrayND[_FloatT]: ...
+) -> FloatT | onp.ArrayND[FloatT]: ...
 @overload  # 1d ~f64
 def skew(
     a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
@@ -2201,14 +2196,14 @@ def skew(
     keepdims: L[False] = False,
 ) -> np.float64: ...
 @overload  # 1d ~T
-def skew(
-    a: onp.ToArrayStrict1D[_FloatT, _FloatT],
+def skew[FloatT: npc.floating](
+    a: onp.ToArrayStrict1D[FloatT, FloatT],
     axis: int = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> _FloatT: ...
+) -> FloatT: ...
 @overload  # 2d ~f64
 def skew(
     a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
@@ -2219,14 +2214,14 @@ def skew(
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.float64]: ...
 @overload  # 2d ~T
-def skew(
-    a: onp.ToArrayStrict2D[_FloatT, _FloatT],
+def skew[FloatT: npc.floating](
+    a: onp.ToArrayStrict2D[FloatT, FloatT],
     axis: int = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> onp.Array1D[_FloatT]: ...
+) -> onp.Array1D[FloatT]: ...
 @overload  # 3d ~f64
 def skew(
     a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
@@ -2237,14 +2232,14 @@ def skew(
     keepdims: L[False] = False,
 ) -> onp.Array2D[np.float64]: ...
 @overload  # 3d ~T
-def skew(
-    a: onp.ToArrayStrict3D[_FloatT, _FloatT],
+def skew[FloatT: npc.floating](
+    a: onp.ToArrayStrict3D[FloatT, FloatT],
     axis: int = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> onp.Array2D[_FloatT]: ...
+) -> onp.Array2D[FloatT]: ...
 @overload  # nd ~f64
 def skew(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
@@ -2273,32 +2268,32 @@ def skew(
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # nd ~T
-def skew(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def skew[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     axis: int = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> onp.ArrayND[_FloatT] | Any: ...
+) -> onp.ArrayND[FloatT] | Any: ...
 @overload  # nd ~T, axis=None
-def skew(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def skew[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     axis: None,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> _FloatT: ...
+) -> FloatT: ...
 @overload  # nd ~T, keepdims=True
-def skew(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def skew[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     axis: int | None = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
-) -> onp.ArrayND[_FloatT]: ...
+) -> onp.ArrayND[FloatT]: ...
 @overload  # nd +floating
 def skew(
     a: onp.ToFloatND, axis: int = 0, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
@@ -2324,15 +2319,15 @@ def kurtosis(
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # ?d ~T
-def kurtosis(
-    a: onp.ArrayND[_FloatT, _JustAnyShape],
+def kurtosis[FloatT: npc.floating](
+    a: onp.ArrayND[FloatT, _JustAnyShape],
     axis: int = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> _FloatT | onp.ArrayND[_FloatT]: ...
+) -> FloatT | onp.ArrayND[FloatT]: ...
 @overload  # 1d ~f64
 def kurtosis(
     a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
@@ -2344,15 +2339,15 @@ def kurtosis(
     keepdims: L[False] = False,
 ) -> np.float64: ...
 @overload  # 1d ~T
-def kurtosis(
-    a: onp.ToArrayStrict1D[_FloatT, _FloatT],
+def kurtosis[FloatT: npc.floating](
+    a: onp.ToArrayStrict1D[FloatT, FloatT],
     axis: int = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> _FloatT: ...
+) -> FloatT: ...
 @overload  # 2d ~f64
 def kurtosis(
     a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
@@ -2364,15 +2359,15 @@ def kurtosis(
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.float64]: ...
 @overload  # 2d ~T
-def kurtosis(
-    a: onp.ToArrayStrict2D[_FloatT, _FloatT],
+def kurtosis[FloatT: npc.floating](
+    a: onp.ToArrayStrict2D[FloatT, FloatT],
     axis: int = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> onp.Array1D[_FloatT]: ...
+) -> onp.Array1D[FloatT]: ...
 @overload  # 3d ~f64
 def kurtosis(
     a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
@@ -2384,15 +2379,15 @@ def kurtosis(
     keepdims: L[False] = False,
 ) -> onp.Array2D[np.float64]: ...
 @overload  # 3d ~T
-def kurtosis(
-    a: onp.ToArrayStrict3D[_FloatT, _FloatT],
+def kurtosis[FloatT: npc.floating](
+    a: onp.ToArrayStrict3D[FloatT, FloatT],
     axis: int = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> onp.Array2D[_FloatT]: ...
+) -> onp.Array2D[FloatT]: ...
 @overload  # nd ~f64
 def kurtosis(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
@@ -2424,35 +2419,35 @@ def kurtosis(
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # nd ~T
-def kurtosis(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def kurtosis[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     axis: int = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> onp.ArrayND[_FloatT] | Any: ...
+) -> onp.ArrayND[FloatT] | Any: ...
 @overload  # nd ~T, axis=None
-def kurtosis(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def kurtosis[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     axis: None,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> _FloatT: ...
+) -> FloatT: ...
 @overload  # nd ~T, keepdims=True
-def kurtosis(
-    a: onp.ToArrayND[_FloatT, _FloatT],
+def kurtosis[FloatT: npc.floating](
+    a: onp.ToArrayND[FloatT, FloatT],
     axis: int | None = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
-) -> onp.ArrayND[_FloatT]: ...
+) -> onp.ArrayND[FloatT]: ...
 @overload  # nd +floating
 def kurtosis(
     a: onp.ToFloatND,
@@ -2486,21 +2481,21 @@ def kurtosis(
 
 #
 @overload  # ?d T@integer, axis=None
-def describe(
-    a: onp.ArrayND[_IntegerT], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
-) -> DescribeResult[_IntegerT, np.float64]: ...
+def describe[IntT: npc.integer](
+    a: onp.ArrayND[IntT], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[IntT, np.float64]: ...
 @overload  # ?d T@floating, axis=None
-def describe(
-    a: onp.ArrayND[_FloatT], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
-) -> DescribeResult[_FloatT, _FloatT]: ...
+def describe[FloatT: npc.floating](
+    a: onp.ArrayND[FloatT], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[FloatT, FloatT]: ...
 @overload  # ?d T@integer
-def describe(
-    a: onp.ArrayND[_IntegerT, _JustAnyShape], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
-) -> DescribeResult[_IntegerT | onp.ArrayND[_IntegerT], np.float64 | onp.ArrayND[np.float64]]: ...
+def describe[IntT: npc.integer](
+    a: onp.ArrayND[IntT, _JustAnyShape], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[IntT | onp.ArrayND[IntT], np.float64 | onp.ArrayND[np.float64]]: ...
 @overload  # ?d T@floating
-def describe(
-    a: onp.ArrayND[_FloatT, _JustAnyShape], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
-) -> DescribeResult[_FloatT | onp.ArrayND[_FloatT], _FloatT | onp.ArrayND[_FloatT]]: ...
+def describe[FloatT: npc.floating](
+    a: onp.ArrayND[FloatT, _JustAnyShape], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[FloatT | onp.ArrayND[FloatT], FloatT | onp.ArrayND[FloatT]]: ...
 @overload  # 1d int
 def describe(
     a: Sequence[int], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
@@ -2510,13 +2505,13 @@ def describe(
     a: list[float], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
 ) -> DescribeResult[np.float64, np.float64]: ...
 @overload  # 1d T@integer
-def describe(
-    a: onp.Array1D[_IntegerT], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
-) -> DescribeResult[_IntegerT, np.float64]: ...
+def describe[IntT: npc.integer](
+    a: onp.Array1D[IntT], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[IntT, np.float64]: ...
 @overload  # 1d T@floating
-def describe(
-    a: onp.Array1D[_FloatT], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
-) -> DescribeResult[_FloatT, _FloatT]: ...
+def describe[FloatT: npc.floating](
+    a: onp.Array1D[FloatT], axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[FloatT, FloatT]: ...
 @overload  # 2d int
 def describe(
     a: Sequence[Sequence[int]], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
@@ -2534,13 +2529,13 @@ def describe(
     a: Sequence[list[float]], axis: None, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
 ) -> DescribeResult[np.float64, np.float64]: ...
 @overload  # 2d T@integer
-def describe(
-    a: onp.Array2D[_IntegerT], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
-) -> DescribeResult[onp.Array1D[_IntegerT], onp.Array1D[np.float64]]: ...
+def describe[IntT: npc.integer](
+    a: onp.Array2D[IntT], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[onp.Array1D[IntT], onp.Array1D[np.float64]]: ...
 @overload  # 2d T@floating
-def describe(
-    a: onp.Array2D[_FloatT], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
-) -> DescribeResult[onp.Array1D[_FloatT], onp.Array1D[_FloatT]]: ...
+def describe[FloatT: npc.floating](
+    a: onp.Array2D[FloatT], axis: int = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
+) -> DescribeResult[onp.Array1D[FloatT], onp.Array1D[FloatT]]: ...
 @overload  # fallback
 def describe(
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, bias: bool = True, nan_policy: NanPolicy = "propagate"
@@ -2566,14 +2561,14 @@ def skewtest(
     keepdims: L[False] = False,
 ) -> SkewtestResult[onp.ArrayND[np.float64]]: ...
 @overload  # Nd ~f64, keepdims=True
-def skewtest(
-    a: onp.ArrayND[npc.floating64 | npc.integer, _ShapeT],
+def skewtest[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.floating64 | npc.integer, ShapeT],
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
-) -> SkewtestResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+) -> SkewtestResult[onp.ArrayND[np.float64, ShapeT]]: ...
 @overload  # ?d ~f64, keepdims=True
 def skewtest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
@@ -2602,14 +2597,14 @@ def skewtest(
     keepdims: L[False] = False,
 ) -> SkewtestResult[onp.ArrayND[np.float32]]: ...
 @overload  # Nd ~f32, keepdims=True
-def skewtest(
-    a: onp.ArrayND[np.float32, _ShapeT],
+def skewtest[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[np.float32, ShapeT],
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
-) -> SkewtestResult[onp.ArrayND[np.float32, _ShapeT]]: ...
+) -> SkewtestResult[onp.ArrayND[np.float32, ShapeT]]: ...
 @overload  # ?d ~f32, keepdims=True
 def skewtest(
     a: onp.ToJustFloat32_ND,
@@ -2638,14 +2633,14 @@ def skewtest(
     keepdims: L[False] = False,
 ) -> SkewtestResult[onp.ArrayND[np.float64 | Any]]: ...
 @overload  # Nd floating, keepdims=True
-def skewtest(
-    a: onp.ArrayND[npc.floating, _ShapeT],
+def skewtest[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.floating, ShapeT],
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
-) -> SkewtestResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
+) -> SkewtestResult[onp.ArrayND[np.float64 | Any, ShapeT]]: ...
 @overload  # ?d floating, keepdims=True
 def skewtest(
     a: onp.ToArrayND[npc.floating, npc.floating],
@@ -2676,13 +2671,13 @@ def kurtosistest(
     keepdims: L[False] = False,
 ) -> KurtosistestResult[onp.ArrayND[np.float64]]: ...
 @overload  # Nd ~f64, keepdims=True
-def kurtosistest(
-    a: onp.ArrayND[npc.floating64 | npc.integer, _ShapeT],
+def kurtosistest[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.floating64 | npc.integer, ShapeT],
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
-) -> KurtosistestResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+) -> KurtosistestResult[onp.ArrayND[np.float64, ShapeT]]: ...
 @overload  # ?d ~f64, keepdims=True
 def kurtosistest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
@@ -2711,14 +2706,14 @@ def kurtosistest(
     keepdims: L[False] = False,
 ) -> KurtosistestResult[onp.ArrayND[np.float32]]: ...
 @overload  # Nd ~f32, keepdims=True
-def kurtosistest(
-    a: onp.ArrayND[np.float32, _ShapeT],
+def kurtosistest[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[np.float32, ShapeT],
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
-) -> KurtosistestResult[onp.ArrayND[np.float32, _ShapeT]]: ...
+) -> KurtosistestResult[onp.ArrayND[np.float32, ShapeT]]: ...
 @overload  # ?d ~f32, keepdims=True
 def kurtosistest(
     a: onp.ToJustFloat32_ND,
@@ -2747,14 +2742,14 @@ def kurtosistest(
     keepdims: L[False] = False,
 ) -> KurtosistestResult[onp.ArrayND[np.float64 | Any]]: ...
 @overload  # Nd floating, keepdims=True
-def kurtosistest(
-    a: onp.ArrayND[npc.floating, _ShapeT],
+def kurtosistest[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.floating, ShapeT],
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
-) -> KurtosistestResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
+) -> KurtosistestResult[onp.ArrayND[np.float64 | Any, ShapeT]]: ...
 @overload  # ?d floating, keepdims=True
 def kurtosistest(
     a: onp.ToArrayND[npc.floating, npc.floating],
@@ -2783,13 +2778,13 @@ def normaltest(
     keepdims: L[False] = False,
 ) -> NormaltestResult[onp.ArrayND[np.float64]]: ...
 @overload  # Nd ~f64, keepdims=True
-def normaltest(
-    a: onp.ArrayND[npc.floating64 | npc.integer, _ShapeT],
+def normaltest[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.floating64 | npc.integer, ShapeT],
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
-) -> NormaltestResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+) -> NormaltestResult[onp.ArrayND[np.float64, ShapeT]]: ...
 @overload  # ?d ~f64, keepdims=True
 def normaltest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
@@ -2807,9 +2802,9 @@ def normaltest(
     a: onp.ToJustFloat32_ND, axis: int, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
 ) -> NormaltestResult[onp.ArrayND[np.float32]]: ...
 @overload  # Nd ~f32, keepdims=True
-def normaltest(
-    a: onp.ArrayND[np.float32, _ShapeT], axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
-) -> NormaltestResult[onp.ArrayND[np.float32, _ShapeT]]: ...
+def normaltest[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[np.float32, ShapeT], axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+) -> NormaltestResult[onp.ArrayND[np.float32, ShapeT]]: ...
 @overload  # ?d ~f32, keepdims=True
 def normaltest(
     a: onp.ToJustFloat32_ND, axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
@@ -2827,9 +2822,9 @@ def normaltest(
     a: onp.ToArrayND[npc.floating, npc.floating], axis: int, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
 ) -> NormaltestResult[onp.ArrayND[np.float64 | Any]]: ...
 @overload  # Nd floating, keepdims=True
-def normaltest(
-    a: onp.ArrayND[npc.floating, _ShapeT], axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
-) -> NormaltestResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
+def normaltest[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.floating, ShapeT], axis: int | None = None, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+) -> NormaltestResult[onp.ArrayND[np.float64 | Any, ShapeT]]: ...
 @overload  # ?d floating, keepdims=True
 def normaltest(
     a: onp.ToArrayND[npc.floating, npc.floating],
@@ -2857,13 +2852,13 @@ def jarque_bera(
     keepdims: L[False] = False,
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
 @overload  # Nd ~f64, keepdims=True
-def jarque_bera(
-    x: onp.ArrayND[npc.floating64 | npc.integer, _ShapeT],
+def jarque_bera[ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[npc.floating64 | npc.integer, ShapeT],
     *,
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> SignificanceResult[onp.ArrayND[np.float64, _ShapeT]]: ...
+) -> SignificanceResult[onp.ArrayND[np.float64, ShapeT]]: ...
 @overload  # ?d ~f64, keepdims=True
 def jarque_bera(
     x: onp.ToArrayND[float, npc.floating64 | npc.integer],
@@ -2881,9 +2876,9 @@ def jarque_bera(
     x: onp.ToJustFloat32_ND, *, axis: int, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
 ) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
 @overload  # Nd ~f32, keepdims=True
-def jarque_bera(
-    x: onp.ArrayND[np.float32, _ShapeT], *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
-) -> SignificanceResult[onp.ArrayND[np.float32, _ShapeT]]: ...
+def jarque_bera[ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[np.float32, ShapeT], *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> SignificanceResult[onp.ArrayND[np.float32, ShapeT]]: ...
 @overload  # ?d ~f32, keepdims=True
 def jarque_bera(
     x: onp.ToJustFloat32_ND, *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
@@ -2901,9 +2896,9 @@ def jarque_bera(
     x: onp.ToArrayND[npc.floating, npc.floating], *, axis: int, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
 ) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 @overload  # Nd floating, keepdims=True
-def jarque_bera(
-    x: onp.ArrayND[npc.floating, _ShapeT], *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
-) -> SignificanceResult[onp.ArrayND[np.float64 | Any, _ShapeT]]: ...
+def jarque_bera[ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[npc.floating, ShapeT], *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> SignificanceResult[onp.ArrayND[np.float64 | Any, ShapeT]]: ...
 @overload  # ?d floating, keepdims=True
 def jarque_bera(
     x: onp.ToArrayND[npc.floating, npc.floating],
@@ -2931,13 +2926,13 @@ def scoreatpercentile(
     axis: int | None = None,
 ) -> onp.Array1D[np.float64]: ...
 @overload
-def scoreatpercentile(
+def scoreatpercentile[ShapeT: tuple[int, ...]](
     a: onp.ToFloat1D,
-    per: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+    per: onp.ArrayND[npc.floating | npc.integer, ShapeT],
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: _QuantileInterpolation = "fraction",
     axis: int | None = None,
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload
 def scoreatpercentile(
     a: onp.ToFloat1D,
@@ -2957,12 +2952,12 @@ def percentileofscore(
     a: onp.ToFloat1D, score: Sequence[onp.ToFloat], kind: _PercentileInterpolation = "rank", nan_policy: NanPolicy = "propagate"
 ) -> onp.Array1D[np.float64]: ...
 @overload
-def percentileofscore(
+def percentileofscore[ShapeT: tuple[int, ...]](
     a: onp.ToFloat1D,
-    score: onp.ArrayND[npc.floating, _ShapeT],
+    score: onp.ArrayND[npc.floating, ShapeT],
     kind: _PercentileInterpolation = "rank",
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload
 def percentileofscore(
     a: onp.ToFloat1D, score: onp.ToFloatND, kind: _PercentileInterpolation = "rank", nan_policy: NanPolicy = "propagate"
@@ -3053,16 +3048,16 @@ def sem(
 
 # NOTE: keep in sync with `gzscore` and `zmap`
 @overload  # +integer, known shape
-def zscore(
-    a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool]],
+def zscore[ShapeT: tuple[int, ...]](
+    a: nptc.CanArray[ShapeT, np.dtype[npc.integer | np.bool]],
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # known inexact dtype, known shape
-def zscore(
-    a: nptc.CanArray[_ShapeT, np.dtype[_InexactT]], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+def zscore[ShapeT: tuple[int, ...], InexactT: npc.inexact](
+    a: nptc.CanArray[ShapeT, np.dtype[InexactT]], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # float 1d
 def zscore(
     a: Sequence[float], axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
@@ -3098,17 +3093,17 @@ def zscore(
 
 # NOTE: keep in sync with `zscore` and `zmap`
 @overload  # +integer, known shape
-def gzscore(
-    a: nptc.CanArray[_ShapeT, np.dtype[npc.integer | np.bool]],
+def gzscore[ShapeT: tuple[int, ...]](
+    a: nptc.CanArray[ShapeT, np.dtype[npc.integer | np.bool]],
     *,
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # known inexact dtype, known shape
-def gzscore(
-    a: nptc.CanArray[_ShapeT, np.dtype[_InexactT]], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+def gzscore[ShapeT: tuple[int, ...], InexactT: npc.inexact](
+    a: nptc.CanArray[ShapeT, np.dtype[InexactT]], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # float 1d
 def gzscore(
     a: Sequence[float], *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
@@ -3144,21 +3139,21 @@ def gzscore(
 
 # keep roughly in sync with `zscore` and `gzscore`
 @overload  # +integer, known shape
-def zmap(  # type: ignore[overload-overlap]
-    scores: nptc.CanArray[_ShapeT, np.dtype[npc.floating64 | npc.integer | np.bool]],
-    compare: nptc.CanArray[_ShapeT, np.dtype[npc.floating64 | npc.integer | np.bool]],
+def zmap[ShapeT: tuple[int, ...]](  # type: ignore[overload-overlap]
+    scores: nptc.CanArray[ShapeT, np.dtype[npc.floating64 | npc.integer | np.bool]],
+    compare: nptc.CanArray[ShapeT, np.dtype[npc.floating64 | npc.integer | np.bool]],
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # known inexact dtype, known shape
-def zmap(
-    scores: nptc.CanArray[_ShapeT, np.dtype[_InexactT]],
-    compare: nptc.CanArray[_ShapeT, np.dtype[_InexactT]],
+def zmap[ShapeT: tuple[int, ...], InexactT: npc.inexact](
+    scores: nptc.CanArray[ShapeT, np.dtype[InexactT]],
+    compare: nptc.CanArray[ShapeT, np.dtype[InexactT]],
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[_InexactT, _ShapeT]: ...
+) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # float 1d
 def zmap(
     scores: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
@@ -3246,18 +3241,18 @@ def zmap(
 
 #
 @overload  # T@floating, axis=None (default)
-def iqr(
-    x: onp.ToArrayND[_FloatT, _FloatT],
+def iqr[FloatT: npc.floating](
+    x: onp.ToArrayND[FloatT, FloatT],
     axis: None = None,
     rng: tuple[float, float] = (25, 75),
     scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
     nan_policy: NanPolicy = "propagate",
     interpolation: _InterpolationMethod = "linear",
     keepdims: L[False] = False,
-) -> _FloatT: ...
+) -> FloatT: ...
 @overload  # T@floating, keepdims=True
-def iqr(
-    x: onp.ToArrayND[_FloatT, _FloatT],
+def iqr[FloatT: npc.floating](
+    x: onp.ToArrayND[FloatT, FloatT],
     axis: int | Sequence[int] | None = None,
     rng: tuple[float, float] = (25, 75),
     scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
@@ -3265,17 +3260,17 @@ def iqr(
     interpolation: _InterpolationMethod = "linear",
     *,
     keepdims: L[True],
-) -> onp.ArrayND[_FloatT]: ...
+) -> onp.ArrayND[FloatT]: ...
 @overload  # T@floating, axis=<given>
-def iqr(
-    x: onp.ToArrayND[_FloatT, _FloatT],
+def iqr[FloatT: npc.floating](
+    x: onp.ToArrayND[FloatT, FloatT],
     axis: int | Sequence[int],
     rng: tuple[float, float] = (25, 75),
     scale: L["normal"] | onp.ToFloat | onp.ToFloatND = 1.0,
     nan_policy: NanPolicy = "propagate",
     interpolation: _InterpolationMethod = "linear",
     keepdims: L[False] = False,
-) -> onp.ArrayND[_FloatT]: ...
+) -> onp.ArrayND[FloatT]: ...
 @overload  # +f64, axis=None (default)
 def iqr(
     x: onp.ToArrayND[float, npc.integer],
@@ -3352,13 +3347,13 @@ def median_abs_deviation(
 
 #
 @overload
-def sigmaclip(
-    a: onp.ArrayND[_IntegerT], low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
-) -> SigmaclipResult[_IntegerT, np.float64]: ...
+def sigmaclip[IntT: npc.integer](
+    a: onp.ArrayND[IntT], low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
+) -> SigmaclipResult[IntT, np.float64]: ...
 @overload
-def sigmaclip(
-    a: onp.ArrayND[_FloatT], low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
-) -> SigmaclipResult[_FloatT, _FloatT]: ...
+def sigmaclip[FloatT: npc.floating](
+    a: onp.ArrayND[FloatT], low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
+) -> SigmaclipResult[FloatT, FloatT]: ...
 @overload
 def sigmaclip(
     a: onp.SequenceND[int], low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
@@ -3872,25 +3867,25 @@ def weightedtau(
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 #
-def pack_TtestResult(
-    statistic: _FloatOrArrayT,
-    pvalue: _FloatOrArrayT,
-    df: _FloatOrArrayT,
+def pack_TtestResult[FloatOrArrayT: _ScalarOrND[npc.floating]](
+    statistic: FloatOrArrayT,
+    pvalue: FloatOrArrayT,
+    df: FloatOrArrayT,
     alternative: Alternative,
-    standard_error: _FloatOrArrayT,
-    estimate: _FloatOrArrayT,
-) -> TtestResult[_FloatOrArrayT]: ...  # undocumented
+    standard_error: FloatOrArrayT,
+    estimate: FloatOrArrayT,
+) -> TtestResult[FloatOrArrayT]: ...  # undocumented
 
 #
-def unpack_TtestResult(
-    res: TtestResult[_FloatOrArrayT], _: int
+def unpack_TtestResult[FloatOrArrayT: _ScalarOrND[npc.floating]](
+    res: TtestResult[FloatOrArrayT], _: int
 ) -> tuple[
-    _FloatOrArrayT,  # statistic
-    _FloatOrArrayT,  # pvalue
-    _FloatOrArrayT,  # df
+    FloatOrArrayT,  # statistic
+    FloatOrArrayT,  # pvalue
+    FloatOrArrayT,  # df
     Alternative,  # _alternative
-    _FloatOrArrayT,  # _standard_error
-    _FloatOrArrayT,  # _estimate
+    FloatOrArrayT,  # _standard_error
+    FloatOrArrayT,  # _estimate
 ]: ...  # undocumented
 
 # TODO(jorenham): improve
@@ -3916,8 +3911,6 @@ def ttest_ind_from_stats(
     alternative: Alternative = "two-sided",
 ) -> Ttest_indResult: ...
 
-_AnyFloatSub64T = TypeVar("_AnyFloatSub64T", bound=np.float32 | np.float16)
-
 # keep in sync with `ttest_rel`
 @overload  # ?d ~float64
 def ttest_ind(
@@ -3933,9 +3926,9 @@ def ttest_ind(
     keepdims: L[False] = False,
 ) -> TtestResult[np.float64 | Any]: ...
 @overload  # ?d ~T
-def ttest_ind(
-    a: onp.ArrayND[_AnyFloatSub64T, _JustAnyShape],
-    b: onp.ArrayND[_AnyFloatSub64T, _JustAnyShape],
+def ttest_ind[FloatT: np.float32 | np.float16](
+    a: onp.ArrayND[FloatT, _JustAnyShape],
+    b: onp.ArrayND[FloatT, _JustAnyShape],
     *,
     axis: int = 0,
     equal_var: bool = True,
@@ -3944,7 +3937,7 @@ def ttest_ind(
     trim: onp.ToFloat = 0,
     method: ResamplingMethod | None = None,
     keepdims: L[False] = False,
-) -> TtestResult[_AnyFloatSub64T | Any]: ...
+) -> TtestResult[FloatT | Any]: ...
 @overload  # 1d ~f64
 def ttest_ind(
     a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
@@ -3959,9 +3952,9 @@ def ttest_ind(
     keepdims: L[False] = False,
 ) -> TtestResult[np.float64]: ...
 @overload  # 1d ~T
-def ttest_ind(
-    a: onp.ToArrayStrict1D[_AnyFloatSub64T, _AnyFloatSub64T],
-    b: onp.ToArrayStrict1D[_AnyFloatSub64T, _AnyFloatSub64T],
+def ttest_ind[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayStrict1D[FloatT, FloatT],
+    b: onp.ToArrayStrict1D[FloatT, FloatT],
     *,
     axis: int = 0,
     equal_var: bool = True,
@@ -3970,7 +3963,7 @@ def ttest_ind(
     trim: onp.ToFloat = 0,
     method: ResamplingMethod | None = None,
     keepdims: L[False] = False,
-) -> TtestResult[_AnyFloatSub64T]: ...
+) -> TtestResult[FloatT]: ...
 @overload  # 1d +floating
 def ttest_ind(
     a: onp.ToFloatStrict1D,
@@ -3998,9 +3991,9 @@ def ttest_ind(
     keepdims: L[False] = False,
 ) -> TtestResult[onp.Array1D[np.float64]]: ...
 @overload  # 2d ~T
-def ttest_ind(
-    a: onp.ToArrayStrict2D[_AnyFloatSub64T, _AnyFloatSub64T],
-    b: onp.ToArrayStrict2D[_AnyFloatSub64T, _AnyFloatSub64T],
+def ttest_ind[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayStrict2D[FloatT, FloatT],
+    b: onp.ToArrayStrict2D[FloatT, FloatT],
     *,
     axis: int = 0,
     equal_var: bool = True,
@@ -4009,7 +4002,7 @@ def ttest_ind(
     trim: onp.ToFloat = 0,
     method: ResamplingMethod | None = None,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array1D[_AnyFloatSub64T]]: ...
+) -> TtestResult[onp.Array1D[FloatT]]: ...
 @overload  # 2d +floating
 def ttest_ind(
     a: onp.ToFloatStrict2D,
@@ -4037,9 +4030,9 @@ def ttest_ind(
     keepdims: L[False] = False,
 ) -> TtestResult[onp.Array2D[np.float64]]: ...
 @overload  # 3d ~T
-def ttest_ind(
-    a: onp.ToArrayStrict3D[_AnyFloatSub64T, _AnyFloatSub64T],
-    b: onp.ToArrayStrict3D[_AnyFloatSub64T, _AnyFloatSub64T],
+def ttest_ind[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayStrict3D[FloatT, FloatT],
+    b: onp.ToArrayStrict3D[FloatT, FloatT],
     *,
     axis: int = 0,
     equal_var: bool = True,
@@ -4048,7 +4041,7 @@ def ttest_ind(
     trim: onp.ToFloat = 0,
     method: ResamplingMethod | None = None,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array2D[_AnyFloatSub64T]]: ...
+) -> TtestResult[onp.Array2D[FloatT]]: ...
 @overload  # 3d +floating
 def ttest_ind(
     a: onp.ToFloatStrict3D,
@@ -4089,9 +4082,9 @@ def ttest_ind(  # type: ignore[overload-overlap]
     keepdims: L[True],
 ) -> TtestResult[onp.ArrayND[np.float64]]: ...
 @overload  # nd ~T, axis=None
-def ttest_ind(
-    a: onp.ToArrayND[_AnyFloatSub64T, _AnyFloatSub64T],
-    b: onp.ToArrayND[_AnyFloatSub64T, _AnyFloatSub64T],
+def ttest_ind[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayND[FloatT, FloatT],
+    b: onp.ToArrayND[FloatT, FloatT],
     *,
     axis: None,
     equal_var: bool = True,
@@ -4100,11 +4093,11 @@ def ttest_ind(
     trim: onp.ToFloat = 0,
     method: ResamplingMethod | None = None,
     keepdims: L[False] = False,
-) -> TtestResult[_AnyFloatSub64T]: ...
+) -> TtestResult[FloatT]: ...
 @overload  # nd ~T, keepdims=True
-def ttest_ind(
-    a: onp.ToArrayND[_AnyFloatSub64T, _AnyFloatSub64T],
-    b: onp.ToArrayND[_AnyFloatSub64T, _AnyFloatSub64T],
+def ttest_ind[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayND[FloatT, FloatT],
+    b: onp.ToArrayND[FloatT, FloatT],
     *,
     axis: int | None = 0,
     equal_var: bool = True,
@@ -4113,7 +4106,7 @@ def ttest_ind(
     trim: onp.ToFloat = 0,
     method: ResamplingMethod | None = None,
     keepdims: L[True],
-) -> TtestResult[onp.ArrayND[_AnyFloatSub64T]]: ...
+) -> TtestResult[onp.ArrayND[FloatT]]: ...
 @overload  # nd +floating, axis=None
 def ttest_ind(
     a: onp.ToFloatND,
@@ -4166,15 +4159,15 @@ def ttest_rel(
     keepdims: L[False] = False,
 ) -> TtestResult[np.float64 | Any]: ...
 @overload  # ?d ~T
-def ttest_rel(
-    a: onp.ArrayND[_AnyFloatSub64T, _JustAnyShape],
-    b: onp.ArrayND[_AnyFloatSub64T, _JustAnyShape],
+def ttest_rel[FloatT: np.float32 | np.float16](
+    a: onp.ArrayND[FloatT, _JustAnyShape],
+    b: onp.ArrayND[FloatT, _JustAnyShape],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[_AnyFloatSub64T | Any]: ...
+) -> TtestResult[FloatT | Any]: ...
 @overload  # 1d ~f64
 def ttest_rel(
     a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
@@ -4186,15 +4179,15 @@ def ttest_rel(
     keepdims: L[False] = False,
 ) -> TtestResult[np.float64]: ...
 @overload  # 1d ~T
-def ttest_rel(
-    a: onp.ToArrayStrict1D[_AnyFloatSub64T, _AnyFloatSub64T],
-    b: onp.ToArrayStrict1D[_AnyFloatSub64T, _AnyFloatSub64T],
+def ttest_rel[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayStrict1D[FloatT, FloatT],
+    b: onp.ToArrayStrict1D[FloatT, FloatT],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[_AnyFloatSub64T]: ...
+) -> TtestResult[FloatT]: ...
 @overload  # 1d +floating
 def ttest_rel(
     a: onp.ToFloatStrict1D,
@@ -4216,15 +4209,15 @@ def ttest_rel(
     keepdims: L[False] = False,
 ) -> TtestResult[onp.Array1D[np.float64]]: ...
 @overload  # 2d ~T
-def ttest_rel(
-    a: onp.ToArrayStrict2D[_AnyFloatSub64T, _AnyFloatSub64T],
-    b: onp.ToArrayStrict2D[_AnyFloatSub64T, _AnyFloatSub64T],
+def ttest_rel[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayStrict2D[FloatT, FloatT],
+    b: onp.ToArrayStrict2D[FloatT, FloatT],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array1D[_AnyFloatSub64T]]: ...
+) -> TtestResult[onp.Array1D[FloatT]]: ...
 @overload  # 2d +floating
 def ttest_rel(
     a: onp.ToFloatStrict2D,
@@ -4246,15 +4239,15 @@ def ttest_rel(
     keepdims: L[False] = False,
 ) -> TtestResult[onp.Array2D[np.float64]]: ...
 @overload  # 3d ~T
-def ttest_rel(
-    a: onp.ToArrayStrict3D[_AnyFloatSub64T, _AnyFloatSub64T],
-    b: onp.ToArrayStrict3D[_AnyFloatSub64T, _AnyFloatSub64T],
+def ttest_rel[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayStrict3D[FloatT, FloatT],
+    b: onp.ToArrayStrict3D[FloatT, FloatT],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array2D[_AnyFloatSub64T]]: ...
+) -> TtestResult[onp.Array2D[FloatT]]: ...
 @overload  # 3d +floating
 def ttest_rel(
     a: onp.ToFloatStrict3D,
@@ -4286,25 +4279,25 @@ def ttest_rel(  # type: ignore[overload-overlap]
     keepdims: L[True],
 ) -> TtestResult[onp.ArrayND[np.float64]]: ...
 @overload  # nd ~T, axis=None
-def ttest_rel(
-    a: onp.ToArrayND[_AnyFloatSub64T, _AnyFloatSub64T],
-    b: onp.ToArrayND[_AnyFloatSub64T, _AnyFloatSub64T],
+def ttest_rel[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayND[FloatT, FloatT],
+    b: onp.ToArrayND[FloatT, FloatT],
     axis: None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[_AnyFloatSub64T]: ...
+) -> TtestResult[FloatT]: ...
 @overload  # nd ~T, keepdims=True
-def ttest_rel(
-    a: onp.ToArrayND[_AnyFloatSub64T, _AnyFloatSub64T],
-    b: onp.ToArrayND[_AnyFloatSub64T, _AnyFloatSub64T],
+def ttest_rel[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayND[FloatT, FloatT],
+    b: onp.ToArrayND[FloatT, FloatT],
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
-) -> TtestResult[onp.ArrayND[_AnyFloatSub64T]]: ...
+) -> TtestResult[onp.ArrayND[FloatT]]: ...
 @overload  # nd +floating, axis=None
 def ttest_rel(
     a: onp.ToFloatND,
@@ -4888,15 +4881,15 @@ def brunnermunzel(
 
 #
 @overload  # ?d T@floating
-def combine_pvalues(
-    pvalues: onp.ArrayND[_FloatT, _JustAnyShape],
+def combine_pvalues[FloatT: npc.floating](
+    pvalues: onp.ArrayND[FloatT, _JustAnyShape],
     method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloatND | None = None,
     *,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[_FloatT | onp.ArrayND[_FloatT]]: ...
+) -> SignificanceResult[FloatT | onp.ArrayND[FloatT]]: ...
 @overload  # 1d float
 def combine_pvalues(
     pvalues: Sequence[float],
@@ -4908,15 +4901,15 @@ def combine_pvalues(
     keepdims: L[False] = False,
 ) -> SignificanceResult[np.float64]: ...
 @overload  # 1d T@floating
-def combine_pvalues(
-    pvalues: onp.Array1D[_FloatT],
+def combine_pvalues[FloatT: npc.floating](
+    pvalues: onp.Array1D[FloatT],
     method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloat1D | None = None,
     *,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[_FloatT]: ...
+) -> SignificanceResult[FloatT]: ...
 @overload  # 2d float
 def combine_pvalues(
     pvalues: Sequence[Sequence[float]],
@@ -4928,35 +4921,35 @@ def combine_pvalues(
     keepdims: L[False] = False,
 ) -> SignificanceResult[onp.Array1D[np.float64]]: ...
 @overload  # 2d T@floating
-def combine_pvalues(
-    pvalues: onp.Array2D[_FloatT],
+def combine_pvalues[FloatT: npc.floating](
+    pvalues: onp.Array2D[FloatT],
     method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloat1D | onp.ToFloat2D | None = None,
     *,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[onp.Array1D[_FloatT]]: ...
+) -> SignificanceResult[onp.Array1D[FloatT]]: ...
 @overload  # Nd T@floating
-def combine_pvalues(
-    pvalues: onp.ArrayND[_FloatT],
+def combine_pvalues[FloatT: npc.floating](
+    pvalues: onp.ArrayND[FloatT],
     method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloatND | None = None,
     *,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[_FloatT | onp.ArrayND[_FloatT]]: ...
+) -> SignificanceResult[FloatT | onp.ArrayND[FloatT]]: ...
 @overload  # Nd T@floating, axis=None
-def combine_pvalues(
-    pvalues: onp.ArrayND[_FloatT],
+def combine_pvalues[FloatT: npc.floating](
+    pvalues: onp.ArrayND[FloatT],
     method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloatND | None = None,
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[_FloatT]: ...
+) -> SignificanceResult[FloatT]: ...
 @overload  # Nd float, axis=None
 def combine_pvalues(
     pvalues: onp.SequenceND[float],
@@ -4978,15 +4971,15 @@ def combine_pvalues(
     keepdims: L[False] = False,
 ) -> SignificanceResult[np.float64 | Any]: ...
 @overload  # Nd T@floating, keepdims=True
-def combine_pvalues(
-    pvalues: onp.ArrayND[_FloatT, _ShapeT],
+def combine_pvalues[FloatT: npc.floating, ShapeT: tuple[int, ...]](
+    pvalues: onp.ArrayND[FloatT, ShapeT],
     method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloatND | None = None,
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> SignificanceResult[onp.ArrayND[_FloatT, _ShapeT]]: ...
+) -> SignificanceResult[onp.ArrayND[FloatT, ShapeT]]: ...
 @overload  # Nd float, keepdims=True
 def combine_pvalues(
     pvalues: onp.SequenceND[float],
@@ -5060,9 +5053,9 @@ def rankdata(
     a: onp.ToArrayND, method: _RankMethod = "average", *, axis: None = None, nan_policy: NanPolicy = "propagate"
 ) -> onp.Array1D[np.float64]: ...
 @overload  # shape: T, axis: int
-def rankdata(
-    a: onp.Array[_ShapeT], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+def rankdata[ShapeT: tuple[int, ...]](
+    a: onp.Array[ShapeT], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # shape: 1d, axis: int
 def rankdata(
     a: Sequence[complex], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"

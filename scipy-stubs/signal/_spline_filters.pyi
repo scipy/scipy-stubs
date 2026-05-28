@@ -1,5 +1,4 @@
 from typing import Any, overload
-from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -24,25 +23,25 @@ type _SubFloat64 = np.bool | npc.integer | np.float16 | np.float32
 type _FloatQ = np.float64 | np.longdouble
 type _ComplexQ = np.complex128 | np.clongdouble
 
-_FloatDT = TypeVar("_FloatDT", bound=np.float32 | np.float64)
-_InexactDT = TypeVar("_InexactDT", bound=npc.inexact32 | npc.inexact64)
-_InexactQT = TypeVar("_InexactQT", bound=npc.inexact64 | npc.inexact80)
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-
 ###
 
 #
-def spline_filter(Iin: onp.ArrayND[_FloatDT], lmbda: onp.ToFloat = 5.0) -> onp.Array2D[_FloatDT]: ...
+def spline_filter[FloatDT: np.float32 | np.float64](
+    Iin: onp.ArrayND[FloatDT], lmbda: onp.ToFloat = 5.0
+) -> onp.Array2D[FloatDT]: ...
 
 # NOTE: Mypy reports a false positive `overload-overlap` error with `numpy<2.1`.
 # mypy: disable-error-code=overload-overlap
 
 #
 @overload
-def gauss_spline(x: onp.ArrayND[_SubFloat64, _ShapeT], n: onp.ToFloat) -> onp.ArrayND[np.float64, _ShapeT]: ...
+def gauss_spline[ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[_SubFloat64, ShapeT], n: onp.ToFloat
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload
-def gauss_spline(x: onp.ArrayND[_InexactQT, _ShapeT], n: onp.ToFloat) -> onp.ArrayND[_InexactQT, _ShapeT]: ...
+def gauss_spline[InexactQT: npc.inexact64 | npc.inexact80, ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[InexactQT, ShapeT], n: onp.ToFloat
+) -> onp.ArrayND[InexactQT, ShapeT]: ...
 @overload
 def gauss_spline(x: onp.ToFloatStrict1D, n: onp.ToFloat) -> onp.Array1D[_FloatQ]: ...
 @overload
@@ -62,7 +61,9 @@ def gauss_spline(x: onp.ToJustComplexND, n: onp.ToFloat) -> onp.ArrayND[_Complex
 
 #
 @overload
-def cspline1d(signal: onp.ArrayND[_InexactQT], lamb: onp.ToFloat = 0.0) -> onp.Array1D[_InexactQT]: ...
+def cspline1d[InexactQT: npc.inexact64 | npc.inexact80](
+    signal: onp.ArrayND[InexactQT], lamb: onp.ToFloat = 0.0
+) -> onp.Array1D[InexactQT]: ...
 @overload
 def cspline1d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[_FloatQ]: ...
 @overload
@@ -70,7 +71,9 @@ def cspline1d(signal: onp.ToJustComplexND, lamb: onp.ToFloat = 0.0) -> onp.Array
 
 #
 @overload
-def qspline1d(signal: onp.ArrayND[_InexactQT], lamb: onp.ToFloat = 0.0) -> onp.Array1D[_InexactQT]: ...
+def qspline1d[InexactQT: npc.inexact64 | npc.inexact80](
+    signal: onp.ArrayND[InexactQT], lamb: onp.ToFloat = 0.0
+) -> onp.Array1D[InexactQT]: ...
 @overload
 def qspline1d(signal: onp.ToFloatND, lamb: onp.ToFloat = 0.0) -> onp.Array1D[_FloatQ]: ...
 @overload
@@ -93,21 +96,21 @@ def qspline2d(
 ) -> onp.Array1D[np.complex128]: ...
 
 #
-def cspline1d_eval(
-    cj: onp.Array1D[_InexactT], newx: onp.ToFloatND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
-) -> onp.Array1D[_InexactT]: ...
+def cspline1d_eval[InexactT: npc.inexact](
+    cj: onp.Array1D[InexactT], newx: onp.ToFloatND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
+) -> onp.Array1D[InexactT]: ...
 
 #
-def qspline1d_eval(
-    cj: onp.Array1D[_InexactQT], newx: onp.ToFloatND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
-) -> onp.Array1D[_InexactQT]: ...
+def qspline1d_eval[InexactQT: npc.inexact64 | npc.inexact80](
+    cj: onp.Array1D[InexactQT], newx: onp.ToFloatND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
+) -> onp.Array1D[InexactQT]: ...
 
 #
-def symiirorder1(
-    signal: onp.ArrayND[_InexactDT, _ShapeT], c0: onp.ToComplex, z1: onp.ToComplex, precision: onp.ToFloat = -1.0
-) -> onp.ArrayND[_InexactDT, _ShapeT]: ...
+def symiirorder1[InexactDT: npc.inexact32 | npc.inexact64, ShapeT: tuple[int, ...]](
+    signal: onp.ArrayND[InexactDT, ShapeT], c0: onp.ToComplex, z1: onp.ToComplex, precision: onp.ToFloat = -1.0
+) -> onp.ArrayND[InexactDT, ShapeT]: ...
 
 #
-def symiirorder2(
-    input: onp.ArrayND[_FloatDT, _ShapeT], r: onp.ToFloat, omega: onp.ToFloat, precision: onp.ToFloat = -1.0
-) -> onp.ArrayND[_FloatDT, _ShapeT]: ...
+def symiirorder2[FloatDT: np.float32 | np.float64, ShapeT: tuple[int, ...]](
+    input: onp.ArrayND[FloatDT, ShapeT], r: onp.ToFloat, omega: onp.ToFloat, precision: onp.ToFloat = -1.0
+) -> onp.ArrayND[FloatDT, ShapeT]: ...

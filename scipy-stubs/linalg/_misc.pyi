@@ -1,4 +1,4 @@
-from typing import Any, Literal, Never, SupportsIndex, TypeVar, overload
+from typing import Any, Literal, Never, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -13,8 +13,6 @@ type _Inf = float
 type _Order = Literal["fro", "nuc", 0, 1, -1, 2, -2] | _Inf
 type _Axis = SupportsIndex | tuple[SupportsIndex, SupportsIndex]
 type _SubScalar = npc.inexact64 | npc.integer | np.bool
-
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
 type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
@@ -49,22 +47,18 @@ def norm(
     check_finite: bool = True,
 ) -> np.float64: ...
 @overload  # float64-coercible array, keepdims: True (positional)
-def norm(
-    a: onp.ArrayND[_SubScalar, _ShapeT],
-    ord: _Order | None,
-    axis: _Axis | None,
-    keepdims: Literal[True],
-    check_finite: bool = True,
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+def norm[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[_SubScalar, ShapeT], ord: _Order | None, axis: _Axis | None, keepdims: Literal[True], check_finite: bool = True
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # float64-coercible array, keepdims: True (keyword)
-def norm(
-    a: onp.ArrayND[_SubScalar, _ShapeT],
+def norm[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[_SubScalar, ShapeT],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
     keepdims: Literal[True],
     check_finite: bool = True,
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # float64-coercible array-like, keepdims: True (positional)
 def norm(  # type: ignore[overload-overlap]  # mypy false positive
     a: onp.ToArrayND[complex, _SubScalar],
@@ -83,39 +77,39 @@ def norm(  # type: ignore[overload-overlap]  # mypy false positive
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # shaped inexact32 array, keepdims: True (positional)
-def norm(
-    a: onp.ArrayND[npc.inexact32, _ShapeT],
+def norm[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.inexact32, ShapeT],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: Literal[True],
     check_finite: bool = True,
-) -> onp.ArrayND[np.float32, _ShapeT]: ...
+) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # shaped longdouble array, keepdims: True (positional)
-def norm(
-    a: onp.ArrayND[npc.inexact80, _ShapeT],
+def norm[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.inexact80, ShapeT],
     ord: _Order | None,
     axis: _Axis | None,
     keepdims: Literal[True],
     check_finite: bool = True,
-) -> onp.ArrayND[np.longdouble, _ShapeT]: ...
+) -> onp.ArrayND[np.longdouble, ShapeT]: ...
 @overload  # shaped inexact32 array, keepdims: True (keyword)
-def norm(
-    a: onp.ArrayND[npc.inexact32, _ShapeT],
+def norm[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.inexact32, ShapeT],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
     keepdims: Literal[True],
     check_finite: bool = True,
-) -> onp.ArrayND[np.float32, _ShapeT]: ...
+) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # shaped longdouble array, keepdims: True (keyword)
-def norm(
-    a: onp.ArrayND[npc.inexact80, _ShapeT],
+def norm[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.inexact80, ShapeT],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
     keepdims: Literal[True],
     check_finite: bool = True,
-) -> onp.ArrayND[np.longdouble, _ShapeT]: ...
+) -> onp.ArrayND[np.longdouble, ShapeT]: ...
 @overload  # scalar array-like, keepdims: True (positional)
 def norm(
     a: onp.ToArrayND[npc.inexact32, npc.inexact32],

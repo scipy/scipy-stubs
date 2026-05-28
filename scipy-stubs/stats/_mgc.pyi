@@ -1,6 +1,5 @@
 from collections.abc import Callable, Iterable, Sequence
 from typing import Self, TypedDict, override, type_check_only
-from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -11,9 +10,6 @@ from ._typing import BaseBunch
 __all__ = ["multiscale_graphcorr"]
 
 ###
-
-_T = TypeVar("_T")
-_R = TypeVar("_R")
 
 @type_check_only
 class _MGCDict(TypedDict):
@@ -37,12 +33,12 @@ class MGCResult(BaseBunch[np.float64, np.float64, _MGCDict]):
     @override
     def __init__(self, /, statistic: np.float64, pvalue: np.float64, mgc_dict: _MGCDict) -> None: ...  # pyrefly:ignore[bad-override]
 
-def multiscale_graphcorr(
+def multiscale_graphcorr[T, R](
     x: onp.ArrayND[npc.floating | npc.integer | np.bool],
     y: onp.ArrayND[npc.floating | npc.integer | np.bool],
     compute_distance: Callable[[onp.ArrayND[np.float64]], onp.ArrayND[npc.floating]] = ...,
     reps: int = 1000,
-    workers: int | Callable[[Callable[[_T], _R], Iterable[_T]], Sequence[_R]] = 1,
+    workers: int | Callable[[Callable[[T], R], Iterable[T]], Sequence[R]] = 1,
     is_twosamp: bool = False,
     random_state: onp.random.ToRNG | None = None,
 ) -> MGCResult: ...

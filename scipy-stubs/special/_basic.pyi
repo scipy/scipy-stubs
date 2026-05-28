@@ -1,5 +1,4 @@
 from typing import Literal as L, Unpack, overload
-from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
@@ -80,9 +79,9 @@ type _ExtendC = L["complex"]
 type _Extend = L[_Extend0, _ExtendC]
 
 # ruff: noqa: PYI042
-type _tuple2[_T] = tuple[_T, _T]
-type _tuple4[_T0, _T1] = tuple[_T0, _T1, _T1, _T1]
-type _tuple8[_T0, _T1] = tuple[_T0, _T1, _T1, _T1, _T1, _T1, _T1, _T1]
+type _tuple2[T] = tuple[T, T]
+type _tuple4[T0, T1] = tuple[T0, T1, T1, T1]
+type _tuple8[T0, T1] = tuple[T0, T1, T1, T1, T1, T1, T1, T1]
 
 type _i4 = np.int32
 type _i8 = np.int64
@@ -109,22 +108,16 @@ type _f_nd = onp.ArrayND[_f]
 type _c_nd = onp.ArrayND[_c]
 type _fc_nd = onp.ArrayND[_fc]
 
-_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_SCT_iu = TypeVar("_SCT_iu", bound=npc.integer)
-_SCT_f = TypeVar("_SCT_f", bound=npc.floating)
-_SCT_fc = TypeVar("_SCT_fc", bound=npc.inexact)
-
 ###
 
 @overload
-def sinc(x: _SCT_fc) -> _SCT_fc: ...
+def sinc[InexactT: npc.inexact](x: InexactT) -> InexactT: ...
 @overload
 def sinc(x: float | onp.ToInt) -> _f8: ...
 @overload
 def sinc(x: op.JustComplex) -> _c8: ...
 @overload
-def sinc(x: complex) -> _fc8: ...  # type: ignore[overload-cannot-match]  # pyright: ignore[reportOverlappingOverload]s
+def sinc(x: complex) -> _fc8: ...  # type: ignore[overload-cannot-match]  # pyright: ignore[reportOverlappingOverload]
 @overload
 def sinc(x: onp.ToIntND) -> _f8_nd: ...
 @overload
@@ -398,7 +391,7 @@ def factorial(n: onp.ToComplexND, exact: onp.ToFalse = False, *, extend: _Extend
 @overload
 def factorial2(n: int, exact: onp.ToTrue, extend: _Extend0 = "zero") -> int: ...
 @overload
-def factorial2(n: _SCT_iu, exact: onp.ToTrue, extend: _Extend0 = "zero") -> _SCT_iu: ...
+def factorial2[IntegerT: npc.integer](n: IntegerT, exact: onp.ToTrue, extend: _Extend0 = "zero") -> IntegerT: ...
 @overload
 def factorial2(n: onp.ToIntND, exact: onp.ToTrue, extend: _Extend0 = "zero") -> _i_nd: ...
 @overload
@@ -448,9 +441,9 @@ def stirling2(N: onp.ToIntND, K: _ToIntOrND, *, exact: onp.ToFalse = False) -> _
 
 #
 @overload
-def zeta(x: _ToComplexOrND, q: _ToFloatOrND | None, out: _ArrayT) -> _ArrayT: ...
+def zeta[ArrayT: onp.ArrayND](x: _ToComplexOrND, q: _ToFloatOrND | None, out: ArrayT) -> ArrayT: ...
 @overload
-def zeta(x: _ToComplexOrND, q: _ToFloatOrND | None = None, *, out: _ArrayT) -> _ArrayT: ...
+def zeta[ArrayT: onp.ArrayND](x: _ToComplexOrND, q: _ToFloatOrND | None = None, *, out: ArrayT) -> ArrayT: ...
 @overload
 def zeta(x: onp.ToFloat, q: onp.ToFloat | None = None, out: None = None) -> _f8: ...
 @overload
@@ -472,7 +465,7 @@ def zeta(x: onp.ToComplexND, q: _ToFloatOrND | None = None, out: None = None) ->
 
 #
 @overload
-def softplus(x: _ToFloatOrND, *, out: _ArrayT, dtype: None = None, **kwds: Unpack[_KwBase]) -> _ArrayT: ...
+def softplus[ArrayT: onp.ArrayND](x: _ToFloatOrND, *, out: ArrayT, dtype: None = None, **kwds: Unpack[_KwBase]) -> ArrayT: ...
 @overload
 def softplus(x: float | _f8, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> _f8: ...
 @overload
@@ -480,9 +473,13 @@ def softplus(x: onp.ToInt, *, out: None, dtype: None = None, **kwds: Unpack[_KwB
 @overload
 def softplus(x: onp.ToIntND, *, out: None, dtype: None = None, **kwds: Unpack[_KwBase]) -> _f_nd: ...
 @overload
-def softplus(x: _SCT_f, *, out: None = None, dtype: onp.ToDType[_SCT_f] | None = None, **kwds: Unpack[_KwBase]) -> _SCT_f: ...
+def softplus[FloatingT: npc.floating](
+    x: FloatingT, *, out: None = None, dtype: onp.ToDType[FloatingT] | None = None, **kwds: Unpack[_KwBase]
+) -> FloatingT: ...
 @overload
-def softplus(x: onp.ToFloat, *, out: None, dtype: onp.ToDType[_SCT_f], **kwds: Unpack[_KwBase]) -> _SCT_f: ...
+def softplus[FloatingT: npc.floating](
+    x: onp.ToFloat, *, out: None, dtype: onp.ToDType[FloatingT], **kwds: Unpack[_KwBase]
+) -> FloatingT: ...
 @overload
 def softplus(
     x: onp.ToFloat, *, out: None, dtype: onp.AnyFloatingDType | None = None, **kwds: Unpack[_KwBase]
@@ -504,13 +501,13 @@ def softplus(
     x: onp.ToJustFloat64_ND, *, out: None = None, dtype: onp.AnyFloat64DType | None = None, **kwds: Unpack[_KwBase]
 ) -> _f8_nd: ...
 @overload
-def softplus(
-    x: onp.ArrayND[_SCT_f, _ShapeT], *, out: None = None, dtype: onp.ToDType[_SCT_f] | None = None, **kwds: Unpack[_KwBase]
-) -> onp.ArrayND[_SCT_f, _ShapeT]: ...
+def softplus[FloatingT: npc.floating, ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[FloatingT, ShapeT], *, out: None = None, dtype: onp.ToDType[FloatingT] | None = None, **kwds: Unpack[_KwBase]
+) -> onp.ArrayND[FloatingT, ShapeT]: ...
 @overload
-def softplus(
-    x: onp.ToFloatND, *, out: None = None, dtype: onp.ToDType[_SCT_f], **kwds: Unpack[_KwBase]
-) -> onp.ArrayND[_SCT_f]: ...
+def softplus[FloatingT: npc.floating](
+    x: onp.ToFloatND, *, out: None = None, dtype: onp.ToDType[FloatingT], **kwds: Unpack[_KwBase]
+) -> onp.ArrayND[FloatingT]: ...
 @overload
 def softplus(
     x: onp.ToFloatND, *, out: None, dtype: onp.AnyFloatingDType | None = None, **kwds: Unpack[_KwBase]

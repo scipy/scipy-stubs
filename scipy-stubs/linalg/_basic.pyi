@@ -2,7 +2,7 @@
 
 from _typeshed import Incomplete
 from collections.abc import Sequence
-from typing import Any, Literal, SupportsIndex, TypeVar, overload
+from typing import Any, Literal, SupportsIndex, overload
 
 import numpy as np
 import optype as op
@@ -29,8 +29,6 @@ __all__ = [
 ]
 
 ###
-
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 type _Tuple2[T] = tuple[T, T]
 type _COrCR[T] = T | _Tuple2[T]
@@ -1054,41 +1052,41 @@ def inv(
     lower: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # generic shape, as float32
-def inv(
-    a: onp.CanArrayND[np.float32 | npc.number16 | npc.integer8 | np.bool, _ShapeT],
+def inv[ShapeT: tuple[int, ...]](
+    a: onp.CanArrayND[np.float32 | npc.number16 | npc.integer8 | np.bool, ShapeT],
     overwrite_a: bool = False,
     check_finite: bool = True,
     *,
     assume_a: _AssumeA | None = None,
     lower: bool = False,
-) -> onp.ArrayND[np.float32, _ShapeT]: ...
+) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # generic shape, as float64
-def inv(
-    a: onp.CanArrayND[np.float64 | npc.floating80 | npc.integer64 | npc.integer32, _ShapeT],
+def inv[ShapeT: tuple[int, ...]](
+    a: onp.CanArrayND[np.float64 | npc.floating80 | npc.integer64 | npc.integer32, ShapeT],
     overwrite_a: bool = False,
     check_finite: bool = True,
     *,
     assume_a: _AssumeA | None = None,
     lower: bool = False,
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # generic shape, as complex64
-def inv(
-    a: onp.CanArrayND[np.complex64, _ShapeT],
+def inv[ShapeT: tuple[int, ...]](
+    a: onp.CanArrayND[np.complex64, ShapeT],
     overwrite_a: bool = False,
     check_finite: bool = True,
     *,
     assume_a: _AssumeA | None = None,
     lower: bool = False,
-) -> onp.ArrayND[np.complex64, _ShapeT]: ...
+) -> onp.ArrayND[np.complex64, ShapeT]: ...
 @overload  # generic shape, as complex128
-def inv(
-    a: onp.CanArrayND[np.complex128 | npc.complexfloating160, _ShapeT],
+def inv[ShapeT: tuple[int, ...]](
+    a: onp.CanArrayND[np.complex128 | npc.complexfloating160, ShapeT],
     overwrite_a: bool = False,
     check_finite: bool = True,
     *,
     assume_a: _AssumeA | None = None,
     lower: bool = False,
-) -> onp.ArrayND[np.complex128, _ShapeT]: ...
+) -> onp.ArrayND[np.complex128, ShapeT]: ...
 
 # NOTE: The order of the overloads has been carefully chosen to avoid triggering a Pyright bug.
 @overload  # +float64 2d

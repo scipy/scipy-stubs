@@ -1,6 +1,5 @@
 from collections.abc import Sequence
 from typing import Any, Literal, Never, overload
-from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -14,9 +13,6 @@ from ._typing import NanPolicy
 type _JustAnyShape = tuple[Never, ...]
 
 type _co_integer = npc.integer | np.bool  # noqa: PYI042
-
-_FloatingT = TypeVar("_FloatingT", bound=npc.floating)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 ###
 
@@ -82,14 +78,14 @@ def variation(
     keepdims: Literal[False] = False,
 ) -> np.float64: ...
 @overload  # T:nd +float64, keepdims=True
-def variation(
-    a: onp.ArrayND[_co_integer, _ShapeT],
+def variation[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[_co_integer, ShapeT],
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
     keepdims: Literal[True],
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # nd +float64, keepdims=True
 def variation(
     a: onp.ToArrayND[float, _co_integer],
@@ -100,68 +96,68 @@ def variation(
     keepdims: Literal[True],
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # ?d ~T:floating
-def variation(
-    a: onp.ArrayND[_FloatingT, _JustAnyShape],
+def variation[FloatingT: npc.floating](
+    a: onp.ArrayND[FloatingT, _JustAnyShape],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
     keepdims: Literal[False] = False,
-) -> onp.ArrayND[_FloatingT] | Any: ...
+) -> onp.ArrayND[FloatingT] | Any: ...
 @overload  # 1d ~T:floating
-def variation(
-    a: onp.ToArrayStrict1D[_FloatingT, _FloatingT],
+def variation[FloatingT: npc.floating](
+    a: onp.ToArrayStrict1D[FloatingT, FloatingT],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
     keepdims: Literal[False] = False,
-) -> _FloatingT: ...
+) -> FloatingT: ...
 @overload  # 2d ~T:floating
-def variation(
-    a: onp.ToArrayStrict2D[_FloatingT, _FloatingT],
+def variation[FloatingT: npc.floating](
+    a: onp.ToArrayStrict2D[FloatingT, FloatingT],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
     keepdims: Literal[False] = False,
-) -> onp.Array1D[_FloatingT]: ...
+) -> onp.Array1D[FloatingT]: ...
 @overload  # nd ~T:floating
-def variation(
-    a: onp.ToArrayND[_FloatingT, _FloatingT],
+def variation[FloatingT: npc.floating](
+    a: onp.ToArrayND[FloatingT, FloatingT],
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
     keepdims: Literal[False] = False,
-) -> onp.ArrayND[_FloatingT] | Any: ...
+) -> onp.ArrayND[FloatingT] | Any: ...
 @overload  # nd ~T:floating, axis=None
-def variation(
-    a: onp.ToArrayND[_FloatingT, _FloatingT],
+def variation[FloatingT: npc.floating](
+    a: onp.ToArrayND[FloatingT, FloatingT],
     axis: None,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
     keepdims: Literal[False] = False,
-) -> _FloatingT: ...
+) -> FloatingT: ...
 @overload  # T:nd ~T:floating, keepdims=True
-def variation(
-    a: onp.ArrayND[_FloatingT, _ShapeT],
+def variation[FloatingT: npc.floating, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[FloatingT, ShapeT],
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
     keepdims: Literal[True],
-) -> onp.ArrayND[_FloatingT, _ShapeT]: ...
+) -> onp.ArrayND[FloatingT, ShapeT]: ...
 @overload  # nd ~T:floating, keepdims=True
-def variation(
-    a: onp.ToArrayND[_FloatingT, _FloatingT],
+def variation[FloatingT: npc.floating](
+    a: onp.ToArrayND[FloatingT, FloatingT],
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
     keepdims: Literal[True],
-) -> onp.ArrayND[_FloatingT]: ...
+) -> onp.ArrayND[FloatingT]: ...
 @overload  # fallback
 def variation(
     a: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", ddof: int = 0, *, keepdims: bool = False

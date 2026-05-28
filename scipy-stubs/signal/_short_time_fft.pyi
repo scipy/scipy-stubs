@@ -13,7 +13,6 @@ __all__ = ["ShortTimeFFT", "closest_STFT_dual_window"]
 
 ###
 
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=Any, covariant=True)
 
 type _PadType = Literal["zeros", "edge", "even", "odd"]
@@ -361,14 +360,14 @@ class ShortTimeFFT(Generic[_InexactT_co]):
     ) -> tuple[float, float, float, float]: ...
 
 #
-def _calc_dual_canonical_window(win: onp.ArrayND[_InexactT], hop: int) -> onp.Array1D[_InexactT]: ...
+def _calc_dual_canonical_window[InexactT: npc.inexact](win: onp.ArrayND[InexactT], hop: int) -> onp.Array1D[InexactT]: ...
 
 #
 @overload
-def closest_STFT_dual_window(
-    win: onp.ArrayND[_InexactT], hop: int, desired_dual: onp.ArrayND[_InexactT] | None = None, *, scaled: onp.ToTrue = True
-) -> tuple[onp.Array1D[_InexactT], _InexactT]: ...
+def closest_STFT_dual_window[InexactT: npc.inexact](
+    win: onp.ArrayND[InexactT], hop: int, desired_dual: onp.ArrayND[InexactT] | None = None, *, scaled: onp.ToTrue = True
+) -> tuple[onp.Array1D[InexactT], InexactT]: ...
 @overload
-def closest_STFT_dual_window(
-    win: onp.ArrayND[_InexactT], hop: int, desired_dual: onp.ArrayND[_InexactT] | None = None, *, scaled: onp.ToFalse
-) -> tuple[onp.Array1D[_InexactT], float]: ...
+def closest_STFT_dual_window[InexactT: npc.inexact](
+    win: onp.ArrayND[InexactT], hop: int, desired_dual: onp.ArrayND[InexactT] | None = None, *, scaled: onp.ToFalse
+) -> tuple[onp.Array1D[InexactT], float]: ...

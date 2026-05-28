@@ -1,6 +1,5 @@
 from collections.abc import MutableSequence, Sequence
 from typing import Any, overload
-from typing_extensions import TypeVar
 
 import numpy as np
 import numpy_typing_compat as nptc
@@ -11,14 +10,12 @@ __all__ = ["cho_factor", "cho_solve", "cho_solve_banded", "cholesky", "cholesky_
 
 ###
 
-_Shape2T = TypeVar("_Shape2T", bound=tuple[int, int, *tuple[int, ...]])
-
 type _as_f32 = np.float32 | np.float16 | npc.integer16 | npc.integer8 | np.bool  # noqa: PYI042
 type _as_f64 = npc.floating64 | npc.floating80 | npc.integer64 | npc.integer32  # noqa: PYI042
 type _as_c64 = np.complex64  # noqa: PYI042
 type _as_c128 = npc.complexfloating160 | npc.complexfloating128  # noqa: PYI042
 
-type _Sequence2D[_T] = Sequence[Sequence[_T]]
+type _Sequence2D[T] = Sequence[Sequence[T]]
 
 ###
 
@@ -26,25 +23,25 @@ type _Sequence2D[_T] = Sequence[Sequence[_T]]
 
 # keep in sync with `cholesky_banded` and `cho_factor`
 @overload  # Nd +f64
-def cholesky(  # type: ignore[overload-overlap]
-    a: nptc.CanArray[_Shape2T, np.dtype[_as_f64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> onp.ArrayND[np.float64, _Shape2T]: ...
+def cholesky[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+    a: nptc.CanArray[Shape2T, np.dtype[_as_f64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float64, Shape2T]: ...
 @overload  # Nd +f32
-def cholesky(
-    a: nptc.CanArray[_Shape2T, np.dtype[_as_f32]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> onp.ArrayND[np.float32, _Shape2T]: ...
+def cholesky[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: nptc.CanArray[Shape2T, np.dtype[_as_f32]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float32, Shape2T]: ...
 @overload  # Nd +c128
-def cholesky(
-    a: nptc.CanArray[_Shape2T, np.dtype[_as_c128]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> onp.ArrayND[np.complex128, _Shape2T]: ...
+def cholesky[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: nptc.CanArray[Shape2T, np.dtype[_as_c128]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.complex128, Shape2T]: ...
 @overload  # Nd ~c64
-def cholesky(
-    a: nptc.CanArray[_Shape2T, np.dtype[_as_c64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> onp.ArrayND[np.complex64, _Shape2T]: ...
+def cholesky[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: nptc.CanArray[Shape2T, np.dtype[_as_c64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.complex64, Shape2T]: ...
 @overload  # Nd ~number
-def cholesky(
-    a: nptc.CanArray[_Shape2T, np.dtype[npc.number]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> onp.ArrayND[Any, _Shape2T]: ...
+def cholesky[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: nptc.CanArray[Shape2T, np.dtype[npc.number]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[Any, Shape2T]: ...
 @overload  # 2d +f64
 def cholesky(
     a: _Sequence2D[float], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
@@ -67,25 +64,25 @@ def cholesky(
 
 # keep in sync with `cholesky` (but swap `lower` and `overwrite_*`)
 @overload  # Nd +f64
-def cholesky_banded(  # type: ignore[overload-overlap]
-    ab: nptc.CanArray[_Shape2T, np.dtype[_as_f64]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
-) -> onp.ArrayND[np.float64, _Shape2T]: ...
+def cholesky_banded[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+    ab: nptc.CanArray[Shape2T, np.dtype[_as_f64]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float64, Shape2T]: ...
 @overload  # Nd +f32
-def cholesky_banded(
-    ab: nptc.CanArray[_Shape2T, np.dtype[_as_f32]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
-) -> onp.ArrayND[np.float32, _Shape2T]: ...
+def cholesky_banded[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    ab: nptc.CanArray[Shape2T, np.dtype[_as_f32]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float32, Shape2T]: ...
 @overload  # Nd +c128
-def cholesky_banded(
-    ab: nptc.CanArray[_Shape2T, np.dtype[_as_c128]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
-) -> onp.ArrayND[np.complex128, _Shape2T]: ...
+def cholesky_banded[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    ab: nptc.CanArray[Shape2T, np.dtype[_as_c128]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.complex128, Shape2T]: ...
 @overload  # Nd ~c64
-def cholesky_banded(
-    ab: nptc.CanArray[_Shape2T, np.dtype[_as_c64]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
-) -> onp.ArrayND[np.complex64, _Shape2T]: ...
+def cholesky_banded[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    ab: nptc.CanArray[Shape2T, np.dtype[_as_c64]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.complex64, Shape2T]: ...
 @overload  # Nd ~number
-def cholesky_banded(
-    ab: nptc.CanArray[_Shape2T, np.dtype[npc.number]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
-) -> onp.ArrayND[Any, _Shape2T]: ...
+def cholesky_banded[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    ab: nptc.CanArray[Shape2T, np.dtype[npc.number]], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
+) -> onp.ArrayND[Any, Shape2T]: ...
 @overload  # 2d +f64
 def cholesky_banded(
     ab: _Sequence2D[float], overwrite_ab: bool = False, lower: bool = False, check_finite: bool = True
@@ -108,25 +105,25 @@ def cholesky_banded(
 
 # keep in sync with `cholesky`
 @overload  # Nd +f64
-def cho_factor(  # type: ignore[overload-overlap]
-    a: nptc.CanArray[_Shape2T, np.dtype[_as_f64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.float64, _Shape2T], bool]: ...
+def cho_factor[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+    a: nptc.CanArray[Shape2T, np.dtype[_as_f64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float64, Shape2T], bool]: ...
 @overload  # Nd +f32
-def cho_factor(
-    a: nptc.CanArray[_Shape2T, np.dtype[_as_f32]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.float32, _Shape2T], bool]: ...
+def cho_factor[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: nptc.CanArray[Shape2T, np.dtype[_as_f32]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float32, Shape2T], bool]: ...
 @overload  # Nd +c128
-def cho_factor(
-    a: nptc.CanArray[_Shape2T, np.dtype[_as_c128]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.complex128, _Shape2T], bool]: ...
+def cho_factor[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: nptc.CanArray[Shape2T, np.dtype[_as_c128]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex128, Shape2T], bool]: ...
 @overload  # Nd ~c64
-def cho_factor(
-    a: nptc.CanArray[_Shape2T, np.dtype[_as_c64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.complex64, _Shape2T], bool]: ...
+def cho_factor[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: nptc.CanArray[Shape2T, np.dtype[_as_c64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex64, Shape2T], bool]: ...
 @overload  # Nd ~number
-def cho_factor(
-    a: nptc.CanArray[_Shape2T, np.dtype[npc.number]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[Any, _Shape2T], bool]: ...
+def cho_factor[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: nptc.CanArray[Shape2T, np.dtype[npc.number]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[Any, Shape2T], bool]: ...
 @overload  # 2d +f64
 def cho_factor(
     a: _Sequence2D[float], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True

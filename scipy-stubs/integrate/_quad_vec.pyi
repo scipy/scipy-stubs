@@ -10,14 +10,6 @@ import optype.numpy.compat as npc
 
 ###
 
-_S = TypeVar("_S")
-_T = TypeVar("_T")
-_VT = TypeVar("_VT", default=Any)
-_NDT_co = TypeVar("_NDT_co", bound=_FloatingND, default=_FloatingND, covariant=True)
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=Any, covariant=True)
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
-
 type _Floating = float | npc.floating
 type _FloatingND = onp.ArrayND[npc.floating] | _Floating
 
@@ -26,9 +18,14 @@ type _Fun[T] = Callable[Concatenate[float, ...], T]
 type _Norm = Literal["max", "2"]
 type _Quadrature = Literal["gk21", "gk15", "trapezoid"]
 
+_VT = TypeVar("_VT", default=Any)
+_NDT_co = TypeVar("_NDT_co", bound=_FloatingND, default=_FloatingND, covariant=True)
+_InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=Any, covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
+
 @type_check_only
 class _DoesMap(Protocol):
-    def __call__(self, func: Callable[[_S], _T], iterable: op.CanIter[op.CanNext[_S]], /) -> op.CanIter[op.CanIterSelf[_T]]: ...
+    def __call__[S, T](self, func: Callable[[S], T], iterable: op.CanIter[op.CanNext[S]], /) -> op.CanIter[op.CanIterSelf[T]]: ...
 
 @type_check_only
 class _InfiniteFunc(Protocol[_NDT_co]):
@@ -147,8 +144,8 @@ def quad_vec(
     args: tuple[object, ...] = (),
 ) -> tuple[onp.Array1D[np.float64], float, _Bunch[np.float64, tuple[int, int]]]: ...
 @overload  # 0d T:inexact
-def quad_vec(
-    f: _Fun[_InexactT],
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[InexactT],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -162,10 +159,10 @@ def quad_vec(
     full_output: Literal[False] = False,
     *,
     args: tuple[object, ...] = (),
-) -> tuple[_InexactT, float]: ...
+) -> tuple[InexactT, float]: ...
 @overload  # 0d T:inexact, full_output=True
-def quad_vec(
-    f: _Fun[_InexactT],
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[InexactT],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -179,10 +176,10 @@ def quad_vec(
     *,
     full_output: Literal[True],
     args: tuple[object, ...] = (),
-) -> tuple[_InexactT, float, _Bunch[_InexactT, tuple[int]]]: ...
+) -> tuple[InexactT, float, _Bunch[InexactT, tuple[int]]]: ...
 @overload  # Nd T:inexact
-def quad_vec(
-    f: _Fun[onp.ArrayND[_InexactT]],
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[onp.ArrayND[InexactT]],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -196,10 +193,10 @@ def quad_vec(
     full_output: Literal[False] = False,
     *,
     args: tuple[object, ...] = (),
-) -> tuple[onp.Array1D[_InexactT], float]: ...
+) -> tuple[onp.Array1D[InexactT], float]: ...
 @overload  # Nd T:inexact, full_output=True
-def quad_vec(
-    f: _Fun[onp.ArrayND[_InexactT]],
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[onp.ArrayND[InexactT]],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -213,7 +210,7 @@ def quad_vec(
     *,
     full_output: Literal[True],
     args: tuple[object, ...] = (),
-) -> tuple[onp.Array1D[_InexactT], float, _Bunch[_InexactT, tuple[int, int]]]: ...
+) -> tuple[onp.Array1D[InexactT], float, _Bunch[InexactT, tuple[int, int]]]: ...
 @overload  # 0d float
 def quad_vec(
     f: _Fun[float],

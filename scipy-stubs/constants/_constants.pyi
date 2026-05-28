@@ -1,4 +1,4 @@
-from typing import Final, Literal, TypeVar, overload
+from typing import Final, Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -165,7 +165,7 @@ __all__ = [
     "zetta",
 ]
 
-_InexactArrayLikeT = TypeVar("_InexactArrayLikeT", bound=npc.inexact | onp.ArrayND[npc.inexact])
+###
 
 type _TempScaleC = Literal["Celsius", "celsius", "C", "c"]
 type _TempScaleK = Literal["Kelvin", "kelvin", "K", "k"]
@@ -365,7 +365,9 @@ kgf: Final = 9.80665
 kilogram_force: Final = kgf
 
 @overload
-def convert_temperature(val: _InexactArrayLikeT, old_scale: _TempScale, new_scale: _TempScale) -> _InexactArrayLikeT: ...
+def convert_temperature[ArrayLikeT: npc.inexact | onp.ArrayND[npc.inexact]](
+    val: ArrayLikeT, old_scale: _TempScale, new_scale: _TempScale
+) -> ArrayLikeT: ...
 @overload
 def convert_temperature(val: onp.ToInt | onp.ToJustFloat64, old_scale: _TempScale, new_scale: _TempScale) -> np.float64: ...
 @overload
@@ -377,7 +379,7 @@ def convert_temperature(val: onp.ToFloatND, old_scale: _TempScale, new_scale: _T
 
 #
 @overload
-def lambda2nu(lambda_: _InexactArrayLikeT) -> _InexactArrayLikeT: ...
+def lambda2nu[ArrayLikeT: npc.inexact | onp.ArrayND[npc.inexact]](lambda_: ArrayLikeT) -> ArrayLikeT: ...
 @overload
 def lambda2nu(lambda_: onp.ToInt | onp.ToJustFloat64) -> np.float64: ...
 @overload
@@ -387,7 +389,7 @@ def lambda2nu(lambda_: onp.ToFloatND) -> onp.ArrayND[npc.floating]: ...
 
 #
 @overload
-def nu2lambda(nu: _InexactArrayLikeT) -> _InexactArrayLikeT: ...
+def nu2lambda[ArrayLikeT: npc.inexact | onp.ArrayND[npc.inexact]](nu: ArrayLikeT) -> ArrayLikeT: ...
 @overload
 def nu2lambda(nu: onp.ToInt | onp.ToJustFloat64) -> np.float64: ...
 @overload
