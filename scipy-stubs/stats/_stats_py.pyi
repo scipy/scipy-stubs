@@ -255,11 +255,21 @@ class AlexanderGovernResult:
 @dataclass
 class QuantileTestResult:
     statistic: float
-    statistic_type: int
+    statistic_type: float  # 1 or 2
     pvalue: float
-    _alternative: list[str]
+    _alternative: Alternative
     _x: onp.ArrayND[_Real0D]
     _p: float
+    _statistic: float
+    _statistic_type: int
+    _pvalue: float
+    _axis: int
+    _axis_none: bool
+    _keepdims: bool
+    _ndim: int
+    _nan_out: bool
+    _xp: ModuleType
+
     def confidence_interval(self, /, confidence_level: float = 0.95) -> float: ...
 
 class SignificanceResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
