@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from types import GenericAlias
 from typing import Any, Final, Generic, Literal, Self, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -29,6 +30,10 @@ class gaussian_kde(Generic[_FloatingT_co]):
     d: Final[int]
     n: Final[int]
 
+    @classmethod
+    def __class_getitem__(cls, arg: object | type, /) -> GenericAlias: ...
+
+    #
     @property
     def weights(self, /) -> onp.Array1D[np.float64]: ...
     @property

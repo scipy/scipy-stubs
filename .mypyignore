@@ -25,7 +25,6 @@ scipy.stats._distribution_infrastructure.Mixture.lmoment
 scipy.stats._distribution_infrastructure.OrderStatisticDistribution._n_domain
 scipy.stats._distribution_infrastructure.OrderStatisticDistribution._r_domain
 scipy.stats._distribution_infrastructure.UnivariateDistribution.lmoment
-scipy.stats._kde.gaussian_kde.__class_getitem__
 scipy.stats._mannwhitneyu.mwu_result_object
 scipy.stats._morestats.ansari
 scipy.stats._morestats.boxcox
@@ -47,7 +46,6 @@ scipy.stats._stats_py.sigmaclip
 scipy.stats._unuran.unuran_wrapper.NumericalInverseHermite.__new__
 scipy.stats._unuran.unuran_wrapper.SimpleRatioUniforms.__new__
 scipy.stats._unuran.unuran_wrapper.TransformedDensityRejection.__new__
-scipy.stats.kde.gaussian_kde.__class_getitem__
 scipy.stats.morestats.ansari
 scipy.stats.morestats.boxcox
 scipy.stats.morestats.boxcox_normmax
