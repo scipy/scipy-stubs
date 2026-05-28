@@ -17,12 +17,5 @@ scipy\.special\._precompute\..*
 # useless __new__
 scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 
-###
-# TODO: 1.18.0rc1
-
-scipy.stats._stats_py.sigmaclip
-scipy.stats.stats.sigmaclip
-
 # https://github.com/scipy/scipy/pull/25240
-scipy.stats._multicomp.DunnettResult.__init__
-scipy.stats._multicomp.DunnettResult.__match_args__
+scipy\.stats\._multicomp\.DunnettResult\.(__init__|__match_args__)
