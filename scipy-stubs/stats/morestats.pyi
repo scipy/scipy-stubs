@@ -66,10 +66,18 @@ def boxcox_llf(
     lmb: object, data: object, *, axis: object = 0, keepdims: object = False, nan_policy: object = "propagate"
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
-def boxcox(x: object, lmbda: object = None, alpha: object = None, optimizer: object = None) -> object: ...
+def boxcox(
+    x: object, lmbda: object = None, alpha: object = None, optimizer: object = None, *, nan_policy: str = "propagate"
+) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def boxcox_normmax(
-    x: object, brack: object = None, method: object = "pearsonr", optimizer: object = None, *, ymax: object = ...
+    x: object,
+    brack: object = None,
+    method: object = "pearsonr",
+    optimizer: object = None,
+    *,
+    ymax: object = ...,
+    nan_policy: str = "propagate",
 ) -> object: ...
 @deprecated("will be removed in SciPy v2.0.0")
 def boxcox_normplot(x: object, la: object, lb: object, plot: object = None, N: object = 80) -> object: ...
