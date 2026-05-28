@@ -31,7 +31,6 @@ scipy.stats._morestats.boxcox
 scipy.stats._morestats.boxcox_normmax
 scipy.stats._morestats.yeojohnson
 scipy.stats._morestats.yeojohnson_normmax
-scipy.stats._multicomp.DunnettResult.__class_getitem__
 scipy.stats._multicomp.DunnettResult.__init__
 scipy.stats._multicomp.DunnettResult.__match_args__
 scipy.stats._probability_distribution._ProbabilityDistribution.lmoment
