@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, ClassVar, Generic, Literal, Never, TypeAlias, TypeAliasType, overload, override, type_check_only
+from typing import Any, ClassVar, Generic, Literal, Never, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -19,18 +19,16 @@ __all__ = ["bsr_array", "bsr_matrix", "isspmatrix_bsr"]
 
 ###
 
-_T = TypeVar("_T")
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
-
-_ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
-_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
-
-_ToData2 = TypeAliasType("_ToData2", tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer]], type_params=(_ScalarT,))
-_ToData3 = TypeAliasType(
-    "_ToData3", tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]], type_params=(_ScalarT,)
+type _ToMatrixPy[T] = Sequence[T] | Sequence[Sequence[T]]
+type _ToMatrix[ScalarT: npc.number | np.bool] = (
+    _spbase[ScalarT] | onp.CanArrayND[ScalarT] | Sequence[onp.CanArrayND[ScalarT]] | _ToMatrixPy[ScalarT]
 )
-_ToData = TypeAliasType("_ToData", _ToData2[_ScalarT] | _ToData3[_ScalarT], type_params=(_ScalarT,))
+
+type _ToData2[ScalarT: npc.number | np.bool] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[npc.integer]]
+type _ToData3[ScalarT: npc.number | np.bool] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]
+type _ToData[ScalarT: npc.number | np.bool] = _ToData2[ScalarT] | _ToData3[ScalarT]
+
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 
 ###
 
@@ -80,7 +78,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __assoc_stacked__(self, /) -> coo_array[_ScalarT_co, tuple[int, int]]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
+    def __assoc_stacked_as__[ScalarT: npc.number | np.bool](self, sctype: ScalarT, /) -> coo_array[ScalarT, tuple[int, int]]: ...
     @override
     @type_check_only
     def __assoc_as_float32__(self, /) -> bsr_array[np.float32]: ...
@@ -271,7 +269,7 @@ class bsr_matrix(_bsr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __assoc_stacked__(self, /) -> coo_matrix[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_matrix[_ScalarT]: ...
+    def __assoc_stacked_as__[ScalarT: npc.number | np.bool](self, sctype: ScalarT, /) -> coo_matrix[ScalarT]: ...
     @override
     @type_check_only
     def __assoc_as_float32__(self, /) -> bsr_matrix[np.float32]: ...

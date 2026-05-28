@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Any, Literal, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import Any, Literal, SupportsIndex, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -7,8 +7,8 @@ import optype.numpy.compat as npc
 
 _T = TypeVar("_T")
 
-_Mode: TypeAlias = Literal["nearest", "wrap", "reflect", "grid-mirror", "mirror", "constant", "grid-wrap", "grid-constant"]
-_ModeCode: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6]
+type _Mode = Literal["nearest", "wrap", "reflect", "grid-mirror", "mirror", "constant", "grid-wrap", "grid-constant"]
+type _ModeCode = Literal[0, 1, 2, 3, 4, 5, 6]
 
 def _extend_mode_to_code(mode: _Mode, is_filter: bool = False) -> _ModeCode: ...
 

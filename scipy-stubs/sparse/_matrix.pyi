@@ -3,7 +3,7 @@
 
 from collections.abc import Sequence
 from types import GenericAlias
-from typing import Any, Generic, Literal as L, Self, SupportsIndex, TypeAlias, TypeAliasType, overload, type_check_only
+from typing import Any, Generic, Literal as L, Self, SupportsIndex, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -21,7 +21,23 @@ from ._dok import dok_matrix
 from ._lil import lil_matrix
 from ._typing import _Format
 
-_T = TypeVar("_T")
+###
+
+type _ToInt8 = np.int8 | np.bool
+type _ToInt = npc.integer | np.bool
+type _ToFloat32 = np.float32 | _ToInt
+type _ToFloat = npc.floating | _ToInt
+type _ToComplex64 = np.complex64 | _ToFloat
+
+type _DualMatrixLike[_T, _ScalarT: npc.number | np.bool] = _T | _ScalarT | _spbase[_ScalarT]
+type _DualArrayLike[_T, _ScalarT: npc.number | np.bool] = (
+    Sequence[Sequence[_T | _ScalarT] | onp.CanArrayND[_ScalarT]] | onp.CanArrayND[_ScalarT]
+)
+
+type _SpMatrixOut[_ScalarT: npc.number | np.bool] = bsr_matrix[_ScalarT] | csc_matrix[_ScalarT] | csr_matrix[_ScalarT]
+
+type _StackedSparseMatrix[_ScalarT: npc.number | np.bool] = coo_matrix[_ScalarT] | csc_matrix[_ScalarT] | csr_matrix[_ScalarT]
+
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 
@@ -30,23 +46,6 @@ _SpMatrixT = TypeVar("_SpMatrixT", bound=spmatrix)
 _SpFromInT = TypeVar("_SpFromInT", bound=spmatrix[npc.number])
 _SpFromFloatT = TypeVar("_SpFromFloatT", bound=spmatrix[npc.inexact])
 _SpFromComplexT = TypeVar("_SpFromComplexT", bound=spmatrix[npc.complexfloating])
-
-_ToInt8: TypeAlias = np.int8 | np.bool
-_ToInt: TypeAlias = npc.integer | np.bool
-_ToFloat32: TypeAlias = np.float32 | _ToInt
-_ToFloat: TypeAlias = npc.floating | _ToInt
-_ToComplex64: TypeAlias = np.complex64 | _ToFloat
-
-_DualMatrixLike = TypeAliasType("_DualMatrixLike", _T | _ScalarT | _spbase[_ScalarT], type_params=(_T, _ScalarT))
-_DualArrayLike = TypeAliasType(
-    "_DualArrayLike",
-    Sequence[Sequence[_T | _ScalarT] | onp.CanArrayND[_ScalarT]] | onp.CanArrayND[_ScalarT],
-    type_params=(_T, _ScalarT),
-)
-
-_SpMatrixOut: TypeAlias = bsr_matrix[_ScalarT] | csc_matrix[_ScalarT] | csr_matrix[_ScalarT]
-
-_StackedSparseMatrix: TypeAlias = coo_matrix[_ScalarT] | csc_matrix[_ScalarT] | csr_matrix[_ScalarT]
 
 ###
 

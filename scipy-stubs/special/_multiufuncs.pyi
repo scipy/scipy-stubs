@@ -1,7 +1,7 @@
 # pyright: reportIncompatibleMethodOverride=false
 
 from collections.abc import Callable, Iterable
-from typing import Any, Final, Literal as L, TypeAlias, overload, override, type_check_only
+from typing import Any, Final, Literal as L, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -20,48 +20,52 @@ __all__ = [
     "sph_legendre_p_all",
 ]
 
+###
+
+type _Complex = np.complex64 | np.complex128  # `clongdouble` isn't supported
+type _ToJustComplex = op.JustComplex | _Complex
+type _ToJustComplexND = onp.CanArrayND[_Complex] | onp.SequenceND[onp.CanArrayND[_Complex]] | onp.SequenceND[_ToJustComplex]
+type _ToJustComplex_D = _ToJustComplex | _ToJustComplexND
+
+type _ToInt_D = onp.ToInt | onp.ToIntND
+type _ToFloat_D = onp.ToFloat | onp.ToFloatND
+type _ToComplex_D = onp.ToComplex | onp.ToComplexND
+
+type _Float1D = onp.Array1D[np.float64]
+type _Float3D = onp.Array3D[np.float64]
+type _Float1_D = onp.Array[onp.AtLeast1D[Any], np.float64]
+type _Float2_D = onp.Array[onp.AtLeast2D[Any], np.float64]
+type _Float3_D = onp.Array[onp.AtLeast3D[Any], np.float64]
+
+type _Complex0D = onp.Array0D[np.complex128]
+type _Complex1D = onp.Array1D[np.complex128]
+type _Complex2D = onp.Array2D[np.complex128]
+type _Complex3D = onp.Array3D[np.complex128]
+type _Complex4D = onp.ArrayND[np.complex128, tuple[int, int, int, int]]
+type _Complex1_D = onp.Array[onp.AtLeast1D[Any], np.complex128]
+type _Complex2_D = onp.Array[onp.AtLeast2D[Any], np.complex128]
+type _Complex3_D = onp.Array[onp.AtLeast3D[Any], np.complex128]
+
+type _Complex01D = tuple[_Complex0D, _Complex1D]
+type _Complex012D = tuple[_Complex0D, _Complex1D, _Complex2D]
+type _Complex23D = tuple[_Complex2D, _Complex3D]
+type _Complex234D = tuple[_Complex2D, _Complex3D, _Complex4D]
+type _Complex12_D = tuple[_Complex1_D, _Complex2_D]
+type _Complex123_D = tuple[_Complex1_D, _Complex2_D, _Complex3_D]
+type _Complex33_D = tuple[_Complex3_D, _Complex3_D]
+type _Complex333_D = tuple[_Complex3_D, _Complex3_D, _Complex3_D]
+
+type _Branch = L[2, 3]
+type _Branch_D = _Branch | onp.SequenceND[_Branch] | onp.CanArrayND[npc.integer]
+
+type _D0 = L[False, 0]
+type _D1 = L[True, 1]
+type _D2 = L[2]
+type _Dn = L[0, 1, 2] | bool | np.bool
+
 _UFuncT_co = TypeVar("_UFuncT_co", bound=Callable[..., object], default=Callable[..., Any], covariant=True)
 
-_Complex: TypeAlias = np.complex64 | np.complex128  # `clongdouble` isn't supported
-_ToJustComplex: TypeAlias = op.JustComplex | _Complex
-_ToJustComplexND: TypeAlias = onp.CanArrayND[_Complex] | onp.SequenceND[onp.CanArrayND[_Complex]] | onp.SequenceND[_ToJustComplex]
-_ToJustComplex_D: TypeAlias = _ToJustComplex | _ToJustComplexND
-
-_ToInt_D: TypeAlias = onp.ToInt | onp.ToIntND
-_ToFloat_D: TypeAlias = onp.ToFloat | onp.ToFloatND
-_ToComplex_D: TypeAlias = onp.ToComplex | onp.ToComplexND
-
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float3D: TypeAlias = onp.Array3D[np.float64]
-_Float1_D: TypeAlias = onp.Array[onp.AtLeast1D[Any], np.float64]
-_Float2_D: TypeAlias = onp.Array[onp.AtLeast2D[Any], np.float64]
-_Float3_D: TypeAlias = onp.Array[onp.AtLeast3D[Any], np.float64]
-
-_Complex0D: TypeAlias = onp.Array0D[np.complex128]
-_Complex1D: TypeAlias = onp.Array1D[np.complex128]
-_Complex2D: TypeAlias = onp.Array2D[np.complex128]
-_Complex3D: TypeAlias = onp.Array3D[np.complex128]
-_Complex4D: TypeAlias = onp.ArrayND[np.complex128, tuple[int, int, int, int]]
-_Complex1_D: TypeAlias = onp.Array[onp.AtLeast1D[Any], np.complex128]
-_Complex2_D: TypeAlias = onp.Array[onp.AtLeast2D[Any], np.complex128]
-_Complex3_D: TypeAlias = onp.Array[onp.AtLeast3D[Any], np.complex128]
-
-_Complex01D: TypeAlias = tuple[_Complex0D, _Complex1D]
-_Complex012D: TypeAlias = tuple[_Complex0D, _Complex1D, _Complex2D]
-_Complex23D: TypeAlias = tuple[_Complex2D, _Complex3D]
-_Complex234D: TypeAlias = tuple[_Complex2D, _Complex3D, _Complex4D]
-_Complex12_D: TypeAlias = tuple[_Complex1_D, _Complex2_D]
-_Complex123_D: TypeAlias = tuple[_Complex1_D, _Complex2_D, _Complex3_D]
-_Complex33_D: TypeAlias = tuple[_Complex3_D, _Complex3_D]
-_Complex333_D: TypeAlias = tuple[_Complex3_D, _Complex3_D, _Complex3_D]
-
-_Branch: TypeAlias = L[2, 3]
-_Branch_D: TypeAlias = _Branch | onp.SequenceND[_Branch] | onp.CanArrayND[npc.integer]
-
-_D0: TypeAlias = L[False, 0]
-_D1: TypeAlias = L[True, 1]
-_D2: TypeAlias = L[2]
-_Dn: TypeAlias = L[0, 1, 2] | bool | np.bool
+###
 
 class MultiUFunc:  # undocumented
     @property

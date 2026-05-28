@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Any, Literal, SupportsIndex, TypeAlias, overload
+from typing import Any, Literal, SupportsIndex, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -35,12 +35,12 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
 _OutputArrayT = TypeVar("_OutputArrayT", bound=onp.ArrayND[np.bool | npc.integer | npc.floating])
 _OriginScalarT = TypeVar("_OriginScalarT", bound=int | npc.integer, default=int)
 
-_Mode: TypeAlias = Literal["reflect", "constant", "nearest", "mirror", "wrap"]
-_Metric1: TypeAlias = Literal["euclidean"]
-_Metric2: TypeAlias = Literal["taxicab", "cityblock", "manhattan"]
-_Metric3: TypeAlias = Literal["chessboard"]
+type _Mode = Literal["reflect", "constant", "nearest", "mirror", "wrap"]
+type _Metric1 = Literal["euclidean"]
+type _Metric2 = Literal["taxicab", "cityblock", "manhattan"]
+type _Metric3 = Literal["chessboard"]
 
-_Origin: TypeAlias = int | tuple[int, ...]
+type _Origin = int | tuple[int, ...]
 
 ###
 

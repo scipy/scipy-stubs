@@ -1,17 +1,19 @@
 from collections.abc import Callable
-from typing import Concatenate, Final, Literal, Protocol, TypeAlias, final, type_check_only
+from typing import Concatenate, Final, Literal, Protocol, final, type_check_only
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_VecI32: TypeAlias = onp.Array1D[np.int32]
-_VecF64: TypeAlias = onp.Array1D[np.float64]
+###
+
+type _VecI32 = onp.Array1D[np.int32]
+type _VecF64 = onp.Array1D[np.float64]
 
 # (x, y) -> f
-_FnCallback: TypeAlias = Callable[Concatenate[float, _VecF64, ...], onp.ArrayND[npc.floating]]
+type _FnCallback = Callable[Concatenate[float, _VecF64, ...], onp.ArrayND[npc.floating]]
 # (nr, xold, x, y, con, icomp[, nd]) -> irtn
-_FnSolOut: TypeAlias = Callable[Concatenate[int, float, float, _VecF64, _VecF64, _VecI32, ...], int]
+type _FnSolOut = Callable[Concatenate[int, float, float, _VecF64, _VecF64, _VecI32, ...], int]
 
 @type_check_only
 @final

@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Final, Literal, TypeAlias
+from typing import Final, Literal
 
 import optype.numpy as onp
 import optype.numpy.compat as npc
@@ -9,9 +9,11 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["orthogonality", "projections"]
 
-_ToMatrix: TypeAlias = onp.ToFloat2D | spmatrix | sparray
+###
 
-_Projections: TypeAlias = tuple[
+type _ToMatrix = onp.ToFloat2D | spmatrix | sparray
+
+type _Projections = tuple[
     Callable[[onp.ToFloat1D], onp.ToFloat1D],
     Callable[[onp.ToFloat1D], onp.ToFloat1D],
     Callable[[onp.ToFloat1D], onp.ToFloat1D],

@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Literal, TypeAlias, TypedDict, Unpack, overload, type_check_only
+from typing import Any, ClassVar, Literal, TypedDict, Unpack, overload, type_check_only
 
 import optype.numpy as onp
 
@@ -8,10 +8,12 @@ from scipy.sparse import coo_array, coo_matrix, sparray, spmatrix
 
 __all__ = ["MMFile", "mminfo", "mmread", "mmwrite"]
 
-_Format: TypeAlias = Literal["coordinate", "array"]
-_Field: TypeAlias = Literal["real", "complex", "pattern", "integer"]
-_Symmetry: TypeAlias = Literal["general", "symmetric", "skew-symmetric", "hermitian"]
-_Info: TypeAlias = tuple[int, int, int, _Format, _Field, _Symmetry]
+###
+
+type _Format = Literal["coordinate", "array"]
+type _Field = Literal["real", "complex", "pattern", "integer"]
+type _Symmetry = Literal["general", "symmetric", "skew-symmetric", "hermitian"]
+type _Info = tuple[int, int, int, _Format, _Field, _Symmetry]
 
 @type_check_only
 class _MMFileKwargs(TypedDict, total=False):

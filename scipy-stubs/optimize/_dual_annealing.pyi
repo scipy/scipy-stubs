@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Concatenate, Literal, TypeAlias
+from typing import Concatenate, Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -10,14 +10,10 @@ from scipy.optimize import OptimizeResult as _OptimizeResult
 
 __all__ = ["dual_annealing"]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-
-###
-
 class OptimizeResult(_OptimizeResult):
     success: bool
     status: int
-    x: _Float1D
+    x: onp.Array1D[np.float64]
     fun: float
     nit: int
     nfev: int
@@ -26,7 +22,7 @@ class OptimizeResult(_OptimizeResult):
     message: str
 
 def dual_annealing(
-    func: Callable[Concatenate[_Float1D, ...], onp.ToFloat],
+    func: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat],
     bounds: Bounds | tuple[onp.ToFloat1D, onp.ToFloat1D] | onp.ToFloat2D,
     args: tuple[object, ...] = (),
     maxiter: onp.ToJustInt = 1_000,
@@ -38,7 +34,7 @@ def dual_annealing(
     maxfun: onp.ToFloat = 10_000_000.0,
     rng: onp.random.ToRNG | None = None,
     no_local_search: bool = False,
-    callback: Callable[[_Float1D, float, Literal[0, 1, 2]], bool | None] | None = None,
+    callback: Callable[[onp.Array1D[np.float64], float, Literal[0, 1, 2]], bool | None] | None = None,
     x0: onp.ToFloat1D | None = None,
     *,
     seed: onp.random.ToRNG | None = None,

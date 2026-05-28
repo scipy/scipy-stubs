@@ -1,4 +1,4 @@
-from typing import Any, TypeAlias, overload
+from typing import Any, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -18,10 +18,11 @@ __all__ = [
     "symiirorder2",
 ]
 
-_SubFloat64: TypeAlias = np.bool | npc.integer | np.float16 | np.float32
+###
 
-_FloatQ: TypeAlias = np.float64 | np.longdouble
-_ComplexQ: TypeAlias = np.complex128 | np.clongdouble
+type _SubFloat64 = np.bool | npc.integer | np.float16 | np.float32
+type _FloatQ = np.float64 | np.longdouble
+type _ComplexQ = np.complex128 | np.clongdouble
 
 _FloatDT = TypeVar("_FloatDT", bound=np.float32 | np.float64)
 _InexactDT = TypeVar("_InexactDT", bound=npc.inexact32 | npc.inexact64)

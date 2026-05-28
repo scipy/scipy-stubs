@@ -1,5 +1,5 @@
 from collections.abc import Callable, Generator, Sequence
-from typing import Concatenate, Final, Generic, Protocol, SupportsIndex, TypeAlias, type_check_only
+from typing import Concatenate, Final, Generic, Protocol, SupportsIndex, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -10,16 +10,18 @@ import optype.numpy.compat as npc
 from ._vertex import VertexBase, VertexCacheBase
 from scipy.optimize._typing import Constraints
 
-_Floats: TypeAlias = onp.ToFloat
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_FloatingND: TypeAlias = onp.ArrayND[npc.floating | npc.integer]
+###
 
-_Fun0D: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat]
-_Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]
+type _Floats = onp.ToFloat
+type _Float1D = onp.Array1D[np.float64]
+type _FloatingND = onp.ArrayND[npc.floating | npc.integer]
 
-_Location: TypeAlias = _FloatingND | Sequence[float]
-_Bounds: TypeAlias = _FloatingND | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
-_Symmetry: TypeAlias = onp.ArrayND[npc.integer] | op.CanGetitem[int, SupportsIndex]
+type _Fun0D = Callable[Concatenate[_Float1D, ...], onp.ToFloat]
+type _Fun1D = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]
+
+type _Location = _FloatingND | Sequence[float]
+type _Bounds = _FloatingND | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
+type _Symmetry = onp.ArrayND[npc.integer] | op.CanGetitem[int, SupportsIndex]
 
 _HT = TypeVar("_HT", bound=VertexCacheBase, default=VertexCacheBase)
 

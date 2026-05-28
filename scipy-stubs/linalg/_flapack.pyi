@@ -1,23 +1,23 @@
 from _typeshed import Incomplete
 from collections.abc import Callable
-from typing import Final, TypeAlias
+from typing import Final
 
 ###
 
-_Incomplete2: TypeAlias = tuple[Incomplete, Incomplete]
-_Incomplete3: TypeAlias = tuple[Incomplete, Incomplete, Incomplete]
-_Incomplete4: TypeAlias = tuple[Incomplete, Incomplete, Incomplete, Incomplete]
-_Incomplete5: TypeAlias = tuple[Incomplete, Incomplete, Incomplete, Incomplete, Incomplete]
-_Incomplete6: TypeAlias = tuple[Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete]
-_Incomplete7: TypeAlias = tuple[Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete]
-_Incomplete8: TypeAlias = tuple[Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete]
-_Incomplete9: TypeAlias = tuple[
+type _Incomplete2 = tuple[Incomplete, Incomplete]
+type _Incomplete3 = tuple[Incomplete, Incomplete, Incomplete]
+type _Incomplete4 = tuple[Incomplete, Incomplete, Incomplete, Incomplete]
+type _Incomplete5 = tuple[Incomplete, Incomplete, Incomplete, Incomplete, Incomplete]
+type _Incomplete6 = tuple[Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete]
+type _Incomplete7 = tuple[Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete]
+type _Incomplete8 = tuple[Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete]
+type _Incomplete9 = tuple[
     Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete
 ]
-_Incomplete10: TypeAlias = tuple[
+type _Incomplete10 = tuple[
     Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete, Incomplete
 ]
-_Incomplete11: TypeAlias = tuple[
+type _Incomplete11 = tuple[
     Incomplete,
     Incomplete,
     Incomplete,
@@ -30,7 +30,7 @@ _Incomplete11: TypeAlias = tuple[
     Incomplete,
     Incomplete,
 ]
-_Incomplete12: TypeAlias = tuple[
+type _Incomplete12 = tuple[
     Incomplete,
     Incomplete,
     Incomplete,

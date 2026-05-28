@@ -1,14 +1,17 @@
 # scipy/signal/_peak_finding_utils.pyx
-from typing import TypeAlias
 
 import numpy as np
 import optype.numpy as onp
 
 __all__ = ["_local_maxima_1d", "_peak_prominences", "_peak_widths", "_select_by_peak_distance"]
 
-_Array_b_1d: TypeAlias = onp.Array1D[np.bool]
-_Array_n_1d: TypeAlias = onp.Array1D[np.intp]
-_Array_f8_1d: TypeAlias = onp.Array1D[np.float64]
+###
+
+type _Array_b_1d = onp.Array1D[np.bool]
+type _Array_n_1d = onp.Array1D[np.intp]
+type _Array_f8_1d = onp.Array1D[np.float64]
+
+###
 
 class PeakPropertyWarning(RuntimeWarning): ...  # undocumented
 

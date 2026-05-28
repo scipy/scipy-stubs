@@ -1,5 +1,5 @@
 from _typeshed import Incomplete
-from typing import Literal, TypeAlias, overload
+from typing import Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -9,8 +9,8 @@ __all__ = ["_output_len", "upfirdn"]
 
 ###
 
-_FIRMode: TypeAlias = Literal["constant", "symmetric", "reflect", "wrap"]
-_int64_t: TypeAlias = int | np.int64  # noqa: PYI042
+type _FIRMode = Literal["constant", "symmetric", "reflect", "wrap"]
+type _int64_t = int | np.int64  # noqa: PYI042
 
 ###
 

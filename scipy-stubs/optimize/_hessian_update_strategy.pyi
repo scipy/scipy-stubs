@@ -1,13 +1,13 @@
-from typing import Final, Literal, Protocol, TypeAlias, overload
+from typing import Final, Literal, Protocol, overload
 
 import numpy as np
 import optype.numpy as onp
 
 __all__ = ["BFGS", "SR1", "HessianUpdateStrategy"]
 
-_HessApprox: TypeAlias = Literal["hess", "inv_hess"]
-_ExceptionStrategy: TypeAlias = Literal["skip_update", "damp_update"]
-_ToInitScale: TypeAlias = onp.ToFloat | onp.ToFloat2D | Literal["auto"]
+type _HessApprox = Literal["hess", "inv_hess"]
+type _ExceptionStrategy = Literal["skip_update", "damp_update"]
+type _ToInitScale = Literal["auto"] | onp.ToFloat | onp.ToFloat2D
 
 ###
 

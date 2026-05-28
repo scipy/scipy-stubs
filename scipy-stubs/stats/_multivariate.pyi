@@ -2,7 +2,7 @@
 # mypy: disable-error-code=overload-overlap
 
 import types
-from typing import Any, ClassVar, Final, Generic, Literal, Never, SupportsIndex, TypeAlias, overload, override, type_check_only
+from typing import Any, ClassVar, Final, Generic, Literal, Never, SupportsIndex, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -32,7 +32,34 @@ __all__ = [
     "wishart",
 ]
 
-_ScalarT = TypeVar("_ScalarT", bound=np.generic, default=np.float64)
+###
+
+type _Scalar_f = npc.floating
+type _Scalar_uif = npc.integer | _Scalar_f
+type _ToFloatMax2D = onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D
+type _ToJustFloat = float | _Scalar_f
+
+type _Array1ND[ScalarT: np.generic] = onp.Array[tuple[int, *tuple[Any, ...]], ScalarT]
+type _Array2ND[ScalarT: np.generic] = onp.Array[tuple[int, int, *tuple[Any, ...]], ScalarT]
+type _Array3ND[ScalarT: np.generic] = onp.Array[tuple[int, int, int, *tuple[Any, ...]], ScalarT]
+
+type _ScalarOrArray_f8 = np.float64 | _Array1ND[np.float64]
+type _AnyCov = Covariance | onp.ToFloat2D | onp.ToFloat
+
+type _ToIntStrict1D = onp.ToArrayStrict1D[int, npc.integer]
+type _ToIntStrict2D = onp.ToArrayStrict2D[int, npc.integer]
+type _ToIntND = onp.ToArrayND[int, npc.integer]
+
+type _ToFloatStrict1D = onp.ToArrayStrict1D[float, npc.floating]
+type _ToFloatStrict2D = onp.ToArrayStrict2D[float, npc.floating]
+type _ToFloatStrict3D = onp.ToArrayStrict3D[float, npc.floating]
+type _ToFloatND = onp.ToArrayND[float, npc.floating]
+
+# workaround for https://github.com/microsoft/pyright/issues/10232
+type _JustAnyShape = tuple[Never, Never, Never, Never]
+# workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
+
 _ScalarT_co = TypeVar("_ScalarT_co", bound=np.generic, default=np.float64, covariant=True)
 
 # TODO(@jorenham): rename as {}T_co
@@ -41,32 +68,6 @@ _RVF_co = TypeVar("_RVF_co", bound=multi_rv_frozen, covariant=True)
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
-
-_Scalar_f: TypeAlias = npc.floating
-_Scalar_uif: TypeAlias = npc.integer | _Scalar_f
-_ToFloatMax2D: TypeAlias = onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D
-_ToJustFloat: TypeAlias = float | _Scalar_f
-
-_Array1ND: TypeAlias = onp.Array[tuple[int, *tuple[Any, ...]], _ScalarT]
-_Array2ND: TypeAlias = onp.Array[tuple[int, int, *tuple[Any, ...]], _ScalarT]
-_Array3ND: TypeAlias = onp.Array[tuple[int, int, int, *tuple[Any, ...]], _ScalarT]
-
-_ScalarOrArray_f8: TypeAlias = np.float64 | _Array1ND
-_AnyCov: TypeAlias = Covariance | onp.ToFloat2D | onp.ToFloat
-
-_ToIntStrict1D: TypeAlias = onp.ToArrayStrict1D[int, npc.integer]
-_ToIntStrict2D: TypeAlias = onp.ToArrayStrict2D[int, npc.integer]
-_ToIntND: TypeAlias = onp.ToArrayND[int, npc.integer]
-
-_ToFloatStrict1D: TypeAlias = onp.ToArrayStrict1D[float, npc.floating]
-_ToFloatStrict2D: TypeAlias = onp.ToArrayStrict2D[float, npc.floating]
-_ToFloatStrict3D: TypeAlias = onp.ToArrayStrict3D[float, npc.floating]
-_ToFloatND: TypeAlias = onp.ToArrayND[float, npc.floating]
-
-# workaround for https://github.com/microsoft/pyright/issues/10232
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
-# workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
-_WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
 
 @type_check_only
 class rng_mixin:
@@ -981,7 +982,7 @@ class dirichlet_gen(multi_rv_generic):
         alpha: onp.ToFloat1D,
         size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
         random_state: onp.random.ToRNG | None = None,
-    ) -> _Array3ND: ...
+    ) -> _Array3ND[np.float64]: ...
 
 class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
     # pyrefly: ignore [bad-override]
@@ -1012,7 +1013,7 @@ class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
         /,
         size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
         random_state: onp.random.ToRNG | None = None,
-    ) -> _Array3ND: ...
+    ) -> _Array3ND[np.float64]: ...
 
 class wishart_gen(multi_rv_generic):
     def __call__(
@@ -1673,7 +1674,7 @@ class multivariate_t_gen(multi_rv_generic):
         *,
         size: onp.AtLeast2D,
         random_state: onp.random.ToRNG | None = None,
-    ) -> _Array3ND: ...
+    ) -> _Array3ND[np.float64]: ...
     @overload
     def rvs(
         self,
@@ -1683,7 +1684,7 @@ class multivariate_t_gen(multi_rv_generic):
         df: int,
         size: onp.AtLeast2D,
         random_state: onp.random.ToRNG | None = None,
-    ) -> _Array3ND: ...
+    ) -> _Array3ND[np.float64]: ...
 
     #
     def marginal(
@@ -1737,7 +1738,7 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
     @overload
     def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
     @overload
-    def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND: ...
+    def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND[np.float64]: ...
 
     #
     def marginal(self, dimensions: int | onp.ToInt1D) -> multivariate_t_frozen: ...
@@ -1749,13 +1750,13 @@ class multivariate_hypergeom_gen(multi_rv_generic):
     ) -> multivariate_hypergeom_frozen: ...
     def logpmf(self, /, x: onp.ToFloatND, m: onp.ToJustIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _ScalarOrArray_f8: ...
     def pmf(self, /, x: onp.ToFloatND, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _ScalarOrArray_f8: ...
-    def mean(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _Array1ND: ...
-    def var(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _Array1ND: ...
-    def cov(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _Array2ND: ...
+    def mean(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _Array1ND[np.float64]: ...
+    def var(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _Array1ND[np.float64]: ...
+    def cov(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _Array2ND[np.float64]: ...
     @overload
     def rvs(
         self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND, size: tuple[()], random_state: onp.random.ToRNG | None = None
-    ) -> _Array1ND: ...
+    ) -> _Array1ND[np.float64]: ...
     @overload
     def rvs(
         self,
@@ -1764,21 +1765,21 @@ class multivariate_hypergeom_gen(multi_rv_generic):
         n: onp.ToJustInt | onp.ToJustIntND,
         size: int | onp.AtLeast1D | None = None,
         random_state: onp.random.ToRNG | None = None,
-    ) -> _Array2ND: ...
+    ) -> _Array2ND[np.float64]: ...
 
 class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen]):
     def __init__(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND, seed: onp.random.ToRNG | None = None) -> None: ...
     def logpmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def pmf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
-    def mean(self, /) -> _Array1ND: ...
-    def var(self, /) -> _Array1ND: ...
-    def cov(self, /) -> _Array2ND: ...
+    def mean(self, /) -> _Array1ND[np.float64]: ...
+    def var(self, /) -> _Array1ND[np.float64]: ...
+    def cov(self, /) -> _Array2ND[np.float64]: ...
     @overload
-    def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> _Array1ND: ...
+    def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> _Array1ND[np.float64]: ...
     @overload
-    def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> _Array2ND: ...
+    def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
 
-_RandomTableRVSMethod: TypeAlias = Literal["boyett", "patefield"]
+type _RandomTableRVSMethod = Literal["boyett", "patefield"]
 
 class random_table_gen(multi_rv_generic):
     def __call__(
@@ -1860,20 +1861,20 @@ class dirichlet_multinomial_gen(multi_rv_generic):
     ) -> dirichlet_multinomial_frozen: ...
     def logpmf(self, /, x: onp.ToIntND, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> _ScalarOrArray_f8: ...
     def pmf(self, /, x: onp.ToIntND, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> _ScalarOrArray_f8: ...
-    def mean(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> _Array1ND: ...
-    def var(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> _Array1ND: ...
-    def cov(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> _Array2ND: ...
+    def mean(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> _Array1ND[np.float64]: ...
+    def var(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> _Array1ND[np.float64]: ...
+    def cov(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND) -> _Array2ND[np.float64]: ...
 
 class dirichlet_multinomial_frozen(multi_rv_frozen[dirichlet_multinomial_gen]):
-    alpha: _Array1ND
+    alpha: _Array1ND[np.float64]
     n: _Array1ND[np.int_]  # broadcasted against alpha
 
     def __init__(self, /, alpha: onp.ToFloatND, n: onp.ToJustIntND, seed: onp.random.ToRNG | None = None) -> None: ...
     def logpmf(self, /, x: onp.ToIntND) -> _ScalarOrArray_f8: ...
     def pmf(self, /, x: onp.ToIntND) -> _ScalarOrArray_f8: ...
-    def mean(self, /) -> _Array1ND: ...
-    def var(self, /) -> _Array1ND: ...
-    def cov(self, /) -> _Array2ND: ...
+    def mean(self, /) -> _Array1ND[np.float64]: ...
+    def var(self, /) -> _Array1ND[np.float64]: ...
+    def cov(self, /) -> _Array2ND[np.float64]: ...
 
 class vonmises_fisher_gen(multi_rv_generic):
     def __call__(
@@ -1889,7 +1890,7 @@ class vonmises_fisher_gen(multi_rv_generic):
         kappa: int = 1,
         size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]] = 1,
         random_state: onp.random.ToRNG | None = None,
-    ) -> _Array2ND: ...
+    ) -> _Array2ND[np.float64]: ...
     def fit(self, /, x: onp.ToFloatND) -> tuple[onp.Array1D[np.float64], float]: ...
 
 class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
@@ -1902,7 +1903,7 @@ class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
         /,
         size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]] = 1,
         random_state: onp.random.ToRNG | None = None,
-    ) -> _Array2ND: ...
+    ) -> _Array2ND[np.float64]: ...
 
 class normal_inverse_gamma_gen(multi_rv_generic):
     def __call__(

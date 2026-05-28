@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Final, Literal, Protocol, TypeAlias, overload, type_check_only
+from typing import Any, Final, Literal, Protocol, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,17 +11,19 @@ from ._typing import Alternative
 
 __all__ = ["ecdf", "logrank"]
 
-_EDFKind: TypeAlias = Literal["cdf", "sf"]
-_CIMethod: TypeAlias = Literal["linear", "log-log"]
+###
 
-_Int1D: TypeAlias = onp.Array1D[np.int_]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
+type _EDFKind = Literal["cdf", "sf"]
+type _CIMethod = Literal["linear", "log-log"]
+
+type _Int1D = onp.Array1D[np.int_]
+type _Float1D = onp.Array1D[np.float64]
 
 _KwargsT = TypeVar("_KwargsT")
 _KwargsT_contra = TypeVar("_KwargsT_contra", contravariant=True)
 _LineT = TypeVar("_LineT")
 
-_SampleData: TypeAlias = onp.ToFloatND | CensoredData[np.float64]
+type _SampleData = onp.ToFloatND | CensoredData[np.float64]
 
 @type_check_only
 class _CanStep(Protocol[_KwargsT_contra, _LineT]):

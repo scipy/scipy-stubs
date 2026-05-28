@@ -1,6 +1,6 @@
 # type-tests for `ndimage/_fourier.pyi`
 
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import numpy.typing as npt
@@ -19,8 +19,8 @@ int_2d: list[list[int]]
 float_2d: list[list[float]]
 complex_2d: list[list[complex]]
 
-_OutputArray: TypeAlias = onp.Array2D[np.complex64]
-_OutputArrayND: TypeAlias = onp.ArrayND[np.complex64]
+type _OutputArray = onp.Array2D[np.complex64]
+type _OutputArrayND = onp.ArrayND[np.complex64]
 output_array: _OutputArray
 output_sctype: type[np.complex64]
 

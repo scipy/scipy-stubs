@@ -1,6 +1,6 @@
 # type-tests for `interpolate/_fitpack_py.pyi`
 
-from typing import LiteralString, TypeAlias, assert_type
+from typing import LiteralString, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -25,13 +25,13 @@ from scipy.interpolate import (
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
-_TCK1D: TypeAlias = tuple[_Float1D, _Float1D, int]
-_TCK2D: TypeAlias = tuple[_Float1D, list[_Float1D], int]
-_OutTCK2: TypeAlias = list[_Float1D | _Float2D | int]
-_OutTCKU1: TypeAlias = tuple[list[_Float1D | list[_Float1D] | int], _Float1D]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
+type _TCK1D = tuple[_Float1D, _Float1D, int]
+type _TCK2D = tuple[_Float1D, list[_Float1D], int]
+type _OutTCK2 = list[_Float1D | _Float2D | int]
+type _OutTCKU1 = tuple[list[_Float1D | list[_Float1D] | int], _Float1D]
 
 tck_1d: _TCK1D
 tck_2d: _TCK2D

@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, Generic, Literal, Self, SupportsIndex, TypeAlias, overload, override, type_check_only
+from typing import Any, Generic, Literal, Self, SupportsIndex, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -16,13 +16,16 @@ from ._typing import _ToShape2D
 
 __all__ = ["isspmatrix_lil", "lil_array", "lil_matrix"]
 
-_T = TypeVar("_T")
+#
+
+type _ToMatrixPy[_T] = list[_T] | list[list[_T]]  # intentionally invariant
+type _ToMatrix[_ScalarT: npc.number | np.bool] = (
+    _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
+)
+type _ToAnyLIL = _ToShape2D | _ToMatrix[npc.number | np.bool]
+
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
-
-_ToMatrixPy: TypeAlias = list[_T] | list[list[_T]]  # intentionally invariant
-_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
-_ToAnyLIL: TypeAlias = _ToShape2D | _ToMatrix[npc.number | np.bool]
 
 ###
 

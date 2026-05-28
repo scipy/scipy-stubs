@@ -1,16 +1,4 @@
-from typing import (
-    Any,
-    ClassVar,
-    Generic,
-    Literal,
-    Never,
-    SupportsIndex,
-    TypeAlias,
-    TypeAliasType,
-    overload,
-    override,
-    type_check_only,
-)
+from typing import Any, ClassVar, Generic, Literal, Never, SupportsIndex, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -27,25 +15,24 @@ from ._typing import _ToShape1D, _ToShape2D
 
 __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 
-_T = TypeVar("_T")
+###
+
+# workaround for the typing-spec non-conformance regarding overload behavior of mypy and pyright
+type _NeitherD = tuple[Never] | tuple[Never, Never]
+
+type _ToMatrixPy[T] = list[T] | list[list[T]]
+type _ToMatrix[ScalarT: npc.number | np.bool] = (
+    _spbase[ScalarT] | onp.CanArrayND[ScalarT] | list[onp.ArrayND[ScalarT]] | _ToMatrixPy[ScalarT]
+)
+
+type _ToData[T] = (
+    tuple[T, tuple[onp.ToJustInt1D, onp.ToJustInt1D]]  # (data, (row_ind, col_ind))
+    | tuple[T, onp.ToJustInt1D, onp.ToJustInt1D]  # (data, indices, indptr)
+)
+
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
-
-# workaround for the typing-spec non-conformance regarding overload behavior of mypy and pyright
-_NeitherD: TypeAlias = tuple[Never] | tuple[Never, Never]
-
-_ToMatrixPy: TypeAlias = list[_T] | list[list[_T]]
-_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | list[onp.ArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
-
-_ToData = TypeAliasType(
-    "_ToData",
-    (
-        tuple[_T, tuple[onp.ToJustInt1D, onp.ToJustInt1D]]  # (data, (row_ind, col_ind))
-        | tuple[_T, onp.ToJustInt1D, onp.ToJustInt1D]  # (data, indices, indptr)
-    ),
-    type_params=(_T,),
-)
 
 ###
 

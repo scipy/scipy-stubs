@@ -1,6 +1,6 @@
 from _typeshed import Incomplete
 from collections.abc import Callable, Iterable, Sequence as Seq
-from typing import Any, Literal, Never, Protocol, TypeAlias, TypeVar, overload, type_check_only
+from typing import Any, Literal, Never, Protocol, TypeVar, overload, type_check_only
 
 import numpy as np
 import optype as op
@@ -41,51 +41,52 @@ __all__ = [
     "vstack",
 ]
 
-_T = TypeVar("_T")
-_SCT = TypeVar("_SCT", bound=_Numeric)
-_SCT0 = TypeVar("_SCT0", bound=_Numeric, default=_Numeric)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]])
+###
 
-_Numeric: TypeAlias = npc.number | np.bool
+type _Numeric = npc.number | np.bool
 
-_ToDType: TypeAlias = type[complex | _Numeric] | np.dtype[_Numeric] | str
+type _ToDType = type[complex | _Numeric] | np.dtype[_Numeric] | str
 
-_SpArray2D: TypeAlias = sparray[_SCT0, tuple[int, int]]
-_COOArray2D: TypeAlias = coo_array[_SCT0, tuple[int, int]]
-_CSRArray2D: TypeAlias = csr_array[_SCT0, tuple[int, int]]
-_DOKArray2D: TypeAlias = dok_array[_SCT0, tuple[int, int]]
+type _SpArray2D[ScalarT: _Numeric] = sparray[ScalarT, tuple[int, int]]
+type _COOArray2D[ScalarT: _Numeric] = coo_array[ScalarT, tuple[int, int]]
+type _CSRArray2D[ScalarT: _Numeric] = csr_array[ScalarT, tuple[int, int]]
+type _DOKArray2D[ScalarT: _Numeric] = dok_array[ScalarT, tuple[int, int]]
 
-_ToArray1D2D: TypeAlias = onp.CanArray[tuple[int] | tuple[int, int], np.dtype[_SCT]] | Seq[_SCT | Seq[_SCT]]
-_ToSpMatrix: TypeAlias = spmatrix[_SCT] | onp.ToArray2D[Never, _SCT]
-_ToSparse2D: TypeAlias = _spbase[_SCT, tuple[int, int]] | onp.ToArray2D[Never, _SCT]
+type _ToArray1D2D[_SCT: _Numeric] = onp.CanArray[tuple[int] | tuple[int, int], np.dtype[_SCT]] | Seq[_SCT | Seq[_SCT]]
+type _ToSpMatrix[_SCT: _Numeric] = spmatrix[_SCT] | onp.ToArray2D[Never, _SCT]
+type _ToSparse2D[_SCT: _Numeric] = _spbase[_SCT, tuple[int, int]] | onp.ToArray2D[Never, _SCT]
 
-_FmtBSR: TypeAlias = Literal["bsr"]
-_FmtCOO: TypeAlias = Literal["coo"]
-_FmtCSC: TypeAlias = Literal["csc"]
-_FmtCSR: TypeAlias = Literal["csr"]
-_FmtDIA: TypeAlias = Literal["dia"]
-_FmtDOK: TypeAlias = Literal["dok"]
-_FmtLIL: TypeAlias = Literal["lil"]
-_FmtNonCOO: TypeAlias = Literal["bsr", "csc", "csr", "dia", "dok", "lil"]
+type _FmtBSR = Literal["bsr"]
+type _FmtCOO = Literal["coo"]
+type _FmtCSC = Literal["csc"]
+type _FmtCSR = Literal["csr"]
+type _FmtDIA = Literal["dia"]
+type _FmtDOK = Literal["dok"]
+type _FmtLIL = Literal["lil"]
+type _FmtNonCOO = Literal["bsr", "csc", "csr", "dia", "dok", "lil"]
 
 # TODO(julvandenbroeck): find a way to separate float and complex
-_ComplexSeq1D2D: TypeAlias = Seq[Seq[complex] | complex]
-_ToComplex1D2D: TypeAlias = onp.CanArray[tuple[int] | tuple[int, int], np.dtype[_Numeric]] | _ComplexSeq1D2D
-_Offsets: TypeAlias = int | Seq[int] | onp.Array1D[npc.integer]
+type _ComplexSeq1D2D = Seq[Seq[complex] | complex]
+type _ToComplex1D2D = onp.CanArray[tuple[int] | tuple[int, int], np.dtype[_Numeric]] | _ComplexSeq1D2D
+type _Offsets = int | Seq[int] | onp.Array1D[npc.integer]
 
-_DataRVS: TypeAlias = Callable[[int], onp.ArrayND[_Numeric]]
+type _DataRVS = Callable[[int], onp.ArrayND[_Numeric]]
 
-_ToBlocks: TypeAlias = Seq[Seq[_T | None]]
-_ToBlocksSpArray: TypeAlias = _ToBlocks[_SpArray2D[_SCT]]
-_ToBlocksCanStackAs: TypeAlias = _ToBlocks[_CanStackAs[_SCT, _T]]
-_ToBlocksUnkown: TypeAlias = _ToBlocksSpArray[_Numeric] | onp.ArrayND[np.object_]
+type _ToBlocks[T] = Seq[Seq[T | None]]
+type _ToBlocksSpArray[ScalarT: _Numeric] = _ToBlocks[_SpArray2D[ScalarT]]
+type _ToBlocksCanStackAs[ScalarT: _Numeric, T] = _ToBlocks[_CanStackAs[ScalarT, T]]
+type _ToBlocksUnkown = _ToBlocksSpArray[_Numeric] | onp.ArrayND[np.object_]
 
-_ToMatsDiag: TypeAlias = Iterable[_spbase[_SCT] | onp.ToArrayND[_SCT]]
-_ToMatsDiagUnknown: TypeAlias = Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]]
+type _ToMatsDiag[ScalarT: _Numeric] = Iterable[_spbase[ScalarT] | onp.ToArrayND[ScalarT]]
+type _ToMatsDiagUnknown = Iterable[_spbase | onp.ArrayND[_Numeric] | complex | Seq[onp.ToComplex] | Seq[onp.ToComplex1D]]
 
 @type_check_only
 class _DataSampler(Protocol):
     def __call__(self, /, *, size: int) -> onp.ArrayND[_Numeric]: ...
+
+_T = TypeVar("_T")
+_SCT = TypeVar("_SCT", bound=_Numeric)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, *tuple[int, ...]])
 
 ###
 #
@@ -637,7 +638,7 @@ def diags_array(
 @overload  # diagonals: <unknown>, format: "coo", dtype: <unknown>
 def diags_array(
     diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: tuple[int, int] | None = None, format: _FmtCOO, dtype: _ToDType
-) -> _COOArray2D: ...
+) -> _COOArray2D[Any]: ...
 @overload  # diagonals: <unknown>, format: "csc", dtype: <unknown>
 def diags_array(
     diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: tuple[int, int] | None = None, format: _FmtCSC, dtype: _ToDType
@@ -645,11 +646,11 @@ def diags_array(
 @overload  # diagonals: <unknown>, format: "csr", dtype: <unknown>
 def diags_array(
     diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: tuple[int, int] | None = None, format: _FmtCSR, dtype: _ToDType
-) -> _CSRArray2D: ...
+) -> _CSRArray2D[Any]: ...
 @overload  # diagonals: <unknown>, format: "dok", dtype: <unknown>
 def diags_array(
     diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: tuple[int, int] | None = None, format: _FmtDOK, dtype: _ToDType
-) -> _DOKArray2D: ...
+) -> _DOKArray2D[Any]: ...
 @overload  # diagonals: <unknown>, format: "lil", dtype: <unknown>
 def diags_array(
     diagonals: _ToComplex1D2D, /, *, offsets: _Offsets = 0, shape: tuple[int, int] | None = None, format: _FmtLIL, dtype: _ToDType
@@ -1473,15 +1474,15 @@ def hstack(blocks: Seq[_CanStackAs[Any, _T]], format: None = None, *, dtype: _To
 @overload  # sparray, format: "bsr", dtype: <unknown>
 def hstack(blocks: Seq[sparray], format: _FmtBSR, dtype: _ToDType) -> bsr_array: ...
 @overload  # sparray, format: "coo", dtype: <unknown>
-def hstack(blocks: Seq[sparray], format: _FmtCOO, dtype: _ToDType) -> _COOArray2D: ...
+def hstack(blocks: Seq[sparray], format: _FmtCOO, dtype: _ToDType) -> _COOArray2D[Any]: ...
 @overload  # sparray, format: "csc", dtype: <unknown>
 def hstack(blocks: Seq[sparray], format: _FmtCSC, dtype: _ToDType) -> csc_array: ...
 @overload  # sparray, format: "csr", dtype: <unknown>
-def hstack(blocks: Seq[sparray], format: _FmtCSR, dtype: _ToDType) -> _CSRArray2D: ...
+def hstack(blocks: Seq[sparray], format: _FmtCSR, dtype: _ToDType) -> _CSRArray2D[Any]: ...
 @overload  # sparray, format: "dia", dtype: <unknown>
 def hstack(blocks: Seq[sparray], format: _FmtDIA, dtype: _ToDType) -> dia_array: ...
 @overload  # sparray, format: "dok", dtype: <unknown>
-def hstack(blocks: Seq[sparray], format: _FmtDOK, dtype: _ToDType) -> _DOKArray2D: ...
+def hstack(blocks: Seq[sparray], format: _FmtDOK, dtype: _ToDType) -> _DOKArray2D[Any]: ...
 @overload  # sparray, format: "lil", dtype: <unknown>
 def hstack(blocks: Seq[sparray], format: _FmtLIL, dtype: _ToDType) -> lil_array: ...
 
@@ -1604,15 +1605,15 @@ def vstack(blocks: Seq[_CanStackAs[Any, _T]], format: None = None, *, dtype: _To
 @overload  # sparray, format: "bsr", dtype: <unknown>
 def vstack(blocks: Seq[sparray], format: _FmtBSR, dtype: _ToDType) -> bsr_array: ...
 @overload  # sparray, format: "coo", dtype: <unknown>
-def vstack(blocks: Seq[sparray], format: _FmtCOO, dtype: _ToDType) -> _COOArray2D: ...
+def vstack(blocks: Seq[sparray], format: _FmtCOO, dtype: _ToDType) -> _COOArray2D[Any]: ...
 @overload  # sparray, format: "csc", dtype: <unknown>
 def vstack(blocks: Seq[sparray], format: _FmtCSC, dtype: _ToDType) -> csc_array: ...
 @overload  # sparray, format: "csr", dtype: <unknown>
-def vstack(blocks: Seq[sparray], format: _FmtCSR, dtype: _ToDType) -> _CSRArray2D: ...
+def vstack(blocks: Seq[sparray], format: _FmtCSR, dtype: _ToDType) -> _CSRArray2D[Any]: ...
 @overload  # sparray, format: "dia", dtype: <unknown>
 def vstack(blocks: Seq[sparray], format: _FmtDIA, dtype: _ToDType) -> dia_array: ...
 @overload  # sparray, format: "dok", dtype: <unknown>
-def vstack(blocks: Seq[sparray], format: _FmtDOK, dtype: _ToDType) -> _DOKArray2D: ...
+def vstack(blocks: Seq[sparray], format: _FmtDOK, dtype: _ToDType) -> _DOKArray2D[Any]: ...
 @overload  # sparray, format: "lil", dtype: <unknown>
 def vstack(blocks: Seq[sparray], format: _FmtLIL, dtype: _ToDType) -> lil_array: ...
 
@@ -1734,15 +1735,15 @@ def block_array(blocks: _ToBlocksCanStackAs[Any, _T], *, format: None = None, dt
 @overload  # blocks: <unknown, unknown>, format: "bsr", dtype: <unknown>
 def block_array(blocks: _ToBlocksUnkown, *, format: _FmtBSR, dtype: _ToDType | None = None) -> bsr_array: ...
 @overload  # blocks: <unknown, unknown>, format: "coo", dtype: <unknown>
-def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCOO, dtype: _ToDType | None = None) -> _COOArray2D: ...
+def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCOO, dtype: _ToDType | None = None) -> _COOArray2D[Any]: ...
 @overload  # blocks: <unknown, unknown>, format: "csc", dtype: <unknown>
 def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCSC, dtype: _ToDType | None = None) -> csc_array: ...
 @overload  # blocks: <unknown, unknown>, format: "csr", dtype: <unknown>
-def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCSR, dtype: _ToDType | None = None) -> _CSRArray2D: ...
+def block_array(blocks: _ToBlocksUnkown, *, format: _FmtCSR, dtype: _ToDType | None = None) -> _CSRArray2D[Any]: ...
 @overload  # blocks: <unknown, unknown>, format: "dia", dtype: <unknown>
 def block_array(blocks: _ToBlocksUnkown, *, format: _FmtDIA, dtype: _ToDType | None = None) -> dia_array: ...
 @overload  # blocks: <unknown, unknown>, format: "dok", dtype: <unknown>
-def block_array(blocks: _ToBlocksUnkown, *, format: _FmtDOK, dtype: _ToDType | None = None) -> _DOKArray2D: ...
+def block_array(blocks: _ToBlocksUnkown, *, format: _FmtDOK, dtype: _ToDType | None = None) -> _DOKArray2D[Any]: ...
 @overload  # blocks: <unknown, unknown>, format: "lil", dtype: <unknown>
 def block_array(blocks: _ToBlocksUnkown, *, format: _FmtLIL, dtype: _ToDType | None = None) -> lil_array: ...
 
@@ -1766,7 +1767,7 @@ def bmat(blocks: _ToBlocksCanStackAs[Any, _T], format: None = None, *, dtype: _T
 @overload  # blocks: <matrix, unknown>, format: <otherwise>, dtype: <unknown>
 def bmat(blocks: _ToBlocks[spmatrix[_Numeric]], format: _Format, *, dtype: _ToDType) -> spmatrix: ...
 @overload  # blocks: <unknown, unknown>, format: <otherwise>, dtype: <unknown>
-def bmat(blocks: _ToBlocksUnkown, format: _Format, *, dtype: _ToDType) -> spmatrix | _SpArray2D: ...
+def bmat(blocks: _ToBlocksUnkown, format: _Format, *, dtype: _ToDType) -> spmatrix | _SpArray2D[Any]: ...
 
 ###
 @overload  # mats: <array, known>, format: <default>, dtype: None
@@ -1908,17 +1909,17 @@ def block_diag(mats: _ToMatsDiagUnknown, format: _FmtLIL, dtype: onp.ToDType[_SC
 @overload  # mats: <unknown, unknown>, format: <default>, dtype: <unknown>
 def block_diag(
     mats: _ToMatsDiagUnknown, format: _FmtCOO | None = None, dtype: _ToDType | None = None
-) -> _COOArray2D | coo_matrix: ...
+) -> _COOArray2D[Any] | coo_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "bsr", dtype: <unknown>
 def block_diag(mats: _ToMatsDiagUnknown, format: _FmtBSR, dtype: _ToDType | None = None) -> bsr_array | bsr_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "csc", dtype: <unknown>
 def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSC, dtype: _ToDType | None = None) -> csc_array | csc_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "csr", dtype: <unknown>
-def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSR, dtype: _ToDType | None = None) -> _CSRArray2D | csr_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtCSR, dtype: _ToDType | None = None) -> _CSRArray2D[Any] | csr_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "dia", dtype: <unknown>
 def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDIA, dtype: _ToDType | None = None) -> dia_array | dia_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "dok", dtype: <unknown>
-def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDOK, dtype: _ToDType | None = None) -> _DOKArray2D | dok_matrix: ...
+def block_diag(mats: _ToMatsDiagUnknown, format: _FmtDOK, dtype: _ToDType | None = None) -> _DOKArray2D[Any] | dok_matrix: ...
 @overload  # mats: <unknown, unknown>, format: "lil", dtype: <unknown>
 def block_diag(mats: _ToMatsDiagUnknown, format: _FmtLIL, dtype: _ToDType | None = None) -> lil_array | lil_matrix: ...
 

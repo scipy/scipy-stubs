@@ -1,6 +1,6 @@
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
-from typing import Any, ClassVar, Generic, Literal, Protocol, TypeAlias, TypeVar, overload, type_check_only
+from typing import Any, ClassVar, Generic, Literal, Protocol, TypeVar, overload, type_check_only
 from typing_extensions import deprecated
 
 import numpy as np
@@ -12,13 +12,16 @@ from ._typing import Alternative
 
 __all__ = ["bootstrap", "monte_carlo_test", "permutation_test"]
 
-_FloatND: TypeAlias = float | np.float64 | onp.Array[Any, np.float64]
+###
+
+type _FloatND = float | np.float64 | onp.Array[Any, np.float64]
+type _BootstrapMethod = Literal["percentile", "basic", "bca", "BCa"]
+type _PermutationType = Literal["independent", "samples", "pairings"]
+
+type _Statistic = Callable[..., onp.ToFloat] | Callable[..., onp.ToFloatND]
+
 _FloatNDT = TypeVar("_FloatNDT", bound=_FloatND, default=Any)
 _DistT = TypeVar("_DistT", bound=onp.ArrayND[np.float64], default=onp.ArrayND[np.float64])
-_BootstrapMethod: TypeAlias = Literal["percentile", "basic", "bca", "BCa"]
-_PermutationType: TypeAlias = Literal["independent", "samples", "pairings"]
-
-_Statistic: TypeAlias = Callable[..., onp.ToFloat] | Callable[..., onp.ToFloatND]
 
 @type_check_only
 class _RVSCallable(Protocol):

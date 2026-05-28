@@ -1,4 +1,4 @@
-from typing import IO, Any, Final, Literal, LiteralString, Protocol, Self, TypeAlias, overload, type_check_only
+from typing import IO, Any, Final, Literal, LiteralString, Protocol, Self, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -10,11 +10,13 @@ from scipy.sparse import csc_array, csc_matrix, sparray, spmatrix
 
 __all__ = ["hb_read", "hb_write"]
 
-_ValueType: TypeAlias = Literal["real", "complex", "pattern", "integer"]
-_Structure: TypeAlias = Literal["symmetric", "unsymmetric", "hermitian", "skewsymmetric", "rectangular"]
-_Storage: TypeAlias = Literal["assembled", "elemental"]
+###
 
-_Real: TypeAlias = npc.integer | np.float32 | np.float64
+type _ValueType = Literal["real", "complex", "pattern", "integer"]
+type _Structure = Literal["symmetric", "unsymmetric", "hermitian", "skewsymmetric", "rectangular"]
+type _Storage = Literal["assembled", "elemental"]
+
+type _Real = npc.integer | np.float32 | np.float64
 
 @type_check_only
 class _HasWidthAndRepeat(Protocol):

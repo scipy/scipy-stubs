@@ -14,18 +14,20 @@
 # See `scipy/sparse/sparsetools/sparsetools.cxx` for more details.
 
 from collections.abc import Sequence
-from typing import Never, TypeAlias
+from typing import Never
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_i: TypeAlias = int | np.int32 | np.int64  # noqa: PYI042
-_l: TypeAlias = int | np.int64  # noqa: PYI042
-_I: TypeAlias = onp.ArrayND[np.int32 | np.int64]
-_T: TypeAlias = onp.ArrayND[npc.number | np.bool]
-_V: TypeAlias = Sequence[_i]
-_W: TypeAlias = Sequence[complex | npc.number | np.bool]
+###
+
+type _i = int | np.int32 | np.int64  # noqa: PYI042
+type _l = int | np.int64  # noqa: PYI042
+type _I = onp.ArrayND[np.int32 | np.int64]
+type _T = onp.ArrayND[npc.number | np.bool]
+type _V = Sequence[_i]
+type _W = Sequence[complex | npc.number | np.bool]
 
 ###
 

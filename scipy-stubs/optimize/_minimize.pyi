@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import Concatenate, Final, Literal, LiteralString, Protocol, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import Concatenate, Final, Literal, LiteralString, Protocol, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -15,28 +15,24 @@ __all__ = ["minimize", "minimize_scalar"]
 
 ###
 
-_T = TypeVar("_T")
-_Float1DT = TypeVar("_Float1DT", bound=_Float1D)
+type _Tuple2[T] = tuple[T, T]
+type _Tuple3[T] = tuple[T, T, T]
+type _Args = tuple[object, ...]
 
-_Tuple2: TypeAlias = tuple[_T, _T]
-_Tuple3: TypeAlias = tuple[_T, _T, _T]
-_Args: TypeAlias = tuple[object, ...]
+type _Floating = float | npc.floating
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
 
-_Floating: TypeAlias = float | npc.floating
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-
-_RT = TypeVar("_RT")
 # NOTE: `ABCPolyBase` is required to work around https://github.com/scipy/scipy-stubs/issues/465
-_Fun0D: TypeAlias = Callable[Concatenate[float, ...], _RT] | Callable[Concatenate[np.float64, ...], _RT] | ABCPolyBase
-_Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], _RT]
-_Fun1Dp: TypeAlias = Callable[Concatenate[_Float1D, _Float1D, ...], _RT]
+type _Fun0D[RT] = Callable[Concatenate[float, ...], RT] | Callable[Concatenate[np.float64, ...], RT] | ABCPolyBase
+type _Fun1D[RT] = Callable[Concatenate[_Float1D, ...], RT]
+type _Fun1Dp[RT] = Callable[Concatenate[_Float1D, _Float1D, ...], RT]
 
-_FDMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
+type _FDMethod = Literal["2-point", "3-point", "cs"]
 
-_ToBracket: TypeAlias = _Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat]
-_ToBound: TypeAlias = _Tuple2[onp.ToFloat]
-_Ignored: TypeAlias = object
+type _ToBracket = _Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat]
+type _ToBound = _Tuple2[onp.ToFloat]
+type _Ignored = object
 
 _MinimizeScalarResultT = TypeVar("_MinimizeScalarResultT", bound=_MinimizeScalarResultBase)
 _MinimizeScalarResultT_co = TypeVar("_MinimizeScalarResultT_co", bound=_MinimizeScalarResultBase, covariant=True)
@@ -185,8 +181,8 @@ class OptimizeResult(_OptimizeResult):
     nhev: int  # requires `hess` or `hessp`
 
 @overload  # identity function with and one parameter, `jac` not truthy
-def minimize(
-    fun: Callable[Concatenate[_Float1DT, ...], _Float1DT],
+def minimize[Float1DT: _Float1D](
+    fun: Callable[Concatenate[Float1DT, ...], Float1DT],
     x0: onp.ToFloat,
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,

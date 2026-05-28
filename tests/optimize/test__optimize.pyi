@@ -1,4 +1,4 @@
-from typing import Any, Literal, TypeAlias, assert_type
+from typing import Any, Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -24,12 +24,12 @@ from scipy.optimize import (
     show_options,
 )
 
-_Float: TypeAlias = float | np.float64
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_AllVecs: TypeAlias = list[onp.Array1D[np.intp] | _Float1D]
-_WarnFlag: TypeAlias = Literal[0, 1, 2, 3, 4]
-_BracketInfo: TypeAlias = tuple[_Float, _Float, _Float, _Float, _Float, _Float, int]
+type _Float = float | np.float64
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _AllVecs = list[onp.Array1D[np.intp] | _Float1D]
+type _WarnFlag = Literal[0, 1, 2, 3, 4]
+type _BracketInfo = tuple[_Float, _Float, _Float, _Float, _Float, _Float, int]
 
 _x0: list[float]
 _arr_1d: _Float1D

@@ -1,10 +1,12 @@
-from typing import TypeAlias
-
 import numpy as np
 
 from scipy import sparse
 
-ScalarType: TypeAlias = np.float32
+###
+
+type ScalarType = np.float32
+
+###
 
 bsr_mat: sparse.bsr_matrix[ScalarType]
 coo_mat: sparse.coo_matrix[ScalarType]

@@ -1,5 +1,5 @@
 # Type tests for scipy.sparse.csgraph._shortest_path
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -7,8 +7,15 @@ import optype.numpy as onp
 import scipy.sparse as sparse
 from scipy.sparse.csgraph import bellman_ford, dijkstra, floyd_warshall, minimum_spanning_tree, shortest_path
 
-ScalarType: TypeAlias = np.float32
+###
+
+type ScalarType = np.float32
+
+###
+
 csr_arr: sparse.csr_array[ScalarType, tuple[int, int]]
+
+###
 
 assert_type(bellman_ford(csr_arr), onp.Array2D[np.float64])
 assert_type(bellman_ford(csr_arr, return_predecessors=True), tuple[onp.Array2D[np.float64], onp.Array2D[np.int32]])

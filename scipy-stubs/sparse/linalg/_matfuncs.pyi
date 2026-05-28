@@ -1,4 +1,4 @@
-from typing import Any, Final, Generic, Literal, Self, SupportsIndex, TypeAlias, override
+from typing import Any, Final, Generic, Literal, Self, SupportsIndex, override
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -10,10 +10,11 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["expm", "inv", "matrix_power"]
 
-_SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool, default=Any, covariant=True)
-_SparseT = TypeVar("_SparseT", bound=_spbase)
+###
 
-_Structure: TypeAlias = Literal["upper_triangular"]
+type _Structure = Literal["upper_triangular"]
+
+_SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 
 ###
 
@@ -33,6 +34,6 @@ class ProductOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     def T(self, /) -> Self: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
     def __init__(self, /, *args: onp.Array2D[_SCT_co] | _spbase, structure: _Structure | None = None) -> None: ...
 
-def inv(A: _SparseT) -> _SparseT: ...
-def expm(A: _SparseT) -> _SparseT: ...
-def matrix_power(A: _SparseT, power: SupportsIndex) -> _SparseT: ...
+def inv[SparseT: _spbase](A: SparseT) -> SparseT: ...
+def expm[SparseT: _spbase](A: SparseT) -> SparseT: ...
+def matrix_power[SparseT: _spbase](A: SparseT, power: SupportsIndex) -> SparseT: ...

@@ -1,5 +1,6 @@
+from _typeshed import Unused
 from collections.abc import Callable
-from typing import Literal, TypeAlias, overload
+from typing import Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,21 +12,21 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["bicg", "bicgstab", "cg", "cgs", "gmres", "qmr"]
 
-_Float: TypeAlias = np.float32 | np.float64
-_Complex: TypeAlias = np.complex64 | np.complex128
+###
 
-_ToInt: TypeAlias = npc.integer | np.bool
-_ToFloat: TypeAlias = _Float | _ToInt
-_ToComplex: TypeAlias = _Complex | _ToFloat
+type _Float = np.float32 | np.float64
+type _Complex = np.complex64 | np.complex128
+
+type _ToInt = npc.integer | np.bool
+type _ToFloat = _Float | _ToInt
+type _ToComplex = _Complex | _ToFloat
+
+type _ToLinearOperator[_ScalarT: npc.number | np.bool] = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
+
+type _Callback[_ScalarT: npc.number | np.bool] = Callable[[onp.Array1D[_ScalarT]], Unused]
 
 _FloatT = TypeVar("_FloatT", bound=_Float, default=np.float64)
 _ComplexT = TypeVar("_ComplexT", bound=_Complex)
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
-
-_ToLinearOperator: TypeAlias = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
-
-_Ignored: TypeAlias = object
-_Callback: TypeAlias = Callable[[onp.Array1D[_ScalarT]], _Ignored]
 
 ###
 
@@ -131,7 +132,7 @@ def gmres(
     restart: int | None = None,
     maxiter: int | None = None,
     M: _ToLinearOperator[_ToFloat] | None = None,
-    callback: Callable[[float], _Ignored] | Callable[[np.float64], _Ignored] | None = None,
+    callback: Callable[[float], Unused] | Callable[[np.float64], Unused] | None = None,
     callback_type: Literal["pr_norm", "legacy"] | None = None,
 ) -> tuple[onp.Array1D[_FloatT], int]: ...
 @overload  # real, callback_type: {"x"}
@@ -159,7 +160,7 @@ def gmres(
     restart: int | None = None,
     maxiter: int | None = None,
     M: _ToLinearOperator[_ToFloat] | None = None,
-    callback: Callable[[float], _Ignored] | Callable[[np.float64], _Ignored] | None = None,
+    callback: Callable[[float], Unused] | Callable[[np.float64], Unused] | None = None,
     callback_type: Literal["pr_norm", "legacy"] | None = None,
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...
 @overload  # complex, callback_type: {"x"}

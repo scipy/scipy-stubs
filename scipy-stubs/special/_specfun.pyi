@@ -1,14 +1,13 @@
 import enum
-from typing import TypeAlias
 
 import numpy as np
 import optype.numpy as onp
 
 ###
 
-_Int1D: TypeAlias = onp.Array1D[np.int32]
-_Double1D: TypeAlias = onp.Array1D[np.float64]
-_CDouble1D: TypeAlias = onp.Array1D[np.complex128]
+type _Int1D = onp.Array1D[np.int32]
+type _Double1D = onp.Array1D[np.float64]
+type _CDouble1D = onp.Array1D[np.complex128]
 
 ###
 

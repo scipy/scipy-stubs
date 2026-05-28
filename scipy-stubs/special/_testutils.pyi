@@ -2,7 +2,7 @@ __all__ = ["FuncData", "assert_func_equal", "with_special_errors"]
 
 from collections.abc import Callable, Generator, Sequence
 from types import ModuleType
-from typing import Any, Final, Generic, TypeAlias, overload
+from typing import Any, Final, Generic, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,11 +11,11 @@ import pytest
 
 ###
 
+type _ResultFunc = Callable[..., object]
+type _FilterFunc = Callable[..., bool]
+
 _FuncT = TypeVar("_FuncT", bound=Callable[..., object])
 _ScalarT_co = TypeVar("_ScalarT_co", bound=np.generic, default=Any, covariant=True)
-
-_ResultFunc: TypeAlias = Callable[..., object]
-_FilterFunc: TypeAlias = Callable[..., bool]
 
 ###
 

@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, ClassVar, Generic, Literal, TypeAlias, overload, override, type_check_only
+from typing import Any, ClassVar, Generic, Literal, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -16,13 +16,13 @@ from ._typing import _ToShape2D
 
 __all__ = ["dia_array", "dia_matrix", "isspmatrix_dia"]
 
-_T = TypeVar("_T")
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
+type _ToMatrixPy[T] = Sequence[T] | Sequence[Sequence[T]]
+type _ToMatrix[ScalarT: npc.number | np.bool] = (
+    _spbase[ScalarT] | onp.CanArrayND[ScalarT] | Sequence[onp.CanArrayND[ScalarT]] | _ToMatrixPy[ScalarT]
+)
+type _ToData[ScalarT: npc.number | np.bool] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[npc.integer]]
 
-_ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
-_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
-_ToData: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[npc.integer]]
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 
 ###
 
@@ -62,7 +62,7 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __assoc_stacked__(self, /) -> coo_array[_ScalarT_co, tuple[int, int]]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
+    def __assoc_stacked_as__[ScalarT: npc.number | np.bool](self, sctype: ScalarT, /) -> coo_array[ScalarT, tuple[int, int]]: ...
     @override
     @type_check_only
     def __assoc_as_float32__(self, /) -> dia_array[np.float32]: ...
@@ -234,7 +234,7 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __assoc_stacked__(self, /) -> coo_matrix[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_matrix[_ScalarT]: ...
+    def __assoc_stacked_as__[ScalarT: npc.number | np.bool](self, sctype: ScalarT, /) -> coo_matrix[ScalarT]: ...
     @override
     @type_check_only
     def __assoc_as_float32__(self, /) -> dia_matrix[np.float32]: ...

@@ -1,6 +1,6 @@
 from collections.abc import Callable, Generator, Iterable, Sequence
 from types import ModuleType
-from typing import Concatenate, Generic, TypeAlias, override
+from typing import Concatenate, Generic, override
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,7 +11,7 @@ _NumberT = TypeVar("_NumberT", bound=npc.number)
 _NumberT_co = TypeVar("_NumberT_co", bound=npc.number, default=np.float64, covariant=True)
 _XPT_co = TypeVar("_XPT_co", default=ModuleType, covariant=True)
 
-_IntegrandFunc: TypeAlias = Callable[Concatenate[onp.Array2D[_NumberT], ...], onp.ArrayND[npc.number]]
+type _IntegrandFunc[NumberT: npc.number] = Callable[Concatenate[onp.Array2D[NumberT], ...], onp.ArrayND[npc.number]]
 
 ###
 

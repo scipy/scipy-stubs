@@ -1,6 +1,6 @@
 # type-tests for `linalg/_solvers.pyi`
 
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -14,8 +14,10 @@ from scipy.linalg import (
     solve_sylvester,
 )
 
-_FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64]
-_ComplexND: TypeAlias = onp.ArrayND[np.complex64 | np.complex128]
+###
+
+type _FloatND = onp.ArrayND[np.float32 | np.float64]
+type _ComplexND = onp.ArrayND[np.complex64 | np.complex128]
 
 ###
 

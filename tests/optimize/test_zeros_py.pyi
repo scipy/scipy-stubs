@@ -1,12 +1,16 @@
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
 
 from scipy.optimize import RootResults, bisect, brenth, brentq, newton, ridder, root_scalar, toms748
 
-_Float: TypeAlias = float | np.float64
-_RR: TypeAlias = RootResults[float | np.float64]
+###
+
+type _Float = float | np.float64
+type _RR = RootResults[float | np.float64]
+
+###
 
 def f(x: float) -> float: ...
 def g(x: onp.Array1D[np.float64]) -> onp.Array1D[np.float64]: ...
@@ -16,6 +20,8 @@ def k(x: float) -> tuple[float, float, float]: ...
 
 arr_1d: onp.Array1D[np.float64]
 arr_2d: onp.Array2D[np.float64]
+
+###
 
 # bisect
 assert_type(bisect(f, 0.0, 1.0), float)

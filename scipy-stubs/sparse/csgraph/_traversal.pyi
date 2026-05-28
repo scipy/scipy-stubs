@@ -1,4 +1,4 @@
-from typing import Final, Literal, TypeAlias, TypeVar, overload
+from typing import Final, Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -7,16 +7,15 @@ import optype.numpy.compat as npc
 from scipy.sparse import csr_array
 from scipy.sparse._base import _spbase
 
-_T = TypeVar("_T")
-_Pair: TypeAlias = tuple[_T, _T]
+###
 
-_Real: TypeAlias = npc.integer | npc.floating
-_Int1D: TypeAlias = onp.Array1D[np.int32]
+type _Pair[T] = tuple[T, T]
 
-_ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
+type _Real = npc.integer | npc.floating
+type _Int1D = onp.Array1D[np.int32]
 
-_RealT = TypeVar("_RealT", bound=_Real)
-_Graph: TypeAlias = onp.CanArrayND[_RealT] | _spbase[_RealT, tuple[int, int]]
+type _ToGraph = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
+type _Graph[RealT: _Real] = onp.CanArrayND[RealT] | _spbase[RealT, tuple[int, int]]
 
 ###
 
@@ -29,13 +28,17 @@ def connected_components(
 
 #
 @overload
-def breadth_first_tree(csgraph: _Graph[_RealT], i_start: int, directed: bool = True) -> csr_array[_RealT, tuple[int, int]]: ...
+def breadth_first_tree[RealT: _Real](
+    csgraph: _Graph[RealT], i_start: int, directed: bool = True
+) -> csr_array[RealT, tuple[int, int]]: ...
 @overload
 def breadth_first_tree(csgraph: _ToGraph, i_start: int, directed: bool = True) -> csr_array[_Real, tuple[int, int]]: ...
 
 #
 @overload
-def depth_first_tree(csgraph: _Graph[_RealT], i_start: int, directed: bool = True) -> csr_array[_RealT, tuple[int, int]]: ...
+def depth_first_tree[RealT: _Real](
+    csgraph: _Graph[RealT], i_start: int, directed: bool = True
+) -> csr_array[RealT, tuple[int, int]]: ...
 @overload
 def depth_first_tree(csgraph: _ToGraph, i_start: int, directed: bool = True) -> csr_array[_Real, tuple[int, int]]: ...
 

@@ -1,4 +1,4 @@
-from typing import Literal, TypeAlias, overload
+from typing import Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -6,14 +6,16 @@ import optype.numpy.compat as npc
 
 from scipy.sparse._base import _spbase
 
-_Int1D: TypeAlias = onp.Array1D[np.int32]
-_Int2D: TypeAlias = onp.Array2D[np.int32]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
+###
 
-_ToGraphArray: TypeAlias = onp.ToFloat2D | _spbase[np.bool | npc.integer | npc.floating]
+type _Int1D = onp.Array1D[np.int32]
+type _Int2D = onp.Array2D[np.int32]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
 
-_ShortestPathMethod: TypeAlias = Literal["auto", "FW", "D", "BF", "J"]
+type _ToGraphArray = onp.ToFloat2D | _spbase[np.bool | npc.integer | npc.floating]
+
+type _ShortestPathMethod = Literal["auto", "FW", "D", "BF", "J"]
 
 ###
 

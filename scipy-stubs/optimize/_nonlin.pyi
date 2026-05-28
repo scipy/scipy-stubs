@@ -3,7 +3,7 @@ import abc
 import types
 from _typeshed import Unused
 from collections.abc import Callable
-from typing import Any, Final, Generic, Literal, Protocol, TypeAliasType, TypedDict, Unpack, overload, override, type_check_only
+from typing import Any, Final, Generic, Literal, Protocol, TypedDict, Unpack, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -50,18 +50,14 @@ type _ResidFunc = (
 _InexactT = TypeVar("_InexactT", bound=_Inexact, default=_Inexact)
 _InexactT_co = TypeVar("_InexactT_co", bound=_Inexact, default=_Inexact, covariant=True)
 
-_ArrayOrSparse = TypeAliasType("_ArrayOrSparse", onp.ArrayND[_InexactT] | _spbase[_InexactT], type_params=(_InexactT,))
-_JacobianLike = TypeAliasType(
-    "_JacobianLike",
-    (
-        Jacobian[_InexactT]
-        | type[Jacobian[_InexactT]]
-        | _SupportsJacobian[_InexactT]
-        | _ArrayOrSparse[_InexactT]
-        | Callable[[onp.Array1D[np.float64]], _ArrayOrSparse[_InexactT]]
-        | Callable[[onp.Array1D[np.complex128]], _ArrayOrSparse[_InexactT]]
-    ),
-    type_params=(_InexactT,),
+type _ArrayOrSparse[_InexactT: _Inexact] = onp.ArrayND[_InexactT] | _spbase[_InexactT]
+type _JacobianLike[_InexactT: _Inexact] = (
+    Jacobian[_InexactT]
+    | type[Jacobian[_InexactT]]
+    | _SupportsJacobian[_InexactT]
+    | _ArrayOrSparse[_InexactT]
+    | Callable[[onp.Array1D[np.float64]], _ArrayOrSparse[_InexactT]]
+    | Callable[[onp.Array1D[np.complex128]], _ArrayOrSparse[_InexactT]]
 )
 
 @type_check_only
@@ -290,7 +286,7 @@ def maxnorm(x: onp.ToComplexND) -> float | np.float64: ...  # undocumented
 def nonlin_solve(
     F: _ResidFunc,
     x0: onp.ToComplexND,
-    jacobian: _JacobianMethod | _JacobianLike = "krylov",
+    jacobian: _JacobianMethod | _JacobianLike[_Inexact] = "krylov",
     iter: onp.ToInt | None = None,
     verbose: bool = False,
     maxiter: onp.ToInt | None = None,
@@ -308,7 +304,7 @@ def nonlin_solve(
 def nonlin_solve(
     F: _ResidFunc,
     x0: onp.ToComplexND,
-    jacobian: _JacobianMethod | _JacobianLike = "krylov",
+    jacobian: _JacobianMethod | _JacobianLike[_Inexact] = "krylov",
     iter: onp.ToInt | None = None,
     verbose: bool = False,
     maxiter: onp.ToInt | None = None,

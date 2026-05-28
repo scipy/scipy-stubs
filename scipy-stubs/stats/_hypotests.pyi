@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, TypeAlias, overload
+from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -22,14 +22,17 @@ __all__ = [
     "tukey_hsd",
 ]
 
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
-_FloatOrND: TypeAlias = float | _FloatND
-_FloatOrNDT = TypeVar("_FloatOrNDT", bound=_FloatOrND, default=Any)
+###
 
-_ToCDF: TypeAlias = str | Callable[Concatenate[float, ...], float | np.float32]
-_ToCDFArgs: TypeAlias = tuple[onp.ToFloat, ...]
-_CV2Method: TypeAlias = Literal["auto", "asymptotic", "exact"]
+type _Float2D = onp.Array2D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
+type _FloatOrND = float | _FloatND
+
+type _ToCDF = str | Callable[Concatenate[float, ...], float | np.float32]
+type _ToCDFArgs = tuple[onp.ToFloat, ...]
+type _CV2Method = Literal["auto", "asymptotic", "exact"]
+
+_FloatOrNDT = TypeVar("_FloatOrNDT", bound=_FloatOrND, default=Any)
 
 ###
 

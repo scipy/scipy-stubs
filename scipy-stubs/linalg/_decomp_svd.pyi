@@ -1,4 +1,4 @@
-from typing import Literal, SupportsIndex, TypeAlias, TypeAliasType, TypeVar, overload
+from typing import Literal, SupportsIndex, TypeVar, overload
 
 import numpy as np
 import optype as op
@@ -7,16 +7,16 @@ import optype.numpy.compat as npc
 
 __all__ = ["diagsvd", "null_space", "orth", "subspace_angles", "svd", "svdvals"]
 
+###
+
 _RealT = TypeVar("_RealT", bound=np.bool | npc.integer | npc.floating)
 _InexactT = TypeVar("_InexactT", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
-_ScalarT = TypeVar("_ScalarT", bound=np.generic)
-_ScalarT1 = TypeVar("_ScalarT1", bound=np.generic)
 
-_SVD_ND = TypeAliasType(
-    "_SVD_ND", tuple[onp.ArrayND[_ScalarT], onp.ArrayND[_ScalarT1], onp.ArrayND[_ScalarT]], type_params=(_ScalarT, _ScalarT1)
-)
+type _SVD_ND[ScalarT1: np.generic, ScalarT2: np.generic] = tuple[
+    onp.ArrayND[ScalarT1], onp.ArrayND[ScalarT2], onp.ArrayND[ScalarT1]
+]
 
-_LapackDriver: TypeAlias = Literal["gesdd", "gesvd"]
+type _LapackDriver = Literal["gesdd", "gesvd"]
 
 ###
 

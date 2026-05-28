@@ -1,5 +1,6 @@
+from _typeshed import Unused
 from collections.abc import Callable, Sequence
-from typing import Final, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Final, Literal, TypedDict, overload, type_check_only
 from typing_extensions import deprecated
 
 import numpy as np
@@ -13,11 +14,10 @@ __all__ = ["linprog", "linprog_terse_callback", "linprog_verbose_callback"]
 
 ###
 
-_Ignored: TypeAlias = object
-_Max3: TypeAlias = Literal[0, 1, 2, 3]
+type _Max3 = Literal[0, 1, 2, 3]
 
-_Int: TypeAlias = int | np.int32 | np.int64
-_Float: TypeAlias = float | np.float64
+type _Int = int | np.int32 | np.int64
+type _Float = float | np.float64
 
 @type_check_only
 class _OptionsCommon(TypedDict, total=False):
@@ -121,7 +121,7 @@ def linprog(
     b_eq: onp.ToFloat1D | None = None,
     bounds: Bound | Sequence[Bound] = (0, None),
     method: Literal["highs"] = "highs",
-    callback: Callable[[OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], Unused] | None = None,
     options: _OptionsHighs | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
@@ -136,7 +136,7 @@ def linprog(
     bounds: Bound | Sequence[Bound] = (0, None),
     *,
     method: Literal["highs-ds"],
-    callback: Callable[[OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], Unused] | None = None,
     options: _OptionsHighsDS | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
@@ -151,7 +151,7 @@ def linprog(
     bounds: Bound | Sequence[Bound] = (0, None),
     *,
     method: Literal["highs-ipm"],
-    callback: Callable[[OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], Unused] | None = None,
     options: _OptionsHighsIPM | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
@@ -167,7 +167,7 @@ def linprog(
     bounds: Bound | Sequence[Bound] = (0, None),
     *,
     method: Literal["interior-point"],
-    callback: Callable[[OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], Unused] | None = None,
     options: _OptionsInteriorPoint | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
@@ -183,7 +183,7 @@ def linprog(
     bounds: Bound | Sequence[Bound] = (0, None),
     *,
     method: Literal["revised simplex"],
-    callback: Callable[[OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], Unused] | None = None,
     options: _OptionsRevisedSimplex | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
@@ -199,7 +199,7 @@ def linprog(
     bounds: Bound | Sequence[Bound] = (0, None),
     *,
     method: Literal["simplex"],
-    callback: Callable[[OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], Unused] | None = None,
     options: _OptionsSimplex | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,
@@ -213,7 +213,7 @@ def linprog(
     b_eq: onp.ToFloat1D | None = None,
     bounds: Bound | Sequence[Bound] = (0, None),
     method: MethodLinprog = "highs",
-    callback: Callable[[OptimizeResult], _Ignored] | None = None,
+    callback: Callable[[OptimizeResult], Unused] | None = None,
     options: _OptionsHighs | None = None,
     x0: onp.ToFloat1D | None = None,
     integrality: _Max3 | Sequence[_Max3] | onp.CanArrayND[npc.integer] | None = None,

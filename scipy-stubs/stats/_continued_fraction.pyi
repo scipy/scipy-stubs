@@ -1,7 +1,7 @@
 from _typeshed import Incomplete
 from collections.abc import Callable
 from types import ModuleType
-from typing import Any, Concatenate, Generic, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import Any, Concatenate, Generic, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import numpy.typing as npt
@@ -12,14 +12,13 @@ from scipy._lib._util import _RichResult
 
 ###
 
-_T = TypeVar("_T", bound=npt.ArrayLike)
+type _FnCoef[T: npt.ArrayLike] = Callable[Concatenate[int, ...], T]
+
 _AT = TypeVar("_AT", bound=npt.ArrayLike)
 _BT = TypeVar("_BT", bound=npt.ArrayLike)
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
-
-_FnCoef: TypeAlias = Callable[Concatenate[int, ...], _T]
 
 @type_check_only
 class _Tolerances(TypedDict, total=False):

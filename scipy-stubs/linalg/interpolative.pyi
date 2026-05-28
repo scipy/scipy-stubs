@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, Final, Literal, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import Any, Final, Literal, SupportsIndex, TypeVar, overload
 from typing_extensions import TypeIs
 
 import numpy as np
@@ -26,8 +26,8 @@ _NumberT = TypeVar("_NumberT", bound=npc.number)
 _ArrayT = TypeVar("_ArrayT", bound=np.ndarray[Any, Any])
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
-_IndexArray: TypeAlias = onp.Array1D[npc.integer] | Sequence[int]
-_ToLinOp: TypeAlias = onp.Array2D[_NumberT] | LinearOperator[_NumberT]
+type _IndexArray = onp.Array1D[npc.integer] | Sequence[int]
+type _ToLinOp[NumberT: npc.number] = onp.Array2D[NumberT] | LinearOperator[NumberT]
 
 ###
 

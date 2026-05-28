@@ -1,11 +1,11 @@
 from _typeshed import Incomplete
 from collections.abc import Callable
 from types import ModuleType
-from typing import Any, Final, Literal, TypeAlias, TypeVar
+from typing import Any, Final, Literal, TypeVar
 
 import optype as op
 
-_KernelFunc: TypeAlias = Callable[[Any, ModuleType], Any]
+type _KernelFunc = Callable[[Any, ModuleType], Any]
 
 _T = TypeVar("_T")
 _ModuleT = TypeVar("_ModuleT", bound=ModuleType)
@@ -16,9 +16,9 @@ _FloatVecT = TypeVar("_FloatVecT")
 _FloatMatT = TypeVar("_FloatMatT")
 _InexactArrT = TypeVar("_InexactArrT")
 
-_IntMat: TypeAlias = Incomplete
+type _IntMat = Incomplete
 
-_KernelName: TypeAlias = Literal[
+type _KernelName = Literal[
     "linear", "thin_plate_spline", "cubic", "quintic", "multiquadric", "inverse_multiquadric", "inverse_quadratic", "gaussian"
 ]
 

@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import Concatenate, Final, Generic, Literal, TypeAlias, overload
+from typing import Concatenate, Final, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -10,16 +10,18 @@ from ._zeros_py import RootResults
 
 __all__ = ["root_scalar"]
 
-_ToFloat2: TypeAlias = tuple[onp.ToFloat, onp.ToFloat]
-_ToFloat3: TypeAlias = tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]
+type _ToFloat2 = tuple[onp.ToFloat, onp.ToFloat]
+type _ToFloat3 = tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]
 
-_RT = TypeVar("_RT", bound=onp.ToFloat | _ToFloat2 | _ToFloat3)
 _RT2_co = TypeVar("_RT2_co", bound=_ToFloat2 | _ToFloat3, default=_ToFloat2 | _ToFloat3, covariant=True)
 
-_Fun: TypeAlias = Callable[Concatenate[float, ...], _RT] | Callable[Concatenate[np.float64, ...], _RT]
-_Fun1: TypeAlias = _Fun[onp.ToFloat]
-_Fun2: TypeAlias = _Fun[_ToFloat2]
-_Fun3: TypeAlias = _Fun[_ToFloat3]
+type _Fun[_RT: onp.ToFloat | _ToFloat2 | _ToFloat3] = (
+    Callable[Concatenate[float, ...], _RT] |
+    Callable[Concatenate[np.float64, ...], _RT]
+)  # fmt: skip
+type _Fun1 = _Fun[onp.ToFloat]
+type _Fun2 = _Fun[_ToFloat2]
+type _Fun3 = _Fun[_ToFloat3]
 
 ###
 

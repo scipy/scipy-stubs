@@ -1,5 +1,5 @@
 from collections.abc import Mapping
-from typing import Any, Literal, Protocol, TypeAlias, overload, type_check_only
+from typing import Any, Literal, Protocol, overload, type_check_only
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
@@ -25,27 +25,28 @@ __all__ = [
     "use_solver",
 ]
 
-_SparseT = TypeVar("_SparseT", bound=_spbase)
+###
+
 _NumberT_contra = TypeVar("_NumberT_contra", bound=npc.number, contravariant=True)
 _InexactT_co = TypeVar("_InexactT_co", bound=np.float32 | np.float64 | np.complex64 | np.complex128, covariant=True)
 
-_PermcSpec: TypeAlias = Literal["COLAMD", "NATURAL", "MMD_ATA", "MMD_AT_PLUS_A"]
+type _PermcSpec = Literal["COLAMD", "NATURAL", "MMD_ATA", "MMD_AT_PLUS_A"]
 
-_ToF32Mat: TypeAlias = _Sparse2D[np.float32] | nptc.CanArray[tuple[Any, ...], np.dtype[np.float32]]
-_ToF64Mat: TypeAlias = _Sparse2D[np.float64 | npc.integer] | onp.ToInt2D | onp.ToJustFloat64_2D
-_ToC64Mat: TypeAlias = _Sparse2D[np.complex64] | nptc.CanArray[tuple[Any, ...], np.dtype[np.complex64]]
-_ToC128Mat: TypeAlias = _Sparse2D[np.complex128] | onp.ToJustComplex128_2D
+type _ToF32Mat = _Sparse2D[np.float32] | nptc.CanArray[tuple[Any, ...], np.dtype[np.float32]]
+type _ToF64Mat = _Sparse2D[np.float64 | npc.integer] | onp.ToInt2D | onp.ToJustFloat64_2D
+type _ToC64Mat = _Sparse2D[np.complex64] | nptc.CanArray[tuple[Any, ...], np.dtype[np.complex64]]
+type _ToC128Mat = _Sparse2D[np.complex128] | onp.ToJustComplex128_2D
 
-_ToFloatMat: TypeAlias = _Sparse2D[npc.floating | npc.integer | np.bool] | onp.ToFloat2D
-_ToFloatMatStrict: TypeAlias = _Sparse2D[npc.floating | npc.integer | np.bool] | onp.ToFloatStrict2D
-_ToComplexMat: TypeAlias = _Sparse2D[npc.complexfloating] | onp.ToJustComplex2D
-_ToInexactMat: TypeAlias = _Sparse2D[Any] | onp.ToComplex128_2D
-_ToInexactMatStrict: TypeAlias = _Sparse2D[Any] | onp.ToComplex128Strict2D
+type _ToFloatMat = _Sparse2D[npc.floating | npc.integer | np.bool] | onp.ToFloat2D
+type _ToFloatMatStrict = _Sparse2D[npc.floating | npc.integer | np.bool] | onp.ToFloatStrict2D
+type _ToComplexMat = _Sparse2D[npc.complexfloating] | onp.ToJustComplex2D
+type _ToInexactMat = _Sparse2D[Any] | onp.ToComplex128_2D
+type _ToInexactMatStrict = _Sparse2D[Any] | onp.ToComplex128Strict2D
 
-_AsF32: TypeAlias = npc.integer8 | npc.number16 | np.int32 | np.float16 | np.float32
-_AsF64: TypeAlias = npc.integer | np.float16 | np.float32 | np.float64
-_AsC64: TypeAlias = npc.integer8 | npc.integer16 | np.int32 | np.float16 | npc.inexact32
-_AsC128: TypeAlias = npc.integer | np.float16 | npc.inexact32 | npc.inexact64
+type _AsF32 = npc.integer8 | npc.number16 | np.int32 | np.float16 | np.float32
+type _AsF64 = npc.integer | np.float16 | np.float32 | np.float64
+type _AsC64 = npc.integer8 | npc.integer16 | np.int32 | np.float16 | npc.inexact32
+type _AsC128 = npc.integer | np.float16 | npc.inexact32 | npc.inexact64
 
 @type_check_only
 class _SuperLU_solve(Protocol[_NumberT_contra, _InexactT_co]):
@@ -74,7 +75,9 @@ def factorized(A: _ToC64Mat) -> _SuperLU_solve[_AsC64, np.complex64]: ...
 
 #
 @overload  # 2d float, sparse 2d
-def spsolve(A: _ToInexactMat, b: _SparseT, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True) -> _SparseT: ...
+def spsolve[SparseT: _spbase](
+    A: _ToInexactMat, b: SparseT, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> SparseT: ...
 @overload  # 2d float, 1d float
 def spsolve(
     A: _ToFloatMat, b: onp.ToFloatStrict1D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True

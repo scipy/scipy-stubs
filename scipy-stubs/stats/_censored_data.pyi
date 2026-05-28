@@ -1,11 +1,15 @@
 from types import GenericAlias
-from typing import Any, Generic, Self, TypeAlias, overload
+from typing import Any, Generic, Self, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
 
 ###
+
+type _LeftCensored[ScalarT: np.float64 | np.complex128] = CensoredData[ScalarT, ScalarT, np.float64, np.float64]
+type _RightCensored[ScalarT: np.float64 | np.complex128] = CensoredData[ScalarT, np.float64, ScalarT, np.float64]
+type _IntervalCensored[ScalarT: np.float64 | np.complex128] = CensoredData[ScalarT, np.float64, np.float64, ScalarT]
 
 _ScalarT = TypeVar("_ScalarT", bound=np.float64 | np.complex128)
 _UncensoredT_co = TypeVar("_UncensoredT_co", bound=np.float64 | np.complex128, default=np.float64 | Any, covariant=True)
@@ -15,10 +19,6 @@ _RightT = TypeVar("_RightT", bound=np.float64 | np.complex128, default=np.float6
 _RightT_co = TypeVar("_RightT_co", bound=np.float64 | np.complex128, default=np.float64 | Any, covariant=True)
 _IntervalT = TypeVar("_IntervalT", bound=np.float64 | np.complex128, default=np.float64)
 _IntervalT_co = TypeVar("_IntervalT_co", bound=np.float64 | np.complex128, default=np.float64 | Any, covariant=True)
-
-_LeftCensored: TypeAlias = CensoredData[_ScalarT, _ScalarT, np.float64, np.float64]
-_RightCensored: TypeAlias = CensoredData[_ScalarT, np.float64, _ScalarT, np.float64]
-_IntervalCensored: TypeAlias = CensoredData[_ScalarT, np.float64, np.float64, _ScalarT]
 
 ###
 

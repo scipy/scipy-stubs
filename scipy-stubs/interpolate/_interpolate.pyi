@@ -1,5 +1,5 @@
 import types
-from typing import Any, Final, Generic, Literal, Never, Self, SupportsIndex, TypeAlias, overload
+from typing import Any, Final, Generic, Literal, Never, Self, SupportsIndex, overload
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
@@ -10,16 +10,17 @@ from ._polyint import _Interpolator1D
 
 __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
 
-_NumberT = TypeVar("_NumberT", bound=npc.number, default=np.float64)
+###
+
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
-_ToAxis: TypeAlias = int | npc.integer
-_Extrapolate: TypeAlias = Literal["periodic"] | bool
+type _ToAxis = int | npc.integer
+type _Extrapolate = Literal["periodic"] | bool
 
-_Interp1dKind: TypeAlias = Literal["linear", "nearest", "nearest-up", "zero", "slinear", "quadratic", "cubic", "previous", "next"]
-_Interp1dFillValue: TypeAlias = onp.ToFloat | onp.ToFloatND | tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND]
+type _Interp1dKind = Literal["linear", "nearest", "nearest-up", "zero", "slinear", "quadratic", "cubic", "previous", "next"]
+type _Interp1dFillValue = onp.ToFloat | onp.ToFloatND | tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND]
 
-_Array2ND: TypeAlias = onp.Array[tuple[int, int, *tuple[Any, ...]], _NumberT]
+type _Array2ND[_NumberT: npc.number] = onp.Array[tuple[int, int, *tuple[Any, ...]], _NumberT]
 
 ###
 

@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Final, Generic, Literal, TypeAlias, TypeAliasType, Unpack, overload, type_check_only
+from typing import Any, Final, Generic, Literal, Unpack, overload, type_check_only
 from typing_extensions import TypeVar, TypeVarTuple, TypedDict
 
 import numpy as np
@@ -16,29 +16,34 @@ _Inexact64T = TypeVar("_Inexact64T", bound=np.float64 | np.complex128)
 _Inexact64T_co = TypeVar("_Inexact64T_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
 
 # numpy <2.2 workarounds
-_Float: TypeAlias = np.float64 | float
+type _Float = np.float64 | float
 _FloatT = TypeVar("_FloatT", bound=_Float)
 
-_FuncSol: TypeAlias = Callable[[np.float64], onp.ArrayND[_Inexact64T]] | Callable[[float], onp.ArrayND[_Inexact64T]]
-_FuncEvent = TypeAliasType(
-    "_FuncEvent",
-    Callable[[np.float64, onp.ArrayND[_Inexact64T], *_Ts], _Float] | Callable[[float, onp.ArrayND[_Inexact64T], *_Ts], _Float],
-    type_params=(_Inexact64T, _Ts),
-)
-_Events: TypeAlias = Sequence[_FuncEvent[_Inexact64T, *_Ts]] | _FuncEvent[_Inexact64T, *_Ts]
+type _FuncSol[Inexact64T: np.float64 | np.complex128] = (
+    Callable[[np.float64], onp.ArrayND[Inexact64T]]
+    | Callable[[float], onp.ArrayND[Inexact64T]]
+)  # fmt: skip
+type _FuncEvent[Inexact64T: np.float64 | np.complex128, *Ts] = (
+    Callable[[np.float64, onp.ArrayND[Inexact64T], *Ts], _Float]
+    | Callable[[float, onp.ArrayND[Inexact64T], *Ts], _Float]
+)  # fmt: skip
+type _Events[Inexact64T: np.float64 | np.complex128, *Ts] = (
+    Sequence[_FuncEvent[Inexact64T, *Ts]]  # ty:ignore[invalid-type-arguments]
+    | _FuncEvent[Inexact64T, *Ts]  # ty:ignore[invalid-type-arguments]
+)  # fmt: skip
 
-_Int1D: TypeAlias = onp.Array1D[np.int_]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_Complex1D: TypeAlias = onp.Array1D[np.complex128]
-_Complex2D: TypeAlias = onp.Array2D[np.complex128]
+type _Int1D = onp.Array1D[np.int_]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _Complex1D = onp.Array1D[np.complex128]
+type _Complex2D = onp.Array2D[np.complex128]
 
-_ToFloatMax1D: TypeAlias = onp.ToFloat1D | onp.ToFloat
-_ToComplexMax1D: TypeAlias = onp.ToComplex1D | onp.ToComplex
+type _ToFloatMax1D = onp.ToFloat1D | onp.ToFloat
+type _ToComplexMax1D = onp.ToComplex1D | onp.ToComplex
 
-_ToJac: TypeAlias = onp.ToArray2D[complex, npc.inexact] | _Sparse2D[npc.inexact]
+type _ToJac = onp.ToArray2D[complex, npc.inexact] | _Sparse2D[npc.inexact]
 
-_IVPMethod: TypeAlias = Literal["RK23", "RK45", "DOP853", "Radau", "BDF", "LSODA"] | type[OdeSolver]
+type _IVPMethod = Literal["RK23", "RK45", "DOP853", "Radau", "BDF", "LSODA"] | type[OdeSolver]
 
 @type_check_only
 class _SolverOptions(TypedDict, total=False):

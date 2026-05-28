@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Generic, Literal, NamedTuple, TypeAlias, overload
+from typing import Generic, Literal, NamedTuple, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -8,8 +8,13 @@ import optype.numpy.compat as npc
 
 __all__ = ["binned_statistic", "binned_statistic_2d", "binned_statistic_dd"]
 
-_Statistic: TypeAlias = Literal["mean", "std", "median", "count", "sum", "min", "max"]
+###
+
+type _Statistic = Literal["mean", "std", "median", "count", "sum", "min", "max"]
+
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], covariant=True, default=tuple[int] | tuple[int, int])
+
+###
 
 class BinnedStatisticResult(NamedTuple):
     statistic: onp.Array1D[npc.inexact]

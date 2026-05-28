@@ -1,4 +1,4 @@
-from typing import TypeAlias, overload
+from typing import overload
 
 import numpy as np
 import optype.numpy as onp
@@ -6,13 +6,13 @@ import optype.numpy.compat as npc
 
 __all__ = ["ldl"]
 
-_ISize1D: TypeAlias = onp.Array1D[np.intp]
-_ISizeND: TypeAlias = onp.ArrayND[np.intp]
-_Float2D: TypeAlias = onp.Array2D[npc.floating]
-_FloatND: TypeAlias = onp.ArrayND[npc.floating]
-_Complex2D: TypeAlias = onp.Array2D[npc.complexfloating]
-_ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
-_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
+type _ISize1D = onp.Array1D[np.intp]
+type _ISizeND = onp.ArrayND[np.intp]
+type _Float2D = onp.Array2D[npc.floating]
+type _FloatND = onp.ArrayND[npc.floating]
+type _Complex2D = onp.Array2D[npc.complexfloating]
+type _ComplexND = onp.ArrayND[npc.complexfloating]
+type _InexactND = onp.ArrayND[npc.inexact]
 
 ###
 

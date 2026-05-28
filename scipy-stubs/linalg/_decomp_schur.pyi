@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Literal, TypeAlias, TypeVar, overload
+from typing import Literal, TypeVar, overload
 
 import numpy as np
 import optype as op
@@ -10,21 +10,20 @@ __all__ = ["rsf2csf", "schur"]
 
 ###
 
-_T = TypeVar("_T")
 _Shape2T = TypeVar("_Shape2T", bound=tuple[int, int, *tuple[int, ...]])
 
-_Tuple2: TypeAlias = tuple[_T, _T]
-_Tuple2i: TypeAlias = tuple[_T, _T, int]
+type _Tuple2[T] = tuple[T, T]
+type _Tuple2i[T] = tuple[T, T, int]
 
-_OutputReal: TypeAlias = Literal["real", "r"]
-_OutputComplex: TypeAlias = Literal["complex", "c"]
-_Output: TypeAlias = Literal[_OutputReal, _OutputComplex]
+type _OutputReal = Literal["real", "r"]
+type _OutputComplex = Literal["complex", "c"]
+type _Output = Literal[_OutputReal, _OutputComplex]
 
-_Sort: TypeAlias = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], bool]
+type _Sort = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], bool]
 
-_as_f32: TypeAlias = np.float32 | np.float16 | np.bool  # noqa: PYI042
-_as_f64: TypeAlias = npc.floating64 | npc.floating80 | npc.integer  # noqa: PYI042
-_as_c128: TypeAlias = npc.complexfloating128 | npc.complexfloating160  # noqa: PYI042
+type _as_f32 = np.float32 | np.float16 | np.bool  # noqa: PYI042
+type _as_f64 = npc.floating64 | npc.floating80 | npc.integer  # noqa: PYI042
+type _as_c128 = npc.complexfloating128 | npc.complexfloating160  # noqa: PYI042
 
 ###
 

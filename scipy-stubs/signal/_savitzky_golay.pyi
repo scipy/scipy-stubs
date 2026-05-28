@@ -1,7 +1,7 @@
 from _typeshed import Incomplete
 from collections.abc import Sequence
 from types import ModuleType
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing import Any, Literal, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -12,9 +12,9 @@ import optype.numpy.compat as npc
 # we use `tuple[Any, ...]` instead of `tuple[int, ...]` here to work around bugs in both mypy and pyright (sigh...)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
 
-_Mode: TypeAlias = Literal["mirror", "constant", "nearest", "wrap", "interp"]
+type _Mode = Literal["mirror", "constant", "nearest", "wrap", "interp"]
 # savgol_filter casts everything except for `float32` to `float64` (kinda weird, but ok)
-_ToFloat64Savgol: TypeAlias = npc.floating64 | npc.floating16 | npc.floating80 | npc.integer | np.bool
+type _ToFloat64Savgol = npc.floating64 | npc.floating16 | npc.floating80 | npc.integer | np.bool
 
 ###
 

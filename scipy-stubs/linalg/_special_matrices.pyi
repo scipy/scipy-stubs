@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Literal as L, Never, TypeAlias, overload
+from typing import Literal as L, Never, overload
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
@@ -26,32 +26,34 @@ __all__ = [
     "toeplitz",
 ]
 
+###
+
 _ScalarT = TypeVar("_ScalarT", bound=np.generic)
 _NumberT = TypeVar("_NumberT", bound=npc.number | np.object_)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact | np.object_)
 
-_Kind: TypeAlias = L["symmetric", "upper", "lower"]
-_ConvMode: TypeAlias = L["valid", "same", "full"]
+type _Kind = L["symmetric", "upper", "lower"]
+type _ConvMode = L["valid", "same", "full"]
 
-_Bool2D: TypeAlias = onp.Array2D[np.bool]
-_Bool3D: TypeAlias = onp.Array3D[np.bool]
-_BoolND: TypeAlias = onp.ArrayND[np.bool]
-_Int2D: TypeAlias = onp.Array2D[np.int_]
-_Int3D: TypeAlias = onp.Array3D[np.int_]
-_IntND: TypeAlias = onp.ArrayND[np.int_]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_Float3D: TypeAlias = onp.Array3D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
-_Complex2D: TypeAlias = onp.Array2D[np.complex128]
-_Complex3D: TypeAlias = onp.Array3D[np.complex128]
-_ComplexND: TypeAlias = onp.ArrayND[np.complex128]
+type _Bool2D = onp.Array2D[np.bool]
+type _Bool3D = onp.Array3D[np.bool]
+type _BoolND = onp.ArrayND[np.bool]
+type _Int2D = onp.Array2D[np.int_]
+type _Int3D = onp.Array3D[np.int_]
+type _IntND = onp.ArrayND[np.int_]
+type _Float2D = onp.Array2D[np.float64]
+type _Float3D = onp.Array3D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
+type _Complex2D = onp.Array2D[np.complex128]
+type _Complex3D = onp.Array3D[np.complex128]
+type _ComplexND = onp.ArrayND[np.complex128]
 
-_To0D: TypeAlias = onp.CanArray0[_ScalarT]
-_To1D: TypeAlias = Sequence[_To0D[_ScalarT]] | onp.CanArrayND[_ScalarT]
-_ToStrict1D: TypeAlias = Sequence[_To0D[_ScalarT]] | onp.CanArray1D[_ScalarT]
-_ToStrict2ND: TypeAlias = onp.SequenceND[_To1D[_ScalarT]] | onp.CanArrayND[_ScalarT, onp.AtLeast2D]
+type _To0D[ScalarT: np.generic] = onp.CanArray0[ScalarT]
+type _To1D[ScalarT: np.generic] = Sequence[_To0D[ScalarT]] | onp.CanArrayND[ScalarT]
+type _ToStrict1D[ScalarT: np.generic] = Sequence[_To0D[ScalarT]] | onp.CanArray1D[ScalarT]
+type _ToStrict2ND[ScalarT: np.generic] = onp.SequenceND[_To1D[ScalarT]] | onp.CanArrayND[ScalarT, onp.AtLeast2D]
 
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 
 ###
 

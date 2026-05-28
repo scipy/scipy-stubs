@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, Literal, Never, TypeAlias, overload
+from typing import Any, Literal, Never, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -8,13 +8,15 @@ import optype.numpy.compat as npc
 
 from ._typing import NanPolicy
 
-_FloatingT = TypeVar("_FloatingT", bound=npc.floating)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+###
 
 # workaround for https://github.com/microsoft/pyright/issues/10232
-_JustAnyShape: TypeAlias = tuple[Never, ...]
+type _JustAnyShape = tuple[Never, ...]
 
-_co_integer: TypeAlias = npc.integer | np.bool  # noqa: PYI042
+type _co_integer = npc.integer | np.bool  # noqa: PYI042
+
+_FloatingT = TypeVar("_FloatingT", bound=npc.floating)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 ###
 

@@ -1,5 +1,4 @@
-from typing import Final, TypeAlias, overload
-from typing_extensions import TypeVar
+from typing import Final, overload
 
 import numpy as np
 import numpy.typing as npt
@@ -8,19 +7,20 @@ import optype.numpy.compat as npc
 
 from scipy.sparse._base import _spbase
 
-_Real: TypeAlias = npc.integer | npc.floating
-_ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
+###
 
-_RealT = TypeVar("_RealT", bound=_Real)
-_Graph: TypeAlias = onp.CanArrayND[_RealT] | _spbase[_RealT, tuple[int, int]]
+type _Real = npc.integer | npc.floating
+type _ToGraph = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
+
+type _Graph[RealT: _Real] = onp.CanArrayND[RealT] | _spbase[RealT, tuple[int, int]]
 
 ###
 
 DTYPE: Final[type[np.float64]] = ...
 
 @overload  # no dtype
-def validate_graph(
-    csgraph: _Graph[_RealT],
+def validate_graph[RealT: _Real](
+    csgraph: _Graph[RealT],
     directed: bool,
     dtype: None,
     csr_output: bool = True,
@@ -31,7 +31,7 @@ def validate_graph(
     null_value_out: float = ...,  # inf
     infinity_null: bool = True,
     nan_null: bool = True,
-) -> onp.Array2D[_RealT]: ...
+) -> onp.Array2D[RealT]: ...
 @overload  # default dtype  (float64)
 def validate_graph(
     csgraph: _ToGraph,

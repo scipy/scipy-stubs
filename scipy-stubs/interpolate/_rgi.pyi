@@ -1,6 +1,6 @@
 import types
 from collections.abc import Iterable
-from typing import Any, Generic, Literal, TypeAlias, overload
+from typing import Any, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -15,9 +15,9 @@ __all__ = ["RegularGridInterpolator", "interpn"]
 
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
-_MethodReal: TypeAlias = Literal["linear", "nearest", "slinear", "cubic", "quintic"]
-_Method: TypeAlias = Literal[_MethodReal, "pchip"]
-_ToPoints: TypeAlias = Iterable[onp.ToFloat1D]
+type _MethodReal = Literal["linear", "nearest", "slinear", "cubic", "quintic"]
+type _Method = Literal[_MethodReal, "pchip"]
+type _ToPoints = Iterable[onp.ToFloat1D]
 
 ###
 

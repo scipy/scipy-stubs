@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Final, Literal, TypeAlias, TypeVar, overload
+from typing import Any, Final, Literal, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -25,22 +25,25 @@ __all__ = [
     "tanm",
 ]
 
+###
+
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _ComplexT = TypeVar("_ComplexT", bound=npc.complexfloating)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
-_FuncND: TypeAlias = Callable[[onp.Array[Any, _InexactT]], onp.ToComplexND]  # return type is unsafely cast to the input type
+# return type is unsafely cast to the input type
+type _FuncND[InexactT: npc.inexact] = Callable[[onp.Array[Any, InexactT]], onp.ToComplexND]
 
-_ToPosInt: TypeAlias = npc.unsignedinteger | Literal[0, 1, 2, 4, 5, 6, 7, 8]
+type _ToPosInt = npc.unsignedinteger | Literal[0, 1, 2, 4, 5, 6, 7, 8]
 
-_IntND: TypeAlias = onp.ArrayND[npc.integer]
-_Float64ND: TypeAlias = onp.ArrayND[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[npc.floating]
-_Complex128ND: TypeAlias = onp.ArrayND[np.complex128]
-_ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
-_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
+type _IntND = onp.ArrayND[npc.integer]
+type _Float64ND = onp.ArrayND[np.float64]
+type _FloatND = onp.ArrayND[npc.floating]
+type _Complex128ND = onp.ArrayND[np.complex128]
+type _ComplexND = onp.ArrayND[npc.complexfloating]
+type _InexactND = onp.ArrayND[npc.inexact]
 
-_AsFloat64ND: TypeAlias = onp.ToArrayND[float, np.float64 | npc.integer | np.bool]
+type _AsFloat64ND = onp.ToArrayND[float, np.float64 | npc.integer | np.bool]
 
 ###
 

@@ -1,5 +1,4 @@
-from typing import SupportsIndex, TypeAlias, overload
-from typing_extensions import TypeVar
+from typing import SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -17,12 +16,13 @@ __all__ = [
     "trimmed_mean_ci",
 ]
 
-_T = TypeVar("_T")
-_Tuple2: TypeAlias = tuple[_T, _T]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
+###
 
-_ToProb: TypeAlias = onp.ToFloat | onp.ToFloatND
-_ToAxis: TypeAlias = SupportsIndex | None
+type _Tuple2[T] = tuple[T, T]
+type _FloatND = onp.ArrayND[np.float64]
+
+type _ToProb = onp.ToFloat | onp.ToFloatND
+type _ToAxis = SupportsIndex | None
 
 ###
 

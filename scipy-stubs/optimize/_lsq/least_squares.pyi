@@ -1,5 +1,6 @@
+from _typeshed import Unused
 from collections.abc import Callable, Iterable, Mapping
-from typing import Any, Concatenate, Final, Literal, Protocol, SupportsIndex, TypeAlias, type_check_only
+from typing import Any, Concatenate, Final, Literal, Protocol, SupportsIndex, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -11,27 +12,27 @@ from scipy.sparse import csr_array
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
-_Ignored: TypeAlias = object
+###
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float1ND: TypeAlias = onp.Array[onp.AtLeast1D[Any], np.float64]
+type _Float1D = onp.Array1D[np.float64]
+type _Float1ND = onp.Array[onp.AtLeast1D[Any], np.float64]
 
-_LeastSquaresMethod: TypeAlias = Literal["trf", "dogbox", "lm"]
+type _LeastSquaresMethod = Literal["trf", "dogbox", "lm"]
 
-_JacMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
-_ToJac2D: TypeAlias = onp.ToFloat2D | _spbase
-_JacFunction: TypeAlias = Callable[Concatenate[_Float1D, ...], _ToJac2D | LinearOperator]
-_ToJac: TypeAlias = _JacFunction | _JacMethod
+type _JacMethod = Literal["2-point", "3-point", "cs"]
+type _ToJac2D = onp.ToFloat2D | _spbase
+type _JacFunction = Callable[Concatenate[_Float1D, ...], _ToJac2D | LinearOperator]
+type _ToJac = _JacFunction | _JacMethod
 
-_XScaleMethod: TypeAlias = Literal["jac"]
-_XScale: TypeAlias = onp.ToFloat | onp.ToFloatND | _XScaleMethod
+type _XScaleMethod = Literal["jac"]
+type _XScale = onp.ToFloat | onp.ToFloatND | _XScaleMethod
 
-_LossMethod: TypeAlias = Literal["linear", "soft_l1", "huber", "cauchy", "arctan"]
-_Loss: TypeAlias = _UserLossFunction | _LossMethod
+type _LossMethod = Literal["linear", "soft_l1", "huber", "cauchy", "arctan"]
+type _Loss = _UserLossFunction | _LossMethod
 
-_ResidFunction: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D | onp.ToFloat]
+type _ResidFunction = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D | onp.ToFloat]
 
-_ResultStatus: TypeAlias = Literal[-2, -1, 0, 1, 2, 3, 4]
+type _ResultStatus = Literal[-2, -1, 0, 1, 2, 3, 4]
 
 @type_check_only
 class _UserLossFunction(Protocol):
@@ -56,9 +57,9 @@ class _BaseOptimizeResult(_OptimizeResult):
 
 @type_check_only
 class _Callback(Protocol):
-    def __call__(self, /, *, intermediate_result: _OptimizeResult) -> _Ignored: ...
+    def __call__(self, /, *, intermediate_result: _OptimizeResult) -> Unused: ...
 
-_ToCallback: TypeAlias = _Callback | Callable[[_Float1D], _Ignored]
+type _ToCallback = _Callback | Callable[[_Float1D], Unused]
 
 ###
 # undocumented internal machinery

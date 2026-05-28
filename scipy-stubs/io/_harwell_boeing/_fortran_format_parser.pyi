@@ -1,13 +1,18 @@
 import abc
 import re
-from typing import Final, Generic, Literal, Self, TypeAlias, TypeVar, type_check_only
+from typing import Final, Generic, Literal, Self, TypeVar, type_check_only
 
 import optype.numpy as onp
 
 __all__ = ["BadFortranFormat", "ExpFormat", "FortranFormatParser", "IntFormat"]
 
+###
+
 _NumberT = TypeVar("_NumberT", int, float)
-_TokenType: TypeAlias = Literal["INT", "INT_ID", "EXP_ID", "DOT", "LPAR", "RPAR"]
+
+type _TokenType = Literal["INT", "INT_ID", "EXP_ID", "DOT", "LPAR", "RPAR"]
+
+###
 
 TOKENS: Final[dict[_TokenType, str]]
 

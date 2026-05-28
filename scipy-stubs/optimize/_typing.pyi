@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Concatenate, Literal, NotRequired, TypeAlias, type_check_only
+from typing import Concatenate, Literal, NotRequired, type_check_only
 from typing_extensions import TypedDict
 
 import numpy as np
@@ -26,11 +26,11 @@ __all__ = [
     "TRSolver",
 ]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
+type _Float1D = onp.Array1D[np.float64]
 
 # bounds
-Bound: TypeAlias = tuple[onp.ToFloat | None, onp.ToFloat | None]
-Bounds: TypeAlias = Sequence[Bound] | _Bounds
+type Bound = tuple[onp.ToFloat | None, onp.ToFloat | None]
+type Bounds = Sequence[Bound] | _Bounds
 
 # constaints
 @type_check_only
@@ -40,15 +40,15 @@ class _ConstraintDict(TypedDict):
     jac: NotRequired[Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]]
     args: NotRequired[tuple[object, ...]]
 
-Constraint: TypeAlias = LinearConstraint | NonlinearConstraint | _ConstraintDict
-Constraints: TypeAlias = Constraint | Sequence[Constraint]
+type Constraint = LinearConstraint | NonlinearConstraint | _ConstraintDict
+type Constraints = Constraint | Sequence[Constraint]
 
-Brack: TypeAlias = tuple[onp.ToFloat, onp.ToFloat] | tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]
+type Brack = tuple[onp.ToFloat, onp.ToFloat] | tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]
 
-Solver: TypeAlias = Literal["minimize", "minimize_scalar", "root", "root_salar", "linprog", "quadratic_assignment"]
-TRSolver: TypeAlias = Literal["exact", "lsmr"]
+type Solver = Literal["minimize", "minimize_scalar", "root", "root_salar", "linprog", "quadratic_assignment"]
+type TRSolver = Literal["exact", "lsmr"]
 
-MethodMimimize: TypeAlias = Literal[
+type MethodMimimize = Literal[
     "Nelder-Mead", "nelder-mead",
     "Powell", "powell",
     "CG", "cg",
@@ -65,10 +65,10 @@ MethodMimimize: TypeAlias = Literal[
     "Trust-Exact", "trust-exact",
     "Trust-Krylov", "trust-krylov",
 ]  # fmt: skip
-MethodMinimizeScalar: TypeAlias = Literal["brent", "golden", "bounded"]
-MethodLinprog: TypeAlias = Literal["highs", "highs-ds", "highs-ipm"]
-MethodLinprogLegacy: TypeAlias = Literal["interior-point", "revised simplex", "simplex"]
-_MethodRoot: TypeAlias = Literal[
+type MethodMinimizeScalar = Literal["brent", "golden", "bounded"]
+type MethodLinprog = Literal["highs", "highs-ds", "highs-ipm"]
+type MethodLinprogLegacy = Literal["interior-point", "revised simplex", "simplex"]
+type _MethodRoot = Literal[
     "hybr",
     "lm",
     "broyden1",
@@ -80,9 +80,9 @@ _MethodRoot: TypeAlias = Literal[
     "krylov",
     "df-sane",
 ]  # fmt: skip
-MethodRootScalar: TypeAlias = Literal["bisect", "brentq", "brenth", "ridder", "toms748", "newton", "secant", "halley"]
-_MethodQuadraticAssignment: TypeAlias = Literal["faq", "2opt"]
-MethodAll: TypeAlias = Literal[
+type MethodRootScalar = Literal["bisect", "brentq", "brenth", "ridder", "toms748", "newton", "secant", "halley"]
+type _MethodQuadraticAssignment = Literal["faq", "2opt"]
+type MethodAll = Literal[
     MethodMimimize,
     _MethodRoot,
     MethodMinimizeScalar,
@@ -91,7 +91,7 @@ MethodAll: TypeAlias = Literal[
     _MethodQuadraticAssignment,
 ]  # fmt: skip
 
-_FDMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
+type _FDMethod = Literal["2-point", "3-point", "cs"]
 
 @type_check_only
 class MinimizerKwargs(TypedDict, total=False):

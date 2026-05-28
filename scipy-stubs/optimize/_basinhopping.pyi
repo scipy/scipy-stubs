@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Concatenate, Literal, Protocol, TypeAlias, TypeVar, type_check_only
+from typing import Concatenate, Literal, Protocol, TypeVar, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -10,13 +10,14 @@ from ._typing import MinimizerKwargs
 
 __all__ = ["basinhopping"]
 
-_Float: TypeAlias = float | np.float64
-_Float1D: TypeAlias = onp.Array1D[np.float64]
+###
 
-_FT = TypeVar("_FT", bound=onp.ToFloat | onp.ToFloatND)
+type _Float = float | np.float64
+type _Float1D = onp.Array1D[np.float64]
+
+type _CallbackFun[FloatT: onp.ToFloat | onp.ToFloatND] = Callable[[_Float1D, FloatT, bool], bool | None]
+
 _FT_contra = TypeVar("_FT_contra", bound=onp.ToFloat | onp.ToFloatND, contravariant=True)
-
-_CallbackFun: TypeAlias = Callable[[_Float1D, _FT, bool], bool | None]
 
 @type_check_only
 class _AcceptTestFun(Protocol[_FT_contra]):

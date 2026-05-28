@@ -1,13 +1,12 @@
 # NOTE(scipy-stubs): This private module should not be used outside of scipy-stubs
 
-from typing import IO, Literal, TypeAlias, TypeVar
+from typing import IO, Literal
 
 import optype as op
 
 __all__ = "ByteOrder", "FileLike", "FileName"
 
-ByteOrder: TypeAlias = Literal["S", "<", "little", ">", "big", "=", "native", "|", "I"]
+type ByteOrder = Literal["S", "<", "little", ">", "big", "=", "native", "|", "I"]
 
-_ByteSOrStr = TypeVar("_ByteSOrStr", bytes, str)
-FileName: TypeAlias = str | op.io.CanFSPath[str]
-FileLike: TypeAlias = FileName | IO[_ByteSOrStr]
+type FileName = str | op.io.CanFSPath[str]
+type FileLike[ByteSOrStr: (bytes, str)] = FileName | IO[ByteSOrStr]

@@ -1,17 +1,19 @@
 import abc
 from collections import OrderedDict
 from collections.abc import Callable, Iterable, Iterator, Sequence
-from typing import Concatenate, Final, Generic, TypeAlias, type_check_only
+from typing import Concatenate, Final, Generic, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
 
+###
+
 _VT_co = TypeVar("_VT_co", bound=VertexBase, default=VertexBase, covariant=True)
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Fun0D: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat]
-_Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]
+type _Float1D = onp.Array1D[np.float64]
+type _Fun0D = Callable[Concatenate[_Float1D, ...], onp.ToFloat]
+type _Fun1D = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]
 
 @type_check_only
 class _VertexMixin:

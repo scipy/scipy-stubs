@@ -1,4 +1,4 @@
-from typing import Literal, Never, TypeAlias, overload
+from typing import Literal, Never, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -6,9 +6,11 @@ import optype.numpy.compat as npc
 
 __all__ = ["expm_cond", "expm_frechet"]
 
-_Method: TypeAlias = Literal["SPS", "blockEnlarge"]
-_ArrayF64: TypeAlias = onp.ArrayND[np.float64]
-_ArrayC128: TypeAlias = onp.ArrayND[np.complex128]
+###
+
+type _Method = Literal["SPS", "blockEnlarge"]
+type _ArrayF64 = onp.ArrayND[np.float64]
+type _ArrayC128 = onp.ArrayND[np.complex128]
 
 ###
 

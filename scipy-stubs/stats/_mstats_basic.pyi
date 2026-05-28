@@ -7,7 +7,6 @@ from typing import (
     NamedTuple,
     Self,
     SupportsIndex,
-    TypeAlias,
     TypedDict,
     overload,
     override,
@@ -86,12 +85,18 @@ __all__ = [
     "winsorize",
 ]
 
-_SCT = TypeVar("_SCT", bound=np.generic, default=np.float64)
+type _MArrayOrND[SCT: np.generic] = SCT | onp.MArray[SCT]
+
+type _KendallTauMethod = Literal["auto", "asymptotic", "exact"]
+type _TheilSlopesMethod = Literal["joint", "separate"]
+type _SiegelSlopesMethod = Literal["hierarchical", "separate"]
+
+type _KSMethod = Literal["auto", "exact", "asymp"]
+type _KTestMethod = Literal[_KSMethod, "approx"]
+
 _SCT_f = TypeVar("_SCT_f", bound=npc.floating, default=np.float64)
 _SCT_bifc = TypeVar("_SCT_bifc", bound=npc.number | np.bool, default=np.float64)
 _SCT_bifcmO = TypeVar("_SCT_bifcmO", bound=npc.number | np.timedelta64 | np.bool | np.object_)
-
-_MArrayOrND: TypeAlias = _SCT | onp.MArray[_SCT]
 
 _NDT_f_co = TypeVar("_NDT_f_co", covariant=True, bound=float | _MArrayOrND[npc.floating], default=onp.MArray[np.float64])
 _NDT_fc_co = TypeVar(
@@ -100,13 +105,6 @@ _NDT_fc_co = TypeVar(
     bound=complex | _MArrayOrND[npc.inexact],
     default=_MArrayOrND[np.float64 | np.complex128],
 )  # fmt: skip
-
-_KendallTauMethod: TypeAlias = Literal["auto", "asymptotic", "exact"]
-_TheilSlopesMethod: TypeAlias = Literal["joint", "separate"]
-_SiegelSlopesMethod: TypeAlias = Literal["hierarchical", "separate"]
-
-_KSMethod: TypeAlias = Literal["auto", "exact", "asymp"]
-_KTestMethod: TypeAlias = Literal[_KSMethod, "approx"]
 
 @type_check_only
 class _TestResult(NamedTuple, Generic[_NDT_f_co, _NDT_fc_co]):
@@ -547,7 +545,7 @@ def tsem(
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = 0,
     ddof: onp.ToInt = 1,
-) -> _MArrayOrND: ...
+) -> _MArrayOrND[np.float64]: ...
 
 #
 @overload

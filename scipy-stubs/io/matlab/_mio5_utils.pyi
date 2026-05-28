@@ -1,7 +1,7 @@
 # defined in scipy/io/matlab/_mio5_utils.pyx
 
 from collections.abc import Iterable
-from typing import Any, ClassVar, Final, Literal, Never, Self, TypeAlias
+from typing import Any, ClassVar, Final, Literal, Never, Self
 from typing_extensions import CapsuleType
 
 import numpy as np
@@ -11,7 +11,7 @@ import optype.numpy.compat as npc
 from ._miobase import MatVarReader
 from ._streams import GenericStream, _FileLike
 
-_bint: TypeAlias = Literal[0, 1] | bool  # noqa: PYI042
+type _bint = Literal[0, 1] | bool  # noqa: PYI042
 
 ###
 
