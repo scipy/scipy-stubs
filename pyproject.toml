@@ -52,7 +52,7 @@ ci = ["packaging>=26.2"]
 lint = [
   { include-group = "extras" },
   "dprint-py==0.53.1.0",
-  "ruff==0.15.14",
+  "ruff==0.15.15",
   "sp-repo-review[cli]==2026.4.4",
 ]
 type = [
@@ -65,7 +65,7 @@ type = [
   "mypy[faster-cache]==2.1.0",
   "pyrefly==0.63.1",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.39",
+  "ty==0.0.40",
   "typeshed-client>=2.11.0",
 ]
 dev = [
