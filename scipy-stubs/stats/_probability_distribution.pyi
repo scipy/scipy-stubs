@@ -1,6 +1,6 @@
 import abc
 import types
-from typing import Any, Generic, Literal as L, TypeAlias, overload
+from typing import Any, Generic, Literal as L, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,22 +11,23 @@ from ._qmc import QMCEngine
 
 _XT_co = TypeVar("_XT_co", bound=npc.number, default=np.float64, covariant=True)
 
-_MedianMethod: TypeAlias = L["formula", "icdf"] | None
-_ModeMethod: TypeAlias = L["formula", "optimization"] | None
-_SampleMethod: TypeAlias = L["formula", "inverse_transform"] | None
-_RMomentMethod: TypeAlias = L["formula", "transform", "quadrature", "cache"] | None
-_CMomentMethod: TypeAlias = L["formula", "transform", "quadrature", "cache", "normalize"] | None
-_SMomentMethod: TypeAlias = L["formula", "transform", "general", "cache", "normalize"] | None
-_EntropyMethod: TypeAlias = L["formula", "logexp", "quadrature"] | None
-_PXFMethod: TypeAlias = L["formula", "logexp"] | None
-_CDFMethod: TypeAlias = L["formula", "logexp", "complement", "quadrature", "subtraction"] | None
-_CCDFMethod: TypeAlias = L["formula", "logexp", "complement", "quadrature", "addition"] | None
-_ICDFMethod: TypeAlias = L["formula", "complement", "inversion"] | None
+type _MedianMethod = L["formula", "icdf"] | None
+type _ModeMethod = L["formula", "optimization"] | None
+type _SampleMethod = L["formula", "inverse_transform"] | None
+type _RMomentMethod = L["formula", "transform", "quadrature", "cache"] | None
+type _CMomentMethod = L["formula", "transform", "quadrature", "cache", "normalize"] | None
+type _SMomentMethod = L["formula", "transform", "general", "cache", "normalize"] | None
+type _LMomentMethod = L["formula", "general", "order_statistics", "quadrature_icdf", "cache"]
+type _EntropyMethod = L["formula", "logexp", "quadrature"] | None
+type _PXFMethod = L["formula", "logexp"] | None
+type _CDFMethod = L["formula", "logexp", "complement", "quadrature", "subtraction"] | None
+type _CCDFMethod = L["formula", "logexp", "complement", "quadrature", "addition"] | None
+type _ICDFMethod = L["formula", "complement", "inversion"] | None
 
-_Float: TypeAlias = np.float64 | np.longdouble
-_Complex: TypeAlias = np.complex128 | np.clongdouble
-_FloatND: TypeAlias = onp.ArrayND[_Float]
-_ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
+type _Float = np.float64 | np.longdouble
+type _Complex = np.complex128 | np.clongdouble
+type _FloatND = onp.ArrayND[_Float]
+type _ToFloat0ND = onp.ToFloat | onp.ToFloatND
 
 ###
 
@@ -68,6 +69,10 @@ class _ProbabilityDistribution(Generic[_XT_co], metaclass=abc.ABCMeta):
     @overload
     @abc.abstractmethod
     def moment(self, /, order: onp.ToInt, kind: L["standardized"], *, method: _SMomentMethod) -> _Float | _FloatND: ...
+
+    # The `kind` param here is wrong: https://github.com/scipy/scipy/pull/25243
+    @abc.abstractmethod
+    def lmoment(self, /, order: int, kind: bool, *, method: _LMomentMethod | None) -> _Float | _FloatND: ...
 
     #
     @abc.abstractmethod

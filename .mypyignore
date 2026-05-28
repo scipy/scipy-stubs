@@ -21,11 +21,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 # TODO: 1.18.0rc1
 
 scipy.stats._bws_test.bws_test
-scipy.stats._distribution_infrastructure.Mixture.lmoment
-scipy.stats._distribution_infrastructure.OrderStatisticDistribution._n_domain
-scipy.stats._distribution_infrastructure.OrderStatisticDistribution._r_domain
-scipy.stats._distribution_infrastructure.UnivariateDistribution.lmoment
-scipy.stats._probability_distribution._ProbabilityDistribution.lmoment
 
 scipy.stats._morestats.ansari
 scipy.stats._morestats.boxcox
