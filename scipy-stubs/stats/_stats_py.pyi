@@ -2981,7 +2981,9 @@ def relfreq(
 ) -> RelfreqResult: ...
 
 #
-def obrientransform(*samples: onp.ToFloatND) -> onp.Array2D[np.float64] | onp.Array1D[np.object_]: ...
+def obrientransform(
+    *samples: onp.ToFloatND, nan_policy: NanPolicy = "propagate"
+) -> onp.Array2D[np.float64] | onp.Array1D[np.object_]: ...
 
 #
 @overload  # 1d ~inexact64 | +integer, keepdims=False (default)
