@@ -10,6 +10,7 @@
 # mypy: disable-error-code=misc
 
 from dataclasses import dataclass
+from types import GenericAlias
 from typing import Generic, overload
 from typing_extensions import TypeVar
 
@@ -42,6 +43,10 @@ class DunnettResult(Generic[_StatT_co]):
     _ci: ConfidenceInterval[_StatT_co] | None = None
     _ci_cl: float | npc.floating | None = None
 
+    @classmethod
+    def __class_getitem__(cls, arg: object | type, /) -> GenericAlias: ...
+
+    #
     def confidence_interval(self, /, confidence_level: float | npc.floating = 0.95) -> ConfidenceInterval[_StatT_co]: ...
 
 @overload

@@ -1,3 +1,4 @@
+from types import GenericAlias
 from typing import Any, Generic, Self, TypeAlias, overload
 from typing_extensions import TypeVar
 
@@ -28,6 +29,9 @@ class CensoredData(Generic[_UncensoredT_co, _LeftT_co, _RightT_co, _IntervalT_co
     _left: onp.Array1D[_LeftT_co]
     _right: onp.Array1D[_RightT_co]
     _interval: onp.Array2D[_IntervalT_co]
+
+    @classmethod
+    def __class_getitem__(cls, arg: object | type, /) -> GenericAlias: ...
 
     #
     @overload
