@@ -1,7 +1,7 @@
 from collections.abc import Callable, Sequence
 from types import ModuleType
 from typing import Final, Literal, overload
-from typing_extensions import TypeVar, deprecated
+from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
@@ -9,7 +9,7 @@ import optype.numpy.compat as npc
 
 __all__ = ["ClusterError", "kmeans", "kmeans2", "py_vq", "vq", "whiten"]
 
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
+###
 
 type _InitMethod = Literal["random", "points", "++", "matrix"]
 type _MissingMethod = Literal["warn", "raise"]
@@ -27,7 +27,7 @@ class ClusterError(Exception): ...
 @overload
 def whiten(obs: onp.ArrayND[np.bool | npc.integer], check_finite: bool | None = None) -> onp.Array2D[np.float64]: ...
 @overload
-def whiten(obs: onp.ArrayND[_InexactT], check_finite: bool | None = None) -> onp.Array2D[_InexactT]: ...
+def whiten[InexactT: npc.inexact](obs: onp.ArrayND[InexactT], check_finite: bool | None = None) -> onp.Array2D[InexactT]: ...
 
 #
 @overload  # float32
@@ -95,9 +95,9 @@ def kmeans(
 ) -> tuple[onp.Array2D[npc.floating], npc.floating]: ...
 
 #
-def _kpoints(
-    data: onp.ArrayND[_InexactT], k: int, rng: onp.random.ToRNG, xp: ModuleType
-) -> onp.Array2D[_InexactT]: ...  # undocumented
+def _kpoints[InexactT: npc.inexact](
+    data: onp.ArrayND[InexactT], k: int, rng: onp.random.ToRNG, xp: ModuleType
+) -> onp.Array2D[InexactT]: ...  # undocumented
 def _krandinit(
     data: onp.ArrayND[npc.inexact], k: int, rng: onp.random.ToRNG, xp: ModuleType
 ) -> onp.Array2D[np.float64]: ...  # undocumented

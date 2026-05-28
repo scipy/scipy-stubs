@@ -1,8 +1,7 @@
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Any, Literal as L, SupportsIndex, overload
-from typing_extensions import TypeVar
+from typing import Any, Literal as L, SupportsIndex, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -68,20 +67,6 @@ type _ComplexND = onp.ArrayND[np.complex128]
 
 type _Order = L[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
 
-_AnyInexactT = TypeVar(
-    "_AnyInexactT",
-    np.float16,
-    np.float32,
-    np.float64,
-    np.float96,
-    np.float128,
-    np.complex64,
-    np.complex128,
-    np.complex192,
-    np.complex256,
-)
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-
 type _ZPK[ZT: np.generic, PT: np.generic, KT: np.generic | float] = tuple[onp.Array1D[ZT], onp.Array1D[PT], KT]
 
 type _Ba1D[InexactT: npc.inexact] = tuple[onp.Array1D[InexactT], onp.Array1D[InexactT]]
@@ -100,6 +85,19 @@ type _Pairing = L["nearest", "keep_odd", "minimal"]
 type _Norm = L["phase", "delay", "mag"]
 
 type _WorNReal = int | onp.ToFloat1D | None
+
+_AnyInexactT = TypeVar(
+    "_AnyInexactT",
+    np.float16,
+    np.float32,
+    np.float64,
+    np.float96,
+    np.float128,
+    np.complex64,
+    np.complex128,
+    np.complex192,
+    np.complex256,
+)
 
 ###
 
@@ -251,7 +249,7 @@ def normalize(b: onp.ToComplex128_ND, a: onp.ToJustComplex128_ND) -> _BaND[np.co
 @overload  # ~c128, +c128
 def normalize(b: onp.ToJustComplex128_ND, a: onp.ToComplex128_ND) -> _BaND[np.complex128]: ...
 @overload  # ~T, ~T
-def normalize(b: onp.ArrayND[_AnyInexactT], a: onp.ArrayND[_AnyInexactT]) -> _BaND[_AnyInexactT]: ...
+def normalize(b: onp.ArrayND[_AnyInexactT], a: onp.ArrayND[_AnyInexactT]) -> _BaND[_AnyInexactT]: ...  # noqa: UP047
 @overload  # fallback
 def normalize(b: onp.ToComplexND, a: onp.ToComplexND) -> _BaND[Any]: ...
 
@@ -261,7 +259,7 @@ def sos2tf(sos: onp.ToInt2D | onp.ToJustFloat64_2D) -> tuple[_Float1D, _Float1D]
 @overload  # c128
 def sos2tf(sos: onp.ToJustComplex128_2D) -> tuple[_Complex1D, _Complex1D]: ...
 @overload  # T: inexact
-def sos2tf(sos: onp.Array2D[_InexactT]) -> tuple[onp.Array1D[_InexactT], onp.Array1D[_InexactT]]: ...
+def sos2tf[InexactT: npc.inexact](sos: onp.Array2D[InexactT]) -> tuple[onp.Array1D[InexactT], onp.Array1D[InexactT]]: ...
 @overload  # fallback
 def sos2tf(sos: onp.ToComplex2D) -> tuple[onp.Array1D, onp.Array1D]: ...
 

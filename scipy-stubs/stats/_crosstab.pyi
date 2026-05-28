@@ -11,7 +11,6 @@ from scipy.sparse import coo_matrix
 
 ###
 
-_ScalarT = TypeVar("_ScalarT", bound=np.generic)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=np.generic, default=Any, covariant=True)
 _CountT_co = TypeVar(
     "_CountT_co",
@@ -35,22 +34,22 @@ class CrosstabResult(BaseBunch[Any, Any], Generic[_ScalarT_co, _CountT_co]):
 
 #
 @overload  # T@generic
-def crosstab(
-    arg0: onp.ToArrayND[_ScalarT, _ScalarT],
+def crosstab[ScalarT: np.generic](
+    arg0: onp.ToArrayND[ScalarT, ScalarT],
     /,
-    *args: onp.ToArrayND[_ScalarT, _ScalarT],
-    levels: onp.ToArrayND[_ScalarT, _ScalarT] | None = None,
+    *args: onp.ToArrayND[ScalarT, ScalarT],
+    levels: onp.ToArrayND[ScalarT, ScalarT] | None = None,
     sparse: Literal[False] = False,
-) -> CrosstabResult[_ScalarT, onp.ArrayND[np.intp]]: ...
+) -> CrosstabResult[ScalarT, onp.ArrayND[np.intp]]: ...
 @overload  # T@generic, sparse=True
-def crosstab(
-    arg0: onp.ToArrayND[_ScalarT, _ScalarT],
-    arg1: onp.ToArrayND[_ScalarT, _ScalarT],
+def crosstab[ScalarT: np.generic](
+    arg0: onp.ToArrayND[ScalarT, ScalarT],
+    arg1: onp.ToArrayND[ScalarT, ScalarT],
     /,
     *,
-    levels: onp.ToArrayND[_ScalarT, _ScalarT] | None = None,
+    levels: onp.ToArrayND[ScalarT, ScalarT] | None = None,
     sparse: Literal[True],
-) -> CrosstabResult[_ScalarT, coo_matrix[np.intp]]: ...
+) -> CrosstabResult[ScalarT, coo_matrix[np.intp]]: ...
 @overload  # bool
 def crosstab(  # type: ignore[overload-overlap]
     arg0: list[bool], /, *args: Sequence[bool], levels: Sequence[bool] | None = None, sparse: Literal[False] = False

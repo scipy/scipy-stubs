@@ -1,16 +1,12 @@
 from _typeshed import Incomplete
 from types import ModuleType
-from typing import Any, Literal, SupportsIndex, TypeVar, overload
+from typing import Any, Literal, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from scipy._typing import AnyShape
-
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_ScalarT = TypeVar("_ScalarT", bound=np.generic)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 def next_fast_len(target: SupportsIndex, real: bool = False) -> int: ...
 def prev_fast_len(target: SupportsIndex, real: bool = False) -> int: ...
@@ -33,7 +29,9 @@ def rfftfreq(n: int, d: float = 1.0, *, xp: ModuleType, device: object | None = 
 
 #
 @overload
-def fftshift(x: onp.ArrayND[_ScalarT, _ShapeT], axes: AnyShape | None = None) -> onp.ArrayND[_ScalarT, _ShapeT]: ...
+def fftshift[ScalarT: np.generic, ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[ScalarT, ShapeT], axes: AnyShape | None = None
+) -> onp.ArrayND[ScalarT, ShapeT]: ...
 @overload
 def fftshift(x: onp.ToJustBoolND, axes: AnyShape | None = None) -> onp.ArrayND[np.bool]: ...
 @overload
@@ -43,13 +41,17 @@ def fftshift(x: onp.ToJustFloat64_ND, axes: AnyShape | None = None) -> onp.Array
 @overload
 def fftshift(x: onp.ToJustComplex128_ND, axes: AnyShape | None = None) -> onp.ArrayND[np.complex128]: ...
 @overload
-def fftshift(x: onp.ToArrayND[_InexactT, _InexactT], axes: AnyShape | None = None) -> onp.ArrayND[_InexactT]: ...
+def fftshift[InexactT: npc.inexact](
+    x: onp.ToArrayND[InexactT, InexactT], axes: AnyShape | None = None
+) -> onp.ArrayND[InexactT]: ...
 @overload
 def fftshift(x: onp.ToComplexND, axes: AnyShape | None = None) -> onp.ArrayND[Any]: ...
 
 #
 @overload
-def ifftshift(x: onp.ArrayND[_ScalarT, _ShapeT], axes: AnyShape | None = None) -> onp.ArrayND[_ScalarT, _ShapeT]: ...
+def ifftshift[ScalarT: np.generic, ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[ScalarT, ShapeT], axes: AnyShape | None = None
+) -> onp.ArrayND[ScalarT, ShapeT]: ...
 @overload
 def ifftshift(x: onp.ToJustBoolND, axes: AnyShape | None = None) -> onp.ArrayND[np.bool]: ...
 @overload
@@ -59,6 +61,8 @@ def ifftshift(x: onp.ToJustFloat64_ND, axes: AnyShape | None = None) -> onp.Arra
 @overload
 def ifftshift(x: onp.ToJustComplex128_ND, axes: AnyShape | None = None) -> onp.ArrayND[np.complex128]: ...
 @overload
-def ifftshift(x: onp.ToArrayND[_InexactT, _InexactT], axes: AnyShape | None = None) -> onp.ArrayND[_InexactT]: ...
+def ifftshift[InexactT: npc.inexact](
+    x: onp.ToArrayND[InexactT, InexactT], axes: AnyShape | None = None
+) -> onp.ArrayND[InexactT]: ...
 @overload
 def ifftshift(x: onp.ToComplexND, axes: AnyShape | None = None) -> onp.ArrayND[Any]: ...

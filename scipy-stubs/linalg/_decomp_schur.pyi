@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Literal, TypeVar, overload
+from typing import Literal, overload
 
 import numpy as np
 import optype as op
@@ -9,8 +9,6 @@ import optype.numpy.compat as npc
 __all__ = ["rsf2csf", "schur"]
 
 ###
-
-_Shape2T = TypeVar("_Shape2T", bound=tuple[int, int, *tuple[int, ...]])
 
 type _Tuple2[T] = tuple[T, T]
 type _Tuple2i[T] = tuple[T, T, int]
@@ -34,119 +32,119 @@ type _as_c128 = npc.complexfloating128 | npc.complexfloating160  # noqa: PYI042
 
 #
 @overload  # Nd f64
-def schur(  # type: ignore[overload-overlap]
-    a: onp.ArrayND[_as_f64, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+    a: onp.ArrayND[_as_f64, Shape2T],
     output: _OutputReal = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     sort: None = None,
     check_finite: bool = True,
-) -> _Tuple2[onp.ArrayND[np.float64, _Shape2T]]: ...
+) -> _Tuple2[onp.ArrayND[np.float64, Shape2T]]: ...
 @overload  # Nd f64, sort=<given>
-def schur(  # type: ignore[overload-overlap]
-    a: onp.ArrayND[_as_f64, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+    a: onp.ArrayND[_as_f64, Shape2T],
     output: _OutputReal = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.float64, _Shape2T]]: ...
+) -> _Tuple2i[onp.ArrayND[np.float64, Shape2T]]: ...
 @overload  # Nd f64, output="complex"
-def schur(  # type: ignore[overload-overlap]
-    a: onp.ArrayND[_as_f64, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+    a: onp.ArrayND[_as_f64, Shape2T],
     output: _OutputComplex,
     lwork: int | None = None,
     overwrite_a: bool = False,
     sort: None = None,
     check_finite: bool = True,
-) -> _Tuple2[onp.ArrayND[np.complex128, _Shape2T]]: ...
+) -> _Tuple2[onp.ArrayND[np.complex128, Shape2T]]: ...
 @overload  # Nd f64, output="complex", sort=<given>
-def schur(  # type: ignore[overload-overlap]
-    a: onp.ArrayND[_as_f64, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+    a: onp.ArrayND[_as_f64, Shape2T],
     output: _OutputComplex,
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex128, _Shape2T]]: ...
+) -> _Tuple2i[onp.ArrayND[np.complex128, Shape2T]]: ...
 @overload  # Nd f32
-def schur(
-    a: onp.ArrayND[_as_f32, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: onp.ArrayND[_as_f32, Shape2T],
     output: _OutputReal = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     sort: None = None,
     check_finite: bool = True,
-) -> _Tuple2[onp.ArrayND[np.float32, _Shape2T]]: ...
+) -> _Tuple2[onp.ArrayND[np.float32, Shape2T]]: ...
 @overload  # Nd f32, sort=<given>
-def schur(
-    a: onp.ArrayND[_as_f32, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: onp.ArrayND[_as_f32, Shape2T],
     output: _OutputReal = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.float32, _Shape2T]]: ...
+) -> _Tuple2i[onp.ArrayND[np.float32, Shape2T]]: ...
 @overload  # Nd f32, output="complex"
-def schur(
-    a: onp.ArrayND[_as_f32, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: onp.ArrayND[_as_f32, Shape2T],
     output: _OutputComplex,
     lwork: int | None = None,
     overwrite_a: bool = False,
     sort: None = None,
     check_finite: bool = True,
-) -> _Tuple2[onp.ArrayND[np.complex64, _Shape2T]]: ...
+) -> _Tuple2[onp.ArrayND[np.complex64, Shape2T]]: ...
 @overload  # Nd f32, output="complex", sort=<given>
-def schur(
-    a: onp.ArrayND[_as_f32, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: onp.ArrayND[_as_f32, Shape2T],
     output: _OutputComplex,
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex64, _Shape2T]]: ...
+) -> _Tuple2i[onp.ArrayND[np.complex64, Shape2T]]: ...
 @overload  # Nd c128
-def schur(
-    a: onp.ArrayND[_as_c128, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: onp.ArrayND[_as_c128, Shape2T],
     output: _Output = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     sort: None = None,
     check_finite: bool = True,
-) -> _Tuple2[onp.ArrayND[np.complex128, _Shape2T]]: ...
+) -> _Tuple2[onp.ArrayND[np.complex128, Shape2T]]: ...
 @overload  # Nd c128, sort=<given>
-def schur(
-    a: onp.ArrayND[_as_c128, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: onp.ArrayND[_as_c128, Shape2T],
     output: _Output = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex128, _Shape2T]]: ...
+) -> _Tuple2i[onp.ArrayND[np.complex128, Shape2T]]: ...
 @overload  # Nd c64
-def schur(
-    a: onp.ArrayND[np.complex64, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: onp.ArrayND[np.complex64, Shape2T],
     output: _Output = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     sort: None = None,
     check_finite: bool = True,
-) -> _Tuple2[onp.ArrayND[np.complex64, _Shape2T]]: ...
+) -> _Tuple2[onp.ArrayND[np.complex64, Shape2T]]: ...
 @overload  # Nd c64, sort=<given>
-def schur(
-    a: onp.ArrayND[np.complex64, _Shape2T],
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
+    a: onp.ArrayND[np.complex64, Shape2T],
     output: _Output = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex64, _Shape2T]]: ...
+) -> _Tuple2i[onp.ArrayND[np.complex64, Shape2T]]: ...
 @overload  # ?d f64
 def schur(  # type: ignore[overload-overlap]
     a: onp.ToArrayND[float, _as_f64],

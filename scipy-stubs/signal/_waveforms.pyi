@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Literal, SupportsIndex, TypeVar, overload
+from typing import Literal, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -10,8 +10,6 @@ from scipy._typing import AnyShape
 __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impulse"]
 
 ###
-
-_SCT = TypeVar("_SCT", bound=np.generic)
 
 type _ToFloat0ND = onp.ToFloat | onp.ToFloatND
 type _FloatND = onp.ArrayND[np.float64]
@@ -118,9 +116,9 @@ def unit_impulse(
     shape: AnyShape, idx: SupportsIndex | Iterable[SupportsIndex] | Literal["mid"] | None = None, dtype: type[float] = ...
 ) -> _FloatND: ...
 @overload  # dtype is given
-def unit_impulse(
-    shape: AnyShape, idx: SupportsIndex | Iterable[SupportsIndex] | Literal["mid"] | None, dtype: _DTypeLike[_SCT]
-) -> onp.ArrayND[_SCT]: ...
+def unit_impulse[ScalarT: np.generic](
+    shape: AnyShape, idx: SupportsIndex | Iterable[SupportsIndex] | Literal["mid"] | None, dtype: _DTypeLike[ScalarT]
+) -> onp.ArrayND[ScalarT]: ...
 
 # Overloads for gausspulse when `t` is `"cutoff"`
 @overload  # retquad: False = ..., retenv: False = ...

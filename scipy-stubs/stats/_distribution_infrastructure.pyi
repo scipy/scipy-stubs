@@ -1,4 +1,5 @@
 # mypy: disable-error-code="override, explicit-override"
+
 import abc
 import types
 from collections.abc import Callable, Iterable, Mapping, Sequence, Set as AbstractSet
@@ -46,13 +47,6 @@ _ShapeT1 = TypeVar("_ShapeT1", bound=tuple[int, *tuple[int, ...]], default=tuple
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 _DistT0 = TypeVar("_DistT0", bound=_Dist[_0D])
-_DistT1 = TypeVar("_DistT1", bound=_Dist[_1D])
-_DistT_1 = TypeVar("_DistT_1", bound=_Dist[onp.AtMost1D])
-_DistT2 = TypeVar("_DistT2", bound=_Dist[_2D])
-_DistT_2 = TypeVar("_DistT_2", bound=_Dist[onp.AtMost2D])
-_DistT3 = TypeVar("_DistT3", bound=_Dist[_3D])
-_DistT_3 = TypeVar("_DistT_3", bound=_Dist[onp.AtMost3D])
-_DistT = TypeVar("_DistT", bound=_Dist[tuple[int, ...]])
 _DistT_co = TypeVar("_DistT_co", bound=_Dist[tuple[int, ...]], default=UnivariateDistribution, covariant=True)
 
 _AxesT = TypeVar("_AxesT", bound=_Axes, default=Any)
@@ -1501,11 +1495,11 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
     @overload
     def __add__(self: _DistT0, x: onp.CanArrayND[_FloatT, _ShapeT1], /) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
     @overload
-    def __add__(self: _DistT_1, x: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...
+    def __add__[DistT_1: _Dist[onp.AtMost1D]](self: DistT_1, x: onp.ToFloatStrict1D, /) -> _LinDist[DistT_1, _Float, _1D]: ...
     @overload
-    def __add__(self: _DistT_2, x: onp.ToFloatStrict2D, /) -> _LinDist[_DistT_2, _Float, _2D]: ...
+    def __add__[DistT_2: _Dist[onp.AtMost2D]](self: DistT_2, x: onp.ToFloatStrict2D, /) -> _LinDist[DistT_2, _Float, _2D]: ...
     @overload
-    def __add__(self: _DistT_3, x: onp.ToFloatStrict3D, /) -> _LinDist[_DistT_3, _Float, _3D]: ...
+    def __add__[DistT_3: _Dist[onp.AtMost3D]](self: DistT_3, x: onp.ToFloatStrict3D, /) -> _LinDist[DistT_3, _Float, _3D]: ...
     @overload
     def __add__(self, x: onp.ToFloatND, /) -> _LinDist[Self, _Float, tuple[Any, ...]]: ...
     __radd__ = __add__
@@ -1522,11 +1516,17 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
         self: _DistT0, lshift: onp.CanArrayND[_FloatT, _ShapeT1], /
     ) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
     @overload
-    def __sub__(self: _DistT_1, lshift: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...
+    def __sub__[DistT_1: _Dist[onp.AtMost1D]](
+        self: DistT_1, lshift: onp.ToFloatStrict1D, /
+    ) -> _LinDist[DistT_1, _Float, _1D]: ...
     @overload
-    def __sub__(self: _DistT_2, lshift: onp.ToFloatStrict2D, /) -> _LinDist[_DistT_2, _Float, _2D]: ...
+    def __sub__[DistT_2: _Dist[onp.AtMost2D]](
+        self: DistT_2, lshift: onp.ToFloatStrict2D, /
+    ) -> _LinDist[DistT_2, _Float, _2D]: ...
     @overload
-    def __sub__(self: _DistT_3, lshift: onp.ToFloatStrict3D, /) -> _LinDist[_DistT_3, _Float, _3D]: ...
+    def __sub__[DistT_3: _Dist[onp.AtMost3D]](
+        self: DistT_3, lshift: onp.ToFloatStrict3D, /
+    ) -> _LinDist[DistT_3, _Float, _3D]: ...
     @overload
     def __sub__(self, lshift: onp.ToFloatND, /) -> _LinDist[Self, _Float, tuple[Any, ...]]: ...
     __rsub__ = __sub__
@@ -1543,11 +1543,11 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
         self: _DistT0, scale: onp.CanArrayND[_FloatT, _ShapeT1], /
     ) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
     @overload
-    def __mul__(self: _DistT_1, scale: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...
+    def __mul__[DistT_1: _Dist[onp.AtMost1D]](self: DistT_1, scale: onp.ToFloatStrict1D, /) -> _LinDist[DistT_1, _Float, _1D]: ...
     @overload
-    def __mul__(self: _DistT_2, scale: onp.ToFloatStrict2D, /) -> _LinDist[_DistT_2, _Float, _2D]: ...
+    def __mul__[DistT_2: _Dist[onp.AtMost2D]](self: DistT_2, scale: onp.ToFloatStrict2D, /) -> _LinDist[DistT_2, _Float, _2D]: ...
     @overload
-    def __mul__(self: _DistT_3, scale: onp.ToFloatStrict3D, /) -> _LinDist[_DistT_3, _Float, _3D]: ...
+    def __mul__[DistT_3: _Dist[onp.AtMost3D]](self: DistT_3, scale: onp.ToFloatStrict3D, /) -> _LinDist[DistT_3, _Float, _3D]: ...
     @overload
     def __mul__(self, scale: onp.ToFloatND, /) -> _LinDist[Self, _Float, tuple[Any, ...]]: ...
     __rmul__ = __mul__
@@ -1568,11 +1568,17 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
         self: _DistT0, iscale: onp.CanArrayND[_FloatT, _ShapeT1], /
     ) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
     @overload
-    def __truediv__(self: _DistT_1, iscale: onp.ToFloatStrict1D, /) -> _LinDist[_DistT_1, _Float, _1D]: ...
+    def __truediv__[DistT_1: _Dist[onp.AtMost1D]](
+        self: DistT_1, iscale: onp.ToFloatStrict1D, /
+    ) -> _LinDist[DistT_1, _Float, _1D]: ...
     @overload
-    def __truediv__(self: _DistT_2, iscale: onp.ToFloatStrict2D, /) -> _LinDist[_DistT_2, _Float, _2D]: ...
+    def __truediv__[DistT_2: _Dist[onp.AtMost2D]](
+        self: DistT_2, iscale: onp.ToFloatStrict2D, /
+    ) -> _LinDist[DistT_2, _Float, _2D]: ...
     @overload
-    def __truediv__(self: _DistT_3, iscale: onp.ToFloatStrict3D, /) -> _LinDist[_DistT_3, _Float, _3D]: ...
+    def __truediv__[DistT_3: _Dist[onp.AtMost3D]](
+        self: DistT_3, iscale: onp.ToFloatStrict3D, /
+    ) -> _LinDist[DistT_3, _Float, _3D]: ...
     @overload
     def __truediv__(self, iscale: onp.ToFloatND, /) -> _LinDist[Self, _Float, tuple[Any, ...]]: ...
     __rtruediv__ = __truediv__
@@ -1608,15 +1614,25 @@ class ShiftedScaledDistribution(
 
 class FoldedDistribution(TransformedDistribution[_DistT_co, _FloatT_co, _ShapeT_co], Generic[_DistT_co, _FloatT_co, _ShapeT_co]):
     @overload
-    def __init__(self: _FoldDist[_DistT0, _Float, _0D], X: _DistT0, /, *args: Never, **kwargs: Unpack[_DistOpts]) -> None: ...
+    def __init__[DistT0: _Dist[_0D]](
+        self: _FoldDist[DistT0, _Float, _0D], X: DistT0, /, *args: Never, **kwargs: Unpack[_DistOpts]
+    ) -> None: ...
     @overload
-    def __init__(self: _FoldDist[_DistT1, _Float, _1D], X: _DistT1, /, *args: Never, **kwargs: Unpack[_DistOpts]) -> None: ...
+    def __init__[DistT1: _Dist[_1D]](
+        self: _FoldDist[DistT1, _Float, _1D], X: DistT1, /, *args: Never, **kwargs: Unpack[_DistOpts]
+    ) -> None: ...
     @overload
-    def __init__(self: _FoldDist[_DistT2, _Float, _2D], X: _DistT2, /, *args: Never, **kwargs: Unpack[_DistOpts]) -> None: ...
+    def __init__[DistT2: _Dist[_2D]](
+        self: _FoldDist[DistT2, _Float, _2D], X: DistT2, /, *args: Never, **kwargs: Unpack[_DistOpts]
+    ) -> None: ...
     @overload
-    def __init__(self: _FoldDist[_DistT3, _Float, _3D], X: _DistT3, /, *args: Never, **kwargs: Unpack[_DistOpts]) -> None: ...
+    def __init__[DistT3: _Dist[_3D]](
+        self: _FoldDist[DistT3, _Float, _3D], X: DistT3, /, *args: Never, **kwargs: Unpack[_DistOpts]
+    ) -> None: ...
     @overload
-    def __init__(self: _FoldDist[_DistT, _Float, _ND], X: _DistT, /, *args: Never, **kwargs: Unpack[_DistOpts]) -> None: ...
+    def __init__[DistT: _Dist[tuple[int, ...]]](
+        self: _FoldDist[DistT, _Float, _ND], X: DistT, /, *args: Never, **kwargs: Unpack[_DistOpts]
+    ) -> None: ...
 
 class TruncatedDistribution(TransformedDistribution[_DistT_co, _Float, _ShapeT_co], Generic[_DistT_co, _ShapeT_co]):
     _lb_domain: ClassVar[_RealInterval] = ...
@@ -1628,9 +1644,9 @@ class TruncatedDistribution(TransformedDistribution[_DistT_co, _Float, _ShapeT_c
     ub: _ParamField[_Float, _ShapeT_co]
 
     @overload
-    def __init__(
-        self: _TruncDist[_DistT0, _0D],
-        X: _DistT0,
+    def __init__[DistT0: _Dist[_0D]](
+        self: _TruncDist[DistT0, _0D],
+        X: DistT0,
         /,
         *args: Never,
         lb: onp.ToFloat = ...,
@@ -1638,9 +1654,9 @@ class TruncatedDistribution(TransformedDistribution[_DistT_co, _Float, _ShapeT_c
         **kwargs: Unpack[_DistOpts],
     ) -> None: ...
     @overload
-    def __init__(
-        self: _TruncDist[_DistT1, _1D],
-        X: _DistT1,
+    def __init__[DistT1: _Dist[_1D]](
+        self: _TruncDist[DistT1, _1D],
+        X: DistT1,
         /,
         *args: Never,
         lb: _ToFloatMax1D = ...,
@@ -1648,9 +1664,9 @@ class TruncatedDistribution(TransformedDistribution[_DistT_co, _Float, _ShapeT_c
         **kwargs: Unpack[_DistOpts],
     ) -> None: ...
     @overload
-    def __init__(
-        self: _TruncDist[_DistT2, _2D],
-        X: _DistT2,
+    def __init__[DistT2: _Dist[_2D]](
+        self: _TruncDist[DistT2, _2D],
+        X: DistT2,
         /,
         *args: Never,
         lb: _ToFloatMax2D = ...,
@@ -1658,9 +1674,9 @@ class TruncatedDistribution(TransformedDistribution[_DistT_co, _Float, _ShapeT_c
         **kwargs: Unpack[_DistOpts],
     ) -> None: ...
     @overload
-    def __init__(
-        self: _TruncDist[_DistT3, _3D],
-        X: _DistT3,
+    def __init__[DistT3: _Dist[_3D]](
+        self: _TruncDist[DistT3, _3D],
+        X: DistT3,
         /,
         *args: Never,
         lb: _ToFloatMax3D = ...,
@@ -1668,9 +1684,9 @@ class TruncatedDistribution(TransformedDistribution[_DistT_co, _Float, _ShapeT_c
         **kwargs: Unpack[_DistOpts],
     ) -> None: ...
     @overload
-    def __init__(
-        self: _TruncDist[_DistT, _ND],
-        X: _DistT,
+    def __init__[DistT: _Dist[tuple[int, ...]]](
+        self: _TruncDist[DistT, _ND],
+        X: DistT,
         /,
         *args: Never,
         lb: _ToFloat0ND = ...,
@@ -1687,9 +1703,9 @@ class OrderStatisticDistribution(TransformedDistribution[_DistT_co, _OutFloat, _
     _n_param: ClassVar[_RealParameter] = ...
 
     @overload
-    def __init__(
-        self: OrderStatisticDistribution[_DistT0, _0D],
-        dist: _DistT0,
+    def __init__[DistT0: _Dist[_0D]](
+        self: OrderStatisticDistribution[DistT0, _0D],
+        dist: DistT0,
         /,
         *args: Never,
         r: onp.ToJustInt,
@@ -1697,9 +1713,9 @@ class OrderStatisticDistribution(TransformedDistribution[_DistT_co, _OutFloat, _
         **kwargs: Unpack[_DistOpts],
     ) -> None: ...
     @overload
-    def __init__(
-        self: OrderStatisticDistribution[_DistT1, _1D],
-        dist: _DistT1,
+    def __init__[DistT1: _Dist[_1D]](
+        self: OrderStatisticDistribution[DistT1, _1D],
+        dist: DistT1,
         /,
         *args: Never,
         r: _ToJustIntMax1D,
@@ -1707,9 +1723,9 @@ class OrderStatisticDistribution(TransformedDistribution[_DistT_co, _OutFloat, _
         **kwargs: Unpack[_DistOpts],
     ) -> None: ...
     @overload
-    def __init__(
-        self: OrderStatisticDistribution[_DistT2, _2D],
-        dist: _DistT2,
+    def __init__[DistT2: _Dist[_2D]](
+        self: OrderStatisticDistribution[DistT2, _2D],
+        dist: DistT2,
         /,
         *args: Never,
         r: _ToJustIntMax2D,
@@ -1717,9 +1733,9 @@ class OrderStatisticDistribution(TransformedDistribution[_DistT_co, _OutFloat, _
         **kwargs: Unpack[_DistOpts],
     ) -> None: ...
     @overload
-    def __init__(
-        self: OrderStatisticDistribution[_DistT3, _3D],
-        dist: _DistT3,
+    def __init__[DistT3: _Dist[_3D]](
+        self: OrderStatisticDistribution[DistT3, _3D],
+        dist: DistT3,
         /,
         *args: Never,
         r: _ToJustIntMax3D,
@@ -1727,9 +1743,9 @@ class OrderStatisticDistribution(TransformedDistribution[_DistT_co, _OutFloat, _
         **kwargs: Unpack[_DistOpts],
     ) -> None: ...
     @overload
-    def __init__(
-        self: OrderStatisticDistribution[_DistT, _ND],
-        X: _DistT,
+    def __init__[DistT: _Dist[tuple[int, ...]]](
+        self: OrderStatisticDistribution[DistT, _ND],
+        X: DistT,
         /,
         *args: Never,
         r: _ToJustIntMaxND,
@@ -1788,63 +1804,73 @@ class Mixture(_BaseDistribution[_FloatT_co, _0D], Generic[_FloatT_co]):
 # still waiting on the intersection type PEP...
 
 @overload
-def truncate(X: _DistT0, lb: onp.ToFloat = ..., ub: onp.ToFloat = ...) -> _TruncDist[_DistT0, _0D]: ...
+def truncate[DistT0: _Dist[_0D]](X: DistT0, lb: onp.ToFloat = ..., ub: onp.ToFloat = ...) -> _TruncDist[DistT0, _0D]: ...
 @overload
-def truncate(X: _DistT1, lb: _ToFloatMax1D = ..., ub: _ToFloatMax1D = ...) -> _TruncDist[_DistT1, _1D]: ...
+def truncate[DistT1: _Dist[_1D]](X: DistT1, lb: _ToFloatMax1D = ..., ub: _ToFloatMax1D = ...) -> _TruncDist[DistT1, _1D]: ...
 @overload
-def truncate(X: _DistT2, lb: _ToFloatMax2D = ..., ub: _ToFloatMax2D = ...) -> _TruncDist[_DistT2, _2D]: ...
+def truncate[DistT2: _Dist[_2D]](X: DistT2, lb: _ToFloatMax2D = ..., ub: _ToFloatMax2D = ...) -> _TruncDist[DistT2, _2D]: ...
 @overload
-def truncate(X: _DistT3, lb: _ToFloatMax3D = ..., ub: _ToFloatMax3D = ...) -> _TruncDist[_DistT3, _3D]: ...
+def truncate[DistT3: _Dist[_3D]](X: DistT3, lb: _ToFloatMax3D = ..., ub: _ToFloatMax3D = ...) -> _TruncDist[DistT3, _3D]: ...
 @overload
-def truncate(X: _DistT, lb: _ToFloat0ND = ..., ub: _ToFloat0ND = ...) -> _TruncDist[_DistT, _ND]: ...
+def truncate[DistT: _Dist[tuple[int, ...]]](X: DistT, lb: _ToFloat0ND = ..., ub: _ToFloat0ND = ...) -> _TruncDist[DistT, _ND]: ...
 
 #
 @overload
-def order_statistic(X: _DistT0, /, *, r: onp.ToJustInt, n: onp.ToJustInt) -> OrderStatisticDistribution[_DistT0, _0D]: ...
+def order_statistic[DistT0: _Dist[_0D]](
+    X: DistT0, /, *, r: onp.ToJustInt, n: onp.ToJustInt
+) -> OrderStatisticDistribution[DistT0, _0D]: ...
 @overload
-def order_statistic(X: _DistT1, /, *, r: _ToJustIntMax1D, n: _ToJustIntMax1D) -> OrderStatisticDistribution[_DistT1, _1D]: ...
+def order_statistic[DistT1: _Dist[_1D]](
+    X: DistT1, /, *, r: _ToJustIntMax1D, n: _ToJustIntMax1D
+) -> OrderStatisticDistribution[DistT1, _1D]: ...
 @overload
-def order_statistic(X: _DistT2, /, *, r: _ToJustIntMax2D, n: _ToJustIntMax2D) -> OrderStatisticDistribution[_DistT2, _2D]: ...
+def order_statistic[DistT2: _Dist[_2D]](
+    X: DistT2, /, *, r: _ToJustIntMax2D, n: _ToJustIntMax2D
+) -> OrderStatisticDistribution[DistT2, _2D]: ...
 @overload
-def order_statistic(X: _DistT3, /, *, r: _ToJustIntMax3D, n: _ToJustIntMax3D) -> OrderStatisticDistribution[_DistT3, _3D]: ...
+def order_statistic[DistT3: _Dist[_3D]](
+    X: DistT3, /, *, r: _ToJustIntMax3D, n: _ToJustIntMax3D
+) -> OrderStatisticDistribution[DistT3, _3D]: ...
 @overload
-def order_statistic(X: _DistT, /, *, r: _ToJustIntMaxND, n: _ToJustIntMaxND) -> OrderStatisticDistribution[_DistT, _ND]: ...
+def order_statistic[DistT: _Dist[tuple[int, ...]]](
+    X: DistT, /, *, r: _ToJustIntMaxND, n: _ToJustIntMaxND
+) -> OrderStatisticDistribution[DistT, _ND]: ...
 
 #
 @overload
-def abs(X: _DistT0, /) -> _FoldDist[_DistT0, _Float, _0D]: ...
+def abs[DistT0: _Dist[_0D]](X: DistT0, /) -> _FoldDist[DistT0, _Float, _0D]: ...
 @overload
-def abs(X: _DistT1, /) -> _FoldDist[_DistT1, _Float, _1D]: ...
+def abs[DistT1: _Dist[_1D]](X: DistT1, /) -> _FoldDist[DistT1, _Float, _1D]: ...
 @overload
-def abs(X: _DistT2, /) -> _FoldDist[_DistT2, _Float, _2D]: ...
+def abs[DistT2: _Dist[_2D]](X: DistT2, /) -> _FoldDist[DistT2, _Float, _2D]: ...
 @overload
-def abs(X: _DistT3, /) -> _FoldDist[_DistT3, _Float, _3D]: ...
+def abs[DistT3: _Dist[_3D]](X: DistT3, /) -> _FoldDist[DistT3, _Float, _3D]: ...
 @overload
-def abs(X: _DistT, /) -> _FoldDist[_DistT, _Float, _ND]: ...
+def abs[DistT: _Dist[tuple[int, ...]]](X: DistT, /) -> _FoldDist[DistT, _Float, _ND]: ...
 
 #
 @overload
-def exp(X: _DistT0, /) -> MonotonicTransformedDistribution[_DistT0, _0D]: ...
+def exp[DistT0: _Dist[_0D]](X: DistT0, /) -> MonotonicTransformedDistribution[DistT0, _0D]: ...
 @overload
-def exp(X: _DistT1, /) -> MonotonicTransformedDistribution[_DistT1, _1D]: ...
+def exp[DistT1: _Dist[_1D]](X: DistT1, /) -> MonotonicTransformedDistribution[DistT1, _1D]: ...
 @overload
-def exp(X: _DistT2, /) -> MonotonicTransformedDistribution[_DistT2, _2D]: ...
+def exp[DistT2: _Dist[_2D]](X: DistT2, /) -> MonotonicTransformedDistribution[DistT2, _2D]: ...
 @overload
-def exp(X: _DistT3, /) -> MonotonicTransformedDistribution[_DistT3, _3D]: ...
+def exp[DistT3: _Dist[_3D]](X: DistT3, /) -> MonotonicTransformedDistribution[DistT3, _3D]: ...
 @overload
-def exp(X: _DistT, /) -> MonotonicTransformedDistribution[_DistT, _ND]: ...
+def exp[DistT: _Dist[tuple[int, ...]]](X: DistT, /) -> MonotonicTransformedDistribution[DistT, _ND]: ...
 
 #
 @overload
-def log(X: _DistT0, /) -> MonotonicTransformedDistribution[_DistT0, _0D]: ...
+def log[DistT0: _Dist[_0D]](X: DistT0, /) -> MonotonicTransformedDistribution[DistT0, _0D]: ...
 @overload
-def log(X: _DistT1, /) -> MonotonicTransformedDistribution[_DistT1, _1D]: ...
+def log[DistT1: _Dist[_1D]](X: DistT1, /) -> MonotonicTransformedDistribution[DistT1, _1D]: ...
 @overload
-def log(X: _DistT2, /) -> MonotonicTransformedDistribution[_DistT2, _2D]: ...
+def log[DistT2: _Dist[_2D]](X: DistT2, /) -> MonotonicTransformedDistribution[DistT2, _2D]: ...
 @overload
-def log(X: _DistT3, /) -> MonotonicTransformedDistribution[_DistT3, _3D]: ...
+def log[DistT3: _Dist[_3D]](X: DistT3, /) -> MonotonicTransformedDistribution[DistT3, _3D]: ...
 @overload
-def log(X: _DistT, /) -> MonotonicTransformedDistribution[_DistT, _ND]: ...
+def log[DistT: _Dist[tuple[int, ...]]](X: DistT, /) -> MonotonicTransformedDistribution[DistT, _ND]: ...
 
 # NOTE: These currently don't support >0-d parameters, and it looks like they always return float64, regardless of dtype
 @type_check_only

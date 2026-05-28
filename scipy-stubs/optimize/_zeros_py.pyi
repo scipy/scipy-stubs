@@ -10,22 +10,21 @@ from ._typing import MethodRootScalar
 
 __all__ = ["RootResults", "bisect", "brenth", "brentq", "newton", "ridder", "toms748"]
 
+###
+
 type _Flag = Literal["converged", "sign error", "convergence error", "value error", "No error"]
 type _FlagKey = Literal[0, -1, -2, -3, -4, 1]
 
 type _Float = float | np.float64
 type _Floating = float | npc.floating
 
-_T = TypeVar("_T")
-_KT = TypeVar("_KT", bound=_FlagKey)
-_RT = TypeVar("_RT", bound=_Floating)
-_RT_co = TypeVar("_RT_co", bound=_Floating, default=_Float, covariant=True)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 type _Fun0D = Callable[Concatenate[float, ...], onp.ToFloat] | Callable[Concatenate[np.float64, ...], onp.ToFloat]
-type _FunND[_ShapeT: tuple[int, ...]] = Callable[Concatenate[onp.Array[_ShapeT, np.float64], ...], onp.Array[_ShapeT, np.float64]]
+type _FunND[ShapeT: tuple[int, ...]] = Callable[Concatenate[onp.Array[ShapeT, np.float64], ...], onp.Array[ShapeT, np.float64]]
 
 type _State = tuple[_FlagKey, _Float]
 type _Bracket = tuple[_Float, _Float]
+
+_RT_co = TypeVar("_RT_co", bound=_Floating, default=_Float, covariant=True)
 
 ###
 
@@ -71,9 +70,9 @@ class TOMS748Solver:
     def configure(self, /, xtol: _Float, rtol: _Float, maxiter: int, disp: bool, k: int) -> None: ...
     def _callf(self, /, x: _Float, error: bool = True) -> onp.ToFloat: ...
     @overload
-    def get_result(self, /, x: _T, flag: Literal[0] = 0) -> tuple[_T, int, int, Literal[0]]: ...
+    def get_result[T](self, /, x: T, flag: Literal[0] = 0) -> tuple[T, int, int, Literal[0]]: ...
     @overload
-    def get_result(self, /, x: _T, flag: _KT) -> tuple[_T, int, int, _KT]: ...
+    def get_result[T, KT: _FlagKey](self, /, x: T, flag: KT) -> tuple[T, int, int, KT]: ...
     def _update_bracket(self, /, c: _Float, fc: _Float) -> _Bracket: ...
     def start(self, /, f: _Fun0D, a: _Float, b: _Float, args: tuple[object, ...] = ()) -> _State: ...
     def get_status(self, /) -> _State: ...
@@ -97,11 +96,11 @@ def _update_bracket(ab: list[_Float] | _Bracket, fab: list[_Float] | _Bracket, c
 
 # undocumented
 @overload
-def results_c(full_output: onp.ToFalse, r: _T, method: MethodRootScalar) -> _T: ...
+def results_c[T](full_output: onp.ToFalse, r: T, method: MethodRootScalar) -> T: ...
 @overload
-def results_c(
-    full_output: onp.ToTrue, r: tuple[_RT, int, int, _FlagKey], method: MethodRootScalar
-) -> tuple[_RT, RootResults[_RT]]: ...
+def results_c[RT: _Floating](
+    full_output: onp.ToTrue, r: tuple[RT, int, int, _FlagKey], method: MethodRootScalar
+) -> tuple[RT, RootResults[RT]]: ...
 
 #
 @overload
@@ -134,34 +133,34 @@ def newton(
     disp: bool = True,
 ) -> tuple[_Float, RootResults[_Float]]: ...
 @overload
-def newton(
-    func: _FunND[_ShapeT],
-    x0: onp.Array[_ShapeT, np.float64],
-    fprime: _FunND[_ShapeT] | None = None,
+def newton[ShapeT: tuple[int, ...]](
+    func: _FunND[ShapeT],
+    x0: onp.Array[ShapeT, np.float64],
+    fprime: _FunND[ShapeT] | None = None,
     args: tuple[object, ...] = (),
     tol: onp.ToFloat = 1.48e-08,
     maxiter: onp.ToJustInt = 50,
-    fprime2: _FunND[_ShapeT] | None = None,
-    x1: onp.Array[_ShapeT, np.float64] | None = None,
+    fprime2: _FunND[ShapeT] | None = None,
+    x1: onp.Array[ShapeT, np.float64] | None = None,
     rtol: onp.ToFloat = 0.0,
     full_output: onp.ToFalse = False,
     disp: bool = True,
-) -> onp.Array[_ShapeT, np.float64]: ...
+) -> onp.Array[ShapeT, np.float64]: ...
 @overload
-def newton(
-    func: _FunND[_ShapeT],
-    x0: onp.Array[_ShapeT, np.float64],
-    fprime: _FunND[_ShapeT] | None = None,
+def newton[ShapeT: tuple[int, ...]](
+    func: _FunND[ShapeT],
+    x0: onp.Array[ShapeT, np.float64],
+    fprime: _FunND[ShapeT] | None = None,
     args: tuple[object, ...] = (),
     tol: onp.ToFloat = 1.48e-08,
     maxiter: onp.ToJustInt = 50,
-    fprime2: _FunND[_ShapeT] | None = None,
-    x1: onp.Array[_ShapeT, np.float64] | None = None,
+    fprime2: _FunND[ShapeT] | None = None,
+    x1: onp.Array[ShapeT, np.float64] | None = None,
     rtol: onp.ToFloat = 0.0,
     *,
     full_output: onp.ToTrue,
     disp: bool = True,
-) -> tuple[onp.Array[_ShapeT, np.float64], onp.Array[_ShapeT, np.bool], onp.Array[_ShapeT, np.bool]]: ...
+) -> tuple[onp.Array[ShapeT, np.float64], onp.Array[ShapeT, np.bool], onp.Array[ShapeT, np.bool]]: ...
 
 #
 @overload

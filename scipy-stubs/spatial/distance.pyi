@@ -1,6 +1,5 @@
 from collections.abc import Callable, Sequence
 from typing import Literal, Never, overload
-from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -98,9 +97,6 @@ type _JustAnyShape = tuple[Never, Never, Never, Never]
 
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
 
-_NumberT = TypeVar("_NumberT", bound=npc.number)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-
 ###
 
 # NOTE: on numpy<2.1, both mypy and pyright reports false positive overload-overlap errors for overload 2 of `jensenshannon`
@@ -146,7 +142,9 @@ def pdist(
 
 #
 @overload  # ?d T@number
-def squareform(X: onp.ArrayND[_NumberT, _JustAnyShape], force: _Force = "no", checks: bool = True) -> onp.ArrayND[_NumberT]: ...
+def squareform[NumberT: npc.number](
+    X: onp.ArrayND[NumberT, _JustAnyShape], force: _Force = "no", checks: bool = True
+) -> onp.ArrayND[NumberT]: ...
 @overload  # 1d +int
 def squareform(X: Sequence[int], force: _Force = "no", checks: bool = True) -> onp.Array2D[np.int_]: ...
 @overload  # 1d ~float
@@ -154,9 +152,9 @@ def squareform(X: list[float], force: _Force = "no", checks: bool = True) -> onp
 @overload  # 1d ~complex
 def squareform(X: list[complex], force: _Force = "no", checks: bool = True) -> onp.Array2D[np.complex128]: ...
 @overload  # 1d T@number
-def squareform(
-    X: onp.ToArrayStrict1D[_NumberT, _NumberT], force: _Force = "no", checks: bool = True
-) -> onp.Array2D[_NumberT]: ...
+def squareform[NumberT: npc.number](
+    X: onp.ToArrayStrict1D[NumberT, NumberT], force: _Force = "no", checks: bool = True
+) -> onp.Array2D[NumberT]: ...
 @overload  # 2d +int
 def squareform(X: Sequence[Sequence[int]], force: _Force = "no", checks: bool = True) -> onp.Array1D[np.int_]: ...
 @overload  # 2d ~float
@@ -164,9 +162,9 @@ def squareform(X: Sequence[list[float]], force: _Force = "no", checks: bool = Tr
 @overload  # 2d ~complex
 def squareform(X: Sequence[list[complex]], force: _Force = "no", checks: bool = True) -> onp.Array1D[np.complex128]: ...
 @overload  # 2d T@number
-def squareform(
-    X: onp.ToArrayStrict2D[_NumberT, _NumberT], force: _Force = "no", checks: bool = True
-) -> onp.Array1D[_NumberT]: ...
+def squareform[NumberT: npc.number](
+    X: onp.ToArrayStrict2D[NumberT, NumberT], force: _Force = "no", checks: bool = True
+) -> onp.Array1D[NumberT]: ...
 @overload  # fallback
 def squareform(X: onp.ToComplexND, force: _Force = "no", checks: bool = True) -> onp.ArrayND: ...
 
@@ -214,14 +212,14 @@ def jensenshannon(
     p: _ToFloatStrictND, q: _ToFloatStrictND, base: float | None = None, *, axis: int = 0, keepdims: Literal[False] = False
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # ?d, keepdims=True
-def jensenshannon(
-    p: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
-    q: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+def jensenshannon[ShapeT: tuple[int, ...]](
+    p: onp.ArrayND[npc.floating | npc.integer, ShapeT],
+    q: onp.ArrayND[npc.floating | npc.integer, ShapeT],
     base: float | None = None,
     *,
     axis: int = 0,
     keepdims: Literal[True],
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # 1d, keepdims=False
 def jensenshannon(
     p: onp.ToFloatStrict1D, q: onp.ToFloatStrict1D, base: float | None = None, *, axis: int = 0, keepdims: Literal[False] = False

@@ -11,8 +11,7 @@ from ._interpolate import PPoly
 
 __all__ = ["Akima1DInterpolator", "CubicHermiteSpline", "CubicSpline", "PchipInterpolator", "pchip_interpolate"]
 
-_CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
-_AxisT = TypeVar("_AxisT", bound=_ToAxis)
+###
 
 type _Tuple2[T] = tuple[T, T]
 type _ToAxis = int | npc.integer
@@ -30,6 +29,8 @@ type _PreparedInput[CT: np.float64 | np.complex128, AxisT: _ToAxis] = tuple[
     AxisT,  # axis
     onp.ArrayND[CT],  # dydx
 ]
+
+_CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
 ###
 
@@ -142,18 +143,18 @@ def pchip_interpolate(
 
 # undocumented
 @overload
-def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToFloatND, axis: _AxisT, dydx: onp.ToFloatND | None = None, xp: None = None
-) -> _PreparedInput[np.float64, _AxisT]: ...
+def prepare_input[AxisT: _ToAxis](
+    x: onp.ToFloat1D, y: onp.ToFloatND, axis: AxisT, dydx: onp.ToFloatND | None = None, xp: None = None
+) -> _PreparedInput[np.float64, AxisT]: ...
 @overload
-def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToJustComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
-) -> _PreparedInput[np.complex128, _AxisT]: ...
+def prepare_input[AxisT: _ToAxis](
+    x: onp.ToFloat1D, y: onp.ToJustComplexND, axis: AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
+) -> _PreparedInput[np.complex128, AxisT]: ...
 @overload
-def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
-) -> _PreparedInput[Any, _AxisT]: ...
+def prepare_input[AxisT: _ToAxis](
+    x: onp.ToFloat1D, y: onp.ToComplexND, axis: AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
+) -> _PreparedInput[Any, AxisT]: ...
 @overload
-def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, *, xp: ModuleType
-) -> tuple[Incomplete, Incomplete, Incomplete, _AxisT, Incomplete]: ...
+def prepare_input[AxisT: _ToAxis](
+    x: onp.ToFloat1D, y: onp.ToComplexND, axis: AxisT, dydx: onp.ToComplexND | None = None, *, xp: ModuleType
+) -> tuple[Incomplete, Incomplete, Incomplete, AxisT, Incomplete]: ...

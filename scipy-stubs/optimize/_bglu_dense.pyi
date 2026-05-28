@@ -6,14 +6,15 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_MethodT = TypeVar("_MethodT", bound=Callable[Concatenate[Any, ...], object])
+###
+
 _NumberT_co = TypeVar("_NumberT_co", bound=npc.number, default=Any, covariant=True)
 
 ###
 
 __all__ = ["BGLU", "LU"]
 
-def _consider_refactor(method: _MethodT) -> _MethodT: ...  # undocumented
+def _consider_refactor[MethodT: Callable[Concatenate[Any, ...], object]](method: MethodT) -> MethodT: ...  # undocumented
 
 class LU(Generic[_NumberT_co]):  # undocumented
     A: onp.Array2D[_NumberT_co]

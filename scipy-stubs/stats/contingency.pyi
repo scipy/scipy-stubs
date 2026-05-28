@@ -17,8 +17,6 @@ __all__ = ["association", "chi2_contingency", "crosstab", "expected_freq", "marg
 
 type _to_floating = npc.floating | npc.integer | np.bool  # noqa: PYI042
 
-_NumericScalarT = TypeVar("_NumericScalarT", bound=npc.number | np.timedelta64)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 ###
@@ -48,25 +46,27 @@ class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, int, onp.ArrayND[n
 
 #
 @overload
-def margins(a: onp.ArrayND[_NumericScalarT, _ShapeT]) -> list[onp.ArrayND[_NumericScalarT, _ShapeT]]: ...
+def margins[ScalarT: npc.number | np.timedelta64, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[ScalarT, ShapeT],
+) -> list[onp.ArrayND[ScalarT, ShapeT]]: ...
 @overload
 def margins(a: onp.ArrayND[np.bool]) -> list[onp.ArrayND[np.int_]]: ...
 
 #
 @overload
-def expected_freq(observed: onp.ArrayND[_to_floating, _ShapeT]) -> onp.ArrayND[np.float64, _ShapeT]: ...
+def expected_freq[ShapeT: tuple[int, ...]](observed: onp.ArrayND[_to_floating, ShapeT]) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload
 def expected_freq(observed: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
 
 #
 @overload
-def chi2_contingency(
-    observed: onp.ArrayND[_to_floating, _ShapeT],
+def chi2_contingency[ShapeT: tuple[int, ...]](
+    observed: onp.ArrayND[_to_floating, ShapeT],
     correction: bool = True,
     lambda_: PowerDivergenceStatistic | float | None = None,
     *,
     method: ResamplingMethod | None = None,
-) -> Chi2ContingencyResult[_ShapeT]: ...
+) -> Chi2ContingencyResult[ShapeT]: ...
 @overload
 def chi2_contingency(
     observed: onp.ToFloatND,

@@ -1,14 +1,10 @@
 import datetime as dt
-from typing import Any, Final, Never, TypeVar, overload
+from typing import Any, Final, Never, overload
 from typing_extensions import CapsuleType
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
-
-_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[Any, onp.AtLeast1D])
-
-###
 
 __pyx_capi__: Final[dict[str, CapsuleType]] = ...
 
@@ -16,7 +12,7 @@ __pyx_capi__: Final[dict[str, CapsuleType]] = ...
 @overload
 def squeeze_element(arr: onp.ArrayND[Any, tuple[Never]]) -> Any: ...
 @overload
-def squeeze_element(arr: _ArrayT) -> _ArrayT: ...
+def squeeze_element[ArrayT: onp.ArrayND[Any, onp.AtLeast1D]](arr: ArrayT) -> ArrayT: ...
 
 # TODO: use generic item type of `np.generic` when we require `numpy>=2.2`
 @overload

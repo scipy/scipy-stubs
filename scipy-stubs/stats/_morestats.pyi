@@ -64,7 +64,6 @@ __all__ = [
 
 ###
 
-_FloatingT = TypeVar("_FloatingT", bound=npc.floating)
 _NDT_co = TypeVar(
     "_NDT_co",
     covariant=True,
@@ -448,50 +447,50 @@ def boxcox_llf(
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64]: ...
 @overload
-def boxcox_llf(
+def boxcox_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
-    data: onp.ArrayND[_FloatingT, _JustAnyShape],
+    data: onp.ArrayND[FloatingT, _JustAnyShape],
     *,
     axis: int = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[_FloatingT] | _FloatingT: ...
+) -> onp.ArrayND[FloatingT] | FloatingT: ...
 @overload
-def boxcox_llf(
+def boxcox_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
-    data: onp.ToArrayStrict1D[_FloatingT, _FloatingT],
+    data: onp.ToArrayStrict1D[FloatingT, FloatingT],
     *,
     axis: int | None = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> _FloatingT: ...
+) -> FloatingT: ...
 @overload
-def boxcox_llf(
+def boxcox_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
-    data: onp.ToArrayStrict2D[_FloatingT, _FloatingT],
+    data: onp.ToArrayStrict2D[FloatingT, FloatingT],
     *,
     axis: int = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> onp.Array1D[_FloatingT]: ...
+) -> onp.Array1D[FloatingT]: ...
 @overload
-def boxcox_llf(
+def boxcox_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
-    data: onp.ToArrayND[_FloatingT, _FloatingT],
+    data: onp.ToArrayND[FloatingT, FloatingT],
     *,
     axis: None,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> _FloatingT: ...
+) -> FloatingT: ...
 @overload
-def boxcox_llf(
+def boxcox_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
-    data: onp.ToArrayND[_FloatingT, _FloatingT],
+    data: onp.ToArrayND[FloatingT, FloatingT],
     *,
     axis: int | None = 0,
     keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[_FloatingT]: ...
+) -> onp.ArrayND[FloatingT]: ...
 @overload
 def boxcox_llf(
     lmb: float | np.float64,
@@ -576,50 +575,50 @@ def yeojohnson_llf(
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64]: ...
 @overload
-def yeojohnson_llf(
+def yeojohnson_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
-    data: onp.ArrayND[_FloatingT, _JustAnyShape],
+    data: onp.ArrayND[FloatingT, _JustAnyShape],
     *,
     axis: int = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[_FloatingT] | _FloatingT: ...
+) -> onp.ArrayND[FloatingT] | FloatingT: ...
 @overload
-def yeojohnson_llf(
+def yeojohnson_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
-    data: onp.ToArrayStrict1D[_FloatingT, _FloatingT],
+    data: onp.ToArrayStrict1D[FloatingT, FloatingT],
     *,
     axis: int | None = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> _FloatingT: ...
+) -> FloatingT: ...
 @overload
-def yeojohnson_llf(
+def yeojohnson_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
-    data: onp.ToArrayStrict2D[_FloatingT, _FloatingT],
+    data: onp.ToArrayStrict2D[FloatingT, FloatingT],
     *,
     axis: int = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> onp.Array1D[_FloatingT]: ...
+) -> onp.Array1D[FloatingT]: ...
 @overload
-def yeojohnson_llf(
+def yeojohnson_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
-    data: onp.ToArrayND[_FloatingT, _FloatingT],
+    data: onp.ToArrayND[FloatingT, FloatingT],
     *,
     axis: None,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> _FloatingT: ...
+) -> FloatingT: ...
 @overload
-def yeojohnson_llf(
+def yeojohnson_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
-    data: onp.ToArrayND[_FloatingT, _FloatingT],
+    data: onp.ToArrayND[FloatingT, FloatingT],
     *,
     axis: int | None = 0,
     keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[_FloatingT]: ...
+) -> onp.ArrayND[FloatingT]: ...
 @overload
 def yeojohnson_llf(
     lmb: float | np.float64,

@@ -85,7 +85,9 @@ __all__ = [
     "winsorize",
 ]
 
-type _MArrayOrND[SCT: np.generic] = SCT | onp.MArray[SCT]
+###
+
+type _MArrayOrND[ScalarT: np.generic] = ScalarT | onp.MArray[ScalarT]
 
 type _KendallTauMethod = Literal["auto", "asymptotic", "exact"]
 type _TheilSlopesMethod = Literal["joint", "separate"]
@@ -93,10 +95,6 @@ type _SiegelSlopesMethod = Literal["hierarchical", "separate"]
 
 type _KSMethod = Literal["auto", "exact", "asymp"]
 type _KTestMethod = Literal[_KSMethod, "approx"]
-
-_SCT_f = TypeVar("_SCT_f", bound=npc.floating, default=np.float64)
-_SCT_bifc = TypeVar("_SCT_bifc", bound=npc.number | np.bool, default=np.float64)
-_SCT_bifcmO = TypeVar("_SCT_bifcmO", bound=npc.number | np.timedelta64 | np.bool | np.object_)
 
 _NDT_f_co = TypeVar("_NDT_f_co", covariant=True, bound=float | _MArrayOrND[npc.floating], default=onp.MArray[np.float64])
 _NDT_fc_co = TypeVar(
@@ -180,7 +178,7 @@ def mode(a: onp.ToFloatND, axis: SupportsIndex | None = 0) -> ModeResult: ...
 
 #
 @overload
-def msign(x: _ArrayLike[_SCT_bifcmO]) -> onp.ArrayND[_SCT_bifcmO]: ...
+def msign[ScalarT: npc.number | np.timedelta64 | np.bool | np.object_](x: _ArrayLike[ScalarT]) -> onp.ArrayND[ScalarT]: ...
 @overload
 def msign(x: onp.ToComplexND) -> onp.ArrayND[npc.number | np.timedelta64 | np.bool | np.object_]: ...
 
@@ -291,11 +289,9 @@ def trima(
     inclusive: tuple[bool, bool] = (True, True),
 ) -> onp.MArray[np.complex128 | np.float64 | np.int_ | np.bool]: ...
 @overload
-def trima(
-    a: _ArrayLike[_SCT_bifc],
-    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-) -> onp.MArray[_SCT_bifc]: ...
+def trima[ScalarT: npc.number | np.bool](
+    a: _ArrayLike[ScalarT], limits: tuple[onp.ToComplex, onp.ToComplex] | None = None, inclusive: tuple[bool, bool] = (True, True)
+) -> onp.MArray[ScalarT]: ...
 
 #
 @overload
@@ -320,12 +316,12 @@ def trimr(
     axis: SupportsIndex | None = None,
 ) -> onp.MArray[np.complex128 | np.float64 | np.int_]: ...
 @overload
-def trimr(
-    a: _ArrayLike[_SCT_bifc],
+def trimr[ScalarT: npc.number | np.bool](
+    a: _ArrayLike[ScalarT],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = None,
-) -> onp.MArray[_SCT_bifc]: ...
+) -> onp.MArray[ScalarT]: ...
 
 #
 @overload
@@ -353,13 +349,13 @@ def trim(
     axis: SupportsIndex | None = None,
 ) -> onp.MArray[np.complex128 | np.float64 | np.int_]: ...
 @overload
-def trim(
-    a: _ArrayLike[_SCT_bifc],
+def trim[ScalarT: npc.number | np.bool](
+    a: _ArrayLike[ScalarT],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     relative: bool = False,
     axis: SupportsIndex | None = None,
-) -> onp.MArray[_SCT_bifc]: ...
+) -> onp.MArray[ScalarT]: ...
 
 #
 @overload
@@ -384,12 +380,12 @@ def trimboth(
     axis: SupportsIndex | None = None,
 ) -> onp.MArray[np.complex128 | np.float64 | np.int_]: ...
 @overload
-def trimboth(
-    data: _ArrayLike[_SCT_bifc],
+def trimboth[ScalarT: npc.number | np.bool](
+    data: _ArrayLike[ScalarT],
     proportiontocut: float | npc.floating = 0.2,
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = None,
-) -> onp.MArray[_SCT_bifc]: ...
+) -> onp.MArray[ScalarT]: ...
 
 #
 @overload
@@ -417,13 +413,13 @@ def trimtail(
     axis: SupportsIndex | None = None,
 ) -> onp.MArray[np.complex128 | np.float64 | np.int_]: ...
 @overload
-def trimtail(
-    data: _ArrayLike[_SCT_bifc],
+def trimtail[ScalarT: npc.number | np.bool](
+    data: _ArrayLike[ScalarT],
     proportiontocut: float | npc.floating = 0.2,
     tail: Literal["left", "right"] = "left",
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = None,
-) -> onp.MArray[_SCT_bifc]: ...
+) -> onp.MArray[ScalarT]: ...
 
 #
 @overload
@@ -513,9 +509,9 @@ def tmin(
     a: onp.SequenceND[complex], lowerlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
 ) -> _MArrayOrND[np.complex128 | np.float64 | np.int_]: ...
 @overload
-def tmin(
-    a: _ArrayLike[_SCT_bifc], lowerlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
-) -> _MArrayOrND[_SCT_bifc]: ...
+def tmin[ScalarT: npc.number | np.bool](
+    a: _ArrayLike[ScalarT], lowerlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
+) -> _MArrayOrND[ScalarT]: ...
 
 #
 @overload
@@ -534,9 +530,9 @@ def tmax(
     a: onp.SequenceND[complex], upperlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
 ) -> _MArrayOrND[np.complex128 | np.float64 | np.int_]: ...
 @overload
-def tmax(
-    a: _ArrayLike[_SCT_bifc], upperlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
-) -> _MArrayOrND[_SCT_bifc]: ...
+def tmax[ScalarT: npc.number | np.bool](
+    a: _ArrayLike[ScalarT], upperlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
+) -> _MArrayOrND[ScalarT]: ...
 
 #
 def tsem(
@@ -558,14 +554,14 @@ def winsorize(
     nan_policy: NanPolicy = "propagate",
 ) -> onp.MArray[np.int_]: ...
 @overload
-def winsorize(
-    a: _ArrayLike[_SCT_f],
+def winsorize[FloatingT: npc.floating](
+    a: _ArrayLike[FloatingT],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     inplace: bool = False,
     axis: SupportsIndex | None = None,
     nan_policy: NanPolicy = "propagate",
-) -> onp.MArray[_SCT_f]: ...
+) -> onp.MArray[FloatingT]: ...
 @overload
 def winsorize(
     a: onp.ToFloatND,

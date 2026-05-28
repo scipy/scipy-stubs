@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, Final, Literal, SupportsIndex, TypeVar, overload
+from typing import Any, Final, Literal, SupportsIndex, overload
 from typing_extensions import TypeIs
 
 import numpy as np
@@ -22,10 +22,6 @@ __all__ = [
 
 ###
 
-_NumberT = TypeVar("_NumberT", bound=npc.number)
-_ArrayT = TypeVar("_ArrayT", bound=np.ndarray[Any, Any])
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-
 type _IndexArray = onp.Array1D[npc.integer] | Sequence[int]
 type _ToLinOp[NumberT: npc.number] = onp.Array2D[NumberT] | LinearOperator[NumberT]
 
@@ -36,14 +32,14 @@ _TYPE_ERROR: Final[TypeError] = ...  # undocumented
 
 # undocumented
 @overload
-def _C_contiguous_copy(A: _ArrayT) -> _ArrayT: ...
+def _C_contiguous_copy[ArrayT: np.ndarray[Any, Any]](A: ArrayT) -> ArrayT: ...
 @overload
 def _C_contiguous_copy(A: onp.ToJustFloat64_ND) -> onp.ArrayND[np.float64]: ...
 @overload
 def _C_contiguous_copy(A: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
 
 # undocumented
-def _is_real(A: onp.ArrayND[npc.inexact64, _ShapeT]) -> TypeIs[onp.ArrayND[np.float64, _ShapeT]]: ...
+def _is_real[ShapeT: tuple[int, ...]](A: onp.ArrayND[npc.inexact64, ShapeT]) -> TypeIs[onp.ArrayND[np.float64, ShapeT]]: ...
 
 #
 @overload  # f64, eps_or_k<1
@@ -91,7 +87,9 @@ def reconstruct_interp_matrix(idx: _IndexArray, proj: onp.Array2D[npc.floating64
 def reconstruct_interp_matrix(idx: _IndexArray, proj: onp.Array2D[npc.complexfloating128]) -> onp.Array2D[np.complex128]: ...
 
 #
-def reconstruct_skel_matrix(A: onp.Array2D[_NumberT], k: SupportsIndex, idx: _IndexArray) -> onp.Array2D[_NumberT]: ...
+def reconstruct_skel_matrix[NumberT: npc.number](
+    A: onp.Array2D[NumberT], k: SupportsIndex, idx: _IndexArray
+) -> onp.Array2D[NumberT]: ...
 
 #
 @overload
