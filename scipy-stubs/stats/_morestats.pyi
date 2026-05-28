@@ -687,9 +687,9 @@ def boxcox(
 
 #
 @overload
-def yeojohnson(x: onp.ToFloat1D, lmbda: None = None) -> tuple[_Float1D, np.float64]: ...
+def yeojohnson(x: onp.ToFloat1D, lmbda: None = None, *, nan_policy: NanPolicy = "propagate") -> tuple[_Float1D, np.float64]: ...
 @overload
-def yeojohnson(x: onp.ToFloat1D, lmbda: onp.ToFloat) -> _Float1D: ...
+def yeojohnson(x: onp.ToFloat1D, lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate") -> _Float1D: ...
 
 #
 @overload
@@ -726,14 +726,23 @@ def boxcox_normmax(
 #
 @overload
 def yeojohnson_normmax(
-    x: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape], brack: _Tuple2[onp.ToFloat] | None = None
+    x: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    brack: _Tuple2[onp.ToFloat] | None = None,
+    *,
+    nan_policy: NanPolicy = "propagate",
 ) -> onp.Array1D[np.float64] | np.float64: ...
 @overload
-def yeojohnson_normmax(x: onp.ToFloatStrict1D, brack: _Tuple2[onp.ToFloat] | None = None) -> np.float64: ...
+def yeojohnson_normmax(
+    x: onp.ToFloatStrict1D, brack: _Tuple2[onp.ToFloat] | None = None, *, nan_policy: NanPolicy = "propagate"
+) -> np.float64: ...
 @overload
-def yeojohnson_normmax(x: onp.ToFloatStrict2D, brack: _Tuple2[onp.ToFloat] | None = None) -> onp.Array1D[np.float64]: ...
+def yeojohnson_normmax(
+    x: onp.ToFloatStrict2D, brack: _Tuple2[onp.ToFloat] | None = None, *, nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.float64]: ...
 @overload
-def yeojohnson_normmax(x: onp.ToFloatND, brack: _Tuple2[onp.ToFloat] | None = None) -> onp.Array1D[np.float64] | np.float64: ...
+def yeojohnson_normmax(
+    x: onp.ToFloatND, brack: _Tuple2[onp.ToFloat] | None = None, *, nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.float64] | np.float64: ...
 
 #
 def boxcox_normplot(

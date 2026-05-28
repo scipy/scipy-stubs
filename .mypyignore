@@ -22,11 +22,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 
 scipy.stats._bws_test.bws_test
 
-scipy.stats._morestats.yeojohnson
-scipy.stats._morestats.yeojohnson_normmax
-scipy.stats.morestats.yeojohnson
-scipy.stats.morestats.yeojohnson_normmax
-
 scipy.stats._stats_py.__all__
 scipy.stats._stats_py.expectile
 scipy.stats._stats_py.obrientransform
