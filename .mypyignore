@@ -47,10 +47,6 @@ scipy.stats._stats_py.sigmaclip
 scipy.stats.stats.obrientransform
 scipy.stats.stats.sigmaclip
 
-scipy.stats._unuran.unuran_wrapper.NumericalInverseHermite.__new__
-scipy.stats._unuran.unuran_wrapper.SimpleRatioUniforms.__new__
-scipy.stats._unuran.unuran_wrapper.TransformedDensityRejection.__new__
-
 # https://github.com/scipy/scipy/pull/25240
 scipy.stats._multicomp.DunnettResult.__init__
 scipy.stats._multicomp.DunnettResult.__match_args__
