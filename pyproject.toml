@@ -285,7 +285,6 @@ ignore = [
   "FIX",
   "DOC",
   # TODO(@jorenham): https://github.com/scipy/scipy-stubs/pull/1615
-  "UP046",
   "UP047",
 ]
 

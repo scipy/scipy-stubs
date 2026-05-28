@@ -27,7 +27,7 @@ _MaxLevelT_co = TypeVar("_MaxLevelT_co", covariant=True)
 @type_check_only
 class _TanhSinhResult(
     _RichResult[_ResultT_co | _SuccessT_co | _StatusT_co | _MaxLevelT_co],
-    Generic[_ResultT_co, _SuccessT_co, _StatusT_co, _MaxLevelT_co],
+    Generic[_ResultT_co, _SuccessT_co, _StatusT_co, _MaxLevelT_co],  # noqa: UP046
 ):
     integral: _ResultT_co
     error: _ResultT_co

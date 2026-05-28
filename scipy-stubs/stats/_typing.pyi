@@ -48,8 +48,8 @@ class BunchMixin(Generic[_TupleT_co]):
     # NOTE: `._asdict()` includes both `{fields}` and `{extra_fields}`
     def _asdict[T](self: BunchMixin[tuple[T, ...]], /) -> dict[str, T]: ...
 
-@type_check_only
-class BaseBunch(tuple[*_Ts], BunchMixin[tuple[*_Ts]], Generic[*_Ts]):
+@type_check_only  # ty currently (0.0.40) doens't support PEP 695 with variadic type parameters.
+class BaseBunch(tuple[*_Ts], BunchMixin[tuple[*_Ts]], Generic[*_Ts]):  # noqa: UP046
     @abc.abstractmethod
     def __new__(_cls) -> Self: ...
     @abc.abstractmethod

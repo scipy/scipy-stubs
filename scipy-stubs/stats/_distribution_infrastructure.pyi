@@ -162,7 +162,7 @@ _null: Final[_Null] = ...
 
 def _isnull(x: object) -> TypeIs[_Null | None]: ...
 
-class _Domain(abc.ABC, Generic[_XT_co]):
+class _Domain(abc.ABC, Generic[_XT_co]):  # noqa: UP046
     @classmethod
     def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
 
@@ -180,7 +180,7 @@ class _Domain(abc.ABC, Generic[_XT_co]):
     @abc.abstractmethod
     def get_numerical_endpoints(self, /, x: _ParamValues) -> tuple[onp.ArrayND[_OutFloat], onp.ArrayND[_OutFloat]]: ...
 
-class _Interval(_Domain[_XT_co], Generic[_XT_co]):  # pyrefly: ignore[implicit-abstract-class]
+class _Interval(_Domain[_XT_co], Generic[_XT_co]):  # pyrefly: ignore[implicit-abstract-class]  # noqa: UP046
     @override
     @abc.abstractmethod
     def __str__(self, /) -> str: ...
