@@ -29,7 +29,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._distn_infrastructure import rv_continuous
-from ._probability_distribution import _ProbabilityDistribution
+from ._probability_distribution import _LMomentMethod, _ProbabilityDistribution
 from ._qmc import QMCEngine
 
 __all__ = ["Mixture", "abs", "exp", "log", "make_distribution", "order_statistic", "truncate"]
@@ -61,15 +61,15 @@ _DistT_co = TypeVar("_DistT_co", bound=_Dist[tuple[int, ...]], default=Univariat
 
 _AxesT = TypeVar("_AxesT", bound=_Axes, default=Any)
 
-_ParameterEndpoint: TypeAlias = onp.ToFloat | Callable[..., onp.ToFloat] | str
-_ParameterTuple: TypeAlias = tuple[_ParameterEndpoint, _ParameterEndpoint]
+type _ParameterEndpoint = onp.ToFloat | Callable[..., onp.ToFloat] | str
+type _ParameterTuple = tuple[_ParameterEndpoint, _ParameterEndpoint]
 
 # NOTE: `TypedDict` with `NotRequired` cannot be used, because `NotRequired` does not
 # mean "not required": Other `TypedDict` MUST also include them to be assignable,
 # so a `NotRequired` value is REQUIRED. Absolutely ridiculous...
 # https://typing.python.org/en/latest/spec/typeddict.html#id4
-_ParameterDict: TypeAlias = Mapping[str, tuple[Any, ...]]
-_ParameterSpec: TypeAlias = _ParameterDict | _ParameterTuple
+type _ParameterDict = Mapping[str, tuple[Any, ...]]
+type _ParameterSpec = _ParameterDict | _ParameterTuple
 
 @type_check_only
 class _DuckDistributionBase(Protocol[_Tss]):
@@ -493,6 +493,10 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         kind: L["standardized"],
         method: _SMomentMethod | None = None,
     ) -> _FloatND[_ShapeT1]: ...
+
+    #
+    @override
+    def lmoment(self, /, order: int = 1, *, standardize: bool = True, method: _LMomentMethod | None = None) -> np.float64: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly:ignore[bad-override] # ty:ignore[invalid-method-override]
 
     #
     @override
@@ -1235,6 +1239,8 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
         t: tuple[_PlotQuantity, onp.ToJustFloat, onp.ToJustFloat] | None = None,
         ax: _AxesT | None = None,
     ) -> _AxesT: ...
+
+    #
     def __neg__(self, /) -> _LinDist[Self, _FloatT_co, _ShapeT_co]: ...
     def __abs__(self, /) -> _FoldDist[Self, _FloatT_co, _ShapeT_co]: ...
 
@@ -1425,10 +1431,10 @@ class TruncatedDistribution(_TransDist[_DistT_co, _Float, _ShapeT_co], Generic[_
 
 # always float64 or longdouble
 class OrderStatisticDistribution(_TransDist[_DistT_co, _OutFloat, _ShapeT_co], Generic[_DistT_co, _ShapeT_co]):
-    # these should actually be integral; but the `_IntegerDomain` isn't finished yet
-    _r_domain: ClassVar[_RealInterval] = ...
+    _r_domain: ClassVar[_IntegerInterval] = ...
     _r_param: ClassVar[_RealParameter] = ...
-    _n_domain: ClassVar[_RealInterval] = ...
+
+    _n_domain: ClassVar[_IntegerInterval] = ...
     _n_param: ClassVar[_RealParameter] = ...
 
     @overload
@@ -1523,6 +1529,10 @@ class Mixture(_BaseDistribution[_FloatT_co, _0D], Generic[_FloatT_co]):
     #
     @override
     def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> _OutFloat: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+
+    # always raises NotImplementedError`
+    @override
+    def lmoment(self, order: int = 1, *, standardize: bool = False, method: _LMomentMethod | None = None) -> Never: ...
 
 ###
 
