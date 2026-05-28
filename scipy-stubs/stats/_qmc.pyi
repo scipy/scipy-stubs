@@ -10,7 +10,6 @@ from typing import (
     Protocol,
     Self,
     SupportsIndex,
-    TypeAlias,
     overload,
     override,
     type_check_only,
@@ -39,19 +38,21 @@ __all__ = [
     "update_discrepancy",
 ]
 
+###
+
+type _Real = npc.floating | npc.integer
+
+type _MethodQMC = Literal["random-cd", "lloyd"]
+type _MethodDisc = Literal["CD", "WD", "MD", "L2-star"]
+type _MethodDist = Literal["mindist", "mst"]
+type _HyperSphere = Literal["volume", "surface"]
+
 _AnyRNG = TypeVar("_AnyRNG", np.random.Generator, np.random.RandomState)
 
 _FloatArrayT = TypeVar("_FloatArrayT", bound=onp.ArrayND[npc.floating])
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=np.float64, covariant=True)
 _EngineT_co = TypeVar("_EngineT_co", bound=QMCEngine[npc.inexact], default=Sobol, covariant=True)
-
-_Real: TypeAlias = npc.floating | npc.integer
-
-_MethodQMC: TypeAlias = Literal["random-cd", "lloyd"]
-_MethodDisc: TypeAlias = Literal["CD", "WD", "MD", "L2-star"]
-_MethodDist: TypeAlias = Literal["mindist", "mst"]
-_HyperSphere: TypeAlias = Literal["volume", "surface"]
 
 @type_check_only
 class _Optimizer(Protocol):

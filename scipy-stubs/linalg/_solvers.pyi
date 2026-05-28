@@ -1,5 +1,5 @@
 from _typeshed import Incomplete
-from typing import Final, Literal, TypeAlias, TypeVar, overload
+from typing import Final, Literal, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -13,12 +13,14 @@ __all__ = [
     "solve_sylvester",
 ]
 
+###
+
 _InexactT = TypeVar("_InexactT", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
 
-_FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64]
-_ComplexND: TypeAlias = onp.ArrayND[np.complex64 | np.complex128]
+type _FloatND = onp.ArrayND[np.float32 | np.float64]
+type _ComplexND = onp.ArrayND[np.complex64 | np.complex128]
 
-_DiscreteMethod: TypeAlias = Literal["direct", "bilinear"]
+type _DiscreteMethod = Literal["direct", "bilinear"]
 
 ###
 

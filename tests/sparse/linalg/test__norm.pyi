@@ -1,4 +1,4 @@
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -6,9 +6,15 @@ import optype.numpy as onp
 from scipy.sparse import csr_array
 from scipy.sparse.linalg import norm
 
-_Real: TypeAlias = np.int32 | np.int64 | np.float64
+###
+
+type _Real = np.int32 | np.int64 | np.float64
+
+###
 
 a: csr_array
+
+###
 
 assert_type(norm(a), _Real)
 assert_type(norm(a, ord="fro"), _Real)

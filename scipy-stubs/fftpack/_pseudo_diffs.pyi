@@ -1,5 +1,5 @@
 from _thread import _local as _Cache  # seriously, typeshed?
-from typing import TypeAlias, overload
+from typing import overload
 
 import numpy as np
 import optype.numpy as onp
@@ -7,8 +7,8 @@ import optype.numpy as onp
 __all__ = ["cc_diff", "cs_diff", "diff", "hilbert", "ihilbert", "itilbert", "sc_diff", "shift", "ss_diff", "tilbert"]
 
 # the suffix correspond to the relevant dtype charcode(s)
-_Vec_d: TypeAlias = onp.Array1D[np.float64]
-_Vec_dD: TypeAlias = onp.Array1D[np.float64 | np.complex128]
+type _Vec_d = onp.Array1D[np.float64]
+type _Vec_dD = onp.Array1D[np.float64 | np.complex128]
 
 ###
 

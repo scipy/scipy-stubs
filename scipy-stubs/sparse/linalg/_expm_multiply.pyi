@@ -1,5 +1,5 @@
 from _typeshed import Incomplete
-from typing import Any, Never, SupportsIndex, TypeAlias, TypeAliasType, TypeVar, overload
+from typing import Any, Never, SupportsIndex, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -10,20 +10,22 @@ from scipy.sparse._base import _spbase, sparray
 
 __all__ = ["expm_multiply"]
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
+###
 
-_ToLinearOperator: TypeAlias = LinearOperator[_ScalarT] | _spbase[_ScalarT, tuple[int, int]] | onp.ArrayND[_ScalarT]
-_SparseOrDense = TypeAliasType(
-    "_SparseOrDense", sparray[_ScalarT, _ShapeT] | onp.ArrayND[_ScalarT, _ShapeT], type_params=(_ScalarT, _ShapeT)
+type _ToLinearOperator[ScalarT: npc.number | np.bool] = (
+    LinearOperator[ScalarT] | _spbase[ScalarT, tuple[int, int]] | onp.ArrayND[ScalarT]
+)
+type _SparseOrDense[ScalarT: npc.number | np.bool, ShapeT: tuple[Any, ...]] = (
+    sparray[ScalarT, ShapeT] | onp.ArrayND[ScalarT, ShapeT]
 )
 
-_AsFloat64: TypeAlias = np.float64 | npc.integer | np.bool
-_ToFloat64: TypeAlias = _AsFloat64 | np.float32 | np.float16
+type _AsFloat64 = np.float64 | npc.integer | np.bool
+type _ToFloat64 = _AsFloat64 | np.float32 | np.float16
 
 # workaround for mypy's and pyright's typing spec non-compliance regarding overloads
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never]
+type _JustAnyShape = tuple[Never, Never, Never]
+
+_InexactT = TypeVar("_InexactT", bound=npc.inexact)
 
 ###
 

@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Concatenate, Literal, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import Concatenate, Literal, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -9,12 +9,10 @@ __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_
 
 ###
 
-_ScalarT = TypeVar("_ScalarT", bound=np.generic)
-
-_Mode: TypeAlias = Literal["clip", "wrap"]
-_PeakProminences: TypeAlias = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp], onp.ArrayND[np.intp]]
-_PeakCondition: TypeAlias = float | onp.ToFloatND | Sequence[float | None]
-_FnWavelet: TypeAlias = (
+type _Mode = Literal["clip", "wrap"]
+type _PeakProminences = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp], onp.ArrayND[np.intp]]
+type _PeakCondition = float | onp.ToFloatND | Sequence[float | None]
+type _FnWavelet = (
     Callable[Concatenate[int, float, ...], onp.ToComplex1D]
     | Callable[Concatenate[np.intp, np.float64, ...], onp.ToComplex1D]
 )  # fmt: skip
@@ -23,9 +21,9 @@ _FnWavelet: TypeAlias = (
 
 def argrelmin(data: onp.Array, axis: int = 0, order: int = 1, mode: _Mode = "clip") -> tuple[onp.ArrayND[np.intp], ...]: ...
 def argrelmax(data: onp.Array, axis: int = 0, order: int = 1, mode: _Mode = "clip") -> tuple[onp.ArrayND[np.intp], ...]: ...
-def argrelextrema(
-    data: onp.ArrayND[_ScalarT],
-    comparator: Callable[[onp.ArrayND[_ScalarT], onp.ArrayND[_ScalarT]], onp.ToBoolND],
+def argrelextrema[ScalarT: np.generic](
+    data: onp.ArrayND[ScalarT],
+    comparator: Callable[[onp.ArrayND[ScalarT], onp.ArrayND[ScalarT]], onp.ToBoolND],
     axis: int = 0,
     order: int = 1,
     mode: _Mode = "clip",

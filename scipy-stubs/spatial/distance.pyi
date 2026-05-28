@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Literal, Never, TypeAlias, overload
+from typing import Literal, Never, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -36,7 +36,7 @@ __all__ = [
     "yule",
 ]
 
-_MetricName: TypeAlias = Literal[
+type _MetricName = Literal[
     "braycurtis",
     "canberra",
     "chebychev",
@@ -88,18 +88,18 @@ _MetricName: TypeAlias = Literal[
 
 ###
 
-_NumberT = TypeVar("_NumberT", bound=npc.number)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
+type _MetricFunc = Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat | None]
+type _Metric = _MetricName | _MetricFunc  # noqa: PYI047
 
-_MetricFunc: TypeAlias = Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat | None]
-_Metric: TypeAlias = _MetricName | _MetricFunc  # noqa: PYI047
-
-_Force: TypeAlias = Literal["NO", "No", "no", "TOMATRIX", "ToMatrix", "tomatrix", "TOVECTOR", "ToVector", "tovector"]
+type _Force = Literal["NO", "No", "no", "TOMATRIX", "ToMatrix", "tomatrix", "TOVECTOR", "ToVector", "tovector"]
 
 # workaround for mypy & pyright's failure to conform to the overload typing specification
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
+type _JustAnyShape = tuple[Never, Never, Never, Never]
 
-_ToFloatStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
+type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
+
+_NumberT = TypeVar("_NumberT", bound=npc.number)
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 ###
 

@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, TypeAlias, TypeVar, overload
+from typing import Any, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -11,7 +11,7 @@ _FloatT = TypeVar("_FloatT", bound=np.float32 | np.float64 | npc.floating80)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
-_WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
 
 ###
 

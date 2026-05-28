@@ -2,7 +2,7 @@
 
 from _typeshed import Incomplete
 from collections.abc import Sequence
-from typing import Any, Literal, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import Any, Literal, SupportsIndex, TypeVar, overload
 
 import numpy as np
 import optype as op
@@ -28,34 +28,34 @@ __all__ = [
     "solveh_banded",
 ]
 
-_T = TypeVar("_T")
+###
+
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_ScalarT = TypeVar("_ScalarT", bound=np.generic)
 
-_Tuple2: TypeAlias = tuple[_T, _T]
-_COrCR: TypeAlias = _T | _Tuple2[_T]
+type _Tuple2[T] = tuple[T, T]
+type _COrCR[T] = T | _Tuple2[T]
 
-_Float1D: TypeAlias = onp.Array1D[npc.floating]
-_FloatND: TypeAlias = onp.ArrayND[npc.floating]
+type _Float1D = onp.Array1D[npc.floating]
+type _FloatND = onp.ArrayND[npc.floating]
 
-_Inexact1D: TypeAlias = onp.Array1D[npc.inexact]
-_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
+type _Inexact1D = onp.Array1D[npc.inexact]
+type _InexactND = onp.ArrayND[npc.inexact]
 
 # TODO(@jorenham): better naming
 
-_InputFloat: TypeAlias = onp.ToArrayND[float, np.float64 | npc.floating80 | npc.integer | np.bool]
-_InputFloatStrict1D: TypeAlias = onp.ToArrayStrict1D[float, np.float64 | npc.floating80 | npc.integer | np.bool]
-_InputFloatStrict2D: TypeAlias = onp.ToArrayStrict2D[float, np.float64 | npc.floating80 | npc.integer | np.bool]
+type _InputFloat = onp.ToArrayND[float, np.float64 | npc.floating80 | npc.integer | np.bool]
+type _InputFloatStrict1D = onp.ToArrayStrict1D[float, np.float64 | npc.floating80 | npc.integer | np.bool]
+type _InputFloatStrict2D = onp.ToArrayStrict2D[float, np.float64 | npc.floating80 | npc.integer | np.bool]
 
-_InputF64: TypeAlias = onp.ToArrayND[float, np.float64 | npc.integer | np.bool]
-_InputF64Strict1D: TypeAlias = onp.ToArrayStrict1D[float, np.float64 | npc.integer | np.bool]
-_InputF64Strict2D: TypeAlias = onp.ToArrayStrict2D[float, np.float64 | npc.integer | np.bool]
+type _InputF64 = onp.ToArrayND[float, np.float64 | npc.integer | np.bool]
+type _InputF64Strict1D = onp.ToArrayStrict1D[float, np.float64 | npc.integer | np.bool]
+type _InputF64Strict2D = onp.ToArrayStrict2D[float, np.float64 | npc.integer | np.bool]
 
-_InputComplex: TypeAlias = onp.ToArrayND[op.JustComplex, np.complex128 | npc.complexfloating160]
-_InputComplexStrict1D: TypeAlias = onp.ToArrayStrict1D[op.JustComplex, np.complex128 | npc.complexfloating160]
-_InputComplexStrict2D: TypeAlias = onp.ToArrayStrict2D[op.JustComplex, np.complex128 | npc.complexfloating160]
+type _InputComplex = onp.ToArrayND[op.JustComplex, np.complex128 | npc.complexfloating160]
+type _InputComplexStrict1D = onp.ToArrayStrict1D[op.JustComplex, np.complex128 | npc.complexfloating160]
+type _InputComplexStrict2D = onp.ToArrayStrict2D[op.JustComplex, np.complex128 | npc.complexfloating160]
 
-_AssumeA: TypeAlias = Literal[
+type _AssumeA = Literal[
     "diagonal",
     "tridiagonal",
     "banded",
@@ -66,13 +66,13 @@ _AssumeA: TypeAlias = Literal[
     "positive definite", "pos",
     "general", "gen",
 ]  # fmt: skip
-_TransSystem: TypeAlias = Literal[0, "N", 1, "T", 2, "C"]
-_Singular: TypeAlias = Literal["lstsq", "raise"]
-_LapackDriver: TypeAlias = Literal["gelsd", "gelsy", "gelss"]
-_LapackDriverDS: TypeAlias = Literal["gelsd", "gelss"]
-_LapackDriverY: TypeAlias = Literal["gelsy"]
+type _TransSystem = Literal[0, "N", 1, "T", 2, "C"]
+type _Singular = Literal["lstsq", "raise"]
+type _LapackDriver = Literal["gelsd", "gelsy", "gelss"]
+type _LapackDriverDS = Literal["gelsd", "gelss"]
+type _LapackDriverY = Literal["gelsy"]
 
-_LstSqResultND: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.Array1D[_ScalarT], int, _T]
+type _LstSqResultND[ScalarT: np.generic, T] = tuple[onp.ArrayND[ScalarT], onp.Array1D[ScalarT], int, T]
 
 ###
 

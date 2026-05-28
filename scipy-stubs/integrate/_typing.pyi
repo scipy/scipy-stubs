@@ -1,6 +1,6 @@
 # type-check-only typing utilities used internally by scipy-stubs, with no guarantee of API stability
 
-from typing import Literal, NotRequired, TypeAlias, TypedDict, type_check_only
+from typing import Literal, NotRequired, TypedDict, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -8,10 +8,10 @@ import optype.numpy.compat as npc
 
 __all__ = "QuadInfoDict", "QuadOpts", "QuadWeights"
 
-_IntLike: TypeAlias = int | npc.integer
-_FloatLike: TypeAlias = float | npc.floating
+type _IntLike = int | npc.integer
+type _FloatLike = float | npc.floating
 
-QuadWeights: TypeAlias = Literal["cos", "sin", "alg", "alg-loga", "alg-logb", "alg-log", "cauchy"]
+type QuadWeights = Literal["cos", "sin", "alg", "alg-loga", "alg-logb", "alg-log", "cauchy"]
 
 @type_check_only
 class QuadOpts(TypedDict, total=False):

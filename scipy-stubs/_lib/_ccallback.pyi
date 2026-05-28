@@ -1,20 +1,7 @@
 import ctypes as ct
 from _ctypes import CFuncPtr as _CFuncPtr
 from types import ModuleType
-from typing import (
-    ClassVar,
-    Generic,
-    Literal,
-    NoReturn,
-    Protocol,
-    Self,
-    TypeAlias,
-    Unpack,
-    final,
-    overload,
-    override,
-    type_check_only,
-)
+from typing import ClassVar, Generic, Literal, NoReturn, Protocol, Self, Unpack, final, overload, override, type_check_only
 from typing_extensions import CapsuleType as PyCapsule, TypeVar, TypeVarTuple
 
 # some quick interfaces for the relevant `cffi` types
@@ -102,12 +89,12 @@ class _CFFIPointerType(_CFFIType, Protocol[_CT_co]):
     def quals(self, /) -> int: ...
     def __init__(self, /, totype: _CT_co, quals: int = 0) -> None: ...
 
-_CFFIVoidP: TypeAlias = _CFFIPointerType[_CFFIVoid]
+type _CFFIVoidP = _CFFIPointerType[_CFFIVoid]
 
 # helper aliases
 
-_Function: TypeAlias = PyCapsule | PyCFuncPtr | _CFFIFuncPtr | CData
-_UserData: TypeAlias = PyCapsule | ct.c_void_p | _CFFIVoidP
+type _Function = PyCapsule | PyCFuncPtr | _CFFIFuncPtr | CData
+type _UserData = PyCapsule | ct.c_void_p | _CFFIVoidP
 
 _FuncT_co = TypeVar("_FuncT_co", bound=_Function, covariant=True, default=_Function)
 _DataT = TypeVar("_DataT", bound=_UserData | None)

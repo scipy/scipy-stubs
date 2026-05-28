@@ -1,12 +1,12 @@
 from collections.abc import Callable, Iterable, Iterator, Mapping, MutableSequence, Sequence
-from typing import ClassVar, Final, Generic, Literal, LiteralString, NamedTuple, SupportsIndex, TypeAlias, override
+from typing import ClassVar, Final, Generic, Literal, LiteralString, NamedTuple, SupportsIndex, override
 from typing_extensions import TypeVar
 
 _FunctionT = TypeVar("_FunctionT", bound=Callable[..., object], default=Callable[..., object])
 _MutableStrSequenceT = TypeVar("_MutableStrSequenceT", bound=MutableSequence[str])
 _AnyStrT = TypeVar("_AnyStrT", str, LiteralString)
 
-_SectionValue: TypeAlias = str | list[str] | Mapping[str, list[str]]
+type _SectionValue = str | list[str] | Mapping[str, list[str]]
 
 ###
 

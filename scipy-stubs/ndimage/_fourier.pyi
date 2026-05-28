@@ -1,4 +1,4 @@
-from typing import SupportsFloat, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import SupportsFloat, SupportsIndex, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -7,17 +7,17 @@ __all__ = ["fourier_ellipsoid", "fourier_gaussian", "fourier_shift", "fourier_un
 
 ###
 
-_ScalarComplex: TypeAlias = np.complex64 | np.complex128
+type _ScalarComplex = np.complex64 | np.complex128
 _OutputScalarComplexT = TypeVar("_OutputScalarComplexT", bound=_ScalarComplex)
 _OutputArrayComplexT = TypeVar("_OutputArrayComplexT", bound=onp.ArrayND[_ScalarComplex])
 
-_Scalar: TypeAlias = np.float32 | np.float64 | _ScalarComplex
+type _Scalar = np.float32 | np.float64 | _ScalarComplex
 _OutputScalarT = TypeVar("_OutputScalarT", bound=_Scalar)
 _OutputArrayT = TypeVar("_OutputArrayT", bound=onp.ArrayND[_Scalar])
 
-_Sigma: TypeAlias = SupportsFloat | onp.ToFloat1D
-_InputF64: TypeAlias = onp.ToJustFloat64_ND | onp.ToIntND
-_InputF32: TypeAlias = onp.ToJustFloat32_ND | onp.ToJustFloat16_ND
+type _Sigma = SupportsFloat | onp.ToFloat1D
+type _InputF64 = onp.ToJustFloat64_ND | onp.ToIntND
+type _InputF32 = onp.ToJustFloat32_ND | onp.ToJustFloat16_ND
 
 ###
 # NOTE: The gaussian, uniform, and ellipsoid function signatures are equivalent (except for the 2nd *name*): Keep them in sync!

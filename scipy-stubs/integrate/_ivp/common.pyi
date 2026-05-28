@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Final, Generic, Literal, TypeAlias, overload
+from typing import Any, Final, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -14,7 +14,7 @@ _FloatingT = TypeVar("_FloatingT", bound=npc.floating)
 _ToFloatT = TypeVar("_ToFloatT", bound=onp.ToFloat)
 _InterpT_co = TypeVar("_InterpT_co", bound=DenseOutput[npc.inexact], default=DenseOutput[Any], covariant=True)
 
-_ToFloat64: TypeAlias = np.float16 | np.float32 | np.float64 | npc.integer | np.bool
+type _ToFloat64 = np.float16 | np.float32 | np.float64 | npc.integer | np.bool
 
 ###
 

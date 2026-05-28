@@ -1,5 +1,5 @@
 from collections.abc import Sequence as Seq
-from typing import Any, Literal, TypeAlias, overload
+from typing import Any, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -21,13 +21,16 @@ __all__ = ["find", "tril", "triu"]
 
 ###
 
+type _ToDense[ScalarT: npc.number | np.bool] = (
+    onp.CanArrayND[ScalarT] | Seq[ScalarT] | Seq[Seq[ScalarT] | onp.CanArrayND[ScalarT]]
+)
+
 _SCT = TypeVar("_SCT", bound=npc.number | np.bool, default=Any)
-_ToDense: TypeAlias = onp.CanArrayND[_SCT] | Seq[_SCT] | Seq[Seq[_SCT] | onp.CanArrayND[_SCT]]
 
 ###
 
 #
-def find(A: _spbase[_SCT] | _ToDense) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32], onp.Array1D[_SCT]]: ...
+def find(A: _spbase[_SCT] | _ToDense[Any]) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32], onp.Array1D[_SCT]]: ...
 
 # NOTE: `tril` and `triu` have identical signatures
 @overload  # sparray -> coo_array (default)

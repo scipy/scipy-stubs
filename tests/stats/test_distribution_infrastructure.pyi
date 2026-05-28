@@ -1,6 +1,6 @@
 # type-tests for `stats/_distribution_infrastructure.pyi`
 
-from typing import TypeAlias, assert_type, type_check_only
+from typing import assert_type, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -18,10 +18,10 @@ from scipy.stats._distribution_infrastructure import (
 
 ###
 
-_0d: TypeAlias = tuple[()]  # noqa: PYI042
-_1d: TypeAlias = tuple[int]  # noqa: PYI042
-_2d: TypeAlias = tuple[int, int]  # noqa: PYI042
-_3d: TypeAlias = tuple[int, int, int]  # noqa: PYI042
+type _0d = tuple[()]  # noqa: PYI042
+type _1d = tuple[int]  # noqa: PYI042
+type _2d = tuple[int, int]  # noqa: PYI042
+type _3d = tuple[int, int, int]  # noqa: PYI042
 
 ###
 

@@ -3,7 +3,7 @@ __all__ = ["cubature"]
 import dataclasses
 from collections.abc import Callable, Iterable, Sequence
 from types import ModuleType
-from typing import Any, Concatenate, Generic, Literal, TypeAlias
+from typing import Any, Concatenate, Generic, Literal
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -13,9 +13,8 @@ _VT = TypeVar("_VT")
 _RT = TypeVar("_RT")
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
-_ArrayAPINamespace: TypeAlias = ModuleType
-_Rule: TypeAlias = Literal["gk21", "gk15", "gauss-kronrod", "genz-malik"]
-_Status: TypeAlias = Literal["converged", "not_converged"]
+type _Rule = Literal["gk21", "gk15", "gauss-kronrod", "genz-malik"]
+type _Status = Literal["converged", "not_converged"]
 
 ###
 
@@ -25,7 +24,7 @@ class CubatureRegion(Generic[_ShapeT_co]):
     error: onp.ArrayND[np.float64, _ShapeT_co]
     a: onp.Array1D[np.float64]
     b: onp.Array1D[np.float64]
-    _xp: _ArrayAPINamespace
+    _xp: ModuleType
 
     def __lt__(self, other: CubatureRegion, /) -> bool: ...
 

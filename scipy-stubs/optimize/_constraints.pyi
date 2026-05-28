@@ -9,7 +9,6 @@ from typing import (
     Never,
     NotRequired,
     SupportsIndex,
-    TypeAlias,
     TypedDict,
     overload,
     type_check_only,
@@ -28,19 +27,18 @@ from scipy.sparse.linalg import LinearOperator
 
 ###
 
-_T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _NumberT = TypeVar("_NumberT", bound=npc.number)
 _NumberT_co = TypeVar("_NumberT_co", bound=npc.number, default=np.float64 | Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=_AnyShape, covariant=True)
 
-_Tuple2: TypeAlias = tuple[_T, _T]
-_MethodJac: TypeAlias = Literal["2-point", "3-point", "cs"]
-_ToFloat2D: TypeAlias = onp.ToFloat2D | _Sparse2D[npc.floating | npc.integer]
+type _Tuple2[T] = tuple[T, T]
+type _MethodJac = Literal["2-point", "3-point", "cs"]
+type _ToFloat2D = onp.ToFloat2D | _Sparse2D[npc.floating | npc.integer]
 
-_AnyShape: TypeAlias = tuple[Any, ...]
+type _AnyShape = tuple[Any, ...]
 # workaround for mypy & pyright's failure to conform to the overload typing specification
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never]
+type _JustAnyShape = tuple[Never, Never, Never]
 
 @type_check_only
 class _OldConstraint(TypedDict):

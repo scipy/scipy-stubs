@@ -1,17 +1,18 @@
 from collections.abc import Callable
-from typing import Literal, TypeAliasType, TypedDict, overload, type_check_only
-from typing_extensions import TypeVar, TypeVarTuple
+from typing import Literal, TypedDict, overload, type_check_only
+from typing_extensions import TypeVarTuple
 
 import numpy as np
 import optype.numpy as onp
 
 __all__ = ["ODEintWarning", "odeint"]
 
-_Ts = TypeVarTuple("_Ts")
-_R = TypeVar("_R")
+###
 
-_FuncYT = TypeAliasType("_FuncYT", Callable[[onp.Array1D[np.float64], float, *_Ts], _R], type_params=(_Ts, _R))
-_FuncTY = TypeAliasType("_FuncTY", Callable[[float, onp.Array1D[np.float64], *_Ts], _R], type_params=(_Ts, _R))
+type _FuncYT[*Ts, R] = Callable[[onp.Array1D[np.float64], float, *Ts], R]
+type _FuncTY[*Ts, R] = Callable[[float, onp.Array1D[np.float64], *Ts], R]
+
+_Ts = TypeVarTuple("_Ts")
 
 @type_check_only
 class _InfoDict(TypedDict):
@@ -35,11 +36,11 @@ class ODEintWarning(Warning): ...
 
 @overload  # args=() (default), full_output=False (default), tfirst=False (default)
 def odeint(
-    func: _FuncYT[*tuple[()], onp.ToFloat1D | float],
+    func: _FuncYT[*tuple[()], onp.ToFloat1D | float],  # ty:ignore[invalid-type-arguments]
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
     args: tuple[()] = (),
-    Dfun: _FuncYT[*tuple[()], onp.ToFloat2D] | None = None,
+    Dfun: _FuncYT[*tuple[()], onp.ToFloat2D] | None = None,  # ty:ignore[invalid-type-arguments]
     col_deriv: bool | Literal[0, 1] = 0,
     full_output: Literal[False, 0] = 0,
     ml: int | None = None,
@@ -60,11 +61,11 @@ def odeint(
 ) -> onp.Array2D[np.float64]: ...
 @overload  # args=() (default), full_output=False (default), *, tfirst=True
 def odeint(
-    func: _FuncTY[*tuple[()], onp.ToFloat1D | float],
+    func: _FuncTY[*tuple[()], onp.ToFloat1D | float],  # ty:ignore[invalid-type-arguments]
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
     args: tuple[()] = (),
-    Dfun: _FuncTY[*tuple[()], onp.ToFloat2D] | None = None,
+    Dfun: _FuncTY[*tuple[()], onp.ToFloat2D] | None = None,  # ty:ignore[invalid-type-arguments]
     col_deriv: bool | Literal[0, 1] = 0,
     full_output: Literal[False, 0] = 0,
     ml: int | None = None,
@@ -86,11 +87,11 @@ def odeint(
 ) -> onp.Array2D[np.float64]: ...
 @overload  # args=() (default), *, full_output=True, tfirst=False (default)
 def odeint(
-    func: _FuncYT[*tuple[()], onp.ToFloat1D | float],
+    func: _FuncYT[*tuple[()], onp.ToFloat1D | float],  # ty:ignore[invalid-type-arguments]
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
     args: tuple[()] = (),
-    Dfun: _FuncYT[*tuple[()], onp.ToFloat2D] | None = None,
+    Dfun: _FuncYT[*tuple[()], onp.ToFloat2D] | None = None,  # ty:ignore[invalid-type-arguments]
     col_deriv: bool | Literal[0, 1] = 0,
     *,
     full_output: Literal[True, 1],
@@ -112,11 +113,11 @@ def odeint(
 ) -> tuple[onp.Array2D[np.float64], _InfoDict]: ...
 @overload  # args=() (default), full_output=True, *, tfirst=True
 def odeint(
-    func: _FuncTY[*tuple[()], onp.ToFloat1D | float],
+    func: _FuncTY[*tuple[()], onp.ToFloat1D | float],  # ty:ignore[invalid-type-arguments]
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
     args: tuple[()] = (),
-    Dfun: _FuncTY[*tuple[()], onp.ToFloat2D] | None = None,
+    Dfun: _FuncTY[*tuple[()], onp.ToFloat2D] | None = None,  # ty:ignore[invalid-type-arguments]
     col_deriv: bool | Literal[0, 1] = 0,
     *,
     full_output: Literal[True, 1],
@@ -138,11 +139,11 @@ def odeint(
 ) -> tuple[onp.Array2D[np.float64], _InfoDict]: ...
 @overload  # args=<given>, full_output=False (default), tfirst=False (default)
 def odeint(
-    func: _FuncYT[*_Ts, onp.ToFloat1D | float],
+    func: _FuncYT[*_Ts, onp.ToFloat1D | float],  # ty:ignore[invalid-type-arguments]
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
     args: tuple[*_Ts],
-    Dfun: _FuncYT[*_Ts, onp.ToFloat2D] | None = None,
+    Dfun: _FuncYT[*_Ts, onp.ToFloat2D] | None = None,  # ty:ignore[invalid-type-arguments]
     col_deriv: bool | Literal[0, 1] = 0,
     full_output: Literal[False, 0] = 0,
     ml: int | None = None,
@@ -163,11 +164,11 @@ def odeint(
 ) -> onp.Array2D[np.float64]: ...
 @overload  # args=<given>, full_output=False (default), *, tfirst=True
 def odeint(
-    func: _FuncTY[*_Ts, onp.ToFloat1D | float],
+    func: _FuncTY[*_Ts, onp.ToFloat1D | float],  # ty:ignore[invalid-type-arguments]
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
     args: tuple[*_Ts],
-    Dfun: _FuncTY[*_Ts, onp.ToFloat2D] | None = None,
+    Dfun: _FuncTY[*_Ts, onp.ToFloat2D] | None = None,  # ty:ignore[invalid-type-arguments]
     col_deriv: bool | Literal[0, 1] = 0,
     full_output: Literal[False, 0] = 0,
     ml: int | None = None,
@@ -189,11 +190,11 @@ def odeint(
 ) -> onp.Array2D[np.float64]: ...
 @overload  # args=<given>, *, full_output=True, tfirst=False (default)
 def odeint(
-    func: _FuncYT[*_Ts, onp.ToFloat1D | float],
+    func: _FuncYT[*_Ts, onp.ToFloat1D | float],  # ty:ignore[invalid-type-arguments]
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
     args: tuple[*_Ts],
-    Dfun: _FuncYT[*_Ts, onp.ToFloat2D] | None = None,
+    Dfun: _FuncYT[*_Ts, onp.ToFloat2D] | None = None,  # ty:ignore[invalid-type-arguments]
     col_deriv: bool | Literal[0, 1] = 0,
     *,
     full_output: Literal[True, 1],
@@ -215,11 +216,11 @@ def odeint(
 ) -> tuple[onp.Array2D[np.float64], _InfoDict]: ...
 @overload  # args=<given>, *, full_output=True, tfirst=True
 def odeint(
-    func: _FuncTY[*_Ts, onp.ToFloat1D | float],
+    func: _FuncTY[*_Ts, onp.ToFloat1D | float],  # ty:ignore[invalid-type-arguments]
     y0: onp.ToFloat1D | float,
     t: onp.ToFloat1D,
     args: tuple[*_Ts],
-    Dfun: _FuncTY[*_Ts, onp.ToFloat2D] | None = None,
+    Dfun: _FuncTY[*_Ts, onp.ToFloat2D] | None = None,  # ty:ignore[invalid-type-arguments]
     col_deriv: bool | Literal[0, 1] = 0,
     *,
     full_output: Literal[True, 1],

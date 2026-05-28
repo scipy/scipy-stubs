@@ -4,7 +4,7 @@
 # mypy: disable-error-code=overload-overlap
 
 from collections.abc import Callable, Sequence
-from typing import Any, Literal as L, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import Any, Literal as L, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import numpy_typing_compat as nptc
@@ -54,7 +54,6 @@ __all__ = [
 
 ###
 
-_T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _NumericT = TypeVar("_NumericT", bound=npc.number | np.bool)
 _InexactT2 = TypeVar("_InexactT2", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
@@ -65,26 +64,26 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _AnyShapeT = TypeVar("_AnyShapeT", tuple[int], tuple[int, int], tuple[int, int, int])
 _AnyInexact64T = TypeVar("_AnyInexact64T", np.float64, np.complex128)
 
-_Tuple2: TypeAlias = tuple[_T, _T]
+type _Tuple2[_T] = tuple[_T, _T]
 
-_ConvMethod: TypeAlias = L["direct", "fft"]
-_ToConvMethod: TypeAlias = L["auto", _ConvMethod]
-_BoundaryConditions: TypeAlias = L["fill", "wrap", "symm"]
-_ResidueType: TypeAlias = L["avg", "mean", "min", "minimum", "max", "maximum"]
-_Domain: TypeAlias = L["time", "freq"]
-_TrendType: TypeAlias = L["linear", "constant"]
-_PadType: TypeAlias = L["constant", "line", "mean", "median", "maximum", "minimum", "symmetric", "reflect", "edge", "wrap"]
-_FiltFiltPadType: TypeAlias = L["odd", "even", "constant"] | None
-_FiltFiltMethod: TypeAlias = L["pad", "gust"]
-_ResidualKind: TypeAlias = L["lowpass", "all"]
-_FilterType: TypeAlias = L["iir", "fir"] | dlti
+type _ConvMethod = L["direct", "fft"]
+type _ToConvMethod = L["auto", _ConvMethod]
+type _BoundaryConditions = L["fill", "wrap", "symm"]
+type _ResidueType = L["avg", "mean", "min", "minimum", "max", "maximum"]
+type _Domain = L["time", "freq"]
+type _TrendType = L["linear", "constant"]
+type _PadType = L["constant", "line", "mean", "median", "maximum", "minimum", "symmetric", "reflect", "edge", "wrap"]
+type _FiltFiltPadType = L["odd", "even", "constant"] | None
+type _FiltFiltMethod = L["pad", "gust"]
+type _ResidualKind = L["lowpass", "all"]
+type _FilterType = L["iir", "fir"] | dlti
 
-_C64_128: TypeAlias = np.complex128 | np.complex64
+type _C64_128 = np.complex128 | np.complex64
 
-_ToResampleWindow: TypeAlias = Callable[[onp.Array1D[_InexactT]], onp.ToFloat1D] | onp.ToFloat1D | _ToWindow
+type _ToResampleWindow[_InexactT: npc.inexact] = Callable[[onp.Array1D[_InexactT]], onp.ToFloat1D] | onp.ToFloat1D | _ToWindow
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
-_WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
 
 @type_check_only
 class _ConvMeasureDict(TypedDict):

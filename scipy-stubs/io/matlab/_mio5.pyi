@@ -1,6 +1,6 @@
 import io
 from collections.abc import Iterable, Mapping
-from typing import IO, Final, Literal, TypeAlias, TypedDict, final, type_check_only
+from typing import IO, Final, Literal, TypedDict, final, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -11,7 +11,9 @@ from scipy._typing import AnyShape
 from scipy.io._typing import ByteOrder
 from scipy.sparse import sparray, spmatrix
 
-_OnedAs: TypeAlias = Literal["row", "column"]
+###
+
+type _OnedAs = Literal["row", "column"]
 
 @type_check_only
 class _MatFile5Header(TypedDict):

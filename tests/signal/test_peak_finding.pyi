@@ -2,7 +2,7 @@
 
 # ruff: noqa: ERA001
 
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -11,8 +11,8 @@ from scipy.signal import argrelextrema, argrelmax, argrelmin, find_peaks, find_p
 
 ###
 
-_Int1D: TypeAlias = onp.Array1D[np.int_]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
+type _Int1D = onp.Array1D[np.int_]
+type _Float1D = onp.Array1D[np.float64]
 
 ###
 

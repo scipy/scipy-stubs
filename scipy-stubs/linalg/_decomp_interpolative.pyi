@@ -1,7 +1,5 @@
 # scipy/linalg/_decomp_interpolative.pyx
 
-from typing import TypeAlias, TypeAliasType
-
 import numpy as np
 import optype.numpy as onp
 
@@ -56,15 +54,14 @@ __all__ = [
 ###
 # ruff: noqa: PYI042
 
-_rng: TypeAlias = onp.random.ToRNG
+type _rng = onp.random.ToRNG
 
-# we use `TypeAliasType` instead `TypeAlias` to reduce the amount of type-checker spaghetti output
-_f64 = TypeAliasType("_f64", np.float64)
-_i64_1d = TypeAliasType("_i64_1d", onp.Array1D[np.int64])
-_f64_1d = TypeAliasType("_f64_1d", onp.Array1D[np.float64])
-_c128_1d = TypeAliasType("_c128_1d", onp.Array1D[np.complex128])
-_f64_2d = TypeAliasType("_f64_2d", onp.Array2D[np.float64])
-_c128_2d = TypeAliasType("_c128_2d", onp.Array2D[np.complex128])
+type _f64 = np.float64
+type _i64_1d = onp.Array1D[np.int64]
+type _f64_1d = onp.Array1D[np.float64]
+type _c128_1d = onp.Array1D[np.complex128]
+type _f64_2d = onp.Array2D[np.float64]
+type _c128_2d = onp.Array2D[np.complex128]
 
 ###
 

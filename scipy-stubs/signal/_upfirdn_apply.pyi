@@ -1,15 +1,17 @@
 # defined in scipy/signal/_upfirdn_apply.pyx
 
-from typing import Literal, TypeAlias, TypeVar
+from typing import Literal, TypeVar
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+###
+
 _DTypeT = TypeVar("_DTypeT", np.float32, np.float64, np.complex64, np.complex128)
 
-_Mode: TypeAlias = Literal["constant", "symmetric", "edge", "smooth", "wrap", "reflect", "antisymmetric", "antireflect", "line"]
-_ModeCode: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8]
+type _Mode = Literal["constant", "symmetric", "edge", "smooth", "wrap", "reflect", "antisymmetric", "antireflect", "line"]
+type _ModeCode = Literal[0, 1, 2, 3, 4, 5, 6, 7, 8]
 
 ###
 

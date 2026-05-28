@@ -1,7 +1,7 @@
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from types import ModuleType
-from typing import Any, Generic, Literal as L, NamedTuple, Never, Protocol, Self, TypeAlias, overload, override, type_check_only
+from typing import Any, Generic, Literal as L, NamedTuple, Never, Protocol, Self, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -83,8 +83,6 @@ __all__ = [
 
 ###
 
-_SCT = TypeVar("_SCT", bound=np.generic)
-
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _IntegerT = TypeVar("_IntegerT", bound=npc.integer)
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
@@ -112,12 +110,12 @@ _F64OrArrayT_co = TypeVar(
 )
 _RealOrArrayT_co = TypeVar("_RealOrArrayT_co", bound=_ScalarOrND[_Real0D], default=_ScalarOrND[Any], covariant=True)
 
-_Real0D: TypeAlias = npc.integer | npc.floating
+type _Real0D = npc.integer | npc.floating
 
-_ScalarOrND: TypeAlias = _SCT | onp.ArrayND[_SCT]
-_FloatOrND: TypeAlias = _ScalarOrND[npc.floating]
+type _ScalarOrND[SCT: np.generic] = SCT | onp.ArrayND[SCT]
+type _FloatOrND = _ScalarOrND[npc.floating]
 
-_InterpolationMethod: TypeAlias = L[
+type _InterpolationMethod = L[
     "linear",
     "lower",
     "higher",
@@ -133,32 +131,32 @@ _InterpolationMethod: TypeAlias = L[
     "median_unbiased",
     "normal_unbiased",
 ]
-_QuantileInterpolation: TypeAlias = L["fraction", "lower", "higher"]
-_PercentileInterpolation: TypeAlias = L["rank", "weak", "strict", "mean"]
-_TrimTail: TypeAlias = L["left", "right"]
-_KendallTauMethod: TypeAlias = L["auto", "asymptotic", "exact"]
-_KendallTauVariant: TypeAlias = L["b", "c"]
-_KS1TestMethod: TypeAlias = L[_KS2TestMethod, "approx"]
-_KS2TestMethod: TypeAlias = L["auto", "exact", "asymp"]
-_CombinePValuesMethod: TypeAlias = L["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"]
-_RankMethod: TypeAlias = L["average", "min", "max", "dense", "ordinal"]
+type _QuantileInterpolation = L["fraction", "lower", "higher"]
+type _PercentileInterpolation = L["rank", "weak", "strict", "mean"]
+type _TrimTail = L["left", "right"]
+type _KendallTauMethod = L["auto", "asymptotic", "exact"]
+type _KendallTauVariant = L["b", "c"]
+type _KS1TestMethod = L[_KS2TestMethod, "approx"]
+type _KS2TestMethod = L["auto", "exact", "asymp"]
+type _CombinePValuesMethod = L["fisher", "pearson", "tippett", "stouffer", "mudholkar_george"]
+type _RankMethod = L["average", "min", "max", "dense", "ordinal"]
 
-_RealLimit: TypeAlias = float | _Real0D
-_RealLimits: TypeAlias = tuple[_RealLimit, _RealLimit]
-_ComplexLimit: TypeAlias = complex | npc.number
-_ComplexLimits: TypeAlias = tuple[_ComplexLimit, _ComplexLimit]
+type _RealLimit = float | _Real0D
+type _RealLimits = tuple[_RealLimit, _RealLimit]
+type _ComplexLimit = complex | npc.number
+type _ComplexLimits = tuple[_ComplexLimit, _ComplexLimit]
 
-_Weigher: TypeAlias = Callable[[int], float | _Real0D]
+type _Weigher = Callable[[int], float | _Real0D]
 
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
-_AsFloat64_1D: TypeAlias = onp.ToArrayStrict1D[float, npc.floating64 | npc.integer]
-_AsFloat64_2D: TypeAlias = onp.ToArrayStrict2D[float, npc.floating64 | npc.integer]
-_AsFloat64_ND: TypeAlias = onp.ToArrayND[float, npc.floating64 | npc.integer]
-_AsFloat32_1D: TypeAlias = onp.ToArrayStrict1D[np.float32, np.float32 | np.float16]
-_AsFloat32_2D: TypeAlias = onp.ToArrayStrict2D[np.float32, np.float32 | np.float16]
-_AsFloat32_ND: TypeAlias = onp.ToArrayND[Never, np.float32 | np.float16]
+type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+type _AsFloat64_1D = onp.ToArrayStrict1D[float, npc.floating64 | npc.integer]
+type _AsFloat64_2D = onp.ToArrayStrict2D[float, npc.floating64 | npc.integer]
+type _AsFloat64_ND = onp.ToArrayND[float, npc.floating64 | npc.integer]
+type _AsFloat32_1D = onp.ToArrayStrict1D[np.float32, np.float32 | np.float16]
+type _AsFloat32_2D = onp.ToArrayStrict2D[np.float32, np.float32 | np.float16]
+type _AsFloat32_ND = onp.ToArrayND[Never, np.float32 | np.float16]
 
-_ToFloatStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
+type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
 
 @type_check_only
 class _RVSCallable(Protocol):
@@ -357,11 +355,11 @@ class KstestResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Gener
 
 Ks_2sampResult = KstestResult
 
-_KstestResult0: TypeAlias = KstestResult[np.float64, np.int8]
+type _KstestResult0 = KstestResult[np.float64, np.int8]
 # we can't use a generic shape-type here due to a variance bug in pyright
-_KstestResult1: TypeAlias = KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]]
-_KstestResult2: TypeAlias = KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]]
-_KstestResultN: TypeAlias = KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]]
+type _KstestResult1 = KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]]
+type _KstestResult2 = KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]]
+type _KstestResultN = KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]]
 
 class LinregressResult(
     BunchMixin[

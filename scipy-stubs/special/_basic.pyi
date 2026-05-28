@@ -1,4 +1,4 @@
-from typing import Literal as L, TypeAlias, Unpack, overload
+from typing import Literal as L, Unpack, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -70,54 +70,50 @@ __all__ = [
 
 ###
 
-_T = TypeVar("_T")
-_T0 = TypeVar("_T0")
-_T1 = TypeVar("_T1")
+type _ToIntOrND = onp.ToInt | onp.ToIntND
+type _ToFloatOrND = onp.ToFloat | onp.ToFloatND
+type _ToComplexOrND = onp.ToComplex | onp.ToComplexND
+type _ToJustComplexOrND = onp.ToJustComplex | onp.ToJustComplexND
+
+type _Extend0 = L["zero"]
+type _ExtendC = L["complex"]
+type _Extend = L[_Extend0, _ExtendC]
+
+# ruff: noqa: PYI042
+type _tuple2[_T] = tuple[_T, _T]
+type _tuple4[_T0, _T1] = tuple[_T0, _T1, _T1, _T1]
+type _tuple8[_T0, _T1] = tuple[_T0, _T1, _T1, _T1, _T1, _T1, _T1, _T1]
+
+type _i4 = np.int32
+type _i8 = np.int64
+type _f4 = np.float32
+type _f8 = np.float64
+type _c4 = np.complex64
+type _c8 = np.complex128
+
+type _fc8 = _f8 | _c8
+
+type _i = _i4 | _i8
+type _f = _f4 | _f8
+type _c = _c4 | _c8
+type _fc = _f | _c
+
+type _f8_1d = onp.Array1D[_f8]
+type _f8_nd = onp.ArrayND[_f8]
+type _c8_1d = onp.Array1D[_c8]
+type _c8_nd = onp.ArrayND[_c8]
+type _fc8_nd = onp.ArrayND[_fc8]
+
+type _i_nd = onp.ArrayND[_i]
+type _f_nd = onp.ArrayND[_f]
+type _c_nd = onp.ArrayND[_c]
+type _fc_nd = onp.ArrayND[_fc]
 
 _ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _SCT_iu = TypeVar("_SCT_iu", bound=npc.integer)
 _SCT_f = TypeVar("_SCT_f", bound=npc.floating)
 _SCT_fc = TypeVar("_SCT_fc", bound=npc.inexact)
-
-_ToIntOrND: TypeAlias = onp.ToInt | onp.ToIntND
-_ToFloatOrND: TypeAlias = onp.ToFloat | onp.ToFloatND
-_ToComplexOrND: TypeAlias = onp.ToComplex | onp.ToComplexND
-_ToJustComplexOrND: TypeAlias = onp.ToJustComplex | onp.ToJustComplexND
-
-_Extend0: TypeAlias = L["zero"]
-_ExtendC: TypeAlias = L["complex"]
-_Extend: TypeAlias = L[_Extend0, _ExtendC]
-
-# ruff: noqa: PYI042
-_tuple2: TypeAlias = tuple[_T, _T]
-_tuple4: TypeAlias = tuple[_T0, _T1, _T1, _T1]
-_tuple8: TypeAlias = tuple[_T0, _T1, _T1, _T1, _T1, _T1, _T1, _T1]
-
-_i4: TypeAlias = np.int32
-_i8: TypeAlias = np.int64
-_f4: TypeAlias = np.float32
-_f8: TypeAlias = np.float64
-_c4: TypeAlias = np.complex64
-_c8: TypeAlias = np.complex128
-
-_fc8: TypeAlias = _f8 | _c8
-
-_i: TypeAlias = _i4 | _i8
-_f: TypeAlias = _f4 | _f8
-_c: TypeAlias = _c4 | _c8
-_fc: TypeAlias = _f | _c
-
-_f8_1d: TypeAlias = onp.Array1D[_f8]
-_f8_nd: TypeAlias = onp.ArrayND[_f8]
-_c8_1d: TypeAlias = onp.Array1D[_c8]
-_c8_nd: TypeAlias = onp.ArrayND[_c8]
-_fc8_nd: TypeAlias = onp.ArrayND[_fc8]
-
-_i_nd: TypeAlias = onp.ArrayND[_i]
-_f_nd: TypeAlias = onp.ArrayND[_f]
-_c_nd: TypeAlias = onp.ArrayND[_c]
-_fc_nd: TypeAlias = onp.ArrayND[_fc]
 
 ###
 

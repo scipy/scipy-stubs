@@ -3,21 +3,7 @@
 import abc
 from collections.abc import Callable, Iterator, Sequence
 from types import GenericAlias
-from typing import (
-    Any,
-    ClassVar,
-    Final,
-    Generic,
-    Literal as L,
-    Never,
-    Protocol,
-    Self,
-    SupportsIndex,
-    TypeAlias,
-    TypeAliasType,
-    overload,
-    type_check_only,
-)
+from typing import Any, ClassVar, Final, Generic, Literal as L, Never, Protocol, Self, SupportsIndex, overload, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -41,12 +27,77 @@ __all__ = ["SparseEfficiencyWarning", "SparseWarning", "issparse", "isspmatrix",
 
 ###
 
-_T = TypeVar("_T")
+type _Numeric = npc.number | np.bool
+type _1D = tuple[int]  # noqa: PYI042
+type _2D = tuple[int, int]  # noqa: PYI042
+
+type _FromInt = npc.number
+type _FromFloat = npc.inexact
+type _FromComplex = npc.complexfloating
+
+type _ToInt8 = np.bool | np.int8
+type _ToInt = npc.integer | np.bool
+type _ToFloat32 = np.float32 | _ToInt
+type _ToFloat = npc.floating | _ToInt
+type _ToComplex64 = np.complex64 | _ToFloat
+
+type _ToSparseSeq[T] = Sequence[Sequence[T]] | Sequence[T]
+type _ToSparseArray[ScalarT: _Numeric] = onp.CanArrayND[ScalarT] | _ToSparseSeq[ScalarT]
+
+type _SpMatrix[ScalarT: _Numeric] = (
+    bsr_matrix[ScalarT]
+    | coo_matrix[ScalarT]
+    | csc_matrix[ScalarT]
+    | csr_matrix[ScalarT]
+    | dia_matrix[ScalarT]
+    | dok_matrix[ScalarT]
+    | lil_matrix[ScalarT]
+)
+type _SpMatrixOut[ScalarT: _Numeric] = bsr_matrix[ScalarT] | csc_matrix[ScalarT] | csr_matrix[ScalarT]
+
+type _SpArray[ScalarT: _Numeric] = (
+    bsr_array[ScalarT]
+    | coo_array[ScalarT]
+    | csc_array[ScalarT]
+    | csr_array[ScalarT]
+    | dia_array[ScalarT]
+    | dok_array[ScalarT]
+    | lil_array[ScalarT]
+)
+type _SpArray1D[ScalarT: _Numeric] = coo_array[ScalarT, _1D] | csr_array[ScalarT, _1D] | dok_array[ScalarT, _1D]
+type _SpArray2D[ScalarT: _Numeric] = (
+    bsr_array[ScalarT]
+    | coo_array[ScalarT, _2D]
+    | csc_array[ScalarT]
+    | csr_array[ScalarT, _2D]
+    | dia_array[ScalarT]
+    | dok_array[ScalarT, _2D]
+    | lil_array[ScalarT]
+)
+type _SpArrayND[ShapeT: tuple[Any, ...], ScalarT: _Numeric] = (
+    coo_array[ScalarT, ShapeT] | csr_array[ScalarT, ShapeT] | dok_array[ScalarT, ShapeT]
+)
+
+type _SpArrayOut[ScalarT: _Numeric] = bsr_array[ScalarT] | csc_array[ScalarT] | csr_array[ScalarT]
+
+type _ToCSRArray[ScalarT: _Numeric] = coo_array[ScalarT] | csr_array[ScalarT] | dia_array[ScalarT] | dok_array[ScalarT]
+type _ToCSRMatrix[ScalarT: _Numeric] = coo_matrix[ScalarT] | csr_matrix[ScalarT] | dia_matrix[ScalarT] | dok_matrix[ScalarT]
+
+type _SparseLike[T, ScalarT: _Numeric] = T | ScalarT | _spbase[ScalarT]
+type _To2D[T, ScalarT: _Numeric] = Sequence[Sequence[T | ScalarT] | onp.CanArrayND[ScalarT]] | onp.CanArrayND[ScalarT]
+type _To2DLike[T, ScalarT: _Numeric] = Sequence[T | ScalarT] | _To2D[T, ScalarT]
+
+type _BinOp = Callable[[object, object], Any]
+
+type _Casting = L["no", "equiv", "safe", "same_kind", "unsafe"]
+
+type _StackedSparseArray[ScalarT: _Numeric] = (
+    coo_array[ScalarT, tuple[int, int]] | csc_array[ScalarT] | csr_array[ScalarT, tuple[int, int]]
+)
+
 _T_co = TypeVar("_T_co", covariant=True)
 _ScalarT = TypeVar("_ScalarT", bound=_Numeric, default=Any)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=_Numeric, default=Any, covariant=True)
-
-_Numeric: TypeAlias = npc.number | np.bool
 
 _COOShapeT = TypeVar("_COOShapeT", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...])
 _CSRShapeT = TypeVar("_CSRShapeT", bound=tuple[int] | tuple[int, int], default=tuple[Any, ...])
@@ -59,7 +110,7 @@ _Sp2dT = TypeVar("_Sp2dT", bound=_spbase[_Numeric, _2D])
 _SpBoolT = TypeVar("_SpBoolT", bound=_spbase[np.bool])
 
 _ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND)
-_SpArrayOutT = TypeVar("_SpArrayOutT", bound=_SpArrayOut)
+_SpArrayOutT = TypeVar("_SpArrayOutT", bound=_SpArrayOut[Any])
 _SpMatrixT = TypeVar("_SpMatrixT", bound=spmatrix)
 
 _FromIntT = TypeVar("_FromIntT", bound=_FromInt)
@@ -69,73 +120,6 @@ _FromComplexT = TypeVar("_FromComplexT", bound=_FromComplex)
 _SpFromIntT = TypeVar("_SpFromIntT", bound=_spbase[_FromInt])
 _SpFromFloatT = TypeVar("_SpFromFloatT", bound=_spbase[_FromFloat])
 _SpFromComplexT = TypeVar("_SpFromComplexT", bound=_spbase[_FromComplex])
-
-_1D: TypeAlias = tuple[int]  # noqa: PYI042
-_2D: TypeAlias = tuple[int, int]  # noqa: PYI042
-
-_FromInt: TypeAlias = npc.number
-_FromFloat: TypeAlias = npc.inexact
-_FromComplex: TypeAlias = npc.complexfloating
-
-_ToInt8: TypeAlias = np.bool | np.int8
-_ToInt: TypeAlias = npc.integer | np.bool
-_ToFloat32: TypeAlias = np.float32 | _ToInt
-_ToFloat: TypeAlias = npc.floating | _ToInt
-_ToComplex64: TypeAlias = np.complex64 | _ToFloat
-
-_ToSparseSeq: TypeAlias = Sequence[Sequence[_T]] | Sequence[_T]
-_ToSparseArray: TypeAlias = onp.CanArrayND[_ScalarT_co] | _ToSparseSeq[_ScalarT_co]
-
-_SpMatrix: TypeAlias = (
-    bsr_matrix[_ScalarT]
-    | coo_matrix[_ScalarT]
-    | csc_matrix[_ScalarT]
-    | csr_matrix[_ScalarT]
-    | dia_matrix[_ScalarT]
-    | dok_matrix[_ScalarT]
-    | lil_matrix[_ScalarT]
-)
-_SpMatrixOut: TypeAlias = bsr_matrix[_ScalarT] | csc_matrix[_ScalarT] | csr_matrix[_ScalarT]
-
-_SpArray: TypeAlias = (
-    bsr_array[_ScalarT]
-    | coo_array[_ScalarT]
-    | csc_array[_ScalarT]
-    | csr_array[_ScalarT]
-    | dia_array[_ScalarT]
-    | dok_array[_ScalarT]
-    | lil_array[_ScalarT]
-)
-_SpArray1D: TypeAlias = coo_array[_ScalarT, _1D] | csr_array[_ScalarT, _1D] | dok_array[_ScalarT, _1D]
-_SpArray2D: TypeAlias = (
-    bsr_array[_ScalarT]
-    | coo_array[_ScalarT, _2D]
-    | csc_array[_ScalarT]
-    | csr_array[_ScalarT, _2D]
-    | dia_array[_ScalarT]
-    | dok_array[_ScalarT, _2D]
-    | lil_array[_ScalarT]
-)
-_SpArrayND = TypeAliasType(
-    "_SpArrayND",
-    coo_array[_ScalarT, _ShapeT] | csr_array[_ScalarT, _ShapeT] | dok_array[_ScalarT, _ShapeT],
-    type_params=(_ShapeT, _ScalarT),
-)
-
-_SpArrayOut: TypeAlias = bsr_array[_ScalarT] | csc_array[_ScalarT] | csr_array[_ScalarT]
-
-_ToCSRArray: TypeAlias = coo_array[_ScalarT] | csr_array[_ScalarT] | dia_array[_ScalarT] | dok_array[_ScalarT]
-_ToCSRMatrix: TypeAlias = coo_matrix[_ScalarT] | csr_matrix[_ScalarT] | dia_matrix[_ScalarT] | dok_matrix[_ScalarT]
-
-_SparseLike = TypeAliasType("_SparseLike", _T | _ScalarT | _spbase[_ScalarT], type_params=(_T, _ScalarT))
-_To2D = TypeAliasType(
-    "_To2D", Sequence[Sequence[_T | _ScalarT] | onp.CanArrayND[_ScalarT]] | onp.CanArrayND[_ScalarT], type_params=(_T, _ScalarT)
-)
-_To2DLike = TypeAliasType("_To2DLike", Sequence[_T | _ScalarT] | _To2D[_T, _ScalarT], type_params=(_T, _ScalarT))
-
-_BinOp: TypeAlias = Callable[[object, object], Any]
-
-_Casting: TypeAlias = L["no", "equiv", "safe", "same_kind", "unsafe"]
 
 # Used to emulate `@property` overloading in `_spbase.T`
 @type_check_only
@@ -236,36 +220,36 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload
     def __lt__(self: _SpBoolT, other: _spbase[_ToFloat, _ShapeT_co] | onp.ToFloat, /) -> _SpBoolT: ...
     @overload
-    def __lt__(self: _SpArray2D, other: _spbase[_ToFloat, _2D] | onp.ToFloat, /) -> csr_array[np.bool, _2D]: ...
+    def __lt__(self: _SpArray2D[Any], other: _spbase[_ToFloat, _2D] | onp.ToFloat, /) -> csr_array[np.bool, _2D]: ...
     @overload
-    def __lt__(self: _SpArray1D, other: _spbase[_ToFloat, _1D] | onp.ToFloat, /) -> csr_array[np.bool, _1D]: ...
+    def __lt__(self: _SpArray1D[Any], other: _spbase[_ToFloat, _1D] | onp.ToFloat, /) -> csr_array[np.bool, _1D]: ...
     @overload
     def __lt__(self: spmatrix, other: _spbase[_ToFloat], /) -> csr_matrix[np.bool]: ...
     #
     @overload
     def __gt__(self: _SpBoolT, other: _spbase[_ToFloat, _ShapeT_co] | onp.ToFloat, /) -> _SpBoolT: ...
     @overload
-    def __gt__(self: _SpArray2D, other: _spbase[_ToFloat, _2D] | onp.ToFloat, /) -> csr_array[np.bool, _2D]: ...
+    def __gt__(self: _SpArray2D[Any], other: _spbase[_ToFloat, _2D] | onp.ToFloat, /) -> csr_array[np.bool, _2D]: ...
     @overload
-    def __gt__(self: _SpArray1D, other: _spbase[_ToFloat, _1D] | onp.ToFloat, /) -> csr_array[np.bool, _1D]: ...
+    def __gt__(self: _SpArray1D[Any], other: _spbase[_ToFloat, _1D] | onp.ToFloat, /) -> csr_array[np.bool, _1D]: ...
     @overload
     def __gt__(self: spmatrix, other: _spbase[_ToFloat], /) -> csr_matrix[np.bool]: ...
     #
     @overload
     def __le__(self: _SpBoolT, other: _spbase[_ToFloat, _ShapeT_co] | onp.ToFloat, /) -> _SpBoolT: ...
     @overload
-    def __le__(self: _SpArray2D, other: _spbase[_ToFloat, _2D] | onp.ToFloat, /) -> csr_array[np.bool, _2D]: ...
+    def __le__(self: _SpArray2D[Any], other: _spbase[_ToFloat, _2D] | onp.ToFloat, /) -> csr_array[np.bool, _2D]: ...
     @overload
-    def __le__(self: _SpArray1D, other: _spbase[_ToFloat, _1D] | onp.ToFloat, /) -> csr_array[np.bool, _1D]: ...
+    def __le__(self: _SpArray1D[Any], other: _spbase[_ToFloat, _1D] | onp.ToFloat, /) -> csr_array[np.bool, _1D]: ...
     @overload
     def __le__(self: spmatrix, other: _spbase[_ToFloat], /) -> csr_matrix[np.bool]: ...
     #
     @overload
     def __ge__(self: _SpBoolT, other: _spbase[_ToFloat, _ShapeT_co] | onp.ToFloat, /) -> _SpBoolT: ...
     @overload
-    def __ge__(self: _SpArray2D, other: _spbase[_ToFloat, _2D] | onp.ToFloat, /) -> csr_array[np.bool, _2D]: ...
+    def __ge__(self: _SpArray2D[Any], other: _spbase[_ToFloat, _2D] | onp.ToFloat, /) -> csr_array[np.bool, _2D]: ...
     @overload
-    def __ge__(self: _SpArray1D, other: _spbase[_ToFloat, _1D] | onp.ToFloat, /) -> csr_array[np.bool, _1D]: ...
+    def __ge__(self: _SpArray1D[Any], other: _spbase[_ToFloat, _1D] | onp.ToFloat, /) -> csr_array[np.bool, _1D]: ...
     @overload
     def __ge__(self: spmatrix, other: _spbase[_ToFloat], /) -> _SpMatrixOut[np.bool]: ...
 
@@ -335,7 +319,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload  # sparray[-Bool], /, other: sparse +Bool
     def __mul__(self: _SpArrayOutT, /, other: _spbase[np.bool | _ScalarT_co]) -> _SpArrayOutT: ...
     @overload  # sparray[-Bool], /, other: array-like +Bool
-    def __mul__(self: _SpArray, /, other: _To2DLike[bool, np.bool]) -> coo_array[_ScalarT_co, _ShapeT_co]: ...
+    def __mul__(self: _SpArray[Any], /, other: _To2DLike[bool, np.bool]) -> coo_array[_ScalarT_co, _ShapeT_co]: ...
     @overload  # sparray[-Int], /, other: sparse +Int
     def __mul__(self: _SpArray[_FromInt], /, other: _spbase[_ToInt8 | _ScalarT_co]) -> _SpArrayOut[_ScalarT_co]: ...
     @overload  # sparray[-Int], /, other: array-like +Int
@@ -407,7 +391,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload  # sparray[-Bool], /, other: sparse +Bool
     def __rmul__(self: _SpArrayOutT, /, other: _spbase[np.bool | _ScalarT_co]) -> _SpArrayOutT: ...
     @overload  # sparray[-Bool], /, other: array-like +Bool
-    def __rmul__(self: _SpArray, /, other: _To2DLike[bool, np.bool]) -> coo_array[_ScalarT_co, _ShapeT_co]: ...
+    def __rmul__(self: _SpArray[Any], /, other: _To2DLike[bool, np.bool]) -> coo_array[_ScalarT_co, _ShapeT_co]: ...
     @overload  # sparray[-Int], /, other: sparse +Int
     def __rmul__(self: _SpArray[_FromInt], /, other: _spbase[_ToInt8 | _ScalarT_co]) -> _SpArrayOut[_ScalarT_co]: ...
     @overload  # sparray[-Int], /, other: array-like +Int
@@ -467,7 +451,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload  # sparray[-Bool], other: sparse +Bool
     def __matmul__(self: _SpArrayOutT, other: _spbase[np.bool | _ScalarT_co], /) -> _SpArrayOutT: ...
     @overload  # sparray[-Bool], other: array-like +Bool
-    def __matmul__(self: _SpArray, other: _To2DLike[bool, np.bool], /) -> onp.ArrayND[_ScalarT_co, _ShapeT_co]: ...
+    def __matmul__(self: _SpArray[Any], other: _To2DLike[bool, np.bool], /) -> onp.ArrayND[_ScalarT_co, _ShapeT_co]: ...
     @overload  # sparray[-Int], other: sparse +Int
     def __matmul__(self: _SpArray[_FromInt], other: _spbase[_ToInt8 | _ScalarT_co], /) -> _SpArrayOut[_ScalarT_co]: ...
     @overload  # sparray[-Int], other: array-like +Int
@@ -587,9 +571,9 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload  # spmatrix[+Float], /, other: scalar-like ~Complex
     def dot(self: spmatrix[_ToFloat], /, other: op.JustComplex) -> spmatrix[npc.complexfloating]: ...
     @overload  # sparray[-Bool], /, other: sparse +Bool
-    def dot(self: _SpArray, /, other: _spbase[np.bool | _ScalarT_co]) -> _SpArrayOut[_ScalarT_co]: ...
+    def dot(self: _SpArray[Any], /, other: _spbase[np.bool | _ScalarT_co]) -> _SpArrayOut[_ScalarT_co]: ...
     @overload  # sparray[-Bool], /, other: array-like +Bool
-    def dot(self: _SpArray, /, other: _To2DLike[bool, np.bool]) -> onp.ArrayND[_ScalarT_co, _ShapeT_co]: ...
+    def dot(self: _SpArray[Any], /, other: _To2DLike[bool, np.bool]) -> onp.ArrayND[_ScalarT_co, _ShapeT_co]: ...
     @overload  # sparray[-Int], /, other: sparse +Int
     def dot(self: _SpArray[_FromInt], /, other: _spbase[_ToInt8 | _ScalarT_co]) -> _SpArrayOut[_ScalarT_co]: ...
     @overload  # sparray[-Int], /, other: array-like +Int
@@ -653,9 +637,9 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload  # csc_matrix, sparse or scalar
     def maximum(self: csc_matrix, /, other: _spbase[_ScalarT] | _ScalarT) -> csc_matrix[_ScalarT_co | _ScalarT]: ...
     @overload  # other sparray, sparse or scalar
-    def maximum(self: _ToCSRArray, /, other: _spbase[_ScalarT] | _ScalarT) -> csr_array[_ScalarT_co | _ScalarT]: ...
+    def maximum(self: _ToCSRArray[Any], /, other: _spbase[_ScalarT] | _ScalarT) -> csr_array[_ScalarT_co | _ScalarT]: ...
     @overload  # other spmatrix, sparse or scalar
-    def maximum(self: _ToCSRMatrix, /, other: _spbase[_ScalarT] | _ScalarT) -> csr_matrix[_ScalarT_co | _ScalarT]: ...
+    def maximum(self: _ToCSRMatrix[Any], /, other: _spbase[_ScalarT] | _ScalarT) -> csr_matrix[_ScalarT_co | _ScalarT]: ...
     @overload  # sparray, dense
     def maximum(self: sparray, /, other: onp.ArrayND[_ScalarT]) -> onp.ArrayND[_ScalarT_co | _ScalarT, _ShapeT_co]: ...
     @overload  # spmatrix, dense
@@ -681,9 +665,9 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload  # csc_matrix, sparse or scalar
     def minimum(self: csc_matrix, /, other: _spbase[_ScalarT] | _ScalarT) -> csc_matrix[_ScalarT_co | _ScalarT]: ...
     @overload  # other sparray, sparse or scalar
-    def minimum(self: _ToCSRArray, /, other: _spbase[_ScalarT] | _ScalarT) -> csr_array[_ScalarT_co | _ScalarT]: ...
+    def minimum(self: _ToCSRArray[Any], /, other: _spbase[_ScalarT] | _ScalarT) -> csr_array[_ScalarT_co | _ScalarT]: ...
     @overload  # other spmatrix, sparse or scalar
-    def minimum(self: _ToCSRMatrix, /, other: _spbase[_ScalarT] | _ScalarT) -> csr_matrix[_ScalarT_co | _ScalarT]: ...
+    def minimum(self: _ToCSRMatrix[Any], /, other: _spbase[_ScalarT] | _ScalarT) -> csr_matrix[_ScalarT_co | _ScalarT]: ...
     @overload  # sparray, dense
     def minimum(self: sparray, /, other: onp.ArrayND[_ScalarT]) -> onp.ArrayND[_ScalarT_co | _ScalarT, _ShapeT_co]: ...
     @overload  # spmatrix, dense
@@ -880,7 +864,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload
     def asformat(self: spmatrix, /, format: L["csc"], copy: bool = False) -> csc_matrix[_ScalarT_co]: ...
     @overload
-    def asformat(self: _SpArrayND[_ShapeT], /, format: L["csr"], copy: bool = False) -> csr_array[_ScalarT_co, _ShapeT]: ...
+    def asformat(self: _SpArrayND[_ShapeT, Any], /, format: L["csr"], copy: bool = False) -> csr_array[_ScalarT_co, _ShapeT]: ...
     @overload
     def asformat(self: spmatrix, /, format: L["csr"], copy: bool = False) -> csr_matrix[_ScalarT_co]: ...
     @overload
@@ -888,7 +872,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload
     def asformat(self: spmatrix, /, format: L["dia"], copy: bool = False) -> dia_matrix[_ScalarT_co]: ...
     @overload
-    def asformat(self: _SpArrayND[_ShapeT], /, format: L["dok"], copy: bool = False) -> dok_array[_ScalarT_co, _ShapeT]: ...
+    def asformat(self: _SpArrayND[_ShapeT, Any], /, format: L["dok"], copy: bool = False) -> dok_array[_ScalarT_co, _ShapeT]: ...
     @overload
     def asformat(self: spmatrix, /, format: L["dok"], copy: bool = False) -> dok_matrix[_ScalarT_co]: ...
     @overload
@@ -959,8 +943,6 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
 
     #
     def setdiag(self, /, values: onp.ToComplex | onp.ToComplex1D, k: int = 0) -> None: ...
-
-_StackedSparseArray: TypeAlias = coo_array[_ScalarT, tuple[int, int]] | csc_array[_ScalarT] | csr_array[_ScalarT, tuple[int, int]]
 
 class sparray(Generic[_ScalarT_co, _ShapeT_co]):
     # NOTE: These two methods do not exist at runtime.

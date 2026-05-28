@@ -1,5 +1,5 @@
 from collections.abc import MutableSequence, Sequence
-from typing import Any, TypeAlias, overload
+from typing import Any, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,15 +11,14 @@ __all__ = ["cho_factor", "cho_solve", "cho_solve_banded", "cholesky", "cholesky_
 
 ###
 
-_T = TypeVar("_T")
 _Shape2T = TypeVar("_Shape2T", bound=tuple[int, int, *tuple[int, ...]])
 
-_as_f32: TypeAlias = np.float32 | np.float16 | npc.integer16 | npc.integer8 | np.bool  # noqa: PYI042
-_as_f64: TypeAlias = npc.floating64 | npc.floating80 | npc.integer64 | npc.integer32  # noqa: PYI042
-_as_c64: TypeAlias = np.complex64  # noqa: PYI042
-_as_c128: TypeAlias = npc.complexfloating160 | npc.complexfloating128  # noqa: PYI042
+type _as_f32 = np.float32 | np.float16 | npc.integer16 | npc.integer8 | np.bool  # noqa: PYI042
+type _as_f64 = npc.floating64 | npc.floating80 | npc.integer64 | npc.integer32  # noqa: PYI042
+type _as_c64 = np.complex64  # noqa: PYI042
+type _as_c128 = npc.complexfloating160 | npc.complexfloating128  # noqa: PYI042
 
-_Sequence2D: TypeAlias = Sequence[Sequence[_T]]
+type _Sequence2D[_T] = Sequence[Sequence[_T]]
 
 ###
 

@@ -1,5 +1,5 @@
 import types
-from typing import Any, Generic, Literal, TypeAlias, overload
+from typing import Any, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -7,7 +7,7 @@ import optype.numpy as onp
 
 __all__ = ["RBFInterpolator"]
 
-_Kernel: TypeAlias = Literal[
+type _Kernel = Literal[
     "thin_plate_spline",
     "linear",
     "cubic",

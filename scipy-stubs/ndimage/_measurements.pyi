@@ -1,6 +1,6 @@
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
-from typing import Any, Protocol, TypeAlias, overload, type_check_only
+from typing import Any, Protocol, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -29,22 +29,26 @@ __all__ = [
     "watershed_ift",
 ]
 
+###
+
 _SCT = TypeVar("_SCT", bound=npc.number | np.bool)
 _ISCT = TypeVar("_ISCT", bound=npc.inexact)
 
-__Func1: TypeAlias = Callable[[onp.ToComplex | onp.ToComplexND], onp.ToComplex]
-__Func2: TypeAlias = Callable[[onp.ToComplex | onp.ToComplexND, onp.ToComplex | onp.ToComplexND], onp.ToComplex]
-_ComprehensionFunc: TypeAlias = __Func1 | __Func2
+type __Func1 = Callable[[onp.ToComplex | onp.ToComplexND], onp.ToComplex]
+type __Func2 = Callable[[onp.ToComplex | onp.ToComplexND, onp.ToComplex | onp.ToComplexND], onp.ToComplex]
+type _ComprehensionFunc = __Func1 | __Func2
 
-_Idx0D: TypeAlias = tuple[np.intp, ...]
-_IdxND: TypeAlias = list[_Idx0D]
+type _Idx0D = tuple[np.intp, ...]
+type _IdxND = list[_Idx0D]
 
-_Extrema0D: TypeAlias = tuple[_SCT, _SCT, _Idx0D, _Idx0D]
-_ExtremaND: TypeAlias = tuple[onp.ArrayND[_SCT], onp.ArrayND[_SCT], _IdxND, _IdxND]
+type _Extrema0D[ScalarT: npc.number | np.bool] = tuple[ScalarT, ScalarT, _Idx0D, _Idx0D]
+type _ExtremaND[ScalarT: npc.number | np.bool] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[ScalarT], _IdxND, _IdxND]
 
-_Coord0D: TypeAlias = tuple[np.float64, ...]
-_Coord1D: TypeAlias = list[_Coord0D]
-_CoordND: TypeAlias = list[tuple[onp.ArrayND[np.float64], ...]]
+type _Coord0D = tuple[np.float64, ...]
+type _Coord1D = list[_Coord0D]
+type _CoordND = list[tuple[onp.ArrayND[np.float64], ...]]
+
+###
 
 #
 @overload

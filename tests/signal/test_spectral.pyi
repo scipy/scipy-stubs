@@ -1,6 +1,6 @@
 # type-tests for `signal/_spectral_py.pyi`
 
-from typing import Literal, TypeAlias, assert_type
+from typing import Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -9,13 +9,13 @@ from scipy.signal import check_COLA, check_NOLA, coherence, csd, istft, lombscar
 
 ###
 
-_F64_1D: TypeAlias = onp.Array1D[np.float64]
-_F32_ND: TypeAlias = onp.ArrayND[np.float32]
-_F64_ND: TypeAlias = onp.ArrayND[np.float64]
-_F80_ND: TypeAlias = onp.ArrayND[np.float96 | np.float128]
-_C64_ND: TypeAlias = onp.ArrayND[np.complex64]
-_C128_ND: TypeAlias = onp.ArrayND[np.complex128]
-_C160_ND: TypeAlias = onp.ArrayND[np.complex192 | np.complex256]
+type _F64_1D = onp.Array1D[np.float64]
+type _F32_ND = onp.ArrayND[np.float32]
+type _F64_ND = onp.ArrayND[np.float64]
+type _F80_ND = onp.ArrayND[np.float96 | np.float128]
+type _C64_ND = onp.ArrayND[np.complex64]
+type _C128_ND = onp.ArrayND[np.complex128]
+type _C160_ND = onp.ArrayND[np.complex192 | np.complex256]
 
 ###
 

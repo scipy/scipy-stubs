@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Generic, Never, TypeAlias, Unpack, overload
+from typing import Any, ClassVar, Generic, Never, Unpack, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -18,20 +18,20 @@ __all__ = ["Binomial", "Logistic", "Normal", "Uniform"]
 
 ###
 
-_Float: TypeAlias = npc.floating
-_Int: TypeAlias = npc.integer
+type _Float = npc.floating
+type _Int = npc.integer
 
-_0D: TypeAlias = tuple[()]  # noqa: PYI042
-_1D: TypeAlias = tuple[int]  # noqa: PYI042
-_2D: TypeAlias = tuple[int, int]  # noqa: PYI042
-_3D: TypeAlias = tuple[int, int, int]  # noqa: PYI042
+type _0D = tuple[()]  # noqa: PYI042
+type _1D = tuple[int]  # noqa: PYI042
+type _2D = tuple[int, int]  # noqa: PYI042
+type _3D = tuple[int, int, int]  # noqa: PYI042
 
-_ToFloat_1D: TypeAlias = onp.ToFloatStrict1D | onp.ToFloat
-_ToFloat_2D: TypeAlias = onp.ToFloatStrict2D | _ToFloat_1D
-_ToFloat_3D: TypeAlias = onp.ToFloatStrict3D | _ToFloat_2D
-_ToFloat_ND: TypeAlias = onp.ToFloatND | onp.ToFloat
+type _ToFloat_1D = onp.ToFloatStrict1D | onp.ToFloat
+type _ToFloat_2D = onp.ToFloatStrict2D | _ToFloat_1D
+type _ToFloat_3D = onp.ToFloatStrict3D | _ToFloat_2D
+type _ToFloat_ND = onp.ToFloatND | onp.ToFloat
 
-_ToInt_ND: TypeAlias = onp.ToIntND | onp.ToInt
+type _ToInt_ND = onp.ToIntND | onp.ToInt
 
 _FloatT = TypeVar("_FloatT", bound=_Float, default=_Float)
 _FloatT_co = TypeVar("_FloatT_co", bound=_Float, default=_Float, covariant=True)

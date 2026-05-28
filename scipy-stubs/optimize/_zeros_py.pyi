@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Concatenate, Final, Generic, Literal, TypeAlias, TypeVar, overload
+from typing import Concatenate, Final, Generic, Literal, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -10,22 +10,22 @@ from ._typing import MethodRootScalar
 
 __all__ = ["RootResults", "bisect", "brenth", "brentq", "newton", "ridder", "toms748"]
 
-_Flag: TypeAlias = Literal["converged", "sign error", "convergence error", "value error", "No error"]
-_FlagKey: TypeAlias = Literal[0, -1, -2, -3, -4, 1]
+type _Flag = Literal["converged", "sign error", "convergence error", "value error", "No error"]
+type _FlagKey = Literal[0, -1, -2, -3, -4, 1]
 
-_Float: TypeAlias = float | np.float64
-_Floating: TypeAlias = float | npc.floating
+type _Float = float | np.float64
+type _Floating = float | npc.floating
 
 _T = TypeVar("_T")
 _KT = TypeVar("_KT", bound=_FlagKey)
 _RT = TypeVar("_RT", bound=_Floating)
 _RT_co = TypeVar("_RT_co", bound=_Floating, default=_Float, covariant=True)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-_Fun0D: TypeAlias = Callable[Concatenate[float, ...], onp.ToFloat] | Callable[Concatenate[np.float64, ...], onp.ToFloat]
-_FunND: TypeAlias = Callable[Concatenate[onp.Array[_ShapeT, np.float64], ...], onp.Array[_ShapeT, np.float64]]
+type _Fun0D = Callable[Concatenate[float, ...], onp.ToFloat] | Callable[Concatenate[np.float64, ...], onp.ToFloat]
+type _FunND[_ShapeT: tuple[int, ...]] = Callable[Concatenate[onp.Array[_ShapeT, np.float64], ...], onp.Array[_ShapeT, np.float64]]
 
-_State: TypeAlias = tuple[_FlagKey, _Float]
-_Bracket: TypeAlias = tuple[_Float, _Float]
+type _State = tuple[_FlagKey, _Float]
+type _Bracket = tuple[_Float, _Float]
 
 ###
 

@@ -2,7 +2,7 @@
 
 from collections.abc import Sequence
 from types import EllipsisType
-from typing import Any, ClassVar, Generic, Literal, Never, Self, SupportsIndex, TypeAlias, overload, override, type_check_only
+from typing import Any, ClassVar, Generic, Literal, Never, Self, SupportsIndex, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -21,26 +21,25 @@ __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 
 ###
 
-_T = TypeVar("_T")
+type _ToData[ScalarT: npc.number | np.bool] = tuple[
+    onp.ArrayND[ScalarT],
+    tuple[onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]] | tuple[onp.ArrayND[npc.integer]],
+]  # fmt: skip
+
+type _ScalarOrDense[ScalarT: npc.number | np.bool] = onp.ArrayND[ScalarT] | ScalarT
+type _JustND[T] = onp.SequenceND[op.Just[T]]
+
+type _Axes = int | tuple[Sequence[int], Sequence[int]]
+type _ToShapeMin3D = tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]]  # ndim > 2
+
+type _IndexSlice = slice | EllipsisType | list[int] | _spbase[np.intp] | onp.ArrayND[np.intp]
+
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 _SupComplexT = TypeVar("_SupComplexT", bound=np.complex128 | npc.complexfloating160)
 _SupFloatT = TypeVar("_SupFloatT", bound=npc.inexact64 | npc.inexact80)
 _SupIntT = TypeVar("_SupIntT", bound=np.int_ | np.uintp | np.uint32 | npc.number64 | npc.inexact80)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
-
-_ToData: TypeAlias = tuple[
-    onp.ArrayND[_ScalarT],
-    tuple[onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]] | tuple[onp.ArrayND[npc.integer]],
-]  # fmt: skip
-
-_ScalarOrDense: TypeAlias = onp.ArrayND[_ScalarT] | _ScalarT
-_JustND: TypeAlias = onp.SequenceND[op.Just[_T]]
-
-_Axes: TypeAlias = int | tuple[Sequence[int], Sequence[int]]
-_ToShapeMin3D: TypeAlias = tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]]  # ndim > 2
-
-_IndexSlice: TypeAlias = slice | EllipsisType | list[int] | _spbase[np.intp] | onp.ArrayND[np.intp]
 
 ###
 

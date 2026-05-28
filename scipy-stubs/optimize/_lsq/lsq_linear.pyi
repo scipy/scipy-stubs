@@ -1,4 +1,4 @@
-from typing import Final, Literal, SupportsIndex, TypeAlias, type_check_only
+from typing import Final, Literal, SupportsIndex, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -9,13 +9,15 @@ from scipy.optimize._typing import Bound
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
-_Int1D: TypeAlias = onp.Array1D[np.intp]
+###
 
-_Float: TypeAlias = float | np.float64
-_Float1D: TypeAlias = onp.Array1D[np.float64]
+type _Int1D = onp.Array1D[np.intp]
 
-_ToBounds: TypeAlias = tuple[float | onp.ToFloat1D, float | onp.ToFloat1D] | Bound
-_TerminationStatus: TypeAlias = Literal[-1, 0, 1, 2, 3]
+type _Float = float | np.float64
+type _Float1D = onp.Array1D[np.float64]
+
+type _ToBounds = tuple[float | onp.ToFloat1D, float | onp.ToFloat1D] | Bound
+type _TerminationStatus = Literal[-1, 0, 1, 2, 3]
 
 @type_check_only
 class _OptimizeResult(OptimizeResult):

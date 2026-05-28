@@ -1,4 +1,4 @@
-from typing import Any, Literal, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import Any, Literal, SupportsIndex, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -12,12 +12,11 @@ __all__ = ["dct", "dctn", "dst", "dstn", "idct", "idctn", "idst", "idstn"]
 _DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating])
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
-_NormKind: TypeAlias = Literal["ortho"] | None
+type _NormKind = Literal["ortho"] | None
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
-_WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
-
-_FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble, _WorkaroundForPyright]
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
+type _FloatND = onp.ArrayND[np.float32 | np.float64 | np.longdouble, _WorkaroundForPyright]
 
 ###
 

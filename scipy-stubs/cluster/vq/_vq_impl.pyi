@@ -1,6 +1,6 @@
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Final, Literal, TypeAlias, overload
+from typing import Final, Literal, overload
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
@@ -11,12 +11,12 @@ __all__ = ["ClusterError", "kmeans", "kmeans2", "py_vq", "vq", "whiten"]
 
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 
-_InitMethod: TypeAlias = Literal["random", "points", "++", "matrix"]
-_MissingMethod: TypeAlias = Literal["warn", "raise"]
+type _InitMethod = Literal["random", "points", "++", "matrix"]
+type _MissingMethod = Literal["warn", "raise"]
 
-_ToFloat32_2D: TypeAlias = onp.ToArray2D[int, np.float32 | np.float16 | npc.integer16 | npc.integer8]
-_AsFloat64_2D: TypeAlias = onp.ToArray2D[float, npc.floating64 | npc.integer]
-_PyFloatMax2D: TypeAlias = Sequence[float] | Sequence[Sequence[float]]
+type _ToFloat32_2D = onp.ToArray2D[int, np.float32 | np.float16 | npc.integer16 | npc.integer8]
+type _AsFloat64_2D = onp.ToArray2D[float, npc.floating64 | npc.integer]
+type _PyFloatMax2D = Sequence[float] | Sequence[Sequence[float]]
 
 ###
 # NOTE: DO NOT RE-ORDER THE OVERLOADS, otherwise it'll trigger a pernicious bug in pyright (1.1.403).

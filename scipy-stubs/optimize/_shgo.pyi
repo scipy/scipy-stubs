@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable, Sequence
-from typing import Concatenate, Literal, TypeAlias, TypeVar, TypedDict, type_check_only
+from typing import Concatenate, Literal, Protocol, TypedDict, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -10,12 +10,11 @@ from ._typing import Constraints, MinimizerKwargs
 
 __all__ = ["shgo"]
 
-_VT = TypeVar("_VT")
-_RT = TypeVar("_RT")
+###
 
-_Float: TypeAlias = float | np.float64
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], _RT]
+type _Float = float | np.float64
+type _Float1D = onp.Array1D[np.float64]
+type _Fun1D[_RT] = Callable[Concatenate[_Float1D, ...], _RT]
 
 @type_check_only
 class _SHGOOptions(TypedDict, total=False):
@@ -34,6 +33,10 @@ class _SHGOOptions(TypedDict, total=False):
     local_iter: int
     infty_constraints: bool
     disp: bool
+
+@type_check_only
+class _DoesMap(Protocol):
+    def __call__[VT, RT](self, func: Callable[[VT], RT], iterable: Iterable[VT], /) -> Iterable[RT]: ...
 
 ###
 
@@ -62,5 +65,5 @@ def shgo(
     options: _SHGOOptions | None = None,
     sampling_method: Callable[[int, int], onp.ToFloat2D] | Literal["simplicial", "halton", "sobol"] = "simplicial",
     *,
-    workers: onp.ToJustInt | Callable[[Callable[[_VT], _RT], Iterable[_VT]], Sequence[_RT]] = 1,
+    workers: onp.ToJustInt | _DoesMap = 1,
 ) -> OptimizeResult: ...

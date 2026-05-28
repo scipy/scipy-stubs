@@ -1,5 +1,6 @@
+from _typeshed import Unused
 from collections.abc import Callable, Mapping
-from typing import Any, Concatenate, Generic, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Any, Concatenate, Generic, Literal, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -12,13 +13,13 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["root"]
 
+###
+
 _ScalarT = TypeVar("_ScalarT", bound=npc.inexact)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.inexact, default=np.float64 | Any, covariant=True)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 _JacOptionsT = TypeVar("_JacOptionsT", bound=Mapping[str, object])
-
-_Ignored: TypeAlias = object
 
 @type_check_only
 class _RootOptionsHybr(TypedDict, total=False):
@@ -82,7 +83,7 @@ class _JacOptionsKrylov(TypedDict, total=False):
     inner_maxiter: int
     outer_k: int
 
-_JacOptionsNonlin: TypeAlias = _JacOptionsBroyden | _JacOptionsAnderson | _JacOptionsExcitingMixing | _JacOptionsKrylov
+type _JacOptionsNonlin = _JacOptionsBroyden | _JacOptionsAnderson | _JacOptionsExcitingMixing | _JacOptionsKrylov
 
 @type_check_only
 class _RootOptionsDFSane(TypedDict, total=False):
@@ -97,13 +98,15 @@ class _RootOptionsDFSane(TypedDict, total=False):
     M: int
     line_search: Literal["cruz", "cheng"]
 
-_MethodNonlin: TypeAlias = Literal["broyden1", "broyden2", "anderson", "linearmixing", "diagbroyden", "excitingmixing", "krylov"]
-_Method: TypeAlias = Literal["hybr", "lm", "df-sane", _MethodNonlin]
+type _MethodNonlin = Literal["broyden1", "broyden2", "anderson", "linearmixing", "diagbroyden", "excitingmixing", "krylov"]
+type _Method = Literal["hybr", "lm", "df-sane", _MethodNonlin]
 
-_CallbackFn: TypeAlias = Callable[[onp.ArrayND[_ScalarT, _ShapeT], onp.ArrayND[_ScalarT, _ShapeT]], _Ignored]
+type _CallbackFn[ScalarT: npc.inexact, ShapeT: tuple[int, ...]] = Callable[
+    [onp.ArrayND[ScalarT, ShapeT], onp.ArrayND[ScalarT, ShapeT]], Unused
+]
 
-_ToFloatOrND: TypeAlias = onp.ToFloat | onp.ToFloatND
-_ToComplexOrND: TypeAlias = onp.ToComplex | onp.ToComplexND
+type _ToFloatOrND = onp.ToFloat | onp.ToFloatND
+type _ToComplexOrND = onp.ToComplex | onp.ToComplexND
 
 ###
 

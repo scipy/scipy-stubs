@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Final, Never, TypeAlias
+from typing import Final, Never
 
 import numpy as np
 import optype.numpy as onp
@@ -7,9 +7,9 @@ import optype.numpy as onp
 from .base import DenseOutput, OdeSolver
 from scipy.sparse import sparray, spmatrix
 
-_LU: TypeAlias = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]
-_FuncSolveLU: TypeAlias = Callable[[_LU, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
-_ToJac: TypeAlias = onp.ToArray2D | spmatrix | sparray
+type _LU = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]
+type _FuncSolveLU = Callable[[_LU, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
+type _ToJac = onp.ToArray2D | spmatrix | sparray
 
 ###
 

@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Literal, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import Literal, SupportsIndex, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -13,10 +13,10 @@ __all__ = ["chirp", "gausspulse", "sawtooth", "square", "sweep_poly", "unit_impu
 
 _SCT = TypeVar("_SCT", bound=np.generic)
 
-_ToFloat0ND: TypeAlias = onp.ToFloat | onp.ToFloatND
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
+type _ToFloat0ND = onp.ToFloat | onp.ToFloatND
+type _FloatND = onp.ArrayND[np.float64]
 
-_ChirpMethod: TypeAlias = Literal["linear", "quadratic", "logarithmic", "hyperbolic"]
+type _ChirpMethod = Literal["linear", "quadratic", "logarithmic", "hyperbolic"]
 
 ###
 

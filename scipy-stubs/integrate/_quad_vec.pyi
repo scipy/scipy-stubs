@@ -1,25 +1,14 @@
 import collections
 from collections.abc import Callable
-from typing import (
-    Any,
-    Concatenate,
-    Final,
-    Generic,
-    Literal,
-    Never,
-    NoReturn,
-    Protocol,
-    TypeAlias,
-    overload,
-    override,
-    type_check_only,
-)
+from typing import Any, Concatenate, Final, Generic, Literal, Never, NoReturn, Protocol, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
+
+###
 
 _S = TypeVar("_S")
 _T = TypeVar("_T")
@@ -29,13 +18,13 @@ _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
-_Floating: TypeAlias = float | npc.floating
-_FloatingND: TypeAlias = onp.ArrayND[npc.floating] | _Floating
+type _Floating = float | npc.floating
+type _FloatingND = onp.ArrayND[npc.floating] | _Floating
 
-_Fun: TypeAlias = Callable[Concatenate[float, ...], _T]
+type _Fun[T] = Callable[Concatenate[float, ...], T]
 
-_Norm: TypeAlias = Literal["max", "2"]
-_Quadrature: TypeAlias = Literal["gk21", "gk15", "trapezoid"]
+type _Norm = Literal["max", "2"]
+type _Quadrature = Literal["gk21", "gk15", "trapezoid"]
 
 @type_check_only
 class _DoesMap(Protocol):

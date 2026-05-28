@@ -1,20 +1,7 @@
 import types
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
-from typing import (
-    Any,
-    ClassVar,
-    Final,
-    Generic,
-    Protocol,
-    Self,
-    SupportsIndex,
-    TypeAlias,
-    final,
-    overload,
-    override,
-    type_check_only,
-)
+from typing import Any, ClassVar, Final, Generic, Protocol, Self, SupportsIndex, final, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -34,7 +21,7 @@ _XT_co = TypeVar("_XT_co", bound=npc.integer | npc.floating, default=Any, covari
 _YT = TypeVar("_YT", bound=np.float64 | np.complex128)
 _YT_co = TypeVar("_YT_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
 
-_MultiIndex: TypeAlias = SupportsIndex | tuple[SupportsIndex, ...]
+type _MultiIndex = SupportsIndex | tuple[SupportsIndex, ...]
 
 @type_check_only
 class _HasShape0(Protocol):

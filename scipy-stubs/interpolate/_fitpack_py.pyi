@@ -1,4 +1,4 @@
-from typing import Any, Literal, TypeAlias, overload
+from typing import Any, Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -8,17 +8,17 @@ from ._fitpack_impl import bisplev, bisplrep, splprep, splrep
 
 __all__ = ["bisplev", "bisplrep", "insert", "spalde", "splantider", "splder", "splev", "splint", "splprep", "splrep", "sproot"]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
 
-_Ext: TypeAlias = Literal[0, 1, 2, 3]
+type _Ext = Literal[0, 1, 2, 3]
 
-_TCK1D: TypeAlias = tuple[_Float1D, _Float1D, int]
-_TCK2D: TypeAlias = tuple[_Float1D, list[_Float1D], int]
-_ToTCK: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D | onp.ToFloat2D, int]
-_ToTCK1D: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloatStrict1D, int]
-_ToTCK2D: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloatStrict2D, int]
+type _TCK1D = tuple[_Float1D, _Float1D, int]
+type _TCK2D = tuple[_Float1D, list[_Float1D], int]
+type _ToTCK = tuple[onp.ToFloat1D, onp.ToFloat1D | onp.ToFloat2D, int]
+type _ToTCK1D = tuple[onp.ToFloat1D, onp.ToFloatStrict1D, int]
+type _ToTCK2D = tuple[onp.ToFloat1D, onp.ToFloatStrict2D, int]
 
 ###
 

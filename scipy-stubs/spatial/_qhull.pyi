@@ -1,4 +1,4 @@
-from typing import Never, Protocol, TypeAlias, final, overload, type_check_only
+from typing import Never, Protocol, final, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -12,11 +12,11 @@ __all__ = ["ConvexHull", "Delaunay", "HalfspaceIntersection", "QhullError", "Vor
 # on numpy<2.1 pyright reports false positive incompatible overload errors for `plane_distance` and `lift_points` in `Delaunay`
 # pyright: reportOverlappingOverload=false
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-
 # workaround for type-checkers that don't comply to the overload spec
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
-_ToArrayStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
+type _JustAnyShape = tuple[Never, Never, Never, Never]
+type _ToArrayStrictND = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
+
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 @type_check_only
 class DelaunayInfo_t(Protocol):

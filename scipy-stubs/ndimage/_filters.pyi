@@ -1,5 +1,6 @@
+from _typeshed import Unused
 from collections.abc import Callable, Sequence
-from typing import Any, Concatenate, Literal, SupportsIndex, TypeAlias, TypedDict, Unpack, overload, type_check_only
+from typing import Any, Concatenate, Literal, SupportsIndex, TypedDict, Unpack, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -42,16 +43,14 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _DTypeT = TypeVar("_DTypeT", bound=np.dtype[np.bool | npc.number])
 _ScalarT = TypeVar("_ScalarT", bound=np.bool | npc.number, default=Any)
 
-_Ignored: TypeAlias = object
+type _Mode = Literal["reflect", "constant", "nearest", "mirror", "wrap", "grid-constant", "grid-mirror", "grid-wrap"]
+type _Modes = _Mode | Sequence[_Mode]
+type _Ints = int | Sequence[int]
+type _AnyOutput = onp.ArrayND[npc.number | np.bool] | onp.AnyDType
 
-_Mode: TypeAlias = Literal["reflect", "constant", "nearest", "mirror", "wrap", "grid-constant", "grid-mirror", "grid-wrap"]
-_Modes: TypeAlias = _Mode | Sequence[_Mode]
-_Ints: TypeAlias = int | Sequence[int]
-_AnyOutput: TypeAlias = onp.ArrayND[npc.number | np.bool] | onp.AnyDType
-
-_FilterFunc1D: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], onp.Array1D[np.float64], ...], _Ignored]
-_FilterFuncND: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToComplex | onp.ToComplexND]
-_Derivative: TypeAlias = Callable[
+type _FilterFunc1D = Callable[Concatenate[onp.Array1D[np.float64], onp.Array1D[np.float64], ...], Unused]
+type _FilterFuncND = Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToComplex | onp.ToComplexND]
+type _Derivative[_DTypeT: np.dtype[np.bool | npc.number], _ScalarT: np.bool | npc.number] = Callable[
     # (input, axis, output, mode, cval, *extra_arguments, **extra_keywords)
     Concatenate[np.ndarray[Any, _DTypeT], int, onp.Array[Any, _ScalarT] | np.dtype[_ScalarT], _Mode, onp.ToComplex, ...],
     onp.ArrayND[Any],

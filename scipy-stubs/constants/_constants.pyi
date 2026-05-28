@@ -1,4 +1,4 @@
-from typing import Final, Literal, TypeAlias, TypeVar, overload
+from typing import Final, Literal, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -167,11 +167,11 @@ __all__ = [
 
 _InexactArrayLikeT = TypeVar("_InexactArrayLikeT", bound=npc.inexact | onp.ArrayND[npc.inexact])
 
-_TempScaleC: TypeAlias = Literal["Celsius", "celsius", "C", "c"]
-_TempScaleK: TypeAlias = Literal["Kelvin", "kelvin", "K", "k"]
-_TempScaleF: TypeAlias = Literal["Fahrenheit", "fahrenheit", "F", "f"]
-_TempScaleR: TypeAlias = Literal["Rankine", "rankine", "R", "r"]
-_TempScale: TypeAlias = Literal[_TempScaleC, _TempScaleK, _TempScaleF, _TempScaleR]
+type _TempScaleC = Literal["Celsius", "celsius", "C", "c"]
+type _TempScaleK = Literal["Kelvin", "kelvin", "K", "k"]
+type _TempScaleF = Literal["Fahrenheit", "fahrenheit", "F", "f"]
+type _TempScaleR = Literal["Rankine", "rankine", "R", "r"]
+type _TempScale = Literal[_TempScaleC, _TempScaleK, _TempScaleF, _TempScaleR]
 
 ###
 

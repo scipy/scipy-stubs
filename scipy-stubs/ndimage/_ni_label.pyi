@@ -1,13 +1,13 @@
 # defined in scipy/ndimage/src/_ni_label.pyx
 
-from typing import TypeAlias
-
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+###
+
 # matches `ctypedef fused data_t`
-_data_t: TypeAlias = npc.integer | np.float32 | np.float64  # noqa: PYI042
+type _data_t = npc.integer | np.float32 | np.float64  # noqa: PYI042
 
 ###
 

@@ -1,24 +1,26 @@
 from collections.abc import Iterator, Sequence
 from types import EllipsisType, GenericAlias, ModuleType
-from typing import Any, Final, Generic, Literal as L, Never, Self, SupportsIndex, TypeAlias, overload
+from typing import Any, Final, Generic, Literal as L, Never, Self, SupportsIndex, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_RotOrder: TypeAlias = L["e", "extrinsic", "i", "intrinsic"]
-_RotGroup: TypeAlias = L["I", "O", "T", "D", "Dn", "C", "Cn"]
-_RotAxisSeq: TypeAlias = L[
+###
+
+type _RotOrder = L["e", "extrinsic", "i", "intrinsic"]
+type _RotGroup = L["I", "O", "T", "D", "Dn", "C", "Cn"]
+type _RotAxisSeq = L[
     "xyz", "xzy", "yxz", "yzx", "zxy", "zyx",
     "xyx", "xzx", "yxy", "yzy", "zxz", "zyz",
     "XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX",
     "XYX", "XZX", "YXY", "YZY", "ZXZ", "ZYZ",
 ]  # fmt: skip
-_RotAxis: TypeAlias = L["X", "Y", "Z"]
+type _RotAxis = L["X", "Y", "Z"]
 
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never]
-_ToFloatStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
+type _JustAnyShape = tuple[Never, Never, Never]
+type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)

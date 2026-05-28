@@ -1,4 +1,4 @@
-from typing import Literal, TypeAlias, overload
+from typing import Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -13,9 +13,9 @@ __all__ = ["firls", "firwin", "firwin2", "firwin_2d", "kaiser_atten", "kaiser_be
 
 _InexactT = TypeVar("_InexactT", bound=float | npc.inexact)
 
-_IIRFilterType: TypeAlias = Literal["bandpass", "lowpass", "highpass", "bandstop"]
-_RemezFilterType: TypeAlias = Literal["bandpass", "differentiator", "hilbert"]
-_LinearPhaseFIRMethod: TypeAlias = Literal["homomorphic", "hilbert"]
+type _IIRFilterType = Literal["bandpass", "lowpass", "highpass", "bandstop"]
+type _RemezFilterType = Literal["bandpass", "differentiator", "hilbert"]
+type _LinearPhaseFIRMethod = Literal["homomorphic", "hilbert"]
 
 ###
 

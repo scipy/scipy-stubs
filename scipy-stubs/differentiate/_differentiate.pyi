@@ -1,6 +1,6 @@
-from _typeshed import ConvertibleToInt
+from _typeshed import ConvertibleToInt, Unused
 from collections.abc import Callable, Mapping
-from typing import Any, Concatenate, Generic, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Any, Concatenate, Generic, Literal, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -14,11 +14,9 @@ _FloatT_co = TypeVar("_FloatT_co", bound=npc.floating, default=np.float64, covar
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 _ShapeT2_co = TypeVar("_ShapeT2_co", bound=tuple[int, int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
-_Ignored: TypeAlias = object
-
-_Function00: TypeAlias = Callable[Concatenate[_FloatT, ...], onp.ToFloat]
-_Function11: TypeAlias = Callable[Concatenate[onp.Array1D[_FloatT], ...], onp.ToFloat1D]
-_FunctionNN: TypeAlias = Callable[Concatenate[onp.ArrayND[_FloatT, Any], ...], onp.ToFloatND]
+type _Function00[_FloatT: npc.floating] = Callable[Concatenate[_FloatT, ...], onp.ToFloat]
+type _Function11[_FloatT: npc.floating] = Callable[Concatenate[onp.Array1D[_FloatT], ...], onp.ToFloat1D]
+type _FunctionNN[_FloatT: npc.floating] = Callable[Concatenate[onp.ArrayND[_FloatT, Any], ...], onp.ToFloatND]
 
 @type_check_only
 class _Tolerances(TypedDict, total=False):
@@ -78,7 +76,7 @@ def derivative(
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt = 0,
     preserve_shape: Literal[False] = False,
-    callback: Callable[[_DerivativeResult0D[np.float64]], _Ignored] | None = None,
+    callback: Callable[[_DerivativeResult0D[np.float64]], Unused] | None = None,
 ) -> _DerivativeResult0D[np.float64]: ...
 @overload  # 0-d <known>
 def derivative(
@@ -94,7 +92,7 @@ def derivative(
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt = 0,
     preserve_shape: Literal[False] = False,
-    callback: Callable[[_DerivativeResult0D[_FloatT]], _Ignored] | None = None,
+    callback: Callable[[_DerivativeResult0D[_FloatT]], Unused] | None = None,
 ) -> _DerivativeResult0D[_FloatT]: ...
 @overload  # 1-d <unknown>
 def derivative(
@@ -110,7 +108,7 @@ def derivative(
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntStrict1D = 0,
     preserve_shape: Literal[False] = False,
-    callback: Callable[[_DerivativeResultND[_FloatT, tuple[int]]], _Ignored] | None = None,
+    callback: Callable[[_DerivativeResultND[_FloatT, tuple[int]]], Unused] | None = None,
 ) -> _DerivativeResultND[_FloatT, tuple[int]]: ...
 @overload  # n-d <known>
 def derivative(
@@ -126,7 +124,7 @@ def derivative(
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntND = 0,
     preserve_shape: bool = False,
-    callback: Callable[[_DerivativeResultND[_FloatT]], _Ignored] | None = None,
+    callback: Callable[[_DerivativeResultND[_FloatT]], Unused] | None = None,
 ) -> _DerivativeResultND[_FloatT]: ...
 @overload  # n-d <unknown>
 def derivative(
@@ -142,7 +140,7 @@ def derivative(
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntND = 0,
     preserve_shape: bool = False,
-    callback: Callable[[_DerivativeResultND[_FloatT]], _Ignored] | None = None,
+    callback: Callable[[_DerivativeResultND[_FloatT]], Unused] | None = None,
 ) -> _DerivativeResultND[_FloatT]: ...
 
 #

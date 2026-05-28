@@ -1,11 +1,10 @@
 from collections.abc import Callable, Iterable, Mapping
-from typing import TypeAlias
 
 import optype.numpy as onp
 
 from ._typing import Fetcher
 
-_Datasets: TypeAlias = Fetcher | list[Callable[[], onp.ArrayND]] | tuple[Fetcher, ...]
+type _Datasets = Fetcher | list[Callable[[], onp.ArrayND]] | tuple[Fetcher, ...]
 
 # NOTE: The implementation explicitly checks that `datasets` sequence is either a `list` or `tuple`, and will raise an
 # `AssertionError` for any other (sequence) types.

@@ -1,13 +1,15 @@
 from _typeshed import Incomplete
-from typing import Literal, TypeAlias, TypeVar
+from typing import Literal, TypeVar
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+###
+
 _NumberT = TypeVar("_NumberT", bound=npc.number)
-_ImageScalarT = TypeVar("_ImageScalarT", bound=np.uint8 | np.float32 | np.float64)
-_Mode: TypeAlias = Literal[0, 1, 2]
+
+type _Mode = Literal[0, 1, 2]
 
 ###
 
@@ -49,4 +51,4 @@ def _remez(
 
 #
 # defined in scipy/signal/_sigtoolsmodule.cc
-def _medfilt2d(image: onp.Array2D[_ImageScalarT], size: tuple[int, int]) -> onp.Array2D[_ImageScalarT]: ...
+def _medfilt2d[ST: np.uint8 | np.float32 | np.float64](image: onp.Array2D[ST], size: tuple[int, int]) -> onp.Array2D[ST]: ...

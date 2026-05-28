@@ -1,6 +1,6 @@
 # type-tests for `signal/_spline_filters.pyi`
 
-from typing import Any, TypeAlias, assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -21,24 +21,24 @@ from scipy.signal import (
 
 ###
 
-_F64_1D: TypeAlias = onp.Array1D[np.float64]
-_F64_2D: TypeAlias = onp.Array2D[np.float64]
-_F32_1D: TypeAlias = onp.Array1D[np.float32]
-_F32_2D: TypeAlias = onp.Array2D[np.float32]
-_FQ_1D: TypeAlias = onp.Array1D[np.float64 | np.longdouble]
-_FQ_2D: TypeAlias = onp.Array2D[np.float64 | np.longdouble]
-_FQ_3D: TypeAlias = onp.Array3D[np.float64 | np.longdouble]
-_FQ_ND: TypeAlias = onp.ArrayND[np.float64 | np.longdouble, tuple[int] | tuple[Any, ...]]
-_F80_1D: TypeAlias = onp.Array1D[npc.floating80]
-_C64_1D: TypeAlias = onp.Array1D[np.complex64]
-_C64_2D: TypeAlias = onp.Array2D[np.complex64]
-_C128_1D: TypeAlias = onp.Array1D[np.complex128]
-_C128_2D: TypeAlias = onp.Array2D[np.complex128]
-_CQ_1D: TypeAlias = onp.Array1D[np.complex128 | np.clongdouble]
-_CQ_2D: TypeAlias = onp.Array2D[np.complex128 | np.clongdouble]
-_CQ_3D: TypeAlias = onp.Array3D[np.complex128 | np.clongdouble]
-_CQ_ND: TypeAlias = onp.ArrayND[np.complex128 | np.clongdouble]
-_C160_1D: TypeAlias = onp.Array1D[npc.complexfloating160]
+type _F64_1D = onp.Array1D[np.float64]
+type _F64_2D = onp.Array2D[np.float64]
+type _F32_1D = onp.Array1D[np.float32]
+type _F32_2D = onp.Array2D[np.float32]
+type _FQ_1D = onp.Array1D[np.float64 | np.longdouble]
+type _FQ_2D = onp.Array2D[np.float64 | np.longdouble]
+type _FQ_3D = onp.Array3D[np.float64 | np.longdouble]
+type _FQ_ND = onp.ArrayND[np.float64 | np.longdouble, tuple[int] | tuple[Any, ...]]
+type _F80_1D = onp.Array1D[npc.floating80]
+type _C64_1D = onp.Array1D[np.complex64]
+type _C64_2D = onp.Array2D[np.complex64]
+type _C128_1D = onp.Array1D[np.complex128]
+type _C128_2D = onp.Array2D[np.complex128]
+type _CQ_1D = onp.Array1D[np.complex128 | np.clongdouble]
+type _CQ_2D = onp.Array2D[np.complex128 | np.clongdouble]
+type _CQ_3D = onp.Array3D[np.complex128 | np.clongdouble]
+type _CQ_ND = onp.ArrayND[np.complex128 | np.clongdouble]
+type _C160_1D = onp.Array1D[npc.complexfloating160]
 
 ###
 

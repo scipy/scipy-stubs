@@ -1,15 +1,9 @@
 from collections.abc import Callable
-from typing import Final, TypeAlias
-
-import optype.numpy as onp
-
-_Fun: TypeAlias = Callable[[float], onp.ToFloat]
-
-###
+from typing import Final
 
 class DCSRCH:
-    phi: Final[_Fun]
-    derphi: Final[_Fun]
+    phi: Final[Callable[[float], float]]
+    derphi: Final[Callable[[float], float]]
     ftol: Final[float]
     gtol: Final[float]
     xtol: Final[float]
@@ -32,7 +26,15 @@ class DCSRCH:
     width1: float | None
 
     def __init__(
-        self, /, phi: _Fun, derphi: _Fun, ftol: float, gtol: float, xtol: float, stpmin: float, stpmax: float
+        self,
+        /,
+        phi: Callable[[float], float],
+        derphi: Callable[[float], float],
+        ftol: float,
+        gtol: float,
+        xtol: float,
+        stpmin: float,
+        stpmax: float,
     ) -> None: ...
     def __call__(
         self, /, alpha1: float, phi0: float | None = None, derphi0: float | None = None, maxiter: int = 100

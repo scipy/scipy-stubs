@@ -1,6 +1,6 @@
 # type-tests for `linalg/_decomp_update.pyi`
 
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -12,8 +12,8 @@ from scipy.linalg import qr_delete, qr_insert, qr_update
 f64_nd: onp.ArrayND[np.float64]
 c128_nd: onp.ArrayND[np.complex128]
 
-_FloatQR: TypeAlias = tuple[onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.float32 | np.float64]]
-_ComplexQR: TypeAlias = (
+type _FloatQR = tuple[onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.float32 | np.float64]]
+type _ComplexQR = (
     tuple[onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.float32 | np.float64]]
     | tuple[onp.ArrayND[np.complex64 | np.complex128], onp.ArrayND[np.complex64 | np.complex128]]
 )

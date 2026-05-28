@@ -1,6 +1,6 @@
 # type-tests for `signal/_czt.pyi`
 
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -9,7 +9,7 @@ from scipy.signal import CZT, ZoomFFT, czt, czt_points, zoom_fft
 
 ###
 
-_Complex: TypeAlias = np.complex128 | np.clongdouble
+type _Complex = np.complex128 | np.clongdouble
 
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]

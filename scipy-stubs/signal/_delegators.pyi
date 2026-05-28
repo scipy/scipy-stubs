@@ -1,26 +1,26 @@
 from collections.abc import Callable
 from types import ModuleType
-from typing import Any, TypeAlias, TypeAliasType, overload
+from typing import Any, overload
 from typing_extensions import TypeVar
 
 import numpy as np
 
 ###
 
-_: TypeAlias = object  # ignored parameters
+type _ = object  # ignored parameters
 
-_WindowSpec: TypeAlias = str | tuple[object, ...] | Callable[..., object]
+type _WindowSpec = str | tuple[object, ...] | Callable[..., object]
 
 _T = TypeVar("_T")
 _TupleT = TypeVar("_TupleT", bound=tuple[object, ...])
 _ModuleT = TypeVar("_ModuleT", bound=ModuleType)
 
 # these pretend that we can a module (`numpy` or `array_api_compat.np_compat`) in Python's type system
-_NumpyModule: TypeAlias = ModuleType
+type _NumpyModule = ModuleType
 
 # this pretends that we can express `array_namespace` in Python's type system
 _ArrayT = TypeVar("_ArrayT")
-_ArrayNamespace = TypeAliasType("_ArrayNamespace", ModuleType, type_params=(_ArrayT,))
+type _ArrayNamespace[ArrayT] = ModuleType
 
 ###
 

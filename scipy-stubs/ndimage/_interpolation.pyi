@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Concatenate, Literal, TypeAlias, TypeVar, overload
+from typing import Any, Concatenate, Literal, TypeVar, overload
 
 import numpy as np
 import optype as op
@@ -17,14 +17,16 @@ __all__ = [
     "zoom",
 ]
 
+###
+
 _ScalarT = TypeVar("_ScalarT", bound=np.generic)
 _NumberT = TypeVar("_NumberT", bound=npc.number)
 _ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[np.bool | npc.integer | npc.inexact32 | npc.inexact64])
 
-_Order: TypeAlias = Literal[0, 1, 2, 3, 4, 5]
-_Mode: TypeAlias = Literal["reflect", "grid-mirror", "constant", "grid-constant", "nearest", "mirror", "wrap", "grid-wrap"]
-_MappingFunc: TypeAlias = Callable[Concatenate[tuple[int, ...], ...], tuple[onp.ToFloat, ...]]
-_ArrayOrDType: TypeAlias = onp.ArrayND[_ScalarT] | type[_ScalarT] | np.dtype[_ScalarT]
+type _Order = Literal[0, 1, 2, 3, 4, 5]
+type _Mode = Literal["reflect", "grid-mirror", "constant", "grid-constant", "nearest", "mirror", "wrap", "grid-wrap"]
+type _MappingFunc = Callable[Concatenate[tuple[int, ...], ...], tuple[onp.ToFloat, ...]]
+type _ArrayOrDType[ScalarT: np.generic] = onp.ArrayND[ScalarT] | type[ScalarT] | np.dtype[ScalarT]
 
 #
 @overload

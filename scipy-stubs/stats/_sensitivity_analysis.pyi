@@ -1,6 +1,6 @@
 from collections.abc import Callable, Mapping, Sequence
 from dataclasses import dataclass
-from typing import Literal, Protocol, TypeAlias, type_check_only
+from typing import Literal, Protocol, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -10,8 +10,10 @@ from ._resampling import BootstrapResult
 
 __all__ = ["sobol_indices"]
 
-_SobolKey: TypeAlias = Literal["f_A", "f_B", "f_AB"]
-_SobolMethod: TypeAlias = Callable[
+###
+
+type _SobolKey = Literal["f_A", "f_B", "f_AB"]
+type _SobolMethod = Callable[
     [onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array3D[np.float64]],
     tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND],
 ]

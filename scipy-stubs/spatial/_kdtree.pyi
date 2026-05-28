@@ -1,4 +1,4 @@
-from typing import Final, Generic, Self, SupportsIndex, TypeAlias, overload, override
+from typing import Final, Generic, Self, SupportsIndex, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -8,8 +8,10 @@ from ._ckdtree import cKDTree, cKDTreeNode
 
 __all__ = ["KDTree", "Rectangle", "distance_matrix", "minkowski_distance", "minkowski_distance_p"]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
+###
+
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
 
 _BoxSizeT_co = TypeVar("_BoxSizeT_co", bound=_Float2D | None, default=_Float2D | None, covariant=True)
 _BoxSizeDataT_co = TypeVar("_BoxSizeDataT_co", bound=_Float1D | None, default=_Float1D | None, covariant=True)

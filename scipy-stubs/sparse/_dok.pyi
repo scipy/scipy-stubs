@@ -2,7 +2,7 @@
 # mypy: disable-error-code="misc, override"
 
 from collections.abc import Iterable, Sequence
-from typing import Any, ClassVar, Generic, Literal, Never, Self, TypeAlias, overload, override, type_check_only
+from typing import Any, ClassVar, Generic, Literal, Never, Self, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -21,27 +21,29 @@ __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
 ###
 
+type _1D = tuple[int]  # noqa: PYI042
+type _2D = tuple[int, int]  # noqa: PYI042
+# workaround for the typing-spec non-conformance regarding overload behavior of mypy and pyright
+type _NoD = tuple[Never] | tuple[Never, Never]
+type _AnyD = tuple[Any, ...]
+
+type _ToMatrix[ScalarT: npc.number | np.bool] = (
+    _spbase[ScalarT] | onp.CanArrayND[ScalarT] | Sequence[onp.CanArrayND[ScalarT]] | _ToMatrixPy[ScalarT]
+)
+type _ToMatrixPy[T] = Sequence[T] | Sequence[Sequence[T]]
+
+type _ToKey1D = onp.ToJustInt | tuple[onp.ToJustInt]
+type _ToKey2D = tuple[onp.ToJustInt, onp.ToJustInt]
+
+type _ToKeys1 = Iterable[_ToKey1D]
+type _ToKeys2 = Iterable[_ToKey2D]
+type _ToKeys = Iterable[_ToKey1D | _ToKey2D]
+
 _T = TypeVar("_T")
 _ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int] | tuple[int, int])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
-
-_1D: TypeAlias = tuple[int]  # noqa: PYI042
-_2D: TypeAlias = tuple[int, int]  # noqa: PYI042
-# workaround for the typing-spec non-conformance regarding overload behavior of mypy and pyright
-_NoD: TypeAlias = tuple[Never] | tuple[Never, Never]
-_AnyD: TypeAlias = tuple[Any, ...]
-
-_ToMatrix: TypeAlias = _spbase[_ScalarT] | onp.CanArrayND[_ScalarT] | Sequence[onp.CanArrayND[_ScalarT]] | _ToMatrixPy[_ScalarT]
-_ToMatrixPy: TypeAlias = Sequence[_T] | Sequence[Sequence[_T]]
-
-_ToKey1D: TypeAlias = onp.ToJustInt | tuple[onp.ToJustInt]
-_ToKey2D: TypeAlias = tuple[onp.ToJustInt, onp.ToJustInt]
-
-_ToKeys1: TypeAlias = Iterable[_ToKey1D]
-_ToKeys2: TypeAlias = Iterable[_ToKey2D]
-_ToKeys: TypeAlias = Iterable[_ToKey1D | _ToKey2D]
 
 _C2T = TypeVar("_C2T", bound=_dok_base[np.float64, _2D])
 

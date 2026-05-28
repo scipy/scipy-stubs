@@ -1,6 +1,6 @@
 import types
 from collections.abc import Callable
-from typing import Any, Concatenate, Generic, Self, SupportsIndex, TypeAlias, overload
+from typing import Any, Concatenate, Generic, Self, SupportsIndex, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -13,14 +13,13 @@ __all__ = ["NdBSpline"]
 
 ###
 
-_ScalarT = TypeVar("_ScalarT", bound=np.generic)
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
-_ToKnots: TypeAlias = tuple[onp.ToFloat1D, ...]
-_ToDegrees: TypeAlias = SupportsIndex | tuple[SupportsIndex, ...]
+type _ToKnots = tuple[onp.ToFloat1D, ...]
+type _ToDegrees = SupportsIndex | tuple[SupportsIndex, ...]
 
-_DesignMatrix: TypeAlias = csr_array[np.float64, tuple[int, int]]
-_SolverFunc: TypeAlias = Callable[Concatenate[_DesignMatrix, onp.Array2D[np.float64], ...], onp.ArrayND[_ScalarT]]
+type _DesignMatrix = csr_array[np.float64, tuple[int, int]]
+type _SolverFunc[ScalarT: np.generic] = Callable[Concatenate[_DesignMatrix, onp.Array2D[np.float64], ...], onp.ArrayND[ScalarT]]
 
 ###
 

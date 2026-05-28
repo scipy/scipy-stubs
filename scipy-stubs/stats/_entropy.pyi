@@ -1,4 +1,4 @@
-from typing import Literal, TypeAlias, TypeAliasType, overload
+from typing import Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -9,31 +9,21 @@ from ._typing import NanPolicy
 
 __all__ = ["differential_entropy", "entropy"]
 
+type _AsF32 = np.float16 | np.float32
+type _AsF64 = np.float64 | npc.integer | np.bool
+
+type _DifferentialMethod = Literal["vasicek", "van es", "ebrahimi", "correa", "auto"]
+
+type _ToArrayMaxND[ScalarT: npc.number | np.bool, PyScalarT] = onp.ToArrayND[PyScalarT, ScalarT] | PyScalarT | ScalarT
+type _ToArrayMax1D[ScalarT: npc.number | np.bool, PyScalarT] = onp.ToArrayStrict1D[PyScalarT, ScalarT] | PyScalarT | ScalarT
+type _ToArrayMax2D[ScalarT: npc.number | np.bool, PyScalarT] = (
+    onp.ToArrayStrict2D[PyScalarT, ScalarT] | _ToArrayMax1D[ScalarT, PyScalarT]
+)
+type _ToArrayMax3D[ScalarT: npc.number | np.bool, PyScalarT] = (
+    onp.ToArrayStrict3D[PyScalarT, ScalarT] | _ToArrayMax2D[ScalarT, PyScalarT]
+)
+
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
-_PyScalarT = TypeVar("_PyScalarT")
-
-_AsF32: TypeAlias = np.float16 | np.float32
-_AsF64: TypeAlias = np.float64 | npc.integer | np.bool
-
-_DifferentialMethod: TypeAlias = Literal["vasicek", "van es", "ebrahimi", "correa", "auto"]
-
-_ToArrayMaxND = TypeAliasType(
-    "_ToArrayMaxND", onp.ToArrayND[_PyScalarT, _ScalarT] | _PyScalarT | _ScalarT, type_params=(_ScalarT, _PyScalarT)
-)
-_ToArrayMax1D = TypeAliasType(
-    "_ToArrayMax1D", onp.ToArrayStrict1D[_PyScalarT, _ScalarT] | _PyScalarT | _ScalarT, type_params=(_ScalarT, _PyScalarT)
-)
-_ToArrayMax2D = TypeAliasType(
-    "_ToArrayMax2D",
-    onp.ToArrayStrict2D[_PyScalarT, _ScalarT] | _ToArrayMax1D[_ScalarT, _PyScalarT],
-    type_params=(_ScalarT, _PyScalarT),
-)
-_ToArrayMax3D = TypeAliasType(
-    "_ToArrayMax3D",
-    onp.ToArrayStrict3D[_PyScalarT, _ScalarT] | _ToArrayMax2D[_ScalarT, _PyScalarT],
-    type_params=(_ScalarT, _PyScalarT),
-)
 
 ###
 

@@ -1,4 +1,4 @@
-from typing import Final, Literal, TypeAlias, TypeVar
+from typing import Final, Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -6,17 +6,17 @@ import optype.numpy as onp
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
-_T = TypeVar("_T")
+###
 
-_Int1D: TypeAlias = onp.Array1D[np.int_]
+type _Int1D = onp.Array1D[np.int_]
 
-_Float: TypeAlias = float | np.float64
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
+type _Float = float | np.float64
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
 
-_Sparse: TypeAlias = sparray | spmatrix
-_ToMatrix: TypeAlias = onp.ToFloat2D | _Sparse | LinearOperator
-_Matrix: TypeAlias = _Float2D | _Sparse | LinearOperator
+type _Sparse = sparray | spmatrix
+type _ToMatrix = onp.ToFloat2D | _Sparse | LinearOperator
+type _Matrix = _Float2D | _Sparse | LinearOperator
 
 ###
 
@@ -91,4 +91,4 @@ def check_termination(
 ) -> Literal[2, 3, 4] | None: ...
 
 #
-def scale_for_robust_loss_function(J: _ToMatrix, f: _T, rho: onp.ToFloat1D) -> tuple[_ToMatrix, _T]: ...
+def scale_for_robust_loss_function[T](J: _ToMatrix, f: T, rho: onp.ToFloat1D) -> tuple[_ToMatrix, T]: ...

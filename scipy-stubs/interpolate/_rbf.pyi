@@ -1,13 +1,15 @@
 from collections.abc import Callable
-from typing import Literal, TypeAlias
+from typing import Literal
 
 import numpy as np
 import optype.numpy as onp
 
 __all__ = ["Rbf"]
 
-_Mode: TypeAlias = Literal["1-D", "N-D"]
-_Function: TypeAlias = (
+###
+
+type _Mode = Literal["1-D", "N-D"]
+type _Function = (
     Literal["multiquadric", "inverse", "gaussian", "linear", "cubic", "quintic", "thin_plate"]
     | Callable[[Rbf, float], onp.ToFloat]
 )

@@ -1,4 +1,4 @@
-from typing import TypeAlias, TypeVar, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -18,8 +18,7 @@ _list_complex: list[complex]
 _list_bytes: list[bytes]
 _list_str: list[str]
 
-_T = TypeVar("_T")
-_Tuple1N: TypeAlias = tuple[_T, *tuple[_T, ...]]
+type _Tuple1N[T] = tuple[T, *tuple[T, ...]]
 
 ###
 

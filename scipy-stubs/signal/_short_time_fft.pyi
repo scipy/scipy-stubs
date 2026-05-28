@@ -1,6 +1,6 @@
 import types
 from collections.abc import Callable
-from typing import Any, Final, Generic, Literal, Self, TypeAlias, overload
+from typing import Any, Final, Generic, Literal, Self, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -16,11 +16,11 @@ __all__ = ["ShortTimeFFT", "closest_STFT_dual_window"]
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=Any, covariant=True)
 
-_PadType: TypeAlias = Literal["zeros", "edge", "even", "odd"]
-_FFTMode: TypeAlias = Literal["twosided", "centered", "onesided", "onesided2X"]
-_ScaleTo: TypeAlias = Literal["magnitude", "psd"]
-_Scaling: TypeAlias = Literal[_ScaleTo, "unitary"]
-_Detr: TypeAlias = (
+type _PadType = Literal["zeros", "edge", "even", "odd"]
+type _FFTMode = Literal["twosided", "centered", "onesided", "onesided2X"]
+type _ScaleTo = Literal["magnitude", "psd"]
+type _Scaling = Literal[_ScaleTo, "unitary"]
+type _Detr = (
     Literal["linear", "constant"]
     | Callable[[onp.ArrayND[np.float64]], onp.ToComplexND]
     | Callable[[onp.ArrayND[np.complex128]], onp.ToComplexND]

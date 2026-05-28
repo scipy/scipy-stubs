@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import TypeAlias, TypeVar, overload
+from typing import TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -10,22 +10,25 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["lobpcg"]
 
-_Float: TypeAlias = np.float32 | np.float64
-_Complex: TypeAlias = np.complex64 | np.complex128
-_FloatT = TypeVar("_FloatT", bound=_Float)
+###
 
-_ToRealMatrix: TypeAlias = (
+type _Float = np.float32 | np.float64
+type _Complex = np.complex64 | np.complex128
+
+type _ToRealMatrix[FloatT: _Float] = (
     onp.ToFloat2D
     | LinearOperator[npc.integer | npc.floating]
     | _spbase
-    | Callable[[onp.Array2D[_FloatT]], onp.ArrayND[_Float | _Complex]]
+    | Callable[[onp.Array2D[FloatT]], onp.ArrayND[_Float | _Complex]]
 )
-_ToComplexMatrix: TypeAlias = (
+type _ToComplexMatrix[FloatT: _Float] = (
     onp.ToComplex2D
     | LinearOperator
     | _spbase
-    | Callable[[onp.Array2D[_FloatT]], onp.ArrayND[_Float | _Complex]]
+    | Callable[[onp.Array2D[FloatT]], onp.ArrayND[_Float | _Complex]]
 )  # fmt: skip
+
+_FloatT = TypeVar("_FloatT", bound=_Float)
 
 ###
 

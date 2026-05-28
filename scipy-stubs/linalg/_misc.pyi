@@ -1,4 +1,4 @@
-from typing import Any, Literal, Never, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import Any, Literal, Never, SupportsIndex, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -7,15 +7,17 @@ from numpy.linalg import LinAlgError
 
 __all__ = ["LinAlgError", "LinAlgWarning", "bandwidth", "norm"]
 
-_Inf: TypeAlias = float
-_Order: TypeAlias = Literal["fro", "nuc", 0, 1, -1, 2, -2] | _Inf
-_Axis: TypeAlias = SupportsIndex | tuple[SupportsIndex, SupportsIndex]
-_SubScalar: TypeAlias = npc.inexact64 | npc.integer | np.bool
+###
+
+type _Inf = float
+type _Order = Literal["fro", "nuc", 0, 1, -1, 2, -2] | _Inf
+type _Axis = SupportsIndex | tuple[SupportsIndex, SupportsIndex]
+type _SubScalar = npc.inexact64 | npc.integer | np.bool
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
-_WorkaroundForPyright: TypeAlias = tuple[int] | tuple[Any, ...]
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
 
 ###
 

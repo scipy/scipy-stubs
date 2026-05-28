@@ -2,7 +2,7 @@
 
 from collections.abc import Sequence
 from types import TracebackType
-from typing import SupportsIndex, TypeAlias, final, type_check_only
+from typing import SupportsIndex, final, type_check_only
 
 __all__ = "AnyShape", "ExitMixin"
 
@@ -13,4 +13,4 @@ class ExitMixin:
     def __exit__(self, /, type: type[BaseException] | None, value: BaseException | None, tb: TracebackType | None) -> None: ...
 
 # equivalent to `numpy._typing._shape._ShapeLike`
-AnyShape: TypeAlias = SupportsIndex | Sequence[SupportsIndex]
+type AnyShape = SupportsIndex | Sequence[SupportsIndex]

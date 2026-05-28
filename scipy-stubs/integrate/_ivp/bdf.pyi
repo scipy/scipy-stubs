@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Final, Generic, Never, TypeAlias, overload
+from typing import Any, Final, Generic, Never, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,18 +11,17 @@ from scipy.sparse import csc_matrix, sparray, spmatrix
 
 ###
 
-_NumberT = TypeVar("_NumberT", bound=npc.number)
 _InexactT = TypeVar("_InexactT", bound=np.float64 | np.complex128, default=np.float64 | Any)
 
-_LU: TypeAlias = tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.integer]]
-_FuncLU: TypeAlias = Callable[[onp.ArrayND[np.float64]], _LU] | Callable[[onp.ArrayND[np.complex128]], _LU]
-_FuncSolveLU: TypeAlias = Callable[[_LU, onp.ArrayND], onp.ArrayND[npc.inexact]]
+type _LU = tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.integer]]
+type _FuncLU = Callable[[onp.ArrayND[np.float64]], _LU] | Callable[[onp.ArrayND[np.complex128]], _LU]
+type _FuncSolveLU = Callable[[_LU, onp.ArrayND], onp.ArrayND[npc.inexact]]
 
-_Sparse2D: TypeAlias = spmatrix[_NumberT] | sparray[_NumberT, tuple[int, int]]
-_ArrayOrCSC: TypeAlias = onp.Array2D[_NumberT] | csc_matrix[_NumberT]
+type _Sparse2D[NumberT: npc.number] = spmatrix[NumberT] | sparray[NumberT, tuple[int, int]]
+type _ArrayOrCSC[NumberT: npc.number] = onp.Array2D[NumberT] | csc_matrix[NumberT]
 
-_ToJacReal: TypeAlias = onp.ToFloat2D | _Sparse2D[npc.floating | npc.integer]
-_ToJacComplex: TypeAlias = onp.ToComplex2D | _Sparse2D[npc.number]
+type _ToJacReal = onp.ToFloat2D | _Sparse2D[npc.floating | npc.integer]
+type _ToJacComplex = onp.ToComplex2D | _Sparse2D[npc.number]
 
 ###
 

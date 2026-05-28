@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, Concatenate, Generic, Literal, NamedTuple, Protocol, TypeAlias, overload, type_check_only
+from typing import Any, Concatenate, Generic, Literal, NamedTuple, Protocol, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -9,16 +9,18 @@ from matplotlib.axes import Axes as _Axes
 from ._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
 from scipy.optimize import OptimizeResult
 
-_Params: TypeAlias = Mapping[str, onp.ToFloat]
-_Bounds: TypeAlias = Mapping[str, tuple[onp.ToFloat, onp.ToFloat]] | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
+###
 
-_GOFStatName: TypeAlias = Literal["ad", "ks", "cvm", "filliben"]
-_GOFStatFunc: TypeAlias = Callable[[rv_continuous_frozen, onp.ArrayND[np.float64]], float | np.float32 | np.float64]
-_FitMethod: TypeAlias = Literal["mle", "mse"]
-_PlotType: TypeAlias = Literal["hist", "qq", "pp", "cdf"]
+type _Params = Mapping[str, onp.ToFloat]
+type _Bounds = Mapping[str, tuple[onp.ToFloat, onp.ToFloat]] | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
+
+type _GOFStatName = Literal["ad", "ks", "cvm", "filliben"]
+type _GOFStatFunc = Callable[[rv_continuous_frozen, onp.ArrayND[np.float64]], float | np.float32 | np.float64]
+type _FitMethod = Literal["mle", "mse"]
+type _PlotType = Literal["hist", "qq", "pp", "cdf"]
 
 # TODO(jorenham): make more specific
-_Optimizer: TypeAlias = Callable[Concatenate[Callable[..., Any], ...], OptimizeResult]
+type _Optimizer = Callable[Concatenate[Callable[..., Any], ...], OptimizeResult]
 
 @type_check_only
 class _PXF1n(Protocol):

@@ -1,11 +1,15 @@
-from typing import Literal, TypeAlias
+from typing import Literal
 
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._common import ConfidenceInterval
 
-_Kind: TypeAlias = Literal["conditional", "sample"]
+###
+
+type _Kind = Literal["conditional", "sample"]
+
+###
 
 class OddsRatioResult:
     statistic: float

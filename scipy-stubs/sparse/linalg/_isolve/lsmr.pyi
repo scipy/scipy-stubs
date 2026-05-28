@@ -1,4 +1,4 @@
-from typing import Literal, TypeAlias
+from typing import Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -9,10 +9,12 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["lsmr"]
 
-_Real: TypeAlias = np.bool | npc.integer | npc.floating
-_ToRealMatrix: TypeAlias = onp.CanArrayND[_Real] | _spbase[_Real] | LinearOperator[_Real]
+###
 
-_IStop: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6, 7]
+type _Real = np.bool | npc.integer | npc.floating
+type _ToRealMatrix = onp.CanArrayND[_Real] | _spbase[_Real] | LinearOperator[_Real]
+
+type _IStop = Literal[0, 1, 2, 3, 4, 5, 6, 7]
 
 ###
 

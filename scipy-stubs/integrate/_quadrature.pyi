@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Concatenate, Literal, NamedTuple, Never, TypeAlias, overload
+from typing import Any, Concatenate, Literal, NamedTuple, Never, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,15 +11,14 @@ from scipy.stats.qmc import QMCEngine
 
 __all__ = ["cumulative_simpson", "cumulative_trapezoid", "fixed_quad", "newton_cotes", "qmc_quad", "romb", "simpson", "trapezoid"]
 
-_T = TypeVar("_T")
 _InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _Inexact80T = TypeVar("_Inexact80T", bound=npc.inexact80)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
 
-_FixedQuadFunc: TypeAlias = Callable[Concatenate[onp.Array1D[np.float64], ...], _T]
+type _FixedQuadFunc[T] = Callable[Concatenate[onp.Array1D[np.float64], ...], T]
 
 # workaround for mypy & pyright's failure to conform to the overload typing specification
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never]
+type _JustAnyShape = tuple[Never, Never, Never]
 
 ###
 

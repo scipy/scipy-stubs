@@ -1,5 +1,5 @@
 from collections.abc import Mapping
-from typing import Literal, TypeAlias, TypeVar
+from typing import Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -9,22 +9,24 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["svds"]
 
-_SCT = TypeVar("_SCT", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
-_ToMatrix: TypeAlias = onp.ArrayND[_SCT] | LinearOperator[_SCT] | _spbase
+###
 
-_Which: TypeAlias = Literal["LM", "SM"]
-_ReturnSingularVectors: TypeAlias = Literal["u", "v"] | bool
-_Solver: TypeAlias = Literal["arpack", "propack", "lobpcg"]
+type _Inexact = np.float32 | np.float64 | np.complex64 | np.complex128
+type _ToMatrix[ScalarT: _Inexact] = onp.ArrayND[ScalarT] | LinearOperator[ScalarT] | _spbase
+
+type _Which = Literal["LM", "SM"]
+type _ReturnSingularVectors = Literal["u", "v"] | bool
+type _Solver = Literal["arpack", "propack", "lobpcg"]
 
 ###
 
-def svds(
-    A: _ToMatrix[_SCT],
+def svds[ScalarT: _Inexact](
+    A: _ToMatrix[ScalarT],
     k: int = 6,
     ncv: int | None = None,
     tol: float = 0,
     which: _Which = "LM",
-    v0: onp.ArrayND[_SCT] | None = None,
+    v0: onp.ArrayND[ScalarT] | None = None,
     maxiter: int | None = None,
     return_singular_vectors: _ReturnSingularVectors = True,
     solver: _Solver = "arpack",
@@ -32,4 +34,4 @@ def svds(
     options: Mapping[str, object] | None = None,
     *,
     random_state: onp.random.ToRNG | None = None,
-) -> tuple[onp.Array2D[_SCT], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[_SCT]]: ...
+) -> tuple[onp.Array2D[ScalarT], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[ScalarT]]: ...

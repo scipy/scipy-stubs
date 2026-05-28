@@ -1,13 +1,10 @@
 from collections.abc import Callable, Sequence
-from typing import Final, TypeAlias, overload, override
+from typing import Final, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
-
-_PointsWeights: TypeAlias = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]
-_PointsWeightsMu: TypeAlias = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64]
 
 __all__ = [
     "c_roots",
@@ -56,6 +53,11 @@ __all__ = [
     "u_roots",
     "us_roots",
 ]
+
+###
+
+type _PointsWeights = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]
+type _PointsWeightsMu = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64]
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 

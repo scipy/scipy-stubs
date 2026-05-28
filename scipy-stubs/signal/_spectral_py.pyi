@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Literal, TypeAlias, overload
+from typing import Literal, overload
 from typing_extensions import deprecated
 
 import numpy as np
@@ -13,24 +13,24 @@ __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle
 
 ###
 
-_float64_1d: TypeAlias = onp.Array1D[np.float64]  # noqa: PYI042
-_float32_nd: TypeAlias = onp.ArrayND[np.float32]  # noqa: PYI042
-_float64_nd: TypeAlias = onp.ArrayND[np.float64]  # noqa: PYI042
-_float80_nd: TypeAlias = onp.ArrayND[np.float96 | np.float128]  # noqa: PYI042
-_complex64_nd: TypeAlias = onp.ArrayND[np.complex64]  # noqa: PYI042
-_complex128_nd: TypeAlias = onp.ArrayND[np.complex128]  # noqa: PYI042
-_complex160_nd: TypeAlias = onp.ArrayND[np.complex192 | np.complex256]  # noqa: PYI042
+type _float64_1d = onp.Array1D[np.float64]  # noqa: PYI042
+type _float32_nd = onp.ArrayND[np.float32]  # noqa: PYI042
+type _float64_nd = onp.ArrayND[np.float64]  # noqa: PYI042
+type _float80_nd = onp.ArrayND[np.float96 | np.float128]  # noqa: PYI042
+type _complex64_nd = onp.ArrayND[np.complex64]  # noqa: PYI042
+type _complex128_nd = onp.ArrayND[np.complex128]  # noqa: PYI042
+type _complex160_nd = onp.ArrayND[np.complex192 | np.complex256]  # noqa: PYI042
 
-_ToInexact32ND: TypeAlias = onp.ToArrayND[npc.inexact32, npc.inexact32 | npc.floating16]
-_ToInexact64ND: TypeAlias = onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool]
-_ToInexact80ND: TypeAlias = onp.ToArrayND[npc.inexact80, npc.inexact80]
+type _ToInexact32ND = onp.ToArrayND[npc.inexact32, npc.inexact32 | npc.floating16]
+type _ToInexact64ND = onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool]
+type _ToInexact80ND = onp.ToArrayND[npc.inexact80, npc.inexact80]
 
-_Detrend: TypeAlias = Literal["literal", "constant", False] | Callable[[onp.ArrayND], onp.ArrayND]
-_Scaling: TypeAlias = Literal["density", "spectrum"]
-_LegacyScaling: TypeAlias = Literal["psd", "spectrum"]
-_Average: TypeAlias = Literal["mean", "median"]
-_Boundary: TypeAlias = Literal["even", "odd", "constant", "zeros"] | None
-_Normalize: TypeAlias = Literal["power", "normalize", "amplitude"] | bool
+type _Detrend = Literal["literal", "constant", False] | Callable[[onp.ArrayND], onp.ArrayND]
+type _Scaling = Literal["density", "spectrum"]
+type _LegacyScaling = Literal["psd", "spectrum"]
+type _Average = Literal["mean", "median"]
+type _Boundary = Literal["even", "odd", "constant", "zeros"] | None
+type _Normalize = Literal["power", "normalize", "amplitude"] | bool
 
 ###
 

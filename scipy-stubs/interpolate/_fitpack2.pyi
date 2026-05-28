@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Final, Literal, Never, TypeAlias, override
+from typing import Final, Literal, Never, override
 
 import numpy as np
 import optype.numpy as onp
@@ -17,16 +17,16 @@ __all__ = [
     "UnivariateSpline",
 ]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
+type _Float1D = onp.Array1D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
 
-_Degree: TypeAlias = Literal[1, 2, 3, 4, 5]
+type _Degree = Literal[1, 2, 3, 4, 5]
 
-_ExtInt: TypeAlias = Literal[0, 1, 2, 3]
-_ExtStr: TypeAlias = Literal["extrapolate", "zeros", "raise", "const"]
-_Ext: TypeAlias = _ExtInt | _ExtStr
+type _ExtInt = Literal[0, 1, 2, 3]
+type _ExtStr = Literal["extrapolate", "zeros", "raise", "const"]
+type _Ext = _ExtInt | _ExtStr
 
-_ToBBox: TypeAlias = Sequence[onp.ToFloat | None]
+type _ToBBox = Sequence[onp.ToFloat | None]
 
 ###
 

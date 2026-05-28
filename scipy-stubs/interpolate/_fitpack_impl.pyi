@@ -1,29 +1,29 @@
 from _typeshed import Incomplete
 from collections.abc import Sequence
 from types import ModuleType
-from typing import Literal, LiteralString, TypeAlias, overload
+from typing import Literal, LiteralString, overload
 
 import numpy as np
 import optype.numpy as onp
 
 __all__ = ["bisplev", "bisplrep", "insert", "spalde", "splantider", "splder", "splev", "splint", "splprep", "splrep", "sproot"]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
 
-_Task: TypeAlias = Literal[-1, 0, 1]
-_Ext: TypeAlias = Literal[0, 1, 2, 3]
+type _Task = Literal[-1, 0, 1]
+type _Ext = Literal[0, 1, 2, 3]
 
 # This coincidentally works for both the univariate and bivariate cases
-_ToTCK: TypeAlias = Sequence[onp.ToFloat1D | onp.ToFloat2D | int]
+type _ToTCK = Sequence[onp.ToFloat1D | onp.ToFloat2D | int]
 
 # `(t, c, k)`
-_OutTCK1: TypeAlias = tuple[_Float1D, _Float1D, int]
+type _OutTCK1 = tuple[_Float1D, _Float1D, int]
 # `[tx, ty, c, kx, ky]`
-_OutTCK2: TypeAlias = list[_Float1D | _Float2D | int]
+type _OutTCK2 = list[_Float1D | _Float2D | int]
 # `([t, c, k], u)`
-_OutTCKU1: TypeAlias = tuple[list[_Float1D | list[_Float1D] | int], _Float1D]
+type _OutTCKU1 = tuple[list[_Float1D | list[_Float1D] | int], _Float1D]
 
 ###
 

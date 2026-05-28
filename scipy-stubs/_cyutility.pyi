@@ -1,8 +1,12 @@
 from _typeshed import Incomplete
 from builtins import memoryview as py_memoryview
 from types import EllipsisType
-from typing import Any, Final, Literal, Never, Self, SupportsIndex, TypeAlias, TypedDict, type_check_only
+from typing import Any, Final, Literal, Never, Self, SupportsIndex, TypedDict, type_check_only
 from typing_extensions import CapsuleType, ReadOnly
+
+###
+
+type _ToIndex = SupportsIndex | tuple[SupportsIndex, ...] | EllipsisType
 
 @type_check_only
 class CApiDict(TypedDict):
@@ -49,8 +53,6 @@ class CApiDict(TypedDict):
     _slice_assign_scalar: ReadOnly[CapsuleType]
     __pyx_unpickle_Enum__set_state: ReadOnly[CapsuleType]
     format_from_typeinfo: ReadOnly[CapsuleType]
-
-_ToIndex: TypeAlias = SupportsIndex | tuple[SupportsIndex, ...] | EllipsisType
 
 ###
 

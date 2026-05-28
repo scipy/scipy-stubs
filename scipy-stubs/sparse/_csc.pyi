@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, ClassVar, Generic, Literal, SupportsIndex, TypeAlias, TypeAliasType, overload, override, type_check_only
+from typing import Any, ClassVar, Generic, Literal, SupportsIndex, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -14,38 +14,29 @@ from ._typing import _Sparse2D, _ToShape2D
 
 __all__ = ["csc_array", "csc_matrix", "isspmatrix_csc"]
 
-_T = TypeVar("_T")
+###
 
-_Scalar: TypeAlias = npc.number | np.bool
+type _Scalar = npc.number | np.bool
+
+type _ToIndices = onp.CanArrayND[npc.integer] | Sequence[int]
+
+# `(data, (row_ind, col_ind))` or `(data, indices, indptr)`
+type _RawCSC[T] = tuple[T, tuple[_ToIndices, _ToIndices]] | tuple[T, _ToIndices, _ToIndices]
+type _ToCSC[ScalarT: _Scalar] = (
+    _Sparse2D[ScalarT]
+    | onp.CanArrayND[ScalarT]
+    | _RawCSC[onp.CanArrayND[ScalarT] | Sequence[ScalarT]]
+    | Sequence[Sequence[ScalarT]]
+    | list[onp.ArrayND[ScalarT]]
+)
+type _ToAnyCSC = _ToShape2D | _Sparse2D[_Scalar] | onp.ToArray2D[complex, _Scalar] | _RawCSC[onp.ToComplex1D]
+type _ToBoolCSC = Sequence[Sequence[bool]] | _RawCSC[Sequence[bool]]
+type _ToIntCSC = Sequence[Sequence[int]] | _RawCSC[Sequence[int]]
+type _ToFloatCSC = Sequence[Sequence[float]] | _RawCSC[Sequence[float]] | _ToShape2D
+type _ToComplexCSC = Sequence[Sequence[complex]] | _RawCSC[Sequence[complex]]
+
 _ScalarT = TypeVar("_ScalarT", bound=_Scalar)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
-
-_ToIndices: TypeAlias = onp.CanArrayND[npc.integer] | Sequence[int]
-
-_RawCSC = TypeAliasType(
-    # `(data, (row_ind, col_ind))` or `(data, indices, indptr)`
-    "_RawCSC",
-    tuple[_T, tuple[_ToIndices, _ToIndices]] | tuple[_T, _ToIndices, _ToIndices],
-    type_params=(_T,),
-)
-_ToCSC = TypeAliasType(
-    "_ToCSC",
-    (
-        _Sparse2D[_ScalarT]
-        | onp.CanArrayND[_ScalarT]
-        | _RawCSC[onp.CanArrayND[_ScalarT] | Sequence[_ScalarT]]
-        | Sequence[Sequence[_ScalarT]]
-        | list[onp.ArrayND[_ScalarT]]
-    ),
-    type_params=(_ScalarT,),
-)
-_ToAnyCSC = TypeAliasType(
-    "_ToAnyCSC", _ToShape2D | _Sparse2D[_Scalar] | onp.ToArray2D[complex, _Scalar] | _RawCSC[onp.ToComplex1D]
-)
-_ToBoolCSC: TypeAlias = Sequence[Sequence[bool]] | _RawCSC[Sequence[bool]]
-_ToIntCSC: TypeAlias = Sequence[Sequence[int]] | _RawCSC[Sequence[int]]
-_ToFloatCSC: TypeAlias = Sequence[Sequence[float]] | _RawCSC[Sequence[float]] | _ToShape2D
-_ToComplexCSC: TypeAlias = Sequence[Sequence[complex]] | _RawCSC[Sequence[complex]]
 
 ###
 
