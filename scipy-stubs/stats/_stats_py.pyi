@@ -5066,7 +5066,15 @@ def rankdata(
 ) -> onp.ArrayND[np.float64]: ...
 
 #
-def expectile(a: onp.ToFloatND, alpha: float = 0.5, *, weights: onp.ToFloatND | None = None) -> np.float64: ...
+def expectile(
+    a: onp.ToFloatND,
+    alpha: float = 0.5,
+    *,
+    weights: onp.ToFloatND | None = None,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
+) -> np.float64: ...
 
 #
 @overload  # ?d, ?d
