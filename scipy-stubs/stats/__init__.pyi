@@ -3,7 +3,7 @@ from ._binned_statistic import binned_statistic, binned_statistic_2d, binned_sta
 from ._binomtest import binomtest
 from ._bws_test import bws_test
 from ._censored_data import CensoredData
-from ._correlation import chatterjeexi, spearmanrho
+from ._correlation import chatterjeexi, siegelslopes, spearmanrho, theilslopes
 from ._covariance import Covariance
 from ._distribution_infrastructure import Mixture, abs, exp, log, make_distribution, order_statistic, truncate
 from ._entropy import differential_entropy, entropy
@@ -130,12 +130,10 @@ from ._stats_py import (
     relfreq,
     scoreatpercentile,
     sem,
-    siegelslopes,
     sigmaclip,
     skew,
     skewtest,
     spearmanr,
-    theilslopes,
     tiecorrect,
     tmax,
     tmean,

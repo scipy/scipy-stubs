@@ -10,7 +10,6 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from ._correlation import siegelslopes, theilslopes
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._typing import Alternative, BaseBunch, BunchMixin, NanPolicy, PowerDivergenceStatistic
 
@@ -57,12 +56,10 @@ __all__ = [
     "relfreq",
     "scoreatpercentile",
     "sem",
-    "siegelslopes",
     "sigmaclip",
     "skew",
     "skewtest",
     "spearmanr",
-    "theilslopes",
     "tiecorrect",
     "tmax",
     "tmean",
