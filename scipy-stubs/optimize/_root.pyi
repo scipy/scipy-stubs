@@ -19,7 +19,6 @@ _ScalarT = TypeVar("_ScalarT", bound=npc.inexact)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.inexact, default=np.float64 | Any, covariant=True)
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
-_JacOptionsT = TypeVar("_JacOptionsT", bound=Mapping[str, object])
 
 @type_check_only
 class _RootOptionsHybr(TypedDict, total=False):
@@ -43,7 +42,7 @@ class _RootOptionsLM(TypedDict, total=False):
     diag: onp.ToFloat1D
 
 @type_check_only
-class _RootOptionsNonlin(TypedDict, Generic[_JacOptionsT], total=False):
+class _RootOptionsNonlin[JacOptionsT: Mapping[str, object]](TypedDict, total=False):
     nit: int
     disp: bool
     maxiter: int
@@ -53,7 +52,7 @@ class _RootOptionsNonlin(TypedDict, Generic[_JacOptionsT], total=False):
     xatol: float
     tol_norm: Callable[[onp.Array1D[np.float64]], float]
     line_search: Literal["armijo", "wolfe"] | None
-    jac_options: _JacOptionsT
+    jac_options: JacOptionsT
 
 @type_check_only
 class _JacOptionsBase(TypedDict, total=False):
