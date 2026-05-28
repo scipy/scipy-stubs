@@ -10,7 +10,6 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from ._correlation import siegelslopes, theilslopes
 from ._resampling import BootstrapMethod, ResamplingMethod
 from ._typing import Alternative, BaseBunch, BunchMixin, NanPolicy, PowerDivergenceStatistic
 
@@ -57,12 +56,10 @@ __all__ = [
     "relfreq",
     "scoreatpercentile",
     "sem",
-    "siegelslopes",
     "sigmaclip",
     "skew",
     "skewtest",
     "spearmanr",
-    "theilslopes",
     "tiecorrect",
     "tmax",
     "tmean",
@@ -2984,7 +2981,9 @@ def relfreq(
 ) -> RelfreqResult: ...
 
 #
-def obrientransform(*samples: onp.ToFloatND) -> onp.Array2D[np.float64] | onp.Array1D[np.object_]: ...
+def obrientransform(
+    *samples: onp.ToFloatND, nan_policy: NanPolicy = "propagate"
+) -> onp.Array2D[np.float64] | onp.Array1D[np.object_]: ...
 
 #
 @overload  # 1d ~inexact64 | +integer, keepdims=False (default)
@@ -3355,17 +3354,25 @@ def median_abs_deviation(
 
 #
 @overload
-def sigmaclip(a: onp.ArrayND[_IntegerT], low: float = 4.0, high: float = 4.0) -> SigmaclipResult[_IntegerT, np.float64]: ...
-@overload
-def sigmaclip(a: onp.ArrayND[_FloatT], low: float = 4.0, high: float = 4.0) -> SigmaclipResult[_FloatT, _FloatT]: ...
-@overload
-def sigmaclip(a: onp.SequenceND[int], low: float = 4.0, high: float = 4.0) -> SigmaclipResult[np.int_, np.float64]: ...
+def sigmaclip(
+    a: onp.ArrayND[_IntegerT], low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
+) -> SigmaclipResult[_IntegerT, np.float64]: ...
 @overload
 def sigmaclip(
-    a: onp.SequenceND[list[float]] | list[float], low: float = 4.0, high: float = 4.0
+    a: onp.ArrayND[_FloatT], low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
+) -> SigmaclipResult[_FloatT, _FloatT]: ...
+@overload
+def sigmaclip(
+    a: onp.SequenceND[int], low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
+) -> SigmaclipResult[np.int_, np.float64]: ...
+@overload
+def sigmaclip(
+    a: onp.SequenceND[list[float]] | list[float], low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
 ) -> SigmaclipResult[np.float64, np.float64]: ...
 @overload
-def sigmaclip(a: onp.ToFloatND, low: float = 4.0, high: float = 4.0) -> SigmaclipResult: ...
+def sigmaclip(
+    a: onp.ToFloatND, low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
+) -> SigmaclipResult: ...
 
 # TODO(jorenham): improve
 def trimboth(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
@@ -5010,12 +5017,23 @@ def fisher_exact(
 
 # undocumented
 def quantile_test_iv(
-    x: onp.ToFloatND, q: float | _Real0D, p: float | npc.floating, alternative: Alternative
+    x: onp.ToFloatND,
+    q: float | _Real0D,
+    p: float | npc.floating,
+    alternative: Alternative,
+    axis: int | None,
+    keepdims: bool | None,
 ) -> tuple[onp.ArrayND[_Real0D], _Real0D, npc.floating, Alternative]: ...
 
 #
 def quantile_test(
-    x: onp.ToFloatND, *, q: float | _Real0D = 0, p: float | npc.floating = 0.5, alternative: Alternative = "two-sided"
+    x: onp.ToFloatND,
+    *,
+    q: float | _Real0D = 0.0,
+    p: float | npc.floating = 0.5,
+    alternative: Alternative = "two-sided",
+    axis: int | None = 0,
+    keepdims: bool | None = None,
 ) -> QuantileTestResult: ...
 
 #
@@ -5069,7 +5087,15 @@ def rankdata(
 ) -> onp.ArrayND[np.float64]: ...
 
 #
-def expectile(a: onp.ToFloatND, alpha: float = 0.5, *, weights: onp.ToFloatND | None = None) -> np.float64: ...
+def expectile(
+    a: onp.ToFloatND,
+    alpha: float = 0.5,
+    *,
+    weights: onp.ToFloatND | None = None,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
+) -> np.float64: ...
 
 #
 @overload  # ?d, ?d

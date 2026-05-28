@@ -17,31 +17,5 @@ scipy\.special\._precompute\..*
 # useless __new__
 scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 
-###
-# TODO: 1.18.0rc1
-
-scipy.stats._bws_test.bws_test
-
-scipy.stats._morestats.ansari
-scipy.stats._morestats.boxcox
-scipy.stats._morestats.boxcox_normmax
-scipy.stats._morestats.yeojohnson
-scipy.stats._morestats.yeojohnson_normmax
-scipy.stats.morestats.ansari
-scipy.stats.morestats.boxcox
-scipy.stats.morestats.boxcox_normmax
-scipy.stats.morestats.yeojohnson
-scipy.stats.morestats.yeojohnson_normmax
-
-scipy.stats._stats_py.__all__
-scipy.stats._stats_py.expectile
-scipy.stats._stats_py.obrientransform
-scipy.stats._stats_py.quantile_test
-scipy.stats._stats_py.quantile_test_iv
-scipy.stats._stats_py.sigmaclip
-scipy.stats.stats.obrientransform
-scipy.stats.stats.sigmaclip
-
 # https://github.com/scipy/scipy/pull/25240
-scipy.stats._multicomp.DunnettResult.__init__
-scipy.stats._multicomp.DunnettResult.__match_args__
+scipy\.stats\._multicomp\.DunnettResult\.(__init__|__match_args__)
