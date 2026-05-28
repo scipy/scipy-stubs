@@ -20,8 +20,6 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 ###
 # TODO: 1.18.0rc1
 
-scipy.stats._stats_py.quantile_test
-scipy.stats._stats_py.quantile_test_iv
 scipy.stats._stats_py.sigmaclip
 scipy.stats.stats.sigmaclip
 

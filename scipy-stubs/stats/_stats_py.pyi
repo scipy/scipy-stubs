@@ -5009,12 +5009,23 @@ def fisher_exact(
 
 # undocumented
 def quantile_test_iv(
-    x: onp.ToFloatND, q: float | _Real0D, p: float | npc.floating, alternative: Alternative
+    x: onp.ToFloatND,
+    q: float | _Real0D,
+    p: float | npc.floating,
+    alternative: Alternative,
+    axis: int | None,
+    keepdims: bool | None,
 ) -> tuple[onp.ArrayND[_Real0D], _Real0D, npc.floating, Alternative]: ...
 
 #
 def quantile_test(
-    x: onp.ToFloatND, *, q: float | _Real0D = 0, p: float | npc.floating = 0.5, alternative: Alternative = "two-sided"
+    x: onp.ToFloatND,
+    *,
+    q: float | _Real0D = 0.0,
+    p: float | npc.floating = 0.5,
+    alternative: Alternative = "two-sided",
+    axis: int | None = 0,
+    keepdims: bool | None = None,
 ) -> QuantileTestResult: ...
 
 #
