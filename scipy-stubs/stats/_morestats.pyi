@@ -9,7 +9,6 @@ from typing import (
     Protocol,
     Self,
     SupportsIndex,
-    TypeAlias,
     final,
     overload,
     override,
@@ -65,7 +64,6 @@ __all__ = [
 
 ###
 
-_T = TypeVar("_T")
 _FloatingT = TypeVar("_FloatingT", bound=npc.floating)
 _NDT_co = TypeVar(
     "_NDT_co",
@@ -74,15 +72,15 @@ _NDT_co = TypeVar(
     default=np.float64 | onp.ArrayND[np.float64],
 )  # fmt: skip
 
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
-_Tuple2: TypeAlias = tuple[_T, _T]
-_Tuple3: TypeAlias = tuple[_T, _T, _T]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
+type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+type _Tuple2[T] = tuple[T, T]
+type _Tuple3[T] = tuple[T, T, T]
+type _Float1D = onp.Array1D[np.float64]
 
-_KStatOrder: TypeAlias = Literal[1, 2, 3, 4]
-_CenterMethod: TypeAlias = Literal["mean", "median", "trimmed"]
-_RVCAnderson: TypeAlias = Literal["norm", "expon", "logistic", "extreme1", "gumbel", "gumbel_l", "gumbel_r", "weibull_min"]
-_RVC0: TypeAlias = Literal[
+type _KStatOrder = Literal[1, 2, 3, 4]
+type _CenterMethod = Literal["mean", "median", "trimmed"]
+type _RVCAnderson = Literal["norm", "expon", "logistic", "extreme1", "gumbel", "gumbel_l", "gumbel_r", "weibull_min"]
+type _RVC0 = Literal[
     "anglit",
     "arcsine",
     "cauchy",
@@ -108,7 +106,7 @@ _RVC0: TypeAlias = Literal[
     "uniform",
     "wald",
 ]
-_RVC1: TypeAlias = Literal[
+type _RVC1 = Literal[
     "alpha",
     "argus",
     "bradford",
@@ -152,11 +150,12 @@ _RVC1: TypeAlias = Literal[
     "weibull_min",
     "wrapcauchy",
 ]
+type _AnsariMethod = Literal["auto", "asymptotic", "exact"]
 
-_ObjFun1D: TypeAlias = Callable[[float], float | npc.floating]
-_MinFun1D: TypeAlias = Callable[[_ObjFun1D], _HasX] | Callable[[_ObjFun1D], OptimizeResult]
+type _ObjFun1D = Callable[[float], float | npc.floating]
+type _MinFun1D = Callable[[_ObjFun1D], _HasX] | Callable[[_ObjFun1D], OptimizeResult]
 
-_AndersonResult: TypeAlias = FitResult[Callable[[onp.ToFloat, onp.ToFloat], np.float64]]
+type _AndersonResult = FitResult[Callable[[onp.ToFloat, onp.ToFloat], np.float64]]
 
 @type_check_only
 class _TestResult(NamedTuple, Generic[_NDT_co]):
@@ -798,6 +797,7 @@ def ansari(
     alternative: Alternative = "two-sided",
     *,
     axis: None,
+    method: _AnsariMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
 ) -> AnsariResult[np.float64]: ...
@@ -808,6 +808,7 @@ def ansari(
     alternative: Alternative = "two-sided",
     *,
     axis: SupportsIndex | None = 0,
+    method: _AnsariMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> AnsariResult[onp.ArrayND[np.float64]]: ...
@@ -818,6 +819,7 @@ def ansari(
     alternative: Alternative = "two-sided",
     *,
     axis: SupportsIndex | None = 0,
+    method: _AnsariMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> AnsariResult: ...

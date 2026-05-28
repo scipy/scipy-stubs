@@ -96,6 +96,7 @@ def ansari(
     alternative: object = "two-sided",
     *,
     axis: object = 0,
+    method: str = "auto",
     nan_policy: object = "propagate",
     keepdims: object = False,
 ) -> object: ...

@@ -22,12 +22,10 @@ scipy\.stats\.(_new_distributions\.)?Normal\.__new__
 
 scipy.stats._bws_test.bws_test
 
-scipy.stats._morestats.ansari
 scipy.stats._morestats.boxcox
 scipy.stats._morestats.boxcox_normmax
 scipy.stats._morestats.yeojohnson
 scipy.stats._morestats.yeojohnson_normmax
-scipy.stats.morestats.ansari
 scipy.stats.morestats.boxcox
 scipy.stats.morestats.boxcox_normmax
 scipy.stats.morestats.yeojohnson
