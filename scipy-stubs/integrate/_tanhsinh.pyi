@@ -1,7 +1,6 @@
 from _typeshed import Unused
 from collections.abc import Callable, Mapping
-from typing import Any, Concatenate, Final, Generic, Literal, TypedDict, overload, type_check_only
-from typing_extensions import TypeVar
+from typing import Any, Concatenate, Final, Literal, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -19,22 +18,16 @@ type _Integrand[InT, ScalarT: np.generic] = Callable[Concatenate[InT, ...], onp.
 type _IntegrandReal = _Integrand[onp.ArrayND[np.float64], npc.floating]
 type _IntegrandComplex = _Integrand[onp.ArrayND[np.float64] | onp.ArrayND[np.complex128], npc.complexfloating]
 
-_ResultT_co = TypeVar("_ResultT_co", covariant=True)
-_SuccessT_co = TypeVar("_SuccessT_co", covariant=True)
-_StatusT_co = TypeVar("_StatusT_co", covariant=True)
-_MaxLevelT_co = TypeVar("_MaxLevelT_co", covariant=True)
-
 @type_check_only
-class _TanhSinhResult(
-    _RichResult[_ResultT_co | _SuccessT_co | _StatusT_co | _MaxLevelT_co],
-    Generic[_ResultT_co, _SuccessT_co, _StatusT_co, _MaxLevelT_co],
+class _TanhSinhResult[ResultT_co, SuccessT_co, StatusT_co, MaxLevelT_co](
+    _RichResult[ResultT_co | SuccessT_co | StatusT_co | MaxLevelT_co]
 ):
-    integral: _ResultT_co
-    error: _ResultT_co
-    success: _SuccessT_co
-    status: _StatusT_co
-    nfev: _StatusT_co
-    maxlevel: _MaxLevelT_co
+    integral: ResultT_co
+    error: ResultT_co
+    success: SuccessT_co
+    status: StatusT_co
+    nfev: StatusT_co
+    maxlevel: MaxLevelT_co
 
 type _TanhSinhResult0[ScalarT: np.generic] = _TanhSinhResult[ScalarT, np.bool, np.int32, np.int64]
 type _TanhSinhResultN[ScalarT: np.generic] = _TanhSinhResult[

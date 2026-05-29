@@ -1,12 +1,11 @@
 import abc
 import re
-from typing import Final, Generic, Literal, Self, TypeAlias, TypeVar, type_check_only
+from typing import Final, Literal, Self, TypeAlias, type_check_only
 
 import optype.numpy as onp
 
 __all__ = ["BadFortranFormat", "ExpFormat", "FortranFormatParser", "IntFormat"]
 
-_NumberT = TypeVar("_NumberT", int, float)
 _TokenType: TypeAlias = Literal["INT", "INT_ID", "EXP_ID", "DOT", "LPAR", "RPAR"]
 
 TOKENS: Final[dict[_TokenType, str]]
@@ -14,7 +13,7 @@ TOKENS: Final[dict[_TokenType, str]]
 class BadFortranFormat(SyntaxError): ...
 
 @type_check_only
-class _NumberFormat(Generic[_NumberT], metaclass=abc.ABCMeta):
+class _NumberFormat[NumberT: (int, float)](metaclass=abc.ABCMeta):
     width: Final[int]
     repeat: Final[int | None]
     min: Final[int | None]
@@ -23,7 +22,7 @@ class _NumberFormat(Generic[_NumberT], metaclass=abc.ABCMeta):
     @property
     def python_format(self, /) -> str: ...
     @classmethod
-    def from_number(cls, n: _NumberT, min: int | None = None) -> Self: ...
+    def from_number(cls, n: NumberT, min: int | None = None) -> Self: ...
 
 class IntFormat(_NumberFormat[int]):
     def __init__(self, /, width: int, min: int | None = None, repeat: int | None = None) -> None: ...

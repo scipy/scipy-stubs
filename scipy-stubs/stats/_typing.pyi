@@ -50,7 +50,7 @@ class BunchMixin(Generic[_TupleT_co]):
     def _asdict(self: BunchMixin[tuple[_ValueT, ...]], /) -> dict[str, _ValueT]: ...
 
 @type_check_only
-class BaseBunch(tuple[*_Ts], BunchMixin[tuple[*_Ts]], Generic[*_Ts]):
+class BaseBunch(tuple[*_Ts], BunchMixin[tuple[*_Ts]]):
     @abc.abstractmethod
     def __new__(_cls) -> Self: ...
     @abc.abstractmethod
