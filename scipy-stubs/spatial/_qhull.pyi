@@ -1,5 +1,5 @@
 from typing import Never, Protocol, final, overload, type_check_only
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype.numpy as onp
@@ -248,14 +248,18 @@ class HalfspaceIntersection(_QhullUser):
     ) -> None: ...
     def add_halfspaces(self, /, halfspaces: onp.ToFloat2D, restart: bool = False) -> None: ...
 
-# same as `tri.find_simplex(xi)`
 @overload
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
 def tsearch(tri: Delaunay, xi: _ToArrayStrictND) -> onp.ArrayND[np.int32]: ...
 @overload
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatStrict1D) -> onp.Array0D[np.int32]: ...
 @overload
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatStrict2D) -> onp.Array1D[np.int32]: ...
 @overload
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatStrict3D) -> onp.Array2D[np.int32]: ...
 @overload
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatND) -> onp.ArrayND[np.int32]: ...

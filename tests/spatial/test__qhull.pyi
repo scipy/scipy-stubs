@@ -108,7 +108,7 @@ assert_type(_hsi.dual_vertices, onp.Array1D[np.int32])
 ###
 # tsearch
 
-assert_type(tsearch(_tri, _f64_1d), onp.Array0D[np.int32])
-assert_type(tsearch(_tri, _f64_2d), onp.Array1D[np.int32])
-assert_type(tsearch(_tri, _f64_3d), onp.Array2D[np.int32])
-assert_type(tsearch(_tri, _f64_nd), onp.ArrayND[np.int32])
+assert_type(tsearch(_tri, _f64_1d), onp.Array0D[np.int32])  # pyright: ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(tsearch(_tri, _f64_2d), onp.Array1D[np.int32])  # pyright: ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(tsearch(_tri, _f64_3d), onp.Array2D[np.int32])  # pyright: ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(tsearch(_tri, _f64_nd), onp.ArrayND[np.int32])  # pyright: ignore[reportDeprecated] # pyrefly:ignore[deprecated]
