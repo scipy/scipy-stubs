@@ -135,17 +135,17 @@ assert_type(_tree.sparse_distance_matrix(_tree, max_distance=1.0, output_type="n
 ###
 # minkowski_distance_p
 
-assert_type(minkowski_distance_p(_f64_1d, _f64_1d), onp.ArrayND[np.float64])
-assert_type(minkowski_distance_p(_c128_1d, _c128_1d), onp.ArrayND[np.float64 | np.complex128])
+assert_type(minkowski_distance_p(_f64_1d, _f64_1d), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(minkowski_distance_p(_c128_1d, _c128_1d), onp.ArrayND[np.float64 | np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # minkowski_distance
 
-assert_type(minkowski_distance(_f64_1d, _f64_1d), onp.ArrayND[np.float64])
-assert_type(minkowski_distance(_c128_1d, _c128_1d), onp.ArrayND[np.float64 | np.complex128])
+assert_type(minkowski_distance(_f64_1d, _f64_1d), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(minkowski_distance(_c128_1d, _c128_1d), onp.ArrayND[np.float64 | np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # distance_matrix
 
-assert_type(distance_matrix(_f64_2d, _f64_2d), onp.Array2D[np.float64])
-assert_type(distance_matrix(_c128_2d, _c128_2d), onp.Array2D[np.float64 | np.complex128])
+assert_type(distance_matrix(_f64_2d, _f64_2d), onp.Array2D[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(distance_matrix(_c128_2d, _c128_2d), onp.Array2D[np.float64 | np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
