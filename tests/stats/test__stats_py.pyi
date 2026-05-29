@@ -918,7 +918,17 @@ assert_type(relfreq(_f64_1d), RelfreqResult)
 
 # obrientransform
 
-assert_type(obrientransform(_f64_1d, _f64_1d), onp.Array2D[np.float64] | onp.Array1D[np.object_])
+assert_type(obrientransform(), tuple[()])
+assert_type(obrientransform(_f64_1d), tuple[onp.ArrayND[np.float64]])
+assert_type(obrientransform(_f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(
+    obrientransform(_f64_1d, _f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+)
+assert_type(
+    obrientransform(_f64_1d, _f64_1d, _f64_1d, _f64_1d),
+    tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
+)
+assert_type(obrientransform(_f64_1d, _f64_1d, _f64_1d, _f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], ...])
 
 # sigmaclip
 
