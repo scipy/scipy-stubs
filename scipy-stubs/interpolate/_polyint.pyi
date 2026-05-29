@@ -2,7 +2,7 @@ import types
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from typing import Any, ClassVar, Final, Generic, Protocol, Self, SupportsIndex, final, overload, override, type_check_only
-from typing_extensions import TypeIs, TypeVar
+from typing_extensions import TypeIs, TypeVar, deprecated
 
 import numpy as np
 import optype.numpy as onp
@@ -235,6 +235,7 @@ def krogh_interpolate(
 ) -> onp.ArrayND[np.float64 | np.complex128]: ...
 
 #
+@deprecated("This function is deprecated and will be removed in SciPy 1.20.0.")
 def approximate_taylor_polynomial(
     f: Callable[[onp.Array1D[np.float64]], onp.ToComplexND] | np.ufunc,
     x: onp.ToFloat,
