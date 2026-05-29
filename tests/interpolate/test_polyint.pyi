@@ -78,4 +78,4 @@ assert_type(bary_c_f32.derivatives(0), np.ndarray[tuple[Any, ...], np.dtype[np.c
 ###
 # approximate_taylor_polynomial
 
-assert_type(approximate_taylor_polynomial(np.sin, 0.0, 3, 1.0), np.poly1d)
+assert_type(approximate_taylor_polynomial(np.sin, 0.0, 3, 1.0), np.poly1d)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]

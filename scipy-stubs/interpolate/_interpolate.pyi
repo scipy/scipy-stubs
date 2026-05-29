@@ -20,7 +20,7 @@ type _Extrapolate = Literal["periodic"] | bool
 type _Interp1dKind = Literal["linear", "nearest", "nearest-up", "zero", "slinear", "quadratic", "cubic", "previous", "next"]
 type _Interp1dFillValue = onp.ToFloat | onp.ToFloatND | tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND]
 
-type _Array2ND[_NumberT: npc.number] = onp.Array[tuple[int, int, *tuple[Any, ...]], _NumberT]
+type _Array2ND[NumberT: npc.number] = onp.Array[tuple[int, int, *tuple[Any, ...]], NumberT]
 
 ###
 
@@ -249,4 +249,7 @@ class NdPPoly(Generic[_CT_co]):
     ) -> onp.ArrayND[_CT_co]: ...
 
 #
+@deprecated(
+    "This function is deprecated and will be removed in SciPy 1.20.0. Use `scipy.interpolate.BarycentricInterpolator` instead."
+)
 def lagrange(x: onp.ToComplex1D, w: onp.ToComplex1D) -> np.poly1d: ...
