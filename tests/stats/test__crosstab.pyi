@@ -3,7 +3,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.sparse import coo_matrix
+from scipy.sparse import coo_array
 from scipy.stats.contingency import crosstab
 
 ###
@@ -32,4 +32,4 @@ assert_type(crosstab(_list_bytes, _list_bytes).elements, _Tuple1N[onp.Array1D[np
 assert_type(crosstab(_list_str, _list_str).elements, _Tuple1N[onp.Array1D[np.str_]])
 
 assert_type(crosstab(_f64_2d, _f64_2d).count, onp.ArrayND[np.intp])
-assert_type(crosstab(_f64_2d, _f64_2d, sparse=True).count, coo_matrix[np.intp])
+assert_type(crosstab(_f64_2d, _f64_2d, sparse=True).count, coo_array[np.intp])
