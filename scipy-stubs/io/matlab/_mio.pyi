@@ -1,10 +1,12 @@
 from collections.abc import Mapping
-from typing import Any, Literal, TypedDict, Unpack, type_check_only
+from typing import Any, Literal, TypedDict, Unpack, overload, type_check_only
+from typing_extensions import deprecated
 
 import optype as op
 
 from ._miobase import MatFileReader
 from scipy.io._typing import ByteOrder, FileName
+from scipy.sparse import coo_array, coo_matrix, csc_array, csc_matrix
 
 __all__ = ["loadmat", "savemat", "whosmat"]
 
@@ -50,14 +52,34 @@ def mat_reader_factory(
 ) -> tuple[MatFileReader, bool]: ...
 
 #
+@overload
+@deprecated("The default value for `spmatrix` is changing to False in v1.20.")
 def loadmat(
     file_name: FileName,
     mdict: Mapping[str, object] | None = None,
     appendmat: bool = True,
     *,
-    spmatrix: bool | _NoValueType = ...,
+    spmatrix: _NoValueType = ...,
     **kwargs: Unpack[_ReaderKwargs],
-) -> dict[str, Any]: ...
+) -> dict[str, csc_matrix[Any] | coo_matrix[Any]]: ...
+@overload
+def loadmat(
+    file_name: FileName,
+    mdict: Mapping[str, object] | None = None,
+    appendmat: bool = True,
+    *,
+    spmatrix: Literal[True],
+    **kwargs: Unpack[_ReaderKwargs],
+) -> dict[str, csc_matrix[Any] | coo_matrix[Any]]: ...
+@overload
+def loadmat(
+    file_name: FileName,
+    mdict: Mapping[str, object] | None = None,
+    appendmat: bool = True,
+    *,
+    spmatrix: Literal[False],
+    **kwargs: Unpack[_ReaderKwargs],
+) -> dict[str, csc_array[Any] | coo_array[Any, tuple[int, int]]]: ...
 
 #
 def savemat(
