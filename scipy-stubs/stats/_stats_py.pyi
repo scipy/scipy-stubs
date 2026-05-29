@@ -2974,9 +2974,24 @@ def relfreq(
 ) -> RelfreqResult: ...
 
 #
+@overload
+def obrientransform(*, nan_policy: NanPolicy = "propagate") -> tuple[()]: ...
+@overload
+def obrientransform(x0: onp.ToFloatND, /, *, nan_policy: NanPolicy = "propagate") -> tuple[onp.ArrayND[np.float64]]: ...
+@overload
 def obrientransform(
-    *samples: onp.ToFloatND, nan_policy: NanPolicy = "propagate"
-) -> onp.Array2D[np.float64] | onp.Array1D[np.object_]: ...
+    x0: onp.ToFloatND, x1: onp.ToFloatND, /, *, nan_policy: NanPolicy = "propagate"
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload
+def obrientransform(
+    x0: onp.ToFloatND, x1: onp.ToFloatND, x2: onp.ToFloatND, /, *, nan_policy: NanPolicy = "propagate"
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload
+def obrientransform(
+    x0: onp.ToFloatND, x1: onp.ToFloatND, x2: onp.ToFloatND, x3: onp.ToFloatND, /, *, nan_policy: NanPolicy = "propagate"
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload
+def obrientransform(*samples: onp.ToFloatND, nan_policy: NanPolicy = "propagate") -> tuple[onp.ArrayND[np.float64], ...]: ...
 
 #
 @overload  # 1d ~inexact64 | +integer, keepdims=False (default)
