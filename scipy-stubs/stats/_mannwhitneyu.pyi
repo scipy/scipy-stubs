@@ -36,6 +36,8 @@ class MannwhitneyuResult(tuple[_StatisticT_co, _PValueT_co], Generic[_StatisticT
     @property
     def pvalue(self) -> _PValueT_co: ...
 
+    zstatistic: _StatisticT_co
+
     #
     def __getnewargs_ex__(self) -> tuple[tuple[_StatisticT_co, _PValueT_co], dict[str, Never]]: ...
 
