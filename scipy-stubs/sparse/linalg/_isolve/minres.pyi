@@ -17,6 +17,9 @@ type _ToLinearOperator[ScalarT: npc.number | np.bool] = onp.CanArrayND[ScalarT] 
 
 ###
 
+# mypy false positive (I'm guessing related to the unions in the next overload)
+# mypy: disable-error-code=overload-overlap
+
 @overload  # f64
 def minres(
     A: _ToLinearOperator[npc.floating64 | npc.integer],
