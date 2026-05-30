@@ -5,6 +5,7 @@ from typing import Any, ClassVar, Final, Generic, Protocol, Self, SupportsIndex,
 from typing_extensions import TypeVar
 
 import numpy as np
+import numpy_typing_compat as nptc
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -40,7 +41,7 @@ class _HasShapeAndMatVec(Protocol[_SCT_co, _ShapeT_co]):
 
     #
     @overload
-    def matvec(self, /, x: onp.CanArrayND[np.float64]) -> onp.CanArrayND[_SCT_co]: ...
+    def matvec(self, /, x: onp.CanArrayND[np.float64]) -> onp.ArrayND[_SCT_co]: ...
     @overload
     def matvec(self, /, x: onp.CanArrayND[np.complex128]) -> onp.ToComplexND: ...
 
@@ -52,7 +53,7 @@ class _HasShapeAndDTypeAndMatVec(Protocol[_SCT_co, _ShapeT_co]):
     def shape(self, /) -> _ShapeT_co: ...
 
     #
-    def matvec(self, /, x: onp.CanArrayND[np.float64 | np.complex128]) -> onp.ToComplexND: ...
+    def matvec(self, /, x: onp.CanArrayND[np.float64] | onp.CanArrayND[np.complex128]) -> onp.ToComplexND: ...
 
 ###
 
@@ -643,7 +644,7 @@ class IdentityOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _Sh
 #
 @overload
 def aslinearoperator[InexactT: npc.inexact, ShapeT: _Shape](
-    A: onp.CanArrayND[InexactT, ShapeT],
+    A: nptc.CanArray[ShapeT, np.dtype[InexactT]],
 ) -> MatrixLinearOperator[InexactT, ShapeT]: ...
 @overload
 def aslinearoperator[InexactT: npc.inexact, ShapeT: _Shape](

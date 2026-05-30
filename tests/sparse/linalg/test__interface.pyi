@@ -27,7 +27,7 @@ _sp_f64: csr_array[np.float64]
 _sp_c128: csr_array[np.complex128]
 
 ###
-#
+# LinearOperator.__new__
 
 def mv(v: npt.NDArray[np.float64 | np.complex128]) -> npt.NDArray[np.float64 | np.complex128]: ...
 
