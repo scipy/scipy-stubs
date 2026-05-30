@@ -22,9 +22,14 @@ type _Graph[RealT: _Real] = onp.CanArrayND[RealT] | _spbase[RealT, tuple[int, in
 DTYPE: Final[type[np.float64]] = ...
 ITYPE: Final[type[np.int32]] = ...
 
+@overload
 def connected_components(
-    csgraph: _ToGraph, directed: bool = True, connection: Literal["weak", "strong"] = "weak", return_labels: bool = True
+    csgraph: _ToGraph, directed: bool = True, connection: Literal["weak", "strong"] = "weak", return_labels: Literal[True] = True
 ) -> tuple[int, _Int1D]: ...
+@overload
+def connected_components(
+    csgraph: _ToGraph, directed: bool = True, connection: Literal["weak", "strong"] = "weak", *, return_labels: Literal[False]
+) -> int: ...
 
 #
 @overload
