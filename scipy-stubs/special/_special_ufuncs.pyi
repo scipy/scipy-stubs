@@ -130,6 +130,7 @@ from ._ufuncs import (
     zetac as zetac,
 )
 
+_bivariate_normal_cdf: Final[np.ufunc] = ...  # undocumented  (fff->f & ddd->d)
 _cospi: Final[np.ufunc] = ...  # undocumented
 _iv_ratio: Final[np.ufunc] = ...  # undocumented
 _iv_ratio_c: Final[np.ufunc] = ...  # undocumented
