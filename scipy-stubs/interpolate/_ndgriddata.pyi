@@ -6,7 +6,7 @@ import numpy as np
 import optype.numpy as onp
 
 from ._interpnd import CloughTocher2DInterpolator, LinearNDInterpolator, NDInterpolatorBase
-from scipy.spatial._ckdtree import cKDTree
+from scipy.spatial import KDTree
 
 __all__ = ["CloughTocher2DInterpolator", "LinearNDInterpolator", "NearestNDInterpolator", "griddata"]
 
@@ -36,7 +36,7 @@ class _QueryOptions(TypedDict, total=False):
 ###
 
 class NearestNDInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
-    tree: cKDTree
+    tree: KDTree
 
     #
     @overload
