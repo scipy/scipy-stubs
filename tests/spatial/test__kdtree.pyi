@@ -5,7 +5,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.sparse import coo_matrix, dok_matrix
+from scipy.sparse import coo_array, coo_matrix, dok_array, dok_matrix
 from scipy.spatial import KDTree, Rectangle, cKDTree, distance_matrix, minkowski_distance, minkowski_distance_p
 
 ###
@@ -60,7 +60,10 @@ assert_type(_ctree.count_neighbors(_ctree, _f64_1d, weights=(_f64_1d, _f64_1d)),
 # cKDTree.sparse_distance_matrix
 
 assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0), dok_matrix[np.float64])
+assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="dok_matrix"), dok_matrix[np.float64])
+assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="dok_array"), dok_array[np.float64])
 assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="coo_matrix"), coo_matrix[np.float64])
+assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="coo_array"), coo_array[np.float64, tuple[int, int]])
 assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="dict"), dict[tuple[int, int], float])
 assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="ndarray"), onp.ArrayND[np.void])
 
