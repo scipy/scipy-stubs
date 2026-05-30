@@ -113,7 +113,7 @@ executor.type = "uv"
 
 [tool.typos]
 files = { extend-exclude = ["*.pyi", ".mypyignore"] }
-default = { extend-ignore-identifiers-re = ['ND|Nd|Theis|TtestResult|SeQUeNCe'] }
+default = { extend-ignore-identifiers-re = ['ND|Nd|Theis|TtestResult|SeQUeNCe|whos'] }
 
 # mypy
 
