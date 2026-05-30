@@ -1,6 +1,6 @@
 from _typeshed import Incomplete
 from collections.abc import Iterable, Iterator, Sequence
-from typing import Literal as L, Protocol, SupportsIndex, TypeVar, overload, type_check_only
+from typing import Final, Literal as L, Protocol, SupportsIndex, TypeVar, overload, type_check_only
 
 import numpy as np
 import numpy.typing as npt
@@ -197,6 +197,9 @@ class _FortranFunction(Protocol):
     def __call__(self, /, *args: object, **kwargs: object) -> Incomplete: ...
 
 ###
+
+HAS_LP64: Final[bool] = ...
+HAS_ILP64: Final[bool] = ...
 
 # see `scipy.linalg.blas._type_conv`
 def find_best_blas_type(
