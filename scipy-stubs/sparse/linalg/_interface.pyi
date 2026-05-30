@@ -282,7 +282,7 @@ class LinearOperator(Generic[_SCT_co, _ShapeT_co]):
     #
     @overload
     def __matmul__[SCT: _Scalar, ShapeT: _Shape](
-        self, /, x: LinearOperator[SCT, _Shape]
+        self, /, x: LinearOperator[SCT, ShapeT]
     ) -> _ProductLinearOperator[_SCT_co, SCT, ShapeT]: ...
     @overload
     def __matmul__(self, /, x: onp.ToFloatND) -> onp.ArrayND[_SCT_co]: ...
