@@ -4,7 +4,7 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 
-from scipy.sparse import coo_matrix, dok_matrix
+from scipy.sparse import coo_array, coo_matrix, dok_array, dok_matrix
 
 __all__ = ["cKDTree"]
 
@@ -323,8 +323,16 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     ) -> dok_matrix[np.float64]: ...
     @overload
     def sparse_distance_matrix(
+        self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["dok_array"]
+    ) -> dok_array[np.float64]: ...
+    @overload
+    def sparse_distance_matrix(
         self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["coo_matrix"]
     ) -> coo_matrix[np.float64]: ...
+    @overload
+    def sparse_distance_matrix(
+        self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["coo_array"]
+    ) -> coo_array[np.float64, tuple[int, int]]: ...
     @overload
     def sparse_distance_matrix(
         self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["dict"]
