@@ -1,6 +1,6 @@
 # scipy-stubs
 
-Reliable type annotations for <a href="https://github.com/scipy/scipy">SciPy</a>
+**The official type stubs for [SciPy](https://github.com/scipy/scipy).**
 
 [![GitHub License](https://img.shields.io/github/license/scipy/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d)](https://github.com/scipy/scipy-stubs)
 [![PyPI Version](https://img.shields.io/pypi/v/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d)](https://pypi.org/project/scipy-stubs)
@@ -8,32 +8,18 @@ Reliable type annotations for <a href="https://github.com/scipy/scipy">SciPy</a>
 [![Python Versions](https://img.shields.io/pypi/pyversions/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d)](https://github.com/scipy/scipy-stubs)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d&cacheSeconds=86400)](https://pypi.org/project/scipy-stubs)
 
+> Used by [Pandas](https://github.com/pandas-dev/pandas), [JAX](https://github.com/jax-ml/jax), [Apache Spark](https://github.com/apache/spark), [Astropy](https://github.com/astropy/astropy), [Ultralytics](https://github.com/ultralytics/ultralytics), [Altair](https://github.com/vega/altair), and [many other projects](#whos-using-scipy-stubs).
+
 ## Features
 
-### Enhanced Development Experience
+- **Complete coverage**: the entire public SciPy API is annotated.
+- **Shape- and dtype-aware**: array shapes and dtypes are tracked where applicable.
+- **Generics**: subscriptable types for sparse arrays, distributions, splines, and linear operators.
+- **No configuration**: works on install, affects type checking only, with no runtime impact.
+- **Broad checker support**: tested against mypy, pyright, basedpyright, pyrefly, and ty.
+- **Thoroughly tested**: `stubtest` against the runtime, [`assert_type` tests][TYPETESTS] for inference, and [mypy_primer][PRIMER] for regressions.
 
-- **Better IDE support**: Get accurate autocompletion, parameter hints, and return type information
-- **Catch errors early**: Type checkers can detect mistakes before runtime
-- **Improved code documentation**: Type hints serve as inline documentation for function signatures
-
-### Zero Configuration Required
-
-- **Drop-in replacement**: Works immediately after installation, no configuration needed
-- **No runtime impact**: Type stubs are only used during development and type checking
-- **IDE agnostic**: Works with VSCode, PyCharm, Vim, Emacs, and any editor with Python language server support
-
-### Precise and Complete
-
-- **Array shape awareness**: Many functions include shape-type information for better array handling
-- **Generic types**: Comprehensive generic classes for sparse arrays, distributions, linear operators, and more
-- **Complete coverage**: Type annotations are provided for the entire SciPy API
-
-### Thoroughly Tested and Reliable
-
-- **stubtest validation**: Ensures all type annotations match the actual SciPy runtime behavior
-- **Comprehensive type-tests**: Validates type checker behavior with real-world usage patterns
-- **Regression testing**: Uses [mypy_primer][PRIMER] to test against popular open-source projects, preventing breaking changes
-
+[TYPETESTS]: https://github.com/scipy/scipy-stubs/tree/master/tests
 [PRIMER]: https://github.com/hauntsaninja/mypy_primer
 
 ## Examples
@@ -186,6 +172,9 @@ This can be worked around with `from __future__ import annotations` or by manual
 We are working on improving this in future versions of SciPy.
 See the `scipy` columns below for which classes are subscriptable at runtime.
 
+<details>
+<summary><b>Browse all generic types by module</b></summary>
+
 ### `scipy.integrate`
 
 | generic type                  | `scipy-stubs` | `scipy`  |                                                                                               |
@@ -299,6 +288,8 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | generic type                           | `scipy-stubs` | `scipy` |                                                                                                |
 | -------------------------------------- | ------------- | ------- | ---------------------------------------------------------------------------------------------- |
 | `Chi2ContingencyResult[S: (int, ...)]` | `>=1.17.1.2`  | `*`     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html) |
+
+</details>
 
 ## Contributing
 
