@@ -149,7 +149,7 @@ type _RVC1 = Literal[
     "weibull_min",
     "wrapcauchy",
 ]
-type _AnsariMethod = Literal["auto", "asymptotic", "exact"]
+type _AnsariMethod = Literal["auto", "asymptotic", "exact"] | PermutationMethod
 
 type _ObjFun1D = Callable[[float], float | npc.floating]
 type _MinFun1D = Callable[[_ObjFun1D], _HasX] | Callable[[_ObjFun1D], OptimizeResult]
