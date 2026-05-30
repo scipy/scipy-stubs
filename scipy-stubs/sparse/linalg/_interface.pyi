@@ -521,7 +521,7 @@ class _ScaledLinearOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co
 
     #
     @overload
-    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], alpha: _SCT_co | complex, xp: ModuleType | None = None) -> Self: ...
+    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], alpha: _SCT_co | complex, xp: ModuleType | None = None) -> Self: ...  # type:ignore[overload-overlap]
     @overload
     def __new__[ShapeT: _Shape](
         cls, A: LinearOperator[npc.floating, ShapeT], alpha: onp.ToFloat64, xp: ModuleType | None = None
