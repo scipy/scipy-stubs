@@ -1,57 +1,45 @@
 # Copilot Instructions for scipy-stubs
 
+See [`CONTRIBUTING.md`](../CONTRIBUTING.md) for environment setup, the full check suite
+(`tox`), the `lefthook` git hooks (which lint and format on commit), markdown formatting
+(`dprint`), code style, and commit-message conventions. The notes below only cover
+what's specific to writing the stubs and running individual checks.
+
 ## Type annotations
 
-Use `A | B` instead of `Union[A, B]`.
 Use `*Ts` instead of `Unpack[Ts]`.
-Use `type[T]` and `list[T]` instead of `Type[T]` and `List[T]`.
-Import `Sequence`, `Mapping`, `Iterable`, `Iterator`, `Generator`, and `Callable` from
-`collections.abc` instead of `typing`.
 The `typing_extensions` module is used for type annotations that are not yet available
-in the standard library, which is needed for `T = TypeAlias("T", default=...)`,
-`Alias = TypeAliasType("Alias", ...)`, `@deprecated`, etc.
-
-## Environment Setup
-
-We use UV to manage the project dependencies. To install the dependencies, run:
-
-```bash
-uv install
-```
+in the standard library, which is needed for `T = TypeVar("T", default=...)`,
+`@deprecated`, etc.
 
 ## Linting and formatting
 
-For linting, we use `ruff`. To run the linter, execute:
-
 ```bash
-uv run ruff check --fix
+uv run ruff check   # lint
+uv run ruff format  # format
 ```
-
-To format the code, we use `black`. To format the code, execute:
-
-```bash
-uv run ruff format
-```
-
-Be sure to format the code before committing any changes.
-
-Lines can be 130 characters long in `*.pyi` stubs.
 
 ## Static Type Checking
 
-Static type checking of `scipy-stubs`, and its type-tests, is performed using
-`basedpyright` and `mypy`. To run these checks, execute the following commands:
+Static type checking is performed with four type-checkers: `basedpyright`, `mypy`,
+`pyrefly`, and `ty`. The stubs are checked by all four; the type-tests by all except
+`ty` (which runs on the stubs only).
+
+To check the stubs, run:
 
 ```bash
-uv run basedpyright
-uv run --no-editable mypy .
+uv run basedpyright scipy-stubs
+uv run --no-editable mypy scipy-stubs
+uv run pyrefly check scipy-stubs
+uv run ty check scipy-stubs
 ```
 
-If only the tests should be checked, you can run:
+To check the type-tests instead, run:
 
 ```bash
 uv run basedpyright tests
 uv run --no-editable mypy tests
+uv run pyrefly check tests
 ```
 
 Note that the errors reported by the vscode mypy plugin can take a long time to update.
@@ -67,11 +55,3 @@ poe stubtest
 
 If `poe` is not available, then you can find the full stubtest command under the
 `[tool.poe.tasks.stubtest]` section in the `pyproject.toml` at the root of the project.
-
-## Tox
-
-If you want to run all checks in parallel and with multiple Python versions, run:
-
-```bash
-uvx tox p
-```
