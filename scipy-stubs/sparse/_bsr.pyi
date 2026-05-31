@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Any, ClassVar, Generic, Literal, Never, overload, override, type_check_only
+from typing import Any, ClassVar, Generic, Literal, Never, SupportsIndex, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -69,6 +69,13 @@ class _bsr_base(_cs_matrix[_ScalarT_co, tuple[int, int]], _minmax_mixin[_ScalarT
     @override
     # pyrefly: ignore [bad-override]
     def __setitem__(self, key: Never, val: object, /) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+
+    #
+    @override
+    @overload
+    def count_nonzero(self, /, axis: None = None) -> np.intp: ...
+    @overload
+    def count_nonzero(self, /, axis: SupportsIndex) -> onp.Array1D[np.intp]: ...
 
 class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     # NOTE: These four methods do not exist at runtime.
