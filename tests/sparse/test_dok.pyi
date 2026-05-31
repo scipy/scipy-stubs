@@ -1,6 +1,7 @@
 from typing import Literal, assert_type
 
 import numpy as np
+import optype.numpy as onp
 
 from ._types import ScalarType, dok_arr, dok_mat, dok_vec
 from scipy.sparse import dok_array, dok_matrix
@@ -71,16 +72,13 @@ assert_type(dok_arr.ndim, Literal[1, 2])
 assert_type(dok_mat.ndim, Literal[2])
 
 # .count_nonzero() (defined in `_dok_base`), so no need to check for `dok_matrix`
-assert_type(dok_vec.count_nonzero(), int)
-assert_type(dok_arr.count_nonzero(), int)
-# pyrefly: ignore [bad-argument-type]
-dok_vec.count_nonzero(0)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
-# pyrefly: ignore [bad-argument-type]
-dok_arr.count_nonzero(0)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
-# pyrefly: ignore [bad-argument-type]
+assert_type(dok_vec.count_nonzero(), np.intp)
+assert_type(dok_arr.count_nonzero(), np.intp)
+assert_type(dok_vec.count_nonzero(), np.intp)
+assert_type(dok_arr.count_nonzero(), np.intp)
+# pyrefly: ignore [no-matching-overload]
 dok_vec.count_nonzero(axis=0)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
-# pyrefly: ignore [bad-argument-type]
-dok_arr.count_nonzero(axis=0)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
+assert_type(dok_arr.count_nonzero(axis=0), onp.Array1D[np.intp])
 
 # .get()
 assert_type(dok_vec.get((0,)), ScalarType | float)

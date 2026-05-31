@@ -2,7 +2,7 @@
 # mypy: disable-error-code="misc, override"
 
 from collections.abc import Iterable, Sequence
-from typing import Any, ClassVar, Generic, Literal, Never, Self, overload, override, type_check_only
+from typing import Any, ClassVar, Generic, Literal, Never, Self, SupportsIndex, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -118,7 +118,10 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @override
-    def count_nonzero(self, /, axis: None = None) -> int: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
+    @overload
+    def count_nonzero(self, /, axis: None = None) -> np.intp: ...
+    @overload
+    def count_nonzero(self: _dok_base[Any, tuple[int, int]], /, axis: SupportsIndex) -> onp.Array1D[np.intp]: ...
 
     #
     @override
