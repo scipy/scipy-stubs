@@ -107,131 +107,155 @@ def cholesky_banded(
 @overload  # Nd +f64
 def cho_factor[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
     a: nptc.CanArray[Shape2T, np.dtype[_as_f64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.float64, Shape2T], bool]: ...
+) -> tuple[onp.ArrayND[np.float64, Shape2T], onp.ArrayND[np.bool]]: ...
 @overload  # Nd +f32
 def cho_factor[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: nptc.CanArray[Shape2T, np.dtype[_as_f32]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.float32, Shape2T], bool]: ...
+) -> tuple[onp.ArrayND[np.float32, Shape2T], onp.ArrayND[np.bool]]: ...
 @overload  # Nd +c128
 def cho_factor[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: nptc.CanArray[Shape2T, np.dtype[_as_c128]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.complex128, Shape2T], bool]: ...
+) -> tuple[onp.ArrayND[np.complex128, Shape2T], onp.ArrayND[np.bool]]: ...
 @overload  # Nd ~c64
 def cho_factor[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: nptc.CanArray[Shape2T, np.dtype[_as_c64]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.complex64, Shape2T], bool]: ...
+) -> tuple[onp.ArrayND[np.complex64, Shape2T], onp.ArrayND[np.bool]]: ...
 @overload  # Nd ~number
 def cho_factor[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: nptc.CanArray[Shape2T, np.dtype[npc.number]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[Any, Shape2T], bool]: ...
+) -> tuple[onp.ArrayND[Any, Shape2T], onp.ArrayND[np.bool]]: ...
 @overload  # 2d +f64
 def cho_factor(
     a: _Sequence2D[float], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.Array2D[np.float64], bool]: ...
+) -> tuple[onp.Array2D[np.float64], onp.ArrayND[np.bool]]: ...
 @overload  # 2d ~c128
 def cho_factor(
     a: Sequence[MutableSequence[complex]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.Array2D[np.complex128], bool]: ...
+) -> tuple[onp.Array2D[np.complex128], onp.ArrayND[np.bool]]: ...
 @overload  # ?d +f64
 def cho_factor(
     a: onp.SequenceND[_Sequence2D[float]], lower: bool = False, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.float64], bool]: ...
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.bool]]: ...
 @overload  # ?d ~c128
 def cho_factor(
     a: onp.SequenceND[Sequence[MutableSequence[complex]]],
     lower: bool = False,
     overwrite_a: bool = False,
     check_finite: bool = True,
-) -> tuple[onp.ArrayND[np.complex128], bool]: ...
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.bool]]: ...
 
 # keep in sync with `cho_solve_banded` and `lu_solve` in `_decomp_lu`
 @overload  # ?d +f64\+f32, ?d +f64
 def cho_solve(  # type: ignore[overload-overlap]
-    c_and_lower: tuple[onp.ToArrayND[float, _as_f64], bool],
+    c_and_lower: tuple[onp.ToArrayND[float, _as_f64], onp.ToBool | onp.ToBoolND],
     b: onp.ToFloatND,
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # ?d +f64, ?d +f64\+f32
 def cho_solve(  # type: ignore[overload-overlap]
-    c_and_lower: tuple[onp.ToFloatND, bool],
+    c_and_lower: tuple[onp.ToFloatND, onp.ToBool | onp.ToBoolND],
     b: onp.ToArrayND[float, _as_f64],
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # ?d +f32, ?d +f32
 def cho_solve(
-    c_and_lower: tuple[onp.ToFloat32_ND, bool], b: onp.ToFloat32_ND, overwrite_b: bool = False, check_finite: bool = True
+    c_and_lower: tuple[onp.ToFloat32_ND, onp.ToBool | onp.ToBoolND],
+    b: onp.ToFloat32_ND,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # ?d ~c128|c160, ?d +c128
 def cho_solve(
-    c_and_lower: tuple[onp.ToJustComplex128_ND | onp.ToJustCLongDoubleND, bool],
+    c_and_lower: tuple[onp.ToJustComplex128_ND | onp.ToJustCLongDoubleND, onp.ToBool | onp.ToBoolND],
     b: onp.ToComplexND,
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ?d +c128, ?d ~c128|c160
 def cho_solve(
-    c_and_lower: tuple[onp.ToComplexND, bool],
+    c_and_lower: tuple[onp.ToComplexND, onp.ToBool | onp.ToBoolND],
     b: onp.ToJustComplex128_ND | onp.ToJustCLongDoubleND,
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ?d ~c64, ?d +c64
 def cho_solve(
-    c_and_lower: tuple[onp.ToJustComplex64_ND, bool], b: onp.ToComplex64_ND, overwrite_b: bool = False, check_finite: bool = True
+    c_and_lower: tuple[onp.ToJustComplex64_ND, onp.ToBool | onp.ToBoolND],
+    b: onp.ToComplex64_ND,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> onp.ArrayND[np.complex64]: ...
 @overload  # ?d +c64, ?d ~c64
 def cho_solve(
-    c_and_lower: tuple[onp.ToComplex64_ND, bool], b: onp.ToJustComplex64_ND, overwrite_b: bool = False, check_finite: bool = True
+    c_and_lower: tuple[onp.ToComplex64_ND, onp.ToBool | onp.ToBoolND],
+    b: onp.ToJustComplex64_ND,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> onp.ArrayND[np.complex64]: ...
 @overload  # ?d +cfloating, ?d ~cfloating (fallback)
 def cho_solve(
-    c_and_lower: tuple[onp.ToComplexND, bool], b: onp.ToComplexND, overwrite_b: bool = False, check_finite: bool = True
+    c_and_lower: tuple[onp.ToComplexND, onp.ToBool | onp.ToBoolND],
+    b: onp.ToComplexND,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> onp.ArrayND[Any]: ...
 
 # keep in sync with `cho_solve`
 @overload  # ?d +f64\+f32, ?d +f64
 def cho_solve_banded(  # type: ignore[overload-overlap]
-    cb_and_lower: tuple[onp.ToArrayND[float, _as_f64], bool],
+    cb_and_lower: tuple[onp.ToArrayND[float, _as_f64], onp.ToBool | onp.ToBoolND],
     b: onp.ToFloatND,
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # ?d +f64, ?d +f64\+f32
 def cho_solve_banded(  # type: ignore[overload-overlap]
-    cb_and_lower: tuple[onp.ToFloatND, bool],
+    cb_and_lower: tuple[onp.ToFloatND, onp.ToBool | onp.ToBoolND],
     b: onp.ToArrayND[float, _as_f64],
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # ?d +f32, ?d +f32
 def cho_solve_banded(
-    cb_and_lower: tuple[onp.ToFloat32_ND, bool], b: onp.ToFloat32_ND, overwrite_b: bool = False, check_finite: bool = True
+    cb_and_lower: tuple[onp.ToFloat32_ND, onp.ToBool | onp.ToBoolND],
+    b: onp.ToFloat32_ND,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # ?d ~c128|c160, ?d +c128
 def cho_solve_banded(
-    cb_and_lower: tuple[onp.ToJustComplex128_ND | onp.ToJustCLongDoubleND, bool],
+    cb_and_lower: tuple[onp.ToJustComplex128_ND | onp.ToJustCLongDoubleND, onp.ToBool | onp.ToBoolND],
     b: onp.ToComplexND,
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ?d +c128, ?d ~c128|c160
 def cho_solve_banded(
-    cb_and_lower: tuple[onp.ToComplexND, bool],
+    cb_and_lower: tuple[onp.ToComplexND, onp.ToBool | onp.ToBoolND],
     b: onp.ToJustComplex128_ND | onp.ToJustCLongDoubleND,
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ?d ~c64, ?d +c64
 def cho_solve_banded(
-    cb_and_lower: tuple[onp.ToJustComplex64_ND, bool], b: onp.ToComplex64_ND, overwrite_b: bool = False, check_finite: bool = True
+    cb_and_lower: tuple[onp.ToJustComplex64_ND, onp.ToBool | onp.ToBoolND],
+    b: onp.ToComplex64_ND,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> onp.ArrayND[np.complex64]: ...
 @overload  # ?d +c64, ?d ~c64
 def cho_solve_banded(
-    cb_and_lower: tuple[onp.ToComplex64_ND, bool], b: onp.ToJustComplex64_ND, overwrite_b: bool = False, check_finite: bool = True
+    cb_and_lower: tuple[onp.ToComplex64_ND, onp.ToBool | onp.ToBoolND],
+    b: onp.ToJustComplex64_ND,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> onp.ArrayND[np.complex64]: ...
 @overload  # ?d +cfloating, ?d ~cfloating (fallback)
 def cho_solve_banded(
-    cb_and_lower: tuple[onp.ToComplexND, bool], b: onp.ToComplexND, overwrite_b: bool = False, check_finite: bool = True
+    cb_and_lower: tuple[onp.ToComplexND, onp.ToBool | onp.ToBoolND],
+    b: onp.ToComplexND,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
 ) -> onp.ArrayND[Any]: ...
