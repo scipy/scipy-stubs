@@ -7,7 +7,6 @@ import optype.numpy as onp
 
 from scipy.stats import BootstrapMethod, MonteCarloMethod, PermutationMethod, bootstrap, monte_carlo_test, permutation_test, power
 from scipy.stats._resampling import BootstrapResult, MonteCarloTestResult, PermutationTestResult, PowerResult
-from scipy.stats._sampling import RatioUniforms
 
 ###
 
@@ -87,10 +86,3 @@ assert_type(PermutationMethod(n_resamples=999), PermutationMethod)
 
 # power
 assert_type(power(_statistic_1d, np.random.standard_normal, [10, 20]), PowerResult[Any])
-
-# RationUniforms.rvs
-v = np.sqrt(np.exp(np.sqrt(2))) * np.sqrt(2)
-umax = np.sqrt(np.exp(0))
-gen = RatioUniforms(np.exp, umax=umax, vmin=-v, vmax=v)
-assert_type(gen.rvs(), onp.ArrayND[np.float64])
-assert_type(gen.rvs(size=1234), onp.ArrayND[np.float64])
