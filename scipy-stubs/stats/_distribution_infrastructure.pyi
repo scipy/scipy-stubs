@@ -27,7 +27,7 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from ._distn_infrastructure import rv_continuous
+from ._distn_infrastructure import rv_continuous, rv_discrete
 from ._probability_distribution import _LMomentMethod, _ProbabilityDistribution
 from ._qmc import QMCEngine
 
@@ -1872,10 +1872,16 @@ def log[DistT3: _Dist[_3D]](X: DistT3, /) -> MonotonicTransformedDistribution[Di
 @overload
 def log[DistT: _Dist[tuple[int, ...]]](X: DistT, /) -> MonotonicTransformedDistribution[DistT, _ND]: ...
 
-# NOTE: These currently don't support >0-d parameters, and it looks like they always return float64, regardless of dtype
-@type_check_only
-class CustomContinuousDistribution(ContinuousDistribution[np.float64, _0D]):
-    _dtype: np.dtype[_Float]  # ignored
+# TODO(@jorenham): Support for >0d parameters for these custom distributions
+# https://github.com/scipy/scipy-stubs/issues/1689
 
-# TODO(jorenham): support for `rv_discrete`
+@type_check_only
+class CustomContinuousDistribution(ContinuousDistribution[np.float64, _0D]): ...
+
+@type_check_only
+class CustomDiscreteDistribution(DiscreteDistribution[np.float64, _0D]): ...
+
+@overload
 def make_distribution(dist: rv_continuous | _DuckDistributionType) -> type[CustomContinuousDistribution]: ...
+@overload
+def make_distribution(dist: rv_discrete) -> type[CustomDiscreteDistribution]: ...
