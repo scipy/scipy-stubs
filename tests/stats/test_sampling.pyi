@@ -12,4 +12,5 @@ def _pdf(x: onp.ToFloat) -> onp.ToFloat: ...
 _ru = RatioUniforms(_pdf, umax=1.0, vmin=-1.0, vmax=1.0)
 
 assert_type(_ru, RatioUniforms)
-assert_type(_ru.rvs(size=3), np.float64 | onp.ArrayND[np.float64])
+assert_type(_ru.rvs(), onp.ArrayND[np.float64])
+assert_type(_ru.rvs(size=3), onp.ArrayND[np.float64])
