@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.11.16,<0.12"]
+requires = ["uv_build>=0.11.18,<0.12"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -65,8 +65,7 @@ type = [
   "mypy[faster-cache]==2.1.0",
   "pyrefly==0.63.1",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.40",
-  "typeshed-client>=2.11.0",
+  "ty==0.0.42",
 ]
 dev = [
   { include-group = "lint" },
@@ -80,8 +79,6 @@ prerelease = "allow"
 [tool.uv.sources]
 # the required stubdefaulter features not released yet (>0.1.0)
 stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "ebe9e31" }
-# TODO(@jorenham): remove once a new >2.11 release has been published
-typeshed-client = { git = "https://github.com/JelleZijlstra/typeshed_client.git", rev = "d07fd47" }
 
 # poe
 

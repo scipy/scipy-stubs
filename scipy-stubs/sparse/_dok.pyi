@@ -159,7 +159,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     def fromkeys(cls: type[_C2T], iterable: _ToKeys2, v: op.JustComplex, /) -> _C2T: ...
     @overload
     @classmethod
-    def fromkeys(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def fromkeys(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]q
         cls: type[_dok_base[np.complex128, _1D]], iterable: _ToKeys1, v: op.JustComplex, /
     ) -> _dok_base[np.complex128, _1D]: ...
 
@@ -536,7 +536,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     @overload
     def __getitem__(self: dok_array[_ScalarT, _1D], key: _ToKey1D, /) -> _ScalarT: ...
     @overload
-    def __getitem__(self: dok_array[_ScalarT, _2D], key: _ToKey1D, /) -> coo_array[_ScalarT, _1D]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __getitem__(self: dok_array[_ScalarT, _2D], key: _ToKey1D, /) -> coo_array[_ScalarT, _1D]: ...  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
 
     # NOTE: This horrible code duplication is required due to the lack of higher-kinded typing (HKT) support.
     # https://github.com/python/typing/issues/548
@@ -591,7 +591,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> dok_array[np.complex128, _2D]: ...
     @overload
     @classmethod
-    def fromkeys(  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+    def fromkeys(  # pyright: ignore[reportIncompatibleMethodOverride]
         cls: type[dok_array[np.complex128, _1D]], iterable: _ToKeys1, v: op.JustComplex, /
     ) -> dok_array[np.complex128, _1D]: ...
 
@@ -723,7 +723,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         self, key: _ToKey1D | onp.CanArrayND[np.bool | npc.integer] | _spbase[np.bool, _2D] | list[int] | slice, /
     ) -> Self: ...
     @overload
-    def __getitem__(self, key: _ToKey2D, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+    def __getitem__(self, key: _ToKey2D, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
     #
     @override
@@ -741,7 +741,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     def fromkeys(cls: type[dok_matrix[np.float64]], iterable: _ToKeys2, v: op.JustFloat, /) -> dok_matrix[np.float64]: ...
     @overload
     @classmethod
-    def fromkeys(cls: type[dok_matrix[np.complex128]], iterable: _ToKeys2, v: op.JustComplex, /) -> dok_matrix[np.complex128]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+    def fromkeys(cls: type[dok_matrix[np.complex128]], iterable: _ToKeys2, v: op.JustComplex, /) -> dok_matrix[np.complex128]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
 
 #
 def isspmatrix_dok(x: object) -> TypeIs[dok_matrix]: ...
