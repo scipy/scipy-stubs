@@ -4,7 +4,6 @@ from typing import assert_type, type_check_only
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 from optype.test import assert_subtype
 
 from scipy.stats import Mixture, Uniform, abs, distributions, exp, log, make_distribution, order_statistic, truncate
@@ -30,6 +29,7 @@ _i64_2d: onp.Array2D[np.int64]
 
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
+_f64_nd: onp.ArrayND[np.float64]
 
 _uniform_0d_f64: Uniform[_0d, np.float64]
 _uniform_1d_f64: Uniform[_1d, np.float64]
@@ -93,15 +93,28 @@ assert_type(log(_uniform_2d_f64), MonotonicTransformedDistribution[Uniform[_2d, 
 assert_type(log(_uniform_3d_f64), MonotonicTransformedDistribution[Uniform[_3d, np.float64], _3d])
 
 # abs
-assert_type(abs(_uniform_0d_f64), FoldedDistribution[Uniform[_0d, np.float64], npc.floating, _0d])
-assert_type(abs(_uniform_1d_f64), FoldedDistribution[Uniform[_1d, np.float64], npc.floating, _1d])
-assert_type(abs(_uniform_2d_f64), FoldedDistribution[Uniform[_2d, np.float64], npc.floating, _2d])
-assert_type(abs(_uniform_3d_f64), FoldedDistribution[Uniform[_3d, np.float64], npc.floating, _3d])
-
-# make_distribution
-assert_subtype[type[ContinuousDistribution]](make_distribution(distributions.loguniform))
-assert_subtype[type[ContinuousDistribution]](make_distribution(_DuckRV))
-assert_subtype[type[ContinuousDistribution]](make_distribution(_MultiDuckRV))
+assert_type(abs(_uniform_0d_f64), FoldedDistribution[Uniform[_0d, np.float64], np.float64, _0d])
+assert_type(abs(_uniform_1d_f64), FoldedDistribution[Uniform[_1d, np.float64], np.float64, _1d])
+assert_type(abs(_uniform_2d_f64), FoldedDistribution[Uniform[_2d, np.float64], np.float64, _2d])
+assert_type(abs(_uniform_3d_f64), FoldedDistribution[Uniform[_3d, np.float64], np.float64, _3d])
 
 # Mixture
 assert_type(Mixture([_uniform_0d_f64, _uniform_0d_f64]), Mixture[np.float64])
+
+###
+# make_distribution
+
+assert_subtype[type[ContinuousDistribution]](make_distribution(_DuckRV))
+assert_subtype[type[ContinuousDistribution]](make_distribution(_MultiDuckRV))
+
+_LogUniform = make_distribution(distributions.loguniform)
+assert_type(_LogUniform(a=1.0, b=2.0).cdf(1.0), np.float64)  # type:ignore[assert-type]  # mypy infers 0d
+assert_type(_LogUniform(a=_f64_1d, b=_f64_1d).cdf(1.0), onp.Array1D[np.float64])
+assert_type(_LogUniform(a=_f64_2d, b=_f64_2d).cdf(1.0), onp.Array2D[np.float64])
+assert_type(_LogUniform(a=_f64_nd, b=_f64_nd).cdf(1.0), np.float64 | onp.ArrayND[np.float64])  # type:ignore[assert-type]  # mypy infers Nd
+
+_Geometric = make_distribution(distributions.geom)
+assert_type(_Geometric(p=0.5).cdf(1.0), np.float64)  # type:ignore[assert-type]  # mypy infers 0d
+assert_type(_Geometric(p=_f64_1d).cdf(1.0), onp.Array1D[np.float64])
+assert_type(_Geometric(p=_f64_2d).cdf(1.0), onp.Array2D[np.float64])
+assert_type(_Geometric(p=_f64_nd).cdf(1.0), np.float64 | onp.ArrayND[np.float64])  # type:ignore[assert-type]  # mypy infers Nd
