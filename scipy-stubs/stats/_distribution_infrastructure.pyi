@@ -1,4 +1,5 @@
-# mypy: disable-error-code="override, explicit-override"
+# TODO(@jorenham): remove `overload-overlap` after dropping support for numpy 2.0
+# mypy: disable-error-code="override, explicit-override, overload-overlap"
 
 import abc
 import types
