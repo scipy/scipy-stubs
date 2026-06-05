@@ -366,6 +366,7 @@ PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 [python-hvac](https://github.com/TomLXXVI/python-hvac) |
 [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay) |
 [scikit-fingerprints](https://github.com/scikit-fingerprints/scikit-fingerprints) |
+[scqubits](https://github.com/scqubits/scqubits) |
 scverse ([PyDESeq2](https://github.com/scverse/PyDESeq2), [scanpy](https://github.com/scverse/scanpy)) |
 [SeQUeNCe](https://github.com/sequence-toolbox/SeQUeNCe) |
 [Skore](https://github.com/probabl-ai/skore) |
