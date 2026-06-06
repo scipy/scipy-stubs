@@ -146,6 +146,10 @@ even without explicit type annotations in your code.
 **A:** You should see improved autocompletion in your IDE and more precise type information.
 You can also run `mypy`, `pyright` or another type checker on your code to see type checking in action.
 
+### Q: Is this vibe-coded?
+
+**A:** No.
+
 ## Versioning and requirements
 
 The versioning scheme of `scipy-stubs` includes the compatible `scipy` version as `{scipy_version}.{stubs_version}`.
