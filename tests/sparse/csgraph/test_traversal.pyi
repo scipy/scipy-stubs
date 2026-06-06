@@ -1,4 +1,5 @@
-# Type tests for scipy.sparse.csgraph._traversal
+# type-tests for `sparse/csgraph/_traversal.pyi`
+
 from typing import assert_type
 
 import numpy as np
@@ -15,27 +16,32 @@ from scipy.sparse.csgraph import (
 
 ###
 
-type ScalarType = np.float32
+type _ScalarType = np.float32
+_csr_arr: sparse.csr_array[_ScalarType, tuple[int, int]]
 
 ###
 
-csr_arr: sparse.csr_array[ScalarType, tuple[int, int]]
+# breadth_first_order
 
-###
+assert_type(breadth_first_order(_csr_arr, 0, return_predecessors=True), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
+assert_type(breadth_first_order(_csr_arr, 0, True, False), onp.Array1D[np.int32])
+assert_type(breadth_first_order(_csr_arr, 0), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
 
-assert_type(breadth_first_order(csr_arr, 0, return_predecessors=True), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
+# breadth_first_tree
 
-assert_type(breadth_first_order(csr_arr, 0, True, False), onp.Array1D[np.int32])
-assert_type(breadth_first_order(csr_arr, 0), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
+assert_type(breadth_first_tree(_csr_arr, 0), sparse.csr_array[_ScalarType, tuple[int, int]])
 
-assert_type(breadth_first_tree(csr_arr, 0), sparse.csr_array[ScalarType, tuple[int, int]])
+# depth_first_order
 
-assert_type(depth_first_order(csr_arr, 0, return_predecessors=True), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
+assert_type(depth_first_order(_csr_arr, 0, return_predecessors=True), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
+assert_type(depth_first_order(_csr_arr, 0, True, False), onp.Array1D[np.int32])
+assert_type(depth_first_order(_csr_arr, 0), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
 
-assert_type(depth_first_order(csr_arr, 0, True, False), onp.Array1D[np.int32])
-assert_type(depth_first_order(csr_arr, 0), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
+# depth_first_tree
 
-assert_type(depth_first_tree(csr_arr, 0), sparse.csr_array[ScalarType, tuple[int, int]])
+assert_type(depth_first_tree(_csr_arr, 0), sparse.csr_array[_ScalarType, tuple[int, int]])
 
-assert_type(connected_components(csr_arr), tuple[int, onp.Array1D[np.int32]])
-assert_type(connected_components(csr_arr, directed=False), tuple[int, onp.Array1D[np.int32]])
+# connected_components
+
+assert_type(connected_components(_csr_arr), tuple[int, onp.Array1D[np.int32]])
+assert_type(connected_components(_csr_arr, directed=False), tuple[int, onp.Array1D[np.int32]])
