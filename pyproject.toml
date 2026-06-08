@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.11.18,<0.12"]
+requires = ["uv_build>=0.11.19,<0.12"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -52,20 +52,21 @@ ci = ["packaging>=26.2"]
 lint = [
   { include-group = "extras" },
   "dprint-py==0.53.1.0",
-  "ruff==0.15.15",
+  "ruff==0.15.16",
   "sp-repo-review[cli]==2026.4.4",
 ]
 type = [
   { include-group = "extras" },
   { include-group = "ci" },
-  "array-api-compat==1.14.0", # bundled as `_lib.array_api_compat`
+  # https://github.com/data-apis/array-api-compat/issues/436
+  "array-api-compat==1.14.0, !=1.15.0", # bundled as `_lib.array_api_compat`
   "pytest==9.0.3", # needed for `_lib._array_api.make_xp_pytest_*`
   "matplotlib==3.10.9", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
-  "basedpyright==1.39.6",
+  "basedpyright==1.39.7",
   "mypy[faster-cache]==2.1.0",
-  "pyrefly==0.63.1",
+  "pyrefly==0.63.1, !=1.0.0",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.42",
+  "ty==0.0.44",
 ]
 dev = [
   { include-group = "lint" },

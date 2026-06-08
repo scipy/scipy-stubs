@@ -90,7 +90,7 @@ class Akima1DInterpolator(CubicHermiteSpline[np.float64]):
     # the following (class)methods will raise `NotImplementedError` when called
     @override
     # pyrefly: ignore [bad-override]
-    def extend(self, /, c: Never, x: Never, right: bool = True) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def extend(self, /, c: Never, x: Never, right: bool = True) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
     @classmethod
     @override
     # pyrefly: ignore [bad-override]
