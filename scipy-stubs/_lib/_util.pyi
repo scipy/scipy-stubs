@@ -10,7 +10,6 @@ from typing_extensions import TypeVar
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
-from numpy import long as np_long, ulong as np_ulong  # pyright: ignore[reportUnusedImport]  # noqa: ICN003
 
 from scipy._typing import ExitMixin
 
