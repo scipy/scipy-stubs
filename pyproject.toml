@@ -9,7 +9,7 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 
 [project]
 name = "scipy-stubs"
-version = "1.18.0.0.dev0"
+version = "1.18.0.0.dev2"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
@@ -38,7 +38,7 @@ requires-python = ">=3.12"
 dependencies = ["optype[numpy]>=0.14.0,<0.19"]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.18.0rc1,<1.19"]
+scipy = ["scipy>=1.18.0rc2,<1.19"]
 
 [project.urls]
 Homepage = "https://scipy.org/"
