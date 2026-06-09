@@ -492,7 +492,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
 
     #
     @override
-    def lmoment(self, /, order: int = 1, *, standardize: bool = True, method: _LMomentMethod | None = None) -> np.float64: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly:ignore[bad-override] # ty:ignore[invalid-method-override]
+    def lmoment(self, /, order: int = 1, *, standardize: bool = True, method: _LMomentMethod | None = None) -> np.float64: ...
 
     #
     @override
@@ -1804,7 +1804,7 @@ class Mixture(_BaseDistribution[_FloatT_co, _0D], Generic[_FloatT_co]):
 
     # always raises NotImplementedError`
     @override
-    def lmoment(self, order: int = 1, *, standardize: bool = False, method: _LMomentMethod | None = None) -> Never: ...
+    def lmoment(self, order: int = 1, *, standardize: bool = True, method: _LMomentMethod | None = None) -> Never: ...
 
 ###
 
