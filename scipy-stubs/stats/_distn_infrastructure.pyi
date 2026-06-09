@@ -96,11 +96,6 @@ _PKT_co = TypeVar("_PKT_co", bound=_Floating, covariant=True, default=_Floating)
 
 ###
 
-# https://github.com/scipy/scipy/pull/25237
-method_name: str = ...  # namespace pollution
-method: Any = ...  # namespace pollution
-doc: str = ...  # namespace pollution
-
 docheaders: Final[dict[str, str]] = ...
 docdict: Final[dict[str, str]] = ...
 docdict_discrete: Final[dict[str, str]] = ...
