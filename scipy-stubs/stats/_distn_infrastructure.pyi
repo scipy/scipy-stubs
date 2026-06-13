@@ -1,6 +1,7 @@
 # NOTE: this is needed because of the >50 LSP violations...
 # mypy: disable-error-code="override"
 # pyright: reportIncompatibleMethodOverride = false
+
 import types
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from typing import Any, Final, Generic, Literal as L, Self, SupportsIndex, Unpack, overload, override, type_check_only
@@ -459,6 +460,10 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> None: ...
 
     #
+    @override
+    def __getstate__(self) -> dict[str, Any]: ...
+
+    #
     @overload
     def __call__(self, /) -> rv_continuous_frozen[Self, _Float]: ...
     @overload
@@ -881,6 +886,10 @@ class rv_discrete(_rv_mixin, rv_generic):
         shapes: str | None = None,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
+
+    #
+    @override
+    def __getstate__(self) -> dict[str, Any]: ...
 
     #
     @overload

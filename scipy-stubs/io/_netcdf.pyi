@@ -1,5 +1,5 @@
 from collections.abc import Mapping, Sequence
-from typing import IO, Any, Final, Generic, Literal, Self, SupportsIndex, overload
+from typing import IO, Any, Final, Generic, Literal, Self, SupportsIndex, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -84,6 +84,8 @@ class netcdf_file(ExitMixin):
     ) -> None: ...
     def __del__(self, /) -> None: ...
     def __enter__(self, /) -> Self: ...
+    @override
+    def __setattr__(self, attr: str, value: object, /) -> None: ...
 
     #
     def createDimension(self, /, name: str, length: int | None) -> None: ...
@@ -134,6 +136,10 @@ class netcdf_variable(Generic[_ShapeT_co, _ScalarT_co]):
     def __setitem__[ScalarT: np.generic](
         self: netcdf_variable[tuple[int, ...], ScalarT], index: object, data: ScalarT | onp.ArrayND[ScalarT], /
     ) -> None: ...
+
+    #
+    @override
+    def __setattr__(self, attr: str, value: object, /) -> None: ...
 
     #
     def assignValue(self, /, value: object) -> None: ...

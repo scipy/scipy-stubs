@@ -88,6 +88,7 @@ class Data:
         fix: onp.ToIntND | None = None,
         meta: dict[str, Any] | None = None,
     ) -> None: ...
+    def __getattr__(self, attr: str, /) -> Any: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
 @deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
@@ -202,6 +203,7 @@ class Model:
     fjacb: Final[_FCN]
     fjacd: Final[_FCN]
     extra_args: Final[tuple[Any, ...]]
+    estimate: onp.ToFloat1D | None
     implicit: Final[bool | Literal[0, 1]]
     meta: Final[dict[str, Any]]
 
@@ -216,6 +218,7 @@ class Model:
         implicit: bool | Literal[0, 1] = 0,
         meta: dict[str, Any] | None = None,
     ) -> None: ...
+    def __getattr__(self, attr: str, /) -> Any: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
 @deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
