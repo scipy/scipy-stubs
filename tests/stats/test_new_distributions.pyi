@@ -6,11 +6,12 @@ import numpy as np
 import optype.numpy.compat as npc
 
 from scipy.stats import Binomial, Logistic, Normal, Uniform
+from scipy.stats._new_distributions import StandardNormal
 
 ###
 
 # Normal
-assert_type(Normal(), Normal[tuple[()], np.float64])
+assert_type(Normal(), StandardNormal)  # type:ignore[assert-type]
 assert_type(Normal(mu=0.0, sigma=1.0), Normal[tuple[()], np.float64])
 assert_type(Normal(mu=[0.0, 1.0], sigma=1.0), Normal[tuple[int], npc.floating])
 

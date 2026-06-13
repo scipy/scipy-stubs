@@ -13,6 +13,3 @@ scipy\.fft\._duccfft\..*
 
 # should this be packaged?
 scipy\.special\._precompute\..*
-
-# useless __new__
-scipy\.stats\.(_new_distributions\.)?Normal\.__new__
