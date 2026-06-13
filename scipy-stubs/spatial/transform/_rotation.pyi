@@ -1,6 +1,6 @@
 from collections.abc import Iterator, Sequence
 from types import EllipsisType, GenericAlias, ModuleType
-from typing import Any, Final, Generic, Literal as L, Never, Self, SupportsIndex, overload
+from typing import Any, Final, Generic, Literal as L, Never, Self, SupportsIndex, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -67,6 +67,11 @@ class Rotation(Generic[_ShapeT_co]):
     ) -> None: ...
     @overload
     def __init__(self, /, quat: onp.ToFloatND, normalize: bool = True, copy: bool = True, scalar_first: bool = False) -> None: ...
+
+    #
+    @override
+    def __getstate__(self) -> tuple[onp.ArrayND[np.float64], bool]: ...
+    def __setstate__(self, state: tuple[onp.ArrayND[np.float64], bool]) -> None: ...
 
     #
     def __bool__(self, /) -> L[True]: ...
