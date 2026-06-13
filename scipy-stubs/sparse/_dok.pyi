@@ -1,7 +1,7 @@
 # NOTE: Adding `@override` to `@overload`ed methods will crash stubtest (mypy 1.13.0)
 # mypy: disable-error-code="misc, override"
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Iterator, Sequence
 from typing import Any, ClassVar, Generic, Literal, Never, Self, SupportsIndex, overload, override, type_check_only
 from typing_extensions import TypeIs, TypeVar
 
@@ -724,6 +724,10 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     ) -> Self: ...
     @overload
     def __getitem__(self, key: _ToKey2D, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+
+    #
+    @override
+    def __reversed__(self, /) -> Iterator[tuple[int, int]]: ...
 
     #
     @override
