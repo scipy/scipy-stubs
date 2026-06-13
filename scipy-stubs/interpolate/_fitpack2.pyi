@@ -31,17 +31,7 @@ type _ToBBox = Sequence[onp.ToFloat | None]
 ###
 
 class UnivariateSpline:
-    @staticmethod
-    def validate_input(
-        x: onp.ToFloat1D,
-        y: onp.ToFloat1D,
-        w: onp.ToFloat1D,
-        bbox: _ToBBox,
-        k: _Degree,
-        s: float | None,
-        ext: _Ext,
-        check_finite: bool,
-    ) -> tuple[_Float1D, _Float1D, _Float1D, _Float1D, _ExtInt]: ...
+    ext: int
 
     # at runtime the `__init__` might change the `__class__` attribute...
     def __init__(
@@ -70,6 +60,19 @@ class UnivariateSpline:
     def derivative(self, /, n: int = 1) -> UnivariateSpline: ...
     def antiderivative(self, /, n: int = 1) -> UnivariateSpline: ...
     def integral(self, /, a: onp.ToFloat, b: onp.ToFloat) -> float: ...
+
+    #
+    @staticmethod
+    def validate_input(
+        x: onp.ToFloat1D,
+        y: onp.ToFloat1D,
+        w: onp.ToFloat1D,
+        bbox: _ToBBox,
+        k: _Degree,
+        s: float | None,
+        ext: _Ext,
+        check_finite: bool,
+    ) -> tuple[_Float1D, _Float1D, _Float1D, _Float1D, _ExtInt]: ...
 
 class InterpolatedUnivariateSpline(UnivariateSpline):
     def __init__(
