@@ -214,6 +214,10 @@ class PoissonDisk(QMCEngine[np.float64]):
     radius: Final[onp.ToFloat]
     radius_squared: Final[onp.ToFloat]
     ncandidates: Final[onp.ToInt]
+
+    l_bounds: onp.Array1D[np.float64]
+    u_bounds: onp.Array1D[np.float64]
+
     cell_size: Final[np.float64]
     grid_size: Final[onp.Array1D[np.int_]]
 
