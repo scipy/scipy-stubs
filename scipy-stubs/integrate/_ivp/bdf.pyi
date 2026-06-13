@@ -32,6 +32,8 @@ MAX_FACTOR: Final = 10
 
 class BDF(OdeSolver[_InexactT], Generic[_InexactT]):
     max_step: float
+    rtol: float
+    atol: float
     h_abs: float
     h_abs_old: float | None
     error_norm_old: None

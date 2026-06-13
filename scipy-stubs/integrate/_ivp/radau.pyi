@@ -5,7 +5,7 @@ import numpy as np
 import optype.numpy as onp
 
 from .base import DenseOutput, OdeSolver
-from scipy.sparse import sparray, spmatrix
+from scipy.sparse import csc_array, csc_matrix, sparray, spmatrix
 
 type _LU = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]
 type _FuncSolveLU = Callable[[_LU, onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]
@@ -34,11 +34,15 @@ MAX_FACTOR: Final = 10
 
 class Radau(OdeSolver[np.float64]):
     max_step: float
+    rtol: float
+    atol: float
     h_abs: float
     h_abs_old: float | None
     error_norm_old: float | None
     newton_tol: float
     jac_factor: onp.ArrayND[np.float64] | None  # 1d
+    jac: Callable[[float, onp.Array1D[np.float64]], onp.Array2D[np.float64]]
+    J: onp.Array2D[np.float64] | csc_matrix[np.float64] | csc_array[np.float64]
     current_jac: bool
 
     LU_real: _LU
