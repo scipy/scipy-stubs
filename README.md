@@ -315,6 +315,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 
 `scipy-stubs` is used by a number of major open-source projects, including:
 
+[Agents](https://github.com/livekit/agents) |
 Apache Spark ([PySpark](https://github.com/apache/spark)) |
 [Artisan](https://github.com/artisan-roaster-scope/artisan) |
 [Arviz](https://github.com/arviz-devs/arviz) |
