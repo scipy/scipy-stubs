@@ -1,6 +1,7 @@
 # NOTE: this is needed because of the >50 LSP violations...
 # mypy: disable-error-code="override"
 # pyright: reportIncompatibleMethodOverride = false
+
 import types
 from collections.abc import Callable, Iterable, Mapping, Sequence
 from typing import Any, Final, Generic, Literal as L, Self, SupportsIndex, Unpack, overload, override, type_check_only
@@ -95,11 +96,6 @@ _XKT_co = TypeVar("_XKT_co", bound=_CoFloat, covariant=True, default=_CoFloat)
 _PKT_co = TypeVar("_PKT_co", bound=_Floating, covariant=True, default=_Floating)
 
 ###
-
-# https://github.com/scipy/scipy/pull/25237
-method_name: str = ...  # namespace pollution
-method: Any = ...  # namespace pollution
-doc: str = ...  # namespace pollution
 
 docheaders: Final[dict[str, str]] = ...
 docdict: Final[dict[str, str]] = ...
@@ -462,6 +458,10 @@ class rv_continuous(_rv_mixin, rv_generic):
         shapes: str | None = None,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
+
+    #
+    @override
+    def __getstate__(self) -> dict[str, Any]: ...
 
     #
     @overload
@@ -886,6 +886,10 @@ class rv_discrete(_rv_mixin, rv_generic):
         shapes: str | None = None,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
+
+    #
+    @override
+    def __getstate__(self) -> dict[str, Any]: ...
 
     #
     @overload

@@ -1,3 +1,5 @@
+# type-tests for `sparse/csgraph/_laplacian.pyi`
+
 from collections.abc import Callable
 
 import numpy as np
@@ -8,10 +10,16 @@ import optype.numpy.compat as npc
 
 from scipy.sparse.csgraph import laplacian
 
+###
+
 _f64_nd: npt.NDArray[np.float64]
 
-fn = laplacian(_f64_nd, form="function")
-op.test.assert_subtype[Callable[[onp.ToComplex2D], onp.Array2D[npc.number]]](fn)
+###
+
+# laplacian
+
+_fn = laplacian(_f64_nd, form="function")
+op.test.assert_subtype[Callable[[onp.ToComplex2D], onp.Array2D[npc.number]]](_fn)
 
 fn1 = laplacian(_f64_nd, form="lo")
 op.test.assert_subtype[Callable[[onp.ToComplex2D], onp.Array2D[npc.number]]](fn1)

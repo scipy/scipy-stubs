@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.11.16,<0.12"]
+requires = ["uv_build>=0.11.19,<0.12"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -9,7 +9,7 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 
 [project]
 name = "scipy-stubs"
-version = "1.18.0.0.dev0"
+version = "1.18.0.0.dev2"
 description = "Type annotations for SciPy"
 readme = "README.md"
 authors = [
@@ -35,10 +35,10 @@ classifiers = [
   "Typing :: Stubs Only",
 ]
 requires-python = ">=3.12"
-dependencies = ["optype[numpy]>=0.14.0,<0.18"]
+dependencies = ["optype[numpy]>=0.14.0,<0.19"]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.18.0rc1,<1.19"]
+scipy = ["scipy>=1.18.0rc2,<1.19"]
 
 [project.urls]
 Homepage = "https://scipy.org/"
@@ -52,21 +52,21 @@ ci = ["packaging>=26.2"]
 lint = [
   { include-group = "extras" },
   "dprint-py==0.53.1.0",
-  "ruff==0.15.15",
+  "ruff==0.15.17",
   "sp-repo-review[cli]==2026.4.4",
 ]
 type = [
   { include-group = "extras" },
   { include-group = "ci" },
-  "array-api-compat==1.14.0", # bundled as `_lib.array_api_compat`
+  # https://github.com/data-apis/array-api-compat/issues/436
+  "array-api-compat==1.14.0, !=1.15.0", # bundled as `_lib.array_api_compat`
   "pytest==9.0.3", # needed for `_lib._array_api.make_xp_pytest_*`
-  "matplotlib==3.10.9", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
-  "basedpyright==1.39.6",
+  "matplotlib==3.11.0", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
+  "basedpyright==1.39.7",
   "mypy[faster-cache]==2.1.0",
-  "pyrefly==0.63.1",
+  "pyrefly==0.63.1, !=1.0.0",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.40",
-  "typeshed-client>=2.11.0",
+  "ty==0.0.49",
 ]
 dev = [
   { include-group = "lint" },
@@ -80,8 +80,6 @@ prerelease = "allow"
 [tool.uv.sources]
 # the required stubdefaulter features not released yet (>0.1.0)
 stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "ebe9e31" }
-# TODO(@jorenham): remove once a new >2.11 release has been published
-typeshed-client = { git = "https://github.com/JelleZijlstra/typeshed_client.git", rev = "d07fd47" }
 
 # poe
 

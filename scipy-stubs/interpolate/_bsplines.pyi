@@ -1,5 +1,5 @@
 import types
-from typing import Any, Generic, Literal, Self, SupportsIndex, TypeVar, overload
+from typing import Any, Generic, Literal, Self, SupportsIndex, TypeVar, overload, override
 
 import numpy as np
 import optype.numpy as onp
@@ -70,6 +70,11 @@ class BSpline(Generic[_CT_co]):
     def __call__(
         self, /, x: onp.ToComplex | onp.ToComplexND, nu: int = 0, extrapolate: _Extrapolate | None = None
     ) -> onp.ArrayND[_CT_co]: ...
+
+    #
+    @override
+    def __getstate__(self) -> tuple[type, onp.Array0D[np.float64]]: ...
+    def __setstate__(self, state: tuple[type, onp.Array0D[np.float64]], /) -> None: ...
 
     #
     def derivative(self, /, nu: int = 1) -> Self: ...

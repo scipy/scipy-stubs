@@ -1,4 +1,5 @@
-# mypy: disable-error-code="override, explicit-override"
+# TODO(@jorenham): remove `overload-overlap` after dropping support for numpy 2.0
+# mypy: disable-error-code="override, explicit-override, overload-overlap"
 
 import abc
 import types
@@ -27,7 +28,7 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from ._distn_infrastructure import rv_continuous
+from ._distn_infrastructure import rv_continuous, rv_discrete
 from ._probability_distribution import _LMomentMethod, _ProbabilityDistribution
 from ._qmc import QMCEngine
 
@@ -37,10 +38,10 @@ __all__ = ["Mixture", "abs", "exp", "log", "make_distribution", "order_statistic
 
 _Tss = ParamSpec("_Tss", default=...)
 
-_FloatT = TypeVar("_FloatT", bound=_Float, default=_Float)
-_FloatT_co = TypeVar("_FloatT_co", bound=_Float, default=_Float, covariant=True)
-_IntT_co = TypeVar("_IntT_co", bound=_Int, default=_Int, covariant=True)
-_RealT_co = TypeVar("_RealT_co", bound=_Float | _Int, default=_Float | _Int, covariant=True)
+_FloatT = TypeVar("_FloatT", bound=npc.floating, default=np.float64)
+_FloatT_co = TypeVar("_FloatT_co", bound=npc.floating, default=np.float64, covariant=True)
+_IntT_co = TypeVar("_IntT_co", bound=npc.integer, default=npc.integer, covariant=True)
+_RealT_co = TypeVar("_RealT_co", bound=_Real, default=np.float64 | npc.integer, covariant=True)
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
 _ShapeT1 = TypeVar("_ShapeT1", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...])
@@ -87,9 +88,7 @@ type _DuckDistributionType = type[_DuckDistributionSingle | _DuckDistributionMul
 
 ###
 
-type _Int = npc.integer
-type _Float = npc.floating
-type _OutFloat = np.float64 | np.longdouble
+type _Real = npc.floating | npc.integer
 
 type _0D = tuple[()]  # noqa: PYI042
 type _1D = tuple[int]  # noqa: PYI042
@@ -122,18 +121,20 @@ type _ParamValues = Mapping[str, _ToFloat0ND]
 type _ToDomain = tuple[onp.ToFloat | str, onp.ToFloat | str]
 type _ToTol = op.JustFloat | _Null
 type _DrawProportions = tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat, onp.ToFloat]
-type _Elementwise[FloatT: _Float] = Callable[[onp.ArrayND[np.float64]], onp.ArrayND[FloatT]]
+type _Elementwise[FloatT: npc.floating] = Callable[[onp.ArrayND[np.float64]], onp.ArrayND[FloatT]]
 
 type _Dist[ShapeT: tuple[int, ...]] = UnivariateDistribution[Any, ShapeT]
-type _CDist[ShapeT: tuple[int, ...]] = ContinuousDistribution[_Float, ShapeT]
-type _CDist0[FloatT: _Float] = ContinuousDistribution[FloatT, _0D]
-type _TransDist[DistT: _Dist[tuple[int, ...]], FloatT: _Float, ShapeT: tuple[int, ...]] = TransformedDistribution[
+type _CDist[ShapeT: tuple[int, ...]] = ContinuousDistribution[np.float64, ShapeT]
+type _CDist0[FloatT: npc.floating] = ContinuousDistribution[FloatT, _0D]
+type _TransDist[DistT: _Dist[tuple[int, ...]], FloatT: npc.floating, ShapeT: tuple[int, ...]] = TransformedDistribution[
     DistT, FloatT, ShapeT
 ]
-type _LinDist[DistT: _Dist[tuple[int, ...]], FloatT: _Float, ShapeT: tuple[int, ...]] = ShiftedScaledDistribution[
+type _LinDist[DistT: _Dist[tuple[int, ...]], FloatT: npc.floating, ShapeT: tuple[int, ...]] = ShiftedScaledDistribution[
     DistT, FloatT, ShapeT
 ]
-type _FoldDist[DistT: _Dist[tuple[int, ...]], FloatT: _Float, ShapeT: tuple[int, ...]] = FoldedDistribution[DistT, FloatT, ShapeT]
+type _FoldDist[DistT: _Dist[tuple[int, ...]], FloatT: npc.floating, ShapeT: tuple[int, ...]] = FoldedDistribution[
+    DistT, FloatT, ShapeT
+]
 type _TruncDist[DistT: _Dist[tuple[int, ...]], ShapeT: tuple[int, ...]] = TruncatedDistribution[DistT, ShapeT]
 
 @type_check_only
@@ -172,7 +173,7 @@ class _Domain(abc.ABC, Generic[_XT_co]):  # noqa: UP046
     @abc.abstractmethod
     def draw(self, /, n: int) -> onp.ArrayND[_XT_co]: ...
     @abc.abstractmethod
-    def get_numerical_endpoints(self, /, x: _ParamValues) -> tuple[onp.ArrayND[_OutFloat], onp.ArrayND[_OutFloat]]: ...
+    def get_numerical_endpoints(self, /, x: _ParamValues) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 
 class _Interval(_Domain[_XT_co], Generic[_XT_co]):  # pyrefly: ignore[implicit-abstract-class]  # noqa: UP046
     @override
@@ -184,10 +185,10 @@ class _Interval(_Domain[_XT_co], Generic[_XT_co]):  # pyrefly: ignore[implicit-a
     @override
     def get_numerical_endpoints(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-param-name-override] # ty: ignore[invalid-method-override]
         self, /, parameter_values: _ParamValues
-    ) -> tuple[onp.ArrayND[_OutFloat], onp.ArrayND[_OutFloat]]: ...
+    ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
     @override
     def contains(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
-        self, /, item: onp.ArrayND[_Int | _Float], parameter_values: _ParamValues | None = None
+        self, /, item: onp.ArrayND[_Real], parameter_values: _ParamValues | None = None
     ) -> onp.ArrayND[np.bool]: ...
     @override
     def draw(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
@@ -195,8 +196,8 @@ class _Interval(_Domain[_XT_co], Generic[_XT_co]):  # pyrefly: ignore[implicit-a
         /,
         n: int,
         type_: _DomainDrawType,
-        min: onp.ArrayND[_Float | _Int],
-        max: onp.ArrayND[_Float | _Int],
+        min: onp.ArrayND[_Real],
+        max: onp.ArrayND[_Real],
         squeezed_base_shape: _ND,
         rng: onp.random.ToRNG | None = None,
     ) -> onp.ArrayND[_XT_co]: ...
@@ -210,8 +211,8 @@ class _IntegerInterval(_Interval[_IntT_co], Generic[_IntT_co]):
     @override  # https://github.com/astral-sh/ruff/issues/18372
     def __str__(self, /) -> str: ...  # noqa: PYI029
 
-type _ValidateOut0D[RealT: _Float | _Int] = tuple[RealT, np.dtype[RealT], onp.Array0D[np.bool]]
-type _ValidateOutND[RealT: _Float | _Int, _ShapeT1: tuple[int, *tuple[int, ...]]] = tuple[
+type _ValidateOut0D[RealT: _Real] = tuple[RealT, np.dtype[RealT], onp.Array0D[np.bool]]
+type _ValidateOutND[RealT: _Real, _ShapeT1: tuple[int, *tuple[int, ...]]] = tuple[
     onp.ArrayND[RealT, _ShapeT1],
     np.dtype[RealT],
     onp.ArrayND[np.bool, _ShapeT1],
@@ -259,7 +260,7 @@ class _Parameterization:
     def __len__(self, /) -> int: ...
     def copy(self, /) -> Self: ...
     def matches(self, /, parameters: AbstractSet[str]) -> bool: ...
-    def validation(self, /, parameter_values: Mapping[str, _Parameter]) -> tuple[onp.ArrayND[np.bool], np.dtype[_Float]]: ...
+    def validation(self, /, parameter_values: Mapping[str, _Parameter]) -> tuple[onp.ArrayND[np.bool], np.dtype[np.float64]]: ...
     def draw(
         self,
         /,
@@ -267,7 +268,7 @@ class _Parameterization:
         rng: onp.random.ToRNG | None = None,
         proportions: _DrawProportions | None = None,
         region: _DomainRegion = "domain",
-    ) -> dict[str, onp.ArrayND[_Float]]: ...
+    ) -> dict[str, onp.ArrayND[np.float64]]: ...
 
 ###
 
@@ -294,19 +295,19 @@ type _CDFMethod = L["formula", "logexp", "complement", "quadrature", "subtractio
 type _CCDFMethod = L["formula", "logexp", "complement", "quadrature", "addition"]
 type _ICDFMethod = L["formula", "complement", "inversion"]
 
-type _Float1D = onp.Array1D[_Float]
-type _Float2D = onp.Array2D[_Float]
-type _Float3D = onp.Array3D[_Float]
-type _FloatND[ShapeT: tuple[int, *tuple[int, ...]]] = onp.ArrayND[_Float, ShapeT]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _Float3D = onp.Array3D[np.float64]
+type _FloatND[ShapeT: tuple[int, *tuple[int, ...]]] = onp.ArrayND[np.float64, ShapeT]
 
-type _Float1ND = onp.Array[tuple[int, *tuple[Any, ...]], _Float]
-type _Float2ND = onp.Array[tuple[int, int, *tuple[Any, ...]], _Float]
-type _Float3ND = onp.Array[tuple[int, int, int, *tuple[Any, ...]], _Float]
+type _Float1ND = onp.Array[tuple[int, *tuple[Any, ...]], np.float64]
+type _Float2ND = onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64]
+type _Float3ND = onp.Array[tuple[int, int, int, *tuple[Any, ...]], np.float64]
 
 type _Complex = np.complex128 | np.clongdouble
 type _ComplexND[ShapeT: tuple[int, *tuple[int, ...]]] = onp.ArrayND[_Complex, ShapeT]
 
-type _ToFloatND[ShapeT: tuple[int, *tuple[int, ...]]] = onp.CanArrayND[npc.floating | npc.integer | np.bool, ShapeT]
+type _ToFloatND[ShapeT: tuple[int, *tuple[int, ...]]] = onp.CanArrayND[_Real | np.bool, ShapeT]
 type _ToFloat0ND = onp.ToFloat | onp.ToFloatND
 type _ToFloatMaxND[ShapeT: tuple[int, *tuple[int, ...]]] = _ToFloatND[ShapeT] | _ToFloatMax1D
 
@@ -318,14 +319,14 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def support(self: _BaseDist0[_XT], /) -> _Tuple2[_XT]: ...
     @overload
-    def support(self: _BaseDistribution[_XT, _ShapeT1], /) -> _Tuple2[onp.Array[_ShapeT1, _XT]]: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def support(self: _BaseDistribution[_XT, _ShapeT1], /) -> _Tuple2[onp.Array[_ShapeT1, _XT]]: ...  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
 
     #
     @override
     @overload
     def median(self: _BaseDist0[_XT], /, *, method: _MedianMethod | None = None) -> _XT: ...
     @overload
-    def median(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def median(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _MedianMethod | None = None
     ) -> onp.Array[_ShapeT1, _XT]: ...
 
@@ -334,7 +335,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def mode(self: _BaseDist0[_XT], /, *, method: _ModeMethod | None = None) -> _XT: ...
     @overload
-    def mode(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def mode(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _ModeMethod | None = None
     ) -> onp.Array[_ShapeT1, _XT]: ...
 
@@ -380,7 +381,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def mean(self: _BaseDist0[_XT], /, *, method: _RMomentMethod | None = None) -> _XT: ...
     @overload
-    def mean(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def mean(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _RMomentMethod | None = None
     ) -> onp.ArrayND[_XT, _ShapeT1]: ...
 
@@ -389,7 +390,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def variance(self: _BaseDist0[_XT], /, *, method: _CMomentMethod | None = None) -> _XT: ...
     @overload
-    def variance(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def variance(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _CMomentMethod | None = None
     ) -> onp.ArrayND[_XT, _ShapeT1]: ...
 
@@ -398,7 +399,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def standard_deviation(self: _BaseDist0[_XT], /, *, method: _CMomentMethod | None = None) -> _XT: ...
     @overload
-    def standard_deviation(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def standard_deviation(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _CMomentMethod | None = None
     ) -> onp.ArrayND[_XT, _ShapeT1]: ...
 
@@ -407,7 +408,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def skewness(self: _BaseDist0[_XT], /, *, method: _SMomentMethod | None = None) -> _XT: ...
     @overload
-    def skewness(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def skewness(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _SMomentMethod | None = None
     ) -> onp.ArrayND[_XT, _ShapeT1]: ...
 
@@ -418,7 +419,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDist0[_XT], /, *, method: _SMomentMethod | None = None, convention: _KurtosisConvention = "non-excess"
     ) -> _XT: ...
     @overload
-    def kurtosis(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def kurtosis(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
         self: _BaseDistribution[_XT, _ShapeT1],
         /,
         *,
@@ -431,23 +432,23 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def moment(
         self: _BaseDist0[npc.number], /, order: onp.ToInt = 1, kind: L["raw"] = "raw", *, method: _RMomentMethod | None = None
-    ) -> _Float: ...
+    ) -> np.float64: ...
     @overload
     def moment(
         self: _BaseDist0[npc.number], /, order: onp.ToInt, kind: L["central"], *, method: _CMomentMethod | None = None
-    ) -> _Float: ...
+    ) -> np.float64: ...
     @overload
     def moment(
         self: _BaseDist0[npc.number], /, order: onp.ToInt = 1, *, kind: L["central"], method: _CMomentMethod | None = None
-    ) -> _Float: ...
+    ) -> np.float64: ...
     @overload
     def moment(
         self: _BaseDist0[npc.number], /, order: onp.ToInt, kind: L["standardized"], *, method: _SMomentMethod | None = None
-    ) -> _Float: ...
+    ) -> np.float64: ...
     @overload
     def moment(
         self: _BaseDist0[npc.number], /, order: onp.ToInt = 1, *, kind: L["standardized"], method: _SMomentMethod | None = None
-    ) -> _Float: ...
+    ) -> np.float64: ...
     @overload
     def moment(
         self: _BaseDistribution[Any, _ShapeT1],
@@ -480,7 +481,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         method: _SMomentMethod | None = None,
     ) -> _FloatND[_ShapeT1]: ...
     @overload
-    def moment(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def moment(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
         self: _BaseDistribution[Any, _ShapeT1],
         /,
         order: onp.ToInt = 1,
@@ -491,26 +492,24 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
 
     #
     @override
-    def lmoment(self, /, order: int = 1, *, standardize: bool = True, method: _LMomentMethod | None = None) -> np.float64: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly:ignore[bad-override] # ty:ignore[invalid-method-override]
+    def lmoment(self, /, order: int = 1, *, standardize: bool = True, method: _LMomentMethod | None = None) -> np.float64: ...
 
     #
     @override
     @overload
-    def entropy(self: _BaseDist0[npc.number], /, *, method: _EntropyMethod | None = None) -> _Float: ...
+    def entropy(self: _BaseDist0[npc.number], /, *, method: _EntropyMethod | None = None) -> np.float64: ...
     @overload
-    def entropy(self: _BaseDistribution[Any, _ShapeT1], /, *, method: _EntropyMethod | None = None) -> _FloatND[_ShapeT1]: ...
+    def entropy(self: _BaseDistribution[Any, _ShapeT1], /, *, method: _EntropyMethod | None = None) -> _FloatND[_ShapeT1]: ...  # ty:ignore[invalid-method-override]
 
     #
     @override
     @overload
     def logentropy(self: _BaseDist0[npc.number], /, *, method: _EntropyMethod | None = None) -> _Complex: ...
     @overload
-    def logentropy(
+    def logentropy(  # ty:ignore[invalid-method-override]
         self: _BaseDistribution[Any, _ShapeT1], /, *, method: _EntropyMethod | None = None
     ) -> _ComplexND[_ShapeT1]: ...
 
-    #
-    # TODO(jorenham): Adjust these, depending on the result of https://github.com/scipy/scipy/issues/22145
     # NOTE: The signatures of `pdf`, `logpdf`, `pmf`, and `logpmf` are equivalent
     @override
     @overload  # self: T1-d, x: 0-d
@@ -518,7 +517,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDistribution[Any, _ShapeT1], x: onp.ToFloat, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[_ShapeT1]: ...
     @overload  # self: 0-d, x: 0-d
-    def pdf(self: _BaseDist0[npc.number], x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> _Float: ...
+    def pdf(self: _BaseDist0[npc.number], x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> np.float64: ...
     @overload  # self: 0-d, x: 1-d
     def pdf(self: _BaseDist0[npc.number], x: onp.ToFloatStrict1D, /, *, method: _PXFMethod | None = None) -> _Float1D: ...
     @overload  # self: 0-d, x: 2-d
@@ -546,7 +545,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, x: >=1-d
     def pdf(self: _BaseDist3[npc.number], x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def pdf(
+    def pdf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -557,7 +556,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDistribution[Any, _ShapeT1], x: onp.ToFloat, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[_ShapeT1]: ...
     @overload  # self: 0-d, x: 0-d
-    def logpdf(self: _BaseDist0[npc.number], x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> _Float: ...
+    def logpdf(self: _BaseDist0[npc.number], x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> np.float64: ...
     @overload  # self: 0-d, x: 1-d
     def logpdf(self: _BaseDist0[npc.number], x: onp.ToFloatStrict1D, /, *, method: _PXFMethod | None = None) -> _Float1D: ...
     @overload  # self: 0-d, x: 2-d
@@ -585,7 +584,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, x: >=1-d
     def logpdf(self: _BaseDist3[npc.number], x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def logpdf(
+    def logpdf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -596,7 +595,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDistribution[Any, _ShapeT1], x: onp.ToFloat, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[_ShapeT1]: ...
     @overload  # self: 0-d, x: 0-d
-    def pmf(self: _BaseDist0[npc.number], x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> _Float: ...
+    def pmf(self: _BaseDist0[npc.number], x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> np.float64: ...
     @overload  # self: 0-d, x: 1-d
     def pmf(self: _BaseDist0[npc.number], x: onp.ToFloatStrict1D, /, *, method: _PXFMethod | None = None) -> _Float1D: ...
     @overload  # self: 0-d, x: 2-d
@@ -624,7 +623,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, x: >=1-d
     def pmf(self: _BaseDist3[npc.number], x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def pmf(
+    def pmf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -635,7 +634,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDistribution[Any, _ShapeT1], x: onp.ToFloat, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[_ShapeT1]: ...
     @overload  # self: 0-d, x: 0-d
-    def logpmf(self: _BaseDist0[npc.number], x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> _Float: ...
+    def logpmf(self: _BaseDist0[npc.number], x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> np.float64: ...
     @overload  # self: 0-d, x: 1-d
     def logpmf(self: _BaseDist0[npc.number], x: onp.ToFloatStrict1D, /, *, method: _PXFMethod | None = None) -> _Float1D: ...
     @overload  # self: 0-d, x: 2-d
@@ -663,7 +662,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, x: >=1-d
     def logpmf(self: _BaseDist3[npc.number], x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def logpmf(
+    def logpmf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -682,7 +681,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 0-d, x: 0-d, y?: 0-d
     def cdf(
         self: _BaseDist0[npc.number], x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CDFMethod | None = None
-    ) -> _Float: ...
+    ) -> np.float64: ...
     @overload  # self: 0-d, x: 1-d, y?: <=1-d
     def cdf(
         self: _BaseDist0[npc.number],
@@ -813,7 +812,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDist3[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod | None = None
     ) -> _Float3ND: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
-    def cdf(
+    def cdf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -831,7 +830,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 0-d, x: 0-d, y?: 0-d
     def logcdf(
         self: _BaseDist0[npc.number], x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CDFMethod | None = None
-    ) -> _Float: ...
+    ) -> np.float64: ...
     @overload  # self: 0-d, x: 1-d, y?: <=1-d
     def logcdf(
         self: _BaseDist0[npc.number],
@@ -962,7 +961,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDist3[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod | None = None
     ) -> _Float3ND: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
-    def logcdf(
+    def logcdf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -980,7 +979,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 0-d, x: 0-d, y?: 0-d
     def ccdf(
         self: _BaseDist0[npc.number], x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CCDFMethod | None = None
-    ) -> _Float: ...
+    ) -> np.float64: ...
     @overload  # self: 0-d, x: 1-d, y?: <=1-d
     def ccdf(
         self: _BaseDist0[npc.number],
@@ -1111,7 +1110,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDist3[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod | None = None
     ) -> _Float3ND: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
-    def ccdf(
+    def ccdf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1129,7 +1128,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 0-d, x: 0-d, y?: 0-d
     def logccdf(
         self: _BaseDist0[npc.number], x: onp.ToFloat, y: onp.ToFloat | None = None, /, *, method: _CCDFMethod | None = None
-    ) -> _Float: ...
+    ) -> np.float64: ...
     @overload  # self: 0-d, x: 1-d, y?: <=1-d
     def logccdf(
         self: _BaseDist0[npc.number],
@@ -1260,7 +1259,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDist3[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod | None = None
     ) -> _Float3ND: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
-    def logccdf(
+    def logccdf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1271,7 +1270,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDistribution[Any, _ShapeT1], p: onp.ToFloat, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[_ShapeT1]: ...
     @overload  # self: 0-d, p: 0-d
-    def icdf(self: _BaseDist0[npc.number], p: onp.ToFloat, /, *, method: _ICDFMethod | None = None) -> _Float: ...
+    def icdf(self: _BaseDist0[npc.number], p: onp.ToFloat, /, *, method: _ICDFMethod | None = None) -> np.float64: ...
     @overload  # self: 0-d, p: 1-d
     def icdf(self: _BaseDist0[npc.number], p: onp.ToFloatStrict1D, /, *, method: _ICDFMethod | None = None) -> _Float1D: ...
     @overload  # self: 0-d, p: 2-d
@@ -1299,7 +1298,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, p: >=1-d
     def icdf(self: _BaseDist3[npc.number], p: onp.ToFloatND, /, *, method: _ICDFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def icdf(
+    def icdf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], p: _ToFloat0ND, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1310,7 +1309,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDistribution[Any, _ShapeT1], logp: onp.ToFloat, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[_ShapeT1]: ...
     @overload  # self: 0-d, logp: 0-d
-    def ilogcdf(self: _BaseDist0[npc.number], logp: onp.ToFloat, /, *, method: _ICDFMethod | None = None) -> _Float: ...
+    def ilogcdf(self: _BaseDist0[npc.number], logp: onp.ToFloat, /, *, method: _ICDFMethod | None = None) -> np.float64: ...
     @overload  # self: 0-d, logp: 1-d
     def ilogcdf(self: _BaseDist0[npc.number], logp: onp.ToFloatStrict1D, /, *, method: _ICDFMethod | None = None) -> _Float1D: ...
     @overload  # self: 0-d, logp: 2-d
@@ -1338,7 +1337,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, logp: >=1-d
     def ilogcdf(self: _BaseDist3[npc.number], logp: onp.ToFloatND, /, *, method: _ICDFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def ilogcdf(
+    def ilogcdf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], logp: _ToFloat0ND, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1349,7 +1348,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDistribution[Any, _ShapeT1], p: onp.ToFloat, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[_ShapeT1]: ...
     @overload  # self: 0-d, p: 0-d
-    def iccdf(self: _BaseDist0[npc.number], p: onp.ToFloat, /, *, method: _ICDFMethod | None = None) -> _Float: ...
+    def iccdf(self: _BaseDist0[npc.number], p: onp.ToFloat, /, *, method: _ICDFMethod | None = None) -> np.float64: ...
     @overload  # self: 0-d, p: 1-d
     def iccdf(self: _BaseDist0[npc.number], p: onp.ToFloatStrict1D, /, *, method: _ICDFMethod | None = None) -> _Float1D: ...
     @overload  # self: 0-d, p: 2-d
@@ -1377,7 +1376,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, p: >=1-d
     def iccdf(self: _BaseDist3[npc.number], p: onp.ToFloatND, /, *, method: _ICDFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def iccdf(
+    def iccdf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], p: _ToFloat0ND, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1388,7 +1387,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDistribution[Any, _ShapeT1], logp: onp.ToFloat, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[_ShapeT1]: ...
     @overload  # self: 0-d, logp: 0-d
-    def ilogccdf(self: _BaseDist0[npc.number], logp: onp.ToFloat, /, *, method: _ICDFMethod | None = None) -> _Float: ...
+    def ilogccdf(self: _BaseDist0[npc.number], logp: onp.ToFloat, /, *, method: _ICDFMethod | None = None) -> np.float64: ...
     @overload  # self: 0-d, logp: 1-d
     def ilogccdf(
         self: _BaseDist0[npc.number], logp: onp.ToFloatStrict1D, /, *, method: _ICDFMethod | None = None
@@ -1428,12 +1427,12 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, logp: >=1-d
     def ilogccdf(self: _BaseDist3[npc.number], logp: onp.ToFloatND, /, *, method: _ICDFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def ilogccdf(
+    def ilogccdf(  # ty:ignore[invalid-method-override]
         self: _BaseDist1N[npc.number], logp: _ToFloat0ND, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
 #
-class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0_co]):
+class UnivariateDistribution(_BaseDistribution[_XT_co, _ShapeT0_co], Generic[_XT_co, _ShapeT0_co]):
     __array_priority__: ClassVar = 1
     _parameterizations: ClassVar[Sequence[_Parameterization]]
     _not_implemented: Final[str]
@@ -1487,30 +1486,30 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
 
     #
     @overload
-    def __add__(self, x: float | _Int | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __add__(self, x: float | npc.integer | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __add__(self, x: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
-    def __add__(self, x: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
+    def __add__(self, x: onp.ToFloat, /) -> _LinDist[Self, npc.floating, _ShapeT_co]: ...
     @overload
     def __add__(self: _DistT0, x: onp.CanArrayND[_FloatT, _ShapeT1], /) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
     @overload
-    def __add__[DistT_1: _Dist[onp.AtMost1D]](self: DistT_1, x: onp.ToFloatStrict1D, /) -> _LinDist[DistT_1, _Float, _1D]: ...
+    def __add__[DistT_1: _Dist[onp.AtMost1D]](self: DistT_1, x: onp.ToFloatStrict1D, /) -> _LinDist[DistT_1, np.float64, _1D]: ...
     @overload
-    def __add__[DistT_2: _Dist[onp.AtMost2D]](self: DistT_2, x: onp.ToFloatStrict2D, /) -> _LinDist[DistT_2, _Float, _2D]: ...
+    def __add__[DistT_2: _Dist[onp.AtMost2D]](self: DistT_2, x: onp.ToFloatStrict2D, /) -> _LinDist[DistT_2, np.float64, _2D]: ...
     @overload
-    def __add__[DistT_3: _Dist[onp.AtMost3D]](self: DistT_3, x: onp.ToFloatStrict3D, /) -> _LinDist[DistT_3, _Float, _3D]: ...
+    def __add__[DistT_3: _Dist[onp.AtMost3D]](self: DistT_3, x: onp.ToFloatStrict3D, /) -> _LinDist[DistT_3, np.float64, _3D]: ...
     @overload
-    def __add__(self, x: onp.ToFloatND, /) -> _LinDist[Self, _Float, tuple[Any, ...]]: ...
+    def __add__(self, x: onp.ToFloatND, /) -> _LinDist[Self, np.float64, tuple[Any, ...]]: ...
     __radd__ = __add__
 
     #
     @overload
-    def __sub__(self, lshift: float | _Int | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __sub__(self, lshift: float | npc.integer | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __sub__(self, lshift: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
-    def __sub__(self, lshift: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
+    def __sub__(self, lshift: onp.ToFloat, /) -> _LinDist[Self, npc.floating, _ShapeT_co]: ...
     @overload
     def __sub__(
         self: _DistT0, lshift: onp.CanArrayND[_FloatT, _ShapeT1], /
@@ -1518,38 +1517,44 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
     @overload
     def __sub__[DistT_1: _Dist[onp.AtMost1D]](
         self: DistT_1, lshift: onp.ToFloatStrict1D, /
-    ) -> _LinDist[DistT_1, _Float, _1D]: ...
+    ) -> _LinDist[DistT_1, np.float64, _1D]: ...
     @overload
     def __sub__[DistT_2: _Dist[onp.AtMost2D]](
         self: DistT_2, lshift: onp.ToFloatStrict2D, /
-    ) -> _LinDist[DistT_2, _Float, _2D]: ...
+    ) -> _LinDist[DistT_2, np.float64, _2D]: ...
     @overload
     def __sub__[DistT_3: _Dist[onp.AtMost3D]](
         self: DistT_3, lshift: onp.ToFloatStrict3D, /
-    ) -> _LinDist[DistT_3, _Float, _3D]: ...
+    ) -> _LinDist[DistT_3, np.float64, _3D]: ...
     @overload
-    def __sub__(self, lshift: onp.ToFloatND, /) -> _LinDist[Self, _Float, tuple[Any, ...]]: ...
+    def __sub__(self, lshift: onp.ToFloatND, /) -> _LinDist[Self, np.float64, tuple[Any, ...]]: ...
     __rsub__ = __sub__
 
     #
     @overload
-    def __mul__(self, scale: float | _Int | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __mul__(self, scale: float | npc.integer | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __mul__(self, scale: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
-    def __mul__(self, scale: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
+    def __mul__(self, scale: onp.ToFloat, /) -> _LinDist[Self, npc.floating, _ShapeT_co]: ...
     @overload
     def __mul__(
         self: _DistT0, scale: onp.CanArrayND[_FloatT, _ShapeT1], /
     ) -> _LinDist[_DistT0, _FloatT | _FloatT_co, _ShapeT1]: ...
     @overload
-    def __mul__[DistT_1: _Dist[onp.AtMost1D]](self: DistT_1, scale: onp.ToFloatStrict1D, /) -> _LinDist[DistT_1, _Float, _1D]: ...
+    def __mul__[DistT_1: _Dist[onp.AtMost1D]](
+        self: DistT_1, scale: onp.ToFloatStrict1D, /
+    ) -> _LinDist[DistT_1, np.float64, _1D]: ...
     @overload
-    def __mul__[DistT_2: _Dist[onp.AtMost2D]](self: DistT_2, scale: onp.ToFloatStrict2D, /) -> _LinDist[DistT_2, _Float, _2D]: ...
+    def __mul__[DistT_2: _Dist[onp.AtMost2D]](
+        self: DistT_2, scale: onp.ToFloatStrict2D, /
+    ) -> _LinDist[DistT_2, np.float64, _2D]: ...
     @overload
-    def __mul__[DistT_3: _Dist[onp.AtMost3D]](self: DistT_3, scale: onp.ToFloatStrict3D, /) -> _LinDist[DistT_3, _Float, _3D]: ...
+    def __mul__[DistT_3: _Dist[onp.AtMost3D]](
+        self: DistT_3, scale: onp.ToFloatStrict3D, /
+    ) -> _LinDist[DistT_3, np.float64, _3D]: ...
     @overload
-    def __mul__(self, scale: onp.ToFloatND, /) -> _LinDist[Self, _Float, tuple[Any, ...]]: ...
+    def __mul__(self, scale: onp.ToFloatND, /) -> _LinDist[Self, np.float64, tuple[Any, ...]]: ...
     __rmul__ = __mul__
 
     #
@@ -1558,11 +1563,11 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
 
     #
     @overload
-    def __truediv__(self, iscale: float | _Int | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
+    def __truediv__(self, iscale: float | npc.integer | np.bool, /) -> _LinDist[Self, np.float64 | _FloatT_co, _ShapeT_co]: ...
     @overload
     def __truediv__(self, iscale: _FloatT, /) -> _LinDist[Self, _FloatT | _FloatT_co, _ShapeT_co]: ...
     @overload
-    def __truediv__(self, iscale: onp.ToFloat, /) -> _LinDist[Self, _Float, _ShapeT_co]: ...
+    def __truediv__(self, iscale: onp.ToFloat, /) -> _LinDist[Self, npc.floating, _ShapeT_co]: ...
     @overload
     def __truediv__(
         self: _DistT0, iscale: onp.CanArrayND[_FloatT, _ShapeT1], /
@@ -1570,17 +1575,17 @@ class UnivariateDistribution(_BaseDistribution[_XT_co], Generic[_XT_co, _ShapeT0
     @overload
     def __truediv__[DistT_1: _Dist[onp.AtMost1D]](
         self: DistT_1, iscale: onp.ToFloatStrict1D, /
-    ) -> _LinDist[DistT_1, _Float, _1D]: ...
+    ) -> _LinDist[DistT_1, np.float64, _1D]: ...
     @overload
     def __truediv__[DistT_2: _Dist[onp.AtMost2D]](
         self: DistT_2, iscale: onp.ToFloatStrict2D, /
-    ) -> _LinDist[DistT_2, _Float, _2D]: ...
+    ) -> _LinDist[DistT_2, np.float64, _2D]: ...
     @overload
     def __truediv__[DistT_3: _Dist[onp.AtMost3D]](
         self: DistT_3, iscale: onp.ToFloatStrict3D, /
-    ) -> _LinDist[DistT_3, _Float, _3D]: ...
+    ) -> _LinDist[DistT_3, np.float64, _3D]: ...
     @overload
-    def __truediv__(self, iscale: onp.ToFloatND, /) -> _LinDist[Self, _Float, tuple[Any, ...]]: ...
+    def __truediv__(self, iscale: onp.ToFloatND, /) -> _LinDist[Self, np.float64, tuple[Any, ...]]: ...
     __rtruediv__ = __truediv__
 
 #
@@ -1615,33 +1620,33 @@ class ShiftedScaledDistribution(
 class FoldedDistribution(TransformedDistribution[_DistT_co, _FloatT_co, _ShapeT_co], Generic[_DistT_co, _FloatT_co, _ShapeT_co]):
     @overload
     def __init__[DistT0: _Dist[_0D]](
-        self: _FoldDist[DistT0, _Float, _0D], X: DistT0, /, *args: Never, **kwargs: Unpack[_DistOpts]
+        self: _FoldDist[DistT0, np.float64, _0D], X: DistT0, /, *args: Never, **kwargs: Unpack[_DistOpts]
     ) -> None: ...
     @overload
     def __init__[DistT1: _Dist[_1D]](
-        self: _FoldDist[DistT1, _Float, _1D], X: DistT1, /, *args: Never, **kwargs: Unpack[_DistOpts]
+        self: _FoldDist[DistT1, np.float64, _1D], X: DistT1, /, *args: Never, **kwargs: Unpack[_DistOpts]
     ) -> None: ...
     @overload
     def __init__[DistT2: _Dist[_2D]](
-        self: _FoldDist[DistT2, _Float, _2D], X: DistT2, /, *args: Never, **kwargs: Unpack[_DistOpts]
+        self: _FoldDist[DistT2, np.float64, _2D], X: DistT2, /, *args: Never, **kwargs: Unpack[_DistOpts]
     ) -> None: ...
     @overload
     def __init__[DistT3: _Dist[_3D]](
-        self: _FoldDist[DistT3, _Float, _3D], X: DistT3, /, *args: Never, **kwargs: Unpack[_DistOpts]
+        self: _FoldDist[DistT3, np.float64, _3D], X: DistT3, /, *args: Never, **kwargs: Unpack[_DistOpts]
     ) -> None: ...
     @overload
     def __init__[DistT: _Dist[tuple[int, ...]]](
-        self: _FoldDist[DistT, _Float, _ND], X: DistT, /, *args: Never, **kwargs: Unpack[_DistOpts]
+        self: _FoldDist[DistT, np.float64, _ND], X: DistT, /, *args: Never, **kwargs: Unpack[_DistOpts]
     ) -> None: ...
 
-class TruncatedDistribution(TransformedDistribution[_DistT_co, _Float, _ShapeT_co], Generic[_DistT_co, _ShapeT_co]):
+class TruncatedDistribution(TransformedDistribution[_DistT_co, np.float64, _ShapeT_co], Generic[_DistT_co, _ShapeT_co]):
     _lb_domain: ClassVar[_RealInterval] = ...
     _lb_param: ClassVar[_RealParameter] = ...
     _ub_domain: ClassVar[_RealInterval] = ...
     _ub_param: ClassVar[_RealParameter] = ...
 
-    lb: _ParamField[_Float, _ShapeT_co]
-    ub: _ParamField[_Float, _ShapeT_co]
+    lb: _ParamField[np.float64, _ShapeT_co]
+    ub: _ParamField[np.float64, _ShapeT_co]
 
     @overload
     def __init__[DistT0: _Dist[_0D]](
@@ -1695,7 +1700,7 @@ class TruncatedDistribution(TransformedDistribution[_DistT_co, _Float, _ShapeT_c
     ) -> None: ...
 
 # always float64 or longdouble
-class OrderStatisticDistribution(TransformedDistribution[_DistT_co, _OutFloat, _ShapeT_co], Generic[_DistT_co, _ShapeT_co]):
+class OrderStatisticDistribution(TransformedDistribution[_DistT_co, np.float64, _ShapeT_co], Generic[_DistT_co, _ShapeT_co]):
     _r_domain: ClassVar[_IntegerInterval] = ...
     _r_param: ClassVar[_RealParameter] = ...
 
@@ -1754,11 +1759,13 @@ class OrderStatisticDistribution(TransformedDistribution[_DistT_co, _OutFloat, _
     ) -> None: ...
 
 # without HKT there's no reasonable way tot determine the floating scalar type
-class MonotonicTransformedDistribution(TransformedDistribution[_DistT_co, _Float, _ShapeT_co], Generic[_DistT_co, _ShapeT_co]):
-    _g: Final[_Elementwise[_Float]]
-    _h: Final[_Elementwise[_Float]]
-    _dh: Final[_Elementwise[_Float]]
-    _logdh: Final[_Elementwise[_Float]]
+class MonotonicTransformedDistribution(
+    TransformedDistribution[_DistT_co, np.float64, _ShapeT_co], Generic[_DistT_co, _ShapeT_co]
+):
+    _g: Final[_Elementwise[np.float64]]
+    _h: Final[_Elementwise[np.float64]]
+    _dh: Final[_Elementwise[np.float64]]
+    _logdh: Final[_Elementwise[np.float64]]
     _increasing: Final[bool]
     _repr_pattern: Final[str]
     _str_pattern: Final[str]
@@ -1768,10 +1775,10 @@ class MonotonicTransformedDistribution(TransformedDistribution[_DistT_co, _Float
         X: _DistT_co,
         /,
         *args: Never,
-        g: _Elementwise[_Float],
-        h: _Elementwise[_Float],
-        dh: _Elementwise[_Float],
-        logdh: _Elementwise[_Float] | None = None,
+        g: _Elementwise[np.float64],
+        h: _Elementwise[np.float64],
+        dh: _Elementwise[np.float64],
+        logdh: _Elementwise[np.float64] | None = None,
         increasing: bool = True,
         repr_pattern: str | None = None,
         str_pattern: str | None = None,
@@ -1793,11 +1800,11 @@ class Mixture(_BaseDistribution[_FloatT_co, _0D], Generic[_FloatT_co]):
     def __init__(self, /, components: Sequence[_CDist0[_FloatT_co]], *, weights: onp.ToFloat1D | None = None) -> None: ...
     #
     @override
-    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> _OutFloat: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> np.float64: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
 
     # always raises NotImplementedError`
     @override
-    def lmoment(self, order: int = 1, *, standardize: bool = False, method: _LMomentMethod | None = None) -> Never: ...
+    def lmoment(self, order: int = 1, *, standardize: bool = True, method: _LMomentMethod | None = None) -> Never: ...
 
 ###
 
@@ -1838,15 +1845,15 @@ def order_statistic[DistT: _Dist[tuple[int, ...]]](
 
 #
 @overload
-def abs[DistT0: _Dist[_0D]](X: DistT0, /) -> _FoldDist[DistT0, _Float, _0D]: ...
+def abs[DistT0: _Dist[_0D]](X: DistT0, /) -> _FoldDist[DistT0, np.float64, _0D]: ...
 @overload
-def abs[DistT1: _Dist[_1D]](X: DistT1, /) -> _FoldDist[DistT1, _Float, _1D]: ...
+def abs[DistT1: _Dist[_1D]](X: DistT1, /) -> _FoldDist[DistT1, np.float64, _1D]: ...
 @overload
-def abs[DistT2: _Dist[_2D]](X: DistT2, /) -> _FoldDist[DistT2, _Float, _2D]: ...
+def abs[DistT2: _Dist[_2D]](X: DistT2, /) -> _FoldDist[DistT2, np.float64, _2D]: ...
 @overload
-def abs[DistT3: _Dist[_3D]](X: DistT3, /) -> _FoldDist[DistT3, _Float, _3D]: ...
+def abs[DistT3: _Dist[_3D]](X: DistT3, /) -> _FoldDist[DistT3, np.float64, _3D]: ...
 @overload
-def abs[DistT: _Dist[tuple[int, ...]]](X: DistT, /) -> _FoldDist[DistT, _Float, _ND]: ...
+def abs[DistT: _Dist[tuple[int, ...]]](X: DistT, /) -> _FoldDist[DistT, np.float64, _ND]: ...
 
 #
 @overload
@@ -1872,10 +1879,90 @@ def log[DistT3: _Dist[_3D]](X: DistT3, /) -> MonotonicTransformedDistribution[Di
 @overload
 def log[DistT: _Dist[tuple[int, ...]]](X: DistT, /) -> MonotonicTransformedDistribution[DistT, _ND]: ...
 
-# NOTE: These currently don't support >0-d parameters, and it looks like they always return float64, regardless of dtype
-@type_check_only
-class CustomContinuousDistribution(ContinuousDistribution[np.float64, _0D]):
-    _dtype: np.dtype[_Float]  # ignored
+###
+# make_distribution
 
-# TODO(jorenham): support for `rv_discrete`
-def make_distribution(dist: rv_continuous | _DuckDistributionType) -> type[CustomContinuousDistribution]: ...
+@type_check_only
+class _CustomDistributionMixin:
+    def __init__(
+        self,
+        *,
+        tol: float | _Null | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ToFloat | onp.ToFloatND | None,
+    ) -> None: ...
+
+    # NOTE: The signatures of `pdf`, `logpdf`, `pmf`, and `logpmf` are equivalent
+    @overload  # x: 0-d
+    def pdf(self, x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # x: >0-d
+    def pdf(self, x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> onp.ArrayND[np.float64]: ...
+
+    #
+    @overload  # x: 0-d
+    def logpdf(self, x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # x: >0-d
+    def logpdf(self, x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> onp.ArrayND[np.float64]: ...
+
+    #
+    @overload  # x: 0-d
+    def pmf(self, x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # x: >0-d
+    def pmf(self, x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> onp.ArrayND[np.float64]: ...
+
+    #
+    @overload  # x: 0-d
+    def logpmf(self, x: onp.ToFloat, /, *, method: _PXFMethod | None = None) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # x: >0-d
+    def logpmf(self, x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> onp.ArrayND[np.float64]: ...
+
+@type_check_only
+class _CustomContinuousDistribution(ContinuousDistribution[np.float64, _ShapeT_co]): ...
+
+@type_check_only
+class _CustomDiscreteDistribution(DiscreteDistribution[np.float64, _ShapeT_co]): ...
+
+# Workarounds for the lack of higher-kinded typing (HKT) support in Python.
+# See https://github.com/python/typing/issues/548 and https://github.com/jorenham/hkt-survey for details.
+
+@type_check_only
+class _CustomContinuousDistributionKind(Protocol):
+    @overload
+    def __call__(self, /) -> _CustomContinuousDistribution[tuple[()]]: ...  # pyright: ignore[reportOverlappingOverload]
+    @overload
+    def __call__(self, /, **parameters: onp.ToFloat) -> _CustomContinuousDistribution[tuple[()]]: ...
+    @overload
+    def __call__(
+        self, /, **parameters: onp.ArrayND[_Real, tuple[Never, Never, Never]]
+    ) -> _CustomContinuousDistribution[tuple[()]] | _CustomContinuousDistribution[tuple[Any, ...]]: ...
+    @overload
+    def __call__(self, /, **parameters: onp.ToFloatStrict1D) -> _CustomContinuousDistribution[tuple[int]]: ...
+    @overload
+    def __call__(self, /, **parameters: onp.ToFloatStrict2D) -> _CustomContinuousDistribution[tuple[int, int]]: ...
+    @overload
+    def __call__(self, /, **parameters: onp.ToFloatND) -> _CustomContinuousDistribution[tuple[int, *tuple[Any, ...]]]: ...
+
+@type_check_only
+class _CustomDiscreteDistributionKind(Protocol):
+    @overload
+    def __call__(self, /) -> _CustomDiscreteDistribution[tuple[()]]: ...  # pyright: ignore[reportOverlappingOverload]
+    @overload
+    def __call__(self, /, **parameters: onp.ToFloat) -> _CustomDiscreteDistribution[tuple[()]]: ...
+    @overload
+    def __call__(
+        self, /, **parameters: onp.ArrayND[_Real, tuple[Never, Never, Never]]
+    ) -> _CustomDiscreteDistribution[tuple[()]] | _CustomDiscreteDistribution[tuple[Any, ...]]: ...
+    @overload
+    def __call__(self, /, **parameters: onp.ToFloatStrict1D) -> _CustomDiscreteDistribution[tuple[int]]: ...
+    @overload
+    def __call__(self, /, **parameters: onp.ToFloatStrict2D) -> _CustomDiscreteDistribution[tuple[int, int]]: ...
+    @overload
+    def __call__(self, /, **parameters: onp.ToFloatND) -> _CustomDiscreteDistribution[tuple[int, *tuple[Any, ...]]]: ...
+
+@overload
+def make_distribution(dist: _DuckDistributionType) -> type[_CustomContinuousDistribution[tuple[()]]]: ...
+@overload
+def make_distribution(dist: rv_continuous) -> _CustomContinuousDistributionKind: ...
+@overload
+def make_distribution(dist: rv_discrete) -> _CustomDiscreteDistributionKind: ...

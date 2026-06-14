@@ -134,7 +134,10 @@ class Jacobian(Generic[_InexactT_co]):  # undocumented
 
 class InverseJacobian(Generic[_InexactT_co]):
     jacobian: Jacobian[_InexactT_co]
+
     matvec: Callable[[_InexactND], onp.Array1D[_InexactT_co]] | Callable[[_InexactND, onp.ToFloat], onp.Array1D[_InexactT_co]]
+    update: Callable[[_InexactND, onp.ArrayND[_InexactT_co]], None]
+    setup: Callable[[_InexactND, onp.ArrayND[_InexactT_co], _ResidFunc], None]
     rmatvec: Callable[[_InexactND], onp.Array1D[_InexactT_co]] | Callable[[_InexactND, onp.ToFloat], onp.Array1D[_InexactT_co]]
 
     @property

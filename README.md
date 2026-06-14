@@ -117,9 +117,9 @@ The speed gap exists mainly because `scipy-stubs` doesn’t require compilation 
 
 - [Mypy](https://github.com/python/mypy),
 - [Pyright](https://github.com/microsoft/pyright) (a.k.a. Pylance),
-- [BasedPyright](https://github.com/detachhead/basedpyright), and
-- [Pyrefly](https://github.com/facebook/pyrefly) (currently in beta, so it may not always work as expected).
-- [ty](https://github.com/astral-sh/ty) (currently in alpha, so it may not always work as expected).
+- [BasedPyright](https://github.com/detachhead/basedpyright),
+- [Pyrefly](https://github.com/facebook/pyrefly), and
+- [ty](https://github.com/astral-sh/ty) (currently in beta, so it may not always work as expected).
 
 ### Q: Do I need to change my existing code?
 
@@ -145,6 +145,10 @@ even without explicit type annotations in your code.
 
 **A:** You should see improved autocompletion in your IDE and more precise type information.
 You can also run `mypy`, `pyright` or another type checker on your code to see type checking in action.
+
+### Q: Is this vibe-coded?
+
+**A:** No.
 
 ## Versioning and requirements
 
@@ -311,6 +315,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 
 `scipy-stubs` is used by a number of major open-source projects, including:
 
+[Agents](https://github.com/livekit/agents) |
 Apache Spark ([PySpark](https://github.com/apache/spark)) |
 [Artisan](https://github.com/artisan-roaster-scope/artisan) |
 [Arviz](https://github.com/arviz-devs/arviz) |
@@ -366,6 +371,7 @@ PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 [python-hvac](https://github.com/TomLXXVI/python-hvac) |
 [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay) |
 [scikit-fingerprints](https://github.com/scikit-fingerprints/scikit-fingerprints) |
+[scqubits](https://github.com/scqubits/scqubits) |
 scverse ([PyDESeq2](https://github.com/scverse/PyDESeq2), [scanpy](https://github.com/scverse/scanpy)) |
 [SeQUeNCe](https://github.com/sequence-toolbox/SeQUeNCe) |
 [Skore](https://github.com/probabl-ai/skore) |

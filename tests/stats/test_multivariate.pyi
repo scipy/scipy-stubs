@@ -119,6 +119,10 @@ assert_type(multivariate_normal(_f_1d).cdf(_f_2d), onp.Array1D[np.float64])
 assert_type(multivariate_normal(_f_1d).cdf(_f_3d), onp.Array2D[np.float64])
 assert_type(multivariate_normal(_f_1d).cdf(_f_nd), np.float64 | onp.ArrayND[np.float64])
 
+assert_type(multivariate_normal(_f_1d).rvs(size=()), onp.Array1D[np.float64])
+assert_type(multivariate_normal(_f_1d).rvs(size=(2,)), onp.Array2D[np.float64])
+assert_type(multivariate_normal(_f_1d).rvs(size=(2, 3)), onp.ArrayND[np.float64])
+
 # matrix_normal
 
 assert_type(matrix_normal.rvs().dtype, np.dtype[np.float64])
@@ -393,6 +397,11 @@ assert_type(matrix_t(df=1).rvs().dtype, np.dtype[np.float64])
 
 assert_type(vonmises_fisher.rvs([0.8, 0.6]).dtype, np.dtype[np.float64])
 assert_type(vonmises_fisher([0.8, 0.6]).rvs().dtype, np.dtype[np.float64])
+
+assert_type(vonmises_fisher([0.8, 0.6], kappa=0.5).rvs().dtype, np.dtype[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6], kappa=1.5).rvs().dtype, np.dtype[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6], kappa=20.0).rvs().dtype, np.dtype[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6], kappa=1).rvs().dtype, np.dtype[np.float64])
 
 # normal_inverse_gamma
 

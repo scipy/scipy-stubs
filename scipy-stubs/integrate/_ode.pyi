@@ -94,7 +94,7 @@ class ode(Generic[_Inexact64T_co, *_Ts]):
 class complex_ode(ode[np.complex128, *_Ts], Generic[*_Ts]):
     cf: Callable[[float, onp.Array1D[np.complex128], *_Ts], complex | onp.ToComplex1D]
     cjac: Callable[[float, onp.Array1D[np.complex128], *_Ts], complex | onp.ToComplex2D] | None
-    tmp: onp.Array1D[np.float64]
+    tmp_derivative: onp.Array1D[np.float64]
 
     @override
     # pyrefly: ignore [bad-override]

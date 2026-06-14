@@ -206,6 +206,7 @@ class BPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
 class NdPPoly(Generic[_CT_co]):
     c: _Array2ND[_CT_co]
     x: tuple[onp.Array1D[np.float64], ...]
+    extrapolate: bool
 
     @classmethod
     def construct_fast(

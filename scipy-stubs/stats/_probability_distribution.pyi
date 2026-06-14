@@ -72,7 +72,7 @@ class _ProbabilityDistribution(Generic[_XT_co], metaclass=abc.ABCMeta):
 
     # The `kind` param here is wrong: https://github.com/scipy/scipy/pull/25243
     @abc.abstractmethod
-    def lmoment(self, /, order: int, kind: bool, *, method: _LMomentMethod | None) -> _Float | _FloatND: ...
+    def lmoment(self, /, order: int, *, standardize: bool, method: _LMomentMethod | None) -> _Float | _FloatND: ...
 
     #
     @abc.abstractmethod
