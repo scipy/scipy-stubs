@@ -58,8 +58,8 @@ assert_type(_tf_2d[:1], RigidTransform[tuple[int, int]])
 assert_type(_tf_nd[:1], RigidTransform)
 
 # __iter__
-assert_type(next(iter(_tf_1d)), RigidTransform[tuple[()]])  # pyrefly: ignore[assert-type]
-assert_type(next(iter(_tf_2d)), RigidTransform[tuple[int]])  # pyrefly: ignore[assert-type]
+assert_type(next(iter(_tf_1d)), RigidTransform[tuple[()]])
+assert_type(next(iter(_tf_2d)), RigidTransform[tuple[int]])
 assert_type(next(iter(_tf_nd)), RigidTransform)
 
 # rotation
