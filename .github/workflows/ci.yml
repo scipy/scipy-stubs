@@ -67,6 +67,9 @@ jobs:
         with:
           python-version: "3.14"
 
+      - name: pyrefly coverage check
+        run: uv run pyrefly coverage check --public-only --fail-under=99.9 scipy-stubs
+
       - name: check for unstubbed modules
         run: uv run scripts/unstubbed_modules.py
 
