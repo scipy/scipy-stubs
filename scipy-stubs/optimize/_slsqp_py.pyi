@@ -10,10 +10,9 @@ __all__ = ["approx_jacobian", "fmin_slsqp"]
 
 ###
 
-type _Fun[_FT: onp.ToFloat | onp.ToFloatND] = Callable[Concatenate[onp.Array1D[np.float64], ...], _FT]
-type _Fun0D = _Fun[onp.ToFloat]
-type _Fun1D = _Fun[onp.ToFloat1D]
-type _Fun2D = _Fun[onp.ToFloat2D]
+type _Fun0D = Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat]
+type _Fun1D = Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat1D]
+type _Fun2D = Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat2D]
 
 type _ExitMode = Literal[-1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 type _ExitDesc = Literal[

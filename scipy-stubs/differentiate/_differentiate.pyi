@@ -9,14 +9,13 @@ import optype.numpy.compat as npc
 
 from scipy._lib._util import _RichResult
 
-_FloatT = TypeVar("_FloatT", bound=npc.floating, default=np.float64)
 _FloatT_co = TypeVar("_FloatT_co", bound=npc.floating, default=np.float64, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 _ShapeT2_co = TypeVar("_ShapeT2_co", bound=tuple[int, int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
-type _Function00[_FloatT: npc.floating] = Callable[Concatenate[_FloatT, ...], onp.ToFloat]
-type _Function11[_FloatT: npc.floating] = Callable[Concatenate[onp.Array1D[_FloatT], ...], onp.ToFloat1D]
-type _FunctionNN[_FloatT: npc.floating] = Callable[Concatenate[onp.ArrayND[_FloatT, Any], ...], onp.ToFloatND]
+type _Function00[FloatT: npc.floating] = Callable[Concatenate[FloatT, ...], onp.ToFloat]
+type _Function11[FloatT: npc.floating] = Callable[Concatenate[onp.Array1D[FloatT], ...], onp.ToFloat1D]
+type _FunctionNN[FloatT: npc.floating] = Callable[Concatenate[onp.ArrayND[FloatT, Any], ...], onp.ToFloatND]
 
 @type_check_only
 class _Tolerances(TypedDict, total=False):
@@ -65,7 +64,7 @@ class _HessianResult(_RichResult, Generic[_FloatT_co, _ShapeT2_co]):
 @overload  # 0-d float64
 def derivative(
     f: _Function00[np.float64],
-    x: float | onp.CanArray0[np.float64 | npc.integer],
+    x: float | np.float64 | npc.integer | onp.CanArray0[np.float64 | npc.integer],
     *,
     args: tuple[onp.ToScalar, ...] = (),
     kwargs: Mapping[str, onp.ToScalar] | None = None,
@@ -79,9 +78,9 @@ def derivative(
     callback: Callable[[_DerivativeResult0D[np.float64]], Unused] | None = None,
 ) -> _DerivativeResult0D[np.float64]: ...
 @overload  # 0-d <known>
-def derivative(
-    f: _Function00[_FloatT],
-    x: onp.CanArray0[_FloatT],
+def derivative[FloatT: npc.floating](
+    f: _Function00[FloatT],
+    x: FloatT | onp.CanArray0[FloatT | npc.integer],
     *,
     args: tuple[onp.ToScalar, ...] = (),
     kwargs: Mapping[str, onp.ToScalar] | None = None,
@@ -92,11 +91,11 @@ def derivative(
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt = 0,
     preserve_shape: Literal[False] = False,
-    callback: Callable[[_DerivativeResult0D[_FloatT]], Unused] | None = None,
-) -> _DerivativeResult0D[_FloatT]: ...
+    callback: Callable[[_DerivativeResult0D[FloatT]], Unused] | None = None,
+) -> _DerivativeResult0D[FloatT]: ...
 @overload  # 1-d <unknown>
-def derivative(
-    f: _Function11[_FloatT],
+def derivative[FloatT: npc.floating](
+    f: _Function11[FloatT],
     x: onp.ToFloatStrict1D,
     *,
     args: tuple[onp.ToScalar | onp.ToArrayStrict1D, ...] = (),
@@ -108,12 +107,12 @@ def derivative(
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntStrict1D = 0,
     preserve_shape: Literal[False] = False,
-    callback: Callable[[_DerivativeResultND[_FloatT, tuple[int]]], Unused] | None = None,
-) -> _DerivativeResultND[_FloatT, tuple[int]]: ...
+    callback: Callable[[_DerivativeResultND[FloatT, tuple[int]]], Unused] | None = None,
+) -> _DerivativeResultND[FloatT, tuple[int]]: ...
 @overload  # n-d <known>
-def derivative(
-    f: _FunctionNN[_FloatT],
-    x: _FloatT | onp.ToArrayND[_FloatT],
+def derivative[FloatT: npc.floating](
+    f: _FunctionNN[FloatT],
+    x: FloatT | onp.ToArrayND[FloatT],
     *,
     args: tuple[onp.ToScalar | onp.ToArrayND, ...] = (),
     kwargs: Mapping[str, onp.ToScalar | onp.ToArrayND] | None = None,
@@ -124,11 +123,11 @@ def derivative(
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntND = 0,
     preserve_shape: bool = False,
-    callback: Callable[[_DerivativeResultND[_FloatT]], Unused] | None = None,
-) -> _DerivativeResultND[_FloatT]: ...
+    callback: Callable[[_DerivativeResultND[FloatT]], Unused] | None = None,
+) -> _DerivativeResultND[FloatT]: ...
 @overload  # n-d <unknown>
-def derivative(
-    f: _FunctionNN[_FloatT],
+def derivative[FloatT: npc.floating](
+    f: _FunctionNN[FloatT],
     x: onp.ToFloat | onp.ToFloatND,
     *,
     args: tuple[onp.ToScalar | onp.ToArrayND, ...] = (),
@@ -140,12 +139,12 @@ def derivative(
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntND = 0,
     preserve_shape: bool = False,
-    callback: Callable[[_DerivativeResultND[_FloatT]], Unused] | None = None,
-) -> _DerivativeResultND[_FloatT]: ...
+    callback: Callable[[_DerivativeResultND[FloatT]], Unused] | None = None,
+) -> _DerivativeResultND[FloatT]: ...
 
 #
-def jacobian(
-    f: Callable[[onp.Array[Any, _FloatT]], onp.ToFloat | onp.ToFloatND],
+def jacobian[FloatT: npc.floating](
+    f: Callable[[onp.Array[Any, FloatT]], onp.ToFloat | onp.ToFloatND],
     x: onp.ToFloatND,
     *,
     tolerances: _Tolerances | None = None,
@@ -154,11 +153,11 @@ def jacobian(
     initial_step: onp.ToFloat | onp.ToFloatND = 0.5,
     step_factor: onp.ToFloat = 2.0,
     step_direction: onp.ToJustInt | onp.ToJustIntND = 0,
-) -> _JacobianResult[_FloatT, onp.AtLeast1D]: ...
+) -> _JacobianResult[FloatT, onp.AtLeast1D]: ...
 
 #
-def hessian(
-    f: Callable[[onp.Array[Any, _FloatT]], onp.ToFloat | onp.ToFloatND],
+def hessian[FloatT: npc.floating](
+    f: Callable[[onp.Array[Any, FloatT]], onp.ToFloat | onp.ToFloatND],
     x: onp.ToFloatND,
     *,
     tolerances: _Tolerances | None = None,
@@ -166,4 +165,4 @@ def hessian(
     order: ConvertibleToInt = 8,
     initial_step: onp.ToFloat | onp.ToFloatND = 0.5,
     step_factor: onp.ToFloat = 2.0,
-) -> _HessianResult[_FloatT, onp.AtLeast2D]: ...
+) -> _HessianResult[FloatT, onp.AtLeast2D]: ...
