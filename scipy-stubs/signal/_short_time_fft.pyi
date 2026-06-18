@@ -221,7 +221,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def __init__[InexactT: npc.inexact](
         self: ShortTimeFFT[InexactT, np.float64],
         /,
-        win: onp.ArrayND[_InexactT_co],
+        win: onp.ArrayND[InexactT],
         hop: int,
         fs: float,
         *,
