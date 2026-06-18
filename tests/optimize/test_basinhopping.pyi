@@ -4,10 +4,23 @@ import numpy as np
 import optype.numpy as onp
 
 from scipy.optimize import basinhopping
-from scipy.optimize._basinhopping import OptimizeResult
 
-def obj(x: onp.Array1D[np.float64]) -> float: ...
+###
 
-x0: onp.Array1D[np.float64]
+def _fn_f64_1d(x: onp.Array1D[np.float64]) -> float: ...
 
-assert_type(basinhopping(obj, x0), OptimizeResult)
+_f64_1d: onp.Array1D[np.float64]
+
+###
+
+assert_type(basinhopping(_fn_f64_1d, _f64_1d).success, bool)
+assert_type(basinhopping(_fn_f64_1d, _f64_1d).nit, int)
+assert_type(basinhopping(_fn_f64_1d, _f64_1d).message, str)
+assert_type(basinhopping(_fn_f64_1d, _f64_1d).x, onp.Array1D[np.float64])
+assert_type(basinhopping(_fn_f64_1d, _f64_1d).fun, float | np.float64)
+assert_type(basinhopping(_fn_f64_1d, _f64_1d).minimization_failures, int)
+assert_type(basinhopping(_fn_f64_1d, _f64_1d).lowest_optimization_result.status, int)
+
+# https://github.com/scipy/scipy-stubs/issues/1730
+assert_type(basinhopping(_fn_f64_1d, _f64_1d, minimizer_kwargs={"args": (1, 2)}).x, onp.Array1D[np.float64])
+assert_type(basinhopping(_fn_f64_1d, _f64_1d, minimizer_kwargs={"bounds": [(0, 1)]}).x, onp.Array1D[np.float64])
