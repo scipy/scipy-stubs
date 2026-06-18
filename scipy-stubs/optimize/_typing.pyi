@@ -1,3 +1,5 @@
+# type-check-only helper types for internal use
+
 from collections.abc import Callable, Sequence
 from typing import Concatenate, Literal, NotRequired, type_check_only
 from typing_extensions import TypedDict
@@ -27,6 +29,7 @@ __all__ = [
 ]
 
 type _Float1D = onp.Array1D[np.float64]
+type _Args = tuple[object, ...]
 
 # bounds
 type Bound = tuple[onp.ToFloat | None, onp.ToFloat | None]
@@ -38,7 +41,7 @@ class _ConstraintDict(TypedDict):
     type: Literal["eq", "ineq"]
     fun: Callable[Concatenate[_Float1D, ...], onp.ToFloat]
     jac: NotRequired[Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]]
-    args: NotRequired[tuple[object, ...]]
+    args: NotRequired[_Args]
 
 type Constraint = LinearConstraint | NonlinearConstraint | _ConstraintDict
 type Constraints = Constraint | Sequence[Constraint]
@@ -95,10 +98,12 @@ type _FDMethod = Literal["2-point", "3-point", "cs"]
 
 @type_check_only
 class MinimizerKwargs(TypedDict, total=False):
+    args: _Args
     method: MethodMimimize
     jac: Callable[Concatenate[_Float1D, ...], onp.ToFloat1D] | _FDMethod | bool
     hess: Callable[Concatenate[_Float1D, ...], onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy
     hessp: Callable[Concatenate[_Float1D, _Float1D, ...], onp.ToFloat1D]
+    bounds: Bounds
     constraints: Constraints
     tol: onp.ToFloat
     options: _MinimizeOptions
