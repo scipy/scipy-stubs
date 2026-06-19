@@ -165,11 +165,11 @@ assert_type(bsr_matrix(_shape2, None, None), bsr_matrix[np.float64])
 ###
 # __getitem__ / __setitem__ truly return Never
 
-assert_type(bsr_arr[0], Never)  # type: ignore[index]  # pyright: ignore[reportArgumentType, reportCallIssue]
-assert_type(bsr_mat[0], Never)  # type: ignore[index]  # pyright: ignore[reportArgumentType, reportCallIssue]
+assert_type(bsr_arr[0], Never)  # type: ignore[index]  # pyright: ignore[reportArgumentType]
+assert_type(bsr_mat[0], Never)  # type: ignore[index]  # pyright: ignore[reportArgumentType]
 
 # __getitem__ / __setitem__ are `Never` (BSR does not support indexing)
 # pyrefly: ignore [bad-argument-type]
-bsr_arr[0]  # type: ignore[index] # pyright: ignore[reportArgumentType, reportCallIssue]
+bsr_arr[0]  # type: ignore[index]  # pyright: ignore[reportArgumentType]
 # pyrefly: ignore [bad-argument-type]
-bsr_mat[0]  # type: ignore[index]  # pyright: ignore[reportArgumentType, reportCallIssue]
+bsr_mat[0]  # type: ignore[index]  # pyright: ignore[reportArgumentType]
