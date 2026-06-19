@@ -1,12 +1,12 @@
 from collections.abc import Callable
-from typing import Concatenate, Literal, Protocol, TypeVar, type_check_only
+from typing import Concatenate, Literal, Protocol, TypeVar, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
 
 from ._minimize import OptimizeResult as _MinimizeResult
 from ._optimize import OptimizeResult as _OptimizeResult
-from ._typing import MinimizerKwargs
+from ._typing import MinimizerKwargs, MinimizerKwargsJac
 
 __all__ = ["basinhopping"]
 
@@ -43,21 +43,42 @@ class OptimizeResult(_OptimizeResult):
 
 ###
 
+@overload
 def basinhopping(
     func: Callable[Concatenate[_Float1D, ...], onp.ToFloat],
     x0: onp.ToFloat1D,
-    niter: onp.ToJustInt = 100,
+    niter: int = 100,
     T: onp.ToFloat = 1.0,
     stepsize: onp.ToFloat = 0.5,
     minimizer_kwargs: MinimizerKwargs | None = None,
     take_step: Callable[[_Float1D], onp.ToFloat] | None = None,
     accept_test: _AcceptTestFun[onp.ToFloat] | None = None,
     callback: _CallbackFun[float] | _CallbackFun[np.float64] | None = None,
-    interval: onp.ToJustInt = 50,
+    interval: int = 50,
     disp: bool = False,
-    niter_success: onp.ToJustInt | None = None,
+    niter_success: int | None = None,
     rng: onp.random.ToRNG | None = None,
     *,
+    seed: onp.random.ToRNG | None = None,
+    target_accept_rate: onp.ToFloat = 0.5,
+    stepwise_factor: onp.ToFloat = 0.9,
+) -> OptimizeResult: ...
+@overload  # minimizer_kwargs={"jac": True, ...}
+def basinhopping(
+    func: Callable[Concatenate[_Float1D, ...], tuple[onp.ToFloat, onp.ToFloat1D]],
+    x0: onp.ToFloat1D,
+    niter: int = 100,
+    T: onp.ToFloat = 1.0,
+    stepsize: onp.ToFloat = 0.5,
+    *,
+    minimizer_kwargs: MinimizerKwargsJac,
+    take_step: Callable[[_Float1D], onp.ToFloat] | None = None,
+    accept_test: _AcceptTestFun[onp.ToFloat] | None = None,
+    callback: _CallbackFun[float] | _CallbackFun[np.float64] | None = None,
+    interval: int = 50,
+    disp: bool = False,
+    niter_success: int | None = None,
+    rng: onp.random.ToRNG | None = None,
     seed: onp.random.ToRNG | None = None,
     target_accept_rate: onp.ToFloat = 0.5,
     stepwise_factor: onp.ToFloat = 0.9,
