@@ -1,7 +1,7 @@
 # type-check-only helper types for internal use
 
 from collections.abc import Callable, Sequence
-from typing import Concatenate, Literal, NotRequired, type_check_only
+from typing import Concatenate, Literal, NotRequired, Required, type_check_only
 from typing_extensions import TypedDict
 
 import numpy as np
@@ -24,6 +24,7 @@ __all__ = [
     "MethodMinimizeScalar",
     "MethodRootScalar",
     "MinimizerKwargs",
+    "MinimizerKwargsJac",
     "Solver",
     "TRSolver",
 ]
@@ -97,13 +98,20 @@ type MethodAll = Literal[
 type _FDMethod = Literal["2-point", "3-point", "cs"]
 
 @type_check_only
-class MinimizerKwargs(TypedDict, total=False):
+class _MinimizerKwargsBase(TypedDict, total=False):
     args: _Args
     method: MethodMimimize
-    jac: Callable[Concatenate[_Float1D, ...], onp.ToFloat1D] | _FDMethod | bool
     hess: Callable[Concatenate[_Float1D, ...], onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy
     hessp: Callable[Concatenate[_Float1D, _Float1D, ...], onp.ToFloat1D]
     bounds: Bounds
     constraints: Constraints
     tol: onp.ToFloat
     options: _MinimizeOptions
+
+@type_check_only
+class MinimizerKwargs(_MinimizerKwargsBase):
+    jac: NotRequired[Callable[Concatenate[_Float1D, ...], onp.ToFloat1D] | _FDMethod | Literal[False]]
+
+@type_check_only
+class MinimizerKwargsJac(_MinimizerKwargsBase):
+    jac: Required[Literal[True]]
