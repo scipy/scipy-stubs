@@ -28,11 +28,12 @@ type _as_c128 = npc.complexfloating128 | npc.complexfloating160  # noqa: PYI042
 # NOTE: On numpy<2.1, pyright reports 12 false positive incompatible overload errors here.
 # pyright: reportOverlappingOverload=false
 
-# NOTE: The ignored `overload-overlap` mypy errors are false positives
+# NOTE: 1/10 of mypy's false positive `overload-overlap` errors in this module are only reported with numpy<2.5
+# mypy: disable-error-code=overload-overlap
 
 #
 @overload  # Nd f64
-def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: onp.ArrayND[_as_f64, Shape2T],
     output: _OutputReal = "real",
     lwork: int | None = None,
@@ -41,7 +42,7 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.float64, Shape2T]]: ...
 @overload  # Nd f64, sort=<given>
-def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: onp.ArrayND[_as_f64, Shape2T],
     output: _OutputReal = "real",
     lwork: int | None = None,
@@ -51,7 +52,7 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-
     check_finite: bool = True,
 ) -> _Tuple2i[onp.ArrayND[np.float64, Shape2T]]: ...
 @overload  # Nd f64, output="complex"
-def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: onp.ArrayND[_as_f64, Shape2T],
     output: _OutputComplex,
     lwork: int | None = None,
@@ -60,7 +61,7 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.complex128, Shape2T]]: ...
 @overload  # Nd f64, output="complex", sort=<given>
-def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](  # type: ignore[overload-overlap]
+def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: onp.ArrayND[_as_f64, Shape2T],
     output: _OutputComplex,
     lwork: int | None = None,
@@ -146,7 +147,7 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     check_finite: bool = True,
 ) -> _Tuple2i[onp.ArrayND[np.complex64, Shape2T]]: ...
 @overload  # ?d f64
-def schur(  # type: ignore[overload-overlap]
+def schur(
     a: onp.ToArrayND[float, _as_f64],
     output: _OutputReal = "real",
     lwork: int | None = None,
@@ -155,7 +156,7 @@ def schur(  # type: ignore[overload-overlap]
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...
 @overload  # ?d f64, sort=<given>
-def schur(  # type: ignore[overload-overlap]
+def schur(
     a: onp.ToArrayND[float, _as_f64],
     output: _OutputReal = "real",
     lwork: int | None = None,
@@ -165,7 +166,7 @@ def schur(  # type: ignore[overload-overlap]
     check_finite: bool = True,
 ) -> _Tuple2i[onp.ArrayND[np.float64]]: ...
 @overload  # ?d f64, output="complex"
-def schur(  # type: ignore[overload-overlap]
+def schur(
     a: onp.ToArrayND[float, _as_f64],
     output: _OutputComplex,
     lwork: int | None = None,
@@ -174,7 +175,7 @@ def schur(  # type: ignore[overload-overlap]
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.complex128]]: ...
 @overload  # ?d f64, output="complex", sort=<given>
-def schur(  # type: ignore[overload-overlap]
+def schur(
     a: onp.ToArrayND[float, _as_f64],
     output: _OutputComplex,
     lwork: int | None = None,
@@ -262,7 +263,7 @@ def schur(
 
 # will raise for dtypes that don't have character code in `ilfdFD`
 @overload  # ?d c128|f64|i64|i32, ?d c128|f64|i64|i32
-def rsf2csf(  # type: ignore[overload-overlap]
+def rsf2csf(
     T: onp.ToArrayND[complex, npc.inexact64 | npc.integer64 | npc.integer32],
     Z: onp.ToArrayND[complex, npc.inexact64 | npc.integer64 | npc.integer32],
     check_finite: bool = True,

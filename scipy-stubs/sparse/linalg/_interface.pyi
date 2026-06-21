@@ -520,13 +520,16 @@ class _ProductLinearOperator(LinearOperator[_SCT1_co | _SCT2_co, _ShapeT_co], Ge
     @override
     def _adjoint(self, /) -> Self: ...
 
+# mypy reports a false positive `overload-overlap` error with numpy<2.5
+# mypy: disable-error-code=overload-overlap
+
 @final
 class _ScaledLinearOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     args: tuple[LinearOperator[_SCT_co, _ShapeT_co], _SCT_co | complex]
 
     #
     @overload
-    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], alpha: _SCT_co | complex, xp: ModuleType | None = None) -> Self: ...  # type:ignore[overload-overlap]
+    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], alpha: _SCT_co | complex, xp: ModuleType | None = None) -> Self: ...
     @overload
     def __new__[ShapeT: _Shape](
         cls, A: LinearOperator[npc.floating, ShapeT], alpha: onp.ToFloat64, xp: ModuleType | None = None

@@ -24,7 +24,8 @@ type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
 
 class LinAlgWarning(RuntimeWarning): ...
 
-# NOTE: the mypy errors are false positives (join vs union)
+# NOTE: mypy reports two false positive `overload-overlap` error with numpy<2.5
+# mypy: disable-error-code=overload-overlap
 
 @overload  # scalar, axis: None = ...
 def norm(
@@ -60,7 +61,7 @@ def norm[ShapeT: tuple[int, ...]](
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # float64-coercible array-like, keepdims: True (positional)
-def norm(  # type: ignore[overload-overlap]  # mypy false positive
+def norm(
     a: onp.ToArrayND[complex, _SubScalar],
     ord: _Order | None,
     axis: _Axis | None,
@@ -68,7 +69,7 @@ def norm(  # type: ignore[overload-overlap]  # mypy false positive
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # float64-coercible array-like, keepdims: True (keyword)
-def norm(  # type: ignore[overload-overlap]  # mypy false positive
+def norm(
     a: onp.ToArrayND[complex, _SubScalar],
     ord: _Order | None = None,
     axis: _Axis | None = None,
