@@ -17,7 +17,7 @@ type _FunctionForm = Literal["function", "lo"]
 ###
 
 @overload
-def laplacian(
+def laplacian(  # function form -> callable
     csgraph: _ToCSGraph,
     normed: bool = False,
     return_diag: onp.ToFalse = False,
@@ -27,9 +27,9 @@ def laplacian(
     form: _FunctionForm,
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
-) -> _LaplacianFunction: ...  # function form -> callable
+) -> _LaplacianFunction: ...
 @overload
-def laplacian(
+def laplacian(  # function form + return_diag -> callable + diag
     csgraph: _ToCSGraph,
     normed: bool = False,
     *,
@@ -39,9 +39,9 @@ def laplacian(
     form: _FunctionForm,
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
-) -> tuple[_LaplacianFunction, _LaplacianDiag]: ...  # function form + return_diag -> callable + diag
+) -> tuple[_LaplacianFunction, _LaplacianDiag]: ...
 @overload
-def laplacian(
+def laplacian(  # array form dense input -> dense output
     csgraph: onp.ToComplex2D,
     normed: bool = False,
     return_diag: onp.ToFalse = False,
@@ -51,9 +51,9 @@ def laplacian(
     form: Literal["array"] = "array",
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
-) -> onp.Array2D[npc.number]: ...  # array form dense input -> dense output
+) -> onp.Array2D[npc.number]: ...
 @overload
-def laplacian(
+def laplacian(  # array form dense input + return_diag -> dense output + diag
     csgraph: onp.ToComplex2D,
     normed: bool,
     return_diag: onp.ToTrue,
@@ -63,9 +63,9 @@ def laplacian(
     form: Literal["array"] = "array",
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
-) -> tuple[onp.Array2D[npc.number], _LaplacianDiag]: ...  # array form dense input + return_diag -> dense output + diag
+) -> tuple[onp.Array2D[npc.number], _LaplacianDiag]: ...
 @overload
-def laplacian(
+def laplacian(  # array form dense input + return_diag -> dense output + diag
     csgraph: onp.ToComplex2D,
     normed: bool = False,
     *,
@@ -75,9 +75,9 @@ def laplacian(
     form: Literal["array"] = "array",
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
-) -> tuple[onp.Array2D[npc.number], _LaplacianDiag]: ...  # array form dense input + return_diag -> dense output + diag
+) -> tuple[onp.Array2D[npc.number], _LaplacianDiag]: ...
 @overload
-def laplacian(
+def laplacian(  # array form sparse input -> sparse output
     csgraph: _spbase,
     normed: bool = False,
     return_diag: onp.ToFalse = False,
@@ -87,9 +87,9 @@ def laplacian(
     form: Literal["array"] = "array",
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
-) -> _spbase: ...  # array form sparse input -> sparse output
+) -> _spbase: ...
 @overload
-def laplacian(
+def laplacian(  # array form sparse input + return_diag -> sparse output + diag
     csgraph: _spbase,
     normed: bool,
     return_diag: onp.ToTrue,
@@ -99,9 +99,9 @@ def laplacian(
     form: Literal["array"] = "array",
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
-) -> tuple[_spbase, _LaplacianDiag]: ...  # array form sparse input + return_diag -> sparse output + diag
+) -> tuple[_spbase, _LaplacianDiag]: ...
 @overload
-def laplacian(
+def laplacian(  # array form sparse input + return_diag -> sparse output + diag
     csgraph: _spbase,
     normed: bool = False,
     *,
@@ -111,4 +111,4 @@ def laplacian(
     form: Literal["array"] = "array",
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
-) -> tuple[_spbase, _LaplacianDiag]: ...  # array form sparse input + return_diag -> sparse output + diag
+) -> tuple[_spbase, _LaplacianDiag]: ...
