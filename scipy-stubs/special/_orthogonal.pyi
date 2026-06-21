@@ -66,6 +66,9 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 # we need this to avoid false positives on numpy<2.1
 # pyright: reportOverlappingOverload = false
 
+# we need this to avoid a false positive on numpy>=2.5  (ffs...)
+# pyright: reportIncompatibleVariableOverride = false
+
 class orthopoly1d(np.poly1d):  # undocumented
     limits: Final[tuple[float, float]]
     weights: Final[onp.Array2D[np.float64]]
