@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Final, overload, override
+from typing import Any, Final, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -70,6 +70,9 @@ _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 # pyright: reportIncompatibleVariableOverride = false
 
 class orthopoly1d(np.poly1d):  # undocumented
+    # stubtest false positive workaround with `numpy>=2.5`
+    __module__: Any
+
     limits: Final[tuple[float, float]]
     weights: Final[onp.Array2D[np.float64]]
     weight_func: Final[Callable[[float], float]]
