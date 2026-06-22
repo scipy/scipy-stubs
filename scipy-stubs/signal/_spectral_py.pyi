@@ -61,9 +61,12 @@ def lombscargle(
     floating_mean: bool = False,
 ) -> _float64_1d: ...
 
+# NOTE: 9/9 of mypy's false positive `overload-overlap` errors in this module are only reported with numpy<2.5
+# mypy: disable-error-code=overload-overlap
+
 #
 @overload  # f64
-def periodogram(  # type: ignore[overload-overlap]
+def periodogram(
     x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow | None = "boxcar",
@@ -98,7 +101,7 @@ def periodogram(
 
 #
 @overload  # f64
-def welch(  # type: ignore[overload-overlap]
+def welch(
     x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
@@ -143,7 +146,7 @@ def welch(
 # NOTE: We assume that `x is not y` always holds here.
 # See https://github.com/scipy/scipy/issues/24285 for details.
 @overload  # c128
-def csd(  # type: ignore[overload-overlap]
+def csd(
     x: _ToInexact64ND,
     y: _ToInexact64ND,
     fs: float = 1.0,
@@ -206,7 +209,7 @@ def csd(
 # NOTE: Even though it is theoretically possible to pass `mode` as positional argument, it's unlikely to be done in practice,
 # and would significantly complicate the overloads. Thus, we only support passing `mode` as keyword argument here (if "complex").
 @overload  # f64, mode != "complex"
-def spectrogram(  # type: ignore[overload-overlap]
+def spectrogram(
     x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = ("tukey_periodic", 0.25),
@@ -220,7 +223,7 @@ def spectrogram(  # type: ignore[overload-overlap]
     mode: Literal["psd", "magnitude", "angle", "phase"] = "psd",
 ) -> tuple[_float64_1d, _float64_1d, _float64_nd]: ...
 @overload  # c128, mode == "complex"
-def spectrogram(  # type: ignore[overload-overlap]
+def spectrogram(
     x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = ("tukey_periodic", 0.25),
@@ -313,7 +316,7 @@ def check_NOLA(window: _ToWindow, nperseg: int, noverlap: int, tol: float = 1e-1
 
 #
 @overload  # c128
-def stft(  # type: ignore[overload-overlap]
+def stft(
     x: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
@@ -376,7 +379,7 @@ def stft(
 # NOTE: Even though it is theoretically possible to pass `input_onesided` positionally, it's unlikely to be done in practice
 # and would significantly complicate the overloads. Thus, we only support passing it as keyword argument here (if `False`).
 @overload  # f64, input_onesided=True (default)
-def istft(  # type: ignore[overload-overlap]
+def istft(
     Zxx: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
@@ -390,7 +393,7 @@ def istft(  # type: ignore[overload-overlap]
     scaling: _LegacyScaling = "spectrum",
 ) -> tuple[_float64_1d, _float64_nd]: ...
 @overload  # c128, input_onesided=False
-def istft(  # type: ignore[overload-overlap]
+def istft(
     Zxx: _ToInexact64ND,
     fs: float = 1.0,
     window: _ToWindow = "hann_periodic",
@@ -480,7 +483,7 @@ def istft(
 
 #
 @overload  # f64
-def coherence(  # type: ignore[overload-overlap]
+def coherence(
     x: _ToInexact64ND,
     y: _ToInexact64ND,
     fs: float = 1.0,
