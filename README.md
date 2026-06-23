@@ -16,7 +16,7 @@
 - **Shape- and dtype-aware**: array shapes and dtypes are tracked where applicable.
 - **Generics**: subscriptable types for sparse arrays, distributions, splines, and linear operators.
 - **No configuration**: works on install, affects type checking only, with no runtime impact.
-- **Broad checker support**: tested against mypy, pyright, basedpyright, pyrefly, and ty.
+- **Broad checker support**: tested against mypy, pyright, basedpyright, pyrefly, ty, and zuban.
 - **Thoroughly tested**: `stubtest` against the runtime, [`assert_type` tests][TYPETESTS] for inference, and [mypy_primer][PRIMER] for regressions.
 
 [TYPETESTS]: https://github.com/scipy/scipy-stubs/tree/master/tests
@@ -120,6 +120,7 @@ The speed gap exists mainly because `scipy-stubs` doesn’t require compilation 
 - [BasedPyright](https://github.com/detachhead/basedpyright),
 - [Pyrefly](https://github.com/facebook/pyrefly), and
 - [ty](https://github.com/astral-sh/ty) (currently in beta, so it may not always work as expected).
+- [Zuban](https://github.com/zubanls/zuban) (currently in beta, so it may not always work as expected).
 
 ### Q: Do I need to change my existing code?
 
