@@ -43,7 +43,6 @@ type _Inexact = _Float | _Complex
 type _Number = npc.integer | _Inexact
 
 type _ToNumber = complex | _Number
-type _ToNumberOrND = _ToNumber | onp.ArrayND[_Number]
 
 type _Array12D[ScalarT: np.generic] = onp.ArrayND[ScalarT, tuple[int] | tuple[int, int]]
 
