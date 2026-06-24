@@ -1,12 +1,12 @@
 from collections.abc import Callable, Iterable, Sequence
-from typing import Concatenate, Literal, Protocol, TypedDict, type_check_only
+from typing import Concatenate, Literal, Protocol, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
 
 from ._constraints import Bounds
 from ._optimize import OptimizeResult as _OptimizeResult
-from ._typing import Constraints, MinimizerKwargs
+from ._typing import Constraints, MinimizerKwargs, MinimizerKwargsJac
 
 __all__ = ["shgo"]
 
@@ -15,6 +15,9 @@ __all__ = ["shgo"]
 type _Float = float | np.float64
 type _Float1D = onp.Array1D[np.float64]
 type _Fun1D[_RT] = Callable[Concatenate[_Float1D, ...], _RT]
+
+type _ToBounds = tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds
+type _SamplingMethod = Callable[[int, int], onp.ToFloat2D] | Literal["simplicial", "halton", "sobol"]
 
 @type_check_only
 class _SHGOOptions(TypedDict, total=False):
@@ -53,17 +56,33 @@ class OptimizeResult(_OptimizeResult):
     nlhev: int  # undocumented
     nit: int
 
+@overload
 def shgo(
     func: _Fun1D[onp.ToFloat],
-    bounds: tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds,
+    bounds: _ToBounds,
     args: tuple[object, ...] = (),
     constraints: Constraints | None = None,
-    n: onp.ToJustInt = 100,
-    iters: onp.ToJustInt = 1,
+    n: int = 100,
+    iters: int = 1,
     callback: Callable[[_Float1D], None] | None = None,
     minimizer_kwargs: MinimizerKwargs | None = None,
     options: _SHGOOptions | None = None,
-    sampling_method: Callable[[int, int], onp.ToFloat2D] | Literal["simplicial", "halton", "sobol"] = "simplicial",
+    sampling_method: _SamplingMethod = "simplicial",
     *,
-    workers: onp.ToJustInt | _DoesMap = 1,
+    workers: int | _DoesMap = 1,
+) -> OptimizeResult: ...
+@overload  # minimizer_kwargs={"jac": True, ...}
+def shgo(
+    func: _Fun1D[tuple[onp.ToFloat, onp.ToFloat1D]],
+    bounds: _ToBounds,
+    args: tuple[object, ...] = (),
+    constraints: Constraints | None = None,
+    n: int = 100,
+    iters: int = 1,
+    callback: Callable[[_Float1D], None] | None = None,
+    *,
+    minimizer_kwargs: MinimizerKwargsJac,
+    options: _SHGOOptions | None = None,
+    sampling_method: _SamplingMethod = "simplicial",
+    workers: int | _DoesMap = 1,
 ) -> OptimizeResult: ...

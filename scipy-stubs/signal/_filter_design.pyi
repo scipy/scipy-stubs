@@ -204,19 +204,22 @@ def freqz_sos(
 
 sosfreqz = freqz_sos
 
+# 2/4 of mypy's false positive `overload-overlap` errors for `tf2zpk` are only reported with numpy<2.5
+# mypy: disable-error-code=overload-overlap
+
 # for real input the return dtype is either real or complex, depending on the values
 @overload  # ~f64, +f64
-def tf2zpk(  # type: ignore[overload-overlap]
+def tf2zpk(
     b: onp.ToJustFloat64_1D | onp.ToInt1D, a: onp.ToFloat64_1D
 ) -> _ZPK[np.float64 | np.complex128, np.complex128, np.float64]: ...
 @overload  # +f64, ~f64
-def tf2zpk(  # type: ignore[overload-overlap]
+def tf2zpk(
     b: onp.ToFloat64_1D, a: onp.ToJustFloat64_1D | onp.ToInt1D
 ) -> _ZPK[np.float64 | np.complex128, np.complex128, np.float64]: ...
 @overload  # ~c128, +c128
-def tf2zpk(b: onp.ToJustComplex128_1D, a: onp.ToComplex128_1D) -> _ZPK[np.complex128, np.complex128, np.float64]: ...  # type: ignore[overload-overlap]
+def tf2zpk(b: onp.ToJustComplex128_1D, a: onp.ToComplex128_1D) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
 @overload  # +c128, ~c128
-def tf2zpk(b: onp.ToComplex128_1D, a: onp.ToJustComplex128_1D) -> _ZPK[np.complex128, np.complex128, np.float64]: ...  # type: ignore[overload-overlap]
+def tf2zpk(b: onp.ToComplex128_1D, a: onp.ToJustComplex128_1D) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
 @overload  # ~f32, +f32
 def tf2zpk(b: onp.ToJustFloat32_1D, a: onp.ToFloat32_1D) -> _ZPK[np.float32 | np.complex64, np.complex64, np.float32]: ...
 @overload  # +f32, ~f32

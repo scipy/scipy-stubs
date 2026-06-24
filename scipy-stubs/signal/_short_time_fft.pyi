@@ -1,6 +1,6 @@
 import types
 from collections.abc import Callable
-from typing import Any, Final, Generic, Literal, Self, overload
+from typing import Any, Final, Generic, Literal, Never, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -14,11 +14,18 @@ __all__ = ["ShortTimeFFT", "closest_STFT_dual_window"]
 ###
 
 _InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=Any, covariant=True)
+# `float64` if `fft_mode in {"onesided", "onesided2X"}` otherwise `complex128`; only affects `istft`
+_Inexact128T_co = TypeVar("_Inexact128T_co", bound=np.float64 | np.complex128, default=Any, covariant=True)
 
 type _PadType = Literal["zeros", "edge", "even", "odd"]
-type _FFTMode = Literal["twosided", "centered", "onesided", "onesided2X"]
+
+type _FFTMode1 = Literal["onesided", "onesided2X"]
+type _FFTMode2 = Literal["twosided", "centered"]
+type _FFTMode = Literal[_FFTMode1, _FFTMode2]
+
 type _ScaleTo = Literal["magnitude", "psd"]
 type _Scaling = Literal[_ScaleTo, "unitary"]
+
 type _Detr = (
     Literal["linear", "constant"]
     | Callable[[onp.ArrayND[np.float64]], onp.ToComplexND]
@@ -27,7 +34,7 @@ type _Detr = (
 
 ###
 
-class ShortTimeFFT(Generic[_InexactT_co]):
+class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     _win: onp.Array1D[_InexactT_co]
     _dual_win: onp.Array1D[_InexactT_co] | None = None
     _hop: Final[int]
@@ -49,18 +56,37 @@ class ShortTimeFFT(Generic[_InexactT_co]):
 
     @classmethod
     def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
+
+    #
+    @overload
     @classmethod
-    def from_dual(
+    def from_dual[InexactT: npc.inexact](
         cls,
-        dual_win: onp.ArrayND[_InexactT_co],
+        dual_win: onp.ArrayND[InexactT],
         hop: int,
         fs: float,
         *,
-        fft_mode: _FFTMode = "onesided",
+        fft_mode: _FFTMode1 = "onesided",
         mfft: int | None = None,
         scale_to: _ScaleTo | None = None,
         phase_shift: int | None = 0,
-    ) -> Self: ...
+    ) -> ShortTimeFFT[InexactT, np.float64]: ...
+    @overload
+    @classmethod
+    def from_dual[InexactT: npc.inexact](
+        cls,
+        dual_win: onp.ArrayND[InexactT],
+        hop: int,
+        fs: float,
+        *,
+        fft_mode: _FFTMode2,
+        mfft: int | None = None,
+        scale_to: _ScaleTo | None = None,
+        phase_shift: int | None = 0,
+    ) -> ShortTimeFFT[InexactT, np.complex128]: ...
+
+    #
+    @overload
     @classmethod
     def from_window(
         cls,
@@ -70,23 +96,54 @@ class ShortTimeFFT(Generic[_InexactT_co]):
         noverlap: int,
         *,
         symmetric_win: bool = False,
-        fft_mode: _FFTMode = "onesided",
+        fft_mode: _FFTMode1 = "onesided",
         mfft: int | None = None,
         scale_to: _ScaleTo | None = None,
         phase_shift: int | None = 0,
-    ) -> ShortTimeFFT[np.float64]: ...
+    ) -> ShortTimeFFT[np.float64, np.float64]: ...
+    @overload
     @classmethod
-    def from_win_equals_dual(
+    def from_window(
         cls,
-        desired_win: onp.ArrayND[npc.inexact],
+        win_param: _ToWindow,
+        fs: float,
+        nperseg: int,
+        noverlap: int,
+        *,
+        symmetric_win: bool = False,
+        fft_mode: _FFTMode2,
+        mfft: int | None = None,
+        scale_to: _ScaleTo | None = None,
+        phase_shift: int | None = 0,
+    ) -> ShortTimeFFT[np.float64, np.complex128]: ...
+
+    #
+    @overload
+    @classmethod
+    def from_win_equals_dual[InexactT: npc.inexact](
+        cls,
+        desired_win: onp.ArrayND[InexactT],
         hop: int,
         fs: float,
         *,
-        fft_mode: _FFTMode = "onesided",
+        fft_mode: _FFTMode1 = "onesided",
         mfft: int | None = None,
         scale_to: _Scaling | None = None,
         phase_shift: int | None = 0,
-    ) -> Self: ...
+    ) -> ShortTimeFFT[InexactT, np.float64]: ...
+    @overload
+    @classmethod
+    def from_win_equals_dual[InexactT: npc.inexact](
+        cls,
+        desired_win: onp.ArrayND[InexactT],
+        hop: int,
+        fs: float,
+        *,
+        fft_mode: _FFTMode2,
+        mfft: int | None = None,
+        scale_to: _Scaling | None = None,
+        phase_shift: int | None = 0,
+    ) -> ShortTimeFFT[InexactT, np.complex128]: ...
 
     #
     @property
@@ -139,8 +196,8 @@ class ShortTimeFFT(Generic[_InexactT_co]):
     #
     @property
     def fft_mode(self, /) -> _FFTMode: ...
-    @fft_mode.setter
-    def fft_mode(self, /, t: _FFTMode) -> None: ...
+    @fft_mode.setter  # `fft_mode` affects the 2nd generic type (`_Inexact128T_co`), so changing it would be type-unsafe
+    def fft_mode(self, /, t: Never) -> None: ...
 
     #
     @property
@@ -160,16 +217,31 @@ class ShortTimeFFT(Generic[_InexactT_co]):
     def _post_padding(self, /, n: int) -> tuple[int, int]: ...
 
     #
-    def __init__(
-        self,
+    @overload
+    def __init__[InexactT: npc.inexact](
+        self: ShortTimeFFT[InexactT, np.float64],
         /,
-        win: onp.ArrayND[_InexactT_co],
+        win: onp.ArrayND[InexactT],
         hop: int,
         fs: float,
         *,
-        fft_mode: _FFTMode = "onesided",
+        fft_mode: _FFTMode1 = "onesided",
         mfft: int | None = None,
-        dual_win: onp.ArrayND[_InexactT_co] | None = None,
+        dual_win: onp.ArrayND[InexactT] | None = None,
+        scale_to: _ScaleTo | None = None,
+        phase_shift: int | None = 0,
+    ) -> None: ...
+    @overload
+    def __init__[InexactT: npc.inexact](
+        self: ShortTimeFFT[InexactT, np.complex128],
+        /,
+        win: onp.ArrayND[InexactT],
+        hop: int,
+        fs: float,
+        *,
+        fft_mode: _FFTMode2,
+        mfft: int | None = None,
+        dual_win: onp.ArrayND[InexactT] | None = None,
         scale_to: _ScaleTo | None = None,
         phase_shift: int | None = 0,
     ) -> None: ...
@@ -352,7 +424,7 @@ class ShortTimeFFT(Generic[_InexactT_co]):
     #
     def istft(
         self, /, S: onp.ArrayND[npc.inexact], k0: int = 0, k1: int | None = None, *, f_axis: int = -2, t_axis: int = -1
-    ) -> onp.ArrayND[np.complex128]: ...
+    ) -> onp.ArrayND[_Inexact128T_co]: ...
 
     #
     def extent(

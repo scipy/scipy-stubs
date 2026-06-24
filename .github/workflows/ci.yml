@@ -21,7 +21,7 @@ jobs:
     timeout-minutes: 2
 
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
@@ -66,6 +66,9 @@ jobs:
         uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
         with:
           python-version: "3.14"
+
+      - name: pyrefly coverage check
+        run: uv run pyrefly coverage check --public-only --fail-under=99.9 scipy-stubs
 
       - name: check for unstubbed modules
         run: uv run scripts/unstubbed_modules.py
@@ -85,10 +88,10 @@ jobs:
       fail-fast: false
       matrix:
         py: ["3.12"]
-        np: ["2.0", "2.1", "2.2", "2.3", "2.4"]
+        np: ["2.0", "2.1", "2.2", "2.3", "2.4", "2.5"]
 
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
@@ -106,6 +109,9 @@ jobs:
 
       - name: ty check scipy-stubs
         run: ty check --error-on-warning --output-format=github scipy-stubs
+
+      - name: zuban check scipy-stubs
+        run: zuban check scipy-stubs
 
       - name: pyrefly check scipy-stubs
         run: pyrefly check scipy-stubs
@@ -127,7 +133,7 @@ jobs:
       fail-fast: false
       matrix:
         py: ["3.12", "3.13", "3.14"]
-        np: ["2.0", "2.1", "2.2", "2.3", "2.4"]
+        np: ["2.0", "2.1", "2.2", "2.3", "2.4", "2.5"]
         exclude:
           - py: "3.13"
             np: "2.0"
@@ -139,7 +145,7 @@ jobs:
             np: "2.2"
 
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 

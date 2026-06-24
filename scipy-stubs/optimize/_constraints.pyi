@@ -144,7 +144,7 @@ class Bounds(_Constraint[_ShapeT_co, _NumberT_co], Generic[_ShapeT_co, _NumberT_
         keep_feasible: bool | onp.ToBoolStrict1D | onp.ToBoolStrict2D = False,
     ) -> None: ...
     @overload  # <=2d, 2d
-    def __init__(
+    def __init__(  # zuban: ignore[overload-cannot-match]
         self: Bounds[tuple[int, int], _NumberT],
         /,
         lb: onp.Array2D[_NumberT] | onp.Array1D[_NumberT],

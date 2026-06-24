@@ -16,7 +16,7 @@
 - **Shape- and dtype-aware**: array shapes and dtypes are tracked where applicable.
 - **Generics**: subscriptable types for sparse arrays, distributions, splines, and linear operators.
 - **No configuration**: works on install, affects type checking only, with no runtime impact.
-- **Broad checker support**: tested against mypy, pyright, basedpyright, pyrefly, and ty.
+- **Broad checker support**: tested against mypy, pyright, basedpyright, pyrefly, ty, and zuban.
 - **Thoroughly tested**: `stubtest` against the runtime, [`assert_type` tests][TYPETESTS] for inference, and [mypy_primer][PRIMER] for regressions.
 
 [TYPETESTS]: https://github.com/scipy/scipy-stubs/tree/master/tests
@@ -120,6 +120,7 @@ The speed gap exists mainly because `scipy-stubs` doesn’t require compilation 
 - [BasedPyright](https://github.com/detachhead/basedpyright),
 - [Pyrefly](https://github.com/facebook/pyrefly), and
 - [ty](https://github.com/astral-sh/ty) (currently in beta, so it may not always work as expected).
+- [Zuban](https://github.com/zubanls/zuban) (currently in beta, so it may not always work as expected).
 
 ### Q: Do I need to change my existing code?
 
@@ -226,6 +227,7 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | generic type                                         | `scipy-stubs` | `scipy`  |                                                                                                 |
 | ---------------------------------------------------- | ------------- | -------- | ----------------------------------------------------------------------------------------------- |
 | `ShortTimeFFT[T: inexact]`                           | `>=1.16.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html)     |
+| `ShortTimeFFT[T: inexact, I: f64 \| c128]`           | `>=1.18.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html)     |
 | `StateSpace[Z: inexact, P: floating, D: scalar]`     | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.StateSpace.html)       |
 | `TransferFunction[P: floating, D: scalar]`           | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.TransferFunction.html) |
 | `ZerosPolesGain[Z: inexact, P: floating, D: scalar]` | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ZerosPolesGain.html)   |

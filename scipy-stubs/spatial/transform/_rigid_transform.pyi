@@ -1,6 +1,6 @@
-from collections.abc import Iterator, Sequence
+from collections.abc import Callable, Iterator, Sequence
 from types import GenericAlias
-from typing import Any, Generic, Never, Self, SupportsIndex, overload
+from typing import Any, Generic, Never, Self, SupportsIndex, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -117,6 +117,10 @@ class RigidTransform(Generic[_ShapeT_co]):
 
     #
     def __pow__(self, n: onp.ToFloat, /) -> Self: ...
+
+    #
+    @override
+    def __reduce__(self, /) -> tuple[Callable[[Self, onp.ToFloatND], RigidTransform], tuple[onp.ArrayND[np.float64]]]: ...
 
     #
     @overload

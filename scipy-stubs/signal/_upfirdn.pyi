@@ -20,9 +20,11 @@ class _UpFIRDn:  # undocumented
         self, /, x: onp.ArrayND[npc.number], axis: int = -1, mode: _FIRMode = "constant", cval: int = 0
     ) -> onp.ArrayND[npc.floating]: ...
 
-# The mypy `overload-overlap` errors are false positives
+# some of mypy's false positive `overload-overlap` errors here are only reported with numpy<2.5
+# mypy: disable-error-code=overload-overlap
+
 @overload  # ~f64, ~f64
-def upfirdn(  # type: ignore[overload-overlap]
+def upfirdn(
     h: onp.ToJustFloat64_1D | onp.ToInt1D,
     x: onp.ToJustFloat64_ND | onp.ToIntND,
     up: int = 1,
@@ -52,7 +54,7 @@ def upfirdn(
     cval: float = 0,
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # +c128, ~c128
-def upfirdn(  # type: ignore[overload-overlap]
+def upfirdn(
     h: onp.ToComplex128_1D,
     x: onp.ToJustComplex128_ND,
     up: int = 1,
@@ -62,7 +64,7 @@ def upfirdn(  # type: ignore[overload-overlap]
     cval: float = 0,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~c128, +c128
-def upfirdn(  # type: ignore[overload-overlap]
+def upfirdn(
     h: onp.ToJustComplex128_1D,
     x: onp.ToComplex128_ND,
     up: int = 1,
