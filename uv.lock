@@ -10,11 +10,11 @@ resolution-markers = [
 
 [[package]]
 name = "array-api-compat"
-version = "1.14.0"
+version = "1.15.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/89/e5/9a12dd1c2b0ad61f3c3ad0fc14b888c65fd735dd9d26805f77317303cbe5/array_api_compat-1.14.0.tar.gz", hash = "sha256:c819ba707f5c507800cb545f7e6348ff1ecc46538381d9ad9b371ffc9cd6d784", size = 106369, upload-time = "2026-02-26T12:02:42.452Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/86/12/65d297d3e425cb7fe5247b7ec14b4ed83539e9b5e89b65c15ea7ee274182/array_api_compat-1.15.0.tar.gz", hash = "sha256:53c5f922491bf15f62847afafc4e39eedfae57d218988fefb8cce39c2a9b3dea", size = 129305, upload-time = "2026-06-07T20:53:24.964Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/a0/d3/54cd560804a8c2b898824778e86c13c2a14600bc83532a9c4f69f2f469c3/array_api_compat-1.14.0-py3-none-any.whl", hash = "sha256:ed5af1f9b6595a199c942505f281ec994892556b6efc24679a0501e87a7d6279", size = 60124, upload-time = "2026-02-26T12:02:41.127Z" },
+    { url = "https://files.pythonhosted.org/packages/86/16/1a8fd2b19544b84575cf84ef7aa3ad4c173b756d5f087c91f85d1b295777/array_api_compat-1.15.0-py3-none-any.whl", hash = "sha256:7b1b9c53269061403fd5f45a8de349f16e7887653328bfa0c5f2d45299ff0a8e", size = 79113, upload-time = "2026-06-07T20:53:23.621Z" },
 ]
 
 [[package]]
@@ -1109,7 +1109,7 @@ provides-extras = ["scipy"]
 [package.metadata.requires-dev]
 ci = [{ name = "packaging", specifier = ">=26.2" }]
 dev = [
-    { name = "array-api-compat", specifier = "==1.14.0,!=1.15.0" },
+    { name = "array-api-compat", specifier = "==1.15.0" },
     { name = "basedpyright", specifier = "==1.39.8" },
     { name = "dprint-py", specifier = "==0.53.1.0" },
     { name = "matplotlib", specifier = "==3.11.0" },
@@ -1132,7 +1132,7 @@ lint = [
     { name = "sp-repo-review", extras = ["cli"], specifier = "==2026.6.18" },
 ]
 type = [
-    { name = "array-api-compat", specifier = "==1.14.0,!=1.15.0" },
+    { name = "array-api-compat", specifier = "==1.15.0" },
     { name = "basedpyright", specifier = "==1.39.8" },
     { name = "matplotlib", specifier = "==3.11.0" },
     { name = "mypy", extras = ["faster-cache"], specifier = "==2.1.0" },
