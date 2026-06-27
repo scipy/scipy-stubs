@@ -6,13 +6,15 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from scipy.sparse._base import _spbase
+from scipy.sparse.linalg._interface import LinearOperator
 
 ###
 
 type _LaplacianFunction = Callable[[onp.ToComplex2D], onp.Array2D[npc.number]]
 type _LaplacianDiag = onp.Array1D[npc.number]
+type _LaplacianLO = LinearOperator[npc.number, tuple[int, int]]
 type _ToCSGraph = onp.ToComplex2D | _spbase
-type _FunctionForm = Literal["function", "lo"]
+type _FunctionForm = Literal["function"]
 
 ###
 
@@ -40,6 +42,30 @@ def laplacian(  # function form + return_diag -> callable + diag
     dtype: npt.DTypeLike | None = None,
     symmetrized: bool = False,
 ) -> tuple[_LaplacianFunction, _LaplacianDiag]: ...
+@overload
+def laplacian(  # lo form -> LinearOperator
+    csgraph: _ToCSGraph,
+    normed: bool = False,
+    return_diag: onp.ToFalse = False,
+    use_out_degree: bool = False,
+    *,
+    copy: bool = True,
+    form: Literal["lo"],
+    dtype: npt.DTypeLike | None = None,
+    symmetrized: bool = False,
+) -> _LaplacianLO: ...
+@overload
+def laplacian(  # lo form + return_diag -> LinearOperator + diag
+    csgraph: _ToCSGraph,
+    normed: bool = False,
+    *,
+    return_diag: onp.ToTrue,
+    use_out_degree: bool = False,
+    copy: bool = True,
+    form: Literal["lo"],
+    dtype: npt.DTypeLike | None = None,
+    symmetrized: bool = False,
+) -> tuple[_LaplacianLO, _LaplacianDiag]: ...
 @overload
 def laplacian(  # array form dense input -> dense output
     csgraph: onp.ToComplex2D,
