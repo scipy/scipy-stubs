@@ -52,7 +52,7 @@ ci = ["packaging>=26.2"]
 lint = [
   { include-group = "extras" },
   "dprint-py==0.53.1.0",
-  "ruff==0.15.18",
+  "ruff==0.15.19",
   "sp-repo-review[cli]==2026.6.18",
 ]
 type = [
@@ -60,13 +60,13 @@ type = [
   { include-group = "ci" },
   # https://github.com/data-apis/array-api-compat/issues/436
   "array-api-compat==1.14.0, !=1.15.0", # bundled as `_lib.array_api_compat`
-  "pytest==9.1.0", # needed for `_lib._array_api.make_xp_pytest_*`
+  "pytest==9.1.1", # needed for `_lib._array_api.make_xp_pytest_*`
   "matplotlib==3.11.0", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
   "basedpyright==1.39.8",
   "mypy[faster-cache]==2.1.0",
   "pyrefly==1.1.1",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.51",
+  "ty==0.0.53",
   "zuban==0.9.0",
 ]
 dev = [
