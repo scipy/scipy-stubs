@@ -5,7 +5,7 @@ from typing import assert_type
 import numpy as np
 
 import scipy.sparse as sparse
-from ._types import ScalarType, any_arr, any_mat, coo_arr, coo_mat, csr_arr, csr_mat
+from ._types import ScalarType, any_arr, any_mat, coo_arr, coo_mat, csr_arr, csr_mat, dia_mat, dok_mat, lil_mat
 
 i64_1d: np.ndarray[tuple[int], np.dtype[np.int64]]
 i64_2d: np.ndarray[tuple[int, int], np.dtype[np.int64]]
@@ -23,6 +23,10 @@ assert_type(sparse.issparse(i64_2d), bool)
 
 assert_type(sparse.isspmatrix_csr(csr_mat), bool)
 assert_type(sparse.isspmatrix_csc(csr_mat), bool)
+assert_type(sparse.isspmatrix_coo(coo_mat), bool)
+assert_type(sparse.isspmatrix_dia(dia_mat), bool)
+assert_type(sparse.isspmatrix_dok(dok_mat), bool)
+assert_type(sparse.isspmatrix_lil(lil_mat), bool)
 
 assert_type(sparse.issparse("duck"), bool)
 
