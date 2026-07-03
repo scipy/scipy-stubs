@@ -1,4 +1,4 @@
-from typing import Literal, Never, assert_type
+from typing import Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -32,9 +32,9 @@ bsr_matrix(1)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentTy
 # (M, N) shape constructor
 
 assert_type(bsr_array(_shape2), bsr_array[np.float64])
-assert_type(bsr_array(_shape2, dtype=np.bool), bsr_array[np.bool])
-assert_type(bsr_array(_shape2, dtype=bool), bsr_array[np.bool])
-assert_type(bsr_array(_shape2, dtype="bool"), bsr_array[np.bool])
+assert_type(bsr_array(_shape2, dtype=np.bool_), bsr_array[np.bool_])
+assert_type(bsr_array(_shape2, dtype=bool), bsr_array[np.bool_])
+assert_type(bsr_array(_shape2, dtype="bool"), bsr_array[np.bool_])
 assert_type(bsr_array(_shape2, dtype=np.int64), bsr_array[np.int64])
 assert_type(bsr_array(_shape2, dtype=int), bsr_array[np.int64])
 assert_type(bsr_array(_shape2, dtype="int"), bsr_array[np.int64])
@@ -45,7 +45,7 @@ assert_type(bsr_array(_shape2, dtype=np.complex128), bsr_array[np.complex128])
 assert_type(bsr_array(_shape2, dtype=complex), bsr_array[np.complex128])
 assert_type(bsr_array(_shape2, dtype="complex"), bsr_array[np.complex128])
 assert_type(bsr_array(_shape2, None, None), bsr_array[np.float64])
-assert_type(bsr_array(_shape2, None, np.bool), bsr_array[np.bool])
+assert_type(bsr_array(_shape2, None, np.bool_), bsr_array[np.bool_])
 assert_type(bsr_array(_shape2, None, np.int64), bsr_array[np.int64])
 assert_type(bsr_array(_shape2, None, np.float64), bsr_array[np.float64])
 assert_type(bsr_array(_shape2, None, np.complex128), bsr_array[np.complex128])
@@ -56,12 +56,12 @@ assert_type(bsr_matrix(_shape2), bsr_matrix[np.float64])
 ###
 # matrix-like (sequences) # noqa: ERA001
 
-assert_type(bsr_array(_seq_seq_bool), bsr_array[np.bool])
+assert_type(bsr_array(_seq_seq_bool), bsr_array[np.bool_])
 assert_type(bsr_array(_seq_seq_int), bsr_array[np.int_])
 assert_type(bsr_array(_seq_seq_float), bsr_array[np.float64])
 assert_type(bsr_array(_seq_seq_complex), bsr_array[np.complex128])
 
-assert_type(bsr_matrix(_seq_seq_bool), bsr_matrix[np.bool])
+assert_type(bsr_matrix(_seq_seq_bool), bsr_matrix[np.bool_])
 assert_type(bsr_matrix(_seq_seq_int), bsr_matrix[np.int_])
 assert_type(bsr_matrix(_seq_seq_float), bsr_matrix[np.float64])
 assert_type(bsr_matrix(_seq_seq_complex), bsr_matrix[np.complex128])
@@ -71,17 +71,17 @@ assert_type(bsr_matrix(_seq_seq_complex), bsr_matrix[np.complex128])
 
 assert_type(bsr_array(_data2), bsr_array[ScalarType])
 assert_type(bsr_array(_data2, dtype=_dtype), bsr_array[ScalarType])
-assert_type(bsr_array(_data2_concrete, dtype=bool), bsr_array[np.bool])
-assert_type(bsr_array(_data2_concrete, dtype=int), bsr_array[np.int_])
-assert_type(bsr_array(_data2_concrete, dtype=float), bsr_array[np.float64])
-assert_type(bsr_array(_data2_concrete, dtype=complex), bsr_array[np.complex128])
+assert_type(bsr_array(_data2_concrete, dtype=np.bool_), bsr_array[np.bool_])
+assert_type(bsr_array(_data2_concrete, dtype=np.int_), bsr_array[np.int_])
+assert_type(bsr_array(_data2_concrete, dtype=np.float64), bsr_array[np.float64])
+assert_type(bsr_array(_data2_concrete, dtype=np.complex128), bsr_array[np.complex128])
 
 assert_type(bsr_matrix(_data2), bsr_matrix[ScalarType])
 assert_type(bsr_matrix(_data2, dtype=_dtype), bsr_matrix[ScalarType])
-assert_type(bsr_matrix(_data2_concrete, dtype=bool), bsr_matrix[np.bool])
-assert_type(bsr_matrix(_data2_concrete, dtype=int), bsr_matrix[np.int_])
-assert_type(bsr_matrix(_data2_concrete, dtype=float), bsr_matrix[np.float64])
-assert_type(bsr_matrix(_data2_concrete, dtype=complex), bsr_matrix[np.complex128])
+assert_type(bsr_matrix(_data2_concrete, dtype=np.bool_), bsr_matrix[np.bool_])
+assert_type(bsr_matrix(_data2_concrete, dtype=np.int_), bsr_matrix[np.int_])
+assert_type(bsr_matrix(_data2_concrete, dtype=np.float64), bsr_matrix[np.float64])
+assert_type(bsr_matrix(_data2_concrete, dtype=np.complex128), bsr_matrix[np.complex128])
 
 ###
 # sparse-to-sparse conversion
@@ -153,7 +153,8 @@ assert_type(bsr_matrix(_data2, blocksize=(2, 2)), bsr_matrix[ScalarType])
 ###
 # (M, N) shape constructor, dtype positional (requires shape positional too)
 
-assert_type(bsr_array(_shape2, _shape2, np.bool), bsr_array[np.bool])
+assert_type(bsr_array(_shape2, _shape2, np.float64), bsr_array[np.float64])
+assert_type(bsr_array(_shape2, _shape2, np.bool_), bsr_array[np.bool_])
 assert_type(bsr_array(_shape2, _shape2, np.int64), bsr_array[np.int64])
 assert_type(bsr_array(_shape2, _shape2, np.complex128), bsr_array[np.complex128])
 
