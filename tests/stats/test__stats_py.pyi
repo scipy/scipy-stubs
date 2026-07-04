@@ -1188,6 +1188,14 @@ assert_type(energy_distance(_f64_1d, _f64_1d), np.float64)
 # expectile
 
 assert_type(expectile(_f64_1d), np.float64)
+assert_type(expectile(_f64_2d), np.float64)
+assert_type(expectile(_f64_3d), np.float64)
+assert_type(expectile(_f64_1d, axis=1), onp.ArrayND[np.float64])
+assert_type(expectile(_f64_2d, axis=1), onp.ArrayND[np.float64])
+assert_type(expectile(_f64_3d, axis=1), onp.ArrayND[np.float64])
+assert_type(expectile(_f64_1d, keepdims=True), onp.Array1D[np.float64])
+assert_type(expectile(_f64_2d, keepdims=True), onp.Array2D[np.float64])
+assert_type(expectile(_f64_3d, keepdims=True), onp.Array3D[np.float64])
 
 # iqr
 
