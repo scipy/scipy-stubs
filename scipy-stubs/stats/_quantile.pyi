@@ -28,29 +28,41 @@ type _QuantileMethod = Literal[
 # NOTE: And of course, Pyright reports a different overload error (obvously a false positive) for `estimated_cdf` on `numpy<2.1`
 # pyright: reportOverlappingOverload=false
 
-@overload
+# TODO(@jorenham): propagate floating dtype
+@overload  # 1d, 0d
 def quantile(
     x: onp.ToFloatStrict1D,
     p: onp.ToJustFloat,
     *,
     method: _QuantileMethod = "linear",
-    axis: Literal[-1, 0] | None = 0,
+    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool | None = None,
+    keepdims: Literal[False] | None = None,
     weights: onp.ToJustFloatStrict1D | None = None,
 ) -> np.float64: ...
-@overload
+@overload  # 2d, 0d
 def quantile(
-    x: onp.ToFloatND,
+    x: onp.ToFloatStrict2D,
     p: onp.ToJustFloat,
     *,
     method: _QuantileMethod = "linear",
-    axis: int | None = 0,
+    axis: int = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: onp.ToFalse | None = None,
-    weights: onp.ToJustFloatND | None = None,
-) -> np.float64: ...
-@overload
+    keepdims: Literal[False] | None = None,
+    weights: onp.ToJustFloatStrict1D | None = None,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 3d, 0d
+def quantile(
+    x: onp.ToFloatStrict3D,
+    p: onp.ToJustFloat,
+    *,
+    method: _QuantileMethod = "linear",
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] | None = None,
+    weights: onp.ToJustFloatStrict1D | None = None,
+) -> onp.Array2D[np.float64]: ...
+@overload  # Nd, >0d
 def quantile(
     x: onp.ToFloatND,
     p: onp.ToJustFloatND,
@@ -61,7 +73,18 @@ def quantile(
     keepdims: bool | None = None,
     weights: onp.ToJustFloatND | None = None,
 ) -> onp.ArrayND[np.float64]: ...
-@overload
+@overload  # axis=None
+def quantile(
+    x: onp.ToFloatND,
+    p: onp.ToJustFloat | onp.ToJustFloatND,
+    *,
+    method: _QuantileMethod = "linear",
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] | None = None,
+    weights: onp.ToJustFloatND | None = None,
+) -> np.float64: ...
+@overload  # keepdims=True
 def quantile(
     x: onp.ToFloatND,
     p: onp.ToJustFloat | onp.ToJustFloatND,
@@ -69,9 +92,20 @@ def quantile(
     method: _QuantileMethod = "linear",
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: onp.ToTrue,
+    keepdims: Literal[True],
     weights: onp.ToJustFloatND | None = None,
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # Nd, Nd  (fallback)
+def quantile(
+    x: onp.ToFloatND,
+    p: onp.ToJustFloat | onp.ToJustFloatND,
+    *,
+    method: _QuantileMethod = "linear",
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool | None = None,
+    weights: onp.ToJustFloatND | None = None,
+) -> onp.ArrayND[np.float64] | np.float64: ...
 
 #
 @overload  # ?d T, 0d float (workaround)

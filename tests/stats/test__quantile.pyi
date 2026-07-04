@@ -28,10 +28,30 @@ _py_f_3d: list[list[list[float]]]
 # quantile
 
 assert_type(quantile(_py_f_1d, 0.5), np.float64)
+assert_type(quantile(_py_f_2d, 0.5), onp.Array1D[np.float64])
+assert_type(quantile(_py_f_3d, 0.5), onp.Array2D[np.float64])
 assert_type(quantile(_f64_1d, 0.5), np.float64)
-assert_type(quantile(_f64_nd, 0.5, axis=None), np.float64)
+assert_type(quantile(_f64_2d, 0.5), onp.Array1D[np.float64])
+assert_type(quantile(_f64_3d, 0.5), onp.Array2D[np.float64])
+assert_type(quantile(_f64_1d, 0.5, axis=None), np.float64)
+assert_type(quantile(_f64_2d, 0.5, axis=None), np.float64)
+assert_type(quantile(_f64_3d, 0.5, axis=None), np.float64)
+assert_type(quantile(_f64_1d, 0.5, keepdims=True), onp.ArrayND[np.float64])
 assert_type(quantile(_f64_2d, 0.5, keepdims=True), onp.ArrayND[np.float64])
-assert_type(quantile(_f64_1d, 0.5, method="hazen"), np.float64)
+assert_type(quantile(_f64_3d, 0.5, keepdims=True), onp.ArrayND[np.float64])
+
+assert_type(quantile(_py_f_1d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(quantile(_py_f_2d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(quantile(_py_f_3d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(quantile(_f64_1d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(quantile(_f64_2d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(quantile(_f64_3d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(quantile(_f64_1d, _f64_1d, axis=None), np.float64)
+assert_type(quantile(_f64_2d, _f64_1d, axis=None), np.float64)
+assert_type(quantile(_f64_3d, _f64_1d, axis=None), np.float64)
+assert_type(quantile(_f64_1d, _f64_1d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(quantile(_f64_2d, _f64_1d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(quantile(_f64_3d, _f64_1d, keepdims=True), onp.ArrayND[np.float64])
 
 ###
 # estimated_cdf
