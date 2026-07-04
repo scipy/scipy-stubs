@@ -74,10 +74,21 @@ type _LstSqResultND[ScalarT: np.generic, T] = tuple[onp.ArrayND[ScalarT], onp.Ar
 
 ###
 
-@overload  # 2D ~float64, +float64
+@overload  # 2d ~float64, 1d +float64
 def solve(
     a: _InputFloatStrict2D,
-    b: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
+    b: onp.ToFloatStrict1D,
+    lower: bool = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    transposed: bool = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~float64, 2d +float64
+def solve(
+    a: _InputFloatStrict2D,
+    b: onp.ToFloatStrict2D,
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
@@ -85,7 +96,7 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.Array2D[np.float64]: ...
-@overload  # Nd ~float64, +float64
+@overload  # Nd ~float64, Nd +float64
 def solve(
     a: _InputFloat,
     b: onp.ToFloatND,
@@ -96,10 +107,21 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # 2d +float64, ~float64
+@overload  # 2d +float64, 1d ~float64
 def solve(
     a: onp.ToFloatStrict2D,
-    b: _InputFloatStrict1D | _InputFloatStrict2D,
+    b: _InputFloatStrict1D,
+    lower: bool = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    transposed: bool = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d +float64, 2d ~float64
+def solve(
+    a: onp.ToFloatStrict2D,
+    b: _InputFloatStrict2D,
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
@@ -107,7 +129,7 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.Array2D[np.float64]: ...
-@overload  # Nd +float64, ~float64
+@overload  # Nd +float64, Nd ~float64
 def solve(
     a: onp.ToFloatND,
     b: _InputFloat,
@@ -118,10 +140,21 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # 2d ~complex128, +complex128
+@overload  # 2d ~complex128, 1d +complex128
 def solve(
     a: _InputComplexStrict2D,
-    b: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
+    b: onp.ToComplexStrict1D,
+    lower: bool = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    transposed: bool = False,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # 2d ~complex128, 2d +complex128
+def solve(
+    a: _InputComplexStrict2D,
+    b: onp.ToComplexStrict2D,
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
@@ -129,7 +162,7 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.Array2D[np.complex128]: ...
-@overload  # Nd ~complex128, +complex128
+@overload  # Nd ~complex128, Nd +complex128
 def solve(
     a: _InputComplex,
     b: onp.ToComplexND,
@@ -140,10 +173,21 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # 2d +complex128, ~complex128
+@overload  # 2d +complex128, 1d ~complex128
 def solve(
     a: onp.ToComplexStrict2D,
-    b: _InputComplexStrict1D | _InputComplexStrict2D,
+    b: _InputComplexStrict1D,
+    lower: bool = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    transposed: bool = False,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # 2d +complex128, 2d ~complex128
+def solve(
+    a: onp.ToComplexStrict2D,
+    b: _InputComplexStrict2D,
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
@@ -151,7 +195,7 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.Array2D[np.complex128]: ...
-@overload  # Nd +complex128, ~complex128
+@overload  # Nd +complex128, Nd ~complex128
 def solve(
     a: onp.ToComplexND,
     b: _InputComplex,
@@ -162,10 +206,21 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # 2d +floating, +floating
+@overload  # 2d +floating, 1d +floating
 def solve(
     a: onp.ToFloatStrict2D,
-    b: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
+    b: onp.ToFloatStrict1D,
+    lower: bool = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    transposed: bool = False,
+) -> onp.Array1D[np.float32 | np.float64]: ...
+@overload  # 2d +floating, 2d +floating
+def solve(
+    a: onp.ToFloatStrict2D,
+    b: onp.ToFloatStrict2D,
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
@@ -173,7 +228,7 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.Array2D[np.float32 | np.float64]: ...
-@overload  # Nd +floating, +floating
+@overload  # Nd +floating, Nd +floating
 def solve(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
@@ -184,10 +239,21 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[np.float32 | np.float64]: ...
-@overload  # 2d +complexfloating, ~complexfloating
+@overload  # 2d +complexfloating, 1d ~complexfloating
 def solve(
     a: onp.ToComplexStrict2D,
-    b: onp.ToJustComplexStrict1D | onp.ToJustComplexStrict2D,
+    b: onp.ToJustComplexStrict1D,
+    lower: bool = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    transposed: bool = False,
+) -> onp.Array1D[np.complex64 | np.complex128]: ...
+@overload  # 2d +complexfloating, 2d ~complexfloating
+def solve(
+    a: onp.ToComplexStrict2D,
+    b: onp.ToJustComplexStrict2D,
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
@@ -195,7 +261,7 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.Array2D[np.complex64 | np.complex128]: ...
-@overload  # Nd +complexfloating, ~complexfloating
+@overload  # Nd +complexfloating, Nd ~complexfloating
 def solve(
     a: onp.ToComplexND,
     b: onp.ToJustComplexND,
@@ -206,7 +272,7 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[np.complex64 | np.complex128]: ...
-@overload  # Nd +complexfloating, +complexfloating
+@overload  # Nd +complexfloating, Nd +complexfloating
 def solve(
     a: onp.ToComplexND,
     b: onp.ToComplexND,
