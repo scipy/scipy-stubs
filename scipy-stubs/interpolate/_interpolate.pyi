@@ -53,12 +53,13 @@ class interp2d:
         fill_value: object = None,
     ) -> Never: ...
 
+# TODO(@jorenham): make generic for dtypes of `x` and `y` (separately) and `y` shape-type
 class interp1d(_Interpolator1D):  # legacy
     copy: bool
     bounds_error: bool
     axis: int
-    x: onp.Array1D[npc.floating | npc.integer | np.bool]
-    y: onp.ArrayND[npc.inexact]
+    x: onp.Array1D[Any]  # floating | integer | bool
+    y: onp.ArrayND[Any]  # inexact
     x_bds: onp.Array1D[npc.floating]  # only set if `kind in {"nearest", "nearest-up"}`
 
     @property
@@ -71,7 +72,7 @@ class interp1d(_Interpolator1D):  # legacy
         self,
         /,
         x: onp.ToFloat1D,
-        y: onp.ToFloatND,
+        y: onp.ToComplexND,
         kind: _Interp1dKind | int = "linear",
         axis: _ToAxis = -1,
         copy: bool = True,
