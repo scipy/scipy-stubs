@@ -150,14 +150,14 @@ assert_type(ivp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
 # h1vp
 assert_type(h1vp(1.0, 1.0), np.complex64 | np.complex128)
 assert_type(h1vp(1.0, 1j), np.complex64 | np.complex128)
-assert_type(h1vp(1.0, c_arr), np.complex64 | np.complex128)
-assert_type(h1vp(f_arr, 1j), np.complex64 | np.complex128)
+assert_type(h1vp(1.0, c_arr), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(h1vp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
 
 # h2vp
 assert_type(h2vp(1.0, 1.0), np.complex64 | np.complex128)
 assert_type(h2vp(1.0, 1j), np.complex64 | np.complex128)
-assert_type(h2vp(1.0, c_arr), np.complex64 | np.complex128)
-assert_type(h2vp(f_arr, 1j), np.complex64 | np.complex128)
+assert_type(h2vp(1.0, c_arr), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(h2vp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
 
 # riccati_jn
 assert_type(riccati_jn(1, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
