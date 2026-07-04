@@ -49,8 +49,7 @@ type _InexactND = onp.ArrayND[np.float32 | np.float64 | np.complex64 | np.comple
 
 ###
 
-# `eig` has `2 * (6 + 7) + 1 == 27` overloads...
-@overload  # float, left: True (positional), right: True = ..., homogeneous_eigvals: False = ...
+@overload  # float, left: True (positional), right: True = ...
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None,
@@ -59,21 +58,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _FloatND]: ...
-@overload  # float, left: True (positional), right: True = ..., homogeneous_eigvals: True (keyword)
-def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _FloatND]: ...
-@overload  # float, left: True (keyword), right: True = ..., homogeneous_eigvals: False = ...
+@overload  # float, left: True (keyword), right: True = ...
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
@@ -83,21 +70,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _FloatND]: ...
-@overload  # float, left: True (keyword), right: True = ..., homogeneous_eigvals: True
-def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _FloatND]: ...
-@overload  # float, left: False, right: False (positional), homogeneous_eigvals: False = ...
+@overload  # float, left: False, right: False (positional)
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None,
@@ -106,21 +81,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _FloatND]: ...
-@overload  # float, left: False, right: False (positional), homogeneous_eigvals: True (keyword)
-def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None,
-    left: Literal[False],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _FloatND]: ...
-@overload  # float, left: False = ..., right: False (keyword), homogeneous_eigvals: False = ...
+@overload  # float, left: False = ..., right: False (keyword)
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
@@ -130,21 +93,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _FloatND]: ...
-@overload  # float, left: False = ..., right: False (keyword), homogeneous_eigvals: True
-def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None = None,
-    left: Literal[False] = False,
-    *,
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _FloatND]: ...
-@overload  # float, left: True (positional), right: False, homogeneous_eigvals: False = ...
+@overload  # float, left: True (positional), right: False
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None,
@@ -153,21 +104,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _FloatND, _FloatND]: ...
-@overload  # float, left: True (positional), right: False, homogeneous_eigvals: True (keyword)
-def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _FloatND, _FloatND]: ...
-@overload  # float, left: True (keyword), right: False, homogeneous_eigvals: False = ...
+@overload  # float, left: True (keyword), right: False
 def eig(
     a: onp.ToFloatND,
     b: onp.ToFloatND | None = None,
@@ -177,21 +116,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _FloatND, _FloatND]: ...
-@overload  # float, left: True (keyword), right: False, homogeneous_eigvals: True
-def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _FloatND, _FloatND]: ...
-@overload  # complex, left: False = ..., right: True = ..., homogeneous_eigvals: False = ...
+@overload  # complex, left: False = ..., right: True = ...
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -200,21 +127,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> _ComplexND: ...
-@overload  # complex, left: False = ..., right: True = ..., homogeneous_eigvals: True (keyword)
-def eig(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None = None,
-    left: Literal[False] = False,
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    homogeneous_eigvals: Literal[True],
-) -> _ComplexND: ...
-@overload  # complex, left: True (positional), right: True = ..., homogeneous_eigvals: False = ...
+@overload  # complex, left: True (positional), right: True = ...
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None,
@@ -223,21 +138,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: True (positional), right: True = ..., homogeneous_eigvals: True (keyword)
-def eig(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: True (keyword), right: True = ..., homogeneous_eigvals: False = ...
+@overload  # complex, left: True (keyword), right: True = ...
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -247,21 +150,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: True (keyword), right: True = ..., homogeneous_eigvals: True
-def eig(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: False, right: False (positional), homogeneous_eigvals: False = ...
+@overload  # complex, left: False, right: False (positional)
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None,
@@ -270,21 +161,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: False, right: False (positional), homogeneous_eigvals: True (keyword)
-def eig(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None,
-    left: Literal[False],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: False = ..., right: False (keyword), homogeneous_eigvals: False = ...
+@overload  # complex, left: False = ..., right: False (keyword)
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -294,21 +173,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: False = ..., right: False (keyword), homogeneous_eigvals: True
-def eig(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None = None,
-    left: Literal[False] = False,
-    *,
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: True (positional), right: False, homogeneous_eigvals: False = ...
+@overload  # complex, left: True (positional), right: False
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None,
@@ -317,21 +184,9 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _InexactND, _InexactND]: ...
-@overload  # complex, left: True (positional), right: False, homogeneous_eigvals: True (keyword)
-def eig(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    homogeneous_eigvals: Literal[True],
-) -> tuple[_ComplexND, _InexactND, _InexactND]: ...
-@overload  # complex, left: True (keyword), right: False (keyword), homogeneous_eigvals: False = ...
+@overload  # complex, left: True (keyword), right: False (keyword)
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -341,19 +196,7 @@ def eig(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    homogeneous_eigvals: Literal[False] = False,
-) -> tuple[_ComplexND, _InexactND, _InexactND]: ...
-@overload  # complex, left: True (keyword), right: False (keyword), homogeneous_eigvals: True
-def eig(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: Literal[True],
+    homogeneous_eigvals: bool = False,
 ) -> tuple[_ComplexND, _InexactND, _InexactND]: ...
 @overload  # catch-all
 def eig(
