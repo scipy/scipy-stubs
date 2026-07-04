@@ -21,7 +21,17 @@ maintainers = [
 ]
 license = "BSD-3-Clause"
 license-files = ["LICENSE"]
-keywords = ["scipy", "typing", "stubs", "mypy", "pyright", "pep484", "pep561", "scipy-stubs"]
+keywords = [
+  "scipy",
+  "typing",
+  "stubs",
+  "type-stubs",
+  "type-hints",
+  "type-checking",
+  "static-typing",
+  "shape-typing",
+  "pep561",
+]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
