@@ -6,7 +6,6 @@ import optype as op
 
 from ._miobase import MatFileReader
 from scipy.io._typing import ByteOrder, FileLike
-from scipy.sparse import coo_array, coo_matrix, csc_array, csc_matrix
 
 __all__ = ["loadmat", "savemat", "whosmat"]
 
@@ -61,25 +60,16 @@ def loadmat(
     *,
     spmatrix: _NoValueType = ...,
     **kwargs: Unpack[_ReaderKwargs],
-) -> dict[str, csc_matrix[Any] | coo_matrix[Any]]: ...
+) -> dict[str, Any]: ...
 @overload
 def loadmat(
     file_name: FileLike[bytes],
     mdict: Mapping[str, object] | None = None,
     appendmat: bool = True,
     *,
-    spmatrix: Literal[True],
+    spmatrix: bool,
     **kwargs: Unpack[_ReaderKwargs],
-) -> dict[str, csc_matrix[Any] | coo_matrix[Any]]: ...
-@overload
-def loadmat(
-    file_name: FileLike[bytes],
-    mdict: Mapping[str, object] | None = None,
-    appendmat: bool = True,
-    *,
-    spmatrix: Literal[False],
-    **kwargs: Unpack[_ReaderKwargs],
-) -> dict[str, csc_array[Any] | coo_array[Any, tuple[int, int]]]: ...
+) -> dict[str, Any]: ...
 
 #
 def savemat(
