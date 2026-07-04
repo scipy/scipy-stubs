@@ -47,7 +47,7 @@ assert_type(peak_prominences(_f64_1d, _i64_1d), tuple[onp.ArrayND[np.float64], o
 
 assert_type(
     peak_widths(_f64_1d, _i64_1d),
-    tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int_], onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
+    tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
 )
 
 # find_peaks_cwt
