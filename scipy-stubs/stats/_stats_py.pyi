@@ -5234,6 +5234,37 @@ def rankdata(
 ) -> onp.ArrayND[np.float64]: ...
 
 #
+@overload  # axis=None (default)
+def expectile(
+    a: onp.ToFloatND,
+    alpha: float = 0.5,
+    *,
+    weights: onp.ToFloatND | None = None,
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # axis=<given>
+def expectile(
+    a: onp.ToFloatND,
+    alpha: float = 0.5,
+    *,
+    weights: onp.ToFloatND | None = None,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # known shape, keepdims=True
+def expectile[ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[npc.floating | npc.integer, ShapeT],
+    alpha: float = 0.5,
+    *,
+    weights: onp.ToFloatND | None = None,
+    axis: int | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # known shape, keepdims=True
 def expectile(
     a: onp.ToFloatND,
     alpha: float = 0.5,
@@ -5241,8 +5272,8 @@ def expectile(
     weights: onp.ToFloatND | None = None,
     axis: int | None = None,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> np.float64: ...
+    keepdims: L[True],
+) -> onp.ArrayND[np.float64]: ...
 
 #
 @overload  # ?d, ?d
