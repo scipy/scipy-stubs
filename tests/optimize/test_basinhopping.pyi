@@ -16,7 +16,7 @@ _f64_1d: onp.Array1D[np.float64]
 
 assert_type(basinhopping(_fn_f64_1d, _f64_1d).success, bool)
 assert_type(basinhopping(_fn_f64_1d, _f64_1d).nit, int)
-assert_type(basinhopping(_fn_f64_1d, _f64_1d).message, str)
+assert_type(basinhopping(_fn_f64_1d, _f64_1d).message, list[str])
 assert_type(basinhopping(_fn_f64_1d, _f64_1d).x, onp.Array1D[np.float64])
 assert_type(basinhopping(_fn_f64_1d, _f64_1d).fun, float | np.float64)
 assert_type(basinhopping(_fn_f64_1d, _f64_1d).minimization_failures, int)

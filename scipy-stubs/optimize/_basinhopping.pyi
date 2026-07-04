@@ -33,7 +33,7 @@ class OptimizeResult(_OptimizeResult):
     x: _Float1D
     fun: _Float
 
-    message: str
+    message: list[str]
     nit: int
     success: bool
 
