@@ -246,7 +246,7 @@ class NdPPoly(Generic[_CT_co]):
 
     #
     def integrate(
-        self, /, ranges: tuple[tuple[onp.ToFloat, onp.ToFloat]], extrapolate: bool | None = None
+        self, /, ranges: tuple[tuple[onp.ToFloat, onp.ToFloat], ...], extrapolate: bool | None = None
     ) -> onp.ArrayND[_CT_co]: ...
 
 #
