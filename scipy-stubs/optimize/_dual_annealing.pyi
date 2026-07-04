@@ -26,7 +26,7 @@ class OptimizeResult(_OptimizeResult):
     nfev: int
     njev: int
     nhev: int
-    message: str
+    message: list[str]
 
 @overload
 def dual_annealing(
