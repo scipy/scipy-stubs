@@ -23,7 +23,7 @@ type _TerminationStatus = Literal[-1, 0, 1, 2, 3]
 class _OptimizeResult(OptimizeResult):
     x: _Float1D
     fun: _Float1D
-    const: _Float
+    cost: _Float
     optimality: _Float
     active_mask: _Int1D
     unbounded_sol: tuple[float | onp.ArrayND[npc.number], ...]
