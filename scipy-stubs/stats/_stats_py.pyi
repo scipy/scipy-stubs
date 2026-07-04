@@ -1281,123 +1281,123 @@ def mode(
     a: onp.ToFloat | onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
 ) -> ModeResult: ...
 
-# keep in sync with `tvar`
-@overload  # ?d T@inexact
-def tmean[InexactT: npc.inexact](
-    a: onp.ArrayND[InexactT, _JustAnyShape],
-    limits: _ComplexLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
-    *,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> InexactT | onp.ArrayND[InexactT]: ...
-@overload  # ?d +integer
-def tmean(
-    a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
-    limits: _RealLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
-    *,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> np.float64 | onp.ArrayND[np.float64]: ...
-@overload  # 1d T@inexact
-def tmean[InexactT: npc.inexact](
-    a: onp.ToArrayStrict1D[InexactT, InexactT],
-    limits: _ComplexLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
-    *,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> InexactT: ...
-@overload  # 1d +float|integer
-def tmean(
-    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
-    limits: _RealLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
-    *,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> np.float64: ...
-@overload  # 1d ~complex
-def tmean(
-    a: list[complex],
-    limits: _ComplexLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
-    *,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> np.complex128: ...
-@overload  # 2d T@inexact
-def tmean[InexactT: npc.inexact](
-    a: onp.ToArrayStrict2D[InexactT, InexactT],
-    limits: _ComplexLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
-    *,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> onp.Array1D[InexactT]: ...
-@overload  # 2d +float|integer
-def tmean(
-    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
-    limits: _RealLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
-    *,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> onp.Array1D[np.float64]: ...
-@overload  # 2d ~complex
-def tmean(
-    a: Sequence[list[complex]],
-    limits: _ComplexLimits | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
-    *,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> onp.Array1D[np.complex128]: ...
-@overload  # ?d T@inexact, axis=None
+#
+@overload  # ?d T@inexact, axis=None  (default)
 def tmean[InexactT: npc.inexact](
     a: onp.ArrayND[InexactT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
+    axis: None = None,
     *,
-    axis: None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> InexactT: ...
-@overload  # ?d +f64, axis=None
+@overload  # ?d +f64, axis=None  (default)
 def tmean(
     a: onp.ToArrayND[float, npc.integer | np.bool],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
+    axis: None = None,
     *,
-    axis: None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> np.float64: ...
-@overload  # ?d ~complex, axis=None
+@overload  # ?d ~complex, axis=None  (default)
 def tmean(
     a: onp.SequenceND[list[complex]] | list[complex],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
+    axis: None = None,
     *,
-    axis: None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> np.complex128: ...
+@overload  # ?d T@inexact, axis=<given>
+def tmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT, _JustAnyShape],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> InexactT | onp.ArrayND[InexactT]: ...
+@overload  # ?d +integer, axis=<given>
+def tmean(
+    a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # 1d T@inexact, axis=<given>
+def tmean[InexactT: npc.inexact](
+    a: onp.ToArrayStrict1D[InexactT, InexactT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> InexactT: ...
+@overload  # 1d +float|integer, axis=<given>
+def tmean(
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64: ...
+@overload  # 1d ~complex, axis=<given>
+def tmean(
+    a: list[complex],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.complex128: ...
+@overload  # 2d T@inexact, axis=<given>
+def tmean[InexactT: npc.inexact](
+    a: onp.ToArrayStrict2D[InexactT, InexactT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[InexactT]: ...
+@overload  # 2d +float|integer, axis=<given>
+def tmean(
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~complex, axis=<given>
+def tmean(
+    a: Sequence[list[complex]],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: int,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.complex128]: ...
 @overload  # S@Nd T@inexact, keepdims=True
 def tmean[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[InexactT, ShapeT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
+    axis: int | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
@@ -1407,7 +1407,7 @@ def tmean[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.integer | np.bool, ShapeT],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
+    axis: int | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
@@ -1417,7 +1417,7 @@ def tmean(
     a: onp.SequenceND[float],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
+    axis: int | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
@@ -1427,13 +1427,13 @@ def tmean(
     a: onp.SequenceND[list[complex]] | list[complex],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
+    axis: int | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> onp.ArrayND[np.complex128]: ...
 
-# keep in sync with `tmean`
+#
 @overload  # ?d T@inexact
 def tvar[InexactT: npc.inexact](
     a: onp.ArrayND[InexactT, _JustAnyShape],
