@@ -232,6 +232,22 @@ class rv_discrete_frozen(rv_frozen[_DRVT_co, _FloatNDT_co], Generic[_DRVT_co, _F
     @overload
     def logpmf(self, /, k: onp.ToFloatND) -> _FloatND: ...
 
+    #
+    @override
+    @overload
+    def rvs(self, /, size: tuple[()] | None = None, random_state: onp.random.ToRNG | None = None) -> int: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]],
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.ArrayND[np.int64]: ...
+    @overload
+    def rvs(
+        self, /, size: AnyShape | None = None, random_state: onp.random.ToRNG | None = None
+    ) -> onp.ArrayND[np.int64] | Any: ...
+
 # NOTE: Because of the limitations of `ParamSpec`, there is no proper way to annotate specific "positional or keyword arguments".
 # Considering the Liskov Substitution Principle, the only remaining option is to annotate `*args, and `**kwargs` as `Any`.
 class rv_generic:
@@ -1005,15 +1021,36 @@ class rv_discrete(_rv_mixin, rv_generic):
 
     #
     @override
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        size: tuple[()] = (),
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: onp.ToFloat,
+    ) -> int: ...
+    @overload
     def rvs(
         self,
         /,
         *args: _ToFloatOrND,
         loc: _ToFloatOrND = 0,
-        size: AnyShape = 1,
+        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]],
         random_state: onp.random.ToRNG | None = None,
         **kwds: _ToFloatOrND,
-    ) -> _IntOrND: ...
+    ) -> onp.ArrayND[np.int64]: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        size: AnyShape = (),
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: _ToFloatOrND,
+    ) -> onp.ArrayND[np.int64] | int: ...
 
 # returned by `rv_discrete.__new__` if `values` is specified
 class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
@@ -1044,6 +1081,39 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
     #
     @override
     def generic_moment(self, /, n: onp.ToInt | onp.ToIntND) -> _FloatND: ...
+
+    #
+    @override
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        size: tuple[()] = (),
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: onp.ToFloat,
+    ) -> np.float64: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]],
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: _ToFloatOrND,
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        size: AnyShape = (),
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: _ToFloatOrND,
+    ) -> onp.ArrayND[np.float64] | np.float64: ...
 
 # private helper subtypes
 @type_check_only
