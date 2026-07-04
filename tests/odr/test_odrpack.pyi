@@ -1,9 +1,10 @@
 # type-tests for `odr/_odrpack.pyi`
 
-from typing_extensions import assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+
 from scipy.odr import Output
 
 ###
