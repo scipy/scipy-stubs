@@ -19,10 +19,11 @@ type _Solver = Literal["arpack", "propack", "lobpcg"]
 
 ###
 
-# the mypy overload-overlap errors below are false positives
+# mypy reports 4 false positive `overload-overlap` errors on numpy>=2.2
+# mypy: disable-error-code=overload-overlap
 
 @overload  # return_singular_vectors=True  (default), f64|c128
-def svds[ScalarT: np.float64 | np.complex128](  # type: ignore[overload-overlap]
+def svds[ScalarT: np.float64 | np.complex128](
     A: _ToMatrix[ScalarT],
     k: int = 6,
     ncv: int | None = None,
@@ -54,7 +55,7 @@ def svds[ScalarT: np.float32 | np.complex64](
     random_state: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[ScalarT], onp.Array1D[np.float32], onp.Array2D[ScalarT]]: ...
 @overload  # return_singular_vectors=False, f64|c128
-def svds(  # type: ignore[overload-overlap]
+def svds(
     A: _ToMatrix[np.float64 | np.complex128],
     k: int = 6,
     ncv: int | None = None,
@@ -86,7 +87,7 @@ def svds(
     random_state: onp.random.ToRNG | None = None,
 ) -> onp.Array1D[np.float32]: ...
 @overload  # return_singular_vectors="u", f64|c128
-def svds[ScalarT: np.float64 | np.complex128](  # type: ignore[overload-overlap]
+def svds[ScalarT: np.float64 | np.complex128](
     A: _ToMatrix[ScalarT],
     k: int = 6,
     ncv: int | None = None,
@@ -118,7 +119,7 @@ def svds[ScalarT: np.float32 | np.complex64](
     random_state: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[ScalarT], onp.Array1D[np.float32], None]: ...
 @overload  # return_singular_vectors="vh", f64|c128
-def svds[ScalarT: np.float64 | np.complex128](  # type: ignore[overload-overlap]
+def svds[ScalarT: np.float64 | np.complex128](
     A: _ToMatrix[ScalarT],
     k: int = 6,
     ncv: int | None = None,
