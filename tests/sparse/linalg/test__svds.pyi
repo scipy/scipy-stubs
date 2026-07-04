@@ -5,13 +5,32 @@ import optype.numpy as onp
 
 from scipy.sparse.linalg import svds
 
-a_f32: onp.Array2D[np.float32]
-a_f64: onp.Array2D[np.float64]
-a_c64: onp.Array2D[np.complex64]
-a_c128: onp.Array2D[np.complex128]
+###
 
+_f32_2d: onp.Array2D[np.float32]
+_f64_2d: onp.Array2D[np.float64]
+_c64_2d: onp.Array2D[np.complex64]
+_c128_2d: onp.Array2D[np.complex128]
+
+###
 # svds
-assert_type(svds(a_f32), tuple[onp.Array2D[np.float32], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.float32]])
-assert_type(svds(a_f64), tuple[onp.Array2D[np.float64], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.float64]])
-assert_type(svds(a_c64), tuple[onp.Array2D[np.complex64], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.complex64]])
-assert_type(svds(a_c128), tuple[onp.Array2D[np.complex128], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.complex128]])
+
+assert_type(svds(_f32_2d), tuple[onp.Array2D[np.float32], onp.Array1D[np.float32], onp.Array2D[np.float32]])
+assert_type(svds(_f64_2d), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], onp.Array2D[np.float64]])
+assert_type(svds(_c64_2d), tuple[onp.Array2D[np.complex64], onp.Array1D[np.float32], onp.Array2D[np.complex64]])
+assert_type(svds(_c128_2d), tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], onp.Array2D[np.complex128]])
+
+assert_type(svds(_f32_2d, return_singular_vectors=False), onp.Array1D[np.float32])
+assert_type(svds(_f64_2d, return_singular_vectors=False), onp.Array1D[np.float64])
+assert_type(svds(_c64_2d, return_singular_vectors=False), onp.Array1D[np.float32])
+assert_type(svds(_c128_2d, return_singular_vectors=False), onp.Array1D[np.float64])
+
+assert_type(svds(_f32_2d, return_singular_vectors="u"), tuple[onp.Array2D[np.float32], onp.Array1D[np.float32], None])
+assert_type(svds(_f64_2d, return_singular_vectors="u"), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], None])
+assert_type(svds(_c64_2d, return_singular_vectors="u"), tuple[onp.Array2D[np.complex64], onp.Array1D[np.float32], None])
+assert_type(svds(_c128_2d, return_singular_vectors="u"), tuple[onp.Array2D[np.complex128], onp.Array1D[np.float64], None])
+
+assert_type(svds(_f32_2d, return_singular_vectors="vh"), tuple[None, onp.Array1D[np.float32], onp.Array2D[np.float32]])
+assert_type(svds(_f64_2d, return_singular_vectors="vh"), tuple[None, onp.Array1D[np.float64], onp.Array2D[np.float64]])
+assert_type(svds(_c64_2d, return_singular_vectors="vh"), tuple[None, onp.Array1D[np.float32], onp.Array2D[np.complex64]])
+assert_type(svds(_c128_2d, return_singular_vectors="vh"), tuple[None, onp.Array1D[np.float64], onp.Array2D[np.complex128]])
