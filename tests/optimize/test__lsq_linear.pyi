@@ -14,7 +14,7 @@ _b: list[float]
 _res = lsq_linear(_A, _b)
 assert_type(_res.x, onp.Array1D[np.float64])
 assert_type(_res.fun, onp.Array1D[np.float64])
-assert_type(_res.const, float | np.float64)
+assert_type(_res.cost, float | np.float64)
 assert_type(_res.optimality, float | np.float64)
 assert_type(_res.active_mask, onp.Array1D[np.intp])
 assert_type(_res.nit, int)
