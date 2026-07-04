@@ -85,11 +85,11 @@ assert_type(cspline1d_eval(_c160_1d, _f64_1d), _C160_1D)
 
 # cspline2d
 
-assert_type(cspline2d(_i64_1d), _F64_1D)
-assert_type(cspline2d(_f64_1d), _F64_1D)
-assert_type(cspline2d(_f64_2d), _F64_1D)
-assert_type(cspline2d(_c128_1d), _C128_1D)
-assert_type(cspline2d(_c128_2d), _C128_1D)
+assert_type(cspline2d(_i64_1d), _F64_2D)
+assert_type(cspline2d(_f64_1d), _F64_2D)
+assert_type(cspline2d(_f64_2d), _F64_2D)
+assert_type(cspline2d(_c128_1d), _C128_2D)
+assert_type(cspline2d(_c128_2d), _C128_2D)
 
 # gauss_spline
 
@@ -140,13 +140,13 @@ assert_type(qspline1d_eval(_c160_1d, _f64_1d), _C160_1D)
 
 # qspline2d
 
-assert_type(qspline2d(_i64_1d, _n), _F64_1D)
-assert_type(qspline2d(_f64_1d, _n), _F64_1D)
-assert_type(qspline2d(_f64_2d, _n), _F64_1D)
-assert_type(qspline2d(_c128_1d, _n), _C128_1D)
-assert_type(qspline2d(_c128_2d, _n), _C128_1D)
-assert_type(qspline2d(_py_f_2d, _n), _F64_1D)
-assert_type(qspline2d(_py_c_2d, _n), _C128_1D)
+assert_type(qspline2d(_i64_1d, _n), _F64_2D)
+assert_type(qspline2d(_f64_1d, _n), _F64_2D)
+assert_type(qspline2d(_f64_2d, _n), _F64_2D)
+assert_type(qspline2d(_c128_1d, _n), _C128_2D)
+assert_type(qspline2d(_c128_2d, _n), _C128_2D)
+assert_type(qspline2d(_py_f_2d, _n), _F64_2D)
+assert_type(qspline2d(_py_c_2d, _n), _C128_2D)
 
 # symiirorder1
 
