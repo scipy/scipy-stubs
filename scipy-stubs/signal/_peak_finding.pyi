@@ -10,7 +10,7 @@ __all__ = ["argrelextrema", "argrelmax", "argrelmin", "find_peaks", "find_peaks_
 ###
 
 type _Mode = Literal["clip", "wrap"]
-type _PeakProminences = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp], onp.ArrayND[np.intp]]
+type _PeakProminences = tuple[onp.Array1D[np.float64], onp.Array1D[np.intp], onp.Array1D[np.intp]]
 type _PeakCondition = float | onp.ToFloatND | Sequence[float | None]
 type _FnWavelet = (
     Callable[Concatenate[int, float, ...], onp.ToComplex1D]
@@ -30,26 +30,26 @@ def argrelextrema[ScalarT: np.generic](
 ) -> tuple[onp.ArrayND[np.intp], ...]: ...
 
 #
-def peak_prominences(x: onp.ToArray1D, peaks: onp.ToIntND, wlen: float | None = None) -> _PeakProminences: ...
+def peak_prominences(x: onp.ToArray1D, peaks: onp.ToInt1D, wlen: float | None = None) -> _PeakProminences: ...
 def peak_widths(
     x: onp.ToArray1D,
-    peaks: onp.ToIntND,
+    peaks: onp.ToInt1D,
     rel_height: float = 0.5,
     prominence_data: _PeakProminences | None = None,
     wlen: float | None = None,
 ) -> tuple[
-    onp.ArrayND[np.float64],  # widths
-    onp.ArrayND[np.float64],  # width_heights
-    onp.ArrayND[np.float64],  # left_ips
-    onp.ArrayND[np.float64],  # right_ips
+    onp.Array1D[np.float64],  # widths
+    onp.Array1D[np.float64],  # width_heights
+    onp.Array1D[np.float64],  # left_ips
+    onp.Array1D[np.float64],  # right_ips
 ]: ...
 
 #
 def find_peaks_cwt(
-    vector: onp.Array,
-    widths: float | onp.ToFloatND,
+    vector: onp.Array1D[npc.floating | npc.integer | np.bool_] | Sequence[float],
+    widths: float | onp.ToFloat1D,
     wavelet: _FnWavelet | None = None,
-    max_distances: onp.ArrayND[npc.floating | npc.integer] | None = None,
+    max_distances: onp.Array1D[npc.floating | npc.integer] | None = None,
     gap_thresh: float | None = None,
     min_length: int | None = None,
     min_snr: float = 1,
