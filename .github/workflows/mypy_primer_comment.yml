@@ -58,6 +58,7 @@ jobs:
 
           echo '## `mypy_primer` results' >> comment.md
           if [ -s "${{ runner.temp }}/artifacts/mypy_primer.diff" ]; then
+            echo "has-changes=true" >> "$GITHUB_OUTPUT"
             echo '<details>' >> comment.md
             echo '<summary>⚠️ Changes were detected when running mypy on open source projects</summary>' >> comment.md
             echo '' >> comment.md
@@ -66,18 +67,16 @@ jobs:
             echo '```' >> comment.md
             echo '</details>' >> comment.md
           else
+            echo "has-changes=false" >> "$GITHUB_OUTPUT"
             echo '✅ No ecosystem changes detected' >> comment.md
           fi
-
-          echo 'comment<<EOF' >> "$GITHUB_OUTPUT"
-          cat comment.md >> "$GITHUB_OUTPUT"
-          echo 'EOF' >> "$GITHUB_OUTPUT"
 
       - name: create or update comment
         if: steps.generate-comment.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ steps.pr-number.outputs.pr-number }}
+          HAS_CHANGES: ${{ steps.generate-comment.outputs.has-changes }}
         run: |
           # Find existing comment by the bot containing the marker
           COMMENT_ID=$(
@@ -89,14 +88,16 @@ jobs:
           )
 
           if [[ -n "$COMMENT_ID" ]]; then
-            # Update existing comment
+            # Update existing comment (an edit, so it does not send a notification)
             gh api \
               --method PATCH \
               "repos/${{ github.repository }}/issues/comments/${COMMENT_ID}" \
               --field "body=@comment.md"
-          else
-            # Create new comment
+          elif [[ "$HAS_CHANGES" == "true" ]]; then
+            # Create a new comment only when there are ecosystem changes to report
             gh pr comment "${PR_NUMBER}" \
               --repo "${{ github.repository }}" \
               --body-file comment.md
+          else
+            echo "No ecosystem changes and no existing comment; skipping to avoid a notification"
           fi
