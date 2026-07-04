@@ -12,26 +12,24 @@ __all__ = ["shgo"]
 
 ###
 
-type _Float = float | np.float64
-type _Float1D = onp.Array1D[np.float64]
-type _Fun1D[_RT] = Callable[Concatenate[_Float1D, ...], _RT]
+type _Fun1D[_RT] = Callable[Concatenate[onp.Array1D[np.float64], ...], _RT]
 
 type _ToBounds = tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds
 type _SamplingMethod = Callable[[int, int], onp.ToFloat2D] | Literal["simplicial", "halton", "sobol"]
 
 @type_check_only
 class _SHGOOptions(TypedDict, total=False):
-    f_min: _Float
-    f_tol: _Float
+    f_min: float
+    f_tol: float
     maxiter: int
     maxfev: int
     maxev: int
-    mmaxtime: _Float
+    mmaxtime: float
     minhgrd: int
     symmetry: Sequence[int] | bool
     jac: _Fun1D[onp.ToFloat1D] | bool  # gradient
     hess: _Fun1D[onp.ToFloat2D]
-    hessp: Callable[Concatenate[_Float1D, _Float1D, ...], onp.ToFloat1D]
+    hessp: Callable[Concatenate[onp.Array1D[np.float64], onp.Array1D[np.float64], ...], onp.ToFloat1D]
     minimize_every_iter: bool
     local_iter: int
     infty_constraints: bool
@@ -44,10 +42,10 @@ class _DoesMap(Protocol):
 ###
 
 class OptimizeResult(_OptimizeResult):
-    x: _Float1D
-    xl: Sequence[_Float1D]
-    fun: _Float
-    funl: Sequence[_Float]
+    x: onp.Array1D[np.float64]
+    xl: onp.Array2D[np.float64]
+    fun: np.float64
+    funl: onp.Array1D[np.float64]
     success: bool
     message: str
     nfev: int
@@ -64,7 +62,7 @@ def shgo(
     constraints: Constraints | None = None,
     n: int = 100,
     iters: int = 1,
-    callback: Callable[[_Float1D], None] | None = None,
+    callback: Callable[[onp.Array1D[np.float64]], None] | None = None,
     minimizer_kwargs: MinimizerKwargs | None = None,
     options: _SHGOOptions | None = None,
     sampling_method: _SamplingMethod = "simplicial",
@@ -79,7 +77,7 @@ def shgo(
     constraints: Constraints | None = None,
     n: int = 100,
     iters: int = 1,
-    callback: Callable[[_Float1D], None] | None = None,
+    callback: Callable[[onp.Array1D[np.float64]], None] | None = None,
     *,
     minimizer_kwargs: MinimizerKwargsJac,
     options: _SHGOOptions | None = None,
