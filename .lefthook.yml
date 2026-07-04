@@ -30,7 +30,7 @@ pre-commit:
       run: uv run ty check {staged_files}
 
     - name: zuban
-      glob: "*.{py,pyi}"
+      glob: "scipy-stubs/*.{py,pyi}"
       run: uv run zuban check {staged_files}
 
     - name: unstubbed-modules
