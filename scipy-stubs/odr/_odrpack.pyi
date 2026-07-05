@@ -240,6 +240,7 @@ class Output:
     rel_error: Final[float]
     work: Final[onp.Array1D[np.float64]]
     work_ind: Final[dict[str, int]]
+    iwork: Final[onp.Array1D[np.int32 | np.int64]]
     info: Final[int]
     stopreason: Final[list[str]]
 
