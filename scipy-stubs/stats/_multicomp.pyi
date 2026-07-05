@@ -47,7 +47,9 @@ class DunnettResult(Generic[_StatT_co]):
     def __class_getitem__(cls, arg: object | type, /) -> GenericAlias: ...
 
     #
-    def confidence_interval(self, /, confidence_level: float | npc.floating = 0.95) -> ConfidenceInterval[_StatT_co]: ...
+    def confidence_interval(
+        self, /, confidence_level: float | npc.floating = 0.95
+    ) -> ConfidenceInterval[onp.Array1D[_StatT_co]]: ...
 
 @overload
 def dunnett(
