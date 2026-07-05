@@ -40,8 +40,11 @@ bspl: BSpline[np.float64]
 ###
 # splev
 
+assert_type(splev(2.5, bspl), _FloatND)
 assert_type(splev(_f64_1d, bspl), _FloatND)
+assert_type(splev(2.5, tck_1d), _FloatND)
 assert_type(splev(_f64_1d, tck_1d), _FloatND)
+assert_type(splev(2.5, tck_2d), list[_FloatND])
 assert_type(splev(_f64_1d, tck_2d), list[_FloatND])
 
 ###
@@ -110,4 +113,5 @@ assert_type(bisplrep(_f64_1d, _f64_1d, _f64_1d, full_output=True), tuple[_OutTCK
 ###
 # bisplev
 
+assert_type(bisplev(2.5, 2.5, tck_1d), np.float64)
 assert_type(bisplev(_f64_1d, _f64_1d, tck_1d), _Float2D)
