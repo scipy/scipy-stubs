@@ -3,6 +3,7 @@ from typing import Final, Literal, Never, overload, override
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = [
     "BivariateSpline",
@@ -46,7 +47,20 @@ class UnivariateSpline:
         ext: _Ext = 0,
         check_finite: bool = False,
     ) -> None: ...
-    def __call__(self, /, x: onp.ToFloat1D, nu: int = 0, ext: _Ext | None = None) -> _Float1D: ...
+
+    #
+    @overload  # known shape
+    def __call__[ShapeT: tuple[int, ...]](
+        self, /, x: onp.ArrayND[npc.floating | npc.integer, ShapeT], nu: int = 0, ext: _Ext | None = None
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
+    @overload  # 1d
+    def __call__(self, /, x: onp.ToFloatStrict1D, nu: int = 0, ext: _Ext | None = None) -> onp.Array1D[np.float64]: ...
+    @overload  # 2d
+    def __call__(self, /, x: onp.ToFloatStrict2D, nu: int = 0, ext: _Ext | None = None) -> onp.Array2D[np.float64]: ...
+    @overload  # 3d
+    def __call__(self, /, x: onp.ToFloatStrict3D, nu: int = 0, ext: _Ext | None = None) -> onp.Array3D[np.float64]: ...
+    @overload  # ?d
+    def __call__(self, /, x: onp.ToFloatND, nu: int = 0, ext: _Ext | None = None) -> onp.ArrayND[np.float64]: ...
 
     #
     def get_knots(self, /) -> _Float1D: ...
