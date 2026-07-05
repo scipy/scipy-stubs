@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Final, Literal, Never, override
+from typing import Final, Literal, Never, overload, override
 
 import numpy as np
 import optype.numpy as onp
@@ -102,7 +102,16 @@ class LSQUnivariateSpline(UnivariateSpline):
     ) -> None: ...
 
 class _BivariateSplineBase:  # undocumented
-    def __call__(self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, grid: bool = True) -> _Float1D: ...
+    @overload  # grid=True  (default)
+    def __call__(
+        self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, grid: Literal[True] = True
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # grid=False
+    def __call__(
+        self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, *, grid: Literal[False]
+    ) -> onp.Array1D[np.float64]: ...
+
+    #
     def get_residual(self, /) -> float: ...
     def get_knots(self, /) -> tuple[_Float1D, _Float1D]: ...
     def get_coeffs(self, /) -> _Float1D: ...
