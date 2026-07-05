@@ -31,6 +31,9 @@ type _ToBBox = Sequence[onp.ToFloat | None]
 
 ###
 
+# pyright reports a false positive `reportOverlappingOverload` error on numpy<2.1
+# pyright: reportOverlappingOverload=false
+
 class UnivariateSpline:
     ext: int
 
