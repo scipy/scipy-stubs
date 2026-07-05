@@ -81,6 +81,8 @@ type _FType0 = L["butter", "cheby1", "cheby2", "ellip"]
 type _FType = _FType0 | L["bessel"]
 type _BType0 = L["bandpass", "lowpass", "highpass", "bandstop"]
 type _BType = _BType0 | L["band", "pass", "bp", "bands", "stop", "bs", "low", "lp", "l", "high", "hp", "h"]
+type _BTypeSingle = L["l", "lp", "low", "lowpass", "h", "hp", "high", "highpass"]
+type _BTypeDouble = L["bp", "band", "pass", "bandpass", "bs", "bands", "stop", "bandstop"]
 type _Pairing = L["nearest", "keep_odd", "minimal"]
 type _Norm = L["phase", "delay", "mag"]
 
@@ -575,41 +577,43 @@ def iirdesign(
     output: L["ba"] = "ba",
     fs: float | None = None,
 ) -> _Ba1D[np.float64]: ...
-@overload  # output="zpk" (positional)
-def iirdesign(
-    wp: float | onp.ToFloat1D,
-    ws: float | onp.ToFloat1D,
-    gpass: float,
-    gstop: float,
-    analog: bool,
-    ftype: _FType0,
-    output: L["zpk"],
-    fs: float | None = None,
-) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
-@overload  # output="zpk" (keyword)
+@overload  # ftype={"cheby2", "ellip"} (default), output="zpk"
 def iirdesign(
     wp: float | onp.ToFloat1D,
     ws: float | onp.ToFloat1D,
     gpass: float,
     gstop: float,
     analog: bool = False,
-    ftype: _FType0 = "ellip",
+    ftype: L["cheby2", "ellip"] = "ellip",
     *,
     output: L["zpk"],
     fs: float | None = None,
 ) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
-@overload  # output="sos" (positional)
+@overload  # ftype={"butter", "cheby1"}, lowpass/highpass (scalar wp/ws), output="zpk"
 def iirdesign(
-    wp: float | onp.ToFloat1D,
-    ws: float | onp.ToFloat1D,
+    wp: float,
+    ws: float,
     gpass: float,
     gstop: float,
-    analog: bool,
-    ftype: _FType0,
-    output: L["sos"],
+    analog: bool = False,
+    *,
+    ftype: L["butter", "cheby1"],
+    output: L["zpk"],
     fs: float | None = None,
-) -> _Float2D: ...
-@overload  # output="sos" (keyword)
+) -> _ZPK[np.float64, np.complex128, np.float64]: ...
+@overload  # ftype={"butter", "cheby1"}, bandpass/bandstop (array wp/ws), output="zpk"
+def iirdesign(
+    wp: onp.ToFloat1D,
+    ws: onp.ToFloat1D,
+    gpass: float,
+    gstop: float,
+    analog: bool = False,
+    *,
+    ftype: L["butter", "cheby1"],
+    output: L["zpk"],
+    fs: float | None = None,
+) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+@overload  # output="sos"
 def iirdesign(
     wp: float | onp.ToFloat1D,
     ws: float | onp.ToFloat1D,
@@ -635,44 +639,46 @@ def iirfilter(
     output: L["ba"] = "ba",
     fs: float | None = None,
 ) -> _Ba1D[np.float64]: ...
-@overload  # output="zpk" (positional)
+@overload  # btype={"bandpass", "bandstop"} (default), output="zpk"
 def iirfilter(
     N: int,
-    Wn: float | onp.ToFloat1D,
-    rp: float | None,
-    rs: float | None,
-    btype: _BType,
-    analog: bool,
-    ftype: _FType,
-    output: L["zpk"],
-    fs: float | None = None,
-) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
-@overload  # output="zpk" (keyword)
-def iirfilter(
-    N: int,
-    Wn: float | onp.ToFloat1D,
+    Wn: onp.ToFloat1D,
     rp: float | None = None,
     rs: float | None = None,
-    btype: _BType = "band",
+    btype: _BTypeDouble = "band",
     analog: bool = False,
     ftype: _FType = "butter",
     *,
     output: L["zpk"],
     fs: float | None = None,
 ) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
-@overload  # output="sos" (positional)
+@overload  # btype={"lowpass", "highpass"}, ftype={"butter", "cheby1", "bessel"} (default), output="zpk"
 def iirfilter(
     N: int,
-    Wn: float | onp.ToFloat1D,
-    rp: float | None,
-    rs: float | None,
-    btype: _BType,
-    analog: bool,
-    ftype: _FType,
-    output: L["sos"],
+    Wn: float,
+    rp: float | None = None,
+    rs: float | None = None,
+    *,
+    btype: _BTypeSingle,
+    analog: bool = False,
+    ftype: L["butter", "cheby1", "bessel"] = "butter",
+    output: L["zpk"],
     fs: float | None = None,
-) -> _Float2D: ...
-@overload  # output="sos" (keyword)
+) -> _ZPK[np.float64, np.complex128, np.float64]: ...
+@overload  # btype={"lowpass", "highpass"}, ftype={"cheby2", "ellip"}, output="zpk"
+def iirfilter(
+    N: int,
+    Wn: float,
+    rp: float | None = None,
+    rs: float | None = None,
+    *,
+    btype: _BTypeSingle,
+    analog: bool = False,
+    ftype: L["cheby2", "ellip"],
+    output: L["zpk"],
+    fs: float | None = None,
+) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+@overload  # output="sos"
 def iirfilter(
     N: int,
     Wn: float | onp.ToFloat1D,
@@ -696,11 +702,15 @@ def butter(
     output: L["ba"] = "ba",
     fs: float | None = None,
 ) -> _Ba1D[np.float64]: ...
-@overload  # output="zpk" (keyword)
+@overload  # btype={"lowpass", "highpass"} (default), output="zpk"
 def butter(
-    N: int, Wn: float | onp.ToFloat1D, btype: _BType = "low", analog: bool = False, *, output: L["zpk"], fs: float | None = None
-) -> _ZPK[np.float64, np.complex128, float]: ...
-@overload  # output="sos" (keyword)
+    N: int, Wn: float, btype: _BTypeSingle = "low", analog: bool = False, *, output: L["zpk"], fs: float | None = None
+) -> _ZPK[np.float64, np.complex128, np.float64]: ...
+@overload  # btype={"bandpass", "bandstop"}, output="zpk"
+def butter(
+    N: int, Wn: onp.ToFloat1D, btype: _BTypeDouble, analog: bool = False, *, output: L["zpk"], fs: float | None = None
+) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+@overload  # output="sos"
 def butter(
     N: int, Wn: float | onp.ToFloat1D, btype: _BType = "low", analog: bool = False, *, output: L["sos"], fs: float | None = None
 ) -> _Float2D: ...
@@ -716,181 +726,131 @@ def cheby1(
     output: L["ba"] = "ba",
     fs: float | None = None,
 ) -> _Ba1D[np.float64]: ...
-@overload  # output="zpk" (positional)
+@overload  # btype={"lowpass", "highpass"} (default), output="zpk"
 def cheby1(
-    N: int, rp: float, Wn: float | onp.ToFloat1D, btype: _BType, analog: bool, output: L["zpk"], fs: float | None = None
-) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
-@overload  # output="zpk" (keyword)
-def cheby1(
-    N: int,
-    rp: float,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType = "low",
-    analog: bool = False,
-    *,
-    output: L["zpk"],
-    fs: float | None = None,
-) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
-@overload  # output="sos" (positional)
-def cheby1(
-    N: int, rp: float, Wn: float | onp.ToFloat1D, btype: _BType, analog: bool, output: L["sos"], fs: float | None = None
-) -> _Float2D: ...
-@overload  # output="sos" (keyword)
-def cheby1(
-    N: int,
-    rp: float,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType = "low",
-    analog: bool = False,
-    *,
-    output: L["sos"],
-    fs: float | None = None,
-) -> _Float2D: ...
-
-#
-@overload  # output="ba" (default)
-def cheby2(
-    N: int,
-    rs: float,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType = "low",
-    analog: bool = False,
-    output: L["ba"] = "ba",
-    fs: float | None = None,
-) -> _Ba1D[np.float64]: ...
-@overload  # output="zpk" (positional)
-def cheby2(
-    N: int, rs: float, Wn: float | onp.ToFloat1D, btype: _BType, analog: bool, output: L["zpk"], fs: float | None = None
-) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
-@overload  # output="zpk" (keyword)
-def cheby2(
-    N: int,
-    rs: float,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType = "low",
-    analog: bool = False,
-    *,
-    output: L["zpk"],
-    fs: float | None = None,
-) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
-@overload  # output="sos" (positional)
-def cheby2(
-    N: int, rs: float, Wn: float | onp.ToFloat1D, btype: _BType, analog: bool, output: L["sos"], fs: float | None = None
-) -> _Float2D: ...
-@overload  # output="sos" (keyword)
-def cheby2(
-    N: int,
-    rs: float,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType = "low",
-    analog: bool = False,
-    *,
-    output: L["sos"],
-    fs: float | None = None,
-) -> _Float2D: ...
-
-#
-@overload  # output="ba" (default)
-def ellip(
-    N: int,
-    rp: float,
-    rs: float,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType = "low",
-    analog: bool = False,
-    output: L["ba"] = "ba",
-    fs: float | None = None,
-) -> _Ba1D[np.float64]: ...
-@overload  # output="zpk" (postitional)
-def ellip(
-    N: int,
-    rp: float,
-    rs: float,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType,
-    analog: bool,
-    output: L["zpk"],
-    fs: float | None = None,
-) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
-@overload  # output="zpk" (keyword)
-def ellip(
-    N: int,
-    rp: float,
-    rs: float,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType = "low",
-    analog: bool = False,
-    *,
-    output: L["zpk"],
-    fs: float | None = None,
-) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
-@overload  # output="sos" (postitional)
-def ellip(
-    N: int,
-    rp: float,
-    rs: float,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType,
-    analog: bool,
-    output: L["sos"],
-    fs: float | None = None,
-) -> _Float2D: ...
-@overload  # output="sos" (keyword)
-def ellip(
-    N: int,
-    rp: float,
-    rs: float,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType = "low",
-    analog: bool = False,
-    *,
-    output: L["sos"],
-    fs: float | None = None,
-) -> _Float2D: ...
-
-#
-@overload  # output="ba" (default)
-def bessel(
-    N: int,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType = "low",
-    analog: bool = False,
-    output: L["ba"] = "ba",
-    norm: _Norm = "phase",
-    fs: float | None = None,
-) -> _Ba1D[np.float64]: ...
-@overload  # output="zpk" (postitional)
-def bessel(
-    N: int,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType,
-    analog: bool,
-    output: L["zpk"],
-    norm: _Norm = "phase",
-    fs: float | None = None,
+    N: int, rp: float, Wn: float, btype: _BTypeSingle = "low", analog: bool = False, *, output: L["zpk"], fs: float | None = None
 ) -> _ZPK[np.float64, np.complex128, np.float64]: ...
-@overload  # output="zpk" (keyword)
+@overload  # btype={"bandpass", "bandstop"}, output="zpk"
+def cheby1(
+    N: int, rp: float, Wn: onp.ToFloat1D, btype: _BTypeDouble, analog: bool = False, *, output: L["zpk"], fs: float | None = None
+) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+@overload  # output="sos"
+def cheby1(
+    N: int,
+    rp: float,
+    Wn: float | onp.ToFloat1D,
+    btype: _BType = "low",
+    analog: bool = False,
+    *,
+    output: L["sos"],
+    fs: float | None = None,
+) -> _Float2D: ...
+
+#
+@overload  # output="ba" (default)
+def cheby2(
+    N: int,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
+    btype: _BType = "low",
+    analog: bool = False,
+    output: L["ba"] = "ba",
+    fs: float | None = None,
+) -> _Ba1D[np.float64]: ...
+@overload  # output="zpk"
+def cheby2(
+    N: int,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
+    btype: _BType = "low",
+    analog: bool = False,
+    *,
+    output: L["zpk"],
+    fs: float | None = None,
+) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+@overload  # output="sos"
+def cheby2(
+    N: int,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
+    btype: _BType = "low",
+    analog: bool = False,
+    *,
+    output: L["sos"],
+    fs: float | None = None,
+) -> _Float2D: ...
+
+#
+@overload  # output="ba" (default)
+def ellip(
+    N: int,
+    rp: float,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
+    btype: _BType = "low",
+    analog: bool = False,
+    output: L["ba"] = "ba",
+    fs: float | None = None,
+) -> _Ba1D[np.float64]: ...
+@overload  # output="zpk"
+def ellip(
+    N: int,
+    rp: float,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
+    btype: _BType = "low",
+    analog: bool = False,
+    *,
+    output: L["zpk"],
+    fs: float | None = None,
+) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+@overload  # output="sos"
+def ellip(
+    N: int,
+    rp: float,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
+    btype: _BType = "low",
+    analog: bool = False,
+    *,
+    output: L["sos"],
+    fs: float | None = None,
+) -> _Float2D: ...
+
+#
+@overload  # output="ba" (default)
 def bessel(
     N: int,
     Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
+    analog: bool = False,
+    output: L["ba"] = "ba",
+    norm: _Norm = "phase",
+    fs: float | None = None,
+) -> _Ba1D[np.float64]: ...
+@overload  # btype={"lowpass", "highpass"} (default), output="zpk"
+def bessel(
+    N: int,
+    Wn: float,
+    btype: _BTypeSingle = "low",
     analog: bool = False,
     *,
     output: L["zpk"],
     norm: _Norm = "phase",
     fs: float | None = None,
 ) -> _ZPK[np.float64, np.complex128, np.float64]: ...
-@overload  # output="sos" (postitional)
+@overload  # btype={"bandpass", "bandstop"}, output="zpk"
 def bessel(
     N: int,
-    Wn: float | onp.ToFloat1D,
-    btype: _BType,
-    analog: bool,
-    output: L["sos"],
+    Wn: onp.ToFloat1D,
+    btype: _BTypeDouble,
+    analog: bool = False,
+    *,
+    output: L["zpk"],
     norm: _Norm = "phase",
     fs: float | None = None,
-) -> _Float2D: ...
-@overload  # output="sos" (keyword)
+) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+@overload  # output="sos"
 def bessel(
     N: int,
     Wn: float | onp.ToFloat1D,

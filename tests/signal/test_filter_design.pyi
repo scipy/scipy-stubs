@@ -222,24 +222,88 @@ assert_type(bilinear_zpk(_c128_1d, _c128_1d, 1.0, 1.0), tuple[onp.Array1D[np.com
 assert_type(iirdesign(0.2, 0.3, 1, 40), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(iirdesign(0.2, 0.3, 1, 40, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(iirdesign(0.2, 0.3, 1, 40, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(
+    iirdesign(0.2, 0.3, 1, 40, ftype="butter", output="zpk"),
+    tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64],
+)
+assert_type(
+    iirdesign(0.2, 0.3, 1, 40, ftype="cheby1", output="zpk"),
+    tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64],
+)
+assert_type(
+    iirdesign(0.2, 0.3, 1, 40, ftype="cheby2", output="zpk"),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
+)
+assert_type(
+    iirdesign(0.2, 0.3, 1, 40, ftype="ellip", output="zpk"),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
+)
+assert_type(
+    iirdesign([0.2, 0.5], [0.1, 0.6], 1, 40, ftype="butter", output="zpk"),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
+)
+assert_type(
+    iirdesign([0.2, 0.5], [0.1, 0.6], 1, 40, ftype="cheby1", output="zpk"),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
+)
 assert_type(iirdesign(0.2, 0.3, 1, 40, output="sos"), onp.Array2D[np.float64])
 
 # iirfilter
 assert_type(iirfilter(8, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(iirfilter(8, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(iirfilter(8, 0.1, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(iirfilter(8, [0.1, 0.2], output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(
+    iirfilter(8, [0.1, 0.2], btype="pass", output="zpk"),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
+)
+assert_type(
+    iirfilter(8, [0.1, 0.2], btype="stop", output="zpk"),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
+)
+assert_type(iirfilter(8, 0.1, btype="low", output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(iirfilter(8, 0.1, btype="high", output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(
+    iirfilter(8, 0.1, btype="low", ftype="cheby2", output="zpk"),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
+)
+assert_type(
+    iirfilter(8, 0.1, btype="high", ftype="ellip", output="zpk"),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
+)
+assert_type(
+    iirfilter(8, 0.1, btype="low", ftype="bessel", output="zpk"),
+    tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64],
+)
 assert_type(iirfilter(8, 0.1, output="sos"), onp.Array2D[np.float64])
 
 # butter
 assert_type(butter(8, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(butter(8, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(butter(8, 0.1, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float])
+assert_type(butter(8, 0.1, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(butter(8, 0.1, btype="low", output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(butter(8, 0.1, btype="high", output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(
+    butter(8, [0.1, 0.2], btype="pass", output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64]
+)
+assert_type(
+    butter(8, [0.1, 0.2], btype="stop", output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64]
+)
 assert_type(butter(8, 0.1, output="sos"), onp.Array2D[np.float64])
 
 # cheby1
 assert_type(cheby1(8, 3, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(cheby1(8, 3, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(cheby1(8, 3, 0.1, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(cheby1(8, 3, 0.1, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(cheby1(8, 3, 0.1, btype="low", output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(cheby1(8, 3, 0.1, btype="high", output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
+assert_type(
+    cheby1(8, 3, [0.1, 0.2], btype="pass", output="zpk"),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
+)
+assert_type(
+    cheby1(8, 3, [0.1, 0.2], btype="stop", output="zpk"),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
+)
 assert_type(cheby1(8, 3, 0.1, output="sos"), onp.Array2D[np.float64])
 
 # cheby2
