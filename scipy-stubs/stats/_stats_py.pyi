@@ -223,14 +223,14 @@ class HistogramResult(NamedTuple):
 class CumfreqResult(NamedTuple):
     cumcount: onp.Array1D[np.float64]
     lowerlimit: L[0] | npc.floating
-    binsize: onp.Array1D[np.float64]
-    extrapoints: int
+    binsize: np.float64
+    extrapoints: np.int64
 
 class RelfreqResult(NamedTuple):
     frequency: onp.Array1D[np.float64]
     lowerlimit: L[0] | npc.floating
-    binsize: onp.Array1D[np.float64]
-    extrapoints: int
+    binsize: np.float64
+    extrapoints: np.int64
 
 class SigmaclipResult(NamedTuple, Generic[_RealT_co, _FloatT_co]):
     clipped: onp.Array1D[_RealT_co]
