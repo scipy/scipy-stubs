@@ -1109,19 +1109,67 @@ def unique_roots[InexactT: npc.inexact](
 ) -> tuple[onp.Array1D[InexactT], onp.Array1D[np.int_]]: ...
 
 #
+@overload  # real
 def residue(
-    b: onp.ToComplex1D, a: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
-) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64]]: ...
-def residuez(
-    b: onp.ToComplex1D, a: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
-) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64]]: ...
+    b: onp.ToFloat1D, a: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64]]: ...
+@overload  # complex b
+def residue(
+    b: onp.ToJustComplex1D, a: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]]: ...
+@overload  # complex a
+def residue(
+    b: onp.ToComplex1D, a: onp.ToJustComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]]: ...
 
 #
+@overload  # real
+def residuez(
+    b: onp.ToFloat1D, a: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64]]: ...
+@overload  # complex b
+def residuez(
+    b: onp.ToJustComplex1D, a: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]]: ...
+@overload  # complex a
+def residuez(
+    b: onp.ToComplex1D, a: onp.ToJustComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]]: ...
+
+#
+@overload  # real
 def invres(
-    r: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+    r: onp.ToFloat1D, p: onp.ToFloat1D, k: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+@overload  # complex r
+def invres(
+    r: onp.ToJustComplex1D, p: onp.ToFloat1D, k: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64]]: ...
+@overload  # complex k
+def invres(
+    r: onp.ToComplex1D, p: onp.ToFloat1D, k: onp.ToJustComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64]]: ...
+@overload  # complex p
+def invres(
+    r: onp.ToComplex1D, p: onp.ToJustComplex1D, k: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
 ) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]]: ...
+
+#
+@overload  # real
 def invresz(
-    r: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+    r: onp.ToFloat1D, p: onp.ToFloat1D, k: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+@overload  # complex r
+def invresz(
+    r: onp.ToJustComplex1D, p: onp.ToFloat1D, k: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64]]: ...
+@overload  # complex k
+def invresz(
+    r: onp.ToComplex1D, p: onp.ToFloat1D, k: onp.ToJustComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64]]: ...
+@overload  # complex p
+def invresz(
+    r: onp.ToComplex1D, p: onp.ToJustComplex1D, k: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
 ) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]]: ...
 
 # NOTE: We use `AnyInexact64T` as "free" type parameter, which behaves exactly as
