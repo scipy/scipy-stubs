@@ -735,11 +735,11 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     def power[ScalarT: _Numeric](
         self: csr_matrix[ScalarT] | dok_matrix[ScalarT] | lil_matrix[ScalarT], /, n: SupportsIndex, dtype: None = None
     ) -> csr_matrix[ScalarT]: ...
-    @overload  # {csr,dok,lil}_matrix -> csr_matrix, dype=<known>
+    @overload  # {csr,dok,lil}_matrix -> csr_matrix, dtype=<known>
     def power[ScalarT: _Numeric](
         self: csr_matrix | dok_matrix | lil_matrix, /, n: SupportsIndex, dtype: onp.ToDType[ScalarT]
     ) -> csr_matrix[ScalarT]: ...
-    @overload  # {csr,dok,lil}_matrix -> csr_matrix, dype=<unknown>
+    @overload  # {csr,dok,lil}_matrix -> csr_matrix, dtype=<unknown>
     def power(self: csr_matrix | dok_matrix | lil_matrix, /, n: SupportsIndex, dtype: type[complex] | str) -> csr_matrix[Any]: ...
     @overload  # otherwise, Self -> Self
     def power[SelfT: bsr_array | bsr_matrix | csc_array | csc_matrix | coo_array | coo_matrix | dia_array | dia_matrix](
