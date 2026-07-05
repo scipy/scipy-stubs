@@ -27,13 +27,12 @@ def _statistic_nd(x: onp.ArrayND[np.float64], y: onp.ArrayND[np.float64]) -> onp
 ###
 
 # bootstrap
-assert_type(bootstrap(_py_f_1d, np.mean), BootstrapResult[float | np.float64, onp.Array1D[np.float64]])
-assert_type(bootstrap(_f64_1d, np.mean), BootstrapResult[float | np.float64, onp.Array1D[np.float64]])
-assert_type(bootstrap(_f64_2d, np.mean), BootstrapResult[onp.Array1D[np.float64], onp.Array2D[np.float64]])
-assert_type(bootstrap(_f64_3d, np.mean), BootstrapResult[onp.Array2D[np.float64], onp.Array3D[np.float64]])
-assert_type(  # pyrefly:ignore[assert-type]
-    bootstrap(_f64_nd, np.mean), BootstrapResult[float | np.float64, onp.Array1D[np.float64]]
-)
+assert_type(bootstrap([_py_f_1d], np.mean), BootstrapResult[np.float64, onp.Array1D[np.float64]])
+assert_type(bootstrap([_f64_1d], np.mean), BootstrapResult[np.float64, onp.Array1D[np.float64]])
+assert_type(bootstrap([_f64_2d], np.mean), BootstrapResult[onp.Array1D[np.float64], onp.Array2D[np.float64]])
+assert_type(bootstrap([_f64_3d], np.mean), BootstrapResult[onp.Array2D[np.float64], onp.Array3D[np.float64]])
+# pyrefly:ignore[assert-type]
+assert_type(bootstrap([_f64_nd], np.mean), BootstrapResult[onp.ArrayND[np.float64] | np.float64, onp.Array1D[np.float64]])
 
 # permutation_test
 assert_type(
