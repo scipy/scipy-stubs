@@ -28,8 +28,8 @@ _edf = _ecdf_r.cdf
 assert_type(_edf.quantiles, onp.Array1D[np.float64])
 assert_type(_edf.probabilities, onp.Array1D[np.float64])
 assert_type(_edf.evaluate(_f64_nd), onp.ArrayND[np.float64])
-assert_type(_edf.confidence_interval(), ConfidenceInterval)
-assert_type(_edf.confidence_interval(0.99, method="log-log"), ConfidenceInterval)
+assert_type(_edf.confidence_interval(), ConfidenceInterval[EmpiricalDistributionFunction])
+assert_type(_edf.confidence_interval(0.99, method="log-log"), ConfidenceInterval[EmpiricalDistributionFunction])
 
 assert_type(ecdf(_f64_1d), ECDFResult)
 

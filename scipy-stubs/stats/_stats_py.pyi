@@ -83,6 +83,7 @@ __all__ = [
 
 ###
 
+_FloatT = TypeVar("_FloatT", bound=npc.floating, default=np.float64 | Any)
 _FloatT_co = TypeVar("_FloatT_co", bound=npc.floating, default=np.float64 | Any, covariant=True)
 _RealT = TypeVar("_RealT", bound=_Real0D, default=_Real0D)
 _RealT_co = TypeVar("_RealT_co", bound=_Real0D, default=np.float64 | Any, covariant=True)
@@ -243,24 +244,24 @@ class AlexanderGovernResult:
     pvalue: float
 
 @dataclass
-class QuantileTestResult:
-    statistic: float
-    statistic_type: float  # 1 or 2
-    pvalue: float
+class QuantileTestResult(Generic[_FloatT]):
+    statistic: _FloatT
+    statistic_type: _FloatT  # 1 or 2
+    pvalue: _FloatT
     _alternative: Alternative
-    _x: onp.ArrayND[_Real0D]
-    _p: float
-    _statistic: float
-    _statistic_type: int
-    _pvalue: float
+    _x: onp.ArrayND[_FloatT]
+    _p: onp.Array1D[np.float32]
+    _statistic: _FloatT
+    _statistic_type: onp.Array1D[_FloatT]
+    _pvalue: onp.Array1D[_FloatT]
     _axis: int
     _axis_none: bool
     _keepdims: bool
     _ndim: int
-    _nan_out: bool
+    _nan_out: onp.Array1D[np.bool_]
     _xp: ModuleType
 
-    def confidence_interval(self, /, confidence_level: float = 0.95) -> float: ...
+    def confidence_interval(self, /, confidence_level: float = 0.95) -> ConfidenceInterval[_FloatT_co]: ...
 
 class SignificanceResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
 class PearsonRResultBase(_TestResultBunch[_FloatOrArrayT_co, _F64OrArrayT_co], Generic[_FloatOrArrayT_co, _F64OrArrayT_co]): ...
@@ -5173,6 +5174,27 @@ def quantile_test_iv(
 ) -> tuple[onp.ArrayND[_Real0D], _Real0D, npc.floating, Alternative]: ...
 
 #
+@overload
+def quantile_test[FloatT: npc.floating](
+    x: onp.ArrayND[FloatT],
+    *,
+    q: float | _Real0D = 0.0,
+    p: float | npc.floating = 0.5,
+    alternative: Alternative = "two-sided",
+    axis: int | None = 0,
+    keepdims: bool | None = None,
+) -> QuantileTestResult[FloatT]: ...
+@overload
+def quantile_test(
+    x: onp.ToIntND | onp.ToJustFloat64_ND,
+    *,
+    q: float | _Real0D = 0.0,
+    p: float | npc.floating = 0.5,
+    alternative: Alternative = "two-sided",
+    axis: int | None = 0,
+    keepdims: bool | None = None,
+) -> QuantileTestResult[np.float64]: ...
+@overload
 def quantile_test(
     x: onp.ToFloatND,
     *,
@@ -5181,7 +5203,7 @@ def quantile_test(
     alternative: Alternative = "two-sided",
     axis: int | None = 0,
     keepdims: bool | None = None,
-) -> QuantileTestResult: ...
+) -> QuantileTestResult[np.float64 | Any]: ...
 
 #
 def wasserstein_distance_nd(
