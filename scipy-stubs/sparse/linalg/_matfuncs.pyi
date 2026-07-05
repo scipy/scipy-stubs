@@ -30,22 +30,26 @@ __all__ = ["expm", "inv", "matrix_power"]
 
 type _Structure = Literal["upper_triangular"]
 
-type _CS[ScalarT: npc.number | np.bool] = csc_array[ScalarT] | csc_matrix[ScalarT] | csr_array[ScalarT] | csr_matrix[ScalarT]
-type _NonCS[ScalarT: npc.number | np.bool] = (
-    bsr_array[ScalarT]
-    | bsr_matrix[ScalarT]
-    | coo_array[ScalarT]
-    | coo_matrix[ScalarT]
-    | dok_array[ScalarT]
-    | dok_matrix[ScalarT]
-    | dia_array[ScalarT]
-    | dia_matrix[ScalarT]
-    | lil_array[ScalarT]
-    | lil_matrix[ScalarT]
+type _CS[ST: npc.number | np.bool] = csc_array[ST] | csc_matrix[ST] | csr_array[ST] | csr_matrix[ST]
+type _NonCS[ST: npc.number | np.bool] = (
+    bsr_array[ST]
+    | bsr_matrix[ST]
+    | coo_array[ST]
+    | coo_matrix[ST]
+    | dok_array[ST]
+    | dok_matrix[ST]
+    | dia_array[ST]
+    | dia_matrix[ST]
+    | lil_array[ST]
+    | lil_matrix[ST]
 )
+type _ToCSCArray[ST: npc.number | np.bool] = bsr_array[ST] | bsr_matrix[ST] | csc_array[ST] | dia_array[ST] | dia_matrix[ST]
+type _ToCSRArray[ST: npc.number | np.bool] = coo_array[ST] | csr_array[ST] | dok_array[ST] | lil_array[ST]
+type _ToCSRMatrix[ST: npc.number | np.bool] = coo_matrix[ST] | csr_matrix[ST] | dok_matrix[ST] | lil_matrix[ST]
 
 type _SubF64 = npc.integer64 | npc.integer32
 type _SubF32 = npc.integer16 | npc.integer8 | np.bool
+type _SubF = npc.integer | np.bool
 
 _SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 
@@ -90,7 +94,22 @@ def inv(A: csc_matrix[_SubF64]) -> csc_matrix[np.float64]: ...  # type: ignore[o
 def inv(A: csc_matrix[_SubF32]) -> csc_matrix[np.float32]: ...
 
 #
-def expm[SparseT: _spbase](A: SparseT) -> SparseT: ...
+@overload
+def expm[ScalarT: npc.inexact](A: _ToCSCArray[ScalarT]) -> csc_array[ScalarT]: ...
+@overload
+def expm(A: _ToCSCArray[_SubF]) -> csc_array[np.float64]: ...
+@overload
+def expm[ScalarT: npc.inexact](A: _ToCSRArray[ScalarT]) -> csr_array[ScalarT]: ...
+@overload
+def expm(A: _ToCSRArray[_SubF]) -> csr_array[np.float64]: ...
+@overload
+def expm[ScalarT: npc.inexact](A: _ToCSRMatrix[ScalarT]) -> csr_matrix[ScalarT]: ...
+@overload
+def expm(A: _ToCSRMatrix[_SubF]) -> csr_matrix[np.float64]: ...
+@overload
+def expm[ScalarT: npc.inexact](A: csc_matrix[ScalarT]) -> csc_matrix[ScalarT]: ...
+@overload
+def expm(A: csc_matrix[_SubF]) -> csc_matrix[np.float64]: ...
 
 #
 def matrix_power[SparseT: _spbase](A: SparseT, power: SupportsIndex) -> SparseT: ...
