@@ -183,12 +183,12 @@ assert_type(sparse.identity(5, dtype=sctype, format="lil"), sparse.lil_matrix[Sc
 
 ###
 # kron
-assert_type(sparse.kron(any_mat, any_mat), sparse.bsr_matrix[ScalarType])
-assert_type(sparse.kron(any_mat, any_arr), sparse.bsr_array[ScalarType])
-assert_type(sparse.kron(any_arr, any_mat), sparse.bsr_array[ScalarType])
-assert_type(sparse.kron(any_arr, any_arr), sparse.bsr_array[ScalarType])
-assert_type(sparse.kron(dense_2d, any_arr), sparse.bsr_array[ScalarType])
-assert_type(sparse.kron(any_arr, dense_2d), sparse.bsr_array[ScalarType])
+assert_type(sparse.kron(any_mat, any_mat), sparse.bsr_matrix[ScalarType] | sparse.coo_matrix[ScalarType])
+assert_type(sparse.kron(any_mat, any_arr), sparse.bsr_array[ScalarType] | sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.kron(any_arr, any_arr), sparse.bsr_array[ScalarType] | sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.kron(any_arr, any_mat), sparse.bsr_array[ScalarType] | sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.kron(dense_2d, any_arr), sparse.bsr_array[ScalarType] | sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.kron(any_arr, dense_2d), sparse.bsr_array[ScalarType] | sparse.coo_array[ScalarType, tuple[int, int]])
 assert_type(sparse.kron(any_arr, any_arr, format="bsr"), sparse.bsr_array[ScalarType])
 assert_type(sparse.kron(any_arr, any_arr, format="coo"), sparse.coo_array[ScalarType, tuple[int, int]])
 assert_type(sparse.kron(any_arr, any_arr, format="csc"), sparse.csc_array[ScalarType])

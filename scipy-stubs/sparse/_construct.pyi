@@ -1305,10 +1305,12 @@ def eye(m: int, n: int | None = None, k: int = 0, *, dtype: _ToDType, format: _F
 def eye(m: int, n: int | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtLIL) -> lil_matrix[Incomplete]: ...
 
 ###
-@overload  # A: spmatrix or 2d array-like, B: spmatrix or 2d array-like, format: "bsr" | None
+@overload  # A: spmatrix or 2d array-like, B: spmatrix, format: None = None
 def kron[ScalarT: _Numeric](
-    A: _ToSpMatrix[ScalarT], B: _ToSpMatrix[ScalarT], format: _FmtBSR | None = None
-) -> bsr_matrix[ScalarT]: ...
+    A: _ToSpMatrix[ScalarT], B: _ToSpMatrix[ScalarT], format: None = None
+) -> bsr_matrix[ScalarT] | coo_matrix[ScalarT]: ...
+@overload  # A: spmatrix or 2d array-like, B: spmatrix or 2d array-like, format: "bsr"
+def kron[ScalarT: _Numeric](A: _ToSpMatrix[ScalarT], B: _ToSpMatrix[ScalarT], format: _FmtBSR) -> bsr_matrix[ScalarT]: ...
 @overload  # A: spmatrix or 2d array-like, B: spmatrix or 2d array-like, format: "coo"
 def kron[ScalarT: _Numeric](A: _ToSpMatrix[ScalarT], B: _ToSpMatrix[ScalarT], format: _FmtCOO) -> coo_matrix[ScalarT]: ...
 @overload  # A: spmatrix or 2d array-like, B: spmatrix or 2d array-like, format: "csc"
@@ -1321,11 +1323,13 @@ def kron[ScalarT: _Numeric](A: _ToSpMatrix[ScalarT], B: _ToSpMatrix[ScalarT], fo
 def kron[ScalarT: _Numeric](A: _ToSpMatrix[ScalarT], B: _ToSpMatrix[ScalarT], format: _FmtDOK) -> dok_matrix[ScalarT]: ...
 @overload  # A: spmatrix or 2d array-like, B: spmatrix or 2d array-like, format: "lil"
 def kron[ScalarT: _Numeric](A: _ToSpMatrix[ScalarT], B: _ToSpMatrix[ScalarT], format: _FmtLIL) -> lil_matrix[ScalarT]: ...
-
-#
-@overload  # A: sparray, B: 2D sparse, format: "bsr" | None
+@overload  # A: sparray, B: sparse, format: None = ...
 def kron[ScalarT: _Numeric](
-    A: sparray[ScalarT, tuple[int, int]], B: _ToSparse2D[ScalarT], format: _FmtBSR | None = None
+    A: sparray[ScalarT, tuple[int, int]], B: _ToSparse2D[ScalarT], format: None = None
+) -> bsr_array[ScalarT] | _COOArray2D[ScalarT]: ...
+@overload  # A: sparray, B: sparse, format: "bsr"
+def kron[ScalarT: _Numeric](
+    A: sparray[ScalarT, tuple[int, int]], B: _ToSparse2D[ScalarT], format: _FmtBSR
 ) -> bsr_array[ScalarT]: ...
 @overload  # A: sparray, B: sparse, format: "coo"
 def kron[ScalarT: _Numeric](
@@ -1351,11 +1355,13 @@ def kron[ScalarT: _Numeric](
 def kron[ScalarT: _Numeric](
     A: sparray[ScalarT, tuple[int, int]], B: _ToSparse2D[ScalarT], format: _FmtLIL
 ) -> lil_array[ScalarT]: ...
-
-#
-@overload  # A: sparse, B: sparray, format: "bsr" | None
+@overload  # A: sparse, B: sparray, format: None = ...
 def kron[ScalarT: _Numeric](
-    A: _ToSparse2D[ScalarT], B: sparray[ScalarT, tuple[int, int]], format: _FmtBSR | None = None
+    A: _ToSparse2D[ScalarT], B: sparray[ScalarT, tuple[int, int]], format: None = None
+) -> bsr_array[ScalarT] | _COOArray2D[ScalarT]: ...
+@overload  # A: sparse, B: sparray, format: "bsr"
+def kron[ScalarT: _Numeric](
+    A: _ToSparse2D[ScalarT], B: sparray[ScalarT, tuple[int, int]], format: _FmtBSR
 ) -> bsr_array[ScalarT]: ...
 @overload  # A: sparray, B: sparse, format: "coo"
 def kron[ScalarT: _Numeric](
