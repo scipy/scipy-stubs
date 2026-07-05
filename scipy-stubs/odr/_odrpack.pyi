@@ -48,7 +48,7 @@ class _FullOutput(TypedDict):
     sum_square: float
     sum_square_delta: float
     sum_square_eps: float
-    inc_condnum: float
+    inv_condnum: float
     rel_error: float
     work: _Float1D
     work_ind: dict[str, int]
