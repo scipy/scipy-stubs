@@ -19,7 +19,22 @@ assert_type(Normal(mu=[0.0, 1.0], sigma=1.0), Normal[tuple[int], npc.floating])
 assert_type(Logistic(), Logistic)
 
 # Binomial
-assert_type(Binomial(n=10, p=0.5), Binomial[tuple[()], np.int_])
+assert_type(Binomial(n=9, p=0.5), Binomial[tuple[()]])
+assert_type(Binomial(n=9, p=[0.5]), Binomial[tuple[int]])
+assert_type(Binomial(n=9, p=[[0.5]]), Binomial[tuple[int, int]])
+assert_type(Binomial(n=9, p=[[[0.5]]]), Binomial[tuple[int, int, int]])
+assert_type(Binomial(n=[9], p=0.5), Binomial[tuple[int]])
+assert_type(Binomial(n=[9], p=[0.5]), Binomial[tuple[int]])
+assert_type(Binomial(n=[9], p=[[0.5]]), Binomial[tuple[int, int]])
+assert_type(Binomial(n=[9], p=[[[0.5]]]), Binomial[tuple[int, int, int]])
+assert_type(Binomial(n=[[9]], p=0.5), Binomial[tuple[int, int]])
+assert_type(Binomial(n=[[9]], p=[0.5]), Binomial[tuple[int, int]])
+assert_type(Binomial(n=[[9]], p=[[0.5]]), Binomial[tuple[int, int]])
+assert_type(Binomial(n=[[9]], p=[[[0.5]]]), Binomial[tuple[int, int, int]])
+assert_type(Binomial(n=[[[9]]], p=0.5), Binomial[tuple[int, int, int]])
+assert_type(Binomial(n=[[[9]]], p=[0.5]), Binomial[tuple[int, int, int]])
+assert_type(Binomial(n=[[[9]]], p=[[0.5]]), Binomial[tuple[int, int, int]])
+assert_type(Binomial(n=[[[9]]], p=[[[0.5]]]), Binomial[tuple[int, int, int]])
 
 # Uniform
 assert_type(Uniform(a=0.0, b=1.0), Uniform[tuple[()], np.float64])
