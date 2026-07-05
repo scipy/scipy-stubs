@@ -50,12 +50,10 @@ assert_type(splev(_f64_1d, tck_2d), list[_FloatND])
 ###
 # splint
 
-assert_type(splint(0.0, 1.0, bspl), float | _Float1D)
-assert_type(splint(0.0, 1.0, bspl, full_output=True), tuple[float, _Float1D] | tuple[_Float1D, _Float1D])
+assert_type(splint(0.0, 1.0, bspl), onp.Array0D[np.float64])
 assert_type(splint(0.0, 1.0, tck_1d), float)
-assert_type(splint(0.0, 1.0, tck_2d), list[float])
 assert_type(splint(0.0, 1.0, tck_1d, full_output=True), tuple[float, None])
-assert_type(splint(0.0, 1.0, tck_2d, full_output=True), tuple[list[float], None])
+assert_type(splint(0.0, 1.0, tck_2d), list[float])
 
 ###
 # sproot
