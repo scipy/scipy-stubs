@@ -127,7 +127,12 @@ class spmatrix(Generic[_ScalarT_co]):
     __rmul__ = __mul__
 
     #
-    def __pow__(self, rhs: SupportsIndex, /) -> Self: ...
+    @overload  # {coo,dok,lil}_matrix -> csr_matrix
+    def __pow__[ScalarT: npc.number | np.bool](  # type: ignore[misc]
+        self: coo_matrix[ScalarT] | dok_matrix[ScalarT] | lil_matrix[ScalarT], rhs: SupportsIndex, /
+    ) -> csr_matrix[ScalarT]: ...
+    @overload  # otherwise; Self -> Self
+    def __pow__[SelfT: bsr_matrix | csc_matrix | csr_matrix | dia_matrix](self: SelfT, rhs: SupportsIndex, /) -> SelfT: ...  # type: ignore[misc]
 
     #
     def getmaxprint(self, /) -> int: ...
