@@ -140,7 +140,16 @@ class spmatrix(Generic[_ScalarT_co]):
     # NOTE: `axis` is only supported by `{coo,csc,csr,lil}_matrix`
     def getnnz(self, /, axis: None = None) -> int: ...
     def getH(self, /) -> Self: ...
-    def getcol(self, /, j: onp.ToJustInt) -> csc_matrix[_ScalarT_co]: ...
+
+    #
+    @overload
+    def getcol[SelfT: bsr_matrix | csc_matrix | csr_matrix](self: SelfT, /, j: onp.ToJustInt) -> SelfT: ...  # type: ignore[misc]
+    @overload
+    def getcol[ScalarT: npc.number | np.bool](  # type: ignore[misc]
+        self: coo_matrix[ScalarT] | dia_matrix[ScalarT] | dok_matrix[ScalarT] | lil_matrix[ScalarT], /, j: onp.ToJustInt
+    ) -> csr_matrix[ScalarT]: ...
+
+    #
     def getrow(self, /, i: onp.ToJustInt) -> csr_matrix[_ScalarT_co]: ...
 
     # NOTE: mypy reports a false positive for overlapping overloads
