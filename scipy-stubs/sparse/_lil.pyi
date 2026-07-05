@@ -9,7 +9,7 @@ import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
 from ._coo import coo_array, coo_matrix
-from ._csr import csr_array, csr_matrix
+from ._csr import csr_matrix
 from ._index import IndexMixin
 from ._matrix import spmatrix
 from ._typing import _ToShape2D
@@ -81,7 +81,7 @@ class _lil_base(_spbase[_ScalarT_co, tuple[int, int]], IndexMixin[_ScalarT_co, t
 
     #
     def getrowview(self, /, i: int) -> Self: ...
-    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_ScalarT_co, tuple[int, int]] | csr_matrix[_ScalarT_co]: ...
+    def getrow(self, /, i: onp.ToJustInt) -> lil_array[_ScalarT_co] | csr_matrix[_ScalarT_co]: ...
 
 class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
@@ -284,7 +284,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
 
     #
     @override
-    def getrow(self, /, i: onp.ToJustInt) -> csr_array[_ScalarT_co, tuple[int, int]]: ...
+    def getrow(self, /, i: onp.ToJustInt) -> lil_array[_ScalarT_co]: ...
 
 class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
