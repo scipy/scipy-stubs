@@ -78,11 +78,11 @@ class ProductOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
 @overload
 def inv[ScalarT: npc.inexact](A: _NonCS[ScalarT]) -> csc_array[ScalarT]: ...
 @overload
+def inv[SparseT: _CS[npc.inexact]](A: SparseT) -> SparseT: ...
+@overload
 def inv(A: _NonCS[_SubF64] | csc_array[_SubF64]) -> csc_array[np.float64]: ...  # type: ignore[overload-overlap]
 @overload
 def inv(A: _NonCS[_SubF32] | csc_array[_SubF32]) -> csc_array[np.float32]: ...
-@overload
-def inv[SparseT: _CS[npc.inexact]](A: SparseT) -> SparseT: ...
 @overload
 def inv(A: csr_array[_SubF64]) -> csr_array[np.float64]: ...  # type: ignore[overload-overlap]
 @overload
