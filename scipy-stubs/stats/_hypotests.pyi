@@ -179,7 +179,7 @@ def poisson_means_test(
 class SomersDResult:
     statistic: Final[float]
     pvalue: Final[float]
-    table: Final[_Float2D]
+    table: Final[onp.Array2D[np.int_]]
 
 def somersd(
     x: onp.ToFloat1D | onp.ToFloat2D, y: onp.ToFloat1D | None = None, alternative: Alternative = "two-sided"
