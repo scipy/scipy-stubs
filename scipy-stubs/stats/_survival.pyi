@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Any, Final, Literal, Protocol, overload, type_check_only
+from typing import Any, Final, Literal, Protocol, Self, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -49,7 +49,7 @@ class EmpiricalDistributionFunction:
     def plot(self, /, ax: _CanStep[_KwargsT, _LineT], **kwds: _KwargsT) -> list[_LineT]: ...
     def confidence_interval(
         self, /, confidence_level: onp.ToFloat = 0.95, *, method: _CIMethod = "linear"
-    ) -> ConfidenceInterval: ...
+    ) -> ConfidenceInterval[Self]: ...
 
 @dataclass
 class ECDFResult:
