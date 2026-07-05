@@ -1177,7 +1177,10 @@ assert_type(fisher_exact(_f64_2d), SignificanceResult[float])
 
 # quantile_test
 
-assert_type(quantile_test(_f64_1d), QuantileTestResult)
+assert_type(quantile_test(_f32_1d), QuantileTestResult[np.float32])
+assert_type(quantile_test(_f64_1d), QuantileTestResult[np.float64])
+assert_type(quantile_test(_i64_1d), QuantileTestResult[np.float64])
+assert_type(quantile_test(_py_f_1d), QuantileTestResult[np.float64])
 
 # wasserstein_distance, wasserstein_distance_nd, energy_distance
 
