@@ -76,7 +76,7 @@ def factorized(A: _ToC64Mat) -> _SuperLU_solve[_AsC64, np.complex64]: ...
 #
 @overload  # 2d float, sparse 2d
 def spsolve[SparseT: _spbase](
-    A: _ToInexactMat, b: SparseT, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+    A: SparseT, b: _Sparse2D[Any], permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
 ) -> SparseT: ...
 @overload  # 2d float, 1d float
 def spsolve(
