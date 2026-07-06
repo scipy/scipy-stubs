@@ -95,6 +95,12 @@ _FloatOrArrayT_co = TypeVar(
     default=float | onp.ArrayND[np.float64],
     covariant=True,
 )
+_IntFloatOrArrayT_co = TypeVar(
+    "_IntFloatOrArrayT_co",
+    bound=float | npc.integer | npc.floating | onp.ArrayND[npc.integer | npc.floating, Any],
+    default=_FloatOrArrayT_co,
+    covariant=True,
+)
 _SignOrArrayT_co = TypeVar(
     "_SignOrArrayT_co", bound=np.int8 | onp.ArrayND[np.int8], default=np.int8 | onp.ArrayND[np.int8], covariant=True
 )
@@ -289,9 +295,9 @@ class PearsonRResult(PearsonRResultBase[_FloatOrArrayT_co, _F64OrArrayT_co], Gen
         self, /, confidence_level: float = 0.95, method: BootstrapMethod | None = None
     ) -> ConfidenceInterval[_FloatOrArrayT_co]: ...
 
-class TtestResultBase(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):
+class TtestResultBase(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co, _IntFloatOrArrayT_co]):
     @property
-    def df(self, /) -> _FloatOrArrayT_co: ...
+    def df(self, /) -> _IntFloatOrArrayT_co: ...
 
     #
     @override
@@ -299,7 +305,7 @@ class TtestResultBase(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Ge
     @override
     def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co, *, df: _FloatOrArrayT_co) -> None: ...  # pyrefly:ignore[bad-override]
 
-class TtestResult(TtestResultBase[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co,]):
+class TtestResult(TtestResultBase[_FloatOrArrayT_co, _IntFloatOrArrayT_co], Generic[_FloatOrArrayT_co, _IntFloatOrArrayT_co]):
     _alternative: Alternative
     _standard_error: _FloatOrArrayT_co
     _estimate: _FloatOrArrayT_co
@@ -313,7 +319,7 @@ class TtestResult(TtestResultBase[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co,
         /,
         statistic: _FloatOrArrayT_co,
         pvalue: _FloatOrArrayT_co,
-        df: _FloatOrArrayT_co,
+        df: _IntFloatOrArrayT_co,
         alternative: Alternative,
         standard_error: _FloatOrArrayT_co,
         estimate: _FloatOrArrayT_co,
@@ -4054,7 +4060,7 @@ def ttest_1samp(
     alternative: Alternative = "two-sided",
     *,
     keepdims: bool = False,
-) -> TtestResult: ...
+) -> TtestResult[np.float64, np.int_] | TtestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int_]]: ...
 
 # TODO(jorenham): improve
 def ttest_ind_from_stats(
@@ -4314,7 +4320,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[np.float64 | Any]: ...
+) -> TtestResult[np.float64 | Any, np.int_ | Any]: ...
 @overload  # ?d ~T
 def ttest_rel[FloatT: np.float32 | np.float16](
     a: onp.ArrayND[FloatT, _JustAnyShape],
@@ -4324,7 +4330,7 @@ def ttest_rel[FloatT: np.float32 | np.float16](
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[FloatT | Any]: ...
+) -> TtestResult[FloatT | Any, np.int_ | Any]: ...
 @overload  # 1d ~f64
 def ttest_rel(
     a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
@@ -4334,7 +4340,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[np.float64]: ...
+) -> TtestResult[np.float64, np.int_]: ...
 @overload  # 1d ~T
 def ttest_rel[FloatT: np.float32 | np.float16](
     a: onp.ToArrayStrict1D[FloatT, FloatT],
@@ -4344,7 +4350,7 @@ def ttest_rel[FloatT: np.float32 | np.float16](
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[FloatT]: ...
+) -> TtestResult[FloatT, np.int_]: ...
 @overload  # 1d +floating
 def ttest_rel(
     a: onp.ToFloatStrict1D,
@@ -4354,7 +4360,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[np.float64 | Any]: ...
+) -> TtestResult[np.float64 | Any, np.int_]: ...
 @overload  # 2d ~f64
 def ttest_rel(
     a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
@@ -4364,7 +4370,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array1D[np.float64]]: ...
+) -> TtestResult[onp.Array1D[np.float64], onp.Array1D[np.int_]]: ...
 @overload  # 2d ~T
 def ttest_rel[FloatT: np.float32 | np.float16](
     a: onp.ToArrayStrict2D[FloatT, FloatT],
@@ -4374,7 +4380,7 @@ def ttest_rel[FloatT: np.float32 | np.float16](
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array1D[FloatT]]: ...
+) -> TtestResult[onp.Array1D[FloatT], onp.Array1D[np.int_]]: ...
 @overload  # 2d +floating
 def ttest_rel(
     a: onp.ToFloatStrict2D,
@@ -4384,7 +4390,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array1D[np.float64 | Any]]: ...
+) -> TtestResult[onp.Array1D[np.float64 | Any], onp.Array1D[np.int_]]: ...
 @overload  # 3d ~f64
 def ttest_rel(
     a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
@@ -4394,7 +4400,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array2D[np.float64]]: ...
+) -> TtestResult[onp.Array2D[np.float64], onp.Array2D[np.int_]]: ...
 @overload  # 3d ~T
 def ttest_rel[FloatT: np.float32 | np.float16](
     a: onp.ToArrayStrict3D[FloatT, FloatT],
@@ -4404,7 +4410,7 @@ def ttest_rel[FloatT: np.float32 | np.float16](
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array2D[FloatT]]: ...
+) -> TtestResult[onp.Array2D[FloatT], onp.Array1D[np.int_]]: ...
 @overload  # 3d +floating
 def ttest_rel(
     a: onp.ToFloatStrict3D,
@@ -4414,7 +4420,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array2D[np.float64 | Any]]: ...
+) -> TtestResult[onp.Array2D[np.float64 | Any], onp.Array2D[np.int_]]: ...
 @overload  # nd ~f64, axis=None
 def ttest_rel(  # type: ignore[overload-overlap]
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
@@ -4424,7 +4430,7 @@ def ttest_rel(  # type: ignore[overload-overlap]
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[np.float64]: ...
+) -> TtestResult[np.float64, np.int_]: ...
 @overload  # nd ~f64, keepdims=True
 def ttest_rel(  # type: ignore[overload-overlap]
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
@@ -4434,7 +4440,7 @@ def ttest_rel(  # type: ignore[overload-overlap]
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
-) -> TtestResult[onp.ArrayND[np.float64]]: ...
+) -> TtestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int_]]: ...
 @overload  # nd ~T, axis=None
 def ttest_rel[FloatT: np.float32 | np.float16](
     a: onp.ToArrayND[FloatT, FloatT],
@@ -4444,7 +4450,7 @@ def ttest_rel[FloatT: np.float32 | np.float16](
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[FloatT]: ...
+) -> TtestResult[FloatT, np.int_]: ...
 @overload  # nd ~T, keepdims=True
 def ttest_rel[FloatT: np.float32 | np.float16](
     a: onp.ToArrayND[FloatT, FloatT],
@@ -4454,7 +4460,7 @@ def ttest_rel[FloatT: np.float32 | np.float16](
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
-) -> TtestResult[onp.ArrayND[FloatT]]: ...
+) -> TtestResult[onp.ArrayND[FloatT], onp.ArrayND[np.int_]]: ...
 @overload  # nd +floating, axis=None
 def ttest_rel(
     a: onp.ToFloatND,
@@ -4464,7 +4470,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[np.float64 | Any]: ...
+) -> TtestResult[np.float64 | Any, np.int64]: ...
 @overload  # nd +floating, keepdims=True
 def ttest_rel(
     a: onp.ToFloatND,
@@ -4474,7 +4480,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[True],
-) -> TtestResult[onp.ArrayND[np.float64 | Any]]: ...
+) -> TtestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int_]]: ...
 @overload  # nd +floating
 def ttest_rel(
     a: onp.ToFloatND,
@@ -4484,7 +4490,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[onp.ArrayND[np.float64 | Any] | np.float64 | Any]: ...
+) -> TtestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int_]] | TtestResult[np.float64 | Any, np.int_]: ...
 
 #
 @overload

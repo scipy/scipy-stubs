@@ -1044,7 +1044,9 @@ assert_type(weightedtau(_f64_nd, _f64_nd, keepdims=True), SignificanceResult[onp
 
 # ttest_1samp
 
-assert_type(ttest_1samp(_f64_1d, 0.0), TtestResult)
+assert_type(
+    ttest_1samp(_f64_1d, 0.0), TtestResult[np.float64, np.int_] | TtestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int_]]
+)
 
 # ttest_ind_from_stats
 
