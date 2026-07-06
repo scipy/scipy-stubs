@@ -375,6 +375,7 @@ PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 [scikit-fingerprints](https://github.com/scikit-fingerprints/scikit-fingerprints) |
 [scqubits](https://github.com/scqubits/scqubits) |
 scverse ([PyDESeq2](https://github.com/scverse/PyDESeq2), [scanpy](https://github.com/scverse/scanpy)) |
+[seaborn](https://github.com/mwaskom/seaborn) |
 [SeQUeNCe](https://github.com/sequence-toolbox/SeQUeNCe) |
 [Skore](https://github.com/probabl-ai/skore) |
 [Splipy](https://github.com/SINTEF/Splipy) |
