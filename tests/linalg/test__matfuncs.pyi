@@ -77,8 +77,8 @@ assert_type(tanhm(c64_nd), onp.ArrayND[npc.complexfloating])
 ###
 # sqrtm
 
-assert_type(sqrtm(py_f_2d), onp.ArrayND[np.float64])
-assert_type(sqrtm(f32_nd), onp.ArrayND[npc.floating])
+assert_type(sqrtm(py_f_2d), onp.ArrayND[np.float64] | onp.ArrayND[np.complex128])
+assert_type(sqrtm(f32_nd), onp.ArrayND[npc.inexact])
 assert_type(sqrtm(c128_nd), onp.ArrayND[np.complex128])
 assert_type(sqrtm(c64_nd), onp.ArrayND[npc.complexfloating])
 
