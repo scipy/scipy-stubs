@@ -9,6 +9,7 @@ from numpy_typing_compat import ABCPolyBase
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
+from scipy.sparse import csr_array
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["minimize", "minimize_scalar"]
@@ -163,7 +164,7 @@ MINIMIZE_METHODS: Final[list[MethodMimimize]] = ...
 MINIMIZE_METHODS_NEW_CB: Final[list[MethodMimimize]] = ...
 MINIMIZE_SCALAR_METHODS: Final[list[MethodMinimizeScalar]] = ...
 
-# NOTE: This `OptimizeResult` "flavor" is specific to `minimize`
+# NOTE: This `OptimizeResult` specialization is specific to `minimize`
 class OptimizeResult(_OptimizeResult):
     success: bool
     status: int
@@ -173,7 +174,7 @@ class OptimizeResult(_OptimizeResult):
     maxcv: float  # requires `bounds`
     fun: float
     nfev: int
-    jac: _Float1D  # requires `jac`
+    jac: _Float1D | Sequence[_Float2D | csr_array[np.float32]]  # is a list when method="trust-constr"
     njev: int  # requires `jac`
     hess: _Float2D  # requires `hess` or `hessp`
     hess_inv: _Float2D | LinearOperator  # requires `hess` or `hessp`, depends on solver
