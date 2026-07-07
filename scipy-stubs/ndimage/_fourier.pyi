@@ -12,7 +12,8 @@ type _Scalar = np.float32 | np.float64 | _ScalarComplex
 
 type _Sigma = SupportsFloat | onp.ToFloat1D
 type _InputF64 = onp.ToJustFloat64_ND | onp.ToIntND
-type _InputF32 = onp.ToJustFloat32_ND | onp.ToJustFloat16_ND
+type _InputF32 = onp.ToJustFloat32_ND
+type _Input = _InputF64 | _InputF32 | onp.ToJustComplex128_ND | onp.ToJustComplex64_ND
 
 ###
 
@@ -45,24 +46,24 @@ def _get_output_fourier_complex[OutputScalarComplexT: _ScalarComplex](
 @overload  # ~complex64
 def _get_output_fourier_complex(output: None, input: onp.ToJustComplex64_ND) -> onp.ArrayND[np.complex64]: ...
 @overload  # fallback
-def _get_output_fourier_complex(output: None, input: onp.ToComplex128_ND) -> onp.ArrayND[_ScalarComplex]: ...
+def _get_output_fourier_complex(output: None, input: _Input) -> onp.ArrayND[_ScalarComplex]: ...
 
 # NOTE: Keep in sync with `fourier_uniform` and `fourier_ellipsoid` (but note the different 2nd parameter names)
 @overload  # output: <T: ndarray> (positional)
 def fourier_gaussian[OutputArrayT: onp.ArrayND[_Scalar]](
-    input: onp.ToComplex128_ND, sigma: _Sigma, n: SupportsIndex, axis: int, output: OutputArrayT
+    input: _Input, sigma: _Sigma, n: SupportsIndex, axis: int, output: OutputArrayT
 ) -> OutputArrayT: ...
 @overload  # output: <T: ndarray> (keyword)
 def fourier_gaussian[OutputArrayT: onp.ArrayND[_Scalar]](
-    input: onp.ToComplex128_ND, sigma: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: OutputArrayT
+    input: _Input, sigma: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: OutputArrayT
 ) -> OutputArrayT: ...
 @overload  # output: <T: scalar type> (positional)
 def fourier_gaussian[OutputScalarT: _Scalar](
-    input: onp.ToComplex128_ND, sigma: _Sigma, n: SupportsIndex, axis: int, output: type[OutputScalarT]
+    input: _Input, sigma: _Sigma, n: SupportsIndex, axis: int, output: type[OutputScalarT]
 ) -> onp.ArrayND[OutputScalarT]: ...
 @overload  # output: <T: scalar type> (keyword)
 def fourier_gaussian[OutputScalarT: _Scalar](
-    input: onp.ToComplex128_ND, sigma: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: type[OutputScalarT]
+    input: _Input, sigma: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: type[OutputScalarT]
 ) -> onp.ArrayND[OutputScalarT]: ...
 @overload  # +float64
 def fourier_gaussian(
@@ -82,25 +83,25 @@ def fourier_gaussian(
 ) -> onp.ArrayND[np.complex64]: ...
 @overload  # fallback
 def fourier_gaussian(
-    input: onp.ToComplex128_ND, sigma: _Sigma, n: SupportsIndex = -1, axis: int = -1, output: None = None
+    input: _Input, sigma: _Sigma, n: SupportsIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[_Scalar]: ...
 
 # NOTE: Keep in sync with `fourier_ellipsoid` and `fourier_gaussian` (but note the different 2nd parameter name)
 @overload  # output: <T: ndarray> (positional)
 def fourier_uniform[OutputArrayT: onp.ArrayND[_Scalar]](
-    input: onp.ToComplex128_ND, size: _Sigma, n: SupportsIndex, axis: int, output: OutputArrayT
+    input: _Input, size: _Sigma, n: SupportsIndex, axis: int, output: OutputArrayT
 ) -> OutputArrayT: ...
 @overload  # output: <T: ndarray> (keyword)
 def fourier_uniform[OutputArrayT: onp.ArrayND[_Scalar]](
-    input: onp.ToComplex128_ND, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: OutputArrayT
+    input: _Input, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: OutputArrayT
 ) -> OutputArrayT: ...
 @overload  # output: <T: scalar type> (positional)
 def fourier_uniform[OutputScalarT: _Scalar](
-    input: onp.ToComplex128_ND, size: _Sigma, n: SupportsIndex, axis: int, output: type[OutputScalarT]
+    input: _Input, size: _Sigma, n: SupportsIndex, axis: int, output: type[OutputScalarT]
 ) -> onp.ArrayND[OutputScalarT]: ...
 @overload  # output: <T: scalar type> (keyword)
 def fourier_uniform[OutputScalarT: _Scalar](
-    input: onp.ToComplex128_ND, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: type[OutputScalarT]
+    input: _Input, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: type[OutputScalarT]
 ) -> onp.ArrayND[OutputScalarT]: ...
 @overload  # +float64
 def fourier_uniform(
@@ -120,25 +121,25 @@ def fourier_uniform(
 ) -> onp.ArrayND[np.complex64]: ...
 @overload  # fallback
 def fourier_uniform(
-    input: onp.ToComplex128_ND, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, output: None = None
+    input: _Input, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[_Scalar]: ...
 
 # NOTE: Keep in sync with `fourier_uniform` and `fourier_gaussian` (but note the different 2nd parameter name)
 @overload  # output: <T: ndarray> (positional)
 def fourier_ellipsoid[OutputArrayT: onp.ArrayND[_Scalar]](
-    input: onp.ToComplex128_ND, size: _Sigma, n: SupportsIndex, axis: int, output: OutputArrayT
+    input: _Input, size: _Sigma, n: SupportsIndex, axis: int, output: OutputArrayT
 ) -> OutputArrayT: ...
 @overload  # output: <T: ndarray> (keyword)
 def fourier_ellipsoid[OutputArrayT: onp.ArrayND[_Scalar]](
-    input: onp.ToComplex128_ND, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: OutputArrayT
+    input: _Input, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: OutputArrayT
 ) -> OutputArrayT: ...
 @overload  # output: <T: scalar type> (positional)
 def fourier_ellipsoid[OutputScalarT: _Scalar](
-    input: onp.ToComplex128_ND, size: _Sigma, n: SupportsIndex, axis: int, output: type[OutputScalarT]
+    input: _Input, size: _Sigma, n: SupportsIndex, axis: int, output: type[OutputScalarT]
 ) -> onp.ArrayND[OutputScalarT]: ...
 @overload  # output: <T: scalar type> (keyword)
 def fourier_ellipsoid[OutputScalarT: _Scalar](
-    input: onp.ToComplex128_ND, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: type[OutputScalarT]
+    input: _Input, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: type[OutputScalarT]
 ) -> onp.ArrayND[OutputScalarT]: ...
 @overload  # +float64
 def fourier_ellipsoid(
@@ -158,29 +159,33 @@ def fourier_ellipsoid(
 ) -> onp.ArrayND[np.complex64]: ...
 @overload  # fallback
 def fourier_ellipsoid(
-    input: onp.ToComplex128_ND, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, output: None = None
+    input: _Input, size: _Sigma, n: SupportsIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[_Scalar]: ...
 
 # NOTE: Unlike the other three functions, this always returns complex output
 @overload  # output: <T: ndarray> (positional)
 def fourier_shift[OutputArrayComplexT: onp.ArrayND[_ScalarComplex]](
-    input: onp.ToComplex128_ND, shift: _Sigma, n: SupportsIndex, axis: int, output: OutputArrayComplexT
+    input: _Input, shift: _Sigma, n: SupportsIndex, axis: int, output: OutputArrayComplexT
 ) -> OutputArrayComplexT: ...
 @overload  # output: <T: ndarray> (keyword)
 def fourier_shift[OutputArrayComplexT: onp.ArrayND[_ScalarComplex]](
-    input: onp.ToComplex128_ND, shift: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: OutputArrayComplexT
+    input: _Input, shift: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: OutputArrayComplexT
 ) -> OutputArrayComplexT: ...
 @overload  # output: <T: scalar type> (positional)
 def fourier_shift[OutputScalarComplexT: _ScalarComplex](
-    input: onp.ToComplex128_ND, shift: _Sigma, n: SupportsIndex, axis: int, output: type[OutputScalarComplexT]
+    input: _Input, shift: _Sigma, n: SupportsIndex, axis: int, output: type[OutputScalarComplexT]
 ) -> onp.ArrayND[OutputScalarComplexT]: ...
 @overload  # output: <T: scalar type> (keyword)
 def fourier_shift[OutputScalarComplexT: _ScalarComplex](
-    input: onp.ToComplex128_ND, shift: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: type[OutputScalarComplexT]
+    input: _Input, shift: _Sigma, n: SupportsIndex = -1, axis: int = -1, *, output: type[OutputScalarComplexT]
 ) -> onp.ArrayND[OutputScalarComplexT]: ...
 @overload  # ~complex128 | +floating
 def fourier_shift(
-    input: onp.ToJustComplex128_ND | onp.ToFloat64_ND, shift: _Sigma, n: SupportsIndex = -1, axis: int = -1, output: None = None
+    input: onp.ToJustComplex128_ND | _InputF64 | _InputF32,
+    shift: _Sigma,
+    n: SupportsIndex = -1,
+    axis: int = -1,
+    output: None = None,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~complex64
 def fourier_shift(
@@ -188,5 +193,5 @@ def fourier_shift(
 ) -> onp.ArrayND[np.complex64]: ...
 @overload  # fallback
 def fourier_shift(
-    input: onp.ToComplex128_ND, shift: _Sigma, n: SupportsIndex = -1, axis: int = -1, output: None = None
+    input: _Input, shift: _Sigma, n: SupportsIndex = -1, axis: int = -1, output: None = None
 ) -> onp.ArrayND[_ScalarComplex]: ...
