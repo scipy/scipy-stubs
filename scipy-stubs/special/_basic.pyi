@@ -98,8 +98,10 @@ type _c = _c4 | _c8
 type _fc = _f | _c
 
 type _f8_1d = onp.Array1D[_f8]
+type _f8_2d = onp.Array2D[_f8]
 type _f8_nd = onp.ArrayND[_f8]
 type _c8_1d = onp.Array1D[_c8]
+type _c8_2d = onp.Array2D[_c8]
 type _c8_nd = onp.ArrayND[_c8]
 type _fc8_nd = onp.ArrayND[_fc8]
 
@@ -308,11 +310,11 @@ def lqn(n: onp.ToInt, z: _ToComplexOrND) -> _tuple2[_f8_nd] | _tuple2[_c8_nd]: .
 
 #
 @overload
-def lqmn(m: onp.ToFloat, n: onp.ToFloat, z: onp.ToFloat) -> _tuple2[_f8_1d]: ...
+def lqmn(m: onp.ToFloat, n: onp.ToFloat, z: onp.ToFloat) -> _tuple2[_f8_2d]: ...
 @overload
 def lqmn(m: onp.ToFloat, n: onp.ToFloat, z: _ToFloatOrND) -> _tuple2[_f8_nd]: ...
 @overload
-def lqmn(m: onp.ToFloat, n: onp.ToFloat, z: onp.ToJustComplex) -> _tuple2[_c8_1d]: ...
+def lqmn(m: onp.ToFloat, n: onp.ToFloat, z: onp.ToJustComplex) -> _tuple2[_c8_2d]: ...
 @overload
 def lqmn(m: onp.ToFloat, n: onp.ToFloat, z: _ToJustComplexOrND) -> _tuple2[_c8_nd]: ...
 @overload

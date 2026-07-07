@@ -205,9 +205,9 @@ assert_type(lqn(2, 1j), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex
 assert_type(lqn(2, c_arr), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 
 # lqmn
-assert_type(lqmn(1, 2, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(lqmn(1, 2, 1.0), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
 assert_type(lqmn(1, 2, f_arr), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
-assert_type(lqmn(1, 2, 1j), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(lqmn(1, 2, 1j), tuple[onp.Array2D[np.complex128], onp.Array2D[np.complex128]])
 assert_type(lqmn(1, 2, c_arr), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 
 # bernoulli
