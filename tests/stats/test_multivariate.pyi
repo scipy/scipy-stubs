@@ -220,18 +220,18 @@ assert_type(multinomial(_i_2d, _f_2d).entropy(), onp.Array2D[np.float64])
 assert_type(multinomial(_i_2d, _f_3d).entropy(), onp.Array2D[np.float64])
 assert_type(multinomial(_i_2d, _f_nd).entropy(), onp.ArrayND[np.float64])
 
-assert_type(multinomial.rvs(1, _f_1d), onp.Array1D[np.float64])  # `multinomial_gen.rvs` defaults to `size=None`
-assert_type(multinomial.rvs(1, _f_1d, size=()), onp.Array1D[np.float64])
-assert_type(multinomial.rvs(1, _f_1d, size=1), onp.Array2D[np.float64])
-assert_type(multinomial.rvs(1, _f_1d, size=(1,)), onp.Array2D[np.float64])
-assert_type(multinomial.rvs(1, _f_1d, size=(1, 2)), onp.Array3D[np.float64])
-assert_type(multinomial.rvs(1, _f_1d, size=(1, 2, 4, 8, 16, 31)), onp.ArrayND[np.float64])
-assert_type(multinomial(1, _f_1d).rvs(), onp.Array2D[np.float64])  # `multinomial_frozen.rvs` defaults to `size=1`
-assert_type(multinomial(1, _f_1d).rvs(size=()), onp.Array1D[np.float64])
-assert_type(multinomial(1, _f_1d).rvs(size=1), onp.Array2D[np.float64])
-assert_type(multinomial(1, _f_1d).rvs(size=(1,)), onp.Array2D[np.float64])
-assert_type(multinomial(1, _f_1d).rvs(size=(1, 2)), onp.Array3D[np.float64])
-assert_type(multinomial(1, _f_1d).rvs(size=(1, 2, 4, 8, 16, 31)), onp.ArrayND[np.float64])
+assert_type(multinomial.rvs(1, _f_1d), onp.Array1D[np.int_])  # `multinomial_gen.rvs` defaults to `size=None`
+assert_type(multinomial.rvs(1, _f_1d, size=()), onp.Array1D[np.int_])
+assert_type(multinomial.rvs(1, _f_1d, size=1), onp.Array2D[np.int_])
+assert_type(multinomial.rvs(1, _f_1d, size=(1,)), onp.Array2D[np.int_])
+assert_type(multinomial.rvs(1, _f_1d, size=(1, 2)), onp.Array3D[np.int_])
+assert_type(multinomial.rvs(1, _f_1d, size=(1, 2, 4, 8, 16, 31)), onp.ArrayND[np.int_])
+assert_type(multinomial(1, _f_1d).rvs(), onp.Array2D[np.int_])  # `multinomial_frozen.rvs` defaults to `size=1`
+assert_type(multinomial(1, _f_1d).rvs(size=()), onp.Array1D[np.int_])
+assert_type(multinomial(1, _f_1d).rvs(size=1), onp.Array2D[np.int_])
+assert_type(multinomial(1, _f_1d).rvs(size=(1,)), onp.Array2D[np.int_])
+assert_type(multinomial(1, _f_1d).rvs(size=(1, 2)), onp.Array3D[np.int_])
+assert_type(multinomial(1, _f_1d).rvs(size=(1, 2, 4, 8, 16, 31)), onp.ArrayND[np.int_])
 
 assert_type(multinomial.logpmf(_i_1d, 1, _f_1d), onp.Array0D[np.float64])
 assert_type(multinomial.logpmf(_i_2d, 1, _f_1d), onp.Array1D[np.float64])
@@ -370,18 +370,22 @@ assert_type(random_correlation([1, 1]).rvs().dtype, np.dtype[np.float64])
 
 # multivariate_t
 
-assert_type(multivariate_t.rvs().dtype, np.dtype[np.float64])
+assert_type(multivariate_t.rvs(), np.float64)
+assert_type(multivariate_t.rvs(_f_1d, _f_2d), onp.ArrayND[np.float64])
+assert_type(multivariate_t.rvs(_f_1d, shape=_f_2d), onp.ArrayND[np.float64])
+assert_type(multivariate_t.rvs(size=(2, 3)), onp.ArrayND[np.float64])
+assert_type(multivariate_t.rvs(_f_1d), np.float64 | onp.ArrayND[np.float64])
 assert_type(multivariate_t().rvs().dtype, np.dtype[np.float64])
 
 # multivariate_hypergeom
 
-assert_type(multivariate_hypergeom.rvs([1], 1).dtype, np.dtype[np.float64])
-assert_type(multivariate_hypergeom([1], 1).rvs().dtype, np.dtype[np.float64])
+assert_type(multivariate_hypergeom.rvs([1], 1).dtype, np.dtype[np.int_])
+assert_type(multivariate_hypergeom([1], 1).rvs().dtype, np.dtype[np.int_])
 
 # random_table
 
-assert_type(random_table.rvs([1, 2], [2, 1]).dtype, np.dtype[np.float64])
-assert_type(random_table([1, 2], [2, 1]).rvs().dtype, np.dtype[np.float64])
+assert_type(random_table.rvs([1, 2], [2, 1]).dtype, np.dtype[np.int_])
+assert_type(random_table([1, 2], [2, 1]).rvs().dtype, np.dtype[np.int_])
 
 # dirichlet_multinomial
 

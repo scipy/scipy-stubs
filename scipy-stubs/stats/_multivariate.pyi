@@ -34,10 +34,8 @@ __all__ = [
 
 ###
 
-type _Scalar_f = npc.floating
-type _Scalar_uif = npc.integer | _Scalar_f
 type _ToFloatMax2D = onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D
-type _ToJustFloat = float | _Scalar_f
+type _ToJustFloat = float | npc.floating
 
 type _Array1ND[ScalarT: np.generic] = onp.Array[tuple[int, *tuple[Any, ...]], ScalarT]
 type _Array2ND[ScalarT: np.generic] = onp.Array[tuple[int, int, *tuple[Any, ...]], ScalarT]
@@ -66,7 +64,6 @@ _ScalarT_co = TypeVar("_ScalarT_co", bound=np.generic, default=np.float64, covar
 _RVG_co = TypeVar("_RVG_co", bound=multi_rv_generic, default=multi_rv_generic, covariant=True)
 _RVF_co = TypeVar("_RVF_co", bound=multi_rv_frozen, covariant=True)
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 @type_check_only
@@ -109,14 +106,14 @@ class multivariate_normal_gen(multi_rv_generic):
         self, /, x: onp.ToFloat, mean: onp.ToFloat | onp.ToFloat1D | None = None, cov: _AnyCov = 1, allow_singular: bool = False
     ) -> np.float64: ...
     @overload
-    def logpdf(
+    def logpdf[ShapeT: tuple[int, ...]](
         self,
         /,
-        x: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+        x: onp.ArrayND[npc.floating | npc.integer, ShapeT],
         mean: onp.ToFloat | None = None,
         cov: _AnyCov = 1,
         allow_singular: bool = False,
-    ) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
     @overload
     def logpdf(
         self, /, x: onp.ToFloatND, mean: onp.ToFloat | None = None, cov: _AnyCov = 1, allow_singular: bool = False
@@ -153,14 +150,14 @@ class multivariate_normal_gen(multi_rv_generic):
         self, /, x: onp.ToFloat, mean: onp.ToFloat | onp.ToFloat1D | None = None, cov: _AnyCov = 1, allow_singular: bool = False
     ) -> np.float64: ...
     @overload
-    def pdf(
+    def pdf[ShapeT: tuple[int, ...]](
         self,
         /,
-        x: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+        x: onp.ArrayND[npc.floating | npc.integer, ShapeT],
         mean: onp.ToFloat | None = None,
         cov: _AnyCov = 1,
         allow_singular: bool = False,
-    ) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
     @overload
     def pdf(
         self, /, x: onp.ToFloatND, mean: onp.ToFloat | None = None, cov: _AnyCov = 1, allow_singular: bool = False
@@ -208,10 +205,10 @@ class multivariate_normal_gen(multi_rv_generic):
         rng: onp.random.ToRNG | None = None,
     ) -> np.float64: ...
     @overload
-    def logcdf(
+    def logcdf[ShapeT: tuple[int, ...]](
         self,
         /,
-        x: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+        x: onp.ArrayND[npc.floating | npc.integer, ShapeT],
         mean: onp.ToFloat | None = None,
         cov: _AnyCov = 1,
         allow_singular: bool = False,
@@ -221,7 +218,7 @@ class multivariate_normal_gen(multi_rv_generic):
         *,
         lower_limit: onp.ToFloat | onp.ToFloatND | None = None,
         rng: onp.random.ToRNG | None = None,
-    ) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
     @overload
     def logcdf(
         self,
@@ -330,10 +327,10 @@ class multivariate_normal_gen(multi_rv_generic):
         rng: onp.random.ToRNG | None = None,
     ) -> np.float64: ...
     @overload
-    def cdf(
+    def cdf[ShapeT: tuple[int, ...]](
         self,
         /,
-        x: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+        x: onp.ArrayND[npc.floating | npc.integer, ShapeT],
         mean: onp.ToFloat | None = None,
         cov: _AnyCov = 1,
         allow_singular: bool = False,
@@ -343,7 +340,7 @@ class multivariate_normal_gen(multi_rv_generic):
         *,
         lower_limit: onp.ToFloat | onp.ToFloatND | None = None,
         rng: onp.random.ToRNG | None = None,
-    ) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
     @overload
     def cdf(
         self,
@@ -556,9 +553,9 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Gener
     @overload
     def logpdf(self, /, x: onp.ToFloat) -> np.float64: ...
     @overload
-    def logpdf(
-        self: multivariate_normal_frozen[tuple[()]], /, x: onp.ArrayND[npc.floating | npc.integer, _ShapeT]
-    ) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    def logpdf[ShapeT: tuple[int, ...]](
+        self: multivariate_normal_frozen[tuple[()]], /, x: onp.ArrayND[npc.floating | npc.integer, ShapeT]
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
     @overload
     def logpdf(
         self: multivariate_normal_frozen[tuple[()]], /, x: onp.ToFloatND
@@ -580,9 +577,9 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Gener
     @overload
     def pdf(self, /, x: onp.ToFloat) -> np.float64: ...
     @overload
-    def pdf(
-        self: multivariate_normal_frozen[tuple[()]], /, x: onp.ArrayND[npc.floating | npc.integer, _ShapeT]
-    ) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    def pdf[ShapeT: tuple[int, ...]](
+        self: multivariate_normal_frozen[tuple[()]], /, x: onp.ArrayND[npc.floating | npc.integer, ShapeT]
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
     @overload
     def pdf(
         self: multivariate_normal_frozen[tuple[()]], /, x: onp.ToFloatND
@@ -606,14 +603,14 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Gener
         self, /, x: onp.ToFloat, *, lower_limit: onp.ToFloat | None = None, rng: onp.random.ToRNG | None = None
     ) -> np.float64: ...
     @overload
-    def logcdf(
+    def logcdf[ShapeT: tuple[int, ...]](
         self: multivariate_normal_frozen[tuple[()]],
         /,
-        x: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+        x: onp.ArrayND[npc.floating | npc.integer, ShapeT],
         *,
         lower_limit: onp.ToFloat | onp.ToFloatND | None = None,
         rng: onp.random.ToRNG | None = None,
-    ) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
     @overload
     def logcdf(
         self: multivariate_normal_frozen[tuple[()]],
@@ -675,14 +672,14 @@ class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Gener
         self, /, x: onp.ToFloat, *, lower_limit: onp.ToFloat | None = None, rng: onp.random.ToRNG | None = None
     ) -> np.float64: ...
     @overload
-    def cdf(
+    def cdf[ShapeT: tuple[int, ...]](
         self: multivariate_normal_frozen[tuple[()]],
         /,
-        x: onp.ArrayND[npc.floating | npc.integer, _ShapeT],
+        x: onp.ArrayND[npc.floating | npc.integer, ShapeT],
         *,
         lower_limit: onp.ToFloat | onp.ToFloatND | None = None,
         rng: onp.random.ToRNG | None = None,
-    ) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
     @overload
     def cdf(
         self: multivariate_normal_frozen[tuple[()]],
@@ -988,7 +985,7 @@ class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
     # pyrefly: ignore [bad-override]
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
 
-    alpha: Final[onp.Array1D[_Scalar_uif]]
+    alpha: Final[onp.Array1D[npc.integer | npc.floating]]
 
     def __init__(self, /, alpha: onp.ToFloat1D, seed: onp.random.ToRNG | None = None) -> None: ...
     def logpdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
@@ -1116,9 +1113,9 @@ class invwishart_frozen(multi_rv_frozen[invwishart_gen]):
 
 class multinomial_gen(multi_rv_generic):
     @overload  # n: 0d, p: Nd -> Nd
-    def __call__(
-        self, /, n: int, p: onp.ArrayND[npc.floating, _ShapeT], seed: onp.random.ToRNG | None = None
-    ) -> multinomial_frozen[_ShapeT]: ...
+    def __call__[ShapeT: tuple[int, ...]](
+        self, /, n: int, p: onp.ArrayND[npc.floating, ShapeT], seed: onp.random.ToRNG | None = None
+    ) -> multinomial_frozen[ShapeT]: ...
     @overload  # n: 0d, p: 1d -> 1d
     def __call__(
         self, /, n: int, p: _ToFloatStrict1D, seed: onp.random.ToRNG | None = None
@@ -1280,7 +1277,9 @@ class multinomial_gen(multi_rv_generic):
 
     # keep in sync with `__call__`
     @overload  # n: 0d, p: Nd -> Nd
-    def mean(self, /, n: int, p: onp.ArrayND[npc.floating, _ShapeT]) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    def mean[ShapeT: tuple[int, ...]](
+        self, /, n: int, p: onp.ArrayND[npc.floating, ShapeT]
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
     @overload  # n: 0d, p: 1d -> 1d
     def mean(self, /, n: int, p: _ToFloatStrict1D) -> onp.Array1D[np.float64]: ...
     @overload  # n: 0d, p: 2d -> 2d
@@ -1353,19 +1352,19 @@ class multinomial_gen(multi_rv_generic):
     @overload
     def rvs(
         self, /, n: int, p: _ToFloatStrict1D, size: tuple[()] | None = None, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array1D[np.float64]: ...
+    ) -> onp.Array1D[np.int_]: ...
     @overload
     def rvs(
         self, /, n: int, p: _ToFloatStrict1D, size: int | tuple[int], random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array2D[np.float64]: ...
+    ) -> onp.Array2D[np.int_]: ...
     @overload
     def rvs(
         self, /, n: int, p: _ToFloatStrict1D, size: tuple[int, int], random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array3D[np.float64]: ...
+    ) -> onp.Array3D[np.int_]: ...
     @overload
     def rvs(
         self, /, n: int, p: _ToFloatStrict1D, size: tuple[int, ...], random_state: onp.random.ToRNG | None = None
-    ) -> onp.ArrayND[np.float64]: ...
+    ) -> onp.ArrayND[np.int_]: ...
 
 # `_ShapeT_co` corresponds to the shape of the mean
 class multinomial_frozen(multi_rv_frozen[multinomial_gen], Generic[_ShapeT_co]):
@@ -1470,19 +1469,19 @@ class multinomial_frozen(multi_rv_frozen[multinomial_gen], Generic[_ShapeT_co]):
     @overload
     def rvs(
         self: multinomial_frozen[tuple[int]], /, size: tuple[()], random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array1D[np.float64]: ...
+    ) -> onp.Array1D[np.int_]: ...
     @overload
     def rvs(
         self: multinomial_frozen[tuple[int]], /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array2D[np.float64]: ...
+    ) -> onp.Array2D[np.int_]: ...
     @overload
     def rvs(
         self: multinomial_frozen[tuple[int]], /, size: tuple[int, int], random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array3D[np.float64]: ...
+    ) -> onp.Array3D[np.int_]: ...
     @overload
     def rvs(
         self: multinomial_frozen[tuple[int]], /, size: tuple[int, ...], random_state: onp.random.ToRNG | None = None
-    ) -> onp.ArrayND[np.float64]: ...
+    ) -> onp.ArrayND[np.int_]: ...
 
 @type_check_only
 class _group_rv_gen_mixin(Generic[_RVF_co, _ScalarT_co]):
@@ -1633,7 +1632,38 @@ class multivariate_t_gen(multi_rv_generic):
     def entropy(self, /, loc: onp.ToFloat1D | None = None, shape: onp.ToFloat | onp.ToFloat2D = 1, df: int = 1) -> np.float64: ...
 
     #
-    @overload
+    @overload  # shape=<0d>, loc=<0d>, size=1 (default)
+    def rvs(
+        self,
+        /,
+        loc: onp.ToFloat | None = None,
+        shape: onp.ToFloat = 1,
+        df: int = 1,
+        size: Literal[1] = 1,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> np.float64: ...
+    @overload  # shape=<2d> (positional)
+    def rvs(
+        self,
+        /,
+        loc: onp.ToFloat1D | None,
+        shape: onp.ToFloat2D,
+        df: int = 1,
+        size: int | tuple[int, ...] = 1,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload  # shape=<2d> (keyword)
+    def rvs(
+        self,
+        /,
+        loc: onp.ToFloat1D | None = None,
+        *,
+        shape: onp.ToFloat2D,
+        df: int = 1,
+        size: int | tuple[int, ...] = 1,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload  # size=(int, ...)
     def rvs(
         self,
         /,
@@ -1641,50 +1671,19 @@ class multivariate_t_gen(multi_rv_generic):
         shape: onp.ToFloat | onp.ToFloat2D = 1,
         df: int = 1,
         *,
-        size: tuple[()],
+        size: tuple[int, ...],
         random_state: onp.random.ToRNG | None = None,
-    ) -> onp.Array1D[np.float64]: ...
-    @overload
-    def rvs(
-        self,
-        /,
-        loc: onp.ToFloat1D | None,
-        shape: onp.ToFloat | onp.ToFloat2D,
-        df: int,
-        size: tuple[()],
-        random_state: onp.random.ToRNG | None = None,
-    ) -> onp.Array1D[np.float64]: ...
-    @overload
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload  # fallback
     def rvs(
         self,
         /,
         loc: onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
         df: int = 1,
-        size: int | tuple[int] = 1,
+        size: int | tuple[int, ...] = 1,
         random_state: onp.random.ToRNG | None = None,
-    ) -> onp.Array2D[np.float64]: ...
-    @overload
-    def rvs(
-        self,
-        /,
-        loc: onp.ToFloat1D | None = None,
-        shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
-        *,
-        size: onp.AtLeast2D,
-        random_state: onp.random.ToRNG | None = None,
-    ) -> _Array3ND[np.float64]: ...
-    @overload
-    def rvs(
-        self,
-        /,
-        loc: onp.ToFloat1D | None,
-        shape: onp.ToFloat | onp.ToFloat2D,
-        df: int,
-        size: onp.AtLeast2D,
-        random_state: onp.random.ToRNG | None = None,
-    ) -> _Array3ND[np.float64]: ...
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
 
     #
     def marginal(
@@ -1696,6 +1695,7 @@ class multivariate_t_gen(multi_rv_generic):
         allow_singular: bool = False,
     ) -> multivariate_t_frozen: ...
 
+# TODO: make generic: https://github.com/scipy/scipy-stubs/issues/406
 class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
     # pyrefly: ignore [bad-override]
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
@@ -1730,15 +1730,13 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen]):
     ) -> _ScalarOrArray_f8: ...
 
     #
-    def entropy(self, /) -> np.float64: ...
+    def entropy(self, /) -> onp.ArrayND[np.float64]: ...
 
     #
     @overload
-    def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
+    def rvs(self, /, size: int = 1, random_state: onp.random.ToRNG | None = None) -> np.float64 | onp.ArrayND[np.float64]: ...
     @overload
-    def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
-    @overload
-    def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND[np.float64]: ...
+    def rvs(self, /, size: tuple[int, ...], random_state: onp.random.ToRNG | None = None) -> onp.ArrayND[np.float64]: ...
 
     #
     def marginal(self, dimensions: int | onp.ToInt1D) -> multivariate_t_frozen: ...
@@ -1753,19 +1751,14 @@ class multivariate_hypergeom_gen(multi_rv_generic):
     def mean(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _Array1ND[np.float64]: ...
     def var(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _Array1ND[np.float64]: ...
     def cov(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND) -> _Array2ND[np.float64]: ...
-    @overload
-    def rvs(
-        self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND, size: tuple[()], random_state: onp.random.ToRNG | None = None
-    ) -> _Array1ND[np.float64]: ...
-    @overload
     def rvs(
         self,
         /,
         m: onp.ToIntND,
         n: onp.ToJustInt | onp.ToJustIntND,
-        size: int | onp.AtLeast1D | None = None,
+        size: int | tuple[int, ...] | None = None,
         random_state: onp.random.ToRNG | None = None,
-    ) -> _Array2ND[np.float64]: ...
+    ) -> _Array1ND[np.int_]: ...
 
 class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen]):
     def __init__(self, /, m: onp.ToIntND, n: onp.ToJustInt | onp.ToJustIntND, seed: onp.random.ToRNG | None = None) -> None: ...
@@ -1774,10 +1767,12 @@ class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen])
     def mean(self, /) -> _Array1ND[np.float64]: ...
     def var(self, /) -> _Array1ND[np.float64]: ...
     def cov(self, /) -> _Array2ND[np.float64]: ...
+
+    #
     @overload
-    def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> _Array1ND[np.float64]: ...
+    def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> _Array1ND[np.int_]: ...
     @overload
-    def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
+    def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.int_]: ...
 
 type _RandomTableRVSMethod = Literal["boyett", "patefield"]
 
@@ -1793,7 +1788,7 @@ class random_table_gen(multi_rv_generic):
     #
     def mean(self, /, row: onp.ToJustIntND, col: onp.ToJustIntND) -> onp.Array2D[np.float64]: ...
 
-    #
+    # NOTE: the docstring example incorrectly suggest a float64 return dtype
     @overload
     def rvs(
         self,
@@ -1804,7 +1799,7 @@ class random_table_gen(multi_rv_generic):
         size: None = None,
         method: _RandomTableRVSMethod | None = None,
         random_state: onp.random.ToRNG | None = None,
-    ) -> onp.Array2D[np.float64]: ...
+    ) -> onp.Array2D[np.int_]: ...
     @overload
     def rvs(
         self,
@@ -1815,7 +1810,7 @@ class random_table_gen(multi_rv_generic):
         size: int | tuple[int],
         method: _RandomTableRVSMethod | None = None,
         random_state: onp.random.ToRNG | None = None,
-    ) -> onp.Array3D[np.float64]: ...
+    ) -> onp.Array3D[np.int_]: ...
     @overload
     def rvs(
         self,
@@ -1826,7 +1821,7 @@ class random_table_gen(multi_rv_generic):
         size: onp.AtLeast1D,
         method: _RandomTableRVSMethod | None = None,
         random_state: onp.random.ToRNG | None = None,
-    ) -> _Array3ND[np.float64]: ...
+    ) -> _Array3ND[np.int_]: ...
 
 class random_table_frozen(multi_rv_frozen[random_table_gen]):
     # pyrefly: ignore [bad-override]
@@ -1845,15 +1840,15 @@ class random_table_frozen(multi_rv_frozen[random_table_gen]):
     @overload
     def rvs(
         self, /, size: None = None, method: _RandomTableRVSMethod | None = None, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array2D[np.float64]: ...
+    ) -> onp.Array2D[np.int_]: ...
     @overload
     def rvs(
         self, /, size: int | tuple[int], method: _RandomTableRVSMethod | None = None, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array3D[np.float64]: ...
+    ) -> onp.Array3D[np.int_]: ...
     @overload
     def rvs(
         self, /, size: onp.AtLeast1D, method: _RandomTableRVSMethod | None = None, random_state: onp.random.ToRNG | None = None
-    ) -> _Array3ND[np.float64]: ...
+    ) -> _Array3ND[np.int_]: ...
 
 class dirichlet_multinomial_gen(multi_rv_generic):
     def __call__(
