@@ -360,9 +360,9 @@ assert_type(hilbert2(_f80_2d), onp.Array2D[npc.complexfloating160])
 
 assert_type(detrend(_py_i_1d), onp.ArrayND[np.float64])
 assert_type(detrend(_f64_1d), onp.ArrayND[np.float64])
-assert_type(detrend(_f16_1d), onp.ArrayND[np.float16])
+assert_type(detrend(_f16_1d), onp.ArrayND[np.float64])
 assert_type(detrend(_f32_1d), onp.ArrayND[np.float32])
-assert_type(detrend(_c64_1d), onp.ArrayND[np.complex128])
+assert_type(detrend(_c64_1d), onp.ArrayND[np.complex64])
 assert_type(detrend(_c128_1d), onp.ArrayND[np.complex128])
 
 # unique_roots

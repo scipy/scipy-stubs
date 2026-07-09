@@ -1045,22 +1045,14 @@ def hilbert2(
 ###
 
 #
-@overload  # f64
+@overload  # +f64
 def detrend(
-    data: onp.ToIntND | onp.ToJustFloat64_ND,
+    data: onp.ToIntND | onp.ToJustFloat64_ND | onp.ToJustFloat16_ND,
     axis: int = -1,
     type: _TrendType = "linear",
     bp: int | onp.ToJustIntND = 0,
     overwrite_data: bool = False,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # f16
-def detrend(
-    data: onp.ToJustFloat16_ND,
-    axis: int = -1,
-    type: _TrendType = "linear",
-    bp: int | onp.ToJustIntND = 0,
-    overwrite_data: bool = False,
-) -> onp.ArrayND[np.float16]: ...
 @overload  # f32
 def detrend(
     data: onp.ToJustFloat32_ND,
@@ -1076,7 +1068,7 @@ def detrend(
     type: _TrendType = "linear",
     bp: int | onp.ToJustIntND = 0,
     overwrite_data: bool = False,
-) -> onp.ArrayND[np.complex128]: ...
+) -> onp.ArrayND[np.complex64]: ...
 @overload  # c128
 def detrend(
     data: onp.ToJustComplex128_ND,
