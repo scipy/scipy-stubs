@@ -1340,7 +1340,7 @@ def pinv(
     rtol: onp.ToFloat | None = None,
     return_rank: Literal[True],
     check_finite: bool = True,
-) -> tuple[_FloatND, int]: ...
+) -> tuple[_FloatND, np.int_]: ...
 @overload  # (complex[:, :], return_rank=False) -> complex[:, :]
 def pinv(
     a: onp.ToComplexND,
@@ -1358,7 +1358,7 @@ def pinv(
     rtol: onp.ToFloat | None = None,
     return_rank: Literal[True],
     check_finite: bool = True,
-) -> tuple[_InexactND, int]: ...
+) -> tuple[_InexactND, np.int_]: ...
 
 # TODO(jorenham): improve this
 @overload  # (float[:, :], return_rank=False) -> float[:, :]

@@ -494,9 +494,9 @@ assert_type(solveh_banded(py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
 # pinv
 
 assert_type(pinv(f64_nd), onp.ArrayND[npc.floating])
-assert_type(pinv(f64_nd, return_rank=True), tuple[onp.ArrayND[npc.floating], int])
+assert_type(pinv(f64_nd, return_rank=True), tuple[onp.ArrayND[npc.floating], np.int_])
 assert_type(pinv(c128_nd), onp.ArrayND[npc.inexact])
-assert_type(pinv(c128_nd, return_rank=True), tuple[onp.ArrayND[npc.inexact], int])
+assert_type(pinv(c128_nd, return_rank=True), tuple[onp.ArrayND[npc.inexact], np.int_])
 
 ###
 # pinvh
