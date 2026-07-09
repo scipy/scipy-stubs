@@ -130,7 +130,6 @@ class Delaunay(_QhullUser):
     coplanar: onp.Array2D[np.int32]
     good: onp.Array1D[np.int32]
     nsimplex: int
-    vertices: onp.Array2D[np.float64]
 
     @property
     def points(self, /) -> onp.Array2D[np.float64]: ...
@@ -196,7 +195,7 @@ class ConvexHull(_QhullUser):
     @property
     def points(self, /) -> onp.Array2D[np.float64]: ...
     @property
-    def vertices(self, /) -> onp.Array2D[np.int32]: ...
+    def vertices(self, /) -> onp.Array1D[np.int32]: ...
 
     #
     def __init__(self, /, points: onp.ToFloat2D, incremental: bool = False, qhull_options: str | None = None) -> None: ...
