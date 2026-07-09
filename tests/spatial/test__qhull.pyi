@@ -102,7 +102,7 @@ assert_type(_hsi.dual_area, float)
 assert_type(_hsi.ndim, int)
 assert_type(_hsi.nineq, int)
 assert_type(_hsi.halfspaces, onp.Array2D[np.float64])
-assert_type(_hsi.dual_vertices, onp.Array1D[np.int32])
+assert_type(_hsi.dual_vertices, onp.Array1D[np.int_])
 
 ###
 # tsearch
