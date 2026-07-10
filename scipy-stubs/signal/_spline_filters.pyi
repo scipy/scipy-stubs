@@ -38,7 +38,7 @@ def gauss_spline[ShapeT: tuple[int, ...]](
     x: onp.ArrayND[npc.integer | np.bool, ShapeT], n: onp.ToFloat
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload
-def gauss_spline[InexactQT: npc.inexact64 | npc.inexact80 | np.float16 | np.float32, ShapeT: tuple[int, ...]](
+def gauss_spline[InexactQT: npc.inexact, ShapeT: tuple[int, ...]](
     x: onp.ArrayND[InexactQT, ShapeT], n: onp.ToFloat
 ) -> onp.ArrayND[InexactQT, ShapeT]: ...
 @overload
