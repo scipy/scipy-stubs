@@ -29,12 +29,26 @@ assert_type(quad_vec(_f_i64, 0.0, 1.0, full_output=True)[0], np.float64)
 assert_type(quad_vec(_f_i64, 0.0, 1.0, full_output=True)[1], float)
 assert_type(quad_vec(_f_i64, 0.0, 1.0, full_output=True)[2].integrals, onp.Array1D[np.float64])
 
-def _f_i64_nd(x: float) -> npt.NDArray[np.int64]: ...
+def _f_i64_1(x: float) -> onp.Array1D[np.int64]: ...
 
-assert_type(quad_vec(_f_i64_nd, 0.0, 1.0), tuple[onp.Array1D[np.float64], float])
-assert_type(quad_vec(_f_i64_nd, 0.0, 1.0, full_output=True)[0], onp.Array1D[np.float64])
-assert_type(quad_vec(_f_i64_nd, 0.0, 1.0, full_output=True)[1], float)
-assert_type(quad_vec(_f_i64_nd, 0.0, 1.0, full_output=True)[2].integrals, onp.Array2D[np.float64])
+assert_type(quad_vec(_f_i64_1, 0.0, 1.0), tuple[onp.Array1D[np.float64], float])
+assert_type(quad_vec(_f_i64_1, 0.0, 1.0, full_output=True)[0], onp.Array1D[np.float64])
+assert_type(quad_vec(_f_i64_1, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_i64_1, 0.0, 1.0, full_output=True)[2].integrals, onp.Array2D[np.float64])
+
+def _f_i64_2(x: float) -> onp.Array2D[np.int64]: ...
+
+assert_type(quad_vec(_f_i64_2, 0.0, 1.0), tuple[onp.Array2D[np.float64], float])
+assert_type(quad_vec(_f_i64_2, 0.0, 1.0, full_output=True)[0], onp.Array2D[np.float64])
+assert_type(quad_vec(_f_i64_2, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_i64_2, 0.0, 1.0, full_output=True)[2].integrals, onp.Array3D[np.float64])
+
+def _f_i64_n(x: float) -> npt.NDArray[np.int64]: ...
+
+assert_type(quad_vec(_f_i64_n, 0.0, 1.0), tuple[onp.ArrayND[np.float64], float])
+assert_type(quad_vec(_f_i64_n, 0.0, 1.0, full_output=True)[0], onp.ArrayND[np.float64])
+assert_type(quad_vec(_f_i64_n, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_i64_n, 0.0, 1.0, full_output=True)[2].integrals, onp.ArrayND[np.float64])
 
 def _f_f32(x: float) -> np.float32: ...
 
@@ -43,12 +57,26 @@ assert_type(quad_vec(_f_f32, 0.0, 1.0, full_output=True)[0], np.float32)
 assert_type(quad_vec(_f_f32, 0.0, 1.0, full_output=True)[1], float)
 assert_type(quad_vec(_f_f32, 0.0, 1.0, full_output=True)[2].integrals, onp.Array1D[np.float32])
 
-def _f_f32_nd(x: float) -> npt.NDArray[np.float32]: ...
+def _f_f32_1(x: float) -> onp.Array1D[np.float32]: ...
 
-assert_type(quad_vec(_f_f32_nd, 0.0, 1.0), tuple[onp.Array1D[np.float32], float])
-assert_type(quad_vec(_f_f32_nd, 0.0, 1.0, full_output=True)[0], onp.Array1D[np.float32])
-assert_type(quad_vec(_f_f32_nd, 0.0, 1.0, full_output=True)[1], float)
-assert_type(quad_vec(_f_f32_nd, 0.0, 1.0, full_output=True)[2].integrals, onp.Array2D[np.float32])
+assert_type(quad_vec(_f_f32_1, 0.0, 1.0), tuple[onp.Array1D[np.float32], float])
+assert_type(quad_vec(_f_f32_1, 0.0, 1.0, full_output=True)[0], onp.Array1D[np.float32])
+assert_type(quad_vec(_f_f32_1, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_f32_1, 0.0, 1.0, full_output=True)[2].integrals, onp.Array2D[np.float32])
+
+def _f_f32_2(x: float) -> onp.Array2D[np.float32]: ...
+
+assert_type(quad_vec(_f_f32_2, 0.0, 1.0), tuple[onp.Array2D[np.float32], float])
+assert_type(quad_vec(_f_f32_2, 0.0, 1.0, full_output=True)[0], onp.Array2D[np.float32])
+assert_type(quad_vec(_f_f32_2, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_f32_2, 0.0, 1.0, full_output=True)[2].integrals, onp.Array3D[np.float32])
+
+def _f_f32_n(x: float) -> npt.NDArray[np.float32]: ...
+
+assert_type(quad_vec(_f_f32_n, 0.0, 1.0), tuple[onp.ArrayND[np.float32], float])
+assert_type(quad_vec(_f_f32_n, 0.0, 1.0, full_output=True)[0], onp.ArrayND[np.float32])
+assert_type(quad_vec(_f_f32_n, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_f32_n, 0.0, 1.0, full_output=True)[2].integrals, onp.ArrayND[np.float32])
 
 def _f_f64(x: float) -> np.float64: ...
 
@@ -57,12 +85,26 @@ assert_type(quad_vec(_f_f64, 0.0, 1.0, full_output=True)[0], np.float64)
 assert_type(quad_vec(_f_f64, 0.0, 1.0, full_output=True)[1], float)
 assert_type(quad_vec(_f_f64, 0.0, 1.0, full_output=True)[2].integrals, onp.Array1D[np.float64])
 
-def _f_f64_nd(x: float) -> npt.NDArray[np.float64]: ...
+def _f_f64_1(x: float) -> onp.Array1D[np.float64]: ...
 
-assert_type(quad_vec(_f_f64_nd, 0.0, 1.0), tuple[onp.Array1D[np.float64], float])
-assert_type(quad_vec(_f_f64_nd, 0.0, 1.0, full_output=True)[0], onp.Array1D[np.float64])
-assert_type(quad_vec(_f_f64_nd, 0.0, 1.0, full_output=True)[1], float)
-assert_type(quad_vec(_f_f64_nd, 0.0, 1.0, full_output=True)[2].integrals, onp.Array2D[np.float64])
+assert_type(quad_vec(_f_f64_1, 0.0, 1.0), tuple[onp.Array1D[np.float64], float])
+assert_type(quad_vec(_f_f64_1, 0.0, 1.0, full_output=True)[0], onp.Array1D[np.float64])
+assert_type(quad_vec(_f_f64_1, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_f64_1, 0.0, 1.0, full_output=True)[2].integrals, onp.Array2D[np.float64])
+
+def _f_f64_2(x: float) -> onp.Array2D[np.float64]: ...
+
+assert_type(quad_vec(_f_f64_2, 0.0, 1.0), tuple[onp.Array2D[np.float64], float])
+assert_type(quad_vec(_f_f64_2, 0.0, 1.0, full_output=True)[0], onp.Array2D[np.float64])
+assert_type(quad_vec(_f_f64_2, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_f64_2, 0.0, 1.0, full_output=True)[2].integrals, onp.Array3D[np.float64])
+
+def _f_f64_n(x: float) -> npt.NDArray[np.float64]: ...
+
+assert_type(quad_vec(_f_f64_n, 0.0, 1.0), tuple[onp.ArrayND[np.float64], float])
+assert_type(quad_vec(_f_f64_n, 0.0, 1.0, full_output=True)[0], onp.ArrayND[np.float64])
+assert_type(quad_vec(_f_f64_n, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_f64_n, 0.0, 1.0, full_output=True)[2].integrals, onp.ArrayND[np.float64])
 
 def _f_c64(x: float) -> np.complex64: ...
 
@@ -71,12 +113,26 @@ assert_type(quad_vec(_f_c64, 0.0, 1.0, full_output=True)[0], np.complex64)
 assert_type(quad_vec(_f_c64, 0.0, 1.0, full_output=True)[1], float)
 assert_type(quad_vec(_f_c64, 0.0, 1.0, full_output=True)[2].integrals, onp.Array1D[np.complex64])
 
-def _f_c64_nd(x: float) -> npt.NDArray[np.complex64]: ...
+def _f_c64_1(x: float) -> onp.Array1D[np.complex64]: ...
 
-assert_type(quad_vec(_f_c64_nd, 0.0, 1.0), tuple[onp.Array1D[np.complex64], float])
-assert_type(quad_vec(_f_c64_nd, 0.0, 1.0, full_output=True)[0], onp.Array1D[np.complex64])
-assert_type(quad_vec(_f_c64_nd, 0.0, 1.0, full_output=True)[1], float)
-assert_type(quad_vec(_f_c64_nd, 0.0, 1.0, full_output=True)[2].integrals, onp.Array2D[np.complex64])
+assert_type(quad_vec(_f_c64_1, 0.0, 1.0), tuple[onp.Array1D[np.complex64], float])
+assert_type(quad_vec(_f_c64_1, 0.0, 1.0, full_output=True)[0], onp.Array1D[np.complex64])
+assert_type(quad_vec(_f_c64_1, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_c64_1, 0.0, 1.0, full_output=True)[2].integrals, onp.Array2D[np.complex64])
+
+def _f_c64_2(x: float) -> onp.Array2D[np.complex64]: ...
+
+assert_type(quad_vec(_f_c64_2, 0.0, 1.0), tuple[onp.Array2D[np.complex64], float])
+assert_type(quad_vec(_f_c64_2, 0.0, 1.0, full_output=True)[0], onp.Array2D[np.complex64])
+assert_type(quad_vec(_f_c64_2, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_c64_2, 0.0, 1.0, full_output=True)[2].integrals, onp.Array3D[np.complex64])
+
+def _f_c64_n(x: float) -> npt.NDArray[np.complex64]: ...
+
+assert_type(quad_vec(_f_c64_n, 0.0, 1.0), tuple[onp.ArrayND[np.complex64], float])
+assert_type(quad_vec(_f_c64_n, 0.0, 1.0, full_output=True)[0], onp.ArrayND[np.complex64])
+assert_type(quad_vec(_f_c64_n, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_c64_n, 0.0, 1.0, full_output=True)[2].integrals, onp.ArrayND[np.complex64])
 
 def _f_c128(x: float) -> np.complex128: ...
 
@@ -85,9 +141,23 @@ assert_type(quad_vec(_f_c128, 0.0, 1.0, full_output=True)[0], np.complex128)
 assert_type(quad_vec(_f_c128, 0.0, 1.0, full_output=True)[1], float)
 assert_type(quad_vec(_f_c128, 0.0, 1.0, full_output=True)[2].integrals, onp.Array1D[np.complex128])
 
-def _f_c128_nd(x: float) -> npt.NDArray[np.complex128]: ...
+def _f_c128_1(x: float) -> onp.Array1D[np.complex128]: ...
 
-assert_type(quad_vec(_f_c128_nd, 0.0, 1.0), tuple[onp.Array1D[np.complex128], float])
-assert_type(quad_vec(_f_c128_nd, 0.0, 1.0, full_output=True)[0], onp.Array1D[np.complex128])
-assert_type(quad_vec(_f_c128_nd, 0.0, 1.0, full_output=True)[1], float)
-assert_type(quad_vec(_f_c128_nd, 0.0, 1.0, full_output=True)[2].integrals, onp.Array2D[np.complex128])
+assert_type(quad_vec(_f_c128_1, 0.0, 1.0), tuple[onp.Array1D[np.complex128], float])
+assert_type(quad_vec(_f_c128_1, 0.0, 1.0, full_output=True)[0], onp.Array1D[np.complex128])
+assert_type(quad_vec(_f_c128_1, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_c128_1, 0.0, 1.0, full_output=True)[2].integrals, onp.Array2D[np.complex128])
+
+def _f_c128_2(x: float) -> onp.Array2D[np.complex128]: ...
+
+assert_type(quad_vec(_f_c128_2, 0.0, 1.0), tuple[onp.Array2D[np.complex128], float])
+assert_type(quad_vec(_f_c128_2, 0.0, 1.0, full_output=True)[0], onp.Array2D[np.complex128])
+assert_type(quad_vec(_f_c128_2, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_c128_2, 0.0, 1.0, full_output=True)[2].integrals, onp.Array3D[np.complex128])
+
+def _f_c128_n(x: float) -> npt.NDArray[np.complex128]: ...
+
+assert_type(quad_vec(_f_c128_n, 0.0, 1.0), tuple[onp.ArrayND[np.complex128], float])
+assert_type(quad_vec(_f_c128_n, 0.0, 1.0, full_output=True)[0], onp.ArrayND[np.complex128])
+assert_type(quad_vec(_f_c128_n, 0.0, 1.0, full_output=True)[1], float)
+assert_type(quad_vec(_f_c128_n, 0.0, 1.0, full_output=True)[2].integrals, onp.ArrayND[np.complex128])
