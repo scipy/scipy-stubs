@@ -41,7 +41,7 @@ def _get_output_fourier(output: None, input: onp.ToComplex128_ND) -> onp.ArrayND
 # undocumented
 @overload  # output: complex64 | complex128 array or scalar-type
 def _get_output_fourier_complex[OutputScalarComplexT: _ScalarComplex](
-    output: onp.ArrayND[OutputScalarComplexT] | type[OutputScalarComplexT], input: onp.ToComplex128_ND
+    output: onp.ArrayND[OutputScalarComplexT] | type[OutputScalarComplexT], input: _Input
 ) -> onp.ArrayND[OutputScalarComplexT]: ...
 @overload  # ~complex64
 def _get_output_fourier_complex(output: None, input: onp.ToJustComplex64_ND) -> onp.ArrayND[np.complex64]: ...
