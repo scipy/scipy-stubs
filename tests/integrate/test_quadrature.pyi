@@ -80,7 +80,7 @@ assert_type(simpson(i64_1d), np.float64)
 assert_type(simpson(i64_2d), onp.Array1D[np.float64])
 assert_type(simpson(i64_nd), Any)
 
-assert_type(simpson(f32_1d), np.float64)  # weird but true
+assert_type(simpson(f32_1d), np.float32)
 assert_type(simpson(f32_2d), onp.Array1D[np.float32])
 assert_type(simpson(f32_nd), Any)
 
@@ -88,7 +88,7 @@ assert_type(simpson(f64_1d), np.float64)
 assert_type(simpson(f64_2d), onp.Array1D[np.float64])
 assert_type(simpson(f64_nd), Any)
 
-assert_type(simpson(c64_1d), np.complex128)  # weird but true
+assert_type(simpson(c64_1d), np.complex64)
 assert_type(simpson(c64_2d), onp.Array1D[np.complex64])
 assert_type(simpson(c64_nd), Any)
 
@@ -140,22 +140,22 @@ assert_type(cumulative_trapezoid(i64_nd), onp.ArrayND[np.float64])
 
 assert_type(cumulative_trapezoid(f32_1d), onp.Array1D[np.float32])
 assert_type(cumulative_trapezoid(f32_2d), onp.Array2D[np.float32])
-assert_type(cumulative_trapezoid(f32_nd), onp.ArrayND[np.float32])
+assert_type(cumulative_trapezoid(f32_nd), onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_trapezoid(f64_1d), onp.Array1D[np.float64])
 assert_type(cumulative_trapezoid(f64_2d), onp.Array2D[np.float64])
-assert_type(cumulative_trapezoid(f64_nd), onp.ArrayND[np.float64])
+assert_type(cumulative_trapezoid(f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_trapezoid(c64_1d), onp.Array1D[np.complex64])
 assert_type(cumulative_trapezoid(c64_2d), onp.Array2D[np.complex64])
-assert_type(cumulative_trapezoid(c64_nd), onp.ArrayND[np.complex64])
+assert_type(cumulative_trapezoid(c64_nd), onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_trapezoid(c128_1d), onp.Array1D[np.complex128])
 assert_type(cumulative_trapezoid(c128_2d), onp.Array2D[np.complex128])
 assert_type(cumulative_trapezoid(c128_nd), onp.ArrayND[np.complex128])
 
 ###
-# cumulative_simpson (same as above)
+# cumulative_simpson
 
 assert_type(cumulative_simpson(float_1d), onp.Array1D[np.float64])
 assert_type(cumulative_simpson(float_2d), onp.Array2D[np.float64])
@@ -167,17 +167,25 @@ assert_type(cumulative_simpson(i64_1d), onp.Array1D[np.float64])
 assert_type(cumulative_simpson(i64_2d), onp.Array2D[np.float64])
 assert_type(cumulative_simpson(i64_nd), onp.ArrayND[np.float64])
 
-assert_type(cumulative_simpson(f32_1d), onp.Array1D[np.float32])
-assert_type(cumulative_simpson(f32_2d), onp.Array2D[np.float32])
-assert_type(cumulative_simpson(f32_nd), onp.ArrayND[np.float32])
+assert_type(cumulative_simpson(f32_1d), onp.Array1D[np.float64])
+assert_type(cumulative_simpson(f32_2d), onp.Array2D[np.float64])
+assert_type(cumulative_simpson(f32_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+
+assert_type(cumulative_simpson(f32_1d, x=f32_1d), onp.Array1D[np.float32])
+assert_type(cumulative_simpson(f32_2d, x=f32_2d), onp.Array2D[np.float32])
+assert_type(cumulative_simpson(f32_nd, x=f32_nd), onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_simpson(f64_1d), onp.Array1D[np.float64])
 assert_type(cumulative_simpson(f64_2d), onp.Array2D[np.float64])
-assert_type(cumulative_simpson(f64_nd), onp.ArrayND[np.float64])
+assert_type(cumulative_simpson(f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
-assert_type(cumulative_simpson(c64_1d), onp.Array1D[np.complex64])
-assert_type(cumulative_simpson(c64_2d), onp.Array2D[np.complex64])
-assert_type(cumulative_simpson(c64_nd), onp.ArrayND[np.complex64])
+assert_type(cumulative_simpson(c64_1d), onp.Array1D[np.complex128])
+assert_type(cumulative_simpson(c64_2d), onp.Array2D[np.complex128])
+assert_type(cumulative_simpson(c64_nd), onp.ArrayND[np.complex128])  # pyrefly:ignore[assert-type]
+
+assert_type(cumulative_simpson(c64_1d, x=f32_1d), onp.Array1D[np.complex64])
+assert_type(cumulative_simpson(c64_2d, x=f32_2d), onp.Array2D[np.complex64])
+assert_type(cumulative_simpson(c64_nd, x=f32_nd), onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_simpson(c128_1d), onp.Array1D[np.complex128])
 assert_type(cumulative_simpson(c128_2d), onp.Array2D[np.complex128])
