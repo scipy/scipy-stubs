@@ -94,14 +94,22 @@ assert_type(bsr_matrix(csr_mat), bsr_matrix[ScalarType])
 ###
 # (data, indices, indptr), [shape=(M, N)], [blocksize]
 
+# pyrefly: ignore [assert-type]
 assert_type(bsr_array(_bsr_spec3), bsr_array[ScalarType])
+# pyrefly: ignore [assert-type]
 assert_type(bsr_array(_bsr_spec3, _shape2), bsr_array[ScalarType])
+# pyrefly: ignore [assert-type]
 assert_type(bsr_array(_bsr_spec3, shape=_shape2), bsr_array[ScalarType])
+# pyrefly: ignore [assert-type]
 assert_type(bsr_array(_bsr_spec3, blocksize=(2, 2)), bsr_array[ScalarType])
 
+# pyrefly: ignore [assert-type]
 assert_type(bsr_matrix(_bsr_spec3), bsr_matrix[ScalarType])
+# pyrefly: ignore [assert-type]
 assert_type(bsr_matrix(_bsr_spec3, _shape2), bsr_matrix[ScalarType])
+# pyrefly: ignore [assert-type]
 assert_type(bsr_matrix(_bsr_spec3, shape=_shape2), bsr_matrix[ScalarType])
+# pyrefly: ignore [assert-type]
 assert_type(bsr_matrix(_bsr_spec3, blocksize=(2, 2)), bsr_matrix[ScalarType])
 
 ###
