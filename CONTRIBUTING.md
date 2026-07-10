@@ -30,6 +30,23 @@ uv sync --exact --python 3.12
 Installing the lowest supported Python version (3.12 in this example) prevents
 your IDE from e.g. auto-importing unsupported `typing` features.
 
+## Just
+
+The common development tasks are defined as [just](https://github.com/casey/just)
+recipes in the `justfile` at the root of the repo. It can be installed as a `uv` tool:
+
+```shell
+uv tool install rust-just --upgrade
+```
+
+To run all checks at once, run:
+
+```shell
+just check
+```
+
+Running `just` without arguments lists the other, more specific, recipes.
+
 ## Lefthook
 
 [Lefthook](https://github.com/evilmartians/lefthook) is a modern Git hooks manager,
