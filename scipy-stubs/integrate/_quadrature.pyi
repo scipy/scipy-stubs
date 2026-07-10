@@ -319,27 +319,75 @@ def cumulative_simpson(
 # function-based
 
 #
-@overload  # (1d f64) -> +f64
+@overload  # (?d f64) -> ?d f64  (mypy & pyright workaround)
+def fixed_quad(
+    func: _FixedQuadFunc[onp.ArrayND[np.float64 | np.float32 | np.float16 | npc.integer | np.bool, _JustAnyShape]],
+    a: float,
+    b: float,
+    args: tuple[object, ...] = (),
+    n: int = 5,
+) -> tuple[np.float64 | onp.ArrayND[np.float64], None]: ...
+@overload  # (1d f64) -> 1d +f64
+def fixed_quad(
+    func: _FixedQuadFunc[onp.ToFloat64Strict1D], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[np.float64, None]: ...
+@overload  # (1d f64) -> 2d +f64
+def fixed_quad(
+    func: _FixedQuadFunc[onp.ToFloat64Strict2D], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[onp.Array1D[np.float64], None]: ...
+@overload  # (1d f64) -> Nd f64
 def fixed_quad(
     func: _FixedQuadFunc[onp.ToFloat64_ND], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
-) -> tuple[np.float64, None]: ...
-@overload  # (1d f64) -> ~c64 | ~c128
+) -> tuple[onp.ArrayND[np.float64] | Any, None]: ...
+@overload  # (1d f64) -> ?d ~c64 | ~c128
 def fixed_quad(
-    func: _FixedQuadFunc[onp.ToArray1D[op.JustComplex, np.complex64 | np.complex128]],
+    func: _FixedQuadFunc[onp.ArrayND[np.complex64 | np.complex128, _JustAnyShape]],
+    a: float,
+    b: float,
+    args: tuple[object, ...] = (),
+    n: int = 5,
+) -> tuple[np.complex128 | onp.ArrayND[np.complex128], None]: ...
+@overload  # (1d f64) -> 1d ~c64 | ~c128
+def fixed_quad(
+    func: _FixedQuadFunc[onp.ToArrayStrict1D[op.JustComplex, np.complex64 | np.complex128]],
     a: float,
     b: float,
     args: tuple[object, ...] = (),
     n: int = 5,
 ) -> tuple[np.complex128, None]: ...
-@overload  # (1d f64) -> ~f80 | ~c160
-def fixed_quad[Inexact80T: npc.inexact80](
-    func: _FixedQuadFunc[onp.ArrayND[Inexact80T]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
-) -> tuple[Inexact80T, None]: ...
-@overload  # (1d f64) -> ~m64
+@overload  # (1d f64) -> 2d ~c64 | ~c128
 def fixed_quad(
-    func: _FixedQuadFunc[onp.ArrayND[np.timedelta64]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
-) -> tuple[np.timedelta64, None]: ...
-@overload  # (1d f64) -> ~object_
+    func: _FixedQuadFunc[onp.ToArrayStrict2D[op.JustComplex, np.complex64 | np.complex128]],
+    a: float,
+    b: float,
+    args: tuple[object, ...] = (),
+    n: int = 5,
+) -> tuple[onp.Array1D[np.complex128], None]: ...
+@overload  # (1d f64) -> Nd ~c64 | ~c128
+def fixed_quad(
+    func: _FixedQuadFunc[onp.ToArrayND[op.JustComplex, np.complex64 | np.complex128]],
+    a: float,
+    b: float,
+    args: tuple[object, ...] = (),
+    n: int = 5,
+) -> tuple[onp.ArrayND[np.complex128] | Any, None]: ...
+@overload  # (1d f64) -> ?d ~f80 | ~c160 | timedelta64
+def fixed_quad[ScalarT: npc.inexact80 | np.timedelta64](
+    func: _FixedQuadFunc[onp.ArrayND[ScalarT, _JustAnyShape]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[ScalarT | onp.ArrayND[ScalarT], None]: ...
+@overload  # (1d f64) -> 1d ~f80 | ~c160 | timedelta64
+def fixed_quad[ScalarT: npc.inexact80 | np.timedelta64](
+    func: _FixedQuadFunc[onp.Array1D[ScalarT]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[ScalarT, None]: ...
+@overload  # (1d f64) -> 2d ~f80 | ~c160 | timedelta64
+def fixed_quad[ScalarT: npc.inexact80 | np.timedelta64](
+    func: _FixedQuadFunc[onp.Array2D[ScalarT]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[onp.Array1D[ScalarT], None]: ...
+@overload  # (1d f64) -> Nd ~f80 | ~c160 | timedelta64
+def fixed_quad[ScalarT: npc.inexact80 | np.timedelta64](
+    func: _FixedQuadFunc[onp.ArrayND[ScalarT]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
+) -> tuple[onp.ArrayND[ScalarT] | Any, None]: ...
+@overload  # (1d f64) -> Nd ~object_
 def fixed_quad(
     func: _FixedQuadFunc[onp.ArrayND[np.object_]], a: float, b: float, args: tuple[object, ...] = (), n: int = 5
 ) -> tuple[Any, None]: ...
