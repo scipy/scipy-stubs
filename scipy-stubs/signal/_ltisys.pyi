@@ -33,6 +33,7 @@ __all__ = [
 _ZerosT_co = TypeVar("_ZerosT_co", bound=npc.inexact32 | npc.inexact64, default=Any, covariant=True)
 _PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=np.float64 | Any, covariant=True)
 _DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=Any, covariant=True)
+_RequestedPolesT_co = TypeVar("_RequestedPolesT_co", bound=npc.inexact64, default=np.float64 | np.complex128, covariant=True)
 
 type _Tuple3[T] = tuple[T, T, T]
 type _Tuple4[T] = tuple[T, T, T, T]
@@ -755,17 +756,54 @@ class StateSpaceDiscrete(
 
 # NOTE: Only used as return type of `place_poles`.
 @final
-class Bunch:
+class Bunch(Generic[_RequestedPolesT_co]):
     gain_matrix: _Float64_2D
-    computed_poles: _Float64_1D
-    requested_poles: _Float64_1D
-    X: onp.Array2D[np.complex128]
+    computed_poles: onp.Array1D[np.complex128]
+    requested_poles: onp.Array1D[_RequestedPolesT_co]
+    X: onp.Array2D[np.float64 | np.complex128]  # float64 iff `B` is square and full-rank
     rtol: float
-    nb_iter: int
+    nb_iter: float  # `nan` if `B` is square and full-rank, `int` otherwise
 
     def __init__(self, /) -> None: ...
 
 #
+@overload  # +f64
+def place_poles(
+    A: onp.ToFloat2D,
+    B: onp.ToFloat2D,
+    poles: onp.ToFloat64_1D,
+    method: Literal["YT", "KNV0"] = "YT",
+    rtol: float = 0.001,
+    maxiter: int = 30,
+) -> Bunch[np.float64]: ...
+@overload  # +floating
+def place_poles(
+    A: onp.ToFloat2D,
+    B: onp.ToFloat2D,
+    poles: onp.ToFloat1D,
+    method: Literal["YT", "KNV0"] = "YT",
+    rtol: float = 0.001,
+    maxiter: int = 30,
+) -> Bunch[np.float64 | Any]: ...
+@overload  # ~c128
+def place_poles(
+    A: onp.ToFloat2D,
+    B: onp.ToFloat2D,
+    poles: onp.ToJustComplex128_1D,
+    method: Literal["YT", "KNV0"] = "YT",
+    rtol: float = 0.001,
+    maxiter: int = 30,
+) -> Bunch[np.complex128]: ...
+@overload  # ~complexfloating
+def place_poles(
+    A: onp.ToFloat2D,
+    B: onp.ToFloat2D,
+    poles: onp.ToJustComplex1D,
+    method: Literal["YT", "KNV0"] = "YT",
+    rtol: float = 0.001,
+    maxiter: int = 30,
+) -> Bunch[np.complex128 | Any]: ...
+@overload  # +complexfloating
 def place_poles(
     A: onp.ToFloat2D,
     B: onp.ToFloat2D,
@@ -773,7 +811,7 @@ def place_poles(
     method: Literal["YT", "KNV0"] = "YT",
     rtol: float = 0.001,
     maxiter: int = 30,
-) -> Bunch: ...
+) -> Bunch[Any]: ...
 
 #
 
