@@ -8,12 +8,12 @@ __all__ = ["ordqz", "qz"]
 
 ###
 
-type _Tuple4[T] = tuple[T, T, T, T]
-type _Tuple222[T2, T1] = tuple[T2, T2, T1, T1, T2, T2]
-
 type _FloatND = onp.ArrayND[npc.floating]
 type _ComplexND = onp.ArrayND[npc.complexfloating]
 type _InexactND = onp.ArrayND[npc.inexact]
+
+type _Tuple4[T] = tuple[T, T, T, T]
+type _Tuple2C12[T2, T1] = tuple[T2, T2, _ComplexND, T1, T2, T2]
 
 type _OutputReal = Literal["real", "r"]
 type _OutputComplex = Literal["complex", "c"]
@@ -67,7 +67,7 @@ def ordqz(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-) -> _Tuple222[_FloatND, _FloatND]: ...
+) -> _Tuple2C12[_FloatND, _FloatND]: ...
 @overload  # complex, {"real"}
 def ordqz(
     A: onp.ToComplexND,
@@ -77,7 +77,7 @@ def ordqz(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-) -> _Tuple222[_InexactND, _InexactND]: ...
+) -> _Tuple2C12[_InexactND, _InexactND]: ...
 @overload  # complex, {"complex"} (positional)
 def ordqz(
     A: onp.ToComplexND,
@@ -87,7 +87,7 @@ def ordqz(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-) -> _Tuple222[_ComplexND, _ComplexND]: ...
+) -> _Tuple2C12[_ComplexND, _ComplexND]: ...
 @overload  # complex, {"complex"} (keyword)
 def ordqz(
     A: onp.ToComplexND,
@@ -98,4 +98,4 @@ def ordqz(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-) -> _Tuple222[_ComplexND, _ComplexND]: ...
+) -> _Tuple2C12[_ComplexND, _ComplexND]: ...
