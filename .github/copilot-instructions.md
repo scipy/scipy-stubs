@@ -50,8 +50,8 @@ If you think that could be the case, then feel free to ignore those errors.
 To run stubtest, execute the following command:
 
 ```bash
-poe stubtest
+just stubtest
 ```
 
-If `poe` is not available, then you can find the full stubtest command under the
-`[tool.poe.tasks.stubtest]` section in the `pyproject.toml` at the root of the project.
+If `just` is not available, then you can find the full stubtest command under the
+`stubtest` recipe in the `justfile` at the root of the project.

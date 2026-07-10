@@ -88,34 +88,6 @@ dev = [
 # the required stubdefaulter features not released yet (>0.1.0)
 stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "ebe9e31" }
 
-# poe
-
-[tool.poe.tasks.clean]
-cmd = """
-rm -rf
-  **/*.pyc
-  **/__pycache__
-  **/.cache
-  **/.mypy_cache
-  **/.ruff_cache
-  **/.tox
-"""
-
-[tool.poe.tasks.stubtest]
-cmd = """
-uv run
-  --no-editable
-  --reinstall-package=scipy-stubs
-  stubtest
-  --ignore-disjoint-bases
-  --allowlist=.mypyignore
-  scipy
-"""
-
-[tool.poe.tasks.stubdefaulter]
-cmd = "stubdefaulter --packages=. --exit-zero --check"
-executor.type = "uv"
-
 [tool.typos]
 files = { extend-exclude = ["*.pyi", ".mypyignore"] }
 default = { extend-ignore-identifiers-re = ['ND|Nd|Theis|TtestResult|SeQUeNCe|whos'] }
