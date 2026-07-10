@@ -11,14 +11,17 @@ from ._types import (
     bsr_mat,
     coo_arr,
     coo_mat,
+    coo_vec,
     csc_arr,
     csc_mat,
     csr_arr,
     csr_mat,
+    csr_vec,
     dia_arr,
     dia_mat,
     dok_arr,
     dok_mat,
+    dok_vec,
     lil_arr,
     lil_mat,
 )
@@ -26,6 +29,7 @@ from ._types import (
 shape_1d: tuple[int]
 shape_2d: tuple[int, int]
 shape_3d: tuple[int, int, int]
+_coo_3d: sparse.coo_array[ScalarType, tuple[int, int, int]]
 
 # TODO(julvandenbroeck): add tests for arrays with unknown shape, like np.ndarray[tuple[int, ...], np.dtype[ScalarType]]
 dense_1d: np.ndarray[tuple[int], np.dtype[ScalarType]]
@@ -217,24 +221,38 @@ assert_type(sparse.kronsum(dense_2d, any_arr, format="lil"), sparse.lil_array[Sc
 
 ###
 # expand_dims
+assert_type(sparse.expand_dims(coo_vec), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.expand_dims(coo_vec, axis=1), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.expand_dims(csr_vec), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.expand_dims(dok_vec), sparse.coo_array[ScalarType, tuple[int, int]])
 assert_type(sparse.expand_dims(csr_arr), sparse.coo_array[ScalarType, tuple[int, int, int]])
 assert_type(sparse.expand_dims(csr_arr, axis=1), sparse.coo_array[ScalarType, tuple[int, int, int]])
+assert_type(sparse.expand_dims(coo_arr), sparse.coo_array[ScalarType, tuple[int, int, int]])
+assert_type(sparse.expand_dims(_coo_3d), sparse.coo_array[ScalarType, tuple[int, int, int, int]])
+assert_type(sparse.expand_dims(_coo_3d, axis=2), sparse.coo_array[ScalarType, tuple[int, int, int, int]])
 assert_type(sparse.expand_dims(csr_mat), sparse.coo_matrix[ScalarType])
+assert_type(sparse.expand_dims(csr_mat, axis=1), sparse.coo_matrix[ScalarType])
+
+###
+# swapaxes
+assert_type(sparse.swapaxes(coo_vec, 0, 0), sparse.coo_array[ScalarType, tuple[int]])
+assert_type(sparse.swapaxes(csr_arr, 0, 1), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.swapaxes(_coo_3d, 0, 2), sparse.coo_array[ScalarType, tuple[int, int, int]])
+assert_type(sparse.swapaxes(csr_mat, 0, 1), sparse.coo_matrix[ScalarType])
+
+###
+# permute_dims
+assert_type(sparse.permute_dims(csr_arr, (1, 0)), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.permute_dims(csr_arr), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.permute_dims(csr_arr, None, copy=True), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(sparse.permute_dims(_coo_3d, (2, 0, 1)), sparse.coo_array[ScalarType, tuple[int, int, int]])
+assert_type(sparse.permute_dims(csr_mat, (1, 0)), sparse.coo_matrix[ScalarType])
+assert_type(sparse.permute_dims(csr_mat), sparse.coo_matrix[ScalarType])
 
 ###
 # matrix_transpose
 assert_type(sparse.matrix_transpose(coo_arr), sparse.coo_array[ScalarType, tuple[int, int]])
 assert_type(sparse.matrix_transpose(coo_mat), sparse.coo_matrix[ScalarType])
-
-###
-# permute_dims
-assert_type(sparse.permute_dims(csr_arr, (1, 0)), sparse.coo_array[ScalarType, tuple[int, int]])
-assert_type(sparse.permute_dims(csr_mat, (1, 0)), sparse.coo_matrix[ScalarType])
-
-###
-# swapaxes
-assert_type(sparse.swapaxes(csr_arr, 0, 1), sparse.coo_array[ScalarType, tuple[int, int]])
-assert_type(sparse.swapaxes(csr_mat, 0, 1), sparse.coo_matrix[ScalarType])
 
 ###
 # hstack (same as vstack)
