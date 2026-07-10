@@ -2,6 +2,7 @@ from typing import SupportsFloat, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["fourier_ellipsoid", "fourier_gaussian", "fourier_shift", "fourier_uniform"]
 
