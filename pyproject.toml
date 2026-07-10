@@ -191,6 +191,11 @@ errors = { deprecated = "ignore" }
 matches = "scipy-stubs/stats/_distn_infrastructure.pyi"
 errors = { bad-override = "ignore" }
 
+[[tool.pyrefly.sub-config]]
+# the ignores needed for https://github.com/facebook/pyrefly/issues/3974 are unused on numpy 2.2
+matches = "tests/integrate/test_quadrature.pyi"
+errors = { unused-ignore = "ignore" }
+
 # ty
 
 [tool.ty]
