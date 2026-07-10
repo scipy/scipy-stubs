@@ -25,6 +25,7 @@ type _F64_1D = onp.Array1D[np.float64]
 type _F64_2D = onp.Array2D[np.float64]
 type _F32_1D = onp.Array1D[np.float32]
 type _F32_2D = onp.Array2D[np.float32]
+type _F16_1D = onp.Array1D[np.float16]
 type _FQ_1D = onp.Array1D[np.float64 | np.longdouble]
 type _FQ_2D = onp.Array2D[np.float64 | np.longdouble]
 type _FQ_3D = onp.Array3D[np.float64 | np.longdouble]
@@ -43,6 +44,7 @@ type _C160_1D = onp.Array1D[npc.complexfloating160]
 ###
 
 _i64_1d: onp.Array1D[np.int64]
+_f16_1d: onp.Array1D[np.float16]
 _f32_1d: onp.Array1D[np.float32]
 _f32_2d: onp.Array2D[np.float32]
 _c64_1d: _C64_1D
@@ -94,6 +96,9 @@ assert_type(cspline2d(_c128_2d), _C128_2D)
 # gauss_spline
 
 assert_type(gauss_spline(_i64_1d, _n), _F64_1D)
+assert_type(gauss_spline(_f16_1d, _n), _F16_1D)
+assert_type(gauss_spline(_f32_1d, _n), _F32_1D)
+assert_type(gauss_spline(_f32_2d, _n), _F32_2D)
 assert_type(gauss_spline(_f64_1d, _n), _F64_1D)
 assert_type(gauss_spline(_f80_1d, _n), _F80_1D)
 assert_type(gauss_spline(_f64_2d, _n), _F64_2D)

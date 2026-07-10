@@ -19,7 +19,6 @@ __all__ = [
 
 ###
 
-type _SubFloat64 = np.bool | npc.integer | np.float16 | np.float32
 type _FloatQ = np.float64 | np.longdouble
 type _ComplexQ = np.complex128 | np.clongdouble
 
@@ -36,10 +35,10 @@ def spline_filter[FloatDT: np.float32 | np.float64](
 #
 @overload
 def gauss_spline[ShapeT: tuple[int, ...]](
-    x: onp.ArrayND[_SubFloat64, ShapeT], n: onp.ToFloat
+    x: onp.ArrayND[npc.integer | np.bool, ShapeT], n: onp.ToFloat
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload
-def gauss_spline[InexactQT: npc.inexact64 | npc.inexact80, ShapeT: tuple[int, ...]](
+def gauss_spline[InexactQT: npc.inexact64 | npc.inexact80 | np.float16 | np.float32, ShapeT: tuple[int, ...]](
     x: onp.ArrayND[InexactQT, ShapeT], n: onp.ToFloat
 ) -> onp.ArrayND[InexactQT, ShapeT]: ...
 @overload
