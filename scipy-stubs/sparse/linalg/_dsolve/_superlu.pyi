@@ -28,8 +28,8 @@ _InexactT_co = TypeVar("_InexactT_co", bound=np.float32 | np.float64 | np.comple
 class SuperLU(Generic[_InexactT_co]):
     shape: Final[tuple[int, int]]
     nnz: Final[int]
-    perm_r: Final[onp.Array1D[np.intp]]
-    perm_c: Final[onp.Array1D[np.intp]]
+    perm_r: Final[onp.Array1D[np.int32]]
+    perm_c: Final[onp.Array1D[np.int32]]
     L: csc_array[_InexactT_co]  # readonly
     U: csc_array[_InexactT_co]  # readonly
 
