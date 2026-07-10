@@ -351,7 +351,7 @@ def cumulative_simpson(
     dx: float = 1.0,
     axis: int = -1,
     initial: float | onp.ToFloatND | None = None,
-) -> onp.Array: ...
+) -> onp.Array[tuple[Any, ...] | tuple[int]]: ...  # workaround for pyright on numpy<2.1
 
 # function-based
 
