@@ -107,22 +107,22 @@ jobs:
       - name: install dependencies
         run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
 
-      - name: ty check scipy-stubs
-        run: ty check --error-on-warning --output-format=github scipy-stubs
+      - name: ty check
+        run: ty check --output-format=github --error-on-warning scipy-stubs scripts
 
-      - name: zuban check scipy-stubs
-        run: zuban check scipy-stubs
+      - name: pyrefly check
+        run: pyrefly check --output-format=github scipy-stubs scripts
 
-      - name: pyrefly check scipy-stubs
-        run: pyrefly check scipy-stubs
+      - name: zuban check
+        run: zuban check scipy-stubs scripts
 
-      - name: basedpyright scipy-stubs
-        run: basedpyright scipy-stubs
+      - name: mypy
+        run: mypy --cache-dir=/dev/null scipy-stubs
 
-      - name: mypy scipy-stubs
-        run: mypy --no-incremental --cache-dir=/dev/null scipy-stubs
+      - name: basedpyright
+        run: basedpyright scipy-stubs scripts
 
-      - name: stubtest scipy
+      - name: stubtest
         run: stubtest --ignore-disjoint-bases --allowlist=.mypyignore scipy
 
   typetest:
@@ -158,10 +158,10 @@ jobs:
         run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
 
       - name: pyrefly check tests
-        run: pyrefly check tests
+        run: pyrefly check --output-format=github tests
+
+      - name: mypy tests
+        run: mypy --cache-dir=/dev/null tests
 
       - name: basedpyright tests
         run: basedpyright tests
-
-      - name: mypy tests
-        run: mypy --no-incremental --cache-dir=/dev/null tests
