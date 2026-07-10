@@ -42,7 +42,7 @@ assert_type(
     tuple[
         onp.ArrayND[npc.floating],
         onp.ArrayND[npc.floating],
-        onp.ArrayND[npc.floating],
+        onp.ArrayND[npc.complexfloating],
         onp.ArrayND[npc.floating],
         onp.ArrayND[npc.floating],
         onp.ArrayND[npc.floating],
@@ -53,7 +53,7 @@ assert_type(
     tuple[
         onp.ArrayND[npc.inexact],
         onp.ArrayND[npc.inexact],
-        onp.ArrayND[npc.inexact],
+        onp.ArrayND[npc.complexfloating],
         onp.ArrayND[npc.inexact],
         onp.ArrayND[npc.inexact],
         onp.ArrayND[npc.inexact],
