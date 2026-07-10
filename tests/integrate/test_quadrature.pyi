@@ -165,7 +165,7 @@ assert_type(cumulative_simpson(complex_2d), onp.Array2D[np.complex128])
 
 assert_type(cumulative_simpson(i64_1d), onp.Array1D[np.float64])
 assert_type(cumulative_simpson(i64_2d), onp.Array2D[np.float64])
-assert_type(cumulative_simpson(i64_nd), onp.ArrayND[np.float64])
+assert_type(cumulative_simpson(i64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_simpson(f32_1d), onp.Array1D[np.float64])
 assert_type(cumulative_simpson(f32_2d), onp.Array2D[np.float64])

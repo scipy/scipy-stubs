@@ -19,6 +19,9 @@ type _JustAnyShape = tuple[Never, Never, Never]
 
 ###
 
+# mypy reports false positive `overload-overlap` errors for `cumulative_simpson` only on `numpy<2.1`
+# mypy: disable-error-code=overload-overlap
+
 class QMCQuadResult(NamedTuple):
     integral: np.float64
     standard_error: np.float64
@@ -342,7 +345,7 @@ def cumulative_simpson(
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # fallback
 def cumulative_simpson(
-    y: onp.ToJustFloatND | onp.ToJustComplexND,  # `ToComplexND` would overlap with the first overload
+    y: onp.ToComplexND,
     *,
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
