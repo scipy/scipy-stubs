@@ -1,6 +1,7 @@
 from _typeshed import Unused
 from collections.abc import Callable, Iterable, Mapping
-from typing import Any, Concatenate, Final, Literal, Protocol, SupportsIndex, type_check_only
+from typing import Any, Concatenate, Final, Generic, Literal, Protocol, SupportsIndex, overload, type_check_only
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -24,6 +25,8 @@ type _ToJac2D = onp.ToFloat2D | _spbase
 type _JacFunction = Callable[Concatenate[_Float1D, ...], _ToJac2D | LinearOperator]
 type _ToJac = _JacFunction | _JacMethod
 
+type _ToBounds = tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds
+
 type _XScaleMethod = Literal["jac"]
 type _XScale = onp.ToFloat | onp.ToFloatND | _XScaleMethod
 
@@ -43,23 +46,25 @@ class _ImplementedLossFunction(Protocol):
     def __call__(self, /, z: onp.Array1D[np.float64], rho: onp.Array2D[np.float64], cost_only: bool) -> None: ...
 
 @type_check_only
-class _BaseOptimizeResult(_OptimizeResult):
+class _Callback(Protocol):
+    def __call__(self, /, *, intermediate_result: _OptimizeResult) -> Unused: ...
+
+type _ToCallback = _Callback | Callable[[_Float1D], Unused]
+
+_MaskT_co = TypeVar("_MaskT_co", bound=npc.number, default=np.int_ | np.float64, covariant=True)
+
+@type_check_only
+class _BaseOptimizeResult(_OptimizeResult, Generic[_MaskT_co]):
     x: _Float1D
     cost: float
     fun: _Float1D
     jac: onp.Array2D[np.float64] | csr_array[np.float64] | LinearOperator[np.float64]
     grad: _Float1D
     optimality: float
-    active_mask: onp.Array1D[np.int_]
+    active_mask: onp.Array1D[_MaskT_co]
     nfev: int
     njev: int | None
     status: _ResultStatus
-
-@type_check_only
-class _Callback(Protocol):
-    def __call__(self, /, *, intermediate_result: _OptimizeResult) -> Unused: ...
-
-type _ToCallback = _Callback | Callable[[_Float1D], Unused]
 
 ###
 # undocumented internal machinery
@@ -77,7 +82,7 @@ def call_minpack(
     max_nfev: int | None,
     x_scale: onp.ToFloat | _Float1ND,
     jac_method: _ToJac | None = None,
-) -> _BaseOptimizeResult: ...
+) -> _BaseOptimizeResult[np.int_]: ...
 def prepare_bounds(bounds: Iterable[onp.ToFloat | onp.ToFloat1D], n: SupportsIndex) -> tuple[_Float1D, _Float1D]: ...
 def check_tolerance(
     ftol: onp.ToFloat | None, xtol: onp.ToFloat | None, gtol: onp.ToFloat | None, method: _LeastSquaresMethod
@@ -98,16 +103,17 @@ def construct_loss_function(m: SupportsIndex, loss: _Loss, f_scale: onp.ToFloat)
 ###
 # public API
 
-class OptimizeResult(_BaseOptimizeResult):
+class OptimizeResult(_BaseOptimizeResult[_MaskT_co], Generic[_MaskT_co]):
     message: str
     success: bool
 
+@overload  # method: "trf"
 def least_squares(
     fun: _ResidFunction,
     x0: onp.ToFloat | onp.ToFloat1D,
     jac: _ToJac = "2-point",
-    bounds: tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds = ...,
-    method: _LeastSquaresMethod = "trf",
+    bounds: _ToBounds = ...,
+    method: Literal["trf"] = "trf",
     ftol: onp.ToFloat | None = 1e-8,
     xtol: onp.ToFloat | None = 1e-8,
     gtol: onp.ToFloat | None = 1e-8,
@@ -124,4 +130,53 @@ def least_squares(
     kwargs: Mapping[str, object] | None = None,
     callback: _ToCallback | None = None,
     workers: _Workers | None = None,
-) -> OptimizeResult: ...
+) -> OptimizeResult[np.float64]: ...
+@overload  # method: {"dogbox", "lm"}  (keyword)
+def least_squares(
+    fun: _ResidFunction,
+    x0: onp.ToFloat | onp.ToFloat1D,
+    jac: _ToJac = "2-point",
+    bounds: _ToBounds = ...,
+    *,
+    method: Literal["dogbox", "lm"],
+    ftol: onp.ToFloat | None = 1e-8,
+    xtol: onp.ToFloat | None = 1e-8,
+    gtol: onp.ToFloat | None = 1e-8,
+    x_scale: _XScale | None = None,
+    loss: _Loss = "linear",
+    f_scale: onp.ToFloat = 1.0,
+    diff_step: onp.ToFloat1D | None = None,
+    tr_solver: Literal["exact", "lsmr"] | None = None,
+    tr_options: Mapping[str, object] | None = None,
+    jac_sparsity: _ToJac2D | None = None,
+    max_nfev: int | None = None,
+    verbose: Literal[0, 1, 2] = 0,
+    args: Iterable[object] = (),
+    kwargs: Mapping[str, object] | None = None,
+    callback: _ToCallback | None = None,
+    workers: _Workers | None = None,
+) -> OptimizeResult[np.int_]: ...
+@overload  # method: {"dogbox", "lm"}  (positional)
+def least_squares(
+    fun: _ResidFunction,
+    x0: onp.ToFloat | onp.ToFloat1D,
+    jac: _ToJac,
+    bounds: _ToBounds,
+    method: Literal["dogbox", "lm"],
+    ftol: onp.ToFloat | None = 1e-8,
+    xtol: onp.ToFloat | None = 1e-8,
+    gtol: onp.ToFloat | None = 1e-8,
+    x_scale: _XScale | None = None,
+    loss: _Loss = "linear",
+    f_scale: onp.ToFloat = 1.0,
+    diff_step: onp.ToFloat1D | None = None,
+    tr_solver: Literal["exact", "lsmr"] | None = None,
+    tr_options: Mapping[str, object] | None = None,
+    jac_sparsity: _ToJac2D | None = None,
+    max_nfev: int | None = None,
+    verbose: Literal[0, 1, 2] = 0,
+    args: Iterable[object] = (),
+    kwargs: Mapping[str, object] | None = None,
+    callback: _ToCallback | None = None,
+    workers: _Workers | None = None,
+) -> OptimizeResult[np.int_]: ...
