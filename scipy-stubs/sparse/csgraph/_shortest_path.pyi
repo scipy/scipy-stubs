@@ -33,7 +33,18 @@ def shortest_path(
     return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
     overwrite: bool = False,
-    indices: onp.ToInt | onp.ToIntND | None = None,
+    *,
+    indices: onp.ToInt,
+) -> _Float1D: ...
+@overload
+def shortest_path(
+    csgraph: _ToGraphArray,
+    method: _ShortestPathMethod = "auto",
+    directed: bool = True,
+    return_predecessors: onp.ToFalse = False,
+    unweighted: bool = False,
+    overwrite: bool = False,
+    indices: onp.ToIntND | None = None,
 ) -> _Float2D: ...
 @overload
 def shortest_path(
@@ -43,7 +54,18 @@ def shortest_path(
     return_predecessors: onp.ToTrue,
     unweighted: bool = False,
     overwrite: bool = False,
-    indices: onp.ToInt | onp.ToIntND | None = None,
+    *,
+    indices: onp.ToInt,
+) -> tuple[_Float1D, _Int1D]: ...
+@overload
+def shortest_path(
+    csgraph: _ToGraphArray,
+    method: _ShortestPathMethod,
+    directed: bool,
+    return_predecessors: onp.ToTrue,
+    unweighted: bool = False,
+    overwrite: bool = False,
+    indices: onp.ToIntND | None = None,
 ) -> tuple[_Float2D, _Int2D]: ...
 @overload
 def shortest_path(
@@ -54,7 +76,18 @@ def shortest_path(
     return_predecessors: onp.ToTrue,
     unweighted: bool = False,
     overwrite: bool = False,
-    indices: onp.ToInt | onp.ToIntND | None = None,
+    indices: onp.ToInt,
+) -> tuple[_Float1D, _Int1D]: ...
+@overload
+def shortest_path(
+    csgraph: _ToGraphArray,
+    method: _ShortestPathMethod = "auto",
+    directed: bool = True,
+    *,
+    return_predecessors: onp.ToTrue,
+    unweighted: bool = False,
+    overwrite: bool = False,
+    indices: onp.ToIntND | None = None,
 ) -> tuple[_Float2D, _Int2D]: ...
 
 #
