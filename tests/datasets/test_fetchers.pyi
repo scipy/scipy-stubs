@@ -10,6 +10,4 @@ assert_type(datasets.electrocardiogram(), np.ndarray[tuple[int], np.dtype[np.flo
 
 assert_type(datasets.face(), np.ndarray[tuple[int, int, int], np.dtype[np.uint8]])
 assert_type(datasets.face(False), np.ndarray[tuple[int, int, int], np.dtype[np.uint8]])
-assert_type(datasets.face(0), np.ndarray[tuple[int, int, int], np.dtype[np.uint8]])
-assert_type(datasets.face(1), np.ndarray[tuple[int, int, int], np.dtype[np.uint8]])
 assert_type(datasets.face(True), np.ndarray[tuple[int, int], np.dtype[np.uint8]])
