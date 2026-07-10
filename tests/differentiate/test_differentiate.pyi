@@ -123,6 +123,6 @@ assert_type(hessian(f_f64_1nd_0d, f64_2d, initial_step=f64_1d), _HessianResult[n
 res_hes = hessian(f_f64_1nd_0d, f64_1d)
 assert_type(res_hes.status, onp.Array[onp.AtLeast2D, np.int32])
 assert_type(res_hes.error, onp.Array[onp.AtLeast2D, np.float64])
-assert_type(res_hes.nfev, onp.Array[onp.AtLeast2D, np.int32])
+assert_type(res_hes.nfev, onp.Array[onp.AtLeast2D, np.int64])
 assert_type(res_hes.success, onp.Array[onp.AtLeast2D, np.bool])
 assert_type(res_hes.ddf, onp.Array[onp.AtLeast2D, np.float64])

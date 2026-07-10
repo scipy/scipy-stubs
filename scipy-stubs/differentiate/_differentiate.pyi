@@ -55,7 +55,7 @@ class _JacobianResult(_RichResult, Generic[_FloatT_co, _ShapeT_co]):
 class _HessianResult(_RichResult, Generic[_FloatT_co, _ShapeT2_co]):
     status: onp.Array[_ShapeT2_co, np.int32]
     error: onp.Array[_ShapeT2_co, _FloatT_co]
-    nfev: onp.Array[_ShapeT2_co, np.int32]
+    nfev: onp.Array[_ShapeT2_co, np.int64]
     success: onp.Array[_ShapeT2_co, np.bool]
     ddf: onp.Array[_ShapeT2_co, _FloatT_co]
 
