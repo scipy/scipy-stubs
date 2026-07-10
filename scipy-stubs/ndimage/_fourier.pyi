@@ -13,7 +13,7 @@ type _Scalar = np.float32 | np.float64 | _ScalarComplex
 type _Sigma = SupportsFloat | onp.ToFloat1D
 type _InputF64 = onp.ToJustFloat64_ND | onp.ToIntND
 type _InputF32 = onp.ToJustFloat32_ND
-type _Input = _InputF64 | _InputF32 | onp.ToJustComplex128_ND | onp.ToJustComplex64_ND
+type _Input = onp.ToArrayND[complex, npc.number64 | npc.number32 | npc.integer | np.bool]
 
 ###
 
