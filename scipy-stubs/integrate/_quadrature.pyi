@@ -19,6 +19,9 @@ type _JustAnyShape = tuple[Never, Never, Never]
 
 ###
 
+# mypy reports false positive `overload-overlap` errors for `cumulative_simpson` only on `numpy<2.1`
+# mypy: disable-error-code=overload-overlap
+
 class QMCQuadResult(NamedTuple):
     integral: np.float64
     standard_error: np.float64
@@ -75,25 +78,23 @@ def trapezoid(
     y: onp.ToComplexND, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.complex128 | Any] | Any: ...
 
-# NOTE: unlike `trapezoid`, this will upcast scalars below 64-bits precision in case of scalar output
+#
 @overload  # ?d +complex  (mypy & pyright workaround)
 def simpson(
     y: onp.Array[_JustAnyShape, npc.number | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> Any: ...
-@overload  # 1d +f64
-def simpson(y: onp.ToFloat64Strict1D, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1) -> np.float64: ...
+@overload  # 1d T:inexact
+def simpson[InexactT: npc.inexact](
+    y: onp.Array1D[InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> InexactT: ...
+@overload  # 1d +int
+def simpson(
+    y: onp.ToArrayStrict1D[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> np.float64: ...
 @overload  # 1d ~complex
 def simpson(
-    y: onp.ToJustComplex128Strict1D | onp.ToJustComplex64Strict1D,
-    x: onp.ToFloatND | None = None,
-    *,
-    dx: float = 1.0,
-    axis: int = -1,
+    y: onp.ToJustComplex128Strict1D, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> np.complex128: ...
-@overload  # 1d T:inexact
-def simpson[Inexact80T: npc.inexact80](
-    y: onp.Array1D[Inexact80T], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
-) -> Inexact80T: ...
 @overload  # 2d T:inexact
 def simpson[InexactT: npc.inexact](
     y: onp.Array2D[InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
@@ -127,7 +128,7 @@ def simpson(
     y: onp.ToComplexND, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.complex128 | Any] | Any: ...
 
-# NOTE: like `simpson`, but this will also upcast scalars below 64-bits precision in case of array output
+# NOTE: unlike `simpson`, this upcasts sub-64-bits sctypes
 @overload  # ?d +complex  (mypy & pyright workaround)
 def romb(y: onp.Array[_JustAnyShape, npc.number | np.bool], dx: float = 1.0, axis: int = -1, show: bool = False) -> Any: ...
 @overload  # 1d +f64
@@ -167,9 +168,9 @@ def romb(y: onp.ToComplexND, dx: float = 1.0, axis: int = -1, show: bool = False
 
 # sample-based cumulative integration
 
-# keep in sync with `cumulative_simpson`
+# NOTE: unlike `cumulative_simpson`, this is dtype-preserving for dtypes below 64-bits precision
 @overload  # +int, shape known
-def cumulative_trapezoid[ShapeT: tuple[Any, ...]](
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
     y: onp.ArrayND[npc.integer | np.bool, ShapeT],
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
@@ -197,7 +198,7 @@ def cumulative_trapezoid(
     y: onp.SequenceND[float], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: Literal[0] | None = None
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # T:inexact, shape known
-def cumulative_trapezoid[InexactT: npc.inexact, ShapeT: tuple[Any, ...]](
+def cumulative_trapezoid[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     y: onp.ArrayND[InexactT, ShapeT],
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
@@ -233,9 +234,9 @@ def cumulative_trapezoid(
     initial: Literal[0] | None = None,
 ) -> onp.Array: ...
 
-# keep in sync with `cumulative_trapezoid`
+# NOTE: unlike `cumulative_trapezoid`, propagates 64bit sctypes if it matches `x`
 @overload  # +int, shape known
-def cumulative_simpson[ShapeT: tuple[Any, ...]](
+def cumulative_simpson[ShapeT: tuple[int, ...]](
     y: onp.ArrayND[npc.integer | np.bool, ShapeT],
     *,
     x: onp.ToFloatND | None = None,
@@ -270,8 +271,8 @@ def cumulative_simpson(
     axis: int = -1,
     initial: float | onp.ToFloatND | None = None,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # T:inexact, shape known
-def cumulative_simpson[InexactT: npc.inexact, ShapeT: tuple[Any, ...]](
+@overload  # T:inexact64, shape known
+def cumulative_simpson[InexactT: npc.inexact64 | npc.inexact80, ShapeT: tuple[int, ...]](
     y: onp.ArrayND[InexactT, ShapeT],
     *,
     x: onp.ToFloatND | None = None,
@@ -279,6 +280,42 @@ def cumulative_simpson[InexactT: npc.inexact, ShapeT: tuple[Any, ...]](
     axis: int = -1,
     initial: float | onp.ToFloatND | None = None,
 ) -> onp.ArrayND[InexactT, ShapeT]: ...
+@overload  # T:float16/32, shape known, matching x
+def cumulative_simpson[FloatT: (np.float16, np.float32), ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[FloatT, ShapeT],
+    *,
+    x: onp.ArrayND[FloatT],
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: FloatT | onp.ArrayND[FloatT] | None = None,
+) -> onp.ArrayND[FloatT, ShapeT]: ...
+@overload  # ~c64, shape known, narrow x
+def cumulative_simpson[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.complex64, ShapeT],
+    *,
+    x: onp.ArrayND[np.float32 | np.float16],
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: np.complex64 | onp.ArrayND[np.complex64] | None = None,
+) -> onp.ArrayND[np.complex64, ShapeT]: ...
+@overload  # ~f16/f32, shape known, promoting x
+def cumulative_simpson[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.float16 | np.float32, ShapeT],
+    *,
+    x: onp.ToJustFloat64_ND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # ~c64, shape known, promoting x
+def cumulative_simpson[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.complex64, ShapeT],
+    *,
+    x: onp.ToJustFloat64_ND | None = None,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | onp.ToFloatND | None = None,
+) -> onp.ArrayND[np.complex128, ShapeT]: ...
 @overload  # ~complex, shape 1d
 def cumulative_simpson(
     y: onp.ToJustComplex128Strict1D,
@@ -308,13 +345,13 @@ def cumulative_simpson(
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # fallback
 def cumulative_simpson(
-    y: onp.ToJustFloatND | onp.ToJustComplexND,  # `ToComplexND` would overlap with the first overload
+    y: onp.ToComplexND,
     *,
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
     initial: float | onp.ToFloatND | None = None,
-) -> onp.Array: ...
+) -> onp.Array[tuple[Any, ...] | tuple[int]]: ...  # workaround for pyright on numpy<2.1
 
 # function-based
 
