@@ -11,5 +11,5 @@ from scipy.optimize import nnls
 _a: list[list[float]]
 _b: list[float]
 
-assert_type(nnls(_a, _b), tuple[onp.ArrayND[np.float64], np.float64])
-assert_type(nnls(_a, _b, maxiter=9), tuple[onp.ArrayND[np.float64], np.float64])
+assert_type(nnls(_a, _b), tuple[onp.ArrayND[np.float64], float])
+assert_type(nnls(_a, _b, maxiter=9), tuple[onp.ArrayND[np.float64], float])
