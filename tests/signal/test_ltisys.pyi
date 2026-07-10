@@ -4,6 +4,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.signal import (
     StateSpace,
@@ -56,6 +57,7 @@ _c64_2d: onp.Array2D[np.complex64]
 _c128_1d: _VecC128
 _c128_2d: onp.Array2D[np.complex128]
 _i64_1d: onp.Array1D[np.int64]
+_f80_1d: onp.Array1D[np.longdouble]
 
 _lti_f32: lti[np.float32, np.float32]
 _lti_f64: lti[np.float64, np.float64]
@@ -294,14 +296,22 @@ assert_type(_lti_c128.freqresp(), tuple[_VecF64, _VecC128])
 ###
 # place_poles
 
-place_poles_result = place_poles(_f64_2d, _f64_2d, _i64_1d)
-assert_type(place_poles_result, Bunch)
+place_poles_result = place_poles(_f64_2d, _f64_2d, _f64_1d)
+assert_type(place_poles_result, Bunch[np.float64])
 assert_type(place_poles_result.gain_matrix, _MatF64)
-assert_type(place_poles_result.computed_poles, _VecF64)
+assert_type(place_poles_result.computed_poles, _VecC128)
 assert_type(place_poles_result.requested_poles, _VecF64)
-assert_type(place_poles_result.X, onp.Array2D[np.complex128])
+assert_type(place_poles_result.X, onp.Array2D[np.float64 | np.complex128])
 assert_type(place_poles_result.rtol, float)
-assert_type(place_poles_result.nb_iter, int)
+assert_type(place_poles_result.nb_iter, float)
+
+assert_type(place_poles(_f64_2d, _f64_2d, _i64_1d), Bunch[np.float64])
+assert_type(place_poles(_f64_2d, _f64_2d, _f32_1d), Bunch[np.float64])
+# on `numpy<2.2` this selects the `+f64` overload instead, returning `Bunch[np.float64]`
+assert_subtype[Bunch[np.float64 | Any]](place_poles(_f64_2d, _f64_2d, _f80_1d))
+assert_type(place_poles(_f64_2d, _f64_2d, _c128_1d), Bunch[np.complex128])
+assert_type(place_poles(_f64_2d, _f64_2d, _c128_1d).requested_poles, _VecC128)
+assert_type(place_poles(_f64_2d, _f64_2d, _c64_1d), Bunch[np.complex128 | Any])
 
 ###
 # dlsim
