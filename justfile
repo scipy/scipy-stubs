@@ -9,13 +9,13 @@ _default:
 # run all checks: lint, typecheck, typetest, and stubtest
 check: lint typecheck typetest stubtest
 
-# ruff, dprint, repo-review, and typos
+# ruff, dprint, typos, and zizmor
 lint:
     uv run ruff check --show-fixes
     uv run ruff format --check
     uv run dprint check --incremental=false
-    uv run repo-review --show=err .
     uvx typos
+    uvx zizmor --quiet .
 
 # auto-fix lint and formatting issues
 fix:
@@ -26,19 +26,19 @@ fix:
 # run all static type-checkers on the stubs and scripts
 typecheck: ty zuban pyrefly mypy pyright
 
-ty *paths="":
-    uv run ty check --error-on-warning --exclude tests {{ paths }}
+ty *paths=stubs:
+    uv run ty check --error-on-warning {{ paths }}
 
-zuban *paths="":
-    uv run zuban check --exclude '^tests/' {{ paths }}
+zuban *paths=stubs:
+    uv run zuban check {{ paths }}
 
-pyrefly *paths=stubs:
+pyrefly *paths:
     uv run pyrefly check {{ paths }}
 
-mypy *paths="scipy-stubs":
+mypy *paths=".":
     uv run mypy {{ paths }}
 
-pyright *paths=stubs:
+pyright *paths:
     uv run basedpyright {{ paths }}
 
 # type-check the tests with pyrefly, mypy, and basedpyright
@@ -55,8 +55,12 @@ coverage:
     uv run scripts/unstubbed_modules.py
 
 # report incorrect or missing default values in the stubs
-stubdefault:
+stubdefaulter:
     uv run stubdefaulter --packages=. --exit-zero --check
+
+# run lefthook pre-commit hooks
+lefthook *flags="--all-files":
+    uv run lefthook run pre-commit {{ flags }}
 
 # remove cache directories and compiled bytecode
 clean:
