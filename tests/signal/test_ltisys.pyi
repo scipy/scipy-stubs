@@ -43,7 +43,6 @@ type _ArrF64 = onp.ArrayND[np.float64]
 type _VecC64 = onp.Array1D[np.complex64]
 type _VecC128 = onp.Array1D[np.complex128]
 type _ArrC128 = onp.ArrayND[np.complex128]
-type _VecC128ish = onp.Array1D[np.complex128 | Any]
 type _ArrC128ish = onp.ArrayND[np.complex128 | Any]
 
 ###
@@ -145,91 +144,91 @@ assert_type(StateSpace(_c128_2d, _c128_2d, _c128_2d, _c128_2d, dt=0.1), StateSpa
 # lsim (same as impulse and step)
 
 # f32
-assert_type(lsim(_lti_f32, None, _f64_1d), tuple[_VecF64, _VecF64, _ArrF64])
-assert_type(lsim(_to_tf_cont_f32, None, _f64_1d), tuple[_VecF64, _VecF64, _ArrF64])
-assert_type(lsim(_to_zpk_cont_f32, None, _f64_1d), tuple[_VecF64, _VecF64, _ArrF64])
-assert_type(lsim(_to_ss_cont_f32, None, _f64_1d), tuple[_VecF64, _VecF64, _ArrF64])
+assert_type(lsim(_lti_f32, None, _f64_1d), tuple[_VecF64, _ArrF64, _ArrF64])
+assert_type(lsim(_to_tf_cont_f32, None, _f64_1d), tuple[_VecF64, _ArrF64, _ArrF64])
+assert_type(lsim(_to_zpk_cont_f32, None, _f64_1d), tuple[_VecF64, _ArrF64, _ArrF64])
+assert_type(lsim(_to_ss_cont_f32, None, _f64_1d), tuple[_VecF64, _ArrF64, _ArrF64])
 # c64
-assert_type(lsim(_lti_c64, None, _f64_1d), tuple[_VecF64, _VecC128, _ArrC128])
-assert_type(lsim(_to_tf_cont_c64, None, _f64_1d), tuple[_VecF64, _VecC128ish, _ArrC128ish])
-assert_type(lsim(_to_zpk_cont_c64, None, _f64_1d), tuple[_VecF64, _VecC128ish, _ArrC128ish])
-assert_type(lsim(_to_ss_cont_c64, None, _f64_1d), tuple[_VecF64, _VecC128ish, _ArrC128ish])
+assert_type(lsim(_lti_c64, None, _f64_1d), tuple[_VecF64, _ArrC128, _ArrC128])
+assert_type(lsim(_to_tf_cont_c64, None, _f64_1d), tuple[_VecF64, _ArrC128ish, _ArrC128ish])
+assert_type(lsim(_to_zpk_cont_c64, None, _f64_1d), tuple[_VecF64, _ArrC128ish, _ArrC128ish])
+assert_type(lsim(_to_ss_cont_c64, None, _f64_1d), tuple[_VecF64, _ArrC128ish, _ArrC128ish])
 # f64
-assert_type(lsim(_lti_f64, None, _f64_1d), tuple[_VecF64, _VecF64, _ArrF64])
-assert_type(lsim(_to_tf_cont_f64, None, _f64_1d), tuple[_VecF64, _VecF64, _ArrF64])
-assert_type(lsim(_to_zpk_cont_f64, None, _f64_1d), tuple[_VecF64, _VecF64, _ArrF64])
-assert_type(lsim(_to_ss_cont_f64, None, _f64_1d), tuple[_VecF64, _VecF64, _ArrF64])
+assert_type(lsim(_lti_f64, None, _f64_1d), tuple[_VecF64, _ArrF64, _ArrF64])
+assert_type(lsim(_to_tf_cont_f64, None, _f64_1d), tuple[_VecF64, _ArrF64, _ArrF64])
+assert_type(lsim(_to_zpk_cont_f64, None, _f64_1d), tuple[_VecF64, _ArrF64, _ArrF64])
+assert_type(lsim(_to_ss_cont_f64, None, _f64_1d), tuple[_VecF64, _ArrF64, _ArrF64])
 # c128
-assert_type(lsim(_lti_c128, None, _f64_1d), tuple[_VecF64, _VecC128, _ArrC128])
-assert_type(lsim(_to_tf_cont_c128, None, _f64_1d), tuple[_VecF64, _VecC128ish, _ArrC128ish])
-assert_type(lsim(_to_zpk_cont_c128, None, _f64_1d), tuple[_VecF64, _VecC128ish, _ArrC128ish])
-assert_type(lsim(_to_ss_cont_c128, None, _f64_1d), tuple[_VecF64, _VecC128ish, _ArrC128ish])
+assert_type(lsim(_lti_c128, None, _f64_1d), tuple[_VecF64, _ArrC128, _ArrC128])
+assert_type(lsim(_to_tf_cont_c128, None, _f64_1d), tuple[_VecF64, _ArrC128ish, _ArrC128ish])
+assert_type(lsim(_to_zpk_cont_c128, None, _f64_1d), tuple[_VecF64, _ArrC128ish, _ArrC128ish])
+assert_type(lsim(_to_ss_cont_c128, None, _f64_1d), tuple[_VecF64, _ArrC128ish, _ArrC128ish])
 
 # lti.output method
-assert_type(_lti_f32.output(None, _f64_1d), tuple[_VecF64, _VecF64, _ArrF64])
-assert_type(_lti_c64.output(None, _f64_1d), tuple[_VecF64, _VecC128, _ArrC128])
-assert_type(_lti_f64.output(None, _f64_1d), tuple[_VecF64, _VecF64, _ArrF64])
-assert_type(_lti_c128.output(None, _f64_1d), tuple[_VecF64, _VecC128, _ArrC128])
+assert_type(_lti_f32.output(None, _f64_1d), tuple[_VecF64, _ArrF64, _ArrF64])
+assert_type(_lti_c64.output(None, _f64_1d), tuple[_VecF64, _ArrC128, _ArrC128])
+assert_type(_lti_f64.output(None, _f64_1d), tuple[_VecF64, _ArrF64, _ArrF64])
+assert_type(_lti_c128.output(None, _f64_1d), tuple[_VecF64, _ArrC128, _ArrC128])
 
 ###
 # impulse (same as lsim and step)
 
 # f32
-assert_type(impulse(_lti_f32), tuple[_VecF64, _VecF64])
-assert_type(impulse(_to_tf_cont_f32), tuple[_VecF64, _VecF64])
-assert_type(impulse(_to_zpk_cont_f32), tuple[_VecF64, _VecF64])
-assert_type(impulse(_to_ss_cont_f32), tuple[_VecF64, _VecF64])
+assert_type(impulse(_lti_f32), tuple[_VecF64, _ArrF64])
+assert_type(impulse(_to_tf_cont_f32), tuple[_VecF64, _ArrF64])
+assert_type(impulse(_to_zpk_cont_f32), tuple[_VecF64, _ArrF64])
+assert_type(impulse(_to_ss_cont_f32), tuple[_VecF64, _ArrF64])
 # c64
-assert_type(impulse(_lti_c64), tuple[_VecF64, _VecC128])
-assert_type(impulse(_to_tf_cont_c64), tuple[_VecF64, _VecC128ish])
-assert_type(impulse(_to_zpk_cont_c64), tuple[_VecF64, _VecC128ish])
-assert_type(impulse(_to_ss_cont_c64), tuple[_VecF64, _VecC128ish])
+assert_type(impulse(_lti_c64), tuple[_VecF64, _ArrC128])
+assert_type(impulse(_to_tf_cont_c64), tuple[_VecF64, _ArrC128ish])
+assert_type(impulse(_to_zpk_cont_c64), tuple[_VecF64, _ArrC128ish])
+assert_type(impulse(_to_ss_cont_c64), tuple[_VecF64, _ArrC128ish])
 # f64
-assert_type(impulse(_lti_f64), tuple[_VecF64, _VecF64])
-assert_type(impulse(_to_tf_cont_f64), tuple[_VecF64, _VecF64])
-assert_type(impulse(_to_zpk_cont_f64), tuple[_VecF64, _VecF64])
-assert_type(impulse(_to_ss_cont_f64), tuple[_VecF64, _VecF64])
+assert_type(impulse(_lti_f64), tuple[_VecF64, _ArrF64])
+assert_type(impulse(_to_tf_cont_f64), tuple[_VecF64, _ArrF64])
+assert_type(impulse(_to_zpk_cont_f64), tuple[_VecF64, _ArrF64])
+assert_type(impulse(_to_ss_cont_f64), tuple[_VecF64, _ArrF64])
 # c128
-assert_type(impulse(_lti_c128), tuple[_VecF64, _VecC128])
-assert_type(impulse(_to_tf_cont_c128), tuple[_VecF64, _VecC128ish])
-assert_type(impulse(_to_zpk_cont_c128), tuple[_VecF64, _VecC128ish])
-assert_type(impulse(_to_ss_cont_c128), tuple[_VecF64, _VecC128ish])
+assert_type(impulse(_lti_c128), tuple[_VecF64, _ArrC128])
+assert_type(impulse(_to_tf_cont_c128), tuple[_VecF64, _ArrC128ish])
+assert_type(impulse(_to_zpk_cont_c128), tuple[_VecF64, _ArrC128ish])
+assert_type(impulse(_to_ss_cont_c128), tuple[_VecF64, _ArrC128ish])
 
 # lti.impulse method
-assert_type(_lti_f32.impulse(), tuple[_VecF64, _VecF64])
-assert_type(_lti_c64.impulse(), tuple[_VecF64, _VecC128])
-assert_type(_lti_f64.impulse(), tuple[_VecF64, _VecF64])
-assert_type(_lti_c128.impulse(), tuple[_VecF64, _VecC128])
+assert_type(_lti_f32.impulse(), tuple[_VecF64, _ArrF64])
+assert_type(_lti_c64.impulse(), tuple[_VecF64, _ArrC128])
+assert_type(_lti_f64.impulse(), tuple[_VecF64, _ArrF64])
+assert_type(_lti_c128.impulse(), tuple[_VecF64, _ArrC128])
 
 ###
 # step (same as lsim and impulse)
 
 # f32
-assert_type(step(_lti_f32), tuple[_VecF64, _VecF64])
-assert_type(step(_to_tf_cont_f32), tuple[_VecF64, _VecF64])
-assert_type(step(_to_zpk_cont_f32), tuple[_VecF64, _VecF64])
-assert_type(step(_to_ss_cont_f32), tuple[_VecF64, _VecF64])
+assert_type(step(_lti_f32), tuple[_VecF64, _ArrF64])
+assert_type(step(_to_tf_cont_f32), tuple[_VecF64, _ArrF64])
+assert_type(step(_to_zpk_cont_f32), tuple[_VecF64, _ArrF64])
+assert_type(step(_to_ss_cont_f32), tuple[_VecF64, _ArrF64])
 # c64
-assert_type(step(_lti_c64), tuple[_VecF64, _VecC128])
-assert_type(step(_to_tf_cont_c64), tuple[_VecF64, _VecC128ish])
-assert_type(step(_to_zpk_cont_c64), tuple[_VecF64, _VecC128ish])
-assert_type(step(_to_ss_cont_c64), tuple[_VecF64, _VecC128ish])
+assert_type(step(_lti_c64), tuple[_VecF64, _ArrC128])
+assert_type(step(_to_tf_cont_c64), tuple[_VecF64, _ArrC128ish])
+assert_type(step(_to_zpk_cont_c64), tuple[_VecF64, _ArrC128ish])
+assert_type(step(_to_ss_cont_c64), tuple[_VecF64, _ArrC128ish])
 # f64
-assert_type(step(_lti_f64), tuple[_VecF64, _VecF64])
-assert_type(step(_to_tf_cont_f64), tuple[_VecF64, _VecF64])
-assert_type(step(_to_zpk_cont_f64), tuple[_VecF64, _VecF64])
-assert_type(step(_to_ss_cont_f64), tuple[_VecF64, _VecF64])
+assert_type(step(_lti_f64), tuple[_VecF64, _ArrF64])
+assert_type(step(_to_tf_cont_f64), tuple[_VecF64, _ArrF64])
+assert_type(step(_to_zpk_cont_f64), tuple[_VecF64, _ArrF64])
+assert_type(step(_to_ss_cont_f64), tuple[_VecF64, _ArrF64])
 # c128
-assert_type(step(_lti_c128), tuple[_VecF64, _VecC128])
-assert_type(step(_to_tf_cont_c128), tuple[_VecF64, _VecC128ish])
-assert_type(step(_to_zpk_cont_c128), tuple[_VecF64, _VecC128ish])
-assert_type(step(_to_ss_cont_c128), tuple[_VecF64, _VecC128ish])
+assert_type(step(_lti_c128), tuple[_VecF64, _ArrC128])
+assert_type(step(_to_tf_cont_c128), tuple[_VecF64, _ArrC128ish])
+assert_type(step(_to_zpk_cont_c128), tuple[_VecF64, _ArrC128ish])
+assert_type(step(_to_ss_cont_c128), tuple[_VecF64, _ArrC128ish])
 
 # lti.step method
-assert_type(_lti_f32.step(), tuple[_VecF64, _VecF64])
-assert_type(_lti_c64.step(), tuple[_VecF64, _VecC128])
-assert_type(_lti_f64.step(), tuple[_VecF64, _VecF64])
-assert_type(_lti_c128.step(), tuple[_VecF64, _VecC128])
+assert_type(_lti_f32.step(), tuple[_VecF64, _ArrF64])
+assert_type(_lti_c64.step(), tuple[_VecF64, _ArrC128])
+assert_type(_lti_f64.step(), tuple[_VecF64, _ArrF64])
+assert_type(_lti_c128.step(), tuple[_VecF64, _ArrC128])
 
 ###
 # bode

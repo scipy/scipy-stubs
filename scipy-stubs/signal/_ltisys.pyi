@@ -149,7 +149,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         X0: onp.ToFloat1D | None = None,
         T: onp.ToFloat1D | None = None,
         N: int | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
     @overload
     def impulse(
         self: lti[np.complex64 | np.complex128],
@@ -157,7 +157,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         X0: onp.ToComplex1D | None = None,
         T: onp.ToFloat1D | None = None,
         N: int | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128]]: ...
 
     #
     @overload
@@ -167,7 +167,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         X0: onp.ToFloat1D | None = None,
         T: onp.ToFloat1D | None = None,
         N: int | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
     @overload
     def step(
         self: lti[np.complex64 | np.complex128],
@@ -175,7 +175,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         X0: onp.ToComplex1D | None = None,
         T: onp.ToFloat1D | None = None,
         N: int | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128]]: ...
 
     #
     @overload
@@ -185,7 +185,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         U: _ToFloat012D | None,
         T: onp.ToFloat | onp.ToFloat1D,
         X0: onp.ToComplex1D | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
     @overload
     def output(
         self: lti[np.complex64 | np.complex128],
@@ -193,7 +193,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         U: _ToFloat012D | None,
         T: onp.ToFloat | onp.ToFloat1D,
         X0: onp.ToComplex1D | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], onp.ArrayND[np.complex128]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
 
     #
     @overload
@@ -823,7 +823,7 @@ def lsim(
     T: onp.ToFloat1D,
     X0: onp.ToFloat1D | None = None,
     interp: bool = True,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 @overload
 def lsim(
     system: lti[np.complex64 | np.complex128],
@@ -831,11 +831,11 @@ def lsim(
     T: onp.ToFloat1D,
     X0: onp.ToComplex1D | None = None,
     interp: bool = True,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], onp.ArrayND[np.complex128]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
 @overload
 def lsim(
     system: _ToLTIInexact, U: _ToFloat012D | None, T: onp.ToFloat1D, X0: onp.ToComplex1D | None = None, interp: bool = True
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
 
 # keep in sync with lsim and step
 @overload
@@ -844,18 +844,18 @@ def impulse(
     X0: onp.ToFloat1D | None = None,
     T: onp.ToFloat1D | None = None,
     N: int | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
 @overload
 def impulse(
     system: lti[np.complex64 | np.complex128],
     X0: onp.ToComplex1D | None = None,
     T: onp.ToFloat1D | None = None,
     N: int | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128]]: ...
 @overload
 def impulse(
     system: _ToLTIInexact, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128 | Any]]: ...
 
 # keep in sync with lsim and impulse
 @overload
@@ -864,18 +864,18 @@ def step(
     X0: onp.ToFloat1D | None = None,
     T: onp.ToFloat1D | None = None,
     N: int | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
 @overload
 def step(
     system: lti[np.complex64 | np.complex128],
     X0: onp.ToComplex1D | None = None,
     T: onp.ToFloat1D | None = None,
     N: int | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128]]: ...
 @overload
 def step(
     system: _ToLTIInexact, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128 | Any]]: ...
 
 #
 @overload
