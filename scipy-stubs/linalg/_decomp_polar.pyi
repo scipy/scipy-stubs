@@ -1,4 +1,4 @@
-from typing import Literal, TypeAlias, TypeVar, overload
+from typing import Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -6,9 +6,10 @@ import optype.numpy.compat as npc
 
 __all__ = ["polar"]
 
-_T = TypeVar("_T")
-_Tuple2: TypeAlias = tuple[_T, _T]
-_Side: TypeAlias = Literal["left", "right"]
+###
+
+type _Tuple2[T] = tuple[T, T]
+type _Side = Literal["left", "right"]
 
 ###
 

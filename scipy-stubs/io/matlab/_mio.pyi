@@ -1,10 +1,11 @@
 from collections.abc import Mapping
-from typing import Any, Literal, TypedDict, Unpack, type_check_only
+from typing import Any, Literal, TypedDict, Unpack, overload, type_check_only
+from typing_extensions import deprecated
 
 import optype as op
 
 from ._miobase import MatFileReader
-from scipy.io._typing import ByteOrder, FileName
+from scipy.io._typing import ByteOrder, FileLike
 
 __all__ = ["loadmat", "savemat", "whosmat"]
 
@@ -46,22 +47,33 @@ class _ReaderKwargs(TypedDict, total=False):
 ###
 
 def mat_reader_factory(
-    file_name: FileName, appendmat: bool = True, **kwargs: Unpack[_ReaderKwargs]
+    file_name: FileLike[bytes], appendmat: bool = True, **kwargs: Unpack[_ReaderKwargs]
 ) -> tuple[MatFileReader, bool]: ...
 
 #
+@overload
+@deprecated("The default value for `spmatrix` is changing to False in v1.20.")
 def loadmat(
-    file_name: FileName,
+    file_name: FileLike[bytes],
     mdict: Mapping[str, object] | None = None,
     appendmat: bool = True,
     *,
-    spmatrix: bool | _NoValueType = ...,
+    spmatrix: _NoValueType = ...,
+    **kwargs: Unpack[_ReaderKwargs],
+) -> dict[str, Any]: ...
+@overload
+def loadmat(
+    file_name: FileLike[bytes],
+    mdict: Mapping[str, object] | None = None,
+    appendmat: bool = True,
+    *,
+    spmatrix: bool,
     **kwargs: Unpack[_ReaderKwargs],
 ) -> dict[str, Any]: ...
 
 #
 def savemat(
-    file_name: FileName,
+    file_name: FileLike[bytes],
     mdict: Mapping[str, object],
     appendmat: bool = True,
     format: Literal["5", "4"] = "5",
@@ -72,5 +84,5 @@ def savemat(
 
 #
 def whosmat(
-    file_name: FileName, appendmat: bool = True, **kwargs: Unpack[_ReaderKwargs]
+    file_name: FileLike[bytes], appendmat: bool = True, **kwargs: Unpack[_ReaderKwargs]
 ) -> list[tuple[str, tuple[int, ...], _DataClass]]: ...

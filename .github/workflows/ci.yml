@@ -21,11 +21,11 @@ jobs:
     timeout-minutes: 2
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
-      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+      - uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
         with:
           python-version: "3.14"
           activate-environment: true
@@ -42,7 +42,7 @@ jobs:
         uses: dprint/check@9cb3a2b17a8e606d37aae341e49df3654933fc23 # v2.3
 
       - name: typos
-        uses: crate-ci/typos@aca895bf05aec0cb7dffa6f94495e923224d9f17 # v1.46.2
+        uses: crate-ci/typos@bee27e3a4fd1ea2111cf90ab89cd076c870fce14 # v1.48.0
 
       - name: ruff check
         run: uv run ruff check --output-format=github
@@ -58,17 +58,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
       - name: setup uv
-        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
         with:
           python-version: "3.14"
 
-      - name: check version literals
-        run: uv run scripts/check_version_literals.py
+      - name: pyrefly coverage check
+        run: uv run pyrefly coverage check --public-only --fail-under=99.9 scipy-stubs
 
       - name: check for unstubbed modules
         run: uv run scripts/unstubbed_modules.py
@@ -88,10 +88,10 @@ jobs:
       fail-fast: false
       matrix:
         py: ["3.12"]
-        np: ["2.0", "2.1", "2.2", "2.3", "2.4"]
+        np: ["2.0", "2.1", "2.2", "2.3", "2.4", "2.5"]
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
@@ -99,7 +99,7 @@ jobs:
       # manually (re)install the desired version directly in the environment.
 
       - name: setup uv
-        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
         with:
           activate-environment: true
           python-version: ${{ matrix.py }}
@@ -107,19 +107,22 @@ jobs:
       - name: install dependencies
         run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
 
-      - name: ty check scipy-stubs
-        run: ty check --error-on-warning --output-format=github scipy-stubs
+      - name: ty check
+        run: ty check --output-format=github --error-on-warning scipy-stubs scripts
 
-      - name: pyrefly check scipy-stubs
-        run: pyrefly check scipy-stubs
+      - name: pyrefly check
+        run: pyrefly check --output-format=github scipy-stubs scripts
 
-      - name: basedpyright scipy-stubs
-        run: basedpyright scipy-stubs
+      - name: zuban check
+        run: zuban check scipy-stubs scripts
 
-      - name: mypy scipy-stubs
-        run: mypy --no-incremental --cache-dir=/dev/null scipy-stubs
+      - name: mypy
+        run: mypy --cache-dir=/dev/null scipy-stubs
 
-      - name: stubtest scipy
+      - name: basedpyright
+        run: basedpyright scipy-stubs scripts
+
+      - name: stubtest
         run: stubtest --ignore-disjoint-bases --allowlist=.mypyignore scipy
 
   typetest:
@@ -130,7 +133,7 @@ jobs:
       fail-fast: false
       matrix:
         py: ["3.12", "3.13", "3.14"]
-        np: ["2.0", "2.1", "2.2", "2.3", "2.4"]
+        np: ["2.0", "2.1", "2.2", "2.3", "2.4", "2.5"]
         exclude:
           - py: "3.13"
             np: "2.0"
@@ -142,11 +145,11 @@ jobs:
             np: "2.2"
 
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
-      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+      - uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
         with:
           activate-environment: true
           python-version: ${{ matrix.py }}
@@ -155,10 +158,10 @@ jobs:
         run: uv pip install --exact --group type numpy==${{ matrix.np }}.* .
 
       - name: pyrefly check tests
-        run: pyrefly check tests
+        run: pyrefly check --output-format=github tests
+
+      - name: mypy tests
+        run: mypy --cache-dir=/dev/null tests
 
       - name: basedpyright tests
         run: basedpyright tests
-
-      - name: mypy tests
-        run: mypy --no-incremental --cache-dir=/dev/null tests

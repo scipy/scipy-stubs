@@ -1,7 +1,8 @@
-from typing import IO, Any, Final, Literal, LiteralString, Protocol, Self, TypeAlias, overload, type_check_only
+from typing import IO, Any, Final, Literal, LiteralString, Protocol, Self, overload, type_check_only
+from typing_extensions import deprecated
 
 import numpy as np
-import optype.numpy as onp
+import optype as op
 import optype.numpy.compat as npc
 import optype.typing as opt
 
@@ -10,11 +11,15 @@ from scipy.sparse import csc_array, csc_matrix, sparray, spmatrix
 
 __all__ = ["hb_read", "hb_write"]
 
-_ValueType: TypeAlias = Literal["real", "complex", "pattern", "integer"]
-_Structure: TypeAlias = Literal["symmetric", "unsymmetric", "hermitian", "skewsymmetric", "rectangular"]
-_Storage: TypeAlias = Literal["assembled", "elemental"]
+###
 
-_Real: TypeAlias = npc.integer | np.float32 | np.float64
+type _NoValueType = op.JustObject
+
+type _ValueType = Literal["real", "complex", "pattern", "integer"]
+type _Structure = Literal["symmetric", "unsymmetric", "hermitian", "skewsymmetric", "rectangular"]
+type _Storage = Literal["assembled", "elemental"]
+
+type _Real = npc.integer | np.float32 | np.float64
 
 @type_check_only
 class _HasWidthAndRepeat(Protocol):
@@ -121,9 +126,12 @@ def _write_data(m: sparray | spmatrix, fid: IO[str], header: HBInfo) -> None: ..
 
 #
 @overload
-def hb_read(path_or_open_file: FileLike[str], *, spmatrix: onp.ToTrue = True) -> csc_matrix[Any]: ...
+@deprecated("The default value for `spmatrix` is changing to False in v1.20.")
+def hb_read(path_or_open_file: FileLike[str], *, spmatrix: _NoValueType = ...) -> csc_matrix[Any]: ...
 @overload
-def hb_read(path_or_open_file: FileLike[str], *, spmatrix: onp.ToFalse) -> csc_array[Any]: ...
+def hb_read(path_or_open_file: FileLike[str], *, spmatrix: Literal[True]) -> csc_matrix[Any]: ...
+@overload
+def hb_read(path_or_open_file: FileLike[str], *, spmatrix: Literal[False]) -> csc_array[Any]: ...
 
 #
 def hb_write(path_or_open_file: FileLike[str], m: sparray | spmatrix, hb_info: HBInfo | None = None) -> None: ...

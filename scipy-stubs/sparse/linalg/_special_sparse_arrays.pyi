@@ -1,4 +1,4 @@
-from typing import Any, Final, Generic, Literal, TypeAlias, overload, override
+from typing import Any, Final, Generic, Literal, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,14 +11,22 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["LaplacianNd"]
 
-_SCT = TypeVar("_SCT", bound=npc.integer | npc.floating, default=Any)
+###
 
 # because `scipy.sparse.sparray` does not implement anything :(
-_SpArray: TypeAlias = (
-    bsr_array[_SCT] | coo_array[_SCT] | csc_array[_SCT] | csr_array[_SCT] | dia_array[_SCT] | dok_array[_SCT] | lil_array[_SCT]
+type _SpArray[ScalarT: npc.integer | npc.floating] = (
+    bsr_array[ScalarT]
+    | coo_array[ScalarT]
+    | csc_array[ScalarT]
+    | csr_array[ScalarT]
+    | dia_array[ScalarT]
+    | dok_array[ScalarT]
+    | lil_array[ScalarT]
 )
 
-_BCs: TypeAlias = Literal["dirichlet", "neumann", "periodic"]
+type _BCs = Literal["dirichlet", "neumann", "periodic"]
+
+_SCT = TypeVar("_SCT", bound=npc.integer | npc.floating, default=Any)
 
 ###
 

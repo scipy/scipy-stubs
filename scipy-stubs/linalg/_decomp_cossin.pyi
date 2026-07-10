@@ -1,5 +1,5 @@
 from collections.abc import Iterable
-from typing import Literal, TypeAlias, TypeVar, overload
+from typing import Literal, overload
 
 import optype.numpy as onp
 import optype.numpy.compat as npc
@@ -7,15 +7,14 @@ import optype.typing as opt
 
 __all__ = ["cossin"]
 
-_T = TypeVar("_T")
-_Tuple2: TypeAlias = tuple[_T, _T]
-_Tuple3: TypeAlias = tuple[_T, _T, _T]
+type _Tuple2[T] = tuple[T, T]
+type _Tuple3[T] = tuple[T, T, T]
 
-_Float1D: TypeAlias = onp.Array1D[npc.floating]
-_Float2D: TypeAlias = onp.Array2D[npc.floating]
-_FloatND: TypeAlias = onp.ArrayND[npc.floating]
-_Complex2D: TypeAlias = onp.Array2D[npc.inexact]
-_ComplexND: TypeAlias = onp.ArrayND[npc.inexact]
+type _Float1D = onp.Array1D[npc.floating]
+type _Float2D = onp.Array2D[npc.floating]
+type _FloatND = onp.ArrayND[npc.floating]
+type _Inexact2D = onp.Array2D[npc.inexact]
+type _InexactND = onp.ArrayND[npc.inexact]
 
 @overload  # (float[:, :], separate=False) -> float[:, :]**3
 def cossin(
@@ -68,7 +67,7 @@ def cossin(
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> _Tuple3[_Complex2D]: ...
+) -> _Tuple3[_Inexact2D]: ...
 @overload  # (complex[:, :, ...], separate=False) -> complex[:, :, ...]**3
 def cossin(
     X: onp.ToComplexND | Iterable[onp.ToComplexND],
@@ -78,7 +77,7 @@ def cossin(
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> _Tuple3[_ComplexND]: ...
+) -> _Tuple3[_InexactND]: ...
 @overload  # (complex[:, :], separate=True) -> (complex[:, :]**2, float[:], complex[:, :]**2)
 def cossin(
     X: onp.ToComplexStrict2D | Iterable[onp.ToComplexStrict2D],
@@ -89,7 +88,7 @@ def cossin(
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> tuple[_Tuple2[_Complex2D], _Float1D, _Tuple2[_Complex2D]]: ...
+) -> tuple[_Tuple2[_Inexact2D], _Float1D, _Tuple2[_Inexact2D]]: ...
 @overload  # (complex[:, :, ...], separate=True) -> (complex[:, :, ...]**2, float[:, ...], complex[:, :, ...]**2)
 def cossin(
     X: onp.ToComplexND | Iterable[onp.ToComplexND],
@@ -100,4 +99,4 @@ def cossin(
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> tuple[_Tuple2[_ComplexND], _FloatND, _Tuple2[_ComplexND]]: ...
+) -> tuple[_Tuple2[_InexactND], _FloatND, _Tuple2[_InexactND]]: ...

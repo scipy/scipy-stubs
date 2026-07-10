@@ -9,5 +9,6 @@ def bws_test(
     y: onp.ToComplex1D,
     *,
     alternative: Literal["two-sided", "less", "greater"] = "two-sided",
+    axis: int | None = 0,
     method: PermutationMethod | None = None,
 ) -> PermutationTestResult: ...

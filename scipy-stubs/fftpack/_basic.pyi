@@ -1,4 +1,4 @@
-from typing import Protocol, SupportsIndex, TypeAlias, type_check_only
+from typing import Protocol, SupportsIndex, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -8,8 +8,8 @@ from scipy._typing import AnyShape
 
 __all__ = ["fft", "fft2", "fftn", "ifft", "ifft2", "ifftn", "irfft", "rfft"]
 
-_ArrayReal: TypeAlias = onp.ArrayND[np.float32 | np.float64 | np.longdouble]  # no float16
-_ArrayComplex: TypeAlias = onp.ArrayND[npc.complexfloating]
+type _ArrayReal = onp.ArrayND[np.float32 | np.float64 | np.longdouble]  # no float16
+type _ArrayComplex = onp.ArrayND[npc.complexfloating]
 
 @type_check_only
 class _OrderedIndex(SupportsIndex, Protocol):

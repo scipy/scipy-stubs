@@ -1,4 +1,4 @@
-from typing import TypeAlias, overload
+from typing import overload
 
 import numpy as np
 import optype.numpy as onp
@@ -8,8 +8,10 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["onenormest"]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_ToMatrix: TypeAlias = onp.ToComplex2D | LinearOperator | _spbase
+###
+
+type _Float1D = onp.Array1D[np.float64]
+type _ToMatrix = onp.ToComplex2D | LinearOperator | _spbase
 
 #
 

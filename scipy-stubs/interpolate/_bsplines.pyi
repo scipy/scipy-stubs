@@ -1,5 +1,5 @@
 import types
-from typing import Any, Generic, Literal, Self, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import Any, Generic, Literal, Self, SupportsIndex, TypeVar, overload, override
 
 import numpy as np
 import optype.numpy as onp
@@ -13,10 +13,10 @@ __all__ = ["BSpline", "make_interp_spline", "make_lsq_spline", "make_smoothing_s
 
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
-_Extrapolate: TypeAlias = Literal["periodic"] | bool
-_BCType: TypeAlias = Literal["not-a-knot", "natural", "clamped", "periodic"]
-_ToBCType: TypeAlias = tuple[onp.ToFloat, onp.ToFloat] | _BCType
-_LSQMethod: TypeAlias = Literal["qr", "norm-eq"]
+type _Extrapolate = Literal["periodic"] | bool
+type _BCType = Literal["not-a-knot", "natural", "clamped", "periodic"]
+type _ToBCType = tuple[onp.ToFloat, onp.ToFloat] | _BCType
+type _LSQMethod = Literal["qr", "norm-eq"]
 
 ###
 
@@ -70,6 +70,11 @@ class BSpline(Generic[_CT_co]):
     def __call__(
         self, /, x: onp.ToComplex | onp.ToComplexND, nu: int = 0, extrapolate: _Extrapolate | None = None
     ) -> onp.ArrayND[_CT_co]: ...
+
+    #
+    @override
+    def __getstate__(self) -> tuple[type, onp.Array0D[np.float64]]: ...
+    def __setstate__(self, state: tuple[type, onp.Array0D[np.float64]], /) -> None: ...
 
     #
     def derivative(self, /, nu: int = 1) -> Self: ...

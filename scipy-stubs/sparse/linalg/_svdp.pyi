@@ -11,7 +11,6 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["_svdp"]
 
-_NumberT = TypeVar("_NumberT", bound=npc.number)
 _NumberT_co = TypeVar("_NumberT_co", bound=npc.number, default=np.float64 | Any, covariant=True)
 
 class _AProd(Generic[_NumberT_co]):
@@ -24,8 +23,8 @@ class _AProd(Generic[_NumberT_co]):
     @property
     def dtype(self) -> np.dtype[_NumberT_co]: ...
 
-def _svdp(
-    A: onp.ToArray2D[_NumberT] | _spbase[_NumberT, tuple[int, int]] | LinearOperator[_NumberT],
+def _svdp[NumberT: npc.number](
+    A: onp.ToArray2D[NumberT] | _spbase[NumberT, tuple[int, int]] | LinearOperator[NumberT],
     k: int,
     which: Literal["LM", "SM"] = "LM",
     irl_mode: bool = True,

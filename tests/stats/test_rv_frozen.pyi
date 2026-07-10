@@ -1,12 +1,14 @@
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
 
 from scipy.stats import distributions as d
 
-_Float: TypeAlias = float | np.float64
-_FloatND: TypeAlias = _Float | onp.ArrayND[np.float64]
+###
+
+type _Float = float | np.float64
+type _FloatND = _Float | onp.ArrayND[np.float64]
 
 ###
 # `rv_continuous_frozen`

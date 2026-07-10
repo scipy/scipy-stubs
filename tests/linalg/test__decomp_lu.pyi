@@ -9,7 +9,7 @@ from scipy.linalg import lu, lu_factor, lu_solve
 
 ###
 
-_bool_1d: onp.Array1D[np.bool_]
+_bool_1d: onp.Array1D[np.bool]
 _i8_1d: onp.Array1D[np.int8]
 _i16_1d: onp.Array1D[np.int16]
 _i32_1d: onp.Array1D[np.int32]
@@ -22,7 +22,7 @@ _c64_1d: onp.Array1D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
 _c160_1d: onp.Array1D[np.complex256]
 
-_bool_2d: onp.Array2D[np.bool_]
+_bool_2d: onp.Array2D[np.bool]
 _i8_2d: onp.Array2D[np.int8]
 _i16_2d: onp.Array2D[np.int16]
 _i32_2d: onp.Array2D[np.int32]
@@ -35,7 +35,7 @@ _c64_2d: onp.Array2D[np.complex64]
 _c128_2d: onp.Array2D[np.complex128]
 _c160_2d: onp.Array2D[np.complex256]
 
-_bool_3d: onp.Array3D[np.bool_]
+_bool_3d: onp.Array3D[np.bool]
 _i8_3d: onp.Array3D[np.int8]
 _i16_3d: onp.Array3D[np.int16]
 _i32_3d: onp.Array3D[np.int32]
@@ -48,7 +48,7 @@ _c64_3d: onp.Array3D[np.complex64]
 _c128_3d: onp.Array3D[np.complex128]
 _c160_3d: onp.Array3D[np.complex256]
 
-_bool_nd: onp.ArrayND[np.bool_]
+_bool_nd: onp.ArrayND[np.bool]
 _i8_nd: onp.ArrayND[np.int8]
 _i16_nd: onp.ArrayND[np.int16]
 _i32_nd: onp.ArrayND[np.int32]

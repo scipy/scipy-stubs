@@ -1,4 +1,4 @@
-from typing import Literal, TypeAlias, assert_type
+from typing import Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -8,9 +8,9 @@ from scipy.optimize._minpack_py import _InfoDictCurveFit, _InfoDictLSQ, _InfoDic
 
 ###
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_IERFlag: TypeAlias = Literal[1, 2, 3, 4, 5, 6, 7, 8]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _IERFlag = Literal[1, 2, 3, 4, 5, 6, 7, 8]
 
 ###
 

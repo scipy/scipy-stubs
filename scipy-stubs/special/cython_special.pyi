@@ -1,16 +1,18 @@
 from types import CodeType
-from typing import Any, Final, Literal, LiteralString, Protocol, TypeAlias, TypedDict, overload, type_check_only
+from typing import Any, Final, Literal, LiteralString, Protocol, TypedDict, overload, type_check_only
 from typing_extensions import CapsuleType, ReadOnly
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_X_i: TypeAlias = int | np.intp
-_X_f: TypeAlias = float | np.float64
-_X_c: TypeAlias = complex | np.complex128
-_X_if: TypeAlias = float | np.intp | np.float64
-_X_fc: TypeAlias = complex | npc.inexact64
+###
+
+type _X_i = int | np.intp
+type _X_f = float | np.float64
+type _X_c = complex | np.complex128
+type _X_if = float | np.intp | np.float64
+type _X_fc = complex | npc.inexact64
 
 @type_check_only
 class _BaseCythonFunctionOrMethod(Protocol):

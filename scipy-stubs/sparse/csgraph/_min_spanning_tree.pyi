@@ -1,5 +1,4 @@
-from typing import Any, Final, TypeAlias, overload
-from typing_extensions import TypeVar
+from typing import Any, Final, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -8,8 +7,9 @@ import optype.numpy.compat as npc
 from scipy.sparse import csr_array
 from scipy.sparse._base import _spbase
 
-_RealT = TypeVar("_RealT", bound=npc.integer | npc.floating)
-_Graph: TypeAlias = onp.CanArrayND[_RealT] | _spbase[_RealT, tuple[int, int]]
+###
+
+type _Graph[RealT: npc.integer | npc.floating] = onp.CanArrayND[RealT] | _spbase[RealT, tuple[int, int]]
 
 ###
 
@@ -17,7 +17,9 @@ DTYPE: Final[type[np.float64]] = ...
 ITYPE: Final[type[np.int32]] = ...
 
 @overload
-def minimum_spanning_tree(csgraph: _Graph[_RealT], overwrite: bool = False) -> csr_array[_RealT, tuple[int, int]]: ...
+def minimum_spanning_tree[RealT: npc.integer | npc.floating](
+    csgraph: _Graph[RealT], overwrite: bool = False
+) -> csr_array[RealT, tuple[int, int]]: ...
 @overload
 def minimum_spanning_tree(csgraph: onp.ToJustInt2D, overwrite: bool = False) -> csr_array[np.int_, tuple[int, int]]: ...
 @overload

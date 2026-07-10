@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable, Mapping
-from typing import Concatenate, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Concatenate, Literal, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -8,18 +8,20 @@ from ._differentiable_functions import _DoesMap
 from scipy.sparse import csr_array, sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
-_ToSparse: TypeAlias = spmatrix | sparray
+###
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
+type _ToSparse = spmatrix | sparray
 
-_ToFloatOr1D: TypeAlias = onp.ToFloat | onp.ToFloat1D
-_ToFloatMatrix: TypeAlias = onp.ToFloat2D | _ToSparse
+type _Float1D = onp.Array1D[np.float64]
 
-_ToIntMatrix: TypeAlias = onp.ToInt2D | _ToSparse
-_Sparsity: TypeAlias = _ToIntMatrix | tuple[_ToIntMatrix, onp.ToFloat1D]
+type _ToFloatOr1D = onp.ToFloat | onp.ToFloat1D
+type _ToFloatMatrix = onp.ToFloat2D | _ToSparse
 
-_Fun: TypeAlias = Callable[Concatenate[_Float1D, ...], _ToFloatOr1D]
-_Jac: TypeAlias = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D | _ToFloatMatrix]
+type _ToIntMatrix = onp.ToInt2D | _ToSparse
+type _Sparsity = _ToIntMatrix | tuple[_ToIntMatrix, onp.ToFloat1D]
+
+type _Fun = Callable[Concatenate[_Float1D, ...], _ToFloatOr1D]
+type _Jac = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D | _ToFloatMatrix]
 
 @type_check_only
 class _InfoDict(TypedDict):

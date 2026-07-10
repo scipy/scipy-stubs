@@ -2,21 +2,26 @@
 
 from typing import assert_type
 
+import numpy as np
+import optype.numpy as onp
+
 from scipy.stats import binomtest
-from scipy.stats._binomtest import BinomTestResult
-from scipy.stats._common import ConfidenceInterval
 
 ###
 # binomtest
 
-_r = binomtest(5, 10)
-assert_type(_r, BinomTestResult)
-assert_type(_r.k, int)
-assert_type(_r.n, int)
-assert_type(_r.statistic, float)
-assert_type(_r.pvalue, float)
-assert_type(_r.proportion_ci(), ConfidenceInterval)
-assert_type(_r.proportion_ci(confidence_level=0.99, method="wilson"), ConfidenceInterval)
+_r_0d = binomtest(5, 10)
+assert_type(_r_0d.k, np.float64)
+assert_type(_r_0d.n, np.float64)
+assert_type(_r_0d.statistic, np.float64)
+assert_type(_r_0d.pvalue, np.float64)
+assert_type(_r_0d.proportion_ci().low, np.float64)
+assert_type(_r_0d.proportion_ci().high, np.float64)
 
-assert_type(binomtest(5, 10, p=0.3, alternative="less"), BinomTestResult)
-assert_type(binomtest(5, 10, alternative="greater"), BinomTestResult)
+_r_1d = binomtest([5], [10, 20])
+assert_type(_r_1d.k, onp.ArrayND[np.float64])
+assert_type(_r_1d.n, onp.ArrayND[np.float64])
+assert_type(_r_1d.statistic, onp.ArrayND[np.float64])
+assert_type(_r_1d.pvalue, onp.ArrayND[np.float64])
+assert_type(_r_1d.proportion_ci().low, onp.ArrayND[np.float64])
+assert_type(_r_1d.proportion_ci().high, onp.ArrayND[np.float64])

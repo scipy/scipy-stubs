@@ -46,4 +46,4 @@ _interp2d_type: type[interp2d]  # pyright: ignore[reportDeprecated]
 ###
 # lagrange
 
-assert_type(lagrange(_f64_1d, _f64_1d), np.poly1d)
+assert_type(lagrange(_f64_1d, _f64_1d), np.poly1d)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]

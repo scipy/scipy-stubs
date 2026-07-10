@@ -1,6 +1,6 @@
 # scipy-stubs
 
-Reliable type annotations for <a href="https://github.com/scipy/scipy">SciPy</a>
+**The official type stubs for [SciPy](https://github.com/scipy/scipy).**
 
 [![GitHub License](https://img.shields.io/github/license/scipy/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d)](https://github.com/scipy/scipy-stubs)
 [![PyPI Version](https://img.shields.io/pypi/v/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d)](https://pypi.org/project/scipy-stubs)
@@ -8,32 +8,18 @@ Reliable type annotations for <a href="https://github.com/scipy/scipy">SciPy</a>
 [![Python Versions](https://img.shields.io/pypi/pyversions/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d)](https://github.com/scipy/scipy-stubs)
 [![PyPI Downloads](https://img.shields.io/pypi/dm/scipy-stubs?style=flat-square&color=121d2f&labelColor=3d444d&cacheSeconds=86400)](https://pypi.org/project/scipy-stubs)
 
+> Used by [Pandas](https://github.com/pandas-dev/pandas), [JAX](https://github.com/jax-ml/jax), [Apache Spark](https://github.com/apache/spark), [Astropy](https://github.com/astropy/astropy), [Ultralytics](https://github.com/ultralytics/ultralytics), [Altair](https://github.com/vega/altair), and [many other projects](#whos-using-scipy-stubs).
+
 ## Features
 
-### Enhanced Development Experience
+- **Complete coverage**: the entire public SciPy API is annotated.
+- **Shape- and dtype-aware**: array shapes and dtypes are tracked where applicable.
+- **Generics**: subscriptable types for sparse arrays, distributions, splines, and linear operators.
+- **No configuration**: works on install, affects type checking only, with no runtime impact.
+- **Broad checker support**: tested against mypy, pyright, basedpyright, pyrefly, ty, and zuban.
+- **Thoroughly tested**: `stubtest` against the runtime, [`assert_type` tests][TYPETESTS] for inference, and [mypy_primer][PRIMER] for regressions.
 
-- **Better IDE support**: Get accurate autocompletion, parameter hints, and return type information
-- **Catch errors early**: Type checkers can detect mistakes before runtime
-- **Improved code documentation**: Type hints serve as inline documentation for function signatures
-
-### Zero Configuration Required
-
-- **Drop-in replacement**: Works immediately after installation, no configuration needed
-- **No runtime impact**: Type stubs are only used during development and type checking
-- **IDE agnostic**: Works with VSCode, PyCharm, Vim, Emacs, and any editor with Python language server support
-
-### Precise and Complete
-
-- **Array shape awareness**: Many functions include shape-type information for better array handling
-- **Generic types**: Comprehensive generic classes for sparse arrays, distributions, linear operators, and more
-- **Complete coverage**: Type annotations are provided for the entire SciPy API
-
-### Thoroughly Tested and Reliable
-
-- **stubtest validation**: Ensures all type annotations match the actual SciPy runtime behavior
-- **Comprehensive type-tests**: Validates type checker behavior with real-world usage patterns
-- **Regression testing**: Uses [mypy_primer][PRIMER] to test against popular open-source projects, preventing breaking changes
-
+[TYPETESTS]: https://github.com/scipy/scipy-stubs/tree/master/tests
 [PRIMER]: https://github.com/hauntsaninja/mypy_primer
 
 ## Examples
@@ -131,9 +117,10 @@ The speed gap exists mainly because `scipy-stubs` doesn’t require compilation 
 
 - [Mypy](https://github.com/python/mypy),
 - [Pyright](https://github.com/microsoft/pyright) (a.k.a. Pylance),
-- [BasedPyright](https://github.com/detachhead/basedpyright), and
-- [Pyrefly](https://github.com/facebook/pyrefly) (currently in beta, so it may not always work as expected).
-- [ty](https://github.com/astral-sh/ty) (currently in alpha, so it may not always work as expected).
+- [BasedPyright](https://github.com/detachhead/basedpyright),
+- [Pyrefly](https://github.com/facebook/pyrefly), and
+- [ty](https://github.com/astral-sh/ty) (currently in beta, so it may not always work as expected).
+- [Zuban](https://github.com/zubanls/zuban) (currently in beta, so it may not always work as expected).
 
 ### Q: Do I need to change my existing code?
 
@@ -160,6 +147,10 @@ even without explicit type annotations in your code.
 **A:** You should see improved autocompletion in your IDE and more precise type information.
 You can also run `mypy`, `pyright` or another type checker on your code to see type checking in action.
 
+### Q: Is this vibe-coded?
+
+**A:** No.
+
 ## Versioning and requirements
 
 The versioning scheme of `scipy-stubs` includes the compatible `scipy` version as `{scipy_version}.{stubs_version}`.
@@ -185,6 +176,9 @@ Note that not all classes are subscriptable at runtime, as that requires the `__
 This can be worked around with `from __future__ import annotations` or by manually stringifying the generic annotations.
 We are working on improving this in future versions of SciPy.
 See the `scipy` columns below for which classes are subscriptable at runtime.
+
+<details>
+<summary><b>Browse all generic types by module</b></summary>
 
 ### `scipy.integrate`
 
@@ -233,6 +227,7 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | generic type                                         | `scipy-stubs` | `scipy`  |                                                                                                 |
 | ---------------------------------------------------- | ------------- | -------- | ----------------------------------------------------------------------------------------------- |
 | `ShortTimeFFT[T: inexact]`                           | `>=1.16.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html)     |
+| `ShortTimeFFT[T: inexact, I: f64 \| c128]`           | `>=1.18.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html)     |
 | `StateSpace[Z: inexact, P: floating, D: scalar]`     | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.StateSpace.html)       |
 | `TransferFunction[P: floating, D: scalar]`           | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.TransferFunction.html) |
 | `ZerosPolesGain[Z: inexact, P: floating, D: scalar]` | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ZerosPolesGain.html)   |
@@ -262,11 +257,12 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 
 #### `scipy.sparse.linalg`
 
-| generic type                | `scipy-stubs` | `scipy`  |                                                                                                      |
-| --------------------------- | ------------- | -------- | ---------------------------------------------------------------------------------------------------- |
-| `LaplacianNd[T: real]`      | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LaplacianNd.html)    |
-| `LinearOperator[T: scalar]` | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
-| `SuperLU[T: inexact]`       | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.SuperLU.html)        |
+| generic type                          | `scipy-stubs` | `scipy`  |                                                                                                      |
+| ------------------------------------- | ------------- | -------- | ---------------------------------------------------------------------------------------------------- |
+| `LaplacianNd[T: real]`                | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LaplacianNd.html)    |
+| `LinearOperator[T: scalar]`           | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
+| `dopc[T: scalar, S: (int, int, ...)]` | `>=1.18.0.0`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.LinearOperator.html) |
+| `SuperLU[T: inexact]`                 | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.SuperLU.html)        |
 
 ### `scipy.spatial.transform`
 
@@ -282,7 +278,7 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | `Covariance[T: real]`                                                          | `>=1.14.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Covariance.html)                     |
 | `Uniform[S: (int, ...), T: floating]`                                          | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Uniform.html)                        |
 | `Normal[S: (int, ...), T: floating]`                                           | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Normal.html)                         |
-| `Binomial[S: (int, ...), T: floating]`                                         | `>=1.16.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Binomial.html)                       |
+| `Binomial[S: (int, ...)]`                                                      | `>=1.16.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Binomial.html)                       |
 | `Mixture[T: floating]`                                                         | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.Mixture.html)                        |
 | `rv_frozen[D: rv_generic, T: scalar or array]`                                 | `>=1.14.0.0`  | `>=1.17` |                                                                                                              |
 | `multi_rv_frozen[D: rv_generic]`                                               | `>=1.14.0.0`  | `>=1.17` |                                                                                                              |
@@ -291,13 +287,15 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | `FitResult[F: (float, *) -> f64]`                                              | `>=1.15.0.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.FitResult.html)      |
 | `DunnettResult[T: f64 \| ld]`                                                  | `>=1.17.1.4`  | `>=1.18` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.DunnettResult.html)  |
 | `PearsonRResult[T: floating scalar/array, P: f64 scalar/array]`                | `>=1.14.1.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.PearsonRResult.html) |
-| `TtestResult[T: floating scalar/array]`                                        | `>=1.14.1.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.TtestResult.html)    |
+| `TtestResult[T: floating scalar/array, D: real scalar/array = T]`              | `>=1.14.1.0`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats._result_classes.TtestResult.html)    |
 
 #### `scipy.stats.contingency`
 
 | generic type                           | `scipy-stubs` | `scipy` |                                                                                                |
 | -------------------------------------- | ------------- | ------- | ---------------------------------------------------------------------------------------------- |
 | `Chi2ContingencyResult[S: (int, ...)]` | `>=1.17.1.2`  | `*`     | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html) |
+
+</details>
 
 ## Contributing
 
@@ -319,6 +317,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 
 `scipy-stubs` is used by a number of major open-source projects, including:
 
+[Agents](https://github.com/livekit/agents) |
 Apache Spark ([PySpark](https://github.com/apache/spark)) |
 [Artisan](https://github.com/artisan-roaster-scope/artisan) |
 [Arviz](https://github.com/arviz-devs/arviz) |
@@ -374,7 +373,9 @@ PyMC ([PyTensor](https://github.com/pymc-devs/pytensor)) |
 [python-hvac](https://github.com/TomLXXVI/python-hvac) |
 [radioactivedecay](https://github.com/radioactivedecay/radioactivedecay) |
 [scikit-fingerprints](https://github.com/scikit-fingerprints/scikit-fingerprints) |
+[scqubits](https://github.com/scqubits/scqubits) |
 scverse ([PyDESeq2](https://github.com/scverse/PyDESeq2), [scanpy](https://github.com/scverse/scanpy)) |
+[seaborn](https://github.com/mwaskom/seaborn) |
 [SeQUeNCe](https://github.com/sequence-toolbox/SeQUeNCe) |
 [Skore](https://github.com/probabl-ai/skore) |
 [Splipy](https://github.com/SINTEF/Splipy) |

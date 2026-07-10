@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import Concatenate, Final, Literal, LiteralString, Protocol, TypeAlias, TypeVar, TypedDict, overload, type_check_only
+from typing import Concatenate, Final, Literal, LiteralString, Protocol, TypeVar, TypedDict, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -9,36 +9,32 @@ from numpy_typing_compat import ABCPolyBase
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
+from scipy.sparse import csr_array
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["minimize", "minimize_scalar"]
 
 ###
 
-_T = TypeVar("_T")
-_Float1DT = TypeVar("_Float1DT", bound=_Float1D)
+type _Tuple2[T] = tuple[T, T]
+type _Tuple3[T] = tuple[T, T, T]
+type _Args = tuple[object, ...]
 
-_Tuple2: TypeAlias = tuple[_T, _T]
-_Tuple3: TypeAlias = tuple[_T, _T, _T]
-_Args: TypeAlias = tuple[object, ...]
+type _Floating = float | npc.floating
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
 
-_Floating: TypeAlias = float | npc.floating
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-
-_RT = TypeVar("_RT")
 # NOTE: `ABCPolyBase` is required to work around https://github.com/scipy/scipy-stubs/issues/465
-_Fun0D: TypeAlias = Callable[Concatenate[float, ...], _RT] | Callable[Concatenate[np.float64, ...], _RT] | ABCPolyBase
-_Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], _RT]
-_Fun1Dp: TypeAlias = Callable[Concatenate[_Float1D, _Float1D, ...], _RT]
+type _Fun0D[RT] = Callable[Concatenate[float, ...], RT] | Callable[Concatenate[np.float64, ...], RT] | ABCPolyBase
+type _Fun1D[RT] = Callable[Concatenate[_Float1D, ...], RT]
+type _Fun1Dp[RT] = Callable[Concatenate[_Float1D, _Float1D, ...], RT]
 
-_FDMethod: TypeAlias = Literal["2-point", "3-point", "cs"]
+type _FDMethod = Literal["2-point", "3-point", "cs"]
 
-_ToBracket: TypeAlias = _Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat]
-_ToBound: TypeAlias = _Tuple2[onp.ToFloat]
-_Ignored: TypeAlias = object
+type _ToBracket = _Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat]
+type _ToBound = _Tuple2[onp.ToFloat]
+type _Ignored = object
 
-_MinimizeScalarResultT = TypeVar("_MinimizeScalarResultT", bound=_MinimizeScalarResultBase)
 _MinimizeScalarResultT_co = TypeVar("_MinimizeScalarResultT_co", bound=_MinimizeScalarResultBase, covariant=True)
 
 @type_check_only
@@ -168,7 +164,7 @@ MINIMIZE_METHODS: Final[list[MethodMimimize]] = ...
 MINIMIZE_METHODS_NEW_CB: Final[list[MethodMimimize]] = ...
 MINIMIZE_SCALAR_METHODS: Final[list[MethodMinimizeScalar]] = ...
 
-# NOTE: This `OptimizeResult` "flavor" is specific to `minimize`
+# NOTE: This `OptimizeResult` specialization is specific to `minimize`
 class OptimizeResult(_OptimizeResult):
     success: bool
     status: int
@@ -178,15 +174,15 @@ class OptimizeResult(_OptimizeResult):
     maxcv: float  # requires `bounds`
     fun: float
     nfev: int
-    jac: _Float1D  # requires `jac`
+    jac: _Float1D | Sequence[_Float2D | csr_array[np.float32]]  # is a list when method="trust-constr"
     njev: int  # requires `jac`
     hess: _Float2D  # requires `hess` or `hessp`
     hess_inv: _Float2D | LinearOperator  # requires `hess` or `hessp`, depends on solver
     nhev: int  # requires `hess` or `hessp`
 
 @overload  # identity function with and one parameter, `jac` not truthy
-def minimize(
-    fun: Callable[Concatenate[_Float1DT, ...], _Float1DT],
+def minimize[Float1DT: _Float1D](
+    fun: Callable[Concatenate[Float1DT, ...], Float1DT],
     x0: onp.ToFloat,
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
@@ -279,26 +275,26 @@ def minimize_scalar(
     options: _MinimizeScalarOptionsBounded | None = None,
 ) -> _MinimizeScalarResult: ...
 @overload  # method=<custom>  (positional)
-def minimize_scalar(
+def minimize_scalar[ResultT: _MinimizeScalarResultBase](
     fun: _Fun0D[onp.ToFloat],
     bracket: _ToBracket | None,
     bounds: _ToBound | None,
     args: _Args,
-    method: _MinimizeScalarMethodFun[_MinimizeScalarResultT],
+    method: _MinimizeScalarMethodFun[ResultT],
     tol: onp.ToFloat | None = None,
     options: Mapping[str, object] | None = None,
-) -> _MinimizeScalarResultT: ...
+) -> ResultT: ...
 @overload  # method=<custom>  (keyword)
-def minimize_scalar(
+def minimize_scalar[ResultT: _MinimizeScalarResultBase](
     fun: _Fun0D[onp.ToFloat],
     bracket: _ToBracket | None = None,
     bounds: _ToBound | None = None,
     args: _Args = (),
     *,
-    method: _MinimizeScalarMethodFun[_MinimizeScalarResultT],
+    method: _MinimizeScalarMethodFun[ResultT],
     tol: onp.ToFloat | None = None,
     options: Mapping[str, object] | None = None,
-) -> _MinimizeScalarResultT: ...
+) -> ResultT: ...
 
 # undocumented
 def standardize_bounds(bounds: Bounds, x0: onp.ToFloat1D, meth: MethodMimimize) -> Bounds | list[Bound]: ...

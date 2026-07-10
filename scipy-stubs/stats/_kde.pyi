@@ -1,5 +1,6 @@
 from collections.abc import Callable
-from typing import Any, Final, Generic, Literal, Self, TypeAlias, overload
+from types import GenericAlias
+from typing import Any, Final, Generic, Literal, Self, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -10,15 +11,15 @@ __all__ = ["gaussian_kde"]
 
 ###
 
+type _co_integer = npc.integer | np.bool  # noqa: PYI042
+
+type _ToFloatMax1D = onp.ToFloat | onp.ToFloat1D
+type _ToFloatMax2D = _ToFloatMax1D | onp.ToFloat2D
+
+type _BWMethod = Literal["scott", "silverman"] | onp.ToFloat | Callable[[gaussian_kde], onp.ToFloat]
+
 _FloatingT = TypeVar("_FloatingT", bound=npc.floating)
 _FloatingT_co = TypeVar("_FloatingT_co", bound=npc.floating, default=np.float64, covariant=True)
-
-_co_integer: TypeAlias = npc.integer | np.bool_  # noqa: PYI042
-
-_ToFloatMax1D: TypeAlias = onp.ToFloat | onp.ToFloat1D
-_ToFloatMax2D: TypeAlias = _ToFloatMax1D | onp.ToFloat2D
-
-_BWMethod: TypeAlias = Literal["scott", "silverman"] | onp.ToFloat | Callable[[gaussian_kde], onp.ToFloat]
 
 ###
 
@@ -29,6 +30,10 @@ class gaussian_kde(Generic[_FloatingT_co]):
     d: Final[int]
     n: Final[int]
 
+    @classmethod
+    def __class_getitem__(cls, arg: object | type, /) -> GenericAlias: ...
+
+    #
     @property
     def weights(self, /) -> onp.Array1D[np.float64]: ...
     @property

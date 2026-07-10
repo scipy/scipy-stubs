@@ -1,6 +1,6 @@
 # type-tests for `linalg/_expm_frechet.pyi`
 
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -15,7 +15,7 @@ f64_3d: onp.Array3D[np.float64]
 f64_nd: onp.ArrayND[np.float64]
 c128_2d: onp.Array2D[np.complex128]
 
-_FreoResult: TypeAlias = (
+type _FreoResult = (
     tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
     | tuple[onp.ArrayND[np.float64] | onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]
 )

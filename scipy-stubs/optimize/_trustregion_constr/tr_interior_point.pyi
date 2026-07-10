@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Literal, TypeVar
+from typing import Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -7,11 +7,7 @@ import optype.numpy.compat as npc
 
 __all__ = ["tr_interior_point"]
 
-_StateT = TypeVar("_StateT")
-
-###
-
-def tr_interior_point(
+def tr_interior_point[StateT](
     fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat],
     grad: Callable[[onp.Array1D[np.float64]], onp.ToFloat1D],
     lagr_hess: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat2D],
@@ -29,7 +25,7 @@ def tr_interior_point(
     jac_eq0: onp.ToArray2D,
     stop_criteria: Callable[
         [
-            _StateT,  # state
+            StateT,  # state
             onp.Array1D[np.float64],  # x
             bool,  # last_iteration_failed
             np.float64,  # optimality
@@ -42,11 +38,11 @@ def tr_interior_point(
     ],
     enforce_feasibility: onp.ToArray1D,
     xtol: float,
-    state: _StateT,
+    state: StateT,
     initial_barrier_parameter: float,
     initial_tolerance: float,
     initial_penalty: onp.ToFloat,
     initial_trust_radius: onp.ToFloat,
     factorization_method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"],
     finite_diff_bounds: tuple[onp.ToFloat1D, onp.ToFloat1D],
-) -> tuple[onp.Array1D[npc.floating], _StateT]: ...
+) -> tuple[onp.Array1D[npc.floating], StateT]: ...

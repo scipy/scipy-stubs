@@ -1,8 +1,9 @@
 from collections.abc import Sequence
-from typing import Final, Literal, Never, TypeAlias, override
+from typing import Final, Literal, Never, overload, override
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = [
     "BivariateSpline",
@@ -17,31 +18,24 @@ __all__ = [
     "UnivariateSpline",
 ]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
+type _Float1D = onp.Array1D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
 
-_Degree: TypeAlias = Literal[1, 2, 3, 4, 5]
+type _Degree = Literal[1, 2, 3, 4, 5]
 
-_ExtInt: TypeAlias = Literal[0, 1, 2, 3]
-_ExtStr: TypeAlias = Literal["extrapolate", "zeros", "raise", "const"]
-_Ext: TypeAlias = _ExtInt | _ExtStr
+type _ExtInt = Literal[0, 1, 2, 3]
+type _ExtStr = Literal["extrapolate", "zeros", "raise", "const"]
+type _Ext = _ExtInt | _ExtStr
 
-_ToBBox: TypeAlias = Sequence[onp.ToFloat | None]
+type _ToBBox = Sequence[onp.ToFloat | None]
 
 ###
 
+# pyright reports a false positive `reportOverlappingOverload` error on numpy<2.1
+# pyright: reportOverlappingOverload=false
+
 class UnivariateSpline:
-    @staticmethod
-    def validate_input(
-        x: onp.ToFloat1D,
-        y: onp.ToFloat1D,
-        w: onp.ToFloat1D,
-        bbox: _ToBBox,
-        k: _Degree,
-        s: float | None,
-        ext: _Ext,
-        check_finite: bool,
-    ) -> tuple[_Float1D, _Float1D, _Float1D, _Float1D, _ExtInt]: ...
+    ext: int
 
     # at runtime the `__init__` might change the `__class__` attribute...
     def __init__(
@@ -56,7 +50,20 @@ class UnivariateSpline:
         ext: _Ext = 0,
         check_finite: bool = False,
     ) -> None: ...
-    def __call__(self, /, x: onp.ToFloat1D, nu: int = 0, ext: _Ext | None = None) -> _Float1D: ...
+
+    #
+    @overload  # 1d
+    def __call__(self, /, x: onp.ToFloatStrict1D, nu: int = 0, ext: _Ext | None = None) -> onp.Array1D[np.float64]: ...
+    @overload  # 2d
+    def __call__(self, /, x: onp.ToFloatStrict2D, nu: int = 0, ext: _Ext | None = None) -> onp.Array2D[np.float64]: ...
+    @overload  # 3d
+    def __call__(self, /, x: onp.ToFloatStrict3D, nu: int = 0, ext: _Ext | None = None) -> onp.Array3D[np.float64]: ...
+    @overload  # known shape
+    def __call__[ShapeT: tuple[int, ...]](
+        self, /, x: onp.ArrayND[npc.floating | npc.integer, ShapeT], nu: int = 0, ext: _Ext | None = None
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
+    @overload  # ?d
+    def __call__(self, /, x: onp.ToFloatND, nu: int = 0, ext: _Ext | None = None) -> onp.ArrayND[np.float64]: ...
 
     #
     def get_knots(self, /) -> _Float1D: ...
@@ -70,6 +77,19 @@ class UnivariateSpline:
     def derivative(self, /, n: int = 1) -> UnivariateSpline: ...
     def antiderivative(self, /, n: int = 1) -> UnivariateSpline: ...
     def integral(self, /, a: onp.ToFloat, b: onp.ToFloat) -> float: ...
+
+    #
+    @staticmethod
+    def validate_input(
+        x: onp.ToFloat1D,
+        y: onp.ToFloat1D,
+        w: onp.ToFloat1D,
+        bbox: _ToBBox,
+        k: _Degree,
+        s: float | None,
+        ext: _Ext,
+        check_finite: bool,
+    ) -> tuple[_Float1D, _Float1D, _Float1D, _Float1D, _ExtInt]: ...
 
 class InterpolatedUnivariateSpline(UnivariateSpline):
     def __init__(
@@ -99,7 +119,16 @@ class LSQUnivariateSpline(UnivariateSpline):
     ) -> None: ...
 
 class _BivariateSplineBase:  # undocumented
-    def __call__(self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, grid: bool = True) -> _Float1D: ...
+    @overload  # grid=True  (default)
+    def __call__(
+        self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, grid: Literal[True] = True
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # grid=False
+    def __call__(
+        self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, *, grid: Literal[False]
+    ) -> onp.Array1D[np.float64]: ...
+
+    #
     def get_residual(self, /) -> float: ...
     def get_knots(self, /) -> tuple[_Float1D, _Float1D]: ...
     def get_coeffs(self, /) -> _Float1D: ...

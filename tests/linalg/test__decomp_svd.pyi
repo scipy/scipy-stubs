@@ -11,7 +11,7 @@ _py_i_2d: list[list[int]]
 _py_f_2d: list[list[float]]
 _py_c_2d: list[list[complex]]
 
-_bool_nd: onp.ArrayND[np.bool_]
+_bool_nd: onp.ArrayND[np.bool]
 _i8_nd: onp.ArrayND[np.int8]
 _i16_nd: onp.ArrayND[np.int16]
 _i32_nd: onp.ArrayND[np.int32]
@@ -69,7 +69,7 @@ assert_type(svdvals(_py_c_2d), onp.ArrayND[np.float64])
 
 assert_type(diagsvd(_f64_nd, 3, 4), onp.ArrayND[np.float64])
 assert_type(diagsvd(_f32_nd, 3, 4), onp.ArrayND[np.float32])
-assert_type(diagsvd([True, False], 2, 3), onp.ArrayND[np.bool_])  # type: ignore[assert-type]  # mypy bug
+assert_type(diagsvd([True, False], 2, 3), onp.ArrayND[np.bool])  # type: ignore[assert-type]  # mypy bug
 assert_type(diagsvd([1, 2], 2, 3), onp.ArrayND[np.intp])  # type: ignore[assert-type]  # mypy bug
 assert_type(diagsvd([1.0, 2.0], 2, 3), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
 

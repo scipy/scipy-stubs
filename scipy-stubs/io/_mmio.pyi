@@ -1,5 +1,7 @@
-from typing import Any, ClassVar, Literal, TypeAlias, TypedDict, Unpack, overload, type_check_only
+from typing import Any, ClassVar, Literal, TypedDict, Unpack, overload, type_check_only
+from typing_extensions import deprecated
 
+import optype as op
 import optype.numpy as onp
 
 from ._fast_matrix_market import mminfo, mmread, mmwrite
@@ -8,10 +10,14 @@ from scipy.sparse import coo_array, coo_matrix, sparray, spmatrix
 
 __all__ = ["MMFile", "mminfo", "mmread", "mmwrite"]
 
-_Format: TypeAlias = Literal["coordinate", "array"]
-_Field: TypeAlias = Literal["real", "complex", "pattern", "integer"]
-_Symmetry: TypeAlias = Literal["general", "symmetric", "skew-symmetric", "hermitian"]
-_Info: TypeAlias = tuple[int, int, int, _Format, _Field, _Symmetry]
+###
+
+type _Format = Literal["coordinate", "array"]
+type _Field = Literal["real", "complex", "pattern", "integer"]
+type _Symmetry = Literal["general", "symmetric", "skew-symmetric", "hermitian"]
+type _Info = tuple[int, int, int, _Format, _Field, _Symmetry]
+
+type _NoValueType = op.JustObject
 
 @type_check_only
 class _MMFileKwargs(TypedDict, total=False):
@@ -66,7 +72,10 @@ class MMFile:
 
     # dtype is either intp, uint64, float64, or complex128, depending on the field
     @overload
-    def read(self, /, source: FileLike[bytes], *, spmatrix: Literal[True] = True) -> onp.Array2D[Any] | coo_matrix[Any]: ...
+    @deprecated("The default value for `spmatrix` is changing to False in v1.20.")
+    def read(self, /, source: FileLike[bytes], *, spmatrix: _NoValueType = ...) -> onp.Array2D[Any] | coo_matrix[Any]: ...
+    @overload
+    def read(self, /, source: FileLike[bytes], *, spmatrix: Literal[True]) -> onp.Array2D[Any] | coo_matrix[Any]: ...
     @overload
     def read(
         self, /, source: FileLike[bytes], *, spmatrix: Literal[False]

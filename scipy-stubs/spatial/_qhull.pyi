@@ -1,5 +1,5 @@
-from typing import Never, Protocol, TypeAlias, final, overload, type_check_only
-from typing_extensions import TypeVar
+from typing import Never, Protocol, final, overload, type_check_only
+from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype.numpy as onp
@@ -12,11 +12,11 @@ __all__ = ["ConvexHull", "Delaunay", "HalfspaceIntersection", "QhullError", "Vor
 # on numpy<2.1 pyright reports false positive incompatible overload errors for `plane_distance` and `lift_points` in `Delaunay`
 # pyright: reportOverlappingOverload=false
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-
 # workaround for type-checkers that don't comply to the overload spec
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
-_ToArrayStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
+type _JustAnyShape = tuple[Never, Never, Never, Never]
+type _ToArrayStrictND = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
+
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 
 @type_check_only
 class DelaunayInfo_t(Protocol):
@@ -130,7 +130,6 @@ class Delaunay(_QhullUser):
     coplanar: onp.Array2D[np.int32]
     good: onp.Array1D[np.int32]
     nsimplex: int
-    vertices: onp.Array2D[np.float64]
 
     @property
     def points(self, /) -> onp.Array2D[np.float64]: ...
@@ -188,7 +187,7 @@ class ConvexHull(_QhullUser):
     neighbors: onp.Array2D[np.int32]
     equations: onp.Array2D[np.float64]
     coplanar: onp.Array2D[np.int32]
-    good: onp.Array1D[np.bool_] | None
+    good: onp.Array1D[np.bool] | None
     volume: float
     area: float
     nsimplex: int
@@ -196,7 +195,7 @@ class ConvexHull(_QhullUser):
     @property
     def points(self, /) -> onp.Array2D[np.float64]: ...
     @property
-    def vertices(self, /) -> onp.Array2D[np.int32]: ...
+    def vertices(self, /) -> onp.Array1D[np.int32]: ...
 
     #
     def __init__(self, /, points: onp.ToFloat2D, incremental: bool = False, qhull_options: str | None = None) -> None: ...
@@ -235,7 +234,7 @@ class HalfspaceIntersection(_QhullUser):
     @property
     def halfspaces(self, /) -> onp.Array2D[np.float64]: ...
     @property
-    def dual_vertices(self, /) -> onp.Array1D[np.int32]: ...
+    def dual_vertices(self, /) -> onp.Array1D[np.int_]: ...
 
     #
     def __init__(
@@ -248,14 +247,18 @@ class HalfspaceIntersection(_QhullUser):
     ) -> None: ...
     def add_halfspaces(self, /, halfspaces: onp.ToFloat2D, restart: bool = False) -> None: ...
 
-# same as `tri.find_simplex(xi)`
 @overload
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
 def tsearch(tri: Delaunay, xi: _ToArrayStrictND) -> onp.ArrayND[np.int32]: ...
 @overload
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatStrict1D) -> onp.Array0D[np.int32]: ...
 @overload
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatStrict2D) -> onp.Array1D[np.int32]: ...
 @overload
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatStrict3D) -> onp.Array2D[np.int32]: ...
 @overload
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatND) -> onp.ArrayND[np.int32]: ...

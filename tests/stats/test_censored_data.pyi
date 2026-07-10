@@ -1,4 +1,4 @@
-from typing import TypeAlias, TypeVar, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -7,11 +7,9 @@ from scipy.stats import CensoredData
 
 ###
 
-_ScalarT = TypeVar("_ScalarT", bound=np.float64 | np.complex128)
-
-_LeftCensored: TypeAlias = CensoredData[_ScalarT, _ScalarT, np.float64, np.float64]
-_RightCensored: TypeAlias = CensoredData[_ScalarT, np.float64, _ScalarT, np.float64]
-_IntervalCensored: TypeAlias = CensoredData[_ScalarT, np.float64, np.float64, _ScalarT]
+type _LeftCensored[ScalarT: np.float64 | np.complex128] = CensoredData[ScalarT, ScalarT, np.float64, np.float64]
+type _RightCensored[ScalarT: np.float64 | np.complex128] = CensoredData[ScalarT, np.float64, ScalarT, np.float64]
+type _IntervalCensored[ScalarT: np.float64 | np.complex128] = CensoredData[ScalarT, np.float64, np.float64, ScalarT]
 
 ###
 

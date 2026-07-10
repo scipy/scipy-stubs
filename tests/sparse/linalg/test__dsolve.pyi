@@ -60,7 +60,7 @@ assert_type(solve_c64(b_c64), onp.Array1D[np.complex64])
 assert_type(solve_c64(b_c64_2d), onp.Array2D[np.complex64])
 
 # spsolve
-assert_type(spsolve(f64_mat, b_sparse), csc_array[np.float64])
+assert_type(spsolve(b_sparse, bsr_), csc_array[np.float64])
 assert_type(spsolve(f64_mat, b_f), onp.Array1D[np.float64])
 assert_type(spsolve(f64_mat, b_f2d), onp.Array2D[np.float64])
 assert_type(spsolve(c128_mat, b_c), onp.Array1D[np.complex128])

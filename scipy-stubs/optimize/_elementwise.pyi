@@ -22,7 +22,7 @@ class _Tolerances(TypedDict, total=False):
 @type_check_only
 @final
 class _FindResult(_RichResult, Generic[_ShapeT_co]):
-    success: onp.ArrayND[np.bool_, _ShapeT_co]
+    success: onp.ArrayND[np.bool, _ShapeT_co]
     status: onp.ArrayND[np.int32, _ShapeT_co]
     x: onp.ArrayND[np.float64, _ShapeT_co]
     f_x: onp.ArrayND[np.float64, _ShapeT_co]
@@ -35,7 +35,7 @@ class _FindResult(_RichResult, Generic[_ShapeT_co]):
 @type_check_only
 @final
 class _BracketResult(_RichResult, Generic[_ShapeT_co]):
-    success: onp.ArrayND[np.bool_, _ShapeT_co]
+    success: onp.ArrayND[np.bool, _ShapeT_co]
     status: onp.ArrayND[np.int32, _ShapeT_co]
     bracket: _Bracket[onp.ArrayND[np.float64, _ShapeT_co]]
     f_bracket: _Bracket[onp.ArrayND[np.float64, _ShapeT_co]]

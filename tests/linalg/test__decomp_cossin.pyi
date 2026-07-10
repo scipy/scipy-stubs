@@ -1,6 +1,6 @@
 # type-tests for `linalg/_decomp_cossin.pyi`
 
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -8,9 +8,11 @@ import optype.numpy.compat as npc
 
 from scipy.linalg import cossin
 
-_Float1D: TypeAlias = onp.Array1D[npc.floating]
-_Float2D: TypeAlias = onp.Array2D[npc.floating]
-_Inexact2D: TypeAlias = onp.Array2D[npc.inexact]
+###
+
+type _Float1D = onp.Array1D[npc.floating]
+type _Float2D = onp.Array2D[npc.floating]
+type _Inexact2D = onp.Array2D[npc.inexact]
 
 ###
 

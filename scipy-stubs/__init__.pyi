@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Final, Literal, TypeAlias
+from typing import Final, Literal
 
 from numpy import __version__ as __numpy_version__  # noqa: ICN003
 
@@ -53,7 +53,7 @@ __all__ = [
 
 ###
 
-_SubModule: TypeAlias = Literal[
+type _SubModule = Literal[
     "cluster",
     "constants",
     "datasets",

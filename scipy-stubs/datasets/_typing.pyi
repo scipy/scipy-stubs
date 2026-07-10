@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Literal as L, LiteralString, Protocol, TypeAlias, overload, type_check_only
+from typing import Literal as L, LiteralString, Protocol, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -10,15 +10,16 @@ __all__ = "AscentDataset", "CanFetch", "Dataset", "ECGDataset", "Face2Dataset", 
 class CanFetch(Protocol):
     def fetch(self, dataset_name: LiteralString, /) -> LiteralString: ...
 
-AscentDataset: TypeAlias = onp.Array2D[np.uint8]
-ECGDataset: TypeAlias = onp.Array1D[np.float64]
-Face2Dataset: TypeAlias = onp.Array2D[np.uint8]
-Face3Dataset: TypeAlias = onp.Array3D[np.uint8]
-_FaceDataset: TypeAlias = Face2Dataset | Face3Dataset
-Dataset: TypeAlias = AscentDataset | ECGDataset | _FaceDataset
+type AscentDataset = onp.Array2D[np.uint8]
+type ECGDataset = onp.Array1D[np.float64]
+type Face2Dataset = onp.Array2D[np.uint8]
+type Face3Dataset = onp.Array3D[np.uint8]
+type _FaceDataset = Face2Dataset | Face3Dataset
+type Dataset = AscentDataset | ECGDataset | _FaceDataset
 
-_AscentFetcher: TypeAlias = Callable[[], AscentDataset]
-_ECGFetcher: TypeAlias = Callable[[], ECGDataset]
+type _AscentFetcher = Callable[[], AscentDataset]
+type _ECGFetcher = Callable[[], ECGDataset]
+type Fetcher = _AscentFetcher | _ECGFetcher | _FaceFetcher
 
 @type_check_only
 class _FaceFetcher(Protocol):
@@ -26,5 +27,3 @@ class _FaceFetcher(Protocol):
     def __call__(self, /, gray: L[True, 1]) -> Face2Dataset: ...
     @overload
     def __call__(self, /, gray: L[False, 0] = False) -> Face3Dataset: ...
-
-Fetcher: TypeAlias = _AscentFetcher | _ECGFetcher | _FaceFetcher

@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, TypeAlias, overload
+from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -22,14 +22,17 @@ __all__ = [
     "tukey_hsd",
 ]
 
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
-_FloatOrND: TypeAlias = float | _FloatND
-_FloatOrNDT = TypeVar("_FloatOrNDT", bound=_FloatOrND, default=Any)
+###
 
-_ToCDF: TypeAlias = str | Callable[Concatenate[float, ...], float | np.float32]
-_ToCDFArgs: TypeAlias = tuple[onp.ToFloat, ...]
-_CV2Method: TypeAlias = Literal["auto", "asymptotic", "exact"]
+type _Float2D = onp.Array2D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
+type _FloatOrND = float | _FloatND
+
+type _ToCDF = str | Callable[Concatenate[float, ...], float | np.float32]
+type _ToCDFArgs = tuple[onp.ToFloat, ...]
+type _CV2Method = Literal["auto", "asymptotic", "exact"]
+
+_FloatOrNDT = TypeVar("_FloatOrNDT", bound=_FloatOrND, default=Any)
 
 ###
 
@@ -176,7 +179,7 @@ def poisson_means_test(
 class SomersDResult:
     statistic: Final[float]
     pvalue: Final[float]
-    table: Final[_Float2D]
+    table: Final[onp.Array2D[np.int_]]
 
 def somersd(
     x: onp.ToFloat1D | onp.ToFloat2D, y: onp.ToFloat1D | None = None, alternative: Alternative = "two-sided"
@@ -212,6 +215,6 @@ class TukeyHSDResult:
     #
     _ci: ConfidenceInterval | None
     _ci_cl: float | None
-    def confidence_interval(self, /, confidence_level: op.JustFloat | np.float64 = 0.95) -> ConfidenceInterval: ...
+    def confidence_interval(self, /, confidence_level: op.JustFloat | np.float64 = 0.95) -> ConfidenceInterval[_Float2D]: ...
 
 def tukey_hsd(arg0: onp.ToFloatND, arg1: onp.ToFloatND, /, *args: onp.ToFloatND, equal_var: bool = True) -> TukeyHSDResult: ...

@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable, Iterator
-from typing import Concatenate, Final, Generic, Literal, Protocol, TypeAlias, TypedDict, overload, type_check_only
+from typing import Concatenate, Final, Generic, Literal, Protocol, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -12,46 +12,45 @@ from scipy._lib._ccallback import LowLevelCallable
 
 __all__ = ["IntegrationWarning", "dblquad", "nquad", "quad", "tplquad"]
 
-_T = TypeVar("_T")
 _T_co = TypeVar("_T_co", covariant=True)
 _T_f_contra = TypeVar("_T_f_contra", contravariant=True, default=float)
 _BT_co = TypeVar("_BT_co", bound=bool, covariant=True, default=bool)
 
 # NOTE: Technically `integer[Any]` and `bool_` are also allowed, but there's no valid usecase for that.
-_IntLike: TypeAlias = int | npc.integer
-_FloatLike: TypeAlias = float | npc.floating
-_ComplexLike: TypeAlias = complex | npc.inexact
+type _IntLike = int | npc.integer
+type _FloatLike = float | npc.floating
+type _ComplexLike = complex | npc.inexact
 
 # NOTE: Technically allowing `x: float64` here is type-unsafe. But in practice that isn't likely to be a problem at all.
-_QuadFunc10: TypeAlias = Callable[[float], _T] | Callable[[np.float64], _T] | LowLevelCallable
-_QuadFunc1N: TypeAlias = Callable[Concatenate[float, ...], _T] | Callable[Concatenate[np.float64, ...], _T] | LowLevelCallable
+type _QuadFunc10[_T] = Callable[[float], _T] | Callable[[np.float64], _T] | LowLevelCallable
+type _QuadFunc1N[_T] = Callable[Concatenate[float, ...], _T] | Callable[Concatenate[np.float64, ...], _T] | LowLevelCallable
 
-_QuadFunc20: TypeAlias = Callable[[float, float], _FloatLike] | Callable[[np.float64, np.float64], _FloatLike] | LowLevelCallable
-_QuadFunc2N: TypeAlias = (
+type _QuadFunc20 = Callable[[float, float], _FloatLike] | Callable[[np.float64, np.float64], _FloatLike] | LowLevelCallable
+type _QuadFunc2N = (
     Callable[Concatenate[float, float, ...], _FloatLike]
     | Callable[Concatenate[np.float64, np.float64, ...], _FloatLike]
     | LowLevelCallable
 )  # fmt: skip
 
-_QuadFunc30: TypeAlias = (
+type _QuadFunc30 = (
     Callable[[float, float, float], _FloatLike]
     | Callable[[np.float64, np.float64, np.float64], _FloatLike]
     | LowLevelCallable
 )  # fmt: skip
-_QuadFunc3N: TypeAlias = (
+type _QuadFunc3N = (
     Callable[Concatenate[float, float, float, ...], _FloatLike]
     | Callable[Concatenate[np.float64, np.float64, np.float64, ...], _FloatLike]
     | LowLevelCallable
 )  # fmt: skip
 
-_QuadFuncN: TypeAlias = (
+type _QuadFuncN = (
     Callable[Concatenate[float, ...], _FloatLike]
     | Callable[Concatenate[np.float64, ...], _FloatLike]
     | LowLevelCallable
 )  # fmt: skip
 
-_GHFunc: TypeAlias = _FloatLike | Callable[[float], _FloatLike] | Callable[[np.float64], _FloatLike]
-_QRFunc: TypeAlias = _FloatLike | Callable[[float, float], _FloatLike] | Callable[[np.float64, np.float64], _FloatLike]
+type _GHFunc = _FloatLike | Callable[[float], _FloatLike] | Callable[[np.float64], _FloatLike]
+type _QRFunc = _FloatLike | Callable[[float, float], _FloatLike] | Callable[[np.float64, np.float64], _FloatLike]
 
 @type_check_only
 class _QuadOutput1C_1(TypedDict):
@@ -72,7 +71,7 @@ class _QuadOutput1C_3(TypedDict):
 class _QuadOutputNC(TypedDict):
     neval: int
 
-_QuadComplexFullOutput: TypeAlias = _QuadOutput1C_1 | _QuadOutput1C_2 | _QuadOutput1C_3
+type _QuadComplexFullOutput = _QuadOutput1C_1 | _QuadOutput1C_2 | _QuadOutput1C_3
 # pyrefly: ignore [invalid-argument]
 _QuadExplain = TypedDict("_QuadExplain", {0: str, 1: str, 2: str, 3: str, 4: str, 5: str})  # type: ignore[misc]  # pyright: ignore[reportGeneralTypeIssues]  # ty: ignore[invalid-argument-type]
 
@@ -81,8 +80,8 @@ class _CanLenAndIter(Protocol[_T_co]):
     def __len__(self, /) -> int: ...
     def __iter__(self, /) -> Iterator[_T_co]: ...
 
-_SizedIterable: TypeAlias = _CanLenAndIter[_T] | op.CanSequence[int, _T]
-_QuadRange: TypeAlias = _SizedIterable[float]
+type _SizedIterable[_T] = _CanLenAndIter[_T] | op.CanSequence[int, _T]
+type _QuadRange = _SizedIterable[float]
 _RangeT = TypeVar("_RangeT", bound=_QuadRange, default=_QuadRange)
 _RangeT_co = TypeVar("_RangeT_co", bound=_QuadRange, covariant=True, default=_QuadRange)
 

@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable
-from typing import Concatenate, Final, Literal, Protocol, TypeAlias, TypedDict, type_check_only
+from typing import Concatenate, Final, Literal, Protocol, TypedDict, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -11,18 +11,20 @@ from scipy.optimize._optimize import OptimizeResult as _OptimizeResult
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
-_StopCond: TypeAlias = Literal[0, 1, 2, 3, 4]
+###
 
-_Float: TypeAlias = float | np.float64
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
-_Sparse: TypeAlias = spmatrix | sparray
-_Matrix: TypeAlias = _Float2D | _Sparse
+type _StopCond = Literal[0, 1, 2, 3, 4]
 
-_HessPFunc: TypeAlias = Callable[Concatenate[_Float1D, _Float1D, ...], _Float1D]
-_ObjectiveHessFunc: TypeAlias = Callable[[_Float1D], _Matrix]
-_ConstraintsHessFunc: TypeAlias = Callable[[_Float1D, _Float1D, _Float1D], _Matrix]
+type _Float = float | np.float64
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
+type _Sparse = spmatrix | sparray
+type _Matrix = _Float2D | _Sparse
+
+type _HessPFunc = Callable[Concatenate[_Float1D, _Float1D, ...], _Float1D]
+type _ObjectiveHessFunc = Callable[[_Float1D], _Matrix]
+type _ConstraintsHessFunc = Callable[[_Float1D, _Float1D, _Float1D], _Matrix]
 
 @type_check_only
 class _CGInfo(TypedDict):

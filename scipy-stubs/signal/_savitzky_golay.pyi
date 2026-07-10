@@ -1,7 +1,7 @@
 from _typeshed import Incomplete
 from collections.abc import Sequence
 from types import ModuleType
-from typing import Any, Literal, TypeAlias, TypeVar, overload
+from typing import Any, Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -9,12 +9,10 @@ import optype.numpy.compat as npc
 
 ###
 
-# we use `tuple[Any, ...]` instead of `tuple[int, ...]` here to work around bugs in both mypy and pyright (sigh...)
-_ShapeT = TypeVar("_ShapeT", bound=tuple[Any, ...])
+type _Mode = Literal["mirror", "constant", "nearest", "wrap", "interp"]
 
-_Mode: TypeAlias = Literal["mirror", "constant", "nearest", "wrap", "interp"]
 # savgol_filter casts everything except for `float32` to `float64` (kinda weird, but ok)
-_ToFloat64Savgol: TypeAlias = npc.floating64 | npc.floating16 | npc.floating80 | npc.integer | np.bool_
+type _ToFloat64Savgol = npc.floating64 | npc.floating16 | npc.floating80 | npc.integer | np.bool
 
 ###
 
@@ -51,8 +49,8 @@ def savgol_coeffs(
 
 #
 @overload  # f64, shape known
-def savgol_filter(
-    x: onp.ArrayND[_ToFloat64Savgol, _ShapeT],
+def savgol_filter[ShapeT: tuple[Any, ...]](
+    x: onp.ArrayND[_ToFloat64Savgol, ShapeT],
     window_length: int,
     polyorder: int,
     deriv: int = 0,
@@ -60,7 +58,7 @@ def savgol_filter(
     axis: int = -1,
     mode: _Mode = "interp",
     cval: float = 0.0,
-) -> onp.ArrayND[np.float64, _ShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # float, 1d
 def savgol_filter(
     x: Sequence[float],
@@ -106,8 +104,8 @@ def savgol_filter(
     cval: float = 0.0,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # f32, shape known
-def savgol_filter(
-    x: onp.ArrayND[npc.floating32, _ShapeT],
+def savgol_filter[ShapeT: tuple[Any, ...]](
+    x: onp.ArrayND[npc.floating32, ShapeT],
     window_length: int,
     polyorder: int,
     deriv: int = 0,
@@ -115,7 +113,7 @@ def savgol_filter(
     axis: int = -1,
     mode: _Mode = "interp",
     cval: float = 0.0,
-) -> onp.ArrayND[np.float32, _ShapeT]: ...
+) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # f32, shape unknown
 def savgol_filter(
     x: onp.ToJustFloat32_ND,

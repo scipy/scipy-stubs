@@ -35,11 +35,7 @@ __all__ = [
     "upcast",
 ]
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=Any)
-_DTypeT = TypeVar("_DTypeT", bound=np.dtype[Any])
-_ScalarT = TypeVar("_ScalarT", bound=np.generic, default=Any)
-_IntT = TypeVar("_IntT", bound=npc.integer)
-_NonIntDTypeT = TypeVar("_NonIntDTypeT", bound=np.dtype[npc.inexact | np.flexible | np.datetime64 | np.timedelta64 | np.object_])
+###
 
 type _Axis = L[-2, -1, 0, 1] | npc.integer
 type _ShapeLike = Iterable[SupportsIndex]
@@ -50,6 +46,9 @@ type _MatrixLike = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array2D
 type _IntP = np.int32 | np.int64
 type _UIntP = np.uint32 | np.uint64
 
+_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=Any)
+_ScalarT = TypeVar("_ScalarT", bound=np.generic, default=Any)
+
 @type_check_only
 class _SizedIndexIterable(Protocol):
     def __len__(self, /) -> int: ...
@@ -57,12 +56,12 @@ class _SizedIndexIterable(Protocol):
 
 ###
 
-supported_dtypes: Final[list[type[npc.number | np.bool_]]] = ...
+supported_dtypes: Final[list[type[npc.number | np.bool]]] = ...
 
 #
 # NOTE: Technically any `numpy.generic` could be returned, but we only care about the supported scalar types in `scipy.sparse`.
-def upcast(*args: npt.DTypeLike) -> npc.number | np.bool_: ...
-def upcast_char(*args: npt.DTypeLike) -> npc.number | np.bool_: ...
+def upcast(*args: npt.DTypeLike) -> npc.number | np.bool: ...
+def upcast_char(*args: npt.DTypeLike) -> npc.number | np.bool: ...
 @overload
 def upcast_scalar(dtype: onp.ToDType[_ScalarT], scalar: onp.ToScalar) -> np.dtype[_ScalarT]: ...
 @overload
@@ -70,7 +69,7 @@ def upcast_scalar(dtype: npt.DTypeLike, scalar: onp.ToScalar) -> np.dtype[Any]: 
 
 #
 def downcast_intp_index(
-    arr: onp.Array[_ShapeT, np.bool_ | npc.integer | npc.floating | np.timedelta64 | np.object_],
+    arr: onp.Array[_ShapeT, np.bool | npc.integer | npc.floating | np.timedelta64 | np.object_],
 ) -> onp.Array[_ShapeT, _IntP]: ...
 
 #
@@ -79,7 +78,7 @@ def to_native(A: _ScalarT) -> onp.Array0D[_ScalarT]: ...
 @overload
 def to_native(A: onp.Array[_ShapeT, _ScalarT]) -> onp.Array[_ShapeT, _ScalarT]: ...
 @overload
-def to_native(A: onp.HasDType[_DTypeT]) -> np.ndarray[Any, _DTypeT]: ...
+def to_native[DTypeT: np.dtype[Any]](A: onp.HasDType[DTypeT]) -> np.ndarray[Any, DTypeT]: ...
 
 #
 def getdtype(
@@ -104,7 +103,7 @@ def getdata(
     obj: onp.ToArrayND[_ScalarT, _ScalarT], dtype: onp.ToDType[_ScalarT] | None = None, copy: bool = False
 ) -> onp.ArrayND[_ScalarT]: ...
 
-type _CoInt32 = np.bool_ | np.int8 | np.uint8 | np.int16 | np.uint16 | np.int32
+type _CoInt32 = np.bool | np.int8 | np.uint8 | np.int16 | np.uint16 | np.int32
 type _ContraInt32 = np.uint32 | np.int64 | np.uint64
 
 #
@@ -133,9 +132,11 @@ def get_index_dtype(
 @overload
 def get_sum_dtype(dtype: np.dtype[npc.unsignedinteger]) -> type[_UIntP]: ...
 @overload
-def get_sum_dtype(dtype: np.dtype[np.bool_ | npc.signedinteger]) -> type[_IntP]: ...
+def get_sum_dtype(dtype: np.dtype[np.bool | npc.signedinteger]) -> type[_IntP]: ...
 @overload
-def get_sum_dtype(dtype: _NonIntDTypeT) -> _NonIntDTypeT: ...
+def get_sum_dtype[DTypeT: np.dtype[npc.inexact | np.flexible | np.datetime64 | np.timedelta64 | np.object_]](
+    dtype: DTypeT,
+) -> DTypeT: ...
 
 #
 # NOTE: all arrays implement `__index__` but if it raises this returns `False`, so `TypeIs` can't be used here
@@ -187,9 +188,9 @@ def safely_cast_index_arrays(
     msg: str = "",
 ) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]: ...
 @overload  # BSR/CSC/CSR, dtype: <known>
-def safely_cast_index_arrays(
-    A: bsr_array | bsr_matrix | csc_array | csc_matrix | csr_array | csr_matrix, idx_dtype: onp.ToDType[_IntT], msg: str = ""
-) -> tuple[onp.Array1D[_IntT], onp.Array1D[_IntT]]: ...
+def safely_cast_index_arrays[IntT: npc.integer](
+    A: bsr_array | bsr_matrix | csc_array | csc_matrix | csr_array | csr_matrix, idx_dtype: onp.ToDType[IntT], msg: str = ""
+) -> tuple[onp.Array1D[IntT], onp.Array1D[IntT]]: ...
 @overload  # 2d COO, dtype: <default>
 def safely_cast_index_arrays(
     A: coo_array[Any, tuple[int, int]] | coo_matrix,
@@ -197,9 +198,9 @@ def safely_cast_index_arrays(
     msg: str = "",
 ) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]]: ...
 @overload  # 2d COO, dtype: <known>
-def safely_cast_index_arrays(
-    A: coo_array[Any, tuple[int, int]] | coo_matrix, idx_dtype: onp.ToDType[_IntT], msg: str = ""
-) -> tuple[onp.Array1D[_IntT], onp.Array1D[_IntT]]: ...
+def safely_cast_index_arrays[IntT: npc.integer](
+    A: coo_array[Any, tuple[int, int]] | coo_matrix, idx_dtype: onp.ToDType[IntT], msg: str = ""
+) -> tuple[onp.Array1D[IntT], onp.Array1D[IntT]]: ...
 @overload  # nd COO, dtype: <default>
 def safely_cast_index_arrays(
     A: coo_array,
@@ -207,7 +208,9 @@ def safely_cast_index_arrays(
     msg: str = "",
 ) -> tuple[onp.Array1D[np.int32], ...]: ...
 @overload  # nd COO, dtype: <known>
-def safely_cast_index_arrays(A: coo_array, idx_dtype: onp.ToDType[_IntT], msg: str = "") -> tuple[onp.Array1D[_IntT], ...]: ...
+def safely_cast_index_arrays[IntT: npc.integer](
+    A: coo_array, idx_dtype: onp.ToDType[IntT], msg: str = ""
+) -> tuple[onp.Array1D[IntT], ...]: ...
 @overload  # DIA, dtype: <default>
 def safely_cast_index_arrays(
     A: dia_array | dia_matrix,
@@ -215,7 +218,9 @@ def safely_cast_index_arrays(
     msg: str = "",
 ) -> onp.Array1D[np.int32]: ...
 @overload  # DIA, dtype: <known>
-def safely_cast_index_arrays(A: dia_array | dia_matrix, idx_dtype: onp.ToDType[_IntT], msg: str = "") -> onp.Array1D[_IntT]: ...
+def safely_cast_index_arrays[IntT: npc.integer](
+    A: dia_array | dia_matrix, idx_dtype: onp.ToDType[IntT], msg: str = ""
+) -> onp.Array1D[IntT]: ...
 
 #
 @overload

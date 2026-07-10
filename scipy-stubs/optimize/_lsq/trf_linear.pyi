@@ -1,13 +1,15 @@
-from typing import Literal, TypeAlias
+from typing import Literal
 
 import numpy as np
 import optype.numpy as onp
 
 from scipy.optimize import OptimizeResult as _OptimizeResult
 
-_Float: TypeAlias = float | np.float64
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Int1D: TypeAlias = onp.Array1D[np.int_]
+###
+
+type _Float = float | np.float64
+type _Float1D = onp.Array1D[np.float64]
+type _Int1D = onp.Array1D[np.int_]
 
 ###
 

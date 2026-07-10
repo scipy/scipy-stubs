@@ -1,12 +1,14 @@
-from typing import TypeAlias, overload
+from typing import overload
 
 import numpy as np
 import optype.numpy as onp
 
 __all__ = ["orthogonal_procrustes"]
 
-_Float: TypeAlias = np.float32 | np.float64
-_Complex: TypeAlias = np.complex64 | np.complex128
+###
+
+type _Float = np.float32 | np.float64
+type _Complex = np.complex64 | np.complex128
 
 ###
 

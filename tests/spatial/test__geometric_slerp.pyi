@@ -16,7 +16,7 @@ _float_list: list[float]
 ###
 # geometric_slerp
 
-assert_type(geometric_slerp(_f64_1d, _f64_1d, t=0.5), onp.Array2D[np.float64])
-assert_type(geometric_slerp(_f64_1d, _f64_1d, t=_f64), onp.Array2D[np.float64])
+assert_type(geometric_slerp(_f64_1d, _f64_1d, t=0.5), onp.Array1D[np.float64])
+assert_type(geometric_slerp(_f64_1d, _f64_1d, t=_f64), onp.Array1D[np.float64])
 assert_type(geometric_slerp(_f64_1d, _f64_1d, t=_f64_1d), onp.Array2D[np.float64])
 assert_type(geometric_slerp(_f64_1d, _f64_1d, t=_float_list), onp.Array2D[np.float64])

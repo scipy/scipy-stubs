@@ -1,16 +1,18 @@
 from collections.abc import Iterable
-from typing import TypeAlias, TypeVar
+from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_Index: TypeAlias = int | np.intp
-_Scalar: TypeAlias = npc.number | np.bool_
+###
+
+type _Index = int | np.intp
+type _Scalar = npc.number | np.bool
 
 _FusedScalarT = TypeVar(
     "_FusedScalarT",
-    np.bool_,
+    np.bool,
     np.uint8,
     np.int8,
     np.uint16,
@@ -28,6 +30,8 @@ _FusedScalarT = TypeVar(
 )
 
 ###
+
+# ruff: noqa: UP047
 
 #
 def lil_get1(

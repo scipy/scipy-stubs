@@ -1,6 +1,6 @@
 # type-tests for `signal/_ltisys.pyi`
 
-from typing import Any, TypeAlias, assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -35,15 +35,15 @@ from scipy.signal._ltisys import (
 
 ###
 
-_VecF32: TypeAlias = onp.Array1D[np.float32]
-_VecF64: TypeAlias = onp.Array1D[np.float64]
-_MatF64: TypeAlias = onp.Array2D[np.float64]
-_ArrF64: TypeAlias = onp.ArrayND[np.float64]
-_VecC64: TypeAlias = onp.Array1D[np.complex64]
-_VecC128: TypeAlias = onp.Array1D[np.complex128]
-_ArrC128: TypeAlias = onp.ArrayND[np.complex128]
-_VecC128ish: TypeAlias = onp.Array1D[np.complex128 | Any]
-_ArrC128ish: TypeAlias = onp.ArrayND[np.complex128 | Any]
+type _VecF32 = onp.Array1D[np.float32]
+type _VecF64 = onp.Array1D[np.float64]
+type _MatF64 = onp.Array2D[np.float64]
+type _ArrF64 = onp.ArrayND[np.float64]
+type _VecC64 = onp.Array1D[np.complex64]
+type _VecC128 = onp.Array1D[np.complex128]
+type _ArrC128 = onp.ArrayND[np.complex128]
+type _VecC128ish = onp.Array1D[np.complex128 | Any]
+type _ArrC128ish = onp.ArrayND[np.complex128 | Any]
 
 ###
 

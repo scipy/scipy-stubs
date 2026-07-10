@@ -1,4 +1,4 @@
-from typing import Any, Never, TypeAlias, TypeVar, overload
+from typing import Any, Never, overload
 
 import numpy as np
 import optype as op
@@ -10,10 +10,10 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["clarkson_woodruff_transform"]
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
+###
 
-_ToInt: TypeAlias = int | npc.integer
-_ToSparse: TypeAlias = _spbase[_ScalarT] | sparray[_ScalarT] | spmatrix[_ScalarT]
+type _ToInt = int | npc.integer
+type _ToSparse[ScalarT: npc.number | np.bool] = _spbase[ScalarT] | sparray[ScalarT] | spmatrix[ScalarT]
 
 ###
 
@@ -30,7 +30,7 @@ def clarkson_woodruff_transform(
 ) -> csc_matrix[Any]: ...
 @overload
 def clarkson_woodruff_transform(
-    input_matrix: _ToSparse[npc.integer | np.bool_],
+    input_matrix: _ToSparse[npc.integer | np.bool],
     sketch_size: _ToInt,
     rng: onp.random.ToRNG | None = None,
     *,

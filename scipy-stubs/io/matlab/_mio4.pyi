@@ -1,5 +1,5 @@
 from collections.abc import Mapping, Sequence
-from typing import IO, Final, Generic, Literal, LiteralString, Protocol, TypeAlias, type_check_only
+from typing import IO, Final, Generic, Literal, LiteralString, Protocol, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -32,9 +32,16 @@ __all__ = [
     "order_codes",
 ]
 
-_OnedAs: TypeAlias = Literal["row", "col"]
-_MDType: TypeAlias = Literal[0, 1, 2, 3, 4, 5]
-_MClass: TypeAlias = Literal[0, 1, 2]
+###
+
+type _OnedAs = Literal["row", "col"]
+type _MDType = Literal[0, 1, 2, 3, 4, 5]
+type _MClass = Literal[0, 1, 2]
+
+_DT = TypeVar("_DT", bound=np.dtype[np.generic])
+_DT_co = TypeVar("_DT_co", covariant=True, bound=np.dtype[np.generic], default=np.dtype[np.generic])
+
+###
 
 SYS_LITTLE_ENDIAN: Final[bool] = ...
 
@@ -53,9 +60,6 @@ mdtypes_template: Final[dict[int | str, str | list[tuple[str, str]]]]
 np_to_mtypes: Final[dict[str, int]]
 order_codes: Final[dict[int, str]]
 mclass_info: Final[dict[int, str]]
-
-_DT = TypeVar("_DT", bound=np.dtype[np.generic])
-_DT_co = TypeVar("_DT_co", covariant=True, bound=np.dtype[np.generic], default=np.dtype[np.generic])
 
 @type_check_only
 class _SupportsVarHeader(Protocol[_DT_co]):

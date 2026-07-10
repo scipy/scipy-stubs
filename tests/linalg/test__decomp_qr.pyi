@@ -1,6 +1,6 @@
 # type-tests for `linalg/_decomp_qr.pyi`
 
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -10,14 +10,14 @@ from scipy.linalg import qr, qr_multiply, rq
 
 ###
 
-_Int1D: TypeAlias = onp.Array1D[np.int32 | np.int64]
-_IntND: TypeAlias = onp.ArrayND[np.int32 | np.int64]
-_Float1D: TypeAlias = onp.Array1D[npc.floating]
-_Float2D: TypeAlias = onp.Array2D[npc.floating]
-_FloatND: TypeAlias = onp.ArrayND[npc.floating]
-_Inexact1D: TypeAlias = onp.Array1D[npc.inexact]
-_Inexact2D: TypeAlias = onp.Array2D[npc.inexact]
-_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
+type _Int1D = onp.Array1D[np.int32 | np.int64]
+type _IntND = onp.ArrayND[np.int32 | np.int64]
+type _Float1D = onp.Array1D[npc.floating]
+type _Float2D = onp.Array2D[npc.floating]
+type _FloatND = onp.ArrayND[npc.floating]
+type _Inexact1D = onp.Array1D[npc.inexact]
+type _Inexact2D = onp.Array2D[npc.inexact]
+type _InexactND = onp.ArrayND[npc.inexact]
 
 ###
 

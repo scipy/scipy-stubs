@@ -1,6 +1,6 @@
 from _typeshed import Incomplete
 from types import ModuleType
-from typing import Any, ClassVar, Generic, Literal, Never, TypeAlias, TypeAliasType, overload, override
+from typing import Any, ClassVar, Generic, Literal, Never, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,31 +11,26 @@ from ._interpolate import PPoly
 
 __all__ = ["Akima1DInterpolator", "CubicHermiteSpline", "CubicSpline", "PchipInterpolator", "pchip_interpolate"]
 
-_T = TypeVar("_T")
-_CT = TypeVar("_CT", bound=np.float64 | np.complex128)
+###
+
+type _Tuple2[T] = tuple[T, T]
+type _ToAxis = int | npc.integer
+
+type _Akima1DMethod = Literal["akima", "makima"]
+type _Extrapolate = Literal["periodic"] | bool
+type _CubicBCName = Literal["not-a-knot", "clamped", "natural"]
+type _CubicBCOrder = Literal[1, 2]
+type _CubicBCType = Literal[_CubicBCName, "periodic"] | _Tuple2[_CubicBCName | tuple[_CubicBCOrder, onp.ToComplexND]]
+
+type _PreparedInput[CT: np.float64 | np.complex128, AxisT: _ToAxis] = tuple[
+    onp.Array1D[np.float64],  # x
+    onp.Array1D[np.float64],  # dx
+    onp.ArrayND[CT],  # y
+    AxisT,  # axis
+    onp.ArrayND[CT],  # dydx
+]
+
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
-_AxisT = TypeVar("_AxisT", bound=_ToAxis)
-
-_Tuple2: TypeAlias = tuple[_T, _T]
-_ToAxis: TypeAlias = int | npc.integer
-
-_Akima1DMethod: TypeAlias = Literal["akima", "makima"]
-_Extrapolate: TypeAlias = Literal["periodic"] | bool
-_CubicBCName: TypeAlias = Literal["not-a-knot", "clamped", "natural"]
-_CubicBCOrder: TypeAlias = Literal[1, 2]
-_CubicBCType: TypeAlias = Literal[_CubicBCName, "periodic"] | _Tuple2[_CubicBCName | tuple[_CubicBCOrder, onp.ToComplexND]]
-
-_PreparedInput = TypeAliasType(
-    "_PreparedInput",
-    tuple[
-        onp.Array1D[np.float64],  # x
-        onp.Array1D[np.float64],  # dx
-        onp.ArrayND[_CT],  # y
-        _AxisT,  # axis
-        onp.ArrayND[_CT],  # dydx
-    ],
-    type_params=(_CT, _AxisT),
-)
 
 ###
 
@@ -95,7 +90,7 @@ class Akima1DInterpolator(CubicHermiteSpline[np.float64]):
     # the following (class)methods will raise `NotImplementedError` when called
     @override
     # pyrefly: ignore [bad-override]
-    def extend(self, /, c: Never, x: Never, right: bool = True) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def extend(self, /, c: Never, x: Never, right: bool = True) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
     @classmethod
     @override
     # pyrefly: ignore [bad-override]
@@ -148,18 +143,18 @@ def pchip_interpolate(
 
 # undocumented
 @overload
-def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToFloatND, axis: _AxisT, dydx: onp.ToFloatND | None = None, xp: None = None
-) -> _PreparedInput[np.float64, _AxisT]: ...
+def prepare_input[AxisT: _ToAxis](
+    x: onp.ToFloat1D, y: onp.ToFloatND, axis: AxisT, dydx: onp.ToFloatND | None = None, xp: None = None
+) -> _PreparedInput[np.float64, AxisT]: ...
 @overload
-def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToJustComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
-) -> _PreparedInput[np.complex128, _AxisT]: ...
+def prepare_input[AxisT: _ToAxis](
+    x: onp.ToFloat1D, y: onp.ToJustComplexND, axis: AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
+) -> _PreparedInput[np.complex128, AxisT]: ...
 @overload
-def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
-) -> _PreparedInput[Any, _AxisT]: ...
+def prepare_input[AxisT: _ToAxis](
+    x: onp.ToFloat1D, y: onp.ToComplexND, axis: AxisT, dydx: onp.ToComplexND | None = None, xp: None = None
+) -> _PreparedInput[Any, AxisT]: ...
 @overload
-def prepare_input(
-    x: onp.ToFloat1D, y: onp.ToComplexND, axis: _AxisT, dydx: onp.ToComplexND | None = None, *, xp: ModuleType
-) -> tuple[Incomplete, Incomplete, Incomplete, _AxisT, Incomplete]: ...
+def prepare_input[AxisT: _ToAxis](
+    x: onp.ToFloat1D, y: onp.ToComplexND, axis: AxisT, dydx: onp.ToComplexND | None = None, *, xp: ModuleType
+) -> tuple[Incomplete, Incomplete, Incomplete, AxisT, Incomplete]: ...

@@ -118,6 +118,18 @@ def xp_assert_less(
     verbose: bool = True,
     xp: ModuleType | None = None,
 ) -> None: ...
+def xp_assert_less_equal(
+    actual: object,
+    desired: object,
+    *,
+    check_namespace: bool = True,
+    check_dtype: bool = True,
+    check_shape: bool = True,
+    check_0d: bool = True,
+    err_msg: str = "",
+    verbose: bool = True,
+    xp: ModuleType | None = None,
+) -> None: ...
 def assert_array_almost_equal(
     actual: object,
     desired: object,
@@ -199,6 +211,7 @@ def make_xp_pytest_marks(
 xp_capabilities_table: Final[_CapabilitiesTable] = ...
 
 def xp_device_type(a: Array) -> Literal["cpu", "cuda"] | None: ...
+def xp_isscalar(x: object) -> bool: ...
 
 # we can't import these from `array_api_compat` due to incomplete annotations, which pyright will complain about
 def xp_device(x: object, /) -> Incomplete: ...

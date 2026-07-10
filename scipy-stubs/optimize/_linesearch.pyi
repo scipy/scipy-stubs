@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Concatenate, Literal, TypeAlias, TypeVar
+from typing import Concatenate, Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -13,11 +13,12 @@ __all__ = [
     "scalar_search_wolfe2",
 ]
 
-_Float: TypeAlias = float | np.float64
-_Float1D: TypeAlias = onp.Array1D[np.float64]
+###
 
-_RT = TypeVar("_RT")
-_Fun1D: TypeAlias = Callable[Concatenate[_Float1D, ...], _RT]
+type _Float = float | np.float64
+type _Float1D = onp.Array1D[np.float64]
+
+type _Fun1D[RT] = Callable[Concatenate[_Float1D, ...], RT]
 
 ###
 

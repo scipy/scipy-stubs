@@ -1,5 +1,4 @@
-from typing import Final, TypeAlias, overload
-from typing_extensions import TypeVar
+from typing import Final, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -8,17 +7,18 @@ import optype.numpy.compat as npc
 from scipy.sparse import csc_array, csc_matrix, csr_array, csr_matrix, lil_array, lil_matrix
 from scipy.sparse._base import _spbase
 
-_Real: TypeAlias = npc.integer | npc.floating
-_RealT = TypeVar("_RealT", bound=_Real)
+###
 
-_SparseGraph: TypeAlias = (
-    csr_array[_RealT] | csr_matrix[_RealT]
-    | csc_array[_RealT] | csc_matrix[_RealT]
-    | lil_array[_RealT] | lil_matrix[_RealT]
+type _Real = npc.integer | npc.floating
+
+type _SparseGraph[RealT: _Real] = (
+    csr_array[RealT] | csr_matrix[RealT]
+    | csc_array[RealT] | csc_matrix[RealT]
+    | lil_array[RealT] | lil_matrix[RealT]
 )  # fmt: skip
 
-_ToGraph: TypeAlias = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
-_Graph: TypeAlias = onp.CanArray2D[_RealT] | _spbase[_RealT, tuple[int, int]]
+type _ToGraph = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
+type _Graph[RealT: _Real] = onp.CanArray2D[RealT] | _spbase[RealT, tuple[int, int]]
 
 ###
 

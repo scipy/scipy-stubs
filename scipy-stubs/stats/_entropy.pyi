@@ -1,5 +1,4 @@
-from typing import Literal, TypeAlias, TypeAliasType, overload
-from typing_extensions import TypeVar
+from typing import Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -9,30 +8,20 @@ from ._typing import NanPolicy
 
 __all__ = ["differential_entropy", "entropy"]
 
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool_)
-_PyScalarT = TypeVar("_PyScalarT")
+###
 
-_AsF32: TypeAlias = np.float16 | np.float32
-_AsF64: TypeAlias = np.float64 | npc.integer | np.bool_
+type _AsF32 = np.float16 | np.float32
+type _AsF64 = np.float64 | npc.integer | np.bool
 
-_DifferentialMethod: TypeAlias = Literal["vasicek", "van es", "ebrahimi", "correa", "auto"]
+type _DifferentialMethod = Literal["vasicek", "van es", "ebrahimi", "correa", "auto"]
 
-_ToArrayMaxND = TypeAliasType(
-    "_ToArrayMaxND", onp.ToArrayND[_PyScalarT, _ScalarT] | _PyScalarT | _ScalarT, type_params=(_ScalarT, _PyScalarT)
+type _ToArrayMaxND[ScalarT: npc.number | np.bool, PyScalarT] = onp.ToArrayND[PyScalarT, ScalarT] | PyScalarT | ScalarT
+type _ToArrayMax1D[ScalarT: npc.number | np.bool, PyScalarT] = onp.ToArrayStrict1D[PyScalarT, ScalarT] | PyScalarT | ScalarT
+type _ToArrayMax2D[ScalarT: npc.number | np.bool, PyScalarT] = (
+    onp.ToArrayStrict2D[PyScalarT, ScalarT] | _ToArrayMax1D[ScalarT, PyScalarT]
 )
-_ToArrayMax1D = TypeAliasType(
-    "_ToArrayMax1D", onp.ToArrayStrict1D[_PyScalarT, _ScalarT] | _PyScalarT | _ScalarT, type_params=(_ScalarT, _PyScalarT)
-)
-_ToArrayMax2D = TypeAliasType(
-    "_ToArrayMax2D",
-    onp.ToArrayStrict2D[_PyScalarT, _ScalarT] | _ToArrayMax1D[_ScalarT, _PyScalarT],
-    type_params=(_ScalarT, _PyScalarT),
-)
-_ToArrayMax3D = TypeAliasType(
-    "_ToArrayMax3D",
-    onp.ToArrayStrict3D[_PyScalarT, _ScalarT] | _ToArrayMax2D[_ScalarT, _PyScalarT],
-    type_params=(_ScalarT, _PyScalarT),
+type _ToArrayMax3D[ScalarT: npc.number | np.bool, PyScalarT] = (
+    onp.ToArrayStrict3D[PyScalarT, ScalarT] | _ToArrayMax2D[ScalarT, PyScalarT]
 )
 
 ###
@@ -323,8 +312,8 @@ def entropy(
 
 #
 @overload  # Nd known inexact dtype, axis=None
-def differential_entropy(
-    values: _ToArrayMaxND[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: _ToArrayMaxND[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -332,10 +321,10 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 0d or 1d known inexact dtype
-def differential_entropy(
-    values: _ToArrayMax1D[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: _ToArrayMax1D[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -343,10 +332,10 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
-) -> _InexactT: ...
+) -> InexactT: ...
 @overload  # 2d known inexact dtype
-def differential_entropy(
-    values: onp.ToArrayStrict2D[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: onp.ToArrayStrict2D[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -354,10 +343,10 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
-) -> onp.Array1D[_InexactT]: ...
+) -> onp.Array1D[InexactT]: ...
 @overload  # 2d known inexact dtype
-def differential_entropy(
-    values: onp.ToArrayStrict3D[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: onp.ToArrayStrict3D[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -365,10 +354,10 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
-) -> onp.Array2D[_InexactT]: ...
+) -> onp.Array2D[InexactT]: ...
 @overload  # Nd known inexact dtype, keepdims=True
-def differential_entropy(
-    values: onp.ToArrayND[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: onp.ToArrayND[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -376,10 +365,10 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
-) -> onp.ArrayND[_InexactT]: ...
+) -> onp.ArrayND[InexactT]: ...
 @overload  # Nd known inexact dtype
-def differential_entropy(
-    values: onp.ToArrayND[_InexactT, _InexactT],
+def differential_entropy[InexactT: npc.inexact](
+    values: onp.ToArrayND[InexactT, InexactT],
     *,
     window_length: int | None = None,
     base: float | None = None,
@@ -387,7 +376,7 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
-) -> _InexactT | onp.ArrayND[_InexactT]: ...
+) -> InexactT | onp.ArrayND[InexactT]: ...
 @overload  # Nd float64 | +integer, axis=None
 def differential_entropy(
     values: _ToArrayMaxND[_AsF64, float],

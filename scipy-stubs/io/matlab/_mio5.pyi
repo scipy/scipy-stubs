@@ -1,6 +1,6 @@
 import io
 from collections.abc import Iterable, Mapping
-from typing import IO, Final, Literal, TypeAlias, TypedDict, final, type_check_only
+from typing import IO, Final, Literal, TypedDict, final, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -11,7 +11,9 @@ from scipy._typing import AnyShape
 from scipy.io._typing import ByteOrder
 from scipy.sparse import sparray, spmatrix
 
-_OnedAs: TypeAlias = Literal["row", "column"]
+###
+
+type _OnedAs = Literal["row", "column"]
 
 @type_check_only
 class _MatFile5Header(TypedDict):
@@ -71,7 +73,7 @@ class VarWriter5:
     def update_matrix_tag(self, /, start_pos: int) -> None: ...
     def write_top(self, /, arr: onp.ToArrayND, name: str, is_global: bool) -> None: ...
     def write(self, /, arr: onp.ToArrayND) -> None: ...
-    def write_numeric(self, /, arr: onp.ArrayND[np.bool_ | npc.number]) -> None: ...
+    def write_numeric(self, /, arr: onp.ArrayND[np.bool | npc.number]) -> None: ...
     def write_char(self, /, arr: onp.ArrayND[np.str_], codec: str = "ascii") -> None: ...
     def write_sparse(self, /, arr: spmatrix | sparray) -> None: ...
     def write_cells(self, /, arr: onp.Array) -> None: ...

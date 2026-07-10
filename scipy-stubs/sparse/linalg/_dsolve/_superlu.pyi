@@ -1,6 +1,6 @@
 import types
 from collections.abc import Callable, Mapping
-from typing import Any, Final, Generic, Literal, SupportsIndex, TypeAlias, final, overload
+from typing import Any, Final, Generic, Literal, SupportsIndex, final, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -9,16 +9,18 @@ import optype.numpy.compat as npc
 
 from scipy.sparse import csc_array, csc_matrix, csr_matrix
 
+###
+
+type _Int1D = onp.Array1D[np.int32]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _Complex1D = onp.Array1D[np.complex128]
+type _Complex2D = onp.Array2D[np.complex128]
+type _Inexact2D = onp.Array2D[np.float32 | np.float64 | np.complex64 | np.complex128]
+
+type _Real = npc.integer | npc.floating
+
 _InexactT_co = TypeVar("_InexactT_co", bound=np.float32 | np.float64 | np.complex64 | np.complex128, default=Any, covariant=True)
-
-_Int1D: TypeAlias = onp.Array1D[np.int32]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_Complex1D: TypeAlias = onp.Array1D[np.complex128]
-_Complex2D: TypeAlias = onp.Array2D[np.complex128]
-_Inexact2D: TypeAlias = onp.Array2D[np.float32 | np.float64 | np.complex64 | np.complex128]
-
-_Real: TypeAlias = npc.integer | npc.floating
 
 ###
 
