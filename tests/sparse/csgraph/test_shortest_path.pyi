@@ -28,6 +28,10 @@ assert_type(minimum_spanning_tree(_csr_arr), sparse.csr_array[_ScalarType, tuple
 
 assert_type(shortest_path(_csr_arr), onp.Array2D[np.float64])
 assert_type(shortest_path(_csr_arr, return_predecessors=True), tuple[onp.Array2D[np.float64], onp.Array2D[np.int32]])
+assert_type(shortest_path(_csr_arr, indices=0), onp.Array1D[np.float64])
+assert_type(shortest_path(_csr_arr, indices=[0]), onp.Array2D[np.float64])
+assert_type(shortest_path(_csr_arr, return_predecessors=True, indices=0), tuple[onp.Array1D[np.float64], onp.Array1D[np.int32]])
+assert_type(shortest_path(_csr_arr, return_predecessors=True, indices=[0]), tuple[onp.Array2D[np.float64], onp.Array2D[np.int32]])
 
 # floyd_warshall
 
