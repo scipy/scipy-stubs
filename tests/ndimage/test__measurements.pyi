@@ -69,7 +69,8 @@ assert_type(value_indices(int_2d), dict[np.intp, tuple[onp.ArrayND[np.intp], ...
 # labeled_comprehension
 
 # index=None -> scalar output
-
+# TODO: assertions below are mostly incorrect — out_dtype is ignored at runtime when index=None.
+# Also missing a separate test for scalar index (e.g. index=1). Will fix in follow-up.
 # out_dtype: DTypeLike[_SCT] -> _SCT
 assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.dtype(np.float32), 0.0), np.float32)
 # out_dtype: AnyIntPDType -> np.intp
