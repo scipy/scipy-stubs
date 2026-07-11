@@ -234,7 +234,7 @@ class Akima1DInterpolator(CubicHermiteSpline[np.float64, _ShapeT_co], Generic[_S
     def from_bernstein_basis(cls, bp: Never, extrapolate: None = None) -> Never: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
 
 class CubicSpline(CubicHermiteSpline[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
-    @overload  # 1d real
+    @overload  # ?d real
     def __init__(
         self: CubicSpline[np.float64],
         /,
@@ -244,7 +244,7 @@ class CubicSpline(CubicHermiteSpline[_CT_co, _ShapeT_co], Generic[_CT_co, _Shape
         bc_type: _CubicBCType = "not-a-knot",
         extrapolate: _Extrapolate | None = None,
     ) -> None: ...
-    @overload  # 1d complex
+    @overload  # ?d complex
     def __init__(
         self: CubicSpline[np.complex128],
         /,
@@ -290,16 +290,6 @@ class CubicSpline(CubicHermiteSpline[_CT_co, _ShapeT_co], Generic[_CT_co, _Shape
         /,
         x: onp.ToFloat1D,
         y: onp.ToJustComplexStrict2D,
-        axis: _ToAxis = 0,
-        bc_type: _CubicBCType = "not-a-knot",
-        extrapolate: _Extrapolate | None = None,
-    ) -> None: ...
-    @overload
-    def __init__(
-        self: CubicSpline[Any, tuple[int]],
-        /,
-        x: onp.ToFloat1D,
-        y: onp.ToComplexStrict2D,
         axis: _ToAxis = 0,
         bc_type: _CubicBCType = "not-a-knot",
         extrapolate: _Extrapolate | None = None,
