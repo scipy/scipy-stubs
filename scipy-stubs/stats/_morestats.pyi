@@ -71,6 +71,11 @@ _NDT_co = TypeVar(
     default=np.float64 | onp.ArrayND[np.float64],
 )  # fmt: skip
 
+_DirectionT_co = TypeVar("_DirectionT_co", bound=onp.ArrayND[npc.inexact], default=onp.ArrayND[np.float64 | Any], covariant=True)
+_LengthT_co = TypeVar(
+    "_LengthT_co", bound=npc.floating | onp.ArrayND[npc.floating], default=onp.ArrayND[np.float64 | Any], covariant=True
+)
+
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 type _Tuple2[T] = tuple[T, T]
 type _Tuple3[T] = tuple[T, T, T]
@@ -186,10 +191,12 @@ class _HasX(Protocol):
 @final
 class _BigFloat: ...
 
-class DirectionalStats:
-    mean_direction: onp.ArrayND[np.float64]
-    mean_resultant_length: onp.ArrayND[np.float64]
-    def __init__(self, /, mean_direction: onp.ArrayND[np.float64], mean_resultant_length: onp.ArrayND[np.float64]) -> None: ...
+@final
+class DirectionalStats(Generic[_DirectionT_co, _LengthT_co]):
+    mean_direction: _DirectionT_co
+    mean_resultant_length: _LengthT_co
+
+    def __init__(self, /, mean_direction: _DirectionT_co, mean_resultant_length: _LengthT_co) -> None: ...
 
 class ShapiroResult(_TestResult[_NDT_co], Generic[_NDT_co]): ...
 class AnsariResult(_TestResult[_NDT_co], Generic[_NDT_co]): ...
@@ -1110,7 +1117,86 @@ def circstd(
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 
 #
-def directional_stats(samples: onp.ToFloatND, *, axis: SupportsIndex | None = 0, normalize: bool = True) -> DirectionalStats: ...
+@overload  # ?d +T@floating
+def directional_stats[ScalarT: npc.floating](
+    samples: onp.ArrayND[ScalarT, _JustAnyShape], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.ArrayND[ScalarT], ScalarT | onp.ArrayND[ScalarT]]: ...
+@overload  # ?d +integer
+def directional_stats(
+    samples: onp.ArrayND[npc.integer | np.bool, _JustAnyShape], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~c128
+def directional_stats(
+    samples: onp.ArrayND[npc.complexfloating128, _JustAnyShape], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.ArrayND[np.complex128], np.float64 | onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~c64
+def directional_stats(
+    samples: onp.ArrayND[npc.complexfloating64, _JustAnyShape], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.ArrayND[np.complex64], np.float32 | onp.ArrayND[np.float32]]: ...
+@overload  # ?d ~c160
+def directional_stats(
+    samples: onp.ArrayND[npc.complexfloating160, _JustAnyShape], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.ArrayND[np.clongdouble], np.longdouble | onp.ArrayND[np.longdouble]]: ...
+@overload  # 2d +T@floating
+def directional_stats[ScalarT: npc.floating](
+    samples: onp.Array2D[ScalarT], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.Array1D[ScalarT], ScalarT]: ...
+@overload  # 2d +integer | +float
+def directional_stats(
+    samples: onp.ToArrayStrict2D[float, npc.integer | np.bool], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.Array1D[np.float64], np.float64]: ...
+@overload  # 2d ~c128
+def directional_stats(
+    samples: onp.ToJustComplex128Strict2D, *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.Array1D[np.complex128], np.float64]: ...
+@overload  # 2d ~c64
+def directional_stats(
+    samples: onp.ToJustComplex64Strict2D, *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.Array1D[np.complex64], np.float32]: ...
+@overload  # 2d ~c160
+def directional_stats(
+    samples: onp.ToJustCLongDoubleStrict2D, *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.Array1D[np.clongdouble], np.longdouble]: ...
+@overload  # 3d +T@floating
+def directional_stats[ScalarT: npc.floating](
+    samples: onp.Array3D[ScalarT], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.Array2D[ScalarT], onp.Array1D[ScalarT]]: ...
+@overload  # 3d +integer | +float
+def directional_stats(
+    samples: onp.ToArrayStrict3D[float, npc.integer | np.bool], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.Array2D[np.float64], onp.Array1D[np.float64]]: ...
+@overload  # 3d ~c128
+def directional_stats(
+    samples: onp.ToJustComplex128Strict3D, *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.Array2D[np.complex128], onp.Array1D[np.float64]]: ...
+@overload  # 3d ~c64
+def directional_stats(
+    samples: onp.ToJustComplex64Strict3D, *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.Array2D[np.complex64], onp.Array1D[np.float32]]: ...
+@overload  # 3d ~c160
+def directional_stats(
+    samples: onp.ToJustCLongDoubleStrict3D, *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.Array2D[np.clongdouble], onp.Array1D[np.longdouble]]: ...
+@overload  # Nd +T@floating
+def directional_stats[ScalarT: npc.floating](
+    samples: onp.ArrayND[ScalarT], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.ArrayND[ScalarT], ScalarT | onp.ArrayND[ScalarT]]: ...
+@overload  # Nd +integer | +float
+def directional_stats(
+    samples: onp.ToArrayND[float, npc.integer | np.bool], *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
+@overload  # Nd ~c128
+def directional_stats(
+    samples: onp.ToJustComplex128_ND, *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.ArrayND[np.complex128], np.float64 | onp.ArrayND[np.float64]]: ...
+@overload  # Nd ~c64
+def directional_stats(
+    samples: onp.ToJustComplex64_ND, *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.ArrayND[np.complex64], np.float32 | onp.ArrayND[np.float32]]: ...
+@overload  # Nd ~c160
+def directional_stats(
+    samples: onp.ToJustCLongDoubleND, *, axis: SupportsIndex = 0, normalize: bool = True
+) -> DirectionalStats[onp.ArrayND[np.clongdouble], np.longdouble | onp.ArrayND[np.longdouble]]: ...
 
 #
 @overload
