@@ -199,4 +199,4 @@ assert_type(circstd(_fnd, keepdims=True), onp.ArrayND[np.float64])
 
 assert_type(false_discovery_control(_f1d), onp.ArrayND[np.float64])
 assert_type(false_discovery_control(_fnd), onp.ArrayND[np.float64])
-assert_type(false_discovery_control(0.05), onp.ArrayND[np.float64])
+assert_type(false_discovery_control(0.05), np.float64)
