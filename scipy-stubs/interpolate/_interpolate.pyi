@@ -13,6 +13,7 @@ __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
 ###
 
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
+_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 type _ToAxis = int | npc.integer
 type _Extrapolate = Literal["periodic"] | bool
@@ -21,6 +22,9 @@ type _Interp1dKind = Literal["linear", "nearest", "nearest-up", "zero", "slinear
 type _Interp1dFillValue = onp.ToFloat | onp.ToFloatND | tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND]
 
 type _Array2ND[NumberT: npc.number] = onp.Array[tuple[int, int, *tuple[Any, ...]], NumberT]
+
+# workaround for https://github.com/microsoft/pyright/issues/10232
+type _JustAnyShape = tuple[Never, Never, Never]
 
 ###
 
@@ -81,7 +85,7 @@ class interp1d(_Interpolator1D):  # legacy
         assume_sorted: bool = False,
     ) -> None: ...
 
-class _PPolyBase(Generic[_CT_co]):
+class _PPolyBase(Generic[_CT_co, _ShapeT_co]):
     __slots__ = "_c", "_x", "axis", "extrapolate"
 
     _c: _Array2ND[_CT_co]
@@ -139,9 +143,12 @@ class _PPolyBase(Generic[_CT_co]):
     ) -> None: ...
 
     #
+    @overload
     def __call__(
-        self, /, x: onp.ToFloat | onp.ToFloatND, nu: _ToAxis = 0, extrapolate: _Extrapolate | None = None
-    ) -> onp.ArrayND[_CT_co]: ...
+        self, /, x: onp.ToFloat, nu: _ToAxis = 0, extrapolate: _Extrapolate | None = None
+    ) -> onp.Array[_ShapeT_co, _CT_co]: ...
+    @overload
+    def __call__(self, /, x: onp.ToFloatND, nu: _ToAxis = 0, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_CT_co]: ...
 
     #
     @overload
@@ -149,26 +156,197 @@ class _PPolyBase(Generic[_CT_co]):
     @overload
     def extend(self: _PPolyBase[np.complex128], /, c: onp.ToComplexND, x: onp.ToFloat1D) -> None: ...
 
-class PPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
+class PPoly(_PPolyBase[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
+    @overload  # ?d real
+    def __init__(
+        self: PPoly[np.float64],
+        /,
+        c: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # ?d complex
+    def __init__(
+        self: PPoly[np.complex128],
+        /,
+        c: onp.ArrayND[npc.complexfloating, _JustAnyShape],
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # 0d real
+    def __init__(
+        self: PPoly[np.float64, tuple[()]],
+        /,
+        c: onp.ToFloatStrict2D,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # 0d complex
+    def __init__(
+        self: PPoly[np.complex128, tuple[()]],
+        /,
+        c: onp.ToJustComplexStrict2D,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # 1d real
+    def __init__(
+        self: PPoly[np.float64, tuple[int]],
+        /,
+        c: onp.ToFloatStrict3D,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # 1d complex
+    def __init__(
+        self: PPoly[np.complex128, tuple[int]],
+        /,
+        c: onp.ToJustComplexStrict3D,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # Nd real
+    def __init__(
+        self: PPoly[np.float64], /, c: onp.ToFloatND, x: onp.ToFloat1D, extrapolate: _Extrapolate | None = None, axis: _ToAxis = 0
+    ) -> None: ...
+    @overload  # Nd complex
+    def __init__(
+        self: PPoly[np.complex128],
+        /,
+        c: onp.ToJustComplexND,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # fallback
+    def __init__(
+        self: PPoly[Any], /, c: onp.ToComplexND, x: onp.ToFloat1D, extrapolate: _Extrapolate | None = None, axis: _ToAxis = 0
+    ) -> None: ...
+
+    #
     @classmethod
     def from_spline(
         cls, tck: tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int], extrapolate: _Extrapolate | None = None
     ) -> Self: ...
     @classmethod
-    def from_bernstein_basis(cls, bp: BPoly[_CT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
+    def from_bernstein_basis(cls, bp: BPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
 
     #
     def derivative(self, /, nu: _ToAxis = 1) -> Self: ...
     def antiderivative(self, /, nu: _ToAxis = 1) -> Self: ...
-    def integrate(self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_CT_co]: ...
-    def solve(
-        self, /, y: onp.ToFloat = 0, discontinuity: bool = True, extrapolate: _Extrapolate | None = None
-    ) -> onp.ArrayND[_CT_co]: ...
-    def roots(self, /, discontinuity: bool = True, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_CT_co]: ...
+    def integrate(
+        self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
+    ) -> onp.ArrayND[_CT_co, _ShapeT_co]: ...
 
-class BPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
+    # NOTE: `solve` and `roots` raise a `ValueError` for complex-valued coefficients
+    @overload
+    def solve(
+        self: PPoly[np.float64, tuple[()]],
+        /,
+        y: onp.ToFloat = 0,
+        discontinuity: bool = True,
+        extrapolate: _Extrapolate | None = None,
+    ) -> onp.Array1D[np.float64]: ...
+    @overload
+    def solve[ShapeT: onp.AtLeast1D](
+        self: PPoly[np.float64, ShapeT],
+        /,
+        y: onp.ToFloat = 0,
+        discontinuity: bool = True,
+        extrapolate: _Extrapolate | None = None,
+    ) -> onp.ArrayND[np.object_, ShapeT]: ...
+    #
+    @overload
+    def roots(
+        self: PPoly[np.float64, tuple[()]], /, discontinuity: bool = True, extrapolate: _Extrapolate | None = None
+    ) -> onp.Array1D[np.float64]: ...
+    @overload
+    def roots[ShapeT: onp.AtLeast1D](
+        self: PPoly[np.float64, ShapeT], /, discontinuity: bool = True, extrapolate: _Extrapolate | None = None
+    ) -> onp.ArrayND[np.object_, ShapeT]: ...
+
+class BPoly(_PPolyBase[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
+    @overload  # ?d real
+    def __init__(
+        self: BPoly[np.float64],
+        /,
+        c: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # ?d complex
+    def __init__(
+        self: BPoly[np.complex128],
+        /,
+        c: onp.ArrayND[npc.complexfloating, _JustAnyShape],
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # 0d real
+    def __init__(
+        self: BPoly[np.float64, tuple[()]],
+        /,
+        c: onp.ToFloatStrict2D,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # 0d complex
+    def __init__(
+        self: BPoly[np.complex128, tuple[()]],
+        /,
+        c: onp.ToJustComplexStrict2D,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # 1d real
+    def __init__(
+        self: BPoly[np.float64, tuple[int]],
+        /,
+        c: onp.ToFloatStrict3D,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # 1d complex
+    def __init__(
+        self: BPoly[np.complex128, tuple[int]],
+        /,
+        c: onp.ToJustComplexStrict3D,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # Nd real
+    def __init__(
+        self: BPoly[np.float64], /, c: onp.ToFloatND, x: onp.ToFloat1D, extrapolate: _Extrapolate | None = None, axis: _ToAxis = 0
+    ) -> None: ...
+    @overload  # Nd complex
+    def __init__(
+        self: BPoly[np.complex128],
+        /,
+        c: onp.ToJustComplexND,
+        x: onp.ToFloat1D,
+        extrapolate: _Extrapolate | None = None,
+        axis: _ToAxis = 0,
+    ) -> None: ...
+    @overload  # fallback
+    def __init__(
+        self: BPoly[Any], /, c: onp.ToComplexND, x: onp.ToFloat1D, extrapolate: _Extrapolate | None = None, axis: _ToAxis = 0
+    ) -> None: ...
+
+    #
     @classmethod
-    def from_power_basis(cls, pp: PPoly[_CT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
+    def from_power_basis(cls, pp: PPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
 
     #
     @overload
@@ -202,7 +380,9 @@ class BPoly(_PPolyBase[_CT_co], Generic[_CT_co]):
     #
     def derivative(self, /, nu: _ToAxis = 1) -> Self: ...
     def antiderivative(self, /, nu: _ToAxis = 1) -> Self: ...
-    def integrate(self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None) -> onp.ArrayND[_CT_co]: ...
+    def integrate(
+        self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
+    ) -> onp.ArrayND[_CT_co, _ShapeT_co]: ...
 
 class NdPPoly(Generic[_CT_co]):
     c: _Array2ND[_CT_co]
