@@ -1113,6 +1113,11 @@ def circstd(
 def directional_stats(samples: onp.ToFloatND, *, axis: SupportsIndex | None = 0, normalize: bool = True) -> DirectionalStats: ...
 
 #
+@overload
 def false_discovery_control(
-    ps: onp.ToFloat | onp.ToFloatND, *, axis: SupportsIndex | None = 0, method: Literal["bh", "by"] = "bh"
+    ps: onp.ToFloat, *, axis: SupportsIndex | None = 0, method: Literal["bh", "by"] = "bh"
+) -> np.float64: ...
+@overload
+def false_discovery_control(
+    ps: onp.ToFloatND, *, axis: SupportsIndex | None = 0, method: Literal["bh", "by"] = "bh"
 ) -> onp.ArrayND[np.float64]: ...
