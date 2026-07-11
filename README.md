@@ -195,23 +195,29 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 
 ### `scipy.interpolate`
 
-| generic type                                       | `scipy-stubs` | `scipy`  |                                                                                                                |
-| -------------------------------------------------- | ------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
-| `AAA[T: inexact]`                                  | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.AAA.html)                        |
-| `BarycentricInterpolator[T: f64 \| c128]`          | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BarycentricInterpolator.html)    |
-| `BPoly[T: f64 \| c128]`                            | `>=1.14.1.4`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BPoly.html)                      |
-| `BSpline[T: f64 \| c128]`                          | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BSpline.html)                    |
-| `CubicHermiteSpline[T: f64 \| c128]`               | `>=1.14.1.4`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicHermiteSpline.html)         |
-| `CubicSpline[T: f64 \| c128]`                      | `>=1.14.1.4`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicSpline.html)                |
-| `FloaterHormannInterpolator[T: f64 \| c128]`       | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.FloaterHormannInterpolator.html) |
-| `KroghInterpolator[T: f64 \| c128, S: (int, ...)]` | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.KroghInterpolator.html)          |
-| `LinearNDInterpolator[T: f64 \| c128]`             | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.LinearNDInterpolator.html)       |
-| `NdBSpline[T: f64 \| c128]`                        | `>=1.15.2.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdBSpline.html)                  |
-| `NdPPoly[T: f64 \| c128]`                          | `>=1.14.1.4`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdPPoly.html)                    |
-| `NearestNDInterpolator[T: f64 \| c128]`            | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NearestNDInterpolator.html)      |
-| `PPoly[T: f64 \| c128]`                            | `>=1.14.1.4`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PPoly.html)                      |
-| `RBFInterpolator[T: f64 \| c128, S: (int, ...)]`   | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RBFInterpolator.html)            |
-| `RegularGridInterpolator[T: f64 \| c128]`          | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RegularGridInterpolator.html)    |
+| generic type                                        | `scipy-stubs` | `scipy`  |                                                                                                                |
+| --------------------------------------------------- | ------------- | -------- | -------------------------------------------------------------------------------------------------------------- |
+| `AAA[T: inexact]`                                   | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.AAA.html)                        |
+| `Akima1DInterpolator[S: (int, ...)]`                | `>=1.18.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Akima1DInterpolator.html)        |
+| `BarycentricInterpolator[T: f64 \| c128]`           | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BarycentricInterpolator.html)    |
+| *`BPoly[T: f64 \| c128]`*                           | `>=1.14.1.4`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BPoly.html)                      |
+| `BPoly[T: f64 \| c128, S: (int, ...)]`              | `>=1.18.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BPoly.html)                      |
+| `BSpline[T: f64 \| c128]`                           | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.BSpline.html)                    |
+| *`CubicHermiteSpline[T: f64 \| c128]`*              | `>=1.14.1.4`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicHermiteSpline.html)         |
+| `CubicHermiteSpline[T: f64 \| c128, S: (int, ...)]` | `>=1.18.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicHermiteSpline.html)         |
+| *`CubicSpline[T: f64 \| c128]`*                     | `>=1.14.1.4`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicSpline.html)                |
+| `CubicSpline[T: f64 \| c128, S: (int, ...)]`        | `>=1.18.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicSpline.html)                |
+| `FloaterHormannInterpolator[T: f64 \| c128]`        | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.FloaterHormannInterpolator.html) |
+| `KroghInterpolator[T: f64 \| c128, S: (int, ...)]`  | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.KroghInterpolator.html)          |
+| `LinearNDInterpolator[T: f64 \| c128]`              | `>=1.15.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.LinearNDInterpolator.html)       |
+| `NdBSpline[T: f64 \| c128]`                         | `>=1.15.2.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdBSpline.html)                  |
+| `NdPPoly[T: f64 \| c128]`                           | `>=1.14.1.4`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdPPoly.html)                    |
+| `NearestNDInterpolator[T: f64 \| c128]`             | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NearestNDInterpolator.html)      |
+| `PchipInterpolator[S: (int, ...)]`                  | `>=1.18.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PchipInterpolator.html)          |
+| *`PPoly[T: f64 \| c128]`*                           | `>=1.14.1.4`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PPoly.html)                      |
+| `PPoly[T: f64 \| c128, S: (int, ...)]`              | `>=1.18.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.PPoly.html)                      |
+| `RBFInterpolator[T: f64 \| c128, S: (int, ...)]`    | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RBFInterpolator.html)            |
+| `RegularGridInterpolator[T: f64 \| c128]`           | `>=1.14.1.6`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.RegularGridInterpolator.html)    |
 
 ### `scipy.optimize`
 
