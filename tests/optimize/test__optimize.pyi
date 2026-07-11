@@ -55,7 +55,8 @@ assert_type(rosen(_f32_2d), onp.Array1D[np.float32])
 ###
 # rosen_der
 
-assert_type(rosen_der([1.0, 2.0, 3.0]), onp.ArrayND[np.float64])
+# (the weird shape-type avoids a pyright overload overlap error on `numpy<2.1`)
+assert_type(rosen_der([1.0, 2.0, 3.0]), onp.ArrayND[np.float64, tuple[Any, ...] | tuple[int]])
 assert_type(rosen_der(_i8_1d), onp.Array1D[np.float64])
 assert_type(rosen_der(_f32_1d), onp.Array1D[np.float32])
 assert_type(rosen_der(_c64_1d), onp.Array1D[np.complex64])
