@@ -57,8 +57,14 @@ def _fp1d(x: _Float1D, /) -> list[float]: ...
 def _fp1d_c(x: onp.Array1D[np.complex128], /) -> list[complex]: ...
 def _fp2d(x: _Float2D, /) -> list[list[float]]: ...
 
-assert_type(fixed_point(_fp, 0.5), np.float64)
-assert_type(fixed_point(_fp_c, 0.5 + 0j), np.complex128)
+# https://github.com/scipy/scipy-stubs/issues/1797
+assert_type(fixed_point(_fp, 0.5), onp.Array0D[np.float64])
+assert_type(fixed_point(_fp, 0.5, method="del2"), onp.Array0D[np.float64])
+assert_type(fixed_point(_fp, 0.5, method="iteration"), np.float64)
+assert_type(fixed_point(_fp_c, 0.5 + 0j), onp.Array0D[np.complex128])
+assert_type(fixed_point(_fp_c, 0.5 + 0j, method="del2"), onp.Array0D[np.complex128])
+assert_type(fixed_point(_fp_c, 0.5 + 0j, method="iteration"), np.complex128)
+
 assert_type(fixed_point(_fp1d, [0.5, 1.0]), _Float1D)
 assert_type(fixed_point(_fp1d_c, [0.5 + 0j, 1.0 + 0j]), onp.Array1D[np.complex128])
 assert_type(fixed_point(_fp2d, [[0.5, 1.0], [1.5, 2.0]]), _Float2D)

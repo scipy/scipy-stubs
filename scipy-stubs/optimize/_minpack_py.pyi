@@ -281,23 +281,43 @@ def curve_fit(
 ) -> tuple[_Float1D | _Float2D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...
 
 #
-@overload  # 0-d real
+@overload  # 0-d real, method="del2"  (default)
 def fixed_point(
     func: _Fun[np.float64, onp.ToFloat] | _Fun[float, onp.ToFloat],
     x0: onp.ToFloat,
     args: tuple[object, ...] = (),
     xtol: float = 1e-8,
     maxiter: int = 500,
-    method: Literal["del2", "iteration"] = "del2",
+    method: Literal["del2"] = "del2",
+) -> onp.Array0D[np.float64]: ...
+@overload  # 0-d real, method="iteration"
+def fixed_point(
+    func: _Fun[np.float64, onp.ToFloat] | _Fun[float, onp.ToFloat],
+    x0: onp.ToFloat,
+    args: tuple[object, ...] = (),
+    xtol: float = 1e-8,
+    maxiter: int = 500,
+    *,
+    method: Literal["iteration"],
 ) -> np.float64: ...
-@overload  # 0-d complex
+@overload  # 0-d complex, method="del2"  (default)
 def fixed_point(
     func: _Fun[np.complex128, onp.ToComplex] | _Fun[complex, onp.ToComplex],
     x0: onp.ToJustComplex,
     args: tuple[object, ...] = (),
     xtol: float = 1e-8,
     maxiter: int = 500,
-    method: Literal["del2", "iteration"] = "del2",
+    method: Literal["del2"] = "del2",
+) -> onp.Array0D[np.complex128]: ...
+@overload  # 0-d complex, method="iteration"
+def fixed_point(
+    func: _Fun[np.complex128, onp.ToComplex] | _Fun[complex, onp.ToComplex],
+    x0: onp.ToJustComplex,
+    args: tuple[object, ...] = (),
+    xtol: float = 1e-8,
+    maxiter: int = 500,
+    *,
+    method: Literal["iteration"],
 ) -> np.complex128: ...
 @overload  # 1-d real
 def fixed_point(
