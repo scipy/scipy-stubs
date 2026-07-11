@@ -188,7 +188,7 @@ assert_type(assoc_laguerre(1j, i_arr, 0.0), onp.ArrayND[np.complex64 | np.comple
 assert_type(assoc_laguerre(c_arr, 3, 0.0), onp.ArrayND[np.complex64 | np.complex128])
 
 # polygamma
-assert_type(polygamma(1, 1.0), np.float64)
+assert_type(polygamma(1, 1.0), onp.Array0D[np.float64])
 assert_type(polygamma(1, f_arr), onp.ArrayND[np.float64])
 assert_type(polygamma(i_arr, 1.0), onp.ArrayND[np.float64])
 
