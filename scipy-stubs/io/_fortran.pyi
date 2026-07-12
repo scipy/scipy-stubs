@@ -1,4 +1,4 @@
-from typing import Literal, Self, overload
+from typing import Any, Literal, Self, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -11,10 +11,6 @@ __all__ = ["FortranEOFError", "FortranFile", "FortranFormattingError"]
 
 ###
 
-type _FileModeRW = Literal["r", "w"]
-
-###
-
 class FortranEOFError(TypeError, OSError): ...
 class FortranFormattingError(TypeError, OSError): ...
 
@@ -23,7 +19,7 @@ class FortranFile(ExitMixin):
         self,
         /,
         filename: FileLike[bytes],
-        mode: _FileModeRW = "r",
+        mode: Literal["r", "w"] = "r",
         header_dtype: onp.AnyDType = np.uint32,  # noqa: PYI011
     ) -> None: ...
 
@@ -33,7 +29,39 @@ class FortranFile(ExitMixin):
 
     #
     def write_record(self, /, *items: onp.ToArrayND) -> None: ...
-    def read_record(self, /, *dtypes: onp.ToDType, dtype: onp.ToDType | None = None) -> onp.Array1D[np.void]: ...
+
+    #
+    @overload
+    def read_record[ScalarT: np.generic](
+        self, dtype0: onp.ToDType[ScalarT], /, *, dtype: None = None
+    ) -> onp.Array1D[ScalarT]: ...
+    @overload
+    def read_record[ScalarT: np.generic](self, /, *, dtype: onp.ToDType[ScalarT]) -> onp.Array1D[ScalarT]: ...
+    @overload
+    def read_record(self, dtype0: str | type, /, *, dtype: None = None) -> onp.Array1D: ...
+    @overload
+    def read_record(self, /, *, dtype: str | type) -> onp.Array1D: ...
+    @overload
+    def read_record[T1: np.generic, T2: np.generic](
+        self, dtype0: onp.ToDType[T1], dtype1: onp.ToDType[T2], /, *, dtype: None = None
+    ) -> tuple[onp.Array1D[T1], onp.Array1D[T2]]: ...
+    @overload
+    def read_record[T1: np.generic, T2: np.generic](
+        self, dtype0: onp.ToDType[T1], /, *, dtype: onp.ToDType[T2]
+    ) -> tuple[onp.Array1D[T1], onp.Array1D[T2]]: ...
+    @overload
+    def read_record(
+        self,
+        dtype0: np.dtype[Any] | str | type,
+        dtype1: np.dtype[Any] | str | type,
+        /,
+        *dtypes: np.dtype[Any] | str | type,
+        dtype: np.dtype[Any] | str | type | None = None,
+    ) -> tuple[onp.Array1D, ...]: ...
+    @overload
+    def read_record(
+        self, dtype0: np.dtype[Any] | str | type, /, *, dtype: np.dtype[Any] | str | type
+    ) -> tuple[onp.Array1D, ...]: ...
 
     #
     @overload
