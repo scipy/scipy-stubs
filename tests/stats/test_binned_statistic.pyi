@@ -15,10 +15,10 @@ _f64_1d: onp.Array1D[np.float64]
 
 assert_type(binned_statistic(_f64_1d, _f64_1d).binnumber, onp.Array1D[np.intp])
 
-assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).binnumber, onp.Array1D[np.intp])
-assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array1D[np.intp])
-assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array2D[np.intp])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).binnumber, onp.Array2D[np.intp])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array2D[np.intp])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array3D[np.intp])
 
-assert_type(binned_statistic_dd(_f64_1d, _f64_1d).binnumber, onp.Array1D[np.intp])
-assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array1D[np.intp])
-assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array2D[np.intp])
+assert_type(binned_statistic_dd(_f64_1d, _f64_1d).binnumber, onp.Array2D[np.intp])
+assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array2D[np.intp])
+assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array3D[np.intp])
