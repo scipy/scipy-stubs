@@ -15,7 +15,6 @@ type _Real = npc.integer | npc.floating
 type _Int1D = onp.Array1D[np.int32]
 
 type _ToGraph = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
-type _Graph[RealT: _Real] = onp.CanArrayND[RealT] | _spbase[RealT, tuple[int, int]]
 
 ###
 
@@ -32,20 +31,10 @@ def connected_components(
 ) -> int: ...
 
 #
-@overload
-def breadth_first_tree[RealT: _Real](
-    csgraph: _Graph[RealT], i_start: int, directed: bool = True
-) -> csr_array[RealT, tuple[int, int]]: ...
-@overload
-def breadth_first_tree(csgraph: _ToGraph, i_start: int, directed: bool = True) -> csr_array[_Real, tuple[int, int]]: ...
+def breadth_first_tree(csgraph: _ToGraph, i_start: int, directed: bool = True) -> csr_array[np.float64, tuple[int, int]]: ...
 
 #
-@overload
-def depth_first_tree[RealT: _Real](
-    csgraph: _Graph[RealT], i_start: int, directed: bool = True
-) -> csr_array[RealT, tuple[int, int]]: ...
-@overload
-def depth_first_tree(csgraph: _ToGraph, i_start: int, directed: bool = True) -> csr_array[_Real, tuple[int, int]]: ...
+def depth_first_tree(csgraph: _ToGraph, i_start: int, directed: bool = True) -> csr_array[np.float64, tuple[int, int]]: ...
 
 #
 @overload

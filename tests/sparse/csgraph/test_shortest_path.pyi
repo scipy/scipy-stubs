@@ -22,7 +22,7 @@ assert_type(bellman_ford(_csr_arr, return_predecessors=True), tuple[onp.Array2D[
 
 # minimum_spanning_tree
 
-assert_type(minimum_spanning_tree(_csr_arr), sparse.csr_array[_ScalarType, tuple[int, int]])
+assert_type(minimum_spanning_tree(_csr_arr), sparse.csr_array[np.float64, tuple[int, int]])
 
 # shortest_path
 
