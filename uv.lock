@@ -1109,7 +1109,7 @@ type = [
 
 [package.metadata]
 requires-dist = [
-    { name = "optype", extras = ["numpy"], specifier = ">=0.14.0,<0.19" },
+    { name = "optype", extras = ["numpy"], specifier = ">=0.15.0,<0.20" },
     { name = "scipy", marker = "extra == 'scipy'", specifier = ">=1.18.0,<1.19" },
 ]
 provides-extras = ["scipy"]
