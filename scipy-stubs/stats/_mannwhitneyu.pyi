@@ -11,8 +11,10 @@ from ._typing import Alternative, NanPolicy
 ###
 
 # `Any` is used as shape-type for numpy<2.1 compatibility (because on numpy 2.0 it's invariant)
-_StatisticT_co = TypeVar("_StatisticT_co", bound=npc.floating | onp.ArrayND[npc.floating, Any], default=Any, covariant=True)
-_PValueT_co = TypeVar("_PValueT_co", bound=np.float64 | onp.ArrayND[np.float64, Any], default=Any, covariant=True)
+_StatisticT_co = TypeVar("_StatisticT_co", bound=npc.floating | onp.ArrayND[npc.floating], default=Any, covariant=True)
+_PValueT_co = TypeVar("_PValueT_co", bound=np.float64 | onp.ArrayND[np.float64], default=Any, covariant=True)
+
+type _AsFloat64 = npc.floating64 | npc.integer | np.bool
 
 type _MannwhitneyuResult0D[FloatT: npc.floating] = MannwhitneyuResult[FloatT, np.float64]
 type _MannwhitneyuResultND[FloatT: npc.floating, ShapeT: tuple[int, ...]] = MannwhitneyuResult[
@@ -21,6 +23,7 @@ type _MannwhitneyuResultND[FloatT: npc.floating, ShapeT: tuple[int, ...]] = Mann
 
 type _MannWhitneyUMethod = L["auto", "asymptotic", "exact"] | PermutationMethod
 
+type _AnyShape = tuple[Any, ...]
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 
 ###
@@ -49,8 +52,8 @@ def mwu_result_object[StatT: npc.floating | onp.ArrayND[npc.floating], PValT: np
 #
 @overload  # ?d ~f64
 def mannwhitneyu(
-    x: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
-    y: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    x: onp.ArrayND[_AsFloat64, _JustAnyShape],
+    y: onp.ArrayND[_AsFloat64, _JustAnyShape],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,
@@ -58,7 +61,7 @@ def mannwhitneyu(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _MannwhitneyuResult0D[np.float64] | _MannwhitneyuResultND[np.float64, tuple[Any, ...]]: ...
+) -> _MannwhitneyuResult0D[np.float64] | _MannwhitneyuResultND[np.float64, _AnyShape]: ...
 @overload  # ?d ~T
 def mannwhitneyu[FloatT: npc.floating](
     x: onp.ArrayND[FloatT, _JustAnyShape],
@@ -70,11 +73,11 @@ def mannwhitneyu[FloatT: npc.floating](
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _MannwhitneyuResult0D[FloatT] | _MannwhitneyuResultND[FloatT, tuple[Any, ...]]: ...
+) -> _MannwhitneyuResult0D[FloatT] | _MannwhitneyuResultND[FloatT, _AnyShape]: ...
 @overload  # 1d ~f64
 def mannwhitneyu(
-    x: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
-    y: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    x: onp.ToArrayStrict1D[float, _AsFloat64],
+    y: onp.ToArrayStrict1D[float, _AsFloat64],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,
@@ -97,8 +100,8 @@ def mannwhitneyu[FloatT: npc.floating](
 ) -> _MannwhitneyuResult0D[FloatT]: ...
 @overload  # 2d ~f64
 def mannwhitneyu(
-    x: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
-    y: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
+    x: onp.ToArrayStrict2D[float, _AsFloat64],
+    y: onp.ToArrayStrict2D[float, _AsFloat64],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,
@@ -121,8 +124,8 @@ def mannwhitneyu[FloatT: npc.floating](
 ) -> _MannwhitneyuResultND[FloatT, tuple[int]]: ...
 @overload  # 3d ~f64
 def mannwhitneyu(
-    x: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
-    y: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
+    x: onp.ToArrayStrict3D[float, _AsFloat64],
+    y: onp.ToArrayStrict3D[float, _AsFloat64],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,
@@ -145,8 +148,8 @@ def mannwhitneyu[FloatT: npc.floating](
 ) -> _MannwhitneyuResultND[FloatT, tuple[int, int]]: ...
 @overload  # nd ~f64
 def mannwhitneyu(
-    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
-    y: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    x: onp.ToArrayND[float, _AsFloat64],
+    y: onp.ToArrayND[float, _AsFloat64],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int = 0,
@@ -154,11 +157,11 @@ def mannwhitneyu(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _MannwhitneyuResult0D[np.float64] | _MannwhitneyuResultND[np.float64, tuple[Any, ...]]: ...
+) -> _MannwhitneyuResult0D[np.float64] | _MannwhitneyuResultND[np.float64, _AnyShape]: ...
 @overload  # nd ~f64, axis=None  (keyword)
 def mannwhitneyu(
-    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
-    y: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    x: onp.ToArrayND[float, _AsFloat64],
+    y: onp.ToArrayND[float, _AsFloat64],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     *,
@@ -169,8 +172,8 @@ def mannwhitneyu(
 ) -> _MannwhitneyuResult0D[np.float64]: ...
 @overload  # nd ~f64, keepdims=True
 def mannwhitneyu(
-    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
-    y: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    x: onp.ToArrayND[float, _AsFloat64],
+    y: onp.ToArrayND[float, _AsFloat64],
     use_continuity: bool = True,
     alternative: Alternative = "two-sided",
     axis: int | None = 0,
@@ -178,7 +181,7 @@ def mannwhitneyu(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> _MannwhitneyuResultND[np.float64, tuple[Any, ...]]: ...
+) -> _MannwhitneyuResultND[np.float64, _AnyShape]: ...
 @overload  # nd ~T
 def mannwhitneyu[FloatT: npc.floating](
     x: onp.ToArrayND[FloatT, FloatT],
@@ -190,7 +193,7 @@ def mannwhitneyu[FloatT: npc.floating](
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _MannwhitneyuResult0D[FloatT] | _MannwhitneyuResultND[FloatT, tuple[Any, ...]]: ...
+) -> _MannwhitneyuResult0D[FloatT] | _MannwhitneyuResultND[FloatT, _AnyShape]: ...
 @overload  # nd ~T, axis=None  (keyword)
 def mannwhitneyu[FloatT: npc.floating](
     x: onp.ToArrayND[FloatT, FloatT],
@@ -214,7 +217,7 @@ def mannwhitneyu[FloatT: npc.floating](
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> _MannwhitneyuResultND[FloatT, tuple[Any, ...]]: ...
+) -> _MannwhitneyuResultND[FloatT, _AnyShape]: ...
 @overload  # nd +floating
 def mannwhitneyu(
     x: onp.ToFloatND,
@@ -226,7 +229,7 @@ def mannwhitneyu(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _MannwhitneyuResult0D[npc.floating] | _MannwhitneyuResultND[npc.floating, tuple[Any, ...]]: ...
+) -> _MannwhitneyuResult0D[npc.floating] | _MannwhitneyuResultND[npc.floating, _AnyShape]: ...
 @overload  # nd +floating, axis=None  (keyword)
 def mannwhitneyu(
     x: onp.ToFloatND,
@@ -250,4 +253,4 @@ def mannwhitneyu(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> _MannwhitneyuResultND[npc.floating, tuple[Any, ...]]: ...
+) -> _MannwhitneyuResultND[npc.floating, _AnyShape]: ...
