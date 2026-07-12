@@ -58,9 +58,9 @@ class _lil_base(_spbase[_ScalarT_co, tuple[int, int]], IndexMixin[_ScalarT_co, t
 
     #
     @override
-    def __iadd__(self, other: onp.ToFalse | _spbase | onp.ArrayND[npc.number | np.bool], /) -> Self: ...
+    def __iadd__(self, other: onp.ToFalse | _spbase | onp.ArrayND[npc.number | np.bool], /) -> Self: ...  # type:ignore[override]
     @override
-    def __isub__(self, other: onp.ToFalse | _spbase | onp.ArrayND[npc.number | np.bool], /) -> Self: ...
+    def __isub__(self, other: onp.ToFalse | _spbase | onp.ArrayND[npc.number | np.bool], /) -> Self: ...  # type:ignore[override]
     @override
     def __imul__(self, other: onp.ToComplex, /) -> Self: ...  # type: ignore[override]
     @override
@@ -92,6 +92,9 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> lil_array[Any]: ...
 
     # NOTE: keep the in sync with `lil_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
@@ -295,6 +298,9 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @override
     @type_check_only
     def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_matrix[_ScalarT]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> lil_matrix[Any]: ...
 
     # NOTE: keep the in sync with `lil_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None

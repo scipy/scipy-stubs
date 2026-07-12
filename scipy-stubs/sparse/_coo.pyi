@@ -160,6 +160,9 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     @override
     @type_check_only
     def __assoc_as_float64__(self, /) -> coo_array[np.float64, _ShapeT_co]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> coo_array[Any, _ShapeT_co]: ...
 
     # NOTE: keep in sync with `coo_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None
@@ -596,6 +599,9 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     @override
     @type_check_only
     def __assoc_as_float64__(self, /) -> coo_matrix[np.float64]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> coo_matrix[Any]: ...
 
     #
     @property

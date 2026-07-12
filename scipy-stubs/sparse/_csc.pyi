@@ -78,6 +78,9 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     @override
     @type_check_only
     def __assoc_as_float64__(self, /) -> csc_array[np.float64]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> csc_array[Any]: ...
 
     # NOTE: keep in sync with `csc_matrix.__init__`
     @overload  # matrix-like (known dtype)
@@ -267,6 +270,9 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @override
     @type_check_only
     def __assoc_as_float64__(self, /) -> csc_matrix[np.float64]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> csc_matrix[Any]: ...
 
     # NOTE: keep in sync with `csc_array.__init__`
     @overload  # matrix-like (known dtype)

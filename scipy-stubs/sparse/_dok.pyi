@@ -177,6 +177,9 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __assoc_as_float32__(self, /) -> dok_array[np.float32, _ShapeT_co]: ...
     @type_check_only
     def __assoc_as_float64__(self, /) -> dok_array[np.float64, _ShapeT_co]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> dok_array[Any, _ShapeT_co]: ...
 
     # NOTE: keep the 2d overloads in sync with `dok_matrix.__init__`
     # TODO(jorenham): Overloads for specific shape types.
@@ -609,6 +612,9 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     def __assoc_as_float32__(self, /) -> dok_matrix[np.float32]: ...
     @type_check_only
     def __assoc_as_float64__(self, /) -> dok_matrix[np.float64]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> dok_matrix[Any]: ...
 
     #
     @property
