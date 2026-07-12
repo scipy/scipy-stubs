@@ -654,22 +654,16 @@ class IdentityOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _Sh
 
 #
 @overload
-def aslinearoperator[InexactT: npc.inexact, ShapeT: _Shape](
-    A: nptc.CanArray[ShapeT, np.dtype[InexactT]],
-) -> MatrixLinearOperator[InexactT, ShapeT]: ...
+def aslinearoperator[ScalarT: _Scalar, ShapeT: _Shape](
+    A: nptc.CanArray[ShapeT, np.dtype[ScalarT]],
+) -> MatrixLinearOperator[ScalarT, ShapeT]: ...
 @overload
-def aslinearoperator[InexactT: npc.inexact, ShapeT: _Shape](
-    A: _spbase[InexactT, ShapeT],
-) -> MatrixLinearOperator[InexactT, ShapeT]: ...
+def aslinearoperator[ScalarT: _Scalar, ShapeT: _Shape](A: _spbase[ScalarT, ShapeT]) -> MatrixLinearOperator[ScalarT, ShapeT]: ...
 @overload
-def aslinearoperator[ShapeT: _Shape](
-    A: onp.ArrayND[np.bool | npc.integer | np.float64, ShapeT] | _spbase[np.bool | npc.integer | np.float64, ShapeT],
-) -> MatrixLinearOperator[np.float64, ShapeT]: ...
+def aslinearoperator[ScalarT: npc.inexact, ShapeT: _Shape](
+    A: _HasShapeAndDTypeAndMatVec[ScalarT, ShapeT],
+) -> MatrixLinearOperator[ScalarT, ShapeT]: ...
 @overload
-def aslinearoperator[InexactT: npc.inexact, ShapeT: _Shape](
-    A: _HasShapeAndDTypeAndMatVec[InexactT, ShapeT],
-) -> MatrixLinearOperator[InexactT, ShapeT]: ...
-@overload
-def aslinearoperator[InexactT: npc.inexact, ShapeT: _Shape](
-    A: _HasShapeAndMatVec[InexactT, ShapeT],
-) -> MatrixLinearOperator[InexactT, ShapeT]: ...
+def aslinearoperator[ScalarT: npc.inexact, ShapeT: _Shape](
+    A: _HasShapeAndMatVec[ScalarT, ShapeT],
+) -> MatrixLinearOperator[ScalarT, ShapeT]: ...
