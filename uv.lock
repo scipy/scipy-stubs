@@ -1128,7 +1128,7 @@ dev = [
     { name = "ruff", specifier = "==0.15.21" },
     { name = "scipy-stubs", extras = ["scipy"] },
     { name = "sp-repo-review", extras = ["cli"], specifier = "==2026.6.18" },
-    { name = "stubdefaulter", git = "https://github.com/JelleZijlstra/stubdefaulter.git?rev=ebe9e31" },
+    { name = "stubdefaulter", git = "https://github.com/JelleZijlstra/stubdefaulter.git?rev=866ecca" },
     { name = "ty", specifier = "==0.0.59" },
     { name = "zuban", specifier = "==0.9.0" },
 ]
@@ -1148,7 +1148,7 @@ type = [
     { name = "pyrefly", specifier = "==1.1.1" },
     { name = "pytest", specifier = "==9.1.1" },
     { name = "scipy-stubs", extras = ["scipy"] },
-    { name = "stubdefaulter", git = "https://github.com/JelleZijlstra/stubdefaulter.git?rev=ebe9e31" },
+    { name = "stubdefaulter", git = "https://github.com/JelleZijlstra/stubdefaulter.git?rev=866ecca" },
     { name = "ty", specifier = "==0.0.59" },
     { name = "zuban", specifier = "==0.9.0" },
 ]
@@ -1183,7 +1183,7 @@ cli = [
 [[package]]
 name = "stubdefaulter"
 version = "0.1.0"
-source = { git = "https://github.com/JelleZijlstra/stubdefaulter.git?rev=ebe9e31#ebe9e31c1643a0c26ec7fee89af59222b4a903ee" }
+source = { git = "https://github.com/JelleZijlstra/stubdefaulter.git?rev=866ecca#866ecca61ce8e8e06b53c0135d52f862cb68bc07" }
 dependencies = [
     { name = "libcst" },
     { name = "termcolor" },
