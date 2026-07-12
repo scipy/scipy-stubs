@@ -86,7 +86,7 @@ dev = [
 
 [tool.uv.sources]
 # the required stubdefaulter features not released yet (>0.1.0)
-stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "ebe9e31" }
+stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "866ecca" }
 
 [tool.typos]
 files = { extend-exclude = ["*.pyi", ".mypyignore"] }
