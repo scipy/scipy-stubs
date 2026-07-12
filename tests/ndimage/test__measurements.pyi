@@ -58,7 +58,8 @@ assert_type(label(int_2d), tuple[onp.ArrayND[np.int32 | np.intp], int])
 ###
 # find_objects
 
-assert_type(find_objects(int_2d), list[tuple[slice, ...]])
+assert_type(find_objects(1), list[tuple[()] | None])
+assert_type(find_objects(int_2d), list[tuple[slice[int, int, None], ...] | None])
 
 ###
 # value_indices
