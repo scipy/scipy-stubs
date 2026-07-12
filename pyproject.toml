@@ -10,7 +10,7 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 [project]
 name = "scipy-stubs"
 version = "1.18.0.1.dev0"
-description = "Type annotations for SciPy"
+description = "The official type stubs for SciPy"
 readme = "README.md"
 authors = [
   { name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com" },
