@@ -729,7 +729,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         self, key: _ToKey1D | onp.CanArrayND[np.bool | npc.integer] | _spbase[np.bool, _2D] | list[int] | slice, /
     ) -> Self: ...
     @overload
-    def __getitem__(self, key: _ToKey2D, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __getitem__(self, key: _ToKey2D, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
 
     #
     @override
