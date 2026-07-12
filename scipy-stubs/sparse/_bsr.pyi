@@ -92,6 +92,9 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     @override
     @type_check_only
     def __assoc_as_float64__(self, /) -> bsr_array[np.float64]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> bsr_array[Any]: ...
 
     # NOTE: keep in sync with `bsr_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
@@ -283,6 +286,9 @@ class bsr_matrix(_bsr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @override
     @type_check_only
     def __assoc_as_float64__(self, /) -> bsr_matrix[np.float64]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> bsr_matrix[Any]: ...
 
     # NOTE: keep in sync with `bsr_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None

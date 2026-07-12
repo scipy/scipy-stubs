@@ -69,6 +69,9 @@ class dia_array(_dia_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     @override
     @type_check_only
     def __assoc_as_float64__(self, /) -> dia_array[np.float64]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> dia_array[Any]: ...
 
     # NOTE: keep in sync with `dia_matrix.__init__`
     @overload  # matrix-like (known dtype), dtype: None
@@ -241,6 +244,9 @@ class dia_matrix(_dia_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @override
     @type_check_only
     def __assoc_as_float64__(self, /) -> dia_matrix[np.float64]: ...
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> dia_matrix[Any]: ...
 
     # NOTE: keep in sync with `dia_array.__init__`
     @overload  # matrix-like (known dtype), dtype: None
