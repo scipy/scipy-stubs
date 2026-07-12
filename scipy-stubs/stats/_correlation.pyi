@@ -2,6 +2,7 @@ from typing import Any, Literal as L, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from . import _resampling
 from ._stats_mstats_common import SiegelslopesResult, TheilslopesResult
@@ -204,7 +205,7 @@ def siegelslopes(
 def theilslopes(
     y: onp.ToFloatND,
     x: onp.ToFloatND | None = None,
-    alpha: onp.ToJustFloat = 0.95,
+    alpha: float | npc.floating = 0.95,
     method: _SlopesMethod = "separate",
     *,
     axis: None = None,
@@ -215,7 +216,7 @@ def theilslopes(
 def theilslopes(
     y: onp.ToFloatStrict1D,
     x: onp.ToFloatStrict1D | None = None,
-    alpha: onp.ToJustFloat = 0.95,
+    alpha: float | npc.floating = 0.95,
     method: _SlopesMethod = "separate",
     *,
     axis: int | None = None,
@@ -226,7 +227,7 @@ def theilslopes(
 def theilslopes(
     y: onp.ToFloatStrict2D,
     x: onp.ToFloatStrict2D | None = None,
-    alpha: onp.ToJustFloat = 0.95,
+    alpha: float | npc.floating = 0.95,
     method: _SlopesMethod = "separate",
     *,
     axis: int,
@@ -237,7 +238,7 @@ def theilslopes(
 def theilslopes(
     y: onp.ToFloatStrict3D,
     x: onp.ToFloatStrict3D | None = None,
-    alpha: onp.ToJustFloat = 0.95,
+    alpha: float | npc.floating = 0.95,
     method: _SlopesMethod = "separate",
     *,
     axis: int,
@@ -248,7 +249,7 @@ def theilslopes(
 def theilslopes(
     y: onp.ToFloatND,
     x: onp.ToFloatND | None = None,
-    alpha: onp.ToJustFloat = 0.95,
+    alpha: float | npc.floating = 0.95,
     method: _SlopesMethod = "separate",
     *,
     axis: int | None = None,
@@ -259,7 +260,7 @@ def theilslopes(
 def theilslopes(
     y: onp.ToFloatND,
     x: onp.ToFloatND | None = None,
-    alpha: onp.ToJustFloat = 0.95,
+    alpha: float | npc.floating = 0.95,
     method: _SlopesMethod = "separate",
     *,
     axis: int | None = None,
