@@ -29,7 +29,7 @@ assert_type(breadth_first_order(_csr_arr, 0), tuple[onp.Array1D[np.int32], onp.A
 
 # breadth_first_tree
 
-assert_type(breadth_first_tree(_csr_arr, 0), sparse.csr_array[_ScalarType, tuple[int, int]])
+assert_type(breadth_first_tree(_csr_arr, 0), sparse.csr_array[np.float64, tuple[int, int]])
 
 # depth_first_order
 
@@ -39,7 +39,7 @@ assert_type(depth_first_order(_csr_arr, 0), tuple[onp.Array1D[np.int32], onp.Arr
 
 # depth_first_tree
 
-assert_type(depth_first_tree(_csr_arr, 0), sparse.csr_array[_ScalarType, tuple[int, int]])
+assert_type(depth_first_tree(_csr_arr, 0), sparse.csr_array[np.float64, tuple[int, int]])
 
 # connected_components
 
