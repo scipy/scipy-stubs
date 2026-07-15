@@ -1,5 +1,5 @@
 from collections.abc import Mapping, Sequence
-from typing import IO, Any, Final, Generic, Literal, Self, SupportsIndex, overload, override
+from typing import IO, Any, Final, Generic, Literal, Protocol, Self, SupportsIndex, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -38,6 +38,14 @@ type _TypeFill = Literal[
     b"\x7c\xf0\x00\x00",
     b"\x47\x9e\x00\x00\x00\x00\x00\x00",
 ]  # fmt: skip
+
+@type_check_only
+class _CanPhantomScalarType[ScalarT](Protocol):
+    def __phantom_scalar_type__(self, /) -> ScalarT: ...
+
+@type_check_only
+class _CanItem[ItemT](Protocol):
+    def item(self) -> ItemT: ...
 
 ###
 
@@ -108,6 +116,9 @@ class netcdf_variable(Generic[_ShapeT_co, _ScalarT_co]):
     dimensions: Final[Sequence[str]]
     maskandscale: Final[bool]
 
+    @type_check_only
+    def __phantom_scalar_type__(self, /) -> _ScalarT_co: ...
+
     #
     @property
     def isrec(self, /) -> bool: ...
@@ -143,7 +154,12 @@ class netcdf_variable(Generic[_ShapeT_co, _ScalarT_co]):
 
     #
     def assignValue(self, /, value: object) -> None: ...
-    def getValue(self, /) -> _ScalarT_co: ...
+
+    # chain protocols to obtain the type of `self.data.item()`
+    # `.data` can't be matched directly because `ndarray.item()` is overloaded
+    def getValue[ItemT](self: _CanPhantomScalarType[_CanItem[ItemT]], /) -> ItemT: ...
+
+    #
     def typecode(self, /) -> str: ...
     def itemsize(self, /) -> int: ...
 
