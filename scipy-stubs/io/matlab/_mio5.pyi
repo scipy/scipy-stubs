@@ -1,6 +1,6 @@
 import io
 from collections.abc import Iterable, Mapping
-from typing import IO, Final, Literal, TypedDict, final, type_check_only
+from typing import IO, Any, Final, Literal, TypedDict, final, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -17,7 +17,7 @@ type _OnedAs = Literal["row", "column"]
 
 @type_check_only
 class _MatFile5Header(TypedDict):
-    __header__: str
+    __header__: bytes
     __version__: str
 
 ###
@@ -51,7 +51,7 @@ class MatFile5Reader(MatFileReader):
     def initialize_read(self, /) -> None: ...
     def read_var_header(self, /) -> tuple[object, int]: ...
     def read_var_array(self, /, header: Mapping[str, object], process: bool = True) -> onp.Array: ...
-    def get_variables(self, /, variable_names: Iterable[str] | None = None) -> dict[str, str | list[str] | onp.Array]: ...
+    def get_variables(self, /, variable_names: Iterable[str] | None = None) -> dict[str, Any]: ...
     def list_variables(self, /) -> list[tuple[str, tuple[int, ...], str]]: ...
 
 class VarWriter5:
