@@ -29,10 +29,9 @@ __all__ = [
 ]
 
 ###
-
-type __Func1 = Callable[[onp.ToComplex | onp.ToComplexND], onp.ToComplex]
-type __Func2 = Callable[[onp.ToComplex | onp.ToComplexND, onp.ToComplex | onp.ToComplexND], onp.ToComplex]
-type _ComprehensionFunc = __Func1 | __Func2
+type __Func1[T] = Callable[[onp.ToComplex | onp.ToComplexND], T]
+type __Func2[T] = Callable[[onp.ToComplex | onp.ToComplexND, onp.ToComplex | onp.ToComplexND], T]
+type _ComprehensionFunc[T] = __Func1[T] | __Func2[T]
 
 type _Idx0D = tuple[np.intp, ...]
 type _IdxND = list[_Idx0D]
@@ -72,11 +71,21 @@ def value_indices(
 
 #
 @overload
-def labeled_comprehension[ScalarT: npc.number | np.bool](
+def labeled_comprehension[T](
     input: onp.ToComplex | onp.ToComplexND,
     labels: onp.ToComplex | onp.ToComplexND | None,
-    index: onp.ToInt | None,
-    func: _ComprehensionFunc,
+    index: None,
+    func: _ComprehensionFunc[T],
+    out_dtype: object,
+    default: object,
+    pass_positions: bool = False,
+) -> T: ...
+@overload
+def labeled_comprehension[ScalarT: npc.number | np.bool](
+    input: onp.ToComplex | onp.ToComplexND,
+    labels: onp.ToComplex | onp.ToComplexND,
+    index: onp.ToInt,
+    func: _ComprehensionFunc[onp.ToComplex],
     out_dtype: _DTypeLike[ScalarT],
     default: onp.ToFloat,
     pass_positions: bool = False,
@@ -84,9 +93,9 @@ def labeled_comprehension[ScalarT: npc.number | np.bool](
 @overload
 def labeled_comprehension[ScalarT: npc.number | np.bool](
     input: onp.ToComplex | onp.ToComplexND,
-    labels: onp.ToComplex | onp.ToComplexND | None,
+    labels: onp.ToComplex | onp.ToComplexND,
     index: onp.ToIntND,
-    func: _ComprehensionFunc,
+    func: _ComprehensionFunc[onp.ToComplex],
     out_dtype: _DTypeLike[ScalarT],
     default: onp.ToFloat,
     pass_positions: bool = False,
@@ -94,9 +103,9 @@ def labeled_comprehension[ScalarT: npc.number | np.bool](
 @overload
 def labeled_comprehension(
     input: onp.ToComplex | onp.ToComplexND,
-    labels: onp.ToComplex | onp.ToComplexND | None,
-    index: onp.ToInt | None,
-    func: _ComprehensionFunc,
+    labels: onp.ToComplex | onp.ToComplexND,
+    index: onp.ToInt,
+    func: _ComprehensionFunc[onp.ToComplex],
     out_dtype: onp.AnyIntPDType,
     default: onp.ToInt,
     pass_positions: bool = False,
@@ -104,9 +113,9 @@ def labeled_comprehension(
 @overload
 def labeled_comprehension(
     input: onp.ToComplex | onp.ToComplexND,
-    labels: onp.ToComplex | onp.ToComplexND | None,
+    labels: onp.ToComplex | onp.ToComplexND,
     index: onp.ToIntND,
-    func: _ComprehensionFunc,
+    func: _ComprehensionFunc[onp.ToComplex],
     out_dtype: onp.AnyIntPDType,
     default: onp.ToInt,
     pass_positions: bool = False,
@@ -114,9 +123,9 @@ def labeled_comprehension(
 @overload
 def labeled_comprehension(
     input: onp.ToComplex | onp.ToComplexND,
-    labels: onp.ToComplex | onp.ToComplexND | None,
-    index: onp.ToInt | None,
-    func: _ComprehensionFunc,
+    labels: onp.ToComplex | onp.ToComplexND,
+    index: onp.ToInt,
+    func: _ComprehensionFunc[onp.ToComplex],
     out_dtype: onp.AnyFloat64DType | None,
     default: onp.ToFloat,
     pass_positions: bool = False,
@@ -124,9 +133,9 @@ def labeled_comprehension(
 @overload
 def labeled_comprehension(
     input: onp.ToComplex | onp.ToComplexND,
-    labels: onp.ToComplex | onp.ToComplexND | None,
+    labels: onp.ToComplex | onp.ToComplexND,
     index: onp.ToIntND,
-    func: _ComprehensionFunc,
+    func: _ComprehensionFunc[onp.ToComplex],
     out_dtype: onp.AnyFloat64DType | None,
     default: onp.ToFloat,
     pass_positions: bool = False,
@@ -134,9 +143,9 @@ def labeled_comprehension(
 @overload
 def labeled_comprehension(
     input: onp.ToComplex | onp.ToComplexND,
-    labels: onp.ToComplex | onp.ToComplexND | None,
-    index: onp.ToInt | None,
-    func: _ComprehensionFunc,
+    labels: onp.ToComplex | onp.ToComplexND,
+    index: onp.ToInt,
+    func: _ComprehensionFunc[onp.ToComplex],
     out_dtype: onp.AnyComplex128DType,
     default: onp.ToComplex,
     pass_positions: bool = False,
@@ -144,9 +153,9 @@ def labeled_comprehension(
 @overload
 def labeled_comprehension(
     input: onp.ToComplex | onp.ToComplexND,
-    labels: onp.ToComplex | onp.ToComplexND | None,
+    labels: onp.ToComplex | onp.ToComplexND,
     index: onp.ToIntND,
-    func: _ComprehensionFunc,
+    func: _ComprehensionFunc[onp.ToComplex],
     out_dtype: onp.AnyComplex128DType,
     default: onp.ToComplex,
     pass_positions: bool = False,
