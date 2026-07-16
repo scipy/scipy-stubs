@@ -71,14 +71,14 @@ assert_type(bsr_matrix(_seq_seq_complex), bsr_matrix[np.complex128])  # type: ig
 
 assert_type(bsr_array(_data2), bsr_array[ScalarType])
 assert_type(bsr_array(_data2, dtype=_dtype), bsr_array[ScalarType])
-assert_type(bsr_array(_data2_concrete, dtype=np.bool_), bsr_array[np.bool_])  # type: ignore[assert-type]
+assert_type(bsr_array(_data2_concrete, dtype=np.bool_), bsr_array[np.bool_])
 assert_type(bsr_array(_data2_concrete, dtype=np.int_), bsr_array[np.int_])
 assert_type(bsr_array(_data2_concrete, dtype=np.float64), bsr_array[np.float64])
 assert_type(bsr_array(_data2_concrete, dtype=np.complex128), bsr_array[np.complex128])
 
 assert_type(bsr_matrix(_data2), bsr_matrix[ScalarType])
 assert_type(bsr_matrix(_data2, dtype=_dtype), bsr_matrix[ScalarType])
-assert_type(bsr_matrix(_data2_concrete, dtype=np.bool_), bsr_matrix[np.bool_])  # type: ignore[assert-type]
+assert_type(bsr_matrix(_data2_concrete, dtype=np.bool_), bsr_matrix[np.bool_])
 assert_type(bsr_matrix(_data2_concrete, dtype=np.int_), bsr_matrix[np.int_])
 assert_type(bsr_matrix(_data2_concrete, dtype=np.float64), bsr_matrix[np.float64])
 assert_type(bsr_matrix(_data2_concrete, dtype=np.complex128), bsr_matrix[np.complex128])
