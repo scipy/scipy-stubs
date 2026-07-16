@@ -57,7 +57,7 @@ def _check_stubs_path() -> None:
 def _path_to_module(parts: tuple[str, ...]) -> str | None:
     name_parts: Sequence[str] = []
     if parts and parts[0] == "scipy" and "tests" not in parts:
-        *parent, leaf = parts
+        *parent, leaf = parts  # zuban:ignore[misc]
         if leaf in _INIT_LEAVES:
             name_parts = parent
         elif leaf != "conftest.py" and leaf.endswith(_MODULE_SUFFIXES):

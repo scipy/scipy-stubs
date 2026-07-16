@@ -1,5 +1,6 @@
+from _typeshed import Unused
 from collections.abc import Callable, Mapping
-from typing import Any, Literal, TypeAlias
+from typing import Any, Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -9,16 +10,18 @@ from scipy.optimize._typing import TRSolver
 from scipy.sparse import sparray, spmatrix
 from scipy.sparse.linalg import LinearOperator
 
-_Ignored: TypeAlias = object
-_ValueFloat: TypeAlias = float | np.float64
+###
 
-_ArrayFloat: TypeAlias = onp.ArrayND[np.float64]
-_MatrixFloat: TypeAlias = onp.ArrayND[np.float64] | sparray | spmatrix | LinearOperator
+type _ValueFloat = float | np.float64
+type _ArrayFloat = onp.ArrayND[np.float64]
+type _MatrixFloat = onp.ArrayND[np.float64] | sparray | spmatrix | LinearOperator
 
-_FunObj: TypeAlias = Callable[[onp.Array1D[np.float64], _ValueFloat], _MatrixFloat]
-_FunJac: TypeAlias = Callable[[onp.Array1D[np.float64], _ValueFloat], _MatrixFloat]
-_FunLoss: TypeAlias = Callable[[_ValueFloat], _ValueFloat]
-_FunCallback: TypeAlias = Callable[[OptimizeResult], _Ignored]
+type _FunObj = Callable[[onp.Array1D[np.float64], _ValueFloat], _MatrixFloat]
+type _FunJac = Callable[[onp.Array1D[np.float64], _ValueFloat], _MatrixFloat]
+type _FunLoss = Callable[[_ValueFloat], _ValueFloat]
+type _FunCallback = Callable[[OptimizeResult], Unused]
+
+###
 
 class OptimizeResult(_OptimizeResult):
     x: _ArrayFloat

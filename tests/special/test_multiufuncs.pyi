@@ -1,4 +1,4 @@
-from typing import Any, TypeAlias, assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -14,17 +14,23 @@ from scipy.special import (
     sph_legendre_p_all,
 )
 
-_Float1_D: TypeAlias = onp.Array[onp.AtLeast1D[Any], np.float64]
-_Float2_D: TypeAlias = onp.Array[onp.AtLeast2D[Any], np.float64]
-_Float3_D: TypeAlias = onp.Array[onp.AtLeast3D[Any], np.float64]
-_Complex0D: TypeAlias = onp.Array0D[np.complex128]
-_Complex2D: TypeAlias = onp.Array2D[np.complex128]
-_Complex1_D: TypeAlias = onp.Array[onp.AtLeast1D[Any], np.complex128]
-_Complex3_D: TypeAlias = onp.Array[onp.AtLeast3D[Any], np.complex128]
+###
+
+type _Float1_D = onp.Array[onp.AtLeast1D[Any], np.float64]
+type _Float2_D = onp.Array[onp.AtLeast2D[Any], np.float64]
+type _Float3_D = onp.Array[onp.AtLeast3D[Any], np.float64]
+type _Complex0D = onp.Array0D[np.complex128]
+type _Complex2D = onp.Array2D[np.complex128]
+type _Complex1_D = onp.Array[onp.AtLeast1D[Any], np.complex128]
+type _Complex3_D = onp.Array[onp.AtLeast3D[Any], np.complex128]
+
+###
 
 _i64_1d: onp.Array1D[np.int64]
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
+
+###
 
 # legendre_p
 assert_type(legendre_p(1, 1.0), onp.Array1D[np.float64])
@@ -34,12 +40,12 @@ assert_type(legendre_p(1, 1.0, diff_n=True), onp.Array1D[np.float64])
 assert_type(legendre_p(1, 1.0, diff_n=1), onp.Array1D[np.float64])
 
 # legendre_p_all
-assert_type(legendre_p_all(3, 1.0), _Float3_D)
-assert_type(legendre_p_all(n=3, z=np.float32(1.0)), _Float3_D)
+assert_type(legendre_p_all(3, 1.0), onp.Array2D[np.float64])
+assert_type(legendre_p_all(n=3, z=np.float32(1.0)), onp.Array2D[np.float64])
+assert_type(legendre_p_all(3, 1.0, diff_n=True), onp.Array2D[np.float64])
+assert_type(legendre_p_all(3, 1.0, diff_n=2), onp.Array2D[np.float64])
 assert_type(legendre_p_all(3, _f64_1d), _Float3_D)
 assert_type(legendre_p_all(3, _f64_2d), _Float3_D)
-assert_type(legendre_p_all(3, 1.0, diff_n=True), _Float3_D)
-assert_type(legendre_p_all(3, 1.0, diff_n=2), _Float3_D)
 
 # assoc_legendre_p
 assert_type(assoc_legendre_p(3, 2, 1.0), _Float1_D)

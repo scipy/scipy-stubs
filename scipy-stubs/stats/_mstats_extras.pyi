@@ -1,8 +1,8 @@
-from typing import SupportsIndex, TypeAlias, overload
-from typing_extensions import TypeVar
+from typing import SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = [
     "compare_medians_ms",
@@ -17,12 +17,13 @@ __all__ = [
     "trimmed_mean_ci",
 ]
 
-_T = TypeVar("_T")
-_Tuple2: TypeAlias = tuple[_T, _T]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
+###
 
-_ToProb: TypeAlias = onp.ToFloat | onp.ToFloatND
-_ToAxis: TypeAlias = SupportsIndex | None
+type _Tuple2[T] = tuple[T, T]
+type _FloatND = onp.ArrayND[np.float64]
+
+type _ToProb = onp.ToFloat | onp.ToFloatND
+type _ToAxis = SupportsIndex | None
 
 ###
 
@@ -57,7 +58,7 @@ def trimmed_mean_ci(
     data: onp.ToFloatND,
     limits: _Tuple2[onp.ToFloat] | None = (0.2, 0.2),
     inclusive: _Tuple2[bool] = (True, True),
-    alpha: onp.ToJustFloat = 0.05,
+    alpha: float | npc.floating = 0.05,
     axis: _ToAxis = None,
 ) -> _FloatND: ...
 
@@ -66,16 +67,18 @@ def mjci(data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis =
 
 #
 def mquantiles_cimj(
-    data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), alpha: onp.ToJustFloat = 0.05, axis: _ToAxis = None
+    data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), alpha: float | npc.floating = 0.05, axis: _ToAxis = None
 ) -> _Tuple2[_FloatND]: ...
 
 #
 @overload
-def median_cihs(data: onp.ToFloatND, alpha: onp.ToJustFloat = 0.05, axis: None = None) -> _Tuple2[np.float64]: ...
+def median_cihs(data: onp.ToFloatND, alpha: float | npc.floating = 0.05, axis: None = None) -> _Tuple2[np.float64]: ...
 @overload
-def median_cihs(data: onp.ToFloatND, alpha: onp.ToJustFloat, axis: SupportsIndex) -> _Tuple2[np.float64 | _FloatND]: ...
+def median_cihs(data: onp.ToFloatND, alpha: float | npc.floating, axis: SupportsIndex) -> _Tuple2[np.float64 | _FloatND]: ...
 @overload
-def median_cihs(data: onp.ToFloatND, alpha: onp.ToJustFloat = 0.05, *, axis: SupportsIndex) -> _Tuple2[np.float64 | _FloatND]: ...
+def median_cihs(
+    data: onp.ToFloatND, alpha: float | npc.floating = 0.05, *, axis: SupportsIndex
+) -> _Tuple2[np.float64 | _FloatND]: ...
 
 #
 @overload

@@ -65,14 +65,14 @@ class TransformedDensityRejection(Method):
         cls,
         dist: _TDRDist,
         *,
-        mode: float | None = ...,
-        center: float | None = ...,
-        domain: tuple[float, float] | None = ...,
-        c: float = ...,
-        construction_points: onp.ToFloatND = ...,
-        use_dars: bool = ...,
-        max_squeeze_hat_ratio: float = ...,
-        random_state: onp.random.ToRNG | None = ...,
+        mode: float | None = None,
+        center: float | None = None,
+        domain: tuple[float, float] | None = None,
+        c: float = -0.5,
+        construction_points: int | onp.ToFloatND = 30,
+        use_dars: bool = True,
+        max_squeeze_hat_ratio: float = 0.99,
+        random_state: onp.random.ToRNG | None = None,
     ) -> Self: ...
     @property
     def hat_area(self, /) -> float: ...
@@ -90,11 +90,11 @@ class SimpleRatioUniforms(Method):
         cls,
         dist: _HasPDF,
         *,
-        mode: float | None = ...,
-        pdf_area: float = ...,
-        domain: tuple[float, float] | None = ...,
-        cdf_at_mode: float = ...,
-        random_state: onp.random.ToRNG | None = ...,
+        mode: float | None = None,
+        pdf_area: float = 1,
+        domain: tuple[float, float] | None = None,
+        cdf_at_mode: float | None = None,
+        random_state: onp.random.ToRNG | None = None,
     ) -> Self: ...
 
 class NumericalInversePolynomial(_PPFMethodMixin, Method):
@@ -102,12 +102,12 @@ class NumericalInversePolynomial(_PPFMethodMixin, Method):
         cls,
         dist: _PINVDist,
         *,
-        mode: float | None = ...,
-        center: float | None = ...,
-        domain: tuple[float, float] | None = ...,
-        order: int = ...,
-        u_resolution: float = ...,
-        random_state: onp.random.ToRNG | None = ...,
+        mode: float | None = None,
+        center: float | None = None,
+        domain: tuple[float, float] | None = None,
+        order: int = 5,
+        u_resolution: float = 1e-10,
+        random_state: onp.random.ToRNG | None = None,
     ) -> Self: ...
     @property
     def intervals(self, /) -> int: ...
@@ -125,12 +125,11 @@ class NumericalInverseHermite(_PPFMethodMixin, Method):
         cls,
         dist: _HasCDF,
         *,
-        domain: tuple[float, float] | None = ...,
-        order: int = ...,
-        u_resolution: float = ...,
-        construction_points: onp.ToFloatND | None = ...,
-        max_intervals: int = ...,
-        random_state: onp.random.ToRNG | None = ...,
+        domain: tuple[float, float] | None = None,
+        order: int = 3,
+        u_resolution: float = 1e-12,
+        construction_points: onp.ToFloatND | None = None,
+        random_state: onp.random.ToRNG | None = None,
     ) -> Self: ...
     @property
     def intervals(self, /) -> int: ...
@@ -146,9 +145,9 @@ class DiscreteAliasUrn(Method):
         cls,
         dist: onp.ToFloat | onp.ToFloatND | _HasPMF,
         *,
-        domain: tuple[float, float] | None = ...,
-        urn_factor: float = ...,
-        random_state: onp.random.ToRNG | None = ...,
+        domain: tuple[float, float] | None = None,
+        urn_factor: float = 1,
+        random_state: onp.random.ToRNG | None = None,
     ) -> Self: ...
 
 class DiscreteGuideTable(_PPFMethodMixin, Method):
@@ -156,7 +155,7 @@ class DiscreteGuideTable(_PPFMethodMixin, Method):
         cls,
         dist: onp.ToFloat | onp.ToFloatND | _HasPMF,
         *,
-        domain: tuple[float, float] | None = ...,
-        guide_factor: float = ...,
-        random_state: onp.random.ToRNG | None = ...,
+        domain: tuple[float, float] | None = None,
+        guide_factor: float = 1,
+        random_state: onp.random.ToRNG | None = None,
     ) -> Self: ...

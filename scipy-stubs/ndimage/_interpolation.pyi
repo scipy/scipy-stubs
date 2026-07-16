@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Concatenate, Literal, TypeAlias, TypeVar, overload
+from typing import Any, Concatenate, Literal, overload
 
 import numpy as np
 import optype as op
@@ -17,14 +17,12 @@ __all__ = [
     "zoom",
 ]
 
-_ScalarT = TypeVar("_ScalarT", bound=np.generic)
-_NumberT = TypeVar("_NumberT", bound=npc.number)
-_ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND[np.bool | npc.integer | npc.inexact32 | npc.inexact64])
+###
 
-_Order: TypeAlias = Literal[0, 1, 2, 3, 4, 5]
-_Mode: TypeAlias = Literal["reflect", "grid-mirror", "constant", "grid-constant", "nearest", "mirror", "wrap", "grid-wrap"]
-_MappingFunc: TypeAlias = Callable[Concatenate[tuple[int, ...], ...], tuple[onp.ToFloat, ...]]
-_ArrayOrDType: TypeAlias = onp.ArrayND[_ScalarT] | type[_ScalarT] | np.dtype[_ScalarT]
+type _Order = Literal[0, 1, 2, 3, 4, 5]
+type _Mode = Literal["reflect", "grid-mirror", "constant", "grid-constant", "nearest", "mirror", "wrap", "grid-wrap"]
+type _MappingFunc = Callable[Concatenate[tuple[int, ...], ...], tuple[onp.ToFloat, ...]]
+type _ArrayOrDType[ScalarT: np.generic] = onp.ArrayND[ScalarT] | type[ScalarT] | np.dtype[ScalarT]
 
 #
 @overload
@@ -40,13 +38,13 @@ def spline_filter1d(
     input: onp.ToComplexND, order: _Order = 3, axis: int = -1, *, output: type[op.JustComplex], mode: _Mode = "mirror"
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
-def spline_filter1d(
-    input: onp.ToComplexND, order: _Order, axis: int, output: _ArrayOrDType[_ScalarT], mode: _Mode = "mirror"
-) -> onp.ArrayND[_ScalarT]: ...
+def spline_filter1d[ScalarT: np.generic](
+    input: onp.ToComplexND, order: _Order, axis: int, output: _ArrayOrDType[ScalarT], mode: _Mode = "mirror"
+) -> onp.ArrayND[ScalarT]: ...
 @overload
-def spline_filter1d(
-    input: onp.ToComplexND, order: _Order = 3, axis: int = -1, *, output: _ArrayOrDType[_ScalarT], mode: _Mode = "mirror"
-) -> onp.ArrayND[_ScalarT]: ...
+def spline_filter1d[ScalarT: np.generic](
+    input: onp.ToComplexND, order: _Order = 3, axis: int = -1, *, output: _ArrayOrDType[ScalarT], mode: _Mode = "mirror"
+) -> onp.ArrayND[ScalarT]: ...
 
 #
 @overload
@@ -61,18 +59,18 @@ def spline_filter(
     input: onp.ToComplexND, order: _Order = 3, *, output: type[op.JustComplex], mode: _Mode = "mirror"
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
-def spline_filter(
-    input: onp.ToComplexND, order: _Order, output: _ArrayOrDType[_ScalarT], mode: _Mode = "mirror"
-) -> onp.ArrayND[_ScalarT]: ...
+def spline_filter[ScalarT: np.generic](
+    input: onp.ToComplexND, order: _Order, output: _ArrayOrDType[ScalarT], mode: _Mode = "mirror"
+) -> onp.ArrayND[ScalarT]: ...
 @overload
-def spline_filter(
-    input: onp.ToComplexND, order: _Order = 3, *, output: _ArrayOrDType[_ScalarT], mode: _Mode = "mirror"
-) -> onp.ArrayND[_ScalarT]: ...
+def spline_filter[ScalarT: np.generic](
+    input: onp.ToComplexND, order: _Order = 3, *, output: _ArrayOrDType[ScalarT], mode: _Mode = "mirror"
+) -> onp.ArrayND[ScalarT]: ...
 
 #
 @overload
-def geometric_transform(
-    input: _ArrayT,
+def geometric_transform[ArrayT: onp.ArrayND[np.bool | npc.integer | npc.inexact32 | npc.inexact64]](
+    input: ArrayT,
     mapping: _MappingFunc,
     output_shape: tuple[int, ...] | None = None,
     output: None = None,
@@ -82,7 +80,7 @@ def geometric_transform(
     prefilter: bool = True,
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, Any] | None = None,
-) -> _ArrayT: ...
+) -> ArrayT: ...
 @overload
 def geometric_transform(
     input: onp.SequenceND[int],
@@ -136,32 +134,32 @@ def geometric_transform(
     extra_keywords: dict[str, Any] | None = None,
 ) -> onp.ArrayND[Any]: ...
 @overload
-def geometric_transform(
+def geometric_transform[ScalarT: np.generic](
     input: onp.ToComplexND,
     mapping: _MappingFunc,
     output_shape: tuple[int, ...] | None,
-    output: _ArrayOrDType[_ScalarT],
+    output: _ArrayOrDType[ScalarT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, Any] | None = None,
-) -> onp.ArrayND[_ScalarT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload
-def geometric_transform(
+def geometric_transform[ScalarT: np.generic](
     input: onp.ToComplexND,
     mapping: _MappingFunc,
     output_shape: tuple[int, ...] | None = None,
     *,
-    output: _ArrayOrDType[_ScalarT],
+    output: _ArrayOrDType[ScalarT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, Any] | None = None,
-) -> onp.ArrayND[_ScalarT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload
 def geometric_transform(
     input: onp.ToComplexND,
@@ -207,15 +205,15 @@ def geometric_transform(
 
 #
 @overload
-def map_coordinates(
-    input: onp.ArrayND[_NumberT],
+def map_coordinates[NumberT: npc.number](
+    input: onp.ArrayND[NumberT],
     coordinates: onp.ToFloatND,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[_NumberT]: ...
+) -> onp.ArrayND[NumberT]: ...
 @overload
 def map_coordinates(
     input: onp.SequenceND[int],
@@ -257,15 +255,15 @@ def map_coordinates(
     prefilter: bool = True,
 ) -> onp.ArrayND[Any]: ...
 @overload
-def map_coordinates(
+def map_coordinates[ScalarT: np.generic](
     input: onp.ToComplexND,
     coordinates: onp.ToFloatND,
-    output: _ArrayOrDType[_ScalarT],
+    output: _ArrayOrDType[ScalarT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[_ScalarT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload
 def map_coordinates(
     input: onp.ToComplexND,
@@ -309,8 +307,8 @@ def map_coordinates(
 
 #
 @overload
-def affine_transform(
-    input: onp.ArrayND[_NumberT],
+def affine_transform[NumberT: npc.number](
+    input: onp.ArrayND[NumberT],
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
     output_shape: tuple[int, ...] | None = None,
@@ -319,7 +317,7 @@ def affine_transform(
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[_NumberT]: ...
+) -> onp.ArrayND[NumberT]: ...
 @overload
 def affine_transform(
     input: onp.SequenceND[int],
@@ -369,18 +367,18 @@ def affine_transform(
     prefilter: bool = True,
 ) -> onp.ArrayND[Any]: ...
 @overload
-def affine_transform(
+def affine_transform[ScalarT: np.generic](
     input: onp.ToComplexND,
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
     output_shape: tuple[int, ...] | None = None,
     *,
-    output: _ArrayOrDType[_ScalarT],
+    output: _ArrayOrDType[ScalarT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[_ScalarT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload
 def affine_transform(
     input: onp.ToComplexND,
@@ -423,15 +421,15 @@ def affine_transform(
 
 #
 @overload
-def shift(
-    input: _ArrayT,
+def shift[ArrayT: onp.ArrayND[np.bool | npc.integer | npc.inexact32 | npc.inexact64]](
+    input: ArrayT,
     shift: onp.ToFloat | onp.ToFloatND,
     output: None = None,
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> _ArrayT: ...
+) -> ArrayT: ...
 @overload
 def shift(
     input: onp.SequenceND[int],
@@ -473,15 +471,15 @@ def shift(
     prefilter: bool = True,
 ) -> onp.ArrayND[Any]: ...
 @overload
-def shift(
+def shift[ScalarT: np.generic](
     input: onp.ToComplexND,
     shift: onp.ToFloat | onp.ToFloatND,
-    output: _ArrayOrDType[_ScalarT],
+    output: _ArrayOrDType[ScalarT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[_ScalarT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload
 def shift(
     input: onp.ToComplexND,
@@ -515,8 +513,8 @@ def shift(
 
 #
 @overload
-def zoom(
-    input: _ArrayT,
+def zoom[ArrayT: onp.ArrayND[np.bool | npc.integer | npc.inexact32 | npc.inexact64]](
+    input: ArrayT,
     zoom: onp.ToFloat | onp.ToFloatND,
     output: None = None,
     order: _Order = 3,
@@ -525,7 +523,7 @@ def zoom(
     prefilter: bool = True,
     *,
     grid_mode: bool = False,
-) -> _ArrayT: ...
+) -> ArrayT: ...
 @overload
 def zoom(
     input: onp.SequenceND[int],
@@ -575,17 +573,17 @@ def zoom(
     grid_mode: bool = False,
 ) -> onp.ArrayND[Any]: ...
 @overload
-def zoom(
+def zoom[ScalarT: np.generic](
     input: onp.ToComplexND,
     zoom: onp.ToFloat | onp.ToFloatND,
-    output: _ArrayOrDType[_ScalarT],
+    output: _ArrayOrDType[ScalarT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
     *,
     grid_mode: bool = False,
-) -> onp.ArrayND[_ScalarT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload
 def zoom(
     input: onp.ToComplexND,
@@ -625,8 +623,8 @@ def zoom(
 
 #
 @overload
-def rotate(
-    input: _ArrayT,
+def rotate[ArrayT: onp.ArrayND[np.bool | npc.integer | npc.inexact32 | npc.inexact64]](
+    input: ArrayT,
     angle: onp.ToFloat,
     axes: tuple[int, int] = (1, 0),
     reshape: bool = True,
@@ -635,7 +633,7 @@ def rotate(
     mode: _Mode = "constant",
     cval: onp.ToFloat = 0.0,
     prefilter: bool = True,
-) -> _ArrayT: ...
+) -> ArrayT: ...
 @overload
 def rotate(
     input: onp.SequenceND[int],
@@ -685,18 +683,18 @@ def rotate(
     prefilter: bool = True,
 ) -> onp.ArrayND[Any]: ...
 @overload
-def rotate(
+def rotate[ScalarT: np.generic](
     input: onp.ToComplexND,
     angle: onp.ToFloat,
     axes: tuple[int, int] = (1, 0),
     reshape: bool = True,
     *,
-    output: _ArrayOrDType[_ScalarT],
+    output: _ArrayOrDType[ScalarT],
     order: _Order = 3,
     mode: _Mode = "constant",
     cval: onp.ToComplex = 0.0,
     prefilter: bool = True,
-) -> onp.ArrayND[_ScalarT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload
 def rotate(
     input: onp.ToComplexND,

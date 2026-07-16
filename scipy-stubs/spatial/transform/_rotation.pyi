@@ -1,28 +1,28 @@
 from collections.abc import Iterator, Sequence
 from types import EllipsisType, GenericAlias, ModuleType
-from typing import Any, Final, Generic, Literal as L, Never, Self, SupportsIndex, TypeAlias, overload
+from typing import Any, Final, Generic, Literal as L, Never, Self, SupportsIndex, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_RotOrder: TypeAlias = L["e", "extrinsic", "i", "intrinsic"]
-_RotGroup: TypeAlias = L["I", "O", "T", "D", "Dn", "C", "Cn"]
-_RotAxisSeq: TypeAlias = L[
+###
+
+type _RotOrder = L["e", "extrinsic", "i", "intrinsic"]
+type _RotGroup = L["I", "O", "T", "D", "Dn", "C", "Cn"]
+type _RotAxisSeq = L[
     "xyz", "xzy", "yxz", "yzx", "zxy", "zyx",
     "xyx", "xzx", "yxy", "yzy", "zxz", "zyz",
     "XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX",
     "XYX", "XZX", "YXY", "YZY", "ZXZ", "ZYZ",
 ]  # fmt: skip
-_RotAxis: TypeAlias = L["X", "Y", "Z"]
+type _RotAxis = L["X", "Y", "Z"]
 
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never]
-_ToFloatStrictND: TypeAlias = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
+type _JustAnyShape = tuple[Never, Never, Never, Never]
+type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
-_RotationT = TypeVar("_RotationT", bound=Rotation)
 
 ###
 
@@ -67,6 +67,11 @@ class Rotation(Generic[_ShapeT_co]):
     ) -> None: ...
     @overload
     def __init__(self, /, quat: onp.ToFloatND, normalize: bool = True, copy: bool = True, scalar_first: bool = False) -> None: ...
+
+    #
+    @override
+    def __getstate__(self) -> tuple[onp.ArrayND[np.float64], bool]: ...
+    def __setstate__(self, state: tuple[onp.ArrayND[np.float64], bool]) -> None: ...
 
     #
     def __bool__(self, /) -> L[True]: ...
@@ -210,9 +215,31 @@ class Rotation(Generic[_ShapeT_co]):
     @overload
     def apply(self, /, vectors: onp.ToFloatND, inverse: bool = False) -> onp.ArrayND[np.float64]: ...
 
-    # NOTE: The docstring incorrectly states that this can return a bool, but it always returns an array, even for single
-    # rotations. See https://github.com/scipy/scipy/pull/24763
-    def approx_equal(self, /, other: Rotation, atol: float | None = None, degrees: bool = False) -> onp.ArrayND[np.bool]: ...
+    # returns `np.bool` if both are single since 1.18.0
+    @overload
+    def approx_equal(
+        self: Rotation[_JustAnyShape], /, other: Rotation[_JustAnyShape], atol: float | None = None, degrees: bool = False
+    ) -> onp.ArrayND[np.bool] | np.bool: ...
+    @overload
+    def approx_equal(
+        self: Rotation[tuple[()]], /, other: Rotation[tuple[()]], atol: float | None = None, degrees: bool = False
+    ) -> np.bool: ...
+    @overload
+    def approx_equal(
+        self: Rotation[tuple[int] | tuple[int, int] | tuple[int, int, int]],
+        /,
+        other: Rotation,
+        atol: float | None = None,
+        degrees: bool = False,
+    ) -> onp.ArrayND[np.bool]: ...
+    @overload
+    def approx_equal(
+        self: Rotation,
+        /,
+        other: Rotation[tuple[int] | tuple[int, int] | tuple[int, int, int]],
+        atol: float | None = None,
+        degrees: bool = False,
+    ) -> onp.ArrayND[np.bool]: ...
 
     #
     @overload
@@ -290,9 +317,9 @@ class Rotation(Generic[_ShapeT_co]):
     def from_euler(seq: str, angles: onp.ToFloat, degrees: bool = False) -> Rotation[tuple[()]]: ...
     @overload
     @staticmethod
-    def from_euler(
-        seq: str, angles: onp.ArrayND[npc.floating | npc.integer, _ShapeT], degrees: bool = False
-    ) -> Rotation[_ShapeT]: ...
+    def from_euler[ShapeT: tuple[int, ...]](
+        seq: str, angles: onp.ArrayND[npc.floating | npc.integer, ShapeT], degrees: bool = False
+    ) -> Rotation[ShapeT]: ...
     @overload
     @staticmethod
     def from_euler(seq: str, angles: onp.ToFloatND, degrees: bool = False) -> Rotation: ...
@@ -305,9 +332,9 @@ class Rotation(Generic[_ShapeT_co]):
     ) -> Rotation[tuple[()]]: ...
     @overload
     @staticmethod
-    def from_davenport(
-        axes: onp.ToFloatND, order: _RotOrder, angles: onp.ArrayND[npc.floating | npc.integer, _ShapeT], degrees: bool = False
-    ) -> Rotation[_ShapeT]: ...
+    def from_davenport[ShapeT: tuple[int, ...]](
+        axes: onp.ToFloatND, order: _RotOrder, angles: onp.ArrayND[npc.floating | npc.integer, ShapeT], degrees: bool = False
+    ) -> Rotation[ShapeT]: ...
     @overload
     @staticmethod
     def from_davenport(axes: onp.ToFloatND, order: _RotOrder, angles: onp.ToFloatND, degrees: bool = False) -> Rotation: ...
@@ -315,7 +342,7 @@ class Rotation(Generic[_ShapeT_co]):
     #
     @overload
     @staticmethod
-    def concatenate(rotations: _RotationT) -> _RotationT: ...
+    def concatenate[RotationT: Rotation](rotations: RotationT) -> RotationT: ...
     @overload
     @staticmethod
     def concatenate(rotations: Sequence[Rotation[_JustAnyShape]]) -> Rotation: ...
@@ -345,7 +372,7 @@ class Rotation(Generic[_ShapeT_co]):
     def identity(num: None = None, *, shape: int) -> Rotation[tuple[int]]: ...
     @overload
     @staticmethod
-    def identity(num: None = None, *, shape: _ShapeT) -> Rotation[_ShapeT]: ...
+    def identity[ShapeT: tuple[int, ...]](num: None = None, *, shape: ShapeT) -> Rotation[ShapeT]: ...
 
     #
     @overload
@@ -360,9 +387,9 @@ class Rotation(Generic[_ShapeT_co]):
     ) -> Rotation[tuple[int]]: ...
     @overload
     @staticmethod
-    def random(
-        num: None = None, rng: onp.random.ToRNG | None = None, *, shape: _ShapeT, random_state: onp.random.ToRNG | None = None
-    ) -> Rotation[_ShapeT]: ...
+    def random[ShapeT: tuple[int, ...]](
+        num: None = None, rng: onp.random.ToRNG | None = None, *, shape: ShapeT, random_state: onp.random.ToRNG | None = None
+    ) -> Rotation[ShapeT]: ...
 
     #
     @overload

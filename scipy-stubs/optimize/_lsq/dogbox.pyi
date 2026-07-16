@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import Literal, TypeAlias
+from typing import Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -9,17 +9,18 @@ from scipy.optimize._typing import TRSolver
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
-_Vector_b1: TypeAlias = onp.Array1D[np.bool]
-_Vector_i0: TypeAlias = onp.Array1D[np.int_]
+###
 
-_Scalar_f8: TypeAlias = float | np.float64
-_Vector_f8: TypeAlias = onp.Array1D[np.float64]
-_Matrix_f8: TypeAlias = onp.Array2D[np.float64] | _spbase | LinearOperator
+type _Vector_b1 = onp.Array1D[np.bool]
+type _Vector_i0 = onp.Array1D[np.int_]
 
-_FunResid: TypeAlias = Callable[[_Vector_f8], _Vector_f8]
-# this type-alias is a workaround to get the correct oder of type params
-_FunJac: TypeAlias = Callable[[_Vector_f8, _Vector_f8], _Matrix_f8]
-_FunLoss: TypeAlias = Callable[[_Vector_f8], _Scalar_f8]
+type _Scalar_f8 = float | np.float64
+type _Vector_f8 = onp.Array1D[np.float64]
+type _Matrix_f8 = onp.Array2D[np.float64] | _spbase | LinearOperator
+
+type _FunResid = Callable[[_Vector_f8], _Vector_f8]
+type _FunJac = Callable[[_Vector_f8, _Vector_f8], _Matrix_f8]
+type _FunLoss = Callable[[_Vector_f8], _Scalar_f8]
 
 ###
 

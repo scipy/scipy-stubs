@@ -28,7 +28,6 @@ assert_type(_tri.equations, onp.Array2D[np.float64])
 assert_type(_tri.coplanar, onp.Array2D[np.int32])
 assert_type(_tri.good, onp.Array1D[np.int32])
 assert_type(_tri.nsimplex, int)
-assert_type(_tri.vertices, onp.Array2D[np.float64])
 assert_type(_tri.ndim, int)
 assert_type(_tri.npoints, int)
 assert_type(_tri.min_bound, onp.Array1D[np.float64])
@@ -67,7 +66,7 @@ assert_type(_hull.good, onp.Array1D[np.bool] | None)
 assert_type(_hull.min_bound, onp.Array1D[np.float64])
 assert_type(_hull.max_bound, onp.Array1D[np.float64])
 assert_type(_hull.points, onp.Array2D[np.float64])
-assert_type(_hull.vertices, onp.Array2D[np.int32])
+assert_type(_hull.vertices, onp.Array1D[np.int32])
 assert_type(_hull.volume, float)
 assert_type(_hull.area, float)
 assert_type(_hull.nsimplex, int)
@@ -103,12 +102,12 @@ assert_type(_hsi.dual_area, float)
 assert_type(_hsi.ndim, int)
 assert_type(_hsi.nineq, int)
 assert_type(_hsi.halfspaces, onp.Array2D[np.float64])
-assert_type(_hsi.dual_vertices, onp.Array1D[np.int32])
+assert_type(_hsi.dual_vertices, onp.Array1D[np.int_])
 
 ###
 # tsearch
 
-assert_type(tsearch(_tri, _f64_1d), onp.Array0D[np.int32])
-assert_type(tsearch(_tri, _f64_2d), onp.Array1D[np.int32])
-assert_type(tsearch(_tri, _f64_3d), onp.Array2D[np.int32])
-assert_type(tsearch(_tri, _f64_nd), onp.ArrayND[np.int32])
+assert_type(tsearch(_tri, _f64_1d), onp.Array0D[np.int32])  # pyright: ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(tsearch(_tri, _f64_2d), onp.Array1D[np.int32])  # pyright: ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(tsearch(_tri, _f64_3d), onp.Array2D[np.int32])  # pyright: ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(tsearch(_tri, _f64_nd), onp.ArrayND[np.int32])  # pyright: ignore[reportDeprecated] # pyrefly:ignore[deprecated]

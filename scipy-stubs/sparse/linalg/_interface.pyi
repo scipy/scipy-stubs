@@ -1,10 +1,11 @@
 from _typeshed import Incomplete
-from collections.abc import Callable, Iterable
+from collections.abc import Callable
 from types import GenericAlias, ModuleType
 from typing import Any, ClassVar, Final, Generic, Protocol, Self, SupportsIndex, final, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
+import numpy_typing_compat as nptc
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -12,109 +13,111 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["LinearOperator", "aslinearoperator"]
 
-_SCT = TypeVar("_SCT", bound=npc.number | np.bool)
+###
+
+type _Real = npc.floating | npc.integer | np.bool
+type _Scalar = npc.number | np.bool
+
+type _Shape = tuple[int, int, *tuple[int, ...]]
+type _AnyShape = tuple[int, int, *tuple[Any, ...]]
+
+type _FunMatVec = Callable[[onp.ArrayND[Any]], onp.ToComplexND]
+type _FunMatMat = Callable[[onp.Array2D[Any]], onp.ToComplexND]
+
 _SCT_co = TypeVar("_SCT_co", bound=npc.number | np.bool, default=Any, covariant=True)
 _SCT1_co = TypeVar("_SCT1_co", bound=npc.number | np.bool, default=Any, covariant=True)
 _SCT2_co = TypeVar("_SCT2_co", bound=npc.number | np.bool, default=_SCT1_co, covariant=True)
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_FunMatVecT_co = TypeVar("_FunMatVecT_co", bound=_FunMatVec, default=_FunMatVec, covariant=True)
-
-_LinearOperatorT = TypeVar("_LinearOperatorT", bound=LinearOperator[Any])
-_LinearOperatorT_co = TypeVar("_LinearOperatorT_co", bound=LinearOperator[Any], covariant=True)
-
-type _ToShape = Iterable[SupportsIndex]
-type _Real = np.bool | npc.integer | npc.floating
-type _FunMatVec = Callable[[onp.ArrayND[Any]], onp.ToComplex1D | onp.ToComplex2D]
-type _FunMatMat = Callable[[onp.Array2D[Any]], onp.ToComplex2D]
+_ShapeT_co = TypeVar("_ShapeT_co", bound=_Shape, default=_AnyShape, covariant=True)
+_LinearOperatorT_co = TypeVar("_LinearOperatorT_co", bound=LinearOperator[Any, Any], covariant=True)
 
 @type_check_only
 class _CanAdjoint(Protocol[_LinearOperatorT_co]):
     def _adjoint(self, /) -> _LinearOperatorT_co: ...
 
 @type_check_only
-class _HasShapeAndMatVec(Protocol[_SCT_co]):
-    shape: tuple[int, int]
+class _HasShapeAndMatVec(Protocol[_SCT_co, _ShapeT_co]):
+    @property
+    def shape(self, /) -> _ShapeT_co: ...
+
+    #
     @overload
-    def matvec(self, /, x: onp.CanArray1D[np.float64]) -> onp.CanArray1D[_SCT_co]: ...
+    def matvec(self, /, x: onp.CanArrayND[np.float64]) -> onp.ArrayND[_SCT_co]: ...
     @overload
-    def matvec(self, /, x: onp.CanArray2D[np.float64]) -> onp.CanArray2D[_SCT_co]: ...
-    @overload
-    def matvec(self, /, x: onp.CanArray1D[np.complex128]) -> onp.ToComplex1D: ...
-    @overload
-    def matvec(self, /, x: onp.CanArray2D[np.complex128]) -> onp.ToComplex2D: ...
+    def matvec(self, /, x: onp.CanArrayND[np.complex128]) -> onp.ToComplexND: ...
 
 @type_check_only
-class _HasShapeAndDTypeAndMatVec(Protocol[_SCT_co]):
-    shape: tuple[int, int]
+class _HasShapeAndDTypeAndMatVec(Protocol[_SCT_co, _ShapeT_co]):
     @property
     def dtype(self, /) -> np.dtype[_SCT_co]: ...
-    @overload
-    def matvec(self, /, x: onp.CanArray1D[np.float64] | onp.CanArray1D[np.complex128]) -> onp.ToComplex1D: ...
-    @overload
-    def matvec(self, /, x: onp.CanArray2D[np.float64] | onp.CanArray2D[np.complex128]) -> onp.ToComplex2D: ...
+    @property
+    def shape(self, /) -> _ShapeT_co: ...
+
+    #
+    def matvec(self, /, x: onp.CanArrayND[np.float64] | onp.CanArrayND[np.complex128]) -> onp.ToComplexND: ...
 
 ###
 
-class LinearOperator(Generic[_SCT_co]):
+class LinearOperator(Generic[_SCT_co, _ShapeT_co]):
     __array_ufunc__: ClassVar[None] = None
-    ndim: ClassVar[int] = 2
-
-    shape: Final[tuple[int, int]]
-    dtype: np.dtype[_SCT_co]
 
     @classmethod
     def __class_getitem__(cls, arg: object, /) -> GenericAlias: ...
 
+    dtype: np.dtype[_SCT_co]
+    shape: _ShapeT_co
+    ndim: Final[int]
+    _xp: Final[ModuleType]
+
     # keep in sync with `_CustomLinearOperator.__init__`
     @overload  # no dtype
-    def __new__(
+    def __new__[ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
         dtype: None = None,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.int8 | Any]: ...
+    ) -> _CustomLinearOperator[np.int8 | Any, ShapeT]: ...
     @overload  # dtype known (positional)
-    def __new__(
+    def __new__[SCT: _Scalar, ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[SCT],
         rmatmat: _FunMatMat | None = None,
         xp: ModuleType | None = None,
-    ) -> _CustomLinearOperator[_SCT]: ...
+    ) -> _CustomLinearOperator[SCT, ShapeT]: ...
     @overload  # dtype known (keyword)
-    def __new__(
+    def __new__[SCT: _Scalar, ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
         *,
-        dtype: onp.ToDType[_SCT],
+        dtype: onp.ToDType[SCT],
         rmatmat: _FunMatMat | None = None,
         xp: ModuleType | None = None,
-    ) -> _CustomLinearOperator[_SCT]: ...
+    ) -> _CustomLinearOperator[SCT, ShapeT]: ...
     @overload  # dtype-like int_ (positional)
-    def __new__(
+    def __new__[ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
         dtype: onp.AnyIntDType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.int_]: ...
+    ) -> _CustomLinearOperator[np.int_, ShapeT]: ...
     @overload  # dtype-like int_ (keyword)
-    def __new__(
+    def __new__[ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -122,22 +125,22 @@ class LinearOperator(Generic[_SCT_co]):
         dtype: onp.AnyIntDType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.int_]: ...
+    ) -> _CustomLinearOperator[np.int_, ShapeT]: ...
     @overload  # dtype-like float64 (positional)
-    def __new__(
+    def __new__[ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
         dtype: onp.AnyFloat64DType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.float64]: ...
+    ) -> _CustomLinearOperator[np.float64, ShapeT]: ...
     @overload  # dtype-like float64 (positional)
-    def __new__(
+    def __new__[ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -145,22 +148,22 @@ class LinearOperator(Generic[_SCT_co]):
         dtype: onp.AnyFloat64DType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.float64]: ...
+    ) -> _CustomLinearOperator[np.float64, ShapeT]: ...
     @overload  # dtype-like complex128 (positional)
-    def __new__(
+    def __new__[ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
         dtype: onp.AnyComplex128DType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.complex128]: ...
+    ) -> _CustomLinearOperator[np.complex128, ShapeT]: ...
     @overload  # dtype-like complex128 (keyword)
-    def __new__(
+    def __new__[ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -168,22 +171,22 @@ class LinearOperator(Generic[_SCT_co]):
         dtype: onp.AnyComplex128DType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.complex128]: ...
+    ) -> _CustomLinearOperator[np.complex128, ShapeT]: ...
     @overload  # unknown dtype
-    def __new__(
+    def __new__[ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
         dtype: type | str | None = None,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[Any]: ...
+    ) -> _CustomLinearOperator[Any, ShapeT]: ...
     @overload  # xp given
-    def __new__(
+    def __new__[ShapeT: _Shape](
         cls,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -191,7 +194,7 @@ class LinearOperator(Generic[_SCT_co]):
         rmatmat: _FunMatMat | None = None,
         *,
         xp: ModuleType,
-    ) -> _CustomLinearOperator[Any]: ...
+    ) -> _CustomLinearOperator[Any, ShapeT]: ...
 
     # NOTE: the `__init__` method cannot be annotated, because it will cause mypy to ignore `__new__`:
     # https://github.com/python/mypy/issues/17251
@@ -199,157 +202,141 @@ class LinearOperator(Generic[_SCT_co]):
     # ruff: noqa: ERA001
 
     # @overload
-    # def __init__(self, /, dtype: onp.ToDType[_SCT_co], shape: _ToShape) -> None: ...
+    # def __init__(self, /, dtype: onp.ToDType[_SCT_co], shape: _ShapeT_co) -> None: ...
     # @overload
-    # def __init__(self: LinearOperator[np.int_], /, dtype: onp.AnyIntDType, shape: _ToShape) -> None: ...
+    # def __init__[ShapeT: _Shape](self: LinearOperator[np.int_, ShapeT], /, dtype: onp.AnyIntDType, shape: ShapeT) -> None: ...
     # @overload
-    # def __init__(self: LinearOperator[np.float64], /, dtype: onp.AnyFloat64DType, shape: _ToShape) -> None: ...
+    # def __init__[ShapeT: _Shape](
+    #     self: LinearOperator[np.float64, ShapeT], /, dtype: onp.AnyFloat64DType, shape: ShapeT
+    # ) -> None: ...
     # @overload
-    # def __init__(self: LinearOperator[np.complex128], /, dtype: onp.AnyComplex128DType, shape: _ToShape) -> None: ...
+    # def __init__[ShapeT: _Shape](
+    #     self: LinearOperator[np.complex128, ShapeT], /, dtype: onp.AnyComplex128DType, shape: ShapeT
+    # ) -> None: ...
     # @overload
-    # def __init__(self: LinearOperator[Any], /, dtype: type | str | None, shape: _ToShape) -> None: ...
+    # def __init__[ShapeT: _Shape](self: LinearOperator[Any, ShapeT], /, dtype: type | str | None, shape: ShapeT) -> None: ...
+
+    @override
+    def __getstate__(self, /) -> dict[str, Any]: ...
+    def __setstate__(self, state: dict[str, Any], /) -> None: ...
 
     #
     @property
-    def H(self: _CanAdjoint[_LinearOperatorT], /) -> _LinearOperatorT: ...
+    def H[LinearOperatorT: LinearOperator[Any, Any]](self: _CanAdjoint[LinearOperatorT], /) -> LinearOperatorT: ...
     @final
-    def adjoint(self: _CanAdjoint[_LinearOperatorT], /) -> _LinearOperatorT: ...
-    def _adjoint(self, /) -> LinearOperator[_SCT_co]: ...
+    def adjoint[LinearOperatorT: LinearOperator[Any, Any]](self: _CanAdjoint[LinearOperatorT], /) -> LinearOperatorT: ...
+    def _adjoint(self, /) -> LinearOperator[_SCT_co, _ShapeT_co]: ...
 
     #
     @property
-    def T(self, /) -> _TransposedLinearOperator[_SCT_co]: ...
-    def transpose(self, /) -> _TransposedLinearOperator[_SCT_co]: ...
+    def T(self, /) -> _TransposedLinearOperator[_SCT_co, _ShapeT_co]: ...
+    def transpose(self, /) -> _TransposedLinearOperator[_SCT_co, _ShapeT_co]: ...
 
     #
-    @overload  # float array 1d
-    def matvec(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
     @overload  # float matrix
     def matvec(self, /, x: onp.Matrix[_Real]) -> onp.Matrix[_SCT_co]: ...
     @overload  # complex matrix
     def matvec(self, /, x: onp.Matrix[np.complex128]) -> onp.Matrix[np.complex128]: ...
-    @overload  # float array 2d
-    def matvec(self, /, x: onp.ToFloatStrict2D) -> onp.Array2D[_SCT_co]: ...
-    @overload  # complex array 1d
-    def matvec(self, /, x: onp.ToJustComplex128Strict1D) -> onp.Array1D[np.complex128]: ...
-    @overload  # complex array 2d
-    def matvec(self, /, x: onp.ToJustComplex128Strict2D) -> onp.Array2D[np.complex128]: ...
     @overload  # float array
-    def matvec(self, /, x: onp.ToFloat2D) -> onp.ArrayND[_SCT_co]: ...
+    def matvec(self, /, x: onp.ToFloatND) -> onp.ArrayND[_SCT_co]: ...
     @overload  # complex array
-    def matvec(self, /, x: onp.ToJustComplex128_2D) -> onp.ArrayND[np.complex128]: ...
+    def matvec(self, /, x: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
     @overload  # unknown array
-    def matvec(self, /, x: onp.ToComplex2D) -> onp.ArrayND[Any]: ...
+    def matvec(self, /, x: onp.ToComplexND) -> onp.ArrayND[Any]: ...
     rmatvec = matvec
 
     #
     @overload
-    def matmat(self, /, X: onp.ToFloat2D) -> onp.Array2D[_SCT_co]: ...
+    def matmat(self, /, X: onp.ToFloatND) -> onp.ArrayND[_SCT_co]: ...
     @overload
-    def matmat(self, /, X: onp.ToJustComplex128_2D) -> onp.Array2D[np.complex128]: ...
+    def matmat(self, /, X: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
     @overload
-    def matmat(self, /, X: onp.ToComplex2D) -> onp.Array2D[Any]: ...
+    def matmat(self, /, X: onp.ToComplexND) -> onp.ArrayND[Any]: ...
     rmatmat = matmat
 
     #
     @overload
-    def dot[SCT: npc.number | np.bool](self, /, x: LinearOperator[SCT]) -> _ProductLinearOperator[_SCT_co, SCT]: ...
+    def dot[SCT: _Scalar, ShapeT: _Shape](
+        self, /, x: LinearOperator[SCT, ShapeT]
+    ) -> _ProductLinearOperator[_SCT_co, SCT, ShapeT]: ...
     @overload
-    def dot(self, /, x: onp.ToFloat) -> _ScaledLinearOperator[_SCT_co]: ...
+    def dot(self, /, x: onp.ToFloat) -> _ScaledLinearOperator[_SCT_co, _ShapeT_co]: ...
     @overload
-    def dot(self, /, x: onp.ToJustComplex128) -> _ScaledLinearOperator[np.complex128]: ...
-    @overload
-    def dot(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
-    @overload
-    def dot(self, /, x: onp.ToJustComplex128Strict1D) -> onp.Array1D[np.complex128]: ...
-    @overload
-    def dot(self, /, x: onp.ToFloatStrict2D) -> onp.Array2D[_SCT_co]: ...
-    @overload
-    def dot(self, /, x: onp.ToJustComplex128Strict2D) -> onp.Array2D[np.complex128]: ...
+    def dot(self, /, x: onp.ToJustComplex128) -> _ScaledLinearOperator[np.complex128, _ShapeT_co]: ...
     @overload
     def dot(self, /, x: onp.ToFloatND) -> onp.ArrayND[_SCT_co]: ...
+    @overload
+    def dot(self, /, x: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
     @overload
     def dot(self, /, x: onp.ToComplexND) -> onp.ArrayND[Any]: ...
     __mul__ = dot
 
     # keep in sync with `dot`
     @overload
-    def rdot[SCT: npc.number | np.bool](self, /, x: LinearOperator[SCT]) -> _ProductLinearOperator[_SCT_co, SCT]: ...
+    def rdot[SCT: _Scalar, ShapeT: _Shape](
+        self, /, x: LinearOperator[SCT, ShapeT]
+    ) -> _ProductLinearOperator[_SCT_co, SCT, ShapeT]: ...
     @overload
-    def rdot(self, /, x: onp.ToFloat) -> _ScaledLinearOperator[_SCT_co]: ...
+    def rdot(self, /, x: onp.ToFloat) -> _ScaledLinearOperator[_SCT_co, _ShapeT_co]: ...
     @overload
-    def rdot(self, /, x: onp.ToJustComplex128) -> _ScaledLinearOperator[np.complex128]: ...
-    @overload
-    def rdot(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
-    @overload
-    def rdot(self, /, x: onp.ToJustComplex128Strict1D) -> onp.Array1D[np.complex128]: ...
-    @overload
-    def rdot(self, /, x: onp.ToFloatStrict2D) -> onp.Array2D[_SCT_co]: ...
-    @overload
-    def rdot(self, /, x: onp.ToJustComplex128Strict2D) -> onp.Array2D[np.complex128]: ...
+    def rdot(self, /, x: onp.ToJustComplex128) -> _ScaledLinearOperator[np.complex128, _ShapeT_co]: ...
     @overload
     def rdot(self, /, x: onp.ToFloatND) -> onp.ArrayND[_SCT_co]: ...
+    @overload
+    def rdot(self, /, x: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
     @overload
     def rdot(self, /, x: onp.ToComplexND) -> onp.ArrayND[Any]: ...
     __rmul__ = rdot
 
     #
     @overload
-    def __matmul__(self, /, x: LinearOperator[_SCT]) -> _ProductLinearOperator[_SCT_co, _SCT]: ...
-    @overload
-    def __matmul__(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
-    @overload
-    def __matmul__(self, /, x: onp.ToJustComplex128Strict1D) -> onp.Array1D[np.complex128]: ...
-    @overload
-    def __matmul__(self, /, x: onp.ToFloatStrict2D) -> onp.Array2D[_SCT_co]: ...
-    @overload
-    def __matmul__(self, /, x: onp.ToJustComplex128Strict2D) -> onp.Array2D[np.complex128]: ...
+    def __matmul__[SCT: _Scalar, ShapeT: _Shape](
+        self, /, x: LinearOperator[SCT, ShapeT]
+    ) -> _ProductLinearOperator[_SCT_co, SCT, ShapeT]: ...
     @overload
     def __matmul__(self, /, x: onp.ToFloatND) -> onp.ArrayND[_SCT_co]: ...
+    @overload
+    def __matmul__(self, /, x: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
     @overload
     def __matmul__(self, /, x: onp.ToComplexND) -> onp.ArrayND[Any]: ...
     __call__ = __matmul__
 
-    #
+    # TODO(@jorenham): shape-typing
     @overload
-    def __rmatmul__(self, /, x: LinearOperator[_SCT]) -> _ProductLinearOperator[_SCT_co, _SCT]: ...
-    @overload
-    def __rmatmul__(self, /, x: onp.ToFloatStrict1D) -> onp.Array1D[_SCT_co]: ...
-    @overload
-    def __rmatmul__(self, /, x: onp.ToJustComplex128Strict1D) -> onp.Array1D[np.complex128]: ...
-    @overload
-    def __rmatmul__(self, /, x: onp.ToFloatStrict2D) -> onp.Array2D[_SCT_co]: ...
-    @overload
-    def __rmatmul__(self, /, x: onp.ToJustComplex128Strict2D) -> onp.Array2D[np.complex128]: ...
+    def __rmatmul__[SCT: _Scalar, ShapeT: _Shape](
+        self, /, x: LinearOperator[SCT, ShapeT]
+    ) -> _ProductLinearOperator[_SCT_co, SCT, ShapeT]: ...
     @overload
     def __rmatmul__(self, /, x: onp.ToFloatND) -> onp.ArrayND[_SCT_co]: ...
+    @overload
+    def __rmatmul__(self, /, x: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
     @overload
     def __rmatmul__(self, /, x: onp.ToComplexND) -> onp.ArrayND[Any]: ...
 
     #
     @overload
-    def __truediv__(self, other: onp.ToFloat, /) -> _ScaledLinearOperator[_SCT_co]: ...
+    def __truediv__(self, other: onp.ToFloat, /) -> _ScaledLinearOperator[_SCT_co, _ShapeT_co]: ...
     @overload
-    def __truediv__(self, other: onp.ToJustComplex128, /) -> _ScaledLinearOperator[np.complex128]: ...
+    def __truediv__(self, other: onp.ToJustComplex128, /) -> _ScaledLinearOperator[np.complex128, _ShapeT_co]: ...
     @overload
-    def __truediv__(self, other: onp.ToComplex, /) -> _ScaledLinearOperator[Any]: ...
+    def __truediv__(self, other: onp.ToComplex, /) -> _ScaledLinearOperator[Any, _ShapeT_co]: ...
 
     #
-    def __neg__(self, /) -> _ScaledLinearOperator[_SCT_co]: ...
-    def __add__(self, x: LinearOperator[_SCT], /) -> _SumLinearOperator[_SCT_co, _SCT]: ...
+    def __neg__(self, /) -> _ScaledLinearOperator[_SCT_co, _ShapeT_co]: ...
+    def __add__[SCT: _Scalar](self, x: LinearOperator[SCT], /) -> _SumLinearOperator[_SCT_co, SCT, _ShapeT_co]: ...
     __sub__ = __add__
-    def __pow__(self, p: onp.ToInt, /) -> _PowerLinearOperator[_SCT_co]: ...
+    def __pow__(self, p: onp.ToInt, /) -> _PowerLinearOperator[_SCT_co, _ShapeT_co]: ...
 
 @final
-class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVecT_co]):
+class _CustomLinearOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     args: tuple[()]
 
     #
     @overload  # no dtype
-    def __init__(
-        self: _CustomLinearOperator[np.int8 | Any],
+    def __init__[ShapeT: _Shape](
+        self: _CustomLinearOperator[np.int8 | Any, ShapeT],
         /,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -361,7 +348,7 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
     def __init__(
         self,
         /,
-        shape: _ToShape,
+        shape: _ShapeT_co,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
@@ -373,7 +360,7 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
     def __init__(
         self,
         /,
-        shape: _ToShape,
+        shape: _ShapeT_co,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -383,10 +370,10 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         xp: None = None,
     ) -> None: ...
     @overload  # dtype-like int_ (positional)
-    def __init__(
-        self: _CustomLinearOperator[np.int_],
+    def __init__[ShapeT: _Shape](
+        self: _CustomLinearOperator[np.int_, ShapeT],
         /,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
@@ -395,10 +382,10 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         xp: None = None,
     ) -> None: ...
     @overload  # dtype-like int_ (keyword)
-    def __init__(
-        self: _CustomLinearOperator[np.int_],
+    def __init__[ShapeT: _Shape](
+        self: _CustomLinearOperator[np.int_, ShapeT],
         /,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -408,10 +395,10 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         xp: None = None,
     ) -> None: ...
     @overload  # dtype-like float64 (positional)
-    def __init__(
-        self: _CustomLinearOperator[np.float64],
+    def __init__[ShapeT: _Shape](
+        self: _CustomLinearOperator[np.float64, ShapeT],
         /,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
@@ -420,10 +407,10 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         xp: None = None,
     ) -> None: ...
     @overload  # dtype-like float64 (keyword)
-    def __init__(
-        self: _CustomLinearOperator[np.float64],
+    def __init__[ShapeT: _Shape](
+        self: _CustomLinearOperator[np.float64, ShapeT],
         /,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -433,10 +420,10 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         xp: None = None,
     ) -> None: ...
     @overload  # dtype-like complex128 (positional)
-    def __init__(
-        self: _CustomLinearOperator[np.complex128],
+    def __init__[ShapeT: _Shape](
+        self: _CustomLinearOperator[np.complex128, ShapeT],
         /,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
         matmat: _FunMatMat | None,
@@ -445,10 +432,10 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         xp: None = None,
     ) -> None: ...
     @overload  # dtype-like complex128 (keyword)
-    def __init__(
-        self: _CustomLinearOperator[np.complex128],
+    def __init__[ShapeT: _Shape](
+        self: _CustomLinearOperator[np.complex128, ShapeT],
         /,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -458,10 +445,10 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         xp: None = None,
     ) -> None: ...
     @overload  # unknown dtype
-    def __init__(
-        self: _CustomLinearOperator[Any],
+    def __init__[ShapeT: _Shape](
+        self: _CustomLinearOperator[Any, ShapeT],
         /,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -470,10 +457,10 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
         xp: None = None,
     ) -> None: ...
     @overload  # xp given
-    def __init__(
-        self: _CustomLinearOperator[Any],
+    def __init__[ShapeT: _Shape](
+        self: _CustomLinearOperator[Any, ShapeT],
         /,
-        shape: _ToShape,
+        shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
         matmat: _FunMatMat | None = None,
@@ -488,85 +475,94 @@ class _CustomLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co, _FunMatVec
     def _adjoint(self, /) -> Self: ...
 
 @type_check_only
-class _UnaryLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
-    A: LinearOperator[_SCT_co]
-    args: tuple[LinearOperator[_SCT_co]]
+class _UnaryLinearOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
+    A: LinearOperator[_SCT_co, _ShapeT_co]
+    args: tuple[LinearOperator[_SCT_co, _ShapeT_co]]
+
+    #
+    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], xp: ModuleType | None = None) -> Self: ...
+    def __init__(self, /, A: LinearOperator[_SCT_co, _ShapeT_co], xp: ModuleType | None = None) -> None: ...
 
     #
     @override
-    def __new__(cls, A: LinearOperator[_SCT_co], xp: ModuleType | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, A: LinearOperator[_SCT_co], xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
-
-    #
-    @override
-    def _adjoint(self, /) -> _AdjointLinearOperator[_SCT_co]: ...
+    def _adjoint(self, /) -> _AdjointLinearOperator[_SCT_co, _ShapeT_co]: ...
 
 @final
-class _AdjointLinearOperator(_UnaryLinearOperator[_SCT_co], Generic[_SCT_co]): ...
+class _AdjointLinearOperator(_UnaryLinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]): ...
 
 @final
-class _TransposedLinearOperator(_UnaryLinearOperator[_SCT_co], Generic[_SCT_co]): ...
+class _TransposedLinearOperator(_UnaryLinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]): ...
 
 @final
-class _SumLinearOperator(LinearOperator[_SCT1_co | _SCT2_co], Generic[_SCT1_co, _SCT2_co]):
-    args: tuple[LinearOperator[_SCT1_co], LinearOperator[_SCT2_co]]
+class _SumLinearOperator(LinearOperator[_SCT1_co | _SCT2_co, _ShapeT_co], Generic[_SCT1_co, _SCT2_co, _ShapeT_co]):
+    args: tuple[LinearOperator[_SCT1_co, _ShapeT_co], LinearOperator[_SCT2_co, _ShapeT_co]]
 
-    @override
-    def __new__(cls, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co], xp: ModuleType | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co], xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
+    def __new__(
+        cls, A: LinearOperator[_SCT1_co, _ShapeT_co], B: LinearOperator[_SCT2_co, _ShapeT_co], xp: ModuleType | None = None
+    ) -> Self: ...
+    def __init__(
+        self, /, A: LinearOperator[_SCT1_co, _ShapeT_co], B: LinearOperator[_SCT2_co, _ShapeT_co], xp: ModuleType | None = None
+    ) -> None: ...
 
     #
     @override
     def _adjoint(self, /) -> Self: ...
 
 @final
-class _ProductLinearOperator(LinearOperator[_SCT1_co | _SCT2_co], Generic[_SCT1_co, _SCT2_co]):
-    args: tuple[LinearOperator[_SCT1_co], LinearOperator[_SCT2_co]]
+class _ProductLinearOperator(LinearOperator[_SCT1_co | _SCT2_co, _ShapeT_co], Generic[_SCT1_co, _SCT2_co, _ShapeT_co]):
+    args: tuple[LinearOperator[_SCT1_co, _ShapeT_co], LinearOperator[_SCT2_co, _ShapeT_co]]
 
     #
-    @override
-    def __new__(cls, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co], xp: ModuleType | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, A: LinearOperator[_SCT1_co], B: LinearOperator[_SCT2_co], xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
+    def __new__(
+        cls, A: LinearOperator[_SCT1_co, _ShapeT_co], B: LinearOperator[_SCT2_co, _ShapeT_co], xp: ModuleType | None = None
+    ) -> Self: ...
+    def __init__(
+        self, /, A: LinearOperator[_SCT1_co, _ShapeT_co], B: LinearOperator[_SCT2_co, _ShapeT_co], xp: ModuleType | None = None
+    ) -> None: ...
 
     #
     @override
     def _adjoint(self, /) -> Self: ...
 
+# mypy reports a false positive `overload-overlap` error with numpy<2.5
+# mypy: disable-error-code=overload-overlap
+
 @final
-class _ScaledLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
-    args: tuple[LinearOperator[_SCT_co], _SCT_co | complex]
+class _ScaledLinearOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
+    args: tuple[LinearOperator[_SCT_co, _ShapeT_co], _SCT_co | complex]
 
     #
-    @override
     @overload
-    def __new__(cls, A: LinearOperator[_SCT_co], alpha: _SCT_co | complex, xp: ModuleType | None = None) -> Self: ...  # type:ignore[overload-overlap]  # pyrefly:ignore[bad-override]
+    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], alpha: _SCT_co | complex, xp: ModuleType | None = None) -> Self: ...
     @overload
-    def __new__(
-        cls, A: LinearOperator[npc.floating], alpha: onp.ToFloat64, xp: ModuleType | None = None
-    ) -> _ScaledLinearOperator[np.float64]: ...
+    def __new__[ShapeT: _Shape](
+        cls, A: LinearOperator[npc.floating, ShapeT], alpha: onp.ToFloat64, xp: ModuleType | None = None
+    ) -> _ScaledLinearOperator[np.float64, ShapeT]: ...
     @overload
-    def __new__(
-        cls, A: LinearOperator[npc.complexfloating], alpha: onp.ToComplex128, xp: ModuleType | None = None
-    ) -> _ScaledLinearOperator[np.complex128]: ...
+    def __new__[ShapeT: _Shape](
+        cls, A: LinearOperator[npc.complexfloating, ShapeT], alpha: onp.ToComplex128, xp: ModuleType | None = None
+    ) -> _ScaledLinearOperator[np.complex128, ShapeT]: ...
 
     #
-    @override
-    @overload
-    def __init__(self, /, A: LinearOperator[_SCT_co], alpha: _SCT_co | complex, xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
     @overload
     def __init__(
-        self: _ScaledLinearOperator[np.float64],
+        self, /, A: LinearOperator[_SCT_co, _ShapeT_co], alpha: _SCT_co | complex, xp: ModuleType | None = None
+    ) -> None: ...
+    @overload
+    def __init__[ShapeT: _Shape](
+        self: _ScaledLinearOperator[np.float64, ShapeT],
         /,
-        A: LinearOperator[npc.floating],
+        A: LinearOperator[npc.floating, ShapeT],
         alpha: onp.ToFloat64,
         xp: ModuleType | None = None,
     ) -> None: ...
     @overload
-    def __init__(
-        self: _ScaledLinearOperator[np.complex128], /, A: LinearOperator, alpha: onp.ToComplex128, xp: ModuleType | None = None
+    def __init__[ShapeT: _Shape](
+        self: _ScaledLinearOperator[np.complex128, ShapeT],
+        /,
+        A: LinearOperator[Any, ShapeT],
+        alpha: onp.ToComplex128,
+        xp: ModuleType | None = None,
     ) -> None: ...
 
     #
@@ -574,77 +570,83 @@ class _ScaledLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     def _adjoint(self, /) -> Self: ...
 
 @final
-class _PowerLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
-    args: tuple[LinearOperator[_SCT_co], SupportsIndex]
+class _PowerLinearOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
+    args: tuple[LinearOperator[_SCT_co, _ShapeT_co], SupportsIndex]
 
     @override
-    def __new__(cls, A: LinearOperator[_SCT_co], p: SupportsIndex, xp: ModuleType | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
+    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], p: SupportsIndex, xp: ModuleType | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
     @override
-    def __init__(self, /, A: LinearOperator[_SCT_co], p: SupportsIndex, xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
+    def __init__(self, /, A: LinearOperator[_SCT_co, _ShapeT_co], p: SupportsIndex, xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
 
     #
     @override
     def _adjoint(self, /) -> Self: ...
 
-class MatrixLinearOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
-    A: _spbase | onp.Array2D[_SCT_co]
-    args: tuple[_spbase | onp.Array2D[_SCT_co]]
+class MatrixLinearOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
+    A: _spbase[_SCT_co, _ShapeT_co] | onp.ArrayND[_SCT_co, _ShapeT_co]
+    args: tuple[_spbase[_SCT_co, _ShapeT_co] | onp.ArrayND[_SCT_co, _ShapeT_co]]
 
-    @override
-    def __new__(cls, /, A: _spbase | onp.ArrayND[_SCT_co], xp: ModuleType | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, A: _spbase | onp.ArrayND[_SCT_co], xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
-
-    #
-    @override
-    def _adjoint(self, /) -> _AdjointMatrixOperator[_SCT_co]: ...
-
-@final
-class _AdjointMatrixOperator(MatrixLinearOperator[_SCT_co], Generic[_SCT_co]):
-    # pyrefly: ignore [bad-override]
-    args: tuple[LinearOperator[_SCT_co]]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleVariableOverride]
-
-    #
-    @override
-    def __new__(cls, A: LinearOperator[_SCT_co], xp: ModuleType | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, A: LinearOperator[_SCT_co], xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
-
-    #
-    @override
-    def _adjoint(self, /) -> MatrixLinearOperator[_SCT_co]: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
-
-class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
-    @override
-    @overload
-    def __new__(cls, shape: _ToShape, dtype: onp.ToDType[_SCT_co], xp: None = None) -> Self: ...  # pyrefly:ignore[bad-override]
-    @overload
     def __new__(
-        cls, shape: _ToShape, dtype: onp.AnyFloat64DType | None = None, xp: None = None
-    ) -> IdentityOperator[np.float64]: ...
-    @overload
-    def __new__(cls, shape: _ToShape, dtype: onp.AnyComplex128DType, xp: None = None) -> IdentityOperator[np.complex128]: ...
-    @overload
-    def __new__(cls, shape: _ToShape, dtype: str, xp: None = None) -> IdentityOperator[Any]: ...
-    @overload
-    def __new__(cls, shape: _ToShape, dtype: Incomplete | None = None, *, xp: ModuleType) -> IdentityOperator[Any]: ...
+        cls, /, A: _spbase[_SCT_co, _ShapeT_co] | onp.ArrayND[_SCT_co, _ShapeT_co], xp: ModuleType | None = None
+    ) -> Self: ...
+    def __init__(
+        self, /, A: _spbase[_SCT_co, _ShapeT_co] | onp.ArrayND[_SCT_co, _ShapeT_co], xp: ModuleType | None = None
+    ) -> None: ...
 
     #
     @override
+    def _adjoint(self, /) -> _AdjointMatrixOperator[_SCT_co, _ShapeT_co]: ...
+
+@final
+class _AdjointMatrixOperator(MatrixLinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
+    # pyrefly: ignore [bad-override]
+    args: tuple[LinearOperator[_SCT_co, _ShapeT_co]]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleVariableOverride]
+
+    #
+    @override
+    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], xp: ModuleType | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
+    @override
+    def __init__(self, /, A: LinearOperator[_SCT_co, _ShapeT_co], xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
+
+    #
+    @override
+    def _adjoint(self, /) -> MatrixLinearOperator[_SCT_co, _ShapeT_co]: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
+
+class IdentityOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     @overload
-    def __init__(self, /, shape: _ToShape, dtype: onp.ToDType[_SCT_co], xp: None = None) -> None: ...  # pyrefly:ignore[bad-override]
+    def __new__(cls, shape: _ShapeT_co, dtype: onp.ToDType[_SCT_co], xp: None = None) -> Self: ...
     @overload
-    def __init__(
-        self: IdentityOperator[np.float64], /, shape: _ToShape, dtype: onp.AnyFloat64DType | None = None, xp: None = None
+    def __new__[ShapeT: _Shape](
+        cls, shape: ShapeT, dtype: onp.AnyFloat64DType | None = None, xp: None = None
+    ) -> IdentityOperator[np.float64, ShapeT]: ...
+    @overload
+    def __new__[ShapeT: _Shape](
+        cls, shape: ShapeT, dtype: onp.AnyComplex128DType, xp: None = None
+    ) -> IdentityOperator[np.complex128, ShapeT]: ...
+    @overload
+    def __new__[ShapeT: _Shape](cls, shape: ShapeT, dtype: str, xp: None = None) -> IdentityOperator[Any, ShapeT]: ...
+    @overload
+    def __new__[ShapeT: _Shape](
+        cls, shape: ShapeT, dtype: Incomplete | None = None, *, xp: ModuleType
+    ) -> IdentityOperator[Any, ShapeT]: ...
+
+    #
+    @overload
+    def __init__(self, /, shape: _ShapeT_co, dtype: onp.ToDType[_SCT_co], xp: None = None) -> None: ...
+    @overload
+    def __init__[ShapeT: _Shape](
+        self: IdentityOperator[np.float64, ShapeT], /, shape: ShapeT, dtype: onp.AnyFloat64DType | None = None, xp: None = None
     ) -> None: ...
     @overload
-    def __init__(
-        self: IdentityOperator[np.complex128], /, shape: _ToShape, dtype: onp.AnyComplex128DType, xp: None = None
+    def __init__[ShapeT: _Shape](
+        self: IdentityOperator[np.complex128, ShapeT], /, shape: ShapeT, dtype: onp.AnyComplex128DType, xp: None = None
     ) -> None: ...
     @overload
-    def __init__(self: IdentityOperator[Any], /, shape: _ToShape, dtype: str, xp: None = None) -> None: ...
+    def __init__[ShapeT: _Shape](self: IdentityOperator[Any, ShapeT], /, shape: ShapeT, dtype: str, xp: None = None) -> None: ...
     @overload
-    def __init__(self: IdentityOperator[Any], /, shape: _ToShape, dtype: Incomplete | None = None, *, xp: ModuleType) -> None: ...
+    def __init__[ShapeT: _Shape](
+        self: IdentityOperator[Any, ShapeT], /, shape: ShapeT, dtype: Incomplete | None = None, *, xp: ModuleType
+    ) -> None: ...
 
     #
     @override
@@ -652,14 +654,16 @@ class IdentityOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
 
 #
 @overload
-def aslinearoperator(A: onp.CanArrayND[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
+def aslinearoperator[ScalarT: _Scalar, ShapeT: _Shape](
+    A: nptc.CanArray[ShapeT, np.dtype[ScalarT]],
+) -> MatrixLinearOperator[ScalarT, ShapeT]: ...
 @overload
-def aslinearoperator(A: _spbase[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
+def aslinearoperator[ScalarT: _Scalar, ShapeT: _Shape](A: _spbase[ScalarT, ShapeT]) -> MatrixLinearOperator[ScalarT, ShapeT]: ...
 @overload
-def aslinearoperator(
-    A: onp.ArrayND[np.bool | npc.integer | np.float64] | _spbase[np.bool | npc.integer | np.float64],
-) -> MatrixLinearOperator[np.float64]: ...
+def aslinearoperator[ScalarT: npc.inexact, ShapeT: _Shape](
+    A: _HasShapeAndDTypeAndMatVec[ScalarT, ShapeT],
+) -> MatrixLinearOperator[ScalarT, ShapeT]: ...
 @overload
-def aslinearoperator(A: _HasShapeAndDTypeAndMatVec[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
-@overload
-def aslinearoperator(A: _HasShapeAndMatVec[_InexactT]) -> MatrixLinearOperator[_InexactT]: ...
+def aslinearoperator[ScalarT: npc.inexact, ShapeT: _Shape](
+    A: _HasShapeAndMatVec[ScalarT, ShapeT],
+) -> MatrixLinearOperator[ScalarT, ShapeT]: ...

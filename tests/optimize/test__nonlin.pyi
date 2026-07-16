@@ -1,4 +1,4 @@
-from typing import Any, TypeAlias, assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -17,8 +17,8 @@ from scipy.optimize import (
     newton_krylov,
 )
 
-_Inexact: TypeAlias = np.float32 | np.float64 | np.complex64 | np.complex128
-_InexactND: TypeAlias = onp.ArrayND[_Inexact]
+type _Inexact = np.float32 | np.float64 | np.complex64 | np.complex128
+type _InexactND = onp.ArrayND[_Inexact]
 
 def _F(x: onp.ArrayND[np.float64]) -> float: ...
 

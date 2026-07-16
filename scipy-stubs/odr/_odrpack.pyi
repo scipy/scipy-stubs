@@ -1,7 +1,7 @@
 # pyright: reportDeprecated=false
 
 from collections.abc import Callable, Iterable
-from typing import Any, Concatenate, Final, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Any, Concatenate, Final, Literal, TypedDict, overload, type_check_only
 from typing_extensions import deprecated
 
 import numpy as np
@@ -14,24 +14,24 @@ __all__ = ["ODR", "Data", "Model", "OdrError", "OdrStop", "OdrWarning", "Output"
 # force users to explicitly narrow the type in many places. In practice,
 # `float64` is used most often, so we simplify this using the "any trick",
 # even though it's technically type-unsafe this way.
-_ToFloatScalar: TypeAlias = np.float64 | Any
+type _ToFloatScalar = np.float64 | Any
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
-_FCN: TypeAlias = Callable[Concatenate[_Float1D, _FloatND, ...], onp.ArrayND[_ToFloatScalar]]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
+type _FCN = Callable[Concatenate[_Float1D, _FloatND, ...], onp.ArrayND[_ToFloatScalar]]
 
-_01: TypeAlias = Literal[0, 1]  # noqa: PYI042
-_012: TypeAlias = Literal[0, 1, 2]  # noqa: PYI042
-_0123: TypeAlias = Literal[0, 1, 2, 3]  # noqa: PYI042
+type _01 = Literal[0, 1]  # noqa: PYI042
+type _012 = Literal[0, 1, 2]  # noqa: PYI042
+type _0123 = Literal[0, 1, 2, 3]  # noqa: PYI042
 
 # return value of `__odrpack.odr` with `full_output=False`
-_RawOutput: TypeAlias = tuple[
+type _RawOutput = tuple[
     _Float1D,  # beta
     _Float1D,  # sd_beta
     _Float2D,  # cov_beta
 ]
-_RawOutputFull: TypeAlias = tuple[
+type _RawOutputFull = tuple[
     _Float1D,  # beta
     _Float1D,  # sd_beta
     _Float2D,  # cov_beta
@@ -48,7 +48,7 @@ class _FullOutput(TypedDict):
     sum_square: float
     sum_square_delta: float
     sum_square_eps: float
-    inc_condnum: float
+    inv_condnum: float
     rel_error: float
     work: _Float1D
     work_ind: dict[str, int]
@@ -88,6 +88,7 @@ class Data:
         fix: onp.ToIntND | None = None,
         meta: dict[str, Any] | None = None,
     ) -> None: ...
+    def __getattr__(self, attr: str, /) -> Any: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
 @deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
@@ -202,6 +203,7 @@ class Model:
     fjacb: Final[_FCN]
     fjacd: Final[_FCN]
     extra_args: Final[tuple[Any, ...]]
+    estimate: onp.ToFloat1D | None
     implicit: Final[bool | Literal[0, 1]]
     meta: Final[dict[str, Any]]
 
@@ -216,6 +218,7 @@ class Model:
         implicit: bool | Literal[0, 1] = 0,
         meta: dict[str, Any] | None = None,
     ) -> None: ...
+    def __getattr__(self, attr: str, /) -> Any: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
 @deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
@@ -237,6 +240,7 @@ class Output:
     rel_error: Final[float]
     work: Final[onp.Array1D[np.float64]]
     work_ind: Final[dict[str, int]]
+    iwork: Final[onp.Array1D[np.int32 | np.int64]]
     info: Final[int]
     stopreason: Final[list[str]]
 

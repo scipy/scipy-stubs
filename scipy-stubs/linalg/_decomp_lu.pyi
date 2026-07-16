@@ -1,4 +1,4 @@
-from typing import Any, Literal, Never, TypeAlias, overload
+from typing import Any, Literal, Never, overload
 
 import numpy as np
 import optype as op
@@ -9,15 +9,15 @@ __all__ = ["lu", "lu_factor", "lu_solve"]
 
 ###
 
-_as_f32: TypeAlias = np.float32 | np.float16 | npc.integer16 | npc.integer8 | np.bool  # noqa: PYI042
-_as_f64: TypeAlias = npc.floating64 | npc.floating80 | npc.integer64 | npc.integer32  # noqa: PYI042
-_as_c128: TypeAlias = npc.complexfloating160 | npc.complexfloating128  # noqa: PYI042
+type _as_f32 = np.float32 | np.float16 | npc.integer16 | npc.integer8 | np.bool  # noqa: PYI042
+type _as_f64 = npc.floating64 | npc.floating80 | npc.integer64 | npc.integer32  # noqa: PYI042
+type _as_c128 = npc.complexfloating160 | npc.complexfloating128  # noqa: PYI042
 
-_PivND: TypeAlias = onp.ToArrayND[int, npc.integer]
-_Trans: TypeAlias = Literal[0, 1, 2]
+type _PivND = onp.ToArrayND[int, npc.integer]
+type _Trans = Literal[0, 1, 2]
 
 # workaround for mypy & pyright's failure to conform to the overload typing specification
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
+type _JustAnyShape = tuple[Never, Never, Never, Never]
 
 ###
 

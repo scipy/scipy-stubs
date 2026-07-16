@@ -1,19 +1,6 @@
 import collections
 from collections.abc import Callable
-from typing import (
-    Any,
-    Concatenate,
-    Final,
-    Generic,
-    Literal,
-    Never,
-    NoReturn,
-    Protocol,
-    TypeAlias,
-    overload,
-    override,
-    type_check_only,
-)
+from typing import Any, Concatenate, Final, Generic, Literal, Never, NoReturn, Protocol, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -21,25 +8,27 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_S = TypeVar("_S")
-_T = TypeVar("_T")
+###
+
+type _Floating = float | npc.floating
+type _FloatingND = onp.ArrayND[npc.floating] | _Floating
+
+type _Fun[T] = Callable[Concatenate[float, ...], T]
+
+type _Norm = Literal["max", "2"]
+type _Quadrature = Literal["gk21", "gk15", "trapezoid"]
+
+# workaround for mypy & pyright's failure to conform to the overload typing specification
+type _JustAnyShape = tuple[Never, Never, Never]
+
 _VT = TypeVar("_VT", default=Any)
 _NDT_co = TypeVar("_NDT_co", bound=_FloatingND, default=_FloatingND, covariant=True)
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
 _InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
-_Floating: TypeAlias = float | npc.floating
-_FloatingND: TypeAlias = onp.ArrayND[npc.floating] | _Floating
-
-_Fun: TypeAlias = Callable[Concatenate[float, ...], _T]
-
-_Norm: TypeAlias = Literal["max", "2"]
-_Quadrature: TypeAlias = Literal["gk21", "gk15", "trapezoid"]
-
 @type_check_only
 class _DoesMap(Protocol):
-    def __call__(self, func: Callable[[_S], _T], iterable: op.CanIter[op.CanNext[_S]], /) -> op.CanIter[op.CanIterSelf[_T]]: ...
+    def __call__[S, T](self, func: Callable[[S], T], iterable: op.CanIter[op.CanNext[S]], /) -> op.CanIter[op.CanIterSelf[T]]: ...
 
 @type_check_only
 class _InfiniteFunc(Protocol[_NDT_co]):
@@ -88,6 +77,11 @@ class _Bunch(Generic[_InexactT_co, _ShapeT_co]):  # undocumented
     errors: Final[onp.Array1D[np.float64]]
     integrals: onp.ArrayND[_InexactT_co, _ShapeT_co]
 
+# NOTE: Unlike `fixed_quad`, `quad_vec` evaluates `f` at scalar points, so the output
+# shape equals the shape of the returned array of `f` (no axis is reduced), and dtypes
+# below 64 bits precision are not upcast (the quadrature weights are python floats).
+# The `integrals` array of the "info dict" has one additional leading axis.
+
 #
 @overload  # 0d +integer
 def quad_vec(
@@ -123,9 +117,43 @@ def quad_vec(
     full_output: Literal[True],
     args: tuple[object, ...] = (),
 ) -> tuple[np.float64, float, _Bunch[np.float64, tuple[int]]]: ...
-@overload  # Nd +integer
+@overload  # ?d +integer  (mypy & pyright workaround)
 def quad_vec(
-    f: _Fun[onp.ArrayND[npc.integer | np.bool]],
+    f: _Fun[onp.ArrayND[npc.integer | np.bool, _JustAnyShape]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    full_output: Literal[False] = False,
+    *,
+    args: tuple[object, ...] = (),
+) -> tuple[onp.ArrayND[np.float64], float]: ...
+@overload  # ?d +integer, full_output=True  (mypy & pyright workaround)
+def quad_vec(
+    f: _Fun[onp.ArrayND[npc.integer | np.bool, _JustAnyShape]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    *,
+    full_output: Literal[True],
+    args: tuple[object, ...] = (),
+) -> tuple[onp.ArrayND[np.float64], float, _Bunch[np.float64]]: ...
+@overload  # 1d +integer
+def quad_vec(
+    f: _Fun[onp.Array1D[npc.integer | np.bool]],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -142,7 +170,7 @@ def quad_vec(
 ) -> tuple[onp.Array1D[np.float64], float]: ...
 @overload  # 1d +integer, full_output=True
 def quad_vec(
-    f: _Fun[onp.ArrayND[npc.integer | np.bool]],
+    f: _Fun[onp.Array1D[npc.integer | np.bool]],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -157,9 +185,77 @@ def quad_vec(
     full_output: Literal[True],
     args: tuple[object, ...] = (),
 ) -> tuple[onp.Array1D[np.float64], float, _Bunch[np.float64, tuple[int, int]]]: ...
+@overload  # 2d +integer
+def quad_vec(
+    f: _Fun[onp.Array2D[npc.integer | np.bool]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    full_output: Literal[False] = False,
+    *,
+    args: tuple[object, ...] = (),
+) -> tuple[onp.Array2D[np.float64], float]: ...
+@overload  # 2d +integer, full_output=True
+def quad_vec(
+    f: _Fun[onp.Array2D[npc.integer | np.bool]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    *,
+    full_output: Literal[True],
+    args: tuple[object, ...] = (),
+) -> tuple[onp.Array2D[np.float64], float, _Bunch[np.float64, tuple[int, int, int]]]: ...
+@overload  # Nd +integer
+def quad_vec(
+    f: _Fun[onp.ArrayND[npc.integer | np.bool]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    full_output: Literal[False] = False,
+    *,
+    args: tuple[object, ...] = (),
+) -> tuple[onp.ArrayND[np.float64], float]: ...
+@overload  # Nd +integer, full_output=True
+def quad_vec(
+    f: _Fun[onp.ArrayND[npc.integer | np.bool]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    *,
+    full_output: Literal[True],
+    args: tuple[object, ...] = (),
+) -> tuple[onp.ArrayND[np.float64], float, _Bunch[np.float64]]: ...
 @overload  # 0d T:inexact
-def quad_vec(
-    f: _Fun[_InexactT],
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[InexactT],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -173,10 +269,10 @@ def quad_vec(
     full_output: Literal[False] = False,
     *,
     args: tuple[object, ...] = (),
-) -> tuple[_InexactT, float]: ...
+) -> tuple[InexactT, float]: ...
 @overload  # 0d T:inexact, full_output=True
-def quad_vec(
-    f: _Fun[_InexactT],
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[InexactT],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -190,10 +286,10 @@ def quad_vec(
     *,
     full_output: Literal[True],
     args: tuple[object, ...] = (),
-) -> tuple[_InexactT, float, _Bunch[_InexactT, tuple[int]]]: ...
-@overload  # Nd T:inexact
-def quad_vec(
-    f: _Fun[onp.ArrayND[_InexactT]],
+) -> tuple[InexactT, float, _Bunch[InexactT, tuple[int]]]: ...
+@overload  # ?d T:inexact  (mypy & pyright workaround)
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[onp.ArrayND[InexactT, _JustAnyShape]],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -207,10 +303,10 @@ def quad_vec(
     full_output: Literal[False] = False,
     *,
     args: tuple[object, ...] = (),
-) -> tuple[onp.Array1D[_InexactT], float]: ...
-@overload  # Nd T:inexact, full_output=True
-def quad_vec(
-    f: _Fun[onp.ArrayND[_InexactT]],
+) -> tuple[onp.ArrayND[InexactT], float]: ...
+@overload  # ?d T:inexact, full_output=True  (mypy & pyright workaround)
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[onp.ArrayND[InexactT, _JustAnyShape]],
     a: float,
     b: float,
     epsabs: float = 1e-200,
@@ -224,7 +320,109 @@ def quad_vec(
     *,
     full_output: Literal[True],
     args: tuple[object, ...] = (),
-) -> tuple[onp.Array1D[_InexactT], float, _Bunch[_InexactT, tuple[int, int]]]: ...
+) -> tuple[onp.ArrayND[InexactT], float, _Bunch[InexactT]]: ...
+@overload  # 1d T:inexact
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[onp.Array1D[InexactT]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    full_output: Literal[False] = False,
+    *,
+    args: tuple[object, ...] = (),
+) -> tuple[onp.Array1D[InexactT], float]: ...
+@overload  # 1d T:inexact, full_output=True
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[onp.Array1D[InexactT]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    *,
+    full_output: Literal[True],
+    args: tuple[object, ...] = (),
+) -> tuple[onp.Array1D[InexactT], float, _Bunch[InexactT, tuple[int, int]]]: ...
+@overload  # 2d T:inexact
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[onp.Array2D[InexactT]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    full_output: Literal[False] = False,
+    *,
+    args: tuple[object, ...] = (),
+) -> tuple[onp.Array2D[InexactT], float]: ...
+@overload  # 2d T:inexact, full_output=True
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[onp.Array2D[InexactT]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    *,
+    full_output: Literal[True],
+    args: tuple[object, ...] = (),
+) -> tuple[onp.Array2D[InexactT], float, _Bunch[InexactT, tuple[int, int, int]]]: ...
+@overload  # Nd T:inexact
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[onp.ArrayND[InexactT]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    full_output: Literal[False] = False,
+    *,
+    args: tuple[object, ...] = (),
+) -> tuple[onp.ArrayND[InexactT], float]: ...
+@overload  # Nd T:inexact, full_output=True
+def quad_vec[InexactT: npc.inexact](
+    f: _Fun[onp.ArrayND[InexactT]],
+    a: float,
+    b: float,
+    epsabs: float = 1e-200,
+    epsrel: float = 1e-08,
+    norm: _Norm = "2",
+    cache_size: float = 100_000_000,
+    limit: float = 10_000,
+    workers: int | _DoesMap = 1,
+    points: onp.ToFloat1D | None = None,
+    quadrature: _Quadrature | None = None,
+    *,
+    full_output: Literal[True],
+    args: tuple[object, ...] = (),
+) -> tuple[onp.ArrayND[InexactT], float, _Bunch[InexactT]]: ...
 @overload  # 0d float
 def quad_vec(
     f: _Fun[float],

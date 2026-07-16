@@ -1,6 +1,6 @@
 # type-tests for `linalg/_decomp_schur.pyi`
 
-from typing import TypeAlias, TypeVar, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -25,11 +25,10 @@ _c160_2d: onp.Array2D[np.complex256]
 _f64_3d: onp.Array3D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
 
-_ScalarT = TypeVar("_ScalarT", bound=np.generic)
-_Res2_2D: TypeAlias = tuple[onp.Array2D[_ScalarT], onp.Array2D[_ScalarT]]
-_Res2_3D: TypeAlias = tuple[onp.Array3D[_ScalarT], onp.Array3D[_ScalarT]]
-_Res2_ND: TypeAlias = tuple[onp.ArrayND[_ScalarT], onp.ArrayND[_ScalarT]]
-_Res3_2D: TypeAlias = tuple[onp.Array2D[_ScalarT], onp.Array2D[_ScalarT], int]
+type _Res2_2D[ScalarT: np.generic] = tuple[onp.Array2D[ScalarT], onp.Array2D[ScalarT]]
+type _Res2_3D[ScalarT: np.generic] = tuple[onp.Array3D[ScalarT], onp.Array3D[ScalarT]]
+type _Res2_ND[ScalarT: np.generic] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[ScalarT]]
+type _Res3_2D[ScalarT: np.generic] = tuple[onp.Array2D[ScalarT], onp.Array2D[ScalarT], int]
 
 ###
 # schur

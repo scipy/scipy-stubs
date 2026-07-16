@@ -1,6 +1,6 @@
 import types
 from collections.abc import Callable
-from typing import Any, ClassVar, Final, Generic, Literal, TypeAlias, overload
+from typing import Any, ClassVar, Final, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -10,8 +10,8 @@ import optype.numpy.compat as npc
 _ScalarT = TypeVar("_ScalarT", bound=np.float64 | np.complex128, default=np.float64 | Any)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.inexact, default=np.float64 | Any, covariant=True)
 
-_ToFunReal: TypeAlias = Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND]
-_ToFunComplex: TypeAlias = Callable[[float, onp.ArrayND[np.complex128]], onp.ToComplexND]
+type _ToFunReal = Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND]
+type _ToFunComplex = Callable[[float, onp.ArrayND[np.complex128]], onp.ToComplexND]
 
 @overload
 def check_arguments(

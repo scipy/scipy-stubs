@@ -22,7 +22,7 @@ _d = dunnett(_py_f_1d, _py_f_1d, control=_py_f_1d)
 assert_type(_d, DunnettResult[np.float64])
 assert_type(_d.statistic, onp.Array1D[np.float64])
 assert_type(_d.pvalue, onp.Array1D[np.float64])
-assert_type(_d.confidence_interval(), ConfidenceInterval[np.float64])
+assert_type(_d.confidence_interval(), ConfidenceInterval[onp.Array1D[np.float64]])
 
 assert_type(dunnett(_f1d, control=_f1d), DunnettResult[np.float64])
 assert_type(dunnett(_f1d, _f1d, _f1d, control=_f1d, alternative="less"), DunnettResult[np.float64])

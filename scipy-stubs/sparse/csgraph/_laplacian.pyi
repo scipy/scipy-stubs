@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Literal, TypeAlias, overload
+from typing import Literal, overload
 
 import numpy.typing as npt
 import optype.numpy as onp
@@ -8,11 +8,13 @@ import optype.numpy.compat as npc
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
-_LaplacianFunction: TypeAlias = Callable[[onp.ToComplex2D], onp.Array2D[npc.number]]
-_LaplacianMatrix: TypeAlias = onp.Array2D[npc.number] | _spbase | LinearOperator
-_LaplacianDiag: TypeAlias = onp.Array1D[npc.number]
-_ToCSGraph: TypeAlias = onp.ToComplex2D | _spbase
-_Form: TypeAlias = Literal["array", "lo"]
+###
+
+type _LaplacianFunction = Callable[[onp.ToComplex2D], onp.Array2D[npc.number]]
+type _LaplacianMatrix = onp.Array2D[npc.number] | _spbase | LinearOperator
+type _LaplacianDiag = onp.Array1D[npc.number]
+type _ToCSGraph = onp.ToComplex2D | _spbase
+type _Form = Literal["array", "lo"]
 
 ###
 

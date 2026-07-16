@@ -45,6 +45,8 @@ _f32_2d: onp.Array2D[np.float32]
 _f64_2d: onp.Array2D[np.float64]
 _c128_2d: onp.Array2D[np.complex128]
 
+_f64_3d: onp.Array3D[np.float64]
+
 _f64_nd: onp.ArrayND[np.float64]
 
 _py_i_1d: list[int]
@@ -111,12 +113,6 @@ assert_type(cityblock(_f64_1d, _f64_1d), np.float64)
 # dice
 assert_type(dice(_f64_1d, _f64_1d), float)
 
-# euclidean
-assert_type(euclidean(_f64_1d, _f64_1d), float)
-
-# minkowski
-assert_type(minkowski(_f64_1d, _f64_1d), float)
-
 # rogerstanimoto
 assert_type(rogerstanimoto(_f64_1d, _f64_1d), float)
 
@@ -141,12 +137,6 @@ assert_type(sokalsneath(_f64_1d, _c128_1d), np.complex128)
 assert_type(sokalsneath(_c128_1d, _f64_1d), np.complex128)
 assert_type(sokalsneath(_c128_1d, _c128_1d), np.complex128)
 
-# sqeuclidean
-assert_type(sqeuclidean(_f64_1d, _f64_1d), np.float64)
-assert_type(sqeuclidean(_f64_1d, _c128_1d), np.complex128)
-assert_type(sqeuclidean(_c128_1d, _f64_1d), np.complex128)
-assert_type(sqeuclidean(_c128_1d, _c128_1d), np.complex128)
-
 # jensenshannon
 assert_type(jensenshannon(_py_f_1d, _py_f_1d), np.float64)
 assert_type(jensenshannon(_py_f_2d, _py_f_2d), onp.Array1D[np.float64])
@@ -168,3 +158,43 @@ assert_type(is_valid_dm(_f64_2d), bool)
 
 # is_valid_y
 assert_type(is_valid_y(_f64_1d), bool)
+
+# minkowski
+assert_type(minkowski(_f64_1d, _f64_1d), np.float64)
+assert_type(minkowski(_f64_1d, _f64_2d), onp.Array1D[np.float64])
+assert_type(minkowski(_f64_1d, _f64_3d), onp.Array2D[np.float64])
+assert_type(minkowski(_f64_2d, _f64_1d), onp.Array1D[np.float64])
+assert_type(minkowski(_f64_2d, _f64_2d), onp.Array1D[np.float64])
+assert_type(minkowski(_f64_2d, _f64_3d), onp.Array2D[np.float64])
+assert_type(minkowski(_f64_3d, _f64_1d), onp.Array2D[np.float64])
+assert_type(minkowski(_f64_3d, _f64_2d), onp.Array2D[np.float64])
+assert_type(minkowski(_f64_3d, _f64_3d), onp.Array2D[np.float64])
+
+# euclidean
+assert_type(euclidean(_f64_1d, _f64_1d), np.float64)
+assert_type(euclidean(_f64_1d, _f64_2d), onp.Array1D[np.float64])
+assert_type(euclidean(_f64_1d, _f64_3d), onp.Array2D[np.float64])
+assert_type(euclidean(_f64_2d, _f64_1d), onp.Array1D[np.float64])
+assert_type(euclidean(_f64_2d, _f64_2d), onp.Array1D[np.float64])
+assert_type(euclidean(_f64_2d, _f64_3d), onp.Array2D[np.float64])
+assert_type(euclidean(_f64_3d, _f64_1d), onp.Array2D[np.float64])
+assert_type(euclidean(_f64_3d, _f64_2d), onp.Array2D[np.float64])
+assert_type(euclidean(_f64_3d, _f64_3d), onp.Array2D[np.float64])
+
+# sqeuclidean
+assert_type(sqeuclidean(_f64_1d, _f64_1d), np.float64)
+assert_type(sqeuclidean(_f64_1d, _f64_2d), onp.Array1D[np.float64])
+assert_type(sqeuclidean(_f64_2d, _f64_1d), onp.Array1D[np.float64])
+assert_type(sqeuclidean(_f64_2d, _f64_2d), onp.Array1D[np.float64])
+assert_type(sqeuclidean(_c128_1d, _f64_1d), np.complex128)
+assert_type(sqeuclidean(_c128_1d, _f64_2d), onp.Array1D[np.complex128])
+assert_type(sqeuclidean(_c128_2d, _f64_1d), onp.Array1D[np.complex128])
+assert_type(sqeuclidean(_c128_2d, _f64_2d), onp.Array1D[np.complex128])
+assert_type(sqeuclidean(_f64_1d, _c128_1d), np.complex128)
+assert_type(sqeuclidean(_f64_1d, _c128_2d), onp.Array1D[np.complex128])
+assert_type(sqeuclidean(_f64_2d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(sqeuclidean(_f64_2d, _c128_2d), onp.Array1D[np.complex128])
+assert_type(sqeuclidean(_c128_1d, _c128_1d), np.complex128)
+assert_type(sqeuclidean(_c128_1d, _c128_2d), onp.Array1D[np.complex128])
+assert_type(sqeuclidean(_c128_2d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(sqeuclidean(_c128_2d, _c128_2d), onp.Array1D[np.complex128])

@@ -1,4 +1,4 @@
-from typing import Any, ClassVar, Generic, Never, TypeAlias, Unpack, overload
+from typing import Any, ClassVar, Generic, Never, Protocol, Unpack, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -18,32 +18,49 @@ __all__ = ["Binomial", "Logistic", "Normal", "Uniform"]
 
 ###
 
-_Float: TypeAlias = npc.floating
-_Int: TypeAlias = npc.integer
+type _0D = tuple[()]  # noqa: PYI042
+type _1D = tuple[int]  # noqa: PYI042
+type _2D = tuple[int, int]  # noqa: PYI042
+type _3D = tuple[int, int, int]  # noqa: PYI042
 
-_0D: TypeAlias = tuple[()]  # noqa: PYI042
-_1D: TypeAlias = tuple[int]  # noqa: PYI042
-_2D: TypeAlias = tuple[int, int]  # noqa: PYI042
-_3D: TypeAlias = tuple[int, int, int]  # noqa: PYI042
+type _ToFloat_1D = onp.ToFloatStrict1D | onp.ToFloat
+type _ToFloat_2D = onp.ToFloatStrict2D | _ToFloat_1D
+type _ToFloat_3D = onp.ToFloatStrict3D | _ToFloat_2D
+type _ToFloat_ND = onp.ToFloatND | onp.ToFloat
 
-_ToFloat_1D: TypeAlias = onp.ToFloatStrict1D | onp.ToFloat
-_ToFloat_2D: TypeAlias = onp.ToFloatStrict2D | _ToFloat_1D
-_ToFloat_3D: TypeAlias = onp.ToFloatStrict3D | _ToFloat_2D
-_ToFloat_ND: TypeAlias = onp.ToFloatND | onp.ToFloat
+type _ToInt_ND = onp.ToIntND | onp.ToInt
 
-_ToInt_ND: TypeAlias = onp.ToIntND | onp.ToInt
-
-_FloatT = TypeVar("_FloatT", bound=_Float, default=_Float)
-_FloatT_co = TypeVar("_FloatT_co", bound=_Float, default=_Float, covariant=True)
-_IntT = TypeVar("_IntT", bound=_Int, default=_Int)
-_IntT_co = TypeVar("_IntT_co", bound=_Int, default=_Int, covariant=True)
-
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
+_FloatT_co = TypeVar("_FloatT_co", bound=npc.floating, default=npc.floating, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 ###
 
-class Normal(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co, _FloatT_co]):
+# Type-check-only "phantom" helper types to work around `@property` not being `@overload`able in Python, by effectively emulating
+# a type constructor / type mapping / overloaded type alias.
+
+@type_check_only
+class __HasPhantomParam[T](Protocol):
+    def __phantom_param__(self, /) -> T: ...
+
+@type_check_only
+class __PhantomParamMixin(Generic[_ShapeT_co, _FloatT_co]):
+    # Overloads cannot overlap, because currently none of the mature type-checkers have a powerful enough constraint set solver
+    # that's able to unify the constraint sets that overlapping overloads will inevitably lead to.
+    @type_check_only
+    @overload
+    def __phantom_param__[ScalarT: npc.floating](self: __PhantomParamMixin[tuple[()], ScalarT], /) -> ScalarT: ...
+    @overload
+    def __phantom_param__[ShapeT: tuple[int, *tuple[int, ...]], ScalarT: npc.floating](
+        self: __PhantomParamMixin[ShapeT, ScalarT], /
+    ) -> onp.Array[ShapeT, ScalarT]: ...
+
+###
+
+class Normal(
+    ContinuousDistribution[_FloatT_co, _ShapeT_co],
+    __PhantomParamMixin[_ShapeT_co, _FloatT_co],
+    Generic[_ShapeT_co, _FloatT_co],
+):  # fmt: skip
     _mu_domain: ClassVar[_RealInterval] = ...
     _mu_param: ClassVar[_RealParameter] = ...
     _sigma_domain: ClassVar[_RealInterval] = ...
@@ -54,31 +71,87 @@ class Normal(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co,
     _log_normalization: ClassVar[np.float64] = ...
 
     @property
-    def mu(self, /) -> _FloatT_co | onp.Array[_ShapeT_co, _FloatT_co]: ...
+    def mu[T](self: __HasPhantomParam[T], /) -> T: ...
     @property
-    def sigma(self, /) -> _FloatT_co | onp.Array[_ShapeT_co, _FloatT_co]: ...
+    def sigma[T](self: __HasPhantomParam[T], /) -> T: ...
 
-    # TODO(jorenham): __new__
+    #
+    @overload
+    def __new__(cls, mu: None = None, sigma: None = None) -> StandardNormal: ...
+    @overload  # default
+    def __new__(cls, /, **kw: Unpack[_DistOpts]) -> Normal[_0D, np.float64]: ...
+    @overload  # mu: N-d <known shape, dtype>
+    def __new__[FloatT: npc.floating, ShapeT: tuple[int, ...]](  # pyright: ignore[reportOverlappingOverload]
+        cls,
+        /,
+        *,
+        mu: onp.CanArrayND[FloatT, ShapeT],
+        sigma: onp.CanArrayND[FloatT | npc.integer | np.bool, ShapeT] | onp.ToInt,
+        **kw: Unpack[_DistOpts],
+    ) -> Normal[ShapeT, FloatT]: ...
+    @overload  # sigma: N-d <known shape, dtype>
+    def __new__[FloatT: npc.floating, ShapeT: tuple[int, ...]](  # pyright: ignore[reportOverlappingOverload]
+        cls,
+        /,
+        *,
+        mu: onp.CanArrayND[FloatT | npc.integer | np.bool, ShapeT] | onp.ToInt,
+        sigma: onp.CanArrayND[FloatT, ShapeT],
+        **kw: Unpack[_DistOpts],
+    ) -> Normal[ShapeT, FloatT]: ...
+    @overload  # mu, sigma: 0-d float
+    def __new__(cls, /, *, mu: float, sigma: float | onp.ToInt, **kw: Unpack[_DistOpts]) -> Normal[_0D, np.float64]: ...
+    @overload  # mu, sigma: 0-d float
+    def __new__(cls, /, *, mu: float | onp.ToInt, sigma: float, **kw: Unpack[_DistOpts]) -> Normal[_0D, np.float64]: ...
+    @overload  # mu: 0-d <known dtype>, sigma: 0-d
+    def __new__[FloatT: npc.floating](
+        cls, /, *, mu: FloatT, sigma: FloatT | onp.ToInt, **kw: Unpack[_DistOpts]
+    ) -> Normal[_0D, FloatT]: ...
+    @overload  # a, sigma: 0-d <known dtype>
+    def __new__[FloatT: npc.floating](
+        cls, /, *, mu: FloatT | onp.ToInt, sigma: FloatT, **kw: Unpack[_DistOpts]
+    ) -> Normal[_0D, FloatT]: ...
+    @overload  # a, sigma: 0-d
+    def __new__(cls, /, *, mu: onp.ToFloat = 0.0, sigma: onp.ToFloat = 1.0, **kw: Unpack[_DistOpts]) -> Normal[_0D]: ...
+    @overload  # mu: 1-d
+    def __new__(cls, /, *, mu: onp.ToFloatStrict1D, sigma: _ToFloat_1D = 1.0, **kw: Unpack[_DistOpts]) -> Normal[_1D]: ...
+    @overload  # sigma: 1-d
+    def __new__(cls, /, *, mu: _ToFloat_1D = 0.0, sigma: onp.ToFloatStrict1D, **kw: Unpack[_DistOpts]) -> Normal[_1D]: ...
+    @overload  # mu: 2-d
+    def __new__(cls, /, *, mu: onp.ToFloatStrict2D, sigma: _ToFloat_2D = 1.0, **kw: Unpack[_DistOpts]) -> Normal[_2D]: ...
+    @overload  # sigma: 2-d
+    def __new__(cls, /, *, mu: _ToFloat_2D = 0.0, sigma: onp.ToFloatStrict2D, **kw: Unpack[_DistOpts]) -> Normal[_2D]: ...
+    @overload  # mu: 3-d
+    def __new__(cls, /, *, mu: onp.ToFloatStrict3D, sigma: _ToFloat_3D = 1.0, **kw: Unpack[_DistOpts]) -> Normal[_3D]: ...
+    @overload  # sigma: 3-d
+    def __new__(cls, /, *, mu: _ToFloat_3D = 0.0, sigma: onp.ToFloatStrict3D, **kw: Unpack[_DistOpts]) -> Normal[_3D]: ...
+    @overload  # mu: >=1-d
+    def __new__(
+        cls, /, *, mu: onp.ToFloatND, sigma: _ToFloat_ND = 1.0, **kw: Unpack[_DistOpts]
+    ) -> Normal[onp.AtLeast1D[Any]]: ...
+    @overload  # sigma: >=1-d
+    def __new__(
+        cls, /, *, mu: _ToFloat_ND = 0.0, sigma: onp.ToFloatND, **kw: Unpack[_DistOpts]
+    ) -> Normal[onp.AtLeast1D[Any]]: ...
 
     #
     @overload  # default
     def __init__(self: Normal[_0D, np.float64], /, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: N-d <known shape, dtype>
-    def __init__(
-        self: Normal[_ShapeT, _FloatT],
+    def __init__[FloatT: npc.floating, ShapeT: tuple[int, ...]](
+        self: Normal[ShapeT, FloatT],
         /,
         *,
-        mu: onp.CanArrayND[_FloatT, _ShapeT],
-        sigma: onp.CanArrayND[_FloatT | npc.integer | np.bool, _ShapeT] | onp.ToInt,
+        mu: onp.CanArrayND[FloatT, ShapeT],
+        sigma: onp.CanArrayND[FloatT | npc.integer | np.bool, ShapeT] | onp.ToInt,
         **kw: Unpack[_DistOpts],
     ) -> None: ...
     @overload  # sigma: N-d <known shape, dtype>
-    def __init__(
-        self: Normal[_ShapeT, _FloatT],
+    def __init__[FloatT: npc.floating, ShapeT: tuple[int, ...]](
+        self: Normal[ShapeT, FloatT],
         /,
         *,
-        mu: onp.CanArrayND[_FloatT | npc.integer | np.bool, _ShapeT] | onp.ToInt,
-        sigma: onp.CanArrayND[_FloatT, _ShapeT],
+        mu: onp.CanArrayND[FloatT | npc.integer | np.bool, ShapeT] | onp.ToInt,
+        sigma: onp.CanArrayND[FloatT, ShapeT],
         **kw: Unpack[_DistOpts],
     ) -> None: ...
     @overload  # mu, sigma: 0-d float
@@ -86,9 +159,13 @@ class Normal(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co,
     @overload  # mu, sigma: 0-d float
     def __init__(self: Normal[_0D, np.float64], /, *, mu: float | onp.ToInt, sigma: float, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: 0-d <known dtype>, sigma: 0-d
-    def __init__(self: Normal[_0D, _FloatT], /, *, mu: _FloatT, sigma: _FloatT | onp.ToInt, **kw: Unpack[_DistOpts]) -> None: ...
+    def __init__[FloatT: npc.floating](
+        self: Normal[_0D, FloatT], /, *, mu: FloatT, sigma: FloatT | onp.ToInt, **kw: Unpack[_DistOpts]
+    ) -> None: ...
     @overload  # a, sigma: 0-d <known dtype>
-    def __init__(self: Normal[_0D, _FloatT], /, *, mu: _FloatT | onp.ToInt, sigma: _FloatT, **kw: Unpack[_DistOpts]) -> None: ...
+    def __init__[FloatT: npc.floating](
+        self: Normal[_0D, FloatT], /, *, mu: FloatT | onp.ToInt, sigma: FloatT, **kw: Unpack[_DistOpts]
+    ) -> None: ...
     @overload  # a, sigma: 0-d
     def __init__(self: Normal[_0D], /, *, mu: onp.ToFloat = 0.0, sigma: onp.ToFloat = 1.0, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: 1-d
@@ -100,7 +177,7 @@ class Normal(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co,
     @overload  # sigma: 2-d
     def __init__(self: Normal[_2D], /, *, mu: _ToFloat_2D = 0.0, sigma: onp.ToFloatStrict2D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: 3-d
-    def __init__(self: Normal[_2D], /, *, mu: onp.ToFloatStrict3D, sigma: _ToFloat_3D = 1.0, **kw: Unpack[_DistOpts]) -> None: ...
+    def __init__(self: Normal[_3D], /, *, mu: onp.ToFloatStrict3D, sigma: _ToFloat_3D = 1.0, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # sigma: 3-d
     def __init__(self: Normal[_3D], /, *, mu: _ToFloat_3D = 0.0, sigma: onp.ToFloatStrict3D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # mu: >=1-d
@@ -123,7 +200,11 @@ class Logistic(ContinuousDistribution[np.float64, tuple[()]]):
     _x_param: ClassVar[_RealParameter] = ...
     _scale: ClassVar[np.float64] = ...
 
-class Uniform(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co, _FloatT_co]):
+class Uniform(
+    ContinuousDistribution[_FloatT_co, _ShapeT_co],
+    __PhantomParamMixin[_ShapeT_co, _FloatT_co],
+    Generic[_ShapeT_co, _FloatT_co],
+):  # fmt: skip
     _a_domain: ClassVar[_RealInterval] = ...
     _a_param: ClassVar[_RealParameter] = ...
     _b_domain: ClassVar[_RealInterval] = ...
@@ -132,11 +213,11 @@ class Uniform(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co
     _x_param: ClassVar[_RealParameter] = ...
 
     @property
-    def a(self, /) -> _FloatT_co | onp.Array[_ShapeT_co, _FloatT_co]: ...
+    def a[T](self: __HasPhantomParam[T], /) -> T: ...
     @property
-    def b(self, /) -> _FloatT_co | onp.Array[_ShapeT_co, _FloatT_co]: ...
+    def b[T](self: __HasPhantomParam[T], /) -> T: ...
     @property
-    def ab(self, /) -> _FloatT_co | onp.Array[_ShapeT_co, _FloatT_co]: ...  # b - a
+    def ab[T](self: __HasPhantomParam[T], /) -> T: ...  # b - a
 
     # NOTE: `a` and `b` are both required; the defaults are just there to confuse you or something...
     @overload  # a: 0-d float, b: 0-d
@@ -144,9 +225,13 @@ class Uniform(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co
     @overload  # a, b: 0-d float
     def __init__(self: Uniform[_0D, np.float64], /, *, a: float | onp.ToInt, b: float, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a: 0-d <known dtype>, b: 0-d
-    def __init__(self: Uniform[_0D, _FloatT], /, *, a: _FloatT, b: _FloatT | onp.ToInt, **kw: Unpack[_DistOpts]) -> None: ...
+    def __init__[FloatT: npc.floating](
+        self: Uniform[_0D, FloatT], /, *, a: FloatT, b: FloatT | onp.ToInt, **kw: Unpack[_DistOpts]
+    ) -> None: ...
     @overload  # a, b: 0-d <known dtype>
-    def __init__(self: Uniform[_0D, _FloatT], /, *, a: _FloatT | onp.ToInt, b: _FloatT, **kw: Unpack[_DistOpts]) -> None: ...
+    def __init__[FloatT: npc.floating](
+        self: Uniform[_0D, FloatT], /, *, a: FloatT | onp.ToInt, b: FloatT, **kw: Unpack[_DistOpts]
+    ) -> None: ...
     @overload  # a, b: 0-d
     def __init__(self: Uniform[_0D], /, *, a: onp.ToFloat, b: onp.ToFloat, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a: 1-d
@@ -158,7 +243,7 @@ class Uniform(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co
     @overload  # b: 2-d
     def __init__(self: Uniform[_2D], /, *, a: _ToFloat_2D, b: onp.ToFloatStrict2D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a: 3-d
-    def __init__(self: Uniform[_2D], /, *, a: onp.ToFloatStrict3D, b: _ToFloat_3D, **kw: Unpack[_DistOpts]) -> None: ...
+    def __init__(self: Uniform[_3D], /, *, a: onp.ToFloatStrict3D, b: _ToFloat_3D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # b: 3-d
     def __init__(self: Uniform[_3D], /, *, a: _ToFloat_3D, b: onp.ToFloatStrict3D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a: >=1-d
@@ -170,7 +255,7 @@ class Uniform(ContinuousDistribution[_FloatT_co, _ShapeT_co], Generic[_ShapeT_co
     @overload  # b: None -> ValueError
     def __init__(self, /, *, a: _ToFloat_ND | None = None, b: None = None, **kw: Unpack[_DistOpts]) -> Never: ...
 
-class Binomial(DiscreteDistribution[_IntT_co, _ShapeT_co], Generic[_ShapeT_co, _IntT_co]):
+class Binomial(DiscreteDistribution[np.float64, _ShapeT_co], __PhantomParamMixin[_ShapeT_co, np.float64], Generic[_ShapeT_co]):
     _n_domain: ClassVar[_IntegerInterval] = ...
     _p_domain: ClassVar[_RealInterval] = ...
     _x_support: ClassVar[_IntegerInterval] = ...
@@ -179,20 +264,13 @@ class Binomial(DiscreteDistribution[_IntT_co, _ShapeT_co], Generic[_ShapeT_co, _
     _p_param: ClassVar[_RealParameter] = ...
     _x_param: ClassVar[_RealParameter] = ...
 
+    #
     @property
-    def n(self, /) -> _IntT_co | onp.Array[_ShapeT_co, _IntT_co]: ...
+    def n[T](self: __HasPhantomParam[T], /) -> T: ...
     @property
-    def p(self, /) -> np.float64 | onp.Array[_ShapeT_co, np.float64]: ...
+    def p[T](self: __HasPhantomParam[T], /) -> T: ...
 
     #
-    @overload  # a: 0-d float, b: 0-d
-    def __init__(self: Binomial[_0D, np.int_], /, *, n: int, p: onp.ToFloat, **kw: Unpack[_DistOpts]) -> None: ...
-    @overload  # a, b: 0-d float
-    def __init__(
-        self: Binomial[_0D, np.int_], /, *, n: onp.ToInt, p: np.float64 | npc.floating80, **kw: Unpack[_DistOpts]
-    ) -> None: ...
-    @overload  # a: 0-d <known dtype>, b: 0-d
-    def __init__(self: Binomial[_0D, _IntT], /, *, n: _IntT, p: onp.ToFloat, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a, b: 0-d
     def __init__(self: Binomial[_0D], /, *, n: onp.ToInt, p: onp.ToFloat, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a: 1-d
@@ -204,7 +282,7 @@ class Binomial(DiscreteDistribution[_IntT_co, _ShapeT_co], Generic[_ShapeT_co, _
     @overload  # b: 2-d
     def __init__(self: Binomial[_2D], /, *, n: _ToFloat_2D, p: onp.ToFloatStrict2D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a: 3-d
-    def __init__(self: Binomial[_2D], /, *, n: onp.ToIntStrict3D, p: _ToFloat_3D, **kw: Unpack[_DistOpts]) -> None: ...
+    def __init__(self: Binomial[_3D], /, *, n: onp.ToIntStrict3D, p: _ToFloat_3D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # b: 3-d
     def __init__(self: Binomial[_3D], /, *, n: _ToFloat_3D, p: onp.ToFloatStrict3D, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a: >=1-d

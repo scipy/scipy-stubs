@@ -1,22 +1,24 @@
 from types import EllipsisType
-from typing import Literal, Never, TypeAlias, overload
+from typing import Literal, Never, overload
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_bint: TypeAlias = bool | Literal[0, 1]  # noqa: PYI042
+###
 
-_bool_1d: TypeAlias = onp.Array1D[np.bool]  # noqa: PYI042
-_f64_1d: TypeAlias = onp.Array1D[np.float64]  # noqa: PYI042
-_f64_2d: TypeAlias = onp.Array2D[np.float64]  # noqa: PYI042
-_f64_3d: TypeAlias = onp.Array3D[np.float64]  # noqa: PYI042
-_f64_nd: TypeAlias = onp.ArrayND[np.float64]  # noqa: PYI042
-_f64_xd: TypeAlias = onp.Array[tuple[Never, ...], np.float64]  # noqa: PYI042
-_isize_2d: TypeAlias = onp.Array2D[np.intp]  # noqa: PYI042
+type _bint = bool | Literal[0, 1]  # noqa: PYI042
 
-_Indexer: TypeAlias = int | slice | EllipsisType | None
-_Order: TypeAlias = Literal["e", "extrinsic", "i", "intrinsic"]
+type _bool_1d = onp.Array1D[np.bool]  # noqa: PYI042
+type _f64_1d = onp.Array1D[np.float64]  # noqa: PYI042
+type _f64_2d = onp.Array2D[np.float64]  # noqa: PYI042
+type _f64_3d = onp.Array3D[np.float64]  # noqa: PYI042
+type _f64_nd = onp.ArrayND[np.float64]  # noqa: PYI042
+type _f64_xd = onp.Array[tuple[Never, ...], np.float64]  # noqa: PYI042
+type _isize_2d = onp.Array2D[np.intp]  # noqa: PYI042
+
+type _Indexer = int | slice | EllipsisType | None
+type _Order = Literal["e", "extrinsic", "i", "intrinsic"]
 
 ###
 

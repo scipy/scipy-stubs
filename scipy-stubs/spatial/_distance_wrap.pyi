@@ -1,16 +1,18 @@
 # defined in scipy/spatial/src/distance_wrap.c
 
-from typing import TypeAlias
-
 import numpy as np
 import optype.numpy as onp
 
-_DoubleND: TypeAlias = onp.ArrayND[np.float64]
-_Double1D: TypeAlias = onp.Array1D[np.float64]
-_Double2D: TypeAlias = onp.Array2D[np.float64]
-_BoolND: TypeAlias = onp.ArrayND[np.bool]
-_Bool1D: TypeAlias = onp.Array1D[np.bool]
-_Bool2D: TypeAlias = onp.Array2D[np.bool]
+###
+
+type _DoubleND = onp.ArrayND[np.float64]
+type _Double1D = onp.Array1D[np.float64]
+type _Double2D = onp.Array2D[np.float64]
+type _BoolND = onp.ArrayND[np.bool]
+type _Bool1D = onp.Array1D[np.bool]
+type _Bool2D = onp.Array2D[np.bool]
+
+###
 
 ###
 # NOTE: These all return 0.0, and write the result to `dm`.

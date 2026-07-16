@@ -1,5 +1,5 @@
 from _typeshed import IdentityFunction
-from typing import Final, Literal, TypeAlias, TypeVar
+from typing import Final, Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -10,17 +10,18 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__: list[str] = []
 
-_T = TypeVar("_T")
-_Char: TypeAlias = Literal["f", "d", "F", "D"]
-_ToLinearOperator: TypeAlias = onp.CanArrayND[npc.number | np.bool] | _spbase | LinearOperator
-_Inexact: TypeAlias = np.float32 | np.float64 | np.complex64 | np.complex128
+###
+
+type _Char = Literal["f", "d", "F", "D"]
+type _ToLinearOperator = onp.CanArrayND[npc.number | np.bool] | _spbase | LinearOperator
+type _Inexact = np.float32 | np.float64 | np.complex64 | np.complex128
 
 ###
 
 __docformat__: Final = "restructuredtext en"
 _coerce_rules: Final[dict[tuple[_Char, _Char], _Char]]
 
-def id(x: _T) -> _T: ...
+def id[T](x: T) -> T: ...
 def coerce(x: str, y: str) -> _Char: ...
 def make_system(
     A: _ToLinearOperator, M: _ToLinearOperator | None, x0: onp.ToComplex1D | Literal["Mb"] | None, b: onp.ToComplex1D

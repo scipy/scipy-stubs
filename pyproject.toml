@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.11.16,<0.12"]
+requires = ["uv_build>=0.11.28,<0.12"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -9,8 +9,8 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 
 [project]
 name = "scipy-stubs"
-version = "1.18.0.0.dev0"
-description = "Type annotations for SciPy"
+version = "1.18.0.2.dev0"
+description = "The official type stubs for SciPy"
 readme = "README.md"
 authors = [
   { name = "Joren Hammudoglu", email = "jhammudoglu@gmail.com" },
@@ -21,7 +21,17 @@ maintainers = [
 ]
 license = "BSD-3-Clause"
 license-files = ["LICENSE"]
-keywords = ["scipy", "typing", "stubs", "mypy", "pyright", "pep484", "pep561", "scipy-stubs"]
+keywords = [
+  "scipy",
+  "typing",
+  "stubs",
+  "type-stubs",
+  "type-hints",
+  "type-checking",
+  "static-typing",
+  "shape-typing",
+  "pep561",
+]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Developers",
@@ -35,10 +45,10 @@ classifiers = [
   "Typing :: Stubs Only",
 ]
 requires-python = ">=3.12"
-dependencies = ["optype[numpy]>=0.14.0,<0.18"]
+dependencies = ["optype[numpy]>=0.15.0,<0.20"]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.18.0rc1,<1.19"]
+scipy = ["scipy>=1.18.0,<1.19"]
 
 [project.urls]
 Homepage = "https://scipy.org/"
@@ -51,69 +61,36 @@ extras = ["scipy-stubs[scipy]"]
 ci = ["packaging>=26.2"]
 lint = [
   { include-group = "extras" },
-  "dprint-py==0.53.1.0",
-  "ruff==0.15.14",
-  "sp-repo-review[cli]==2026.4.4",
+  "dprint-py==0.55.1.4",
+  "ruff==0.15.21",
+  "sp-repo-review[cli]==2026.6.18",
 ]
 type = [
   { include-group = "extras" },
   { include-group = "ci" },
-  "array-api-compat==1.14.0", # bundled as `_lib.array_api_compat`
-  "pytest==9.0.3", # needed for `_lib._array_api.make_xp_pytest_*`
-  "matplotlib==3.10.9", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
-  "basedpyright==1.39.6",
-  "mypy[faster-cache]==2.1.0",
-  "pyrefly==0.63.1",
+  # https://github.com/data-apis/array-api-compat/issues/436
+  "array-api-compat==1.14.0, !=1.15.0", # bundled as `_lib.array_api_compat`
+  "pytest==9.1.1", # needed for `_lib._array_api.make_xp_pytest_*`
+  "matplotlib==3.11.0", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
+  "basedpyright==1.39.9",
+  "mypy[faster-cache]==2.2.0",
+  "pyrefly==1.1.1",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.39",
-  "typeshed-client>=2.11.0",
+  "ty==0.0.59",
+  "zuban==0.9.0",
 ]
 dev = [
   { include-group = "lint" },
   { include-group = "type" },
 ]
 
-[tool.uv]
-# TODO(@jorenham): remove after scipy==1.18.0 final
-prerelease = "allow"
-
 [tool.uv.sources]
 # the required stubdefaulter features not released yet (>0.1.0)
-stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "ebe9e31" }
-# TODO(@jorenham): remove once a new >2.11 release has been published
-typeshed-client = { git = "https://github.com/JelleZijlstra/typeshed_client.git", rev = "d07fd47" }
-
-# poe
-
-[tool.poe.tasks.clean]
-cmd = """
-rm -rf
-  **/*.pyc
-  **/__pycache__
-  **/.cache
-  **/.mypy_cache
-  **/.ruff_cache
-  **/.tox
-"""
-
-[tool.poe.tasks.stubtest]
-cmd = """
-uv run
-  --no-editable
-  --reinstall-package=scipy-stubs
-  stubtest
-  --ignore-disjoint-bases
-  --allowlist=.mypyignore
-  scipy
-"""
-
-[tool.poe.tasks.stubdefaulter]
-cmd = "stubdefaulter --packages=. --exit-zero --check"
-executor.type = "uv"
+stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", rev = "866ecca" }
 
 [tool.typos]
 files = { extend-exclude = ["*.pyi", ".mypyignore"] }
-default = { extend-ignore-identifiers-re = ['ND|Nd|Theis|TtestResult|SeQUeNCe'] }
+default = { extend-ignore-identifiers-re = ['ND|Nd|Theis|TtestResult|SeQUeNCe|whos'] }
 
 # mypy
 
@@ -214,6 +191,11 @@ errors = { deprecated = "ignore" }
 matches = "scipy-stubs/stats/_distn_infrastructure.pyi"
 errors = { bad-override = "ignore" }
 
+[[tool.pyrefly.sub-config]]
+# the ignores needed for https://github.com/facebook/pyrefly/issues/3974 are unused on numpy 2.2
+matches = "tests/integrate/test_quadrature.pyi"
+errors = { unused-ignore = "ignore" }
+
 # ty
 
 [tool.ty]
@@ -274,21 +256,8 @@ skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = [
-  "D",
-  "FBT",
-  "ANN401",
-  "COM812",
-  "CPY",
-  "EM",
-  "TD",
-  "FIX",
-  "DOC",
-  # TODO(@jorenham): https://github.com/scipy/scipy-stubs/pull/1615
-  "UP040",
-  "UP046",
-  "UP047",
-]
+ignore = ["D", "FBT", "ANN401", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
+extend-safe-fixes = ["UP047"]
 
 [tool.ruff.lint.per-file-ignores]
 "*.pyi" = ["F", "E741", "N", "A", "PYI054", "PLC2701", "PLW3201", "PLR", "FURB"]
@@ -318,7 +287,7 @@ split-on-trailing-comma = false
 [tool.tox]
 min_version = "4"
 requires = ["tox-uv>=1"]
-env_list = ["lint", "ty", "pyrefly", "pyright", "mypy", "3.12", "3.13", "3.14"]
+env_list = ["lint", "ty", "zuban", "pyrefly", "pyright", "mypy", "3.12", "3.13", "3.14"]
 
 [tool.tox.env_run_base]
 description = "stubtest with {base_python}"
@@ -353,6 +322,14 @@ commands = [
     "--output-format=concise",
     { replace = "posargs", default = ["scipy-stubs", "scripts"], extend = true },
   ],
+]
+
+[tool.tox.env.zuban]
+description = "zuban"
+runner = "uv-venv-lock-runner"
+dependency_groups = ["type"]
+commands = [
+  ["zuban", "check", { replace = "posargs", default = ["scipy-stubs", "scripts"], extend = true }],
 ]
 
 [tool.tox.env.pyrefly]

@@ -2,7 +2,7 @@ __all__ = ["FuncData", "assert_func_equal", "with_special_errors"]
 
 from collections.abc import Callable, Generator, Sequence
 from types import ModuleType
-from typing import Any, Final, Generic, TypeAlias, overload
+from typing import Any, Final, Generic, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,11 +11,10 @@ import pytest
 
 ###
 
-_FuncT = TypeVar("_FuncT", bound=Callable[..., object])
-_ScalarT_co = TypeVar("_ScalarT_co", bound=np.generic, default=Any, covariant=True)
+type _ResultFunc = Callable[..., object]
+type _FilterFunc = Callable[..., bool]
 
-_ResultFunc: TypeAlias = Callable[..., object]
-_FilterFunc: TypeAlias = Callable[..., bool]
+_ScalarT_co = TypeVar("_ScalarT_co", bound=np.generic, default=Any, covariant=True)
 
 ###
 
@@ -27,7 +26,7 @@ class MissingModule:  # undocumented
 def check_version(module: ModuleType | MissingModule, min_ver: str) -> pytest.MarkDecorator: ...  # undocumented
 
 #
-def with_special_errors(func: _FuncT) -> _FuncT: ...  # undocumented
+def with_special_errors[FuncT: Callable[..., object]](func: FuncT) -> FuncT: ...  # undocumented
 
 #
 def assert_func_equal(

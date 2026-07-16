@@ -49,4 +49,12 @@ assert_type(LinearConstraint([[1.0, 2.0]]), LinearConstraint)
 
 def _con(x: onp.Array1D[np.float64]) -> onp.Array1D[np.float64]: ...
 
-assert_type(NonlinearConstraint(_con, 0.0, 1.0), NonlinearConstraint)
+f64_1d: onp.Array1D[np.float64]
+bools_1d: list[bool]
+
+assert_type(NonlinearConstraint(_con, 0.0, 1.5), NonlinearConstraint[float, bool])
+assert_type(NonlinearConstraint(_con, 0.0, 1.5).lb, float)
+assert_type(NonlinearConstraint(_con, 0.0, 1.5).ub, float)
+assert_type(NonlinearConstraint(_con, 0.0, 1.5).keep_feasible, bool)
+assert_type(NonlinearConstraint(_con, f64_1d, f64_1d).lb, onp.Array1D[np.float64])
+assert_type(NonlinearConstraint(_con, 0.0, 1.0, keep_feasible=bools_1d).keep_feasible, list[bool])

@@ -1,14 +1,16 @@
 from _typeshed import IdentityFunction
 from collections.abc import Callable
-from typing import Literal as L, TypeAlias, overload
+from typing import Literal as L, overload
 
 import numpy as np
 import optype.numpy as onp
 
-_Inexact: TypeAlias = np.float64 | np.complex128
+###
 
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
-_InexactND: TypeAlias = onp.ArrayND[np.float64 | np.complex128]
+type _Inexact = np.float64 | np.complex128
+
+type _FloatND = onp.ArrayND[np.float64]
+type _InexactND = onp.ArrayND[np.float64 | np.complex128]
 
 ###
 # Undocumented (private) functions

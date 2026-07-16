@@ -150,14 +150,14 @@ assert_type(ivp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
 # h1vp
 assert_type(h1vp(1.0, 1.0), np.complex64 | np.complex128)
 assert_type(h1vp(1.0, 1j), np.complex64 | np.complex128)
-assert_type(h1vp(1.0, c_arr), np.complex64 | np.complex128)
-assert_type(h1vp(f_arr, 1j), np.complex64 | np.complex128)
+assert_type(h1vp(1.0, c_arr), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(h1vp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
 
 # h2vp
 assert_type(h2vp(1.0, 1.0), np.complex64 | np.complex128)
 assert_type(h2vp(1.0, 1j), np.complex64 | np.complex128)
-assert_type(h2vp(1.0, c_arr), np.complex64 | np.complex128)
-assert_type(h2vp(f_arr, 1j), np.complex64 | np.complex128)
+assert_type(h2vp(1.0, c_arr), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(h2vp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
 
 # riccati_jn
 assert_type(riccati_jn(1, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -188,7 +188,7 @@ assert_type(assoc_laguerre(1j, i_arr, 0.0), onp.ArrayND[np.complex64 | np.comple
 assert_type(assoc_laguerre(c_arr, 3, 0.0), onp.ArrayND[np.complex64 | np.complex128])
 
 # polygamma
-assert_type(polygamma(1, 1.0), np.float64)
+assert_type(polygamma(1, 1.0), onp.Array0D[np.float64])
 assert_type(polygamma(1, f_arr), onp.ArrayND[np.float64])
 assert_type(polygamma(i_arr, 1.0), onp.ArrayND[np.float64])
 
@@ -205,9 +205,9 @@ assert_type(lqn(2, 1j), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex
 assert_type(lqn(2, c_arr), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 
 # lqmn
-assert_type(lqmn(1, 2, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(lqmn(1, 2, 1.0), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
 assert_type(lqmn(1, 2, f_arr), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
-assert_type(lqmn(1, 2, 1j), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(lqmn(1, 2, 1j), tuple[onp.Array2D[np.complex128], onp.Array2D[np.complex128]])
 assert_type(lqmn(1, 2, c_arr), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 
 # bernoulli

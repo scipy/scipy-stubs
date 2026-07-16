@@ -1,11 +1,11 @@
-from typing import TypeAlias
-
 import numpy as np
 import numpy.typing as npt
 
 from scipy.optimize import minimize
 
-NDArrayFloat: TypeAlias = npt.NDArray[np.float16 | np.float32 | np.float64]
+###
+
+type NDArrayFloat = npt.NDArray[np.float16 | np.float32 | np.float64]
 
 def objective_function(CCT: NDArrayFloat, uv_: NDArrayFloat) -> np.float64: ...
 

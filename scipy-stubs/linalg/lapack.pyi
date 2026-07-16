@@ -633,6 +633,7 @@ from .blas import _FortranFunction
 
 __all__ = ["get_lapack_funcs"]
 
+HAS_LP64: Final[bool] = ...
 HAS_ILP64: Final[bool] = ...
 
 def get_lapack_funcs(

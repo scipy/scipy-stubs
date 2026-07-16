@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Final, Generic, Literal, TypeAlias, overload
+from typing import Any, Final, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -10,11 +10,11 @@ import optype.numpy.compat as npc
 from .base import DenseOutput
 from scipy.sparse import csc_matrix
 
-_FloatingT = TypeVar("_FloatingT", bound=npc.floating)
-_ToFloatT = TypeVar("_ToFloatT", bound=onp.ToFloat)
-_InterpT_co = TypeVar("_InterpT_co", bound=DenseOutput[npc.inexact], default=DenseOutput[Any], covariant=True)
+###
 
-_ToFloat64: TypeAlias = np.float16 | np.float32 | np.float64 | npc.integer | np.bool
+type _ToFloat64 = np.float16 | np.float32 | np.float64 | npc.integer | np.bool
+
+_InterpT_co = TypeVar("_InterpT_co", bound=DenseOutput[npc.inexact], default=DenseOutput[Any], covariant=True)
 
 ###
 
@@ -54,12 +54,14 @@ class OdeSolution(Generic[_InterpT_co]):
     @overload
     def __call__(self, /, t: onp.CanArrayND[npc.complexfloating160]) -> onp.Array2D[np.clongdouble]: ...
 
-def validate_first_step(first_step: _ToFloatT, t0: onp.ToFloat, t_bound: onp.ToFloat) -> _ToFloatT: ...  # undocumented
-def validate_max_step(max_step: _ToFloatT) -> _ToFloatT: ...  # undocumented
+def validate_first_step[ToFloatT: onp.ToFloat](
+    first_step: ToFloatT, t0: onp.ToFloat, t_bound: onp.ToFloat
+) -> ToFloatT: ...  # undocumented
+def validate_max_step[ToFloatT: onp.ToFloat](max_step: ToFloatT) -> ToFloatT: ...  # undocumented
 def warn_extraneous(extraneous: dict[str, Any]) -> None: ...  # undocumented
-def validate_tol(
-    rtol: onp.ArrayND[_FloatingT], atol: onp.ArrayND[_FloatingT], n: int
-) -> tuple[onp.Array1D[_FloatingT], onp.Array1D[_FloatingT]]: ...  # undocumented
+def validate_tol[FloatingT: npc.floating](
+    rtol: onp.ArrayND[FloatingT], atol: onp.ArrayND[FloatingT], n: int
+) -> tuple[onp.Array1D[FloatingT], onp.Array1D[FloatingT]]: ...  # undocumented
 def norm(x: onp.ToFloatND) -> npc.floating: ...  # undocumented
 def select_initial_step(
     fun: Callable[[np.float64, onp.Array1D[np.float64]], onp.Array1D[np.float64]],

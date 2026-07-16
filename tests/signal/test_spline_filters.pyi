@@ -1,6 +1,6 @@
 # type-tests for `signal/_spline_filters.pyi`
 
-from typing import Any, TypeAlias, assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -21,28 +21,30 @@ from scipy.signal import (
 
 ###
 
-_F64_1D: TypeAlias = onp.Array1D[np.float64]
-_F64_2D: TypeAlias = onp.Array2D[np.float64]
-_F32_1D: TypeAlias = onp.Array1D[np.float32]
-_F32_2D: TypeAlias = onp.Array2D[np.float32]
-_FQ_1D: TypeAlias = onp.Array1D[np.float64 | np.longdouble]
-_FQ_2D: TypeAlias = onp.Array2D[np.float64 | np.longdouble]
-_FQ_3D: TypeAlias = onp.Array3D[np.float64 | np.longdouble]
-_FQ_ND: TypeAlias = onp.ArrayND[np.float64 | np.longdouble, tuple[int] | tuple[Any, ...]]
-_F80_1D: TypeAlias = onp.Array1D[npc.floating80]
-_C64_1D: TypeAlias = onp.Array1D[np.complex64]
-_C64_2D: TypeAlias = onp.Array2D[np.complex64]
-_C128_1D: TypeAlias = onp.Array1D[np.complex128]
-_C128_2D: TypeAlias = onp.Array2D[np.complex128]
-_CQ_1D: TypeAlias = onp.Array1D[np.complex128 | np.clongdouble]
-_CQ_2D: TypeAlias = onp.Array2D[np.complex128 | np.clongdouble]
-_CQ_3D: TypeAlias = onp.Array3D[np.complex128 | np.clongdouble]
-_CQ_ND: TypeAlias = onp.ArrayND[np.complex128 | np.clongdouble]
-_C160_1D: TypeAlias = onp.Array1D[npc.complexfloating160]
+type _F64_1D = onp.Array1D[np.float64]
+type _F64_2D = onp.Array2D[np.float64]
+type _F32_1D = onp.Array1D[np.float32]
+type _F32_2D = onp.Array2D[np.float32]
+type _F16_1D = onp.Array1D[np.float16]
+type _FQ_1D = onp.Array1D[np.float64 | np.longdouble]
+type _FQ_2D = onp.Array2D[np.float64 | np.longdouble]
+type _FQ_3D = onp.Array3D[np.float64 | np.longdouble]
+type _FQ_ND = onp.ArrayND[np.float64 | np.longdouble, tuple[int] | tuple[Any, ...]]
+type _F80_1D = onp.Array1D[npc.floating80]
+type _C64_1D = onp.Array1D[np.complex64]
+type _C64_2D = onp.Array2D[np.complex64]
+type _C128_1D = onp.Array1D[np.complex128]
+type _C128_2D = onp.Array2D[np.complex128]
+type _CQ_1D = onp.Array1D[np.complex128 | np.clongdouble]
+type _CQ_2D = onp.Array2D[np.complex128 | np.clongdouble]
+type _CQ_3D = onp.Array3D[np.complex128 | np.clongdouble]
+type _CQ_ND = onp.ArrayND[np.complex128 | np.clongdouble]
+type _C160_1D = onp.Array1D[npc.complexfloating160]
 
 ###
 
 _i64_1d: onp.Array1D[np.int64]
+_f16_1d: onp.Array1D[np.float16]
 _f32_1d: onp.Array1D[np.float32]
 _f32_2d: onp.Array2D[np.float32]
 _c64_1d: _C64_1D
@@ -85,15 +87,18 @@ assert_type(cspline1d_eval(_c160_1d, _f64_1d), _C160_1D)
 
 # cspline2d
 
-assert_type(cspline2d(_i64_1d), _F64_1D)
-assert_type(cspline2d(_f64_1d), _F64_1D)
-assert_type(cspline2d(_f64_2d), _F64_1D)
-assert_type(cspline2d(_c128_1d), _C128_1D)
-assert_type(cspline2d(_c128_2d), _C128_1D)
+assert_type(cspline2d(_i64_1d), _F64_2D)
+assert_type(cspline2d(_f64_1d), _F64_2D)
+assert_type(cspline2d(_f64_2d), _F64_2D)
+assert_type(cspline2d(_c128_1d), _C128_2D)
+assert_type(cspline2d(_c128_2d), _C128_2D)
 
 # gauss_spline
 
 assert_type(gauss_spline(_i64_1d, _n), _F64_1D)
+assert_type(gauss_spline(_f16_1d, _n), _F16_1D)
+assert_type(gauss_spline(_f32_1d, _n), _F32_1D)
+assert_type(gauss_spline(_f32_2d, _n), _F32_2D)
 assert_type(gauss_spline(_f64_1d, _n), _F64_1D)
 assert_type(gauss_spline(_f80_1d, _n), _F80_1D)
 assert_type(gauss_spline(_f64_2d, _n), _F64_2D)
@@ -140,13 +145,13 @@ assert_type(qspline1d_eval(_c160_1d, _f64_1d), _C160_1D)
 
 # qspline2d
 
-assert_type(qspline2d(_i64_1d, _n), _F64_1D)
-assert_type(qspline2d(_f64_1d, _n), _F64_1D)
-assert_type(qspline2d(_f64_2d, _n), _F64_1D)
-assert_type(qspline2d(_c128_1d, _n), _C128_1D)
-assert_type(qspline2d(_c128_2d, _n), _C128_1D)
-assert_type(qspline2d(_py_f_2d, _n), _F64_1D)
-assert_type(qspline2d(_py_c_2d, _n), _C128_1D)
+assert_type(qspline2d(_i64_1d, _n), _F64_2D)
+assert_type(qspline2d(_f64_1d, _n), _F64_2D)
+assert_type(qspline2d(_f64_2d, _n), _F64_2D)
+assert_type(qspline2d(_c128_1d, _n), _C128_2D)
+assert_type(qspline2d(_c128_2d, _n), _C128_2D)
+assert_type(qspline2d(_py_f_2d, _n), _F64_2D)
+assert_type(qspline2d(_py_c_2d, _n), _C128_2D)
 
 # symiirorder1
 

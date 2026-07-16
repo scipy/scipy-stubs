@@ -27,37 +27,36 @@ def _statistic_nd(x: onp.ArrayND[np.float64], y: onp.ArrayND[np.float64]) -> onp
 ###
 
 # bootstrap
-assert_type(bootstrap(_py_f_1d, np.mean), BootstrapResult[float | np.float64, onp.Array1D[np.float64]])
-assert_type(bootstrap(_f64_1d, np.mean), BootstrapResult[float | np.float64, onp.Array1D[np.float64]])
-assert_type(bootstrap(_f64_2d, np.mean), BootstrapResult[onp.Array1D[np.float64], onp.Array2D[np.float64]])
-assert_type(bootstrap(_f64_3d, np.mean), BootstrapResult[onp.Array2D[np.float64], onp.Array3D[np.float64]])
-assert_type(  # pyrefly:ignore[assert-type]
-    bootstrap(_f64_nd, np.mean), BootstrapResult[float | np.float64, onp.Array1D[np.float64]]
+assert_type(bootstrap((_py_f_1d, _py_f_1d), np.mean), BootstrapResult[np.float64, onp.Array1D[np.float64]])
+assert_type(bootstrap((_f64_1d, _f64_1d), np.mean), BootstrapResult[np.float64, onp.Array1D[np.float64]])
+assert_type(bootstrap((_f64_2d, _f64_2d), np.mean), BootstrapResult[onp.Array1D[np.float64], onp.Array2D[np.float64]])
+assert_type(bootstrap((_f64_3d, _f64_3d), np.mean), BootstrapResult[onp.Array2D[np.float64], onp.Array3D[np.float64]])
+# pyrefly:ignore[assert-type]
+assert_type(
+    bootstrap((_f64_nd, _f64_nd), np.mean), BootstrapResult[onp.ArrayND[np.float64] | np.float64, onp.ArrayND[np.float64]]
 )
 
 # permutation_test
+assert_type(permutation_test((_py_f_1d, _py_f_1d), _statistic_1d), PermutationTestResult[np.float64, onp.Array1D[np.float64]])
+assert_type(permutation_test((_f64_1d, _f64_1d), _statistic_1d), PermutationTestResult[np.float64, onp.Array1D[np.float64]])
 assert_type(
-    permutation_test((_py_f_1d, _py_f_1d), _statistic_1d), PermutationTestResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]
+    permutation_test((_f64_2d, _f64_2d), _statistic_2d), PermutationTestResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]
 )
 assert_type(
-    permutation_test((_f64_1d, _f64_1d), _statistic_1d), PermutationTestResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]
+    permutation_test((_f64_3d, _f64_3d), _statistic_3d), PermutationTestResult[onp.Array2D[np.float64], onp.Array3D[np.float64]]
 )
+# pyrefly:ignore[assert-type]
 assert_type(
-    permutation_test((_f64_2d, _f64_2d), _statistic_2d), PermutationTestResult[onp.Array2D[np.float64], onp.Array3D[np.float64]]
-)
-assert_type(permutation_test((_f64_3d, _f64_3d), _statistic_3d), PermutationTestResult[Any, onp.ArrayND[np.float64]])
-assert_type(  # pyrefly:ignore[assert-type]
-    permutation_test((_f64_nd, _f64_nd), _statistic_nd), PermutationTestResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]
+    permutation_test((_f64_nd, _f64_nd), _statistic_nd),
+    PermutationTestResult[onp.ArrayND[np.float64] | np.float64, onp.ArrayND[np.float64]],
 )
 
 # monte_carlo_test
 assert_type(
-    monte_carlo_test(_py_f_1d, np.random.standard_normal, np.mean),
-    MonteCarloTestResult[float | np.float64, onp.Array1D[np.float64]],
+    monte_carlo_test(_py_f_1d, np.random.standard_normal, np.mean), MonteCarloTestResult[np.float64, onp.Array1D[np.float64]]
 )
 assert_type(
-    monte_carlo_test(_f64_1d, np.random.standard_normal, np.mean),
-    MonteCarloTestResult[float | np.float64, onp.Array1D[np.float64]],
+    monte_carlo_test(_f64_1d, np.random.standard_normal, np.mean), MonteCarloTestResult[np.float64, onp.Array1D[np.float64]]
 )
 assert_type(
     monte_carlo_test(_f64_2d, np.random.standard_normal, np.mean),
@@ -67,9 +66,10 @@ assert_type(
     monte_carlo_test(_f64_3d, np.random.standard_normal, np.mean),
     MonteCarloTestResult[onp.Array2D[np.float64], onp.Array3D[np.float64]],
 )
-assert_type(  # pyrefly:ignore[assert-type]
+# pyrefly:ignore[assert-type]
+assert_type(
     monte_carlo_test(_f64_nd, np.random.standard_normal, np.mean),
-    MonteCarloTestResult[float | np.float64, onp.Array1D[np.float64]],
+    MonteCarloTestResult[onp.ArrayND[np.float64] | np.float64, onp.ArrayND[np.float64]],
 )
 
 # BootstrapMethod

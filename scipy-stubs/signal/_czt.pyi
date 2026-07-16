@@ -1,4 +1,4 @@
-from typing import Final, Never, SupportsIndex, TypeAlias, overload
+from typing import Final, Never, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -6,10 +6,13 @@ import optype.numpy.compat as npc
 
 __all__ = ["CZT", "ZoomFFT", "czt", "czt_points", "zoom_fft"]
 
-_Complex: TypeAlias = np.complex128 | np.clongdouble
+###
+
+type _Complex = np.complex128 | np.clongdouble
+
 # workaround for non-overload-spec-compliant type-checkers
-_JustAnyShape: TypeAlias = tuple[Never, Never, Never, Never]
-_ToComplexStrictND: TypeAlias = onp.ArrayND[npc.number | np.bool, _JustAnyShape]
+type _JustAnyShape = tuple[Never, Never, Never, Never]
+type _ToComplexStrictND = onp.ArrayND[npc.number | np.bool, _JustAnyShape]
 
 ###
 

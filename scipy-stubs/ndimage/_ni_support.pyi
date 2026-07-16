@@ -1,14 +1,16 @@
 from collections.abc import Iterable
-from typing import Any, Literal, SupportsIndex, TypeAlias, TypeVar, overload
+from typing import Any, Literal, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-_T = TypeVar("_T")
+###
 
-_Mode: TypeAlias = Literal["nearest", "wrap", "reflect", "grid-mirror", "mirror", "constant", "grid-wrap", "grid-constant"]
-_ModeCode: TypeAlias = Literal[0, 1, 2, 3, 4, 5, 6]
+type _Mode = Literal["nearest", "wrap", "reflect", "grid-mirror", "mirror", "constant", "grid-wrap", "grid-constant"]
+type _ModeCode = Literal[0, 1, 2, 3, 4, 5, 6]
+
+###
 
 def _extend_mode_to_code(mode: _Mode, is_filter: bool = False) -> _ModeCode: ...
 
@@ -16,9 +18,9 @@ def _extend_mode_to_code(mode: _Mode, is_filter: bool = False) -> _ModeCode: ...
 @overload
 def _normalize_sequence(input: str, rank: int) -> list[str]: ...
 @overload
-def _normalize_sequence(input: Iterable[_T], rank: int) -> list[_T]: ...
+def _normalize_sequence[T](input: Iterable[T], rank: int) -> list[T]: ...
 @overload
-def _normalize_sequence(input: _T, rank: int) -> list[_T]: ...
+def _normalize_sequence[T](input: T, rank: int) -> list[T]: ...
 
 #
 @overload
@@ -51,4 +53,4 @@ def _check_axes(axes: SupportsIndex | Iterable[SupportsIndex], ndim: int) -> tup
 @overload
 def _skip_if_dtype(arg: str | np.dtype[Any] | type[np.generic]) -> None: ...
 @overload
-def _skip_if_dtype(arg: _T) -> _T | None: ...
+def _skip_if_dtype[T](arg: T) -> T | None: ...

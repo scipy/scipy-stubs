@@ -1,13 +1,17 @@
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
 
 from scipy.special import spherical_in, spherical_jn, spherical_kn, spherical_yn
 
-_Inexact: TypeAlias = np.float64 | np.complex128
-_InexactND: TypeAlias = onp.ArrayND[np.float64 | np.complex128]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
+###
+
+type _Inexact = np.float64 | np.complex128
+type _InexactND = onp.ArrayND[np.float64 | np.complex128]
+type _FloatND = onp.ArrayND[np.float64]
+
+###
 
 n_scalar: int
 n_arr: onp.ArrayND[np.intp]
@@ -15,6 +19,8 @@ z_float: float
 z_float_arr: onp.ArrayND[np.float64]
 z_complex: complex
 z_complex_arr: onp.ArrayND[np.complex128]
+
+###
 
 # spherical_jn
 assert_type(spherical_jn(n_scalar, z_float), np.float64)

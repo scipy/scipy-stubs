@@ -1,4 +1,4 @@
-from typing import Any, Literal, TypeAlias, overload
+from typing import Any, Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -8,17 +8,17 @@ from ._fitpack_impl import bisplev, bisplrep, splprep, splrep
 
 __all__ = ["bisplev", "bisplrep", "insert", "spalde", "splantider", "splder", "splev", "splint", "splprep", "splrep", "sproot"]
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _FloatND = onp.ArrayND[np.float64]
 
-_Ext: TypeAlias = Literal[0, 1, 2, 3]
+type _Ext = Literal[0, 1, 2, 3]
 
-_TCK1D: TypeAlias = tuple[_Float1D, _Float1D, int]
-_TCK2D: TypeAlias = tuple[_Float1D, list[_Float1D], int]
-_ToTCK: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloat1D | onp.ToFloat2D, int]
-_ToTCK1D: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloatStrict1D, int]
-_ToTCK2D: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloatStrict2D, int]
+type _TCK1D = tuple[_Float1D, _Float1D, int]
+type _TCK2D = tuple[_Float1D, list[_Float1D], int]
+type _ToTCK = tuple[onp.ToFloat1D, onp.ToFloat1D | onp.ToFloat2D, int]
+type _ToTCK1D = tuple[onp.ToFloat1D, onp.ToFloatStrict1D, int]
+type _ToTCK2D = tuple[onp.ToFloat1D, onp.ToFloatStrict2D, int]
 
 ###
 
@@ -26,35 +26,27 @@ _ToTCK2D: TypeAlias = tuple[onp.ToFloat1D, onp.ToFloatStrict2D, int]
 
 # legacy
 @overload  # tck: BSpline
-def splev(x: onp.ToFloatND, tck: BSpline, der: int = 0, ext: _Ext = 0) -> _FloatND: ...
+def splev(x: onp.ToFloat | onp.ToFloatND, tck: BSpline, der: int = 0, ext: _Ext = 0) -> _FloatND: ...
 @overload  # tck: 1-d
-def splev(x: onp.ToFloatND, tck: _ToTCK1D, der: int = 0, ext: _Ext = 0) -> _FloatND: ...
+def splev(x: onp.ToFloat | onp.ToFloatND, tck: _ToTCK1D, der: int = 0, ext: _Ext = 0) -> _FloatND: ...
 @overload  # tck: 2-d
-def splev(x: onp.ToFloatND, tck: _ToTCK2D, der: int = 0, ext: _Ext = 0) -> list[_FloatND]: ...
+def splev(x: onp.ToFloat | onp.ToFloatND, tck: _ToTCK2D, der: int = 0, ext: _Ext = 0) -> list[_FloatND]: ...
 @overload  # tck: ?-d
-def splev(x: onp.ToFloatND, tck: _ToTCK, der: int = 0, ext: _Ext = 0) -> _FloatND | list[_FloatND]: ...
+def splev(x: onp.ToFloat | onp.ToFloatND, tck: _ToTCK, der: int = 0, ext: _Ext = 0) -> _FloatND | list[_FloatND]: ...
 
 # legacy
-@overload  # tck: BSpline, full_output: falsy
-def splint(a: onp.ToFloat, b: onp.ToFloat, tck: BSpline, full_output: Literal[False, 0] = 0) -> float | _Float1D: ...
-@overload  # tck: BSpline, full_output: truthy
-def splint(
-    a: onp.ToFloat, b: onp.ToFloat, tck: BSpline, full_output: Literal[True, 1]
-) -> tuple[float, _Float1D] | tuple[_Float1D, _Float1D]: ...
+@overload  # tck: BSpline, full_output: <ignored>
+def splint(a: onp.ToFloat, b: onp.ToFloat, tck: BSpline, full_output: Literal[0] = 0) -> onp.Array0D[np.float64]: ...
 @overload  # tck: 1-d, full_output: falsy
 def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK1D, full_output: Literal[False, 0] = 0) -> float: ...
-@overload  # tck: 2-d, full_output: falsy
-def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK2D, full_output: Literal[False, 0] = 0) -> list[float]: ...
+@overload  # tck: 1-d, full_output: truthy
+def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK1D, full_output: Literal[True, 1]) -> tuple[float, None]: ...
+@overload  # tck: 2-d, full_output: <ignored>
+def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK2D, full_output: Literal[0] = 0) -> list[float]: ...
 @overload  # tck: ?-d, full_output: falsy
 def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK, full_output: Literal[False, 0] = 0) -> float | list[float]: ...
-@overload  # tck: 1-d, full_output: truthy
-def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK1D, full_output: Literal[True, 1]) -> tuple[float, _Float1D]: ...
-@overload  # tck: 2-d, full_output: truthy
-def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK2D, full_output: Literal[True, 1]) -> tuple[list[float], _Float1D]: ...
 @overload  # tck: ?-d, full_output: truthy
-def splint(
-    a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK, full_output: Literal[True, 1]
-) -> tuple[float | list[float], _Float1D]: ...
+def splint(a: onp.ToFloat, b: onp.ToFloat, tck: _ToTCK, full_output: Literal[True, 1]) -> tuple[float, None] | list[float]: ...
 
 # legacy
 @overload  # tck: BSpline

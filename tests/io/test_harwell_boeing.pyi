@@ -13,7 +13,7 @@ _csc_array: csc_array[npc.floating]
 ###
 
 # hb_read
-assert_type(hb_read("file.hb"), csc_matrix)
+assert_type(hb_read("file.hb"), csc_matrix)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(hb_read("file.hb", spmatrix=True), csc_matrix)
 assert_type(hb_read("file.hb", spmatrix=False), csc_array)
 

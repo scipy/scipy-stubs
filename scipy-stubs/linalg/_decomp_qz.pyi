@@ -1,24 +1,24 @@
 from collections.abc import Callable
-from typing import Literal, TypeAlias, TypeVar, overload
+from typing import Literal, overload
 
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
 __all__ = ["ordqz", "qz"]
 
-_T1 = TypeVar("_T1")
-_T2 = TypeVar("_T2")
-_Tuple4: TypeAlias = tuple[_T2, _T2, _T2, _T2]
-_Tuple222: TypeAlias = tuple[_T2, _T2, _T1, _T1, _T2, _T2]
+###
 
-_FloatND: TypeAlias = onp.ArrayND[npc.floating]
-_ComplexND: TypeAlias = onp.ArrayND[npc.complexfloating]
-_InexactND: TypeAlias = onp.ArrayND[npc.inexact]
+type _FloatND = onp.ArrayND[npc.floating]
+type _ComplexND = onp.ArrayND[npc.complexfloating]
+type _InexactND = onp.ArrayND[npc.inexact]
 
-_OutputReal: TypeAlias = Literal["real", "r"]
-_OutputComplex: TypeAlias = Literal["complex", "c"]
+type _Tuple4[T] = tuple[T, T, T, T]
+type _Tuple2C12[T2, T1] = tuple[T2, T2, _ComplexND, T1, T2, T2]
 
-_Sort: TypeAlias = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], bool]
+type _OutputReal = Literal["real", "r"]
+type _OutputComplex = Literal["complex", "c"]
+
+type _Sort = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], bool]
 
 ###
 
@@ -67,7 +67,7 @@ def ordqz(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-) -> _Tuple222[_FloatND, _FloatND]: ...
+) -> _Tuple2C12[_FloatND, _FloatND]: ...
 @overload  # complex, {"real"}
 def ordqz(
     A: onp.ToComplexND,
@@ -77,7 +77,7 @@ def ordqz(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-) -> _Tuple222[_InexactND, _InexactND]: ...
+) -> _Tuple2C12[_InexactND, _InexactND]: ...
 @overload  # complex, {"complex"} (positional)
 def ordqz(
     A: onp.ToComplexND,
@@ -87,7 +87,7 @@ def ordqz(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-) -> _Tuple222[_ComplexND, _ComplexND]: ...
+) -> _Tuple2C12[_ComplexND, _ComplexND]: ...
 @overload  # complex, {"complex"} (keyword)
 def ordqz(
     A: onp.ToComplexND,
@@ -98,4 +98,4 @@ def ordqz(
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-) -> _Tuple222[_ComplexND, _ComplexND]: ...
+) -> _Tuple2C12[_ComplexND, _ComplexND]: ...

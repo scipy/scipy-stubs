@@ -1,17 +1,19 @@
-from typing import Literal, TypeAlias, overload
+from typing import Literal, overload
 
 import numpy as np
 import optype.numpy as onp
 
 __all__ = ["qr_delete", "qr_insert", "qr_update"]
 
-_FloatND: TypeAlias = onp.ArrayND[np.float32 | np.float64]
-_FloatQR: TypeAlias = tuple[_FloatND, _FloatND]
+###
 
-_ComplexND: TypeAlias = onp.ArrayND[np.complex64 | np.complex128]
-_ComplexQR: TypeAlias = _FloatQR | tuple[_ComplexND, _ComplexND]
+type _FloatND = onp.ArrayND[np.float32 | np.float64]
+type _FloatQR = tuple[_FloatND, _FloatND]
 
-_Which: TypeAlias = Literal["row", "col"]
+type _ComplexND = onp.ArrayND[np.complex64 | np.complex128]
+type _ComplexQR = _FloatQR | tuple[_ComplexND, _ComplexND]
+
+type _Which = Literal["row", "col"]
 
 ###
 

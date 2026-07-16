@@ -1,6 +1,6 @@
 # type-tests for `ndimage/_fourier.pyi`
 
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import numpy.typing as npt
@@ -19,8 +19,8 @@ int_2d: list[list[int]]
 float_2d: list[list[float]]
 complex_2d: list[list[complex]]
 
-_OutputArray: TypeAlias = onp.Array2D[np.complex64]
-_OutputArrayND: TypeAlias = onp.ArrayND[np.complex64]
+type _OutputArray = onp.Array2D[np.complex64]
+type _OutputArrayND = onp.ArrayND[np.complex64]
 output_array: _OutputArray
 output_sctype: type[np.complex64]
 
@@ -29,7 +29,7 @@ output_sctype: type[np.complex64]
 # NOTE: `fourier_uniform` and `fourier_ellipsoid` have the same signature; only abbreviated tests below.
 
 assert_type(fourier_gaussian(i8_nd, 4), onp.ArrayND[np.float64])
-assert_type(fourier_gaussian(f16_nd, 4), onp.ArrayND[np.float32])
+fourier_gaussian(f16_nd, 4)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 assert_type(fourier_gaussian(f32_nd, 4), onp.ArrayND[np.float32])
 assert_type(fourier_gaussian(f64_nd, 4), onp.ArrayND[np.float64])
 assert_type(fourier_gaussian(c64_nd, 4), onp.ArrayND[np.complex64])
@@ -39,7 +39,7 @@ assert_type(fourier_gaussian(float_2d, 4), onp.ArrayND[np.float64])
 assert_type(fourier_gaussian(complex_2d, 4), onp.ArrayND[np.complex128])
 
 assert_type(fourier_gaussian(i8_nd, 4, output=output_array), _OutputArray)
-assert_type(fourier_gaussian(f16_nd, 4, output=output_array), _OutputArray)
+fourier_gaussian(f16_nd, 4, output=output_array)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 assert_type(fourier_gaussian(f32_nd, 4, output=output_array), _OutputArray)
 assert_type(fourier_gaussian(f64_nd, 4, output=output_array), _OutputArray)
 assert_type(fourier_gaussian(c64_nd, 4, output=output_array), _OutputArray)
@@ -49,7 +49,7 @@ assert_type(fourier_gaussian(float_2d, 4, output=output_array), _OutputArray)
 assert_type(fourier_gaussian(complex_2d, 4, output=output_array), _OutputArray)
 
 assert_type(fourier_gaussian(i8_nd, 4, output=output_sctype), _OutputArrayND)
-assert_type(fourier_gaussian(f16_nd, 4, output=output_sctype), _OutputArrayND)
+fourier_gaussian(f16_nd, 4, output=output_sctype)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 assert_type(fourier_gaussian(f32_nd, 4, output=output_sctype), _OutputArrayND)
 assert_type(fourier_gaussian(f64_nd, 4, output=output_sctype), _OutputArrayND)
 assert_type(fourier_gaussian(c64_nd, 4, output=output_sctype), _OutputArrayND)
@@ -83,7 +83,7 @@ assert_type(fourier_ellipsoid(f64_nd, 4, output=output_sctype), _OutputArrayND)
 # NOTE: Unlike the other three functions, this always returns complex output.
 
 assert_type(fourier_shift(i8_nd, 4), onp.ArrayND[np.complex128])
-assert_type(fourier_shift(f16_nd, 4), onp.ArrayND[np.complex128])
+fourier_shift(f16_nd, 4)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 assert_type(fourier_shift(f32_nd, 4), onp.ArrayND[np.complex128])
 assert_type(fourier_shift(f64_nd, 4), onp.ArrayND[np.complex128])
 assert_type(fourier_shift(c64_nd, 4), onp.ArrayND[np.complex64])
@@ -93,7 +93,7 @@ assert_type(fourier_shift(float_2d, 4), onp.ArrayND[np.complex128])
 assert_type(fourier_shift(complex_2d, 4), onp.ArrayND[np.complex128])
 
 assert_type(fourier_shift(i8_nd, 4, output=output_array), _OutputArray)
-assert_type(fourier_shift(f16_nd, 4, output=output_array), _OutputArray)
+fourier_shift(f16_nd, 4, output=output_array)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 assert_type(fourier_shift(f32_nd, 4, output=output_array), _OutputArray)
 assert_type(fourier_shift(f64_nd, 4, output=output_array), _OutputArray)
 assert_type(fourier_shift(c64_nd, 4, output=output_array), _OutputArray)
@@ -103,7 +103,7 @@ assert_type(fourier_shift(float_2d, 4, output=output_array), _OutputArray)
 assert_type(fourier_shift(complex_2d, 4, output=output_array), _OutputArray)
 
 assert_type(fourier_shift(i8_nd, 4, output=output_sctype), _OutputArrayND)
-assert_type(fourier_shift(f16_nd, 4, output=output_sctype), _OutputArrayND)
+fourier_shift(f16_nd, 4, output=output_sctype)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 assert_type(fourier_shift(f32_nd, 4, output=output_sctype), _OutputArrayND)
 assert_type(fourier_shift(f64_nd, 4, output=output_sctype), _OutputArrayND)
 assert_type(fourier_shift(c64_nd, 4, output=output_sctype), _OutputArrayND)

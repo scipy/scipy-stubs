@@ -1,5 +1,6 @@
+from _typeshed import Unused
 from collections.abc import Callable
-from typing import TypeAlias, overload
+from typing import overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,18 +12,18 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["lgmres"]
 
-_Float: TypeAlias = np.float32 | np.float64
-_Complex: TypeAlias = np.complex64 | np.complex128
+###
+
+type _Float = np.float32 | np.float64
+type _Complex = np.complex64 | np.complex128
+
+type _ToInt = npc.integer | np.bool
+type _ToLinearOperator[_ScalarT: npc.number | np.bool] = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
+
+type _Callback[_ScalarT: npc.number | np.bool] = Callable[[onp.Array1D[_ScalarT]], Unused]
 
 _FloatT = TypeVar("_FloatT", bound=_Float, default=np.float64)
 _ComplexT = TypeVar("_ComplexT", bound=_Complex, default=np.complex128)
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
-
-_ToInt: TypeAlias = npc.integer | np.bool
-_ToLinearOperator: TypeAlias = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
-
-_Ignored: TypeAlias = object
-_Callback: TypeAlias = Callable[[onp.Array1D[_ScalarT]], _Ignored]
 
 ###
 

@@ -1,22 +1,90 @@
 # NOTE: this is needed because of the >50 LSP violations...
 # mypy: disable-error-code="override"
 # pyright: reportIncompatibleMethodOverride = false
+
 import types
 from collections.abc import Callable, Iterable, Mapping, Sequence
-from typing import Any, Final, Generic, Literal as L, Self, SupportsIndex, TypeAlias, Unpack, overload, override, type_check_only
+from typing import Any, Final, Generic, Literal as L, Self, SupportsIndex, Unpack, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from ._censored_data import CensoredData
 from scipy._typing import AnyShape
 from scipy.integrate._typing import QuadOpts as _QuadOpts
-from scipy.stats._censored_data import CensoredData
 
-_T = TypeVar("_T")
+###
+
+type _Tuple2[T] = tuple[T, T]
+type _Tuple3[T] = tuple[T, T, T]
+type _Tuple4[T] = tuple[T, T, T, T]
+
+type _Floating = np.float64 | np.float32 | np.float16  # longdouble often results in trouble
+type _CoFloat = _Floating | npc.integer
+
+type _Bool = bool | np.bool
+type _Int = int | np.int32 | np.int64
+type _Float = float | np.float64
+
+type _Float0D = onp.Array0D[np.float64]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+
+type _BoolND = onp.ArrayND[np.bool]
+type _IntND = onp.ArrayND[np.int_]
+type _FloatND = onp.ArrayND[np.float64]
+type _CoFloatND = onp.ArrayND[_CoFloat]
+
+type _BoolOrND = _Bool | _BoolND
+type _IntOrND = _Int | _IntND
+type _FloatOrND = _Float | _FloatND
+
+# pyright bug workaround on `numpy<2.1` (note the weird shape-type)
+type _Float1ND = onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]]
+type _FloatOr1ND = _Float | _Float1ND
+
+type _ToFloatOrND = onp.ToFloat | onp.ToFloatND
+
+type _Expectant = Callable[[float], onp.ToFloat]
+
+# there are at most 4 + 2 args
+type _RVArgs[ArgT: _ToFloatOrND] = (
+    tuple[()]
+    | tuple[ArgT]
+    | tuple[ArgT, ArgT]
+    | tuple[ArgT, ArgT, ArgT]
+    | tuple[ArgT, ArgT, ArgT, ArgT]
+    | tuple[ArgT, ArgT, ArgT, ArgT, ArgT]
+    | tuple[ArgT, ArgT, ArgT, ArgT, ArgT, ArgT]
+)
+type _RVKwds = dict[str, _ToFloatOrND]
+
+type _Moment1 = L["m", "v", "s", "k"]
+type _Moment2 = L[
+    "mv", "ms", "mk",
+    "vm", "vs", "vk",
+    "sm", "sv", "sk",
+    "km", "kv", "ks",
+]  # fmt: skip
+type _Moment3 = L[
+    "mvs", "mvk", "msv", "msk", "mkv", "mks",
+    "vms", "vmk", "vsm", "vsk", "vkm", "vks",
+    "smv", "smk", "svm", "svk", "skm", "skv",
+    "kmv", "kms", "kvm", "kvs", "ksm", "ksv",
+]  # fmt: skip
+type _Moment4 = L[
+    "mvsk", "mvks", "msvk", "mskv", "mkvs", "mksv",
+    "vmsk", "vmks", "vsmk", "vskm", "vkms", "vksm",
+    "smvk", "smkv", "svmk", "svkm", "skmv", "skvm",
+    "kmvs", "kmsv", "kvms", "kvsm", "ksmv", "ksvm",
+]  # fmt: skip
+
+type _MomentType = L[0, 1]
+type _FitMethod = L["MLE", "MM"]
+
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
-_ArgT = TypeVar("_ArgT", bound=_ToFloatOrND, default=_ToFloatOrND)
 _FloatNDT = TypeVar("_FloatNDT", bound=_FloatOrND, default=_FloatOrND)
 
 _FloatNDT_co = TypeVar("_FloatNDT_co", bound=_FloatOrND, default=_FloatOrND, covariant=True)
@@ -26,73 +94,6 @@ _CRVT_co = TypeVar("_CRVT_co", bound=rv_continuous, default=rv_continuous, covar
 _DRVT_co = TypeVar("_DRVT_co", bound=rv_discrete, default=rv_discrete, covariant=True)
 _XKT_co = TypeVar("_XKT_co", bound=_CoFloat, covariant=True, default=_CoFloat)
 _PKT_co = TypeVar("_PKT_co", bound=_Floating, covariant=True, default=_Floating)
-
-_Tuple2: TypeAlias = tuple[_T, _T]
-_Tuple3: TypeAlias = tuple[_T, _T, _T]
-_Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
-
-_Floating: TypeAlias = np.float64 | np.float32 | np.float16  # longdouble often results in trouble
-_CoFloat: TypeAlias = _Floating | npc.integer
-
-_Bool: TypeAlias = bool | np.bool
-_Int: TypeAlias = int | np.int32 | np.int64
-_Float: TypeAlias = float | np.float64
-
-_Float0D: TypeAlias = onp.Array0D[np.float64]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-
-_BoolND: TypeAlias = onp.ArrayND[np.bool]
-_IntND: TypeAlias = onp.ArrayND[np.int_]
-_FloatND: TypeAlias = onp.ArrayND[np.float64]
-_CoFloatND: TypeAlias = onp.ArrayND[_CoFloat]
-
-_BoolOrND: TypeAlias = _Bool | _BoolND
-_IntOrND: TypeAlias = _Int | _IntND
-_FloatOrND: TypeAlias = _Float | _FloatND
-
-# pyright bug workaround on `numpy<2.1` (note the weird shape-type)
-_Float1ND: TypeAlias = onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]]
-_FloatOr1ND: TypeAlias = _Float | _Float1ND
-
-_ToFloatOrND: TypeAlias = onp.ToFloat | onp.ToFloatND
-
-_Expectant: TypeAlias = Callable[[float], onp.ToFloat]
-
-# there are at most 4 + 2 args
-_RVArgs: TypeAlias = (
-    tuple[()]
-    | tuple[_ArgT]
-    | tuple[_ArgT, _ArgT]
-    | tuple[_ArgT, _ArgT, _ArgT]
-    | tuple[_ArgT, _ArgT, _ArgT, _ArgT]
-    | tuple[_ArgT, _ArgT, _ArgT, _ArgT, _ArgT]
-    | tuple[_ArgT, _ArgT, _ArgT, _ArgT, _ArgT, _ArgT]
-)
-_RVKwds: TypeAlias = dict[str, _ToFloatOrND]
-
-_Moment1: TypeAlias = L["m", "v", "s", "k"]
-_Moment2: TypeAlias = L[
-    "mv", "ms", "mk",
-    "vm", "vs", "vk",
-    "sm", "sv", "sk",
-    "km", "kv", "ks",
-]  # fmt: skip
-_Moment3: TypeAlias = L[
-    "mvs", "mvk", "msv", "msk", "mkv", "mks",
-    "vms", "vmk", "vsm", "vsk", "vkm", "vks",
-    "smv", "smk", "svm", "svk", "skm", "skv",
-    "kmv", "kms", "kvm", "kvs", "ksm", "ksv",
-]  # fmt: skip
-_Moment4: TypeAlias = L[
-    "mvsk", "mvks", "msvk", "mskv", "mkvs", "mksv",
-    "vmsk", "vmks", "vsmk", "vskm", "vkms", "vksm",
-    "smvk", "smkv", "svmk", "svkm", "skmv", "skvm",
-    "kmvs", "kmsv", "kvms", "kvsm", "ksmv", "ksvm",
-]  # fmt: skip
-
-_MomentType: TypeAlias = L[0, 1]
-_FitMethod: TypeAlias = L["MLE", "MM"]
 
 ###
 
@@ -230,6 +231,22 @@ class rv_discrete_frozen(rv_frozen[_DRVT_co, _FloatNDT_co], Generic[_DRVT_co, _F
     def logpmf(self, /, k: onp.ToFloat) -> _FloatNDT_co: ...
     @overload
     def logpmf(self, /, k: onp.ToFloatND) -> _FloatND: ...
+
+    #
+    @override
+    @overload
+    def rvs(self, /, size: tuple[()] | None = None, random_state: onp.random.ToRNG | None = None) -> int: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]],
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.ArrayND[np.int64]: ...
+    @overload
+    def rvs(
+        self, /, size: AnyShape | None = None, random_state: onp.random.ToRNG | None = None
+    ) -> onp.ArrayND[np.int64] | Any: ...
 
 # NOTE: Because of the limitations of `ParamSpec`, there is no proper way to annotate specific "positional or keyword arguments".
 # Considering the Liskov Substitution Principle, the only remaining option is to annotate `*args, and `**kwargs` as `Any`.
@@ -457,6 +474,10 @@ class rv_continuous(_rv_mixin, rv_generic):
         shapes: str | None = None,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
+
+    #
+    @override
+    def __getstate__(self) -> dict[str, Any]: ...
 
     #
     @overload
@@ -883,6 +904,10 @@ class rv_discrete(_rv_mixin, rv_generic):
     ) -> None: ...
 
     #
+    @override
+    def __getstate__(self) -> dict[str, Any]: ...
+
+    #
     @overload
     def __call__(self, /) -> rv_discrete_frozen[Self, _Float]: ...
     @overload
@@ -996,15 +1021,36 @@ class rv_discrete(_rv_mixin, rv_generic):
 
     #
     @override
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        size: tuple[()] = (),
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: onp.ToFloat,
+    ) -> int: ...
+    @overload
     def rvs(
         self,
         /,
         *args: _ToFloatOrND,
         loc: _ToFloatOrND = 0,
-        size: AnyShape = 1,
+        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]],
         random_state: onp.random.ToRNG | None = None,
         **kwds: _ToFloatOrND,
-    ) -> _IntOrND: ...
+    ) -> onp.ArrayND[np.int64]: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        size: AnyShape = (),
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: _ToFloatOrND,
+    ) -> onp.ArrayND[np.int64] | int: ...
 
 # returned by `rv_discrete.__new__` if `values` is specified
 class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
@@ -1035,6 +1081,39 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
     #
     @override
     def generic_moment(self, /, n: onp.ToInt | onp.ToIntND) -> _FloatND: ...
+
+    #
+    @override
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: onp.ToFloat,
+        loc: onp.ToFloat = 0,
+        size: tuple[()] = (),
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: onp.ToFloat,
+    ) -> np.float64: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]],
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: _ToFloatOrND,
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload
+    def rvs(
+        self,
+        /,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        size: AnyShape = (),
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: _ToFloatOrND,
+    ) -> onp.ArrayND[np.float64] | np.float64: ...
 
 # private helper subtypes
 @type_check_only

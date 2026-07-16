@@ -1,17 +1,19 @@
-from typing import Generic, Literal as L, Protocol, TypeAlias, overload, override, type_check_only
+from typing import Generic, Literal as L, Protocol, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
 
-from scipy.sparse import coo_matrix, dok_matrix
+from scipy.sparse import coo_array, coo_matrix, dok_array, dok_matrix
 
 __all__ = ["cKDTree"]
 
-_Weights: TypeAlias = onp.ToFloatND | tuple[onp.ToFloatND, onp.ToFloatND]
-_Indices: TypeAlias = onp.Array1D[np.intp]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
+###
+
+type _Weights = onp.ToFloatND | tuple[onp.ToFloatND, onp.ToFloatND]
+type _Indices = onp.Array1D[np.intp]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
 
 _NodeT_co = TypeVar("_NodeT_co", bound=_KDTreeNode | None, default=_KDTreeNode | None, covariant=True)
 _BoxSizeT_co = TypeVar("_BoxSizeT_co", bound=_Float2D | None, default=_Float2D | None, covariant=True)
@@ -321,8 +323,16 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     ) -> dok_matrix[np.float64]: ...
     @overload
     def sparse_distance_matrix(
+        self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["dok_array"]
+    ) -> dok_array[np.float64]: ...
+    @overload
+    def sparse_distance_matrix(
         self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["coo_matrix"]
     ) -> coo_matrix[np.float64]: ...
+    @overload
+    def sparse_distance_matrix(
+        self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["coo_array"]
+    ) -> coo_array[np.float64, tuple[int, int]]: ...
     @overload
     def sparse_distance_matrix(
         self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["dict"]

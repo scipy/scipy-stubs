@@ -1,4 +1,4 @@
-from typing import Final, Generic, Literal, Self, TypeAlias, TypedDict, final, override, type_check_only
+from typing import Final, Generic, Literal, Self, TypedDict, final, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -108,29 +108,29 @@ class _NP2MX(TypedDict):
     b1: Literal[9]
 
 # NOTE: TypedDict doesn't support integer keys (but the python core devs are literally incapable of admitting their mistakes)
-_CodecsTemplate: TypeAlias = dict[_MCodec, _CodecTemplateValue]
+type _CodecsTemplate = dict[_MCodec, _CodecTemplateValue]
 
-_ByteOrder: TypeAlias = Literal["<", ">"]
-_Codec: TypeAlias = Literal["utf_8", "utf_16", "utf_32"]
-_CodecBO: TypeAlias = Literal["utf_8", "utf_16_le", "utf_16_be", "utf_32_le", "utf_32_be"]
+type _ByteOrder = Literal["<", ">"]
+type _Codec = Literal["utf_8", "utf_16", "utf_32"]
+type _CodecBO = Literal["utf_8", "utf_16_le", "utf_16_be", "utf_32_le", "utf_32_be"]
 
-_MCodec: TypeAlias = Literal[16, 17, 18]
-_MType: TypeAlias = Literal[1, 2, 3, 4, 5, 6, 7, 9, 12, 13, 14, 15, _MCodec]
-_Number: TypeAlias = Literal["i1", "i2", "i4", "i8", "u1", "u2", "u4", "u8", "f4", "f8"]
-_MDTypeTemplateKey: TypeAlias = Literal[_MType, "array_flags", "file_header", "tag_full", "tag_smalldata", "U1"]
-_MDTypeTemplateValueKey: TypeAlias = Literal[
+type _MCodec = Literal[16, 17, 18]
+type _MType = Literal[1, 2, 3, 4, 5, 6, 7, 9, 12, 13, 14, 15, _MCodec]
+type _Number = Literal["i1", "i2", "i4", "i8", "u1", "u2", "u4", "u8", "f4", "f8"]
+type _MDTypeTemplateKey = Literal[_MType, "array_flags", "file_header", "tag_full", "tag_smalldata", "U1"]
+type _MDTypeTemplateValueKey = Literal[
     "description", "subsystem_offset", "version", "endian_test",
     "mdtype", "byte_count",
     "byte_count_mdtype", "data",
     "data_type", "flags_class", "nzmax",
 ]  # fmt: skip
-_MDTypeTemplateValueValue: TypeAlias = Literal["S2", "u2", "s4", "u4", "i8", "S116"]
-_MDTypeTemplateValueItems: TypeAlias = list[tuple[_MDTypeTemplateValueKey, _MDTypeTemplateValueValue]]
-_MDTypeTemplateValue: TypeAlias = _Number | _MDTypeTemplateValueItems
+type _MDTypeTemplateValueValue = Literal["S2", "u2", "s4", "u4", "i8", "S116"]
+type _MDTypeTemplateValueItems = list[tuple[_MDTypeTemplateValueKey, _MDTypeTemplateValueValue]]
+type _MDTypeTemplateValue = _Number | _MDTypeTemplateValueItems
 
-_MXNumber: TypeAlias = Literal[6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
-_MXType: TypeAlias = Literal[1, 2, 3, 4, 5, _MXNumber, 16, 17, 18]
-_MXName: TypeAlias = Literal[
+type _MXNumber = Literal[6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+type _MXType = Literal[1, 2, 3, 4, 5, _MXNumber, 16, 17, 18]
+type _MXName = Literal[
     "cell", "struct", "object", "char", "sparse",
     "single", "double", "int8", "int16", "int32", "int64", "uint8", "uint16", "uint32", "uint64",
     "function", "opaque",

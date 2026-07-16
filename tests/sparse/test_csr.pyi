@@ -1,4 +1,4 @@
-from typing import Literal, TypeAlias, assert_type
+from typing import Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -117,7 +117,7 @@ csr_matrix((seq_seq_complex, (seq_int, seq_int)))  # type: ignore[type-var] # py
 ###
 # CSR-specific tests
 
-_Index1D: TypeAlias = np.ndarray[tuple[int], np.dtype[np.intp]]
+type _Index1D = onp.Array1D[np.intp]
 
 # .format
 assert_type(csr_arr.format, Literal["csr"])

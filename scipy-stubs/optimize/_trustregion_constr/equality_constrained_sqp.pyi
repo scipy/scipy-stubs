@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Literal, TypeVar
+from typing import Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -9,10 +9,10 @@ from scipy.sparse import dia_matrix
 
 __all__ = ["equality_constrained_sqp"]
 
-_StateT = TypeVar("_StateT")
-
 def default_scaling(x: onp.ToArray1D) -> dia_matrix: ...
-def equality_constrained_sqp(
+
+#
+def equality_constrained_sqp[StateT](
     fun_and_constr: Callable[[onp.Array1D[np.float64]], tuple[float | npc.floating, onp.ToFloat1D]],
     grad_and_jac: Callable[[onp.Array1D[np.float64]], tuple[onp.ToFloat1D, onp.ToFloat2D]],
     lagr_hess: Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat2D],
@@ -23,7 +23,7 @@ def equality_constrained_sqp(
     jac0: onp.ToFloat2D,
     stop_criteria: Callable[
         [
-            _StateT,  # state
+            StateT,  # state
             onp.Array1D[np.float64],  # x
             bool,  # last_iteration_failed
             np.float64,  # optimality
@@ -34,11 +34,11 @@ def equality_constrained_sqp(
         ],
         bool,
     ],
-    state: _StateT,
+    state: StateT,
     initial_penalty: onp.ToFloat,
     initial_trust_radius: onp.ToFloat,
     factorization_method: Literal["NormalEquation", "AugmentedSystem", "QRFactorization", "SVDFactorization"],
     trust_lb: onp.Array1D[npc.floating] | None = None,
     trust_ub: onp.Array1D[npc.floating] | None = None,
     scaling: Callable[[onp.Array1D[np.float64]], dia_matrix] = ...,
-) -> tuple[onp.Array1D[npc.floating], _StateT]: ...
+) -> tuple[onp.Array1D[npc.floating], StateT]: ...

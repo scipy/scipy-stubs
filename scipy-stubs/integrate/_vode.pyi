@@ -1,13 +1,13 @@
 from collections.abc import Callable
-from typing import Concatenate, Final, Literal, Protocol, TypeAlias, final, type_check_only
+from typing import Concatenate, Final, Literal, Protocol, final, type_check_only
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
 # (t, y) -> ydot or jac
-_FnCallbackD: TypeAlias = Callable[Concatenate[float, onp.Array1D[np.float64], ...], onp.ArrayND[npc.floating]]
-_FnCallbackZ: TypeAlias = Callable[Concatenate[float, onp.Array1D[np.complex128], ...], onp.ArrayND[npc.complexfloating]]
+type _FnCallbackD = Callable[Concatenate[float, onp.Array1D[np.float64], ...], onp.ArrayND[npc.floating]]
+type _FnCallbackZ = Callable[Concatenate[float, onp.Array1D[np.complex128], ...], onp.ArrayND[npc.complexfloating]]
 
 @type_check_only
 @final

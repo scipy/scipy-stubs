@@ -6,6 +6,7 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 import optype.numpy.compat as npc
+from optype.test import assert_subtype
 
 from scipy.integrate import cumulative_simpson, cumulative_trapezoid, fixed_quad, newton_cotes, qmc_quad, romb, simpson, trapezoid
 
@@ -79,7 +80,7 @@ assert_type(simpson(i64_1d), np.float64)
 assert_type(simpson(i64_2d), onp.Array1D[np.float64])
 assert_type(simpson(i64_nd), Any)
 
-assert_type(simpson(f32_1d), np.float64)  # weird but true
+assert_type(simpson(f32_1d), np.float32)
 assert_type(simpson(f32_2d), onp.Array1D[np.float32])
 assert_type(simpson(f32_nd), Any)
 
@@ -87,7 +88,7 @@ assert_type(simpson(f64_1d), np.float64)
 assert_type(simpson(f64_2d), onp.Array1D[np.float64])
 assert_type(simpson(f64_nd), Any)
 
-assert_type(simpson(c64_1d), np.complex128)  # weird but true
+assert_type(simpson(c64_1d), np.complex64)
 assert_type(simpson(c64_2d), onp.Array1D[np.complex64])
 assert_type(simpson(c64_nd), Any)
 
@@ -139,22 +140,22 @@ assert_type(cumulative_trapezoid(i64_nd), onp.ArrayND[np.float64])
 
 assert_type(cumulative_trapezoid(f32_1d), onp.Array1D[np.float32])
 assert_type(cumulative_trapezoid(f32_2d), onp.Array2D[np.float32])
-assert_type(cumulative_trapezoid(f32_nd), onp.ArrayND[np.float32])
+assert_type(cumulative_trapezoid(f32_nd), onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_trapezoid(f64_1d), onp.Array1D[np.float64])
 assert_type(cumulative_trapezoid(f64_2d), onp.Array2D[np.float64])
-assert_type(cumulative_trapezoid(f64_nd), onp.ArrayND[np.float64])
+assert_type(cumulative_trapezoid(f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_trapezoid(c64_1d), onp.Array1D[np.complex64])
 assert_type(cumulative_trapezoid(c64_2d), onp.Array2D[np.complex64])
-assert_type(cumulative_trapezoid(c64_nd), onp.ArrayND[np.complex64])
+assert_type(cumulative_trapezoid(c64_nd), onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_trapezoid(c128_1d), onp.Array1D[np.complex128])
 assert_type(cumulative_trapezoid(c128_2d), onp.Array2D[np.complex128])
 assert_type(cumulative_trapezoid(c128_nd), onp.ArrayND[np.complex128])
 
 ###
-# cumulative_simpson (same as above)
+# cumulative_simpson
 
 assert_type(cumulative_simpson(float_1d), onp.Array1D[np.float64])
 assert_type(cumulative_simpson(float_2d), onp.Array2D[np.float64])
@@ -164,19 +165,27 @@ assert_type(cumulative_simpson(complex_2d), onp.Array2D[np.complex128])
 
 assert_type(cumulative_simpson(i64_1d), onp.Array1D[np.float64])
 assert_type(cumulative_simpson(i64_2d), onp.Array2D[np.float64])
-assert_type(cumulative_simpson(i64_nd), onp.ArrayND[np.float64])
+assert_type(cumulative_simpson(i64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
-assert_type(cumulative_simpson(f32_1d), onp.Array1D[np.float32])
-assert_type(cumulative_simpson(f32_2d), onp.Array2D[np.float32])
-assert_type(cumulative_simpson(f32_nd), onp.ArrayND[np.float32])
+assert_type(cumulative_simpson(f32_1d), onp.Array1D[np.float64])
+assert_type(cumulative_simpson(f32_2d), onp.Array2D[np.float64])
+assert_type(cumulative_simpson(f32_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+
+assert_type(cumulative_simpson(f32_1d, x=f32_1d), onp.Array1D[np.float32])
+assert_type(cumulative_simpson(f32_2d, x=f32_2d), onp.Array2D[np.float32])
+assert_type(cumulative_simpson(f32_nd, x=f32_nd), onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_simpson(f64_1d), onp.Array1D[np.float64])
 assert_type(cumulative_simpson(f64_2d), onp.Array2D[np.float64])
-assert_type(cumulative_simpson(f64_nd), onp.ArrayND[np.float64])
+assert_type(cumulative_simpson(f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
-assert_type(cumulative_simpson(c64_1d), onp.Array1D[np.complex64])
-assert_type(cumulative_simpson(c64_2d), onp.Array2D[np.complex64])
-assert_type(cumulative_simpson(c64_nd), onp.ArrayND[np.complex64])
+assert_type(cumulative_simpson(c64_1d), onp.Array1D[np.complex128])
+assert_type(cumulative_simpson(c64_2d), onp.Array2D[np.complex128])
+assert_type(cumulative_simpson(c64_nd), onp.ArrayND[np.complex128])  # pyrefly:ignore[assert-type]
+
+assert_type(cumulative_simpson(c64_1d, x=f32_1d), onp.Array1D[np.complex64])
+assert_type(cumulative_simpson(c64_2d, x=f32_2d), onp.Array2D[np.complex64])
+assert_type(cumulative_simpson(c64_nd, x=f32_nd), onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
 
 assert_type(cumulative_simpson(c128_1d), onp.Array1D[np.complex128])
 assert_type(cumulative_simpson(c128_2d), onp.Array2D[np.complex128])
@@ -185,25 +194,58 @@ assert_type(cumulative_simpson(c128_nd), onp.ArrayND[np.complex128])
 ###
 # fixed_quad
 
-def _f_f16(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float16]: ...
-def _f_f32(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float32]: ...
-def _f_f64(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]: ...
-def _f_f80(x: npt.NDArray[np.float64]) -> npt.NDArray[npc.floating80]: ...
-def _f_c64(x: npt.NDArray[np.float64]) -> npt.NDArray[np.complex64]: ...
-def _f_c128(x: npt.NDArray[np.float64]) -> npt.NDArray[np.complex128]: ...
-def _f_c160(x: npt.NDArray[np.float64]) -> npt.NDArray[npc.complexfloating160]: ...
-def _f_m64(x: npt.NDArray[np.float64]) -> npt.NDArray[np.timedelta64]: ...
-def _f_obj(x: npt.NDArray[np.float64]) -> npt.NDArray[np.object_]: ...
+def _f_f16_1(x: npt.NDArray[np.float64]) -> onp.Array1D[np.float16]: ...
+def _f_f32_1(x: npt.NDArray[np.float64]) -> onp.Array1D[np.float32]: ...
+def _f_f64_1(x: npt.NDArray[np.float64]) -> onp.Array1D[np.float64]: ...
+def _f_f80_1(x: npt.NDArray[np.float64]) -> onp.Array1D[npc.floating80]: ...
+def _f_c64_1(x: npt.NDArray[np.float64]) -> onp.Array1D[np.complex64]: ...
+def _f_c128_1(x: npt.NDArray[np.float64]) -> onp.Array1D[np.complex128]: ...
+def _f_c160_1(x: npt.NDArray[np.float64]) -> onp.Array1D[npc.complexfloating160]: ...
+def _f_m64_1(x: npt.NDArray[np.float64]) -> onp.Array1D[np.timedelta64]: ...
+def _f_f16_2(x: npt.NDArray[np.float64]) -> onp.Array2D[np.float16]: ...
+def _f_f32_2(x: npt.NDArray[np.float64]) -> onp.Array2D[np.float32]: ...
+def _f_f64_2(x: npt.NDArray[np.float64]) -> onp.Array2D[np.float64]: ...
+def _f_f80_2(x: npt.NDArray[np.float64]) -> onp.Array2D[npc.floating80]: ...
+def _f_c64_2(x: npt.NDArray[np.float64]) -> onp.Array2D[np.complex64]: ...
+def _f_c128_2(x: npt.NDArray[np.float64]) -> onp.Array2D[np.complex128]: ...
+def _f_c160_2(x: npt.NDArray[np.float64]) -> onp.Array2D[npc.complexfloating160]: ...
+def _f_m64_2(x: npt.NDArray[np.float64]) -> onp.Array2D[np.timedelta64]: ...
+def _f_f16_n(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float16]: ...
+def _f_f32_n(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float32]: ...
+def _f_f64_n(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]: ...
+def _f_f80_n(x: npt.NDArray[np.float64]) -> npt.NDArray[npc.floating80]: ...
+def _f_c64_n(x: npt.NDArray[np.float64]) -> npt.NDArray[np.complex64]: ...
+def _f_c128_n(x: npt.NDArray[np.float64]) -> npt.NDArray[np.complex128]: ...
+def _f_c160_n(x: npt.NDArray[np.float64]) -> npt.NDArray[npc.complexfloating160]: ...
+def _f_m64_n(x: npt.NDArray[np.float64]) -> npt.NDArray[np.timedelta64]: ...
+def _f_obj_n(x: npt.NDArray[np.float64]) -> npt.NDArray[np.object_]: ...
 
-assert_type(fixed_quad(_f_f16, 0.0, 1.0), tuple[np.float64, None])
-assert_type(fixed_quad(_f_f32, 0.0, 1.0), tuple[np.float64, None])
-assert_type(fixed_quad(_f_f64, 0.0, 1.0), tuple[np.float64, None])
-assert_type(fixed_quad(_f_c64, 0.0, 1.0), tuple[np.complex128, None])
-assert_type(fixed_quad(_f_f80, 0.0, 1.0), tuple[npc.floating80, None])
-assert_type(fixed_quad(_f_c128, 0.0, 1.0), tuple[np.complex128, None])
-assert_type(fixed_quad(_f_c160, 0.0, 1.0), tuple[npc.complexfloating160, None])
-assert_type(fixed_quad(_f_m64, 0.0, 1.0), tuple[np.timedelta64, None])
-assert_type(fixed_quad(_f_obj, 0.0, 1.0), tuple[Any, None])
+# https://github.com/facebook/pyrefly/issues/3974
+assert_type(fixed_quad(_f_f16_1, 0.0, 1.0), tuple[np.float64, None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_f32_1, 0.0, 1.0), tuple[np.float64, None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_f64_1, 0.0, 1.0), tuple[np.float64, None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_c64_1, 0.0, 1.0), tuple[np.complex128, None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_f80_1, 0.0, 1.0), tuple[npc.floating80, None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_c128_1, 0.0, 1.0), tuple[np.complex128, None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_c160_1, 0.0, 1.0), tuple[npc.complexfloating160, None])  # pyrefly:ignore[assert-type]
+assert_subtype[tuple[np.timedelta64, None]](fixed_quad(_f_m64_1, 0.0, 1.0))  # pyrefly:ignore[bad-argument-type]
+assert_type(fixed_quad(_f_f16_2, 0.0, 1.0), tuple[onp.Array1D[np.float64], None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_f32_2, 0.0, 1.0), tuple[onp.Array1D[np.float64], None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_f64_2, 0.0, 1.0), tuple[onp.Array1D[np.float64], None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_c64_2, 0.0, 1.0), tuple[onp.Array1D[np.complex128], None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_f80_2, 0.0, 1.0), tuple[onp.Array1D[npc.floating80], None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_c128_2, 0.0, 1.0), tuple[onp.Array1D[np.complex128], None])  # pyrefly:ignore[assert-type]
+assert_type(fixed_quad(_f_c160_2, 0.0, 1.0), tuple[onp.Array1D[npc.complexfloating160], None])  # pyrefly:ignore[assert-type]
+assert_subtype[tuple[onp.Array1D[np.timedelta64], None]](fixed_quad(_f_m64_2, 0.0, 1.0))
+assert_subtype[tuple[onp.ArrayND[np.float64] | np.float64, None]](fixed_quad(_f_f16_n, 0.0, 1.0))
+assert_subtype[tuple[onp.ArrayND[np.float64] | np.float64, None]](fixed_quad(_f_f32_n, 0.0, 1.0))
+assert_subtype[tuple[onp.ArrayND[np.float64] | np.float64, None]](fixed_quad(_f_f64_n, 0.0, 1.0))
+assert_subtype[tuple[onp.ArrayND[np.complex128] | np.complex128, None]](fixed_quad(_f_c64_n, 0.0, 1.0))
+assert_subtype[tuple[onp.ArrayND[npc.floating80] | npc.floating80, None]](fixed_quad(_f_f80_n, 0.0, 1.0))
+assert_subtype[tuple[onp.ArrayND[np.complex128] | np.complex128, None]](fixed_quad(_f_c128_n, 0.0, 1.0))
+assert_subtype[tuple[onp.ArrayND[npc.complexfloating160] | npc.complexfloating160, None]](fixed_quad(_f_c160_n, 0.0, 1.0))
+assert_subtype[tuple[onp.ArrayND[np.timedelta64] | np.timedelta64, None]](fixed_quad(_f_m64_n, 0.0, 1.0))
+assert_type(fixed_quad(_f_obj_n, 0.0, 1.0), tuple[Any, None])
 
 ###
 # qmc_quad

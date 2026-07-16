@@ -1,4 +1,4 @@
-from typing import Any, TypeAlias, assert_type, type_check_only
+from typing import Any, assert_type, type_check_only
 
 import numpy as np
 import numpy.typing as npt
@@ -20,8 +20,8 @@ b: float = ...
 c: float = ...
 t: npt.NDArray[np.float64] = ...
 
-_VecF64: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
-_MatF64: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
+type _VecF64 = np.ndarray[tuple[int], np.dtype[np.float64]]
+type _MatF64 = np.ndarray[tuple[int, int], np.dtype[np.float64]]
 
 ###
 

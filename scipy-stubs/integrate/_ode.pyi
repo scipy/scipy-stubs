@@ -1,6 +1,6 @@
 import types
 from collections.abc import Callable
-from typing import Any, ClassVar, Final, Generic, Literal, Self, TypeAlias, TypedDict, Unpack, overload, override, type_check_only
+from typing import Any, ClassVar, Final, Generic, Literal, Self, TypedDict, Unpack, overload, override, type_check_only
 from typing_extensions import TypeVar, TypeVarTuple
 
 import numpy as np
@@ -12,8 +12,8 @@ __all__ = ["complex_ode", "ode"]
 _Ts = TypeVarTuple("_Ts", default=Unpack[tuple[Any, ...]])
 _Inexact64T_co = TypeVar("_Inexact64T_co", bound=npc.inexact, default=Any, covariant=True)
 
-_IntegratorReal: TypeAlias = Literal["vode", "dopri5", "dop853", "lsoda"]
-_IntegratorComplex: TypeAlias = Literal["vode", "zvode"]
+type _IntegratorReal = Literal["vode", "dopri5", "dop853", "lsoda"]
+type _IntegratorComplex = Literal["vode", "zvode"]
 
 @type_check_only
 class _IntegratorParams(TypedDict, total=False):
@@ -94,7 +94,7 @@ class ode(Generic[_Inexact64T_co, *_Ts]):
 class complex_ode(ode[np.complex128, *_Ts], Generic[*_Ts]):
     cf: Callable[[float, onp.Array1D[np.complex128], *_Ts], complex | onp.ToComplex1D]
     cjac: Callable[[float, onp.Array1D[np.complex128], *_Ts], complex | onp.ToComplex2D] | None
-    tmp: onp.Array1D[np.float64]
+    tmp_derivative: onp.Array1D[np.float64]
 
     @override
     # pyrefly: ignore [bad-override]

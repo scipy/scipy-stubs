@@ -1,4 +1,4 @@
-from typing import Literal, TypeAlias, assert_type
+from typing import Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -8,9 +8,9 @@ from scipy.optimize._minpack_py import _InfoDictCurveFit, _InfoDictLSQ, _InfoDic
 
 ###
 
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_IERFlag: TypeAlias = Literal[1, 2, 3, 4, 5, 6, 7, 8]
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _IERFlag = Literal[1, 2, 3, 4, 5, 6, 7, 8]
 
 ###
 
@@ -57,8 +57,14 @@ def _fp1d(x: _Float1D, /) -> list[float]: ...
 def _fp1d_c(x: onp.Array1D[np.complex128], /) -> list[complex]: ...
 def _fp2d(x: _Float2D, /) -> list[list[float]]: ...
 
-assert_type(fixed_point(_fp, 0.5), np.float64)
-assert_type(fixed_point(_fp_c, 0.5 + 0j), np.complex128)
+# https://github.com/scipy/scipy-stubs/issues/1797
+assert_type(fixed_point(_fp, 0.5), onp.Array0D[np.float64])
+assert_type(fixed_point(_fp, 0.5, method="del2"), onp.Array0D[np.float64])
+assert_type(fixed_point(_fp, 0.5, method="iteration"), np.float64)
+assert_type(fixed_point(_fp_c, 0.5 + 0j), onp.Array0D[np.complex128])
+assert_type(fixed_point(_fp_c, 0.5 + 0j, method="del2"), onp.Array0D[np.complex128])
+assert_type(fixed_point(_fp_c, 0.5 + 0j, method="iteration"), np.complex128)
+
 assert_type(fixed_point(_fp1d, [0.5, 1.0]), _Float1D)
 assert_type(fixed_point(_fp1d_c, [0.5 + 0j, 1.0 + 0j]), onp.Array1D[np.complex128])
 assert_type(fixed_point(_fp2d, [[0.5, 1.0], [1.5, 2.0]]), _Float2D)

@@ -1,4 +1,4 @@
-from typing import Any, Literal, TypeAlias, assert_type
+from typing import Any, Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -24,15 +24,19 @@ from scipy.optimize import (
     show_options,
 )
 
-_Float: TypeAlias = float | np.float64
-_Float1D: TypeAlias = onp.Array1D[np.float64]
-_Float2D: TypeAlias = onp.Array2D[np.float64]
-_AllVecs: TypeAlias = list[onp.Array1D[np.intp] | _Float1D]
-_WarnFlag: TypeAlias = Literal[0, 1, 2, 3, 4]
-_BracketInfo: TypeAlias = tuple[_Float, _Float, _Float, _Float, _Float, _Float, int]
+type _Float = float | np.float64
+type _Float1D = onp.Array1D[np.float64]
+type _Float2D = onp.Array2D[np.float64]
+type _AllVecs = list[onp.Array1D[np.intp] | _Float1D]
+type _WarnFlag = Literal[0, 1, 2, 3, 4]
+type _BracketInfo = tuple[_Float, _Float, _Float, _Float, _Float, _Float, int]
 
 _x0: list[float]
-_arr_1d: _Float1D
+_i8_1d: onp.Array1D[np.int8]
+_f64_1d: _Float1D
+_f32_1d: onp.Array1D[np.float32]
+_f32_2d: onp.Array2D[np.float32]
+_c64_1d: onp.Array1D[np.complex64]
 
 def _f(x: _Float1D, /) -> float: ...
 def _f_vec(x: _Float1D, /) -> _Float1D: ...
@@ -40,12 +44,39 @@ def _f0d(x: float, /) -> float: ...
 def _fprime(x: _Float1D, /) -> _Float1D: ...
 
 ###
-# rosen, rosen_der, rosen_hess, rosen_hess_prod
+# rosen
 
-assert_type(rosen([1.0, 2.0, 3.0]), _Float)
-assert_type(rosen_der([1.0, 2.0, 3.0]), _Float1D)
-assert_type(rosen_hess([1.0, 2.0, 3.0]), _Float2D)
-assert_type(rosen_hess_prod([1.0, 2.0, 3.0], [1.0, 0.0, 0.0]), _Float1D)
+assert_type(rosen([1.0, 2.0, 3.0]), np.float64)
+assert_type(rosen(_i8_1d), np.float64)
+assert_type(rosen(_f32_1d), np.float32)
+assert_type(rosen(_c64_1d), np.complex64)
+assert_type(rosen(_f32_2d), onp.Array1D[np.float32])
+
+###
+# rosen_der
+
+# (the weird shape-type avoids a pyright overload overlap error on `numpy<2.1`)
+assert_type(rosen_der([1.0, 2.0, 3.0]), onp.ArrayND[np.float64, tuple[Any, ...] | tuple[int]])
+assert_type(rosen_der(_i8_1d), onp.Array1D[np.float64])
+assert_type(rosen_der(_f32_1d), onp.Array1D[np.float32])
+assert_type(rosen_der(_c64_1d), onp.Array1D[np.complex64])
+assert_type(rosen_der(_f32_2d), onp.Array2D[np.float32])
+
+###
+# rosen_hess
+
+assert_type(rosen_hess([1.0, 2.0, 3.0]), onp.Array2D[np.float64])
+assert_type(rosen_hess(_i8_1d), onp.Array2D[np.float64])
+assert_type(rosen_hess(_f32_1d), onp.Array2D[np.float32])
+assert_type(rosen_hess(_c64_1d), onp.Array2D[np.complex64])
+
+###
+# rosen_hess_prod
+
+assert_type(rosen_hess_prod([1.0, 2.0, 3.0], [1.0, 0.0, 0.0]), onp.Array1D[np.float64])
+assert_type(rosen_hess_prod(_i8_1d, _i8_1d), onp.Array1D[np.float64])
+assert_type(rosen_hess_prod(_f32_1d, _f32_1d), onp.Array1D[np.float32])
+assert_type(rosen_hess_prod(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 
 ###
 # approx_fprime
@@ -149,5 +180,5 @@ assert_type(show_options(disp=False), str)
 # line_search
 
 assert_type(
-    line_search(_f, _fprime, _arr_1d, _arr_1d, _arr_1d), tuple[_Float | None, int, int, _Float | None, _Float, _Float | None]
+    line_search(_f, _fprime, _f64_1d, _f64_1d, _f64_1d), tuple[_Float | None, int, int, _Float | None, _Float, _Float | None]
 )

@@ -1,5 +1,5 @@
 from collections.abc import Mapping
-from typing import Final, Literal, TypeAlias, TypeVar, overload
+from typing import Final, Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -10,27 +10,26 @@ from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["ArpackError", "ArpackNoConvergence", "eigs", "eigsh"]
 
-_KT = TypeVar("_KT")
-_SCT = TypeVar("_SCT", bound=_Numeric, default=_Numeric)
+###
 
-_Numeric: TypeAlias = npc.number | np.bool
-_ToFloat: TypeAlias = npc.floating | npc.integer | np.bool
+type _Numeric = npc.number | np.bool
+type _ToFloat = npc.floating | npc.integer | np.bool
 
-_MatrixOperator: TypeAlias = spmatrix[_SCT] | sparray[_SCT, tuple[int, int]] | LinearOperator[_SCT]
+type _MatrixOperator[_SCT: _Numeric] = spmatrix[_SCT] | sparray[_SCT, tuple[int, int]] | LinearOperator[_SCT]
 
-_ToRealMatrix: TypeAlias = onp.ToFloat2D | _MatrixOperator[_ToFloat]
-_ToJustComplexMatrix: TypeAlias = onp.ToJustComplex2D | _MatrixOperator[npc.complexfloating]
-_ToComplexMatrix: TypeAlias = onp.ToComplex2D | _MatrixOperator
+type _ToRealMatrix = onp.ToFloat2D | _MatrixOperator[_ToFloat]
+type _ToJustComplexMatrix = onp.ToJustComplex2D | _MatrixOperator[npc.complexfloating]
+type _ToComplexMatrix = onp.ToComplex2D | _MatrixOperator[_Numeric]
 
-_Which_eigs: TypeAlias = Literal["LM", "SM", "LR", "SR", "LI", "SI"]
-_Which_eigsh: TypeAlias = Literal["LM", "SM", "LA", "SA", "BE"]
-_OPpart: TypeAlias = Literal["r", "i"]
-_Mode: TypeAlias = Literal["normal", "buckling", "cayley"]
+type _Which_eigs = Literal["LM", "SM", "LR", "SR", "LI", "SI"]
+type _Which_eigsh = Literal["LM", "SM", "LA", "SA", "BE"]
+type _OPpart = Literal["r", "i"]
+type _Mode = Literal["normal", "buckling", "cayley"]
 
 ###
 
 class ArpackError(RuntimeError):
-    def __init__(self, /, info: _KT, infodict: Mapping[_KT, str] | None = None) -> None: ...
+    def __init__[T](self, /, info: T, infodict: Mapping[T, str] | None = None) -> None: ...
 
 class ArpackNoConvergence(ArpackError):
     eigenvalues: Final[onp.Array1D[np.float64 | np.complex128]]

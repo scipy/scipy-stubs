@@ -2,7 +2,7 @@
 
 # ruff: noqa: ERA001
 
-from typing import TypeAlias, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -11,8 +11,8 @@ from scipy.signal import argrelextrema, argrelmax, argrelmin, find_peaks, find_p
 
 ###
 
-_Int1D: TypeAlias = onp.Array1D[np.int_]
-_Float1D: TypeAlias = onp.Array1D[np.float64]
+type _Int1D = onp.Array1D[np.int_]
+type _Float1D = onp.Array1D[np.float64]
 
 ###
 
@@ -41,13 +41,13 @@ assert_type(argrelextrema(_f64_1d, _cmp_f64), tuple[onp.ArrayND[np.intp], ...])
 
 # peak_prominences
 
-assert_type(peak_prominences(_f64_1d, _i64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp], onp.ArrayND[np.intp]])
+assert_type(peak_prominences(_f64_1d, _i64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp], onp.Array1D[np.intp]])
 
 # peak_widths
 
 assert_type(
     peak_widths(_f64_1d, _i64_1d),
-    tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int_], onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
+    tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64]],
 )
 
 # find_peaks_cwt

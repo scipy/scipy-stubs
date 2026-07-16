@@ -33,6 +33,7 @@ __all__ = [
 _ZerosT_co = TypeVar("_ZerosT_co", bound=npc.inexact32 | npc.inexact64, default=Any, covariant=True)
 _PolesT_co = TypeVar("_PolesT_co", bound=_Float, default=np.float64 | Any, covariant=True)
 _DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=Any, covariant=True)
+_RequestedPolesT_co = TypeVar("_RequestedPolesT_co", bound=npc.inexact64, default=np.float64 | np.complex128, covariant=True)
 
 type _Tuple3[T] = tuple[T, T, T]
 type _Tuple4[T] = tuple[T, T, T, T]
@@ -43,7 +44,6 @@ type _Inexact = _Float | _Complex
 type _Number = npc.integer | _Inexact
 
 type _ToNumber = complex | _Number
-type _ToNumberOrND = _ToNumber | onp.ArrayND[_Number]
 
 type _Array12D[ScalarT: np.generic] = onp.ArrayND[ScalarT, tuple[int] | tuple[int, int]]
 
@@ -149,7 +149,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         X0: onp.ToFloat1D | None = None,
         T: onp.ToFloat1D | None = None,
         N: int | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
     @overload
     def impulse(
         self: lti[np.complex64 | np.complex128],
@@ -157,7 +157,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         X0: onp.ToComplex1D | None = None,
         T: onp.ToFloat1D | None = None,
         N: int | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128]]: ...
 
     #
     @overload
@@ -167,7 +167,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         X0: onp.ToFloat1D | None = None,
         T: onp.ToFloat1D | None = None,
         N: int | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
     @overload
     def step(
         self: lti[np.complex64 | np.complex128],
@@ -175,7 +175,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         X0: onp.ToComplex1D | None = None,
         T: onp.ToFloat1D | None = None,
         N: int | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128]]: ...
 
     #
     @overload
@@ -185,7 +185,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         U: _ToFloat012D | None,
         T: onp.ToFloat | onp.ToFloat1D,
         X0: onp.ToComplex1D | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
     @overload
     def output(
         self: lti[np.complex64 | np.complex128],
@@ -193,7 +193,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
         U: _ToFloat012D | None,
         T: onp.ToFloat | onp.ToFloat1D,
         X0: onp.ToComplex1D | None = None,
-    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], onp.ArrayND[np.complex128]]: ...
+    ) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
 
     #
     @overload
@@ -650,13 +650,13 @@ class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_
 
     #
     def __neg__(self, /) -> Self: ...
-    def __add__(self, other: Self | _ToNumberOrND, /) -> Self: ...
-    def __sub__(self, other: Self | _ToNumberOrND, /) -> Self: ...
-    def __mul__(self, other: Self | _ToNumberOrND, /) -> Self: ...
+    def __add__(self, other: Self | npc.number | onp.ArrayND[npc.number], /) -> Self: ...
+    def __sub__(self, other: Self | npc.number | onp.ArrayND[npc.number], /) -> Self: ...
+    def __mul__(self, other: Self | npc.number | onp.ArrayND[npc.number], /) -> Self: ...
     def __truediv__(self, other: _ToNumber, /) -> Self: ...
-    def __radd__(self, other: Self | _ToNumberOrND, /) -> Self: ...
-    def __rsub__(self, other: Self | _ToNumberOrND, /) -> Self: ...
-    def __rmul__(self, other: Self | _ToNumberOrND, /) -> Self: ...
+    def __radd__(self, other: Self | npc.number | onp.ArrayND[npc.number], /) -> Self: ...
+    def __rsub__(self, other: Self | npc.number | onp.ArrayND[npc.number], /) -> Self: ...
+    def __rmul__(self, other: Self | npc.number | onp.ArrayND[npc.number], /) -> Self: ...
 
     #
     @property
@@ -756,17 +756,54 @@ class StateSpaceDiscrete(
 
 # NOTE: Only used as return type of `place_poles`.
 @final
-class Bunch:
+class Bunch(Generic[_RequestedPolesT_co]):
     gain_matrix: _Float64_2D
-    computed_poles: _Float64_1D
-    requested_poles: _Float64_1D
-    X: onp.Array2D[np.complex128]
+    computed_poles: onp.Array1D[np.complex128]
+    requested_poles: onp.Array1D[_RequestedPolesT_co]
+    X: onp.Array2D[np.float64 | np.complex128]  # float64 iff `B` is square and full-rank
     rtol: float
-    nb_iter: int
+    nb_iter: float  # `nan` if `B` is square and full-rank, `int` otherwise
 
     def __init__(self, /) -> None: ...
 
 #
+@overload  # +f64
+def place_poles(
+    A: onp.ToFloat2D,
+    B: onp.ToFloat2D,
+    poles: onp.ToFloat64_1D,
+    method: Literal["YT", "KNV0"] = "YT",
+    rtol: float = 0.001,
+    maxiter: int = 30,
+) -> Bunch[np.float64]: ...
+@overload  # +floating
+def place_poles(
+    A: onp.ToFloat2D,
+    B: onp.ToFloat2D,
+    poles: onp.ToFloat1D,
+    method: Literal["YT", "KNV0"] = "YT",
+    rtol: float = 0.001,
+    maxiter: int = 30,
+) -> Bunch[np.float64 | Any]: ...
+@overload  # ~c128
+def place_poles(
+    A: onp.ToFloat2D,
+    B: onp.ToFloat2D,
+    poles: onp.ToJustComplex128_1D,
+    method: Literal["YT", "KNV0"] = "YT",
+    rtol: float = 0.001,
+    maxiter: int = 30,
+) -> Bunch[np.complex128]: ...
+@overload  # ~complexfloating
+def place_poles(
+    A: onp.ToFloat2D,
+    B: onp.ToFloat2D,
+    poles: onp.ToJustComplex1D,
+    method: Literal["YT", "KNV0"] = "YT",
+    rtol: float = 0.001,
+    maxiter: int = 30,
+) -> Bunch[np.complex128 | Any]: ...
+@overload  # +complexfloating
 def place_poles(
     A: onp.ToFloat2D,
     B: onp.ToFloat2D,
@@ -774,7 +811,7 @@ def place_poles(
     method: Literal["YT", "KNV0"] = "YT",
     rtol: float = 0.001,
     maxiter: int = 30,
-) -> Bunch: ...
+) -> Bunch[Any]: ...
 
 #
 
@@ -786,7 +823,7 @@ def lsim(
     T: onp.ToFloat1D,
     X0: onp.ToFloat1D | None = None,
     interp: bool = True,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 @overload
 def lsim(
     system: lti[np.complex64 | np.complex128],
@@ -794,11 +831,11 @@ def lsim(
     T: onp.ToFloat1D,
     X0: onp.ToComplex1D | None = None,
     interp: bool = True,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], onp.ArrayND[np.complex128]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
 @overload
 def lsim(
     system: _ToLTIInexact, U: _ToFloat012D | None, T: onp.ToFloat1D, X0: onp.ToComplex1D | None = None, interp: bool = True
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
 
 # keep in sync with lsim and step
 @overload
@@ -807,18 +844,18 @@ def impulse(
     X0: onp.ToFloat1D | None = None,
     T: onp.ToFloat1D | None = None,
     N: int | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
 @overload
 def impulse(
     system: lti[np.complex64 | np.complex128],
     X0: onp.ToComplex1D | None = None,
     T: onp.ToFloat1D | None = None,
     N: int | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128]]: ...
 @overload
 def impulse(
     system: _ToLTIInexact, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128 | Any]]: ...
 
 # keep in sync with lsim and impulse
 @overload
@@ -827,18 +864,18 @@ def step(
     X0: onp.ToFloat1D | None = None,
     T: onp.ToFloat1D | None = None,
     N: int | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
 @overload
 def step(
     system: lti[np.complex64 | np.complex128],
     X0: onp.ToComplex1D | None = None,
     T: onp.ToFloat1D | None = None,
     N: int | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128]]: ...
 @overload
 def step(
     system: _ToLTIInexact, X0: onp.ToComplex1D | None = None, T: onp.ToFloat1D | None = None, N: int | None = None
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128 | Any]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.ArrayND[np.complex128 | Any]]: ...
 
 #
 @overload

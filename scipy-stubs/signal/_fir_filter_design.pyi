@@ -1,5 +1,4 @@
-from typing import Literal, TypeAlias, overload
-from typing_extensions import TypeVar
+from typing import Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -11,17 +10,15 @@ __all__ = ["firls", "firwin", "firwin2", "firwin_2d", "kaiser_atten", "kaiser_be
 
 ###
 
-_InexactT = TypeVar("_InexactT", bound=float | npc.inexact)
-
-_IIRFilterType: TypeAlias = Literal["bandpass", "lowpass", "highpass", "bandstop"]
-_RemezFilterType: TypeAlias = Literal["bandpass", "differentiator", "hilbert"]
-_LinearPhaseFIRMethod: TypeAlias = Literal["homomorphic", "hilbert"]
+type _IIRFilterType = Literal["bandpass", "lowpass", "highpass", "bandstop"]
+type _RemezFilterType = Literal["bandpass", "differentiator", "hilbert"]
+type _LinearPhaseFIRMethod = Literal["homomorphic", "hilbert"]
 
 ###
 
 #
 def kaiser_beta(a: float) -> float: ...
-def kaiser_atten(numtaps: int, width: _InexactT) -> _InexactT: ...
+def kaiser_atten[InexactT: float | npc.inexact](numtaps: int, width: InexactT) -> InexactT: ...
 def kaiserord(ripple: float, width: float) -> tuple[int, float]: ...
 
 #

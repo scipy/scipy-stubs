@@ -10,7 +10,6 @@ from typing import (
     Protocol,
     Self,
     SupportsIndex,
-    TypeAlias,
     overload,
     override,
     type_check_only,
@@ -39,23 +38,21 @@ __all__ = [
     "update_discrepancy",
 ]
 
-_AnyRNG = TypeVar("_AnyRNG", np.random.Generator, np.random.RandomState)
+###
 
-_FloatArrayT = TypeVar("_FloatArrayT", bound=onp.ArrayND[npc.floating])
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
+type _Real = npc.floating | npc.integer
+
+type _MethodQMC = Literal["random-cd", "lloyd"]
+type _MethodDisc = Literal["CD", "WD", "MD", "L2-star"]
+type _MethodDist = Literal["mindist", "mst"]
+type _HyperSphere = Literal["volume", "surface"]
+
 _InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=np.float64, covariant=True)
 _EngineT_co = TypeVar("_EngineT_co", bound=QMCEngine[npc.inexact], default=Sobol, covariant=True)
 
-_Real: TypeAlias = npc.floating | npc.integer
-
-_MethodQMC: TypeAlias = Literal["random-cd", "lloyd"]
-_MethodDisc: TypeAlias = Literal["CD", "WD", "MD", "L2-star"]
-_MethodDist: TypeAlias = Literal["mindist", "mst"]
-_HyperSphere: TypeAlias = Literal["volume", "surface"]
-
 @type_check_only
 class _Optimizer(Protocol):
-    def __call__(self, sample: onp.ArrayND[_InexactT], /) -> onp.Array2D[_InexactT]: ...
+    def __call__[InexactT: npc.inexact](self, sample: onp.ArrayND[InexactT], /) -> onp.Array2D[InexactT]: ...
 
 @type_check_only
 class _HypersphereMethod(Protocol):
@@ -68,7 +65,9 @@ class _QMCDistribution(Generic[_EngineT_co]):
     engine: _EngineT_co
 
     def __init__(self, /, *, engine: _EngineT_co | None = None, rng: onp.random.ToRNG | None = None) -> None: ...
-    def random(self: _QMCDistribution[QMCEngine[_InexactT]], /, n: onp.ToJustInt = 1) -> onp.Array2D[_InexactT]: ...
+    def random[InexactT: npc.inexact](
+        self: _QMCDistribution[QMCEngine[InexactT]], /, n: onp.ToJustInt = 1
+    ) -> onp.Array2D[InexactT]: ...
 
 ###
 
@@ -215,6 +214,10 @@ class PoissonDisk(QMCEngine[np.float64]):
     radius: Final[onp.ToFloat]
     radius_squared: Final[onp.ToFloat]
     ncandidates: Final[onp.ToInt]
+
+    l_bounds: onp.Array1D[np.float64]
+    u_bounds: onp.Array1D[np.float64]
+
     cell_size: Final[np.float64]
     grid_size: Final[onp.Array1D[np.int_]]
 
@@ -316,12 +319,12 @@ class MultivariateNormalQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co])
         seed: onp.random.ToRNG | None,
     ) -> None: ...
     #
-    def _correlate(
-        self: MultivariateNormalQMC[QMCEngine[_InexactT]], /, base_samples: onp.Array2D[_InexactT]
-    ) -> onp.Array2D[_InexactT]: ...
-    def _standard_normal_samples(
-        self: MultivariateNormalQMC[QMCEngine[_InexactT]], /, n: onp.ToJustInt = 1
-    ) -> onp.Array2D[_InexactT]: ...
+    def _correlate[InexactT: npc.inexact](
+        self: MultivariateNormalQMC[QMCEngine[InexactT]], /, base_samples: onp.Array2D[InexactT]
+    ) -> onp.Array2D[InexactT]: ...
+    def _standard_normal_samples[InexactT: npc.inexact](
+        self: MultivariateNormalQMC[QMCEngine[InexactT]], /, n: onp.ToJustInt = 1
+    ) -> onp.Array2D[InexactT]: ...
 
 class MultinomialQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co]):
     pvals: Final[onp.Array1D[np.float32 | np.float64]]
@@ -372,7 +375,7 @@ class MultinomialQMC(_QMCDistribution[_EngineT_co], Generic[_EngineT_co]):
 @overload
 def check_random_state(seed: int | npc.integer | numbers.Integral | None = None) -> np.random.Generator: ...
 @overload
-def check_random_state(seed: _AnyRNG) -> _AnyRNG: ...
+def check_random_state[AnyRNG: (np.random.Generator, np.random.RandomState)](seed: AnyRNG) -> AnyRNG: ...
 
 #
 def scale(
@@ -396,9 +399,13 @@ def n_primes(n: onp.ToInt) -> list[int] | onp.Array1D[np.int_]: ...
 
 #
 def _select_optimizer(optimization: _MethodQMC | None, config: Mapping[str, object]) -> _Optimizer | None: ...
-def _random_cd(best_sample: _FloatArrayT, n_iters: onp.ToInt, n_nochange: onp.ToInt, rng: onp.random.RNG) -> _FloatArrayT: ...
+def _random_cd[FloatArrayT: onp.ArrayND[npc.floating]](
+    best_sample: FloatArrayT, n_iters: onp.ToInt, n_nochange: onp.ToInt, rng: onp.random.RNG
+) -> FloatArrayT: ...
 def _l1_norm(sample: onp.ToJustFloat2D) -> float | np.float64: ...
-def _lloyd_iteration(sample: _FloatArrayT, decay: onp.ToFloat, qhull_options: str | None) -> _FloatArrayT: ...
+def _lloyd_iteration[FloatArrayT: onp.ArrayND[npc.floating]](
+    sample: FloatArrayT, decay: onp.ToFloat, qhull_options: str | None
+) -> FloatArrayT: ...
 def _lloyd_centroidal_voronoi_tessellation(
     sample: onp.ToJustFloat2D, *, tol: onp.ToFloat = 1e-5, maxiter: onp.ToJustInt = 10, qhull_options: str | None = None
 ) -> onp.Array2D[np.float64]: ...
@@ -410,9 +417,9 @@ def _perturb_discrepancy(
     sample: onp.Array2D[npc.integer | np.bool], i1: SupportsIndex, i2: SupportsIndex, k: SupportsIndex, disc: onp.ToFloat
 ) -> float | np.float64: ...
 @overload
-def _perturb_discrepancy(
-    sample: onp.Array2D[_InexactT], i1: SupportsIndex, i2: SupportsIndex, k: SupportsIndex, disc: onp.ToFloat
-) -> _InexactT: ...
+def _perturb_discrepancy[InexactT: npc.inexact](
+    sample: onp.Array2D[InexactT], i1: SupportsIndex, i2: SupportsIndex, k: SupportsIndex, disc: onp.ToFloat
+) -> InexactT: ...
 
 #
 def van_der_corput(

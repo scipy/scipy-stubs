@@ -1,6 +1,6 @@
 from _typeshed import Incomplete
 from types import ModuleType
-from typing import Literal, TypeAlias, TypeAliasType, overload
+from typing import Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -36,15 +36,14 @@ __all__ = [
 
 ###
 
-_Float64_1D: TypeAlias = onp.Array1D[np.float64]
-_Float64_2D: TypeAlias = onp.Array2D[np.float64]
+type _Float64_1D = onp.Array1D[np.float64]
+type _Float64_2D = onp.Array2D[np.float64]
 
-_DeviceNP: TypeAlias = Literal["cpu"]
-_Norm: TypeAlias = Literal[2, "approximate", "subsample"]
+type _DeviceNP = Literal["cpu"]
+type _Norm = Literal[2, "approximate", "subsample"]
 
-_ToWindow = TypeAliasType(
-    "_ToWindow",
-    float | str | tuple[str] | tuple[str, float | onp.ToFloat1D] | tuple[str, float, float | int] | tuple[str, int, int, bool],
+type _ToWindow = (
+    float | str | tuple[str] | tuple[str, float | onp.ToFloat1D] | tuple[str, float, float | int] | tuple[str, int, int, bool]
 )
 
 ###

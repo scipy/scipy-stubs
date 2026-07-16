@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable
-from typing import Self, SupportsIndex, TypeAlias, TypeVar
+from typing import Self, SupportsIndex
 
 import numpy as np
 import optype.numpy as onp
@@ -8,17 +8,20 @@ from scipy.optimize._constraints import PreparedConstraint
 from scipy.sparse import csr_matrix
 from scipy.sparse.linalg import LinearOperator
 
-_T = TypeVar("_T")
-_Tuple2: TypeAlias = tuple[_T, _T]
+###
 
-_FunConstr: TypeAlias = Callable[[onp.Array1D[np.float64]], _Tuple2[onp.Array1D[np.float64]]]
-_FunJac: TypeAlias = Callable[[onp.Array1D[np.float64]], _Tuple2[onp.Array2D[np.float64] | csr_matrix]]
-_FunHess: TypeAlias = Callable[
+type _Tuple2[T] = tuple[T, T]
+
+type _FunConstr = Callable[[onp.Array1D[np.float64]], _Tuple2[onp.Array1D[np.float64]]]
+type _FunJac = Callable[[onp.Array1D[np.float64]], _Tuple2[onp.Array2D[np.float64] | csr_matrix]]
+type _FunHess = Callable[
     [onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64]],
     _Tuple2[onp.Array2D[np.float64] | csr_matrix | LinearOperator],
 ]
 
-_PreparedConstraints: TypeAlias = Iterable[CanonicalConstraint]
+type _PreparedConstraints = Iterable[CanonicalConstraint]
+
+###
 
 class CanonicalConstraint:
     n_eq: int

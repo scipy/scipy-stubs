@@ -55,11 +55,11 @@ type _Orientation = Literal["top", "bottom", "left", "right"]
 
 @type_check_only
 class _DendrogramResult(TypedDict):
-    color_list: list[str]
-    icoord: list[list[int]]
-    dcoord: list[list[int]]
+    icoord: list[list[float]]
+    dcoord: list[list[float]]
     ivl: list[str]
     leaves: list[int] | None
+    color_list: list[str]
     leaves_color_list: list[str]
 
 ###

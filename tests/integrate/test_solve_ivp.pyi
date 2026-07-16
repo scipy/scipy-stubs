@@ -1,4 +1,4 @@
-from typing import Any, TypeAlias, assert_type, type_check_only
+from typing import assert_type, type_check_only
 
 import numpy as np
 import numpy.typing as npt
@@ -6,12 +6,12 @@ import optype.numpy as onp
 
 from scipy.integrate import solve_ivp
 
-_VecF64: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
-_MatF64: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.float64]]
-_ArrF64: TypeAlias = np.ndarray[tuple[Any, ...], np.dtype[np.float64]]
-_VecC128: TypeAlias = np.ndarray[tuple[int], np.dtype[np.complex128]]
-_MatC128: TypeAlias = np.ndarray[tuple[int, int], np.dtype[np.complex128]]
-_ArrC128: TypeAlias = np.ndarray[tuple[Any, ...], np.dtype[np.complex128]]
+type _VecF64 = onp.Array1D[np.float64]
+type _MatF64 = onp.Array2D[np.float64]
+type _ArrF64 = onp.ArrayND[np.float64]
+type _VecC128 = onp.Array1D[np.complex128]
+type _MatC128 = onp.Array2D[np.complex128]
+type _ArrC128 = onp.ArrayND[np.complex128]
 
 list_float: list[float] = ...
 list_complex: list[complex] = ...

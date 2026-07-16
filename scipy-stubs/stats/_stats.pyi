@@ -1,7 +1,7 @@
 # defined in scipy/stats/_stats.pyx
 
 from collections.abc import Callable
-from typing import Final, Literal, TypeAlias, TypedDict, overload, type_check_only
+from typing import Final, Literal, TypedDict, overload, type_check_only
 from typing_extensions import CapsuleType, ReadOnly
 
 import numpy as np
@@ -11,19 +11,19 @@ import optype.numpy.compat as npc
 ###
 
 # matches the `ctypedef fused ordered`
-_Ordered: TypeAlias = np.int32 | np.int64 | np.float32 | np.float64
+type _Ordered = np.int32 | np.int64 | np.float32 | np.float64
 
 # matches the `ctypedef fused real`
-_Real: TypeAlias = np.float32 | np.float64 | npc.floating80
+type _Real = np.float32 | np.float64 | npc.floating80
 
 # castable to `_Real`
-_AsReal: TypeAlias = npc.floating | npc.integer | np.bool
+type _AsReal = npc.floating | npc.integer | np.bool
 
 # castable to a real distance matrix
-_Dist2D: TypeAlias = onp.Array2D[_AsReal]
+type _Dist2D = onp.Array2D[_AsReal]
 
 # the (presumed) type of the `global_corr` parameters
-_GlobalCorr: TypeAlias = Literal["mgc", "mantel", "biased", "rank"]
+type _GlobalCorr = Literal["mgc", "mantel", "biased", "rank"]
 
 ###
 

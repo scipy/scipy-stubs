@@ -1,4 +1,4 @@
-from typing import Any, Literal, TypeAlias, TypeAliasType, TypeVar, overload
+from typing import Any, Literal, TypeVar, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -19,27 +19,29 @@ __all__ = ["abcd_normalize", "cont2discrete", "ss2tf", "ss2zpk", "tf2ss", "zpk2s
 
 ###
 
-_SafeFloatT = TypeVar("_SafeFloatT", bound=np.float32 | np.float64)
-_SafeInexactT = TypeVar("_SafeInexactT", bound=np.float32 | np.float64 | np.complex64 | np.complex128)
-_InexactT = TypeVar("_InexactT", bound=npc.inexact, default=npc.inexact)
 _InexactAT = TypeVar("_InexactAT", bound=npc.inexact, default=np.float64)
 _InexactBT = TypeVar("_InexactBT", bound=npc.inexact, default=np.float64)
 _InexactCT = TypeVar("_InexactCT", bound=npc.inexact, default=np.float64)
 _InexactDT = TypeVar("_InexactDT", bound=npc.inexact, default=np.float64)
 
-_T = TypeVar("_T")
-_Tuple4: TypeAlias = tuple[_T, _T, _T, _T]
+type _Tuple4[T] = tuple[T, T, T, T]
 
-_SystemTF: TypeAlias = tuple[onp.Array2D[_InexactT], onp.Array1D[_InexactT]]
-_SystemSS: TypeAlias = tuple[onp.Array2D[_InexactT], onp.Array2D[_InexactT], onp.Array2D[_InexactT], onp.Array2D[_InexactT]]
+type _SystemTF[InexactT: npc.inexact] = tuple[onp.Array2D[InexactT], onp.Array1D[InexactT]]
+type _SystemSS[InexactT: npc.inexact] = tuple[
+    onp.Array2D[InexactT],
+    onp.Array2D[InexactT],
+    onp.Array2D[InexactT],
+    onp.Array2D[InexactT],
+]  # fmt: skip
 
-_DiscretizeMethod: TypeAlias = Literal["gbt", "bilinear", "euler", "backward_diff", "foh", "impulse", "zoh"]
-# ty (0.0.9) doens't seem to understand `TypeAlias` with multiple `TypeVar`s
-_DiscreteSS = TypeAliasType(
-    "_DiscreteSS",
-    tuple[onp.Array2D[_SafeInexactT], onp.Array2D[_SafeInexactT], onp.Array2D[_InexactT], onp.Array2D[_InexactT], float],
-    type_params=(_SafeInexactT, _InexactT),
-)
+type _DiscretizeMethod = Literal["gbt", "bilinear", "euler", "backward_diff", "foh", "impulse", "zoh"]
+type _DiscreteSS[SafeInexactT: np.float32 | np.float64 | np.complex64 | np.complex128, InexactT: npc.inexact] = tuple[
+    onp.Array2D[SafeInexactT],
+    onp.Array2D[SafeInexactT],
+    onp.Array2D[InexactT],
+    onp.Array2D[InexactT],
+    float,
+]  # fmt: skip
 
 ###
 
@@ -234,27 +236,27 @@ def ss2zpk(
 
 #
 @overload  # TransferFunction
-def cont2discrete(
-    system: TransferFunctionContinuous[_SafeFloatT], dt: float, method: _DiscretizeMethod = "zoh", alpha: float | None = None
-) -> TransferFunctionDiscrete[_SafeFloatT]: ...
+def cont2discrete[SafeFloatT: np.float32 | np.float64](
+    system: TransferFunctionContinuous[SafeFloatT], dt: float, method: _DiscretizeMethod = "zoh", alpha: float | None = None
+) -> TransferFunctionDiscrete[SafeFloatT]: ...
 @overload  # ZerosPolesGain
-def cont2discrete(
-    system: ZerosPolesGainContinuous[_SafeInexactT, _SafeFloatT],
+def cont2discrete[SafeInexactT: np.float32 | np.float64 | np.complex64 | np.complex128, SafeFloatT: np.float32 | np.float64](
+    system: ZerosPolesGainContinuous[SafeInexactT, SafeFloatT],
     dt: float,
     method: _DiscretizeMethod = "zoh",
     alpha: float | None = None,
-) -> ZerosPolesGainDiscrete[_SafeInexactT, _SafeFloatT]: ...
+) -> ZerosPolesGainDiscrete[SafeInexactT, SafeFloatT]: ...
 @overload  # StateSpace
-def cont2discrete(
-    system: StateSpaceContinuous[_SafeInexactT, _SafeFloatT],
+def cont2discrete[SafeInexactT: np.float32 | np.float64 | np.complex64 | np.complex128, SafeFloatT: np.float32 | np.float64](
+    system: StateSpaceContinuous[SafeInexactT, SafeFloatT],
     dt: float,
     method: _DiscretizeMethod = "zoh",
     alpha: float | None = None,
-) -> StateSpaceDiscrete[_SafeInexactT, _SafeFloatT]: ...
+) -> StateSpaceDiscrete[SafeInexactT, SafeFloatT]: ...
 @overload  # lti
-def cont2discrete(
-    system: lti[_SafeInexactT, _SafeFloatT], dt: float, method: _DiscretizeMethod = "zoh", alpha: float | None = None
-) -> dlti[_SafeInexactT, _SafeFloatT]: ...
+def cont2discrete[SafeInexactT: np.float32 | np.float64 | np.complex64 | np.complex128, SafeFloatT: np.float32 | np.float64](
+    system: lti[SafeInexactT, SafeFloatT], dt: float, method: _DiscretizeMethod = "zoh", alpha: float | None = None
+) -> dlti[SafeInexactT, SafeFloatT]: ...
 @overload  # (+f64, +f64)
 def cont2discrete(
     system: tuple[float | onp.ToFloat64_2D, float | onp.ToFloat64_1D],

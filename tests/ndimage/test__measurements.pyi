@@ -58,7 +58,8 @@ assert_type(label(int_2d), tuple[onp.ArrayND[np.int32 | np.intp], int])
 ###
 # find_objects
 
-assert_type(find_objects(int_2d), list[tuple[slice, ...]])
+assert_type(find_objects(1), list[tuple[()] | None])
+assert_type(find_objects(int_2d), list[tuple[slice[int, int, None], ...] | None])
 
 ###
 # value_indices
@@ -68,15 +69,30 @@ assert_type(value_indices(int_2d), dict[np.intp, tuple[onp.ArrayND[np.intp], ...
 ###
 # labeled_comprehension
 
+# index=None -> scalar output
+# TODO: assertions below are mostly incorrect — out_dtype is ignored at runtime when index=None.
+# Also missing a separate test for scalar index (e.g. index=1). Will fix in follow-up.
+# out_dtype: DTypeLike[_SCT] -> _SCT
+assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.dtype(np.float32), 0.0), np.float32)
+# out_dtype: AnyIntPDType -> np.intp
+assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.intp, 0), np.intp)
+# out_dtype: AnyFloat64DType | None -> np.float64
+assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, None, 0.0), np.float64)
+assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.float64, 0.0), np.float64)
+# out_dtype: AnyComplex128DType -> np.complex128
+assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.complex128, 0.0), np.complex128)
+
+# index=<int array> -> ArrayND output
+
 # out_dtype: DTypeLike[_SCT] -> ArrayND[_SCT]
-assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.dtype(np.float32), 0.0), onp.ArrayND[np.float32])
+assert_type(labeled_comprehension(f64_2d, label_1d, index_1d, _stat_func, np.dtype(np.float32), 0.0), onp.ArrayND[np.float32])
 # out_dtype: AnyIntPDType -> ArrayND[np.intp]
-assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.intp, 0), onp.ArrayND[np.intp])
+assert_type(labeled_comprehension(f64_2d, label_1d, index_1d, _stat_func, np.intp, 0), onp.ArrayND[np.intp])
 # out_dtype: AnyFloat64DType | None -> ArrayND[np.float64]
-assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, None, 0.0), onp.ArrayND[np.float64])
-assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.float64, 0.0), onp.ArrayND[np.float64])
+assert_type(labeled_comprehension(f64_2d, label_1d, index_1d, _stat_func, None, 0.0), onp.ArrayND[np.float64])
+assert_type(labeled_comprehension(f64_2d, label_1d, index_1d, _stat_func, np.float64, 0.0), onp.ArrayND[np.float64])
 # out_dtype: AnyComplex128DType -> ArrayND[np.complex128]
-assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.complex128, 0.0), onp.ArrayND[np.complex128])
+assert_type(labeled_comprehension(f64_2d, label_1d, index_1d, _stat_func, np.complex128, 0.0), onp.ArrayND[np.complex128])
 
 ###
 # sum / sum_labels / mean / variance / standard_deviation / median

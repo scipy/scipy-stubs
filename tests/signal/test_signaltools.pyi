@@ -360,9 +360,9 @@ assert_type(hilbert2(_f80_2d), onp.Array2D[npc.complexfloating160])
 
 assert_type(detrend(_py_i_1d), onp.ArrayND[np.float64])
 assert_type(detrend(_f64_1d), onp.ArrayND[np.float64])
-assert_type(detrend(_f16_1d), onp.ArrayND[np.float16])
+assert_type(detrend(_f16_1d), onp.ArrayND[np.float64])
 assert_type(detrend(_f32_1d), onp.ArrayND[np.float32])
-assert_type(detrend(_c64_1d), onp.ArrayND[np.complex128])
+assert_type(detrend(_c64_1d), onp.ArrayND[np.complex64])
 assert_type(detrend(_c128_1d), onp.ArrayND[np.complex128])
 
 # unique_roots
@@ -373,19 +373,47 @@ assert_type(unique_roots(_c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1
 
 # residue
 
-assert_type(residue(_f64_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64]])
+assert_type(
+    residue(_f64_1d, _f64_1d),
+    tuple[onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64]],
+)
+assert_type(
+    residue(_c128_1d, _f64_1d),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]],
+)
+assert_type(
+    residue(_f64_1d, _c128_1d),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]],
+)
 
 # residuez
 
-assert_type(residuez(_f64_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64]])
+assert_type(
+    residuez(_f64_1d, _f64_1d),
+    tuple[onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64]],
+)
+assert_type(
+    residuez(_c128_1d, _f64_1d),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]],
+)
+assert_type(
+    residuez(_f64_1d, _c128_1d),
+    tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]],
+)
 
 # invres
 
-assert_type(invres(_f64_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(invres(_f64_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(invres(_c128_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64]])
+assert_type(invres(_f64_1d, _f64_1d, _c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64]])
+assert_type(invres(_f64_1d, _c128_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
 
 # invresz
 
-assert_type(invresz(_f64_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(invresz(_f64_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(invresz(_c128_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64]])
+assert_type(invresz(_f64_1d, _f64_1d, _c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64]])
+assert_type(invresz(_f64_1d, _c128_1d, _f64_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
 
 # resample
 

@@ -1,12 +1,16 @@
 from collections.abc import Callable, Sequence
-from typing import Final, Literal, TypeAlias
+from typing import Final, Literal
 
 import numpy as np
 import optype.numpy as onp
 
 __all__ = ["fmin_tnc"]
 
-_ReturnCode: TypeAlias = Literal[-1, 0, 1, 2, 3, 4, 5, 6, 7]
+###
+
+type _ReturnCode = Literal[-1, 0, 1, 2, 3, 4, 5, 6, 7]
+
+###
 
 MSG_NONE: Final = 0
 MSG_ITER: Final = 1
