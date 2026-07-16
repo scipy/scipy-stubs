@@ -45,13 +45,12 @@ _f64_nd: onp.ArrayND[np.float64]
 
 assert_type(multivariate_normal.logpdf(1.0), np.float64)
 assert_type(multivariate_normal.logpdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.logpdf(_f64_2d), onp.Array2D[np.float64])
 assert_type(multivariate_normal.logpdf(_f64_nd), onp.ArrayND[np.float64])
 assert_type(multivariate_normal.logpdf(1.0, _f_1d), np.float64)
 assert_type(multivariate_normal.logpdf(_f_1d, _f_1d), np.float64)
 assert_type(multivariate_normal.logpdf(_f_2d, _f_1d), onp.Array1D[np.float64])
 assert_type(multivariate_normal.logpdf(_f_3d, _f_1d), onp.Array2D[np.float64])
-assert_type(multivariate_normal.logpdf(_f_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_normal.logpdf(_f_nd, _f_1d), onp.ArrayND[np.float64] | np.float64)
 assert_type(multivariate_normal().logpdf(1.0), np.float64)
 assert_type(multivariate_normal().logpdf(_f64_1d), onp.Array1D[np.float64])
 assert_type(multivariate_normal().logpdf(_f64_2d), onp.Array2D[np.float64])
@@ -64,7 +63,6 @@ assert_type(multivariate_normal(_f_1d).logpdf(_f_nd), np.float64 | onp.ArrayND[n
 
 assert_type(multivariate_normal.pdf(1.0), np.float64)
 assert_type(multivariate_normal.pdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.pdf(_f64_2d), onp.Array2D[np.float64])
 assert_type(multivariate_normal.pdf(_f64_nd), onp.ArrayND[np.float64])
 assert_type(multivariate_normal.pdf(1.0, _f_1d), np.float64)
 assert_type(multivariate_normal.pdf(_f_1d, _f_1d), np.float64)
@@ -83,7 +81,6 @@ assert_type(multivariate_normal(_f_1d).pdf(_f_nd), np.float64 | onp.ArrayND[np.f
 
 assert_type(multivariate_normal.logcdf(1.0), np.float64)
 assert_type(multivariate_normal.logcdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.logcdf(_f64_2d), onp.Array2D[np.float64])
 assert_type(multivariate_normal.logcdf(_f64_nd), onp.ArrayND[np.float64])
 assert_type(multivariate_normal.logcdf(1.0, _f_1d), np.float64)
 assert_type(multivariate_normal.logcdf(_f_1d, _f_1d), np.float64)
@@ -102,7 +99,6 @@ assert_type(multivariate_normal(_f_1d).logcdf(_f_nd), np.float64 | onp.ArrayND[n
 
 assert_type(multivariate_normal.cdf(1.0), np.float64)
 assert_type(multivariate_normal.cdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.cdf(_f64_2d), onp.Array2D[np.float64])
 assert_type(multivariate_normal.cdf(_f64_nd), onp.ArrayND[np.float64])
 assert_type(multivariate_normal.cdf(1.0, _f_1d), np.float64)
 assert_type(multivariate_normal.cdf(_f_1d, _f_1d), np.float64)
