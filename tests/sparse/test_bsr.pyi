@@ -56,29 +56,29 @@ assert_type(bsr_matrix(_shape2), bsr_matrix[np.float64])
 ###
 # matrix-like (sequences) # noqa: ERA001
 
-assert_type(bsr_array(_seq_seq_bool), bsr_array[np.bool_])
-assert_type(bsr_array(_seq_seq_int), bsr_array[np.int_])
-assert_type(bsr_array(_seq_seq_float), bsr_array[np.float64])
-assert_type(bsr_array(_seq_seq_complex), bsr_array[np.complex128])
+assert_type(bsr_array(_seq_seq_bool), bsr_array[np.bool_])  # type: ignore[assert-type]
+assert_type(bsr_array(_seq_seq_int), bsr_array[np.int_])  # type: ignore[assert-type]
+assert_type(bsr_array(_seq_seq_float), bsr_array[np.float64])  # type: ignore[assert-type]
+assert_type(bsr_array(_seq_seq_complex), bsr_array[np.complex128])  # type: ignore[assert-type]
 
-assert_type(bsr_matrix(_seq_seq_bool), bsr_matrix[np.bool_])
-assert_type(bsr_matrix(_seq_seq_int), bsr_matrix[np.int_])
-assert_type(bsr_matrix(_seq_seq_float), bsr_matrix[np.float64])
-assert_type(bsr_matrix(_seq_seq_complex), bsr_matrix[np.complex128])
+assert_type(bsr_matrix(_seq_seq_bool), bsr_matrix[np.bool_])  # type: ignore[assert-type]
+assert_type(bsr_matrix(_seq_seq_int), bsr_matrix[np.int_])  # type: ignore[assert-type]
+assert_type(bsr_matrix(_seq_seq_float), bsr_matrix[np.float64])  # type: ignore[assert-type]
+assert_type(bsr_matrix(_seq_seq_complex), bsr_matrix[np.complex128])  # type: ignore[assert-type]
 
 ###
 # matrix-like (dense ndarray)
 
 assert_type(bsr_array(_data2), bsr_array[ScalarType])
 assert_type(bsr_array(_data2, dtype=_dtype), bsr_array[ScalarType])
-assert_type(bsr_array(_data2_concrete, dtype=np.bool_), bsr_array[np.bool_])
+assert_type(bsr_array(_data2_concrete, dtype=np.bool_), bsr_array[np.bool_])  # type: ignore[assert-type]
 assert_type(bsr_array(_data2_concrete, dtype=np.int_), bsr_array[np.int_])
 assert_type(bsr_array(_data2_concrete, dtype=np.float64), bsr_array[np.float64])
 assert_type(bsr_array(_data2_concrete, dtype=np.complex128), bsr_array[np.complex128])
 
 assert_type(bsr_matrix(_data2), bsr_matrix[ScalarType])
 assert_type(bsr_matrix(_data2, dtype=_dtype), bsr_matrix[ScalarType])
-assert_type(bsr_matrix(_data2_concrete, dtype=np.bool_), bsr_matrix[np.bool_])
+assert_type(bsr_matrix(_data2_concrete, dtype=np.bool_), bsr_matrix[np.bool_])  # type: ignore[assert-type]
 assert_type(bsr_matrix(_data2_concrete, dtype=np.int_), bsr_matrix[np.int_])
 assert_type(bsr_matrix(_data2_concrete, dtype=np.float64), bsr_matrix[np.float64])
 assert_type(bsr_matrix(_data2_concrete, dtype=np.complex128), bsr_matrix[np.complex128])
@@ -95,22 +95,22 @@ assert_type(bsr_matrix(csr_mat), bsr_matrix[ScalarType])
 # (data, indices, indptr), [shape=(M, N)], [blocksize]
 
 # pyrefly: ignore [assert-type]
-assert_type(bsr_array(_bsr_spec3), bsr_array[ScalarType])
+assert_type(bsr_array(_bsr_spec3), bsr_array[ScalarType])  # type: ignore[assert-type]
 # pyrefly: ignore [assert-type]
-assert_type(bsr_array(_bsr_spec3, _shape2), bsr_array[ScalarType])
+assert_type(bsr_array(_bsr_spec3, _shape2), bsr_array[ScalarType])  # type: ignore[assert-type]
 # pyrefly: ignore [assert-type]
-assert_type(bsr_array(_bsr_spec3, shape=_shape2), bsr_array[ScalarType])
+assert_type(bsr_array(_bsr_spec3, shape=_shape2), bsr_array[ScalarType])  # type: ignore[assert-type]
 # pyrefly: ignore [assert-type]
-assert_type(bsr_array(_bsr_spec3, blocksize=(2, 2)), bsr_array[ScalarType])
+assert_type(bsr_array(_bsr_spec3, blocksize=(2, 2)), bsr_array[ScalarType])  # type: ignore[assert-type]
 
 # pyrefly: ignore [assert-type]
-assert_type(bsr_matrix(_bsr_spec3), bsr_matrix[ScalarType])
+assert_type(bsr_matrix(_bsr_spec3), bsr_matrix[ScalarType])  # type: ignore[assert-type]
 # pyrefly: ignore [assert-type]
-assert_type(bsr_matrix(_bsr_spec3, _shape2), bsr_matrix[ScalarType])
+assert_type(bsr_matrix(_bsr_spec3, _shape2), bsr_matrix[ScalarType])  # type: ignore[assert-type]
 # pyrefly: ignore [assert-type]
-assert_type(bsr_matrix(_bsr_spec3, shape=_shape2), bsr_matrix[ScalarType])
+assert_type(bsr_matrix(_bsr_spec3, shape=_shape2), bsr_matrix[ScalarType])  # type: ignore[assert-type]
 # pyrefly: ignore [assert-type]
-assert_type(bsr_matrix(_bsr_spec3, blocksize=(2, 2)), bsr_matrix[ScalarType])
+assert_type(bsr_matrix(_bsr_spec3, blocksize=(2, 2)), bsr_matrix[ScalarType])  # type: ignore[assert-type]
 
 ###
 # BSR-specific tests
@@ -153,9 +153,9 @@ assert_type(isspmatrix_bsr(object()), bool)
 ###
 # blocksize with matrix-like data (not just _bsr_spec3)
 
-assert_type(bsr_array(_seq_seq_int, blocksize=(2, 2)), bsr_array[np.int_])
+assert_type(bsr_array(_seq_seq_int, blocksize=(2, 2)), bsr_array[np.int_])  # type: ignore[assert-type]
 assert_type(bsr_array(_data2, blocksize=(2, 2)), bsr_array[ScalarType])
-assert_type(bsr_matrix(_seq_seq_int, blocksize=(2, 2)), bsr_matrix[np.int_])
+assert_type(bsr_matrix(_seq_seq_int, blocksize=(2, 2)), bsr_matrix[np.int_])  # type: ignore[assert-type]
 assert_type(bsr_matrix(_data2, blocksize=(2, 2)), bsr_matrix[ScalarType])
 
 ###
