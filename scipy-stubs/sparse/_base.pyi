@@ -36,6 +36,7 @@ type _FromFloat = npc.inexact
 type _FromComplex = npc.complexfloating
 
 type _ToInt8 = np.bool | np.int8
+type _ToInt16 = np.bool | npc.integer8 | npc.integer16
 type _ToInt = npc.integer | np.bool
 type _ToFloat32 = np.float32 | _ToInt
 type _ToFloat = npc.floating | _ToInt
@@ -44,6 +45,15 @@ type _ToComplex64 = np.complex64 | _ToFloat
 type _ToSparseSeq[T] = Sequence[Sequence[T]] | Sequence[T]
 type _ToSparseArray[ScalarT: _Numeric] = onp.CanArrayND[ScalarT] | _ToSparseSeq[ScalarT]
 
+type _SpMatrix[ScalarT: _Numeric] = (
+    bsr_matrix[ScalarT]
+    | coo_matrix[ScalarT]
+    | csc_matrix[ScalarT]
+    | csr_matrix[ScalarT]
+    | dia_matrix[ScalarT]
+    | dok_matrix[ScalarT]
+    | lil_matrix[ScalarT]
+)
 type _SpMatrixOut[ScalarT: _Numeric] = bsr_matrix[ScalarT] | csc_matrix[ScalarT] | csr_matrix[ScalarT]
 
 type _SpArray[ScalarT: _Numeric] = (
@@ -105,6 +115,14 @@ _ArrayT = TypeVar("_ArrayT", bound=onp.ArrayND)
 _FromIntT = TypeVar("_FromIntT", bound=_FromInt)
 _FromFloatT = TypeVar("_FromFloatT", bound=_FromFloat)
 _FromComplexT = TypeVar("_FromComplexT", bound=_FromComplex)
+
+# NOTE: PEP 695 syntax isn't possible here: type-parameter defaults require Python >= 3.13
+_IntT = TypeVar("_IntT", bound=npc.integer, default=np.int_)
+_FloatT = TypeVar("_FloatT", bound=npc.floating, default=np.float64)
+_Float64T = TypeVar("_Float64T", bound=np.float64 | npc.floating80, default=np.float64)
+_ComplexT = TypeVar("_ComplexT", bound=npc.complexfloating, default=np.complex128)
+_Complex64T = TypeVar("_Complex64T", bound=npc.complexfloating, default=np.complex64)
+_Complex128T = TypeVar("_Complex128T", bound=np.complex128 | npc.complexfloating160, default=np.complex128)
 
 _SpFromIntT = TypeVar("_SpFromIntT", bound=_spbase[_FromInt])
 _SpFromFloatT = TypeVar("_SpFromFloatT", bound=_spbase[_FromFloat])
@@ -300,8 +318,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload  # sparse[?], array[?]
     def __sub__(self, other: onp.ArrayND[_Numeric], /) -> onp.ArrayND[Any, _ShapeT_co]: ...
 
-    # NOTE: `other` isn't positional-only because we re-use it for `multiply`
-    # NOTE: keep in sync with `__rmul__`
+    # NOTE: keep in sync with `__rmul__` and `multiply`
     @overload  # Self[-Bool], /, other: scalar-like +Bool
     def __mul__(self, /, other: bool | np.bool) -> Self: ...
     @overload  # Self[-Int], /, other: scalar-like +Int
@@ -375,8 +392,105 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @overload  # catch-all
     def __mul__(self, /, other: _To2DLike[complex, _Numeric] | _spbase) -> _spbase[Any] | onp.ArrayND[Any]: ...
 
-    #
-    multiply = __mul__
+    # NOTE: unlike `__mul__`, this is always element-wise, so dense operands result in sparse output
+    @overload  # Self[-Bool], /, other: scalar-like +Bool
+    def multiply(self, /, other: bool | np.bool) -> Self: ...
+    @overload  # Self[-Int], /, other: scalar-like +Int
+    def multiply[SelfT: _spbase[_FromInt]](self: SelfT, /, other: onp.ToInt) -> SelfT: ...
+    @overload  # Self[-Float], /, other: scalar-like +Float
+    def multiply[SelfT: _spbase[_FromFloat]](self: SelfT, /, other: onp.ToFloat) -> SelfT: ...
+    @overload  # Self[-Complex], /, other: scalar-like +Complex
+    def multiply[SelfT: _spbase[_FromComplex]](self: SelfT, /, other: onp.ToComplex) -> SelfT: ...
+    @overload  # sparray[-Bool], /, other: sparse +Bool
+    def multiply[SelfT: _SpArrayOut[Any]](self: SelfT, /, other: _spbase[np.bool | _ScalarT_co]) -> SelfT: ...
+    @overload  # sparray[-Bool], /, other: array-like +Bool
+    def multiply(self: _SpArray[Any], /, other: _To2DLike[bool, np.bool]) -> coo_array[_ScalarT_co, _ShapeT_co]: ...
+    @overload  # sparray[-Int], /, other: sparse +Int
+    def multiply(self: _SpArray[_FromInt], /, other: _spbase[_ToInt8 | _ScalarT_co]) -> _SpArrayOut[_ScalarT_co]: ...
+    @overload  # sparray[-Int], /, other: array-like +Int
+    def multiply(self: _SpArray[_FromInt], /, other: _To2DLike[bool, _ToInt8]) -> coo_array[_ScalarT_co, _ShapeT_co]: ...
+    @overload  # sparray[-Float], /, other: sparse +Float
+    def multiply(self: _SpArray[_FromFloat], /, other: _spbase[_ToFloat32 | _ScalarT_co]) -> _SpArrayOut[_ScalarT_co]: ...
+    @overload  # sparray[-Float], /, other: array-like +Float
+    def multiply(self: _SpArray[_FromFloat], /, other: _To2DLike[int, _ToFloat32]) -> coo_array[_ScalarT_co, _ShapeT_co]: ...
+    @overload  # sparray[-Complex], /, other: sparse +Complex
+    def multiply(self: _SpArray[_FromComplex], /, other: _spbase[_ToComplex64 | _ScalarT_co]) -> _SpArrayOut[_ScalarT_co]: ...
+    @overload  # sparray[-Complex], /, other: array-like +Complex
+    def multiply(self: _SpArray[_FromComplex], /, other: _To2DLike[int, _ToComplex64]) -> coo_array[_ScalarT_co, _ShapeT_co]: ...
+    @overload  # {bsr,csc,csr_dia}_matrix, other: {bsr,csc,csr_dia}_matrix
+    def multiply[SpT: bsr_matrix | csc_matrix | csr_matrix | dia_matrix](self: SpT, /, other: SpT) -> SpT: ...
+    @overload  # {coo,dok,lil}_matrix, other: {coo,dok,lil}_matrix
+    def multiply[SpT: coo_matrix | dok_matrix | lil_matrix](self: SpT, /, other: SpT) -> csr_matrix[_ScalarT_co]: ...
+    @overload  # spmatrix[-Bool], /, other: sparse +Bool
+    def multiply(self: spmatrix, /, other: _spbase[np.bool]) -> _SpMatrixOut[_ScalarT_co]: ...
+    @overload  # spmatrix[-Bool], /, other: array-like +Bool
+    def multiply(self: spmatrix, /, other: _To2DLike[bool, np.bool]) -> coo_matrix[_ScalarT_co]: ...
+    @overload  # spmatrix[-Int], /, other: sparse +Int
+    def multiply(self: spmatrix[_FromInt], /, other: _spbase[_ToInt8]) -> _SpMatrixOut[_ScalarT_co]: ...
+    @overload  # spmatrix[-Int], /, other: array-like +Int
+    def multiply(self: spmatrix[_FromInt], /, other: _To2DLike[bool, _ToInt8]) -> coo_matrix[_ScalarT_co]: ...
+    @overload  # spmatrix[-Float], /, other: sparse +Float
+    def multiply(self: spmatrix[_FromFloat], /, other: _spbase[_ToFloat32 | _ScalarT_co]) -> _SpMatrixOut[_ScalarT_co]: ...
+    @overload  # spmatrix[-Float], /, other: array-like +Float
+    def multiply(self: spmatrix[_FromFloat], /, other: _To2DLike[int, _ToFloat32]) -> coo_matrix[_ScalarT_co]: ...
+    @overload  # spmatrix[-Complex], /, other: sparse +Complex
+    def multiply(self: spmatrix[_FromComplex], /, other: _spbase[_ToComplex64 | _ScalarT_co]) -> _SpMatrixOut[_ScalarT_co]: ...
+    @overload  # spmatrix[-Complex], /, other: array-like +Complex
+    def multiply(self: spmatrix[_FromComplex], /, other: _To2DLike[float, _ToComplex64]) -> coo_matrix[_ScalarT_co]: ...
+    @overload  # spmatrix[+Bool], /, other: scalar- or matrix-like ~Int
+    def multiply(self: spmatrix[np.bool], /, other: _SparseLike[op.JustInt, _IntT]) -> _SpMatrix[_IntT]: ...
+    @overload  # spmatrix[+Bool], /, other: array-like ~Int
+    def multiply(self: spmatrix[np.bool], /, other: _To2DLike[op.JustInt, _IntT]) -> coo_matrix[_IntT]: ...
+    @overload  # spmatrix[+Int16], /, other: scalar- or matrix-like ~Float
+    def multiply(self: spmatrix[_ToInt16], /, other: _SparseLike[op.JustFloat, _FloatT]) -> _SpMatrix[_FloatT]: ...
+    @overload  # spmatrix[+Int16], /, other: array-like ~Float
+    def multiply(self: spmatrix[_ToInt16], /, other: _To2DLike[op.JustFloat, _FloatT]) -> coo_matrix[_FloatT]: ...
+    @overload  # spmatrix[-Int32], /, other: scalar- or matrix-like ~Float
+    def multiply(
+        self: spmatrix[npc.integer32 | npc.integer64],
+        /,
+        other: _SparseLike[op.JustFloat | np.float32 | _spbase[np.float32], _Float64T],
+    ) -> _SpMatrix[_Float64T]: ...
+    @overload  # spmatrix[-Int32], /, other: array-like ~Float
+    def multiply(
+        self: spmatrix[npc.integer32 | npc.integer64],
+        /,
+        other: _To2DLike[op.JustFloat | np.float32, _Float64T] | onp.CanArrayND[np.float32],
+    ) -> coo_matrix[_Float64T]: ...
+    @overload  # spmatrix[Float32], /, other: scalar- or matrix-like ~Complex
+    def multiply(self: spmatrix[np.float32], /, other: _SparseLike[op.JustComplex, _Complex64T]) -> _SpMatrix[_Complex64T]: ...
+    @overload  # spmatrix[+Int16], /, other: scalar- or matrix-like ~Complex
+    def multiply(self: spmatrix[_ToInt16], /, other: _SparseLike[op.JustComplex, _ComplexT]) -> _SpMatrix[_ComplexT]: ...
+    @overload  # spmatrix[Float32 | +Int16], /, other: array-like ~Complex
+    def multiply(
+        self: spmatrix[np.float32 | _ToInt16], /, other: _To2DLike[op.JustComplex, _ComplexT]
+    ) -> coo_matrix[_ComplexT]: ...
+    @overload  # spmatrix[Float64 | -Int32], /, other: scalar- or matrix-like ~Complex
+    def multiply(
+        self: spmatrix[np.float64 | npc.integer32 | npc.integer64],
+        /,
+        other: _SparseLike[op.JustComplex | np.complex64 | _spbase[np.complex64], _Complex128T],
+    ) -> _SpMatrix[_Complex128T]: ...
+    @overload  # spmatrix[Float64 | -Int32], /, other: array-like ~Complex
+    def multiply(
+        self: spmatrix[np.float64 | npc.integer32 | npc.integer64],
+        /,
+        other: _To2DLike[op.JustComplex | np.complex64, _Complex128T] | onp.CanArrayND[np.complex64],
+    ) -> coo_matrix[_Complex128T]: ...
+    @overload  # spmatrix[LongDouble], /, other: ~Complex
+    def multiply(
+        self: spmatrix[npc.floating80],
+        /,
+        other: _SparseLike[op.JustComplex, npc.complexfloating] | _To2DLike[op.JustComplex, npc.complexfloating],
+    ) -> _SpMatrix[np.clongdouble]: ...
+    @overload  # Self[+Bool], /, other: -Int
+    def multiply(self: _spbase[np.bool], /, other: _FromIntT) -> _spbase[_FromIntT, _ShapeT_co]: ...
+    @overload  # Self[+Int], /, other: -Float
+    def multiply(self: _spbase[_ToInt], /, other: _FromFloatT) -> _spbase[_FromFloatT, _ShapeT_co]: ...
+    @overload  # Self[+Float], /, other: -Complex
+    def multiply(self: _spbase[_ToFloat], /, other: _FromComplexT) -> _spbase[_FromComplexT, _ShapeT_co]: ...
+    @overload  # catch-all
+    def multiply(self, /, other: _To2DLike[complex, _Numeric] | _spbase) -> _spbase[Any]: ...
 
     # NOTE: `__rmul__ = __mul__` won't work here due to mypy limitations
     # NOTE: keep in sync with `__mul__`
