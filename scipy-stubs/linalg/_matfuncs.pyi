@@ -1,5 +1,6 @@
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from typing import Any, Final, Literal, overload
+from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
@@ -41,6 +42,11 @@ type _InexactND = onp.ArrayND[npc.inexact]
 
 type _AsFloat64ND = onp.ToArrayND[float, np.float64 | npc.integer | np.bool]
 
+# workaround for Pyrefly (1.1.1) that doesn't want to assign `tuple[Any, ...]` to `T: onp.AtLeast2D`.
+type _AtLeast2D_ish = tuple[int, int, *tuple[int, ...]] | tuple[Any, ...]
+# workaround for Pyright (1.1.411) false positive reportIncompatibleOverload on `numpy<2.1`
+type _AnyShapeOrTriviallyMaybeAlso2D = tuple[int, int] | tuple[Any, ...]
+
 ###
 
 eps: Final[np.float64] = ...  # undocumented
@@ -75,17 +81,42 @@ def fractional_matrix_power(A: onp.ToComplexND, t: onp.ToJustFloat) -> _ComplexN
 @overload  # +complex, +floating
 def fractional_matrix_power(A: onp.ToComplexND, t: onp.ToFloat) -> onp.ArrayND[Any]: ...
 
-# NOTE: return dtype depends on the sign of the values
-@overload
-def sqrtm(A: _AsFloat64ND) -> _Float64ND | _Complex128ND: ...
-@overload
-def sqrtm(A: onp.ToFloatND) -> _InexactND: ...
-@overload
-def sqrtm(A: onp.ToJustComplex128_ND) -> _Complex128ND: ...
-@overload
-def sqrtm(A: onp.ToJustComplexND) -> _ComplexND: ...
-@overload
-def sqrtm(A: onp.ToComplexND) -> _InexactND: ...
+# mypy reports two false positive `overload-overlap` errors on `numpy>=2.2` for `sqrtm`, so we're forced to ignore it module-wide
+# mypy: disable-error-code="overload-overlap"
+
+# NOTE: real input can have either real or complex output depending on the sign of the values
+@overload  # Nd ~f64
+def sqrtm[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.floating64 | npc.integer, ShapeT],
+) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
+@overload  # Nd ~f32
+def sqrtm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating32, ShapeT]) -> onp.ArrayND[np.float32 | np.complex64, ShapeT]: ...
+@overload  # Nd T@(c128|c64
+def sqrtm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[ComplexT, ShapeT],
+) -> onp.ArrayND[ComplexT, ShapeT]: ...
+@overload  # Nd bool
+@deprecated("bool input will no longer be supported in SciPy 1.20")
+def sqrtm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[np.bool, ShapeT]) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
+@overload  # Nd longdouble
+@deprecated("longdouble input will no longer be supported in SciPy 1.20")
+def sqrtm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating80, ShapeT]) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
+@overload  # Nd float16
+@deprecated("float16 input will no longer be supported in SciPy 1.20")
+def sqrtm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float32 | np.complex64, ShapeT]: ...
+@overload  # Nd clongdouble
+@deprecated("clongdouble input will no longer be supported in SciPy 1.20")
+def sqrtm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.complexfloating160, ShapeT]) -> onp.ArrayND[np.complex128, ShapeT]: ...
+@overload  # 2d +float
+def sqrtm(A: Sequence[Sequence[float]]) -> onp.Array2D[np.float64 | np.complex128]: ...
+@overload  # 2d ~complex
+def sqrtm(A: Sequence[list[complex]]) -> onp.Array2D[np.complex128]: ...
+@overload  # 3d +float
+def sqrtm(A: Sequence[Sequence[Sequence[float]]]) -> onp.Array3D[np.float64 | np.complex128]: ...
+@overload  # 3d ~complex
+def sqrtm(A: Sequence[Sequence[list[complex]]]) -> onp.Array3D[np.complex128]: ...
+@overload  # Nd +c  (fallback)
+def sqrtm(A: onp.ToComplexND) -> onp.ArrayND[Any, _AnyShapeOrTriviallyMaybeAlso2D]: ...
 
 # NOTE: return dtype depends on the sign of the values
 @overload  # +integer | ~float64

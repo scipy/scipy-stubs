@@ -26,12 +26,30 @@ from scipy.linalg import (
 ###
 
 py_f_2d: list[list[float]]
+py_f_3d: list[list[list[float]]]
+py_c_2d: list[list[complex]]
+py_c_3d: list[list[list[complex]]]
 
+b1_2d: onp.Array2D[np.bool_]
+
+i32_2d: onp.Array2D[np.int32]
 i32_nd: onp.ArrayND[np.int32]
+
+f32_2d: onp.Array2D[np.float32]
 f32_nd: onp.ArrayND[np.float32]
+
+f64_2d: onp.Array2D[np.float64]
+f64_3d: onp.Array3D[np.float64]
 f64_nd: onp.ArrayND[np.float64]
+
+c64_2d: onp.Array2D[np.complex64]
 c64_nd: onp.ArrayND[np.complex64]
+
+c128_2d: onp.Array2D[np.complex128]
+c128_3d: onp.Array3D[np.complex128]
 c128_nd: onp.ArrayND[np.complex128]
+
+c160_nd: onp.ArrayND[np.complex256]
 
 func_f64: Callable[[onp.Array[Any, np.float64]], onp.ToComplexND]
 func_c128: Callable[[onp.Array[Any, np.complex128]], onp.ToComplexND]
@@ -77,10 +95,26 @@ assert_type(tanhm(c64_nd), onp.ArrayND[npc.complexfloating])
 ###
 # sqrtm
 
-assert_type(sqrtm(py_f_2d), onp.ArrayND[np.float64] | onp.ArrayND[np.complex128])
-assert_type(sqrtm(f32_nd), onp.ArrayND[npc.inexact])
+assert_type(sqrtm(py_f_2d), onp.Array2D[np.float64 | np.complex128])
+assert_type(sqrtm(py_c_2d), onp.Array2D[np.complex128])
+assert_type(sqrtm(b1_2d), onp.Array2D[np.float64 | np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(sqrtm(i32_2d), onp.Array2D[np.float64 | np.complex128])
+assert_type(sqrtm(f32_2d), onp.Array2D[np.float32 | np.complex64])
+assert_type(sqrtm(f64_2d), onp.Array2D[np.float64 | np.complex128])
+assert_type(sqrtm(c64_2d), onp.Array2D[np.complex64])
+assert_type(sqrtm(c128_2d), onp.Array2D[np.complex128])
+
+assert_type(sqrtm(py_f_3d), onp.Array3D[np.float64 | np.complex128])
+assert_type(sqrtm(py_c_3d), onp.Array3D[np.complex128])
+assert_type(sqrtm(f64_3d), onp.Array3D[np.float64 | np.complex128])
+assert_type(sqrtm(c128_3d), onp.Array3D[np.complex128])
+
+assert_type(sqrtm(i32_nd), onp.ArrayND[np.float64 | np.complex128])
+assert_type(sqrtm(f32_nd), onp.ArrayND[np.float32 | np.complex64])
+assert_type(sqrtm(f64_nd), onp.ArrayND[np.float64 | np.complex128])
+assert_type(sqrtm(c64_nd), onp.ArrayND[np.complex64])
 assert_type(sqrtm(c128_nd), onp.ArrayND[np.complex128])
-assert_type(sqrtm(c64_nd), onp.ArrayND[npc.complexfloating])
+assert_type(sqrtm(c160_nd), onp.ArrayND[np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # logm
