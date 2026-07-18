@@ -32,12 +32,7 @@ __all__ = [
 
 type _Tuple2[T] = tuple[T, T]
 type _COrCR[T] = T | _Tuple2[T]
-
-type _Float1D = onp.Array1D[npc.floating]
-type _FloatND = onp.ArrayND[npc.floating]
-
-type _Inexact1D = onp.Array1D[npc.inexact]
-type _InexactND = onp.ArrayND[npc.inexact]
+type _JustCOrCR[JustT, T] = JustT | tuple[JustT, T] | tuple[T, JustT]
 
 # TODO(@jorenham): better naming
 
@@ -2224,29 +2219,157 @@ def matrix_balance(
     onp.ArrayND[Any, tuple[int, int] | tuple[Any, ...]], onp.ArrayND[np.float64, tuple[int, int] | tuple[Any, ...]] | Any
 ]: ...
 
-# TODO(jorenham): improve this
-@overload  # floating 1d, 1d
+#
+@overload  # ?d +float, +float
 def matmul_toeplitz(
-    c_or_cr: onp.ToFloatStrict1D | _Tuple2[onp.ToFloatStrict1D],
-    x: onp.ToFloatStrict1D,
+    c_or_cr: _COrCR[onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]],
+    x: onp.ToFloatND,
     check_finite: bool = False,
     workers: int | None = None,
-) -> _Float1D: ...
-@overload  # floating
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float, ?d +float
 def matmul_toeplitz(
-    c_or_cr: onp.ToFloatND | _Tuple2[onp.ToFloatND], x: onp.ToFloatND, check_finite: bool = False, workers: int | None = None
-) -> _FloatND: ...
-@overload  # complexfloating 1d, 1d
-def matmul_toeplitz(
-    c_or_cr: onp.ToComplexStrict1D | _Tuple2[onp.ToComplexStrict1D],
-    x: onp.ToComplexStrict1D,
+    c_or_cr: _COrCR[onp.ToFloatND],
+    x: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
     check_finite: bool = False,
     workers: int | None = None,
-) -> _Inexact1D: ...
-@overload  # complexfloating
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d ~complex, +complex
 def matmul_toeplitz(
-    c_or_cr: onp.ToComplexND | _Tuple2[onp.ToComplexND],
+    c_or_cr: _JustCOrCR[onp.ArrayND[npc.complexfloating, _JustAnyShape], onp.ToComplexND],
     x: onp.ToComplexND,
     check_finite: bool = False,
     workers: int | None = None,
-) -> _InexactND: ...
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ?d +complex, ~complex
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ArrayND[npc.number | np.bool, _JustAnyShape]],
+    x: onp.ToJustComplexND,
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +complex, ?d ~complex
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToComplexND],
+    x: onp.ArrayND[npc.complexfloating, _JustAnyShape],
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~complex, ?d +complex
+def matmul_toeplitz(
+    c_or_cr: _JustCOrCR[onp.ToJustComplexND, onp.ToComplexND],
+    x: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # 1d +float, 1d +float
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToFloatStrict1D], x: onp.ToFloatStrict1D, check_finite: bool = False, workers: int | None = None
+) -> onp.Array1D[np.float64]: ...
+@overload  # 1d ~complex, 1d +complex
+def matmul_toeplitz(
+    c_or_cr: _JustCOrCR[onp.ToJustComplexStrict1D, onp.ToComplexStrict1D],
+    x: onp.ToComplexStrict1D,
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.Array1D[np.complex128]: ...
+@overload  # 1d +complex, 1d ~complex
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToComplexStrict1D], x: onp.ToJustComplexStrict1D, check_finite: bool = False, workers: int | None = None
+) -> onp.Array1D[np.complex128]: ...
+@overload  # 1d +float, 2d +float
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToFloatStrict1D], x: onp.ToFloatStrict2D, check_finite: bool = False, workers: int | None = None
+) -> onp.Array2D[np.float64]: ...
+@overload  # 2d +float, 1d +float
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToFloatStrict2D], x: onp.ToFloatStrict1D, check_finite: bool = False, workers: int | None = None
+) -> onp.Array2D[np.float64]: ...
+@overload  # 1d ~complex, 2d +complex
+def matmul_toeplitz(
+    c_or_cr: _JustCOrCR[onp.ToJustComplexStrict1D, onp.ToComplexStrict1D],
+    x: onp.ToComplexStrict2D,
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.Array2D[np.complex128]: ...
+@overload  # 1d +complex, 2d ~complex
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToComplexStrict1D], x: onp.ToJustComplexStrict2D, check_finite: bool = False, workers: int | None = None
+) -> onp.Array2D[np.complex128]: ...
+@overload  # 2d ~complex, 1d +complex
+def matmul_toeplitz(
+    c_or_cr: _JustCOrCR[onp.ToJustComplexStrict2D, onp.ToComplexStrict2D],
+    x: onp.ToComplexStrict1D,
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.Array2D[np.complex128]: ...
+@overload  # 2d +complex, 1d ~complex
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToComplexStrict2D], x: onp.ToJustComplexStrict1D, check_finite: bool = False, workers: int | None = None
+) -> onp.Array2D[np.complex128]: ...
+@overload  # <3d +float, 3d +float
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToFloatStrict1D | onp.ToFloatStrict2D],
+    x: onp.ToFloatStrict3D,
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.Array3D[np.float64]: ...
+@overload  # 2d +float, 2d +float
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToFloatStrict2D], x: onp.ToFloatStrict2D, check_finite: bool = False, workers: int | None = None
+) -> onp.Array3D[np.float64]: ...
+@overload  # 3d +float, 1d +float
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToFloatStrict3D], x: onp.ToFloatStrict1D, check_finite: bool = False, workers: int | None = None
+) -> onp.Array3D[np.float64]: ...
+@overload  # <3d ~complex, 3d +complex
+def matmul_toeplitz(
+    c_or_cr: _JustCOrCR[onp.ToJustComplexStrict1D | onp.ToJustComplexStrict2D, onp.ToComplexStrict1D | onp.ToComplexStrict2D],
+    x: onp.ToComplexStrict3D,
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.Array3D[np.complex128]: ...
+@overload  # <3d +complex, 3d ~complex
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToComplexStrict1D | onp.ToComplexStrict2D],
+    x: onp.ToJustComplexStrict3D,
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.Array3D[np.complex128]: ...
+@overload  # 2d ~complex, 2d +complex
+def matmul_toeplitz(
+    c_or_cr: _JustCOrCR[onp.ToJustComplexStrict2D, onp.ToComplexStrict2D],
+    x: onp.ToComplexStrict2D,
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.Array3D[np.complex128]: ...
+@overload  # 2d +complex, 2d ~complex
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToComplexStrict2D], x: onp.ToJustComplexStrict2D, check_finite: bool = False, workers: int | None = None
+) -> onp.Array3D[np.complex128]: ...
+@overload  # 3d ~complex, 1d +complex
+def matmul_toeplitz(
+    c_or_cr: _JustCOrCR[onp.ToJustComplexStrict3D, onp.ToComplexStrict3D],
+    x: onp.ToComplexStrict1D,
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.Array3D[np.complex128]: ...
+@overload  # 3d +complex, 1d ~complex
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToComplexStrict3D], x: onp.ToJustComplexStrict1D, check_finite: bool = False, workers: int | None = None
+) -> onp.Array3D[np.complex128]: ...
+@overload  # Nd +float  (fallback)
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToFloatND], x: onp.ToFloatND, check_finite: bool = False, workers: int | None = None
+) -> onp.ArrayND[np.float64]: ...
+@overload  # Nd ~complex, Nd +complex  (fallback)
+def matmul_toeplitz(
+    c_or_cr: _JustCOrCR[onp.ToJustComplexND, onp.ToComplexND],
+    x: onp.ToComplexND,
+    check_finite: bool = False,
+    workers: int | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # Nd +complex, Nd ~complex  (fallback)
+def matmul_toeplitz(
+    c_or_cr: _COrCR[onp.ToComplexND], x: onp.ToJustComplexND, check_finite: bool = False, workers: int | None = None
+) -> onp.ArrayND[np.complex128]: ...
