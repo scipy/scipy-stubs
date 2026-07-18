@@ -28,8 +28,8 @@ __all__ = [
 
 ###
 
-# return type is unsafely cast to the input type
-type _FuncND[InexactT: npc.inexact] = Callable[[onp.Array[Any, InexactT]], onp.ToComplexND]
+# always called with the 1-d diagonal of the (complex) schur form; the return value is unsafely cast back to its dtype
+type _Func1D[ComplexT: npc.complexfloating] = Callable[[onp.Array1D[ComplexT]], onp.ToComplexND]
 
 type _ToPosInt = npc.unsignedinteger | Literal[0, 1, 2, 3, 4, 5, 6, 7, 8]
 
@@ -374,23 +374,58 @@ def tanhm(A: Sequence[Sequence[list[complex]]]) -> onp.Array3D[np.complex128]: .
 @overload  # Nd +c  (fallback)
 def tanhm(A: onp.ToComplexND) -> onp.ArrayND[Any, _AnyShapeOrTriviallyMaybeAlso2D]: ...
 
-#
-@overload  # +float64, disp: True = ...
-def funm(A: onp.ToFloat64_ND, func: _FuncND[np.float64], disp: onp.ToTrue = True) -> _Float64ND: ...
-@overload  # +floating, disp: False
-def funm(A: onp.ToFloat64_ND, func: _FuncND[np.float64], disp: onp.ToFalse) -> tuple[_Float64ND, float]: ...
-@overload  # +complexfloating, disp: True = ...
-def funm(A: onp.ToJustComplex128_ND, func: _FuncND[np.complex128], disp: onp.ToTrue = True) -> _Complex128ND: ...
-@overload  # +complexfloating, disp: False
-def funm(A: onp.ToJustComplex128_ND, func: _FuncND[np.complex128], disp: onp.ToFalse) -> tuple[_Complex128ND, float]: ...
-@overload  # T: inexact, disp: True = ...
-def funm[InexactT: npc.inexact](
-    A: onp.CanArrayND[InexactT], func: _FuncND[InexactT], disp: onp.ToTrue = True
-) -> onp.ArrayND[InexactT]: ...
-@overload  # T: inexact, disp: False
-def funm[InexactT: npc.inexact](
-    A: onp.CanArrayND[InexactT], func: _FuncND[InexactT], disp: onp.ToFalse
-) -> tuple[onp.ArrayND[InexactT], float]: ...
+# NOTE: real input can have either real or complex output, depending on `func` and the input values
+@overload  # Nd +f64
+def funm[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.floating64 | npc.integer, ShapeT], func: _Func1D[np.complex128], disp: onp.ToTrue = True
+) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
+@overload  # Nd +f64, disp=False
+def funm[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.floating64 | npc.integer, ShapeT], func: _Func1D[np.complex128], disp: onp.ToFalse
+) -> tuple[onp.ArrayND[np.float64 | np.complex128, ShapeT], float]: ...
+@overload  # Nd ~f32 | bool
+def funm[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.floating32 | np.bool, ShapeT], func: _Func1D[np.complex64], disp: onp.ToTrue = True
+) -> onp.ArrayND[np.float32 | np.complex64, ShapeT]: ...
+@overload  # Nd ~f32 | bool, disp=False
+def funm[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.floating32 | np.bool, ShapeT], func: _Func1D[np.complex64], disp: onp.ToFalse
+) -> tuple[onp.ArrayND[np.float32 | np.complex64, ShapeT], float]: ...
+@overload  # Nd T@(c128|c64)
+def funm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[ComplexT, ShapeT], func: _Func1D[ComplexT], disp: onp.ToTrue = True
+) -> onp.ArrayND[ComplexT, ShapeT]: ...
+@overload  # Nd T@(c128|c64), disp=False
+def funm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[ComplexT, ShapeT], func: _Func1D[ComplexT], disp: onp.ToFalse
+) -> tuple[onp.ArrayND[ComplexT, ShapeT], float]: ...
+@overload  # Nd float16 | longdouble | clongdouble
+@deprecated("float16, longdouble, and clongdouble input will no longer be supported in SciPy 1.20")
+def funm[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.floating16 | npc.inexact80, ShapeT], func: _Func1D[Any], disp: onp.ToTrue = True
+) -> onp.ArrayND[npc.inexact64 | npc.inexact32, ShapeT]: ...
+@overload  # 2d +float
+def funm(
+    A: Sequence[Sequence[float]], func: _Func1D[np.complex128], disp: onp.ToTrue = True
+) -> onp.Array2D[np.float64 | np.complex128]: ...
+@overload  # 2d ~complex
+def funm(A: Sequence[list[complex]], func: _Func1D[np.complex128], disp: onp.ToTrue = True) -> onp.Array2D[np.complex128]: ...
+@overload  # 3d +float
+def funm(
+    A: Sequence[Sequence[Sequence[float]]], func: _Func1D[np.complex128], disp: onp.ToTrue = True
+) -> onp.Array3D[np.float64 | np.complex128]: ...
+@overload  # 3d ~complex
+def funm(
+    A: Sequence[Sequence[list[complex]]], func: _Func1D[np.complex128], disp: onp.ToTrue = True
+) -> onp.Array3D[np.complex128]: ...
+@overload  # Nd +c  (fallback)
+def funm(
+    A: onp.ToComplexND, func: _Func1D[Any], disp: onp.ToTrue = True
+) -> onp.ArrayND[Any, _AnyShapeOrTriviallyMaybeAlso2D]: ...
+@overload  # Nd +c, disp=False  (fallback)
+def funm(
+    A: onp.ToComplexND, func: _Func1D[Any], disp: onp.ToFalse
+) -> tuple[onp.ArrayND[Any, _AnyShapeOrTriviallyMaybeAlso2D], float]: ...
 
 # NOTE: at runtime the out dtype is value-dependent, which we ignore here, because it seems to be unintentional.
 # https://github.com/scipy/scipy/issues/25657

@@ -1,11 +1,12 @@
 # type-tests for `linalg/_matfuncs.pyi`
 
 from collections.abc import Callable
-from typing import Any, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+from optype.test import assert_subtype
 
 from scipy.linalg import (
     coshm,
@@ -55,8 +56,8 @@ c128_nd: onp.ArrayND[np.complex128]
 
 c160_nd: onp.ArrayND[np.complex256]
 
-func_f64: Callable[[onp.Array[Any, np.float64]], onp.ToComplexND]
-func_c128: Callable[[onp.Array[Any, np.complex128]], onp.ToComplexND]
+func_c64: Callable[[onp.Array1D[np.complex64]], onp.ToComplexND]
+func_c128: Callable[[onp.Array1D[np.complex128]], onp.ToComplexND]
 
 ###
 # expm / cosm / sinm / tanm / coshm / sinhm / tanhm
@@ -259,11 +260,32 @@ assert_type(signm(c160_nd), onp.ArrayND[np.complex128])  # pyright:ignore[report
 
 ###
 # funm
+# NOTE: `assert_subtype` because mypy infers `Any` when multiple overloads match with `Any`-typed arguments
 
-assert_type(funm(f64_nd, func_f64), onp.ArrayND[np.float64])
-assert_type(funm(f64_nd, func_f64, False), tuple[onp.ArrayND[np.float64], float])
-assert_type(funm(c128_nd, func_c128), onp.ArrayND[np.complex128])
-assert_type(funm(c128_nd, func_c128, False), tuple[onp.ArrayND[np.complex128], float])
+assert_subtype[onp.Array2D[np.float64 | np.complex128]](funm(py_f_2d, func_c128))
+assert_subtype[onp.Array2D[np.complex128]](funm(py_c_2d, func_c128))
+assert_subtype[onp.Array2D[np.float32 | np.complex64]](funm(b1_2d, func_c64))
+assert_subtype[onp.Array2D[np.float64 | np.complex128]](funm(i32_2d, func_c128))
+assert_subtype[onp.Array2D[np.float32 | np.complex64]](funm(f32_2d, func_c64))
+assert_subtype[onp.Array2D[np.float64 | np.complex128]](funm(f64_2d, func_c128))
+assert_subtype[onp.Array2D[np.complex64]](funm(c64_2d, func_c64))
+assert_subtype[onp.Array2D[np.complex128]](funm(c128_2d, func_c128))
+assert_type(funm(f16_2d, func_c64), onp.Array2D[npc.inexact64 | npc.inexact32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(funm(f80_2d, func_c128), onp.Array2D[npc.inexact64 | npc.inexact32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+
+assert_subtype[onp.Array3D[np.float64 | np.complex128]](funm(py_f_3d, func_c128))
+assert_subtype[onp.Array3D[np.float64 | np.complex128]](funm(f64_3d, func_c128))
+assert_subtype[onp.Array3D[np.complex128]](funm(c128_3d, func_c128))
+
+assert_subtype[onp.ArrayND[np.float64 | np.complex128]](funm(f64_nd, func_c128))
+assert_subtype[onp.ArrayND[np.complex64]](funm(c64_nd, func_c64))
+assert_subtype[onp.ArrayND[np.complex128]](funm(c128_nd, func_c128))
+assert_type(funm(c160_nd, func_c128), onp.ArrayND[npc.inexact64 | npc.inexact32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+
+assert_subtype[tuple[onp.Array2D[np.float64 | np.complex128], float]](funm(f64_2d, func_c128, False))
+assert_subtype[tuple[onp.Array2D[np.complex128], float]](funm(c128_2d, func_c128, False))
+assert_subtype[tuple[onp.ArrayND[np.float64 | np.complex128], float]](funm(f64_nd, func_c128, False))
+assert_subtype[tuple[onp.ArrayND[np.complex128], float]](funm(c128_nd, func_c128, False))
 
 ###
 # khatri_rao
