@@ -1603,7 +1603,7 @@ def lstsq(
 
 # keep structurally in sync with `pinvh` below
 @overload  # Nd ~f64
-def pinv[ShapeT: onp.AtLeast2D | tuple[Any, ...]](  # the strange upper bound is a pyrefly workaround
+def pinv[ShapeT: onp.AtLeast2D[Any] | tuple[Any, ...]](  # the strange upper bound is a pyrefly workaround
     a: onp.ArrayND[npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64, ShapeT],
     *,
     atol: onp.ToFloat | None = None,
@@ -1682,7 +1682,7 @@ def pinv(
     rtol: onp.ToFloat | None = None,
     return_rank: Literal[False] = False,
     check_finite: bool = True,
-) -> onp.ArrayND[Any]: ...
+) -> onp.ArrayND[Any, tuple[int, int] | tuple[Any, ...]]: ...  # pyright workaround on `numpy<2.1`
 @overload  # ?d ~f64, return_rank=True
 def pinv(
     a: onp.ArrayND[npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64, _JustAnyShape],
@@ -1918,7 +1918,7 @@ def pinvh(
     lower: bool = True,
     return_rank: Literal[False] = False,
     check_finite: bool = True,
-) -> onp.ArrayND[Any]: ...
+) -> onp.ArrayND[Any, tuple[int, int] | tuple[Any, ...]]: ...  # pyright workaround on `numpy<2.1`
 @overload  # ?d ~f64, return_rank=True
 def pinvh(
     a: onp.ArrayND[npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64, _JustAnyShape],
