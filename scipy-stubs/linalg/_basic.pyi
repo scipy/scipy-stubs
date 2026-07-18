@@ -2090,31 +2090,139 @@ def pinvh(
     check_finite: bool = True,
 ) -> tuple[onp.ArrayND[Any], int | Any]: ...
 
-# TODO(jorenham): improve this
-@overload  # (float[:, :], separate=True) -> (float[:, :], float[:, :])
+type _ScalePerm1D = tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]]
+
+# NOTE: `separate=True` 2nd return type is only a tuple for 2d input, otherwise it's (also) Nd
+@overload  # >=2d, T
+def matrix_balance[
+    ScalarT: npc.inexact64 | npc.inexact32,
+    ShapeT: onp.AtLeast2D | tuple[Any, ...],  # the strange ShapeT upper bound is a pyrefly workaround
+](
+    A: onp.ArrayND[ScalarT, ShapeT],
+    permute: bool = True,
+    scale: bool = True,
+    separate: Literal[False] = False,
+    overwrite_a: bool = False,
+) -> tuple[onp.ArrayND[ScalarT, ShapeT], onp.ArrayND[np.float64, ShapeT]]: ...
+@overload  # Nd, +f64
+def matrix_balance[ShapeT: onp.AtLeast2D | tuple[Any, ...]](
+    A: onp.ArrayND[npc.integer64 | npc.integer32, ShapeT],
+    permute: bool = True,
+    scale: bool = True,
+    separate: Literal[False] = False,
+    overwrite_a: bool = False,
+) -> tuple[onp.ArrayND[np.float64, ShapeT], onp.ArrayND[np.float64, ShapeT]]: ...
+@overload  # Nd, +f32
+def matrix_balance[ShapeT: onp.AtLeast2D | tuple[Any, ...]](
+    A: onp.ArrayND[npc.integer16 | npc.integer8, ShapeT],
+    permute: bool = True,
+    scale: bool = True,
+    separate: Literal[False] = False,
+    overwrite_a: bool = False,
+) -> tuple[onp.ArrayND[np.float32, ShapeT], onp.ArrayND[np.float64, ShapeT]]: ...
+@overload  # 2d, +float
 def matrix_balance(
-    A: onp.ToFloatND, permute: bool = True, scale: bool = True, separate: Literal[False] = False, overwrite_a: bool = False
-) -> _Tuple2[_FloatND]: ...
-@overload  # (float[:, :], separate=False, /) -> (float[:, :], (float[:], float[:]))
+    A: Sequence[Sequence[float]],
+    permute: bool = True,
+    scale: bool = True,
+    separate: Literal[False] = False,
+    overwrite_a: bool = False,
+) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+@overload  # 3d, +float
 def matrix_balance(
-    A: onp.ToFloatND, permute: bool, scale: bool, separate: Literal[True], overwrite_a: bool = False
-) -> tuple[_FloatND, _Tuple2[_FloatND]]: ...
-@overload  # (float[:, :], *, separate=False) -> (float[:, :], (float[:], float[:]))
+    A: Sequence[Sequence[Sequence[float]]],
+    permute: bool = True,
+    scale: bool = True,
+    separate: Literal[False] = False,
+    overwrite_a: bool = False,
+) -> tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]]: ...
+@overload  # 2d, ~c128
 def matrix_balance(
-    A: onp.ToFloatND, permute: bool = True, scale: bool = True, *, separate: Literal[True], overwrite_a: bool = False
-) -> tuple[_FloatND, _Tuple2[_FloatND]]: ...
-@overload  # (complex[:, :], separate=True) -> (complex[:, :], complex[:, :])
+    A: Sequence[list[complex]],
+    permute: bool = True,
+    scale: bool = True,
+    separate: Literal[False] = False,
+    overwrite_a: bool = False,
+) -> tuple[onp.Array2D[np.complex128], onp.Array2D[np.float64]]: ...
+@overload  # 3d, ~c128
+def matrix_balance(
+    A: Sequence[Sequence[list[complex]]],
+    permute: bool = True,
+    scale: bool = True,
+    separate: bool = False,
+    overwrite_a: bool = False,
+) -> tuple[onp.Array3D[np.complex128], onp.Array3D[np.float64]]: ...
+@overload  # Nd, ?, fallback
 def matrix_balance(
     A: onp.ToComplexND, permute: bool = True, scale: bool = True, separate: Literal[False] = False, overwrite_a: bool = False
-) -> _Tuple2[_InexactND]: ...
-@overload  # (complex[:, :], separate=False, /) -> (complex[:, :], (complex[:], complex[:]))
+) -> tuple[onp.ArrayND[Any, tuple[int, int] | tuple[Any, ...]], onp.ArrayND[np.float64, tuple[int, int] | tuple[Any, ...]]]: ...
+@overload  # 2d, T, separate=True
+def matrix_balance[ScalarT: npc.inexact64 | npc.inexact32](
+    A: onp.Array2D[ScalarT], permute: bool = True, scale: bool = True, *, separate: Literal[True], overwrite_a: bool = False
+) -> tuple[onp.Array2D[ScalarT], _ScalePerm1D]: ...
+@overload  # >=3d, T, separate=True
+def matrix_balance[ScalarT: npc.inexact64 | npc.inexact32, ShapeT: onp.AtLeast3D](
+    A: onp.ArrayND[ScalarT, ShapeT],
+    permute: bool = True,
+    scale: bool = True,
+    *,
+    separate: Literal[True],
+    overwrite_a: bool = False,
+) -> tuple[onp.ArrayND[ScalarT, ShapeT], onp.ArrayND[np.float64, ShapeT]]: ...
+@overload  # 2d, +f64, separate=True
 def matrix_balance(
-    A: onp.ToComplexND, permute: bool, scale: bool, separate: Literal[True], overwrite_a: bool = False
-) -> tuple[_InexactND, _Tuple2[_InexactND]]: ...
-@overload  # (complex[:, :], *, separate=False) -> (complex[:, :], (complex[:], complex[:]))
+    A: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer64 | npc.integer32],
+    permute: bool = True,
+    scale: bool = True,
+    *,
+    separate: Literal[True],
+    overwrite_a: bool = False,
+) -> tuple[onp.Array2D[np.float64], _ScalePerm1D]: ...
+@overload  # 3d, +f64, separate=True
+def matrix_balance(
+    A: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer64 | npc.integer32],
+    permute: bool = True,
+    scale: bool = True,
+    *,
+    separate: Literal[True],
+    overwrite_a: bool = False,
+) -> tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]]: ...
+@overload  # 2d, +f32
+def matrix_balance(
+    A: onp.ToArrayStrict2D[np.float32, npc.floating32 | npc.integer16 | npc.integer8],
+    permute: bool = True,
+    scale: bool = True,
+    *,
+    separate: Literal[True],
+    overwrite_a: bool = False,
+) -> tuple[onp.Array2D[np.float32], _ScalePerm1D]: ...
+@overload  # 3d, +f32
+def matrix_balance(
+    A: onp.ToArrayStrict3D[np.float32, npc.floating32 | npc.integer16 | npc.integer8],
+    permute: bool = True,
+    scale: bool = True,
+    *,
+    separate: Literal[True],
+    overwrite_a: bool = False,
+) -> tuple[onp.Array3D[np.float32], onp.Array3D[np.float64]]: ...
+@overload  # 2d, ~complex, separate=True
+def matrix_balance(
+    A: Sequence[list[complex]], permute: bool = True, scale: bool = True, *, separate: Literal[True], overwrite_a: bool = False
+) -> tuple[onp.Array2D[np.complex128], _ScalePerm1D]: ...
+@overload  # 2d, ?, separate=True  (fallback)
+def matrix_balance(
+    A: onp.ToComplexStrict2D, permute: bool = True, scale: bool = True, *, separate: Literal[True], overwrite_a: bool = False
+) -> tuple[onp.Array2D[Any], _ScalePerm1D]: ...
+@overload  # 3d, ?, separate=True  (fallback)
+def matrix_balance(
+    A: onp.ToComplexStrict3D, permute: bool = True, scale: bool = True, *, separate: Literal[True], overwrite_a: bool = False
+) -> tuple[onp.Array3D[Any], onp.Array3D[np.float64]]: ...
+@overload  # Nd, ?, separate=True  (fallback)
 def matrix_balance(
     A: onp.ToComplexND, permute: bool = True, scale: bool = True, *, separate: Literal[True], overwrite_a: bool = False
-) -> tuple[_InexactND, _Tuple2[_InexactND]]: ...
+) -> tuple[
+    onp.ArrayND[Any, tuple[int, int] | tuple[Any, ...]], onp.ArrayND[np.float64, tuple[int, int] | tuple[Any, ...]] | Any
+]: ...
 
 # TODO(jorenham): improve this
 @overload  # floating 1d, 1d

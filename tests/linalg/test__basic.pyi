@@ -683,24 +683,49 @@ assert_type(pinvh(c160_nd, return_rank=True), tuple[onp.ArrayND[np.complex128], 
 ###
 # matrix_balance
 
-assert_type(matrix_balance(f64_nd), tuple[onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]])
-assert_type(
-    matrix_balance(f64_nd, True, True, True),
-    tuple[onp.ArrayND[npc.floating], tuple[onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]]],
-)
-assert_type(
-    matrix_balance(f64_nd, separate=True),
-    tuple[onp.ArrayND[npc.floating], tuple[onp.ArrayND[npc.floating], onp.ArrayND[npc.floating]]],
-)
-assert_type(matrix_balance(c128_nd), tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.inexact]])
-assert_type(
-    matrix_balance(c128_nd, True, True, True),
-    tuple[onp.ArrayND[npc.inexact], tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.inexact]]],
-)
-assert_type(
-    matrix_balance(c128_nd, separate=True),
-    tuple[onp.ArrayND[npc.inexact], tuple[onp.ArrayND[npc.inexact], onp.ArrayND[npc.inexact]]],
-)
+assert_type(matrix_balance(py_f_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(matrix_balance(py_c_2d), tuple[onp.Array2D[np.complex128], onp.Array2D[np.float64]])
+assert_type(matrix_balance(i8_2d), tuple[onp.Array2D[np.float32], onp.Array2D[np.float64]])
+assert_type(matrix_balance(i32_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(matrix_balance(f32_2d), tuple[onp.Array2D[np.float32], onp.Array2D[np.float64]])
+assert_type(matrix_balance(f64_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(matrix_balance(c64_2d), tuple[onp.Array2D[np.complex64], onp.Array2D[np.float64]])
+assert_type(matrix_balance(c128_2d), tuple[onp.Array2D[np.complex128], onp.Array2D[np.float64]])
+
+assert_type(matrix_balance(py_f_3d), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+assert_type(matrix_balance(py_c_3d), tuple[onp.Array3D[np.complex128], onp.Array3D[np.float64]])
+assert_type(matrix_balance(i8_3d), tuple[onp.Array3D[np.float32], onp.Array3D[np.float64]])
+assert_type(matrix_balance(i32_3d), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+assert_type(matrix_balance(f32_3d), tuple[onp.Array3D[np.float32], onp.Array3D[np.float64]])
+assert_type(matrix_balance(f64_3d), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+assert_type(matrix_balance(c64_3d), tuple[onp.Array3D[np.complex64], onp.Array3D[np.float64]])
+assert_type(matrix_balance(c128_3d), tuple[onp.Array3D[np.complex128], onp.Array3D[np.float64]])
+
+assert_type(matrix_balance(i8_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float64]])
+assert_type(matrix_balance(i32_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(matrix_balance(f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float64]])
+assert_type(matrix_balance(f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(matrix_balance(c64_nd), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float64]])
+assert_type(matrix_balance(c128_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64]])
+
+type _ScalePerm1D = tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]]
+assert_type(matrix_balance(py_f_2d, separate=True), tuple[onp.Array2D[np.float64], _ScalePerm1D])
+assert_type(matrix_balance(py_c_2d, separate=True), tuple[onp.Array2D[np.complex128], _ScalePerm1D])
+assert_type(matrix_balance(i8_2d, separate=True), tuple[onp.Array2D[np.float32], _ScalePerm1D])
+assert_type(matrix_balance(i32_2d, separate=True), tuple[onp.Array2D[np.float64], _ScalePerm1D])
+assert_type(matrix_balance(f32_2d, separate=True), tuple[onp.Array2D[np.float32], _ScalePerm1D])
+assert_type(matrix_balance(f64_2d, separate=True), tuple[onp.Array2D[np.float64], _ScalePerm1D])
+assert_type(matrix_balance(c64_2d, separate=True), tuple[onp.Array2D[np.complex64], _ScalePerm1D])
+assert_type(matrix_balance(c128_2d, separate=True), tuple[onp.Array2D[np.complex128], _ScalePerm1D])
+
+assert_type(matrix_balance(py_f_3d, separate=True), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+assert_type(matrix_balance(py_c_3d, separate=True), tuple[onp.Array3D[np.complex128], onp.Array3D[np.float64]])
+assert_type(matrix_balance(i8_3d, separate=True), tuple[onp.Array3D[np.float32], onp.Array3D[np.float64]])
+assert_type(matrix_balance(i32_3d, separate=True), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+assert_type(matrix_balance(f32_3d, separate=True), tuple[onp.Array3D[np.float32], onp.Array3D[np.float64]])
+assert_type(matrix_balance(f64_3d, separate=True), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+assert_type(matrix_balance(c64_3d, separate=True), tuple[onp.Array3D[np.complex64], onp.Array3D[np.float64]])
+assert_type(matrix_balance(c128_3d, separate=True), tuple[onp.Array3D[np.complex128], onp.Array3D[np.float64]])
 
 ###
 # matmul_toeplitz
