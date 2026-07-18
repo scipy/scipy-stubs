@@ -216,7 +216,7 @@ assert_type(sqrtm(c160_nd), onp.ArrayND[np.complex128])  # pyright:ignore[report
 
 assert_type(logm(py_f_2d), onp.Array2D[np.float64 | np.complex128])
 assert_type(logm(py_c_2d), onp.Array2D[np.complex128])
-assert_type(logm(b1_2d), onp.Array2D[np.float64 | np.complex128])
+assert_type(logm(b1_2d), onp.Array2D[np.float64 | np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(logm(i32_2d), onp.Array2D[np.float64 | np.complex128])
 assert_type(logm(f32_2d), onp.Array2D[np.float64 | np.complex128])
 assert_type(logm(f64_2d), onp.Array2D[np.float64 | np.complex128])
@@ -240,7 +240,7 @@ assert_type(logm(c160_nd), onp.ArrayND[np.complex128])  # pyright:ignore[reportD
 
 assert_type(signm(py_f_2d), onp.Array2D[np.float64])
 assert_type(signm(py_c_2d), onp.Array2D[np.complex128])
-assert_type(signm(b1_2d), onp.Array2D[np.float32])
+assert_type(signm(b1_2d), onp.Array2D[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(signm(i32_2d), onp.Array2D[np.float64])
 assert_type(signm(f32_2d), onp.Array2D[np.float32])
 assert_type(signm(f64_2d), onp.Array2D[np.float64])
@@ -265,7 +265,7 @@ assert_type(signm(c160_nd), onp.ArrayND[np.complex128])  # pyright:ignore[report
 
 assert_subtype[onp.Array2D[np.float64 | np.complex128]](funm(py_f_2d, func_c128))
 assert_subtype[onp.Array2D[np.complex128]](funm(py_c_2d, func_c128))
-assert_subtype[onp.Array2D[np.float32 | np.complex64]](funm(b1_2d, func_c64))
+assert_type(funm(b1_2d, func_c64), onp.Array2D[npc.inexact64 | npc.inexact32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_subtype[onp.Array2D[np.float64 | np.complex128]](funm(i32_2d, func_c128))
 assert_subtype[onp.Array2D[np.float32 | np.complex64]](funm(f32_2d, func_c64))
 assert_subtype[onp.Array2D[np.float64 | np.complex128]](funm(f64_2d, func_c128))

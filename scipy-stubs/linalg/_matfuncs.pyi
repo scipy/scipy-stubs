@@ -141,7 +141,7 @@ def sqrtm[ShapeT: _AtLeast2D_ish](
 ) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
 @overload  # Nd ~f32
 def sqrtm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating32, ShapeT]) -> onp.ArrayND[np.float32 | np.complex64, ShapeT]: ...
-@overload  # Nd T@(c128|c64
+@overload  # Nd T@(c128|c64)
 def sqrtm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[ComplexT, ShapeT],
 ) -> onp.ArrayND[ComplexT, ShapeT]: ...
@@ -169,14 +169,17 @@ def sqrtm(A: Sequence[Sequence[list[complex]]]) -> onp.Array3D[np.complex128]: .
 def sqrtm(A: onp.ToComplexND) -> onp.ArrayND[Any, _AnyShapeOrTriviallyMaybeAlso2D]: ...
 
 # NOTE: real input can have either real or complex output depending on the sign of the values
-@overload  # Nd +f64 (except f16)
+@overload  # Nd +f64 (except bool | f16)
 def logm[ShapeT: _AtLeast2D_ish](
-    A: onp.ArrayND[npc.floating64 | npc.floating32 | npc.integer | np.bool, ShapeT],
+    A: onp.ArrayND[npc.floating64 | npc.floating32 | npc.integer, ShapeT],
 ) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
 @overload  # Nd c128 | c64
 def logm[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[npc.complexfloating128 | npc.complexfloating64, ShapeT],
 ) -> onp.ArrayND[np.complex128, ShapeT]: ...
+@overload  # Nd bool
+@deprecated("bool input will no longer be supported in SciPy 1.20")
+def logm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[np.bool, ShapeT]) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
 @overload  # Nd f80
 @deprecated("longdouble input will no longer be supported in SciPy 1.20")
 def logm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating80, ShapeT]) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
@@ -384,13 +387,13 @@ def funm[ShapeT: _AtLeast2D_ish](
 def funm[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[npc.floating64 | npc.integer, ShapeT], func: _Func1D[np.complex128], disp: onp.ToFalse
 ) -> tuple[onp.ArrayND[np.float64 | np.complex128, ShapeT], float]: ...
-@overload  # Nd ~f32 | bool
+@overload  # Nd ~f32
 def funm[ShapeT: _AtLeast2D_ish](
-    A: onp.ArrayND[npc.floating32 | np.bool, ShapeT], func: _Func1D[np.complex64], disp: onp.ToTrue = True
+    A: onp.ArrayND[npc.floating32, ShapeT], func: _Func1D[np.complex64], disp: onp.ToTrue = True
 ) -> onp.ArrayND[np.float32 | np.complex64, ShapeT]: ...
-@overload  # Nd ~f32 | bool, disp=False
+@overload  # Nd ~f32, disp=False
 def funm[ShapeT: _AtLeast2D_ish](
-    A: onp.ArrayND[npc.floating32 | np.bool, ShapeT], func: _Func1D[np.complex64], disp: onp.ToFalse
+    A: onp.ArrayND[npc.floating32, ShapeT], func: _Func1D[np.complex64], disp: onp.ToFalse
 ) -> tuple[onp.ArrayND[np.float32 | np.complex64, ShapeT], float]: ...
 @overload  # Nd T@(c128|c64)
 def funm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
@@ -400,10 +403,10 @@ def funm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
 def funm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[ComplexT, ShapeT], func: _Func1D[ComplexT], disp: onp.ToFalse
 ) -> tuple[onp.ArrayND[ComplexT, ShapeT], float]: ...
-@overload  # Nd f16 | f80 | c160
-@deprecated("float16, longdouble, and clongdouble input will no longer be supported in SciPy 1.20")
+@overload  # Nd bool | f16 | f80 | c160
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 1.20")
 def funm[ShapeT: _AtLeast2D_ish](
-    A: onp.ArrayND[npc.floating16 | npc.inexact80, ShapeT], func: _Func1D[Any], disp: onp.ToTrue = True
+    A: onp.ArrayND[np.bool | npc.floating16 | npc.inexact80, ShapeT], func: _Func1D[Any], disp: onp.ToTrue = True
 ) -> onp.ArrayND[npc.inexact64 | npc.inexact32, ShapeT]: ...
 @overload  # 2d +float
 def funm(
@@ -432,12 +435,15 @@ def funm(
 # https://github.com/scipy/scipy/issues/25657
 @overload  # Nd ~f64
 def signm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating64 | npc.integer, ShapeT]) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # Nd ~f32 | bool
-def signm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating32 | np.bool, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
+@overload  # Nd ~f32
+def signm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating32, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # Nd T@(c128|c64)
 def signm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[ComplexT, ShapeT],
 ) -> onp.ArrayND[ComplexT, ShapeT]: ...
+@overload  # Nd bool
+@deprecated("bool input will no longer be supported in SciPy 1.20")
+def signm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[np.bool, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # Nd f80
 @deprecated("longdouble input will no longer be supported in SciPy 1.20")
 def signm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating80, ShapeT]) -> onp.ArrayND[np.float64, ShapeT]: ...
