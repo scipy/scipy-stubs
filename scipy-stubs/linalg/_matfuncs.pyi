@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Final, Literal, overload
+from typing import Any, Final, Literal, Never, overload
 from typing_extensions import deprecated
 
 import numpy as np
@@ -33,7 +33,6 @@ type _Func1D[ComplexT: npc.complexfloating] = Callable[[onp.Array1D[ComplexT]], 
 
 type _ToPosInt = npc.unsignedinteger | Literal[0, 1, 2, 3, 4, 5, 6, 7, 8]
 
-type _IntND = onp.ArrayND[npc.integer]
 type _Float64ND = onp.ArrayND[np.float64]
 type _FloatND = onp.ArrayND[npc.floating]
 type _Complex128ND = onp.ArrayND[np.complex128]
@@ -41,6 +40,8 @@ type _ComplexND = onp.ArrayND[npc.complexfloating]
 
 # workaround for Pyrefly (1.1.1) that doesn't want to assign `tuple[Any, ...]` to `T: onp.AtLeast2D`.
 type _AtLeast2D_ish = tuple[int, int, *tuple[int, ...]] | tuple[Any, ...]
+# workaround for https://github.com/microsoft/pyright/issues/10232 (only matches gradually-shaped arrays)
+type _JustAnyShape = tuple[Never, Never, Never, Never]
 # workaround for Pyright (1.1.411) false positive reportIncompatibleOverload on `numpy<2.1`
 type _AnyShapeOrTriviallyMaybeAlso2D = tuple[int, int] | tuple[Any, ...]
 
@@ -98,17 +99,17 @@ def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
 def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[np.bool, ShapeT], t: onp.ToJustFloat
 ) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
-@overload  # Nd float16, ~float t
+@overload  # Nd f16, ~float t
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[npc.floating16, ShapeT], t: onp.ToJustFloat
 ) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
-@overload  # Nd longdouble, ~float t
+@overload  # Nd f80, ~float t
 @deprecated("longdouble input will no longer be supported in SciPy 1.20")
 def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[npc.floating80, ShapeT], t: onp.ToJustFloat
 ) -> onp.ArrayND[np.longdouble | np.clongdouble, ShapeT]: ...
-@overload  # Nd clongdouble, ~float t
+@overload  # Nd c160, ~float t
 @deprecated("clongdouble input will no longer be supported in SciPy 1.20")
 def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[npc.complexfloating160, ShapeT], t: onp.ToJustFloat
@@ -147,13 +148,13 @@ def sqrtm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
 @overload  # Nd bool
 @deprecated("bool input will no longer be supported in SciPy 1.20")
 def sqrtm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[np.bool, ShapeT]) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
-@overload  # Nd longdouble
+@overload  # Nd f80
 @deprecated("longdouble input will no longer be supported in SciPy 1.20")
 def sqrtm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating80, ShapeT]) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
-@overload  # Nd float16
+@overload  # Nd f16
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def sqrtm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float32 | np.complex64, ShapeT]: ...
-@overload  # Nd clongdouble
+@overload  # Nd c160
 @deprecated("clongdouble input will no longer be supported in SciPy 1.20")
 def sqrtm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.complexfloating160, ShapeT]) -> onp.ArrayND[np.complex128, ShapeT]: ...
 @overload  # 2d +float
@@ -176,13 +177,13 @@ def logm[ShapeT: _AtLeast2D_ish](
 def logm[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[npc.complexfloating128 | npc.complexfloating64, ShapeT],
 ) -> onp.ArrayND[np.complex128, ShapeT]: ...
-@overload  # Nd longdouble
+@overload  # Nd f80
 @deprecated("longdouble input will no longer be supported in SciPy 1.20")
 def logm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating80, ShapeT]) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
-@overload  # Nd float16
+@overload  # Nd f16
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def logm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
-@overload  # Nd clongdouble
+@overload  # Nd c160
 @deprecated("clongdouble input will no longer be supported in SciPy 1.20")
 def logm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.complexfloating160, ShapeT]) -> onp.ArrayND[np.complex128, ShapeT]: ...
 @overload  # 2d +float
@@ -208,7 +209,7 @@ def expm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
 @overload  # Nd bool
 @deprecated("bool input will no longer be supported in SciPy 1.20")
 def expm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[np.bool, ShapeT]) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # Nd float16
+@overload  # Nd f16
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def expm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # 2d +float
@@ -239,7 +240,7 @@ def cosm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
 @overload  # Nd bool
 @deprecated("bool input will no longer be supported in SciPy 1.20")
 def cosm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[np.bool, ShapeT]) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # Nd float16
+@overload  # Nd f16
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def cosm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # 2d +float
@@ -265,7 +266,7 @@ def sinm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
 @overload  # Nd bool
 @deprecated("bool input will no longer be supported in SciPy 1.20")
 def sinm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[np.bool, ShapeT]) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # Nd float16
+@overload  # Nd f16
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def sinm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # 2d +float
@@ -291,7 +292,7 @@ def tanm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
 @overload  # Nd bool
 @deprecated("bool input will no longer be supported in SciPy 1.20")
 def tanm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[np.bool, ShapeT]) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # Nd float16
+@overload  # Nd f16
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def tanm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # 2d +float
@@ -314,7 +315,7 @@ def coshm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating32, ShapeT]) -> onp
 def coshm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[ComplexT, ShapeT],
 ) -> onp.ArrayND[ComplexT, ShapeT]: ...
-@overload  # Nd float16
+@overload  # Nd f16
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def coshm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # 2d +float
@@ -337,7 +338,7 @@ def sinhm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating32, ShapeT]) -> onp
 def sinhm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[ComplexT, ShapeT],
 ) -> onp.ArrayND[ComplexT, ShapeT]: ...
-@overload  # Nd float16
+@overload  # Nd f16
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def sinhm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # 2d +float
@@ -360,7 +361,7 @@ def tanhm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating32, ShapeT]) -> onp
 def tanhm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[ComplexT, ShapeT],
 ) -> onp.ArrayND[ComplexT, ShapeT]: ...
-@overload  # Nd float16
+@overload  # Nd f16
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def tanhm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # 2d +float
@@ -399,7 +400,7 @@ def funm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
 def funm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[ComplexT, ShapeT], func: _Func1D[ComplexT], disp: onp.ToFalse
 ) -> tuple[onp.ArrayND[ComplexT, ShapeT], float]: ...
-@overload  # Nd float16 | longdouble | clongdouble
+@overload  # Nd f16 | f80 | c160
 @deprecated("float16, longdouble, and clongdouble input will no longer be supported in SciPy 1.20")
 def funm[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[npc.floating16 | npc.inexact80, ShapeT], func: _Func1D[Any], disp: onp.ToTrue = True
@@ -437,13 +438,13 @@ def signm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating32 | np.bool, Shape
 def signm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[ComplexT, ShapeT],
 ) -> onp.ArrayND[ComplexT, ShapeT]: ...
-@overload  # Nd longdouble
+@overload  # Nd f80
 @deprecated("longdouble input will no longer be supported in SciPy 1.20")
 def signm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating80, ShapeT]) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # Nd float16
+@overload  # Nd f16
 @deprecated("float16 input will no longer be supported in SciPy 1.20")
 def signm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.floating16, ShapeT]) -> onp.ArrayND[np.float32, ShapeT]: ...
-@overload  # Nd clongdouble
+@overload  # Nd c160
 @deprecated("clongdouble input will no longer be supported in SciPy 1.20")
 def signm[ShapeT: _AtLeast2D_ish](A: onp.ArrayND[npc.complexfloating160, ShapeT]) -> onp.ArrayND[np.complex128, ShapeT]: ...
 @overload  # 2d +float
@@ -458,23 +459,65 @@ def signm(A: Sequence[Sequence[list[complex]]]) -> onp.Array3D[np.complex128]: .
 def signm(A: onp.ToComplexND) -> onp.ArrayND[Any, _AnyShapeOrTriviallyMaybeAlso2D]: ...
 
 #
-@overload  # +integer | ~float64
-def khatri_rao(a: onp.ToIntND, b: onp.ToIntND) -> _IntND: ...
-@overload  # +float64, ~float64
+@overload  # ?d T, Nd T
+def khatri_rao[ScalarT: (npc.signedinteger, npc.unsignedinteger, np.float32, np.float64, np.complex64, np.complex128)](
+    a: onp.ArrayND[ScalarT, _JustAnyShape], b: onp.ArrayND[ScalarT]
+) -> onp.ArrayND[ScalarT]: ...
+@overload  # Nd T, ?d T
+def khatri_rao[ScalarT: (npc.signedinteger, npc.unsignedinteger, np.float32, np.float64, np.complex64, np.complex128)](
+    a: onp.ArrayND[ScalarT, tuple[int, ...]], b: onp.ArrayND[ScalarT, _JustAnyShape]
+) -> onp.ArrayND[ScalarT]: ...
+@overload  # 2d T, 2d T
+def khatri_rao[ScalarT: (npc.signedinteger, npc.unsignedinteger, np.float32, np.float64, np.complex64, np.complex128)](
+    a: onp.Array2D[ScalarT], b: onp.Array2D[ScalarT]
+) -> onp.Array2D[ScalarT]: ...
+@overload  # <3d T, 3d T
+def khatri_rao[ScalarT: (npc.signedinteger, npc.unsignedinteger, np.float32, np.float64, np.complex64, np.complex128)](
+    a: onp.Array2D[ScalarT] | onp.Array3D[ScalarT], b: onp.Array3D[ScalarT]
+) -> onp.Array3D[ScalarT]: ...
+@overload  # 3d T, 2d T
+def khatri_rao[ScalarT: (npc.signedinteger, npc.unsignedinteger, np.float32, np.float64, np.complex64, np.complex128)](
+    a: onp.Array3D[ScalarT], b: onp.Array2D[ScalarT]
+) -> onp.Array3D[ScalarT]: ...
+@overload  # Nd bool | f16 | f80 | c160, Nd +complex
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 1.20")
+def khatri_rao(a: onp.ArrayND[np.bool | npc.floating16 | npc.inexact80], b: onp.ToComplexND) -> onp.ArrayND[Any]: ...
+@overload  # Nd +complex, Nd bool | f16 | f80 | c160
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 1.20")
+def khatri_rao(a: onp.ToComplexND, b: onp.ArrayND[np.bool | npc.floating16 | npc.inexact80]) -> onp.ArrayND[Any]: ...
+@overload  # 2d +float, 2d +float
+def khatri_rao(a: Sequence[Sequence[float]], b: Sequence[Sequence[float]]) -> onp.Array2D[np.float64]: ...
+@overload  # 2d ~complex, 2d ~complex
+def khatri_rao(a: Sequence[list[complex]], b: Sequence[list[complex]]) -> onp.Array2D[np.complex128]: ...
+@overload  # 3d +float, 3d +float
+def khatri_rao(a: Sequence[Sequence[Sequence[float]]], b: Sequence[Sequence[Sequence[float]]]) -> onp.Array3D[np.float64]: ...
+@overload  # 3d ~complex, 3d ~complex
+def khatri_rao(a: Sequence[Sequence[list[complex]]], b: Sequence[Sequence[list[complex]]]) -> onp.Array3D[np.complex128]: ...
+@overload  # Nd +int, +int  (signed x unsigned can promote to f64)
+def khatri_rao(a: onp.ToIntND, b: onp.ToIntND) -> onp.ArrayND[npc.integer | np.float64]: ...
+@overload  # Nd +f64, ~f64
 def khatri_rao(a: onp.ToFloat64_ND, b: onp.ToJustFloat64_ND) -> _Float64ND: ...
-@overload  # ~float64, +float64
+@overload  # Nd ~f64, +f64
 def khatri_rao(a: onp.ToJustFloat64_ND, b: onp.ToFloat64_ND) -> _Float64ND: ...
-@overload  # +floating, ~floating
+@overload  # Nd +f32, ~f32
+def khatri_rao(a: onp.ToFloat32_ND, b: onp.ToJustFloat32_ND) -> onp.ArrayND[np.float32]: ...
+@overload  # Nd ~f32, +f32
+def khatri_rao(a: onp.ToJustFloat32_ND, b: onp.ToFloat32_ND) -> onp.ArrayND[np.float32]: ...
+@overload  # Nd +float, ~float
 def khatri_rao(a: onp.ToFloatND, b: onp.ToJustFloatND) -> _FloatND: ...
-@overload  # ~floating, +floating
+@overload  # Nd ~float, +float
 def khatri_rao(a: onp.ToJustFloatND, b: onp.ToFloatND) -> _FloatND: ...
-@overload  # +complex128, ~complex128
+@overload  # Nd +c64, ~c64
+def khatri_rao(a: onp.ToComplex64_ND, b: onp.ToJustComplex64_ND) -> onp.ArrayND[np.complex64]: ...
+@overload  # Nd ~c64, +c64
+def khatri_rao(a: onp.ToJustComplex64_ND, b: onp.ToComplex64_ND) -> onp.ArrayND[np.complex64]: ...
+@overload  # Nd +c128, ~c128
 def khatri_rao(a: onp.ToComplex128_ND, b: onp.ToJustComplex128_ND) -> _Complex128ND: ...
-@overload  # ~complex128, +complex128
+@overload  # Nd ~c128, +c128
 def khatri_rao(a: onp.ToJustComplex128_ND, b: onp.ToComplex128_ND) -> _Complex128ND: ...
-@overload  # +complexfloating, ~complexfloating
+@overload  # Nd +complex, ~complex
 def khatri_rao(a: onp.ToComplexND, b: onp.ToJustComplexND) -> _ComplexND: ...
-@overload  # ~complexfloating, +complexfloating
+@overload  # Nd ~complex, +complex
 def khatri_rao(a: onp.ToJustComplexND, b: onp.ToComplexND) -> _ComplexND: ...
-@overload  # fallback
+@overload  # Nd +complex, +complex  (fallback)
 def khatri_rao(a: onp.ToComplexND, b: onp.ToComplexND) -> onp.ArrayND[Any]: ...

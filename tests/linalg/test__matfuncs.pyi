@@ -1,7 +1,7 @@
 # type-tests for `linalg/_matfuncs.pyi`
 
 from collections.abc import Callable
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -34,6 +34,7 @@ py_c_3d: list[list[list[complex]]]
 b1_2d: onp.Array2D[np.bool_]
 
 i32_2d: onp.Array2D[np.int32]
+u64_2d: onp.Array2D[np.uint64]
 i32_nd: onp.ArrayND[np.int32]
 
 f16_2d: onp.Array2D[np.float16]
@@ -290,10 +291,41 @@ assert_subtype[tuple[onp.ArrayND[np.complex128], float]](funm(c128_nd, func_c128
 ###
 # khatri_rao
 
-assert_type(khatri_rao(i32_nd, i32_nd), onp.ArrayND[npc.integer])
-assert_type(khatri_rao(f64_nd, f64_nd), onp.ArrayND[np.float64])
+assert_subtype[onp.Array2D[npc.integer]](khatri_rao(i32_2d, i32_2d))
+assert_type(khatri_rao(f32_2d, f32_2d), onp.Array2D[np.float32])
+assert_type(khatri_rao(f64_2d, f64_2d), onp.Array2D[np.float64])
+assert_type(khatri_rao(c64_2d, c64_2d), onp.Array2D[np.complex64])
+assert_type(khatri_rao(c128_2d, c128_2d), onp.Array2D[np.complex128])
+
+assert_type(khatri_rao(f64_2d, f64_3d), onp.Array3D[np.float64])
+assert_type(khatri_rao(f64_3d, f64_3d), onp.Array3D[np.float64])
+assert_type(khatri_rao(f64_3d, f64_2d), onp.Array3D[np.float64])
+assert_type(khatri_rao(c128_3d, c128_3d), onp.Array3D[np.complex128])
+
+assert_type(khatri_rao(f32_nd, f32_nd), onp.ArrayND[np.float32])
+assert_type(khatri_rao(f64_nd, f64_2d), onp.ArrayND[np.float64])
+assert_subtype[onp.ArrayND[np.float64]](khatri_rao(f64_2d, f64_nd))
+assert_subtype[onp.ArrayND[npc.integer | np.float64]](khatri_rao(i32_nd, i32_nd))
+assert_type(khatri_rao(c64_nd, c64_nd), onp.ArrayND[np.complex64])
 assert_type(khatri_rao(c128_nd, c128_nd), onp.ArrayND[np.complex128])
-assert_type(khatri_rao(c64_nd, c64_nd), onp.ArrayND[npc.complexfloating])
+
+assert_subtype[onp.ArrayND[np.float64]](khatri_rao(f32_2d, f64_2d))
+assert_type(khatri_rao(f64_2d, f32_2d), onp.ArrayND[np.float64])
+assert_subtype[onp.ArrayND[npc.integer | np.float64]](khatri_rao(i32_2d, u64_2d))
+assert_type(khatri_rao(i32_2d, f32_2d), onp.ArrayND[npc.floating])
+assert_type(khatri_rao(c64_2d, c128_2d), onp.ArrayND[np.complex128])
+assert_type(khatri_rao(c64_2d, f64_2d), onp.ArrayND[npc.complexfloating])
+
+assert_type(khatri_rao(py_f_2d, py_f_2d), onp.Array2D[np.float64])
+assert_type(khatri_rao(py_c_2d, py_c_2d), onp.Array2D[np.complex128])
+assert_type(khatri_rao(py_f_3d, py_f_3d), onp.Array3D[np.float64])
+assert_type(khatri_rao(py_c_3d, py_c_3d), onp.Array3D[np.complex128])
+assert_type(khatri_rao(py_f_2d, py_c_2d), onp.ArrayND[np.complex128])
+
+assert_type(khatri_rao(b1_2d, f64_2d), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(khatri_rao(f64_2d, f16_2d), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(khatri_rao(f80_2d, f64_2d), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(khatri_rao(c160_nd, c128_2d), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # fractional_matrix_power
