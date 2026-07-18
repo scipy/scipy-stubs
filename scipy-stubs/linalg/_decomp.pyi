@@ -48,205 +48,42 @@ type _ComplexND = onp.ArrayND[np.complex128 | np.complex64]
 type _InexactND = onp.ArrayND[np.complex128 | np.complex64 | np.float64 | np.float32]
 
 # per-precision aliases (used by the f32/f64/c64/c128-specific overloads)
-type _Float32ND = onp.ArrayND[np.float32]
-type _Float64ND = onp.ArrayND[np.float64]
 type _Complex64ND = onp.ArrayND[np.complex64]
 type _Complex128ND = onp.ArrayND[np.complex128]
 
 # real-input eigenvector unions (value-dependent: see NOTE on `eig`)
-type _Vec32ND = onp.ArrayND[np.float32 | np.complex64]
-type _Vec64ND = onp.ArrayND[np.float64 | np.complex128]
+type _Inexact32ND = onp.ArrayND[np.complex64 | np.float32]
+type _Inexact64ND = onp.ArrayND[np.complex128 | np.float64]
 
 ###
 
 # NOTE: The eigenvectors of real `a` can be either real or complex, depending on its values.
-@overload  # f32, left: False, right: False (positional)
-def eig(  # type: ignore[overload-overlap]
-    a: _Float32ND,
-    b: _Float32ND | None,
-    left: Literal[False],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> _Complex64ND: ...
-@overload  # f32, left: False = ..., right: False (keyword)
-def eig(  # type: ignore[overload-overlap]
-    a: _Float32ND,
-    b: _Float32ND | None = None,
-    left: Literal[False] = False,
-    *,
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> _Complex64ND: ...
 @overload  # f32, left: False = ..., right: True = ...
 def eig(  # type: ignore[overload-overlap]
-    a: _Float32ND,
-    b: _Float32ND | None = None,
+    a: onp.ToJustFloat32_ND,
+    b: onp.ToJustFloat32_ND | None = None,
     left: Literal[False] = False,
     right: Literal[True] = True,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> tuple[_Complex64ND, _Vec32ND]: ...
-@overload  # f32, left: True (positional), right: False
-def eig(  # type: ignore[overload-overlap]
-    a: _Float32ND,
-    b: _Float32ND | None,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex64ND, _Vec32ND]: ...
-@overload  # f32, left: True (keyword), right: False (keyword)
-def eig(  # type: ignore[overload-overlap]
-    a: _Float32ND,
-    b: _Float32ND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex64ND, _Vec32ND]: ...
-@overload  # f32, left: True (positional), right: True = ...
-def eig(  # type: ignore[overload-overlap]
-    a: _Float32ND,
-    b: _Float32ND | None,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex64ND, _Vec32ND, _Vec32ND]: ...
-@overload  # f32, left: True (keyword), right: True = ...
-def eig(  # type: ignore[overload-overlap]
-    a: _Float32ND,
-    b: _Float32ND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex64ND, _Vec32ND, _Vec32ND]: ...
-@overload  # f64, left: False, right: False (positional)
-def eig(
-    a: _Float64ND,
-    b: _Float64ND | None,
-    left: Literal[False],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> _Complex128ND: ...
-@overload  # f64, left: False = ..., right: False (keyword)
-def eig(
-    a: _Float64ND,
-    b: _Float64ND | None = None,
-    left: Literal[False] = False,
-    *,
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> _Complex128ND: ...
+) -> tuple[_Complex64ND, _Inexact32ND]: ...
 @overload  # f64, left: False = ..., right: True = ...
 def eig(
-    a: _Float64ND,
-    b: _Float64ND | None = None,
+    a: onp.ToJustFloat64_ND,
+    b: onp.ToJustFloat64_ND | None = None,
     left: Literal[False] = False,
     right: Literal[True] = True,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> tuple[_Complex128ND, _Vec64ND]: ...
-@overload  # f64, left: True (positional), right: False
-def eig(
-    a: _Float64ND,
-    b: _Float64ND | None,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex128ND, _Vec64ND]: ...
-@overload  # f64, left: True (keyword), right: False (keyword)
-def eig(
-    a: _Float64ND,
-    b: _Float64ND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex128ND, _Vec64ND]: ...
-@overload  # f64, left: True (positional), right: True = ...
-def eig(
-    a: _Float64ND,
-    b: _Float64ND | None,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex128ND, _Vec64ND, _Vec64ND]: ...
-@overload  # f64, left: True (keyword), right: True = ...
-def eig(
-    a: _Float64ND,
-    b: _Float64ND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex128ND, _Vec64ND, _Vec64ND]: ...
-@overload  # c64, left: False, right: False (positional)
-def eig(  # type: ignore[overload-overlap]
-    a: _Complex64ND,
-    b: _Complex64ND | None,
-    left: Literal[False],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> _Complex64ND: ...
-@overload  # c64, left: False = ..., right: False (keyword)
-def eig(  # type: ignore[overload-overlap]
-    a: _Complex64ND,
-    b: _Complex64ND | None = None,
-    left: Literal[False] = False,
-    *,
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> _Complex64ND: ...
+) -> tuple[_Complex128ND, _Inexact64ND]: ...
 @overload  # c64, left: False = ..., right: True = ...
 def eig(  # type: ignore[overload-overlap]
-    a: _Complex64ND,
-    b: _Complex64ND | None = None,
+    a: onp.ToJustComplex64_ND,
+    b: onp.ToJustComplex64_ND | None = None,
     left: Literal[False] = False,
     right: Literal[True] = True,
     overwrite_a: bool = False,
@@ -254,33 +91,115 @@ def eig(  # type: ignore[overload-overlap]
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> tuple[_Complex64ND, _Complex64ND]: ...
-@overload  # c64, left: True (positional), right: False
+@overload  # c128, left: False = ..., right: True = ...
+def eig(
+    a: onp.ToJustComplex128_ND,
+    b: onp.ToJustComplex128_ND | None = None,
+    left: Literal[False] = False,
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex128ND, _Complex128ND]: ...
+@overload  # f32, left: False = ..., right: False (keyword)
 def eig(  # type: ignore[overload-overlap]
-    a: _Complex64ND,
-    b: _Complex64ND | None,
-    left: Literal[True],
+    a: onp.ToJustFloat32_ND,
+    b: onp.ToJustFloat32_ND | None = None,
+    left: Literal[False] = False,
+    *,
     right: Literal[False],
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> tuple[_Complex64ND, _Complex64ND]: ...
-@overload  # c64, left: True (keyword), right: False (keyword)
+) -> _Complex64ND: ...
+@overload  # f64, left: False = ..., right: False (keyword)
+def eig(
+    a: onp.ToJustFloat64_ND,
+    b: onp.ToJustFloat64_ND | None = None,
+    left: Literal[False] = False,
+    *,
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> _Complex128ND: ...
+@overload  # c64, left: False = ..., right: False (keyword)
 def eig(  # type: ignore[overload-overlap]
-    a: _Complex64ND,
-    b: _Complex64ND | None = None,
+    a: onp.ToJustComplex64_ND,
+    b: onp.ToJustComplex64_ND | None = None,
+    left: Literal[False] = False,
+    *,
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> _Complex64ND: ...
+@overload  # c128, left: False = ..., right: False (keyword)
+def eig(
+    a: onp.ToJustComplex128_ND,
+    b: onp.ToJustComplex128_ND | None = None,
+    left: Literal[False] = False,
+    *,
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> _Complex128ND: ...
+@overload  # f32, left: True (positional), right: True = ...
+def eig(  # type: ignore[overload-overlap]
+    a: onp.ToJustFloat32_ND,
+    b: onp.ToJustFloat32_ND | None,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex64ND, _Inexact32ND, _Inexact32ND]: ...
+@overload  # f32, left: True (keyword), right: True = ...
+def eig(  # type: ignore[overload-overlap]
+    a: onp.ToJustFloat32_ND,
+    b: onp.ToJustFloat32_ND | None = None,
     *,
     left: Literal[True],
-    right: Literal[False],
+    right: Literal[True] = True,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> tuple[_Complex64ND, _Complex64ND]: ...
+) -> tuple[_Complex64ND, _Inexact32ND, _Inexact32ND]: ...
+@overload  # f64, left: True (positional), right: True = ...
+def eig(
+    a: onp.ToJustFloat64_ND,
+    b: onp.ToJustFloat64_ND | None,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex128ND, _Inexact64ND, _Inexact64ND]: ...
+@overload  # f64, left: True (keyword), right: True = ...
+def eig(
+    a: onp.ToJustFloat64_ND,
+    b: onp.ToJustFloat64_ND | None = None,
+    *,
+    left: Literal[True],
+    right: Literal[True] = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex128ND, _Inexact64ND, _Inexact64ND]: ...
 @overload  # c64, left: True (positional), right: True = ...
 def eig(  # type: ignore[overload-overlap]
-    a: _Complex64ND,
-    b: _Complex64ND | None,
+    a: onp.ToJustComplex64_ND,
+    b: onp.ToJustComplex64_ND | None,
     left: Literal[True],
     right: Literal[True] = True,
     overwrite_a: bool = False,
@@ -290,8 +209,8 @@ def eig(  # type: ignore[overload-overlap]
 ) -> tuple[_Complex64ND, _Complex64ND, _Complex64ND]: ...
 @overload  # c64, left: True (keyword), right: True = ...
 def eig(  # type: ignore[overload-overlap]
-    a: _Complex64ND,
-    b: _Complex64ND | None = None,
+    a: onp.ToJustComplex64_ND,
+    b: onp.ToJustComplex64_ND | None = None,
     *,
     left: Literal[True],
     right: Literal[True] = True,
@@ -300,67 +219,10 @@ def eig(  # type: ignore[overload-overlap]
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> tuple[_Complex64ND, _Complex64ND, _Complex64ND]: ...
-@overload  # c128, left: False, right: False (positional)
-def eig(
-    a: _Complex128ND,
-    b: _Complex128ND | None,
-    left: Literal[False],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> _Complex128ND: ...
-@overload  # c128, left: False = ..., right: False (keyword)
-def eig(
-    a: _Complex128ND,
-    b: _Complex128ND | None = None,
-    left: Literal[False] = False,
-    *,
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> _Complex128ND: ...
-@overload  # c128, left: False = ..., right: True = ...
-def eig(
-    a: _Complex128ND,
-    b: _Complex128ND | None = None,
-    left: Literal[False] = False,
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex128ND, _Complex128ND]: ...
-@overload  # c128, left: True (positional), right: False
-def eig(
-    a: _Complex128ND,
-    b: _Complex128ND | None,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex128ND, _Complex128ND]: ...
-@overload  # c128, left: True (keyword), right: False (keyword)
-def eig(
-    a: _Complex128ND,
-    b: _Complex128ND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_Complex128ND, _Complex128ND]: ...
 @overload  # c128, left: True (positional), right: True = ...
 def eig(
-    a: _Complex128ND,
-    b: _Complex128ND | None,
+    a: onp.ToJustComplex128_ND,
+    b: onp.ToJustComplex128_ND | None,
     left: Literal[True],
     right: Literal[True] = True,
     overwrite_a: bool = False,
@@ -370,8 +232,8 @@ def eig(
 ) -> tuple[_Complex128ND, _Complex128ND, _Complex128ND]: ...
 @overload  # c128, left: True (keyword), right: True = ...
 def eig(
-    a: _Complex128ND,
-    b: _Complex128ND | None = None,
+    a: onp.ToJustComplex128_ND,
+    b: onp.ToJustComplex128_ND | None = None,
     *,
     left: Literal[True],
     right: Literal[True] = True,
@@ -380,6 +242,98 @@ def eig(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> tuple[_Complex128ND, _Complex128ND, _Complex128ND]: ...
+@overload  # f32, left: True (positional), right: False
+def eig(  # type: ignore[overload-overlap]
+    a: onp.ToJustFloat32_ND,
+    b: onp.ToJustFloat32_ND | None,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex64ND, _Inexact32ND]: ...
+@overload  # f32, left: True (keyword), right: False (keyword)
+def eig(  # type: ignore[overload-overlap]
+    a: onp.ToJustFloat32_ND,
+    b: onp.ToJustFloat32_ND | None = None,
+    *,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex64ND, _Inexact32ND]: ...
+@overload  # f64, left: True (positional), right: False
+def eig(
+    a: onp.ToJustFloat64_ND,
+    b: onp.ToJustFloat64_ND | None,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex128ND, _Inexact64ND]: ...
+@overload  # f64, left: True (keyword), right: False (keyword)
+def eig(
+    a: onp.ToJustFloat64_ND,
+    b: onp.ToJustFloat64_ND | None = None,
+    *,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex128ND, _Inexact64ND]: ...
+@overload  # c64, left: True (positional), right: False
+def eig(  # type: ignore[overload-overlap]
+    a: onp.ToJustComplex64_ND,
+    b: onp.ToJustComplex64_ND | None,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex64ND, _Complex64ND]: ...
+@overload  # c64, left: True (keyword), right: False (keyword)
+def eig(  # type: ignore[overload-overlap]
+    a: onp.ToJustComplex64_ND,
+    b: onp.ToJustComplex64_ND | None = None,
+    *,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex64ND, _Complex64ND]: ...
+@overload  # c128, left: True (positional), right: False
+def eig(
+    a: onp.ToJustComplex128_ND,
+    b: onp.ToJustComplex128_ND | None,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex128ND, _Complex128ND]: ...
+@overload  # c128, left: True (keyword), right: False (keyword)
+def eig(
+    a: onp.ToJustComplex128_ND,
+    b: onp.ToJustComplex128_ND | None = None,
+    *,
+    left: Literal[True],
+    right: Literal[False],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[_Complex128ND, _Complex128ND]: ...
 @overload  # complex, left: False, right: False (positional)
 def eig(
     a: onp.ToComplexND,
