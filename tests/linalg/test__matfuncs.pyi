@@ -35,6 +35,8 @@ b1_2d: onp.Array2D[np.bool_]
 i32_2d: onp.Array2D[np.int32]
 i32_nd: onp.ArrayND[np.int32]
 
+f16_2d: onp.Array2D[np.float16]
+
 f32_2d: onp.Array2D[np.float32]
 f32_nd: onp.ArrayND[np.float32]
 
@@ -55,42 +57,131 @@ func_f64: Callable[[onp.Array[Any, np.float64]], onp.ToComplexND]
 func_c128: Callable[[onp.Array[Any, np.complex128]], onp.ToComplexND]
 
 ###
-# expm / cosm / sinm / tanm / coshm / sinhm / tanhm (all share the same overload structure)
+# expm / cosm / sinm / tanm / coshm / sinhm / tanhm
+# (same overload structure, except that the hyperbolic ones reject `bool` input)
 
-assert_type(expm(py_f_2d), onp.ArrayND[np.float64])
-assert_type(expm(f32_nd), onp.ArrayND[npc.floating])
+assert_type(expm(py_f_2d), onp.Array2D[np.float64])
+assert_type(expm(py_c_2d), onp.Array2D[np.complex128])
+assert_type(expm(b1_2d), onp.Array2D[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(expm(f16_2d), onp.Array2D[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(expm(i32_2d), onp.Array2D[np.float64])
+assert_type(expm(f32_2d), onp.Array2D[np.float32])
+assert_type(expm(f64_2d), onp.Array2D[np.float64])
+assert_type(expm(c64_2d), onp.Array2D[np.complex64])
+assert_type(expm(c128_2d), onp.Array2D[np.complex128])
+assert_type(expm(py_f_3d), onp.Array3D[np.float64])
+assert_type(expm(f64_3d), onp.Array3D[np.float64])
+assert_type(expm(c128_3d), onp.Array3D[np.complex128])
+assert_type(expm(i32_nd), onp.ArrayND[np.float64])
+assert_type(expm(f32_nd), onp.ArrayND[np.float32])
+assert_type(expm(f64_nd), onp.ArrayND[np.float64])
+assert_type(expm(c64_nd), onp.ArrayND[np.complex64])
 assert_type(expm(c128_nd), onp.ArrayND[np.complex128])
-assert_type(expm(c64_nd), onp.ArrayND[npc.complexfloating])
 
-assert_type(cosm(py_f_2d), onp.ArrayND[np.float64])
-assert_type(cosm(f32_nd), onp.ArrayND[npc.floating])
+assert_type(cosm(py_f_2d), onp.Array2D[np.float64])
+assert_type(cosm(py_c_2d), onp.Array2D[np.complex128])
+assert_type(cosm(b1_2d), onp.Array2D[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(cosm(f16_2d), onp.Array2D[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(cosm(i32_2d), onp.Array2D[np.float64])
+assert_type(cosm(f32_2d), onp.Array2D[np.float32])
+assert_type(cosm(f64_2d), onp.Array2D[np.float64])
+assert_type(cosm(c64_2d), onp.Array2D[np.complex64])
+assert_type(cosm(c128_2d), onp.Array2D[np.complex128])
+assert_type(cosm(py_f_3d), onp.Array3D[np.float64])
+assert_type(cosm(f64_3d), onp.Array3D[np.float64])
+assert_type(cosm(c128_3d), onp.Array3D[np.complex128])
+assert_type(cosm(i32_nd), onp.ArrayND[np.float64])
+assert_type(cosm(f32_nd), onp.ArrayND[np.float32])
+assert_type(cosm(f64_nd), onp.ArrayND[np.float64])
+assert_type(cosm(c64_nd), onp.ArrayND[np.complex64])
 assert_type(cosm(c128_nd), onp.ArrayND[np.complex128])
-assert_type(cosm(c64_nd), onp.ArrayND[npc.complexfloating])
 
-assert_type(sinm(py_f_2d), onp.ArrayND[np.float64])
-assert_type(sinm(f32_nd), onp.ArrayND[npc.floating])
+assert_type(sinm(py_f_2d), onp.Array2D[np.float64])
+assert_type(sinm(py_c_2d), onp.Array2D[np.complex128])
+assert_type(sinm(b1_2d), onp.Array2D[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(sinm(f16_2d), onp.Array2D[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(sinm(i32_2d), onp.Array2D[np.float64])
+assert_type(sinm(f32_2d), onp.Array2D[np.float32])
+assert_type(sinm(f64_2d), onp.Array2D[np.float64])
+assert_type(sinm(c64_2d), onp.Array2D[np.complex64])
+assert_type(sinm(c128_2d), onp.Array2D[np.complex128])
+assert_type(sinm(py_f_3d), onp.Array3D[np.float64])
+assert_type(sinm(f64_3d), onp.Array3D[np.float64])
+assert_type(sinm(c128_3d), onp.Array3D[np.complex128])
+assert_type(sinm(i32_nd), onp.ArrayND[np.float64])
+assert_type(sinm(f32_nd), onp.ArrayND[np.float32])
+assert_type(sinm(f64_nd), onp.ArrayND[np.float64])
+assert_type(sinm(c64_nd), onp.ArrayND[np.complex64])
 assert_type(sinm(c128_nd), onp.ArrayND[np.complex128])
-assert_type(sinm(c64_nd), onp.ArrayND[npc.complexfloating])
 
-assert_type(tanm(py_f_2d), onp.ArrayND[np.float64])
-assert_type(tanm(f32_nd), onp.ArrayND[npc.floating])
+assert_type(tanm(py_f_2d), onp.Array2D[np.float64])
+assert_type(tanm(py_c_2d), onp.Array2D[np.complex128])
+assert_type(tanm(b1_2d), onp.Array2D[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(tanm(f16_2d), onp.Array2D[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(tanm(i32_2d), onp.Array2D[np.float64])
+assert_type(tanm(f32_2d), onp.Array2D[np.float32])
+assert_type(tanm(f64_2d), onp.Array2D[np.float64])
+assert_type(tanm(c64_2d), onp.Array2D[np.complex64])
+assert_type(tanm(c128_2d), onp.Array2D[np.complex128])
+assert_type(tanm(py_f_3d), onp.Array3D[np.float64])
+assert_type(tanm(f64_3d), onp.Array3D[np.float64])
+assert_type(tanm(c128_3d), onp.Array3D[np.complex128])
+assert_type(tanm(i32_nd), onp.ArrayND[np.float64])
+assert_type(tanm(f32_nd), onp.ArrayND[np.float32])
+assert_type(tanm(f64_nd), onp.ArrayND[np.float64])
+assert_type(tanm(c64_nd), onp.ArrayND[np.complex64])
 assert_type(tanm(c128_nd), onp.ArrayND[np.complex128])
-assert_type(tanm(c64_nd), onp.ArrayND[npc.complexfloating])
 
-assert_type(coshm(py_f_2d), onp.ArrayND[np.float64])
-assert_type(coshm(f32_nd), onp.ArrayND[npc.floating])
+assert_type(coshm(py_f_2d), onp.Array2D[np.float64])
+assert_type(coshm(py_c_2d), onp.Array2D[np.complex128])
+assert_type(coshm(f16_2d), onp.Array2D[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(coshm(i32_2d), onp.Array2D[np.float64])
+assert_type(coshm(f32_2d), onp.Array2D[np.float32])
+assert_type(coshm(f64_2d), onp.Array2D[np.float64])
+assert_type(coshm(c64_2d), onp.Array2D[np.complex64])
+assert_type(coshm(c128_2d), onp.Array2D[np.complex128])
+assert_type(coshm(py_f_3d), onp.Array3D[np.float64])
+assert_type(coshm(f64_3d), onp.Array3D[np.float64])
+assert_type(coshm(c128_3d), onp.Array3D[np.complex128])
+assert_type(coshm(i32_nd), onp.ArrayND[np.float64])
+assert_type(coshm(f32_nd), onp.ArrayND[np.float32])
+assert_type(coshm(f64_nd), onp.ArrayND[np.float64])
+assert_type(coshm(c64_nd), onp.ArrayND[np.complex64])
 assert_type(coshm(c128_nd), onp.ArrayND[np.complex128])
-assert_type(coshm(c64_nd), onp.ArrayND[npc.complexfloating])
 
-assert_type(sinhm(py_f_2d), onp.ArrayND[np.float64])
-assert_type(sinhm(f32_nd), onp.ArrayND[npc.floating])
+assert_type(sinhm(py_f_2d), onp.Array2D[np.float64])
+assert_type(sinhm(py_c_2d), onp.Array2D[np.complex128])
+assert_type(sinhm(f16_2d), onp.Array2D[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(sinhm(i32_2d), onp.Array2D[np.float64])
+assert_type(sinhm(f32_2d), onp.Array2D[np.float32])
+assert_type(sinhm(f64_2d), onp.Array2D[np.float64])
+assert_type(sinhm(c64_2d), onp.Array2D[np.complex64])
+assert_type(sinhm(c128_2d), onp.Array2D[np.complex128])
+assert_type(sinhm(py_f_3d), onp.Array3D[np.float64])
+assert_type(sinhm(f64_3d), onp.Array3D[np.float64])
+assert_type(sinhm(c128_3d), onp.Array3D[np.complex128])
+assert_type(sinhm(i32_nd), onp.ArrayND[np.float64])
+assert_type(sinhm(f32_nd), onp.ArrayND[np.float32])
+assert_type(sinhm(f64_nd), onp.ArrayND[np.float64])
+assert_type(sinhm(c64_nd), onp.ArrayND[np.complex64])
 assert_type(sinhm(c128_nd), onp.ArrayND[np.complex128])
-assert_type(sinhm(c64_nd), onp.ArrayND[npc.complexfloating])
 
-assert_type(tanhm(py_f_2d), onp.ArrayND[np.float64])
-assert_type(tanhm(f32_nd), onp.ArrayND[npc.floating])
+assert_type(tanhm(py_f_2d), onp.Array2D[np.float64])
+assert_type(tanhm(py_c_2d), onp.Array2D[np.complex128])
+assert_type(tanhm(f16_2d), onp.Array2D[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(tanhm(i32_2d), onp.Array2D[np.float64])
+assert_type(tanhm(f32_2d), onp.Array2D[np.float32])
+assert_type(tanhm(f64_2d), onp.Array2D[np.float64])
+assert_type(tanhm(c64_2d), onp.Array2D[np.complex64])
+assert_type(tanhm(c128_2d), onp.Array2D[np.complex128])
+assert_type(tanhm(py_f_3d), onp.Array3D[np.float64])
+assert_type(tanhm(f64_3d), onp.Array3D[np.float64])
+assert_type(tanhm(c128_3d), onp.Array3D[np.complex128])
+assert_type(tanhm(i32_nd), onp.ArrayND[np.float64])
+assert_type(tanhm(f32_nd), onp.ArrayND[np.float32])
+assert_type(tanhm(f64_nd), onp.ArrayND[np.float64])
+assert_type(tanhm(c64_nd), onp.ArrayND[np.complex64])
 assert_type(tanhm(c128_nd), onp.ArrayND[np.complex128])
-assert_type(tanhm(c64_nd), onp.ArrayND[npc.complexfloating])
 
 ###
 # sqrtm
