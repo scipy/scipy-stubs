@@ -44,6 +44,8 @@ f64_2d: onp.Array2D[np.float64]
 f64_3d: onp.Array3D[np.float64]
 f64_nd: onp.ArrayND[np.float64]
 
+f80_2d: onp.Array2D[np.float128]
+
 c64_2d: onp.Array2D[np.complex64]
 c64_nd: onp.ArrayND[np.complex64]
 
@@ -274,7 +276,39 @@ assert_type(khatri_rao(c64_nd, c64_nd), onp.ArrayND[npc.complexfloating])
 ###
 # fractional_matrix_power
 
-assert_type(fractional_matrix_power(i32_nd, 2), onp.ArrayND[npc.integer])
+assert_type(fractional_matrix_power(i32_2d, 2), onp.Array2D[np.int32])
+assert_type(fractional_matrix_power(f32_2d, 2), onp.Array2D[np.float32])
+assert_type(fractional_matrix_power(f64_2d, 2), onp.Array2D[np.float64])
+assert_type(fractional_matrix_power(c64_2d, 2), onp.Array2D[np.complex64])
+assert_type(fractional_matrix_power(c128_2d, 2), onp.Array2D[np.complex128])
+assert_type(fractional_matrix_power(b1_2d, 2), onp.Array2D[np.bool_])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(fractional_matrix_power(f16_2d, 2), onp.Array2D[np.float16])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(fractional_matrix_power(f80_2d, 2), onp.Array2D[np.float128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+
+assert_type(fractional_matrix_power(f32_2d, -1), onp.Array2D[np.float32])
+assert_type(fractional_matrix_power(c128_2d, -1), onp.Array2D[np.complex128])
+assert_type(fractional_matrix_power(i32_2d, -1), onp.Array2D[np.int32 | np.float64])
+assert_type(fractional_matrix_power(b1_2d, -1), onp.Array2D[np.bool_ | np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+
+assert_type(fractional_matrix_power(i32_2d, 0.5), onp.Array2D[np.float64 | np.complex128])
+assert_type(fractional_matrix_power(f32_2d, 0.5), onp.Array2D[np.float64 | np.complex128])
+assert_type(fractional_matrix_power(f64_2d, 0.5), onp.Array2D[np.float64 | np.complex128])
+assert_type(fractional_matrix_power(c64_2d, 0.5), onp.Array2D[np.complex128])
+assert_type(fractional_matrix_power(c128_2d, 0.5), onp.Array2D[np.complex128])
+assert_type(fractional_matrix_power(b1_2d, 0.5), onp.Array2D[np.float64 | np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(fractional_matrix_power(f16_2d, 0.5), onp.Array2D[np.float64 | np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(fractional_matrix_power(f80_2d, 0.5), onp.Array2D[np.longdouble | np.clongdouble])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+
+assert_type(fractional_matrix_power(py_f_2d, 2), onp.Array2D[np.float64])
+assert_type(fractional_matrix_power(py_f_2d, 0.5), onp.Array2D[np.float64 | np.complex128])
+assert_type(fractional_matrix_power(py_c_2d, 0.5), onp.Array2D[np.complex128])
+assert_type(fractional_matrix_power(py_f_3d, 2), onp.Array3D[np.float64])
+assert_type(fractional_matrix_power(py_f_3d, 0.5), onp.Array3D[np.float64 | np.complex128])
+assert_type(fractional_matrix_power(py_c_3d, 2), onp.Array3D[np.complex128])
+
+assert_type(fractional_matrix_power(i32_nd, 2), onp.ArrayND[np.int32])
+assert_type(fractional_matrix_power(f32_nd, 2), onp.ArrayND[np.float32])
 assert_type(fractional_matrix_power(f64_nd, 2), onp.ArrayND[np.float64])
-assert_type(fractional_matrix_power(f32_nd, 2), onp.ArrayND[npc.floating])
+assert_type(fractional_matrix_power(f64_nd, 0.5), onp.ArrayND[np.float64 | np.complex128])
 assert_type(fractional_matrix_power(c128_nd, np.float64(1.0)), onp.ArrayND[np.complex128])
+assert_type(fractional_matrix_power(c160_nd, 2), onp.ArrayND[np.complex256])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]

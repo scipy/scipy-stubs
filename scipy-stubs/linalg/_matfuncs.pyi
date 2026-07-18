@@ -31,7 +31,7 @@ __all__ = [
 # return type is unsafely cast to the input type
 type _FuncND[InexactT: npc.inexact] = Callable[[onp.Array[Any, InexactT]], onp.ToComplexND]
 
-type _ToPosInt = npc.unsignedinteger | Literal[0, 1, 2, 4, 5, 6, 7, 8]
+type _ToPosInt = npc.unsignedinteger | Literal[0, 1, 2, 3, 4, 5, 6, 7, 8]
 
 type _IntND = onp.ArrayND[npc.integer]
 type _Float64ND = onp.ArrayND[np.float64]
@@ -62,21 +62,73 @@ def _maybe_real[ShapeT: tuple[int, ...]](
     A: onp.ArrayND[npc.inexact], B: onp.ArrayND[npc.inexact32, ShapeT], tol: float | None = None
 ) -> onp.ArrayND[np.float32, ShapeT]: ...  # undocumented
 
-#
-@overload  # +integer, +unsignedinteger
-def fractional_matrix_power(A: onp.ToIntND, t: _ToPosInt) -> _IntND: ...
-@overload  # ~float64, +integer
-def fractional_matrix_power(A: onp.ToJustFloat64_ND, t: onp.ToInt) -> _Float64ND: ...
-@overload  # ~floating, +integer
-def fractional_matrix_power(A: onp.ToJustFloatND, t: onp.ToInt) -> _FloatND: ...
-@overload  # ~complex128, +float64
-def fractional_matrix_power(A: onp.ToJustComplex128_ND, t: onp.ToFloat64) -> _Complex128ND: ...
-@overload  # +complex128, ~float64
-def fractional_matrix_power(A: onp.ToComplex128_ND, t: onp.ToJustFloat64) -> _Complex128ND: ...
-@overload  # +complexfloating, ~float
-def fractional_matrix_power(A: onp.ToComplexND, t: onp.ToJustFloat) -> _ComplexND: ...
-@overload  # +complex, +floating
-def fractional_matrix_power(A: onp.ToComplexND, t: onp.ToFloat) -> onp.ArrayND[Any]: ...
+# NOTE: with fractional `t`, real input can have either real or complex output depending on the sign of the eigenvalues
+@overload  # Nd T, +int t
+def fractional_matrix_power[NumberT: npc.inexact64 | npc.inexact32 | npc.integer, ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[NumberT, ShapeT], t: _ToPosInt
+) -> onp.ArrayND[NumberT, ShapeT]: ...
+@overload  # Nd T@inexact, int t
+def fractional_matrix_power[InexactT: npc.inexact64 | npc.inexact32, ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[InexactT, ShapeT], t: onp.ToInt
+) -> onp.ArrayND[InexactT, ShapeT]: ...
+@overload  # Nd ~int, int t
+def fractional_matrix_power[IntT: npc.integer, ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[IntT, ShapeT], t: onp.ToInt
+) -> onp.ArrayND[IntT | np.float64, ShapeT]: ...
+@overload  # Nd +f64, ~float t
+def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.floating64 | npc.floating32 | npc.integer, ShapeT], t: onp.ToJustFloat
+) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
+@overload  # Nd c128 | c64, ~float t
+def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.complexfloating128 | npc.complexfloating64, ShapeT], t: onp.ToJustFloat
+) -> onp.ArrayND[np.complex128, ShapeT]: ...
+@overload  # Nd T, +int t
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 1.20")
+def fractional_matrix_power[NumberT: npc.inexact80 | np.float16 | np.bool, ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[NumberT, ShapeT], t: _ToPosInt
+) -> onp.ArrayND[NumberT, ShapeT]: ...
+@overload  # Nd bool, int t
+@deprecated("bool input will no longer be supported in SciPy 1.20")
+def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[np.bool, ShapeT], t: onp.ToInt
+) -> onp.ArrayND[np.bool | np.float64, ShapeT]: ...
+@overload  # Nd bool, ~float t
+@deprecated("bool input will no longer be supported in SciPy 1.20")
+def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[np.bool, ShapeT], t: onp.ToJustFloat
+) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
+@overload  # Nd float16, ~float t
+@deprecated("float16 input will no longer be supported in SciPy 1.20")
+def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.floating16, ShapeT], t: onp.ToJustFloat
+) -> onp.ArrayND[np.float64 | np.complex128, ShapeT]: ...
+@overload  # Nd longdouble, ~float t
+@deprecated("longdouble input will no longer be supported in SciPy 1.20")
+def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.floating80, ShapeT], t: onp.ToJustFloat
+) -> onp.ArrayND[np.longdouble | np.clongdouble, ShapeT]: ...
+@overload  # Nd clongdouble, ~float t
+@deprecated("clongdouble input will no longer be supported in SciPy 1.20")
+def fractional_matrix_power[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[npc.complexfloating160, ShapeT], t: onp.ToJustFloat
+) -> onp.ArrayND[np.clongdouble, ShapeT]: ...
+@overload  # 2d +float, int t
+def fractional_matrix_power(A: Sequence[Sequence[float]], t: onp.ToInt) -> onp.Array2D[np.float64]: ...
+@overload  # 2d +float, ~float t
+def fractional_matrix_power(A: Sequence[Sequence[float]], t: onp.ToJustFloat) -> onp.Array2D[np.float64 | np.complex128]: ...
+@overload  # 2d ~complex
+def fractional_matrix_power(A: Sequence[list[complex]], t: onp.ToFloat) -> onp.Array2D[np.complex128]: ...
+@overload  # 3d +float, int t
+def fractional_matrix_power(A: Sequence[Sequence[Sequence[float]]], t: onp.ToInt) -> onp.Array3D[np.float64]: ...
+@overload  # 3d +float, ~float t
+def fractional_matrix_power(
+    A: Sequence[Sequence[Sequence[float]]], t: onp.ToJustFloat
+) -> onp.Array3D[np.float64 | np.complex128]: ...
+@overload  # 3d ~complex
+def fractional_matrix_power(A: Sequence[Sequence[list[complex]]], t: onp.ToFloat) -> onp.Array3D[np.complex128]: ...
+@overload  # Nd +c  (fallback)
+def fractional_matrix_power(A: onp.ToComplexND, t: onp.ToFloat) -> onp.ArrayND[Any, _AnyShapeOrTriviallyMaybeAlso2D]: ...
 
 # mypy reports two false positive `overload-overlap` errors on `numpy>=2.2` for `sqrtm`, so we're forced to ignore it module-wide
 # mypy: disable-error-code="overload-overlap"
