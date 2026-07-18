@@ -2,7 +2,7 @@
 
 from _typeshed import Incomplete
 from collections.abc import Sequence
-from typing import Any, Literal, SupportsIndex, overload
+from typing import Any, Literal, Never, SupportsIndex, overload
 
 import numpy as np
 import optype as op
@@ -96,6 +96,8 @@ type _LstSqResult11[ScalarT: np.generic] = tuple[onp.Array1D[ScalarT], onp.Array
 type _LstSqResult1N[ScalarT: np.generic, T] = tuple[onp.Array1D[ScalarT], onp.ArrayND[ScalarT], np.int64, T]
 type _LstSqResult21[ScalarT: np.generic, T] = tuple[onp.Array2D[ScalarT], onp.Array1D[ScalarT], np.int64, T]
 type _LstSqResultND[ScalarT: np.generic, T] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[ScalarT], np.int64 | Any, T]
+
+type _JustAnyShape = tuple[Never, Never, Never, Never]
 
 ###
 
@@ -1599,26 +1601,80 @@ def lstsq(
     lapack_driver: _LapackDriver | None = None,
 ) -> _LstSqResultND[Incomplete, onp.ArrayND[np.float64 | Any] | Any]: ...
 
-# TODO(jorenham): improve this
-@overload
-def pinv(  # (float[:, :], return_rank=False) -> float[:, :]
-    a: onp.ToFloatND,
+# keep structurally in sync with `pinvh` below
+@overload  # Nd ~f64
+def pinv[ShapeT: onp.AtLeast2D[Any] | tuple[Any, ...]](  # the strange upper bound is a pyrefly workaround
+    a: onp.ArrayND[npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64, ShapeT],
     *,
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
     return_rank: Literal[False] = False,
     check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # (float[:, :], return_rank=True) -> (float[:, :], int)
-def pinv(
-    a: onp.ToFloatND,
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # Nd ~f32
+def pinv[ShapeT: onp.AtLeast2D | tuple[Any, ...]](
+    a: onp.ArrayND[npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool, ShapeT],
     *,
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
-    return_rank: Literal[True],
+    return_rank: Literal[False] = False,
     check_finite: bool = True,
-) -> tuple[_FloatND, np.int_]: ...
-@overload  # (complex[:, :], return_rank=False) -> complex[:, :]
+) -> onp.ArrayND[np.float32, ShapeT]: ...
+@overload  # Nd ~c128
+def pinv[ShapeT: onp.AtLeast2D | tuple[Any, ...]](
+    a: onp.ArrayND[npc.complexfloating128 | npc.complexfloating160, ShapeT],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.complex128, ShapeT]: ...
+@overload  # Nd ~c64
+def pinv[ShapeT: onp.AtLeast2D | tuple[Any, ...]](
+    a: onp.ArrayND[npc.complexfloating64, ShapeT],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.complex64, ShapeT]: ...
+@overload  # 2d +float
+def pinv(
+    a: Sequence[Sequence[float]],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.Array2D[np.float64]: ...
+@overload  # 2d ~complex
+def pinv(
+    a: Sequence[list[complex]],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.Array2D[np.complex128]: ...
+@overload  # 3d +float
+def pinv(
+    a: Sequence[Sequence[Sequence[float]]],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.Array3D[np.float64]: ...
+@overload  # 3d ~complex
+def pinv(
+    a: Sequence[Sequence[list[complex]]],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.Array3D[np.complex128]: ...
+@overload  # Nd +c  (fallback)
 def pinv(
     a: onp.ToComplexND,
     *,
@@ -1626,8 +1682,152 @@ def pinv(
     rtol: onp.ToFloat | None = None,
     return_rank: Literal[False] = False,
     check_finite: bool = True,
-) -> _InexactND: ...
-@overload  # (complex[:, :], return_rank=True) -> (complex[:, :], int)
+) -> onp.ArrayND[Any, tuple[int, int] | tuple[Any, ...]]: ...  # pyright workaround on `numpy<2.1`
+@overload  # ?d ~f64, return_rank=True
+def pinv(
+    a: onp.ArrayND[npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64, _JustAnyShape],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64], np.int_ | Any]: ...
+@overload  # ?d ~f32, return_rank=True
+def pinv(
+    a: onp.ArrayND[npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool, _JustAnyShape],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float32], np.int_ | Any]: ...
+@overload  # ?d ~c128, return_rank=True
+def pinv(
+    a: onp.ArrayND[npc.complexfloating128 | npc.complexfloating160, _JustAnyShape],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex128], np.int_ | Any]: ...
+@overload  # ?d ~c64, return_rank=True
+def pinv(
+    a: onp.ArrayND[npc.complexfloating64, _JustAnyShape],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex64], np.int_ | Any]: ...
+@overload  # 2d ~f64, return_rank=True
+def pinv(
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array2D[np.float64], np.int_]: ...
+@overload  # 2d ~f32, return_rank=True
+def pinv(
+    a: onp.ToArrayStrict2D[np.float32, npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array2D[np.float32], np.int_]: ...
+@overload  # 2d ~c128, return_rank=True
+def pinv(
+    a: onp.ToArrayStrict2D[op.JustComplex, npc.complexfloating128 | npc.complexfloating160],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array2D[np.complex128], np.int_]: ...
+@overload  # 2d ~c64, return_rank=True
+def pinv(
+    a: onp.ToJustComplex64Strict2D,
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array2D[np.complex64], np.int_]: ...
+@overload  # 3d ~f64, return_rank=True
+def pinv(
+    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array3D[np.float64], onp.Array1D[np.int_]]: ...
+@overload  # 3d ~f32, return_rank=True
+def pinv(
+    a: onp.ToArrayStrict3D[np.float32, npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array3D[np.float32], onp.Array1D[np.int_]]: ...
+@overload  # 3d ~c128, return_rank=True
+def pinv(
+    a: onp.ToArrayStrict3D[op.JustComplex, npc.complexfloating128 | npc.complexfloating160],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array3D[np.complex128], onp.Array1D[np.int_]]: ...
+@overload  # 3d ~c64, return_rank=True
+def pinv(
+    a: onp.ToJustComplex64Strict3D,
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array3D[np.complex64], onp.Array1D[np.int_]]: ...
+@overload  # Nd ~f64, return_rank=True
+def pinv(
+    a: onp.ToArrayND[float, npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64], np.int_ | Any]: ...
+@overload  # Nd ~f32, return_rank=True
+def pinv(
+    a: onp.ToArrayND[np.float32, npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float32], np.int_ | Any]: ...
+@overload  # Nd ~c128, return_rank=True
+def pinv(
+    a: onp.ToArrayND[op.JustComplex, npc.complexfloating128 | npc.complexfloating160],
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex128], np.int_ | Any]: ...
+@overload  # Nd ~c64, return_rank=True
+def pinv(
+    a: onp.ToJustComplex64_ND,
+    *,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex64], np.int_ | Any]: ...
+@overload  # Nd ?, return_rank=True  (fallback)
 def pinv(
     a: onp.ToComplexND,
     *,
@@ -1635,56 +1835,251 @@ def pinv(
     rtol: onp.ToFloat | None = None,
     return_rank: Literal[True],
     check_finite: bool = True,
-) -> tuple[_InexactND, np.int_]: ...
+) -> tuple[onp.ArrayND[Any], np.int_ | Any]: ...
 
-# TODO(jorenham): improve this
-@overload  # (float[:, :], return_rank=False) -> float[:, :]
-def pinvh(
-    a: onp.ToFloatND,
+# keep structurally in sync with `pinv` above
+@overload  # Nd ~f64
+def pinvh[ShapeT: onp.AtLeast2D | tuple[Any, ...]](  # the strange upper bound is a pyrefly workaround
+    a: onp.ArrayND[npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64, ShapeT],
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
     lower: bool = True,
     return_rank: Literal[False] = False,
     check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # (float[:, :], return_rank=True, /) -> (float[:, :], int)
-def pinvh(
-    a: onp.ToFloatND,
-    atol: onp.ToFloat | None,
-    rtol: onp.ToFloat | None,
-    lower: bool,
-    return_rank: Literal[True],
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # Nd ~f32
+def pinvh[ShapeT: onp.AtLeast2D | tuple[Any, ...]](
+    a: onp.ArrayND[npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool, ShapeT],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    return_rank: Literal[False] = False,
     check_finite: bool = True,
-) -> tuple[_FloatND, int]: ...
-@overload  # (float[:, :], *, return_rank=True) -> (float[:, :], int)
+) -> onp.ArrayND[np.float32, ShapeT]: ...
+@overload  # Nd ~c128
+def pinvh[ShapeT: onp.AtLeast2D | tuple[Any, ...]](
+    a: onp.ArrayND[npc.complexfloating128 | npc.complexfloating160, ShapeT],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.complex128, ShapeT]: ...
+@overload  # Nd ~c64
+def pinvh[ShapeT: onp.AtLeast2D | tuple[Any, ...]](
+    a: onp.ArrayND[npc.complexfloating64, ShapeT],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.complex64, ShapeT]: ...
+@overload  # 2d +float
 def pinvh(
-    a: onp.ToFloatND,
+    a: Sequence[Sequence[float]],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.Array2D[np.float64]: ...
+@overload  # 2d ~complex
+def pinvh(
+    a: Sequence[list[complex]],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.Array2D[np.complex128]: ...
+@overload  # 3d +float
+def pinvh(
+    a: Sequence[Sequence[Sequence[float]]],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.Array3D[np.float64]: ...
+@overload  # 3d ~complex
+def pinvh(
+    a: Sequence[Sequence[list[complex]]],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.Array3D[np.complex128]: ...
+@overload  # Nd +c  (fallback)
+def pinvh(
+    a: onp.ToComplexND,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    return_rank: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[Any, tuple[int, int] | tuple[Any, ...]]: ...  # pyright workaround on `numpy<2.1`
+@overload  # ?d ~f64, return_rank=True
+def pinvh(
+    a: onp.ArrayND[npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64, _JustAnyShape],
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
     lower: bool = True,
     *,
     return_rank: Literal[True],
     check_finite: bool = True,
-) -> tuple[_FloatND, int]: ...
-@overload  # (complex[:, :], return_rank=False) -> complex[:, :]
+) -> tuple[onp.ArrayND[np.float64], int | Any]: ...
+@overload  # ?d ~f32, return_rank=True
 def pinvh(
-    a: onp.ToComplexND,
+    a: onp.ArrayND[npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool, _JustAnyShape],
     atol: onp.ToFloat | None = None,
     rtol: onp.ToFloat | None = None,
     lower: bool = True,
-    return_rank: Literal[False] = False,
-    check_finite: bool = True,
-) -> _InexactND: ...
-@overload  # (complex[:, :], return_rank=True, /) -> (complex[:, :], int)
-def pinvh(
-    a: onp.ToComplexND,
-    atol: onp.ToFloat | None,
-    rtol: onp.ToFloat | None,
-    lower: bool,
+    *,
     return_rank: Literal[True],
     check_finite: bool = True,
-) -> tuple[_InexactND, int]: ...
-@overload  # (complex[:, :], *, return_rank=True) -> (complex[:, :], int)
+) -> tuple[onp.ArrayND[np.float32], int | Any]: ...
+@overload  # ?d ~c128, return_rank=True
+def pinvh(
+    a: onp.ArrayND[npc.complexfloating128 | npc.complexfloating160, _JustAnyShape],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex128], int | Any]: ...
+@overload  # ?d ~c64, return_rank=True
+def pinvh(
+    a: onp.ArrayND[npc.complexfloating64, _JustAnyShape],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex64], int | Any]: ...
+@overload  # 2d ~f64, return_rank=True
+def pinvh(
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array2D[np.float64], int]: ...
+@overload  # 2d ~f32, return_rank=True
+def pinvh(
+    a: onp.ToArrayStrict2D[np.float32, npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array2D[np.float32], int]: ...
+@overload  # 2d ~c128, return_rank=True
+def pinvh(
+    a: onp.ToArrayStrict2D[op.JustComplex, npc.complexfloating128 | npc.complexfloating160],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array2D[np.complex128], int]: ...
+@overload  # 2d ~c64, return_rank=True
+def pinvh(
+    a: onp.ToJustComplex64Strict2D,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array2D[np.complex64], int]: ...
+@overload  # 3d ~f64, return_rank=True
+def pinvh(
+    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array3D[np.float64], onp.Array1D[np.int_]]: ...
+@overload  # 3d ~f32, return_rank=True
+def pinvh(
+    a: onp.ToArrayStrict3D[np.float32, npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array3D[np.float32], onp.Array1D[np.int_]]: ...
+@overload  # 3d ~c128, return_rank=True
+def pinvh(
+    a: onp.ToArrayStrict3D[op.JustComplex, npc.complexfloating128 | npc.complexfloating160],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array3D[np.complex128], onp.Array1D[np.int_]]: ...
+@overload  # 3d ~c64, return_rank=True
+def pinvh(
+    a: onp.ToJustComplex64Strict3D,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.Array3D[np.complex64], onp.Array1D[np.int_]]: ...
+@overload  # Nd ~f64, return_rank=True
+def pinvh(
+    a: onp.ToArrayND[float, npc.floating64 | npc.floating80 | npc.integer32 | npc.integer64],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64], int | Any]: ...
+@overload  # Nd ~f32, return_rank=True
+def pinvh(
+    a: onp.ToArrayND[np.float32, npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float32], int | Any]: ...
+@overload  # Nd ~c128, return_rank=True
+def pinvh(
+    a: onp.ToArrayND[op.JustComplex, npc.complexfloating128 | npc.complexfloating160],
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex128], int | Any]: ...
+@overload  # Nd ~c64, return_rank=True
+def pinvh(
+    a: onp.ToJustComplex64_ND,
+    atol: onp.ToFloat | None = None,
+    rtol: onp.ToFloat | None = None,
+    lower: bool = True,
+    *,
+    return_rank: Literal[True],
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex64], int | Any]: ...
+@overload  # Nd ?, return_rank=True  (fallback)
 def pinvh(
     a: onp.ToComplexND,
     atol: onp.ToFloat | None = None,
@@ -1693,7 +2088,7 @@ def pinvh(
     *,
     return_rank: Literal[True],
     check_finite: bool = True,
-) -> tuple[_InexactND, int]: ...
+) -> tuple[onp.ArrayND[Any], int | Any]: ...
 
 # TODO(jorenham): improve this
 @overload  # (float[:, :], separate=True) -> (float[:, :], float[:, :])
