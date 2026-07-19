@@ -171,24 +171,16 @@ def sum_labels[ScalarT: npc.inexact](
     input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
 ) -> ScalarT: ...
 @overload
-def sum_labels[ScalarT: npc.inexact](
-    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
-) -> onp.ArrayND[ScalarT]: ...
-@overload
-def sum_labels[ScalarT: npc.inexact](
-    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
-) -> onp.ArrayND[ScalarT]: ...
-@overload
 def sum_labels(input: _AsUInt64OrND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None) -> np.uint64: ...
 @overload
 def sum_labels(input: _AsInt64OrND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None) -> np.int64: ...
 @overload
 def sum_labels(
-    input: onp.ToInt | onp.ToIntND, labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
+    input: onp.ToFloat64 | onp.ToFloat64_ND, labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def sum_labels(
-    input: onp.ToInt | onp.ToIntND, labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
+    input: onp.ToFloat64 | onp.ToFloat64_ND, labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def sum_labels(
@@ -261,14 +253,6 @@ def mean[ScalarT: npc.inexact80](
     input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
 ) -> ScalarT: ...
 @overload
-def mean[ScalarT: npc.inexact](
-    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
-) -> onp.ArrayND[ScalarT]: ...
-@overload
-def mean[ScalarT: npc.inexact](
-    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
-) -> onp.ArrayND[ScalarT]: ...
-@overload
 def mean(
     input: onp.ToFloat64 | onp.ToFloat64_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
 ) -> np.float64: ...
@@ -306,14 +290,6 @@ def mean(
 def variance[ScalarT: npc.inexact80](
     input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
 ) -> ScalarT: ...
-@overload
-def variance[ScalarT: npc.inexact](
-    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
-) -> onp.ArrayND[ScalarT]: ...
-@overload
-def variance[ScalarT: npc.inexact](
-    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
-) -> onp.ArrayND[ScalarT]: ...
 @overload
 def variance(
     input: onp.ToFloat64 | onp.ToFloat64_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
@@ -354,14 +330,6 @@ def variance(
 def standard_deviation[ScalarT: npc.inexact80](
     input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
 ) -> ScalarT: ...
-@overload
-def standard_deviation[ScalarT: npc.inexact](
-    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
-) -> onp.ArrayND[ScalarT]: ...
-@overload
-def standard_deviation[ScalarT: npc.inexact](
-    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
-) -> onp.ArrayND[ScalarT]: ...
 @overload
 def standard_deviation(
     input: onp.ToFloat64 | onp.ToFloat64_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
