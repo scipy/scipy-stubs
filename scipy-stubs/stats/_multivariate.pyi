@@ -980,6 +980,10 @@ class dirichlet_gen(multi_rv_generic):
         size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array3ND[np.float64]: ...
+    @overload
+    def rvs(
+        self, /, alpha: onp.ToFloat1D, size: tuple[SupportsIndex, ...], random_state: onp.random.ToRNG | None = None
+    ) -> _Array1ND[np.float64]: ...
 
 class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
     # pyrefly: ignore [bad-override]
@@ -1011,6 +1015,8 @@ class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
         size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array3ND[np.float64]: ...
+    @overload
+    def rvs(self, /, size: tuple[SupportsIndex, ...], random_state: onp.random.ToRNG | None = None) -> _Array1ND[np.float64]: ...
 
 class wishart_gen(multi_rv_generic):
     def __call__(
@@ -1563,6 +1569,8 @@ class uniform_direction_gen(multi_rv_generic):
     ) -> onp.Array2D[np.float64]: ...
     @overload
     def rvs(self, /, dim: int, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND[np.float64]: ...
+    @overload
+    def rvs(self, /, dim: int, size: tuple[int, ...], random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
 
 class uniform_direction_frozen(multi_rv_frozen[uniform_direction_gen]):
     dim: Final[int]
@@ -1575,7 +1583,7 @@ class uniform_direction_frozen(multi_rv_frozen[uniform_direction_gen]):
     @overload
     def rvs(self, /, size: int | tuple[int], random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
     @overload
-    def rvs(self, /, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
+    def rvs(self, /, size: tuple[int, ...], random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
 
 class random_correlation_gen(multi_rv_generic):
     def __call__(
@@ -1797,9 +1805,9 @@ class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen])
 
     #
     @overload
-    def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> _Array1ND[np.int_]: ...
-    @overload
     def rvs(self, /, size: int | tuple[int] = 1, random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.int_]: ...
+    @overload
+    def rvs(self, /, size: tuple[int, ...], random_state: onp.random.ToRNG | None = None) -> _Array1ND[np.int_]: ...
 
 type _RandomTableRVSMethod = Literal["boyett", "patefield"]
 
@@ -1845,7 +1853,7 @@ class random_table_gen(multi_rv_generic):
         row: onp.ToJustIntND,
         col: onp.ToJustIntND,
         *,
-        size: onp.AtLeast1D,
+        size: tuple[int, ...],
         method: _RandomTableRVSMethod | None = None,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array3ND[np.int_]: ...
@@ -1874,7 +1882,7 @@ class random_table_frozen(multi_rv_frozen[random_table_gen]):
     ) -> onp.Array3D[np.int_]: ...
     @overload
     def rvs(
-        self, /, size: onp.AtLeast1D, method: _RandomTableRVSMethod | None = None, random_state: onp.random.ToRNG | None = None
+        self, /, size: tuple[int, ...], method: _RandomTableRVSMethod | None = None, random_state: onp.random.ToRNG | None = None
     ) -> _Array3ND[np.int_]: ...
 
 class dirichlet_multinomial_gen(multi_rv_generic):
@@ -1910,7 +1918,7 @@ class vonmises_fisher_gen(multi_rv_generic):
         /,
         mu: onp.ToFloat1D | None = None,
         kappa: onp.ToFloat = 1,
-        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]] = 1,
+        size: SupportsIndex | tuple[SupportsIndex, ...] = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array2ND[np.float64]: ...
     def fit(self, /, x: onp.ToFloatND) -> tuple[onp.Array1D[np.float64], float]: ...
@@ -1923,10 +1931,7 @@ class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
     def pdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
     def entropy(self, /) -> np.float64: ...
     def rvs(
-        self,
-        /,
-        size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]] = 1,
-        random_state: onp.random.ToRNG | None = None,
+        self, /, size: SupportsIndex | tuple[SupportsIndex, ...] = 1, random_state: onp.random.ToRNG | None = None
     ) -> _Array2ND[np.float64]: ...
 
 class normal_inverse_gamma_gen(multi_rv_generic):
