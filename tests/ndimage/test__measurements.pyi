@@ -43,6 +43,7 @@ out_labeled: onp.ArrayND[np.int32 | np.intp]
 
 # helper function for labeled_comprehension
 def _stat_func(x: onp.ToComplex | onp.ToComplexND) -> np.float64: ...
+def _stat_func_with_positions(x: onp.ToComplex | onp.ToComplexND, positions: onp.ToComplex | onp.ToComplexND) -> np.float64: ...
 
 ###
 # label
@@ -69,12 +70,15 @@ assert_type(value_indices(int_2d), dict[np.intp, tuple[onp.ArrayND[np.intp], ...
 ###
 # labeled_comprehension
 
-# index=None -> the return type of `func`, as-is; out_dtype and default are ignored at runtime
+# index=None -> the return type of `func`, as-is; `out_dtype` and `default` are ignored at runtime
 assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.dtype(np.float32), 0.0), np.float64)
 assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.intp, 0), np.float64)
 assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, None, 0.0), np.float64)
 assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.float64, 0.0), np.float64)
 assert_type(labeled_comprehension(f64_2d, None, None, _stat_func, np.complex128, 0.0), np.float64)
+assert_type(
+    labeled_comprehension(f64_2d, None, None, _stat_func_with_positions, np.float64, 0.0, pass_positions=True), np.float64
+)
 # labels may also be given with index=None
 assert_type(labeled_comprehension(f64_2d, label_1d, None, _stat_func, np.complex128, 0.0), np.float64)
 
