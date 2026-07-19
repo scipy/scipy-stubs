@@ -29,8 +29,8 @@ assert_type(fsolve(_func, [1.0, 2.0], full_output=True), tuple[_Float1D, _InfoDi
 # leastsq
 
 assert_type(leastsq(_func, [1.0, 2.0]), tuple[_Float1D, _IERFlag])
-assert_type(leastsq(_func, [1.0, 2.0], (), None, True), tuple[_Float1D, _Float2D, _InfoDictLSQ, str, _IERFlag])
-assert_type(leastsq(_func, [1.0, 2.0], full_output=True), tuple[_Float1D, _Float2D, _InfoDictLSQ, str, _IERFlag])
+assert_type(leastsq(_func, [1.0, 2.0], (), None, True), tuple[_Float1D, _Float2D | None, _InfoDictLSQ, str, _IERFlag])
+assert_type(leastsq(_func, [1.0, 2.0], full_output=True), tuple[_Float1D, _Float2D | None, _InfoDictLSQ, str, _IERFlag])
 
 ###
 # curve_fit, 1-d xdata
