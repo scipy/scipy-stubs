@@ -1402,7 +1402,7 @@ def envelope(
     *,
     n_out: int | None = None,
     squared: bool = False,
-    residual: _ResidualKind | None = "lowpass",
+    residual: _ResidualKind = "lowpass",
     axis: int = -1,
 ) -> onp.Array2D[np.float32]: ...
 @overload
@@ -1412,7 +1412,7 @@ def envelope(
     *,
     n_out: int | None = None,
     squared: bool = False,
-    residual: _ResidualKind | None = "lowpass",
+    residual: _ResidualKind = "lowpass",
     axis: int = -1,
 ) -> onp.Array3D[np.float32]: ...
 @overload
@@ -1422,7 +1422,7 @@ def envelope(
     *,
     n_out: int | None = None,
     squared: bool = False,
-    residual: _ResidualKind | None = "lowpass",
+    residual: _ResidualKind = "lowpass",
     axis: int = -1,
 ) -> onp.ArrayND[np.float32]: ...
 @overload
@@ -1432,7 +1432,7 @@ def envelope[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfl
     *,
     n_out: int | None = None,
     squared: bool = False,
-    residual: _ResidualKind | None = "lowpass",
+    residual: _ResidualKind = "lowpass",
     axis: int = -1,
 ) -> onp.Array2D[InexactT3]: ...
 @overload
@@ -1442,7 +1442,7 @@ def envelope[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfl
     *,
     n_out: int | None = None,
     squared: bool = False,
-    residual: _ResidualKind | None = "lowpass",
+    residual: _ResidualKind = "lowpass",
     axis: int = -1,
 ) -> onp.Array3D[InexactT3]: ...
 @overload
@@ -1452,6 +1452,46 @@ def envelope[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfl
     *,
     n_out: int | None = None,
     squared: bool = False,
-    residual: _ResidualKind | None = "lowpass",
+    residual: _ResidualKind = "lowpass",
     axis: int = -1,
 ) -> onp.ArrayND[InexactT3]: ...
+@overload
+def envelope[ShapeT: tuple[int, ...]](
+    z: onp.ArrayND[np.float16 | np.complex64, ShapeT],
+    bp_in: tuple[int | None, int | None] = (1, None),
+    *,
+    n_out: int | None = None,
+    squared: bool = False,
+    residual: None,
+    axis: int = -1,
+) -> onp.ArrayND[np.float32, ShapeT]: ...
+@overload
+def envelope[FloatT: np.float32 | np.float64 | npc.floating80, ShapeT: tuple[int, ...]](
+    z: onp.ArrayND[FloatT, ShapeT],
+    bp_in: tuple[int | None, int | None] = (1, None),
+    *,
+    n_out: int | None = None,
+    squared: bool = False,
+    residual: None,
+    axis: int = -1,
+) -> onp.ArrayND[FloatT, ShapeT]: ...
+@overload
+def envelope[ShapeT: tuple[int, ...]](
+    z: onp.ArrayND[npc.complexfloating128, ShapeT],
+    bp_in: tuple[int | None, int | None] = (1, None),
+    *,
+    n_out: int | None = None,
+    squared: bool = False,
+    residual: None,
+    axis: int = -1,
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload
+def envelope[ShapeT: tuple[int, ...]](
+    z: onp.ArrayND[npc.complexfloating160, ShapeT],
+    bp_in: tuple[int | None, int | None] = (1, None),
+    *,
+    n_out: int | None = None,
+    squared: bool = False,
+    residual: None,
+    axis: int = -1,
+) -> onp.ArrayND[np.longdouble, ShapeT]: ...
