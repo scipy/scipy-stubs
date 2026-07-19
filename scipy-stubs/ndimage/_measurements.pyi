@@ -44,6 +44,8 @@ type _Coord1D = list[_Coord0D]
 type _CoordND = list[tuple[onp.ArrayND[np.float64], ...]]
 
 type _AsComplex128OrND = onp.ToJustComplex128 | onp.ToJustComplex128_ND | onp.ToJustComplex64 | onp.ToJustComplex64_ND
+type _AsUInt64OrND = npc.unsignedinteger | onp.ToArrayND[npc.unsignedinteger, npc.unsignedinteger]
+type _AsInt64OrND = int | npc.signedinteger | np.bool | onp.ToArrayND[int, npc.signedinteger | np.bool]
 
 ###
 
@@ -164,74 +166,94 @@ def labeled_comprehension(
 ) -> onp.ArrayND[np.complex128]: ...
 
 #
-@type_check_only
-class _DefStatistic(Protocol):
-    @overload
-    def __call__[InexactT: npc.inexact](
-        self, /, input: onp.CanArrayND[InexactT], labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
-    ) -> InexactT: ...
-    @overload
-    def __call__[InexactT: npc.inexact](
-        self, /, input: onp.CanArrayND[InexactT], labels: onp.ToInt | onp.ToIntND, index: onp.ArrayND[npc.integer]
-    ) -> onp.ArrayND[InexactT]: ...
-    @overload
-    def __call__[InexactT: npc.inexact](
-        self,
-        /,
-        input: onp.CanArrayND[InexactT],
-        labels: onp.ToInt | onp.ToIntND | None = None,
-        *,
-        index: onp.ArrayND[npc.integer],
-    ) -> onp.ArrayND[InexactT]: ...
-    @overload
-    def __call__[InexactT: npc.inexact](
-        self, /, input: onp.CanArrayND[InexactT], labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
-    ) -> onp.ArrayND[InexactT]: ...
-    @overload
-    def __call__[InexactT: npc.inexact](
-        self, /, input: onp.CanArrayND[InexactT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
-    ) -> onp.ArrayND[InexactT]: ...
-    @overload
-    def __call__(
-        self, /, input: onp.ToInt | onp.ToIntND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
-    ) -> np.float64: ...
-    @overload
-    def __call__(
-        self, /, input: onp.ToInt | onp.ToIntND, labels: onp.ToInt | onp.ToIntND, index: onp.ArrayND[npc.integer]
-    ) -> onp.ArrayND[np.float64]: ...
-    @overload
-    def __call__(
-        self, /, input: onp.ToInt | onp.ToIntND, labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ArrayND[npc.integer]
-    ) -> onp.ArrayND[np.float64]: ...
-    @overload
-    def __call__(
-        self, /, input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
-    ) -> npc.inexact: ...
-    @overload
-    def __call__(
-        self, /, input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ArrayND[npc.integer]
-    ) -> onp.ArrayND[npc.inexact]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        input: onp.ToComplex | onp.ToComplexND,
-        labels: onp.ToInt | onp.ToIntND | None = None,
-        *,
-        index: onp.ArrayND[npc.integer],
-    ) -> onp.ArrayND[npc.inexact]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        input: onp.ToComplex | onp.ToComplexND,
-        labels: onp.ToInt | onp.ToIntND | None = None,
-        index: onp.ToInt | onp.ToIntND | None = None,
-    ) -> npc.inexact | onp.ArrayND[npc.inexact]: ...
+@overload
+def sum_labels[ScalarT: npc.inexact](
+    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
+) -> ScalarT: ...
+@overload
+def sum_labels[ScalarT: npc.inexact](
+    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[ScalarT]: ...
+@overload
+def sum_labels[ScalarT: npc.inexact](
+    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[ScalarT]: ...
+@overload
+def sum_labels(input: _AsUInt64OrND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None) -> np.uint64: ...
+@overload
+def sum_labels(input: _AsInt64OrND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None) -> np.int64: ...
+@overload
+def sum_labels(
+    input: onp.ToInt | onp.ToIntND, labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def sum_labels(
+    input: onp.ToInt | onp.ToIntND, labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def sum_labels(
+    input: onp.ToJustFloat64 | onp.ToJustFloat64_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
+) -> np.float64: ...
+@overload
+def sum_labels(
+    input: onp.ToJustComplex128 | onp.ToJustComplex128_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
+) -> np.complex128: ...
+@overload
+def sum_labels(
+    input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
+) -> Any: ...
+@overload
+def sum_labels(
+    input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[Any]: ...
+@overload
+def sum_labels(
+    input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[Any]: ...
 
-sum: _DefStatistic
-sum_labels: _DefStatistic
-median: _DefStatistic
+sum = sum_labels
+
+#
+@overload
+def median[ScalarT: npc.inexact](
+    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
+) -> ScalarT: ...
+@overload
+def median[ScalarT: npc.inexact](
+    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[ScalarT]: ...
+@overload
+def median[ScalarT: npc.inexact](
+    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[ScalarT]: ...
+@overload
+def median(input: onp.ToInt | onp.ToIntND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None) -> np.float64: ...
+@overload
+def median(
+    input: onp.ToInt | onp.ToIntND, labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def median(
+    input: onp.ToInt | onp.ToIntND, labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def median(
+    input: onp.ToJustFloat64 | onp.ToJustFloat64_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
+) -> np.float64: ...
+@overload
+def median(
+    input: onp.ToJustComplex128 | onp.ToJustComplex128_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
+) -> np.complex128: ...
+@overload
+def median(input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None) -> Any: ...
+@overload
+def median(
+    input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[Any]: ...
+@overload
+def median(
+    input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToInt | onp.ToIntND
+) -> onp.ArrayND[Any]: ...
 
 # keep in sync with `variance` and `standard_deviation`
 @overload
