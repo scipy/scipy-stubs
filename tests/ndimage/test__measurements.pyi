@@ -1,6 +1,6 @@
 # type-tests for `ndimage/_measurements.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -179,17 +179,17 @@ assert_type(standard_deviation(int_2d, label_1d), np.float64)
 assert_type(sum(int_2d, label_1d), np.int64)
 assert_type(sum(uint8_2d, label_1d), np.uint64)
 
-# array return (array index); everything except median goes through bincount and upcasts to float64
+# array return (labels with array index); everything except median goes through bincount and upcasts to float64
 assert_type(mean(f64_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 assert_type(mean(f32_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 assert_type(mean(int_2d, label_1d, index_1d), onp.ArrayND[np.float64])
-assert_type(mean(f64_2d, index=index_1d), onp.ArrayND[np.float64])
-assert_type(mean(c128_2d, label_1d, index_1d), onp.ArrayND[np.complex128])
+assert_type(mean(f64_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
+assert_type(mean(int_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(variance(f32_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 assert_type(variance(int_2d, label_1d, index_1d), onp.ArrayND[np.float64])
-assert_type(variance(int_2d, index=index_1d), onp.ArrayND[np.float64])
+assert_type(variance(f64_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(standard_deviation(f32_2d, label_1d, index_1d), onp.ArrayND[np.float64])
-assert_type(standard_deviation(int_2d, label_1d, index_1d), onp.ArrayND[np.float64])
+assert_type(standard_deviation(int_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(sum(f64_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 assert_type(sum(f32_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 assert_type(sum(int_2d, label_1d, index_1d), onp.ArrayND[np.float64])
@@ -197,20 +197,34 @@ assert_type(sum(uint8_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 assert_type(sum_labels(int_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 assert_type(sum_labels(f32_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 
-# array return (array index); median preserves inexact dtypes
+# array return (labels with array index); median preserves inexact dtypes
 assert_type(median(f32_2d, label_1d, index_1d), onp.ArrayND[np.float32])
 assert_type(median(c64_2d, label_1d, index_1d), onp.ArrayND[np.complex64])
 assert_type(median(int_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 
-# array return (scalar or sequence index)
-assert_type(mean(f64_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
-assert_type(mean(int_2d, label_1d, 1), onp.ArrayND[np.float64])
-assert_type(mean(int_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
-assert_type(mean(py_complex_1d, [1, 2], [1, 2]), onp.ArrayND[np.complex128])
-assert_type(variance(int_2d, label_1d, 1), onp.ArrayND[np.float64])
-assert_type(variance(f64_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
-assert_type(standard_deviation(int_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
-assert_type(standard_deviation(py_float_1d, [1, 2], 1), onp.ArrayND[np.float64])
+# scalar return (labels with scalar index)
+assert_type(sum(f32_2d, label_1d, 1), np.float32)
+assert_type(sum(int_2d, label_1d, 1), np.int64)
+assert_type(sum(uint8_2d, label_1d, 1), np.uint64)
+assert_type(mean(f32_2d, label_1d, 1), np.float64)
+assert_type(mean(int_2d, label_1d, 1), np.float64)
+assert_type(mean(c64_2d, label_1d, 1), np.complex128)
+assert_type(mean(f80_2d, label_1d, 1), np.longdouble)
+assert_type(variance(int_2d, label_1d, 1), np.float64)
+assert_type(standard_deviation(py_float_1d, [1, 2], 1), np.float64)
+assert_type(median(f32_2d, label_1d, 1), np.float32)
+
+# scalar return (no labels); index is ignored when labels is None
+assert_type(mean(f64_2d, index=index_1d), np.float64)
+assert_type(variance(int_2d, index=index_1d), np.float64)
+assert_type(sum(f32_2d, index=index_1d), np.float32)
+assert_type(sum(f32_2d, None, index_1d), np.float32)
+assert_type(median(f32_2d, None, index_1d), np.float32)
+
+# complex or longdouble input with labels and an array index raises a TypeError at runtime
+assert_type(mean(c128_2d, label_1d, index_1d), onp.ArrayND[Any])
+assert_type(mean(py_complex_1d, [1, 2], [1, 2]), onp.ArrayND[Any])
+assert_type(sum(f80_2d, label_1d, index_1d), onp.ArrayND[Any])
 
 ###
 # minimum / maximum
