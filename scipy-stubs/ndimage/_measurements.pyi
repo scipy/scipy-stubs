@@ -49,6 +49,9 @@ type _AsInt64OrND = int | npc.signedinteger | np.bool | onp.ToArrayND[int, npc.s
 
 ###
 
+# Mypy reports false positive `overload-overlap` errors on `numpy<2.5`, so we're forced to disable the error module-wide.
+# mypy: disable-error-code="overload-overlap"
+
 #
 @overload
 def label(
