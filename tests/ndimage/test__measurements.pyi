@@ -30,9 +30,19 @@ from scipy.ndimage import (
 # typed test arrays
 f64_2d: onp.Array2D[np.float64]
 f32_2d: onp.Array2D[np.float32]
+f16_2d: onp.Array2D[np.float16]
+f80_2d: onp.Array2D[np.longdouble]
+c64_2d: onp.Array2D[np.complex64]
 c128_2d: onp.Array2D[np.complex128]
+c160_2d: onp.Array2D[np.clongdouble]
 int_2d: onp.Array2D[np.int32]
 uint8_2d: onp.Array2D[np.uint8]
+bool_2d: onp.Array2D[np.bool_]
+
+# python scalar sequences
+py_float_1d: list[float]
+py_int_2d: list[list[int]]
+py_complex_1d: list[complex]
 
 # label / index arrays for supervised statistics
 label_1d: onp.Array1D[np.int32]
@@ -111,20 +121,67 @@ labeled_comprehension(f64_2d, None, index_1d, _stat_func, np.float64, 0.0)  # ty
 ###
 # sum / sum_labels / mean / variance / standard_deviation / median
 
-# scalar return (no index)
+# scalar return (no index); mean / variance / standard_deviation upcast to at least float64
 assert_type(mean(f64_2d), np.float64)
-assert_type(mean(f32_2d), np.float32)
+assert_type(mean(f32_2d), np.float64)
+assert_type(mean(f16_2d), np.float64)
+assert_type(mean(f80_2d), np.longdouble)
+assert_type(mean(int_2d), np.float64)
+assert_type(mean(bool_2d), np.float64)
+assert_type(mean(c64_2d), np.complex128)
 assert_type(mean(c128_2d), np.complex128)
-assert_type(sum(f64_2d), np.float64)
-assert_type(sum_labels(f64_2d), np.float64)
+assert_type(mean(c160_2d), np.clongdouble)
+assert_type(mean(py_float_1d), np.float64)
+assert_type(mean(py_int_2d), np.float64)
+assert_type(mean(py_complex_1d), np.complex128)
 assert_type(variance(f64_2d), np.float64)
+assert_type(variance(f32_2d), np.float64)
+assert_type(variance(f80_2d), np.longdouble)
+assert_type(variance(int_2d), np.float64)
+assert_type(variance(c64_2d), np.complex128)
+assert_type(variance(c128_2d), np.complex128)
+assert_type(variance(c160_2d), np.clongdouble)
 assert_type(standard_deviation(f64_2d), np.float64)
+assert_type(standard_deviation(f32_2d), np.float64)
+assert_type(standard_deviation(f80_2d), np.longdouble)
+assert_type(standard_deviation(int_2d), np.float64)
+assert_type(standard_deviation(c64_2d), np.complex128)
+assert_type(standard_deviation(c128_2d), np.complex128)
+assert_type(standard_deviation(c160_2d), np.clongdouble)
+
+# scalar return (no index); sum / sum_labels / median preserve inexact dtypes
+assert_type(sum(f64_2d), np.float64)
+assert_type(sum(f32_2d), np.float32)
+assert_type(sum_labels(f64_2d), np.float64)
 assert_type(median(f64_2d), np.float64)
+assert_type(median(f32_2d), np.float32)
+
+# labels without index -> still a scalar
+assert_type(mean(f32_2d, label_1d), np.float64)
+assert_type(variance(c64_2d, label_1d), np.complex128)
+assert_type(standard_deviation(int_2d, label_1d), np.float64)
 
 # array return (array index)
 assert_type(mean(f64_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 assert_type(mean(f32_2d, label_1d, index_1d), onp.ArrayND[np.float32])
+assert_type(mean(int_2d, label_1d, index_1d), onp.ArrayND[np.float64])
+assert_type(mean(f64_2d, index=index_1d), onp.ArrayND[np.float64])
+assert_type(variance(f32_2d, label_1d, index_1d), onp.ArrayND[np.float32])
+assert_type(variance(int_2d, label_1d, index_1d), onp.ArrayND[np.float64])
+assert_type(variance(int_2d, index=index_1d), onp.ArrayND[np.float64])
+assert_type(standard_deviation(f32_2d, label_1d, index_1d), onp.ArrayND[np.float32])
+assert_type(standard_deviation(int_2d, label_1d, index_1d), onp.ArrayND[np.float64])
 assert_type(sum(f64_2d, label_1d, index_1d), onp.ArrayND[np.float64])
+
+# array return (scalar or sequence index)
+assert_type(mean(f64_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
+assert_type(mean(int_2d, label_1d, 1), onp.ArrayND[np.float64])
+assert_type(mean(int_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
+assert_type(mean(py_complex_1d, [1, 2], [1, 2]), onp.ArrayND[np.complex128])
+assert_type(variance(int_2d, label_1d, 1), onp.ArrayND[np.float64])
+assert_type(variance(f64_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
+assert_type(standard_deviation(int_2d, label_1d, [1, 2]), onp.ArrayND[np.float64])
+assert_type(standard_deviation(py_float_1d, [1, 2], 1), onp.ArrayND[np.float64])
 
 ###
 # minimum / maximum
