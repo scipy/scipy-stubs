@@ -5,6 +5,7 @@ from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.spatial._qhull import Delaunay, DelaunayInfo_t
 
@@ -13,6 +14,10 @@ from scipy.spatial._qhull import Delaunay, DelaunayInfo_t
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
 ###
+
+def _ndim_coords_from_arrays[ScalarT: npc.inexact64](
+    points: tuple[onp.ArrayND[ScalarT], ...] | onp.ArrayND[ScalarT], ndim: int | None = None
+) -> onp.ArrayND[ScalarT]: ...
 
 class GradientEstimationWarning(Warning): ...
 
