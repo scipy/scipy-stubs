@@ -1,3 +1,4 @@
+from _ctypes import CFuncPtr as _CFuncPtr
 from collections.abc import Callable
 from typing import Any, Final, SupportsFloat, TypedDict, type_check_only
 from typing_extensions import CapsuleType, ReadOnly, TypeIs
@@ -26,3 +27,13 @@ sig: tuple[bytes, int] = ...  # undocumented
 sigs: list[tuple[bytes, int]] = ...  # undocumented
 
 def test_call_cython(callback_obj: Callable[[float], SupportsFloat], value: float) -> float: ...  # undocumented
+
+# ctypes declarations of the cython callables
+plus1_t: Final[type[_CFuncPtr]] = ...  # undocumented
+plus1_ctypes: Final[_CFuncPtr] = ...  # undocumented
+plus1b_t: Final[type[_CFuncPtr]] = ...  # undocumented
+plus1b_ctypes: Final[_CFuncPtr] = ...  # undocumented
+plus1bc_t: Final[type[_CFuncPtr]] = ...  # undocumented
+plus1bc_ctypes: Final[_CFuncPtr] = ...  # undocumented
+sine_t: Final[type[_CFuncPtr]] = ...  # undocumented
+sine_ctypes: Final[_CFuncPtr] = ...  # undocumented
