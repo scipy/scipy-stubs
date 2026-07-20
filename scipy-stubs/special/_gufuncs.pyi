@@ -6,7 +6,7 @@ _lqmn: Final[np.ufunc] = ...  # undocumented
 _lqn: Final[np.ufunc] = ...  # undocumented
 
 _poisson_binom_cdf: Final[np.ufunc] = ...  # undocumented
-_poisson_binom_pdf: Final[np.ufunc] = ...  # undocumented
+_poisson_binom_pmf: Final[np.ufunc] = ...  # undocumented
 
 _rctj: Final[np.ufunc] = ...  # undocumented
 _rcty: Final[np.ufunc] = ...  # undocumented
