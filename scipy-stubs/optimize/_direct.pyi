@@ -1,7 +1,7 @@
 # defined in scipy/optimize/_directmodule.c
 
-from _typeshed import Incomplete
 from collections.abc import Callable
+from typing import Literal
 
 import numpy as np
 import optype.numpy as onp
@@ -9,7 +9,7 @@ import optype.numpy as onp
 from scipy._lib._ccallback import LowLevelCallable
 
 def direct(
-    f: Callable[..., Incomplete] | LowLevelCallable,
+    f: Callable[..., float] | LowLevelCallable,
     lv: onp.Array1D[np.float64],
     ub: onp.Array1D[np.float64],
     f_args: tuple[object, ...],
@@ -17,11 +17,17 @@ def direct(
     magic_eps: float,
     max_feval: int,
     max_iter: int,
-    algorithm: str,
-    fglobal: onp.Array1D[np.float64],
+    algorithm: bool | Literal[0, 1],
+    fglobal: float,
     fglobal_reltol: float,
     volume_reltol: float,
     sigma_reltol: float,
-    callback: Callable[..., object],
+    callback: Callable[..., object] | None,
     /,
-) -> tuple[list[Incomplete], float, int, int, int]: ...  # -> (x_seq, minf, ret_code, numfunc, numiter)
+) -> tuple[
+    list[float],  # x_seq
+    float,  # minf
+    int,  # ret_code
+    int,  # numfunc
+    int,  # numiter
+]: ...
