@@ -12,14 +12,16 @@ ITYPE: Final[type[np.int32]] = ...
 
 class MaximumFlowResult:
     flow_value: Final[np.int_]
-    flow: csr_array[np.int32, tuple[int, int]]
+    flow: Final[csr_array[np.int32]]
 
-    def __init__(self, /, flow_value: np.int_, flow: csr_array[np.int32, tuple[int, int]]) -> None: ...
+    def __init__(self, /, flow_value: np.int_, flow: csr_array[np.int32]) -> None: ...
 
+#
 def maximum_flow(
-    csgraph: csr_array[npc.integer, tuple[int, int]],
-    source: int,
-    sink: int,
-    *,
-    method: Literal["edmonds_karp", "dinic"] = "dinic",
+    csgraph: csr_array[npc.integer], source: int, sink: int, *, method: Literal["edmonds_karp", "dinic"] = "dinic"
 ) -> MaximumFlowResult: ...
+
+#
+def _add_reverse_edges(a: csr_array[np.int32]) -> csr_array[np.int32]: ...  # undocumented
+def _make_edge_pointers(a: csr_array[npc.integer]) -> csr_array[np.int32]: ...  # undocumented
+def _make_tails(a: csr_array[npc.integer]) -> csr_array[np.int32]: ...  # undocumented
