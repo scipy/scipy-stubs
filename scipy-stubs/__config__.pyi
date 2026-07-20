@@ -33,8 +33,8 @@ _ConfigMachineInformationDict = TypedDict(
     "_ConfigMachineInformationDict",
     {"host": _ConfigMachineInformationValueDict, "build": _ConfigMachineInformationValueDict, "cross-compiled": bool},
 )
-_ConfigBuildDependencyDict = TypedDict(
-    "_ConfigBuildDependencyDict",
+_ConfigBuildDependencyBlasDict = TypedDict(
+    "_ConfigBuildDependencyBlasDict",
     {
         "name": str,
         "found": bool,
@@ -44,6 +44,22 @@ _ConfigBuildDependencyDict = TypedDict(
         "lib directory": str,
         "openblas configuration": str,
         "pc file directory": str,
+        "has ilp64": bool,
+        "cython blas ilp64": bool,
+    },
+)
+_ConfigBuildDependencyLapackDict = TypedDict(
+    "_ConfigBuildDependencyLapackDict",
+    {
+        "name": str,
+        "found": bool,
+        "version": str,
+        "detection method": str,
+        "include directory": str,
+        "lib directory": str,
+        "openblas configuration": str,
+        "pc file directory": str,
+        "has ilp64": bool,
     },
 )
 _ConfigBuildDependencyPybind11Dict = TypedDict(
@@ -53,8 +69,8 @@ _ConfigBuildDependencyPybind11Dict = TypedDict(
 
 @type_check_only
 class _ConfigBuildDependenciesDict(TypedDict):
-    blas: _ConfigBuildDependencyDict
-    lapack: _ConfigBuildDependencyDict
+    blas: _ConfigBuildDependencyBlasDict
+    lapack: _ConfigBuildDependencyLapackDict
     pybind11: _ConfigBuildDependencyPybind11Dict
 
 @type_check_only
