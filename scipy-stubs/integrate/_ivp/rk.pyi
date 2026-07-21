@@ -29,6 +29,8 @@ class RungeKutta(OdeSolver, Generic[_SCT_fc]):
     f: onp.ArrayND[_SCT_fc]
     K: onp.ArrayND[_SCT_fc]
     max_step: float
+    rtol: float
+    atol: float
     h_abs: float
     error_exponent: float
     h_previous: float | None
