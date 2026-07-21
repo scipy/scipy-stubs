@@ -345,6 +345,7 @@ derwen.ai ([kglab](https://github.com/DerwenAI/kglab)) |
 [Efax](https://github.com/NeilGirdhar/efax) |
 [Fast GraphRAG](https://github.com/circlemind-ai/fast-graphrag) |
 [foamlib](https://github.com/gerlero/foamlib) |
+[FreeMoCap](https://github.com/freemocap/freemocap) |
 [Freqtrade](https://github.com/freqtrade/freqtrade) |
 [graphix](https://github.com/TeamGraphix/graphix) |
 Gurobi ([gurobi-logtools](https://github.com/Gurobi/gurobi-logtools)) |
