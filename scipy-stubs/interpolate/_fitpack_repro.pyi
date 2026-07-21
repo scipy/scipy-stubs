@@ -1,5 +1,5 @@
 from collections.abc import Callable, Generator
-from typing import Final, Literal, type_check_only
+from typing import Any, Final, Literal, type_check_only
 
 import numpy as np
 import optype as op
@@ -92,7 +92,9 @@ class Fperiodic:  # undocumented
     ) -> None: ...
     def __call__(self, /, p: float) -> float: ...
 
-class Bunch: ...  # undocumented
+# undocumented
+class Bunch:
+    def __init__(self, /, **kwargs: Any) -> None: ...
 
 #
 def add_knot(
