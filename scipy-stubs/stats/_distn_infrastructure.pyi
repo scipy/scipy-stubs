@@ -106,6 +106,8 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     dist: _RVT_co
     args: _RVArgs[_FloatNDT_co]
     kwds: _RVKwds
+    a: Final[float]
+    b: Final[float]
 
     @property
     def random_state(self, /) -> onp.random.RNG: ...
@@ -258,6 +260,9 @@ class rv_generic:
 
     #
     def __init__(self, /, seed: onp.random.ToRNG | None = None) -> None: ...
+    def __setstate__(self, state: dict[str, Any]) -> None: ...
+
+    #
     def _attach_methods(self, /) -> None: ...
     def _attach_argparser_methods(self, /) -> None: ...
     def _construct_argparser(
@@ -425,6 +430,8 @@ class rv_generic:
 class _ShapeInfo:
     name: Final[str]
     integrality: Final[bool]
+    endpoints: Final[Sequence[_Float]]
+    inclusive: Final[bool]
     domain: Final[Sequence[_Float]]  # in practice always a list of size two
 
     def __init__(
