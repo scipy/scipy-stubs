@@ -1,6 +1,6 @@
 from collections.abc import Callable, Iterable, Sequence
 from types import ModuleType
-from typing import Concatenate, Final, Generic, Literal, Protocol, overload, type_check_only
+from typing import Any, Concatenate, Final, Generic, Literal, Protocol, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -19,7 +19,7 @@ type _ToHess = _ToJac | LinearOperator
 
 type _Vec[FloatT: npc.floating] = onp.Array1D[FloatT]
 type _Jac[FloatT: npc.floating] = onp.Array2D[FloatT] | csr_array[FloatT]
-type _Hess[FloatT: npc.floating] = _Jac[FloatT] | LinearOperator
+type _Hess[FloatT: npc.floating] = _Jac[FloatT] | LinearOperator[FloatT, tuple[int, int]]
 
 type _ScalarFun[FloatT: npc.floating] = Callable[Concatenate[onp.Array1D[FloatT], ...], onp.ToFloat]
 type _VectorFun[FloatT: npc.floating] = Callable[Concatenate[onp.Array1D[FloatT], ...], onp.ToFloat1D]
@@ -45,6 +45,42 @@ _XT_contra = TypeVar("_XT_contra", bound=npc.floating, default=npc.floating, con
 
 FD_METHODS: Final = "2-point", "3-point", "cs"
 
+class _ScalarGradWrapper(Generic[_XT_contra]):
+    grad: _ToGradFun[_XT_contra]
+    fun: Callable[[onp.Array1D[_XT_contra]], onp.ToFloat]
+    args: Sequence[Any]
+    finite_diff_options: dict[str, Any] | None
+    ngev: int
+    nfev: int
+
+    def __init__(
+        self,
+        grad: _ToGradFun[_XT_contra],
+        fun: Callable[[onp.Array1D[_XT_contra]], onp.ToFloat] | None = None,
+        args: Sequence[Any] | None = None,
+        finite_diff_options: dict[str, Any] | None = None,
+    ) -> None: ...
+    def __call__(self, x: _Vec[_XT_contra], f0: onp.ToFloat | None = None) -> _Vec[npc.floating]: ...
+
+class _ScalarHessWrapper(Generic[_XT_contra]):
+    hess: _ToHessFun[_XT_contra]
+    grad: _ScalarGradWrapper[_XT_contra] | None
+    args: Sequence[Any]
+    finite_diff_options: dict[str, Any] | None
+    ngev: int
+    nhev: int
+    H: _Hess[npc.floating]
+
+    def __init__(
+        self,
+        hess: _ToHessFun[_XT_contra],
+        x0: onp.Array1D[_XT_contra] | None = None,
+        grad: _ScalarGradWrapper[_XT_contra] | None = None,
+        args: Sequence[Any] | None = None,
+        finite_diff_options: dict[str, Any] | None = None,
+    ) -> None: ...
+    def __call__(self, x: _Vec[_XT_contra], f0: onp.ToFloat | None = None) -> _Hess[npc.floating]: ...
+
 class ScalarFunction(Generic[_XT_contra]):
     xp: Final[ModuleType]
 
@@ -63,13 +99,13 @@ class ScalarFunction(Generic[_XT_contra]):
     f_updated: bool
 
     _orig_grad: _ToGradFun[_XT_contra]  # readonly
-    _wrapped_grad: Callable[[onp.Array1D[_XT_contra]], _Vec[npc.floating]]  # readonly
+    _wrapped_grad: _ScalarGradWrapper[_XT_contra]  # readonly
     _ngev: Final[list[int]]  # size 1
     g_prev: _Vec[npc.floating] | None
     g_updated: bool
 
     _orig_hess: _ToHessFun[_XT_contra]  # readonly
-    _wrapped_hess: Callable[[onp.Array1D[_XT_contra]], _Hess[npc.floating]]  # readonly
+    _wrapped_hess: _ScalarHessWrapper[_XT_contra]  # readonly
     _nhev: Final[list[int]]  # size 1
     H: _Hess[npc.floating]
     H_updated: bool
@@ -124,6 +160,54 @@ class ScalarFunction(Generic[_XT_contra]):
     def hess(self, /, x: onp.ToFloat1D) -> _Hess[npc.floating]: ...
     def fun_and_grad(self, /, x: onp.ToFloat1D) -> tuple[float | npc.floating, _Vec[npc.floating]]: ...
 
+class _VectorFunWrapper(Generic[_XT_contra]):
+    fun: _VectorFun[_XT_contra]
+    nfev: int
+
+    def __init__(self, fun: _VectorFun[_XT_contra]) -> None: ...
+    def __call__[XT: npc.floating](self, x: _Vec[XT]) -> _Vec[XT]: ...
+
+class _VectorJacWrapper(Generic[_XT_contra]):
+    jac: _JacFun[_XT_contra]
+    fun: _VectorFunWrapper[_XT_contra]
+    finite_diff_options: Final[dict[str, Any] | None]
+    sparse_jacobian: Final[bool | None]
+    njev: int
+    nfev: int
+
+    def __init__(
+        self,
+        jac: _JacFun[_XT_contra],
+        fun: _VectorFunWrapper[_XT_contra] | None = None,
+        finite_diff_options: dict[str, Any] | None = None,
+        sparse_jacobian: bool | None = None,
+    ) -> None: ...
+
+    #
+    def __call__[XT: npc.floating](self: _VectorJacWrapper[XT], x: _Vec[XT], f0: _Vec[XT] | None = None) -> _Hess[XT]: ...
+
+class _VectorHessWrapper(Generic[_XT_contra]):
+    hess: _HessFun[_XT_contra]
+    jac: _VectorJacWrapper[_XT_contra]
+    finite_diff_options: Final[dict[str, Any] | None]
+    nhev: int
+    njev: int
+
+    def __init__(
+        self,
+        hess: _HessFun[_XT_contra],
+        jac: _VectorJacWrapper[_XT_contra] | None = None,
+        finite_diff_options: dict[str, Any] | None = None,
+    ) -> None: ...
+
+    #
+    def __call__[XT: npc.floating](
+        self: _VectorHessWrapper[XT], x: _Vec[XT], v: _Vec[XT], J0: _ToJac | None = None
+    ) -> _Hess[XT]: ...
+
+    #
+    def jac_dot_v[XT: npc.floating](self: _VectorHessWrapper[XT], x: _Vec[XT], v: _Vec[XT]) -> _Vec[XT]: ...
+
 class VectorFunction(Generic[_XT_contra]):
     xp: Final[ModuleType]
 
@@ -145,6 +229,10 @@ class VectorFunction(Generic[_XT_contra]):
 
     H: _Hess[npc.floating]
     H_updated: bool
+
+    fun_wrapped: _VectorFunWrapper[_XT_contra]
+    jac_wrapped: _VectorJacWrapper[_XT_contra]
+    hess_wrapped: _VectorHessWrapper[_XT_contra]
 
     @overload
     def __init__(
