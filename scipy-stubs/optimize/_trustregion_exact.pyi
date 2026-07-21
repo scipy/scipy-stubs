@@ -42,10 +42,14 @@ class IterativeSubproblem(BaseQuadraticSubproblem):
     niter: int
     k_easy: float | np.float64
     k_hard: float | np.float64
+    maxiter: float
     hess_inf: float | np.float64
     hess_fro: float | np.float64
     lambda_lb: float | np.float64 | None  # intially `None`
     lambda_current: float | np.float64  # set in `solve()`
+    cholesky: Callable[..., tuple[onp.Array2D[np.float64], int]]
+    hess_gershgorin_lb: np.float64
+    hess_gershgorin_ub: np.float64
 
     def __init__(
         self,
