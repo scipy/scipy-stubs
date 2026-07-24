@@ -15,7 +15,7 @@ lint:
     uv run ruff format --check
     uv run dprint check --incremental=false
     uvx typos
-    uvx zizmor --quiet .
+    uvx zizmor --quiet --persona=pedantic .
 
 # auto-fix lint and formatting issues
 fix:
