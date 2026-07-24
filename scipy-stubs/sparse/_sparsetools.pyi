@@ -22,8 +22,8 @@ import optype.numpy.compat as npc
 
 ###
 
-type _i = int | np.int32 | np.int64  # noqa: PYI042
-type _l = int | np.int64  # noqa: PYI042
+type _i = int | np.int32 | np.int64  # ruff: ignore[snake-case-type-alias]
+type _l = int | np.int64  # ruff: ignore[snake-case-type-alias]
 type _I = onp.ArrayND[np.int32 | np.int64]
 type _T = onp.ArrayND[npc.number | np.bool]
 type _V = Sequence[_i]

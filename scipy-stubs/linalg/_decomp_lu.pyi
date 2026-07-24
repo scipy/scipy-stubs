@@ -9,9 +9,9 @@ __all__ = ["lu", "lu_factor", "lu_solve"]
 
 ###
 
-type _as_f32 = np.float32 | np.float16 | npc.integer16 | npc.integer8 | np.bool  # noqa: PYI042
-type _as_f64 = npc.floating64 | npc.floating80 | npc.integer64 | npc.integer32  # noqa: PYI042
-type _as_c128 = npc.complexfloating160 | npc.complexfloating128  # noqa: PYI042
+type _as_f32 = np.float32 | np.float16 | npc.integer16 | npc.integer8 | np.bool  # ruff: ignore[snake-case-type-alias]
+type _as_f64 = npc.floating64 | npc.floating80 | npc.integer64 | npc.integer32  # ruff: ignore[snake-case-type-alias]
+type _as_c128 = npc.complexfloating160 | npc.complexfloating128  # ruff: ignore[snake-case-type-alias]
 
 type _PivND = onp.ToArrayND[int, npc.integer]
 type _Trans = Literal[0, 1, 2]

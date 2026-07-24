@@ -7,15 +7,15 @@ import optype.numpy.compat as npc
 
 ###
 
-type _bint = bool | Literal[0, 1]  # noqa: PYI042
+type _bint = bool | Literal[0, 1]  # ruff: ignore[snake-case-type-alias]
 
-type _bool_1d = onp.Array1D[np.bool]  # noqa: PYI042
-type _f64_1d = onp.Array1D[np.float64]  # noqa: PYI042
-type _f64_2d = onp.Array2D[np.float64]  # noqa: PYI042
-type _f64_3d = onp.Array3D[np.float64]  # noqa: PYI042
-type _f64_nd = onp.ArrayND[np.float64]  # noqa: PYI042
-type _f64_xd = onp.Array[tuple[Never, ...], np.float64]  # noqa: PYI042
-type _isize_2d = onp.Array2D[np.intp]  # noqa: PYI042
+type _bool_1d = onp.Array1D[np.bool]  # ruff: ignore[snake-case-type-alias]
+type _f64_1d = onp.Array1D[np.float64]  # ruff: ignore[snake-case-type-alias]
+type _f64_2d = onp.Array2D[np.float64]  # ruff: ignore[snake-case-type-alias]
+type _f64_3d = onp.Array3D[np.float64]  # ruff: ignore[snake-case-type-alias]
+type _f64_nd = onp.ArrayND[np.float64]  # ruff: ignore[snake-case-type-alias]
+type _f64_xd = onp.Array[tuple[Never, ...], np.float64]  # ruff: ignore[snake-case-type-alias]
+type _isize_2d = onp.Array2D[np.intp]  # ruff: ignore[snake-case-type-alias]
 
 type _Indexer = int | slice | EllipsisType | None
 type _Order = Literal["e", "extrinsic", "i", "intrinsic"]

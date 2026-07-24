@@ -92,7 +92,7 @@ assert_type(_rot_nd.shape, tuple[Any, ...])
 
 # dunders
 
-assert_type(_rot_nd.__bool__(), Literal[True])  # noqa: PLC2801
+assert_type(_rot_nd.__bool__(), Literal[True])  # ruff: ignore[unnecessary-dunder-call]
 assert_type(len(_rot_nd), int)
 assert_type(_rot_nd * _rot_nd, Rotation)
 assert_type(_rot_nd**2.0, Rotation)

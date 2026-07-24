@@ -18,10 +18,10 @@ __all__ = ["Binomial", "Logistic", "Normal", "Uniform"]
 
 ###
 
-type _0D = tuple[()]  # noqa: PYI042
-type _1D = tuple[int]  # noqa: PYI042
-type _2D = tuple[int, int]  # noqa: PYI042
-type _3D = tuple[int, int, int]  # noqa: PYI042
+type _0D = tuple[()]  # ruff: ignore[snake-case-type-alias]
+type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
+type _2D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
+type _3D = tuple[int, int, int]  # ruff: ignore[snake-case-type-alias]
 
 type _ToFloat_1D = onp.ToFloatStrict1D | onp.ToFloat
 type _ToFloat_2D = onp.ToFloatStrict2D | _ToFloat_1D

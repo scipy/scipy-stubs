@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# ruff: noqa: PLR6301
+# ruff: file-ignore[no-self-use]
 
 import argparse
 import ast
@@ -115,7 +115,7 @@ def download_repo(repo_name: str, target_dir: Path) -> Path:
         try:
             _, _ = urllib.request.urlretrieve(zip_url, zip_path)
         except urllib.error.HTTPError as e:
-            if e.code == 404:  # noqa: PLR2004
+            if e.code == 404:  # ruff: ignore[magic-value-comparison]
                 logger.warning(
                     "Branch %s not found for %s, trying next branch", branch, repo_name
                 )
@@ -138,7 +138,7 @@ def download_repo(repo_name: str, target_dir: Path) -> Path:
         # Fallback: return the first directory
         return next(extract_dir.iterdir())
 
-    raise RuntimeError(f"Could not download {repo_name} - no valid branches found")  # noqa: TRY003
+    raise RuntimeError(f"Could not download {repo_name} - no valid branches found")  # ruff: ignore[raise-vanilla-args]
 
 
 def find_python_files(repo_path: Path) -> Generator[Path]:

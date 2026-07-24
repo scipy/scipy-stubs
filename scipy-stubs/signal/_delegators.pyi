@@ -143,7 +143,7 @@ def savgol_coeffs_signature[ModuleT: ModuleType](
 ) -> ModuleT: ...
 
 #
-def unit_impulse_signature(shape: _, idx: _ = None, dtype: _ = float) -> _NumpyModule: ...  # noqa: PYI011
+def unit_impulse_signature(shape: _, idx: _ = None, dtype: _ = float) -> _NumpyModule: ...  # ruff: ignore[typed-argument-default-in-stub]
 
 #
 def buttord_signature[ArrayT](

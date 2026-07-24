@@ -1,6 +1,6 @@
 # type-tests for `signal/_peak_finding.pyi`
 
-# ruff: noqa: ERA001
+# ruff: file-ignore[commented-out-code]
 
 from typing import assert_type
 

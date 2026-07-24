@@ -21,9 +21,9 @@ type _Float2D = onp.Array2D[np.float64]
 type _FloatND = onp.ArrayND[np.float64]
 type _FCN = Callable[Concatenate[_Float1D, _FloatND, ...], onp.ArrayND[_ToFloatScalar]]
 
-type _01 = Literal[0, 1]  # noqa: PYI042
-type _012 = Literal[0, 1, 2]  # noqa: PYI042
-type _0123 = Literal[0, 1, 2, 3]  # noqa: PYI042
+type _01 = Literal[0, 1]  # ruff: ignore[snake-case-type-alias]
+type _012 = Literal[0, 1, 2]  # ruff: ignore[snake-case-type-alias]
+type _0123 = Literal[0, 1, 2, 3]  # ruff: ignore[snake-case-type-alias]
 
 # return value of `__odrpack.odr` with `full_output=False`
 type _RawOutput = tuple[

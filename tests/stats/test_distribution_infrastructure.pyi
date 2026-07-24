@@ -17,10 +17,10 @@ from scipy.stats._distribution_infrastructure import (
 
 ###
 
-type _0d = tuple[()]  # noqa: PYI042
-type _1d = tuple[int]  # noqa: PYI042
-type _2d = tuple[int, int]  # noqa: PYI042
-type _3d = tuple[int, int, int]  # noqa: PYI042
+type _0d = tuple[()]  # ruff: ignore[snake-case-type-alias]
+type _1d = tuple[int]  # ruff: ignore[snake-case-type-alias]
+type _2d = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
+type _3d = tuple[int, int, int]  # ruff: ignore[snake-case-type-alias]
 
 ###
 

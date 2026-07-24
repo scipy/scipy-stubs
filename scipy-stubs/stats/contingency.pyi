@@ -15,7 +15,7 @@ __all__ = ["association", "chi2_contingency", "crosstab", "expected_freq", "marg
 
 ###
 
-type _to_floating = npc.floating | npc.integer | np.bool  # noqa: PYI042
+type _to_floating = npc.floating | npc.integer | np.bool  # ruff: ignore[snake-case-type-alias]
 
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 

@@ -34,4 +34,4 @@ assert_type(Halton(_d, seed=0), Halton)
 
 assert_type(_h1.base, list[int])
 assert_type(_h1.scramble, bool)
-assert_type(_h1._permutations, list[onp.Array2D[np.int_]])  # noqa: SLF001
+assert_type(_h1._permutations, list[onp.Array2D[np.int_]])  # ruff: ignore[private-member-access]

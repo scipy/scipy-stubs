@@ -11,7 +11,7 @@ import optype.numpy.compat as npc
 from ._miobase import MatVarReader
 from ._streams import GenericStream, _FileLike
 
-type _bint = Literal[0, 1] | bool  # noqa: PYI042
+type _bint = Literal[0, 1] | bool  # ruff: ignore[snake-case-type-alias]
 
 ###
 

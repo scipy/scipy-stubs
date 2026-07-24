@@ -12,7 +12,7 @@ from ._typing import NanPolicy
 # workaround for https://github.com/microsoft/pyright/issues/10232
 type _JustAnyShape = tuple[Never, ...]
 
-type _co_integer = npc.integer | np.bool  # noqa: PYI042
+type _co_integer = npc.integer | np.bool  # ruff: ignore[snake-case-type-alias]
 
 ###
 

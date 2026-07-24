@@ -31,7 +31,7 @@ _FusedScalarT = TypeVar(
 
 ###
 
-# ruff: noqa: UP047
+# ruff: file-ignore[non-pep695-generic-function]
 
 #
 def lil_get1(

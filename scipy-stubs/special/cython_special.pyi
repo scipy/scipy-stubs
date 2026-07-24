@@ -108,7 +108,7 @@ class _CythonFunctionOrMethod_4_poly(_BaseCythonFunctionOrMethod, Protocol):
 @type_check_only
 class _CApiDict(TypedDict):
     # for k in scipy.special.cython_special.__pyx_capi__:
-    #    print(f"    {k}: ReadOnly[CapsuleType]")  # noqa: ERA001
+    #    print(f"    {k}: ReadOnly[CapsuleType]")  # ruff: ignore[commented-out-code]
 
     __pyx_fuse_2_0eval_chebyc: ReadOnly[CapsuleType]
     __pyx_fuse_2_0eval_chebys: ReadOnly[CapsuleType]

@@ -6,11 +6,11 @@ import optype.numpy as onp
 
 ###
 
-type _bint = bool | Literal[0, 1]  # noqa: PYI042
+type _bint = bool | Literal[0, 1]  # ruff: ignore[snake-case-type-alias]
 
-type _f64_1d = onp.Array1D[np.float64]  # noqa: PYI042
-type _f64_2d = onp.Array2D[np.float64]  # noqa: PYI042
-type _f64_3d = onp.Array3D[np.float64]  # noqa: PYI042
+type _f64_1d = onp.Array1D[np.float64]  # ruff: ignore[snake-case-type-alias]
+type _f64_2d = onp.Array2D[np.float64]  # ruff: ignore[snake-case-type-alias]
+type _f64_3d = onp.Array3D[np.float64]  # ruff: ignore[snake-case-type-alias]
 
 type _Indexer = int | slice | EllipsisType | None
 

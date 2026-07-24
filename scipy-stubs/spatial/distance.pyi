@@ -88,7 +88,7 @@ type _MetricName = Literal[
 ###
 
 type _MetricFunc = Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat | None]
-type _Metric = _MetricName | _MetricFunc  # noqa: PYI047
+type _Metric = _MetricName | _MetricFunc  # ruff: ignore[unused-private-type-alias]
 
 type _Force = Literal["NO", "No", "no", "TOMATRIX", "ToMatrix", "tomatrix", "TOVECTOR", "ToVector", "tovector"]
 

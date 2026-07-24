@@ -56,7 +56,7 @@ class FunctionDoc(NumpyDocString, Generic[_FunctionT]):
     ) -> None: ...
     @override
     # pyrefly: ignore [bad-override]
-    def __str__(self, /) -> str: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]  # noqa: PYI029
+    def __str__(self, /) -> str: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]  # ruff: ignore[str-or-repr-defined-in-stub]
     def get_func(self, /) -> _FunctionT: ...
 
 class ClassDoc(NumpyDocString):

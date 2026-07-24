@@ -55,7 +55,7 @@ assert_type(bsr_array(_shape2, None, np.complex128), bsr_array[np.complex128])
 assert_type(bsr_matrix(_shape2), bsr_matrix[np.float64])
 
 ###
-# matrix-like (sequences) # noqa: ERA001
+# matrix-like (sequences) # ruff: ignore[commented-out-code]
 
 assert_type(bsr_array(_seq_seq_bool), bsr_array[np.bool])  # type: ignore[assert-type]
 assert_type(bsr_array(_seq_seq_int), bsr_array[np.int_])  # type: ignore[assert-type]

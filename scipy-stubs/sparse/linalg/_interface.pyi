@@ -57,6 +57,9 @@ class _HasShapeAndDTypeAndMatVec(Protocol[_SCT_co, _ShapeT_co]):
 
 ###
 
+# ruff: file-ignore[commented-out-code]
+# ^^^ needed for the commented-out `LinearOperator.__init__`  code below (mypy workaround)
+
 class LinearOperator(Generic[_SCT_co, _ShapeT_co]):
     __array_ufunc__: ClassVar[None] = None
 
@@ -198,8 +201,6 @@ class LinearOperator(Generic[_SCT_co, _ShapeT_co]):
 
     # NOTE: the `__init__` method cannot be annotated, because it will cause mypy to ignore `__new__`:
     # https://github.com/python/mypy/issues/17251
-
-    # ruff: noqa: ERA001
 
     # @overload
     # def __init__(self, /, dtype: onp.ToDType[_SCT_co], shape: _ShapeT_co) -> None: ...

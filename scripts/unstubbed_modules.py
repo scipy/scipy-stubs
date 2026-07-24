@@ -2,7 +2,7 @@
 Prints the names of all SciPy modules that are not stubbed.
 """
 
-# ruff: noqa: T201, S101
+# ruff: file-ignore[print, assert]
 import sys
 import warnings
 from collections.abc import Iterator, Sequence

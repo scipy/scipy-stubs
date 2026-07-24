@@ -28,8 +28,8 @@ __all__ = ["SparseEfficiencyWarning", "SparseWarning", "issparse", "isspmatrix",
 ###
 
 type _Numeric = npc.number | np.bool
-type _1D = tuple[int]  # noqa: PYI042
-type _2D = tuple[int, int]  # noqa: PYI042
+type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
+type _2D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
 
 type _FromInt = npc.number
 type _FromFloat = npc.inexact
@@ -868,7 +868,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
 
     #
     @property
-    def mT[SelfT: _spbase[Any, onp.AtLeast2D]](self: SelfT) -> SelfT: ...  # noqa: PYI019
+    def mT[SelfT: _spbase[Any, onp.AtLeast2D]](self: SelfT) -> SelfT: ...  # ruff: ignore[custom-type-var-for-self]
 
     #
     def diagonal(self, /, k: int = 0) -> onp.Array1D[_ScalarT_co]: ...  # only if 2-d
