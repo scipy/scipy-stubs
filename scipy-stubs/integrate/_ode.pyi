@@ -98,7 +98,7 @@ class complex_ode(ode[np.complex128, *_Ts], Generic[*_Ts]):
 
     @override
     # pyrefly: ignore [bad-override]
-    def set_integrator(self, /, name: _IntegratorReal, **integrator_params: Unpack[_IntegratorParams]) -> Self: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def set_integrator(self, /, name: _IntegratorReal, **integrator_params: Unpack[_IntegratorParams]) -> Self: ...  # type:ignore[override]  # pyright:ignore[reportIncompatibleMethodOverride]  # ty:ignore[invalid-method-override]
     @override
     def set_initial_value(self, /, y: complex | onp.ToComplex1D, t: float = 0.0) -> Self: ...
 

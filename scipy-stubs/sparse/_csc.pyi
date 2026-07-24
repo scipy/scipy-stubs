@@ -255,7 +255,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         self, /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
     ) -> csr_array[_ScalarT_co, tuple[int, int]]: ...
 
-class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
+class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # ty:ignore[invalid-method-override]
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override

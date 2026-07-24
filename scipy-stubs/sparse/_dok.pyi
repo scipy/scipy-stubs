@@ -49,7 +49,7 @@ _C2T = TypeVar("_C2T", bound=_dok_base[np.float64, _2D])
 
 ###
 
-class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
+class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:ignore[invalid-method-override]
     _spbase[_ScalarT_co, _ShapeT_co],
     IndexMixin[_ScalarT_co, _ShapeT_co],
     dict[tuple[Any, ...], _ScalarT_co | Any],  # pyrefly:ignore[invalid-variance] # ty:ignore[invalid-generic-class]
@@ -86,7 +86,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     @override
     def __len__(self, /) -> int: ...
     @override
-    def __delitem__(self: _dok_base[Any, _ShapeT], key: _ShapeT, /) -> None: ...  # pyrefly: ignore[bad-override]
+    def __delitem__(self: _dok_base[Any, _ShapeT], key: _ShapeT, /) -> None: ...  # pyrefly: ignore[bad-override]  # ty:ignore[invalid-method-override]
 
     #
     @override
@@ -95,7 +95,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
         self: _dok_base[_ScalarT, _ShapeT], key: _ShapeT, default: _T, /
     ) -> _ScalarT | _T: ...
     @overload
-    def setdefault(self: _dok_base[_ScalarT, _ShapeT], key: _ShapeT, default: None = None, /) -> _ScalarT | None: ...  # pyright: ignore[reportIncompatibleMethodOverride]
+    def setdefault(self: _dok_base[_ScalarT, _ShapeT], key: _ShapeT, default: None = None, /) -> _ScalarT | None: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:ignore[invalid-method-override]
 
     #
     @override
@@ -164,7 +164,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]
     ) -> _dok_base[np.complex128, _1D]: ...
 
 #
-class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):
+class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):  # ty:ignore[invalid-method-override]
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
@@ -599,7 +599,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> dok_array[np.complex128, _1D]: ...
 
 #
-class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
+class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # ty:ignore[invalid-method-override]
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override

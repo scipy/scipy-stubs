@@ -175,7 +175,7 @@ class _TestResultTuple(NamedTuple, Generic[_FloatOrArrayT_co]):
 
 @type_check_only
 class _TestResultBunch(  # zuban: ignore[type-var]
-    BaseBunch[_FloatOrArrayT_co, _FloatOrArrayT2_co],  # pyrefly: ignore[invalid-variance]
+    BaseBunch[_FloatOrArrayT_co, _FloatOrArrayT2_co],  # pyrefly: ignore[invalid-variance]  # ty:ignore[invalid-generic-class]
     Generic[_FloatOrArrayT_co, _FloatOrArrayT2_co],
 ):
     @property

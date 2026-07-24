@@ -83,7 +83,7 @@ class _lil_base(_spbase[_ScalarT_co, tuple[int, int]], IndexMixin[_ScalarT_co, t
     def getrowview(self, /, i: int) -> Self: ...
     def getrow(self, /, i: onp.ToJustInt) -> lil_array[_ScalarT_co] | csr_matrix[_ScalarT_co]: ...
 
-class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
+class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):  # ty:ignore[invalid-method-override]
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
@@ -289,7 +289,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     @override
     def getrow(self, /, i: onp.ToJustInt) -> lil_array[_ScalarT_co]: ...
 
-class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
+class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # ty:ignore[invalid-method-override]
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override

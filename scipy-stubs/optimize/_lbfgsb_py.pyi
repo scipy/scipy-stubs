@@ -67,7 +67,7 @@ def fmin_l_bfgs_b(
 ) -> _FMinResult: ...
 @overload  # args, no fprime, no approx_grad
 def fmin_l_bfgs_b(
-    func: _Fn[_ToFloatAnd1D, *_Ts],  # ty:ignore[invalid-type-arguments]
+    func: _Fn[_ToFloatAnd1D, *_Ts],
     x0: _ToFloatOr1D,
     fprime: None = None,
     args: tuple[*_Ts] = ...,  # stubdefaulter: ignore[missing-default]
@@ -85,9 +85,9 @@ def fmin_l_bfgs_b(
 ) -> _FMinResult: ...
 @overload  # fprime, no approx_grad
 def fmin_l_bfgs_b(
-    func: _Fn[onp.ToFloat, *_Ts],  # ty:ignore[invalid-type-arguments]
+    func: _Fn[onp.ToFloat, *_Ts],
     x0: _ToFloatOr1D,
-    fprime: _Fn[onp.ToFloat1D, *_Ts],  # ty:ignore[invalid-type-arguments]
+    fprime: _Fn[onp.ToFloat1D, *_Ts],
     args: tuple[*_Ts] = ...,  # stubdefaulter: ignore[missing-default]
     approx_grad: onp.ToFalse = 0,
     bounds: _Bounds | None = None,
@@ -103,7 +103,7 @@ def fmin_l_bfgs_b(
 ) -> _FMinResult: ...
 @overload  # no fprime, approx_grad (keyword)
 def fmin_l_bfgs_b(
-    func: _Fn[onp.ToFloat, *_Ts],  # ty:ignore[invalid-type-arguments]
+    func: _Fn[onp.ToFloat, *_Ts],
     x0: _ToFloatOr1D,
     fprime: None = None,
     args: tuple[*_Ts] = ...,  # stubdefaulter: ignore[missing-default]
@@ -121,7 +121,7 @@ def fmin_l_bfgs_b(
 ) -> _FMinResult: ...
 @overload  # no fprime, unknown approx_grad  (keyword)
 def fmin_l_bfgs_b(
-    func: _Fn[onp.ToFloat, *_Ts] | _Fn[_ToFloatAnd1D, *_Ts],  # ty:ignore[invalid-type-arguments]
+    func: _Fn[onp.ToFloat, *_Ts] | _Fn[_ToFloatAnd1D, *_Ts],
     x0: _ToFloatOr1D,
     fprime: None = None,
     args: tuple[*_Ts] = ...,  # stubdefaulter: ignore[missing-default]
