@@ -76,7 +76,7 @@ type = [
   "mypy[faster-cache]==2.3.0",
   "pyrefly==1.1.1",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.59",
+  "ty==0.0.63",
   "zuban==0.9.0",
 ]
 dev = [
