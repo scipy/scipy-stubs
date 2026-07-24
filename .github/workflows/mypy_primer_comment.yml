@@ -1,19 +1,27 @@
 name: mypy_primer comment
 
-permissions:
-  contents: read
-  pull-requests: write
+permissions: {}
 
 on: # zizmor: ignore[dangerous-triggers] -- workflow_run is needed to post PR comments from fork PRs
   workflow_run:
     workflows: [mypy_primer run]
     types: [completed]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.workflow_run.head_branch || github.run_id }}
+  cancel-in-progress: true
+
 jobs:
   comment:
+    name: comment
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 2
+
+    permissions:
+      actions: read # to download the artifacts of the triggering workflow run
+      contents: read # to read the repository metadata
+      pull-requests: write # to create and update the mypy_primer results comment
 
     steps:
       - uses: dawidd6/action-download-artifact@b6e2e70617bc3265edd6dab6c906732b2f1ae151 # v21
@@ -26,9 +34,9 @@ jobs:
       - name: parse pr-number
         id: pr-number
         run: |
-          if [[ -f ${{ runner.temp }}/artifacts/pr-number ]]
+          if [[ -f "$RUNNER_TEMP/artifacts/pr-number" ]]
           then
-            echo "pr-number=$(<${{ runner.temp }}/artifacts/pr-number)" >> "$GITHUB_OUTPUT"
+            echo "pr-number=$(<"$RUNNER_TEMP/artifacts/pr-number")" >> "$GITHUB_OUTPUT"
           fi
 
       - uses: dawidd6/action-download-artifact@b6e2e70617bc3265edd6dab6c906732b2f1ae151 # v21
@@ -46,7 +54,7 @@ jobs:
         run: |
           # Guard against malicious mypy_primer results that symlink to a secret
           # file on this runner
-          if [[ -L ${{ runner.temp }}/artifacts/mypy_primer.diff ]]
+          if [[ -L "$RUNNER_TEMP/artifacts/mypy_primer.diff" ]]
           then
               echo "Error: mypy_primer.diff cannot be a symlink"
               exit 1
@@ -57,13 +65,13 @@ jobs:
           echo '<!-- generated-comment mypy_primer -->' >> comment.md
 
           echo '## `mypy_primer` results' >> comment.md
-          if [ -s "${{ runner.temp }}/artifacts/mypy_primer.diff" ]; then
+          if [ -s "$RUNNER_TEMP/artifacts/mypy_primer.diff" ]; then
             echo "has-changes=true" >> "$GITHUB_OUTPUT"
             echo '<details>' >> comment.md
             echo '<summary>⚠️ Changes were detected when running mypy on open source projects</summary>' >> comment.md
             echo '' >> comment.md
             echo '```diff' >> comment.md
-            cat ${{ runner.temp }}/artifacts/mypy_primer.diff >> comment.md
+            cat "$RUNNER_TEMP/artifacts/mypy_primer.diff" >> comment.md
             echo '```' >> comment.md
             echo '</details>' >> comment.md
           else
@@ -81,7 +89,7 @@ jobs:
           # Find existing comment by the bot containing the marker
           COMMENT_ID=$(
             gh api \
-              "repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" \
+              "repos/${GITHUB_REPOSITORY}/issues/${PR_NUMBER}/comments" \
               --paginate \
               --jq '.[] | select(.user.login == "github-actions[bot]") | select(.body | contains("<!-- generated-comment mypy_primer -->")) | .id' \
             | head -n1
@@ -91,12 +99,12 @@ jobs:
             # Update existing comment (an edit, so it does not send a notification)
             gh api \
               --method PATCH \
-              "repos/${{ github.repository }}/issues/comments/${COMMENT_ID}" \
+              "repos/${GITHUB_REPOSITORY}/issues/comments/${COMMENT_ID}" \
               --field "body=@comment.md"
           elif [[ "$HAS_CHANGES" == "true" ]]; then
             # Create a new comment only when there are ecosystem changes to report
             gh pr comment "${PR_NUMBER}" \
-              --repo "${{ github.repository }}" \
+              --repo "${GITHUB_REPOSITORY}" \
               --body-file comment.md
           else
             echo "No ecosystem changes and no existing comment; skipping to avoid a notification"

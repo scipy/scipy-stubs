@@ -1,8 +1,6 @@
 name: Update test coverage
 
-permissions:
-  contents: read
-  issues: write
+permissions: {}
 
 on:
   push:
@@ -18,8 +16,13 @@ concurrency:
 
 jobs:
   update-coverage:
+    name: update-coverage
     runs-on: ubuntu-latest
     timeout-minutes: 5
+
+    permissions:
+      contents: read # to check out the repository
+      issues: write # to update the body of the test coverage tracking issue
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
