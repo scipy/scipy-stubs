@@ -15,7 +15,7 @@ data2: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
 
 ###
 # LIL matrix constructor
-# ruff: noqa: ERA001
+# ruff: file-ignore[commented-out-code]
 
 # lil_matrix(D)
 assert_type(lil_matrix(data2), lil_matrix[ScalarType])

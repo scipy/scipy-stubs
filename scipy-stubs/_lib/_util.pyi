@@ -28,7 +28,7 @@ type _RNG = Any
 type SeedType = Any
 
 # see https://github.com/scipy/scipy/pull/25225
-GeneratorType = TypeVar("GeneratorType", bound=_RNG)  # noqa: PYI001
+GeneratorType = TypeVar("GeneratorType", bound=_RNG)  # ruff: ignore[unprefixed-type-param]
 
 if sys.version_info >= (3, 14):
     def wrapped_inspect_signature(callable: Callable[..., object]) -> inspect.Signature: ...

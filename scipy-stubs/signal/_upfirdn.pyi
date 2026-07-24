@@ -10,7 +10,7 @@ __all__ = ["_output_len", "upfirdn"]
 ###
 
 type _FIRMode = Literal["constant", "symmetric", "reflect", "wrap"]
-type _int64_t = int | np.int64  # noqa: PYI042
+type _int64_t = int | np.int64  # ruff: ignore[snake-case-type-alias]
 
 ###
 

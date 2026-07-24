@@ -1,4 +1,4 @@
-# ruff: noqa: ERA001
+# ruff: file-ignore[commented-out-code]
 
 from typing import assert_type
 

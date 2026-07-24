@@ -7,7 +7,7 @@ import optype.numpy.compat as npc
 ###
 
 # matches `ctypedef fused data_t`
-type _data_t = npc.integer | np.float32 | np.float64  # noqa: PYI042
+type _data_t = npc.integer | np.float32 | np.float64  # ruff: ignore[snake-case-type-alias]
 
 ###
 

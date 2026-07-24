@@ -30,7 +30,7 @@ def spline_filter1d(
     input: onp.ToFloatND,
     order: _Order = 3,
     axis: int = -1,
-    output: type[float | np.float64] = np.float64,  # noqa: PYI011
+    output: type[float | np.float64] = np.float64,  # ruff: ignore[typed-argument-default-in-stub]
     mode: _Mode = "mirror",
 ) -> onp.ArrayND[np.float64]: ...
 @overload
@@ -51,7 +51,7 @@ def spline_filter1d[ScalarT: np.generic](
 def spline_filter(
     input: onp.ToFloatND,
     order: _Order = 3,
-    output: type[float | np.float64] = np.float64,  # noqa: PYI011
+    output: type[float | np.float64] = np.float64,  # ruff: ignore[typed-argument-default-in-stub]
     mode: _Mode = "mirror",
 ) -> onp.ArrayND[np.float64]: ...
 @overload

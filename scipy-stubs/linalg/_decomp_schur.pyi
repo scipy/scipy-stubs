@@ -19,9 +19,9 @@ type _Output = Literal[_OutputReal, _OutputComplex]
 
 type _Sort = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], bool]
 
-type _as_f32 = np.float32 | np.float16 | np.bool  # noqa: PYI042
-type _as_f64 = npc.floating64 | npc.floating80 | npc.integer  # noqa: PYI042
-type _as_c128 = npc.complexfloating128 | npc.complexfloating160  # noqa: PYI042
+type _as_f32 = np.float32 | np.float16 | np.bool  # ruff: ignore[snake-case-type-alias]
+type _as_f64 = npc.floating64 | npc.floating80 | npc.integer  # ruff: ignore[snake-case-type-alias]
+type _as_c128 = npc.complexfloating128 | npc.complexfloating160  # ruff: ignore[snake-case-type-alias]
 
 ###
 

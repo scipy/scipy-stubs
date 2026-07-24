@@ -78,7 +78,7 @@ type _Extend0 = L["zero"]
 type _ExtendC = L["complex"]
 type _Extend = L[_Extend0, _ExtendC]
 
-# ruff: noqa: PYI042
+# ruff: file-ignore[snake-case-type-alias]
 type _tuple2[T] = tuple[T, T]
 type _tuple4[T0, T1] = tuple[T0, T1, T1, T1]
 type _tuple8[T0, T1] = tuple[T0, T1, T1, T1, T1, T1, T1, T1]

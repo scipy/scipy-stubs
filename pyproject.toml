@@ -62,7 +62,7 @@ ci = ["packaging>=26.2"]
 lint = [
   { include-group = "extras" },
   "dprint-py==0.55.2.0",
-  "ruff==0.15.21",
+  "ruff==0.16.0",
   "sp-repo-review[cli]==2026.6.18",
 ]
 type = [
@@ -256,11 +256,30 @@ skip-magic-trailing-comma = true
 
 [tool.ruff.lint]
 select = ["ALL"]
-ignore = ["D", "FBT", "ANN401", "COM812", "CPY", "EM", "TD", "FIX", "DOC"]
-extend-safe-fixes = ["UP047"]
+ignore = [
+  "D",
+  "FBT",
+  "CPY",
+  "EM",
+  "TD",
+  "FIX",
+  "DOC",
+  "any-type",
+  "missing-trailing-comma",
+]
 
 [tool.ruff.lint.per-file-ignores]
-"*.pyi" = ["F", "E741", "N", "A", "PYI054", "PLC2701", "PLW3201", "PLR", "FURB"]
+"*.pyi" = [
+  "F",
+  "N",
+  "A",
+  "PLR",
+  "FURB",
+  "ambiguous-variable-name",
+  "numeric-literal-too-long",
+  "import-private-name",
+  "bad-dunder-method-name",
+]
 
 [tool.ruff.lint.flake8-import-conventions]
 banned-from = ["numpy", "numpy.typing", "optype", "optype.numpy", "optype.typing"]

@@ -1,4 +1,9 @@
 extend = "../pyproject.toml"
 
 [lint]
-extend-ignore = ["B018", "PYI002", "PYI015", "PYI017"]
+extend-ignore = [
+  "useless-expression",
+  "complex-if-statement-in-stub",
+  "assignment-default-in-stub",
+  "complex-assignment-in-stub",
+]

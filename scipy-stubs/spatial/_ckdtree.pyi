@@ -125,7 +125,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         k: onp.ToInt | onp.ToInt1D = 1,
         eps: onp.ToFloat = 0.0,
         p: onp.ToFloat = 2.0,
-        distance_upper_bound: float = float("inf"),  # noqa: PYI011
+        distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
         workers: int | None = None,
     ) -> tuple[float, np.intp] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
 

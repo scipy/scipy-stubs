@@ -11,7 +11,7 @@ __all__ = ["gaussian_kde"]
 
 ###
 
-type _co_integer = npc.integer | np.bool  # noqa: PYI042
+type _co_integer = npc.integer | np.bool  # ruff: ignore[snake-case-type-alias]
 
 type _ToFloatMax1D = onp.ToFloat | onp.ToFloat1D
 type _ToFloatMax2D = _ToFloatMax1D | onp.ToFloat2D

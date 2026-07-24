@@ -21,8 +21,8 @@ __all__ = ["dok_array", "dok_matrix", "isspmatrix_dok"]
 
 ###
 
-type _1D = tuple[int]  # noqa: PYI042
-type _2D = tuple[int, int]  # noqa: PYI042
+type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
+type _2D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
 # workaround for the typing-spec non-conformance regarding overload behavior of mypy and pyright
 type _NoD = tuple[Never] | tuple[Never, Never]
 type _AnyD = tuple[Any, ...]

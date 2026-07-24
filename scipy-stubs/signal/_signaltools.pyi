@@ -54,9 +54,9 @@ __all__ = [
 
 ###
 
-type _1D = tuple[int]  # noqa: PYI042
-type _2D = tuple[int, int]  # noqa: PYI042
-type _3D = tuple[int, int]  # noqa: PYI042
+type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
+type _2D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
+type _3D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
 
 type _Tuple2[_T] = tuple[_T, _T]
 

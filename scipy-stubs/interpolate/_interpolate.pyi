@@ -41,7 +41,7 @@ For scattered data, prefer `LinearNDInterpolator` or
 
 For more details see
 https://scipy.github.io/devdocs/tutorial/interpolate/interp_transition_guide.html
-"""  # noqa: PYI053  # undocumented
+"""  # ruff: ignore[string-or-bytes-too-long]  # undocumented
 
 @deprecated(err_mesg)
 class interp2d:

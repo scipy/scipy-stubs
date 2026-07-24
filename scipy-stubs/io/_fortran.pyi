@@ -20,7 +20,7 @@ class FortranFile(ExitMixin):
         /,
         filename: FileLike[bytes],
         mode: Literal["r", "w"] = "r",
-        header_dtype: onp.AnyDType = np.uint32,  # noqa: PYI011
+        header_dtype: onp.AnyDType = np.uint32,  # ruff: ignore[typed-argument-default-in-stub]
     ) -> None: ...
 
     #

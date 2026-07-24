@@ -254,7 +254,7 @@ def normalize(b: onp.ToComplex128_ND, a: onp.ToJustComplex128_ND) -> _BaND[np.co
 @overload  # ~c128, +c128
 def normalize(b: onp.ToJustComplex128_ND, a: onp.ToComplex128_ND) -> _BaND[np.complex128]: ...
 @overload  # ~T, ~T
-def normalize(b: onp.ArrayND[_AnyInexactT], a: onp.ArrayND[_AnyInexactT]) -> _BaND[_AnyInexactT]: ...  # noqa: UP047
+def normalize(b: onp.ArrayND[_AnyInexactT], a: onp.ArrayND[_AnyInexactT]) -> _BaND[_AnyInexactT]: ...  # ruff: ignore[non-pep695-generic-function]
 @overload  # fallback
 def normalize(b: onp.ToComplexND, a: onp.ToComplexND) -> _BaND[Any]: ...
 

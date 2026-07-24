@@ -13,13 +13,13 @@ __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle
 
 ###
 
-type _float64_1d = onp.Array1D[np.float64]  # noqa: PYI042
-type _float32_nd = onp.ArrayND[np.float32]  # noqa: PYI042
-type _float64_nd = onp.ArrayND[np.float64]  # noqa: PYI042
-type _float80_nd = onp.ArrayND[np.float96 | np.float128]  # noqa: PYI042
-type _complex64_nd = onp.ArrayND[np.complex64]  # noqa: PYI042
-type _complex128_nd = onp.ArrayND[np.complex128]  # noqa: PYI042
-type _complex160_nd = onp.ArrayND[np.complex192 | np.complex256]  # noqa: PYI042
+type _float64_1d = onp.Array1D[np.float64]  # ruff: ignore[snake-case-type-alias]
+type _float32_nd = onp.ArrayND[np.float32]  # ruff: ignore[snake-case-type-alias]
+type _float64_nd = onp.ArrayND[np.float64]  # ruff: ignore[snake-case-type-alias]
+type _float80_nd = onp.ArrayND[np.float96 | np.float128]  # ruff: ignore[snake-case-type-alias]
+type _complex64_nd = onp.ArrayND[np.complex64]  # ruff: ignore[snake-case-type-alias]
+type _complex128_nd = onp.ArrayND[np.complex128]  # ruff: ignore[snake-case-type-alias]
+type _complex160_nd = onp.ArrayND[np.complex192 | np.complex256]  # ruff: ignore[snake-case-type-alias]
 
 type _ToInexact32ND = onp.ToArrayND[npc.inexact32, npc.inexact32 | npc.floating16]
 type _ToInexact64ND = onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool]

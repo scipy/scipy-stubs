@@ -90,10 +90,10 @@ type _DuckDistributionType = type[_DuckDistributionSingle | _DuckDistributionMul
 
 type _Real = npc.floating | npc.integer
 
-type _0D = tuple[()]  # noqa: PYI042
-type _1D = tuple[int]  # noqa: PYI042
-type _2D = tuple[int, int]  # noqa: PYI042
-type _3D = tuple[int, int, int]  # noqa: PYI042
+type _0D = tuple[()]  # ruff: ignore[snake-case-type-alias]
+type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
+type _2D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
+type _3D = tuple[int, int, int]  # ruff: ignore[snake-case-type-alias]
 type _ND = tuple[int, ...]
 
 type _ToFloatMax1D = onp.ToFloatStrict1D | onp.ToFloat
@@ -157,7 +157,7 @@ _null: Final[_Null] = ...
 
 def _isnull(x: object) -> TypeIs[_Null | None]: ...
 
-class _Domain(abc.ABC, Generic[_XT_co]):  # noqa: UP046
+class _Domain(abc.ABC, Generic[_XT_co]):  # ruff: ignore[non-pep695-generic-class]
     @classmethod
     def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
 
@@ -175,7 +175,7 @@ class _Domain(abc.ABC, Generic[_XT_co]):  # noqa: UP046
     @abc.abstractmethod
     def get_numerical_endpoints(self, /, x: _ParamValues) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 
-class _Interval(_Domain[_XT_co], Generic[_XT_co]):  # pyrefly: ignore[implicit-abstract-class]  # noqa: UP046
+class _Interval(_Domain[_XT_co], Generic[_XT_co]):  # pyrefly: ignore[implicit-abstract-class]  # ruff: ignore[non-pep695-generic-class]
     @override
     @abc.abstractmethod
     def __str__(self, /) -> str: ...
@@ -205,11 +205,11 @@ class _Interval(_Domain[_XT_co], Generic[_XT_co]):  # pyrefly: ignore[implicit-a
 
 class _RealInterval(_Interval[_FloatT_co], Generic[_FloatT_co]):
     @override  # https://github.com/astral-sh/ruff/issues/18372
-    def __str__(self, /) -> str: ...  # noqa: PYI029
+    def __str__(self, /) -> str: ...  # ruff: ignore[str-or-repr-defined-in-stub]
 
 class _IntegerInterval(_Interval[_IntT_co], Generic[_IntT_co]):
     @override  # https://github.com/astral-sh/ruff/issues/18372
-    def __str__(self, /) -> str: ...  # noqa: PYI029
+    def __str__(self, /) -> str: ...  # ruff: ignore[str-or-repr-defined-in-stub]
 
 type _ValidateOut0D[RealT: _Real] = tuple[RealT, np.dtype[RealT], onp.Array0D[np.bool]]
 type _ValidateOutND[RealT: _Real, _ShapeT1: tuple[int, *tuple[int, ...]]] = tuple[

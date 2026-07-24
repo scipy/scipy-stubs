@@ -15,8 +15,8 @@ from ._matrix import spmatrix
 
 type _ToNumber = SupportsIndex | SupportsInt | SupportsFloat | SupportsComplex | str | Buffer
 
-type _1D = tuple[int]  # noqa: PYI042
-type _2D = tuple[int, int]  # noqa: PYI042
+type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
+type _2D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
 
 # 1d simple index
 type _ToIndex1 = int | tuple[int]

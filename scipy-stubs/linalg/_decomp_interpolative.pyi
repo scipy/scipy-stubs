@@ -52,7 +52,7 @@ __all__ = [
 ]
 
 ###
-# ruff: noqa: PYI042
+# ruff: file-ignore[snake-case-type-alias]
 
 type _rng = onp.random.ToRNG
 

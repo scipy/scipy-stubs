@@ -1,6 +1,6 @@
 """Walk through tests/ and collect the qualnames of accessed scipy.* names."""
 
-# ruff: noqa: S101, T201
+# ruff: file-ignore[assert, print]
 
 import ast
 import importlib
@@ -240,7 +240,7 @@ def _should_ignore(qualname: str) -> bool:
     parts = qualname.split(".")
     if any(part.startswith("_") for part in parts[1:]):
         return True  # private
-    if len(parts) < 3 or qualname.endswith(_PACKAGES_PUBLIC):  # noqa: PLR2004
+    if len(parts) < 3 or qualname.endswith(_PACKAGES_PUBLIC):  # ruff: ignore[magic-value-comparison]
         return True  # bare package
     for deprecated_pkg in _PACKAGES_DEPRECATED:
         if (
