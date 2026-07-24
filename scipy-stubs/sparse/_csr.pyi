@@ -444,7 +444,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         self: csr_array[_ScalarT, tuple[int]], /, axes: None = None, copy: bool = False
     ) -> csr_array[_ScalarT, tuple[int]]: ...
 
-class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # type: ignore[misc]
+class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # type: ignore[misc]  # ty:ignore[invalid-method-override]
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
