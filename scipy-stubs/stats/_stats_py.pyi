@@ -4240,11 +4240,11 @@ def ttest_1samp(
 #
 @overload  # 0d, ~f64
 def ttest_ind_from_stats(
-    mean1: float | onp.ToInt,
-    std1: float | onp.ToInt,
+    mean1: float | npc.floating64 | onp.ToInt,
+    std1: float | npc.floating64 | onp.ToInt,
     nobs1: onp.ToInt,
-    mean2: float | onp.ToInt,
-    std2: float | onp.ToInt,
+    mean2: float | npc.floating64 | onp.ToInt,
+    std2: float | npc.floating64 | onp.ToInt,
     nobs2: onp.ToInt,
     equal_var: bool = True,
     alternative: Alternative = "two-sided",
