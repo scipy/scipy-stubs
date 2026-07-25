@@ -1132,7 +1132,24 @@ assert_type(tiecorrect(_i64_1d), float)
 
 # ranksums
 
-assert_type(ranksums(_f64_1d, _f64_1d), RanksumsResult)
+assert_type(ranksums(_f64_1d, _f64_1d), RanksumsResult[np.float64])
+assert_type(ranksums(_f64_1d, _f64_2d), RanksumsResult[onp.Array1D[np.float64]])
+assert_type(ranksums(_f64_1d, _f64_3d), RanksumsResult[onp.Array2D[np.float64]])
+assert_type(ranksums(_f64_1d, _f64_nd), RanksumsResult[np.float64 | Any])
+
+assert_type(ranksums(_f64_2d, _f64_1d), RanksumsResult[onp.Array1D[np.float64]])
+assert_type(ranksums(_i64_2d, _f64_2d), RanksumsResult[onp.Array1D[np.float64]])
+assert_type(ranksums(_f32_2d, _f64_3d), RanksumsResult[onp.Array2D[np.float64]])
+assert_type(ranksums(_f64_2d, _f64_nd), RanksumsResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
+
+assert_type(ranksums(_f64_3d, _f64_1d), RanksumsResult[onp.Array2D[np.float64]])
+assert_type(ranksums(_f64_3d, _f64_3d), RanksumsResult[onp.Array2D[np.float64]])
+assert_type(ranksums(_f64_nd, _f64_2d), RanksumsResult[onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
+assert_type(ranksums(_f64_nd, _f64_nd), RanksumsResult[np.float64 | Any])
+
+assert_type(ranksums(_py_i_1d, _py_f_1d), RanksumsResult[np.float64])
+assert_type(ranksums(_f32_nd, _f32_nd, axis=None), RanksumsResult[np.float64])
+assert_type(ranksums(_f32_nd, _f32_nd, keepdims=True), RanksumsResult[onp.ArrayND[np.float64]])
 
 # kruskal
 

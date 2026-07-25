@@ -160,6 +160,7 @@ type _AsFloat32_2D = onp.ToArrayStrict2D[np.float32, np.float32 | np.float16]
 type _AsFloat32_ND = onp.ToArrayND[Never, np.float32 | np.float16]
 
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
+type _ToFloat64StrictND = onp.ArrayND[npc.floating64 | npc.floating32 | npc.floating16 | npc.integer | np.bool, _JustAnyShape]
 
 type _ToFloatOrND = onp.ToFloat | onp.ToFloatND
 type _ToFloat64OrND = op.JustFloat | onp.ToInt | npc.floating64 | onp.ToFloat64_ND
@@ -4784,7 +4785,7 @@ def chisquare(
 #
 @overload  # ?d
 def ks_1samp(
-    x: _ToFloatStrictND,
+    x: _ToFloat64StrictND,
     cdf: _ToCDF,
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
@@ -4808,7 +4809,7 @@ def ks_1samp(
 ) -> _KstestResult0: ...
 @overload  # 1d +floating
 def ks_1samp(
-    x: onp.ToFloatStrict1D,
+    x: onp.ToFloat64Strict1D,
     cdf: _ToCDF,
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
@@ -4832,7 +4833,7 @@ def ks_1samp(
 ) -> _KstestResult1: ...
 @overload  # 2d +floating
 def ks_1samp(
-    x: onp.ToFloatStrict2D,
+    x: onp.ToFloat64Strict2D,
     cdf: _ToCDF,
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
@@ -4856,7 +4857,7 @@ def ks_1samp(
 ) -> _KstestResult2: ...
 @overload  # 3d +floating
 def ks_1samp(
-    x: onp.ToFloatStrict3D,
+    x: onp.ToFloat64Strict3D,
     cdf: _ToCDF,
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
@@ -4880,7 +4881,7 @@ def ks_1samp(
 ) -> _KstestResult0: ...
 @overload  # nd +floating, axis=None
 def ks_1samp(
-    x: onp.ToFloatND,
+    x: onp.ToFloat64_ND,
     cdf: _ToCDF,
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
@@ -4904,7 +4905,7 @@ def ks_1samp(
 ) -> _KstestResultN: ...
 @overload  # nd +floating, keepdims=True
 def ks_1samp(
-    x: onp.ToFloatND,
+    x: onp.ToFloat64_ND,
     cdf: _ToCDF,
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
@@ -4916,7 +4917,7 @@ def ks_1samp(
 ) -> KstestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int8]]: ...
 @overload  # nd
 def ks_1samp(
-    x: onp.ToFloatND,
+    x: onp.ToFloat64_ND,
     cdf: _ToCDF,
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
@@ -5064,7 +5065,7 @@ def ks_2samp(
 # 1-sample iff `cdf` is a name or callable
 @overload  # 1-sample, ?d
 def kstest(
-    rvs: _ToFloatStrictND,
+    rvs: _ToFloat64StrictND,
     cdf: str | _ToCDF,
     args: tuple[object, ...] = (),
     N: int = 20,
@@ -5090,7 +5091,7 @@ def kstest(
 ) -> _KstestResult0: ...
 @overload  # 1-sample, 1d +floating
 def kstest(
-    rvs: onp.ToFloatStrict1D,
+    rvs: onp.ToFloat64Strict1D,
     cdf: str | _ToCDF,
     args: tuple[object, ...] = (),
     N: int = 20,
@@ -5116,7 +5117,7 @@ def kstest(
 ) -> _KstestResult1: ...
 @overload  # 1-sample, 2d +floating
 def kstest(
-    rvs: onp.ToFloatStrict2D,
+    rvs: onp.ToFloat64Strict2D,
     cdf: str | _ToCDF,
     args: tuple[object, ...] = (),
     N: int = 20,
@@ -5142,7 +5143,7 @@ def kstest(
 ) -> _KstestResult2: ...
 @overload  # 1-sample, 3d +floating
 def kstest(
-    rvs: onp.ToFloatStrict3D,
+    rvs: onp.ToFloat64Strict3D,
     cdf: str | _ToCDF,
     args: tuple[object, ...] = (),
     N: int = 20,
@@ -5168,7 +5169,7 @@ def kstest(
 ) -> _KstestResult0: ...
 @overload  # 1-sample, nd +floating, axis=None
 def kstest(
-    rvs: onp.ToFloatND,
+    rvs: onp.ToFloat64_ND,
     cdf: str | _ToCDF,
     args: tuple[object, ...] = (),
     N: int = 20,
@@ -5194,7 +5195,7 @@ def kstest(
 ) -> _KstestResultN: ...
 @overload  # 1-sample, nd +floating, keepdims=True
 def kstest(
-    rvs: onp.ToFloatND,
+    rvs: onp.ToFloat64_ND,
     cdf: str | _ToCDF,
     args: tuple[object, ...] = (),
     N: int = 20,
@@ -5207,7 +5208,7 @@ def kstest(
 ) -> KstestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int8]]: ...
 @overload  # 1-sample, nd
 def kstest(
-    rvs: onp.ToFloatND,
+    rvs: onp.ToFloat64_ND,
     cdf: str | _ToCDF,
     args: tuple[object, ...] = (),
     N: int = 20,
@@ -5540,16 +5541,127 @@ def kstest(
 #
 def tiecorrect(rankvals: onp.ToIntND) -> float: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d, ?d|1d
 def ranksums(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
+    x: _ToFloat64StrictND,
+    y: _ToFloat64StrictND | onp.ToFloat64Strict1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[np.float64 | Any]: ...
+@overload  # ?d|1d, ?d
+def ranksums(
+    x: _ToFloat64StrictND | onp.ToFloat64Strict1D,
+    y: _ToFloat64StrictND,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[np.float64 | Any]: ...
+@overload  # ?d, 2d|3d
+def ranksums(
+    x: _ToFloat64StrictND,
+    y: onp.ToFloat64Strict2D | onp.ToFloat64Strict3D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[onp.ArrayND[np.float64]]: ...
+@overload  # 2d|3d, ?d
+def ranksums(
+    x: onp.ToFloat64Strict2D | onp.ToFloat64Strict3D,
+    y: _ToFloat64StrictND,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[onp.ArrayND[np.float64]]: ...
+@overload  # 1d, 1d
+def ranksums(
+    x: onp.ToFloat64Strict1D,
+    y: onp.ToFloat64Strict1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[np.float64]: ...
+@overload  # 2d, <=2d
+def ranksums(
+    x: onp.ToFloat64Strict2D,
+    y: onp.ToFloat64Strict2D | onp.ToFloat64Strict1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[onp.Array1D[np.float64]]: ...
+@overload  # <=2d, 2d
+def ranksums(
+    x: onp.ToFloat64Strict2D | onp.ToFloat64Strict1D,
+    y: onp.ToFloat64Strict2D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[onp.Array1D[np.float64]]: ...
+@overload  # 3d, <=3d
+def ranksums(
+    x: onp.ToFloat64Strict3D,
+    y: onp.ToFloat64Strict3D | onp.ToFloat64Strict2D | onp.ToFloat64Strict1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[onp.Array2D[np.float64]]: ...
+@overload  # <=3d, 3d
+def ranksums(
+    x: onp.ToFloat64Strict3D | onp.ToFloat64Strict2D | onp.ToFloat64Strict1D,
+    y: onp.ToFloat64Strict3D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[onp.Array2D[np.float64]]: ...
+@overload  # Nd, Nd
+def ranksums(
+    x: onp.ToFloat64_ND,
+    y: onp.ToFloat64_ND,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[np.float64 | Any]: ...
+@overload  # axis=None
+def ranksums(
+    x: onp.ToFloat64_ND,
+    y: onp.ToFloat64_ND,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> RanksumsResult[np.float64]: ...
+@overload  # keepdims=True
+def ranksums(
+    x: onp.ToFloat64_ND,
+    y: onp.ToFloat64_ND,
     alternative: Alternative = "two-sided",
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> RanksumsResult: ...
+    keepdims: L[True],
+) -> RanksumsResult[onp.ArrayND[np.float64]]: ...
 
 #
 @overload  # ?d, ?d|1d
