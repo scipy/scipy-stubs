@@ -32,6 +32,7 @@ _f32_2d: onp.Array2D[np.float32]
 _f32_3d: onp.Array3D[np.float32]
 _f32_nd: onp.ArrayND[np.float32]
 
+_f64_0d: np.float64
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
@@ -67,7 +68,10 @@ assert_type(ttest_1samp(_f16_nd, 0.0).statistic, np.float16 | Any)
 assert_type(ttest_1samp(_f32_nd, 0.0).statistic, np.float32 | Any)
 assert_type(ttest_1samp(_f64_nd, 0.0).statistic, np.float64 | Any)
 
-assert_type(ttest_1samp(_f32_1d, np.float64(0)).statistic, np.float64 | Any)
+assert_type(ttest_1samp(_f32_1d, _f64_0d).statistic, np.float64 | Any)
+assert_type(ttest_1samp(_i8_1d, _f32_1d).statistic, np.float64 | Any)
+assert_type(ttest_1samp(_i8_1d, _f64_1d).statistic, np.float64)
+assert_type(ttest_1samp(_f64_1d, _f32_1d).statistic, np.float64 | Any)
 
 assert_type(ttest_1samp(_f64_nd, 0.0, axis=None).statistic, np.float64)
 assert_type(ttest_1samp(_f64_nd, 0.0, keepdims=True).statistic, onp.ArrayND[np.float64])

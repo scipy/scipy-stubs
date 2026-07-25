@@ -94,14 +94,17 @@ _bool_nd: onp.ArrayND[np.bool]
 _i16_1d: onp.Array1D[np.int16]
 _i16_2d: onp.Array2D[np.int16]
 
+_i64_0d: np.int64
 _i64_1d: onp.Array1D[np.int64]
 _i64_2d: onp.Array2D[np.int64]
 _i64_nd: onp.ArrayND[np.int64]
 
+_f32_0d: np.float32
 _f32_1d: onp.Array1D[np.float32]
 _f32_2d: onp.Array2D[np.float32]
 _f32_nd: onp.ArrayND[np.float32]
 
+_f64_0d: np.float64
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
@@ -1043,7 +1046,15 @@ assert_type(weightedtau(_f64_nd, _f64_nd, keepdims=True), SignificanceResult[onp
 
 # ttest_ind_from_stats
 
-assert_type(ttest_ind_from_stats(0.0, 1.0, 10, 0.0, 1.0, 10), Ttest_indResult)
+assert_type(ttest_ind_from_stats(0.0, 1.0, 10, 0.0, 1.0, 10), Ttest_indResult[np.float64])
+assert_type(ttest_ind_from_stats(0, 1, 10, 0, 1, 10), Ttest_indResult[np.float64])
+assert_type(ttest_ind_from_stats(_f64_0d, 1.0, _i64_0d, 0.0, 1.0, 10), Ttest_indResult[np.float64])
+assert_type(ttest_ind_from_stats(_f32_0d, 1.0, 10, 0.0, 1.0, 10), Ttest_indResult[np.float32])
+
+assert_type(ttest_ind_from_stats(_f64_1d, _f64_1d, 10, _f64_1d, _f64_1d, 10), Ttest_indResult[onp.ArrayND[np.float64]])
+assert_type(ttest_ind_from_stats(_i64_1d, 1.0, _i64_1d, 0.0, 1.0, 10), Ttest_indResult[onp.ArrayND[np.float64]])
+assert_type(ttest_ind_from_stats(_f32_1d, 1.0, 10, _f32_1d, 1.0, 10), Ttest_indResult[onp.ArrayND[np.float32]])
+assert_type(ttest_ind_from_stats(_f32_1d, 1.0, _i64_1d, 0.0, 1.0, 10), Ttest_indResult[onp.ArrayND[np.float64 | Any]])
 
 # power_divergence
 
