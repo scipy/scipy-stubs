@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.stats import ttest_ind, ttest_rel
+from scipy.stats import ttest_1samp, ttest_ind, ttest_rel
 
 ###
 
@@ -38,6 +38,46 @@ _f64_3d: onp.Array3D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
 
 ###
+
+# ttest_1samp
+
+assert_type(ttest_1samp(_py_i_1d, 0).statistic, np.float64)
+assert_type(ttest_1samp(_py_f_1d, 0.0).statistic, np.float64)
+assert_type(ttest_1samp(_i8_1d, 0).statistic, np.float64)
+assert_type(ttest_1samp(_f16_1d, np.float16(0)).statistic, np.float16)
+assert_type(ttest_1samp(_f32_1d, 0.0).statistic, np.float32)
+assert_type(ttest_1samp(_f64_1d, np.float64(0)).statistic, np.float64)
+
+assert_type(ttest_1samp(_py_i_2d, 0).statistic, onp.Array1D[np.float64])
+assert_type(ttest_1samp(_py_f_2d, 0.0).statistic, onp.Array1D[np.float64])
+assert_type(ttest_1samp(_i8_2d, 0).statistic, onp.Array1D[np.float64])
+assert_type(ttest_1samp(_f16_2d, 0.0).statistic, onp.Array1D[np.float16])
+assert_type(ttest_1samp(_f32_2d, _f32_1d).statistic, onp.Array1D[np.float32])
+assert_type(ttest_1samp(_f64_2d, _f64_1d).statistic, onp.Array1D[np.float64])
+
+assert_type(ttest_1samp(_py_i_3d, 0).statistic, onp.Array2D[np.float64])
+assert_type(ttest_1samp(_py_f_3d, 0.0).statistic, onp.Array2D[np.float64])
+assert_type(ttest_1samp(_i8_3d, 0).statistic, onp.Array2D[np.float64])
+assert_type(ttest_1samp(_f16_3d, 0.0).statistic, onp.Array2D[np.float16])
+assert_type(ttest_1samp(_f32_3d, 0.0).statistic, onp.Array2D[np.float32])
+assert_type(ttest_1samp(_f64_3d, 0.0).statistic, onp.Array2D[np.float64])
+
+assert_type(ttest_1samp(_i8_nd, 0).statistic, np.float64 | Any)
+assert_type(ttest_1samp(_f16_nd, 0.0).statistic, np.float16 | Any)
+assert_type(ttest_1samp(_f32_nd, 0.0).statistic, np.float32 | Any)
+assert_type(ttest_1samp(_f64_nd, 0.0).statistic, np.float64 | Any)
+
+assert_type(ttest_1samp(_f32_1d, np.float64(0)).statistic, np.float64 | Any)
+
+assert_type(ttest_1samp(_f64_nd, 0.0, axis=None).statistic, np.float64)
+assert_type(ttest_1samp(_f64_nd, 0.0, keepdims=True).statistic, onp.ArrayND[np.float64])
+assert_type(ttest_1samp(_f32_nd, 0.0, axis=None).statistic, np.float32)
+assert_type(ttest_1samp(_f32_nd, 0.0, keepdims=True).statistic, onp.ArrayND[np.float32])
+
+assert_type(ttest_1samp(_py_i_1d, 0).df, np.int_)
+assert_type(ttest_1samp(_py_i_2d, 0).df, onp.Array1D[np.int_])
+assert_type(ttest_1samp(_py_i_3d, 0).df, onp.Array2D[np.int_])
+assert_type(ttest_1samp(_i8_nd, 0).df, np.int_ | Any)
 
 # ttest_ind
 

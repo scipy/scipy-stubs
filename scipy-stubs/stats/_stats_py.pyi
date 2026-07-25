@@ -160,6 +160,10 @@ type _AsFloat32_ND = onp.ToArrayND[Never, np.float32 | np.float16]
 
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
 
+type _ToFloatOrND = onp.ToFloat | onp.ToFloatND
+type _ToFloat64OrND = op.JustFloat | onp.ToInt | npc.floating64 | onp.ToFloat64_ND
+type _ToJustFloatOrND[FloatT: npc.floating] = op.JustFloat | int | FloatT | onp.ToArrayND[FloatT, FloatT]
+
 @type_check_only
 class _RVSCallable(Protocol):
     def __call__(self, /, *, size: int | tuple[int, ...]) -> onp.ArrayND[npc.floating]: ...
@@ -4050,16 +4054,187 @@ def unpack_TtestResult[FloatOrArrayT: _ScalarOrND[npc.floating]](
     FloatOrArrayT,  # _estimate
 ]: ...  # undocumented
 
-# TODO(jorenham): improve
+# keep in sync with `ttest_rel`
+@overload  # ?d ~f64
 def ttest_1samp(
-    a: onp.ToFloatND,
-    popmean: onp.ToFloat | onp.ToFloatND,
+    a: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    popmean: _ToFloat64OrND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[np.float64 | Any, np.int_ | Any]: ...
+@overload  # ?d ~T
+def ttest_1samp[FloatT: np.float32 | np.float16](
+    a: onp.ArrayND[FloatT, _JustAnyShape],
+    popmean: _ToJustFloatOrND[FloatT],
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[FloatT | Any, np.int_ | Any]: ...
+@overload  # 1d ~f64
+def ttest_1samp(
+    a: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    popmean: _ToFloat64OrND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[np.float64, np.int_]: ...
+@overload  # 1d ~T
+def ttest_1samp[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayStrict1D[FloatT, FloatT],
+    popmean: _ToJustFloatOrND[FloatT],
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[FloatT, np.int_]: ...
+@overload  # 1d +floating
+def ttest_1samp(
+    a: onp.ToFloatStrict1D,
+    popmean: _ToFloatOrND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[np.float64 | Any, np.int_]: ...
+@overload  # 2d ~f64
+def ttest_1samp(
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
+    popmean: _ToFloat64OrND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[onp.Array1D[np.float64], onp.Array1D[np.int_]]: ...
+@overload  # 2d ~T
+def ttest_1samp[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayStrict2D[FloatT, FloatT],
+    popmean: _ToJustFloatOrND[FloatT],
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[onp.Array1D[FloatT], onp.Array1D[np.int_]]: ...
+@overload  # 2d +floating
+def ttest_1samp(
+    a: onp.ToFloatStrict2D,
+    popmean: _ToFloatOrND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[onp.Array1D[np.float64 | Any], onp.Array1D[np.int_]]: ...
+@overload  # 3d ~f64
+def ttest_1samp(
+    a: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
+    popmean: _ToFloat64OrND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[onp.Array2D[np.float64], onp.Array2D[np.int_]]: ...
+@overload  # 3d ~T
+def ttest_1samp[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayStrict3D[FloatT, FloatT],
+    popmean: _ToJustFloatOrND[FloatT],
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[onp.Array2D[FloatT], onp.Array2D[np.int_]]: ...
+@overload  # 3d +floating
+def ttest_1samp(
+    a: onp.ToFloatStrict3D,
+    popmean: _ToFloatOrND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[onp.Array2D[np.float64 | Any], onp.Array2D[np.int_]]: ...
+@overload  # nd ~f64, axis=None
+def ttest_1samp(  # type: ignore[overload-overlap]
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    popmean: _ToFloat64OrND,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[np.float64, np.int_]: ...
+@overload  # nd ~f64, keepdims=True
+def ttest_1samp(  # type: ignore[overload-overlap]
+    a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    popmean: _ToFloat64OrND,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
-    keepdims: bool = False,
-) -> TtestResult[np.float64, np.int_] | TtestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int_]]: ...
+    keepdims: L[True],
+) -> TtestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int_]]: ...
+@overload  # nd ~T, axis=None
+def ttest_1samp[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayND[FloatT, FloatT],
+    popmean: _ToJustFloatOrND[FloatT],
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[FloatT, np.int_]: ...
+@overload  # nd ~T, keepdims=True
+def ttest_1samp[FloatT: np.float32 | np.float16](
+    a: onp.ToArrayND[FloatT, FloatT],
+    popmean: _ToJustFloatOrND[FloatT],
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> TtestResult[onp.ArrayND[FloatT], onp.ArrayND[np.int_]]: ...
+@overload  # nd +floating, axis=None
+def ttest_1samp(
+    a: onp.ToFloatND,
+    popmean: _ToFloatOrND,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[np.float64 | Any, np.int_]: ...
+@overload  # nd +floating, keepdims=True
+def ttest_1samp(
+    a: onp.ToFloatND,
+    popmean: _ToFloatOrND,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[True],
+) -> TtestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int_]]: ...
+@overload  # nd +floating
+def ttest_1samp(
+    a: onp.ToFloatND,
+    popmean: _ToFloatOrND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+    *,
+    keepdims: L[False] = False,
+) -> TtestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int_]] | TtestResult[np.float64 | Any, np.int_]: ...
 
 # TODO(jorenham): improve
 def ttest_ind_from_stats(
@@ -4409,7 +4584,7 @@ def ttest_rel[FloatT: np.float32 | np.float16](
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[onp.Array2D[FloatT], onp.Array1D[np.int_]]: ...
+) -> TtestResult[onp.Array2D[FloatT], onp.Array2D[np.int_]]: ...
 @overload  # 3d +floating
 def ttest_rel(
     a: onp.ToFloatStrict3D,
@@ -4469,7 +4644,7 @@ def ttest_rel(
     alternative: Alternative = "two-sided",
     *,
     keepdims: L[False] = False,
-) -> TtestResult[np.float64 | Any, np.int64]: ...
+) -> TtestResult[np.float64 | Any, np.int_]: ...
 @overload  # nd +floating, keepdims=True
 def ttest_rel(
     a: onp.ToFloatND,

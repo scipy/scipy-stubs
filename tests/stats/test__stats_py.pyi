@@ -54,7 +54,6 @@ from scipy.stats import (
     trimboth,
     tsem,
     tstd,
-    ttest_1samp,
     ttest_ind_from_stats,
     tvar,
     wasserstein_distance,
@@ -82,7 +81,6 @@ from scipy.stats._stats_py import (
     SigmaclipResult,
     SignificanceResult,
     SkewtestResult,
-    TtestResult,
     Ttest_indResult,
 )
 
@@ -1041,12 +1039,6 @@ assert_type(weightedtau(_f64_1d, _f64_1d), SignificanceResult[np.float64])
 assert_type(weightedtau(_f64_2d, _f64_2d, axis=0), SignificanceResult[onp.Array1D[np.float64]])
 assert_type(weightedtau(_f64_3d, _f64_3d, axis=0), SignificanceResult[onp.Array2D[np.float64]])
 assert_type(weightedtau(_f64_nd, _f64_nd, keepdims=True), SignificanceResult[onp.ArrayND[np.float64]])
-
-# ttest_1samp
-
-assert_type(
-    ttest_1samp(_f64_1d, 0.0), TtestResult[np.float64, np.int_] | TtestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int_]]
-)
 
 # ttest_ind_from_stats
 
