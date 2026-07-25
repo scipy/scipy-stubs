@@ -31,6 +31,7 @@ from scipy.stats import (
     kstest,
     kurtosistest,
     median_abs_deviation,
+    norm,
     normaltest,
     obrientransform,
     percentileofscore,
@@ -1084,7 +1085,35 @@ assert_type(ks_2samp(_f64_nd, _f64_nd), KstestResult[np.float64 | Any, np.int8 |
 
 # kstest
 
-assert_type(kstest(_f64_1d, "norm"), KstestResult)
+assert_type(kstest(_f64_1d, "norm"), KstestResult[np.float64, np.int8])
+assert_type(kstest(_f64_1d, norm.cdf), KstestResult[np.float64, np.int8])
+assert_type(kstest(_f64_1d, lambda x: x), KstestResult[np.float64, np.int8])
+assert_type(kstest(_py_f_1d, "norm"), KstestResult[np.float64, np.int8])
+assert_type(kstest(_i64_2d, "norm"), KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]])
+assert_type(kstest(_f64_3d, "norm"), KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]])
+assert_type(kstest(_f64_nd, "norm"), KstestResult[np.float64 | Any, np.int8 | Any])
+assert_type(kstest(_f64_2d, "norm", axis=None), KstestResult[np.float64, np.int8])
+assert_type(kstest(_f64_2d, "norm", keepdims=True), KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]])
+assert_type(kstest("norm", "norm", N=100), KstestResult[np.float64, np.int8])
+assert_type(kstest(norm.rvs, "norm", N=100), KstestResult[np.float64, np.int8])
+
+assert_type(kstest(_f32_1d, "norm"), KstestResult[np.float64 | Any, np.int8])
+assert_type(kstest(_f32_2d, "norm"), KstestResult[onp.Array1D[np.float64 | Any], onp.Array1D[np.int8]])
+assert_type(kstest(_f32_nd, "norm", axis=None), KstestResult[np.float64 | Any, np.int8])
+
+assert_type(kstest(_f64_1d, _f64_1d), KstestResult[np.float64, np.int8])
+assert_type(kstest(_f64_1d, _f64_2d), KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]])
+assert_type(kstest(_f64_2d, _f64_3d), KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]])
+assert_type(kstest(_f64_nd, _f64_nd), KstestResult[np.float64 | Any, np.int8 | Any])
+assert_type(kstest(_f64_2d, _f64_2d, axis=None), KstestResult[np.float64, np.int8])
+assert_type(kstest(_f64_1d, _f64_1d, keepdims=True), KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]])
+
+assert_type(kstest(_f32_1d, _f32_1d), KstestResult[np.float32, np.int8])
+assert_type(kstest(_f32_2d, _f32_2d), KstestResult[onp.Array1D[np.float32], onp.Array1D[np.int8]])
+assert_type(kstest(_f32_nd, _f32_nd, axis=None), KstestResult[np.float32, np.int8])
+assert_type(kstest(_f32_nd, _f32_nd, keepdims=True), KstestResult[onp.ArrayND[np.float32], onp.ArrayND[np.int8]])
+assert_type(kstest(_f32_1d, _f64_1d), KstestResult[np.float64 | Any, np.int8])
+assert_type(kstest(_i64_1d, _f32_1d), KstestResult[np.float64 | Any, np.int8])
 
 # tiecorrect
 

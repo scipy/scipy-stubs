@@ -149,6 +149,7 @@ type _ComplexLimit = complex | npc.number
 type _ComplexLimits = tuple[_ComplexLimit, _ComplexLimit]
 
 type _Weigher = Callable[[int], float | _Real0D]
+type _ToCDF = Callable[[onp.ArrayND[np.float64]], onp.ToFloat | onp.ToFloatND]
 
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 type _AsFloat64_1D = onp.ToArrayStrict1D[float, npc.floating64 | npc.integer]
@@ -166,7 +167,7 @@ type _ToJustFloatOrND[FloatT: npc.floating] = op.JustFloat | int | FloatT | onp.
 
 @type_check_only
 class _RVSCallable(Protocol):
-    def __call__(self, /, *, size: int | tuple[int, ...]) -> onp.ArrayND[npc.floating]: ...
+    def __call__(self, /, *, size: int | tuple[int, ...]) -> onp.ToFloat | onp.ToFloatND: ...
 
 @type_check_only
 class _MADCenterFunc(Protocol):
@@ -4927,10 +4928,24 @@ def ks_2samp(
     keepdims: L[False] = False,
 ) -> _KstestResult0: ...
 
-# TODO(jorenham): improve
+# 1-sample iff `cdf` is a name or callable
+@overload  # 1-sample, ?d
 def kstest(
-    rvs: str | onp.ToFloatND | _RVSCallable,
-    cdf: str | onp.ToFloatND | Callable[[float], float | npc.floating],
+    rvs: _ToFloatStrictND,
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
+@overload  # 1-sample, 1d ~f64
+def kstest(
+    rvs: str | _RVSCallable | onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: str | _ToCDF,
     args: tuple[object, ...] = (),
     N: int = 20,
     alternative: Alternative = "two-sided",
@@ -4938,8 +4953,456 @@ def kstest(
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> KstestResult: ...
+    keepdims: L[False] = False,
+) -> _KstestResult0: ...
+@overload  # 1-sample, 1d +floating
+def kstest(
+    rvs: onp.ToFloatStrict1D,
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8]: ...
+@overload  # 1-sample, 2d ~f64
+def kstest(
+    rvs: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult1: ...
+@overload  # 1-sample, 2d +floating
+def kstest(
+    rvs: onp.ToFloatStrict2D,
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[onp.Array1D[np.float64 | Any], onp.Array1D[np.int8]]: ...
+@overload  # 1-sample, 3d ~f64
+def kstest(
+    rvs: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult2: ...
+@overload  # 1-sample, 3d +floating
+def kstest(
+    rvs: onp.ToFloatStrict3D,
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[onp.Array2D[np.float64 | Any], onp.Array2D[np.int8]]: ...
+@overload  # 1-sample, nd ~f64, axis=None
+def kstest(
+    rvs: str | _RVSCallable | onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult0: ...
+@overload  # 1-sample, nd +floating, axis=None
+def kstest(
+    rvs: onp.ToFloatND,
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8]: ...
+@overload  # 1-sample, nd ~f64, keepdims=True
+def kstest(
+    rvs: str | _RVSCallable | onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> _KstestResultN: ...
+@overload  # 1-sample, nd +floating, keepdims=True
+def kstest(
+    rvs: onp.ToFloatND,
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> KstestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int8]]: ...
+@overload  # 1-sample, nd
+def kstest(
+    rvs: onp.ToFloatND,
+    cdf: str | _ToCDF,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
+@overload  # 2-sample, ?d, ?d|1d
+def kstest(
+    rvs: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    cdf: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape] | onp.ToFloatStrict1D,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
+@overload  # 2-sample, ?d|1d, ?d
+def kstest(
+    rvs: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape] | onp.ToFloatStrict1D,
+    cdf: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
+@overload  # 2-sample, ?d, 2d|3d
+def kstest(
+    rvs: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    cdf: onp.ToFloatStrict2D | onp.ToFloatStrict3D,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResultN: ...
+@overload  # 2-sample, 2d|3d, ?d
+def kstest(
+    rvs: onp.ToFloatStrict2D | onp.ToFloatStrict3D,
+    cdf: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResultN: ...
+@overload  # 2-sample, 1d, 1d ~f64
+def kstest(
+    rvs: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult0: ...
+@overload  # 2-sample, 1d, 1d ~T
+def kstest[FloatT: np.float32 | np.float16](
+    rvs: onp.ToArrayStrict1D[FloatT, FloatT],
+    cdf: onp.ToArrayStrict1D[FloatT, FloatT],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[FloatT, np.int8]: ...
+@overload  # 2-sample, 1d, 1d +floating
+def kstest(
+    rvs: onp.ToFloatStrict1D,
+    cdf: onp.ToFloatStrict1D,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8]: ...
+@overload  # 2-sample, 2d, <=2d ~f64
+def kstest(
+    rvs: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool]
+    | onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult1: ...
+@overload  # 2-sample, <=2d, 2d ~f64
+def kstest(
+    rvs: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool]
+    | onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult1: ...
+@overload  # 2-sample, 2d, 2d ~T
+def kstest[FloatT: np.float32 | np.float16](
+    rvs: onp.ToArrayStrict2D[FloatT, FloatT],
+    cdf: onp.ToArrayStrict2D[FloatT, FloatT],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[onp.Array1D[FloatT], onp.Array1D[np.int8]]: ...
+@overload  # 2-sample, 2d, <=2d +floating
+def kstest(
+    rvs: onp.ToFloatStrict2D,
+    cdf: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[onp.Array1D[np.float64 | Any], onp.Array1D[np.int8]]: ...
+@overload  # 2-sample, <=2d, 2d +floating
+def kstest(
+    rvs: onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    cdf: onp.ToFloatStrict2D,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[onp.Array1D[np.float64 | Any], onp.Array1D[np.int8]]: ...
+@overload  # 2-sample, 3d, <=3d ~f64
+def kstest(
+    rvs: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool]
+    | onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool]
+    | onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult2: ...
+@overload  # 2-sample, <=3d, 3d ~f64
+def kstest(
+    rvs: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool]
+    | onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool]
+    | onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult2: ...
+@overload  # 2-sample, 3d, 3d ~T
+def kstest[FloatT: np.float32 | np.float16](
+    rvs: onp.ToArrayStrict3D[FloatT, FloatT],
+    cdf: onp.ToArrayStrict3D[FloatT, FloatT],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[onp.Array2D[FloatT], onp.Array2D[np.int8]]: ...
+@overload  # 2-sample, 3d, <=3d +floating
+def kstest(
+    rvs: onp.ToFloatStrict3D,
+    cdf: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[onp.Array2D[np.float64 | Any], onp.Array2D[np.int8]]: ...
+@overload  # 2-sample, <=3d, 3d +floating
+def kstest(
+    rvs: onp.ToFloatStrict3D | onp.ToFloatStrict2D | onp.ToFloatStrict1D,
+    cdf: onp.ToFloatStrict3D,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[onp.Array2D[np.float64 | Any], onp.Array2D[np.int8]]: ...
+@overload  # 2-sample, nd ~f64, axis=None
+def kstest(  # type: ignore[overload-overlap]
+    rvs: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    cdf: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult0: ...
+@overload  # 2-sample, nd ~T, axis=None
+def kstest[FloatT: np.float32 | np.float16](
+    rvs: onp.ToArrayND[FloatT, FloatT],
+    cdf: onp.ToArrayND[FloatT, FloatT],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[FloatT, np.int8]: ...
+@overload  # 2-sample, nd +floating, axis=None
+def kstest(
+    rvs: onp.ToFloatND,
+    cdf: onp.ToFloatND,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8]: ...
+@overload  # 2-sample, nd ~f64, keepdims=True
+def kstest(  # type: ignore[overload-overlap]
+    rvs: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    cdf: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> _KstestResultN: ...
+@overload  # 2-sample, nd ~T, keepdims=True
+def kstest[FloatT: np.float32 | np.float16](
+    rvs: onp.ToArrayND[FloatT, FloatT],
+    cdf: onp.ToArrayND[FloatT, FloatT],
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> KstestResult[onp.ArrayND[FloatT], onp.ArrayND[np.int8]]: ...
+@overload  # 2-sample, nd +floating, keepdims=True
+def kstest(
+    rvs: onp.ToFloatND,
+    cdf: onp.ToFloatND,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> KstestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int8]]: ...
+@overload  # 2-sample, nd
+def kstest(
+    rvs: onp.ToFloatND,
+    cdf: onp.ToFloatND,
+    args: tuple[object, ...] = (),
+    N: int = 20,
+    alternative: Alternative = "two-sided",
+    method: _KS2TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
 
 #
 def tiecorrect(rankvals: onp.ToIntND) -> float: ...
