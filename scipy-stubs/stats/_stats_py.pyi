@@ -4781,18 +4781,151 @@ def chisquare(
     nan_policy: NanPolicy = "propagate",
 ) -> Power_divergenceResult[np.float64 | Any]: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d
 def ks_1samp(
-    x: onp.ToFloatND,
-    cdf: Callable[[float], float | _Real0D],
+    x: _ToFloatStrictND,
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
+@overload  # 1d ~f64
+def ks_1samp(
+    x: onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: _ToCDF,
     args: tuple[object, ...] = (),
     alternative: Alternative = "two-sided",
     method: _KS1TestMethod = "auto",
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
-    keepdims: bool = False,
-) -> KstestResult: ...
+    keepdims: L[False] = False,
+) -> _KstestResult0: ...
+@overload  # 1d +floating
+def ks_1samp(
+    x: onp.ToFloatStrict1D,
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8]: ...
+@overload  # 2d ~f64
+def ks_1samp(
+    x: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult1: ...
+@overload  # 2d +floating
+def ks_1samp(
+    x: onp.ToFloatStrict2D,
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[onp.Array1D[np.float64 | Any], onp.Array1D[np.int8]]: ...
+@overload  # 3d ~f64
+def ks_1samp(
+    x: onp.ToArrayStrict3D[float, npc.floating64 | npc.integer | np.bool],
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult2: ...
+@overload  # 3d +floating
+def ks_1samp(
+    x: onp.ToFloatStrict3D,
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[onp.Array2D[np.float64 | Any], onp.Array2D[np.int8]]: ...
+@overload  # nd ~f64, axis=None
+def ks_1samp(
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> _KstestResult0: ...
+@overload  # nd +floating, axis=None
+def ks_1samp(
+    x: onp.ToFloatND,
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8]: ...
+@overload  # nd ~f64, keepdims=True
+def ks_1samp(
+    x: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> _KstestResultN: ...
+@overload  # nd +floating, keepdims=True
+def ks_1samp(
+    x: onp.ToFloatND,
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> KstestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int8]]: ...
+@overload  # nd
+def ks_1samp(
+    x: onp.ToFloatND,
+    cdf: _ToCDF,
+    args: tuple[object, ...] = (),
+    alternative: Alternative = "two-sided",
+    method: _KS1TestMethod = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
 
 #
 @overload  # ?d, ?d|1d
