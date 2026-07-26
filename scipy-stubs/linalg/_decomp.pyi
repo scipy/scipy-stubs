@@ -32,6 +32,7 @@ type _ToInexact80ND = onp.ToArrayND[Never, npc.inexact80]
 type _SelectA = Literal["a", "all", 0]
 type _SelectV = Literal["v", "value", 1]
 type _SelectI = Literal["i", "index", 2]
+type _Select = _SelectA | _SelectV | _SelectI
 
 # NOTE: `_check_select()` requires the `select_range` array-like to be of `int{16,32,64}` when `select: _SelectIndex`
 # https://github.com/scipy/scipy-stubs/issues/154
@@ -308,147 +309,239 @@ def eigh(
 ) -> _FloatND: ...
 
 #
-@overload  # float, eigvals_only: False = ..., select: _SelectA = ...
+@overload  # ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eig_banded(
-    a_band: onp.ToFloatND,
+    a_band: _ToBoolF16ND,
     lower: bool = False,
     eigvals_only: Literal[False] = False,
     overwrite_a_band: bool = False,
-    select: _SelectA = "a",
+    select: _Select = "a",
     select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # float, eigvals_only: False = ..., select: _SelectV (keyword)
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
+@overload  # ~f80
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
 def eig_banded(
-    a_band: onp.ToFloatND,
+    a_band: onp.ToJustLongDoubleND,
     lower: bool = False,
     eigvals_only: Literal[False] = False,
     overwrite_a_band: bool = False,
-    *,
-    select: _SelectV,
-    select_range: _SelectRange,
-    max_ev: onp.ToInt = 0,
-    check_finite: bool = True,
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # float, eigvals_only: False = ..., select: _SelectI (keyword)
-def eig_banded(
-    a_band: onp.ToFloatND,
-    lower: bool = False,
-    eigvals_only: Literal[False] = False,
-    overwrite_a_band: bool = False,
-    *,
-    select: _SelectI,
-    select_range: _SelectRangeI,
-    max_ev: onp.ToInt = 0,
-    check_finite: bool = True,
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # complex, eigvals_only: False = ..., select: _SelectA = ...
-def eig_banded(
-    a_band: onp.ToComplexND,
-    lower: bool = False,
-    eigvals_only: Literal[False] = False,
-    overwrite_a_band: bool = False,
-    select: _SelectA = "a",
+    select: _Select = "a",
     select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
-) -> tuple[_FloatND, _InexactND]: ...
-@overload  # complex, eigvals_only: False = ..., select: _SelectV (keyword)
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~c160
+@deprecated("clongdouble input will no longer be supported in SciPy 2.1")
+def eig_banded(
+    a_band: onp.ToJustCLongDoubleND,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # +f32
+def eig_banded(
+    a_band: onp.ToFloat32_ND,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
+@overload  # +f64
+def eig_banded(
+    a_band: _ToF64ND,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~c64
+def eig_banded(
+    a_band: onp.ToJustComplex64_ND,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]]: ...
+@overload  # ~c128
+def eig_banded(
+    a_band: onp.ToJustComplex128_ND,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # catch-all
 def eig_banded(
     a_band: onp.ToComplexND,
     lower: bool = False,
     eigvals_only: Literal[False] = False,
     overwrite_a_band: bool = False,
-    *,
-    select: _SelectV,
-    select_range: _SelectRange,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
-) -> tuple[_FloatND, _InexactND]: ...
-@overload  # complex, eigvals_only: False = ..., select: _SelectI (keyword)
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # ~bool | ~f16, eigvals_only: True (positional)
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eig_banded(
-    a_band: onp.ToComplexND,
-    lower: bool = False,
-    eigvals_only: Literal[False] = False,
+    a_band: _ToBoolF16ND,
+    lower: bool,
+    eigvals_only: Literal[True],
     overwrite_a_band: bool = False,
-    *,
-    select: _SelectI,
-    select_range: _SelectRangeI,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
-) -> tuple[_FloatND, _InexactND]: ...
-@overload  # eigvals_only: True  (positional), select: _SelectA = ...
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~bool | ~f16, eigvals_only: True (keyword)
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eig_banded(
+    a_band: _ToBoolF16ND,
+    lower: bool = False,
+    *,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~f80 | ~c160, eigvals_only: True (positional)
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
+def eig_banded(
+    a_band: _ToInexact80ND,
+    lower: bool,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f80 | ~c160, eigvals_only: True (keyword)
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
+def eig_banded(
+    a_band: _ToInexact80ND,
+    lower: bool = False,
+    *,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +c64, eigvals_only: True (positional)
+def eig_banded(
+    a_band: onp.ToComplex64_ND,
+    lower: bool,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +c64, eigvals_only: True (keyword)
+def eig_banded(
+    a_band: onp.ToComplex64_ND,
+    lower: bool = False,
+    *,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +c128, eigvals_only: True (positional)
+def eig_banded(
+    a_band: _ToC128ND,
+    lower: bool,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +c128, eigvals_only: True (keyword)
+def eig_banded(
+    a_band: _ToC128ND,
+    lower: bool = False,
+    *,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # catch-all, eigvals_only: True (positional)
 def eig_banded(
     a_band: onp.ToComplexND,
     lower: bool,
     eigvals_only: Literal[True],
     overwrite_a_band: bool = False,
-    select: _SelectA = "a",
+    select: _Select = "a",
     select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # eigvals_only: True  (keyword), select: _SelectA = ... (keyword)
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload  # catch-all, eigvals_only: True (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
     lower: bool = False,
     *,
     eigvals_only: Literal[True],
     overwrite_a_band: bool = False,
-    select: _SelectA = "a",
+    select: _Select = "a",
     select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # eigvals_only: True  (positional), select: _SelectV (keyword)
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload  # catch-all, eigvals_only: bool (positional)
 def eig_banded(
     a_band: onp.ToComplexND,
     lower: bool,
-    eigvals_only: Literal[True],
+    eigvals_only: bool,
     overwrite_a_band: bool = False,
-    *,
-    select: _SelectV,
-    select_range: _SelectRange,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # eigvals_only: True  (keyword), select: _SelectV (keyword)
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]] | onp.ArrayND[np.float64 | Any]: ...
+@overload  # catch-all, eigvals_only: bool (keyword)
 def eig_banded(
     a_band: onp.ToComplexND,
     lower: bool = False,
     *,
-    eigvals_only: Literal[True],
+    eigvals_only: bool,
     overwrite_a_band: bool = False,
-    select: _SelectV,
-    select_range: _SelectRange,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # eigvals_only: True (positional), select: _SelectI (keyword)
-def eig_banded(
-    a_band: onp.ToComplexND,
-    lower: bool,
-    eigvals_only: Literal[True],
-    overwrite_a_band: bool = False,
-    *,
-    select: _SelectI,
-    select_range: _SelectRangeI,
-    max_ev: onp.ToInt = 0,
-    check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # eigvals_only: True (keyword), select: _SelectI (keyword)
-def eig_banded(
-    a_band: onp.ToComplexND,
-    lower: bool = False,
-    *,
-    eigvals_only: Literal[True],
-    overwrite_a_band: bool = False,
-    select: _SelectI,
-    select_range: _SelectRangeI,
-    max_ev: onp.ToInt = 0,
-    check_finite: bool = True,
-) -> _FloatND: ...
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]] | onp.ArrayND[np.float64 | Any]: ...
 
 # keep structurally in sync with `eigvalsh`
 @overload  # ~bool | ~f16, +c64 | None

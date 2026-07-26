@@ -192,10 +192,32 @@ assert_type(eig(_c128_nd, left=True, right=True), tuple[_ComplexND, _ComplexND, 
 ###
 # eig_banded
 
-assert_type(eig_banded(_py_f_2d), tuple[_FloatND, _FloatND])
-assert_type(eig_banded(_c128_nd), tuple[_FloatND, _InexactND])
-assert_type(eig_banded(_py_f_2d, eigvals_only=True), _FloatND)
-assert_type(eig_banded(_c128_nd, True, True), _FloatND)
+assert_type(eig_banded(_i8_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(eig_banded(_f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(eig_banded(_i32_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eig_banded(_f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eig_banded(_py_f_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eig_banded(_c64_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]])
+assert_type(eig_banded(_c128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(eig_banded(_py_c_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+
+# the eigenvalues are always real, so complex input does not widen the result here
+assert_type(eig_banded(_f32_nd, eigvals_only=True), onp.ArrayND[np.float32])
+assert_type(eig_banded(_c64_nd, eigvals_only=True), onp.ArrayND[np.float32])
+assert_type(eig_banded(_f64_nd, eigvals_only=True), onp.ArrayND[np.float64])
+assert_type(eig_banded(_py_f_2d, eigvals_only=True), onp.ArrayND[np.float64])
+assert_type(eig_banded(_c128_nd, True, True), onp.ArrayND[np.float64])
+
+assert_type(eig_banded(_f32_nd, select="v", select_range=_py_f_1d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(eig_banded(_c128_nd, select="i", select_range=_py_i_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(eig_banded(_c64_nd, eigvals_only=True, select="v", select_range=_py_f_1d), onp.ArrayND[np.float32])
+assert_type(eig_banded(_f64_nd, True, True, select="i", select_range=_py_i_1d), onp.ArrayND[np.float64])
+
+assert_type(eig_banded(_f16_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eig_banded(_f128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eig_banded(_c256_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eig_banded(_f16_nd, eigvals_only=True), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eig_banded(_c256_nd, eigvals_only=True), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # hessenberg
