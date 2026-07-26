@@ -102,9 +102,26 @@ assert_type(eigvalsh_tridiagonal(_py_f_1d, _py_f_1d, "i", [0, 2]), _FloatND)
 ###
 # eigvals_banded
 
-assert_type(eigvals_banded(_py_f_2d), _FloatND)
-assert_type(eigvals_banded(_py_f_2d, select="v", select_range=[0.5, 1.5]), _FloatND)
-assert_type(eigvals_banded(_py_f_2d, select="i", select_range=[0, 2]), _FloatND)
+assert_type(eigvals_banded(_i8_nd), onp.ArrayND[np.float32])
+assert_type(eigvals_banded(_f32_nd), onp.ArrayND[np.float32])
+assert_type(eigvals_banded(_c64_nd), onp.ArrayND[np.float32])
+assert_type(eigvals_banded(_i32_nd), onp.ArrayND[np.float64])
+assert_type(eigvals_banded(_f64_nd), onp.ArrayND[np.float64])
+assert_type(eigvals_banded(_c128_nd), onp.ArrayND[np.float64])
+assert_type(eigvals_banded(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(eigvals_banded(_py_c_2d), onp.ArrayND[np.float64])
+
+assert_type(eigvals_banded(_f32_nd, select="v", select_range=[0.5, 1.5]), onp.ArrayND[np.float32])
+assert_type(eigvals_banded(_py_f_2d, select="v", select_range=[0.5, 1.5]), onp.ArrayND[np.float64])
+assert_type(eigvals_banded(_f32_nd, select="i", select_range=[0, 2]), onp.ArrayND[np.float32])
+assert_type(eigvals_banded(_py_f_2d, select="i", select_range=[0, 2]), onp.ArrayND[np.float64])
+assert_type(eigvals_banded(_c64_nd, select="i", select_range=[0, 2]), onp.ArrayND[np.float32])
+assert_type(eigvals_banded(_c128_nd, select="v", select_range=[0.5, 1.5]), onp.ArrayND[np.float64])
+
+# deprecated input dtypes
+assert_type(eigvals_banded(_f16_nd), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigvals_banded(_f128_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigvals_banded(_c256_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # eigh_tridiagonal
