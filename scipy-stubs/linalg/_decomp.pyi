@@ -850,36 +850,324 @@ def eigvals_banded(
 ) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
-@overload  # select: _SelectA = ...
+@overload  # ~bool | ~f16, +f32
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvalsh_tridiagonal(
-    d: onp.ToComplexND,
-    e: onp.ToComplexND,
+    d: _ToBoolF16ND,
+    e: onp.ToFloat32_ND,
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
     check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> _FloatND: ...
-@overload  # select: _SelectV
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~bool | ~f16, +f32, select: "v"
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvalsh_tridiagonal(
-    d: onp.ToComplexND,
-    e: onp.ToComplexND,
+    d: _ToBoolF16ND,
+    e: onp.ToFloat32_ND,
     select: _SelectV,
     select_range: _SelectRange,
     check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> _FloatND: ...
-@overload  # select: _SelectI
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~bool | ~f16, +f32, select: "i"
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvalsh_tridiagonal(
-    d: onp.ToComplexND,
-    e: onp.ToComplexND,
+    d: _ToBoolF16ND,
+    e: onp.ToFloat32_ND,
     select: _SelectI,
     select_range: _SelectRangeI,
     check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> _FloatND: ...
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f32, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: onp.ToFloat32_ND,
+    e: _ToBoolF16ND,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f32, ~bool | ~f16, select: "v"
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: onp.ToFloat32_ND,
+    e: _ToBoolF16ND,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f32, ~bool | ~f16, select: "i"
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: onp.ToFloat32_ND,
+    e: _ToBoolF16ND,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~bool | ~f16, +f64
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: _ToBoolF16ND,
+    e: _ToF64ND,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~bool | ~f16, +f64, select: "v"
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: _ToBoolF16ND,
+    e: _ToF64ND,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~bool | ~f16, +f64, select: "i"
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: _ToBoolF16ND,
+    e: _ToF64ND,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: _ToF64ND,
+    e: _ToBoolF16ND,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, ~bool | ~f16, select: "v"
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: _ToF64ND,
+    e: _ToBoolF16ND,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, ~bool | ~f16, select: "i"
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: _ToF64ND,
+    e: _ToBoolF16ND,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f80, +float
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: onp.ToJustLongDoubleND,
+    e: onp.ToFloatND,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f80, +float, select: "v"
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: onp.ToJustLongDoubleND,
+    e: onp.ToFloatND,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f80, +float, select: "i"
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: onp.ToJustLongDoubleND,
+    e: onp.ToFloatND,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float, ~f80
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: onp.ToFloatND,
+    e: onp.ToJustLongDoubleND,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float, ~f80, select: "v"
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: onp.ToFloatND,
+    e: onp.ToJustLongDoubleND,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float, ~f80, select: "i"
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigvalsh_tridiagonal(
+    d: onp.ToFloatND,
+    e: onp.ToJustLongDoubleND,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f32, +f32
+def eigvalsh_tridiagonal(
+    d: onp.ToFloat32_ND,
+    e: onp.ToFloat32_ND,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f32, +f32, select: "v"
+def eigvalsh_tridiagonal(
+    d: onp.ToFloat32_ND,
+    e: onp.ToFloat32_ND,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f32, +f32, select: "i"
+def eigvalsh_tridiagonal(
+    d: onp.ToFloat32_ND,
+    e: onp.ToFloat32_ND,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f64, +float
+def eigvalsh_tridiagonal(
+    d: _ToF64ND,
+    e: onp.ToFloatND,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, +float, select: "v"
+def eigvalsh_tridiagonal(
+    d: _ToF64ND,
+    e: onp.ToFloatND,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, +float, select: "i"
+def eigvalsh_tridiagonal(
+    d: _ToF64ND,
+    e: onp.ToFloatND,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float, +f64
+def eigvalsh_tridiagonal(
+    d: onp.ToFloatND,
+    e: _ToF64ND,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float, +f64, select: "v"
+def eigvalsh_tridiagonal(
+    d: onp.ToFloatND,
+    e: _ToF64ND,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float, +f64, select: "i"
+def eigvalsh_tridiagonal(
+    d: onp.ToFloatND,
+    e: _ToF64ND,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # catch-all
+def eigvalsh_tridiagonal(
+    d: onp.ToFloatND,
+    e: onp.ToFloatND,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload  # catch-all, select: "v"
+def eigvalsh_tridiagonal(
+    d: onp.ToFloatND,
+    e: onp.ToFloatND,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload  # catch-all, select: "i"
+def eigvalsh_tridiagonal(
+    d: onp.ToFloatND,
+    e: onp.ToFloatND,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload  # eigvals_only: False = ..., select: _SelectA = ...
