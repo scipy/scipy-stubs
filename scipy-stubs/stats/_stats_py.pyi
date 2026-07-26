@@ -154,6 +154,7 @@ type _ToCDF = Callable[[onp.ArrayND[np.float64]], onp.ToFloat | onp.ToFloatND]
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 type _AsFloat64_1D = onp.ToArrayStrict1D[float, npc.floating64 | npc.integer]
 type _AsFloat64_2D = onp.ToArrayStrict2D[float, npc.floating64 | npc.integer]
+type _AsFloat64_3D = onp.ToArrayStrict3D[float, npc.floating64 | npc.integer]
 type _AsFloat64_ND = onp.ToArrayND[float, npc.floating64 | npc.integer]
 type _AsFloat32_1D = onp.ToArrayStrict1D[np.float32, np.float32 | np.float16]
 type _AsFloat32_2D = onp.ToArrayStrict2D[np.float32, np.float32 | np.float16]
@@ -161,6 +162,8 @@ type _AsFloat32_ND = onp.ToArrayND[Never, np.float32 | np.float16]
 
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
 type _ToFloat64StrictND = onp.ArrayND[npc.floating64 | npc.floating32 | npc.floating16 | npc.integer | np.bool, _JustAnyShape]
+type _AsFloat64StrictND = onp.ArrayND[npc.floating64 | npc.integer, _JustAnyShape]
+type _AsFloat32StrictND = onp.ArrayND[np.float32, _JustAnyShape]
 
 type _ToFloatOrND = onp.ToFloat | onp.ToFloatND
 type _AsFloat64OrND = float | npc.floating64 | onp.ToInt | onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool]
@@ -5966,10 +5969,205 @@ def kruskal(
     keepdims: L[True],
 ) -> KruskalResult[onp.ArrayND[np.float64]]: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d ~f64 | +integer, axis=None
 def friedmanchisquare(
-    *samples: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
-) -> FriedmanchisquareResult: ...
+    sample1: _AsFloat64_ND,
+    sample2: _AsFloat64_ND,
+    sample3: _AsFloat64_ND,
+    /,
+    *samples: _AsFloat64_ND,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[np.float64]: ...
+@overload  # ?d ~f64 | +integer
+def friedmanchisquare(
+    sample1: _AsFloat64StrictND,
+    sample2: _AsFloat64StrictND,
+    sample3: _AsFloat64StrictND,
+    /,
+    *samples: _AsFloat64_ND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[np.float64 | Any]: ...
+@overload  # 1d ~f64 | +integer
+def friedmanchisquare(
+    sample1: _AsFloat64_1D,
+    sample2: _AsFloat64_1D,
+    sample3: _AsFloat64_1D,
+    /,
+    *samples: _AsFloat64_1D,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[np.float64]: ...
+@overload  # 2d ~f64 | +integer
+def friedmanchisquare(
+    sample1: _AsFloat64_2D,
+    sample2: _AsFloat64_2D,
+    sample3: _AsFloat64_2D,
+    /,
+    *samples: _AsFloat64_2D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[onp.Array1D[np.float64]]: ...
+@overload  # 3d ~f64 | +integer
+def friedmanchisquare(
+    sample1: _AsFloat64_3D,
+    sample2: _AsFloat64_3D,
+    sample3: _AsFloat64_3D,
+    /,
+    *samples: _AsFloat64_3D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[onp.Array2D[np.float64]]: ...
+@overload  # ?d ~f64 | +integer, keepdims=True
+def friedmanchisquare(
+    sample1: _AsFloat64_ND,
+    sample2: _AsFloat64_ND,
+    sample3: _AsFloat64_ND,
+    /,
+    *samples: _AsFloat64_ND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> FriedmanchisquareResult[onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~f32, axis=None
+def friedmanchisquare(
+    sample1: onp.ToJustFloat32_ND,
+    sample2: onp.ToJustFloat32_ND,
+    sample3: onp.ToJustFloat32_ND,
+    /,
+    *samples: onp.ToJustFloat32_ND,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[np.float32]: ...
+@overload  # ?d ~f32
+def friedmanchisquare(
+    sample1: _AsFloat32StrictND,
+    sample2: _AsFloat32StrictND,
+    sample3: _AsFloat32StrictND,
+    /,
+    *samples: onp.ToJustFloat32_ND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[np.float32 | Any]: ...
+@overload  # 1d ~f32
+def friedmanchisquare(
+    sample1: onp.ToJustFloat32Strict1D,
+    sample2: onp.ToJustFloat32Strict1D,
+    sample3: onp.ToJustFloat32Strict1D,
+    /,
+    *samples: onp.ToJustFloat32Strict1D,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[np.float32]: ...
+@overload  # 2d ~f32
+def friedmanchisquare(
+    sample1: onp.ToJustFloat32Strict2D,
+    sample2: onp.ToJustFloat32Strict2D,
+    sample3: onp.ToJustFloat32Strict2D,
+    /,
+    *samples: onp.ToJustFloat32Strict2D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[onp.Array1D[np.float32]]: ...
+@overload  # 3d ~f32
+def friedmanchisquare(
+    sample1: onp.ToJustFloat32Strict3D,
+    sample2: onp.ToJustFloat32Strict3D,
+    sample3: onp.ToJustFloat32Strict3D,
+    /,
+    *samples: onp.ToJustFloat32Strict3D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[onp.Array2D[np.float32]]: ...
+@overload  # ?d ~f32, keepdims=True
+def friedmanchisquare(
+    sample1: onp.ToJustFloat32_ND,
+    sample2: onp.ToJustFloat32_ND,
+    sample3: onp.ToJustFloat32_ND,
+    /,
+    *samples: onp.ToJustFloat32_ND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> FriedmanchisquareResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d ~f32, fallback
+def friedmanchisquare(
+    sample1: onp.ToJustFloat32_ND,
+    sample2: onp.ToJustFloat32_ND,
+    sample3: onp.ToJustFloat32_ND,
+    /,
+    *samples: onp.ToJustFloat32_ND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
+) -> FriedmanchisquareResult[np.float32 | Any]: ...
+@overload  # ?d +floating
+def friedmanchisquare(
+    sample1: _ToFloatStrictND,
+    sample2: _ToFloatStrictND,
+    sample3: _ToFloatStrictND,
+    /,
+    *samples: onp.ToFloatND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[np.float64 | Any]: ...
+@overload  # 2d +floating
+def friedmanchisquare(
+    sample1: onp.ToFloatStrict2D,
+    sample2: onp.ToFloatStrict2D,
+    sample3: onp.ToFloatStrict2D,
+    /,
+    *samples: onp.ToFloatStrict2D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[onp.Array1D[np.float64 | Any]]: ...
+@overload  # 3d +floating
+def friedmanchisquare(
+    sample1: onp.ToFloatStrict3D,
+    sample2: onp.ToFloatStrict3D,
+    sample3: onp.ToFloatStrict3D,
+    /,
+    *samples: onp.ToFloatStrict3D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> FriedmanchisquareResult[onp.Array2D[np.float64 | Any]]: ...
+@overload  # ?d +floating, keepdims=True
+def friedmanchisquare(
+    sample1: onp.ToFloatND,
+    sample2: onp.ToFloatND,
+    sample3: onp.ToFloatND,
+    /,
+    *samples: onp.ToFloatND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> FriedmanchisquareResult[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # fallback
+def friedmanchisquare(
+    sample1: onp.ToFloatND,
+    sample2: onp.ToFloatND,
+    sample3: onp.ToFloatND,
+    /,
+    *samples: onp.ToFloatND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
+) -> FriedmanchisquareResult[np.float64 | Any]: ...
 
 #
 @overload  # ?d, ?d|1d
