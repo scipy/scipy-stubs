@@ -1,40 +1,165 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Generic, Literal, NamedTuple, overload
+from typing import Any, Generic, Literal, NamedTuple, Never, overload
 from typing_extensions import TypeVar
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["binned_statistic", "binned_statistic_2d", "binned_statistic_dd"]
 
 ###
 
-type _Statistic = Literal["mean", "std", "median", "count", "sum", "min", "max"]
+type _StatisticF64 = Literal["count", "std"]  # always `float64`, even for complex `values`
+type _StatisticPromoted = Literal["mean", "median", "sum", "min", "max"]  # `result_type(values, float64)`
+type _Statistic = Literal[_StatisticF64, _StatisticPromoted]
 
+type _StatFunc[ScalarT: npc.inexact, ToT] = Callable[[onp.Array1D[ScalarT]], ToT]
+
+type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+
+type _AsF64 = npc.floating64 | npc.floating32 | npc.floating16 | npc.integer | np.bool
+type _AsC128 = npc.complexfloating128 | npc.complexfloating64
+
+type _ToBins = onp.ToInt | onp.ToFloat1D
+type _ToRange = tuple[float, float] | Sequence[tuple[float, float]] | None
+
+_InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, covariant=True, default=np.float64 | np.complex128)
+_StatShapeT_co = TypeVar(
+    "_StatShapeT_co", bound=tuple[int] | tuple[int, int], covariant=True, default=tuple[int] | tuple[int, int]
+)
 _ShapeT_co = TypeVar(
     "_ShapeT_co", bound=tuple[int, int] | tuple[int, int, int], covariant=True, default=tuple[int, int] | tuple[int, int, int]
 )
 
 ###
 
-class BinnedStatisticResult(NamedTuple):
-    statistic: onp.Array1D[Any]
+class BinnedStatisticResult(NamedTuple, Generic[_InexactT_co, _StatShapeT_co]):
+    statistic: onp.Array[_StatShapeT_co, _InexactT_co]
     bin_edges: onp.Array1D[np.float64]
     binnumber: onp.Array1D[np.intp]
-
-def binned_statistic(
-    x: onp.ToComplex1D,
-    values: onp.ToComplex1D | Sequence[onp.ToComplex1D],
-    statistic: _Statistic | Callable[[onp.Array1D[np.float64]], onp.ToFloat] = "mean",
-    bins: onp.ToInt | onp.ToFloat1D = 10,
-    range: tuple[float, float] | Sequence[tuple[float, float]] | None = None,
-) -> BinnedStatisticResult: ...
 
 class BinnedStatistic2dResult(NamedTuple, Generic[_ShapeT_co]):
     statistic: onp.Array2D[Any]
     x_edge: onp.Array1D[np.float64]
     y_edge: onp.Array1D[np.float64]
     binnumber: onp.Array[_ShapeT_co, np.intp]
+
+class BinnedStatisticddResult(NamedTuple, Generic[_ShapeT_co]):
+    statistic: onp.ArrayND[Any]
+    bin_edges: list[onp.Array1D[np.float64]]
+    binnumber: onp.Array[_ShapeT_co, np.intp]
+
+#
+@overload  # ?d, count|std
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ArrayND[_AsF64 | _AsC128, _JustAnyShape],
+    statistic: _StatisticF64,
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.float64]: ...
+@overload  # ?d real
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ArrayND[_AsF64, _JustAnyShape],
+    statistic: _StatisticPromoted | _StatFunc[np.float64, onp.ToFloat] = "mean",
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.float64]: ...
+@overload  # ?d ~complex
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ArrayND[_AsC128, _JustAnyShape],
+    statistic: _StatisticPromoted | _StatFunc[np.complex128, onp.ToComplex] = "mean",
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.complex128]: ...
+@overload  # ?d real, ~complex statistic
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ArrayND[_AsF64, _JustAnyShape],
+    statistic: _StatFunc[np.float64, onp.ToJustComplex],
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.complex128]: ...
+@overload  # 1d, count|std
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ToArrayStrict1D[complex, _AsF64 | _AsC128],
+    statistic: _StatisticF64,
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.float64, tuple[int]]: ...
+@overload  # 1d real
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ToArrayStrict1D[float, _AsF64],
+    statistic: _StatisticPromoted | _StatFunc[np.float64, onp.ToFloat] = "mean",
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.float64, tuple[int]]: ...
+@overload  # 1d ~complex
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ToArrayStrict1D[op.JustComplex, _AsC128],
+    statistic: _StatisticPromoted | _StatFunc[np.complex128, onp.ToComplex] = "mean",
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.complex128, tuple[int]]: ...
+@overload  # 1d real, ~complex statistic
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ToArrayStrict1D[float, _AsF64],
+    statistic: _StatFunc[np.float64, onp.ToJustComplex],
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.complex128, tuple[int]]: ...
+@overload  # 2d, count|std
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ToArrayStrict2D[complex, _AsF64 | _AsC128],
+    statistic: _StatisticF64,
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.float64, tuple[int, int]]: ...
+@overload  # 2d real
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ToArrayStrict2D[float, _AsF64],
+    statistic: _StatisticPromoted | _StatFunc[np.float64, onp.ToFloat] = "mean",
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.float64, tuple[int, int]]: ...
+@overload  # 2d ~complex
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ToArrayStrict2D[op.JustComplex, _AsC128],
+    statistic: _StatisticPromoted | _StatFunc[np.complex128, onp.ToComplex] = "mean",
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.complex128, tuple[int, int]]: ...
+@overload  # 2d real, ~complex statistic
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ToArrayStrict2D[float, _AsF64],
+    statistic: _StatFunc[np.float64, onp.ToJustComplex],
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult[np.complex128, tuple[int, int]]: ...
+@overload  # values=None, count
+def binned_statistic(
+    x: onp.ToFloat1D, values: None, statistic: Literal["count"], bins: _ToBins = 10, range: _ToRange = None
+) -> BinnedStatisticResult[np.float64, tuple[int]]: ...
+@overload  # fallback
+def binned_statistic(
+    x: onp.ToFloat1D,
+    values: onp.ToComplexND | None,
+    statistic: _Statistic | _StatFunc[Any, onp.ToComplex] = "mean",
+    bins: _ToBins = 10,
+    range: _ToRange = None,
+) -> BinnedStatisticResult: ...
 
 #
 @overload
@@ -58,11 +183,6 @@ def binned_statistic_2d(
     *,
     expand_binnumbers: Literal[True],
 ) -> BinnedStatistic2dResult[tuple[int, int, int]]: ...
-
-class BinnedStatisticddResult(NamedTuple, Generic[_ShapeT_co]):
-    statistic: onp.ArrayND[Any]
-    bin_edges: list[onp.Array1D[np.float64]]
-    binnumber: onp.Array[_ShapeT_co, np.intp]
 
 #
 @overload
