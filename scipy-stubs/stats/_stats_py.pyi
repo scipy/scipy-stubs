@@ -3832,45 +3832,116 @@ def spearmanr(
     a: onp.ToFloat2D, b: None = None, axis: int = 0, nan_policy: NanPolicy = "propagate", alternative: Alternative = "two-sided"
 ) -> SignificanceResult[np.float64 | onp.Array2D[np.float64]]: ...
 
-# TODO(jorenham): improve like `pearsonr` (but return `SignificanceResult`, not `PearsonRResult`)
-@overload
+#
+@overload  # ?d +integer, +integer | ~f64, axis=None
 def pointbiserialr(
-    x: onp.ToBoolND, y: onp.ToFloatND, *, axis: None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+    x: onp.ToIntND,
+    y: onp.ToIntND | onp.ToJustFloat64_ND,
+    *,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
 ) -> SignificanceResult[np.float64]: ...
-@overload
+@overload  # 1d +integer, +integer | ~f64
 def pointbiserialr(
-    x: onp.ToBoolStrict1D,
-    y: onp.ToFloatStrict1D,
+    x: onp.ToIntStrict1D,
+    y: onp.ToIntStrict1D | onp.ToJustFloat64Strict1D,
     *,
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[np.float64]: ...
-@overload
+@overload  # 2d +integer, +integer | ~f64
 def pointbiserialr(
-    x: onp.ToBoolStrict2D,
-    y: onp.ToFloatStrict2D,
+    x: onp.ToIntStrict2D,
+    y: onp.ToIntStrict2D | onp.ToJustFloat64Strict2D,
     *,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[onp.Array1D[np.float64]]: ...
-@overload
+@overload  # 3d +integer, +integer | ~f64
 def pointbiserialr(
-    x: onp.ToBoolStrict3D,
-    y: onp.ToFloatStrict3D,
+    x: onp.ToIntStrict3D,
+    y: onp.ToIntStrict3D | onp.ToJustFloat64Strict3D,
     *,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[onp.Array2D[np.float64]]: ...
-@overload
+@overload  # ?d +integer, +integer | ~f64, keepdims=True
 def pointbiserialr(
-    x: onp.ToBoolND, y: onp.ToFloatND, *, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+    x: onp.ToIntND,
+    y: onp.ToIntND | onp.ToJustFloat64_ND,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
-@overload
+@overload  # ?d +bool, ~f32, axis=None
 def pointbiserialr(
-    x: onp.ToBoolND, y: onp.ToFloatND, *, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+    x: onp.ToBoolND, y: onp.ToJustFloat32_ND, *, axis: None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+) -> SignificanceResult[np.float32]: ...
+@overload  # 1d +bool, ~f32
+def pointbiserialr(
+    x: onp.ToBoolStrict1D,
+    y: onp.ToJustFloat32Strict1D,
+    *,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float32]: ...
+@overload  # 2d +bool, ~f32
+def pointbiserialr(
+    x: onp.ToBoolStrict2D,
+    y: onp.ToJustFloat32Strict2D,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array1D[np.float32]]: ...
+@overload  # 3d +bool, ~f32
+def pointbiserialr(
+    x: onp.ToBoolStrict3D,
+    y: onp.ToJustFloat32Strict3D,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array2D[np.float32]]: ...
+@overload  # ?d +bool, ~f32, keepdims=True
+def pointbiserialr(
+    x: onp.ToBoolND, y: onp.ToJustFloat32_ND, *, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d +bool, ~f32, fallback
+def pointbiserialr(
+    x: onp.ToBoolND, y: onp.ToJustFloat32_ND, *, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+) -> SignificanceResult[np.float32 | Any]: ...
+@overload  # 2d +integer, +floating
+def pointbiserialr(
+    x: onp.ToIntStrict2D,
+    y: onp.ToFloatStrict2D,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array1D[np.float64 | Any]]: ...
+@overload  # 3d +integer, +floating
+def pointbiserialr(
+    x: onp.ToIntStrict3D,
+    y: onp.ToFloatStrict3D,
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[onp.Array2D[np.float64 | Any]]: ...
+@overload  # ?d +integer, +floating, keepdims=True
+def pointbiserialr(
+    x: onp.ToIntND, y: onp.ToFloatND, *, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # fallback
+def pointbiserialr(
+    x: onp.ToIntND, y: onp.ToFloatND, *, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 #
