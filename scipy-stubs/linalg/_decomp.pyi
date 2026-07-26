@@ -25,6 +25,7 @@ __all__ = [
 
 type _ToBoolF16ND = onp.ToArrayND[Never, np.bool | np.float16]
 type _ToF64ND = onp.ToArrayND[float, npc.integer32 | npc.integer64 | npc.floating64]
+type _ToC64ND = onp.ToArrayND[Never, npc.inexact32 | npc.integer16 | npc.integer8]
 type _ToC128ND = onp.ToArrayND[complex, npc.integer32 | npc.number64]
 type _ToInexact80ND = onp.ToArrayND[Never, npc.inexact80]
 
@@ -52,8 +53,6 @@ type _DriverAuto = Literal["auto"]
 # output types
 
 type _FloatND = onp.ArrayND[np.float64 | np.float32]
-type _ComplexND = onp.ArrayND[np.complex128 | np.complex64]
-type _InexactND = onp.ArrayND[np.complex128 | np.complex64 | np.float64 | np.float32]
 
 ###
 
@@ -61,160 +60,398 @@ type _InexactND = onp.ArrayND[np.complex128 | np.complex64 | np.float64 | np.flo
 # mypy: disable-error-code=overload-overlap
 
 # NOTE: The eigenvectors of real `a` can be either real or complex, depending on its values.
-# TODO(@jorenham): f32/f64/c64/c128-specific overloads
-@overload  # complex, left: False, right: False (positional)
+@overload  # +c64, +c64 | None, right: False
+def eig(
+    a: _ToC64ND,
+    b: _ToC64ND | None = None,
+    left: onp.ToFalse = False,
+    *,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # ~bool | ~f16, +c64 | None, right: False
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eig(
+    a: _ToBoolF16ND,
+    b: onp.ToComplex64_ND | None = None,
+    left: onp.ToFalse = False,
+    *,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # +c64, ~bool | ~f16, right: False
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eig(
+    a: onp.ToComplex64_ND,
+    b: _ToBoolF16ND,
+    left: onp.ToFalse = False,
+    *,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # +c128, +complex | None, right: False
+def eig(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    left: onp.ToFalse = False,
+    *,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +complex, +c128, right: False
+def eig(
+    a: _ToC64ND | _ToC128ND,
+    b: _ToC128ND,
+    left: onp.ToFalse = False,
+    *,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, +complex | None, right: False
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def eig(
+    a: _ToBoolF16ND | _ToInexact80ND,
+    b: onp.ToComplexND | None = None,
+    left: onp.ToFalse = False,
+    *,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +complex, ~bool | ~f16 | ~f80 | ~c160, right: False
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
 def eig(
     a: onp.ToComplexND,
-    b: onp.ToComplexND | None,
-    left: Literal[False],
-    right: Literal[False],
+    b: _ToBoolF16ND | _ToInexact80ND,
+    left: onp.ToFalse = False,
+    *,
+    right: onp.ToFalse,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> _ComplexND: ...
-@overload  # complex, left: False = ..., right: False (keyword)
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # catch-all, right: False
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
-    left: Literal[False] = False,
+    left: onp.ToFalse = False,
     *,
-    right: Literal[False],
+    right: onp.ToFalse,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> _ComplexND: ...
-@overload  # float, left: False = ..., right: True = ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
+@overload  # +c64, +c64 | None
 def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None = None,
-    left: Literal[False] = False,
-    right: Literal[True] = True,
+    a: _ToC64ND,
+    b: _ToC64ND | None = None,
+    left: onp.ToFalse = False,
+    right: onp.ToTrue = True,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: False = ..., right: True = ...
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
+@overload  # ~bool | ~f16, +c64 | None
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eig(
-    a: onp.ToJustComplexND,
+    a: _ToBoolF16ND,
+    b: onp.ToComplex64_ND | None = None,
+    left: onp.ToFalse = False,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
+@overload  # +c64, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eig(
+    a: onp.ToComplex64_ND,
+    b: _ToBoolF16ND,
+    left: onp.ToFalse = False,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
+@overload  # +c128, +complex | None
+def eig(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    left: onp.ToFalse = False,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # +complex, +c128
+def eig(
+    a: _ToC64ND | _ToC128ND,
+    b: _ToC128ND,
+    left: onp.ToFalse = False,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, +complex | None
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def eig(
+    a: _ToBoolF16ND | _ToInexact80ND,
     b: onp.ToComplexND | None = None,
-    left: Literal[False] = False,
-    right: Literal[True] = True,
+    left: onp.ToFalse = False,
+    right: onp.ToTrue = True,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> tuple[_ComplexND, _ComplexND]: ...
-@overload  # float, left: True (positional), right: False
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # +complex, ~bool | ~f16 | ~f80 | ~c160
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
 def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None,
-    left: Literal[True],
-    right: Literal[False],
+    a: onp.ToComplexND,
+    b: _ToBoolF16ND | _ToInexact80ND,
+    left: onp.ToFalse = False,
+    right: onp.ToTrue = True,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: True (positional), right: False
-def eig(
-    a: onp.ToJustComplexND,
-    b: onp.ToComplexND | None,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_ComplexND, _ComplexND]: ...
-@overload  # float, left: True (keyword), right: False
-def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_ComplexND, _InexactND]: ...
-@overload  # complex, left: True (keyword), right: False (keyword)
-def eig(
-    a: onp.ToJustComplexND,
-    b: onp.ToComplexND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[False],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_ComplexND, _ComplexND]: ...
-@overload  # float, left: True (positional), right: True = ...
-def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_ComplexND, _InexactND, _InexactND]: ...
-@overload  # complex, left: True (positional), right: True = ...
-def eig(
-    a: onp.ToJustComplexND,
-    b: onp.ToComplexND | None,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_ComplexND, _ComplexND, _ComplexND]: ...
-@overload  # float, left: True (keyword), right: True = ...
-def eig(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_ComplexND, _InexactND, _InexactND]: ...
-@overload  # complex, left: True (keyword), right: True = ...
-def eig(
-    a: onp.ToJustComplexND,
-    b: onp.ToComplexND | None = None,
-    *,
-    left: Literal[True],
-    right: Literal[True] = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[_ComplexND, _ComplexND, _ComplexND]: ...
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
 @overload  # catch-all
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
-    left: bool = False,
-    right: bool = True,
+    left: onp.ToFalse = False,
+    right: onp.ToTrue = True,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> (
-    _ComplexND
-    | tuple[_ComplexND, _InexactND]
-    | tuple[_ComplexND, _InexactND, _InexactND]
-):  # fmt: skip
-    ...
+) -> tuple[onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+@overload  # +c64, +c64 | None, left: True, right: False
+def eig(
+    a: _ToC64ND,
+    b: _ToC64ND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
+@overload  # ~bool | ~f16, +c64 | None, left: True, right: False
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eig(
+    a: _ToBoolF16ND,
+    b: onp.ToComplex64_ND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
+@overload  # +c64, ~bool | ~f16, left: True, right: False
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eig(
+    a: onp.ToComplex64_ND,
+    b: _ToBoolF16ND,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
+@overload  # +c128, +complex | None, left: True, right: False
+def eig(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # +complex, +c128, left: True, right: False
+def eig(
+    a: _ToC64ND | _ToC128ND,
+    b: _ToC128ND,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, +complex | None, left: True, right: False
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def eig(
+    a: _ToBoolF16ND | _ToInexact80ND,
+    b: onp.ToComplexND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # +complex, ~bool | ~f16 | ~f80 | ~c160, left: True, right: False
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def eig(
+    a: onp.ToComplexND,
+    b: _ToBoolF16ND | _ToInexact80ND,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # catch-all, left: True, right: False
+def eig(
+    a: onp.ToComplexND,
+    b: onp.ToComplexND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+@overload  # +c64, +c64 | None, left: True
+def eig(
+    a: _ToC64ND,
+    b: _ToC64ND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
+@overload  # ~bool | ~f16, +c64 | None, left: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eig(
+    a: _ToBoolF16ND,
+    b: onp.ToComplex64_ND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
+@overload  # +c64, ~bool | ~f16, left: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eig(
+    a: onp.ToComplex64_ND,
+    b: _ToBoolF16ND,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
+@overload  # +c128, +complex | None, left: True
+def eig(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # +complex, +c128, left: True
+def eig(
+    a: _ToC64ND | _ToC128ND,
+    b: _ToC128ND,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, +complex | None, left: True
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def eig(
+    a: _ToBoolF16ND | _ToInexact80ND,
+    b: onp.ToComplexND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # +complex, ~bool | ~f16 | ~f80 | ~c160, left: True
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def eig(
+    a: onp.ToComplexND,
+    b: _ToBoolF16ND | _ToInexact80ND,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
+@overload  # catch-all, left: True
+def eig(
+    a: onp.ToComplexND,
+    b: onp.ToComplexND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
 
 #
 @overload  # ~bool | ~f16, +f32 | None
