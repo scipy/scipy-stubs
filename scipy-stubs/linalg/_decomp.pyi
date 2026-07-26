@@ -697,7 +697,129 @@ def eigvalsh(
 ) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
-@overload  # select: _SelectA = ...
+@overload  # ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvals_banded(
+    a_band: _ToBoolF16ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~bool | ~f16, select: "v"
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvals_banded(
+    a_band: _ToBoolF16ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    *,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~bool | ~f16, select: "i"
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigvals_banded(
+    a_band: _ToBoolF16ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    *,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~f80 | ~c160
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
+def eigvals_banded(
+    a_band: _ToInexact80ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f80 | ~c160, select: "v"
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
+def eigvals_banded(
+    a_band: _ToInexact80ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    *,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f80 | ~c160, select: "i"
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
+def eigvals_banded(
+    a_band: _ToInexact80ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    *,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +c64
+def eigvals_banded(
+    a_band: onp.ToComplex64_ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +c64, select: "v"
+def eigvals_banded(
+    a_band: onp.ToComplex64_ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    *,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +c64, select: "i"
+def eigvals_banded(
+    a_band: onp.ToComplex64_ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    *,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +c128
+def eigvals_banded(
+    a_band: _ToC128ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +c128, select: "v"
+def eigvals_banded(
+    a_band: _ToC128ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    *,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +c128, select: "i"
+def eigvals_banded(
+    a_band: _ToC128ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    *,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # catch-all
 def eigvals_banded(
     a_band: onp.ToComplexND,
     lower: bool = False,
@@ -705,17 +827,8 @@ def eigvals_banded(
     select: _SelectA = "a",
     select_range: _SelectRange | None = None,
     check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # select: _SelectV (positional)
-def eigvals_banded(
-    a_band: onp.ToComplexND,
-    lower: bool,
-    overwrite_a_band: bool,
-    select: _SelectV,
-    select_range: _SelectRange,
-    check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # select: _SelectV (keyword)
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload  # catch-all, select: "v"
 def eigvals_banded(
     a_band: onp.ToComplexND,
     lower: bool = False,
@@ -724,17 +837,8 @@ def eigvals_banded(
     select: _SelectV,
     select_range: _SelectRange,
     check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # select: _SelectI (positional)
-def eigvals_banded(
-    a_band: onp.ToComplexND,
-    lower: bool,
-    overwrite_a_band: bool,
-    select: _SelectI,
-    select_range: _SelectRangeI,
-    check_finite: bool = True,
-) -> _FloatND: ...
-@overload  # select: _SelectI (keyword)
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload  # catch-all, select: "i"
 def eigvals_banded(
     a_band: onp.ToComplexND,
     lower: bool = False,
@@ -743,7 +847,7 @@ def eigvals_banded(
     select: _SelectI,
     select_range: _SelectRangeI,
     check_finite: bool = True,
-) -> _FloatND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload  # select: _SelectA = ...
