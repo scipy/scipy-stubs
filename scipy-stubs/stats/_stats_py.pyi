@@ -1,3 +1,4 @@
+import sys
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from types import ModuleType
@@ -251,11 +252,19 @@ class SigmaclipResult(NamedTuple, Generic[_RealT_co, _FloatT_co]):
     lower: _FloatT_co
     upper: _FloatT_co
 
-@dataclass
-class AlexanderGovernResult(Generic[_FloatOrArrayT_co]):
-    # NOTE: an invariant typevar avoids the mypy errors, but makes pyrefly infer `Unknown` for `... | Any` specializations
-    statistic: _FloatOrArrayT_co  # type: ignore[misc]
-    pvalue: _FloatOrArrayT_co  # type: ignore[misc]
+if sys.version_info >= (3, 13):
+    @dataclass
+    class AlexanderGovernResult(Generic[_FloatOrArrayT_co]):
+        # NOTE: an invariant typevar avoids these py>=3.13 mypy errors, but makes pyrefly infer `Unknown` for `... | Any` results
+        statistic: _FloatOrArrayT_co  # type: ignore[misc]
+        pvalue: _FloatOrArrayT_co  # type: ignore[misc]
+
+else:
+    @dataclass
+    class AlexanderGovernResult(Generic[_FloatOrArrayT_co]):
+        # NOTE: an invariant typevar avoids these py>=3.13 mypy errors, but makes pyrefly infer `Unknown` for `... | Any` results
+        statistic: _FloatOrArrayT_co
+        pvalue: _FloatOrArrayT_co
 
 @dataclass
 class QuantileTestResult(Generic[_FloatT]):
