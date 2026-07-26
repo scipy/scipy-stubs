@@ -1,4 +1,5 @@
-from typing import Literal, overload
+from typing import Any, Literal, Never, overload
+from typing_extensions import deprecated
 
 import numpy as np
 import optype as op
@@ -8,6 +9,11 @@ import optype.numpy.compat as npc
 __all__ = ["qr", "qr_multiply", "rq"]
 
 type _Tuple2[T] = tuple[T, T]
+
+type _AsF16ND = onp.ToArrayND[Never, np.bool | np.float16]
+type _AsF32ND = onp.ToArrayND[Never, npc.floating32 | npc.integer16 | npc.integer8]
+type _AsF64ND = onp.ToArrayND[float, npc.floating64 | npc.integer64 | npc.integer32]
+type _AsC80ND = onp.ToArrayND[Never, npc.inexact80]
 
 type _Int1D = onp.Array1D[np.int32 | np.int64]
 type _IntND = onp.ArrayND[np.int32 | np.int64]
@@ -27,86 +33,330 @@ type _NoValueType = op.JustObject
 
 ###
 
-# 2 * (3 + 4 + 4) = 22 overloads (10/22 handle the positional cases of `mode`/`pivoting`)
-@overload  # float, mode: {full, economic}, pivoting: {False}
+# NOTE: mypy incorrectly sees disjoint dtypes like `np.complex64` and `np.complex128` as overlapping
+# mypy: disable-error-code=overload-overlap
+
+@overload  # +f64, mode: {full, economic}
 def qr(
-    a: onp.ToFloatND,
+    a: _AsF64ND,
     overwrite_a: bool = False,
     lwork: _NoValueType = ...,
     mode: _ModeFullEcon = "full",
     pivoting: onp.ToFalse = False,
     check_finite: bool = True,
-) -> _Tuple2[_FloatND]: ...
-@overload  # float, mode: {full, economic}, *, pivoting: {True}
+) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+@overload  # +f64, mode: {full, economic}, pivoting: True
 def qr(
-    a: onp.ToFloatND,
-    overwrite_a: bool = False,
-    lwork: _NoValueType = ...,
-    mode: _ModeFullEcon = "full",
-    *,
-    pivoting: onp.ToTrue,
-    check_finite: bool = True,
-) -> tuple[_FloatND, _FloatND, _IntND]: ...
-@overload  # float, *, mode: {r}, pivoting: {False}
-def qr(
-    a: onp.ToFloatND,
-    overwrite_a: bool = False,
-    lwork: _NoValueType = ...,
-    *,
-    mode: _ModeR,
-    pivoting: onp.ToFalse = False,
-    check_finite: bool = True,
-) -> tuple[_FloatND]: ...
-@overload  # float, *, mode: {r}, pivoting: {True}
-def qr(
-    a: onp.ToFloatND,
-    overwrite_a: bool = False,
-    lwork: _NoValueType = ...,
-    *,
-    mode: _ModeR,
-    pivoting: onp.ToTrue,
-    check_finite: bool = True,
-) -> tuple[_FloatND, _IntND]: ...
-@overload  # float, *, mode: {raw}, pivoting: {False}
-def qr(
-    a: onp.ToFloatND,
-    overwrite_a: bool = False,
-    lwork: _NoValueType = ...,
-    *,
-    mode: _ModeRaw,
-    pivoting: onp.ToFalse = False,
-    check_finite: bool = True,
-) -> tuple[_Tuple2[_FloatND], _FloatND]: ...
-@overload  # float, *, mode: {raw}, pivoting: {True}
-def qr(
-    a: onp.ToFloatND,
-    overwrite_a: bool = False,
-    lwork: _NoValueType = ...,
-    *,
-    mode: _ModeRaw,
-    pivoting: onp.ToTrue,
-    check_finite: bool = True,
-) -> tuple[_Tuple2[_FloatND], _FloatND, _IntND]: ...
-@overload  # complex, mode: {full, economic}, pivoting: {False}
-def qr(
-    a: onp.ToComplexND,
-    overwrite_a: bool = False,
-    lwork: _NoValueType = ...,
-    mode: _ModeFullEcon = "full",
-    pivoting: onp.ToFalse = False,
-    check_finite: bool = True,
-) -> _Tuple2[_InexactND]: ...
-@overload  # complex, mode: {full, economic}, *, pivoting: {True}
-def qr(
-    a: onp.ToComplexND,
+    a: _AsF64ND,
     overwrite_a: bool = False,
     lwork: _NoValueType = ...,
     mode: _ModeFullEcon = "full",
     *,
     pivoting: onp.ToTrue,
     check_finite: bool = True,
-) -> tuple[_InexactND, _InexactND, _IntND]: ...
-@overload  # complex, *, mode: {r}, pivoting: {False}
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.int32]]: ...
+@overload  # +f64, mode: r
+def qr(
+    a: _AsF64ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeR,
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64]]: ...
+@overload  # +f64, mode: r, pivoting: True
+def qr(
+    a: _AsF64ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeR,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]]: ...
+@overload  # +f64, mode: raw
+def qr(
+    a: _AsF64ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeRaw,
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.float64]], onp.ArrayND[np.float64]]: ...
+@overload  # +f64, mode: raw, pivoting: True
+def qr(
+    a: _AsF64ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeRaw,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.float64]], onp.ArrayND[np.float64], onp.ArrayND[np.int32]]: ...
+@overload  # +f32, mode: {full, economic}
+def qr(
+    a: _AsF32ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    mode: _ModeFullEcon = "full",
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> _Tuple2[onp.ArrayND[np.float32]]: ...
+@overload  # +f32, mode: {full, economic}, pivoting: True
+def qr(
+    a: _AsF32ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    mode: _ModeFullEcon = "full",
+    *,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], onp.ArrayND[np.int32]]: ...
+@overload  # +f32, mode: r
+def qr(
+    a: _AsF32ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeR,
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float32]]: ...
+@overload  # +f32, mode: r, pivoting: True
+def qr(
+    a: _AsF32ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeR,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.int32]]: ...
+@overload  # +f32, mode: raw
+def qr(
+    a: _AsF32ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeRaw,
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.float32]], onp.ArrayND[np.float32]]: ...
+@overload  # +f32, mode: raw, pivoting: True
+def qr(
+    a: _AsF32ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeRaw,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.float32]], onp.ArrayND[np.float32], onp.ArrayND[np.int32]]: ...
+@overload  # ~c64, mode: {full, economic}
+def qr(
+    a: onp.ToJustComplex64_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    mode: _ModeFullEcon = "full",
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> _Tuple2[onp.ArrayND[np.complex64]]: ...
+@overload  # ~c64, mode: {full, economic}, pivoting: True
+def qr(
+    a: onp.ToJustComplex64_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    mode: _ModeFullEcon = "full",
+    *,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64], onp.ArrayND[np.int32]]: ...
+@overload  # ~c64, mode: r
+def qr(
+    a: onp.ToJustComplex64_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeR,
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex64]]: ...
+@overload  # ~c64, mode: r, pivoting: True
+def qr(
+    a: onp.ToJustComplex64_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeR,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.int32]]: ...
+@overload  # ~c64, mode: raw
+def qr(
+    a: onp.ToJustComplex64_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeRaw,
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.complex64]], onp.ArrayND[np.complex64]]: ...
+@overload  # ~c64, mode: raw, pivoting: True
+def qr(
+    a: onp.ToJustComplex64_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeRaw,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.complex64]], onp.ArrayND[np.complex64], onp.ArrayND[np.int32]]: ...
+@overload  # ~c128, mode: {full, economic}
+def qr(
+    a: onp.ToJustComplex128_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    mode: _ModeFullEcon = "full",
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> _Tuple2[onp.ArrayND[np.complex128]]: ...
+@overload  # ~c128, mode: {full, economic}, pivoting: True
+def qr(
+    a: onp.ToJustComplex128_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    mode: _ModeFullEcon = "full",
+    *,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], onp.ArrayND[np.int32]]: ...
+@overload  # ~c128, mode: r
+def qr(
+    a: onp.ToJustComplex128_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeR,
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex128]]: ...
+@overload  # ~c128, mode: r, pivoting: True
+def qr(
+    a: onp.ToJustComplex128_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeR,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.int32]]: ...
+@overload  # ~c128, mode: raw
+def qr(
+    a: onp.ToJustComplex128_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeRaw,
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.complex128]], onp.ArrayND[np.complex128]]: ...
+@overload  # ~c128, mode: raw, pivoting: True
+def qr(
+    a: onp.ToJustComplex128_ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeRaw,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.complex128]], onp.ArrayND[np.complex128], onp.ArrayND[np.int32]]: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, mode: {full, economic}
+@deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
+def qr(
+    a: _AsF16ND | _AsC80ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    mode: _ModeFullEcon = "full",
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> _Tuple2[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, mode: {full, economic}, pivoting: True
+@deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
+def qr(
+    a: _AsF16ND | _AsC80ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    mode: _ModeFullEcon = "full",
+    *,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, mode: r
+@deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
+def qr(
+    a: _AsF16ND | _AsC80ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeR,
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, mode: r, pivoting: True
+@deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
+def qr(
+    a: _AsF16ND | _AsC80ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeR,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, mode: raw
+@deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
+def qr(
+    a: _AsF16ND | _AsC80ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeRaw,
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.float64 | Any]], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, mode: raw, pivoting: True
+@deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
+def qr(
+    a: _AsF16ND | _AsC80ND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    *,
+    mode: _ModeRaw,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.float64 | Any]], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
+@overload  # catch-all, mode: {full, economic}
+def qr(
+    a: onp.ToComplexND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    mode: _ModeFullEcon = "full",
+    pivoting: onp.ToFalse = False,
+    check_finite: bool = True,
+) -> _Tuple2[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # catch-all, mode: {full, economic}, pivoting: True
+def qr(
+    a: onp.ToComplexND,
+    overwrite_a: bool = False,
+    lwork: _NoValueType = ...,
+    mode: _ModeFullEcon = "full",
+    *,
+    pivoting: onp.ToTrue,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
+@overload  # catch-all, mode: r
 def qr(
     a: onp.ToComplexND,
     overwrite_a: bool = False,
@@ -115,8 +365,8 @@ def qr(
     mode: _ModeR,
     pivoting: onp.ToFalse = False,
     check_finite: bool = True,
-) -> tuple[_InexactND]: ...
-@overload  # complex, *, mode: {r}, pivoting: {True}
+) -> tuple[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # catch-all, mode: r, pivoting: True
 def qr(
     a: onp.ToComplexND,
     overwrite_a: bool = False,
@@ -125,8 +375,8 @@ def qr(
     mode: _ModeR,
     pivoting: onp.ToTrue,
     check_finite: bool = True,
-) -> tuple[_InexactND, _IntND]: ...
-@overload  # complex, *, mode: {raw}, pivoting: {False}
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
+@overload  # catch-all, mode: raw
 def qr(
     a: onp.ToComplexND,
     overwrite_a: bool = False,
@@ -135,8 +385,8 @@ def qr(
     mode: _ModeRaw,
     pivoting: onp.ToFalse = False,
     check_finite: bool = True,
-) -> tuple[_Tuple2[_InexactND], _InexactND]: ...
-@overload  # complex, *, mode: {raw}, pivoting: {True}
+) -> tuple[_Tuple2[onp.ArrayND[np.float64 | Any]], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # catch-all, mode: raw, pivoting: True
 def qr(
     a: onp.ToComplexND,
     overwrite_a: bool = False,
@@ -145,7 +395,7 @@ def qr(
     mode: _ModeRaw,
     pivoting: onp.ToTrue,
     check_finite: bool = True,
-) -> tuple[_Tuple2[_InexactND], _InexactND, _IntND]: ...
+) -> tuple[_Tuple2[onp.ArrayND[np.float64 | Any]], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
 
 #
 @overload  # (float[:, :], float[:], pivoting=False) -> (float[:], float[:, :])
