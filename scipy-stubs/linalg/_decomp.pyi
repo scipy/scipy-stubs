@@ -23,7 +23,9 @@ __all__ = [
 
 # input types
 
-type _ToF64ND = onp.ToArrayND[complex, npc.integer32 | npc.number64]
+type _ToBoolF16ND = onp.ToArrayND[Never, np.bool | np.float16]
+type _ToF64ND = onp.ToArrayND[float, npc.integer32 | npc.integer64 | npc.floating64]
+type _ToC128ND = onp.ToArrayND[complex, npc.integer32 | npc.number64]
 type _ToInexact80ND = onp.ToArrayND[Never, npc.inexact80]
 
 # NOTE: only "a", "v" and "i" are documented for the `select` params, but internally 0, 1, and 2 are used, respectively.
@@ -449,48 +451,48 @@ def eig_banded(
 ) -> _FloatND: ...
 
 # keep structurally in sync with `eigvalsh`
-@overload  # +f16, +c64 | None
-@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+@overload  # ~bool | ~f16, +c64 | None
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvals(
-    a: onp.ToFloat16_ND,
+    a: _ToBoolF16ND,
     b: onp.ToComplex64_ND | None = None,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex64]: ...
-@overload  # +c64, +f16
-@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+@overload  # +c64, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvals(
     a: onp.ToComplex64_ND,
-    b: onp.ToFloat16_ND,
+    b: _ToBoolF16ND,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex64]: ...
-@overload  # +f16, +f64
-@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+@overload  # ~bool | ~f16, +c128
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvals(
-    a: onp.ToFloat16_ND,
-    b: _ToF64ND,
+    a: _ToBoolF16ND,
+    b: _ToC128ND,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # +f64, +f16
-@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+@overload  # +c128, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvals(
-    a: _ToF64ND,
-    b: onp.ToFloat16_ND,
+    a: _ToC128ND,
+    b: _ToBoolF16ND,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~f80 | ~c160, +complex | None
-@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 1.20")
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
 def eigvals(
     a: _ToInexact80ND,
     b: onp.ToComplexND | None = None,
@@ -500,7 +502,7 @@ def eigvals(
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # +complex, ~f80 | ~c160
-@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 1.20")
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
 def eigvals(
     a: onp.ToComplexND,
     b: _ToInexact80ND,
@@ -518,19 +520,19 @@ def eigvals(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex64]: ...
-@overload  # +f64, +complex | None
+@overload  # +c128, +complex | None
 def eigvals(
-    a: _ToF64ND,
+    a: _ToC128ND,
     b: onp.ToComplexND | None = None,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # +complex, +f64
+@overload  # +complex, +c128
 def eigvals(
     a: onp.ToComplexND,
-    b: _ToF64ND,
+    b: _ToC128ND,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
@@ -547,10 +549,10 @@ def eigvals(
 ) -> onp.ArrayND[np.complex128 | Any]: ...
 
 # keep structurally in sync with `eigvals`
-@overload  # +f16, +c64 | None
-@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+@overload  # ~bool | ~f16, +c64 | None
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvalsh(
-    a: onp.ToFloat16_ND,
+    a: _ToBoolF16ND,
     b: onp.ToComplex64_ND | None = None,
     *,
     lower: bool = True,
@@ -562,11 +564,11 @@ def eigvalsh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # +c64, +f16
-@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+@overload  # +c64, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvalsh(
     a: onp.ToComplex64_ND,
-    b: onp.ToFloat16_ND,
+    b: _ToBoolF16ND,
     *,
     lower: bool = True,
     overwrite_a: bool = False,
@@ -577,11 +579,11 @@ def eigvalsh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # +f16, +f64
-@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+@overload  # ~bool | ~f16, +c128
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvalsh(
-    a: onp.ToFloat16_ND,
-    b: _ToF64ND,
+    a: _ToBoolF16ND,
+    b: _ToC128ND,
     *,
     lower: bool = True,
     overwrite_a: bool = False,
@@ -592,11 +594,11 @@ def eigvalsh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # +f64, +f16
-@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+@overload  # +c128, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvalsh(
-    a: _ToF64ND,
-    b: onp.ToFloat16_ND,
+    a: _ToC128ND,
+    b: _ToBoolF16ND,
     *,
     lower: bool = True,
     overwrite_a: bool = False,
@@ -608,7 +610,7 @@ def eigvalsh(
     driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # ~f80 | ~c160, +complex | None
-@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 1.20")
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
 def eigvalsh(
     a: _ToInexact80ND,
     b: onp.ToComplexND | None = None,
@@ -623,7 +625,7 @@ def eigvalsh(
     driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # +complex, ~f80 | ~c160
-@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 1.20")
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
 def eigvalsh(
     a: onp.ToComplexND,
     b: _ToInexact80ND,
@@ -651,9 +653,9 @@ def eigvalsh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # +f64, +complex | None
+@overload  # +c128, +complex | None
 def eigvalsh(
-    a: _ToF64ND,
+    a: _ToC128ND,
     b: onp.ToComplexND | None = None,
     *,
     lower: bool = True,
@@ -665,10 +667,10 @@ def eigvalsh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # +complex, +f64
+@overload  # +complex, +c128
 def eigvalsh(
     a: onp.ToComplexND,
-    b: _ToF64ND,
+    b: _ToC128ND,
     *,
     lower: bool = True,
     overwrite_a: bool = False,
@@ -868,26 +870,80 @@ def eigh_tridiagonal(
 ) -> _FloatND: ...
 
 #
-@overload  # float, calc_q: False = ...
+@overload  # ~bool | ~f16, calc_q: False = ...
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def hessenberg(
-    a: onp.ToFloatND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
-) -> _FloatND: ...
-@overload  # float, calc_q: True
+    a: _ToBoolF16ND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~bool | ~f16, calc_q: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def hessenberg(
-    a: onp.ToFloatND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # complex, calc_q: False = ...
+    a: _ToBoolF16ND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
+@overload  # ~f80
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def hessenberg(
+    a: onp.ToJustLongDoubleND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f80, calc_q: True
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def hessenberg(
+    a: onp.ToJustLongDoubleND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~c160
+@deprecated("clongdouble input will no longer be supported in SciPy 2.1")
+def hessenberg(
+    a: onp.ToJustCLongDoubleND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~c160, calc_q: True
+@deprecated("clongdouble input will no longer be supported in SciPy 2.1")
+def hessenberg(
+    a: onp.ToJustCLongDoubleND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
+@overload  # +f32
+def hessenberg(
+    a: onp.ToFloat32_ND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f32, calc_q: True
+def hessenberg(
+    a: onp.ToFloat32_ND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
+@overload  # +f64
+def hessenberg(
+    a: _ToF64ND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, calc_q: True
+def hessenberg(
+    a: _ToF64ND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~c64
+def hessenberg(
+    a: onp.ToJustComplex64_ND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # ~c64, calc_q: True
+def hessenberg(
+    a: onp.ToJustComplex64_ND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]]: ...
+@overload  # ~c128
+def hessenberg(
+    a: onp.ToJustComplex128_ND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~c128, calc_q: True
+def hessenberg(
+    a: onp.ToJustComplex128_ND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
+@overload  # catch-all
 def hessenberg(
     a: onp.ToComplexND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
-) -> _InexactND: ...
-@overload  # complex, calc_q: True
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload  # catch-all, calc_q: True
 def hessenberg(
     a: onp.ToComplexND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[_InexactND, _InexactND]: ...
-@overload  # complex, calc_q: CanBool (catch-all)
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # catch-all, calc_q: bool
 def hessenberg(
     a: onp.ToComplexND, calc_q: bool, overwrite_a: bool = False, check_finite: bool = True
-) -> _InexactND | tuple[_InexactND, _InexactND]: ...
+) -> onp.ArrayND[np.float64 | Any] | tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
 
 #
 @overload
