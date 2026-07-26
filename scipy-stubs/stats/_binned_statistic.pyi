@@ -32,7 +32,7 @@ type _ToRangeND = Sequence[tuple[float, float]] | None
 type _Shape1Or2 = tuple[int] | tuple[int, int]
 type _Shape2Or3 = tuple[int, int] | tuple[int, int, int]
 
-_InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, covariant=True, default=np.float64 | np.complex128)
+_InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, covariant=True, default=np.float64 | Any)
 _Shape1Or2T_co = TypeVar("_Shape1Or2T_co", bound=_Shape1Or2, covariant=True, default=_Shape1Or2)
 _Shape2Or3T_co = TypeVar("_Shape2Or3T_co", bound=_Shape2Or3, covariant=True, default=_Shape2Or3)
 
@@ -447,7 +447,7 @@ def binned_statistic_2d(
     bins: _ToBinsND = 10,
     range: _ToRangeND = None,
     expand_binnumbers: Literal[False] = False,
-) -> BinnedStatistic2dResult[np.float64 | np.complex128, _Shape2Or3, tuple[int]]: ...
+) -> BinnedStatistic2dResult[np.float64 | Any, _Shape2Or3, tuple[int]]: ...
 @overload  # fallback, expanded (keyword)
 def binned_statistic_2d(
     x: onp.ToFloat1D,
@@ -458,7 +458,7 @@ def binned_statistic_2d(
     range: _ToRangeND = None,
     *,
     expand_binnumbers: Literal[True],
-) -> BinnedStatistic2dResult[np.float64 | np.complex128, _Shape2Or3, tuple[int, int]]: ...
+) -> BinnedStatistic2dResult[np.float64 | Any, _Shape2Or3, tuple[int, int]]: ...
 
 #
 @overload  # count|std
@@ -575,7 +575,7 @@ def binned_statistic_dd(
     range: _ToRangeND = None,
     expand_binnumbers: Literal[False] = False,
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.float64 | np.complex128, tuple[int]]: ...
+) -> BinnedStatisticddResult[np.float64 | Any, tuple[int]]: ...
 @overload  # fallback, expanded (keyword)
 def binned_statistic_dd(
     sample: _ToSample,
@@ -586,4 +586,4 @@ def binned_statistic_dd(
     *,
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.float64 | np.complex128, tuple[int, int]]: ...
+) -> BinnedStatisticddResult[np.float64 | Any, tuple[int, int]]: ...
