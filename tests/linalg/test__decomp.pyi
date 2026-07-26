@@ -21,8 +21,6 @@ from scipy.linalg import (
 ###
 
 type _FloatND = onp.ArrayND[np.float64 | np.float32]
-type _ComplexND = onp.ArrayND[np.complex128 | np.complex64]
-type _InexactND = onp.ArrayND[np.complex128 | np.complex64 | np.float64 | np.float32]
 
 ###
 # Input arrays
@@ -211,30 +209,46 @@ assert_type(eigh(_c256_nd, eigvals_only=True), onp.ArrayND[np.float64])  # pyrig
 ###
 # eig
 
-assert_type(eig(_f32_nd), tuple[_ComplexND, _InexactND])
-assert_type(eig(_f64_nd), tuple[_ComplexND, _InexactND])
-assert_type(eig(_c64_nd), tuple[_ComplexND, _ComplexND])
-assert_type(eig(_c128_nd), tuple[_ComplexND, _ComplexND])
+assert_type(eig(_i8_nd), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]])
+assert_type(eig(_f32_nd), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]])
+assert_type(eig(_c64_nd), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]])
+assert_type(eig(_i32_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])
+assert_type(eig(_f64_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])
+assert_type(eig(_c128_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])
+assert_type(eig(_py_f_2d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])
+assert_type(eig(_py_c_2d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])
 
-assert_type(eig(_f32_nd, left=False, right=False), _ComplexND)
-assert_type(eig(_f64_nd, left=False, right=False), _ComplexND)
-assert_type(eig(_c64_nd, left=False, right=False), _ComplexND)
-assert_type(eig(_c128_nd, left=False, right=False), _ComplexND)
+assert_type(eig(_f32_nd, _c64_nd), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]])
+assert_type(eig(_f32_nd, _f64_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])
+assert_type(eig(_f64_nd, _f32_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])
+assert_type(eig(_f32_nd, None), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]])
 
-assert_type(eig(_f32_nd, left=False, right=True), tuple[_ComplexND, _InexactND])
-assert_type(eig(_f64_nd, left=False, right=True), tuple[_ComplexND, _InexactND])
-assert_type(eig(_c64_nd, left=False, right=True), tuple[_ComplexND, _ComplexND])
-assert_type(eig(_c128_nd, left=False, right=True), tuple[_ComplexND, _ComplexND])
+assert_type(eig(_f32_nd, right=False), onp.ArrayND[np.complex64])
+assert_type(eig(_c128_nd, right=False), onp.ArrayND[np.complex128])
+assert_type(eig(_f32_nd, left=False, right=False), onp.ArrayND[np.complex64])
+assert_type(eig(_f32_nd, right=0), onp.ArrayND[np.complex64])
+assert_type(eig(_c128_nd, left=0, right=0), onp.ArrayND[np.complex128])
 
-assert_type(eig(_f32_nd, left=True, right=False), tuple[_ComplexND, _InexactND])
-assert_type(eig(_f64_nd, left=True, right=False), tuple[_ComplexND, _InexactND])
-assert_type(eig(_c64_nd, left=True, right=False), tuple[_ComplexND, _ComplexND])
-assert_type(eig(_c128_nd, left=True, right=False), tuple[_ComplexND, _ComplexND])
+assert_type(eig(_f32_nd, left=False, right=True), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]])
+assert_type(eig(_c128_nd, left=False, right=True), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])
 
-assert_type(eig(_f32_nd, left=True, right=True), tuple[_ComplexND, _InexactND, _InexactND])
-assert_type(eig(_f64_nd, left=True, right=True), tuple[_ComplexND, _InexactND, _InexactND])
-assert_type(eig(_c64_nd, left=True, right=True), tuple[_ComplexND, _ComplexND, _ComplexND])
-assert_type(eig(_c128_nd, left=True, right=True), tuple[_ComplexND, _ComplexND, _ComplexND])
+assert_type(eig(_f32_nd, left=True, right=False), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]])
+assert_type(eig(_c128_nd, left=True, right=False), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])
+assert_type(eig(_f32_nd, left=1, right=0), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]])
+
+assert_type(
+    eig(_f32_nd, left=True),
+    tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64], onp.ArrayND[np.float32 | np.complex64]],
+)
+assert_type(
+    eig(_c128_nd, left=True, right=True),
+    tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128], onp.ArrayND[np.float64 | np.complex128]],
+)
+
+assert_type(eig(_f16_nd), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eig(_f128_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eig(_c256_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eig(_f16_nd, right=False), onp.ArrayND[np.complex64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # eig_banded
