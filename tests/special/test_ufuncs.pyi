@@ -19,6 +19,8 @@ type _ErrOption = L["ignored", "warn", "raise"]
 
 _b1: np.bool
 _i: npc.integer
+_i1: np.int8
+_i4: np.int32
 _f: npc.floating
 _f2: np.float16
 _f4: np.float32
@@ -28,6 +30,7 @@ _c16: np.complex128
 
 _b1_nd: onp.ArrayND[np.bool]
 _i1_nd: onp.ArrayND[np.uint8 | np.int8]
+_i4_nd: onp.ArrayND[np.int32]
 _f2_nd: onp.ArrayND[np.float16]
 _f4_nd: _Float32ND
 _f8_nd: _Float64ND
@@ -56,12 +59,15 @@ assert_type(sp.cbrt.types, list[L["f->f", "d->d"]])
 assert_type(sp.exprel.identity, None)
 
 # _UFunc11f
-assert_type(sp.cbrt(_b1), np.float64)
-assert_type(sp.cbrt(_b1_nd), _Float64ND)
-assert_type(sp.cbrt(_i), np.float64)
-assert_type(sp.cbrt(_i1_nd), _Float64ND)
-assert_type(sp.cbrt(_f2), np.float64)
-assert_type(sp.cbrt(_f2_nd), _Float64ND)
+assert_type(sp.cbrt(_b1), np.float32)
+assert_type(sp.cbrt(_b1_nd), _Float32ND)
+assert_type(sp.cbrt(_i1), np.float32)
+assert_type(sp.cbrt(_i1_nd), _Float32ND)
+assert_type(sp.cbrt(_i4), np.float64)
+assert_type(sp.cbrt(_i4_nd), _Float64ND)
+# NOTE: an abstract `npc.integer` has no known width, so its precision is checker-dependent (gradual `Any` parameter)
+assert_type(sp.cbrt(_f2), np.float32)
+assert_type(sp.cbrt(_f2_nd), _Float32ND)
 assert_type(sp.cbrt(_f4), np.float32)
 assert_type(sp.cbrt(_f4_nd), _Float32ND)
 assert_type(sp.cbrt(_f8), np.float64)
@@ -70,8 +76,8 @@ assert_type(sp.cbrt(_f8_nd), _Float64ND)
 sp.cbrt(_c16)  # type:ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
 sp.cbrt(_c16_nd)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
-assert_type(sp.cbrt(False), np.float64)
-assert_type(sp.cbrt([False]), _Float64ND)
+assert_type(sp.cbrt(False), np.float32)
+assert_type(sp.cbrt([False]), _Float32ND)
 assert_type(sp.cbrt(0), np.float64)
 assert_type(sp.cbrt([0]), _Float64ND)
 assert_type(sp.cbrt(0.0), np.float64)
@@ -86,9 +92,40 @@ sp.cbrt.at(_c16, _i)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentT
 assert_type(sp.cbrt.nin, L[1])
 
 # _UFunc11g
+assert_type(sp.expit.ntypes, L[3])
+assert_type(sp.expit.types, list[L["f->f", "d->d", "g->g"]])
+assert_type(sp.expit(_b1), np.float32)
+assert_type(sp.expit(_b1_nd), _Float32ND)
+assert_type(sp.expit(_i1), np.float32)
+assert_type(sp.expit(_i1_nd), _Float32ND)
+assert_type(sp.expit(_i4), np.float64)
+assert_type(sp.expit(_i4_nd), _Float64ND)
+assert_type(sp.expit(_f2), np.float32)
+assert_type(sp.expit(_f2_nd), _Float32ND)
+assert_type(sp.expit(_f4), np.float32)
+assert_type(sp.expit(_f4_nd), _Float32ND)
+assert_type(sp.expit(_f8), np.float64)
+assert_type(sp.expit(_f8_nd), _Float64ND)
+assert_type(sp.expit(False), np.float32)
+assert_type(sp.expit([False]), _Float32ND)
+assert_type(sp.expit(0), np.float64)
+assert_type(sp.expit([0]), _Float64ND)
+assert_type(sp.expit(0.0), np.float64)
+assert_type(sp.expit([0.0]), _Float64ND)
+# pyrefly: ignore [no-matching-overload]
+sp.expit(_c16)  # type:ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
+
+# _UFunc11dfg: `d->d` comes first, so sub-f32 promotes to float64 instead of float32
 assert_type(sp.logit.ntypes, L[3])
+assert_type(sp.logit.types, list[L["d->d", "f->f", "g->g"]])
 assert_type(sp.logit(_b1), np.float64)
 assert_type(sp.logit(_b1_nd), _Float64ND)
+assert_type(sp.logit(_i1), np.float64)
+assert_type(sp.logit(_i1_nd), _Float64ND)
+assert_type(sp.logit(_f2), np.float64)
+assert_type(sp.logit(_f2_nd), _Float64ND)
+assert_type(sp.logit(False), np.float64)
+assert_type(sp.logit([False]), _Float64ND)
 assert_type(sp.logit(_f4), np.float32)
 assert_type(sp.logit(_f4_nd), _Float32ND)
 assert_type(sp.logit(_f8), np.float64)
