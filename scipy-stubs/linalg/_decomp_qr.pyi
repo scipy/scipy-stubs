@@ -397,7 +397,8 @@ def qr(
     check_finite: bool = True,
 ) -> tuple[_Tuple2[onp.ArrayND[np.float64 | Any]], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
 
-#
+# TODO(@jorenham): improve return dtypes
+# https://github.com/scipy/scipy-stubs/issues/1308
 @overload  # (float[:, :], float[:], pivoting=False) -> (float[:], float[:, :])
 def qr_multiply(
     a: onp.ToFloatStrict2D,
@@ -524,75 +525,168 @@ def qr_multiply(
 ) -> tuple[_InexactND, _InexactND, _IntND]: ...
 
 #
-@overload  # (float[:, :], mode: {"full", "economic"}) -> (float[:, :], float[:, :])
+@overload  # 2d +f64, mode: {full, economic}
 def rq(
-    a: onp.ToFloatStrict2D,
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer64 | npc.integer32],
     overwrite_a: bool = False,
-    lwork: onp.ToJustInt | None = None,
+    lwork: int | None = None,
     mode: _ModeFullEcon = "full",
     check_finite: bool = True,
-) -> tuple[_Float2D, _Float2D]: ...
-@overload  # (float[:, :, ...], mode: {"full", "economic"}) -> (float[:, :, ...], float[:, :, ...])
+) -> _Tuple2[onp.Array2D[np.float64]]: ...
+@overload  # Nd +f64, mode: {full, economic}
 def rq(
-    a: onp.ToFloatND,
+    a: _AsF64ND, overwrite_a: bool = False, lwork: int | None = None, mode: _ModeFullEcon = "full", check_finite: bool = True
+) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+@overload  # 2d +f64, mode: r
+def rq(
+    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer64 | npc.integer32],
     overwrite_a: bool = False,
-    lwork: onp.ToJustInt | None = None,
-    mode: _ModeFullEcon = "full",
-    check_finite: bool = True,
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # (float[:, :], mode: {"r"}, /) -> float[:, :]
-def rq(
-    a: onp.ToFloatStrict2D, overwrite_a: bool, lwork: onp.ToJustInt | None, mode: _ModeR, check_finite: bool = True
-) -> _Float2D: ...
-@overload  # (float[:, :, ...], mode: {"r"}, /) -> float[:, :, ...]
-def rq(a: onp.ToFloatND, overwrite_a: bool, lwork: onp.ToJustInt | None, mode: _ModeR, check_finite: bool = True) -> _FloatND: ...
-@overload  # (float[:, :], *, mode: {"r"}) -> float[:, :]
-def rq(
-    a: onp.ToFloatStrict2D,
-    overwrite_a: bool = False,
-    lwork: onp.ToJustInt | None = None,
+    lwork: int | None = None,
     *,
     mode: _ModeR,
     check_finite: bool = True,
-) -> _Float2D: ...
-@overload  # (float[:, :, ...], *, mode: {"r"}) -> float[:, : ...]
+) -> onp.Array2D[np.float64]: ...
+@overload  # Nd +f64, mode: r
 def rq(
-    a: onp.ToFloatND, overwrite_a: bool = False, lwork: onp.ToJustInt | None = None, *, mode: _ModeR, check_finite: bool = True
-) -> _FloatND: ...
-@overload  # (complex[:, :], mode: {"full", "economic"}) -> (complex[:, :], complex[:, :])
+    a: _AsF64ND, overwrite_a: bool = False, lwork: int | None = None, *, mode: _ModeR, check_finite: bool = True
+) -> onp.ArrayND[np.float64]: ...
+@overload  # 2d +f32, mode: {full, economic}
+def rq(
+    a: onp.ToArrayStrict2D[Never, npc.floating32 | npc.integer16 | npc.integer8],
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    mode: _ModeFullEcon = "full",
+    check_finite: bool = True,
+) -> _Tuple2[onp.Array2D[np.float32]]: ...
+@overload  # Nd +f32, mode: {full, economic}
+def rq(
+    a: _AsF32ND, overwrite_a: bool = False, lwork: int | None = None, mode: _ModeFullEcon = "full", check_finite: bool = True
+) -> _Tuple2[onp.ArrayND[np.float32]]: ...
+@overload  # 2d +f32, mode: r
+def rq(
+    a: onp.ToArrayStrict2D[Never, npc.floating32 | npc.integer16 | npc.integer8],
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    *,
+    mode: _ModeR,
+    check_finite: bool = True,
+) -> onp.Array2D[np.float32]: ...
+@overload  # Nd +f32, mode: r
+def rq(
+    a: _AsF32ND, overwrite_a: bool = False, lwork: int | None = None, *, mode: _ModeR, check_finite: bool = True
+) -> onp.ArrayND[np.float32]: ...
+@overload  # 2d ~c64, mode: {full, economic}
+def rq(
+    a: onp.ToJustComplex64Strict2D,
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    mode: _ModeFullEcon = "full",
+    check_finite: bool = True,
+) -> _Tuple2[onp.Array2D[np.complex64]]: ...
+@overload  # Nd ~c64, mode: {full, economic}
+def rq(
+    a: onp.ToJustComplex64_ND,
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    mode: _ModeFullEcon = "full",
+    check_finite: bool = True,
+) -> _Tuple2[onp.ArrayND[np.complex64]]: ...
+@overload  # 2d ~c64, mode: r
+def rq(
+    a: onp.ToJustComplex64Strict2D,
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    *,
+    mode: _ModeR,
+    check_finite: bool = True,
+) -> onp.Array2D[np.complex64]: ...
+@overload  # Nd ~c64, mode: r
+def rq(
+    a: onp.ToJustComplex64_ND, overwrite_a: bool = False, lwork: int | None = None, *, mode: _ModeR, check_finite: bool = True
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # 2d ~c128, mode: {full, economic}
+def rq(
+    a: onp.ToJustComplex128Strict2D,
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    mode: _ModeFullEcon = "full",
+    check_finite: bool = True,
+) -> _Tuple2[onp.Array2D[np.complex128]]: ...
+@overload  # Nd ~c128, mode: {full, economic}
+def rq(
+    a: onp.ToJustComplex128_ND,
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    mode: _ModeFullEcon = "full",
+    check_finite: bool = True,
+) -> _Tuple2[onp.ArrayND[np.complex128]]: ...
+@overload  # 2d ~c128, mode: r
+def rq(
+    a: onp.ToJustComplex128Strict2D,
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    *,
+    mode: _ModeR,
+    check_finite: bool = True,
+) -> onp.Array2D[np.complex128]: ...
+@overload  # Nd ~c128, mode: r
+def rq(
+    a: onp.ToJustComplex128_ND, overwrite_a: bool = False, lwork: int | None = None, *, mode: _ModeR, check_finite: bool = True
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # 2d ~bool | ~f16 | ~f80 | ~c160, mode: {full, economic}
+@deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
+def rq(
+    a: onp.ToArrayStrict2D[Never, np.bool | np.float16 | npc.inexact80],
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    mode: _ModeFullEcon = "full",
+    check_finite: bool = True,
+) -> _Tuple2[onp.Array2D[np.float64 | Any]]: ...
+@overload  # Nd ~bool | ~f16 | ~f80 | ~c160, mode: {full, economic}
+@deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
+def rq(
+    a: _AsF16ND | _AsC80ND,
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    mode: _ModeFullEcon = "full",
+    check_finite: bool = True,
+) -> _Tuple2[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # 2d ~bool | ~f16 | ~f80 | ~c160, mode: r
+@deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
+def rq(
+    a: onp.ToArrayStrict2D[Never, np.bool | np.float16 | npc.inexact80],
+    overwrite_a: bool = False,
+    lwork: int | None = None,
+    *,
+    mode: _ModeR,
+    check_finite: bool = True,
+) -> onp.Array2D[np.float64 | Any]: ...
+@overload  # Nd ~bool | ~f16 | ~f80 | ~c160, mode: r
+@deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
+def rq(
+    a: _AsF16ND | _AsC80ND, overwrite_a: bool = False, lwork: int | None = None, *, mode: _ModeR, check_finite: bool = True
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload  # 2d catch-all, mode: {full, economic}
 def rq(
     a: onp.ToComplexStrict2D,
     overwrite_a: bool = False,
-    lwork: onp.ToJustInt | None = None,
+    lwork: int | None = None,
     mode: _ModeFullEcon = "full",
     check_finite: bool = True,
-) -> _Tuple2[_Inexact2D]: ...
-@overload  # (complex[:, :], mode: {"full", "economic"}) -> (complex[:, :], complex[:, :])
+) -> _Tuple2[onp.Array2D[np.float64 | Any]]: ...
+@overload  # Nd catch-all, mode: {full, economic}
 def rq(
     a: onp.ToComplexND,
     overwrite_a: bool = False,
-    lwork: onp.ToJustInt | None = None,
+    lwork: int | None = None,
     mode: _ModeFullEcon = "full",
     check_finite: bool = True,
-) -> _Tuple2[_InexactND]: ...
-@overload  # (complex[:, :], mode: {"r"}, /) -> complex[:, :]
+) -> _Tuple2[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # 2d catch-all, mode: r
 def rq(
-    a: onp.ToComplexStrict2D, overwrite_a: bool, lwork: onp.ToJustInt | None, mode: _ModeR, check_finite: bool = True
-) -> _Inexact2D: ...
-@overload  # (complex[:, :, ...], mode: {"r"}, /) -> complex[:, :, ...]
+    a: onp.ToComplexStrict2D, overwrite_a: bool = False, lwork: int | None = None, *, mode: _ModeR, check_finite: bool = True
+) -> onp.Array2D[np.float64 | Any]: ...
+@overload  # Nd catch-all, mode: r
 def rq(
-    a: onp.ToComplexND, overwrite_a: bool, lwork: onp.ToJustInt | None, mode: _ModeR, check_finite: bool = True
-) -> _InexactND: ...
-@overload  # (complex[:, :], *, mode: {"r"}) -> complex[:, :]
-def rq(
-    a: onp.ToComplexStrict2D,
-    overwrite_a: bool = False,
-    lwork: onp.ToJustInt | None = None,
-    *,
-    mode: _ModeR,
-    check_finite: bool = True,
-) -> _Inexact2D: ...
-@overload  # (complex[:, :, ...], *, mode: {"r"}) -> complex[:, :, ...]
-def rq(
-    a: onp.ToComplexND, overwrite_a: bool = False, lwork: onp.ToJustInt | None = None, *, mode: _ModeR, check_finite: bool = True
-) -> _InexactND: ...
+    a: onp.ToComplexND, overwrite_a: bool = False, lwork: int | None = None, *, mode: _ModeR, check_finite: bool = True
+) -> onp.ArrayND[np.float64 | Any]: ...
