@@ -252,9 +252,10 @@ class SigmaclipResult(NamedTuple, Generic[_RealT_co, _FloatT_co]):
     upper: _FloatT_co
 
 @dataclass
-class AlexanderGovernResult:
-    statistic: float
-    pvalue: float
+class AlexanderGovernResult(Generic[_FloatOrArrayT_co]):
+    # NOTE: an invariant typevar avoids the mypy errors, but makes pyrefly infer `Unknown` for `... | Any` specializations
+    statistic: _FloatOrArrayT_co  # type: ignore[misc]
+    pvalue: _FloatOrArrayT_co  # type: ignore[misc]
 
 @dataclass
 class QuantileTestResult(Generic[_FloatT]):
@@ -3704,10 +3705,157 @@ def f_oneway(
     keepdims: L[True],
 ) -> F_onewayResult[onp.ArrayND[np.float64]]: ...
 
-# TODO(jorenham): improve
+#
+@overload  # ?d ~f64 | +integer, axis=None
 def alexandergovern(
-    *samples: onp.ToFloatND, axis: int | None = 0, keepdims: bool = False, nan_policy: NanPolicy = "propagate"
-) -> AlexanderGovernResult: ...
+    sample1: _AsFloat64_ND,
+    sample2: _AsFloat64_ND,
+    /,
+    *samples: _AsFloat64_ND,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> AlexanderGovernResult[np.float64]: ...
+@overload  # ?d ~f64 | +integer
+def alexandergovern(
+    sample1: _AsFloat64StrictND,
+    sample2: _AsFloat64StrictND,
+    /,
+    *samples: _AsFloat64_ND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> AlexanderGovernResult[np.float64 | Any]: ...
+@overload  # 1d ~f64 | +integer
+def alexandergovern(
+    sample1: _AsFloat64_1D,
+    sample2: _AsFloat64_1D,
+    /,
+    *samples: _AsFloat64_1D,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> AlexanderGovernResult[np.float64]: ...
+@overload  # 2d ~f64 | +integer
+def alexandergovern(
+    sample1: _AsFloat64_2D,
+    sample2: _AsFloat64_2D,
+    /,
+    *samples: _AsFloat64_2D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> AlexanderGovernResult[onp.Array1D[np.float64]]: ...
+@overload  # ?d ~f64 | +integer, keepdims=True
+def alexandergovern(
+    sample1: _AsFloat64_ND,
+    sample2: _AsFloat64_ND,
+    /,
+    *samples: _AsFloat64_ND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> AlexanderGovernResult[onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~f32, axis=None
+def alexandergovern(
+    sample1: onp.ToJustFloat32_ND,
+    sample2: onp.ToJustFloat32_ND,
+    /,
+    *samples: onp.ToJustFloat32_ND,
+    axis: None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> AlexanderGovernResult[np.float32]: ...
+@overload  # ?d ~f32
+def alexandergovern(
+    sample1: _AsFloat32StrictND,
+    sample2: _AsFloat32StrictND,
+    /,
+    *samples: onp.ToJustFloat32_ND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> AlexanderGovernResult[np.float32 | Any]: ...
+@overload  # 1d ~f32
+def alexandergovern(
+    sample1: onp.ToJustFloat32Strict1D,
+    sample2: onp.ToJustFloat32Strict1D,
+    /,
+    *samples: onp.ToJustFloat32Strict1D,
+    axis: int | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> AlexanderGovernResult[np.float32]: ...
+@overload  # 2d ~f32
+def alexandergovern(
+    sample1: onp.ToJustFloat32Strict2D,
+    sample2: onp.ToJustFloat32Strict2D,
+    /,
+    *samples: onp.ToJustFloat32Strict2D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> AlexanderGovernResult[onp.Array1D[np.float32]]: ...
+@overload  # ?d ~f32, keepdims=True
+def alexandergovern(
+    sample1: onp.ToJustFloat32_ND,
+    sample2: onp.ToJustFloat32_ND,
+    /,
+    *samples: onp.ToJustFloat32_ND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> AlexanderGovernResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d ~f32, fallback
+def alexandergovern(
+    sample1: onp.ToJustFloat32_ND,
+    sample2: onp.ToJustFloat32_ND,
+    /,
+    *samples: onp.ToJustFloat32_ND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
+) -> AlexanderGovernResult[np.float32 | Any]: ...
+@overload  # ?d +floating
+def alexandergovern(
+    sample1: _ToFloatStrictND,
+    sample2: _ToFloatStrictND,
+    /,
+    *samples: onp.ToFloatND,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> AlexanderGovernResult[np.float64 | Any]: ...
+@overload  # 2d +floating
+def alexandergovern(
+    sample1: onp.ToFloatStrict2D,
+    sample2: onp.ToFloatStrict2D,
+    /,
+    *samples: onp.ToFloatStrict2D,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> AlexanderGovernResult[onp.Array1D[np.float64 | Any]]: ...
+@overload  # ?d +floating, keepdims=True
+def alexandergovern(
+    sample1: onp.ToFloatND,
+    sample2: onp.ToFloatND,
+    /,
+    *samples: onp.ToFloatND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
+) -> AlexanderGovernResult[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # fallback
+def alexandergovern(
+    sample1: onp.ToFloatND,
+    sample2: onp.ToFloatND,
+    /,
+    *samples: onp.ToFloatND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
+) -> AlexanderGovernResult[np.float64 | Any]: ...
 
 #
 @overload  # 1d +integer | ~float64, +floating
