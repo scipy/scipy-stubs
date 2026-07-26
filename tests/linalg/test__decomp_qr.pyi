@@ -28,6 +28,7 @@ _f16_2d: onp.Array2D[np.float16]
 _f32_2d: onp.Array2D[np.float32]
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
+_f32_3d: onp.Array3D[np.float32]
 _f64_3d: onp.Array3D[np.float64]
 _f80_2d: onp.Array2D[np.float128]
 _c64_2d: onp.Array2D[np.complex64]
@@ -100,16 +101,29 @@ assert_type(qr_multiply(_c128_3d, _c128_3d, pivoting=True), tuple[_InexactND, _I
 ###
 # rq
 
-assert_type(rq(_f64_2d), tuple[_Float2D, _Float2D])
-assert_type(rq(_f64_3d), tuple[_FloatND, _FloatND])
-assert_type(rq(_f64_2d, False, None, "r"), _Float2D)
-assert_type(rq(_f64_3d, False, None, "r"), _FloatND)
-assert_type(rq(_f64_2d, mode="r"), _Float2D)
-assert_type(rq(_f64_3d, mode="r"), _FloatND)
+assert_type(rq(_i8_2d), tuple[onp.Array2D[np.float32], onp.Array2D[np.float32]])
+assert_type(rq(_f32_2d), tuple[onp.Array2D[np.float32], onp.Array2D[np.float32]])
+assert_type(rq(_i32_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(rq(_f64_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(rq(_py_f_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(rq(_c64_2d), tuple[onp.Array2D[np.complex64], onp.Array2D[np.complex64]])
+assert_type(rq(_c128_2d), tuple[onp.Array2D[np.complex128], onp.Array2D[np.complex128]])
+assert_type(rq(_py_c_2d), tuple[onp.Array2D[np.complex128], onp.Array2D[np.complex128]])
 
-assert_type(rq(_c128_2d), tuple[_Inexact2D, _Inexact2D])
-assert_type(rq(_c128_3d), tuple[_InexactND, _InexactND])
-assert_type(rq(_c128_2d, False, None, "r"), _Inexact2D)
-assert_type(rq(_c128_3d, False, None, "r"), _InexactND)
-assert_type(rq(_c128_2d, mode="r"), _Inexact2D)
-assert_type(rq(_c128_3d, mode="r"), _InexactND)
+assert_type(rq(_f32_3d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(rq(_f64_3d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(rq(_c128_3d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+
+assert_type(rq(_f64_2d, mode="economic"), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(rq(_f64_2d, mode="r"), onp.Array2D[np.float64])
+assert_type(rq(_f64_3d, mode="r"), onp.ArrayND[np.float64])
+assert_type(rq(_f32_2d, mode="r"), onp.Array2D[np.float32])
+assert_type(rq(_c64_2d, mode="r"), onp.Array2D[np.complex64])
+assert_type(rq(_c128_2d, mode="r"), onp.Array2D[np.complex128])
+assert_type(rq(_c128_3d, mode="r"), onp.ArrayND[np.complex128])
+
+assert_type(rq(_bool_2d), tuple[onp.Array2D[np.float64 | Any], onp.Array2D[np.float64 | Any]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(rq(_f16_2d), tuple[onp.Array2D[np.float64 | Any], onp.Array2D[np.float64 | Any]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(rq(_f80_2d), tuple[onp.Array2D[np.float64 | Any], onp.Array2D[np.float64 | Any]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(rq(_c160_2d), tuple[onp.Array2D[np.float64 | Any], onp.Array2D[np.float64 | Any]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(rq(_f80_2d, mode="r"), onp.Array2D[np.float64 | Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
