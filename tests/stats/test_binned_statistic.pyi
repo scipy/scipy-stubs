@@ -65,9 +65,49 @@ assert_type(
 
 # binned_statistic_2d
 
-assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).binnumber, onp.Array2D[np.intp])
-assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array2D[np.intp])
-assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array3D[np.intp])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).x_edge, onp.Array1D[np.float64])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).y_edge, onp.Array1D[np.float64])
+
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).binnumber, onp.Array1D[np.intp])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array1D[np.intp])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array2D[np.intp])
+
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).statistic, onp.Array2D[np.float64])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _i64_1d, "sum").statistic, onp.Array2D[np.float64])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, [1, 2, 3], "median").statistic, onp.Array2D[np.float64])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _c128_1d).statistic, onp.Array2D[np.complex128])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, [1j, 2j], "max").statistic, onp.Array2D[np.complex128])
+
+# `count` and `std` are always real, even for complex `values`
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _c128_1d, "count").statistic, onp.Array2D[np.float64])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _c128_1d, "std").statistic, onp.Array2D[np.float64])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, None, "count").statistic, onp.Array2D[np.float64])
+
+# a list of `values` sequences results in one 2-d statistic per sequence
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_2d).statistic, onp.Array3D[np.float64])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, [_f64_1d, _f64_1d], "min").statistic, onp.Array3D[np.float64])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _c128_2d, "median").statistic, onp.Array3D[np.complex128])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _c128_2d, "std").statistic, onp.Array3D[np.float64])
+
+# callable statistics
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, _to_f64).statistic, onp.Array2D[np.float64])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, _to_c128).statistic, onp.Array2D[np.complex128])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_2d, _to_c128).statistic, onp.Array3D[np.complex128])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _c128_1d, _to_c128_c).statistic, onp.Array2D[np.complex128])
+
+# `expand_binnumbers` does not affect `statistic`
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _c128_2d, "sum", expand_binnumbers=True).statistic, onp.Array3D[np.complex128])
+
+# unknown rank; pyright matches the erased-shape overloads, pyrefly falls through to the fallback
+assert_subtype[onp.Array[tuple[int, int] | tuple[int, int, int], np.float64 | np.complex128]](
+    binned_statistic_2d(_f64_1d, _f64_1d, _c128_nd, "sum").statistic
+)
+
+# unsupported `values` dtypes fall back to a gradual result
+assert_type(
+    binned_statistic_2d(_f64_1d, _f64_1d, _g_1d, "median").statistic,
+    onp.Array[tuple[int, int] | tuple[int, int, int], np.float64 | np.complex128],
+)
 
 # binned_statistic_dd
 
