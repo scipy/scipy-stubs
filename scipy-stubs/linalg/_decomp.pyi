@@ -1263,96 +1263,238 @@ def eigvalsh_tridiagonal(
 ) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
-@overload  # eigvals_only: False = ..., select: _SelectA = ...
+@overload  # ~bool | ~f16, +f32
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigh_tridiagonal(
-    d: onp.ToFloatND,
-    e: onp.ToFloatND,
+    d: _ToBoolF16ND,
+    e: onp.ToFloat32_ND,
     eigvals_only: Literal[False] = False,
-    select: _SelectA = "a",
+    select: _Select = "a",
     select_range: _SelectRange | None = None,
     check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # eigvals_only: False, select: _SelectV (positional)
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
+@overload  # ~bool | ~f16, +f32, eigvals_only: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigh_tridiagonal(
-    d: onp.ToFloatND,
-    e: onp.ToFloatND,
-    eigvals_only: Literal[False],
-    select: _SelectV,
-    select_range: _SelectRange,
-    check_finite: bool = True,
-    tol: onp.ToFloat = 0.0,
-    lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # eigvals_only: False = ..., select: _SelectV (keyword)
-def eigh_tridiagonal(
-    d: onp.ToFloatND,
-    e: onp.ToFloatND,
-    eigvals_only: Literal[False] = False,
-    *,
-    select: _SelectV,
-    select_range: _SelectRange,
-    check_finite: bool = True,
-    tol: onp.ToFloat = 0.0,
-    lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # eigvals_only: False, select: _SelectI (positional)
-def eigh_tridiagonal(
-    d: onp.ToFloatND,
-    e: onp.ToFloatND,
-    eigvals_only: Literal[False],
-    select: _SelectI,
-    select_range: _SelectRangeI,
-    check_finite: bool = True,
-    tol: onp.ToFloat = 0.0,
-    lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # eigvals_only: False = ..., select: _SelectI (keyword)
-def eigh_tridiagonal(
-    d: onp.ToFloatND,
-    e: onp.ToFloatND,
-    eigvals_only: Literal[False] = False,
-    *,
-    select: _SelectI,
-    select_range: _SelectRangeI,
-    check_finite: bool = True,
-    tol: onp.ToFloat = 0.0,
-    lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # eigvals_only: True, select: _SelectA = ...
-def eigh_tridiagonal(
-    d: onp.ToFloatND,
-    e: onp.ToFloatND,
+    d: _ToBoolF16ND,
+    e: onp.ToFloat32_ND,
     eigvals_only: Literal[True],
-    select: _SelectA = "a",
+    select: _Select = "a",
     select_range: _SelectRange | None = None,
     check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> _FloatND: ...
-@overload  # eigvals_only: True, select: _SelectV
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f32, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh_tridiagonal(
+    d: onp.ToFloat32_ND,
+    e: _ToBoolF16ND,
+    eigvals_only: Literal[False] = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
+@overload  # +f32, ~bool | ~f16, eigvals_only: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh_tridiagonal(
+    d: onp.ToFloat32_ND,
+    e: _ToBoolF16ND,
+    eigvals_only: Literal[True],
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~bool | ~f16, +f64
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh_tridiagonal(
+    d: _ToBoolF16ND,
+    e: _ToF64ND,
+    eigvals_only: Literal[False] = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~bool | ~f16, +f64, eigvals_only: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh_tridiagonal(
+    d: _ToBoolF16ND,
+    e: _ToF64ND,
+    eigvals_only: Literal[True],
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh_tridiagonal(
+    d: _ToF64ND,
+    e: _ToBoolF16ND,
+    eigvals_only: Literal[False] = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # +f64, ~bool | ~f16, eigvals_only: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh_tridiagonal(
+    d: _ToF64ND,
+    e: _ToBoolF16ND,
+    eigvals_only: Literal[True],
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f80, +float
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigh_tridiagonal(
+    d: onp.ToJustLongDoubleND,
+    e: onp.ToFloatND,
+    eigvals_only: Literal[False] = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~f80, +float, eigvals_only: True
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigh_tridiagonal(
+    d: onp.ToJustLongDoubleND,
+    e: onp.ToFloatND,
+    eigvals_only: Literal[True],
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float, ~f80
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigh_tridiagonal(
+    d: onp.ToFloatND,
+    e: onp.ToJustLongDoubleND,
+    eigvals_only: Literal[False] = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # +float, ~f80, eigvals_only: True
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigh_tridiagonal(
+    d: onp.ToFloatND,
+    e: onp.ToJustLongDoubleND,
+    eigvals_only: Literal[True],
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f32, +f32
+def eigh_tridiagonal(
+    d: onp.ToFloat32_ND,
+    e: onp.ToFloat32_ND,
+    eigvals_only: Literal[False] = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
+@overload  # +f32, +f32, eigvals_only: True
+def eigh_tridiagonal(
+    d: onp.ToFloat32_ND,
+    e: onp.ToFloat32_ND,
+    eigvals_only: Literal[True],
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f64, +float
+def eigh_tridiagonal(
+    d: _ToF64ND,
+    e: onp.ToFloatND,
+    eigvals_only: Literal[False] = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # +f64, +float, eigvals_only: True
+def eigh_tridiagonal(
+    d: _ToF64ND,
+    e: onp.ToFloatND,
+    eigvals_only: Literal[True],
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float, +f64
+def eigh_tridiagonal(
+    d: onp.ToFloatND,
+    e: _ToF64ND,
+    eigvals_only: Literal[False] = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # +float, +f64, eigvals_only: True
+def eigh_tridiagonal(
+    d: onp.ToFloatND,
+    e: _ToF64ND,
+    eigvals_only: Literal[True],
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # catch-all
+def eigh_tridiagonal(
+    d: onp.ToFloatND,
+    e: onp.ToFloatND,
+    eigvals_only: Literal[False] = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # catch-all, eigvals_only: True
 def eigh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
     eigvals_only: Literal[True],
-    select: _SelectV,
-    select_range: _SelectRange,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
     check_finite: bool = True,
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> _FloatND: ...
-@overload  # eigvals_only: True, select: _SelectI
-def eigh_tridiagonal(
-    d: onp.ToFloatND,
-    e: onp.ToFloatND,
-    eigvals_only: Literal[True],
-    select: _SelectI,
-    select_range: _SelectRangeI,
-    check_finite: bool = True,
-    tol: onp.ToFloat = 0.0,
-    lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> _FloatND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload  # ~bool | ~f16, calc_q: False = ...

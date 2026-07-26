@@ -138,7 +138,6 @@ assert_type(eigvals_banded(_py_f_2d, select="i", select_range=[0, 2]), onp.Array
 assert_type(eigvals_banded(_c64_nd, select="i", select_range=[0, 2]), onp.ArrayND[np.float32])
 assert_type(eigvals_banded(_c128_nd, select="v", select_range=[0.5, 1.5]), onp.ArrayND[np.float64])
 
-# deprecated input dtypes
 assert_type(eigvals_banded(_f16_nd), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eigvals_banded(_f128_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eigvals_banded(_c256_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
@@ -146,12 +145,31 @@ assert_type(eigvals_banded(_c256_nd), onp.ArrayND[np.float64])  # pyright:ignore
 ###
 # eigh_tridiagonal
 
-assert_type(eigh_tridiagonal(_py_f_1d, _py_f_1d), tuple[_FloatND, _FloatND])
-assert_type(eigh_tridiagonal(_py_f_1d, _py_f_1d, False, "v", [0.5, 1.5]), tuple[_FloatND, _FloatND])
-assert_type(eigh_tridiagonal(_py_f_1d, _py_f_1d, False, "i", [0, 2]), tuple[_FloatND, _FloatND])
-assert_type(eigh_tridiagonal(_py_f_1d, _py_f_1d, True), _FloatND)
-assert_type(eigh_tridiagonal(_py_f_1d, _py_f_1d, True, "v", [0.5, 1.5]), _FloatND)
-assert_type(eigh_tridiagonal(_py_f_1d, _py_f_1d, True, "i", [0, 2]), _FloatND)
+assert_type(eigh_tridiagonal(_i8_nd, _i8_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(eigh_tridiagonal(_f32_nd, _f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(eigh_tridiagonal(_i32_nd, _i32_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eigh_tridiagonal(_f64_nd, _f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eigh_tridiagonal(_py_f_1d, _py_f_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+
+assert_type(eigh_tridiagonal(_f32_nd, _i8_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(eigh_tridiagonal(_f32_nd, _f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eigh_tridiagonal(_f64_nd, _f32_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+
+assert_type(eigh_tridiagonal(_f32_nd, _f32_nd, True), onp.ArrayND[np.float32])
+assert_type(eigh_tridiagonal(_f64_nd, _f32_nd, True), onp.ArrayND[np.float64])
+assert_type(eigh_tridiagonal(_py_f_1d, _py_f_1d, True), onp.ArrayND[np.float64])
+
+assert_type(eigh_tridiagonal(_f32_nd, _f32_nd, False, "v", _py_f_1d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(eigh_tridiagonal(_py_f_1d, _py_f_1d, False, "i", _py_i_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eigh_tridiagonal(_f32_nd, _f32_nd, True, "v", _py_f_1d), onp.ArrayND[np.float32])
+assert_type(eigh_tridiagonal(_py_f_1d, _py_f_1d, True, "i", _py_i_1d), onp.ArrayND[np.float64])
+
+assert_type(eigh_tridiagonal(_f16_nd, _f16_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh_tridiagonal(_f128_nd, _f32_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh_tridiagonal(_f32_nd, _f128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh_tridiagonal(_f16_nd, _f16_nd, True), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+
+eigh_tridiagonal(_c128_nd, _c128_nd)  # type: ignore[arg-type]  # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 
 ###
 # eigh
