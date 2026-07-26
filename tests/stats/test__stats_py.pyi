@@ -1035,7 +1035,31 @@ assert_type(f_oneway(_f64_nd, _f64_nd), F_onewayResult[np.float64 | Any])
 
 # alexandergovern
 
-assert_type(alexandergovern(_f64_1d, _f64_1d), AlexanderGovernResult)
+assert_type(alexandergovern(_py_i_1d, _py_f_1d), AlexanderGovernResult[np.float64])
+assert_type(alexandergovern(_i64_1d, _f64_1d, _i16_1d), AlexanderGovernResult[np.float64])
+assert_type(alexandergovern(_f64_1d, _f64_1d), AlexanderGovernResult[np.float64])
+assert_type(alexandergovern(_f64_1d, _f64_1d, _f64_1d, _f64_1d), AlexanderGovernResult[np.float64])
+assert_type(alexandergovern(_f32_1d, _f32_1d), AlexanderGovernResult[np.float32])
+assert_type(alexandergovern(_f16_1d, _f16_1d), AlexanderGovernResult[np.float64 | Any])
+assert_type(alexandergovern(_f32_1d, _f64_1d), AlexanderGovernResult[np.float64 | Any])
+
+assert_type(alexandergovern(_f64_2d, _f64_2d), AlexanderGovernResult[onp.Array1D[np.float64]])
+assert_type(alexandergovern(_f64_2d, _f64_2d, axis=1), AlexanderGovernResult[onp.Array1D[np.float64]])
+assert_type(alexandergovern(_f32_2d, _f32_2d), AlexanderGovernResult[onp.Array1D[np.float32]])
+assert_type(alexandergovern(_f16_2d, _f16_2d), AlexanderGovernResult[onp.Array1D[np.float64 | Any]])
+
+assert_type(alexandergovern(_f64_1d, _f64_1d, axis=None), AlexanderGovernResult[np.float64])
+assert_type(alexandergovern(_f64_2d, _f64_2d, axis=None), AlexanderGovernResult[np.float64])
+assert_type(alexandergovern(_f32_2d, _f32_2d, axis=None), AlexanderGovernResult[np.float32])
+
+assert_type(alexandergovern(_i64_nd, _f64_nd), AlexanderGovernResult[np.float64 | Any])
+assert_type(alexandergovern(_f64_nd, _f64_nd), AlexanderGovernResult[np.float64 | Any])
+assert_type(alexandergovern(_f32_nd, _f32_nd), AlexanderGovernResult[np.float32 | Any])
+assert_type(alexandergovern(_f16_nd, _f16_nd), AlexanderGovernResult[np.float64 | Any])
+
+assert_type(alexandergovern(_f64_nd, _f64_nd, keepdims=True), AlexanderGovernResult[onp.ArrayND[np.float64]])
+assert_type(alexandergovern(_f32_nd, _f32_nd, keepdims=True), AlexanderGovernResult[onp.ArrayND[np.float32]])
+assert_type(alexandergovern(_f64_3d, _f64_3d, axis=(0, 1), keepdims=True), AlexanderGovernResult[onp.ArrayND[np.float64]])
 
 # pointbiserialr
 
