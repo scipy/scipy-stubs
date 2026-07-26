@@ -69,8 +69,27 @@ assert_type(eigvals(_f32_nd, _f128_nd), onp.ArrayND[np.complex128])  # pyright:i
 ###
 # eigvalsh
 
-assert_type(eigvalsh(_f32_nd), _FloatND)
-assert_type(eigvalsh(_c128_nd), _FloatND)
+assert_type(eigvalsh(_i8_nd), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigvalsh(_f32_nd), onp.ArrayND[np.float32])
+assert_type(eigvalsh(_c64_nd), onp.ArrayND[np.float32])
+assert_type(eigvalsh(_i32_nd), onp.ArrayND[np.float64])
+assert_type(eigvalsh(_f64_nd), onp.ArrayND[np.float64])
+assert_type(eigvalsh(_c128_nd), onp.ArrayND[np.float64])
+assert_type(eigvalsh(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(eigvalsh(_py_c_2d), onp.ArrayND[np.float64])
+assert_type(eigvalsh(_f32_nd, subset_by_index=[0, 1], driver="evx"), onp.ArrayND[np.float32])
+
+# `b` widens the result to `f64` unless it fits in `c64` as well
+assert_type(eigvalsh(_f32_nd, _c64_nd), onp.ArrayND[np.float32])
+assert_type(eigvalsh(_f32_nd, _f64_nd), onp.ArrayND[np.float64])
+assert_type(eigvalsh(_f64_nd, _f32_nd), onp.ArrayND[np.float64])
+assert_type(eigvalsh(_f32_nd, None), onp.ArrayND[np.float32])
+
+# deprecated input dtypes
+assert_type(eigvalsh(_f16_nd), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigvalsh(_f16_nd, _f64_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigvalsh(_f128_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigvalsh(_f32_nd, _f128_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # eigvalsh_tridiagonal
