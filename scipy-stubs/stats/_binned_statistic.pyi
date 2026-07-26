@@ -469,7 +469,7 @@ def binned_statistic_dd(
     bins: _ToBinsND = 10,
     range: _ToRangeND = None,
     expand_binnumbers: Literal[False] = False,
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int]]: ...
 @overload  # count|std, expanded (keyword)
 def binned_statistic_dd(
@@ -480,7 +480,7 @@ def binned_statistic_dd(
     range: _ToRangeND = None,
     *,
     expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int, int]]: ...
 @overload  # real
 def binned_statistic_dd(
@@ -490,7 +490,7 @@ def binned_statistic_dd(
     bins: _ToBinsND = 10,
     range: _ToRangeND = None,
     expand_binnumbers: Literal[False] = False,
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int]]: ...
 @overload  # real, expanded (keyword)
 def binned_statistic_dd(
@@ -501,7 +501,7 @@ def binned_statistic_dd(
     range: _ToRangeND = None,
     *,
     expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int, int]]: ...
 @overload  # ~complex
 def binned_statistic_dd(
@@ -511,7 +511,7 @@ def binned_statistic_dd(
     bins: _ToBinsND = 10,
     range: _ToRangeND = None,
     expand_binnumbers: Literal[False] = False,
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.complex128, tuple[int]]: ...
 @overload  # ~complex, expanded (keyword)
 def binned_statistic_dd(
@@ -522,7 +522,7 @@ def binned_statistic_dd(
     range: _ToRangeND = None,
     *,
     expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.complex128, tuple[int, int]]: ...
 @overload  # real, ~complex statistic
 def binned_statistic_dd(
@@ -532,7 +532,7 @@ def binned_statistic_dd(
     bins: _ToBinsND = 10,
     range: _ToRangeND = None,
     expand_binnumbers: Literal[False] = False,
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.complex128, tuple[int]]: ...
 @overload  # real, ~complex statistic, expanded (keyword)
 def binned_statistic_dd(
@@ -543,7 +543,7 @@ def binned_statistic_dd(
     range: _ToRangeND = None,
     *,
     expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.complex128, tuple[int, int]]: ...
 @overload  # values=None, count
 def binned_statistic_dd(
@@ -553,7 +553,7 @@ def binned_statistic_dd(
     bins: _ToBinsND = 10,
     range: _ToRangeND = None,
     expand_binnumbers: Literal[False] = False,
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int]]: ...
 @overload  # values=None, count, expanded (keyword)
 def binned_statistic_dd(
@@ -564,7 +564,7 @@ def binned_statistic_dd(
     range: _ToRangeND = None,
     *,
     expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int, int]]: ...
 @overload  # fallback
 def binned_statistic_dd(
@@ -574,7 +574,7 @@ def binned_statistic_dd(
     bins: _ToBinsND = 10,
     range: _ToRangeND = None,
     expand_binnumbers: Literal[False] = False,
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64 | np.complex128, tuple[int]]: ...
 @overload  # fallback, expanded (keyword)
 def binned_statistic_dd(
@@ -585,5 +585,5 @@ def binned_statistic_dd(
     range: _ToRangeND = None,
     *,
     expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult | None = None,
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64 | np.complex128, tuple[int, int]]: ...
