@@ -1,4 +1,5 @@
 from typing import Any, Literal, Never, SupportsIndex, overload
+from typing_extensions import deprecated
 
 import numpy as np
 import optype.numpy as onp
@@ -12,46 +13,62 @@ __all__ = ["LinAlgError", "LinAlgWarning", "bandwidth", "norm"]
 type _Inf = float
 type _Order = Literal["fro", "nuc", 0, 1, -1, 2, -2] | _Inf
 type _Axis = SupportsIndex | tuple[SupportsIndex, SupportsIndex]
-type _SubScalar = npc.inexact64 | npc.integer | np.bool
+type _SubScalar = npc.inexact64 | npc.integer
+type _BoolF16Inexact80 = np.bool | np.float16 | npc.inexact80
+
+type _ToIntND = onp.ToArrayND[Never, npc.integer]
+type _AsInexact32ND = onp.ToArrayND[Never, npc.inexact32]
+type _AsInexact64ND = onp.ToArrayND[complex, npc.inexact64]
+type _AsBoolF16Inexact80ND = onp.ToArrayND[Never, _BoolF16Inexact80]
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
 type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
 
 ###
 
-# On numpy<2.1, pyright reports 6 false positive incompatible overload errors here.
-# pyright: reportOverlappingOverload=false
-
 class LinAlgWarning(RuntimeWarning): ...
 
-# NOTE: mypy reports two false positive `overload-overlap` error with numpy<2.5
+# NOTE: false positives on numpy<2.1
+# pyright: reportOverlappingOverload=false
+
+# NOTE: the `inexact{32,64,80}` groups are disjoint
 # mypy: disable-error-code=overload-overlap
 
-@overload  # scalar, axis: None = ...
+@overload  # 0d +inexact64
 def norm(
     a: complex | _SubScalar, ord: _Order | None = None, axis: None = None, keepdims: bool = False, check_finite: bool = True
 ) -> np.float64: ...
-@overload  # inexact32, axis: None = ...
+@overload  # 0d ~inexact32
 def norm(
     a: npc.inexact32, ord: _Order | None = None, axis: None = None, keepdims: bool = False, check_finite: bool = True
 ) -> np.float32: ...
-@overload  # longdouble, axis: None = ...
+@overload  # 0d ~bool | ~f16 | ~f80 | ~c160
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
 def norm(
-    a: npc.inexact80, ord: _Order | None = None, axis: None = None, keepdims: bool = False, check_finite: bool = True
-) -> np.longdouble: ...
-@overload  # scalar array, axis: None = ..., keepdims: False = ...
+    a: _BoolF16Inexact80, ord: _Order | None = None, axis: None = None, keepdims: bool = False, check_finite: bool = True
+) -> np.float64 | Any: ...
+@overload  # Nd ~integer
 def norm(
-    a: onp.ToArrayND[_SubScalar, _SubScalar],
+    a: _ToIntND, ord: _Order | None = None, axis: None = None, keepdims: Literal[False] = False, check_finite: bool = True
+) -> np.float64: ...
+@overload  # Nd +inexact64
+def norm(
+    a: _AsInexact64ND, ord: _Order | None = None, axis: None = None, keepdims: Literal[False] = False, check_finite: bool = True
+) -> float: ...
+@overload  # Nd ~inexact32
+def norm(
+    a: _AsInexact32ND, ord: _Order | None = None, axis: None = None, keepdims: Literal[False] = False, check_finite: bool = True
+) -> float | np.float32: ...
+@overload  # Nd ~bool | ~f16 | ~f80 | ~c160
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def norm(
+    a: _AsBoolF16Inexact80ND,
     ord: _Order | None = None,
     axis: None = None,
     keepdims: Literal[False] = False,
     check_finite: bool = True,
-) -> np.float64: ...
-@overload  # float64-coercible array, keepdims: True (positional)
-def norm[ShapeT: tuple[int, ...]](
-    a: onp.ArrayND[_SubScalar, ShapeT], ord: _Order | None, axis: _Axis | None, keepdims: Literal[True], check_finite: bool = True
-) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # float64-coercible array, keepdims: True (keyword)
+) -> np.float64 | Any: ...
+@overload  # Nd +inexact64, keepdims: True, shape known
 def norm[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[_SubScalar, ShapeT],
     ord: _Order | None = None,
@@ -60,40 +77,7 @@ def norm[ShapeT: tuple[int, ...]](
     keepdims: Literal[True],
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # float64-coercible array-like, keepdims: True (positional)
-def norm(
-    a: onp.ToArrayND[complex, _SubScalar],
-    ord: _Order | None,
-    axis: _Axis | None,
-    keepdims: Literal[True],
-    check_finite: bool = True,
-) -> onp.ArrayND[np.float64]: ...
-@overload  # float64-coercible array-like, keepdims: True (keyword)
-def norm(
-    a: onp.ToArrayND[complex, _SubScalar],
-    ord: _Order | None = None,
-    axis: _Axis | None = None,
-    *,
-    keepdims: Literal[True],
-    check_finite: bool = True,
-) -> onp.ArrayND[np.float64]: ...
-@overload  # shaped inexact32 array, keepdims: True (positional)
-def norm[ShapeT: tuple[int, ...]](
-    a: onp.ArrayND[npc.inexact32, ShapeT],
-    ord: _Order | None,
-    axis: _Axis | None,
-    keepdims: Literal[True],
-    check_finite: bool = True,
-) -> onp.ArrayND[np.float32, ShapeT]: ...
-@overload  # shaped longdouble array, keepdims: True (positional)
-def norm[ShapeT: tuple[int, ...]](
-    a: onp.ArrayND[npc.inexact80, ShapeT],
-    ord: _Order | None,
-    axis: _Axis | None,
-    keepdims: Literal[True],
-    check_finite: bool = True,
-) -> onp.ArrayND[np.longdouble, ShapeT]: ...
-@overload  # shaped inexact32 array, keepdims: True (keyword)
+@overload  # Nd ~inexact32, keepdims: True, shape known
 def norm[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.inexact32, ShapeT],
     ord: _Order | None = None,
@@ -102,58 +86,40 @@ def norm[ShapeT: tuple[int, ...]](
     keepdims: Literal[True],
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float32, ShapeT]: ...
-@overload  # shaped longdouble array, keepdims: True (keyword)
+@overload  # Nd ~bool | ~f16 | ~f80 | ~c160, keepdims: True, shape known
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
 def norm[ShapeT: tuple[int, ...]](
-    a: onp.ArrayND[npc.inexact80, ShapeT],
+    a: onp.ArrayND[_BoolF16Inexact80, ShapeT],
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
     keepdims: Literal[True],
     check_finite: bool = True,
-) -> onp.ArrayND[np.longdouble, ShapeT]: ...
-@overload  # scalar array-like, keepdims: True (positional)
+) -> onp.ArrayND[np.float64 | Any, ShapeT]: ...
+@overload  # Nd +inexact64, keepdims: True
 def norm(
-    a: onp.ToArrayND[npc.inexact32, npc.inexact32],
-    ord: _Order | None,
-    axis: _Axis | None,
+    a: onp.ToArrayND[complex, _SubScalar],
+    ord: _Order | None = None,
+    axis: _Axis | None = None,
+    *,
     keepdims: Literal[True],
     check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # Nd ~inexact32, keepdims: True
+def norm(
+    a: _AsInexact32ND, ord: _Order | None = None, axis: _Axis | None = None, *, keepdims: Literal[True], check_finite: bool = True
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # scalar array-like, keepdims: True (positional)
+@overload  # Nd ~bool | ~f16 | ~f80 | ~c160, keepdims: True
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
 def norm(
-    a: onp.ToArrayND[npc.inexact80, npc.inexact80],
-    ord: _Order | None,
-    axis: _Axis | None,
-    keepdims: Literal[True],
-    check_finite: bool = True,
-) -> onp.ArrayND[np.longdouble]: ...
-@overload  # scalar array-like, keepdims: True (keyword)
-def norm(
-    a: onp.ToArrayND[npc.inexact32, npc.inexact32],
+    a: _AsBoolF16Inexact80ND,
     ord: _Order | None = None,
     axis: _Axis | None = None,
     *,
     keepdims: Literal[True],
     check_finite: bool = True,
-) -> onp.ArrayND[np.float32]: ...
-@overload  # scalar array-like, keepdims: True (keyword)
-def norm(
-    a: onp.ToArrayND[npc.inexact80, npc.inexact80],
-    ord: _Order | None = None,
-    axis: _Axis | None = None,
-    *,
-    keepdims: Literal[True],
-    check_finite: bool = True,
-) -> onp.ArrayND[np.longdouble]: ...
-@overload  # array-like, axis: None = ..., keepdims: False = ...
-def norm(
-    a: onp.ToComplexND, ord: _Order | None = None, axis: None = None, keepdims: Literal[False] = False, check_finite: bool = True
-) -> np.float64: ...
-@overload  # array-like, keepdims: True (positional)
-def norm(
-    a: onp.ToComplexND, ord: _Order | None, axis: _Axis | None, keepdims: Literal[True], check_finite: bool = True
-) -> onp.ArrayND[npc.floating, _WorkaroundForPyright]: ...
-@overload  # array-like, keepdims: True (keyword)
+) -> onp.ArrayND[np.float64 | Any]: ...
+@overload  # catch-all, keepdims: True
 def norm(
     a: onp.ToComplexND,
     ord: _Order | None = None,
@@ -161,11 +127,11 @@ def norm(
     *,
     keepdims: Literal[True],
     check_finite: bool = True,
-) -> onp.ArrayND[npc.floating, _WorkaroundForPyright]: ...
+) -> onp.ArrayND[np.float64 | Any, _WorkaroundForPyright]: ...
 @overload  # catch-all
 def norm(
     a: onp.ToArrayND, ord: _Order | None = None, axis: _Axis | None = None, keepdims: bool = False, check_finite: bool = True
-) -> npc.floating | onp.ArrayND[npc.floating, _WorkaroundForPyright]: ...
+) -> np.float64 | Any: ...
 
 #
 def _datacopied(arr: onp.ArrayND[Any], original: onp.CanArrayND[Any]) -> bool: ...  # undocumented
