@@ -111,6 +111,35 @@ assert_type(
 
 # binned_statistic_dd
 
-assert_type(binned_statistic_dd(_f64_1d, _f64_1d).binnumber, onp.Array2D[np.intp])
-assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array2D[np.intp])
-assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array3D[np.intp])
+assert_type(binned_statistic_dd(_f64_2d, _f64_1d).bin_edges, list[onp.Array1D[np.float64]])
+
+assert_type(binned_statistic_dd(_f64_1d, _f64_1d).binnumber, onp.Array1D[np.intp])
+assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array1D[np.intp])
+assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array2D[np.intp])
+
+# the statistic rank is `D` (`+ 1` for 2-d `values`), which isn't known statically
+assert_type(binned_statistic_dd(_f64_2d, _f64_1d).statistic, onp.ArrayND[np.float64])
+assert_type(binned_statistic_dd(_f64_2d, _i64_1d, "sum").statistic, onp.ArrayND[np.float64])
+assert_type(binned_statistic_dd([_f64_1d, _f64_1d], [1, 2, 3], "median").statistic, onp.ArrayND[np.float64])
+assert_type(binned_statistic_dd(_f64_2d, _c128_1d).statistic, onp.ArrayND[np.complex128])
+assert_type(binned_statistic_dd(_f64_2d, _c128_2d, "max").statistic, onp.ArrayND[np.complex128])
+
+# `count` and `std` are always real, even for complex `values`
+assert_type(binned_statistic_dd(_f64_2d, _c128_1d, "count").statistic, onp.ArrayND[np.float64])
+assert_type(binned_statistic_dd(_f64_2d, _c128_2d, "std").statistic, onp.ArrayND[np.float64])
+assert_type(binned_statistic_dd(_f64_2d, None, "count").statistic, onp.ArrayND[np.float64])
+
+# callable statistics
+assert_type(binned_statistic_dd(_f64_2d, _f64_1d, _to_f64).statistic, onp.ArrayND[np.float64])
+assert_type(binned_statistic_dd(_f64_2d, _f64_1d, _to_c128).statistic, onp.ArrayND[np.complex128])
+assert_type(binned_statistic_dd(_f64_2d, _c128_1d, _to_c128_c).statistic, onp.ArrayND[np.complex128])
+
+# `expand_binnumbers` does not affect `statistic`
+assert_type(binned_statistic_dd(_f64_2d, _c128_nd, "sum", expand_binnumbers=True).statistic, onp.ArrayND[np.complex128])
+
+# unsupported `values` dtypes fall back to a gradual result
+assert_type(binned_statistic_dd(_f64_2d, _g_1d, "median").statistic, onp.ArrayND[np.float64 | np.complex128])
+
+# a previous result can be passed back in to reuse its bin edges
+_dd_result = binned_statistic_dd(_f64_2d, _f64_1d)
+assert_type(binned_statistic_dd(_f64_2d, _c128_1d, binned_statistic_result=_dd_result).statistic, onp.ArrayND[np.complex128])
