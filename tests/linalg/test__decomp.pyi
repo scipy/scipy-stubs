@@ -35,6 +35,7 @@ _f64_nd: onp.ArrayND[np.float64]
 _f128_nd: onp.ArrayND[np.float128]
 _c64_nd: onp.ArrayND[np.complex64]
 _c128_nd: onp.ArrayND[np.complex128]
+_c256_nd: onp.ArrayND[np.complex256]
 
 _py_f_1d: list[float]
 _py_f_2d: list[list[float]]
@@ -43,7 +44,7 @@ _py_c_2d: list[list[complex]]
 ###
 # eigvals
 
-assert_type(eigvals(_i8_nd), onp.ArrayND[np.complex64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigvals(_i8_nd), onp.ArrayND[np.complex64])
 assert_type(eigvals(_f32_nd), onp.ArrayND[np.complex64])
 assert_type(eigvals(_c64_nd), onp.ArrayND[np.complex64])
 assert_type(eigvals(_i32_nd), onp.ArrayND[np.complex128])
@@ -69,7 +70,7 @@ assert_type(eigvals(_f32_nd, _f128_nd), onp.ArrayND[np.complex128])  # pyright:i
 ###
 # eigvalsh
 
-assert_type(eigvalsh(_i8_nd), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigvalsh(_i8_nd), onp.ArrayND[np.float32])
 assert_type(eigvalsh(_f32_nd), onp.ArrayND[np.float32])
 assert_type(eigvalsh(_c64_nd), onp.ArrayND[np.float32])
 assert_type(eigvalsh(_i32_nd), onp.ArrayND[np.float64])
@@ -162,11 +163,23 @@ assert_type(eig_banded(_c128_nd, True, True), _FloatND)
 ###
 # hessenberg
 
-assert_type(hessenberg(_f32_nd), _FloatND)
-assert_type(hessenberg(_f32_nd, True), tuple[_FloatND, _FloatND])
+assert_type(hessenberg(_i8_nd), onp.ArrayND[np.float32])
+assert_type(hessenberg(_f32_nd), onp.ArrayND[np.float32])
+assert_type(hessenberg(_i32_nd), onp.ArrayND[np.float64])
+assert_type(hessenberg(_f64_nd), onp.ArrayND[np.float64])
+assert_type(hessenberg(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(hessenberg(_c64_nd), onp.ArrayND[np.complex64])
+assert_type(hessenberg(_c128_nd), onp.ArrayND[np.complex128])
+assert_type(hessenberg(_py_c_2d), onp.ArrayND[np.complex128])
 
-assert_type(hessenberg(_c128_nd), _InexactND)
-assert_type(hessenberg(_c128_nd, True), tuple[_InexactND, _InexactND])
+assert_type(hessenberg(_f32_nd, True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(hessenberg(_f64_nd, True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(hessenberg(_c64_nd, True), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(hessenberg(_c128_nd, calc_q=True), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+
+assert_type(hessenberg(_f16_nd), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(hessenberg(_f128_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(hessenberg(_c256_nd), onp.ArrayND[np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # cdf2rdf
