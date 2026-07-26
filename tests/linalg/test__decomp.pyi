@@ -174,10 +174,39 @@ eigh_tridiagonal(_c128_nd, _c128_nd)  # type: ignore[arg-type]  # pyright:ignore
 ###
 # eigh
 
-assert_type(eigh(_f32_nd), tuple[_FloatND, _FloatND])
-assert_type(eigh(_c128_nd), tuple[_FloatND, _ComplexND])
-assert_type(eigh(_f32_nd, eigvals_only=True), _FloatND)
+assert_type(eigh(_i8_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(eigh(_f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(eigh(_c64_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]])
+assert_type(eigh(_i32_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eigh(_f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eigh(_c128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(eigh(_py_f_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eigh(_py_c_2d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+
+assert_type(eigh(_f32_nd, _c64_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]])
+assert_type(eigh(_c64_nd, _f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]])
+assert_type(eigh(_f32_nd, _f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(eigh(_c64_nd, _f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(eigh(_f64_nd, _c64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(eigh(_f64_nd, _c128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(eigh(_f32_nd, None), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+
+assert_type(eigh(_f32_nd, eigvals_only=True), onp.ArrayND[np.float32])
+assert_type(eigh(_c64_nd, eigvals_only=True), onp.ArrayND[np.float32])
+assert_type(eigh(_f64_nd, eigvals_only=True), onp.ArrayND[np.float64])
 assert_type(eigh(_c128_nd, eigvals_only=True), onp.ArrayND[np.float64])
+assert_type(eigh(_f32_nd, _f64_nd, eigvals_only=True), onp.ArrayND[np.float64])
+assert_type(eigh(_f32_nd, subset_by_index=[0, 1], driver="evx"), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+
+assert_type(eigh(_f16_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh(_f16_nd, _c64_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh(_f16_nd, _f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh(_f128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh(_f128_nd, _c64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh(_c64_nd, _f128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh(_c256_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh(_f16_nd, eigvals_only=True), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(eigh(_c256_nd, eigvals_only=True), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # eig

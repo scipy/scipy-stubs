@@ -217,10 +217,75 @@ def eig(
     ...
 
 #
-@overload  # +float64, eigvals_only: False = ...
-def eigh(  #
-    a: onp.ToArrayND[float, np.float64 | npc.floating80 | npc.integer64 | npc.integer32],
-    b: onp.ToFloat64_ND | None = None,
+@overload  # ~bool | ~f16, +f32 | None
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: _ToBoolF16ND,
+    b: onp.ToFloat32_ND | None = None,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
+@overload  # +f32, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: onp.ToFloat32_ND,
+    b: _ToBoolF16ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
+@overload  # ~bool | ~f16, ~c64
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: _ToBoolF16ND,
+    b: onp.ToJustComplex64_ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]]: ...
+@overload  # ~c64, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: onp.ToJustComplex64_ND,
+    b: _ToBoolF16ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]]: ...
+@overload  # ~bool | ~f16, +f64
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: _ToBoolF16ND,
+    b: _ToF64ND,
     *,
     lower: bool = True,
     eigvals_only: Literal[False] = False,
@@ -232,9 +297,58 @@ def eigh(  #
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
-@overload  # +float, eigvals_only: False = ...
+@overload  # +f64, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigh(
-    a: onp.ToFloatND,
+    a: _ToF64ND,
+    b: _ToBoolF16ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~bool | ~f16, ~c128
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: _ToBoolF16ND,
+    b: onp.ToJustComplex128_ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # ~c128, ~bool | ~f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: onp.ToJustComplex128_ND,
+    b: _ToBoolF16ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # ~f80, +float | None
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: onp.ToJustLongDoubleND,
     b: onp.ToFloatND | None = None,
     *,
     lower: bool = True,
@@ -246,10 +360,27 @@ def eigh(
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
-) -> tuple[_FloatND, _FloatND]: ...
-@overload  # ~complex, eigvals_only: False = ...
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # +float, ~f80
+@deprecated("longdouble input will no longer be supported in SciPy 2.1")
 def eigh(
-    a: onp.ToJustComplexND,
+    a: onp.ToFloatND,
+    b: onp.ToJustLongDoubleND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~f80 | ~c160, +complex | None
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: _ToInexact80ND,
     b: onp.ToComplexND | None = None,
     *,
     lower: bool = True,
@@ -261,8 +392,159 @@ def eigh(
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
-) -> tuple[_FloatND, _ComplexND]: ...
-@overload  # +complex, eigvals_only: False = ...
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # +complex, ~f80 | ~c160
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: onp.ToComplexND,
+    b: _ToInexact80ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # +f32, +f32 | None
+def eigh(
+    a: onp.ToFloat32_ND,
+    b: onp.ToFloat32_ND | None = None,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
+@overload  # ~c64, +c64 | None
+def eigh(
+    a: onp.ToJustComplex64_ND,
+    b: onp.ToComplex64_ND | None = None,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]]: ...
+@overload  # +c64, ~c64
+def eigh(
+    a: onp.ToComplex64_ND,
+    b: onp.ToJustComplex64_ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]]: ...
+@overload  # +f64, +float | None
+def eigh(
+    a: _ToF64ND,
+    b: onp.ToFloatND | None = None,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # +float, +f64
+def eigh(
+    a: onp.ToFloatND,
+    b: _ToF64ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~c64, +f64
+def eigh(
+    a: onp.ToJustComplex64_ND,
+    b: _ToF64ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # +f64, ~c64
+def eigh(
+    a: _ToF64ND,
+    b: onp.ToJustComplex64_ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # ~c128, +complex | None
+def eigh(
+    a: onp.ToJustComplex128_ND,
+    b: onp.ToComplexND | None = None,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # +complex, ~c128
+def eigh(
+    a: onp.ToComplexND,
+    b: onp.ToJustComplex128_ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # catch-all
 def eigh(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -276,11 +558,12 @@ def eigh(
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
-) -> tuple[_FloatND, _InexactND]: ...
-@overload  # +complex128, eigvals_only: True
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # ~bool | ~f16, +c64 | None, eigvals_only: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigh(
-    a: onp.ToArrayND[float, npc.inexact80 | npc.number64 | npc.integer32],
-    b: onp.ToComplex128_ND | None = None,
+    a: _ToBoolF16ND,
+    b: onp.ToComplex64_ND | None = None,
     *,
     lower: bool = True,
     eigvals_only: Literal[True],
@@ -290,9 +573,134 @@ def eigh(
     check_finite: bool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
-    driver: _DriverEV | _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +c64, ~bool | ~f16, eigvals_only: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: onp.ToComplex64_ND,
+    b: _ToBoolF16ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ~bool | ~f16, +c128, eigvals_only: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: _ToBoolF16ND,
+    b: _ToC128ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # +complex, eigvals_only: True
+@overload  # +c128, ~bool | ~f16, eigvals_only: True
+@deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: _ToC128ND,
+    b: _ToBoolF16ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f80 | ~c160, +complex | None, eigvals_only: True
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: _ToInexact80ND,
+    b: onp.ToComplexND | None = None,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +complex, ~f80 | ~c160, eigvals_only: True
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 2.1")
+def eigh(
+    a: onp.ToComplexND,
+    b: _ToInexact80ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +c64, +c64 | None, eigvals_only: True
+def eigh(
+    a: onp.ToComplex64_ND,
+    b: onp.ToComplex64_ND | None = None,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +c128, +complex | None, eigvals_only: True
+def eigh(
+    a: _ToC128ND,
+    b: onp.ToComplexND | None = None,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +complex, +c128, eigvals_only: True
+def eigh(
+    a: onp.ToComplexND,
+    b: _ToC128ND,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # catch-all, eigvals_only: True
 def eigh(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -305,8 +713,8 @@ def eigh(
     check_finite: bool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
-    driver: _DriverEV | _EigHSubsetByValue | None = None,
-) -> _FloatND: ...
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload  # ~bool | ~f16
