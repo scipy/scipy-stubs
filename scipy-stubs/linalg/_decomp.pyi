@@ -1,5 +1,6 @@
 from collections.abc import Iterable, Sequence
-from typing import Any, Literal, overload
+from typing import Any, Literal, Never, overload
+from typing_extensions import deprecated
 
 import numpy as np
 import numpy_typing_compat as nptc
@@ -21,6 +22,10 @@ __all__ = [
 ]
 
 # input types
+
+type _ToF64ND = onp.ToArrayND[complex, npc.integer32 | npc.number64]
+type _ToInexact80ND = onp.ToArrayND[Never, npc.inexact80]
+
 # NOTE: only "a", "v" and "i" are documented for the `select` params, but internally 0, 1, and 2 are used, respectively.
 type _SelectA = Literal["a", "all", 0]
 type _SelectV = Literal["v", "value", 1]
@@ -36,18 +41,21 @@ type _EigHType = Literal[1, 2, 3]
 type _EigHSubsetByIndex = Iterable[opt.AnyInt]
 type _EigHSubsetByValue = Iterable[onp.ToFloat]
 
-# LAPACK drivers
 type _DriverGV = Literal["gv", "gvd", "gvx"]
 type _DriverEV = Literal["ev", "evd", "evx", "evr"]
 type _DriverSTE = Literal["stemr", "stebz", "sterf", "stev"]
 type _DriverAuto = Literal["auto"]
 
 # output types
+
 type _FloatND = onp.ArrayND[np.float64 | np.float32]
 type _ComplexND = onp.ArrayND[np.complex128 | np.complex64]
 type _InexactND = onp.ArrayND[np.complex128 | np.complex64 | np.float64 | np.float32]
 
 ###
+
+# NOTE: mypy incorrectly sees disjoint dtypes like `npc.integer32` and `npc.integer8` as overlapping
+# mypy: disable-error-code=overload-overlap
 
 # NOTE: The eigenvectors of real `a` can be either real or complex, depending on its values.
 # TODO(@jorenham): f32/f64/c64/c128-specific overloads
@@ -440,7 +448,95 @@ def eig_banded(
     check_finite: bool = True,
 ) -> _FloatND: ...
 
-#
+# keep structurally in sync with `eigvalsh`
+@overload  # +f16, +c64 | None
+@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+def eigvals(
+    a: onp.ToFloat16_ND,
+    b: onp.ToComplex64_ND | None = None,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # +c64, +f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+def eigvals(
+    a: onp.ToComplex64_ND,
+    b: onp.ToFloat16_ND,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # +f16, +f64
+@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+def eigvals(
+    a: onp.ToFloat16_ND,
+    b: _ToF64ND,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +f64, +f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+def eigvals(
+    a: _ToF64ND,
+    b: onp.ToFloat16_ND,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~f80 | ~c160, +complex | None
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 1.20")
+def eigvals(
+    a: _ToInexact80ND,
+    b: onp.ToComplexND | None = None,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +complex, ~f80 | ~c160
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 1.20")
+def eigvals(
+    a: onp.ToComplexND,
+    b: _ToInexact80ND,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +c64, +c64 | None
+def eigvals(
+    a: onp.ToComplex64_ND,
+    b: onp.ToComplex64_ND | None = None,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # +f64, +complex | None
+def eigvals(
+    a: _ToF64ND,
+    b: onp.ToComplexND | None = None,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +complex, +f64
+def eigvals(
+    a: onp.ToComplexND,
+    b: _ToF64ND,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # catch-all
 def eigvals(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -448,9 +544,142 @@ def eigvals(
     overwrite_b: bool = False,
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
 
-#
+# keep structurally in sync with `eigvals`
+@overload  # +f16, +c64 | None
+@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+def eigvalsh(
+    a: onp.ToFloat16_ND,
+    b: onp.ToComplex64_ND | None = None,
+    *,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +c64, +f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+def eigvalsh(
+    a: onp.ToComplex64_ND,
+    b: onp.ToFloat16_ND,
+    *,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f16, +f64
+@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+def eigvalsh(
+    a: onp.ToFloat16_ND,
+    b: _ToF64ND,
+    *,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, +f16
+@deprecated("bool and float16 input will no longer be supported in SciPy 1.20")
+def eigvalsh(
+    a: _ToF64ND,
+    b: onp.ToFloat16_ND,
+    *,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f80 | ~c160, +complex | None
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 1.20")
+def eigvalsh(
+    a: _ToInexact80ND,
+    b: onp.ToComplexND | None = None,
+    *,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +complex, ~f80 | ~c160
+@deprecated("longdouble and clongdouble input will no longer be supported in SciPy 1.20")
+def eigvalsh(
+    a: onp.ToComplexND,
+    b: _ToInexact80ND,
+    *,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +c64, +c64 | None
+def eigvalsh(
+    a: onp.ToComplex64_ND,
+    b: onp.ToComplex64_ND | None = None,
+    *,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # +f64, +complex | None
+def eigvalsh(
+    a: _ToF64ND,
+    b: onp.ToComplexND | None = None,
+    *,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +complex, +f64
+def eigvalsh(
+    a: onp.ToComplexND,
+    b: _ToF64ND,
+    *,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # catch-all
 def eigvalsh(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -462,8 +691,8 @@ def eigvalsh(
     check_finite: bool = True,
     subset_by_index: _EigHSubsetByIndex | None = None,
     subset_by_value: _EigHSubsetByValue | None = None,
-    driver: _DriverEV | _EigHSubsetByValue | None = None,
-) -> _FloatND: ...
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload  # select: _SelectA = ...
