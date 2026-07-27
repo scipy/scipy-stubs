@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.11.28,<0.12"]
+requires = ["uv_build>=0.11.32,<0.12"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -76,7 +76,7 @@ type = [
   "mypy[faster-cache]==2.3.0",
   "pyrefly==1.1.1",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.63",
+  "ty==0.0.64",
   "zuban==0.9.0",
 ]
 dev = [
