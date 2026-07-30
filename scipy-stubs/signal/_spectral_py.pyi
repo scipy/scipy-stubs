@@ -7,6 +7,7 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from ._signaltools import _TrendType
 from .windows._windows import _ToWindow
 
 __all__ = ["check_COLA", "check_NOLA", "coherence", "csd", "istft", "lombscargle", "periodogram", "spectrogram", "stft", "welch"]
@@ -25,7 +26,7 @@ type _ToInexact32ND = onp.ToArrayND[npc.inexact32, npc.inexact32 | npc.floating1
 type _ToInexact64ND = onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool]
 type _ToInexact80ND = onp.ToArrayND[npc.inexact80, npc.inexact80]
 
-type _Detrend = Literal["literal", "constant", False] | Callable[[onp.ArrayND], onp.ArrayND]
+type _Detrend = _TrendType | Literal[False] | Callable[[onp.ArrayND], onp.ArrayND]
 type _Scaling = Literal["density", "spectrum"]
 type _LegacyScaling = Literal["psd", "spectrum"]
 type _Average = Literal["mean", "median"]
