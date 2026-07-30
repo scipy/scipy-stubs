@@ -1,4 +1,3 @@
-import abc
 from collections.abc import Callable, Mapping
 from typing import IO, Any, Final, Literal, Protocol, TypeVar, type_check_only
 
@@ -28,9 +27,7 @@ class MatWriteWarning(UserWarning): ...
 
 class MatVarReader:
     def __init__(self, /, file_reader: MatFileReader) -> None: ...
-    @abc.abstractmethod
     def read_header(self, /) -> dict[str, Any]: ...
-    @abc.abstractmethod
     def array_from_header(self, /, header: Mapping[str, object]) -> onp.ArrayND: ...
 
 class MatFileReader:

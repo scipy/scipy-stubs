@@ -1,4 +1,3 @@
-import abc
 import re
 from collections.abc import Iterable, Iterator, Sequence
 from csv import Dialect
@@ -31,7 +30,7 @@ r_wcomattrval: Final[re.Pattern[str]] = ...  # undocumented
 class ArffError(OSError): ...
 class ParseArffError(ArffError): ...
 
-class Attribute(Generic[_T_co], metaclass=abc.ABCMeta):  # undocumented
+class Attribute(Generic[_T_co]):  # undocumented
     type_name: ClassVar[str | None]
     dtype: Any
     range: Any
