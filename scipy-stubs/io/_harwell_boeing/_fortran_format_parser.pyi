@@ -1,4 +1,3 @@
-import abc
 import re
 from typing import Final, Literal, Self, type_check_only
 
@@ -17,7 +16,7 @@ TOKENS: Final[dict[_TokenType, str]]
 class BadFortranFormat(SyntaxError): ...
 
 @type_check_only
-class _NumberFormat[NumberT: (int, float)](metaclass=abc.ABCMeta):
+class _NumberFormat[NumberT: (int, float)]:
     width: Final[int]
     repeat: Final[int | None]
     min: Final[int | None]
