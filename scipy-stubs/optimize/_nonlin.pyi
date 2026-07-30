@@ -1,5 +1,3 @@
-# mypy: disable-error-code="override"
-import abc
 import types
 from _typeshed import Unused
 from collections.abc import Callable
@@ -125,7 +123,6 @@ class Jacobian(Generic[_InexactT_co]):  # undocumented
     def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
     def __init__(self, /, **kw: Unpack[_JacobianKwargs[_InexactT_co]]) -> None: ...
     #
-    @abc.abstractmethod
     def solve(self, v: _InexactND, /, tol: float = 0) -> onp.Array2D[_InexactT_co]: ...
     # `x` and `F` are 1-d
     def setup(self: Jacobian[_InexactT], x: _InexactND, F: onp.ArrayND[_InexactT], func: _ResidFunc, /) -> None: ...
@@ -150,7 +147,7 @@ class InverseJacobian(Generic[_InexactT_co]):
     def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
     def __init__(self, /, jacobian: Jacobian[_InexactT_co]) -> None: ...
 
-class GenericBroyden(Jacobian[_InexactT_co], Generic[_InexactT_co], metaclass=abc.ABCMeta):
+class GenericBroyden(Jacobian[_InexactT_co], Generic[_InexactT_co]):
     alpha: Final[float | None]
     last_x: _Inexact1D
     last_f: float
