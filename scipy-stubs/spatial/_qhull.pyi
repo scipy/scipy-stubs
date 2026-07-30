@@ -248,17 +248,17 @@ class HalfspaceIntersection(_QhullUser):
     def add_halfspaces(self, /, halfspaces: onp.ToFloat2D, restart: bool = False) -> None: ...
 
 @overload
-@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 2.3.0.")
 def tsearch(tri: Delaunay, xi: _ToArrayStrictND) -> onp.ArrayND[np.int32]: ...
 @overload
-@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 2.3.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatStrict1D) -> onp.Array0D[np.int32]: ...
 @overload
-@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 2.3.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatStrict2D) -> onp.Array1D[np.int32]: ...
 @overload
-@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 2.3.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatStrict3D) -> onp.Array2D[np.int32]: ...
 @overload
-@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 1.22.0.")
+@deprecated("`tsearch` is deprecated in favor of `Delaunay.find_simplex` and will be removed in SciPy 2.3.0.")
 def tsearch(tri: Delaunay, xi: onp.ToFloatND) -> onp.ArrayND[np.int32]: ...

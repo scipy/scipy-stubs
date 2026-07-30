@@ -235,7 +235,7 @@ def krogh_interpolate(
 ) -> onp.ArrayND[np.float64 | np.complex128]: ...
 
 #
-@deprecated("This function is deprecated and will be removed in SciPy 1.20.0.")
+@deprecated("This function is deprecated and will be removed in SciPy 2.1.0.")
 def approximate_taylor_polynomial(
     f: Callable[[onp.Array1D[np.float64]], onp.ToComplexND] | np.ufunc,
     x: onp.ToFloat,

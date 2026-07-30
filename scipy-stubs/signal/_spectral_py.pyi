@@ -48,7 +48,7 @@ def lombscargle(
 ) -> _float64_1d: ...
 @overload
 @deprecated(
-    "The `precenter` argument is deprecated and will be removed in SciPy 1.19.0. "
+    "The `precenter` argument is deprecated and will be removed in SciPy 2.0. "
     "The functionality can be substituted by passing `y - y.mean()` to `y`."
 )
 def lombscargle(

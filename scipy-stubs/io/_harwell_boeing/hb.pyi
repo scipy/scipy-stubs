@@ -126,7 +126,7 @@ def _write_data(m: sparray | spmatrix, fid: IO[str], header: HBInfo) -> None: ..
 
 #
 @overload
-@deprecated("The default value for `spmatrix` is changing to False in v1.20.")
+@deprecated("The default value for `spmatrix` is changing to False in v2.1.")
 def hb_read(path_or_open_file: FileLike[str], *, spmatrix: _NoValueType = ...) -> csc_matrix[Any]: ...
 @overload
 def hb_read(path_or_open_file: FileLike[str], *, spmatrix: Literal[True]) -> csc_matrix[Any]: ...
