@@ -1,4 +1,3 @@
-import abc
 import types
 from typing import Any, ClassVar, Final, Generic, Literal, Self, final, overload, override, type_check_only
 from typing_extensions import TypeVar
@@ -107,13 +106,10 @@ class LinearTimeInvariant(Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     def __new__(cls, /, *system: *tuple[()], dt: None = None) -> Self: ...
 
     #
-    @abc.abstractmethod
     @type_check_only
     def to_tf(self, /) -> TransferFunction[_PolesT_co, _DTT_co]: ...
-    @abc.abstractmethod
     @type_check_only
     def to_zpk(self, /) -> ZerosPolesGain[_ZerosT_co, _PolesT_co, _DTT_co]: ...
-    @abc.abstractmethod
     @type_check_only
     def to_ss(self, /) -> StateSpace[_ZerosT_co, _PolesT_co, _DTT_co]: ...
 
@@ -125,7 +121,7 @@ class LinearTimeInvariant(Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     @property
     def dt(self, /) -> _DTT_co: ...
 
-class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co, _PolesT_co], metaclass=abc.ABCMeta):
+class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co, _PolesT_co]):
     @override
     @overload
     def __new__(cls, num: _ToFloat12D, den: onp.ToFloat1D, /) -> TransferFunctionContinuous[_Float]: ...  # pyrefly:ignore[bad-override]
@@ -212,13 +208,12 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
     ) -> tuple[onp.Array1D[np.float32], onp.Array1D[np.complex64]]: ...
 
     #
-    @abc.abstractmethod
     def to_discrete[DTT: onp.ToComplex | None](
         self, /, dt: DTT, method: _DiscretizeMethod = "zoh", alpha: float | None = None
     ) -> dlti[_ZerosT_co, _PolesT_co, DTT]: ...
 
 #
-class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co], metaclass=abc.ABCMeta):
+class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     @override
     @overload
     def __new__(  # pyrefly:ignore[bad-override]
@@ -261,7 +256,7 @@ class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT
     ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
 
 #
-class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Generic[_PolesT_co, _DTT_co], metaclass=abc.ABCMeta):
+class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Generic[_PolesT_co, _DTT_co]):
     @override
     @overload
     def __new__[PolesT: _Float](
