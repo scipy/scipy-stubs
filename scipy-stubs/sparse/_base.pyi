@@ -1,6 +1,5 @@
 # mypy: disable-error-code="misc"
 
-import abc
 from collections.abc import Callable, Iterator, Sequence
 from types import GenericAlias
 from typing import Any, ClassVar, Final, Generic, Literal as L, Never, Protocol, Self, SupportsIndex, overload, type_check_only
@@ -147,7 +146,7 @@ class SparseWarning(Warning): ...
 class SparseFormatWarning(SparseWarning): ...
 class SparseEfficiencyWarning(SparseWarning): ...
 
-class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[implicit-abstract-class]
+class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     __array_priority__: ClassVar[float] = 10.1
     _format: ClassVar[str] = "und"
     _allow_nd: ClassVar[Sequence[int]] = (2,)  # will be either a `tuple[int, ...]` or a `builtins.range` instance
@@ -175,9 +174,8 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):  # pyrefly: ignore[i
     @property
     def size(self, /) -> int: ...
 
-    # NOTE: At runtime this isn't abstract, but returns `und` instead.
+    # abstract-ish
     @property
-    @abc.abstractmethod
     def format(self, /) -> _Format: ...
 
     #
