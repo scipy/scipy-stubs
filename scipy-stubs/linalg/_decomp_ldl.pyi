@@ -33,7 +33,7 @@ def ldl(
     A: onp.ToFloatStrict2D, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_Float2D, _Float2D, _ISize1D]: ...
 @overload  # nd: float32 -> float32
-def ldl(  # type: ignore[overload-overlap]
+def ldl(
     A: onp.ToArrayND[np.float32, np.float32],
     lower: bool = True,
     hermitian: bool = True,
@@ -69,7 +69,7 @@ def ldl(
     A: onp.ToJustComplexStrict2D, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_Complex2D, _Complex2D, _ISize1D]: ...
 @overload  # nd: complex64 -> complex64
-def ldl(  # type: ignore[overload-overlap]
+def ldl(
     A: onp.ToArrayND[np.complex64, np.complex64],
     lower: bool = True,
     hermitian: bool = True,
