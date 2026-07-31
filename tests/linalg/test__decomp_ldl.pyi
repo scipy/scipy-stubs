@@ -37,11 +37,15 @@ assert_type(ldl(f32_2d), tuple[onp.Array2D[np.float32], onp.Array2D[np.float32],
 assert_type(ldl(f32_3d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], onp.ArrayND[np.intp]])
 
 # -> float64
-assert_type(ldl(py_int_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array1D[np.intp]])
 assert_type(ldl(py_float_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array1D[np.intp]])
-assert_type(ldl(i64_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array1D[np.intp]])
 assert_type(ldl(f64_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64], onp.Array1D[np.intp]])
 assert_type(ldl(f64_3d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.intp]])
+
+# -> float32 | float64
+assert_type(
+    ldl(py_int_2d), tuple[onp.Array2D[np.float32 | np.float64], onp.Array2D[np.float32 | np.float64], onp.Array1D[np.intp]]
+)
+assert_type(ldl(i64_2d), tuple[onp.Array2D[np.float32 | np.float64], onp.Array2D[np.float32 | np.float64], onp.Array1D[np.intp]])
 
 # -> complex64
 assert_type(ldl(c64_2d), tuple[onp.Array2D[np.complex64], onp.Array2D[np.complex64], onp.Array1D[np.intp]])
