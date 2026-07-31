@@ -105,7 +105,6 @@ type _c8_2d = onp.Array2D[_c8]
 type _c8_nd = onp.ArrayND[_c8]
 type _fc8_nd = onp.ArrayND[_fc8]
 
-type _i_nd = onp.ArrayND[_i]
 type _f_nd = onp.ArrayND[_f]
 type _c_nd = onp.ArrayND[_c]
 type _fc_nd = onp.ArrayND[_fc]
@@ -396,22 +395,24 @@ def factorial2(n: onp.ToJustComplex, exact: onp.ToFalse = False, *, extend: _Ext
 def factorial2(n: onp.ToJustComplexND, exact: onp.ToFalse = False, *, extend: _ExtendC) -> onp.ArrayND[np.complex128]: ...
 
 #
-@overload
+@overload  # 0d ~int, exact=True
 def factorialk(n: onp.ToJustInt, k: onp.ToJustInt, exact: onp.ToTrue, extend: _Extend0 = "zero") -> int: ...
-@overload
-def factorialk(n: onp.ToJustIntND, k: onp.ToJustInt, exact: onp.ToTrue, extend: _Extend0 = "zero") -> _i_nd: ...
-@overload
-def factorialk(n: onp.ToFloat, k: onp.ToInt, exact: onp.ToFalse = False, extend: _Extend = "zero") -> _f8: ...
-@overload
-def factorialk(n: onp.ToFloatND, k: onp.ToInt, exact: onp.ToFalse = False, extend: _Extend = "zero") -> _f8_nd: ...
-@overload
-def factorialk(n: onp.ToComplex, k: onp.ToInt, exact: onp.ToFalse, extend: _ExtendC) -> _fc8: ...
-@overload
-def factorialk(n: onp.ToComplexND, k: onp.ToInt, exact: onp.ToFalse, extend: _ExtendC) -> _fc8_nd: ...
-@overload
-def factorialk(n: onp.ToComplex, k: onp.ToInt, exact: onp.ToFalse = False, *, extend: _ExtendC) -> _fc8: ...
-@overload
-def factorialk(n: onp.ToComplexND, k: onp.ToInt, exact: onp.ToFalse = False, *, extend: _ExtendC) -> _fc8_nd: ...
+@overload  # Nd +int, exact=True
+def factorialk(
+    n: onp.ToIntND, k: onp.ToJustInt, exact: onp.ToTrue, extend: _Extend0 = "zero"
+) -> onp.ArrayND[np.int_ | np.object_]: ...
+@overload  # 0d +float
+def factorialk(n: onp.ToFloat, k: onp.ToInt, exact: onp.ToFalse = False, extend: _Extend = "zero") -> np.float64: ...
+@overload  # Nd +float
+def factorialk(
+    n: onp.ToFloatND, k: onp.ToInt, exact: onp.ToFalse = False, extend: _Extend = "zero"
+) -> onp.ArrayND[np.float64]: ...
+@overload  # 0d ~complex
+def factorialk(n: onp.ToJustComplex, k: onp.ToInt, exact: onp.ToFalse = False, *, extend: _ExtendC) -> np.complex128: ...
+@overload  # Nd ~complex
+def factorialk(
+    n: onp.ToJustComplexND, k: onp.ToInt, exact: onp.ToFalse = False, *, extend: _ExtendC
+) -> onp.ArrayND[np.complex128]: ...
 
 #
 @overload
