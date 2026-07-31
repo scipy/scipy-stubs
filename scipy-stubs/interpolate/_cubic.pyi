@@ -325,13 +325,8 @@ class CubicSpline(CubicHermiteSpline[_CT_co, _ShapeT_co], Generic[_CT_co, _Shape
         extrapolate: _Extrapolate | None = None,
     ) -> None: ...
 
-@overload
 def pchip_interpolate(
-    xi: onp.ToFloat1D, yi: onp.ToFloat1D, x: onp.ToFloat, der: onp.ToInt = 0, axis: _ToAxis = 0
-) -> np.float64: ...
-@overload
-def pchip_interpolate(
-    xi: onp.ToFloat1D, yi: onp.ToFloat1D, x: onp.ToFloat1D, der: onp.ToInt | onp.ToInt1D = 0, axis: _ToAxis = 0
+    xi: onp.ToFloat1D, yi: onp.ToFloatND, x: onp.ToFloat | onp.ToFloat1D, der: onp.ToInt | onp.ToInt1D = 0, axis: _ToAxis = 0
 ) -> onp.ArrayND[np.float64]: ...
 
 # undocumented
