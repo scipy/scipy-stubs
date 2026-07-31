@@ -245,91 +245,31 @@ def approximate_taylor_polynomial(
 ) -> np.poly1d: ...
 
 #
-@overload  # 0d f64
+@overload  # f64
 def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToFloatND,
-    x: onp.ToFloat,
-    axis: int = 0,
-    *,
-    der: int | list[int] | None = 0,
-    rng: onp.random.ToRNG | None = None,
-) -> np.float64: ...
-@overload  # 1d f64
-def barycentric_interpolate(
-    xi: onp.ToFloat1D,
-    yi: onp.ToFloatND,
-    x: onp.ToFloatStrict1D,
-    axis: int = 0,
-    *,
-    der: int | list[int] | None = 0,
-    rng: onp.random.ToRNG | None = None,
-) -> onp.Array1D[np.float64]: ...
-@overload  # nd f64
-def barycentric_interpolate(
-    xi: onp.ToFloat1D,
-    yi: onp.ToFloatND,
-    x: onp.ToFloatND,
+    x: onp.ToFloat | onp.ToFloatND,
     axis: int = 0,
     *,
     der: int | list[int] | None = 0,
     rng: onp.random.ToRNG | None = None,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # 0d c128
-def barycentric_interpolate(
-    xi: onp.ToFloat1D,
-    yi: onp.ToJustComplexND,
-    x: onp.ToFloat,
-    axis: int = 0,
-    *,
-    der: int | list[int] | None = 0,
-    rng: onp.random.ToRNG | None = None,
-) -> np.complex128: ...
-@overload  # 1d c128
-def barycentric_interpolate(
-    xi: onp.ToFloat1D,
-    yi: onp.ToJustComplexND,
-    x: onp.ToFloatStrict1D,
-    axis: int = 0,
-    *,
-    der: int | list[int] | None = 0,
-    rng: onp.random.ToRNG | None = None,
-) -> onp.Array1D[np.complex128]: ...
 @overload  # nd c128
 def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToJustComplexND,
-    x: onp.ToFloatND,
+    x: onp.ToFloat | onp.ToFloatND,
     axis: int = 0,
     *,
     der: int | list[int] | None = 0,
     rng: onp.random.ToRNG | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # 0d f64 or c128
-def barycentric_interpolate(
-    xi: onp.ToFloat1D,
-    yi: onp.ToComplexND,
-    x: onp.ToFloat,
-    axis: int = 0,
-    *,
-    der: int | list[int] | None = 0,
-    rng: onp.random.ToRNG | None = None,
-) -> np.float64 | np.complex128: ...
-@overload  # 1d f64 or c128
-def barycentric_interpolate(
-    xi: onp.ToFloat1D,
-    yi: onp.ToComplexND,
-    x: onp.ToFloatStrict1D,
-    axis: int = 0,
-    *,
-    der: int | list[int] | None = 0,
-    rng: onp.random.ToRNG | None = None,
-) -> onp.Array1D[np.float64 | np.complex128]: ...
 @overload  # nd f64 or c128
 def barycentric_interpolate(
     xi: onp.ToFloat1D,
     yi: onp.ToComplexND,
-    x: onp.ToFloatND,
+    x: onp.ToFloat | onp.ToFloatND,
     axis: int = 0,
     *,
     der: int | list[int] | None = 0,
