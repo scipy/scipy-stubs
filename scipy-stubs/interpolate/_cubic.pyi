@@ -1,4 +1,5 @@
 from _typeshed import Incomplete
+from collections.abc import Iterable
 from types import ModuleType
 from typing import Any, ClassVar, Generic, Literal, Never, overload, override
 from typing_extensions import TypeVar
@@ -325,9 +326,14 @@ class CubicSpline(CubicHermiteSpline[_CT_co, _ShapeT_co], Generic[_CT_co, _Shape
         extrapolate: _Extrapolate | None = None,
     ) -> None: ...
 
+@overload  # der: int
 def pchip_interpolate(
-    xi: onp.ToFloat1D, yi: onp.ToFloatND, x: onp.ToFloat | onp.ToFloat1D, der: onp.ToInt | onp.ToInt1D = 0, axis: _ToAxis = 0
+    xi: onp.ToFloat1D, yi: onp.ToFloatND, x: onp.ToFloat | onp.ToFloat1D, der: int | npc.integer = 0, axis: _ToAxis = 0
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # der: Iterable[int]
+def pchip_interpolate(
+    xi: onp.ToFloat1D, yi: onp.ToFloatND, x: onp.ToFloat | onp.ToFloat1D, der: Iterable[int | npc.integer], axis: _ToAxis = 0
+) -> list[onp.ArrayND[np.float64]]: ...
 
 # undocumented
 @overload
