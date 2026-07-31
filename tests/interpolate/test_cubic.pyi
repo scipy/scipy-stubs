@@ -77,5 +77,5 @@ assert_type(cs_nd.solve(), onp.Array1D[np.float64])
 ###
 # pchip_interpolate
 
-assert_type(pchip_interpolate(x_1d, y_1d, 0.5), np.float64)
+assert_type(pchip_interpolate(x_1d, y_1d, 0.5), onp.ArrayND[np.float64])
 assert_type(pchip_interpolate(x_1d, y_1d, x_1d), onp.ArrayND[np.float64])
