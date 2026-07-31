@@ -318,16 +318,16 @@ def hankel(c: onp.ToJustComplexStrict1D, r: onp.ToJustComplexStrict1D | None = N
 @overload
 def hankel[ScalarT: np.generic](c: _ToStrict1D[ScalarT], r: _ToStrict1D[ScalarT] | None = None) -> onp.Array2D[ScalarT]: ...
 @overload
-@deprecated("Beginning in SciPy 1.19, multidimensional input will be treated as a batch, not `ravel`ed.")
+@deprecated("Beginning in SciPy 2.0, multidimensional input will be treated as a batch, not `ravel`ed.")
 def hankel(c: onp.ToJustIntND, r: onp.ToJustIntND | None = None) -> _Int2D: ...
 @overload
-@deprecated("Beginning in SciPy 1.19, multidimensional input will be treated as a batch, not `ravel`ed.")
+@deprecated("Beginning in SciPy 2.0, multidimensional input will be treated as a batch, not `ravel`ed.")
 def hankel(c: onp.ToJustFloatND, r: onp.ToJustFloatND | None = None) -> _Float2D: ...
 @overload
-@deprecated("Beginning in SciPy 1.19, multidimensional input will be treated as a batch, not `ravel`ed.")
+@deprecated("Beginning in SciPy 2.0, multidimensional input will be treated as a batch, not `ravel`ed.")
 def hankel(c: onp.ToJustComplexND, r: onp.ToJustComplexND | None = None) -> _Complex2D: ...
 @overload
-@deprecated("Beginning in SciPy 1.19, multidimensional input will be treated as a batch, not `ravel`ed.")
+@deprecated("Beginning in SciPy 2.0, multidimensional input will be treated as a batch, not `ravel`ed.")
 def hankel[ScalarT: np.generic](c: _ToStrict2ND[ScalarT], r: _ToStrict2ND[ScalarT] | None = None) -> onp.Array2D[ScalarT]: ...
 @overload
 def hankel[ScalarT: np.generic](c: _To1D[ScalarT], r: _To1D[ScalarT] | None = None) -> onp.Array2D[ScalarT]: ...

@@ -51,7 +51,7 @@ class _TextToBytesWrapper(io.BufferedReader):
 #
 @overload
 @deprecated(
-    "The default value for `spmatrix` is changing to `False` in v1.20. That means the default return type will be a sparse "
+    "The default value for `spmatrix` is changing to `False` in v2.1. That means the default return type will be a sparse "
     "array. Unless you use * instead of @, ** for matrix power, or you depend on 2D shapes from e.g. `A.sum(axis=0)` it may not "
     "matter to you. See the spmatrix to sparray migration guide for details. "
     "https://docs.scipy.org/doc/scipy/reference/sparse.migration_to_sparray.html"

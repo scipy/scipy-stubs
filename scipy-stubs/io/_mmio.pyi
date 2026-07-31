@@ -72,7 +72,7 @@ class MMFile:
 
     # dtype is either intp, uint64, float64, or complex128, depending on the field
     @overload
-    @deprecated("The default value for `spmatrix` is changing to False in v1.20.")
+    @deprecated("The default value for `spmatrix` is changing to False in v2.1.")
     def read(self, /, source: FileLike[bytes], *, spmatrix: _NoValueType = ...) -> onp.Array2D[Any] | coo_matrix[Any]: ...
     @overload
     def read(self, /, source: FileLike[bytes], *, spmatrix: Literal[True]) -> onp.Array2D[Any] | coo_matrix[Any]: ...

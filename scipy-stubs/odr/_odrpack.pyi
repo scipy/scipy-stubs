@@ -57,19 +57,19 @@ class _FullOutput(TypedDict):
 
 ###
 
-@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 2.0.0.")
 class OdrWarning(UserWarning): ...
 
-@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 2.0.0.")
 class OdrError(Exception): ...
 
-@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 2.0.0.")
 class OdrStop(Exception): ...
 
 odr_error = OdrError
 odr_stop = OdrStop
 
-@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 2.0.0.")
 class Data:
     x: Final[onp.ArrayND[_ToFloatScalar]]
     y: Final[onp.ArrayND[_ToFloatScalar] | _ToFloatScalar | None]
@@ -91,7 +91,7 @@ class Data:
     def __getattr__(self, attr: str, /) -> Any: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
-@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 2.0.0.")
 class RealData(Data):
     sx: Final[onp.ArrayND[_ToFloatScalar] | None]
     sy: Final[onp.ArrayND[_ToFloatScalar] | None]
@@ -197,7 +197,7 @@ class RealData(Data):
         meta: dict[str, Any] | None = None,
     ) -> None: ...
 
-@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 2.0.0.")
 class Model:
     fcn: Final[_FCN]
     fjacb: Final[_FCN]
@@ -221,7 +221,7 @@ class Model:
     def __getattr__(self, attr: str, /) -> Any: ...
     def set_meta(self, /, **kwds: object) -> None: ...
 
-@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 2.0.0.")
 class Output:
     beta: Final[onp.Array1D[np.float64]]
     sd_beta: Final[onp.Array1D[np.float64]]
@@ -247,7 +247,7 @@ class Output:
     def __init__(self, /, output: _RawOutput | _RawOutputFull) -> None: ...
     def pprint(self, /) -> None: ...
 
-@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 2.0.0.")
 class ODR:
     data: Final[Data]
     model: Final[Model]
@@ -324,7 +324,7 @@ class ODR:
     def restart(self, /, iter: int | None = None) -> Output: ...
 
 @overload
-@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 2.0.0.")
 def odr(
     fcn: _FCN,
     beta0: onp.ToFloat1D,
@@ -355,7 +355,7 @@ def odr(
     full_output: onp.ToFalse = 0,
 ) -> _RawOutput: ...
 @overload
-@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 1.19.0.")
+@deprecated("`scipy.odr` is deprecated and will be removed in SciPy 2.0.0.")
 def odr(
     fcn: _FCN,
     beta0: onp.ToFloat1D,

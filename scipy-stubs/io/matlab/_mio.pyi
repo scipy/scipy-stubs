@@ -52,7 +52,7 @@ def mat_reader_factory(
 
 #
 @overload
-@deprecated("The default value for `spmatrix` is changing to False in v1.20.")
+@deprecated("The default value for `spmatrix` is changing to False in v2.1.")
 def loadmat(
     file_name: FileLike[bytes],
     mdict: Mapping[str, object] | None = None,

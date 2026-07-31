@@ -770,7 +770,7 @@ def yeojohnson_normplot(
     "`MonteCarloMethod` to approximate the p-value via Monte Carlo simulation. "
     "When `method` is specified, the result object will include a `pvalue` attribute and not attributes `critical_value`, "
     "`significance_level`, or `fit_result`. "
-    "Beginning in 1.19.0, these other attributes will no longer be available, "
+    "Beginning in 2.0.0, these other attributes will no longer be available, "
     "and a p-value will always be computed according to one of the available `method` options.",
     category=FutureWarning,
 )
@@ -784,7 +784,7 @@ def anderson(
 @overload
 @deprecated(
     "Parameter `variant` has been introduced to replace `midrank`; "
-    "`midrank` will be removed in SciPy 1.19.0. Specify `variant` to silence this warning. "
+    "`midrank` will be removed in SciPy 2.0.0. Specify `variant` to silence this warning. "
     "Note that the returned object will no longer be unpackable as a tuple, and `critical_values` will be omitted."
 )
 def anderson_ksamp(

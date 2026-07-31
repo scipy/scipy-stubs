@@ -46,14 +46,14 @@ def vq(
 #
 @overload  # float64
 @deprecated(
-    "`scipy.cluster.vq.py_vq` was unintentionally public, and will be removed in SciPy 1.20.0, use `scipy.cluster.vq.vq` instead."
+    "`scipy.cluster.vq.py_vq` was unintentionally public, and will be removed in SciPy 2.1.0, use `scipy.cluster.vq.vq` instead."
 )
 def py_vq(
     obs: onp.ToFloat64_2D, code_book: onp.ToFloat64_2D, check_finite: bool = True
 ) -> tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]]: ...
 @overload  # floating
 @deprecated(
-    "`scipy.cluster.vq.py_vq` was unintentionally public, and will be removed in SciPy 1.20.0, use `scipy.cluster.vq.vq` instead."
+    "`scipy.cluster.vq.py_vq` was unintentionally public, and will be removed in SciPy 2.1.0, use `scipy.cluster.vq.vq` instead."
 )
 def py_vq(
     obs: onp.ToFloat2D, code_book: onp.ToFloat2D, check_finite: bool = True

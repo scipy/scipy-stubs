@@ -432,6 +432,6 @@ class NdPPoly(Generic[_CT_co]):
 
 #
 @deprecated(
-    "This function is deprecated and will be removed in SciPy 1.20.0. Use `scipy.interpolate.BarycentricInterpolator` instead."
+    "This function is deprecated and will be removed in SciPy 2.1.0. Use `scipy.interpolate.BarycentricInterpolator` instead."
 )
 def lagrange(x: onp.ToComplex1D, w: onp.ToComplex1D) -> np.poly1d: ...
