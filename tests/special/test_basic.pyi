@@ -317,12 +317,13 @@ assert_type(factorial2(1j, extend="complex"), np.complex128)
 assert_type(factorial2(c_arr, extend="complex"), onp.ArrayND[np.complex128])
 
 # factorialk
-assert_type(factorialk(5, 2, True), int)
-assert_type(factorialk(i_arr, 2, True), onp.ArrayND[np.int32 | np.int64])
+assert_type(factorialk(5, 2), np.float64)
+assert_type(factorialk(5, 2, exact=True), int)
 assert_type(factorialk(5.0, 2), np.float64)
+assert_type(factorialk(i_arr, 2, exact=True), onp.ArrayND[np.int_ | np.object_])
 assert_type(factorialk(f_arr, 2), onp.ArrayND[np.float64])
-assert_type(factorialk(1j, 2, False, "complex"), np.float64 | np.complex128)
-assert_type(factorialk(c_arr, 2, False, "complex"), onp.ArrayND[np.float64 | np.complex128])
+assert_type(factorialk(1j, 2, extend="complex"), np.complex128)
+assert_type(factorialk(c_arr, 2, extend="complex"), onp.ArrayND[np.complex128])
 
 # stirling2
 assert_type(stirling2(5, 2, exact=True), int)
