@@ -308,13 +308,13 @@ assert_type(factorial(1j, extend="complex"), np.complex128)
 assert_type(factorial(c_arr, extend="complex"), onp.ArrayND[np.complex128])
 
 # factorial2
-assert_type(factorial2(5, True), int)
-assert_type(factorial2(np.uint8(5), True), np.uint8)
-assert_type(factorial2(i_arr, True), onp.ArrayND[np.int32 | np.int64])
 assert_type(factorial2(5), np.float64)
+assert_type(factorial2(5, exact=True), int)
+assert_type(factorial2(np.uint8(5), True), int)
+assert_type(factorial2(i_arr, exact=True), onp.ArrayND[np.int_ | np.object_])
 assert_type(factorial2(f_arr), onp.ArrayND[np.float64])
-assert_type(factorial2(1j, False, "complex"), np.float64 | np.complex128)
-assert_type(factorial2(c_arr, False, "complex"), onp.ArrayND[np.float64 | np.complex128])
+assert_type(factorial2(1j, extend="complex"), np.complex128)
+assert_type(factorial2(c_arr, extend="complex"), onp.ArrayND[np.complex128])
 
 # factorialk
 assert_type(factorialk(5, 2, True), int)
