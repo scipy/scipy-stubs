@@ -63,6 +63,7 @@ from scipy.special import (
     zeta,
 )
 
+# TODO(@jorenham): use private names here
 f_arr: onp.ArrayND[np.float64]
 f32_1d: onp.Array1D[np.float32]
 f64_1d: onp.Array1D[np.float64]
@@ -298,12 +299,13 @@ assert_type(perm(5.0, f_arr), onp.ArrayND[np.float32 | np.float64])
 assert_type(perm(f_arr, 2.0), onp.ArrayND[np.float32 | np.float64])
 
 # factorial
-assert_type(factorial(5, True), int)
-assert_type(factorial(i_arr, True), onp.ArrayND[np.int32 | np.int64])
 assert_type(factorial(5), np.float64)
+assert_type(factorial(5, exact=True), int)
+assert_type(factorial(i_arr), onp.ArrayND[np.float64])
+assert_type(factorial(i_arr, exact=True), onp.ArrayND[np.int_ | np.object_])
 assert_type(factorial(f_arr), onp.ArrayND[np.float64])
-assert_type(factorial(1j, False, "complex"), np.float64 | np.complex128)
-assert_type(factorial(c_arr, False, "complex"), onp.ArrayND[np.float64 | np.complex128])
+assert_type(factorial(1j, extend="complex"), np.complex128)
+assert_type(factorial(c_arr, extend="complex"), onp.ArrayND[np.complex128])
 
 # factorial2
 assert_type(factorial2(5, True), int)
