@@ -1,3 +1,9 @@
+# `onp.ToArrayND[np.float32, np.float32]` / `onp.ToJustFloat64_ND` (and the complex64/complex128
+# equivalents) are disjoint by definition, but mypy's overlap checker reports false-positive
+# overlaps between them on some numpy versions (not on numpy==2.1, for example). Since this is
+# numpy-version-dependent, per-line `type: ignore` comments would trip `unused-ignore` on the
+# versions where the false positive doesn't occur, so it's disabled for the whole module instead.
+# mypy: disable-error-code="overload-overlap"
 from typing import overload
 
 import numpy as np
@@ -32,6 +38,10 @@ def ldl(
 def ldl(
     A: onp.ToFloatStrict2D, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_Float2D, _Float2D, _ISize1D]: ...
+@overload  # nd: -> float64
+def ldl(
+    A: onp.ToJustFloat64_ND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], _ISizeND]: ...
 @overload  # nd: float32 -> float32
 def ldl(
     A: onp.ToArrayND[np.float32, np.float32],
@@ -40,10 +50,6 @@ def ldl(
     overwrite_a: bool = False,
     check_finite: bool = True,
 ) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], _ISizeND]: ...
-@overload  # nd: -> float64
-def ldl(
-    A: onp.ToJustFloat64_ND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], _ISizeND]: ...
 @overload  # nd: real -> float32 | float64
 def ldl(
     A: onp.ToFloatND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
@@ -68,6 +74,10 @@ def ldl(
 def ldl(
     A: onp.ToJustComplexStrict2D, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[_Complex2D, _Complex2D, _ISize1D]: ...
+@overload  # nd: -> complex128
+def ldl(
+    A: onp.ToJustComplex128_ND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], _ISizeND]: ...
 @overload  # nd: complex64 -> complex64
 def ldl(
     A: onp.ToArrayND[np.complex64, np.complex64],
@@ -76,10 +86,6 @@ def ldl(
     overwrite_a: bool = False,
     check_finite: bool = True,
 ) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64], _ISizeND]: ...
-@overload  # nd: -> complex128
-def ldl(
-    A: onp.ToJustComplex128_ND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], _ISizeND]: ...
 @overload  # nd: complex -> complex64 | complex128
 def ldl(
     A: onp.ToJustComplexND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
