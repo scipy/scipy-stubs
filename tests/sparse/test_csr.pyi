@@ -193,7 +193,7 @@ assert_type(csr_mat[None, 0], csr_matrix[ScalarType])
 assert_type(csr_mat[seq_int, seq_int], np.matrix[tuple[int, int], np.dtype[ScalarType]])
 
 # T
-assert_type(csr_vec.T, csr_array[ScalarType, tuple[int]])  # pyrefly: ignore[assert-type]
+assert_type(csr_vec.T, csr_array[ScalarType, tuple[int]])
 assert_type(csr_arr.T, csc_array[ScalarType])
 assert_type(csr_mat.T, csc_matrix[ScalarType])
 
