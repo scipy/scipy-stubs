@@ -1129,7 +1129,9 @@ assert_type(chisquare(_f64_nd, keepdims=True), Power_divergenceResult[onp.ArrayN
 
 # ks_1samp
 
-assert_type(ks_1samp(_f64_1d, lambda x: x), KstestResult[np.float64, np.int8])
+def _f_id[T](x: T) -> T: ...
+
+assert_type(ks_1samp(_f64_1d, _f_id), KstestResult[np.float64, np.int8])
 assert_type(ks_1samp(_f64_1d, norm.cdf), KstestResult[np.float64, np.int8])
 assert_type(ks_1samp(_py_f_1d, norm.cdf), KstestResult[np.float64, np.int8])
 assert_type(ks_1samp(_i64_2d, norm.cdf), KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]])
@@ -1168,7 +1170,7 @@ assert_type(ks_2samp(_f64_nd, _f64_nd), KstestResult[np.float64 | Any, np.int8 |
 
 assert_type(kstest(_f64_1d, "norm"), KstestResult[np.float64, np.int8])
 assert_type(kstest(_f64_1d, norm.cdf), KstestResult[np.float64, np.int8])
-assert_type(kstest(_f64_1d, lambda x: x), KstestResult[np.float64, np.int8])
+assert_type(kstest(_f64_1d, _f_id), KstestResult[np.float64, np.int8])
 assert_type(kstest(_py_f_1d, "norm"), KstestResult[np.float64, np.int8])
 assert_type(kstest(_i64_2d, "norm"), KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]])
 assert_type(kstest(_f64_3d, "norm"), KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]])

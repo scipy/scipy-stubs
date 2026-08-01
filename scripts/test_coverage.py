@@ -324,10 +324,11 @@ def main() -> int:
     public = names_public()
     tested = names_tested() & public
 
+    def sort_key(s: str, /) -> tuple[str, str]:
+        return s.rsplit(".", 1)[0], s.rsplit(".", 1)[1]
+
     groups: dict[str, list[str]] = {}
-    for name in sorted(
-        public, key=lambda s: (s.rsplit(".", 1)[0], s.rsplit(".", 1)[1])
-    ):
+    for name in sorted(public, key=sort_key):
         pkg = ".".join(name.split(".", 2)[:2])
         if pkg not in groups:
             groups[pkg] = []

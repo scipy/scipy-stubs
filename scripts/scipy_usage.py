@@ -156,13 +156,10 @@ def _create_counts_data(
         project_count = len(by_repo_dict.get(name, set()))
         counts[name] = {"references": usage_count, "projects": project_count}
 
-    return dict(
-        sorted(
-            counts.items(),
-            key=lambda x: (x[1]["projects"], x[1]["references"]),
-            reverse=True,
-        )
-    )
+    def sort_key(item: tuple[str, dict[str, int]], /) -> tuple[int, int]:
+        return item[1]["projects"], item[1]["references"]
+
+    return dict(sorted(counts.items(), key=sort_key, reverse=True))
 
 
 def parse_scipy_usage(file_path: Path) -> tuple[set[str], set[str]]:

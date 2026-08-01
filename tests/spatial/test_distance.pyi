@@ -1,5 +1,6 @@
 # type-tests for `spatial/distance.pyi`
 
+from _typeshed import Unused
 from typing import assert_type
 
 import numpy as np
@@ -59,19 +60,21 @@ _py_c_2d: list[list[complex]]
 
 ###
 
+def _f(u: Unused, v: Unused) -> float: ...
+
 # cdist
 assert_type(cdist(_f64_2d, _f64_2d), onp.Array2D[np.float64])
 assert_type(cdist(_f64_2d, _f64_2d, "euclidean"), onp.Array2D[np.float64])
 assert_type(cdist(_f64_2d, _f64_2d, "cosine"), onp.Array2D[np.float64])
 assert_type(cdist(_py_f_2d, _py_f_2d), onp.Array2D[np.float64])
-assert_type(cdist(_f64_2d, _f64_2d, metric=lambda u, v: 0.0), onp.Array2D[np.float64])
+assert_type(cdist(_f64_2d, _f64_2d, metric=_f), onp.Array2D[np.float64])
 
 # pdist
 assert_type(pdist(_f64_2d), onp.Array1D[np.float64])
 assert_type(pdist(_f64_2d, "euclidean"), onp.Array1D[np.float64])
 assert_type(pdist(_f64_2d, "cosine"), onp.Array1D[np.float64])
 assert_type(pdist(_py_f_2d), onp.Array1D[np.float64])
-assert_type(pdist(_f64_2d, metric=lambda u, v: 0.0), onp.Array1D[np.float64])
+assert_type(pdist(_f64_2d, metric=_f), onp.Array1D[np.float64])
 
 # squareform
 assert_type(squareform(_py_i_1d), onp.Array2D[np.intp])
