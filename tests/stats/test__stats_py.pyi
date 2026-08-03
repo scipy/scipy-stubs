@@ -1124,8 +1124,24 @@ assert_type(power_divergence(_f64_nd, keepdims=True), Power_divergenceResult[onp
 # chisquare
 
 assert_type(chisquare(_f64_1d), Power_divergenceResult[np.float64])
-assert_type(chisquare(_f64_nd, axis=None), Power_divergenceResult[np.float64])
-assert_type(chisquare(_f64_nd, keepdims=True), Power_divergenceResult[onp.ArrayND[np.float64]])
+assert_type(chisquare(_f64_1d, _f64_1d), Power_divergenceResult[np.float64])
+assert_type(chisquare(_f64_1d, ddof=1), Power_divergenceResult[np.float64])
+assert_type(chisquare(_f64_1d, axis=None), Power_divergenceResult[np.float64])
+assert_type(chisquare(_f64_1d, axis=1), Power_divergenceResult[np.float64])
+
+assert_type(chisquare(_f64_2d, _f64_2d, 0, None), Power_divergenceResult[np.float64])
+
+assert_type(chisquare(_f64_2d, axis=None), Power_divergenceResult[np.float64])
+assert_type(chisquare(_f64_2d, f_exp=_f64_2d, ddof=1, axis=None), Power_divergenceResult[np.float64])
+
+assert_type(chisquare(_f64_2d, keepdims=True), Power_divergenceResult[onp.ArrayND[np.float64]])
+assert_type(chisquare(_f64_2d, axis=1, keepdims=True), Power_divergenceResult[onp.ArrayND[np.float64]])
+assert_type(chisquare(_f64_2d, axis=None, keepdims=True), Power_divergenceResult[onp.ArrayND[np.float64]])
+
+assert_type(chisquare(_f64_2d), Power_divergenceResult[np.float64 | Any])
+assert_type(chisquare(_f64_2d, axis=0), Power_divergenceResult[np.float64 | Any])
+assert_type(chisquare(_f64_2d, axis=1), Power_divergenceResult[np.float64 | Any])
+assert_type(chisquare(_f64_2d, keepdims=False), Power_divergenceResult[np.float64 | Any])
 
 # ks_1samp
 
