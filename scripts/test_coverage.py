@@ -11,12 +11,18 @@ from typing import Final
 _SCIPY: Final = "scipy"
 _IGNORED_SUFFIXES: Final = {"__class__"}
 _IGNORED_QUALNAMES: Final = {
+    # `scipy.special.digamma` is an alias of `scipy.special.psi`.
+    "scipy.special.digamma",
     # `scipy.stats.chi2_contingency` is a re-export of
     # `scipy.stats.contingency.chi2_contingency`, which is already tested in
     # `tests/stats/test_contingency.pyi`.
     "scipy.stats.chi2_contingency",
-    # `scipy.special.digamma` is an alias of `scipy.special.psi`.
-    "scipy.special.digamma",
+    # direct re-exports of `scipy.stats`
+    "scipy.stats.mstats.chisquare",
+    "scipy.stats.mstats.gmean",
+    "scipy.stats.mstats.hmean",
+    "scipy.stats.mstats.zmap",
+    "scipy.stats.mstats.zscore",
 }
 
 _PACKAGES_PUBLIC: Final = (
