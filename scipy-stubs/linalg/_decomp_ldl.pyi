@@ -16,7 +16,6 @@ type _ISizeND = onp.ArrayND[np.intp]
 
 type _Float2D = onp.Array2D[np.float32 | np.float64]
 type _FloatND = onp.ArrayND[np.float32 | np.float64]
-type _Complex2D = onp.Array2D[np.complex64 | np.complex128]
 type _ComplexND = onp.ArrayND[np.complex64 | np.complex128]
 type _InexactND = onp.ArrayND[np.float32 | np.float64 | np.complex64 | np.complex128]
 
@@ -70,10 +69,6 @@ def ldl(
     overwrite_a: bool = False,
     check_finite: bool = True,
 ) -> tuple[onp.Array2D[np.complex64], onp.Array2D[np.complex64], _ISize1D]: ...
-@overload  # 2d: complex -> complex64 | complex128
-def ldl(
-    A: onp.ToJustComplexStrict2D, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[_Complex2D, _Complex2D, _ISize1D]: ...
 @overload  # nd: -> complex128
 def ldl(
     A: onp.ToJustComplex128_ND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
