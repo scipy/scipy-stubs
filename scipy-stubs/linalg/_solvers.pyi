@@ -17,7 +17,7 @@ __all__ = [
 
 ###
 
-type _Inexact = np.float32 | np.float64 | np.complex64 | np.complex128
+type _Inexact64_2D = onp.Array2D[np.float64 | np.complex128]
 
 type _FloatND = onp.ArrayND[np.float32 | np.float64]
 type _ComplexND = onp.ArrayND[np.complex64 | np.complex128]
@@ -118,20 +118,37 @@ def solve_continuous_lyapunov(a: onp.ToComplexND, q: onp.ToComplexND) -> onp.Arr
 solve_lyapunov: Final = solve_continuous_lyapunov
 
 #
-def _solve_discrete_lyapunov_direct[InexactT: _Inexact](
-    a: onp.Array2D[InexactT], q: onp.Array2D[InexactT]
-) -> onp.Array2D[InexactT]: ...
-def _solve_discrete_lyapunov_bilinear[InexactT: _Inexact](
-    a: onp.Array2D[InexactT], q: onp.Array2D[InexactT]
-) -> onp.Array2D[InexactT]: ...
+# NOTE: Both solvers construct a `float64` identity matrix, so single precision input is never preserved.
+def _solve_discrete_lyapunov_direct(a: onp.Array2D[npc.number], q: onp.Array2D[npc.number]) -> _Inexact64_2D: ...
+def _solve_discrete_lyapunov_bilinear(a: onp.Array2D[npc.number], q: onp.Array2D[npc.number]) -> _Inexact64_2D: ...
 
 #
-@overload  # real
-def solve_discrete_lyapunov(a: onp.ToFloatND, q: onp.ToFloatND, method: _DiscreteMethod | None = None) -> _FloatND: ...
+@overload  # ~bool | ~f16 | ~f80 | ~c160, +complex
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def solve_discrete_lyapunov(
+    a: _ToDeprecatedND, q: onp.ToComplexND, method: _DiscreteMethod | None = None
+) -> onp.ArrayND[Any]: ...
+@overload  # +complex, ~bool | ~f16 | ~f80 | ~c160
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def solve_discrete_lyapunov(
+    a: onp.ToComplexND, q: _ToDeprecatedND, method: _DiscreteMethod | None = None
+) -> onp.ArrayND[Any]: ...
+@overload  # +float, +float
+def solve_discrete_lyapunov(
+    a: onp.ToFloatND, q: onp.ToFloatND, method: _DiscreteMethod | None = None
+) -> onp.ArrayND[np.float64]: ...
 @overload  # ~complex, +complex
-def solve_discrete_lyapunov(a: onp.ToJustComplexND, q: onp.ToComplexND, method: _DiscreteMethod | None = None) -> _ComplexND: ...
+def solve_discrete_lyapunov(
+    a: onp.ToJustComplexND, q: onp.ToComplexND, method: _DiscreteMethod | None = None
+) -> onp.ArrayND[np.complex128]: ...
 @overload  # +complex, ~complex
-def solve_discrete_lyapunov(a: onp.ToComplexND, q: onp.ToJustComplexND, method: _DiscreteMethod | None = None) -> _ComplexND: ...
+def solve_discrete_lyapunov(
+    a: onp.ToComplexND, q: onp.ToJustComplexND, method: _DiscreteMethod | None = None
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # catch-all
+def solve_discrete_lyapunov(
+    a: onp.ToComplexND, q: onp.ToComplexND, method: _DiscreteMethod | None = None
+) -> onp.ArrayND[np.complex128 | Any]: ...
 
 #
 @overload  # real
