@@ -1,8 +1,4 @@
-# `onp.ToArrayND[np.float32, np.float32]` / `onp.ToJustFloat64_ND` (and the complex64/complex128
-# equivalents) are disjoint by definition, but mypy's overlap checker reports false-positive
-# overlaps between them on some numpy versions (not on numpy==2.1, for example). Since this is
-# numpy-version-dependent, per-line `type: ignore` comments would trip `unused-ignore` on the
-# versions where the false positive doesn't occur, so it's disabled for the whole module instead.
+# turned off for this file: mypy wrongly flags these types as overlapping
 # mypy: disable-error-code="overload-overlap"
 from typing import overload
 
