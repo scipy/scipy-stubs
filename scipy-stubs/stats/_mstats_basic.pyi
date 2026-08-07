@@ -1,10 +1,12 @@
 from collections.abc import Callable
 from typing import (
+    Any,
     Concatenate,
     Final,
     Generic,
     Literal,
     NamedTuple,
+    Never,
     Self,
     SupportsIndex,
     TypedDict,
@@ -88,6 +90,10 @@ __all__ = [
 ###
 
 type _MArrayOrND[ScalarT: np.generic] = ScalarT | onp.MArray[ScalarT]
+
+type _AsF64 = np.float64 | npc.integer | np.bool
+
+type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 
 type _KendallTauMethod = Literal["auto", "asymptotic", "exact"]
 type _TheilSlopesMethod = Literal["joint", "separate"]
@@ -468,20 +474,121 @@ def trimmed_stde(
 ) -> _MArrayOrND[np.float64]: ...
 
 #
-@overload
+# NOTE: f32/c64 promotes to f64/c128
+@overload  # ?d ~f64, axis=None (default)
 def tmean(
-    a: onp.ToFloatND,
+    a: onp.ToArrayND[float, _AsF64 | np.float32],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: None = None,
+) -> np.float64: ...
+@overload  # ?d ~c128, axis=None (default)
+def tmean(
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: None = None,
+) -> np.complex128: ...
+@overload  # ?d T@inexact, axis=None (default)
+def tmean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ToArrayND[InexactT, InexactT],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: None = None,
+) -> InexactT: ...
+@overload  # ?d +integer | ~f32, axis=<given>
+def tmean(
+    a: onp.ArrayND[_AsF64 | np.float32, _JustAnyShape],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # ?d ~c64, axis=<given>
+def tmean(
+    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # ?d T@inexact, axis=<given>
+def tmean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ArrayND[InexactT, _JustAnyShape],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray[InexactT] | Any: ...
+@overload  # 1d +f64 | ~f32, axis=<given>
+def tmean(
+    a: onp.ToArrayStrict1D[float, _AsF64 | np.float32],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: SupportsIndex,
+) -> np.float64: ...
+@overload  # 1d ~complex | ~c64, axis=<given>
+def tmean(
+    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: SupportsIndex,
+) -> np.complex128: ...
+@overload  # 1d T@inexact, axis=<given>
+def tmean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ToArrayStrict1D[InexactT, InexactT],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: SupportsIndex,
+) -> InexactT: ...
+@overload  # 2d ~f64, axis=<given>
+def tmean(
+    a: onp.ToArrayStrict2D[float, _AsF64 | np.float32],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray1D[np.float64]: ...
+@overload  # 2d ~c128, axis=<given>
+def tmean(
+    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray1D[np.complex128]: ...
+@overload  # 2d T@inexact, axis=<given>
+def tmean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ToArrayStrict2D[InexactT, InexactT],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray1D[InexactT]: ...
+@overload  # Nd ~f64
+def tmean(
+    a: onp.ToArrayND[float, _AsF64 | np.float32],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = None,
-) -> _MArrayOrND[npc.floating]: ...
-@overload
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # Nd ~c128
 def tmean(
-    a: onp.ToComplexND,
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = None,
-) -> _MArrayOrND[npc.inexact]: ...
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # Nd T@inexact
+def tmean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ToArrayND[InexactT, InexactT],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[InexactT] | Any: ...
 
 #
 def tvar(
