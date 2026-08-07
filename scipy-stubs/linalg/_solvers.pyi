@@ -19,9 +19,6 @@ __all__ = [
 
 type _Inexact64_2D = onp.Array2D[np.float64 | np.complex128]
 
-type _FloatND = onp.ArrayND[np.float32 | np.float64]
-type _ComplexND = onp.ArrayND[np.complex64 | np.complex128]
-
 type _DiscreteMethod = Literal["direct", "bilinear"]
 
 type _ToDeprecatedND = onp.ToArrayND[Never, np.bool | np.float16 | npc.inexact80]
@@ -322,6 +319,84 @@ def solve_continuous_are(
 ) -> onp.ArrayND[np.complex128 | Any]: ...
 
 #
+@overload  # ~bool | ~f16 | ~f80 | ~c160, +complex, +complex, +complex, +complex?, +complex?
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def solve_discrete_are(
+    a: _ToDeprecatedND,
+    b: onp.ToComplexND,
+    q: onp.ToComplexND,
+    r: onp.ToComplexND,
+    e: onp.ToComplexND | None = None,
+    s: onp.ToComplexND | None = None,
+    balanced: bool = True,
+) -> onp.ArrayND[Any]: ...
+@overload  # +complex, ~bool | ~f16 | ~f80 | ~c160, +complex, +complex, +complex?, +complex?
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def solve_discrete_are(
+    a: onp.ToComplexND,
+    b: _ToDeprecatedND,
+    q: onp.ToComplexND,
+    r: onp.ToComplexND,
+    e: onp.ToComplexND | None = None,
+    s: onp.ToComplexND | None = None,
+    balanced: bool = True,
+) -> onp.ArrayND[Any]: ...
+@overload  # +complex, +complex, ~bool | ~f16 | ~f80 | ~c160, +complex, +complex?, +complex?
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def solve_discrete_are(
+    a: onp.ToComplexND,
+    b: onp.ToComplexND,
+    q: _ToDeprecatedND,
+    r: onp.ToComplexND,
+    e: onp.ToComplexND | None = None,
+    s: onp.ToComplexND | None = None,
+    balanced: bool = True,
+) -> onp.ArrayND[Any]: ...
+@overload  # +complex, +complex, +complex, ~bool | ~f16 | ~f80 | ~c160, +complex?, +complex?
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def solve_discrete_are(
+    a: onp.ToComplexND,
+    b: onp.ToComplexND,
+    q: onp.ToComplexND,
+    r: _ToDeprecatedND,
+    e: onp.ToComplexND | None = None,
+    s: onp.ToComplexND | None = None,
+    balanced: bool = True,
+) -> onp.ArrayND[Any]: ...
+@overload  # +complex, +complex, +complex, +complex, ~bool | ~f16 | ~f80 | ~c160, +complex?
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def solve_discrete_are(
+    a: onp.ToComplexND,
+    b: onp.ToComplexND,
+    q: onp.ToComplexND,
+    r: onp.ToComplexND,
+    e: _ToDeprecatedND,
+    s: onp.ToComplexND | None = None,
+    balanced: bool = True,
+) -> onp.ArrayND[Any]: ...
+@overload  # +complex, +complex, +complex, +complex, +complex, ~bool | ~f16 | ~f80 | ~c160
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def solve_discrete_are(
+    a: onp.ToComplexND,
+    b: onp.ToComplexND,
+    q: onp.ToComplexND,
+    r: onp.ToComplexND,
+    e: onp.ToComplexND | None,
+    s: _ToDeprecatedND,
+    balanced: bool = True,
+) -> onp.ArrayND[Any]: ...
+@overload  # +complex, +complex, +complex, +complex, +complex?, *, ~bool | ~f16 | ~f80 | ~c160
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def solve_discrete_are(
+    a: onp.ToComplexND,
+    b: onp.ToComplexND,
+    q: onp.ToComplexND,
+    r: onp.ToComplexND,
+    e: onp.ToComplexND | None = None,
+    *,
+    s: _ToDeprecatedND,
+    balanced: bool = True,
+) -> onp.ArrayND[Any]: ...
 @overload  # real
 def solve_discrete_are(
     a: onp.ToFloatND,
@@ -331,7 +406,7 @@ def solve_discrete_are(
     e: onp.ToFloatND | None = None,
     s: onp.ToFloatND | None = None,
     balanced: bool = True,
-) -> _FloatND: ...
+) -> onp.ArrayND[np.float64]: ...
 @overload  # ~complex, +complex, +complex, +complex, +complex?, +complex?
 def solve_discrete_are(
     a: onp.ToJustComplexND,
@@ -341,7 +416,7 @@ def solve_discrete_are(
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
     balanced: bool = True,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128]: ...
 @overload  # +complex, ~complex, +complex, +complex, +complex?, +complex?
 def solve_discrete_are(
     a: onp.ToComplexND,
@@ -351,7 +426,7 @@ def solve_discrete_are(
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
     balanced: bool = True,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128]: ...
 @overload  # +complex, +complex, ~complex, +complex, +complex?, +complex?
 def solve_discrete_are(
     a: onp.ToComplexND,
@@ -361,7 +436,7 @@ def solve_discrete_are(
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
     balanced: bool = True,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128]: ...
 @overload  # +complex, +complex, +complex, ~complex, +complex?, +complex?
 def solve_discrete_are(
     a: onp.ToComplexND,
@@ -371,7 +446,7 @@ def solve_discrete_are(
     e: onp.ToComplexND | None = None,
     s: onp.ToComplexND | None = None,
     balanced: bool = True,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128]: ...
 @overload  # +complex, +complex, +complex, +complex, ~complex, +complex?
 def solve_discrete_are(
     a: onp.ToComplexND,
@@ -381,7 +456,7 @@ def solve_discrete_are(
     e: onp.ToJustComplexND,
     s: onp.ToComplexND | None = None,
     balanced: bool = True,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128]: ...
 @overload  # +complex, +complex, +complex, +complex, +complex, ~complex
 def solve_discrete_are(
     a: onp.ToComplexND,
@@ -391,7 +466,7 @@ def solve_discrete_are(
     e: onp.ToComplexND | None,
     s: onp.ToJustComplexND,
     balanced: bool = True,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128]: ...
 @overload  # +complex, +complex, +complex, +complex, +complex?, *, ~complex
 def solve_discrete_are(
     a: onp.ToComplexND,
@@ -402,7 +477,17 @@ def solve_discrete_are(
     *,
     s: onp.ToJustComplexND,
     balanced: bool = True,
-) -> _ComplexND: ...
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # catch-all
+def solve_discrete_are(
+    a: onp.ToComplexND,
+    b: onp.ToComplexND,
+    q: onp.ToComplexND,
+    r: onp.ToComplexND,
+    e: onp.ToComplexND | None = None,
+    s: onp.ToComplexND | None = None,
+    balanced: bool = True,
+) -> onp.ArrayND[np.complex128 | Any]: ...
 
 #
 def _are_validate_args(
