@@ -16,11 +16,6 @@ from scipy.linalg import (
 
 ###
 
-type _FloatND = onp.ArrayND[np.float32 | np.float64]
-type _ComplexND = onp.ArrayND[np.complex64 | np.complex128]
-
-###
-
 _bool_nd: onp.ArrayND[np.bool]
 _i8_nd: onp.ArrayND[np.int8]
 _i32_nd: onp.ArrayND[np.int32]
@@ -115,24 +110,58 @@ assert_type(solve_discrete_lyapunov(_c160_nd, _c160_nd), onp.ArrayND[Any])  # py
 ###
 # solve_continuous_are
 
-assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd), _FloatND)
-assert_type(solve_continuous_are(_c128_nd, _f64_nd, _f64_nd, _f64_nd), _ComplexND)
-assert_type(solve_continuous_are(_f64_nd, _c128_nd, _f64_nd, _f64_nd), _ComplexND)
-assert_type(solve_continuous_are(_f64_nd, _f64_nd, _c128_nd, _f64_nd), _ComplexND)
-assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _c128_nd), _ComplexND)
-assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _c128_nd), _ComplexND)
-assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, s=_c128_nd), _ComplexND)
+assert_type(solve_continuous_are(_f32_nd, _f32_nd, _f32_nd, _f32_nd), onp.ArrayND[np.float64])
+assert_type(solve_continuous_are(_i8_nd, _i8_nd, _i8_nd, _i8_nd), onp.ArrayND[np.float64])
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd), onp.ArrayND[np.float64])
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _f64_nd, _f64_nd), onp.ArrayND[np.float64])
+assert_type(solve_continuous_are(_py_f_2d, _py_f_2d, _py_f_2d, _py_f_2d), onp.ArrayND[np.float64])
+
+assert_type(solve_continuous_are(_c64_nd, _f64_nd, _f64_nd, _f64_nd), onp.ArrayND[np.complex128])
+assert_type(solve_continuous_are(_c128_nd, _f64_nd, _f64_nd, _f64_nd), onp.ArrayND[np.complex128])
+assert_type(solve_continuous_are(_f64_nd, _c128_nd, _f64_nd, _f64_nd), onp.ArrayND[np.complex128])
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _c128_nd, _f64_nd), onp.ArrayND[np.complex128])
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _c128_nd), onp.ArrayND[np.complex128])
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _c128_nd), onp.ArrayND[np.complex128])
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, e=_c128_nd), onp.ArrayND[np.complex128])
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _f64_nd, _c128_nd), onp.ArrayND[np.complex128])
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, s=_c128_nd), onp.ArrayND[np.complex128])
+assert_type(solve_continuous_are(_py_c_2d, _py_c_2d, _py_c_2d, _py_c_2d), onp.ArrayND[np.complex128])
+
+assert_type(solve_continuous_are(_f16_nd, _f64_nd, _f64_nd, _f64_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_continuous_are(_f64_nd, _bool_nd, _f64_nd, _f64_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f80_nd, _f64_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _c160_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _f16_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _f64_nd, _f80_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_continuous_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, s=_f80_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # solve_discrete_are
 
-assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd), _FloatND)
-assert_type(solve_discrete_are(_c128_nd, _f64_nd, _f64_nd, _f64_nd), _ComplexND)
-assert_type(solve_discrete_are(_f64_nd, _c128_nd, _f64_nd, _f64_nd), _ComplexND)
-assert_type(solve_discrete_are(_f64_nd, _f64_nd, _c128_nd, _f64_nd), _ComplexND)
-assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _c128_nd), _ComplexND)
-assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _c128_nd), _ComplexND)
-assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, s=_c128_nd), _ComplexND)
+assert_type(solve_discrete_are(_f32_nd, _f32_nd, _f32_nd, _f32_nd), onp.ArrayND[np.float64])
+assert_type(solve_discrete_are(_i8_nd, _i8_nd, _i8_nd, _i8_nd), onp.ArrayND[np.float64])
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd), onp.ArrayND[np.float64])
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _f64_nd, _f64_nd), onp.ArrayND[np.float64])
+assert_type(solve_discrete_are(_py_f_2d, _py_f_2d, _py_f_2d, _py_f_2d), onp.ArrayND[np.float64])
+
+assert_type(solve_discrete_are(_c64_nd, _f64_nd, _f64_nd, _f64_nd), onp.ArrayND[np.complex128])
+assert_type(solve_discrete_are(_c128_nd, _f64_nd, _f64_nd, _f64_nd), onp.ArrayND[np.complex128])
+assert_type(solve_discrete_are(_f64_nd, _c128_nd, _f64_nd, _f64_nd), onp.ArrayND[np.complex128])
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _c128_nd, _f64_nd), onp.ArrayND[np.complex128])
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _c128_nd), onp.ArrayND[np.complex128])
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _c128_nd), onp.ArrayND[np.complex128])
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, e=_c128_nd), onp.ArrayND[np.complex128])
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _f64_nd, _c128_nd), onp.ArrayND[np.complex128])
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, s=_c128_nd), onp.ArrayND[np.complex128])
+assert_type(solve_discrete_are(_py_c_2d, _py_c_2d, _py_c_2d, _py_c_2d), onp.ArrayND[np.complex128])
+
+assert_type(solve_discrete_are(_f16_nd, _f64_nd, _f64_nd, _f64_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_discrete_are(_f64_nd, _bool_nd, _f64_nd, _f64_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f80_nd, _f64_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _c160_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _f16_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, _f64_nd, _f80_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(solve_discrete_are(_f64_nd, _f64_nd, _f64_nd, _f64_nd, s=_f80_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # solve_lyapunov  (alias for solve_continuous_lyapunov)
