@@ -736,15 +736,96 @@ def winsorize(
     nan_policy: NanPolicy = "propagate",
 ) -> onp.MArray[np.complex128 | npc.floating | np.int_]: ...
 
-# TODO(jorenham): Overloads for complex array-likes
+# NOTE: f16/f32 and c64 promote to f64 and c128, unless `moment <= 1`
+@overload  # ?d ~f64, axis=None (positional)
+def moment(a: onp.ToFloat64_ND, moment: onp.ToInt, axis: None) -> np.float64: ...
+@overload  # ?d ~c128, axis=None (positional)
+def moment(a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToInt, axis: None) -> np.complex128: ...
+@overload  # ?d T@inexact80, axis=None (positional)
+def moment[InexactT: npc.inexact80](a: onp.ToArrayND[InexactT, InexactT], moment: onp.ToInt, axis: None) -> InexactT: ...
+@overload  # ?d ~f64, axis=None (keyword)
+def moment(a: onp.ToFloat64_ND, moment: onp.ToInt = 1, *, axis: None) -> np.float64: ...
+@overload  # ?d ~c128, axis=None (keyword)
 def moment(
-    a: onp.ToFloatND, moment: onp.ToInt | onp.ToIntND = 1, axis: SupportsIndex | None = 0
-) -> _MArrayOrND[npc.floating]: ...
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToInt = 1, *, axis: None
+) -> np.complex128: ...
+@overload  # ?d T@inexact80, axis=None (keyword)
+def moment[InexactT: npc.inexact80](a: onp.ToArrayND[InexactT, InexactT], moment: onp.ToInt = 1, *, axis: None) -> InexactT: ...
+@overload  # ?d ~f64, axis=<given> (default)
+def moment(
+    a: onp.ArrayND[_AsF64 | np.float32 | np.float16, _JustAnyShape], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # ?d ~c128, axis=<given> (default)
+def moment(
+    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # ?d T@inexact80, axis=<given> (default)
+def moment[InexactT: npc.inexact80](
+    a: onp.ArrayND[InexactT, _JustAnyShape], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+) -> onp.MArray[InexactT] | Any: ...
+@overload  # 1d ~f64, axis=<given> (default)
+def moment(a: onp.ToFloat64Strict1D, moment: onp.ToInt = 1, axis: SupportsIndex = 0) -> np.float64: ...
+@overload  # 1d ~c128, axis=<given> (default)
+def moment(
+    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+) -> np.complex128: ...
+@overload  # 1d T@inexact80, axis=<given> (default)
+def moment[InexactT: npc.inexact80](
+    a: onp.ToArrayStrict1D[InexactT, InexactT], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+) -> InexactT: ...
+@overload  # 2d ~f64, axis=<given> (default)
+def moment(a: onp.ToFloat64Strict2D, moment: onp.ToInt = 1, axis: SupportsIndex = 0) -> onp.MArray1D[np.float64]: ...
+@overload  # 2d ~c128, axis=<given> (default)
+def moment(
+    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+) -> onp.MArray1D[np.complex128]: ...
+@overload  # 2d T@inexact80, axis=<given> (default)
+def moment[InexactT: npc.inexact80](
+    a: onp.ToArrayStrict2D[InexactT, InexactT], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+) -> onp.MArray1D[InexactT]: ...
+@overload  # 3d ~f64, axis=<given> (default)
+def moment(a: onp.ToFloat64Strict3D, moment: onp.ToInt = 1, axis: SupportsIndex = 0) -> onp.MArray2D[np.float64]: ...
+@overload  # 3d ~c128, axis=<given> (default)
+def moment(
+    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+) -> onp.MArray2D[np.complex128]: ...
+@overload  # 3d T@inexact80, axis=<given> (default)
+def moment[InexactT: npc.inexact80](
+    a: onp.ToArrayStrict3D[InexactT, InexactT], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+) -> onp.MArray2D[InexactT]: ...
+@overload  # ?d ~f64, moment: 1d
+def moment(a: onp.ToFloat64_ND, moment: onp.ToIntND, axis: SupportsIndex | None = 0) -> onp.MArray[np.float64]: ...
+@overload  # ?d ~c128, moment: 1d
+def moment(
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToIntND, axis: SupportsIndex | None = 0
+) -> onp.MArray[np.complex128]: ...
+@overload  # ?d T@inexact80, moment: 1d
+def moment[InexactT: npc.inexact80](
+    a: onp.ToArrayND[InexactT, InexactT], moment: onp.ToIntND, axis: SupportsIndex | None = 0
+) -> onp.MArray[InexactT]: ...
+@overload  # Nd ~f64
+def moment(
+    a: onp.ToFloat64_ND, moment: onp.ToInt | onp.ToIntND = 1, axis: SupportsIndex | None = 0
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # Nd ~c128
+def moment(
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    moment: onp.ToInt | onp.ToIntND = 1,
+    axis: SupportsIndex | None = 0,
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # Nd T@inexact80
+def moment[InexactT: npc.inexact80](
+    a: onp.ToArrayND[InexactT, InexactT], moment: onp.ToInt | onp.ToIntND = 1, axis: SupportsIndex | None = 0
+) -> onp.MArray[InexactT] | Any: ...
+
+# TODO(jorenham): Overloads for complex array-likes
 def variation(a: onp.ToFloatND, axis: SupportsIndex | None = 0, ddof: onp.ToInt = 0) -> _MArrayOrND[npc.floating]: ...
 def skew(a: onp.ToFloatND, axis: SupportsIndex | None = 0, bias: bool = True) -> _MArrayOrND[npc.floating]: ...
 def kurtosis(
     a: onp.ToFloatND, axis: SupportsIndex | None = 0, fisher: bool = True, bias: bool = True
 ) -> _MArrayOrND[npc.floating]: ...
+
+#
 def describe(a: onp.ToFloatND, axis: SupportsIndex | None = 0, ddof: onp.ToInt = 0, bias: bool = True) -> DescribeResult: ...
 
 #
