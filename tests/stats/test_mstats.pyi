@@ -12,6 +12,7 @@ from scipy.stats.mstats import (
     kendalltau_seasonal,
     kurtosis,
     linregress,
+    mode,
     moment,
     mquantiles,
     normaltest,
@@ -105,7 +106,15 @@ _m_f64_nd: onp.MArray[np.float64]
 # TODO
 
 # mode
-# TODO
+assert_type(mode(_py_f_2d, axis=None).mode, onp.Array1D[np.float64])
+assert_type(mode(_f32_1d).mode, onp.Array1D[np.float64])
+assert_type(mode(_f16_2d).count, onp.MArray2D[np.float64])
+assert_type(mode(_f64_3d, axis=1).mode, onp.MArray3D[np.float64])
+assert_type(mode(_py_i_2d, axis=None).mode, onp.Array1D[np.float64 | Any])
+assert_type(mode(_i64_1d).mode, onp.Array1D[np.float64 | Any])
+assert_type(mode(_i8_2d).count, onp.MArray2D[np.float64 | Any])
+assert_type(mode(_f80_3d, axis=1).mode, onp.MArray3D[np.float64 | Any])
+assert_type(mode(_m_f64_nd).mode, onp.ArrayND[np.float64 | Any])
 
 # msign
 # TODO
