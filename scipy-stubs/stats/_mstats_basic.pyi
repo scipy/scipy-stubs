@@ -94,6 +94,7 @@ type _MArrayOrND[ScalarT: np.generic] = ScalarT | onp.MArray[ScalarT]
 type _AsF64 = np.float64 | npc.integer | np.bool
 
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
 
 type _KendallTauMethod = Literal["auto", "asymptotic", "exact"]
 type _TheilSlopesMethod = Literal["joint", "separate"]
@@ -190,6 +191,49 @@ def msign(x: onp.ToComplexND) -> onp.ArrayND[npc.number | np.timedelta64 | np.bo
 
 #
 def pearsonr(x: onp.ToFloatND, y: onp.ToFloatND) -> tuple[np.float64, np.float64]: ...
+
+#
+# NOTE: `y` is required with `axis=None` (default)
+@overload  # ?d, ?d, axis=None (default)
+def spearmanr(
+    x: onp.ToFloatND,
+    y: onp.ToFloatND,
+    use_ties: bool = True,
+    axis: None = None,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+) -> SignificanceResult[np.float64]: ...
+@overload  # ?d, ?d, axis=<given>
+def spearmanr(
+    x: _ToFloatStrictND,
+    y: _ToFloatStrictND,
+    use_ties: bool = True,
+    *,
+    axis: SupportsIndex,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+) -> SignificanceResult[onp.Array2D[np.float64] | Any]: ...
+@overload  # 1d, 1d, axis=<given>
+def spearmanr(
+    x: onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict1D,
+    use_ties: bool = True,
+    *,
+    axis: SupportsIndex,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+) -> SignificanceResult[np.float64]: ...
+@overload  # 2d, 2d, axis=<given>
+def spearmanr(
+    x: onp.ToFloatStrict2D,
+    y: onp.ToFloatStrict2D,
+    use_ties: bool = True,
+    *,
+    axis: SupportsIndex,
+    nan_policy: NanPolicy = "propagate",
+    alternative: Alternative = "two-sided",
+) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+@overload  # fallback
 def spearmanr(
     x: onp.ToFloatND,
     y: onp.ToFloatND | None = None,
@@ -197,7 +241,9 @@ def spearmanr(
     axis: SupportsIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult: ...
+) -> SignificanceResult[onp.Array2D[np.float64] | Any]: ...
+
+#
 def kendalltau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,

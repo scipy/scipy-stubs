@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.stats.mstats import tmax, tmean, tmin
+from scipy.stats.mstats import spearmanr, tmax, tmean, tmin
 
 ###
 
@@ -113,3 +113,33 @@ assert_type(tmin(_f32_1d), np.float32 | onp.MArray[np.float32])
 
 assert_type(tmax(_py_i_1d), np.int_ | onp.MArray[np.int_])
 assert_type(tmax(_f32_1d), np.float32 | onp.MArray[np.float32])
+
+###
+# spearmanr
+
+assert_type(spearmanr(_py_i_1d, _py_i_1d).statistic, np.float64)
+assert_type(spearmanr(_py_f_2d, _py_f_2d).statistic, np.float64)
+assert_type(spearmanr(_i64_1d, _i64_1d).statistic, np.float64)
+assert_type(spearmanr(_f64_2d, _f64_2d).statistic, np.float64)
+assert_type(spearmanr(_f64_nd, _f64_nd).statistic, np.float64)
+assert_type(spearmanr(_f32_3d, _f32_3d, axis=None).statistic, np.float64)
+assert_type(spearmanr(_m_f64_nd, _m_f64_nd).statistic, np.float64)
+
+assert_type(spearmanr(_py_i_1d, _py_i_1d, axis=0).statistic, np.float64)
+assert_type(spearmanr(_py_f_1d, _py_f_1d, axis=0).statistic, np.float64)
+assert_type(spearmanr(_i64_1d, _i64_1d, axis=0).statistic, np.float64)
+assert_type(spearmanr(_f64_1d, _f64_1d, axis=1).statistic, np.float64)
+
+assert_type(spearmanr(_py_i_2d, _py_i_2d, axis=0).statistic, onp.Array2D[np.float64])
+assert_type(spearmanr(_py_f_2d, _py_f_2d, axis=0).statistic, onp.Array2D[np.float64])
+assert_type(spearmanr(_i64_2d, _i64_2d, axis=0).statistic, onp.Array2D[np.float64])
+assert_type(spearmanr(_f64_2d, _f64_2d, axis=1).statistic, onp.Array2D[np.float64])
+
+assert_type(spearmanr(_i64_nd, _i64_nd, axis=0).statistic, onp.Array2D[np.float64] | Any)
+assert_type(spearmanr(_f64_nd, _f64_nd, axis=0).statistic, onp.Array2D[np.float64] | Any)
+assert_type(spearmanr(_m_f64_nd, _m_f64_nd, axis=0).statistic, onp.Array2D[np.float64] | Any)
+
+assert_type(spearmanr(_py_f_2d, axis=0).statistic, onp.Array2D[np.float64] | Any)
+assert_type(spearmanr(_i64_2d, axis=0).statistic, onp.Array2D[np.float64] | Any)
+assert_type(spearmanr(_f64_2d, axis=1).statistic, onp.Array2D[np.float64] | Any)
+assert_type(spearmanr(_f64_nd, axis=0).statistic, onp.Array2D[np.float64] | Any)
