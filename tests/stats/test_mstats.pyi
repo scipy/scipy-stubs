@@ -4,6 +4,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.stats.mstats import (
     describe,
@@ -13,6 +14,7 @@ from scipy.stats.mstats import (
     linregress,
     moment,
     normaltest,
+    pearsonr,
     pointbiserialr,
     sen_seasonal_slopes,
     siegelslopes,
@@ -89,8 +91,31 @@ _m_f64_nd: onp.MArray[np.float64]
 
 ###
 
-# pearsonr
+# argstoarray
 # TODO
+
+# find_repeats
+# TODO
+
+# count_tied_groups
+# TODO
+
+# rankdata
+# TODO
+
+# mode
+# TODO
+
+# msign
+# TODO
+
+# pearsonr
+assert_type(pearsonr(_py_i_1d, _f16_1d).statistic, np.float64)
+assert_type(pearsonr(_f16_2d, _f64_2d).statistic, np.float64)
+assert_type(pearsonr(_f32_2d, _f16_2d).statistic, np.float32)
+assert_type(pearsonr(_f16_1d, _f32_1d).statistic, np.float32)
+assert_type(pearsonr(_f16_2d, _f16_2d).statistic, npc.floating)
+assert_type(pearsonr(_i64_1d, _f64_1d).pvalue, np.float64)
 
 # spearmanr
 assert_type(spearmanr(_py_i_1d, _py_i_1d).statistic, np.float64)
