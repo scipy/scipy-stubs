@@ -96,6 +96,9 @@ type _AsF64 = np.float64 | npc.integer | np.bool
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
 
+# workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
+
 type _KendallTauMethod = Literal["auto", "asymptotic", "exact"]
 type _TheilSlopesMethod = Literal["joint", "separate"]
 type _SiegelSlopesMethod = Literal["hierarchical", "separate"]
@@ -457,7 +460,7 @@ def trim[ScalarT: npc.number | np.bool](
     inclusive: tuple[bool, bool] = (True, True),
     relative: bool = False,
     axis: SupportsIndex | None = None,
-) -> onp.MArray[ScalarT]: ...
+) -> onp.MArray[ScalarT, _WorkaroundForPyright]: ...
 
 #
 @overload
