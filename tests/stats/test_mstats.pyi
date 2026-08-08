@@ -11,6 +11,7 @@ from scipy.stats.mstats import (
     linregress,
     moment,
     normaltest,
+    pointbiserialr,
     sen_seasonal_slopes,
     siegelslopes,
     skew,
@@ -108,7 +109,8 @@ assert_type(spearmanr(_f64_2d, axis=1).statistic, onp.Array2D[np.float64] | Any)
 # TODO
 
 # pointbiserialr
-# TODO
+assert_type(pointbiserialr(_py_b_1d, _py_i_1d).correlation, np.float64)
+assert_type(pointbiserialr(_i8_2d, _f16_2d).pvalue, onp.MArray0D[np.float64])
 
 # linregress
 assert_type(linregress(_py_i_1d, _f16_1d).slope, np.float64)

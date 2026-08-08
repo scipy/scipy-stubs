@@ -174,7 +174,7 @@ class DescribeResult(NamedTuple, Generic[_ShapeT_co, _MinMaxT_co, _MeanT_co, _Va
 
 class PointbiserialrResult(NamedTuple):
     correlation: np.float64
-    pvalue: np.float64
+    pvalue: onp.MArray0D[np.float64]
 
 class Ttest_relResult(_TestResult[_NDT_f_co, _NDT_fc_co], Generic[_NDT_f_co, _NDT_fc_co]): ...
 class Ttest_indResult(_TestResult[_NDT_f_co, _NDT_fc_co], Generic[_NDT_f_co, _NDT_fc_co]): ...
@@ -281,6 +281,8 @@ def kendalltau(
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult: ...
 def kendalltau_seasonal(x: onp.ToFloatND) -> _KendallTauSeasonalResult: ...
+
+#
 def pointbiserialr(x: onp.ToFloatND, y: onp.ToFloatND) -> PointbiserialrResult: ...
 
 # NOTE: flattens input
