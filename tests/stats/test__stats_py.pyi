@@ -816,14 +816,49 @@ assert_type(describe(_py_f_1d), DescribeResult[np.float64, np.float64])
 assert_type(describe(_i64_1d), DescribeResult[np.int64, np.float64])
 assert_type(describe(_f32_1d), DescribeResult[np.float32, np.float32])
 assert_type(describe(_f64_1d), DescribeResult[np.float64, np.float64])
-assert_type(describe(_f64_2d), DescribeResult[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 
 assert_type(describe(_py_i_1d, axis=None), DescribeResult[np.int_, np.float64])
 assert_type(describe(_py_f_1d, axis=None), DescribeResult[np.float64, np.float64])
 assert_type(describe(_i64_1d, axis=None), DescribeResult[np.int64, np.float64])
 assert_type(describe(_f32_1d, axis=None), DescribeResult[np.float32, np.float32])
 assert_type(describe(_f64_1d, axis=None), DescribeResult[np.float64, np.float64])
+
+# NOTE: ?d axis=int overloads untested — pyrefly can't resolve the _JustAnyShape guard
+assert_type(describe(_i64_nd, axis=None), DescribeResult[np.int64, np.float64])
+assert_type(describe(_f32_nd, axis=None), DescribeResult[np.float32, np.float32])
+
 assert_type(describe(_f64_2d, axis=None), DescribeResult[np.float64, np.float64])
+assert_type(describe(_f32_2d, axis=None), DescribeResult[np.float32, np.float32])
+
+assert_type(describe(_py_i_1d, axis=1), DescribeResult[np.int_, np.float64])
+assert_type(describe(_py_f_1d, axis=1), DescribeResult[np.float64, np.float64])
+
+assert_type(describe(_i16_1d, axis=1), DescribeResult[np.int16, np.float64])
+assert_type(describe(_i64_1d, axis=1), DescribeResult[np.int64, np.float64])
+assert_type(describe(_f32_1d, axis=1), DescribeResult[np.float32, np.float32])
+assert_type(describe(_f64_1d, axis=1), DescribeResult[np.float64, np.float64])
+
+assert_type(describe([[1, 2, 3], [4, 5, 6]]), DescribeResult[onp.Array1D[np.int_], onp.Array1D[np.float64]])
+assert_type(describe([[1, 2, 3], [4, 5, 6]], axis=1), DescribeResult[onp.Array1D[np.int_], onp.Array1D[np.float64]])
+assert_type(describe([[1, 2, 3], [4, 5, 6]], axis=None), DescribeResult[np.int_, np.float64])
+
+assert_type(describe([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]), DescribeResult[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(
+    describe([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], axis=1), DescribeResult[onp.Array1D[np.float64], onp.Array1D[np.float64]]
+)
+assert_type(describe([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]], axis=None), DescribeResult[np.float64, np.float64])
+
+assert_type(describe(_i64_2d), DescribeResult[onp.Array1D[np.int64], onp.Array1D[np.float64]])
+assert_type(describe(_i64_2d, axis=1), DescribeResult[onp.Array1D[np.int64], onp.Array1D[np.float64]])
+assert_type(describe(_i16_2d), DescribeResult[onp.Array1D[np.int16], onp.Array1D[np.float64]])
+
+assert_type(describe(_f64_2d), DescribeResult[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(describe(_f64_2d, axis=1), DescribeResult[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(describe(_f32_2d), DescribeResult[onp.Array1D[np.float32], onp.Array1D[np.float32]])
+
+assert_type(describe(_bool_1d), DescribeResult[Any, Any])
+assert_type(describe(_bool_2d), DescribeResult[Any, Any])
+assert_type(describe(_bool_nd), DescribeResult[Any, Any])
 
 # skewtest
 
