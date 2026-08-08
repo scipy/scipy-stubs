@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.stats.mstats import kurtosis, moment, normaltest, skew, spearmanr, tmax, tmean, tmin, trim, variation
+from scipy.stats.mstats import kurtosis, moment, normaltest, skew, spearmanr, tmax, tmean, tmin, trim, trimmed_mean, variation
 
 ###
 
@@ -82,6 +82,32 @@ assert_type(trim(_c64_nd), onp.MArray[np.complex64])
 assert_type(trim(_m_f32_nd), onp.MArray[np.float32])
 
 assert_type(trim(_f64_2d, (0.1, 0.1), (True, True), True, 0), onp.MArray2D[np.float64])
+
+###
+# trimmed_mean
+assert_type(trimmed_mean(_py_i_1d), np.float64)
+assert_type(trimmed_mean(_py_c_2d), np.complex128)
+assert_type(trimmed_mean(_i64_2d), np.float64)
+assert_type(trimmed_mean(_f16_1d), np.float16)
+assert_type(trimmed_mean(_f32_2d), np.float64)
+assert_type(trimmed_mean(_c64_nd), np.complex128)
+assert_type(trimmed_mean(_f80_3d), np.float128)
+
+assert_type(trimmed_mean(_py_f_1d, axis=0), np.float64)
+assert_type(trimmed_mean(_f16_1d, axis=0), np.float16)
+assert_type(trimmed_mean(_c128_1d, axis=0), np.complex128)
+
+assert_type(trimmed_mean(_i64_2d, axis=0), onp.MArray1D[np.float64])
+assert_type(trimmed_mean(_f32_2d, axis=1), onp.MArray1D[np.float64])
+assert_type(trimmed_mean(_c64_2d, axis=0), onp.MArray1D[np.complex128])
+assert_type(trimmed_mean(_f80_2d, axis=0), onp.MArray1D[np.float128])
+
+assert_type(trimmed_mean(_f32_3d, axis=0), onp.MArray2D[np.float64])
+assert_type(trimmed_mean(_f80_3d, axis=0), onp.MArray2D[np.float128])
+
+assert_type(trimmed_mean(_f64_nd, axis=0), onp.MArray[np.float64] | Any)
+assert_type(trimmed_mean(_m_f32_nd, axis=0), onp.MArray[np.float64] | Any)
+assert_type(trimmed_mean(_f64_2d, (0.2, 0.2), (1, 1), False, 0), onp.MArray[np.float64] | Any)
 
 ###
 # tmean
