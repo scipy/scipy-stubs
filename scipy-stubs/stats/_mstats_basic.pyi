@@ -145,14 +145,14 @@ class _TestResult(NamedTuple, Generic[_NDT_f_co, _NDT_fc_co]):
 _KendallTauSeasonalResult = TypedDict(
     "_KendallTauSeasonalResult",
     {
-        "seasonal tau": _MArrayOrND[np.float64],
+        "seasonal tau": onp.MArray1D[np.float64],
         "global tau": np.float64,
         "global tau (alt)": np.float64,
-        "seasonal p-value": onp.ArrayND[np.float64],
+        "seasonal p-value": onp.Array1D[np.float64],
         "global p-value (indep)": np.float64,
         "global p-value (dep)": np.float64,
-        "chi2 total": onp.MArray[np.float64],
-        "chi2 trend": onp.MArray[np.float64],
+        "chi2 total": np.float64,
+        "chi2 trend": np.float64,
     },
 )
 
@@ -174,7 +174,7 @@ class DescribeResult(NamedTuple, Generic[_ShapeT_co, _MinMaxT_co, _MeanT_co, _Va
 
 class PointbiserialrResult(NamedTuple):
     correlation: np.float64
-    pvalue: np.float64
+    pvalue: onp.MArray0D[np.float64]
 
 class Ttest_relResult(_TestResult[_NDT_f_co, _NDT_fc_co], Generic[_NDT_f_co, _NDT_fc_co]): ...
 class Ttest_indResult(_TestResult[_NDT_f_co, _NDT_fc_co], Generic[_NDT_f_co, _NDT_fc_co]): ...
@@ -271,7 +271,7 @@ def spearmanr(
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult[onp.Array2D[np.float64] | Any]: ...
 
-#
+# NOTE: flattens input
 def kendalltau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -279,8 +279,12 @@ def kendalltau(
     use_missing: bool = False,
     method: _KendallTauMethod = "auto",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult: ...
+) -> SignificanceResult[np.float64]: ...
+
+#
 def kendalltau_seasonal(x: onp.ToFloatND) -> _KendallTauSeasonalResult: ...
+
+#
 def pointbiserialr(x: onp.ToFloatND, y: onp.ToFloatND) -> PointbiserialrResult: ...
 
 # NOTE: flattens input
