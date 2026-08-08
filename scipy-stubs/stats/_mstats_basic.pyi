@@ -1,3 +1,5 @@
+# mypy's false positive `overload-overlap` errors here differ per numpy version
+# mypy: disable-error-code=overload-overlap
 from collections.abc import Callable
 from typing import (
     Any,
@@ -106,6 +108,16 @@ type _SiegelSlopesMethod = Literal["hierarchical", "separate"]
 type _KSMethod = Literal["auto", "exact", "asymp"]
 type _KTestMethod = Literal[_KSMethod, "approx"]
 
+type _Describe0D[MinMaxT: npc.number | np.bool, MeanT: npc.inexact, VarT: npc.inexact, SkewT: npc.inexact] = DescribeResult[
+    tuple[()], MinMaxT, MeanT, VarT, SkewT, SkewT
+]
+type _Describe1D[MinMaxT: npc.number | np.bool, MeanT: npc.inexact, VarT: npc.inexact, SkewT: npc.inexact] = DescribeResult[
+    tuple[int], MinMaxT, onp.MArray1D[MeanT], onp.MArray1D[VarT], SkewT, onp.MArray1D[SkewT]
+]  # fmt: skip
+type _DescribeND[MinMaxT: npc.number | np.bool, MeanT: npc.inexact, VarT: npc.inexact, SkewT: npc.inexact] = DescribeResult[
+    tuple[Any, ...], MinMaxT, onp.MArray[MeanT] | Any, onp.MArray[VarT] | Any, SkewT, onp.MArray[SkewT] | Any
+]  # fmt: skip
+
 _NDT_f_co = TypeVar(
     "_NDT_f_co", covariant=True, bound=float | npc.floating | onp.ArrayND[npc.floating], default=onp.MArray[np.float64]
 )
@@ -115,6 +127,13 @@ _NDT_fc_co = TypeVar(
     bound=complex | _MArrayOrND[npc.inexact],
     default=_MArrayOrND[np.float64 | np.complex128],
 )  # fmt: skip
+
+_ShapeT_co = TypeVar("_ShapeT_co", covariant=True, bound=tuple[int, ...], default=tuple[Any, ...])
+_MinMaxT_co = TypeVar("_MinMaxT_co", covariant=True, bound=npc.number | np.bool, default=Any)
+_MeanT_co = TypeVar("_MeanT_co", covariant=True, bound=_MArrayOrND[npc.inexact], default=_MArrayOrND[Any])
+_VarT_co = TypeVar("_VarT_co", covariant=True, bound=_MArrayOrND[npc.inexact], default=_MArrayOrND[Any])
+_SkewT_co = TypeVar("_SkewT_co", covariant=True, bound=npc.inexact, default=Any)
+_KurtT_co = TypeVar("_KurtT_co", covariant=True, bound=_MArrayOrND[npc.inexact], default=_MArrayOrND[Any])
 
 @type_check_only
 class _TestResult(NamedTuple, Generic[_NDT_f_co, _NDT_fc_co]):
@@ -143,13 +162,13 @@ class ModeResult(NamedTuple):
     mode: onp.MArray[np.float64]
     count: onp.MArray[np.float64]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
 
-class DescribeResult(NamedTuple):
-    nobs: np.int_ | onp.ArrayND[np.int_]
-    minmax: tuple[onp.MArray[npc.floating | npc.integer], onp.MArray[npc.floating | npc.integer]]
-    mean: npc.floating
-    variance: npc.floating
-    skewness: npc.floating
-    kurtosis: npc.floating
+class DescribeResult(NamedTuple, Generic[_ShapeT_co, _MinMaxT_co, _MeanT_co, _VarT_co, _SkewT_co, _KurtT_co]):
+    nobs: onp.Array[_ShapeT_co, np.int_]
+    minmax: tuple[onp.MArray[_MinMaxT_co, _ShapeT_co], onp.MArray[_MinMaxT_co, _ShapeT_co]]
+    mean: _MeanT_co
+    variance: _VarT_co
+    skewness: onp.MArray[_SkewT_co, _ShapeT_co]
+    kurtosis: _KurtT_co
 
 class PointbiserialrResult(NamedTuple):
     correlation: np.float64
@@ -382,7 +401,7 @@ def trimr[ScalarT: npc.number | np.bool](
 
 #
 @overload  # 1d bool
-def trim(  # type:ignore[overload-overlap]
+def trim(
     a: list[bool],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
@@ -390,7 +409,7 @@ def trim(  # type:ignore[overload-overlap]
     axis: SupportsIndex | None = None,
 ) -> onp.MArray1D[np.bool]: ...
 @overload  # ?d bool
-def trim(  # type:ignore[overload-overlap]
+def trim(
     a: onp.SequenceND[list[bool]],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
@@ -1222,7 +1241,162 @@ def kurtosis[InexactT: npc.inexact80](
 ) -> onp.MArray[InexactT] | Any: ...
 
 #
-def describe(a: onp.ToFloatND, axis: SupportsIndex | None = 0, ddof: onp.ToInt = 0, bias: bool = True) -> DescribeResult: ...
+@overload  # ?d bool, axis=None
+def describe(
+    a: onp.ToArrayND[bool, np.bool], axis: None, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[np.bool, np.float64, np.float64, np.float64]: ...
+@overload  # ?d T@integer, axis=None
+def describe[ScalarT: npc.integer](
+    a: onp.ToArrayND[ScalarT, ScalarT], axis: None, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[ScalarT, np.float64, np.float64, np.float64]: ...
+@overload  # ?d ~int, axis=None
+def describe(
+    a: onp.ToJustInt64_ND, axis: None, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[np.int_, np.float64, np.float64, np.float64]: ...
+@overload  # ?d T@float32, axis=None
+def describe[ScalarT: np.float32 | np.float16](
+    a: onp.ToArrayND[ScalarT, ScalarT], axis: None, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[ScalarT, ScalarT, ScalarT, np.float64]: ...
+@overload  # ?d ~f64, axis=None
+def describe(
+    a: onp.ToJustFloat64_ND, axis: None, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[np.float64, np.float64, np.float64, np.float64]: ...
+@overload  # ?d T@inexact80, axis=None
+def describe[ScalarT: npc.inexact80](
+    a: onp.ToArrayND[ScalarT, ScalarT], axis: None, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[ScalarT, ScalarT, np.longdouble, ScalarT]: ...
+@overload  # ?d c64, axis=None
+def describe(
+    a: onp.ToJustComplex64_ND, axis: None, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[np.complex64, np.complex64, np.float32, np.complex128]: ...
+@overload  # ?d ~c128, axis=None
+def describe(
+    a: onp.ToJustComplex128_ND, axis: None, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[np.complex128, np.complex128, np.float64, np.complex128]: ...
+@overload  # ?d bool, axis=<given> (default)
+def describe(
+    a: onp.ArrayND[np.bool, _JustAnyShape], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[np.bool, np.float64, np.float64, np.float64]: ...
+@overload  # ?d T@integer, axis=<given> (default)
+def describe[ScalarT: npc.integer](
+    a: onp.ArrayND[ScalarT, _JustAnyShape], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[ScalarT, np.float64, np.float64, np.float64]: ...
+@overload  # ?d T@float32, axis=<given> (default)
+def describe[ScalarT: np.float32 | np.float16](
+    a: onp.ArrayND[ScalarT, _JustAnyShape], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[ScalarT, ScalarT, ScalarT, np.float64]: ...
+@overload  # ?d ~f64, axis=<given> (default)
+def describe(
+    a: onp.ArrayND[np.float64, _JustAnyShape], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[np.float64, np.float64, np.float64, np.float64]: ...
+@overload  # ?d T@inexact80, axis=<given> (default)
+def describe[ScalarT: npc.inexact80](
+    a: onp.ArrayND[ScalarT, _JustAnyShape], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[ScalarT, ScalarT, np.longdouble, ScalarT]: ...
+@overload  # ?d c64, axis=<given> (default)
+def describe(
+    a: onp.ArrayND[np.complex64, _JustAnyShape], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[np.complex64, np.complex64, np.float32, np.complex128]: ...
+@overload  # ?d ~c128, axis=<given> (default)
+def describe(
+    a: onp.ArrayND[np.complex128, _JustAnyShape], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[np.complex128, np.complex128, np.float64, np.complex128]: ...
+@overload  # 1d bool, axis=<given> (default)
+def describe(
+    a: onp.ToArrayStrict1D[bool, np.bool], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[np.bool, np.float64, np.float64, np.float64]: ...
+@overload  # 1d T@integer, axis=<given> (default)
+def describe[ScalarT: npc.integer](
+    a: onp.ToArrayStrict1D[ScalarT, ScalarT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[ScalarT, np.float64, np.float64, np.float64]: ...
+@overload  # 1d ~int, axis=<given> (default)
+def describe(
+    a: onp.ToJustInt64Strict1D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[np.int_, np.float64, np.float64, np.float64]: ...
+@overload  # 1d T@float32, axis=<given> (default)
+def describe[ScalarT: np.float32 | np.float16](
+    a: onp.ToArrayStrict1D[ScalarT, ScalarT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[ScalarT, ScalarT, ScalarT, np.float64]: ...
+@overload  # 1d ~f64, axis=<given> (default)
+def describe(
+    a: onp.ToJustFloat64Strict1D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[np.float64, np.float64, np.float64, np.float64]: ...
+@overload  # 1d T@inexact80, axis=<given> (default)
+def describe[ScalarT: npc.inexact80](
+    a: onp.ToArrayStrict1D[ScalarT, ScalarT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[ScalarT, ScalarT, np.longdouble, ScalarT]: ...
+@overload  # 1d c64, axis=<given> (default)
+def describe(
+    a: onp.ToJustComplex64Strict1D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[np.complex64, np.complex64, np.float32, np.complex128]: ...
+@overload  # 1d ~c128, axis=<given> (default)
+def describe(
+    a: onp.ToJustComplex128Strict1D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe0D[np.complex128, np.complex128, np.float64, np.complex128]: ...
+@overload  # 2d bool, axis=<given> (default)
+def describe(
+    a: onp.ToArrayStrict2D[bool, np.bool], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe1D[np.bool, np.float64, np.float64, np.float64]: ...
+@overload  # 2d T@integer, axis=<given> (default)
+def describe[ScalarT: npc.integer](
+    a: onp.ToArrayStrict2D[ScalarT, ScalarT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe1D[ScalarT, np.float64, np.float64, np.float64]: ...
+@overload  # 2d ~int, axis=<given> (default)
+def describe(
+    a: onp.ToJustInt64Strict2D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe1D[np.int_, np.float64, np.float64, np.float64]: ...
+@overload  # 2d T@float32, axis=<given> (default)
+def describe[ScalarT: np.float32 | np.float16](
+    a: onp.ToArrayStrict2D[ScalarT, ScalarT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe1D[ScalarT, ScalarT, ScalarT, np.float64]: ...
+@overload  # 2d ~f64, axis=<given> (default)
+def describe(
+    a: onp.ToJustFloat64Strict2D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe1D[np.float64, np.float64, np.float64, np.float64]: ...
+@overload  # 2d T@inexact80, axis=<given> (default)
+def describe[ScalarT: npc.inexact80](
+    a: onp.ToArrayStrict2D[ScalarT, ScalarT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe1D[ScalarT, ScalarT, np.longdouble, ScalarT]: ...
+@overload  # 2d c64, axis=<given> (default)
+def describe(
+    a: onp.ToJustComplex64Strict2D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe1D[np.complex64, np.complex64, np.float32, np.complex128]: ...
+@overload  # 2d ~c128, axis=<given> (default)
+def describe(
+    a: onp.ToJustComplex128Strict2D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _Describe1D[np.complex128, np.complex128, np.float64, np.complex128]: ...
+@overload  # Nd bool
+def describe(
+    a: onp.ToArrayND[bool, np.bool], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[np.bool, np.float64, np.float64, np.float64]: ...
+@overload  # Nd T@integer
+def describe[ScalarT: npc.integer](
+    a: onp.ToArrayND[ScalarT, ScalarT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[ScalarT, np.float64, np.float64, np.float64]: ...
+@overload  # Nd ~int
+def describe(
+    a: onp.ToJustInt64_ND, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[np.int_, np.float64, np.float64, np.float64]: ...
+@overload  # Nd T@float32
+def describe[ScalarT: np.float32 | np.float16](
+    a: onp.ToArrayND[ScalarT, ScalarT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[ScalarT, ScalarT, ScalarT, np.float64]: ...
+@overload  # Nd ~f64
+def describe(
+    a: onp.ToJustFloat64_ND, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[np.float64, np.float64, np.float64, np.float64]: ...
+@overload  # Nd T@inexact80
+def describe[ScalarT: npc.inexact80](
+    a: onp.ToArrayND[ScalarT, ScalarT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[ScalarT, ScalarT, np.longdouble, ScalarT]: ...
+@overload  # Nd c64
+def describe(
+    a: onp.ToJustComplex64_ND, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[np.complex64, np.complex64, np.float32, np.complex128]: ...
+@overload  # Nd ~c128
+def describe(
+    a: onp.ToJustComplex128_ND, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
+) -> _DescribeND[np.complex128, np.complex128, np.float64, np.complex128]: ...
 
 #
 @overload
