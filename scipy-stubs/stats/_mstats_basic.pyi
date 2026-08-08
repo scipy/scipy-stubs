@@ -25,7 +25,7 @@ import optype.numpy.compat as npc
 from numpy._typing import _ArrayLike
 
 from ._stats_mstats_common import SiegelslopesResult, TheilslopesResult
-from ._stats_py import KstestResult, LinregressResult, SignificanceResult
+from ._stats_py import KstestResult, LinregressResult, PearsonRResult, SignificanceResult
 from ._typing import Alternative, BaseBunch, NanPolicy
 
 __all__ = [
@@ -217,8 +217,17 @@ def msign[ScalarT: npc.number | np.timedelta64 | np.bool | np.object_](x: _Array
 @overload
 def msign(x: onp.ToComplexND) -> onp.ArrayND[npc.number | np.timedelta64 | np.bool | np.object_]: ...
 
-#
-def pearsonr(x: onp.ToFloatND, y: onp.ToFloatND) -> tuple[np.float64, np.float64]: ...
+# NOTE: flattens input
+@overload  # ~f64 | +integer, +floating
+def pearsonr(x: onp.ToJustFloat64_ND | onp.ToIntND, y: onp.ToFloatND) -> PearsonRResult[np.float64, np.float64]: ...
+@overload  # +floating, ~f64 | +integer
+def pearsonr(x: onp.ToFloatND, y: onp.ToJustFloat64_ND | onp.ToIntND) -> PearsonRResult[np.float64, np.float64]: ...
+@overload  # ~f32, +float32
+def pearsonr(x: onp.ToJustFloat32_ND, y: onp.ToFloat32_ND) -> PearsonRResult[np.float32, np.float64]: ...
+@overload  # +float32, ~f32
+def pearsonr(x: onp.ToFloat32_ND, y: onp.ToJustFloat32_ND) -> PearsonRResult[np.float32, np.float64]: ...
+@overload  # +floating, +floating
+def pearsonr(x: onp.ToFloatND, y: onp.ToFloatND) -> PearsonRResult[npc.floating, np.float64]: ...
 
 #
 # NOTE: `y` is required with `axis=None` (default)
