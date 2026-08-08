@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.stats.mstats import normaltest, spearmanr, tmax, tmean, tmin
+from scipy.stats.mstats import moment, normaltest, spearmanr, tmax, tmean, tmin
 
 ###
 
@@ -32,6 +32,10 @@ _f32_nd: onp.ArrayND[np.float32]
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
+
+_f80_1d: onp.Array1D[np.float128]
+_f80_2d: onp.Array2D[np.float128]
+_f80_3d: onp.Array3D[np.float128]
 
 _c64_1d: onp.Array1D[np.complex64]
 _c64_2d: onp.Array2D[np.complex64]
@@ -140,3 +144,28 @@ assert_type(normaltest(_f32_3d).statistic, onp.MArray2D[np.float64])
 assert_type(normaltest(_f32_nd).statistic, onp.MArray[np.float64] | Any)
 assert_type(normaltest(_m_f64_nd, axis=0).statistic, onp.MArray[np.float64] | Any)
 assert_type(normaltest(_f64_nd, axis=0).pvalue, onp.ArrayND[np.float64] | Any)
+
+###
+# moment
+
+assert_type(moment(_f64_2d, 2, None), np.float64)
+assert_type(moment(_c128_2d, axis=None), np.complex128)
+assert_type(moment(_f80_2d, 2, axis=None), np.float128)
+
+assert_type(moment(_py_i_1d), np.float64)
+assert_type(moment(_f32_1d, 2), np.float64)
+assert_type(moment(_py_c_1d), np.complex128)
+assert_type(moment(_f80_1d), np.float128)
+
+assert_type(moment(_f16_2d, 2), onp.MArray1D[np.float64])
+assert_type(moment(_c64_2d, 3), onp.MArray1D[np.complex128])
+assert_type(moment(_f80_2d), onp.MArray1D[np.float128])
+
+assert_type(moment(_f32_3d, 2), onp.MArray2D[np.float64])
+assert_type(moment(_f80_3d), onp.MArray2D[np.float128])
+
+assert_type(moment(_m_f64_nd, 2, axis=0), onp.MArray[np.float64] | Any)
+assert_type(moment(_i64_nd, 2), onp.MArray[np.float64] | Any)
+
+assert_type(moment(_f64_2d, [2, 3]), onp.MArray[np.float64])
+assert_type(moment(_c64_1d, [2, 3], None), onp.MArray[np.complex128])
