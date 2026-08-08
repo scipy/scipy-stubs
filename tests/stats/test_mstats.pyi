@@ -11,6 +11,7 @@ from scipy.stats.mstats import (
     linregress,
     moment,
     normaltest,
+    sen_seasonal_slopes,
     skew,
     spearmanr,
     theilslopes,
@@ -84,6 +85,9 @@ _m_f64_nd: onp.MArray[np.float64]
 
 ###
 
+# pearsonr
+# TODO
+
 # spearmanr
 assert_type(spearmanr(_py_i_1d, _py_i_1d).statistic, np.float64)
 assert_type(spearmanr(_f64_nd, _f64_nd).statistic, np.float64)
@@ -117,7 +121,15 @@ assert_type(theilslopes(_f64_2d).intercept, np.float64)
 # TODO
 
 # sen_seasonal_slopes
-# TODO
+assert_type(sen_seasonal_slopes(_py_i_2d).intra_slope, onp.MArray1D[np.float64])
+assert_type(sen_seasonal_slopes(_i8_2d).inter_slope, np.float64)
+assert_type(sen_seasonal_slopes(_f16_2d).inter_slope, np.float64)
+assert_type(sen_seasonal_slopes(_f32_3d).inter_slope, np.float64)
+assert_type(sen_seasonal_slopes(_m_f64_nd).inter_slope, np.float64)
+assert_type(sen_seasonal_slopes(_py_c_2d).intra_slope, onp.MArray1D[np.complex128])
+assert_type(sen_seasonal_slopes(_c64_2d).inter_slope, np.complex128)
+assert_type(sen_seasonal_slopes(_f80_2d).intra_slope, onp.MArray1D[np.float128])
+assert_type(sen_seasonal_slopes(_c160_2d).inter_slope, np.complex256)
 
 # ttest_1samp
 # TODO

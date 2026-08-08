@@ -135,6 +135,8 @@ _VarT_co = TypeVar("_VarT_co", covariant=True, bound=_MArrayOrND[npc.inexact], d
 _SkewT_co = TypeVar("_SkewT_co", covariant=True, bound=npc.inexact, default=Any)
 _KurtT_co = TypeVar("_KurtT_co", covariant=True, bound=_MArrayOrND[npc.inexact], default=_MArrayOrND[Any])
 
+_SlopeT_co = TypeVar("_SlopeT_co", covariant=True, bound=npc.inexact, default=Any)
+
 @type_check_only
 class _TestResult(NamedTuple, Generic[_NDT_f_co, _NDT_fc_co]):
     statistic: _NDT_fc_co
@@ -186,17 +188,19 @@ class KruskalResult(_TestResult[np.float64, np.float64]): ...
 class FriedmanchisquareResult(_TestResult[np.float64, np.float64]): ...
 class BrunnerMunzelResult(_TestResult[np.float64, np.float64]): ...
 
-class SenSeasonalSlopesResult(BaseBunch[onp.MArray[np.float64], np.float64]):
+class SenSeasonalSlopesResult(  # zuban: ignore[type-var]
+    BaseBunch[onp.MArray1D[_SlopeT_co], _SlopeT_co], Generic[_SlopeT_co]
+):
     @override
-    def __new__(_cls, intra_slope: float, inter_slope: float) -> Self: ...  # pyrefly:ignore[bad-override]
+    def __new__(_cls, intra_slope: onp.MArray1D[_SlopeT_co], inter_slope: _SlopeT_co) -> Self: ...  # pyrefly:ignore[bad-override]
     @override
-    def __init__(self, /, intra_slope: float, inter_slope: float) -> None: ...  # pyrefly:ignore[bad-override]
+    def __init__(self, /, intra_slope: onp.MArray1D[_SlopeT_co], inter_slope: _SlopeT_co) -> None: ...  # pyrefly:ignore[bad-override]
 
     #
     @property
-    def intra_slope(self, /) -> onp.MArray[np.float64]: ...
+    def intra_slope(self, /) -> onp.MArray1D[_SlopeT_co]: ...
     @property
-    def inter_slope(self, /) -> float: ...
+    def inter_slope(self, /) -> _SlopeT_co: ...
 
 # TODO(jorenham): Overloads for scalar vs. array
 # TODO(jorenham): Overloads for specific dtypes
@@ -291,7 +295,14 @@ def theilslopes(
 def siegelslopes(
     y: onp.ToFloatND, x: onp.ToFloatND | None = None, method: _SiegelSlopesMethod = "hierarchical"
 ) -> SiegelslopesResult: ...
-def sen_seasonal_slopes(x: onp.ToFloatND) -> SenSeasonalSlopesResult: ...
+
+#
+@overload  # ~f64
+def sen_seasonal_slopes(x: onp.ToFloat64_ND) -> SenSeasonalSlopesResult[np.float64]: ...
+@overload  # ~c128
+def sen_seasonal_slopes(x: onp.ToJustComplex128_ND | onp.ToJustComplex64_ND) -> SenSeasonalSlopesResult[np.complex128]: ...
+@overload  # T@inexact80
+def sen_seasonal_slopes[ScalarT: npc.inexact80](x: onp.ToArrayND[ScalarT, ScalarT]) -> SenSeasonalSlopesResult[ScalarT]: ...
 
 #
 def ttest_1samp(
