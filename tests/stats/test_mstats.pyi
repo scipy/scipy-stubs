@@ -7,6 +7,7 @@ import optype.numpy as onp
 
 from scipy.stats.mstats import (
     describe,
+    kendalltau,
     kendalltau_seasonal,
     kurtosis,
     linregress,
@@ -104,7 +105,8 @@ assert_type(spearmanr(_f32_3d, _f32_3d, axis=0).statistic, onp.Array2D[np.float6
 assert_type(spearmanr(_f64_2d, axis=1).statistic, onp.Array2D[np.float64] | Any)
 
 # kentalltau
-# TODO
+assert_type(kendalltau(_py_i_1d, _f16_1d).statistic, np.float64)
+assert_type(kendalltau(_f64_2d, _f32_2d, method="exact").pvalue, np.float64)
 
 # kendalltau_seasonal
 assert_type(kendalltau_seasonal(_f32_2d)["seasonal tau"], onp.MArray1D[np.float64])

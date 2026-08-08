@@ -271,7 +271,7 @@ def spearmanr(
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult[onp.Array2D[np.float64] | Any]: ...
 
-#
+# NOTE: flattens input
 def kendalltau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
@@ -279,7 +279,7 @@ def kendalltau(
     use_missing: bool = False,
     method: _KendallTauMethod = "auto",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult: ...
+) -> SignificanceResult[np.float64]: ...
 
 #
 def kendalltau_seasonal(x: onp.ToFloatND) -> _KendallTauSeasonalResult: ...
