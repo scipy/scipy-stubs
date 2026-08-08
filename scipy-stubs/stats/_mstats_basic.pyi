@@ -1477,14 +1477,84 @@ def normaltest(
 ) -> NormaltestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 
 #
+@overload  # ?d ~f64, axis=None (default)
 def mquantiles(
-    a: onp.ToFloatND,
-    prob: onp.ToFloatND = (0.25, 0.5, 0.75),
+    a: onp.ToFloat64_ND,
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
     alphap: onp.ToFloat = 0.4,
     betap: onp.ToFloat = 0.4,
-    axis: SupportsIndex | None = None,
+    axis: None = None,
     limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
-) -> onp.MArray[np.float64]: ...
+) -> onp.Array1D[np.float64]: ...
+@overload  # ?d T@floating80, axis=None (default)
+def mquantiles[FloatT: npc.floating80](
+    a: onp.ToArrayND[FloatT, FloatT],
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+    axis: None = None,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+) -> onp.Array1D[FloatT]: ...
+@overload  # ?d ~f64, axis=<given>
+def mquantiles(
+    a: onp.ArrayND[_AsF64 | np.float32 | np.float16, _JustAnyShape],
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+    *,
+    axis: SupportsIndex,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # ?d T@floating80, axis=<given>
+def mquantiles[FloatT: npc.floating80](
+    a: onp.ArrayND[FloatT, _JustAnyShape],
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+    *,
+    axis: SupportsIndex,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+) -> onp.MArray[FloatT] | Any: ...
+@overload  # 1d ~f64, axis=<given>
+def mquantiles(
+    a: onp.ToFloat64Strict1D,
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+    *,
+    axis: SupportsIndex,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+) -> onp.MArray1D[np.float64]: ...
+@overload  # 1d T@floating80, axis=<given>
+def mquantiles[FloatT: npc.floating80](
+    a: onp.ToArrayStrict1D[FloatT, FloatT],
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+    *,
+    axis: SupportsIndex,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+) -> onp.MArray1D[FloatT]: ...
+@overload  # 2d ~f64, axis=<given>
+def mquantiles(
+    a: onp.ToFloat64Strict2D,
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+    *,
+    axis: SupportsIndex,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+) -> onp.MArray2D[np.float64]: ...
+@overload  # 2d T@floating80, axis=<given>
+def mquantiles[FloatT: npc.floating80](
+    a: onp.ToArrayStrict2D[FloatT, FloatT],
+    prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+    *,
+    axis: SupportsIndex,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+) -> onp.MArray2D[FloatT]: ...
 
 #
 def scoreatpercentile(

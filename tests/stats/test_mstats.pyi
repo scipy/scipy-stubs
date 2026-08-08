@@ -13,6 +13,7 @@ from scipy.stats.mstats import (
     kurtosis,
     linregress,
     moment,
+    mquantiles,
     normaltest,
     pearsonr,
     pointbiserialr,
@@ -489,7 +490,15 @@ assert_type(normaltest(_m_f64_nd, axis=0).statistic, onp.MArray[np.float64] | An
 assert_type(normaltest(_f64_nd, axis=0).pvalue, onp.ArrayND[np.float64] | Any)
 
 # mquantiles
-# TODO
+assert_type(mquantiles(_py_i_2d), onp.Array1D[np.float64])
+assert_type(mquantiles(_f16_1d, 0.5), onp.Array1D[np.float64])
+assert_type(mquantiles(_f80_2d), onp.Array1D[np.float128])
+assert_type(mquantiles(_f32_1d, axis=0), onp.MArray1D[np.float64])
+assert_type(mquantiles(_f80_1d, axis=0), onp.MArray1D[np.float128])
+assert_type(mquantiles(_i64_2d, axis=1), onp.MArray2D[np.float64])
+assert_type(mquantiles(_f80_2d, axis=0), onp.MArray2D[np.float128])
+assert_type(mquantiles(_f64_nd, axis=0), onp.MArray[np.float64] | Any)
+assert_type(mquantiles(_f80_nd, axis=0), onp.MArray[np.float128] | Any)
 
 # scoreatpercentile
 # TODO
