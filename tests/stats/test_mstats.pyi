@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.stats.mstats import moment, normaltest, spearmanr, tmax, tmean, tmin
+from scipy.stats.mstats import kurtosis, moment, normaltest, skew, spearmanr, tmax, tmean, tmin, variation
 
 ###
 
@@ -49,8 +49,20 @@ _m_f32_nd: onp.MArray[np.float32]
 _m_f64_nd: onp.MArray[np.float64]
 
 ###
-# tmean
+# spearmanr
+assert_type(spearmanr(_py_i_1d, _py_i_1d).statistic, np.float64)
+assert_type(spearmanr(_f64_nd, _f64_nd).statistic, np.float64)
+assert_type(spearmanr(_f32_3d, _f32_3d, axis=None).statistic, np.float64)
+assert_type(spearmanr(_py_f_1d, _py_f_1d, axis=0).statistic, np.float64)
+assert_type(spearmanr(_i64_1d, _i64_1d, axis=1).statistic, np.float64)
+assert_type(spearmanr(_py_i_2d, _py_i_2d, axis=0).statistic, onp.Array2D[np.float64])
+assert_type(spearmanr(_f64_2d, _f64_2d, axis=1).statistic, onp.Array2D[np.float64])
+assert_type(spearmanr(_m_f64_nd, _m_f64_nd, axis=0).statistic, onp.Array2D[np.float64] | Any)
+assert_type(spearmanr(_f32_3d, _f32_3d, axis=0).statistic, onp.Array2D[np.float64] | Any)
+assert_type(spearmanr(_f64_2d, axis=1).statistic, onp.Array2D[np.float64] | Any)
 
+###
+# tmean
 assert_type(tmean(_py_i_1d), np.float64)
 assert_type(tmean(_py_f_1d), np.float64)
 assert_type(tmean(_py_c_1d), np.complex128)
@@ -108,46 +120,16 @@ assert_type(tmean(_f64_nd, (0.0, 1.0), (True, True), 0), onp.MArray[np.float64] 
 
 ###
 # tmin
-
 assert_type(tmin(_py_i_1d), np.int_ | onp.MArray[np.int_])
 assert_type(tmin(_f32_1d), np.float32 | onp.MArray[np.float32])
 
 ###
 # tmax
-
 assert_type(tmax(_py_i_1d), np.int_ | onp.MArray[np.int_])
 assert_type(tmax(_f32_1d), np.float32 | onp.MArray[np.float32])
 
 ###
-# spearmanr
-
-assert_type(spearmanr(_py_i_1d, _py_i_1d).statistic, np.float64)
-assert_type(spearmanr(_f64_nd, _f64_nd).statistic, np.float64)
-assert_type(spearmanr(_f32_3d, _f32_3d, axis=None).statistic, np.float64)
-assert_type(spearmanr(_py_f_1d, _py_f_1d, axis=0).statistic, np.float64)
-assert_type(spearmanr(_i64_1d, _i64_1d, axis=1).statistic, np.float64)
-assert_type(spearmanr(_py_i_2d, _py_i_2d, axis=0).statistic, onp.Array2D[np.float64])
-assert_type(spearmanr(_f64_2d, _f64_2d, axis=1).statistic, onp.Array2D[np.float64])
-assert_type(spearmanr(_m_f64_nd, _m_f64_nd, axis=0).statistic, onp.Array2D[np.float64] | Any)
-assert_type(spearmanr(_f32_3d, _f32_3d, axis=0).statistic, onp.Array2D[np.float64] | Any)
-assert_type(spearmanr(_f64_2d, axis=1).statistic, onp.Array2D[np.float64] | Any)
-
-###
-# normaltest
-
-assert_type(normaltest(_f64_nd, axis=None).statistic, np.float64)
-assert_type(normaltest(_py_i_1d).statistic, np.float64)
-assert_type(normaltest(_f64_1d).pvalue, np.float64)
-assert_type(normaltest(_i64_2d).statistic, onp.MArray1D[np.float64])
-assert_type(normaltest(_f32_2d, axis=1).pvalue, onp.Array1D[np.float64])
-assert_type(normaltest(_f32_3d).statistic, onp.MArray2D[np.float64])
-assert_type(normaltest(_f32_nd).statistic, onp.MArray[np.float64] | Any)
-assert_type(normaltest(_m_f64_nd, axis=0).statistic, onp.MArray[np.float64] | Any)
-assert_type(normaltest(_f64_nd, axis=0).pvalue, onp.ArrayND[np.float64] | Any)
-
-###
 # moment
-
 assert_type(moment(_f64_2d, 2, None), np.float64)
 assert_type(moment(_c128_2d, axis=None), np.complex128)
 assert_type(moment(_f80_2d, 2, axis=None), np.float128)
@@ -169,3 +151,86 @@ assert_type(moment(_i64_nd, 2), onp.MArray[np.float64] | Any)
 
 assert_type(moment(_f64_2d, [2, 3]), onp.MArray[np.float64])
 assert_type(moment(_c64_1d, [2, 3], None), onp.MArray[np.complex128])
+
+###
+# variation
+assert_type(variation(_f64_2d, None), np.float64)
+assert_type(variation(_c64_2d, axis=None), np.complex64)
+assert_type(variation(_f80_2d, None), np.float128)
+
+assert_type(variation(_py_i_1d), np.float64)
+assert_type(variation(_py_c_1d), np.complex128)
+assert_type(variation(_i64_1d), np.float64)
+assert_type(variation(_f16_1d), np.float16)
+assert_type(variation(_f32_1d), np.float32)
+assert_type(variation(_c128_1d), np.complex128)
+assert_type(variation(_f80_1d), np.float128)
+
+assert_type(variation(_py_f_2d), onp.MArray1D[np.float64])
+assert_type(variation(_f16_2d), onp.MArray1D[np.float16])
+assert_type(variation(_c64_2d, 1), onp.MArray1D[np.complex64])
+assert_type(variation(_f80_2d), onp.MArray1D[np.float128])
+
+assert_type(variation(_f32_3d), onp.MArray2D[np.float32])
+assert_type(variation(_f80_3d), onp.MArray2D[np.float128])
+
+assert_type(variation(_i64_nd, 0, 1), onp.MArray[np.float64] | Any)
+assert_type(variation(_m_f32_nd), onp.MArray[np.float32] | Any)
+
+###
+# skew
+assert_type(skew(_f64_2d, None), onp.MArray0D[np.float64])
+assert_type(skew(_c128_2d, axis=None), onp.MArray0D[np.complex128])
+assert_type(skew(_f80_2d, None), onp.MArray0D[np.float128])
+
+assert_type(skew(_py_i_1d), onp.MArray0D[np.float64])
+assert_type(skew(_f32_1d), onp.MArray0D[np.float64])
+assert_type(skew(_py_c_1d), onp.MArray0D[np.complex128])
+assert_type(skew(_f80_1d), onp.MArray0D[np.float128])
+
+assert_type(skew(_f16_2d), onp.MArray1D[np.float64])
+assert_type(skew(_c64_2d, 1), onp.MArray1D[np.complex128])
+assert_type(skew(_f80_2d), onp.MArray1D[np.float128])
+
+assert_type(skew(_f32_3d), onp.MArray2D[np.float64])
+assert_type(skew(_f80_3d), onp.MArray2D[np.float128])
+
+assert_type(skew(_m_f64_nd, 0, False), onp.MArray[np.float64] | Any)
+assert_type(skew(_c64_nd), onp.MArray[np.complex128] | Any)
+
+###
+# kurtosis
+assert_type(kurtosis(_f64_2d, None), np.float64)
+assert_type(kurtosis(_c128_2d, axis=None), np.complex128)
+assert_type(kurtosis(_f80_2d, None), np.float128)
+
+assert_type(kurtosis(_py_i_1d), np.float64)
+assert_type(kurtosis(_f32_1d), np.float64)
+assert_type(kurtosis(_py_c_1d), np.complex128)
+assert_type(kurtosis(_f80_1d), np.float128)
+
+assert_type(kurtosis(_f16_2d), onp.MArray1D[np.float64])
+assert_type(kurtosis(_c64_2d, 1), onp.MArray1D[np.complex128])
+assert_type(kurtosis(_f80_2d), onp.MArray1D[np.float128])
+
+assert_type(kurtosis(_f32_3d), onp.MArray2D[np.float64])
+assert_type(kurtosis(_f80_3d), onp.MArray2D[np.float128])
+
+assert_type(kurtosis(_m_f64_nd, 0, True, False), onp.MArray[np.float64] | Any)
+assert_type(kurtosis(_c64_nd), onp.MArray[np.complex128] | Any)
+
+# fisher=False returns a 0d `MaskedArray` instead of a scalar
+assert_type(kurtosis(_f64_1d, 0, False), onp.MArray[np.float64] | Any)
+assert_type(kurtosis(_f64_2d, None, False), onp.MArray[np.float64] | Any)
+
+###
+# normaltest
+assert_type(normaltest(_f64_nd, axis=None).statistic, np.float64)
+assert_type(normaltest(_py_i_1d).statistic, np.float64)
+assert_type(normaltest(_f64_1d).pvalue, np.float64)
+assert_type(normaltest(_i64_2d).statistic, onp.MArray1D[np.float64])
+assert_type(normaltest(_f32_2d, axis=1).pvalue, onp.Array1D[np.float64])
+assert_type(normaltest(_f32_3d).statistic, onp.MArray2D[np.float64])
+assert_type(normaltest(_f32_nd).statistic, onp.MArray[np.float64] | Any)
+assert_type(normaltest(_m_f64_nd, axis=0).statistic, onp.MArray[np.float64] | Any)
+assert_type(normaltest(_f64_nd, axis=0).pvalue, onp.ArrayND[np.float64] | Any)

@@ -818,12 +818,216 @@ def moment[InexactT: npc.inexact80](
     a: onp.ToArrayND[InexactT, InexactT], moment: onp.ToInt | onp.ToIntND = 1, axis: SupportsIndex | None = 0
 ) -> onp.MArray[InexactT] | Any: ...
 
-# TODO(jorenham): Overloads for complex array-likes
-def variation(a: onp.ToFloatND, axis: SupportsIndex | None = 0, ddof: onp.ToInt = 0) -> _MArrayOrND[npc.floating]: ...
-def skew(a: onp.ToFloatND, axis: SupportsIndex | None = 0, bias: bool = True) -> _MArrayOrND[npc.floating]: ...
+# NOTE: f16/f32 and c64 promote only if `a` is masked
+@overload  # ?d ~f64, axis=None
+def variation(a: onp.ToArrayND[float, _AsF64], axis: None, ddof: onp.ToInt = 0) -> np.float64: ...
+@overload  # ?d ~c128, axis=None
+def variation(a: onp.ToJustComplex128_ND, axis: None, ddof: onp.ToInt = 0) -> np.complex128: ...
+@overload  # ?d T@inexact, axis=None
+def variation[InexactT: npc.inexact](a: onp.ToArrayND[InexactT, InexactT], axis: None, ddof: onp.ToInt = 0) -> InexactT: ...
+@overload  # ?d ~f64, axis=<given> (default)
+def variation(
+    a: onp.ArrayND[_AsF64, _JustAnyShape], axis: SupportsIndex = 0, ddof: onp.ToInt = 0
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # ?d ~c128, axis=<given> (default)
+def variation(
+    a: onp.ArrayND[np.complex128, _JustAnyShape], axis: SupportsIndex = 0, ddof: onp.ToInt = 0
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # ?d T@inexact, axis=<given> (default)
+def variation[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT, _JustAnyShape], axis: SupportsIndex = 0, ddof: onp.ToInt = 0
+) -> onp.MArray[InexactT] | Any: ...
+@overload  # 1d ~f64, axis=<given> (default)
+def variation(a: onp.ToArrayStrict1D[float, _AsF64], axis: SupportsIndex = 0, ddof: onp.ToInt = 0) -> np.float64: ...
+@overload  # 1d ~c128, axis=<given> (default)
+def variation(a: onp.ToJustComplex128Strict1D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0) -> np.complex128: ...
+@overload  # 1d T@inexact, axis=<given> (default)
+def variation[InexactT: npc.inexact](
+    a: onp.ToArrayStrict1D[InexactT, InexactT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0
+) -> InexactT: ...
+@overload  # 2d ~f64, axis=<given> (default)
+def variation(
+    a: onp.ToArrayStrict2D[float, _AsF64], axis: SupportsIndex = 0, ddof: onp.ToInt = 0
+) -> onp.MArray1D[np.float64]: ...
+@overload  # 2d ~c128, axis=<given> (default)
+def variation(a: onp.ToJustComplex128Strict2D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0) -> onp.MArray1D[np.complex128]: ...
+@overload  # 2d T@inexact, axis=<given> (default)
+def variation[InexactT: npc.inexact](
+    a: onp.ToArrayStrict2D[InexactT, InexactT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0
+) -> onp.MArray1D[InexactT]: ...
+@overload  # 3d ~f64, axis=<given> (default)
+def variation(
+    a: onp.ToArrayStrict3D[float, _AsF64], axis: SupportsIndex = 0, ddof: onp.ToInt = 0
+) -> onp.MArray2D[np.float64]: ...
+@overload  # 3d ~c128, axis=<given> (default)
+def variation(a: onp.ToJustComplex128Strict3D, axis: SupportsIndex = 0, ddof: onp.ToInt = 0) -> onp.MArray2D[np.complex128]: ...
+@overload  # 3d T@inexact, axis=<given> (default)
+def variation[InexactT: npc.inexact](
+    a: onp.ToArrayStrict3D[InexactT, InexactT], axis: SupportsIndex = 0, ddof: onp.ToInt = 0
+) -> onp.MArray2D[InexactT]: ...
+@overload  # Nd ~f64
+def variation(
+    a: onp.ToArrayND[float, _AsF64], axis: SupportsIndex | None = 0, ddof: onp.ToInt = 0
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # Nd ~c128
+def variation(
+    a: onp.ToJustComplex128_ND, axis: SupportsIndex | None = 0, ddof: onp.ToInt = 0
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # Nd T@inexact
+def variation[InexactT: npc.inexact](
+    a: onp.ToArrayND[InexactT, InexactT], axis: SupportsIndex | None = 0, ddof: onp.ToInt = 0
+) -> onp.MArray[InexactT] | Any: ...
+
+#
+@overload  # ?d ~f64, axis=None
+def skew(a: onp.ToFloat64_ND, axis: None, bias: bool = True) -> onp.MArray0D[np.float64]: ...
+@overload  # ?d ~c128, axis=None
+def skew(
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], axis: None, bias: bool = True
+) -> onp.MArray0D[np.complex128]: ...
+@overload  # ?d T@inexact80, axis=None
+def skew[InexactT: npc.inexact80](
+    a: onp.ToArrayND[InexactT, InexactT], axis: None, bias: bool = True
+) -> onp.MArray0D[InexactT]: ...
+@overload  # ?d ~f64, axis=<given> (default)
+def skew(
+    a: onp.ArrayND[_AsF64 | np.float32 | np.float16, _JustAnyShape], axis: SupportsIndex = 0, bias: bool = True
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # ?d ~c128, axis=<given> (default)
+def skew(
+    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape], axis: SupportsIndex = 0, bias: bool = True
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # ?d T@inexact80, axis=<given> (default)
+def skew[InexactT: npc.inexact80](
+    a: onp.ArrayND[InexactT, _JustAnyShape], axis: SupportsIndex = 0, bias: bool = True
+) -> onp.MArray[InexactT] | Any: ...
+@overload  # 1d ~f64, axis=<given> (default)
+def skew(a: onp.ToFloat64Strict1D, axis: SupportsIndex = 0, bias: bool = True) -> onp.MArray0D[np.float64]: ...
+@overload  # 1d ~c128, axis=<given> (default)
+def skew(
+    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64], axis: SupportsIndex = 0, bias: bool = True
+) -> onp.MArray0D[np.complex128]: ...
+@overload  # 1d T@inexact80, axis=<given> (default)
+def skew[InexactT: npc.inexact80](
+    a: onp.ToArrayStrict1D[InexactT, InexactT], axis: SupportsIndex = 0, bias: bool = True
+) -> onp.MArray0D[InexactT]: ...
+@overload  # 2d ~f64, axis=<given> (default)
+def skew(a: onp.ToFloat64Strict2D, axis: SupportsIndex = 0, bias: bool = True) -> onp.MArray1D[np.float64]: ...
+@overload  # 2d ~c128, axis=<given> (default)
+def skew(
+    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64], axis: SupportsIndex = 0, bias: bool = True
+) -> onp.MArray1D[np.complex128]: ...
+@overload  # 2d T@inexact80, axis=<given> (default)
+def skew[InexactT: npc.inexact80](
+    a: onp.ToArrayStrict2D[InexactT, InexactT], axis: SupportsIndex = 0, bias: bool = True
+) -> onp.MArray1D[InexactT]: ...
+@overload  # 3d ~f64, axis=<given> (default)
+def skew(a: onp.ToFloat64Strict3D, axis: SupportsIndex = 0, bias: bool = True) -> onp.MArray2D[np.float64]: ...
+@overload  # 3d ~c128, axis=<given> (default)
+def skew(
+    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64], axis: SupportsIndex = 0, bias: bool = True
+) -> onp.MArray2D[np.complex128]: ...
+@overload  # 3d T@inexact80, axis=<given> (default)
+def skew[InexactT: npc.inexact80](
+    a: onp.ToArrayStrict3D[InexactT, InexactT], axis: SupportsIndex = 0, bias: bool = True
+) -> onp.MArray2D[InexactT]: ...
+@overload  # Nd ~f64
+def skew(a: onp.ToFloat64_ND, axis: SupportsIndex | None = 0, bias: bool = True) -> onp.MArray[np.float64] | Any: ...
+@overload  # Nd ~c128
+def skew(
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], axis: SupportsIndex | None = 0, bias: bool = True
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # Nd T@inexact80
+def skew[InexactT: npc.inexact80](
+    a: onp.ToArrayND[InexactT, InexactT], axis: SupportsIndex | None = 0, bias: bool = True
+) -> onp.MArray[InexactT] | Any: ...
+
+#
+@overload  # ?d ~f64, axis=None, fisher=True
+def kurtosis(a: onp.ToFloat64_ND, axis: None, fisher: Literal[True] = True, bias: bool = True) -> np.float64: ...
+@overload  # ?d ~c128, axis=None, fisher=True
 def kurtosis(
-    a: onp.ToFloatND, axis: SupportsIndex | None = 0, fisher: bool = True, bias: bool = True
-) -> _MArrayOrND[npc.floating]: ...
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], axis: None, fisher: Literal[True] = True, bias: bool = True
+) -> np.complex128: ...
+@overload  # ?d T@inexact80, axis=None, fisher=True
+def kurtosis[InexactT: npc.inexact80](
+    a: onp.ToArrayND[InexactT, InexactT], axis: None, fisher: Literal[True] = True, bias: bool = True
+) -> InexactT: ...
+@overload  # ?d ~f64, axis=<given> (default)
+def kurtosis(
+    a: onp.ArrayND[_AsF64 | np.float32 | np.float16, _JustAnyShape],
+    axis: SupportsIndex = 0,
+    fisher: bool = True,
+    bias: bool = True,
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # ?d ~c128, axis=<given> (default)
+def kurtosis(
+    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape], axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # ?d T@inexact80, axis=<given> (default)
+def kurtosis[InexactT: npc.inexact80](
+    a: onp.ArrayND[InexactT, _JustAnyShape], axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
+) -> onp.MArray[InexactT] | Any: ...
+@overload  # 1d ~f64, fisher=True (default)
+def kurtosis(
+    a: onp.ToFloat64Strict1D, axis: SupportsIndex = 0, fisher: Literal[True] = True, bias: bool = True
+) -> np.float64: ...
+@overload  # 1d ~c128, fisher=True (default)
+def kurtosis(
+    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    fisher: Literal[True] = True,
+    bias: bool = True,
+) -> np.complex128: ...
+@overload  # 1d T@inexact80, fisher=True (default)
+def kurtosis[InexactT: npc.inexact80](
+    a: onp.ToArrayStrict1D[InexactT, InexactT], axis: SupportsIndex = 0, fisher: Literal[True] = True, bias: bool = True
+) -> InexactT: ...
+@overload  # 2d ~f64, axis=<given> (default)
+def kurtosis(
+    a: onp.ToFloat64Strict2D, axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
+) -> onp.MArray1D[np.float64]: ...
+@overload  # 2d ~c128, axis=<given> (default)
+def kurtosis(
+    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    fisher: bool = True,
+    bias: bool = True,
+) -> onp.MArray1D[np.complex128]: ...
+@overload  # 2d T@inexact80, axis=<given> (default)
+def kurtosis[InexactT: npc.inexact80](
+    a: onp.ToArrayStrict2D[InexactT, InexactT], axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
+) -> onp.MArray1D[InexactT]: ...
+@overload  # 3d ~f64, axis=<given> (default)
+def kurtosis(
+    a: onp.ToFloat64Strict3D, axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
+) -> onp.MArray2D[np.float64]: ...
+@overload  # 3d ~c128, axis=<given> (default)
+def kurtosis(
+    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    fisher: bool = True,
+    bias: bool = True,
+) -> onp.MArray2D[np.complex128]: ...
+@overload  # 3d T@inexact80, axis=<given> (default)
+def kurtosis[InexactT: npc.inexact80](
+    a: onp.ToArrayStrict3D[InexactT, InexactT], axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
+) -> onp.MArray2D[InexactT]: ...
+@overload  # Nd ~f64
+def kurtosis(
+    a: onp.ToFloat64_ND, axis: SupportsIndex | None = 0, fisher: bool = True, bias: bool = True
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # Nd ~c128
+def kurtosis(
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex | None = 0,
+    fisher: bool = True,
+    bias: bool = True,
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # Nd T@inexact80
+def kurtosis[InexactT: npc.inexact80](
+    a: onp.ToArrayND[InexactT, InexactT], axis: SupportsIndex | None = 0, fisher: bool = True, bias: bool = True
+) -> onp.MArray[InexactT] | Any: ...
 
 #
 def describe(a: onp.ToFloatND, axis: SupportsIndex | None = 0, ddof: onp.ToInt = 0, bias: bool = True) -> DescribeResult: ...
