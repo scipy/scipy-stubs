@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.stats.mstats import moment, normaltest, spearmanr, tmax, tmean, tmin
+from scipy.stats.mstats import moment, normaltest, skew, spearmanr, tmax, tmean, tmin
 
 ###
 
@@ -169,3 +169,25 @@ assert_type(moment(_i64_nd, 2), onp.MArray[np.float64] | Any)
 
 assert_type(moment(_f64_2d, [2, 3]), onp.MArray[np.float64])
 assert_type(moment(_c64_1d, [2, 3], None), onp.MArray[np.complex128])
+
+###
+# skew
+
+assert_type(skew(_f64_2d, None), onp.MArray0D[np.float64])
+assert_type(skew(_c128_2d, axis=None), onp.MArray0D[np.complex128])
+assert_type(skew(_f80_2d, None), onp.MArray0D[np.float128])
+
+assert_type(skew(_py_i_1d), onp.MArray0D[np.float64])
+assert_type(skew(_f32_1d), onp.MArray0D[np.float64])
+assert_type(skew(_py_c_1d), onp.MArray0D[np.complex128])
+assert_type(skew(_f80_1d), onp.MArray0D[np.float128])
+
+assert_type(skew(_f16_2d), onp.MArray1D[np.float64])
+assert_type(skew(_c64_2d, 1), onp.MArray1D[np.complex128])
+assert_type(skew(_f80_2d), onp.MArray1D[np.float128])
+
+assert_type(skew(_f32_3d), onp.MArray2D[np.float64])
+assert_type(skew(_f80_3d), onp.MArray2D[np.float128])
+
+assert_type(skew(_m_f64_nd, 0, False), onp.MArray[np.float64] | Any)
+assert_type(skew(_c64_nd), onp.MArray[np.complex128] | Any)
