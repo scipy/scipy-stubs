@@ -282,10 +282,12 @@ def pointbiserialr(x: onp.ToFloatND, y: onp.ToFloatND) -> PointbiserialrResult: 
 # NOTE: flattens input
 def linregress(x: onp.ToFloatND, y: onp.ToFloatND | None = None) -> LinregressResult[np.float64]: ...
 
-#
+# NOTE: flattens input
 def theilslopes(
     y: onp.ToFloatND, x: onp.ToFloatND | None = None, alpha: float | npc.floating = 0.95, method: _TheilSlopesMethod = "separate"
-) -> TheilslopesResult: ...
+) -> TheilslopesResult[np.float64]: ...
+
+#
 def siegelslopes(
     y: onp.ToFloatND, x: onp.ToFloatND | None = None, method: _SiegelSlopesMethod = "hierarchical"
 ) -> SiegelslopesResult: ...
