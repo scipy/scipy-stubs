@@ -378,33 +378,81 @@ def trimr[ScalarT: npc.number | np.bool](
 ) -> onp.MArray[ScalarT]: ...
 
 #
-@overload
+@overload  # 1d bool
+def trim(  # type:ignore[overload-overlap]
+    a: list[bool],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    relative: bool = False,
+    axis: SupportsIndex | None = None,
+) -> onp.MArray1D[np.bool]: ...
+@overload  # ?d bool
+def trim(  # type:ignore[overload-overlap]
+    a: onp.SequenceND[list[bool]],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    relative: bool = False,
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[np.bool]: ...
+@overload  # 1d ~int
 def trim(
-    a: onp.SequenceND[op.JustInt | np.int_],
+    a: list[int],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    relative: bool = False,
+    axis: SupportsIndex | None = None,
+) -> onp.MArray1D[np.int_]: ...
+@overload  # ?d ~int
+def trim(
+    a: onp.SequenceND[list[int]],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     relative: bool = False,
     axis: SupportsIndex | None = None,
 ) -> onp.MArray[np.int_]: ...
-@overload
+@overload  # 1d ~float
 def trim(
-    a: onp.SequenceND[float],
+    a: list[float],
     limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     relative: bool = False,
     axis: SupportsIndex | None = None,
-) -> onp.MArray[np.float64 | np.int_]: ...
-@overload
+) -> onp.MArray1D[np.float64]: ...
+@overload  # ?d ~float
 def trim(
-    a: onp.SequenceND[complex],
+    a: onp.SequenceND[list[float]],
+    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    relative: bool = False,
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[np.float64]: ...
+@overload  # 1d ~complex
+def trim(
+    a: list[complex],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     relative: bool = False,
     axis: SupportsIndex | None = None,
-) -> onp.MArray[np.complex128 | np.float64 | np.int_]: ...
-@overload
+) -> onp.MArray1D[np.complex128]: ...
+@overload  # ?d ~complex
+def trim(
+    a: onp.SequenceND[list[complex]],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    relative: bool = False,
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[np.complex128]: ...
+@overload  # ?d T@+number
+def trim[ShapeT: tuple[int, ...], ScalarT: npc.number | np.bool](
+    a: onp.ArrayND[ScalarT, ShapeT],
+    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    relative: bool = False,
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[ScalarT, ShapeT]: ...
+@overload  # Nd T@+number
 def trim[ScalarT: npc.number | np.bool](
-    a: _ArrayLike[ScalarT],
+    a: onp.ToArrayND[ScalarT, ScalarT],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     relative: bool = False,
