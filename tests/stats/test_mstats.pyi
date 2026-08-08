@@ -12,6 +12,7 @@ from scipy.stats.mstats import (
     moment,
     normaltest,
     sen_seasonal_slopes,
+    siegelslopes,
     skew,
     spearmanr,
     theilslopes,
@@ -118,7 +119,8 @@ assert_type(theilslopes(_py_i_1d, _f16_1d).slope, np.float64)
 assert_type(theilslopes(_f64_2d).intercept, np.float64)
 
 # siegelslopes
-# TODO
+assert_type(siegelslopes(_py_i_1d, _f16_1d).slope, np.float64)
+assert_type(siegelslopes(_f64_2d).intercept, np.float64)
 
 # sen_seasonal_slopes
 assert_type(sen_seasonal_slopes(_py_i_2d).intra_slope, onp.MArray1D[np.float64])

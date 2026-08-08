@@ -291,10 +291,10 @@ def theilslopes(
     y: onp.ToFloatND, x: onp.ToFloatND | None = None, alpha: float | npc.floating = 0.95, method: _TheilSlopesMethod = "separate"
 ) -> TheilslopesResult[np.float64]: ...
 
-#
+# NOTE: flattens input
 def siegelslopes(
     y: onp.ToFloatND, x: onp.ToFloatND | None = None, method: _SiegelSlopesMethod = "hierarchical"
-) -> SiegelslopesResult: ...
+) -> SiegelslopesResult[np.float64]: ...
 
 #
 @overload  # ~f64
