@@ -145,14 +145,14 @@ class _TestResult(NamedTuple, Generic[_NDT_f_co, _NDT_fc_co]):
 _KendallTauSeasonalResult = TypedDict(
     "_KendallTauSeasonalResult",
     {
-        "seasonal tau": _MArrayOrND[np.float64],
+        "seasonal tau": onp.MArray1D[np.float64],
         "global tau": np.float64,
         "global tau (alt)": np.float64,
-        "seasonal p-value": onp.ArrayND[np.float64],
+        "seasonal p-value": onp.Array1D[np.float64],
         "global p-value (indep)": np.float64,
         "global p-value (dep)": np.float64,
-        "chi2 total": onp.MArray[np.float64],
-        "chi2 trend": onp.MArray[np.float64],
+        "chi2 total": np.float64,
+        "chi2 trend": np.float64,
     },
 )
 
@@ -280,6 +280,8 @@ def kendalltau(
     method: _KendallTauMethod = "auto",
     alternative: Alternative = "two-sided",
 ) -> SignificanceResult: ...
+
+#
 def kendalltau_seasonal(x: onp.ToFloatND) -> _KendallTauSeasonalResult: ...
 
 #
