@@ -8,6 +8,7 @@ import optype.numpy as onp
 from scipy.stats.mstats import (
     describe,
     kurtosis,
+    linregress,
     moment,
     normaltest,
     skew,
@@ -92,6 +93,11 @@ assert_type(spearmanr(_f64_2d, _f64_2d, axis=1).statistic, onp.Array2D[np.float6
 assert_type(spearmanr(_m_f64_nd, _m_f64_nd, axis=0).statistic, onp.Array2D[np.float64] | Any)
 assert_type(spearmanr(_f32_3d, _f32_3d, axis=0).statistic, onp.Array2D[np.float64] | Any)
 assert_type(spearmanr(_f64_2d, axis=1).statistic, onp.Array2D[np.float64] | Any)
+
+###
+# linregress
+assert_type(linregress(_py_i_1d, _f16_1d).slope, np.float64)
+assert_type(linregress(_f64_2d).intercept, np.float64)
 
 ###
 # trim
