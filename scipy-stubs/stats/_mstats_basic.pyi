@@ -527,22 +527,163 @@ def trimtail[ScalarT: npc.number | np.bool](
 ) -> onp.MArray[ScalarT]: ...
 
 #
-@overload
+# NOTE: f32/c64 promotes to f64/c128
+@overload  # ?d ~f64, axis=None (default)
 def trimmed_mean(
-    a: onp.ToFloatND,
+    a: onp.ToArrayND[float, _AsF64 | np.float32],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    axis: None = None,
+) -> np.float64: ...
+@overload  # ?d ~c128, axis=None (default)
+def trimmed_mean(
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    axis: None = None,
+) -> np.complex128: ...
+@overload  # ?d T@inexact, axis=None (default)
+def trimmed_mean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ToArrayND[InexactT, InexactT],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    axis: None = None,
+) -> InexactT: ...
+@overload  # ?d ~f64, axis=<given>
+def trimmed_mean(
+    a: onp.ArrayND[_AsF64 | np.float32, _JustAnyShape],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # ?d ~c128, axis=<given>
+def trimmed_mean(
+    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # ?d T@inexact, axis=<given>
+def trimmed_mean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ArrayND[InexactT, _JustAnyShape],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray[InexactT] | Any: ...
+@overload  # 1d ~f64, axis=<given>
+def trimmed_mean(
+    a: onp.ToArrayStrict1D[float, _AsF64 | np.float32],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> np.float64: ...
+@overload  # 1d ~c128, axis=<given>
+def trimmed_mean(
+    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> np.complex128: ...
+@overload  # 1d T@inexact, axis=<given>
+def trimmed_mean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ToArrayStrict1D[InexactT, InexactT],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> InexactT: ...
+@overload  # 2d ~f64, axis=<given>
+def trimmed_mean(
+    a: onp.ToArrayStrict2D[float, _AsF64 | np.float32],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray1D[np.float64]: ...
+@overload  # 2d ~c128, axis=<given>
+def trimmed_mean(
+    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray1D[np.complex128]: ...
+@overload  # 2d T@inexact, axis=<given>
+def trimmed_mean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ToArrayStrict2D[InexactT, InexactT],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray1D[InexactT]: ...
+@overload  # 3d ~f64, axis=<given>
+def trimmed_mean(
+    a: onp.ToArrayStrict3D[float, _AsF64 | np.float32],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray2D[np.float64]: ...
+@overload  # 3d ~c128, axis=<given>
+def trimmed_mean(
+    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray2D[np.complex128]: ...
+@overload  # 3d T@inexact, axis=<given>
+def trimmed_mean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ToArrayStrict3D[InexactT, InexactT],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray2D[InexactT]: ...
+@overload  # Nd ~f64
+def trimmed_mean(
+    a: onp.ToArrayND[float, _AsF64 | np.float32],
     limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
     inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
     relative: bool = True,
     axis: SupportsIndex | None = None,
-) -> _MArrayOrND[npc.floating]: ...
-@overload
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # Nd ~c128
 def trimmed_mean(
-    a: onp.ToComplexND,
-    limits: tuple[onp.ToComplex, onp.ToComplex] = (0.1, 0.1),
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
     inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
     relative: bool = True,
     axis: SupportsIndex | None = None,
-) -> _MArrayOrND[npc.floating | np.complex128]: ...
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # Nd T@inexact
+def trimmed_mean[InexactT: npc.inexact80 | np.float16](
+    a: onp.ToArrayND[InexactT, InexactT],
+    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    inclusive: tuple[op.CanBool, op.CanBool] = (1, 1),
+    relative: bool = True,
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[InexactT] | Any: ...
 
 #
 def trimmed_var(
