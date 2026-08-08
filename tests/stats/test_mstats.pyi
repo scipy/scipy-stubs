@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.stats.mstats import moment, normaltest, skew, spearmanr, tmax, tmean, tmin
+from scipy.stats.mstats import kurtosis, moment, normaltest, skew, spearmanr, tmax, tmean, tmin
 
 ###
 
@@ -191,3 +191,29 @@ assert_type(skew(_f80_3d), onp.MArray2D[np.float128])
 
 assert_type(skew(_m_f64_nd, 0, False), onp.MArray[np.float64] | Any)
 assert_type(skew(_c64_nd), onp.MArray[np.complex128] | Any)
+
+###
+# kurtosis
+
+assert_type(kurtosis(_f64_2d, None), np.float64)
+assert_type(kurtosis(_c128_2d, axis=None), np.complex128)
+assert_type(kurtosis(_f80_2d, None), np.float128)
+
+assert_type(kurtosis(_py_i_1d), np.float64)
+assert_type(kurtosis(_f32_1d), np.float64)
+assert_type(kurtosis(_py_c_1d), np.complex128)
+assert_type(kurtosis(_f80_1d), np.float128)
+
+assert_type(kurtosis(_f16_2d), onp.MArray1D[np.float64])
+assert_type(kurtosis(_c64_2d, 1), onp.MArray1D[np.complex128])
+assert_type(kurtosis(_f80_2d), onp.MArray1D[np.float128])
+
+assert_type(kurtosis(_f32_3d), onp.MArray2D[np.float64])
+assert_type(kurtosis(_f80_3d), onp.MArray2D[np.float128])
+
+assert_type(kurtosis(_m_f64_nd, 0, True, False), onp.MArray[np.float64] | Any)
+assert_type(kurtosis(_c64_nd), onp.MArray[np.complex128] | Any)
+
+# fisher=False returns a 0d `MaskedArray` instead of a scalar
+assert_type(kurtosis(_f64_1d, 0, False), onp.MArray[np.float64] | Any)
+assert_type(kurtosis(_f64_2d, None, False), onp.MArray[np.float64] | Any)
