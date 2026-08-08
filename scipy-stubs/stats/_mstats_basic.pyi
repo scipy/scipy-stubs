@@ -94,6 +94,7 @@ __all__ = [
 type _MArrayOrND[ScalarT: np.generic] = ScalarT | onp.MArray[ScalarT]
 
 type _AsF64 = np.float64 | npc.integer | np.bool
+type _ToJustF64 = np.float64 | np.float32 | np.float16
 
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
@@ -136,6 +137,7 @@ _SkewT_co = TypeVar("_SkewT_co", covariant=True, bound=npc.inexact, default=Any)
 _KurtT_co = TypeVar("_KurtT_co", covariant=True, bound=_MArrayOrND[npc.inexact], default=_MArrayOrND[Any])
 
 _SlopeT_co = TypeVar("_SlopeT_co", covariant=True, bound=npc.inexact, default=Any)
+_ModeT_co = TypeVar("_ModeT_co", covariant=True, bound=onp.ArrayND[Any], default=onp.ArrayND[np.float64 | Any])
 
 @type_check_only
 class _TestResult(NamedTuple, Generic[_NDT_f_co, _NDT_fc_co]):
@@ -160,9 +162,9 @@ _KendallTauSeasonalResult = TypedDict(
 
 trimdoc: Final[str] = ...
 
-class ModeResult(NamedTuple):
-    mode: onp.MArray[np.float64]
-    count: onp.MArray[np.float64]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
+class ModeResult(NamedTuple, Generic[_ModeT_co]):
+    mode: _ModeT_co
+    count: _ModeT_co  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleMethodOverride]
 
 class DescribeResult(NamedTuple, Generic[_ShapeT_co, _MinMaxT_co, _MeanT_co, _VarT_co, _SkewT_co, _KurtT_co]):
     nobs: onp.Array[_ShapeT_co, np.int_]
@@ -209,7 +211,28 @@ def argstoarray(*args: onp.ToFloatND) -> onp.MArray[np.float64]: ...
 def find_repeats(arr: onp.ToFloatND) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
 def count_tied_groups(x: onp.ToFloatND, use_missing: bool = False) -> dict[np.intp, np.intp | int]: ...
 def rankdata(data: onp.ToFloatND, axis: SupportsIndex | None = None, use_missing: bool = False) -> onp.ArrayND[np.float64]: ...
-def mode(a: onp.ToFloatND, axis: SupportsIndex | None = 0) -> ModeResult: ...
+
+#
+@overload  # ?d ~f64, axis=None
+def mode(a: onp.ToArrayND[op.JustFloat, _ToJustF64], axis: None) -> ModeResult[onp.Array1D[np.float64]]: ...
+@overload  # ?d, axis=None
+def mode(a: onp.ToFloatND, axis: None) -> ModeResult[onp.Array1D[np.float64 | Any]]: ...
+@overload  # ?d, axis=<given> (default)
+def mode(a: _ToFloatStrictND, axis: SupportsIndex = 0) -> ModeResult[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # 1d ~f64, axis=<given> (default)
+def mode(a: onp.ToArrayStrict1D[op.JustFloat, _ToJustF64], axis: SupportsIndex = 0) -> ModeResult[onp.Array1D[np.float64]]: ...
+@overload  # 1d, axis=<given> (default)
+def mode(a: onp.ToFloatStrict1D, axis: SupportsIndex = 0) -> ModeResult[onp.Array1D[np.float64 | Any]]: ...
+@overload  # 2d ~f64, axis=<given> (default)
+def mode(a: onp.ToArrayStrict2D[op.JustFloat, _ToJustF64], axis: SupportsIndex = 0) -> ModeResult[onp.MArray2D[np.float64]]: ...
+@overload  # 2d, axis=<given> (default)
+def mode(a: onp.ToFloatStrict2D, axis: SupportsIndex = 0) -> ModeResult[onp.MArray2D[np.float64 | Any]]: ...
+@overload  # 3d ~f64, axis=<given> (default)
+def mode(a: onp.ToArrayStrict3D[op.JustFloat, _ToJustF64], axis: SupportsIndex = 0) -> ModeResult[onp.MArray3D[np.float64]]: ...
+@overload  # 3d, axis=<given> (default)
+def mode(a: onp.ToFloatStrict3D, axis: SupportsIndex = 0) -> ModeResult[onp.MArray3D[np.float64 | Any]]: ...
+@overload  # fallback
+def mode(a: onp.ToFloatND, axis: SupportsIndex | None = 0) -> ModeResult[onp.ArrayND[np.float64 | Any]]: ...
 
 #
 @overload
