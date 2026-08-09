@@ -221,11 +221,13 @@ class SenSeasonalSlopesResult(  # zuban: ignore[type-var]
     @property
     def inter_slope(self, /) -> _SlopeT_co: ...
 
-# TODO(jorenham): Overloads for scalar vs. array
-# TODO(jorenham): Overloads for specific dtypes
-
+#
 def argstoarray(*args: onp.ToFloatND) -> onp.MArray[np.float64]: ...
-def find_repeats(arr: onp.ToFloatND) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
+
+#
+def find_repeats(arr: onp.ToFloatND) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]]: ...
+
+#
 def count_tied_groups(x: onp.ToFloatND, use_missing: bool = False) -> dict[np.intp, np.intp | int]: ...
 
 #
