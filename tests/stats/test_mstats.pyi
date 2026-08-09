@@ -13,6 +13,7 @@ from scipy.stats.mstats import (
     describe,
     f_oneway,
     friedmanchisquare,
+    hdmedian,
     hdquantiles,
     kendalltau,
     kendalltau_seasonal,
@@ -616,6 +617,16 @@ assert_type(hdquantiles(_f64_1d, axis=0, var=True), onp.MArray2D[np.float64])
 assert_type(hdquantiles(_f64_2d, axis=0), onp.MArray2D[np.float64])
 assert_type(hdquantiles(_f16_2d, axis=1, var=True), onp.MArray3D[np.float64])
 assert_type(hdquantiles(_f64_nd, axis=0), onp.MArray[np.float64])
+
+# hdmedian
+assert_type(hdmedian(_py_f_1d), onp.MArray0D[np.float64])
+assert_type(hdmedian(_f32_3d, None), onp.MArray0D[np.float64])
+assert_type(hdmedian(_i8_2d), onp.MArray1D[np.float64])
+assert_type(hdmedian(_f64_nd, 0), onp.MArray[np.float64])
+assert_type(hdmedian(_f16_1d, var=True), onp.MArray1D[np.float64])
+assert_type(hdmedian(_f64_2d, None, True), onp.MArray1D[np.float64])
+assert_type(hdmedian(_f64_2d, 0, True), onp.MArray2D[np.float64])
+assert_type(hdmedian(_py_i_2d, var=True), onp.MArray2D[np.float64])
 
 # rsh
 assert_type(rsh(_py_i_1d), onp.MArray1D[np.float64])
