@@ -296,7 +296,9 @@ def msign[ShapeT: tuple[int, ...], ScalarT: npc.number | np.object_](
     x: onp.ArrayND[ScalarT, ShapeT],
 ) -> onp.ArrayND[ScalarT, ShapeT]: ...
 @overload  # Nd T@+number
-def msign[ScalarT: npc.number | np.object_](x: onp.ToArrayND[ScalarT, ScalarT]) -> onp.ArrayND[ScalarT]: ...
+def msign[ScalarT: npc.number | np.object_](
+    x: onp.ToArrayND[ScalarT, ScalarT],
+) -> onp.ArrayND[ScalarT, _WorkaroundForPyright]: ...
 
 # NOTE: flattens input
 @overload  # ~f64 | +integer, +floating
