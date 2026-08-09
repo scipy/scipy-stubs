@@ -95,8 +95,10 @@ type _MArrayOrND[ScalarT: np.generic] = ScalarT | onp.MArray[ScalarT]
 
 type _ListND[T] = onp.SequenceND[list[T]] | list[T]
 
-type _AsF64 = np.float64 | npc.integer | np.bool
 type _ToJustF64 = np.float64 | np.float32 | np.float16
+type _ToJustC128 = np.complex128 | np.complex64
+type _ToF64 = _ToJustF64 | npc.integer | np.bool
+type _AsF64 = np.float64 | npc.integer | np.bool
 
 type _ToLimits = onp.ToJustFloat64 | onp.ToFloat1D | tuple[onp.ToFloat | None, onp.ToFloat | None] | None
 type _ToInclusive = tuple[op.CanBool, op.CanBool]
@@ -382,7 +384,7 @@ def ttest_1samp(
 ) -> Ttest_1sampResult[np.float64, np.float64]: ...
 @overload  # ?d ~c128, axis=None
 def ttest_1samp(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128],
     popmean: onp.ToComplex | onp.ToComplexND,
     axis: None,
     alternative: Alternative = "two-sided",
@@ -393,7 +395,7 @@ def ttest_1samp(
 ) -> Ttest_1sampResult[onp.MArray[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 @overload  # ?d ~c128, axis=<given> (default)
 def ttest_1samp(
-    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape],
+    a: onp.ArrayND[_ToJustC128, _JustAnyShape],
     popmean: onp.ToComplex | onp.ToComplexND,
     axis: SupportsIndex = 0,
     alternative: Alternative = "two-sided",
@@ -404,7 +406,7 @@ def ttest_1samp(
 ) -> Ttest_1sampResult[np.float64, np.float64]: ...
 @overload  # 1d ~c128, axis=<given> (default)
 def ttest_1samp(
-    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128],
     popmean: onp.ToComplex | onp.ToComplexND,
     axis: SupportsIndex = 0,
     alternative: Alternative = "two-sided",
@@ -415,7 +417,7 @@ def ttest_1samp(
 ) -> Ttest_1sampResult[onp.MArray1D[np.float64], onp.MArray1D[np.float64]]: ...
 @overload  # 2d ~c128, axis=<given> (default)
 def ttest_1samp(
-    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128],
     popmean: onp.ToComplex | onp.ToComplexND,
     axis: SupportsIndex = 0,
     alternative: Alternative = "two-sided",
@@ -426,7 +428,7 @@ def ttest_1samp(
 ) -> Ttest_1sampResult[onp.MArray2D[np.float64], onp.MArray2D[np.float64]]: ...
 @overload  # 3d ~c128, axis=<given> (default)
 def ttest_1samp(
-    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayStrict3D[op.JustComplex, _ToJustC128],
     popmean: onp.ToComplex | onp.ToComplexND,
     axis: SupportsIndex = 0,
     alternative: Alternative = "two-sided",
@@ -446,7 +448,7 @@ def ttest_ind(
 ) -> Ttest_indResult[np.float64, np.float64]: ...
 @overload  # ?d ~c128, ?d, axis=None
 def ttest_ind(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128],
     b: onp.ToComplexND,
     axis: None,
     equal_var: bool = True,
@@ -455,7 +457,7 @@ def ttest_ind(
 @overload  # ?d, ?d ~c128, axis=None
 def ttest_ind(
     a: onp.ToComplexND,
-    b: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    b: onp.ToArrayND[op.JustComplex, _ToJustC128],
     axis: None,
     equal_var: bool = True,
     alternative: Alternative = "two-sided",
@@ -470,7 +472,7 @@ def ttest_ind(
 ) -> Ttest_indResult[onp.MArray[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 @overload  # ?d ~c128, ?d, axis=<given> (default)
 def ttest_ind(
-    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape],
+    a: onp.ArrayND[_ToJustC128, _JustAnyShape],
     b: _ToComplexStrictND,
     axis: SupportsIndex = 0,
     equal_var: bool = True,
@@ -479,7 +481,7 @@ def ttest_ind(
 @overload  # ?d, ?d ~c128, axis=<given> (default)
 def ttest_ind(
     a: _ToComplexStrictND,
-    b: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape],
+    b: onp.ArrayND[_ToJustC128, _JustAnyShape],
     axis: SupportsIndex = 0,
     equal_var: bool = True,
     alternative: Alternative = "two-sided",
@@ -494,7 +496,7 @@ def ttest_ind(
 ) -> Ttest_indResult[np.float64, np.float64]: ...
 @overload  # 1d ~c128, 1d, axis=<given> (default)
 def ttest_ind(
-    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128],
     b: onp.ToComplexStrict1D,
     axis: SupportsIndex = 0,
     equal_var: bool = True,
@@ -503,7 +505,7 @@ def ttest_ind(
 @overload  # 1d, 1d ~c128, axis=<given> (default)
 def ttest_ind(
     a: onp.ToComplexStrict1D,
-    b: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    b: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128],
     axis: SupportsIndex = 0,
     equal_var: bool = True,
     alternative: Alternative = "two-sided",
@@ -518,7 +520,7 @@ def ttest_ind(
 ) -> Ttest_indResult[onp.MArray1D[np.float64], onp.MArray1D[np.float64]]: ...
 @overload  # 2d ~c128, 2d, axis=<given> (default)
 def ttest_ind(
-    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128],
     b: onp.ToComplexStrict2D,
     axis: SupportsIndex = 0,
     equal_var: bool = True,
@@ -527,7 +529,7 @@ def ttest_ind(
 @overload  # 2d, 2d ~c128, axis=<given> (default)
 def ttest_ind(
     a: onp.ToComplexStrict2D,
-    b: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    b: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128],
     axis: SupportsIndex = 0,
     equal_var: bool = True,
     alternative: Alternative = "two-sided",
@@ -1077,7 +1079,7 @@ def trimmed_mean(
 ) -> np.float64: ...
 @overload  # ?d ~c128, axis=None (default)
 def trimmed_mean(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128],
     limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
     inclusive: _ToInclusive = (1, 1),
     relative: bool = True,
@@ -1102,7 +1104,7 @@ def trimmed_mean(
 ) -> onp.MArray[np.float64] | Any: ...
 @overload  # ?d ~c128, axis=<given>
 def trimmed_mean(
-    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape],
+    a: onp.ArrayND[_ToJustC128, _JustAnyShape],
     limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
     inclusive: _ToInclusive = (1, 1),
     relative: bool = True,
@@ -1129,7 +1131,7 @@ def trimmed_mean(
 ) -> np.float64: ...
 @overload  # 1d ~c128, axis=<given>
 def trimmed_mean(
-    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128],
     limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
     inclusive: _ToInclusive = (1, 1),
     relative: bool = True,
@@ -1156,7 +1158,7 @@ def trimmed_mean(
 ) -> onp.MArray1D[np.float64]: ...
 @overload  # 2d ~c128, axis=<given>
 def trimmed_mean(
-    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128],
     limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
     inclusive: _ToInclusive = (1, 1),
     relative: bool = True,
@@ -1183,7 +1185,7 @@ def trimmed_mean(
 ) -> onp.MArray2D[np.float64]: ...
 @overload  # 3d ~c128, axis=<given>
 def trimmed_mean(
-    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayStrict3D[op.JustComplex, _ToJustC128],
     limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
     inclusive: _ToInclusive = (1, 1),
     relative: bool = True,
@@ -1209,7 +1211,7 @@ def trimmed_mean(
 ) -> onp.MArray[np.float64] | Any: ...
 @overload  # Nd ~c128
 def trimmed_mean(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128],
     limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
     inclusive: _ToInclusive = (1, 1),
     relative: bool = True,
@@ -1491,7 +1493,7 @@ def tmean(
 ) -> np.float64: ...
 @overload  # ?d ~c128, axis=None (default)
 def tmean(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: None = None,
@@ -1513,7 +1515,7 @@ def tmean(
 ) -> onp.MArray[np.float64] | Any: ...
 @overload  # ?d ~c64, axis=<given>
 def tmean(
-    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape],
+    a: onp.ArrayND[_ToJustC128, _JustAnyShape],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     *,
@@ -1537,7 +1539,7 @@ def tmean(
 ) -> np.float64: ...
 @overload  # 1d ~complex | ~c64, axis=<given>
 def tmean(
-    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     *,
@@ -1561,7 +1563,7 @@ def tmean(
 ) -> onp.MArray1D[np.float64]: ...
 @overload  # 2d ~c128, axis=<given>
 def tmean(
-    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     *,
@@ -1584,7 +1586,7 @@ def tmean(
 ) -> onp.MArray[np.float64] | Any: ...
 @overload  # Nd ~c128
 def tmean(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128],
     limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = None,
@@ -1755,24 +1757,22 @@ def winsorize[ShapeT: tuple[int, ...], ScalarT: npc.number | np.bool](
 @overload  # ?d ~f64, axis=None (positional)
 def moment(a: onp.ToFloat64_ND, moment: onp.ToInt, axis: None) -> np.float64: ...
 @overload  # ?d ~c128, axis=None (positional)
-def moment(a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToInt, axis: None) -> np.complex128: ...
+def moment(a: onp.ToArrayND[op.JustComplex, _ToJustC128], moment: onp.ToInt, axis: None) -> np.complex128: ...
 @overload  # ?d T@inexact80, axis=None (positional)
 def moment[InexactT: npc.inexact80](a: onp.ToArrayND[InexactT, InexactT], moment: onp.ToInt, axis: None) -> InexactT: ...
 @overload  # ?d ~f64, axis=None (keyword)
 def moment(a: onp.ToFloat64_ND, moment: onp.ToInt = 1, *, axis: None) -> np.float64: ...
 @overload  # ?d ~c128, axis=None (keyword)
-def moment(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToInt = 1, *, axis: None
-) -> np.complex128: ...
+def moment(a: onp.ToArrayND[op.JustComplex, _ToJustC128], moment: onp.ToInt = 1, *, axis: None) -> np.complex128: ...
 @overload  # ?d T@inexact80, axis=None (keyword)
 def moment[InexactT: npc.inexact80](a: onp.ToArrayND[InexactT, InexactT], moment: onp.ToInt = 1, *, axis: None) -> InexactT: ...
 @overload  # ?d ~f64, axis=<given> (default)
 def moment(
-    a: onp.ArrayND[_AsF64 | np.float32 | np.float16, _JustAnyShape], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+    a: onp.ArrayND[_ToF64, _JustAnyShape], moment: onp.ToInt = 1, axis: SupportsIndex = 0
 ) -> onp.MArray[np.float64] | Any: ...
 @overload  # ?d ~c128, axis=<given> (default)
 def moment(
-    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+    a: onp.ArrayND[_ToJustC128, _JustAnyShape], moment: onp.ToInt = 1, axis: SupportsIndex = 0
 ) -> onp.MArray[np.complex128] | Any: ...
 @overload  # ?d T@inexact80, axis=<given> (default)
 def moment[InexactT: npc.inexact80](
@@ -1782,7 +1782,7 @@ def moment[InexactT: npc.inexact80](
 def moment(a: onp.ToFloat64Strict1D, moment: onp.ToInt = 1, axis: SupportsIndex = 0) -> np.float64: ...
 @overload  # 1d ~c128, axis=<given> (default)
 def moment(
-    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+    a: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128], moment: onp.ToInt = 1, axis: SupportsIndex = 0
 ) -> np.complex128: ...
 @overload  # 1d T@inexact80, axis=<given> (default)
 def moment[InexactT: npc.inexact80](
@@ -1792,7 +1792,7 @@ def moment[InexactT: npc.inexact80](
 def moment(a: onp.ToFloat64Strict2D, moment: onp.ToInt = 1, axis: SupportsIndex = 0) -> onp.MArray1D[np.float64]: ...
 @overload  # 2d ~c128, axis=<given> (default)
 def moment(
-    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+    a: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128], moment: onp.ToInt = 1, axis: SupportsIndex = 0
 ) -> onp.MArray1D[np.complex128]: ...
 @overload  # 2d T@inexact80, axis=<given> (default)
 def moment[InexactT: npc.inexact80](
@@ -1802,7 +1802,7 @@ def moment[InexactT: npc.inexact80](
 def moment(a: onp.ToFloat64Strict3D, moment: onp.ToInt = 1, axis: SupportsIndex = 0) -> onp.MArray2D[np.float64]: ...
 @overload  # 3d ~c128, axis=<given> (default)
 def moment(
-    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToInt = 1, axis: SupportsIndex = 0
+    a: onp.ToArrayStrict3D[op.JustComplex, _ToJustC128], moment: onp.ToInt = 1, axis: SupportsIndex = 0
 ) -> onp.MArray2D[np.complex128]: ...
 @overload  # 3d T@inexact80, axis=<given> (default)
 def moment[InexactT: npc.inexact80](
@@ -1812,7 +1812,7 @@ def moment[InexactT: npc.inexact80](
 def moment(a: onp.ToFloat64_ND, moment: onp.ToIntND, axis: SupportsIndex | None = 0) -> onp.MArray[np.float64]: ...
 @overload  # ?d ~c128, moment: 1d
 def moment(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], moment: onp.ToIntND, axis: SupportsIndex | None = 0
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128], moment: onp.ToIntND, axis: SupportsIndex | None = 0
 ) -> onp.MArray[np.complex128]: ...
 @overload  # ?d T@inexact80, moment: 1d
 def moment[InexactT: npc.inexact80](
@@ -1824,9 +1824,7 @@ def moment(
 ) -> onp.MArray[np.float64] | Any: ...
 @overload  # Nd ~c128
 def moment(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
-    moment: onp.ToInt | onp.ToIntND = 1,
-    axis: SupportsIndex | None = 0,
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128], moment: onp.ToInt | onp.ToIntND = 1, axis: SupportsIndex | None = 0
 ) -> onp.MArray[np.complex128] | Any: ...
 @overload  # Nd T@inexact80
 def moment[InexactT: npc.inexact80](
@@ -1897,20 +1895,16 @@ def variation[InexactT: npc.inexact](
 @overload  # ?d ~f64, axis=None
 def skew(a: onp.ToFloat64_ND, axis: None, bias: bool = True) -> onp.MArray0D[np.float64]: ...
 @overload  # ?d ~c128, axis=None
-def skew(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], axis: None, bias: bool = True
-) -> onp.MArray0D[np.complex128]: ...
+def skew(a: onp.ToArrayND[op.JustComplex, _ToJustC128], axis: None, bias: bool = True) -> onp.MArray0D[np.complex128]: ...
 @overload  # ?d T@inexact80, axis=None
 def skew[InexactT: npc.inexact80](
     a: onp.ToArrayND[InexactT, InexactT], axis: None, bias: bool = True
 ) -> onp.MArray0D[InexactT]: ...
 @overload  # ?d ~f64, axis=<given> (default)
-def skew(
-    a: onp.ArrayND[_AsF64 | np.float32 | np.float16, _JustAnyShape], axis: SupportsIndex = 0, bias: bool = True
-) -> onp.MArray[np.float64] | Any: ...
+def skew(a: onp.ArrayND[_ToF64, _JustAnyShape], axis: SupportsIndex = 0, bias: bool = True) -> onp.MArray[np.float64] | Any: ...
 @overload  # ?d ~c128, axis=<given> (default)
 def skew(
-    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape], axis: SupportsIndex = 0, bias: bool = True
+    a: onp.ArrayND[_ToJustC128, _JustAnyShape], axis: SupportsIndex = 0, bias: bool = True
 ) -> onp.MArray[np.complex128] | Any: ...
 @overload  # ?d T@inexact80, axis=<given> (default)
 def skew[InexactT: npc.inexact80](
@@ -1920,7 +1914,7 @@ def skew[InexactT: npc.inexact80](
 def skew(a: onp.ToFloat64Strict1D, axis: SupportsIndex = 0, bias: bool = True) -> onp.MArray0D[np.float64]: ...
 @overload  # 1d ~c128, axis=<given> (default)
 def skew(
-    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64], axis: SupportsIndex = 0, bias: bool = True
+    a: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, bias: bool = True
 ) -> onp.MArray0D[np.complex128]: ...
 @overload  # 1d T@inexact80, axis=<given> (default)
 def skew[InexactT: npc.inexact80](
@@ -1930,7 +1924,7 @@ def skew[InexactT: npc.inexact80](
 def skew(a: onp.ToFloat64Strict2D, axis: SupportsIndex = 0, bias: bool = True) -> onp.MArray1D[np.float64]: ...
 @overload  # 2d ~c128, axis=<given> (default)
 def skew(
-    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64], axis: SupportsIndex = 0, bias: bool = True
+    a: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, bias: bool = True
 ) -> onp.MArray1D[np.complex128]: ...
 @overload  # 2d T@inexact80, axis=<given> (default)
 def skew[InexactT: npc.inexact80](
@@ -1940,7 +1934,7 @@ def skew[InexactT: npc.inexact80](
 def skew(a: onp.ToFloat64Strict3D, axis: SupportsIndex = 0, bias: bool = True) -> onp.MArray2D[np.float64]: ...
 @overload  # 3d ~c128, axis=<given> (default)
 def skew(
-    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64], axis: SupportsIndex = 0, bias: bool = True
+    a: onp.ToArrayStrict3D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, bias: bool = True
 ) -> onp.MArray2D[np.complex128]: ...
 @overload  # 3d T@inexact80, axis=<given> (default)
 def skew[InexactT: npc.inexact80](
@@ -1950,7 +1944,7 @@ def skew[InexactT: npc.inexact80](
 def skew(a: onp.ToFloat64_ND, axis: SupportsIndex | None = 0, bias: bool = True) -> onp.MArray[np.float64] | Any: ...
 @overload  # Nd ~c128
 def skew(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], axis: SupportsIndex | None = 0, bias: bool = True
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128], axis: SupportsIndex | None = 0, bias: bool = True
 ) -> onp.MArray[np.complex128] | Any: ...
 @overload  # Nd T@inexact80
 def skew[InexactT: npc.inexact80](
@@ -1962,7 +1956,7 @@ def skew[InexactT: npc.inexact80](
 def kurtosis(a: onp.ToFloat64_ND, axis: None, fisher: Literal[True] = True, bias: bool = True) -> np.float64: ...
 @overload  # ?d ~c128, axis=None, fisher=True
 def kurtosis(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], axis: None, fisher: Literal[True] = True, bias: bool = True
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128], axis: None, fisher: Literal[True] = True, bias: bool = True
 ) -> np.complex128: ...
 @overload  # ?d T@inexact80, axis=None, fisher=True
 def kurtosis[InexactT: npc.inexact80](
@@ -1970,14 +1964,11 @@ def kurtosis[InexactT: npc.inexact80](
 ) -> InexactT: ...
 @overload  # ?d ~f64, axis=<given> (default)
 def kurtosis(
-    a: onp.ArrayND[_AsF64 | np.float32 | np.float16, _JustAnyShape],
-    axis: SupportsIndex = 0,
-    fisher: bool = True,
-    bias: bool = True,
+    a: onp.ArrayND[_ToF64, _JustAnyShape], axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
 ) -> onp.MArray[np.float64] | Any: ...
 @overload  # ?d ~c128, axis=<given> (default)
 def kurtosis(
-    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape], axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
+    a: onp.ArrayND[_ToJustC128, _JustAnyShape], axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
 ) -> onp.MArray[np.complex128] | Any: ...
 @overload  # ?d T@inexact80, axis=<given> (default)
 def kurtosis[InexactT: npc.inexact80](
@@ -1989,10 +1980,7 @@ def kurtosis(
 ) -> np.float64: ...
 @overload  # 1d ~c128, fisher=True (default)
 def kurtosis(
-    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
-    axis: SupportsIndex = 0,
-    fisher: Literal[True] = True,
-    bias: bool = True,
+    a: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, fisher: Literal[True] = True, bias: bool = True
 ) -> np.complex128: ...
 @overload  # 1d T@inexact80, fisher=True (default)
 def kurtosis[InexactT: npc.inexact80](
@@ -2004,10 +1992,7 @@ def kurtosis(
 ) -> onp.MArray1D[np.float64]: ...
 @overload  # 2d ~c128, axis=<given> (default)
 def kurtosis(
-    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
-    axis: SupportsIndex = 0,
-    fisher: bool = True,
-    bias: bool = True,
+    a: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
 ) -> onp.MArray1D[np.complex128]: ...
 @overload  # 2d T@inexact80, axis=<given> (default)
 def kurtosis[InexactT: npc.inexact80](
@@ -2019,10 +2004,7 @@ def kurtosis(
 ) -> onp.MArray2D[np.float64]: ...
 @overload  # 3d ~c128, axis=<given> (default)
 def kurtosis(
-    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64],
-    axis: SupportsIndex = 0,
-    fisher: bool = True,
-    bias: bool = True,
+    a: onp.ToArrayStrict3D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, fisher: bool = True, bias: bool = True
 ) -> onp.MArray2D[np.complex128]: ...
 @overload  # 3d T@inexact80, axis=<given> (default)
 def kurtosis[InexactT: npc.inexact80](
@@ -2034,10 +2016,7 @@ def kurtosis(
 ) -> onp.MArray[np.float64] | Any: ...
 @overload  # Nd ~c128
 def kurtosis(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
-    axis: SupportsIndex | None = 0,
-    fisher: bool = True,
-    bias: bool = True,
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128], axis: SupportsIndex | None = 0, fisher: bool = True, bias: bool = True
 ) -> onp.MArray[np.complex128] | Any: ...
 @overload  # Nd T@inexact80
 def kurtosis[InexactT: npc.inexact80](
@@ -2213,7 +2192,7 @@ def stde_median(data: onp.ToComplexND, axis: SupportsIndex | None = None) -> _MA
 def skewtest(a: onp.ToFloatND, axis: None, alternative: Alternative = "two-sided") -> SkewtestResult[np.float64, np.float64]: ...
 @overload  # ?d ~c128, axis=None
 def skewtest(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], axis: None, alternative: Alternative = "two-sided"
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128], axis: None, alternative: Alternative = "two-sided"
 ) -> SkewtestResult[np.float64, np.complex128]: ...
 @overload  # ?d, axis=<given> (default)
 def skewtest(
@@ -2221,7 +2200,7 @@ def skewtest(
 ) -> SkewtestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 @overload  # ?d ~c128, axis=<given> (default)
 def skewtest(
-    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+    a: onp.ArrayND[_ToJustC128, _JustAnyShape], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
 ) -> SkewtestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.complex128] | Any]: ...
 @overload  # 1d, axis=<given> (default)
 def skewtest(
@@ -2229,9 +2208,7 @@ def skewtest(
 ) -> SkewtestResult[np.float64, np.float64]: ...
 @overload  # 1d ~c128, axis=<given> (default)
 def skewtest(
-    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
-    axis: SupportsIndex = 0,
-    alternative: Alternative = "two-sided",
+    a: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
 ) -> SkewtestResult[np.float64, np.complex128]: ...
 @overload  # 2d, axis=<given> (default)
 def skewtest(
@@ -2239,9 +2216,7 @@ def skewtest(
 ) -> SkewtestResult[onp.Array1D[np.float64], onp.MArray1D[np.float64]]: ...
 @overload  # 2d ~c128, axis=<given> (default)
 def skewtest(
-    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
-    axis: SupportsIndex = 0,
-    alternative: Alternative = "two-sided",
+    a: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
 ) -> SkewtestResult[onp.Array1D[np.float64], onp.MArray1D[np.complex128]]: ...
 @overload  # 3d, axis=<given> (default)
 def skewtest(
@@ -2249,9 +2224,7 @@ def skewtest(
 ) -> SkewtestResult[onp.Array2D[np.float64], onp.MArray2D[np.float64]]: ...
 @overload  # 3d ~c128, axis=<given> (default)
 def skewtest(
-    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64],
-    axis: SupportsIndex = 0,
-    alternative: Alternative = "two-sided",
+    a: onp.ToArrayStrict3D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
 ) -> SkewtestResult[onp.Array2D[np.float64], onp.MArray2D[np.complex128]]: ...
 @overload  # fallback
 def skewtest(
@@ -2265,7 +2238,7 @@ def kurtosistest(
 ) -> KurtosistestResult[np.float64, np.float64]: ...
 @overload  # ?d ~c128, axis=None
 def kurtosistest(
-    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], axis: None, alternative: Alternative = "two-sided"
+    a: onp.ToArrayND[op.JustComplex, _ToJustC128], axis: None, alternative: Alternative = "two-sided"
 ) -> KurtosistestResult[np.float64, np.complex128]: ...
 @overload  # ?d, axis=<given> (default)
 def kurtosistest(
@@ -2273,7 +2246,7 @@ def kurtosistest(
 ) -> KurtosistestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 @overload  # ?d ~c128, axis=<given> (default)
 def kurtosistest(
-    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+    a: onp.ArrayND[_ToJustC128, _JustAnyShape], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
 ) -> KurtosistestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.complex128] | Any]: ...
 @overload  # 1d, axis=<given> (default)
 def kurtosistest(
@@ -2281,9 +2254,7 @@ def kurtosistest(
 ) -> KurtosistestResult[np.float64, np.float64]: ...
 @overload  # 1d ~c128, axis=<given> (default)
 def kurtosistest(
-    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
-    axis: SupportsIndex = 0,
-    alternative: Alternative = "two-sided",
+    a: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
 ) -> KurtosistestResult[np.float64, np.complex128]: ...
 @overload  # 2d, axis=<given> (default)
 def kurtosistest(
@@ -2291,9 +2262,7 @@ def kurtosistest(
 ) -> KurtosistestResult[onp.Array1D[np.float64], onp.MArray1D[np.float64]]: ...
 @overload  # 2d ~c128, axis=<given> (default)
 def kurtosistest(
-    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
-    axis: SupportsIndex = 0,
-    alternative: Alternative = "two-sided",
+    a: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
 ) -> KurtosistestResult[onp.Array1D[np.float64], onp.MArray1D[np.complex128]]: ...
 @overload  # 3d, axis=<given> (default)
 def kurtosistest(
@@ -2301,9 +2270,7 @@ def kurtosistest(
 ) -> KurtosistestResult[onp.Array2D[np.float64], onp.MArray2D[np.float64]]: ...
 @overload  # 3d ~c128, axis=<given> (default)
 def kurtosistest(
-    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64],
-    axis: SupportsIndex = 0,
-    alternative: Alternative = "two-sided",
+    a: onp.ToArrayStrict3D[op.JustComplex, _ToJustC128], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
 ) -> KurtosistestResult[onp.Array2D[np.float64], onp.MArray2D[np.complex128]]: ...
 @overload  # fallback
 def kurtosistest(
@@ -2353,7 +2320,7 @@ def mquantiles[FloatT: npc.floating80](
 ) -> onp.Array1D[FloatT]: ...
 @overload  # ?d ~f64, axis=<given>
 def mquantiles(
-    a: onp.ArrayND[_AsF64 | np.float32 | np.float16, _JustAnyShape],
+    a: onp.ArrayND[_ToF64, _JustAnyShape],
     prob: onp.ToFloat | onp.ToFloatND = (0.25, 0.5, 0.75),
     alphap: onp.ToFloat = 0.4,
     betap: onp.ToFloat = 0.4,
@@ -2413,13 +2380,102 @@ def mquantiles[FloatT: npc.floating80](
 ) -> onp.MArray2D[FloatT]: ...
 
 #
+@overload  # ?d ~f64
 def scoreatpercentile(
-    data: onp.ToFloatND,
+    data: onp.ArrayND[_ToF64, _JustAnyShape],
     per: onp.ToFloat,
     limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
     alphap: onp.ToFloat = 0.4,
     betap: onp.ToFloat = 0.4,
-) -> onp.MArray[np.float64]: ...
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # ?d ~c128
+def scoreatpercentile(
+    data: onp.ArrayND[_ToJustC128, _JustAnyShape],
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # ?d T@inexact80
+def scoreatpercentile[InexactT: npc.inexact80](
+    data: onp.ArrayND[InexactT, _JustAnyShape],
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray[InexactT] | Any: ...
+@overload  # 1d ~f64
+def scoreatpercentile(
+    data: onp.ToFloat64Strict1D,
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray0D[np.float64]: ...
+@overload  # 1d ~c128
+def scoreatpercentile(
+    data: onp.ToArrayStrict1D[op.JustComplex, _ToJustC128],
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray0D[np.complex128]: ...
+@overload  # 1d T@inexact80
+def scoreatpercentile[InexactT: npc.inexact80](
+    data: onp.ToArrayStrict1D[InexactT, InexactT],
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray0D[InexactT]: ...
+@overload  # 2d ~f64
+def scoreatpercentile(
+    data: onp.ToFloat64Strict2D,
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray1D[np.float64]: ...
+@overload  # 2d ~c128
+def scoreatpercentile(
+    data: onp.ToArrayStrict2D[op.JustComplex, _ToJustC128],
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray1D[np.complex128]: ...
+@overload  # 2d T@inexact80
+def scoreatpercentile[InexactT: npc.inexact80](
+    data: onp.ToArrayStrict2D[InexactT, InexactT],
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray1D[InexactT]: ...
+@overload  # Nd ~f64
+def scoreatpercentile(
+    data: onp.ToFloat64_ND,
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # Nd ~c128
+def scoreatpercentile(
+    data: onp.ToArrayND[op.JustComplex, _ToJustC128],
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray[np.complex128] | Any: ...
+@overload  # Nd T@inexact80
+def scoreatpercentile[InexactT: npc.inexact80](
+    data: onp.ToArrayND[InexactT, InexactT],
+    per: onp.ToFloat,
+    limit: tuple[onp.ToFloat, onp.ToFloat] | tuple[()] = (),
+    alphap: onp.ToFloat = 0.4,
+    betap: onp.ToFloat = 0.4,
+) -> onp.MArray[InexactT] | Any: ...
 
 #
 def plotting_positions(data: onp.ToComplexND, alpha: onp.ToFloat = 0.4, beta: onp.ToFloat = 0.4) -> onp.MArray1D[np.float64]: ...

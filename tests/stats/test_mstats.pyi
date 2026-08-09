@@ -42,6 +42,7 @@ from scipy.stats.mstats import (
     pointbiserialr,
     rankdata,
     rsh,
+    scoreatpercentile,
     sem,
     sen_seasonal_slopes,
     siegelslopes,
@@ -694,7 +695,18 @@ assert_type(mquantiles(_f64_nd, axis=0), onp.MArray[np.float64] | Any)
 assert_type(mquantiles(_f80_nd, axis=0), onp.MArray[np.float128] | Any)
 
 # scoreatpercentile
-# TODO
+assert_type(scoreatpercentile(_i8_nd, 50), onp.MArray[np.float64] | Any)
+assert_type(scoreatpercentile(_f80_nd, 50), onp.MArray[np.float128] | Any)
+assert_type(scoreatpercentile(_c64_nd, 50), onp.MArray[np.complex128] | Any)
+assert_type(scoreatpercentile(_c160_nd, 50), onp.MArray[np.complex256] | Any)
+assert_type(scoreatpercentile(_py_f_1d, 50), onp.MArray0D[np.float64])
+assert_type(scoreatpercentile(_f80_1d, 50), onp.MArray0D[np.float128])
+assert_type(scoreatpercentile(_py_c_1d, 50), onp.MArray0D[np.complex128])
+assert_type(scoreatpercentile(_c160_1d, 50), onp.MArray0D[np.complex256])
+assert_type(scoreatpercentile(_f16_2d, 50), onp.MArray1D[np.float64])
+assert_type(scoreatpercentile(_f80_2d, 50), onp.MArray1D[np.float128])
+assert_type(scoreatpercentile(_c128_2d, 50), onp.MArray1D[np.complex128])
+assert_type(scoreatpercentile(_c160_2d, 50), onp.MArray1D[np.complex256])
 
 # plotting_positions
 assert_type(plotting_positions(_py_c_2d), onp.MArray1D[np.float64])
