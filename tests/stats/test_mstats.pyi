@@ -23,6 +23,7 @@ from scipy.stats.mstats import (
     kurtosistest,
     linregress,
     mannwhitneyu,
+    mjci,
     mode,
     moment,
     mquantiles,
@@ -655,6 +656,13 @@ assert_type(trimmed_mean_ci(_f64_nd, axis=0), onp.ArrayND[np.float64] | Any)
 
 # idealfourths
 # TODO
+
+# mjci
+assert_type(mjci(_py_f_1d), onp.Array1D[np.float64])
+assert_type(mjci(_i8_2d, 0.5), onp.Array1D[np.float64])
+assert_type(mjci(_f16_1d, axis=0), onp.MArray1D[np.float64])
+assert_type(mjci(_f80_2d, axis=1), onp.MArray2D[np.float64])
+assert_type(mjci(_f64_nd, axis=0), onp.ArrayND[np.float64] | Any)
 
 # rsh
 assert_type(rsh(_py_i_1d), onp.MArray1D[np.float64])
