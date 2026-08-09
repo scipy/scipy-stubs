@@ -23,6 +23,12 @@ _IGNORED_QUALNAMES: Final = {
     "scipy.stats.mstats.hmean",
     "scipy.stats.mstats.zmap",
     "scipy.stats.mstats.zscore",
+    # direct aliases of other `scipy.stats.mstats` functions
+    "scipy.stats.mstats.kruskalwallis",
+    "scipy.stats.mstats.ks_twosamp",
+    "scipy.stats.mstats.meppf",
+    "scipy.stats.mstats.trim1",
+    "scipy.stats.mstats.ttest_onesamp",
 }
 
 _PACKAGES_PUBLIC: Final = (

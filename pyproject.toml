@@ -90,7 +90,7 @@ stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", re
 
 [tool.typos]
 files = { extend-exclude = ["*.pyi", ".mypyignore"] }
-default = { extend-ignore-identifiers-re = ['ND|Nd|Theis|TtestResult|SeQUeNCe|whos'] }
+default = { extend-ignore-identifiers-re = ['ND|Nd|Theis|ttest|TtestResult|SeQUeNCe|whos'] }
 
 # mypy
 
