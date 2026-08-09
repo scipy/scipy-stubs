@@ -16,6 +16,7 @@ from scipy.stats.mstats import (
     friedmanchisquare,
     hdmedian,
     hdquantiles,
+    hdquantiles_sd,
     idealfourths,
     kendalltau,
     kendalltau_seasonal,
@@ -639,7 +640,9 @@ assert_type(hdmedian(_f64_2d, 0, True), onp.MArray2D[np.float64])
 assert_type(hdmedian(_py_i_2d, var=True), onp.MArray2D[np.float64])
 
 # hdquantiles_sd
-# TODO
+assert_type(hdquantiles_sd(_py_i_1d), onp.MArray1D[np.float64])
+assert_type(hdquantiles_sd(_f80_3d, 0.5), onp.MArray1D[np.float64])
+assert_type(hdquantiles_sd(_f32_2d, axis=1), onp.MArray1D[np.float64])
 
 # trimmed_mean_ci
 assert_type(trimmed_mean_ci(_py_f_1d), onp.Array1D[np.float64])
