@@ -40,6 +40,7 @@ from scipy.stats.mstats import (
     pointbiserialr,
     rankdata,
     rsh,
+    sem,
     sen_seasonal_slopes,
     siegelslopes,
     skew,
@@ -119,6 +120,7 @@ _c64_nd: onp.ArrayND[np.complex64]
 
 _c160_1d: onp.Array1D[np.complex256]
 _c160_2d: onp.Array2D[np.complex256]
+_c160_nd: onp.ArrayND[np.complex256]
 
 _c128_1d: onp.Array1D[np.complex128]
 _c128_2d: onp.Array2D[np.complex128]
@@ -695,7 +697,14 @@ assert_type(mquantiles(_f80_nd, axis=0), onp.MArray[np.float128] | Any)
 # TODO
 
 # sem
-# TODO
+assert_type(sem(_py_c_2d, axis=None), np.float64)
+assert_type(sem(_f80_nd, axis=None), np.longdouble)
+assert_type(sem(_i8_nd), onp.MArray[np.float64] | Any)
+assert_type(sem(_c160_nd), onp.MArray[np.longdouble] | Any)
+assert_type(sem(_c64_1d), np.float64)
+assert_type(sem(_f80_1d), np.longdouble)
+assert_type(sem(_f16_2d, 1), onp.MArray1D[np.float64])
+assert_type(sem(_c160_2d, 1), onp.MArray1D[np.longdouble])
 
 # f_oneway
 assert_type(f_oneway(_f64_1d), F_onewayResult)
