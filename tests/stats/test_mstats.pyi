@@ -51,6 +51,7 @@ from scipy.stats.mstats import (
     trimboth,
     trimmed_mean,
     trimmed_mean_ci,
+    trimmed_std,
     trimtail,
     ttest_1samp,
     ttest_ind,
@@ -354,7 +355,16 @@ assert_type(trimmed_mean(_f64_2d, (0.2, 0.2), (1, 1), False, 0), onp.MArray[np.f
 # TODO
 
 # trimmed_std
-# TODO
+assert_type(trimmed_std(_py_c_2d), np.float64)
+assert_type(trimmed_std(_f80_2d), np.longdouble)
+assert_type(trimmed_std(_i8_nd, axis=0), onp.MArray[np.float64] | Any)
+assert_type(trimmed_std(_f80_nd, axis=0), onp.MArray[np.longdouble] | Any)
+assert_type(trimmed_std(_c64_1d, axis=0), np.float64)
+assert_type(trimmed_std(_c160_1d, axis=0), np.longdouble)
+assert_type(trimmed_std(_f16_2d, axis=1), onp.MArray1D[np.float64])
+assert_type(trimmed_std(_c160_2d, axis=1), onp.MArray1D[np.longdouble])
+assert_type(trimmed_std(_f32_3d, axis=1), onp.MArray[np.float64] | Any)
+assert_type(trimmed_std(_f80_3d, axis=1), onp.MArray[np.longdouble] | Any)
 
 # trimmed_stde
 # TODO
