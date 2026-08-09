@@ -1899,7 +1899,9 @@ def sem(a: onp.ToFloatND, axis: SupportsIndex | None = 0, ddof: onp.ToInt = 1) -
 def f_oneway(arg0: onp.ToFloat1D, /, *args: onp.ToFloat1D) -> F_onewayResult: ...
 
 #
-def friedmanchisquare(arg0: onp.ToFloatND, *args: onp.ToFloatND) -> FriedmanchisquareResult: ...
+def friedmanchisquare(
+    arg0: onp.ToFloat1D, arg1: onp.ToFloat1D, arg2: onp.ToFloat1D, /, *args: onp.ToFloat1D
+) -> FriedmanchisquareResult: ...
 
 #
 def brunnermunzel(
