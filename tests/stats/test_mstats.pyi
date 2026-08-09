@@ -6,10 +6,14 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from scipy.stats._mstats_basic import KruskalResult
 from scipy.stats.mstats import (
+    argstoarray,
+    count_tied_groups,
     describe,
     kendalltau,
     kendalltau_seasonal,
+    kruskal,
     kurtosis,
     kurtosistest,
     linregress,
@@ -100,13 +104,15 @@ _m_f64_nd: onp.MArray[np.float64]
 ###
 
 # argstoarray
-# TODO
+assert_type(argstoarray(_f64_nd), onp.MArray[np.float64])
+assert_type(argstoarray(_f64_nd, _i8_nd), onp.MArray[np.float64])
+assert_type(argstoarray(_py_f_1d, _py_i_1d, _f32_nd), onp.MArray[np.float64])
 
 # find_repeats
 # TODO
 
 # count_tied_groups
-# TODO
+assert_type(count_tied_groups(_f64_nd), dict[np.intp, np.intp | int])
 
 # rankdata
 # TODO
@@ -216,7 +222,9 @@ assert_type(ttest_rel(_m_f64_nd, _f64_nd).statistic, onp.MArray[np.float64] | An
 # TODO
 
 # kruskal
-# TODO
+assert_type(kruskal(_f64_1d), KruskalResult)
+assert_type(kruskal(_f64_1d, _i8_1d), KruskalResult)
+assert_type(kruskal(_py_f_1d, _f32_1d, _f16_1d), KruskalResult)
 
 # ks_1samp
 # TODO
