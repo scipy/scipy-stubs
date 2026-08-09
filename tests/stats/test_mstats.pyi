@@ -55,6 +55,7 @@ from scipy.stats.mstats import (
     ttest_ind,
     ttest_rel,
     variation,
+    winsorize,
 )
 
 ###
@@ -425,7 +426,10 @@ assert_type(tmax(_f32_1d), np.float32 | onp.MArray[np.float32])
 # TODO
 
 # winsorize
-# TODO
+assert_type(winsorize(_i8_2d), onp.MArray2D[np.int8])
+assert_type(winsorize(_c128_1d, 0.1), onp.MArray1D[np.complex128])
+assert_type(winsorize(_f80_3d, [0.1, 0.2], axis=1), onp.MArray3D[np.float128])
+assert_type(winsorize(_f32_nd, (None, 0.2), inplace=True), onp.MArray[np.float32])
 
 # moment
 assert_type(moment(_f64_2d, 2, None), np.float64)
