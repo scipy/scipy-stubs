@@ -1458,24 +1458,106 @@ def stde_median(data: onp.ToFloatND, axis: SupportsIndex | None = None) -> _MArr
 def stde_median(data: onp.ToComplexND, axis: SupportsIndex | None = None) -> _MArrayOrND[npc.inexact]: ...
 
 #
-@overload
+@overload  # ?d, axis=None
+def skewtest(a: onp.ToFloatND, axis: None, alternative: Alternative = "two-sided") -> SkewtestResult[np.float64, np.float64]: ...
+@overload  # ?d ~c128, axis=None
 def skewtest(
-    a: onp.ToFloatND, axis: SupportsIndex | None = 0, alternative: Alternative = "two-sided"
-) -> SkewtestResult[_MArrayOrND[np.float64], _MArrayOrND[np.float64]]: ...
-@overload
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], axis: None, alternative: Alternative = "two-sided"
+) -> SkewtestResult[np.float64, np.complex128]: ...
+@overload  # ?d, axis=<given> (default)
+def skewtest(
+    a: _ToFloatStrictND, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> SkewtestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
+@overload  # ?d ~c128, axis=<given> (default)
+def skewtest(
+    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> SkewtestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.complex128] | Any]: ...
+@overload  # 1d, axis=<given> (default)
+def skewtest(
+    a: onp.ToFloatStrict1D, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> SkewtestResult[np.float64, np.float64]: ...
+@overload  # 1d ~c128, axis=<given> (default)
+def skewtest(
+    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+) -> SkewtestResult[np.float64, np.complex128]: ...
+@overload  # 2d, axis=<given> (default)
+def skewtest(
+    a: onp.ToFloatStrict2D, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> SkewtestResult[onp.Array1D[np.float64], onp.MArray1D[np.float64]]: ...
+@overload  # 2d ~c128, axis=<given> (default)
+def skewtest(
+    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+) -> SkewtestResult[onp.Array1D[np.float64], onp.MArray1D[np.complex128]]: ...
+@overload  # 3d, axis=<given> (default)
+def skewtest(
+    a: onp.ToFloatStrict3D, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> SkewtestResult[onp.Array2D[np.float64], onp.MArray2D[np.float64]]: ...
+@overload  # 3d ~c128, axis=<given> (default)
+def skewtest(
+    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+) -> SkewtestResult[onp.Array2D[np.float64], onp.MArray2D[np.complex128]]: ...
+@overload  # fallback
 def skewtest(
     a: onp.ToComplexND, axis: SupportsIndex | None = 0, alternative: Alternative = "two-sided"
-) -> SkewtestResult[_MArrayOrND[np.float64], _MArrayOrND[np.float64 | np.complex128]]: ...
+) -> SkewtestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 
 #
-@overload
+@overload  # ?d, axis=None
 def kurtosistest(
-    a: onp.ToFloatND, axis: SupportsIndex | None = 0, alternative: Alternative = "two-sided"
-) -> KurtosistestResult[_MArrayOrND[np.float64], _MArrayOrND[np.float64]]: ...
-@overload
+    a: onp.ToFloatND, axis: None, alternative: Alternative = "two-sided"
+) -> KurtosistestResult[np.float64, np.float64]: ...
+@overload  # ?d ~c128, axis=None
+def kurtosistest(
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64], axis: None, alternative: Alternative = "two-sided"
+) -> KurtosistestResult[np.float64, np.complex128]: ...
+@overload  # ?d, axis=<given> (default)
+def kurtosistest(
+    a: _ToFloatStrictND, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> KurtosistestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
+@overload  # ?d ~c128, axis=<given> (default)
+def kurtosistest(
+    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape], axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> KurtosistestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.complex128] | Any]: ...
+@overload  # 1d, axis=<given> (default)
+def kurtosistest(
+    a: onp.ToFloatStrict1D, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> KurtosistestResult[np.float64, np.float64]: ...
+@overload  # 1d ~c128, axis=<given> (default)
+def kurtosistest(
+    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+) -> KurtosistestResult[np.float64, np.complex128]: ...
+@overload  # 2d, axis=<given> (default)
+def kurtosistest(
+    a: onp.ToFloatStrict2D, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> KurtosistestResult[onp.Array1D[np.float64], onp.MArray1D[np.float64]]: ...
+@overload  # 2d ~c128, axis=<given> (default)
+def kurtosistest(
+    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+) -> KurtosistestResult[onp.Array1D[np.float64], onp.MArray1D[np.complex128]]: ...
+@overload  # 3d, axis=<given> (default)
+def kurtosistest(
+    a: onp.ToFloatStrict3D, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> KurtosistestResult[onp.Array2D[np.float64], onp.MArray2D[np.float64]]: ...
+@overload  # 3d ~c128, axis=<given> (default)
+def kurtosistest(
+    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+) -> KurtosistestResult[onp.Array2D[np.float64], onp.MArray2D[np.complex128]]: ...
+@overload  # fallback
 def kurtosistest(
     a: onp.ToComplexND, axis: SupportsIndex | None = 0, alternative: Alternative = "two-sided"
-) -> KurtosistestResult[_MArrayOrND[np.float64], _MArrayOrND[np.float64 | np.complex128]]: ...
+) -> KurtosistestResult[onp.ArrayND[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 
 #
 @overload  # ?d, axis=None
