@@ -14,6 +14,7 @@ from scipy.stats.mstats import (
     count_tied_groups,
     describe,
     f_oneway,
+    find_repeats,
     friedmanchisquare,
     hdmedian,
     hdquantiles,
@@ -148,7 +149,8 @@ assert_type(argstoarray(_f64_nd, _i8_nd), onp.MArray[np.float64])
 assert_type(argstoarray(_py_f_1d, _py_i_1d, _f32_nd), onp.MArray[np.float64])
 
 # find_repeats
-# TODO
+assert_type(find_repeats(_py_i_2d), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]])
+assert_type(find_repeats(_f80_3d), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]])
 
 # count_tied_groups
 assert_type(count_tied_groups(_f64_nd), dict[np.intp, np.intp | int])
