@@ -30,6 +30,9 @@ from scipy.stats.mstats import (
     tmin,
     trim,
     trimmed_mean,
+    ttest_1samp,
+    ttest_ind,
+    ttest_rel,
     variation,
 )
 
@@ -178,13 +181,35 @@ assert_type(sen_seasonal_slopes(_f80_2d).intra_slope, onp.MArray1D[np.float128])
 assert_type(sen_seasonal_slopes(_c160_2d).inter_slope, np.complex256)
 
 # ttest_1samp
-# TODO
+assert_type(ttest_1samp(_f32_3d, 0.5, axis=None).statistic, np.float64)
+assert_type(ttest_1samp(_py_i_1d, 0.5).statistic, np.float64)
+assert_type(ttest_1samp(_f16_2d, _f64_1d).statistic, onp.MArray1D[np.float64])
+assert_type(ttest_1samp(_i8_3d, 0).pvalue, onp.MArray2D[np.float64])
+assert_type(ttest_1samp(_m_f64_nd, 0.5).statistic, onp.MArray[np.float64] | Any)
+assert_type(ttest_1samp(_py_c_2d, 0.5j, axis=None).statistic, np.complex128)
+assert_type(ttest_1samp(_c64_1d, 0.5).statistic, np.complex128)
+assert_type(ttest_1samp(_c128_2d, 0.5j).statistic, onp.MArray1D[np.complex128])
+assert_type(ttest_1samp(_c128_2d, 0.5j).pvalue, onp.MArray1D[np.float64])
+assert_type(ttest_1samp(_c64_3d, 0.5).statistic, onp.MArray2D[np.complex128])
 
 # ttest_ind
-# TODO
+assert_type(ttest_ind(_f32_3d, _i8_3d, axis=None).statistic, np.float64)
+assert_type(ttest_ind(_py_i_1d, _f16_1d).statistic, np.float64)
+assert_type(ttest_ind(_f16_2d, _f64_2d, equal_var=False).statistic, onp.MArray1D[np.float64])
+assert_type(ttest_ind(_i8_2d, _f32_2d).pvalue, onp.MArray1D[np.float64])
+assert_type(ttest_ind(_m_f64_nd, _f64_nd).statistic, onp.MArray[np.float64] | Any)
+assert_type(ttest_ind(_py_c_2d, _py_f_2d, axis=None).statistic, np.complex128)
+assert_type(ttest_ind(_f64_1d, _c64_1d).statistic, np.complex128)
+assert_type(ttest_ind(_c128_2d, _f16_2d).statistic, onp.MArray1D[np.complex128])
+assert_type(ttest_ind(_c128_2d, _f16_2d).pvalue, onp.MArray1D[np.float64])
+assert_type(ttest_ind(_f32_2d, _c64_2d).statistic, onp.MArray1D[np.complex128])
 
 # ttest_rel
-# TODO
+assert_type(ttest_rel(_f32_3d, _i8_3d, axis=None).statistic, np.float64)
+assert_type(ttest_rel(_py_i_1d, _f16_1d).statistic, np.float64)
+assert_type(ttest_rel(_f16_2d, _f64_2d).statistic, onp.MArray1D[np.float64])
+assert_type(ttest_rel(_i8_2d, _f32_2d).pvalue, onp.MArray1D[np.float64])
+assert_type(ttest_rel(_m_f64_nd, _f64_nd).statistic, onp.MArray[np.float64] | Any)
 
 # mannwhitneyu
 # TODO
