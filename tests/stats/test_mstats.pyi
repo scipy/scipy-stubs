@@ -39,6 +39,7 @@ from scipy.stats.mstats import (
     tmean,
     tmin,
     trim,
+    trimboth,
     trimmed_mean,
     ttest_1samp,
     ttest_ind,
@@ -260,18 +261,28 @@ assert_type(trim(_py_f_1d), onp.MArray1D[np.float64])
 assert_type(trim(_py_f_2d), onp.MArray[np.float64])
 assert_type(trim(_py_c_1d), onp.MArray1D[np.complex128])
 assert_type(trim(_py_c_2d), onp.MArray[np.complex128])
-
 assert_type(trim(_i64_1d), onp.MArray1D[np.int64])
 assert_type(trim(_f16_2d), onp.MArray2D[np.float16])
 assert_type(trim(_f32_3d), onp.MArray3D[np.float32])
 assert_type(trim(_f80_2d), onp.MArray2D[np.float128])
 assert_type(trim(_c64_nd), onp.MArray[np.complex64])
 assert_type(trim(_m_f32_nd), onp.MArray[np.float32])
-
 assert_type(trim(_f64_2d, (0.1, 0.1), (True, True), True, 0), onp.MArray2D[np.float64])
 
 # trimboth
-# TODO
+assert_type(trimboth(_py_b_1d), onp.MArray1D[np.bool])
+assert_type(trimboth(_py_b_2d), onp.MArray[np.bool])
+assert_type(trimboth(_py_i_1d), onp.MArray1D[np.int_])
+assert_type(trimboth(_py_i_2d), onp.MArray[np.int_])
+assert_type(trimboth(_py_f_1d), onp.MArray1D[np.float64])
+assert_type(trimboth(_py_c_2d), onp.MArray[np.complex128])
+assert_type(trimboth(_i64_1d), onp.MArray1D[np.int64])
+assert_type(trimboth(_f16_2d), onp.MArray2D[np.float16])
+assert_type(trimboth(_f32_3d), onp.MArray3D[np.float32])
+assert_type(trimboth(_f80_2d), onp.MArray2D[np.float128])
+assert_type(trimboth(_c64_nd), onp.MArray[np.complex64])
+assert_type(trimboth(_m_f32_nd), onp.MArray[np.float32])
+assert_type(trimboth(_f64_2d, 0.1, (True, True), 0), onp.MArray2D[np.float64])
 
 # trimtail
 # TODO
