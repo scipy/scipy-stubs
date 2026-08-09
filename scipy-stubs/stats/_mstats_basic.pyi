@@ -1517,13 +1517,22 @@ def tmean[InexactT: npc.inexact80 | np.float16](
 ) -> onp.MArray[InexactT] | Any: ...
 
 #
+@overload  # limits=None (default), requires a mask
 def tvar(
-    a: onp.MArray[npc.floating | npc.integer],
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+    a: onp.MArray[npc.number | np.bool],
+    limits: None = None,
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = 0,
     ddof: onp.ToInt = 1,
-) -> _MArrayOrND[npc.floating]: ...
+) -> np.float64: ...
+@overload  # limits=<given>
+def tvar(
+    a: onp.ArrayND[npc.number | np.bool],
+    limits: tuple[onp.ToFloat | None, onp.ToFloat | None],
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: SupportsIndex | None = 0,
+    ddof: onp.ToInt = 1,
+) -> np.float64: ...
 
 #
 @overload
