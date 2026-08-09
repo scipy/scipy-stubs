@@ -256,10 +256,20 @@ def median_cihs(
 ) -> _Tuple2[np.float64] | onp.MArray[np.float64] | Any: ...
 
 #
-@overload
+@overload  # ?d, ?d, axis=None (default)
 def compare_medians_ms(group_1: onp.ToFloatND, group_2: onp.ToFloatND, axis: None = None) -> np.float64: ...
-@overload
-def compare_medians_ms(group_1: onp.ToFloatND, group_2: onp.ToFloatND, axis: SupportsIndex) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d, ?d, axis=<given>
+def compare_medians_ms(
+    group_1: _ToFloatStrictND, group_2: _ToFloatStrictND, axis: SupportsIndex
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload  # 1d, 1d, axis=<given>
+def compare_medians_ms(group_1: onp.ToFloatStrict1D, group_2: onp.ToFloatStrict1D, axis: SupportsIndex) -> np.float64: ...
+@overload  # 2d, 2d, axis=<given>
+def compare_medians_ms(
+    group_1: onp.ToFloatStrict2D, group_2: onp.ToFloatStrict2D, axis: SupportsIndex
+) -> onp.Array1D[np.float64]: ...
+@overload  # fallback
+def compare_medians_ms(group_1: onp.ToFloatND, group_2: onp.ToFloatND, axis: _ToAxis = None) -> onp.ArrayND[np.float64] | Any: ...
 
 #
 @overload  # ?d T@floating, axis=None (default)

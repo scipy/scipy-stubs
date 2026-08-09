@@ -9,6 +9,7 @@ import optype.numpy.compat as npc
 from scipy.stats._mstats_basic import F_onewayResult, FriedmanchisquareResult, KruskalResult
 from scipy.stats.mstats import (
     argstoarray,
+    compare_medians_ms,
     count_tied_groups,
     describe,
     f_oneway,
@@ -677,7 +678,11 @@ assert_type(median_cihs(_i8_2d, axis=0), onp.MArray2D[np.float64])
 assert_type(median_cihs(_f80_2d, axis=1), onp.MArray2D[np.longdouble])
 
 # compare_medians_ms
-# TODO
+assert_type(compare_medians_ms(_py_f_1d, _i8_1d), np.float64)
+assert_type(compare_medians_ms(_f32_3d, _f64_3d), np.float64)
+assert_type(compare_medians_ms(_f16_1d, _f64_1d, 0), np.float64)
+assert_type(compare_medians_ms(_i8_2d, _f32_2d, 0), onp.Array1D[np.float64])
+assert_type(compare_medians_ms(_f64_nd, _f64_nd, 0), onp.ArrayND[np.float64] | Any)
 
 # idealfourths
 assert_type(idealfourths(_f16_1d), list[np.float16])
