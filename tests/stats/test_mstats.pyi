@@ -36,6 +36,7 @@ from scipy.stats.mstats import (
     normaltest,
     pearsonr,
     pointbiserialr,
+    rankdata,
     rsh,
     sen_seasonal_slopes,
     siegelslopes,
@@ -134,7 +135,10 @@ assert_type(argstoarray(_py_f_1d, _py_i_1d, _f32_nd), onp.MArray[np.float64])
 assert_type(count_tied_groups(_f64_nd), dict[np.intp, np.intp | int])
 
 # rankdata
-# TODO
+assert_type(rankdata(_i8_nd), onp.ArrayND[np.float64])
+assert_type(rankdata(_py_b_1d), onp.Array1D[np.float64])
+assert_type(rankdata(_f80_2d, axis=0), onp.Array2D[np.float64])
+assert_type(rankdata(_c128_3d, 1), onp.Array3D[np.float64])
 
 # mode
 assert_type(mode(_py_f_2d, axis=None).mode, onp.Array1D[np.float64])
