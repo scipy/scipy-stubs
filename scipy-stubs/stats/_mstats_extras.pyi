@@ -1,4 +1,4 @@
-from typing import SupportsIndex, overload
+from typing import Never, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -22,23 +22,51 @@ __all__ = [
 type _Tuple2[T] = tuple[T, T]
 type _FloatND = onp.ArrayND[np.float64]
 
+type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
+
 type _ToProb = onp.ToFloat | onp.ToFloatND
 type _ToPoints = onp.ToFloat | onp.ToFloat1D | None
 type _ToAxis = SupportsIndex | None
 
 ###
 
-@overload
+# NOTE: with `axis=None` the result is 1-d for any input rank
+@overload  # ?d, axis=None (default), var=False (default)
 def hdquantiles(
-    data: onp.ToFloat1D, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis = None, var: onp.ToFalse = False
+    data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis: None = None, var: onp.ToFalse = False
 ) -> onp.MArray1D[np.float64]: ...
-@overload
-def hdquantiles(data: onp.ToFloat1D, prob: _ToProb, axis: _ToAxis, var: onp.ToTrue) -> onp.MArray2D[np.float64]: ...
-@overload
+@overload  # ?d, axis=None (default), var=True
+def hdquantiles(data: onp.ToFloatND, prob: _ToProb, axis: None, var: onp.ToTrue) -> onp.MArray2D[np.float64]: ...
+@overload  # ?d, axis=None (default), var=True
 def hdquantiles(
-    data: onp.ToFloat1D, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis = None, *, var: onp.ToTrue
+    data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis: None = None, *, var: onp.ToTrue
 ) -> onp.MArray2D[np.float64]: ...
-@overload
+@overload  # ?d, axis=<given>, var=False (default)
+def hdquantiles(
+    data: _ToFloatStrictND, prob: _ToProb = (0.25, 0.5, 0.75), *, axis: SupportsIndex, var: onp.ToFalse = False
+) -> onp.MArray[np.float64]: ...
+@overload  # ?d, axis=<given>, var=True
+def hdquantiles(
+    data: _ToFloatStrictND, prob: _ToProb = (0.25, 0.5, 0.75), *, axis: SupportsIndex, var: onp.ToTrue
+) -> onp.MArray[np.float64]: ...
+@overload  # 1d, axis=<given>, var=False (default)
+def hdquantiles(
+    data: onp.ToFloatStrict1D, prob: _ToProb = (0.25, 0.5, 0.75), *, axis: SupportsIndex, var: onp.ToFalse = False
+) -> onp.MArray1D[np.float64]: ...
+@overload  # 1d, axis=<given>, var=True
+def hdquantiles(
+    data: onp.ToFloatStrict1D, prob: _ToProb = (0.25, 0.5, 0.75), *, axis: SupportsIndex, var: onp.ToTrue
+) -> onp.MArray2D[np.float64]: ...
+@overload  # 2d, axis=<given>, var=False (default)
+def hdquantiles(
+    data: onp.ToFloatStrict2D, prob: _ToProb = (0.25, 0.5, 0.75), *, axis: SupportsIndex, var: onp.ToFalse = False
+) -> onp.MArray2D[np.float64]: ...
+@overload  # 2d, axis=<given>, var=True
+def hdquantiles(
+    data: onp.ToFloatStrict2D, prob: _ToProb = (0.25, 0.5, 0.75), *, axis: SupportsIndex, var: onp.ToTrue
+) -> onp.MArray3D[np.float64]: ...
+@overload  # fallback
 def hdquantiles(
     data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis = None, var: bool = False
 ) -> onp.MArray[np.float64]: ...
