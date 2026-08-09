@@ -576,9 +576,6 @@ assert_type(describe(_m_f32_nd).mean, onp.MArray[np.float32] | Any)
 assert_type(describe(_i8_2d).minmax[0], onp.MArray1D[np.int8])
 assert_type(describe(_b_nd).kurtosis, onp.MArray[np.float64] | Any)
 
-# stde_median
-# TODO
-
 # skewtest
 assert_type(skewtest(_f32_3d, axis=None).statistic, np.float64)
 assert_type(skewtest(_py_c_2d, axis=None).statistic, np.complex128)
