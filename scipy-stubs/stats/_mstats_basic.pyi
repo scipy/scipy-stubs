@@ -1805,7 +1805,7 @@ def describe(
     a: onp.ToJustComplex128_ND, axis: SupportsIndex = 0, ddof: onp.ToInt = 0, bias: bool = True
 ) -> _DescribeND[np.complex128, np.complex128, np.float64, np.complex128]: ...
 
-#
+# undocumented
 @overload
 def stde_median(data: onp.ToFloatND, axis: SupportsIndex | None = None) -> _MArrayOrND[npc.floating]: ...
 @overload
