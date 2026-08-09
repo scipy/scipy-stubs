@@ -35,6 +35,7 @@ from scipy.stats.mstats import (
     moment,
     mquantiles,
     mquantiles_cimj,
+    msign,
     normaltest,
     obrientransform,
     pearsonr,
@@ -86,6 +87,8 @@ _py_c_1d: list[complex]
 _py_c_2d: list[list[complex]]
 
 _b_nd: onp.ArrayND[np.bool]
+
+_m8_1d: onp.Array1D[np.timedelta64]
 
 _i8_1d: onp.Array1D[np.int8]
 _i8_2d: onp.Array2D[np.int8]
@@ -168,7 +171,15 @@ assert_type(mode(_f80_3d, axis=1).mode, onp.MArray3D[np.float64 | Any])
 assert_type(mode(_m_f64_nd).mode, onp.ArrayND[np.float64 | Any])
 
 # msign
-# TODO
+assert_type(msign(-1), onp.Array0D[np.int_])
+assert_type(msign(-1.0), onp.Array0D[np.float64])
+assert_type(msign(-1j), onp.Array0D[np.complex128])
+assert_type(msign(_py_i_1d), onp.Array1D[np.int_])
+assert_type(msign(_py_f_2d), onp.ArrayND[np.float64])
+assert_type(msign(_py_c_1d), onp.Array1D[np.complex128])
+assert_type(msign(_m8_1d), onp.ArrayND[np.float64])
+assert_type(msign(_i8_3d), onp.Array3D[np.int8])
+assert_type(msign(_c160_2d), onp.Array2D[np.complex256])
 
 # pearsonr
 assert_type(pearsonr(_py_i_1d, _f16_1d).statistic, np.float64)
