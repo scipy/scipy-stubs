@@ -481,8 +481,14 @@ assert_type(tmin(_f80_1d), onp.MArray0D[np.float128])
 assert_type(tmin(_c160_2d, axis=1), onp.MArray1D[np.complex256])
 
 # tmax
-assert_type(tmax(_py_i_1d), np.int_ | onp.MArray[np.int_])
-assert_type(tmax(_f32_1d), np.float32 | onp.MArray[np.float32])
+assert_type(tmax(_py_b_1d), onp.MArray[np.bool])
+assert_type(tmax(_py_i_2d), onp.MArray[np.int_])
+assert_type(tmax(_py_f_1d), onp.MArray[np.float64])
+assert_type(tmax(_py_c_2d), onp.MArray[np.complex128])
+assert_type(tmax(_f32_3d, axis=None), onp.MArray0D[np.float32])
+assert_type(tmax(_i8_nd), onp.MArray[np.int8] | Any)
+assert_type(tmax(_f80_1d), onp.MArray0D[np.float128])
+assert_type(tmax(_c160_2d, axis=1), onp.MArray1D[np.complex256])
 
 # tsem
 assert_type(tsem(_py_c_2d), np.float64)
