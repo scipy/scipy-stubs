@@ -21,6 +21,7 @@ from scipy.stats.mstats import (
     kurtosis,
     kurtosistest,
     linregress,
+    mannwhitneyu,
     mode,
     moment,
     mquantiles,
@@ -223,7 +224,8 @@ assert_type(ttest_rel(_i8_2d, _f32_2d).pvalue, onp.MArray1D[np.float64])
 assert_type(ttest_rel(_m_f64_nd, _f64_nd).statistic, onp.MArray[np.float64] | Any)
 
 # mannwhitneyu
-# TODO
+assert_type(mannwhitneyu(_py_i_1d, _f16_1d).statistic, np.float64)
+assert_type(mannwhitneyu(_f80_3d, _i8_2d, use_continuity=False).pvalue, np.float64)
 
 # kruskal
 assert_type(kruskal(_f64_1d), KruskalResult)
