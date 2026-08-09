@@ -1325,43 +1325,15 @@ def tsem(
     ddof: onp.ToInt = 1,
 ) -> _MArrayOrND[np.float64]: ...
 
-#
-@overload
-def winsorize(
-    a: onp.ToIntND,
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
+# NOTE: rejects array-likes: the `nan_policy` check requires `a.shape`
+def winsorize[ShapeT: tuple[int, ...], ScalarT: npc.number | np.bool](
+    a: onp.ArrayND[ScalarT, ShapeT],
+    limits: onp.ToJustFloat64 | tuple[onp.ToFloat | None, onp.ToFloat | None] | onp.ToFloat1D | None = None,
     inclusive: tuple[bool, bool] = (True, True),
     inplace: bool = False,
     axis: SupportsIndex | None = None,
     nan_policy: NanPolicy = "propagate",
-) -> onp.MArray[np.int_]: ...
-@overload
-def winsorize[FloatingT: npc.floating](
-    a: _ArrayLike[FloatingT],
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    inplace: bool = False,
-    axis: SupportsIndex | None = None,
-    nan_policy: NanPolicy = "propagate",
-) -> onp.MArray[FloatingT]: ...
-@overload
-def winsorize(
-    a: onp.ToFloatND,
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    inplace: bool = False,
-    axis: SupportsIndex | None = None,
-    nan_policy: NanPolicy = "propagate",
-) -> onp.MArray[npc.floating | np.int_]: ...
-@overload
-def winsorize(
-    a: onp.ToComplexND,
-    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    inplace: bool = False,
-    axis: SupportsIndex | None = None,
-    nan_policy: NanPolicy = "propagate",
-) -> onp.MArray[np.complex128 | npc.floating | np.int_]: ...
+) -> onp.MArray[ScalarT, ShapeT]: ...
 
 # NOTE: f16/f32 and c64 promote to f64 and c128, unless `moment <= 1`
 @overload  # ?d ~f64, axis=None (positional)
