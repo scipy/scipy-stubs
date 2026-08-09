@@ -19,6 +19,7 @@ from scipy.stats.mstats import (
     normaltest,
     pearsonr,
     pointbiserialr,
+    rsh,
     sen_seasonal_slopes,
     siegelslopes,
     skew,
@@ -571,3 +572,11 @@ assert_type(mquantiles(_f80_nd, axis=0), onp.MArray[np.float128] | Any)
 
 # brunnermunzel
 # TODO
+
+###
+
+# rsh
+assert_type(rsh(_py_i_1d), onp.MArray1D[np.float64])
+assert_type(rsh(_f32_1d, 0.5), onp.MArray1D[np.float64])
+assert_type(rsh(_m_f64_nd, _f64_1d), onp.MArray1D[np.float64])
+assert_type(rsh(_f80_1d), onp.MArray1D[np.longdouble])

@@ -23,6 +23,7 @@ type _Tuple2[T] = tuple[T, T]
 type _FloatND = onp.ArrayND[np.float64]
 
 type _ToProb = onp.ToFloat | onp.ToFloatND
+type _ToPoints = onp.ToFloat | onp.ToFloat1D | None
 type _ToAxis = SupportsIndex | None
 
 ###
@@ -93,4 +94,7 @@ def idealfourths(data: onp.ToFloatND, axis: None = None) -> list[np.float64]: ..
 def idealfourths(data: onp.ToFloatND, axis: SupportsIndex) -> onp.MArray[np.float64]: ...
 
 #
-def rsh(data: onp.ToFloatND, points: onp.ToFloatND | None = None) -> np.float64: ...
+@overload  # ~f64
+def rsh(data: onp.ToFloat64_1D, points: _ToPoints = None) -> onp.MArray1D[np.float64]: ...
+@overload  # T@floating80
+def rsh(data: onp.ToArray1D[npc.floating80, npc.floating80], points: _ToPoints = None) -> onp.MArray1D[np.longdouble]: ...
