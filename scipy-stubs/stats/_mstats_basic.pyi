@@ -1577,13 +1577,30 @@ def tmax[ScalarT: npc.number | np.bool](
 ) -> _MArrayOrND[ScalarT]: ...
 
 #
+@overload  # ?d ~f64
 def tsem(
-    a: onp.ToComplexND,
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
+    a: onp.ToComplex128_ND,
+    limits: tuple[onp.ToFloat | None, onp.ToFloat | None] | None = None,
+    inclusive: _ToInclusive = (True, True),
     axis: SupportsIndex | None = 0,
     ddof: onp.ToInt = 1,
-) -> _MArrayOrND[np.float64]: ...
+) -> np.float64: ...
+@overload  # ?d ~f80
+def tsem(
+    a: onp.ToArrayND[npc.inexact80, npc.inexact80],
+    limits: tuple[onp.ToFloat | None, onp.ToFloat | None] | None = None,
+    inclusive: _ToInclusive = (True, True),
+    axis: SupportsIndex | None = 0,
+    ddof: onp.ToInt = 1,
+) -> np.longdouble: ...
+@overload  # ?d
+def tsem(
+    a: onp.ToComplexND,
+    limits: tuple[onp.ToFloat | None, onp.ToFloat | None] | None = None,
+    inclusive: _ToInclusive = (True, True),
+    axis: SupportsIndex | None = 0,
+    ddof: onp.ToInt = 1,
+) -> np.float64 | Any: ...
 
 # NOTE: rejects array-likes: the `nan_policy` check requires `a.shape`
 def winsorize[ShapeT: tuple[int, ...], ScalarT: npc.number | np.bool](

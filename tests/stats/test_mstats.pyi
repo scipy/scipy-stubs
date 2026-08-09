@@ -55,6 +55,7 @@ from scipy.stats.mstats import (
     trimmed_stde,
     trimmed_var,
     trimtail,
+    tsem,
     ttest_1samp,
     ttest_ind,
     ttest_rel,
@@ -458,7 +459,9 @@ assert_type(tmax(_py_i_1d), np.int_ | onp.MArray[np.int_])
 assert_type(tmax(_f32_1d), np.float32 | onp.MArray[np.float32])
 
 # tsem
-# TODO
+assert_type(tsem(_py_c_2d), np.float64)
+assert_type(tsem(_f16_nd, (2.0, None)), np.float64)
+assert_type(tsem(_c160_2d), np.longdouble)
 
 # winsorize
 assert_type(winsorize(_i8_2d), onp.MArray2D[np.int8])
