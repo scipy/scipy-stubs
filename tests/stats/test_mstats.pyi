@@ -15,6 +15,7 @@ from scipy.stats.mstats import (
     kendalltau,
     kendalltau_seasonal,
     kruskal,
+    ks_2samp,
     kurtosis,
     kurtosistest,
     linregress,
@@ -231,7 +232,11 @@ assert_type(kruskal(_py_f_1d, _f32_1d, _f16_1d), KruskalResult)
 # TODO
 
 # ks_2samp
-# TODO
+assert_type(ks_2samp(_py_f_1d, _f64_1d).statistic, np.float64)
+assert_type(ks_2samp(_i8_1d, _f32_1d).statistic_sign, np.int8)
+assert_type(ks_2samp(_f64_2d, _i8_2d).statistic, onp.Array1D[np.float64])
+assert_type(ks_2samp(_f16_2d, _f64_1d).statistic_sign, onp.Array1D[np.int8])
+assert_type(ks_2samp(_m_f64_nd, _f64_nd).statistic, np.float64 | Any)
 
 # ktest
 # TODO

@@ -110,6 +110,11 @@ type _SiegelSlopesMethod = Literal["hierarchical", "separate"]
 type _KSMethod = Literal["auto", "exact", "asymp"]
 type _KTestMethod = Literal[_KSMethod, "approx"]
 
+# we can't use a generic shape-type here due to a variance bug in pyright
+type _KstestResult0 = KstestResult[np.float64, np.int8]
+type _KstestResult1 = KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]]
+type _KstestResultAny = KstestResult[np.float64 | Any, np.int8 | Any]
+
 type _Describe0D[MinMaxT: npc.number | np.bool, MeanT: npc.inexact, VarT: npc.inexact, SkewT: npc.inexact] = DescribeResult[
     tuple[()], MinMaxT, MeanT, VarT, SkewT, SkewT
 ]
@@ -554,9 +559,42 @@ def ks_1samp(
 ) -> KstestResult: ...
 
 #
+@overload  # ?d, ?d | 1d
+def ks_2samp(
+    data1: _ToFloatStrictND,
+    data2: _ToFloatStrictND | onp.ToFloatStrict1D,
+    alternative: Alternative = "two-sided",
+    method: _KSMethod = "auto",
+) -> _KstestResultAny: ...
+@overload  # ?d | 1d, ?d
+def ks_2samp(
+    data1: _ToFloatStrictND | onp.ToFloatStrict1D,
+    data2: _ToFloatStrictND,
+    alternative: Alternative = "two-sided",
+    method: _KSMethod = "auto",
+) -> _KstestResultAny: ...
+@overload  # 1d, 1d
+def ks_2samp(
+    data1: onp.ToFloatStrict1D, data2: onp.ToFloatStrict1D, alternative: Alternative = "two-sided", method: _KSMethod = "auto"
+) -> _KstestResult0: ...
+@overload  # 2d, <=2d
+def ks_2samp(
+    data1: onp.ToFloatStrict2D,
+    data2: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
+    alternative: Alternative = "two-sided",
+    method: _KSMethod = "auto",
+) -> _KstestResult1: ...
+@overload  # <=2d, 2d
+def ks_2samp(
+    data1: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
+    data2: onp.ToFloatStrict2D,
+    alternative: Alternative = "two-sided",
+    method: _KSMethod = "auto",
+) -> _KstestResult1: ...
+@overload  # fallback
 def ks_2samp(
     data1: onp.ToFloatND, data2: onp.ToFloatND, alternative: Alternative = "two-sided", method: _KSMethod = "auto"
-) -> KstestResult: ...
+) -> _KstestResultAny: ...
 
 #
 @overload
