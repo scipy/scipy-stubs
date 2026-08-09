@@ -36,6 +36,7 @@ from scipy.stats.mstats import (
     mquantiles,
     mquantiles_cimj,
     normaltest,
+    obrientransform,
     pearsonr,
     plotting_positions,
     pointbiserialr,
@@ -700,7 +701,8 @@ assert_type(plotting_positions(_py_c_2d), onp.MArray1D[np.float64])
 assert_type(plotting_positions(_c160_3d, 0.5, 0.5), onp.MArray1D[np.float64])
 
 # obrientransform
-# TODO
+assert_type(obrientransform(_f64_1d), onp.MArray2D[np.float64])
+assert_type(obrientransform(_py_f_1d, _i8_1d, _f32_1d), onp.MArray2D[np.float64])
 
 # sem
 assert_type(sem(_py_c_2d, axis=None), np.float64)
