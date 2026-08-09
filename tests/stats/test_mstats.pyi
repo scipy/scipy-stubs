@@ -21,6 +21,7 @@ from scipy.stats.mstats import (
     kendalltau,
     kendalltau_seasonal,
     kruskal,
+    ks_1samp,
     ks_2samp,
     kstest,
     kurtosis,
@@ -123,6 +124,7 @@ _c128_2d: onp.Array2D[np.complex128]
 _c128_3d: onp.Array3D[np.complex128]
 _c128_nd: onp.ArrayND[np.complex128]
 
+def _cdf1(x: onp.ArrayND[np.float64], /) -> onp.ArrayND[np.float64]: ...
 def _cdf2(x: onp.ArrayND[np.float64], a: float, /) -> onp.ArrayND[np.float64]: ...
 
 _m_f32_nd: onp.MArray[np.float32]
@@ -258,7 +260,12 @@ assert_type(kruskal(_f64_1d, _i8_1d), KruskalResult)
 assert_type(kruskal(_py_f_1d, _f32_1d, _f16_1d), KruskalResult)
 
 # ks_1samp
-# TODO
+assert_type(ks_1samp(_f64_1d, _cdf1).statistic, np.float64)
+assert_type(ks_1samp(_f64_2d, _cdf1).statistic_sign, onp.Array1D[np.int8])
+assert_type(ks_1samp(_f64_nd, _cdf1).statistic, np.float64 | Any)
+assert_type(ks_1samp(_py_f_1d, _cdf2, (1.0,)).statistic, np.float64)
+assert_type(ks_1samp(_py_f_2d, _cdf2, (1.0,)).statistic, onp.Array1D[np.float64])
+assert_type(ks_1samp(_m_f64_nd, _cdf2, (1.0,)).statistic, np.float64 | Any)
 
 # ks_2samp
 assert_type(ks_2samp(_py_f_1d, _f64_1d).statistic, np.float64)
