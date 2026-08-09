@@ -9,6 +9,7 @@ import optype.numpy.compat as npc
 from scipy.stats._mstats_basic import F_onewayResult, FriedmanchisquareResult, KruskalResult
 from scipy.stats.mstats import (
     argstoarray,
+    brunnermunzel,
     compare_medians_ms,
     count_tied_groups,
     describe,
@@ -694,7 +695,8 @@ assert_type(friedmanchisquare(_f64_1d, _i8_1d, _f32_1d), FriedmanchisquareResult
 assert_type(friedmanchisquare(_py_f_1d, _py_i_1d, _f16_1d, _f64_1d), FriedmanchisquareResult)
 
 # brunnermunzel
-# TODO
+assert_type(brunnermunzel(_py_i_1d, _f16_2d).statistic, np.float64)
+assert_type(brunnermunzel(_c128_3d, _f80_nd, distribution="normal").pvalue, np.float64)
 
 ###
 

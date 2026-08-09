@@ -2380,7 +2380,7 @@ def friedmanchisquare(
 
 #
 def brunnermunzel(
-    x: onp.ToFloatND, y: onp.ToFloatND, alternative: Alternative = "two-sided", distribution: Literal["t", "normal"] = "t"
+    x: onp.ToComplexND, y: onp.ToComplexND, alternative: Alternative = "two-sided", distribution: Literal["t", "normal"] = "t"
 ) -> BrunnerMunzelResult: ...
 
 #
