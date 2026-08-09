@@ -32,6 +32,7 @@ from scipy.stats.mstats import (
     trimmed_mean,
     ttest_1samp,
     ttest_ind,
+    ttest_rel,
     variation,
 )
 
@@ -204,7 +205,11 @@ assert_type(ttest_ind(_c128_2d, _f16_2d).pvalue, onp.MArray1D[np.float64])
 assert_type(ttest_ind(_f32_2d, _c64_2d).statistic, onp.MArray1D[np.complex128])
 
 # ttest_rel
-# TODO
+assert_type(ttest_rel(_f32_3d, _i8_3d, axis=None).statistic, np.float64)
+assert_type(ttest_rel(_py_i_1d, _f16_1d).statistic, np.float64)
+assert_type(ttest_rel(_f16_2d, _f64_2d).statistic, onp.MArray1D[np.float64])
+assert_type(ttest_rel(_i8_2d, _f32_2d).pvalue, onp.MArray1D[np.float64])
+assert_type(ttest_rel(_m_f64_nd, _f64_nd).statistic, onp.MArray[np.float64] | Any)
 
 # mannwhitneyu
 # TODO

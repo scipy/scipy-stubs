@@ -508,9 +508,26 @@ def ttest_ind(
 ) -> Ttest_indResult[onp.MArray[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 
 #
+@overload  # ?d, ?d, axis=None
+def ttest_rel(
+    a: onp.ToFloatND, b: onp.ToFloatND, axis: None, alternative: Alternative = "two-sided"
+) -> Ttest_relResult[np.float64, np.float64]: ...
+@overload  # ?d, ?d, axis=<given> (default)
+def ttest_rel(
+    a: _ToFloatStrictND, b: _ToFloatStrictND, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> Ttest_relResult[onp.MArray[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
+@overload  # 1d, 1d, axis=<given> (default)
+def ttest_rel(
+    a: onp.ToFloatStrict1D, b: onp.ToFloatStrict1D, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> Ttest_relResult[np.float64, np.float64]: ...
+@overload  # 2d, 2d, axis=<given> (default)
+def ttest_rel(
+    a: onp.ToFloatStrict2D, b: onp.ToFloatStrict2D, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> Ttest_relResult[onp.MArray1D[np.float64], onp.MArray1D[np.float64]]: ...
+@overload  # fallback
 def ttest_rel(
     a: onp.ToFloatND, b: onp.ToFloatND, axis: SupportsIndex | None = 0, alternative: Alternative = "two-sided"
-) -> Ttest_relResult: ...
+) -> Ttest_relResult[onp.MArray[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 
 #
 def mannwhitneyu(x: onp.ToFloatND, y: onp.ToFloatND, use_continuity: bool = True) -> MannwhitneyuResult: ...
