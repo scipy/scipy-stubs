@@ -42,6 +42,7 @@ from scipy.stats.mstats import (
     trim,
     trimboth,
     trimmed_mean,
+    trimmed_mean_ci,
     ttest_1samp,
     ttest_ind,
     ttest_rel,
@@ -627,6 +628,33 @@ assert_type(hdmedian(_f16_1d, var=True), onp.MArray1D[np.float64])
 assert_type(hdmedian(_f64_2d, None, True), onp.MArray1D[np.float64])
 assert_type(hdmedian(_f64_2d, 0, True), onp.MArray2D[np.float64])
 assert_type(hdmedian(_py_i_2d, var=True), onp.MArray2D[np.float64])
+
+# hdquantiles_sd
+# TODO
+
+# trimmed_mean_ci
+assert_type(trimmed_mean_ci(_py_f_1d), onp.Array1D[np.float64])
+assert_type(trimmed_mean_ci(_f32_3d), onp.Array1D[np.float64])
+assert_type(trimmed_mean_ci(_f80_1d), onp.Array1D[np.longdouble])
+assert_type(trimmed_mean_ci(_f16_1d, axis=0), onp.Array1D[np.float64])
+assert_type(trimmed_mean_ci(_i8_2d, axis=0), onp.Array2D[np.float64])
+assert_type(trimmed_mean_ci(_f80_2d, axis=1), onp.Array2D[np.longdouble])
+assert_type(trimmed_mean_ci(_f64_nd, axis=0), onp.ArrayND[np.float64] | Any)
+
+# mjci
+# TODO
+
+# mquantiles_cimj
+# TODO
+
+# median_cihs
+# TODO
+
+# compare_medians_ms
+# TODO
+
+# idealfourths
+# TODO
 
 # rsh
 assert_type(rsh(_py_i_1d), onp.MArray1D[np.float64])

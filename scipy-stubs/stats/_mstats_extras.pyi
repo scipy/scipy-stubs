@@ -1,4 +1,4 @@
-from typing import Never, SupportsIndex, overload
+from typing import Any, Never, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -100,13 +100,75 @@ def hdmedian(data: onp.ToFloatND, axis: _ToAxis = -1, var: bool = False) -> onp.
 def hdquantiles_sd(data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis = None) -> onp.MArray[np.float64]: ...
 
 #
+@overload  # ?d +f64, axis=None (default)
+def trimmed_mean_ci(
+    data: onp.ToFloat64_ND,
+    limits: _Tuple2[onp.ToFloat] | None = (0.2, 0.2),
+    inclusive: _Tuple2[bool] = (True, True),
+    alpha: float | npc.floating = 0.05,
+    axis: None = None,
+) -> onp.Array1D[np.float64]: ...
+@overload  # ?d ~f80, axis=None (default)
+def trimmed_mean_ci(
+    data: onp.ToJustLongDoubleND,
+    limits: _Tuple2[onp.ToFloat] | None = (0.2, 0.2),
+    inclusive: _Tuple2[bool] = (True, True),
+    alpha: float | npc.floating = 0.05,
+    axis: None = None,
+) -> onp.Array1D[np.longdouble]: ...
+@overload  # ?d, axis=<given>
+def trimmed_mean_ci(
+    data: _ToFloatStrictND,
+    limits: _Tuple2[onp.ToFloat] | None = (0.2, 0.2),
+    inclusive: _Tuple2[bool] = (True, True),
+    alpha: float | npc.floating = 0.05,
+    *,
+    axis: SupportsIndex,
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload  # 1d +f64, axis=<given>
+def trimmed_mean_ci(
+    data: onp.ToFloat64Strict1D,
+    limits: _Tuple2[onp.ToFloat] | None = (0.2, 0.2),
+    inclusive: _Tuple2[bool] = (True, True),
+    alpha: float | npc.floating = 0.05,
+    *,
+    axis: SupportsIndex,
+) -> onp.Array1D[np.float64]: ...
+@overload  # 1d ~f80, axis=<given>
+def trimmed_mean_ci(
+    data: onp.ToJustLongDoubleStrict1D,
+    limits: _Tuple2[onp.ToFloat] | None = (0.2, 0.2),
+    inclusive: _Tuple2[bool] = (True, True),
+    alpha: float | npc.floating = 0.05,
+    *,
+    axis: SupportsIndex,
+) -> onp.Array1D[np.longdouble]: ...
+@overload  # 2d +f64, axis=<given>
+def trimmed_mean_ci(
+    data: onp.ToFloat64Strict2D,
+    limits: _Tuple2[onp.ToFloat] | None = (0.2, 0.2),
+    inclusive: _Tuple2[bool] = (True, True),
+    alpha: float | npc.floating = 0.05,
+    *,
+    axis: SupportsIndex,
+) -> onp.Array2D[np.float64]: ...
+@overload  # 2d ~f80, axis=<given>
+def trimmed_mean_ci(
+    data: onp.ToJustLongDoubleStrict2D,
+    limits: _Tuple2[onp.ToFloat] | None = (0.2, 0.2),
+    inclusive: _Tuple2[bool] = (True, True),
+    alpha: float | npc.floating = 0.05,
+    *,
+    axis: SupportsIndex,
+) -> onp.Array2D[np.longdouble]: ...
+@overload  # fallback
 def trimmed_mean_ci(
     data: onp.ToFloatND,
     limits: _Tuple2[onp.ToFloat] | None = (0.2, 0.2),
     inclusive: _Tuple2[bool] = (True, True),
     alpha: float | npc.floating = 0.05,
-    axis: _ToAxis = None,
-) -> _FloatND: ...
+    axis: SupportsIndex | None = None,
+) -> onp.ArrayND[np.float64] | Any: ...
 
 #
 def mjci(data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis = None) -> _FloatND: ...
