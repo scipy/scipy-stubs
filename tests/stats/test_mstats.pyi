@@ -144,9 +144,9 @@ _m_f64_nd: onp.MArray[np.float64]
 ###
 
 # argstoarray
-assert_type(argstoarray(_f64_nd), onp.MArray[np.float64])
-assert_type(argstoarray(_f64_nd, _i8_nd), onp.MArray[np.float64])
-assert_type(argstoarray(_py_f_1d, _py_i_1d, _f32_nd), onp.MArray[np.float64])
+assert_type(argstoarray(_f64_1d), onp.MArray2D[np.float64])
+assert_type(argstoarray(_f64_1d, _i8_1d), onp.MArray2D[np.float64])
+assert_type(argstoarray(_py_f_1d, _py_i_1d, _f32_1d), onp.MArray2D[np.float64])
 
 # find_repeats
 assert_type(find_repeats(_py_i_2d), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]])
