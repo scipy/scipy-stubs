@@ -9,29 +9,36 @@ from scipy.linalg import qr_delete, qr_insert, qr_update
 
 ###
 
+f32_nd: onp.ArrayND[np.float32]
 f64_nd: onp.ArrayND[np.float64]
+c64_nd: onp.ArrayND[np.complex64]
 c128_nd: onp.ArrayND[np.complex128]
 
-type _FloatQR = tuple[onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.float32 | np.float64]]
-type _ComplexQR = (
-    tuple[onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.float32 | np.float64]]
-    | tuple[onp.ArrayND[np.complex64 | np.complex128], onp.ArrayND[np.complex64 | np.complex128]]
-)
+type _QR32 = tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]
+type _QR64 = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+type _QRc64 = tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]]
+type _QRc128 = tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]
 
 ###
 # qr_delete
 
-assert_type(qr_delete(f64_nd, f64_nd, 0), _FloatQR)
-assert_type(qr_delete(c128_nd, c128_nd, 0), _ComplexQR)
+assert_type(qr_delete(f32_nd, f32_nd, 0), _QR32)
+assert_type(qr_delete(f64_nd, f64_nd, 0), _QR64)
+assert_type(qr_delete(c64_nd, c64_nd, 0), _QRc64)
+assert_type(qr_delete(c128_nd, c128_nd, 0), _QRc128)
 
 ###
 # qr_insert
 
-assert_type(qr_insert(f64_nd, f64_nd, f64_nd, 0), _FloatQR)
-assert_type(qr_insert(c128_nd, c128_nd, c128_nd, 0), _ComplexQR)
+assert_type(qr_insert(f32_nd, f32_nd, f32_nd, 0), _QR32)
+assert_type(qr_insert(f64_nd, f64_nd, f64_nd, 0), _QR64)
+assert_type(qr_insert(c64_nd, c64_nd, c64_nd, 0), _QRc64)
+assert_type(qr_insert(c128_nd, c128_nd, c128_nd, 0), _QRc128)
 
 ###
 # qr_update
 
-assert_type(qr_update(f64_nd, f64_nd, f64_nd, f64_nd), _FloatQR)
-assert_type(qr_update(c128_nd, c128_nd, c128_nd, c128_nd), _ComplexQR)
+assert_type(qr_update(f32_nd, f32_nd, f32_nd, f32_nd), _QR32)
+assert_type(qr_update(f64_nd, f64_nd, f64_nd, f64_nd), _QR64)
+assert_type(qr_update(c64_nd, c64_nd, c64_nd, c64_nd), _QRc64)
+assert_type(qr_update(c128_nd, c128_nd, c128_nd, c128_nd), _QRc128)
