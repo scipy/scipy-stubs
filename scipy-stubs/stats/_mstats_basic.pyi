@@ -102,6 +102,7 @@ type _ToInclusive = tuple[op.CanBool, op.CanBool]
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
 type _ToComplexStrictND = onp.ArrayND[npc.number | np.bool, _JustAnyShape]
+type _ToComplex128StrictND = onp.ArrayND[npc.inexact64 | npc.inexact32 | np.float16 | npc.integer | np.bool, _JustAnyShape]
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
 type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
@@ -1163,7 +1164,7 @@ def trimmed_var(
 ) -> np.longdouble: ...
 @overload  # ?d ~f64, axis=<given>
 def trimmed_var(
-    a: onp.ArrayND[npc.inexact64 | npc.inexact32 | np.float16 | npc.integer | np.bool, _JustAnyShape],
+    a: _ToComplex128StrictND,
     limits: _ToLimits = (0.1, 0.1),
     inclusive: _ToInclusive = (1, 1),
     relative: bool = True,
@@ -1261,7 +1262,7 @@ def trimmed_std(
 ) -> np.longdouble: ...
 @overload  # ?d ~f64, axis=<given>
 def trimmed_std(
-    a: onp.ArrayND[npc.inexact64 | npc.inexact32 | np.float16 | npc.integer | np.bool, _JustAnyShape],
+    a: _ToComplex128StrictND,
     limits: _ToLimits = (0.1, 0.1),
     inclusive: _ToInclusive = (1, 1),
     relative: bool = True,
@@ -1339,12 +1340,64 @@ def trimmed_std(
 ) -> onp.MArray[np.longdouble] | Any: ...
 
 #
+@overload  # ?d ~f64, axis=None (default)
 def trimmed_stde(
-    a: onp.ToComplexND,
-    limits: tuple[onp.ToFloat, onp.ToFloat] = (0.1, 0.1),
+    a: onp.ToComplex128_ND, limits: _ToLimits = (0.1, 0.1), inclusive: _ToInclusive = (1, 1), axis: None = None
+) -> np.float64: ...
+@overload  # ?d ~f80, axis=None (default)
+def trimmed_stde(
+    a: onp.ToArrayND[npc.inexact80, npc.inexact80],
+    limits: _ToLimits = (0.1, 0.1),
+    inclusive: _ToInclusive = (1, 1),
+    axis: None = None,
+) -> np.longdouble: ...
+@overload  # ?d ~f64, axis=<given>
+def trimmed_stde(
+    a: _ToComplex128StrictND, limits: _ToLimits = (0.1, 0.1), inclusive: _ToInclusive = (1, 1), *, axis: SupportsIndex
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # ?d ~f80, axis=<given>
+def trimmed_stde(
+    a: onp.ArrayND[npc.inexact80, _JustAnyShape],
+    limits: _ToLimits = (0.1, 0.1),
+    inclusive: _ToInclusive = (1, 1),
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray[np.longdouble] | Any: ...
+@overload  # 1d ~f64, axis=<given>
+def trimmed_stde(
+    a: onp.ToComplex128Strict1D, limits: _ToLimits = (0.1, 0.1), inclusive: _ToInclusive = (1, 1), *, axis: SupportsIndex
+) -> onp.MArray0D[np.float64]: ...
+@overload  # 1d ~f80, axis=<given>
+def trimmed_stde(
+    a: onp.ToArrayStrict1D[npc.inexact80, npc.inexact80],
+    limits: _ToLimits = (0.1, 0.1),
+    inclusive: _ToInclusive = (1, 1),
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray0D[np.longdouble]: ...
+@overload  # 2d ~f64, axis=<given>
+def trimmed_stde(
+    a: onp.ToComplex128Strict2D, limits: _ToLimits = (0.1, 0.1), inclusive: _ToInclusive = (1, 1), *, axis: SupportsIndex
+) -> onp.MArray1D[np.float64]: ...
+@overload  # 2d ~f80, axis=<given>
+def trimmed_stde(
+    a: onp.ToArrayStrict2D[npc.inexact80, npc.inexact80],
+    limits: _ToLimits = (0.1, 0.1),
+    inclusive: _ToInclusive = (1, 1),
+    *,
+    axis: SupportsIndex,
+) -> onp.MArray1D[np.longdouble]: ...
+@overload  # Nd ~f64
+def trimmed_stde(
+    a: onp.ToComplex128_ND, limits: _ToLimits = (0.1, 0.1), inclusive: _ToInclusive = (1, 1), axis: SupportsIndex | None = None
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # Nd ~f80
+def trimmed_stde(
+    a: onp.ToArrayND[npc.inexact80, npc.inexact80],
+    limits: _ToLimits = (0.1, 0.1),
     inclusive: _ToInclusive = (1, 1),
     axis: SupportsIndex | None = None,
-) -> _MArrayOrND[np.float64]: ...
+) -> onp.MArray[np.longdouble] | Any: ...
 
 #
 # NOTE: f32/c64 promotes to f64/c128
