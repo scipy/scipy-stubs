@@ -21,6 +21,7 @@ from scipy.stats.mstats import (
     sen_seasonal_slopes,
     siegelslopes,
     skew,
+    skewtest,
     spearmanr,
     theilslopes,
     tmax,
@@ -482,7 +483,16 @@ assert_type(describe(_b_nd).kurtosis, onp.MArray[np.float64] | Any)
 # TODO
 
 # skewtest
-# TODO
+assert_type(skewtest(_f32_3d, axis=None).statistic, np.float64)
+assert_type(skewtest(_py_c_2d, axis=None).statistic, np.complex128)
+assert_type(skewtest(_py_i_1d).statistic, np.float64)
+assert_type(skewtest(_f16_2d).statistic, onp.MArray1D[np.float64])
+assert_type(skewtest(_m_f64_nd).statistic, onp.MArray[np.float64] | Any)
+assert_type(skewtest(_c64_1d).statistic, np.complex128)
+assert_type(skewtest(_c128_2d).statistic, onp.MArray1D[np.complex128])
+assert_type(skewtest(_i8_3d).pvalue, onp.Array2D[np.float64])
+assert_type(skewtest(_c128_2d).pvalue, onp.Array1D[np.float64])
+assert_type(skewtest(_c64_3d).statistic, onp.MArray2D[np.complex128])
 
 # kurtosistest
 # TODO
