@@ -183,9 +183,46 @@ def mjci(data: onp.ToFloatStrict2D, prob: _ToProb = (0.25, 0.5, 0.75), *, axis: 
 def mjci(data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), axis: _ToAxis = None) -> onp.ArrayND[np.float64] | Any: ...
 
 #
+@overload  # ?d +f64, axis=None (default)
+def mquantiles_cimj(
+    data: onp.ToFloat64_ND, prob: _ToProb = (0.25, 0.5, 0.75), alpha: float | npc.floating = 0.05, axis: None = None
+) -> _Tuple2[onp.Array1D[np.float64]]: ...
+@overload  # ?d ~f80, axis=None (default)
+def mquantiles_cimj(
+    data: onp.ToJustLongDoubleND, prob: _ToProb = (0.25, 0.5, 0.75), alpha: float | npc.floating = 0.05, axis: None = None
+) -> _Tuple2[onp.Array1D[np.longdouble]]: ...
+@overload  # ?d, axis=<given>
+def mquantiles_cimj(
+    data: _ToFloatStrictND, prob: _ToProb = (0.25, 0.5, 0.75), alpha: float | npc.floating = 0.05, *, axis: SupportsIndex
+) -> _Tuple2[onp.ArrayND[np.float64] | Any]: ...
+@overload  # 1d +f64, axis=<given>
+def mquantiles_cimj(
+    data: onp.ToFloat64Strict1D, prob: _ToProb = (0.25, 0.5, 0.75), alpha: float | npc.floating = 0.05, *, axis: SupportsIndex
+) -> _Tuple2[onp.MArray1D[np.float64]]: ...
+@overload  # 1d ~f80, axis=<given>
+def mquantiles_cimj(
+    data: onp.ToJustLongDoubleStrict1D,
+    prob: _ToProb = (0.25, 0.5, 0.75),
+    alpha: float | npc.floating = 0.05,
+    *,
+    axis: SupportsIndex,
+) -> _Tuple2[onp.MArray1D[np.longdouble]]: ...
+@overload  # 2d +f64, axis=<given>
+def mquantiles_cimj(
+    data: onp.ToFloat64Strict2D, prob: _ToProb = (0.25, 0.5, 0.75), alpha: float | npc.floating = 0.05, *, axis: SupportsIndex
+) -> _Tuple2[onp.MArray2D[np.float64]]: ...
+@overload  # 2d ~f80, axis=<given>
+def mquantiles_cimj(
+    data: onp.ToJustLongDoubleStrict2D,
+    prob: _ToProb = (0.25, 0.5, 0.75),
+    alpha: float | npc.floating = 0.05,
+    *,
+    axis: SupportsIndex,
+) -> _Tuple2[onp.MArray2D[np.longdouble]]: ...
+@overload  # fallback
 def mquantiles_cimj(
     data: onp.ToFloatND, prob: _ToProb = (0.25, 0.5, 0.75), alpha: float | npc.floating = 0.05, axis: _ToAxis = None
-) -> _Tuple2[_FloatND]: ...
+) -> _Tuple2[onp.ArrayND[np.float64] | Any]: ...
 
 #
 @overload

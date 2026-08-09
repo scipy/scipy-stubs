@@ -27,6 +27,7 @@ from scipy.stats.mstats import (
     mode,
     moment,
     mquantiles,
+    mquantiles_cimj,
     normaltest,
     pearsonr,
     pointbiserialr,
@@ -619,13 +620,17 @@ assert_type(hdquantiles(_f64_1d, axis=0, var=True), onp.MArray2D[np.float64])
 assert_type(hdquantiles(_f64_2d, axis=0), onp.MArray2D[np.float64])
 assert_type(hdquantiles(_f16_2d, axis=1, var=True), onp.MArray3D[np.float64])
 assert_type(hdquantiles(_f64_nd, axis=0), onp.MArray[np.float64])
+assert_type(hdquantiles(_f64_nd, axis=0, var=True), onp.MArray[np.float64])
 
 # hdmedian
 assert_type(hdmedian(_py_f_1d), onp.MArray0D[np.float64])
 assert_type(hdmedian(_f32_3d, None), onp.MArray0D[np.float64])
 assert_type(hdmedian(_i8_2d), onp.MArray1D[np.float64])
 assert_type(hdmedian(_f64_nd, 0), onp.MArray[np.float64])
+assert_type(hdmedian(_f64_nd, 0, True), onp.MArray[np.float64])
+assert_type(hdmedian(_f64_nd, var=True), onp.MArray[np.float64])
 assert_type(hdmedian(_f16_1d, var=True), onp.MArray1D[np.float64])
+assert_type(hdmedian(_f16_1d, 0, True), onp.MArray1D[np.float64])
 assert_type(hdmedian(_f64_2d, None, True), onp.MArray1D[np.float64])
 assert_type(hdmedian(_f64_2d, 0, True), onp.MArray2D[np.float64])
 assert_type(hdmedian(_py_i_2d, var=True), onp.MArray2D[np.float64])
@@ -638,15 +643,26 @@ assert_type(trimmed_mean_ci(_py_f_1d), onp.Array1D[np.float64])
 assert_type(trimmed_mean_ci(_f32_3d), onp.Array1D[np.float64])
 assert_type(trimmed_mean_ci(_f80_1d), onp.Array1D[np.longdouble])
 assert_type(trimmed_mean_ci(_f16_1d, axis=0), onp.Array1D[np.float64])
+assert_type(trimmed_mean_ci(_f80_1d, axis=0), onp.Array1D[np.longdouble])
 assert_type(trimmed_mean_ci(_i8_2d, axis=0), onp.Array2D[np.float64])
 assert_type(trimmed_mean_ci(_f80_2d, axis=1), onp.Array2D[np.longdouble])
 assert_type(trimmed_mean_ci(_f64_nd, axis=0), onp.ArrayND[np.float64] | Any)
 
 # mjci
-# TODO
+assert_type(mjci(_py_f_1d), onp.Array1D[np.float64])
+assert_type(mjci(_i8_2d, 0.5), onp.Array1D[np.float64])
+assert_type(mjci(_f16_1d, axis=0), onp.MArray1D[np.float64])
+assert_type(mjci(_f80_2d, axis=1), onp.MArray2D[np.float64])
+assert_type(mjci(_f64_nd, axis=0), onp.ArrayND[np.float64] | Any)
 
 # mquantiles_cimj
-# TODO
+assert_type(mquantiles_cimj(_py_f_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(mquantiles_cimj(_f80_1d), tuple[onp.Array1D[np.longdouble], onp.Array1D[np.longdouble]])
+assert_type(mquantiles_cimj(_f64_nd, axis=0), tuple[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.float64] | Any])
+assert_type(mquantiles_cimj(_f16_1d, axis=0), tuple[onp.MArray1D[np.float64], onp.MArray1D[np.float64]])
+assert_type(mquantiles_cimj(_f80_1d, axis=0), tuple[onp.MArray1D[np.longdouble], onp.MArray1D[np.longdouble]])
+assert_type(mquantiles_cimj(_i8_2d, 0.5, axis=0), tuple[onp.MArray2D[np.float64], onp.MArray2D[np.float64]])
+assert_type(mquantiles_cimj(_f80_2d, axis=1), tuple[onp.MArray2D[np.longdouble], onp.MArray2D[np.longdouble]])
 
 # median_cihs
 # TODO
@@ -656,13 +672,6 @@ assert_type(trimmed_mean_ci(_f64_nd, axis=0), onp.ArrayND[np.float64] | Any)
 
 # idealfourths
 # TODO
-
-# mjci
-assert_type(mjci(_py_f_1d), onp.Array1D[np.float64])
-assert_type(mjci(_i8_2d, 0.5), onp.Array1D[np.float64])
-assert_type(mjci(_f16_1d, axis=0), onp.MArray1D[np.float64])
-assert_type(mjci(_f80_2d, axis=1), onp.MArray2D[np.float64])
-assert_type(mjci(_f64_nd, axis=0), onp.ArrayND[np.float64] | Any)
 
 # rsh
 assert_type(rsh(_py_i_1d), onp.MArray1D[np.float64])
