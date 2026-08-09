@@ -114,7 +114,9 @@ type _SiegelSlopesMethod = Literal["hierarchical", "separate"]
 
 type _KSMethod = Literal["auto", "exact", "asymp"]
 type _KTestMethod = Literal[_KSMethod, "approx"]
-type _ToCDF = str | Callable[[onp.ArrayND[np.float64]], onp.ToFloatND]
+
+type _CDF[**Tss] = Callable[Concatenate[onp.ArrayND[np.float64], Tss], onp.ToFloatND]
+type _ToCDF = str | _CDF[[]]
 
 # we can't use a generic shape-type here due to a variance bug in pyright
 type _KstestResult0 = KstestResult[np.float64, np.int8]
@@ -566,22 +568,58 @@ def mannwhitneyu(x: onp.ToFloatND, y: onp.ToFloatND, use_continuity: bool = True
 def kruskal(arg0: onp.ToFloat1D, /, *args: onp.ToFloat1D) -> KruskalResult: ...
 
 #
-@overload
+@overload  # ?d, args=()
 def ks_1samp(
-    x: onp.ToFloatND,
-    cdf: str | Callable[[float], onp.ToFloat],
+    x: _ToFloatStrictND, cdf: _CDF[[]], args: tuple[()] = (), alternative: Alternative = "two-sided", method: _KSMethod = "auto"
+) -> _KstestResultAny: ...
+@overload  # 1d, args=()
+def ks_1samp(
+    x: onp.ToFloatStrict1D,
+    cdf: _CDF[[]],
     args: tuple[()] = (),
     alternative: Alternative = "two-sided",
     method: _KSMethod = "auto",
-) -> KstestResult: ...
-@overload
+) -> _KstestResult0: ...
+@overload  # 2d, args=()
 def ks_1samp(
-    x: onp.ToFloatND,
-    cdf: str | Callable[Concatenate[float, ...], onp.ToFloat],
+    x: onp.ToFloatStrict2D,
+    cdf: _CDF[[]],
+    args: tuple[()] = (),
+    alternative: Alternative = "two-sided",
+    method: _KSMethod = "auto",
+) -> _KstestResult1: ...
+@overload  # Nd, args=()
+def ks_1samp(
+    x: onp.ToFloatND, cdf: _CDF[[]], args: tuple[()] = (), alternative: Alternative = "two-sided", method: _KSMethod = "auto"
+) -> _KstestResultAny: ...
+@overload  # ?d, args=<given>
+def ks_1samp(
+    x: _ToFloatStrictND,
+    cdf: _CDF[...],
     args: tuple[object, ...],
     alternative: Alternative = "two-sided",
     method: _KSMethod = "auto",
-) -> KstestResult: ...
+) -> _KstestResultAny: ...
+@overload  # 1d, args=<given>
+def ks_1samp(
+    x: onp.ToFloatStrict1D,
+    cdf: _CDF[...],
+    args: tuple[object, ...],
+    alternative: Alternative = "two-sided",
+    method: _KSMethod = "auto",
+) -> _KstestResult0: ...
+@overload  # 2d, args=<given>
+def ks_1samp(
+    x: onp.ToFloatStrict2D,
+    cdf: _CDF[...],
+    args: tuple[object, ...],
+    alternative: Alternative = "two-sided",
+    method: _KSMethod = "auto",
+) -> _KstestResult1: ...
+@overload  # Nd, args=<given>
+def ks_1samp(
+    x: onp.ToFloatND, cdf: _CDF[...], args: tuple[object, ...], alternative: Alternative = "two-sided", method: _KSMethod = "auto"
+) -> _KstestResultAny: ...
 
 #
 @overload  # ?d, ?d | 1d
@@ -673,7 +711,7 @@ def kstest(
 @overload  # 1d, args=<given>
 def kstest(
     data1: onp.ToFloatStrict1D,
-    data2: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloatND],
+    data2: _CDF[...],
     args: tuple[object, ...],
     alternative: Alternative = "two-sided",
     method: _KTestMethod = "auto",
@@ -681,7 +719,7 @@ def kstest(
 @overload  # 2d, args=<given>
 def kstest(
     data1: onp.ToFloatStrict2D,
-    data2: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloatND],
+    data2: _CDF[...],
     args: tuple[object, ...],
     alternative: Alternative = "two-sided",
     method: _KTestMethod = "auto",
@@ -689,7 +727,7 @@ def kstest(
 @overload  # fallback, args=<given>
 def kstest(
     data1: onp.ToFloatND,
-    data2: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloatND],
+    data2: _CDF[...],
     args: tuple[object, ...],
     alternative: Alternative = "two-sided",
     method: _KTestMethod = "auto",
