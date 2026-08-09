@@ -730,34 +730,64 @@ def trima[ScalarT: npc.number | np.bool](
 ) -> onp.MArray[ScalarT, _WorkaroundForPyright]: ...
 
 #
-@overload
+@overload  # 1d bool
 def trimr(
-    a: onp.SequenceND[op.JustInt | np.int_],
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
+    a: list[bool], limits: _ToMinMax = None, inclusive: _ToInclusive = (True, True), axis: SupportsIndex | None = None
+) -> onp.MArray1D[np.bool]: ...
+@overload  # ?d bool
+def trimr(
+    a: onp.SequenceND[list[bool]],
+    limits: _ToMinMax = None,
+    inclusive: _ToInclusive = (True, True),
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[np.bool]: ...
+@overload  # 1d ~int
+def trimr(
+    a: list[int], limits: _ToMinMax = None, inclusive: _ToInclusive = (True, True), axis: SupportsIndex | None = None
+) -> onp.MArray1D[np.int_]: ...
+@overload  # ?d ~int
+def trimr(
+    a: onp.SequenceND[list[int]],
+    limits: _ToMinMax = None,
+    inclusive: _ToInclusive = (True, True),
     axis: SupportsIndex | None = None,
 ) -> onp.MArray[np.int_]: ...
-@overload
+@overload  # 1d ~float
 def trimr(
-    a: onp.SequenceND[float],
-    limits: tuple[onp.ToFloat, onp.ToFloat] | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
-    axis: SupportsIndex | None = None,
-) -> onp.MArray[np.float64 | np.int_]: ...
-@overload
+    a: list[float], limits: _ToMinMax = None, inclusive: _ToInclusive = (True, True), axis: SupportsIndex | None = None
+) -> onp.MArray1D[np.float64]: ...
+@overload  # ?d ~float
 def trimr(
-    a: onp.SequenceND[complex],
-    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
+    a: onp.SequenceND[list[float]],
+    limits: _ToMinMax = None,
+    inclusive: _ToInclusive = (True, True),
     axis: SupportsIndex | None = None,
-) -> onp.MArray[np.complex128 | np.float64 | np.int_]: ...
-@overload
+) -> onp.MArray[np.float64]: ...
+@overload  # 1d ~complex
+def trimr(
+    a: list[complex], limits: _ToMinMax = None, inclusive: _ToInclusive = (True, True), axis: SupportsIndex | None = None
+) -> onp.MArray1D[np.complex128]: ...
+@overload  # ?d ~complex
+def trimr(
+    a: onp.SequenceND[list[complex]],
+    limits: _ToMinMax = None,
+    inclusive: _ToInclusive = (True, True),
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[np.complex128]: ...
+@overload  # ?d T@+number
+def trimr[ShapeT: tuple[int, ...], ScalarT: npc.number | np.bool](
+    a: onp.ArrayND[ScalarT, ShapeT],
+    limits: _ToMinMax = None,
+    inclusive: _ToInclusive = (True, True),
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[ScalarT, ShapeT]: ...
+@overload  # Nd T@+number
 def trimr[ScalarT: npc.number | np.bool](
-    a: _ArrayLike[ScalarT],
-    limits: tuple[onp.ToComplex, onp.ToComplex] | None = None,
-    inclusive: tuple[bool, bool] = (True, True),
+    a: onp.ToArrayND[ScalarT, ScalarT],
+    limits: _ToMinMax = None,
+    inclusive: _ToInclusive = (True, True),
     axis: SupportsIndex | None = None,
-) -> onp.MArray[ScalarT]: ...
+) -> onp.MArray[ScalarT, _WorkaroundForPyright]: ...
 
 #
 @overload  # 1d bool
