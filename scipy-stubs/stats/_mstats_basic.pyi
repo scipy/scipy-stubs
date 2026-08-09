@@ -823,38 +823,86 @@ def trimboth[ScalarT: npc.number | np.bool](
 ) -> onp.MArray[ScalarT, _WorkaroundForPyright]: ...
 
 #
-@overload
+@overload  # 1d bool
 def trimtail(
-    data: onp.SequenceND[op.JustInt | np.int_],
+    data: list[bool],
+    proportiontocut: float | npc.floating = 0.2,
+    tail: Literal["left", "right"] = "left",
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: SupportsIndex | None = None,
+) -> onp.MArray1D[np.bool]: ...
+@overload  # ?d bool
+def trimtail(
+    data: onp.SequenceND[list[bool]],
+    proportiontocut: float | npc.floating = 0.2,
+    tail: Literal["left", "right"] = "left",
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[np.bool]: ...
+@overload  # 1d ~int
+def trimtail(
+    data: list[int],
+    proportiontocut: float | npc.floating = 0.2,
+    tail: Literal["left", "right"] = "left",
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: SupportsIndex | None = None,
+) -> onp.MArray1D[np.int_]: ...
+@overload  # ?d ~int
+def trimtail(
+    data: onp.SequenceND[list[int]],
     proportiontocut: float | npc.floating = 0.2,
     tail: Literal["left", "right"] = "left",
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = None,
 ) -> onp.MArray[np.int_]: ...
-@overload
+@overload  # 1d ~float
 def trimtail(
-    data: onp.SequenceND[float],
+    data: list[float],
     proportiontocut: float | npc.floating = 0.2,
     tail: Literal["left", "right"] = "left",
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = None,
-) -> onp.MArray[np.float64 | np.int_]: ...
-@overload
+) -> onp.MArray1D[np.float64]: ...
+@overload  # ?d ~float
 def trimtail(
-    data: onp.SequenceND[complex],
+    data: onp.SequenceND[list[float]],
     proportiontocut: float | npc.floating = 0.2,
     tail: Literal["left", "right"] = "left",
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = None,
-) -> onp.MArray[np.complex128 | np.float64 | np.int_]: ...
-@overload
+) -> onp.MArray[np.float64]: ...
+@overload  # 1d ~complex
+def trimtail(
+    data: list[complex],
+    proportiontocut: float | npc.floating = 0.2,
+    tail: Literal["left", "right"] = "left",
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: SupportsIndex | None = None,
+) -> onp.MArray1D[np.complex128]: ...
+@overload  # ?d ~complex
+def trimtail(
+    data: onp.SequenceND[list[complex]],
+    proportiontocut: float | npc.floating = 0.2,
+    tail: Literal["left", "right"] = "left",
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[np.complex128]: ...
+@overload  # Nd T@+number
+def trimtail[ShapeT: tuple[int, ...], ScalarT: npc.number | np.bool](
+    data: onp.ArrayND[ScalarT, ShapeT],
+    proportiontocut: float | npc.floating = 0.2,
+    tail: Literal["left", "right"] = "left",
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: SupportsIndex | None = None,
+) -> onp.MArray[ScalarT, ShapeT]: ...
+@overload  # ?d T@+number
 def trimtail[ScalarT: npc.number | np.bool](
-    data: _ArrayLike[ScalarT],
+    data: onp.ToArrayND[ScalarT, ScalarT],
     proportiontocut: float | npc.floating = 0.2,
     tail: Literal["left", "right"] = "left",
     inclusive: tuple[bool, bool] = (True, True),
     axis: SupportsIndex | None = None,
-) -> onp.MArray[ScalarT]: ...
+) -> onp.MArray[ScalarT, _WorkaroundForPyright]: ...
 
 #
 # NOTE: f32/c64 promotes to f64/c128
