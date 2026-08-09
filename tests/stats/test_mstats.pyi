@@ -37,6 +37,7 @@ from scipy.stats.mstats import (
     mquantiles_cimj,
     normaltest,
     pearsonr,
+    plotting_positions,
     pointbiserialr,
     rankdata,
     rsh,
@@ -120,6 +121,7 @@ _c64_nd: onp.ArrayND[np.complex64]
 
 _c160_1d: onp.Array1D[np.complex256]
 _c160_2d: onp.Array2D[np.complex256]
+_c160_3d: onp.Array3D[np.complex256]
 _c160_nd: onp.ArrayND[np.complex256]
 
 _c128_1d: onp.Array1D[np.complex128]
@@ -692,6 +694,10 @@ assert_type(mquantiles(_f80_nd, axis=0), onp.MArray[np.float128] | Any)
 
 # scoreatpercentile
 # TODO
+
+# plotting_positions
+assert_type(plotting_positions(_py_c_2d), onp.MArray1D[np.float64])
+assert_type(plotting_positions(_c160_3d, 0.5, 0.5), onp.MArray1D[np.float64])
 
 # obrientransform
 # TODO
