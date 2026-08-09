@@ -6,12 +6,13 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.stats._mstats_basic import F_onewayResult, KruskalResult
+from scipy.stats._mstats_basic import F_onewayResult, FriedmanchisquareResult, KruskalResult
 from scipy.stats.mstats import (
     argstoarray,
     count_tied_groups,
     describe,
     f_oneway,
+    friedmanchisquare,
     hdquantiles,
     kendalltau,
     kendalltau_seasonal,
@@ -585,7 +586,8 @@ assert_type(f_oneway(_f64_1d, _i8_1d), F_onewayResult)
 assert_type(f_oneway(_py_f_1d, _f32_1d, _f16_1d), F_onewayResult)
 
 # friedmanchisquare
-# TODO
+assert_type(friedmanchisquare(_f64_1d, _i8_1d, _f32_1d), FriedmanchisquareResult)
+assert_type(friedmanchisquare(_py_f_1d, _py_i_1d, _f16_1d, _f64_1d), FriedmanchisquareResult)
 
 # brunnermunzel
 # TODO
