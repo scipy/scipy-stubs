@@ -98,6 +98,7 @@ type _ToJustF64 = np.float64 | np.float32 | np.float16
 
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
+type _ToComplexStrictND = onp.ArrayND[npc.number | np.bool, _JustAnyShape]
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
 type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
@@ -405,13 +406,106 @@ def ttest_1samp(
 ) -> Ttest_1sampResult[onp.MArray[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 
 #
+@overload  # ?d, ?d, axis=None
 def ttest_ind(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND,
+    a: onp.ToFloatND, b: onp.ToFloatND, axis: None, equal_var: bool = True, alternative: Alternative = "two-sided"
+) -> Ttest_indResult[np.float64, np.float64]: ...
+@overload  # ?d ~c128, ?d, axis=None
+def ttest_ind(
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    b: onp.ToComplexND,
+    axis: None,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[np.float64, np.complex128]: ...
+@overload  # ?d, ?d ~c128, axis=None
+def ttest_ind(
+    a: onp.ToComplexND,
+    b: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    axis: None,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[np.float64, np.complex128]: ...
+@overload  # ?d, ?d, axis=<given> (default)
+def ttest_ind(
+    a: _ToFloatStrictND,
+    b: _ToFloatStrictND,
+    axis: SupportsIndex = 0,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[onp.MArray[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
+@overload  # ?d ~c128, ?d, axis=<given> (default)
+def ttest_ind(
+    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape],
+    b: _ToComplexStrictND,
+    axis: SupportsIndex = 0,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[onp.MArray[np.float64] | Any, onp.MArray[np.complex128] | Any]: ...
+@overload  # ?d, ?d ~c128, axis=<given> (default)
+def ttest_ind(
+    a: _ToComplexStrictND,
+    b: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape],
+    axis: SupportsIndex = 0,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[onp.MArray[np.float64] | Any, onp.MArray[np.complex128] | Any]: ...
+@overload  # 1d, 1d, axis=<given> (default)
+def ttest_ind(
+    a: onp.ToFloatStrict1D,
+    b: onp.ToFloatStrict1D,
+    axis: SupportsIndex = 0,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[np.float64, np.float64]: ...
+@overload  # 1d ~c128, 1d, axis=<given> (default)
+def ttest_ind(
+    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    b: onp.ToComplexStrict1D,
+    axis: SupportsIndex = 0,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[np.float64, np.complex128]: ...
+@overload  # 1d, 1d ~c128, axis=<given> (default)
+def ttest_ind(
+    a: onp.ToComplexStrict1D,
+    b: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[np.float64, np.complex128]: ...
+@overload  # 2d, 2d, axis=<given> (default)
+def ttest_ind(
+    a: onp.ToFloatStrict2D,
+    b: onp.ToFloatStrict2D,
+    axis: SupportsIndex = 0,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[onp.MArray1D[np.float64], onp.MArray1D[np.float64]]: ...
+@overload  # 2d ~c128, 2d, axis=<given> (default)
+def ttest_ind(
+    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    b: onp.ToComplexStrict2D,
+    axis: SupportsIndex = 0,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[onp.MArray1D[np.float64], onp.MArray1D[np.complex128]]: ...
+@overload  # 2d, 2d ~c128, axis=<given> (default)
+def ttest_ind(
+    a: onp.ToComplexStrict2D,
+    b: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    axis: SupportsIndex = 0,
+    equal_var: bool = True,
+    alternative: Alternative = "two-sided",
+) -> Ttest_indResult[onp.MArray1D[np.float64], onp.MArray1D[np.complex128]]: ...
+@overload  # fallback
+def ttest_ind(
+    a: onp.ToComplexND,
+    b: onp.ToComplexND,
     axis: SupportsIndex | None = 0,
     equal_var: bool = True,
     alternative: Alternative = "two-sided",
-) -> Ttest_indResult: ...
+) -> Ttest_indResult[onp.MArray[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
 
 #
 def ttest_rel(
