@@ -11,6 +11,7 @@ from scipy.stats.mstats import (
     argstoarray,
     count_tied_groups,
     describe,
+    hdquantiles,
     kendalltau,
     kendalltau_seasonal,
     kruskal,
@@ -582,6 +583,16 @@ assert_type(mquantiles(_f80_nd, axis=0), onp.MArray[np.float128] | Any)
 # TODO
 
 ###
+
+# hdquantiles
+assert_type(hdquantiles(_f64_3d), onp.MArray1D[np.float64])
+assert_type(hdquantiles(_i8_2d, var=True), onp.MArray2D[np.float64])
+assert_type(hdquantiles(_f32_2d, (0.1, 0.9), None, True), onp.MArray2D[np.float64])
+assert_type(hdquantiles(_py_f_1d, axis=0), onp.MArray1D[np.float64])
+assert_type(hdquantiles(_f64_1d, axis=0, var=True), onp.MArray2D[np.float64])
+assert_type(hdquantiles(_f64_2d, axis=0), onp.MArray2D[np.float64])
+assert_type(hdquantiles(_f16_2d, axis=1, var=True), onp.MArray3D[np.float64])
+assert_type(hdquantiles(_f64_nd, axis=0), onp.MArray[np.float64])
 
 # rsh
 assert_type(rsh(_py_i_1d), onp.MArray1D[np.float64])
