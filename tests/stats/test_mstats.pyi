@@ -22,6 +22,7 @@ from scipy.stats.mstats import (
     kendalltau_seasonal,
     kruskal,
     ks_2samp,
+    kstest,
     kurtosis,
     kurtosistest,
     linregress,
@@ -112,6 +113,8 @@ _c128_1d: onp.Array1D[np.complex128]
 _c128_2d: onp.Array2D[np.complex128]
 _c128_3d: onp.Array3D[np.complex128]
 _c128_nd: onp.ArrayND[np.complex128]
+
+def _cdf2(x: onp.ArrayND[np.float64], a: float, /) -> onp.ArrayND[np.float64]: ...
 
 _m_f32_nd: onp.MArray[np.float32]
 _m_f64_nd: onp.MArray[np.float64]
@@ -252,8 +255,15 @@ assert_type(ks_2samp(_f64_2d, _i8_2d).statistic, onp.Array1D[np.float64])
 assert_type(ks_2samp(_f16_2d, _f64_1d).statistic_sign, onp.Array1D[np.int8])
 assert_type(ks_2samp(_m_f64_nd, _f64_nd).statistic, np.float64 | Any)
 
-# ktest
-# TODO
+# kstest
+assert_type(kstest(_py_f_1d, _i8_1d).statistic, np.float64)
+assert_type(kstest(_f32_1d, "norm").statistic_sign, np.int8)
+assert_type(kstest(_f64_2d, _i8_2d).statistic, onp.Array1D[np.float64])
+assert_type(kstest(_f16_2d, "norm").statistic_sign, onp.Array1D[np.int8])
+assert_type(kstest(_f64_2d, _f64_1d).statistic, onp.Array1D[np.float64])
+assert_type(kstest(_f64_nd, _f64_nd).statistic, np.float64 | Any)
+assert_type(kstest(_f64_1d, _cdf2, (1.0,)).statistic, np.float64)
+assert_type(kstest(_f64_2d, _cdf2, (1.0,)).statistic, onp.Array1D[np.float64])
 
 # trima
 # TODO
