@@ -30,6 +30,7 @@ from scipy.stats.mstats import (
     tmin,
     trim,
     trimmed_mean,
+    ttest_1samp,
     variation,
 )
 
@@ -178,7 +179,16 @@ assert_type(sen_seasonal_slopes(_f80_2d).intra_slope, onp.MArray1D[np.float128])
 assert_type(sen_seasonal_slopes(_c160_2d).inter_slope, np.complex256)
 
 # ttest_1samp
-# TODO
+assert_type(ttest_1samp(_f32_3d, 0.5, axis=None).statistic, np.float64)
+assert_type(ttest_1samp(_py_i_1d, 0.5).statistic, np.float64)
+assert_type(ttest_1samp(_f16_2d, _f64_1d).statistic, onp.MArray1D[np.float64])
+assert_type(ttest_1samp(_i8_3d, 0).pvalue, onp.MArray2D[np.float64])
+assert_type(ttest_1samp(_m_f64_nd, 0.5).statistic, onp.MArray[np.float64] | Any)
+assert_type(ttest_1samp(_py_c_2d, 0.5j, axis=None).statistic, np.complex128)
+assert_type(ttest_1samp(_c64_1d, 0.5).statistic, np.complex128)
+assert_type(ttest_1samp(_c128_2d, 0.5j).statistic, onp.MArray1D[np.complex128])
+assert_type(ttest_1samp(_c128_2d, 0.5j).pvalue, onp.MArray1D[np.float64])
+assert_type(ttest_1samp(_c64_3d, 0.5).statistic, onp.MArray2D[np.complex128])
 
 # ttest_ind
 # TODO

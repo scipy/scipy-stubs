@@ -341,9 +341,70 @@ def sen_seasonal_slopes(x: onp.ToJustComplex128_ND | onp.ToJustComplex64_ND) -> 
 def sen_seasonal_slopes[ScalarT: npc.inexact80](x: onp.ToArrayND[ScalarT, ScalarT]) -> SenSeasonalSlopesResult[ScalarT]: ...
 
 #
+@overload  # ?d, axis=None
 def ttest_1samp(
-    a: onp.ToFloatND, popmean: onp.ToFloat | onp.ToFloatND, axis: SupportsIndex | None = 0, alternative: Alternative = "two-sided"
-) -> Ttest_1sampResult: ...
+    a: onp.ToFloatND, popmean: onp.ToFloat | onp.ToFloatND, axis: None, alternative: Alternative = "two-sided"
+) -> Ttest_1sampResult[np.float64, np.float64]: ...
+@overload  # ?d ~c128, axis=None
+def ttest_1samp(
+    a: onp.ToArrayND[op.JustComplex, np.complex128 | np.complex64],
+    popmean: onp.ToComplex | onp.ToComplexND,
+    axis: None,
+    alternative: Alternative = "two-sided",
+) -> Ttest_1sampResult[np.float64, np.complex128]: ...
+@overload  # ?d, axis=<given> (default)
+def ttest_1samp(
+    a: _ToFloatStrictND, popmean: onp.ToFloat | onp.ToFloatND, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> Ttest_1sampResult[onp.MArray[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
+@overload  # ?d ~c128, axis=<given> (default)
+def ttest_1samp(
+    a: onp.ArrayND[np.complex128 | np.complex64, _JustAnyShape],
+    popmean: onp.ToComplex | onp.ToComplexND,
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+) -> Ttest_1sampResult[onp.MArray[np.float64] | Any, onp.MArray[np.complex128] | Any]: ...
+@overload  # 1d, axis=<given> (default)
+def ttest_1samp(
+    a: onp.ToFloatStrict1D, popmean: onp.ToFloat | onp.ToFloatND, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> Ttest_1sampResult[np.float64, np.float64]: ...
+@overload  # 1d ~c128, axis=<given> (default)
+def ttest_1samp(
+    a: onp.ToArrayStrict1D[op.JustComplex, np.complex128 | np.complex64],
+    popmean: onp.ToComplex | onp.ToComplexND,
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+) -> Ttest_1sampResult[np.float64, np.complex128]: ...
+@overload  # 2d, axis=<given> (default)
+def ttest_1samp(
+    a: onp.ToFloatStrict2D, popmean: onp.ToFloat | onp.ToFloatND, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> Ttest_1sampResult[onp.MArray1D[np.float64], onp.MArray1D[np.float64]]: ...
+@overload  # 2d ~c128, axis=<given> (default)
+def ttest_1samp(
+    a: onp.ToArrayStrict2D[op.JustComplex, np.complex128 | np.complex64],
+    popmean: onp.ToComplex | onp.ToComplexND,
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+) -> Ttest_1sampResult[onp.MArray1D[np.float64], onp.MArray1D[np.complex128]]: ...
+@overload  # 3d, axis=<given> (default)
+def ttest_1samp(
+    a: onp.ToFloatStrict3D, popmean: onp.ToFloat | onp.ToFloatND, axis: SupportsIndex = 0, alternative: Alternative = "two-sided"
+) -> Ttest_1sampResult[onp.MArray2D[np.float64], onp.MArray2D[np.float64]]: ...
+@overload  # 3d ~c128, axis=<given> (default)
+def ttest_1samp(
+    a: onp.ToArrayStrict3D[op.JustComplex, np.complex128 | np.complex64],
+    popmean: onp.ToComplex | onp.ToComplexND,
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+) -> Ttest_1sampResult[onp.MArray2D[np.float64], onp.MArray2D[np.complex128]]: ...
+@overload  # fallback
+def ttest_1samp(
+    a: onp.ToComplexND,
+    popmean: onp.ToComplex | onp.ToComplexND,
+    axis: SupportsIndex | None = 0,
+    alternative: Alternative = "two-sided",
+) -> Ttest_1sampResult[onp.MArray[np.float64] | Any, onp.MArray[np.float64] | Any]: ...
+
+#
 def ttest_ind(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
@@ -351,10 +412,16 @@ def ttest_ind(
     equal_var: bool = True,
     alternative: Alternative = "two-sided",
 ) -> Ttest_indResult: ...
+
+#
 def ttest_rel(
     a: onp.ToFloatND, b: onp.ToFloatND, axis: SupportsIndex | None = 0, alternative: Alternative = "two-sided"
 ) -> Ttest_relResult: ...
+
+#
 def mannwhitneyu(x: onp.ToFloatND, y: onp.ToFloatND, use_continuity: bool = True) -> MannwhitneyuResult: ...
+
+#
 def kruskal(arg0: onp.ToFloatND, arg1: onp.ToFloatND, /, *args: onp.ToFloatND) -> KruskalResult: ...
 
 #
