@@ -93,6 +93,8 @@ __all__ = [
 
 type _MArrayOrND[ScalarT: np.generic] = ScalarT | onp.MArray[ScalarT]
 
+type _ListND[T] = onp.SequenceND[list[T]] | list[T]
+
 type _AsF64 = np.float64 | npc.integer | np.bool
 type _ToJustF64 = np.float64 | np.float32 | np.float16
 
@@ -1614,46 +1616,104 @@ def tvar(
 ) -> np.float64: ...
 
 #
-@overload
+@overload  # ?d bool
 def tmin(
-    a: onp.SequenceND[op.JustInt | np.int_],
-    lowerlimit: onp.ToFloat | None = None,
+    a: _ListND[bool], lowerlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
+) -> onp.MArray[np.bool]: ...
+@overload  # ?d ~int
+def tmin(
+    a: _ListND[int], lowerlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
+) -> onp.MArray[np.int_]: ...
+@overload  # ?d ~float
+def tmin(
+    a: _ListND[float], lowerlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
+) -> onp.MArray[np.float64]: ...
+@overload  # ?d ~complex
+def tmin(
+    a: _ListND[complex], lowerlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
+) -> onp.MArray[np.complex128]: ...
+@overload  # ?d T@+number, axis=None
+def tmin[ScalarT: npc.number | np.bool](
+    a: onp.ToArrayND[ScalarT, ScalarT], lowerlimit: onp.ToComplex | None = None, *, axis: None, inclusive: bool = True
+) -> onp.MArray0D[ScalarT]: ...
+@overload  # ?d T@+number, axis=<given>
+def tmin[ScalarT: npc.number | np.bool](
+    a: onp.ArrayND[ScalarT, _JustAnyShape],
+    lowerlimit: onp.ToComplex | None = None,
+    axis: SupportsIndex = 0,
+    inclusive: bool = True,
+) -> onp.MArray[ScalarT] | Any: ...
+@overload  # 1d T@+number, axis=<given>
+def tmin[ScalarT: npc.number | np.bool](
+    a: onp.ToArrayStrict1D[ScalarT, ScalarT],
+    lowerlimit: onp.ToComplex | None = None,
+    axis: SupportsIndex = 0,
+    inclusive: bool = True,
+) -> onp.MArray0D[ScalarT]: ...
+@overload  # 2d T@+number, axis=<given>
+def tmin[ScalarT: npc.number | np.bool](
+    a: onp.ToArrayStrict2D[ScalarT, ScalarT],
+    lowerlimit: onp.ToComplex | None = None,
+    axis: SupportsIndex = 0,
+    inclusive: bool = True,
+) -> onp.MArray1D[ScalarT]: ...
+@overload  # Nd T@+number
+def tmin[ScalarT: npc.number | np.bool](
+    a: onp.ToArrayND[ScalarT, ScalarT],
+    lowerlimit: onp.ToComplex | None = None,
     axis: SupportsIndex | None = 0,
     inclusive: bool = True,
-) -> _MArrayOrND[np.int_]: ...
-@overload
-def tmin(
-    a: onp.SequenceND[float], lowerlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
-) -> _MArrayOrND[np.float64 | np.int_]: ...
-@overload
-def tmin(
-    a: onp.SequenceND[complex], lowerlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
-) -> _MArrayOrND[np.complex128 | np.float64 | np.int_]: ...
-@overload
-def tmin[ScalarT: npc.number | np.bool](
-    a: _ArrayLike[ScalarT], lowerlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
-) -> _MArrayOrND[ScalarT]: ...
+) -> onp.MArray[ScalarT]: ...
 
 #
-@overload
+@overload  # ?d bool
 def tmax(
-    a: onp.SequenceND[op.JustInt | np.int_],
-    upperlimit: onp.ToFloat | None = None,
+    a: _ListND[bool], upperlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
+) -> onp.MArray[np.bool]: ...
+@overload  # ?d ~int
+def tmax(
+    a: _ListND[int], upperlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
+) -> onp.MArray[np.int_]: ...
+@overload  # ?d ~float
+def tmax(
+    a: _ListND[float], upperlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
+) -> onp.MArray[np.float64]: ...
+@overload  # ?d ~complex
+def tmax(
+    a: _ListND[complex], upperlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
+) -> onp.MArray[np.complex128]: ...
+@overload  # ?d T@+number, axis=None
+def tmax[ScalarT: npc.number | np.bool](
+    a: onp.ToArrayND[ScalarT, ScalarT], upperlimit: onp.ToComplex | None = None, *, axis: None, inclusive: bool = True
+) -> onp.MArray0D[ScalarT]: ...
+@overload  # ?d T@+number, axis=<given>
+def tmax[ScalarT: npc.number | np.bool](
+    a: onp.ArrayND[ScalarT, _JustAnyShape],
+    upperlimit: onp.ToComplex | None = None,
+    axis: SupportsIndex = 0,
+    inclusive: bool = True,
+) -> onp.MArray[ScalarT] | Any: ...
+@overload  # 1d T@+number, axis=<given>
+def tmax[ScalarT: npc.number | np.bool](
+    a: onp.ToArrayStrict1D[ScalarT, ScalarT],
+    upperlimit: onp.ToComplex | None = None,
+    axis: SupportsIndex = 0,
+    inclusive: bool = True,
+) -> onp.MArray0D[ScalarT]: ...
+@overload  # 2d T@+number, axis=<given>
+def tmax[ScalarT: npc.number | np.bool](
+    a: onp.ToArrayStrict2D[ScalarT, ScalarT],
+    upperlimit: onp.ToComplex | None = None,
+    axis: SupportsIndex = 0,
+    inclusive: bool = True,
+) -> onp.MArray1D[ScalarT]: ...
+@overload  # Nd T@+number
+def tmax[ScalarT: npc.number | np.bool](
+    a: onp.ToArrayND[ScalarT, ScalarT],
+    upperlimit: onp.ToComplex | None = None,
     axis: SupportsIndex | None = 0,
     inclusive: bool = True,
-) -> _MArrayOrND[np.int_]: ...
-@overload
-def tmax(
-    a: onp.SequenceND[float], upperlimit: onp.ToFloat | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
-) -> _MArrayOrND[np.float64 | np.int_]: ...
-@overload
-def tmax(
-    a: onp.SequenceND[complex], upperlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
-) -> _MArrayOrND[np.complex128 | np.float64 | np.int_]: ...
-@overload
-def tmax[ScalarT: npc.number | np.bool](
-    a: _ArrayLike[ScalarT], upperlimit: onp.ToComplex | None = None, axis: SupportsIndex | None = 0, inclusive: bool = True
-) -> _MArrayOrND[ScalarT]: ...
+) -> onp.MArray[ScalarT]: ...
 
 #
 @overload  # ?d ~f64
