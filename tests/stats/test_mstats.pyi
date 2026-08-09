@@ -58,6 +58,7 @@ from scipy.stats.mstats import (
     ttest_1samp,
     ttest_ind,
     ttest_rel,
+    tvar,
     variation,
     winsorize,
 )
@@ -444,7 +445,9 @@ assert_type(tmean(_f32_3d, axis=0), onp.MArray[np.float64] | Any)
 assert_type(tmean(_f64_nd, (0.0, 1.0), (True, True), 0), onp.MArray[np.float64] | Any)
 
 # tvar
-# TODO
+assert_type(tvar(_m_f32_nd), np.float64)
+assert_type(tvar(_c128_2d, (2.0, 18.0)), np.float64)
+assert_type(tvar(_i8_nd, (None, 18.0)), np.float64)
 
 # tmin
 assert_type(tmin(_py_i_1d), np.int_ | onp.MArray[np.int_])
