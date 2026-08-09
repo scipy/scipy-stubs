@@ -15,6 +15,7 @@ from scipy.stats.mstats import (
     friedmanchisquare,
     hdmedian,
     hdquantiles,
+    idealfourths,
     kendalltau,
     kendalltau_seasonal,
     kruskal,
@@ -679,7 +680,14 @@ assert_type(median_cihs(_f80_2d, axis=1), onp.MArray2D[np.longdouble])
 # TODO
 
 # idealfourths
-# TODO
+assert_type(idealfourths(_f16_1d), list[np.float16])
+assert_type(idealfourths(_f80_2d), list[np.float128])
+assert_type(idealfourths(_py_i_2d), list[np.float64])
+assert_type(idealfourths(_f64_nd, 0), onp.MArray[np.float64] | Any)
+assert_type(idealfourths(_f32_1d, 0), onp.MArray1D[np.float32])
+assert_type(idealfourths(_i8_1d, 0), onp.MArray1D[np.float64])
+assert_type(idealfourths(_f80_2d, 1), onp.MArray2D[np.float128])
+assert_type(idealfourths(_py_f_2d, 0), onp.MArray2D[np.float64])
 
 # rsh
 assert_type(rsh(_py_i_1d), onp.MArray1D[np.float64])
