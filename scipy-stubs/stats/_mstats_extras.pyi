@@ -20,7 +20,6 @@ __all__ = [
 ###
 
 type _Tuple2[T] = tuple[T, T]
-type _FloatND = onp.ArrayND[np.float64]
 
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
@@ -225,20 +224,42 @@ def mquantiles_cimj(
 ) -> _Tuple2[onp.ArrayND[np.float64] | Any]: ...
 
 #
-@overload
-def median_cihs(data: onp.ToFloatND, alpha: float | npc.floating = 0.05, axis: None = None) -> _Tuple2[np.float64]: ...
-@overload
-def median_cihs(data: onp.ToFloatND, alpha: float | npc.floating, axis: SupportsIndex) -> _Tuple2[np.float64 | _FloatND]: ...
-@overload
+@overload  # ?d +f64, axis=None (default)
+def median_cihs(data: onp.ToFloat64_ND, alpha: float | npc.floating = 0.05, axis: None = None) -> _Tuple2[np.float64]: ...
+@overload  # ?d ~f80, axis=None (default)
 def median_cihs(
-    data: onp.ToFloatND, alpha: float | npc.floating = 0.05, *, axis: SupportsIndex
-) -> _Tuple2[np.float64 | _FloatND]: ...
+    data: onp.ToJustLongDoubleND, alpha: float | npc.floating = 0.05, axis: None = None
+) -> _Tuple2[np.longdouble]: ...
+@overload  # ?d, axis=<given>
+def median_cihs(
+    data: _ToFloatStrictND, alpha: float | npc.floating = 0.05, *, axis: SupportsIndex
+) -> onp.MArray[np.float64] | Any: ...
+@overload  # 1d +f64, axis=<given>
+def median_cihs(
+    data: onp.ToFloat64Strict1D, alpha: float | npc.floating = 0.05, *, axis: SupportsIndex
+) -> onp.MArray1D[np.float64]: ...
+@overload  # 1d ~f80, axis=<given>
+def median_cihs(
+    data: onp.ToJustLongDoubleStrict1D, alpha: float | npc.floating = 0.05, *, axis: SupportsIndex
+) -> onp.MArray1D[np.longdouble]: ...
+@overload  # 2d +f64, axis=<given>
+def median_cihs(
+    data: onp.ToFloat64Strict2D, alpha: float | npc.floating = 0.05, *, axis: SupportsIndex
+) -> onp.MArray2D[np.float64]: ...
+@overload  # 2d ~f80, axis=<given>
+def median_cihs(
+    data: onp.ToJustLongDoubleStrict2D, alpha: float | npc.floating = 0.05, *, axis: SupportsIndex
+) -> onp.MArray2D[np.longdouble]: ...
+@overload  # fallback
+def median_cihs(
+    data: onp.ToFloatND, alpha: float | npc.floating = 0.05, axis: _ToAxis = None
+) -> _Tuple2[np.float64] | onp.MArray[np.float64] | Any: ...
 
 #
 @overload
 def compare_medians_ms(group_1: onp.ToFloatND, group_2: onp.ToFloatND, axis: None = None) -> np.float64: ...
 @overload
-def compare_medians_ms(group_1: onp.ToFloatND, group_2: onp.ToFloatND, axis: SupportsIndex) -> _FloatND: ...
+def compare_medians_ms(group_1: onp.ToFloatND, group_2: onp.ToFloatND, axis: SupportsIndex) -> onp.ArrayND[np.float64]: ...
 
 #
 @overload

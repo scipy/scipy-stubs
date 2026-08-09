@@ -23,6 +23,7 @@ from scipy.stats.mstats import (
     kurtosistest,
     linregress,
     mannwhitneyu,
+    median_cihs,
     mjci,
     mode,
     moment,
@@ -665,7 +666,14 @@ assert_type(mquantiles_cimj(_i8_2d, 0.5, axis=0), tuple[onp.MArray2D[np.float64]
 assert_type(mquantiles_cimj(_f80_2d, axis=1), tuple[onp.MArray2D[np.longdouble], onp.MArray2D[np.longdouble]])
 
 # median_cihs
-# TODO
+assert_type(median_cihs(_py_f_1d), tuple[np.float64, np.float64])
+assert_type(median_cihs(_f32_3d), tuple[np.float64, np.float64])
+assert_type(median_cihs(_f80_1d), tuple[np.longdouble, np.longdouble])
+assert_type(median_cihs(_f64_nd, axis=0), onp.MArray[np.float64] | Any)
+assert_type(median_cihs(_f16_1d, axis=0), onp.MArray1D[np.float64])
+assert_type(median_cihs(_f80_1d, axis=0), onp.MArray1D[np.longdouble])
+assert_type(median_cihs(_i8_2d, axis=0), onp.MArray2D[np.float64])
+assert_type(median_cihs(_f80_2d, axis=1), onp.MArray2D[np.longdouble])
 
 # compare_medians_ms
 # TODO
