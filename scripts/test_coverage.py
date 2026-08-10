@@ -145,6 +145,7 @@ _PACKAGES_DEPRECATED: Final = (
     "signal.wavelets",
     "signal.windows.windows",
     "sparse.base",
+    "sparse.bsr",
     "sparse.compressed",
     "sparse.construct",
     "sparse.coo",
