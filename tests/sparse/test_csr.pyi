@@ -1,4 +1,4 @@
-from typing import Literal, assert_type
+from typing import Any, Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -201,3 +201,11 @@ assert_type(csr_mat.T, csc_matrix[ScalarType])
 assert_type(csr_vec.transpose(), csr_array[ScalarType, tuple[int]])
 assert_type(csr_arr.transpose(), csc_array[ScalarType])
 assert_type(csr_mat.transpose(), csc_matrix[ScalarType])
+
+# sum
+_csr_arr_any: csr_array[Any]
+_csr_arr_bool: csr_array[np.bool]
+_csr_arr_f32: csr_array[np.float32]
+assert_type(_csr_arr_any.sum(), Any)
+assert_type(_csr_arr_bool.sum(), np.int_)  # type:ignore[assert-type]  # mypy bug
+assert_type(_csr_arr_f32.sum(), np.float32)
