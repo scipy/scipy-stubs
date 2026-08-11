@@ -1,6 +1,6 @@
 # type-tests for `spatial/_kdtree.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -102,8 +102,10 @@ assert_type(_tree_box.boxsize, onp.Array2D[np.float64])
 
 # KDTree.query
 
-assert_type(_tree.query(_f64_1d), tuple[float, np.intp] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]])
-assert_type(_tree.query(_f64_1d, k=3), tuple[float, np.intp] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]])
+assert_type(_tree.query(_f64_1d), tuple[float, np.intp])
+assert_type(_tree.query(_f64_1d, k=3), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]] | Any)
+assert_type(_tree.query(_f64_2d), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]])
+assert_type(_tree.query(_f64_2d, k=3), tuple[onp.Array2D[np.float64], onp.Array2D[np.intp]] | Any)
 
 # KDTree.query_ball_point
 
