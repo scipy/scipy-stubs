@@ -1,4 +1,4 @@
-from typing import Final, Generic, Self, SupportsIndex, overload, override
+from typing import Any, Final, Generic, Literal, Self, SupportsIndex, overload, override
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
@@ -97,17 +97,51 @@ class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _Box
     ) -> None: ...
 
     #
-    @override
-    def query(
+    @override  # type:ignore[override]
+    @overload  # 1d, k=1
+    def query(  # pyrefly:ignore[bad-override]
         self,
         /,
-        x: onp.ToFloat1D,
-        k: onp.ToInt | onp.ToInt1D = 1,
+        x: onp.ToFloatStrict1D,
+        k: Literal[1] = 1,
         eps: onp.ToFloat = 0.0,
         p: onp.ToFloat = 2.0,
         distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
         workers: int | None = 1,
-    ) -> tuple[float, np.intp] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
+    ) -> tuple[float, np.intp]: ...
+    @overload  # 1d
+    def query(
+        self,
+        /,
+        x: onp.ToFloatStrict1D,
+        k: onp.ToInt | onp.ToInt1D,
+        eps: onp.ToFloat = 0.0,
+        p: onp.ToFloat = 2.0,
+        distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
+        workers: int | None = 1,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]] | Any: ...
+    @overload  # 2d, k=1
+    def query(
+        self,
+        /,
+        x: onp.ToFloatStrict2D,
+        k: Literal[1] = 1,
+        eps: onp.ToFloat = 0.0,
+        p: onp.ToFloat = 2.0,
+        distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
+        workers: int | None = 1,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]]: ...
+    @overload  # 2d
+    def query(  # pyright:ignore[reportIncompatibleMethodOverride]  # ty:ignore[invalid-method-override]
+        self,
+        /,
+        x: onp.ToFloatStrict2D,
+        k: onp.ToInt | onp.ToInt1D,
+        eps: onp.ToFloat = 0.0,
+        p: onp.ToFloat = 2.0,
+        distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
+        workers: int | None = 1,
+    ) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.intp]] | Any: ...
 
 @overload
 @deprecated("This function is deprecated in favor of `scipy.spatial.distance.minkowski` and will be removed in SciPy 2.1.0.")
