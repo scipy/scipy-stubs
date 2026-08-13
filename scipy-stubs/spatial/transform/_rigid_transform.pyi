@@ -225,7 +225,7 @@ class RigidTransform(Generic[_ShapeT_co]):
     def concatenate(transforms: Sequence[RigidTransform[tuple[int]]]) -> RigidTransform[tuple[int, int]]: ...
     @overload
     @staticmethod
-    def concatenate(transforms: Sequence[RigidTransform]) -> RigidTransform: ...  # pyright: ignore[reportOverlappingOverload]
+    def concatenate(transforms: Sequence[RigidTransform[tuple[int, ...]]]) -> RigidTransform: ...
 
     #
     @overload

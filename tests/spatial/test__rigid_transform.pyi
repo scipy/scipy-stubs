@@ -4,6 +4,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.spatial.transform import RigidTransform, Rotation
 
@@ -16,7 +17,7 @@ _tf_nd: RigidTransform
 
 _rot_0d: Rotation[tuple[()]]
 _rot_1d: Rotation[tuple[int]]
-_rot_nd: Rotation
+_rot_nd: Rotation[tuple[Any, ...]]
 
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
@@ -127,7 +128,7 @@ assert_type(RigidTransform.identity(shape=4), RigidTransform[tuple[int]])
 assert_type(RigidTransform.concatenate(_tf_nd), RigidTransform)
 assert_type(RigidTransform.concatenate([_tf_0d, _tf_0d]), RigidTransform[tuple[int]])
 assert_type(RigidTransform.concatenate([_tf_1d, _tf_1d]), RigidTransform[tuple[int, int]])
-assert_type(RigidTransform.concatenate([_tf_nd, _tf_nd]), RigidTransform)  # type: ignore[assert-type]
+assert_subtype[RigidTransform](RigidTransform.concatenate([_tf_nd, _tf_nd]))
 
 # inv
 assert_type(_tf_0d.inv(), RigidTransform[tuple[()]])
