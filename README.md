@@ -17,7 +17,7 @@
 - **Generics**: subscriptable types for sparse arrays, distributions, splines, and linear operators.
 - **No configuration**: works on install, affects type checking only, with no runtime impact.
 - **Broad checker support**: tested against mypy, pyright, basedpyright, pyrefly, ty, and zuban.
-- **Thoroughly tested**: `stubtest` against the runtime, [`assert_type` tests][TYPETESTS] for inference, and [mypy_primer][PRIMER] for regressions.
+- **Thoroughly tested**: every public name is [type-tested][TYPETESTS], plus `stubtest` against the runtime and [mypy_primer][PRIMER] for regressions.
 
 [TYPETESTS]: https://github.com/scipy/scipy-stubs/tree/master/tests
 [PRIMER]: https://github.com/hauntsaninja/mypy_primer
