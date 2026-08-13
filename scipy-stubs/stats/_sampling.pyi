@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Concatenate, Final, Generic, Literal, overload
+from typing import Any, Concatenate, Final, Generic, Literal, SupportsIndex, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -11,6 +11,11 @@ from .qmc import QMCEngine
 from scipy._typing import AnyShape
 
 __all__ = ["FastGeneratorInversion", "RatioUniforms"]
+
+###
+
+# workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
 
 _RT_co = TypeVar("_RT_co", bound=onp.ToFloat, default=float, covariant=True)
 
@@ -26,7 +31,7 @@ class RatioUniforms:
     def __init__(
         self,
         /,
-        pdf: Callable[Concatenate[onp.ToFloat, ...], onp.ToFloat],
+        pdf: Callable[[onp.Array1D[np.float64]], onp.ToFloat1D],
         *,
         umax: onp.ToFloat,
         vmin: onp.ToFloat,
@@ -34,7 +39,14 @@ class RatioUniforms:
         c: onp.ToFloat = 0,
         random_state: onp.random.ToRNG | None = None,
     ) -> None: ...
-    def rvs(self, /, size: AnyShape = 1) -> onp.ArrayND[np.float64]: ...
+
+    #
+    @overload  # 1d
+    def rvs(self, /, size: SupportsIndex = 1) -> onp.Array1D[np.float64]: ...
+    @overload  # Nd
+    def rvs[ShapeT: tuple[int, *tuple[int, ...]]](self, /, size: ShapeT) -> onp.ArrayND[np.float64, ShapeT]: ...
+    @overload  # ?d
+    def rvs(self, /, size: AnyShape) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
 
 class FastGeneratorInversion:
     def __init__(
