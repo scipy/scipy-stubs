@@ -75,6 +75,9 @@ jobs:
       - name: check for unstubbed modules
         run: uv run scripts/unstubbed_modules.py
 
+      - name: check for untested public names
+        run: uv run scripts/test_coverage.py
+
       # avoid stubdefaulter checking the tests as if they were stubs
       - name: exclude tests
         run: rm -rf tests

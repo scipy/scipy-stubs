@@ -1,4 +1,4 @@
-"""Walk through tests/ and collect the qualnames of accessed scipy.* names."""
+"""Require that every public `scipy.*` name is accessed somewhere in tests/."""
 
 # ruff: file-ignore[assert, print]
 
@@ -253,7 +253,7 @@ def _should_ignore(qualname: str) -> bool:
     parts = qualname.split(".")
     if any(part.startswith("_") for part in parts[1:]):
         return True  # private
-    if len(parts) < 3 or qualname.endswith(_PACKAGES_PUBLIC):  # ruff: ignore[magic-value-comparison]
+    if len(parts) < 3 or qualname.removeprefix("scipy.") in _PACKAGES_PUBLIC:  # ruff: ignore[magic-value-comparison]
         return True  # bare package
     for deprecated_pkg in _PACKAGES_DEPRECATED:
         if (
@@ -335,40 +335,21 @@ def names_public() -> set[str]:
 
 def main() -> int:
     public = names_public()
-    tested = names_tested() & public
+    missing = public - names_tested()
+
+    if not missing:
+        print(f"all {len(public)} public names are type-tested")
+        return 0
 
     def sort_key(s: str, /) -> tuple[str, str]:
-        return s.rsplit(".", 1)[0], s.rsplit(".", 1)[1]
+        module, _, name = s.rpartition(".")
+        return module, name
 
-    groups: dict[str, list[str]] = {}
-    for name in sorted(public, key=sort_key):
-        pkg = ".".join(name.split(".", 2)[:2])
-        if pkg not in groups:
-            groups[pkg] = []
-        groups[pkg].append(name)
+    print(f"{len(missing)} of {len(public)} public names are not type-tested:")
+    for name in sorted(missing, key=sort_key):
+        print(f"  {name}")
 
-    total_public = len(public)
-    total_tested = len(tested)
-
-    for pkg, names in groups.items():
-        pkg_public = len(names)
-        pkg_tested = sum(1 for n in names if n in tested)
-        pct = f"{pkg_tested / pkg_public:.1%}" if pkg_public else "N/A"
-        marker = " \N{CHECK MARK}" if pkg_tested == pkg_public else ""
-        summary = (
-            f"<code>{pkg}</code> {marker}<br>-> {pkg_tested} / {pkg_public} ({pct})"
-        )
-        print(f"<details>\n<summary>{summary}</summary>\n")
-        for name in names:
-            x = "x" if name in tested else " "
-            print(f"- [{x}] `{name}`")
-        print("\n</details>\n")
-
-    print()
-    total_pct = f"{total_tested / total_public:.1%}" if total_public else "N/A"
-    print(f"**Total: {total_tested} / {total_public} ({total_pct})**")
-
-    return 0
+    return 1
 
 
 if __name__ == "__main__":

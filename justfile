@@ -49,10 +49,11 @@ stubtest:
     uv run --no-editable --reinstall-package=scipy-stubs \
         stubtest --ignore-disjoint-bases --allowlist=.mypyignore scipy
 
-# check stub completeness
+# check stub and type-test completeness
 coverage:
     uv run pyrefly coverage check --public-only --fail-under=99.9 scipy-stubs
     uv run scripts/unstubbed_modules.py
+    uv run scripts/test_coverage.py
 
 # report incorrect or missing default values in the stubs
 stubdefaulter:
