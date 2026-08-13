@@ -235,8 +235,9 @@ assert_type(directional_stats(_c128_3d), DirectionalStats[onp.Array2D[np.complex
 assert_type(directional_stats(_c160_3d), DirectionalStats[onp.Array2D[np.clongdouble], onp.Array1D[np.longdouble]])
 
 assert_type(directional_stats(_i16_nd), DirectionalStats[onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]])
-assert_type(directional_stats(_f32_nd), DirectionalStats[onp.ArrayND[np.float32], np.float32 | onp.ArrayND[np.float32]])
-assert_type(directional_stats(_f64_nd), DirectionalStats[onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]])
+# pyright 1.1.412 regression workaround on numpy<2.1
+assert_subtype[DirectionalStats[onp.ArrayND[np.float32], np.float32 | onp.ArrayND[np.float32]]](directional_stats(_f32_nd))
+assert_subtype[DirectionalStats[onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]](directional_stats(_f64_nd))
 assert_type(directional_stats(_c64_nd), DirectionalStats[onp.ArrayND[np.complex64], np.float32 | onp.ArrayND[np.float32]])
 assert_type(directional_stats(_c128_nd), DirectionalStats[onp.ArrayND[np.complex128], np.float64 | onp.ArrayND[np.float64]])
 assert_type(

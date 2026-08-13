@@ -6,6 +6,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+from optype.test import assert_subtype
 
 from scipy.stats import (
     alexandergovern,
@@ -155,10 +156,11 @@ assert_type(gmean(_f64_2d), onp.Array1D[np.float64])
 assert_type(gmean(_c64_2d), onp.Array1D[np.complex64])
 assert_type(gmean(_c128_2d), onp.Array1D[np.complex128])
 assert_type(gmean(_i64_nd), np.float64 | onp.ArrayND[np.float64])
-assert_type(gmean(_f32_nd), np.float32 | onp.ArrayND[np.float32])
-assert_type(gmean(_f64_nd), np.float64 | onp.ArrayND[np.float64])
-assert_type(gmean(_c64_nd), np.complex64 | onp.ArrayND[np.complex64])
-assert_type(gmean(_c128_nd), np.complex128 | onp.ArrayND[np.complex128])
+# pyright 1.1.412 regression workaround on numpy<2.1
+assert_subtype[np.float32 | onp.ArrayND[np.float32]](gmean(_f32_nd))
+assert_subtype[np.float64 | onp.ArrayND[np.float64]](gmean(_f64_nd))
+assert_subtype[np.complex64 | onp.ArrayND[np.complex64]](gmean(_c64_nd))
+assert_subtype[np.complex128 | onp.ArrayND[np.complex128]](gmean(_c128_nd))
 
 assert_type(gmean(_py_i_1d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(gmean(_py_f_1d, keepdims=True), onp.ArrayND[np.float64])
@@ -241,10 +243,11 @@ assert_type(hmean(_f64_2d), onp.Array1D[np.float64])
 assert_type(hmean(_c64_2d), onp.Array1D[np.complex64])
 assert_type(hmean(_c128_2d), onp.Array1D[np.complex128])
 assert_type(hmean(_i64_nd), np.float64 | onp.ArrayND[np.float64])
-assert_type(hmean(_f32_nd), np.float32 | onp.ArrayND[np.float32])
-assert_type(hmean(_f64_nd), np.float64 | onp.ArrayND[np.float64])
-assert_type(hmean(_c64_nd), np.complex64 | onp.ArrayND[np.complex64])
-assert_type(hmean(_c128_nd), np.complex128 | onp.ArrayND[np.complex128])
+# pyright 1.1.412 regression workaround on numpy<2.1
+assert_subtype[np.float32 | onp.ArrayND[np.float32]](hmean(_f32_nd))
+assert_subtype[np.float64 | onp.ArrayND[np.float64]](hmean(_f64_nd))
+assert_subtype[np.complex64 | onp.ArrayND[np.complex64]](hmean(_c64_nd))
+assert_subtype[np.complex128 | onp.ArrayND[np.complex128]](hmean(_c128_nd))
 
 assert_type(hmean(_py_i_1d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(hmean(_py_f_1d, keepdims=True), onp.ArrayND[np.float64])
@@ -327,10 +330,11 @@ assert_type(pmean(_f64_2d, 2), onp.Array1D[np.float64])
 assert_type(pmean(_c64_2d, 2), onp.Array1D[np.complex64])
 assert_type(pmean(_c128_2d, 2), onp.Array1D[np.complex128])
 assert_type(pmean(_i64_nd, 2), np.float64 | onp.ArrayND[np.float64])
-assert_type(pmean(_f32_nd, 2), np.float32 | onp.ArrayND[np.float32])
-assert_type(pmean(_f64_nd, 2), np.float64 | onp.ArrayND[np.float64])
-assert_type(pmean(_c64_nd, 2), np.complex64 | onp.ArrayND[np.complex64])
-assert_type(pmean(_c128_nd, 2), np.complex128 | onp.ArrayND[np.complex128])
+# pyright 1.1.412 regression workaround on numpy<2.1
+assert_subtype[np.float32 | onp.ArrayND[np.float32]](pmean(_f32_nd, 2))
+assert_subtype[np.float64 | onp.ArrayND[np.float64]](pmean(_f64_nd, 2))
+assert_subtype[np.complex64 | onp.ArrayND[np.complex64]](pmean(_c64_nd, 2))
+assert_subtype[np.complex128 | onp.ArrayND[np.complex128]](pmean(_c128_nd, 2))
 
 assert_type(pmean(_py_i_1d, 2, keepdims=True), onp.ArrayND[np.float64])
 assert_type(pmean(_py_f_1d, 2, keepdims=True), onp.ArrayND[np.float64])
