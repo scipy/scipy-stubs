@@ -17,7 +17,7 @@
 - **Generics**: subscriptable types for sparse arrays, distributions, splines, and linear operators.
 - **No configuration**: works on install, affects type checking only, with no runtime impact.
 - **Broad checker support**: tested against mypy, pyright, basedpyright, pyrefly, ty, and zuban.
-- **Thoroughly tested**: `stubtest` against the runtime, [`assert_type` tests][TYPETESTS] for inference, and [mypy_primer][PRIMER] for regressions.
+- **Thoroughly tested**: every public name is [type-tested][TYPETESTS], plus `stubtest` against the runtime and [mypy_primer][PRIMER] for regressions.
 
 [TYPETESTS]: https://github.com/scipy/scipy-stubs/tree/master/tests
 [PRIMER]: https://github.com/hauntsaninja/mypy_primer
@@ -312,7 +312,7 @@ We welcome contributions from the community! There are many ways to help improve
 
 - **Report issues**: Found a bug or incorrect type annotation? [Open an issue](https://github.com/scipy/scipy-stubs/issues)
 - **Improve stubs**: Fix or enhance `.pyi` files (see [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTRIBUTING.md))
-- **Add tests**: Help with type-testing (see [#1099](https://github.com/scipy/scipy-stubs/issues/1099) and the `README.md` in [`tests/`](https://github.com/scipy/scipy-stubs/tree/master/tests))
+- **Add tests**: Help with type-testing (see the `README.md` in [`tests/`](https://github.com/scipy/scipy-stubs/tree/master/tests))
 - **Documentation**: Write guides, examples, or improve existing documentation
 - **Spread the word**: Help others discover `scipy-stubs`
 

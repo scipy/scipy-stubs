@@ -3,7 +3,13 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.interpolate import BarycentricInterpolator, KroghInterpolator, approximate_taylor_polynomial
+from scipy.interpolate import (
+    BarycentricInterpolator,
+    KroghInterpolator,
+    approximate_taylor_polynomial,
+    barycentric_interpolate,
+    krogh_interpolate,
+)
 
 py_int_1d: list[float]
 py_int_2d: list[list[float]]
@@ -74,6 +80,22 @@ assert_type(bary_c_f32.derivative(0), np.ndarray[tuple[Any, ...], np.dtype[np.co
 
 assert_type(bary_f_f32.derivatives(0), np.ndarray[tuple[Any, ...], np.dtype[np.float64]])
 assert_type(bary_c_f32.derivatives(0), np.ndarray[tuple[Any, ...], np.dtype[np.complex128]])
+
+###
+# krogh_interpolate
+
+assert_type(krogh_interpolate(py_float_1d, py_float_2d, 0.0), onp.ArrayND[np.float64])
+assert_type(krogh_interpolate(py_float_1d, f32_2d, f64_1d, der=1, axis=1), onp.ArrayND[np.float64])
+assert_type(krogh_interpolate(py_float_1d, py_complex_2d, 0.0), onp.ArrayND[np.complex128])
+assert_type(krogh_interpolate(py_float_1d, c64_2d, 0.0, der=[0, 1]), onp.ArrayND[np.complex128])
+
+###
+# barycentric_interpolate
+
+assert_type(barycentric_interpolate(py_float_1d, py_float_2d, 0.0), onp.ArrayND[np.float64])
+assert_type(barycentric_interpolate(py_float_1d, f32_2d, f64_2d, 1, der=1), onp.ArrayND[np.float64])
+assert_type(barycentric_interpolate(py_float_1d, py_complex_2d, 0.0), onp.ArrayND[np.complex128])
+assert_type(barycentric_interpolate(py_float_1d, c128_2d, 0.0, rng=0), onp.ArrayND[np.complex128])
 
 ###
 # approximate_taylor_polynomial
