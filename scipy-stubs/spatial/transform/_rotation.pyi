@@ -354,7 +354,7 @@ class Rotation(Generic[_ShapeT_co]):
     def concatenate(rotations: Sequence[Rotation[tuple[int]]]) -> Rotation[tuple[int, int]]: ...
     @overload
     @staticmethod
-    def concatenate(rotations: Sequence[Rotation]) -> Rotation: ...  # pyright: ignore[reportOverlappingOverload]
+    def concatenate(rotations: Sequence[Rotation[tuple[int, ...]]]) -> Rotation: ...
 
     #
     @classmethod

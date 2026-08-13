@@ -4,6 +4,7 @@ from typing import Any, Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.spatial.transform import Rotation, Slerp
 
@@ -78,7 +79,7 @@ assert_type(Rotation.random(shape=_3d), Rotation[tuple[int, int, int]])
 assert_type(Rotation.concatenate(_rot_nd), Rotation)
 assert_type(Rotation.concatenate([_rot_0d, _rot_0d]), Rotation[tuple[int]])
 assert_type(Rotation.concatenate([_rot_1d, _rot_1d]), Rotation[tuple[int, int]])
-assert_type(Rotation.concatenate([_rot_nd, _rot_nd]), Rotation)  # type: ignore[assert-type]
+assert_subtype[Rotation](Rotation.concatenate([_rot_nd, _rot_nd]))
 
 # create_group
 

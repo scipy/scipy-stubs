@@ -72,7 +72,7 @@ type = [
   "array-api-compat==1.14.0, !=1.15.0", # bundled as `_lib.array_api_compat`
   "pytest==9.1.1", # needed for `_lib._array_api.make_xp_pytest_*`
   "matplotlib==3.11.1", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
-  "basedpyright==1.39.9",
+  "basedpyright==1.39.10",
   "mypy[faster-cache]==2.3.0",
   "pyrefly==1.2.0",
   "stubdefaulter>=0.1.0",
