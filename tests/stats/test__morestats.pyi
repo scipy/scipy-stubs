@@ -186,6 +186,10 @@ assert_type(mood(_f64_nd, _f64_nd), SignificanceResult[np.float64 | onp.ArrayND[
 assert_type(wilcoxon(_f64_nd, axis=None), WilcoxonResult[np.float64])
 assert_type(wilcoxon(_f64_nd, keepdims=True), WilcoxonResult[onp.ArrayND[np.float64]])
 assert_type(wilcoxon(_f64_nd), WilcoxonResult)
+assert_type(wilcoxon(_f64_1d), WilcoxonResult[np.float64])
+assert_type(wilcoxon(_f64_1d, _f64_1d), WilcoxonResult[np.float64])
+assert_type(wilcoxon(_f64_2d), WilcoxonResult[onp.Array1D[np.float64]])
+assert_type(wilcoxon(_f64_2d, _f64_2d), WilcoxonResult[onp.Array1D[np.float64]])
 
 ###
 # median_test

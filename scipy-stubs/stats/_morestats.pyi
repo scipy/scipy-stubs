@@ -155,6 +155,8 @@ type _RVC1 = Literal[
     "wrapcauchy",
 ]
 type _AnsariMethod = Literal["auto", "asymptotic", "exact"] | PermutationMethod
+type _WilcoxonMethod = Literal["auto", "exact", "asymptotic", "approx"] | PermutationMethod
+type _ZeroMethod = Literal["wilcox", "pratt", "zsplit"]
 
 type _ObjFun1D = Callable[[float], float | npc.floating]
 type _MinFun1D = Callable[[_ObjFun1D], _HasX] | Callable[[_ObjFun1D], OptimizeResult]
@@ -961,40 +963,79 @@ def mood(
 ) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64]]: ...
 
 #
-@overload
+@overload  # ?d, axis=None
 def wilcoxon(
     x: onp.ToFloat | onp.ToFloatND,
     y: onp.ToFloat | onp.ToFloatND | None = None,
-    zero_method: Literal["wilcox", "pratt", "zsplit"] = "wilcox",
+    zero_method: _ZeroMethod = "wilcox",
     correction: bool = False,
     alternative: Alternative = "two-sided",
-    method: Literal["auto", "exact", "approx"] | PermutationMethod = "auto",
+    method: _WilcoxonMethod = "auto",
     *,
     axis: None,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
 ) -> WilcoxonResult[np.float64]: ...
-@overload
+@overload  # ?d, keepdims=True
 def wilcoxon(
     x: onp.ToFloat | onp.ToFloatND,
     y: onp.ToFloat | onp.ToFloatND | None = None,
-    zero_method: Literal["wilcox", "pratt", "zsplit"] = "wilcox",
+    zero_method: _ZeroMethod = "wilcox",
     correction: bool = False,
     alternative: Alternative = "two-sided",
-    method: Literal["auto", "exact", "approx", "asymptotic"] | PermutationMethod = "auto",
+    method: _WilcoxonMethod = "auto",
     *,
     axis: SupportsIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> WilcoxonResult[onp.ArrayND[np.float64]]: ...
-@overload
+@overload  # ?d
+def wilcoxon(
+    x: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    y: onp.ToFloat | onp.ToFloatND | None = None,
+    zero_method: _ZeroMethod = "wilcox",
+    correction: bool = False,
+    alternative: Alternative = "two-sided",
+    method: _WilcoxonMethod = "auto",
+    *,
+    axis: SupportsIndex | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> WilcoxonResult: ...
+@overload  # 1d
+def wilcoxon(
+    x: onp.ToFloatStrict1D,
+    y: onp.ToFloatStrict1D | None = None,
+    zero_method: _ZeroMethod = "wilcox",
+    correction: bool = False,
+    alternative: Alternative = "two-sided",
+    method: _WilcoxonMethod = "auto",
+    *,
+    axis: SupportsIndex | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> WilcoxonResult[np.float64]: ...
+@overload  # 2d
+def wilcoxon(
+    x: onp.ToFloatStrict2D,
+    y: onp.ToFloatStrict2D | None = None,
+    zero_method: _ZeroMethod = "wilcox",
+    correction: bool = False,
+    alternative: Alternative = "two-sided",
+    method: _WilcoxonMethod = "auto",
+    *,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> WilcoxonResult[onp.Array1D[np.float64]]: ...
+@overload  # fallback
 def wilcoxon(
     x: onp.ToFloat | onp.ToFloatND,
     y: onp.ToFloat | onp.ToFloatND | None = None,
-    zero_method: Literal["wilcox", "pratt", "zsplit"] = "wilcox",
+    zero_method: _ZeroMethod = "wilcox",
     correction: bool = False,
     alternative: Alternative = "two-sided",
-    method: Literal["auto", "exact", "approx"] | PermutationMethod = "auto",
+    method: _WilcoxonMethod = "auto",
     *,
     axis: SupportsIndex | None = 0,
     nan_policy: NanPolicy = "propagate",
