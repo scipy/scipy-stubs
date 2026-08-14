@@ -46,7 +46,7 @@ class OptimizeResult(_OptimizeResult):
 
 def differential_evolution(
     func: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat],
-    bounds: tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds,
+    bounds: onp.ToFloat2D | Bounds,
     args: tuple[object, ...] = (),
     strategy: _StrategyName | Callable[[int, onp.Array2D[np.float64], np.random.Generator], onp.ToFloat1D] = "best1bin",
     maxiter: onp.ToJustInt = 1000,
