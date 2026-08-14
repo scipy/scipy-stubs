@@ -1,6 +1,6 @@
 # type-tests for `interpolate/_interpolate.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -9,10 +9,12 @@ from scipy.interpolate import BPoly, NdPPoly, PPoly, interp1d, interp2d, lagrang
 
 ###
 
+_i64_1d: onp.Array1D[np.int64]
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
+_c128_1d: onp.Array1D[np.complex128]
 _c128_2d: onp.Array2D[np.complex128]
 
 ###
@@ -70,8 +72,12 @@ assert_type(_ndppoly.integrate(((0.0, 1.0),)), onp.ArrayND[np.float64])
 # interp1d
 
 interp1d_f: interp1d
-assert_type(interp1d(_f64_1d, _f64_1d), interp1d)
-assert_type(interp1d_f(0.5), onp.ArrayND[np.float64 | np.complex128])
+assert_type(interp1d(_f64_1d, _f64_1d), interp1d[np.float64])
+assert_type(interp1d(_f64_1d, _i64_1d), interp1d[np.float64])
+assert_type(interp1d(_f64_1d, _c128_1d), interp1d[np.complex128])
+assert_type(interp1d(_f64_1d, _f64_1d)(0.5), onp.ArrayND[np.float64])
+assert_type(interp1d(_f64_1d, _c128_1d)(0.5), onp.ArrayND[np.complex128])
+assert_type(interp1d_f(0.5), onp.ArrayND[Any])
 
 ###
 # interp2d (deprecated, __init__ takes Never)
