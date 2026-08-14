@@ -1,3 +1,5 @@
+# ruff: file-ignore[typed-argument-default-in-stub]
+
 from collections.abc import Callable, Iterable
 from typing import Any, Concatenate, Final, Generic, Literal, Protocol, overload, type_check_only
 from typing_extensions import TypeVar
@@ -45,12 +47,12 @@ type _Int1D = onp.Array1D[np.intp]
 type _Float = float | np.float64  # equivalent to `np.float64` in `numpy>=2.2`
 type _Float1D = onp.Array1D[np.float64]
 type _Float2D = onp.Array2D[np.float64]
-type _ComplexCo1D = onp.Array1D[npc.number | np.bool]
-type _FloatingND = onp.ArrayND[npc.floating]
-type _FloatingCoND = onp.ArrayND[npc.floating | npc.integer | np.bool]
-type _NumericND = onp.ArrayND[npc.number | np.bool | np.timedelta64 | np.object_]
+type _ToFloatingND = onp.ArrayND[npc.floating | npc.integer | np.bool]
+type _ToNumber1D = onp.Array1D[npc.number | np.bool]
+type _ToNumericND = onp.ArrayND[npc.number | np.bool | np.timedelta64 | np.object_]
 
 type _Args = tuple[object, ...]
+type _ToRange = tuple[float, float] | slice[float, float, complex | None]
 type _Brack = tuple[float, float] | tuple[float, float, float]
 type _Disp = Literal[0, 1, 2, 3] | bool | np.bool
 type _BracketInfo = tuple[
@@ -62,13 +64,13 @@ type _WarnFlag = Literal[0, 1, 2, 3, 4]
 type _AllVecs = list[_Int1D | _Float1D]
 
 _ResultValueT_co = TypeVar("_ResultValueT_co", default=Any, covariant=True)
-_XT_contra = TypeVar("_XT_contra", bound=_ComplexCo1D, default=_Float1D, contravariant=True)
+_XT_contra = TypeVar("_XT_contra", bound=_ToNumber1D, default=_Float1D, contravariant=True)
 _ValueT_co = TypeVar("_ValueT_co", bound=float | npc.floating, default=_Float, covariant=True)
 _JacT_co = TypeVar("_JacT_co", bound=onp.Array1D[npc.floating] | onp.Array2D[npc.floating], default=_Float1D, covariant=True)
 
 @type_check_only
 class _DoesFMin(Protocol):
-    def __call__(self, func: _Fn1_1d[onp.ToFloat], x0: _Float1D, /, *, args: _Args) -> _FloatingND: ...
+    def __call__(self, func: _Fn1_1d[onp.ToFloat], x0: _Float1D, /, *, args: _Args) -> onp.ArrayND[npc.floating]: ...
 
 @type_check_only
 class _DoesMap(Protocol):
@@ -135,24 +137,24 @@ class Brent(Generic[_ValueT_co]):
 @overload
 def is_finite_scalar(x: onp.ToScalar) -> np.bool: ...
 @overload  # returns a `np.ndarray` of `size = 1`, but could have any `ndim`
-def is_finite_scalar(x: _NumericND) -> Literal[False] | onp.Array[onp.AtLeast1D[Any], np.bool]: ...
+def is_finite_scalar(x: _ToNumericND) -> Literal[False] | onp.Array[onp.AtLeast1D[Any], np.bool]: ...
 
 # undocumented
 @overload
 def vecnorm(x: onp.ToComplex, ord: onp.ToFloat = 2) -> onp.ToFloat: ...
 @overload
-def vecnorm(x: _NumericND, ord: onp.ToInt = 2) -> _FloatingCoND: ...
+def vecnorm(x: _ToNumericND, ord: onp.ToInt = 2) -> _ToFloatingND: ...
 @overload
 def vecnorm(x: onp.ToFloatND, ord: onp.ToInt = 2) -> onp.ToFloat: ...
 @overload
-def vecnorm(x: onp.ToComplexND, ord: onp.ToFloat = 2) -> onp.ToFloat | _FloatingCoND: ...
+def vecnorm(x: onp.ToComplexND, ord: onp.ToFloat = 2) -> onp.ToFloat | _ToFloatingND: ...
 
 # undocumented
 def approx_fhess_p(
     x0: onp.ToFloat | onp.ToFloat1D,
     p: onp.ToFloat,
-    fprime: _Fn1[_Float1D, _FloatingCoND],
-    epsilon: onp.ToFloat | _FloatingCoND,  # scalar or 1d ndarray
+    fprime: _Fn1[_Float1D, _ToFloatingND],
+    epsilon: onp.ToFloat | _ToFloatingND,  # scalar or 1d ndarray
     *args: object,
 ) -> _Float1D: ...
 
@@ -226,7 +228,7 @@ def fmin(
 def fmin_bfgs(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND] | None = None,
+    fprime: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
@@ -245,7 +247,7 @@ def fmin_bfgs(
 def fmin_bfgs(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND] | None = None,
+    fprime: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
@@ -265,7 +267,7 @@ def fmin_bfgs(
 def fmin_bfgs(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND] | None = None,
+    fprime: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
@@ -285,7 +287,7 @@ def fmin_bfgs(
 def fmin_bfgs(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND] | None = None,
+    fprime: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
@@ -307,11 +309,11 @@ def fmin_bfgs(
 def fmin_cg(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND] | None = None,
+    fprime: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _FloatingCoND = ...,
+    epsilon: onp.ToFloat | _ToFloatingND = ...,
     maxiter: int | None = None,
     full_output: onp.ToFalse = 0,
     disp: _Disp = 1,
@@ -324,11 +326,11 @@ def fmin_cg(
 def fmin_cg(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND] | None = None,
+    fprime: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _FloatingCoND = ...,
+    epsilon: onp.ToFloat | _ToFloatingND = ...,
     maxiter: int | None = None,
     full_output: onp.ToFalse = 0,
     disp: _Disp = 1,
@@ -342,11 +344,11 @@ def fmin_cg(
 def fmin_cg(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND] | None = None,
+    fprime: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _FloatingCoND = ...,
+    epsilon: onp.ToFloat | _ToFloatingND = ...,
     maxiter: int | None = None,
     *,
     full_output: onp.ToTrue,
@@ -360,11 +362,11 @@ def fmin_cg(
 def fmin_cg(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND] | None = None,
+    fprime: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _FloatingCoND = ...,
+    epsilon: onp.ToFloat | _ToFloatingND = ...,
     maxiter: int | None = None,
     *,
     full_output: onp.ToTrue,
@@ -378,12 +380,12 @@ def fmin_cg(
 def fmin_ncg(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND],
+    fprime: _Fn1_1d[_ToFloatingND],
     fhess_p: _Fn2[_Float1D, _Float1D, onp.ToFloat] | None = None,
-    fhess: _Fn1_1d[_FloatingCoND] | None = None,
+    fhess: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _FloatingCoND = ...,
+    epsilon: onp.ToFloat | _ToFloatingND = ...,
     maxiter: int | None = None,
     full_output: onp.ToFalse = 0,
     disp: _Disp = 1,
@@ -396,12 +398,12 @@ def fmin_ncg(
 def fmin_ncg(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND],
+    fprime: _Fn1_1d[_ToFloatingND],
     fhess_p: _Fn2[_Float1D, _Float1D, onp.ToFloat] | None = None,
-    fhess: _Fn1_1d[_FloatingCoND] | None = None,
+    fhess: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _FloatingCoND = ...,
+    epsilon: onp.ToFloat | _ToFloatingND = ...,
     maxiter: int | None = None,
     full_output: onp.ToFalse = 0,
     disp: _Disp = 1,
@@ -415,12 +417,12 @@ def fmin_ncg(
 def fmin_ncg(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND],
+    fprime: _Fn1_1d[_ToFloatingND],
     fhess_p: _Fn2[_Float1D, _Float1D, onp.ToFloat] | None = None,
-    fhess: _Fn1_1d[_FloatingCoND] | None = None,
+    fhess: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _FloatingCoND = ...,
+    epsilon: onp.ToFloat | _ToFloatingND = ...,
     maxiter: int | None = None,
     *,
     full_output: onp.ToTrue,
@@ -434,12 +436,12 @@ def fmin_ncg(
 def fmin_ncg(
     f: _Fn1_1d[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: _Fn1_1d[_FloatingCoND],
+    fprime: _Fn1_1d[_ToFloatingND],
     fhess_p: _Fn2[_Float1D, _Float1D, onp.ToFloat] | None = None,
-    fhess: _Fn1_1d[_FloatingCoND] | None = None,
+    fhess: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _FloatingCoND = ...,
+    epsilon: onp.ToFloat | _ToFloatingND = ...,
     maxiter: int | None = None,
     *,
     full_output: onp.ToTrue,
@@ -541,29 +543,111 @@ def fminbound(
 ) -> tuple[_Float, _Float, _WarnFlag, int]: ...  # x, fun, status, nfev
 
 #
-@overload  # full_output: False = ...
+@overload  # ranges: 1, finish=None
 def brute(
     func: _Fn1_1d[onp.ToFloat],
-    ranges: tuple[tuple[onp.ToFloat, onp.ToFloat] | slice, ...],
+    ranges: tuple[_ToRange],
     args: _Args = (),
     Ns: int = 20,
     full_output: onp.ToFalse = 0,
-    finish: _DoesFMin | None = ...,  # default: `fmin`
+    *,
+    finish: None,
     disp: bool = False,
     workers: int | _DoesMap = 1,
-) -> _Float1D: ...
-@overload  # full_output: True (keyword)
+) -> np.float64: ...
+@overload  # ranges: 1
 def brute(
     func: _Fn1_1d[onp.ToFloat],
-    ranges: tuple[tuple[onp.ToFloat, onp.ToFloat] | slice, ...],
+    ranges: tuple[_ToRange],
+    args: _Args = (),
+    Ns: int = 20,
+    full_output: onp.ToFalse = 0,
+    finish: _DoesFMin = fmin,
+    disp: bool = False,
+    workers: int | _DoesMap = 1,
+) -> onp.Array1D[np.float64]: ...
+@overload  # ranges: 1, finish=None, full_output=True
+def brute(
+    func: _Fn1_1d[onp.ToFloat],
+    ranges: tuple[_ToRange],
     args: _Args = (),
     Ns: int = 20,
     *,
     full_output: onp.ToTrue,
-    finish: _DoesFMin | None = ...,  # default: `fmin`
+    finish: None,
     disp: bool = False,
     workers: int | _DoesMap = 1,
-) -> tuple[_Float1D, np.float64, onp.Array3D[np.float64], onp.Array2D[npc.floating]]: ...
+) -> tuple[np.float64, np.float64, onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+@overload  # ranges: 1, full_output=True
+def brute(
+    func: _Fn1_1d[onp.ToFloat],
+    ranges: tuple[_ToRange],
+    args: _Args = (),
+    Ns: int = 20,
+    *,
+    full_output: onp.ToTrue,
+    finish: _DoesFMin = fmin,
+    disp: bool = False,
+    workers: int | _DoesMap = 1,
+) -> tuple[onp.Array1D[np.float64], np.float64, onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+@overload  # ranges: 2, full_output=True
+def brute(
+    func: _Fn1_1d[onp.ToFloat],
+    ranges: tuple[_ToRange, _ToRange],
+    args: _Args = (),
+    Ns: int = 20,
+    *,
+    full_output: onp.ToTrue,
+    finish: _DoesFMin | None = fmin,
+    disp: bool = False,
+    workers: int | _DoesMap = 1,
+) -> tuple[onp.Array1D[np.float64], np.float64, onp.Array3D[np.float64], onp.Array2D[np.float64 | Any]]: ...
+@overload  # ranges: >1
+def brute(
+    func: _Fn1_1d[onp.ToFloat],
+    ranges: tuple[_ToRange, _ToRange, *tuple[_ToRange, ...]],
+    args: _Args = (),
+    Ns: int = 20,
+    full_output: onp.ToFalse = 0,
+    finish: _DoesFMin | None = fmin,
+    disp: bool = False,
+    workers: int | _DoesMap = 1,
+) -> onp.Array1D[np.float64]: ...
+@overload  # ranges: >2, full_output=True
+def brute(
+    func: _Fn1_1d[onp.ToFloat],
+    ranges: tuple[_ToRange, _ToRange, _ToRange, *tuple[_ToRange, ...]],
+    args: _Args = (),
+    Ns: int = 20,
+    *,
+    full_output: onp.ToTrue,
+    finish: _DoesFMin | None = fmin,
+    disp: bool = False,
+    workers: int | _DoesMap = 1,
+) -> tuple[onp.Array1D[np.float64], np.float64, onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # ?d
+def brute(
+    func: _Fn1_1d[onp.ToFloat],
+    ranges: tuple[_ToRange, ...],
+    args: _Args = (),
+    Ns: int = 20,
+    full_output: onp.ToFalse = 0,
+    finish: _DoesFMin | None = fmin,
+    disp: bool = False,
+    workers: int | _DoesMap = 1,
+) -> onp.Array1D[np.float64] | Any: ...
+@overload  # ?d, full_output=True
+def brute(
+    func: _Fn1_1d[onp.ToFloat],
+    ranges: tuple[_ToRange, ...],
+    args: _Args = (),
+    Ns: int = 20,
+    *,
+    full_output: onp.ToTrue,
+    finish: _DoesFMin | None = fmin,
+    disp: bool = False,
+    workers: int | _DoesMap = 1,
+) -> tuple[onp.Array1D[np.float64] | Any, np.float64, onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]]: ...
 
 #
 @overload  # full_output: False = ...
@@ -675,17 +759,17 @@ def show_options(solver: Solver | None = None, method: MethodAll | None = None, 
 #
 @overload
 def approx_fprime(
-    xk: onp.ToFloat1D, f: _Fn1_1d[_Float], epsilon: onp.ToFloat | _FloatingCoND = ..., *args: object
+    xk: onp.ToFloat1D, f: _Fn1_1d[_Float], epsilon: onp.ToFloat | _ToFloatingND = ..., *args: object
 ) -> _Float1D: ...
 @overload
 def approx_fprime(
-    xk: onp.ToFloat1D, f: _Fn1_1d[_Float1D], epsilon: onp.ToFloat | _FloatingCoND = ..., *args: object
+    xk: onp.ToFloat1D, f: _Fn1_1d[_Float1D], epsilon: onp.ToFloat | _ToFloatingND = ..., *args: object
 ) -> _Float2D: ...
 
 #
 def check_grad(
     func: _Fn1_1d[onp.ToFloat],
-    grad: _Fn1_1d[_FloatingCoND],
+    grad: _Fn1_1d[_ToFloatingND],
     x0: onp.ToFloat | onp.ToFloat1D,
     *args: object,
     epsilon: onp.ToFloat = ...,
