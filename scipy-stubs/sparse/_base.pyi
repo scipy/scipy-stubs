@@ -870,7 +870,18 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
 
     #
     def diagonal(self, /, k: int = 0) -> onp.Array1D[_ScalarT_co]: ...  # only if 2-d
-    def trace(self, /, offset: int = 0) -> _ScalarT_co: ...
+
+    #
+    @overload
+    def trace(self: _spbase[Never], /, offset: int = 0) -> Any: ...
+    @overload
+    def trace(self: _spbase[np.bool | npc.signedinteger], /, offset: int = 0) -> np.int_: ...
+    @overload
+    def trace(self: _spbase[npc.unsignedinteger], /, offset: int = 0) -> np.uint64: ...
+    @overload
+    def trace[InexactT: npc.inexact](self: _spbase[InexactT], /, offset: int = 0) -> InexactT: ...
+    @overload
+    def trace(self, /, offset: int = 0) -> Any: ...
 
     #
     @overload  # out: array (keyword)
