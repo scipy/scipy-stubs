@@ -14,7 +14,7 @@ __all__ = ["shgo"]
 
 type _Fun1D[_RT] = Callable[Concatenate[onp.Array1D[np.float64], ...], _RT]
 
-type _ToBounds = tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds
+type _ToBounds = Sequence[tuple[onp.ToFloat | None, onp.ToFloat | None]] | onp.ToFloat2D | Bounds
 type _SamplingMethod = Callable[[int, int], onp.ToFloat2D] | Literal["simplicial", "halton", "sobol"]
 
 @type_check_only
