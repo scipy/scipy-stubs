@@ -187,28 +187,6 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: float64-like | None
-    def __init__(
-        self: coo_array[np.float64, tuple[int]],
-        /,
-        arg1: _ToShape1D,
-        shape: _ToShape1D | None = None,
-        dtype: onp.AnyFloat64DType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d shape-like, dtype: float64-like | None
-    def __init__(
-        self: coo_array[np.float64, tuple[int, int]],
-        /,
-        arg1: _ToShape2D,
-        shape: _ToShape2D | None = None,
-        dtype: onp.AnyFloat64DType | None = None,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
     @overload  # >2-d shape-like, dtype: float64-like | None
     def __init__(
         self: coo_array[np.float64, onp.AtLeast3D],
@@ -284,6 +262,28 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         dtype: onp.AnyIntDType,
         copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 1-d shape-like, dtype: float64-like | None
+    def __init__(
+        self: coo_array[np.float64, tuple[int]],
+        /,
+        arg1: _ToShape1D,
+        shape: _ToShape1D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: float64-like | None
+    def __init__(
+        self: coo_array[np.float64, tuple[int, int]],
+        /,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
+        dtype: onp.AnyFloat64DType | None = None,
+        copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: complex128-like
