@@ -208,6 +208,7 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | *`CubicSpline[T: f64 \| c128]`*                     | `>=1.14.1.4`  | `>=1.17`   | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicSpline.html)                |
 | `CubicSpline[T: f64 \| c128, S: (int, ...)]`        | `>=1.18.0.1`  | `>=1.17`   | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicSpline.html)                |
 | `FloaterHormannInterpolator[T: f64 \| c128]`        | `>=1.15.0.0`  | `>=1.17`   | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.FloaterHormannInterpolator.html) |
+| `interp1d[T: f64 \| c128]`                          | `>=1.18.1.0`  | `>=1.17`   | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.interp1d.html)                   |
 | `KroghInterpolator[T: f64 \| c128, S: (int, ...)]`  | `>=1.16.0.1`  | `>=1.17`   | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.KroghInterpolator.html)          |
 | `LinearNDInterpolator[T: f64 \| c128]`              | `>=1.15.0.0`  | `>=1.17`   | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.LinearNDInterpolator.html)       |
 | `NdBSpline[T: f64 \| c128]`                         | `>=1.15.2.1`  | `>=1.17`   | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.NdBSpline.html)                  |
@@ -227,7 +228,7 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | `InverseJacobian[T: inexact]`                       | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.InverseJacobian.html)     |
 | `KrylovJacobian[T: inexact]`                        | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.KrylovJacobian.html)      |
 | `Bounds[S: (int, int, ...), T: scalar]`             | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.Bounds.html)              |
-| `NonlinearConstraint[B: float scalar/1d, K = bool]` | `>=1.18.0.1`  | `>=1.19` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.NonlinearConstraint.html) |
+| `NonlinearConstraint[B: float scalar/1d, K = bool]` | `>=1.18.0.1`  | `>=2.0`  | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.NonlinearConstraint.html) |
 
 ### `scipy.signal`
 
