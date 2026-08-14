@@ -226,3 +226,13 @@ assert_type(_csr_arr_bool.sum(0), onp.Array1D[np.int_])
 assert_type(_csr_arr_i8.sum(0), onp.Array1D[np.int_])
 assert_type(_csr_arr_u8.sum(0), onp.Array1D[np.uint64])
 assert_type(_csr_arr_f32.sum(0), onp.Array1D[np.float32])  # type: ignore[assert-type]  # mypy bug
+
+_csr_arr_c64: csr_array[np.complex64]
+assert_type(_csr_arr_any.mean(), Any)
+assert_type(_csr_arr_bool.mean(), np.float64)
+assert_type(_csr_arr_i8.mean(), np.float64)
+assert_type(_csr_arr_u8.mean(), np.float64)
+assert_type(_csr_arr_f32.mean(), np.float32)
+assert_type(_csr_arr_c64.mean(), np.complex64)
+assert_type(_csr_arr_i8.mean(0), onp.Array1D[np.float64])
+assert_type(_csr_arr_any.mean(0), onp.Array1D[Any])
