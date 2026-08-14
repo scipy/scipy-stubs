@@ -13,6 +13,7 @@ __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
 ###
 
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
+_YT_co = TypeVar("_YT_co", bound=np.float64 | np.complex128, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
 
 type _ToAxis = int | npc.integer
@@ -57,13 +58,12 @@ class interp2d:
         fill_value: object = None,
     ) -> Never: ...
 
-# TODO(@jorenham): make generic for dtypes of `x` and `y` (separately) and `y` shape-type
-class interp1d(_Interpolator1D):  # legacy
+class interp1d(_Interpolator1D[_YT_co], Generic[_YT_co]):  # legacy
     copy: bool
     bounds_error: bool
     axis: int
     x: onp.Array1D[Any]  # floating | integer | bool
-    y: onp.ArrayND[Any]  # inexact
+    y: onp.ArrayND[_YT_co]
     x_bds: onp.Array1D[npc.floating]  # only set if `kind in {"nearest", "nearest-up"}`
 
     @property
@@ -72,8 +72,35 @@ class interp1d(_Interpolator1D):  # legacy
     def fill_value(self, fill_value: _Interp1dFillValue | Literal["extrapolate"], /) -> None: ...
 
     #
+    @overload  # +float
     def __init__(
-        self,
+        self: interp1d[np.float64],
+        /,
+        x: onp.ToFloat1D,
+        y: onp.ToFloatND,
+        kind: _Interp1dKind | int = "linear",
+        axis: _ToAxis = -1,
+        copy: bool = True,
+        bounds_error: bool | None = None,
+        fill_value: _Interp1dFillValue | Literal["extrapolate"] = ...,  # np.nan
+        assume_sorted: bool = False,
+    ) -> None: ...
+    @overload  # ~complex
+    def __init__(
+        self: interp1d[np.complex128],
+        /,
+        x: onp.ToFloat1D,
+        y: onp.ToJustComplexND,
+        kind: _Interp1dKind | int = "linear",
+        axis: _ToAxis = -1,
+        copy: bool = True,
+        bounds_error: bool | None = None,
+        fill_value: _Interp1dFillValue | Literal["extrapolate"] = ...,  # np.nan
+        assume_sorted: bool = False,
+    ) -> None: ...
+    @overload  # ?complex
+    def __init__(
+        self: interp1d[Any],
         /,
         x: onp.ToFloat1D,
         y: onp.ToComplexND,
