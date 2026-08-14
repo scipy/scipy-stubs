@@ -1,3 +1,7 @@
+from typing import Any, assert_type
+
+import numpy as np
+import optype.numpy as onp
 from optype.test import assert_subtype
 
 from scipy.stats import (
@@ -236,3 +240,28 @@ assert_subtype[rv_continuous](weibull_min)
 assert_subtype[rv_continuous](wrapcauchy)
 
 assert_subtype[type[rv_continuous]](rv_histogram)
+
+###
+
+_f64_nd: onp.ArrayND[np.float64]
+_n: int
+_shape_nd: tuple[int, ...]
+_np_shape: tuple[np.intp, np.intp]
+
+assert_type(norm.rvs(), np.float64)
+assert_type(norm.rvs(size=None), np.float64)
+assert_type(norm.rvs(size=()), np.float64)
+assert_type(norm.rvs(0.5, 1.2), np.float64)
+assert_type(norm.rvs(loc=0.5, scale=1.2), np.float64)
+assert_type(expon.rvs(), np.float64)
+
+assert_type(norm.rvs(size=4), onp.Array1D[np.float64])
+assert_type(norm.rvs(size=(_n,)), onp.Array1D[np.float64])
+assert_type(norm.rvs(size=(_n, _n)), onp.Array2D[np.float64])
+assert_type(norm.rvs(size=(_n, _n, _n)), onp.Array3D[np.float64])
+assert_type(uniform.rvs(size=4), onp.Array1D[np.float64])
+assert_type(norm.rvs(size=_np_shape), onp.ArrayND[np.float64] | Any)
+
+assert_type(norm.rvs(_f64_nd), onp.ArrayND[np.float64])
+assert_type(norm.rvs(loc=_f64_nd), onp.ArrayND[np.float64])
+assert_type(norm.rvs(scale=_f64_nd), onp.ArrayND[np.float64])
