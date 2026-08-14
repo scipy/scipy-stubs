@@ -24,14 +24,16 @@ _f80_2d: onp.Array2D[np.float128]
 ###
 
 assert_type(gaussian_kde(_py_float_1d), gaussian_kde[np.float64])
-assert_type(gaussian_kde(_i64_1d), gaussian_kde[np.float64])
+assert_type(gaussian_kde(_i64_1d), gaussian_kde[np.int64])
 assert_type(gaussian_kde(_f16_1d), gaussian_kde[np.float16])
 assert_type(gaussian_kde(_f32_1d), gaussian_kde[np.float32])
 assert_type(gaussian_kde(_f64_1d), gaussian_kde[np.float64])
 assert_type(gaussian_kde(_f80_1d), gaussian_kde[np.float128])
+assert_type(gaussian_kde([1, 2, 3]), gaussian_kde[np.int64])
+assert_type(gaussian_kde([True, False]), gaussian_kde[np.bool])
 
 assert_type(gaussian_kde(_py_float_2d), gaussian_kde[np.float64])
-assert_type(gaussian_kde(_i64_2d), gaussian_kde[np.float64])
+assert_type(gaussian_kde(_i64_2d), gaussian_kde[np.int64])
 assert_type(gaussian_kde(_f16_2d), gaussian_kde[np.float16])
 assert_type(gaussian_kde(_f32_2d), gaussian_kde[np.float32])
 assert_type(gaussian_kde(_f64_2d), gaussian_kde[np.float64])
