@@ -6584,7 +6584,7 @@ def combine_pvalues(
 
 #
 def fisher_exact(
-    table: onp.ArrayND[_Real0D], alternative: Alternative | None = None, *, method: ResamplingMethod | None = None
+    table: onp.ToFloat2D, alternative: Alternative | None = None, *, method: ResamplingMethod | None = None
 ) -> SignificanceResult[float]: ...
 
 # undocumented

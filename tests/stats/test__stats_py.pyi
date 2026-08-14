@@ -1347,6 +1347,10 @@ assert_type(combine_pvalues(_f64_2d, keepdims=True), SignificanceResult[onp.Arra
 # fisher_exact
 
 assert_type(fisher_exact(_f64_2d), SignificanceResult[float])
+assert_type(fisher_exact(_i64_2d), SignificanceResult[float])
+assert_type(fisher_exact(_bool_2d), SignificanceResult[float])
+assert_type(fisher_exact(_py_i_2d), SignificanceResult[float])
+assert_type(fisher_exact([[8, 2], [1, 5]]), SignificanceResult[float])
 
 # quantile_test
 
