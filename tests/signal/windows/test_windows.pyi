@@ -154,11 +154,10 @@ assert_type(taylor(64), onp.Array1D[np.float64])
 assert_type(taylor(64, nbar=6, sll=25, norm=False, sym=False), onp.Array1D[np.float64])
 assert_type(taylor(64, xp=np), Any)
 
-# ... other window functions ...
-
 # dpss
 assert_type(dpss(64, 3), onp.Array1D[np.float64])
 assert_type(dpss(64, 3, 2), onp.Array2D[np.float64])
-assert_type(dpss(64, 3, return_ratios=True), tuple[onp.Array1D[np.float64], np.float64])
+assert_type(dpss(64, 3, return_ratios=True), tuple[onp.Array1D[np.float64], onp.Array0D[np.float64]])
 assert_type(dpss(64, 3, 2, return_ratios=True), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64]])
-assert_type(dpss(64, 3, 2, xp=np), tuple[Any, Any])
+assert_type(dpss(64, 3, 2, xp=np), Any)
+assert_type(dpss(64, 3, 2, return_ratios=True, xp=np), tuple[Any, Any])
