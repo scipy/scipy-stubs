@@ -58,8 +58,8 @@ assert_type(label(_f64_2d, output=_i32_i64_nd), int)
 assert_type(label(_i32_2d, output=_i32_i64_nd), int)
 
 # no output -> (labeled_array, num_features)
-assert_type(label(_f64_2d), tuple[onp.ArrayND[np.int32 | np.intp], int])
-assert_type(label(_i32_2d), tuple[onp.ArrayND[np.int32 | np.intp], int])
+assert_type(label(_f64_2d), tuple[onp.ArrayND[np.int32], int])
+assert_type(label(_i32_2d), tuple[onp.ArrayND[np.int32], int])
 
 ###
 # find_objects

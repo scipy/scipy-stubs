@@ -63,7 +63,7 @@ def label(
 @overload
 def label(
     input: onp.ToComplex | onp.ToComplexND, structure: onp.ToComplex | onp.ToComplexND | None = None, output: None = None
-) -> tuple[onp.ArrayND[np.int32 | np.intp], int]: ...
+) -> tuple[onp.ArrayND[np.int32], int]: ...
 
 #
 @overload
