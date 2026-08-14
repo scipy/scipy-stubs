@@ -25,7 +25,7 @@ SUCCESS_MESSAGES: tuple[str, str, str] = ...
 
 def direct(
     func: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat],
-    bounds: tuple[onp.ToFloat1D, onp.ToFloat1D] | Bounds,
+    bounds: onp.ToFloat2D | Bounds,
     *,
     args: tuple[object, ...] = (),
     eps: onp.ToFloat = 1e-4,
