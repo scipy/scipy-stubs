@@ -1,6 +1,6 @@
 # ruff: file-ignore[commented-out-code]
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy.compat as npc
@@ -156,3 +156,17 @@ assert_type(csr_arr.multiply(csr_arr), sparse.csr_array[ScalarType, tuple[int, i
 assert_type(csr_arr.multiply(dense_2d), sparse.coo_array[ScalarType, tuple[int, int]])
 
 # TODO(jorenham): test other arithmetic operations for all formats
+
+###
+
+_csr_arr_u8: sparse.csr_array[np.uint8, tuple[int, int]]
+_csr_arr_c64: sparse.csr_array[np.complex64, tuple[int, int]]
+_csr_arr_any: sparse.csr_array[Any, tuple[int, int]]
+
+assert_type(_csr_mat_bool.trace(), np.int_)
+assert_type(_csr_mat_i16.trace(), np.int_)
+assert_type(_csr_mat_i64.trace(), np.int_)
+assert_type(_csr_arr_u8.trace(), np.uint64)
+assert_type(_csr_mat_f64.trace(), np.float64)
+assert_type(_csr_arr_c64.trace(), np.complex64)
+assert_type(_csr_arr_any.trace(), Any)
