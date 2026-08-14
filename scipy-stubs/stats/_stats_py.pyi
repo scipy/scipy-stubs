@@ -4195,7 +4195,7 @@ def kendalltau(
 def weightedtau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
-    rank: onp.ToInt | onp.ToIntND = True,
+    rank: onp.ToInt | onp.ToIntND | None = True,
     weigher: _Weigher | None = None,
     additive: bool = True,
     *,
@@ -4207,7 +4207,7 @@ def weightedtau(
 def weightedtau(
     x: onp.ToFloatStrict1D,
     y: onp.ToFloatStrict1D,
-    rank: onp.ToInt | onp.ToIntND = True,
+    rank: onp.ToInt | onp.ToIntND | None = True,
     weigher: _Weigher | None = None,
     additive: bool = True,
     *,
@@ -4219,7 +4219,7 @@ def weightedtau(
 def weightedtau(
     x: onp.ToFloatStrict2D,
     y: onp.ToFloatStrict2D,
-    rank: onp.ToInt | onp.ToIntND = True,
+    rank: onp.ToInt | onp.ToIntND | None = True,
     weigher: _Weigher | None = None,
     additive: bool = True,
     *,
@@ -4231,7 +4231,7 @@ def weightedtau(
 def weightedtau(
     x: onp.ToFloatStrict3D,
     y: onp.ToFloatStrict3D,
-    rank: onp.ToInt | onp.ToIntND = True,
+    rank: onp.ToInt | onp.ToIntND | None = True,
     weigher: _Weigher | None = None,
     additive: bool = True,
     *,
@@ -4243,7 +4243,7 @@ def weightedtau(
 def weightedtau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
-    rank: onp.ToInt | onp.ToIntND = True,
+    rank: onp.ToInt | onp.ToIntND | None = True,
     weigher: _Weigher | None = None,
     additive: bool = True,
     *,
@@ -4255,7 +4255,7 @@ def weightedtau(
 def weightedtau(
     x: onp.ToFloatND,
     y: onp.ToFloatND,
-    rank: onp.ToInt | onp.ToIntND = True,
+    rank: onp.ToInt | onp.ToIntND | None = True,
     weigher: _Weigher | None = None,
     additive: bool = True,
     *,
