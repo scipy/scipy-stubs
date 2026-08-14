@@ -11,20 +11,18 @@ __all__ = ["gaussian_kde"]
 
 ###
 
-type _co_integer = npc.integer | np.bool  # ruff: ignore[snake-case-type-alias]
-
 type _ToFloatMax1D = onp.ToFloat | onp.ToFloat1D
 type _ToFloatMax2D = _ToFloatMax1D | onp.ToFloat2D
 
 type _BWMethod = Literal["scott", "silverman"] | onp.ToFloat | Callable[[gaussian_kde], onp.ToFloat]
 
-_FloatingT = TypeVar("_FloatingT", bound=npc.floating)
-_FloatingT_co = TypeVar("_FloatingT_co", bound=npc.floating, default=np.float64, covariant=True)
+_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=np.float64, covariant=True)
 
 ###
 
-class gaussian_kde(Generic[_FloatingT_co]):
-    dataset: onp.Array2D[_FloatingT_co]  # readonly
+class gaussian_kde(Generic[_ScalarT_co]):
+    dataset: onp.Array2D[_ScalarT_co]  # readonly
     covariance: Final[onp.Array2D[np.float64 | Any]]  # usually float64, sometimes longdouble
     factor: Final[np.float64]
     d: Final[int]
@@ -42,23 +40,39 @@ class gaussian_kde(Generic[_FloatingT_co]):
     def neff(self, /) -> np.float64: ...
 
     #
-    @overload
+    @overload  # <known scalar-type>
+    def __init__(
+        self: gaussian_kde[_ScalarT],
+        /,
+        dataset: onp.ToArray1D[_ScalarT, _ScalarT] | onp.ToArray2D[_ScalarT, _ScalarT],
+        bw_method: _BWMethod | None = None,
+        weights: _ToFloatMax1D | None = None,
+    ) -> None: ...
+    @overload  # ~bool
+    def __init__(
+        self: gaussian_kde[np.bool],
+        /,
+        dataset: onp.ToJustBool1D | onp.ToJustBool2D,
+        bw_method: _BWMethod | None = None,
+        weights: _ToFloatMax1D | None = None,
+    ) -> None: ...
+    @overload  # ~int
+    def __init__(
+        self: gaussian_kde[np.int64],
+        /,
+        dataset: onp.ToJustInt64_1D | onp.ToJustInt64_2D,
+        bw_method: _BWMethod | None = None,
+        weights: _ToFloatMax1D | None = None,
+    ) -> None: ...
+    @overload  # ~float
     def __init__(
         self: gaussian_kde[np.float64],
         /,
-        dataset: onp.ToArray1D[float, _co_integer] | onp.ToArray2D[float, _co_integer],
+        dataset: onp.ToJustFloat64_1D | onp.ToJustFloat64_2D,
         bw_method: _BWMethod | None = None,
         weights: _ToFloatMax1D | None = None,
     ) -> None: ...
-    @overload
-    def __init__(
-        self: gaussian_kde[_FloatingT],
-        /,
-        dataset: onp.ToArray1D[_FloatingT, _FloatingT] | onp.ToArray2D[_FloatingT, _FloatingT],
-        bw_method: _BWMethod | None = None,
-        weights: _ToFloatMax1D | None = None,
-    ) -> None: ...
-    @overload
+    @overload  # fallback
     def __init__(
         self: gaussian_kde[np.float64 | Any],
         /,
