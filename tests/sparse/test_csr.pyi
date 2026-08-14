@@ -8,18 +8,18 @@ from scipy.sparse import coo_array, csc_array, csc_matrix, csr_array, csr_matrix
 
 ###
 
-seq_bool: list[bool]
-seq_int: list[int]
-seq_float: list[float]
-seq_complex: list[complex]
+_py_b_1d: list[bool]
+_py_i_1d: list[int]
+_py_f_1d: list[float]
+_py_c_1d: list[complex]
 
-seq_seq_bool: list[list[bool]]
-seq_seq_int: list[list[int]]
-seq_seq_float: list[list[float]]
-seq_seq_complex: list[list[complex]]
+_py_b_2d: list[list[bool]]
+_py_i_2d: list[list[int]]
+_py_f_2d: list[list[float]]
+_py_c_2d: list[list[complex]]
 
-arr_f32_nd: onp.ArrayND[np.float32]
-arr_f32_1d: onp.Array1D[np.float32]
+_f32_1d: onp.Array1D[np.float32]
+_f32_nd: onp.ArrayND[np.float32]
 
 ###
 # NOTE: Keep these tests in sync with the `dok` tests.
@@ -55,64 +55,70 @@ assert_type(csr_array((2,), dtype=complex), csr_array[np.complex128, tuple[int]]
 assert_type(csr_array((2, 3), dtype=complex), csr_array[np.complex128, tuple[int, int]])
 assert_type(csr_array((2,), dtype="complex"), csr_array[np.complex128, tuple[int]])
 assert_type(csr_array((2, 3), dtype="complex"), csr_array[np.complex128, tuple[int, int]])
-assert_type(csr_array((2,), None, None), csr_array[np.float64, tuple[int]])
-assert_type(csr_array((2, 3), None, None), csr_array[np.float64, tuple[int, int]])
-assert_type(csr_array((2,), None, np.bool), csr_array[np.bool, tuple[int]])
-assert_type(csr_array((2, 3), None, np.bool), csr_array[np.bool, tuple[int, int]])
-assert_type(csr_array((2,), None, np.int64), csr_array[np.int64, tuple[int]])
-assert_type(csr_array((2, 3), None, np.int64), csr_array[np.int64, tuple[int, int]])
-assert_type(csr_array((2,), None, np.float64), csr_array[np.float64, tuple[int]])
-assert_type(csr_array((2, 3), None, np.float64), csr_array[np.float64, tuple[int, int]])
-assert_type(csr_array((2,), None, np.complex128), csr_array[np.complex128, tuple[int]])
-assert_type(csr_array((2, 3), None, np.complex128), csr_array[np.complex128, tuple[int, int]])
+assert_type(csr_array((2,), dtype=np.int8), csr_array[np.int8, tuple[int]])
+assert_type(csr_array((2, 3), dtype=np.int8), csr_array[np.int8, tuple[int, int]])
+assert_type(csr_array((2,), dtype=np.uint8), csr_array[np.uint8, tuple[int]])
+assert_type(csr_array((2, 3), dtype=np.uint8), csr_array[np.uint8, tuple[int, int]])
+assert_type(csr_array((2,), dtype=np.float32), csr_array[np.float32, tuple[int]])
+assert_type(csr_array((2, 3), dtype=np.float32), csr_array[np.float32, tuple[int, int]])
+assert_type(csr_array((2,), dtype=np.complex64), csr_array[np.complex64, tuple[int]])
+assert_type(csr_array((2, 3), dtype=np.complex64), csr_array[np.complex64, tuple[int, int]])
 assert_type(csr_matrix((2, 3)), csr_matrix[np.float64])
+assert_type(csr_matrix((2, 3), dtype=np.bool), csr_matrix[np.bool])
+assert_type(csr_matrix((2, 3), dtype=np.int64), csr_matrix[np.int64])
+assert_type(csr_matrix((2, 3), dtype=np.float64), csr_matrix[np.float64])
+assert_type(csr_matrix((2, 3), dtype=np.complex128), csr_matrix[np.complex128])
+assert_type(csr_matrix((2, 3), dtype=np.int8), csr_matrix[np.int8])
+assert_type(csr_matrix((2, 3), dtype=np.uint8), csr_matrix[np.uint8])
+assert_type(csr_matrix((2, 3), dtype=np.float32), csr_matrix[np.float32])
+assert_type(csr_matrix((2, 3), dtype=np.complex64), csr_matrix[np.complex64])
 
-assert_type(csr_array(seq_bool), csr_array[np.bool, tuple[int]])
-assert_type(csr_array(seq_int), csr_array[np.int64, tuple[int]])
-assert_type(csr_array(seq_float), csr_array[np.float64, tuple[int]])
-assert_type(csr_array(seq_complex), csr_array[np.complex128, tuple[int]])
+assert_type(csr_array(_py_b_1d), csr_array[np.bool, tuple[int]])
+assert_type(csr_array(_py_i_1d), csr_array[np.int64, tuple[int]])
+assert_type(csr_array(_py_f_1d), csr_array[np.float64, tuple[int]])
+assert_type(csr_array(_py_c_1d), csr_array[np.complex128, tuple[int]])
 
-assert_type(csr_array(seq_seq_bool), csr_array[np.bool, tuple[int, int]])
-assert_type(csr_array(seq_seq_int), csr_array[np.int64, tuple[int, int]])
-assert_type(csr_array(seq_seq_float), csr_array[np.float64, tuple[int, int]])
-assert_type(csr_array(seq_seq_complex), csr_array[np.complex128, tuple[int, int]])
+assert_type(csr_array(_py_b_2d), csr_array[np.bool, tuple[int, int]])
+assert_type(csr_array(_py_i_2d), csr_array[np.int64, tuple[int, int]])
+assert_type(csr_array(_py_f_2d), csr_array[np.float64, tuple[int, int]])
+assert_type(csr_array(_py_c_2d), csr_array[np.complex128, tuple[int, int]])
 
-assert_type(csr_matrix(seq_seq_bool), csr_matrix[np.bool])
-assert_type(csr_matrix(seq_seq_int), csr_matrix[np.int64])
-assert_type(csr_matrix(seq_seq_float), csr_matrix[np.float64])
-assert_type(csr_matrix(seq_seq_complex), csr_matrix[np.complex128])
+assert_type(csr_matrix(_py_b_2d), csr_matrix[np.bool])
+assert_type(csr_matrix(_py_i_2d), csr_matrix[np.int64])
+assert_type(csr_matrix(_py_f_2d), csr_matrix[np.float64])
+assert_type(csr_matrix(_py_c_2d), csr_matrix[np.complex128])
 
 # https://github.com/scipy/scipy-stubs/issues/1060
 
-assert_type(csr_array((arr_f32_nd, (seq_int, seq_int))), csr_array[np.float32])
-assert_type(csr_array((arr_f32_1d, (seq_int, seq_int))), csr_array[np.float32])
-assert_type(csr_array((seq_bool, (seq_int, seq_int))), csr_array[np.bool])
-assert_type(csr_array((seq_int, (seq_int, seq_int))), csr_array[np.int64])
-assert_type(csr_array((seq_float, (seq_int, seq_int))), csr_array[np.float64])
-assert_type(csr_array((seq_complex, (seq_int, seq_int))), csr_array[np.complex128])
+assert_type(csr_array((_f32_nd, (_py_i_1d, _py_i_1d))), csr_array[np.float32])
+assert_type(csr_array((_f32_1d, (_py_i_1d, _py_i_1d))), csr_array[np.float32])
+assert_type(csr_array((_py_b_1d, (_py_i_1d, _py_i_1d))), csr_array[np.bool])
+assert_type(csr_array((_py_i_1d, (_py_i_1d, _py_i_1d))), csr_array[np.int64])
+assert_type(csr_array((_py_f_1d, (_py_i_1d, _py_i_1d))), csr_array[np.float64])
+assert_type(csr_array((_py_c_1d, (_py_i_1d, _py_i_1d))), csr_array[np.complex128])
 # pyrefly: ignore [no-matching-overload]
-csr_array((seq_seq_bool, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_array((_py_b_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
-csr_array((seq_seq_int, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_array((_py_i_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
-csr_array((seq_seq_float, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_array((_py_f_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
-csr_array((seq_seq_complex, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_array((_py_c_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 
-assert_type(csr_matrix((arr_f32_nd, (seq_int, seq_int))), csr_matrix[np.float32])
-assert_type(csr_matrix((arr_f32_1d, (seq_int, seq_int))), csr_matrix[np.float32])
-assert_type(csr_matrix((seq_bool, (seq_int, seq_int))), csr_matrix[np.bool])
-assert_type(csr_matrix((seq_int, (seq_int, seq_int))), csr_matrix[np.int64])
-assert_type(csr_matrix((seq_float, (seq_int, seq_int))), csr_matrix[np.float64])
-assert_type(csr_matrix((seq_complex, (seq_int, seq_int))), csr_matrix[np.complex128])
+assert_type(csr_matrix((_f32_nd, (_py_i_1d, _py_i_1d))), csr_matrix[np.float32])
+assert_type(csr_matrix((_f32_1d, (_py_i_1d, _py_i_1d))), csr_matrix[np.float32])
+assert_type(csr_matrix((_py_b_1d, (_py_i_1d, _py_i_1d))), csr_matrix[np.bool])
+assert_type(csr_matrix((_py_i_1d, (_py_i_1d, _py_i_1d))), csr_matrix[np.int64])
+assert_type(csr_matrix((_py_f_1d, (_py_i_1d, _py_i_1d))), csr_matrix[np.float64])
+assert_type(csr_matrix((_py_c_1d, (_py_i_1d, _py_i_1d))), csr_matrix[np.complex128])
 # pyrefly: ignore [no-matching-overload]
-csr_matrix((seq_seq_bool, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((_py_b_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
-csr_matrix((seq_seq_int, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((_py_i_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
-csr_matrix((seq_seq_float, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((_py_f_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
-csr_matrix((seq_seq_complex, (seq_int, seq_int)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+csr_matrix((_py_c_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 
 ###
 # CSR-specific tests
@@ -156,8 +162,8 @@ assert_type(csr_vec[0], ScalarType)
 assert_type(csr_vec[()], csr_array[ScalarType, tuple[int]])
 assert_type(csr_vec[:], csr_array[ScalarType, tuple[int]])
 assert_type(csr_vec[...], csr_array[ScalarType, tuple[int]])
-assert_type(csr_vec[seq_bool], csr_array[ScalarType, tuple[int]])
-assert_type(csr_vec[seq_int], csr_array[ScalarType, tuple[int]])
+assert_type(csr_vec[_py_b_1d], csr_array[ScalarType, tuple[int]])
+assert_type(csr_vec[_py_i_1d], csr_array[ScalarType, tuple[int]])
 assert_type(csr_vec[0, None], csr_array[ScalarType, tuple[int]])
 assert_type(csr_vec[None, 0], csr_array[ScalarType, tuple[int]])
 assert_type(csr_vec[None], coo_array[ScalarType, tuple[int, int]])
@@ -166,31 +172,31 @@ assert_type(csr_vec[None], coo_array[ScalarType, tuple[int, int]])
 csr_arr[None]  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(csr_arr[0, 0], ScalarType)
 assert_type(csr_arr[0], coo_array[ScalarType, tuple[int]])
-assert_type(csr_arr[0, seq_int], coo_array[ScalarType, tuple[int]])
-assert_type(csr_arr[seq_int, 0], coo_array[ScalarType, tuple[int]])
+assert_type(csr_arr[0, _py_i_1d], coo_array[ScalarType, tuple[int]])
+assert_type(csr_arr[_py_i_1d, 0], coo_array[ScalarType, tuple[int]])
 assert_type(csr_arr[()], csr_array[ScalarType, tuple[int, int]])
 assert_type(csr_arr[:], csr_array[ScalarType, tuple[int, int]])
 assert_type(csr_arr[...], csr_array[ScalarType, tuple[int, int]])
-assert_type(csr_arr[seq_bool], csr_array[ScalarType, tuple[int, int]])
-assert_type(csr_arr[seq_int], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[_py_b_1d], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[_py_i_1d], csr_array[ScalarType, tuple[int, int]])
 assert_type(csr_arr[0, None], csr_array[ScalarType, tuple[int, int]])
 assert_type(csr_arr[None, 0], csr_array[ScalarType, tuple[int, int]])
-assert_type(csr_arr[seq_int, seq_int], np.ndarray[tuple[int], np.dtype[ScalarType]])
+assert_type(csr_arr[_py_i_1d, _py_i_1d], np.ndarray[tuple[int], np.dtype[ScalarType]])
 
 # pyrefly: ignore [bad-index]
 csr_mat[None]  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 assert_type(csr_mat[0, 0], ScalarType)
 assert_type(csr_mat[0], csr_matrix[ScalarType])
-assert_type(csr_mat[0, seq_int], csr_matrix[ScalarType])
-assert_type(csr_mat[seq_int, 0], csr_matrix[ScalarType])
+assert_type(csr_mat[0, _py_i_1d], csr_matrix[ScalarType])
+assert_type(csr_mat[_py_i_1d, 0], csr_matrix[ScalarType])
 assert_type(csr_mat[()], csr_matrix[ScalarType])
 assert_type(csr_mat[:], csr_matrix[ScalarType])
 assert_type(csr_mat[...], csr_matrix[ScalarType])
-assert_type(csr_mat[seq_bool], csr_matrix[ScalarType])
-assert_type(csr_mat[seq_int], csr_matrix[ScalarType])
+assert_type(csr_mat[_py_b_1d], csr_matrix[ScalarType])
+assert_type(csr_mat[_py_i_1d], csr_matrix[ScalarType])
 assert_type(csr_mat[0, None], csr_matrix[ScalarType])
 assert_type(csr_mat[None, 0], csr_matrix[ScalarType])
-assert_type(csr_mat[seq_int, seq_int], np.matrix[tuple[int, int], np.dtype[ScalarType]])
+assert_type(csr_mat[_py_i_1d, _py_i_1d], np.matrix[tuple[int, int], np.dtype[ScalarType]])
 
 # T
 assert_type(csr_vec.T, csr_array[ScalarType, tuple[int]])

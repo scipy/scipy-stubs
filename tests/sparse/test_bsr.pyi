@@ -9,10 +9,10 @@ from scipy.sparse import bsr_array, bsr_matrix, isspmatrix_bsr
 
 ###
 
-_seq_seq_bool: list[list[bool]]
-_seq_seq_int: list[list[int]]
-_seq_seq_float: list[list[float]]
-_seq_seq_complex: list[list[complex]]
+_py_b_2d: list[list[bool]]
+_py_i_2d: list[list[int]]
+_py_f_2d: list[list[float]]
+_py_2d_c: list[list[complex]]
 
 _dtype: np.dtype[ScalarType]
 
@@ -45,27 +45,35 @@ assert_type(bsr_array(_shape2, dtype="float"), bsr_array[np.float64])
 assert_type(bsr_array(_shape2, dtype=np.complex128), bsr_array[np.complex128])
 assert_type(bsr_array(_shape2, dtype=complex), bsr_array[np.complex128])
 assert_type(bsr_array(_shape2, dtype="complex"), bsr_array[np.complex128])
-assert_type(bsr_array(_shape2, None, None), bsr_array[np.float64])
-assert_type(bsr_array(_shape2, None, np.bool), bsr_array[np.bool])
-assert_type(bsr_array(_shape2, None, np.int64), bsr_array[np.int64])
-assert_type(bsr_array(_shape2, None, np.float64), bsr_array[np.float64])
-assert_type(bsr_array(_shape2, None, np.complex128), bsr_array[np.complex128])
+assert_type(bsr_array(_shape2, dtype=np.int8), bsr_array[np.int8])
+assert_type(bsr_array(_shape2, dtype=np.uint8), bsr_array[np.uint8])
+assert_type(bsr_array(_shape2, dtype=np.float32), bsr_array[np.float32])
+assert_type(bsr_array(_shape2, dtype=np.complex64), bsr_array[np.complex64])
+assert_type(bsr_array(_shape2, dtype=np.int8, blocksize=(1, 1)), bsr_array[np.int8])
 
-# `bsr_matrix` lacks the dedicated shape+dtype overloads that `bsr_array` has
 assert_type(bsr_matrix(_shape2), bsr_matrix[np.float64])
+assert_type(bsr_matrix(_shape2, dtype=np.bool), bsr_matrix[np.bool])
+assert_type(bsr_matrix(_shape2, dtype=np.int64), bsr_matrix[np.int64])
+assert_type(bsr_matrix(_shape2, dtype=np.float64), bsr_matrix[np.float64])
+assert_type(bsr_matrix(_shape2, dtype=np.complex128), bsr_matrix[np.complex128])
+assert_type(bsr_matrix(_shape2, dtype=np.int8), bsr_matrix[np.int8])
+assert_type(bsr_matrix(_shape2, dtype=np.uint8), bsr_matrix[np.uint8])
+assert_type(bsr_matrix(_shape2, dtype=np.float32), bsr_matrix[np.float32])
+assert_type(bsr_matrix(_shape2, dtype=np.complex64), bsr_matrix[np.complex64])
+assert_type(bsr_matrix(_shape2, dtype=np.int8, blocksize=(1, 1)), bsr_matrix[np.int8])
 
 ###
 # matrix-like (sequences) # ruff: ignore[commented-out-code]
 
-assert_type(bsr_array(_seq_seq_bool), bsr_array[np.bool])  # type: ignore[assert-type]
-assert_type(bsr_array(_seq_seq_int), bsr_array[np.int_])  # type: ignore[assert-type]
-assert_type(bsr_array(_seq_seq_float), bsr_array[np.float64])  # type: ignore[assert-type]
-assert_type(bsr_array(_seq_seq_complex), bsr_array[np.complex128])  # type: ignore[assert-type]
+assert_type(bsr_array(_py_b_2d), bsr_array[np.bool])  # type: ignore[assert-type]
+assert_type(bsr_array(_py_i_2d), bsr_array[np.int_])  # type: ignore[assert-type]
+assert_type(bsr_array(_py_f_2d), bsr_array[np.float64])  # type: ignore[assert-type]
+assert_type(bsr_array(_py_2d_c), bsr_array[np.complex128])  # type: ignore[assert-type]
 
-assert_type(bsr_matrix(_seq_seq_bool), bsr_matrix[np.bool])  # type: ignore[assert-type]
-assert_type(bsr_matrix(_seq_seq_int), bsr_matrix[np.int_])  # type: ignore[assert-type]
-assert_type(bsr_matrix(_seq_seq_float), bsr_matrix[np.float64])  # type: ignore[assert-type]
-assert_type(bsr_matrix(_seq_seq_complex), bsr_matrix[np.complex128])  # type: ignore[assert-type]
+assert_type(bsr_matrix(_py_b_2d), bsr_matrix[np.bool])  # type: ignore[assert-type]
+assert_type(bsr_matrix(_py_i_2d), bsr_matrix[np.int_])  # type: ignore[assert-type]
+assert_type(bsr_matrix(_py_f_2d), bsr_matrix[np.float64])  # type: ignore[assert-type]
+assert_type(bsr_matrix(_py_2d_c), bsr_matrix[np.complex128])  # type: ignore[assert-type]
 
 ###
 # matrix-like (dense ndarray)
@@ -154,18 +162,10 @@ assert_type(isspmatrix_bsr(object()), bool)
 ###
 # blocksize with matrix-like data (not just _bsr_spec3)
 
-assert_type(bsr_array(_seq_seq_int, blocksize=(2, 2)), bsr_array[np.int_])  # type: ignore[assert-type]
+assert_type(bsr_array(_py_i_2d, blocksize=(2, 2)), bsr_array[np.int_])  # type: ignore[assert-type]
 assert_type(bsr_array(_data2, blocksize=(2, 2)), bsr_array[ScalarType])
-assert_type(bsr_matrix(_seq_seq_int, blocksize=(2, 2)), bsr_matrix[np.int_])  # type: ignore[assert-type]
+assert_type(bsr_matrix(_py_i_2d, blocksize=(2, 2)), bsr_matrix[np.int_])  # type: ignore[assert-type]
 assert_type(bsr_matrix(_data2, blocksize=(2, 2)), bsr_matrix[ScalarType])
-
-###
-# (M, N) shape constructor, dtype positional (requires shape positional too)
-
-assert_type(bsr_array(_shape2, _shape2, np.float64), bsr_array[np.float64])
-assert_type(bsr_array(_shape2, _shape2, np.bool), bsr_array[np.bool])
-assert_type(bsr_array(_shape2, _shape2, np.int64), bsr_array[np.int64])
-assert_type(bsr_array(_shape2, _shape2, np.complex128), bsr_array[np.complex128])
 
 ###
 # bsr_matrix (M, N) shape constructor — only supports dtype=None per stub
