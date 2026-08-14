@@ -117,6 +117,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
+        blocksize: tuple[int, int] | None = None,
         *,
         maxprint: int | None = None,
     ) -> None: ...
@@ -129,6 +130,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
+        blocksize: tuple[int, int] | None = None,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: int-like
@@ -140,6 +142,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         dtype: onp.AnyIntDType,
         copy: bool = False,
+        blocksize: tuple[int, int] | None = None,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: complex128-like
@@ -151,6 +154,7 @@ class bsr_array(_bsr_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         *,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
+        blocksize: tuple[int, int] | None = None,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: <known>
