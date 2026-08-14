@@ -211,7 +211,18 @@ assert_type(csr_mat.transpose(), csc_matrix[ScalarType])
 # sum
 _csr_arr_any: csr_array[Any]
 _csr_arr_bool: csr_array[np.bool]
+_csr_arr_i8: csr_array[np.int8]
+_csr_arr_u8: csr_array[np.uint8]
 _csr_arr_f32: csr_array[np.float32]
+
 assert_type(_csr_arr_any.sum(), Any)
-assert_type(_csr_arr_bool.sum(), np.int_)  # type:ignore[assert-type]  # mypy bug
+assert_type(_csr_arr_bool.sum(), np.int_)
+assert_type(_csr_arr_i8.sum(), np.int_)
+assert_type(_csr_arr_u8.sum(), np.uint64)
 assert_type(_csr_arr_f32.sum(), np.float32)
+
+assert_type(_csr_arr_any.sum(0), onp.Array1D[Any])
+assert_type(_csr_arr_bool.sum(0), onp.Array1D[np.int_])
+assert_type(_csr_arr_i8.sum(0), onp.Array1D[np.int_])
+assert_type(_csr_arr_u8.sum(0), onp.Array1D[np.uint64])
+assert_type(_csr_arr_f32.sum(0), onp.Array1D[np.float32])  # type: ignore[assert-type]  # mypy bug
