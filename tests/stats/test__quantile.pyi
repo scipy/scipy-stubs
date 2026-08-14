@@ -36,9 +36,27 @@ assert_type(quantile(_f64_3d, 0.5), onp.Array2D[np.float64])
 assert_type(quantile(_f64_1d, 0.5, axis=None), np.float64)
 assert_type(quantile(_f64_2d, 0.5, axis=None), np.float64)
 assert_type(quantile(_f64_3d, 0.5, axis=None), np.float64)
-assert_type(quantile(_f64_1d, 0.5, keepdims=True), onp.ArrayND[np.float64])
-assert_type(quantile(_f64_2d, 0.5, keepdims=True), onp.ArrayND[np.float64])
-assert_type(quantile(_f64_3d, 0.5, keepdims=True), onp.ArrayND[np.float64])
+assert_type(quantile(_f64_1d, 0.5, keepdims=True), onp.Array1D[np.float64])
+assert_type(quantile(_f64_2d, 0.5, keepdims=True), onp.Array2D[np.float64])
+assert_type(quantile(_f64_3d, 0.5, keepdims=True), onp.Array3D[np.float64])
+
+# https://github.com/scipy/scipy-stubs/issues/1897
+assert_type(quantile(_f32_1d, 0.5), np.float32)
+assert_type(quantile(_f32_2d, 0.5), onp.Array1D[np.float32])
+assert_type(quantile(_f32_3d, 0.5), onp.Array2D[np.float32])
+assert_type(quantile(_f32_1d, 0.5, axis=None), np.float32)
+assert_type(quantile(_f32_2d, 0.5, axis=None), np.float32)
+assert_type(quantile(_f32_1d, 0.5, keepdims=True), onp.Array1D[np.float32])
+assert_type(quantile(_f32_2d, 0.5, keepdims=True), onp.Array2D[np.float32])
+assert_type(quantile(_f32_3d, 0.5, keepdims=True), onp.Array3D[np.float32])
+assert_subtype[np.float32 | onp.ArrayND[np.float32] | Any](quantile(_f32_nd, 0.5))
+
+# a *sequence* `p` is `float64`, and so co-promotes; only a `float` scalar `p` propagates
+assert_type(quantile(_f32_1d, _py_f_1d), onp.ArrayND[np.float64])
+assert_type(quantile(_f32_1d, _f64_1d), onp.ArrayND[np.float64])
+# `weights` co-promotes with `x` as well, so a weighted float32 `x` falls back to the gradual overload
+assert_subtype[onp.ArrayND[np.float64] | np.float64 | Any](quantile(_f32_1d, 0.5, weights=_f64_1d))
+assert_type(quantile(_py_f_1d, 0.5, weights=_f64_1d), np.float64)
 
 assert_type(quantile(_py_f_1d, _f64_1d), onp.ArrayND[np.float64])
 assert_type(quantile(_py_f_2d, _f64_1d), onp.ArrayND[np.float64])
