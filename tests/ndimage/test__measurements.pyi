@@ -70,7 +70,9 @@ assert_type(find_objects(_i32_2d), list[tuple[slice[int, int, None], ...] | None
 ###
 # value_indices
 
-assert_type(value_indices(_i32_2d), dict[np.intp, tuple[onp.ArrayND[np.intp], ...]])
+assert_type(value_indices(_i32_2d), dict[np.int32, tuple[onp.ArrayND[np.intp], ...]])
+assert_type(value_indices(_u8_2d), dict[np.uint8, tuple[onp.ArrayND[np.intp], ...]])
+assert_type(value_indices(_py_i_2d), dict[np.intp, tuple[onp.ArrayND[np.intp], ...]])
 
 ###
 # labeled_comprehension

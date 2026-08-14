@@ -72,9 +72,18 @@ def find_objects(input: onp.ToInt, max_label: int = 0) -> list[tuple[()] | None]
 def find_objects(input: onp.ToIntND, max_label: int = 0) -> list[tuple[slice[int, int, None], ...] | None]: ...
 
 #
+@overload  # <known integer scalar-type>
+def value_indices[IntT: npc.integer](
+    arr: onp.ArrayND[IntT], *, ignore_value: int | None = None
+) -> dict[IntT, tuple[onp.ArrayND[np.intp], ...]]: ...
+@overload  # ~int
+def value_indices(
+    arr: int | onp.ToJustInt64_ND, *, ignore_value: int | None = None
+) -> dict[np.int_, tuple[onp.ArrayND[np.intp], ...]]: ...
+@overload  # +int
 def value_indices(
     arr: onp.ToInt | onp.ToIntND, *, ignore_value: int | None = None
-) -> dict[np.intp, tuple[onp.ArrayND[np.intp], ...]]: ...
+) -> dict[np.int_ | Any, tuple[onp.ArrayND[np.intp], ...]]: ...
 
 #
 @overload
