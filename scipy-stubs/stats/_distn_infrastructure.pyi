@@ -1355,9 +1355,67 @@ class _rv_continuous_0(rv_continuous):
 
     #
     @override
+    @overload  # size: () | None  (default)
     def rvs(
-        self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, size: AnyShape = 1, random_state: onp.random.ToRNG | None = None
-    ) -> _FloatOrND: ...
+        self,
+        /,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        size: tuple[()] | None = None,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> np.float64: ...
+    @overload  # size: int
+    def rvs(
+        self,
+        /,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        *,
+        size: SupportsIndex,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # size: (int, [int, ...])
+    def rvs[ShapeT: tuple[int, *tuple[int, ...]]](
+        self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1, *, size: ShapeT, random_state: onp.random.ToRNG | None = None
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
+    @overload  # size: (index, ...)
+    def rvs(
+        self,
+        /,
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        *,
+        size: tuple[SupportsIndex, ...],
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.ArrayND[np.float64] | Any: ...
+    @overload  # loc: Nd
+    def rvs(
+        self,
+        /,
+        loc: onp.ToFloatND,
+        scale: onp.ToFloat | onp.ToFloatND = 1,
+        size: AnyShape | None = None,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload  # scale: Nd
+    def rvs(
+        self,
+        /,
+        loc: onp.ToFloat = 0,
+        *,
+        scale: onp.ToFloatND,
+        size: AnyShape | None = None,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.ArrayND[np.float64]: ...
+    @overload  # size: <unknown>
+    def rvs(
+        self,
+        /,
+        loc: onp.ToFloat | onp.ToFloatND = 0,
+        scale: onp.ToFloat | onp.ToFloatND = 1,
+        size: AnyShape | None = None,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.ArrayND[np.float64] | Any: ...
 
     #
     @override
