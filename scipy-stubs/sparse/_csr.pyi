@@ -431,6 +431,28 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         maxprint: int | None = None,
     ) -> None: ...
+    @overload  # 2-d shape-like, dtype: bool-like
+    def __init__(
+        self: csr_matrix[np.bool],
+        /,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: <known>
+    def __init__(
+        self,
+        /,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_ScalarT_co],
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload  # 2-d array-like bool, dtype: bool-like | None
     def __init__(
         self: csr_matrix[np.bool],
