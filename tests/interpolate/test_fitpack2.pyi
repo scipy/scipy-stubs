@@ -23,6 +23,7 @@ x2d: onp.Array2D[np.float64]
 # UnivariateSpline
 us = UnivariateSpline(x, y)
 assert_type(us, UnivariateSpline)
+assert_type(us(1.0), onp.Array0D[np.float64])
 assert_type(us(x), onp.Array1D[np.float64])
 assert_type(us.get_knots(), onp.Array1D[np.float64])
 assert_type(us.get_coeffs(), onp.Array1D[np.float64])
