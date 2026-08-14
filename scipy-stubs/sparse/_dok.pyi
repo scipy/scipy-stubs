@@ -249,18 +249,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         *,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: bool-like (positional)
-    def __init__(
-        self: dok_array[np.bool, _1D],
-        /,
-        arg1: _ToShape1D,
-        shape: _ToShape1D | None,
-        dtype: onp.AnyBoolDType,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 1-d shape-like, dtype: bool-like (keyword)
+    @overload  # 1-d shape-like, dtype: bool-like
     def __init__(
         self: dok_array[np.bool, _1D],
         /,
@@ -271,18 +260,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: bool-like (positional)
-    def __init__(
-        self: dok_array[np.bool, _2D],
-        /,
-        arg1: _ToShape2D,
-        shape: _ToShape2D | None,
-        dtype: onp.AnyBoolDType,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d shape-like, dtype: bool-like (keyword)
+    @overload  # 2-d shape-like, dtype: bool-like
     def __init__(
         self: dok_array[np.bool, _2D],
         /,
@@ -293,18 +271,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: int-like (positional)
-    def __init__(
-        self: dok_array[np.int64, _1D],
-        /,
-        arg1: _ToShape1D,
-        shape: _ToShape1D | None,
-        dtype: onp.AnyIntDType,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 1-d shape-like, dtype: int-like (keyword)
+    @overload  # 1-d shape-like, dtype: int-like
     def __init__(
         self: dok_array[np.int64, _1D],
         /,
@@ -315,18 +282,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: int-like (positional)
-    def __init__(
-        self: dok_array[np.int64, _2D],
-        /,
-        arg1: _ToShape2D,
-        shape: _ToShape2D | None,
-        dtype: onp.AnyIntDType,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d shape-like, dtype: int-like (keyword)
+    @overload  # 2-d shape-like, dtype: int-like
     def __init__(
         self: dok_array[np.int64, _2D],
         /,
@@ -337,18 +293,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 1-d shape-like, dtype: complex128-like (positional)
-    def __init__(
-        self: dok_array[np.complex128, _1D],
-        /,
-        arg1: _ToShape1D,
-        shape: _ToShape1D | None,
-        dtype: onp.AnyComplex128DType,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 1-d shape-like, dtype: complex128-like (keyword)
+    @overload  # 1-d shape-like, dtype: complex128-like
     def __init__(
         self: dok_array[np.complex128, _1D],
         /,
@@ -359,18 +304,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
-    @overload  # 2-d shape-like, dtype: complex128-like (positional)
-    def __init__(
-        self: dok_array[np.complex128, _2D],
-        /,
-        arg1: _ToShape2D,
-        shape: _ToShape2D | None,
-        dtype: onp.AnyComplex128DType,
-        copy: bool = False,
-        *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d shape-like, dtype: complex128-like (keyword)
+    @overload  # 2-d shape-like, dtype: complex128-like
     def __init__(
         self: dok_array[np.complex128, _2D],
         /,
@@ -378,6 +312,28 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         shape: _ToShape2D | None = None,
         *,
         dtype: onp.AnyComplex128DType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 1-d shape-like, dtype: <known>
+    def __init__(
+        self: dok_array[_ScalarT, _1D],
+        /,
+        arg1: _ToShape1D,
+        shape: _ToShape1D | None = None,
+        *,
+        dtype: onp.ToDType[_ScalarT],
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: <known>
+    def __init__(
+        self: dok_array[_ScalarT, _2D],
+        /,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_ScalarT],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -642,6 +598,28 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: bool-like
+    def __init__(
+        self: dok_matrix[np.bool],
+        /,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: <known>
+    def __init__(
+        self: dok_matrix[_ScalarT],
+        /,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_ScalarT],
+        copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: bool-like | None
