@@ -114,7 +114,49 @@ def floyd_warshall(
 ) -> tuple[_Float2D, _Int2D]: ...
 
 #
-@overload
+@overload  # indices: 0-d (positional)
+def dijkstra(
+    csgraph: _ToGraphArray,
+    directed: bool,
+    indices: onp.ToInt,
+    return_predecessors: onp.ToFalse = False,
+    unweighted: bool = False,
+    limit: float = ...,
+    min_only: onp.ToFalse = False,
+) -> _Float1D: ...
+@overload  # indices: 0-d (keyword)
+def dijkstra(
+    csgraph: _ToGraphArray,
+    directed: bool = True,
+    *,
+    indices: onp.ToInt,
+    return_predecessors: onp.ToFalse = False,
+    unweighted: bool = False,
+    limit: float = ...,
+    min_only: onp.ToFalse = False,
+) -> _Float1D: ...
+@overload  # indices: 0-d, return_predecessors=True (positional)
+def dijkstra(
+    csgraph: _ToGraphArray,
+    directed: bool,
+    indices: onp.ToInt,
+    return_predecessors: onp.ToTrue,
+    unweighted: bool = False,
+    limit: float = ...,
+    min_only: onp.ToFalse = False,
+) -> tuple[_Float1D, _Int1D]: ...
+@overload  # indices: 0-d, return_predecessors=True (keyword)
+def dijkstra(
+    csgraph: _ToGraphArray,
+    directed: bool = True,
+    *,
+    indices: onp.ToInt,
+    return_predecessors: onp.ToTrue,
+    unweighted: bool = False,
+    limit: float = ...,
+    min_only: onp.ToFalse = False,
+) -> tuple[_Float1D, _Int1D]: ...
+@overload  # indices: ?d
 def dijkstra(
     csgraph: _ToGraphArray,
     directed: bool = True,
@@ -124,18 +166,18 @@ def dijkstra(
     limit: float = ...,
     min_only: onp.ToFalse = False,
 ) -> _Float2D: ...
-@overload
+@overload  # indices: ?d, min_only=True
 def dijkstra(
     csgraph: _ToGraphArray,
     directed: bool = True,
-    indices: onp.ToIntND | None = None,
+    indices: onp.ToInt | onp.ToIntND | None = None,
     return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
     limit: float = ...,
     *,
     min_only: onp.ToTrue,
 ) -> _Float1D: ...
-@overload
+@overload  # indices: ?d, return_predecessors=True (positional)
 def dijkstra(
     csgraph: _ToGraphArray,
     directed: bool,
@@ -145,7 +187,7 @@ def dijkstra(
     limit: float = ...,
     min_only: onp.ToFalse = False,
 ) -> tuple[_Float2D, _Int2D]: ...
-@overload
+@overload  # indices: ?d, return_predecessors=True (keyword)
 def dijkstra(
     csgraph: _ToGraphArray,
     directed: bool = True,
@@ -156,22 +198,22 @@ def dijkstra(
     limit: float = ...,
     min_only: onp.ToFalse = False,
 ) -> tuple[_Float2D, _Int2D]: ...
-@overload
+@overload  # indices: ?d, return_predecessors=True, min_only=True (positional)
 def dijkstra(
     csgraph: _ToGraphArray,
     directed: bool,
-    indices: onp.ToIntND | None,
+    indices: onp.ToInt | onp.ToIntND | None,
     return_predecessors: onp.ToTrue,
     unweighted: bool = False,
     limit: float = ...,
     *,
     min_only: onp.ToTrue,
 ) -> tuple[_Float1D, _Int1D, _Int1D]: ...
-@overload
+@overload  # indices: ?d, return_predecessors=True, min_only=True (keyword)
 def dijkstra(
     csgraph: _ToGraphArray,
     directed: bool = True,
-    indices: onp.ToIntND | None = None,
+    indices: onp.ToInt | onp.ToIntND | None = None,
     *,
     return_predecessors: onp.ToTrue,
     unweighted: bool = False,
@@ -180,7 +222,33 @@ def dijkstra(
 ) -> tuple[_Float1D, _Int1D, _Int1D]: ...
 
 #
-@overload
+@overload  # indices: 0-d (positional)
+def bellman_ford(
+    csgraph: _ToGraphArray, directed: bool, indices: onp.ToInt, return_predecessors: onp.ToFalse = False, unweighted: bool = False
+) -> _Float1D: ...
+@overload  # indices: 0-d (keyword)
+def bellman_ford(
+    csgraph: _ToGraphArray,
+    directed: bool = True,
+    *,
+    indices: onp.ToInt,
+    return_predecessors: onp.ToFalse = False,
+    unweighted: bool = False,
+) -> _Float1D: ...
+@overload  # indices: 0-d, return_predecessors=True (positional)
+def bellman_ford(
+    csgraph: _ToGraphArray, directed: bool, indices: onp.ToInt, return_predecessors: onp.ToTrue, unweighted: bool = False
+) -> tuple[_Float1D, _Int1D]: ...
+@overload  # indices: 0-d, return_predecessors=True (keyword)
+def bellman_ford(
+    csgraph: _ToGraphArray,
+    directed: bool = True,
+    *,
+    indices: onp.ToInt,
+    return_predecessors: onp.ToTrue,
+    unweighted: bool = False,
+) -> tuple[_Float1D, _Int1D]: ...
+@overload  # indices: ?d
 def bellman_ford(
     csgraph: _ToGraphArray,
     directed: bool = True,
@@ -188,11 +256,11 @@ def bellman_ford(
     return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
 ) -> _Float2D: ...
-@overload
+@overload  # indices: ?d, return_predecessors=True (positional)
 def bellman_ford(
     csgraph: _ToGraphArray, directed: bool, indices: onp.ToIntND | None, return_predecessors: onp.ToTrue, unweighted: bool = False
 ) -> tuple[_Float2D, _Int2D]: ...
-@overload
+@overload  # indices: ?d, return_predecessors=True (keyword)
 def bellman_ford(
     csgraph: _ToGraphArray,
     directed: bool = True,
@@ -203,7 +271,33 @@ def bellman_ford(
 ) -> tuple[_Float2D, _Int2D]: ...
 
 #
-@overload
+@overload  # indices: 0-d (positional)
+def johnson(
+    csgraph: _ToGraphArray, directed: bool, indices: onp.ToInt, return_predecessors: onp.ToFalse = False, unweighted: bool = False
+) -> _Float1D: ...
+@overload  # indices: 0-d (keyword)
+def johnson(
+    csgraph: _ToGraphArray,
+    directed: bool = True,
+    *,
+    indices: onp.ToInt,
+    return_predecessors: onp.ToFalse = False,
+    unweighted: bool = False,
+) -> _Float1D: ...
+@overload  # indices: 0-d, return_predecessors=True (positional)
+def johnson(
+    csgraph: _ToGraphArray, directed: bool, indices: onp.ToInt, return_predecessors: onp.ToTrue, unweighted: bool = False
+) -> tuple[_Float1D, _Int1D]: ...
+@overload  # indices: 0-d, return_predecessors=True (keyword)
+def johnson(
+    csgraph: _ToGraphArray,
+    directed: bool = True,
+    *,
+    indices: onp.ToInt,
+    return_predecessors: onp.ToTrue,
+    unweighted: bool = False,
+) -> tuple[_Float1D, _Int1D]: ...
+@overload  # indices: ?d
 def johnson(
     csgraph: _ToGraphArray,
     directed: bool = True,
@@ -211,11 +305,11 @@ def johnson(
     return_predecessors: onp.ToFalse = False,
     unweighted: bool = False,
 ) -> _Float2D: ...
-@overload
+@overload  # indices: ?d, return_predecessors=True (positional)
 def johnson(
     csgraph: _ToGraphArray, directed: bool, indices: onp.ToIntND | None, return_predecessors: onp.ToTrue, unweighted: bool = False
 ) -> tuple[_Float2D, _Int2D]: ...
-@overload
+@overload  # indices: ?d, return_predecessors=True (keyword)
 def johnson(
     csgraph: _ToGraphArray,
     directed: bool = True,
