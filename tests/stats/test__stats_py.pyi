@@ -1103,6 +1103,9 @@ assert_type(pointbiserialr(_i16_nd, _f32_nd, keepdims=True), SignificanceResult[
 
 assert_type(weightedtau(_f64_1d, _f64_1d, axis=None), SignificanceResult[np.float64])
 assert_type(weightedtau(_f64_1d, _f64_1d), SignificanceResult[np.float64])
+assert_type(weightedtau(_f64_1d, _f64_1d, rank=None), SignificanceResult[np.float64])
+assert_type(weightedtau(_f64_1d, _f64_1d, rank=False), SignificanceResult[np.float64])
+assert_type(weightedtau(_f64_1d, _f64_1d, rank=[0, 1, 2]), SignificanceResult[np.float64])
 assert_type(weightedtau(_f64_2d, _f64_2d, axis=0), SignificanceResult[onp.Array1D[np.float64]])
 assert_type(weightedtau(_f64_3d, _f64_3d, axis=0), SignificanceResult[onp.Array2D[np.float64]])
 assert_type(weightedtau(_f64_nd, _f64_nd, keepdims=True), SignificanceResult[onp.ArrayND[np.float64]])
