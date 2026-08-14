@@ -576,6 +576,28 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
         *,
         maxprint: int | None = None,
     ) -> None: ...
+    @overload  # 2-d shape-like, dtype: bool-like
+    def __init__(
+        self: coo_matrix[np.bool],
+        /,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.AnyBoolDType,
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # 2-d shape-like, dtype: <known>
+    def __init__(
+        self,
+        /,
+        arg1: _ToShape2D,
+        shape: _ToShape2D | None = None,
+        *,
+        dtype: onp.ToDType[_ScalarT_co],
+        copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
     @overload  # matrix-like builtins.bool, dtype: bool-like | None
     def __init__(
         self: coo_matrix[np.bool],
