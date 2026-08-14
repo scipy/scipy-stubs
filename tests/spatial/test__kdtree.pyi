@@ -76,10 +76,11 @@ assert_type(_rect.maxes, onp.Array1D[np.float64])
 assert_type(_rect.mins, onp.Array1D[np.float64])
 assert_type(_rect.volume(), np.float64)
 assert_type(_rect.split(0, 0.5), tuple[Rectangle, Rectangle])
-assert_type(_rect.min_distance_point(_f64_1d), onp.ArrayND[np.float64])
-assert_type(_rect.max_distance_point(_f64_1d), onp.ArrayND[np.float64])
-assert_type(_rect.min_distance_rectangle(_rect), onp.ArrayND[np.float64])
-assert_type(_rect.max_distance_rectangle(_rect), onp.ArrayND[np.float64])
+assert_type(_rect.min_distance_point(_f64_1d), np.float64)
+assert_type(_rect.max_distance_point(_f64_1d), np.float64)
+assert_type(_rect.min_distance_point(0.5), np.float64)
+assert_type(_rect.min_distance_rectangle(_rect), np.float64)
+assert_type(_rect.max_distance_rectangle(_rect), np.float64)
 
 ###
 # KDTree
