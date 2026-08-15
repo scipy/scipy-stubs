@@ -14,6 +14,10 @@ _py_f_1d: list[float]
 _py_f_2d: list[list[float]]
 _py_f_3d: list[list[list[float]]]
 
+_i64_1d: onp.Array1D[np.int64]
+_f16_1d: onp.Array1D[np.float16]
+_f32_1d: onp.Array1D[np.float32]
+_f32_2d: onp.Array2D[np.float32]
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
@@ -70,6 +74,19 @@ assert_type(
 assert_type(
     monte_carlo_test(_f64_nd, np.random.standard_normal, np.mean),
     MonteCarloTestResult[onp.ArrayND[np.float64] | np.float64, onp.ArrayND[np.float64]],
+)
+assert_type(
+    monte_carlo_test(_f32_1d, np.random.standard_normal, np.mean), MonteCarloTestResult[np.float32, onp.Array1D[np.float64]]
+)
+assert_type(
+    monte_carlo_test(_f16_1d, np.random.standard_normal, np.mean), MonteCarloTestResult[np.float16, onp.Array1D[np.float64]]
+)
+assert_type(
+    monte_carlo_test(_f32_2d, np.random.standard_normal, np.mean),
+    MonteCarloTestResult[onp.Array1D[np.float32], onp.Array2D[np.float64]],
+)
+assert_type(
+    monte_carlo_test(_i64_1d, np.random.standard_normal, np.mean), MonteCarloTestResult[np.float64, onp.Array1D[np.float64]]
 )
 
 # BootstrapMethod
