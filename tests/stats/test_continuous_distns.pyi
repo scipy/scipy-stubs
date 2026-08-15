@@ -119,6 +119,17 @@ from scipy.stats import (
     wrapcauchy,
 )
 
+###
+
+_f32: np.float32
+_f64_nd: onp.ArrayND[np.float64]
+
+_n: int
+_shape_nd: tuple[int, ...]
+_np_shape: tuple[np.intp, np.intp]
+
+###
+
 assert_subtype[rv_continuous](alpha)
 assert_subtype[rv_continuous](anglit)
 assert_subtype[rv_continuous](arcsine)
@@ -243,10 +254,7 @@ assert_subtype[type[rv_continuous]](rv_histogram)
 
 ###
 
-_f64_nd: onp.ArrayND[np.float64]
-_n: int
-_shape_nd: tuple[int, ...]
-_np_shape: tuple[np.intp, np.intp]
+# .rvs
 
 assert_type(norm.rvs(), np.float64)
 assert_type(norm.rvs(size=None), np.float64)
@@ -265,3 +273,12 @@ assert_type(norm.rvs(size=_np_shape), onp.ArrayND[np.float64] | Any)
 assert_type(norm.rvs(_f64_nd), onp.ArrayND[np.float64])
 assert_type(norm.rvs(loc=_f64_nd), onp.ArrayND[np.float64])
 assert_type(norm.rvs(scale=_f64_nd), onp.ArrayND[np.float64])
+
+# .fit
+
+assert_type(norm.fit(_f64_nd), tuple[np.float64, np.float64])
+assert_type(norm.fit(_f64_nd, floc=0), tuple[int, np.float64])
+assert_type(norm.fit(_f64_nd, floc=0.0), tuple[float, np.float64])
+assert_type(norm.fit(_f64_nd, floc=_f32), tuple[np.float32, np.float64])
+assert_type(norm.fit(_f64_nd, fscale=1), tuple[np.float64, int])
+assert_type(norm.fit(_f64_nd, fscale=2.0), tuple[np.float64, float])
