@@ -24,24 +24,24 @@ _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...
 # NOTE: On numpy<2.1, pyright reports 12 false positive incompatible overload errors here.
 # pyright: reportOverlappingOverload=false
 
-class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, int, onp.ArrayND[np.float64]], Generic[_ShapeT_co]):
+class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, float, onp.ArrayND[np.float64]], Generic[_ShapeT_co]):
     @property
     def statistic(self, /) -> np.float64: ...
     @property
     def pvalue(self, /) -> np.float64: ...
     @property
-    def dof(self, /) -> int: ...
+    def dof(self, /) -> float: ...
     @property
     def expected_freq(self, /) -> onp.ArrayND[np.float64, _ShapeT_co]: ...
 
     #
     @override
     def __new__(  # pyrefly:ignore[bad-override]
-        _cls, statistic: np.float64, pvalue: np.float64, dof: int, expected_freq: onp.ArrayND[np.float64, _ShapeT_co]
+        _cls, statistic: np.float64, pvalue: np.float64, dof: float, expected_freq: onp.ArrayND[np.float64, _ShapeT_co]
     ) -> Self: ...
     @override
     def __init__(  # pyrefly:ignore[bad-override]
-        self, /, statistic: np.float64, pvalue: np.float64, dof: int, expected_freq: onp.ArrayND[np.float64, _ShapeT_co]
+        self, /, statistic: np.float64, pvalue: np.float64, dof: float, expected_freq: onp.ArrayND[np.float64, _ShapeT_co]
     ) -> None: ...
 
 #

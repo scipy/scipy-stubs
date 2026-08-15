@@ -29,5 +29,5 @@ assert_type(chi2_contingency(_f64_2d, lambda_="log-likelihood"), Chi2Contingency
 res = chi2_contingency(_f64_2d)
 assert_type(res.statistic, np.float64)
 assert_type(res.pvalue, np.float64)
-assert_type(res.dof, int)
+assert_type(res.dof, float)
 assert_type(res.expected_freq, onp.Array2D[np.float64])
