@@ -1,7 +1,7 @@
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from types import ModuleType
-from typing import Any, Literal as L, SupportsIndex, TypeVar, overload
+from typing import Any, Literal as L, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -87,19 +87,6 @@ type _Pairing = L["nearest", "keep_odd", "minimal"]
 type _Norm = L["phase", "delay", "mag"]
 
 type _WorNReal = int | onp.ToFloat1D | None
-
-_AnyInexactT = TypeVar(
-    "_AnyInexactT",
-    np.float16,
-    np.float32,
-    np.float64,
-    np.float96,
-    np.float128,
-    np.complex64,
-    np.complex128,
-    np.complex192,
-    np.complex256,
-)
 
 ###
 
@@ -254,7 +241,9 @@ def normalize(b: onp.ToComplex128_ND, a: onp.ToJustComplex128_ND) -> _BaND[np.co
 @overload  # ~c128, +c128
 def normalize(b: onp.ToJustComplex128_ND, a: onp.ToComplex128_ND) -> _BaND[np.complex128]: ...
 @overload  # ~T, ~T
-def normalize(b: onp.ArrayND[_AnyInexactT], a: onp.ArrayND[_AnyInexactT]) -> _BaND[_AnyInexactT]: ...  # ruff: ignore[non-pep695-generic-function]
+def normalize[ST: (np.float16, np.float32, np.float64, np.longdouble, np.complex64, np.complex128, np.clongdouble)](
+    b: onp.ArrayND[ST], a: onp.ArrayND[ST]
+) -> _BaND[ST]: ...
 @overload  # fallback
 def normalize(b: onp.ToComplexND, a: onp.ToComplexND) -> _BaND[Any]: ...
 
