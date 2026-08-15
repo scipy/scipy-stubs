@@ -29,17 +29,15 @@ type _ToFloat32 = np.float32 | _ToInt
 type _ToFloat = npc.floating | _ToInt
 type _ToComplex64 = np.complex64 | _ToFloat
 
-type _DualMatrixLike[_T, _ScalarT: npc.number | np.bool] = _T | _ScalarT | _spbase[_ScalarT]
-type _DualArrayLike[_T, _ScalarT: npc.number | np.bool] = (
-    Sequence[Sequence[_T | _ScalarT] | onp.CanArrayND[_ScalarT]] | onp.CanArrayND[_ScalarT]
-)
+type _Scalar = npc.number | np.bool
 
-type _SpMatrixOut[_ScalarT: npc.number | np.bool] = bsr_matrix[_ScalarT] | csc_matrix[_ScalarT] | csr_matrix[_ScalarT]
+type _DualMatrixLike[T, ST: _Scalar] = T | ST | _spbase[ST]
+type _DualArrayLike[T, ST: _Scalar] = Sequence[Sequence[T | ST] | onp.CanArrayND[ST]] | onp.CanArrayND[ST]
 
-type _StackedSparseMatrix[_ScalarT: npc.number | np.bool] = coo_matrix[_ScalarT] | csc_matrix[_ScalarT] | csr_matrix[_ScalarT]
+type _SpMatrixOut[ST: _Scalar] = bsr_matrix[ST] | csc_matrix[ST] | csr_matrix[ST]
+type _StackedSparseMatrix[ST: _Scalar] = coo_matrix[ST] | csc_matrix[ST] | csr_matrix[ST]
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
 
 ###
 
@@ -49,7 +47,7 @@ class spmatrix(Generic[_ScalarT_co]):
     @type_check_only
     def __assoc_stacked__(self, /) -> _StackedSparseMatrix[_ScalarT_co]: ...
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> _StackedSparseMatrix[_ScalarT]: ...
+    def __assoc_stacked_as__[ST: _Scalar](self, sctype: ST, /) -> _StackedSparseMatrix[ST]: ...
 
     #
     @property
@@ -84,28 +82,26 @@ class spmatrix(Generic[_ScalarT_co]):
     def __mul__[SelfT: spmatrix[npc.complexfloating]](self: SelfT, other: onp.ToComplex, /) -> SelfT: ...
     @overload  # {bsr,csc,csr_dia}_matrix, other: {bsr,csc,csr_dia}_matrix
     def __mul__[SelfT: bsr_matrix | csc_matrix | csr_matrix | dia_matrix](self: SelfT, other: SelfT, /) -> SelfT: ...  # type:ignore[misc]
-    @overload  # {coo,dok,lil}_matrix, other: {coo,dok,lil}_matrix
+    @overload  # {coo,dok,lil}_matrix, other: {coo,dok,lil}_matrix   TODO
     def __mul__[SelfT: (coo_matrix, dok_matrix, lil_matrix)](self: SelfT, other: SelfT, /) -> csr_matrix[_ScalarT_co]: ...
     @overload  # spmatrix[-Bool], other: sparse +Bool
-    def __mul__(self: spmatrix, other: _spbase[np.bool], /) -> _SpMatrixOut[_ScalarT_co]: ...
+    def __mul__[ST: _Scalar](self: spmatrix[ST], other: _spbase[np.bool], /) -> _SpMatrixOut[ST]: ...
     @overload  # spmatrix[-Bool], other: array-like +Bool
     def __mul__(self, other: _DualArrayLike[bool, np.bool], /) -> onp.Array2D[_ScalarT_co]: ...
     @overload  # spmatrix[-Int], other: sparse +Int
-    def __mul__(self: spmatrix[npc.number], other: _spbase[_ToInt8], /) -> _SpMatrixOut[_ScalarT_co]: ...
+    def __mul__[ST: _ToInt](self: spmatrix[ST], other: _spbase[_ToInt8], /) -> _SpMatrixOut[ST]: ...
     @overload  # spmatrix[-Int], other: array-like +Int
-    def __mul__(self: spmatrix[npc.number], other: _DualArrayLike[bool, _ToInt8], /) -> onp.Array2D[_ScalarT_co]: ...
+    def __mul__[ST: _ToInt](self: spmatrix[ST], other: _DualArrayLike[bool, _ToInt8], /) -> onp.Array2D[ST]: ...
     @overload  # spmatrix[-Float], other: sparse +Float
-    def __mul__(self: spmatrix[npc.inexact], other: _spbase[_ToFloat32 | _ScalarT_co], /) -> _SpMatrixOut[_ScalarT_co]: ...
+    def __mul__[ST: npc.floating](self: spmatrix[ST], other: _spbase[_ToFloat32 | ST], /) -> _SpMatrixOut[ST]: ...
     @overload  # spmatrix[-Float], other: array-like +Float
-    def __mul__(self: spmatrix[npc.inexact], other: _DualArrayLike[int, _ToFloat32], /) -> onp.Array2D[_ScalarT_co]: ...
+    def __mul__[ST: npc.floating](self: spmatrix[ST], other: _DualArrayLike[int, _ToFloat32], /) -> onp.Array2D[ST]: ...
     @overload  # spmatrix[-Complex], other: sparse +Complex
-    def __mul__(
-        self: spmatrix[npc.complexfloating], other: _spbase[_ToComplex64 | _ScalarT_co], /
-    ) -> _SpMatrixOut[_ScalarT_co]: ...
+    def __mul__[ST: npc.complexfloating](self: spmatrix[ST], other: _spbase[_ToComplex64 | ST], /) -> _SpMatrixOut[ST]: ...
     @overload  # spmatrix[-Complex], other: array-like +Complex
-    def __mul__(
-        self: spmatrix[npc.complexfloating], other: _DualArrayLike[float, _ToComplex64], /
-    ) -> onp.Array2D[_ScalarT_co]: ...
+    def __mul__[ST: npc.complexfloating](
+        self: spmatrix[ST], other: _DualArrayLike[float, _ToComplex64], /
+    ) -> onp.Array2D[ST]: ...
     @overload  # spmatrix[+Bool], other: scalar- or matrix-like ~Int
     def __mul__(self: spmatrix[np.bool], other: _DualMatrixLike[op.JustInt, npc.integer], /) -> spmatrix[npc.integer]: ...
     @overload  # spmatrix[+Bool], other: array-like ~Int
@@ -123,14 +119,14 @@ class spmatrix(Generic[_ScalarT_co]):
         self: spmatrix[_ToFloat], other: _DualArrayLike[op.JustComplex, npc.complexfloating], /
     ) -> onp.Array2D[npc.complexfloating]: ...
     @overload  # catch-all
-    def __mul__(self, other: _DualArrayLike[complex, npc.number | np.bool] | _spbase, /) -> _spbase | onp.ArrayND: ...
+    def __mul__(self, other: _DualArrayLike[complex, _Scalar] | _spbase, /) -> _spbase | onp.ArrayND: ...
     __rmul__ = __mul__
 
     #
     @overload  # {coo,dok,lil}_matrix -> csr_matrix
-    def __pow__[ScalarT: npc.number | np.bool](  # type: ignore[misc]
-        self: coo_matrix[ScalarT] | dok_matrix[ScalarT] | lil_matrix[ScalarT], rhs: SupportsIndex, /
-    ) -> csr_matrix[ScalarT]: ...
+    def __pow__[ST: _Scalar](  # type: ignore[misc]
+        self: coo_matrix[ST] | dok_matrix[ST] | lil_matrix[ST], rhs: SupportsIndex, /
+    ) -> csr_matrix[ST]: ...
     @overload  # otherwise; Self -> Self
     def __pow__[SelfT: bsr_matrix | csc_matrix | csr_matrix | dia_matrix](self: SelfT, rhs: SupportsIndex, /) -> SelfT: ...  # type: ignore[misc]
 
@@ -145,9 +141,9 @@ class spmatrix(Generic[_ScalarT_co]):
     @overload
     def getcol[SelfT: bsr_matrix | csc_matrix | csr_matrix](self: SelfT, /, j: onp.ToJustInt) -> SelfT: ...  # type: ignore[misc]
     @overload
-    def getcol[ScalarT: npc.number | np.bool](  # type: ignore[misc]
-        self: coo_matrix[ScalarT] | dia_matrix[ScalarT] | dok_matrix[ScalarT] | lil_matrix[ScalarT], /, j: onp.ToJustInt
-    ) -> csr_matrix[ScalarT]: ...
+    def getcol[ST: _Scalar](  # type: ignore[misc]
+        self: coo_matrix[ST] | dia_matrix[ST] | dok_matrix[ST] | lil_matrix[ST], /, j: onp.ToJustInt
+    ) -> csr_matrix[ST]: ...
 
     #
     def getrow(self, /, i: onp.ToJustInt) -> csr_matrix[_ScalarT_co]: ...
@@ -164,9 +160,9 @@ class spmatrix(Generic[_ScalarT_co]):
     @overload
     def todense(self, /, order: L["C", "F"] | None = None, out: None = None) -> onp.Matrix[_ScalarT_co]: ...
     @overload
-    def todense(self, /, order: L["C", "F"] | None, out: onp.ArrayND[_ScalarT]) -> onp.Matrix[_ScalarT]: ...
+    def todense[ST: _Scalar](self, /, order: L["C", "F"] | None, out: onp.ArrayND[ST]) -> onp.Matrix[ST]: ...
     @overload
-    def todense(self, /, order: L["C", "F"] | None = None, *, out: onp.ArrayND[_ScalarT]) -> onp.Matrix[_ScalarT]: ...
+    def todense[ST: _Scalar](self, /, order: L["C", "F"] | None = None, *, out: onp.ArrayND[ST]) -> onp.Matrix[ST]: ...
 
     #
     @classmethod
