@@ -4,20 +4,8 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from scipy.linalg import qr, qr_multiply, rq
-
-###
-
-type _Int1D = onp.Array1D[np.int32 | np.int64]
-type _IntND = onp.ArrayND[np.int32 | np.int64]
-type _Float1D = onp.Array1D[npc.floating]
-type _Float2D = onp.Array2D[npc.floating]
-type _FloatND = onp.ArrayND[npc.floating]
-type _Inexact1D = onp.Array1D[npc.inexact]
-type _Inexact2D = onp.Array2D[npc.inexact]
-type _InexactND = onp.ArrayND[npc.inexact]
 
 ###
 
@@ -87,16 +75,24 @@ assert_type(qr(_f80_2d, False, mode="r", pivoting=True), tuple[onp.ArrayND[np.fl
 ###
 # qr_multiply
 
-assert_type(qr_multiply(_f64_2d, _f64_1d), tuple[_Float1D, _Inexact2D])
-assert_type(qr_multiply(_f64_2d, _f64_2d), tuple[_Float2D, _Inexact2D])
-assert_type(qr_multiply(_f64_3d, _f64_3d), tuple[_FloatND, _InexactND])
-assert_type(qr_multiply(_f64_2d, _f64_1d, "right", True), tuple[_Float1D | _Float2D, _Float2D, _Int1D])
-assert_type(qr_multiply(_f64_3d, _f64_3d, pivoting=True), tuple[_FloatND, _FloatND, _IntND])
+assert_type(qr_multiply(_f64_2d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]])
+assert_type(qr_multiply(_f64_2d, _f64_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(qr_multiply(_f64_3d, _f64_3d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(
+    qr_multiply(_f64_3d, _f64_3d, pivoting=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.int32]]
+)
 
-assert_type(qr_multiply(_c128_2d, _c128_1d), tuple[_Inexact1D | _Inexact2D, _Inexact2D])
-assert_type(qr_multiply(_c128_3d, _c128_3d), tuple[_InexactND, _InexactND])
-assert_type(qr_multiply(_c128_2d, _c128_1d, "right", True), tuple[_Inexact1D | _Inexact2D, _Inexact2D, _Int1D])
-assert_type(qr_multiply(_c128_3d, _c128_3d, pivoting=True), tuple[_InexactND, _InexactND, _IntND])
+assert_type(qr_multiply(_c128_2d, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.Array2D[np.complex128]])
+assert_type(qr_multiply(_c128_3d, _c128_3d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(
+    qr_multiply(_c128_3d, _c128_3d, pivoting=True),
+    tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], onp.ArrayND[np.int32]],
+)
+assert_type(qr_multiply(_f32_2d, _f64_1d), tuple[onp.Array1D[np.float32], onp.Array2D[np.float32]])
+assert_type(qr_multiply(_i8_2d, _f64_1d), tuple[onp.Array1D[np.float32], onp.Array2D[np.float32]])
+assert_type(qr_multiply(_i32_2d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]])
+assert_type(qr_multiply(_c64_2d, _c128_1d), tuple[onp.ArrayND[np.complex64], onp.Array2D[np.complex64]])
+assert_type(qr_multiply(_f32_3d, _f64_3d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
 
 ###
 # rq
