@@ -20,18 +20,17 @@ __all__ = ["csr_array", "csr_matrix", "isspmatrix_csr"]
 # workaround for the typing-spec non-conformance regarding overload behavior of mypy and pyright
 type _NeitherD = tuple[Never] | tuple[Never, Never]
 
+type _Scalar = npc.number | np.bool
+
 type _ToMatrixPy[T] = list[T] | list[list[T]]
-type _ToMatrix[ScalarT: npc.number | np.bool] = (
-    _spbase[ScalarT] | onp.CanArrayND[ScalarT] | list[onp.ArrayND[ScalarT]] | _ToMatrixPy[ScalarT]
-)
+type _ToMatrix[ST: _Scalar] = _spbase[ST] | onp.CanArrayND[ST] | list[onp.ArrayND[ST]] | _ToMatrixPy[ST]
 
 type _ToData[T] = (
     tuple[T, tuple[onp.ToJustInt1D, onp.ToJustInt1D]]  # (data, (row_ind, col_ind))
     | tuple[T, onp.ToJustInt1D, onp.ToJustInt1D]  # (data, indices, indptr)
 )
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int] | tuple[int, int], default=tuple[int, int], covariant=True)
 
 ###
@@ -68,7 +67,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __assoc_stacked__(self, /) -> csr_array[_ScalarT_co, tuple[int, int]]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> csr_array[_ScalarT, tuple[int, int]]: ...
+    def __assoc_stacked_as__[ST: _Scalar](self, sctype: ST, /) -> csr_array[ST, tuple[int, int]]: ...
     @override
     @type_check_only
     def __assoc_as_float32__(self, /) -> csr_array[np.float32, _ShapeT_co]: ...
@@ -92,10 +91,10 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d array-like (know dtype)
-    def __init__(
-        self: csr_array[_ScalarT, tuple[int]],
+    def __init__[ST: _Scalar](
+        self: csr_array[ST, tuple[int]],
         /,
-        arg1: list[_ScalarT],
+        arg1: list[ST],
         shape: _ToShape1D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -103,10 +102,10 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like (know dtype)
-    def __init__(
-        self: csr_array[_ScalarT, tuple[int, int]],
+    def __init__[ST: _Scalar](
+        self: csr_array[ST, tuple[int, int]],
         /,
-        arg1: onp.ToArray2D[_ScalarT, _ScalarT],
+        arg1: onp.ToArray2D[ST, ST],
         shape: _ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -114,10 +113,10 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like (know dtype)
-    def __init__(
-        self: csr_array[_ScalarT, tuple[int, int]],
+    def __init__[ST: _Scalar](
+        self: csr_array[ST, tuple[int, int]],
         /,
-        arg1: _ToData[onp.ToArray1D[_ScalarT, _ScalarT]],
+        arg1: _ToData[onp.ToArray1D[ST, ST]],
         shape: _ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -125,10 +124,10 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like (known dtype)
-    def __init__(
-        self: csr_array[_ScalarT, tuple[Any, ...]],
+    def __init__[ST: _Scalar](
+        self: csr_array[ST, tuple[Any, ...]],
         /,
-        arg1: _ToMatrix[_ScalarT],
+        arg1: _ToMatrix[ST],
         shape: _ToShape1D | _ToShape2D | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -213,13 +212,13 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: <known>
-    def __init__(
-        self: csr_array[_ScalarT, tuple[int]],
+    def __init__[ST: _Scalar](
+        self: csr_array[ST, tuple[int]],
         /,
         arg1: _ToShape1D,
         shape: _ToShape1D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -235,13 +234,13 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: <known>
-    def __init__(
-        self: csr_array[_ScalarT, tuple[int, int]],
+    def __init__[ST: _Scalar](
+        self: csr_array[ST, tuple[int, int]],
         /,
         arg1: _ToShape2D,
         shape: _ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -334,24 +333,24 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-D, dtype: <known>
-    def __init__(
-        self: csr_array[_ScalarT, tuple[int]],
+    def __init__[ST: _Scalar](
+        self: csr_array[ST, tuple[int]],
         /,
         arg1: onp.ToComplexStrict1D,
         shape: _ToShape1D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known>
-    def __init__(
-        self: csr_array[_ScalarT, tuple[int, int]],
+    def __init__[ST: _Scalar](
+        self: csr_array[ST, tuple[int, int]],
         /,
         arg1: onp.ToComplexStrict2D,
         shape: _ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -370,15 +369,15 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     #
     @override  # type: ignore[override]
     @overload
-    def transpose(  # pyrefly: ignore[bad-override]
-        self: csr_array[_ScalarT, tuple[int, int]], /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
-    ) -> csc_array[_ScalarT]: ...
+    def transpose[ST: _Scalar](  # pyrefly: ignore[bad-override]
+        self: csr_array[ST, tuple[int, int]], /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
+    ) -> csc_array[ST]: ...
     @overload
-    def transpose(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
-        self: csr_array[_ScalarT, tuple[int]], /, axes: None = None, copy: bool = False
-    ) -> csr_array[_ScalarT, tuple[int]]: ...
+    def transpose[ST: _Scalar](  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+        self: csr_array[ST, tuple[int]], /, axes: None = None, copy: bool = False
+    ) -> csr_array[ST, tuple[int]]: ...
 
-class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # type: ignore[misc]  # ty:ignore[invalid-method-override]
+class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # type: ignore[misc]
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
@@ -386,7 +385,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __assoc_stacked__(self, /) -> csr_matrix[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> csr_matrix[_ScalarT]: ...
+    def __assoc_stacked_as__[ST: _Scalar](self, sctype: ST, /) -> csr_matrix[ST]: ...
     @override
     @type_check_only
     def __assoc_as_float32__(self, /) -> csr_matrix[np.float32]: ...
@@ -399,23 +398,23 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
 
     # NOTE: keep in sync with `csc_matrix.__init__`
     @overload  # matrix-like (known dtype)
-    def __init__(
-        self: csr_matrix[_ScalarT],  # this self annotation works around a mypy bug
+    def __init__[ST: _Scalar](
+        self: csr_matrix[ST],  # this self annotation works around a mypy bug
         /,
-        arg1: _ToMatrix[_ScalarT],
+        arg1: _ToMatrix[ST],
         shape: _ToShape2D | None = None,
-        dtype: onp.ToDType[_ScalarT] | None = None,
+        dtype: onp.ToDType[ST] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # matrix-like (known dtype)
-    def __init__(
-        self: csr_matrix[_ScalarT],  # this self annotation works around a mypy bug
+    def __init__[ST: _Scalar](
+        self: csr_matrix[ST],  # this self annotation works around a mypy bug
         /,
-        arg1: _ToData[onp.ToArray1D[_ScalarT, _ScalarT]],
+        arg1: _ToData[onp.ToArray1D[ST, ST]],
         shape: _ToShape2D | None = None,
-        dtype: onp.ToDType[_ScalarT] | None = None,
+        dtype: onp.ToDType[ST] | None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,

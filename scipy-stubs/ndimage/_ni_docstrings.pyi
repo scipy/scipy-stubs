@@ -1,13 +1,11 @@
 from collections.abc import Callable
-from typing import Final, Protocol, TypeVar, type_check_only
+from typing import Final, Protocol, type_check_only
 
 __all__ = ["docfiller"]
 
-_FT = TypeVar("_FT", bound=Callable[..., object])
-
 @type_check_only
 class _Docfiller(Protocol):
-    def __call__(self, f: _FT, /) -> _FT: ...
+    def __call__[FuncT: Callable[..., object]](self, f: FuncT, /) -> FuncT: ...
 
 ###
 

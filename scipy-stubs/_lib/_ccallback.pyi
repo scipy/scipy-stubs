@@ -97,7 +97,6 @@ type _Function = PyCapsule | PyCFuncPtr | _CFFIFuncPtr | CData
 type _UserData = PyCapsule | ct.c_void_p | _CFFIVoidP
 
 _FuncT_co = TypeVar("_FuncT_co", bound=_Function, covariant=True, default=_Function)
-_DataT = TypeVar("_DataT", bound=_UserData | None)
 _DataT_co = TypeVar("_DataT_co", bound=_UserData | None, covariant=True, default=None)
 
 ffi: Literal[False] | None
@@ -135,9 +134,9 @@ class LowLevelCallable(tuple[PyCapsule, _FuncT_co, _DataT_co], Generic[_FuncT_co
     ) -> LowLevelCallable[PyCapsule, None]: ...
     @classmethod
     @overload
-    def from_cython(
-        cls, module: ModuleType, name: str, user_data: _DataT, signature: str | None = None
-    ) -> LowLevelCallable[PyCapsule, _DataT]: ...
+    def from_cython[DataT: _UserData | None](
+        cls, module: ModuleType, name: str, user_data: DataT, signature: str | None = None
+    ) -> LowLevelCallable[PyCapsule, DataT]: ...
 
     # NOTE: `__getitem__` will always raise a `ValueError`
     @override

@@ -19,7 +19,6 @@ type _CIMethod = Literal["linear", "log-log"]
 type _Int1D = onp.Array1D[np.int_]
 type _Float1D = onp.Array1D[np.float64]
 
-_KwargsT = TypeVar("_KwargsT")
 _KwargsT_contra = TypeVar("_KwargsT_contra", contravariant=True)
 _LineT = TypeVar("_LineT")
 
@@ -46,7 +45,7 @@ class EmpiricalDistributionFunction:
     @overload
     def plot(self, /, ax: None = None, **kwds: object) -> list[Any]: ...
     @overload
-    def plot(self, /, ax: _CanStep[_KwargsT, _LineT], **kwds: _KwargsT) -> list[_LineT]: ...
+    def plot[KwargsT, LineT](self, /, ax: _CanStep[KwargsT, LineT], **kwds: KwargsT) -> list[LineT]: ...
     def confidence_interval(
         self, /, confidence_level: onp.ToFloat = 0.95, *, method: _CIMethod = "linear"
     ) -> ConfidenceInterval[Self]: ...

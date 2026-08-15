@@ -13,9 +13,7 @@ __all__ = ["RigidTransform"]
 
 ###
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
-_RigidTransformT = TypeVar("_RigidTransformT", bound=RigidTransform)
 
 type _JustAnyShape = tuple[Never, Never, Never]
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
@@ -95,7 +93,9 @@ class RigidTransform(Generic[_ShapeT_co]):
     @overload
     def __mul__(self: RigidTransform[_JustAnyShape], other: _Transformable[tuple[int, ...]], /) -> RigidTransform: ...
     @overload
-    def __mul__(self: RigidTransform[tuple[()]], other: _Transformable[_ShapeT], /) -> RigidTransform[_ShapeT]: ...
+    def __mul__[ShapeT: tuple[int, ...]](
+        self: RigidTransform[tuple[()]], other: _Transformable[ShapeT], /
+    ) -> RigidTransform[ShapeT]: ...
     @overload
     def __mul__(self: RigidTransform[tuple[int]], other: _Transformable[tuple[int]], /) -> RigidTransform[tuple[int]]: ...
     @overload
@@ -109,7 +109,9 @@ class RigidTransform(Generic[_ShapeT_co]):
     @overload
     def __rmul__(self: RigidTransform[_JustAnyShape], other: Rotation[tuple[int, ...]], /) -> RigidTransform: ...
     @overload
-    def __rmul__(self: RigidTransform[tuple[()]], other: Rotation[_ShapeT], /) -> RigidTransform[_ShapeT]: ...
+    def __rmul__[ShapeT: tuple[int, ...]](
+        self: RigidTransform[tuple[()]], other: Rotation[ShapeT], /
+    ) -> RigidTransform[ShapeT]: ...
     @overload
     def __rmul__(self: RigidTransform[tuple[int]], other: Rotation[tuple[int]], /) -> RigidTransform[tuple[int]]: ...
     @overload
@@ -138,7 +140,7 @@ class RigidTransform(Generic[_ShapeT_co]):
 
     #
     @staticmethod
-    def from_rotation(rotation: Rotation[_ShapeT]) -> RigidTransform[_ShapeT]: ...
+    def from_rotation[ShapeT: tuple[int, ...]](rotation: Rotation[ShapeT]) -> RigidTransform[ShapeT]: ...
 
     #
     @overload
@@ -160,7 +162,9 @@ class RigidTransform(Generic[_ShapeT_co]):
     def from_components(translation: _ToFloatStrictND, rotation: Rotation) -> RigidTransform: ...
     @overload
     @staticmethod
-    def from_components(translation: onp.ToFloatStrict1D, rotation: Rotation[_ShapeT]) -> RigidTransform[_ShapeT]: ...
+    def from_components[ShapeT: tuple[int, ...]](
+        translation: onp.ToFloatStrict1D, rotation: Rotation[ShapeT]
+    ) -> RigidTransform[ShapeT]: ...
     @overload
     @staticmethod
     def from_components(translation: onp.ToFloatStrict2D, rotation: Rotation) -> RigidTransform[tuple[int]]: ...
@@ -208,12 +212,12 @@ class RigidTransform(Generic[_ShapeT_co]):
     def identity(num: None = None, *, shape: int) -> RigidTransform[tuple[int]]: ...
     @overload
     @staticmethod
-    def identity(num: None = None, *, shape: _ShapeT) -> RigidTransform[_ShapeT]: ...
+    def identity[ShapeT: tuple[int, ...]](num: None = None, *, shape: ShapeT) -> RigidTransform[ShapeT]: ...
 
     #
     @overload
     @staticmethod
-    def concatenate(transforms: _RigidTransformT) -> _RigidTransformT: ...
+    def concatenate[RigidTransformT: RigidTransform](transforms: RigidTransformT) -> RigidTransformT: ...
     @overload
     @staticmethod
     def concatenate(transforms: Sequence[RigidTransform[_JustAnyShape]]) -> RigidTransform: ...
