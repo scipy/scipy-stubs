@@ -27,8 +27,6 @@ from scipy.sparse.linalg import LinearOperator
 
 ###
 
-_InexactT = TypeVar("_InexactT", bound=npc.inexact)
-_NumberT = TypeVar("_NumberT", bound=npc.number)
 _NumberT_co = TypeVar("_NumberT_co", bound=npc.number, default=np.float64 | Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=_AnyShape, covariant=True)
 _BoundT_co = TypeVar("_BoundT_co", bound=onp.ToFloat | onp.ToFloat1D, default=float | Any, covariant=True)
@@ -115,43 +113,43 @@ class Bounds(_Constraint[_ShapeT_co, _NumberT_co], Generic[_ShapeT_co, _NumberT_
         keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload  # ?d, Nd
-    def __init__(
-        self: Bounds[_AnyShape, _NumberT],
+    def __init__[ST: npc.number](
+        self: Bounds[_AnyShape, ST],
         /,
-        lb: onp.ArrayND[_NumberT, _JustAnyShape],
-        ub: onp.ArrayND[_NumberT],
+        lb: onp.ArrayND[ST, _JustAnyShape],
+        ub: onp.ArrayND[ST],
         keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload  # Nd, ?d
-    def __init__(
-        self: Bounds[_AnyShape, _NumberT],
+    def __init__[ST: npc.number](
+        self: Bounds[_AnyShape, ST],
         /,
-        lb: onp.ArrayND[_NumberT],
-        ub: onp.ArrayND[_NumberT, _JustAnyShape],
+        lb: onp.ArrayND[ST],
+        ub: onp.ArrayND[ST, _JustAnyShape],
         keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload  # 1d, 1d
-    def __init__(
-        self: Bounds[tuple[int], _NumberT],
+    def __init__[ST: npc.number](
+        self: Bounds[tuple[int], ST],
         /,
-        lb: _NumberT | onp.Array1D[_NumberT],
-        ub: _NumberT | onp.Array1D[_NumberT],
+        lb: ST | onp.Array1D[ST],
+        ub: ST | onp.Array1D[ST],
         keep_feasible: bool | onp.ToBoolStrict1D = False,
     ) -> None: ...
     @overload  # 2d, <=2d
-    def __init__(
-        self: Bounds[tuple[int, int], _NumberT],
+    def __init__[ST: npc.number](
+        self: Bounds[tuple[int, int], ST],
         /,
-        lb: onp.Array2D[_NumberT],
-        ub: onp.Array2D[_NumberT] | onp.Array1D[_NumberT],
+        lb: onp.Array2D[ST],
+        ub: onp.Array2D[ST] | onp.Array1D[ST],
         keep_feasible: bool | onp.ToBoolStrict1D | onp.ToBoolStrict2D = False,
     ) -> None: ...
     @overload  # <=2d, 2d
-    def __init__(  # zuban: ignore[overload-cannot-match]
-        self: Bounds[tuple[int, int], _NumberT],
+    def __init__[ST: npc.number](  # zuban: ignore[overload-cannot-match]
+        self: Bounds[tuple[int, int], ST],
         /,
-        lb: onp.Array2D[_NumberT] | onp.Array1D[_NumberT],
-        ub: onp.Array2D[_NumberT],
+        lb: onp.Array2D[ST] | onp.Array1D[ST],
+        ub: onp.Array2D[ST],
         keep_feasible: bool | onp.ToBoolStrict1D | onp.ToBoolStrict2D = False,
     ) -> None: ...
     @overload  # Nd
@@ -165,33 +163,31 @@ class Bounds(_Constraint[_ShapeT_co, _NumberT_co], Generic[_ShapeT_co, _NumberT_
 
     #
     @overload  # known scalar type
-    def residual(
-        self: Bounds[_AnyShape, _NumberT], /, x: onp.ToInt | onp.ToInt1D
-    ) -> _Tuple2[onp.ArrayND[_NumberT, _ShapeT_co]]: ...
+    def residual[ST: npc.number, ShapeT: tuple[int, *tuple[int, ...]]](
+        self: Bounds[ShapeT, ST], /, x: onp.ToInt | onp.ToInt1D
+    ) -> _Tuple2[onp.ArrayND[ST, ShapeT]]: ...
     @overload  # known inexact scalar type
-    def residual(
-        self: Bounds[_AnyShape, npc.integer],
-        /,
-        x: onp.CanArray[tuple[()] | tuple[int], np.dtype[_InexactT]] | Sequence[_InexactT],
-    ) -> _Tuple2[onp.ArrayND[_InexactT, _ShapeT_co]]: ...
+    def residual[ST: npc.inexact, ShapeT: tuple[int, *tuple[int, ...]]](
+        self: Bounds[ShapeT, npc.integer], /, x: onp.CanArray[tuple[()] | tuple[int], np.dtype[ST]] | Sequence[ST]
+    ) -> _Tuple2[onp.ArrayND[ST, ShapeT]]: ...
     @overload  # c64 scalar type
-    def residual(
-        self: Bounds[_AnyShape, npc.integer | np.float64], /, x: onp.ToJustFloat64 | onp.ToJustFloat64_1D
-    ) -> _Tuple2[onp.ArrayND[np.float64, _ShapeT_co]]: ...
+    def residual[ShapeT: tuple[int, *tuple[int, ...]]](
+        self: Bounds[ShapeT, npc.integer | np.float64], /, x: onp.ToJustFloat64 | onp.ToJustFloat64_1D
+    ) -> _Tuple2[onp.ArrayND[np.float64, ShapeT]]: ...
     @overload  # known floating type
-    def residual(
-        self: Bounds[_AnyShape, npc.inexact64 | npc.inexact80], /, x: onp.ToFloat64 | onp.ToFloat64_1D
-    ) -> _Tuple2[onp.ArrayND[_NumberT_co, _ShapeT_co]]: ...
+    def residual[ST: npc.inexact64 | npc.inexact80, ShapeT: tuple[int, *tuple[int, ...]]](
+        self: Bounds[ShapeT, ST], /, x: onp.ToFloat64 | onp.ToFloat64_1D
+    ) -> _Tuple2[onp.ArrayND[ST, ShapeT]]: ...
     @overload  # c128 scalar type
-    def residual(
-        self: Bounds[_AnyShape, npc.integer | np.float16 | npc.inexact32 | npc.inexact64],
+    def residual[ShapeT: tuple[int, *tuple[int, ...]]](
+        self: Bounds[ShapeT, npc.integer | np.float16 | npc.inexact32 | npc.inexact64],
         /,
         x: onp.ToJustComplex128 | onp.ToJustComplex128_1D,
-    ) -> _Tuple2[onp.ArrayND[np.complex128, _ShapeT_co]]: ...
+    ) -> _Tuple2[onp.ArrayND[np.complex128, ShapeT]]: ...
     @overload  # known complex type
-    def residual(
-        self: Bounds[_AnyShape, np.complex128 | npc.complexfloating160], /, x: onp.ToComplex128 | onp.ToComplex128_1D
-    ) -> _Tuple2[onp.ArrayND[_NumberT_co, _ShapeT_co]]: ...
+    def residual[ST: np.complex128 | npc.complexfloating160, ShapeT: tuple[int, *tuple[int, ...]]](
+        self: Bounds[ShapeT, ST], /, x: onp.ToComplex128 | onp.ToComplex128_1D
+    ) -> _Tuple2[onp.ArrayND[ST, ShapeT]]: ...
 
 class LinearConstraint(_Constraint[tuple[int], np.float64]):
     A: Final[onp.Array2D[np.float64] | _Sparse2D[np.float64]]
