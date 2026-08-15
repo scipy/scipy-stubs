@@ -39,6 +39,12 @@ assert_type(bootstrap((_f64_3d, _f64_3d), np.mean), BootstrapResult[onp.Array2D[
 assert_type(
     bootstrap((_f64_nd, _f64_nd), np.mean), BootstrapResult[onp.ArrayND[np.float64] | np.float64, onp.ArrayND[np.float64]]
 )
+assert_type(bootstrap((_i64_1d,), np.mean), BootstrapResult[np.float64, onp.Array1D[np.float64]])
+assert_type(bootstrap((_f16_1d,), np.mean), BootstrapResult[np.float16, onp.Array1D[np.float16]])
+assert_type(bootstrap((_f32_1d,), np.mean), BootstrapResult[np.float32, onp.Array1D[np.float32]])
+assert_type(bootstrap((_f64_1d,), np.mean), BootstrapResult[np.float64, onp.Array1D[np.float64]])
+assert_type(bootstrap((_f64_1d, _f32_1d), np.mean), BootstrapResult[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.float64 | Any]])
+assert_type(bootstrap((_py_f_1d,), np.mean), BootstrapResult[np.float64, onp.Array1D[np.float64]])
 
 # permutation_test
 assert_type(permutation_test((_py_f_1d, _py_f_1d), _statistic_1d), PermutationTestResult[np.float64, onp.Array1D[np.float64]])
@@ -54,6 +60,8 @@ assert_type(
     permutation_test((_f64_nd, _f64_nd), _statistic_nd),
     PermutationTestResult[onp.ArrayND[np.float64] | np.float64, onp.ArrayND[np.float64]],
 )
+assert_type(permutation_test((_f16_1d, _f16_1d), _statistic_1d), PermutationTestResult[np.float16, onp.Array1D[np.float16]])
+assert_type(permutation_test((_f32_1d, _f32_1d), _statistic_1d), PermutationTestResult[np.float32, onp.Array1D[np.float32]])
 
 # monte_carlo_test
 assert_type(
