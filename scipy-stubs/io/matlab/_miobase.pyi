@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import IO, Any, Final, Literal, Protocol, TypeVar, type_check_only
+from typing import IO, Any, Final, Literal, Protocol, type_check_only
 
 import numpy as np
 import numpy.typing as npt
@@ -9,11 +9,9 @@ from scipy.io._typing import ByteOrder, FileName
 
 __all__ = ["MatReadError", "MatReadWarning", "MatWriteError", "MatWriteWarning"]
 
-_FT = TypeVar("_FT", bound=Callable[..., object])
-
 @type_check_only
 class _Decorator(Protocol):
-    def __call__(self, f: _FT, /) -> _FT: ...
+    def __call__[FuncT: Callable[..., object]](self, f: FuncT, /) -> FuncT: ...
 
 ###
 
