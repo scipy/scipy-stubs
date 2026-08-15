@@ -13,6 +13,7 @@ from ._matrix import spmatrix
 
 ###
 
+type _Scalar = npc.number | np.bool
 type _ToNumber = SupportsIndex | SupportsInt | SupportsFloat | SupportsComplex | str | Buffer
 
 type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
@@ -36,12 +37,8 @@ type _ToSlice1 = (
 # axis-wise slice for 2d arrays (maintains only 2d shape)
 type _ToSlice2 = _ToSlice | tuple[_ToSlice, _ToSlice] | _spbase[np.bool, _2D] | list[np.bool] | list[bool] | list[int]
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
-
-_Self2T = TypeVar("_Self2T", bound=IndexMixin[Any, _2D])
-_SelfMatrixT = TypeVar("_SelfMatrixT", bound=spmatrix)
 
 ###
 
@@ -49,28 +46,28 @@ INT_TYPES: tuple[type[int], type[npc.integer]] = ...
 
 class IndexMixin(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
-    def __getitem__(self: IndexMixin[Any, _1D], ix: int, /) -> _ScalarT_co: ...
+    def __getitem__[ST: _Scalar](self: IndexMixin[ST, _1D], ix: int, /) -> ST: ...
     @overload
-    def __getitem__(self: IndexMixin[Any, _1D], ix: None, /) -> coo_array[_ScalarT_co, tuple[int, int]]: ...
+    def __getitem__[ST: _Scalar](self: IndexMixin[ST, _1D], ix: None, /) -> coo_array[ST, tuple[int, int]]: ...
     @overload
-    def __getitem__(self: IndexMixin[Any, _2D], ix: _ToIndex2, /) -> _ScalarT_co: ...
+    def __getitem__[ST: _Scalar](self: IndexMixin[ST, _2D], ix: _ToIndex2, /) -> ST: ...  # type: ignore[overload-overlap]
     @overload
     def __getitem__(self, ixs: _ToSlice1, /) -> Self: ...
     @overload
-    def __getitem__(self: _Self2T, ixs: _ToSlice2, /) -> _Self2T: ...
+    def __getitem__[Self2T: IndexMixin[Any, _2D]](self: Self2T, ixs: _ToSlice2, /) -> Self2T: ...
     @overload
-    def __getitem__(self: _SelfMatrixT, ixs: _ToIndex1Of2, /) -> _SelfMatrixT: ...  # type: ignore[misc]
+    def __getitem__[SelfMatrixT: spmatrix](self: SelfMatrixT, ixs: _ToIndex1Of2, /) -> SelfMatrixT: ...  # type: ignore[misc]
     @overload
-    def __getitem__(self: sparray[_ScalarT], ixs: _ToIndex1Of2, /) -> coo_array[_ScalarT, tuple[int]]: ...  # type: ignore[misc]
+    def __getitem__[ST: _Scalar](self: sparray[ST], ixs: _ToIndex1Of2, /) -> coo_array[ST, tuple[int]]: ...  # type: ignore[misc]
     @overload
-    def __getitem__(self: spmatrix, ixs: _ToIndex2Of2, /) -> onp.Matrix[_ScalarT_co]: ...  # type: ignore[misc]
+    def __getitem__[ST: _Scalar](self: spmatrix[ST], ixs: _ToIndex2Of2, /) -> onp.Matrix[ST]: ...  # type: ignore[misc]
     @overload
-    def __getitem__(self: sparray[_ScalarT, _2D], ixs: _ToIndex2Of2, /) -> onp.Array1D[_ScalarT]: ...  # type: ignore[misc]
+    def __getitem__[ST: _Scalar](self: sparray[ST, _2D], ixs: _ToIndex2Of2, /) -> onp.Array1D[ST]: ...  # type: ignore[misc]
 
     #
     @overload
     def __setitem__(self: IndexMixin[Any, _1D], ix: _ToIndex1, x: _ToNumber, /) -> None: ...
     @overload
     def __setitem__(
-        self: IndexMixin[Any, _2D], ix: _ToIndex1Of2 | _ToIndex2Of2 | _ToIndex2 | _ToSlice1 | _ToSlice2, x: _ToNumber, /
+        self: IndexMixin[Any, _2D], ix: _ToIndex1Of2 | _ToIndex2Of2 | _ToSlice1 | _ToSlice2, x: _ToNumber, /
     ) -> None: ...
