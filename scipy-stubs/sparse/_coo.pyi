@@ -21,12 +21,14 @@ __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 
 ###
 
-type _ToData[ScalarT: npc.number | np.bool] = tuple[
-    onp.ArrayND[ScalarT],
+type _Scalar = npc.number | np.bool
+
+type _ToData[ST: _Scalar] = tuple[
+    onp.ArrayND[ST],
     tuple[onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]] | tuple[onp.ArrayND[npc.integer]],
 ]  # fmt: skip
 
-type _ScalarOrDense[ScalarT: npc.number | np.bool] = onp.ArrayND[ScalarT] | ScalarT
+type _ScalarOrDense[ST: _Scalar] = onp.ArrayND[ST] | ST
 type _JustND[T] = onp.SequenceND[op.Just[T]]
 
 type _Axes = int | tuple[Sequence[int], Sequence[int]]
@@ -34,11 +36,7 @@ type _ToShapeMin3D = tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[S
 
 type _IndexSlice = slice | EllipsisType | list[int] | _spbase[np.intp] | onp.ArrayND[np.intp]
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
-_ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=Any, covariant=True)
-_SupComplexT = TypeVar("_SupComplexT", bound=np.complex128 | npc.complexfloating160)
-_SupFloatT = TypeVar("_SupFloatT", bound=npc.inexact64 | npc.inexact80)
-_SupIntT = TypeVar("_SupIntT", bound=np.int_ | np.uintp | np.uint32 | npc.number64 | npc.inexact80)
+_ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=tuple[Any, ...], covariant=True)
 
 ###
@@ -89,13 +87,13 @@ class _coo_base(_data_matrix[_ScalarT_co, _ShapeT_co], _minmax_mixin[_ScalarT_co
     #   would  result in more overloads than that mypy has bugs (i.e. >1_200).
     # NOTE: due to a bug in `axes`, only `int` can be used at the moment (passing a 2-tuple or 2-list raises `TypeError`)
     @overload
-    def tensordot(
-        self, /, other: _spbase[_ScalarT], axes: _Axes = 2
-    ) -> _ScalarT_co | _ScalarT | coo_array[_ScalarT_co | _ScalarT]: ...
+    def tensordot[ST: _Scalar](
+        self, /, other: _spbase[ST], axes: _Axes = 2
+    ) -> _ScalarT_co | ST | coo_array[_ScalarT_co | ST]: ...
     @overload
-    def tensordot(
-        self, /, other: onp.ArrayND[_ScalarT] | onp.SequenceND[onp.ArrayND[_ScalarT]] | onp.SequenceND[_ScalarT], axes: _Axes = 2
-    ) -> _ScalarOrDense[_ScalarT_co | _ScalarT]: ...
+    def tensordot[ST: _Scalar](
+        self, /, other: onp.ArrayND[ST] | onp.SequenceND[onp.ArrayND[ST]] | onp.SequenceND[ST], axes: _Axes = 2
+    ) -> _ScalarOrDense[_ScalarT_co | ST]: ...
     @overload
     def tensordot(self, /, other: onp.SequenceND[bool], axes: _Axes = 2) -> _ScalarOrDense[_ScalarT_co]: ...
     @overload
@@ -111,31 +109,37 @@ class _coo_base(_data_matrix[_ScalarT_co, _ShapeT_co], _minmax_mixin[_ScalarT_co
         self: _spbase[np.bool | npc.integer | npc.inexact32 | npc.inexact64], /, other: _JustND[complex], axes: _Axes = 2
     ) -> _ScalarOrDense[np.complex128]: ...
     @overload
-    def tensordot(self: _spbase[_SupComplexT], /, other: _JustND[complex], axes: _Axes = 2) -> _ScalarOrDense[_SupComplexT]: ...
+    def tensordot[ST: np.complex128 | npc.complexfloating160](
+        self: _spbase[ST], /, other: _JustND[complex], axes: _Axes = 2
+    ) -> _ScalarOrDense[ST]: ...
     @overload
-    def tensordot(self: _spbase[_SupFloatT], /, other: _JustND[float], axes: _Axes = 2) -> _ScalarOrDense[_SupFloatT]: ...
+    def tensordot[ST: npc.inexact64 | npc.inexact80](
+        self: _spbase[ST], /, other: _JustND[float], axes: _Axes = 2
+    ) -> _ScalarOrDense[ST]: ...
     @overload
-    def tensordot(self: _spbase[_SupIntT], /, other: _JustND[int], axes: _Axes = 2) -> _ScalarOrDense[_SupIntT]: ...
+    def tensordot[ST: np.uint32 | npc.number64 | npc.inexact80](
+        self: _spbase[ST], /, other: _JustND[int], axes: _Axes = 2
+    ) -> _ScalarOrDense[ST]: ...
 
     #
     @overload
     def __getitem__(self, key: _IndexSlice | tuple[()], /) -> Self: ...
     @overload
-    def __getitem__(self: _coo_base[_ScalarT, tuple[int]], key: int, /) -> _ScalarT: ...
+    def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int]], key: int, /) -> ST: ...
     @overload
-    def __getitem__(self: _coo_base[_ScalarT, tuple[int]], key: None, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
+    def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int]], key: None, /) -> coo_array[ST, tuple[int, int]]: ...
     @overload
-    def __getitem__(
-        self: _coo_base[_ScalarT, tuple[int, int]], key: int | tuple[int, _IndexSlice] | tuple[_IndexSlice, int], /
-    ) -> coo_array[_ScalarT, tuple[int]]: ...
+    def __getitem__[ST: _Scalar](
+        self: _coo_base[ST, tuple[int, int]], key: int | tuple[int, _IndexSlice] | tuple[_IndexSlice, int], /
+    ) -> coo_array[ST, tuple[int]]: ...
     @overload
-    def __getitem__(self: _coo_base[_ScalarT, tuple[int, int]], key: tuple[int, int], /) -> _ScalarT: ...
+    def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int, int]], key: tuple[int, int], /) -> ST: ...
     @overload
-    def __getitem__(
-        self: _coo_base[_ScalarT, tuple[int, int, int, *tuple[int, ...]]],
+    def __getitem__[ST: _Scalar](
+        self: _coo_base[ST, tuple[int, int, int, *tuple[int, ...]]],
         key: tuple[int | _IndexSlice | None, *tuple[int | _IndexSlice | None, ...]] | int | None,
         /,
-    ) -> coo_array[_ScalarT]: ...
+    ) -> coo_array[ST]: ...
 
     #
     def __setitem__(
@@ -153,7 +157,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __assoc_stacked__(self, /) -> coo_array[_ScalarT_co, tuple[int, int]]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_array[_ScalarT, tuple[int, int]]: ...
+    def __assoc_stacked_as__[ST: _Scalar](self, sctype: ST, /) -> coo_array[ST, tuple[int, int]]: ...
     @override
     @type_check_only
     def __assoc_as_float32__(self, /) -> coo_array[np.float32, _ShapeT_co]: ...
@@ -320,35 +324,35 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: <known>
-    def __init__(
-        self: coo_array[_ScalarT, tuple[int]],
+    def __init__[ST: _Scalar](
+        self: coo_array[ST, tuple[int]],
         /,
         arg1: _ToShape1D,
         shape: _ToShape1D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: <known>
-    def __init__(
-        self: coo_array[_ScalarT, tuple[int, int]],
+    def __init__[ST: _Scalar](
+        self: coo_array[ST, tuple[int, int]],
         /,
         arg1: _ToShape2D,
         shape: _ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # >2-d shape-like, dtype: <known>
-    def __init__(
-        self: coo_array[_ScalarT, onp.AtLeast3D],
+    def __init__[ST: _Scalar](
+        self: coo_array[ST, onp.AtLeast3D],
         /,
         arg1: _ToShapeMin3D,
         shape: _ToShapeMin3D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -378,7 +382,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.int_, tuple[int]],
         /,
-        arg1: Sequence[op.JustInt],
+        arg1: list[int],
         shape: _ToShape1D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
@@ -389,7 +393,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.int_, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[op.JustInt]],
+        arg1: Sequence[list[int]],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
@@ -400,7 +404,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.float64, tuple[int]],
         /,
-        arg1: Sequence[op.JustFloat],
+        arg1: list[float],
         shape: _ToShape1D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -411,7 +415,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.float64, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[op.JustFloat]],
+        arg1: Sequence[list[float]],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -422,7 +426,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.complex128, tuple[int]],
         /,
-        arg1: Sequence[op.JustComplex],
+        arg1: list[complex],
         shape: _ToShape1D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
@@ -433,7 +437,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.complex128, tuple[int, int]],
         /,
-        arg1: Sequence[Sequence[op.JustComplex]],
+        arg1: Sequence[list[complex]],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
@@ -441,68 +445,68 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-D, dtype: <known> (positional)
-    def __init__(
-        self: coo_array[_ScalarT, tuple[int]],
+    def __init__[ST: _Scalar](
+        self: coo_array[ST, tuple[int]],
         /,
         arg1: onp.ToComplexStrict1D,
         shape: _ToShape1D | None,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-D, dtype: <known> (keyword)
-    def __init__(
-        self: coo_array[_ScalarT, tuple[int]],
+    def __init__[ST: _Scalar](
+        self: coo_array[ST, tuple[int]],
         /,
         arg1: onp.ToComplexStrict1D,
         shape: _ToShape1D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (positional)
-    def __init__(
-        self: coo_array[_ScalarT, tuple[int, int]],
+    def __init__[ST: _Scalar](
+        self: coo_array[ST, tuple[int, int]],
         /,
         arg1: onp.ToComplexStrict2D,
         shape: _ToShape2D | None,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (keyword)
-    def __init__(
-        self: coo_array[_ScalarT, tuple[int, int]],
+    def __init__[ST: _Scalar](
+        self: coo_array[ST, tuple[int, int]],
         /,
         arg1: onp.ToComplexStrict2D,
         shape: _ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # >2-D, dtype: <known> (positional)
-    def __init__(
-        self: coo_array[_ScalarT, onp.AtLeast3D],
+    def __init__[ST: _Scalar](
+        self: coo_array[ST, onp.AtLeast3D],
         /,
         arg1: onp.ToComplexStrict2D,
         shape: _ToShapeMin3D | None,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # >2-D, dtype: <known> (keyword)
-    def __init__(
-        self: coo_array[_ScalarT, onp.AtLeast3D],
+    def __init__[ST: _Scalar](
+        self: coo_array[ST, onp.AtLeast3D],
         /,
         arg1: onp.ToComplexStrict2D,
         shape: _ToShapeMin3D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
@@ -526,7 +530,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __assoc_stacked__(self, /) -> coo_matrix[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> coo_matrix[_ScalarT]: ...
+    def __assoc_stacked_as__[ST: _Scalar](self, sctype: ST, /) -> coo_matrix[ST]: ...
     @override
     @type_check_only
     def __assoc_as_float32__(self, /) -> coo_matrix[np.float32]: ...
@@ -545,7 +549,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     # NOTE: keep in sync with `coo_array.__init__` (minus the 1d overloads)
     @overload  # matrix-like (known dtype), dtype: None
     def __init__(
-        self,
+        self: coo_matrix,
         /,
         arg1: _spbase[_ScalarT_co, _ShapeT_co] | onp.CanArrayND[_ScalarT_co],
         shape: _ShapeT_co | None = None,
@@ -613,7 +617,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __init__(
         self: coo_matrix[np.int_],
         /,
-        arg1: Sequence[Sequence[op.JustInt]],
+        arg1: Sequence[list[int]],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
@@ -624,7 +628,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __init__(
         self: coo_matrix[np.float64],
         /,
-        arg1: Sequence[Sequence[op.JustFloat]],
+        arg1: Sequence[list[float]],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -635,7 +639,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __init__(
         self: coo_matrix[np.complex128],
         /,
-        arg1: Sequence[Sequence[op.JustComplex]],
+        arg1: Sequence[list[complex]],
         shape: _ToShape2D | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,
@@ -643,24 +647,24 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (positional)
-    def __init__(
-        self: coo_matrix[_ScalarT],
+    def __init__[ST: _Scalar](
+        self: coo_matrix[ST],
         /,
         arg1: onp.ToComplexStrict2D,
         shape: _ToShape2D | None,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         *,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (keyword)
-    def __init__(
-        self: coo_matrix[_ScalarT],
+    def __init__[ST: _Scalar](
+        self: coo_matrix[ST],
         /,
         arg1: onp.ToComplexStrict2D,
         shape: _ToShape2D | None = None,
         *,
-        dtype: onp.ToDType[_ScalarT],
+        dtype: onp.ToDType[ST],
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
