@@ -11,8 +11,11 @@ from scipy.stats._survival import ECDFResult, EmpiricalDistributionFunction, Log
 
 ###
 
+_i64_1d: onp.Array1D[np.int64]
+_f32_1d: onp.Array1D[np.float32]
 _f64_1d: onp.Array1D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
+_f80_1d: onp.Array1D[np.float128]
 
 _py_f_1d: list[float]
 
@@ -32,6 +35,17 @@ assert_type(_edf.confidence_interval(), ConfidenceInterval[EmpiricalDistribution
 assert_type(_edf.confidence_interval(0.99, method="log-log"), ConfidenceInterval[EmpiricalDistributionFunction])
 
 assert_type(ecdf(_f64_1d), ECDFResult)
+assert_type(ecdf(_f32_1d), ECDFResult)
+assert_type(ecdf(_i64_1d), ECDFResult)
+
+_ecdf_f80 = ecdf(_f80_1d)
+assert_type(_ecdf_f80, ECDFResult[np.longdouble])
+assert_type(_ecdf_f80.cdf, EmpiricalDistributionFunction[np.longdouble])
+assert_type(_ecdf_f80.sf, EmpiricalDistributionFunction[np.longdouble])
+assert_type(_ecdf_f80.cdf.quantiles, onp.Array1D[np.longdouble])
+assert_type(_ecdf_f80.cdf.probabilities, onp.Array1D[np.float64])
+assert_type(_ecdf_f80.cdf.evaluate(_f64_nd), onp.ArrayND[np.float64])
+assert_type(_ecdf_f80.cdf.confidence_interval(), ConfidenceInterval[EmpiricalDistributionFunction[np.longdouble]])
 
 ###
 # logrank
