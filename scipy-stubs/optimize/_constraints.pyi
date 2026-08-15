@@ -175,7 +175,7 @@ class Bounds(_Constraint[_ShapeT_co, _NumberT_co], Generic[_ShapeT_co, _NumberT_
         self: Bounds[ShapeT, npc.integer | np.float64], /, x: onp.ToJustFloat64 | onp.ToJustFloat64_1D
     ) -> _Tuple2[onp.ArrayND[np.float64, ShapeT]]: ...
     @overload  # known floating type
-    def residual[ST: npc.inexact64 | npc.inexact80, ShapeT: tuple[int, *tuple[int, ...]]](
+    def residual[ST: npc.floating64 | npc.floating80, ShapeT: tuple[int, *tuple[int, ...]]](
         self: Bounds[ShapeT, ST], /, x: onp.ToFloat64 | onp.ToFloat64_1D
     ) -> _Tuple2[onp.ArrayND[ST, ShapeT]]: ...
     @overload  # c128 scalar type
