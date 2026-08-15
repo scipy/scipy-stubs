@@ -29,6 +29,7 @@ from ._types import (
 shape_1d: tuple[int]
 shape_2d: tuple[int, int]
 shape_3d: tuple[int, int, int]
+_coo_1d: sparse.coo_array[ScalarType, tuple[int]]
 _coo_3d: sparse.coo_array[ScalarType, tuple[int, int, int]]
 
 # TODO(julvandenbroeck): add tests for arrays with unknown shape, like np.ndarray[tuple[int, ...], np.dtype[ScalarType]]
@@ -202,6 +203,13 @@ assert_type(sparse.kron(any_arr, any_arr, format="dok"), sparse.dok_array[Scalar
 assert_type(sparse.kron(any_arr, any_arr, format="lil"), sparse.lil_array[ScalarType])
 assert_type(sparse.kron(any_arr, dense_2d, format="lil"), sparse.lil_array[ScalarType])
 assert_type(sparse.kron(dense_2d, any_arr, format="lil"), sparse.lil_array[ScalarType])
+assert_type(sparse.kron(_coo_1d, _coo_1d), sparse.coo_array[ScalarType, tuple[int]])
+assert_type(sparse.kron(_coo_1d, _coo_1d, format="coo"), sparse.coo_array[ScalarType, tuple[int]])
+assert_type(sparse.kron(_coo_1d, _coo_1d, format="csr"), sparse.csr_array[ScalarType, tuple[int]])
+assert_type(sparse.kron(_coo_1d, _coo_1d, format="dok"), sparse.dok_array[ScalarType, tuple[int]])
+assert_type(sparse.kron(_coo_3d, _coo_3d), sparse.coo_array[ScalarType, tuple[int, int, int]])
+assert_type(sparse.kron(_coo_3d, _coo_3d, format="coo"), sparse.coo_array[ScalarType, tuple[int, int, int]])
+
 # kronsum
 assert_type(sparse.kronsum(any_mat, any_mat), sparse.csr_matrix[ScalarType])
 assert_type(sparse.kronsum(any_mat, any_arr), sparse.csr_array[ScalarType])
