@@ -58,6 +58,8 @@ from scipy.signal import (
 
 ###
 
+_f32: np.float32
+
 _i64_1d: onp.Array1D[np.int64]
 _f32_1d: onp.Array1D[np.float32]
 _f64_1d: onp.Array1D[np.float64]
@@ -192,6 +194,7 @@ assert_type(lp2lp_zpk(_c128_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128],
 assert_type(lp2lp_zpk(_c128_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], float])
 
 # lp2hp_zpk
+assert_type(lp2hp_zpk(_f32_1d, _c64_1d, _f32), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex64], np.float32])
 assert_type(lp2hp_zpk(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
 assert_type(lp2hp_zpk(_f64_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
 assert_type(lp2hp_zpk(_c128_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64], np.float64])
@@ -217,6 +220,8 @@ assert_type(bilinear_zpk(_f64_1d, _f64_1d, 1.0, 1.0), tuple[onp.Array1D[np.float
 assert_type(bilinear_zpk(_f64_1d, _c128_1d, 1.0, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
 assert_type(bilinear_zpk(_c128_1d, _f64_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64], np.float64])
 assert_type(bilinear_zpk(_c128_1d, _c128_1d, 1.0, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
+assert_type(bilinear_zpk(_f32_1d, _f32_1d, _f32, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float32], np.float32])
+assert_type(bilinear_zpk(_c64_1d, _c64_1d, _f32, 1.0), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex64], np.float32])
 
 # iirdesign
 assert_type(iirdesign(0.2, 0.3, 1, 40), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -275,6 +280,9 @@ assert_type(
     tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64],
 )
 assert_type(iirfilter(8, 0.1, output="sos"), onp.Array2D[np.float64])
+assert_type(
+    iirfilter(8, 0.1, btype="low", analog=True, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float]
+)
 
 # butter
 assert_type(butter(8, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -289,6 +297,7 @@ assert_type(
     butter(8, [0.1, 0.2], btype="stop", output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64]
 )
 assert_type(butter(8, 0.1, output="sos"), onp.Array2D[np.float64])
+assert_type(butter(8, 0.1, analog=True, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float])
 
 # cheby1
 assert_type(cheby1(8, 3, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -305,6 +314,7 @@ assert_type(
     tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64],
 )
 assert_type(cheby1(8, 3, 0.1, output="sos"), onp.Array2D[np.float64])
+assert_type(cheby1(8, 3, 0.1, analog=True, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
 
 # cheby2
 assert_type(cheby2(8, 3, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -317,12 +327,14 @@ assert_type(ellip(8, 5, 40, 100), tuple[onp.Array1D[np.float64], onp.Array1D[np.
 assert_type(ellip(8, 5, 40, 100, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(ellip(8, 5, 40, 100, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
 assert_type(ellip(8, 5, 40, 100, output="sos"), onp.Array2D[np.float64])
+assert_type(ellip(8, 5, 40, 100, analog=True, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], float])
 
 # bessel
 assert_type(bessel(3, 10), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(bessel(3, 10, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(bessel(3, 10, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], np.float64])
 assert_type(bessel(3, 10, output="sos"), onp.Array2D[np.float64])
+assert_type(bessel(3, 10, analog=True, output="zpk"), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128], float])
 
 # band_stop_obj
 assert_type(band_stop_obj(2, 1, _f64_1d, _f64_1d, 3, 30, "butter"), np.float64)

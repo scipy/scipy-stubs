@@ -453,19 +453,19 @@ def lp2hp_zpk(
 @overload
 def lp2hp_zpk(
     z: onp.ToJustFloat32_1D, p: onp.ToJustFloat32_1D, k: onp.ToFloat32, wo: float = 1.0
-) -> _ZPK[np.float64, np.float64, np.float64]: ...
+) -> _ZPK[np.float64, np.float32, np.float32]: ...
 @overload
 def lp2hp_zpk(
     z: onp.ToJustComplex64_1D, p: onp.ToJustFloat32_1D, k: onp.ToFloat32, wo: float = 1.0
-) -> _ZPK[np.complex128, np.float64, np.float64]: ...
+) -> _ZPK[np.complex128, np.float32, np.float32]: ...
 @overload
 def lp2hp_zpk(
     z: onp.ToJustFloat32_1D, p: onp.ToJustComplex64_1D, k: onp.ToFloat32, wo: float = 1.0
-) -> _ZPK[np.float64, np.complex128, np.float64]: ...
+) -> _ZPK[np.float64, np.complex64, np.float32]: ...
 @overload
 def lp2hp_zpk(
     z: onp.ToJustComplex64_1D, p: onp.ToJustComplex64_1D, k: onp.ToFloat32, wo: float = 1.0
-) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+) -> _ZPK[np.complex128, np.complex64, np.float32]: ...
 @overload
 def lp2hp_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, wo: float = 1.0
@@ -536,19 +536,19 @@ def bilinear_zpk(
 @overload
 def bilinear_zpk(
     z: onp.ToJustFloat32_1D, p: onp.ToJustFloat32_1D, k: onp.ToFloat32, fs: float
-) -> _ZPK[np.float64, np.float64, np.float64]: ...
+) -> _ZPK[np.float64, np.float32, np.float32]: ...
 @overload
 def bilinear_zpk(
     z: onp.ToJustComplex64_1D, p: onp.ToJustFloat32_1D, k: onp.ToFloat32, fs: float
-) -> _ZPK[np.complex128, np.float64, np.float64]: ...
+) -> _ZPK[np.complex128, np.float32, np.float32]: ...
 @overload
 def bilinear_zpk(
     z: onp.ToJustFloat32_1D, p: onp.ToJustComplex64_1D, k: onp.ToFloat32, fs: float
-) -> _ZPK[np.float64, np.complex128, np.float64]: ...
+) -> _ZPK[np.float64, np.complex64, np.float32]: ...
 @overload
 def bilinear_zpk(
     z: onp.ToJustComplex64_1D, p: onp.ToJustComplex64_1D, k: onp.ToFloat32, fs: float
-) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+) -> _ZPK[np.complex128, np.complex64, np.float32]: ...
 @overload
 def bilinear_zpk(
     z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, fs: float
@@ -628,6 +628,19 @@ def iirfilter(
     output: L["ba"] = "ba",
     fs: float | None = None,
 ) -> _Ba1D[np.float64]: ...
+@overload  # btype={"bandpass", "bandstop"} (default), output="zpk", analog=True
+def iirfilter(
+    N: int,
+    Wn: onp.ToFloat1D,
+    rp: float | None = None,
+    rs: float | None = None,
+    btype: _BTypeDouble = "band",
+    ftype: _FType = "butter",
+    *,
+    analog: onp.ToTrue,
+    output: L["zpk"],
+    fs: float | None = None,
+) -> _ZPK[np.complex128, np.complex128, float]: ...
 @overload  # btype={"bandpass", "bandstop"} (default), output="zpk"
 def iirfilter(
     N: int,
@@ -635,12 +648,25 @@ def iirfilter(
     rp: float | None = None,
     rs: float | None = None,
     btype: _BTypeDouble = "band",
-    analog: bool = False,
+    analog: onp.ToFalse = False,
     ftype: _FType = "butter",
     *,
     output: L["zpk"],
     fs: float | None = None,
 ) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
+@overload  # btype={"lowpass", "highpass"}, ftype={"butter", "cheby1", "bessel"} (default), output="zpk", analog=True
+def iirfilter(
+    N: int,
+    Wn: float,
+    rp: float | None = None,
+    rs: float | None = None,
+    *,
+    analog: onp.ToTrue,
+    btype: _BTypeSingle,
+    ftype: L["butter", "cheby1", "bessel"] = "butter",
+    output: L["zpk"],
+    fs: float | None = None,
+) -> _ZPK[np.float64, np.complex128, float]: ...
 @overload  # btype={"lowpass", "highpass"}, ftype={"butter", "cheby1", "bessel"} (default), output="zpk"
 def iirfilter(
     N: int,
@@ -649,11 +675,24 @@ def iirfilter(
     rs: float | None = None,
     *,
     btype: _BTypeSingle,
-    analog: bool = False,
+    analog: onp.ToFalse = False,
     ftype: L["butter", "cheby1", "bessel"] = "butter",
     output: L["zpk"],
     fs: float | None = None,
 ) -> _ZPK[np.float64, np.complex128, np.float64]: ...
+@overload  # btype={"lowpass", "highpass"}, ftype={"cheby2", "ellip"}, output="zpk", analog=True
+def iirfilter(
+    N: int,
+    Wn: float,
+    rp: float | None = None,
+    rs: float | None = None,
+    *,
+    analog: onp.ToTrue,
+    btype: _BTypeSingle,
+    ftype: L["cheby2", "ellip"],
+    output: L["zpk"],
+    fs: float | None = None,
+) -> _ZPK[np.complex128, np.complex128, float]: ...
 @overload  # btype={"lowpass", "highpass"}, ftype={"cheby2", "ellip"}, output="zpk"
 def iirfilter(
     N: int,
@@ -662,7 +701,7 @@ def iirfilter(
     rs: float | None = None,
     *,
     btype: _BTypeSingle,
-    analog: bool = False,
+    analog: onp.ToFalse = False,
     ftype: L["cheby2", "ellip"],
     output: L["zpk"],
     fs: float | None = None,
@@ -691,13 +730,21 @@ def butter(
     output: L["ba"] = "ba",
     fs: float | None = None,
 ) -> _Ba1D[np.float64]: ...
+@overload  # btype={"lowpass", "highpass"} (default), output="zpk", analog=True
+def butter(
+    N: int, Wn: float, btype: _BTypeSingle = "low", *, analog: onp.ToTrue, output: L["zpk"], fs: float | None = None
+) -> _ZPK[np.float64, np.complex128, float]: ...
 @overload  # btype={"lowpass", "highpass"} (default), output="zpk"
 def butter(
-    N: int, Wn: float, btype: _BTypeSingle = "low", analog: bool = False, *, output: L["zpk"], fs: float | None = None
+    N: int, Wn: float, btype: _BTypeSingle = "low", analog: onp.ToFalse = False, *, output: L["zpk"], fs: float | None = None
 ) -> _ZPK[np.float64, np.complex128, np.float64]: ...
+@overload  # btype={"bandpass", "bandstop"}, output="zpk", analog=True
+def butter(
+    N: int, Wn: onp.ToFloat1D, btype: _BTypeDouble, *, analog: onp.ToTrue, output: L["zpk"], fs: float | None = None
+) -> _ZPK[np.complex128, np.complex128, float]: ...
 @overload  # btype={"bandpass", "bandstop"}, output="zpk"
 def butter(
-    N: int, Wn: onp.ToFloat1D, btype: _BTypeDouble, analog: bool = False, *, output: L["zpk"], fs: float | None = None
+    N: int, Wn: onp.ToFloat1D, btype: _BTypeDouble, analog: onp.ToFalse = False, *, output: L["zpk"], fs: float | None = None
 ) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
 @overload  # output="sos"
 def butter(
@@ -781,6 +828,18 @@ def ellip(
     output: L["ba"] = "ba",
     fs: float | None = None,
 ) -> _Ba1D[np.float64]: ...
+@overload  # output="zpk", analog=True
+def ellip(
+    N: int,
+    rp: float,
+    rs: float,
+    Wn: float | onp.ToFloat1D,
+    btype: _BType = "low",
+    *,
+    analog: onp.ToTrue,
+    output: L["zpk"],
+    fs: float | None = None,
+) -> _ZPK[np.complex128, np.complex128, float]: ...
 @overload  # output="zpk"
 def ellip(
     N: int,
@@ -788,7 +847,7 @@ def ellip(
     rs: float,
     Wn: float | onp.ToFloat1D,
     btype: _BType = "low",
-    analog: bool = False,
+    analog: onp.ToFalse = False,
     *,
     output: L["zpk"],
     fs: float | None = None,
@@ -817,23 +876,45 @@ def bessel(
     norm: _Norm = "phase",
     fs: float | None = None,
 ) -> _Ba1D[np.float64]: ...
+@overload  # btype={"lowpass", "highpass"} (default), output="zpk", analog=True
+def bessel(
+    N: int,
+    Wn: float,
+    btype: _BTypeSingle = "low",
+    *,
+    analog: onp.ToTrue,
+    output: L["zpk"],
+    norm: _Norm = "phase",
+    fs: float | None = None,
+) -> _ZPK[np.float64, np.complex128, float]: ...
 @overload  # btype={"lowpass", "highpass"} (default), output="zpk"
 def bessel(
     N: int,
     Wn: float,
     btype: _BTypeSingle = "low",
-    analog: bool = False,
+    analog: onp.ToFalse = False,
     *,
     output: L["zpk"],
     norm: _Norm = "phase",
     fs: float | None = None,
 ) -> _ZPK[np.float64, np.complex128, np.float64]: ...
+@overload  # btype={"bandpass", "bandstop"}, output="zpk", analog=True
+def bessel(
+    N: int,
+    Wn: onp.ToFloat1D,
+    btype: _BTypeDouble,
+    *,
+    analog: onp.ToTrue,
+    output: L["zpk"],
+    norm: _Norm = "phase",
+    fs: float | None = None,
+) -> _ZPK[np.complex128, np.complex128, float]: ...
 @overload  # btype={"bandpass", "bandstop"}, output="zpk"
 def bessel(
     N: int,
     Wn: onp.ToFloat1D,
     btype: _BTypeDouble,
-    analog: bool = False,
+    analog: onp.ToFalse = False,
     *,
     output: L["zpk"],
     norm: _Norm = "phase",
