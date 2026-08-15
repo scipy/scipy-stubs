@@ -10,19 +10,12 @@ __all__ = ["qr", "qr_multiply", "rq"]
 
 type _Tuple2[T] = tuple[T, T]
 
-type _AsF16ND = onp.ToArrayND[Never, np.bool | np.float16]
+type _AsF64Strict2D = onp.ToArrayStrict2D[float, npc.floating64 | npc.integer64 | npc.integer32]
+
+type _AsF16ND = onp.ToArrayND[Never, np.float16 | np.bool]
 type _AsF32ND = onp.ToArrayND[Never, npc.floating32 | npc.integer16 | npc.integer8]
 type _AsF64ND = onp.ToArrayND[float, npc.floating64 | npc.integer64 | npc.integer32]
 type _AsC80ND = onp.ToArrayND[Never, npc.inexact80]
-
-type _Int1D = onp.Array1D[np.int32 | np.int64]
-type _IntND = onp.ArrayND[np.int32 | np.int64]
-type _Float1D = onp.Array1D[npc.floating]
-type _Float2D = onp.Array2D[npc.floating]
-type _FloatND = onp.ArrayND[npc.floating]
-type _Inexact1D = onp.Array1D[npc.inexact]
-type _Inexact2D = onp.Array2D[npc.inexact]
-type _InexactND = onp.ArrayND[npc.inexact]
 
 type _Side = Literal["left", "right"]
 type _ModeFullEcon = Literal["full", "economic"]
@@ -397,9 +390,196 @@ def qr(
     check_finite: bool = True,
 ) -> tuple[_Tuple2[onp.ArrayND[np.float64 | Any]], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
 
-# TODO(@jorenham): improve return dtypes
-# https://github.com/scipy/scipy-stubs/issues/1308
-@overload  # (float[:, :], float[:], pivoting=False) -> (float[:], float[:, :])
+#
+@overload  # 2d +f32, c: 1d
+def qr_multiply(
+    a: onp.ToFloat32Strict2D,
+    c: onp.ToFloatStrict1D,
+    mode: _Side = "right",
+    pivoting: onp.ToFalse = False,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.float32]]: ...
+@overload  # 2d +f64, c: 1d
+def qr_multiply(
+    a: _AsF64Strict2D,
+    c: onp.ToFloatStrict1D,
+    mode: _Side = "right",
+    pivoting: onp.ToFalse = False,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
+@overload  # 2d +f32, c: 2d
+def qr_multiply(
+    a: onp.ToFloat32Strict2D,
+    c: onp.ToFloatStrict2D,
+    mode: _Side = "right",
+    pivoting: onp.ToFalse = False,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> _Tuple2[onp.Array2D[np.float32]]: ...
+@overload  # 2d +f64, c: 2d
+def qr_multiply(
+    a: _AsF64Strict2D,
+    c: onp.ToFloatStrict2D,
+    mode: _Side = "right",
+    pivoting: onp.ToFalse = False,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> _Tuple2[onp.Array2D[np.float64]]: ...
+@overload  # Nd +f32, c: Nd
+def qr_multiply(
+    a: _AsF32ND,
+    c: onp.ToFloatND,
+    mode: _Side = "right",
+    pivoting: onp.ToFalse = False,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> _Tuple2[onp.ArrayND[np.float32]]: ...
+@overload  # Nd +f64, c: Nd
+def qr_multiply(
+    a: _AsF64ND,
+    c: onp.ToFloatND,
+    mode: _Side = "right",
+    pivoting: onp.ToFalse = False,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+@overload  # 2d +f32, c: 1d | 2d, pivoting: True
+def qr_multiply(
+    a: onp.ToFloat32Strict2D,
+    c: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
+    mode: _Side = "right",
+    *,
+    pivoting: onp.ToTrue,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.float32], onp.Array2D[np.float32], onp.Array1D[np.int32]]: ...
+@overload  # 2d +f64, c: 1d | 2d, pivoting: True
+def qr_multiply(
+    a: _AsF64Strict2D,
+    c: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
+    mode: _Side = "right",
+    *,
+    pivoting: onp.ToTrue,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.float64], onp.Array2D[np.float64], onp.Array1D[np.int32]]: ...
+@overload  # Nd +f32, c: Nd, pivoting: True
+def qr_multiply(
+    a: _AsF32ND,
+    c: onp.ToFloatND,
+    mode: _Side = "right",
+    *,
+    pivoting: onp.ToTrue,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], onp.ArrayND[np.int32]]: ...
+@overload  # Nd +f64, c: Nd, pivoting: True
+def qr_multiply(
+    a: _AsF64ND,
+    c: onp.ToFloatND,
+    mode: _Side = "right",
+    *,
+    pivoting: onp.ToTrue,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.int32]]: ...
+@overload  # 2d ~c64, c: 1d | 2d
+def qr_multiply(
+    a: onp.ToJustComplex64Strict2D,
+    c: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
+    mode: _Side = "right",
+    pivoting: onp.ToFalse = False,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.Array2D[np.complex64]]: ...
+@overload  # 2d ~c128, c: 1d | 2d
+def qr_multiply(
+    a: onp.ToJustComplex128Strict2D,
+    c: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
+    mode: _Side = "right",
+    pivoting: onp.ToFalse = False,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.Array2D[np.complex128]]: ...
+@overload  # Nd ~c64, c: Nd
+def qr_multiply(
+    a: onp.ToJustComplex64_ND,
+    c: onp.ToComplexND,
+    mode: _Side = "right",
+    pivoting: onp.ToFalse = False,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> _Tuple2[onp.ArrayND[np.complex64]]: ...
+@overload  # Nd ~c128, c: Nd
+def qr_multiply(
+    a: onp.ToJustComplex128_ND,
+    c: onp.ToComplexND,
+    mode: _Side = "right",
+    pivoting: onp.ToFalse = False,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> _Tuple2[onp.ArrayND[np.complex128]]: ...
+@overload  # 2d ~c64, c: 1d | 2d, pivoting: True
+def qr_multiply(
+    a: onp.ToJustComplex64Strict2D,
+    c: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
+    mode: _Side = "right",
+    *,
+    pivoting: onp.ToTrue,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.Array2D[np.complex64], onp.Array1D[np.int32]]: ...
+@overload  # 2d ~c128, c: 1d | 2d, pivoting: True
+def qr_multiply(
+    a: onp.ToJustComplex128Strict2D,
+    c: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
+    mode: _Side = "right",
+    *,
+    pivoting: onp.ToTrue,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.Array2D[np.complex128], onp.Array1D[np.int32]]: ...
+@overload  # Nd ~c64, c: Nd, pivoting: True
+def qr_multiply(
+    a: onp.ToJustComplex64_ND,
+    c: onp.ToComplexND,
+    mode: _Side = "right",
+    *,
+    pivoting: onp.ToTrue,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64], onp.ArrayND[np.int32]]: ...
+@overload  # Nd ~c128, c: Nd, pivoting: True
+def qr_multiply(
+    a: onp.ToJustComplex128_ND,
+    c: onp.ToComplexND,
+    mode: _Side = "right",
+    *,
+    pivoting: onp.ToTrue,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], onp.ArrayND[np.int32]]: ...
+@overload  # 2d +float, c: 1d
 def qr_multiply(
     a: onp.ToFloatStrict2D,
     c: onp.ToFloatStrict1D,
@@ -408,8 +588,8 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_Float1D, _Inexact2D]: ...
-@overload  # (float[:, :], float[:, :], pivoting=False) -> (float[:, :], float[:, :])
+) -> tuple[onp.Array1D[np.float64 | Any], onp.Array2D[np.float64 | Any]]: ...
+@overload  # 2d +float, c: 2d
 def qr_multiply(
     a: onp.ToFloatStrict2D,
     c: onp.ToFloatStrict2D,
@@ -418,8 +598,8 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_Float2D, _Inexact2D]: ...
-@overload  # (float[:, :], float[:, :?], pivoting=False) -> (float[:, :?], float[:, :])
+) -> _Tuple2[onp.Array2D[np.float64 | Any]]: ...
+@overload  # 2d +float, c: 1d | 2d
 def qr_multiply(
     a: onp.ToFloatStrict2D,
     c: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
@@ -428,8 +608,8 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_Float1D | _Float2D, _Inexact2D]: ...
-@overload  # (float[:, :, ...], float[:, ...], pivoting=False) -> (float[:, ...], float[:, :, ...])
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.Array2D[np.float64 | Any]]: ...
+@overload  # Nd +float, c: Nd
 def qr_multiply(
     a: onp.ToFloatND,
     c: onp.ToFloatND,
@@ -438,18 +618,8 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_FloatND, _InexactND]: ...
-@overload  # (float[:, :], float[:, :?], pivoting=True, /) -> (float[:, :?], float[:, :], int[:])
-def qr_multiply(
-    a: onp.ToFloatStrict2D,
-    c: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
-    mode: _Side,
-    pivoting: onp.ToTrue,
-    conjugate: bool = False,
-    overwrite_a: bool = False,
-    overwrite_c: bool = False,
-) -> tuple[_Float1D | _Float2D, _Float2D, _Int1D]: ...
-@overload  # (float[:, :], float[:, :?], *, pivoting=True) -> (float[:, :?], float[:, :], int[:])
+) -> _Tuple2[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # 2d +float, c: 1d | 2d, pivoting: True
 def qr_multiply(
     a: onp.ToFloatStrict2D,
     c: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
@@ -459,8 +629,8 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_Float1D | _Float2D, _Float2D, _Int1D]: ...
-@overload  # (float[:, :, ...], float[:, ...], *, pivoting=True) -> (float[:, ...], float[:, :, ...], int[:, ...])
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.Array2D[np.float64 | Any], onp.Array1D[np.int32]]: ...
+@overload  # Nd +float, c: Nd, pivoting: True
 def qr_multiply(
     a: onp.ToFloatND,
     c: onp.ToFloatND,
@@ -470,8 +640,8 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_FloatND, _FloatND, _IntND]: ...
-@overload  # (complex[:, :], complex[:, :?], pivoting=False) -> (complex[:, :?], complex[:, :])
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
+@overload  # 2d catch-all, c: 1d | 2d
 def qr_multiply(
     a: onp.ToComplexStrict2D,
     c: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
@@ -480,8 +650,8 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_Inexact1D | _Inexact2D, _Inexact2D]: ...
-@overload  # (complex[:, :, ...], complex[:, ...], pivoting=False) -> (complex[:, ...], complex[:, :, ...])
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.Array2D[np.float64 | Any]]: ...
+@overload  # Nd catch-all, c: Nd
 def qr_multiply(
     a: onp.ToComplexND,
     c: onp.ToComplexND,
@@ -490,18 +660,8 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_InexactND, _InexactND]: ...
-@overload  # (complex[:, :], complex[:, :?], pivoting=True, /) -> (complex[:, :?], complex[:, :], int[:])
-def qr_multiply(
-    a: onp.ToComplexStrict2D,
-    c: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
-    mode: _Side,
-    pivoting: onp.ToTrue,
-    conjugate: bool = False,
-    overwrite_a: bool = False,
-    overwrite_c: bool = False,
-) -> tuple[_Inexact1D | _Inexact2D, _Inexact2D, _Int1D]: ...
-@overload  # (complex[:, :], complex[:, :?], *, pivoting=True) -> (complex[:, :?], complex[:, :], int[:])
+) -> _Tuple2[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # 2d catch-all, c: 1d | 2d, pivoting: True
 def qr_multiply(
     a: onp.ToComplexStrict2D,
     c: onp.ToComplexStrict1D | onp.ToComplexStrict2D,
@@ -511,8 +671,8 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_Inexact1D | _Inexact2D, _Inexact2D, _Int1D]: ...
-@overload  # (complex[:, :, ...], complex[:, ...], *, pivoting=True) -> (complex[:, ...], complex[:, :, ...], int[:, ...])
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.Array2D[np.float64 | Any], onp.Array1D[np.int32]]: ...
+@overload  # Nd catch-all, c: Nd, pivoting: True
 def qr_multiply(
     a: onp.ToComplexND,
     c: onp.ToComplexND,
@@ -522,12 +682,12 @@ def qr_multiply(
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[_InexactND, _InexactND, _IntND]: ...
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
 
 #
 @overload  # 2d +f64, mode: {full, economic}
 def rq(
-    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer64 | npc.integer32],
+    a: _AsF64Strict2D,
     overwrite_a: bool = False,
     lwork: int | None = None,
     mode: _ModeFullEcon = "full",
@@ -539,12 +699,7 @@ def rq(
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...
 @overload  # 2d +f64, mode: r
 def rq(
-    a: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer64 | npc.integer32],
-    overwrite_a: bool = False,
-    lwork: int | None = None,
-    *,
-    mode: _ModeR,
-    check_finite: bool = True,
+    a: _AsF64Strict2D, overwrite_a: bool = False, lwork: int | None = None, *, mode: _ModeR, check_finite: bool = True
 ) -> onp.Array2D[np.float64]: ...
 @overload  # Nd +f64, mode: r
 def rq(
