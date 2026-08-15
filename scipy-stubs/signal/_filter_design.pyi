@@ -241,7 +241,7 @@ def normalize(b: onp.ToComplex128_ND, a: onp.ToJustComplex128_ND) -> _BaND[np.co
 @overload  # ~c128, +c128
 def normalize(b: onp.ToJustComplex128_ND, a: onp.ToComplex128_ND) -> _BaND[np.complex128]: ...
 @overload  # ~T, ~T
-def normalize[ST: (np.float16, np.float32, np.float64, np.longdouble, np.complex64, np.complex128, np.clongdouble)](
+def normalize[ST: (np.float16, np.float32, np.float64, npc.floating80, np.complex64, np.complex128, npc.complexfloating160)](
     b: onp.ArrayND[ST], a: onp.ArrayND[ST]
 ) -> _BaND[ST]: ...
 @overload  # fallback
