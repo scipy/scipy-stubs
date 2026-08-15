@@ -22,12 +22,12 @@ type _ToIndices = onp.CanArrayND[npc.integer] | Sequence[int]
 
 # `(data, (row_ind, col_ind))` or `(data, indices, indptr)`
 type _RawCSC[T] = tuple[T, tuple[_ToIndices, _ToIndices]] | tuple[T, _ToIndices, _ToIndices]
-type _ToCSC[ScalarT: _Scalar] = (
-    _Sparse2D[ScalarT]
-    | onp.CanArrayND[ScalarT]
-    | _RawCSC[onp.CanArrayND[ScalarT] | Sequence[ScalarT]]
-    | Sequence[Sequence[ScalarT]]
-    | list[onp.ArrayND[ScalarT]]
+type _ToCSC[ST: _Scalar] = (
+    _Sparse2D[ST]
+    | onp.CanArrayND[ST]
+    | _RawCSC[onp.CanArrayND[ST] | Sequence[ST]]
+    | Sequence[Sequence[ST]]
+    | list[onp.ArrayND[ST]]
 )
 type _ToAnyCSC = _ToShape2D | _Sparse2D[_Scalar] | onp.ToArray2D[complex, _Scalar] | _RawCSC[onp.ToComplex1D]
 type _ToBoolCSC = Sequence[Sequence[bool]] | _RawCSC[Sequence[bool]]
@@ -35,7 +35,6 @@ type _ToIntCSC = Sequence[Sequence[int]] | _RawCSC[Sequence[int]]
 type _ToFloatCSC = Sequence[Sequence[float]] | _RawCSC[Sequence[float]] | _ToShape2D
 type _ToComplexCSC = Sequence[Sequence[complex]] | _RawCSC[Sequence[complex]]
 
-_ScalarT = TypeVar("_ScalarT", bound=_Scalar)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
 
 ###
@@ -71,7 +70,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     def __assoc_stacked__(self, /) -> csc_array[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> csc_array[_ScalarT]: ...
+    def __assoc_stacked_as__[ST: _Scalar](self, sctype: ST, /) -> csc_array[ST]: ...
     @override
     @type_check_only
     def __assoc_as_float32__(self, /) -> csc_array[np.float32]: ...
@@ -263,7 +262,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __assoc_stacked__(self, /) -> csc_matrix[_ScalarT_co]: ...
     @override
     @type_check_only
-    def __assoc_stacked_as__(self, sctype: _ScalarT, /) -> csc_matrix[_ScalarT]: ...
+    def __assoc_stacked_as__[ST: _Scalar](self, sctype: ST, /) -> csc_matrix[ST]: ...
     @override
     @type_check_only
     def __assoc_as_float32__(self, /) -> csc_matrix[np.float32]: ...
