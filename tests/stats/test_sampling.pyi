@@ -71,7 +71,11 @@ assert_type(_fgi.qrvs(), np.float64)
 assert_type(_fgi.qrvs(4, d=1, qmc_engine=Halton(1)), onp.ArrayND[np.float64])
 assert_type(_fgi.ppf(0.5), np.float64)
 assert_type(_fgi.ppf(_f64_1d), onp.ArrayND[np.float64])
-assert_type(_fgi.evaluate_error(), tuple[np.float64, np.float64])
+assert_type(_fgi.evaluate_error(), tuple[np.float64, float])
+assert_type(_fgi.evaluate_error(1_000, 0), tuple[np.float64, float])
+assert_type(_fgi.evaluate_error(x_error=False), tuple[np.float64, float])
+assert_type(_fgi.evaluate_error(x_error=True), tuple[np.float64, np.float64])
+assert_type(_fgi.evaluate_error(1_000, random_state=0, x_error=True), tuple[np.float64, np.float64])
 assert_type(_fgi.support(), tuple[float, float] | tuple[np.float64, np.float64])
 
 ###

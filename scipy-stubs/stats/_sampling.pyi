@@ -96,8 +96,13 @@ class FastGeneratorInversion:
     def ppf(self, /, q: onp.ToFloatND) -> onp.ArrayND[np.float64]: ...
 
     #
+    @overload  # x_error=False (default)
     def evaluate_error(
-        self, /, size: int = 100_000, random_state: onp.random.ToRNG | None = None, x_error: bool = False
+        self, /, size: int = 100_000, random_state: onp.random.ToRNG | None = None, x_error: onp.ToFalse = False
+    ) -> tuple[np.float64, float]: ...
+    @overload  # x_error=True
+    def evaluate_error(
+        self, /, size: int = 100_000, random_state: onp.random.ToRNG | None = None, *, x_error: onp.ToTrue
     ) -> tuple[np.float64, np.float64]: ...
 
     #
