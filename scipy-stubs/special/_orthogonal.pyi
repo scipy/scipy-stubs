@@ -1,6 +1,5 @@
 from collections.abc import Callable, Sequence
 from typing import Any, Final, overload, override
-from typing_extensions import TypeVar
 
 import numpy as np
 import optype.numpy as onp
@@ -60,8 +59,6 @@ type _PointsWeights = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]
 type _PointsWeightsMu = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64]
 type _PointsWeightsMuConst = tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float]
 
-_ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...])
-
 ###
 
 # we need this to avoid false positives on numpy<2.1
@@ -101,9 +98,13 @@ class orthopoly1d(np.poly1d):  # undocumented
     @overload
     def __call__(self, /, v: onp.ToJustComplex) -> np.complex128: ...
     @overload
-    def __call__(self, /, v: onp.ArrayND[npc.floating | npc.integer | np.bool, _ShapeT]) -> onp.ArrayND[np.float64, _ShapeT]: ...
+    def __call__[ShapeT: tuple[int, ...]](
+        self, /, v: onp.ArrayND[npc.floating | npc.integer | np.bool, ShapeT]
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
     @overload
-    def __call__(self, /, v: onp.ArrayND[npc.complexfloating, _ShapeT]) -> onp.ArrayND[np.complex128, _ShapeT]: ...
+    def __call__[ShapeT: tuple[int, ...]](
+        self, /, v: onp.ArrayND[npc.complexfloating, ShapeT]
+    ) -> onp.ArrayND[np.complex128, ShapeT]: ...
     @overload
     def __call__(self, /, v: Sequence[float]) -> onp.Array1D[np.float64]: ...
     @overload
