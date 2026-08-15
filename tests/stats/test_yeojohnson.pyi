@@ -14,17 +14,20 @@ _i8_1d: onp.Array1D[np.int8]
 _f16_1d: onp.Array1D[np.float16]
 _f32_1d: onp.Array1D[np.float32]
 _f64_1d: onp.Array1D[np.float64]
+_f80_1d: onp.Array1D[np.float128]
 
 _py_float_2d: list[list[float]]
 _i8_2d: onp.Array2D[np.int8]
 _f16_2d: onp.Array2D[np.float16]
 _f32_2d: onp.Array2D[np.float32]
 _f64_2d: onp.Array2D[np.float64]
+_f80_2d: onp.Array2D[np.float128]
 
 _i8_nd: onp.ArrayND[np.int8]
 _f16_nd: onp.ArrayND[np.float16]
 _f32_nd: onp.ArrayND[np.float32]
 _f64_nd: onp.ArrayND[np.float64]
+_f80_nd: onp.ArrayND[np.float128]
 
 ###
 
@@ -35,6 +38,7 @@ assert_type(yeojohnson_llf(0.5, _i8_1d), np.float64)
 assert_type(yeojohnson_llf(0.5, _f16_1d), np.float16)
 assert_type(yeojohnson_llf(0.5, _f32_1d), np.float32)
 assert_type(yeojohnson_llf(0.5, _f64_1d), np.float64)
+assert_type(yeojohnson_llf(0.5, _f80_1d), np.float128)
 
 assert_type(yeojohnson_llf(0.5, _py_float_1d, axis=None), np.float64)
 assert_type(yeojohnson_llf(0.5, _i8_1d, axis=None), np.float64)
@@ -73,9 +77,13 @@ assert_type(yeojohnson(_f16_1d), tuple[onp.Array1D[np.float64], np.float64])
 assert_type(yeojohnson(_f32_1d), tuple[onp.Array1D[np.float64], np.float64])
 assert_type(yeojohnson(_f64_1d), tuple[onp.Array1D[np.float64], np.float64])
 assert_type(yeojohnson(_i8_1d, 0.1), onp.Array1D[np.float64])
-assert_type(yeojohnson(_f16_1d, 0.1), onp.Array1D[np.float64])
-assert_type(yeojohnson(_f32_1d, 0.1), onp.Array1D[np.float64])
+assert_type(yeojohnson(_f16_1d, 0.1), onp.Array1D[np.float16])
+assert_type(yeojohnson(_f32_1d, 0.1), onp.Array1D[np.float32])
 assert_type(yeojohnson(_f64_1d, 0.1), onp.Array1D[np.float64])
+
+# https://github.com/scipy/scipy-stubs/issues/1196: `longdouble` keeps its precision
+assert_type(yeojohnson(_f80_1d), tuple[onp.Array1D[np.longdouble], np.longdouble])
+assert_type(yeojohnson(_f80_1d, 0.1), onp.Array1D[np.float128])
 
 # yeojohnson_normmax
 
@@ -84,12 +92,14 @@ assert_type(yeojohnson_normmax(_i8_1d), np.float64)
 assert_type(yeojohnson_normmax(_f16_1d), np.float64)
 assert_type(yeojohnson_normmax(_f32_1d), np.float64)
 assert_type(yeojohnson_normmax(_f64_1d), np.float64)
+assert_type(yeojohnson_normmax(_f80_1d), np.longdouble)
 
 assert_type(yeojohnson_normmax(_py_float_2d), onp.Array1D[np.float64])
 assert_type(yeojohnson_normmax(_i8_2d), onp.Array1D[np.float64])
 assert_type(yeojohnson_normmax(_f16_2d), onp.Array1D[np.float64])
 assert_type(yeojohnson_normmax(_f32_2d), onp.Array1D[np.float64])
 assert_type(yeojohnson_normmax(_f64_2d), onp.Array1D[np.float64])
+assert_type(yeojohnson_normmax(_f80_2d), onp.Array1D[np.longdouble])
 
 # NOTE: Pyrefly doesn't seem to be able to intersect the return types in case of multiple matching overloads,
 # and in this case both return types are even identical (Array1D[float64] | float64).
@@ -97,6 +107,7 @@ assert_type(yeojohnson_normmax(_i8_nd), onp.Array1D[np.float64] | np.float64)
 assert_type(yeojohnson_normmax(_f16_nd), onp.Array1D[np.float64] | np.float64)
 assert_type(yeojohnson_normmax(_f32_nd), onp.Array1D[np.float64] | np.float64)
 assert_type(yeojohnson_normmax(_f64_nd), onp.Array1D[np.float64] | np.float64)
+assert_type(yeojohnson_normmax(_f80_nd), onp.Array1D[np.longdouble] | np.longdouble)
 
 # yeojohnson_plot
 
