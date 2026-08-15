@@ -159,33 +159,33 @@ assert_type(cg_roots(3, 2, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[
 
 # chebyt
 assert_type(roots_chebyt(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(roots_chebyt(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(roots_chebyt(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 assert_type(t_roots(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(t_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(t_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 
 # chebyu
 assert_type(roots_chebyu(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(roots_chebyu(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(roots_chebyu(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 assert_type(u_roots(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(u_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(u_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 
 # chebyc
 assert_type(roots_chebyc(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(roots_chebyc(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(roots_chebyc(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 assert_type(c_roots(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(c_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(c_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 
 # chebys
 assert_type(roots_chebys(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(roots_chebys(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(roots_chebys(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 assert_type(s_roots(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(s_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(s_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 
 # sh_chebyt
 assert_type(roots_sh_chebyt(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(roots_sh_chebyt(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(roots_sh_chebyt(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 assert_type(ts_roots(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(ts_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(ts_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 
 # sh_chebyu
 assert_type(roots_sh_chebyu(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -195,14 +195,14 @@ assert_type(us_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.
 
 # legendre
 assert_type(roots_legendre(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(roots_legendre(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(roots_legendre(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 assert_type(p_roots(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(p_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(p_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 
 # sh_legendre
 assert_type(roots_sh_legendre(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(roots_sh_legendre(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(roots_sh_legendre(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 assert_type(ps_roots(3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
-assert_type(ps_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])
+assert_type(ps_roots(3, mu=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
 
 ###
