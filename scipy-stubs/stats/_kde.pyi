@@ -16,7 +16,6 @@ type _ToFloatMax2D = _ToFloatMax1D | onp.ToFloat2D
 
 type _BWMethod = Literal["scott", "silverman"] | onp.ToFloat | Callable[[gaussian_kde], onp.ToFloat]
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.number | np.bool)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.number | np.bool, default=np.float64, covariant=True)
 
 ###
@@ -41,10 +40,10 @@ class gaussian_kde(Generic[_ScalarT_co]):
 
     #
     @overload  # <known scalar-type>
-    def __init__(
-        self: gaussian_kde[_ScalarT],
+    def __init__[ST: npc.number | np.bool](
+        self: gaussian_kde[ST],
         /,
-        dataset: onp.ToArray1D[_ScalarT, _ScalarT] | onp.ToArray2D[_ScalarT, _ScalarT],
+        dataset: onp.ToArray1D[ST, ST] | onp.ToArray2D[ST, ST],
         bw_method: _BWMethod | None = None,
         weights: _ToFloatMax1D | None = None,
     ) -> None: ...

@@ -8,7 +8,6 @@ import optype.numpy.compat as npc
 
 __all__ = ["Covariance"]
 
-_ScalarT = TypeVar("_ScalarT", bound=npc.floating | npc.integer)
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.floating | npc.integer, default=np.float64, covariant=True)
 
 class Covariance(Generic[_ScalarT_co]):
@@ -24,7 +23,7 @@ class Covariance(Generic[_ScalarT_co]):
     def from_diagonal(diagonal: onp.ToJustInt64_1D) -> CovViaDiagonal[np.int_]: ...
     @staticmethod
     @overload
-    def from_diagonal(diagonal: onp.ToArray1D[_ScalarT, _ScalarT]) -> CovViaDiagonal[_ScalarT]: ...
+    def from_diagonal[ST: npc.floating | npc.integer](diagonal: onp.ToArray1D[ST, ST]) -> CovViaDiagonal[ST]: ...
 
     #
     @staticmethod
