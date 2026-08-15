@@ -326,16 +326,25 @@ class maxwell_gen(_rv_continuous_0): ...
 class moyal_gen(_rv_continuous_0): ...
 
 class norm_gen(_rv_continuous_0):
-    @override
-    def fit(  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore [bad-override]
+    @override  # type:ignore[override]
+    @overload  # floc=None, fscale=None  (default)
+    def fit(  # pyrefly:ignore[bad-override]
         self,
         /,
         data: onp.ToFloat64_ND | CensoredData[np.float64],
         *,
-        floc: onp.ToFloat64 | None = None,
-        fscale: onp.ToFloat64 | None = None,
+        floc: None = None,
+        fscale: None = None,
         **kwds: onp.ToFloat64,
-    ) -> tuple[np.float64, np.float64]: ...  # ty: ignore[invalid-method-override]
+    ) -> tuple[np.float64, np.float64]: ...
+    @overload  # floc=<given>
+    def fit[LocT: onp.ToFloat64](
+        self, /, data: onp.ToFloat64_ND | CensoredData[np.float64], *, floc: LocT, fscale: None = None, **kwds: onp.ToFloat64
+    ) -> tuple[LocT, np.float64]: ...
+    @overload  # fscale=<given>
+    def fit[ScaleT: onp.ToFloat64](  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+        self, /, data: onp.ToFloat64_ND | CensoredData[np.float64], *, floc: None = None, fscale: ScaleT, **kwds: onp.ToFloat64
+    ) -> tuple[np.float64, ScaleT]: ...
 
 class rayleigh_gen(_rv_continuous_0): ...
 class semicircular_gen(_rv_continuous_0): ...
