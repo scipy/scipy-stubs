@@ -38,7 +38,7 @@ def line_search_wolfe1(
     amax: onp.ToJustInt = 50,
     amin: onp.ToFloat = 1e-08,
     xtol: onp.ToFloat = 1e-14,
-) -> tuple[_Float | None, int, int, _Float | None, _Float, _Float | None]: ...
+) -> tuple[_Float | None, int, int, _Float | None, _Float, _Float1D]: ...
 
 # NOTE: exported as `scipy.optimize.line_search`
 def line_search_wolfe2(
@@ -55,7 +55,7 @@ def line_search_wolfe2(
     amax: onp.ToFloat | None = None,
     extra_condition: Callable[[float, _Float1D, float, _Float1D], bool] | None = None,
     maxiter: onp.ToJustInt = 10,
-) -> tuple[_Float | None, int, int, _Float | None, _Float, _Float | None]: ...
+) -> tuple[_Float | None, int, int, _Float | None, _Float, _Float1D | None]: ...
 
 #
 def line_search_armijo(
