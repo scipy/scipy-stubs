@@ -59,6 +59,7 @@ from scipy.signal import (
 ###
 
 _f32: np.float32
+_f64: np.float64
 
 _i64_1d: onp.Array1D[np.int64]
 _f32_1d: onp.Array1D[np.float32]
@@ -93,9 +94,9 @@ assert_type(freqs(_f64_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp
 assert_type(freqs(_f64_1d, _f64_1d, _c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
 
 # freqs_zpk
-assert_type(freqs_zpk(_f64_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]])
-assert_type(freqs_zpk(_f64_1d, _f64_1d, _f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]])
-assert_type(freqs_zpk(_f64_1d, _f64_1d, _f64_1d, _c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(freqs_zpk(_f64_1d, _f64_1d, _f64), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]])
+assert_type(freqs_zpk(_f64_1d, _f64_1d, _f64, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]])
+assert_type(freqs_zpk(_f64_1d, _f64_1d, _f64, _c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
 
 # freqz
 assert_type(freqz(_f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
@@ -105,9 +106,9 @@ assert_type(freqz(_f64_1d, _f64_1d, _c128_1d), tuple[onp.ArrayND[np.complex128],
 assert_type(freqz(_f64_1d, worN=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 
 # freqz_zpk
-assert_type(freqz_zpk(_f64_1d, _f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
-assert_type(freqz_zpk(_f64_1d, _f64_1d, _f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
-assert_type(freqz_zpk(_f64_1d, _f64_1d, _f64_1d, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(freqz_zpk(_f64_1d, _f64_1d, _f64), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(freqz_zpk(_f64_1d, _f64_1d, _f64, _f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(freqz_zpk(_f64_1d, _f64_1d, _f64, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 
 # group_delay
 assert_type(group_delay((_f64_1d, _f64_1d)), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
