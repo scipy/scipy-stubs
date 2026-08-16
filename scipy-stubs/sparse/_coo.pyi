@@ -83,6 +83,13 @@ class _coo_base(_data_matrix[_ScalarT_co, _ShapeT_co], _minmax_mixin[_ScalarT_co
     def sum_duplicates(self, /) -> None: ...
     def eliminate_zeros(self, /) -> None: ...
 
+    #
+    @override
+    @overload
+    def count_nonzero(self, /, axis: None = None) -> np.intp: ...
+    @overload
+    def count_nonzero(self: _coo_base[Any, tuple[int, int]], /, axis: SupportsIndex) -> onp.Array1D[np.intp]: ...
+
     # NOTE: all combinations (self dtype, other dtype, self shape, other shape, self: array|matrix, other dense|sparse, axes)
     #   would  result in more overloads than that mypy has bugs (i.e. >1_200).
     # NOTE: due to a bug in `axes`, only `int` can be used at the moment (passing a 2-tuple or 2-list raises `TypeError`)

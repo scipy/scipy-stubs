@@ -3,6 +3,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
+from ._types import coo_arr, coo_vec
 from scipy.sparse import coo_array, coo_matrix
 
 ###
@@ -44,6 +45,12 @@ assert_type(coo_array((2, 3), dtype=np.complex64), coo_array[np.complex64, tuple
 
 assert_type(coo_array(_py_i_1d, dtype=np.int8), coo_array[np.int8, tuple[int]])
 assert_type(coo_array(_py_i_2d, dtype=np.int8), coo_array[np.int8, tuple[int, int]])
+
+assert_type(coo_vec.count_nonzero(), np.intp)
+assert_type(coo_arr.count_nonzero(), np.intp)
+assert_type(coo_arr.count_nonzero(axis=0), onp.Array1D[np.intp])
+# pyrefly: ignore [no-matching-overload]
+coo_vec.count_nonzero(axis=0)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
 
 ###
 # coo_matrix
