@@ -16,7 +16,7 @@ c64_nd: onp.ArrayND[np.complex64]
 c128_nd: onp.ArrayND[np.complex128]
 
 py_float_2d: list[list[float]]
-py_complex_2d: list[list[op.JustComplex]]
+py_complex_2d: list[list[complex]]
 
 type _QR32 = tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]
 type _QR64 = tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
