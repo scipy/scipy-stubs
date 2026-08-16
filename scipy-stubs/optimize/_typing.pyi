@@ -14,7 +14,6 @@ from ._minimize import _MinimizeOptions
 __all__ = [
     "Bound",
     "Bounds",
-    "Brack",
     "Constraint",
     "Constraints",
     "MethodAll",
@@ -46,8 +45,6 @@ class _ConstraintDict(TypedDict):
 
 type Constraint = LinearConstraint | NonlinearConstraint | _ConstraintDict
 type Constraints = Constraint | Sequence[Constraint]
-
-type Brack = tuple[onp.ToFloat, onp.ToFloat] | tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat]
 
 type Solver = Literal["minimize", "minimize_scalar", "root", "root_salar", "linprog", "quadratic_assignment"]
 type TRSolver = Literal["exact", "lsmr"]

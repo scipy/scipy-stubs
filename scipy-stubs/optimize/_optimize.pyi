@@ -9,7 +9,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._linesearch import line_search_wolfe2 as line_search
-from ._typing import Brack, MethodAll, Solver
+from ._typing import MethodAll, Solver
 from scipy._lib._util import _RichResult
 
 __all__ = [
@@ -654,20 +654,25 @@ def brute(
 def brent(
     func: _Fn1_0d[onp.ToFloat],
     args: _Args = (),
-    brack: Brack | None = None,
+    brack: onp.ToFloat1D | None = None,
     tol: onp.ToFloat = 1.48e-08,
     full_output: onp.ToFalse = 0,
     maxiter: int = 500,
 ) -> _Float: ...
 @overload  # full_output: True (positional)
 def brent(
-    func: _Fn1_0d[onp.ToFloat], args: _Args, brack: Brack | None, tol: onp.ToFloat, full_output: onp.ToTrue, maxiter: int = 500
+    func: _Fn1_0d[onp.ToFloat],
+    args: _Args,
+    brack: onp.ToFloat1D | None,
+    tol: onp.ToFloat,
+    full_output: onp.ToTrue,
+    maxiter: int = 500,
 ) -> tuple[_Float, _Float, int, int]: ...
 @overload  # full_output: True (keyword)
 def brent(
     func: _Fn1_0d[onp.ToFloat],
     args: _Args = (),
-    brack: Brack | None = None,
+    brack: onp.ToFloat1D | None = None,
     tol: onp.ToFloat = 1.48e-08,
     *,
     full_output: onp.ToTrue,
@@ -679,20 +684,25 @@ def brent(
 def golden(
     func: _Fn1_0d[onp.ToFloat],
     args: _Args = (),
-    brack: Brack | None = None,
+    brack: onp.ToFloat1D | None = None,
     tol: onp.ToFloat = ...,
     full_output: onp.ToFalse = 0,
     maxiter: int = 5_000,
 ) -> _Float: ...
 @overload  # full_output: True (positional)
 def golden(
-    func: _Fn1_0d[onp.ToFloat], args: _Args, brack: Brack | None, tol: onp.ToFloat, full_output: onp.ToTrue, maxiter: int = 5_000
+    func: _Fn1_0d[onp.ToFloat],
+    args: _Args,
+    brack: onp.ToFloat1D | None,
+    tol: onp.ToFloat,
+    full_output: onp.ToTrue,
+    maxiter: int = 5_000,
 ) -> tuple[_Float, _Float, int]: ...
 @overload  # full_output: True (keyword)
 def golden(
     func: _Fn1_0d[onp.ToFloat],
     args: _Args = (),
-    brack: Brack | None = None,
+    brack: onp.ToFloat1D | None = None,
     tol: onp.ToFloat = ...,
     *,
     full_output: onp.ToTrue,
