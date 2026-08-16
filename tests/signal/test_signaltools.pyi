@@ -467,6 +467,9 @@ assert_type(resample_poly(_c128_2d, 1, 1), onp.Array2D[np.complex128])
 # pyrefly: ignore [no-matching-overload]
 resample_poly(_c160_2d, 1, 1)  # type: ignore[type-var]  # pyright: ignore[reportArgumentType, reportCallIssue]
 
+assert_type(resample_poly(_f64_1d, 1, 1, window=_f64_1d), onp.Array1D[np.float64])
+assert_type(resample_poly(_f64_1d, 1, 1, window=[1.0, 2.0, 3.0]), onp.Array1D[np.float64])
+
 # sosfilt
 
 assert_type(sosfilt(_py_i_2d, _py_i_1d), onp.ArrayND[np.float64])
