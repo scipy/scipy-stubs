@@ -17,6 +17,7 @@ _c128_nd: onp.ArrayND[np.complex128]
 # BDF
 assert_type(BDF(_f_f64, 0.0, _f64_nd, 10.0), BDF[np.float64])
 assert_type(BDF(_f_c128, 0.0, _c128_nd, 10.0), BDF[np.complex128])
+assert_type(BDF(_f_c128, 0.0, _c128_nd, 10.0).dense_output(), DenseOutput[np.complex128])
 # DOP853
 assert_type(DOP853(_f_f64, 0.0, _f64_nd, 10.0), DOP853[np.float64])
 assert_type(DOP853(_f_c128, 0.0, _c128_nd, 10.0), DOP853[np.complex128])
@@ -26,11 +27,13 @@ assert_type(RK23(_f_c128, 0.0, _c128_nd, 10.0), RK23[np.complex128])
 # RK45
 assert_type(RK45(_f_f64, 0.0, _f64_nd, 10.0), RK45[np.float64])
 assert_type(RK45(_f_c128, 0.0, _c128_nd, 10.0), RK45[np.complex128])
+assert_type(RK45(_f_f64, 0.0, _f64_nd, 10.0).dense_output(), DenseOutput[np.float64 | Any])
 
 ###
 # OdeSolver
 assert_type(OdeSolver(_f_f64, 0.0, _f64_nd, 10.0, False), OdeSolver[np.float64])
 assert_type(OdeSolver(_f_c128, 0.0, _c128_nd, 10.0, False, support_complex=True), OdeSolver[np.complex128])
+assert_type(OdeSolver(_f_f64, 0.0, _f64_nd, 10.0, False).dense_output(), DenseOutput[np.float64])
 # LSODA
 assert_type(LSODA(_f_f64, 0.0, _f64_nd, 10.0), LSODA)
 # LSODA
