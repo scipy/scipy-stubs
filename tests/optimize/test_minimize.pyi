@@ -1,9 +1,11 @@
+from collections.abc import Sequence
 from typing import Literal, assert_type, overload
 
 import numpy as np
 import optype.numpy as onp
 
 from scipy.optimize import Bounds, minimize
+from scipy.sparse import csr_array
 
 ###
 
@@ -47,3 +49,8 @@ assert_type(minimize(_f_float, _f64_1d, bounds=[[0, 1], [0, 1]]).fun, float)
 assert_type(minimize(_f_float, _f64_1d, bounds=_f64_2d).fun, float)
 assert_type(minimize(_f_float, _f64_1d, bounds=[(0, None), (None, 1)]).fun, float)
 assert_type(minimize(_f_float, _f64_1d, bounds=Bounds(0, 1)).fun, float)
+
+assert_type(
+    minimize(_f_float, _f64_1d, method="trust-constr").jac,
+    onp.Array1D[np.float64] | Sequence[onp.Array2D[np.float64] | csr_array[np.float64]],
+)

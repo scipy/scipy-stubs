@@ -176,7 +176,7 @@ class OptimizeResult(_OptimizeResult, Generic[_FunT_co]):
     maxcv: float  # requires `bounds`
     fun: _FunT_co
     nfev: int
-    jac: _Float1D | Sequence[_Float2D | csr_array[np.float32]]  # is a list when method="trust-constr"
+    jac: _Float1D | Sequence[_Float2D | csr_array[np.float64]]  # is a list when method="trust-constr"
     njev: int  # requires `jac`
     hess: _Float2D  # requires `hess` or `hessp`
     hess_inv: _Float2D | LinearOperator  # requires `hess` or `hessp`, depends on solver
