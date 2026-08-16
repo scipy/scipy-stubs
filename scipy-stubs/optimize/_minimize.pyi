@@ -17,8 +17,6 @@ __all__ = ["minimize", "minimize_scalar"]
 
 ###
 
-type _Tuple2[T] = tuple[T, T]
-type _Tuple3[T] = tuple[T, T, T]
 type _Args = tuple[object, ...]
 
 type _Floating = float | npc.floating
@@ -36,8 +34,6 @@ type _FDMethod = Literal["2-point", "3-point", "cs"]
 
 type _MethodF64 = Literal["Nelder-Mead", "nelder-mead", "COBYLA", "cobyla", "COBYQA", "cobyqa"]
 
-type _ToBracket = _Tuple2[onp.ToFloat] | _Tuple3[onp.ToFloat]
-type _ToBound = _Tuple2[onp.ToFloat]
 type _Ignored = object
 
 _MinimizeScalarResultT_co = TypeVar("_MinimizeScalarResultT_co", bound=_MinimizeScalarResultBase, covariant=True)
@@ -58,7 +54,7 @@ class _MinimizeMethodFun(Protocol):
 @type_check_only
 class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
     def __call__(
-        self, fun: _Fun0D[onp.ToFloat], /, *, args: _Args, bracket: _ToBracket, bound: _ToBound
+        self, fun: _Fun0D[onp.ToFloat], /, *, args: _Args, bracket: onp.ToFloat1D, bound: onp.ToFloat1D
     ) -> _MinimizeScalarResultT_co: ...
 
 @type_check_only
@@ -283,7 +279,7 @@ def minimize[FunT: onp.ToFloat](
 @overload  # method="brent" or method="golden"
 def minimize_scalar(
     fun: _Fun0D[onp.ToFloat],
-    bracket: _ToBracket | None = None,
+    bracket: onp.ToFloat1D | None = None,
     bounds: None = None,
     args: _Args = (),
     method: Literal["brent", "golden"] | None = None,  # default: "brent"
@@ -294,7 +290,7 @@ def minimize_scalar(
 def minimize_scalar(
     fun: _Fun0D[onp.ToFloat],
     bracket: _Ignored | None,
-    bounds: _ToBound,
+    bounds: onp.ToFloat1D,
     args: _Args = (),
     method: Literal["bounded"] | None = None,
     tol: onp.ToFloat | None = None,
@@ -305,7 +301,7 @@ def minimize_scalar(
     fun: _Fun0D[onp.ToFloat],
     bracket: _Ignored | None = None,
     *,
-    bounds: _ToBound,
+    bounds: onp.ToFloat1D,
     args: _Args = (),
     method: Literal["bounded"] | None = None,
     tol: onp.ToFloat | None = None,
@@ -314,8 +310,8 @@ def minimize_scalar(
 @overload  # method=<custom>  (positional)
 def minimize_scalar[ResultT: _MinimizeScalarResultBase](
     fun: _Fun0D[onp.ToFloat],
-    bracket: _ToBracket | None,
-    bounds: _ToBound | None,
+    bracket: onp.ToFloat1D | None,
+    bounds: onp.ToFloat1D | None,
     args: _Args,
     method: _MinimizeScalarMethodFun[ResultT],
     tol: onp.ToFloat | None = None,
@@ -324,8 +320,8 @@ def minimize_scalar[ResultT: _MinimizeScalarResultBase](
 @overload  # method=<custom>  (keyword)
 def minimize_scalar[ResultT: _MinimizeScalarResultBase](
     fun: _Fun0D[onp.ToFloat],
-    bracket: _ToBracket | None = None,
-    bounds: _ToBound | None = None,
+    bracket: onp.ToFloat1D | None = None,
+    bounds: onp.ToFloat1D | None = None,
     args: _Args = (),
     *,
     method: _MinimizeScalarMethodFun[ResultT],
