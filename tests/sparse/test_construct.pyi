@@ -1,4 +1,4 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 
@@ -403,9 +403,24 @@ assert_type(sparse.random_array(shape_3d), sparse.coo_array[np.float64, tuple[in
 assert_type(sparse.random_array(shape_1d, dtype=sctype), sparse.coo_array[ScalarType, tuple[int]])
 assert_type(sparse.random_array(shape_2d, dtype=sctype), sparse.coo_array[ScalarType, tuple[int, int]])
 assert_type(sparse.random_array(shape_3d, dtype=sctype), sparse.coo_array[ScalarType, tuple[int, int, int]])
-# random (legacy, `random_array` is preferred)
+assert_type(sparse.random_array(shape_2d, format="bsr"), sparse.bsr_array[np.float64])
+assert_type(sparse.random_array(shape_2d, format="coo"), sparse.coo_array[np.float64, tuple[int, int]])
+assert_type(sparse.random_array(shape_2d, format="csc"), sparse.csc_array[np.float64])
+assert_type(sparse.random_array(shape_2d, format="csr"), sparse.csr_array[np.float64, tuple[int, int]])
+assert_type(sparse.random_array(shape_2d, format="dia"), sparse.dia_array[np.float64])
+assert_type(sparse.random_array(shape_2d, format="dok"), sparse.dok_array[np.float64, tuple[int, int]])
+assert_type(sparse.random_array(shape_2d, format="lil"), sparse.lil_array[np.float64])
+assert_type(sparse.random_array(shape_2d, format="csr", dtype=sctype), sparse.csr_array[ScalarType, tuple[int, int]])
+assert_type(sparse.random_array(shape_2d, format="csc", dtype=complex), sparse.csc_array[np.complex128])
+assert_type(sparse.random_array(shape_2d, format="lil", dtype="int"), sparse.lil_array[Any])
+assert_type(sparse.random_array(shape_1d, format="csr"), sparse.csr_array[np.float64, tuple[int]])
+assert_type(sparse.random_array(shape_1d, format="dok"), sparse.dok_array[np.float64, tuple[int]])
+assert_type(sparse.random_array(shape_3d, format="coo"), sparse.coo_array[np.float64, tuple[int, int, int]])
+
+# random
 assert_type(sparse.random(4, 2), sparse.coo_matrix[np.float64])
 assert_type(sparse.random(4, 2, dtype=sctype), sparse.coo_matrix[ScalarType])
-# rand (legacy, `random_array` is preferred)
+
+# rand
 assert_type(sparse.rand(4, 2), sparse.coo_matrix[np.float64])
 assert_type(sparse.rand(4, 2, dtype=sctype), sparse.coo_matrix[ScalarType])

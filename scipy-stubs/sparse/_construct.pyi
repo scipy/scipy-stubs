@@ -1975,17 +1975,72 @@ def random_array[ShapeT: tuple[int, *tuple[int, ...]]](
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
 ) -> coo_array[np.float64, ShapeT]: ...
-@overload  # shape: T, format: <otherwise>, dtype: <default>
-def random_array[ShapeT: tuple[int, *tuple[int, ...]]](
-    shape: ShapeT,
+@overload  # shape: 2d, format: "bsr", dtype: <default>
+def random_array(
+    shape: tuple[int, int],
     *,
     density: float | npc.floating = 0.01,
-    format: _FmtNonCOO,
+    format: _FmtBSR,
     dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
-) -> sparray[np.float64, ShapeT]: ...
+) -> bsr_array[np.float64]: ...
+@overload  # shape: 2d, format: "csc", dtype: <default>
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCSC,
+    dtype: onp.AnyFloat64DType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> csc_array[np.float64]: ...
+@overload  # shape: T, format: "csr", dtype: <default>
+def random_array[ShapeT: tuple[int] | tuple[int, int]](
+    shape: ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCSR,
+    dtype: onp.AnyFloat64DType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> csr_array[np.float64, ShapeT]: ...
+@overload  # shape: 2d, format: "dia", dtype: <default>
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtDIA,
+    dtype: onp.AnyFloat64DType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> dia_array[np.float64]: ...
+@overload  # shape: T, format: "dok", dtype: <default>
+def random_array[ShapeT: tuple[int] | tuple[int, int]](
+    shape: ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtDOK,
+    dtype: onp.AnyFloat64DType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> dok_array[np.float64, ShapeT]: ...
+@overload  # shape: 2d, format: "lil", dtype: <default>
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtLIL,
+    dtype: onp.AnyFloat64DType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> lil_array[np.float64]: ...
 @overload  # shape: T, format: <default>, dtype: <known>
 def random_array[ShapeT: tuple[int, *tuple[int, ...]], ScalarT: _Numeric](
     shape: ShapeT,
@@ -1997,17 +2052,72 @@ def random_array[ShapeT: tuple[int, *tuple[int, ...]], ScalarT: _Numeric](
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
 ) -> coo_array[ScalarT, ShapeT]: ...
-@overload  # shape: T, format: <otherwise>, dtype: <known>
-def random_array[ShapeT: tuple[int, *tuple[int, ...]], ScalarT: _Numeric](
-    shape: ShapeT,
+@overload  # shape: 2d, format: "bsr", dtype: <known>
+def random_array[ScalarT: _Numeric](
+    shape: tuple[int, int],
     *,
     density: float | npc.floating = 0.01,
-    format: _FmtNonCOO,
+    format: _FmtBSR,
     dtype: onp.ToDType[ScalarT],
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
-) -> sparray[ScalarT, ShapeT]: ...
+) -> bsr_array[ScalarT]: ...
+@overload  # shape: 2d, format: "csc", dtype: <known>
+def random_array[ScalarT: _Numeric](
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCSC,
+    dtype: onp.ToDType[ScalarT],
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> csc_array[ScalarT]: ...
+@overload  # shape: T, format: "csr", dtype: <known>
+def random_array[ShapeT: tuple[int] | tuple[int, int], ScalarT: _Numeric](
+    shape: ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCSR,
+    dtype: onp.ToDType[ScalarT],
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> csr_array[ScalarT, ShapeT]: ...
+@overload  # shape: 2d, format: "dia", dtype: <known>
+def random_array[ScalarT: _Numeric](
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtDIA,
+    dtype: onp.ToDType[ScalarT],
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> dia_array[ScalarT]: ...
+@overload  # shape: T, format: "dok", dtype: <known>
+def random_array[ShapeT: tuple[int] | tuple[int, int], ScalarT: _Numeric](
+    shape: ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtDOK,
+    dtype: onp.ToDType[ScalarT],
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> dok_array[ScalarT, ShapeT]: ...
+@overload  # shape: 2d, format: "lil", dtype: <known>
+def random_array[ScalarT: _Numeric](
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtLIL,
+    dtype: onp.ToDType[ScalarT],
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> lil_array[ScalarT]: ...
 @overload  # shape: T, format: <default>, dtype: complex
 def random_array[ShapeT: tuple[int, *tuple[int, ...]]](
     shape: ShapeT,
@@ -2019,17 +2129,72 @@ def random_array[ShapeT: tuple[int, *tuple[int, ...]]](
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
 ) -> coo_array[np.complex128, ShapeT]: ...
-@overload  # shape: T, format: <otherwise>, dtype: complex
-def random_array[ShapeT: tuple[int, *tuple[int, ...]]](
-    shape: ShapeT,
+@overload  # shape: 2d, format: "bsr", dtype: complex
+def random_array(
+    shape: tuple[int, int],
     *,
     density: float | npc.floating = 0.01,
-    format: _FmtNonCOO,
+    format: _FmtBSR,
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
-) -> sparray[np.complex128, ShapeT]: ...
+) -> bsr_array[np.complex128]: ...
+@overload  # shape: 2d, format: "csc", dtype: complex
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCSC,
+    dtype: onp.AnyComplex128DType,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> csc_array[np.complex128]: ...
+@overload  # shape: T, format: "csr", dtype: complex
+def random_array[ShapeT: tuple[int] | tuple[int, int]](
+    shape: ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCSR,
+    dtype: onp.AnyComplex128DType,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> csr_array[np.complex128, ShapeT]: ...
+@overload  # shape: 2d, format: "dia", dtype: complex
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtDIA,
+    dtype: onp.AnyComplex128DType,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> dia_array[np.complex128]: ...
+@overload  # shape: T, format: "dok", dtype: complex
+def random_array[ShapeT: tuple[int] | tuple[int, int]](
+    shape: ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtDOK,
+    dtype: onp.AnyComplex128DType,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> dok_array[np.complex128, ShapeT]: ...
+@overload  # shape: 2d, format: "lil", dtype: complex
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtLIL,
+    dtype: onp.AnyComplex128DType,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> lil_array[np.complex128]: ...
 @overload  # shape: T, format: <default>, dtype: <unknown>
 def random_array[ShapeT: tuple[int, *tuple[int, ...]]](
     shape: ShapeT,
@@ -2041,17 +2206,72 @@ def random_array[ShapeT: tuple[int, *tuple[int, ...]]](
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
 ) -> coo_array[Any, ShapeT]: ...
-@overload  # shape: T, format: <otherwise>, dtype: <unknown>
-def random_array[ShapeT: tuple[int, *tuple[int, ...]]](
-    shape: ShapeT,
+@overload  # shape: 2d, format: "bsr", dtype: <unknown>
+def random_array(
+    shape: tuple[int, int],
     *,
     density: float | npc.floating = 0.01,
-    format: _FmtNonCOO,
+    format: _FmtBSR,
     dtype: _ToDType,
     rng: onp.random.ToRNG | None = None,
     random_state: onp.random.ToRNG | None = None,
     data_sampler: _DataSampler | None = None,
-) -> sparray[Any, ShapeT]: ...
+) -> bsr_array[Any]: ...
+@overload  # shape: 2d, format: "csc", dtype: <unknown>
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCSC,
+    dtype: _ToDType,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> csc_array[Any]: ...
+@overload  # shape: T, format: "csr", dtype: <unknown>
+def random_array[ShapeT: tuple[int] | tuple[int, int]](
+    shape: ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtCSR,
+    dtype: _ToDType,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> csr_array[Any, ShapeT]: ...
+@overload  # shape: 2d, format: "dia", dtype: <unknown>
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtDIA,
+    dtype: _ToDType,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> dia_array[Any]: ...
+@overload  # shape: T, format: "dok", dtype: <unknown>
+def random_array[ShapeT: tuple[int] | tuple[int, int]](
+    shape: ShapeT,
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtDOK,
+    dtype: _ToDType,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> dok_array[Any, ShapeT]: ...
+@overload  # shape: 2d, format: "lil", dtype: <unknown>
+def random_array(
+    shape: tuple[int, int],
+    *,
+    density: float | npc.floating = 0.01,
+    format: _FmtLIL,
+    dtype: _ToDType,
+    rng: onp.random.ToRNG | None = None,
+    random_state: onp.random.ToRNG | None = None,
+    data_sampler: _DataSampler | None = None,
+) -> lil_array[Any]: ...
 
 # NOTE: `random_array` should be prefered over `random`
 @overload  # format: <default>, dtype: <default>
