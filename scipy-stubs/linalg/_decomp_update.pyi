@@ -45,6 +45,16 @@ def qr_delete(
     overwrite_qr: bool = False,
     check_finite: bool = True,
 ) -> _QR[np.complex128]: ...
+@overload  # ~f32 | ~f64 | ~c64 | ~c128
+def qr_delete(
+    Q: onp.ToArrayND[complex, npc.inexact],
+    R: onp.ToArrayND[complex, npc.inexact],
+    k: onp.ToJustInt,
+    p: onp.ToJustInt = 1,
+    which: _Which = "row",
+    overwrite_qr: bool = False,
+    check_finite: bool = True,
+) -> _QR[npc.inexact]: ...
 
 #
 @overload  # ~f32 | ~c64
@@ -80,6 +90,17 @@ def qr_insert(
     overwrite_qru: bool = False,
     check_finite: bool = True,
 ) -> _QR[np.complex128]: ...
+@overload  # ~f32 | ~f64 | ~c64 | ~c128
+def qr_insert(
+    Q: onp.ToArrayND[complex, npc.inexact],
+    R: onp.ToArrayND[complex, npc.inexact],
+    u: onp.ToArrayND[complex, npc.inexact],
+    k: onp.ToJustInt,
+    which: _Which = "row",
+    rcond: onp.ToFloat | None = None,
+    overwrite_qru: bool = False,
+    check_finite: bool = True,
+) -> _QR[npc.inexact]: ...
 
 #
 @overload  # ~f32 | ~c64
@@ -109,3 +130,12 @@ def qr_update(
     overwrite_qruv: bool = False,
     check_finite: bool = True,
 ) -> _QR[np.complex128]: ...
+@overload  # ~f32 | ~f64 | ~c64 | ~c128
+def qr_update(
+    Q: onp.ToArrayND[complex, npc.inexact],
+    R: onp.ToArrayND[complex, npc.inexact],
+    u: onp.ToArrayND[complex, npc.inexact],
+    v: onp.ToArrayND[complex, npc.inexact],
+    overwrite_qruv: bool = False,
+    check_finite: bool = True,
+) -> _QR[npc.inexact]: ...
