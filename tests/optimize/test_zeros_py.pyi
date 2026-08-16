@@ -50,6 +50,10 @@ assert_type(newton(g, arr_1d), onp.Array1D[np.float64])
 assert_type(newton(g, arr_1d, full_output=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.bool], onp.Array1D[np.bool]])
 assert_type(newton(g2, arr_2d), onp.Array2D[np.float64])
 assert_type(newton(g2, arr_2d, full_output=True), tuple[onp.Array2D[np.float64], onp.Array2D[np.bool], onp.Array2D[np.bool]])
+assert_type(newton(g, [1.0, 2.0]), onp.Array1D[np.float64])
+assert_type(newton(g, (1.0, 2.0)), onp.Array1D[np.float64])
+assert_type(newton(g, [1, 2]), onp.Array1D[np.float64])
+assert_type(newton(g, [1.0, 2.0], full_output=True), tuple[onp.Array1D[np.float64], onp.Array1D[np.bool], onp.Array1D[np.bool]])
 
 # root_scalar
 assert_type(root_scalar(f, bracket=(0.0, 1.0)), RootResults[float])

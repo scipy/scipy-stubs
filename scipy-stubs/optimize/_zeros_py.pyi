@@ -1,4 +1,4 @@
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from typing import Concatenate, Final, Generic, Literal, TypeVar, overload
 
 import numpy as np
@@ -161,6 +161,35 @@ def newton[ShapeT: tuple[int, ...]](
     full_output: onp.ToTrue,
     disp: bool = True,
 ) -> tuple[onp.Array[ShapeT, np.float64], onp.Array[ShapeT, np.bool], onp.Array[ShapeT, np.bool]]: ...
+@overload
+def newton(
+    func: _FunND[tuple[int]],
+    x0: Sequence[onp.ToFloat],
+    fprime: _FunND[tuple[int]] | None = None,
+    args: tuple[object, ...] = (),
+    tol: onp.ToFloat = 1.48e-08,
+    maxiter: onp.ToJustInt = 50,
+    fprime2: _FunND[tuple[int]] | None = None,
+    x1: onp.ToFloat1D | None = None,
+    rtol: onp.ToFloat = 0.0,
+    full_output: onp.ToFalse = False,
+    disp: bool = True,
+) -> onp.Array1D[np.float64]: ...
+@overload
+def newton(
+    func: _FunND[tuple[int]],
+    x0: Sequence[onp.ToFloat],
+    fprime: _FunND[tuple[int]] | None = None,
+    args: tuple[object, ...] = (),
+    tol: onp.ToFloat = 1.48e-08,
+    maxiter: onp.ToJustInt = 50,
+    fprime2: _FunND[tuple[int]] | None = None,
+    x1: onp.ToFloat1D | None = None,
+    rtol: onp.ToFloat = 0.0,
+    *,
+    full_output: onp.ToTrue,
+    disp: bool = True,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.bool], onp.Array1D[np.bool]]: ...
 
 #
 @overload
