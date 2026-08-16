@@ -9,6 +9,8 @@ class SphericalVoronoi:
     points: onp.Array2D[np.float64]
     center: onp.Array1D[np.float64]
     radius: float
+    vertices: onp.Array2D[np.float64]
+    regions: list[list[np.intp]]
 
     def __init__(
         self, /, points: onp.ToFloat2D, radius: float = 1, center: onp.ToFloat1D | None = None, threshold: float = 1e-06
