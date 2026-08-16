@@ -33,8 +33,8 @@ type _Float1D = onp.Array1D[np.float64]
 type _Args = tuple[object, ...]
 
 # bounds
-type Bound = tuple[onp.ToFloat | None, onp.ToFloat | None]
-type Bounds = Sequence[Bound] | _Bounds
+type Bound = Sequence[onp.ToFloat | None]
+type Bounds = Sequence[Bound] | onp.ToFloat2D | _Bounds
 
 # constaints
 @type_check_only
