@@ -54,7 +54,7 @@ def qr_delete(
     which: _Which = "row",
     overwrite_qr: bool = False,
     check_finite: bool = True,
-) -> _QR[npc.inexact]: ...
+) -> _QR[Any]: ...
 
 #
 @overload  # ~f32 | ~c64
