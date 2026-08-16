@@ -100,7 +100,7 @@ def qr_insert(
     rcond: onp.ToFloat | None = None,
     overwrite_qru: bool = False,
     check_finite: bool = True,
-) -> _QR[npc.inexact]: ...
+) -> _QR[Any]: ...
 
 #
 @overload  # ~f32 | ~c64
@@ -138,4 +138,4 @@ def qr_update(
     v: onp.ToArrayND[complex, npc.inexact],
     overwrite_qruv: bool = False,
     check_finite: bool = True,
-) -> _QR[npc.inexact]: ...
+) -> _QR[Any]: ...
