@@ -8,6 +8,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._superlu import SuperLU
+from scipy.sparse import csc_array, csc_matrix, csr_array, csr_matrix
 from scipy.sparse._base import SparseEfficiencyWarning, _spbase
 from scipy.sparse._bsr import _bsr_base
 from scipy.sparse._lil import _lil_base
@@ -43,6 +44,10 @@ type _ToComplexMat = _Sparse2D[npc.complexfloating] | onp.ToJustComplex2D
 type _ToInexactMat = _Sparse2D[Any] | onp.ToComplex128_2D
 type _ToInexactMatStrict = _Sparse2D[Any] | onp.ToComplex128Strict2D
 
+type _ToFloat = npc.floating | npc.integer | np.bool
+type _ToFloatSparse2D = _spbase[_ToFloat, tuple[int, int]]
+type _ToInexactSparse2D = _spbase[Any, tuple[int, int]]
+
 type _AsF32 = npc.integer8 | npc.number16 | np.int32 | np.float16 | np.float32
 type _AsF64 = npc.integer | np.float16 | np.float32 | np.float64
 type _AsC64 = npc.integer8 | npc.integer16 | np.int32 | np.float16 | npc.inexact32
@@ -74,10 +79,65 @@ def factorized(A: _ToF32Mat) -> _SuperLU_solve[_AsF32, np.float32]: ...
 def factorized(A: _ToC64Mat) -> _SuperLU_solve[_AsC64, np.complex64]: ...
 
 #
-@overload  # 2d float, sparse 2d
-def spsolve[SparseT: _spbase](
-    A: SparseT, b: _Sparse2D[Any], permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
-) -> SparseT: ...
+@overload  # csc array, 2d float sparse
+def spsolve(
+    A: csc_array[_ToFloat], b: _ToFloatSparse2D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> csc_array[np.float64]: ...
+@overload  # csc array, 2d complex sparse
+def spsolve(
+    A: csc_array[npc.complexfloating], b: _ToInexactSparse2D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> csc_array[np.complex128]: ...
+@overload  # csr array, 2d float sparse
+def spsolve(
+    A: csr_array[_ToFloat], b: _ToFloatSparse2D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> csr_array[np.float64]: ...
+@overload  # csr array, 2d complex sparse
+def spsolve(
+    A: csr_array[npc.complexfloating], b: _ToInexactSparse2D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> csr_array[np.complex128]: ...
+@overload  # csc matrix, 2d float sparse
+def spsolve(
+    A: csc_matrix[_ToFloat], b: _ToFloatSparse2D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> csc_matrix[np.float64]: ...
+@overload  # csc matrix, 2d complex sparse
+def spsolve(
+    A: csc_matrix[npc.complexfloating], b: _ToInexactSparse2D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> csc_matrix[np.complex128]: ...
+@overload  # csr matrix, 2d float sparse
+def spsolve(
+    A: csr_matrix[_ToFloat], b: _ToFloatSparse2D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> csr_matrix[np.float64]: ...
+@overload  # csr matrix, 2d complex sparse
+def spsolve(
+    A: csr_matrix[npc.complexfloating], b: _ToInexactSparse2D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> csr_matrix[np.complex128]: ...
+@overload  # 2d float, 2d float sparse
+def spsolve(
+    A: _ToFloatMat, b: _ToFloatSparse2D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> _spbase[np.float64, tuple[int, int]]: ...
+@overload  # 2d complex, 2d sparse
+def spsolve(
+    A: _ToComplexMat, b: _ToInexactSparse2D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> _spbase[np.complex128, tuple[int, int]]: ...
+@overload  # 2d float, 2d complex sparse
+def spsolve(
+    A: _ToFloatMat,
+    b: _spbase[npc.complexfloating, tuple[int, int]],
+    permc_spec: _PermcSpec | None = None,
+    use_umfpack: bool = True,
+) -> _spbase[np.complex128, tuple[int, int]]: ...
+@overload  # 2d float, 1d float sparse
+def spsolve(
+    A: _ToFloatMat, b: _spbase[_ToFloat, tuple[int]], permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d complex, 1d sparse
+def spsolve(
+    A: _ToComplexMat, b: _spbase[Any, tuple[int]], permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> onp.Array1D[np.complex128]: ...
+@overload  # 2d float, 1d complex sparse
+def spsolve(
+    A: _ToFloatMat, b: _spbase[npc.complexfloating, tuple[int]], permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
+) -> onp.Array1D[np.complex128]: ...
 @overload  # 2d float, 1d float
 def spsolve(
     A: _ToFloatMat, b: onp.ToFloatStrict1D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
