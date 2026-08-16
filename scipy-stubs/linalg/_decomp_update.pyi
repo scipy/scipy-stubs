@@ -1,6 +1,6 @@
 # NOTE: mypy incorrectly sees disjoint dtypes as overlapping on numpy<2.5
 # mypy: disable-error-code=overload-overlap
-from typing import Literal, overload
+from typing import Any, Literal, overload
 
 import numpy as np
 import optype.numpy as onp
