@@ -1,4 +1,4 @@
-from typing import Protocol, SupportsIndex, type_check_only
+from typing import SupportsIndex
 
 import numpy as np
 import optype.numpy as onp
@@ -11,22 +11,17 @@ __all__ = ["fft", "fft2", "fftn", "ifft", "ifft2", "ifftn", "irfft", "rfft"]
 type _ArrayReal = onp.ArrayND[np.float32 | np.float64 | np.longdouble]  # no float16
 type _ArrayComplex = onp.ArrayND[npc.complexfloating]
 
-@type_check_only
-class _OrderedIndex(SupportsIndex, Protocol):
-    def __lt__(self, other: SupportsIndex, /) -> bool: ...
-    def __le__(self, other: SupportsIndex, /) -> bool: ...
-
 ###
 
 def fft(
-    x: onp.ToComplexND, n: _OrderedIndex | None = None, axis: SupportsIndex = -1, overwrite_x: bool = False
+    x: onp.ToComplexND, n: onp.ToJustInt | None = None, axis: SupportsIndex = -1, overwrite_x: bool = False
 ) -> _ArrayComplex: ...
 def ifft(
-    x: onp.ToComplexND, n: _OrderedIndex | None = None, axis: SupportsIndex = -1, overwrite_x: bool = False
+    x: onp.ToComplexND, n: onp.ToJustInt | None = None, axis: SupportsIndex = -1, overwrite_x: bool = False
 ) -> _ArrayComplex: ...
-def rfft(x: onp.ToFloatND, n: _OrderedIndex | None = None, axis: SupportsIndex = -1, overwrite_x: bool = False) -> _ArrayReal: ...
+def rfft(x: onp.ToFloatND, n: onp.ToJustInt | None = None, axis: SupportsIndex = -1, overwrite_x: bool = False) -> _ArrayReal: ...
 def irfft(
-    x: onp.ToFloatND, n: _OrderedIndex | None = None, axis: SupportsIndex = -1, overwrite_x: bool = False
+    x: onp.ToFloatND, n: onp.ToJustInt | None = None, axis: SupportsIndex = -1, overwrite_x: bool = False
 ) -> _ArrayReal: ...
 def fftn(
     x: onp.ToComplexND, shape: AnyShape | None = None, axes: AnyShape | None = None, overwrite_x: bool = False
