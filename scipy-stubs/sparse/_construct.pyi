@@ -2286,19 +2286,79 @@ def random(
     *,
     random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[np.float64]: ...
-@overload  # format: <otherwise>, dtype: <default>
+@overload  # format: "bsr", dtype: <default>
 def random(
     m: int,
     n: int,
     density: float | npc.floating = 0.01,
     *,
-    format: _FmtNonCOO,
+    format: _FmtBSR,
     dtype: onp.AnyFloat64DType | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> spmatrix[np.float64]: ...
-@overload  # format: <default>, dtype: <known> (keyword)
+) -> bsr_matrix[np.float64]: ...
+@overload  # format: "csc", dtype: <default>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtCSC,
+    dtype: onp.AnyFloat64DType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> csc_matrix[np.float64]: ...
+@overload  # format: "csr", dtype: <default>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtCSR,
+    dtype: onp.AnyFloat64DType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> csr_matrix[np.float64]: ...
+@overload  # format: "dia", dtype: <default>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtDIA,
+    dtype: onp.AnyFloat64DType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> dia_matrix[np.float64]: ...
+@overload  # format: "dok", dtype: <default>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtDOK,
+    dtype: onp.AnyFloat64DType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> dok_matrix[np.float64]: ...
+@overload  # format: "lil", dtype: <default>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtLIL,
+    dtype: onp.AnyFloat64DType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> lil_matrix[np.float64]: ...
+@overload  # format: <default>, dtype: <known>
 def random[ScalarT: _Numeric](
     m: int,
     n: int,
@@ -2310,43 +2370,79 @@ def random[ScalarT: _Numeric](
     data_rvs: _DataRVS | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[ScalarT]: ...
-@overload  # format: <otherwise>, dtype: <known> (keyword)
+@overload  # format: "bsr", dtype: <known>
 def random[ScalarT: _Numeric](
     m: int,
     n: int,
     density: float | npc.floating = 0.01,
     *,
-    format: _FmtNonCOO,
+    format: _FmtBSR,
     dtype: onp.ToDType[ScalarT],
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> spmatrix[ScalarT]: ...
-@overload  # format: <default>, dtype: <known> (positional)
+) -> bsr_matrix[ScalarT]: ...
+@overload  # format: "csc", dtype: <known>
 def random[ScalarT: _Numeric](
     m: int,
     n: int,
-    density: float | npc.floating,
-    format: _FmtCOO,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtCSC,
     dtype: onp.ToDType[ScalarT],
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
-    *,
     random_state: onp.random.ToRNG | None = None,
-) -> coo_matrix[ScalarT]: ...
-@overload  # format: <otherwise>, dtype: <known> (positional)
+) -> csc_matrix[ScalarT]: ...
+@overload  # format: "csr", dtype: <known>
 def random[ScalarT: _Numeric](
     m: int,
     n: int,
-    density: float | npc.floating,
-    format: _FmtNonCOO,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtCSR,
     dtype: onp.ToDType[ScalarT],
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
-    *,
     random_state: onp.random.ToRNG | None = None,
-) -> spmatrix[ScalarT]: ...
-@overload  # format: <default>, dtype: complex (keyword)
+) -> csr_matrix[ScalarT]: ...
+@overload  # format: "dia", dtype: <known>
+def random[ScalarT: _Numeric](
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtDIA,
+    dtype: onp.ToDType[ScalarT],
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> dia_matrix[ScalarT]: ...
+@overload  # format: "dok", dtype: <known>
+def random[ScalarT: _Numeric](
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtDOK,
+    dtype: onp.ToDType[ScalarT],
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> dok_matrix[ScalarT]: ...
+@overload  # format: "lil", dtype: <known>
+def random[ScalarT: _Numeric](
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtLIL,
+    dtype: onp.ToDType[ScalarT],
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> lil_matrix[ScalarT]: ...
+@overload  # format: <default>, dtype: complex
 def random(
     m: int,
     n: int,
@@ -2358,42 +2454,78 @@ def random(
     data_rvs: _DataRVS | None = None,
     random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix[np.complex128]: ...
-@overload  # format: <otherwise>, dtype: complex (keyword)
+@overload  # format: "bsr", dtype: complex
 def random(
     m: int,
     n: int,
     density: float | npc.floating = 0.01,
     *,
-    format: _FmtNonCOO,
+    format: _FmtBSR,
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> spmatrix[np.complex128]: ...
-@overload  # format: <default>, dtype: complex (positional)
+) -> bsr_matrix[np.complex128]: ...
+@overload  # format: "csc", dtype: complex
 def random(
     m: int,
     n: int,
-    density: float | npc.floating,
-    format: _FmtCOO,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtCSC,
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
-    *,
     random_state: onp.random.ToRNG | None = None,
-) -> coo_matrix[np.complex128]: ...
-@overload  # format: <otherwise>, dtype: complex (positional)
+) -> csc_matrix[np.complex128]: ...
+@overload  # format: "csr", dtype: complex
 def random(
     m: int,
     n: int,
-    density: float | npc.floating,
-    format: _FmtNonCOO,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtCSR,
     dtype: onp.AnyComplex128DType,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
-    *,
     random_state: onp.random.ToRNG | None = None,
-) -> spmatrix[np.complex128]: ...
+) -> csr_matrix[np.complex128]: ...
+@overload  # format: "dia", dtype: complex
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtDIA,
+    dtype: onp.AnyComplex128DType,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> dia_matrix[np.complex128]: ...
+@overload  # format: "dok", dtype: complex
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtDOK,
+    dtype: onp.AnyComplex128DType,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> dok_matrix[np.complex128]: ...
+@overload  # format: "lil", dtype: complex
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtLIL,
+    dtype: onp.AnyComplex128DType,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> lil_matrix[np.complex128]: ...
 @overload  # format: <default>, dtype: <unknown>
 def random(
     m: int,
@@ -2406,30 +2538,150 @@ def random(
     *,
     random_state: onp.random.ToRNG | None = None,
 ) -> coo_matrix: ...
-@overload  # format: <otherwise> (keyword), dtype: <unknown>
+@overload  # format: "bsr", dtype: <unknown>
 def random(
     m: int,
     n: int,
     density: float | npc.floating = 0.01,
     *,
-    format: _FmtNonCOO,
+    format: _FmtBSR,
     dtype: _ToDType | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
     random_state: onp.random.ToRNG | None = None,
-) -> spmatrix: ...
-@overload  # format: <otherwise> (positional), dtype: <unknown>
+) -> bsr_matrix: ...
+@overload  # format: "csc", dtype: <unknown>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtCSC,
+    dtype: _ToDType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> csc_matrix: ...
+@overload  # format: "csr", dtype: <unknown>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtCSR,
+    dtype: _ToDType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> csr_matrix: ...
+@overload  # format: "dia", dtype: <unknown>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtDIA,
+    dtype: _ToDType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> dia_matrix: ...
+@overload  # format: "dok", dtype: <unknown>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtDOK,
+    dtype: _ToDType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> dok_matrix: ...
+@overload  # format: "lil", dtype: <unknown>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating = 0.01,
+    *,
+    format: _FmtLIL,
+    dtype: _ToDType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    random_state: onp.random.ToRNG | None = None,
+) -> lil_matrix: ...
+@overload  # format: "bsr" (positional), dtype: <unknown>
 def random(
     m: int,
     n: int,
     density: float | npc.floating,
-    format: _FmtNonCOO,
+    format: _FmtBSR,
     dtype: _ToDType | None = None,
     rng: onp.random.ToRNG | None = None,
     data_rvs: _DataRVS | None = None,
     *,
     random_state: onp.random.ToRNG | None = None,
-) -> spmatrix: ...
+) -> bsr_matrix: ...
+@overload  # format: "csc" (positional), dtype: <unknown>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating,
+    format: _FmtCSC,
+    dtype: _ToDType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
+) -> csc_matrix: ...
+@overload  # format: "csr" (positional), dtype: <unknown>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating,
+    format: _FmtCSR,
+    dtype: _ToDType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
+) -> csr_matrix: ...
+@overload  # format: "dia" (positional), dtype: <unknown>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating,
+    format: _FmtDIA,
+    dtype: _ToDType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
+) -> dia_matrix: ...
+@overload  # format: "dok" (positional), dtype: <unknown>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating,
+    format: _FmtDOK,
+    dtype: _ToDType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
+) -> dok_matrix: ...
+@overload  # format: "lil" (positional), dtype: <unknown>
+def random(
+    m: int,
+    n: int,
+    density: float | npc.floating,
+    format: _FmtLIL,
+    dtype: _ToDType | None = None,
+    rng: onp.random.ToRNG | None = None,
+    data_rvs: _DataRVS | None = None,
+    *,
+    random_state: onp.random.ToRNG | None = None,
+) -> lil_matrix: ...
 
 # NOTE: `random_array` should be prefered over `rand`
 @overload  # format: <default>, dtype: <default>
