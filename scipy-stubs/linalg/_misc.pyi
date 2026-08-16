@@ -68,6 +68,29 @@ def norm(
     keepdims: Literal[False] = False,
     check_finite: bool = True,
 ) -> np.float64 | Any: ...
+@overload  # Nd +inexact64, axis: <given>
+def norm(
+    a: onp.ToArrayND[complex, _SubScalar],
+    ord: _Order | None = None,
+    *,
+    axis: _Axis,
+    keepdims: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # Nd ~inexact32, axis: <given>
+def norm(
+    a: _AsInexact32ND, ord: _Order | None = None, *, axis: _Axis, keepdims: Literal[False] = False, check_finite: bool = True
+) -> onp.ArrayND[np.float32]: ...
+@overload  # Nd ~bool | ~f16 | ~f80 | ~c160, axis: <given>
+@deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
+def norm(
+    a: _AsBoolF16Inexact80ND,
+    ord: _Order | None = None,
+    *,
+    axis: _Axis,
+    keepdims: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64 | Any]: ...
 @overload  # Nd +inexact64, keepdims: True, shape known
 def norm[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[_SubScalar, ShapeT],
