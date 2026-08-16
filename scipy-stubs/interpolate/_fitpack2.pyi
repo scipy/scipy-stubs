@@ -148,7 +148,7 @@ class _DerivedBivariateSpline(_BivariateSplineBase):  # undocumented
 
 class SmoothBivariateSpline(BivariateSpline):
     fp: Final[float]
-    tck: tuple[_Float1D, _Float1D, int]
+    tck: tuple[_Float1D, _Float1D, _Float1D]
     degrees: tuple[int, int]
 
     def __init__(
@@ -167,7 +167,7 @@ class SmoothBivariateSpline(BivariateSpline):
 
 class LSQBivariateSpline(BivariateSpline):
     fp: Final[float]
-    tck: tuple[_Float1D, _Float1D, int]
+    tck: tuple[_Float1D, _Float1D, _Float1D]
     degrees: tuple[int, int]
 
     def __init__(
@@ -187,7 +187,7 @@ class LSQBivariateSpline(BivariateSpline):
 
 class RectBivariateSpline(BivariateSpline):
     fp: Final[float]
-    tck: tuple[_Float1D, _Float1D, int]
+    tck: tuple[_Float1D, _Float1D, _Float1D]
     degrees: tuple[int, int]
 
     def __init__(
@@ -212,7 +212,7 @@ class SphereBivariateSpline(_BivariateSplineBase):
 
 class SmoothSphereBivariateSpline(SphereBivariateSpline):
     fp: Final[float]
-    tck: tuple[_Float1D, _Float1D, int]
+    tck: tuple[_Float1D, _Float1D, _Float1D]
     degrees: tuple[int, int]
 
     def __init__(
@@ -228,7 +228,7 @@ class SmoothSphereBivariateSpline(SphereBivariateSpline):
 
 class LSQSphereBivariateSpline(SphereBivariateSpline):
     fp: Final[float]
-    tck: tuple[_Float1D, _Float1D, int]
+    tck: tuple[_Float1D, _Float1D, _Float1D]
     degrees: tuple[int, int]
 
     def __init__(
@@ -245,7 +245,7 @@ class LSQSphereBivariateSpline(SphereBivariateSpline):
 
 class RectSphereBivariateSpline(SphereBivariateSpline):
     fp: Final[float]
-    tck: tuple[_Float1D, _Float1D, int]
+    tck: tuple[_Float1D, _Float1D, _Float1D]
     degrees: tuple[int, int]
     v0: np.float64
 

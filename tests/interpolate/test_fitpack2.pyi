@@ -55,6 +55,8 @@ assert_type(sbs.get_knots(), tuple[onp.Array1D[np.float64], onp.Array1D[np.float
 assert_type(sbs.get_coeffs(), onp.Array1D[np.float64])
 assert_type(sbs.get_residual(), float)
 assert_type(sbs.integral(0.0, 1.0, 0.0, 1.0), float)
+assert_type(sbs.tck, tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(sbs.degrees, tuple[int, int])
 
 # LSQBivariateSpline
 lbs = LSQBivariateSpline(x, y, y, x[2:-2], x[2:-2])
@@ -63,6 +65,7 @@ assert_type(lbs(x, y), onp.Array2D[np.float64])
 assert_type(lbs(x, y, grid=True), onp.Array2D[np.float64])
 assert_type(lbs(x, y, grid=False), onp.Array1D[np.float64])
 assert_type(lbs.ev(x, y), onp.ArrayND[np.float64])
+assert_type(lbs.tck, tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64]])
 
 # RectBivariateSpline
 rbs = RectBivariateSpline(x, y, x2d)
@@ -71,6 +74,7 @@ assert_type(rbs(x, y), onp.Array2D[np.float64])
 assert_type(rbs(x, y, grid=True), onp.Array2D[np.float64])
 assert_type(rbs(x, y, grid=False), onp.Array1D[np.float64])
 assert_type(rbs.ev(x, y), onp.ArrayND[np.float64])
+assert_type(rbs.tck, tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], onp.Array1D[np.float64]])
 
 # BivariateSpline
 
