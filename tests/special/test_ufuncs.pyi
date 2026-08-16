@@ -151,7 +151,22 @@ sp.logit.at(_c16, _i)  # type:ignore[arg-type]  # pyright: ignore[reportArgument
 
 ###
 
-# _UFunc21 - TODO
+# _UFunc21f
+assert_type(sp.beta(_f4, 2.0), np.float32)
+assert_type(sp.beta(2.0, _f4), np.float32)
+assert_type(sp.beta(1, _f4), np.float32)
+assert_type(sp.beta(_f8, 2.0), np.float64)
+assert_type(sp.beta(2.0, _f8), np.float64)
+
+# _UFunc21fc1
+assert_type(sp.jv(2.0, _f4), np.float32)
+assert_type(sp.jv(_f4, 2.0), np.float32 | np.float64)
+assert_type(sp.jv(2.0, _c8), np.complex64)
+
+# _UFunc21fc2
+assert_type(sp.xlogy(_f4_nd, 2.0), _Float32ND)
+assert_type(sp.xlogy(_f8_nd, 2.0), _Float64ND)
+
 # _UFunc22 - TODO
 # _UFunc24 - TODO
 

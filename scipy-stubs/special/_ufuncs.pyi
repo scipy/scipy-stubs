@@ -324,7 +324,7 @@ type _ToSubComplex = op.JustComplex | _ToSubFloat  # does not overlap with compl
 
 type _ToND[CoT: np.generic, ToT] = onp.CanArrayND[CoT] | onp.SequenceND[onp.CanArrayND[CoT]] | onp.SequenceND[ToT]
 
-type _ToFloat32 = int | np.float32 | _SubFloat
+type _ToFloat32 = np.float32 | _ToSubFloat
 type _ToFloat64OrND = onp.ToFloat64 | onp.ToFloat64_ND
 
 type _ToComplex64 = np.complex64 | _ToFloat32
