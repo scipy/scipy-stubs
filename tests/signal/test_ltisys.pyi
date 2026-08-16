@@ -36,6 +36,8 @@ from scipy.signal._ltisys import (
 
 ###
 
+type _F32_64 = np.float32 | np.float64
+
 type _VecF32 = onp.Array1D[np.float32]
 type _VecF64 = onp.Array1D[np.float64]
 type _MatF64 = onp.Array2D[np.float64]
@@ -139,6 +141,21 @@ assert_type(StateSpace(_f64_2d, _f64_2d, _f64_2d, _f64_2d), StateSpaceContinuous
 assert_type(StateSpace(_c128_2d, _c128_2d, _c128_2d, _c128_2d), StateSpaceContinuous[np.complex128, np.float64])  # type: ignore[assert-type]
 assert_type(StateSpace(_f64_2d, _f64_2d, _f64_2d, _f64_2d, dt=0.1), StateSpaceDiscrete[np.float64, np.float64, float])  # type: ignore[assert-type]
 assert_type(StateSpace(_c128_2d, _c128_2d, _c128_2d, _c128_2d, dt=0.1), StateSpaceDiscrete[np.complex128, np.float64, float])  # type: ignore[assert-type]
+
+# lti
+assert_type(lti(_f64_1d, _f64_1d), TransferFunctionContinuous[_F32_64])  # type: ignore[assert-type]
+assert_type(lti(_f64_1d, _f64_1d, 5), ZerosPolesGainContinuous[_F32_64, np.float64 | Any])  # type: ignore[assert-type]
+assert_type(lti(_c128_1d, _f64_1d, 5), ZerosPolesGainContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
+assert_type(lti(_f64_2d, _f64_2d, _f64_2d, _f64_2d), StateSpaceContinuous[_F32_64, np.float64 | Any])  # type: ignore[assert-type]
+assert_type(lti(_c128_2d, _c128_2d, _c128_2d, _c128_2d), StateSpaceContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
+
+# dlti
+assert_type(dlti(_f64_1d, _f64_1d), TransferFunctionDiscrete[_F32_64, Any])  # type: ignore[assert-type]
+assert_type(dlti(_f64_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[_F32_64, float])  # type: ignore[assert-type]
+assert_type(dlti(_f64_1d, _f64_1d, 5, dt=0.1), ZerosPolesGainDiscrete[_F32_64, _F32_64, float])  # type: ignore[assert-type]
+assert_type(dlti(_c128_1d, _f64_1d, 5, dt=0.1), ZerosPolesGainDiscrete[Any, _F32_64, float])  # type: ignore[assert-type]
+assert_type(dlti(_f64_2d, _f64_2d, _f64_2d, _f64_2d, dt=0.1), StateSpaceDiscrete[_F32_64, _F32_64, float])  # type: ignore[assert-type]
+assert_type(dlti(_c128_2d, _c128_2d, _c128_2d, _c128_2d, dt=0.1), StateSpaceDiscrete[Any, _F32_64, float])  # type: ignore[assert-type]
 
 ###
 # lsim (same as impulse and step)
