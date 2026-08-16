@@ -110,12 +110,10 @@ def freqs(
 
 #
 @overload  # worN: real
-def freqs_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToComplex1D, worN: _WorNReal = 200
-) -> tuple[_Float1D, _Complex1D]: ...
+def freqs_zpk(z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, worN: _WorNReal = 200) -> tuple[_Float1D, _Complex1D]: ...
 @overload  # worN: complex
 def freqs_zpk(
-    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToComplex1D, worN: onp.ToJustComplex1D
+    z: onp.ToComplex1D, p: onp.ToComplex1D, k: onp.ToFloat, worN: onp.ToJustComplex1D
 ) -> tuple[_Complex1D, _Complex1D]: ...
 
 #
@@ -156,7 +154,7 @@ def freqz(
 def freqz_zpk(
     z: onp.ToComplex1D,
     p: onp.ToComplex1D,
-    k: onp.ToComplex1D,
+    k: onp.ToFloat,
     worN: _WorNReal = 512,
     whole: bool = False,
     fs: float = 6.283185307179586,
@@ -165,7 +163,7 @@ def freqz_zpk(
 def freqz_zpk(
     z: onp.ToComplex1D,
     p: onp.ToComplex1D,
-    k: onp.ToComplex1D,
+    k: onp.ToFloat,
     worN: onp.ToJustComplex1D,
     whole: bool = False,
     fs: float = 6.283185307179586,
