@@ -1,4 +1,4 @@
-from typing import Generic, Literal as L, Protocol, overload, override, type_check_only
+from typing import Any, Generic, Literal as L, Protocol, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -118,16 +118,50 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     ) -> None: ...
 
     #
+    @overload  # 1d, k=1
     def query(
         self,
         /,
-        x: onp.ToFloat1D,
-        k: onp.ToInt | onp.ToInt1D = 1,
+        x: onp.ToFloatStrict1D,
+        k: L[1] = 1,
         eps: onp.ToFloat = 0.0,
         p: onp.ToFloat = 2.0,
         distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
         workers: int | None = None,
-    ) -> tuple[float, np.intp] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.intp]]: ...
+    ) -> tuple[float, int]: ...
+    @overload  # 1d
+    def query(
+        self,
+        /,
+        x: onp.ToFloatStrict1D,
+        k: onp.ToInt | onp.ToInt1D,
+        eps: onp.ToFloat = 0.0,
+        p: onp.ToFloat = 2.0,
+        distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
+        workers: int | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]] | Any: ...
+    @overload  # 2d, k=1
+    def query(
+        self,
+        /,
+        x: onp.ToFloatStrict2D,
+        k: L[1] = 1,
+        eps: onp.ToFloat = 0.0,
+        p: onp.ToFloat = 2.0,
+        distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
+        workers: int | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]]: ...
+    @overload  # 2d
+    def query(
+        self,
+        /,
+        x: onp.ToFloatStrict2D,
+        k: onp.ToInt | onp.ToInt1D,
+        eps: onp.ToFloat = 0.0,
+        p: onp.ToFloat = 2.0,
+        distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
+        workers: int | None = None,
+    ) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.intp]] | Any: ...
 
     # NOTE: The parameters `eps` and `p` default to `0.0` and `2.0` in `cKDTree`, but are overridden in KDTree to default to
     # `0` and `2` (or `2.0`) respectively. Filling in these defaults would therefore require us to override these methods in
@@ -142,7 +176,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatStrict1D,
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
+        eps: onp.ToFloat = 0.0,
         workers: int | None = None,
         return_sorted: bool | None = None,
         return_length: L[False] = False,
@@ -166,7 +200,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatStrict1D,
         r: onp.ToFloat,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
+        eps: onp.ToFloat = 0.0,
         workers: int | None = None,
         return_sorted: bool | None = None,
         *,
@@ -179,7 +213,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
+        eps: onp.ToFloat = 0.0,
         workers: int | None = None,
         return_sorted: bool | None = None,
         return_length: L[False] = False,
@@ -203,7 +237,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
+        eps: onp.ToFloat = 0.0,
         workers: int | None = None,
         return_sorted: bool | None = None,
         *,
@@ -216,7 +250,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         x: onp.ToFloatND,
         r: onp.ToFloat | onp.ToFloatND,
         p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
+        eps: onp.ToFloat = 0.0,
         workers: int | None = None,
         return_sorted: bool | None = None,
         return_length: L[False] = False,
@@ -249,12 +283,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
 
     #
     def query_ball_tree(
-        self,
-        /,
-        other: cKDTree,
-        r: onp.ToFloat,
-        p: onp.ToFloat = 2.0,
-        eps: onp.ToFloat = ...,  # stubdefaulter: ignore[missing-default]
+        self, /, other: cKDTree, r: onp.ToFloat, p: onp.ToFloat = 2.0, eps: onp.ToFloat = 0.0
     ) -> list[list[int]]: ...
 
     #
