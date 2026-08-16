@@ -53,6 +53,9 @@ assert_type(newton(g2, arr_2d, full_output=True), tuple[onp.Array2D[np.float64],
 
 # root_scalar
 assert_type(root_scalar(f, bracket=(0.0, 1.0)), RootResults[float])
+assert_type(root_scalar(f, bracket=[0, 1]), RootResults[float])
+assert_type(root_scalar(f, bracket=arr_1d), RootResults[float])
+assert_type(root_scalar(f, (), "brentq", [0.0, 1.0]), RootResults[float])
 assert_type(root_scalar(f, method="secant", x0=0.5), RootResults[float])
 assert_type(root_scalar(f, method="newton", fprime=f, x0=0.5), RootResults[float])
 assert_type(root_scalar(h, method="newton", fprime=True, x0=0.5), RootResults[float])
