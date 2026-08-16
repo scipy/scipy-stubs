@@ -3,7 +3,6 @@
 from typing import assert_type
 
 import numpy as np
-import optype as op
 import optype.numpy as onp
 
 from scipy.linalg import qr_delete, qr_insert, qr_update
