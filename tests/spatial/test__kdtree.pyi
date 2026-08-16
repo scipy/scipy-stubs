@@ -30,6 +30,13 @@ assert_type(_ctree.n, int)
 assert_type(_ctree.size, int)
 assert_type(_ctree.boxsize, None)
 
+# cKDTree.query
+
+assert_type(_ctree.query(_f64_1d), tuple[float, int])
+assert_type(_ctree.query(_f64_2d), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]])
+assert_type(_ctree.query(_f64_1d, k=3), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]] | Any)
+assert_type(_ctree.query(_f64_2d, k=3), tuple[onp.Array2D[np.float64], onp.Array2D[np.intp]] | Any)
+
 # cKDTree.query_ball_point
 
 assert_type(_ctree.query_ball_point(_f64_1d, 1.0), list[int])
