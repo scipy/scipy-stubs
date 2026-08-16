@@ -74,6 +74,7 @@ type _FilterType = L["iir", "fir"] | dlti
 
 type _C64_128 = np.complex128 | np.complex64
 
+type _ToWindowOrArray = _ToWindow | onp.ToFloat1D
 type _ToResampleWindow[InexactT: npc.inexact] = Callable[[onp.Array1D[InexactT]], onp.ToFloat1D] | onp.ToFloat1D | _ToWindow
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
@@ -1290,7 +1291,7 @@ def resample_poly[ShapeT: tuple[int, ...], InexactT2: np.float32 | np.float64 | 
     up: int,
     down: int,
     axis: int = 0,
-    window: _ToWindow = ("kaiser", 5.0),
+    window: _ToWindowOrArray = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
 ) -> onp.ArrayND[InexactT2, ShapeT]: ...
@@ -1300,7 +1301,7 @@ def resample_poly[ShapeT: tuple[int, ...]](
     up: int,
     down: int,
     axis: int = 0,
-    window: _ToWindow = ("kaiser", 5.0),
+    window: _ToWindowOrArray = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
@@ -1310,7 +1311,7 @@ def resample_poly[ShapeT: tuple[int, ...]](
     up: int,
     down: int,
     axis: int = 0,
-    window: _ToWindow = ("kaiser", 5.0),
+    window: _ToWindowOrArray = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
 ) -> onp.ArrayND[np.float32, ShapeT]: ...
@@ -1320,7 +1321,7 @@ def resample_poly(
     up: int,
     down: int,
     axis: int = 0,
-    window: _ToWindow = ("kaiser", 5.0),
+    window: _ToWindowOrArray = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
 ) -> onp.Array1D[np.float64]: ...
@@ -1330,7 +1331,7 @@ def resample_poly(
     up: int,
     down: int,
     axis: int = 0,
-    window: _ToWindow = ("kaiser", 5.0),
+    window: _ToWindowOrArray = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
 ) -> onp.ArrayND[np.float64]: ...
@@ -1340,7 +1341,7 @@ def resample_poly(
     up: int,
     down: int,
     axis: int = 0,
-    window: _ToWindow = ("kaiser", 5.0),
+    window: _ToWindowOrArray = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
 ) -> onp.Array1D[np.complex128]: ...
@@ -1350,7 +1351,7 @@ def resample_poly(
     up: int,
     down: int,
     axis: int = 0,
-    window: _ToWindow = ("kaiser", 5.0),
+    window: _ToWindowOrArray = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
@@ -1360,7 +1361,7 @@ def resample_poly(
     up: int,
     down: int,
     axis: int = 0,
-    window: _ToWindow = ("kaiser", 5.0),
+    window: _ToWindowOrArray = ("kaiser", 5.0),
     padtype: _PadType = "constant",
     cval: float | None = None,
 ) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...

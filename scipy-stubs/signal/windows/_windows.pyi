@@ -44,8 +44,13 @@ type _DeviceNP = Literal["cpu"]
 type _Norm = Literal[2, "approximate", "subsample"]
 
 type _ToWindow = (
-    float | str | tuple[str] | tuple[str, float | onp.ToFloat1D] | tuple[str, float, float | int] | tuple[str, int, int, bool]
-)
+    float
+    | str
+    | tuple[str]
+    | tuple[str, float | onp.ToFloat1D]
+    | tuple[str, float, float]
+    | tuple[str, int, int, bool]
+)  # fmt: skip
 
 ###
 
