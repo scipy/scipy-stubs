@@ -25,6 +25,11 @@ assert_type(fsolve(_func, [1.0, 2.0]), _Float1D)
 assert_type(fsolve(_func, [1.0, 2.0], (), None, True), tuple[_Float1D, _InfoDictSolve, _IERFlag, str])
 assert_type(fsolve(_func, [1.0, 2.0], full_output=True), tuple[_Float1D, _InfoDictSolve, _IERFlag, str])
 
+_info: _InfoDictSolve
+assert_type(_info["nfev"], int)
+assert_type(_info["fjac"], _Float2D)
+assert_type(_info.get("njev"), int | None)
+
 ###
 # leastsq
 

@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import Concatenate, Literal, TypedDict, Unpack, final, overload, type_check_only
+from typing import Concatenate, Literal, NotRequired, TypedDict, Unpack, final, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -62,7 +62,7 @@ class _InfoDictBase(TypedDict):
 
 @type_check_only
 class _InfoDictSolve(_InfoDictBase, TypedDict):
-    njev: int
+    njev: NotRequired[int]  # only if `fprime` is given
     fjac: _Float2D
     r: _Float1D
     qtf: _Float1D
