@@ -11,8 +11,6 @@ from scipy.sparse.linalg import LinearOperator
 
 ###
 
-type _Int1D = onp.Array1D[np.intp]
-
 type _Float = float | np.float64
 type _Float1D = onp.Array1D[np.float64]
 
@@ -25,7 +23,7 @@ class _OptimizeResult(OptimizeResult):
     fun: _Float1D
     cost: _Float
     optimality: _Float
-    active_mask: _Int1D
+    active_mask: onp.Array1D[np.intp | np.float64]
     unbounded_sol: tuple[float | onp.ArrayND[npc.number], ...]
     nit: int
     status: _TerminationStatus

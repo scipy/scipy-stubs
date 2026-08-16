@@ -130,7 +130,7 @@ def least_squares(
     kwargs: Mapping[str, object] | None = None,
     callback: _ToCallback | None = None,
     workers: _Workers | None = None,
-) -> OptimizeResult[np.float64]: ...
+) -> OptimizeResult[np.int_ | np.float64]: ...
 @overload  # method: {"dogbox", "lm"}  (keyword)
 def least_squares(
     fun: _ResidFunction,
