@@ -1,3 +1,5 @@
+# NOTE: mypy incorrectly sees disjoint dtypes as overlapping
+# mypy: disable-error-code=overload-overlap
 from typing import Literal, overload
 
 import numpy as np
