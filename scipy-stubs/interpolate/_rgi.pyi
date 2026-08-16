@@ -17,6 +17,8 @@ _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64,
 
 type _MethodReal = Literal["linear", "nearest", "slinear", "cubic", "quintic"]
 type _Method = Literal[_MethodReal, "pchip"]
+type _MethodN = Literal[_Method, "splinef2d"]
+
 type _ToPoints = Iterable[onp.ToFloat1D]
 
 ###
@@ -88,25 +90,25 @@ def interpn(
     points: _ToPoints,
     values: onp.ToFloatND,
     xi: onp.ToFloatND,
-    method: _Method = "linear",
+    method: _MethodN = "linear",
     bounds_error: bool = True,
-    fill_value: onp.ToFloat = ...,  # np.nan
+    fill_value: onp.ToFloat | None = ...,  # np.nan
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def interpn(
     points: _ToPoints,
     values: onp.ToJustComplex1D,
     xi: onp.ToFloatND,
-    method: _Method = "linear",
+    method: _MethodN = "linear",
     bounds_error: bool = True,
-    fill_value: onp.ToComplex = ...,  # np.nan
+    fill_value: onp.ToComplex | None = ...,  # np.nan
 ) -> onp.ArrayND[np.complex128]: ...
 @overload
 def interpn(
     points: _ToPoints,
     values: onp.ToComplex1D,
     xi: onp.ToFloatND,
-    method: _Method = "linear",
+    method: _MethodN = "linear",
     bounds_error: bool = True,
-    fill_value: onp.ToComplex = ...,  # np.nan
+    fill_value: onp.ToComplex | None = ...,  # np.nan
 ) -> onp.ArrayND[Any]: ...
