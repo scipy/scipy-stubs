@@ -2,8 +2,10 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
-from scipy.sparse import bsr_array, csc_array, csr_array, lil_array
+from scipy.sparse import bsr_array, coo_array, csc_array, csc_matrix, csr_array, csr_matrix, lil_array
+from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import (
     SuperLU,
     factorized,
@@ -33,9 +35,18 @@ b_c2d: onp.Array2D[np.complex128]
 b_c64: onp.Array1D[np.complex64]
 b_c64_2d: onp.Array2D[np.complex64]
 b_sparse: csc_array[np.float64]
+b_sparse_c128: csc_array[np.complex128]
+b_sparse_1d: coo_array[np.float64, tuple[int]]
 bsr_: bsr_array
 csr_: csr_array
 lil_: lil_array
+
+i16_csc: csc_array[np.int16]
+c128_csc: csc_array[np.complex128]
+f64_csr: csr_array[np.float64]
+f64_csc_mat: csc_matrix[np.float64]
+f64_csr_mat: csr_matrix[np.float64]
+f64_lil: lil_array[np.float64]
 
 # use_solver
 assert_type(use_solver(useUmfpack=False), None)
@@ -60,7 +71,17 @@ assert_type(solve_c64(b_c64), onp.Array1D[np.complex64])
 assert_type(solve_c64(b_c64_2d), onp.Array2D[np.complex64])
 
 # spsolve
-assert_type(spsolve(b_sparse, bsr_), csc_array[np.float64])
+assert_subtype[csc_array[np.float64]](spsolve(b_sparse, bsr_))
+assert_type(spsolve(b_sparse, b_sparse), csc_array[np.float64])
+assert_type(spsolve(i16_csc, b_sparse), csc_array[np.float64])
+assert_type(spsolve(c128_csc, b_sparse), csc_array[np.complex128])
+assert_type(spsolve(b_sparse, b_sparse_c128), _spbase[np.complex128, tuple[int, int]])
+assert_type(spsolve(f64_csr, b_sparse), csr_array[np.float64])
+assert_type(spsolve(f64_csc_mat, b_sparse), csc_matrix[np.float64])
+assert_type(spsolve(f64_csr_mat, b_sparse), csr_matrix[np.float64])
+assert_type(spsolve(f64_lil, b_sparse), _spbase[np.float64, tuple[int, int]])
+assert_type(spsolve(b_f2d, b_sparse), _spbase[np.float64, tuple[int, int]])
+assert_type(spsolve(b_sparse, b_sparse_1d), onp.Array1D[np.float64])
 assert_type(spsolve(f64_mat, b_f), onp.Array1D[np.float64])
 assert_type(spsolve(f64_mat, b_f2d), onp.Array2D[np.float64])
 assert_type(spsolve(c128_mat, b_c), onp.Array1D[np.complex128])
