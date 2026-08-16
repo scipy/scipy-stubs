@@ -111,6 +111,15 @@ assert_type(spilu(c128_mat), SuperLU[np.complex128])
 assert_type(spilu(fc_float_mat), SuperLU[np.float32 | np.float64])
 assert_type(spilu(fc_complex_mat), SuperLU[np.complex64 | np.complex128])
 
+# SuperLU.solve
+lu_f64 = splu(f64_mat)
+assert_type(lu_f64.solve(b_f), onp.Array1D[np.float64])
+assert_type(lu_f64.solve(b_f2d, "T"), onp.Array2D[np.float64])
+assert_type(lu_f64.solve(b_f, trans="H"), onp.Array1D[np.float64])
+
+lu_c128 = splu(c128_mat)
+assert_type(lu_c128.solve(b_c2d, "T"), onp.Array2D[np.complex128])
+
 # is_sptriangular
 assert_type(is_sptriangular(csr_), tuple[bool, bool])
 assert_type(is_sptriangular(bsr_), tuple[bool, bool])  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
