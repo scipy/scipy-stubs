@@ -65,8 +65,8 @@ class OdeResult(_RichResult[Any], Generic[_Inexact64T_co]):
     t: _Float1D
     y: onp.Array2D[_Inexact64T_co]
     sol: OdeSolution | None
-    t_events: list[_Float1D] | None
-    y_events: list[onp.ArrayND[_Inexact64T_co]] | None
+    t_events: list[_Float1D] | Any
+    y_events: list[onp.ArrayND[_Inexact64T_co]] | Any
     nfev: int
     njev: int
     nlu: int
