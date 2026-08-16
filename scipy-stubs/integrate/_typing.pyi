@@ -31,20 +31,20 @@ class QuadInfoDict(TypedDict):
     blist: onp.Array1D[np.float64]
     rlist: onp.Array1D[np.float64]
     elist: onp.Array1D[np.float64]
-    iord: onp.Array1D[np.int_]
+    iord: onp.Array1D[np.int32]
 
     # if `points` is provided
     pts: NotRequired[onp.Array1D[np.float64]]
-    level: NotRequired[onp.Array1D[np.int_]]
-    ndin: NotRequired[onp.Array1D[np.int_]]
+    level: NotRequired[onp.Array1D[np.int32]]
+    ndin: NotRequired[onp.Array1D[np.int32]]
 
     # finite integration limits
-    momcom: NotRequired[float | np.float64]
-    nnlog: NotRequired[onp.Array1D[np.int_]]
-    chebmo: NotRequired[onp.Array2D[np.int_]]
+    momcom: NotRequired[int]
+    nnlog: NotRequired[onp.Array1D[np.int32]]
+    chebmo: NotRequired[onp.Array2D[np.float64]]
 
     # single infitite integration limit and numerical error
     lst: NotRequired[int]
     rslst: NotRequired[onp.Array1D[np.float64]]
     erlst: NotRequired[onp.Array1D[np.float64]]
-    ierlst: NotRequired[onp.Array1D[np.float64]]
+    ierlst: NotRequired[onp.Array1D[np.int32]]
