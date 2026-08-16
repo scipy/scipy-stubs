@@ -83,8 +83,9 @@ assert_subtype[Rotation](Rotation.concatenate([_rot_nd, _rot_nd]))
 
 # create_group
 
-assert_type(Rotation.create_group("I"), Rotation[tuple[()]])
-assert_type(Rotation.create_group("Dn", "X"), Rotation[tuple[()]])
+assert_type(Rotation.create_group("I"), Rotation[tuple[int]])
+assert_type(Rotation.create_group("D4", "X"), Rotation[tuple[int]])
+assert_type(Rotation.create_group("I", "z"), Rotation[tuple[int]])
 
 # properties
 
