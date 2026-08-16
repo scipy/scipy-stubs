@@ -10,14 +10,12 @@ import optype.numpy.compat as npc
 ###
 
 type _RotOrder = L["e", "extrinsic", "i", "intrinsic"]
-type _RotGroup = L["I", "O", "T", "D", "Dn", "C", "Cn"]
 type _RotAxisSeq = L[
     "xyz", "xzy", "yxz", "yzx", "zxy", "zyx",
     "xyx", "xzx", "yxy", "yzy", "zxz", "zyz",
     "XYZ", "XZY", "YXZ", "YZX", "ZXY", "ZYX",
     "XYX", "XZX", "YXY", "YZY", "ZXZ", "ZYZ",
 ]  # fmt: skip
-type _RotAxis = L["X", "Y", "Z"]
 
 type _JustAnyShape = tuple[Never, Never, Never, Never]
 type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
@@ -358,7 +356,7 @@ class Rotation(Generic[_ShapeT_co]):
 
     #
     @classmethod
-    def create_group(cls, group: _RotGroup, axis: _RotAxis = "Z") -> Rotation[tuple[()]]: ...
+    def create_group(cls, group: str, axis: L["x", "y", "z", "X", "Y", "Z"] = "Z") -> Rotation[tuple[int]]: ...
 
     #
     @overload
