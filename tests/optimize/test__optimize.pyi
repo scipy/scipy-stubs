@@ -104,6 +104,9 @@ assert_type(bracket(_f0d, args=()), _BracketInfo)
 assert_type(brent(_f0d), _Float)
 assert_type(brent(_f0d, (), None, 1.48e-08, True), tuple[_Float, _Float, int, int])
 assert_type(brent(_f0d, full_output=True), tuple[_Float, _Float, int, int])
+assert_type(brent(_f0d, brack=[0, 2]), _Float)
+assert_type(brent(_f0d, brack=[0, 1, 2]), _Float)
+assert_type(brent(_f0d, brack=_f64_1d), _Float)
 
 ###
 # golden
@@ -111,6 +114,8 @@ assert_type(brent(_f0d, full_output=True), tuple[_Float, _Float, int, int])
 assert_type(golden(_f0d), _Float)
 assert_type(golden(_f0d, (), None, 1e-5, True), tuple[_Float, _Float, int])
 assert_type(golden(_f0d, full_output=True), tuple[_Float, _Float, int])
+assert_type(golden(_f0d, brack=[0, 2]), _Float)
+assert_type(golden(_f0d, brack=_f64_1d), _Float)
 
 ###
 # fminbound
