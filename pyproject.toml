@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.12.3,<0.13"]
+requires = ["uv_build>=0.12.5,<0.13"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -63,7 +63,7 @@ lint = [
   { include-group = "extras" },
   "dprint-py==0.55.2.0",
   "ruff==0.16.3",
-  "sp-repo-review[cli]==2026.6.18",
+  "sp-repo-review[cli]==2026.8.14",
 ]
 type = [
   { include-group = "extras" },
@@ -73,10 +73,10 @@ type = [
   "pytest==9.1.1", # needed for `_lib._array_api.make_xp_pytest_*`
   "matplotlib==3.11.1", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
   "basedpyright==1.39.10",
-  "mypy[faster-cache]==2.3.0",
+  "mypy[faster-cache]==2.3.1",
   "pyrefly==1.2.0",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.71",
+  "ty==0.0.72",
   "zuban==0.9.1",
 ]
 dev = [
