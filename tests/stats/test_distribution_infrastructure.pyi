@@ -12,6 +12,7 @@ from scipy.stats._distribution_infrastructure import (
     FoldedDistribution,
     MonotonicTransformedDistribution,
     OrderStatisticDistribution,
+    ShiftedScaledDistribution,
     TruncatedDistribution,
 )
 
@@ -60,6 +61,27 @@ class _MultiDuckRV:
     def pdf(self, x: float, /, *, quack: float, swim: float) -> np.float64: ...
 
 ###
+
+# __neg__
+assert_type(-_uniform_0d_f64, ShiftedScaledDistribution[Uniform[_0d, np.float64], np.float64, _0d])
+assert_type(-_uniform_1d_f64, ShiftedScaledDistribution[Uniform[_1d, np.float64], np.float64, _1d])
+assert_type(-_uniform_2d_f64, ShiftedScaledDistribution[Uniform[_2d, np.float64], np.float64, _2d])
+
+# __add__
+assert_type(_uniform_1d_f64 + 1.0, ShiftedScaledDistribution[Uniform[_1d, np.float64], np.float64, _1d])
+assert_type(_uniform_0d_f64 + _f64_1d, ShiftedScaledDistribution[Uniform[_0d, np.float64], np.float64, _1d])
+
+# __sub__
+assert_type(_uniform_2d_f64 - 1.0, ShiftedScaledDistribution[Uniform[_2d, np.float64], np.float64, _2d])
+
+# __mul__
+assert_type(_uniform_1d_f64 * 2.0, ShiftedScaledDistribution[Uniform[_1d, np.float64], np.float64, _1d])
+
+# __truediv__
+assert_type(_uniform_3d_f64 / 2.0, ShiftedScaledDistribution[Uniform[_3d, np.float64], np.float64, _3d])
+
+# __pow__
+assert_type(_uniform_1d_f64**2, MonotonicTransformedDistribution[Uniform[_1d, np.float64], _1d])
 
 # truncate
 assert_type(truncate(_uniform_0d_f64), TruncatedDistribution[Uniform[_0d, np.float64], _0d])
