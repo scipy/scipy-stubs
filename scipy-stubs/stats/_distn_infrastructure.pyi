@@ -704,12 +704,12 @@ class rv_continuous(_rv_mixin, rv_generic):
     def fit_loc_scale(self, /, data: _ToFloatOrND, *args: onp.ToFloat) -> _Tuple2[_Float]: ...
 
     #
-    def fit(
+    def fit[FuncT: Callable[..., onp.ToFloat], X0T: onp.ToFloat1D, ArgsT: tuple[Any, ...]](
         self,
         /,
         data: _ToFloatOrND | CensoredData[np.float64],
         *args: onp.ToFloat,
-        optimizer: Callable[[_FloatND, tuple[float, ...], tuple[float, ...], bool], tuple[onp.ToFloat, ...]] | None = ...,
+        optimizer: Callable[[FuncT, X0T, ArgsT, int], onp.ToFloat1D] | None = ...,
         method: _FitMethod = "MLE",
         **kwds: onp.ToFloat,
     ) -> tuple[_Float, ...]: ...
