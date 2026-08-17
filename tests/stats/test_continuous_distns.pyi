@@ -262,6 +262,9 @@ assert_type(norm.rvs(size=()), np.float64)
 assert_type(norm.rvs(0.5, 1.2), np.float64)
 assert_type(norm.rvs(loc=0.5, scale=1.2), np.float64)
 assert_type(expon.rvs(), np.float64)
+assert_type(gamma.rvs(2.0), np.float64)
+assert_type(gamma.rvs(2.0, size=None), np.float64)
+assert_type(gamma.rvs(2.0, size=()), np.float64)
 
 assert_type(norm.rvs(size=4), onp.Array1D[np.float64])
 assert_type(norm.rvs(size=(_n,)), onp.Array1D[np.float64])
@@ -270,7 +273,10 @@ assert_type(norm.rvs(size=(_n, _n, _n)), onp.Array3D[np.float64])
 assert_type(uniform.rvs(size=4), onp.Array1D[np.float64])
 assert_type(norm.rvs(size=_np_shape), onp.ArrayND[np.float64] | Any)
 
+assert_type(gamma.rvs(2.0, size=4), onp.Array1D[np.float64])
+
 assert_type(norm.rvs(_f64_nd), onp.ArrayND[np.float64])
+assert_type(gamma.rvs(_f64_nd, size=None), onp.ArrayND[np.float64])
 assert_type(norm.rvs(loc=_f64_nd), onp.ArrayND[np.float64])
 assert_type(norm.rvs(scale=_f64_nd), onp.ArrayND[np.float64])
 

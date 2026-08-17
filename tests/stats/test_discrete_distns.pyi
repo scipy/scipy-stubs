@@ -1,3 +1,7 @@
+from typing import assert_type
+
+import numpy as np
+import optype.numpy as onp
 from optype.test import assert_subtype
 
 from scipy.stats import (
@@ -50,3 +54,12 @@ assert_subtype[rv_discrete](zipfian)
 assert_subtype[rv_discrete](zipfian)
 assert_subtype[rv_discrete](yulesimon)
 assert_subtype[rv_discrete](nhypergeom)
+
+###
+
+# .rvs
+
+assert_type(poisson.rvs(1.0), int)
+assert_type(poisson.rvs(1.0, size=None), int)
+assert_type(poisson.rvs(1.0, size=()), int)
+assert_type(poisson.rvs(1.0, size=4), onp.ArrayND[np.int64])
