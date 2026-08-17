@@ -749,14 +749,14 @@ class rv_continuous(_rv_mixin, rv_generic):
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloat,
     ) -> _Float2D: ...
-    @overload  # size: ()  (default)
+    @overload  # size: () | None  (default)
     def rvs(
         self,
         /,
         *args: onp.ToFloat,
         loc: onp.ToFloat = 0,
         scale: onp.ToFloat = 1,
-        size: tuple[()] = (),
+        size: tuple[()] | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloat,
     ) -> np.float64: ...
@@ -779,7 +779,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         *args: onp.ToFloat | onp.ToFloatND,
         loc: onp.ToFloat | onp.ToFloatND = 0,
         scale: onp.ToFloat | onp.ToFloatND = 1,
-        size: SupportsIndex | tuple[SupportsIndex, ...] = (),
+        size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloat | onp.ToFloatND,
     ) -> _FloatND: ...
@@ -792,7 +792,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         *args: onp.ToFloat | onp.ToFloatND,
         loc: onp.ToFloat | onp.ToFloatND = 0,
         scale: onp.ToFloat | onp.ToFloatND = 1,
-        size: SupportsIndex | tuple[SupportsIndex, ...] = (),
+        size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloat | onp.ToFloatND,
     ) -> _FloatND: ...
@@ -806,7 +806,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         *args: onp.ToFloat | onp.ToFloatND,
         loc: onp.ToFloat | onp.ToFloatND = 0,
         scale: onp.ToFloat | onp.ToFloatND = 1,
-        size: SupportsIndex | tuple[SupportsIndex, ...] = (),
+        size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloat | onp.ToFloatND,
     ) -> _FloatND: ...
@@ -817,7 +817,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         *args: onp.ToFloat | onp.ToFloatND,
         loc: onp.ToFloatND,
         scale: onp.ToFloat | onp.ToFloatND = 1,
-        size: SupportsIndex | tuple[SupportsIndex, ...] = (),
+        size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloat | onp.ToFloatND,
     ) -> _FloatND: ...
@@ -828,7 +828,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         *args: onp.ToFloat | onp.ToFloatND,
         loc: onp.ToFloat | onp.ToFloatND = 0,
         scale: onp.ToFloatND,
-        size: SupportsIndex | tuple[SupportsIndex, ...] = (),
+        size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloat | onp.ToFloatND,
     ) -> _FloatND: ...
@@ -839,7 +839,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         *args: onp.ToFloat | onp.ToFloatND,
         loc: onp.ToFloat | onp.ToFloatND = 0,
         scale: onp.ToFloat | onp.ToFloatND = 1,
-        size: SupportsIndex | tuple[SupportsIndex, ...] = (),
+        size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloatND,
     ) -> _FloatND: ...
@@ -1034,7 +1034,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         /,
         *args: onp.ToFloat,
         loc: onp.ToFloat = 0,
-        size: tuple[()] = (),
+        size: tuple[()] | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloat,
     ) -> int: ...
@@ -1054,7 +1054,7 @@ class rv_discrete(_rv_mixin, rv_generic):
         /,
         *args: _ToFloatOrND,
         loc: _ToFloatOrND = 0,
-        size: AnyShape = (),
+        size: AnyShape | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: _ToFloatOrND,
     ) -> onp.ArrayND[np.int64] | int: ...
@@ -1097,7 +1097,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
         /,
         *args: onp.ToFloat,
         loc: onp.ToFloat = 0,
-        size: tuple[()] = (),
+        size: tuple[()] | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloat,
     ) -> np.float64: ...
@@ -1117,7 +1117,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
         /,
         *args: _ToFloatOrND,
         loc: _ToFloatOrND = 0,
-        size: AnyShape = (),
+        size: AnyShape | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: _ToFloatOrND,
     ) -> onp.ArrayND[np.float64] | np.float64: ...
