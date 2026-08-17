@@ -862,8 +862,8 @@ class rv_discrete(_rv_mixin, rv_generic):
         shapes: str | None = None,
         seed: onp.random.ToRNG | None = None,
     ) -> Self: ...
-    # NOTE: The return types of the following overloads is ignored by mypy
-    @overload
+    # NOTE: The return types of the following overloads is ignored by mypy (2.3)
+    @overload  # values: (int, float)
     def __new__(
         cls,
         a: onp.ToFloat,
@@ -871,13 +871,13 @@ class rv_discrete(_rv_mixin, rv_generic):
         name: str | None,
         badvalue: _Float | None,
         moment_tol: _Float,
-        values: _Tuple2[onp.ToFloatND],
+        values: tuple[onp.ToIntND, onp.ToFloatND],
         inc: int | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
         seed: onp.random.ToRNG | None = None,
-    ) -> rv_sample: ...
-    @overload
+    ) -> rv_sample[np.int64]: ...
+    @overload  # values: (int, float)  (keyword)
     def __new__(
         cls,
         a: onp.ToFloat = 0,
@@ -886,12 +886,41 @@ class rv_discrete(_rv_mixin, rv_generic):
         badvalue: _Float | None = None,
         moment_tol: _Float = 1e-8,
         *,
-        values: _Tuple2[onp.ToFloatND],
+        values: tuple[onp.ToIntND, onp.ToFloatND],
         inc: int | np.int_ = 1,
         longname: str | None = None,
         shapes: str | None = None,
         seed: onp.random.ToRNG | None = None,
-    ) -> rv_sample: ...
+    ) -> rv_sample[np.int64]: ...
+    @overload  # values: (float, float)
+    def __new__(
+        cls,
+        a: onp.ToFloat,
+        b: onp.ToFloat,
+        name: str | None,
+        badvalue: _Float | None,
+        moment_tol: _Float,
+        values: tuple[onp.ToJustFloatND, onp.ToFloatND],
+        inc: int | np.int_ = 1,
+        longname: str | None = None,
+        shapes: str | None = None,
+        seed: onp.random.ToRNG | None = None,
+    ) -> rv_sample[np.float64]: ...
+    @overload  # values: (float, float)  (keyword)
+    def __new__(
+        cls,
+        a: onp.ToFloat = 0,
+        b: onp.ToFloat = ...,
+        name: str | None = None,
+        badvalue: _Float | None = None,
+        moment_tol: _Float = 1e-8,
+        *,
+        values: tuple[onp.ToJustFloatND, onp.ToFloatND],
+        inc: int | np.int_ = 1,
+        longname: str | None = None,
+        shapes: str | None = None,
+        seed: onp.random.ToRNG | None = None,
+    ) -> rv_sample[np.float64]: ...
 
     #
     def __init__(
@@ -1091,7 +1120,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
 
     #
     @override
-    @overload
+    @overload  # size: 0d | None  (default)
     def rvs(
         self,
         /,
@@ -1100,8 +1129,28 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
         size: tuple[()] | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: onp.ToFloat,
-    ) -> np.float64: ...
-    @overload
+    ) -> _XKT_co: ...
+    @overload  # size: 1d
+    def rvs(
+        self,
+        /,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        size: SupportsIndex,
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: _ToFloatOrND,
+    ) -> onp.Array1D[_XKT_co]: ...
+    @overload  # size: >=1d (known)
+    def rvs[ShapeT: tuple[int, *tuple[int, ...]]](
+        self,
+        /,
+        *args: _ToFloatOrND,
+        loc: _ToFloatOrND = 0,
+        size: ShapeT,
+        random_state: onp.random.ToRNG | None = None,
+        **kwds: _ToFloatOrND,
+    ) -> onp.ArrayND[_XKT_co, ShapeT]: ...
+    @overload  # size: >=1d (unknown)
     def rvs(
         self,
         /,
@@ -1110,8 +1159,8 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
         size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]],
         random_state: onp.random.ToRNG | None = None,
         **kwds: _ToFloatOrND,
-    ) -> onp.ArrayND[np.float64]: ...
-    @overload
+    ) -> onp.ArrayND[_XKT_co]: ...
+    @overload  # fallback
     def rvs(
         self,
         /,
@@ -1120,7 +1169,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
         size: AnyShape | None = None,
         random_state: onp.random.ToRNG | None = None,
         **kwds: _ToFloatOrND,
-    ) -> onp.ArrayND[np.float64] | np.float64: ...
+    ) -> onp.ArrayND[_XKT_co] | Any: ...
 
 # private helper subtypes
 @type_check_only
