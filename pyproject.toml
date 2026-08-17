@@ -9,7 +9,7 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 
 [project]
 name = "scipy-stubs"
-version = "1.18.0.2.dev0"
+version = "1.18.1.0.dev1"
 description = "The official type stubs for SciPy"
 readme = "README.md"
 authors = [
@@ -42,6 +42,7 @@ classifiers = [
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: 3.15",
   "Typing :: Stubs Only",
 ]
 requires-python = ">=3.12"
