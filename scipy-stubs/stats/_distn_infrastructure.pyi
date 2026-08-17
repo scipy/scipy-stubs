@@ -21,6 +21,9 @@ type _Tuple2[T] = tuple[T, T]
 type _Tuple3[T] = tuple[T, T, T]
 type _Tuple4[T] = tuple[T, T, T, T]
 
+# workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
+
 type _Floating = np.float64 | np.float32 | np.float16  # longdouble often results in trouble
 type _CoFloat = _Floating | npc.integer
 
@@ -1159,7 +1162,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
         size: SupportsIndex | tuple[SupportsIndex, *tuple[SupportsIndex, ...]],
         random_state: onp.random.ToRNG | None = None,
         **kwds: _ToFloatOrND,
-    ) -> onp.ArrayND[_XKT_co]: ...
+    ) -> onp.ArrayND[_XKT_co, _WorkaroundForPyright]: ...
     @overload  # fallback
     def rvs(
         self,
