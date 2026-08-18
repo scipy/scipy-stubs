@@ -198,10 +198,12 @@ assert_type(_rot_nd.mean(axis=0), Rotation)
 assert_type(_rot_nd.reduce(), Rotation)
 assert_type(_rot_nd.reduce(left=_rot_nd), Rotation)
 
-_reduced_with_idx = _rot_nd.reduce(return_indices=True)
-assert_type(_reduced_with_idx[0], Rotation)
-assert_type(_reduced_with_idx[1], onp.ArrayND[np.int32 | np.int64])
-assert_type(_reduced_with_idx[2], onp.ArrayND[np.int32 | np.int64])
+assert_type(_rot_nd.reduce(return_indices=True), tuple[Rotation, None, None])
+assert_type(_rot_nd.reduce(None, None, True), tuple[Rotation, None, None])
+assert_type(_rot_nd.reduce(left=_rot_nd, return_indices=True), tuple[Rotation, onp.Array1D[np.intp], None])
+assert_type(_rot_nd.reduce(right=_rot_nd, return_indices=True), tuple[Rotation, None, onp.Array1D[np.intp]])
+assert_type(_rot_nd.reduce(_rot_nd, _rot_nd, True), tuple[Rotation, onp.Array1D[np.intp], onp.Array1D[np.intp]])
+assert_type(_rot_nd.reduce(_rot_nd, _rot_nd, return_indices=True), tuple[Rotation, onp.Array1D[np.intp], onp.Array1D[np.intp]])
 
 # align_vectors
 

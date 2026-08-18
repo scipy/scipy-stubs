@@ -240,18 +240,30 @@ class Rotation(Generic[_ShapeT_co]):
     ) -> onp.ArrayND[np.bool]: ...
 
     #
-    @overload
+    @overload  # return_indices: False
     def reduce(
         self, /, left: Rotation | None = None, right: Rotation | None = None, return_indices: L[False] = False
     ) -> Self: ...
-    @overload
+    @overload  # left, right
     def reduce(
-        self, /, left: Rotation | None, right: Rotation | None, return_indices: L[True]
-    ) -> tuple[Self, onp.ArrayND[np.int32 | np.int64], onp.ArrayND[np.int32 | np.int64]]: ...
-    @overload
+        self, /, left: Rotation, right: Rotation, return_indices: L[True]
+    ) -> tuple[Self, onp.Array1D[np.intp], onp.Array1D[np.intp]]: ...
+    @overload  # left
+    def reduce(self, /, left: Rotation, right: None, return_indices: L[True]) -> tuple[Self, onp.Array1D[np.intp], None]: ...
+    @overload  # left (keyword)
     def reduce(
-        self, /, left: Rotation | None = None, right: Rotation | None = None, *, return_indices: L[True]
-    ) -> tuple[Self, onp.ArrayND[np.int32 | np.int64], onp.ArrayND[np.int32 | np.int64]]: ...
+        self, /, left: Rotation, right: None = None, *, return_indices: L[True]
+    ) -> tuple[Self, onp.Array1D[np.intp], None]: ...
+    @overload  # right
+    def reduce(self, /, left: None, right: Rotation, return_indices: L[True]) -> tuple[Self, None, onp.Array1D[np.intp]]: ...
+    @overload  # right (keyword)
+    def reduce(
+        self, /, left: None = None, *, right: Rotation, return_indices: L[True]
+    ) -> tuple[Self, None, onp.Array1D[np.intp]]: ...
+    @overload  # neither
+    def reduce(self, /, left: None, right: None, return_indices: L[True]) -> tuple[Self, None, None]: ...
+    @overload  # neither (keyword)
+    def reduce(self, /, left: None = None, right: None = None, *, return_indices: L[True]) -> tuple[Self, None, None]: ...
 
     #
     @overload
