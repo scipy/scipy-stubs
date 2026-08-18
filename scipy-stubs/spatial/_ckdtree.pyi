@@ -310,7 +310,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         p: onp.ToFloat = 2.0,
         weights: tuple[None, None] | None = None,
         cumulative: bool = True,
-    ) -> np.intp: ...
+    ) -> int: ...
     @overload
     def count_neighbors(
         self, /, other: cKDTree, r: onp.ToFloat, p: onp.ToFloat, weights: _Weights, cumulative: bool = True
@@ -328,7 +328,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         p: onp.ToFloat = 2.0,
         weights: tuple[None, None] | None = None,
         cumulative: bool = True,
-    ) -> np.intp | onp.Array1D[np.intp]: ...
+    ) -> int | onp.Array1D[np.intp]: ...
     @overload
     def count_neighbors(
         self, /, other: cKDTree, r: onp.ToFloat | onp.ToFloat1D, p: onp.ToFloat, weights: _Weights, cumulative: bool = True
