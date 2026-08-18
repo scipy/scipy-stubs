@@ -32,7 +32,8 @@ type _ToJac[T] = tuple[T, *tuple[onp.ToFloat1D, ...]]
 
 type _FDMethod = Literal["2-point", "3-point", "cs"]
 
-type _MethodF64 = Literal["Nelder-Mead", "nelder-mead", "COBYLA", "cobyla", "COBYQA", "cobyqa"]
+type _MethodCobyla = Literal["COBYLA", "cobyla"]
+type _MethodF64 = Literal["Nelder-Mead", "nelder-mead", "COBYQA", "cobyqa"]
 
 type _Ignored = object
 
@@ -182,6 +183,10 @@ class OptimizeResult(_OptimizeResult, Generic[_FunT_co]):
     hess_inv: _Float2D | LinearOperator  # requires `hess` or `hessp`, depends on solver
     nhev: int  # requires `hess` or `hessp`
 
+@type_check_only
+class _CobylaResult(OptimizeResult[np.float64]):
+    nfev: np.intp  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleVariableOverride] # pyrefly:ignore[bad-override-mutable-attribute]
+
 @overload  # identity function with and one parameter, `jac` not truthy
 def minimize[Float1DT: _Float1D](
     fun: Callable[Concatenate[Float1DT, ...], Float1DT],
@@ -197,7 +202,38 @@ def minimize[Float1DT: _Float1D](
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[np.float64]: ...
-@overload  # method={nelder-mead,cobyla,COBYQA}  (positional)
+@overload  # method={COBYLA}  (positional)
+def minimize(
+    fun: _Fun1D[onp.ToFloat],
+    x0: onp.ToFloat | onp.ToFloat1D,
+    args: _Args,
+    method: _MethodCobyla,
+    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
+    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
+    bounds: Bounds | None = None,
+    constraints: Constraints = (),
+    tol: onp.ToFloat | None = None,
+    callback: _CallbackResult | _CallbackVector | None = None,
+    options: _MinimizeOptions | None = None,
+) -> _CobylaResult: ...
+@overload  # method={COBYLA}  (keyword)
+def minimize(
+    fun: _Fun1D[onp.ToFloat],
+    x0: onp.ToFloat | onp.ToFloat1D,
+    args: _Args = (),
+    *,
+    method: _MethodCobyla,
+    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
+    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
+    bounds: Bounds | None = None,
+    constraints: Constraints = (),
+    tol: onp.ToFloat | None = None,
+    callback: _CallbackResult | _CallbackVector | None = None,
+    options: _MinimizeOptions | None = None,
+) -> _CobylaResult: ...
+@overload  # method={nelder-mead,COBYQA}  (positional)
 def minimize(
     fun: _Fun1D[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
@@ -212,7 +248,7 @@ def minimize(
     callback: _CallbackResult | _CallbackVector | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[np.float64]: ...
-@overload  # method={nelder-mead,cobyla,COBYQA}  (keyword)
+@overload  # method={nelder-mead,COBYQA}  (keyword)
 def minimize(
     fun: _Fun1D[onp.ToFloat],
     x0: onp.ToFloat | onp.ToFloat1D,
