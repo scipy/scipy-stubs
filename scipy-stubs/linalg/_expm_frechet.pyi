@@ -9,27 +9,63 @@ __all__ = ["expm_cond", "expm_frechet"]
 ###
 
 type _Method = Literal["SPS", "blockEnlarge"]
-type _ArrayF64 = onp.ArrayND[np.float64]
-type _ArrayC128 = onp.ArrayND[np.complex128]
 
 ###
 
-@overload
+@overload  # +f64, +f64
 def expm_frechet(
-    A: onp.ToComplexND,
+    A: onp.ToFloatND, E: onp.ToFloatND, method: _Method | None = None, compute_expm: onp.ToTrue = True, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # +f64, ~complex
+def expm_frechet(
+    A: onp.ToFloatND,
+    E: onp.ToJustComplexND,
+    method: _Method | None = None,
+    compute_expm: onp.ToTrue = True,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # ~complex, +complex
+def expm_frechet(
+    A: onp.ToJustComplexND,
     E: onp.ToComplexND,
     method: _Method | None = None,
     compute_expm: onp.ToTrue = True,
     check_finite: bool = True,
-) -> tuple[_ArrayF64, _ArrayF64] | tuple[_ArrayF64 | _ArrayC128, _ArrayC128]: ...
-@overload
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
+@overload  # +f64, +f64, compute_expm=False
 def expm_frechet(
-    A: onp.ToComplexND, E: onp.ToComplexND, method: _Method | None, compute_expm: onp.ToFalse, check_finite: bool = True
-) -> tuple[_ArrayF64, _ArrayF64] | tuple[_ArrayF64 | _ArrayC128, _ArrayC128]: ...
-@overload
+    A: onp.ToFloatND, E: onp.ToFloatND, method: _Method | None, compute_expm: onp.ToFalse, check_finite: bool = True
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, +f64, compute_expm=False (keyword)
 def expm_frechet(
-    A: onp.ToComplexND, E: onp.ToComplexND, method: _Method | None = None, *, compute_expm: onp.ToFalse, check_finite: bool = True
-) -> tuple[_ArrayF64, _ArrayF64] | tuple[_ArrayF64 | _ArrayC128, _ArrayC128]: ...
+    A: onp.ToFloatND, E: onp.ToFloatND, method: _Method | None = None, *, compute_expm: onp.ToFalse, check_finite: bool = True
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, ~complex, compute_expm=False
+def expm_frechet(
+    A: onp.ToFloatND, E: onp.ToJustComplexND, method: _Method | None, compute_expm: onp.ToFalse, check_finite: bool = True
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # +f64, ~complex, compute_expm=False (keyword)
+def expm_frechet(
+    A: onp.ToFloatND,
+    E: onp.ToJustComplexND,
+    method: _Method | None = None,
+    *,
+    compute_expm: onp.ToFalse,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~complex, +complex, compute_expm=False
+def expm_frechet(
+    A: onp.ToJustComplexND, E: onp.ToComplexND, method: _Method | None, compute_expm: onp.ToFalse, check_finite: bool = True
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~complex, +complex, compute_expm=False (keyword)
+def expm_frechet(
+    A: onp.ToJustComplexND,
+    E: onp.ToComplexND,
+    method: _Method | None = None,
+    *,
+    compute_expm: onp.ToFalse,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.complex128]: ...
 
 #
 @overload
