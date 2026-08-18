@@ -53,17 +53,31 @@ type _AsInt64OrND = int | npc.signedinteger | np.bool | onp.ToArrayND[int, npc.s
 # mypy: disable-error-code="overload-overlap"
 
 #
-@overload
+@overload  # output=<array>
 def label(
     input: onp.ToComplex | onp.ToComplexND,
     structure: onp.ToComplex | onp.ToComplexND | None = None,
     *,
     output: onp.ArrayND[np.int32 | np.intp],
 ) -> int: ...
-@overload
+@overload  # output=<known dtype>
+def label[ScalarT: npc.number | np.bool](
+    input: onp.ToComplex | onp.ToComplexND,
+    structure: onp.ToComplex | onp.ToComplexND | None = None,
+    *,
+    output: type[ScalarT] | np.dtype[ScalarT],
+) -> tuple[onp.ArrayND[ScalarT], int]: ...
+@overload  # output: None  (default)
 def label(
     input: onp.ToComplex | onp.ToComplexND, structure: onp.ToComplex | onp.ToComplexND | None = None, output: None = None
 ) -> tuple[onp.ArrayND[np.int32], int]: ...
+@overload  # output=<unknown dtype>
+def label(
+    input: onp.ToComplex | onp.ToComplexND,
+    structure: onp.ToComplex | onp.ToComplexND | None = None,
+    *,
+    output: type[complex] | str,
+) -> tuple[onp.ArrayND[Any], int]: ...
 
 #
 @overload
