@@ -60,6 +60,7 @@ type _MetricName = Literal[
     "hamm",
     "ha",
     "h",
+    "matching",
     "minkowski",
     "mi",
     "m",
