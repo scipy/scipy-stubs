@@ -21,7 +21,7 @@ class OptimizeResult(_OptimizeResult):
     success: bool
     status: int
     x: onp.Array1D[np.float64]
-    fun: float
+    fun: np.float64
     nit: int
     nfev: int
     njev: int
@@ -46,7 +46,7 @@ def dual_annealing(
     x0: onp.ToFloat1D | None = None,
     *,
     seed: onp.random.ToRNG | None = None,
-) -> _OptimizeResult: ...
+) -> OptimizeResult: ...
 @overload  # minimizer_kwargs={"jac": True, ...}
 def dual_annealing(
     func: Callable[Concatenate[onp.Array1D[np.float64], ...], tuple[onp.ToFloat, onp.ToFloat1D]],
@@ -65,4 +65,4 @@ def dual_annealing(
     callback: _CallbackFun | None = None,
     x0: onp.ToFloat1D | None = None,
     seed: onp.random.ToRNG | None = None,
-) -> _OptimizeResult: ...
+) -> OptimizeResult: ...
