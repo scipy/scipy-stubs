@@ -9,6 +9,7 @@ from scipy.sparse import coo_array, coo_matrix
 ###
 
 _arr_f64_2d: onp.Array2D[np.float64]
+_arr_u64_2d: onp.Array2D[np.uint64]
 _coo_f64_2d: coo_array[np.float64] | coo_matrix[np.float64]
 
 ###
@@ -21,7 +22,7 @@ assert_type(
         int,
         int,
         Literal["coordinate", "array"],
-        Literal["real", "complex", "pattern", "integer"],
+        Literal["real", "complex", "pattern", "integer", "unsigned-integer"],
         Literal["general", "symmetric", "skew-symmetric", "hermitian"],
     ],
 )
@@ -34,3 +35,5 @@ assert_type(mmread("file.mtx", spmatrix=False), onp.Array2D | coo_array[Any, tup
 # mmwrite
 assert_type(mmwrite("file_out.mtx", _arr_f64_2d), None)
 assert_type(mmwrite("file_out.mtx", _coo_f64_2d), None)
+assert_type(mmwrite("file_out.mtx", _arr_u64_2d, field="unsigned-integer"), None)
+assert_type(mmwrite("file_out.mtx", _arr_f64_2d, field=mminfo("file.mtx")[4]), None)
