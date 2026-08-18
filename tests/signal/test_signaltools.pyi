@@ -289,6 +289,10 @@ assert_type(order_filter(_i16_2d, _i16_2d, 0), onp.Array2D[np.int16])
 assert_type(order_filter(_f32_2d, _i16_2d, 0), onp.Array2D[np.float32])
 assert_type(order_filter(_f64_2d, _i16_2d, 0), onp.Array2D[np.float64])
 
+assert_type(order_filter(_py_f_2d, _f64_2d, 0), onp.ArrayND[np.float64])
+assert_type(order_filter(_i16_2d, _f64_2d, 0), onp.Array2D[np.int16])
+assert_type(order_filter(_f64_2d, _f64_2d, 0), onp.Array2D[np.float64])
+
 # medfilt
 
 assert_type(medfilt(_py_i_1d), onp.ArrayND[np.int_])
