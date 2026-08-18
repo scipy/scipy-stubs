@@ -1,3 +1,4 @@
+from collections.abc import Callable
 from typing import Any, assert_type
 
 import numpy as np
@@ -127,6 +128,13 @@ _f64_nd: onp.ArrayND[np.float64]
 _n: int
 _shape_nd: tuple[int, ...]
 _np_shape: tuple[np.intp, np.intp]
+
+def _optimizer(
+    func: Callable[[list[float], onp.ArrayND[np.float64]], np.float64],
+    x0: list[float],
+    args: tuple[onp.ArrayND[np.float64]],
+    disp: int,
+) -> onp.Array1D[np.float64]: ...
 
 ###
 
@@ -288,3 +296,4 @@ assert_type(norm.fit(_f64_nd, floc=0.0), tuple[float, np.float64])
 assert_type(norm.fit(_f64_nd, floc=_f32), tuple[np.float32, np.float64])
 assert_type(norm.fit(_f64_nd, fscale=1), tuple[np.float64, int])
 assert_type(norm.fit(_f64_nd, fscale=2.0), tuple[np.float64, float])
+assert_type(gamma.fit(_f64_nd, optimizer=_optimizer), tuple[float | np.float64, ...])
