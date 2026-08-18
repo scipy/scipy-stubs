@@ -3499,7 +3499,7 @@ def median_abs_deviation(
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> onp.ArrayND[np.float64]: ...
+) -> np.float64: ...
 @overload
 def median_abs_deviation(
     x: onp.ToFloatND,
