@@ -300,7 +300,7 @@ assert_type(invhilbert(4, exact=True), onp.Array2D[np.int64 | np.object_])
 
 # pascal
 
-assert_type(pascal(4), onp.Array2D[np.int64 | np.object_])
+assert_type(pascal(4), onp.Array2D[np.uint64 | np.object_])
 assert_type(pascal(4, exact=False), onp.Array2D[np.float64])
 
 # invpascal
