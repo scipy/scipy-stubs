@@ -36,6 +36,7 @@ _b_nd: onp.ArrayND[np.bool]
 
 _u32_2d: onp.Array2D[np.uint32]
 _i32_2d: onp.Array2D[np.int32]
+_i32_nd: onp.ArrayND[np.int32]
 
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
@@ -249,6 +250,10 @@ assert_type(distance_transform_bf(_f64_2d, "taxicab", distances=_u32_2d), None)
 assert_type(distance_transform_bf(_f64_2d, "taxicab", return_distances=False, return_indices=True), onp.ArrayND[np.int32])
 assert_type(distance_transform_bf(_f64_2d, "taxicab", distances=_u32_2d, return_indices=True), onp.Array2D[np.int32])
 assert_type(distance_transform_bf(_f64_2d, "taxicab", return_indices=True), tuple[onp.ArrayND[np.uint32], onp.ArrayND[np.int32]])
+assert_type(distance_transform_bf(_f64_2d, return_indices=True, indices=_i32_nd), onp.ArrayND[np.float64])
+assert_type(distance_transform_bf(_f64_2d, "taxicab", return_indices=True, indices=_i32_nd), onp.ArrayND[np.uint32])
+assert_type(distance_transform_bf(_f64_2d, return_indices=True, indices=_i32_nd, distances=_f64_2d), None)
+assert_type(distance_transform_bf(_f64_2d, return_distances=False, return_indices=True, indices=_i32_nd), None)
 
 # distance_transform_cdt
 assert_type(distance_transform_cdt(_f64_2d), onp.ArrayND[np.int32])
@@ -257,6 +262,9 @@ assert_type(distance_transform_cdt(_f64_2d, distances=_i32_2d), None)
 assert_type(distance_transform_cdt(_f64_2d, return_distances=False, return_indices=True), onp.ArrayND[np.int32])
 assert_type(distance_transform_cdt(_f64_2d, distances=_i32_2d, return_indices=True), onp.Array2D[np.int32])
 assert_type(distance_transform_cdt(_f64_2d, return_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.int32]])
+assert_type(distance_transform_cdt(_f64_2d, return_indices=True, indices=_i32_nd), onp.ArrayND[np.int32])
+assert_type(distance_transform_cdt(_f64_2d, return_indices=True, indices=_i32_nd, distances=_i32_2d), None)
+assert_type(distance_transform_cdt(_f64_2d, return_distances=False, return_indices=True, indices=_i32_nd), None)
 
 # distance_transform_edt
 assert_type(distance_transform_edt(_f64_2d), onp.ArrayND[np.float64])
@@ -265,3 +273,6 @@ assert_type(distance_transform_edt(_f64_2d, distances=_f64_2d), None)
 assert_type(distance_transform_edt(_f64_2d, return_distances=False, return_indices=True), onp.ArrayND[np.int32])
 assert_type(distance_transform_edt(_f64_2d, distances=_f64_2d, return_indices=True), onp.Array2D[np.int32])
 assert_type(distance_transform_edt(_f64_2d, return_indices=True), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.int32]])
+assert_type(distance_transform_edt(_f64_2d, return_indices=True, indices=_i32_nd), onp.ArrayND[np.float64])
+assert_type(distance_transform_edt(_f64_2d, return_indices=True, indices=_i32_nd, distances=_f64_2d), None)
+assert_type(distance_transform_edt(_f64_2d, return_distances=False, return_indices=True, indices=_i32_nd), None)
