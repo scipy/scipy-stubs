@@ -1,6 +1,6 @@
-from collections.abc import Callable, Sequence
+from collections.abc import Callable
 from types import ModuleType
-from typing import Final, Literal, overload
+from typing import Any, Final, Literal, Never, overload
 from typing_extensions import deprecated
 
 import numpy as np
@@ -16,18 +16,35 @@ type _MissingMethod = Literal["warn", "raise"]
 
 type _ToFloat32_2D = onp.ToArray2D[int, np.float32 | np.float16 | npc.integer16 | npc.integer8]
 type _AsFloat64_2D = onp.ToArray2D[float, npc.floating64 | npc.integer]
-type _PyFloatMax2D = Sequence[float] | Sequence[Sequence[float]]
+
+# workaround for https://github.com/microsoft/pyright/issues/10232
+type _JustAnyShape = tuple[Never, Never, Never]
 
 ###
-# NOTE: DO NOT RE-ORDER THE OVERLOADS, otherwise it'll trigger a pernicious bug in pyright (1.1.403).
 
 class ClusterError(Exception): ...
 
 #
-@overload
-def whiten(obs: onp.ArrayND[np.bool | npc.integer], check_finite: bool | None = None) -> onp.Array2D[np.float64]: ...
-@overload
-def whiten[InexactT: npc.inexact](obs: onp.ArrayND[InexactT], check_finite: bool | None = None) -> onp.Array2D[InexactT]: ...
+@overload  # ?d, +f64
+def whiten(
+    obs: onp.ArrayND[npc.integer | np.bool, _JustAnyShape], check_finite: bool | None = None
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d, ~inexact
+def whiten[InexactT: npc.inexact](
+    obs: onp.ArrayND[InexactT, _JustAnyShape], check_finite: bool | None = None
+) -> onp.ArrayND[InexactT]: ...
+@overload  # 1d, +f64
+def whiten(obs: onp.Array1D[npc.integer | np.bool], check_finite: bool | None = None) -> onp.Array1D[np.float64]: ...
+@overload  # 1d, ~inexact
+def whiten[InexactT: npc.inexact](obs: onp.Array1D[InexactT], check_finite: bool | None = None) -> onp.Array1D[InexactT]: ...
+@overload  # 2d, +f64
+def whiten(obs: onp.Array2D[npc.integer | np.bool], check_finite: bool | None = None) -> onp.Array2D[np.float64]: ...
+@overload  # 2d, ~inexact
+def whiten[InexactT: npc.inexact](obs: onp.Array2D[InexactT], check_finite: bool | None = None) -> onp.Array2D[InexactT]: ...
+@overload  # nd, +f64
+def whiten(obs: onp.ArrayND[npc.integer | np.bool], check_finite: bool | None = None) -> onp.ArrayND[np.float64]: ...
+@overload  # nd, ~inexact
+def whiten[InexactT: npc.inexact](obs: onp.ArrayND[InexactT], check_finite: bool | None = None) -> onp.ArrayND[InexactT]: ...
 
 #
 @overload  # float32
@@ -60,9 +77,75 @@ def py_vq(
 ) -> tuple[onp.Array1D[np.intp], onp.Array1D[npc.floating]]: ...
 
 #
-@overload  # float32
+@overload  # ?d float32
 def kmeans(
-    obs: onp.CanArrayND[np.float32],
+    obs: onp.ArrayND[np.float32, _JustAnyShape],
+    k_or_guess: int | _ToFloat32_2D,
+    iter: int = 20,
+    thresh: float = 1e-5,
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.ArrayND[np.float32], np.float32]: ...
+@overload  # ?d float64
+def kmeans(
+    obs: onp.ArrayND[np.float64, _JustAnyShape],
+    k_or_guess: int | _AsFloat64_2D,
+    iter: int = 20,
+    thresh: float = 1e-5,
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.ArrayND[np.float64], np.float64]: ...
+@overload  # ?d floating
+def kmeans(
+    obs: onp.ArrayND[npc.floating, _JustAnyShape],
+    k_or_guess: int | onp.ToFloat2D,
+    iter: int = 20,
+    thresh: float = 1e-5,
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.ArrayND[np.float64 | Any], np.float64 | Any]: ...
+@overload  # 1d float32
+def kmeans(
+    obs: onp.ToJustFloat32Strict1D,
+    k_or_guess: int | _ToFloat32_2D,
+    iter: int = 20,
+    thresh: float = 1e-5,
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.float32], np.float32]: ...
+@overload  # 1d float64
+def kmeans(
+    obs: onp.ToJustFloat64Strict1D,
+    k_or_guess: int | _AsFloat64_2D,
+    iter: int = 20,
+    thresh: float = 1e-5,
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.float64], np.float64]: ...
+@overload  # 1d floating
+def kmeans(
+    obs: onp.ToJustFloatStrict1D,
+    k_or_guess: int | onp.ToFloat2D,
+    iter: int = 20,
+    thresh: float = 1e-5,
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.float64 | Any], np.float64 | Any]: ...
+@overload  # 2d float32
+def kmeans(
+    obs: onp.ToJustFloat32Strict2D,
     k_or_guess: int | _ToFloat32_2D,
     iter: int = 20,
     thresh: float = 1e-5,
@@ -71,9 +154,9 @@ def kmeans(
     seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[np.float32], np.float32]: ...
-@overload  # float64
+@overload  # 2d float64
 def kmeans(
-    obs: onp.ToJustFloat64_2D,
+    obs: onp.ToJustFloat64Strict2D,
     k_or_guess: int | _AsFloat64_2D,
     iter: int = 20,
     thresh: float = 1e-5,
@@ -82,9 +165,9 @@ def kmeans(
     seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[np.float64], np.float64]: ...
-@overload  # floating
+@overload  # 2d floating
 def kmeans(
-    obs: onp.ToJustFloat2D,
+    obs: onp.ToJustFloatStrict2D,
     k_or_guess: int | onp.ToFloat2D,
     iter: int = 20,
     thresh: float = 1e-5,
@@ -92,7 +175,7 @@ def kmeans(
     *,
     seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
-) -> tuple[onp.Array2D[npc.floating], npc.floating]: ...
+) -> tuple[onp.Array2D[np.float64 | Any], np.float64 | Any]: ...
 
 #
 def _kpoints[InexactT: npc.inexact](
@@ -118,9 +201,87 @@ _valid_miss_meth: Final[dict[str, Callable[[], None]]] = ...  # undocumented
 # mypy: disable-error-code=overload-overlap
 
 #
-@overload  # float32
+@overload  # ?d float32
 def kmeans2(
-    data: onp.CanArrayND[np.float32],
+    data: onp.ArrayND[np.float32, _JustAnyShape],
+    k: int | _ToFloat32_2D,
+    iter: int = 10,
+    thresh: float = 1e-5,
+    minit: _InitMethod = "random",
+    missing: _MissingMethod = "warn",
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.ArrayND[np.float32], onp.Array1D[np.int32]]: ...
+@overload  # ?d float64
+def kmeans2(
+    data: onp.ArrayND[np.float64, _JustAnyShape],
+    k: int | _AsFloat64_2D,
+    iter: int = 10,
+    thresh: float = 1e-5,
+    minit: _InitMethod = "random",
+    missing: _MissingMethod = "warn",
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.Array1D[np.int32]]: ...
+@overload  # ?d floating
+def kmeans2(
+    data: onp.ArrayND[npc.floating, _JustAnyShape],
+    k: int | onp.ToFloat2D,
+    iter: int = 10,
+    thresh: float = 1e-5,
+    minit: _InitMethod = "random",
+    missing: _MissingMethod = "warn",
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.Array1D[np.int32]]: ...
+@overload  # 1d float32
+def kmeans2(
+    data: onp.ToJustFloat32Strict1D,
+    k: int | _ToFloat32_2D,
+    iter: int = 10,
+    thresh: float = 1e-5,
+    minit: _InitMethod = "random",
+    missing: _MissingMethod = "warn",
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.float32], onp.Array1D[np.int32]]: ...
+@overload  # 1d float64
+def kmeans2(
+    data: onp.ToJustFloat64Strict1D,
+    k: int | _AsFloat64_2D,
+    iter: int = 10,
+    thresh: float = 1e-5,
+    minit: _InitMethod = "random",
+    missing: _MissingMethod = "warn",
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.int32]]: ...
+@overload  # 1d floating
+def kmeans2(
+    data: onp.ToJustFloatStrict1D,
+    k: int | onp.ToFloat2D,
+    iter: int = 10,
+    thresh: float = 1e-5,
+    minit: _InitMethod = "random",
+    missing: _MissingMethod = "warn",
+    check_finite: bool = True,
+    *,
+    seed: onp.random.ToRNG | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.int32]]: ...
+@overload  # 2d float32
+def kmeans2(
+    data: onp.ToJustFloat32Strict2D,
     k: int | _ToFloat32_2D,
     iter: int = 10,
     thresh: float = 1e-5,
@@ -131,9 +292,9 @@ def kmeans2(
     seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[np.float32], onp.Array1D[np.int32]]: ...
-@overload  # float64
+@overload  # 2d float64
 def kmeans2(
-    data: onp.CanArrayND[np.float64] | _PyFloatMax2D,
+    data: onp.ToJustFloat64Strict2D,
     k: int | _AsFloat64_2D,
     iter: int = 10,
     thresh: float = 1e-5,
@@ -144,9 +305,9 @@ def kmeans2(
     seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.int32]]: ...
-@overload  # floating
+@overload  # 2d floating
 def kmeans2(
-    data: onp.CanArrayND[npc.floating] | _PyFloatMax2D,
+    data: onp.ToJustFloatStrict2D,
     k: int | onp.ToFloat2D,
     iter: int = 10,
     thresh: float = 1e-5,
@@ -156,4 +317,4 @@ def kmeans2(
     *,
     seed: onp.random.ToRNG | None = None,
     rng: onp.random.ToRNG | None = None,
-) -> tuple[onp.Array2D[npc.floating], onp.Array1D[np.int32]]: ...
+) -> tuple[onp.Array2D[np.float64 | Any], onp.Array1D[np.int32]]: ...
