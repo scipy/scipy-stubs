@@ -1,44 +1,56 @@
-from collections.abc import Iterable
-from typing import Literal, overload
+from collections.abc import Sequence
+from typing import Any, Literal, Never, overload
 
+import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 import optype.typing as opt
 
 __all__ = ["cossin"]
 
+###
+
 type _Tuple2[T] = tuple[T, T]
-type _Tuple3[T] = tuple[T, T, T]
+type _ToBlocks[T] = T | Sequence[T]
 
-type _Float1D = onp.Array1D[npc.floating]
-type _Float2D = onp.Array2D[npc.floating]
-type _FloatND = onp.ArrayND[npc.floating]
-type _Inexact2D = onp.Array2D[npc.inexact]
-type _InexactND = onp.ArrayND[npc.inexact]
+# workaround for https://github.com/microsoft/pyright/issues/10232
+type _JustAnyShape = tuple[Never, Never, Never, Never]
 
-@overload  # (float[:, :], separate=False) -> float[:, :]**3
+###
+
+@overload  # +f64, ?d
 def cossin(
-    X: onp.ToFloatStrict2D | Iterable[onp.ToFloatStrict2D],
+    X: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     separate: Literal[False] = False,
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> _Tuple3[_Float2D]: ...
-@overload  # (float[:, :, ...], separate=False) -> float[:, :, ...]**3
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # +f64, 2d
 def cossin(
-    X: onp.ToFloatND | Iterable[onp.ToFloatND],
+    X: _ToBlocks[onp.ToFloatStrict2D],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     separate: Literal[False] = False,
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> _Tuple3[_FloatND]: ...
-@overload  # (float[:, :], *, separate=True) -> (float[:, :]**2, float[:], float[:, :]**2)
+) -> tuple[onp.Array2D[np.float64 | Any], onp.Array2D[np.float64 | Any], onp.Array2D[np.float64 | Any]]: ...
+@overload  # +f64, nd
 def cossin(
-    X: onp.ToFloatStrict2D | Iterable[onp.ToFloatStrict2D],
+    X: _ToBlocks[onp.ToFloatND],
+    p: opt.AnyInt | None = None,
+    q: opt.AnyInt | None = None,
+    separate: Literal[False] = False,
+    swap_sign: bool = False,
+    compute_u: bool = True,
+    compute_vh: bool = True,
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # +f64, ?d, separate=True
+def cossin(
+    X: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
@@ -46,10 +58,10 @@ def cossin(
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> tuple[_Tuple2[_Float2D], _Float1D, _Tuple2[_Float2D]]: ...
-@overload  # (float[:, :, ...], *, separate=True) -> (float[:, :, ...]**2, float[:, ...], float[:, :, ...]**2)
+) -> tuple[_Tuple2[onp.ArrayND[np.float64 | Any]], onp.ArrayND[np.float64 | Any], _Tuple2[onp.ArrayND[np.float64 | Any]]]: ...
+@overload  # +f64, 2d, separate=True
 def cossin(
-    X: onp.ToFloatND | Iterable[onp.ToFloatND],
+    X: _ToBlocks[onp.ToFloatStrict2D],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
@@ -57,30 +69,51 @@ def cossin(
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> tuple[_Tuple2[_FloatND], _FloatND, _Tuple2[_FloatND]]: ...
-@overload  # (complex[:, :], separate=False) -> complex[:, :]**3
+) -> tuple[_Tuple2[onp.Array2D[np.float64 | Any]], onp.Array1D[np.float64 | Any], _Tuple2[onp.Array2D[np.float64 | Any]]]: ...
+@overload  # +f64, nd, separate=True
 def cossin(
-    X: onp.ToComplexStrict2D | Iterable[onp.ToComplexStrict2D],
+    X: _ToBlocks[onp.ToFloatND],
+    p: opt.AnyInt | None = None,
+    q: opt.AnyInt | None = None,
+    *,
+    separate: Literal[True],
+    swap_sign: bool = False,
+    compute_u: bool = True,
+    compute_vh: bool = True,
+) -> tuple[_Tuple2[onp.ArrayND[np.float64 | Any]], onp.ArrayND[np.float64 | Any], _Tuple2[onp.ArrayND[np.float64 | Any]]]: ...
+@overload  # ~c128, ?d
+def cossin(
+    X: onp.ArrayND[npc.complexfloating, _JustAnyShape],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     separate: Literal[False] = False,
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> _Tuple3[_Inexact2D]: ...
-@overload  # (complex[:, :, ...], separate=False) -> complex[:, :, ...]**3
+) -> tuple[onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+@overload  # ~c128, 2d
 def cossin(
-    X: onp.ToComplexND | Iterable[onp.ToComplexND],
+    X: _ToBlocks[onp.ToJustComplexStrict2D],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     separate: Literal[False] = False,
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> _Tuple3[_InexactND]: ...
-@overload  # (complex[:, :], separate=True) -> (complex[:, :]**2, float[:], complex[:, :]**2)
+) -> tuple[onp.Array2D[np.complex128 | Any], onp.Array2D[np.float64 | Any], onp.Array2D[np.complex128 | Any]]: ...
+@overload  # ~c128, nd
 def cossin(
-    X: onp.ToComplexStrict2D | Iterable[onp.ToComplexStrict2D],
+    X: _ToBlocks[onp.ToJustComplexND],
+    p: opt.AnyInt | None = None,
+    q: opt.AnyInt | None = None,
+    separate: Literal[False] = False,
+    swap_sign: bool = False,
+    compute_u: bool = True,
+    compute_vh: bool = True,
+) -> tuple[onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+@overload  # ~c128, ?d, separate=True
+def cossin(
+    X: onp.ArrayND[npc.complexfloating, _JustAnyShape],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
@@ -88,10 +121,12 @@ def cossin(
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> tuple[_Tuple2[_Inexact2D], _Float1D, _Tuple2[_Inexact2D]]: ...
-@overload  # (complex[:, :, ...], separate=True) -> (complex[:, :, ...]**2, float[:, ...], complex[:, :, ...]**2)
+) -> tuple[
+    _Tuple2[onp.ArrayND[np.complex128 | Any]], onp.ArrayND[np.float64 | Any], _Tuple2[onp.ArrayND[np.complex128 | Any]]
+]: ...
+@overload  # ~c128, 2d, separate=True
 def cossin(
-    X: onp.ToComplexND | Iterable[onp.ToComplexND],
+    X: _ToBlocks[onp.ToJustComplexStrict2D],
     p: opt.AnyInt | None = None,
     q: opt.AnyInt | None = None,
     *,
@@ -99,4 +134,19 @@ def cossin(
     swap_sign: bool = False,
     compute_u: bool = True,
     compute_vh: bool = True,
-) -> tuple[_Tuple2[_InexactND], _FloatND, _Tuple2[_InexactND]]: ...
+) -> tuple[
+    _Tuple2[onp.Array2D[np.complex128 | Any]], onp.Array1D[np.float64 | Any], _Tuple2[onp.Array2D[np.complex128 | Any]]
+]: ...
+@overload  # ~c128, nd, separate=True
+def cossin(
+    X: _ToBlocks[onp.ToJustComplexND],
+    p: opt.AnyInt | None = None,
+    q: opt.AnyInt | None = None,
+    *,
+    separate: Literal[True],
+    swap_sign: bool = False,
+    compute_u: bool = True,
+    compute_vh: bool = True,
+) -> tuple[
+    _Tuple2[onp.ArrayND[np.complex128 | Any]], onp.ArrayND[np.float64 | Any], _Tuple2[onp.ArrayND[np.complex128 | Any]]
+]: ...
