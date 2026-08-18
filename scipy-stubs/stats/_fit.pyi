@@ -37,7 +37,7 @@ _PXFT_co = TypeVar("_PXFT_co", bound=Callable[Concatenate[onp.ToFloat, ...], np.
 class FitResult(Generic[_PXFT_co]):
     # tuple of at least size 1
     pxf: _PXFT_co
-    params: tuple[onp.ToFloat, *tuple[onp.ToFloat, ...]]
+    params: tuple[np.float64, *tuple[np.float64, ...]]
     success: bool | None
     message: str | None
     discrete: bool
