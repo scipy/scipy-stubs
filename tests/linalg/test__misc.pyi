@@ -39,9 +39,9 @@ py_f_2d: list[list[float]]
 ###
 # bandwidth
 
-assert_type(bandwidth(f64_2d), tuple[np.int64, np.int64])
+assert_type(bandwidth(f64_2d), tuple[int, int])
 assert_type(bandwidth(f64_3d), tuple[onp.Array1D[np.int64], onp.Array1D[np.int64]])
-assert_type(bandwidth(c128_2d), tuple[np.int64, np.int64])
+assert_type(bandwidth(c128_2d), tuple[int, int])
 assert_type(bandwidth(c128_3d), tuple[onp.Array1D[np.int64], onp.Array1D[np.int64]])
 
 ###
