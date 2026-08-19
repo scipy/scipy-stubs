@@ -44,7 +44,6 @@ type _SequenceLike = tuple[_ScalarLike, ...] | list[_ScalarLike] | onp.Array1D
 type _MatrixLike = tuple[_SequenceLike, ...] | list[_SequenceLike] | onp.Array2D
 
 type _IntP = np.int32 | np.int64
-type _UIntP = np.uint32 | np.uint64
 
 _ScalarT = TypeVar("_ScalarT", bound=np.generic, default=Any)
 
@@ -127,11 +126,11 @@ def get_index_dtype(
     arrays: tuple[onp.ToInt | onp.ToIntND, ...], maxval: onp.ToFloat | None = None, check_contents: bool = False
 ) -> type[_IntP]: ...
 
-# NOTE: The inline annotations (`(np.dtype) -> np.dtype`) are incorrect.
+#
 @overload
-def get_sum_dtype(dtype: np.dtype[npc.unsignedinteger]) -> type[_UIntP]: ...
+def get_sum_dtype(dtype: np.dtype[npc.unsignedinteger]) -> np.dtype[np.uint]: ...
 @overload
-def get_sum_dtype(dtype: np.dtype[np.bool | npc.signedinteger]) -> type[_IntP]: ...
+def get_sum_dtype(dtype: np.dtype[np.bool | npc.signedinteger]) -> np.dtype[np.int_]: ...
 @overload
 def get_sum_dtype[DTypeT: np.dtype[npc.inexact | np.flexible | np.datetime64 | np.timedelta64 | np.object_]](
     dtype: DTypeT,
