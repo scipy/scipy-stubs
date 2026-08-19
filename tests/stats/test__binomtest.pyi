@@ -11,8 +11,8 @@ from scipy.stats import binomtest
 # binomtest
 
 _r_0d = binomtest(5, 10)
-assert_type(_r_0d.k, np.float64)
-assert_type(_r_0d.n, np.float64)
+assert_type(_r_0d.k, int)
+assert_type(_r_0d.n, int)
 assert_type(_r_0d.statistic, np.float64)
 assert_type(_r_0d.pvalue, np.float64)
 assert_type(_r_0d.proportion_ci().low, np.float64)
