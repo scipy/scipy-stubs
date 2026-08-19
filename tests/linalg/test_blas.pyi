@@ -14,7 +14,7 @@ assert_type(
     find_best_blas_type(),
     (
         tuple[L["s"], np.dtype[np.float32], bool]
-        | tuple[L["f"], np.dtype[np.float64], bool]
+        | tuple[L["d"], np.dtype[np.float64], bool]
         | tuple[L["c"], np.dtype[np.complex64], bool]
         | tuple[L["z"], np.dtype[np.complex128], bool]
     ),
