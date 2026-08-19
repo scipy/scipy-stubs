@@ -1,5 +1,5 @@
 from collections.abc import Iterable, Sequence
-from typing import Final, Literal
+from typing import Final, Literal, overload
 
 import numpy.typing as npt
 import optype.numpy as onp
@@ -636,8 +636,24 @@ __all__ = ["get_lapack_funcs"]
 HAS_LP64: Final[bool] = ...
 HAS_ILP64: Final[bool] = ...
 
+#
+@overload
 def get_lapack_funcs(
-    names: Iterable[str] | str,
+    names: str,
+    arrays: Sequence[onp.ArrayND] = (),
+    dtype: npt.DTypeLike | None = None,
+    ilp64: Literal["preferred"] | bool = "preferred",
+) -> _FortranFunction: ...
+@overload
+def get_lapack_funcs(
+    names: list[str] | tuple[str, ...],
+    arrays: Sequence[onp.ArrayND] = (),
+    dtype: npt.DTypeLike | None = None,
+    ilp64: Literal["preferred"] | bool = "preferred",
+) -> list[_FortranFunction]: ...
+@overload
+def get_lapack_funcs(
+    names: Iterable[str],
     arrays: Sequence[onp.ArrayND] = (),
     dtype: npt.DTypeLike | None = None,
     ilp64: Literal["preferred"] | bool = "preferred",
