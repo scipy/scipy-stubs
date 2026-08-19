@@ -8,5 +8,5 @@ from scipy.linalg.blas import _FortranFunction
 ###
 # get_lapack_funcs
 
-assert_type(get_lapack_funcs("getrf"), list[_FortranFunction] | _FortranFunction)
-assert_type(get_lapack_funcs(["getrf", "getrs"]), list[_FortranFunction] | _FortranFunction)
+assert_type(get_lapack_funcs("getrf"), _FortranFunction)
+assert_type(get_lapack_funcs(["getrf", "getrs"]), list[_FortranFunction])
