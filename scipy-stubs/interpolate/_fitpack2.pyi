@@ -123,12 +123,30 @@ class LSQUnivariateSpline(UnivariateSpline):
 class _BivariateSplineBase:  # undocumented
     @overload  # grid=True  (default)
     def __call__(
-        self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, grid: Literal[True] = True
+        self,
+        /,
+        x: onp.ToFloat | onp.ToFloatND,
+        y: onp.ToFloat | onp.ToFloatND,
+        dx: int = 0,
+        dy: int = 0,
+        grid: Literal[True] = True,
     ) -> onp.Array2D[np.float64]: ...
-    @overload  # grid=False
+    @overload  # 0d, 0d, grid=False
     def __call__(
-        self, /, x: onp.ToFloatND, y: onp.ToFloatND, dx: int = 0, dy: int = 0, *, grid: Literal[False]
+        self, /, x: onp.ToFloat, y: onp.ToFloat, dx: int = 0, dy: int = 0, *, grid: Literal[False]
+    ) -> onp.Array0D[np.float64]: ...
+    @overload  # 1d, {0,1}d, grid=False
+    def __call__(
+        self, /, x: onp.ToFloatStrict1D, y: onp.ToFloat | onp.ToFloatStrict1D, dx: int = 0, dy: int = 0, *, grid: Literal[False]
     ) -> onp.Array1D[np.float64]: ...
+    @overload  # 0d, 1d, grid=False
+    def __call__(
+        self, /, x: onp.ToFloat, y: onp.ToFloatStrict1D, dx: int = 0, dy: int = 0, *, grid: Literal[False]
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # ?d, ?d, grid=False
+    def __call__(
+        self, /, x: onp.ToFloat | onp.ToFloatND, y: onp.ToFloat | onp.ToFloatND, dx: int = 0, dy: int = 0, *, grid: Literal[False]
+    ) -> onp.ArrayND[np.float64]: ...
 
     #
     def get_residual(self, /) -> float: ...
