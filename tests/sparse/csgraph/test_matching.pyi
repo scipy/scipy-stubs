@@ -16,8 +16,8 @@ _csr_arr: sparse.csr_array[np.float64, tuple[int, int]]
 
 # maximum_bipartite_matching
 
-assert_type(maximum_bipartite_matching(_csr_arr), onp.Array1D[np.int32 | np.intp])
-assert_type(maximum_bipartite_matching(_csr_arr, perm_type="column"), onp.Array1D[np.int32 | np.intp])
+assert_type(maximum_bipartite_matching(_csr_arr), onp.Array1D[np.int32])
+assert_type(maximum_bipartite_matching(_csr_arr, perm_type="column"), onp.Array1D[np.int32])
 
 # min_weight_full_bipartite_matching
 
