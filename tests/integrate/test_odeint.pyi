@@ -26,6 +26,8 @@ type _MatF64 = np.ndarray[tuple[int, int], np.dtype[np.float64]]
 ###
 
 assert_type(odeint(pend_0, y0, t), _MatF64)
+assert_type(odeint(pend_0, y0, t, rtol=1e-6, atol=1e-8), _MatF64)
+assert_type(odeint(pend_0, y0, t, rtol=[1e-6, 1e-7], atol=t), _MatF64)
 assert_type(odeint(pend_0, y0, t, full_output=True)[0], _MatF64)
 assert_type(odeint(pend_0, y0, t, full_output=True)[1]["hu"], _VecF64)
 assert_type(odeint(pend_0, y0, t, full_output=True)[1]["message"], str)
