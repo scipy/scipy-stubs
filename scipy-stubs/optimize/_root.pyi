@@ -114,6 +114,13 @@ class OptimizeResult(_OptimizeResult, Generic[_ScalarT_co, _ShapeT_co]):
     x: onp.ArrayND[_ScalarT_co, _ShapeT_co]
     nfev: int
     method: _Method
+    status: int  # method != "df-sane"
+    nit: int  # method != "hybr" | "lm"
+    fjac: onp.Array2D[np.float64]  # method == "hybr" | "lm"
+    qtf: onp.Array1D[np.float64]  # method == "hybr" | "lm"
+    r: onp.Array1D[np.float64]  # method == "hybr"
+    cov_x: onp.Array2D[np.float64] | None  # method == "lm"
+    ipvt: onp.Array1D[np.int32]  # method == "lm"
 
 @overload  # hybr | lm
 def root(
