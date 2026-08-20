@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import Concatenate, Final, final, overload, type_check_only
+from typing import Any, Concatenate, Final, final, overload, type_check_only
 from typing_extensions import TypedDict
 
 import numpy as np
@@ -8,8 +8,12 @@ import optype.numpy.compat as npc
 
 from scipy._lib._util import _RichResult
 
+###
+
 type _Tuple2[T] = tuple[T, T]
 type _Tuple3[T] = tuple[T, T, T]
+
+type _F64OrND[ShapeT: tuple[int, ...]] = np.float64 | onp.ArrayND[np.float64, ShapeT] | Any
 
 @type_check_only
 class _Tolerances(TypedDict, total=False, closed=True):
@@ -20,34 +24,34 @@ class _Tolerances(TypedDict, total=False, closed=True):
 
 @type_check_only
 class _ResultBase[ShapeT: tuple[int, ...], BrackT](_RichResult):
-    success: onp.ArrayND[np.bool, ShapeT]
-    status: onp.ArrayND[np.int32, ShapeT]
-    nfev: onp.ArrayND[np.int32, ShapeT]
-    nit: onp.ArrayND[np.int32, ShapeT]
+    success: onp.ArrayND[np.bool, ShapeT] | np.bool
+    status: onp.ArrayND[np.int32, ShapeT] | np.int32
+    nfev: onp.ArrayND[np.int32, ShapeT] | np.int32
+    nit: onp.ArrayND[np.int32, ShapeT] | np.int32
     bracket: BrackT
     f_bracket: BrackT
 
 @type_check_only
 class _FindResultBase[ShapeT: tuple[int, ...], BrackT](_ResultBase[ShapeT, BrackT]):
-    x: onp.ArrayND[np.float64, ShapeT]
-    f_x: onp.ArrayND[np.float64, ShapeT]
+    x: _F64OrND[ShapeT]
+    f_x: _F64OrND[ShapeT]
     _order_keys: Final = ["success", "status", "x", "f_x", "nfev", "nit", "bracket", "f_bracket"]
 
 @type_check_only
 @final
-class _FindRootResult[ShapeT: tuple[int, ...]](_FindResultBase[ShapeT, _Tuple2[onp.ArrayND[np.float64, ShapeT]]]): ...
+class _FindRootResult[ShapeT: tuple[int, ...]](_FindResultBase[ShapeT, _Tuple2[_F64OrND[ShapeT]]]): ...
 
 @type_check_only
 @final
-class _FindMinResult[ShapeT: tuple[int, ...]](_FindResultBase[ShapeT, _Tuple3[onp.ArrayND[np.float64, ShapeT]]]): ...
+class _FindMinResult[ShapeT: tuple[int, ...]](_FindResultBase[ShapeT, _Tuple3[_F64OrND[ShapeT]]]): ...
 
 @type_check_only
 @final
-class _BracketRootResult[ShapeT: tuple[int, ...]](_ResultBase[ShapeT, _Tuple2[onp.ArrayND[np.float64, ShapeT]]]): ...
+class _BracketRootResult[ShapeT: tuple[int, ...]](_ResultBase[ShapeT, _Tuple2[_F64OrND[ShapeT]]]): ...
 
 @type_check_only
 @final
-class _BracketMinResult[ShapeT: tuple[int, ...]](_ResultBase[ShapeT, _Tuple3[onp.ArrayND[np.float64, ShapeT]]]): ...
+class _BracketMinResult[ShapeT: tuple[int, ...]](_ResultBase[ShapeT, _Tuple3[_F64OrND[ShapeT]]]): ...
 
 ###
 
@@ -55,7 +59,7 @@ class _BracketMinResult[ShapeT: tuple[int, ...]](_ResultBase[ShapeT, _Tuple3[onp
 @overload
 def find_root[ShapeT: tuple[int, ...]](
     f: Callable[[onp.ArrayND[np.float64, ShapeT]], onp.ArrayND[npc.floating]],
-    init: _Tuple2[onp.ToFloat] | _Tuple2[onp.ToFloatND],
+    init: _Tuple2[onp.ToFloat | onp.ToFloatND],
     /,
     *,
     args: tuple[()] = (),
@@ -67,7 +71,7 @@ def find_root[ShapeT: tuple[int, ...]](
 @overload
 def find_root[ShapeT: tuple[int, ...]](
     f: Callable[Concatenate[onp.ArrayND[np.float64, ShapeT], ...], onp.ArrayND[npc.floating]],
-    init: _Tuple2[onp.ToFloat] | _Tuple2[onp.ToFloatND],
+    init: _Tuple2[onp.ToFloat | onp.ToFloatND],
     /,
     *,
     args: tuple[object, ...],
@@ -79,7 +83,7 @@ def find_root[ShapeT: tuple[int, ...]](
 @overload
 def find_root[ShapeT: tuple[int, ...]](
     f: Callable[Concatenate[onp.ArrayND[np.float64, ShapeT], ...], onp.ArrayND[npc.floating]],
-    init: _Tuple2[onp.ToFloat] | _Tuple2[onp.ToFloatND],
+    init: _Tuple2[onp.ToFloat | onp.ToFloatND],
     /,
     *,
     args: tuple[object, ...] = (),
@@ -93,7 +97,7 @@ def find_root[ShapeT: tuple[int, ...]](
 @overload
 def find_minimum[ShapeT: tuple[int, ...]](
     f: Callable[[onp.ArrayND[np.float64, ShapeT]], onp.ArrayND[npc.floating]],
-    init: tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat] | tuple[onp.ToFloatND, onp.ToFloatND, onp.ToFloatND],
+    init: _Tuple3[onp.ToFloat | onp.ToFloatND],
     /,
     *,
     args: tuple[()] = (),
@@ -105,7 +109,7 @@ def find_minimum[ShapeT: tuple[int, ...]](
 @overload
 def find_minimum[ShapeT: tuple[int, ...]](
     f: Callable[Concatenate[onp.ArrayND[np.float64, ShapeT], ...], onp.ArrayND[npc.floating]],
-    init: tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat] | tuple[onp.ToFloatND, onp.ToFloatND, onp.ToFloatND],
+    init: _Tuple3[onp.ToFloat | onp.ToFloatND],
     /,
     *,
     args: tuple[object, ...],
@@ -117,7 +121,7 @@ def find_minimum[ShapeT: tuple[int, ...]](
 @overload
 def find_minimum[ShapeT: tuple[int, ...]](
     f: Callable[Concatenate[onp.ArrayND[np.float64, ShapeT], ...], onp.ArrayND[npc.floating]],
-    init: tuple[onp.ToFloat, onp.ToFloat, onp.ToFloat] | tuple[onp.ToFloatND, onp.ToFloatND, onp.ToFloatND],
+    init: _Tuple3[onp.ToFloat | onp.ToFloatND],
     /,
     *,
     args: tuple[object, ...] = (),
