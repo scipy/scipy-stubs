@@ -182,6 +182,29 @@ class OptimizeResult(_OptimizeResult, Generic[_FunT_co]):
     hess: _Float2D  # requires `hess` or `hessp`
     hess_inv: _Float2D | LinearOperator  # requires `hess` or `hessp`, depends on solver
     nhev: int  # requires `hess` or `hessp`
+    final_simplex: tuple[_Float2D, _Float1D]  # requires method="Nelder-Mead"
+    direc: _Float2D  # requires method="Powell"
+    multipliers: _Float1D  # requires method="SLSQP"
+
+    # requires method="trust-constr"
+    method: Literal["equality_constrained_sqp", "tr_interior_point"]
+    grad: _Float1D
+    lagrangian_grad: _Float1D
+    constr: list[_Float1D]
+    v: list[_Float1D]
+    constr_nfev: list[int]
+    constr_njev: list[int]
+    constr_nhev: list[int]
+    optimality: np.float64
+    constr_violation: np.float64
+    tr_radius: np.float64
+    constr_penalty: float
+    execution_time: float
+    barrier_parameter: float  # requires an inequality constraint
+    barrier_tolerance: float  # requires an inequality constraint
+    niter: int
+    cg_niter: int
+    cg_stop_cond: int
 
 @type_check_only
 class _CobylaResult(OptimizeResult[np.float64]):
