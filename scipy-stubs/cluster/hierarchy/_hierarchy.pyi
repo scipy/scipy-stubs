@@ -1,4 +1,5 @@
 from typing import Any, Final, Literal, final, type_check_only
+from typing_extensions import disjoint_base
 
 import numpy as np
 import optype.numpy as onp
@@ -16,6 +17,7 @@ class Pair:
     value: Final[float]
 
 # defined in `cluster/_structures.pxi`
+@disjoint_base
 class Heap(_CythonMixin):
     index_by_key: Final[onp.Array1D[np.int32]]
     keys_by_index: Final[onp.Array1D[np.int32]]
@@ -27,6 +29,7 @@ class Heap(_CythonMixin):
     def remove_min(self, /) -> None: ...
     def change_value(self, /, key: int, value: float) -> None: ...
 
+@disjoint_base
 class LinkageUnionFind(_CythonMixin):
     parent: Final[onp.Array1D[np.int32]]
     size: Final[onp.Array1D[np.int32]]

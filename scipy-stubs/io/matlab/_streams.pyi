@@ -1,5 +1,5 @@
 from typing import Any, ClassVar, Final, Literal, Protocol, type_check_only
-from typing_extensions import CapsuleType
+from typing_extensions import CapsuleType, disjoint_base
 
 @type_check_only
 class _FileLike(Protocol):
@@ -13,6 +13,7 @@ BLOCK_SIZE: Final = 131072  # undocumented
 
 __pyx_capi__: Final[dict[str, CapsuleType]] = ...  # undocumented
 
+@disjoint_base
 class GenericStream:  # undocumented
     __pyx_vtable__: ClassVar[CapsuleType] = ...
 
@@ -26,6 +27,7 @@ class GenericStream:  # undocumented
     def __reduce_cython__(self) -> tuple[Any, ...]: ...
     def __setstate_cython__(self, /, state: tuple[object, ...]) -> None: ...
 
+@disjoint_base
 class ZlibInputStream(GenericStream):  # undocumented
     def __init__(self, /, fobj: _FileLike, max_length: int) -> None: ...
 

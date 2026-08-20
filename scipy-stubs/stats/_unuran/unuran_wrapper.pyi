@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from typing import Generic, NamedTuple, Protocol, Self, overload, type_check_only
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, disjoint_base
 
 import numpy as np
 import optype.numpy as onp
@@ -51,6 +51,7 @@ class UError(NamedTuple):
     max_error: float
     mean_absolute_error: float
 
+@disjoint_base
 class Method(Generic[_ScalarT_co]):
     @overload
     def rvs(self: Method[np.int32], /, size: None = None, random_state: onp.random.ToRNG | None = None) -> int: ...
@@ -62,6 +63,7 @@ class Method(Generic[_ScalarT_co]):
     #
     def set_random_state(self, /, random_state: onp.random.ToRNG | None = None) -> None: ...
 
+@disjoint_base
 class TransformedDensityRejection(Method[np.float64]):
     def __new__(
         cls,
@@ -137,6 +139,7 @@ class NumericalInversePolynomial(_PPFMethodMixin, Method[np.float64]):
         self, /, size: int | tuple[int, ...], d: int | None = None, qmc_engine: stats.qmc.QMCEngine | None = None
     ) -> onp.ArrayND[np.float64]: ...
 
+@disjoint_base
 class NumericalInverseHermite(_PPFMethodMixin, Method[np.float64]):
     def __new__(
         cls,
@@ -166,6 +169,7 @@ class NumericalInverseHermite(_PPFMethodMixin, Method[np.float64]):
         self, /, size: int | tuple[int, ...], d: int | None = None, qmc_engine: stats.qmc.QMCEngine | None = None
     ) -> onp.ArrayND[np.float64]: ...
 
+@disjoint_base
 class DiscreteAliasUrn(Method[np.int32]):
     def __new__(
         cls,
@@ -176,6 +180,7 @@ class DiscreteAliasUrn(Method[np.int32]):
         random_state: onp.random.ToRNG | None = None,
     ) -> Self: ...
 
+@disjoint_base
 class DiscreteGuideTable(_PPFMethodMixin, Method[np.int32]):
     def __new__(
         cls,

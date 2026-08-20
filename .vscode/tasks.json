@@ -92,7 +92,6 @@
       "--no-editable",
       "--reinstall-package=scipy-stubs",
       "stubtest",
-      "--ignore-disjoint-bases",
       "--allowlist=.mypyignore",
       "scipy"
     ],

@@ -1,6 +1,7 @@
 # see `scipy/stats/_biasedurn.pyx`
 
 from typing import Never, Self, type_check_only
+from typing_extensions import disjoint_base
 
 import numpy as np
 import optype as op
@@ -21,10 +22,14 @@ class _PyNCHypergeometric:
 def __setstate_cython__(self: Never, pyx_state: Never, /) -> None: ...  # undocumented
 def __reduce_cython__(self: Never, /) -> Never: ...  # undocumented
 
+@disjoint_base
 class _PyFishersNCHypergeometric(_PyNCHypergeometric): ...  # undocumented
+
+@disjoint_base
 class _PyWalleniusNCHypergeometric(_PyNCHypergeometric): ...  # undocumented
 
 # undocumented
+@disjoint_base
 class _PyStochasticLib3:
     def Random(self, /) -> float: ...
     def SetAccuracy(self, /, accur: op.CanFloat) -> None: ...

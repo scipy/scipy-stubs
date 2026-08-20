@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from typing import Any, Concatenate, Generic, Never
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, disjoint_base
 
 import numpy as np
 import optype.numpy as onp
@@ -16,6 +16,7 @@ __all__ = ["BGLU", "LU"]
 
 def _consider_refactor[MethodT: Callable[Concatenate[Any, ...], object]](method: MethodT) -> MethodT: ...  # undocumented
 
+@disjoint_base
 class LU(Generic[_NumberT_co]):  # undocumented
     A: onp.Array2D[_NumberT_co]
     B: onp.Array2D[_NumberT_co]
@@ -29,6 +30,7 @@ class LU(Generic[_NumberT_co]):  # undocumented
     def update(self, /, i: int, j: int) -> None: ...
     def solve(self, /, q: onp.ArrayND[npc.number], transposed: bool = False) -> onp.ArrayND[_NumberT_co]: ...
 
+@disjoint_base
 class BGLU(LU[_NumberT_co], Generic[_NumberT_co]):  # undocumented
     plu: tuple[onp.ArrayND[Any], ...]
     L: onp.Array2D[_NumberT_co]

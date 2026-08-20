@@ -1,3 +1,6 @@
+from typing_extensions import disjoint_base
+
+@disjoint_base
 class Nolan:
     def __init__(self, /, alpha: float, beta: float, x0: float) -> None: ...
     def g(self, /, theta: float) -> float: ...

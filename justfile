@@ -47,7 +47,7 @@ typetest: (pyrefly "tests") (mypy "tests") (pyright "tests")
 # validate the stubs against the scipy runtime
 stubtest:
     uv run --no-editable --reinstall-package=scipy-stubs \
-        stubtest --ignore-disjoint-bases --allowlist=.mypyignore scipy
+        stubtest --allowlist=.mypyignore scipy
 
 # check stub and type-test completeness
 coverage:
