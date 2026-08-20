@@ -1,5 +1,5 @@
 from typing import Any, Generic, Literal as L, Protocol, overload, override, type_check_only
-from typing_extensions import TypeVar
+from typing_extensions import TypeVar, disjoint_base
 
 import numpy as np
 import optype.numpy as onp
@@ -50,6 +50,7 @@ class _KDTreeNode(Protocol):
 
 ###
 
+@disjoint_base
 class cKDTreeNode(_CythonMixin, _KDTreeNode, Generic[_NodeT_co]):
     @property
     @override
@@ -58,6 +59,7 @@ class cKDTreeNode(_CythonMixin, _KDTreeNode, Generic[_NodeT_co]):
     @override
     def greater(self, /) -> _NodeT_co: ...
 
+@disjoint_base
 class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     @property
     def data(self, /) -> _Float2D: ...

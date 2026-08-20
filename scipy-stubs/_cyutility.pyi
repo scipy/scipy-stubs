@@ -2,7 +2,7 @@ from _typeshed import Incomplete
 from builtins import memoryview as py_memoryview
 from types import EllipsisType
 from typing import Any, Final, Literal, Never, Self, SupportsIndex, TypedDict, type_check_only
-from typing_extensions import CapsuleType, ReadOnly
+from typing_extensions import CapsuleType, ReadOnly, disjoint_base
 
 ###
 
@@ -59,10 +59,12 @@ class CApiDict(TypedDict):
 __pyx_capi__: Final[CApiDict] = ...  # undocumented
 __test__: Final[dict[Any, Any]] = ...  # undocumented
 
+@disjoint_base
 class Enum:  # undocumented
     def __init__(self, /, name: str) -> None: ...
     def __setstate__(self, state: tuple[str], /) -> None: ...
 
+@disjoint_base
 class memoryview:  # undocumented
     __pyx_vtable__: Final[CapsuleType]
     base: Final[array]
@@ -84,6 +86,7 @@ class _memoryviewslize(memoryview):  # undocumented
     def count(self, /, value: Incomplete) -> int: ...
     def index(self, /, value: Incomplete, start: SupportsIndex = 0, stop: SupportsIndex | None = None) -> int: ...
 
+@disjoint_base
 class array:  # undocumented
     memview: Final[memoryview]
 

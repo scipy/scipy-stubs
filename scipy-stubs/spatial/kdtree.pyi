@@ -1,7 +1,7 @@
 # This file is not meant for public use and will be removed in SciPy v2.0.0.
 # Use the `scipy.spatial` namespace for importing the functions
 # included below.
-from typing_extensions import deprecated
+from typing_extensions import deprecated, disjoint_base
 
 from ._ckdtree import cKDTree as _cKDTree
 from ._kdtree import KDTree as _KDTree, Rectangle as _Rectangle
@@ -9,6 +9,7 @@ from ._kdtree import KDTree as _KDTree, Rectangle as _Rectangle
 __all__ = ["KDTree", "Rectangle", "cKDTree", "distance_matrix", "minkowski_distance", "minkowski_distance_p"]
 
 @deprecated("will be removed in SciPy v2.0.0")
+@disjoint_base
 class cKDTree(_cKDTree): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
