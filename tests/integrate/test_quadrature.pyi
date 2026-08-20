@@ -101,6 +101,8 @@ assert_type(simpson(c128_nd), Any)
 
 assert_type(romb(float_1d), np.float64)
 assert_type(romb(float_2d), onp.Array1D[np.float64])
+assert_type(romb(float_1d, show=True), np.float64)
+assert_type(romb(f64_1d, show=True), np.float64)
 
 assert_type(romb(complex_1d), np.complex128)
 assert_type(romb(complex_2d), onp.Array1D[np.complex128])
