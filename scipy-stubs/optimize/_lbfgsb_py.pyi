@@ -37,7 +37,7 @@ class LbfgsInvHessProduct(LinearOperator[np.float64]):
     sk: Final[onp.Array2D[np.float64]]
     yk: Final[onp.Array2D[np.float64]]
     n_corrs: Final[int]
-    rho: Final[float]
+    rho: Final[onp.Array1D[np.float64]]
 
     @override
     def __new__(cls, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> Self: ...  # pyrefly:ignore[bad-override]
