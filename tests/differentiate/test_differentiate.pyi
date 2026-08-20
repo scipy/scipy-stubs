@@ -1,6 +1,4 @@
-# ruff: file-ignore[commented-out-code]
-
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -8,46 +6,53 @@ import optype.numpy as onp
 from scipy.differentiate import derivative, hessian, jacobian
 from scipy.differentiate._differentiate import _DerivativeResult0D, _DerivativeResultND, _HessianResult, _JacobianResult
 
-# Test scalar
-i32_0d: np.int32
-i64_0d: np.int64
-f32_0d: np.float32
-f64_0d: np.float64
+###
 
-i64_1d: onp.Array1D[np.int64]
-f64_1d: onp.Array1D[np.float64]
-f64_2d: onp.Array2D[np.float64]
+_i32_0d: np.int32
+_i64_0d: np.int64
+_f32_0d: np.float32
+_f64_0d: np.float64
 
-def f_f64_0d(x: np.float64) -> np.float64: ...
-def f_f32_0d(x: np.float32) -> np.float32: ...
-def f_f64_1d(x: onp.Array1D[np.float64]) -> onp.Array1D[np.float64]: ...
-def f_f64_nd(x: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
-def f_f64_1nd_0d(x: onp.Array[onp.AtLeast1D, np.float64]) -> np.float64: ...
-def f_f64_1nd_nd(x: onp.Array[onp.AtLeast1D, np.float64]) -> onp.ArrayND[np.float64]: ...
-def f_f64_0d_arg(x: np.float64, a: float) -> np.float64: ...
+_i64_1d: onp.Array1D[np.int64]
+_f64_1d: onp.Array1D[np.float64]
+_f64_2d: onp.Array2D[np.float64]
 
-# NOTE: the commented out assertions only work on numpy 2.1+, so we instead check for assignability
+_py_f_1d: list[float]
+
+def _f_f32_0d(x: np.float32) -> np.float32: ...
+def _f_f64_0d(x: np.float64) -> np.float64: ...
+def _f_f64_1d(x: onp.Array1D[np.float64]) -> onp.Array1D[np.float64]: ...
+def _f_f64_nd(x: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
+def _f_f64_nd_0d(x: onp.ArrayND[np.float64]) -> np.float64: ...
+def _f_f64_nd_nd(x: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
+def _f_f64_0d_arg(x: np.float64, a: float) -> np.float64: ...
 
 ###
 # derivative
 
-assert_type(derivative(f_f64_0d, 1.0), _DerivativeResult0D[np.float64])
-assert_type(derivative(f_f64_0d, f64_0d), _DerivativeResult0D[np.float64])
-assert_type(derivative(f_f64_0d, i32_0d), _DerivativeResult0D[np.float64])
-assert_type(derivative(f_f32_0d, f32_0d), _DerivativeResult0D[np.float32])
+assert_type(derivative(_f_f64_0d, 1.0), _DerivativeResult0D[np.float64])
+assert_type(derivative(_f_f64_0d, _f64_0d), _DerivativeResult0D[np.float64])
+assert_type(derivative(_f_f64_0d, _i32_0d), _DerivativeResult0D[np.float64])
+assert_type(derivative(_f_f32_0d, _f32_0d), _DerivativeResult0D[np.float32])
 
-# assert_type(derivative(f_f64_1d, f64_1d), _DerivativeResultND[np.float64, tuple[int]])
-# assert_type(derivative(f_f64_nd, f64_2d), _DerivativeResultND[np.float64, tuple[int, int]])
-# assert_type(derivative(f_f64_1d, f64_1d, <...>), _DerivativeResultND[np.float64, tuple[int]])
-_0: _DerivativeResultND[np.float64, tuple[int]] = derivative(f_f64_1d, f64_1d)
-_1: _DerivativeResultND[np.float64, tuple[int, int]] = derivative(f_f64_nd, f64_2d)
-_2: _DerivativeResultND[np.float64, tuple[int]] = derivative(f_f64_1d, f64_1d, initial_step=f64_1d, step_direction=i64_1d)
+assert_type(derivative(_f_f64_1d, _f64_1d), _DerivativeResultND[np.float64, tuple[int]])
+assert_type(derivative(_f_f64_nd, _f64_2d), _DerivativeResultND[np.float64, tuple[Any, ...]])
+assert_type(
+    derivative(_f_f64_1d, _f64_1d, initial_step=_f64_1d, step_direction=_i64_1d), _DerivativeResultND[np.float64, tuple[int]]
+)
 
-assert_type(derivative(f_f64_0d_arg, 1.0, args=(2.0,)), _DerivativeResult0D[np.float64])
-assert_type(derivative(f_f64_0d, 1.0, tolerances={"atol": 0.1}), _DerivativeResult0D[np.float64])
+# the dtype follows `x`, not `f`
+assert_type(derivative(np.exp, _f64_1d), _DerivativeResultND[np.float64, tuple[int]])
+assert_type(derivative(np.exp, _i64_1d), _DerivativeResultND[np.float64, tuple[int]])
+assert_type(derivative(np.exp, _py_f_1d), _DerivativeResultND[np.float64, tuple[int]])
+assert_type(jacobian(np.exp, _f64_1d), _JacobianResult[np.float64, tuple[int, *tuple[Any, ...]]])
+assert_type(hessian(np.exp, _f64_1d), _HessianResult[np.float64, tuple[int, int, *tuple[Any, ...]]])
+
+assert_type(derivative(_f_f64_0d_arg, 1.0, args=(2.0,)), _DerivativeResult0D[np.float64])
+assert_type(derivative(_f_f64_0d, 1.0, tolerances={"atol": 0.1}), _DerivativeResult0D[np.float64])
 assert_type(
     derivative(
-        f_f64_0d,
+        _f_f64_0d,
         1.0,
         args=(),
         tolerances={"atol": 0.1},
@@ -62,7 +67,7 @@ assert_type(
     _DerivativeResult0D[np.float64],
 )
 
-res_der_0d = derivative(f_f64_0d, 1.0)
+res_der_0d = derivative(_f_f64_0d, 1.0)
 assert_type(res_der_0d.success, np.bool)
 assert_type(res_der_0d.status, np.int32)
 assert_type(res_der_0d.nfev, np.int32)
@@ -71,58 +76,52 @@ assert_type(res_der_0d.x, np.float64)
 assert_type(res_der_0d.df, np.float64)
 assert_type(res_der_0d.error, np.float64)
 
-res_der_nd = derivative(f_f64_1d, f64_1d)
-# assert_type(res_der_nd.success, onp.Array1D[np.bool])
-# assert_type(res_der_nd.status, onp.Array1D[np.int32])
-# assert_type(res_der_nd.nfev, onp.Array1D[np.int32])
-# assert_type(res_der_nd.nit, onp.Array1D[np.int32])
-# assert_type(res_der_nd.x, onp.Array1D[np.float64])
-# assert_type(res_der_nd.df, onp.Array1D[np.float64])
-# assert_type(res_der_nd.error, onp.Array1D[np.float64])
-_3: onp.Array1D[np.bool] = res_der_nd.success
-_4: onp.Array1D[np.int32] = res_der_nd.status
-_5: onp.Array1D[np.int32] = res_der_nd.nfev
-_6: onp.Array1D[np.int32] = res_der_nd.nit
-_7: onp.Array1D[np.float64] = res_der_nd.x
-_8: onp.Array1D[np.float64] = res_der_nd.df
-_9: onp.Array1D[np.float64] = res_der_nd.error
+res_der_nd = derivative(_f_f64_1d, _f64_1d)
+assert_type(res_der_nd.success, onp.Array1D[np.bool])
+assert_type(res_der_nd.status, onp.Array1D[np.int32])
+assert_type(res_der_nd.nfev, onp.Array1D[np.int32])
+assert_type(res_der_nd.nit, onp.Array1D[np.int32])
+assert_type(res_der_nd.x, onp.Array1D[np.float64])
+assert_type(res_der_nd.df, onp.Array1D[np.float64])
+assert_type(res_der_nd.error, onp.Array1D[np.float64])
 
 ###
 # jacobian
 
-assert_type(jacobian(f_f64_1nd_0d, f64_1d), _JacobianResult[np.float64, onp.AtLeast1D])
-assert_type(jacobian(f_f64_1nd_nd, f64_1d), _JacobianResult[np.float64, onp.AtLeast1D])
+assert_type(jacobian(_f_f64_nd_0d, _f64_1d), _JacobianResult[np.float64, tuple[int, *tuple[Any, ...]]])
+assert_type(jacobian(_f_f64_nd_nd, _f64_1d), _JacobianResult[np.float64, tuple[int, *tuple[Any, ...]]])
 assert_type(
     jacobian(
-        f_f64_1nd_0d, f64_1d, tolerances={"atol": 0.1}, maxiter=15, order=6, initial_step=0.1, step_factor=1.8, step_direction=0
+        _f_f64_nd_0d, _f64_1d, tolerances={"atol": 0.1}, maxiter=15, order=6, initial_step=0.1, step_factor=1.8, step_direction=0
     ),
-    _JacobianResult[np.float64, onp.AtLeast1D],
+    _JacobianResult[np.float64, tuple[int, *tuple[Any, ...]]],
 )
 assert_type(
-    jacobian(f_f64_1nd_nd, f64_2d, initial_step=f64_1d, step_direction=i64_1d), _JacobianResult[np.float64, onp.AtLeast1D]
+    jacobian(_f_f64_nd_nd, _f64_2d, initial_step=_f64_1d, step_direction=_i64_1d),
+    _JacobianResult[np.float64, tuple[int, *tuple[Any, ...]]],
 )
 
-res_jac = jacobian(f_f64_1nd_0d, f64_1d)
-assert_type(res_jac.status, onp.Array[onp.AtLeast1D, np.int32])
-assert_type(res_jac.df, onp.Array[onp.AtLeast1D, np.float64])
-assert_type(res_jac.error, onp.Array[onp.AtLeast1D, np.float64])
-assert_type(res_jac.nit, onp.Array[onp.AtLeast1D, np.int32])
-assert_type(res_jac.nfev, onp.Array[onp.AtLeast1D, np.int32])
-assert_type(res_jac.success, onp.Array[onp.AtLeast1D, np.bool])
+_res_jac = jacobian(_f_f64_nd_0d, _f64_1d)
+assert_type(_res_jac.status, onp.ArrayND[np.int32, tuple[int, *tuple[Any, ...]]])
+assert_type(_res_jac.df, onp.ArrayND[np.float64, tuple[int, *tuple[Any, ...]]])
+assert_type(_res_jac.error, onp.ArrayND[np.float64, tuple[int, *tuple[Any, ...]]])
+assert_type(_res_jac.nit, onp.ArrayND[np.int32, tuple[int, *tuple[Any, ...]]])
+assert_type(_res_jac.nfev, onp.ArrayND[np.int32, tuple[int, *tuple[Any, ...]]])
+assert_type(_res_jac.success, onp.ArrayND[np.bool, tuple[int, *tuple[Any, ...]]])
 
 ###
 # hessian
 
-assert_type(hessian(f_f64_1nd_0d, f64_1d), _HessianResult[np.float64, onp.AtLeast2D])
+assert_type(hessian(_f_f64_nd_0d, _f64_1d), _HessianResult[np.float64, tuple[int, int, *tuple[Any, ...]]])
 assert_type(
-    hessian(f_f64_1nd_0d, f64_1d, tolerances={"atol": 0.1}, maxiter=25, order=10, initial_step=0.05, step_factor=2.5),
-    _HessianResult[np.float64, onp.AtLeast2D],
+    hessian(_f_f64_nd_0d, _f64_1d, tolerances={"atol": 0.1}, maxiter=25, order=10, initial_step=0.05, step_factor=2.5),
+    _HessianResult[np.float64, tuple[int, int, *tuple[Any, ...]]],
 )
-assert_type(hessian(f_f64_1nd_0d, f64_2d, initial_step=f64_1d), _HessianResult[np.float64, onp.AtLeast2D])
+assert_type(hessian(_f_f64_nd_0d, _f64_2d, initial_step=_f64_1d), _HessianResult[np.float64, tuple[int, int, *tuple[Any, ...]]])
 
-res_hes = hessian(f_f64_1nd_0d, f64_1d)
-assert_type(res_hes.status, onp.Array[onp.AtLeast2D, np.int32])
-assert_type(res_hes.error, onp.Array[onp.AtLeast2D, np.float64])
-assert_type(res_hes.nfev, onp.Array[onp.AtLeast2D, np.int64])
-assert_type(res_hes.success, onp.Array[onp.AtLeast2D, np.bool])
-assert_type(res_hes.ddf, onp.Array[onp.AtLeast2D, np.float64])
+_res_hes = hessian(_f_f64_nd_0d, _f64_1d)
+assert_type(_res_hes.status, onp.ArrayND[np.int32, tuple[int, int, *tuple[Any, ...]]])
+assert_type(_res_hes.error, onp.ArrayND[np.float64, tuple[int, int, *tuple[Any, ...]]])
+assert_type(_res_hes.nfev, onp.ArrayND[np.int64, tuple[int, int, *tuple[Any, ...]]])
+assert_type(_res_hes.success, onp.ArrayND[np.bool, tuple[int, int, *tuple[Any, ...]]])
+assert_type(_res_hes.ddf, onp.ArrayND[np.float64, tuple[int, int, *tuple[Any, ...]]])
