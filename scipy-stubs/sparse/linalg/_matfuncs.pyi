@@ -63,15 +63,13 @@ UPPER_TRIANGULAR: Final[_Structure] = "upper_triangular"
 class MatrixPowerOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     @property
     @override
-    # pyrefly: ignore [bad-override]
-    def T(self, /) -> Self: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def T(self, /) -> Self: ...  # type:ignore[override] # pyright:ignore[reportIncompatibleMethodOverride] # pyrefly:ignore[bad-override]
     def __init__(self, /, A: onp.Array2D[_SCT_co] | _spbase, p: int, structure: _Structure | None = None) -> None: ...
 
 class ProductOperator(LinearOperator[_SCT_co], Generic[_SCT_co]):
     @property
     @override
-    # pyrefly: ignore [bad-override]
-    def T(self, /) -> Self: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def T(self, /) -> Self: ...  # type:ignore[override] # pyright:ignore[reportIncompatibleMethodOverride] # pyrefly:ignore[bad-override]
     def __init__(self, /, *args: onp.Array2D[_SCT_co] | _spbase, structure: _Structure | None = None) -> None: ...
 
 #
@@ -116,8 +114,16 @@ def expm(A: csc_matrix[_SubF]) -> csc_matrix[np.float64]: ...
 
 #
 @overload
-def matrix_power[ScalarT: npc.number | np.bool](A: _ToCSRArray[ScalarT], power: SupportsIndex) -> csr_array[ScalarT]: ...
+def matrix_power[ScalarT: npc.number | np.bool](A: _CS[ScalarT] | _NonCS[ScalarT], power: Literal[0]) -> dia_array[ScalarT]: ...
 @overload
-def matrix_power[ScalarT: npc.number | np.bool](A: _ToCSRMatrix[ScalarT], power: SupportsIndex) -> csr_matrix[ScalarT]: ...
+def matrix_power[SparseT: _CS[npc.number | np.bool] | _NonCS[npc.number | np.bool]](A: SparseT, power: Literal[1]) -> SparseT: ...  # type:ignore[overload-overlap]
+@overload
+def matrix_power[ScalarT: npc.number | np.bool](A: _ToCSRArray[ScalarT], power: Literal[2, 3, 4, 5]) -> csr_array[ScalarT]: ...
+@overload
+def matrix_power[ScalarT: npc.number | np.bool](A: _ToCSRArray[ScalarT], power: SupportsIndex) -> csr_array[ScalarT] | Any: ...
+@overload
+def matrix_power[ScalarT: npc.number | np.bool](A: _ToCSRMatrix[ScalarT], power: Literal[2, 3, 4, 5]) -> csr_matrix[ScalarT]: ...
+@overload
+def matrix_power[ScalarT: npc.number | np.bool](A: _ToCSRMatrix[ScalarT], power: SupportsIndex) -> csr_matrix[ScalarT] | Any: ...
 @overload
 def matrix_power[SparseT: _ToSelf[npc.number | np.bool]](A: SparseT, power: SupportsIndex) -> SparseT: ...

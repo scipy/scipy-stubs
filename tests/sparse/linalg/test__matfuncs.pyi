@@ -127,6 +127,18 @@ assert_type(expm(_m_lil_f32), csr_matrix[np.float32])
 ###
 # matrix_power
 
+assert_type(matrix_power(_a_csr_i16, 0), dia_array[np.int16])
+assert_type(matrix_power(_m_csr_i16, 0), dia_array[np.int16])
+assert_type(matrix_power(_a_dia_i16, 0), dia_array[np.int16])
+
+assert_type(matrix_power(_a_bsr_i16, 1), bsr_array[np.int16])
+assert_type(matrix_power(_a_csc_i16, 1), csc_array[np.int16])
+assert_type(matrix_power(_a_csr_i16, 1), csr_array[np.int16])
+assert_type(matrix_power(_a_dia_i16, 1), dia_array[np.int16])
+assert_type(matrix_power(_a_dok_i16, 1), dok_array[np.int16])
+assert_type(matrix_power(_a_lil_i16, 1), lil_array[np.int16])
+assert_type(matrix_power(_m_csr_i16, 1), csr_matrix[np.int16])
+
 assert_type(matrix_power(_a_bsr_i16, 3), bsr_array[np.int16])
 assert_type(matrix_power(_a_csc_i16, 3), csc_array[np.int16])
 assert_type(matrix_power(_a_csr_i16, 3), csr_array[np.int16])
