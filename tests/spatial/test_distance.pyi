@@ -125,7 +125,7 @@ assert_type(rogerstanimoto(_f64_1d, _f64_1d), float)
 assert_type(russellrao(_f64_1d, _f64_1d), float)
 
 # seuclidean
-assert_type(seuclidean(_f64_1d, _f64_1d, V=_f64_1d), float)
+assert_type(seuclidean(_f64_1d, _f64_1d, V=_f64_1d), np.float64)
 
 # yule
 assert_type(yule(_f64_1d, _f64_1d), float)
