@@ -6752,30 +6752,60 @@ def linregress(
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[np.float64 | Any]: ...
+@overload  # T:f32|f64 1d, 1d
+def linregress[FloatT: np.float32 | np.float64](
+    x: onp.Array1D[FloatT],
+    y: onp.Array1D[FloatT],
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[FloatT]: ...
 @overload  # 1d, 1d
 def linregress(
-    x: onp.ToFloatStrict1D,
-    y: onp.ToFloatStrict1D,
+    x: _AsFloat64_1D,
+    y: _AsFloat64_1D,
     alternative: Alternative = "two-sided",
     *,
     axis: int = 0,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[np.float64]: ...
+@overload  # T:f32|f64 2d, 2d
+def linregress[FloatT: np.float32 | np.float64](
+    x: onp.Array2D[FloatT],
+    y: onp.Array2D[FloatT],
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[onp.Array1D[FloatT]]: ...
 @overload  # 2d, 2d
 def linregress(
-    x: onp.ToFloatStrict2D,
-    y: onp.ToFloatStrict2D,
+    x: _AsFloat64_2D,
+    y: _AsFloat64_2D,
     alternative: Alternative = "two-sided",
     *,
     axis: int = 0,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[onp.Array1D[np.float64]]: ...
+@overload  # T:f32|f64 3d, 3d
+def linregress[FloatT: np.float32 | np.float64](
+    x: onp.Array3D[FloatT],
+    y: onp.Array3D[FloatT],
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int = 0,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[onp.Array2D[FloatT]]: ...
 @overload  # 3d, 3d
 def linregress(
-    x: onp.ToFloatStrict3D,
-    y: onp.ToFloatStrict3D,
+    x: _AsFloat64_3D,
+    y: _AsFloat64_3D,
     alternative: Alternative = "two-sided",
     *,
     axis: int = 0,
@@ -6792,20 +6822,40 @@ def linregress(
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[np.float64 | Any]: ...
+@overload  # T:f32|f64 keepdims=True
+def linregress[FloatT: np.float32 | np.float64](
+    x: onp.ArrayND[FloatT],
+    y: onp.ArrayND[FloatT],
+    alternative: Alternative = "two-sided",
+    *,
+    axis: int | None = 0,
+    keepdims: L[True],
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[onp.ArrayND[FloatT]]: ...
 @overload  # keepdims=True
 def linregress(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
+    x: _AsFloat64_ND,
+    y: _AsFloat64_ND,
     alternative: Alternative = "two-sided",
     *,
     axis: int | None = 0,
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[onp.ArrayND[np.float64]]: ...
+@overload  # T:f32|f64 axis=None
+def linregress[FloatT: np.float32 | np.float64](
+    x: onp.ArrayND[FloatT],
+    y: onp.ArrayND[FloatT],
+    alternative: Alternative = "two-sided",
+    *,
+    axis: None,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> LinregressResult[FloatT]: ...
 @overload  # axis=None
 def linregress(
-    x: onp.ToFloatND,
-    y: onp.ToFloatND,
+    x: _AsFloat64_ND,
+    y: _AsFloat64_ND,
     alternative: Alternative = "two-sided",
     *,
     axis: None,
