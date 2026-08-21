@@ -386,7 +386,7 @@ def funm[ShapeT: _AtLeast2D_ish](
 @overload  # Nd +f64, disp=False
 def funm[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[npc.floating64 | npc.integer, ShapeT], func: _Func1D[np.complex128], disp: onp.ToFalse
-) -> tuple[onp.ArrayND[np.float64 | np.complex128, ShapeT], float]: ...
+) -> tuple[onp.ArrayND[np.float64 | np.complex128, ShapeT], np.float64]: ...
 @overload  # Nd ~f32
 def funm[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[npc.floating32, ShapeT], func: _Func1D[np.complex64], disp: onp.ToTrue = True
@@ -394,15 +394,19 @@ def funm[ShapeT: _AtLeast2D_ish](
 @overload  # Nd ~f32, disp=False
 def funm[ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[npc.floating32, ShapeT], func: _Func1D[np.complex64], disp: onp.ToFalse
-) -> tuple[onp.ArrayND[np.float32 | np.complex64, ShapeT], float]: ...
+) -> tuple[onp.ArrayND[np.float32 | np.complex64, ShapeT], np.float32]: ...
 @overload  # Nd T@(c128|c64)
 def funm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
     A: onp.ArrayND[ComplexT, ShapeT], func: _Func1D[ComplexT], disp: onp.ToTrue = True
 ) -> onp.ArrayND[ComplexT, ShapeT]: ...
-@overload  # Nd T@(c128|c64), disp=False
-def funm[ComplexT: np.complex128 | np.complex64, ShapeT: _AtLeast2D_ish](
-    A: onp.ArrayND[ComplexT, ShapeT], func: _Func1D[ComplexT], disp: onp.ToFalse
-) -> tuple[onp.ArrayND[ComplexT, ShapeT], float]: ...
+@overload  # Nd ~c128, disp=False
+def funm[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[np.complex128, ShapeT], func: _Func1D[np.complex128], disp: onp.ToFalse
+) -> tuple[onp.ArrayND[np.complex128, ShapeT], np.float64]: ...
+@overload  # Nd ~c64, disp=False
+def funm[ShapeT: _AtLeast2D_ish](
+    A: onp.ArrayND[np.complex64, ShapeT], func: _Func1D[np.complex64], disp: onp.ToFalse
+) -> tuple[onp.ArrayND[np.complex64, ShapeT], np.float32]: ...
 @overload  # Nd bool | f16 | f80 | c160
 @deprecated("bool, float16, longdouble, and clongdouble input will no longer be supported in SciPy 2.1")
 def funm[ShapeT: _AtLeast2D_ish](
@@ -429,7 +433,7 @@ def funm(
 @overload  # Nd +c, disp=False  (fallback)
 def funm(
     A: onp.ToComplexND, func: _Func1D[Any], disp: onp.ToFalse
-) -> tuple[onp.ArrayND[Any, _AnyShapeOrTriviallyMaybeAlso2D], float]: ...
+) -> tuple[onp.ArrayND[Any, _AnyShapeOrTriviallyMaybeAlso2D], np.float64 | Any]: ...
 
 # NOTE: at runtime the out dtype is value-dependent, which we ignore here, because it seems to be unintentional.
 # https://github.com/scipy/scipy/issues/25657
