@@ -37,33 +37,28 @@ _py_i_1d: list[int]
 _py_f_2d: list[list[float]]
 _py_c_2d: list[list[complex]]
 
+_py_int: int
+_py_float: float
+
 ###
 
 # interp_decomp
-assert_type(interp_decomp(_f64_2d, 0), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]])
 assert_type(interp_decomp(_f64_2d, 1), tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]])
-assert_type(
-    interp_decomp(_f64_2d, 0.5),
-    tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]],
-)
-assert_type(interp_decomp(_c128_2d, 0), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]])
+assert_type(interp_decomp(_f64_2d, _py_int), tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]])
+assert_type(interp_decomp(_f64_2d, 0.5), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]])
+assert_type(interp_decomp(_f64_2d, _py_float), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]])
 assert_type(interp_decomp(_c128_2d, 1), tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]])
-assert_type(
-    interp_decomp(_c128_2d, 0.5),
-    tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]],
-)
-assert_type(interp_decomp(_lo_f64, 0), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]])
+assert_type(interp_decomp(_c128_2d, _py_int), tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]])
+assert_type(interp_decomp(_c128_2d, 0.5), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]])
+assert_type(interp_decomp(_c128_2d, _py_float), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]])
 assert_type(interp_decomp(_lo_f64, 1), tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]])
-assert_type(
-    interp_decomp(_lo_f64, 0.5),
-    tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]],
-)
-assert_type(interp_decomp(_lo_c128, 0), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]])
+assert_type(interp_decomp(_lo_f64, _py_int), tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]])
+assert_type(interp_decomp(_lo_f64, 0.5), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]])
+assert_type(interp_decomp(_lo_f64, _py_float), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]])
 assert_type(interp_decomp(_lo_c128, 1), tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]])
-assert_type(
-    interp_decomp(_lo_c128, 0.5),
-    tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]],
-)
+assert_type(interp_decomp(_lo_c128, _py_int), tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]])
+assert_type(interp_decomp(_lo_c128, 0.5), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]])
+assert_type(interp_decomp(_lo_c128, _py_float), tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]])
 
 # reconstruct_matrix_from_id
 assert_type(reconstruct_matrix_from_id(_f64_2d, _i64_1d, _f64_2d), onp.Array2D[np.float64])
