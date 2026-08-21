@@ -6658,34 +6658,46 @@ def energy_distance(
 ) -> np.float64: ...
 
 #
+@overload  # T:floating, axix: None (default)
+def rankdata[FloatT: npc.floating](
+    a: onp.ArrayND[FloatT], method: _RankMethod = "average", *, axis: None = None, nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[FloatT]: ...
 @overload  # axix: None (default)
 def rankdata(
     a: onp.ToArrayND, method: _RankMethod = "average", *, axis: None = None, nan_policy: NanPolicy = "propagate"
 ) -> onp.Array1D[np.float64]: ...
+@overload  # shape: T, T:floating, axis: int
+def rankdata[FloatT: npc.floating, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[FloatT, ShapeT], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[FloatT, ShapeT]: ...
 @overload  # shape: T, axis: int
 def rankdata[ShapeT: tuple[int, ...]](
-    a: onp.Array[ShapeT], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # shape: 1d, axis: int
-def rankdata(
-    a: Sequence[complex], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.Array1D[np.float64]: ...
-@overload  # shape: 2d, axis: int
-def rankdata(
-    a: Sequence[Sequence[complex]], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.Array2D[np.float64]: ...
-@overload  # shape: 3d, axis: int
-def rankdata(
-    a: Sequence[Sequence[Sequence[complex]]],
+    a: onp.ArrayND[npc.integer | np.bool, ShapeT],
     method: _RankMethod = "average",
     *,
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # shape: T, axis: int
+def rankdata[ShapeT: tuple[int, ...]](
+    a: onp.Array[ShapeT], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[Any, ShapeT]: ...
+@overload  # shape: 1d, axis: int
+def rankdata(
+    a: Sequence[float], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array1D[np.float64]: ...
+@overload  # shape: 2d, axis: int
+def rankdata(
+    a: Sequence[Sequence[float]], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
+) -> onp.Array2D[np.float64]: ...
+@overload  # shape: 3d, axis: int
+def rankdata(
+    a: Sequence[Sequence[Sequence[float]]], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
 ) -> onp.Array3D[np.float64]: ...
 @overload  # shape: ?, axis: int
 def rankdata(
     a: onp.ToArrayND, method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[np.float64]: ...
+) -> onp.ArrayND[Any]: ...
 
 #
 @overload  # axis=None (default)
