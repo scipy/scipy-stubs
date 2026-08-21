@@ -6,23 +6,12 @@ import numpy.typing as npt
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.sparse import bsr_array, coo_array, csc_array, csr_array, dia_array, dok_array, lil_array
+from scipy.sparse import csr_array, dia_array
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["LaplacianNd"]
 
 ###
-
-# because `scipy.sparse.sparray` does not implement anything :(
-type _SpArray[ScalarT: npc.integer | npc.floating] = (
-    bsr_array[ScalarT]
-    | coo_array[ScalarT]
-    | csc_array[ScalarT]
-    | csr_array[ScalarT]
-    | dia_array[ScalarT]
-    | dok_array[ScalarT]
-    | lil_array[ScalarT]
-)
 
 type _BCs = Literal["dirichlet", "neumann", "periodic"]
 
@@ -61,4 +50,4 @@ class LaplacianNd(LinearOperator[_SCT], Generic[_SCT]):
     def eigenvalues(self, /, m: onp.ToJustInt | None = None) -> onp.Array1D[np.float64]: ...
     def eigenvectors(self, /, m: onp.ToJustInt | None = None) -> onp.Array2D[np.float64]: ...
     def toarray(self, /) -> onp.Array2D[_SCT]: ...
-    def tosparse(self, /) -> _SpArray[_SCT]: ...
+    def tosparse(self, /) -> dia_array[_SCT] | csr_array[_SCT]: ...
