@@ -479,7 +479,7 @@ class multivariate_normal_gen(multi_rv_generic):
     def rvs(
         self,
         /,
-        mean: onp.ToFloat1D | None = None,
+        mean: onp.ToFloat | onp.ToFloat1D | None = None,
         cov: _ToCov = 1,
         size: int | tuple[int, ...] = 1,
         random_state: onp.random.ToRNG | None = None,

@@ -122,6 +122,12 @@ assert_type(multivariate_normal(_f_1d).rvs(size=(2,)), onp.Array2D[np.float64])
 assert_type(multivariate_normal(_f_1d).rvs(size=(2, 3)), onp.ArrayND[np.float64])
 assert_type(multivariate_normal(_f_1d).rvs(size=_shape), onp.ArrayND[np.float64])
 
+assert_type(multivariate_normal.rvs(mean=0.0, cov=2.0), np.float64)
+assert_type(multivariate_normal.rvs(mean=0.0, cov=2.0, size=1), np.float64)
+assert_type(multivariate_normal.rvs(mean=0.0, cov=2.0, size=3), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_normal.rvs(mean=0.0, cov=2.0, size=(2, 3)), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_normal.rvs(cov=2.0, size=3), np.float64 | onp.ArrayND[np.float64])
+
 # matrix_normal
 
 assert_type(matrix_normal.rvs().dtype, np.dtype[np.float64])
