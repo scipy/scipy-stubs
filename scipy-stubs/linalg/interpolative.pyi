@@ -1,8 +1,9 @@
 from collections.abc import Sequence
-from typing import Any, Final, Literal, SupportsIndex, overload
+from typing import Any, Final, SupportsIndex, overload
 from typing_extensions import TypeIs
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -42,33 +43,28 @@ def _C_contiguous_copy(A: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]
 def _is_real[ShapeT: tuple[int, ...]](A: onp.ArrayND[npc.inexact64, ShapeT]) -> TypeIs[onp.ArrayND[np.float64, ShapeT]]: ...
 
 #
-@overload  # f64, eps_or_k<1
+@overload  # f64, ~int
 def interp_decomp(
-    A: _ToLinOp[npc.floating64], eps_or_k: Literal[0, -1, -2, -3, -4], rand: bool = True, rng: onp.random.ToRNG | None = None
-) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
-@overload  # f64, eps_or_k>=1
-def interp_decomp(
-    A: _ToLinOp[npc.floating64], eps_or_k: Literal[1, 2, 3, 4, 5], rand: bool = True, rng: onp.random.ToRNG | None = None
+    A: _ToLinOp[npc.floating64], eps_or_k: op.JustInt | npc.integer, rand: bool = True, rng: onp.random.ToRNG | None = None
 ) -> tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
-@overload  # f64, eps_or_k unknown
+@overload  # f64, ~float
 def interp_decomp(
-    A: _ToLinOp[npc.floating64], eps_or_k: float, rand: bool = True, rng: onp.random.ToRNG | None = None
-) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
-@overload  # c128, eps_or_k<1
+    A: _ToLinOp[npc.floating64], eps_or_k: op.JustFloat | npc.floating, rand: bool = True, rng: onp.random.ToRNG | None = None
+) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.float64]]: ...
+@overload  # c128, ~int
 def interp_decomp(
     A: _ToLinOp[npc.complexfloating128],
-    eps_or_k: Literal[0, -1, -2, -3, -4],
+    eps_or_k: op.JustInt | npc.integer,
+    rand: bool = True,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
+@overload  # c128, ~float
+def interp_decomp(
+    A: _ToLinOp[npc.complexfloating128],
+    eps_or_k: op.JustFloat | npc.floating,
     rand: bool = True,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
-@overload  # c128, eps_or_k>=1
-def interp_decomp(
-    A: _ToLinOp[npc.complexfloating128], eps_or_k: Literal[1, 2, 3, 4, 5], rand: bool = True, rng: onp.random.ToRNG | None = None
-) -> tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
-@overload  # c128, eps_or_k unknown
-def interp_decomp(
-    A: _ToLinOp[npc.complexfloating128], eps_or_k: float, rand: bool = True, rng: onp.random.ToRNG | None = None
-) -> tuple[int, onp.Array1D[np.intp], onp.Array2D[np.complex128]] | tuple[onp.Array1D[np.intp], onp.Array2D[np.complex128]]: ...
 
 #
 @overload
