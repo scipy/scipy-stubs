@@ -115,7 +115,7 @@ assert_type(dendrogram(f64_2d)["color_list"], list[str])
 assert_type(dendrogram(f64_2d)["icoord"], list[list[float]])
 assert_type(dendrogram(f64_2d)["dcoord"], list[list[float]])
 assert_type(dendrogram(f64_2d)["ivl"], list[str])
-assert_type(dendrogram(f64_2d)["leaves"], list[int] | None)
+assert_type(dendrogram(f64_2d)["leaves"], list[int])
 assert_type(dendrogram(f64_2d)["leaves_color_list"], list[str])
 # set_link_color_palette
 assert_type(set_link_color_palette(["red", "green", "blue"]), None)
