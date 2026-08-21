@@ -7,7 +7,11 @@ from scipy.signal import chirp, gausspulse, sawtooth, square, sweep_poly, unit_i
 
 ###
 
+_i64_1d: onp.Array1D[np.int64]
+_f16_1d: onp.Array1D[np.float16]
+_f32_1d: onp.Array1D[np.float32]
 _f64_1d: onp.Array1D[np.float64]
+_f80_1d: onp.Array1D[np.longdouble]
 _c64_1d: onp.Array1D[np.complex64]
 _c128_0d: np.complex128
 _c128_1d: onp.Array1D[np.complex128]
@@ -16,15 +20,29 @@ _c128_1d: onp.Array1D[np.complex128]
 
 # sawtooth
 
+assert_type(sawtooth(1), onp.ArrayND[np.float64])
 assert_type(sawtooth(1.0), onp.ArrayND[np.float64])
 assert_type(sawtooth(_f64_1d), onp.ArrayND[np.float64])
 assert_type(sawtooth(_f64_1d, 0.5), onp.ArrayND[np.float64])
+assert_type(sawtooth([1, 2]), onp.ArrayND[np.float64])
+assert_type(sawtooth([1.0, 2.0]), onp.ArrayND[np.float64])
+assert_type(sawtooth(_i64_1d), onp.ArrayND[np.float64])
+assert_type(sawtooth(_f16_1d), onp.ArrayND[np.float16])
+assert_type(sawtooth(_f32_1d), onp.ArrayND[np.float32])
+assert_type(sawtooth(_f80_1d), onp.ArrayND[np.longdouble])
 
 # square
 
+assert_type(square(1), onp.ArrayND[np.float64])
 assert_type(square(1.0), onp.ArrayND[np.float64])
 assert_type(square(_f64_1d), onp.ArrayND[np.float64])
 assert_type(square(_f64_1d, 0.5), onp.ArrayND[np.float64])
+assert_type(square([1, 2]), onp.ArrayND[np.float64])
+assert_type(square([1.0, 2.0]), onp.ArrayND[np.float64])
+assert_type(square(_i64_1d), onp.ArrayND[np.float64])
+assert_type(square(_f16_1d), onp.ArrayND[np.float16])
+assert_type(square(_f32_1d), onp.ArrayND[np.float32])
+assert_type(square(_f80_1d), onp.ArrayND[np.longdouble])
 
 # chirp
 
