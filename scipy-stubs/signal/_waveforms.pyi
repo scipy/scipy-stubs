@@ -1,9 +1,9 @@
 from collections.abc import Iterable
-from typing import Literal, SupportsIndex, overload
+from typing import Any, Literal, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
-from numpy._typing import _DTypeLike
+import optype.numpy.compat as npc
 
 from scipy._typing import AnyShape
 
@@ -18,8 +18,21 @@ type _ChirpMethod = Literal["linear", "quadratic", "logarithmic", "hyperbolic"]
 
 ###
 
-def sawtooth(t: _ToFloat0ND, width: _ToFloat0ND = 1.0) -> _FloatND: ...
-def square(t: _ToFloat0ND, duty: _ToFloat0ND = 0.5) -> _FloatND: ...
+#
+@overload  # T:floating
+def sawtooth[FloatT: npc.floating](t: FloatT | onp.ArrayND[FloatT], width: float = 1.0) -> onp.ArrayND[FloatT]: ...
+@overload  # +int
+def sawtooth(t: float | onp.SequenceND[float] | onp.ToInt | onp.ToIntND, width: float = 1.0) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64  (fallback)
+def sawtooth(t: _ToFloat0ND, width: _ToFloat0ND = 1.0) -> onp.ArrayND[np.float64 | Any]: ...
+
+#
+@overload  # T:floating
+def square[FloatT: npc.floating](t: FloatT | onp.ArrayND[FloatT], duty: float = 0.5) -> onp.ArrayND[FloatT]: ...
+@overload  # +int
+def square(t: float | onp.SequenceND[float] | onp.ToInt | onp.ToIntND, duty: float = 0.5) -> onp.ArrayND[np.float64]: ...
+@overload  # fallback
+def square(t: _ToFloat0ND, duty: _ToFloat0ND = 0.5) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload  # t: +f64 0d, complex: False
@@ -117,7 +130,7 @@ def unit_impulse(
 ) -> _FloatND: ...
 @overload  # dtype is given
 def unit_impulse[ScalarT: np.generic](
-    shape: AnyShape, idx: SupportsIndex | Iterable[SupportsIndex] | Literal["mid"] | None, dtype: _DTypeLike[ScalarT]
+    shape: AnyShape, idx: SupportsIndex | Iterable[SupportsIndex] | Literal["mid"] | None, dtype: onp.ToDType[ScalarT]
 ) -> onp.ArrayND[ScalarT]: ...
 
 # Overloads for gausspulse when `t` is `"cutoff"`
