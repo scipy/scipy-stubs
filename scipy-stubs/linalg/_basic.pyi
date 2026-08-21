@@ -229,7 +229,7 @@ def solve(
     transposed: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # 2d T:inexact32, 1d T:inexact32
-def solve[InexactT: (np.float32, np.complex64)](
+def solve[InexactT: np.float32 | np.complex64](
     a: onp.Array2D[InexactT],
     b: onp.Array1D[InexactT],
     lower: bool = False,
@@ -240,7 +240,7 @@ def solve[InexactT: (np.float32, np.complex64)](
     transposed: bool = False,
 ) -> onp.Array1D[InexactT]: ...
 @overload  # 2d T:inexact32, 2d T:inexact32
-def solve[InexactT: (np.float32, np.complex64)](
+def solve[InexactT: np.float32 | np.complex64](
     a: onp.Array2D[InexactT],
     b: onp.Array2D[InexactT],
     lower: bool = False,
@@ -251,7 +251,7 @@ def solve[InexactT: (np.float32, np.complex64)](
     transposed: bool = False,
 ) -> onp.Array2D[InexactT]: ...
 @overload  # Nd T:inexact32, Nd T:inexact32
-def solve[InexactT: (np.float32, np.complex64)](
+def solve[InexactT: np.float32 | np.complex64](
     a: onp.ArrayND[InexactT],
     b: onp.ArrayND[InexactT],
     lower: bool = False,
@@ -461,7 +461,7 @@ def solve_triangular(
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # 2d T:inexact32, 1d T:inexact32
-def solve_triangular[InexactT: (np.float32, np.complex64)](
+def solve_triangular[InexactT: np.float32 | np.complex64](
     a: onp.Array2D[InexactT],
     b: onp.Array1D[InexactT],
     trans: _TransSystem = 0,
@@ -471,7 +471,7 @@ def solve_triangular[InexactT: (np.float32, np.complex64)](
     check_finite: bool = True,
 ) -> onp.Array1D[InexactT]: ...
 @overload  # 2d T:inexact32, 2d T:inexact32
-def solve_triangular[InexactT: (np.float32, np.complex64)](
+def solve_triangular[InexactT: np.float32 | np.complex64](
     a: onp.Array2D[InexactT],
     b: onp.Array2D[InexactT],
     trans: _TransSystem = 0,
@@ -481,7 +481,7 @@ def solve_triangular[InexactT: (np.float32, np.complex64)](
     check_finite: bool = True,
 ) -> onp.Array2D[InexactT]: ...
 @overload  # Nd T:inexact32, Nd T:inexact32
-def solve_triangular[InexactT: (np.float32, np.complex64)](
+def solve_triangular[InexactT: np.float32 | np.complex64](
     a: onp.ArrayND[InexactT],
     b: onp.ArrayND[InexactT],
     trans: _TransSystem = 0,
@@ -671,7 +671,7 @@ def solve_banded(
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # 2d T:inexact32, 1d T:inexact32
-def solve_banded[InexactT: (np.float32, np.complex64)](
+def solve_banded[InexactT: np.float32 | np.complex64](
     l_and_u: tuple[int, int],
     ab: onp.Array2D[InexactT],
     b: onp.Array1D[InexactT],
@@ -680,7 +680,7 @@ def solve_banded[InexactT: (np.float32, np.complex64)](
     check_finite: bool = True,
 ) -> onp.Array1D[InexactT]: ...
 @overload  # 2d T:inexact32, 2d T:inexact32
-def solve_banded[InexactT: (np.float32, np.complex64)](
+def solve_banded[InexactT: np.float32 | np.complex64](
     l_and_u: tuple[int, int],
     ab: onp.Array2D[InexactT],
     b: onp.Array2D[InexactT],
@@ -689,7 +689,7 @@ def solve_banded[InexactT: (np.float32, np.complex64)](
     check_finite: bool = True,
 ) -> onp.Array2D[InexactT]: ...
 @overload  # Nd T:inexact32, Nd T:inexact32
-def solve_banded[InexactT: (np.float32, np.complex64)](
+def solve_banded[InexactT: np.float32 | np.complex64](
     l_and_u: tuple[int, int],
     ab: onp.ArrayND[InexactT],
     b: onp.ArrayND[InexactT],
@@ -871,7 +871,7 @@ def solveh_banded(
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # 2d T:inexact32, 1d T:inexact32
-def solveh_banded[InexactT: (np.float32, np.complex64)](
+def solveh_banded[InexactT: np.float32 | np.complex64](
     ab: onp.Array2D[InexactT],
     b: onp.Array1D[InexactT],
     overwrite_ab: bool = False,
@@ -880,7 +880,7 @@ def solveh_banded[InexactT: (np.float32, np.complex64)](
     check_finite: bool = True,
 ) -> onp.Array1D[InexactT]: ...
 @overload  # 2d T:inexact32, 2d T:inexact32
-def solveh_banded[InexactT: (np.float32, np.complex64)](
+def solveh_banded[InexactT: np.float32 | np.complex64](
     ab: onp.Array2D[InexactT],
     b: onp.Array2D[InexactT],
     overwrite_ab: bool = False,
@@ -889,7 +889,7 @@ def solveh_banded[InexactT: (np.float32, np.complex64)](
     check_finite: bool = True,
 ) -> onp.Array2D[InexactT]: ...
 @overload  # Nd T:inexact32, Nd T:inexact32
-def solveh_banded[InexactT: (np.float32, np.complex64)](
+def solveh_banded[InexactT: np.float32 | np.complex64](
     ab: onp.ArrayND[InexactT],
     b: onp.ArrayND[InexactT],
     overwrite_ab: bool = False,
@@ -1131,7 +1131,7 @@ def solve_circulant(
     outaxis: int = 0,
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # 1d T:inexact32, 1d T:inexact32
-def solve_circulant[InexactT: (np.float32, np.complex64)](
+def solve_circulant[InexactT: np.float32 | np.complex64](
     c: onp.Array1D[InexactT],
     b: onp.Array1D[InexactT],
     singular: _Singular = "raise",
@@ -1141,7 +1141,7 @@ def solve_circulant[InexactT: (np.float32, np.complex64)](
     outaxis: int = 0,
 ) -> onp.Array1D[InexactT]: ...
 @overload  # 1d T:inexact32, 2d T:inexact32
-def solve_circulant[InexactT: (np.float32, np.complex64)](
+def solve_circulant[InexactT: np.float32 | np.complex64](
     c: onp.Array1D[InexactT],
     b: onp.Array2D[InexactT],
     singular: _Singular = "raise",
@@ -1151,7 +1151,7 @@ def solve_circulant[InexactT: (np.float32, np.complex64)](
     outaxis: int = 0,
 ) -> onp.Array2D[InexactT]: ...
 @overload  # 1d T:inexact32, Nd T:inexact32
-def solve_circulant[InexactT: (np.float32, np.complex64)](
+def solve_circulant[InexactT: np.float32 | np.complex64](
     c: onp.Array1D[InexactT],
     b: onp.ArrayND[InexactT],
     singular: _Singular = "raise",
