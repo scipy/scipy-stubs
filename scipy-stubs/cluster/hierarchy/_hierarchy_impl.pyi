@@ -55,7 +55,7 @@ class _DendrogramResult(TypedDict):
     icoord: list[list[float]]
     dcoord: list[list[float]]
     ivl: list[str]
-    leaves: list[int] | None
+    leaves: list[int]
     color_list: list[str]
     leaves_color_list: list[str]
 
