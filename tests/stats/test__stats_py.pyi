@@ -1366,6 +1366,7 @@ assert_type(quantile_test(_py_f_1d), QuantileTestResult[np.float64])
 
 assert_type(wasserstein_distance(_f64_1d, _f64_1d), np.float64)
 assert_type(wasserstein_distance_nd(_f64_1d, _f64_1d), np.float64)
+assert_type(wasserstein_distance_nd(_f64_2d, _f64_2d), float | np.float64)
 assert_type(energy_distance(_f64_1d, _f64_1d), np.float64)
 
 # expectile
