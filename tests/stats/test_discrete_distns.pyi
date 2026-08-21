@@ -63,3 +63,13 @@ assert_type(poisson.rvs(1.0), int)
 assert_type(poisson.rvs(1.0, size=None), int)
 assert_type(poisson.rvs(1.0, size=()), int)
 assert_type(poisson.rvs(1.0, size=4), onp.ArrayND[np.int64])
+
+# .expect
+
+_frozen = poisson(1.0)
+assert_type(_frozen.expect(), float | np.float64)
+assert_type(_frozen.expect(lambda k: k), float | np.float64)
+assert_type(_frozen.expect(lambda k: k, lb=0, ub=5, conditional=True), float | np.float64)
+assert_type(_frozen.expect(lambda k: k, maxcount=2000), float | np.float64)
+assert_type(_frozen.expect(lambda k: k, tolerance=1e-8), float | np.float64)
+assert_type(_frozen.expect(lambda k: k, chunksize=64), float | np.float64)

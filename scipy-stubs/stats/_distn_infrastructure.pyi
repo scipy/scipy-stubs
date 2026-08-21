@@ -253,6 +253,21 @@ class rv_discrete_frozen(rv_frozen[_DRVT_co, _FloatNDT_co], Generic[_DRVT_co, _F
         self, /, size: AnyShape | None = None, random_state: onp.random.ToRNG | None = None
     ) -> onp.ArrayND[np.int64] | Any: ...
 
+    #
+    @override
+    def expect(
+        self: rv_discrete_frozen[_DRVT_co, _Float],
+        /,
+        func: Callable[[onp.Array1D[np.int_]], onp.ToFloatND] | None = None,
+        lb: onp.ToInt | None = None,
+        ub: onp.ToInt | None = None,
+        conditional: _Bool = False,
+        *,
+        maxcount: onp.ToInt = 1000,
+        tolerance: onp.ToFloat = 1e-10,
+        chunksize: onp.ToInt = 32,
+    ) -> _Float: ...
+
 # NOTE: Because of the limitations of `ParamSpec`, there is no proper way to annotate specific "positional or keyword arguments".
 # Considering the Liskov Substitution Principle, the only remaining option is to annotate `*args, and `**kwargs` as `Any`.
 class rv_generic:
