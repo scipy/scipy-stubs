@@ -6626,18 +6626,30 @@ def quantile_test(
 ) -> QuantileTestResult[np.float64 | Any]: ...
 
 #
+@overload  # 1d
+def wasserstein_distance_nd(
+    u_values: onp.ToFloatStrict1D,
+    v_values: onp.ToFloatStrict1D,
+    u_weights: onp.ToFloatND | None = None,
+    v_weights: onp.ToFloatND | None = None,
+) -> np.float64: ...
+@overload  # Nd
 def wasserstein_distance_nd(
     u_values: onp.ToFloatND,
     v_values: onp.ToFloatND,
     u_weights: onp.ToFloatND | None = None,
     v_weights: onp.ToFloatND | None = None,
-) -> np.float64: ...
+) -> float | np.float64: ...
+
+#
 def wasserstein_distance(
     u_values: onp.ToFloatND,
     v_values: onp.ToFloatND,
     u_weights: onp.ToFloatND | None = None,
     v_weights: onp.ToFloatND | None = None,
 ) -> np.float64: ...
+
+#
 def energy_distance(
     u_values: onp.ToFloatND,
     v_values: onp.ToFloatND,
