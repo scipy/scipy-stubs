@@ -1434,6 +1434,12 @@ assert_type(iqr(_f64_nd, axis=1), onp.ArrayND[np.float64])
 
 # median_abs_deviation
 
+assert_type(median_abs_deviation(_py_f_1d), np.float64)
+assert_type(median_abs_deviation(_i16_1d), np.float64)
+assert_type(median_abs_deviation(_f32_1d), np.float32)
+assert_type(median_abs_deviation(_f32_nd, axis=None), np.float32)
+assert_type(median_abs_deviation(_f32_nd, keepdims=True), onp.ArrayND[np.float32])
+assert_type(median_abs_deviation(_f32_nd, axis=None, keepdims=True), onp.ArrayND[np.float32])
 assert_type(median_abs_deviation(_f64_1d), np.float64)
 assert_type(median_abs_deviation(_f64_nd, axis=None), np.float64)
 assert_type(median_abs_deviation(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
