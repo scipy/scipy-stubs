@@ -62,8 +62,8 @@ extras = ["scipy-stubs[scipy]"]
 ci = ["packaging>=26.3"]
 lint = [
   { include-group = "extras" },
-  "dprint-py==0.55.2.0",
-  "ruff==0.16.3",
+  "dprint-py==0.56.1.0",
+  "ruff==0.16.4",
   "sp-repo-review[cli]==2026.8.14",
 ]
 type = [
@@ -77,7 +77,7 @@ type = [
   "mypy[faster-cache]==2.3.1",
   "pyrefly==1.2.0",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.72",
+  "ty==0.0.73",
   "zuban==0.9.1",
 ]
 dev = [
@@ -91,7 +91,7 @@ stubdefaulter = { git = "https://github.com/JelleZijlstra/stubdefaulter.git", re
 
 [tool.typos]
 files = { extend-exclude = ["*.pyi", ".mypyignore"] }
-default = { extend-ignore-identifiers-re = ['ND|Nd|Theis|ttest|TtestResult|SeQUeNCe|whos'] }
+default = { extend-ignore-identifiers-re = ["ND|Nd|Theis|ttest|TtestResult|SeQUeNCe|whos"] }
 
 # mypy
 
