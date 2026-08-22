@@ -417,6 +417,10 @@ class NdPPoly(Generic[_CT_co]):
     extrapolate: bool
 
     @classmethod
+    def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
+
+    #
+    @classmethod
     def construct_fast(
         cls,
         c: onp.ArrayND[_CT_co],  # at least 2d

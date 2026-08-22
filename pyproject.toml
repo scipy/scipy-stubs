@@ -49,7 +49,7 @@ requires-python = ">=3.12"
 dependencies = ["optype[numpy]>=0.15.0,<0.20"]
 
 [project.optional-dependencies]
-scipy = ["scipy>=1.18.0,<1.19"]
+scipy = ["scipy>=1.18.1,<1.19"]
 
 [project.urls]
 Homepage = "https://scipy.org/"
