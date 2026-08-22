@@ -3480,9 +3480,9 @@ def iqr(
 ) -> onp.ArrayND[np.float64]: ...
 
 #
-@overload
+@overload  # +f64, 1d
 def median_abs_deviation(
-    x: onp.ToFloatStrict1D,
+    x: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     axis: int = 0,
     center: np.ufunc | _MADCenterFunc | None = None,
     scale: L["normal"] | float = 1.0,
@@ -3490,9 +3490,9 @@ def median_abs_deviation(
     *,
     keepdims: L[False] = False,
 ) -> np.float64: ...
-@overload
+@overload  # +f64, axis=None
 def median_abs_deviation(
-    x: onp.ToFloatND,
+    x: onp.ToArrayND[float, npc.integer | np.bool],
     axis: None,
     center: np.ufunc | _MADCenterFunc | None = None,
     scale: L["normal"] | float = 1.0,
@@ -3500,9 +3500,9 @@ def median_abs_deviation(
     *,
     keepdims: L[False] = False,
 ) -> np.float64: ...
-@overload
+@overload  # +f64, axis=<given>  (default)
 def median_abs_deviation(
-    x: onp.ToFloatND,
+    x: onp.ToArrayND[float, npc.integer | np.bool],
     axis: int = 0,
     center: np.ufunc | _MADCenterFunc | None = None,
     scale: L["normal"] | float = 1.0,
@@ -3510,9 +3510,9 @@ def median_abs_deviation(
     *,
     keepdims: L[False] = False,
 ) -> onp.ArrayND[np.float64] | Any: ...
-@overload
+@overload  # +f64, keepdims=True
 def median_abs_deviation(
-    x: onp.ToFloatND,
+    x: onp.ToArrayND[float, npc.integer | np.bool],
     axis: int | None = 0,
     center: np.ufunc | _MADCenterFunc | None = None,
     scale: L["normal"] | float = 1.0,
@@ -3520,6 +3520,46 @@ def median_abs_deviation(
     *,
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # T@floating, 1d
+def median_abs_deviation[FloatT: npc.floating](
+    x: onp.ToArrayStrict1D[FloatT, FloatT],
+    axis: int = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> FloatT: ...
+@overload  # T@floating, axis=None
+def median_abs_deviation[FloatT: npc.floating](
+    x: onp.ToArrayND[FloatT, FloatT],
+    axis: None,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> FloatT: ...
+@overload  # T@floating, axis=<given>  (default)
+def median_abs_deviation[FloatT: npc.floating](
+    x: onp.ToArrayND[FloatT, FloatT],
+    axis: int = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[FloatT] | Any: ...
+@overload  # T@floating, keepdims=True
+def median_abs_deviation[FloatT: npc.floating](
+    x: onp.ToArrayND[FloatT, FloatT],
+    axis: int | None = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[FloatT]: ...
 
 #
 @overload
