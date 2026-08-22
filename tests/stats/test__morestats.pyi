@@ -1,6 +1,6 @@
 # type-tests for `stats/_morestats.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -54,6 +54,7 @@ _i16_2d: onp.Array2D[np.int16]
 _i16_3d: onp.Array3D[np.int16]
 _i16_nd: onp.ArrayND[np.int16]
 
+_f32_1d: onp.Array1D[np.float32]
 _f32_2d: onp.Array2D[np.float32]
 _f32_3d: onp.Array3D[np.float32]
 _f32_nd: onp.ArrayND[np.float32]
@@ -96,7 +97,7 @@ assert_subtype[rv_continuous_frozen](mvsdist(_f64_1d)[2])
 
 assert_type(kstat(_f64_nd), np.float64)
 assert_type(kstat(_f64_nd, axis=None), np.float64)
-assert_type(kstat(_f64_nd, axis=0), np.float64 | onp.ArrayND[np.float64])
+assert_type(kstat(_f64_nd, axis=0), np.float64 | onp.ArrayND[np.float64] | Any)
 assert_type(kstat(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 
 ###
@@ -104,7 +105,7 @@ assert_type(kstat(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 
 assert_type(kstatvar(_f64_nd), np.float64)
 assert_type(kstatvar(_f64_nd, axis=None), np.float64)
-assert_type(kstatvar(_f64_nd, axis=0), np.float64 | onp.ArrayND[np.float64])
+assert_type(kstatvar(_f64_nd, axis=0), np.float64 | onp.ArrayND[np.float64] | Any)
 assert_type(kstatvar(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 
 ###
@@ -142,7 +143,7 @@ assert_type(anderson_ksamp(_f64_nd), Anderson_ksampResult)
 
 assert_type(shapiro(_f64_nd), ShapiroResult[np.float64])
 assert_type(shapiro(_f64_nd, axis=None), ShapiroResult[np.float64])
-assert_type(shapiro(_f64_nd, axis=0), ShapiroResult)
+assert_type(shapiro(_f64_nd, axis=0), ShapiroResult[np.float64 | onp.ArrayND[np.float64] | Any])
 assert_type(shapiro(_f64_nd, keepdims=True), ShapiroResult[onp.ArrayND[np.float64]])
 
 ###
@@ -150,19 +151,19 @@ assert_type(shapiro(_f64_nd, keepdims=True), ShapiroResult[onp.ArrayND[np.float6
 
 assert_type(ansari(_f64_nd, _f64_nd, axis=None), AnsariResult[np.float64])
 assert_type(ansari(_f64_nd, _f64_nd, keepdims=True), AnsariResult[onp.ArrayND[np.float64]])
-assert_type(ansari(_f64_nd, _f64_nd), AnsariResult)
+assert_type(ansari(_f64_nd, _f64_nd), AnsariResult[np.float64 | onp.ArrayND[np.float64] | Any])
 
 ###
 # bartlett
 
 assert_type(bartlett(_f64_nd, _f64_nd, axis=None), BartlettResult[np.float64])
 assert_type(bartlett(_f64_nd, _f64_nd, keepdims=True), BartlettResult[onp.ArrayND[np.float64]])
-assert_type(bartlett(_f64_nd, _f64_nd), BartlettResult)
+assert_type(bartlett(_f64_nd, _f64_nd), BartlettResult[np.float64 | onp.ArrayND[np.float64] | Any])
 
 ###
 # levene
 
-assert_type(levene(_f64_nd, _f64_nd), LeveneResult[np.float64 | onp.ArrayND[np.float64]])
+assert_type(levene(_f64_nd, _f64_nd), LeveneResult[np.float64 | onp.ArrayND[np.float64] | Any])
 assert_type(levene(_f64_nd, _f64_nd, axis=None), LeveneResult[np.float64])
 assert_type(levene(_f64_nd, _f64_nd, keepdims=True), LeveneResult[onp.ArrayND[np.float64]])
 
@@ -171,21 +172,20 @@ assert_type(levene(_f64_nd, _f64_nd, keepdims=True), LeveneResult[onp.ArrayND[np
 
 assert_type(fligner(_f64_nd, _f64_nd, axis=None), FlignerResult[np.float64])
 assert_type(fligner(_f64_nd, _f64_nd, keepdims=True), FlignerResult[onp.ArrayND[np.float64]])
-assert_type(fligner(_f64_nd, _f64_nd), FlignerResult)
+assert_type(fligner(_f64_nd, _f64_nd), FlignerResult[np.float64 | onp.ArrayND[np.float64] | Any])
 
 ###
 # mood
 
 assert_type(mood(_f64_nd, _f64_nd, None), SignificanceResult[np.float64])
 assert_type(mood(_f64_nd, _f64_nd, keepdims=True), SignificanceResult[onp.ArrayND[np.float64]])
-assert_type(mood(_f64_nd, _f64_nd), SignificanceResult[np.float64 | onp.ArrayND[np.float64]])
+assert_type(mood(_f64_nd, _f64_nd), SignificanceResult[np.float64 | onp.ArrayND[np.float64] | Any])
 
 ###
 # wilcoxon
 
 assert_type(wilcoxon(_f64_nd, axis=None), WilcoxonResult[np.float64])
 assert_type(wilcoxon(_f64_nd, keepdims=True), WilcoxonResult[onp.ArrayND[np.float64]])
-assert_type(wilcoxon(_f64_nd), WilcoxonResult)
 assert_type(wilcoxon(_f64_1d), WilcoxonResult[np.float64])
 assert_type(wilcoxon(_f64_1d, _f64_1d), WilcoxonResult[np.float64])
 assert_type(wilcoxon(_f64_2d), WilcoxonResult[onp.Array1D[np.float64]])
@@ -194,15 +194,15 @@ assert_type(wilcoxon(_f64_2d, _f64_2d), WilcoxonResult[onp.Array1D[np.float64]])
 ###
 # median_test
 
-assert_type(median_test(_f64_1d, _f64_1d), MedianTestResult)
-assert_type(median_test(_f64_1d, _f64_1d, _f64_1d), MedianTestResult)
+assert_type(median_test(_f64_1d, _f64_1d), MedianTestResult[np.float64])
+assert_type(median_test(_f64_1d, _f64_1d, _f64_1d), MedianTestResult[np.float64])
 
 ###
 # circmean
 
 assert_type(circmean(_f64_nd), np.float64)
 assert_type(circmean(_f64_nd, axis=None), np.float64)
-assert_type(circmean(_f64_nd, axis=0), np.float64 | onp.ArrayND[np.float64])
+assert_type(circmean(_f64_nd, axis=0), np.float64 | onp.ArrayND[np.float64] | Any)
 assert_type(circmean(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 
 ###
@@ -210,7 +210,7 @@ assert_type(circmean(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 
 assert_type(circvar(_f64_nd), np.float64)
 assert_type(circvar(_f64_nd, axis=None), np.float64)
-assert_type(circvar(_f64_nd, axis=0), np.float64 | onp.ArrayND[np.float64])
+assert_type(circvar(_f64_nd, axis=0), np.float64 | onp.ArrayND[np.float64] | Any)
 assert_type(circvar(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 
 ###
@@ -218,7 +218,23 @@ assert_type(circvar(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 
 assert_type(circstd(_f64_nd), np.float64)
 assert_type(circstd(_f64_nd, axis=None), np.float64)
-assert_type(circstd(_f64_nd, axis=0), np.float64 | onp.ArrayND[np.float64])
+assert_type(circstd(_f64_nd, axis=0), np.float64 | onp.ArrayND[np.float64] | Any)
+
+assert_type(shapiro(_f32_1d).statistic, np.float32)
+assert_type(shapiro(_f32_1d, keepdims=True).statistic, onp.ArrayND[np.float32])
+assert_type(ansari(_f32_1d, _f32_1d, axis=None).statistic, np.float32)
+assert_type(bartlett(_f32_1d, _f32_1d, axis=None).statistic, np.float32)
+assert_type(levene(_f32_1d, _f32_1d, axis=None).statistic, np.float32)
+assert_type(fligner(_f32_1d, _f32_1d, axis=None).statistic, np.float32)
+assert_type(mood(_f32_1d, _f32_1d, None).statistic, np.float32)
+assert_type(wilcoxon(_f32_1d).statistic, np.float32)
+assert_type(kstat(_f32_1d), np.float32)
+assert_type(kstatvar(_f32_1d), np.float32)
+assert_type(circmean(_f32_1d), np.float32)
+assert_type(circvar(_f32_1d), np.float32)
+assert_type(circstd(_f32_1d), np.float32)
+assert_type(false_discovery_control(_f32_1d), onp.ArrayND[np.float32])
+assert_type(median_test(_f32_1d, _f32_1d).median, np.float32)
 assert_type(circstd(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 
 ###
