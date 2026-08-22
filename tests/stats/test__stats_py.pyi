@@ -1018,6 +1018,8 @@ assert_type(trim_mean(_f64_nd, 0.1), np.float64 | onp.ArrayND[np.float64])
 # f_oneway
 
 assert_type(f_oneway(_f64_1d, _f64_1d), F_onewayResult[np.float64])
+assert_type(f_oneway(_f32_1d, _f32_1d), F_onewayResult[np.float32])
+assert_type(f_oneway(_f32_2d, _f32_2d), F_onewayResult[onp.Array1D[np.float32]])
 assert_type(f_oneway(_f64_1d, _f64_2d), F_onewayResult[onp.Array1D[np.float64]])
 assert_type(f_oneway(_f64_1d, _f64_3d), F_onewayResult[onp.Array2D[np.float64]])
 assert_type(f_oneway(_f64_1d, _f64_nd), F_onewayResult[np.float64 | Any])
@@ -1125,12 +1127,14 @@ assert_type(ttest_ind_from_stats(_f32_1d, 1.0, _i64_1d, 0.0, 1.0, 10), Ttest_ind
 # power_divergence
 
 assert_type(power_divergence(_f64_1d), Power_divergenceResult[np.float64])
+assert_type(power_divergence(_f32_1d), Power_divergenceResult[np.float32])
 assert_type(power_divergence(_f64_nd, axis=None), Power_divergenceResult[np.float64])
 assert_type(power_divergence(_f64_nd, keepdims=True), Power_divergenceResult[onp.ArrayND[np.float64]])
 
 # chisquare
 
 assert_type(chisquare(_f64_1d), Power_divergenceResult[np.float64])
+assert_type(chisquare(_f32_1d), Power_divergenceResult[np.float32])
 assert_type(chisquare(_f64_1d, _f64_1d), Power_divergenceResult[np.float64])
 assert_type(chisquare(_f64_1d, ddof=1), Power_divergenceResult[np.float64])
 assert_type(chisquare(_f64_1d, axis=None), Power_divergenceResult[np.float64])
@@ -1170,6 +1174,7 @@ assert_type(ks_1samp(_f32_nd, norm.cdf, axis=None), KstestResult[np.float64 | An
 # ks_2samp
 
 assert_type(ks_2samp(_f64_1d, _f64_1d), KstestResult[np.float64, np.int8])
+assert_type(ks_2samp(_f32_1d, _f32_1d), KstestResult[np.float32, np.int8])
 assert_type(ks_2samp(_f64_1d, _f64_2d), KstestResult[onp.Array1D[np.float64], onp.Array1D[np.int8]])
 assert_type(ks_2samp(_f64_1d, _f64_3d), KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]])
 assert_type(ks_2samp(_f64_1d, _f64_nd), KstestResult[np.float64 | Any, np.int8 | Any])
@@ -1249,6 +1254,7 @@ assert_type(ranksums(_f32_nd, _f32_nd, keepdims=True), RanksumsResult[onp.ArrayN
 # kruskal
 
 assert_type(kruskal(_f64_1d, _f64_1d), KruskalResult[np.float64])
+assert_type(kruskal(_f32_1d, _f32_1d), KruskalResult[np.float32])
 assert_type(kruskal(_f64_1d, _f64_2d), KruskalResult[onp.Array1D[np.float64]])
 assert_type(kruskal(_f64_1d, _f64_3d), KruskalResult[onp.Array2D[np.float64]])
 assert_type(kruskal(_f64_1d, _f64_nd), KruskalResult[np.float64 | Any])
@@ -1305,6 +1311,7 @@ assert_type(
 # brunnermunzel
 
 assert_type(brunnermunzel(_f64_1d, _f64_1d), BrunnerMunzelResult[np.float64])
+assert_type(brunnermunzel(_f32_1d, _f32_1d), BrunnerMunzelResult[np.float32])
 assert_type(brunnermunzel(_f64_1d, _f64_2d), BrunnerMunzelResult[onp.Array1D[np.float64]])
 assert_type(brunnermunzel(_f64_1d, _f64_3d), BrunnerMunzelResult[onp.Array2D[np.float64]])
 assert_type(brunnermunzel(_f64_1d, _f64_nd), BrunnerMunzelResult[np.float64 | Any])
