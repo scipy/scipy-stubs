@@ -1,7 +1,7 @@
 from _typeshed import Incomplete
 from collections.abc import Iterable
 from types import ModuleType
-from typing import Any, ClassVar, Generic, Literal, Never, overload, override
+from typing import Any, Generic, Literal, Never, overload, override
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -132,9 +132,6 @@ class CubicHermiteSpline(PPoly[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co])
     ) -> None: ...
 
 class PchipInterpolator(CubicHermiteSpline[np.float64, _ShapeT_co], Generic[_ShapeT_co]):
-    # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
-
     @overload  # ?d
     def __init__(
         self,
@@ -173,9 +170,6 @@ class PchipInterpolator(CubicHermiteSpline[np.float64, _ShapeT_co], Generic[_Sha
     ) -> None: ...
 
 class Akima1DInterpolator(CubicHermiteSpline[np.float64, _ShapeT_co], Generic[_ShapeT_co]):
-    # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
-
     @overload  # ?d
     def __init__(
         self,
