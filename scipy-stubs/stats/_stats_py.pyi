@@ -4028,7 +4028,7 @@ def pearsonr(
     axis: L[0, -1] | None = 0,
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
-) -> PearsonRResult[npc.floating, np.float64]: ...
+) -> PearsonRResult[np.float64 | Any, np.float64 | Any]: ...
 @overload  # ?d +integer | ~float64, +floating, axis=None
 def pearsonr(
     x: onp.ToJustFloat64_ND | onp.ToIntND,
@@ -4055,7 +4055,7 @@ def pearsonr(
     axis: None,
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
-) -> PearsonRResult[npc.floating, np.float64]: ...
+) -> PearsonRResult[np.float64 | Any, np.float64 | Any]: ...
 @overload  # >=2d +integer | ~float64, +floating
 def pearsonr(
     x: onp.CanArray[onp.AtLeast2D, np.dtype[npc.integer | npc.floating]] | Sequence[onp.SequenceND[float]],
@@ -4082,7 +4082,7 @@ def pearsonr(
     axis: int = 0,
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
-) -> PearsonRResult[onp.ArrayND[npc.floating], onp.ArrayND[np.float64]]: ...
+) -> PearsonRResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
 @overload  # fallback
 def pearsonr(
     x: onp.ToFloatND,
@@ -4091,7 +4091,10 @@ def pearsonr(
     axis: int | None = 0,
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
-) -> PearsonRResult[npc.floating, np.float64] | PearsonRResult[onp.ArrayND[npc.floating], onp.ArrayND[np.float64]]: ...
+) -> (
+    PearsonRResult[np.float64 | Any, np.float64 | Any]
+    | PearsonRResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]
+): ...
 
 #
 @overload  # ?d, ?d

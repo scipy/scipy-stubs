@@ -1,10 +1,9 @@
 # type-tests for `pearsonr` from `stats/_stats_py.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from scipy.stats import pearsonr
 
@@ -45,7 +44,7 @@ assert_type(pearsonr(_i8_1d, _f64_1d).statistic, np.float64)
 assert_type(pearsonr(_f16_1d, _py_i_1d).statistic, np.float64)
 assert_type(pearsonr(_f16_1d, _py_f_1d).statistic, np.float64)
 assert_type(pearsonr(_f16_1d, _i8_1d).statistic, np.float64)
-assert_type(pearsonr(_f16_1d, _f16_1d).statistic, npc.floating)
+assert_type(pearsonr(_f16_1d, _f16_1d).statistic, np.float64 | Any)
 assert_type(pearsonr(_f16_1d, _f64_1d).statistic, np.float64)
 assert_type(pearsonr(_f64_1d, _py_i_1d).statistic, np.float64)
 assert_type(pearsonr(_f64_1d, _py_f_1d).statistic, np.float64)
@@ -71,7 +70,7 @@ assert_type(pearsonr(_i8_2d, _f64_2d, axis=None).statistic, np.float64)
 assert_type(pearsonr(_f16_2d, _py_i_2d, axis=None).statistic, np.float64)
 assert_type(pearsonr(_f16_2d, _py_f_2d, axis=None).statistic, np.float64)
 assert_type(pearsonr(_f16_2d, _i8_2d, axis=None).statistic, np.float64)
-assert_type(pearsonr(_f16_2d, _f16_2d, axis=None).statistic, npc.floating)
+assert_type(pearsonr(_f16_2d, _f16_2d, axis=None).statistic, np.float64 | Any)
 assert_type(pearsonr(_f16_2d, _f64_2d, axis=None).statistic, np.float64)
 assert_type(pearsonr(_f64_2d, _py_i_2d, axis=None).statistic, np.float64)
 assert_type(pearsonr(_f64_2d, _py_f_2d, axis=None).statistic, np.float64)
@@ -97,7 +96,7 @@ assert_type(pearsonr(_i8_2d, _f64_2d).statistic, onp.ArrayND[np.float64])
 assert_type(pearsonr(_f16_2d, _py_i_2d).statistic, onp.ArrayND[np.float64])
 assert_type(pearsonr(_f16_2d, _py_f_2d).statistic, onp.ArrayND[np.float64])
 assert_type(pearsonr(_f16_2d, _i8_2d).statistic, onp.ArrayND[np.float64])
-assert_type(pearsonr(_f16_2d, _f16_2d).statistic, onp.ArrayND[npc.floating])
+assert_type(pearsonr(_f16_2d, _f16_2d).statistic, onp.ArrayND[np.float64 | Any])
 assert_type(pearsonr(_f16_2d, _f64_2d).statistic, onp.ArrayND[np.float64])
 assert_type(pearsonr(_f64_2d, _py_i_2d).statistic, onp.ArrayND[np.float64])
 assert_type(pearsonr(_f64_2d, _py_f_2d).statistic, onp.ArrayND[np.float64])
@@ -105,6 +104,7 @@ assert_type(pearsonr(_f64_2d, _i8_2d).statistic, onp.ArrayND[np.float64])
 assert_type(pearsonr(_f64_2d, _f16_2d).statistic, onp.ArrayND[np.float64])
 assert_type(pearsonr(_f64_2d, _f64_2d).statistic, onp.ArrayND[np.float64])
 
-assert_type(pearsonr(_f16_1d, _f16_1d).pvalue, np.float64)
-assert_type(pearsonr(_f16_2d, _f16_2d, axis=None).pvalue, np.float64)
-assert_type(pearsonr(_f16_2d, _f16_2d).pvalue, onp.ArrayND[np.float64])
+assert_type(pearsonr(_f16_1d, _f16_1d).pvalue, np.float64 | Any)
+assert_type(pearsonr(_f16_2d, _f16_2d, axis=None).pvalue, np.float64 | Any)
+assert_type(pearsonr(_f16_2d, _f16_2d).pvalue, onp.ArrayND[np.float64 | Any])
+assert_type(pearsonr(_f64_1d, _f64_1d).pvalue, np.float64)
