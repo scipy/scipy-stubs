@@ -78,52 +78,87 @@ def trapezoid(
     y: onp.ToComplexND, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.complex128 | Any] | Any: ...
 
+type _ToF32ND = onp.ToArrayND[bool, npc.floating32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool]
+type _ToF64ND = onp.ToArrayND[op.JustFloat | op.JustInt, npc.floating64 | npc.integer32 | npc.integer64]
+
 #
-@overload  # ?d +complex  (mypy & pyright workaround)
+@overload  # ?d +complex  (workaround)
 def simpson(
-    y: onp.Array[_JustAnyShape, npc.number | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
+    y: onp.ArrayND[npc.number | np.bool, _JustAnyShape], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> Any: ...
-@overload  # 1d T:inexact
-def simpson[InexactT: npc.inexact](
+@overload  # 1d T, +f
+def simpson[InexactT: npc.inexact64 | npc.inexact80](
     y: onp.Array1D[InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> InexactT: ...
-@overload  # 1d +int
+@overload  # 1d T:+c64, +f32
+def simpson[InexactT: npc.floating16 | npc.inexact32](
+    y: onp.Array1D[InexactT], x: _ToF32ND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> InexactT: ...
+@overload  # 1d ~f32, +f64
+def simpson(y: onp.Array1D[npc.floating16 | npc.floating32], x: _ToF64ND, *, dx: float = 1.0, axis: int = -1) -> np.float64: ...
+@overload  # 1d ~c64, +f64
+def simpson(y: onp.Array1D[npc.complexfloating64], x: _ToF64ND, *, dx: float = 1.0, axis: int = -1) -> np.complex128: ...
+@overload  # 1d +i64, +f
 def simpson(
     y: onp.ToArrayStrict1D[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> np.float64: ...
-@overload  # 1d ~complex
+@overload  # 1d ~c128, +f
 def simpson(
     y: onp.ToJustComplex128Strict1D, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> np.complex128: ...
-@overload  # 2d T:inexact
-def simpson[InexactT: npc.inexact](
+@overload  # 2d T, +f
+def simpson[InexactT: npc.inexact64 | npc.inexact80](
     y: onp.Array2D[InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.Array1D[InexactT]: ...
-@overload  # 2d +int
+@overload  # 2d f16|f32, +f32
+def simpson[InexactT: npc.floating16 | npc.inexact32](
+    y: onp.Array2D[InexactT], x: _ToF32ND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.Array1D[InexactT]: ...
+@overload  # 2d ~f16|f32, +f64
+def simpson(
+    y: onp.Array2D[npc.floating16 | npc.floating32], x: _ToF64ND, *, dx: float = 1.0, axis: int = -1
+) -> onp.Array1D[np.float64]: ...
+@overload  # 2d ~c64, +f64
+def simpson(
+    y: onp.Array2D[npc.complexfloating64], x: _ToF64ND, *, dx: float = 1.0, axis: int = -1
+) -> onp.Array1D[np.complex128]: ...
+@overload  # 2d +i64, +f
 def simpson(
     y: onp.ToArrayStrict2D[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.Array1D[np.float64]: ...
-@overload  # 2d ~complex
+@overload  # 2d ~c128, +f
 def simpson(
     y: onp.ToJustComplex128Strict2D, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.Array1D[np.complex128]: ...
-@overload  # Nd T:inexact
-def simpson[InexactT: npc.inexact](
+@overload  # Nd T, +f
+def simpson[InexactT: npc.inexact64 | npc.inexact80](
     y: onp.ArrayND[InexactT], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[InexactT] | Any: ...
-@overload  # Nd +int
+@overload  # Nd T, +f32
+def simpson[InexactT: npc.floating16 | npc.inexact32](
+    y: onp.ArrayND[InexactT], x: _ToF32ND | None = None, *, dx: float = 1.0, axis: int = -1
+) -> onp.ArrayND[InexactT] | Any: ...
+@overload  # Nd ~f16|f32, +f64
+def simpson(
+    y: onp.ArrayND[npc.floating16 | npc.floating32], x: _ToF64ND, *, dx: float = 1.0, axis: int = -1
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload  # Nd ~c64, +f64
+def simpson(
+    y: onp.ArrayND[npc.complexfloating64], x: _ToF64ND, *, dx: float = 1.0, axis: int = -1
+) -> onp.ArrayND[np.complex128] | Any: ...
+@overload  # Nd +f64, +f
 def simpson(
     y: onp.ToArrayND[float, npc.integer | np.bool], x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.float64] | Any: ...
-@overload  # Nd ~complex
+@overload  # Nd ~c128, +f
 def simpson(
     y: onp.ToJustComplex128_ND, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.complex128] | Any: ...
-@overload  # +float (fallback)
+@overload  # Nd +f
 def simpson(
     y: onp.ToFloatND, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.float64 | Any] | Any: ...
-@overload  # +complex (fallback)
+@overload  # Nd +c
 def simpson(
     y: onp.ToComplexND, x: onp.ToFloatND | None = None, *, dx: float = 1.0, axis: int = -1
 ) -> onp.ArrayND[np.complex128 | Any] | Any: ...

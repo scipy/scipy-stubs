@@ -81,15 +81,22 @@ assert_type(simpson(i64_2d), onp.Array1D[np.float64])
 assert_type(simpson(i64_nd), Any)
 
 assert_type(simpson(f32_1d), np.float32)
+assert_type(simpson(f32_1d, f32_1d), np.float32)
+assert_type(simpson(f32_1d, f64_1d), np.float64)
+assert_type(simpson(f32_1d, i64_1d), np.float64)
 assert_type(simpson(f32_2d), onp.Array1D[np.float32])
+assert_type(simpson(f32_2d, f64_1d), onp.Array1D[np.float64])
 assert_type(simpson(f32_nd), Any)
 
 assert_type(simpson(f64_1d), np.float64)
+assert_type(simpson(f64_1d, f32_1d), np.float64)
 assert_type(simpson(f64_2d), onp.Array1D[np.float64])
 assert_type(simpson(f64_nd), Any)
 
 assert_type(simpson(c64_1d), np.complex64)
+assert_type(simpson(c64_1d, f64_1d), np.complex128)
 assert_type(simpson(c64_2d), onp.Array1D[np.complex64])
+assert_type(simpson(c64_2d, f64_1d), onp.Array1D[np.complex128])
 assert_type(simpson(c64_nd), Any)
 
 assert_type(simpson(c128_1d), np.complex128)
