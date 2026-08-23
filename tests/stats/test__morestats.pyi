@@ -76,6 +76,7 @@ _c160_2d: onp.Array2D[np.complex256]
 _c160_3d: onp.Array3D[np.complex256]
 _c160_nd: onp.ArrayND[np.complex256]
 
+_py_i_1d: list[int]
 _py_f_1d: list[float]
 _py_f_2d: list[list[float]]
 
@@ -111,9 +112,13 @@ assert_type(kstatvar(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 ###
 # probplot
 
-assert_type(
-    probplot(_f64_1d), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], tuple[np.float64, np.float64, np.float64]]
-)
+type _tuple3[T] = tuple[T, T, T]  # ruff: ignore[snake-case-type-alias]
+
+assert_type(probplot(_py_i_1d), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]], _tuple3[np.float64]])
+assert_type(probplot(_f32_1d), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float32]], _tuple3[np.float64]])
+assert_type(probplot(_f64_1d), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], _tuple3[np.float64]])
+assert_type(probplot(_py_i_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]])
+assert_type(probplot(_f32_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float32]])
 assert_type(probplot(_f64_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
 
 ###

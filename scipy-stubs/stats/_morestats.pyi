@@ -393,7 +393,83 @@ def kstatvar(
 ) -> np.float64 | onp.ArrayND[np.float64] | Any: ...
 
 #
-@overload
+@overload  # +f64
+def probplot[ScalarT: npc.floating | npc.integer | np.bool](
+    x: onp.ToArrayND[ScalarT, ScalarT],
+    sparams: tuple[()] = (),
+    dist: _RVC0 | _CanPPF = "norm",
+    fit: Literal[True] = True,
+    plot: _CanPlotText | ModuleType | None = None,
+    rvalue: bool = False,
+) -> tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[ScalarT]], _Tuple3[np.float64]]: ...
+@overload  # +f64, fit=False
+def probplot[ScalarT: npc.floating | npc.integer | np.bool](
+    x: onp.ToArrayND[ScalarT, ScalarT],
+    sparams: tuple[()] = (),
+    dist: _RVC0 | _CanPPF = "norm",
+    *,
+    fit: Literal[False],
+    plot: _CanPlotText | ModuleType | None = None,
+    rvalue: bool = False,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[ScalarT]]: ...
+@overload  # +f64, sparams
+def probplot[ScalarT: npc.floating | npc.integer | np.bool](
+    x: onp.ToArrayND[ScalarT, ScalarT],
+    sparams: tuple[onp.ToFloat, ...],
+    dist: str | _CanPPF = "norm",
+    fit: Literal[True] = True,
+    plot: _CanPlotText | ModuleType | None = None,
+    rvalue: bool = False,
+) -> tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[ScalarT]], _Tuple3[np.float64]]: ...
+@overload  # +f64, sparams, fit=False
+def probplot[ScalarT: npc.floating | npc.integer | np.bool](
+    x: onp.ToArrayND[ScalarT, ScalarT],
+    sparams: tuple[onp.ToFloat, ...],
+    dist: str | _CanPPF = "norm",
+    *,
+    fit: Literal[False],
+    plot: _CanPlotText | ModuleType | None = None,
+    rvalue: bool = False,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[ScalarT]]: ...
+@overload  # ~f64
+def probplot(
+    x: onp.ToJustFloat64_ND,
+    sparams: tuple[()] = (),
+    dist: _RVC0 | _CanPPF = "norm",
+    fit: Literal[True] = True,
+    plot: _CanPlotText | ModuleType | None = None,
+    rvalue: bool = False,
+) -> tuple[_Tuple2[onp.ArrayND[np.float64]], _Tuple3[np.float64]]: ...
+@overload  # ~f64, fit=False
+def probplot(
+    x: onp.ToJustFloat64_ND,
+    sparams: tuple[()] = (),
+    dist: _RVC0 | _CanPPF = "norm",
+    *,
+    fit: Literal[False],
+    plot: _CanPlotText | ModuleType | None = None,
+    rvalue: bool = False,
+) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+@overload  # ~f64, sparams
+def probplot(
+    x: onp.ToJustFloat64_ND,
+    sparams: tuple[onp.ToFloat, ...],
+    dist: str | _CanPPF = "norm",
+    fit: Literal[True] = True,
+    plot: _CanPlotText | ModuleType | None = None,
+    rvalue: bool = False,
+) -> tuple[_Tuple2[onp.ArrayND[np.float64]], _Tuple3[np.float64]]: ...
+@overload  # ~f64, sparams, fit=False
+def probplot(
+    x: onp.ToJustFloat64_ND,
+    sparams: tuple[onp.ToFloat, ...],
+    dist: str | _CanPPF = "norm",
+    *,
+    fit: Literal[False],
+    plot: _CanPlotText | ModuleType | None = None,
+    rvalue: bool = False,
+) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+@overload  # fallback
 def probplot(
     x: onp.ToFloat | onp.ToFloatND,
     sparams: tuple[()] = (),
@@ -401,8 +477,8 @@ def probplot(
     fit: Literal[True] = True,
     plot: _CanPlotText | ModuleType | None = None,
     rvalue: bool = False,
-) -> tuple[_Tuple2[onp.ArrayND[np.float64]], _Tuple3[np.float64]]: ...
-@overload
+) -> tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]], _Tuple3[np.float64]]: ...
+@overload  # fallback, fit=False
 def probplot(
     x: onp.ToFloat | onp.ToFloatND,
     sparams: tuple[()] = (),
@@ -411,8 +487,8 @@ def probplot(
     fit: Literal[False],
     plot: _CanPlotText | ModuleType | None = None,
     rvalue: bool = False,
-) -> _Tuple2[onp.ArrayND[np.float64]]: ...
-@overload
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # fallback, sparams
 def probplot(
     x: onp.ToFloat | onp.ToFloatND,
     sparams: tuple[onp.ToFloat, ...],
@@ -420,17 +496,17 @@ def probplot(
     fit: Literal[True] = True,
     plot: _CanPlotText | ModuleType | None = None,
     rvalue: bool = False,
-) -> tuple[_Tuple2[onp.ArrayND[np.float64]], _Tuple3[np.float64]]: ...
-@overload
+) -> tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]], _Tuple3[np.float64]]: ...
+@overload  # fallback, sparams, fit=False
 def probplot(
     x: onp.ToFloat | onp.ToFloatND,
-    sparams: tuple[onp.ToFloat],
+    sparams: tuple[onp.ToFloat, ...],
     dist: str | _CanPPF = "norm",
     *,
     fit: Literal[False],
     plot: _CanPlotText | ModuleType | None = None,
     rvalue: bool = False,
-) -> _Tuple2[onp.ArrayND[np.float64]]: ...
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]]: ...
 
 #
 def ppcc_max(
