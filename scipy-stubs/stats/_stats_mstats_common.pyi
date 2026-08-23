@@ -10,7 +10,7 @@ from ._typing import BunchMixin
 
 __all__ = ["_find_repeats"]
 
-_ResultT_co = TypeVar("_ResultT_co", bound=np.float64 | onp.ArrayND[np.float64], default=np.float64 | Any, covariant=True)
+_ResultT_co = TypeVar("_ResultT_co", bound=npc.floating | onp.ArrayND[npc.floating], default=np.float64 | Any, covariant=True)
 
 ###
 
