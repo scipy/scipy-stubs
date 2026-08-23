@@ -1,6 +1,6 @@
 # type-tests for `binned_statistic`, `binned_statistic_2d`, and `binned_statistic_dd` from `stats/_binned_statistic.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -27,7 +27,7 @@ def _to_c128_c(a: onp.Array1D[np.complex128], /) -> np.complex128: ...
 
 # binned_statistic
 
-assert_type(binned_statistic(_f64_1d, _f64_1d).bin_edges, onp.Array1D[np.float64])
+assert_type(binned_statistic(_f64_1d, _f64_1d).bin_edges, onp.Array1D[np.float64 | Any])
 assert_type(binned_statistic(_f64_1d, _f64_1d).binnumber, onp.Array1D[np.intp])
 
 assert_type(binned_statistic(_f64_1d, _f64_1d).statistic, onp.Array1D[np.float64])
@@ -63,8 +63,8 @@ assert_subtype[onp.ArrayND[np.float64 | np.complex128]](binned_statistic(_f64_1d
 
 # binned_statistic_2d
 
-assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).x_edge, onp.Array1D[np.float64])
-assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).y_edge, onp.Array1D[np.float64])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).x_edge, onp.Array1D[np.float64 | Any])
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).y_edge, onp.Array1D[np.float64 | Any])
 
 assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).binnumber, onp.Array1D[np.intp])
 assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array1D[np.intp])
@@ -99,7 +99,7 @@ assert_subtype[onp.ArrayND[np.float64 | np.complex128]](binned_statistic_2d(_f64
 
 # binned_statistic_dd
 
-assert_type(binned_statistic_dd(_f64_2d, _f64_1d).bin_edges, list[onp.Array1D[np.float64]])
+assert_type(binned_statistic_dd(_f64_2d, _f64_1d).bin_edges, list[onp.Array1D[np.float64 | Any]])
 
 assert_type(binned_statistic_dd(_f64_1d, _f64_1d).binnumber, onp.Array1D[np.intp])
 assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array1D[np.intp])
