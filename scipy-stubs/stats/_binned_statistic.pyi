@@ -40,18 +40,18 @@ _Shape2Or3T_co = TypeVar("_Shape2Or3T_co", bound=_Shape2Or3, covariant=True, def
 
 class BinnedStatisticResult(NamedTuple, Generic[_InexactT_co, _Shape1Or2T_co]):
     statistic: onp.Array[_Shape1Or2T_co, _InexactT_co]
-    bin_edges: onp.Array1D[np.float64]
+    bin_edges: onp.Array1D[np.float64 | Any]
     binnumber: onp.Array1D[np.intp]
 
 class BinnedStatistic2dResult(NamedTuple, Generic[_InexactT_co, _Shape2Or3T_co, _Shape1Or2T_co]):
     statistic: onp.Array[_Shape2Or3T_co, _InexactT_co]
-    x_edge: onp.Array1D[np.float64]
-    y_edge: onp.Array1D[np.float64]
+    x_edge: onp.Array1D[np.float64 | Any]
+    y_edge: onp.Array1D[np.float64 | Any]
     binnumber: onp.Array[_Shape1Or2T_co, np.intp]
 
 class BinnedStatisticddResult(NamedTuple, Generic[_InexactT_co, _Shape1Or2T_co]):
     statistic: onp.ArrayND[_InexactT_co]  # `(nx1, ..., nxD)`, or `(len(values), nx1, ..., nxD)` for 2-d `values`
-    bin_edges: list[onp.Array1D[np.float64]]
+    bin_edges: list[onp.Array1D[np.float64 | Any]]
     binnumber: onp.Array[_Shape1Or2T_co, np.intp]
 
 #
