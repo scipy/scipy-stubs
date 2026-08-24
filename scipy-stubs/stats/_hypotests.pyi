@@ -47,7 +47,7 @@ class CramerVonMisesResult(Generic[_FloatOrNDT]):
     def __init__(self, /, statistic: _FloatOrNDT, pvalue: _FloatOrNDT) -> None: ...
 
 class TukeyHSDResult:
-    statistic: Final[onp.Array2D[np.float64]]
+    statistic: Final[onp.Array2D[np.float64 | Any]]
     pvalue: Final[onp.Array2D[np.float64]]
     _ntreatments: Final[int]
     _df: Final[int]
@@ -56,7 +56,7 @@ class TukeyHSDResult:
     def __init__(
         self,
         /,
-        statistic: onp.Array2D[np.float64],
+        statistic: onp.Array2D[np.float64 | Any],
         pvalue: onp.Array2D[np.float64],
         _ntreatments: int,
         _df: int,
