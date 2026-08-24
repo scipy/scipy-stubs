@@ -1,6 +1,6 @@
 # type-tests for `stats/_hypotests.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -111,5 +111,5 @@ assert_type(boschloo_exact(_i64_2d).pvalue, float)
 
 assert_type(tukey_hsd(_f64_1d, _f64_1d), TukeyHSDResult)
 assert_type(tukey_hsd(_f64_1d, _f64_1d, _f64_1d), TukeyHSDResult)
-assert_type(tukey_hsd(_f64_1d, _f64_1d).statistic, onp.Array2D[np.float64])
+assert_type(tukey_hsd(_f64_1d, _f64_1d).statistic, onp.Array2D[np.float64 | Any])
 assert_type(tukey_hsd(_f64_1d, _f64_1d).pvalue, onp.Array2D[np.float64])
