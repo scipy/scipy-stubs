@@ -1,4 +1,7 @@
-from typing import Literal as L, Unpack, overload
+# mypy reports false positive `overload-overlap` errors for `zeta`, which vary per numpy version
+# mypy: disable-error-code=overload-overlap
+
+from typing import Any, Literal as L, Unpack, overload
 
 import numpy as np
 import optype as op
@@ -74,6 +77,9 @@ type _ToFloatOrND = onp.ToFloat | onp.ToFloatND
 type _ToComplexOrND = onp.ToComplex | onp.ToComplexND
 type _ToJustComplexOrND = onp.ToJustComplex | onp.ToJustComplexND
 
+type _AsF64 = np.float64 | npc.integer64 | npc.integer32
+type _ToF32 = onp.ToFloat32 | op.JustFloat | int
+
 type _Extend0 = L["zero"]
 type _ExtendC = L["complex"]
 type _Extend = L[_Extend0, _ExtendC]
@@ -103,7 +109,6 @@ type _f8_nd = onp.ArrayND[_f8]
 type _c8_1d = onp.Array1D[_c8]
 type _c8_2d = onp.Array2D[_c8]
 type _c8_nd = onp.ArrayND[_c8]
-type _fc8_nd = onp.ArrayND[_fc8]
 
 type _f_nd = onp.ArrayND[_f]
 type _c_nd = onp.ArrayND[_c]
@@ -429,28 +434,66 @@ def stirling2(N: _ToIntOrND, K: onp.ToIntND, *, exact: onp.ToFalse = False) -> _
 def stirling2(N: onp.ToIntND, K: _ToIntOrND, *, exact: onp.ToFalse = False) -> _f8_nd: ...
 
 #
-@overload
+@overload  # out=
 def zeta[ArrayT: onp.ArrayND](x: _ToComplexOrND, q: _ToFloatOrND | None, out: ArrayT) -> ArrayT: ...
-@overload
+@overload  # out= (keyword)
 def zeta[ArrayT: onp.ArrayND](x: _ToComplexOrND, q: _ToFloatOrND | None = None, *, out: ArrayT) -> ArrayT: ...
-@overload
-def zeta(x: onp.ToFloat, q: onp.ToFloat | None = None, out: None = None) -> _f8: ...
-@overload
-def zeta(x: _ToFloatOrND, q: onp.ToFloatND, out: None = None) -> _f8_nd: ...
-@overload
-def zeta(x: onp.ToFloatND, q: _ToFloatOrND | None = None, out: None = None) -> _f8_nd: ...
-@overload
-def zeta(x: onp.ToJustComplex, q: onp.ToFloat | None = None, out: None = None) -> _c8: ...
-@overload
-def zeta(x: _ToJustComplexOrND, q: onp.ToFloatND, out: None = None) -> _c8_nd: ...
-@overload
-def zeta(x: onp.ToJustComplexND, q: _ToFloatOrND | None = None, out: None = None) -> _c8_nd: ...
-@overload
-def zeta(x: onp.ToComplex, q: onp.ToFloat | None = None, out: None = None) -> _fc8: ...
-@overload
-def zeta(x: _ToComplexOrND, q: onp.ToFloatND, out: None = None) -> _fc8_nd: ...
-@overload
-def zeta(x: onp.ToComplexND, q: _ToFloatOrND | None = None, out: None = None) -> _fc8_nd: ...
+@overload  # ~f32
+def zeta(x: npc.floating32 | npc.floating16, q: _ToF32 | None = None, out: None = None) -> np.float32: ...
+@overload  # +f32
+def zeta(x: npc.integer16 | npc.integer8, q: onp.ToFloat32 | int | None = None, out: None = None) -> np.float32: ...
+@overload  # ~bool
+def zeta(x: np.bool, q: onp.ToFloat32 | None = None, out: None = None) -> np.float32: ...
+@overload  # +f64, ~f32
+def zeta(x: op.JustFloat | int, q: npc.floating32 | npc.floating16, out: None = None) -> np.float32: ...
+@overload  # +int, +f32
+def zeta(x: int, q: npc.integer16 | npc.integer8, out: None = None) -> np.float32: ...
+@overload  # ~f64
+def zeta(x: _AsF64, q: onp.ToFloat | None = None, out: None = None) -> np.float64: ...
+@overload  # +float, ~f64
+def zeta(x: onp.ToFloat, q: _AsF64, out: None = None) -> np.float64: ...
+@overload  # +f64
+def zeta(x: float, q: float | None = None, out: None = None) -> np.float64: ...
+@overload  # Nd T:f32|f64
+def zeta[ArrayT: onp.ArrayND[np.float32] | onp.ArrayND[np.float64]](
+    x: ArrayT, q: _ToF32 | None = None, out: None = None
+) -> ArrayT: ...
+@overload  # Nd +f64
+def zeta(
+    x: onp.ToArrayND[float, npc.integer64 | npc.integer32], q: _ToFloatOrND | None = None, out: None = None
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +float, Nd +f64
+def zeta(
+    x: _ToFloatOrND, q: onp.ToArrayND[float, np.float64 | npc.integer64 | npc.integer32], out: None = None
+) -> onp.ArrayND[np.float64]: ...
+@overload  # T:c64
+def zeta[ComplexT: np.complex64 | onp.ArrayND[np.complex64]](
+    x: ComplexT, q: _ToF32 | None = None, out: None = None
+) -> ComplexT: ...
+@overload  # ~complex, ~f64
+def zeta(x: onp.ToJustComplex, q: _AsF64, out: None = None) -> np.complex128: ...
+@overload  # Nd ~complex, ~f64
+def zeta(x: onp.ToJustComplexND, q: _AsF64, out: None = None) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~complex, ~f32
+def zeta(x: op.JustComplex, q: npc.floating32 | npc.floating16, out: None = None) -> np.complex64: ...
+@overload  # ~c128
+def zeta(x: npc.complexfloating128, q: onp.ToFloat | None = None, out: None = None) -> np.complex128: ...
+@overload  # ~complex, +f64
+def zeta(
+    x: op.JustComplex, q: float | npc.integer | np.bool | npc.floating80 | None = None, out: None = None
+) -> np.complex128: ...
+@overload  # Nd ~c128
+def zeta(x: onp.ToJustComplex128_ND, q: _ToFloatOrND | None = None, out: None = None) -> onp.ArrayND[np.complex128]: ...
+@overload  # ~complex, Nd +f64
+def zeta(
+    x: _ToJustComplexOrND, q: onp.ToArrayND[float, np.float64 | npc.integer64 | npc.integer32], out: None = None
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # fallback
+def zeta(x: onp.ToComplex, q: onp.ToFloat | None = None, out: None = None) -> np.float64 | Any: ...
+@overload  # Nd fallback
+def zeta(x: onp.ToComplexND, q: _ToFloatOrND | None = None, out: None = None) -> onp.ArrayND[np.float64 | Any]: ...
+@overload  # +complex, Nd fallback
+def zeta(x: onp.ToComplex, q: onp.ToFloatND, out: None = None) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload
