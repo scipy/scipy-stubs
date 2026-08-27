@@ -1,6 +1,6 @@
 from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
-from typing import Any, Protocol, overload, type_check_only
+from typing import Any, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -29,6 +29,7 @@ __all__ = [
 ]
 
 ###
+
 type __Func1[T] = Callable[[onp.ToComplex | onp.ToComplexND], T]
 type __Func2[T] = Callable[[onp.ToComplex | onp.ToComplexND, onp.ToComplex | onp.ToComplexND], T]
 type _ComprehensionFunc[T] = __Func1[T] | __Func2[T]
@@ -401,53 +402,101 @@ def standard_deviation(
     input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
 ) -> onp.ArrayND[Any]: ...
 
-#
-@type_check_only
-class _DefExtreme(Protocol):
-    @overload
-    def __call__[ScalarT: npc.number | np.bool](
-        self, /, input: onp.CanArrayND[ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
-    ) -> ScalarT: ...
-    @overload
-    def __call__[ScalarT: npc.number | np.bool](
-        self, /, input: onp.CanArrayND[ScalarT], labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
-    ) -> onp.ArrayND[ScalarT]: ...
-    @overload
-    def __call__[ScalarT: npc.number | np.bool](
-        self, /, input: onp.CanArrayND[ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, *, index: onp.ToIntND
-    ) -> onp.ArrayND[ScalarT]: ...
-    @overload
-    def __call__(
-        self, /, input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ArrayND[npc.integer]
-    ) -> onp.ArrayND[Any]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        input: onp.ToComplex | onp.ToComplexND,
-        labels: onp.ToInt | onp.ToIntND | None = None,
-        *,
-        index: onp.ArrayND[npc.integer],
-    ) -> onp.ArrayND[Any]: ...
-    @overload
-    def __call__[ScalarT: npc.number | np.bool](
-        self,
-        /,
-        input: onp.CanArrayND[ScalarT],
-        labels: onp.ToInt | onp.ToIntND | None = None,
-        index: onp.ToInt | onp.ToIntND | None = None,
-    ) -> ScalarT | onp.ArrayND[ScalarT]: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        input: onp.ToComplex | onp.ToComplexND,
-        labels: onp.ToInt | onp.ToIntND | None = None,
-        index: onp.ToInt | onp.ToIntND | None = None,
-    ) -> Incomplete: ...
+# keep in sync with `maximum`
+@overload
+def minimum[ScalarT: npc.number | np.bool](
+    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> ScalarT: ...
+@overload
+def minimum[ScalarT: npc.number | np.bool](
+    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
+) -> onp.ArrayND[ScalarT]: ...
+@overload
+def minimum(
+    input: onp.ToJustInt64 | onp.ToJustInt64_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> np.int64: ...
+@overload
+def minimum(
+    input: onp.ToJustInt64 | onp.ToJustInt64_ND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
+) -> onp.ArrayND[np.int64]: ...
+@overload
+def minimum(
+    input: onp.ToJustFloat64 | onp.ToJustFloat64_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> np.float64: ...
+@overload
+def minimum(
+    input: onp.ToJustFloat64 | onp.ToJustFloat64_ND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def minimum(
+    input: onp.ToJustComplex128 | onp.ToJustComplex128_ND,
+    labels: onp.ToInt | onp.ToIntND | None = None,
+    index: onp.ToInt | None = None,
+) -> np.complex128: ...
+@overload
+def minimum(
+    input: onp.ToJustComplex128 | onp.ToJustComplex128_ND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
+) -> onp.ArrayND[np.complex128]: ...
+@overload
+def minimum(
+    input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> Incomplete: ...
+@overload
+def minimum(input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND) -> onp.ArrayND[Any]: ...
+@overload
+def minimum(
+    input: onp.ToComplex | onp.ToComplexND,
+    labels: onp.ToInt | onp.ToIntND | None = None,
+    index: onp.ToInt | onp.ToIntND | None = None,
+) -> Incomplete: ...
 
-minimum: _DefExtreme
-maximum: _DefExtreme
+# keep in sync with `minimum`
+@overload
+def maximum[ScalarT: npc.number | np.bool](
+    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> ScalarT: ...
+@overload
+def maximum[ScalarT: npc.number | np.bool](
+    input: onp.ToArrayND[ScalarT, ScalarT], labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
+) -> onp.ArrayND[ScalarT]: ...
+@overload
+def maximum(
+    input: onp.ToJustInt64 | onp.ToJustInt64_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> np.int64: ...
+@overload
+def maximum(
+    input: onp.ToJustInt64 | onp.ToJustInt64_ND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
+) -> onp.ArrayND[np.int64]: ...
+@overload
+def maximum(
+    input: onp.ToJustFloat64 | onp.ToJustFloat64_ND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> np.float64: ...
+@overload
+def maximum(
+    input: onp.ToJustFloat64 | onp.ToJustFloat64_ND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def maximum(
+    input: onp.ToJustComplex128 | onp.ToJustComplex128_ND,
+    labels: onp.ToInt | onp.ToIntND | None = None,
+    index: onp.ToInt | None = None,
+) -> np.complex128: ...
+@overload
+def maximum(
+    input: onp.ToJustComplex128 | onp.ToJustComplex128_ND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND
+) -> onp.ArrayND[np.complex128]: ...
+@overload
+def maximum(
+    input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> Incomplete: ...
+@overload
+def maximum(input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND) -> onp.ArrayND[Any]: ...
+@overload
+def maximum(
+    input: onp.ToComplex | onp.ToComplexND,
+    labels: onp.ToInt | onp.ToIntND | None = None,
+    index: onp.ToInt | onp.ToIntND | None = None,
+) -> Incomplete: ...
 
 #
 @overload
@@ -509,37 +558,33 @@ def extrema(
     index: onp.ToInt | onp.ToIntND | None = None,
 ) -> _Extrema0D[Any] | _ExtremaND[Any]: ...
 
-#
-@type_check_only
-class _DefArgExtreme(Protocol):
-    @overload
-    def __call__(
-        self, /, input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: None = None
-    ) -> _Idx0D: ...
-    @overload
-    def __call__(
-        self, /, input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ArrayND[npc.integer]
-    ) -> _IdxND: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        input: onp.ToComplex | onp.ToComplexND,
-        labels: onp.ToInt | onp.ToIntND | None = None,
-        *,
-        index: onp.ArrayND[npc.integer],
-    ) -> _IdxND: ...
-    @overload
-    def __call__(
-        self,
-        /,
-        input: onp.ToComplex | onp.ToComplexND,
-        labels: onp.ToInt | onp.ToIntND | None = None,
-        index: onp.ToInt | onp.ToIntND | None = None,
-    ) -> _Idx0D | _IdxND: ...
+# keep in sync with `maximum_position`
+@overload
+def minimum_position(
+    input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> _Idx0D: ...
+@overload
+def minimum_position(input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND) -> _IdxND: ...
+@overload
+def minimum_position(
+    input: onp.ToComplex | onp.ToComplexND,
+    labels: onp.ToInt | onp.ToIntND | None = None,
+    index: onp.ToInt | onp.ToIntND | None = None,
+) -> _Idx0D | _IdxND: ...
 
-minimum_position: _DefArgExtreme
-maximum_position: _DefArgExtreme
+# keep in sync with `minimum_position`
+@overload
+def maximum_position(
+    input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
+) -> _Idx0D: ...
+@overload
+def maximum_position(input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND) -> _IdxND: ...
+@overload
+def maximum_position(
+    input: onp.ToComplex | onp.ToComplexND,
+    labels: onp.ToInt | onp.ToIntND | None = None,
+    index: onp.ToInt | onp.ToIntND | None = None,
+) -> _Idx0D | _IdxND: ...
 
 #
 @overload
