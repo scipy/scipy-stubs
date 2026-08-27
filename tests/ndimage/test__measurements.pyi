@@ -232,10 +232,16 @@ assert_type(sum(_f80_2d, _i32_1d, _intp_1d), onp.ArrayND[Any])
 ###
 # minimum / maximum
 
-assert_type(minimum(_f64_2d), np.float64)
-assert_type(minimum(_f32_2d), np.float32)
-assert_type(maximum(_f64_2d), np.float64)
+assert_type(maximum(_py_i_2d), np.int64)
+assert_type(maximum(_py_f_1d), np.float64)
+assert_type(maximum(_py_c_1d), np.complex128)
 
+assert_type(minimum(_f32_2d), np.float32)
+assert_type(maximum(_f32_2d, _i32_1d, 1), np.float32)
+assert_type(maximum(_f32_2d, _i32_1d, [1, 2]), onp.ArrayND[np.float32])
+
+assert_type(minimum(_f64_2d), np.float64)
+assert_type(maximum(_f64_2d), np.float64)
 assert_type(minimum(_f64_2d, _i32_1d, _intp_1d), onp.ArrayND[np.float64])
 assert_type(maximum(_f64_2d, _i32_1d, _intp_1d), onp.ArrayND[np.float64])
 
@@ -261,9 +267,11 @@ assert_type(
 
 assert_type(minimum_position(_f64_2d), tuple[np.intp, ...])
 assert_type(maximum_position(_f64_2d), tuple[np.intp, ...])
+assert_type(maximum_position(_f64_2d, _i32_1d, 1), tuple[np.intp, ...])
 
 assert_type(minimum_position(_f64_2d, _i32_1d, _intp_1d), list[tuple[np.intp, ...]])
 assert_type(maximum_position(_f64_2d, _i32_1d, _intp_1d), list[tuple[np.intp, ...]])
+assert_type(maximum_position(_f64_2d, _i32_1d, [1, 2]), list[tuple[np.intp, ...]])
 
 ###
 # center_of_mass
