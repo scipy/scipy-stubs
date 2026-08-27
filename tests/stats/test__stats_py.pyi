@@ -1444,6 +1444,7 @@ assert_type(median_abs_deviation(_f64_1d), np.float64)
 assert_type(median_abs_deviation(_f64_nd, axis=None), np.float64)
 assert_type(median_abs_deviation(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(median_abs_deviation(_f64_nd, axis=None, keepdims=True), onp.ArrayND[np.float64])
+assert_type(median_abs_deviation(_f64_1d, center=np.mean), np.float64)
 
 # zscore
 

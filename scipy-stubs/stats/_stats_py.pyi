@@ -174,7 +174,7 @@ class _RVSCallable(Protocol):
 
 @type_check_only
 class _MADCenterFunc(Protocol):
-    def __call__(self, x: onp.Array1D[np.float64], /, *, axis: int | None) -> onp.ToFloat: ...
+    def __call__(self, x: onp.Array1D[np.float64], /, *, axis: Any) -> Any: ...
 
 @type_check_only
 class _TestResultTuple(NamedTuple, Generic[_FloatOrArrayT_co]):
