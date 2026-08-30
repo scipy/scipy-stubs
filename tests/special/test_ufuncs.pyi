@@ -195,8 +195,19 @@ assert_type(sp.xlogy(_f8_nd, 2.0), _Float64ND)
 
 ###
 
-# _UFunc31 - TODO
+# _UFunc31f
+assert_type(sp.voigt_profile(_f4, 1.0, 1.0), np.float32)
+assert_type(sp.voigt_profile(_f8, 1.0, _f4), np.float64)
+
 # _UFunc32 - TODO
+
+# _UFunc42f
+assert_type(sp.pro_ang1(_f4, 1.0, 1.0, 1.0), np.float32)
+assert_type(sp.pro_ang1(_f8, 1.0, 1.0, _f4), np.float64)
+
+# _UFunc52f
+assert_type(sp.pro_ang1_cv(_f4, 1.0, 1.0, 1.0, 1.0), np.float32)
+assert_type(sp.pro_ang1_cv(_f8, 1.0, 1.0, 1.0, _f4), np.float64)
 
 # _UFunc31lldf
 assert_type(sp.nbdtr.ntypes, L[3])
