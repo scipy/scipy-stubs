@@ -1,46 +1,51 @@
 from typing import overload
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["orthogonal_procrustes"]
 
 ###
 
-type _Float = np.float32 | np.float64
-type _Complex = np.complex64 | np.complex128
+type _ToF32ND = onp.ToFloat32_ND | onp.ToBoolND
+type _AsF64ND = onp.ToArrayND[op.JustFloat | op.JustInt, npc.integer32 | npc.integer64 | npc.floating64 | npc.floating80]
+type _AsC128ND = onp.ToJustComplex128_ND | onp.ToJustCLongDoubleND
 
 ###
 
-@overload
-def orthogonal_procrustes(
-    A: onp.ToFloat64, B: onp.ToIntND | onp.ToJustFloat64, check_finite: bool = True
+@overload  # ~f64, +f64
+def orthogonal_procrustes(  # type: ignore[overload-overlap]
+    A: _AsF64ND, B: onp.ToFloatND, check_finite: bool = True
 ) -> tuple[onp.ArrayND[np.float64], np.float64]: ...
-@overload
-def orthogonal_procrustes(
-    A: onp.ToIntND | onp.ToJustFloat64, B: onp.ToFloat64, check_finite: bool = True
+@overload  # +f64, ~f64
+def orthogonal_procrustes(  # type: ignore[overload-overlap]
+    A: onp.ToFloatND, B: _AsF64ND, check_finite: bool = True
 ) -> tuple[onp.ArrayND[np.float64], np.float64]: ...
-@overload
-def orthogonal_procrustes(
-    A: onp.ToFloatND, B: onp.ToFloatND, check_finite: bool = True
-) -> tuple[onp.ArrayND[_Float], _Float]: ...
-@overload
-def orthogonal_procrustes(
-    A: onp.ToComplex128_ND, B: onp.ToJustComplex128_ND, check_finite: bool = True
+@overload  # +f32, +f32
+def orthogonal_procrustes(A: _ToF32ND, B: _ToF32ND, check_finite: bool = True) -> tuple[onp.ArrayND[np.float32], np.float32]: ...
+@overload  # ~c128, +c128
+def orthogonal_procrustes(  # type: ignore[overload-overlap]
+    A: _AsC128ND, B: onp.ToComplexND, check_finite: bool = True
 ) -> tuple[onp.ArrayND[np.complex128], np.float64]: ...
-@overload
-def orthogonal_procrustes(
-    A: onp.ToJustComplex128_ND, B: onp.ToComplex128_ND, check_finite: bool = True
+@overload  # +c128, ~c128
+def orthogonal_procrustes(  # type: ignore[overload-overlap]
+    A: onp.ToComplexND, B: _AsC128ND, check_finite: bool = True
 ) -> tuple[onp.ArrayND[np.complex128], np.float64]: ...
-@overload
+@overload  # ~f64, ~c64
+def orthogonal_procrustes(  # type: ignore[overload-overlap]
+    A: _AsF64ND, B: onp.ToJustComplex64_ND, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex128], np.float64]: ...
+@overload  # ~c64, +f64
+def orthogonal_procrustes(  # type: ignore[overload-overlap]
+    A: onp.ToJustComplex64_ND, B: _AsF64ND, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex128], np.float64]: ...
+@overload  # ~c64, +c64
 def orthogonal_procrustes(
-    A: onp.ToJustComplexND, B: onp.ToComplexND, check_finite: bool = True
-) -> tuple[onp.ArrayND[_Complex], _Float]: ...
-@overload
+    A: onp.ToJustComplex64_ND, B: onp.ToComplex64_ND | onp.ToBoolND, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex64], np.float32]: ...
+@overload  # +f32, ~c64
 def orthogonal_procrustes(
-    A: onp.ToComplexND, B: onp.ToJustComplexND, check_finite: bool = True
-) -> tuple[onp.ArrayND[_Complex], _Float]: ...
-@overload
-def orthogonal_procrustes(
-    A: onp.ToComplexND, B: onp.ToComplexND, check_finite: bool = True
-) -> tuple[onp.ArrayND[_Float | _Complex], _Float]: ...
+    A: _ToF32ND, B: onp.ToJustComplex64_ND, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.complex64], np.float32]: ...
