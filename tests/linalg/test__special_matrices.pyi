@@ -279,6 +279,10 @@ assert_type(hankel(_f64_nd), onp.Array2D[np.float64])
 assert_type(hankel(_f64_1d, _f64_1d), onp.Array2D[np.float64])
 assert_type(hankel(_f64_1d, _f64_nd), onp.Array2D[np.float64])
 assert_type(hankel(_f64_nd, _f64_nd), onp.Array2D[np.float64])
+assert_type(hankel(_py_b_1d), onp.Array2D[np.bool_])
+assert_type(hankel(_f32_1d), onp.Array2D[np.float32])
+assert_type(hankel(_f32_1d, _f32_1d), onp.Array2D[np.float32])
+assert_type(hankel(_f32_1d, _py_f_1d), onp.Array2D[np.float64])
 assert_type(hankel(_py_i_2d), onp.Array2D[np.int_])  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
 assert_type(hankel(_py_i_3d), onp.Array2D[np.int_])  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
 
