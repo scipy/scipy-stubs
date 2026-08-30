@@ -1,7 +1,7 @@
 # mypy reports false positive `overload-overlap` errors for `zeta`, which vary per numpy version
 # mypy: disable-error-code=overload-overlap
 
-from typing import Any, Literal as L, Unpack, overload
+from typing import Any, Literal as L, Never, Unpack, overload
 
 import numpy as np
 import optype as op
@@ -90,7 +90,6 @@ type _tuple4[T0, T1] = tuple[T0, T1, T1, T1]
 type _tuple8[T0, T1] = tuple[T0, T1, T1, T1, T1, T1, T1, T1]
 
 type _i = np.int32 | np.int64
-type _fc8 = np.float64 | np.complex128
 
 type _f8_1d = onp.Array1D[np.float64]
 type _f8_2d = onp.Array2D[np.float64]
@@ -98,6 +97,9 @@ type _f8_nd = onp.ArrayND[np.float64]
 type _c8_1d = onp.Array1D[np.complex128]
 type _c8_2d = onp.Array2D[np.complex128]
 type _c8_nd = onp.ArrayND[np.complex128]
+
+# workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
 
 ###
 
@@ -108,13 +110,17 @@ def sinc(x: float | onp.ToInt) -> np.float64: ...
 @overload
 def sinc(x: op.JustComplex) -> np.complex128: ...
 @overload
-def sinc(x: complex) -> _fc8: ...  # type: ignore[overload-cannot-match]  # pyright: ignore[reportOverlappingOverload]
+def sinc(x: complex) -> np.float64 | np.complex128: ...  # type: ignore[overload-cannot-match]  # pyright: ignore[reportOverlappingOverload]
 @overload
-def sinc(x: onp.ToIntND) -> _f8_nd: ...
+def sinc[InexactT: npc.inexact, ShapeT: tuple[int, ...]](x: onp.ArrayND[InexactT, ShapeT]) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload
-def sinc(x: onp.ToFloatND) -> onp.ArrayND[npc.floating]: ...
+def sinc[InexactT: npc.inexact](x: onp.ToArrayND[Never, InexactT]) -> onp.ArrayND[InexactT, _WorkaroundForPyright]: ...
 @overload
-def sinc(x: onp.ToComplexND) -> onp.ArrayND[npc.inexact]: ...
+def sinc(x: onp.ToFloat64_ND) -> onp.ArrayND[np.float64]: ...
+@overload
+def sinc(x: onp.ToJustComplex128_ND) -> onp.ArrayND[np.complex128]: ...
+@overload
+def sinc(x: onp.ToComplexND) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...
 
 #
 @overload
