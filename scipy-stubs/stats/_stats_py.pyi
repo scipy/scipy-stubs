@@ -107,9 +107,6 @@ _SignOrArrayT_co = TypeVar(
 _FloatOrArrayT2_co = TypeVar(
     "_FloatOrArrayT2_co", bound=float | _ScalarOrND[npc.floating], default=float | onp.ArrayND[np.float64], covariant=True
 )
-_F64OrArrayT_co = TypeVar(
-    "_F64OrArrayT_co", bound=np.float64 | onp.ArrayND[np.float64], default=np.float64 | onp.ArrayND[np.float64], covariant=True
-)
 _RealOrArrayT_co = TypeVar("_RealOrArrayT_co", bound=_ScalarOrND[_Real0D], default=_ScalarOrND[Any], covariant=True)
 
 type _Real0D = npc.integer | npc.floating
@@ -286,9 +283,11 @@ class QuantileTestResult(Generic[_FloatT]):
     def confidence_interval(self, /, confidence_level: float = 0.95) -> ConfidenceInterval[_FloatT_co]: ...
 
 class SignificanceResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
-class PearsonRResultBase(_TestResultBunch[_FloatOrArrayT_co, _F64OrArrayT_co], Generic[_FloatOrArrayT_co, _F64OrArrayT_co]): ...
+class PearsonRResultBase(
+    _TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT2_co], Generic[_FloatOrArrayT_co, _FloatOrArrayT2_co]
+): ...
 
-class PearsonRResult(PearsonRResultBase[_FloatOrArrayT_co, _F64OrArrayT_co], Generic[_FloatOrArrayT_co, _F64OrArrayT_co]):
+class PearsonRResult(PearsonRResultBase[_FloatOrArrayT_co, _FloatOrArrayT2_co], Generic[_FloatOrArrayT_co, _FloatOrArrayT2_co]):
     _alternative: Alternative
     _n: int
     _x: onp.ArrayND[_Real0D]
@@ -300,7 +299,7 @@ class PearsonRResult(PearsonRResultBase[_FloatOrArrayT_co, _F64OrArrayT_co], Gen
         self,
         /,
         statistic: _FloatOrArrayT_co,
-        pvalue: _F64OrArrayT_co,
+        pvalue: _FloatOrArrayT2_co,
         alternative: Alternative,
         n: int,
         x: onp.ArrayND[_Real0D],
