@@ -117,48 +117,48 @@ assert_type(y1p_zeros(5, False), tuple[onp.Array1D[np.complex128], onp.Array1D[n
 assert_type(y1p_zeros(5, True), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
 
 # jvp
-assert_type(jvp(1.0, 1.0), np.float32 | np.float64)
-assert_type(jvp(1.0, 1j), np.complex64 | np.complex128)
-assert_type(jvp(1.0, f_arr), onp.ArrayND[np.float32 | np.float64])
-assert_type(jvp(f_arr, 1.0), onp.ArrayND[np.float32 | np.float64])
-assert_type(jvp(1.0, c_arr), onp.ArrayND[np.complex64 | np.complex128])
-assert_type(jvp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(jvp(1.0, 1.0), np.float64)
+assert_type(jvp(1.0, 1j), np.complex128)
+assert_type(jvp(1.0, f_arr), onp.ArrayND[np.float64])
+assert_type(jvp(f_arr, 1.0), onp.ArrayND[np.float64])
+assert_type(jvp(1.0, c_arr), onp.ArrayND[np.complex128])
+assert_type(jvp(f_arr, 1j), onp.ArrayND[np.complex128])
 
 # yvp
-assert_type(yvp(1.0, 1.0), np.float32 | np.float64)
-assert_type(yvp(1.0, 1j), np.complex64 | np.complex128)
-assert_type(yvp(1.0, f_arr), onp.ArrayND[np.float32 | np.float64])
-assert_type(yvp(f_arr, 1.0), onp.ArrayND[np.float32 | np.float64])
-assert_type(yvp(1.0, c_arr), onp.ArrayND[np.complex64 | np.complex128])
-assert_type(yvp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(yvp(1.0, 1.0), np.float64)
+assert_type(yvp(1.0, 1j), np.complex128)
+assert_type(yvp(1.0, f_arr), onp.ArrayND[np.float64])
+assert_type(yvp(f_arr, 1.0), onp.ArrayND[np.float64])
+assert_type(yvp(1.0, c_arr), onp.ArrayND[np.complex128])
+assert_type(yvp(f_arr, 1j), onp.ArrayND[np.complex128])
 
 # kvp
-assert_type(kvp(1.0, 1.0), np.float32 | np.float64)
-assert_type(kvp(1.0, 1j), np.complex64 | np.complex128)
-assert_type(kvp(1.0, f_arr), onp.ArrayND[np.float32 | np.float64])
-assert_type(kvp(f_arr, 1.0), onp.ArrayND[np.float32 | np.float64])
-assert_type(kvp(1.0, c_arr), onp.ArrayND[np.complex64 | np.complex128])
-assert_type(kvp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(kvp(1.0, 1.0), np.float64)
+assert_type(kvp(1.0, 1j), np.complex128)
+assert_type(kvp(1.0, f_arr), onp.ArrayND[np.float64])
+assert_type(kvp(f_arr, 1.0), onp.ArrayND[np.float64])
+assert_type(kvp(1.0, c_arr), onp.ArrayND[np.complex128])
+assert_type(kvp(f_arr, 1j), onp.ArrayND[np.complex128])
 
 # ivp
-assert_type(ivp(1.0, 1.0), np.float32 | np.float64)
-assert_type(ivp(1.0, 1j), np.complex64 | np.complex128)
-assert_type(ivp(1.0, f_arr), onp.ArrayND[np.float32 | np.float64])
-assert_type(ivp(f_arr, 1.0), onp.ArrayND[np.float32 | np.float64])
-assert_type(ivp(1.0, c_arr), onp.ArrayND[np.complex64 | np.complex128])
-assert_type(ivp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(ivp(1.0, 1.0), np.float64)
+assert_type(ivp(1.0, 1j), np.complex128)
+assert_type(ivp(1.0, f_arr), onp.ArrayND[np.float64])
+assert_type(ivp(f_arr, 1.0), onp.ArrayND[np.float64])
+assert_type(ivp(1.0, c_arr), onp.ArrayND[np.complex128])
+assert_type(ivp(f_arr, 1j), onp.ArrayND[np.complex128])
 
 # h1vp
-assert_type(h1vp(1.0, 1.0), np.complex64 | np.complex128)
-assert_type(h1vp(1.0, 1j), np.complex64 | np.complex128)
-assert_type(h1vp(1.0, c_arr), onp.ArrayND[np.complex64 | np.complex128])
-assert_type(h1vp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(h1vp(1.0, 1.0), np.complex128)
+assert_type(h1vp(1.0, 1j), np.complex128)
+assert_type(h1vp(1.0, c_arr), onp.ArrayND[np.complex128])
+assert_type(h1vp(f_arr, 1j), onp.ArrayND[np.complex128])
 
 # h2vp
-assert_type(h2vp(1.0, 1.0), np.complex64 | np.complex128)
-assert_type(h2vp(1.0, 1j), np.complex64 | np.complex128)
-assert_type(h2vp(1.0, c_arr), onp.ArrayND[np.complex64 | np.complex128])
-assert_type(h2vp(f_arr, 1j), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(h2vp(1.0, 1.0), np.complex128)
+assert_type(h2vp(1.0, 1j), np.complex128)
+assert_type(h2vp(1.0, c_arr), onp.ArrayND[np.complex128])
+assert_type(h2vp(f_arr, 1j), onp.ArrayND[np.complex128])
 
 # riccati_jn
 assert_type(riccati_jn(1, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -179,14 +179,14 @@ assert_type(fresnels_zeros(5), onp.Array1D[np.complex128])
 assert_type(fresnel_zeros(5), onp.Array1D[np.complex128])
 
 # assoc_laguerre
-assert_type(assoc_laguerre(1.0, 3), np.float32 | np.float64)
-assert_type(assoc_laguerre(1j, 3), np.complex64 | np.complex128)
-assert_type(assoc_laguerre(1.0, 3, f_arr), onp.ArrayND[np.float32 | np.float64])
-assert_type(assoc_laguerre(1.0, i_arr, 0.0), onp.ArrayND[np.float32 | np.float64])
-assert_type(assoc_laguerre(f_arr, 3, 0.0), onp.ArrayND[np.float32 | np.float64])
-assert_type(assoc_laguerre(1j, 3, f_arr), onp.ArrayND[np.complex64 | np.complex128])
-assert_type(assoc_laguerre(1j, i_arr, 0.0), onp.ArrayND[np.complex64 | np.complex128])
-assert_type(assoc_laguerre(c_arr, 3, 0.0), onp.ArrayND[np.complex64 | np.complex128])
+assert_type(assoc_laguerre(1.0, 3), np.float64)
+assert_type(assoc_laguerre(1j, 3), np.complex128)
+assert_type(assoc_laguerre(1.0, 3, f_arr), onp.ArrayND[np.float64])
+assert_type(assoc_laguerre(1.0, i_arr, 0.0), onp.ArrayND[np.float64])
+assert_type(assoc_laguerre(f_arr, 3, 0.0), onp.ArrayND[np.float64])
+assert_type(assoc_laguerre(1j, 3, f_arr), onp.ArrayND[np.complex128])
+assert_type(assoc_laguerre(1j, i_arr, 0.0), onp.ArrayND[np.complex128])
+assert_type(assoc_laguerre(c_arr, 3, 0.0), onp.ArrayND[np.complex128])
 
 # polygamma
 assert_type(polygamma(1, 1.0), onp.Array0D[np.float64])
@@ -288,15 +288,15 @@ assert_type(obl_cv_seq(1, 2, 1.0), onp.Array1D[np.float64])
 
 # comb
 assert_type(comb(5, 2, exact=True), int)
-assert_type(comb(5.0, 2.0), np.float32 | np.float64)
-assert_type(comb(5.0, f_arr), onp.ArrayND[np.float32 | np.float64])
-assert_type(comb(f_arr, 2.0), onp.ArrayND[np.float32 | np.float64])
+assert_type(comb(5.0, 2.0), np.float64)
+assert_type(comb(5.0, f_arr), onp.ArrayND[np.float64])
+assert_type(comb(f_arr, 2.0), onp.ArrayND[np.float64])
 
 # perm
 assert_type(perm(5, 2, True), int)
-assert_type(perm(5.0, 2.0), np.float32 | np.float64)
-assert_type(perm(5.0, f_arr), onp.ArrayND[np.float32 | np.float64])
-assert_type(perm(f_arr, 2.0), onp.ArrayND[np.float32 | np.float64])
+assert_type(perm(5.0, 2.0), np.float64)
+assert_type(perm(5.0, f_arr), onp.ArrayND[np.float64])
+assert_type(perm(f_arr, 2.0), onp.ArrayND[np.float64])
 
 # factorial
 assert_type(factorial(5), np.float64)
