@@ -202,12 +202,14 @@ assert_type(sp.voigt_profile(_f8, 1.0, _f4), np.float64)
 # _UFunc32 - TODO
 
 # _UFunc42f
-assert_type(sp.pro_ang1(_f4, 1.0, 1.0, 1.0), np.float32)
-assert_type(sp.pro_ang1(_f8, 1.0, 1.0, _f4), np.float64)
+assert_type(sp.pro_ang1(_f4, 1.0, 1.0, 1.0), tuple[np.float32, np.float32])
+assert_type(sp.pro_ang1(_f8, 1.0, 1.0, _f4), tuple[np.float64, np.float64])
+assert_type(sp.pro_ang1(_f8_nd, 1.0, 1.0, 1.0), tuple[_Float64ND, _Float64ND])
 
 # _UFunc52f
-assert_type(sp.pro_ang1_cv(_f4, 1.0, 1.0, 1.0, 1.0), np.float32)
-assert_type(sp.pro_ang1_cv(_f8, 1.0, 1.0, 1.0, _f4), np.float64)
+assert_type(sp.pro_ang1_cv(_f4, 1.0, 1.0, 1.0, 1.0), tuple[np.float32, np.float32])
+assert_type(sp.pro_ang1_cv(_f8, 1.0, 1.0, 1.0, _f4), tuple[np.float64, np.float64])
+assert_type(sp.pro_ang1_cv(_f8_nd, 1.0, 1.0, 1.0, 1.0), tuple[_Float64ND, _Float64ND])
 
 # _UFunc31lldf
 assert_type(sp.nbdtr.ntypes, L[3])
