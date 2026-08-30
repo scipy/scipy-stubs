@@ -2002,15 +2002,15 @@ class _UFunc31f(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     ) -> _Float: ...
     @overload
     def __call__[ST: _Float_D](
-        self, a: onp.ToFloat64, b: onp.ToFloat64, x: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+        self, a: ST, b: ST | _ToFloat32, x: ST | _ToFloat32, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
     ) -> ST: ...
     @overload
     def __call__[ST: _Float_D](
-        self, a: onp.ToFloat64, b: ST, x: onp.ToFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+        self, a: ST | _ToFloat32, b: ST, x: ST | _ToFloat32, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
     ) -> ST: ...
     @overload
     def __call__[ST: _Float_D](
-        self, a: ST, b: onp.ToFloat64, x: onp.ToFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+        self, a: ST | _ToFloat32, b: ST | _ToFloat32, x: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
     ) -> ST: ...
     @overload
     def __call__(
@@ -2980,19 +2980,19 @@ class _UFunc42f(_UFunc42[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     ) -> _Float: ...
     @overload
     def __call__[ST: _Float_D](
-        self, m: onp.ToFloat64, n: onp.ToFloat64, c: onp.ToFloat64, x: ST, /, out: _None2 = ..., **kw: Unpack[_Kw42f]
+        self, m: ST, n: ST | _ToFloat32, c: ST | _ToFloat32, x: ST | _ToFloat32, /, out: _None2 = ..., **kw: Unpack[_Kw42f]
     ) -> ST: ...
     @overload
     def __call__[ST: _Float_D](
-        self, m: onp.ToFloat64, n: onp.ToFloat64, c: ST, x: onp.ToFloat64, /, out: _None2 = ..., **kw: Unpack[_Kw42f]
+        self, m: ST | _ToFloat32, n: ST, c: ST | _ToFloat32, x: ST | _ToFloat32, /, out: _None2 = ..., **kw: Unpack[_Kw42f]
     ) -> ST: ...
     @overload
     def __call__[ST: _Float_D](
-        self, m: onp.ToFloat64, n: ST, c: onp.ToFloat64, x: onp.ToFloat64, /, out: _None2 = ..., **kw: Unpack[_Kw42f]
+        self, m: ST | _ToFloat32, n: ST | _ToFloat32, c: ST, x: ST | _ToFloat32, /, out: _None2 = ..., **kw: Unpack[_Kw42f]
     ) -> ST: ...
     @overload
     def __call__[ST: _Float_D](
-        self, m: ST, n: onp.ToFloat64, c: onp.ToFloat64, x: onp.ToFloat64, /, out: _None2 = ..., **kw: Unpack[_Kw42f]
+        self, m: ST | _ToFloat32, n: ST | _ToFloat32, c: ST | _ToFloat32, x: ST, /, out: _None2 = ..., **kw: Unpack[_Kw42f]
     ) -> ST: ...
     @overload
     def __call__(
@@ -3087,59 +3087,59 @@ class _UFunc52f(_UFunc52[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     @overload
     def __call__[ST: _Float_D](
         self,
-        m: onp.ToFloat64,
-        n: onp.ToFloat64,
-        c: onp.ToFloat64,
-        cv: onp.ToFloat64,
-        x: ST,
-        /,
-        out: _None2 = ...,
-        **kw: Unpack[_Kw52f],
-    ) -> ST: ...
-    @overload
-    def __call__[ST: _Float_D](
-        self,
-        m: onp.ToFloat64,
-        n: onp.ToFloat64,
-        c: onp.ToFloat64,
-        cv: ST,
-        x: onp.ToFloat64,
-        /,
-        out: _None2 = ...,
-        **kw: Unpack[_Kw52f],
-    ) -> ST: ...
-    @overload
-    def __call__[ST: _Float_D](
-        self,
-        m: onp.ToFloat64,
-        n: onp.ToFloat64,
-        c: ST,
-        cv: onp.ToFloat64,
-        x: onp.ToFloat64,
-        /,
-        out: _None2 = ...,
-        **kw: Unpack[_Kw52f],
-    ) -> ST: ...
-    @overload
-    def __call__[ST: _Float_D](
-        self,
-        m: onp.ToFloat64,
-        n: ST,
-        c: onp.ToFloat64,
-        cv: onp.ToFloat64,
-        x: onp.ToFloat64,
-        /,
-        out: _None2 = ...,
-        **kw: Unpack[_Kw52f],
-    ) -> ST: ...
-    @overload
-    def __call__[ST: _Float_D](
-        self,
         m: ST,
-        n: onp.ToFloat64,
-        c: onp.ToFloat64,
-        cv: onp.ToFloat64,
-        x: onp.ToFloat64,
+        n: ST | _ToFloat32,
+        c: ST | _ToFloat32,
+        cv: ST | _ToFloat32,
+        x: ST | _ToFloat32,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> ST: ...
+    @overload
+    def __call__[ST: _Float_D](
+        self,
+        m: ST | _ToFloat32,
+        n: ST,
+        c: ST | _ToFloat32,
+        cv: ST | _ToFloat32,
+        x: ST | _ToFloat32,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> ST: ...
+    @overload
+    def __call__[ST: _Float_D](
+        self,
+        m: ST | _ToFloat32,
+        n: ST | _ToFloat32,
+        c: ST,
+        cv: ST | _ToFloat32,
+        x: ST | _ToFloat32,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> ST: ...
+    @overload
+    def __call__[ST: _Float_D](
+        self,
+        m: ST | _ToFloat32,
+        n: ST | _ToFloat32,
+        c: ST | _ToFloat32,
+        cv: ST,
+        x: ST | _ToFloat32,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_Kw52f],
+    ) -> ST: ...
+    @overload
+    def __call__[ST: _Float_D](
+        self,
+        m: ST | _ToFloat32,
+        n: ST | _ToFloat32,
+        c: ST | _ToFloat32,
+        cv: ST | _ToFloat32,
+        x: ST,
         /,
         out: _None2 = ...,
         **kw: Unpack[_Kw52f],
