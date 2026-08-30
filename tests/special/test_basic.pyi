@@ -2,7 +2,6 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from scipy.special import (
     ai_zeros,
@@ -82,8 +81,9 @@ assert_type(sinc(_c128_nd), onp.ArrayND[np.complex128])
 
 # diric
 assert_type(diric(1.0, 3), onp.Array0D[np.float64])
-assert_type(diric(1.0, np.uint8(3)), onp.Array0D[npc.floating])
-assert_type(diric(_f64_nd, 3), onp.ArrayND[npc.floating])
+assert_type(diric(1.0, np.uint8(3)), onp.Array0D[np.float64])
+assert_type(diric(1.0, _i64_nd), onp.ArrayND[np.float64])
+assert_type(diric(_f64_nd, 3), onp.ArrayND[np.float64])
 
 # jnjnp_zeros
 assert_type(jnjnp_zeros(2), tuple[onp.Array1D[np.float64], onp.Array1D[np.int32], onp.Array1D[np.int32], onp.Array1D[np.int32]])
