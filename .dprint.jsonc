@@ -20,7 +20,7 @@
   "plugins": [
     "npm:dprint-plugin-yaml@0.6.0",
     "npm:@dprint/json@0.23.0",
-    "npm:@dprint/markdown@0.22.1",
+    "npm:@dprint/markdown@0.23.1",
     "npm:@dprint/toml@0.8.0",
   ],
 }
