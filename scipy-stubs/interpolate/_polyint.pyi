@@ -230,7 +230,7 @@ def krogh_interpolate(
 @overload
 def krogh_interpolate(
     xi: onp.ToFloat1D, yi: onp.ToComplexND, x: onp.ToFloat | onp.ToFloat1D, der: int | list[int] | None = 0, axis: int = 0
-) -> onp.ArrayND[np.float64 | np.complex128]: ...
+) -> onp.ArrayND[np.float64] | onp.ArrayND[np.complex128]: ...
 
 #
 @deprecated("This function is deprecated and will be removed in SciPy 2.1.0.")
@@ -272,4 +272,4 @@ def barycentric_interpolate(
     *,
     der: int | list[int] | None = 0,
     rng: onp.random.ToRNG | None = None,
-) -> onp.ArrayND[np.float64 | np.complex128]: ...
+) -> onp.ArrayND[np.float64] | onp.ArrayND[np.complex128]: ...

@@ -118,7 +118,7 @@ class orthopoly1d(np.poly1d):  # undocumented
     @overload
     def __call__(self, /, v: onp.ToJustComplexND) -> onp.ArrayND[np.complex128]: ...
     @overload
-    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[np.float64 | np.complex128]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+    def __call__(self, /, v: onp.ToComplexND) -> onp.ArrayND[np.float64] | onp.ArrayND[np.complex128]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
 
 #
 @overload

@@ -5,4 +5,6 @@ __all__: list[str] = []
 
 class SqrtmError(np.linalg.LinAlgError): ...  # undocumented
 
-def _sqrtm_triu(T: onp.ToComplex2D, blocksize: onp.ToJustInt = 64) -> onp.Array2D[np.float64 | np.complex128]: ...  # undocumented
+def _sqrtm_triu(
+    T: onp.ToComplex2D, blocksize: onp.ToJustInt = 64
+) -> onp.Array2D[np.float64] | onp.Array2D[np.complex128]: ...  # undocumented

@@ -51,7 +51,9 @@ class SuperLU(Generic[_InexactT_co]):
     @overload
     def solve(self, /, rhs: onp.ArrayND[npc.complexfloating], trans: _Trans = "N") -> onp.ArrayND[np.complex128]: ...
     @overload
-    def solve(self, /, rhs: onp.ArrayND[npc.number], trans: _Trans = "N") -> onp.ArrayND[np.float64 | np.complex128]: ...
+    def solve(
+        self, /, rhs: onp.ArrayND[npc.number], trans: _Trans = "N"
+    ) -> onp.ArrayND[np.float64] | onp.ArrayND[np.complex128]: ...
 
 def gssv(
     N: SupportsIndex,
@@ -90,4 +92,4 @@ def gstrs(
     U_rowind: _Int1D,
     U_colptr: _Int1D,
     B: _Inexact2D,
-) -> tuple[onp.ArrayND[np.float64 | np.complex128], int]: ...
+) -> tuple[onp.ArrayND[np.float64] | onp.ArrayND[np.complex128], int]: ...

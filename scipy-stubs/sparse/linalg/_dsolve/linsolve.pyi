@@ -165,7 +165,7 @@ def spsolve(
 @overload  # 2d inexact, 1d or 2d inexact
 def spsolve(
     A: _ToInexactMat, b: onp.ToComplex2D | onp.ToComplex1D, permc_spec: _PermcSpec | None = None, use_umfpack: bool = True
-) -> onp.ArrayND[np.float64 | np.complex128]: ...
+) -> onp.ArrayND[np.float64] | onp.ArrayND[np.complex128]: ...
 
 #
 @overload  # 2d float, 1d float
@@ -230,7 +230,7 @@ def spsolve_triangular(
     overwrite_A: bool = False,
     overwrite_b: bool = False,
     unit_diagonal: bool = False,
-) -> onp.ArrayND[np.float64 | np.complex128]: ...
+) -> onp.ArrayND[np.float64] | onp.ArrayND[np.complex128]: ...
 
 # NOTE: keep in sync with `spilu`
 # NOTE: the mypy ignores work around a mypy bug in overload overlap checking

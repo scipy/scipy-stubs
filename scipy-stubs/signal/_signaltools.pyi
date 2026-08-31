@@ -1105,29 +1105,37 @@ def unique_roots[InexactT: npc.inexact](
 @overload  # real
 def residue(
     b: onp.ToFloat1D, a: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "avg"
-) -> tuple[onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64]]: ...
+) -> tuple[
+    onp.Array1D[np.float64] | onp.Array1D[np.complex128],
+    onp.Array1D[np.float64] | onp.Array1D[np.complex128],
+    onp.Array1D[np.float64],
+]: ...
 @overload  # complex b
 def residue(
     b: onp.ToJustComplex1D, a: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
-) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]]: ...
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64] | onp.Array1D[np.complex128]]: ...
 @overload  # complex a
 def residue(
     b: onp.ToComplex1D, a: onp.ToJustComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
-) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]]: ...
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64] | onp.Array1D[np.complex128]]: ...
 
 #
 @overload  # real
 def residuez(
     b: onp.ToFloat1D, a: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "avg"
-) -> tuple[onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64]]: ...
+) -> tuple[
+    onp.Array1D[np.float64] | onp.Array1D[np.complex128],
+    onp.Array1D[np.float64] | onp.Array1D[np.complex128],
+    onp.Array1D[np.float64],
+]: ...
 @overload  # complex b
 def residuez(
     b: onp.ToJustComplex1D, a: onp.ToComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
-) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]]: ...
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64] | onp.Array1D[np.complex128]]: ...
 @overload  # complex a
 def residuez(
     b: onp.ToComplex1D, a: onp.ToJustComplex1D, tol: float = 0.001, rtype: _ResidueType = "avg"
-) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64 | np.complex128]]: ...
+) -> tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], onp.Array1D[np.float64] | onp.Array1D[np.complex128]]: ...
 
 #
 @overload  # real
