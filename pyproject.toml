@@ -62,7 +62,7 @@ extras = ["scipy-stubs[scipy]"]
 ci = ["packaging>=26.3"]
 lint = [
   { include-group = "extras" },
-  "dprint-py==0.56.1.0",
+  "dprint-py==0.57.0.0",
   "ruff==0.16.4",
   "sp-repo-review[cli]==2026.8.14",
 ]
