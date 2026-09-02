@@ -2,7 +2,7 @@ import sys
 from collections.abc import Callable, Sequence
 from dataclasses import dataclass
 from types import ModuleType
-from typing import Any, Generic, Literal as L, NamedTuple, Never, Protocol, Self, overload, override, type_check_only
+from typing import Any, Generic, Literal as L, NamedTuple, Never, Protocol, Self, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -188,10 +188,8 @@ class _TestResultBunch(  # zuban: ignore[type-var]
     def pvalue(self, /) -> _FloatOrArrayT2_co: ...
 
     #
-    @override
-    def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT2_co) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT2_co) -> None: ...  # pyrefly:ignore[bad-override]
+    def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT2_co) -> Self: ...
+    def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT2_co) -> None: ...
 
 ###
 
@@ -315,10 +313,8 @@ class TtestResultBase(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Ge
     def df(self, /) -> _IntFloatOrArrayT_co: ...
 
     #
-    @override
-    def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co, *, df: _FloatOrArrayT_co) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co, *, df: _FloatOrArrayT_co) -> None: ...  # pyrefly:ignore[bad-override]
+    def __new__(_cls, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co, *, df: _FloatOrArrayT_co) -> Self: ...
+    def __init__(self, /, statistic: _FloatOrArrayT_co, pvalue: _FloatOrArrayT_co, *, df: _FloatOrArrayT_co) -> None: ...
 
 class TtestResult(TtestResultBase[_FloatOrArrayT_co, _IntFloatOrArrayT_co], Generic[_FloatOrArrayT_co, _IntFloatOrArrayT_co]):
     _alternative: Alternative
@@ -328,8 +324,7 @@ class TtestResult(TtestResultBase[_FloatOrArrayT_co, _IntFloatOrArrayT_co], Gene
     _dtype: np.dtype[npc.floating]
     _xp: ModuleType
 
-    @override
-    def __init__(  # pyright: ignore[reportInconsistentConstructor]  # pyrefly:ignore[bad-override]
+    def __init__(  # pyright: ignore[reportInconsistentConstructor]
         self,
         /,
         statistic: _FloatOrArrayT_co,
@@ -350,8 +345,7 @@ class KstestResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Gener
     def statistic_sign(self, /) -> _SignOrArrayT_co: ...
 
     #
-    @override
-    def __new__(  # pyrefly:ignore[bad-override]
+    def __new__(
         _cls,
         statistic: _FloatOrArrayT_co,
         pvalue: _FloatOrArrayT_co,
@@ -359,8 +353,7 @@ class KstestResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Gener
         statistic_location: _FloatOrArrayT_co,
         statistic_sign: _SignOrArrayT_co,
     ) -> Self: ...
-    @override
-    def __init__(  # pyrefly:ignore[bad-override]
+    def __init__(
         self,
         /,
         statistic: _FloatOrArrayT_co,

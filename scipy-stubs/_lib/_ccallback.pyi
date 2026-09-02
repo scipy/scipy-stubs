@@ -120,9 +120,8 @@ class LowLevelCallable(tuple[PyCapsule, _FuncT_co, _DataT_co], Generic[_FuncT_co
     def signature(self, /) -> str: ...
 
     #
-    @override
     @overload
-    def __new__(cls, function: Self, user_data: _DataT_co | None = None, signature: str | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
+    def __new__(cls, function: Self, user_data: _DataT_co | None = None, signature: str | None = None) -> Self: ...
     @overload
     def __new__(cls, function: _FuncT_co, user_data: _DataT_co, signature: str | None = None) -> Self: ...
 

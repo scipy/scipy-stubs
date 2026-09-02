@@ -1,6 +1,6 @@
 from collections.abc import Callable, Generator, Iterable, Sequence
 from types import ModuleType
-from typing import Concatenate, Generic, override
+from typing import Concatenate, Generic
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -35,15 +35,14 @@ class NestedFixedRule(FixedRule[_XPT_co, _NumberT_co], Generic[_XPT_co, _NumberT
     higher: FixedRule[_XPT_co, _NumberT_co]
     lower: FixedRule[_XPT_co, _NumberT_co]
 
-    @override
-    def __init__(self, /, higher: FixedRule[_XPT_co, _NumberT_co], lower: FixedRule[_XPT_co, _NumberT_co]) -> None: ...  # pyrefly:ignore[bad-override]
+    def __init__(self, /, higher: FixedRule[_XPT_co, _NumberT_co], lower: FixedRule[_XPT_co, _NumberT_co]) -> None: ...
     @property
     def lower_nodes_and_weights(self) -> tuple[onp.ArrayND[_NumberT_co], onp.ArrayND[_NumberT_co]]: ...  # semi-abstract
 
 class ProductNestedFixed(NestedFixedRule[_XPT_co, _NumberT_co], Generic[_XPT_co, _NumberT_co]):
     base_rules: Sequence[NestedFixedRule[_XPT_co, _NumberT_co]]
-    @override
-    def __init__(self, /, base_rules: Sequence[NestedFixedRule[_XPT_co, _NumberT_co]]) -> None: ...  # pyrefly:ignore[bad-override]
+
+    def __init__(self, /, base_rules: Sequence[NestedFixedRule[_XPT_co, _NumberT_co]]) -> None: ...
 
 def _cartesian_product[NumberT: npc.number](arrays: Iterable[onp.ArrayND[NumberT]]) -> onp.Array2D[NumberT]: ...  # undocumented
 def _split_subregion[NumberT: npc.number](

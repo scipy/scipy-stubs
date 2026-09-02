@@ -1,6 +1,6 @@
 from _typeshed import Unused
 from collections.abc import Callable, Sequence
-from typing import Final, Literal, Self, TypedDict, Unpack, overload, override, type_check_only
+from typing import Final, Literal, Self, TypedDict, Unpack, overload, type_check_only
 from typing_extensions import TypeVarTuple
 
 import numpy as np
@@ -39,10 +39,8 @@ class LbfgsInvHessProduct(LinearOperator[np.float64]):
     n_corrs: Final[int]
     rho: Final[onp.Array1D[np.float64]]
 
-    @override
-    def __new__(cls, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> None: ...  # pyrefly:ignore[bad-override]
+    def __new__(cls, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> Self: ...
+    def __init__(self, /, sk: onp.ToFloat2D, yk: onp.ToFloat2D) -> None: ...
 
     #
     def todense(self, /) -> onp.Array2D[np.float64]: ...

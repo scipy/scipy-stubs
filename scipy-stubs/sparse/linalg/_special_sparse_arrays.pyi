@@ -1,4 +1,4 @@
-from typing import Any, Final, Generic, Literal, overload, override
+from typing import Any, Final, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -23,9 +23,8 @@ class LaplacianNd(LinearOperator[_SCT], Generic[_SCT]):
     grid_shape: Final[onp.AtLeast1D[Any]]
     boundary_conditions: Final[_BCs]
 
-    @override
     @overload  # default dtype (int8)
-    def __new__(cls, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann") -> LaplacianNd[np.int8]: ...  # pyrefly:ignore[bad-override]
+    def __new__(cls, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann") -> LaplacianNd[np.int8]: ...
     @overload  # know dtype
     def __new__(
         cls, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann", dtype: onp.ToDType[_SCT]
@@ -36,9 +35,8 @@ class LaplacianNd(LinearOperator[_SCT], Generic[_SCT]):
     ) -> LaplacianNd[Any]: ...
 
     #
-    @override
     @overload  # default dtype (int8)
-    def __init__(self: LaplacianNd[np.int8], /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann") -> None: ...  # pyrefly:ignore[bad-override]
+    def __init__(self: LaplacianNd[np.int8], /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann") -> None: ...
     @overload  # know dtype
     def __init__(
         self, /, grid_shape: onp.AtLeast1D, *, boundary_conditions: _BCs = "neumann", dtype: onp.ToDType[_SCT]
