@@ -31,7 +31,7 @@ class QMCQuadResult(NamedTuple):
 #
 @overload  # ?d +complex  (mypy & pyright workaround)
 def trapezoid(
-    y: onp.Array[_JustAnyShape, npc.number | np.bool], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
+    y: onp.ArrayND[npc.number | np.bool, _JustAnyShape], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1
 ) -> Any: ...
 @overload  # 1d T:inexact
 def trapezoid[InexactT: npc.inexact](
@@ -165,7 +165,7 @@ def simpson(
 
 # NOTE: unlike `simpson`, this upcasts sub-64-bits sctypes
 @overload  # ?d +complex  (mypy & pyright workaround)
-def romb(y: onp.Array[_JustAnyShape, npc.number | np.bool], dx: float = 1.0, axis: int = -1, show: bool = False) -> Any: ...
+def romb(y: onp.ArrayND[npc.number | np.bool, _JustAnyShape], dx: float = 1.0, axis: int = -1, show: bool = False) -> Any: ...
 @overload  # 1d +f64
 def romb(y: onp.ToFloat64Strict1D, dx: float = 1.0, axis: int = -1, show: bool = False) -> np.float64: ...
 @overload  # 1d ~complex
@@ -386,7 +386,7 @@ def cumulative_simpson(
     dx: float = 1.0,
     axis: int = -1,
     initial: float | onp.ToFloatND | None = None,
-) -> onp.Array[tuple[Any, ...] | tuple[int]]: ...  # workaround for pyright on numpy<2.1
+) -> onp.ArrayND[Any, tuple[Any, ...] | tuple[int]]: ...  # workaround for pyright on numpy<2.1
 
 # function-based
 
