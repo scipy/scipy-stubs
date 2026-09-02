@@ -122,9 +122,8 @@ class LinearTimeInvariant(Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     def dt(self, /) -> _DTT_co: ...
 
 class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co, _PolesT_co]):
-    @override
     @overload
-    def __new__(cls, num: _ToFloat12D, den: onp.ToFloat1D, /) -> TransferFunctionContinuous[_Float]: ...  # pyrefly:ignore[bad-override]
+    def __new__(cls, num: _ToFloat12D, den: onp.ToFloat1D, /) -> TransferFunctionContinuous[_Float]: ...
     @overload
     def __new__(cls, zeros: onp.ToFloat1D, poles: onp.ToFloat1D, gain: onp.ToFloat, /) -> ZerosPolesGainContinuous[_Float]: ...
     @overload
@@ -219,9 +218,8 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
 
 #
 class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
-    @override
     @overload
-    def __new__(  # pyrefly:ignore[bad-override]
+    def __new__(
         cls, num: _ToFloat12D, den: onp.ToFloat1D, /, *, dt: _DTT_co = ...
     ) -> TransferFunctionDiscrete[_Float, _DTT_co]: ...
     @overload
@@ -269,7 +267,6 @@ class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT
 
 #
 class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Generic[_PolesT_co, _DTT_co]):
-    @override
     @overload
     def __new__[PolesT: _Float](
         cls, system: lti[PolesT, PolesT], /, *, dt: None = None
@@ -379,7 +376,6 @@ class TransferFunctionDiscrete(
 
 #
 class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
-    @override
     @overload
     def __new__(
         cls, system: lti[_ZerosT_co, _PolesT_co], /, *, dt: None = None
@@ -551,7 +547,6 @@ class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_
     __array_priority__: ClassVar[float] = 100.0
     __array_ufunc__: ClassVar[None] = None
 
-    @override
     @overload
     def __new__(
         cls, system: lti[_ZerosT_co, _PolesT_co], /, *, dt: None = None

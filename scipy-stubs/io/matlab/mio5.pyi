@@ -1,6 +1,6 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 
-from typing import Self, override
+from typing import Self
 from typing_extensions import deprecated
 
 import numpy as np
@@ -18,13 +18,11 @@ class MatReadWarning(UserWarning): ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class MatlabObject(np.ndarray[tuple[int, ...], np.dtype[np.generic]]):
-    @override
-    def __new__(cls, input_array: object, classname: object = None) -> Self: ...  # pyrefly:ignore[bad-override]
+    def __new__(cls, input_array: object, classname: object = None) -> Self: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class MatlabFunction(MatlabObject):  # pyright:ignore[reportDeprecated]  # ty:ignore[deprecated]
-    @override
-    def __new__(cls, input_array: object) -> Self: ...  # pyrefly:ignore[bad-override]
+    def __new__(cls, input_array: object) -> Self: ...
 
 @deprecated("will be removed in SciPy v2.0.0")
 class mat_struct: ...

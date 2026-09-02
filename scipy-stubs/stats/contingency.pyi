@@ -1,4 +1,4 @@
-from typing import Any, Generic, Literal, Self, overload, override
+from typing import Any, Generic, Literal, Self, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -35,12 +35,10 @@ class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, float, onp.ArrayND
     def expected_freq(self, /) -> onp.ArrayND[np.float64, _ShapeT_co]: ...
 
     #
-    @override
-    def __new__(  # pyrefly:ignore[bad-override]
+    def __new__(
         _cls, statistic: np.float64, pvalue: np.float64, dof: float, expected_freq: onp.ArrayND[np.float64, _ShapeT_co]
     ) -> Self: ...
-    @override
-    def __init__(  # pyrefly:ignore[bad-override]
+    def __init__(
         self, /, statistic: np.float64, pvalue: np.float64, dof: float, expected_freq: onp.ArrayND[np.float64, _ShapeT_co]
     ) -> None: ...
 

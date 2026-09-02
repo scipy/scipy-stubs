@@ -13,7 +13,6 @@ from typing import (
     SupportsIndex,
     TypedDict,
     overload,
-    override,
     type_check_only,
 )
 from typing_extensions import TypeVar
@@ -210,10 +209,8 @@ class BrunnerMunzelResult(_TestResult[np.float64, np.float64]): ...
 class SenSeasonalSlopesResult(  # zuban: ignore[type-var]
     BaseBunch[onp.MArray1D[_SlopeT_co], _SlopeT_co], Generic[_SlopeT_co]
 ):
-    @override
-    def __new__(_cls, intra_slope: onp.MArray1D[_SlopeT_co], inter_slope: _SlopeT_co) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, intra_slope: onp.MArray1D[_SlopeT_co], inter_slope: _SlopeT_co) -> None: ...  # pyrefly:ignore[bad-override]
+    def __new__(_cls, intra_slope: onp.MArray1D[_SlopeT_co], inter_slope: _SlopeT_co) -> Self: ...
+    def __init__(self, /, intra_slope: onp.MArray1D[_SlopeT_co], inter_slope: _SlopeT_co) -> None: ...
 
     #
     @property

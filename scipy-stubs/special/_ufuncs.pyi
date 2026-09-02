@@ -829,7 +829,9 @@ class _UFunc11dfg(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @overload  # f32 | f64 | g (scalar | Nd)
     def __call__[ST: _LFloat_D](self, x: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> ST: ...
     @overload  # scalar, dtype= | signature=
-    def __call__(self, x: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw11g]) -> _LFloat: ...
+    def __call__(
+        self, x: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw11g]
+    ) -> _LFloat: ...  # zuban:ignore[overload-cannot-match]
     @overload  # Nd, dtype= | signature=
     def __call__(self, x: onp.ToFloatND, /, out: _Out1[None] = None, **kw: Unpack[_Kw11g]) -> _LFloatND: ...
     @overload  # out=<given>

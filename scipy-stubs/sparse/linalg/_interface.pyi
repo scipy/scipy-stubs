@@ -574,10 +574,8 @@ class _ScaledLinearOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co
 class _PowerLinearOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     args: tuple[LinearOperator[_SCT_co, _ShapeT_co], SupportsIndex]
 
-    @override
-    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], p: SupportsIndex, xp: ModuleType | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, A: LinearOperator[_SCT_co, _ShapeT_co], p: SupportsIndex, xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
+    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], p: SupportsIndex, xp: ModuleType | None = None) -> Self: ...
+    def __init__(self, /, A: LinearOperator[_SCT_co, _ShapeT_co], p: SupportsIndex, xp: ModuleType | None = None) -> None: ...
 
     #
     @override
@@ -604,10 +602,8 @@ class _AdjointMatrixOperator(MatrixLinearOperator[_SCT_co, _ShapeT_co], Generic[
     args: tuple[LinearOperator[_SCT_co, _ShapeT_co]]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleVariableOverride]
 
     #
-    @override
-    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], xp: ModuleType | None = None) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, A: LinearOperator[_SCT_co, _ShapeT_co], xp: ModuleType | None = None) -> None: ...  # pyrefly:ignore[bad-override]
+    def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], xp: ModuleType | None = None) -> Self: ...
+    def __init__(self, /, A: LinearOperator[_SCT_co, _ShapeT_co], xp: ModuleType | None = None) -> None: ...
 
     #
     @override

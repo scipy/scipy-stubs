@@ -1,5 +1,5 @@
 from collections.abc import Callable, Iterable, Sequence
-from typing import Self, TypedDict, override, type_check_only
+from typing import Self, TypedDict, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -28,10 +28,8 @@ class MGCResult(BaseBunch[np.float64, np.float64, _MGCDict]):
     def mgc_dict(self, /) -> _MGCDict: ...
 
     #
-    @override
-    def __new__(_cls, statistic: np.float64, pvalue: np.float64, mgc_dict: _MGCDict) -> Self: ...  # pyrefly:ignore[bad-override]
-    @override
-    def __init__(self, /, statistic: np.float64, pvalue: np.float64, mgc_dict: _MGCDict) -> None: ...  # pyrefly:ignore[bad-override]
+    def __new__(_cls, statistic: np.float64, pvalue: np.float64, mgc_dict: _MGCDict) -> Self: ...
+    def __init__(self, /, statistic: np.float64, pvalue: np.float64, mgc_dict: _MGCDict) -> None: ...
 
 def multiscale_graphcorr[T, R](
     x: onp.ArrayND[npc.floating | npc.integer | np.bool],
