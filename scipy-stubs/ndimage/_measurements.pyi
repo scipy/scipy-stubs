@@ -1,4 +1,3 @@
-from _typeshed import Incomplete
 from collections.abc import Callable, Sequence
 from typing import Any, overload
 
@@ -440,7 +439,7 @@ def minimum(
 @overload
 def minimum(
     input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
-) -> Incomplete: ...
+) -> Any: ...
 @overload
 def minimum(input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND) -> onp.ArrayND[Any]: ...
 @overload
@@ -448,7 +447,7 @@ def minimum(
     input: onp.ToComplex | onp.ToComplexND,
     labels: onp.ToInt | onp.ToIntND | None = None,
     index: onp.ToInt | onp.ToIntND | None = None,
-) -> Incomplete: ...
+) -> Any: ...
 
 # keep in sync with `minimum`
 @overload
@@ -488,7 +487,7 @@ def maximum(
 @overload
 def maximum(
     input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND | None = None, index: onp.ToInt | None = None
-) -> Incomplete: ...
+) -> Any: ...
 @overload
 def maximum(input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: onp.ToIntND) -> onp.ArrayND[Any]: ...
 @overload
@@ -496,7 +495,7 @@ def maximum(
     input: onp.ToComplex | onp.ToComplexND,
     labels: onp.ToInt | onp.ToIntND | None = None,
     index: onp.ToInt | onp.ToIntND | None = None,
-) -> Incomplete: ...
+) -> Any: ...
 
 #
 @overload
