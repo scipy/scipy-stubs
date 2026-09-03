@@ -130,15 +130,24 @@ def logsumexp(
     *,
     return_sign: onp.ToTrue,
 ) -> tuple[np.float64, np.complex128]: ...
-@overload  # 0d/nd T@complexfloating, axis=None (default), keepdims=False (default), return_sign=True
-def logsumexp[CFloatingT: npc.complexfloating](
-    a: CFloatingT | onp.ToArrayND[Never, CFloatingT],
+@overload  # 0d/nd ~c64, axis=None (default), keepdims=False (default), return_sign=True
+def logsumexp(
+    a: onp.ToJustComplex64 | onp.ToJustComplex64_ND,
     axis: None = None,
     b: onp.ToFloat | onp.ToFloatND | None = None,
     keepdims: onp.ToFalse = False,
     *,
     return_sign: onp.ToTrue,
-) -> tuple[npc.floating, CFloatingT]: ...
+) -> tuple[np.float32, np.complex64]: ...
+@overload  # 0d/nd ~c160, axis=None (default), keepdims=False (default), return_sign=True
+def logsumexp(
+    a: onp.ToJustCLongDouble | onp.ToJustCLongDoubleND,
+    axis: None = None,
+    b: onp.ToFloat | onp.ToFloatND | None = None,
+    keepdims: onp.ToFalse = False,
+    *,
+    return_sign: onp.ToTrue,
+) -> tuple[np.longdouble, np.clongdouble]: ...
 @overload  # 0d/nd T@floatinv, keepdims=True, return_sign=True
 def logsumexp[FloatingT: npc.floating](
     a: FloatingT | onp.ToArrayND[Never, FloatingT],
@@ -166,15 +175,24 @@ def logsumexp(
     keepdims: onp.ToTrue,
     return_sign: onp.ToTrue,
 ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
-@overload  # 0d/nd T@complexfloating, keepdims=True, return_sign=True
-def logsumexp[CFloatingT: npc.complexfloating](
-    a: CFloatingT | onp.ToArrayND[Never, CFloatingT],
+@overload  # 0d/nd ~c64, keepdims=True, return_sign=True
+def logsumexp(
+    a: onp.ToJustComplex64 | onp.ToJustComplex64_ND,
     axis: AnyShape | None = None,
     b: onp.ToComplex | onp.ToComplexND | None = None,
     *,
     keepdims: onp.ToTrue,
     return_sign: onp.ToTrue,
-) -> tuple[onp.ArrayND[npc.floating], onp.ArrayND[CFloatingT]]: ...
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]]: ...
+@overload  # 0d/nd ~c160, keepdims=True, return_sign=True
+def logsumexp(
+    a: onp.ToJustCLongDouble | onp.ToJustCLongDoubleND,
+    axis: AnyShape | None = None,
+    b: onp.ToComplex | onp.ToComplexND | None = None,
+    *,
+    keepdims: onp.ToTrue,
+    return_sign: onp.ToTrue,
+) -> tuple[onp.ArrayND[np.longdouble], onp.ArrayND[np.clongdouble]]: ...
 @overload  # 0d/nd T@floatinv, axis=<given>, return_sign=True
 def logsumexp[FloatingT: npc.floating](
     a: FloatingT | onp.ToArrayND[Never, FloatingT],
@@ -202,15 +220,24 @@ def logsumexp(
     *,
     return_sign: onp.ToTrue,
 ) -> tuple[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.complex128] | Any]: ...
-@overload  # 0d/nd T@complexfloating, axis=<given>, return_sign=True
-def logsumexp[CFloatingT: npc.complexfloating](
-    a: CFloatingT | onp.ToArrayND[Never, CFloatingT],
+@overload  # 0d/nd ~c64, axis=<given>, return_sign=True
+def logsumexp(
+    a: onp.ToJustComplex64 | onp.ToJustComplex64_ND,
     axis: AnyShape,
     b: onp.ToComplex | onp.ToComplexND | None = None,
     keepdims: onp.ToFalse = False,
     *,
     return_sign: onp.ToTrue,
-) -> tuple[onp.ArrayND[npc.floating] | Any, onp.ArrayND[CFloatingT] | Any]: ...
+) -> tuple[onp.ArrayND[np.float32] | Any, onp.ArrayND[np.complex64] | Any]: ...
+@overload  # 0d/nd ~c160, axis=<given>, return_sign=True
+def logsumexp(
+    a: onp.ToJustCLongDouble | onp.ToJustCLongDoubleND,
+    axis: AnyShape,
+    b: onp.ToComplex | onp.ToComplexND | None = None,
+    keepdims: onp.ToFalse = False,
+    *,
+    return_sign: onp.ToTrue,
+) -> tuple[onp.ArrayND[np.longdouble] | Any, onp.ArrayND[np.clongdouble] | Any]: ...
 @overload  # floating fallback, return_sign=True
 def logsumexp(
     a: onp.ToFloat | onp.ToFloatND,
