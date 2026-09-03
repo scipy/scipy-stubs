@@ -1,6 +1,6 @@
 # type-tests for `signal/_signaltools.pyi`
 
-from typing import Literal, assert_type
+from typing import Any, Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -73,6 +73,7 @@ _f80_2d: onp.Array2D[npc.floating80]
 _c64_2d: onp.Array2D[np.complex64]
 _c128_2d: onp.Array2D[np.complex128]
 _c160_2d: onp.Array2D[npc.complexfloating160]
+_f_2d: onp.Array2D[np.float32 | np.float64]
 
 _u8_nd: onp.ArrayND[np.uint8]
 _f16_nd: onp.ArrayND[np.float32]
@@ -322,9 +323,9 @@ assert_type(wiener(_py_f_1d), onp.ArrayND[np.float64])
 assert_type(wiener(_u8_1d), onp.ArrayND[np.float64])
 assert_type(wiener(_f32_1d), onp.ArrayND[np.float64])
 assert_type(wiener(_f64_1d), onp.ArrayND[np.float64])
-assert_type(wiener(_f80_1d), onp.ArrayND[npc.floating80])
+assert_type(wiener(_f80_1d), onp.ArrayND[np.longdouble])
 assert_type(wiener(_c128_1d), onp.ArrayND[np.complex128])
-assert_type(wiener(_c160_1d), onp.ArrayND[npc.complexfloating160])
+assert_type(wiener(_c160_1d), onp.ArrayND[np.clongdouble])
 
 # hilbert
 
@@ -334,7 +335,7 @@ assert_type(hilbert(_u8_1d), onp.Array1D[np.complex128])
 assert_type(hilbert(_f16_1d), onp.Array1D[np.complex64])
 assert_type(hilbert(_f32_1d), onp.Array1D[np.complex64])
 assert_type(hilbert(_f64_1d), onp.Array1D[np.complex128])
-assert_type(hilbert(_f80_1d), onp.Array1D[npc.complexfloating160])
+assert_type(hilbert(_f80_1d), onp.Array1D[np.clongdouble])
 
 assert_type(hilbert(_py_i_2d), onp.Array2D[np.complex128])
 assert_type(hilbert(_py_f_2d), onp.Array2D[np.complex128])
@@ -342,13 +343,13 @@ assert_type(hilbert(_u8_2d), onp.Array2D[np.complex128])
 assert_type(hilbert(_f16_2d), onp.Array2D[np.complex64])
 assert_type(hilbert(_f32_2d), onp.Array2D[np.complex64])
 assert_type(hilbert(_f64_2d), onp.Array2D[np.complex128])
-assert_type(hilbert(_f80_2d), onp.Array2D[npc.complexfloating160])
+assert_type(hilbert(_f80_2d), onp.Array2D[np.clongdouble])
 
 assert_type(hilbert(_u8_nd), onp.ArrayND[np.complex128])
 assert_type(hilbert(_f16_nd), onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
 assert_type(hilbert(_f32_nd), onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
 assert_type(hilbert(_f64_nd), onp.ArrayND[np.complex128])
-assert_type(hilbert(_f80_nd), onp.ArrayND[npc.complexfloating160])  # pyrefly:ignore[assert-type]
+assert_type(hilbert(_f80_nd), onp.ArrayND[np.clongdouble])  # pyrefly:ignore[assert-type]
 
 # hilbert2
 
@@ -358,7 +359,8 @@ assert_type(hilbert2(_u8_2d), onp.Array2D[np.complex128])
 assert_type(hilbert2(_f16_2d), onp.Array2D[np.complex64])
 assert_type(hilbert2(_f32_2d), onp.Array2D[np.complex64])
 assert_type(hilbert2(_f64_2d), onp.Array2D[np.complex128])
-assert_type(hilbert2(_f80_2d), onp.Array2D[npc.complexfloating160])
+assert_type(hilbert2(_f80_2d), onp.Array2D[np.clongdouble])
+assert_type(hilbert2(_f_2d), onp.Array2D[np.complex128 | Any])
 
 # detrend
 
