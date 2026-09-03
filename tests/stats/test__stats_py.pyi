@@ -5,7 +5,6 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 from optype.test import assert_subtype
 
 from scipy.stats import (
@@ -1003,10 +1002,18 @@ assert_type(sigmaclip(_f64_1d), SigmaclipResult[np.float64, np.float64])
 assert_type(sigmaclip(_py_i_1d), SigmaclipResult[np.int_, np.float64])
 assert_type(sigmaclip(_py_f_1d), SigmaclipResult[np.float64, np.float64])
 
-# trimboth, trim1
+# trimboth
 
-assert_type(trimboth(_f64_1d, 0.1), onp.ArrayND[npc.integer | npc.floating])
-assert_type(trim1(_f64_1d, 0.1), onp.ArrayND[npc.integer | npc.floating])
+assert_type(trimboth(_i16_1d, 0.1), onp.ArrayND[np.int16])
+assert_type(trimboth(_f64_1d, 0.1), onp.ArrayND[np.float64])
+assert_type(trimboth(_py_i_1d, 0.1), onp.ArrayND[np.int_])
+assert_type(trimboth(_py_f_1d, 0.1), onp.ArrayND[np.float64])
+
+# trim1
+
+assert_type(trim1(_f32_2d, 0.1, axis=None), onp.ArrayND[np.float32])
+assert_type(trim1(_py_i_2d, 0.1), onp.ArrayND[np.int_])
+assert_type(trim1(_py_f_2d, 0.1, "left"), onp.ArrayND[np.float64])
 
 # trim_mean
 
