@@ -44,7 +44,7 @@ def lobpcg[FloatT: _Float](
     retLambdaHistory: onp.ToFalse = False,
     retResidualNormsHistory: onp.ToFalse = False,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex]]: ...
+) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT] | onp.Array2D[_Complex]]: ...
 @overload  # retLambdaHistory: falsy = ..., retResidualNormsHistory: truthy  (positional)
 def lobpcg[FloatT: _Float](
     A: _ToComplexMatrix[FloatT],
@@ -59,7 +59,7 @@ def lobpcg[FloatT: _Float](
     retLambdaHistory: onp.ToFalse,
     retResidualNormsHistory: onp.ToTrue,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]]]: ...
+) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT] | onp.Array2D[_Complex], list[onp.Array1D[FloatT]]]: ...
 @overload  # retLambdaHistory: falsy = ..., retResidualNormsHistory: truthy  (keyword)
 def lobpcg[FloatT: _Float](
     A: _ToComplexMatrix[FloatT],
@@ -75,7 +75,7 @@ def lobpcg[FloatT: _Float](
     *,
     retResidualNormsHistory: onp.ToTrue,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]]]: ...
+) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT] | onp.Array2D[_Complex], list[onp.Array1D[FloatT]]]: ...
 @overload  # retLambdaHistory: truthy  (positional), retResidualNormsHistory: falsy = ...
 def lobpcg[FloatT: _Float](
     A: _ToComplexMatrix[FloatT],
@@ -90,7 +90,7 @@ def lobpcg[FloatT: _Float](
     retLambdaHistory: onp.ToTrue,
     retResidualNormsHistory: onp.ToFalse = False,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]]]: ...
+) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT] | onp.Array2D[_Complex], list[onp.Array1D[FloatT]]]: ...
 @overload  # retLambdaHistory: truthy  (keyword), retResidualNormsHistory: falsy = ...
 def lobpcg[FloatT: _Float](
     A: _ToComplexMatrix[FloatT],
@@ -106,7 +106,7 @@ def lobpcg[FloatT: _Float](
     retLambdaHistory: onp.ToTrue,
     retResidualNormsHistory: onp.ToFalse = False,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]]]: ...
+) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT] | onp.Array2D[_Complex], list[onp.Array1D[FloatT]]]: ...
 @overload  # retLambdaHistory: truthy  (positional), retResidualNormsHistory: truthy
 def lobpcg[FloatT: _Float](
     A: _ToComplexMatrix[FloatT],
@@ -121,7 +121,9 @@ def lobpcg[FloatT: _Float](
     retLambdaHistory: onp.ToTrue,
     retResidualNormsHistory: onp.ToTrue,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]], list[onp.Array1D[FloatT]]]: ...
+) -> tuple[
+    onp.Array1D[FloatT], onp.Array2D[FloatT] | onp.Array2D[_Complex], list[onp.Array1D[FloatT]], list[onp.Array1D[FloatT]]
+]: ...
 @overload  # retLambdaHistory: truthy  (keyword), retResidualNormsHistory: truthy
 def lobpcg[FloatT: _Float](
     A: _ToComplexMatrix[FloatT],
@@ -137,4 +139,6 @@ def lobpcg[FloatT: _Float](
     retLambdaHistory: onp.ToTrue,
     retResidualNormsHistory: onp.ToTrue,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]], list[onp.Array1D[FloatT]]]: ...
+) -> tuple[
+    onp.Array1D[FloatT], onp.Array2D[FloatT] | onp.Array2D[_Complex], list[onp.Array1D[FloatT]], list[onp.Array1D[FloatT]]
+]: ...

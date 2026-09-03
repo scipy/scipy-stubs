@@ -212,7 +212,7 @@ def eigsh(
     OPinv: _ToMatComplex | None = None,
     mode: _Mode = "normal",
     rng: onp.random.ToRNG | None = None,
-) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.float32 | np.complex64]]: ...
+) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.float32] | onp.Array2D[np.complex64]]: ...
 @overload  # +f64, returns_eigenvectors: truthy (default)
 def eigsh(
     A: _ToMatF64,
@@ -263,7 +263,7 @@ def eigsh(
     OPinv: _ToMatComplex | None = None,
     mode: _Mode = "normal",
     rng: onp.random.ToRNG | None = None,
-) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64 | np.complex128]]: ...
+) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64] | onp.Array2D[np.complex128]]: ...
 @overload  # +complex (fallback), returns_eigenvectors: truthy (default)
 def eigsh(
     A: _ToMatComplex,

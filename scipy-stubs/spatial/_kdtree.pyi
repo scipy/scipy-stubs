@@ -148,7 +148,9 @@ class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _Box
 def minkowski_distance_p(x: onp.ToFloatND, y: onp.ToFloatND, p: float = 2.0) -> onp.ArrayND[np.float64]: ...
 @overload
 @deprecated("This function is deprecated in favor of `scipy.spatial.distance.minkowski` and will be removed in SciPy 2.1.0.")
-def minkowski_distance_p(x: onp.ToComplexND, y: onp.ToComplexND, p: float = 2.0) -> onp.ArrayND[np.float64 | np.complex128]: ...
+def minkowski_distance_p(
+    x: onp.ToComplexND, y: onp.ToComplexND, p: float = 2.0
+) -> onp.ArrayND[np.float64] | onp.ArrayND[np.complex128]: ...
 
 #
 @overload
@@ -156,7 +158,9 @@ def minkowski_distance_p(x: onp.ToComplexND, y: onp.ToComplexND, p: float = 2.0)
 def minkowski_distance(x: onp.ToFloatND, y: onp.ToFloatND, p: float = 2.0) -> onp.ArrayND[np.float64]: ...
 @overload
 @deprecated("This function is deprecated in favor of `scipy.spatial.distance.minkowski` and will be removed in SciPy 2.1.0.")
-def minkowski_distance(x: onp.ToComplexND, y: onp.ToComplexND, p: float = 2.0) -> onp.ArrayND[np.float64 | np.complex128]: ...
+def minkowski_distance(
+    x: onp.ToComplexND, y: onp.ToComplexND, p: float = 2.0
+) -> onp.ArrayND[np.float64] | onp.ArrayND[np.complex128]: ...
 
 #
 @overload
@@ -168,4 +172,4 @@ def distance_matrix(
 @deprecated("This function is deprecated in favor of `scipy.spatial.distance.cdist` and will be removed in SciPy 2.1.0.")
 def distance_matrix(
     x: onp.ToComplexND, y: onp.ToComplexND, p: float = 2.0, threshold: int = 1_000_000
-) -> onp.Array2D[np.float64 | np.complex128]: ...
+) -> onp.Array2D[np.float64] | onp.Array2D[np.complex128]: ...

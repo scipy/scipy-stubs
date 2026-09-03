@@ -999,15 +999,15 @@ def solve_toeplitz(
 @overload  # 1d +complex, +complex
 def solve_toeplitz(
     c_or_cr: _COrCR[onp.ToComplexStrict1D], b: onp.ToComplexStrict1D, check_finite: bool = True
-) -> onp.Array1D[np.float64 | np.complex128]: ...
+) -> onp.Array1D[np.float64] | onp.Array1D[np.complex128]: ...
 @overload  # 2d +complex, +complex
 def solve_toeplitz(
     c_or_cr: _COrCR[onp.ToComplexStrict1D], b: onp.ToComplexStrict2D, check_finite: bool = True
-) -> onp.Array2D[np.float64 | np.complex128]: ...
+) -> onp.Array2D[np.float64] | onp.Array2D[np.complex128]: ...
 @overload  # Nd +complex, +complex
 def solve_toeplitz(
     c_or_cr: _COrCR[onp.ToComplexND], b: onp.ToComplexND, check_finite: bool = True
-) -> onp.ArrayND[np.float64 | np.complex128]: ...
+) -> onp.ArrayND[np.float64] | onp.ArrayND[np.complex128]: ...
 
 #
 @overload  # 1D ~float64, +float64
@@ -1347,7 +1347,7 @@ def det(a: onp.ToComplex128Strict2D, overwrite_a: bool = False, check_finite: bo
 @overload  # +complex128 3d
 def det(
     a: onp.ToComplex128Strict3D, overwrite_a: bool = False, check_finite: bool = True
-) -> onp.Array1D[np.float64 | np.complex128]: ...
+) -> onp.Array1D[np.float64] | onp.Array1D[np.complex128]: ...
 @overload  # +complex128 Nd
 def det(
     a: onp.ToComplex128_ND, overwrite_a: bool = False, check_finite: bool = True
