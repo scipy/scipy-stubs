@@ -1,35 +1,43 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
 
 from scipy import constants
 
-u64_nd: onp.ArrayND[np.uint64]
-f32_nd: onp.ArrayND[np.float32]
-f64_nd: onp.ArrayND[np.float64]
-c64_nd: onp.ArrayND[np.complex64]
+###
+
+_u64_nd: onp.ArrayND[np.uint64]
+_f32_nd: onp.ArrayND[np.float32]
+_f64_nd: onp.ArrayND[np.float64]
+_c64_nd: onp.ArrayND[np.complex64]
+_f32_list: list[np.float32]
+
+###
 
 assert_type(constants.convert_temperature(1, "Celsius", "Kelvin"), np.float64)
 assert_type(constants.convert_temperature([1], "Celsius", "Kelvin"), onp.ArrayND[np.float64])
-assert_type(constants.convert_temperature(u64_nd, "Celsius", "Kelvin"), onp.ArrayND[np.float64])
-assert_type(constants.convert_temperature(f32_nd, "Celsius", "Kelvin"), onp.ArrayND[np.float32])
-assert_type(constants.convert_temperature(f64_nd, "Celsius", "Kelvin"), onp.ArrayND[np.float64])
-assert_type(constants.convert_temperature(c64_nd, "Celsius", "Kelvin"), onp.ArrayND[np.complex64])
+assert_type(constants.convert_temperature(_u64_nd, "Celsius", "Kelvin"), onp.ArrayND[np.float64])
+assert_type(constants.convert_temperature(_f32_nd, "Celsius", "Kelvin"), onp.ArrayND[np.float32])
+assert_type(constants.convert_temperature(_f64_nd, "Celsius", "Kelvin"), onp.ArrayND[np.float64])
+assert_type(constants.convert_temperature(_c64_nd, "Celsius", "Kelvin"), onp.ArrayND[np.complex64])
+assert_type(constants.convert_temperature(_f32_list, "Celsius", "Kelvin"), onp.ArrayND[np.float64 | Any])
 
 assert_type(constants.lambda2nu(1), np.float64)
 assert_type(constants.lambda2nu([1]), onp.ArrayND[np.float64])
-assert_type(constants.lambda2nu(u64_nd), onp.ArrayND[np.float64])
-assert_type(constants.lambda2nu(f32_nd), onp.ArrayND[np.float32])
-assert_type(constants.lambda2nu(f64_nd), onp.ArrayND[np.float64])
-assert_type(constants.lambda2nu(c64_nd), onp.ArrayND[np.complex64])
+assert_type(constants.lambda2nu(_u64_nd), onp.ArrayND[np.float64])
+assert_type(constants.lambda2nu(_f32_nd), onp.ArrayND[np.float32])
+assert_type(constants.lambda2nu(_f64_nd), onp.ArrayND[np.float64])
+assert_type(constants.lambda2nu(_c64_nd), onp.ArrayND[np.complex64])
+assert_type(constants.lambda2nu(_f32_list), onp.ArrayND[np.float64 | Any])
 
 assert_type(constants.nu2lambda(1), np.float64)
 assert_type(constants.nu2lambda([1]), onp.ArrayND[np.float64])
-assert_type(constants.nu2lambda(u64_nd), onp.ArrayND[np.float64])
-assert_type(constants.nu2lambda(f32_nd), onp.ArrayND[np.float32])
-assert_type(constants.nu2lambda(f64_nd), onp.ArrayND[np.float64])
-assert_type(constants.nu2lambda(c64_nd), onp.ArrayND[np.complex64])
+assert_type(constants.nu2lambda(_u64_nd), onp.ArrayND[np.float64])
+assert_type(constants.nu2lambda(_f32_nd), onp.ArrayND[np.float32])
+assert_type(constants.nu2lambda(_f64_nd), onp.ArrayND[np.float64])
+assert_type(constants.nu2lambda(_c64_nd), onp.ArrayND[np.complex64])
+assert_type(constants.nu2lambda(_f32_list), onp.ArrayND[np.float64 | Any])
 
 ###
 
