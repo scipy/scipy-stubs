@@ -3575,11 +3575,35 @@ def sigmaclip(
     a: onp.ToFloatND, low: float = 4.0, high: float = 4.0, *, nan_policy: NanPolicy = "propagate"
 ) -> SigmaclipResult: ...
 
-# TODO(jorenham): improve
-def trimboth(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
+#
+@overload  # T@+floating
+def trimboth[ScalarT: npc.floating | npc.integer | np.bool](
+    a: onp.ArrayND[ScalarT], proportiontocut: float, axis: int | None = 0
+) -> onp.ArrayND[ScalarT]: ...
+@overload  # ~int
+def trimboth(a: onp.SequenceND[int], proportiontocut: float, axis: int | None = 0) -> onp.ArrayND[np.int_]: ...
+@overload  # ~float
+def trimboth(
+    a: onp.SequenceND[list[float]] | list[float], proportiontocut: float, axis: int | None = 0
+) -> onp.ArrayND[np.float64]: ...
+@overload  # fallback
+def trimboth(a: onp.ToFloatND, proportiontocut: float, axis: int | None = 0) -> onp.ArrayND[Any]: ...
 
-# TODO(jorenham): improve
-def trim1(a: onp.ToFloatND, proportiontocut: float, tail: _TrimTail = "right", axis: int | None = 0) -> onp.ArrayND[_Real0D]: ...
+#
+@overload  # T@+floating
+def trim1[ScalarT: npc.floating | npc.integer | np.bool](
+    a: onp.ArrayND[ScalarT], proportiontocut: float, tail: _TrimTail = "right", axis: int | None = 0
+) -> onp.ArrayND[ScalarT]: ...
+@overload  # ~int
+def trim1(
+    a: onp.SequenceND[int], proportiontocut: float, tail: _TrimTail = "right", axis: int | None = 0
+) -> onp.ArrayND[np.int_]: ...
+@overload  # ~float
+def trim1(
+    a: onp.SequenceND[list[float]] | list[float], proportiontocut: float, tail: _TrimTail = "right", axis: int | None = 0
+) -> onp.ArrayND[np.float64]: ...
+@overload  # fallback
+def trim1(a: onp.ToFloatND, proportiontocut: float, tail: _TrimTail = "right", axis: int | None = 0) -> onp.ArrayND[Any]: ...
 
 #
 @overload
