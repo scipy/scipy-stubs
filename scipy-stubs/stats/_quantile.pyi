@@ -397,7 +397,7 @@ def estimated_cdf(
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool | None = None,
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 @overload  # Nd +floating, 0d +floating, keepdims=True  (fallback)
 def estimated_cdf(
     x: onp.ToFloatND,
@@ -407,4 +407,4 @@ def estimated_cdf(
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...

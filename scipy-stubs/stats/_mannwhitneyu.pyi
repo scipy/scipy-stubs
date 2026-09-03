@@ -401,7 +401,7 @@ def mannwhitneyu(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _MannwhitneyuResult0D[npc.floating] | _MannwhitneyuResultND[npc.floating, _AnyShape]: ...
+) -> _MannwhitneyuResult0D[np.float64 | Any] | _MannwhitneyuResultND[np.float64 | Any, _AnyShape]: ...
 @overload  # Nd +floating, axis=None  (keyword)
 def mannwhitneyu(
     x: onp.ToFloatND,
@@ -413,7 +413,7 @@ def mannwhitneyu(
     method: _MannWhitneyUMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> _MannwhitneyuResult0D[npc.floating]: ...
+) -> _MannwhitneyuResult0D[np.float64 | Any]: ...
 @overload  # Nd +floating, keepdims=True
 def mannwhitneyu(
     x: onp.ToFloatND,
@@ -425,4 +425,4 @@ def mannwhitneyu(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> _MannwhitneyuResultND[npc.floating, _AnyShape]: ...
+) -> _MannwhitneyuResultND[np.float64 | Any, _AnyShape]: ...
