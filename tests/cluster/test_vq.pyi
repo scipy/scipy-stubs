@@ -15,6 +15,7 @@ _f32_1d: onp.Array1D[np.float32]
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
+_f80_2d: onp.Array2D[np.float128]
 _c128_2d: onp.Array2D[np.complex128]
 
 _py_f_1d: list[float]
@@ -32,11 +33,13 @@ assert_subtype[onp.ArrayND[np.float64]](vq.whiten(_f64_nd))
 # vq
 assert_type(vq.vq(_f32_2d, _f32_2d), tuple[onp.Array1D[np.int32], onp.Array1D[np.float32]])
 assert_type(vq.vq(_f64_2d, _f64_2d), tuple[onp.Array1D[np.int32], onp.Array1D[np.float64]])
+assert_type(vq.vq(_f80_2d, _f80_2d), tuple[onp.Array1D[np.int32], onp.Array1D[np.float64 | Any]])
 
 # py_vq
 assert_type(vq.py_vq(_i64_2d, _i64_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(vq.py_vq(_f32_2d, _f32_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(vq.py_vq(_f64_2d, _f64_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(vq.py_vq(_f80_2d, _f80_2d), tuple[onp.Array1D[np.intp], onp.Array1D[np.float64 | Any]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 # kmeans
 assert_type(vq.kmeans(_f32_2d, 2), tuple[onp.Array2D[np.float32], np.float32])
