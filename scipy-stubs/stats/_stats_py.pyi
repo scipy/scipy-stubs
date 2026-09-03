@@ -7239,7 +7239,7 @@ def rankdata[ShapeT: tuple[int, ...]](
 @overload  # shape: T, axis: int
 def rankdata[ShapeT: tuple[int, ...]](
     a: onp.Array[ShapeT], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[Any, ShapeT]: ...
+) -> onp.ArrayND[np.float64 | Any, ShapeT]: ...
 @overload  # shape: 1d, axis: int
 def rankdata(
     a: Sequence[float], method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
@@ -7255,7 +7255,7 @@ def rankdata(
 @overload  # shape: ?, axis: int
 def rankdata(
     a: onp.ToArrayND, method: _RankMethod = "average", *, axis: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[Any]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload  # axis=None (default)
