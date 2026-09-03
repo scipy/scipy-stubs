@@ -2136,7 +2136,7 @@ def moment(
     *,
     center: float | None = None,
     keepdims: L[False] = False,
-) -> npc.floating | onp.ArrayND[npc.floating]: ...
+) -> np.float64 | Any | onp.ArrayND[np.float64 | Any]: ...
 @overload  # nd +floating, order: 0d, axis=None  (positional)
 def moment(
     a: onp.ToFloatND,
@@ -2146,7 +2146,7 @@ def moment(
     *,
     center: float | None = None,
     keepdims: L[False] = False,
-) -> npc.floating: ...
+) -> np.float64 | Any: ...
 @overload  # nd +floating, order: 0d, axis=None  (keyword)
 def moment(
     a: onp.ToFloatND,
@@ -2156,7 +2156,7 @@ def moment(
     nan_policy: NanPolicy = "propagate",
     center: float | None = None,
     keepdims: L[False] = False,
-) -> npc.floating: ...
+) -> np.float64 | Any: ...
 @overload  # nd +floating, order: nd
 def moment(
     a: onp.ToFloatND,
@@ -2166,7 +2166,7 @@ def moment(
     *,
     center: float | None = None,
     keepdims: L[False] = False,
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 @overload  # nd +floating, keepdims=True
 def moment(
     a: onp.ToFloatND,
@@ -2176,7 +2176,7 @@ def moment(
     *,
     center: float | None = None,
     keepdims: L[True],
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 
 # keep in sync with kurtosis
 @overload  # ?d ~f64
@@ -2308,15 +2308,15 @@ def skew[FloatT: npc.floating](
 @overload  # nd +floating
 def skew(
     a: onp.ToFloatND, axis: int = 0, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
-) -> onp.ArrayND[npc.floating] | Any: ...
+) -> onp.ArrayND[np.float64 | Any] | Any: ...
 @overload  # nd +floating, axis=None
 def skew(
     a: onp.ToFloatND, axis: None, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
-) -> npc.floating: ...
+) -> np.float64 | Any: ...
 @overload  # nd +floating, keepdims=True
 def skew(
     a: onp.ToFloatND, axis: int | None = 0, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 
 # keep in sync with skew
 @overload  # ?d ~f64
@@ -2468,7 +2468,7 @@ def kurtosis(
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> onp.ArrayND[npc.floating] | Any: ...
+) -> onp.ArrayND[np.float64 | Any] | Any: ...
 @overload  # nd +floating, axis=None
 def kurtosis(
     a: onp.ToFloatND,
@@ -2478,7 +2478,7 @@ def kurtosis(
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> npc.floating: ...
+) -> np.float64 | Any: ...
 @overload  # nd +floating, keepdims=True
 def kurtosis(
     a: onp.ToFloatND,
@@ -2488,7 +2488,7 @@ def kurtosis(
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload  # ?d T@integer, axis=None
@@ -3288,11 +3288,11 @@ def zscore(
 @overload  # floating fallback
 def zscore(  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection on numpy<2.1
     a: onp.ToFloatND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.floating, tuple[int] | tuple[Any, ...]]: ...
+) -> onp.ArrayND[np.float64 | Any, tuple[int] | tuple[Any, ...]]: ...
 @overload  # complex fallback
 def zscore(
     a: onp.ToJustComplexND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.complexfloating]: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
 
 # NOTE: keep in sync with `zscore` and `zmap`
 @overload  # +integer, known shape
@@ -3334,11 +3334,11 @@ def gzscore(
 @overload  # floating fallback
 def gzscore(  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection on numpy<2.1
     a: onp.ToFloatND, *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.floating, tuple[int] | tuple[Any, ...]]: ...
+) -> onp.ArrayND[np.float64 | Any, tuple[int] | tuple[Any, ...]]: ...
 @overload  # complex fallback
 def gzscore(
     a: onp.ToJustComplexND, *, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.complexfloating]: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
 
 # keep roughly in sync with `zscore` and `gzscore`
 @overload  # +integer, known shape
@@ -3424,7 +3424,7 @@ def zmap(
 @overload  # floating fallback
 def zmap(  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection on numpy<2.1
     scores: onp.ToFloatND, compare: onp.ToFloatND, axis: int | None = 0, ddof: int = 0, nan_policy: NanPolicy = "propagate"
-) -> onp.ArrayND[npc.floating, tuple[int] | tuple[Any, ...]]: ...
+) -> onp.ArrayND[np.float64 | Any, tuple[int] | tuple[Any, ...]]: ...
 @overload  # complex fallback
 def zmap(
     scores: onp.ToComplexND,
@@ -3432,7 +3432,7 @@ def zmap(
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[npc.complexfloating]: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
 @overload  # complex fallback
 def zmap(
     scores: onp.ToJustComplexND,
@@ -3440,7 +3440,7 @@ def zmap(
     axis: int | None = 0,
     ddof: int = 0,
     nan_policy: NanPolicy = "propagate",
-) -> onp.ArrayND[npc.complexfloating]: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
 
 #
 @overload  # T@floating, axis=None (default)
