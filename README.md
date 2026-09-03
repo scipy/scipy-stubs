@@ -327,6 +327,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 
 [Agents](https://github.com/livekit/agents) |
 Apache Spark ([PySpark](https://github.com/apache/spark)) |
+[Arkouda](https://github.com/Bears-R-Us/arkouda) |
 [Artisan](https://github.com/artisan-roaster-scope/artisan) |
 [Arviz](https://github.com/arviz-devs/arviz) |
 [asammdf](https://github.com/danielhrisca/asammdf) |
