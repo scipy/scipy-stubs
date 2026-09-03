@@ -1,4 +1,4 @@
-from typing import Literal, overload
+from typing import Any, Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -308,7 +308,7 @@ def entropy(
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
-) -> npc.floating | onp.ArrayND[npc.floating]: ...
+) -> np.float64 | Any | onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload  # Nd known inexact dtype, axis=None
@@ -519,7 +519,7 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 @overload  # floating fallback
 def differential_entropy(
     values: onp.ToFloatND | onp.ToFloat,
@@ -530,7 +530,7 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
-) -> npc.floating | onp.ArrayND[npc.floating]: ...
+) -> np.float64 | Any | onp.ArrayND[np.float64 | Any]: ...
 @overload  # inexact fallback, keepdims=True
 def differential_entropy(
     values: onp.ToComplexND | onp.ToComplex,
@@ -541,7 +541,7 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
-) -> onp.ArrayND[npc.inexact]: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
 @overload  # inexact fallback
 def differential_entropy(
     values: onp.ToComplexND | onp.ToComplex,
@@ -552,4 +552,4 @@ def differential_entropy(
     method: _DifferentialMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
-) -> npc.inexact | onp.ArrayND[npc.inexact]: ...
+) -> np.complex128 | Any | onp.ArrayND[np.complex128 | Any]: ...
