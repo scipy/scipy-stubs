@@ -55,10 +55,10 @@ def vq(
 def vq(
     obs: onp.ToJustFloat64_2D, code_book: _AsFloat64_2D, check_finite: bool = True
 ) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.float64]]: ...
-@overload  # floating
+@overload  # fallback
 def vq(
     obs: onp.ToJustFloat2D, code_book: onp.ToFloat2D, check_finite: bool = True
-) -> tuple[onp.Array1D[np.int32], onp.Array1D[npc.floating]]: ...
+) -> tuple[onp.Array1D[np.int32], onp.Array1D[np.float64 | Any]]: ...
 
 #
 @overload  # float64
@@ -68,13 +68,13 @@ def vq(
 def py_vq(
     obs: onp.ToFloat64_2D, code_book: onp.ToFloat64_2D, check_finite: bool = True
 ) -> tuple[onp.Array1D[np.intp], onp.Array1D[np.float64]]: ...
-@overload  # floating
+@overload  # fallback
 @deprecated(
     "`scipy.cluster.vq.py_vq` was unintentionally public, and will be removed in SciPy 2.1.0, use `scipy.cluster.vq.vq` instead."
 )
 def py_vq(
     obs: onp.ToFloat2D, code_book: onp.ToFloat2D, check_finite: bool = True
-) -> tuple[onp.Array1D[np.intp], onp.Array1D[npc.floating]]: ...
+) -> tuple[onp.Array1D[np.intp], onp.Array1D[np.float64 | Any]]: ...
 
 #
 @overload  # ?d float32
