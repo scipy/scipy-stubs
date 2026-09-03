@@ -1023,7 +1023,7 @@ def hilbert(
 @overload  # fallback
 def hilbert(
     x: onp.ToFloatND, N: int | None = None, axis: int = -1
-) -> onp.ArrayND[npc.complexfloating, _WorkaroundForPyright]: ...
+) -> onp.ArrayND[np.complex128 | Any, _WorkaroundForPyright]: ...
 
 #
 @overload  # float64 | integer
