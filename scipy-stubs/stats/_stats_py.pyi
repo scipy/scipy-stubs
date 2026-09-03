@@ -112,7 +112,6 @@ _RealOrArrayT_co = TypeVar("_RealOrArrayT_co", bound=_ScalarOrND[_Real0D], defau
 type _Real0D = npc.integer | npc.floating
 
 type _ScalarOrND[SCT: np.generic] = SCT | onp.ArrayND[SCT]
-type _FloatOrND = _ScalarOrND[npc.floating]
 
 type _InterpolationMethod = L[
     "linear",
@@ -3157,7 +3156,7 @@ def sem(
     keepdims: L[False] = False,
 ) -> np.float64: ...
 @overload  # >1d ~inexact64 | +integer, axis: int (default)
-def sem(
+def sem(  # type: ignore[overload-overlap]
     a: onp.CanArray[onp.AtLeast2D, np.dtype[npc.inexact64 | npc.integer | np.bool]] | Sequence[onp.SequenceND[complex]],
     axis: int = 0,
     ddof: int = 1,
@@ -3183,6 +3182,42 @@ def sem(
     *,
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # 1d ~inexact32, keepdims=False (default)
+def sem(
+    a: onp.ToArrayStrict1D[Never, npc.inexact32],
+    axis: L[0, -1] | None = 0,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float32: ...
+@overload  # >1d ~inexact32, axis: int (default)
+def sem(
+    a: onp.CanArray[onp.AtLeast2D, np.dtype[npc.inexact32]],
+    axis: int = 0,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: bool = False,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ?d ~inexact32, axis=None, keepdims=False (default)
+def sem(
+    a: onp.ToArrayND[Never, npc.inexact32],
+    axis: None,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float32: ...
+@overload  # ?d ~inexact32, keepdims=True
+def sem(
+    a: onp.ToArrayND[Never, npc.inexact32],
+    axis: int | None = 0,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.float32]: ...
 @overload  # 1d +complex, keepdims=False (default)
 def sem(
     a: onp.ToComplexStrict1D,
@@ -3191,7 +3226,7 @@ def sem(
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> npc.floating: ...
+) -> np.float64 | Any: ...
 @overload  # >1d +complex, axis: int (default)
 def sem(
     a: onp.CanArray[onp.AtLeast2D, np.dtype[npc.number]],
@@ -3200,19 +3235,19 @@ def sem(
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: bool = False,
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 @overload  # ?d +complex, axis=None, keepdims=False (default)
 def sem(
     a: onp.ToComplexND, axis: None, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
-) -> npc.floating: ...
+) -> np.float64 | Any: ...
 @overload  # ?d +complex, keepdims=True
 def sem(
     a: onp.ToComplexND, axis: int | None = 0, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
-) -> onp.ArrayND[npc.floating]: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 @overload  # ?d +complex
 def sem(
     a: onp.ToComplexND, axis: int | None = 0, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
-) -> _FloatOrND: ...
+) -> onp.ArrayND[np.float64 | Any] | Any: ...
 
 # NOTE: keep in sync with `gzscore` and `zmap`
 @overload  # +integer, known shape
