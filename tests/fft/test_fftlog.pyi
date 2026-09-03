@@ -1,31 +1,37 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
+import optype.numpy as onp
 
 from scipy import fft
 
-f64_0d: np.float64 = ...
-f64_1d: np.ndarray[tuple[int], np.dtype[np.float64]] = ...
-f32_2d: np.ndarray[tuple[int, int], np.dtype[np.float32]] = ...
-f80_3d: np.ndarray[tuple[int, int, int], np.dtype[np.float128]] = ...
+###
+
+_f64: np.float64 = ...
+_f16_1d: onp.Array1D[np.float16] = ...
+_f64_1d: onp.Array1D[np.float64] = ...
+_f32_2d: onp.Array2D[np.float32] = ...
+_f80_3d: onp.Array3D[np.float128] = ...
 
 ###
 
-# fftoffset
-assert_type(fft.fhtoffset(0.1, 2.0, 0.5, 0.0), np.float64)
-
 # fht
-assert_type(fft.fht(f64_1d, f64_0d, 1), np.ndarray[tuple[int], np.dtype[np.float64]])
-assert_type(fft.fht(f32_2d, f64_0d, 1), np.ndarray[tuple[int, int], np.dtype[np.float32]])
-assert_type(fft.fht(f80_3d, f64_0d, 1), np.ndarray[tuple[int, int, int], np.dtype[np.float128]])
-assert_type(fft.fht([0.4], f64_0d, 1), np.ndarray[tuple[int], np.dtype[np.float64]])
-assert_type(fft.fht([[0.1]], f64_0d, 1), np.ndarray[tuple[int, int], np.dtype[np.float64]])
-assert_type(fft.fht([[[0.1]]], f64_0d, 1), np.ndarray[tuple[int, int, int], np.dtype[np.float64]])
+assert_type(fft.fht(_f64_1d, _f64, 1), onp.Array1D[np.float64])
+assert_type(fft.fht(_f32_2d, _f64, 1), onp.Array2D[np.float32])
+assert_type(fft.fht(_f80_3d, _f64, 1), onp.Array3D[np.float128])
+assert_type(fft.fht([0.4], _f64, 1), onp.Array1D[np.float64])
+assert_type(fft.fht([[0.1]], _f64, 1), onp.Array2D[np.float64])
+assert_type(fft.fht([[[0.1]]], _f64, 1), onp.Array3D[np.float64])
+assert_type(fft.fht(_f16_1d, _f64, 1), onp.ArrayND[np.float64 | Any, tuple[int] | tuple[Any, ...]])
 
 # ifht
-assert_type(fft.ifht(f64_1d, f64_0d, 1), np.ndarray[tuple[int], np.dtype[np.float64]])
-assert_type(fft.ifht(f32_2d, f64_0d, 1), np.ndarray[tuple[int, int], np.dtype[np.float32]])
-assert_type(fft.ifht(f80_3d, f64_0d, 1), np.ndarray[tuple[int, int, int], np.dtype[np.float128]])
-assert_type(fft.ifht([0.4], f64_0d, 1), np.ndarray[tuple[int], np.dtype[np.float64]])
-assert_type(fft.ifht([[0.1]], f64_0d, 1), np.ndarray[tuple[int, int], np.dtype[np.float64]])
-assert_type(fft.ifht([[[0.1]]], f64_0d, 1), np.ndarray[tuple[int, int, int], np.dtype[np.float64]])
+assert_type(fft.ifht(_f64_1d, _f64, 1), onp.Array1D[np.float64])
+assert_type(fft.ifht(_f32_2d, _f64, 1), onp.Array2D[np.float32])
+assert_type(fft.ifht(_f80_3d, _f64, 1), onp.Array3D[np.float128])
+assert_type(fft.ifht([0.4], _f64, 1), onp.Array1D[np.float64])
+assert_type(fft.ifht([[0.1]], _f64, 1), onp.Array2D[np.float64])
+assert_type(fft.ifht([[[0.1]]], _f64, 1), onp.Array3D[np.float64])
+assert_type(fft.ifht(_f16_1d, _f64, 1), onp.ArrayND[np.float64 | Any, tuple[int] | tuple[Any, ...]])
+
+# fftoffset
+assert_type(fft.fhtoffset(0.1, 2.0, 0.5, 0.0), np.float64)
