@@ -70,6 +70,8 @@ _dlti_c64: dlti[np.complex64, np.float32, float]
 _dlti_c128: dlti[np.complex128, np.float64, float]
 _ss_cont_f32: StateSpaceContinuous[np.float32, np.float32]
 _ss_cont_f64: StateSpaceContinuous[np.float64, np.float64]
+_ss_cont_c64: StateSpaceContinuous[np.complex64, np.float32]
+_ss_cont_c128: StateSpaceContinuous[np.complex128, np.float64]
 _ss_disc_f32: StateSpaceDiscrete[np.float32, np.float32, float]
 _ss_disc_f64: StateSpaceDiscrete[np.float64, np.float64, float]
 _tf_cont_f32: TransferFunctionContinuous[np.float32]
@@ -141,6 +143,10 @@ assert_type(StateSpace(_f64_2d, _f64_2d, _f64_2d, _f64_2d), StateSpaceContinuous
 assert_type(StateSpace(_c128_2d, _c128_2d, _c128_2d, _c128_2d), StateSpaceContinuous[np.complex128, np.float64])  # type: ignore[assert-type]
 assert_type(StateSpace(_f64_2d, _f64_2d, _f64_2d, _f64_2d, dt=0.1), StateSpaceDiscrete[np.float64, np.float64, float])  # type: ignore[assert-type]
 assert_type(StateSpace(_c128_2d, _c128_2d, _c128_2d, _c128_2d, dt=0.1), StateSpaceDiscrete[np.complex128, np.float64, float])  # type: ignore[assert-type]
+assert_type(_ss_cont_f32.A, onp.Array2D[np.float32])
+assert_type(_ss_cont_f64.A, onp.Array2D[np.float64])
+assert_type(_ss_cont_c64.A, onp.Array2D[np.complex64])
+assert_type(_ss_cont_c128.A, onp.Array2D[np.complex128])
 
 # lti
 assert_type(lti(_f64_1d, _f64_1d), TransferFunctionContinuous[_F32_64])  # type: ignore[assert-type]
