@@ -4,7 +4,6 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
-import optype.numpy.compat as npc
 
 from scipy.ndimage import (
     center_of_mass,
@@ -298,4 +297,6 @@ assert_type(histogram(_f64_2d, 0, 100, 10, _i32_1d, index=_intp_1d), onp.ArrayND
 ###
 # watershed_ift
 
-assert_type(watershed_ift(_u8_2d, _i32_2d), onp.ArrayND[npc.signedinteger])
+assert_type(watershed_ift(_u8_2d, _i32_2d), onp.ArrayND[np.int32])
+assert_type(watershed_ift(_u8_2d, _py_i_2d), onp.ArrayND[np.int_])
+assert_type(watershed_ift(_u8_2d, _py_i_2d, output=_i32_2d), onp.Array2D[np.int32])
