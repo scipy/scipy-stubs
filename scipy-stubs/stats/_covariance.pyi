@@ -1,5 +1,5 @@
 import types
-from typing import ClassVar, Final, Generic, Protocol, overload, type_check_only
+from typing import Any, ClassVar, Final, Generic, Protocol, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -8,7 +8,13 @@ import optype.numpy.compat as npc
 
 __all__ = ["Covariance"]
 
+###
+
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]  # workaround for pyright on numpy<2.1
+
 _ScalarT_co = TypeVar("_ScalarT_co", bound=npc.floating | npc.integer, default=np.float64, covariant=True)
+
+###
 
 class Covariance(Generic[_ScalarT_co]):
     @classmethod
@@ -44,8 +50,20 @@ class Covariance(Generic[_ScalarT_co]):
     def shape(self, /) -> tuple[int, int]: ...
 
     #
-    def whiten(self, /, x: onp.ToFloatND) -> onp.ArrayND[npc.floating]: ...
-    def colorize(self, /, x: onp.ToFloatND) -> onp.ArrayND[npc.floating]: ...
+    @overload
+    def whiten[ShapeT: tuple[int, ...]](
+        self, /, x: onp.ArrayND[npc.floating | npc.integer | np.bool, ShapeT]
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
+    @overload
+    def whiten(self, /, x: onp.ToFloatND) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
+
+    #
+    @overload
+    def colorize[ShapeT: tuple[int, ...]](
+        self, /, x: onp.ArrayND[npc.floating | npc.integer | np.bool, ShapeT]
+    ) -> onp.ArrayND[np.float64, ShapeT]: ...
+    @overload
+    def colorize(self, /, x: onp.ToFloatND) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
 
 class CovViaDiagonal(Covariance[_ScalarT_co], Generic[_ScalarT_co]):
     @overload
@@ -55,18 +73,21 @@ class CovViaDiagonal(Covariance[_ScalarT_co], Generic[_ScalarT_co]):
     @overload
     def __init__(self, /, diagonal: onp.ToArray1D[_ScalarT_co, _ScalarT_co]) -> None: ...
 
+# undocumented
 class CovViaPrecision(Covariance[np.float64]):
     # pyrefly: ignore [bad-override]
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
 
     def __init__(self, /, precision: onp.ToFloat2D, covariance: onp.ToFloat2D | None = None) -> None: ...
 
+# undocumented
 class CovViaCholesky(Covariance[np.float64]):
     # pyrefly: ignore [bad-override]
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
 
     def __init__(self, /, cholesky: onp.ToFloat2D) -> None: ...
 
+# undocumented
 class CovViaEigendecomposition(Covariance[np.float64]):
     # pyrefly: ignore [bad-override]
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
@@ -84,8 +105,9 @@ class _PSD(Protocol):
     rank: int
 
     @property
-    def pinv(self, /) -> onp.ArrayND[npc.floating]: ...
+    def pinv(self, /) -> onp.ArrayND[np.float64]: ...
 
+# undocumented
 class CovViaPSD(Covariance[np.float64]):
     # pyrefly: ignore [bad-override]
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]

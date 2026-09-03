@@ -25,3 +25,9 @@ assert_type(_cov.log_pdet, np.float64)
 assert_type(_cov.rank, np.int_)
 assert_type(_cov.covariance, onp.Array2D[np.float64])
 assert_type(_cov.shape, tuple[int, int])
+
+assert_type(_cov.whiten(_f64_1d), onp.Array1D[np.float64])
+assert_type(_cov.whiten(_f64_2d), onp.Array2D[np.float64])
+
+assert_type(_cov.colorize(_f64_1d), onp.Array1D[np.float64])
+assert_type(_cov.colorize(_f64_2d), onp.Array2D[np.float64])
