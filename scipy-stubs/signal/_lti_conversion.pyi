@@ -239,6 +239,13 @@ def ss2zpk(
 def cont2discrete[SafeFloatT: np.float32 | np.float64](
     system: TransferFunctionContinuous[SafeFloatT], dt: float, method: _DiscretizeMethod = "zoh", alpha: float | None = None
 ) -> TransferFunctionDiscrete[SafeFloatT]: ...
+@overload  # ZerosPolesGain: +f64, +f64
+def cont2discrete(
+    system: ZerosPolesGainContinuous[npc.integer | np.float64, npc.integer | np.float64],
+    dt: float,
+    method: _DiscretizeMethod = "zoh",
+    alpha: float | None = None,
+) -> ZerosPolesGainDiscrete[np.float64, np.float64]: ...
 @overload  # ZerosPolesGain
 def cont2discrete[SafeInexactT: np.float32 | np.float64 | np.complex64 | np.complex128, SafeFloatT: np.float32 | np.float64](
     system: ZerosPolesGainContinuous[SafeInexactT, SafeFloatT],
@@ -253,6 +260,10 @@ def cont2discrete[SafeInexactT: np.float32 | np.float64 | np.complex64 | np.comp
     method: _DiscretizeMethod = "zoh",
     alpha: float | None = None,
 ) -> StateSpaceDiscrete[SafeInexactT, SafeFloatT]: ...
+@overload  # lti: ~integer
+def cont2discrete(
+    system: lti[npc.integer, npc.integer], dt: float, method: _DiscretizeMethod = "zoh", alpha: float | None = None
+) -> dlti[np.float64, np.float64]: ...
 @overload  # lti
 def cont2discrete[SafeInexactT: np.float32 | np.float64 | np.complex64 | np.complex128, SafeFloatT: np.float32 | np.float64](
     system: lti[SafeInexactT, SafeFloatT], dt: float, method: _DiscretizeMethod = "zoh", alpha: float | None = None
