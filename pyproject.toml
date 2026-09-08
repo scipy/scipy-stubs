@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.12.5,<0.13"]
+requires = ["uv_build>=0.12.10,<0.13"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -62,8 +62,8 @@ extras = ["scipy-stubs[scipy]"]
 ci = ["packaging>=26.3"]
 lint = [
   { include-group = "extras" },
-  "dprint-py==0.57.0.0",
-  "ruff==0.16.5",
+  "dprint-py==0.57.4.0",
+  "ruff==0.16.6",
   "sp-repo-review[cli]==2026.8.14",
 ]
 type = [
@@ -73,7 +73,7 @@ type = [
   "array-api-compat==1.14.0, !=1.15.0", # bundled as `_lib.array_api_compat`
   "pytest==9.1.1", # needed for `_lib._array_api.make_xp_pytest_*`
   "matplotlib==3.11.1", # needed for `spatial._plotutils` and `stats._fit.FitResult.plot`
-  "basedpyright==1.39.10",
+  "basedpyright==1.40.0",
   "mypy[faster-cache]==2.3.1",
   "pyrefly==1.2.0",
   "stubdefaulter>=0.1.0",
