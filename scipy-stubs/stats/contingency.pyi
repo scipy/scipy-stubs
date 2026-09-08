@@ -1,5 +1,4 @@
-from typing import Any, Generic, Literal, Self, overload
-from typing_extensions import TypeVar
+from typing import Any, Literal, Self, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -17,14 +16,12 @@ __all__ = ["association", "chi2_contingency", "crosstab", "expected_freq", "marg
 
 type _to_floating = npc.floating | npc.integer | np.bool  # ruff: ignore[snake-case-type-alias]
 
-_ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
-
 ###
 
 # NOTE: On numpy<2.1, pyright reports 12 false positive incompatible overload errors here.
 # pyright: reportOverlappingOverload=false
 
-class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, float, onp.ArrayND[np.float64]], Generic[_ShapeT_co]):
+class Chi2ContingencyResult[ShapeT: tuple[int, ...]](BaseBunch[np.float64, np.float64, float, onp.ArrayND[np.float64]]):
     @property
     def statistic(self, /) -> np.float64: ...
     @property
@@ -32,14 +29,14 @@ class Chi2ContingencyResult(BaseBunch[np.float64, np.float64, float, onp.ArrayND
     @property
     def dof(self, /) -> float: ...
     @property
-    def expected_freq(self, /) -> onp.ArrayND[np.float64, _ShapeT_co]: ...
+    def expected_freq(self, /) -> onp.ArrayND[np.float64, ShapeT]: ...
 
     #
     def __new__(
-        _cls, statistic: np.float64, pvalue: np.float64, dof: float, expected_freq: onp.ArrayND[np.float64, _ShapeT_co]
+        _cls, statistic: np.float64, pvalue: np.float64, dof: float, expected_freq: onp.ArrayND[np.float64, ShapeT]
     ) -> Self: ...
     def __init__(
-        self, /, statistic: np.float64, pvalue: np.float64, dof: float, expected_freq: onp.ArrayND[np.float64, _ShapeT_co]
+        self, /, statistic: np.float64, pvalue: np.float64, dof: float, expected_freq: onp.ArrayND[np.float64, ShapeT]
     ) -> None: ...
 
 #
@@ -72,7 +69,7 @@ def chi2_contingency(
     lambda_: PowerDivergenceStatistic | float | None = None,
     *,
     method: ResamplingMethod | None = None,
-) -> Chi2ContingencyResult: ...
+) -> Chi2ContingencyResult[tuple[Any, ...]]: ...
 
 #
 def association(

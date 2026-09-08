@@ -337,9 +337,11 @@ class PPoly(_PPolyBase[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
     #
     def derivative(self, /, nu: _ToAxis = 1) -> Self: ...
     def antiderivative(self, /, nu: _ToAxis = 1) -> Self: ...
-    def integrate(
-        self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
-    ) -> onp.ArrayND[_CT_co, _ShapeT_co]: ...
+
+    #
+    def integrate[CT: np.float64 | np.complex128, ShapeT: tuple[int, ...]](
+        self: PPoly[CT, ShapeT], /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
+    ) -> onp.ArrayND[CT, ShapeT]: ...
 
     # NOTE: `solve` and `roots` raise a `ValueError` for complex-valued coefficients
     @overload
@@ -477,9 +479,11 @@ class BPoly(_PPolyBase[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
     #
     def derivative(self, /, nu: _ToAxis = 1) -> Self: ...
     def antiderivative(self, /, nu: _ToAxis = 1) -> Self: ...
-    def integrate(
-        self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
-    ) -> onp.ArrayND[_CT_co, _ShapeT_co]: ...
+
+    #
+    def integrate[CT: np.float64 | np.complex128, ShapeT: tuple[int, ...]](
+        self: BPoly[CT, ShapeT], /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
+    ) -> onp.ArrayND[CT, ShapeT]: ...
 
 class NdPPoly(Generic[_CT_co]):
     c: _Array2ND[_CT_co]

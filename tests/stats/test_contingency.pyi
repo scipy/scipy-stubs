@@ -1,6 +1,6 @@
 # type-tests for `stats/contingency.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -49,7 +49,7 @@ assert_type(expected_freq(_f64_nd), onp.ArrayND[np.float64])
 assert_type(chi2_contingency(_f32_2d, correction=False), Chi2ContingencyResult[tuple[int, int]])
 assert_type(chi2_contingency(_f64_2d, correction=False), Chi2ContingencyResult[tuple[int, int]])
 assert_type(chi2_contingency(_f64_3d, correction=False), Chi2ContingencyResult[tuple[int, int, int]])
-assert_type(chi2_contingency(_f64_nd, correction=False), Chi2ContingencyResult)
+assert_type(chi2_contingency(_f64_nd, correction=False), Chi2ContingencyResult[tuple[Any, ...]])
 
 # association
 assert_type(association(_py_i_2d), float)
