@@ -537,9 +537,9 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
 
     #
     @override
-    def transpose(  # type: ignore[override] # pyrefly: ignore [bad-override]
+    def transpose(  # type: ignore[override] # pyrefly: ignore[bad-override]
         self, /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
-    ) -> csc_matrix[_ScalarT_co]: ...
+    ) -> csc_matrix[_ScalarT_co]: ...  # ty: ignore[invalid-method-override]
 
     #
     @override

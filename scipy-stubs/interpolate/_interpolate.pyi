@@ -332,14 +332,16 @@ class PPoly(_PPolyBase[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
         cls, tck: tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int], extrapolate: _Extrapolate | None = None
     ) -> Self: ...
     @classmethod
-    def from_bernstein_basis(cls, bp: BPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
+    def from_bernstein_basis(cls, bp: BPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...  # ty: ignore[invalid-generic-class]
 
     #
     def derivative(self, /, nu: _ToAxis = 1) -> Self: ...
     def antiderivative(self, /, nu: _ToAxis = 1) -> Self: ...
-    def integrate(
-        self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
-    ) -> onp.ArrayND[_CT_co, _ShapeT_co]: ...
+
+    #
+    def integrate[CT: np.float64 | np.complex128, ShapeT: tuple[int, ...]](
+        self: PPoly[CT, ShapeT], /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
+    ) -> onp.ArrayND[CT, ShapeT]: ...
 
     # NOTE: `solve` and `roots` raise a `ValueError` for complex-valued coefficients
     @overload
@@ -443,7 +445,7 @@ class BPoly(_PPolyBase[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
 
     #
     @classmethod
-    def from_power_basis(cls, pp: PPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
+    def from_power_basis(cls, pp: PPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...  # ty: ignore[invalid-generic-class]
 
     #
     @overload
@@ -477,9 +479,11 @@ class BPoly(_PPolyBase[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
     #
     def derivative(self, /, nu: _ToAxis = 1) -> Self: ...
     def antiderivative(self, /, nu: _ToAxis = 1) -> Self: ...
-    def integrate(
-        self, /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
-    ) -> onp.ArrayND[_CT_co, _ShapeT_co]: ...
+
+    #
+    def integrate[CT: np.float64 | np.complex128, ShapeT: tuple[int, ...]](
+        self: BPoly[CT, ShapeT], /, a: onp.ToFloat, b: onp.ToFloat, extrapolate: _Extrapolate | None = None
+    ) -> onp.ArrayND[CT, ShapeT]: ...
 
 class NdPPoly(Generic[_CT_co]):
     c: _Array2ND[_CT_co]
@@ -493,7 +497,7 @@ class NdPPoly(Generic[_CT_co]):
     @classmethod
     def construct_fast(
         cls,
-        c: onp.ArrayND[_CT_co],  # at least 2d
+        c: onp.ArrayND[_CT_co],  # at least 2d  # ty: ignore[invalid-generic-class]
         x: tuple[onp.ArrayND[np.float64], ...],
         extrapolate: _Extrapolate | None = None,
     ) -> Self: ...

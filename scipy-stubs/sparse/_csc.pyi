@@ -53,7 +53,7 @@ class _csc_base(_cs_matrix[_ScalarT_co, tuple[int, int]], Generic[_ScalarT_co]):
     @override
     def transpose(  # type: ignore[override] # pyrefly: ignore[bad-override]
         self, /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
-    ) -> _csr_base[_ScalarT_co, tuple[int, int]]: ...
+    ) -> _csr_base[_ScalarT_co, tuple[int, int]]: ...  # ty: ignore[invalid-method-override]
 
     #
     @override

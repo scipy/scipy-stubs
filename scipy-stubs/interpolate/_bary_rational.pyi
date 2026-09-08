@@ -104,7 +104,9 @@ class _BarycentricRational(Generic[_ScalarT_co, _ShapeT_co]):
     def __call__(self, /, z: onp.ToJustComplexND) -> onp.ArrayND[npc.complexfloating]: ...
 
     #
-    def residues(self, /) -> onp.ArrayND[_ScalarT_co, _ShapeT_co]: ...
+    def residues[ScalarT: npc.inexact, ShapeT: tuple[int, ...]](
+        self: _BarycentricRational[ScalarT, ShapeT], /
+    ) -> onp.ArrayND[ScalarT, ShapeT]: ...
 
     #
     @overload

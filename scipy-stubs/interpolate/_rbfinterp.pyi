@@ -211,7 +211,7 @@ class RBFInterpolator(Generic[_Inexact64T_co, _ShapeT_co]):
 
     #
     @override
-    def __getstate__(self) -> _State[_ShapeT_co]: ...
+    def __getstate__[ShapeT: tuple[int, ...]](self: RBFInterpolator[Any, ShapeT]) -> _State[ShapeT]: ...  # ty: ignore[invalid-method-override]
     def __setstate__[ShapeT: tuple[int, ...]](self, state: _State[ShapeT], /) -> None: ...
 
     # TODO(jorenham): Return `onp.Array[tuple[int, Unpack[_ShapeT_co]], _SCT_co]` once mypy supports it (if ever)

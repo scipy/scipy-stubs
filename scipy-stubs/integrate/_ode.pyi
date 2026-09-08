@@ -10,7 +10,7 @@ import optype.numpy.compat as npc
 __all__ = ["complex_ode", "ode"]
 
 _Ts = TypeVarTuple("_Ts", default=Unpack[tuple[Any, ...]])
-_Inexact64T_co = TypeVar("_Inexact64T_co", bound=npc.inexact, default=Any, covariant=True)
+_InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=Any, covariant=True)
 
 type _IntegratorReal = Literal["vode", "dopri5", "dop853", "lsoda"]
 type _IntegratorComplex = Literal["vode", "zvode"]
@@ -40,9 +40,9 @@ class _IntegratorParams(TypedDict, total=False):
 
 ###
 
-class ode(Generic[_Inexact64T_co, *_Ts]):
-    f: Callable[[float, onp.Array1D[_Inexact64T_co], *_Ts], complex | onp.ToComplex1D]
-    jac: Callable[[float, onp.Array1D[_Inexact64T_co], *_Ts], complex | onp.ToComplex2D] | None
+class ode(Generic[_InexactT_co, *_Ts]):
+    f: Callable[[float, onp.Array1D[_InexactT_co], *_Ts], complex | onp.ToComplex1D]
+    jac: Callable[[float, onp.Array1D[_InexactT_co], *_Ts], complex | onp.ToComplex2D] | None
     f_params: tuple[*_Ts]
     jac_params: tuple[*_Ts]
     stiff: Literal[0, 1]
@@ -55,41 +55,41 @@ class ode(Generic[_Inexact64T_co, *_Ts]):
     def __init__(
         self,
         /,
-        f: Callable[[float, onp.Array1D[_Inexact64T_co], *_Ts], complex | onp.ToComplex1D],
-        jac: Callable[[float, onp.Array1D[_Inexact64T_co], *_Ts], complex | onp.ToComplex2D] | None = None,
+        f: Callable[[float, onp.Array1D[_InexactT_co], *_Ts], complex | onp.ToComplex1D],
+        jac: Callable[[float, onp.Array1D[_InexactT_co], *_Ts], complex | onp.ToComplex2D] | None = None,
     ) -> None: ...
 
     #
     @property
-    def y(self, /) -> onp.Array1D[_Inexact64T_co]: ...
+    def y(self, /) -> onp.Array1D[_InexactT_co]: ...
 
     #
     @overload
     def set_initial_value(
         self: ode[npc.floating, *_Ts], /, y: float | onp.ToFloat1D, t: float = 0.0
-    ) -> ode[_Inexact64T_co, *_Ts]: ...
+    ) -> ode[_InexactT_co, *_Ts]: ...
     @overload
     def set_initial_value(
         self: ode[npc.complexfloating, *_Ts], /, y: complex | onp.ToComplex1D, t: float = 0.0
-    ) -> ode[_Inexact64T_co, *_Ts]: ...
+    ) -> ode[_InexactT_co, *_Ts]: ...
 
     #
     @overload
     def set_integrator(
         self: ode[npc.floating, *_Ts], /, name: _IntegratorReal, **integrator_params: Unpack[_IntegratorParams]
-    ) -> ode[_Inexact64T_co, *_Ts]: ...
+    ) -> ode[_InexactT_co, *_Ts]: ...
     @overload
     def set_integrator(
         self: ode[npc.complexfloating, *_Ts], /, name: _IntegratorComplex, **integrator_params: Unpack[_IntegratorParams]
-    ) -> ode[_Inexact64T_co, *_Ts]: ...
+    ) -> ode[_InexactT_co, *_Ts]: ...
 
     #
-    def integrate(self, /, t: float, step: bool = False, relax: bool = False) -> onp.Array1D[_Inexact64T_co]: ...
+    def integrate(self, /, t: float, step: bool = False, relax: bool = False) -> onp.Array1D[_InexactT_co]: ...
     def successful(self, /) -> bool: ...
     def get_return_code(self, /) -> Literal[-7, -6, -5, -4, -3, -2, -1, 1, 2]: ...
     def set_f_params(self, /, *args: *_Ts) -> Self: ...
     def set_jac_params(self, /, *args: *_Ts) -> Self: ...
-    def set_solout(self, /, solout: Callable[[float, onp.Array1D[_Inexact64T_co]], Literal[-1, 0] | None]) -> None: ...
+    def set_solout(self, /, solout: Callable[[float, onp.Array1D[_InexactT_co]], Literal[-1, 0] | None]) -> None: ...
 
 class complex_ode(ode[np.complex128, *_Ts], Generic[*_Ts]):
     cf: Callable[[float, onp.Array1D[np.complex128], *_Ts], complex | onp.ToComplex1D]
@@ -107,7 +107,7 @@ class IntegratorConcurrencyError(RuntimeError):
     def __init__(self, /, name: str) -> None: ...
 
 # undocumented
-class IntegratorBase(Generic[_Inexact64T_co]):
+class IntegratorBase(Generic[_InexactT_co]):
     runner: ClassVar[Callable[..., tuple[Any, ...]] | None]  # fortran function or unavailable
     supports_run_relax: ClassVar[Literal[0, 1] | None] = None
     supports_step: ClassVar[Literal[0, 1] | None] = None
@@ -126,42 +126,48 @@ class IntegratorBase(Generic[_Inexact64T_co]):
     def acquire_new_handle(self, /) -> None: ...
     def check_handle(self, /) -> None: ...
     def reset(self, /, n: int, has_jac: bool) -> None: ...
-    def run(
+
+    #
+    def run[InexactT: npc.inexact](
         self,
         /,
-        f: Callable[..., _Inexact64T_co],
-        jac: Callable[..., onp.ArrayND[_Inexact64T_co]] | None,
+        f: Callable[..., InexactT],
+        jac: Callable[..., onp.ArrayND[InexactT]] | None,
         y0: complex,
         t0: float,
         t1: float,
         f_params: tuple[object, ...],
         jac_params: tuple[object, ...],
-    ) -> tuple[_Inexact64T_co, float]: ...
-    def step(
+    ) -> tuple[InexactT, float]: ...
+
+    #
+    def step[InexactT: npc.inexact](
         self,
-        f: Callable[..., _Inexact64T_co],
-        jac: Callable[..., onp.ArrayND[_Inexact64T_co]],
-        y0: complex,
-        t0: float,
-        t1: float,
-        f_params: tuple[object, ...],
-        jac_params: tuple[object, ...],
-        /,
-    ) -> tuple[_Inexact64T_co, float]: ...
-    def run_relax(
-        self,
-        f: Callable[..., _Inexact64T_co],
-        jac: Callable[..., onp.ArrayND[_Inexact64T_co]],
+        f: Callable[..., InexactT],
+        jac: Callable[..., onp.ArrayND[InexactT]],
         y0: complex,
         t0: float,
         t1: float,
         f_params: tuple[object, ...],
         jac_params: tuple[object, ...],
         /,
-    ) -> tuple[_Inexact64T_co, float]: ...
+    ) -> tuple[InexactT, float]: ...
+
+    #
+    def run_relax[InexactT: npc.inexact](
+        self: IntegratorBase[InexactT],
+        f: Callable[..., InexactT],
+        jac: Callable[..., onp.ArrayND[InexactT]],
+        y0: complex,
+        t0: float,
+        t1: float,
+        f_params: tuple[object, ...],
+        jac_params: tuple[object, ...],
+        /,
+    ) -> tuple[InexactT, float]: ...
 
 # undocumented
-class vode(IntegratorBase[_Inexact64T_co], Generic[_Inexact64T_co]):
+class vode(IntegratorBase[_InexactT_co], Generic[_InexactT_co]):
     messages: ClassVar[dict[int, str]] = ...
 
     active_global_handle: int
