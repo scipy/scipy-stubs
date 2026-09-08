@@ -1,7 +1,9 @@
 from collections.abc import Callable
-from typing import overload
+from typing import Any, TypeAliasType, overload
+from typing_extensions import TypeVar
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -12,31 +14,55 @@ __all__ = ["lobpcg"]
 
 ###
 
-type _Float = np.float32 | np.float64
-type _Complex = np.complex64 | np.complex128
+type _ToInt = npc.integer | np.bool
+type _ToFloat = npc.floating | _ToInt
+type _ToComplex = npc.number | np.bool
+type _ToF64 = npc.floating64 | npc.floating32 | npc.floating16 | _ToInt
+type _AsF64 = npc.floating64 | npc.integer64 | npc.integer32
 
-type _ToRealMatrix[FloatT: _Float] = (
-    onp.ToFloat2D
-    | LinearOperator[npc.integer | npc.floating]
-    | _spbase
-    | Callable[[onp.Array2D[FloatT]], onp.ArrayND[_Float | _Complex]]
+type _MatOp[ScalarT: _ToComplex] = _spbase[ScalarT] | LinearOperator[ScalarT]
+
+type _ToMatF64 = onp.ToFloat64_2D | _MatOp[_ToF64]
+type _ToMatC128 = onp.ToComplex128_2D | _MatOp[npc.inexact64 | npc.inexact32 | np.float16 | _ToInt]
+type _AsMatF32 = onp.ToJustFloat32_2D | _spbase[npc.floating32]
+type _AsMatF64 = onp.ToArray2D[op.JustFloat | op.JustInt, _AsF64] | _MatOp[_AsF64]
+type _AsMatC128 = onp.ToJustComplex128_2D | _MatOp[npc.complexfloating128]
+
+_InexactT = TypeVar("_InexactT", bound=npc.inexact, default=Any)
+_ToMat = TypeAliasType(
+    "_ToMat",
+    onp.ToComplex2D | _MatOp[_ToComplex] | Callable[[onp.Array2D[_InexactT]], onp.ArrayND[_ToComplex]],
+    type_params=(_InexactT,),
 )
-type _ToComplexMatrix[FloatT: _Float] = (
-    onp.ToComplex2D
-    | LinearOperator
-    | _spbase
-    | Callable[[onp.Array2D[FloatT]], onp.ArrayND[_Float | _Complex]]
-)  # fmt: skip
+
+type _Result[ValT: npc.inexact, VecT: npc.inexact] = tuple[
+    onp.Array1D[ValT],  # lambda
+    onp.Array2D[VecT],  # v
+]
+type _Result1[ValT: npc.inexact, VecT: npc.inexact, HistT: npc.inexact] = tuple[
+    onp.Array1D[ValT],  # lambda
+    onp.Array2D[VecT],  # v
+    list[onp.Array1D[HistT]],  # lambdaHistory / residualNormsHistory
+]
+type _Result2[ValT: npc.inexact, VecT: npc.inexact, HistT: npc.inexact] = tuple[
+    onp.Array1D[ValT],  # lambda
+    onp.Array2D[VecT],  # v
+    list[onp.Array1D[HistT]],  # lambdaHistory
+    list[onp.Array1D[HistT]],  # residualNormsHistory
+]
 
 ###
 
-@overload  # retLambdaHistory: falsy = ..., retResidualNormsHistory: falsy = ...
-def lobpcg[FloatT: _Float](
-    A: _ToComplexMatrix[FloatT],
-    X: onp.ArrayND[FloatT],  # 2d
-    B: _ToRealMatrix[FloatT] | None = None,
-    M: _ToRealMatrix[FloatT] | None = None,
-    Y: onp.ArrayND[FloatT] | None = None,  # 2d
+# mypy reports false positive `overload-overlap` errors on `numpy>=2.2`
+# mypy: disable-error-code=overload-overlap
+
+@overload  # A: +f64, X: ~f64
+def lobpcg(
+    A: _AsMatF64,
+    X: onp.ArrayND[np.float64],
+    B: _ToMatF64 | None = None,
+    M: _ToMatF64 | None = None,
+    Y: onp.ArrayND[_ToFloat] | None = None,
     tol: float | None = None,
     maxiter: int | None = None,
     largest: bool = True,
@@ -44,29 +70,30 @@ def lobpcg[FloatT: _Float](
     retLambdaHistory: onp.ToFalse = False,
     retResidualNormsHistory: onp.ToFalse = False,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex]]: ...
-@overload  # retLambdaHistory: falsy = ..., retResidualNormsHistory: truthy  (positional)
-def lobpcg[FloatT: _Float](
-    A: _ToComplexMatrix[FloatT],
-    X: onp.ArrayND[FloatT],  # 2d
-    B: _ToRealMatrix[FloatT] | None,
-    M: _ToRealMatrix[FloatT] | None,
-    Y: onp.ArrayND[FloatT] | None,  # 2d
-    tol: float | None,
-    maxiter: int | None,
-    largest: bool,
-    verbosityLevel: int,
-    retLambdaHistory: onp.ToFalse,
-    retResidualNormsHistory: onp.ToTrue,
+) -> _Result[np.float64, np.float64]: ...
+@overload  # A: +f64, X: ~f64, retLambdaHistory
+def lobpcg(
+    A: _AsMatF64,
+    X: onp.ArrayND[np.float64],
+    B: _ToMatF64 | None = None,
+    M: _ToMatF64 | None = None,
+    Y: onp.ArrayND[_ToFloat] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    *,
+    retLambdaHistory: onp.ToTrue,
+    retResidualNormsHistory: onp.ToFalse = False,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]]]: ...
-@overload  # retLambdaHistory: falsy = ..., retResidualNormsHistory: truthy  (keyword)
-def lobpcg[FloatT: _Float](
-    A: _ToComplexMatrix[FloatT],
-    X: onp.ArrayND[FloatT],  # 2d
-    B: _ToRealMatrix[FloatT] | None = None,
-    M: _ToRealMatrix[FloatT] | None = None,
-    Y: onp.ArrayND[FloatT] | None = None,  # 2d
+) -> _Result1[np.float64, np.float64, np.float64]: ...
+@overload  # A: +f64, X: ~f64, retResidualNormsHistory
+def lobpcg(
+    A: _AsMatF64,
+    X: onp.ArrayND[np.float64],
+    B: _ToMatF64 | None = None,
+    M: _ToMatF64 | None = None,
+    Y: onp.ArrayND[_ToFloat] | None = None,
     tol: float | None = None,
     maxiter: int | None = None,
     largest: bool = True,
@@ -75,60 +102,14 @@ def lobpcg[FloatT: _Float](
     *,
     retResidualNormsHistory: onp.ToTrue,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]]]: ...
-@overload  # retLambdaHistory: truthy  (positional), retResidualNormsHistory: falsy = ...
-def lobpcg[FloatT: _Float](
-    A: _ToComplexMatrix[FloatT],
-    X: onp.ArrayND[FloatT],  # 2d
-    B: _ToRealMatrix[FloatT] | None,
-    M: _ToRealMatrix[FloatT] | None,
-    Y: onp.ArrayND[FloatT] | None,  # 2d
-    tol: float | None,
-    maxiter: int | None,
-    largest: bool,
-    verbosityLevel: int,
-    retLambdaHistory: onp.ToTrue,
-    retResidualNormsHistory: onp.ToFalse = False,
-    restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]]]: ...
-@overload  # retLambdaHistory: truthy  (keyword), retResidualNormsHistory: falsy = ...
-def lobpcg[FloatT: _Float](
-    A: _ToComplexMatrix[FloatT],
-    X: onp.ArrayND[FloatT],  # 2d
-    B: _ToRealMatrix[FloatT] | None = None,
-    M: _ToRealMatrix[FloatT] | None = None,
-    Y: onp.ArrayND[FloatT] | None = None,  # 2d
-    tol: float | None = None,
-    maxiter: int | None = None,
-    largest: bool = True,
-    verbosityLevel: int = 0,
-    *,
-    retLambdaHistory: onp.ToTrue,
-    retResidualNormsHistory: onp.ToFalse = False,
-    restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]]]: ...
-@overload  # retLambdaHistory: truthy  (positional), retResidualNormsHistory: truthy
-def lobpcg[FloatT: _Float](
-    A: _ToComplexMatrix[FloatT],
-    X: onp.ArrayND[FloatT],  # 2d
-    B: _ToRealMatrix[FloatT] | None,
-    M: _ToRealMatrix[FloatT] | None,
-    Y: onp.ArrayND[FloatT] | None,  # 2d
-    tol: float | None,
-    maxiter: int | None,
-    largest: bool,
-    verbosityLevel: int,
-    retLambdaHistory: onp.ToTrue,
-    retResidualNormsHistory: onp.ToTrue,
-    restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]], list[onp.Array1D[FloatT]]]: ...
-@overload  # retLambdaHistory: truthy  (keyword), retResidualNormsHistory: truthy
-def lobpcg[FloatT: _Float](
-    A: _ToComplexMatrix[FloatT],
-    X: onp.ArrayND[FloatT],  # 2d
-    B: _ToRealMatrix[FloatT] | None = None,
-    M: _ToRealMatrix[FloatT] | None = None,
-    Y: onp.ArrayND[FloatT] | None = None,  # 2d
+) -> _Result1[np.float64, np.float64, np.float64]: ...
+@overload  # A: +f64, X: ~f64, retLambdaHistory, retResidualNormsHistory
+def lobpcg(
+    A: _AsMatF64,
+    X: onp.ArrayND[np.float64],
+    B: _ToMatF64 | None = None,
+    M: _ToMatF64 | None = None,
+    Y: onp.ArrayND[_ToFloat] | None = None,
     tol: float | None = None,
     maxiter: int | None = None,
     largest: bool = True,
@@ -137,4 +118,193 @@ def lobpcg[FloatT: _Float](
     retLambdaHistory: onp.ToTrue,
     retResidualNormsHistory: onp.ToTrue,
     restartControl: int = 20,
-) -> tuple[onp.Array1D[FloatT], onp.Array2D[FloatT | _Complex], list[onp.Array1D[FloatT]], list[onp.Array1D[FloatT]]]: ...
+) -> _Result2[np.float64, np.float64, np.float64]: ...
+@overload  # A: ~c128, X: ~f64 | ~c128
+def lobpcg(
+    A: _AsMatC128,
+    X: onp.ArrayND[np.float64 | np.complex128],
+    B: _ToMatC128 | None = None,
+    M: _ToMatC128 | None = None,
+    Y: onp.ArrayND[_ToComplex] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    retLambdaHistory: onp.ToFalse = False,
+    retResidualNormsHistory: onp.ToFalse = False,
+    restartControl: int = 20,
+) -> _Result[np.float64, np.complex128]: ...
+@overload  # A: ~c128, X: T:inexact64, retLambdaHistory
+def lobpcg[InexactT: npc.inexact64](
+    A: _AsMatC128,
+    X: onp.ArrayND[InexactT],
+    B: _ToMatC128 | None = None,
+    M: _ToMatC128 | None = None,
+    Y: onp.ArrayND[_ToComplex] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    *,
+    retLambdaHistory: onp.ToTrue,
+    retResidualNormsHistory: onp.ToFalse = False,
+    restartControl: int = 20,
+) -> _Result1[np.float64, np.complex128, InexactT]: ...
+@overload  # A: ~c128, X: T:inexact64, retResidualNormsHistory
+def lobpcg[ScalarT: npc.inexact64](
+    A: _AsMatC128,
+    X: onp.ArrayND[ScalarT],
+    B: _ToMatC128 | None = None,
+    M: _ToMatC128 | None = None,
+    Y: onp.ArrayND[_ToComplex] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    retLambdaHistory: onp.ToFalse = False,
+    *,
+    retResidualNormsHistory: onp.ToTrue,
+    restartControl: int = 20,
+) -> _Result1[np.float64, np.complex128, ScalarT]: ...
+@overload  # A: ~c128, X: T:inexact64, retLambdaHistory, retResidualNormsHistory
+def lobpcg[InexactT: npc.inexact64](
+    A: _AsMatC128,
+    X: onp.ArrayND[InexactT],
+    B: _ToMatC128 | None = None,
+    M: _ToMatC128 | None = None,
+    Y: onp.ArrayND[_ToComplex] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    *,
+    retLambdaHistory: onp.ToTrue,
+    retResidualNormsHistory: onp.ToTrue,
+    restartControl: int = 20,
+) -> _Result2[np.float64, np.complex128, InexactT]: ...
+@overload  # A: ~f32, X: T:inexact32
+def lobpcg[InexactT: npc.inexact32](
+    A: _AsMatF32,
+    X: onp.ArrayND[InexactT],
+    B: _AsMatF32 | None = None,
+    M: _AsMatF32 | None = None,
+    Y: onp.ArrayND[_ToFloat] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    retLambdaHistory: onp.ToFalse = False,
+    retResidualNormsHistory: onp.ToFalse = False,
+    restartControl: int = 20,
+) -> _Result[np.float32, InexactT]: ...
+@overload  # A: ~f32, X: T:inexact32, retLambdaHistory
+def lobpcg[InexactT: npc.inexact32](
+    A: _AsMatF32,
+    X: onp.ArrayND[InexactT],
+    B: _AsMatF32 | None = None,
+    M: _AsMatF32 | None = None,
+    Y: onp.ArrayND[_ToFloat] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    *,
+    retLambdaHistory: onp.ToTrue,
+    retResidualNormsHistory: onp.ToFalse = False,
+    restartControl: int = 20,
+) -> _Result1[np.float32, InexactT, InexactT]: ...
+@overload  # A: ~f32, X: T:inexact32, retResidualNormsHistory
+def lobpcg[InexactT: npc.inexact32](
+    A: _AsMatF32,
+    X: onp.ArrayND[InexactT],
+    B: _AsMatF32 | None = None,
+    M: _AsMatF32 | None = None,
+    Y: onp.ArrayND[_ToFloat] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    retLambdaHistory: onp.ToFalse = False,
+    *,
+    retResidualNormsHistory: onp.ToTrue,
+    restartControl: int = 20,
+) -> _Result1[np.float32, InexactT, InexactT]: ...
+@overload  # A: ~f32, X: T:inexact32, retLambdaHistory, retResidualNormsHistory
+def lobpcg[InexactT: npc.inexact32](
+    A: _AsMatF32,
+    X: onp.ArrayND[InexactT],
+    B: _AsMatF32 | None = None,
+    M: _AsMatF32 | None = None,
+    Y: onp.ArrayND[_ToFloat] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    *,
+    retLambdaHistory: onp.ToTrue,
+    retResidualNormsHistory: onp.ToTrue,
+    restartControl: int = 20,
+) -> _Result2[np.float32, InexactT, InexactT]: ...
+@overload  # fallback
+def lobpcg(
+    A: _ToMat,
+    X: onp.ArrayND[npc.inexact],
+    B: _ToMat | None = None,
+    M: _ToMat | None = None,
+    Y: onp.ArrayND[_ToComplex] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    retLambdaHistory: onp.ToFalse = False,
+    retResidualNormsHistory: onp.ToFalse = False,
+    restartControl: int = 20,
+) -> _Result[np.float64 | Any, np.float64 | Any]: ...
+@overload  # fallback, retLambdaHistory
+def lobpcg[InexactT: npc.inexact](
+    A: _ToMat[InexactT],
+    X: onp.ArrayND[InexactT],
+    B: _ToMat[InexactT] | None = None,
+    M: _ToMat[InexactT] | None = None,
+    Y: onp.ArrayND[_ToComplex] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    *,
+    retLambdaHistory: onp.ToTrue,
+    retResidualNormsHistory: onp.ToFalse = False,
+    restartControl: int = 20,
+) -> _Result1[np.float64 | Any, np.float64 | Any, InexactT]: ...
+@overload  # fallback, retResidualNormsHistory
+def lobpcg[InexactT: npc.inexact](
+    A: _ToMat[InexactT],
+    X: onp.ArrayND[InexactT],
+    B: _ToMat[InexactT] | None = None,
+    M: _ToMat[InexactT] | None = None,
+    Y: onp.ArrayND[_ToComplex] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    retLambdaHistory: onp.ToFalse = False,
+    *,
+    retResidualNormsHistory: onp.ToTrue,
+    restartControl: int = 20,
+) -> _Result1[np.float64 | Any, np.float64 | Any, InexactT]: ...
+@overload  # fallback, retLambdaHistory, retResidualNormsHistory
+def lobpcg[InexactT: npc.inexact](
+    A: _ToMat[InexactT],
+    X: onp.ArrayND[InexactT],
+    B: _ToMat[InexactT] | None = None,
+    M: _ToMat[InexactT] | None = None,
+    Y: onp.ArrayND[_ToComplex] | None = None,
+    tol: float | None = None,
+    maxiter: int | None = None,
+    largest: bool = True,
+    verbosityLevel: int = 0,
+    *,
+    retLambdaHistory: onp.ToTrue,
+    retResidualNormsHistory: onp.ToTrue,
+    restartControl: int = 20,
+) -> _Result2[np.float64 | Any, np.float64 | Any, InexactT]: ...
