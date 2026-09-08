@@ -332,7 +332,7 @@ class PPoly(_PPolyBase[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
         cls, tck: tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int], extrapolate: _Extrapolate | None = None
     ) -> Self: ...
     @classmethod
-    def from_bernstein_basis(cls, bp: BPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
+    def from_bernstein_basis(cls, bp: BPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...  # ty: ignore[invalid-generic-class]
 
     #
     def derivative(self, /, nu: _ToAxis = 1) -> Self: ...
@@ -443,7 +443,7 @@ class BPoly(_PPolyBase[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
 
     #
     @classmethod
-    def from_power_basis(cls, pp: PPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...
+    def from_power_basis(cls, pp: PPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...  # ty: ignore[invalid-generic-class]
 
     #
     @overload
@@ -493,7 +493,7 @@ class NdPPoly(Generic[_CT_co]):
     @classmethod
     def construct_fast(
         cls,
-        c: onp.ArrayND[_CT_co],  # at least 2d
+        c: onp.ArrayND[_CT_co],  # at least 2d  # ty: ignore[invalid-generic-class]
         x: tuple[onp.ArrayND[np.float64], ...],
         extrapolate: _Extrapolate | None = None,
     ) -> Self: ...

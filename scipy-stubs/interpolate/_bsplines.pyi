@@ -101,12 +101,17 @@ class BSpline(Generic[_CT_co]):
 
     #
     @classmethod
-    def from_power_basis(cls, pp: CubicSpline[_CT_co], bc_type: _BCType = "not-a-knot") -> Self: ...
+    def from_power_basis(cls, pp: CubicSpline[_CT_co], bc_type: _BCType = "not-a-knot") -> Self: ...  # ty: ignore[invalid-generic-class]
 
     #
     @classmethod
     def construct_fast(
-        cls, t: onp.ArrayND[np.float64], c: onp.ArrayND[_CT_co], k: int, extrapolate: _Extrapolate = True, axis: int = 0
+        cls,
+        t: onp.ArrayND[np.float64],
+        c: onp.ArrayND[_CT_co],  # ty: ignore[invalid-generic-class]
+        k: int,
+        extrapolate: _Extrapolate = True,
+        axis: int = 0,
     ) -> Self: ...
 
     #

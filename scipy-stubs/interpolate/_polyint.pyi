@@ -78,7 +78,9 @@ class _Interpolator1D(Generic[_YT_co]):  # undocumented
         self, /, x: onp.ToFloat | onp.ToFloatND
     ) -> tuple[onp.Array1D[Incomplete], tuple[int, ...]]: ...  # undocumented
     @final
-    def _finish_y(self, /, y: onp.Array2D[_YT_co], x_shape: tuple[int, ...]) -> onp.ArrayND[_YT_co]: ...  # undocumented
+    def _finish_y[YT: np.float64 | np.complex128](
+        self: _Interpolator1D[YT], /, y: onp.Array2D[YT], x_shape: tuple[int, ...]
+    ) -> onp.ArrayND[YT]: ...  # undocumented
 
     #
     @overload

@@ -1,24 +1,21 @@
 from collections.abc import Callable, Mapping, Sequence
-from typing import Any, ClassVar, Final, Generic, Literal, final, override
-from typing_extensions import TypeVar
+from typing import Any, ClassVar, Final, Literal, final, override
 
 import optype as op
 
 from scipy._lib._uarray._backend import _Backend
-
-_T_co = TypeVar("_T_co", covariant=True, default=Any)
 
 type _ToBackend[T] = type[_Backend[T]] | Literal["scipy"]
 
 ###
 
 @final
-class _ScipyBackend(_Backend[_T_co], Generic[_T_co]):
+class _ScipyBackend[T](_Backend[T]):
     __ua_domain__: ClassVar = "numpy.scipy.fft"
 
     @override
     @staticmethod
-    def __ua_function__(method: Callable[..., _T_co], args: Sequence[object], kwargs: Mapping[str, object]) -> _T_co: ...
+    def __ua_function__(method: Callable[..., T], args: Sequence[object], kwargs: Mapping[str, object]) -> T: ...
 
 _named_backends: Final[dict[str, type[_Backend[Any]]]] = ...
 
