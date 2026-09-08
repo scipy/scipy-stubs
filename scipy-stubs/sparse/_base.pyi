@@ -832,7 +832,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
         self: csr_array[Any, ShapeT] | dok_array[Any, ShapeT], /, n: SupportsIndex, dtype: onp.ToDType[ST]
     ) -> csr_array[ST, ShapeT]: ...
     @overload  # {csr,dok}_array -> csr_array, dtype=<unknown>
-    def power[ST: _Scalar, ShapeT: _1D | _2D](
+    def power[ShapeT: _1D | _2D](
         self: csr_array[Any, ShapeT] | dok_array[Any, ShapeT], /, n: SupportsIndex, dtype: type[complex] | str
     ) -> csr_array[Any, ShapeT]: ...
     @overload  # lil_array -> csr_array
