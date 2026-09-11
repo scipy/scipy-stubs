@@ -92,7 +92,7 @@ class orthopoly1d(np.poly1d):  # undocumented
     #
     @override  # type: ignore[override]
     @overload
-    def __call__(self, /, v: np.poly1d) -> np.poly1d: ...
+    def __call__(self, /, v: np.poly1d) -> np.poly1d: ...  # pyrefly: ignore[bad-override]
     @overload
     def __call__(self, /, v: onp.ToFloat) -> np.float64: ...
     @overload

@@ -223,7 +223,7 @@ class RectBivariateSpline(BivariateSpline):
 
 class SphereBivariateSpline(_BivariateSplineBase):
     @override
-    def __call__(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+    def __call__(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]  # ty: ignore[invalid-method-override]
         self, /, theta: onp.ToFloat1D, phi: onp.ToFloat1D, dtheta: int = 0, dphi: int = 0, grid: bool = True
     ) -> _FloatND: ...
     def ev(self, /, theta: onp.ToFloatND, phi: onp.ToFloatND, dtheta: int = 0, dphi: int = 0) -> _FloatND: ...

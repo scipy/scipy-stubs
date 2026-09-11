@@ -1097,7 +1097,7 @@ class wishart_frozen(multi_rv_frozen[wishart_gen]):
 
 class invwishart_gen(wishart_gen):
     @override
-    def __call__(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]
+    def __call__(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
         self, /, df: onp.ToFloat | None = None, scale: _ToFloatMax2D | None = None, seed: onp.random.ToRNG | None = None
     ) -> invwishart_frozen: ...  # ty: ignore[invalid-method-override]
 
