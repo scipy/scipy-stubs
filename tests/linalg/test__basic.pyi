@@ -598,15 +598,16 @@ assert_type(pinv(c64_3d, return_rank=True), tuple[onp.Array3D[np.complex64], onp
 assert_type(pinv(c128_3d, return_rank=True), tuple[onp.Array3D[np.complex128], onp.Array1D[np.int_]])
 assert_type(pinv(c160_3d, return_rank=True), tuple[onp.Array3D[np.complex128], onp.Array1D[np.int_]])
 
-assert_type(pinv(i8_nd, return_rank=True), tuple[onp.ArrayND[np.float32], np.int_ | Any])
-assert_type(pinv(i32_nd, return_rank=True), tuple[onp.ArrayND[np.float64], np.int_ | Any])
-assert_type(pinv(f16_nd, return_rank=True), tuple[onp.ArrayND[np.float32], np.int_ | Any])
-assert_type(pinv(f32_nd, return_rank=True), tuple[onp.ArrayND[np.float32], np.int_ | Any])
-assert_type(pinv(f64_nd, return_rank=True), tuple[onp.ArrayND[np.float64], np.int_ | Any])
-assert_type(pinv(f80_nd, return_rank=True), tuple[onp.ArrayND[np.float64], np.int_ | Any])
-assert_type(pinv(c64_nd, return_rank=True), tuple[onp.ArrayND[np.complex64], np.int_ | Any])
-assert_type(pinv(c128_nd, return_rank=True), tuple[onp.ArrayND[np.complex128], np.int_ | Any])
-assert_type(pinv(c160_nd, return_rank=True), tuple[onp.ArrayND[np.complex128], np.int_ | Any])
+# https://github.com/facebook/pyrefly/issues/4910
+assert_type(pinv(i8_nd, return_rank=True), tuple[onp.ArrayND[np.float32], np.int_ | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinv(i32_nd, return_rank=True), tuple[onp.ArrayND[np.float64], np.int_ | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinv(f16_nd, return_rank=True), tuple[onp.ArrayND[np.float32], np.int_ | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinv(f32_nd, return_rank=True), tuple[onp.ArrayND[np.float32], np.int_ | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinv(f64_nd, return_rank=True), tuple[onp.ArrayND[np.float64], np.int_ | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinv(f80_nd, return_rank=True), tuple[onp.ArrayND[np.float64], np.int_ | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinv(c64_nd, return_rank=True), tuple[onp.ArrayND[np.complex64], np.int_ | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinv(c128_nd, return_rank=True), tuple[onp.ArrayND[np.complex128], np.int_ | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinv(c160_nd, return_rank=True), tuple[onp.ArrayND[np.complex128], np.int_ | Any])  # pyrefly:ignore[assert-type]
 
 ###
 # pinvh
@@ -669,15 +670,16 @@ assert_type(pinvh(c64_3d, return_rank=True), tuple[onp.Array3D[np.complex64], on
 assert_type(pinvh(c128_3d, return_rank=True), tuple[onp.Array3D[np.complex128], onp.Array1D[np.int_]])
 assert_type(pinvh(c160_3d, return_rank=True), tuple[onp.Array3D[np.complex128], onp.Array1D[np.int_]])
 
-assert_type(pinvh(i8_nd, return_rank=True), tuple[onp.ArrayND[np.float32], int | Any])
-assert_type(pinvh(i32_nd, return_rank=True), tuple[onp.ArrayND[np.float64], int | Any])
-assert_type(pinvh(f16_nd, return_rank=True), tuple[onp.ArrayND[np.float32], int | Any])
-assert_type(pinvh(f32_nd, return_rank=True), tuple[onp.ArrayND[np.float32], int | Any])
-assert_type(pinvh(f64_nd, return_rank=True), tuple[onp.ArrayND[np.float64], int | Any])
-assert_type(pinvh(f80_nd, return_rank=True), tuple[onp.ArrayND[np.float64], int | Any])
-assert_type(pinvh(c64_nd, return_rank=True), tuple[onp.ArrayND[np.complex64], int | Any])
-assert_type(pinvh(c128_nd, return_rank=True), tuple[onp.ArrayND[np.complex128], int | Any])
-assert_type(pinvh(c160_nd, return_rank=True), tuple[onp.ArrayND[np.complex128], int | Any])
+# https://github.com/facebook/pyrefly/issues/4910
+assert_type(pinvh(i8_nd, return_rank=True), tuple[onp.ArrayND[np.float32], int | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinvh(i32_nd, return_rank=True), tuple[onp.ArrayND[np.float64], int | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinvh(f16_nd, return_rank=True), tuple[onp.ArrayND[np.float32], int | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinvh(f32_nd, return_rank=True), tuple[onp.ArrayND[np.float32], int | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinvh(f64_nd, return_rank=True), tuple[onp.ArrayND[np.float64], int | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinvh(f80_nd, return_rank=True), tuple[onp.ArrayND[np.float64], int | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinvh(c64_nd, return_rank=True), tuple[onp.ArrayND[np.complex64], int | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinvh(c128_nd, return_rank=True), tuple[onp.ArrayND[np.complex128], int | Any])  # pyrefly:ignore[assert-type]
+assert_type(pinvh(c160_nd, return_rank=True), tuple[onp.ArrayND[np.complex128], int | Any])  # pyrefly:ignore[assert-type]
 
 ###
 # matrix_balance

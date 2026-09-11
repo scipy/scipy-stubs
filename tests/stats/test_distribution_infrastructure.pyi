@@ -133,10 +133,12 @@ _LogUniform = make_distribution(distributions.loguniform)
 assert_type(_LogUniform(a=1.0, b=2.0).cdf(1.0), np.float64)  # type:ignore[assert-type]  # mypy infers 0d
 assert_type(_LogUniform(a=_f64_1d, b=_f64_1d).cdf(1.0), onp.Array1D[np.float64])
 assert_type(_LogUniform(a=_f64_2d, b=_f64_2d).cdf(1.0), onp.Array2D[np.float64])
+# pyrefly:ignore[assert-type]  # https://github.com/facebook/pyrefly/issues/4910
 assert_type(_LogUniform(a=_f64_nd, b=_f64_nd).cdf(1.0), np.float64 | onp.ArrayND[np.float64])  # type:ignore[assert-type]  # mypy infers Nd
 
 _Geometric = make_distribution(distributions.geom)
 assert_type(_Geometric(p=0.5).cdf(1.0), np.float64)  # type:ignore[assert-type]  # mypy infers 0d
 assert_type(_Geometric(p=_f64_1d).cdf(1.0), onp.Array1D[np.float64])
 assert_type(_Geometric(p=_f64_2d).cdf(1.0), onp.Array2D[np.float64])
+# pyrefly:ignore[assert-type]  # https://github.com/facebook/pyrefly/issues/4910
 assert_type(_Geometric(p=_f64_nd).cdf(1.0), np.float64 | onp.ArrayND[np.float64])  # type:ignore[assert-type]  # mypy infers Nd

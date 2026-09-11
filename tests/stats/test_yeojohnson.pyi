@@ -81,7 +81,6 @@ assert_type(yeojohnson(_f16_1d, 0.1), onp.Array1D[np.float16])
 assert_type(yeojohnson(_f32_1d, 0.1), onp.Array1D[np.float32])
 assert_type(yeojohnson(_f64_1d, 0.1), onp.Array1D[np.float64])
 
-# https://github.com/scipy/scipy-stubs/issues/1196: `longdouble` keeps its precision
 assert_type(yeojohnson(_f80_1d), tuple[onp.Array1D[np.longdouble], np.longdouble])
 assert_type(yeojohnson(_f80_1d, 0.1), onp.Array1D[np.float128])
 
@@ -101,13 +100,12 @@ assert_type(yeojohnson_normmax(_f32_2d), onp.Array1D[np.float64])
 assert_type(yeojohnson_normmax(_f64_2d), onp.Array1D[np.float64])
 assert_type(yeojohnson_normmax(_f80_2d), onp.Array1D[np.longdouble])
 
-# NOTE: Pyrefly doesn't seem to be able to intersect the return types in case of multiple matching overloads,
-# and in this case both return types are even identical (Array1D[float64] | float64).
-assert_type(yeojohnson_normmax(_i8_nd), onp.Array1D[np.float64] | np.float64)
-assert_type(yeojohnson_normmax(_f16_nd), onp.Array1D[np.float64] | np.float64)
-assert_type(yeojohnson_normmax(_f32_nd), onp.Array1D[np.float64] | np.float64)
-assert_type(yeojohnson_normmax(_f64_nd), onp.Array1D[np.float64] | np.float64)
-assert_type(yeojohnson_normmax(_f80_nd), onp.Array1D[np.longdouble] | np.longdouble)
+# https://github.com/facebook/pyrefly/issues/4910
+assert_type(yeojohnson_normmax(_i8_nd), onp.Array1D[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
+assert_type(yeojohnson_normmax(_f16_nd), onp.Array1D[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
+assert_type(yeojohnson_normmax(_f32_nd), onp.Array1D[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
+assert_type(yeojohnson_normmax(_f64_nd), onp.Array1D[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
+assert_type(yeojohnson_normmax(_f80_nd), onp.Array1D[np.longdouble] | np.longdouble)  # pyrefly:ignore[assert-type]
 
 # yeojohnson_plot
 
