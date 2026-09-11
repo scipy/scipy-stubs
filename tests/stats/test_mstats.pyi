@@ -142,6 +142,8 @@ _m_f64_nd: onp.MArray[np.float64]
 
 ###
 
+# NOTE: the pyrefly ignores are needed because of https://github.com/facebook/pyrefly/issues/4910
+
 # argstoarray
 assert_type(argstoarray(_f64_1d), onp.MArray2D[np.float64])
 assert_type(argstoarray(_f64_1d, _i8_1d), onp.MArray2D[np.float64])
@@ -169,7 +171,7 @@ assert_type(mode(_py_i_2d, axis=None).mode, onp.Array1D[np.float64 | Any])
 assert_type(mode(_i64_1d).mode, onp.Array1D[np.float64 | Any])
 assert_type(mode(_i8_2d).count, onp.MArray2D[np.float64 | Any])
 assert_type(mode(_f80_3d, axis=1).mode, onp.MArray3D[np.float64 | Any])
-assert_type(mode(_m_f64_nd).mode, onp.ArrayND[np.float64 | Any])
+assert_type(mode(_m_f64_nd).mode, onp.ArrayND[np.float64 | Any])  # pyrefly:ignore[assert-type]
 
 # msign
 assert_type(msign(-1), onp.Array0D[np.int_])
@@ -200,7 +202,7 @@ assert_type(spearmanr(_py_f_1d, _py_f_1d, axis=0).statistic, np.float64)
 assert_type(spearmanr(_i64_1d, _i64_1d, axis=1).statistic, np.float64)
 assert_type(spearmanr(_py_i_2d, _py_i_2d, axis=0).statistic, onp.Array2D[np.float64])
 assert_type(spearmanr(_f64_2d, _f64_2d, axis=1).statistic, onp.Array2D[np.float64])
-assert_type(spearmanr(_m_f64_nd, _m_f64_nd, axis=0).statistic, onp.Array2D[np.float64] | Any)
+assert_type(spearmanr(_m_f64_nd, _m_f64_nd, axis=0).statistic, onp.Array2D[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(spearmanr(_f32_3d, _f32_3d, axis=0).statistic, onp.Array2D[np.float64] | Any)
 assert_type(spearmanr(_f64_2d, axis=1).statistic, onp.Array2D[np.float64] | Any)
 
@@ -245,7 +247,7 @@ assert_type(ttest_1samp(_f32_3d, 0.5, axis=None).statistic, np.float64)
 assert_type(ttest_1samp(_py_i_1d, 0.5).statistic, np.float64)
 assert_type(ttest_1samp(_f16_2d, _f64_1d).statistic, onp.MArray1D[np.float64])
 assert_type(ttest_1samp(_i8_3d, 0).pvalue, onp.MArray2D[np.float64])
-assert_type(ttest_1samp(_m_f64_nd, 0.5).statistic, onp.MArray[np.float64] | Any)
+assert_type(ttest_1samp(_m_f64_nd, 0.5).statistic, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(ttest_1samp(_py_c_2d, 0.5j, axis=None).statistic, np.complex128)
 assert_type(ttest_1samp(_c64_1d, 0.5).statistic, np.complex128)
 assert_type(ttest_1samp(_c128_2d, 0.5j).statistic, onp.MArray1D[np.complex128])
@@ -257,7 +259,7 @@ assert_type(ttest_ind(_f32_3d, _i8_3d, axis=None).statistic, np.float64)
 assert_type(ttest_ind(_py_i_1d, _f16_1d).statistic, np.float64)
 assert_type(ttest_ind(_f16_2d, _f64_2d, equal_var=False).statistic, onp.MArray1D[np.float64])
 assert_type(ttest_ind(_i8_2d, _f32_2d).pvalue, onp.MArray1D[np.float64])
-assert_type(ttest_ind(_m_f64_nd, _f64_nd).statistic, onp.MArray[np.float64] | Any)
+assert_type(ttest_ind(_m_f64_nd, _f64_nd).statistic, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(ttest_ind(_py_c_2d, _py_f_2d, axis=None).statistic, np.complex128)
 assert_type(ttest_ind(_f64_1d, _c64_1d).statistic, np.complex128)
 assert_type(ttest_ind(_c128_2d, _f16_2d).statistic, onp.MArray1D[np.complex128])
@@ -269,7 +271,7 @@ assert_type(ttest_rel(_f32_3d, _i8_3d, axis=None).statistic, np.float64)
 assert_type(ttest_rel(_py_i_1d, _f16_1d).statistic, np.float64)
 assert_type(ttest_rel(_f16_2d, _f64_2d).statistic, onp.MArray1D[np.float64])
 assert_type(ttest_rel(_i8_2d, _f32_2d).pvalue, onp.MArray1D[np.float64])
-assert_type(ttest_rel(_m_f64_nd, _f64_nd).statistic, onp.MArray[np.float64] | Any)
+assert_type(ttest_rel(_m_f64_nd, _f64_nd).statistic, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
 
 # mannwhitneyu
 assert_type(mannwhitneyu(_py_i_1d, _f16_1d).statistic, np.float64)
@@ -283,17 +285,17 @@ assert_type(kruskal(_py_f_1d, _f32_1d, _f16_1d), KruskalResult)
 # ks_1samp
 assert_type(ks_1samp(_f64_1d, _cdf1).statistic, np.float64)
 assert_type(ks_1samp(_f64_2d, _cdf1).statistic_sign, onp.Array1D[np.int8])
-assert_type(ks_1samp(_f64_nd, _cdf1).statistic, np.float64 | Any)
+assert_type(ks_1samp(_f64_nd, _cdf1).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
 assert_type(ks_1samp(_py_f_1d, _cdf2, (1.0,)).statistic, np.float64)
 assert_type(ks_1samp(_py_f_2d, _cdf2, (1.0,)).statistic, onp.Array1D[np.float64])
-assert_type(ks_1samp(_m_f64_nd, _cdf2, (1.0,)).statistic, np.float64 | Any)
+assert_type(ks_1samp(_m_f64_nd, _cdf2, (1.0,)).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
 
 # ks_2samp
 assert_type(ks_2samp(_py_f_1d, _f64_1d).statistic, np.float64)
 assert_type(ks_2samp(_i8_1d, _f32_1d).statistic_sign, np.int8)
 assert_type(ks_2samp(_f64_2d, _i8_2d).statistic, onp.Array1D[np.float64])
 assert_type(ks_2samp(_f16_2d, _f64_1d).statistic_sign, onp.Array1D[np.int8])
-assert_type(ks_2samp(_m_f64_nd, _f64_nd).statistic, np.float64 | Any)
+assert_type(ks_2samp(_m_f64_nd, _f64_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
 
 # kstest
 assert_type(kstest(_py_f_1d, _i8_1d).statistic, np.float64)
@@ -301,7 +303,7 @@ assert_type(kstest(_f32_1d, "norm").statistic_sign, np.int8)
 assert_type(kstest(_f64_2d, _i8_2d).statistic, onp.Array1D[np.float64])
 assert_type(kstest(_f16_2d, "norm").statistic_sign, onp.Array1D[np.int8])
 assert_type(kstest(_f64_2d, _f64_1d).statistic, onp.Array1D[np.float64])
-assert_type(kstest(_f64_nd, _f64_nd).statistic, np.float64 | Any)
+assert_type(kstest(_f64_nd, _f64_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
 assert_type(kstest(_f64_1d, _cdf2, (1.0,)).statistic, np.float64)
 assert_type(kstest(_f64_2d, _cdf2, (1.0,)).statistic, onp.Array1D[np.float64])
 
@@ -391,15 +393,15 @@ assert_type(trimmed_mean(_f80_2d, axis=0), onp.MArray1D[np.float128])
 assert_type(trimmed_mean(_f32_3d, axis=0), onp.MArray2D[np.float64])
 assert_type(trimmed_mean(_f80_3d, axis=0), onp.MArray2D[np.float128])
 
-assert_type(trimmed_mean(_f64_nd, axis=0), onp.MArray[np.float64] | Any)
-assert_type(trimmed_mean(_m_f32_nd, axis=0), onp.MArray[np.float64] | Any)
+assert_type(trimmed_mean(_f64_nd, axis=0), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(trimmed_mean(_m_f32_nd, axis=0), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(trimmed_mean(_f64_2d, (0.2, 0.2), (1, 1), False, 0), onp.MArray[np.float64] | Any)
 
 # trimmed_var
 assert_type(trimmed_var(_py_c_2d), np.float64)
 assert_type(trimmed_var(_f80_2d), np.longdouble)
-assert_type(trimmed_var(_i8_nd, axis=0), onp.MArray[np.float64] | Any)
-assert_type(trimmed_var(_f80_nd, axis=0), onp.MArray[np.longdouble] | Any)
+assert_type(trimmed_var(_i8_nd, axis=0), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(trimmed_var(_f80_nd, axis=0), onp.MArray[np.longdouble] | Any)  # pyrefly:ignore[assert-type]
 assert_type(trimmed_var(_c64_1d, axis=0), np.float64)
 assert_type(trimmed_var(_c160_1d, axis=0), np.longdouble)
 assert_type(trimmed_var(_f16_2d, axis=1), onp.MArray1D[np.float64])
@@ -410,8 +412,8 @@ assert_type(trimmed_var(_f80_3d, axis=1), onp.MArray[np.longdouble] | Any)
 # trimmed_std
 assert_type(trimmed_std(_py_c_2d), np.float64)
 assert_type(trimmed_std(_f80_2d), np.longdouble)
-assert_type(trimmed_std(_i8_nd, axis=0), onp.MArray[np.float64] | Any)
-assert_type(trimmed_std(_f80_nd, axis=0), onp.MArray[np.longdouble] | Any)
+assert_type(trimmed_std(_i8_nd, axis=0), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(trimmed_std(_f80_nd, axis=0), onp.MArray[np.longdouble] | Any)  # pyrefly:ignore[assert-type]
 assert_type(trimmed_std(_c64_1d, axis=0), np.float64)
 assert_type(trimmed_std(_c160_1d, axis=0), np.longdouble)
 assert_type(trimmed_std(_f16_2d, axis=1), onp.MArray1D[np.float64])
@@ -473,14 +475,14 @@ assert_type(tmean(_f64_2d, axis=0), onp.MArray1D[np.float64])
 assert_type(tmean(_c64_2d, axis=0), onp.MArray1D[np.complex128])
 assert_type(tmean(_c128_2d, axis=0), onp.MArray1D[np.complex128])
 
-assert_type(tmean(_i64_nd, axis=0), onp.MArray[np.float64] | Any)
-assert_type(tmean(_f16_nd, axis=0), onp.MArray[np.float16] | Any)
-assert_type(tmean(_f32_nd, axis=0), onp.MArray[np.float64] | Any)
-assert_type(tmean(_f64_nd, axis=0), onp.MArray[np.float64] | Any)
-assert_type(tmean(_c64_nd, axis=0), onp.MArray[np.complex128] | Any)
-assert_type(tmean(_c128_nd, axis=0), onp.MArray[np.complex128] | Any)
-assert_type(tmean(_m_f32_nd, axis=0), onp.MArray[np.float64] | Any)
-assert_type(tmean(_m_f64_nd, axis=0), onp.MArray[np.float64] | Any)
+assert_type(tmean(_i64_nd, axis=0), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(tmean(_f16_nd, axis=0), onp.MArray[np.float16] | Any)  # pyrefly:ignore[assert-type]
+assert_type(tmean(_f32_nd, axis=0), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(tmean(_f64_nd, axis=0), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(tmean(_c64_nd, axis=0), onp.MArray[np.complex128] | Any)  # pyrefly:ignore[assert-type]
+assert_type(tmean(_c128_nd, axis=0), onp.MArray[np.complex128] | Any)  # pyrefly:ignore[assert-type]
+assert_type(tmean(_m_f32_nd, axis=0), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(tmean(_m_f64_nd, axis=0), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
 
 assert_type(tmean(_f32_3d, axis=0), onp.MArray[np.float64] | Any)
 assert_type(tmean(_f64_nd, (0.0, 1.0), (True, True), 0), onp.MArray[np.float64] | Any)
@@ -538,8 +540,8 @@ assert_type(moment(_f80_2d), onp.MArray1D[np.float128])
 assert_type(moment(_f32_3d, 2), onp.MArray2D[np.float64])
 assert_type(moment(_f80_3d), onp.MArray2D[np.float128])
 
-assert_type(moment(_m_f64_nd, 2, axis=0), onp.MArray[np.float64] | Any)
-assert_type(moment(_i64_nd, 2), onp.MArray[np.float64] | Any)
+assert_type(moment(_m_f64_nd, 2, axis=0), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(moment(_i64_nd, 2), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
 
 assert_type(moment(_f64_2d, [2, 3]), onp.MArray[np.float64])
 assert_type(moment(_c64_1d, [2, 3], None), onp.MArray[np.complex128])
@@ -565,8 +567,8 @@ assert_type(variation(_f80_2d), onp.MArray1D[np.float128])
 assert_type(variation(_f32_3d), onp.MArray2D[np.float32])
 assert_type(variation(_f80_3d), onp.MArray2D[np.float128])
 
-assert_type(variation(_i64_nd, 0, 1), onp.MArray[np.float64] | Any)
-assert_type(variation(_m_f32_nd), onp.MArray[np.float32] | Any)
+assert_type(variation(_i64_nd, 0, 1), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(variation(_m_f32_nd), onp.MArray[np.float32] | Any)  # pyrefly:ignore[assert-type]
 
 # skew
 assert_type(skew(_f64_2d, None), onp.MArray0D[np.float64])
@@ -605,8 +607,8 @@ assert_type(kurtosis(_f80_2d), onp.MArray1D[np.float128])
 assert_type(kurtosis(_f32_3d), onp.MArray2D[np.float64])
 assert_type(kurtosis(_f80_3d), onp.MArray2D[np.float128])
 
-assert_type(kurtosis(_m_f64_nd, 0, True, False), onp.MArray[np.float64] | Any)
-assert_type(kurtosis(_c64_nd), onp.MArray[np.complex128] | Any)
+assert_type(kurtosis(_m_f64_nd, 0, True, False), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(kurtosis(_c64_nd), onp.MArray[np.complex128] | Any)  # pyrefly:ignore[assert-type]
 
 assert_type(kurtosis(_f64_1d, 0, False), onp.MArray[np.float64] | Any)
 assert_type(kurtosis(_f64_2d, None, False), onp.MArray[np.float64] | Any)
@@ -621,12 +623,12 @@ assert_type(describe(_f80_2d, None).mean, np.float128)
 assert_type(describe(_c64_2d, None).mean, np.complex64)
 assert_type(describe(_c128_2d, None).mean, np.complex128)
 
-assert_type(describe(_i8_nd).variance, onp.MArray[np.float64] | Any)
-assert_type(describe(_f32_nd).variance, onp.MArray[np.float32] | Any)
-assert_type(describe(_f64_nd).variance, onp.MArray[np.float64] | Any)
-assert_type(describe(_f80_nd).variance, onp.MArray[np.longdouble] | Any)
-assert_type(describe(_c64_nd).variance, onp.MArray[np.float32] | Any)
-assert_type(describe(_c128_nd).variance, onp.MArray[np.float64] | Any)
+assert_type(describe(_i8_nd).variance, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(describe(_f32_nd).variance, onp.MArray[np.float32] | Any)  # pyrefly:ignore[assert-type]
+assert_type(describe(_f64_nd).variance, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(describe(_f80_nd).variance, onp.MArray[np.longdouble] | Any)  # pyrefly:ignore[assert-type]
+assert_type(describe(_c64_nd).variance, onp.MArray[np.float32] | Any)  # pyrefly:ignore[assert-type]
+assert_type(describe(_c128_nd).variance, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
 
 assert_type(describe(_py_b_1d).minmax[0], onp.MArray0D[np.bool])
 assert_type(describe(_i8_1d).minmax[0], onp.MArray0D[np.int8])
@@ -657,17 +659,17 @@ assert_type(describe(_c128_3d).kurtosis, onp.MArray[np.complex128] | Any)
 
 assert_type(describe(_f64_1d).nobs, onp.Array0D[np.int_])
 assert_type(describe(_f64_2d).nobs, onp.Array1D[np.int_])
-assert_type(describe(_f64_nd).nobs, onp.ArrayND[np.int_])
-assert_type(describe(_m_f32_nd).mean, onp.MArray[np.float32] | Any)
+assert_type(describe(_f64_nd).nobs, onp.ArrayND[np.int_])  # pyrefly:ignore[assert-type]
+assert_type(describe(_m_f32_nd).mean, onp.MArray[np.float32] | Any)  # pyrefly:ignore[assert-type]
 assert_type(describe(_i8_2d).minmax[0], onp.MArray1D[np.int8])
-assert_type(describe(_b_nd).kurtosis, onp.MArray[np.float64] | Any)
+assert_type(describe(_b_nd).kurtosis, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
 
 # skewtest
 assert_type(skewtest(_f32_3d, axis=None).statistic, np.float64)
 assert_type(skewtest(_py_c_2d, axis=None).statistic, np.complex128)
 assert_type(skewtest(_py_i_1d).statistic, np.float64)
 assert_type(skewtest(_f16_2d).statistic, onp.MArray1D[np.float64])
-assert_type(skewtest(_m_f64_nd).statistic, onp.MArray[np.float64] | Any)
+assert_type(skewtest(_m_f64_nd).statistic, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(skewtest(_c64_1d).statistic, np.complex128)
 assert_type(skewtest(_c128_2d).statistic, onp.MArray1D[np.complex128])
 assert_type(skewtest(_i8_3d).pvalue, onp.Array2D[np.float64])
@@ -679,7 +681,7 @@ assert_type(kurtosistest(_f32_3d, axis=None).statistic, np.float64)
 assert_type(kurtosistest(_py_i_1d).statistic, np.float64)
 assert_type(kurtosistest(_f16_2d).statistic, onp.MArray1D[np.float64])
 assert_type(kurtosistest(_i8_3d).pvalue, onp.Array2D[np.float64])
-assert_type(kurtosistest(_m_f64_nd).statistic, onp.MArray[np.float64] | Any)
+assert_type(kurtosistest(_m_f64_nd).statistic, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(kurtosistest(_py_c_2d, axis=None).statistic, np.complex128)
 assert_type(kurtosistest(_c64_1d).statistic, np.complex128)
 assert_type(kurtosistest(_c128_2d).statistic, onp.MArray1D[np.complex128])
@@ -693,9 +695,9 @@ assert_type(normaltest(_f64_1d).pvalue, np.float64)
 assert_type(normaltest(_i64_2d).statistic, onp.MArray1D[np.float64])
 assert_type(normaltest(_f32_2d, axis=1).pvalue, onp.Array1D[np.float64])
 assert_type(normaltest(_f32_3d).statistic, onp.MArray2D[np.float64])
-assert_type(normaltest(_f32_nd).statistic, onp.MArray[np.float64] | Any)
-assert_type(normaltest(_m_f64_nd, axis=0).statistic, onp.MArray[np.float64] | Any)
-assert_type(normaltest(_f64_nd, axis=0).pvalue, onp.ArrayND[np.float64] | Any)
+assert_type(normaltest(_f32_nd).statistic, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(normaltest(_m_f64_nd, axis=0).statistic, onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(normaltest(_f64_nd, axis=0).pvalue, onp.ArrayND[np.float64] | Any)  # pyrefly:ignore[assert-type]
 
 # mquantiles
 assert_type(mquantiles(_py_i_2d), onp.Array1D[np.float64])
@@ -733,8 +735,8 @@ assert_type(obrientransform(_py_f_1d, _i8_1d, _f32_1d), onp.MArray2D[np.float64]
 # sem
 assert_type(sem(_py_c_2d, axis=None), np.float64)
 assert_type(sem(_f80_nd, axis=None), np.longdouble)
-assert_type(sem(_i8_nd), onp.MArray[np.float64] | Any)
-assert_type(sem(_c160_nd), onp.MArray[np.longdouble] | Any)
+assert_type(sem(_i8_nd), onp.MArray[np.float64] | Any)  # pyrefly:ignore[assert-type]
+assert_type(sem(_c160_nd), onp.MArray[np.longdouble] | Any)  # pyrefly:ignore[assert-type]
 assert_type(sem(_c64_1d), np.float64)
 assert_type(sem(_f80_1d), np.longdouble)
 assert_type(sem(_f16_2d, 1), onp.MArray1D[np.float64])
@@ -799,12 +801,12 @@ assert_type(mjci(_py_f_1d), onp.Array1D[np.float64])
 assert_type(mjci(_i8_2d, 0.5), onp.Array1D[np.float64])
 assert_type(mjci(_f16_1d, axis=0), onp.MArray1D[np.float64])
 assert_type(mjci(_f80_2d, axis=1), onp.MArray2D[np.float64])
-assert_type(mjci(_f64_nd, axis=0), onp.ArrayND[np.float64] | Any)
+assert_type(mjci(_f64_nd, axis=0), onp.ArrayND[np.float64] | Any)  # pyrefly:ignore[assert-type]
 
 # mquantiles_cimj
 assert_type(mquantiles_cimj(_py_f_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(mquantiles_cimj(_f80_1d), tuple[onp.Array1D[np.longdouble], onp.Array1D[np.longdouble]])
-assert_type(mquantiles_cimj(_f64_nd, axis=0), tuple[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.float64] | Any])
+assert_type(mquantiles_cimj(_f64_nd, axis=0), tuple[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.float64] | Any])  # pyrefly:ignore[assert-type]
 assert_type(mquantiles_cimj(_f16_1d, axis=0), tuple[onp.MArray1D[np.float64], onp.MArray1D[np.float64]])
 assert_type(mquantiles_cimj(_f80_1d, axis=0), tuple[onp.MArray1D[np.longdouble], onp.MArray1D[np.longdouble]])
 assert_type(mquantiles_cimj(_i8_2d, 0.5, axis=0), tuple[onp.MArray2D[np.float64], onp.MArray2D[np.float64]])
@@ -825,7 +827,7 @@ assert_type(compare_medians_ms(_py_f_1d, _i8_1d), np.float64)
 assert_type(compare_medians_ms(_f32_3d, _f64_3d), np.float64)
 assert_type(compare_medians_ms(_f16_1d, _f64_1d, 0), np.float64)
 assert_type(compare_medians_ms(_i8_2d, _f32_2d, 0), onp.Array1D[np.float64])
-assert_type(compare_medians_ms(_f64_nd, _f64_nd, 0), onp.ArrayND[np.float64] | Any)
+assert_type(compare_medians_ms(_f64_nd, _f64_nd, 0), onp.ArrayND[np.float64] | Any)  # pyrefly:ignore[assert-type]
 
 # idealfourths
 assert_type(idealfourths(_f16_1d), list[np.float16])

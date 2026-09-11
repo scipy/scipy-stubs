@@ -160,6 +160,7 @@ assert_type(_rot_nd.apply(_f64_nd), onp.ArrayND[np.float64])
 
 assert_type(_rot_0d.approx_equal(_rot_0d), np.bool)
 assert_type(_rot_1d.approx_equal(_rot_1d), onp.ArrayND[np.bool])
+# pyrefly:ignore[assert-type]  # https://github.com/facebook/pyrefly/issues/4910
 assert_type(_rot_nd.approx_equal(_rot_nd), np.bool | onp.ArrayND[np.bool])  # type:ignore[assert-type]  # mypy infers `Any`
 
 # as_* with known shapes
