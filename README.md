@@ -326,6 +326,7 @@ See the [CONTRIBUTING.md](https://github.com/scipy/scipy-stubs/blob/master/CONTR
 `scipy-stubs` is used by a number of major open-source projects, including:
 
 [Agents](https://github.com/livekit/agents) |
+[AkkudoktorEOS](https://github.com/Akkudoktor-EOS/EOS) |
 Apache Spark ([PySpark](https://github.com/apache/spark)) |
 [Arkouda](https://github.com/Bears-R-Us/arkouda) |
 [Artisan](https://github.com/artisan-roaster-scope/artisan) |
