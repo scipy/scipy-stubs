@@ -40,7 +40,7 @@ jobs:
           >> $GITHUB_STEP_SUMMARY
 
       - name: dprint
-        uses: dprint/check@9cb3a2b17a8e606d37aae341e49df3654933fc23 # v2.3
+        uses: dprint/check@7dc032d8874778fc024f6f9b4a7e6d896782c330 # v2.5
 
       - name: typos
         uses: crate-ci/typos@d43b6c087ac471e2ea7b8af622ff15f05c0c365b # v1.50.1
