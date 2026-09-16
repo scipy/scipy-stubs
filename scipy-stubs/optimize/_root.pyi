@@ -22,7 +22,7 @@ _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...
 class _RootOptionsHybr(TypedDict, total=False):
     col_deriv: bool
     xtol: float
-    maxffev: int
+    maxfev: int
     band: tuple[int, int]
     eps: float
     factor: float
