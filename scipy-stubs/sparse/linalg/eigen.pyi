@@ -1,13 +1,14 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
 
-from types import ModuleType
+from typing import Final
 from typing_extensions import deprecated
 
 from . import _eigen
+from scipy._lib._testutils import PytestTester as _PytestTester
 
 __all__ = ["ArpackError", "ArpackNoConvergence", "eigs", "eigsh", "lobpcg", "svds", "test"]
 
-test: ModuleType
+test: Final[_PytestTester] = ...  # undocumented
 
 @deprecated("will be removed in SciPy v2.0.0")
 class ArpackError(_eigen.ArpackError): ...

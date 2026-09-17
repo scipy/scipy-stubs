@@ -1,10 +1,13 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-from types import ModuleType
+
+from typing import Final
 from typing_extensions import deprecated
+
+from scipy._lib._testutils import PytestTester as _PytestTester
 
 __all__ = ["bicg", "bicgstab", "cg", "cgs", "gcrotmk", "gmres", "lgmres", "lsmr", "lsqr", "minres", "qmr", "test", "tfqmr"]
 
-test: ModuleType
+test: Final[_PytestTester] = ...  # undocumented
 
 @deprecated("will be removed in SciPy v2.0.0")
 def cgs(
