@@ -1,13 +1,14 @@
 # This module is not meant for public use and will be removed in SciPy v2.0.0.
-from types import ModuleType
-from typing import final
+
+from typing import Final, final
 from typing_extensions import deprecated
 
 from . import _dsolve
+from scipy._lib._testutils import PytestTester as _PytestTester
 
 __all__ = ["MatrixRankWarning", "SuperLU", "factorized", "spilu", "splu", "spsolve", "spsolve_triangular", "test", "use_solver"]
 
-test: ModuleType
+test: Final[_PytestTester] = ...  # undocumented
 
 @deprecated("will be removed in SciPy v2.0.0")
 class MatrixRankWarning(_dsolve.MatrixRankWarning): ...

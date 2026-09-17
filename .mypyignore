@@ -6,7 +6,7 @@ scipy\.sparse\.linalg(\._?interface|\.matfuncs)?\.LinearOperator\.__init__
 
 # scipy tests
 scipy\.conftest
-scipy\.((_|\w)+\.)+(__test__|test|tests(\..+)?)
+scipy\.((_|\w)+\.)+(__test__|tests(\..+)?)
 
 # bundled external packages
 scipy\.fft\._duccfft\..*
