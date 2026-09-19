@@ -30,6 +30,9 @@ _i_1d: list[int]
 _i_2d: list[list[int]]
 _i_3d: list[list[list[int]]]
 
+_i64_2d: onp.Array2D[np.int64]
+_i64_nd: onp.ArrayND[np.int64]
+
 _f_1d: list[float] | onp.Array1D[np.float64]
 _f_2d: list[list[float]] | onp.Array2D[np.float64]
 _f_3d: list[list[list[float]]] | onp.Array3D[np.float64]
@@ -479,11 +482,140 @@ assert_type(multivariate_t(_f_1d).marginal(_i_1d).rvs(), onp.Array1D[np.float64]
 
 # multivariate_hypergeom
 
-assert_type(multivariate_hypergeom.rvs([1], 1).dtype, np.dtype[np.int_])
-assert_type(multivariate_hypergeom([1], 1).rvs().dtype, np.dtype[np.int_])
+assert_type(multivariate_hypergeom.logpmf(_i64_nd, _i_1d, 1), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom(_i_1d, 1).logpmf(_i64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom.logpmf(_i_1d, _i64_nd, 1), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom(_i64_nd, 1).logpmf(_i_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_hypergeom.logpmf(_i_1d, _i_1d, _i64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom(_i_1d, _i64_nd).logpmf(_i_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_hypergeom.logpmf(_i_1d, _i_1d, 1), np.float64)
+assert_type(multivariate_hypergeom(_i_1d, 1).logpmf(_i_1d), np.float64)
+assert_type(multivariate_hypergeom.logpmf(_i_1d, _i_2d, 1), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, 1).logpmf(_i_1d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom.logpmf(_i_1d, _i_1d, _i_1d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, _i_1d).logpmf(_i_1d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom.logpmf(_i_1d, _i_3d, 1), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_3d, 1).logpmf(_i_1d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.logpmf(_i_2d, _i_1d, _i_2d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, _i_2d).logpmf(_i_2d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.logpmf(_i_2d, _i_1d, 1), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, 1).logpmf(_i_2d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom.logpmf(_i_2d, _i_2d, _i_1d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, _i_1d).logpmf(_i_2d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom.logpmf(_i_3d, _i_1d, 1), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, 1).logpmf(_i_3d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.logpmf(_i_3d, _i_2d, _i_1d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, _i_1d).logpmf(_i_3d), onp.Array2D[np.float64])
 
-assert_type(multivariate_hypergeom([1], 1).rvs(size=(2, 3)), onp.Array[tuple[int, *tuple[Any, ...]], np.int_])
-assert_type(multivariate_hypergeom([1], 1).rvs(size=_shape_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.int_])
+assert_type(multivariate_hypergeom.pmf(_i64_nd, _i_1d, 1), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom(_i_1d, 1).pmf(_i64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom.pmf(_i_1d, _i64_nd, 1), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom(_i64_nd, 1).pmf(_i_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_hypergeom.pmf(_i_1d, _i_1d, _i64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom(_i_1d, _i64_nd).pmf(_i_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_hypergeom.pmf(_i_1d, _i_1d, 1), np.float64)
+assert_type(multivariate_hypergeom(_i_1d, 1).pmf(_i_1d), np.float64)
+assert_type(multivariate_hypergeom.pmf(_i_1d, _i_2d, 1), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, 1).pmf(_i_1d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom.pmf(_i_1d, _i_1d, _i_1d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, _i_1d).pmf(_i_1d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom.pmf(_i_1d, _i_3d, 1), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_3d, 1).pmf(_i_1d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.pmf(_i_2d, _i_1d, _i_2d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, _i_2d).pmf(_i_2d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.pmf(_i_2d, _i_1d, 1), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, 1).pmf(_i_2d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom.pmf(_i_2d, _i_2d, _i_1d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, _i_1d).pmf(_i_2d), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom.pmf(_i_3d, _i_1d, 1), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, 1).pmf(_i_3d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.pmf(_i_3d, _i_2d, _i_1d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, _i_1d).pmf(_i_3d), onp.Array2D[np.float64])
+
+assert_type(multivariate_hypergeom.mean(_i64_2d, 1), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i64_2d, 1).mean(), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.mean(_i_1d, 1), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, 1).mean(), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom.mean(_i_2d, 1), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, 1).mean(), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.mean(_i_3d, 1), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_3d, 1).mean(), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom.mean(_i64_nd, _i_1d), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom(_i64_nd, _i_1d).mean(), onp.ArrayND[np.float64])
+assert_type(multivariate_hypergeom.mean(_i_1d, _i64_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom(_i_1d, _i64_nd).mean(), onp.ArrayND[np.float64])
+assert_type(multivariate_hypergeom.mean(_i_1d, _i_1d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, _i_1d).mean(), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.mean(_i_2d, _i_1d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, _i_1d).mean(), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.mean(_i_3d, _i_1d), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_3d, _i_1d).mean(), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom.mean(_i_1d, _i_2d), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, _i_2d).mean(), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom.mean(_i_3d, _i_2d), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_3d, _i_2d).mean(), onp.Array3D[np.float64])
+
+assert_type(multivariate_hypergeom.var(_i64_2d, 1), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i64_2d, 1).var(), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.var(_i_1d, 1), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, 1).var(), onp.Array1D[np.float64])
+assert_type(multivariate_hypergeom.var(_i_2d, 1), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, 1).var(), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.var(_i_3d, 1), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_3d, 1).var(), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom.var(_i64_nd, _i_1d), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom(_i64_nd, _i_1d).var(), onp.ArrayND[np.float64])
+assert_type(multivariate_hypergeom.var(_i_1d, _i64_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_hypergeom(_i_1d, _i64_nd).var(), onp.ArrayND[np.float64])
+assert_type(multivariate_hypergeom.var(_i_1d, _i_1d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, _i_1d).var(), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.var(_i_2d, _i_1d), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, _i_1d).var(), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.var(_i_3d, _i_1d), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_3d, _i_1d).var(), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom.var(_i_1d, _i_2d), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, _i_2d).var(), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom.var(_i_3d, _i_2d), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_3d, _i_2d).var(), onp.Array3D[np.float64])
+
+assert_type(multivariate_hypergeom.cov(_i64_nd, 1), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
+assert_type(multivariate_hypergeom(_i64_nd, 1).cov(), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
+assert_type(multivariate_hypergeom.cov(_i_1d, _i64_nd), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
+assert_type(multivariate_hypergeom(_i_1d, _i64_nd).cov(), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
+assert_type(multivariate_hypergeom.cov(_i_1d, 1), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, 1).cov(), onp.Array2D[np.float64])
+assert_type(multivariate_hypergeom.cov(_i_2d, 1), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, 1).cov(), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom.cov(_i_3d, 1), onp.ArrayND[np.float64, tuple[int, int, int, int]])
+assert_type(multivariate_hypergeom(_i_3d, 1).cov(), onp.ArrayND[np.float64, tuple[int, int, int, int]])
+assert_type(multivariate_hypergeom.cov(_i_1d, _i_1d), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_1d, _i_1d).cov(), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom.cov(_i_2d, _i_1d), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom(_i_2d, _i_1d).cov(), onp.Array3D[np.float64])
+assert_type(multivariate_hypergeom.cov(_i_3d, _i_1d), onp.ArrayND[np.float64, tuple[int, int, int, int]])
+assert_type(multivariate_hypergeom(_i_3d, _i_1d).cov(), onp.ArrayND[np.float64, tuple[int, int, int, int]])
+assert_type(multivariate_hypergeom.cov(_i_1d, _i_2d), onp.ArrayND[np.float64, tuple[int, int, int, int]])
+assert_type(multivariate_hypergeom(_i_1d, _i_2d).cov(), onp.ArrayND[np.float64, tuple[int, int, int, int]])
+
+assert_type(multivariate_hypergeom.rvs(_i_1d, 1).dtype, np.dtype[np.int_])
+assert_type(multivariate_hypergeom(_i_1d, 1).rvs().dtype, np.dtype[np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_1d, 1), onp.Array1D[np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_2d, 1), onp.Array2D[np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_3d, 1), onp.Array3D[np.int_])
+assert_type(multivariate_hypergeom.rvs(_i64_nd, _i_1d), onp.Array[tuple[int, *tuple[Any, ...]], np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_1d, _i64_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_1d, _i_1d), onp.Array2D[np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_3d, _i_1d), onp.Array3D[np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_1d, _i_2d), onp.Array3D[np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_1d, 1, size=_shape_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.int_])
+assert_type(multivariate_hypergeom(_i_1d, 1).rvs(size=_shape_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_1d, 1, size=()), onp.Array1D[np.int_])
+assert_type(multivariate_hypergeom(_i_1d, 1).rvs(size=()), onp.Array1D[np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_1d, 1, size=3), onp.Array2D[np.int_])
+assert_type(multivariate_hypergeom(_i_1d, 1).rvs(), onp.Array2D[np.int_])
+assert_type(multivariate_hypergeom(_i_1d, 1).rvs(size=3), onp.Array2D[np.int_])
+assert_type(multivariate_hypergeom.rvs(_i_1d, 1, size=(2, 3)), onp.Array3D[np.int_])
+assert_type(multivariate_hypergeom(_i_1d, 1).rvs(size=(2, 3)), onp.Array3D[np.int_])
 
 # random_table
 
