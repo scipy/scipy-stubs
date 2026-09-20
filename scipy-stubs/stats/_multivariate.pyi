@@ -3066,29 +3066,157 @@ class vonmises_fisher_gen(multi_rv_generic):
     def __call__(
         self, /, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1, seed: onp.random.ToRNG | None = None
     ) -> vonmises_fisher_frozen: ...
-    def logpdf(self, /, x: onp.ToFloatND, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1) -> _ScalarOrArray_f8: ...
-    def pdf(self, /, x: onp.ToFloatND, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1) -> _ScalarOrArray_f8: ...
+
+    #
+    @overload  # ?d  (workaround)
+    def logpdf(
+        self, /, x: _ToFloatJustND, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 1d
+    def logpdf(self, /, x: onp.ToFloatStrict1D, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1) -> np.float64: ...
+    @overload  # 2d
+    def logpdf(
+        self, /, x: onp.ToFloatStrict2D, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 3d
+    def logpdf(
+        self, /, x: onp.ToFloatStrict3D, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # fallback
+    def logpdf(
+        self, /, x: onp.ToFloatND, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+
+    # keep in sync with `logpdf`
+    @overload  # ?d  (workaround)
+    def pdf(
+        self, /, x: _ToFloatJustND, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 1d
+    def pdf(self, /, x: onp.ToFloatStrict1D, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1) -> np.float64: ...
+    @overload  # 2d
+    def pdf(
+        self, /, x: onp.ToFloatStrict2D, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 3d
+    def pdf(
+        self, /, x: onp.ToFloatStrict3D, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # fallback
+    def pdf(
+        self, /, x: onp.ToFloatND, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+
+    #
     def entropy(self, /, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1) -> np.float64: ...
+
+    #
+    @overload  # 0d
     def rvs(
         self,
         /,
         mu: onp.ToFloat1D | None = None,
         kappa: onp.ToFloat = 1,
-        size: SupportsIndex | tuple[SupportsIndex, ...] = 1,
+        *,
+        size: tuple[()] | None,
         random_state: onp.random.ToRNG | None = None,
-    ) -> _Array2ND[np.float64]: ...
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 1d
+    def rvs(
+        self,
+        /,
+        mu: onp.ToFloat1D | None = None,
+        kappa: onp.ToFloat = 1,
+        size: SupportsIndex | tuple[SupportsIndex] = 1,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # 2d
+    def rvs(
+        self,
+        /,
+        mu: onp.ToFloat1D | None = None,
+        kappa: onp.ToFloat = 1,
+        *,
+        size: tuple[SupportsIndex, SupportsIndex],
+        random_state: onp.random.ToRNG | None = None,
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # >=3d
+    def rvs(
+        self,
+        /,
+        mu: onp.ToFloat1D | None = None,
+        kappa: onp.ToFloat = 1,
+        *,
+        size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
+        random_state: onp.random.ToRNG | None = None,
+    ) -> _Array3ND[np.float64]: ...
+    @overload  # fallback
+    def rvs(
+        self,
+        /,
+        mu: onp.ToFloat1D | None = None,
+        kappa: onp.ToFloat = 1,
+        size: SupportsIndex | tuple[SupportsIndex, ...] | None = 1,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> _Array1ND[np.float64]: ...
+
+    #
     def fit(self, /, x: onp.ToFloatND) -> tuple[onp.Array1D[np.float64], float]: ...
 
 class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
     def __init__(
         self, /, mu: onp.ToFloat1D | None = None, kappa: onp.ToFloat = 1, seed: onp.random.ToRNG | None = None
     ) -> None: ...
-    def logpdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
-    def pdf(self, /, x: onp.ToFloatND) -> _ScalarOrArray_f8: ...
+
+    #
+    @overload  # ?d  (workaround)
+    def logpdf(self, /, x: _ToFloatJustND) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 1d
+    def logpdf(self, /, x: onp.ToFloatStrict1D) -> np.float64: ...
+    @overload  # 2d
+    def logpdf(self, /, x: onp.ToFloatStrict2D) -> onp.Array1D[np.float64]: ...
+    @overload  # 3d
+    def logpdf(self, /, x: onp.ToFloatStrict3D) -> onp.Array2D[np.float64]: ...
+    @overload  # fallback
+    def logpdf(self, /, x: onp.ToFloatND) -> np.float64 | onp.ArrayND[np.float64]: ...
+
+    # keep in sync with `logpdf`
+    @overload  # ?d  (workaround)
+    def pdf(self, /, x: _ToFloatJustND) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 1d
+    def pdf(self, /, x: onp.ToFloatStrict1D) -> np.float64: ...
+    @overload  # 2d
+    def pdf(self, /, x: onp.ToFloatStrict2D) -> onp.Array1D[np.float64]: ...
+    @overload  # 3d
+    def pdf(self, /, x: onp.ToFloatStrict3D) -> onp.Array2D[np.float64]: ...
+    @overload  # fallback
+    def pdf(self, /, x: onp.ToFloatND) -> np.float64 | onp.ArrayND[np.float64]: ...
+
+    #
     def entropy(self, /) -> np.float64: ...
+
+    #
+    @overload  # 0d
+    def rvs(self, /, size: tuple[()] | None, random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
+    @overload  # 1d
     def rvs(
-        self, /, size: SupportsIndex | tuple[SupportsIndex, ...] = 1, random_state: onp.random.ToRNG | None = None
-    ) -> _Array2ND[np.float64]: ...
+        self, /, size: SupportsIndex | tuple[SupportsIndex] = 1, random_state: onp.random.ToRNG | None = None
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # 2d
+    def rvs(
+        self, /, size: tuple[SupportsIndex, SupportsIndex], random_state: onp.random.ToRNG | None = None
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # >=3d
+    def rvs(
+        self,
+        /,
+        size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
+        random_state: onp.random.ToRNG | None = None,
+    ) -> _Array3ND[np.float64]: ...
+    @overload  # fallback
+    def rvs(
+        self, /, size: SupportsIndex | tuple[SupportsIndex, ...] | None = 1, random_state: onp.random.ToRNG | None = None
+    ) -> _Array1ND[np.float64]: ...
 
 class normal_inverse_gamma_gen(multi_rv_generic):
     @overload  # 0d, 0d, 0d, 0d

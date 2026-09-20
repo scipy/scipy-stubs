@@ -38,6 +38,7 @@ _i64_nd: onp.ArrayND[np.int64]
 _f_1d: list[float] | onp.Array1D[np.float64]
 _f_2d: list[list[float]] | onp.Array2D[np.float64]
 _f_3d: list[list[list[float]]] | onp.Array3D[np.float64]
+_f_4d: onp.Array[tuple[int, int, int, int], np.float64]
 _f_nd: onp.ArrayND[np.float64]
 
 _f64_1d: onp.Array1D[np.float64]
@@ -682,13 +683,48 @@ assert_type(matrix_t(df=1).rvs().dtype, np.dtype[np.float64])
 assert_type(vonmises_fisher.rvs([0.8, 0.6]).dtype, np.dtype[np.float64])
 assert_type(vonmises_fisher([0.8, 0.6]).rvs().dtype, np.dtype[np.float64])
 
-assert_type(vonmises_fisher.rvs([0.8, 0.6], size=_shape_nd), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
-assert_type(vonmises_fisher([0.8, 0.6]).rvs(size=_shape_nd), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
+assert_type(vonmises_fisher.logpdf(_f64_nd, [0.8, 0.6]), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(vonmises_fisher([0.8, 0.6]).logpdf(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(vonmises_fisher.logpdf(_f_1d, [0.8, 0.6]), np.float64)
+assert_type(vonmises_fisher([0.8, 0.6]).logpdf(_f_1d), np.float64)
+assert_type(vonmises_fisher.logpdf(_f_2d, [0.8, 0.6]), onp.Array1D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).logpdf(_f_2d), onp.Array1D[np.float64])
+assert_type(vonmises_fisher.logpdf(_f_3d, [0.8, 0.6]), onp.Array2D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).logpdf(_f_3d), onp.Array2D[np.float64])
+assert_type(vonmises_fisher.logpdf(_f_4d, [0.8, 0.6]), np.float64 | onp.ArrayND[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).logpdf(_f_4d), np.float64 | onp.ArrayND[np.float64])
 
+assert_type(vonmises_fisher.pdf(_f64_nd, [0.8, 0.6]), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(vonmises_fisher([0.8, 0.6]).pdf(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(vonmises_fisher.pdf(_f_1d, [0.8, 0.6]), np.float64)
+assert_type(vonmises_fisher([0.8, 0.6]).pdf(_f_1d), np.float64)
+assert_type(vonmises_fisher.pdf(_f_2d, [0.8, 0.6]), onp.Array1D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).pdf(_f_2d), onp.Array1D[np.float64])
+assert_type(vonmises_fisher.pdf(_f_3d, [0.8, 0.6]), onp.Array2D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).pdf(_f_3d), onp.Array2D[np.float64])
+assert_type(vonmises_fisher.pdf(_f_4d, [0.8, 0.6]), np.float64 | onp.ArrayND[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).pdf(_f_4d), np.float64 | onp.ArrayND[np.float64])
+
+assert_type(vonmises_fisher.rvs([0.8, 0.6], size=()), onp.Array1D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).rvs(size=()), onp.Array1D[np.float64])
+assert_type(vonmises_fisher.rvs([0.8, 0.6], size=None), onp.Array1D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).rvs(size=None), onp.Array1D[np.float64])
+assert_type(vonmises_fisher.rvs([0.8, 0.6]), onp.Array2D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).rvs(), onp.Array2D[np.float64])
+assert_type(vonmises_fisher.rvs([0.8, 0.6], 1, 3), onp.Array2D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).rvs(3), onp.Array2D[np.float64])
+assert_type(vonmises_fisher.rvs([0.8, 0.6], size=_i64), onp.Array2D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).rvs(size=_i64), onp.Array2D[np.float64])
+assert_type(vonmises_fisher.rvs([0.8, 0.6], size=(3,)), onp.Array2D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).rvs(size=(3,)), onp.Array2D[np.float64])
+assert_type(vonmises_fisher.rvs([0.8, 0.6], size=(2, 3)), onp.Array3D[np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).rvs(size=(2, 3)), onp.Array3D[np.float64])
+assert_type(vonmises_fisher.rvs([0.8, 0.6], size=(2, 3, 4)), onp.Array[tuple[int, int, int, *tuple[Any, ...]], np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).rvs(size=(2, 3, 4)), onp.Array[tuple[int, int, int, *tuple[Any, ...]], np.float64])
+assert_type(vonmises_fisher.rvs([0.8, 0.6], size=_shape_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])
+assert_type(vonmises_fisher([0.8, 0.6]).rvs(size=_shape_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])
+assert_type(vonmises_fisher.rvs([0.8, 0.6], kappa=0.5).dtype, np.dtype[np.float64])
 assert_type(vonmises_fisher([0.8, 0.6], kappa=0.5).rvs().dtype, np.dtype[np.float64])
-assert_type(vonmises_fisher([0.8, 0.6], kappa=1.5).rvs().dtype, np.dtype[np.float64])
-assert_type(vonmises_fisher([0.8, 0.6], kappa=20.0).rvs().dtype, np.dtype[np.float64])
-assert_type(vonmises_fisher([0.8, 0.6], kappa=1).rvs().dtype, np.dtype[np.float64])
 
 # normal_inverse_gamma
 
