@@ -1,5 +1,5 @@
 [build-system]
-requires = ["uv_build>=0.12.15,<0.13"]
+requires = ["uv_build>=0.12.17,<0.13"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
@@ -9,7 +9,7 @@ source-include = [".mypyignore"] # for scipy-stubs-feedstock
 
 [project]
 name = "scipy-stubs"
-version = "1.18.1.1.dev0"
+version = "1.18.1.1"
 description = "The official type stubs for SciPy"
 readme = "README.md"
 authors = [
