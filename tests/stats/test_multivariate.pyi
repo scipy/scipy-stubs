@@ -677,8 +677,73 @@ assert_type(random_table([1, 2], [2, 1]).rvs(size=_shape_nd), onp.Array[tuple[in
 
 # dirichlet_multinomial
 
-assert_type(dirichlet_multinomial.pmf([1, 2], [0.5, 0.5], [3]), np.float64 | onp.Array[tuple[int, *tuple[Any, ...]], np.float64])
-assert_type(dirichlet_multinomial([0.5, 0.5], [3]).pmf([1, 2]), np.float64 | onp.Array[tuple[int, *tuple[Any, ...]], np.float64])
+assert_type(dirichlet_multinomial.logpmf(_i64_nd, _f_1d, 1), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(dirichlet_multinomial(_f_1d, 1).logpmf(_i64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(dirichlet_multinomial.logpmf(_i_1d, _f_nd, 1), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(dirichlet_multinomial(_f_nd, 1).logpmf(_i_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(dirichlet_multinomial.logpmf(_i_1d, _f_1d, _i64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(dirichlet_multinomial(_f_1d, _i64_nd).logpmf(_i_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(dirichlet_multinomial.logpmf(_i_1d, _f_1d, 1), np.float64)
+assert_type(dirichlet_multinomial(_f_1d, 1).logpmf(_i_1d), np.float64)
+assert_type(dirichlet_multinomial.logpmf(_i_1d, _f_2d, 1), onp.Array1D[np.float64])
+assert_type(dirichlet_multinomial(_f_2d, 1).logpmf(_i_1d), onp.Array1D[np.float64])
+assert_type(dirichlet_multinomial.logpmf(_i_2d, _f_1d, 1), onp.Array1D[np.float64])
+assert_type(dirichlet_multinomial(_f_1d, 1).logpmf(_i_2d), onp.Array1D[np.float64])
+assert_type(dirichlet_multinomial.logpmf(_i_1d, _f_1d, _i_1d), onp.Array1D[np.float64])
+assert_type(dirichlet_multinomial(_f_nd, 1).logpmf(_i_2d), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])
+assert_type(dirichlet_multinomial.logpmf(_i_1d, _f_3d, 1), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial(_f_3d, 1).logpmf(_i_1d), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial.logpmf(_i_3d, _f_1d, 1), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial(_f_1d, 1).logpmf(_i_3d), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial.logpmf(_i_2d, _f_2d, _i_2d), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial(_f_nd, 1).logpmf(_i_3d), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
+assert_type(dirichlet_multinomial(_f_1d, _i_1d).logpmf(_i64_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])  # pyrefly:ignore[assert-type]
+assert_type(dirichlet_multinomial(_f_2d, 1).logpmf(_i_3d), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial(_f_2d, _i_2d).logpmf(_i64_nd), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])  # pyrefly:ignore[assert-type]
+assert_type(dirichlet_multinomial.logpmf(_i_1d, _f_4d, 1), np.float64 | onp.ArrayND[np.float64])
+assert_type(dirichlet_multinomial(_f_4d, 1).logpmf(_i_1d), np.float64 | onp.ArrayND[np.float64])
+
+assert_type(dirichlet_multinomial.pmf(_i_1d, _f_1d, _i_1d), onp.Array1D[np.float64])
+assert_type(dirichlet_multinomial(_f_1d, _i_1d).pmf(_i_1d), onp.Array1D[np.float64])
+
+assert_type(dirichlet_multinomial.mean(_f_nd, 1), onp.ArrayND[np.float64])
+assert_type(dirichlet_multinomial(_f_nd, 1).mean(), onp.ArrayND[np.float64])
+assert_type(dirichlet_multinomial.mean(_f_1d, 1), onp.Array1D[np.float64])
+assert_type(dirichlet_multinomial(_f_1d, 1).mean(), onp.Array1D[np.float64])
+assert_type(dirichlet_multinomial.mean(_f_nd, _i64_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])  # pyrefly:ignore[assert-type]
+assert_type(dirichlet_multinomial(_f_nd, _i64_nd).mean(), onp.ArrayND[np.float64])
+assert_type(dirichlet_multinomial.mean(_f_1d, _i64_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])  # pyrefly:ignore[assert-type]
+assert_type(dirichlet_multinomial(_f_1d, _i64_nd).mean(), onp.ArrayND[np.float64])
+assert_type(dirichlet_multinomial.mean(_f_2d, 1), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial(_f_2d, 1).mean(), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial.mean(_f_1d, _i_1d), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial(_f_1d, _i_1d).mean(), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial.mean(_f_3d, 1), onp.Array3D[np.float64])
+assert_type(dirichlet_multinomial(_f_3d, 1).mean(), onp.Array3D[np.float64])
+assert_type(dirichlet_multinomial.mean(_f_2d, _i_2d), onp.Array3D[np.float64])
+assert_type(dirichlet_multinomial(_f_2d, _i_2d).mean(), onp.Array3D[np.float64])
+assert_type(dirichlet_multinomial.mean(_f_1d, _i_3d), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
+assert_type(dirichlet_multinomial(_f_1d, _i_3d).mean(), onp.ArrayND[np.float64])
+
+assert_type(dirichlet_multinomial.var(_f_1d, 1), onp.Array1D[np.float64])
+assert_type(dirichlet_multinomial(_f_1d, 1).var(), onp.Array1D[np.float64])
+
+assert_type(dirichlet_multinomial.cov(_f_1d, 1), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial(_f_1d, 1).cov(), onp.Array2D[np.float64])
+assert_type(dirichlet_multinomial.cov(_f_nd, 1), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])  # pyrefly:ignore[assert-type]
+assert_type(dirichlet_multinomial(_f_nd, 1).cov(), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
+assert_type(dirichlet_multinomial.cov(_f_1d, _i64_nd), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])  # pyrefly:ignore[assert-type]
+assert_type(dirichlet_multinomial(_f_1d, _i64_nd).cov(), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
+assert_type(dirichlet_multinomial.cov(_f_2d, 1), onp.Array3D[np.float64])
+assert_type(dirichlet_multinomial(_f_2d, 1).cov(), onp.Array3D[np.float64])
+assert_type(dirichlet_multinomial.cov(_f_1d, _i_1d), onp.Array3D[np.float64])
+assert_type(dirichlet_multinomial(_f_1d, _i_1d).cov(), onp.Array3D[np.float64])
+assert_type(dirichlet_multinomial.cov(_f_3d, 1), onp.ArrayND[np.float64, tuple[int, int, int, int]])
+assert_type(dirichlet_multinomial(_f_3d, 1).cov(), onp.ArrayND[np.float64, tuple[int, int, int, int]])
+assert_type(dirichlet_multinomial.cov(_f_2d, _i_2d), onp.ArrayND[np.float64, tuple[int, int, int, int]])
+assert_type(dirichlet_multinomial(_f_2d, _i_2d).cov(), onp.ArrayND[np.float64, tuple[int, int, int, int]])
+assert_type(dirichlet_multinomial.cov(_f_1d, _i_3d), onp.ArrayND[np.float64])
+assert_type(dirichlet_multinomial(_f_1d, _i_3d).cov(), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
 
 # matrix_t
 
