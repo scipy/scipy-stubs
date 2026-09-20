@@ -421,8 +421,15 @@ assert_type(unitary_group().rvs(3).dtype, np.dtype[np.complex128])
 assert_type(uniform_direction.rvs(2).dtype, np.dtype[np.float64])
 assert_type(uniform_direction(2).rvs().dtype, np.dtype[np.float64])
 
-assert_type(uniform_direction.rvs(2, size=_shape_nd), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
+assert_type(uniform_direction.rvs(2, size=_i64), onp.Array2D[np.float64])
+assert_type(uniform_direction(2).rvs(size=_i64), onp.Array2D[np.float64])
+assert_type(uniform_direction.rvs(2, size=(2,)), onp.Array2D[np.float64])
 assert_type(uniform_direction(2).rvs(size=(2,)), onp.Array2D[np.float64])
+assert_type(uniform_direction.rvs(2, size=(2, 3)), onp.Array3D[np.float64])
+assert_type(uniform_direction(2).rvs(size=(2, 3)), onp.Array3D[np.float64])
+assert_type(uniform_direction.rvs(2, size=(2, 3, 4)), onp.Array[tuple[int, int, int, *tuple[Any, ...]], np.float64])
+assert_type(uniform_direction(2).rvs(size=(2, 3, 4)), onp.Array[tuple[int, int, int, *tuple[Any, ...]], np.float64])
+assert_type(uniform_direction.rvs(2, size=_shape_nd), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
 assert_type(uniform_direction(2).rvs(size=_shape_nd), onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64])
 
 # random_correlation
