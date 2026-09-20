@@ -31,6 +31,7 @@ _i_1d: list[int]
 _i_2d: list[list[int]]
 _i_3d: list[list[list[int]]]
 
+_i64: np.int64
 _i64_2d: onp.Array2D[np.int64]
 _i64_nd: onp.ArrayND[np.int64]
 
@@ -693,3 +694,157 @@ assert_type(vonmises_fisher([0.8, 0.6], kappa=1).rvs().dtype, np.dtype[np.float6
 
 assert_type(normal_inverse_gamma.rvs()[0].dtype, np.dtype[np.float64])
 assert_type(normal_inverse_gamma().rvs()[0].dtype, np.dtype[np.float64])
+
+assert_type(normal_inverse_gamma.mean(), tuple[np.float64, np.float64])
+assert_type(  # pyrefly:ignore[assert-type]
+    normal_inverse_gamma.mean(_f64_nd), tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+)
+assert_type(  # pyrefly:ignore[assert-type]
+    normal_inverse_gamma.mean(lmbda=_f64_nd),
+    tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
+)
+assert_type(  # pyrefly:ignore[assert-type]
+    normal_inverse_gamma.mean(a=_f64_nd), tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+)
+assert_type(  # pyrefly:ignore[assert-type]
+    normal_inverse_gamma.mean(b=_f64_nd), tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+)
+assert_type(normal_inverse_gamma.mean(mu=_f_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(normal_inverse_gamma.mean(mu=_f_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(normal_inverse_gamma.mean(mu=_f_3d), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+
+assert_type(normal_inverse_gamma.var(), tuple[np.float64, np.float64])
+assert_type(  # pyrefly:ignore[assert-type]
+    normal_inverse_gamma.var(_f64_nd), tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+)
+assert_type(  # pyrefly:ignore[assert-type]
+    normal_inverse_gamma.var(lmbda=_f64_nd),
+    tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
+)
+assert_type(  # pyrefly:ignore[assert-type]
+    normal_inverse_gamma.var(a=_f64_nd), tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+)
+assert_type(  # pyrefly:ignore[assert-type]
+    normal_inverse_gamma.var(b=_f64_nd), tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+)
+assert_type(normal_inverse_gamma.var(mu=_f_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(normal_inverse_gamma.var(mu=_f_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(normal_inverse_gamma.var(mu=_f_3d), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+
+assert_type(normal_inverse_gamma().mean(), tuple[np.float64, np.float64])
+assert_type(
+    normal_inverse_gamma(_f64_nd).mean(), tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+)
+assert_type(
+    normal_inverse_gamma(lmbda=_f64_nd).mean(),
+    tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
+)
+assert_type(
+    normal_inverse_gamma(a=_f64_nd).mean(),
+    tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
+)
+assert_type(
+    normal_inverse_gamma(b=_f64_nd).mean(),
+    tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
+)
+assert_type(normal_inverse_gamma(mu=_f_1d).mean(), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(normal_inverse_gamma(mu=_f_2d).mean(), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(normal_inverse_gamma(mu=_f_3d).mean(), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+assert_type(normal_inverse_gamma(_f_1d).var(), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(normal_inverse_gamma(_f_2d).var(), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(normal_inverse_gamma(_f_3d).var(), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+
+assert_type(normal_inverse_gamma.logpdf(1.0, 1.0), np.float64)
+assert_type(normal_inverse_gamma.logpdf(_f64_nd, 1.0), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(normal_inverse_gamma.logpdf(1.0, _f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(normal_inverse_gamma.logpdf(1.0, 1.0, _f64_nd), np.float64 | onp.ArrayND[np.float64])
+assert_type(normal_inverse_gamma.logpdf(1.0, 1.0, lmbda=_f64_nd), np.float64 | onp.ArrayND[np.float64])
+assert_type(normal_inverse_gamma.logpdf(1.0, 1.0, a=_f64_nd), np.float64 | onp.ArrayND[np.float64])
+assert_type(normal_inverse_gamma.logpdf(1.0, 1.0, b=_f64_nd), np.float64 | onp.ArrayND[np.float64])
+assert_type(normal_inverse_gamma.logpdf(_f_1d, 1.0), onp.Array1D[np.float64])
+assert_type(normal_inverse_gamma.logpdf(1.0, _f_1d), onp.Array1D[np.float64])
+assert_type(normal_inverse_gamma.logpdf(_f_2d, 1.0), onp.Array2D[np.float64])
+assert_type(normal_inverse_gamma.logpdf(1.0, _f_2d), onp.Array2D[np.float64])
+assert_type(normal_inverse_gamma.logpdf(_f_3d, 1.0), onp.Array3D[np.float64])
+assert_type(normal_inverse_gamma.logpdf(1.0, _f_3d), onp.Array3D[np.float64])
+
+assert_type(normal_inverse_gamma.pdf(1.0, 1.0), np.float64)
+assert_type(normal_inverse_gamma.pdf(_f64_nd, 1.0), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(normal_inverse_gamma.pdf(1.0, _f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(normal_inverse_gamma.pdf(1.0, 1.0, _f64_nd), np.float64 | onp.ArrayND[np.float64])
+assert_type(normal_inverse_gamma.pdf(1.0, 1.0, lmbda=_f64_nd), np.float64 | onp.ArrayND[np.float64])
+assert_type(normal_inverse_gamma.pdf(1.0, 1.0, a=_f64_nd), np.float64 | onp.ArrayND[np.float64])
+assert_type(normal_inverse_gamma.pdf(1.0, 1.0, b=_f64_nd), np.float64 | onp.ArrayND[np.float64])
+assert_type(normal_inverse_gamma.pdf(_f_1d, 1.0), onp.Array1D[np.float64])
+assert_type(normal_inverse_gamma.pdf(1.0, _f_1d), onp.Array1D[np.float64])
+assert_type(normal_inverse_gamma.pdf(_f_2d, 1.0), onp.Array2D[np.float64])
+assert_type(normal_inverse_gamma.pdf(1.0, _f_2d), onp.Array2D[np.float64])
+assert_type(normal_inverse_gamma.pdf(_f_3d, 1.0), onp.Array3D[np.float64])
+assert_type(normal_inverse_gamma.pdf(1.0, _f_3d), onp.Array3D[np.float64])
+
+assert_type(normal_inverse_gamma(_f64_nd).logpdf(1.0, 1.0), np.float64 | onp.ArrayND[np.float64])
+assert_type(normal_inverse_gamma().logpdf(_f64_nd, 1.0), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(normal_inverse_gamma().logpdf(1.0, _f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(normal_inverse_gamma().logpdf(1.0, 1.0), np.float64)
+assert_type(normal_inverse_gamma(_f_1d).logpdf(1.0, 1.0), onp.Array1D[np.float64])
+assert_type(normal_inverse_gamma().logpdf(_f_1d, 1.0), onp.Array1D[np.float64])
+assert_type(normal_inverse_gamma().logpdf(1.0, _f_1d), onp.Array1D[np.float64])
+assert_type(normal_inverse_gamma(_f_2d).logpdf(1.0, 1.0), onp.Array2D[np.float64])
+assert_type(normal_inverse_gamma(_f_1d).logpdf(_f_2d, 1.0), onp.Array2D[np.float64])
+assert_type(normal_inverse_gamma(_f_1d).logpdf(1.0, _f_2d), onp.Array2D[np.float64])
+assert_type(normal_inverse_gamma(_f_3d).logpdf(1.0, 1.0), onp.Array3D[np.float64])
+assert_type(normal_inverse_gamma(_f_2d).logpdf(_f_3d, 1.0), onp.Array3D[np.float64])
+assert_type(normal_inverse_gamma(_f_2d).logpdf(1.0, _f_3d), onp.Array3D[np.float64])
+
+assert_type(normal_inverse_gamma(_f64_nd).pdf(1.0, 1.0), np.float64 | onp.ArrayND[np.float64])
+assert_type(normal_inverse_gamma().pdf(_f64_nd, 1.0), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(normal_inverse_gamma().pdf(1.0, _f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(normal_inverse_gamma().pdf(1.0, 1.0), np.float64)
+assert_type(normal_inverse_gamma(_f_1d).pdf(1.0, 1.0), onp.Array1D[np.float64])
+assert_type(normal_inverse_gamma().pdf(_f_1d, 1.0), onp.Array1D[np.float64])
+assert_type(normal_inverse_gamma().pdf(1.0, _f_1d), onp.Array1D[np.float64])
+assert_type(normal_inverse_gamma(_f_2d).pdf(1.0, 1.0), onp.Array2D[np.float64])
+assert_type(normal_inverse_gamma(_f_1d).pdf(_f_2d, 1.0), onp.Array2D[np.float64])
+assert_type(normal_inverse_gamma(_f_1d).pdf(1.0, _f_2d), onp.Array2D[np.float64])
+assert_type(normal_inverse_gamma(_f_3d).pdf(1.0, 1.0), onp.Array3D[np.float64])
+assert_type(normal_inverse_gamma(_f_2d).pdf(_f_3d, 1.0), onp.Array3D[np.float64])
+assert_type(normal_inverse_gamma(_f_2d).pdf(1.0, _f_3d), onp.Array3D[np.float64])
+
+assert_type(normal_inverse_gamma.rvs(), tuple[np.float64, np.float64])
+assert_type(normal_inverse_gamma().rvs(), tuple[np.float64, np.float64])
+assert_type(
+    normal_inverse_gamma(_f64_nd).rvs(),
+    tuple[np.float64, np.float64]
+    | tuple[onp.ArrayND[np.float64], np.float64]
+    | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]],
+)
+assert_type(
+    normal_inverse_gamma(_f_1d).rvs(),
+    tuple[onp.Array1D[np.float64], np.float64] | tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64]],
+)
+assert_type(
+    normal_inverse_gamma(_f_2d).rvs(),
+    tuple[onp.Array2D[np.float64], np.float64] | tuple[onp.Array2D[np.float64], onp.ArrayND[np.float64]],
+)
+assert_type(
+    normal_inverse_gamma(_f_3d).rvs(),
+    tuple[onp.Array3D[np.float64], np.float64] | tuple[onp.Array3D[np.float64], onp.ArrayND[np.float64]],
+)
+assert_type(
+    normal_inverse_gamma.rvs(size=_shape_nd), tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]
+)
+assert_type(
+    normal_inverse_gamma().rvs(size=_shape_nd), tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]
+)
+assert_type(normal_inverse_gamma.rvs(size=()), tuple[np.float64, np.float64])
+assert_type(normal_inverse_gamma().rvs(size=()), tuple[np.float64, np.float64])
+assert_type(normal_inverse_gamma.rvs(size=3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(normal_inverse_gamma().rvs(size=3), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(normal_inverse_gamma.rvs(size=(2, 3)), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(normal_inverse_gamma().rvs(size=(2, 3)), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]])
+assert_type(normal_inverse_gamma.rvs(size=(2, 3, 4)), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+assert_type(normal_inverse_gamma().rvs(size=(2, 3, 4)), tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]])
+assert_type(normal_inverse_gamma.rvs(_f_1d), tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]])
+assert_type(
+    normal_inverse_gamma().rvs(size=_i64), tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]
+)

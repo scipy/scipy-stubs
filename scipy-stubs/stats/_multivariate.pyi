@@ -53,6 +53,10 @@ type _ToFloatStrict1D = onp.ToArrayStrict1D[float, npc.floating]
 type _ToFloatStrict2D = onp.ToArrayStrict2D[float, npc.floating]
 type _ToFloatStrict3D = onp.ToArrayStrict3D[float, npc.floating]
 type _ToFloatND = onp.ToArrayND[float, npc.floating]
+type _ToFloatMaxND = onp.ToFloat | onp.ToFloatND
+type _ToFloatStrictMax1D = onp.ToFloat | onp.ToFloatStrict1D
+type _ToFloatStrictMax2D = onp.ToFloat | onp.ToFloatStrict1D | onp.ToFloatStrict2D
+type _ToFloatStrictMax3D = onp.ToFloat | onp.ToFloatStrict1D | onp.ToFloatStrict2D | onp.ToFloatStrict3D
 
 # workaround for https://github.com/microsoft/pyright/issues/10232
 type _JustAnyShape = tuple[Never, Never, Never, Never]
@@ -3087,80 +3091,864 @@ class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
     ) -> _Array2ND[np.float64]: ...
 
 class normal_inverse_gamma_gen(multi_rv_generic):
+    @overload  # 0d, 0d, 0d, 0d
     def __call__(
         self,
         /,
-        mu: onp.ToFloat | onp.ToFloatND = 0,
-        lmbda: onp.ToFloat | onp.ToFloatND = 1,
-        a: onp.ToFloat | onp.ToFloatND = 1,
-        b: onp.ToFloat | onp.ToFloatND = 1,
+        mu: onp.ToFloat = 0,
+        lmbda: onp.ToFloat = 1,
+        a: onp.ToFloat = 1,
+        b: onp.ToFloat = 1,
         seed: onp.random.ToRNG | None = None,
-    ) -> normal_inverse_gamma_frozen: ...
+    ) -> normal_inverse_gamma_frozen[tuple[()]]: ...
+    @overload  # ?d, 0d|Nd, 0d|Nd, 0d|Nd  (workaround)
+    def __call__(
+        self,
+        /,
+        mu: _ToFloatJustND,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> normal_inverse_gamma_frozen[tuple[Any, ...]]: ...
+    @overload  # 0d|Nd, ?d, 0d|Nd, 0d|Nd  (workaround)
+    def __call__(
+        self,
+        /,
+        mu: _ToFloatMaxND = 0,
+        *,
+        lmbda: _ToFloatJustND,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> normal_inverse_gamma_frozen[tuple[Any, ...]]: ...
+    @overload  # 0d|Nd, 0d|Nd, ?d, 0d|Nd  (workaround)
+    def __call__(
+        self,
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        *,
+        a: _ToFloatJustND,
+        b: _ToFloatMaxND = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> normal_inverse_gamma_frozen[tuple[Any, ...]]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, ?d  (workaround)
+    def __call__(
+        self,
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        *,
+        b: _ToFloatJustND,
+        seed: onp.random.ToRNG | None = None,
+    ) -> normal_inverse_gamma_frozen[tuple[Any, ...]]: ...
+    @overload  # 1d, <=1d, <=1d, <=1d
+    def __call__(
+        self,
+        /,
+        mu: onp.ToFloatStrict1D,
+        lmbda: _ToFloatStrictMax1D = 1,
+        a: _ToFloatStrictMax1D = 1,
+        b: _ToFloatStrictMax1D = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> normal_inverse_gamma_frozen[tuple[int]]: ...
+    @overload  # 2d, <=2d, <=2d, <=2d
+    def __call__(
+        self,
+        /,
+        mu: onp.ToFloatStrict2D,
+        lmbda: _ToFloatStrictMax2D = 1,
+        a: _ToFloatStrictMax2D = 1,
+        b: _ToFloatStrictMax2D = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> normal_inverse_gamma_frozen[tuple[int, int]]: ...
+    @overload  # 3d, <=3d, <=3d, <=3d
+    def __call__(
+        self,
+        /,
+        mu: onp.ToFloatStrict3D,
+        lmbda: _ToFloatStrictMax3D = 1,
+        a: _ToFloatStrictMax3D = 1,
+        b: _ToFloatStrictMax3D = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> normal_inverse_gamma_frozen[tuple[int, int, int]]: ...
+    @overload  # fallback
+    def __call__(
+        self,
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> normal_inverse_gamma_frozen[tuple[Any, ...]]: ...
+
+    #
+    @overload  # 0d, 0d, 0d, 0d, 0d, 0d
     def logpdf(
         self,
         /,
-        x: onp.ToFloat | onp.ToFloatND,
-        s2: onp.ToFloat | onp.ToFloatND,
-        mu: onp.ToFloat | onp.ToFloatND = 0,
-        lmbda: onp.ToFloat | onp.ToFloatND = 1,
-        a: onp.ToFloat | onp.ToFloatND = 1,
-        b: onp.ToFloat | onp.ToFloatND = 1,
-    ) -> _ScalarOrArray_f8: ...
+        x: onp.ToFloat,
+        s2: onp.ToFloat,
+        mu: onp.ToFloat = 0,
+        lmbda: onp.ToFloat = 1,
+        a: onp.ToFloat = 1,
+        b: onp.ToFloat = 1,
+    ) -> np.float64: ...
+    @overload  # ?d, 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd  (workaround)
+    def logpdf(
+        self,
+        /,
+        x: _ToFloatJustND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d|Nd, ?d, 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd  (workaround)
+    def logpdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatJustND,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d|Nd, 0d|Nd, ?d, 0d|Nd, 0d|Nd, 0d|Nd  (workaround)
+    def logpdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatJustND,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, ?d, 0d|Nd, 0d|Nd  (workaround)
+    def logpdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatMaxND = 0,
+        *,
+        lmbda: _ToFloatJustND,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, ?d, 0d|Nd  (workaround)
+    def logpdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        *,
+        a: _ToFloatJustND,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, ?d  (workaround)
+    def logpdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        *,
+        b: _ToFloatJustND,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 1d, <=1d, <=1d, <=1d, <=1d, <=1d
+    def logpdf(
+        self,
+        /,
+        x: onp.ToFloatStrict1D,
+        s2: _ToFloatStrictMax1D,
+        mu: _ToFloatStrictMax1D = 0,
+        lmbda: _ToFloatStrictMax1D = 1,
+        a: _ToFloatStrictMax1D = 1,
+        b: _ToFloatStrictMax1D = 1,
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 0d, 1d, <=1d, <=1d, <=1d, <=1d
+    def logpdf(
+        self,
+        /,
+        x: onp.ToFloat,
+        s2: onp.ToFloatStrict1D,
+        mu: _ToFloatStrictMax1D = 0,
+        lmbda: _ToFloatStrictMax1D = 1,
+        a: _ToFloatStrictMax1D = 1,
+        b: _ToFloatStrictMax1D = 1,
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 2d, <=2d, <=2d, <=2d, <=2d, <=2d
+    def logpdf(
+        self,
+        /,
+        x: onp.ToFloatStrict2D,
+        s2: _ToFloatStrictMax2D,
+        mu: _ToFloatStrictMax2D = 0,
+        lmbda: _ToFloatStrictMax2D = 1,
+        a: _ToFloatStrictMax2D = 1,
+        b: _ToFloatStrictMax2D = 1,
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # <=1d, 2d, <=2d, <=2d, <=2d, <=2d
+    def logpdf(
+        self,
+        /,
+        x: _ToFloatStrictMax1D,
+        s2: onp.ToFloatStrict2D,
+        mu: _ToFloatStrictMax2D = 0,
+        lmbda: _ToFloatStrictMax2D = 1,
+        a: _ToFloatStrictMax2D = 1,
+        b: _ToFloatStrictMax2D = 1,
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # 3d, <=3d, <=3d, <=3d, <=3d, <=3d
+    def logpdf(
+        self,
+        /,
+        x: onp.ToFloatStrict3D,
+        s2: _ToFloatStrictMax3D,
+        mu: _ToFloatStrictMax3D = 0,
+        lmbda: _ToFloatStrictMax3D = 1,
+        a: _ToFloatStrictMax3D = 1,
+        b: _ToFloatStrictMax3D = 1,
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # <=2d, 3d, <=3d, <=3d, <=3d, <=3d
+    def logpdf(
+        self,
+        /,
+        x: _ToFloatStrictMax2D,
+        s2: onp.ToFloatStrict3D,
+        mu: _ToFloatStrictMax3D = 0,
+        lmbda: _ToFloatStrictMax3D = 1,
+        a: _ToFloatStrictMax3D = 1,
+        b: _ToFloatStrictMax3D = 1,
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # fallback
+    def logpdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+
+    # keep in sync with `logpdf`
+    @overload  # 0d, 0d, 0d, 0d, 0d, 0d
     def pdf(
         self,
         /,
-        x: onp.ToFloat | onp.ToFloatND,
-        s2: onp.ToFloat | onp.ToFloatND,
-        mu: onp.ToFloat | onp.ToFloatND = 0,
-        lmbda: onp.ToFloat | onp.ToFloatND = 1,
-        a: onp.ToFloat | onp.ToFloatND = 1,
-        b: onp.ToFloat | onp.ToFloatND = 1,
-    ) -> _ScalarOrArray_f8: ...
+        x: onp.ToFloat,
+        s2: onp.ToFloat,
+        mu: onp.ToFloat = 0,
+        lmbda: onp.ToFloat = 1,
+        a: onp.ToFloat = 1,
+        b: onp.ToFloat = 1,
+    ) -> np.float64: ...
+    @overload  # ?d, 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd  (workaround)
+    def pdf(
+        self,
+        /,
+        x: _ToFloatJustND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d|Nd, ?d, 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd  (workaround)
+    def pdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatJustND,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d|Nd, 0d|Nd, ?d, 0d|Nd, 0d|Nd, 0d|Nd  (workaround)
+    def pdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatJustND,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, ?d, 0d|Nd, 0d|Nd  (workaround)
+    def pdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatMaxND = 0,
+        *,
+        lmbda: _ToFloatJustND,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, ?d, 0d|Nd  (workaround)
+    def pdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        *,
+        a: _ToFloatJustND,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, ?d  (workaround)
+    def pdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        *,
+        b: _ToFloatJustND,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 1d, <=1d, <=1d, <=1d, <=1d, <=1d
+    def pdf(
+        self,
+        /,
+        x: onp.ToFloatStrict1D,
+        s2: _ToFloatStrictMax1D,
+        mu: _ToFloatStrictMax1D = 0,
+        lmbda: _ToFloatStrictMax1D = 1,
+        a: _ToFloatStrictMax1D = 1,
+        b: _ToFloatStrictMax1D = 1,
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 0d, 1d, <=1d, <=1d, <=1d, <=1d
+    def pdf(
+        self,
+        /,
+        x: onp.ToFloat,
+        s2: onp.ToFloatStrict1D,
+        mu: _ToFloatStrictMax1D = 0,
+        lmbda: _ToFloatStrictMax1D = 1,
+        a: _ToFloatStrictMax1D = 1,
+        b: _ToFloatStrictMax1D = 1,
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 2d, <=2d, <=2d, <=2d, <=2d, <=2d
+    def pdf(
+        self,
+        /,
+        x: onp.ToFloatStrict2D,
+        s2: _ToFloatStrictMax2D,
+        mu: _ToFloatStrictMax2D = 0,
+        lmbda: _ToFloatStrictMax2D = 1,
+        a: _ToFloatStrictMax2D = 1,
+        b: _ToFloatStrictMax2D = 1,
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # <=1d, 2d, <=2d, <=2d, <=2d, <=2d
+    def pdf(
+        self,
+        /,
+        x: _ToFloatStrictMax1D,
+        s2: onp.ToFloatStrict2D,
+        mu: _ToFloatStrictMax2D = 0,
+        lmbda: _ToFloatStrictMax2D = 1,
+        a: _ToFloatStrictMax2D = 1,
+        b: _ToFloatStrictMax2D = 1,
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # 3d, <=3d, <=3d, <=3d, <=3d, <=3d
+    def pdf(
+        self,
+        /,
+        x: onp.ToFloatStrict3D,
+        s2: _ToFloatStrictMax3D,
+        mu: _ToFloatStrictMax3D = 0,
+        lmbda: _ToFloatStrictMax3D = 1,
+        a: _ToFloatStrictMax3D = 1,
+        b: _ToFloatStrictMax3D = 1,
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # <=2d, 3d, <=3d, <=3d, <=3d, <=3d
+    def pdf(
+        self,
+        /,
+        x: _ToFloatStrictMax2D,
+        s2: onp.ToFloatStrict3D,
+        mu: _ToFloatStrictMax3D = 0,
+        lmbda: _ToFloatStrictMax3D = 1,
+        a: _ToFloatStrictMax3D = 1,
+        b: _ToFloatStrictMax3D = 1,
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # fallback
+    def pdf(
+        self,
+        /,
+        x: _ToFloatMaxND,
+        s2: _ToFloatMaxND,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+
+    #
+    @overload  # 0d, 0d, 0d, 0d
     def mean(
-        self,
-        /,
-        mu: onp.ToFloat | onp.ToFloatND = 0,
-        lmbda: onp.ToFloat | onp.ToFloatND = 1,
-        a: onp.ToFloat | onp.ToFloatND = 1,
-        b: onp.ToFloat | onp.ToFloatND = 1,
-    ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+        self, /, mu: onp.ToFloat = 0, lmbda: onp.ToFloat = 1, a: onp.ToFloat = 1, b: onp.ToFloat = 1
+    ) -> tuple[np.float64, np.float64]: ...
+    @overload  # ?d, 0d|Nd, 0d|Nd, 0d|Nd  (workaround)
+    def mean(
+        self, /, mu: _ToFloatJustND, lmbda: _ToFloatMaxND = 1, a: _ToFloatMaxND = 1, b: _ToFloatMaxND = 1
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 0d|Nd, ?d, 0d|Nd, 0d|Nd  (workaround)
+    def mean(
+        self, /, mu: _ToFloatMaxND = 0, *, lmbda: _ToFloatJustND, a: _ToFloatMaxND = 1, b: _ToFloatMaxND = 1
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 0d|Nd, 0d|Nd, ?d, 0d|Nd  (workaround)
+    def mean(
+        self, /, mu: _ToFloatMaxND = 0, lmbda: _ToFloatMaxND = 1, *, a: _ToFloatJustND, b: _ToFloatMaxND = 1
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, ?d  (workaround)
+    def mean(
+        self, /, mu: _ToFloatMaxND = 0, lmbda: _ToFloatMaxND = 1, a: _ToFloatMaxND = 1, *, b: _ToFloatJustND
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 1d, <=1d, <=1d, <=1d
+    def mean(
+        self, /, mu: onp.ToFloatStrict1D, lmbda: _ToFloatStrictMax1D = 1, a: _ToFloatStrictMax1D = 1, b: _ToFloatStrictMax1D = 1
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    @overload  # 2d, <=2d, <=2d, <=2d
+    def mean(
+        self, /, mu: onp.ToFloatStrict2D, lmbda: _ToFloatStrictMax2D = 1, a: _ToFloatStrictMax2D = 1, b: _ToFloatStrictMax2D = 1
+    ) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+    @overload  # 3d, <=3d, <=3d, <=3d
+    def mean(
+        self, /, mu: onp.ToFloatStrict3D, lmbda: _ToFloatStrictMax3D = 1, a: _ToFloatStrictMax3D = 1, b: _ToFloatStrictMax3D = 1
+    ) -> tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]]: ...
+    @overload  # fallback
+    def mean(
+        self, /, mu: _ToFloatMaxND = 0, lmbda: _ToFloatMaxND = 1, a: _ToFloatMaxND = 1, b: _ToFloatMaxND = 1
+    ) -> tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
+
+    # keep in sync with `mean`
+    @overload  # 0d, 0d, 0d, 0d
     def var(
-        self,
-        /,
-        mu: onp.ToFloat | onp.ToFloatND = 0,
-        lmbda: onp.ToFloat | onp.ToFloatND = 1,
-        a: onp.ToFloat | onp.ToFloatND = 1,
-        b: onp.ToFloat | onp.ToFloatND = 1,
-    ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+        self, /, mu: onp.ToFloat = 0, lmbda: onp.ToFloat = 1, a: onp.ToFloat = 1, b: onp.ToFloat = 1
+    ) -> tuple[np.float64, np.float64]: ...
+    @overload  # ?d, 0d|Nd, 0d|Nd, 0d|Nd  (workaround)
+    def var(
+        self, /, mu: _ToFloatJustND, lmbda: _ToFloatMaxND = 1, a: _ToFloatMaxND = 1, b: _ToFloatMaxND = 1
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 0d|Nd, ?d, 0d|Nd, 0d|Nd  (workaround)
+    def var(
+        self, /, mu: _ToFloatMaxND = 0, *, lmbda: _ToFloatJustND, a: _ToFloatMaxND = 1, b: _ToFloatMaxND = 1
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 0d|Nd, 0d|Nd, ?d, 0d|Nd  (workaround)
+    def var(
+        self, /, mu: _ToFloatMaxND = 0, lmbda: _ToFloatMaxND = 1, *, a: _ToFloatJustND, b: _ToFloatMaxND = 1
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, ?d  (workaround)
+    def var(
+        self, /, mu: _ToFloatMaxND = 0, lmbda: _ToFloatMaxND = 1, a: _ToFloatMaxND = 1, *, b: _ToFloatJustND
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 1d, <=1d, <=1d, <=1d
+    def var(
+        self, /, mu: onp.ToFloatStrict1D, lmbda: _ToFloatStrictMax1D = 1, a: _ToFloatStrictMax1D = 1, b: _ToFloatStrictMax1D = 1
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    @overload  # 2d, <=2d, <=2d, <=2d
+    def var(
+        self, /, mu: onp.ToFloatStrict2D, lmbda: _ToFloatStrictMax2D = 1, a: _ToFloatStrictMax2D = 1, b: _ToFloatStrictMax2D = 1
+    ) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+    @overload  # 3d, <=3d, <=3d, <=3d
+    def var(
+        self, /, mu: onp.ToFloatStrict3D, lmbda: _ToFloatStrictMax3D = 1, a: _ToFloatStrictMax3D = 1, b: _ToFloatStrictMax3D = 1
+    ) -> tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]]: ...
+    @overload  # fallback
+    def var(
+        self, /, mu: _ToFloatMaxND = 0, lmbda: _ToFloatMaxND = 1, a: _ToFloatMaxND = 1, b: _ToFloatMaxND = 1
+    ) -> tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
+
+    #
+    @overload  # 0d, 0d, 0d, 0d, 0d?
     def rvs(
         self,
         /,
-        mu: onp.ToFloat | onp.ToFloatND = 0,
-        lmbda: onp.ToFloat | onp.ToFloatND = 1,
-        a: onp.ToFloat | onp.ToFloatND = 1,
-        b: onp.ToFloat | onp.ToFloatND = 1,
+        mu: onp.ToFloat = 0,
+        lmbda: onp.ToFloat = 1,
+        a: onp.ToFloat = 1,
+        b: onp.ToFloat = 1,
+        size: tuple[()] | None = None,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> tuple[np.float64, np.float64]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, ?d  (workaround)
+    def rvs(
+        self,
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+        *,
+        size: _JustAnyShape,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, 1d
+    def rvs(
+        self,
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+        *,
+        size: int | tuple[int],
+        random_state: onp.random.ToRNG | None = None,
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, 2d
+    def rvs(
+        self,
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+        *,
+        size: tuple[int, int],
+        random_state: onp.random.ToRNG | None = None,
+    ) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, 0d|Nd, 3d
+    def rvs(
+        self,
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+        *,
+        size: tuple[int, int, int],
+        random_state: onp.random.ToRNG | None = None,
+    ) -> tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]]: ...
+    @overload  # fallback
+    def rvs(
+        self,
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
         size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
         random_state: onp.random.ToRNG | None = None,
-    ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+    ) -> tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
 
-#
-class normal_inverse_gamma_frozen(multi_rv_frozen[normal_inverse_gamma_gen]):
+# `_ShapeT_co` represents the broadcasted shape of `mu`, `lmbda`, `a`, and `b`
+class normal_inverse_gamma_frozen(multi_rv_frozen[normal_inverse_gamma_gen], Generic[_ShapeT_co]):
+    # keep in sync with `__call__`
+    @overload  # 0d, 0d, 0d, 0d
     def __init__(
-        self,
+        self: normal_inverse_gamma_frozen[tuple[()]],
         /,
-        mu: onp.ToFloat | onp.ToFloatND = 0,
-        lmbda: onp.ToFloat | onp.ToFloatND = 1,
-        a: onp.ToFloat | onp.ToFloatND = 1,
-        b: onp.ToFloat | onp.ToFloatND = 1,
+        mu: onp.ToFloat = 0,
+        lmbda: onp.ToFloat = 1,
+        a: onp.ToFloat = 1,
+        b: onp.ToFloat = 1,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
-    def logpdf(self, /, x: onp.ToFloat | onp.ToFloatND, s2: onp.ToFloat | onp.ToFloatND) -> _ScalarOrArray_f8: ...
-    def pdf(self, /, x: onp.ToFloat | onp.ToFloatND, s2: onp.ToFloat | onp.ToFloatND) -> _ScalarOrArray_f8: ...
-    def mean(self, /) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
-    def var(self, /) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+    @overload  # ?d, 0d|Nd, 0d|Nd, 0d|Nd  (workaround)
+    def __init__(
+        self: normal_inverse_gamma_frozen[tuple[Any, ...]],
+        /,
+        mu: _ToFloatJustND,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> None: ...
+    @overload  # 0d|Nd, ?d, 0d|Nd, 0d|Nd  (workaround)
+    def __init__(
+        self: normal_inverse_gamma_frozen[tuple[Any, ...]],
+        /,
+        mu: _ToFloatMaxND = 0,
+        *,
+        lmbda: _ToFloatJustND,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> None: ...
+    @overload  # 0d|Nd, 0d|Nd, ?d, 0d|Nd  (workaround)
+    def __init__(
+        self: normal_inverse_gamma_frozen[tuple[Any, ...]],
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        *,
+        a: _ToFloatJustND,
+        b: _ToFloatMaxND = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> None: ...
+    @overload  # 0d|Nd, 0d|Nd, 0d|Nd, ?d  (workaround)
+    def __init__(
+        self: normal_inverse_gamma_frozen[tuple[Any, ...]],
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        *,
+        b: _ToFloatJustND,
+        seed: onp.random.ToRNG | None = None,
+    ) -> None: ...
+    @overload  # 1d, <=1d, <=1d, <=1d
+    def __init__(
+        self: normal_inverse_gamma_frozen[tuple[int]],
+        /,
+        mu: onp.ToFloatStrict1D,
+        lmbda: _ToFloatStrictMax1D = 1,
+        a: _ToFloatStrictMax1D = 1,
+        b: _ToFloatStrictMax1D = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> None: ...
+    @overload  # 2d, <=2d, <=2d, <=2d
+    def __init__(
+        self: normal_inverse_gamma_frozen[tuple[int, int]],
+        /,
+        mu: onp.ToFloatStrict2D,
+        lmbda: _ToFloatStrictMax2D = 1,
+        a: _ToFloatStrictMax2D = 1,
+        b: _ToFloatStrictMax2D = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> None: ...
+    @overload  # 3d, <=3d, <=3d, <=3d
+    def __init__(
+        self: normal_inverse_gamma_frozen[tuple[int, int, int]],
+        /,
+        mu: onp.ToFloatStrict3D,
+        lmbda: _ToFloatStrictMax3D = 1,
+        a: _ToFloatStrictMax3D = 1,
+        b: _ToFloatStrictMax3D = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> None: ...
+    @overload  # fallback
+    def __init__(
+        self: normal_inverse_gamma_frozen[tuple[Any, ...]],
+        /,
+        mu: _ToFloatMaxND = 0,
+        lmbda: _ToFloatMaxND = 1,
+        a: _ToFloatMaxND = 1,
+        b: _ToFloatMaxND = 1,
+        seed: onp.random.ToRNG | None = None,
+    ) -> None: ...
+
+    #
+    @overload  # ?d, 0d|Nd, 0d|Nd  (workaround)
+    def logpdf(
+        self: normal_inverse_gamma_frozen[_JustAnyShape], /, x: _ToFloatMaxND, s2: _ToFloatMaxND
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # ?d, ?d, 0d|Nd  (workaround)
+    def logpdf(self, /, x: _ToFloatJustND, s2: _ToFloatMaxND) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # ?d, 0d|Nd, ?d  (workaround)
+    def logpdf(self, /, x: _ToFloatMaxND, s2: _ToFloatJustND) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d, 0d, 0d
+    def logpdf(self: normal_inverse_gamma_frozen[tuple[()]], /, x: onp.ToFloat, s2: onp.ToFloat) -> np.float64: ...
+    @overload  # 1d, <=1d, <=1d
+    def logpdf(
+        self: normal_inverse_gamma_frozen[tuple[int]], /, x: _ToFloatStrictMax1D, s2: _ToFloatStrictMax1D
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 0d, 1d, <=1d
+    def logpdf(
+        self: normal_inverse_gamma_frozen[tuple[()]], /, x: onp.ToFloatStrict1D, s2: _ToFloatStrictMax1D
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 0d, 0d, 1d
+    def logpdf(
+        self: normal_inverse_gamma_frozen[tuple[()]], /, x: onp.ToFloat, s2: onp.ToFloatStrict1D
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 2d, <=2d, <=2d
+    def logpdf(
+        self: normal_inverse_gamma_frozen[tuple[int, int]], /, x: _ToFloatStrictMax2D, s2: _ToFloatStrictMax2D
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # <=1d, 2d, <=2d
+    def logpdf(
+        self: normal_inverse_gamma_frozen[tuple[()] | tuple[int]], /, x: onp.ToFloatStrict2D, s2: _ToFloatStrictMax2D
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # <=1d, <=1d, 2d
+    def logpdf(
+        self: normal_inverse_gamma_frozen[tuple[()] | tuple[int]], /, x: _ToFloatStrictMax1D, s2: onp.ToFloatStrict2D
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # 3d, <=3d, <=3d
+    def logpdf(
+        self: normal_inverse_gamma_frozen[tuple[int, int, int]], /, x: _ToFloatStrictMax3D, s2: _ToFloatStrictMax3D
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # <=2d, 3d, <=3d
+    def logpdf(
+        self: normal_inverse_gamma_frozen[tuple[()] | tuple[int] | tuple[int, int]],
+        /,
+        x: onp.ToFloatStrict3D,
+        s2: _ToFloatStrictMax3D,
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # <=2d, <=2d, 3d
+    def logpdf(
+        self: normal_inverse_gamma_frozen[tuple[()] | tuple[int] | tuple[int, int]],
+        /,
+        x: _ToFloatStrictMax2D,
+        s2: onp.ToFloatStrict3D,
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # fallback
+    def logpdf(self, /, x: _ToFloatMaxND, s2: _ToFloatMaxND) -> np.float64 | onp.ArrayND[np.float64]: ...
+
+    # keep in sync with `logpdf`
+    @overload  # ?d, 0d|Nd, 0d|Nd  (workaround)
+    def pdf(
+        self: normal_inverse_gamma_frozen[_JustAnyShape], /, x: _ToFloatMaxND, s2: _ToFloatMaxND
+    ) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # ?d, ?d, 0d|Nd  (workaround)
+    def pdf(self, /, x: _ToFloatJustND, s2: _ToFloatMaxND) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # ?d, 0d|Nd, ?d  (workaround)
+    def pdf(self, /, x: _ToFloatMaxND, s2: _ToFloatJustND) -> np.float64 | onp.ArrayND[np.float64]: ...
+    @overload  # 0d, 0d, 0d
+    def pdf(self: normal_inverse_gamma_frozen[tuple[()]], /, x: onp.ToFloat, s2: onp.ToFloat) -> np.float64: ...
+    @overload  # 1d, <=1d, <=1d
+    def pdf(
+        self: normal_inverse_gamma_frozen[tuple[int]], /, x: _ToFloatStrictMax1D, s2: _ToFloatStrictMax1D
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 0d, 1d, <=1d
+    def pdf(
+        self: normal_inverse_gamma_frozen[tuple[()]], /, x: onp.ToFloatStrict1D, s2: _ToFloatStrictMax1D
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 0d, 0d, 1d
+    def pdf(
+        self: normal_inverse_gamma_frozen[tuple[()]], /, x: onp.ToFloat, s2: onp.ToFloatStrict1D
+    ) -> onp.Array1D[np.float64]: ...
+    @overload  # 2d, <=2d, <=2d
+    def pdf(
+        self: normal_inverse_gamma_frozen[tuple[int, int]], /, x: _ToFloatStrictMax2D, s2: _ToFloatStrictMax2D
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # <=1d, 2d, <=2d
+    def pdf(
+        self: normal_inverse_gamma_frozen[tuple[()] | tuple[int]], /, x: onp.ToFloatStrict2D, s2: _ToFloatStrictMax2D
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # <=1d, <=1d, 2d
+    def pdf(
+        self: normal_inverse_gamma_frozen[tuple[()] | tuple[int]], /, x: _ToFloatStrictMax1D, s2: onp.ToFloatStrict2D
+    ) -> onp.Array2D[np.float64]: ...
+    @overload  # 3d, <=3d, <=3d
+    def pdf(
+        self: normal_inverse_gamma_frozen[tuple[int, int, int]], /, x: _ToFloatStrictMax3D, s2: _ToFloatStrictMax3D
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # <=2d, 3d, <=3d
+    def pdf(
+        self: normal_inverse_gamma_frozen[tuple[()] | tuple[int] | tuple[int, int]],
+        /,
+        x: onp.ToFloatStrict3D,
+        s2: _ToFloatStrictMax3D,
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # <=2d, <=2d, 3d
+    def pdf(
+        self: normal_inverse_gamma_frozen[tuple[()] | tuple[int] | tuple[int, int]],
+        /,
+        x: _ToFloatStrictMax2D,
+        s2: onp.ToFloatStrict3D,
+    ) -> onp.Array3D[np.float64]: ...
+    @overload  # fallback
+    def pdf(self, /, x: _ToFloatMaxND, s2: _ToFloatMaxND) -> np.float64 | onp.ArrayND[np.float64]: ...
+
+    #
+    @overload  # ?d  (workaround)
+    def mean(
+        self: normal_inverse_gamma_frozen[_JustAnyShape], /
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 0d
+    def mean(self: normal_inverse_gamma_frozen[tuple[()]], /) -> tuple[np.float64, np.float64]: ...
+    @overload  # 1d
+    def mean(self: normal_inverse_gamma_frozen[tuple[int]], /) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    @overload  # 2d
+    def mean(
+        self: normal_inverse_gamma_frozen[tuple[int, int]], /
+    ) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+    @overload  # 3d
+    def mean(
+        self: normal_inverse_gamma_frozen[tuple[int, int, int]], /
+    ) -> tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]]: ...
+    @overload  # fallback
+    def mean(self, /) -> tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
+
+    # keep in sync with `mean`
+    @overload  # ?d  (workaround)
+    def var(
+        self: normal_inverse_gamma_frozen[_JustAnyShape], /
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 0d
+    def var(self: normal_inverse_gamma_frozen[tuple[()]], /) -> tuple[np.float64, np.float64]: ...
+    @overload  # 1d
+    def var(self: normal_inverse_gamma_frozen[tuple[int]], /) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    @overload  # 2d
+    def var(self: normal_inverse_gamma_frozen[tuple[int, int]], /) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+    @overload  # 3d
+    def var(
+        self: normal_inverse_gamma_frozen[tuple[int, int, int]], /
+    ) -> tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]]: ...
+    @overload  # fallback
+    def var(self, /) -> tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
+
+    #
+    @overload  # ?d, ?d  (workaround)
+    def rvs(
+        self, /, size: _JustAnyShape, random_state: onp.random.ToRNG | None = None
+    ) -> tuple[np.float64, np.float64] | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # ?d, None  (workaround)
+    def rvs(
+        self: normal_inverse_gamma_frozen[_JustAnyShape], /, size: None = None, random_state: onp.random.ToRNG | None = None
+    ) -> (
+        tuple[np.float64, np.float64]
+        | tuple[onp.ArrayND[np.float64], np.float64]
+        | tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]
+    ): ...
+    @overload  # 0d, 0d?
+    def rvs(
+        self: normal_inverse_gamma_frozen[tuple[()]],
+        /,
+        size: tuple[()] | None = None,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> tuple[np.float64, np.float64]: ...
+    @overload  # 1d, None
+    def rvs(
+        self: normal_inverse_gamma_frozen[tuple[int]], /, size: None = None, random_state: onp.random.ToRNG | None = None
+    ) -> tuple[onp.Array1D[np.float64], np.float64] | tuple[onp.Array1D[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 2d, None
+    def rvs(
+        self: normal_inverse_gamma_frozen[tuple[int, int]], /, size: None = None, random_state: onp.random.ToRNG | None = None
+    ) -> tuple[onp.Array2D[np.float64], np.float64] | tuple[onp.Array2D[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # 3d, None
+    def rvs(
+        self: normal_inverse_gamma_frozen[tuple[int, int, int]],
+        /,
+        size: None = None,
+        random_state: onp.random.ToRNG | None = None,
+    ) -> tuple[onp.Array3D[np.float64], np.float64] | tuple[onp.Array3D[np.float64], onp.ArrayND[np.float64]]: ...
+    @overload  # ?d, 1d
+    def rvs(
+        self, /, size: int | tuple[int], random_state: onp.random.ToRNG | None = None
+    ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
+    @overload  # ?d, 2d
+    def rvs(
+        self, /, size: tuple[int, int], random_state: onp.random.ToRNG | None = None
+    ) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]: ...
+    @overload  # ?d, 3d
+    def rvs(
+        self, /, size: tuple[int, int, int], random_state: onp.random.ToRNG | None = None
+    ) -> tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]]: ...
+    @overload  # fallback
     def rvs(
         self, /, size: SupportsIndex | tuple[SupportsIndex, ...] | None = None, random_state: onp.random.ToRNG | None = None
-    ) -> tuple[_ScalarOrArray_f8, _ScalarOrArray_f8]: ...
+    ) -> tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
 
 multivariate_normal: Final[multivariate_normal_gen] = ...
 matrix_normal: Final[matrix_normal_gen] = ...
