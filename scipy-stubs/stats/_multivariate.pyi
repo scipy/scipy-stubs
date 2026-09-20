@@ -63,6 +63,11 @@ type _JustAnyShape = tuple[Never, Never, Never, Never]
 type _ToIntJustND = onp.ArrayND[npc.integer, _JustAnyShape]
 type _ToFloatJustND = onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape]
 
+type _ToSize1D = SupportsIndex | tuple[SupportsIndex]
+type _ToSize2D = tuple[SupportsIndex, SupportsIndex]
+type _ToSize3ND = tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]]
+type _ToSizeND = SupportsIndex | tuple[SupportsIndex, ...]
+
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
 type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
 
@@ -1164,23 +1169,15 @@ class dirichlet_gen(multi_rv_generic):
     ) -> onp.Array1D[np.float64]: ...
     @overload
     def rvs(
-        self,
-        /,
-        alpha: onp.ToFloat1D,
-        size: SupportsIndex | tuple[SupportsIndex] = 1,
-        random_state: onp.random.ToRNG | None = None,
+        self, /, alpha: onp.ToFloat1D, size: _ToSize1D = 1, random_state: onp.random.ToRNG | None = None
     ) -> onp.Array2D[np.float64]: ...
     @overload
     def rvs(
-        self, /, alpha: onp.ToFloat1D, size: tuple[SupportsIndex, SupportsIndex], random_state: onp.random.ToRNG | None = None
+        self, /, alpha: onp.ToFloat1D, size: _ToSize2D, random_state: onp.random.ToRNG | None = None
     ) -> onp.Array3D[np.float64]: ...
     @overload
     def rvs(
-        self,
-        /,
-        alpha: onp.ToFloat1D,
-        size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
-        random_state: onp.random.ToRNG | None = None,
+        self, /, alpha: onp.ToFloat1D, size: _ToSize3ND, random_state: onp.random.ToRNG | None = None
     ) -> _Array3ND[np.float64]: ...
     @overload
     def rvs(
@@ -1203,20 +1200,11 @@ class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
     @overload
     def rvs(self, /, size: tuple[()], random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
     @overload
-    def rvs(
-        self, /, size: SupportsIndex | tuple[SupportsIndex] = 1, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array2D[np.float64]: ...
+    def rvs(self, /, size: _ToSize1D = 1, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
     @overload
-    def rvs(
-        self, /, size: tuple[SupportsIndex, SupportsIndex], random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array3D[np.float64]: ...
+    def rvs(self, /, size: _ToSize2D, random_state: onp.random.ToRNG | None = None) -> onp.Array3D[np.float64]: ...
     @overload
-    def rvs(
-        self,
-        /,
-        size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
-        random_state: onp.random.ToRNG | None = None,
-    ) -> _Array3ND[np.float64]: ...
+    def rvs(self, /, size: _ToSize3ND, random_state: onp.random.ToRNG | None = None) -> _Array3ND[np.float64]: ...
     @overload
     def rvs(self, /, size: tuple[SupportsIndex, ...], random_state: onp.random.ToRNG | None = None) -> _Array1ND[np.float64]: ...
 
@@ -1746,33 +1734,34 @@ class _group_rv_frozen_mixin(Generic[_ScalarT_co]):
     @overload
     def rvs(self, /, size: int, random_state: onp.random.ToRNG | None = None) -> _Array2ND[_ScalarT_co]: ...
 
+#
 class special_ortho_group_gen(_group_rv_gen_mixin[special_ortho_group_frozen], multi_rv_generic): ...
+class special_ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[special_ortho_group_gen]): ...  # type: ignore[misc] # pyrefly: ignore[inconsistent-inheritance]
 
-# pyrefly: ignore [inconsistent-inheritance]
-class special_ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[special_ortho_group_gen]): ...  # type: ignore[misc]
+#
 class ortho_group_gen(_group_rv_gen_mixin[ortho_group_frozen], multi_rv_generic): ...
+class ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[ortho_group_gen]): ...  # type: ignore[misc] # pyrefly: ignore[inconsistent-inheritance]
 
-# pyrefly: ignore [inconsistent-inheritance]
-class ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[ortho_group_gen]): ...  # type: ignore[misc]
+#
 class unitary_group_gen(_group_rv_gen_mixin[unitary_group_frozen, np.complex128], multi_rv_generic): ...
-
-# pyrefly: ignore [inconsistent-inheritance]
-class unitary_group_frozen(_group_rv_frozen_mixin[np.complex128], multi_rv_frozen[unitary_group_gen]): ...  # type: ignore[misc]
+class unitary_group_frozen(_group_rv_frozen_mixin[np.complex128], multi_rv_frozen[unitary_group_gen]): ...  # type: ignore[misc] # pyrefly: ignore[inconsistent-inheritance]
 
 class uniform_direction_gen(multi_rv_generic):
     def __call__(self, /, dim: int | None = None, seed: onp.random.ToRNG | None = None) -> uniform_direction_frozen: ...
 
     #
-    @overload
+    @overload  # 0d
     def rvs(self, /, dim: int, size: None = None, random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
-    @overload
+    @overload  # 1d
+    def rvs(self, /, dim: int, size: _ToSize1D, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
+    @overload  # 2d
+    def rvs(self, /, dim: int, size: _ToSize2D, random_state: onp.random.ToRNG | None = None) -> onp.Array3D[np.float64]: ...
+    @overload  # >=3d
+    def rvs(self, /, dim: int, size: _ToSize3ND, random_state: onp.random.ToRNG | None = None) -> _Array3ND[np.float64]: ...
+    @overload  # fallback
     def rvs(
-        self, /, dim: int, size: int | tuple[int], random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array2D[np.float64]: ...
-    @overload
-    def rvs(self, /, dim: int, size: onp.AtLeast2D, random_state: onp.random.ToRNG | None = None) -> _Array3ND[np.float64]: ...
-    @overload
-    def rvs(self, /, dim: int, size: tuple[int, ...], random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
+        self, /, dim: int, size: tuple[SupportsIndex, ...], random_state: onp.random.ToRNG | None = None
+    ) -> _Array2ND[np.float64]: ...
 
 class uniform_direction_frozen(multi_rv_frozen[uniform_direction_gen]):
     dim: Final[int]
@@ -1780,12 +1769,16 @@ class uniform_direction_frozen(multi_rv_frozen[uniform_direction_gen]):
     def __init__(self, /, dim: int | None = None, seed: onp.random.ToRNG | None = None) -> None: ...
 
     #
-    @overload
+    @overload  # 0d
     def rvs(self, /, size: None = None, random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
-    @overload
-    def rvs(self, /, size: int | tuple[int], random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
-    @overload
-    def rvs(self, /, size: tuple[int, ...], random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
+    @overload  # 1d
+    def rvs(self, /, size: _ToSize1D, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
+    @overload  # 2d
+    def rvs(self, /, size: _ToSize2D, random_state: onp.random.ToRNG | None = None) -> onp.Array3D[np.float64]: ...
+    @overload  # >=3d
+    def rvs(self, /, size: _ToSize3ND, random_state: onp.random.ToRNG | None = None) -> _Array3ND[np.float64]: ...
+    @overload  # fallback
+    def rvs(self, /, size: tuple[SupportsIndex, ...], random_state: onp.random.ToRNG | None = None) -> _Array2ND[np.float64]: ...
 
 class random_correlation_gen(multi_rv_generic):
     def __call__(
@@ -3127,7 +3120,7 @@ class vonmises_fisher_gen(multi_rv_generic):
         /,
         mu: onp.ToFloat1D | None = None,
         kappa: onp.ToFloat = 1,
-        size: SupportsIndex | tuple[SupportsIndex] = 1,
+        size: _ToSize1D = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> onp.Array2D[np.float64]: ...
     @overload  # 2d
@@ -3137,7 +3130,7 @@ class vonmises_fisher_gen(multi_rv_generic):
         mu: onp.ToFloat1D | None = None,
         kappa: onp.ToFloat = 1,
         *,
-        size: tuple[SupportsIndex, SupportsIndex],
+        size: _ToSize2D,
         random_state: onp.random.ToRNG | None = None,
     ) -> onp.Array3D[np.float64]: ...
     @overload  # >=3d
@@ -3147,7 +3140,7 @@ class vonmises_fisher_gen(multi_rv_generic):
         mu: onp.ToFloat1D | None = None,
         kappa: onp.ToFloat = 1,
         *,
-        size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
+        size: _ToSize3ND,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array3ND[np.float64]: ...
     @overload  # fallback
@@ -3156,7 +3149,7 @@ class vonmises_fisher_gen(multi_rv_generic):
         /,
         mu: onp.ToFloat1D | None = None,
         kappa: onp.ToFloat = 1,
-        size: SupportsIndex | tuple[SupportsIndex, ...] | None = 1,
+        size: _ToSizeND | None = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> _Array1ND[np.float64]: ...
 
@@ -3199,24 +3192,13 @@ class vonmises_fisher_frozen(multi_rv_frozen[vonmises_fisher_gen]):
     @overload  # 0d
     def rvs(self, /, size: tuple[()] | None, random_state: onp.random.ToRNG | None = None) -> onp.Array1D[np.float64]: ...
     @overload  # 1d
-    def rvs(
-        self, /, size: SupportsIndex | tuple[SupportsIndex] = 1, random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array2D[np.float64]: ...
+    def rvs(self, /, size: _ToSize1D = 1, random_state: onp.random.ToRNG | None = None) -> onp.Array2D[np.float64]: ...
     @overload  # 2d
-    def rvs(
-        self, /, size: tuple[SupportsIndex, SupportsIndex], random_state: onp.random.ToRNG | None = None
-    ) -> onp.Array3D[np.float64]: ...
+    def rvs(self, /, size: _ToSize2D, random_state: onp.random.ToRNG | None = None) -> onp.Array3D[np.float64]: ...
     @overload  # >=3d
-    def rvs(
-        self,
-        /,
-        size: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
-        random_state: onp.random.ToRNG | None = None,
-    ) -> _Array3ND[np.float64]: ...
+    def rvs(self, /, size: _ToSize3ND, random_state: onp.random.ToRNG | None = None) -> _Array3ND[np.float64]: ...
     @overload  # fallback
-    def rvs(
-        self, /, size: SupportsIndex | tuple[SupportsIndex, ...] | None = 1, random_state: onp.random.ToRNG | None = None
-    ) -> _Array1ND[np.float64]: ...
+    def rvs(self, /, size: _ToSizeND | None = 1, random_state: onp.random.ToRNG | None = None) -> _Array1ND[np.float64]: ...
 
 class normal_inverse_gamma_gen(multi_rv_generic):
     @overload  # 0d, 0d, 0d, 0d
@@ -3775,7 +3757,7 @@ class normal_inverse_gamma_gen(multi_rv_generic):
         lmbda: _ToFloatMaxND = 1,
         a: _ToFloatMaxND = 1,
         b: _ToFloatMaxND = 1,
-        size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
+        size: _ToSizeND | None = None,
         random_state: onp.random.ToRNG | None = None,
     ) -> tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
 
@@ -4075,7 +4057,7 @@ class normal_inverse_gamma_frozen(multi_rv_frozen[normal_inverse_gamma_gen], Gen
     ) -> tuple[onp.Array3D[np.float64], onp.Array3D[np.float64]]: ...
     @overload  # fallback
     def rvs(
-        self, /, size: SupportsIndex | tuple[SupportsIndex, ...] | None = None, random_state: onp.random.ToRNG | None = None
+        self, /, size: _ToSizeND | None = None, random_state: onp.random.ToRNG | None = None
     ) -> tuple[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
 
 multivariate_normal: Final[multivariate_normal_gen] = ...
