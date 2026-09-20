@@ -1,4 +1,5 @@
 changelog:
+  # used by scripts/release_notes.py
   categories:
     - title: 💥 Breaking
       labels:

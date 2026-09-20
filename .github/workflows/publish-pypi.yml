@@ -39,5 +39,47 @@ jobs:
       - name: uv build
         run: uv build
 
+      - name: upload distributions
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
       - name: publish to PyPI
         uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+
+  draft-release:
+    name: Draft GitHub release
+    needs: pypi-publish
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write # to generate notes and create the draft release
+      pull-requests: read # to group release entries by their SciPy package labels
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
+        with:
+          python-version: "3.14"
+          enable-cache: false
+
+      - name: download distributions
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: dist
+          path: dist/
+
+      - name: create draft release
+        shell: bash # for pipefail
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          url=$(uv run --only-group ci scripts/release_notes.py --tag "$RELEASE_TAG" \
+            | gh release create "$RELEASE_TAG" --draft --title "$RELEASE_TAG" --notes-file - dist/*)
+          echo "Review the draft and optionally add highlights: $url" >> "$GITHUB_STEP_SUMMARY"
