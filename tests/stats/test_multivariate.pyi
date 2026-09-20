@@ -4,6 +4,7 @@ import numpy as np
 import optype.numpy as onp
 
 from scipy.stats import (
+    Covariance,
     dirichlet,
     dirichlet_multinomial,
     invwishart,
@@ -44,6 +45,8 @@ _f64_nd: onp.ArrayND[np.float64]
 
 _shape_nd: tuple[int, ...]
 
+_cov: Covariance
+
 ###
 
 # multivariate_normal
@@ -51,87 +54,124 @@ _shape_nd: tuple[int, ...]
 # NOTE: the pyrefly ignores are needed because of https://github.com/facebook/pyrefly/issues/4910
 
 assert_type(multivariate_normal.logpdf(1.0), np.float64)
-assert_type(multivariate_normal.logpdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.logpdf(_f64_nd), onp.ArrayND[np.float64])
-assert_type(multivariate_normal.logpdf(1.0, _f_1d), np.float64)
-assert_type(multivariate_normal.logpdf(_f_1d, _f_1d), np.float64)
-assert_type(multivariate_normal.logpdf(_f_2d, _f_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.logpdf(_f_3d, _f_1d), onp.Array2D[np.float64])
-assert_type(multivariate_normal.logpdf(_f_nd, _f_1d), onp.ArrayND[np.float64] | np.float64)  # pyrefly:ignore[assert-type]
 assert_type(multivariate_normal().logpdf(1.0), np.float64)
+assert_type(multivariate_normal.logpdf(_f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal().logpdf(_f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal.logpdf(_f64_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal(_f_1d).logpdf(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal.logpdf(_f64_1d), onp.Array1D[np.float64])
 assert_type(multivariate_normal().logpdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal().logpdf(_f64_2d), onp.Array2D[np.float64])
-assert_type(multivariate_normal().logpdf(_f64_nd), onp.ArrayND[np.float64])
-assert_type(multivariate_normal(_f_1d).logpdf(1.0), np.float64)
+assert_type(multivariate_normal.logpdf(_f_1d, None, _f_2d), np.float64)
+assert_type(multivariate_normal(None, _f_2d).logpdf(_f_1d), np.float64)
+assert_type(multivariate_normal.logpdf(_f_1d, cov=_f_2d), np.float64)
+assert_type(multivariate_normal(cov=_f_2d).logpdf(_f_1d), np.float64)
+assert_type(multivariate_normal.logpdf(_f_1d, 0.0, _cov), np.float64)
+assert_type(multivariate_normal(0.0, _cov).logpdf(_f_1d), np.float64)
+assert_type(multivariate_normal.logpdf(_f_1d, _f_1d), np.float64)
 assert_type(multivariate_normal(_f_1d).logpdf(_f_1d), np.float64)
-assert_type(multivariate_normal(_f_1d).logpdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.logpdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal().logpdf(_f64_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.logpdf(_f_3d), onp.Array2D[np.float64])
 assert_type(multivariate_normal(_f_1d).logpdf(_f_3d), onp.Array2D[np.float64])
-assert_type(multivariate_normal(_f_1d).logpdf(_f_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
 assert_type(multivariate_normal.pdf(1.0), np.float64)
-assert_type(multivariate_normal.pdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.pdf(_f64_nd), onp.ArrayND[np.float64])
-assert_type(multivariate_normal.pdf(1.0, _f_1d), np.float64)
-assert_type(multivariate_normal.pdf(_f_1d, _f_1d), np.float64)
-assert_type(multivariate_normal.pdf(_f_2d, _f_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.pdf(_f_3d, _f_1d), onp.Array2D[np.float64])
-assert_type(multivariate_normal.pdf(_f_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 assert_type(multivariate_normal().pdf(1.0), np.float64)
+assert_type(multivariate_normal.pdf(_f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal().pdf(_f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal.pdf(_f64_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal(_f_1d).pdf(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal.pdf(_f64_1d), onp.Array1D[np.float64])
 assert_type(multivariate_normal().pdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal().pdf(_f64_2d), onp.Array2D[np.float64])
-assert_type(multivariate_normal().pdf(_f64_nd), onp.ArrayND[np.float64])
-assert_type(multivariate_normal(_f_1d).pdf(1.0), np.float64)
+assert_type(multivariate_normal.pdf(_f_1d, None, _f_2d), np.float64)
+assert_type(multivariate_normal(None, _f_2d).pdf(_f_1d), np.float64)
+assert_type(multivariate_normal.pdf(_f_1d, cov=_f_2d), np.float64)
+assert_type(multivariate_normal(cov=_f_2d).pdf(_f_1d), np.float64)
+assert_type(multivariate_normal.pdf(_f_1d, 0.0, _cov), np.float64)
+assert_type(multivariate_normal(0.0, _cov).pdf(_f_1d), np.float64)
+assert_type(multivariate_normal.pdf(_f_1d, _f_1d), np.float64)
 assert_type(multivariate_normal(_f_1d).pdf(_f_1d), np.float64)
-assert_type(multivariate_normal(_f_1d).pdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.pdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal().pdf(_f64_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.pdf(_f_3d), onp.Array2D[np.float64])
 assert_type(multivariate_normal(_f_1d).pdf(_f_3d), onp.Array2D[np.float64])
-assert_type(multivariate_normal(_f_1d).pdf(_f_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
 assert_type(multivariate_normal.logcdf(1.0), np.float64)
-assert_type(multivariate_normal.logcdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.logcdf(_f64_nd), onp.ArrayND[np.float64])
-assert_type(multivariate_normal.logcdf(1.0, _f_1d), np.float64)
-assert_type(multivariate_normal.logcdf(_f_1d, _f_1d), np.float64)
-assert_type(multivariate_normal.logcdf(_f_2d, _f_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.logcdf(_f_3d, _f_1d), onp.Array2D[np.float64])
-assert_type(multivariate_normal.logcdf(_f_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 assert_type(multivariate_normal().logcdf(1.0), np.float64)
+assert_type(multivariate_normal.logcdf(_f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal().logcdf(_f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal.logcdf(_f64_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal(_f_1d).logcdf(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal.logcdf(_f64_1d), onp.Array1D[np.float64])
 assert_type(multivariate_normal().logcdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal().logcdf(_f64_2d), onp.Array2D[np.float64])
-assert_type(multivariate_normal().logcdf(_f64_nd), onp.ArrayND[np.float64])
-assert_type(multivariate_normal(_f_1d).logcdf(1.0), np.float64)
+assert_type(multivariate_normal.logcdf(_f_1d, None, _f_2d), np.float64)
+assert_type(multivariate_normal(None, _f_2d).logcdf(_f_1d), np.float64)
+assert_type(multivariate_normal.logcdf(_f_1d, cov=_f_2d), np.float64)
+assert_type(multivariate_normal(cov=_f_2d).logcdf(_f_1d), np.float64)
+assert_type(multivariate_normal.logcdf(_f_1d, 0.0, _cov), np.float64)
+assert_type(multivariate_normal(0.0, _cov).logcdf(_f_1d), np.float64)
+assert_type(multivariate_normal.logcdf(_f_1d, _f_1d), np.float64)
 assert_type(multivariate_normal(_f_1d).logcdf(_f_1d), np.float64)
-assert_type(multivariate_normal(_f_1d).logcdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.logcdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal().logcdf(_f64_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.logcdf(_f_3d), onp.Array2D[np.float64])
 assert_type(multivariate_normal(_f_1d).logcdf(_f_3d), onp.Array2D[np.float64])
-assert_type(multivariate_normal(_f_1d).logcdf(_f_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
 assert_type(multivariate_normal.cdf(1.0), np.float64)
-assert_type(multivariate_normal.cdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.cdf(_f64_nd), onp.ArrayND[np.float64])
-assert_type(multivariate_normal.cdf(1.0, _f_1d), np.float64)
-assert_type(multivariate_normal.cdf(_f_1d, _f_1d), np.float64)
-assert_type(multivariate_normal.cdf(_f_2d, _f_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal.cdf(_f_3d, _f_1d), onp.Array2D[np.float64])
-assert_type(multivariate_normal.cdf(_f_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 assert_type(multivariate_normal().cdf(1.0), np.float64)
+assert_type(multivariate_normal.cdf(_f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal().cdf(_f64_nd), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal.cdf(_f64_nd, _f_1d), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal(_f_1d).cdf(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(multivariate_normal.cdf(_f64_1d), onp.Array1D[np.float64])
 assert_type(multivariate_normal().cdf(_f64_1d), onp.Array1D[np.float64])
-assert_type(multivariate_normal().cdf(_f64_2d), onp.Array2D[np.float64])
-assert_type(multivariate_normal().cdf(_f64_nd), onp.ArrayND[np.float64])
-assert_type(multivariate_normal(_f_1d).cdf(1.0), np.float64)
+assert_type(multivariate_normal.cdf(_f_1d, None, _f_2d), np.float64)
+assert_type(multivariate_normal(None, _f_2d).cdf(_f_1d), np.float64)
+assert_type(multivariate_normal.cdf(_f_1d, cov=_f_2d), np.float64)
+assert_type(multivariate_normal(cov=_f_2d).cdf(_f_1d), np.float64)
+assert_type(multivariate_normal.cdf(_f_1d, 0.0, _cov), np.float64)
+assert_type(multivariate_normal(0.0, _cov).cdf(_f_1d), np.float64)
+assert_type(multivariate_normal.cdf(_f_1d, _f_1d), np.float64)
 assert_type(multivariate_normal(_f_1d).cdf(_f_1d), np.float64)
-assert_type(multivariate_normal(_f_1d).cdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.cdf(_f_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal().cdf(_f64_2d), onp.Array1D[np.float64])
+assert_type(multivariate_normal.cdf(_f_3d), onp.Array2D[np.float64])
 assert_type(multivariate_normal(_f_1d).cdf(_f_3d), onp.Array2D[np.float64])
-assert_type(multivariate_normal(_f_1d).cdf(_f_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
-assert_type(multivariate_normal(_f_1d).rvs(size=()), onp.Array1D[np.float64])
+assert_type(multivariate_normal.entropy(), np.float64)
+assert_type(multivariate_normal().entropy(), np.float64)
+
+assert_type(multivariate_normal.rvs(), np.float64)
+assert_type(multivariate_normal().rvs(), np.float64)
+assert_type(multivariate_normal.rvs(_f_1d), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_normal(_f_1d).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal.rvs(None, _f_2d), onp.ArrayND[np.float64])
+assert_type(multivariate_normal(None, _f_2d).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal.rvs(cov=_f_2d), onp.ArrayND[np.float64])
+assert_type(multivariate_normal(cov=_f_2d).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal.rvs(size=(2, 3)), onp.ArrayND[np.float64])
+assert_type(multivariate_normal().rvs(size=(2, 3)), onp.ArrayND[np.float64])
+assert_type(multivariate_normal.rvs(size=3), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_normal().rvs(size=3), onp.Array1D[np.float64])
+assert_type(multivariate_normal.rvs(size=_shape_nd), onp.ArrayND[np.float64])
+assert_type(multivariate_normal().rvs(size=_shape_nd), onp.ArrayND[np.float64])
+assert_type(multivariate_normal(0.0, _cov).rvs(size=(2,)), onp.Array2D[np.float64])
+assert_type(multivariate_normal.rvs(_f_1d, size=(2,)), onp.ArrayND[np.float64])
 assert_type(multivariate_normal(_f_1d).rvs(size=(2,)), onp.Array2D[np.float64])
-assert_type(multivariate_normal(_f_1d).rvs(size=(2, 3)), onp.ArrayND[np.float64])
+assert_type(multivariate_normal.rvs(_f_1d, size=_shape_nd), onp.ArrayND[np.float64])
 assert_type(multivariate_normal(_f_1d).rvs(size=_shape_nd), onp.ArrayND[np.float64])
 
-assert_type(multivariate_normal.rvs(mean=0.0, cov=2.0), np.float64)
-assert_type(multivariate_normal.rvs(mean=0.0, cov=2.0, size=1), np.float64)
-assert_type(multivariate_normal.rvs(mean=0.0, cov=2.0, size=3), np.float64 | onp.ArrayND[np.float64])
-assert_type(multivariate_normal.rvs(mean=0.0, cov=2.0, size=(2, 3)), np.float64 | onp.ArrayND[np.float64])
-assert_type(multivariate_normal.rvs(cov=2.0, size=3), np.float64 | onp.ArrayND[np.float64])
+assert_type(multivariate_normal.marginal(0).rvs(), np.float64)
+assert_type(multivariate_normal(_f_1d).marginal(0).rvs(), np.float64)
+assert_type(multivariate_normal.marginal(_i_1d).rvs(), np.float64)
+assert_type(multivariate_normal().marginal(_i_1d).rvs(), np.float64)
+assert_type(multivariate_normal.marginal(_i_1d, None, _f_2d).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal(None, _f_2d).marginal(_i_1d).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal.marginal(_i_1d, cov=_f_2d).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal(cov=_f_2d).marginal(_i_1d).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal.marginal(_i_1d, _f_1d).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal.marginal(_i_1d, 0.0, _cov).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal(0.0, _cov).marginal(_i_1d).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal(_f_1d).marginal(_i_1d).rvs(), onp.Array1D[np.float64])
 
 # matrix_normal
 
