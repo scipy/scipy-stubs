@@ -61,35 +61,29 @@ type _MetricName = Literal[
     "ha",
     "h",
     "matching",
-    "minkowski",
-    "mi",
-    "m",
-    "pnorm",
     "jaccard",
     "jacc",
     "ja",
     "j",
-    "jensenshannon",
-    "js",
-    "mahalanobis",
-    "mahal",
-    "mah",
     "rogerstanimoto",
     "russellrao",
-    "seuclidean",
-    "se",
-    "s",
     "sokalsneath",
     "sqeuclidean",
     "sqe",
     "sqeuclid",
     "yule",
 ]
+type _MetricNameCorrelation = Literal["correlation", "co"]
+type _MetricNameMinkowski = Literal["minkowski", "mi", "m", "pnorm"]
+type _MetricNameSEuclidean = Literal["seuclidean", "se", "s"]
+type _MetricNameMahalanobis = Literal["mahalanobis", "mahal", "mah"]
+type _MetricNameJS = Literal["jensenshannon", "js"]
+type _MetricNameAll = _MetricName | _MetricNameMinkowski | _MetricNameSEuclidean | _MetricNameMahalanobis | _MetricNameJS
 
 ###
 
 type _MetricFunc = Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat | None]
-type _Metric = _MetricName | _MetricFunc  # ruff: ignore[unused-private-type-alias]
+type _Metric = _MetricNameAll | _MetricFunc  # ruff: ignore[unused-private-type-alias]
 
 type _Force = Literal["NO", "No", "no", "TOMATRIX", "ToMatrix", "tomatrix", "TOVECTOR", "ToVector", "tovector"]
 
@@ -104,39 +98,104 @@ type _ToFloatStrictND = onp.ArrayND[npc.floating | npc.integer, _JustAnyShape]
 # pyright: reportOverlappingOverload=false
 # mypy: disable-error-code=overload-overlap
 
-# TODO(@jorenham): metric-specific overloads
-# https://github.com/scipy/scipy-stubs/issues/404
-@overload
+@overload  # weighted
 def cdist(
     XA: onp.ToFloat2D,
     XB: onp.ToFloat2D,
     metric: _MetricName = "euclidean",
     *,
     out: onp.Array2D[np.float64] | None = None,
+    w: onp.ToFloat1D | None = None,
+) -> onp.Array2D[np.float64]: ...
+@overload  # weighted correlation
+def cdist(
+    XA: onp.ToFloat2D,
+    XB: onp.ToFloat2D,
+    metric: _MetricNameCorrelation,
+    *,
+    out: onp.Array2D[np.float64] | None = None,
+    w: onp.ToFloat1D,
+    centered: bool = True,
+) -> onp.Array2D[np.float64]: ...
+@overload  # minkowski
+def cdist(
+    XA: onp.ToFloat2D,
+    XB: onp.ToFloat2D,
+    metric: _MetricNameMinkowski,
+    *,
+    out: onp.Array2D[np.float64] | None = None,
     p: float = 2,
     w: onp.ToFloat1D | None = None,
-    V: onp.ToFloat2D | None = None,
+) -> onp.Array2D[np.float64]: ...
+@overload  # seuclidean
+def cdist(
+    XA: onp.ToFloat2D,
+    XB: onp.ToFloat2D,
+    metric: _MetricNameSEuclidean,
+    *,
+    out: onp.Array2D[np.float64] | None = None,
+    V: onp.ToFloat1D | None = None,
+) -> onp.Array2D[np.float64]: ...
+@overload  # mahalanobis
+def cdist(
+    XA: onp.ToFloat2D,
+    XB: onp.ToFloat2D,
+    metric: _MetricNameMahalanobis,
+    *,
+    out: onp.Array2D[np.float64] | None = None,
     VI: onp.ToFloat2D | None = None,
 ) -> onp.Array2D[np.float64]: ...
-@overload
+@overload  # jensenshannon
+def cdist(
+    XA: onp.ToFloat2D, XB: onp.ToFloat2D, metric: _MetricNameJS, *, out: onp.Array2D[np.float64] | None = None
+) -> onp.Array2D[np.float64]: ...
+@overload  # custom metric
 def cdist(
     XA: onp.ToFloat2D, XB: onp.ToFloat2D, metric: _MetricFunc, *, out: onp.Array2D[np.float64] | None = None, **kwds: object
 ) -> onp.Array2D[np.float64]: ...
 
-# TODO(@jorenham): metric-specific overloads
-# https://github.com/scipy/scipy-stubs/issues/404
-@overload
+#
+@overload  # weighted
 def pdist(
     X: onp.ToFloat2D,
     metric: _MetricName = "euclidean",
     *,
     out: onp.Array1D[np.float64] | None = None,
+    w: onp.ToFloat1D | None = None,
+) -> onp.Array1D[np.float64]: ...
+@overload  # weighted correlation
+def pdist(
+    X: onp.ToFloat2D,
+    metric: _MetricNameCorrelation,
+    *,
+    out: onp.Array1D[np.float64] | None = None,
+    w: onp.ToFloat1D,
+    centered: bool = True,
+) -> onp.Array1D[np.float64]: ...
+@overload  # minkowski
+def pdist(
+    X: onp.ToFloat2D,
+    metric: _MetricNameMinkowski,
+    *,
+    out: onp.Array1D[np.float64] | None = None,
     p: float = 2,
     w: onp.ToFloat1D | None = None,
-    V: onp.ToFloat2D | None = None,
+) -> onp.Array1D[np.float64]: ...
+@overload  # seuclidean
+def pdist(
+    X: onp.ToFloat2D, metric: _MetricNameSEuclidean, *, out: onp.Array1D[np.float64] | None = None, V: onp.ToFloat1D | None = None
+) -> onp.Array1D[np.float64]: ...
+@overload  # mahalanobis
+def pdist(
+    X: onp.ToFloat2D,
+    metric: _MetricNameMahalanobis,
+    *,
+    out: onp.Array1D[np.float64] | None = None,
     VI: onp.ToFloat2D | None = None,
 ) -> onp.Array1D[np.float64]: ...
-@overload
+@overload  # jensenshannon
+def pdist(X: onp.ToFloat2D, metric: _MetricNameJS, *, out: onp.Array1D[np.float64] | None = None) -> onp.Array1D[np.float64]: ...
+@overload  # custom metric
 def pdist(
     X: onp.ToFloat2D, metric: _MetricFunc, *, out: onp.Array1D[np.float64] | None = None, **kwargs: object
 ) -> onp.Array1D[np.float64]: ...
