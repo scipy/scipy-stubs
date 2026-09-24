@@ -38,7 +38,7 @@ assert_type(dia_matrix(_shape2, dtype=np.float32), dia_matrix[np.float32])
 assert_type(dia_matrix(_shape2, dtype=np.complex64), dia_matrix[np.complex64])
 
 ###
-## dia {*, @, multiply, dot} dia -> dia
+# dia {*, @, multiply, dot} dia -> dia
 
 assert_type(dia_arr * dia_arr, dia_array[ScalarType])
 assert_type(dia_arr @ dia_arr, dia_array[ScalarType])
