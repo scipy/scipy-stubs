@@ -155,6 +155,7 @@ assert_type(_rot_nd.magnitude(), np.float64 | onp.ArrayND[np.float64])
 assert_type(_rot_0d.apply(_f64_1d), onp.Array1D[np.float64])
 assert_type(_rot_1d.apply(_f64_2d), onp.Array2D[np.float64])
 assert_type(_rot_nd.apply(_f64_nd), onp.ArrayND[np.float64])
+assert_type(_rot_0d.apply(_f64_nd), onp.ArrayND[np.float64])
 
 # approx_equal
 
