@@ -3,7 +3,8 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.sparse import dia_array, dia_matrix
+from ._types import ScalarType, csr_arr, dia_arr, dia_mat
+from scipy.sparse import bsr_array, csc_array, csr_array, dia_array, dia_matrix
 
 ###
 
@@ -13,6 +14,11 @@ _py_i: int
 _py_i_1d: list[int]
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
+
+_dia_arr_b1: dia_array[np.bool]
+_dia_arr_i64: dia_array[np.int64]
+_dia_arr_f64: dia_array[np.float64]
+_dia_arr_c128: dia_array[np.complex128]
 
 ###
 # (M, N) shape constructor
@@ -43,3 +49,27 @@ assert_type(dia_matrix(_shape2, dtype=np.complex64), dia_matrix[np.complex64])
 
 assert_type(dia_array((_f64_2d, _py_i_1d), shape=_shape2), dia_array[np.float64])
 assert_type(dia_matrix((_f64_1d, _py_i), shape=_shape2), dia_matrix[np.float64])
+
+###
+## dia {*, @, multiply, dot} dia -> dia
+
+assert_type(dia_arr * dia_arr, dia_array[ScalarType])
+assert_type(dia_arr @ dia_arr, dia_array[ScalarType])
+assert_type(dia_arr.multiply(dia_arr), dia_array[ScalarType])
+assert_type(dia_arr.dot(dia_arr), dia_array[ScalarType])
+assert_type(dia_arr * dia_mat, dia_array[ScalarType])
+assert_type(dia_arr @ dia_mat, dia_array[ScalarType])
+
+assert_type(dia_mat * dia_mat, dia_matrix[ScalarType])
+assert_type(dia_mat @ dia_mat, dia_matrix[ScalarType])
+assert_type(dia_mat.multiply(dia_mat), dia_matrix[ScalarType])
+assert_type(dia_mat.dot(dia_mat), dia_matrix[ScalarType])
+assert_type(dia_mat @ dia_arr, dia_matrix[ScalarType])
+
+assert_type(_dia_arr_i64 * _dia_arr_b1, dia_array[np.int64])
+assert_type(_dia_arr_f64 @ _dia_arr_i64, dia_array[np.float64])
+assert_type(_dia_arr_f64 @ dia_arr, dia_array[np.float64])
+assert_type(_dia_arr_c128 @ _dia_arr_f64, dia_array[np.complex128])
+
+assert_type(csr_arr @ dia_arr, csr_array[ScalarType])
+assert_type(dia_arr @ csr_arr, bsr_array[ScalarType] | csc_array[ScalarType] | csr_array[ScalarType])
