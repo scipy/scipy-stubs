@@ -12,6 +12,7 @@ from scipy.spatial import KDTree, Rectangle, cKDTree, distance_matrix, minkowski
 
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
+_f64_nd: onp.ArrayND[np.float64]
 _c128_1d: onp.Array1D[np.complex128]
 _c128_2d: onp.Array2D[np.complex128]
 
@@ -36,18 +37,18 @@ assert_type(_ctree.query(_f64_1d), tuple[float, int])
 assert_type(_ctree.query(_f64_2d), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]])
 assert_type(_ctree.query(_f64_1d, k=3), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]] | Any)
 assert_type(_ctree.query(_f64_2d, k=3), tuple[onp.Array2D[np.float64], onp.Array2D[np.intp]] | Any)
+assert_type(_ctree.query(_f64_nd), tuple[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.intp] | Any])  # pyrefly:ignore[assert-type]
 
 # cKDTree.query_ball_point
 
 assert_type(_ctree.query_ball_point(_f64_1d, 1.0), list[int])
-assert_type(_ctree.query_ball_point(_f64_1d, 1.0, 2.0, 0.0, None, None, True), np.intp)
 assert_type(_ctree.query_ball_point(_f64_1d, 1.0, return_length=True), np.intp)
 assert_type(_ctree.query_ball_point(_f64_2d, _f64_1d), onp.ArrayND[np.object_])
-assert_type(_ctree.query_ball_point(_f64_2d, _f64_1d, 2.0, 0.0, None, None, True), onp.ArrayND[np.intp])
 assert_type(_ctree.query_ball_point(_f64_2d, _f64_1d, return_length=True), onp.ArrayND[np.intp])
 assert_type(_ctree.query_ball_point(_f64_2d, 1.0), list[int] | onp.ArrayND[np.object_])
-assert_type(_ctree.query_ball_point(_f64_2d, 1.0, 2.0, 0.0, None, None, True), np.intp | onp.ArrayND[np.intp])
 assert_type(_ctree.query_ball_point(_f64_2d, 1.0, return_length=True), np.intp | onp.ArrayND[np.intp])
+assert_type(_ctree.query_ball_point(_f64_nd, 1.0), onp.ArrayND[np.object_] | Any)  # pyrefly:ignore[assert-type]
+assert_type(_ctree.query_ball_point(_f64_nd, 1.0, return_length=True), onp.ArrayND[np.intp] | Any)  # pyrefly:ignore[assert-type]
 
 # cKDTree.query_pairs
 
@@ -114,6 +115,7 @@ assert_type(_tree.query(_f64_1d), tuple[float, np.intp])
 assert_type(_tree.query(_f64_1d, k=3), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]] | Any)
 assert_type(_tree.query(_f64_2d), tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]])
 assert_type(_tree.query(_f64_2d, k=3), tuple[onp.Array2D[np.float64], onp.Array2D[np.intp]] | Any)
+assert_type(_tree.query(_f64_nd), tuple[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.intp] | Any])  # pyrefly:ignore[assert-type]
 
 # KDTree.query_ball_point
 

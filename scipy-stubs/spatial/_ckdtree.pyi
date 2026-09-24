@@ -1,8 +1,9 @@
-from typing import Any, Generic, Literal as L, Protocol, overload, override, type_check_only
+from typing import Any, Generic, Literal as L, Never, Protocol, overload, override, type_check_only
 from typing_extensions import TypeVar, disjoint_base
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.sparse import coo_array, coo_matrix, dok_array, dok_matrix
 
@@ -14,6 +15,8 @@ type _Weights = onp.ToFloatND | tuple[onp.ToFloatND, onp.ToFloatND]
 type _Indices = onp.Array1D[np.intp]
 type _Float1D = onp.Array1D[np.float64]
 type _Float2D = onp.Array2D[np.float64]
+
+type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 
 _NodeT_co = TypeVar("_NodeT_co", bound=_KDTreeNode | None, default=_KDTreeNode | None, covariant=True)
 _BoxSizeT_co = TypeVar("_BoxSizeT_co", bound=_Float2D | None, default=_Float2D | None, covariant=True)
@@ -120,6 +123,17 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     ) -> None: ...
 
     #
+    @overload  # ?d  (workaround)
+    def query(
+        self,
+        /,
+        x: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+        k: onp.ToInt | onp.ToInt1D = 1,
+        eps: onp.ToFloat = 0.0,
+        p: onp.ToFloat = 2.0,
+        distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
+        workers: int | None = None,
+    ) -> tuple[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.intp] | Any]: ...
     @overload  # 1d, k=1
     def query(
         self,
@@ -165,12 +179,32 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         workers: int | None = None,
     ) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.intp]] | Any: ...
 
-    # NOTE: The parameters `eps` and `p` default to `0.0` and `2.0` in `cKDTree`, but are overridden in KDTree to default to
-    # `0` and `2` (or `2.0`) respectively. Filling in these defaults would therefore require us to override these methods in
-    # `KDTree`, which otherwise wouldn't be necessary. Hence, we leave these parameters without defaults here, so that we avoid a
-    # lot of duplicated code.
-    # In scipy 1.17.0 this will no longer be necessary (scipy/scipy#23727).
-
+    #
+    @overload
+    def query_ball_point(
+        self,
+        /,
+        x: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+        r: onp.ToFloat | onp.ToFloatND,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0.0,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
+        return_length: L[False] = False,
+    ) -> onp.ArrayND[np.object_] | Any: ...
+    @overload
+    def query_ball_point(
+        self,
+        /,
+        x: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+        r: onp.ToFloat | onp.ToFloatND,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0.0,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
+        *,
+        return_length: L[True],
+    ) -> onp.ArrayND[np.intp] | Any: ...
     @overload
     def query_ball_point(
         self,
@@ -183,18 +217,6 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         return_sorted: bool | None = None,
         return_length: L[False] = False,
     ) -> list[int]: ...
-    @overload
-    def query_ball_point(
-        self,
-        /,
-        x: onp.ToFloatStrict1D,
-        r: onp.ToFloat,
-        p: onp.ToFloat,
-        eps: onp.ToFloat,
-        workers: int | None,
-        return_sorted: bool | None,
-        return_length: L[True],
-    ) -> np.intp: ...
     @overload
     def query_ball_point(
         self,
@@ -226,18 +248,6 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         /,
         x: onp.ToFloatND,
         r: onp.ToFloatND,
-        p: onp.ToFloat,
-        eps: onp.ToFloat,
-        workers: int | None,
-        return_sorted: bool | None,
-        return_length: L[True],
-    ) -> onp.ArrayND[np.intp]: ...
-    @overload
-    def query_ball_point(
-        self,
-        /,
-        x: onp.ToFloatND,
-        r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
         eps: onp.ToFloat = 0.0,
         workers: int | None = None,
@@ -257,18 +267,6 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         return_sorted: bool | None = None,
         return_length: L[False] = False,
     ) -> list[int] | onp.ArrayND[np.object_]: ...
-    @overload
-    def query_ball_point(
-        self,
-        /,
-        x: onp.ToFloatND,
-        r: onp.ToFloat | onp.ToFloatND,
-        p: onp.ToFloat,
-        eps: onp.ToFloat,
-        workers: int | None,
-        return_sorted: bool | None,
-        return_length: L[True],
-    ) -> np.intp | onp.ArrayND[np.intp]: ...
     @overload
     def query_ball_point(
         self,

@@ -1,8 +1,9 @@
-from typing import Any, Final, Generic, Literal, Self, SupportsIndex, overload, override
+from typing import Any, Final, Generic, Literal, Never, Self, SupportsIndex, overload, override
 from typing_extensions import TypeVar, deprecated
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._ckdtree import cKDTree, cKDTreeNode
 
@@ -98,8 +99,19 @@ class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _Box
 
     #
     @override  # type:ignore[override]
-    @overload  # 1d, k=1
+    @overload  # ?d  (workaround)
     def query(  # pyrefly:ignore[bad-override]
+        self,
+        /,
+        x: onp.ArrayND[npc.floating | npc.integer | np.bool, tuple[Never, Never, Never, Never]],
+        k: onp.ToInt | onp.ToInt1D = 1,
+        eps: onp.ToFloat = 0.0,
+        p: onp.ToFloat = 2.0,
+        distance_upper_bound: float = float("inf"),  # ruff: ignore[typed-argument-default-in-stub]
+        workers: int | None = 1,
+    ) -> tuple[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.intp] | Any]: ...
+    @overload  # 1d, k=1
+    def query(
         self,
         /,
         x: onp.ToFloatStrict1D,
