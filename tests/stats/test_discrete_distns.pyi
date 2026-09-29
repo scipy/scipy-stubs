@@ -1,4 +1,4 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -28,6 +28,8 @@ from scipy.stats import (
     zipf,
     zipfian,
 )
+
+_py_i_1d: list[int]
 
 assert_subtype[rv_discrete](bernoulli)
 assert_subtype[rv_discrete](betabinom)
@@ -63,6 +65,10 @@ assert_type(poisson.rvs(1.0), int)
 assert_type(poisson.rvs(1.0, size=None), int)
 assert_type(poisson.rvs(1.0, size=()), int)
 assert_type(poisson.rvs(1.0, size=4), onp.ArrayND[np.int64])
+
+# .pmf (same as .logpmf, .cdf, .logcdf, .sf, .logsf, .ppf, .isf)
+
+assert_type(binom.pmf(_py_i_1d, 10, 0.3), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
 
 # .expect
 

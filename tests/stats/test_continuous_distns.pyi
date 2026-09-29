@@ -124,6 +124,7 @@ from scipy.stats import (
 
 _f32: np.float32
 _f64_nd: onp.ArrayND[np.float64]
+_py_f_1d: list[float]
 
 _n: int
 _shape_nd: tuple[int, ...]
@@ -297,3 +298,8 @@ assert_type(norm.fit(_f64_nd, floc=_f32), tuple[np.float32, np.float64])
 assert_type(norm.fit(_f64_nd, fscale=1), tuple[np.float64, int])
 assert_type(norm.fit(_f64_nd, fscale=2.0), tuple[np.float64, float])
 assert_type(gamma.fit(_f64_nd, optimizer=_optimizer), tuple[float | np.float64, ...])
+
+# .cdf (same as .pdf, .logpdf, .logcdf, .sf, .logsf, .ppf, .isf)
+
+assert_type(gamma.cdf(_py_f_1d, 2.0), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
+assert_type(norm.cdf(_py_f_1d), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
