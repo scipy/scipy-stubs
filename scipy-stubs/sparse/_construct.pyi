@@ -93,7 +93,7 @@ class _HasMT[MT](Protocol):
 ###
 
 @overload  # nasty workaround for https://github.com/microsoft/pyright/issues/10232
-def expand_dims[ScalarT: _Numeric](  # type: ignore[overload-overlap]
+def expand_dims[ScalarT: _Numeric](
     A: sparray[ScalarT, tuple[Never] | tuple[Never, Never]], /, *, axis: int = 0
 ) -> coo_array[ScalarT, tuple[int, int, *tuple[Any, ...]]]: ...
 @overload

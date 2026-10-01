@@ -249,8 +249,8 @@ if sys.version_info >= (3, 13):
     @dataclass
     class AlexanderGovernResult(Generic[_FloatOrArrayT_co]):
         # NOTE: an invariant typevar avoids these py>=3.13 mypy errors, but makes pyrefly infer `Unknown` for `... | Any` results
-        statistic: _FloatOrArrayT_co  # type: ignore[misc]
-        pvalue: _FloatOrArrayT_co  # type: ignore[misc]
+        statistic: _FloatOrArrayT_co
+        pvalue: _FloatOrArrayT_co
 
 else:
     @dataclass
