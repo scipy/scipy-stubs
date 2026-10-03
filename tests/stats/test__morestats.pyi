@@ -201,6 +201,8 @@ assert_type(wilcoxon(_f64_1d), WilcoxonResult[np.float64])
 assert_type(wilcoxon(_f64_1d, _f64_1d), WilcoxonResult[np.float64])
 assert_type(wilcoxon(_f64_2d), WilcoxonResult[onp.Array1D[np.float64]])
 assert_type(wilcoxon(_f64_2d, _f64_2d), WilcoxonResult[onp.Array1D[np.float64]])
+assert_type(wilcoxon(_f64_nd, _f64_nd), WilcoxonResult[np.float64 | onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
+assert_type(wilcoxon(_f32_nd), WilcoxonResult[np.float32 | onp.ArrayND[np.float32]])  # pyrefly:ignore[assert-type]
 
 ###
 # median_test
