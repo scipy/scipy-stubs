@@ -144,6 +144,8 @@ assert_type(sp.logit.at(_f8_nd, _i), None)
 sp.logit.at(_c16, _i)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType]
 
 # _UFunc11c - TODO: wofz
+assert_type(sp.wofz(_f8), np.complex128)
+
 # _UFunc11fc - TODO: erf
 
 # _UFunc12 - TODO
@@ -170,10 +172,17 @@ assert_type(sp.yn(2.0, _f4), np.float32)
 assert_type(sp.yn(_f2, _f4), np.float32)
 assert_type(sp.yn(_f4, 1), np.float32)
 
+# _UFunc21c1
+assert_type(sp.hankel1(1, _f8), np.complex128)
+assert_type(sp.hankel1(_f8, _c8), np.complex128)
+
 # _UFunc21fc1
 assert_type(sp.jv(2.0, _f4), np.float32)
 assert_type(sp.jv(_f4, 2.0), np.float32 | np.float64)
 assert_type(sp.jv(2.0, _c8), np.complex64)
+assert_type(sp.jv(_f8, _c16), np.complex128)
+assert_type(sp.jv(_f8, _c8), np.complex128)
+assert_type(sp.jv(_f8, 1j), np.complex128)
 
 # _UFunc21ldfc1
 assert_type(sp.eval_legendre.ntypes, L[5])
@@ -185,6 +194,9 @@ assert_type(sp.eval_legendre(2.0, _f4), np.float32)
 assert_type(sp.eval_legendre(_f4, _f4), np.float32)
 assert_type(sp.eval_legendre(1, _c8), np.complex64)
 assert_type(sp.eval_legendre(1, _c8_nd), _Complex64ND)
+assert_type(sp.eval_legendre(_f8, _c16), np.complex128)
+assert_type(sp.eval_legendre(_f8, _c8), np.complex128)
+assert_type(sp.eval_legendre(1, 1j), np.complex128)
 
 # _UFunc21fc2
 assert_type(sp.xlogy(_f4_nd, 2.0), _Float32ND)
@@ -220,6 +232,12 @@ assert_type(sp.nbdtr(1, 2, _f4_nd), _Float64ND)
 assert_type(sp.nbdtr(1, _f4, _f4), np.float32)
 assert_type(sp.nbdtr(_f4, 1, _f4), np.float32)
 
+# _UFunc31fc1
+assert_type(sp.hyp1f1(_f8, 2.0, _c16), np.complex128)
+assert_type(sp.hyp1f1(_f8, _i4, _c8), np.complex128)
+assert_type(sp.hyp1f1(2.0, _f8, _c8), np.complex128)
+assert_type(sp.hyp1f1(_f8, 2.0, 1j), np.complex128)
+
 # _UFunc31lddfc1
 assert_type(sp.eval_gegenbauer.ntypes, L[5])
 assert_type(sp.eval_gegenbauer.types, list[L["ldd->d", "fff->f", "ffF->F", "ddd->d", "ddD->D"]])
@@ -228,8 +246,19 @@ assert_type(sp.eval_gegenbauer(_i4_nd, 2.0, _f4), _Float64ND)
 assert_type(sp.eval_gegenbauer(1, 2.0, _f4_nd), _Float64ND)
 assert_type(sp.eval_gegenbauer(2.0, 2.0, _f4), np.float32)
 assert_type(sp.eval_gegenbauer(1, 2.0, _c8), np.complex64)
+assert_type(sp.eval_gegenbauer(1, _f8, _c16), np.complex128)
+assert_type(sp.eval_gegenbauer(_f8, 2.0, _c8), np.complex128)
+assert_type(sp.eval_gegenbauer(_i4, _f8, _c8), np.complex128)
+assert_type(sp.eval_gegenbauer(1, _f8, 1j), np.complex128)
 
 ###
+
+# _UFunc41fc1
+assert_type(sp.hyp2f1(1.0, 2.0, _f8, _c16), np.complex128)
+assert_type(sp.hyp2f1(_f8, _f8, _i4, _c8), np.complex128)
+assert_type(sp.hyp2f1(1.0, _f8, 2.0, _c8), np.complex128)
+assert_type(sp.hyp2f1(1.0, 2.0, _f8, _c8), np.complex128)
+assert_type(sp.hyp2f1(1.0, 2.0, _f8, 1j), np.complex128)
 
 # _UFunc41ldfc1
 assert_type(sp.eval_jacobi.ntypes, L[5])
@@ -239,6 +268,11 @@ assert_type(sp.eval_jacobi(_i4_nd, 2.0, 3.0, _f4), _Float64ND)
 assert_type(sp.eval_jacobi(1, 2.0, 3.0, _f4_nd), _Float64ND)
 assert_type(sp.eval_jacobi(2.0, 2.0, 3.0, _f4), np.float32)
 assert_type(sp.eval_jacobi(1, 2.0, 3.0, _c8), np.complex64)
+assert_type(sp.eval_jacobi(1, _f8, 3.0, _c16), np.complex128)
+assert_type(sp.eval_jacobi(_f8, 2.0, 3.0, _c8), np.complex128)
+assert_type(sp.eval_jacobi(_i4, _f8, _f8, _c8), np.complex128)
+assert_type(sp.eval_jacobi(1, 2.0, _f8, _c8), np.complex128)
+assert_type(sp.eval_jacobi(1, _f8, 3.0, 1j), np.complex128)
 
 # _UFunc42 - TODO
 
