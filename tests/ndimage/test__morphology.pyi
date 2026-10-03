@@ -137,11 +137,11 @@ assert_type(binary_propagation(_f64_2d, structure=_f64_2d, mask=_f64_2d, output=
 assert_type(binary_fill_holes(_py_i_2d), onp.ArrayND[np.bool])
 assert_type(binary_fill_holes(_py_f_2d), onp.ArrayND[np.bool])
 assert_type(binary_fill_holes(_f64_2d), onp.ArrayND[np.bool])
-assert_type(binary_fill_holes(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
-assert_type(binary_fill_holes(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
-assert_type(binary_fill_holes(_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_fill_holes(_py_i_2d, output=_f64_2d), None)
+assert_type(binary_fill_holes(_py_f_2d, output=_f64_2d), None)
+assert_type(binary_fill_holes(_f64_2d, output=_f64_2d), None)
 assert_type(binary_fill_holes(_f64_2d, structure=_f64_2d), onp.ArrayND[np.bool])
-assert_type(binary_fill_holes(_f64_2d, structure=_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_fill_holes(_f64_2d, structure=_f64_2d, output=_f64_2d), None)
 
 # grey_erosion
 assert_type(grey_erosion(_b_1d), onp.Array1D[np.bool])
