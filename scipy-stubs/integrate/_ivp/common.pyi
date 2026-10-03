@@ -12,8 +12,6 @@ from scipy.sparse import csc_matrix
 
 ###
 
-type _ToFloat64 = np.float16 | np.float32 | np.float64 | npc.integer | np.bool
-
 _InterpT_co = TypeVar("_InterpT_co", bound=DenseOutput[npc.inexact], default=DenseOutput[Any], covariant=True)
 
 ###
@@ -41,7 +39,7 @@ class OdeSolution(Generic[_InterpT_co]):
     #
     @overload
     def __call__[InexactT: npc.inexact](  # type: ignore[overload-overlap]  # mypy NBit false positive (`longdouble`)
-        self: OdeSolution[DenseOutput[InexactT]], /, t: float | _ToFloat64
+        self: OdeSolution[DenseOutput[InexactT]], /, t: onp.ToFloat64
     ) -> onp.Array1D[InexactT]: ...
     @overload
     def __call__(self, /, t: op.JustComplex | np.complex128 | np.complex64) -> onp.Array1D[np.complex128]: ...
@@ -51,7 +49,7 @@ class OdeSolution(Generic[_InterpT_co]):
     def __call__(self, /, t: npc.complexfloating160) -> onp.Array1D[np.clongdouble]: ...
     @overload
     def __call__[InexactT: npc.inexact](
-        self: OdeSolution[DenseOutput[InexactT]], /, t: onp.ToArray1D[float, _ToFloat64]
+        self: OdeSolution[DenseOutput[InexactT]], /, t: onp.ToFloat64_1D
     ) -> onp.Array2D[InexactT]: ...
     @overload
     def __call__(self, /, t: onp.ToArray1D[op.JustComplex, np.complex128 | np.complex64]) -> onp.Array2D[np.complex128]: ...
