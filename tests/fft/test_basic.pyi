@@ -70,6 +70,10 @@ c160_1d: onp.Array1D[np.complex256]
 c160_2d: onp.Array2D[np.complex256]
 c160_3d: onp.Array3D[np.complex256]
 
+_f32_nd: onp.ArrayND[np.float32]
+_f64_nd: onp.ArrayND[np.float64]
+_f80_nd: onp.ArrayND[np.float128]
+
 ###
 
 ###
@@ -142,6 +146,9 @@ rfft(c160_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, repo
 assert_type(rfft(f32_3d), onp.Array3D[np.complex64])
 assert_type(rfft(f64_3d), onp.Array3D[np.complex128])
 assert_type(rfft(f80_3d), onp.Array3D[np.clongdouble])
+assert_subtype[onp.ArrayND[np.complex64]](rfft(_f32_nd))
+assert_type(rfft(_f64_nd), onp.ArrayND[np.complex128])
+assert_subtype[onp.ArrayND[np.clongdouble]](rfft(_f80_nd))
 
 # irfft (same as hfft)
 assert_subtype[onp.Array1D[np.float64]](irfft(int_1d))
