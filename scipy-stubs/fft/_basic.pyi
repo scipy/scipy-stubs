@@ -172,7 +172,7 @@ def ifft(
 # keep in sync with `ihfft`
 @overload
 def rfft[ShapeT: (_1D, _2D, _3D)](
-    x: onp.ArrayND[npc.floating64 | _CoInteger, ShapeT],
+    x: onp.CanArray[ShapeT, np.dtype[npc.floating64 | _CoInteger]],
     n: int | None = None,
     axis: int = -1,
     norm: _Norm | None = None,
@@ -183,7 +183,7 @@ def rfft[ShapeT: (_1D, _2D, _3D)](
 ) -> onp.ArrayND[np.complex128, ShapeT]: ...
 @overload
 def rfft[ShapeT: (_1D, _2D, _3D)](
-    x: onp.ArrayND[npc.floating32, ShapeT],
+    x: onp.CanArray[ShapeT, np.dtype[npc.floating32]],
     n: int | None = None,
     axis: int = -1,
     norm: _Norm | None = None,
@@ -194,7 +194,7 @@ def rfft[ShapeT: (_1D, _2D, _3D)](
 ) -> onp.ArrayND[np.complex64, ShapeT]: ...
 @overload
 def rfft[ShapeT: (_1D, _2D, _3D)](
-    x: onp.ArrayND[npc.floating80, ShapeT],
+    x: onp.CanArray[ShapeT, np.dtype[npc.floating80]],
     n: int | None = None,
     axis: int = -1,
     norm: _Norm | None = None,
