@@ -676,7 +676,7 @@ assert_type(multivariate_hypergeom(_i_1d, 1).rvs(), onp.Array2D[np.int_])
 assert_type(multivariate_hypergeom(_i_1d, 1).rvs(size=3), onp.Array2D[np.int_])
 assert_type(multivariate_hypergeom.rvs(_i_1d, 1, size=(2, 3)), onp.Array3D[np.int_])
 assert_type(multivariate_hypergeom(_i_1d, 1).rvs(size=(2, 3)), onp.Array3D[np.int_])
-assert_type(multivariate_hypergeom(_i_1d, 1).M, np.int_ | Any | onp.ArrayND[np.int_ | Any])
+assert_type(multivariate_hypergeom(_i_1d, 1).M, np.int_ | Any)
 assert_type(multivariate_hypergeom(_i_1d, 1).m, onp.ArrayND[np.int_ | Any])
 assert_type(multivariate_hypergeom(_i_1d, 1).n, onp.ArrayND[np.int_ | Any])
 

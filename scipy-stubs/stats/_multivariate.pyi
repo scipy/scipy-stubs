@@ -2724,7 +2724,7 @@ class multivariate_hypergeom_gen(multi_rv_generic):
 
 # `_ShapeT_co` represents the shape of the mean
 class multivariate_hypergeom_frozen(multi_rv_frozen[multivariate_hypergeom_gen], Generic[_ShapeT_co]):
-    M: Final[np.int_ | Any | onp.ArrayND[np.int_ | Any]]
+    M: Final[np.int_ | Any]
     m: Final[onp.ArrayND[np.int_ | Any]]
     n: Final[onp.ArrayND[np.int_ | Any]]
 
