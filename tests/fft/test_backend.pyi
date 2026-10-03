@@ -1,4 +1,5 @@
 from collections.abc import Callable
+from types import ModuleType
 from typing import Any, ClassVar, assert_type, type_check_only
 
 from scipy import fft
@@ -9,16 +10,20 @@ class MyBackend:
     @staticmethod
     def __ua_function__(method: Callable[..., Any], args: tuple[Any, ...], kwargs: dict[str, Any], /) -> Any: ...
 
+_backend_module: ModuleType
+
 # set_global_backend
 assert_type(fft.set_global_backend("scipy"), None)
 assert_type(fft.set_global_backend("scipy", coerce=True), None)
 assert_type(fft.set_global_backend("scipy", only=True), None)
 assert_type(fft.set_global_backend("scipy", try_last=True), None)
 assert_type(fft.set_global_backend(MyBackend), None)
+assert_type(fft.set_global_backend(MyBackend()), None)
 
 # register_backend
 assert_type(fft.register_backend("scipy"), None)
 assert_type(fft.register_backend(MyBackend), None)
+assert_type(fft.register_backend(_backend_module), None)
 
 # set_backend
 with fft.set_backend("scipy") as ctx1:
@@ -29,9 +34,13 @@ with fft.set_backend("scipy", only=True) as ctx3:
     assert_type(ctx3, None)
 with fft.set_backend(MyBackend) as ctx4:
     assert_type(ctx4, None)
+with fft.set_backend(_backend_module) as ctx7:
+    assert_type(ctx7, None)
 
 # skip_backend
 with fft.skip_backend("scipy") as ctx5:
     assert_type(ctx5, None)
 with fft.skip_backend(MyBackend) as ctx6:
     assert_type(ctx6, None)
+with fft.skip_backend(_backend_module) as ctx8:
+    assert_type(ctx8, None)
