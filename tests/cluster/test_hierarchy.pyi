@@ -133,6 +133,8 @@ assert_type(to_tree(f64_2d, False), ClusterNode)
 assert_type(cut_tree(f64_2d), onp.Array2D[np.int64])
 assert_type(cut_tree(f64_2d, n_clusters=i32_1d), onp.Array2D[np.int64])
 assert_type(cut_tree(f64_2d, height=f64_1d), onp.Array2D[np.int64])
+assert_type(cut_tree(f64_2d, n_clusters=3), onp.Array2D[np.int64])
+assert_type(cut_tree(f64_2d, height=0.5), onp.Array2D[np.int64])
 # optimal_leaf_order
 assert_type(optimal_leaf_ordering(f64_2d, f64_1d), onp.Array2D[np.float64])
 
