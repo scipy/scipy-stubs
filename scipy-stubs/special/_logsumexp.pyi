@@ -12,7 +12,7 @@ __all__ = ["log_softmax", "logsumexp", "softmax"]
 # Mypy reports four false positive `overload-overlap` only with `numpy<2.1`
 # mypy: disable-error-code="overload-overlap"
 
-@overload  # 0d/nd T@floating, axis=None (default), keepdims=False (default)
+@overload  # 0d/nd T@float, axis=None (default), keepdims=False (default)
 def logsumexp[FloatingT: npc.floating](
     a: FloatingT | onp.ToArrayND[Never, FloatingT],
     axis: None = None,
@@ -20,7 +20,7 @@ def logsumexp[FloatingT: npc.floating](
     keepdims: onp.ToFalse = False,
     return_sign: onp.ToFalse = False,
 ) -> FloatingT: ...
-@overload  # 0d/nd T@complexfloating, axis=None (default), keepdims=False (default)
+@overload  # 0d/nd T@complex, axis=None (default), keepdims=False (default)
 def logsumexp[ComplexT: npc.complexfloating](
     a: ComplexT | onp.ToArrayND[Never, ComplexT],
     axis: None = None,
@@ -44,7 +44,7 @@ def logsumexp(
     keepdims: onp.ToFalse = False,
     return_sign: onp.ToFalse = False,
 ) -> np.complex128: ...
-@overload  # 0d/nd T@floating, keepdims=True
+@overload  # 0d/nd T@float, keepdims=True
 def logsumexp[FloatingT: npc.floating](
     a: FloatingT | onp.ToArrayND[Never, FloatingT],
     axis: AnyShape | None = None,
@@ -53,7 +53,7 @@ def logsumexp[FloatingT: npc.floating](
     keepdims: onp.ToTrue,
     return_sign: onp.ToFalse = False,
 ) -> onp.ArrayND[FloatingT]: ...
-@overload  # 0d/nd T@complexfloating, keepdims=True
+@overload  # 0d/nd T@complex, keepdims=True
 def logsumexp[ComplexT: npc.complexfloating](
     a: ComplexT | onp.ToArrayND[Never, ComplexT],
     axis: AnyShape | None = None,
@@ -80,7 +80,7 @@ def logsumexp(
     keepdims: onp.ToTrue,
     return_sign: onp.ToFalse = False,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # 0d/nd T@floating, axis=<given>
+@overload  # 0d/nd T@float, axis=<given>
 def logsumexp[FloatingT: npc.floating](
     a: FloatingT | onp.ToArrayND[Never, FloatingT],
     axis: AnyShape,
@@ -89,7 +89,7 @@ def logsumexp[FloatingT: npc.floating](
     keepdims: onp.ToFalse = False,
     return_sign: onp.ToFalse = False,
 ) -> onp.ArrayND[FloatingT] | Any: ...
-@overload  # 0d/nd T@complexfloating, axis=<given>
+@overload  # 0d/nd T@complex, axis=<given>
 def logsumexp[ComplexT: npc.complexfloating](
     a: ComplexT | onp.ToArrayND[Never, ComplexT],
     axis: AnyShape,
@@ -114,7 +114,7 @@ def logsumexp(
     keepdims: onp.ToFalse = False,
     return_sign: onp.ToFalse = False,
 ) -> onp.ArrayND[np.complex128] | Any: ...
-@overload  # floating fallback, return_sign=False
+@overload  # float fallback, return_sign=False
 def logsumexp(
     a: onp.ToFloat | onp.ToFloatND,
     axis: AnyShape | None = None,
@@ -130,7 +130,7 @@ def logsumexp(
     keepdims: bool = False,
     return_sign: onp.ToFalse = False,
 ) -> onp.ArrayND[np.complex128 | Any] | Any: ...
-@overload  # 0d/nd T@floating, axis=None (default), keepdims=False (default), return_sign=True
+@overload  # 0d/nd T@float, axis=None (default), keepdims=False (default), return_sign=True
 def logsumexp[FloatingT: npc.floating](
     a: FloatingT | onp.ToArrayND[Never, FloatingT],
     axis: None = None,
@@ -265,7 +265,7 @@ def logsumexp(
     *,
     return_sign: onp.ToTrue,
 ) -> tuple[onp.ArrayND[np.longdouble] | Any, onp.ArrayND[np.clongdouble] | Any]: ...
-@overload  # floating fallback, return_sign=True
+@overload  # float fallback, return_sign=True
 def logsumexp(
     a: onp.ToFloat | onp.ToFloatND,
     axis: AnyShape | None = None,
