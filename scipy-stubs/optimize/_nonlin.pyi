@@ -378,7 +378,7 @@ def linearmixing(
     alpha: onp.ToFloat | None = None,
     verbose: bool = False,
     maxiter: int | None = None,
-    f_tol: onp.ToInt | None = None,
+    f_tol: onp.ToFloat | None = None,
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,
