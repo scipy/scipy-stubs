@@ -55,7 +55,7 @@ def svds[ScalarT: np.float32 | np.complex64](
     random_state: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[ScalarT], onp.Array1D[np.float32], onp.Array2D[ScalarT]]: ...
 @overload  # return_singular_vectors=True  (default), int
-def svds[IntT: npc.integer](
+def svds[IntT: npc.integer](  # `IntT` keeps mypy from matching `Any`-dtype input here
     A: _ToMatrix[IntT],
     k: int = 6,
     ncv: int | None = None,
@@ -135,7 +135,7 @@ def svds[ScalarT: np.float32 | np.complex64](
     random_state: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array2D[ScalarT], onp.Array1D[np.float32], None]: ...
 @overload  # return_singular_vectors="u", int
-def svds[IntT: npc.integer](
+def svds[IntT: npc.integer](  # `IntT` keeps mypy from matching `Any`-dtype input here
     A: _ToMatrix[IntT],
     k: int = 6,
     ncv: int | None = None,
@@ -183,7 +183,7 @@ def svds[ScalarT: np.float32 | np.complex64](
     random_state: onp.random.ToRNG | None = None,
 ) -> tuple[None, onp.Array1D[np.float32], onp.Array2D[ScalarT]]: ...
 @overload  # return_singular_vectors="vh", int
-def svds[IntT: npc.integer](
+def svds[IntT: npc.integer](  # `IntT` keeps mypy from matching `Any`-dtype input here
     A: _ToMatrix[IntT],
     k: int = 6,
     ncv: int | None = None,
