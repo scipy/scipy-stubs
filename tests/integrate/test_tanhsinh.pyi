@@ -8,6 +8,8 @@ from scipy.integrate import nsum, tanhsinh
 def integrand_f(x: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
 def integrand_c(x: onp.ArrayND[np.float64 | np.complex128]) -> onp.ArrayND[np.complex128]: ...
 def _integrand_fp(x: onp.ArrayND[np.float64], p: onp.ArrayND[np.int64]) -> onp.ArrayND[np.float64]: ...
+def _integrand_fl(x: onp.ArrayND[np.float64]) -> list[onp.ArrayND[np.float64]]: ...
+def _integrand_cl(x: onp.ArrayND[np.float64 | np.complex128]) -> list[onp.ArrayND[np.complex128]]: ...
 
 _i64_1d: onp.Array1D[np.int64]
 
@@ -34,6 +36,9 @@ assert_type(tanhsinh(integrand_f, [0.0, 1.0], [1.0, 2.0]).integral, onp.ArrayND[
 assert_type(tanhsinh(integrand_c, [0.0, 1.0], [1.0, 2.0]).error, onp.ArrayND[np.complex128])
 assert_type(tanhsinh(integrand_f, [0.0, 1.0], [1.0, 2.0], preserve_shape=True).integral, onp.ArrayND[np.float64])
 assert_type(tanhsinh(integrand_c, [0.0, 1.0], [1.0, 2.0], preserve_shape=True).error, onp.ArrayND[np.complex128])
+
+assert_type(tanhsinh(_integrand_fl, [0.0, 0.5], 1.0, preserve_shape=True).integral, onp.ArrayND[np.float64])
+assert_type(tanhsinh(_integrand_cl, [0.0, 0.5], 1.0, preserve_shape=True).integral, onp.ArrayND[np.complex128])
 
 ###
 # nsum (only reals)
