@@ -21,7 +21,9 @@ type _Akima1DMethod = Literal["akima", "makima"]
 type _Extrapolate = Literal["periodic"] | bool
 type _CubicBCName = Literal["not-a-knot", "clamped", "natural"]
 type _CubicBCOrder = Literal[1, 2]
-type _CubicBCType = Literal[_CubicBCName, "periodic"] | _Tuple2[_CubicBCName | tuple[_CubicBCOrder, onp.ToComplexND]]
+type _CubicBCType = (
+    Literal[_CubicBCName, "periodic"] | _Tuple2[_CubicBCName | tuple[_CubicBCOrder, onp.ToComplex | onp.ToComplexND]]
+)
 
 type _PreparedInput[CT: np.float64 | np.complex128, AxisT: _ToAxis] = tuple[
     onp.Array1D[np.float64],  # x
