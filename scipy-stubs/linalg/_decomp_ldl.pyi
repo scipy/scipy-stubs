@@ -4,6 +4,7 @@ from typing import overload
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 __all__ = ["ldl"]
 
@@ -19,7 +20,11 @@ type _InexactND = onp.ArrayND[np.float32 | np.float64 | np.complex64 | np.comple
 
 @overload  # 2d: -> float64
 def ldl(
-    A: onp.ToJustFloat64Strict2D, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
+    A: onp.ToArrayStrict2D[float, npc.floating64 | npc.integer64 | npc.integer32],
+    lower: bool = True,
+    hermitian: bool = True,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
 ) -> tuple[onp.Array2D[np.float64], onp.Array2D[np.float64], _ISize1D]: ...
 @overload  # 2d: float32 -> float32
 def ldl(
@@ -35,7 +40,11 @@ def ldl(
 ) -> tuple[_Float2D, _Float2D, _ISize1D]: ...
 @overload  # nd: -> float64
 def ldl(
-    A: onp.ToJustFloat64_ND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
+    A: onp.ToArrayND[float, npc.floating64 | npc.integer64 | npc.integer32],
+    lower: bool = True,
+    hermitian: bool = True,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
 ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], _ISizeND]: ...
 @overload  # nd: float32 -> float32
 def ldl(
