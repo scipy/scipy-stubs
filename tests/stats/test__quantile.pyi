@@ -70,6 +70,7 @@ assert_type(quantile(_f64_3d, _f64_1d, axis=None), np.float64)
 assert_type(quantile(_f64_1d, _f64_1d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(quantile(_f64_2d, _f64_1d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(quantile(_f64_3d, _f64_1d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(quantile(_f64_1d, 0.5, method="harrell-davis"), np.float64)
 
 ###
 # estimated_cdf
