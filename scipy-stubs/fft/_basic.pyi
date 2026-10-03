@@ -1,6 +1,6 @@
 from _typeshed import Unused
 from collections.abc import Sequence
-from typing import Any, Literal, overload
+from typing import Any, Literal, Never, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -13,6 +13,9 @@ from scipy._typing import AnyShape
 type _Norm = Literal["backward", "ortho", "forward"]
 
 type _CoInteger = npc.integer | np.bool
+
+# workaround for https://github.com/microsoft/pyright/issues/10232
+type _JustAnyShape = tuple[Never, Never, Never, Never]
 
 type _AsFloat32[ShapeT: tuple[int, ...]] = onp.CanArray[ShapeT, np.dtype[npc.floating32]]
 type _AsFloat64[ShapeT: tuple[int, ...]] = onp.CanArray[ShapeT, np.dtype[npc.floating64 | _CoInteger]]
@@ -167,8 +170,8 @@ def ifft(
 
 # keep in sync with `ihfft`
 @overload
-def rfft[ShapeT: tuple[int, ...]](
-    x: _AsFloat64[ShapeT],
+def rfft(  # type: ignore[overload-overlap]
+    x: _AsFloat64[_JustAnyShape],
     n: int | None = None,
     axis: int = -1,
     norm: _Norm | None = None,
@@ -176,32 +179,10 @@ def rfft[ShapeT: tuple[int, ...]](
     workers: int | None = None,
     *,
     plan: Unused | None = None,
-) -> onp.ArrayND[np.complex128, ShapeT]: ...
+) -> onp.ArrayND[np.complex128]: ...
 @overload
-def rfft[ShapeT: tuple[int, ...]](
-    x: _AsFloat32[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
-    norm: _Norm | None = None,
-    overwrite_x: bool = False,
-    workers: int | None = None,
-    *,
-    plan: Unused | None = None,
-) -> onp.ArrayND[np.complex64, ShapeT]: ...
-@overload
-def rfft[ShapeT: tuple[int, ...]](
-    x: _AsFloat80[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
-    norm: _Norm | None = None,
-    overwrite_x: bool = False,
-    workers: int | None = None,
-    *,
-    plan: Unused | None = None,
-) -> onp.ArrayND[np.clongdouble, ShapeT]: ...
-@overload
-def rfft(
-    x: Sequence[float],
+def rfft(  # type: ignore[overload-overlap]
+    x: _AsFloat64[tuple[int]] | Sequence[float],
     n: int | None = None,
     axis: int = -1,
     norm: _Norm | None = None,
@@ -210,6 +191,50 @@ def rfft(
     *,
     plan: Unused | None = None,
 ) -> onp.Array1D[np.complex128]: ...
+@overload
+def rfft(  # type: ignore[overload-overlap]
+    x: _AsFloat64[tuple[int, int]],
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.Array2D[np.complex128]: ...
+@overload
+def rfft(  # type: ignore[overload-overlap]
+    x: _AsFloat64[tuple[int, int, int]],
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.Array3D[np.complex128]: ...
+@overload
+def rfft(
+    x: _AsFloat32[tuple[int, ...]],
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.ArrayND[np.complex64]: ...
+@overload
+def rfft(
+    x: _AsFloat80[tuple[int, ...]],
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.ArrayND[np.clongdouble]: ...
 @overload
 def rfft(
     x: _ToFloat64_ND,
