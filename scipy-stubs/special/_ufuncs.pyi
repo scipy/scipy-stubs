@@ -3405,7 +3405,7 @@ class _UFunc52f(_UFunc52[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 ###
 
-type _ErrOption = L["ignored", "warn", "raise"]
+type _ErrOption = L["ignore", "warn", "raise"]
 
 @type_check_only
 class _ErrDict(TypedDict):
@@ -3418,6 +3418,7 @@ class _ErrDict(TypedDict):
     domain: _ErrOption
     arg: _ErrOption
     other: _ErrOption
+    memory: _ErrOption
 
 @type_check_only
 class _ErrKwargs(TypedDict, total=False):
@@ -3431,6 +3432,7 @@ class _ErrKwargs(TypedDict, total=False):
     domain: _ErrOption
     arg: _ErrOption
     other: _ErrOption
+    memory: _ErrOption
 
 ###
 

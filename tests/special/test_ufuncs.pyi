@@ -13,7 +13,7 @@ type _Float32ND = onp.ArrayND[np.float32]
 type _Float64ND = onp.ArrayND[np.float64]
 type _Complex64ND = onp.ArrayND[np.complex64]
 type _Complex128ND = onp.ArrayND[np.complex128]
-type _ErrOption = L["ignored", "warn", "raise"]
+type _ErrOption = L["ignore", "warn", "raise"]
 
 ###
 
@@ -46,9 +46,10 @@ assert_type(sp.cbrt.__name__, L["cbrt"])
 assert_type(sp.cbrt.identity, L[0])
 assert_type(sp.geterr()["singular"], _ErrOption)
 assert_type(sp.geterr()["underflow"], _ErrOption)
+assert_type(sp.geterr()["memory"], _ErrOption)
 assert_type(sp.seterr()["overflow"], _ErrOption)
-assert_type(sp.seterr(all="warn", singular="raise", underflow="raise")["singular"], _ErrOption)
-assert_type(sp.errstate(all="warn", singular="raise"), sp.errstate)
+assert_type(sp.seterr(all="ignore", singular="raise", underflow="raise", memory="raise")["singular"], _ErrOption)
+assert_type(sp.errstate(all="ignore", singular="raise", memory="raise"), sp.errstate)
 
 # _UFunc11
 assert_type(sp.cbrt.nin, L[1])
