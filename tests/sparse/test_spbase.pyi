@@ -21,6 +21,7 @@ from ._types import (
     dok_mat,
     lil_mat,
 )
+from scipy.sparse._base import _spbase
 
 i64_1d: np.ndarray[tuple[int], np.dtype[np.int64]]
 i64_2d: np.ndarray[tuple[int, int], np.dtype[np.int64]]
@@ -37,6 +38,7 @@ _csr_mat_f80: sparse.csr_matrix[npc.floating80]
 _csr_arr_bool: sparse.csr_array[np.bool, tuple[int, int]]
 _csr_arr_i64: sparse.csr_array[np.int64, tuple[int, int]]
 _csr_arr_f64: sparse.csr_array[np.float64, tuple[int, int]]
+_coo_arr_f64: sparse.coo_array[np.float64]
 
 type _SpMatrix[ScalarT: npc.number | np.bool] = (
     sparse.bsr_matrix[ScalarT]
@@ -187,12 +189,24 @@ assert_type(_csr_arr_bool.multiply(2), sparse.csr_array[Any, tuple[int, int]])
 # __eq__ (same as __ne__)
 
 assert_type(csc_arr == 1, sparse.csc_array[np.bool])
+assert_type(_coo_arr_f64 == 1, _spbase[np.bool, tuple[Any, ...]])
 assert_type(csr_arr == csr_arr, sparse.csr_array[np.bool, tuple[int, int]])
 assert_type(coo_vec == 1, sparse.csr_array[np.bool, tuple[int]])
 assert_type(csc_mat == csr_mat, sparse.csc_matrix[np.bool])
 assert_type(csr_mat == 1, sparse.csr_matrix[np.bool])
 assert_type(csr_arr == dense_2d, np.ndarray[tuple[Any, ...], np.dtype[np.bool]])
 assert_type(csr_mat == dense_2d, np.matrix[tuple[int, int], np.dtype[np.bool]])
+
+# __lt__ (same as __gt__, __le__, __ge__)
+
+assert_type(csc_arr < 1, sparse.csc_array[np.bool])
+assert_type(_coo_arr_f64 < 1, _spbase[np.bool, tuple[Any, ...]])
+assert_type(csr_arr < csr_arr, sparse.csr_array[np.bool, tuple[int, int]])
+assert_type(coo_vec < 1, sparse.csr_array[np.bool, tuple[int]])
+assert_type(csc_mat < csr_mat, sparse.csc_matrix[np.bool])
+assert_type(csr_mat < 1, sparse.csr_matrix[np.bool])
+assert_type(csr_arr < dense_2d, np.ndarray[tuple[Any, ...], np.dtype[np.bool]])
+assert_type(csr_mat < dense_2d, np.matrix[tuple[int, int], np.dtype[np.bool]])
 
 ###
 
