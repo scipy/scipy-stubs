@@ -120,19 +120,20 @@ _to_ss_disc_c128: tuple[
 # mypy (still) doesn't support `__new__` methods that return a different type
 
 # TransferFunction
-assert_type(TransferFunction(_tf_cont_f32), TransferFunctionContinuous[np.float32])  # type: ignore[assert-type]
-assert_type(TransferFunction(_tf_disc_f32), TransferFunctionDiscrete[np.float32, float])  # type: ignore[assert-type]
-assert_type(TransferFunction(_zpk_cont_i64), TransferFunctionContinuous[np.float64])  # type: ignore[assert-type]
-assert_type(TransferFunction(_zpk_disc_i64), TransferFunctionDiscrete[np.float64, float])  # type: ignore[assert-type]
+assert_type(TransferFunction(_tf_cont_f32), TransferFunctionContinuous[np.float32])
+assert_type(TransferFunction(_tf_disc_f32), TransferFunctionDiscrete[np.float32, float])
+assert_type(TransferFunction(_zpk_cont_i64), TransferFunctionContinuous[np.float64])
+assert_type(TransferFunction(_zpk_disc_i64), TransferFunctionDiscrete[np.float64, float])
 assert_type(TransferFunction(dlti(_c128_1d, _f64_1d, 5, dt=0.1)), TransferFunctionDiscrete[np.float64 | Any, float])  # type: ignore[assert-type]
-assert_type(TransferFunction(_f32_1d, _f32_1d), TransferFunctionContinuous[np.float32])  # type: ignore[assert-type]
-assert_type(TransferFunction(_f32_1d, _f64_1d), TransferFunctionContinuous[np.float64])  # type: ignore[assert-type]
-assert_type(TransferFunction(_f64_1d, _f32_1d), TransferFunctionContinuous[np.float64])  # type: ignore[assert-type]
-assert_type(TransferFunction(_f64_1d, _f64_1d), TransferFunctionContinuous[np.float64])  # type: ignore[assert-type]
-assert_type(TransferFunction(_f32_1d, _f32_1d, dt=0.1), TransferFunctionDiscrete[np.float32, float])  # type: ignore[assert-type]
-assert_type(TransferFunction(_f32_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])  # type: ignore[assert-type]
-assert_type(TransferFunction(_f64_1d, _f32_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])  # type: ignore[assert-type]
-assert_type(TransferFunction(_f64_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f32_1d, _f32_1d), TransferFunctionContinuous[np.float32])
+assert_type(TransferFunction(_f32_1d, _f64_1d), TransferFunctionContinuous[np.float64])
+assert_type(TransferFunction(_f64_1d, _f32_1d), TransferFunctionContinuous[np.float64])
+assert_type(TransferFunction(_f64_1d, _f64_1d), TransferFunctionContinuous[np.float64])
+assert_type(TransferFunction(_f32_1d, _f32_1d, dt=0.1), TransferFunctionDiscrete[np.float32, float])
+assert_type(TransferFunction(_f32_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])
+assert_type(TransferFunction(_f64_1d, _f32_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])
+assert_type(TransferFunction(_f64_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])
+assert_type(TransferFunction(_tf_cont_f64.to_zpk()), TransferFunction[np.float64, None])
 
 # ZerosPolesGain
 assert_type(ZerosPolesGain(_zpk_cont_f32), ZerosPolesGainContinuous[np.float32, np.float32])  # type: ignore[assert-type]
