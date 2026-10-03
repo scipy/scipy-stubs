@@ -4,6 +4,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.linalg import ordqz, qz
 
@@ -27,6 +28,7 @@ c128_2d: onp.Array2D[np.complex128]
 c160_2d: onp.Array2D[np.complex256]
 py_f_2d: list[list[float]]
 py_c_2d: list[list[complex]]
+any_2d: onp.Array2D[Any]
 
 ###
 # qz
@@ -63,6 +65,9 @@ assert_type(qz(f64_2d, f80_2d), _Tuple4[onp.ArrayND[np.float64 | Any]])  # pyrig
 assert_type(qz(c160_2d, c160_2d), _Tuple4[onp.ArrayND[np.float64 | Any]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(qz(f80_2d, f80_2d, "complex"), _Tuple4[onp.ArrayND[np.float64 | Any]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
+assert_subtype[_Tuple4[onp.ArrayND[np.float64]]](qz(any_2d, any_2d))
+assert_subtype[_Tuple4[onp.ArrayND[np.complex128]]](qz(any_2d, any_2d, "complex"))
+
 ###
 # ordqz
 
@@ -96,3 +101,6 @@ assert_type(ordqz(f16_2d, f16_2d), _Tuple2C3[onp.ArrayND[np.float64 | Any], onp.
 assert_type(ordqz(f64_2d, f80_2d), _Tuple2C3[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.complex128 | Any]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(ordqz(c160_2d, c160_2d), _Tuple2C3[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.complex128 | Any]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(ordqz(f80_2d, f80_2d, "lhp", "complex"), _Tuple2C3[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.complex128 | Any]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_subtype[_Tuple2C3[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]](ordqz(any_2d, any_2d))
+assert_subtype[_Tuple2C3[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]](ordqz(any_2d, any_2d, "lhp", "complex"))
+assert_subtype[_Tuple2C3[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]](ordqz(any_2d, any_2d, output="complex"))

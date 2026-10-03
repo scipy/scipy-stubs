@@ -4,6 +4,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.linalg import qr, qr_multiply, rq
 
@@ -26,6 +27,8 @@ _c128_3d: onp.Array3D[np.complex128]
 _c160_2d: onp.Array2D[np.complex256]
 _py_f_2d: list[list[float]]
 _py_c_2d: list[list[complex]]
+_any_2d: onp.Array2D[Any]
+_any_3d: onp.Array3D[Any]
 
 ###
 # qr
@@ -93,6 +96,16 @@ assert_type(qr_multiply(_i8_2d, _f64_1d), tuple[onp.Array1D[np.float32], onp.Arr
 assert_type(qr_multiply(_i32_2d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]])
 assert_type(qr_multiply(_c64_2d, _c128_1d), tuple[onp.ArrayND[np.complex64], onp.Array2D[np.complex64]])
 assert_type(qr_multiply(_f32_3d, _f64_3d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+
+assert_subtype[tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]]](qr_multiply(_any_2d, _f64_1d))
+assert_subtype[tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]](qr_multiply(_any_2d, _f64_2d))
+assert_subtype[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]](qr_multiply(_any_3d, _f64_3d))
+assert_subtype[tuple[onp.ArrayND[np.float64], onp.Array2D[np.float64], onp.Array1D[np.int32]]](
+    qr_multiply(_any_2d, _f64_2d, pivoting=True)
+)
+assert_subtype[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.int32]]](
+    qr_multiply(_any_3d, _f64_3d, pivoting=True)
+)
 
 ###
 # rq

@@ -1286,15 +1286,6 @@ def inv(
     assume_a: _AssumeA | None = None,
     lower: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # generic shape, as float32
-def inv[ShapeT: tuple[int, ...]](
-    a: onp.CanArrayND[np.float32 | npc.number16 | npc.integer8 | np.bool, ShapeT],
-    overwrite_a: bool = False,
-    check_finite: bool = True,
-    *,
-    assume_a: _AssumeA | None = None,
-    lower: bool = False,
-) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # generic shape, as float64
 def inv[ShapeT: tuple[int, ...]](
     a: onp.CanArrayND[np.float64 | npc.floating80 | npc.integer64 | npc.integer32, ShapeT],
@@ -1304,6 +1295,15 @@ def inv[ShapeT: tuple[int, ...]](
     assume_a: _AssumeA | None = None,
     lower: bool = False,
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # generic shape, as float32
+def inv[ShapeT: tuple[int, ...]](
+    a: onp.CanArrayND[np.float32 | npc.number16 | npc.integer8 | np.bool, ShapeT],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    *,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
+) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # generic shape, as complex64
 def inv[ShapeT: tuple[int, ...]](
     a: onp.CanArrayND[np.complex64, ShapeT],

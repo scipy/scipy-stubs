@@ -1,7 +1,8 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.linalg import (
     block_diag,
@@ -51,6 +52,7 @@ _f32_3d: onp.Array3D[np.float32]
 _f32_nd: onp.ArrayND[np.float32]
 
 _f64_1d: onp.Array1D[np.float64]
+_any_1d: onp.Array1D[Any]
 _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
@@ -285,6 +287,7 @@ assert_type(hankel(_f32_1d, _f32_1d), onp.Array2D[np.float32])
 assert_type(hankel(_f32_1d, _py_f_1d), onp.Array2D[np.float64])
 assert_type(hankel(_py_i_2d), onp.Array2D[np.int_])  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
 assert_type(hankel(_py_i_3d), onp.Array2D[np.int_])  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
+assert_subtype[onp.Array2D[np.float64]](hankel(_any_1d))
 
 # helmert
 
