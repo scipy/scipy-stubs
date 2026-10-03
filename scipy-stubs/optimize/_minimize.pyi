@@ -46,7 +46,11 @@ class _CallbackResult(Protocol):
 
 @type_check_only
 class _CallbackVector(Protocol):
-    def __call__(self, /, xk: _Float1D) -> None: ...
+    def __call__(self, xk: _Float1D, /) -> object: ...
+
+@type_check_only
+class _CallbackVectorState(Protocol):
+    def __call__(self, xk: _Float1D, state: OptimizeResult[Any], /) -> object: ...
 
 @type_check_only
 class _MinimizeMethodFun(Protocol):
@@ -222,7 +226,7 @@ def minimize[Float1DT: _Float1D](
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[np.float64]: ...
 @overload  # method={COBYLA}  (positional)
@@ -237,7 +241,7 @@ def minimize(
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> _CobylaResult: ...
 @overload  # method={COBYLA}  (keyword)
@@ -253,7 +257,7 @@ def minimize(
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> _CobylaResult: ...
 @overload  # method={nelder-mead,COBYQA}  (positional)
@@ -268,7 +272,7 @@ def minimize(
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[np.float64]: ...
 @overload  # method={nelder-mead,COBYQA}  (keyword)
@@ -284,7 +288,7 @@ def minimize(
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[np.float64]: ...
 @overload  # `fun` return scalar, `jac` not truthy
@@ -299,7 +303,7 @@ def minimize[FunT: onp.ToFloat](
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[FunT]: ...
 @overload  # fun` return (scalar, vector), `jac` truthy  (positional)
@@ -314,7 +318,7 @@ def minimize[FunT: onp.ToFloat](
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[FunT]: ...
 @overload  # fun` return (scalar, vector), `jac` truthy  (keyword)
@@ -330,7 +334,7 @@ def minimize[FunT: onp.ToFloat](
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[FunT]: ...
 

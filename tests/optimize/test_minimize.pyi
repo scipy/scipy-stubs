@@ -4,7 +4,7 @@ from typing import Literal, assert_type, overload
 import numpy as np
 import optype.numpy as onp
 
-from scipy.optimize import Bounds, minimize
+from scipy.optimize import Bounds, OptimizeResult, minimize
 from scipy.sparse import csr_array
 
 ###
@@ -14,6 +14,8 @@ def _f_f64(x: onp.Array1D[np.float64]) -> np.float64: ...
 def _f_f64_f64(CCT: onp.Array1D[np.float64], uv_: onp.ArrayND[np.float64]) -> np.float64: ...
 def _f_float(x: onp.Array1D[np.float64]) -> float: ...
 def _f_jac_f32(x: onp.Array1D[np.float64]) -> tuple[np.float32, onp.Array1D[np.float64]]: ...
+def _callback_x(x: onp.ArrayND[np.float64]) -> bool: ...
+def _callback_x_state(x: onp.ArrayND[np.float64], state: OptimizeResult) -> bool: ...
 
 #
 @overload
@@ -24,6 +26,7 @@ def _f_jac_over(x: onp.Array1D[np.float64], extra: Literal[True]) -> tuple[float
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
+_f64_1d_list: list[onp.Array1D[np.float64]]
 
 ###
 
@@ -59,3 +62,7 @@ assert_type(
     minimize(_f_float, _f64_1d, method="trust-constr").jac,
     onp.Array1D[np.float64] | Sequence[onp.Array2D[np.float64] | csr_array[np.float64]],
 )
+
+assert_type(minimize(_f_float, _f64_1d, callback=_callback_x).fun, float)
+assert_type(minimize(_f_float, _f64_1d, callback=lambda p: _f64_1d_list.append(p.copy())).fun, float)
+assert_type(minimize(_f_float, _f64_1d, method="trust-constr", callback=_callback_x_state).fun, float)
