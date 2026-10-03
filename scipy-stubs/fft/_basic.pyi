@@ -169,7 +169,7 @@ def ifft(
 ) -> onp.ArrayND[np.complex128 | Any]: ...
 
 # keep in sync with `ihfft`
-@overload
+@overload  # ?d  (workaround)
 def rfft(  # type: ignore[overload-overlap]
     x: _AsFloat64[_JustAnyShape],
     n: int | None = None,
