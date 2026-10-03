@@ -64,10 +64,6 @@ def reconstruct_path(csgraph: spmatrix[_Real], predecessors: onp.ToFloatND, dire
 def reconstruct_path(
     csgraph: onp.ToFloat2D | sparray[_Real, tuple[int, int]], predecessors: onp.ToFloatND, directed: bool = True
 ) -> csr_array[np.float64, tuple[int, int]]: ...
-@overload
-def reconstruct_path(
-    csgraph: _spbase[_Real, tuple[int, int]], predecessors: onp.ToFloatND, directed: bool = True
-) -> csr_array[np.float64, tuple[int, int]] | Any: ...
 
 #
 def construct_dist_matrix(
