@@ -36,7 +36,9 @@ type _Tuple2[T] = tuple[T, T]
 type _MethodJac = Literal["2-point", "3-point", "cs"]
 
 type _ToJac = Callable[[onp.Array1D[np.float64]], _ToFloat2D] | _MethodJac
-type _ToHess = Callable[[onp.Array1D[np.float64]], _ToFloat2D | LinearOperator] | _MethodJac | HessianUpdateStrategy
+type _ToHess = (
+    Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], _ToFloat2D | LinearOperator] | _MethodJac | HessianUpdateStrategy
+)
 
 type _ToFloat2D = onp.ToFloat2D | _Sparse2D[npc.floating | npc.integer]
 
