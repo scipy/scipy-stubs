@@ -26,9 +26,9 @@ z_complex_arr: onp.ArrayND[np.complex128]
 assert_type(spherical_jn(n_scalar, z_float), np.float64)
 assert_type(spherical_jn(n_scalar, z_float_arr), _FloatND)
 assert_type(spherical_jn(n_arr, z_float), _FloatND)
-assert_type(spherical_jn(n_scalar, z_complex), _Inexact)
-assert_type(spherical_jn(n_scalar, z_complex_arr), _InexactND)
-assert_type(spherical_jn(n_arr, z_complex), _InexactND)
+assert_type(spherical_jn(n_scalar, z_complex), np.complex128)
+assert_type(spherical_jn(n_scalar, z_complex_arr), onp.ArrayND[np.complex128])
+assert_type(spherical_jn(n_arr, z_complex), onp.ArrayND[np.complex128])
 
 # spherical_yn
 assert_type(spherical_yn(n_scalar, z_float), np.float64)
