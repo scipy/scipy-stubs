@@ -1,6 +1,7 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
+import optype.numpy as onp
 
 from scipy.sparse import (
     bsr_array,
@@ -53,6 +54,11 @@ _m_coo_f32: coo_matrix[np.float32]
 _m_dia_f32: dia_matrix[np.float32]
 _m_dok_f32: dok_matrix[np.float32]
 _m_lil_f32: lil_matrix[np.float32]
+
+_f32_2d: onp.Array2D[np.float32]
+_f64_2d: onp.Array2D[np.float64]
+_f80_2d: onp.Array2D[np.float128]
+_c128_2d: onp.Array2D[np.complex128]
 
 ###
 # inv
@@ -123,6 +129,11 @@ assert_type(expm(_m_coo_f32), csr_matrix[np.float32])
 assert_type(expm(_m_dia_f32), csc_array[np.float32])
 assert_type(expm(_m_dok_f32), csr_matrix[np.float32])
 assert_type(expm(_m_lil_f32), csr_matrix[np.float32])
+
+assert_type(expm(_f64_2d), onp.Array2D[np.float64])
+assert_type(expm(_c128_2d), onp.Array2D[np.complex128])
+assert_type(expm(_f32_2d), onp.Array2D[np.float32])
+assert_type(expm(_f80_2d), onp.Array2D[Any])
 
 ###
 # matrix_power
