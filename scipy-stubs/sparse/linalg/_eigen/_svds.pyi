@@ -12,8 +12,7 @@ __all__ = ["svds"]
 
 ###
 
-type _Inexact = np.float32 | np.float64 | np.complex64 | np.complex128
-type _ToMatrix[ScalarT: _Inexact | npc.integer] = onp.ArrayND[ScalarT] | LinearOperator[ScalarT] | _spbase[ScalarT]
+type _ToMatrix[ScalarT: npc.number] = onp.ArrayND[ScalarT] | LinearOperator[ScalarT] | _spbase[ScalarT]
 
 type _Which = Literal["LM", "SM"]
 type _Solver = Literal["arpack", "propack", "lobpcg"]
