@@ -28,6 +28,15 @@ _sp_i64: csr_array[np.int64]
 _sp_f64: csr_array[np.float64]
 _sp_c128: csr_array[np.complex128]
 
+_op_f64: LinearOperator[np.float64, tuple[int, int]]
+
+class _MatVec:
+    shape: tuple[int, int]
+    def matvec(self, x: onp.ArrayND[np.float64], /) -> onp.ArrayND[np.float64]: ...
+
+class _MatVecDType(_MatVec):
+    dtype: np.dtype[np.float64]
+
 ###
 # LinearOperator.__new__
 
@@ -60,3 +69,7 @@ assert_type(aslinearoperator(_3d_i64), MatrixLinearOperator[np.int64, tuple[int,
 assert_type(aslinearoperator(_sp_i64), MatrixLinearOperator[np.int64, tuple[int, int]])
 assert_type(aslinearoperator(_sp_f64), MatrixLinearOperator[np.float64, tuple[int, int]])
 assert_type(aslinearoperator(_sp_c128), MatrixLinearOperator[np.complex128, tuple[int, int]])
+
+assert_type(aslinearoperator(_op_f64), LinearOperator[np.float64, tuple[int, int]])
+assert_type(aslinearoperator(_MatVecDType()), _CustomLinearOperator[np.float64, tuple[int, int]])
+assert_type(aslinearoperator(_MatVec()), _CustomLinearOperator[np.float64, tuple[int, int]])
