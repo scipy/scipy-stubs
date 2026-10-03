@@ -907,7 +907,11 @@ def anderson(
 ) -> SignificanceResult[np.float64]: ...
 
 #
-@overload  # midrank: bool
+@overload
+def anderson_ksamp(
+    samples: onp.ToFloatND, midrank: op.JustObject = ..., *, variant: op.JustObject = ..., method: PermutationMethod | None = None
+) -> Anderson_ksampResult: ...
+@overload
 @deprecated(
     "Parameter `variant` has been introduced to replace `midrank`; "
     "`midrank` will be removed in SciPy 2.0.0. Specify `variant` to silence this warning. "
@@ -916,11 +920,7 @@ def anderson(
 def anderson_ksamp(
     samples: onp.ToFloatND, midrank: bool, *, variant: op.JustObject = ..., method: PermutationMethod | None = None
 ) -> Anderson_ksampResult: ...
-@overload  # default
-def anderson_ksamp(
-    samples: onp.ToFloatND, midrank: op.JustObject = ..., *, variant: op.JustObject = ..., method: PermutationMethod | None = None
-) -> Anderson_ksampResult: ...
-@overload  # variant: str
+@overload
 def anderson_ksamp(
     samples: onp.ToFloatND,
     midrank: op.JustObject = ...,
