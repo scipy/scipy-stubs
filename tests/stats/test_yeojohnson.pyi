@@ -4,6 +4,7 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+from matplotlib.axes import Axes
 
 from scipy.stats import yeojohnson, yeojohnson_llf, yeojohnson_normmax, yeojohnson_normplot
 
@@ -28,6 +29,8 @@ _f16_nd: onp.ArrayND[np.float16]
 _f32_nd: onp.ArrayND[np.float32]
 _f64_nd: onp.ArrayND[np.float64]
 _f80_nd: onp.ArrayND[np.float128]
+
+_ax: Axes
 
 ###
 
@@ -113,3 +116,4 @@ assert_type(yeojohnson_normplot(_i8_1d, 0.0, 1.0), tuple[onp.Array1D[np.float64]
 assert_type(yeojohnson_normplot(_f16_1d, 0.0, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(yeojohnson_normplot(_f32_1d, 0.0, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(yeojohnson_normplot(_f64_1d, 0.0, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(yeojohnson_normplot(_f64_1d, 0.0, 1.0, plot=_ax), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
