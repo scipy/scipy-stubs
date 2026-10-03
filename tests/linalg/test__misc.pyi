@@ -4,6 +4,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.linalg import bandwidth, norm
 
@@ -79,11 +80,11 @@ assert_type(norm(f32_2d, keepdims=True), onp.Array2D[np.float32])
 
 assert_type(norm(f64_2d, axis=0), onp.ArrayND[np.float64])
 assert_type(norm(f64_3d, axis=(0, 1)), onp.ArrayND[np.float64])
-assert_type(norm(i32_nd, axis=0), onp.ArrayND[np.float64])
-assert_type(norm(c128_nd, axis=0), onp.ArrayND[np.float64])
+assert_subtype[onp.ArrayND[np.float64]](norm(i32_nd, axis=0))
+assert_subtype[onp.ArrayND[np.float64]](norm(c128_nd, axis=0))
 assert_type(norm(py_f_2d, axis=0), onp.ArrayND[np.float64])
 assert_type(norm(f32_2d, axis=0), onp.ArrayND[np.float32])
-assert_type(norm(c64_nd, axis=0), onp.ArrayND[np.float32])
+assert_subtype[onp.ArrayND[np.float32]](norm(c64_nd, axis=0))
 assert_type(norm(b1_nd, axis=0), onp.ArrayND[np.float64 | Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(norm(f16_nd, axis=0), onp.ArrayND[np.float64 | Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(norm(f80_nd, axis=0), onp.ArrayND[np.float64 | Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]

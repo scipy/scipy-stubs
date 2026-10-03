@@ -23,6 +23,7 @@ type _AsBoolF16Inexact80ND = onp.ToArrayND[Never, _BoolF16Inexact80]
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
 type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
+type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 
 ###
 
@@ -68,6 +69,24 @@ def norm(
     keepdims: Literal[False] = False,
     check_finite: bool = True,
 ) -> np.float64 | Any: ...
+@overload  # ?d +inexact64, axis: <given>  (workaround)
+def norm(
+    a: onp.ArrayND[_SubScalar, _JustAnyShape],
+    ord: _Order | None = None,
+    *,
+    axis: _Axis,
+    keepdims: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64] | Any: ...
+@overload  # ?d ~inexact32, axis: <given>  (workaround)
+def norm(
+    a: onp.ArrayND[npc.inexact32, _JustAnyShape],
+    ord: _Order | None = None,
+    *,
+    axis: _Axis,
+    keepdims: Literal[False] = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32] | Any: ...
 @overload  # Nd +inexact64, axis: <given>
 def norm(
     a: onp.ToArrayND[complex, _SubScalar],
