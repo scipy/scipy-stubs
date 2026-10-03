@@ -127,8 +127,9 @@ assert_type(RigidTransform.identity(shape=4), RigidTransform[tuple[int]])
 # concatenate
 assert_type(RigidTransform.concatenate(_tf_nd), RigidTransform)
 assert_type(RigidTransform.concatenate([_tf_0d, _tf_0d]), RigidTransform[tuple[int]])
-assert_type(RigidTransform.concatenate([_tf_1d, _tf_1d]), RigidTransform[tuple[int, int]])
+assert_type(RigidTransform.concatenate([_tf_1d, _tf_1d]), RigidTransform[tuple[int]])
 assert_subtype[RigidTransform](RigidTransform.concatenate([_tf_nd, _tf_nd]))
+assert_type(RigidTransform.concatenate([_tf_0d, _tf_1d]), RigidTransform[tuple[int]])
 
 # inv
 assert_type(_tf_0d.inv(), RigidTransform[tuple[()]])

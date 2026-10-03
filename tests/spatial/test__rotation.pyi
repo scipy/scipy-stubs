@@ -78,8 +78,9 @@ assert_type(Rotation.random(shape=_3d), Rotation[tuple[int, int, int]])
 
 assert_type(Rotation.concatenate(_rot_nd), Rotation)
 assert_type(Rotation.concatenate([_rot_0d, _rot_0d]), Rotation[tuple[int]])
-assert_type(Rotation.concatenate([_rot_1d, _rot_1d]), Rotation[tuple[int, int]])
+assert_type(Rotation.concatenate([_rot_1d, _rot_1d]), Rotation[tuple[int]])
 assert_subtype[Rotation](Rotation.concatenate([_rot_nd, _rot_nd]))
+assert_type(Rotation.concatenate([_rot_0d, _rot_1d]), Rotation[tuple[int]])
 
 # create_group
 
