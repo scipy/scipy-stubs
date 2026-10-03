@@ -1473,7 +1473,7 @@ class UnivariateDistribution(_BaseDistribution[_XT_co, _ShapeT0_co], Generic[_XT
         x: _PlotQuantity = "x",
         y: _PlotQuantity | None = None,
         *,
-        t: tuple[_PlotQuantity, onp.ToJustFloat, onp.ToJustFloat] | None = None,
+        t: tuple[_PlotQuantity, onp.ToFloat, onp.ToFloat] | None = None,
         ax: _AxesT | None = None,
     ) -> _AxesT: ...
 
