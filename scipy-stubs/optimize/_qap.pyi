@@ -14,7 +14,7 @@ class _CommonOptions(TypedDict, total=False):
 @type_check_only
 class _FAQOptions(_CommonOptions, TypedDict, total=False):
     P0: onp.ToFloat2D | Literal["barycenter", "randomized"]
-    shuffle: bool
+    shuffle_input: bool
     maxiter: onp.ToJustInt
     tol: onp.ToFloat
 

@@ -50,6 +50,7 @@ assert_type(minimize(_f_f32, _f64_1d, method="Nelder-Mead").fun, np.float64)
 assert_type(minimize(_f_f32, _f64_1d, method="cobyqa").fun, np.float64)
 assert_type(minimize(_f_f32, _f64_1d, (), "COBYLA").fun, np.float64)
 
+assert_type(minimize(_f_f32, _f64_1d, method="COBYLA", options={"catol": 1e-6}).fun, np.float64)
 assert_type(minimize(_f_f32, _f64_1d, method="COBYLA").nfev, np.intp)
 assert_type(minimize(_f_f32, _f64_1d, method="COBYLA").maxcv, float)
 assert_type(minimize(_f_f32, _f64_1d, (), "COBYLA").nfev, np.intp)

@@ -188,6 +188,7 @@ assert_type(fmin_powell(_f, _x0, full_output=True, retall=True), tuple[_Float1D,
 assert_type(show_options(), None)
 assert_type(show_options(None, None, False), str)
 assert_type(show_options(disp=False), str)
+assert_type(show_options("root_scalar", "brentq"), None)
 
 ###
 # line_search

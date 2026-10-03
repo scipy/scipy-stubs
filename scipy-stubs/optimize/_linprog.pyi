@@ -42,7 +42,7 @@ class _OptionsHighsIPM(_OptionsHighsDS, TypedDict, total=False):
 # highs
 @type_check_only
 class _OptionsHighs(_OptionsHighsIPM, TypedDict, total=False):
-    min_rel_gap: _Float | None  # default: None
+    mip_rel_gap: _Float | None  # default: None
 
 @type_check_only
 class _OptionsCommonLegacy(_OptionsCommon, TypedDict, total=False):
