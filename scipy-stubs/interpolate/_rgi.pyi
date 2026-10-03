@@ -97,7 +97,7 @@ def interpn(
 @overload
 def interpn(
     points: _ToPoints,
-    values: onp.ToJustComplex1D,
+    values: onp.ToJustComplexND,
     xi: onp.ToFloatND,
     method: _MethodN = "linear",
     bounds_error: bool = True,
@@ -106,7 +106,7 @@ def interpn(
 @overload
 def interpn(
     points: _ToPoints,
-    values: onp.ToComplex1D,
+    values: onp.ToComplexND,
     xi: onp.ToFloatND,
     method: _MethodN = "linear",
     bounds_error: bool = True,
