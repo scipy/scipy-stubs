@@ -74,6 +74,9 @@ cs_nd = CubicSpline(x_1d, y_nd)
 assert_type(cs_nd, CubicSpline[np.float64])
 assert_type(cs_nd.solve(), onp.Array1D[np.float64])
 
+cs_bc = CubicSpline(x_1d, y_1d, bc_type=((1, 0.0), (2, 0.0)))
+assert_type(cs_bc, CubicSpline[np.float64, tuple[()]])
+
 ###
 # pchip_interpolate
 
