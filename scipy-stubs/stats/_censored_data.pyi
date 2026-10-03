@@ -63,6 +63,16 @@ class CensoredData(Generic[_UncensoredT_co, _LeftT_co, _RightT_co, _IntervalT_co
     #
     @overload
     def __init__(
+        self: CensoredData[np.float64, np.float64, np.float64, np.float64],
+        /,
+        uncensored: onp.ToFloat64_1D | None = None,
+        *,
+        left: onp.ToFloat64_1D | None = None,
+        right: onp.ToFloat64_1D | None = None,
+        interval: onp.ToFloat64_2D | None = None,
+    ) -> None: ...
+    @overload
+    def __init__(
         self: CensoredData[_ScalarT, _LeftT, _RightT, _IntervalT],
         /,
         uncensored: onp.ToArray1D[float, _ScalarT] | None = None,
