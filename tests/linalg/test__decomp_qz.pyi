@@ -30,6 +30,8 @@ py_f_2d: list[list[float]]
 py_c_2d: list[list[complex]]
 any_2d: onp.Array2D[Any]
 
+def _sort(alpha: onp.ArrayND[np.complex128], beta: onp.ArrayND[np.float64], /) -> onp.ArrayND[np.bool]: ...
+
 ###
 # qz
 
@@ -104,3 +106,5 @@ assert_type(ordqz(f80_2d, f80_2d, "lhp", "complex"), _Tuple2C3[onp.ArrayND[np.fl
 assert_subtype[_Tuple2C3[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]](ordqz(any_2d, any_2d))
 assert_subtype[_Tuple2C3[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]](ordqz(any_2d, any_2d, "lhp", "complex"))
 assert_subtype[_Tuple2C3[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]](ordqz(any_2d, any_2d, output="complex"))
+
+assert_type(ordqz(f64_2d, f64_2d, _sort), _Tuple2C3[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
