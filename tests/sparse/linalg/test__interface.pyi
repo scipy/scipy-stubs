@@ -33,6 +33,10 @@ _sp_c128: csr_array[np.complex128]
 
 def mv(v: npt.NDArray[np.float64 | np.complex128]) -> npt.NDArray[np.float64 | np.complex128]: ...
 
+class _Identity(LinearOperator[np.float64]):
+    def __init__(self, /, n: int) -> None: ...
+    def _matvec(self, /, x: onp.Array1D[np.float64]) -> onp.Array1D[np.float64]: ...
+
 assert_type(LinearOperator(_2d, matvec=mv, dtype=np.int16), _CustomLinearOperator[np.int16, tuple[int, int]])
 assert_type(LinearOperator(_2d, matvec=mv, dtype=int), _CustomLinearOperator[np.int_, tuple[int, int]])
 assert_type(LinearOperator(_2d, matvec=mv, dtype=float), _CustomLinearOperator[np.float64, tuple[int, int]])
@@ -44,6 +48,8 @@ assert_type(LinearOperator(_3d, matvec=mv, dtype=int), _CustomLinearOperator[np.
 assert_type(LinearOperator(_3d, matvec=mv, dtype=float), _CustomLinearOperator[np.float64, tuple[int, int, int]])
 assert_type(LinearOperator(_3d, matvec=mv, dtype=complex), _CustomLinearOperator[np.complex128, tuple[int, int, int]])
 assert_type(LinearOperator(_3d, matvec=mv), _CustomLinearOperator[np.int8 | Any, tuple[int, int, int]])
+
+assert_type(_Identity(3), _Identity)
 
 ###
 # aslinearoperator

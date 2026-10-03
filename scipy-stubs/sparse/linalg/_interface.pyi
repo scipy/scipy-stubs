@@ -55,12 +55,27 @@ class _HasShapeAndDTypeAndMatVec(Protocol[_SCT_co, _ShapeT_co]):
     #
     def matvec(self, /, x: onp.CanArrayND[np.float64] | onp.CanArrayND[np.complex128]) -> onp.ToComplexND: ...
 
+@type_check_only
+class _CanMatVec(Protocol):
+    @property
+    def _matvec(self, /) -> object: ...
+
+@type_check_only
+class _CanMatMat(Protocol):
+    @property
+    def _matmat(self, /) -> object: ...
+
 ###
 
 # ruff: file-ignore[commented-out-code]
 # ^^^ needed for the commented-out `LinearOperator.__init__`  code below (mypy workaround)
 
-class LinearOperator(Generic[_SCT_co, _ShapeT_co]):
+# https://github.com/python/mypy/issues/17251
+@type_check_only
+class _LinearOperatorBase:
+    def __init__(self, /, *args: object, **kwargs: object) -> None: ...
+
+class LinearOperator(_LinearOperatorBase, Generic[_SCT_co, _ShapeT_co]):
     __array_ufunc__: ClassVar[None] = None
 
     @classmethod
@@ -198,6 +213,8 @@ class LinearOperator(Generic[_SCT_co, _ShapeT_co]):
         *,
         xp: ModuleType,
     ) -> _CustomLinearOperator[Any, ShapeT]: ...
+    @overload  # subclass
+    def __new__[SubclassT: _CanMatVec | _CanMatMat](cls: type[SubclassT], /, *args: object, **kwargs: object) -> SubclassT: ...  # type: ignore[misc]
 
     # NOTE: the `__init__` method cannot be annotated, because it will cause mypy to ignore `__new__`:
     # https://github.com/python/mypy/issues/17251
