@@ -99,7 +99,7 @@ def epps_singleton_2samp(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
-) -> Epps_Singleton_2sampResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> Epps_Singleton_2sampResult[np.float64 | Any]: ...
 @overload  # ?d|1d +f64, ?d +f64  (workaround)
 def epps_singleton_2samp(
     x: _AsF64StrictND | _AsF64Strict1D,
@@ -109,7 +109,7 @@ def epps_singleton_2samp(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
-) -> Epps_Singleton_2sampResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> Epps_Singleton_2sampResult[np.float64 | Any]: ...
 @overload  # ?d ~f32, ?d|1d ~f32  (workaround)
 def epps_singleton_2samp(
     x: _AsF32StrictND,
@@ -190,7 +190,7 @@ def epps_singleton_2samp(
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> Epps_Singleton_2sampResult: ...
-@overload
+@overload  # ?d  (workaround)
 def cramervonmises(
     rvs: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
     cdf: _ToCDF,
@@ -199,7 +199,7 @@ def cramervonmises(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
-) -> CramerVonMisesResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> CramerVonMisesResult[np.float64 | Any]: ...
 @overload
 def cramervonmises(
     rvs: onp.ToFloatStrict1D,
@@ -251,7 +251,7 @@ def cramervonmises_2samp(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
-) -> CramerVonMisesResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> CramerVonMisesResult[np.float64 | Any]: ...
 @overload  # ?d|1d +f64, ?d +f64  (workaround)
 def cramervonmises_2samp(
     x: _AsF64StrictND | _AsF64Strict1D,
@@ -261,7 +261,7 @@ def cramervonmises_2samp(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
-) -> CramerVonMisesResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> CramerVonMisesResult[np.float64 | Any]: ...
 @overload  # ?d ~f32, ?d|1d ~f32  (workaround)
 def cramervonmises_2samp(
     x: _AsF32StrictND,

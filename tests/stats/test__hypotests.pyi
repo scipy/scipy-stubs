@@ -57,8 +57,8 @@ assert_type(epps_singleton_2samp(_f32_2d, _f32_2d, axis=None), Epps_Singleton_2s
 assert_type(epps_singleton_2samp(_f64_1d, _f64_1d).statistic, np.float64)
 assert_type(epps_singleton_2samp(_f64_1d, _f64_1d).pvalue, np.float64)
 
-assert_type(epps_singleton_2samp(_f64_nd, _f64_nd), Epps_Singleton_2sampResult[np.float64 | onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
-assert_type(epps_singleton_2samp(_f64_1d, _f64_nd), Epps_Singleton_2sampResult[np.float64 | onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
+assert_type(epps_singleton_2samp(_f64_nd, _f64_nd), Epps_Singleton_2sampResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
+assert_type(epps_singleton_2samp(_f64_1d, _f64_nd), Epps_Singleton_2sampResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
 assert_type(epps_singleton_2samp(_f32_nd, _f32_nd), Epps_Singleton_2sampResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
 assert_type(epps_singleton_2samp(_f32_1d, _f32_nd), Epps_Singleton_2sampResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
 
@@ -75,7 +75,7 @@ assert_type(cramervonmises(_f32_1d, "norm"), CramerVonMisesResult[np.float64])
 assert_type(cramervonmises(_f64_1d, "norm").statistic, np.float64)
 assert_type(cramervonmises(_f64_1d, "norm").pvalue, np.float64)
 
-assert_type(cramervonmises(_f64_nd, _cdf), CramerVonMisesResult[np.float64 | onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
+assert_type(cramervonmises(_f64_nd, _cdf), CramerVonMisesResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
 
 # cramervonmises_2samp
 
@@ -90,8 +90,8 @@ assert_type(cramervonmises_2samp(_f32_2d, _f32_2d, axis=None), CramerVonMisesRes
 assert_type(cramervonmises_2samp(_f64_1d, _f64_1d).statistic, np.float64)
 assert_type(cramervonmises_2samp(_f64_1d, _f64_1d).pvalue, np.float64)
 
-assert_type(cramervonmises_2samp(_f64_nd, _f64_nd), CramerVonMisesResult[np.float64 | onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
-assert_type(cramervonmises_2samp(_f64_1d, _f64_nd), CramerVonMisesResult[np.float64 | onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
+assert_type(cramervonmises_2samp(_f64_nd, _f64_nd), CramerVonMisesResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
+assert_type(cramervonmises_2samp(_f64_1d, _f64_nd), CramerVonMisesResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
 assert_type(cramervonmises_2samp(_f32_nd, _f32_nd), CramerVonMisesResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
 assert_type(cramervonmises_2samp(_f32_1d, _f32_nd), CramerVonMisesResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
 
