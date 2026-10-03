@@ -3505,7 +3505,7 @@ def iqr(
 ) -> onp.ArrayND[np.float64]: ...
 
 #
-@overload  # +f64, ?d
+@overload  # +f64, ?d  (workaround)
 def median_abs_deviation(
     x: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
     axis: int = 0,
@@ -3515,7 +3515,7 @@ def median_abs_deviation(
     *,
     keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
-@overload  # T@floating, ?d
+@overload  # T@floating, ?d  (workaround)
 def median_abs_deviation[FloatT: npc.floating](
     x: onp.ArrayND[FloatT, _JustAnyShape],
     axis: int = 0,
@@ -4071,7 +4071,7 @@ def alexandergovern(
 ) -> AlexanderGovernResult[np.float64 | Any]: ...
 
 #
-@overload  # ?d +integer | ~float64, ?d|1d +floating
+@overload  # ?d +integer | ~float64, ?d|1d +floating  (workaround)
 def pearsonr(
     x: onp.ArrayND[npc.integer | np.bool | np.float64, _JustAnyShape],
     y: _ToFloatStrictND | onp.ToFloatStrict1D,
@@ -4080,7 +4080,7 @@ def pearsonr(
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
 ) -> PearsonRResult[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d|1d +floating, ?d +integer | ~float64
+@overload  # ?d|1d +floating, ?d +integer | ~float64  (workaround)
 def pearsonr(
     x: _ToFloatStrictND | onp.ToFloatStrict1D,
     y: onp.ArrayND[npc.integer | np.bool | np.float64, _JustAnyShape],
@@ -4089,7 +4089,7 @@ def pearsonr(
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
 ) -> PearsonRResult[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d +floating, ?d|1d +floating
+@overload  # ?d +floating, ?d|1d +floating  (workaround)
 def pearsonr(
     x: _ToFloatStrictND,
     y: _ToFloatStrictND | onp.ToFloatStrict1D,
@@ -4101,7 +4101,7 @@ def pearsonr(
     PearsonRResult[np.float64 | Any, np.float64 | Any]
     | PearsonRResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]
 ): ...
-@overload  # ?d|1d +floating, ?d +floating
+@overload  # ?d|1d +floating, ?d +floating  (workaround)
 def pearsonr(
     x: _ToFloatStrictND | onp.ToFloatStrict1D,
     y: _ToFloatStrictND,
@@ -5360,7 +5360,7 @@ def power_divergence(
 ) -> Power_divergenceResult[np.float64 | Any]: ...
 
 #
-@overload  # ?d +f64
+@overload  # ?d +f64  (workaround)
 def chisquare(
     f_obs: _AsFloat64StrictND,
     f_exp: _AsFloat64_ND | None = None,
@@ -5371,7 +5371,7 @@ def chisquare(
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> Power_divergenceResult[np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d ~f32
+@overload  # ?d ~f32  (workaround)
 def chisquare(
     f_obs: _AsFloat32StrictND,
     f_exp: onp.ToJustFloat32_ND | None = None,
