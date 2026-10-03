@@ -12,6 +12,7 @@ type _ResultUnconstrained = OptimizeResult[onp.Array1D[np.float64] | None]
 type _ResultConstrained = OptimizeResult[list[onp.Array2D[np.float64]] | None]
 
 def _obj(x: onp.Array1D[np.float64]) -> float: ...
+def _obj_vec(x: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
 
 _b: list[tuple[float, float]]
 _nlc: NonlinearConstraint
@@ -23,6 +24,8 @@ assert_type(differential_evolution(_obj, bounds=[(-5.0, 5.0), (-2.0, 2.0)]), _Re
 assert_type(differential_evolution(_obj, bounds=[[-5.0, 5.0], [-2.0, 2.0]]), _ResultUnconstrained)
 assert_type(differential_evolution(_obj, _b, constraints=_nlc), _ResultConstrained)
 assert_type(differential_evolution(_obj, _b, constraints=Bounds(0, 1)), _ResultConstrained)
+assert_type(differential_evolution(_obj_vec, _b, updating="deferred", vectorized=True), _ResultUnconstrained)
+assert_type(differential_evolution(_obj_vec, _b, updating="deferred", constraints=_nlc, vectorized=True), _ResultConstrained)
 
 _res: OptimizeResult
 
