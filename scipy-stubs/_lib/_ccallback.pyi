@@ -1,5 +1,5 @@
 import ctypes as ct
-from _ctypes import CFuncPtr as _CFuncPtr
+from _ctypes import CFuncPtr as PyCFuncPtr
 from types import ModuleType
 from typing import ClassVar, Generic, Literal, NoReturn, Protocol, Self, Unpack, final, overload, override, type_check_only
 from typing_extensions import CapsuleType as PyCapsule, TypeVar, TypeVarTuple
@@ -104,9 +104,6 @@ ffi: Literal[False] | None
 # public api
 
 @final
-class PyCFuncPtr(_CFuncPtr): ...
-
-@final
 class CData: ...
 
 class LowLevelCallable(tuple[PyCapsule, _FuncT_co, _DataT_co], Generic[_FuncT_co, _DataT_co]):
@@ -122,6 +119,10 @@ class LowLevelCallable(tuple[PyCapsule, _FuncT_co, _DataT_co], Generic[_FuncT_co
     #
     @overload
     def __new__(cls, function: Self, user_data: _DataT_co | None = None, signature: str | None = None) -> Self: ...
+    @overload
+    def __new__[FuncT: _Function](  # type: ignore[misc]
+        cls, function: FuncT, user_data: None = None, signature: str | None = None
+    ) -> LowLevelCallable[FuncT, None]: ...
     @overload
     def __new__(cls, function: _FuncT_co, user_data: _DataT_co, signature: str | None = None) -> Self: ...
 
