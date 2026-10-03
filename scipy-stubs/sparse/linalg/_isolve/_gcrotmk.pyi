@@ -66,3 +66,20 @@ def gcrotmk(
     discard_C: bool = False,
     truncate: _Truncate = "oldest",
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...
+@overload  # real A, complex b
+def gcrotmk(
+    A: _ToLinearOperator[_Float | _ToInt],
+    b: onp.ToJustComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int = 1_000,
+    M: _ToLinearOperator[_Inexact | _ToInt] | None = None,
+    callback: _Callback[np.complex128] | None = None,
+    m: int = 20,
+    k: int | None = None,
+    CU: Sequence[tuple[Sequence[onp.ArrayND[_Inexact]], Sequence[onp.ArrayND[_Inexact]] | None]] | None = None,
+    discard_C: bool = False,
+    truncate: _Truncate = "oldest",
+) -> tuple[onp.Array1D[np.complex128], int]: ...

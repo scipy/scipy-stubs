@@ -48,3 +48,16 @@ def tfqmr(
     callback: _Callback[_ComplexT] | None = None,
     show: bool = False,
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...
+@overload  # real A, complex b
+def tfqmr(
+    A: _ToLinearOperator[np.float32 | np.float64 | npc.integer | np.bool],
+    b: onp.ToJustComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: float = 1e-5,
+    atol: float = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[npc.inexact64 | npc.inexact32 | npc.integer | np.bool] | None = None,
+    callback: _Callback[np.complex128] | None = None,
+    show: bool = False,
+) -> tuple[onp.Array1D[np.complex128], int]: ...
