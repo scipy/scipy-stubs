@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from typing import Literal, assert_type
 
 import numpy as np
@@ -10,6 +11,8 @@ from scipy.integrate import cubature
 
 def f(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]: ...
 
+_ex: ThreadPoolExecutor
+
 r = cubature(f, [0], [1])
 assert_type(r.estimate, onp.ArrayND[np.float64])
 assert_type(r.error, onp.ArrayND[np.float64])
@@ -21,3 +24,5 @@ assert_type(r.regions[0].b, onp.Array1D[np.float64])
 assert_type(r.subdivisions, int)
 assert_type(r.atol, float)
 assert_type(r.rtol, float)
+
+assert_type(cubature(f, [0], [1], workers=_ex.map).estimate, onp.ArrayND[np.float64])

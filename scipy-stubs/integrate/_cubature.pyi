@@ -48,6 +48,6 @@ def cubature[VT, RT](
     atol: float = 0,
     max_subdivisions: int = 10_000,
     args: tuple[object, ...] = (),
-    workers: int | Callable[[Callable[[VT], RT], Iterable[VT]], Sequence[RT]] = 1,
+    workers: int | Callable[[Callable[[VT], RT], Iterable[VT]], Iterable[RT]] = 1,
     points: Sequence[onp.ToFloat1D] | None = None,
 ) -> CubatureResult: ...
