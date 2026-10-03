@@ -144,19 +144,19 @@ def convolve(
     in1: onp.ToJustBoolND, in2: onp.ToJustBoolND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[np.bool]: ...
 @overload  # ?d, Nd generic
-def convolve[NumericT: npc.number | np.bool](
-    in1: onp.ArrayND[NumericT, _JustAnyShape],
-    in2: onp.CanArrayND[NumericT],
+def convolve[ScalarT: npc.number | np.bool](
+    in1: onp.ArrayND[ScalarT, _JustAnyShape],
+    in2: onp.CanArrayND[ScalarT],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
-) -> onp.ArrayND[NumericT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload  # Nd, ?d generic
-def convolve[NumericT: npc.number | np.bool](
-    in1: onp.CanArrayND[NumericT],
-    in2: onp.ArrayND[NumericT, _JustAnyShape],
+def convolve[ScalarT: npc.number | np.bool](
+    in1: onp.CanArrayND[ScalarT],
+    in2: onp.ArrayND[ScalarT, _JustAnyShape],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
-) -> onp.ArrayND[NumericT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload  # generic
 def convolve[AnyShapeT: (_1D, _2D, _3D), NumericT: npc.number | np.bool](
     in1: nptc.CanArray[AnyShapeT, np.dtype[NumericT]],
@@ -199,19 +199,19 @@ def correlate(
     in1: onp.ToJustBoolND, in2: onp.ToJustBoolND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[np.bool]: ...
 @overload  # ?d, Nd generic
-def correlate[NumericT: npc.number | np.bool](
-    in1: onp.ArrayND[NumericT, _JustAnyShape],
-    in2: onp.CanArrayND[NumericT],
+def correlate[ScalarT: npc.number | np.bool](
+    in1: onp.ArrayND[ScalarT, _JustAnyShape],
+    in2: onp.CanArrayND[ScalarT],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
-) -> onp.ArrayND[NumericT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload  # Nd, ?d generic
-def correlate[NumericT: npc.number | np.bool](
-    in1: onp.CanArrayND[NumericT],
-    in2: onp.ArrayND[NumericT, _JustAnyShape],
+def correlate[ScalarT: npc.number | np.bool](
+    in1: onp.CanArrayND[ScalarT],
+    in2: onp.ArrayND[ScalarT, _JustAnyShape],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
-) -> onp.ArrayND[NumericT]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload  # generic
 def correlate[AnyShapeT: (_1D, _2D, _3D), NumericT: npc.number | np.bool](
     in1: nptc.CanArray[AnyShapeT, np.dtype[NumericT]],
@@ -396,9 +396,9 @@ def fftconvolve(
     axes: None = None,
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # ?d, Nd generic dtype
-def fftconvolve[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
-    in1: onp.ArrayND[InexactT3, _JustAnyShape], in2: onp.ArrayND[InexactT3], mode: onp.ConvolveMode = "full", axes: None = None
-) -> onp.ArrayND[InexactT3]: ...
+def fftconvolve[ScalarT: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
+    in1: onp.ArrayND[ScalarT, _JustAnyShape], in2: onp.ArrayND[ScalarT], mode: onp.ConvolveMode = "full", axes: None = None
+) -> onp.ArrayND[ScalarT]: ...
 @overload  # float64 | integer | bool, float64 | integer | bool, generic shape
 def fftconvolve[AnyShapeT: (_1D, _2D, _3D)](
     in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, AnyShapeT],
@@ -468,9 +468,9 @@ def oaconvolve(
     axes: None = None,
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # ?d, Nd generic dtype
-def oaconvolve[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
-    in1: onp.ArrayND[InexactT3, _JustAnyShape], in2: onp.ArrayND[InexactT3], mode: onp.ConvolveMode = "full", axes: None = None
-) -> onp.ArrayND[InexactT3]: ...
+def oaconvolve[ScalarT: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
+    in1: onp.ArrayND[ScalarT, _JustAnyShape], in2: onp.ArrayND[ScalarT], mode: onp.ConvolveMode = "full", axes: None = None
+) -> onp.ArrayND[ScalarT]: ...
 @overload  # float64 | integer | bool, float64 | integer | bool, generic shape
 def oaconvolve[AnyShapeT: (_1D, _2D, _3D)](
     in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, AnyShapeT],
@@ -1491,15 +1491,15 @@ def envelope(
     axis: int = -1,
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # ?d
-def envelope[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
-    z: onp.ArrayND[InexactT3, _JustAnyShape],
+def envelope[ScalarT: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
+    z: onp.ArrayND[ScalarT, _JustAnyShape],
     bp_in: tuple[int | None, int | None] = (1, None),
     *,
     n_out: int | None = None,
     squared: bool = False,
     residual: _ResidualKind = "lowpass",
     axis: int = -1,
-) -> onp.ArrayND[InexactT3]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload
 def envelope(
     z: onp.Array1D[np.float16],
