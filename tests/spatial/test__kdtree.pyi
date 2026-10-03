@@ -104,6 +104,7 @@ assert_type(_tree.mins, onp.Array1D[np.float64])
 assert_type(_tree.size, int)
 assert_type(_tree.indices, onp.Array1D[np.intp])
 assert_type(_tree.boxsize, None)
+assert_type(_tree.tree, KDTree.innernode | KDTree.leafnode)
 
 _tree_box: KDTree[onp.Array2D[np.float64], onp.Array1D[np.float64]]
 

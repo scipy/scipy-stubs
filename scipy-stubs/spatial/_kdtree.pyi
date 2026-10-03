@@ -62,6 +62,11 @@ class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _Box
         @property
         def children(self, /) -> int: ...
 
+    @property
+    @override
+    def tree(self, /) -> KDTree.innernode | KDTree.leafnode: ...  # type:ignore[override]  # pyright:ignore[reportIncompatibleMethodOverride]  # pyrefly:ignore[bad-override]
+
+    #
     @overload
     def __init__(
         self: KDTree[None, None],
