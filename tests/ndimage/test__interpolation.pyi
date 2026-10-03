@@ -1,10 +1,13 @@
 # type-tests for `ndimage/_interpolation.pyi`
 
+import ctypes as ct
 from typing import assert_type
+from typing_extensions import CapsuleType
 
 import numpy as np
 import optype.numpy as onp
 
+from scipy import LowLevelCallable
 from scipy.ndimage import (
     affine_transform,
     geometric_transform,
@@ -29,6 +32,8 @@ _py_f_2d: list[list[float]]
 _py_c_2d: list[list[complex]]
 
 def _mapping(output_coords: tuple[int, ...]) -> tuple[float, ...]: ...
+
+_mapping_llc: LowLevelCallable[CapsuleType, ct.c_void_p]
 
 ###
 
@@ -68,6 +73,7 @@ assert_type(geometric_transform(_f64_2d, _mapping, output=float), onp.ArrayND[np
 assert_type(geometric_transform(_f64_2d, _mapping, output=complex), onp.ArrayND[np.complex128])
 assert_type(geometric_transform(_f64_2d, _mapping, None, np.dtype(np.float32)), onp.ArrayND[np.float32])
 assert_type(geometric_transform(_f64_2d, _mapping, output=np.dtype(np.float32)), onp.ArrayND[np.float32])
+assert_type(geometric_transform(_f64_2d, _mapping_llc), onp.Array2D[np.float64])
 
 # map_coordinates
 
