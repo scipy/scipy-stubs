@@ -80,12 +80,10 @@ class QMCEngine(abc.ABC, Generic[_InexactT_co]):
     num_generated: int
 
     @overload
-    @abc.abstractmethod
     def __init__(
         self, /, d: onp.ToJustInt, *, optimization: _MethodQMC | None = None, rng: onp.random.ToRNG | None = None
     ) -> None: ...
     @overload  # will be deprecated in the future
-    @abc.abstractmethod
     def __init__(self, /, d: onp.ToJustInt, *, optimization: _MethodQMC | None = None, seed: onp.random.ToRNG | None) -> None: ...
 
     #

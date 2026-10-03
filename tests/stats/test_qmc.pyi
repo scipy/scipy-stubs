@@ -40,6 +40,8 @@ assert_type(_engine.integers(0), onp.Array2D[np.int64])
 assert_type(_engine.integers(0, u_bounds=10, n=8, endpoint=True, workers=2), onp.Array2D[np.int64])
 assert_type(_engine.reset(), QMCEngine[np.float64])
 assert_type(_engine.fast_forward(8), QMCEngine[np.float64])
+assert_type(QMCEngine.__init__(_engine, 4), None)
+assert_type(QMCEngine.__init__(_engine, 4, seed=0), None)
 
 ###
 # Halton
