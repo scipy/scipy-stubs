@@ -40,12 +40,13 @@ dense_1d_list: list[np.ndarray[tuple[int], np.dtype[ScalarType]]]
 sctype: type[ScalarType]
 
 int_list: list[int]
+_f_list: list[float]
 
 ###
 # diags_array
-assert_type(sparse.diags_array([1, 2]), sparse.dia_array[np.float64] | sparse.dia_array[np.complex128])
-assert_type(sparse.diags_array([[1, 2], 2.0]), sparse.dia_array[np.float64] | sparse.dia_array[np.complex128])
-assert_type(sparse.diags_array([[1, 2.0], [2]]), sparse.dia_array[np.float64] | sparse.dia_array[np.complex128])
+assert_type(sparse.diags_array([1, 2]), sparse.dia_array[np.float64])
+assert_type(sparse.diags_array([[1, 2], 2.0]), sparse.dia_array[np.float64])
+assert_type(sparse.diags_array([[1, 2.0], [2]]), sparse.dia_array[np.float64])
 assert_type(sparse.diags_array([3j, 5j]), sparse.dia_array[np.float64] | sparse.dia_array[np.complex128])
 assert_type(sparse.diags_array([[1, 2.0], [3j]]), sparse.dia_array[np.float64] | sparse.dia_array[np.complex128])
 assert_type(sparse.diags_array([[1, 2.0], 3j]), sparse.dia_array[np.float64] | sparse.dia_array[np.complex128])
@@ -70,6 +71,12 @@ assert_type(sparse.diags_array(dense_2d, format="dok"), sparse.dok_array[ScalarT
 assert_type(sparse.diags_array(dense_2d, format="lil"), sparse.lil_array[ScalarType])
 assert_type(sparse.diags_array(dense_1d_list, offsets=int_list), sparse.dia_array[ScalarType])
 assert_type(sparse.diags_array(dense_1d_list, offsets=int_list, dtype=np.float128), sparse.dia_array[np.float128])
+assert_type(sparse.diags_array(_f_list, format="bsr"), sparse.bsr_array[np.float64])
+assert_type(sparse.diags_array(_f_list, format="coo"), sparse.coo_array[np.float64, tuple[int, int]])
+assert_type(sparse.diags_array(_f_list, format="csc"), sparse.csc_array[np.float64])
+assert_type(sparse.diags_array(_f_list, format="csr"), sparse.csr_array[np.float64, tuple[int, int]])
+assert_type(sparse.diags_array(_f_list, format="dok"), sparse.dok_array[np.float64, tuple[int, int]])
+assert_type(sparse.diags_array(_f_list, format="lil"), sparse.lil_array[np.float64])
 # diags (legacy, `diags_array` is preferred)
 assert_type(sparse.diags(dense_1d), sparse.dia_matrix[ScalarType])
 assert_type(sparse.diags(dense_1d, format="bsr"), sparse.bsr_matrix[ScalarType])

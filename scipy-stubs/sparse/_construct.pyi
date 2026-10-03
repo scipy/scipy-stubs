@@ -68,6 +68,7 @@ type _FmtDIA = Literal["dia"]
 type _FmtDOK = Literal["dok"]
 type _FmtLIL = Literal["lil"]
 
+type _FloatSeq1D2D = Seq[Seq[float] | float]
 # TODO(julvandenbroeck): find a way to separate float and complex
 type _ComplexSeq1D2D = Seq[Seq[complex] | complex]
 type _ToComplex1D2D = onp.CanArray[tuple[int] | tuple[int, int], np.dtype[_Numeric]] | _ComplexSeq1D2D | Seq[onp.ToComplex1D]
@@ -130,6 +131,76 @@ def permute_dims[ScalarT: _Numeric](
 ) -> coo_matrix[ScalarT]: ...
 
 ###
+@overload  # diagonals: <float>, format: "dia" | None, dtype: None
+def diags_array(
+    diagonals: _FloatSeq1D2D,
+    /,
+    *,
+    offsets: _Offsets = 0,
+    shape: tuple[int, int] | None = None,
+    format: _FmtDIA | None = None,
+    dtype: op.JustObject | None = ...,
+) -> dia_array[np.float64]: ...
+@overload  # diagonals: <float>, format: "bsr", dtype: None
+def diags_array(
+    diagonals: _FloatSeq1D2D,
+    /,
+    *,
+    offsets: _Offsets = 0,
+    shape: tuple[int, int] | None = None,
+    format: _FmtBSR,
+    dtype: op.JustObject | None = ...,
+) -> bsr_array[np.float64]: ...
+@overload  # diagonals: <float>, format: "coo", dtype: None
+def diags_array(
+    diagonals: _FloatSeq1D2D,
+    /,
+    *,
+    offsets: _Offsets = 0,
+    shape: tuple[int, int] | None = None,
+    format: _FmtCOO,
+    dtype: op.JustObject | None = ...,
+) -> _COOArray2D[np.float64]: ...
+@overload  # diagonals: <float>, format: "csc", dtype: None
+def diags_array(
+    diagonals: _FloatSeq1D2D,
+    /,
+    *,
+    offsets: _Offsets = 0,
+    shape: tuple[int, int] | None = None,
+    format: _FmtCSC,
+    dtype: op.JustObject | None = ...,
+) -> csc_array[np.float64]: ...
+@overload  # diagonals: <float>, format: "csr", dtype: None
+def diags_array(
+    diagonals: _FloatSeq1D2D,
+    /,
+    *,
+    offsets: _Offsets = 0,
+    shape: tuple[int, int] | None = None,
+    format: _FmtCSR,
+    dtype: op.JustObject | None = ...,
+) -> _CSRArray2D[np.float64]: ...
+@overload  # diagonals: <float>, format: "dok", dtype: None
+def diags_array(
+    diagonals: _FloatSeq1D2D,
+    /,
+    *,
+    offsets: _Offsets = 0,
+    shape: tuple[int, int] | None = None,
+    format: _FmtDOK,
+    dtype: op.JustObject | None = ...,
+) -> _DOKArray2D[np.float64]: ...
+@overload  # diagonals: <float>, format: "lil", dtype: None
+def diags_array(
+    diagonals: _FloatSeq1D2D,
+    /,
+    *,
+    offsets: _Offsets = 0,
+    shape: tuple[int, int] | None = None,
+    format: _FmtLIL,
+    dtype: op.JustObject | None = ...,
+) -> lil_array[np.float64]: ...
 @overload  # diagonals: <complex>, format: "dia" | None, dtype: None
 def diags_array(
     diagonals: _ComplexSeq1D2D,
