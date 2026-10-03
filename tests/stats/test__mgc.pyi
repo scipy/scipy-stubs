@@ -21,3 +21,4 @@ assert_type(_mgc.statistic, np.float64)
 assert_type(_mgc.pvalue, np.float64)
 
 assert_type(multiscale_graphcorr(_f64_2d, _f64_2d, reps=100, workers=2), MGCResult)
+assert_type(multiscale_graphcorr(_f64_2d, _f64_2d, compute_distance=None), MGCResult)
