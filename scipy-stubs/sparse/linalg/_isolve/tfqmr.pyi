@@ -50,7 +50,7 @@ def tfqmr(
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...
 @overload  # real A, complex b
 def tfqmr(
-    A: _ToLinearOperator[np.float32 | np.float64 | npc.integer | np.bool],
+    A: _ToLinearOperator[npc.floating64 | npc.floating32 | npc.integer | np.bool],
     b: onp.ToJustComplex1D,
     x0: onp.ToComplex1D | None = None,
     *,
