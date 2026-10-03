@@ -35,6 +35,7 @@ type _JacobianMethod = Literal["anderson", "krylov", "broyden1", "broyden2", "di
 type _KrylovMethod = Literal["lgmres", "gmres", "bicgstab", "cgs", "minres", "tfqmr"]
 type _ReductionMethod = Literal["restart", "simple", "svd"]
 type _LineSearch = Literal["armijo", "wolfe"]
+type _TolNorm = Callable[[onp.Array1D[np.float64]], onp.ToFloat] | Callable[[onp.Array1D[np.complex128]], onp.ToFloat]
 
 type _Callback = (
     Callable[[onp.ArrayND[np.float64, Any], np.float64], Unused]
@@ -293,7 +294,7 @@ def nonlin_solve(
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,
-    tol_norm: onp.ToFloat | None = None,
+    tol_norm: _TolNorm | None = None,
     line_search: _LineSearch = "armijo",
     callback: _Callback | None = None,
     full_output: Literal[False] = False,
@@ -311,7 +312,7 @@ def nonlin_solve(
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,
-    tol_norm: onp.ToFloat | None = None,
+    tol_norm: _TolNorm | None = None,
     line_search: _LineSearch = "armijo",
     callback: _Callback | None = None,
     *,
@@ -333,7 +334,7 @@ def broyden1(
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,
-    tol_norm: onp.ToFloat | None = None,
+    tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _InexactND: ...
@@ -350,7 +351,7 @@ def broyden2(
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,
-    tol_norm: onp.ToFloat | None = None,
+    tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _InexactND: ...
@@ -367,7 +368,7 @@ def anderson(
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,
-    tol_norm: onp.ToFloat | None = None,
+    tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _InexactND: ...
@@ -382,7 +383,7 @@ def linearmixing(
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,
-    tol_norm: onp.ToFloat | None = None,
+    tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _InexactND: ...
@@ -397,7 +398,7 @@ def diagbroyden(
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,
-    tol_norm: onp.ToFloat | None = None,
+    tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _InexactND: ...
@@ -413,7 +414,7 @@ def excitingmixing(
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,
-    tol_norm: onp.ToFloat | None = None,
+    tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _InexactND: ...
@@ -432,7 +433,7 @@ def newton_krylov(
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,
-    tol_norm: onp.ToFloat | None = None,
+    tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
 ) -> _InexactND: ...
