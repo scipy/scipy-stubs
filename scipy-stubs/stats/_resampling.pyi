@@ -651,10 +651,7 @@ def monte_carlo_test(
     alternative: Alternative = "two-sided",
     axis: int = 0,
 ) -> MonteCarloTestResult[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.float64]]: ...
-
-# NOTE: The separate `rvs` overloads are a mypy workaround: with `rvs: _RVSCallable | Sequence[_RVSCallable]`, mypy
-# infers `MonteCarloTestResult[Any, Any]` for overloaded `rvs` callables such as `np.random.poisson`.
-@overload  # k samples
+@overload  # k samples  (separate for mypy)
 def monte_carlo_test(
     data: onp.ToFloatND,
     rvs: Sequence[_RVSCallable],
