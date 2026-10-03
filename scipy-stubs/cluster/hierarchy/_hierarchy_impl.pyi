@@ -175,11 +175,13 @@ def to_tree(Z: onp.ToFloat2D, rd: onp.ToTrue) -> tuple[ClusterNode, list[Cluster
 
 #
 def cut_tree(
-    Z: onp.ToFloat2D, n_clusters: onp.ToInt1D | None = None, height: onp.ToFloat1D | None = None
+    Z: onp.ToFloat2D, n_clusters: onp.ToInt | onp.ToInt1D | None = None, height: onp.ToFloat | onp.ToFloat1D | None = None
 ) -> onp.Array2D[np.int64]: ...
 
 #
-def optimal_leaf_ordering(Z: onp.ToFloat2D, y: onp.ToFloat1D, metric: _Metric = "euclidean") -> onp.Array2D[np.float64]: ...
+def optimal_leaf_ordering(
+    Z: onp.ToFloat2D, y: onp.ToFloat1D | onp.ToFloat2D, metric: _Metric = "euclidean"
+) -> onp.Array2D[np.float64]: ...
 
 # keep in sync with `is_valid_linkage`
 @overload
@@ -240,7 +242,7 @@ def fclusterdata(
     metric: _Metric = "euclidean",
     depth: int = 2,
     method: _LinkageMethod = "single",
-    R: onp.ToFloat1D | None = None,
+    R: onp.ToFloat2D | None = None,
 ) -> onp.Array1D[np.int32]: ...
 
 #

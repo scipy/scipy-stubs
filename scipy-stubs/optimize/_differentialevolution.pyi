@@ -51,7 +51,7 @@ class OptimizeResult(_OptimizeResult, Generic[_JacT_co]):
 
 @overload  # constraints=() (default)
 def differential_evolution(
-    func: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat],
+    func: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloat | onp.ToFloat1D],
     bounds: onp.ToFloat2D | Bounds,
     args: tuple[object, ...] = (),
     strategy: _StrategyName | Callable[[int, onp.Array2D[np.float64], np.random.Generator], onp.ToFloat1D] = "best1bin",
@@ -63,7 +63,7 @@ def differential_evolution(
     rng: onp.random.ToRNG | None = None,
     callback: Callable[[OptimizeResult], None] | Callable[[onp.Array1D[np.float64], onp.ToFloat], None] | None = None,
     disp: bool = False,
-    polish: bool = True,
+    polish: bool | Callable[..., _OptimizeResult] = True,
     init: onp.ToFloat2D | Literal["sobol", "halton", "random", "latinhypercube"] = "latinhypercube",
     atol: onp.ToFloat = 0,
     updating: Literal["immediate", "deferred"] = "immediate",
@@ -77,7 +77,7 @@ def differential_evolution(
 ) -> OptimizeResult[onp.Array1D[np.float64] | None]: ...
 @overload  # constraints=<given>
 def differential_evolution(
-    func: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat],
+    func: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloat | onp.ToFloat1D],
     bounds: onp.ToFloat2D | Bounds,
     args: tuple[object, ...] = (),
     strategy: _StrategyName | Callable[[int, onp.Array2D[np.float64], np.random.Generator], onp.ToFloat1D] = "best1bin",
@@ -89,7 +89,7 @@ def differential_evolution(
     rng: onp.random.ToRNG | None = None,
     callback: Callable[[OptimizeResult], None] | Callable[[onp.Array1D[np.float64], onp.ToFloat], None] | None = None,
     disp: bool = False,
-    polish: bool = True,
+    polish: bool | Callable[..., _OptimizeResult] = True,
     init: onp.ToFloat2D | Literal["sobol", "halton", "random", "latinhypercube"] = "latinhypercube",
     atol: onp.ToFloat = 0,
     updating: Literal["immediate", "deferred"] = "immediate",

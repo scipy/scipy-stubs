@@ -371,10 +371,8 @@ type _KstestResult2 = KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]
 type _KstestResultN = KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]]
 
 class LinregressResult(
-    BunchMixin[
-        tuple[_FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co]
-    ],
-    tuple[_FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co],
+    BunchMixin[tuple[_FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co]],
+    tuple[_FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co],
     Generic[_FloatOrArrayT_co],
 ):
     def __new__(
@@ -3507,6 +3505,26 @@ def iqr(
 ) -> onp.ArrayND[np.float64]: ...
 
 #
+@overload  # ?d T@floating  (workaround)
+def median_abs_deviation[FloatT: npc.floating](
+    x: onp.ArrayND[FloatT, _JustAnyShape],
+    axis: int = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[FloatT] | Any: ...
+@overload  # ?d +f64  (workaround)
+def median_abs_deviation(
+    x: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
+    axis: int = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.ArrayND[np.float64] | Any: ...
 @overload  # +f64, 1d
 def median_abs_deviation(
     x: onp.ToArrayStrict1D[float, npc.integer | np.bool],
@@ -4053,6 +4071,48 @@ def alexandergovern(
 ) -> AlexanderGovernResult[np.float64 | Any]: ...
 
 #
+@overload  # ?d +f64, ?d|1d +float  (workaround)
+def pearsonr(
+    x: onp.ArrayND[np.float64 | npc.integer | np.bool, _JustAnyShape],
+    y: _ToFloatStrictND | onp.ToFloatStrict1D,
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[np.float64 | Any, np.float64 | Any]: ...
+@overload  # ?d|1d +float, ?d +f64  (workaround)
+def pearsonr(
+    x: _ToFloatStrictND | onp.ToFloatStrict1D,
+    y: onp.ArrayND[np.float64 | npc.integer | np.bool, _JustAnyShape],
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[np.float64 | Any, np.float64 | Any]: ...
+@overload  # ?d +float, ?d|1d +float  (workaround)
+def pearsonr(
+    x: _ToFloatStrictND,
+    y: _ToFloatStrictND | onp.ToFloatStrict1D,
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> (
+    PearsonRResult[np.float64 | Any, np.float64 | Any]
+    | PearsonRResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]
+): ...
+@overload  # ?d|1d +float, ?d +float  (workaround)
+def pearsonr(
+    x: _ToFloatStrictND | onp.ToFloatStrict1D,
+    y: _ToFloatStrictND,
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> (
+    PearsonRResult[np.float64 | Any, np.float64 | Any]
+    | PearsonRResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]
+): ...
 @overload  # 1d +integer | ~float64, +floating
 def pearsonr(
     x: onp.ToJustFloat64Strict1D | onp.ToIntStrict1D,
@@ -5300,6 +5360,28 @@ def power_divergence(
 ) -> Power_divergenceResult[np.float64 | Any]: ...
 
 #
+@overload  # ?d +f64  (workaround)
+def chisquare(
+    f_obs: _AsFloat64StrictND,
+    f_exp: _AsFloat64_ND | None = None,
+    ddof: int = 0,
+    axis: int = 0,
+    *,
+    sum_check: bool = True,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float64 | Any]: ...
+@overload  # ?d ~f32  (workaround)
+def chisquare(
+    f_obs: _AsFloat32StrictND,
+    f_exp: onp.ToJustFloat32_ND | None = None,
+    ddof: int = 0,
+    axis: int = 0,
+    *,
+    sum_check: bool = True,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float32 | Any]: ...
 @overload  # 1d +f64
 def chisquare(
     f_obs: _AsFloat64_1D,
@@ -6245,7 +6327,7 @@ def kstest(
 ) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
 
 #
-def tiecorrect(rankvals: onp.ToIntND) -> float: ...
+def tiecorrect(rankvals: onp.ToFloatND) -> float: ...
 
 #
 @overload  # ?d, ?d|1d

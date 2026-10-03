@@ -67,3 +67,6 @@ assert_type(linregress(_f32_2d, _f32_2d).slope, onp.Array1D[np.float32])
 assert_type(linregress(_f32_3d, _f32_3d).slope, onp.Array2D[np.float32])
 assert_type(linregress(_f32_nd, _f32_nd, keepdims=True).slope, onp.ArrayND[np.float32])
 assert_type(linregress(_f32_nd, _f32_nd, axis=None).slope, np.float32)
+
+_slope, _intercept, _rvalue, _pvalue, _stderr = linregress(_f64_1d, _f64_1d)
+assert_type(_stderr, np.float64)

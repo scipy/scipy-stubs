@@ -48,6 +48,7 @@ _f64_nd: onp.ArrayND[np.float64]
 _shape_nd: tuple[int, ...]
 
 _cov: Covariance
+_cov_i: Covariance[np.int_]
 
 ###
 
@@ -69,6 +70,8 @@ assert_type(multivariate_normal.logpdf(_f_1d, cov=_f_2d), np.float64)
 assert_type(multivariate_normal(cov=_f_2d).logpdf(_f_1d), np.float64)
 assert_type(multivariate_normal.logpdf(_f_1d, 0.0, _cov), np.float64)
 assert_type(multivariate_normal(0.0, _cov).logpdf(_f_1d), np.float64)
+assert_type(multivariate_normal.logpdf(_f_1d, 0.0, _cov_i), np.float64)
+assert_type(multivariate_normal(0.0, _cov_i).logpdf(_f_1d), np.float64)
 assert_type(multivariate_normal.logpdf(_f_1d, _f_1d), np.float64)
 assert_type(multivariate_normal(_f_1d).logpdf(_f_1d), np.float64)
 assert_type(multivariate_normal.logpdf(_f_2d), onp.Array1D[np.float64])
@@ -90,6 +93,8 @@ assert_type(multivariate_normal.pdf(_f_1d, cov=_f_2d), np.float64)
 assert_type(multivariate_normal(cov=_f_2d).pdf(_f_1d), np.float64)
 assert_type(multivariate_normal.pdf(_f_1d, 0.0, _cov), np.float64)
 assert_type(multivariate_normal(0.0, _cov).pdf(_f_1d), np.float64)
+assert_type(multivariate_normal.pdf(_f_1d, 0.0, _cov_i), np.float64)
+assert_type(multivariate_normal(0.0, _cov_i).pdf(_f_1d), np.float64)
 assert_type(multivariate_normal.pdf(_f_1d, _f_1d), np.float64)
 assert_type(multivariate_normal(_f_1d).pdf(_f_1d), np.float64)
 assert_type(multivariate_normal.pdf(_f_2d), onp.Array1D[np.float64])
@@ -111,6 +116,8 @@ assert_type(multivariate_normal.logcdf(_f_1d, cov=_f_2d), np.float64)
 assert_type(multivariate_normal(cov=_f_2d).logcdf(_f_1d), np.float64)
 assert_type(multivariate_normal.logcdf(_f_1d, 0.0, _cov), np.float64)
 assert_type(multivariate_normal(0.0, _cov).logcdf(_f_1d), np.float64)
+assert_type(multivariate_normal.logcdf(_f_1d, 0.0, _cov_i), np.float64)
+assert_type(multivariate_normal(0.0, _cov_i).logcdf(_f_1d), np.float64)
 assert_type(multivariate_normal.logcdf(_f_1d, _f_1d), np.float64)
 assert_type(multivariate_normal(_f_1d).logcdf(_f_1d), np.float64)
 assert_type(multivariate_normal.logcdf(_f_2d), onp.Array1D[np.float64])
@@ -132,6 +139,8 @@ assert_type(multivariate_normal.cdf(_f_1d, cov=_f_2d), np.float64)
 assert_type(multivariate_normal(cov=_f_2d).cdf(_f_1d), np.float64)
 assert_type(multivariate_normal.cdf(_f_1d, 0.0, _cov), np.float64)
 assert_type(multivariate_normal(0.0, _cov).cdf(_f_1d), np.float64)
+assert_type(multivariate_normal.cdf(_f_1d, 0.0, _cov_i), np.float64)
+assert_type(multivariate_normal(0.0, _cov_i).cdf(_f_1d), np.float64)
 assert_type(multivariate_normal.cdf(_f_1d, _f_1d), np.float64)
 assert_type(multivariate_normal(_f_1d).cdf(_f_1d), np.float64)
 assert_type(multivariate_normal.cdf(_f_2d), onp.Array1D[np.float64])
@@ -141,6 +150,8 @@ assert_type(multivariate_normal(_f_1d).cdf(_f_3d), onp.Array2D[np.float64])
 
 assert_type(multivariate_normal.entropy(), np.float64)
 assert_type(multivariate_normal().entropy(), np.float64)
+assert_type(multivariate_normal.entropy(cov=_cov_i), np.float64)
+assert_type(multivariate_normal(cov=_cov_i).entropy(), np.float64)
 
 assert_type(multivariate_normal.rvs(), np.float64)
 assert_type(multivariate_normal().rvs(), np.float64)
@@ -157,6 +168,8 @@ assert_type(multivariate_normal().rvs(size=3), onp.Array1D[np.float64])
 assert_type(multivariate_normal.rvs(size=_shape_nd), onp.ArrayND[np.float64])
 assert_type(multivariate_normal().rvs(size=_shape_nd), onp.ArrayND[np.float64])
 assert_type(multivariate_normal(0.0, _cov).rvs(size=(2,)), onp.Array2D[np.float64])
+assert_type(multivariate_normal.rvs(0.0, _cov_i, size=(2,)), onp.ArrayND[np.float64])
+assert_type(multivariate_normal(0.0, _cov_i).rvs(size=(2,)), onp.Array2D[np.float64])
 assert_type(multivariate_normal.rvs(_f_1d, size=(2,)), onp.ArrayND[np.float64])
 assert_type(multivariate_normal(_f_1d).rvs(size=(2,)), onp.Array2D[np.float64])
 assert_type(multivariate_normal.rvs(_f_1d, size=_shape_nd), onp.ArrayND[np.float64])
@@ -173,12 +186,18 @@ assert_type(multivariate_normal(cov=_f_2d).marginal(_i_1d).rvs(), onp.Array1D[np
 assert_type(multivariate_normal.marginal(_i_1d, _f_1d).rvs(), onp.Array1D[np.float64])
 assert_type(multivariate_normal.marginal(_i_1d, 0.0, _cov).rvs(), onp.Array1D[np.float64])
 assert_type(multivariate_normal(0.0, _cov).marginal(_i_1d).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal.marginal(_i_1d, 0.0, _cov_i).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal(0.0, _cov_i).marginal(_i_1d).rvs(), onp.Array1D[np.float64])
 assert_type(multivariate_normal(_f_1d).marginal(_i_1d).rvs(), onp.Array1D[np.float64])
 
 # matrix_normal
 
 assert_type(matrix_normal.rvs().dtype, np.dtype[np.float64])
 assert_type(matrix_normal().rvs().dtype, np.dtype[np.float64])
+assert_type(matrix_normal(_f_2d).dims, tuple[int, int])
+assert_type(matrix_normal(_f_2d).mean, onp.Array2D[np.float64])
+assert_type(matrix_normal(_f_2d).rowcov, onp.Array2D[np.float64])
+assert_type(matrix_normal(_f_2d).colcov, onp.Array2D[np.float64])
 
 # dirichlet
 
@@ -200,6 +219,11 @@ assert_type(wishart().rvs().dtype, np.dtype[np.float64])
 
 assert_type(invwishart.rvs(1, 1).dtype, np.dtype[np.float64])
 assert_type(invwishart().rvs().dtype, np.dtype[np.float64])
+assert_type(invwishart(1, _f_2d).dim, int)
+assert_type(invwishart(1, _f_2d).df, float)
+assert_type(invwishart(1, _f_2d).scale, onp.Array2D[np.float64])
+assert_type(invwishart(1, _f_2d).C, onp.Array2D[np.float64])
+assert_type(invwishart(1, _f_2d).log_det_scale, np.float64)
 
 # multinomial
 
@@ -400,6 +424,8 @@ assert_type(multinomial(_i_2d, _f_2d).pmf(_i_3d), onp.Array2D[np.float64])
 assert_type(multinomial(_i_2d, _f_3d).pmf(_i_1d), onp.Array2D[np.float64])
 assert_type(multinomial(_i_2d, _f_3d).pmf(_i_2d), onp.Array2D[np.float64])
 assert_type(multinomial(_i_2d, _f_3d).pmf(_i_3d), onp.Array2D[np.float64])
+assert_type(multinomial(1, _f_1d).n, onp.ArrayND[np.int_])
+assert_type(multinomial(1, _f_1d).p, onp.ArrayND[np.float64])
 
 # ortho_group
 
@@ -665,6 +691,9 @@ assert_type(multivariate_hypergeom(_i_1d, 1).rvs(), onp.Array2D[np.int_])
 assert_type(multivariate_hypergeom(_i_1d, 1).rvs(size=3), onp.Array2D[np.int_])
 assert_type(multivariate_hypergeom.rvs(_i_1d, 1, size=(2, 3)), onp.Array3D[np.int_])
 assert_type(multivariate_hypergeom(_i_1d, 1).rvs(size=(2, 3)), onp.Array3D[np.int_])
+assert_type(multivariate_hypergeom(_i_1d, 1).M, np.int_ | Any)
+assert_type(multivariate_hypergeom(_i_1d, 1).m, onp.ArrayND[np.int_ | Any])
+assert_type(multivariate_hypergeom(_i_1d, 1).n, onp.ArrayND[np.int_ | Any])
 
 # random_table
 
@@ -749,6 +778,9 @@ assert_type(dirichlet_multinomial(_f_1d, _i_3d).cov(), onp.Array[tuple[int, int,
 
 assert_type(matrix_t.rvs(df=1).dtype, np.dtype[np.float64])
 assert_type(matrix_t(df=1).rvs().dtype, np.dtype[np.float64])
+assert_type(matrix_t(_f_2d, df=1).dims, tuple[int, int])
+assert_type(matrix_t(_f_2d, df=1).row_spread, onp.Array2D[np.float64])
+assert_type(matrix_t(_f_2d, df=1).col_spread, onp.Array2D[np.float64])
 
 # vonmises_fisher
 
@@ -797,6 +829,9 @@ assert_type(vonmises_fisher.rvs([0.8, 0.6], size=_shape_nd), onp.Array[tuple[int
 assert_type(vonmises_fisher([0.8, 0.6]).rvs(size=_shape_nd), onp.Array[tuple[int, *tuple[Any, ...]], np.float64])
 assert_type(vonmises_fisher.rvs([0.8, 0.6], kappa=0.5).dtype, np.dtype[np.float64])
 assert_type(vonmises_fisher([0.8, 0.6], kappa=0.5).rvs().dtype, np.dtype[np.float64])
+assert_type(vonmises_fisher(_f_1d).dim, int)
+assert_type(vonmises_fisher(_f_1d).mu, onp.Array1D[np.float64 | Any])
+assert_type(vonmises_fisher(_f_1d).kappa, float)
 
 # normal_inverse_gamma
 

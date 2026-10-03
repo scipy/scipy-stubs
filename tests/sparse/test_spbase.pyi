@@ -19,6 +19,7 @@ from ._types import (
     csr_mat,
     dia_mat,
     dok_mat,
+    lil_arr,
     lil_mat,
 )
 from scipy.sparse._base import _spbase
@@ -242,3 +243,19 @@ assert_type(_csr_arr_u8.trace(), np.uint64)
 assert_type(_csr_mat_f64.trace(), np.float64)
 assert_type(_csr_arr_c64.trace(), np.complex64)
 assert_type(_csr_arr_any.trace(), Any)
+
+###
+# reshape
+
+_shape_1d: tuple[int]
+_shape_3d: tuple[int, int, int]
+_shape_nd: tuple[int, ...]
+
+assert_type(csr_arr.reshape(_shape_1d), sparse.coo_array[ScalarType, tuple[int]])
+assert_type(csr_arr.reshape(shape_2d), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr.reshape(3, 2), sparse.coo_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr.reshape(_shape_3d), sparse.coo_array[ScalarType, tuple[int, int, int, *tuple[Any, ...]]])
+assert_type(csr_arr.reshape(_shape_nd), sparse.coo_array[ScalarType])
+assert_type(csr_mat.reshape(3, 2), sparse.coo_matrix[ScalarType])
+assert_type(lil_arr.reshape(3, 2), sparse.lil_array[ScalarType])
+assert_type(lil_mat.reshape(3, 2), sparse.lil_matrix[ScalarType])

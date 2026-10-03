@@ -29,3 +29,19 @@ assert_type(least_squares(_f_f64_0d, 0.0, method="trf").active_mask, onp.Array1D
 assert_type(least_squares(_f_f64_0d, 0.0, bounds=(0, 1)).active_mask, onp.Array1D[np.int_ | np.float64])
 assert_type(least_squares(_f_f64_0d, 0.0, method="dogbox").active_mask, onp.Array1D[np.int_])
 assert_type(least_squares(_f_f64_0d, 0.0, method="lm").active_mask, onp.Array1D[np.int_])
+
+###
+# callable `loss`
+
+def _rho(z: onp.Array1D[np.float64]) -> onp.Array2D[np.float64]: ...
+
+assert_type(least_squares(_f_f64_0d, 0.0, loss=_rho).x, onp.Array1D[np.float64])
+assert_type(least_squares(_f_f64_0d, 0.0, method="dogbox", loss=_rho).x, onp.Array1D[np.float64])
+assert_type(least_squares(_f_f64_0d, 0.0, "2-point", (0, 1), "dogbox", loss=_rho).x, onp.Array1D[np.float64])
+
+###
+# scalar `diff_step`
+
+assert_type(least_squares(_f_f64_0d, 0.0, diff_step=0.1).x, onp.Array1D[np.float64])
+assert_type(least_squares(_f_f64_0d, 0.0, method="dogbox", diff_step=0.1).x, onp.Array1D[np.float64])
+assert_type(least_squares(_f_f64_0d, 0.0, "2-point", (0, 1), "dogbox", diff_step=0.1).x, onp.Array1D[np.float64])

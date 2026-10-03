@@ -1,6 +1,6 @@
 # type-tests for `interpolate/_ndgriddata.pyi` and `interpolate/_interpnd.pyi`
 
-from typing import Any, assert_type
+from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -13,15 +13,19 @@ pts_2d: onp.Array2D[np.float64]
 vals_f: onp.Array1D[np.float64]
 vals_c: onp.Array1D[np.complex128]
 xi: onp.Array2D[np.float64]
+_f: float
+_py_f_2d: list[list[float]]
+_py_c_2d: list[list[complex]]
 
 ###
 # NearestNDInterpolator
 
-nn_f = NearestNDInterpolator(pts_2d, vals_f)
+nn_f = NearestNDInterpolator(pts_2d, _py_f_2d)
 assert_type(nn_f, NearestNDInterpolator[np.float64])
 
-nn_c = NearestNDInterpolator(pts_2d, vals_c)
+nn_c = NearestNDInterpolator(pts_2d, _py_c_2d)
 assert_type(nn_c, NearestNDInterpolator[np.complex128])
+assert_type(nn_f(_f, _f), onp.ArrayND[np.float64])
 
 ###
 # LinearNDInterpolator
@@ -31,6 +35,7 @@ assert_type(ln_f, LinearNDInterpolator[np.float64])
 
 ln_c = LinearNDInterpolator(pts_2d, vals_c)
 assert_type(ln_c, LinearNDInterpolator[np.complex128])
+assert_type(ln_f(_f, _f), onp.ArrayND[np.float64])
 
 ###
 # CloughTocher2DInterpolator
@@ -44,5 +49,5 @@ assert_type(ct_c, CloughTocher2DInterpolator[np.complex128])
 ###
 # griddata
 
-assert_type(griddata(pts_2d, vals_f, xi), onp.Array[onp.AtLeast1D[Any], np.float64])
-assert_type(griddata(pts_2d, vals_c, xi), onp.Array[onp.AtLeast1D[Any], np.complex128])
+assert_type(griddata(pts_2d, vals_f, (_f, _f)), onp.ArrayND[np.float64])
+assert_type(griddata(pts_2d, vals_c, xi), onp.ArrayND[np.complex128])

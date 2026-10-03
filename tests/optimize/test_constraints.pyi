@@ -2,6 +2,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.optimize import Bounds, LinearConstraint, NonlinearConstraint
 
@@ -43,11 +44,15 @@ assert_type(Bounds(f32_nd, f32_nd), Bounds[tuple[Any, ...], np.float32])
 
 assert_type(LinearConstraint([[1.0, 2.0]], 0.0, 1.0), LinearConstraint)
 assert_type(LinearConstraint([[1.0, 2.0]]), LinearConstraint)
+assert_subtype[tuple[int, ...]](LinearConstraint(floats_2d).A.shape)
+assert_type(LinearConstraint(ints_1d, 1, 1), LinearConstraint)
 
 ###
 # NonlinearConstraint
 
 def _con(x: onp.Array1D[np.float64]) -> onp.Array1D[np.float64]: ...
+def _con_0d(x: onp.Array1D[np.float64]) -> float: ...
+def _con_hess(x: onp.Array1D[np.float64], v: onp.Array1D[np.float64]) -> onp.Array2D[np.float64]: ...
 
 f64_1d: onp.Array1D[np.float64]
 bools_1d: list[bool]
@@ -58,3 +63,7 @@ assert_type(NonlinearConstraint(_con, 0.0, 1.5).ub, float)
 assert_type(NonlinearConstraint(_con, 0.0, 1.5).keep_feasible, bool)
 assert_type(NonlinearConstraint(_con, f64_1d, f64_1d).lb, onp.Array1D[np.float64])
 assert_type(NonlinearConstraint(_con, 0.0, 1.0, keep_feasible=bools_1d).keep_feasible, list[bool])
+assert_type(NonlinearConstraint(_con_0d, 0.0, 1.5), NonlinearConstraint[float, bool])
+assert_type(NonlinearConstraint(_con_0d, 0.0, 1.0, keep_feasible=bools_1d), NonlinearConstraint[float, list[bool]])
+assert_type(NonlinearConstraint(_con, 0.0, 1.5, hess=_con_hess), NonlinearConstraint[float, bool])
+assert_type(NonlinearConstraint(_con, 0.0, 1.0, hess=_con_hess, keep_feasible=bools_1d), NonlinearConstraint[float, list[bool]])

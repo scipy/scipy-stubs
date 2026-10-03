@@ -69,6 +69,7 @@ type _AsF64_2D = onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bo
 type _AsF64_ND = onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool]
 
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]  # workaround for pyright on numpy<2.1
 type _Tuple2[T] = tuple[T, T]
 type _Tuple3[T] = tuple[T, T, T]
 
@@ -170,7 +171,7 @@ class _ConfidenceInterval(NamedTuple):
 @type_check_only
 class _CanPlotText(Protocol):
     # NOTE: `Any` is required as return type because it's covariant, and not shouldn't be `Never`.
-    def plot(self, /, *args: float | onp.ToFloatND | str, **kwargs: object) -> Any: ...
+    def plot(self, /, *args: Any, **kwargs: Any) -> Any: ...
     def text(self, /, x: float, y: float, s: str, fontdict: dict[str, Any] | None = None, **kwargs: object) -> Any: ...
 
 @type_check_only
@@ -222,18 +223,18 @@ class AndersonResult(BaseBunch[np.float64, _Float1D, _Float1D]):
         self, /, statistic: np.float64, critical_values: _Float1D, significance_level: _Float1D, *, fit_result: _AndersonResult
     ) -> None: ...
 
-class Anderson_ksampResult(BaseBunch[np.float64, _Float1D, np.float64]):
+class Anderson_ksampResult(BaseBunch[np.float64, _Float1D, np.float64 | Any]):
     @property
     def statistic(self, /) -> np.float64: ...
     @property
     @deprecated("Present only when `variant` is unspecified.")
     def critical_values(self, /) -> _Float1D: ...
     @property
-    def pvalue(self, /) -> np.float64: ...
+    def pvalue(self, /) -> np.float64 | Any: ...
 
     #
-    def __new__(_cls, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> Self: ...
-    def __init__(self, /, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> None: ...
+    def __new__(_cls, statistic: np.float64, critical_values: _Float1D, pvalue: float) -> Self: ...
+    def __init__(self, /, statistic: np.float64, critical_values: _Float1D, pvalue: float) -> None: ...
 
 class WilcoxonResult(BaseBunch[_NDT_co, _NDT_co], Generic[_NDT_co]):  # pyright: ignore[reportInvalidTypeArguments]  # zuban: ignore[type-var]
     zstatistic: _NDT_co  # might not be set (depends on `method`)
@@ -773,14 +774,23 @@ def boxcox(
     nan_policy: NanPolicy = "propagate",
 ) -> tuple[_Float1D, np.float64]: ...
 @overload
-def boxcox(
-    x: onp.ToFloat1D,
+def boxcox[ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[npc.floating | npc.integer | np.bool, ShapeT],
     lmbda: onp.ToFloat,
     alpha: float | None = None,
     optimizer: _MinFun1D | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
-) -> _Float1D: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload
+def boxcox(  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection on numpy<2.1
+    x: onp.ToFloatND,
+    lmbda: onp.ToFloat,
+    alpha: float | None = None,
+    optimizer: _MinFun1D | None = None,
+    *,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]]: ...
 @overload
 def boxcox(
     x: onp.ToFloat1D, lmbda: None, alpha: float, optimizer: _MinFun1D | None = None, *, nan_policy: NanPolicy = "propagate"
@@ -799,12 +809,28 @@ def yeojohnson(
 def yeojohnson(
     x: onp.ToJustLongDouble1D, lmbda: None = None, *, nan_policy: NanPolicy = "propagate"
 ) -> tuple[onp.Array1D[np.longdouble], np.longdouble]: ...
-@overload  # ~floating, lmbda=<given>
+@overload  # 0d ~floating, lmbda=<given>
 def yeojohnson[FloatingT: npc.floating](
-    x: onp.ToArray1D[FloatingT, FloatingT], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
-) -> onp.Array1D[FloatingT]: ...
-@overload  # +f64, lmbda=<given>
-def yeojohnson(x: onp.ToArray1D[float, npc.integer], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate") -> _Float1D: ...
+    x: FloatingT, lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
+) -> onp.Array0D[FloatingT]: ...
+@overload  # 0d +f64, lmbda=<given>
+def yeojohnson(x: float | npc.integer, lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate") -> onp.Array0D[np.float64]: ...
+@overload  # Nd ~floating, lmbda=<given>
+def yeojohnson[FloatingT: npc.floating, ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[FloatingT, ShapeT], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[FloatingT, ShapeT]: ...
+@overload  # Nd +integer, lmbda=<given>
+def yeojohnson[ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[npc.integer, ShapeT], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # ?d ~floating, lmbda=<given>
+def yeojohnson[FloatingT: npc.floating](
+    x: onp.ToArrayND[FloatingT, FloatingT], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[FloatingT, _WorkaroundForPyright]: ...
+@overload  # ?d +f64, lmbda=<given>
+def yeojohnson(
+    x: onp.ToArrayND[float, npc.integer], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
 
 #
 @overload
@@ -903,10 +929,14 @@ def yeojohnson_normplot(
 def anderson(x: onp.ToFloatND, dist: _RVCAnderson = "norm", *, method: None = None) -> AndersonResult: ...
 @overload
 def anderson(
-    x: onp.ToFloatND, dist: _RVCAnderson = "norm", *, method: MonteCarloMethod | Literal["interpolated"]
-) -> AndersonResult: ...
+    x: onp.ToFloatND, dist: _RVCAnderson = "norm", *, method: MonteCarloMethod | Literal["interpolate"]
+) -> SignificanceResult[np.float64]: ...
 
 #
+@overload
+def anderson_ksamp(
+    samples: onp.ToFloatND, midrank: op.JustObject = ..., *, variant: op.JustObject = ..., method: PermutationMethod | None = None
+) -> Anderson_ksampResult: ...
 @overload
 @deprecated(
     "Parameter `variant` has been introduced to replace `midrank`; "
@@ -921,9 +951,9 @@ def anderson_ksamp(
     samples: onp.ToFloatND,
     midrank: op.JustObject = ...,
     *,
-    variant: Literal["midrank", "right", "continuous"] | op.JustObject = ...,
+    variant: Literal["midrank", "right", "continuous"],
     method: PermutationMethod | None = None,
-) -> Anderson_ksampResult: ...
+) -> SignificanceResult[np.float64 | Any]: ...
 
 #
 @overload  # T:f32|f64, axis=None (default)
@@ -1173,6 +1203,32 @@ def mood(
 ) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
 
 #
+@overload  # ?d ~f64  (workaround)
+def wilcoxon(
+    x: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    y: _AsF64 | _AsF64_ND | None = None,
+    zero_method: _ZeroMethod = "wilcox",
+    correction: bool = False,
+    alternative: Alternative = "two-sided",
+    method: _WilcoxonMethod = "auto",
+    *,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> WilcoxonResult[np.float64 | Any]: ...
+@overload  # ?d ~f32  (workaround)
+def wilcoxon(
+    x: onp.ArrayND[np.float32, _JustAnyShape],
+    y: onp.ToJustFloat32_ND | None = None,
+    zero_method: _ZeroMethod = "wilcox",
+    correction: bool = False,
+    alternative: Alternative = "two-sided",
+    method: _WilcoxonMethod = "auto",
+    *,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> WilcoxonResult[np.float32 | Any]: ...
 @overload  # ?d ~f64, axis=None
 def wilcoxon(
     x: _AsF64 | _AsF64_ND,

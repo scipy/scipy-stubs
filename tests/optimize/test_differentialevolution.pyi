@@ -1,8 +1,10 @@
+from collections.abc import Callable
 from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
 
+import scipy.optimize as so
 from scipy.optimize import Bounds, NonlinearConstraint, differential_evolution
 from scipy.optimize._differentialevolution import OptimizeResult
 
@@ -12,6 +14,8 @@ type _ResultUnconstrained = OptimizeResult[onp.Array1D[np.float64] | None]
 type _ResultConstrained = OptimizeResult[list[onp.Array2D[np.float64]] | None]
 
 def _obj(x: onp.Array1D[np.float64]) -> float: ...
+def _obj_vec(x: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
+def _polish(func: Callable[..., float], x0: onp.Array1D[np.float64], **kwds: object) -> so.OptimizeResult: ...
 
 _b: list[tuple[float, float]]
 _nlc: NonlinearConstraint
@@ -23,6 +27,10 @@ assert_type(differential_evolution(_obj, bounds=[(-5.0, 5.0), (-2.0, 2.0)]), _Re
 assert_type(differential_evolution(_obj, bounds=[[-5.0, 5.0], [-2.0, 2.0]]), _ResultUnconstrained)
 assert_type(differential_evolution(_obj, _b, constraints=_nlc), _ResultConstrained)
 assert_type(differential_evolution(_obj, _b, constraints=Bounds(0, 1)), _ResultConstrained)
+assert_type(differential_evolution(_obj_vec, _b, updating="deferred", vectorized=True), _ResultUnconstrained)
+assert_type(differential_evolution(_obj_vec, _b, updating="deferred", constraints=_nlc, vectorized=True), _ResultConstrained)
+assert_type(differential_evolution(_obj, _b, polish=_polish), _ResultUnconstrained)
+assert_type(differential_evolution(_obj, _b, polish=_polish, constraints=_nlc), _ResultConstrained)
 
 _res: OptimizeResult
 

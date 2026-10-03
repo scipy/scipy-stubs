@@ -1,6 +1,6 @@
 import types
 from collections.abc import Callable, Mapping
-from typing import Any, Final, Generic, Literal, SupportsIndex, final, overload
+from typing import Any, Final, Generic, Literal, SupportsIndex, final
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -12,13 +12,8 @@ from scipy.sparse import csc_array, csc_matrix, csr_matrix
 ###
 
 type _Int1D = onp.Array1D[np.int32]
-type _Float1D = onp.Array1D[np.float64]
-type _Float2D = onp.Array2D[np.float64]
-type _Complex1D = onp.Array1D[np.complex128]
-type _Complex2D = onp.Array2D[np.complex128]
 type _Inexact2D = onp.Array2D[np.float32 | np.float64 | np.complex64 | np.complex128]
 
-type _Real = npc.integer | npc.floating
 type _Trans = Literal["N", "T", "H"]
 
 _InexactT_co = TypeVar("_InexactT_co", bound=np.float32 | np.float64 | np.complex64 | np.complex128, default=Any, covariant=True)
@@ -38,20 +33,9 @@ class SuperLU(Generic[_InexactT_co]):
     def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
 
     #
-    @overload
-    def solve(self, /, rhs: onp.Array1D[_Real], trans: _Trans = "N") -> _Float1D: ...
-    @overload
-    def solve(self, /, rhs: onp.Array1D[npc.complexfloating], trans: _Trans = "N") -> _Complex1D: ...
-    @overload
-    def solve(self, /, rhs: onp.Array2D[_Real], trans: _Trans = "N") -> _Float2D: ...
-    @overload
-    def solve(self, /, rhs: onp.Array2D[npc.complexfloating], trans: _Trans = "N") -> _Complex2D: ...
-    @overload
-    def solve(self, /, rhs: onp.ArrayND[_Real], trans: _Trans = "N") -> onp.ArrayND[np.float64]: ...
-    @overload
-    def solve(self, /, rhs: onp.ArrayND[npc.complexfloating], trans: _Trans = "N") -> onp.ArrayND[np.complex128]: ...
-    @overload
-    def solve(self, /, rhs: onp.ArrayND[npc.number], trans: _Trans = "N") -> onp.ArrayND[np.float64 | np.complex128]: ...
+    def solve[ShapeT: tuple[int] | tuple[int, int]](
+        self, /, rhs: onp.ArrayND[npc.number, ShapeT], trans: _Trans = "N"
+    ) -> onp.ArrayND[_InexactT_co, ShapeT]: ...
 
 def gssv(
     N: SupportsIndex,

@@ -42,8 +42,8 @@ type _Callback = (
     | Callable[[onp.ArrayND[np.complex128, Any], np.float64], Unused]
 )  # fmt: skip
 type _ResidFunc = (
-    Callable[[onp.ArrayND[np.float64, Any]], onp.ToFloat]
-    | Callable[[onp.ArrayND[np.complex128, Any]], onp.ToFloat]
+    Callable[[onp.ArrayND[np.float64, Any]], onp.ToComplex | onp.ToComplexND]
+    | Callable[[onp.ArrayND[np.complex128, Any]], onp.ToComplex | onp.ToComplexND]
 )  # fmt: skip
 
 _InexactT_co = TypeVar("_InexactT_co", bound=_Inexact, default=_Inexact, covariant=True)
@@ -379,7 +379,7 @@ def linearmixing(
     alpha: onp.ToFloat | None = None,
     verbose: bool = False,
     maxiter: int | None = None,
-    f_tol: onp.ToInt | None = None,
+    f_tol: onp.ToFloat | None = None,
     f_rtol: onp.ToFloat | None = None,
     x_tol: onp.ToFloat | None = None,
     x_rtol: onp.ToFloat | None = None,

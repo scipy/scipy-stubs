@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.interpolate import BPoly, NdPPoly, PPoly, interp1d, interp2d, lagrange
+from scipy.interpolate import BPoly, BSpline, NdPPoly, PPoly, interp1d, interp2d, lagrange
 
 ###
 
@@ -19,6 +19,7 @@ _f64_nd: onp.ArrayND[np.float64]
 _c64_1d: onp.Array1D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
 _c128_2d: onp.Array2D[np.complex128]
+_bspline: BSpline[np.float64]
 
 ###
 # PPoly
@@ -51,6 +52,8 @@ assert_type(_ppoly_c.integrate(0.0, 1.0), onp.Array[tuple[()], np.complex128])
 _ppoly_c.solve()  # type: ignore[misc]  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
 # pyrefly: ignore [no-matching-overload]
 _ppoly_c.roots()  # type: ignore[misc]  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+
+assert_type(PPoly.from_spline(_bspline), PPoly[np.float64])
 
 ###
 # BPoly

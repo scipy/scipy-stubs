@@ -12,6 +12,8 @@ from scipy.signal import ShortTimeFFT, closest_STFT_dual_window
 f64_1d: onp.Array1D[np.float64]
 f64_2d: onp.Array2D[np.float64]
 c128_1d: onp.Array1D[np.complex128]
+_i64_1d: onp.Array1D[np.int64]
+_i64_3d: onp.Array3D[np.int64]
 
 ###
 # ShortTimeFFT.from_window / from_dual / from_win_equals_dual
@@ -52,8 +54,9 @@ assert_type(stft_f64_1.lower_border_end, tuple[int, int])
 ###
 # stft
 
-assert_type(stft_f64_1.stft(f64_1d), onp.Array2D[np.complex128])
+assert_type(stft_f64_1.stft(_i64_1d), onp.Array2D[np.complex128])
 assert_type(stft_f64_1.stft(f64_2d), onp.Array3D[np.complex128])
+assert_type(stft_f64_1.stft(_i64_3d), onp.ArrayND[np.complex128])
 
 ###
 # stft_detrend

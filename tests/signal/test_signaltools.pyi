@@ -5,6 +5,7 @@ from typing import Any, Literal, assert_type
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+from optype.test import assert_subtype
 
 from scipy.signal import (
     choose_conv_method,
@@ -44,6 +45,12 @@ from scipy.signal import (
 
 ###
 
+_py_f: float
+_py_c: complex
+_f32: np.float32
+_f64: np.float64
+_c64: np.complex64
+
 _py_b_1d: list[bool]
 _py_i_1d: list[int]
 _py_f_1d: list[float]
@@ -76,7 +83,7 @@ _c160_2d: onp.Array2D[npc.complexfloating160]
 _f_2d: onp.Array2D[np.float32 | np.float64]
 
 _u8_nd: onp.ArrayND[np.uint8]
-_f16_nd: onp.ArrayND[np.float32]
+_f16_nd: onp.ArrayND[np.float16]
 _f32_nd: onp.ArrayND[np.float32]
 _f64_nd: onp.ArrayND[np.float64]
 _f80_nd: onp.ArrayND[npc.floating80]
@@ -133,6 +140,8 @@ assert_type(convolve(_f32_1d, _f32_1d), onp.Array1D[np.float32])
 assert_type(convolve(_f64_1d, _f64_1d), onp.Array1D[np.float64])
 assert_type(convolve(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(convolve(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(convolve(_f64_nd, _f64_nd), onp.ArrayND[np.float64])
+assert_type(convolve(_f64_2d, _f64_nd), onp.ArrayND[np.float64])
 
 # correlate (same as convolve)
 
@@ -144,6 +153,8 @@ assert_type(correlate(_f32_1d, _f32_1d), onp.Array1D[np.float32])
 assert_type(correlate(_f64_1d, _f64_1d), onp.Array1D[np.float64])
 assert_type(correlate(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(correlate(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(correlate(_f64_nd, _f64_nd), onp.ArrayND[np.float64])
+assert_type(correlate(_f64_2d, _f64_nd), onp.ArrayND[np.float64])
 
 # convolve2d (same as correlate2d)
 
@@ -174,6 +185,10 @@ assert_type(fftconvolve(_f32_1d, _f32_1d), onp.Array1D[np.float32])
 assert_type(fftconvolve(_f64_1d, _f64_1d), onp.Array1D[np.float64])
 assert_type(fftconvolve(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(fftconvolve(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(fftconvolve(_f64_nd, _f64_nd), onp.ArrayND[np.float64])
+assert_subtype[onp.ArrayND[np.float32]](fftconvolve(_f32_nd, _f32_nd))
+assert_type(fftconvolve(_c128_nd, _c128_nd), onp.ArrayND[np.complex128])
+assert_subtype[onp.Array2D[np.float32]](fftconvolve(_f32_2d, _f32_nd))
 
 # oaconvolve
 
@@ -184,6 +199,10 @@ assert_type(oaconvolve(_f32_1d, _f32_1d), onp.Array1D[np.float32])
 assert_type(oaconvolve(_f64_1d, _f64_1d), onp.Array1D[np.float64])
 assert_type(oaconvolve(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(oaconvolve(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(oaconvolve(_f64_nd, _f64_nd), onp.ArrayND[np.float64])
+assert_subtype[onp.ArrayND[np.float32]](oaconvolve(_f32_nd, _f32_nd))
+assert_type(oaconvolve(_c128_nd, _c128_nd), onp.ArrayND[np.complex128])
+assert_subtype[onp.Array2D[np.float32]](oaconvolve(_f32_2d, _f32_nd))
 
 # deconvolve
 
@@ -215,6 +234,15 @@ assert_type(lfilter_zi(_f32_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(lfilter_zi(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(lfilter_zi(_c64_1d, _c128_1d), onp.Array1D[np.complex128])
 assert_type(lfilter_zi(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(lfilter_zi(_py_f_1d, _py_f), onp.Array1D[np.float64])
+assert_type(lfilter_zi(_f64, _f32_1d), onp.Array1D[np.float64])
+assert_type(lfilter_zi(_f32_1d, _f64), onp.Array1D[np.float64])
+assert_type(lfilter_zi(_f32_1d, _py_f), onp.Array1D[np.float32])
+assert_type(lfilter_zi(_py_f, _f32_1d), onp.Array1D[np.float32])
+assert_type(lfilter_zi(_c128_1d, _py_c), onp.Array1D[np.complex128])
+assert_type(lfilter_zi(_py_c, _c128_1d), onp.Array1D[np.complex128])
+assert_type(lfilter_zi(_c64_1d, _py_c), onp.Array1D[np.complex64])
+assert_type(lfilter_zi(_py_c, _c64_1d), onp.Array1D[np.complex64])
 
 # lfiltic
 
@@ -228,6 +256,16 @@ assert_type(lfiltic(_f32_1d, _f32_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(lfiltic(_c64_1d, _c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(lfiltic(_c64_1d, _c64_1d, _c128_1d), onp.Array1D[np.complex128])
 assert_type(lfiltic(_c128_1d, _c128_1d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(lfiltic(_py_f, _f32_1d, _f32_1d), onp.Array1D[np.float64])
+assert_type(lfiltic(_f32_1d, _py_f, _f32_1d), onp.Array1D[np.float64])
+assert_type(lfiltic(_f32, _f32_1d, _f64_1d), onp.Array1D[np.float64])
+assert_type(lfiltic(_f32, _f32_1d, _f32_1d), onp.Array1D[np.float32])
+assert_type(lfiltic(_py_c, _c64_1d, _c64_1d), onp.Array1D[np.complex128])
+assert_type(lfiltic(_c64_1d, _py_c, _c64_1d), onp.Array1D[np.complex128])
+assert_type(lfiltic(_c64, _c64_1d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(lfiltic(_c64, _c64_1d, _c64_1d), onp.Array1D[np.complex64])
+assert_type(lfiltic(_f32_1d, _c64, _f32_1d), onp.Array1D[np.complex64])
+assert_type(lfiltic(_f32, _f32_1d, _c64_1d), onp.Array1D[np.complex64])
 
 # lfilter
 
@@ -241,6 +279,26 @@ assert_type(lfilter(_f32_1d, _f32_1d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(lfilter(_c64_1d, _c64_1d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(lfilter(_c64_1d, _c64_1d, _c128_1d), onp.ArrayND[np.complex128])
 assert_type(lfilter(_c128_1d, _c128_1d, _c128_1d), onp.ArrayND[np.complex128])
+assert_type(lfilter(_py_f, _f32_1d, _f32_1d), onp.ArrayND[np.float64])
+assert_type(lfilter(_py_f, _f32_1d, _f32_1d, zi=_f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lfilter(_f32_1d, _py_f, _f32_1d), onp.ArrayND[np.float64])
+assert_type(lfilter(_f32_1d, _py_f, _f32_1d, zi=_f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lfilter(_f32, _f32_1d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(lfilter(_f32, _f32_1d, _f64_1d, zi=_f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lfilter(_f32, _f32_1d, _f32_1d), onp.ArrayND[np.float32])
+assert_type(lfilter(_f32, _f32_1d, _f32_1d, zi=_f32_1d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lfilter(_py_c, _c64_1d, _c64_1d), onp.ArrayND[np.complex128])
+assert_type(lfilter(_py_c, _c64_1d, _c64_1d, zi=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lfilter(_c64_1d, _py_c, _c64_1d), onp.ArrayND[np.complex128])
+assert_type(lfilter(_c64_1d, _py_c, _c64_1d, zi=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lfilter(_c64, _c64_1d, _c128_1d), onp.ArrayND[np.complex128])
+assert_type(lfilter(_c64, _c64_1d, _c128_1d, zi=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lfilter(_c64, _c64_1d, _c64_1d), onp.ArrayND[np.complex64])
+assert_type(lfilter(_c64, _c64_1d, _c64_1d, zi=_c64_1d), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(lfilter(_f32_1d, _c64, _f32_1d), onp.ArrayND[np.complex64])
+assert_type(lfilter(_f32_1d, _c64, _f32_1d, zi=_c64_1d), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(lfilter(_f32, _f32_1d, _c64_1d), onp.ArrayND[np.complex64])
+assert_type(lfilter(_f32, _f32_1d, _c64_1d, zi=_c64_1d), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
 
 # filtfilt
 
@@ -254,6 +312,16 @@ assert_type(filtfilt(_f32_1d, _f32_1d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(filtfilt(_c64_1d, _c64_1d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(filtfilt(_c64_1d, _c64_1d, _c128_1d), onp.ArrayND[np.complex128])
 assert_type(filtfilt(_c128_1d, _c128_1d, _c128_1d), onp.ArrayND[np.complex128])
+assert_type(filtfilt(_py_f, _f32_1d, _f32_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_f32_1d, _py_f, _f32_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_f32, _f32_1d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_f32, _f32_1d, _f32_1d), onp.ArrayND[np.float32])
+assert_type(filtfilt(_py_c, _c64_1d, _c64_1d), onp.ArrayND[np.complex128])
+assert_type(filtfilt(_c64_1d, _py_c, _c64_1d), onp.ArrayND[np.complex128])
+assert_type(filtfilt(_c64, _c64_1d, _c128_1d), onp.ArrayND[np.complex128])
+assert_type(filtfilt(_c64, _c64_1d, _c64_1d), onp.ArrayND[np.complex64])
+assert_type(filtfilt(_f32_1d, _c64, _f32_1d), onp.ArrayND[np.complex64])
+assert_type(filtfilt(_f32, _f32_1d, _c64_1d), onp.ArrayND[np.complex64])
 
 # sosfilt_zi
 
@@ -525,3 +593,5 @@ assert_type(envelope(_c64_2d, residual=None), onp.Array2D[np.float32])
 assert_type(envelope(_c128_1d, residual=None), onp.Array1D[np.float64])
 assert_type(envelope(_c128_2d, residual=None), onp.Array2D[np.float64])
 assert_type(envelope(_c160_1d, residual=None), onp.Array1D[np.longdouble])
+assert_subtype[onp.ArrayND[np.float64]](envelope(_f64_nd))
+assert_subtype[onp.ArrayND[np.float32]](envelope(_f16_nd))

@@ -12,6 +12,7 @@ from scipy.sparse.csgraph import bellman_ford, dijkstra, floyd_warshall, johnson
 
 type _ScalarType = np.float32
 _csr_arr: sparse.csr_array[_ScalarType, tuple[int, int]]
+_csr_mat: sparse.csr_matrix[_ScalarType]
 
 ###
 
@@ -23,6 +24,7 @@ assert_type(bellman_ford(_csr_arr, return_predecessors=True), tuple[onp.Array2D[
 # minimum_spanning_tree
 
 assert_type(minimum_spanning_tree(_csr_arr), sparse.csr_array[np.float64, tuple[int, int]])
+assert_type(minimum_spanning_tree(_csr_mat), sparse.csr_matrix[np.float64])
 
 # shortest_path
 

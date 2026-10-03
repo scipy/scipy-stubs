@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from typing import Any, Literal, SupportsIndex, overload
 from typing_extensions import TypeVar
 
@@ -36,6 +36,7 @@ type _Metric1 = Literal["euclidean"]
 type _Metric2 = Literal["taxicab", "cityblock", "manhattan"]
 type _Metric3 = Literal["chessboard"]
 
+type _Ints = int | Sequence[int]
 type _Origin = int | tuple[int, ...]
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
@@ -48,17 +49,19 @@ _OriginScalarT = TypeVar("_OriginScalarT", bound=int | npc.integer, default=int)
 
 @overload  # known shape
 def iterate_structure(
-    structure: onp.ArrayND[np.bool | npc.integer, _ShapeT], iterations: int, origin: None = None
+    structure: onp.ArrayND[np.bool | npc.integer | npc.floating, _ShapeT], iterations: int, origin: None = None
 ) -> onp.ArrayND[np.bool, _ShapeT]: ...
 @overload  # known shape, origin=<given>
 def iterate_structure(
-    structure: onp.ArrayND[np.bool | npc.integer, _ShapeT], iterations: int, origin: _OriginScalarT | Iterable[_OriginScalarT]
+    structure: onp.ArrayND[np.bool | npc.integer | npc.floating, _ShapeT],
+    iterations: int,
+    origin: _OriginScalarT | Iterable[_OriginScalarT],
 ) -> tuple[onp.ArrayND[np.bool, _ShapeT], list[_OriginScalarT]]: ...
 @overload  # unknown shape
-def iterate_structure(structure: onp.ToIntND, iterations: int, origin: None = None) -> onp.ArrayND[np.bool]: ...
+def iterate_structure(structure: onp.ToFloatND, iterations: int, origin: None = None) -> onp.ArrayND[np.bool]: ...
 @overload  # unknown shape, origin=<given>
 def iterate_structure(
-    structure: onp.ToIntND, iterations: int, origin: _OriginScalarT | Iterable[_OriginScalarT]
+    structure: onp.ToFloatND, iterations: int, origin: _OriginScalarT | Iterable[_OriginScalarT]
 ) -> tuple[onp.ArrayND[np.bool], list[_OriginScalarT]]: ...
 
 #
@@ -77,9 +80,9 @@ def generate_binary_structure(rank: int, connectivity: int) -> onp.ArrayND[np.bo
 @overload
 def binary_erosion(
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
     iterations: SupportsIndex = 1,
-    mask: onp.ToIntND | None = None,
+    mask: onp.ToFloatND | None = None,
     output: None = None,
     border_value: int = 0,
     origin: _Origin = 0,
@@ -90,9 +93,9 @@ def binary_erosion(
 @overload
 def binary_erosion[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
     iterations: SupportsIndex = 1,
-    mask: onp.ToIntND | None = None,
+    mask: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     border_value: int = 0,
@@ -105,9 +108,9 @@ def binary_erosion[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floatin
 @overload
 def binary_dilation(
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
     iterations: SupportsIndex = 1,
-    mask: onp.ToIntND | None = None,
+    mask: onp.ToFloatND | None = None,
     output: None = None,
     border_value: int = 0,
     origin: _Origin = 0,
@@ -118,9 +121,9 @@ def binary_dilation(
 @overload
 def binary_dilation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
     iterations: SupportsIndex = 1,
-    mask: onp.ToIntND | None = None,
+    mask: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     border_value: int = 0,
@@ -133,11 +136,11 @@ def binary_dilation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floati
 @overload
 def binary_opening(
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
     iterations: SupportsIndex = 1,
     output: None = None,
     origin: _Origin = 0,
-    mask: onp.ToIntND | None = None,
+    mask: onp.ToFloatND | None = None,
     border_value: int = 0,
     brute_force: bool = False,
     *,
@@ -146,12 +149,12 @@ def binary_opening(
 @overload
 def binary_opening[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
     iterations: SupportsIndex = 1,
     *,
     output: OutputArrayT,
     origin: _Origin = 0,
-    mask: onp.ToIntND | None = None,
+    mask: onp.ToFloatND | None = None,
     border_value: int = 0,
     brute_force: bool = False,
     axes: tuple[int, ...] | None = None,
@@ -161,11 +164,11 @@ def binary_opening[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floatin
 @overload
 def binary_closing(
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
     iterations: SupportsIndex = 1,
     output: None = None,
     origin: _Origin = 0,
-    mask: onp.ToIntND | None = None,
+    mask: onp.ToFloatND | None = None,
     border_value: int = 0,
     brute_force: bool = False,
     *,
@@ -174,12 +177,12 @@ def binary_closing(
 @overload
 def binary_closing[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
     iterations: SupportsIndex = 1,
     *,
     output: OutputArrayT,
     origin: _Origin = 0,
-    mask: onp.ToIntND | None = None,
+    mask: onp.ToFloatND | None = None,
     border_value: int = 0,
     brute_force: bool = False,
     axes: tuple[int, ...] | None = None,
@@ -189,8 +192,8 @@ def binary_closing[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floatin
 @overload
 def binary_hit_or_miss(
     input: onp.ToFloatND,
-    structure1: onp.ToIntND | None = None,
-    structure2: onp.ToIntND | None = None,
+    structure1: onp.ToFloatND | None = None,
+    structure2: onp.ToFloatND | None = None,
     output: None = None,
     origin1: _Origin = 0,
     origin2: _Origin | None = None,
@@ -200,8 +203,8 @@ def binary_hit_or_miss(
 @overload
 def binary_hit_or_miss[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    structure1: onp.ToIntND | None = None,
-    structure2: onp.ToIntND | None = None,
+    structure1: onp.ToFloatND | None = None,
+    structure2: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     origin1: _Origin = 0,
@@ -213,8 +216,8 @@ def binary_hit_or_miss[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.flo
 @overload
 def binary_propagation(
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
-    mask: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
+    mask: onp.ToFloatND | None = None,
     output: None = None,
     border_value: int = 0,
     origin: _Origin = 0,
@@ -224,8 +227,8 @@ def binary_propagation(
 @overload
 def binary_propagation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
-    mask: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
+    mask: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     border_value: int = 0,
@@ -237,29 +240,29 @@ def binary_propagation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.flo
 @overload
 def binary_fill_holes(
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     origin: _Origin = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.bool]: ...
 @overload
-def binary_fill_holes[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
+def binary_fill_holes(
     input: onp.ToFloatND,
-    structure: onp.ToIntND | None = None,
+    structure: onp.ToFloatND | None = None,
     *,
-    output: OutputArrayT,
+    output: onp.ArrayND[np.bool | npc.integer | npc.floating],
     origin: _Origin = 0,
     axes: tuple[int, ...] | None = None,
-) -> OutputArrayT: ...
+) -> None: ...
 
 #
 @overload
 def grey_erosion[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -270,9 +273,9 @@ def grey_erosion[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_erosion[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     mode: _Mode = "reflect",
@@ -283,9 +286,9 @@ def grey_erosion[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_erosion(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -296,9 +299,9 @@ def grey_erosion(
 @overload
 def grey_erosion(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -309,9 +312,9 @@ def grey_erosion(
 @overload
 def grey_erosion(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -324,9 +327,9 @@ def grey_erosion(
 @overload
 def grey_dilation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -337,9 +340,9 @@ def grey_dilation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating
 @overload
 def grey_dilation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     mode: _Mode = "reflect",
@@ -350,9 +353,9 @@ def grey_dilation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating
 @overload
 def grey_dilation(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -363,9 +366,9 @@ def grey_dilation(
 @overload
 def grey_dilation(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -376,9 +379,9 @@ def grey_dilation(
 @overload
 def grey_dilation(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -391,9 +394,9 @@ def grey_dilation(
 @overload
 def grey_opening[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -404,9 +407,9 @@ def grey_opening[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_opening[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     mode: _Mode = "reflect",
@@ -417,9 +420,9 @@ def grey_opening[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_opening(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -430,9 +433,9 @@ def grey_opening(
 @overload
 def grey_opening(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -443,9 +446,9 @@ def grey_opening(
 @overload
 def grey_opening(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -458,9 +461,9 @@ def grey_opening(
 @overload
 def grey_closing[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -471,9 +474,9 @@ def grey_closing[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_closing[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     mode: _Mode = "reflect",
@@ -484,9 +487,9 @@ def grey_closing[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_closing(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -497,9 +500,9 @@ def grey_closing(
 @overload
 def grey_closing(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -510,9 +513,9 @@ def grey_closing(
 @overload
 def grey_closing(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -525,9 +528,9 @@ def grey_closing(
 @overload
 def morphological_gradient[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -538,9 +541,9 @@ def morphological_gradient[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc
 @overload
 def morphological_gradient[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     mode: _Mode = "reflect",
@@ -551,9 +554,9 @@ def morphological_gradient[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc
 @overload
 def morphological_gradient(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -564,9 +567,9 @@ def morphological_gradient(
 @overload
 def morphological_gradient(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -577,9 +580,9 @@ def morphological_gradient(
 @overload
 def morphological_gradient(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -592,9 +595,9 @@ def morphological_gradient(
 @overload
 def morphological_laplace[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -605,9 +608,9 @@ def morphological_laplace[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.
 @overload
 def morphological_laplace[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     mode: _Mode = "reflect",
@@ -618,9 +621,9 @@ def morphological_laplace[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.
 @overload
 def morphological_laplace(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -631,9 +634,9 @@ def morphological_laplace(
 @overload
 def morphological_laplace(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -644,9 +647,9 @@ def morphological_laplace(
 @overload
 def morphological_laplace(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -659,9 +662,9 @@ def morphological_laplace(
 @overload
 def white_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -672,9 +675,9 @@ def white_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def white_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     mode: _Mode = "reflect",
@@ -685,9 +688,9 @@ def white_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def white_tophat(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -698,9 +701,9 @@ def white_tophat(
 @overload
 def white_tophat(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -711,9 +714,9 @@ def white_tophat(
 @overload
 def white_tophat(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -726,9 +729,9 @@ def white_tophat(
 @overload
 def black_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -739,9 +742,9 @@ def black_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def black_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     *,
     output: OutputArrayT,
     mode: _Mode = "reflect",
@@ -752,9 +755,9 @@ def black_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def black_tophat(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -765,9 +768,9 @@ def black_tophat(
 @overload
 def black_tophat(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,
@@ -778,9 +781,9 @@ def black_tophat(
 @overload
 def black_tophat(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
-    footprint: onp.ToIntND | None = None,
-    structure: onp.ToIntND | None = None,
+    size: _Ints | None = None,
+    footprint: onp.ToFloatND | None = None,
+    structure: onp.ToFloatND | None = None,
     output: None = None,
     mode: _Mode = "reflect",
     cval: float = 0.0,

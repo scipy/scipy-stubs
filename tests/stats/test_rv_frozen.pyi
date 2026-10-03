@@ -10,6 +10,8 @@ from scipy.stats import distributions as d
 type _Float = float | np.float64
 type _FloatND = _Float | onp.ArrayND[np.float64]
 
+def _f2c(x: float, /) -> complex: ...
+
 ###
 # `rv_continuous_frozen`
 # .mean()
@@ -23,6 +25,7 @@ assert_type(d.uniform(0, [0.5, 2]).mean(), _FloatND)
 assert_type(d.uniform().expect(), _Float)
 assert_type(d.uniform(0).expect(), _Float)
 assert_type(d.uniform(0.5, 2).expect(), _Float)
+assert_type(d.uniform().expect(_f2c, complex_func=True), np.complex128)
 # pyrefly: ignore [bad-argument-type]
 d.uniform([0, -1]).expect()  # type: ignore[misc]  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
 # pyrefly: ignore [bad-argument-type]

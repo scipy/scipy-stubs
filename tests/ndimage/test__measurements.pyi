@@ -33,6 +33,7 @@ _i32_2d: onp.Array2D[np.int32]
 _intp_1d: onp.Array1D[np.intp]
 _f16_2d: onp.Array2D[np.float16]
 _f32_2d: onp.Array2D[np.float32]
+_f64_0d: np.float64
 _f64_2d: onp.Array2D[np.float64]
 _f80_2d: onp.Array2D[np.float128]
 _c64_2d: onp.Array2D[np.complex64]
@@ -46,8 +47,8 @@ _py_c_1d: list[complex]
 _i32_i64_nd: onp.ArrayND[np.int32 | np.int64]
 
 # helper function for labeled_comprehension
-def _stat_func(x: onp.ToComplex | onp.ToComplexND) -> np.float64: ...
-def _stat_func_with_positions(x: onp.ToComplex | onp.ToComplexND, positions: onp.ToComplex | onp.ToComplexND) -> np.float64: ...
+def _stat_func(x: onp.ArrayND[np.float64]) -> np.float64: ...
+def _stat_func_with_positions(x: onp.ArrayND[np.float64], positions: onp.ArrayND[np.intp]) -> np.float64: ...
 
 ###
 # label
@@ -112,7 +113,7 @@ assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, _stat_func, np.dty
 assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, _stat_func, np.intp, 0), onp.ArrayND[np.intp])
 # out_dtype: AnyFloat64DType | None -> ArrayND[np.float64]
 assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, _stat_func, None, 0.0), onp.ArrayND[np.float64])
-assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, _stat_func, np.float64, 0.0), onp.ArrayND[np.float64])
+assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, np.mean, np.float64, 0.0), onp.ArrayND[np.float64])
 # out_dtype: AnyComplex128DType -> ArrayND[np.complex128]
 assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, _stat_func, np.complex128, 0.0), onp.ArrayND[np.complex128])
 
@@ -287,11 +288,11 @@ assert_type(center_of_mass(_f64_2d, index=[1, 2, 3]), list[tuple[np.float64, ...
 # histogram
 
 # no index / scalar index -> ArrayND[np.intp]
-assert_type(histogram(_f64_2d, 0, 100, 10), onp.ArrayND[np.intp])
+assert_type(histogram(_f64_2d, _f64_0d, _f64_0d, 10), onp.ArrayND[np.intp])
 assert_type(histogram(_f64_2d, 0, 100, 10, _i32_1d, 1), onp.ArrayND[np.intp])
 
 # array index -> ArrayND[np.object_]
-assert_type(histogram(_f64_2d, 0, 100, 10, _i32_1d, _intp_1d), onp.ArrayND[np.object_])
+assert_type(histogram(_f64_2d, _f64_0d, _f64_0d, 10, _i32_1d, _intp_1d), onp.ArrayND[np.object_])
 assert_type(histogram(_f64_2d, 0, 100, 10, _i32_1d, index=_intp_1d), onp.ArrayND[np.object_])
 
 ###
@@ -300,3 +301,4 @@ assert_type(histogram(_f64_2d, 0, 100, 10, _i32_1d, index=_intp_1d), onp.ArrayND
 assert_type(watershed_ift(_u8_2d, _i32_2d), onp.ArrayND[np.int32])
 assert_type(watershed_ift(_u8_2d, _py_i_2d), onp.ArrayND[np.int_])
 assert_type(watershed_ift(_u8_2d, _py_i_2d, output=_i32_2d), onp.Array2D[np.int32])
+assert_type(watershed_ift(_u8_2d, _i32_2d, structure=_f64_2d), onp.ArrayND[np.int32])

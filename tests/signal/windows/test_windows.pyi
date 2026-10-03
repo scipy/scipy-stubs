@@ -151,8 +151,8 @@ assert_type(general_gaussian(64, 1.5, 2.0, xp=np), Any)
 
 # taylor
 assert_type(taylor(64), onp.Array1D[np.float64])
-assert_type(taylor(64, nbar=6, sll=25, norm=False, sym=False), onp.Array1D[np.float64])
-assert_type(taylor(64, xp=np), Any)
+assert_type(taylor(64, nbar=6, sll=25.5, norm=False, sym=False), onp.Array1D[np.float64])
+assert_type(taylor(64, sll=25.5, xp=np), Any)
 
 # dpss
 assert_type(dpss(64, 3), onp.Array1D[np.float64])

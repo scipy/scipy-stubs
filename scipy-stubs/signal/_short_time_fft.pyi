@@ -261,7 +261,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def stft(
         self,
         /,
-        x: onp.Array1D[npc.inexact],
+        x: onp.Array1D[npc.number | np.bool],
         p0: int | None = None,
         p1: int | None = None,
         *,
@@ -273,7 +273,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def stft(
         self,
         /,
-        x: onp.Array2D[npc.inexact],
+        x: onp.Array2D[npc.number | np.bool],
         p0: int | None = None,
         p1: int | None = None,
         *,
@@ -285,7 +285,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def stft(
         self,
         /,
-        x: onp.ArrayND[npc.inexact],
+        x: onp.ArrayND[npc.number | np.bool],
         p0: int | None = None,
         p1: int | None = None,
         *,

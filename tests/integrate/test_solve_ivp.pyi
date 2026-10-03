@@ -22,6 +22,19 @@ arr_f64: _ArrF64 = ...
 vec_c128: _VecC128 = ...
 arr_c128: _ArrC128 = ...
 
+@type_check_only
+def _lv_vec(t: _VecF64, z: _MatF64, a: float, b: float, c: float, d: float) -> _MatF64: ...
+@type_check_only
+def _lv_event(t: float, z: npt.NDArray[np.float64], a: float, b: float, c: float, d: float) -> float: ...
+@type_check_only
+def _lv_jac(t: float, z: npt.NDArray[np.float64], a: float, b: float, c: float, d: float) -> _MatF64: ...
+@type_check_only
+def _rot(t: float, y: _ArrC128, omega: float) -> _ArrC128: ...
+@type_check_only
+def _rot_vec(t: _VecF64, y: _MatC128, omega: float) -> _MatC128: ...
+@type_check_only
+def _rot_event(t: float, y: _ArrC128, omega: float) -> float: ...
+
 # NOTE: these examples are based on the `solve_ivp` docstring, and use common (suboptimal) type annotation patterns.
 ###
 
@@ -52,6 +65,10 @@ def lotkavolterra(t: float, z: npt.NDArray[np.float64], a: float, b: float, c: f
 assert_type(solve_ivp(lotkavolterra, list_float, list_float, args=(1.5, 1, 3, 1)).y, _MatF64)
 assert_type(solve_ivp(lotkavolterra, list_float, list_float, args=(1.5, 1, 3, 1), dense_output=True).y, _MatF64)
 
+assert_type(solve_ivp(lotkavolterra, list_float, list_float, events=_lv_event, args=(1.5, 1, 3, 1)).y, _MatF64)
+assert_type(solve_ivp(_lv_vec, list_float, list_float, events=_lv_event, vectorized=True, args=(1.5, 1, 3, 1)).y, _MatF64)
+assert_type(solve_ivp(lotkavolterra, list_float, list_float, method="Radau", jac=_lv_jac, args=(1.5, 1, 3, 1)).y, _MatF64)
+
 ###
 
 @type_check_only
@@ -64,3 +81,6 @@ assert_type(solve_ivp(deriv_vec, list_float, arr_c128).y, _MatC128)
 assert_type(solve_ivp(deriv_vec, list_float, arr_c128, t_eval=list_float).y, _MatC128)
 assert_type(solve_ivp(deriv_vec, list_float, list_complex, t_eval=vec_f64).y, _MatC128)
 assert_type(solve_ivp(deriv_vec, list_float, vec_c128, t_eval=arr_f64).y, _MatC128)
+
+assert_type(solve_ivp(_rot, list_float, list_complex, events=_rot_event, args=(1.0,)).y, _MatC128)
+assert_type(solve_ivp(_rot_vec, list_float, list_complex, events=_rot_event, vectorized=True, args=(1.0,)).y, _MatC128)

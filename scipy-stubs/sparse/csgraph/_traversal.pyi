@@ -4,7 +4,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.sparse import csr_array
+from scipy.sparse import csr_array, csr_matrix, sparray, spmatrix
 from scipy.sparse._base import _spbase
 
 ###
@@ -31,10 +31,20 @@ def connected_components(
 ) -> int: ...
 
 #
-def breadth_first_tree(csgraph: _ToGraph, i_start: int, directed: bool = True) -> csr_array[np.float64, tuple[int, int]]: ...
+@overload
+def breadth_first_tree(csgraph: spmatrix[_Real], i_start: int, directed: bool = True) -> csr_matrix[np.float64]: ...
+@overload
+def breadth_first_tree(
+    csgraph: onp.ToFloat2D | sparray[_Real, tuple[int, int]], i_start: int, directed: bool = True
+) -> csr_array[np.float64, tuple[int, int]]: ...
 
 #
-def depth_first_tree(csgraph: _ToGraph, i_start: int, directed: bool = True) -> csr_array[np.float64, tuple[int, int]]: ...
+@overload
+def depth_first_tree(csgraph: spmatrix[_Real], i_start: int, directed: bool = True) -> csr_matrix[np.float64]: ...
+@overload
+def depth_first_tree(
+    csgraph: onp.ToFloat2D | sparray[_Real, tuple[int, int]], i_start: int, directed: bool = True
+) -> csr_array[np.float64, tuple[int, int]]: ...
 
 #
 @overload

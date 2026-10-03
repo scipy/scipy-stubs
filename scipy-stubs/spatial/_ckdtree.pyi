@@ -234,6 +234,31 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     def query_ball_point(
         self,
         /,
+        x: onp.ToFloatStrict2D,
+        r: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0.0,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
+        return_length: L[False] = False,
+    ) -> onp.Array1D[np.object_]: ...
+    @overload
+    def query_ball_point(
+        self,
+        /,
+        x: onp.ToFloatStrict2D,
+        r: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0.0,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
+        *,
+        return_length: L[True],
+    ) -> onp.Array1D[np.intp]: ...
+    @overload
+    def query_ball_point(
+        self,
+        /,
         x: onp.ToFloatND,
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
@@ -328,11 +353,11 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         p: onp.ToFloat = 2.0,
         weights: tuple[None, None] | None = None,
         cumulative: bool = True,
-    ) -> int | onp.Array1D[np.intp]: ...
+    ) -> onp.Array1D[np.intp] | Any: ...
     @overload
     def count_neighbors(
         self, /, other: cKDTree, r: onp.ToFloat | onp.ToFloat1D, p: onp.ToFloat, weights: _Weights, cumulative: bool = True
-    ) -> np.float64 | onp.Array1D[np.float64]: ...
+    ) -> onp.Array1D[np.float64] | Any: ...
     @overload
     def count_neighbors(
         self,
@@ -343,7 +368,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         *,
         weights: _Weights,
         cumulative: bool = True,
-    ) -> np.float64 | onp.Array1D[np.float64]: ...
+    ) -> onp.Array1D[np.float64] | Any: ...
 
     #
     @overload

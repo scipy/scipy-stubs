@@ -20,6 +20,7 @@ from scipy.sparse.csgraph import (
 
 _csr_int: sparse.csr_array[np.int32, tuple[int, int]]
 _csr_float: sparse.csr_array[np.float64, tuple[int, int]]
+_csr_mat: sparse.csr_matrix[np.float64]
 
 _int_graph: onp.Array2D[np.int32]
 _float_graph: onp.Array2D[np.float64]
@@ -60,6 +61,7 @@ assert_type(csgraph_to_masked(_csr_float), onp.MArray2D[np.float64])
 
 assert_type(reconstruct_path(_int_graph, _pred_int), sparse.csr_array[np.float64, tuple[int, int]])
 assert_type(reconstruct_path(_float_graph, _pred_float), sparse.csr_array[np.float64, tuple[int, int]])
+assert_type(reconstruct_path(_csr_mat, _pred_int), sparse.csr_matrix[np.float64])
 
 # construct_dist_matrix
 

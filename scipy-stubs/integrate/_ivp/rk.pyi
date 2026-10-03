@@ -35,23 +35,100 @@ class RungeKutta(OdeSolver, Generic[_SCT_fc]):
     error_exponent: float
     h_previous: float | None
 
+    @overload
     def __init__(
-        self,
+        self: RungeKutta[np.float64],
         /,
-        fun: Callable[[float, onp.ArrayND[_SCT_fc]], onp.ArrayND[_SCT_fc]],
+        fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND],
         t0: float,
-        y0: onp.ArrayND[_SCT_fc],
+        y0: onp.ToFloatND,
         t_bound: float,
         max_step: float = ...,
-        rtol: float = 0.001,
-        atol: float = 1e-06,
+        rtol: float | onp.ToFloat1D = 0.001,
+        atol: float | onp.ToFloat1D = 1e-06,
+        vectorized: bool = False,
+        first_step: float | None = None,
+        **extraneous: Never,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: RungeKutta[np.complex128],
+        /,
+        fun: Callable[[float, onp.ArrayND[np.complex128]], onp.ToComplexND],
+        t0: float,
+        y0: onp.ToJustComplexND,
+        t_bound: float,
+        max_step: float = ...,
+        rtol: float | onp.ToFloat1D = 0.001,
+        atol: float | onp.ToFloat1D = 1e-06,
         vectorized: bool = False,
         first_step: float | None = None,
         **extraneous: Never,
     ) -> None: ...
 
-class RK23(RungeKutta[_SCT_fc], Generic[_SCT_fc]): ...
-class RK45(RungeKutta[_SCT_fc], Generic[_SCT_fc]): ...
+class RK23(RungeKutta[_SCT_fc], Generic[_SCT_fc]):
+    @overload
+    def __init__(
+        self: RK23[np.float64],
+        /,
+        fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND],
+        t0: float,
+        y0: onp.ToFloatND,
+        t_bound: float,
+        max_step: float = ...,
+        rtol: float | onp.ToFloat1D = 0.001,
+        atol: float | onp.ToFloat1D = 1e-06,
+        vectorized: bool = False,
+        first_step: float | None = None,
+        **extraneous: Never,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: RK23[np.complex128],
+        /,
+        fun: Callable[[float, onp.ArrayND[np.complex128]], onp.ToComplexND],
+        t0: float,
+        y0: onp.ToJustComplexND,
+        t_bound: float,
+        max_step: float = ...,
+        rtol: float | onp.ToFloat1D = 0.001,
+        atol: float | onp.ToFloat1D = 1e-06,
+        vectorized: bool = False,
+        first_step: float | None = None,
+        **extraneous: Never,
+    ) -> None: ...
+
+class RK45(RungeKutta[_SCT_fc], Generic[_SCT_fc]):
+    @overload
+    def __init__(
+        self: RK45[np.float64],
+        /,
+        fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND],
+        t0: float,
+        y0: onp.ToFloatND,
+        t_bound: float,
+        max_step: float = ...,
+        rtol: float | onp.ToFloat1D = 0.001,
+        atol: float | onp.ToFloat1D = 1e-06,
+        vectorized: bool = False,
+        first_step: float | None = None,
+        **extraneous: Never,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: RK45[np.complex128],
+        /,
+        fun: Callable[[float, onp.ArrayND[np.complex128]], onp.ToComplexND],
+        t0: float,
+        y0: onp.ToJustComplexND,
+        t_bound: float,
+        max_step: float = ...,
+        rtol: float | onp.ToFloat1D = 0.001,
+        atol: float | onp.ToFloat1D = 1e-06,
+        vectorized: bool = False,
+        first_step: float | None = None,
+        **extraneous: Never,
+    ) -> None: ...
 
 class DOP853(RungeKutta[_SCT_fc], Generic[_SCT_fc]):
     E3: ClassVar[onp.ArrayND[np.float64]]
@@ -61,6 +138,37 @@ class DOP853(RungeKutta[_SCT_fc], Generic[_SCT_fc]):
     C_EXTRA: ClassVar[onp.ArrayND[np.float64]]
 
     K_extended: onp.ArrayND[_SCT_fc]
+
+    @overload
+    def __init__(
+        self: DOP853[np.float64],
+        /,
+        fun: Callable[[float, onp.ArrayND[np.float64]], onp.ToFloatND],
+        t0: float,
+        y0: onp.ToFloatND,
+        t_bound: float,
+        max_step: float = ...,
+        rtol: float | onp.ToFloat1D = 0.001,
+        atol: float | onp.ToFloat1D = 1e-06,
+        vectorized: bool = False,
+        first_step: float | None = None,
+        **extraneous: Never,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: DOP853[np.complex128],
+        /,
+        fun: Callable[[float, onp.ArrayND[np.complex128]], onp.ToComplexND],
+        t0: float,
+        y0: onp.ToJustComplexND,
+        t_bound: float,
+        max_step: float = ...,
+        rtol: float | onp.ToFloat1D = 0.001,
+        atol: float | onp.ToFloat1D = 1e-06,
+        vectorized: bool = False,
+        first_step: float | None = None,
+        **extraneous: Never,
+    ) -> None: ...
 
 class RkDenseOutput(DenseOutput[_SCT_fc], Generic[_SCT_fc]):
     h: float

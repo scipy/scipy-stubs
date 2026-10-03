@@ -83,28 +83,19 @@ class _CanLenAndIter(Protocol[_T_co]):
 type _SizedIterable[_T] = _CanLenAndIter[_T] | op.CanSequence[int, _T]
 type _QuadRange = _SizedIterable[float]
 _RangeT = TypeVar("_RangeT", bound=_QuadRange, default=_QuadRange)
-_RangeT_co = TypeVar("_RangeT_co", bound=_QuadRange, covariant=True, default=_QuadRange)
-
-@type_check_only
-class _RangeCallable(Protocol[_T_f_contra, _RangeT_co]):
-    def __call__(self, /, *args: _T_f_contra) -> _RangeT_co: ...
-
 _OptT = TypeVar("_OptT", bound=QuadOpts, default=QuadOpts)
-_OptT_co = TypeVar("_OptT_co", bound=QuadOpts, covariant=True, default=QuadOpts)
-
-@type_check_only
-class _OptCallable(Protocol[_T_f_contra, _OptT_co]):
-    def __call__(self, /, *args: _T_f_contra) -> _OptT_co: ...
 
 ###
 
-class _RangeFunc(_RangeCallable[_T_f_contra, _RangeT], Generic[_T_f_contra, _RangeT]):
+class _RangeFunc(Generic[_T_f_contra, _RangeT]):
     range_: _RangeT
     def __init__(self, /, range_: _RangeT) -> None: ...
+    def __call__(self, /, *args: _T_f_contra) -> _RangeT: ...
 
-class _OptFunc(_OptCallable[_T_f_contra, _OptT], Generic[_T_f_contra, _OptT]):
+class _OptFunc(Generic[_T_f_contra, _OptT]):
     opt: _OptT
     def __init__(self, /, opt: _OptT) -> None: ...
+    def __call__(self, /, *args: _T_f_contra) -> _OptT: ...
 
 class _NQuad(Generic[_BT_co]):
     abserr: Final[float]
@@ -456,7 +447,7 @@ def tplquad(
 @overload
 def nquad(
     func: _QuadFuncN,
-    ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
+    ranges: _SizedIterable[_QuadRange | Callable[..., _QuadRange]],
     args: Iterable[object] | None = None,
     opts: QuadOpts | Callable[..., QuadOpts] | Iterable[QuadOpts | Callable[..., QuadOpts]] | None = None,
     full_output: onp.ToFalse = False,
@@ -464,17 +455,17 @@ def nquad(
 @overload
 def nquad(
     func: _QuadFuncN,
-    ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
+    ranges: _SizedIterable[_QuadRange | Callable[..., _QuadRange]],
     args: Iterable[object] | None,
-    opts: QuadOpts | _OptCallable | Iterable[QuadOpts | _OptCallable] | None,
+    opts: QuadOpts | Callable[..., QuadOpts] | Iterable[QuadOpts | Callable[..., QuadOpts]] | None,
     full_output: onp.ToTrue,
 ) -> tuple[float, float, _QuadOutputNC]: ...
 @overload
 def nquad(
     func: _QuadFuncN,
-    ranges: _SizedIterable[_QuadRange | _RangeCallable[float]],
+    ranges: _SizedIterable[_QuadRange | Callable[..., _QuadRange]],
     args: Iterable[object] | None = None,
-    opts: QuadOpts | _OptCallable | Iterable[QuadOpts | _OptCallable] | None = None,
+    opts: QuadOpts | Callable[..., QuadOpts] | Iterable[QuadOpts | Callable[..., QuadOpts]] | None = None,
     *,
     full_output: onp.ToTrue,
 ) -> tuple[float, float, _QuadOutputNC]: ...

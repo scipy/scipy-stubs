@@ -31,7 +31,7 @@ type _XScaleMethod = Literal["jac"]
 type _XScale = onp.ToFloat | onp.ToFloatND | _XScaleMethod
 
 type _LossMethod = Literal["linear", "soft_l1", "huber", "cauchy", "arctan"]
-type _Loss = _UserLossFunction | _LossMethod
+type _Loss = Callable[[_Float1D], onp.ToFloat2D] | _LossMethod
 
 type _ResidFunction = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D | onp.ToFloat]
 
@@ -120,7 +120,7 @@ def least_squares(
     x_scale: _XScale | None = None,
     loss: _Loss = "linear",
     f_scale: onp.ToFloat = 1.0,
-    diff_step: onp.ToFloat1D | None = None,
+    diff_step: onp.ToFloat | onp.ToFloat1D | None = None,
     tr_solver: Literal["exact", "lsmr"] | None = None,
     tr_options: Mapping[str, object] | None = None,
     jac_sparsity: _ToJac2D | None = None,
@@ -145,7 +145,7 @@ def least_squares(
     x_scale: _XScale | None = None,
     loss: _Loss = "linear",
     f_scale: onp.ToFloat = 1.0,
-    diff_step: onp.ToFloat1D | None = None,
+    diff_step: onp.ToFloat | onp.ToFloat1D | None = None,
     tr_solver: Literal["exact", "lsmr"] | None = None,
     tr_options: Mapping[str, object] | None = None,
     jac_sparsity: _ToJac2D | None = None,
@@ -169,7 +169,7 @@ def least_squares(
     x_scale: _XScale | None = None,
     loss: _Loss = "linear",
     f_scale: onp.ToFloat = 1.0,
-    diff_step: onp.ToFloat1D | None = None,
+    diff_step: onp.ToFloat | onp.ToFloat1D | None = None,
     tr_solver: Literal["exact", "lsmr"] | None = None,
     tr_options: Mapping[str, object] | None = None,
     jac_sparsity: _ToJac2D | None = None,

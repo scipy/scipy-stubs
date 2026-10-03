@@ -18,6 +18,7 @@ type _Max3 = Literal[0, 1, 2, 3]
 
 type _Int = int | np.int32 | np.int64
 type _Float = float | np.float64
+type _ToBounds = Bound | Sequence[Bound] | onp.ToFloat1D | onp.ToFloat2D
 
 @type_check_only
 class _OptionsCommon(TypedDict, total=False):
@@ -41,7 +42,7 @@ class _OptionsHighsIPM(_OptionsHighsDS, TypedDict, total=False):
 # highs
 @type_check_only
 class _OptionsHighs(_OptionsHighsIPM, TypedDict, total=False):
-    min_rel_gap: _Float | None  # default: None
+    mip_rel_gap: _Float | None  # default: None
 
 @type_check_only
 class _OptionsCommonLegacy(_OptionsCommon, TypedDict, total=False):
@@ -119,7 +120,7 @@ def linprog(
     b_ub: onp.ToFloat1D | None = None,
     A_eq: onp.ToFloat2D | None = None,
     b_eq: onp.ToFloat1D | None = None,
-    bounds: Bound | Sequence[Bound] = (0, None),
+    bounds: _ToBounds = (0, None),
     method: Literal["highs"] = "highs",
     callback: Callable[[OptimizeResult], Unused] | None = None,
     options: _OptionsHighs | None = None,
@@ -133,7 +134,7 @@ def linprog(
     b_ub: onp.ToFloat1D | None = None,
     A_eq: onp.ToFloat2D | None = None,
     b_eq: onp.ToFloat1D | None = None,
-    bounds: Bound | Sequence[Bound] = (0, None),
+    bounds: _ToBounds = (0, None),
     *,
     method: Literal["highs-ds"],
     callback: Callable[[OptimizeResult], Unused] | None = None,
@@ -148,7 +149,7 @@ def linprog(
     b_ub: onp.ToFloat1D | None = None,
     A_eq: onp.ToFloat2D | None = None,
     b_eq: onp.ToFloat1D | None = None,
-    bounds: Bound | Sequence[Bound] = (0, None),
+    bounds: _ToBounds = (0, None),
     *,
     method: Literal["highs-ipm"],
     callback: Callable[[OptimizeResult], Unused] | None = None,
@@ -164,7 +165,7 @@ def linprog(
     b_ub: onp.ToFloat1D | None = None,
     A_eq: onp.ToFloat2D | None = None,
     b_eq: onp.ToFloat1D | None = None,
-    bounds: Bound | Sequence[Bound] = (0, None),
+    bounds: _ToBounds = (0, None),
     *,
     method: Literal["interior-point"],
     callback: Callable[[OptimizeResult], Unused] | None = None,
@@ -180,7 +181,7 @@ def linprog(
     b_ub: onp.ToFloat1D | None = None,
     A_eq: onp.ToFloat2D | None = None,
     b_eq: onp.ToFloat1D | None = None,
-    bounds: Bound | Sequence[Bound] = (0, None),
+    bounds: _ToBounds = (0, None),
     *,
     method: Literal["revised simplex"],
     callback: Callable[[OptimizeResult], Unused] | None = None,
@@ -196,7 +197,7 @@ def linprog(
     b_ub: onp.ToFloat1D | None = None,
     A_eq: onp.ToFloat2D | None = None,
     b_eq: onp.ToFloat1D | None = None,
-    bounds: Bound | Sequence[Bound] = (0, None),
+    bounds: _ToBounds = (0, None),
     *,
     method: Literal["simplex"],
     callback: Callable[[OptimizeResult], Unused] | None = None,
@@ -211,7 +212,7 @@ def linprog(
     b_ub: onp.ToFloat1D | None = None,
     A_eq: onp.ToFloat2D | None = None,
     b_eq: onp.ToFloat1D | None = None,
-    bounds: Bound | Sequence[Bound] = (0, None),
+    bounds: _ToBounds = (0, None),
     method: MethodLinprog = "highs",
     callback: Callable[[OptimizeResult], Unused] | None = None,
     options: _OptionsHighs | None = None,

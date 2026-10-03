@@ -1,6 +1,6 @@
 # ruff: file-ignore[typed-argument-default-in-stub]
 
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Sequence
 from typing import Any, Concatenate, Final, Generic, Literal, Protocol, overload, type_check_only
 from typing_extensions import TypeVar
 
@@ -628,7 +628,7 @@ def brute(
 @overload  # ?d
 def brute(
     func: _Fn1_1d[onp.ToFloat],
-    ranges: tuple[_ToRange, ...],
+    ranges: Sequence[_ToRange],
     args: _Args = (),
     Ns: int = 20,
     full_output: onp.ToFalse = 0,
@@ -639,7 +639,7 @@ def brute(
 @overload  # ?d, full_output=True
 def brute(
     func: _Fn1_1d[onp.ToFloat],
-    ranges: tuple[_ToRange, ...],
+    ranges: Sequence[_ToRange],
     args: _Args = (),
     Ns: int = 20,
     *,
@@ -737,6 +737,8 @@ def rosen(x: onp.ToArrayStrict2D[float, npc.integer | np.bool]) -> onp.Array1D[n
 def rosen(x: onp.ToArrayStrict3D[float, npc.integer | np.bool]) -> onp.Array2D[np.float64]: ...
 @overload
 def rosen(x: onp.ToArrayND[float, npc.integer | np.bool]) -> onp.ArrayND[np.float64] | np.float64: ...
+@overload
+def rosen(x: onp.ToFloatND) -> onp.ArrayND[np.float64] | Any: ...
 
 #
 @overload

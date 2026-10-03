@@ -12,7 +12,7 @@ RegularGridInterpolator(np.array([], dtype=np.float64), np.array([], dtype=np.fl
 # interpn
 
 _f64_1d: onp.Array1D[np.float64]
-_c128_1d: onp.Array1D[np.complex128]
+_py_c_2d: list[list[complex]]
 
 assert_type(interpn((_f64_1d,), _f64_1d, _f64_1d), onp.ArrayND[np.float64])
-assert_type(interpn((_f64_1d,), _c128_1d, _f64_1d), onp.ArrayND[np.complex128])
+assert_type(interpn((_f64_1d, _f64_1d), _py_c_2d, _f64_1d), onp.ArrayND[np.complex128])

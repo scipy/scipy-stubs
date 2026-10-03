@@ -39,14 +39,14 @@ type Bounds = Sequence[Bound] | onp.ToFloat2D | _Bounds
 @type_check_only
 class _ConstraintDict(TypedDict):
     type: Literal["eq", "ineq"]
-    fun: Callable[Concatenate[_Float1D, ...], onp.ToFloat]
-    jac: NotRequired[Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]]
+    fun: Callable[Concatenate[_Float1D, ...], onp.ToFloat | onp.ToFloat1D]
+    jac: NotRequired[Callable[Concatenate[_Float1D, ...], onp.ToFloat1D | onp.ToFloat2D]]
     args: NotRequired[_Args]
 
 type Constraint = LinearConstraint | NonlinearConstraint | _ConstraintDict
 type Constraints = Constraint | Sequence[Constraint]
 
-type Solver = Literal["minimize", "minimize_scalar", "root", "root_salar", "linprog", "quadratic_assignment"]
+type Solver = Literal["minimize", "minimize_scalar", "root", "root_scalar", "linprog", "quadratic_assignment"]
 type TRSolver = Literal["exact", "lsmr"]
 
 type MethodMimimize = Literal[

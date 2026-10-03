@@ -1,9 +1,10 @@
 # type-tests for `linalg/_decomp_polar.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.linalg import polar
 
@@ -31,6 +32,9 @@ _f32_3d: onp.Array3D[np.float32]
 _f64_3d: onp.Array3D[np.float64]
 _c128_3d: onp.Array3D[np.complex128]
 
+_any_2d: onp.Array2D[Any]
+_any_3d: onp.Array3D[Any]
+
 ###
 # polar
 
@@ -53,3 +57,6 @@ assert_type(polar(_c160_2d), tuple[onp.Array2D[np.complex128], onp.Array2D[np.co
 assert_type(polar(_f32_3d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
 assert_type(polar(_f64_3d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
 assert_type(polar(_c128_3d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+
+assert_subtype[tuple[onp.Array2D[np.float64], onp.Array2D[np.float64]]](polar(_any_2d))
+assert_subtype[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]](polar(_any_3d))

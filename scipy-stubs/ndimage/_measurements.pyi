@@ -29,8 +29,8 @@ __all__ = [
 
 ###
 
-type __Func1[T] = Callable[[onp.ToComplex | onp.ToComplexND], T]
-type __Func2[T] = Callable[[onp.ToComplex | onp.ToComplexND, onp.ToComplex | onp.ToComplexND], T]
+type __Func1[T] = Callable[[onp.Array1D[Any]], T]
+type __Func2[T] = Callable[[onp.Array1D[Any], onp.Array1D[np.intp]], T]
 type _ComprehensionFunc[T] = __Func1[T] | __Func2[T]
 
 type _Idx0D = tuple[np.intp, ...]
@@ -620,8 +620,8 @@ def center_of_mass(
 @overload
 def histogram(
     input: onp.ToComplex | onp.ToComplexND,
-    min: onp.ToInt,
-    max: onp.ToInt,
+    min: onp.ToFloat,
+    max: onp.ToFloat,
     bins: onp.ToInt,
     labels: onp.ToInt | onp.ToIntND | None = None,
     index: onp.ToInt | None = None,
@@ -629,8 +629,8 @@ def histogram(
 @overload
 def histogram(
     input: onp.ToComplex | onp.ToComplexND,
-    min: onp.ToInt,
-    max: onp.ToInt,
+    min: onp.ToFloat,
+    max: onp.ToFloat,
     bins: onp.ToInt,
     labels: onp.ToInt | onp.ToIntND,
     index: onp.ToIntND,
@@ -638,8 +638,8 @@ def histogram(
 @overload
 def histogram(
     input: onp.ToComplex | onp.ToComplexND,
-    min: onp.ToInt,
-    max: onp.ToInt,
+    min: onp.ToFloat,
+    max: onp.ToFloat,
     bins: onp.ToInt,
     labels: onp.ToInt | onp.ToIntND | None = None,
     *,
@@ -648,8 +648,8 @@ def histogram(
 @overload
 def histogram(
     input: onp.ToComplex | onp.ToComplexND,
-    min: onp.ToInt,
-    max: onp.ToInt,
+    min: onp.ToFloat,
+    max: onp.ToFloat,
     bins: onp.ToInt,
     labels: onp.ToInt | onp.ToIntND | None,
     index: onp.ToInt | onp.ToIntND | None,
@@ -660,21 +660,21 @@ def histogram(
 def watershed_ift[IntT: npc.signedinteger](
     input: _ArrayLike[np.uint8 | np.uint16],
     markers: _ArrayLike[IntT],
-    structure: onp.ToInt | onp.ToIntND | None = None,
+    structure: onp.ToFloat | onp.ToFloatND | None = None,
     output: None = None,
 ) -> onp.ArrayND[IntT]: ...
 @overload  # ~int
 def watershed_ift(
     input: _ArrayLike[np.uint8 | np.uint16],
     markers: onp.SequenceND[int],
-    structure: onp.ToInt | onp.ToIntND | None = None,
+    structure: onp.ToFloat | onp.ToFloatND | None = None,
     output: None = None,
 ) -> onp.ArrayND[np.int_]: ...
 @overload  # output: <given>
 def watershed_ift[ArrayT: onp.ArrayND[npc.signedinteger]](
     input: _ArrayLike[np.uint8 | np.uint16],
     markers: _ArrayLike[npc.signedinteger] | onp.SequenceND[int],
-    structure: onp.ToInt | onp.ToIntND | None = None,
+    structure: onp.ToFloat | onp.ToFloatND | None = None,
     *,
     output: ArrayT,
 ) -> ArrayT: ...

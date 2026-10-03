@@ -3,7 +3,6 @@ from typing import Any, Literal, Never, overload
 from typing_extensions import deprecated
 
 import numpy as np
-import numpy_typing_compat as nptc
 import optype.numpy as onp
 import optype.numpy.compat as npc
 import optype.typing as opt
@@ -24,6 +23,7 @@ __all__ = [
 # input types
 
 type _ToBoolF16ND = onp.ToArrayND[Never, np.bool | np.float16]
+type _ToF32ND = onp.ToArrayND[Never, npc.floating32 | npc.integer16 | npc.integer8]
 type _ToF64ND = onp.ToArrayND[float, npc.integer32 | npc.integer64 | npc.floating64]
 type _ToC64ND = onp.ToArrayND[Never, npc.inexact32 | npc.integer16 | npc.integer8]
 type _ToC128ND = onp.ToArrayND[complex, npc.integer32 | npc.number64]
@@ -50,16 +50,24 @@ type _DriverEV = Literal["ev", "evd", "evx", "evr"]
 type _DriverSTE = Literal["stemr", "stebz", "sterf", "stev"]
 type _DriverAuto = Literal["auto"]
 
-# output types
-
-type _FloatND = onp.ArrayND[np.float64 | np.float32]
-
 ###
 
 # NOTE: mypy incorrectly sees disjoint dtypes like `npc.integer32` and `npc.integer8` as overlapping
 # mypy: disable-error-code=overload-overlap
 
 # NOTE: The eigenvectors of real `a` can be either real or complex, depending on its values.
+@overload  # +c128, +complex | None, right: False
+def eig(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    left: onp.ToFalse = False,
+    *,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
 @overload  # +c64, +c64 | None, right: False
 def eig(
     a: _ToC64ND,
@@ -98,18 +106,6 @@ def eig(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex64]: ...
-@overload  # +c128, +complex | None, right: False
-def eig(
-    a: _ToC128ND,
-    b: _ToC64ND | _ToC128ND | None = None,
-    left: onp.ToFalse = False,
-    *,
-    right: onp.ToFalse,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> onp.ArrayND[np.complex128]: ...
 @overload  # +complex, +c128, right: False
 def eig(
     a: _ToC64ND | _ToC128ND,
@@ -160,6 +156,17 @@ def eig(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex128 | Any]: ...
+@overload  # +c128, +complex | None
+def eig(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    left: onp.ToFalse = False,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
 @overload  # +c64, +c64 | None
 def eig(
     a: _ToC64ND,
@@ -195,17 +202,6 @@ def eig(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
-@overload  # +c128, +complex | None
-def eig(
-    a: _ToC128ND,
-    b: _ToC64ND | _ToC128ND | None = None,
-    left: onp.ToFalse = False,
-    right: onp.ToTrue = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
 @overload  # +complex, +c128
 def eig(
     a: _ToC64ND | _ToC128ND,
@@ -252,6 +248,18 @@ def eig(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> tuple[onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+@overload  # +c128, +complex | None, left: True, right: False
+def eig(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToFalse,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
 @overload  # +c64, +c64 | None, left: True, right: False
 def eig(
     a: _ToC64ND,
@@ -290,18 +298,6 @@ def eig(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
-@overload  # +c128, +complex | None, left: True, right: False
-def eig(
-    a: _ToC128ND,
-    b: _ToC64ND | _ToC128ND | None = None,
-    *,
-    left: onp.ToTrue,
-    right: onp.ToFalse,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
 @overload  # +complex, +c128, left: True, right: False
 def eig(
     a: _ToC64ND | _ToC128ND,
@@ -352,6 +348,18 @@ def eig(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> tuple[onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
+@overload  # +c128, +complex | None, left: True
+def eig(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    *,
+    left: onp.ToTrue,
+    right: onp.ToTrue = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
 @overload  # +c64, +c64 | None, left: True
 def eig(
     a: _ToC64ND,
@@ -390,18 +398,6 @@ def eig(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32 | np.complex64], onp.ArrayND[np.float32 | np.complex64]]: ...
-@overload  # +c128, +complex | None, left: True
-def eig(
-    a: _ToC128ND,
-    b: _ToC64ND | _ToC128ND | None = None,
-    *,
-    left: onp.ToTrue,
-    right: onp.ToTrue = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
 @overload  # +complex, +c128, left: True
 def eig(
     a: _ToC64ND | _ToC128ND,
@@ -454,6 +450,21 @@ def eig(
 ) -> tuple[onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.complex128 | Any], onp.ArrayND[np.complex128 | Any]]: ...
 
 #
+@overload  # +f64, +float | None
+def eigh(
+    a: _ToF64ND,
+    b: _ToF64ND | _ToF32ND | None = None,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[False] = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 @overload  # ~bool | ~f16, +f32 | None
 @deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigh(
@@ -691,21 +702,6 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]]: ...
-@overload  # +f64, +float | None
-def eigh(
-    a: _ToF64ND,
-    b: onp.ToFloatND | None = None,
-    *,
-    lower: bool = True,
-    eigvals_only: Literal[False] = False,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    type: _EigHType = 1,
-    check_finite: bool = True,
-    subset_by_index: _EigHSubsetByIndex | None = None,
-    subset_by_value: _EigHSubsetByValue | None = None,
-    driver: _DriverEV | _DriverGV | None = None,
-) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 @overload  # +float, +f64
 def eigh(
     a: onp.ToFloatND,
@@ -796,6 +792,21 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # +c128, +complex | None, eigvals_only: True
+def eigh(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    *,
+    lower: bool = True,
+    eigvals_only: Literal[True],
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
 @overload  # ~bool | ~f16, +c64 | None, eigvals_only: True
 @deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigh(
@@ -907,21 +918,6 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # +c128, +complex | None, eigvals_only: True
-def eigh(
-    a: _ToC128ND,
-    b: onp.ToComplexND | None = None,
-    *,
-    lower: bool = True,
-    eigvals_only: Literal[True],
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    type: _EigHType = 1,
-    check_finite: bool = True,
-    subset_by_index: _EigHSubsetByIndex | None = None,
-    subset_by_value: _EigHSubsetByValue | None = None,
-    driver: _DriverEV | _DriverGV | None = None,
-) -> onp.ArrayND[np.float64]: ...
 @overload  # +complex, +c128, eigvals_only: True
 def eigh(
     a: onp.ToComplexND,
@@ -954,6 +950,17 @@ def eigh(
 ) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
+@overload  # +f64
+def eig_banded(
+    a_band: _ToF64ND,
+    lower: bool = False,
+    eigvals_only: Literal[False] = False,
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 @overload  # ~bool | ~f16
 @deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eig_banded(
@@ -1001,17 +1008,6 @@ def eig_banded(
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
 ) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
-@overload  # +f64
-def eig_banded(
-    a_band: _ToF64ND,
-    lower: bool = False,
-    eigvals_only: Literal[False] = False,
-    overwrite_a_band: bool = False,
-    select: _Select = "a",
-    select_range: _SelectRange | None = None,
-    max_ev: onp.ToInt = 0,
-    check_finite: bool = True,
-) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 @overload  # ~c64
 def eig_banded(
     a_band: onp.ToJustComplex64_ND,
@@ -1045,6 +1041,29 @@ def eig_banded(
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
 ) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # +c128, eigvals_only: True (positional)
+def eig_banded(
+    a_band: _ToC128ND,
+    lower: bool,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +c128, eigvals_only: True (keyword)
+def eig_banded(
+    a_band: _ToC128ND,
+    lower: bool = False,
+    *,
+    eigvals_only: Literal[True],
+    overwrite_a_band: bool = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    max_ev: onp.ToInt = 0,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
 @overload  # ~bool | ~f16, eigvals_only: True (positional)
 @deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eig_banded(
@@ -1118,29 +1137,6 @@ def eig_banded(
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # +c128, eigvals_only: True (positional)
-def eig_banded(
-    a_band: _ToC128ND,
-    lower: bool,
-    eigvals_only: Literal[True],
-    overwrite_a_band: bool = False,
-    select: _Select = "a",
-    select_range: _SelectRange | None = None,
-    max_ev: onp.ToInt = 0,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.float64]: ...
-@overload  # +c128, eigvals_only: True (keyword)
-def eig_banded(
-    a_band: _ToC128ND,
-    lower: bool = False,
-    *,
-    eigvals_only: Literal[True],
-    overwrite_a_band: bool = False,
-    select: _Select = "a",
-    select_range: _SelectRange | None = None,
-    max_ev: onp.ToInt = 0,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.float64]: ...
 @overload  # catch-all, eigvals_only: True (positional)
 def eig_banded(
     a_band: onp.ToComplexND,
@@ -1189,6 +1185,15 @@ def eig_banded(
 ) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]] | onp.ArrayND[np.float64 | Any]: ...
 
 # keep structurally in sync with `eigvalsh`
+@overload  # +c128, +complex | None
+def eigvals(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    homogeneous_eigvals: bool = False,
+) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~bool | ~f16, +c64 | None
 @deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvals(
@@ -1258,15 +1263,6 @@ def eigvals(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex64]: ...
-@overload  # +c128, +complex | None
-def eigvals(
-    a: _ToC128ND,
-    b: onp.ToComplexND | None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    homogeneous_eigvals: bool = False,
-) -> onp.ArrayND[np.complex128]: ...
 @overload  # +complex, +c128
 def eigvals(
     a: onp.ToComplexND,
@@ -1287,6 +1283,20 @@ def eigvals(
 ) -> onp.ArrayND[np.complex128 | Any]: ...
 
 # keep structurally in sync with `eigvals`
+@overload  # +c128, +complex | None
+def eigvalsh(
+    a: _ToC128ND,
+    b: _ToC64ND | _ToC128ND | None = None,
+    *,
+    lower: bool = True,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    type: _EigHType = 1,
+    check_finite: bool = True,
+    subset_by_index: _EigHSubsetByIndex | None = None,
+    subset_by_value: _EigHSubsetByValue | None = None,
+    driver: _DriverEV | _DriverGV | None = None,
+) -> onp.ArrayND[np.float64]: ...
 @overload  # ~bool | ~f16, +c64 | None
 @deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvalsh(
@@ -1391,20 +1401,6 @@ def eigvalsh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # +c128, +complex | None
-def eigvalsh(
-    a: _ToC128ND,
-    b: onp.ToComplexND | None = None,
-    *,
-    lower: bool = True,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    type: _EigHType = 1,
-    check_finite: bool = True,
-    subset_by_index: _EigHSubsetByIndex | None = None,
-    subset_by_value: _EigHSubsetByValue | None = None,
-    driver: _DriverEV | _DriverGV | None = None,
-) -> onp.ArrayND[np.float64]: ...
 @overload  # +complex, +c128
 def eigvalsh(
     a: onp.ToComplexND,
@@ -1435,6 +1431,35 @@ def eigvalsh(
 ) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
+@overload  # +c128
+def eigvals_banded(
+    a_band: _ToC128ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +c128, select: "v"
+def eigvals_banded(
+    a_band: _ToC128ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    *,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +c128, select: "i"
+def eigvals_banded(
+    a_band: _ToC128ND,
+    lower: bool = False,
+    overwrite_a_band: bool = False,
+    *,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
 @overload  # ~bool | ~f16
 @deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvals_banded(
@@ -1528,35 +1553,6 @@ def eigvals_banded(
     select_range: _SelectRangeI,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # +c128
-def eigvals_banded(
-    a_band: _ToC128ND,
-    lower: bool = False,
-    overwrite_a_band: bool = False,
-    select: _SelectA = "a",
-    select_range: _SelectRange | None = None,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.float64]: ...
-@overload  # +c128, select: "v"
-def eigvals_banded(
-    a_band: _ToC128ND,
-    lower: bool = False,
-    overwrite_a_band: bool = False,
-    *,
-    select: _SelectV,
-    select_range: _SelectRange,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.float64]: ...
-@overload  # +c128, select: "i"
-def eigvals_banded(
-    a_band: _ToC128ND,
-    lower: bool = False,
-    overwrite_a_band: bool = False,
-    *,
-    select: _SelectI,
-    select_range: _SelectRangeI,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.float64]: ...
 @overload  # catch-all
 def eigvals_banded(
     a_band: onp.ToComplexND,
@@ -1588,6 +1584,36 @@ def eigvals_banded(
 ) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
+@overload  # +f64, +float
+def eigvalsh_tridiagonal(
+    d: _ToF64ND,
+    e: _ToF64ND | _ToF32ND,
+    select: _SelectA = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, +float, select: "v"
+def eigvalsh_tridiagonal(
+    d: _ToF64ND,
+    e: _ToF64ND | _ToF32ND,
+    select: _SelectV,
+    select_range: _SelectRange,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, +float, select: "i"
+def eigvalsh_tridiagonal(
+    d: _ToF64ND,
+    e: _ToF64ND | _ToF32ND,
+    select: _SelectI,
+    select_range: _SelectRangeI,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
 @overload  # ~bool | ~f16, +f32
 @deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigvalsh_tridiagonal(
@@ -1816,36 +1842,6 @@ def eigvalsh_tridiagonal(
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # +f64, +float
-def eigvalsh_tridiagonal(
-    d: _ToF64ND,
-    e: onp.ToFloatND,
-    select: _SelectA = "a",
-    select_range: _SelectRange | None = None,
-    check_finite: bool = True,
-    tol: onp.ToFloat = 0.0,
-    lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> onp.ArrayND[np.float64]: ...
-@overload  # +f64, +float, select: "v"
-def eigvalsh_tridiagonal(
-    d: _ToF64ND,
-    e: onp.ToFloatND,
-    select: _SelectV,
-    select_range: _SelectRange,
-    check_finite: bool = True,
-    tol: onp.ToFloat = 0.0,
-    lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> onp.ArrayND[np.float64]: ...
-@overload  # +f64, +float, select: "i"
-def eigvalsh_tridiagonal(
-    d: _ToF64ND,
-    e: onp.ToFloatND,
-    select: _SelectI,
-    select_range: _SelectRangeI,
-    check_finite: bool = True,
-    tol: onp.ToFloat = 0.0,
-    lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> onp.ArrayND[np.float64]: ...
 @overload  # +float, +f64
 def eigvalsh_tridiagonal(
     d: onp.ToFloatND,
@@ -1908,6 +1904,28 @@ def eigvalsh_tridiagonal(
 ) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
+@overload  # +f64, +float
+def eigh_tridiagonal(
+    d: _ToF64ND,
+    e: _ToF64ND | _ToF32ND,
+    eigvals_only: Literal[False] = False,
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # +f64, +float, eigvals_only: True
+def eigh_tridiagonal(
+    d: _ToF64ND,
+    e: _ToF64ND | _ToF32ND,
+    eigvals_only: Literal[True],
+    select: _Select = "a",
+    select_range: _SelectRange | None = None,
+    check_finite: bool = True,
+    tol: onp.ToFloat = 0.0,
+    lapack_driver: _DriverSTE | _DriverAuto = "auto",
+) -> onp.ArrayND[np.float64]: ...
 @overload  # ~bool | ~f16, +f32
 @deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def eigh_tridiagonal(
@@ -2074,28 +2092,6 @@ def eigh_tridiagonal(
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # +f64, +float
-def eigh_tridiagonal(
-    d: _ToF64ND,
-    e: onp.ToFloatND,
-    eigvals_only: Literal[False] = False,
-    select: _Select = "a",
-    select_range: _SelectRange | None = None,
-    check_finite: bool = True,
-    tol: onp.ToFloat = 0.0,
-    lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
-@overload  # +f64, +float, eigvals_only: True
-def eigh_tridiagonal(
-    d: _ToF64ND,
-    e: onp.ToFloatND,
-    eigvals_only: Literal[True],
-    select: _Select = "a",
-    select_range: _SelectRange | None = None,
-    check_finite: bool = True,
-    tol: onp.ToFloat = 0.0,
-    lapack_driver: _DriverSTE | _DriverAuto = "auto",
-) -> onp.ArrayND[np.float64]: ...
 @overload  # +float, +f64
 def eigh_tridiagonal(
     d: onp.ToFloatND,
@@ -2142,6 +2138,14 @@ def eigh_tridiagonal(
 ) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
+@overload  # +f64
+def hessenberg(
+    a: _ToF64ND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
+) -> onp.ArrayND[np.float64]: ...
+@overload  # +f64, calc_q: True
+def hessenberg(
+    a: _ToF64ND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 @overload  # ~bool | ~f16, calc_q: False = ...
 @deprecated("bool and float16 input will no longer be supported in SciPy 2.1")
 def hessenberg(
@@ -2180,14 +2184,6 @@ def hessenberg(
 def hessenberg(
     a: onp.ToFloat32_ND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]]: ...
-@overload  # +f64
-def hessenberg(
-    a: _ToF64ND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
-) -> onp.ArrayND[np.float64]: ...
-@overload  # +f64, calc_q: True
-def hessenberg(
-    a: _ToF64ND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
-) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 @overload  # ~c64
 def hessenberg(
     a: onp.ToJustComplex64_ND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
@@ -2218,17 +2214,13 @@ def hessenberg(
 ) -> onp.ArrayND[np.float64 | Any] | tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
 
 #
-@overload
-def cdf2rdf[FloatVT: npc.floating, FloatWT: npc.floating](
-    w: nptc.CanArray[Any, np.dtype[FloatVT]], v: nptc.CanArray[Any, np.dtype[FloatWT]]
-) -> tuple[onp.ArrayND[FloatVT], onp.ArrayND[FloatWT]]: ...
-@overload
-def cdf2rdf[FloatT: npc.floating](
-    w: nptc.CanArray[Any, np.dtype[FloatT]], v: onp.ToComplexND
-) -> tuple[onp.ArrayND[FloatT], _FloatND]: ...
-@overload
-def cdf2rdf[FloatT: npc.floating](
-    w: onp.ToComplexND, v: nptc.CanArray[Any, np.dtype[FloatT]]
-) -> tuple[_FloatND, onp.ArrayND[FloatT]]: ...
-@overload
-def cdf2rdf(w: onp.ToComplexND, v: onp.ToComplexND) -> tuple[_FloatND, _FloatND]: ...
+@overload  # ~f64 | ~c128, +c128
+def cdf2rdf(
+    w: onp.ToJustFloat64_ND | onp.ToJustComplex128_ND, v: onp.ToComplex128_ND
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~f32 | ~c64, +c128
+def cdf2rdf(
+    w: onp.ToJustFloat32_ND | onp.ToJustComplex64_ND, v: onp.ToComplex128_ND
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float64]]: ...
+@overload  # fallback
+def cdf2rdf(w: onp.ToComplexND, v: onp.ToComplexND) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...

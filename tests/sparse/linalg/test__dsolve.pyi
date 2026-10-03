@@ -118,7 +118,7 @@ assert_type(lu_f64.solve(b_f2d, "T"), onp.Array2D[np.float64])
 assert_type(lu_f64.solve(b_f, trans="H"), onp.Array1D[np.float64])
 
 lu_c128 = splu(c128_mat)
-assert_type(lu_c128.solve(b_c2d, "T"), onp.Array2D[np.complex128])
+assert_type(lu_c128.solve(b_f2d, "T"), onp.Array2D[np.complex128])
 
 # is_sptriangular
 assert_type(is_sptriangular(csr_), tuple[bool, bool])

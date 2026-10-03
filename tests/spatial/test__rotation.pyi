@@ -49,14 +49,18 @@ assert_type(Rotation.from_mrp(_f64_2d), Rotation[tuple[int]])
 assert_type(Rotation.from_mrp(_f64_nd), Rotation)
 
 assert_type(Rotation.from_euler("xyz", 0.0), Rotation[tuple[()]])
-assert_type(Rotation.from_euler("xyz", _f64_1d), Rotation[tuple[int]])
-assert_type(Rotation.from_euler("xyz", _f64_2d), Rotation[tuple[int, int]])
+assert_type(Rotation.from_euler("xyz", _f64_1d), Rotation[tuple[()]])
+assert_type(Rotation.from_euler("xyz", _f64_2d), Rotation[tuple[int]])
+assert_type(Rotation.from_euler("xyz", _f64_3d), Rotation[tuple[int, int]])
 assert_type(Rotation.from_euler("xyz", _f64_nd), Rotation)
 
 assert_type(Rotation.from_davenport(_f64_1d, "extrinsic", 0.0), Rotation[tuple[()]])
-assert_type(Rotation.from_davenport(_f64_2d, "intrinsic", _f64_1d), Rotation[tuple[int]])
-assert_type(Rotation.from_davenport(_f64_2d, "intrinsic", _f64_2d), Rotation[tuple[int, int]])
+assert_type(Rotation.from_davenport(_f64_2d, "intrinsic", _f64_1d), Rotation[tuple[()]])
+assert_type(Rotation.from_davenport(_f64_2d, "intrinsic", _f64_2d), Rotation[tuple[int]])
+assert_type(Rotation.from_davenport(_f64_2d, "intrinsic", _f64_3d), Rotation[tuple[int, int]])
 assert_type(Rotation.from_davenport(_f64_2d, "intrinsic", _f64_nd), Rotation)
+assert_type(Rotation.from_davenport(_f64_nd, "intrinsic", _f64_1d), Rotation)
+assert_type(Rotation.from_davenport(_f64_3d, "intrinsic", _f64_1d), Rotation)
 
 # identity
 
@@ -78,8 +82,9 @@ assert_type(Rotation.random(shape=_3d), Rotation[tuple[int, int, int]])
 
 assert_type(Rotation.concatenate(_rot_nd), Rotation)
 assert_type(Rotation.concatenate([_rot_0d, _rot_0d]), Rotation[tuple[int]])
-assert_type(Rotation.concatenate([_rot_1d, _rot_1d]), Rotation[tuple[int, int]])
+assert_type(Rotation.concatenate([_rot_1d, _rot_1d]), Rotation[tuple[int]])
 assert_subtype[Rotation](Rotation.concatenate([_rot_nd, _rot_nd]))
+assert_type(Rotation.concatenate([_rot_0d, _rot_1d]), Rotation[tuple[int]])
 
 # create_group
 

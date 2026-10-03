@@ -71,6 +71,8 @@ c160_2d: onp.Array2D[np.complex256]
 c160_3d: onp.Array3D[np.complex256]
 c160_nd: onp.ArrayND[np.complex256]
 
+any_nd: onp.ArrayND[Any]
+
 py_b_2d: list[list[bool]]
 py_b_3d: list[list[list[bool]]]
 
@@ -386,6 +388,8 @@ assert_subtype[onp.ArrayND[np.float64]](inv(f80_nd))
 assert_subtype[onp.ArrayND[np.complex64]](inv(c64_nd))
 assert_subtype[onp.ArrayND[np.complex128]](inv(c128_nd))
 assert_subtype[onp.ArrayND[np.complex128]](inv(c160_nd))
+
+assert_subtype[onp.ArrayND[np.float64]](inv(any_nd))
 
 ###
 # det

@@ -6,6 +6,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from ._bsplines import BSpline
 from ._polyint import _Interpolator1D
 
 __all__ = ["BPoly", "NdPPoly", "PPoly", "interp1d", "interp2d", "lagrange"]
@@ -329,7 +330,7 @@ class PPoly(_PPolyBase[_CT_co, _ShapeT_co], Generic[_CT_co, _ShapeT_co]):
     #
     @classmethod
     def from_spline(
-        cls, tck: tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], int], extrapolate: _Extrapolate | None = None
+        cls, tck: BSpline[np.float64] | tuple[onp.ToFloat1D, onp.ToFloat1D, int], extrapolate: _Extrapolate | None = None
     ) -> Self: ...
     @classmethod
     def from_bernstein_basis(cls, bp: BPoly[_CT_co, _ShapeT_co], extrapolate: _Extrapolate | None = None) -> Self: ...  # ty: ignore[invalid-generic-class]

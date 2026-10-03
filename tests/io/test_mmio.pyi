@@ -1,3 +1,4 @@
+import io
 from typing import Any, Literal, assert_type
 
 import numpy as np
@@ -8,6 +9,8 @@ from scipy.sparse import coo_array, coo_matrix
 
 ###
 
+_str_io: io.StringIO
+
 _arr_f64_2d: onp.Array2D[np.float64]
 _arr_u64_2d: onp.Array2D[np.uint64]
 _coo_f64_2d: coo_array[np.float64] | coo_matrix[np.float64]
@@ -16,7 +19,7 @@ _coo_f64_2d: coo_array[np.float64] | coo_matrix[np.float64]
 
 # mminfo
 assert_type(
-    mminfo("file.mtx"),
+    mminfo(_str_io),
     tuple[
         int,
         int,
@@ -29,8 +32,8 @@ assert_type(
 
 # mmread
 assert_type(mmread("file.mtx"), onp.Array2D | coo_matrix)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
-assert_type(mmread("file.mtx", spmatrix=True), onp.Array2D | coo_matrix)
-assert_type(mmread("file.mtx", spmatrix=False), onp.Array2D | coo_array[Any, tuple[int, int]])
+assert_type(mmread(_str_io, spmatrix=True), onp.Array2D | coo_matrix)
+assert_type(mmread(_str_io, spmatrix=False), onp.Array2D | coo_array[Any, tuple[int, int]])
 
 # mmwrite
 assert_type(mmwrite("file_out.mtx", _arr_f64_2d), None)

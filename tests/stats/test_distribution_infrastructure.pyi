@@ -4,6 +4,7 @@ from typing import assert_type, type_check_only
 
 import numpy as np
 import optype.numpy as onp
+from matplotlib.axes import Axes
 from optype.test import assert_subtype
 
 from scipy.stats import Mixture, Uniform, abs, distributions, exp, log, make_distribution, order_statistic, truncate
@@ -37,6 +38,8 @@ _uniform_1d_f64: Uniform[_1d, np.float64]
 _uniform_2d_f64: Uniform[_2d, np.float64]
 _uniform_3d_f64: Uniform[_3d, np.float64]
 
+_ax: Axes
+
 ###
 
 @type_check_only
@@ -61,6 +64,9 @@ class _MultiDuckRV:
     def pdf(self, x: float, /, *, quack: float, swim: float) -> np.float64: ...
 
 ###
+
+# plot
+assert_type(_uniform_0d_f64.plot(t=("x", -1, 5), ax=_ax), Axes)
 
 # __neg__
 assert_type(-_uniform_0d_f64, ShiftedScaledDistribution[Uniform[_0d, np.float64], np.float64, _0d])
@@ -126,8 +132,8 @@ assert_type(Mixture([_uniform_0d_f64, _uniform_0d_f64]), Mixture[np.float64])
 ###
 # make_distribution
 
-assert_subtype[type[ContinuousDistribution]](make_distribution(_DuckRV))
-assert_subtype[type[ContinuousDistribution]](make_distribution(_MultiDuckRV))
+assert_subtype[type[ContinuousDistribution]](make_distribution(_DuckRV()))
+assert_subtype[type[ContinuousDistribution]](make_distribution(_MultiDuckRV()))
 
 _LogUniform = make_distribution(distributions.loguniform)
 assert_type(_LogUniform(a=1.0, b=2.0).cdf(1.0), np.float64)  # type:ignore[assert-type]  # mypy infers 0d

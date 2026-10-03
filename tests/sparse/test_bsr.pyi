@@ -20,6 +20,7 @@ _shape2: tuple[int, int]
 _data2: onp.Array2D[ScalarType]
 _data2_concrete: onp.Array2D[np.float32]
 
+_bsr_spec2: tuple[onp.Array1D[ScalarType], tuple[onp.Array1D[np.intp], onp.Array1D[np.intp]]]
 _bsr_spec3: tuple[onp.ArrayND[ScalarType], onp.Array1D[np.intp], onp.Array1D[np.intp]]
 
 ###
@@ -99,6 +100,12 @@ assert_type(bsr_array(csr_arr), bsr_array[ScalarType])
 assert_type(bsr_array(csr_mat), bsr_array[ScalarType])
 assert_type(bsr_matrix(csr_arr), bsr_matrix[ScalarType])
 assert_type(bsr_matrix(csr_mat), bsr_matrix[ScalarType])
+
+###
+# (data, (row, col)), [shape=(M, N)]
+
+assert_type(bsr_array(_bsr_spec2, _shape2), bsr_array[ScalarType])
+assert_type(bsr_matrix(_bsr_spec2, _shape2), bsr_matrix[ScalarType])
 
 ###
 # (data, indices, indptr), [shape=(M, N)], [blocksize]

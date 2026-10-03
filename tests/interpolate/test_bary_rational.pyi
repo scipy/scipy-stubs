@@ -1,6 +1,6 @@
 # type-tests for `interpolate/_bary_rational.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -44,6 +44,7 @@ assert_type(_aaa.support_values, onp.Array1D[np.float32])
 assert_type(_aaa.residues(), onp.Array1D[np.float32])
 assert_type(_aaa.poles(), onp.Array1D[np.complex64])
 assert_type(_aaa.roots(), onp.Array1D[np.complex64])
+assert_type(_aaa.errors, onp.Array1D[np.float64 | Any])
 
 # FloaterHormannInterpolator
 
@@ -65,3 +66,4 @@ assert_type(_fhi(1j), onp.Array2D[np.complex128])
 assert_type(_fhi.residues(), onp.Array2D[np.float32])
 assert_type(_fhi.poles(), onp.Array2D[np.complex64])
 assert_type(_fhi.roots(), onp.Array2D[np.complex64])
+assert_type(_fhi.weights, onp.Array1D[np.float64 | Any])

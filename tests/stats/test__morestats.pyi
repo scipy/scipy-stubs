@@ -4,6 +4,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from matplotlib.axes import Axes
 from optype.test import assert_subtype
 
 from scipy.stats import (
@@ -80,6 +81,8 @@ _py_i_1d: list[int]
 _py_f_1d: list[float]
 _py_f_2d: list[list[float]]
 
+_ax: Axes
+
 ###
 # bayes_mvs
 
@@ -120,6 +123,7 @@ assert_type(probplot(_f64_1d), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[
 assert_type(probplot(_py_i_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]])
 assert_type(probplot(_f32_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float32]])
 assert_type(probplot(_f64_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(probplot(_f64_1d, plot=_ax), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], _tuple3[np.float64]])
 
 ###
 # ppcc_max
@@ -131,17 +135,21 @@ assert_type(ppcc_max(_f64_2d), np.float64)
 # ppcc_plot
 
 assert_type(ppcc_plot(_f64_1d, 0.0, 2.0), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(ppcc_plot(_f64_1d, 0.0, 2.0, plot=_ax), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
 
 ###
 # anderson
 
 assert_type(anderson(_f64_1d), AndersonResult)  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
 assert_type(anderson(_f64_nd), AndersonResult)  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
+assert_type(anderson(_f64_1d, method="interpolate"), SignificanceResult[np.float64])
 
 ###
 # anderson_ksamp
 
 assert_type(anderson_ksamp(_f64_nd), Anderson_ksampResult)
+assert_type(anderson_ksamp(_f64_nd).pvalue, np.float64 | Any)
+assert_type(anderson_ksamp(_f64_nd, variant="midrank"), SignificanceResult[np.float64 | Any])
 
 ###
 # shapiro
@@ -195,6 +203,8 @@ assert_type(wilcoxon(_f64_1d), WilcoxonResult[np.float64])
 assert_type(wilcoxon(_f64_1d, _f64_1d), WilcoxonResult[np.float64])
 assert_type(wilcoxon(_f64_2d), WilcoxonResult[onp.Array1D[np.float64]])
 assert_type(wilcoxon(_f64_2d, _f64_2d), WilcoxonResult[onp.Array1D[np.float64]])
+assert_type(wilcoxon(_f64_nd, _f64_nd), WilcoxonResult[np.float64 | Any])  # pyrefly:ignore[assert-type]
+assert_type(wilcoxon(_f32_nd), WilcoxonResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
 
 ###
 # median_test

@@ -45,8 +45,8 @@ assert_type(_ctree.query_ball_point(_f64_1d, 1.0), list[int])
 assert_type(_ctree.query_ball_point(_f64_1d, 1.0, return_length=True), np.intp)
 assert_type(_ctree.query_ball_point(_f64_2d, _f64_1d), onp.ArrayND[np.object_])
 assert_type(_ctree.query_ball_point(_f64_2d, _f64_1d, return_length=True), onp.ArrayND[np.intp])
-assert_type(_ctree.query_ball_point(_f64_2d, 1.0), list[int] | onp.ArrayND[np.object_])
-assert_type(_ctree.query_ball_point(_f64_2d, 1.0, return_length=True), np.intp | onp.ArrayND[np.intp])
+assert_type(_ctree.query_ball_point(_f64_2d, 1.0), onp.Array1D[np.object_])
+assert_type(_ctree.query_ball_point(_f64_2d, 1.0, return_length=True), onp.Array1D[np.intp])
 assert_type(_ctree.query_ball_point(_f64_nd, 1.0), onp.ArrayND[np.object_] | Any)  # pyrefly:ignore[assert-type]
 assert_type(_ctree.query_ball_point(_f64_nd, 1.0, return_length=True), onp.ArrayND[np.intp] | Any)  # pyrefly:ignore[assert-type]
 
@@ -61,9 +61,9 @@ assert_type(_ctree.query_pairs(1.0, output_type="ndarray"), onp.ArrayND[np.intp]
 assert_type(_ctree.count_neighbors(_ctree, 1.0), int)
 assert_type(_ctree.count_neighbors(_ctree, 1.0, 2.0, (_f64_1d, _f64_1d)), np.float64)
 assert_type(_ctree.count_neighbors(_ctree, 1.0, weights=(_f64_1d, _f64_1d)), np.float64)
-assert_type(_ctree.count_neighbors(_ctree, _f64_1d), int | onp.Array1D[np.intp])
-assert_type(_ctree.count_neighbors(_ctree, _f64_1d, 2.0, (_f64_1d, _f64_1d)), np.float64 | onp.Array1D[np.float64])
-assert_type(_ctree.count_neighbors(_ctree, _f64_1d, weights=(_f64_1d, _f64_1d)), np.float64 | onp.Array1D[np.float64])
+assert_type(_ctree.count_neighbors(_ctree, _f64_1d), onp.Array1D[np.intp] | Any)
+assert_type(_ctree.count_neighbors(_ctree, _f64_1d, 2.0, (_f64_1d, _f64_1d)), onp.Array1D[np.float64] | Any)
+assert_type(_ctree.count_neighbors(_ctree, _f64_1d, weights=(_f64_1d, _f64_1d)), onp.Array1D[np.float64] | Any)
 
 # cKDTree.sparse_distance_matrix
 
@@ -104,6 +104,7 @@ assert_type(_tree.mins, onp.Array1D[np.float64])
 assert_type(_tree.size, int)
 assert_type(_tree.indices, onp.Array1D[np.intp])
 assert_type(_tree.boxsize, None)
+assert_type(_tree.tree, KDTree.innernode | KDTree.leafnode)
 
 _tree_box: KDTree[onp.Array2D[np.float64], onp.Array1D[np.float64]]
 

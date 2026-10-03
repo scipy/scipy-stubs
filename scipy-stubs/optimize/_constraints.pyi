@@ -22,6 +22,7 @@ import optype.numpy.compat as npc
 
 from scipy.optimize._differentiable_functions import LinearVectorFunction, VectorFunction
 from scipy.optimize._hessian_update_strategy import HessianUpdateStrategy
+from scipy.sparse._base import _spbase
 from scipy.sparse._typing import _Sparse2D
 from scipy.sparse.linalg import LinearOperator
 
@@ -36,7 +37,9 @@ type _Tuple2[T] = tuple[T, T]
 type _MethodJac = Literal["2-point", "3-point", "cs"]
 
 type _ToJac = Callable[[onp.Array1D[np.float64]], _ToFloat2D] | _MethodJac
-type _ToHess = Callable[[onp.Array1D[np.float64]], _ToFloat2D | LinearOperator] | _MethodJac | HessianUpdateStrategy
+type _ToHess = (
+    Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], _ToFloat2D | LinearOperator] | _MethodJac | HessianUpdateStrategy
+)
 
 type _ToFloat2D = onp.ToFloat2D | _Sparse2D[npc.floating | npc.integer]
 
@@ -190,12 +193,12 @@ class Bounds(_Constraint[_ShapeT_co, _NumberT_co], Generic[_ShapeT_co, _NumberT_
     ) -> _Tuple2[onp.ArrayND[ST, ShapeT]]: ...
 
 class LinearConstraint(_Constraint[tuple[int], np.float64]):
-    A: Final[onp.Array2D[np.float64] | _Sparse2D[np.float64]]
+    A: Final[onp.Array2D[np.float64] | _spbase[np.float64 | Any, tuple[int, int]]]
 
     def __init__(
         self,
         /,
-        A: _ToFloat2D,
+        A: _ToFloat2D | onp.ToFloat1D,
         lb: onp.ToFloat | onp.ToFloat1D = ...,
         ub: onp.ToFloat | onp.ToFloat1D = ...,
         keep_feasible: bool | onp.ToBool1D = False,
@@ -203,7 +206,7 @@ class LinearConstraint(_Constraint[tuple[int], np.float64]):
     def residual(self, /, x: onp.ToFloat1D) -> _Tuple2[onp.Array1D[np.float64]]: ...
 
 class NonlinearConstraint(Generic[_BoundT_co, _KeepFeasibleT_co]):
-    fun: Final[Callable[[onp.Array1D[np.float64]], onp.ToFloat1D]]
+    fun: Final[Callable[[onp.Array1D[np.float64]], onp.ToFloat | onp.ToFloat1D]]
     lb: _BoundT_co
     ub: _BoundT_co
     keep_feasible: _KeepFeasibleT_co
@@ -216,7 +219,7 @@ class NonlinearConstraint(Generic[_BoundT_co, _KeepFeasibleT_co]):
     def __init__[BoundT: onp.ToFloat | onp.ToFloat1D](
         self: NonlinearConstraint[BoundT, bool],
         /,
-        fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat1D],
+        fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat | onp.ToFloat1D],
         lb: BoundT,
         ub: BoundT,
         jac: _ToJac = "2-point",
@@ -229,7 +232,7 @@ class NonlinearConstraint(Generic[_BoundT_co, _KeepFeasibleT_co]):
     def __init__(
         self,
         /,
-        fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat1D],
+        fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat | onp.ToFloat1D],
         lb: _BoundT_co,
         ub: _BoundT_co,
         jac: _ToJac = "2-point",

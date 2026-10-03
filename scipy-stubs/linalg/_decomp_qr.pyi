@@ -391,16 +391,6 @@ def qr(
 ) -> tuple[_Tuple2[onp.ArrayND[np.float64 | Any]], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int32]]: ...
 
 #
-@overload  # 2d +f32, c: 1d
-def qr_multiply(
-    a: onp.ToFloat32Strict2D,
-    c: onp.ToFloatStrict1D,
-    mode: _Side = "right",
-    pivoting: onp.ToFalse = False,
-    conjugate: bool = False,
-    overwrite_a: bool = False,
-    overwrite_c: bool = False,
-) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.float32]]: ...
 @overload  # 2d +f64, c: 1d
 def qr_multiply(
     a: _AsF64Strict2D,
@@ -411,16 +401,16 @@ def qr_multiply(
     overwrite_a: bool = False,
     overwrite_c: bool = False,
 ) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64]]: ...
-@overload  # 2d +f32, c: 2d
+@overload  # 2d +f32, c: 1d
 def qr_multiply(
     a: onp.ToFloat32Strict2D,
-    c: onp.ToFloatStrict2D,
+    c: onp.ToFloatStrict1D,
     mode: _Side = "right",
     pivoting: onp.ToFalse = False,
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> _Tuple2[onp.Array2D[np.float32]]: ...
+) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.float32]]: ...
 @overload  # 2d +f64, c: 2d
 def qr_multiply(
     a: _AsF64Strict2D,
@@ -431,16 +421,16 @@ def qr_multiply(
     overwrite_a: bool = False,
     overwrite_c: bool = False,
 ) -> _Tuple2[onp.Array2D[np.float64]]: ...
-@overload  # Nd +f32, c: Nd
+@overload  # 2d +f32, c: 2d
 def qr_multiply(
-    a: _AsF32ND,
-    c: onp.ToFloatND,
+    a: onp.ToFloat32Strict2D,
+    c: onp.ToFloatStrict2D,
     mode: _Side = "right",
     pivoting: onp.ToFalse = False,
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> _Tuple2[onp.ArrayND[np.float32]]: ...
+) -> _Tuple2[onp.Array2D[np.float32]]: ...
 @overload  # Nd +f64, c: Nd
 def qr_multiply(
     a: _AsF64ND,
@@ -451,17 +441,16 @@ def qr_multiply(
     overwrite_a: bool = False,
     overwrite_c: bool = False,
 ) -> _Tuple2[onp.ArrayND[np.float64]]: ...
-@overload  # 2d +f32, c: 1d | 2d, pivoting: True
+@overload  # Nd +f32, c: Nd
 def qr_multiply(
-    a: onp.ToFloat32Strict2D,
-    c: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
+    a: _AsF32ND,
+    c: onp.ToFloatND,
     mode: _Side = "right",
-    *,
-    pivoting: onp.ToTrue,
+    pivoting: onp.ToFalse = False,
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[onp.ArrayND[np.float32], onp.Array2D[np.float32], onp.Array1D[np.int32]]: ...
+) -> _Tuple2[onp.ArrayND[np.float32]]: ...
 @overload  # 2d +f64, c: 1d | 2d, pivoting: True
 def qr_multiply(
     a: _AsF64Strict2D,
@@ -473,17 +462,17 @@ def qr_multiply(
     overwrite_a: bool = False,
     overwrite_c: bool = False,
 ) -> tuple[onp.ArrayND[np.float64], onp.Array2D[np.float64], onp.Array1D[np.int32]]: ...
-@overload  # Nd +f32, c: Nd, pivoting: True
+@overload  # 2d +f32, c: 1d | 2d, pivoting: True
 def qr_multiply(
-    a: _AsF32ND,
-    c: onp.ToFloatND,
+    a: onp.ToFloat32Strict2D,
+    c: onp.ToFloatStrict1D | onp.ToFloatStrict2D,
     mode: _Side = "right",
     *,
     pivoting: onp.ToTrue,
     conjugate: bool = False,
     overwrite_a: bool = False,
     overwrite_c: bool = False,
-) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], onp.ArrayND[np.int32]]: ...
+) -> tuple[onp.ArrayND[np.float32], onp.Array2D[np.float32], onp.Array1D[np.int32]]: ...
 @overload  # Nd +f64, c: Nd, pivoting: True
 def qr_multiply(
     a: _AsF64ND,
@@ -495,6 +484,17 @@ def qr_multiply(
     overwrite_a: bool = False,
     overwrite_c: bool = False,
 ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], onp.ArrayND[np.int32]]: ...
+@overload  # Nd +f32, c: Nd, pivoting: True
+def qr_multiply(
+    a: _AsF32ND,
+    c: onp.ToFloatND,
+    mode: _Side = "right",
+    *,
+    pivoting: onp.ToTrue,
+    conjugate: bool = False,
+    overwrite_a: bool = False,
+    overwrite_c: bool = False,
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], onp.ArrayND[np.int32]]: ...
 @overload  # 2d ~c64, c: 1d | 2d
 def qr_multiply(
     a: onp.ToJustComplex64Strict2D,

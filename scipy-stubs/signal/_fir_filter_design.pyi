@@ -1,3 +1,4 @@
+from collections.abc import Sequence
 from typing import Literal, overload
 
 import numpy as np
@@ -48,7 +49,7 @@ def firwin_2d(
 @overload  # `fc` optional, `circular=False` (default)
 def firwin_2d(
     hsize: tuple[int, int],
-    window: _ToWindow,
+    window: Sequence[_ToWindow],
     *,
     fc: float | onp.ToFloat1D | None = None,
     fs: float = 2,

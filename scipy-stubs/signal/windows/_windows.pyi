@@ -219,7 +219,7 @@ def general_gaussian(
 def taylor(
     M: int,
     nbar: onp.ToInt = 4,
-    sll: onp.ToInt = 30,
+    sll: onp.ToFloat = 30,
     norm: bool = True,
     sym: bool = True,
     *,
@@ -230,7 +230,7 @@ def taylor(
 def taylor(
     M: int,
     nbar: onp.ToInt = 4,
-    sll: onp.ToInt = 30,
+    sll: onp.ToFloat = 30,
     norm: bool = True,
     sym: bool = True,
     *,

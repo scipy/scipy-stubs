@@ -25,9 +25,12 @@ assert_type(spl_complex(2.5), onp.ArrayND[np.complex128])
 
 _f64_1d: onp.Array1D[np.float64]
 _c128_1d: onp.Array1D[np.complex128]
+_deriv: list[tuple[int, float]]
 
 assert_type(make_interp_spline(_f64_1d, _f64_1d), BSpline[np.float64])
 assert_type(make_interp_spline(_f64_1d, _c128_1d), BSpline[np.complex128])
+assert_type(make_interp_spline(_f64_1d, _f64_1d, bc_type=(_deriv, "natural")), BSpline[np.float64])
+assert_type(make_interp_spline(_f64_1d, _c128_1d, bc_type=(_deriv, "natural")), BSpline[np.complex128])
 
 ###
 # make_lsq_spline

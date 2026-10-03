@@ -10,9 +10,9 @@ class LSODA(OdeSolver[np.float64]):
     def __init__(
         self,
         /,
-        fun: Callable[[float, onp.Array1D[np.float64]], onp.Array1D[np.float64]],
+        fun: Callable[[float, onp.Array1D[np.float64]], onp.ToFloatND],
         t0: float,
-        y0: onp.Array1D[np.float64],
+        y0: onp.ToFloatND,
         t_bound: float,
         first_step: float | None = None,
         min_step: float = 0.0,

@@ -30,7 +30,7 @@ type _ToSobolMethod = _SobolMethod | Literal["saltelli_2010"]
 @type_check_only
 class _HasPPF(Protocol):
     @property
-    def ppf(self, /) -> Callable[..., np.float64]: ...
+    def ppf(self, /) -> Callable[[onp.ArrayND[np.float64]], onp.ToFloatND]: ...
 
 ###
 

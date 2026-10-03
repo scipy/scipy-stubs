@@ -26,6 +26,15 @@ _InexactDT = TypeVar("_InexactDT", bound=npc.inexact, default=np.float64)
 
 type _Tuple4[T] = tuple[T, T, T, T]
 
+type _AsF64Max2D = (
+    npc.floating64 | onp.ToArray1D[float, npc.floating64 | npc.integer] | onp.ToArray2D[float, npc.floating64 | npc.integer]
+)
+type _ToF64Max2D = onp.ToFloat64 | onp.ToFloat64_1D | onp.ToFloat64_2D
+type _ToFloatMax2D = onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D
+type _AsC128Max2D = npc.complexfloating128 | onp.ToJustComplex128_1D | onp.ToJustComplex128_2D
+type _ToC128Max2D = onp.ToComplex128 | onp.ToComplex128_1D | onp.ToComplex128_2D
+type _ToComplexMax2D = onp.ToComplex | onp.ToComplex1D | onp.ToComplex2D
+
 type _SystemTF[InexactT: npc.inexact] = tuple[onp.Array2D[InexactT], onp.Array1D[InexactT]]
 type _SystemSS[InexactT: npc.inexact] = tuple[
     onp.Array2D[InexactT],
@@ -96,60 +105,28 @@ def abcd_normalize(
 
 #
 @overload  # ~f64, +f64, +f64, +f64
-def ss2tf(
-    A: onp.ToArray2D[float, npc.floating64 | npc.integer],
-    B: onp.ToFloat64_2D,
-    C: onp.ToFloat64_2D,
-    D: onp.ToFloat64_2D,
-    input: int = 0,
-) -> _SystemTF[np.float64]: ...
+def ss2tf(A: _AsF64Max2D, B: _ToF64Max2D, C: _ToF64Max2D, D: _ToF64Max2D, input: int = 0) -> _SystemTF[np.float64]: ...
 @overload  # +f64, ~f64, +f64, +f64
-def ss2tf(
-    A: onp.ToFloat64_2D,
-    B: onp.ToArray2D[float, npc.floating64 | npc.integer],
-    C: onp.ToFloat64_2D,
-    D: onp.ToFloat64_2D,
-    input: int = 0,
-) -> _SystemTF[np.float64]: ...
+def ss2tf(A: _ToF64Max2D, B: _AsF64Max2D, C: _ToF64Max2D, D: _ToF64Max2D, input: int = 0) -> _SystemTF[np.float64]: ...
 @overload  # +f64, +f64, ~f64, +f64
-def ss2tf(
-    A: onp.ToFloat64_2D,
-    B: onp.ToFloat64_2D,
-    C: onp.ToArray2D[float, npc.floating64 | npc.integer],
-    D: onp.ToFloat64_2D,
-    input: int = 0,
-) -> _SystemTF[np.float64]: ...
+def ss2tf(A: _ToF64Max2D, B: _ToF64Max2D, C: _AsF64Max2D, D: _ToF64Max2D, input: int = 0) -> _SystemTF[np.float64]: ...
 @overload  # +f64, +f64, +f64, ~f64
-def ss2tf(
-    A: onp.ToFloat64_2D,
-    B: onp.ToFloat64_2D,
-    C: onp.ToFloat64_2D,
-    D: onp.ToArray2D[float, npc.floating64 | npc.integer],
-    input: int = 0,
-) -> _SystemTF[np.float64]: ...
+def ss2tf(A: _ToF64Max2D, B: _ToF64Max2D, C: _ToF64Max2D, D: _AsF64Max2D, input: int = 0) -> _SystemTF[np.float64]: ...
 @overload  # +floating, +floating, +floating, +floating
 def ss2tf(
-    A: onp.ToFloat2D, B: onp.ToFloat2D, C: onp.ToFloat2D, D: onp.ToFloat2D, input: int = 0
+    A: _ToFloatMax2D, B: _ToFloatMax2D, C: _ToFloatMax2D, D: _ToFloatMax2D, input: int = 0
 ) -> _SystemTF[np.float64 | Any]: ...
 @overload  # ~c128, +c128, +c128, +c128
-def ss2tf(
-    A: onp.ToJustComplex128_2D, B: onp.ToComplex128_2D, C: onp.ToComplex128_2D, D: onp.ToComplex128_2D, input: int = 0
-) -> _SystemTF[np.complex128]: ...
+def ss2tf(A: _AsC128Max2D, B: _ToC128Max2D, C: _ToC128Max2D, D: _ToC128Max2D, input: int = 0) -> _SystemTF[np.complex128]: ...
 @overload  # +c128, ~c128, +c128, +c128
-def ss2tf(
-    A: onp.ToComplex128_2D, B: onp.ToJustComplex128_2D, C: onp.ToComplex128_2D, D: onp.ToComplex128_2D, input: int = 0
-) -> _SystemTF[np.complex128]: ...
+def ss2tf(A: _ToC128Max2D, B: _AsC128Max2D, C: _ToC128Max2D, D: _ToC128Max2D, input: int = 0) -> _SystemTF[np.complex128]: ...
 @overload  # +c128, +c128, ~c128, +c128
-def ss2tf(
-    A: onp.ToComplex128_2D, B: onp.ToComplex128_2D, C: onp.ToJustComplex128_2D, D: onp.ToComplex128_2D, input: int = 0
-) -> _SystemTF[np.complex128]: ...
+def ss2tf(A: _ToC128Max2D, B: _ToC128Max2D, C: _AsC128Max2D, D: _ToC128Max2D, input: int = 0) -> _SystemTF[np.complex128]: ...
 @overload  # +c128, +c128, +c128, ~c128
-def ss2tf(
-    A: onp.ToComplex128_2D, B: onp.ToComplex128_2D, C: onp.ToComplex128_2D, D: onp.ToJustComplex128_2D, input: int = 0
-) -> _SystemTF[np.complex128]: ...
+def ss2tf(A: _ToC128Max2D, B: _ToC128Max2D, C: _ToC128Max2D, D: _AsC128Max2D, input: int = 0) -> _SystemTF[np.complex128]: ...
 @overload  # +complexfloating, +complexfloating, +complexfloating, +complexfloating
 def ss2tf(
-    A: onp.ToComplex2D, B: onp.ToComplex2D, C: onp.ToComplex2D, D: onp.ToComplex2D, input: int = 0
+    A: _ToComplexMax2D, B: _ToComplexMax2D, C: _ToComplexMax2D, D: _ToComplexMax2D, input: int = 0
 ) -> _SystemTF[np.complex128 | Any]: ...
 
 #
@@ -270,14 +247,14 @@ def cont2discrete[SafeInexactT: np.float32 | np.float64 | np.complex64 | np.comp
 ) -> dlti[SafeInexactT, SafeFloatT]: ...
 @overload  # (+f64, +f64)
 def cont2discrete(
-    system: tuple[float | onp.ToFloat64_2D, float | onp.ToFloat64_1D],
+    system: tuple[float | onp.ToFloat64_1D | onp.ToFloat64_2D, float | onp.ToFloat64_1D],
     dt: float,
     method: _DiscretizeMethod = "zoh",
     alpha: float | None = None,
 ) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], float]: ...
 @overload  # (+complex, +complex)
 def cont2discrete(
-    system: tuple[complex | onp.ToComplex2D, complex | onp.ToComplex1D],
+    system: tuple[complex | onp.ToComplex1D | onp.ToComplex2D, complex | onp.ToComplex1D],
     dt: float,
     method: _DiscretizeMethod = "zoh",
     alpha: float | None = None,

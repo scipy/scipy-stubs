@@ -13,6 +13,7 @@ _py_b_1d: list[bool]
 _py_i_1d: list[int]
 _py_f_1d: list[float]
 _py_c_1d: list[complex]
+_py_str_1d: list[str]
 _u8_1d: onp.Array1D[np.uint8]
 _i16_1d: onp.Array1D[np.int16]
 _f32_1d: onp.Array1D[np.float32]
@@ -50,8 +51,8 @@ assert_type(firwin(1, _f64_1d), onp.Array1D[np.float64])
 
 # firwin_2d
 
-assert_type(firwin_2d((3, 4), 0.5), onp.Array2D[np.float64])
-assert_type(firwin_2d((3, 4), "hann"), onp.Array2D[np.float64])
+assert_type(firwin_2d((3, 4), (("kaiser", 5.0), ("kaiser", 5.0)), fc=0.5), onp.Array2D[np.float64])
+assert_type(firwin_2d((3, 4), _py_str_1d, fc=0.5), onp.Array2D[np.float64])
 assert_type(firwin_2d((3, 4), "hann", fc=0.5, circular=True), onp.Array2D[np.float64])
 assert_type(firwin_2d((3, 4), "hann", fc=_py_i_1d, circular=True), onp.Array2D[np.float64])
 assert_type(firwin_2d((3, 4), "hann", fc=_py_f_1d, circular=True), onp.Array2D[np.float64])

@@ -36,6 +36,7 @@ type _BracketInfo = tuple[_Float, _Float, _Float, _Float, _Float, _Float, int]
 _x0: list[float]
 _i8_1d: onp.Array1D[np.int8]
 _f64_1d: _Float1D
+_f64_2d: _Float2D
 _f32_1d: onp.Array1D[np.float32]
 _f32_2d: onp.Array2D[np.float32]
 _c64_1d: onp.Array1D[np.complex64]
@@ -53,6 +54,7 @@ assert_type(rosen(_i8_1d), np.float64)
 assert_type(rosen(_f32_1d), np.float32)
 assert_type(rosen(_c64_1d), np.complex64)
 assert_type(rosen(_f32_2d), onp.Array1D[np.float32])
+assert_type(rosen((_f64_2d, _f64_2d)), onp.ArrayND[np.float64] | Any)
 
 ###
 # rosen_der
@@ -129,6 +131,7 @@ assert_type(fminbound(_f0d, 0.0, 1.0, full_output=True), tuple[_Float, _Float, _
 _py_f2_1: tuple[tuple[float, float]]
 _py_f2_2: tuple[tuple[float, float], tuple[float, float]]
 _py_f2_3: tuple[tuple[float, float], tuple[float, float], tuple[float, float]]
+_py_f2_n: list[tuple[float, float]]
 
 assert_type(brute(_f, _py_f2_1), _Float1D)
 assert_type(brute(_f, _py_f2_2), _Float1D)
@@ -137,6 +140,8 @@ assert_type(brute(_f, _py_f2_1, full_output=True, finish=None), tuple[np.float64
 assert_type(brute(_f, _py_f2_2, full_output=True), tuple[_Float1D, np.float64, _Float3D, onp.Array2D[np.float64 | Any]])
 assert_type(brute(_f, _py_f2_1, full_output=True), tuple[_Float1D, np.float64, _Float1D, _Float1D])
 assert_type(brute(_f, _py_f2_3, full_output=True), tuple[_Float1D, np.float64, _FloatND, onp.ArrayND[np.float64 | Any]])
+assert_type(brute(_f, _py_f2_n), _Float1D | Any)
+assert_type(brute(_f, _py_f2_n, full_output=True), tuple[_Float1D | Any, np.float64, _FloatND, onp.ArrayND[np.float64 | Any]])
 
 ###
 # fmin
@@ -188,6 +193,7 @@ assert_type(fmin_powell(_f, _x0, full_output=True, retall=True), tuple[_Float1D,
 assert_type(show_options(), None)
 assert_type(show_options(None, None, False), str)
 assert_type(show_options(disp=False), str)
+assert_type(show_options("root_scalar", "brentq"), None)
 
 ###
 # line_search

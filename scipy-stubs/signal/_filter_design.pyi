@@ -172,11 +172,17 @@ def freqz_zpk(
 #
 @overload  # w: real
 def group_delay(
-    system: tuple[onp.ToComplex1D, onp.ToComplex1D], w: _WorNReal = 512, whole: bool = False, fs: float = 6.283185307179586
+    system: tuple[onp.ToComplex | onp.ToComplex1D, onp.ToComplex | onp.ToComplex1D],
+    w: _WorNReal = 512,
+    whole: bool = False,
+    fs: float = 6.283185307179586,
 ) -> _Ba1D[np.float64]: ...
 @overload  # w: complex
 def group_delay(
-    system: tuple[onp.ToComplex1D, onp.ToComplex1D], w: onp.ToJustComplex1D, whole: bool = False, fs: float = 6.283185307179586
+    system: tuple[onp.ToComplex | onp.ToComplex1D, onp.ToComplex | onp.ToComplex1D],
+    w: onp.ToJustComplex1D,
+    whole: bool = False,
+    fs: float = 6.283185307179586,
 ) -> tuple[_Complex1D, _Float1D]: ...
 
 #
@@ -198,19 +204,23 @@ sosfreqz = freqz_sos
 @overload  # ~f64, +f64
 def tf2zpk(
     b: onp.ToJustFloat64_1D | onp.ToInt1D, a: onp.ToFloat64_1D
-) -> _ZPK[np.float64 | np.complex128, np.complex128, np.float64]: ...
+) -> _ZPK[np.float64 | np.complex128, np.float64 | np.complex128, np.float64]: ...
 @overload  # +f64, ~f64
 def tf2zpk(
     b: onp.ToFloat64_1D, a: onp.ToJustFloat64_1D | onp.ToInt1D
-) -> _ZPK[np.float64 | np.complex128, np.complex128, np.float64]: ...
+) -> _ZPK[np.float64 | np.complex128, np.float64 | np.complex128, np.float64]: ...
 @overload  # ~c128, +c128
 def tf2zpk(b: onp.ToJustComplex128_1D, a: onp.ToComplex128_1D) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
 @overload  # +c128, ~c128
 def tf2zpk(b: onp.ToComplex128_1D, a: onp.ToJustComplex128_1D) -> _ZPK[np.complex128, np.complex128, np.float64]: ...
 @overload  # ~f32, +f32
-def tf2zpk(b: onp.ToJustFloat32_1D, a: onp.ToFloat32_1D) -> _ZPK[np.float32 | np.complex64, np.complex64, np.float32]: ...
+def tf2zpk(
+    b: onp.ToJustFloat32_1D, a: onp.ToFloat32_1D
+) -> _ZPK[np.float32 | np.complex64, np.float32 | np.complex64, np.float32]: ...
 @overload  # +f32, ~f32
-def tf2zpk(b: onp.ToFloat32_1D, a: onp.ToJustFloat32_1D) -> _ZPK[np.float32 | np.complex64, np.complex64, np.float32]: ...
+def tf2zpk(
+    b: onp.ToFloat32_1D, a: onp.ToJustFloat32_1D
+) -> _ZPK[np.float32 | np.complex64, np.float32 | np.complex64, np.float32]: ...
 @overload  # ~c64, +c64
 def tf2zpk(b: onp.ToJustComplex64_1D, a: onp.ToComplex64_1D) -> _ZPK[np.complex64, np.complex64, np.float32]: ...
 @overload  # +c64, ~c64
@@ -1019,9 +1029,9 @@ def ellipord(
 
 #
 @overload
-def buttap(N: int, *, xp: None = None, device: None = None) -> tuple[_Float1D, _Complex1D, L[1]]: ...
+def buttap(N: int, *, xp: None = None, device: None = None) -> tuple[_Float1D, _Complex1D, float]: ...
 @overload
-def buttap(N: int, *, xp: ModuleType, device: object = None) -> tuple[Incomplete, Incomplete, L[1]]: ...
+def buttap(N: int, *, xp: ModuleType, device: object = None) -> tuple[Incomplete, Incomplete, float]: ...
 
 #
 @overload

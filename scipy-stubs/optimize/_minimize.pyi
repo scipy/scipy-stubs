@@ -8,7 +8,7 @@ import optype.numpy.compat as npc
 from numpy_typing_compat import ABCPolyBase
 
 from ._hessian_update_strategy import HessianUpdateStrategy
-from ._optimize import OptimizeResult as _OptimizeResult
+from ._optimize import OptimizeResult as _OptimizeResult, _DoesMap
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
 from scipy.sparse import csr_array
 from scipy.sparse.linalg import LinearOperator
@@ -46,7 +46,11 @@ class _CallbackResult(Protocol):
 
 @type_check_only
 class _CallbackVector(Protocol):
-    def __call__(self, /, xk: _Float1D) -> None: ...
+    def __call__(self, xk: _Float1D, /) -> object: ...
+
+@type_check_only
+class _CallbackVectorState(Protocol):
+    def __call__(self, xk: _Float1D, state: OptimizeResult[Any], /) -> object: ...
 
 @type_check_only
 class _MinimizeMethodFun(Protocol):
@@ -97,7 +101,7 @@ class _MinimizeOptions(TypedDict, total=False):
     hess_inv0: onp.ArrayND[npc.floating]
     # COBYLA
     tol: _Floating
-    catool: _Floating
+    catol: _Floating
     rhobeg: _Floating
     f_target: _Floating
     # COBYQA
@@ -114,6 +118,8 @@ class _MinimizeOptions(TypedDict, total=False):
     norm: _Floating
     # CG, BFGS, L-BFGS-B, TNC, SLSQP, trust-constr
     finite_diff_rel_step: onp.ToFloat | onp.ToFloatND
+    # CG, BFGS, Newton-CG, L-BFGS-B, TNC, SLSQP, trust-constr
+    workers: int | _DoesMap
     # dogleg, trust-ncg, trust-exact
     initial_trust_radius: _Floating
     max_trust_radius: _Floating
@@ -222,7 +228,7 @@ def minimize[Float1DT: _Float1D](
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[np.float64]: ...
 @overload  # method={COBYLA}  (positional)
@@ -237,7 +243,7 @@ def minimize(
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> _CobylaResult: ...
 @overload  # method={COBYLA}  (keyword)
@@ -253,7 +259,7 @@ def minimize(
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> _CobylaResult: ...
 @overload  # method={nelder-mead,COBYQA}  (positional)
@@ -268,7 +274,7 @@ def minimize(
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[np.float64]: ...
 @overload  # method={nelder-mead,COBYQA}  (keyword)
@@ -284,7 +290,7 @@ def minimize(
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[np.float64]: ...
 @overload  # `fun` return scalar, `jac` not truthy
@@ -299,7 +305,7 @@ def minimize[FunT: onp.ToFloat](
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[FunT]: ...
 @overload  # fun` return (scalar, vector), `jac` truthy  (positional)
@@ -314,7 +320,7 @@ def minimize[FunT: onp.ToFloat](
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[FunT]: ...
 @overload  # fun` return (scalar, vector), `jac` truthy  (keyword)
@@ -330,7 +336,7 @@ def minimize[FunT: onp.ToFloat](
     bounds: Bounds | None = None,
     constraints: Constraints = (),
     tol: onp.ToFloat | None = None,
-    callback: _CallbackResult | _CallbackVector | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[FunT]: ...
 

@@ -319,6 +319,7 @@ type _ToSubFloat32 = bool | _SubFloat32
 type _ToSubFloat64 = op.JustFloat | op.JustInt | _SubFloat64
 type _ToSubFloat32ND = _ToND[_SubFloat32, bool]
 type _ToSubFloat64ND = _ToND[_SubFloat64, op.JustFloat | op.JustInt]
+type _ToFloat64NoF32 = op.JustFloat | np.float64 | onp.ToInt
 
 type _ToSubComplex = op.JustComplex | _ToSubFloat  # does not overlap with complex64 | complex128
 
@@ -853,6 +854,8 @@ class _UFunc11c(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     @overload
     def __call__(self, x: _ToSubComplex, /, out: _Out1[None] = None, **kw: Unpack[_Kw11c]) -> _Complex: ...
     @overload
+    def __call__(self, x: np.float64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.complex128: ...
+    @overload
     def __call__[ST: _Complex_D](self, x: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> ST: ...
     @overload
     def __call__(self, x: _ToComplex128ND, /, out: _Out1[None] = None, **kw: Unpack[_Kw11c]) -> _ComplexND: ...
@@ -1362,6 +1365,12 @@ class _UFunc21c1(_UFuncWithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Gene
     @overload
     def __call__(self, a: onp.ToFloat64, b: _ToSubComplex, /, out: _Out1[None] = None, **kw: Unpack[_Kw21c1]) -> _Complex: ...
     @overload
+    def __call__(
+        self, a: onp.ToFloat64, b: np.complex128 | np.float64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(self, a: np.float64, b: np.complex64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.complex128: ...
+    @overload
     def __call__[ST: _Complex_D](self, a: _ToFloat32, b: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> ST: ...
     @overload
     def __call__(
@@ -1405,6 +1414,16 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     #
     @overload
     def __call__(self, a: onp.ToFloat64, b: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw21fc1]) -> _Float: ...
+    @overload
+    def __call__(
+        self, a: onp.ToFloat64, b: np.complex128, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(self, a: np.float64, b: np.complex64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.complex128: ...
+    @overload
+    def __call__(
+        self, a: _ToFloat64NoF32, b: op.JustComplex, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
     @overload
     def __call__[ST: _Complex_D](self, a: _ToFloat32, b: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> ST: ...
     @overload
@@ -1558,6 +1577,16 @@ class _UFunc21ldfc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Iden
     @overload
     def __call__(self, a: onp.ToFloat64, b: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw21fc1]) -> _Float: ...
     @overload
+    def __call__(
+        self, a: onp.ToFloat64, b: np.complex128, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(self, a: np.float64, b: np.complex64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.complex128: ...
+    @overload
+    def __call__(
+        self, a: _ToFloat64NoF32, b: op.JustComplex, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
     def __call__[ST: _Complex_D](self, a: _ToFloat32, b: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> ST: ...
     @overload
     def __call__[ST: _Float_D](self, a: ST | _ToFloat32, b: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> ST: ...
@@ -1708,6 +1737,10 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     def __call__[ST: _Inexact_D](self, a: _ToFloat32, b: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> ST: ...
     @overload
     def __call__[ST: _Inexact_D](self, a: ST, b: _ToFloat32, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> ST: ...
+    @overload
+    def __call__[ST: _Float](self, a: ST, b: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> ST: ...
+    @overload
+    def __call__[ST: _Complex](self, a: ST, b: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> ST: ...
     @overload
     def __call__(
         self, a: _ToFloat64OrND, b: onp.ToFloat64_ND, /, out: _Out1[None] = None, **kw: Unpack[_Kw21fc2]
@@ -1901,6 +1934,8 @@ class _UFunc22f(_UFunc22[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def __call__[ST: _Float_D](self, v: _ToFloat32, x: ST, /, out: _None2 = ..., **kw: Unpack[_KwBase]) -> _Tuple2[ST]: ...
     @overload
     def __call__[ST: _Float_D](self, v: ST, x: _ToFloat32, /, out: _None2 = ..., **kw: Unpack[_KwBase]) -> _Tuple2[ST]: ...
+    @overload
+    def __call__[ST: _Float](self, v: ST, x: ST, /, out: _None2 = ..., **kw: Unpack[_KwBase]) -> _Tuple2[ST]: ...
     @overload
     def __call__(
         self, v: onp.ToFloat64_ND, x: onp.ToFloat64_ND, /, out: _None2 = ..., **kw: Unpack[_Kw22f]
@@ -2108,6 +2143,22 @@ class _UFunc31fc1(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     ) -> _Float: ...
     @overload
     def __call__(
+        self, n: onp.ToFloat64, a: onp.ToFloat64, x: np.complex128, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self, n: np.float64, a: onp.ToFloat64, x: np.complex64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self, n: onp.ToFloat64, a: np.float64, x: np.complex64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self, n: _ToFloat64NoF32, a: _ToFloat64NoF32, x: op.JustComplex, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
         self, n: _ToSubFloat, a: _ToSubFloat, x: _ToSubComplex, /, out: _Out1[None] = None, **kw: Unpack[_Kw31fc1]
     ) -> _Inexact: ...
     @overload
@@ -2186,6 +2237,22 @@ class _UFunc31ldfc1(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Iden
     def __call__(
         self, n: _ToSubFloat, a: _ToSubFloat, x: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw31fc1]
     ) -> _Float: ...
+    @overload
+    def __call__(
+        self, n: onp.ToFloat64, a: onp.ToFloat64, x: np.complex128, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self, n: np.float64, a: onp.ToFloat64, x: np.complex64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self, n: onp.ToFloat64, a: np.float64, x: np.complex64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self, n: _ToFloat64NoF32, a: _ToFloat64NoF32, x: op.JustComplex, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
     @overload
     def __call__(
         self, n: _ToSubFloat, a: _ToSubFloat, x: _ToSubComplex, /, out: _Out1[None] = None, **kw: Unpack[_Kw31fc1]
@@ -2480,6 +2547,61 @@ class _UFunc41fc1(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     ) -> _Float: ...
     @overload
     def __call__(
+        self,
+        n: onp.ToFloat64,
+        a: onp.ToFloat64,
+        b: onp.ToFloat64,
+        x: np.complex128,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self,
+        n: np.float64,
+        a: onp.ToFloat64,
+        b: onp.ToFloat64,
+        x: np.complex64,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToFloat64,
+        a: np.float64,
+        b: onp.ToFloat64,
+        x: np.complex64,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToFloat64,
+        a: onp.ToFloat64,
+        b: np.float64,
+        x: np.complex64,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64NoF32,
+        a: _ToFloat64NoF32,
+        b: _ToFloat64NoF32,
+        x: op.JustComplex,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
         self, n: _ToSubFloat, a: _ToSubFloat, b: _ToSubFloat, x: _ToSubComplex, /, out: _Out1[None] = None, **kw: Unpack[_Kw41fc1]
     ) -> _Inexact: ...
     @overload
@@ -2672,6 +2794,61 @@ class _UFunc41ldfc1(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Iden
     def __call__(
         self, n: _ToSubFloat, a: _ToSubFloat, b: _ToSubFloat, x: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw41fc1]
     ) -> _Float: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToFloat64,
+        a: onp.ToFloat64,
+        b: onp.ToFloat64,
+        x: np.complex128,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self,
+        n: np.float64,
+        a: onp.ToFloat64,
+        b: onp.ToFloat64,
+        x: np.complex64,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToFloat64,
+        a: np.float64,
+        b: onp.ToFloat64,
+        x: np.complex64,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self,
+        n: onp.ToFloat64,
+        a: onp.ToFloat64,
+        b: np.float64,
+        x: np.complex64,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToFloat64NoF32,
+        a: _ToFloat64NoF32,
+        b: _ToFloat64NoF32,
+        x: op.JustComplex,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.complex128: ...
     @overload
     def __call__(
         self, n: _ToSubFloat, a: _ToSubFloat, b: _ToSubFloat, x: _ToSubComplex, /, out: _Out1[None] = None, **kw: Unpack[_Kw41fc1]
@@ -3234,7 +3411,7 @@ class _UFunc52f(_UFunc52[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
 
 ###
 
-type _ErrOption = L["ignored", "warn", "raise"]
+type _ErrOption = L["ignore", "warn", "raise"]
 
 @type_check_only
 class _ErrDict(TypedDict):
@@ -3247,6 +3424,7 @@ class _ErrDict(TypedDict):
     domain: _ErrOption
     arg: _ErrOption
     other: _ErrOption
+    memory: _ErrOption
 
 @type_check_only
 class _ErrKwargs(TypedDict, total=False):
@@ -3260,6 +3438,7 @@ class _ErrKwargs(TypedDict, total=False):
     domain: _ErrOption
     arg: _ErrOption
     other: _ErrOption
+    memory: _ErrOption
 
 ###
 

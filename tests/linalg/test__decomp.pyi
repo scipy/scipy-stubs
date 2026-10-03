@@ -1,9 +1,10 @@
 # type-tests for `linalg/_decomp.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.linalg import (
     cdf2rdf,
@@ -19,10 +20,6 @@ from scipy.linalg import (
 )
 
 ###
-
-type _FloatND = onp.ArrayND[np.float64 | np.float32]
-
-###
 # Input arrays
 
 _i8_nd: onp.ArrayND[np.int8]
@@ -34,6 +31,7 @@ _f128_nd: onp.ArrayND[np.float128]
 _c64_nd: onp.ArrayND[np.complex64]
 _c128_nd: onp.ArrayND[np.complex128]
 _c256_nd: onp.ArrayND[np.complex256]
+_any_nd: onp.ArrayND[Any]
 
 _py_i_1d: list[int]
 _py_f_1d: list[float]
@@ -66,6 +64,8 @@ assert_type(eigvals(_f16_nd, _f64_nd), onp.ArrayND[np.complex128])  # pyright:ig
 assert_type(eigvals(_f128_nd), onp.ArrayND[np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eigvals(_f32_nd, _f128_nd), onp.ArrayND[np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
+assert_subtype[onp.ArrayND[np.complex128]](eigvals(_any_nd))
+
 ###
 # eigvalsh
 
@@ -90,6 +90,8 @@ assert_type(eigvalsh(_f16_nd), onp.ArrayND[np.float32])  # pyright:ignore[report
 assert_type(eigvalsh(_f16_nd, _f64_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eigvalsh(_f128_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eigvalsh(_f32_nd, _f128_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+
+assert_subtype[onp.ArrayND[np.float64]](eigvalsh(_any_nd))
 
 ###
 # eigvalsh_tridiagonal
@@ -117,6 +119,10 @@ assert_type(eigvalsh_tridiagonal(_f32_nd, _f128_nd), onp.ArrayND[np.float64])  #
 
 eigvalsh_tridiagonal(_c128_nd, _c128_nd)  # type: ignore[arg-type]  # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 
+assert_subtype[onp.ArrayND[np.float64]](eigvalsh_tridiagonal(_any_nd, _any_nd))
+assert_subtype[onp.ArrayND[np.float64]](eigvalsh_tridiagonal(_any_nd, _any_nd, "v", _py_f_1d))
+assert_subtype[onp.ArrayND[np.float64]](eigvalsh_tridiagonal(_any_nd, _any_nd, "i", _py_i_1d))
+
 ###
 # eigvals_banded
 
@@ -139,6 +145,10 @@ assert_type(eigvals_banded(_c128_nd, select="v", select_range=[0.5, 1.5]), onp.A
 assert_type(eigvals_banded(_f16_nd), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eigvals_banded(_f128_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eigvals_banded(_c256_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+
+assert_subtype[onp.ArrayND[np.float64]](eigvals_banded(_any_nd))
+assert_subtype[onp.ArrayND[np.float64]](eigvals_banded(_any_nd, select="v", select_range=[0.5, 1.5]))
+assert_subtype[onp.ArrayND[np.float64]](eigvals_banded(_any_nd, select="i", select_range=[0, 2]))
 
 ###
 # eigh_tridiagonal
@@ -168,6 +178,9 @@ assert_type(eigh_tridiagonal(_f32_nd, _f128_nd), tuple[onp.ArrayND[np.float64], 
 assert_type(eigh_tridiagonal(_f16_nd, _f16_nd, True), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 eigh_tridiagonal(_c128_nd, _c128_nd)  # type: ignore[arg-type]  # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+
+assert_subtype[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]](eigh_tridiagonal(_any_nd, _any_nd))
+assert_subtype[onp.ArrayND[np.float64]](eigh_tridiagonal(_any_nd, _any_nd, True))
 
 ###
 # eigh
@@ -205,6 +218,9 @@ assert_type(eigh(_c64_nd, _f128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[
 assert_type(eigh(_c256_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eigh(_f16_nd, eigvals_only=True), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eigh(_c256_nd, eigvals_only=True), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+
+assert_subtype[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]](eigh(_any_nd))
+assert_subtype[onp.ArrayND[np.float64]](eigh(_any_nd, eigvals_only=True))
 
 ###
 # eig
@@ -250,6 +266,13 @@ assert_type(eig(_f128_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.floa
 assert_type(eig(_c256_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eig(_f16_nd, right=False), onp.ArrayND[np.complex64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
+assert_subtype[tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]](eig(_any_nd))
+assert_subtype[onp.ArrayND[np.complex128]](eig(_any_nd, right=False))
+assert_subtype[tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]](eig(_any_nd, left=True, right=False))
+assert_subtype[
+    tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128], onp.ArrayND[np.float64 | np.complex128]]
+](eig(_any_nd, left=True))
+
 ###
 # eig_banded
 
@@ -280,6 +303,10 @@ assert_type(eig_banded(_c256_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.
 assert_type(eig_banded(_f16_nd, eigvals_only=True), onp.ArrayND[np.float32])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(eig_banded(_c256_nd, eigvals_only=True), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
+assert_subtype[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]](eig_banded(_any_nd))
+assert_subtype[onp.ArrayND[np.float64]](eig_banded(_any_nd, True, True))
+assert_subtype[onp.ArrayND[np.float64]](eig_banded(_any_nd, eigvals_only=True))
+
 ###
 # hessenberg
 
@@ -301,12 +328,12 @@ assert_type(hessenberg(_f16_nd), onp.ArrayND[np.float32])  # pyright:ignore[repo
 assert_type(hessenberg(_f128_nd), onp.ArrayND[np.float64])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(hessenberg(_c256_nd), onp.ArrayND[np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
+assert_subtype[onp.ArrayND[np.float64]](hessenberg(_any_nd))
+assert_subtype[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]](hessenberg(_any_nd, True))
+
 ###
 # cdf2rdf
 
-assert_type(cdf2rdf(_f64_nd, _f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
-assert_type(cdf2rdf(_f32_nd, _f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
-assert_type(cdf2rdf(_f64_nd, _f32_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float32]])
-assert_type(cdf2rdf(_f64_nd, _c128_nd), tuple[onp.ArrayND[np.float64], _FloatND])
-assert_type(cdf2rdf(_c128_nd, _f64_nd), tuple[_FloatND, onp.ArrayND[np.float64]])
-assert_type(cdf2rdf(_c128_nd, _c128_nd), tuple[_FloatND, _FloatND])
+assert_type(cdf2rdf(_c128_nd, _c128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(cdf2rdf(_c64_nd, _c64_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float64]])
+assert_type(cdf2rdf(_i32_nd, _f64_nd), tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]])

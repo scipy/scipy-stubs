@@ -35,6 +35,7 @@ type _OutTCKU1 = tuple[list[_Float1D | list[_Float1D] | int], _Float1D]
 
 tck_1d: _TCK1D
 tck_2d: _TCK2D
+tck_nd: list[_Float1D | list[_Float1D] | int]
 bspl: BSpline[np.float64]
 
 ###
@@ -46,6 +47,7 @@ assert_type(splev(2.5, tck_1d), _FloatND)
 assert_type(splev(_f64_1d, tck_1d), _FloatND)
 assert_type(splev(2.5, tck_2d), list[_FloatND])
 assert_type(splev(_f64_1d, tck_2d), list[_FloatND])
+assert_type(splev(_f64_1d, tck_nd), _FloatND | list[_FloatND])
 
 ###
 # splint
@@ -54,6 +56,8 @@ assert_type(splint(0.0, 1.0, bspl), onp.Array0D[np.float64])
 assert_type(splint(0.0, 1.0, tck_1d), float)
 assert_type(splint(0.0, 1.0, tck_1d, full_output=True), tuple[float, None])
 assert_type(splint(0.0, 1.0, tck_2d), list[float])
+assert_type(splint(0.0, 1.0, tck_nd), float | list[float])
+assert_type(splint(0.0, 1.0, tck_nd, full_output=True), tuple[float, None] | list[float])
 
 ###
 # sproot
@@ -61,6 +65,7 @@ assert_type(splint(0.0, 1.0, tck_2d), list[float])
 assert_type(sproot(bspl), _Float1D | _Float2D)
 assert_type(sproot(tck_1d), _Float1D)
 assert_type(sproot(tck_2d), list[_Float1D])
+assert_type(sproot(tck_nd), _Float1D | list[_Float1D])
 
 ###
 # spalde
@@ -71,6 +76,9 @@ assert_type(spalde(_f64_1d, tck_1d), list[_Float1D])
 assert_type(spalde(_f64_1d, tck_2d), list[list[_Float1D]])
 assert_type(spalde(_f64_2d, tck_1d), list[list[_Float1D]])
 assert_type(spalde(_f64_2d, tck_2d), list[list[list[_Float1D]]])
+assert_type(spalde(0.5, tck_nd), _Float1D | list[_Float1D])
+assert_type(spalde(_f64_1d, tck_nd), list[_Float1D] | list[list[_Float1D]])
+assert_type(spalde(_f64_2d, tck_nd), list[list[_Float1D]] | list[list[list[_Float1D]]])
 
 ###
 # insert
@@ -78,6 +86,7 @@ assert_type(spalde(_f64_2d, tck_2d), list[list[list[_Float1D]]])
 assert_type(insert(0.5, bspl), BSpline[np.float64])
 assert_type(insert(0.5, tck_1d), _TCK1D)
 assert_type(insert(0.5, tck_2d), _TCK2D)
+assert_type(insert(0.5, tck_nd), _TCK1D | _TCK2D)
 
 ###
 # splder / splantider

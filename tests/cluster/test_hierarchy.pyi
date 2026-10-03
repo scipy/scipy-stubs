@@ -46,6 +46,7 @@ py_str_1d: list[str]
 py_int_1d: list[int]
 py_float_1d: list[float]
 py_complex_1d: list[complex]
+_py_float_2d: list[list[float]]
 
 i32_1d: onp.Array1D[np.int32]
 i64_1d: onp.Array1D[np.int64]
@@ -66,7 +67,7 @@ assert_type(fcluster(f64_2d, 1.5, "inconsistent", R=f64_2d), onp.Array1D[np.int3
 # fclusterdata
 assert_type(fclusterdata(f64_2d, 1.5), onp.Array1D[np.int32])
 assert_type(fclusterdata(f64_2d, t=1.5), onp.Array1D[np.int32])
-assert_type(fclusterdata(f64_2d, 1.5, "inconsistent", R=f64_2d), onp.Array1D[np.int32])
+assert_type(fclusterdata(f64_2d, 1.5, "inconsistent", R=_py_float_2d), onp.Array1D[np.int32])
 # leaders
 assert_type(leaders(f64_2d, i32_1d), tuple[onp.Array1D[np.int32], onp.Array1D[np.int32]])
 
@@ -133,8 +134,10 @@ assert_type(to_tree(f64_2d, False), ClusterNode)
 assert_type(cut_tree(f64_2d), onp.Array2D[np.int64])
 assert_type(cut_tree(f64_2d, n_clusters=i32_1d), onp.Array2D[np.int64])
 assert_type(cut_tree(f64_2d, height=f64_1d), onp.Array2D[np.int64])
+assert_type(cut_tree(f64_2d, n_clusters=3), onp.Array2D[np.int64])
+assert_type(cut_tree(f64_2d, height=0.5), onp.Array2D[np.int64])
 # optimal_leaf_order
-assert_type(optimal_leaf_ordering(f64_2d, f64_1d), onp.Array2D[np.float64])
+assert_type(optimal_leaf_ordering(f64_2d, _py_float_2d), onp.Array2D[np.float64])
 
 ###
 

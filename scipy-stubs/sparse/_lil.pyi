@@ -292,6 +292,12 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
     @override
     def getrow(self, /, i: onp.ToJustInt) -> lil_array[_ScalarT_co]: ...
 
+    #
+    @override
+    def reshape(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+        self, /, *shape: SupportsIndex | tuple[SupportsIndex, ...], order: Literal["C", "F"] = "C", copy: bool = False
+    ) -> lil_array[_ScalarT_co]: ...
+
 class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
@@ -501,6 +507,12 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     #
     @override
     def getrow(self, /, i: onp.ToJustInt) -> csr_matrix[_ScalarT_co]: ...
+
+    #
+    @override
+    def reshape(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+        self, /, *shape: SupportsIndex | tuple[SupportsIndex, ...], order: Literal["C", "F"] = "C", copy: bool = False
+    ) -> lil_matrix[_ScalarT_co]: ...
 
     # NOTE: using `@override` together with `@overload` causes stubtest to crash...
     @override

@@ -30,6 +30,50 @@ type _AsF32StrictND = onp.ArrayND[np.float32, _JustAnyShape]
 
 ###
 
+@overload  # ?d +f64, Nd +f64  (workaround)
+def chatterjeexi(
+    x: _AsF64StrictND,
+    y: _AsF64_ND,
+    *,
+    axis: SupportsIndex = 0,
+    y_continuous: bool = False,
+    method: _PermutationMethod = "asymptotic",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64 | Any]: ...
+@overload  # Nd +f64, ?d +f64  (workaround)
+def chatterjeexi(
+    x: _AsF64_ND,
+    y: _AsF64StrictND,
+    *,
+    axis: SupportsIndex = 0,
+    y_continuous: bool = False,
+    method: _PermutationMethod = "asymptotic",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64 | Any]: ...
+@overload  # ?d ~f32, Nd ~f32  (workaround)
+def chatterjeexi(
+    x: _AsF32StrictND,
+    y: onp.ToJustFloat32_ND,
+    *,
+    axis: SupportsIndex = 0,
+    y_continuous: bool = False,
+    method: _PermutationMethod = "asymptotic",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float32 | Any]: ...
+@overload  # Nd ~f32, ?d ~f32  (workaround)
+def chatterjeexi(
+    x: onp.ToJustFloat32_ND,
+    y: _AsF32StrictND,
+    *,
+    axis: SupportsIndex = 0,
+    y_continuous: bool = False,
+    method: _PermutationMethod = "asymptotic",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float32 | Any]: ...
 @overload  # 1d +f64, 1d +f64
 def chatterjeexi(
     x: _AsF64_1D,
@@ -85,39 +129,6 @@ def chatterjeexi(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[onp.Array1D[np.float32]]: ...
-@overload  # ?d +f64, ?d|1d +f64
-def chatterjeexi(
-    x: _AsF64StrictND,
-    y: _AsF64StrictND | _AsF64_1D,
-    *,
-    axis: SupportsIndex = 0,
-    y_continuous: bool = False,
-    method: _PermutationMethod = "asymptotic",
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d|1d +f64, ?d +f64
-def chatterjeexi(
-    x: _AsF64StrictND | _AsF64_1D,
-    y: _AsF64StrictND,
-    *,
-    axis: SupportsIndex = 0,
-    y_continuous: bool = False,
-    method: _PermutationMethod = "asymptotic",
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d ~f32, ?d ~f32
-def chatterjeexi(
-    x: _AsF32StrictND,
-    y: _AsF32StrictND,
-    *,
-    axis: SupportsIndex = 0,
-    y_continuous: bool = False,
-    method: _PermutationMethod = "asymptotic",
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> SignificanceResult[np.float32 | onp.ArrayND[np.float32]]: ...
 @overload  # ?d +f64, keepdims
 def chatterjeexi(
     x: _AsF64_ND,
@@ -153,6 +164,54 @@ def chatterjeexi(
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 # keep in sync with `chatterjeexi` above
+@overload  # ?d +f64, Nd +f64  (workaround)
+def spearmanrho(
+    x: _AsF64StrictND,
+    y: _AsF64_ND,
+    /,
+    *,
+    alternative: _Alternative = "two-sided",
+    method: _resampling.ResamplingMethod | None = None,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64 | Any]: ...
+@overload  # Nd +f64, ?d +f64  (workaround)
+def spearmanrho(
+    x: _AsF64_ND,
+    y: _AsF64StrictND,
+    /,
+    *,
+    alternative: _Alternative = "two-sided",
+    method: _resampling.ResamplingMethod | None = None,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float64 | Any]: ...
+@overload  # ?d ~f32, Nd ~f32  (workaround)
+def spearmanrho(
+    x: _AsF32StrictND,
+    y: onp.ToJustFloat32_ND,
+    /,
+    *,
+    alternative: _Alternative = "two-sided",
+    method: _resampling.ResamplingMethod | None = None,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float32 | Any]: ...
+@overload  # Nd ~f32, ?d ~f32  (workaround)
+def spearmanrho(
+    x: onp.ToJustFloat32_ND,
+    y: _AsF32StrictND,
+    /,
+    *,
+    alternative: _Alternative = "two-sided",
+    method: _resampling.ResamplingMethod | None = None,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> SignificanceResult[np.float32 | Any]: ...
 @overload  # 1d +f64, 1d +f64
 def spearmanrho(
     x: _AsF64_1D,
@@ -213,42 +272,6 @@ def spearmanrho(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[onp.Array1D[np.float32]]: ...
-@overload  # ?d +f64, ?d|1d +f64
-def spearmanrho(
-    x: _AsF64StrictND,
-    y: _AsF64StrictND | _AsF64_1D,
-    /,
-    *,
-    alternative: _Alternative = "two-sided",
-    method: _resampling.ResamplingMethod | None = None,
-    axis: int = 0,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d|1d +f64, ?d +f64
-def spearmanrho(
-    x: _AsF64StrictND | _AsF64_1D,
-    y: _AsF64StrictND,
-    /,
-    *,
-    alternative: _Alternative = "two-sided",
-    method: _resampling.ResamplingMethod | None = None,
-    axis: int = 0,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d ~f32, ?d ~f32
-def spearmanrho(
-    x: _AsF32StrictND,
-    y: _AsF32StrictND,
-    /,
-    *,
-    alternative: _Alternative = "two-sided",
-    method: _resampling.ResamplingMethod | None = None,
-    axis: int = 0,
-    nan_policy: NanPolicy = "propagate",
-    keepdims: L[False] = False,
-) -> SignificanceResult[np.float32 | onp.ArrayND[np.float32]]: ...
 @overload  # ?d +f64, keepdims
 def spearmanrho(
     x: _AsF64_ND,
