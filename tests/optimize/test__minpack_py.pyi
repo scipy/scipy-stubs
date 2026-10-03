@@ -58,6 +58,7 @@ assert_type(
 def _rho(z: _Float1D, /) -> _Float2D: ...
 
 assert_type(curve_fit(_model, [1.0, 2.0], [3.0, 4.0], method="trf", loss=_rho), tuple[_Float1D, _Float2D])
+assert_type(curve_fit(_model, [1.0, 2.0], [3.0, 4.0], diff_step=1e-6), tuple[_Float1D, _Float2D])
 
 ###
 # fixed_point
