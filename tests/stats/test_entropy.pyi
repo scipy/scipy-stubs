@@ -1,6 +1,6 @@
 # type-tests for `stats/_entropy.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -168,8 +168,8 @@ assert_type(entropy(py_f_3d, py_f_0d), onp.Array2D[np.float64])
 assert_type(entropy(py_f_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])
 assert_type(entropy(py_f_nd, py_f_0d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(entropy(py_f_nd, py_f_0d, axis=None), np.float64)
-assert_type(entropy(_f64_any), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(entropy(_f32_any), np.float32 | onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
+assert_type(entropy(_f64_any), np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(entropy(_f32_any), np.float32 | Any)  # pyrefly:ignore[assert-type]
 
 ###
 # differential_entropy
@@ -230,5 +230,5 @@ assert_type(differential_entropy(py_c_3d), onp.Array2D[np.complex128])
 assert_type(differential_entropy(py_c_nd), np.complex128 | onp.ArrayND[np.complex128])
 assert_type(differential_entropy(py_c_nd, keepdims=True), onp.ArrayND[np.complex128])
 assert_type(differential_entropy(py_c_nd, axis=None), np.complex128)
-assert_type(differential_entropy(_f64_any), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(differential_entropy(_i8_any), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(differential_entropy(_f64_any), np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(differential_entropy(_i8_any), np.float64 | Any)  # pyrefly:ignore[assert-type]
