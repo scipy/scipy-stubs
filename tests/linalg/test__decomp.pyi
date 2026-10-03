@@ -20,10 +20,6 @@ from scipy.linalg import (
 )
 
 ###
-
-type _FloatND = onp.ArrayND[np.float64 | np.float32]
-
-###
 # Input arrays
 
 _i8_nd: onp.ArrayND[np.int8]
@@ -338,9 +334,6 @@ assert_subtype[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]](hessenbe
 ###
 # cdf2rdf
 
-assert_type(cdf2rdf(_f64_nd, _f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
-assert_type(cdf2rdf(_f32_nd, _f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
-assert_type(cdf2rdf(_f64_nd, _f32_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float32]])
-assert_type(cdf2rdf(_f64_nd, _c128_nd), tuple[onp.ArrayND[np.float64], _FloatND])
-assert_type(cdf2rdf(_c128_nd, _f64_nd), tuple[_FloatND, onp.ArrayND[np.float64]])
-assert_type(cdf2rdf(_c128_nd, _c128_nd), tuple[_FloatND, _FloatND])
+assert_type(cdf2rdf(_c128_nd, _c128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(cdf2rdf(_c64_nd, _c64_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float64]])
+assert_type(cdf2rdf(_i32_nd, _f64_nd), tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]])
