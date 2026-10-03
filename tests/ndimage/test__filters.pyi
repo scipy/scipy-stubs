@@ -47,6 +47,8 @@ c128_nd: onp.ArrayND[np.complex128]
 # weights for convolve/correlate
 weights_1d: onp.Array1D[np.float64]
 weights_nd: onp.ArrayND[np.float64]
+_origin: tuple[int, int]
+_dtype: str
 
 # plain-Python sequences -> the JustInt / JustFloat64 / JustComplex128 overloads
 int_2d: list[list[int]]
@@ -73,13 +75,15 @@ assert_type(correlate1d(c128_nd, weights_1d), onp.ArrayND[np.complex128])
 ###
 # correlate
 
-assert_type(correlate(f64_2d, weights_nd), onp.Array2D[np.float64])
+assert_type(correlate(f64_2d, weights_nd, origin=_origin), onp.Array2D[np.float64])
 assert_type(correlate(f32_2d, weights_nd), onp.Array2D[np.float32])
-assert_type(correlate(int_2d, weights_nd), onp.ArrayND[np.intp])
-assert_type(correlate(float_2d, weights_nd), onp.ArrayND[np.float64])
-assert_type(correlate(complex_2d, weights_nd), onp.ArrayND[np.complex128])
+assert_type(correlate(int_2d, weights_nd, origin=_origin), onp.ArrayND[np.intp])
+assert_type(correlate(float_2d, weights_nd, origin=_origin), onp.ArrayND[np.float64])
+assert_type(correlate(complex_2d, weights_nd, origin=_origin), onp.ArrayND[np.complex128])
 assert_type(correlate(f64_nd, weights_nd), onp.ArrayND[np.float64])
 assert_type(correlate(c128_nd, weights_nd), onp.ArrayND[np.complex128])
+assert_type(correlate(f64_nd, weights_nd, output=np.float32, origin=_origin), onp.ArrayND[np.float32])
+assert_type(correlate(f64_nd, weights_nd, output=_dtype, origin=_origin), onp.ArrayND[Any])
 
 ###
 # convolve1d
