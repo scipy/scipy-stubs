@@ -222,18 +222,18 @@ class AndersonResult(BaseBunch[np.float64, _Float1D, _Float1D]):
         self, /, statistic: np.float64, critical_values: _Float1D, significance_level: _Float1D, *, fit_result: _AndersonResult
     ) -> None: ...
 
-class Anderson_ksampResult(BaseBunch[np.float64, _Float1D, np.float64]):
+class Anderson_ksampResult(BaseBunch[np.float64, _Float1D, np.float64 | Any]):
     @property
     def statistic(self, /) -> np.float64: ...
     @property
     @deprecated("Present only when `variant` is unspecified.")
     def critical_values(self, /) -> _Float1D: ...
     @property
-    def pvalue(self, /) -> np.float64: ...
+    def pvalue(self, /) -> np.float64 | Any: ...
 
     #
-    def __new__(_cls, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> Self: ...
-    def __init__(self, /, statistic: np.float64, critical_values: _Float1D, pvalue: np.float64) -> None: ...
+    def __new__(_cls, statistic: np.float64, critical_values: _Float1D, pvalue: float) -> Self: ...
+    def __init__(self, /, statistic: np.float64, critical_values: _Float1D, pvalue: float) -> None: ...
 
 class WilcoxonResult(BaseBunch[_NDT_co, _NDT_co], Generic[_NDT_co]):  # pyright: ignore[reportInvalidTypeArguments]  # zuban: ignore[type-var]
     zstatistic: _NDT_co  # might not be set (depends on `method`)
@@ -907,7 +907,7 @@ def anderson(
 ) -> SignificanceResult[np.float64]: ...
 
 #
-@overload
+@overload  # midrank: bool
 @deprecated(
     "Parameter `variant` has been introduced to replace `midrank`; "
     "`midrank` will be removed in SciPy 2.0.0. Specify `variant` to silence this warning. "
@@ -916,14 +916,18 @@ def anderson(
 def anderson_ksamp(
     samples: onp.ToFloatND, midrank: bool, *, variant: op.JustObject = ..., method: PermutationMethod | None = None
 ) -> Anderson_ksampResult: ...
-@overload
+@overload  # default
+def anderson_ksamp(
+    samples: onp.ToFloatND, midrank: op.JustObject = ..., *, variant: op.JustObject = ..., method: PermutationMethod | None = None
+) -> Anderson_ksampResult: ...
+@overload  # variant: str
 def anderson_ksamp(
     samples: onp.ToFloatND,
     midrank: op.JustObject = ...,
     *,
-    variant: Literal["midrank", "right", "continuous"] | op.JustObject = ...,
+    variant: Literal["midrank", "right", "continuous"],
     method: PermutationMethod | None = None,
-) -> Anderson_ksampResult: ...
+) -> SignificanceResult[np.float64 | Any]: ...
 
 #
 @overload  # T:f32|f64, axis=None (default)
