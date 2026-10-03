@@ -230,6 +230,8 @@ class AAA(_BarycentricRational[_ScalarT_co, tuple[int]], Generic[_ScalarT_co]):
     def clean_up(self, /, cleanup_tol: float = 1e-13) -> int: ...
 
 class FloaterHormannInterpolator(_BarycentricRational[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):
+    weights: onp.Array1D[np.float64 | Any]
+
     @overload
     def __init__(
         self: FloaterHormannInterpolator[np.float64, tuple[int]],
