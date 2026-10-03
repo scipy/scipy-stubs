@@ -11,6 +11,7 @@ __all__ = ["ishermitian", "issymmetric"]
 # see `scipy/linalg/_cythonized_array_utils.pxd`
 type _Numeric = npc.integer | np.float32 | np.float64 | npc.floating80 | np.complex64 | np.complex128
 
+# workaround for mypy & pyright's failure to conform to the overload typing specification
 type _JustAnyShape = tuple[Never, Never]
 
 ###
@@ -25,4 +26,6 @@ def issymmetric[ShapeT: onp.AtLeast3D](
 ) -> onp.ArrayND[np.bool]: ...
 @overload  # fallback
 def issymmetric(a: onp.CanArrayND[_Numeric], atol: float | None = None, rtol: float | None = None) -> bool | Any: ...
+
+#
 def ishermitian(a: onp.ArrayND[_Numeric], atol: float | None = None, rtol: float | None = None) -> bool: ...
