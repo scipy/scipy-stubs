@@ -7,6 +7,9 @@ from scipy.integrate import nsum, tanhsinh
 
 def integrand_f(x: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
 def integrand_c(x: onp.ArrayND[np.float64 | np.complex128]) -> onp.ArrayND[np.complex128]: ...
+def _integrand_fp(x: onp.ArrayND[np.float64], p: onp.ArrayND[np.int64]) -> onp.ArrayND[np.float64]: ...
+
+_i64_1d: onp.Array1D[np.int64]
 
 ###
 # tanhsinh
@@ -41,3 +44,4 @@ assert_type(nsum(integrand_f, 0.0, [1.0]).sum, onp.ArrayND[np.float64])
 assert_type(nsum(integrand_f, [0.0], [1.0]).sum, onp.ArrayND[np.float64])
 assert_type(nsum(integrand_f, 0.0, 1.0, step=[1, 2]).sum, onp.ArrayND[np.float64])
 assert_type(nsum(integrand_f, [0.0], [1.0], step=[1, 2]).sum, onp.ArrayND[np.float64])
+assert_type(nsum(_integrand_fp, 1, np.inf, args=(_i64_1d,)).sum, onp.ArrayND[np.float64] | Any)
