@@ -282,6 +282,7 @@ assert_type(center_of_mass(_f64_2d, _i32_1d, 1), tuple[np.float64, ...])
 
 # list of int indices -> _Coord1D
 assert_type(center_of_mass(_f64_2d, _i32_1d, [1, 2, 3]), list[tuple[np.float64, ...]])
+assert_type(center_of_mass(_f64_2d, _i32_1d, _intp_1d), list[tuple[np.float64, ...]])
 assert_type(center_of_mass(_f64_2d, index=[1, 2, 3]), list[tuple[np.float64, ...]])
 
 ###

@@ -592,7 +592,9 @@ def center_of_mass(
 ) -> _Coord0D: ...
 @overload
 def center_of_mass(
-    input: onp.ToComplex | onp.ToComplexND, labels: onp.ToInt | onp.ToIntND, index: Sequence[onp.ToInt]
+    input: onp.ToComplex | onp.ToComplexND,
+    labels: onp.ToInt | onp.ToIntND,
+    index: Sequence[onp.ToInt] | onp.CanArray1D[npc.integer],
 ) -> _Coord1D: ...
 @overload
 def center_of_mass(
