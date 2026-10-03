@@ -62,5 +62,5 @@ interpolants_c128: list[DenseOutput[np.complex128]]
 assert_type(OdeSolution([0.0, 1.0], interpolants_f64), OdeSolution[DenseOutput[np.float64]])
 assert_type(OdeSolution([0.0, 1.0], interpolants_c128), OdeSolution[DenseOutput[np.complex128]])
 assert_type(OdeSolution([0.0, 1.0], interpolants_c128)(_f), onp.Array1D[np.complex128])
-assert_type(OdeSolution([0.0, 1.0], interpolants_c128)(_f80), onp.Array1D[np.longdouble | Any])
+assert_type(OdeSolution([0.0, 1.0], interpolants_c128)(_f80), onp.Array1D[np.longdouble])
 assert_type(OdeSolution([0.0, 1.0], interpolants_c128)(_f_list), onp.Array2D[np.complex128])
