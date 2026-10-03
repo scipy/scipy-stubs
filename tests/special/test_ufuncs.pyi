@@ -201,8 +201,14 @@ assert_type(sp.eval_legendre(1, 1j), np.complex128)
 # _UFunc21fc2
 assert_type(sp.xlogy(_f4_nd, 2.0), _Float32ND)
 assert_type(sp.xlogy(_f8_nd, 2.0), _Float64ND)
+assert_type(sp.xlogy(_f8, _f8), np.float64)
+assert_type(sp.xlogy(_c16, _c16), np.complex128)
 
 # _UFunc22 - TODO
+
+# _UFunc22f
+assert_type(sp.pbdv(_f8, _f8), tuple[np.float64, np.float64])
+
 # _UFunc24 - TODO
 
 ###
