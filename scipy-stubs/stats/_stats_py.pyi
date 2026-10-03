@@ -371,10 +371,8 @@ type _KstestResult2 = KstestResult[onp.Array2D[np.float64], onp.Array2D[np.int8]
 type _KstestResultN = KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]]
 
 class LinregressResult(
-    BunchMixin[
-        tuple[_FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co]
-    ],
-    tuple[_FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co],
+    BunchMixin[tuple[_FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co]],
+    tuple[_FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co, _FloatOrArrayT_co],
     Generic[_FloatOrArrayT_co],
 ):
     def __new__(
