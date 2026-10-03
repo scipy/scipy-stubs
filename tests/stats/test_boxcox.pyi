@@ -4,6 +4,7 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+from matplotlib.axes import Axes
 
 from scipy.stats import boxcox, boxcox_llf, boxcox_normmax, boxcox_normplot
 
@@ -20,6 +21,8 @@ _i8_2d: onp.Array2D[np.int8]
 _f16_2d: onp.Array2D[np.float16]
 _f32_2d: onp.Array2D[np.float32]
 _f64_2d: onp.Array2D[np.float64]
+
+_ax: Axes
 
 ###
 
@@ -89,3 +92,4 @@ assert_type(boxcox_normplot(_i8_1d, 0.0, 1.0), tuple[onp.Array1D[np.float64], on
 assert_type(boxcox_normplot(_f16_1d, 0.0, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(boxcox_normplot(_f32_1d, 0.0, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(boxcox_normplot(_f64_1d, 0.0, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(boxcox_normplot(_f64_1d, 0.0, 1.0, plot=_ax), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
