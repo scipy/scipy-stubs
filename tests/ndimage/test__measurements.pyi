@@ -301,3 +301,4 @@ assert_type(histogram(_f64_2d, 0, 100, 10, _i32_1d, index=_intp_1d), onp.ArrayND
 assert_type(watershed_ift(_u8_2d, _i32_2d), onp.ArrayND[np.int32])
 assert_type(watershed_ift(_u8_2d, _py_i_2d), onp.ArrayND[np.int_])
 assert_type(watershed_ift(_u8_2d, _py_i_2d, output=_i32_2d), onp.Array2D[np.int32])
+assert_type(watershed_ift(_u8_2d, _i32_2d, structure=_f64_2d), onp.ArrayND[np.int32])

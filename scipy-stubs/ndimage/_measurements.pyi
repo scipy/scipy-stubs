@@ -660,21 +660,21 @@ def histogram(
 def watershed_ift[IntT: npc.signedinteger](
     input: _ArrayLike[np.uint8 | np.uint16],
     markers: _ArrayLike[IntT],
-    structure: onp.ToInt | onp.ToIntND | None = None,
+    structure: onp.ToFloat | onp.ToFloatND | None = None,
     output: None = None,
 ) -> onp.ArrayND[IntT]: ...
 @overload  # ~int
 def watershed_ift(
     input: _ArrayLike[np.uint8 | np.uint16],
     markers: onp.SequenceND[int],
-    structure: onp.ToInt | onp.ToIntND | None = None,
+    structure: onp.ToFloat | onp.ToFloatND | None = None,
     output: None = None,
 ) -> onp.ArrayND[np.int_]: ...
 @overload  # output: <given>
 def watershed_ift[ArrayT: onp.ArrayND[npc.signedinteger]](
     input: _ArrayLike[np.uint8 | np.uint16],
     markers: _ArrayLike[npc.signedinteger] | onp.SequenceND[int],
-    structure: onp.ToInt | onp.ToIntND | None = None,
+    structure: onp.ToFloat | onp.ToFloatND | None = None,
     *,
     output: ArrayT,
 ) -> ArrayT: ...
