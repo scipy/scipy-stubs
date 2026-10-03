@@ -14,14 +14,16 @@ vals_f: onp.Array1D[np.float64]
 vals_c: onp.Array1D[np.complex128]
 xi: onp.Array2D[np.float64]
 _f: float
+_py_f_2d: list[list[float]]
+_py_c_2d: list[list[complex]]
 
 ###
 # NearestNDInterpolator
 
-nn_f = NearestNDInterpolator(pts_2d, vals_f)
+nn_f = NearestNDInterpolator(pts_2d, _py_f_2d)
 assert_type(nn_f, NearestNDInterpolator[np.float64])
 
-nn_c = NearestNDInterpolator(pts_2d, vals_c)
+nn_c = NearestNDInterpolator(pts_2d, _py_c_2d)
 assert_type(nn_c, NearestNDInterpolator[np.complex128])
 assert_type(nn_f(_f, _f), onp.ArrayND[np.float64])
 

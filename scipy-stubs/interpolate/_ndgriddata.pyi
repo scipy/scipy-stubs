@@ -44,7 +44,7 @@ class NearestNDInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
         self: NearestNDInterpolator[np.float64],
         /,
         x: onp.ToFloat2D,
-        y: onp.ToFloat1D,
+        y: onp.ToFloatND,
         rescale: bool = False,
         tree_options: _TreeOptions | None = None,
     ) -> None: ...
@@ -53,7 +53,7 @@ class NearestNDInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
         self: NearestNDInterpolator[np.complex128],
         /,
         x: onp.ToFloat2D,
-        y: onp.ToJustComplex1D,
+        y: onp.ToJustComplexND,
         rescale: bool = False,
         tree_options: _TreeOptions | None = None,
     ) -> None: ...
@@ -62,7 +62,7 @@ class NearestNDInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
         self: NearestNDInterpolator[Any],
         /,
         x: onp.ToFloat2D,
-        y: onp.ToComplex1D,
+        y: onp.ToComplexND,
         rescale: bool = False,
         tree_options: _TreeOptions | None = None,
     ) -> None: ...
