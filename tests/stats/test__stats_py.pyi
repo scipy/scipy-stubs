@@ -1237,7 +1237,7 @@ assert_type(kstest(_i64_1d, _f32_1d), KstestResult[np.float64 | Any, np.int8])
 
 # tiecorrect
 
-assert_type(tiecorrect(_i64_1d), float)
+assert_type(tiecorrect(_f64_1d), float)
 
 # ranksums
 
