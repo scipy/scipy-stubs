@@ -33,6 +33,7 @@ _7: OptimizeResult[np.float64] = linprog(c, bounds=_f64_2d, method="interior-poi
 _8: OptimizeResult[np.float64] = linprog(c, bounds=_f64_2d, method="revised simplex")  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 _9: OptimizeResult[np.float64] = linprog(c, bounds=_f64_2d, method="simplex")  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 _10: OptimizeResult[np.float64] = linprog(c, bounds=_f64_2d, method=_method)
+_11: OptimizeResult[np.float64] = linprog(c, method="highs", options={"mip_rel_gap": 1e-3})
 
 ###
 # linprog_verbose_callback

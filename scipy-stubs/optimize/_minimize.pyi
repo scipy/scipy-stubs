@@ -101,7 +101,7 @@ class _MinimizeOptions(TypedDict, total=False):
     hess_inv0: onp.ArrayND[npc.floating]
     # COBYLA
     tol: _Floating
-    catool: _Floating
+    catol: _Floating
     rhobeg: _Floating
     f_target: _Floating
     # COBYQA
