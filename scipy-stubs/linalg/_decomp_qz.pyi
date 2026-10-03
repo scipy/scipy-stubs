@@ -23,7 +23,7 @@ type _OutputReal = Literal["real", "r"]
 type _OutputComplex = Literal["complex", "c"]
 type _Output = Literal[_OutputReal, _OutputComplex]
 
-type _Sort = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], bool]
+type _Sort = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[onp.ArrayND[Any], onp.ArrayND[Any]], onp.ToBoolND]
 
 ###
 
