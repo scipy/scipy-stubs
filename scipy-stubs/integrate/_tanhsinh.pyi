@@ -15,9 +15,10 @@ type _ArgsND = tuple[onp.ToScalar | onp.ToArrayND, ...]
 type _KwargsND = Mapping[str, onp.ToScalar | onp.ToArrayND]
 type _Callback[ResultT] = Callable[[ResultT], Unused]
 
-type _Integrand[InT, ScalarT: np.generic] = Callable[Concatenate[InT, ...], onp.ArrayND[ScalarT]]
-type _IntegrandReal = _Integrand[onp.ArrayND[np.float64], npc.floating]
-type _IntegrandComplex = _Integrand[onp.ArrayND[np.float64] | onp.ArrayND[np.complex128], npc.complexfloating]
+type _Integrand[InT, OutT] = Callable[Concatenate[InT, ...], OutT]
+type _IntegrandReal = _Integrand[onp.ArrayND[np.float64], onp.ToFloatND]
+type _IntegrandComplex = _Integrand[onp.ArrayND[np.float64] | onp.ArrayND[np.complex128], onp.ToComplexND]
+type _Summand = _Integrand[onp.ArrayND[np.float64], onp.ArrayND[npc.floating]]
 
 _ResultT_co = TypeVar("_ResultT_co", covariant=True)
 _SuccessT_co = TypeVar("_SuccessT_co", covariant=True)
@@ -206,7 +207,7 @@ def tanhsinh(
 #
 @overload  # scalar a, scalar b, scalar step
 def nsum(
-    f: _IntegrandReal,
+    f: _Summand,
     a: onp.ToFloat,
     b: onp.ToFloat,
     *,
@@ -219,7 +220,7 @@ def nsum(
 ) -> _NSumResult0: ...
 @overload  # scalar/array a, array b, scalar/array step
 def nsum(
-    f: _IntegrandReal,
+    f: _Summand,
     a: onp.ToFloat | onp.ToFloatND,
     b: onp.ToFloatND,
     *,
@@ -232,7 +233,7 @@ def nsum(
 ) -> _NSumResultN: ...
 @overload  # array a, scalar/array b, array step
 def nsum(
-    f: _IntegrandReal,
+    f: _Summand,
     a: onp.ToFloatND,
     b: onp.ToFloat | onp.ToFloatND,
     *,
@@ -245,7 +246,7 @@ def nsum(
 ) -> _NSumResultN: ...
 @overload  # scalar/array a, scalar/array b, array step
 def nsum(
-    f: _IntegrandReal,
+    f: _Summand,
     a: onp.ToFloat | onp.ToFloatND,
     b: onp.ToFloat | onp.ToFloatND,
     *,
@@ -258,7 +259,7 @@ def nsum(
 ) -> _NSumResultN: ...
 @overload  # fallback
 def nsum(
-    f: _IntegrandReal,
+    f: _Summand,
     a: onp.ToFloat | onp.ToFloatND,
     b: onp.ToFloat | onp.ToFloatND,
     *,
