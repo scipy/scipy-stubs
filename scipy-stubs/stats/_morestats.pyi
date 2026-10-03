@@ -774,13 +774,31 @@ def boxcox(
 ) -> tuple[_Float1D, np.float64]: ...
 @overload
 def boxcox(
-    x: onp.ToFloat1D,
+    x: onp.ToFloat,
     lmbda: onp.ToFloat,
     alpha: float | None = None,
     optimizer: _MinFun1D | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
-) -> _Float1D: ...
+) -> np.float64: ...
+@overload
+def boxcox[ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[npc.floating | npc.integer | np.bool, ShapeT],
+    lmbda: onp.ToFloat,
+    alpha: float | None = None,
+    optimizer: _MinFun1D | None = None,
+    *,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload
+def boxcox(  # the weird shape-type is a workaround for a bug in pyright's overlapping overload detection on numpy<2.1
+    x: onp.ToFloatND,
+    lmbda: onp.ToFloat,
+    alpha: float | None = None,
+    optimizer: _MinFun1D | None = None,
+    *,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]]: ...
 @overload
 def boxcox(
     x: onp.ToFloat1D, lmbda: None, alpha: float, optimizer: _MinFun1D | None = None, *, nan_policy: NanPolicy = "propagate"
