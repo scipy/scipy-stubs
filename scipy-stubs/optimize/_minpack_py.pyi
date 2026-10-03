@@ -227,7 +227,7 @@ def curve_fit(
     full_output: onp.ToFalse = False,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
-) -> tuple[_Float2D, _Float2D]: ...
+) -> tuple[_Float1D, _Float2D]: ...
 @overload  # 2-d `x`, full-output=True
 def curve_fit(
     f: _Fun2D,
@@ -244,7 +244,7 @@ def curve_fit(
     full_output: onp.ToTrue,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
-) -> tuple[_Float2D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...
+) -> tuple[_Float1D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...
 @overload  # ?-d `x`, full-output=False
 def curve_fit(
     f: _Fun1D | _Fun2D,
@@ -261,7 +261,7 @@ def curve_fit(
     full_output: onp.ToFalse = False,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
-) -> tuple[_Float1D | _Float2D, _Float2D]: ...
+) -> tuple[_Float1D, _Float2D]: ...
 @overload  # ?-d `x`, full-output=True
 def curve_fit(
     f: _Fun1D | _Fun2D,
@@ -278,7 +278,7 @@ def curve_fit(
     full_output: onp.ToTrue,
     nan_policy: _NanPolicy | None = None,
     **kwargs: Unpack[_KwargsCurveFit],
-) -> tuple[_Float1D | _Float2D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...
+) -> tuple[_Float1D, _Float2D, _InfoDictCurveFit, str, _IERFlag]: ...
 
 #
 @overload  # 0-d real, method="del2"  (default)
