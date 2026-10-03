@@ -1766,7 +1766,7 @@ def tmin(
 ) -> np.int_: ...
 @overload  # ?d +f64, axis=None
 def tmin(
-    a: onp.ToArrayND[float, npc.integer | np.bool],
+    a: onp.ToArrayND[float, npc.floating64],
     lowerlimit: _RealLimit | None = None,
     *,
     axis: None,
