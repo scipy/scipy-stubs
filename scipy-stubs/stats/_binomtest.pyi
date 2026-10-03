@@ -32,10 +32,12 @@ class BinomTestResult(Generic[_NumT_co, _StatT_co]):
     ) -> ConfidenceInterval[_StatT_co]: ...
 
 @overload
-def binomtest(k: int, n: int, p: float = 0.5, alternative: Alternative = "two-sided") -> BinomTestResult[int, np.float64]: ...
+def binomtest(
+    k: int | npc.integer, n: int | npc.integer, p: float = 0.5, alternative: Alternative = "two-sided"
+) -> BinomTestResult[int, np.float64]: ...
 @overload
 def binomtest(
-    k: onp.ToArrayND[int, npc.integer] | int,
+    k: onp.ToArrayND[int, npc.integer] | int | npc.integer,
     n: onp.ToArrayND[int, npc.integer],
     p: onp.ToArrayND[float, npc.floating] | float = 0.5,
     alternative: Alternative = "two-sided",
@@ -43,14 +45,14 @@ def binomtest(
 @overload
 def binomtest(
     k: onp.ToArrayND[int, npc.integer],
-    n: onp.ToArrayND[int, npc.integer] | int,
+    n: onp.ToArrayND[int, npc.integer] | int | npc.integer,
     p: onp.ToArrayND[float, npc.floating] | float = 0.5,
     alternative: Alternative = "two-sided",
 ) -> BinomTestResult[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
 @overload
 def binomtest(
-    k: onp.ToArrayND[int, npc.integer] | int,
-    n: onp.ToArrayND[int, npc.integer] | int,
+    k: onp.ToArrayND[int, npc.integer] | int | npc.integer,
+    n: onp.ToArrayND[int, npc.integer] | int | npc.integer,
     p: onp.ToArrayND[float, npc.floating],
     alternative: Alternative = "two-sided",
 ) -> BinomTestResult[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...

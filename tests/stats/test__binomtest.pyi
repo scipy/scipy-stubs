@@ -8,9 +8,14 @@ import optype.numpy as onp
 from scipy.stats import binomtest
 
 ###
+
+_i64: np.int64
+_i64_1d: onp.Array1D[np.int64]
+
+###
 # binomtest
 
-_r_0d = binomtest(5, 10)
+_r_0d = binomtest(_i64, 10)
 assert_type(_r_0d.k, int)
 assert_type(_r_0d.n, int)
 assert_type(_r_0d.statistic, np.float64)
@@ -18,10 +23,13 @@ assert_type(_r_0d.pvalue, np.float64)
 assert_type(_r_0d.proportion_ci().low, np.float64)
 assert_type(_r_0d.proportion_ci().high, np.float64)
 
-_r_1d = binomtest([5], [10, 20])
+_r_1d = binomtest(_i64, [10, 20])
 assert_type(_r_1d.k, onp.ArrayND[np.float64])
 assert_type(_r_1d.n, onp.ArrayND[np.float64])
 assert_type(_r_1d.statistic, onp.ArrayND[np.float64])
 assert_type(_r_1d.pvalue, onp.ArrayND[np.float64])
 assert_type(_r_1d.proportion_ci().low, onp.ArrayND[np.float64])
 assert_type(_r_1d.proportion_ci().high, onp.ArrayND[np.float64])
+
+assert_type(binomtest(_i64_1d, _i64).statistic, onp.ArrayND[np.float64])
+assert_type(binomtest(_i64, _i64, [0.5]).statistic, onp.ArrayND[np.float64])
