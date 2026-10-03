@@ -199,6 +199,7 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     def moment(self, /, order: onp.ToInt | None = None) -> _FloatNDT_co: ...
 
     # NOTE: Will raise a `TypeError` with n-D parameters.
+    @overload  # complex_func: False  (default)
     def expect(
         self: rv_frozen[_RVT, _Float],
         /,
@@ -206,8 +207,22 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
         lb: onp.ToFloat | None = None,
         ub: onp.ToFloat | None = None,
         conditional: _Bool = False,
+        *,
+        complex_func: onp.ToFalse = False,
         **kwds: Unpack[_QuadOpts],
     ) -> _Float: ...
+    @overload  # complex_func: True
+    def expect(
+        self: rv_frozen[_RVT, _Float],
+        /,
+        func: Callable[[float], onp.ToComplex] | None = None,
+        lb: onp.ToFloat | None = None,
+        ub: onp.ToFloat | None = None,
+        conditional: _Bool = False,
+        *,
+        complex_func: onp.ToTrue,
+        **kwds: Unpack[_QuadOpts],
+    ) -> np.complex128: ...
 
     #
     def support(self, /) -> _Tuple2[_FloatNDT_co]: ...
@@ -762,6 +777,7 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> tuple[_Float, ...]: ...
 
     #
+    @overload  # complex_func: False  (default)
     def expect(
         self,
         /,
@@ -772,8 +788,25 @@ class rv_continuous(_rv_mixin, rv_generic):
         lb: onp.ToFloat | None = None,
         ub: onp.ToFloat | None = None,
         conditional: bool = False,
+        *,
+        complex_func: onp.ToFalse = False,
         **kwds: Unpack[_QuadOpts],
     ) -> _Float: ...
+    @overload  # complex_func: True
+    def expect(
+        self,
+        /,
+        func: Callable[[float], onp.ToComplex] | None = None,
+        args: tuple[onp.ToFloat, ...] = (),
+        loc: onp.ToFloat = 0,
+        scale: onp.ToFloat = 1,
+        lb: onp.ToFloat | None = None,
+        ub: onp.ToFloat | None = None,
+        conditional: bool = False,
+        *,
+        complex_func: onp.ToTrue,
+        **kwds: Unpack[_QuadOpts],
+    ) -> np.complex128: ...
 
     #
     @override
