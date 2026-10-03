@@ -1185,7 +1185,7 @@ def wilcoxon(
     axis: SupportsIndex = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
-) -> WilcoxonResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> WilcoxonResult[np.float64 | Any]: ...
 @overload  # ?d ~f32  (workaround)
 def wilcoxon(
     x: onp.ArrayND[np.float32, _JustAnyShape],
@@ -1198,7 +1198,7 @@ def wilcoxon(
     axis: SupportsIndex = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
-) -> WilcoxonResult[np.float32 | onp.ArrayND[np.float32]]: ...
+) -> WilcoxonResult[np.float32 | Any]: ...
 @overload  # ?d ~f64, axis=None
 def wilcoxon(
     x: _AsF64 | _AsF64_ND,
