@@ -93,8 +93,10 @@ assert_type(
     monte_carlo_test(_f32_2d, np.random.standard_normal, np.mean),
     MonteCarloTestResult[onp.Array1D[np.float32], onp.Array2D[np.float64]],
 )
+assert_type(monte_carlo_test(_i64_1d, np.random.poisson, np.mean), MonteCarloTestResult[np.float64, onp.Array1D[np.float64]])
 assert_type(
-    monte_carlo_test(_i64_1d, np.random.standard_normal, np.mean), MonteCarloTestResult[np.float64, onp.Array1D[np.float64]]
+    monte_carlo_test((_f64_1d, _f64_1d), (np.random.standard_normal, np.random.standard_normal), _statistic_1d),
+    MonteCarloTestResult[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.float64]],
 )
 
 # BootstrapMethod

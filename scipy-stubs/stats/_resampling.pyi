@@ -26,7 +26,7 @@ _DistT = TypeVar("_DistT", bound=onp.ArrayND[npc.floating], default=onp.ArrayND[
 
 @type_check_only
 class _RVSCallable(Protocol):
-    def __call__(self, /, *, size: tuple[int, ...]) -> onp.ArrayND[npc.floating]: ...
+    def __call__(self, /, *, size: tuple[int, ...]) -> onp.ArrayND[npc.floating | npc.integer]: ...
 
 ###
 
@@ -643,6 +643,18 @@ def monte_carlo_test[FloatT: npc.floating](
 def monte_carlo_test(
     data: onp.ToArrayND[float, npc.integer],
     rvs: _RVSCallable,
+    statistic: _Statistic,
+    *,
+    vectorized: bool | None = None,
+    n_resamples: int = 9_999,
+    batch: int | None = None,
+    alternative: Alternative = "two-sided",
+    axis: int = 0,
+) -> MonteCarloTestResult[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.float64]]: ...
+@overload  # k samples  (separate for mypy)
+def monte_carlo_test(
+    data: onp.ToFloatND,
+    rvs: Sequence[_RVSCallable],
     statistic: _Statistic,
     *,
     vectorized: bool | None = None,
