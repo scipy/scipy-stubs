@@ -903,8 +903,8 @@ def yeojohnson_normplot(
 def anderson(x: onp.ToFloatND, dist: _RVCAnderson = "norm", *, method: None = None) -> AndersonResult: ...
 @overload
 def anderson(
-    x: onp.ToFloatND, dist: _RVCAnderson = "norm", *, method: MonteCarloMethod | Literal["interpolated"]
-) -> AndersonResult: ...
+    x: onp.ToFloatND, dist: _RVCAnderson = "norm", *, method: MonteCarloMethod | Literal["interpolate"]
+) -> SignificanceResult[np.float64]: ...
 
 #
 @overload

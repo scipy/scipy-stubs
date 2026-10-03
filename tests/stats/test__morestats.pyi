@@ -142,6 +142,7 @@ assert_type(ppcc_plot(_f64_1d, 0.0, 2.0, plot=_ax), tuple[onp.ArrayND[np.float64
 
 assert_type(anderson(_f64_1d), AndersonResult)  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
 assert_type(anderson(_f64_nd), AndersonResult)  # pyright: ignore[reportDeprecated]  # pyrefly: ignore[deprecated]
+assert_type(anderson(_f64_1d, method="interpolate"), SignificanceResult[np.float64])
 
 ###
 # anderson_ksamp
