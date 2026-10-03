@@ -39,8 +39,8 @@ type Bounds = Sequence[Bound] | onp.ToFloat2D | _Bounds
 @type_check_only
 class _ConstraintDict(TypedDict):
     type: Literal["eq", "ineq"]
-    fun: Callable[Concatenate[_Float1D, ...], onp.ToFloat]
-    jac: NotRequired[Callable[Concatenate[_Float1D, ...], onp.ToFloat1D]]
+    fun: Callable[Concatenate[_Float1D, ...], onp.ToFloat | onp.ToFloat1D]
+    jac: NotRequired[Callable[Concatenate[_Float1D, ...], onp.ToFloat1D | onp.ToFloat2D]]
     args: NotRequired[_Args]
 
 type Constraint = LinearConstraint | NonlinearConstraint | _ConstraintDict
