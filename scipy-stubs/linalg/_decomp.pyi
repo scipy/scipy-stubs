@@ -237,7 +237,7 @@ def eig(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64 | np.complex128]]: ...
-@overload  # catch-all
+@overload  # fallback
 def eig(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -777,7 +777,7 @@ def eigh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
-@overload  # catch-all
+@overload  # fallback
 def eigh(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -1030,7 +1030,7 @@ def eig_banded(
     max_ev: onp.ToInt = 0,
     check_finite: bool = True,
 ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
-@overload  # catch-all
+@overload  # fallback
 def eig_banded(
     a_band: onp.ToComplexND,
     lower: bool = False,
@@ -1272,7 +1272,7 @@ def eigvals(
     check_finite: bool = True,
     homogeneous_eigvals: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # catch-all
+@overload  # fallback
 def eigvals(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -1415,7 +1415,7 @@ def eigvalsh(
     subset_by_value: _EigHSubsetByValue | None = None,
     driver: _DriverEV | _DriverGV | None = None,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # catch-all
+@overload  # fallback
 def eigvalsh(
     a: onp.ToComplexND,
     b: onp.ToComplexND | None = None,
@@ -1553,7 +1553,7 @@ def eigvals_banded(
     select_range: _SelectRangeI,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float32]: ...
-@overload  # catch-all
+@overload  # fallback
 def eigvals_banded(
     a_band: onp.ToComplexND,
     lower: bool = False,
@@ -1872,7 +1872,7 @@ def eigvalsh_tridiagonal(
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # catch-all
+@overload  # fallback
 def eigvalsh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
@@ -2114,7 +2114,7 @@ def eigh_tridiagonal(
     tol: onp.ToFloat = 0.0,
     lapack_driver: _DriverSTE | _DriverAuto = "auto",
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # catch-all
+@overload  # fallback
 def eigh_tridiagonal(
     d: onp.ToFloatND,
     e: onp.ToFloatND,
@@ -2200,7 +2200,7 @@ def hessenberg(
 def hessenberg(
     a: onp.ToJustComplex128_ND, calc_q: Literal[True], overwrite_a: bool = False, check_finite: bool = True
 ) -> tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
-@overload  # catch-all
+@overload  # fallback
 def hessenberg(
     a: onp.ToComplexND, calc_q: Literal[False] = False, overwrite_a: bool = False, check_finite: bool = True
 ) -> onp.ArrayND[np.float64 | Any]: ...
@@ -2222,5 +2222,5 @@ def cdf2rdf(
 def cdf2rdf(
     w: onp.ToJustFloat32_ND | onp.ToJustComplex64_ND, v: onp.ToComplex128_ND
 ) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float64]]: ...
-@overload  # catch-all
+@overload  # fallback
 def cdf2rdf(w: onp.ToComplexND, v: onp.ToComplexND) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
