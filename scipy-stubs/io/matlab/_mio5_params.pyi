@@ -1,4 +1,4 @@
-from typing import Final, Generic, Literal, Self, TypedDict, final, override, type_check_only
+from typing import Any, Final, Generic, Literal, Self, TypedDict, final, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -185,7 +185,11 @@ mxOPAQUE_CLASS: Final[_MXType] = 17
 mxOBJECT_CLASS_FROM_MATRIX_H: Final[_MXType] = 18
 
 @final
-class mat_struct: ...
+class mat_struct:
+    _fieldnames: list[str]
+
+    @type_check_only
+    def __getattr__(self, name: str, /) -> Any: ...
 
 class MatlabObject(np.ndarray[_ShapeT, np.dtype[np.void]], Generic[_ShapeT]):
     classname: Final[str | None]

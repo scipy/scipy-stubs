@@ -1,6 +1,9 @@
 from typing import Any, Literal, assert_type
 
 from scipy.io import loadmat, savemat, whosmat
+from scipy.io.matlab import mat_struct
+
+_s: mat_struct
 
 ###
 
@@ -59,3 +62,7 @@ assert_type(
         ]
     ],
 )
+
+# mat_struct
+assert_type(_s._fieldnames, list[str])  # ruff: ignore[private-member-access]
+assert_type(_s.stringfield, Any)
