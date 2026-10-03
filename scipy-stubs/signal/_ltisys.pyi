@@ -30,7 +30,7 @@ __all__ = [
 ###
 
 _ZerosT_co = TypeVar("_ZerosT_co", bound=npc.inexact32 | npc.inexact64 | npc.integer, default=Any, covariant=True)
-_PolesT_co = TypeVar("_PolesT_co", bound=_Float | npc.integer, default=np.float64 | Any, covariant=True)
+_PolesT_co = TypeVar("_PolesT_co", bound=_Inexact | npc.integer, default=np.float64 | Any, covariant=True)
 _DTT_co = TypeVar("_DTT_co", bound=onp.ToComplex | None, default=Any, covariant=True)
 _RequestedPolesT_co = TypeVar("_RequestedPolesT_co", bound=npc.inexact64, default=np.float64 | np.complex128, covariant=True)
 
@@ -470,20 +470,20 @@ class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Gener
         *,
         dt: DTT,
     ) -> ZerosPolesGainDiscrete[np.complex128, np.float64, DTT]: ...
-    @overload  # +complex, +float, +float
+    @overload  # +complex, +complex, +float
     def __new__(
-        cls, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: None = None
+        cls, zeros: _ToComplex12D, poles: onp.ToComplex1D, gain: onp.ToFloat, /, *, dt: None = None
     ) -> ZerosPolesGainContinuous[Any, np.float64 | Any]: ...
-    @overload  # +complex, +float, +float
+    @overload  # +complex, +complex, +float
     def __new__[DTT: onp.ToComplex](
-        cls, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: DTT
+        cls, zeros: _ToComplex12D, poles: onp.ToComplex1D, gain: onp.ToFloat, /, *, dt: DTT
     ) -> ZerosPolesGainDiscrete[Any, np.float64 | Any, DTT]: ...
 
     #
     @overload
     def __init__(self, system: LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], /, *, dt: None = None) -> None: ...
     @overload
-    def __init__(self, zeros: _ToComplex12D, poles: onp.ToFloat1D, gain: onp.ToFloat, /, *, dt: _DTT_co = ...) -> None: ...
+    def __init__(self, zeros: _ToComplex12D, poles: onp.ToComplex1D, gain: onp.ToFloat, /, *, dt: _DTT_co = ...) -> None: ...
 
     #
     @property
@@ -499,7 +499,7 @@ class ZerosPolesGain(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Gener
     def poles(self, /) -> onp.Array1D[_PolesT_co]: ...
     @poles.setter
     @override
-    def poles(self, gain: onp.ToFloat1D, /) -> None: ...
+    def poles(self, gain: onp.ToComplex1D, /) -> None: ...
 
     #
     @property
@@ -589,11 +589,11 @@ class ZerosPolesGainDiscrete(
         *,
         dt: DTT = ...,
     ) -> None: ...
-    @overload  # +complex, +float, +float
+    @overload  # +complex, +complex, +float
     def __init__[DTT: onp.ToComplex | None](
         self: ZerosPolesGainDiscrete[Any, np.float64 | Any, DTT],
         zeros: _ToComplex12D,
-        poles: onp.ToFloat1D,
+        poles: onp.ToComplex1D,
         gain: onp.ToFloat,
         /,
         *,

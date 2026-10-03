@@ -152,6 +152,8 @@ assert_type(_zpk_cont_i64.to_discrete(0.1), ZerosPolesGainDiscrete[np.float64, n
 assert_type(_zpk_cont_i64.impulse(), tuple[_VecF64, _ArrF64])
 assert_type(_zpk_cont_i64.bode(), tuple[_VecF64, _VecF64, _VecF64])
 assert_type(_zpk_cont_i64.freqresp(), tuple[_VecF64, _VecC128])
+assert_type(ZerosPolesGain(_f64_1d, _c128_1d, 5), ZerosPolesGainContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
+assert_type(ZerosPolesGain(_f64_1d, _c128_1d, 5, dt=0.1), ZerosPolesGainDiscrete[Any, np.float64 | Any, float])  # type: ignore[assert-type]
 
 # StateSpace
 assert_type(StateSpace(_ss_cont_f32), StateSpaceContinuous[np.float32, np.float32])  # type: ignore[assert-type]
@@ -172,6 +174,7 @@ assert_type(lti(_f64_1d, _f64_1d, 5), ZerosPolesGainContinuous[_F32_64, np.float
 assert_type(lti(_c128_1d, _f64_1d, 5), ZerosPolesGainContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
 assert_type(lti(_f64_2d, _f64_2d, _f64_2d, _f64_2d), StateSpaceContinuous[_F32_64, np.float64 | Any])  # type: ignore[assert-type]
 assert_type(lti(_c128_2d, _c128_2d, _c128_2d, _c128_2d), StateSpaceContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
+assert_type(lti(_f64_1d, _c128_1d, 5), ZerosPolesGainContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
 
 # dlti
 assert_type(dlti(_f64_1d, _f64_1d), TransferFunctionDiscrete[_F32_64, Any])  # type: ignore[assert-type]
@@ -181,6 +184,7 @@ assert_type(dlti(_f64_1d, _f64_1d, 5, dt=0.1), ZerosPolesGainDiscrete[_F32_64, _
 assert_subtype[dlti[Any, np.float64 | Any, float]](dlti(_c128_1d, _f64_1d, 5, dt=0.1))
 assert_type(dlti(_f64_2d, _f64_2d, _f64_2d, _f64_2d, dt=0.1), StateSpaceDiscrete[_F32_64, _F32_64, float])  # type: ignore[assert-type]
 assert_type(dlti(_c128_2d, _c128_2d, _c128_2d, _c128_2d, dt=0.1), StateSpaceDiscrete[Any, _F32_64, float])  # type: ignore[assert-type]
+assert_subtype[dlti[Any, np.float64 | Any, float]](dlti(_f64_1d, _c128_1d, 5, dt=0.1))
 
 ###
 # lsim (same as impulse and step)
