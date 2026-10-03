@@ -1,6 +1,6 @@
 import types
 from collections.abc import Callable
-from typing import Any, Final, Generic, Literal, Never, overload
+from typing import Any, Final, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -196,8 +196,8 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     #
     @property
     def fft_mode(self, /) -> _FFTMode: ...
-    @fft_mode.setter  # `fft_mode` affects the 2nd generic type (`_Inexact128T_co`), so changing it would be type-unsafe
-    def fft_mode(self, /, t: Never) -> None: ...
+    @fft_mode.setter
+    def fft_mode(self, /, t: _FFTMode) -> None: ...
 
     #
     @property

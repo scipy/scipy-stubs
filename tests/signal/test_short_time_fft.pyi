@@ -38,6 +38,7 @@ assert_type(stft_f64_1.f_pts, int)
 assert_type(stft_f64_1.m_num, int)
 assert_type(stft_f64_1.delta_t, float)
 assert_type(stft_f64_1.delta_f, float)
+stft_f64_2.fft_mode = "centered"
 
 ###
 # t / k_max / p_range / upper_border_begin / lower_border_end
