@@ -45,8 +45,8 @@ assert_type(_ctree.query_ball_point(_f64_1d, 1.0), list[int])
 assert_type(_ctree.query_ball_point(_f64_1d, 1.0, return_length=True), np.intp)
 assert_type(_ctree.query_ball_point(_f64_2d, _f64_1d), onp.ArrayND[np.object_])
 assert_type(_ctree.query_ball_point(_f64_2d, _f64_1d, return_length=True), onp.ArrayND[np.intp])
-assert_type(_ctree.query_ball_point(_f64_2d, 1.0), list[int] | onp.ArrayND[np.object_])
-assert_type(_ctree.query_ball_point(_f64_2d, 1.0, return_length=True), np.intp | onp.ArrayND[np.intp])
+assert_type(_ctree.query_ball_point(_f64_2d, 1.0), onp.Array1D[np.object_])
+assert_type(_ctree.query_ball_point(_f64_2d, 1.0, return_length=True), onp.Array1D[np.intp])
 assert_type(_ctree.query_ball_point(_f64_nd, 1.0), onp.ArrayND[np.object_] | Any)  # pyrefly:ignore[assert-type]
 assert_type(_ctree.query_ball_point(_f64_nd, 1.0, return_length=True), onp.ArrayND[np.intp] | Any)  # pyrefly:ignore[assert-type]
 

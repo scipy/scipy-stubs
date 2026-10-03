@@ -234,6 +234,31 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     def query_ball_point(
         self,
         /,
+        x: onp.ToFloatStrict2D,
+        r: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0.0,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
+        return_length: L[False] = False,
+    ) -> onp.Array1D[np.object_]: ...
+    @overload
+    def query_ball_point(
+        self,
+        /,
+        x: onp.ToFloatStrict2D,
+        r: onp.ToFloat,
+        p: onp.ToFloat = 2.0,
+        eps: onp.ToFloat = 0.0,
+        workers: int | None = None,
+        return_sorted: bool | None = None,
+        *,
+        return_length: L[True],
+    ) -> onp.Array1D[np.intp]: ...
+    @overload
+    def query_ball_point(
+        self,
+        /,
         x: onp.ToFloatND,
         r: onp.ToFloatND,
         p: onp.ToFloat = 2.0,
