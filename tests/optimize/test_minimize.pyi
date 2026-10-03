@@ -72,3 +72,4 @@ assert_type(
 assert_type(minimize(_f_float, _f64_1d, callback=_callback_x).fun, float)
 assert_type(minimize(_f_float, _f64_1d, callback=lambda p: _f64_1d_list.append(p.copy())).fun, float)
 assert_type(minimize(_f_float, _f64_1d, method="trust-constr", callback=_callback_x_state).fun, float)
+assert_type(minimize(_f_float, _f64_1d, method="CG", options={"maxiter": None}).fun, float)

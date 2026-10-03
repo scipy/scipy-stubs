@@ -69,7 +69,7 @@ class _MinimizeOptions(TypedDict, total=False):
     # Nelder-Mead, Powell, CG, BFGS, L-BFGS-B, Newton-CG, TNC, COBYLA, COBYQA, SLSQP, trust-constr
     disp: bool
     # Nelder-Mead, Powell, CG, BFGS, L-BFGS-B, Newton-CG, COBYLA, SLSQP, trust-constr
-    maxiter: int
+    maxiter: int | None
     # Nelder-Mead, Powell, COBYQA
     maxfev: int
     # TNC
