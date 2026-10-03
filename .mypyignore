@@ -13,3 +13,6 @@ scipy\.fft\._duccfft\..*
 
 # should this be packaged?
 scipy\.special\._precompute\..*
+
+# subclass hooks, typed as `(*args: Any, **kwds: Any)` so that any override is compatible
+scipy\.stats\._distn_infrastructure\.rv_continuous\._pdf

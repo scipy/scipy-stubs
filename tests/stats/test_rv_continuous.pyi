@@ -1,4 +1,4 @@
-from typing import assert_type
+from typing import assert_type, override
 
 import numpy as np
 import optype.numpy as onp
@@ -46,3 +46,10 @@ assert_type(mydist.rvs(s=_f64_nd), onp.ArrayND[np.float64])
 
 assert_type(mydist.expect(), float | np.float64)
 assert_type(mydist.expect(_f2c, complex_func=True), np.complex128)
+
+###
+# _pdf
+
+class _gen_pdf(rv_continuous):
+    @override
+    def _pdf(self, x: onp.ArrayND[np.float64], a: float) -> onp.ArrayND[np.float64]: ...
