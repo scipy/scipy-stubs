@@ -164,7 +164,7 @@ def correlate[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
-    axes: ShapeT | None = None,
+    axes: tuple[int, ...] | None = None,
 ) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def correlate(

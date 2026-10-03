@@ -43,6 +43,7 @@ f64_2d: onp.Array2D[np.float64]
 f64_nd: onp.ArrayND[np.float64]
 c64_nd: onp.ArrayND[np.complex64]
 c128_nd: onp.ArrayND[np.complex128]
+_axes: tuple[int]
 
 # weights for convolve/correlate
 weights_1d: onp.Array1D[np.float64]
@@ -76,7 +77,7 @@ assert_type(correlate1d(c128_nd, weights_1d), onp.ArrayND[np.complex128])
 # correlate
 
 assert_type(correlate(f64_2d, weights_nd, origin=_origin), onp.Array2D[np.float64])
-assert_type(correlate(f32_2d, weights_nd), onp.Array2D[np.float32])
+assert_type(correlate(f32_2d, weights_nd, axes=_axes), onp.Array2D[np.float32])
 assert_type(correlate(int_2d, weights_nd, origin=_origin), onp.ArrayND[np.intp])
 assert_type(correlate(float_2d, weights_nd, origin=_origin), onp.ArrayND[np.float64])
 assert_type(correlate(complex_2d, weights_nd, origin=_origin), onp.ArrayND[np.complex128])
