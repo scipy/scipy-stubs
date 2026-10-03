@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Literal as L, Never, overload
+from typing import Any, Literal as L, Never, overload
 from typing_extensions import deprecated
 
 import numpy as np
@@ -274,22 +274,32 @@ def leslie[ScalarT: np.generic](
 #
 @overload
 def block_diag(
-    arr0: onp.ToJustFloat64_1D | onp.ToJustFloat64_2D = ..., /, *arrs: onp.ToFloat64_1D | onp.ToFloat64_2D
+    arr0: onp.ToJustFloat64 | onp.ToJustFloat64_1D | onp.ToJustFloat64_2D = ...,
+    /,
+    *arrs: onp.ToFloat64 | onp.ToFloat64_1D | onp.ToFloat64_2D,
 ) -> _Float2D: ...
 @overload
-def block_diag(arr0: onp.ToJustBool1D | onp.ToJustBool2D, /, *arrs: onp.ToBool1D | onp.ToBool2D) -> _Bool2D: ...
-@overload
-def block_diag(arr0: onp.ToJustInt64_1D | onp.ToJustInt64_2D, /, *arrs: onp.ToInt1D | onp.ToInt2D) -> _Int2D: ...
+def block_diag(
+    arr0: onp.ToJustBool | onp.ToJustBool1D | onp.ToJustBool2D, /, *arrs: onp.ToBool | onp.ToBool1D | onp.ToBool2D
+) -> _Bool2D: ...
 @overload
 def block_diag(
-    arr0: onp.ToJustComplex128_1D | onp.ToJustComplex128_2D, /, *arrs: onp.ToComplex128_1D | onp.ToComplex128_2D
+    arr0: onp.ToJustInt64 | onp.ToJustInt64_1D | onp.ToJustInt64_2D, /, *arrs: onp.ToInt | onp.ToInt1D | onp.ToInt2D
+) -> _Int2D: ...
+@overload
+def block_diag(
+    arr0: onp.ToJustComplex128 | onp.ToJustComplex128_1D | onp.ToJustComplex128_2D,
+    /,
+    *arrs: onp.ToComplex128 | onp.ToComplex128_1D | onp.ToComplex128_2D,
 ) -> _Complex2D: ...
 @overload
 def block_diag[ScalarT: np.generic](
-    arr0: onp.ToArray1D[ScalarT, ScalarT] | onp.ToArray2D[ScalarT, ScalarT],
+    arr0: ScalarT | onp.ToArray1D[ScalarT, ScalarT] | onp.ToArray2D[ScalarT, ScalarT],
     /,
-    *arrs: onp.ToArray1D[ScalarT, ScalarT] | onp.ToArray2D[ScalarT, ScalarT],
+    *arrs: ScalarT | onp.ToArray1D[ScalarT, ScalarT] | onp.ToArray2D[ScalarT, ScalarT],
 ) -> onp.Array2D[ScalarT]: ...
+@overload
+def block_diag(*arrs: onp.ToComplex | onp.ToComplex1D | onp.ToComplex2D) -> onp.Array2D[np.float64 | Any]: ...
 
 # `n` should probably be an int, but floats are also accepted in practice
 def dft(n: onp.ToFloat, scale: L["sqrtn", "n"] | None = None) -> _Complex2D: ...
