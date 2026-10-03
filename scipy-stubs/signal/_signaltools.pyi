@@ -158,12 +158,12 @@ def convolve[ScalarT: npc.number | np.bool](
     method: _ToConvMethod = "auto",
 ) -> onp.ArrayND[ScalarT]: ...
 @overload  # generic
-def convolve[AnyShapeT: (_1D, _2D, _3D), NumericT: npc.number | np.bool](
-    in1: nptc.CanArray[AnyShapeT, np.dtype[NumericT]],
-    in2: nptc.CanArray[AnyShapeT, np.dtype[NumericT]],
+def convolve[AnyShapeT: (_1D, _2D, _3D), ScalarT: npc.number | np.bool](
+    in1: nptc.CanArray[AnyShapeT, np.dtype[ScalarT]],
+    in2: nptc.CanArray[AnyShapeT, np.dtype[ScalarT]],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
-) -> onp.ArrayND[NumericT, AnyShapeT]: ...
+) -> onp.ArrayND[ScalarT, AnyShapeT]: ...
 @overload  # ~int64, +int64
 def convolve(
     in1: onp.ToJustInt64_ND, in2: onp.ToIntND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
@@ -213,12 +213,12 @@ def correlate[ScalarT: npc.number | np.bool](
     method: _ToConvMethod = "auto",
 ) -> onp.ArrayND[ScalarT]: ...
 @overload  # generic
-def correlate[AnyShapeT: (_1D, _2D, _3D), NumericT: npc.number | np.bool](
-    in1: nptc.CanArray[AnyShapeT, np.dtype[NumericT]],
-    in2: nptc.CanArray[AnyShapeT, np.dtype[NumericT]],
+def correlate[AnyShapeT: (_1D, _2D, _3D), ScalarT: npc.number | np.bool](
+    in1: nptc.CanArray[AnyShapeT, np.dtype[ScalarT]],
+    in2: nptc.CanArray[AnyShapeT, np.dtype[ScalarT]],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
-) -> onp.ArrayND[NumericT, AnyShapeT]: ...
+) -> onp.ArrayND[ScalarT, AnyShapeT]: ...
 @overload  # ~int64, +int64
 def correlate(
     in1: onp.ToJustInt64_ND, in2: onp.ToIntND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
@@ -250,13 +250,13 @@ def correlate(
 
 # NOTE: keep in sync with `correlate2d`
 @overload  # generic
-def convolve2d[NumericT: npc.number | np.bool](
-    in1: onp.CanArrayND[NumericT],
-    in2: onp.CanArrayND[NumericT],
+def convolve2d[ScalarT: npc.number | np.bool](
+    in1: onp.CanArrayND[ScalarT],
+    in2: onp.CanArrayND[ScalarT],
     mode: onp.ConvolveMode = "full",
     boundary: _BoundaryConditions = "fill",
     fillvalue: onp.ToComplex = 0,
-) -> onp.Array2D[NumericT]: ...
+) -> onp.Array2D[ScalarT]: ...
 @overload  # ~int64, +int64
 def convolve2d(
     in1: onp.ToJustInt64_ND,
@@ -316,13 +316,13 @@ def convolve2d(
 
 # NOTE: keep in sync with `convolve2d`
 @overload  # generic
-def correlate2d[NumericT: npc.number | np.bool](
-    in1: onp.CanArrayND[NumericT],
-    in2: onp.CanArrayND[NumericT],
+def correlate2d[ScalarT: npc.number | np.bool](
+    in1: onp.CanArrayND[ScalarT],
+    in2: onp.CanArrayND[ScalarT],
     mode: onp.ConvolveMode = "full",
     boundary: _BoundaryConditions = "fill",
     fillvalue: onp.ToComplex = 0,
-) -> onp.Array2D[NumericT]: ...
+) -> onp.Array2D[ScalarT]: ...
 @overload  # ~int64, +int64
 def correlate2d(
     in1: onp.ToJustInt64_ND,
@@ -414,12 +414,9 @@ def fftconvolve[AnyShapeT: (_1D, _2D, _3D)](
     axes: None = None,
 ) -> onp.ArrayND[np.float32, AnyShapeT]: ...
 @overload  # generic dtype, generic, shape
-def fftconvolve[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating, AnyShapeT: (_1D, _2D, _3D)](
-    in1: onp.ArrayND[InexactT3, AnyShapeT],
-    in2: onp.ArrayND[InexactT3, AnyShapeT],
-    mode: onp.ConvolveMode = "full",
-    axes: None = None,
-) -> onp.ArrayND[InexactT3, AnyShapeT]: ...
+def fftconvolve[ScalarT: np.float32 | np.float64 | npc.floating80 | npc.complexfloating, AnyShapeT: (_1D, _2D, _3D)](
+    in1: onp.ArrayND[ScalarT, AnyShapeT], in2: onp.ArrayND[ScalarT, AnyShapeT], mode: onp.ConvolveMode = "full", axes: None = None
+) -> onp.ArrayND[ScalarT, AnyShapeT]: ...
 @overload  # ~float64, ~float64
 def fftconvolve(
     in1: onp.SequenceND[float], in2: onp.SequenceND[float], mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
@@ -486,12 +483,9 @@ def oaconvolve[AnyShapeT: (_1D, _2D, _3D)](
     axes: None = None,
 ) -> onp.ArrayND[np.float32, AnyShapeT]: ...
 @overload  # generic dtype, generic, shape
-def oaconvolve[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating, AnyShapeT: (_1D, _2D, _3D)](
-    in1: onp.ArrayND[InexactT3, AnyShapeT],
-    in2: onp.ArrayND[InexactT3, AnyShapeT],
-    mode: onp.ConvolveMode = "full",
-    axes: None = None,
-) -> onp.ArrayND[InexactT3, AnyShapeT]: ...
+def oaconvolve[ScalarT: np.float32 | np.float64 | npc.floating80 | npc.complexfloating, AnyShapeT: (_1D, _2D, _3D)](
+    in1: onp.ArrayND[ScalarT, AnyShapeT], in2: onp.ArrayND[ScalarT, AnyShapeT], mode: onp.ConvolveMode = "full", axes: None = None
+) -> onp.ArrayND[ScalarT, AnyShapeT]: ...
 @overload  # ~float64, ~float64
 def oaconvolve(
     in1: onp.SequenceND[float], in2: onp.SequenceND[float], mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
@@ -1254,29 +1248,29 @@ def invresz(
 @overload  # known dtype, known shape, t=None (default)
 def resample[
     ShapeT: tuple[int, ...],
-    InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating,
+    ScalarT: np.float32 | np.float64 | npc.floating80 | npc.complexfloating,
     AnyInexact64T: (np.float64, np.complex128),
 ](
-    x: nptc.CanArray[ShapeT, np.dtype[InexactT3]],
+    x: nptc.CanArray[ShapeT, np.dtype[ScalarT]],
     num: int,
     t: None = None,
     axis: int = 0,
     window: _ToResampleWindow[AnyInexact64T] | None = None,
     domain: _Domain = "time",
-) -> onp.ArrayND[InexactT3, ShapeT]: ...
+) -> onp.ArrayND[ScalarT, ShapeT]: ...
 @overload  # known dtype, known shape, t=<given>
 def resample[
     ShapeT: tuple[int, ...],
-    InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating,
+    ScalarT: np.float32 | np.float64 | npc.floating80 | npc.complexfloating,
     AnyInexact64T: (np.float64, np.complex128),
 ](
-    x: nptc.CanArray[ShapeT, np.dtype[InexactT3]],
+    x: nptc.CanArray[ShapeT, np.dtype[ScalarT]],
     num: int,
     t: onp.ToFloat1D,
     axis: int = 0,
     window: _ToResampleWindow[AnyInexact64T] | None = None,
     domain: _Domain = "time",
-) -> tuple[onp.ArrayND[InexactT3, ShapeT], onp.Array1D[np.float64]]: ...
+) -> tuple[onp.ArrayND[ScalarT, ShapeT], onp.Array1D[np.float64]]: ...
 @overload  # +integer, known shape, t=None (default)
 def resample[ShapeT: tuple[int, ...]](
     x: nptc.CanArray[ShapeT, np.dtype[npc.integer | np.bool]],
@@ -1531,35 +1525,35 @@ def envelope(
     axis: int = -1,
 ) -> onp.ArrayND[np.float32]: ...
 @overload
-def envelope[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
-    z: onp.Array1D[InexactT3],
+def envelope[ScalarT: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
+    z: onp.Array1D[ScalarT],
     bp_in: tuple[int | None, int | None] = (1, None),
     *,
     n_out: int | None = None,
     squared: bool = False,
     residual: _ResidualKind = "lowpass",
     axis: int = -1,
-) -> onp.Array2D[InexactT3]: ...
+) -> onp.Array2D[ScalarT]: ...
 @overload
-def envelope[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
-    z: onp.Array2D[InexactT3],
+def envelope[ScalarT: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
+    z: onp.Array2D[ScalarT],
     bp_in: tuple[int | None, int | None] = (1, None),
     *,
     n_out: int | None = None,
     squared: bool = False,
     residual: _ResidualKind = "lowpass",
     axis: int = -1,
-) -> onp.Array3D[InexactT3]: ...
+) -> onp.Array3D[ScalarT]: ...
 @overload
-def envelope[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
-    z: onp.ArrayND[InexactT3],
+def envelope[ScalarT: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
+    z: onp.ArrayND[ScalarT],
     bp_in: tuple[int | None, int | None] = (1, None),
     *,
     n_out: int | None = None,
     squared: bool = False,
     residual: _ResidualKind = "lowpass",
     axis: int = -1,
-) -> onp.ArrayND[InexactT3]: ...
+) -> onp.ArrayND[ScalarT]: ...
 @overload
 def envelope[ShapeT: tuple[int, ...]](
     z: onp.ArrayND[np.float16 | np.complex64, ShapeT],
