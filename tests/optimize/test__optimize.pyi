@@ -129,6 +129,7 @@ assert_type(fminbound(_f0d, 0.0, 1.0, full_output=True), tuple[_Float, _Float, _
 _py_f2_1: tuple[tuple[float, float]]
 _py_f2_2: tuple[tuple[float, float], tuple[float, float]]
 _py_f2_3: tuple[tuple[float, float], tuple[float, float], tuple[float, float]]
+_py_f2_n: list[tuple[float, float]]
 
 assert_type(brute(_f, _py_f2_1), _Float1D)
 assert_type(brute(_f, _py_f2_2), _Float1D)
@@ -137,6 +138,8 @@ assert_type(brute(_f, _py_f2_1, full_output=True, finish=None), tuple[np.float64
 assert_type(brute(_f, _py_f2_2, full_output=True), tuple[_Float1D, np.float64, _Float3D, onp.Array2D[np.float64 | Any]])
 assert_type(brute(_f, _py_f2_1, full_output=True), tuple[_Float1D, np.float64, _Float1D, _Float1D])
 assert_type(brute(_f, _py_f2_3, full_output=True), tuple[_Float1D, np.float64, _FloatND, onp.ArrayND[np.float64 | Any]])
+assert_type(brute(_f, _py_f2_n), _Float1D | Any)
+assert_type(brute(_f, _py_f2_n, full_output=True), tuple[_Float1D | Any, np.float64, _FloatND, onp.ArrayND[np.float64 | Any]])
 
 ###
 # fmin
