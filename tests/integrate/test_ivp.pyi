@@ -14,6 +14,8 @@ def _f_c128_list(t: float, y: onp.ArrayND[np.complex128]) -> list[complex]: ...
 
 _f64_nd: onp.ArrayND[np.float64]
 _c128_nd: onp.ArrayND[np.complex128]
+_f: float
+_f80: np.float128
 _f_list: list[float]
 _c_list: list[complex]
 
@@ -59,3 +61,6 @@ interpolants_f64: list[DenseOutput[np.float64]]
 interpolants_c128: list[DenseOutput[np.complex128]]
 assert_type(OdeSolution([0.0, 1.0], interpolants_f64), OdeSolution[DenseOutput[np.float64]])
 assert_type(OdeSolution([0.0, 1.0], interpolants_c128), OdeSolution[DenseOutput[np.complex128]])
+assert_type(OdeSolution([0.0, 1.0], interpolants_c128)(_f), onp.Array1D[np.complex128])
+assert_type(OdeSolution([0.0, 1.0], interpolants_c128)(_f80), onp.Array1D[np.longdouble | Any])
+assert_type(OdeSolution([0.0, 1.0], interpolants_c128)(_f_list), onp.Array2D[np.complex128])
