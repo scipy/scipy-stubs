@@ -19,7 +19,7 @@
   "excludes": ["**/*-lock.json", "**/*.lock", "**/node_modules/", "dist/"],
   "plugins": [
     "npm:dprint-plugin-yaml@0.6.0",
-    "npm:@dprint/json@0.23.0",
+    "npm:@dprint/json@0.25.0",
     "npm:@dprint/markdown@0.24.0",
     "npm:@dprint/toml@0.8.0",
   ],
