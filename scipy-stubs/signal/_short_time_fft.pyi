@@ -299,7 +299,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def stft_detrend(
         self,
         /,
-        x: onp.Array1D[npc.inexact],
+        x: onp.Array1D[npc.number | np.bool],
         detr: _Detr | None,
         p0: int | None = None,
         p1: int | None = None,
@@ -312,7 +312,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def stft_detrend(
         self,
         /,
-        x: onp.Array2D[npc.inexact],
+        x: onp.Array2D[npc.number | np.bool],
         detr: _Detr | None,
         p0: int | None = None,
         p1: int | None = None,
@@ -325,7 +325,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def stft_detrend(
         self,
         /,
-        x: onp.ArrayND[npc.inexact],
+        x: onp.ArrayND[npc.number | np.bool],
         detr: _Detr | None,
         p0: int | None = None,
         p1: int | None = None,
@@ -340,7 +340,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def spectrogram(
         self,
         /,
-        x: onp.Array1D[npc.inexact],
+        x: onp.Array1D[npc.number | np.bool],
         y: None = None,
         detr: _Detr | None = None,
         *,
@@ -354,8 +354,8 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def spectrogram(
         self,
         /,
-        x: onp.Array1D[npc.inexact],
-        y: onp.Array1D[npc.inexact],
+        x: onp.Array1D[npc.number | np.bool],
+        y: onp.Array1D[npc.number | np.bool],
         detr: _Detr | None = None,
         *,
         p0: int | None = None,
@@ -368,7 +368,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def spectrogram(
         self,
         /,
-        x: onp.Array2D[npc.inexact],
+        x: onp.Array2D[npc.number | np.bool],
         y: None = None,
         detr: _Detr | None = None,
         *,
@@ -382,8 +382,8 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def spectrogram(
         self,
         /,
-        x: onp.Array2D[npc.inexact],
-        y: onp.Array2D[npc.inexact],
+        x: onp.Array2D[npc.number | np.bool],
+        y: onp.Array2D[npc.number | np.bool],
         detr: _Detr | None = None,
         *,
         p0: int | None = None,
@@ -396,7 +396,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def spectrogram(
         self,
         /,
-        x: onp.ArrayND[npc.inexact],
+        x: onp.ArrayND[npc.number | np.bool],
         y: None = None,
         detr: _Detr | None = None,
         *,
@@ -410,8 +410,8 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
     def spectrogram(
         self,
         /,
-        x: onp.ArrayND[npc.inexact],
-        y: onp.ArrayND[npc.inexact],
+        x: onp.ArrayND[npc.number | np.bool],
+        y: onp.ArrayND[npc.number | np.bool],
         detr: _Detr | None = None,
         *,
         p0: int | None = None,
@@ -423,7 +423,7 @@ class ShortTimeFFT(Generic[_InexactT_co, _Inexact128T_co]):
 
     #
     def istft(
-        self, /, S: onp.ArrayND[npc.inexact], k0: int = 0, k1: int | None = None, *, f_axis: int = -2, t_axis: int = -1
+        self, /, S: onp.ArrayND[npc.number | np.bool], k0: int = 0, k1: int | None = None, *, f_axis: int = -2, t_axis: int = -1
     ) -> onp.ArrayND[_Inexact128T_co]: ...
 
     #

@@ -61,21 +61,24 @@ assert_type(stft_f64_1.stft(_i64_3d), onp.ArrayND[np.complex128])
 ###
 # stft_detrend
 
-assert_type(stft_f64_1.stft_detrend(f64_1d, "constant"), onp.Array2D[np.complex128])
+assert_type(stft_f64_1.stft_detrend(_i64_1d, "constant"), onp.Array2D[np.complex128])
 assert_type(stft_f64_1.stft_detrend(f64_2d, None), onp.Array3D[np.complex128])
+assert_type(stft_f64_1.stft_detrend(_i64_3d, None), onp.ArrayND[np.complex128])
 
 ###
 # spectrogram
 
-assert_type(stft_f64_1.spectrogram(f64_1d), onp.Array2D[np.float64])
-assert_type(stft_f64_1.spectrogram(f64_1d, f64_1d), onp.Array2D[np.complex128])
+assert_type(stft_f64_1.spectrogram(_i64_1d), onp.Array2D[np.float64])
+assert_type(stft_f64_1.spectrogram(_i64_1d, _i64_1d), onp.Array2D[np.complex128])
 assert_type(stft_f64_1.spectrogram(f64_2d), onp.Array3D[np.float64])
 assert_type(stft_f64_1.spectrogram(f64_2d, f64_2d), onp.Array3D[np.complex128])
+assert_type(stft_f64_1.spectrogram(_i64_3d), onp.ArrayND[np.float64])
+assert_type(stft_f64_1.spectrogram(_i64_3d, _i64_3d), onp.ArrayND[np.complex128])
 
 ###
 # istft
 
-assert_type(stft_f64_1.istft(f64_2d), onp.ArrayND[np.float64])
+assert_type(stft_f64_1.istft(_i64_3d), onp.ArrayND[np.float64])
 assert_type(stft_f64_2.istft(f64_2d), onp.ArrayND[np.complex128])
 assert_type(stft_c128_1.istft(f64_2d), onp.ArrayND[np.float64])
 assert_type(stft_c128_2.istft(f64_2d), onp.ArrayND[np.complex128])
