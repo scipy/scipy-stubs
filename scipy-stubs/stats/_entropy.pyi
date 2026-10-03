@@ -1,4 +1,4 @@
-from typing import Any, Literal, overload
+from typing import Any, Literal, Never, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -15,6 +15,8 @@ type _AsF64 = np.float64 | npc.integer | np.bool
 
 type _DifferentialMethod = Literal["vasicek", "van es", "ebrahimi", "correa", "auto"]
 
+type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+
 type _ToArrayMaxND[ScalarT: npc.number | np.bool, PyScalarT] = onp.ToArrayND[PyScalarT, ScalarT] | PyScalarT | ScalarT
 type _ToArrayMax1D[ScalarT: npc.number | np.bool, PyScalarT] = onp.ToArrayStrict1D[PyScalarT, ScalarT] | PyScalarT | ScalarT
 type _ToArrayMax2D[ScalarT: npc.number | np.bool, PyScalarT] = (
@@ -29,6 +31,26 @@ type _ToArrayMax3D[ScalarT: npc.number | np.bool, PyScalarT] = (
 # NOTE: The (many) [overload-overlap] mypy errors in `entropy` are false positives, so we instead rely on pyright for this.
 # mypy: disable-error-code=overload-overlap
 
+@overload  # ?d float64 | int -> 0d float64 | Nd float64
+def entropy(
+    pk: onp.ArrayND[_AsF64, _JustAnyShape],
+    qk: onp.ToFloat64_ND | onp.ToFloat64 | None = None,
+    base: float | None = None,
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # ?d float32 | float16 -> 0d float32 | Nd float32
+def entropy(
+    pk: onp.ArrayND[_AsF32, _JustAnyShape],
+    qk: _ToArrayMaxND[_AsF32, np.float32] | None = None,
+    base: float | None = None,
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> np.float32 | onp.ArrayND[np.float32]: ...
 @overload  # nd float64 | int, axis=None (positional) -> 0d float64
 def entropy(
     pk: _ToArrayMaxND[_AsF64, float],
@@ -311,6 +333,28 @@ def entropy(
 ) -> np.float64 | Any | onp.ArrayND[np.float64 | Any]: ...
 
 #
+@overload  # ?d known inexact dtype
+def differential_entropy[InexactT: npc.inexact](
+    values: onp.ArrayND[InexactT, _JustAnyShape],
+    *,
+    window_length: int | None = None,
+    base: float | None = None,
+    axis: int = 0,
+    method: _DifferentialMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> InexactT | onp.ArrayND[InexactT]: ...
+@overload  # ?d +integer
+def differential_entropy(
+    values: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
+    *,
+    window_length: int | None = None,
+    base: float | None = None,
+    axis: int = 0,
+    method: _DifferentialMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # Nd known inexact dtype, axis=None
 def differential_entropy[InexactT: npc.inexact](
     values: _ToArrayMaxND[InexactT, InexactT],
