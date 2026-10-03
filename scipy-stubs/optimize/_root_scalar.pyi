@@ -104,7 +104,7 @@ def root_scalar(
 ) -> RootResults[float]: ...
 @overload  # newton  (fprime=True)
 def root_scalar(
-    f: _Fun2,
+    f: _Fun2 | _Fun3,
     args: tuple[object, ...] = (),
     method: Literal["newton"] | None = None,
     bracket: None = None,
@@ -136,7 +136,7 @@ def root_scalar(
 ) -> RootResults[float]: ...
 @overload  # halley (fprime=True)
 def root_scalar(
-    f: _Fun2,
+    f: _Fun2 | _Fun3,
     args: tuple[object, ...] = (),
     method: Literal["halley"] | None = None,
     bracket: None = None,
