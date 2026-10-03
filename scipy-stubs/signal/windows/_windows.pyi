@@ -47,8 +47,8 @@ type _ToWindow = (
     float
     | str
     | tuple[str]
-    | tuple[str, float | onp.ToFloat1D]
-    | tuple[str, float, float]
+    | tuple[str, float | onp.ToFloat1D | None]
+    | tuple[str, float | None, float]
     | tuple[str, int, int, bool]
 )  # fmt: skip
 
