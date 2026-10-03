@@ -146,6 +146,7 @@ class _BarycentricRational(Generic[_ScalarT_co, _ShapeT_co]):
 
 class AAA(_BarycentricRational[_ScalarT_co, tuple[int]], Generic[_ScalarT_co]):
     weights: onp.Array1D[_ScalarT_co]
+    errors: onp.Array1D[np.float64 | Any]
 
     @property
     def support_points(self, /) -> onp.Array1D[_ScalarT_co]: ...
