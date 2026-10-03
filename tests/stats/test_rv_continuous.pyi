@@ -9,6 +9,8 @@ from scipy.stats import rv_continuous
 
 _f64_nd: onp.ArrayND[np.float64]
 
+def _f2c(x: float, /) -> complex: ...
+
 ###
 
 mydist = rv_continuous(name="mydist")
@@ -38,3 +40,9 @@ assert_type(mydist.rvs(0.5, 0.1, _f64_nd), onp.ArrayND[np.float64])
 assert_type(mydist.rvs(loc=_f64_nd), onp.ArrayND[np.float64])
 assert_type(mydist.rvs(scale=_f64_nd), onp.ArrayND[np.float64])
 assert_type(mydist.rvs(s=_f64_nd), onp.ArrayND[np.float64])
+
+###
+# expect
+
+assert_type(mydist.expect(), float | np.float64)
+assert_type(mydist.expect(_f2c, complex_func=True), np.complex128)
