@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, overload
+from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -25,8 +25,12 @@ __all__ = [
 
 ###
 
+type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+
 type _AsF64ND = onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool]
 type _AsF64Strict1D = onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool]
+type _AsF64StrictND = onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape]
+type _AsF32StrictND = onp.ArrayND[np.float32, _JustAnyShape]
 
 type _ToCDF = str | Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloat | onp.ToFloatND]
 type _ToCDFArgs = tuple[onp.ToFloat, ...]
@@ -86,6 +90,46 @@ class BarnardExactResult:
     statistic: Final[float]
     pvalue: Final[float]
 
+@overload  # ?d +f64, ?d|1d +f64  (workaround)
+def epps_singleton_2samp(
+    x: _AsF64StrictND,
+    y: _AsF64StrictND | _AsF64Strict1D,
+    t: onp.ToFloatND = (0.4, 0.8),
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: onp.ToFalse = False,
+) -> Epps_Singleton_2sampResult[np.float64 | Any]: ...
+@overload  # ?d|1d +f64, ?d +f64  (workaround)
+def epps_singleton_2samp(
+    x: _AsF64StrictND | _AsF64Strict1D,
+    y: _AsF64StrictND,
+    t: onp.ToFloatND = (0.4, 0.8),
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: onp.ToFalse = False,
+) -> Epps_Singleton_2sampResult[np.float64 | Any]: ...
+@overload  # ?d ~f32, ?d|1d ~f32  (workaround)
+def epps_singleton_2samp(
+    x: _AsF32StrictND,
+    y: _AsF32StrictND | onp.ToJustFloat32Strict1D,
+    t: onp.ToFloatND = (0.4, 0.8),
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: onp.ToFalse = False,
+) -> Epps_Singleton_2sampResult[np.float32 | Any]: ...
+@overload  # ?d|1d ~f32, ?d ~f32  (workaround)
+def epps_singleton_2samp(
+    x: _AsF32StrictND | onp.ToJustFloat32Strict1D,
+    y: _AsF32StrictND,
+    t: onp.ToFloatND = (0.4, 0.8),
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: onp.ToFalse = False,
+) -> Epps_Singleton_2sampResult[np.float32 | Any]: ...
 @overload  # +f64, 1d
 def epps_singleton_2samp(
     x: _AsF64Strict1D,
@@ -146,6 +190,16 @@ def epps_singleton_2samp(
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> Epps_Singleton_2sampResult: ...
+@overload  # ?d  (workaround)
+def cramervonmises(
+    rvs: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+    cdf: _ToCDF,
+    args: _ToCDFArgs = (),
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: onp.ToFalse = False,
+) -> CramerVonMisesResult[np.float64 | Any]: ...
 @overload
 def cramervonmises(
     rvs: onp.ToFloatStrict1D,
@@ -188,6 +242,46 @@ def cramervonmises(
 ) -> CramerVonMisesResult: ...
 
 #
+@overload  # ?d +f64, ?d|1d +f64  (workaround)
+def cramervonmises_2samp(
+    x: _AsF64StrictND,
+    y: _AsF64StrictND | _AsF64Strict1D,
+    method: _CV2Method = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: onp.ToFalse = False,
+) -> CramerVonMisesResult[np.float64 | Any]: ...
+@overload  # ?d|1d +f64, ?d +f64  (workaround)
+def cramervonmises_2samp(
+    x: _AsF64StrictND | _AsF64Strict1D,
+    y: _AsF64StrictND,
+    method: _CV2Method = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: onp.ToFalse = False,
+) -> CramerVonMisesResult[np.float64 | Any]: ...
+@overload  # ?d ~f32, ?d|1d ~f32  (workaround)
+def cramervonmises_2samp(
+    x: _AsF32StrictND,
+    y: _AsF32StrictND | onp.ToJustFloat32Strict1D,
+    method: _CV2Method = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: onp.ToFalse = False,
+) -> CramerVonMisesResult[np.float32 | Any]: ...
+@overload  # ?d|1d ~f32, ?d ~f32  (workaround)
+def cramervonmises_2samp(
+    x: _AsF32StrictND | onp.ToJustFloat32Strict1D,
+    y: _AsF32StrictND,
+    method: _CV2Method = "auto",
+    *,
+    axis: int = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: onp.ToFalse = False,
+) -> CramerVonMisesResult[np.float32 | Any]: ...
 @overload  # 1d, +f64
 def cramervonmises_2samp(
     x: _AsF64Strict1D,
