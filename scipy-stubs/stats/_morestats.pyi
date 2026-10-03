@@ -69,6 +69,7 @@ type _AsF64_2D = onp.ToArrayStrict2D[float, npc.floating64 | npc.integer | np.bo
 type _AsF64_ND = onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool]
 
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
+type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]  # workaround for pyright on numpy<2.1
 type _Tuple2[T] = tuple[T, T]
 type _Tuple3[T] = tuple[T, T, T]
 
@@ -799,12 +800,28 @@ def yeojohnson(
 def yeojohnson(
     x: onp.ToJustLongDouble1D, lmbda: None = None, *, nan_policy: NanPolicy = "propagate"
 ) -> tuple[onp.Array1D[np.longdouble], np.longdouble]: ...
-@overload  # ~floating, lmbda=<given>
+@overload  # 0d ~floating, lmbda=<given>
 def yeojohnson[FloatingT: npc.floating](
-    x: onp.ToArray1D[FloatingT, FloatingT], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
-) -> onp.Array1D[FloatingT]: ...
-@overload  # +f64, lmbda=<given>
-def yeojohnson(x: onp.ToArray1D[float, npc.integer], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate") -> _Float1D: ...
+    x: FloatingT, lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
+) -> onp.Array0D[FloatingT]: ...
+@overload  # 0d +f64, lmbda=<given>
+def yeojohnson(x: float | npc.integer, lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate") -> onp.Array0D[np.float64]: ...
+@overload  # Nd ~floating, lmbda=<given>
+def yeojohnson[FloatingT: npc.floating, ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[FloatingT, ShapeT], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[FloatingT, ShapeT]: ...
+@overload  # Nd +integer, lmbda=<given>
+def yeojohnson[ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[npc.integer, ShapeT], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # ?d ~floating, lmbda=<given>
+def yeojohnson[FloatingT: npc.floating](
+    x: onp.ToArrayND[FloatingT, FloatingT], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[FloatingT, _WorkaroundForPyright]: ...
+@overload  # ?d +f64, lmbda=<given>
+def yeojohnson(
+    x: onp.ToArrayND[float, npc.integer], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[np.float64, _WorkaroundForPyright]: ...
 
 #
 @overload

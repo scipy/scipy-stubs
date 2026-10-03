@@ -1,6 +1,6 @@
 # type-tests for `yeojohnson*` from `stats/_morestats.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -9,6 +9,8 @@ from matplotlib.axes import Axes
 from scipy.stats import yeojohnson, yeojohnson_llf, yeojohnson_normmax, yeojohnson_normplot
 
 ###
+
+_f32_0d: np.float32
 
 _py_float_1d: list[float]
 _i8_1d: onp.Array1D[np.int8]
@@ -79,10 +81,13 @@ assert_type(yeojohnson(_i8_1d), tuple[onp.Array1D[np.float64], np.float64])
 assert_type(yeojohnson(_f16_1d), tuple[onp.Array1D[np.float64], np.float64])
 assert_type(yeojohnson(_f32_1d), tuple[onp.Array1D[np.float64], np.float64])
 assert_type(yeojohnson(_f64_1d), tuple[onp.Array1D[np.float64], np.float64])
-assert_type(yeojohnson(_i8_1d, 0.1), onp.Array1D[np.float64])
+assert_type(yeojohnson(_i8_2d, 0.1), onp.Array2D[np.float64])
 assert_type(yeojohnson(_f16_1d, 0.1), onp.Array1D[np.float16])
-assert_type(yeojohnson(_f32_1d, 0.1), onp.Array1D[np.float32])
+assert_type(yeojohnson(_f32_2d, 0.1), onp.Array2D[np.float32])
 assert_type(yeojohnson(_f64_1d, 0.1), onp.Array1D[np.float64])
+assert_type(yeojohnson(_f32_0d, 0.1), onp.Array0D[np.float32])
+assert_type(yeojohnson(2.0, 0.1), onp.Array0D[np.float64])
+assert_type(yeojohnson(_py_float_2d, 0.1), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
 
 assert_type(yeojohnson(_f80_1d), tuple[onp.Array1D[np.longdouble], np.longdouble])
 assert_type(yeojohnson(_f80_1d, 0.1), onp.Array1D[np.float128])
