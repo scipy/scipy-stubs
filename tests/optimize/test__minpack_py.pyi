@@ -47,10 +47,10 @@ assert_type(
 
 def _model_2d(x: _Float2D, a: float, b: float) -> list[float]: ...
 
-assert_type(curve_fit(_model_2d, [[1.0, 2.0], [3.0, 4.0]], [3.0, 4.0]), tuple[_Float2D, _Float2D])
+assert_type(curve_fit(_model_2d, [[1.0, 2.0], [3.0, 4.0]], [3.0, 4.0]), tuple[_Float1D, _Float2D])
 assert_type(
     curve_fit(_model_2d, [[1.0, 2.0], [3.0, 4.0]], [3.0, 4.0], full_output=True),
-    tuple[_Float2D, _Float2D, _InfoDictCurveFit, str, _IERFlag],
+    tuple[_Float1D, _Float2D, _InfoDictCurveFit, str, _IERFlag],
 )
 
 ###
