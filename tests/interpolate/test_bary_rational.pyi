@@ -18,6 +18,10 @@ _f80_1d: onp.Array1D[npc.floating80]
 _c64_1d: onp.Array1D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
 _c160_1d: onp.Array1D[npc.complexfloating160]
+_f_1d: list[float]
+_f_2d: list[list[float]]
+_c_1d: list[complex]
+_c_2d: list[list[complex]]
 
 ###
 
@@ -58,6 +62,10 @@ assert_type(FloaterHormannInterpolator(_f80_1d, _f80_1d), FloaterHormannInterpol
 assert_type(FloaterHormannInterpolator(_c64_1d, _c64_1d), FloaterHormannInterpolator[np.complex64, tuple[int]])
 assert_type(FloaterHormannInterpolator(_c128_1d, _c128_1d), FloaterHormannInterpolator[np.complex128, tuple[int]])
 assert_type(FloaterHormannInterpolator(_c160_1d, _c160_1d), FloaterHormannInterpolator[npc.complexfloating160, tuple[int]])
+assert_type(FloaterHormannInterpolator(_f32_1d, _f_1d), FloaterHormannInterpolator[np.float64, tuple[int]])
+assert_type(FloaterHormannInterpolator(_f64_1d, _f_2d), FloaterHormannInterpolator[np.float64, tuple[int, int]])
+assert_type(FloaterHormannInterpolator(_f64_1d, _c_1d), FloaterHormannInterpolator[np.complex128, tuple[int]])
+assert_type(FloaterHormannInterpolator(_f64_1d, _c_2d), FloaterHormannInterpolator[np.complex128, tuple[int, int]])
 
 assert_type(_fhi(1), onp.Array2D[np.float32])
 assert_type(_fhi(1.0), onp.Array2D[np.float64])
