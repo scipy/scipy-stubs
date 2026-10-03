@@ -99,6 +99,7 @@ default = { extend-ignore-identifiers-re = ["ND|Nd|Theis|ttest|TtestResult|SeQUe
 strict = true
 strict_equality_for_none = true
 allow_redefinition = true
+num_workers = "auto"
 # required by repo-review
 enable_error_code = ["ignore-without-code", "redundant-expr", "truthy-bool"]
 warn_unreachable = false
