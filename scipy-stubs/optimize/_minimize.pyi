@@ -8,7 +8,7 @@ import optype.numpy.compat as npc
 from numpy_typing_compat import ABCPolyBase
 
 from ._hessian_update_strategy import HessianUpdateStrategy
-from ._optimize import OptimizeResult as _OptimizeResult
+from ._optimize import OptimizeResult as _OptimizeResult, _DoesMap
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
 from scipy.sparse import csr_array
 from scipy.sparse.linalg import LinearOperator
@@ -118,6 +118,8 @@ class _MinimizeOptions(TypedDict, total=False):
     norm: _Floating
     # CG, BFGS, L-BFGS-B, TNC, SLSQP, trust-constr
     finite_diff_rel_step: onp.ToFloat | onp.ToFloatND
+    # CG, BFGS, Newton-CG, L-BFGS-B, TNC, SLSQP, trust-constr
+    workers: int | _DoesMap
     # dogleg, trust-ncg, trust-exact
     initial_trust_radius: _Floating
     max_trust_radius: _Floating
