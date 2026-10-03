@@ -172,11 +172,17 @@ def freqz_zpk(
 #
 @overload  # w: real
 def group_delay(
-    system: tuple[onp.ToComplex1D, onp.ToComplex1D], w: _WorNReal = 512, whole: bool = False, fs: float = 6.283185307179586
+    system: tuple[onp.ToComplex | onp.ToComplex1D, onp.ToComplex | onp.ToComplex1D],
+    w: _WorNReal = 512,
+    whole: bool = False,
+    fs: float = 6.283185307179586,
 ) -> _Ba1D[np.float64]: ...
 @overload  # w: complex
 def group_delay(
-    system: tuple[onp.ToComplex1D, onp.ToComplex1D], w: onp.ToJustComplex1D, whole: bool = False, fs: float = 6.283185307179586
+    system: tuple[onp.ToComplex | onp.ToComplex1D, onp.ToComplex | onp.ToComplex1D],
+    w: onp.ToJustComplex1D,
+    whole: bool = False,
+    fs: float = 6.283185307179586,
 ) -> tuple[_Complex1D, _Float1D]: ...
 
 #

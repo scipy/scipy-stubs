@@ -114,6 +114,8 @@ assert_type(freqz_zpk(_f64_1d, _f64_1d, _f64, _c128_1d), tuple[onp.ArrayND[np.co
 assert_type(group_delay((_f64_1d, _f64_1d)), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(group_delay((_f64_1d, _f64_1d), _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(group_delay((_f64_1d, _f64_1d), _c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64]])
+assert_type(group_delay((_f64_1d, _f64)), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(group_delay((_f64_1d, _f64), _c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.float64]])
 
 # freqz_sos
 assert_type(freqz_sos(_f64_2d), tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]])

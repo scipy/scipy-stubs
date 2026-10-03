@@ -44,6 +44,12 @@ from scipy.signal import (
 
 ###
 
+_py_f: float
+_py_c: complex
+_f32: np.float32
+_f64: np.float64
+_c64: np.complex64
+
 _py_b_1d: list[bool]
 _py_i_1d: list[int]
 _py_f_1d: list[float]
@@ -215,6 +221,15 @@ assert_type(lfilter_zi(_f32_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(lfilter_zi(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(lfilter_zi(_c64_1d, _c128_1d), onp.Array1D[np.complex128])
 assert_type(lfilter_zi(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(lfilter_zi(_py_f_1d, _py_f), onp.Array1D[np.float64])
+assert_type(lfilter_zi(_f64, _f32_1d), onp.Array1D[np.float64])
+assert_type(lfilter_zi(_f32_1d, _f64), onp.Array1D[np.float64])
+assert_type(lfilter_zi(_f32_1d, _py_f), onp.Array1D[np.float32])
+assert_type(lfilter_zi(_py_f, _f32_1d), onp.Array1D[np.float32])
+assert_type(lfilter_zi(_c128_1d, _py_c), onp.Array1D[np.complex128])
+assert_type(lfilter_zi(_py_c, _c128_1d), onp.Array1D[np.complex128])
+assert_type(lfilter_zi(_c64_1d, _py_c), onp.Array1D[np.complex64])
+assert_type(lfilter_zi(_py_c, _c64_1d), onp.Array1D[np.complex64])
 
 # lfiltic
 
@@ -228,6 +243,16 @@ assert_type(lfiltic(_f32_1d, _f32_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(lfiltic(_c64_1d, _c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(lfiltic(_c64_1d, _c64_1d, _c128_1d), onp.Array1D[np.complex128])
 assert_type(lfiltic(_c128_1d, _c128_1d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(lfiltic(_py_f, _f32_1d, _f32_1d), onp.Array1D[np.float64])
+assert_type(lfiltic(_f32_1d, _py_f, _f32_1d), onp.Array1D[np.float64])
+assert_type(lfiltic(_f32, _f32_1d, _f64_1d), onp.Array1D[np.float64])
+assert_type(lfiltic(_f32, _f32_1d, _f32_1d), onp.Array1D[np.float32])
+assert_type(lfiltic(_py_c, _c64_1d, _c64_1d), onp.Array1D[np.complex128])
+assert_type(lfiltic(_c64_1d, _py_c, _c64_1d), onp.Array1D[np.complex128])
+assert_type(lfiltic(_c64, _c64_1d, _c128_1d), onp.Array1D[np.complex128])
+assert_type(lfiltic(_c64, _c64_1d, _c64_1d), onp.Array1D[np.complex64])
+assert_type(lfiltic(_f32_1d, _c64, _f32_1d), onp.Array1D[np.complex64])
+assert_type(lfiltic(_f32, _f32_1d, _c64_1d), onp.Array1D[np.complex64])
 
 # lfilter
 
@@ -241,6 +266,26 @@ assert_type(lfilter(_f32_1d, _f32_1d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(lfilter(_c64_1d, _c64_1d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(lfilter(_c64_1d, _c64_1d, _c128_1d), onp.ArrayND[np.complex128])
 assert_type(lfilter(_c128_1d, _c128_1d, _c128_1d), onp.ArrayND[np.complex128])
+assert_type(lfilter(_py_f, _f32_1d, _f32_1d), onp.ArrayND[np.float64])
+assert_type(lfilter(_py_f, _f32_1d, _f32_1d, zi=_f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lfilter(_f32_1d, _py_f, _f32_1d), onp.ArrayND[np.float64])
+assert_type(lfilter(_f32_1d, _py_f, _f32_1d, zi=_f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lfilter(_f32, _f32_1d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(lfilter(_f32, _f32_1d, _f64_1d, zi=_f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(lfilter(_f32, _f32_1d, _f32_1d), onp.ArrayND[np.float32])
+assert_type(lfilter(_f32, _f32_1d, _f32_1d, zi=_f32_1d), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
+assert_type(lfilter(_py_c, _c64_1d, _c64_1d), onp.ArrayND[np.complex128])
+assert_type(lfilter(_py_c, _c64_1d, _c64_1d, zi=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lfilter(_c64_1d, _py_c, _c64_1d), onp.ArrayND[np.complex128])
+assert_type(lfilter(_c64_1d, _py_c, _c64_1d, zi=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lfilter(_c64, _c64_1d, _c128_1d), onp.ArrayND[np.complex128])
+assert_type(lfilter(_c64, _c64_1d, _c128_1d, zi=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lfilter(_c64, _c64_1d, _c64_1d), onp.ArrayND[np.complex64])
+assert_type(lfilter(_c64, _c64_1d, _c64_1d, zi=_c64_1d), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(lfilter(_f32_1d, _c64, _f32_1d), onp.ArrayND[np.complex64])
+assert_type(lfilter(_f32_1d, _c64, _f32_1d, zi=_c64_1d), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(lfilter(_f32, _f32_1d, _c64_1d), onp.ArrayND[np.complex64])
+assert_type(lfilter(_f32, _f32_1d, _c64_1d, zi=_c64_1d), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
 
 # filtfilt
 
@@ -254,6 +299,16 @@ assert_type(filtfilt(_f32_1d, _f32_1d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(filtfilt(_c64_1d, _c64_1d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(filtfilt(_c64_1d, _c64_1d, _c128_1d), onp.ArrayND[np.complex128])
 assert_type(filtfilt(_c128_1d, _c128_1d, _c128_1d), onp.ArrayND[np.complex128])
+assert_type(filtfilt(_py_f, _f32_1d, _f32_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_f32_1d, _py_f, _f32_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_f32, _f32_1d, _f64_1d), onp.ArrayND[np.float64])
+assert_type(filtfilt(_f32, _f32_1d, _f32_1d), onp.ArrayND[np.float32])
+assert_type(filtfilt(_py_c, _c64_1d, _c64_1d), onp.ArrayND[np.complex128])
+assert_type(filtfilt(_c64_1d, _py_c, _c64_1d), onp.ArrayND[np.complex128])
+assert_type(filtfilt(_c64, _c64_1d, _c128_1d), onp.ArrayND[np.complex128])
+assert_type(filtfilt(_c64, _c64_1d, _c64_1d), onp.ArrayND[np.complex64])
+assert_type(filtfilt(_f32_1d, _c64, _f32_1d), onp.ArrayND[np.complex64])
+assert_type(filtfilt(_f32, _f32_1d, _c64_1d), onp.ArrayND[np.complex64])
 
 # sosfilt_zi
 
