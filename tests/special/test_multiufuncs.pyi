@@ -60,9 +60,9 @@ assert_type(assoc_legendre_p(3, 2, 1.0, branch_cut=3, norm=True, diff_n=1), _Flo
 assert_type(assoc_legendre_p(3, 2, _f64_1d, branch_cut=_i64_1d, diff_n=2), _Float1_D)
 
 # assoc_legendre_p_all
-assert_type(assoc_legendre_p_all(3, 2, 1.0), onp.Array3D[np.float64])
-assert_type(assoc_legendre_p_all(n=3, m=2, z=np.float32(1.0)), onp.Array3D[np.float32])
-assert_type(assoc_legendre_p_all(n=3, m=2, z=_f64_1d), _Float3_D)
+assert_type(assoc_legendre_p_all(_i64, _i64, 1.0), onp.Array3D[np.float64])
+assert_type(assoc_legendre_p_all(n=_i64, m=_i64, z=np.float32(1.0)), onp.Array3D[np.float32])
+assert_type(assoc_legendre_p_all(n=_i64, m=_i64, z=_f64_1d), _Float3_D)
 assert_type(assoc_legendre_p_all(3, 2, 1.0, branch_cut=3, norm=True, diff_n=1), onp.Array3D[np.float64])
 assert_type(assoc_legendre_p_all(3, 2, np.float64(1.0), branch_cut=2, diff_n=2), onp.Array3D[np.float64])
 
@@ -74,9 +74,9 @@ assert_type(sph_legendre_p(3, 2, 1.0, diff_n=True), onp.Array1D[np.float64])
 assert_type(sph_legendre_p(3, 2, 1.0, diff_n=2), onp.Array1D[np.float64])
 
 # sph_legendre_p_all
-assert_type(sph_legendre_p_all(3, 2, 1.0), onp.Array3D[np.float64])
-assert_type(sph_legendre_p_all(n=3, m=2, theta=np.float32(1.0)), onp.Array3D[np.float32])
-assert_type(sph_legendre_p_all(n=3, m=2, theta=_f64_1d), _Float3_D)
+assert_type(sph_legendre_p_all(_i64, _i64, 1.0), onp.Array3D[np.float64])
+assert_type(sph_legendre_p_all(n=_i64, m=_i64, theta=np.float32(1.0)), onp.Array3D[np.float32])
+assert_type(sph_legendre_p_all(n=_i64, m=_i64, theta=_f64_1d), _Float3_D)
 assert_type(sph_legendre_p_all(3, 2, 1.0, diff_n=True), onp.Array3D[np.float64])
 assert_type(sph_legendre_p_all(3, 2, 1.0, diff_n=2), onp.Array3D[np.float64])
 
@@ -87,7 +87,7 @@ assert_type(sph_harm_y(3, 2, 1.0, _f64_1d), _Complex1_D)
 assert_type(sph_harm_y(3, 2, 1.0, 2.0, diff_n=0), _Complex0D)
 
 # sph_harm_y_all
-assert_type(sph_harm_y_all(3, 2, 1.0, 2.0), _Complex2D)
-assert_type(sph_harm_y_all(n=3, m=2, theta=np.float32(1.0), phi=np.float32(2.0)), onp.Array2D[np.complex64])
-assert_type(sph_harm_y_all(3, 2, 1.0, _f64_1d), _Complex3_D)
+assert_type(sph_harm_y_all(_i64, _i64, 1.0, 2.0), _Complex2D)
+assert_type(sph_harm_y_all(n=_i64, m=_i64, theta=np.float32(1.0), phi=np.float32(2.0)), onp.Array2D[np.complex64])
+assert_type(sph_harm_y_all(_i64, _i64, 1.0, _f64_1d), _Complex3_D)
 assert_type(sph_harm_y_all(3, 2, 1.0, 2.0, diff_n=0), _Complex2D)

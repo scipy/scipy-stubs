@@ -136,30 +136,46 @@ class _AssocLegendreP(MultiUFunc):
 class _AssocLegendrePAll(MultiUFunc):
     @overload  # 0d +f64
     def __call__(
-        self, /, n: int, m: int, z: _AsF64, *, branch_cut: _Branch = 2, norm: bool = False, diff_n: int = 0
+        self, /, n: onp.ToInt, m: onp.ToInt, z: _AsF64, *, branch_cut: _Branch = 2, norm: bool = False, diff_n: int = 0
     ) -> onp.Array3D[np.float64]: ...
     @overload  # 0d ~c128
     def __call__(
-        self, /, n: int, m: int, z: onp.ToJustComplex128, *, branch_cut: _Branch = 2, norm: bool = False, diff_n: int = 0
+        self,
+        /,
+        n: onp.ToInt,
+        m: onp.ToInt,
+        z: onp.ToJustComplex128,
+        *,
+        branch_cut: _Branch = 2,
+        norm: bool = False,
+        diff_n: int = 0,
     ) -> onp.Array3D[np.complex128]: ...
     @overload  # 0d T:f32|c64
     def __call__[InexactT: npc.inexact32](
-        self, /, n: int, m: int, z: InexactT, *, branch_cut: _Branch = 2, norm: bool = False, diff_n: int = 0
+        self, /, n: onp.ToInt, m: onp.ToInt, z: InexactT, *, branch_cut: _Branch = 2, norm: bool = False, diff_n: int = 0
     ) -> onp.Array3D[InexactT]: ...
     @overload  # >=0d +f64
     def __call__(
-        self, /, n: int, m: int, z: _AsF64_D, *, branch_cut: _Branch_D = 2, norm: bool = False, diff_n: int = 0
+        self, /, n: onp.ToInt, m: onp.ToInt, z: _AsF64_D, *, branch_cut: _Branch_D = 2, norm: bool = False, diff_n: int = 0
     ) -> _ArrayMin3D[np.float64]: ...
     @overload  # >=0d ~c128
     def __call__(
-        self, /, n: int, m: int, z: onp.ToJustComplex128_ND, *, branch_cut: _Branch_D = 2, norm: bool = False, diff_n: int = 0
+        self,
+        /,
+        n: onp.ToInt,
+        m: onp.ToInt,
+        z: onp.ToJustComplex128_ND,
+        *,
+        branch_cut: _Branch_D = 2,
+        norm: bool = False,
+        diff_n: int = 0,
     ) -> _ArrayMin3D[np.complex128]: ...
     @overload  # >=0d T:f32|c64
     def __call__[InexactT: npc.inexact32](
         self,
         /,
-        n: int,
-        m: int,
+        n: onp.ToInt,
+        m: onp.ToInt,
         z: InexactT | onp.ToArrayND[InexactT, InexactT],
         *,
         branch_cut: _Branch_D = 2,
@@ -168,7 +184,7 @@ class _AssocLegendrePAll(MultiUFunc):
     ) -> _ArrayMin3D[InexactT]: ...
     @overload  # fallback
     def __call__(
-        self, /, n: int, m: int, z: _ToComplex_D, *, branch_cut: _Branch_D = 2, norm: bool = False, diff_n: int = 0
+        self, /, n: onp.ToInt, m: onp.ToInt, z: _ToComplex_D, *, branch_cut: _Branch_D = 2, norm: bool = False, diff_n: int = 0
     ) -> onp.ArrayND[Any]: ...
 
 @type_check_only
@@ -185,15 +201,17 @@ class _SphLegendreP(MultiUFunc):
 @type_check_only
 class _SphLegendrePAll(MultiUFunc):
     @overload  # 0d +f64
-    def __call__(self, /, n: int, m: int, theta: _AsF64, *, diff_n: int = 0) -> onp.Array3D[np.float64]: ...
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64, *, diff_n: int = 0) -> onp.Array3D[np.float64]: ...
     @overload  # 0d ~f32
-    def __call__(self, /, n: int, m: int, theta: onp.ToJustFloat32, *, diff_n: int = 0) -> onp.Array3D[np.float32]: ...
+    def __call__(
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToJustFloat32, *, diff_n: int = 0
+    ) -> onp.Array3D[np.float32]: ...
     @overload  # >=0d +f64
-    def __call__(self, /, n: int, m: int, theta: _AsF64_D, *, diff_n: int = 0) -> _ArrayMin3D[np.float64]: ...
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64_D, *, diff_n: int = 0) -> _ArrayMin3D[np.float64]: ...
     @overload  # >=0d ~f32
-    def __call__(self, /, n: int, m: int, theta: _ToJustFloat32_D, *, diff_n: int = 0) -> _ArrayMin3D[np.float32]: ...
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToJustFloat32_D, *, diff_n: int = 0) -> _ArrayMin3D[np.float32]: ...
     @overload  # fallback
-    def __call__(self, /, n: int, m: int, theta: _ToFloat_D, *, diff_n: int = 0) -> onp.ArrayND[Any]: ...
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToFloat_D, *, diff_n: int = 0) -> onp.ArrayND[Any]: ...
 
 @type_check_only
 class _SphHarmY(MultiUFunc):
@@ -331,80 +349,88 @@ class _SphHarmY(MultiUFunc):
 @type_check_only
 class _SphHarmYAll(MultiUFunc):
     @overload  # 0d +f64, 0d +f64, diff_n=0
-    def __call__(self, /, n: int, m: int, theta: _AsF64, phi: _AsF64, *, diff_n: L[0] = 0) -> onp.Array2D[np.complex128]: ...
+    def __call__(
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64, phi: _AsF64, *, diff_n: L[0] = 0
+    ) -> onp.Array2D[np.complex128]: ...
     @overload  # 0d +f64, 0d +f64, diff_n=1
     def __call__(
-        self, /, n: int, m: int, theta: _AsF64, phi: _AsF64, *, diff_n: L[1]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64, phi: _AsF64, *, diff_n: L[1]
     ) -> tuple[onp.Array2D[np.complex128], onp.Array3D[np.complex128]]: ...
     @overload  # 0d +f64, 0d +f64, diff_n=2
     def __call__(
-        self, /, n: int, m: int, theta: _AsF64, phi: _AsF64, *, diff_n: L[2]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64, phi: _AsF64, *, diff_n: L[2]
     ) -> tuple[onp.Array2D[np.complex128], onp.Array3D[np.complex128], onp.Array4D[np.complex128]]: ...
     @overload  # 0d ~f32, 0d ~f32, diff_n=0
     def __call__(
-        self, /, n: int, m: int, theta: onp.ToJustFloat32, phi: onp.ToJustFloat32, *, diff_n: L[0] = 0
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToJustFloat32, phi: onp.ToJustFloat32, *, diff_n: L[0] = 0
     ) -> onp.Array2D[np.complex64]: ...
     @overload  # 0d ~f32, 0d ~f32, diff_n=1
     def __call__(
-        self, /, n: int, m: int, theta: onp.ToJustFloat32, phi: onp.ToJustFloat32, *, diff_n: L[1]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToJustFloat32, phi: onp.ToJustFloat32, *, diff_n: L[1]
     ) -> tuple[onp.Array2D[np.complex64], onp.Array3D[np.complex64]]: ...
     @overload  # 0d ~f32, 0d ~f32, diff_n=2
     def __call__(
-        self, /, n: int, m: int, theta: onp.ToJustFloat32, phi: onp.ToJustFloat32, *, diff_n: L[2]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToJustFloat32, phi: onp.ToJustFloat32, *, diff_n: L[2]
     ) -> tuple[onp.Array2D[np.complex64], onp.Array3D[np.complex64], onp.Array4D[np.complex64]]: ...
     @overload  # >=0d +f64, >0d +f64, diff_n=0
-    def __call__(self, /, n: int, m: int, theta: _AsF64_D, phi: _AsF64ND, *, diff_n: L[0] = 0) -> _ArrayMin3D[np.complex128]: ...
+    def __call__(
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64_D, phi: _AsF64ND, *, diff_n: L[0] = 0
+    ) -> _ArrayMin3D[np.complex128]: ...
     @overload  # >=0d +f64, >0d +f64, diff_n=1
     def __call__(
-        self, /, n: int, m: int, theta: _AsF64_D, phi: _AsF64ND, *, diff_n: L[1]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64_D, phi: _AsF64ND, *, diff_n: L[1]
     ) -> tuple[_ArrayMin3D[np.complex128], _ArrayMin3D[np.complex128]]: ...
     @overload  # >=0d +f64, >0d +f64, diff_n=2
     def __call__(
-        self, /, n: int, m: int, theta: _AsF64_D, phi: _AsF64ND, *, diff_n: L[2]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64_D, phi: _AsF64ND, *, diff_n: L[2]
     ) -> tuple[_ArrayMin3D[np.complex128], _ArrayMin3D[np.complex128], _ArrayMin3D[np.complex128]]: ...
     @overload  # >=0d ~f32, >0d ~f32, diff_n=0
     def __call__(
-        self, /, n: int, m: int, theta: _ToJustFloat32_D, phi: onp.ToJustFloat32_ND, *, diff_n: L[0] = 0
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToJustFloat32_D, phi: onp.ToJustFloat32_ND, *, diff_n: L[0] = 0
     ) -> _ArrayMin3D[np.complex64]: ...
     @overload  # >=0d ~f32, >0d ~f32, diff_n=1
     def __call__(
-        self, /, n: int, m: int, theta: _ToJustFloat32_D, phi: onp.ToJustFloat32_ND, *, diff_n: L[1]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToJustFloat32_D, phi: onp.ToJustFloat32_ND, *, diff_n: L[1]
     ) -> tuple[_ArrayMin3D[np.complex64], _ArrayMin3D[np.complex64]]: ...
     @overload  # >=0d ~f32, >0d ~f32, diff_n=2
     def __call__(
-        self, /, n: int, m: int, theta: _ToJustFloat32_D, phi: onp.ToJustFloat32_ND, *, diff_n: L[2]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToJustFloat32_D, phi: onp.ToJustFloat32_ND, *, diff_n: L[2]
     ) -> tuple[_ArrayMin3D[np.complex64], _ArrayMin3D[np.complex64], _ArrayMin3D[np.complex64]]: ...
     @overload  # >0d +f64, >=0d +f64, diff_n=0
-    def __call__(self, /, n: int, m: int, theta: _AsF64ND, phi: _AsF64_D, *, diff_n: L[0] = 0) -> _ArrayMin3D[np.complex128]: ...
+    def __call__(
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64ND, phi: _AsF64_D, *, diff_n: L[0] = 0
+    ) -> _ArrayMin3D[np.complex128]: ...
     @overload  # >0d +f64, >=0d +f64, diff_n=1
     def __call__(
-        self, /, n: int, m: int, theta: _AsF64ND, phi: _AsF64_D, *, diff_n: L[1]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64ND, phi: _AsF64_D, *, diff_n: L[1]
     ) -> tuple[_ArrayMin3D[np.complex128], _ArrayMin3D[np.complex128]]: ...
     @overload  # >0d +f64, >=0d +f64, diff_n=2
     def __call__(
-        self, /, n: int, m: int, theta: _AsF64ND, phi: _AsF64_D, *, diff_n: L[2]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _AsF64ND, phi: _AsF64_D, *, diff_n: L[2]
     ) -> tuple[_ArrayMin3D[np.complex128], _ArrayMin3D[np.complex128], _ArrayMin3D[np.complex128]]: ...
     @overload  # >0d ~f32, >=0d ~f32, diff_n=0
     def __call__(
-        self, /, n: int, m: int, theta: onp.ToJustFloat32_ND, phi: _ToJustFloat32_D, *, diff_n: L[0] = 0
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToJustFloat32_ND, phi: _ToJustFloat32_D, *, diff_n: L[0] = 0
     ) -> _ArrayMin3D[np.complex64]: ...
     @overload  # >0d ~f32, >=0d ~f32, diff_n=1
     def __call__(
-        self, /, n: int, m: int, theta: onp.ToJustFloat32_ND, phi: _ToJustFloat32_D, *, diff_n: L[1]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToJustFloat32_ND, phi: _ToJustFloat32_D, *, diff_n: L[1]
     ) -> tuple[_ArrayMin3D[np.complex64], _ArrayMin3D[np.complex64]]: ...
     @overload  # >0d ~f32, >=0d ~f32, diff_n=2
     def __call__(
-        self, /, n: int, m: int, theta: onp.ToJustFloat32_ND, phi: _ToJustFloat32_D, *, diff_n: L[2]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: onp.ToJustFloat32_ND, phi: _ToJustFloat32_D, *, diff_n: L[2]
     ) -> tuple[_ArrayMin3D[np.complex64], _ArrayMin3D[np.complex64], _ArrayMin3D[np.complex64]]: ...
     @overload  # fallback, diff_n=0
-    def __call__(self, /, n: int, m: int, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: L[0] = 0) -> onp.ArrayND[Any]: ...
+    def __call__(
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: L[0] = 0
+    ) -> onp.ArrayND[Any]: ...
     @overload  # fallback, diff_n=1
     def __call__(
-        self, /, n: int, m: int, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: L[1]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: L[1]
     ) -> tuple[onp.ArrayND[Any], onp.ArrayND[Any]]: ...
     @overload  # fallback, diff_n=2
     def __call__(
-        self, /, n: int, m: int, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: L[2]
+        self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: L[2]
     ) -> tuple[onp.ArrayND[Any], onp.ArrayND[Any], onp.ArrayND[Any]]: ...
 
 ###
