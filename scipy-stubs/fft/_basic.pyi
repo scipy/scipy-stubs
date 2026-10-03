@@ -1,6 +1,6 @@
 from _typeshed import Unused
 from collections.abc import Sequence
-from typing import Any, Literal, overload
+from typing import Any, Literal, Never, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -23,6 +23,9 @@ type _AsComplex160[ShapeT: tuple[int, ...]] = onp.CanArray[ShapeT, np.dtype[npc.
 
 type _ToFloat64_ND = onp.ToArrayND[float, npc.floating64 | _CoInteger]
 type _ToComplex128_ND = onp.ToArrayND[complex, npc.inexact64 | _CoInteger]
+
+# workaround for mypy & pyright's failure to conform to the overload typing specification
+type _JustAnyShape = tuple[Never, Never, Never, Never]
 
 # NOTE: The order of overloads has been carefully chosen to avoid triggering a pyright bug.
 
@@ -166,6 +169,39 @@ def ifft(
 ) -> onp.ArrayND[np.complex128 | Any]: ...
 
 # keep in sync with `ihfft`
+@overload  # ?d  (workaround)
+def rfft(
+    x: onp.ArrayND[npc.floating64 | _CoInteger, _JustAnyShape],
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.ArrayND[np.complex128]: ...
+@overload  # ?d  (workaround)
+def rfft(
+    x: onp.ArrayND[npc.floating32, _JustAnyShape],
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.ArrayND[np.complex64]: ...
+@overload  # ?d  (workaround)
+def rfft(
+    x: onp.ArrayND[npc.floating80, _JustAnyShape],
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.ArrayND[np.clongdouble]: ...
 @overload
 def rfft(
     x: onp.ToArrayStrict1D[float, npc.floating64 | _CoInteger],
