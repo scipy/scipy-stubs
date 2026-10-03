@@ -115,7 +115,7 @@ def cdist(
     out: onp.Array2D[np.float64] | None = None,
     p: float = 2,
     w: onp.ToFloat1D | None = None,
-    V: onp.ToFloat2D | None = None,
+    V: onp.ToFloat1D | None = None,
     VI: onp.ToFloat2D | None = None,
 ) -> onp.Array2D[np.float64]: ...
 @overload
@@ -133,7 +133,7 @@ def pdist(
     out: onp.Array1D[np.float64] | None = None,
     p: float = 2,
     w: onp.ToFloat1D | None = None,
-    V: onp.ToFloat2D | None = None,
+    V: onp.ToFloat1D | None = None,
     VI: onp.ToFloat2D | None = None,
 ) -> onp.Array1D[np.float64]: ...
 @overload
