@@ -148,6 +148,8 @@ assert_type(anderson(_f64_1d, method="interpolate"), SignificanceResult[np.float
 # anderson_ksamp
 
 assert_type(anderson_ksamp(_f64_nd), Anderson_ksampResult)
+assert_type(anderson_ksamp(_f64_nd).pvalue, np.float64 | Any)
+assert_type(anderson_ksamp(_f64_nd, variant="midrank"), SignificanceResult[np.float64 | Any])
 
 ###
 # shapiro
