@@ -35,6 +35,7 @@ _coo_3d: sparse.coo_array[ScalarType, tuple[int, int, int]]
 # TODO(julvandenbroeck): add tests for arrays with unknown shape, like np.ndarray[tuple[int, ...], np.dtype[ScalarType]]
 dense_1d: np.ndarray[tuple[int], np.dtype[ScalarType]]
 dense_2d: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
+dense_1d_list: list[np.ndarray[tuple[int], np.dtype[ScalarType]]]
 
 sctype: type[ScalarType]
 
@@ -67,6 +68,8 @@ assert_type(sparse.diags_array(dense_2d, format="csr"), sparse.csr_array[ScalarT
 assert_type(sparse.diags_array(dense_2d, format="dia"), sparse.dia_array[ScalarType])
 assert_type(sparse.diags_array(dense_2d, format="dok"), sparse.dok_array[ScalarType, tuple[int, int]])
 assert_type(sparse.diags_array(dense_2d, format="lil"), sparse.lil_array[ScalarType])
+assert_type(sparse.diags_array(dense_1d_list, offsets=int_list), sparse.dia_array[ScalarType])
+assert_type(sparse.diags_array(dense_1d_list, offsets=int_list, dtype=np.float128), sparse.dia_array[np.float128])
 # diags (legacy, `diags_array` is preferred)
 assert_type(sparse.diags(dense_1d), sparse.dia_matrix[ScalarType])
 assert_type(sparse.diags(dense_1d, format="bsr"), sparse.bsr_matrix[ScalarType])
@@ -91,6 +94,7 @@ assert_type(sparse.diags(dense_2d, format="csr"), sparse.csr_matrix[ScalarType])
 assert_type(sparse.diags(dense_2d, format="dia"), sparse.dia_matrix[ScalarType])
 assert_type(sparse.diags(dense_2d, format="dok"), sparse.dok_matrix[ScalarType])
 assert_type(sparse.diags(dense_2d, format="lil"), sparse.lil_matrix[ScalarType])
+assert_type(sparse.diags(dense_1d_list, int_list), sparse.dia_matrix[ScalarType])
 # spdiags (legacy, `diags_array` is preferred)
 assert_type(sparse.spdiags(dense_1d, int_list, 4, 4), sparse.dia_matrix[ScalarType])
 assert_type(sparse.spdiags(dense_1d, int_list, 4, 4, format="bsr"), sparse.bsr_matrix[ScalarType])
@@ -124,6 +128,7 @@ assert_type(sparse.spdiags(dense_2d, int_list, shape_2d, format="csr"), sparse.c
 assert_type(sparse.spdiags(dense_2d, int_list, shape_2d, format="dia"), sparse.dia_matrix[ScalarType])
 assert_type(sparse.spdiags(dense_2d, int_list, shape_2d, format="dok"), sparse.dok_matrix[ScalarType])
 assert_type(sparse.spdiags(dense_2d, int_list, shape_2d, format="lil"), sparse.lil_matrix[ScalarType])
+assert_type(sparse.spdiags(dense_1d_list, int_list, 4, 4), sparse.dia_matrix[ScalarType])
 
 ###
 # eye_array

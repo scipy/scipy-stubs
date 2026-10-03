@@ -53,7 +53,9 @@ type _COOArray2D[ScalarT: _Numeric] = coo_array[ScalarT, tuple[int, int]]
 type _CSRArray2D[ScalarT: _Numeric] = csr_array[ScalarT, tuple[int, int]]
 type _DOKArray2D[ScalarT: _Numeric] = dok_array[ScalarT, tuple[int, int]]
 
-type _ToArray1D2D[ScalarT: _Numeric] = onp.CanArray[tuple[int] | tuple[int, int], np.dtype[ScalarT]] | Seq[ScalarT | Seq[ScalarT]]
+type _ToArray1D2D[ScalarT: _Numeric] = (
+    onp.CanArray[tuple[int] | tuple[int, int], np.dtype[ScalarT]] | Seq[ScalarT | Seq[ScalarT] | onp.CanArrayND[ScalarT]]
+)
 type _ToSpMatrix[ScalarT: _Numeric] = spmatrix[ScalarT] | onp.ToArray2D[Never, ScalarT]
 type _ToSparse1D[ScalarT: _Numeric] = _spbase[ScalarT, tuple[int]] | onp.ToArray1D[Never, ScalarT]
 type _ToSparse2D[ScalarT: _Numeric] = _spbase[ScalarT, tuple[int, int]] | onp.ToArray2D[Never, ScalarT]
@@ -68,7 +70,7 @@ type _FmtLIL = Literal["lil"]
 
 # TODO(julvandenbroeck): find a way to separate float and complex
 type _ComplexSeq1D2D = Seq[Seq[complex] | complex]
-type _ToComplex1D2D = onp.CanArray[tuple[int] | tuple[int, int], np.dtype[_Numeric]] | _ComplexSeq1D2D
+type _ToComplex1D2D = onp.CanArray[tuple[int] | tuple[int, int], np.dtype[_Numeric]] | _ComplexSeq1D2D | Seq[onp.ToComplex1D]
 type _Offsets = int | Seq[int] | onp.Array1D[npc.integer]
 
 type _DataRVS = Callable[[int], onp.ArrayND[_Numeric]]
