@@ -96,6 +96,17 @@ type _JustAnyShape = tuple[Never, Never, Never, Never]
 
 ###
 
+@overload  # Nd ~float64, ?d +float64  (workaround)
+def solve(
+    a: _InputFloat,
+    b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+    lower: bool = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    transposed: bool = False,
+) -> onp.ArrayND[np.float64]: ...
 @overload  # 2d ~float64, 1d +float64
 def solve(
     a: _InputFloatStrict2D,
@@ -129,6 +140,17 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # Nd +complexfloating, ?d +complexfloating  (workaround)
+def solve(
+    a: onp.ToComplexND,
+    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
+    lower: bool = False,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    assume_a: _AssumeA | None = None,
+    transposed: bool = False,
+) -> onp.ArrayND[Any]: ...
 @overload  # 2d +float64, 1d ~float64
 def solve(
     a: onp.ToFloatStrict2D,
@@ -340,6 +362,16 @@ def solve(
 ) -> onp.ArrayND[Any]: ...
 
 #
+@overload  # ?d ~float64, +float64  (workaround)
+def solve_triangular(
+    a: _InputFloat,
+    b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+    trans: _TransSystem = 0,
+    lower: bool = False,
+    unit_diagonal: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
 @overload  # 1D ~float64, +float64
 def solve_triangular(
     a: _InputFloatStrict2D,
@@ -370,6 +402,16 @@ def solve_triangular(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d +complexfloating, +complexfloating  (workaround)
+def solve_triangular(
+    a: onp.ToComplexND,
+    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
+    trans: _TransSystem = 0,
+    lower: bool = False,
+    unit_diagonal: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[Any]: ...
 @overload  # 1d +float64, ~float64
 def solve_triangular(
     a: onp.ToFloatStrict2D,
@@ -562,6 +604,15 @@ def solve_triangular(
 ) -> onp.ArrayND[Any]: ...
 
 # NOTE: keep overload structure consistent with `solveh_banded` below
+@overload  # ?d ~float64, +float64  (workaround)
+def solve_banded(
+    l_and_u: tuple[int, int],
+    ab: _InputFloat,
+    b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+    overwrite_ab: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
 @overload  # 1D ~float64, +float64
 def solve_banded(
     l_and_u: tuple[int, int],
@@ -589,6 +640,15 @@ def solve_banded(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d +complexfloating, +complexfloating  (workaround)
+def solve_banded(
+    l_and_u: tuple[int, int],
+    ab: onp.ToComplexND,
+    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
+    overwrite_ab: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[Any]: ...
 @overload  # 1d +float64, ~float64
 def solve_banded(
     l_and_u: tuple[int, int],
@@ -762,6 +822,15 @@ def solve_banded(
 ) -> onp.ArrayND[Any]: ...
 
 # NOTE: keep overload structure consistent with `solve_banded` above
+@overload  # ?d ~float64, +float64  (workaround)
+def solveh_banded(
+    ab: _InputFloat,
+    b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+    overwrite_ab: bool = False,
+    overwrite_b: bool = False,
+    lower: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float64]: ...
 @overload  # 1D ~float64, +float64
 def solveh_banded(
     ab: _InputFloatStrict2D,
@@ -789,6 +858,15 @@ def solveh_banded(
     lower: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d +complexfloating, +complexfloating  (workaround)
+def solveh_banded(
+    ab: onp.ToComplexND,
+    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
+    overwrite_ab: bool = False,
+    overwrite_b: bool = False,
+    lower: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[Any]: ...
 @overload  # 1d +float64, ~float64
 def solveh_banded(
     ab: onp.ToFloatStrict2D,
@@ -1354,6 +1432,27 @@ def det(
 ) -> np.float64 | np.complex128 | onp.ArrayND[np.float64 | np.complex128]: ...
 
 #
+@overload  # ~f64, +f64 ?d  (workaround)
+def lstsq(
+    a: _AsFloat64_2D,
+    b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+    cond: float | None = None,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    lapack_driver: _LapackDriverDS | None = None,
+) -> _LstSqResultND[np.float64, onp.ArrayND[np.float64]]: ...
+@overload  # ~f64, +f64 ?d, lapack_driver='gelsy' (keyword)  (workaround)
+def lstsq(
+    a: _AsFloat64_2D,
+    b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
+    cond: float | None = None,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    *,
+    lapack_driver: _LapackDriverY,
+) -> _LstSqResultND[np.float64, None]: ...
 @overload  # ~f64, +f64 1d
 def lstsq(
     a: _AsFloat64Strict2D,
@@ -1417,6 +1516,16 @@ def lstsq(
     *,
     lapack_driver: _LapackDriverY,
 ) -> _LstSqResultND[np.float64, None]: ...
+@overload  # +fallback ?d  (workaround)
+def lstsq(
+    a: onp.ToComplex2D,
+    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
+    cond: float | None = None,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+    lapack_driver: _LapackDriver | None = None,
+) -> _LstSqResultND[Incomplete, onp.ArrayND[np.float64 | Any] | Any]: ...
 @overload  # +f64, ~f64 1d
 def lstsq(
     a: onp.ToFloatStrict2D,

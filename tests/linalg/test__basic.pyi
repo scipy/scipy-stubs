@@ -143,6 +143,9 @@ assert_type(solve(py_c_2d, py_c_2d), onp.Array2D[np.complex128])
 assert_type(solve(py_c_2d, py_c_3d), onp.ArrayND[np.complex128])
 assert_type(solve(py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
 
+assert_type(solve(f64_2d, f64_nd), onp.ArrayND[np.float64])
+assert_type(solve(f16_2d, f16_nd), onp.ArrayND[Any])
+
 ###
 # solve_triangular
 
@@ -196,6 +199,9 @@ assert_type(solve_triangular(py_c_2d, py_c_2d), onp.Array2D[np.complex128])
 assert_type(solve_triangular(py_c_2d, py_c_3d), onp.ArrayND[np.complex128])
 assert_type(solve_triangular(py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
 
+assert_type(solve_triangular(f64_2d, f64_nd), onp.ArrayND[np.float64])
+assert_type(solve_triangular(f16_2d, f16_nd), onp.ArrayND[Any])
+
 ###
 # solve_banded  (equivalent overload structure to `solveh_banded`)
 
@@ -248,6 +254,9 @@ assert_type(solve_banded((1, 2), py_c_2d, py_c_1d), onp.Array1D[np.complex128])
 assert_type(solve_banded((1, 2), py_c_2d, py_c_2d), onp.Array2D[np.complex128])
 assert_type(solve_banded((1, 2), py_c_2d, py_c_3d), onp.ArrayND[np.complex128])
 assert_type(solve_banded((1, 2), py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
+
+assert_type(solve_banded((1, 2), f64_2d, f64_nd), onp.ArrayND[np.float64])
+assert_type(solve_banded((1, 2), f16_2d, f16_nd), onp.ArrayND[Any])
 
 ###
 # solve_toeplitz
@@ -493,6 +502,16 @@ assert_type(
     lstsq(f64_2d, f64_3d, lapack_driver="gelsy"), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], np.int64 | Any, None]
 )
 
+assert_type(
+    lstsq(f64_2d, f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], np.int64 | Any, onp.ArrayND[np.float64]]
+)
+assert_type(
+    lstsq(f64_2d, f64_nd, lapack_driver="gelsy"), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], np.int64 | Any, None]
+)
+assert_type(
+    lstsq(c128_2d, c128_nd), tuple[onp.ArrayND[Any], onp.ArrayND[Any], np.int64 | Any, onp.ArrayND[np.float64 | Any] | Any]
+)
+
 ###
 # solveh_banded
 
@@ -540,6 +559,9 @@ assert_type(solveh_banded(py_c_2d, py_c_1d), onp.Array1D[np.complex128])
 assert_type(solveh_banded(py_c_2d, py_c_2d), onp.Array2D[np.complex128])
 assert_type(solveh_banded(py_c_2d, py_c_3d), onp.ArrayND[np.complex128])
 assert_type(solveh_banded(py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
+
+assert_type(solveh_banded(f64_2d, f64_nd), onp.ArrayND[np.float64])
+assert_type(solveh_banded(f16_2d, f16_nd), onp.ArrayND[Any])
 
 ###
 # pinv
