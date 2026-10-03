@@ -1,6 +1,7 @@
 from typing import Any, Never, overload
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -11,14 +12,22 @@ __all__ = ["log_softmax", "logsumexp", "softmax"]
 # Mypy reports four false positive `overload-overlap` only with `numpy<2.1`
 # mypy: disable-error-code="overload-overlap"
 
-@overload  # 0d/nd T, axis=None (default), keepdims=False (default)
-def logsumexp[InexactT: npc.inexact](
-    a: InexactT | onp.ToArrayND[Never, InexactT],
+@overload  # 0d/nd T@floating, axis=None (default), keepdims=False (default)
+def logsumexp[FloatingT: npc.floating](
+    a: FloatingT | onp.ToArrayND[Never, FloatingT],
     axis: None = None,
-    b: onp.ToComplex | onp.ToComplexND | None = None,
+    b: FloatingT | onp.ToArrayND[Never, FloatingT] | op.JustFloat | op.JustInt | None = None,
     keepdims: onp.ToFalse = False,
     return_sign: onp.ToFalse = False,
-) -> InexactT: ...
+) -> FloatingT: ...
+@overload  # 0d/nd T@complexfloating, axis=None (default), keepdims=False (default)
+def logsumexp[ComplexT: npc.complexfloating](
+    a: ComplexT | onp.ToArrayND[Never, ComplexT],
+    axis: None = None,
+    b: ComplexT | onp.ToArrayND[Never, ComplexT] | op.JustComplex | op.JustFloat | op.JustInt | None = None,
+    keepdims: onp.ToFalse = False,
+    return_sign: onp.ToFalse = False,
+) -> ComplexT: ...
 @overload  # 0d/nd +float , axis=None (default), keepdims=False (default)
 def logsumexp(
     a: onp.ToInt | onp.ToIntND | onp.ToJustFloat64 | onp.ToJustFloat64_ND,
@@ -35,15 +44,24 @@ def logsumexp(
     keepdims: onp.ToFalse = False,
     return_sign: onp.ToFalse = False,
 ) -> np.complex128: ...
-@overload  # 0d/nd T, keepdims=True
-def logsumexp[InexactT: npc.inexact](
-    a: InexactT | onp.ToArrayND[Never, InexactT],
+@overload  # 0d/nd T@floating, keepdims=True
+def logsumexp[FloatingT: npc.floating](
+    a: FloatingT | onp.ToArrayND[Never, FloatingT],
     axis: AnyShape | None = None,
-    b: onp.ToComplex | onp.ToComplexND | None = None,
+    b: FloatingT | onp.ToArrayND[Never, FloatingT] | op.JustFloat | op.JustInt | None = None,
     *,
     keepdims: onp.ToTrue,
     return_sign: onp.ToFalse = False,
-) -> onp.ArrayND[InexactT]: ...
+) -> onp.ArrayND[FloatingT]: ...
+@overload  # 0d/nd T@complexfloating, keepdims=True
+def logsumexp[ComplexT: npc.complexfloating](
+    a: ComplexT | onp.ToArrayND[Never, ComplexT],
+    axis: AnyShape | None = None,
+    b: ComplexT | onp.ToArrayND[Never, ComplexT] | op.JustComplex | op.JustFloat | op.JustInt | None = None,
+    *,
+    keepdims: onp.ToTrue,
+    return_sign: onp.ToFalse = False,
+) -> onp.ArrayND[ComplexT]: ...
 @overload  # 0d/nd +float, keepdims=True
 def logsumexp(
     a: onp.ToInt | onp.ToIntND | onp.ToJustFloat64 | onp.ToJustFloat64_ND,
@@ -62,15 +80,24 @@ def logsumexp(
     keepdims: onp.ToTrue,
     return_sign: onp.ToFalse = False,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # 0d/nd T, axis=<given>
-def logsumexp[InexactT: npc.inexact](
-    a: InexactT | onp.ToArrayND[Never, InexactT],
+@overload  # 0d/nd T@floating, axis=<given>
+def logsumexp[FloatingT: npc.floating](
+    a: FloatingT | onp.ToArrayND[Never, FloatingT],
     axis: AnyShape,
-    b: onp.ToComplex | onp.ToComplexND | None = None,
+    b: FloatingT | onp.ToArrayND[Never, FloatingT] | op.JustFloat | op.JustInt | None = None,
     *,
     keepdims: onp.ToFalse = False,
     return_sign: onp.ToFalse = False,
-) -> onp.ArrayND[InexactT] | Any: ...
+) -> onp.ArrayND[FloatingT] | Any: ...
+@overload  # 0d/nd T@complexfloating, axis=<given>
+def logsumexp[ComplexT: npc.complexfloating](
+    a: ComplexT | onp.ToArrayND[Never, ComplexT],
+    axis: AnyShape,
+    b: ComplexT | onp.ToArrayND[Never, ComplexT] | op.JustComplex | op.JustFloat | op.JustInt | None = None,
+    *,
+    keepdims: onp.ToFalse = False,
+    return_sign: onp.ToFalse = False,
+) -> onp.ArrayND[ComplexT] | Any: ...
 @overload  # 0d/nd +float, axis=<given>
 def logsumexp(
     a: onp.ToInt | onp.ToIntND | onp.ToJustFloat64 | onp.ToJustFloat64_ND,

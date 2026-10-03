@@ -72,6 +72,8 @@ assert_type(logsumexp(f16_1d, axis=0, return_sign=True), tuple[onp.ArrayND[np.fl
 assert_type(logsumexp(c64_0d, axis=0, return_sign=True), tuple[onp.ArrayND[np.float32] | Any, onp.ArrayND[np.complex64] | Any])
 assert_type(logsumexp(c64_1d, axis=0, return_sign=True), tuple[onp.ArrayND[np.float32] | Any, onp.ArrayND[np.complex64] | Any])
 
+assert_type(logsumexp(f16_1d, b=py_f_1d), onp.ArrayND[np.float64 | Any] | Any)
+
 # softmax
 
 assert_type(softmax(py_f_0d), np.float64)
