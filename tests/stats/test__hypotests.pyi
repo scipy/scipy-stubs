@@ -27,6 +27,9 @@ from scipy.stats._stats_py import SignificanceResult
 
 ###
 
+_i64: np.int64
+_f32: np.float32
+
 _i64_2d: onp.Array2D[np.int64]
 
 _f32_1d: onp.Array1D[np.float32]
@@ -84,7 +87,7 @@ assert_type(cramervonmises_2samp(_f64_1d, _f64_1d).pvalue, np.float64)
 
 # poisson_means_test
 
-assert_type(poisson_means_test(5, 100.0, 3, 80.0), SignificanceResult[np.float64])
+assert_type(poisson_means_test(_i64, _i64, 3, _f32), SignificanceResult[np.float64])
 assert_type(poisson_means_test(5, 100.0, 3, 80.0).statistic, np.float64)
 assert_type(poisson_means_test(5, 100.0, 3, 80.0).pvalue, np.float64)
 

@@ -251,7 +251,13 @@ def cramervonmises_2samp(
 
 #
 def poisson_means_test(
-    k1: int, n1: float, k2: int, n2: float, *, diff: float = 0, alternative: Alternative = "two-sided"
+    k1: int | npc.integer,
+    n1: onp.ToFloat,
+    k2: int | npc.integer,
+    n2: onp.ToFloat,
+    *,
+    diff: float = 0,
+    alternative: Alternative = "two-sided",
 ) -> SignificanceResult[np.float64]: ...
 
 #
