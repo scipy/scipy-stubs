@@ -2,7 +2,20 @@
 
 from collections.abc import Callable, Iterator, Sequence
 from types import GenericAlias
-from typing import Any, ClassVar, Final, Generic, Literal as L, Never, Protocol, Self, SupportsIndex, overload, type_check_only
+from typing import (
+    Any,
+    ClassVar,
+    Final,
+    Generic,
+    Literal as L,
+    Never,
+    Protocol,
+    Self,
+    SupportsIndex,
+    final,
+    overload,
+    type_check_only,
+)
 from typing_extensions import TypeIs, TypeVar
 
 import numpy as np
@@ -80,6 +93,22 @@ _Complex128T = TypeVar("_Complex128T", bound=np.complex128 | npc.complexfloating
 @type_check_only
 class _CanTranspose(Protocol[_T_co]):
     def transpose(self, /) -> _T_co: ...
+
+@final
+@type_check_only
+class _CanAsFloat64[ST: _Scalar, OutT](Protocol):
+    @property
+    def dtype(self, /) -> np.dtype[ST]: ...
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> OutT: ...
+
+@final
+@type_check_only
+class _CanAsComplex128[ST: _Scalar, OutT](Protocol):
+    @property
+    def dtype(self, /) -> np.dtype[ST]: ...
+    @type_check_only
+    def __assoc_as_complex128__(self, /) -> OutT: ...
 
 ###
 
@@ -286,6 +315,12 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def __mul__[SelfT: _spbase[npc.inexact]](self: SelfT, /, other: onp.ToFloat) -> SelfT: ...
     @overload  # Self[-Complex], /, other: scalar-like +Complex
     def __mul__[SelfT: _spbase[npc.complexfloating]](self: SelfT, /, other: onp.ToComplex) -> SelfT: ...
+    @overload  # Self[+Int], /, other: ~Float64
+    def __mul__[OutT](self: _CanAsFloat64[_ToInt, OutT], /, other: op.JustFloat | np.float64) -> OutT: ...
+    @overload  # Self[Float64 | +Int], /, other: ~Complex128
+    def __mul__[OutT](self: _CanAsComplex128[np.float64 | _ToInt, OutT], /, other: op.JustComplex | np.complex128) -> OutT: ...
+    @overload  # Self[?], /, other: ~Int | ~Float | ~Complex
+    def __mul__[OutT](self: _CanAsAny[OutT], /, other: op.JustInt | op.JustFloat | op.JustComplex) -> OutT: ...
     @overload  # sparray[-Bool], /, other: sparse +Bool
     def __mul__[SelfT: _SpArrayOut[Any]](self: SelfT, /, other: _spbase[np.bool | _ScalarT_co]) -> SelfT: ...
     @overload  # sparray[-Bool], /, other: array-like +Bool
@@ -370,6 +405,10 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def multiply[SelfT: _spbase[npc.inexact]](self: SelfT, /, other: onp.ToFloat) -> SelfT: ...
     @overload  # Self[-Complex], /, other: scalar-like +Complex
     def multiply[SelfT: _spbase[npc.complexfloating]](self: SelfT, /, other: onp.ToComplex) -> SelfT: ...
+    @overload  # Self[+Int], /, other: ~Float64
+    def multiply[OutT](self: _CanAsFloat64[_ToInt, OutT], /, other: op.JustFloat | np.float64) -> OutT: ...
+    @overload  # Self[Float64 | +Int], /, other: ~Complex128
+    def multiply[OutT](self: _CanAsComplex128[np.float64 | _ToInt, OutT], /, other: op.JustComplex | np.complex128) -> OutT: ...
     @overload  # sparray[-Bool], /, other: sparse +Bool
     def multiply[SelfT: _SpArrayOut[Any]](self: SelfT, /, other: _spbase[np.bool | _ScalarT_co]) -> SelfT: ...
     @overload  # sparray[-Bool], /, other: array-like +Bool
@@ -472,6 +511,8 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def multiply[ST: npc.complexfloating, ShapeT: tuple[Any, ...]](
         self: _spbase[_ToFloat, ShapeT], /, other: ST
     ) -> _spbase[ST, ShapeT]: ...
+    @overload  # Self[?], /, other: ~Int | ~Float | ~Complex
+    def multiply[OutT](self: _CanAsAny[OutT], /, other: op.JustInt | op.JustFloat | op.JustComplex) -> OutT: ...
     @overload  # catch-all
     def multiply(self, /, other: _To2DLike[complex, _Scalar] | _spbase) -> _spbase[Any]: ...
 
@@ -485,6 +526,12 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def __rmul__[SelfT: _spbase[npc.inexact]](self: SelfT, /, other: onp.ToFloat) -> SelfT: ...
     @overload  # Self[-Complex], /, other: scalar-like +Complex
     def __rmul__[SelfT: _spbase[npc.complexfloating]](self: SelfT, /, other: onp.ToComplex) -> SelfT: ...
+    @overload  # Self[+Int], /, other: ~Float64
+    def __rmul__[OutT](self: _CanAsFloat64[_ToInt, OutT], /, other: op.JustFloat | np.float64) -> OutT: ...
+    @overload  # Self[Float64 | +Int], /, other: ~Complex128
+    def __rmul__[OutT](self: _CanAsComplex128[np.float64 | _ToInt, OutT], /, other: op.JustComplex | np.complex128) -> OutT: ...
+    @overload  # Self[?], /, other: ~Int | ~Float | ~Complex
+    def __rmul__[OutT](self: _CanAsAny[OutT], /, other: op.JustInt | op.JustFloat | op.JustComplex) -> OutT: ...
     @overload  # sparray[-Bool], /, other: sparse +Bool
     def __rmul__[SelfT: _SpArrayOut[Any]](self: SelfT, /, other: _spbase[np.bool | _ScalarT_co]) -> SelfT: ...
     @overload  # sparray[-Bool], /, other: array-like +Bool
@@ -691,6 +738,12 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def dot[SelfT: _spbase[npc.inexact]](self: SelfT, /, other: onp.ToFloat) -> SelfT: ...
     @overload  # Self[-Complex], /, other: scalar-like +Complex
     def dot[SelfT: _spbase[npc.complexfloating]](self: SelfT, /, other: onp.ToComplex) -> SelfT: ...
+    @overload  # Self[+Int], /, other: ~Float64
+    def dot[OutT](self: _CanAsFloat64[_ToInt, OutT], /, other: op.JustFloat | np.float64) -> OutT: ...
+    @overload  # Self[Float64 | +Int], /, other: ~Complex128
+    def dot[OutT](self: _CanAsComplex128[np.float64 | _ToInt, OutT], /, other: op.JustComplex | np.complex128) -> OutT: ...
+    @overload  # Self[?], /, other: ~Int | ~Float | ~Complex
+    def dot[OutT](self: _CanAsAny[OutT], /, other: op.JustInt | op.JustFloat | op.JustComplex) -> OutT: ...
     @overload  # spmatrix[+Bool], /, other: scalar-like ~Int
     def dot(self: spmatrix[np.bool], /, other: op.JustInt) -> spmatrix[npc.integer]: ...
     @overload  # spmatrix[+Int], /, other: scalar-like ~Float
