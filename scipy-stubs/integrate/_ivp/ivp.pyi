@@ -1,5 +1,5 @@
 from collections.abc import Callable, Sequence
-from typing import Any, Final, Generic, Literal, Unpack, overload, type_check_only
+from typing import Any, Final, Generic, Literal, Protocol, Unpack, overload, type_check_only
 from typing_extensions import TypeVar, TypedDict
 
 import numpy as np
@@ -45,12 +45,16 @@ type _IVPMethod = Literal["RK23", "RK45", "DOP853", "Radau", "BDF", "LSODA"] | t
 _Inexact64T_co = TypeVar("_Inexact64T_co", bound=np.float64 | np.complex128, default=np.float64 | np.complex128, covariant=True)
 
 @type_check_only
+class _Jac[FloatT: _Float](Protocol):
+    def __call__(self, t: FloatT, y: onp.Array1D, /, *args: Any, **kwargs: Any) -> _ToJac: ...
+
+@type_check_only
 class _SolverOptions(TypedDict, total=False):
     first_step: float | None
     max_step: float
     rtol: float | onp.ToFloat1D
     atol: float | onp.ToFloat1D
-    jac: _ToJac | Callable[[np.float64, onp.Array1D], _ToJac] | None
+    jac: _ToJac | _Jac[np.float64] | _Jac[float] | None
     jac_sparsity: onp.ToFloat2D | _Sparse2D[npc.floating] | None
     lband: int | None
     uband: int | None
@@ -113,7 +117,7 @@ def solve_ivp[FloatT: _Float, *Ts](
     method: _IVPMethod = "RK45",
     t_eval: onp.ToFloat1D | None = None,
     dense_output: bool = False,
-    events: _Events[np.float64] | None = None,
+    events: _Events[np.float64, *Ts] | None = None,
     vectorized: onp.ToFalse = False,
     *,
     args: tuple[*Ts],
@@ -141,7 +145,7 @@ def solve_ivp[*Ts](
     method: _IVPMethod = "RK45",
     t_eval: onp.ToFloat1D | None = None,
     dense_output: bool = False,
-    events: _Events[np.float64] | None = None,
+    events: _Events[np.float64, *Ts] | None = None,
     *,
     vectorized: onp.ToTrue,
     args: tuple[*Ts],
@@ -168,7 +172,7 @@ def solve_ivp[FloatT: _Float, *Ts](
     method: _IVPMethod = "RK45",
     t_eval: onp.ToFloat1D | None = None,
     dense_output: bool = False,
-    events: _Events[np.complex128] | None = None,
+    events: _Events[np.complex128, *Ts] | None = None,
     vectorized: onp.ToFalse = False,
     *,
     args: tuple[*Ts],
@@ -196,7 +200,7 @@ def solve_ivp[*Ts](
     method: _IVPMethod = "RK45",
     t_eval: onp.ToFloat1D | None = None,
     dense_output: bool = False,
-    events: _Events[np.complex128] | None = None,
+    events: _Events[np.complex128, *Ts] | None = None,
     *,
     vectorized: onp.ToTrue,
     args: tuple[*Ts],
