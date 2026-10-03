@@ -31,6 +31,28 @@ type _Sort = Literal["lhp", "rhp", "iuc", "ouc"] | Callable[[float, float], bool
 # mypy: disable-error-code=overload-overlap
 
 # NOTE: `sort` will raise `ValueError` if not `None`.
+@overload  # +f64, +f32 | +f64
+def qz(
+    A: _AsF64ND,
+    B: onp.ToArrayND[float, npc.floating64 | npc.floating32 | npc.integer],
+    output: _OutputReal = "real",
+    lwork: int | None = None,
+    sort: None = None,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> _Tuple4[onp.ArrayND[np.float64]]: ...
+@overload  # +c128, +inexact, output: complex
+def qz(
+    A: _AsC128ND,
+    B: _AsInexactND,
+    output: _OutputComplex,
+    lwork: int | None = None,
+    sort: None = None,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> _Tuple4[onp.ArrayND[np.complex128]]: ...
 @overload  # ~bool | ~f16 | ~f80 | ~c160, +complex
 @deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
 def qz(
@@ -66,17 +88,6 @@ def qz(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> _Tuple4[onp.ArrayND[np.float32]]: ...
-@overload  # +f64, +f32 | +f64
-def qz(
-    A: _AsF64ND,
-    B: onp.ToArrayND[float, npc.floating64 | npc.floating32 | npc.integer],
-    output: _OutputReal = "real",
-    lwork: int | None = None,
-    sort: None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> _Tuple4[onp.ArrayND[np.float64]]: ...
 @overload  # +f32, +f64
 def qz(
     A: _AsF32ND,
@@ -165,17 +176,6 @@ def qz(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> _Tuple4[onp.ArrayND[np.complex64]]: ...
-@overload  # +c128, +inexact, output: complex
-def qz(
-    A: _AsC128ND,
-    B: _AsInexactND,
-    output: _OutputComplex,
-    lwork: int | None = None,
-    sort: None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> _Tuple4[onp.ArrayND[np.complex128]]: ...
 @overload  # +inexact, +c128, output: complex
 def qz(
     A: _AsInexactND,
@@ -211,6 +211,37 @@ def qz(
 ) -> _Tuple4[onp.ArrayND[np.complex128 | Any]]: ...
 
 #
+@overload  # +f64, +f32 | +f64
+def ordqz(
+    A: _AsF64ND,
+    B: onp.ToArrayND[float, npc.floating64 | npc.floating32 | npc.integer],
+    sort: _Sort = "lhp",
+    output: _OutputReal = "real",
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> _Tuple2C3[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
+@overload  # +c128, +inexact, output: complex (positional)
+def ordqz(
+    A: _AsC128ND,
+    B: _AsInexactND,
+    sort: _Sort,
+    output: _OutputComplex,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> _Tuple2C3[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
+@overload  # +c128, +inexact, output: complex (keyword)
+def ordqz(
+    A: _AsC128ND,
+    B: _AsInexactND,
+    sort: _Sort = "lhp",
+    *,
+    output: _OutputComplex,
+    overwrite_a: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> _Tuple2C3[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
 @overload  # ~bool | ~f16 | ~f80 | ~c160, +complex
 @deprecated("bool, float16, and longdouble input will no longer be supported in SciPy 2.1")
 def ordqz(
@@ -243,16 +274,6 @@ def ordqz(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> _Tuple2C3[onp.ArrayND[np.float32], onp.ArrayND[np.complex64]]: ...
-@overload  # +f64, +f32 | +f64
-def ordqz(
-    A: _AsF64ND,
-    B: onp.ToArrayND[float, npc.floating64 | npc.floating32 | npc.integer],
-    sort: _Sort = "lhp",
-    output: _OutputReal = "real",
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> _Tuple2C3[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]]: ...
 @overload  # +f32, +f64
 def ordqz(
     A: _AsF32ND,
@@ -344,27 +365,6 @@ def ordqz(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> _Tuple2C3[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]]: ...
-@overload  # +c128, +inexact, output: complex (positional)
-def ordqz(
-    A: _AsC128ND,
-    B: _AsInexactND,
-    sort: _Sort,
-    output: _OutputComplex,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> _Tuple2C3[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
-@overload  # +c128, +inexact, output: complex (keyword)
-def ordqz(
-    A: _AsC128ND,
-    B: _AsInexactND,
-    sort: _Sort = "lhp",
-    *,
-    output: _OutputComplex,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> _Tuple2C3[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]]: ...
 @overload  # +inexact, +c128, output: complex (positional)
 def ordqz(
     A: _AsInexactND,
