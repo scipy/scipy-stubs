@@ -3,7 +3,6 @@ from typing import Any, Literal, Never, overload
 from typing_extensions import deprecated
 
 import numpy as np
-import numpy_typing_compat as nptc
 import optype.numpy as onp
 import optype.numpy.compat as npc
 import optype.typing as opt
@@ -50,10 +49,6 @@ type _DriverGV = Literal["gv", "gvd", "gvx"]
 type _DriverEV = Literal["ev", "evd", "evx", "evr"]
 type _DriverSTE = Literal["stemr", "stebz", "sterf", "stev"]
 type _DriverAuto = Literal["auto"]
-
-# output types
-
-type _FloatND = onp.ArrayND[np.float64 | np.float32]
 
 ###
 
@@ -2219,17 +2214,13 @@ def hessenberg(
 ) -> onp.ArrayND[np.float64 | Any] | tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
 
 #
-@overload
-def cdf2rdf[FloatVT: npc.floating, FloatWT: npc.floating](
-    w: nptc.CanArray[Any, np.dtype[FloatVT]], v: nptc.CanArray[Any, np.dtype[FloatWT]]
-) -> tuple[onp.ArrayND[FloatVT], onp.ArrayND[FloatWT]]: ...
-@overload
-def cdf2rdf[FloatT: npc.floating](
-    w: nptc.CanArray[Any, np.dtype[FloatT]], v: onp.ToComplexND
-) -> tuple[onp.ArrayND[FloatT], _FloatND]: ...
-@overload
-def cdf2rdf[FloatT: npc.floating](
-    w: onp.ToComplexND, v: nptc.CanArray[Any, np.dtype[FloatT]]
-) -> tuple[_FloatND, onp.ArrayND[FloatT]]: ...
-@overload
-def cdf2rdf(w: onp.ToComplexND, v: onp.ToComplexND) -> tuple[_FloatND, _FloatND]: ...
+@overload  # ~f64 | ~c128, +c128
+def cdf2rdf(
+    w: onp.ToJustFloat64_ND | onp.ToJustComplex128_ND, v: onp.ToComplex128_ND
+) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
+@overload  # ~f32 | ~c64, +c128
+def cdf2rdf(
+    w: onp.ToJustFloat32_ND | onp.ToJustComplex64_ND, v: onp.ToComplex128_ND
+) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float64]]: ...
+@overload  # catch-all
+def cdf2rdf(w: onp.ToComplexND, v: onp.ToComplexND) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
