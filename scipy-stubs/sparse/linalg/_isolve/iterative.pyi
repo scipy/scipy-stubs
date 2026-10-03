@@ -143,6 +143,7 @@ def cg(
 ) -> tuple[onp.Array1D[np.complex128], int]: ...
 
 #
+@overload  # real
 def cgs(
     A: _ToLinearOperator[_FloatT | _ToInt],
     b: onp.ToFloat1D,
@@ -154,6 +155,18 @@ def cgs(
     M: _ToLinearOperator[_FloatT | _ToInt] | None = None,
     callback: _Callback[_FloatT] | None = None,
 ) -> tuple[onp.Array1D[_FloatT], int]: ...
+@overload  # complex
+def cgs[ComplexT: _Complex](
+    A: _ToLinearOperator[ComplexT],
+    b: onp.ToComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToComplex] | None = None,
+    callback: _Callback[ComplexT] | None = None,
+) -> tuple[onp.Array1D[ComplexT], int]: ...
 
 #
 @overload  # real, callback_type: {"pr_norm", "legacy"} | None = ...

@@ -15,7 +15,7 @@ __all__ = ["CloughTocher2DInterpolator", "LinearNDInterpolator", "NearestNDInter
 _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 
 type _Method = Literal["nearest", "linear", "cubic"]
-type _ToXi = onp.ToFloat2D | tuple[onp.ToFloat1D | onp.ToFloat2D, ...]
+type _ToXi = onp.ToFloat2D | tuple[onp.ToFloat | onp.ToFloatND, ...]
 
 @type_check_only
 class _TreeOptions(TypedDict, total=False):
@@ -69,9 +69,7 @@ class NearestNDInterpolator(NDInterpolatorBase[_CT_co], Generic[_CT_co]):
 
     #
     @override
-    def __call__(
-        self, /, *args: onp.ToFloatND, **query_options: Unpack[_QueryOptions]
-    ) -> onp.Array[onp.AtLeast1D[Any], _CT_co]: ...
+    def __call__(self, /, *args: onp.ToFloat | onp.ToFloatND, **query_options: Unpack[_QueryOptions]) -> onp.ArrayND[_CT_co]: ...
 
 #
 @overload
@@ -83,7 +81,7 @@ def griddata(
     fill_value: onp.ToFloat = ...,  # np.nan
     rescale: bool = False,
     simplex_tolerance: float = 1.0,
-) -> onp.Array[onp.AtLeast1D[Any], np.float64]: ...
+) -> onp.ArrayND[np.float64]: ...
 @overload
 def griddata(
     points: onp.ToFloat1D | onp.ToFloat2D,
@@ -93,7 +91,7 @@ def griddata(
     fill_value: onp.ToComplex = ...,  # np.nan
     rescale: bool = False,
     simplex_tolerance: float = 1.0,
-) -> onp.Array[onp.AtLeast1D[Any], np.complex128]: ...
+) -> onp.ArrayND[np.complex128]: ...
 @overload
 def griddata(
     points: onp.ToFloat1D | onp.ToFloat2D,
@@ -103,4 +101,4 @@ def griddata(
     fill_value: onp.ToComplex = ...,  # np.nan
     rescale: bool = False,
     simplex_tolerance: float = 1.0,
-) -> onp.Array[onp.AtLeast1D[Any], Incomplete]: ...
+) -> onp.ArrayND[Incomplete]: ...
