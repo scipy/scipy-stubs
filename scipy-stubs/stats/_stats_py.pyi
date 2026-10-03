@@ -1624,16 +1624,16 @@ def tmin[InexactT: npc.inexact](
     *,
     keepdims: L[False] = False,
 ) -> InexactT | onp.ArrayND[InexactT]: ...
-@overload  # ?d +integer
-def tmin(
-    a: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
+@overload  # ?d T@+integer
+def tmin[ScalarT: npc.integer | np.bool](
+    a: onp.ArrayND[ScalarT, _JustAnyShape],
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> np.float64 | onp.ArrayND[np.float64]: ...
+) -> ScalarT | onp.ArrayND[ScalarT]: ...
 @overload  # 1d T@inexact
 def tmin[InexactT: npc.inexact](
     a: onp.ToArrayStrict1D[InexactT, InexactT],
@@ -1644,9 +1644,29 @@ def tmin[InexactT: npc.inexact](
     *,
     keepdims: L[False] = False,
 ) -> InexactT: ...
+@overload  # 1d T@+integer
+def tmin[ScalarT: npc.integer | np.bool](
+    a: onp.ToArrayStrict1D[ScalarT, ScalarT],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> ScalarT: ...
+@overload  # 1d ~int
+def tmin(
+    a: list[int],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.int_: ...
 @overload  # 1d +float|integer
 def tmin(
-    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
+    a: onp.ToArrayStrict1D[float, npc.floating64],
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1674,9 +1694,29 @@ def tmin[InexactT: npc.inexact](
     *,
     keepdims: L[False] = False,
 ) -> onp.Array1D[InexactT]: ...
+@overload  # 2d T@+integer
+def tmin[ScalarT: npc.integer | np.bool](
+    a: onp.ToArrayStrict2D[ScalarT, ScalarT],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[ScalarT]: ...
+@overload  # 2d ~int
+def tmin(
+    a: Sequence[list[int]],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.int_]: ...
 @overload  # 2d +float|integer
 def tmin(
-    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
+    a: onp.ToArrayStrict2D[float, npc.floating64],
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1704,6 +1744,26 @@ def tmin[InexactT: npc.inexact](
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> InexactT: ...
+@overload  # ?d T@+integer, axis=None
+def tmin[ScalarT: npc.integer | np.bool](
+    a: onp.ArrayND[ScalarT],
+    lowerlimit: _RealLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> ScalarT: ...
+@overload  # ?d ~int, axis=None
+def tmin(
+    a: onp.SequenceND[list[int]] | list[int],
+    lowerlimit: _RealLimit | None = None,
+    *,
+    axis: None,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.int_: ...
 @overload  # ?d +f64, axis=None
 def tmin(
     a: onp.ToArrayND[float, npc.integer | np.bool],
@@ -1734,16 +1794,26 @@ def tmin[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     *,
     keepdims: L[True],
 ) -> onp.ArrayND[InexactT, ShapeT]: ...
-@overload  # S@Nd +integer, keepdims=True
-def tmin[ShapeT: tuple[int, ...]](
-    a: onp.ArrayND[npc.integer | np.bool, ShapeT],
+@overload  # S@Nd T@+integer, keepdims=True
+def tmin[ScalarT: npc.integer | np.bool, ShapeT: tuple[int, ...]](
+    a: onp.ArrayND[ScalarT, ShapeT],
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
-) -> onp.ArrayND[np.float64, ShapeT]: ...
+) -> onp.ArrayND[ScalarT, ShapeT]: ...
+@overload  # ?d ~int, keepdims=True
+def tmin(
+    a: onp.SequenceND[list[int]] | list[int],
+    lowerlimit: _RealLimit | None = None,
+    axis: int = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
+) -> onp.ArrayND[np.int_]: ...
 @overload  # ?d +float, keepdims=True
 def tmin(
     a: onp.SequenceND[float],
