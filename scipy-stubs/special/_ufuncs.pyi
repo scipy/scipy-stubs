@@ -1097,13 +1097,13 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     @override
     def types(self, /) -> list[L["ff->f", "dd->d"]]: ...
     #
-    @overload  # scalar +f64, scalar +f64
+    @overload
     def __call__(self, a: _ToSubFloat64, b: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.float64: ...
-    @overload  # Nd +f64, sub-f64
+    @overload
     def __call__(
         self, a: _ToSubFloat64ND, b: _ToSubFloat | _ToSubFloatND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
     ) -> _Float64ND: ...
-    @overload  # sub-f64, Nd +f64
+    @overload
     def __call__(
         self, a: _ToSubFloat | _ToSubFloatND, b: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
     ) -> _Float64ND: ...
