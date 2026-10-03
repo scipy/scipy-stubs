@@ -1,5 +1,5 @@
 import collections
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from typing import Any, Concatenate, Final, Generic, Literal, Never, NoReturn, Protocol, overload, override, type_check_only
 from typing_extensions import TypeVar
 
@@ -17,6 +17,7 @@ type _Fun[T] = Callable[Concatenate[float, ...], T]
 
 type _Norm = Literal["max", "2"]
 type _Quadrature = Literal["gk21", "gk15", "trapezoid"]
+type _DoesMap = Callable[[Callable[[Any], Any], Iterable[Any]], Iterable[object]]
 
 # workaround for mypy & pyright's failure to conform to the overload typing specification
 type _JustAnyShape = tuple[Never, Never, Never]
@@ -25,10 +26,6 @@ _VT = TypeVar("_VT", default=Any)
 _NDT_co = TypeVar("_NDT_co", bound=_FloatingND, default=_FloatingND, covariant=True)
 _InexactT_co = TypeVar("_InexactT_co", bound=npc.inexact, default=Any, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
-
-@type_check_only
-class _DoesMap(Protocol):
-    def __call__[S, T](self, func: Callable[[S], T], iterable: op.CanIter[op.CanNext[S]], /) -> op.CanIter[op.CanIterSelf[T]]: ...
 
 @type_check_only
 class _InfiniteFunc(Protocol[_NDT_co]):

@@ -1,3 +1,4 @@
+from concurrent.futures import ThreadPoolExecutor
 from typing import assert_type
 
 import numpy as np
@@ -7,6 +8,8 @@ import optype.numpy as onp
 from scipy.integrate import quad_vec
 
 ###
+
+_ex: ThreadPoolExecutor
 
 def _f_float(x: float) -> float: ...
 
@@ -161,3 +164,5 @@ assert_type(quad_vec(_f_c128_n, 0.0, 1.0), tuple[onp.ArrayND[np.complex128], flo
 assert_type(quad_vec(_f_c128_n, 0.0, 1.0, full_output=True)[0], onp.ArrayND[np.complex128])
 assert_type(quad_vec(_f_c128_n, 0.0, 1.0, full_output=True)[1], float)
 assert_type(quad_vec(_f_c128_n, 0.0, 1.0, full_output=True)[2].integrals, onp.ArrayND[np.complex128])
+
+assert_type(quad_vec(_f_f64_1, 0.0, 1.0, workers=_ex.map), tuple[onp.Array1D[np.float64], float])
