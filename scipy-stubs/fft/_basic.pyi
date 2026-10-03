@@ -14,10 +14,6 @@ type _Norm = Literal["backward", "ortho", "forward"]
 
 type _CoInteger = npc.integer | np.bool
 
-type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
-type _2D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
-type _3D = tuple[int, int, int]  # ruff: ignore[snake-case-type-alias]
-
 type _AsFloat32[ShapeT: tuple[int, ...]] = onp.CanArray[ShapeT, np.dtype[npc.floating32]]
 type _AsFloat64[ShapeT: tuple[int, ...]] = onp.CanArray[ShapeT, np.dtype[npc.floating64 | _CoInteger]]
 type _AsFloat80[ShapeT: tuple[int, ...]] = onp.CanArray[ShapeT, np.dtype[npc.floating80]]
@@ -171,8 +167,8 @@ def ifft(
 
 # keep in sync with `ihfft`
 @overload
-def rfft[ShapeT: (_1D, _2D, _3D)](
-    x: onp.CanArray[ShapeT, np.dtype[npc.floating64 | _CoInteger]],
+def rfft[ShapeT: tuple[int, ...]](
+    x: _AsFloat64[ShapeT],
     n: int | None = None,
     axis: int = -1,
     norm: _Norm | None = None,
@@ -182,8 +178,8 @@ def rfft[ShapeT: (_1D, _2D, _3D)](
     plan: Unused | None = None,
 ) -> onp.ArrayND[np.complex128, ShapeT]: ...
 @overload
-def rfft[ShapeT: (_1D, _2D, _3D)](
-    x: onp.CanArray[ShapeT, np.dtype[npc.floating32]],
+def rfft[ShapeT: tuple[int, ...]](
+    x: _AsFloat32[ShapeT],
     n: int | None = None,
     axis: int = -1,
     norm: _Norm | None = None,
@@ -193,8 +189,8 @@ def rfft[ShapeT: (_1D, _2D, _3D)](
     plan: Unused | None = None,
 ) -> onp.ArrayND[np.complex64, ShapeT]: ...
 @overload
-def rfft[ShapeT: (_1D, _2D, _3D)](
-    x: onp.CanArray[ShapeT, np.dtype[npc.floating80]],
+def rfft[ShapeT: tuple[int, ...]](
+    x: _AsFloat80[ShapeT],
     n: int | None = None,
     axis: int = -1,
     norm: _Norm | None = None,
