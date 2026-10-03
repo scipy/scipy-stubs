@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Literal
+from typing import Any, Literal
 
 import optype.numpy as onp
 import optype.numpy.compat as npc
@@ -9,12 +9,9 @@ from scipy.sparse._base import _spbase
 
 __all__ = ["funm_multiply_krylov"]
 
-def funm_multiply_krylov[
-    MatrixT: onp.Array2D[npc.inexact] | LinearOperator[npc.inexact] | _spbase[npc.inexact, tuple[int, int]],
-    ScalarT: npc.inexact,
-](
-    f: Callable[[MatrixT], onp.ArrayND[ScalarT]],
-    A: MatrixT,
+def funm_multiply_krylov[ScalarT: npc.inexact](
+    f: Callable[[onp.Array2D[Any]], onp.ArrayND[ScalarT]],
+    A: onp.Array2D[npc.inexact] | LinearOperator[npc.inexact] | _spbase[npc.inexact, tuple[int, int]],
     b: onp.Array1D[ScalarT],
     *,
     assume_a: Literal["general", "gen", "hermitian", "her"] = "general",
