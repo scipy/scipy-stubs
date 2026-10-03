@@ -17,6 +17,8 @@ py_c: complex
 f32: np.float32
 f80: np.float128
 
+f32_1d: onp.Array1D[np.float32]
+
 f32_2d: onp.Array2D[np.float32]
 f64_2d: onp.Array2D[np.float64]
 c128_2d: onp.Array2D[np.complex128]
@@ -89,3 +91,7 @@ assert_type(norm(b1_nd, axis=0), onp.ArrayND[np.float64 | Any])  # pyright:ignor
 assert_type(norm(f16_nd, axis=0), onp.ArrayND[np.float64 | Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(norm(f80_nd, axis=0), onp.ArrayND[np.float64 | Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(norm(c256_nd, axis=0), onp.ArrayND[np.float64 | Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(norm(py_f_1d, axis=0), np.float64)
+assert_type(norm(f64_2d, axis=(0, 1)), np.float64)
+assert_type(norm(f32_1d, axis=0), np.float32)
+assert_type(norm(f32_2d, axis=(0, 1)), np.float32)
