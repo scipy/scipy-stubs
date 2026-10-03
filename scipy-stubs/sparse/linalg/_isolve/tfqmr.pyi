@@ -22,7 +22,7 @@ _ComplexT = TypeVar("_ComplexT", bound=np.complex64 | np.complex128, default=np.
 
 ###
 
-@overload  # real
+@overload  # real, real
 def tfqmr(
     A: _ToLinearOperator[_FloatT | npc.integer | np.bool],
     b: onp.ToFloat1D,
@@ -35,7 +35,7 @@ def tfqmr(
     callback: _Callback[_FloatT] | None = None,
     show: bool = False,
 ) -> tuple[onp.Array1D[_FloatT], int]: ...
-@overload  # complex
+@overload  # complex, complex
 def tfqmr(
     A: _ToLinearOperator[_ComplexT],
     b: onp.ToComplex1D,
@@ -48,3 +48,16 @@ def tfqmr(
     callback: _Callback[_ComplexT] | None = None,
     show: bool = False,
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...
+@overload  # real, complex
+def tfqmr(
+    A: _ToLinearOperator[npc.floating64 | npc.floating32 | npc.integer | np.bool],
+    b: onp.ToJustComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: float = 1e-5,
+    atol: float = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[npc.inexact64 | npc.inexact32 | npc.integer | np.bool] | None = None,
+    callback: _Callback[np.complex128] | None = None,
+    show: bool = False,
+) -> tuple[onp.Array1D[np.complex128], int]: ...

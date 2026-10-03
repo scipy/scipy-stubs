@@ -15,3 +15,4 @@ b_c: onp.Array1D[np.complex128]
 assert_type(gcrotmk(a_f, b_f), tuple[onp.Array1D[np.float64], int])
 assert_type(gcrotmk(a_c, b_c), tuple[onp.Array1D[np.complex128], int])
 assert_type(gcrotmk(a_c, b_c, M=a_f), tuple[onp.Array1D[np.complex128], int])
+assert_type(gcrotmk(a_f, b_c), tuple[onp.Array1D[np.complex128], int])

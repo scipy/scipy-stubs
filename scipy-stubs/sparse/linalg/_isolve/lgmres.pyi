@@ -16,6 +16,7 @@ __all__ = ["lgmres"]
 
 type _Float = np.float32 | np.float64
 type _Complex = np.complex64 | np.complex128
+type _Inexact = npc.inexact64 | npc.inexact32
 
 type _ToInt = npc.integer | np.bool
 type _ToLinearOperator[_ScalarT: npc.number | np.bool] = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
@@ -53,11 +54,28 @@ def lgmres(
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
     maxiter: int = 1_000,
-    M: _ToLinearOperator[_Float | _Complex | _ToInt] | None = None,
+    M: _ToLinearOperator[_Inexact | _ToInt] | None = None,
     callback: _Callback[_ComplexT] | None = None,
     inner_m: int = 30,
     outer_k: int = 3,
-    outer_v: list[tuple[onp.ArrayND[_Float | _Complex], onp.ArrayND[_Complex] | None]] | None = None,
+    outer_v: list[tuple[onp.ArrayND[_Inexact], onp.ArrayND[_Complex] | None]] | None = None,
     store_outer_Av: bool = True,
     prepend_outer_v: bool = False,
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...
+@overload
+def lgmres(
+    A: _ToLinearOperator[_Float | _ToInt],
+    b: onp.ToJustComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int = 1_000,
+    M: _ToLinearOperator[_Inexact | _ToInt] | None = None,
+    callback: _Callback[np.complex128] | None = None,
+    inner_m: int = 30,
+    outer_k: int = 3,
+    outer_v: list[tuple[onp.ArrayND[_Inexact], onp.ArrayND[_Inexact] | None]] | None = None,
+    store_outer_Av: bool = True,
+    prepend_outer_v: bool = False,
+) -> tuple[onp.Array1D[np.complex128], int]: ...
