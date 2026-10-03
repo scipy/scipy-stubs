@@ -21,6 +21,7 @@ type _Inexact = np.float32 | np.float64 | np.complex64 | np.complex128
 type _InexactND = onp.ArrayND[_Inexact]
 
 def _F(x: onp.ArrayND[np.float64]) -> float: ...
+def _F_nd(x: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
 
 ###
 # NoConvergence
@@ -59,3 +60,4 @@ assert_type(linearmixing(_F, [1.0, 2.0]), _InexactND)
 assert_type(diagbroyden(_F, [1.0, 2.0]), _InexactND)
 assert_type(excitingmixing(_F, [1.0, 2.0]), _InexactND)
 assert_type(newton_krylov(_F, [1.0, 2.0]), _InexactND)
+assert_type(newton_krylov(_F_nd, [1.0, 2.0]), _InexactND)

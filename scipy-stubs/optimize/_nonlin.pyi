@@ -41,8 +41,8 @@ type _Callback = (
     | Callable[[onp.ArrayND[np.complex128, Any], np.float64], Unused]
 )  # fmt: skip
 type _ResidFunc = (
-    Callable[[onp.ArrayND[np.float64, Any]], onp.ToFloat]
-    | Callable[[onp.ArrayND[np.complex128, Any]], onp.ToFloat]
+    Callable[[onp.ArrayND[np.float64, Any]], onp.ToComplex | onp.ToComplexND]
+    | Callable[[onp.ArrayND[np.complex128, Any]], onp.ToComplex | onp.ToComplexND]
 )  # fmt: skip
 
 _InexactT_co = TypeVar("_InexactT_co", bound=_Inexact, default=_Inexact, covariant=True)
