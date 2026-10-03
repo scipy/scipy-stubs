@@ -4,6 +4,9 @@ scipy(\.\w+)?\._typing
 # https://github.com/python/mypy/issues/17251
 scipy\.sparse\.linalg(\._?interface|\.matfuncs)?\.LinearOperator\.__init__
 
+# abstract at runtime, but pyright rejects `super().__init__(...)` calls to abstract stub methods
+scipy\.stats\._qmc\.QMCEngine\.__init__
+
 # scipy tests
 scipy\.conftest
 scipy\.((_|\w)+\.)+(__test__|tests(\..+)?)
