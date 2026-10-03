@@ -3514,7 +3514,7 @@ def median_abs_deviation[FloatT: npc.floating](
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> FloatT | onp.ArrayND[FloatT]: ...
+) -> onp.ArrayND[FloatT] | Any: ...
 @overload  # ?d +f64  (workaround)
 def median_abs_deviation(
     x: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
@@ -3524,7 +3524,7 @@ def median_abs_deviation(
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
-) -> np.float64 | onp.ArrayND[np.float64]: ...
+) -> onp.ArrayND[np.float64] | Any: ...
 @overload  # +f64, 1d
 def median_abs_deviation(
     x: onp.ToArrayStrict1D[float, npc.integer | np.bool],
@@ -4079,7 +4079,7 @@ def pearsonr(
     axis: int = 0,
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
-) -> PearsonRResult[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
+) -> PearsonRResult[np.float64 | Any, np.float64 | Any]: ...
 @overload  # ?d|1d +floating, ?d +integer | ~float64  (workaround)
 def pearsonr(
     x: _ToFloatStrictND | onp.ToFloatStrict1D,
@@ -4088,7 +4088,7 @@ def pearsonr(
     axis: int = 0,
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
-) -> PearsonRResult[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
+) -> PearsonRResult[np.float64 | Any, np.float64 | Any]: ...
 @overload  # ?d +floating, ?d|1d +floating  (workaround)
 def pearsonr(
     x: _ToFloatStrictND,
@@ -5370,7 +5370,7 @@ def chisquare(
     sum_check: bool = True,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> Power_divergenceResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> Power_divergenceResult[np.float64 | Any]: ...
 @overload  # ?d ~f32  (workaround)
 def chisquare(
     f_obs: _AsFloat32StrictND,
@@ -5381,7 +5381,7 @@ def chisquare(
     sum_check: bool = True,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> Power_divergenceResult[np.float32 | onp.ArrayND[np.float32]]: ...
+) -> Power_divergenceResult[np.float32 | Any]: ...
 @overload  # 1d +f64
 def chisquare(
     f_obs: _AsFloat64_1D,

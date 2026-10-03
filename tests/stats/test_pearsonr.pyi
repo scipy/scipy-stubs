@@ -106,8 +106,8 @@ assert_type(pearsonr(_f64_2d, _i8_2d).statistic, onp.ArrayND[np.float64])
 assert_type(pearsonr(_f64_2d, _f16_2d).statistic, onp.ArrayND[np.float64])
 assert_type(pearsonr(_f64_2d, _f64_2d).statistic, onp.ArrayND[np.float64])
 
-assert_type(pearsonr(_f64_nd, _f64_nd).statistic, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(pearsonr(_f16_1d, _f64_nd).statistic, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(pearsonr(_f64_nd, _f64_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(pearsonr(_f16_1d, _f64_nd).statistic, np.float64 | Any)
 assert_type(pearsonr(_f16_nd, _f16_nd).statistic, np.float64 | Any | onp.ArrayND[np.float64 | Any])  # pyrefly:ignore[assert-type]
 assert_type(pearsonr(_f16_1d, _f16_nd).statistic, np.float64 | Any | onp.ArrayND[np.float64 | Any])  # pyrefly:ignore[assert-type]
 
