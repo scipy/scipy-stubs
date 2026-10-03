@@ -62,7 +62,7 @@ def lgmres(
     store_outer_Av: bool = True,
     prepend_outer_v: bool = False,
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...
-@overload  # real A, complex b
+@overload
 def lgmres(
     A: _ToLinearOperator[_Float | _ToInt],
     b: onp.ToJustComplex1D,
