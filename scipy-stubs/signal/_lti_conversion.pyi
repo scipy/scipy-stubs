@@ -26,6 +26,15 @@ _InexactDT = TypeVar("_InexactDT", bound=npc.inexact, default=np.float64)
 
 type _Tuple4[T] = tuple[T, T, T, T]
 
+type _AsF64_012D = (
+    npc.floating64 | onp.ToArray1D[float, npc.floating64 | npc.integer] | onp.ToArray2D[float, npc.floating64 | npc.integer]
+)
+type _ToF64_012D = onp.ToFloat64 | onp.ToFloat64_1D | onp.ToFloat64_2D
+type _ToFloat012D = onp.ToFloat | onp.ToFloat1D | onp.ToFloat2D
+type _AsC128_012D = npc.complexfloating128 | onp.ToJustComplex128_1D | onp.ToJustComplex128_2D
+type _ToC128_012D = onp.ToComplex128 | onp.ToComplex128_1D | onp.ToComplex128_2D
+type _ToComplex012D = onp.ToComplex | onp.ToComplex1D | onp.ToComplex2D
+
 type _SystemTF[InexactT: npc.inexact] = tuple[onp.Array2D[InexactT], onp.Array1D[InexactT]]
 type _SystemSS[InexactT: npc.inexact] = tuple[
     onp.Array2D[InexactT],
@@ -96,60 +105,26 @@ def abcd_normalize(
 
 #
 @overload  # ~f64, +f64, +f64, +f64
-def ss2tf(
-    A: onp.ToArray2D[float, npc.floating64 | npc.integer],
-    B: onp.ToFloat64_2D,
-    C: onp.ToFloat64_2D,
-    D: onp.ToFloat64_2D,
-    input: int = 0,
-) -> _SystemTF[np.float64]: ...
+def ss2tf(A: _AsF64_012D, B: _ToF64_012D, C: _ToF64_012D, D: _ToF64_012D, input: int = 0) -> _SystemTF[np.float64]: ...
 @overload  # +f64, ~f64, +f64, +f64
-def ss2tf(
-    A: onp.ToFloat64_2D,
-    B: onp.ToArray2D[float, npc.floating64 | npc.integer],
-    C: onp.ToFloat64_2D,
-    D: onp.ToFloat64_2D,
-    input: int = 0,
-) -> _SystemTF[np.float64]: ...
+def ss2tf(A: _ToF64_012D, B: _AsF64_012D, C: _ToF64_012D, D: _ToF64_012D, input: int = 0) -> _SystemTF[np.float64]: ...
 @overload  # +f64, +f64, ~f64, +f64
-def ss2tf(
-    A: onp.ToFloat64_2D,
-    B: onp.ToFloat64_2D,
-    C: onp.ToArray2D[float, npc.floating64 | npc.integer],
-    D: onp.ToFloat64_2D,
-    input: int = 0,
-) -> _SystemTF[np.float64]: ...
+def ss2tf(A: _ToF64_012D, B: _ToF64_012D, C: _AsF64_012D, D: _ToF64_012D, input: int = 0) -> _SystemTF[np.float64]: ...
 @overload  # +f64, +f64, +f64, ~f64
-def ss2tf(
-    A: onp.ToFloat64_2D,
-    B: onp.ToFloat64_2D,
-    C: onp.ToFloat64_2D,
-    D: onp.ToArray2D[float, npc.floating64 | npc.integer],
-    input: int = 0,
-) -> _SystemTF[np.float64]: ...
+def ss2tf(A: _ToF64_012D, B: _ToF64_012D, C: _ToF64_012D, D: _AsF64_012D, input: int = 0) -> _SystemTF[np.float64]: ...
 @overload  # +floating, +floating, +floating, +floating
-def ss2tf(
-    A: onp.ToFloat2D, B: onp.ToFloat2D, C: onp.ToFloat2D, D: onp.ToFloat2D, input: int = 0
-) -> _SystemTF[np.float64 | Any]: ...
+def ss2tf(A: _ToFloat012D, B: _ToFloat012D, C: _ToFloat012D, D: _ToFloat012D, input: int = 0) -> _SystemTF[np.float64 | Any]: ...
 @overload  # ~c128, +c128, +c128, +c128
-def ss2tf(
-    A: onp.ToJustComplex128_2D, B: onp.ToComplex128_2D, C: onp.ToComplex128_2D, D: onp.ToComplex128_2D, input: int = 0
-) -> _SystemTF[np.complex128]: ...
+def ss2tf(A: _AsC128_012D, B: _ToC128_012D, C: _ToC128_012D, D: _ToC128_012D, input: int = 0) -> _SystemTF[np.complex128]: ...
 @overload  # +c128, ~c128, +c128, +c128
-def ss2tf(
-    A: onp.ToComplex128_2D, B: onp.ToJustComplex128_2D, C: onp.ToComplex128_2D, D: onp.ToComplex128_2D, input: int = 0
-) -> _SystemTF[np.complex128]: ...
+def ss2tf(A: _ToC128_012D, B: _AsC128_012D, C: _ToC128_012D, D: _ToC128_012D, input: int = 0) -> _SystemTF[np.complex128]: ...
 @overload  # +c128, +c128, ~c128, +c128
-def ss2tf(
-    A: onp.ToComplex128_2D, B: onp.ToComplex128_2D, C: onp.ToJustComplex128_2D, D: onp.ToComplex128_2D, input: int = 0
-) -> _SystemTF[np.complex128]: ...
+def ss2tf(A: _ToC128_012D, B: _ToC128_012D, C: _AsC128_012D, D: _ToC128_012D, input: int = 0) -> _SystemTF[np.complex128]: ...
 @overload  # +c128, +c128, +c128, ~c128
-def ss2tf(
-    A: onp.ToComplex128_2D, B: onp.ToComplex128_2D, C: onp.ToComplex128_2D, D: onp.ToJustComplex128_2D, input: int = 0
-) -> _SystemTF[np.complex128]: ...
+def ss2tf(A: _ToC128_012D, B: _ToC128_012D, C: _ToC128_012D, D: _AsC128_012D, input: int = 0) -> _SystemTF[np.complex128]: ...
 @overload  # +complexfloating, +complexfloating, +complexfloating, +complexfloating
 def ss2tf(
-    A: onp.ToComplex2D, B: onp.ToComplex2D, C: onp.ToComplex2D, D: onp.ToComplex2D, input: int = 0
+    A: _ToComplex012D, B: _ToComplex012D, C: _ToComplex012D, D: _ToComplex012D, input: int = 0
 ) -> _SystemTF[np.complex128 | Any]: ...
 
 #

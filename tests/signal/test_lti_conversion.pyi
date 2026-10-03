@@ -26,7 +26,9 @@ _c64_1d: onp.Array1D[np.complex64]
 _c64_2d: onp.Array2D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
 _c128_2d: onp.Array2D[np.complex128]
+_py_f: float
 _py_f_1d: list[float]
+_py_c: complex
 _py_c_1d: list[complex]
 
 _tf_c_f64: TransferFunctionContinuous[np.float64]
@@ -69,8 +71,16 @@ assert_type(
 
 # ss2tf
 
-assert_type(ss2tf(_f64_2d, _f64_2d, _f64_2d, _f64_2d), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64]])
-assert_type(ss2tf(_c128_2d, _c128_2d, _c128_2d, _c128_2d), tuple[onp.Array2D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(ss2tf(_f64_2d, _f64_2d, _py_f_1d, _py_f), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64]])
+assert_type(ss2tf(_c128_2d, _c128_2d, _py_c_1d, _py_c), tuple[onp.Array2D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(ss2tf(_f32_2d, _f64_2d, _f32_2d, _py_f), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64]])
+assert_type(ss2tf(_f32_2d, _f32_2d, _py_f_1d, _py_f), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64]])
+assert_type(ss2tf(_f32_2d, _f32_2d, _f32_2d, _py_f_1d), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64]])
+assert_type(ss2tf(_f32_2d, _f32_2d, _f32_2d, _py_f), tuple[onp.Array2D[np.float64 | Any], onp.Array1D[np.float64 | Any]])
+assert_type(ss2tf(_c64_2d, _c128_2d, _c64_2d, _py_c), tuple[onp.Array2D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(ss2tf(_c64_2d, _c64_2d, _py_c_1d, _py_c), tuple[onp.Array2D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(ss2tf(_c64_2d, _c64_2d, _c64_2d, _py_c_1d), tuple[onp.Array2D[np.complex128], onp.Array1D[np.complex128]])
+assert_type(ss2tf(_c64_2d, _c64_2d, _c64_2d, _py_c), tuple[onp.Array2D[np.complex128 | Any], onp.Array1D[np.complex128 | Any]])
 
 # zpk2ss
 
