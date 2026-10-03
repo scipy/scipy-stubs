@@ -1,5 +1,5 @@
 from collections.abc import Callable, Mapping
-from typing import Concatenate, Literal, NotRequired, TypedDict, Unpack, final, overload, type_check_only
+from typing import Any, Concatenate, Literal, NotRequired, TypedDict, Unpack, final, overload, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -17,7 +17,7 @@ type _Fun[XT, FT] = Callable[Concatenate[XT, ...], FT]
 type _Float1D = onp.Array1D[np.float64]
 type _Float2D = onp.Array2D[np.float64]
 
-type _Fun1D = _Fun[_Float1D, onp.ToFloat1D]
+type _Fun1D = _Fun[_Float1D, onp.ToFloat | onp.ToFloat1D]
 type _Fun2D = _Fun[_Float2D, onp.ToFloat1D]
 type _Jac1D = _Fun[_Float1D, onp.ToFloat2D]
 type _Jac2D = _Fun[_Float2D, onp.ToFloat2D]
@@ -58,7 +58,7 @@ class _KwargsCurveFit(TypedDict, total=False):
 @type_check_only
 class _InfoDictBase(TypedDict):
     nfev: int
-    fvec: _Float1D
+    fvec: _Float1D | Any
 
 @type_check_only
 class _InfoDictSolve(_InfoDictBase, TypedDict):
@@ -129,7 +129,7 @@ def fsolve(
 @overload  # full_output=False (default)
 def leastsq(
     func: _Fun1D,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: tuple[object, ...] = (),
     Dfun: _Jac1D | None = None,
     full_output: onp.ToFalse = False,
@@ -145,7 +145,7 @@ def leastsq(
 @overload  # full_output=True (positional)
 def leastsq(
     func: _Fun1D,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: tuple[object, ...],
     Dfun: _Jac1D | None,
     full_output: onp.ToTrue,
@@ -161,7 +161,7 @@ def leastsq(
 @overload  # full_output=True (keyword)
 def leastsq(
     func: _Fun1D,
-    x0: onp.ToFloat1D,
+    x0: onp.ToFloat | onp.ToFloat1D,
     args: tuple[object, ...] = (),
     Dfun: _Jac1D | None = None,
     *,
