@@ -6,7 +6,21 @@ import numpy as np
 import optype.numpy.compat as npc
 
 import scipy.sparse as sparse
-from ._types import ScalarType, any_arr, any_mat, coo_arr, coo_mat, csc_mat, csr_arr, csr_mat, dia_mat, dok_mat, lil_mat
+from ._types import (
+    ScalarType,
+    any_arr,
+    any_mat,
+    coo_arr,
+    coo_mat,
+    coo_vec,
+    csc_arr,
+    csc_mat,
+    csr_arr,
+    csr_mat,
+    dia_mat,
+    dok_mat,
+    lil_mat,
+)
 
 i64_1d: np.ndarray[tuple[int], np.dtype[np.int64]]
 i64_2d: np.ndarray[tuple[int, int], np.dtype[np.int64]]
@@ -169,6 +183,16 @@ assert_type(_csr_arr_f64.dot(1j), sparse.csr_array[np.complex128, tuple[int, int
 assert_type(_csr_arr_bool.multiply(2), sparse.csr_array[Any, tuple[int, int]])
 
 # TODO(jorenham): test other arithmetic operations for all formats
+
+# __eq__ (same as __ne__)
+
+assert_type(csc_arr == 1, sparse.csc_array[np.bool])
+assert_type(csr_arr == csr_arr, sparse.csr_array[np.bool, tuple[int, int]])
+assert_type(coo_vec == 1, sparse.csr_array[np.bool, tuple[int]])
+assert_type(csc_mat == csr_mat, sparse.csc_matrix[np.bool])
+assert_type(csr_mat == 1, sparse.csr_matrix[np.bool])
+assert_type(csr_arr == dense_2d, np.ndarray[tuple[Any, ...], np.dtype[np.bool]])
+assert_type(csr_mat == dense_2d, np.matrix[tuple[int, int], np.dtype[np.bool]])
 
 ###
 
