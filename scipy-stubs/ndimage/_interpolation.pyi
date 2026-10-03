@@ -6,6 +6,8 @@ import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
+from scipy._lib._ccallback import LowLevelCallable
+
 __all__ = [
     "affine_transform",
     "geometric_transform",
@@ -21,7 +23,7 @@ __all__ = [
 
 type _Order = Literal[0, 1, 2, 3, 4, 5]
 type _Mode = Literal["reflect", "grid-mirror", "constant", "grid-constant", "nearest", "mirror", "wrap", "grid-wrap"]
-type _MappingFunc = Callable[Concatenate[tuple[int, ...], ...], tuple[onp.ToFloat, ...]]
+type _MappingFunc = Callable[Concatenate[tuple[int, ...], ...], tuple[onp.ToFloat, ...]] | LowLevelCallable[Any, Any]
 type _ArrayOrDType[ScalarT: np.generic] = onp.ArrayND[ScalarT] | type[ScalarT] | np.dtype[ScalarT]
 
 #
