@@ -15,7 +15,6 @@ type _Params = Mapping[str, onp.ToFloat]
 type _Bounds = Mapping[str, tuple[onp.ToFloat, onp.ToFloat]] | Sequence[tuple[onp.ToFloat, onp.ToFloat]]
 
 type _GOFStatName = Literal["ad", "ks", "cvm", "filliben"]
-type _GOFStatFunc = Callable[[rv_continuous_frozen, onp.ArrayND[np.float64]], float | np.float32 | np.float64]
 type _FitMethod = Literal["mle", "mse"]
 type _PlotType = Literal["hist", "qq", "pp", "cdf"]
 
@@ -29,6 +28,12 @@ class _PXF1n(Protocol):
 @type_check_only
 class _PXF2n(Protocol):
     def __call__(self, x: onp.ToFloat, arg0: onp.ToFloat, arg1: onp.ToFloat, /, *args: onp.ToFloat) -> np.float64: ...
+
+@type_check_only
+class _GOFStatFunc(Protocol):
+    def __call__(
+        self, dist: rv_continuous_frozen, data: onp.ArrayND[np.float64], /, *, axis: int
+    ) -> onp.ToFloat | onp.ToFloatND: ...
 
 _PXFT_co = TypeVar("_PXFT_co", bound=Callable[Concatenate[onp.ToFloat, ...], np.float64], default=_PXF1n | _PXF2n, covariant=True)
 

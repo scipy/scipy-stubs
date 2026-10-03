@@ -6,7 +6,7 @@ import numpy as np
 import optype.numpy as onp
 
 from scipy.stats import fit, goodness_of_fit
-from scipy.stats._distn_infrastructure import rv_continuous, rv_discrete
+from scipy.stats._distn_infrastructure import rv_continuous, rv_continuous_frozen, rv_discrete
 from scipy.stats._fit import FitResult, GoodnessOfFitResult, _PXF1n, _PXF2n
 
 ###
@@ -15,6 +15,8 @@ _f64_1d: onp.Array1D[np.float64]
 
 _rv_c: rv_continuous
 _rv_d: rv_discrete
+
+def _gof_stat(dist: rv_continuous_frozen, data: onp.ArrayND[np.float64], axis: int) -> onp.ArrayND[np.float64]: ...
 
 ###
 # fit
@@ -45,3 +47,4 @@ assert_type(_gof.pvalue, float | np.float64)
 assert_type(_gof.null_distribution, onp.Array1D[np.float64])
 
 assert_type(goodness_of_fit(_rv_c, _f64_1d, statistic="ks", n_mc_samples=100), GoodnessOfFitResult)
+assert_type(goodness_of_fit(_rv_c, _f64_1d, statistic=_gof_stat), GoodnessOfFitResult)
