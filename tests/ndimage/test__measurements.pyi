@@ -33,6 +33,7 @@ _i32_2d: onp.Array2D[np.int32]
 _intp_1d: onp.Array1D[np.intp]
 _f16_2d: onp.Array2D[np.float16]
 _f32_2d: onp.Array2D[np.float32]
+_f64_0d: np.float64
 _f64_2d: onp.Array2D[np.float64]
 _f80_2d: onp.Array2D[np.float128]
 _c64_2d: onp.Array2D[np.complex64]
@@ -287,11 +288,11 @@ assert_type(center_of_mass(_f64_2d, index=[1, 2, 3]), list[tuple[np.float64, ...
 # histogram
 
 # no index / scalar index -> ArrayND[np.intp]
-assert_type(histogram(_f64_2d, 0, 100, 10), onp.ArrayND[np.intp])
+assert_type(histogram(_f64_2d, _f64_0d, _f64_0d, 10), onp.ArrayND[np.intp])
 assert_type(histogram(_f64_2d, 0, 100, 10, _i32_1d, 1), onp.ArrayND[np.intp])
 
 # array index -> ArrayND[np.object_]
-assert_type(histogram(_f64_2d, 0, 100, 10, _i32_1d, _intp_1d), onp.ArrayND[np.object_])
+assert_type(histogram(_f64_2d, _f64_0d, _f64_0d, 10, _i32_1d, _intp_1d), onp.ArrayND[np.object_])
 assert_type(histogram(_f64_2d, 0, 100, 10, _i32_1d, index=_intp_1d), onp.ArrayND[np.object_])
 
 ###

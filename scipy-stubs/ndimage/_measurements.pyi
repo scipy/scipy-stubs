@@ -620,8 +620,8 @@ def center_of_mass(
 @overload
 def histogram(
     input: onp.ToComplex | onp.ToComplexND,
-    min: onp.ToInt,
-    max: onp.ToInt,
+    min: onp.ToFloat,
+    max: onp.ToFloat,
     bins: onp.ToInt,
     labels: onp.ToInt | onp.ToIntND | None = None,
     index: onp.ToInt | None = None,
@@ -629,8 +629,8 @@ def histogram(
 @overload
 def histogram(
     input: onp.ToComplex | onp.ToComplexND,
-    min: onp.ToInt,
-    max: onp.ToInt,
+    min: onp.ToFloat,
+    max: onp.ToFloat,
     bins: onp.ToInt,
     labels: onp.ToInt | onp.ToIntND,
     index: onp.ToIntND,
@@ -638,8 +638,8 @@ def histogram(
 @overload
 def histogram(
     input: onp.ToComplex | onp.ToComplexND,
-    min: onp.ToInt,
-    max: onp.ToInt,
+    min: onp.ToFloat,
+    max: onp.ToFloat,
     bins: onp.ToInt,
     labels: onp.ToInt | onp.ToIntND | None = None,
     *,
@@ -648,8 +648,8 @@ def histogram(
 @overload
 def histogram(
     input: onp.ToComplex | onp.ToComplexND,
-    min: onp.ToInt,
-    max: onp.ToInt,
+    min: onp.ToFloat,
+    max: onp.ToFloat,
     bins: onp.ToInt,
     labels: onp.ToInt | onp.ToIntND | None,
     index: onp.ToInt | onp.ToIntND | None,
