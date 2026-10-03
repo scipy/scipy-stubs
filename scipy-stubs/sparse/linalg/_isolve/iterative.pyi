@@ -50,7 +50,7 @@ def bicg[ComplexT: _Complex](
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
     maxiter: int | None = None,
-    M: _ToLinearOperator[ComplexT] | None = None,
+    M: _ToLinearOperator[_ToComplex] | None = None,
     callback: _Callback[ComplexT] | None = None,
 ) -> tuple[onp.Array1D[ComplexT], int]: ...
 
@@ -76,7 +76,7 @@ def bicgstab[ComplexT: _Complex](
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
     maxiter: int | None = None,
-    M: _ToLinearOperator[ComplexT] | None = None,
+    M: _ToLinearOperator[_ToComplex] | None = None,
     callback: _Callback[ComplexT] | None = None,
 ) -> tuple[onp.Array1D[ComplexT], int]: ...
 
@@ -102,7 +102,7 @@ def cg[ComplexT: _Complex](
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
     maxiter: int | None = None,
-    M: _ToLinearOperator[ComplexT] | None = None,
+    M: _ToLinearOperator[_ToComplex] | None = None,
     callback: _Callback[ComplexT] | None = None,
 ) -> tuple[onp.Array1D[ComplexT], int]: ...
 
@@ -158,7 +158,7 @@ def gmres[ComplexT: _Complex](
     atol: onp.ToFloat = 0.0,
     restart: int | None = None,
     maxiter: int | None = None,
-    M: _ToLinearOperator[_ToFloat] | None = None,
+    M: _ToLinearOperator[_ToComplex] | None = None,
     callback: Callable[[float], Unused] | Callable[[np.float64], Unused] | None = None,
     callback_type: Literal["pr_norm", "legacy"] | None = None,
 ) -> tuple[onp.Array1D[ComplexT], int]: ...
