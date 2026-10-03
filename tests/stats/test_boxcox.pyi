@@ -74,7 +74,6 @@ assert_type(boxcox(_i8_1d, alpha=0.1), tuple[onp.Array1D[np.float64], np.float64
 assert_type(boxcox(_f16_1d, alpha=0.1), tuple[onp.Array1D[np.float64], np.float64, tuple[float, float]])
 assert_type(boxcox(_f32_1d, alpha=0.1), tuple[onp.Array1D[np.float64], np.float64, tuple[float, float]])
 assert_type(boxcox(_f64_1d, alpha=0.1), tuple[onp.Array1D[np.float64], np.float64, tuple[float, float]])
-assert_type(boxcox(2.0, 0.5), np.float64)
 assert_type(boxcox(_f64_2d, 0.5), onp.Array2D[np.float64])
 assert_type(boxcox(_py_float_2d, 0.5), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
 
