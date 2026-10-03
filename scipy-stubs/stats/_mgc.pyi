@@ -34,7 +34,7 @@ class MGCResult(BaseBunch[np.float64, np.float64, _MGCDict]):
 def multiscale_graphcorr[T, R](
     x: onp.ArrayND[npc.floating | npc.integer | np.bool],
     y: onp.ArrayND[npc.floating | npc.integer | np.bool],
-    compute_distance: Callable[[onp.ArrayND[np.float64]], onp.ArrayND[npc.floating]] = ...,
+    compute_distance: Callable[[onp.ArrayND[np.float64]], onp.ArrayND[npc.floating]] | None = ...,
     reps: int = 1000,
     workers: int | Callable[[Callable[[T], R], Iterable[T]], Sequence[R]] = 1,
     is_twosamp: bool = False,
