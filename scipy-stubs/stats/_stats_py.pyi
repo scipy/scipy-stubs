@@ -4071,25 +4071,25 @@ def alexandergovern(
 ) -> AlexanderGovernResult[np.float64 | Any]: ...
 
 #
-@overload  # ?d +integer | ~float64, ?d|1d +floating  (workaround)
+@overload  # ?d +f64, ?d|1d +float  (workaround)
 def pearsonr(
-    x: onp.ArrayND[npc.integer | np.bool | np.float64, _JustAnyShape],
+    x: onp.ArrayND[np.float64 | npc.integer | np.bool, _JustAnyShape],
     y: _ToFloatStrictND | onp.ToFloatStrict1D,
     *,
     axis: int = 0,
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
 ) -> PearsonRResult[np.float64 | Any, np.float64 | Any]: ...
-@overload  # ?d|1d +floating, ?d +integer | ~float64  (workaround)
+@overload  # ?d|1d +float, ?d +f64  (workaround)
 def pearsonr(
     x: _ToFloatStrictND | onp.ToFloatStrict1D,
-    y: onp.ArrayND[npc.integer | np.bool | np.float64, _JustAnyShape],
+    y: onp.ArrayND[np.float64 | npc.integer | np.bool, _JustAnyShape],
     *,
     axis: int = 0,
     alternative: Alternative = "two-sided",
     method: ResamplingMethod | None = None,
 ) -> PearsonRResult[np.float64 | Any, np.float64 | Any]: ...
-@overload  # ?d +floating, ?d|1d +floating  (workaround)
+@overload  # ?d +float, ?d|1d +float  (workaround)
 def pearsonr(
     x: _ToFloatStrictND,
     y: _ToFloatStrictND | onp.ToFloatStrict1D,
@@ -4101,7 +4101,7 @@ def pearsonr(
     PearsonRResult[np.float64 | Any, np.float64 | Any]
     | PearsonRResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]
 ): ...
-@overload  # ?d|1d +floating, ?d +floating  (workaround)
+@overload  # ?d|1d +float, ?d +float  (workaround)
 def pearsonr(
     x: _ToFloatStrictND | onp.ToFloatStrict1D,
     y: _ToFloatStrictND,
