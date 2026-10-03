@@ -153,11 +153,11 @@ assert_type(is_valid_linkage(f64_2d, throw=True), bool)
 # pyrefly: ignore [no-matching-overload]
 is_valid_linkage(c128_2d, throw=True)  # type:ignore[call-overload]  # pyright:ignore[reportArgumentType, reportCallIssue]
 # is_isomorphic
-assert_type(is_isomorphic(f64_1d, f64_1d), bool)
-assert_type(is_isomorphic(c128_1d, c128_1d), bool)
-assert_type(is_isomorphic(c160_1d, c160_1d), bool)
+assert_type(is_isomorphic(f64_1d, f64_1d), np.bool)
+assert_type(is_isomorphic(c128_1d, c128_1d), np.bool)
+assert_type(is_isomorphic(c160_1d, c160_1d), np.bool)
 # is_monotonic
-assert_type(is_monotonic(f64_2d), bool)
+assert_type(is_monotonic(f64_2d), np.bool)
 # corresponds
 assert_type(correspond(f64_2d, f64_1d), bool)
 # num_obs_linkage
