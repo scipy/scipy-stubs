@@ -175,7 +175,7 @@ def to_tree(Z: onp.ToFloat2D, rd: onp.ToTrue) -> tuple[ClusterNode, list[Cluster
 
 #
 def cut_tree(
-    Z: onp.ToFloat2D, n_clusters: onp.ToInt1D | None = None, height: onp.ToFloat1D | None = None
+    Z: onp.ToFloat2D, n_clusters: onp.ToInt | onp.ToInt1D | None = None, height: onp.ToFloat | onp.ToFloat1D | None = None
 ) -> onp.Array2D[np.int64]: ...
 
 #
