@@ -270,14 +270,14 @@ def cont2discrete[SafeInexactT: np.float32 | np.float64 | np.complex64 | np.comp
 ) -> dlti[SafeInexactT, SafeFloatT]: ...
 @overload  # (+f64, +f64)
 def cont2discrete(
-    system: tuple[float | onp.ToFloat64_2D, float | onp.ToFloat64_1D],
+    system: tuple[float | onp.ToFloat64_1D | onp.ToFloat64_2D, float | onp.ToFloat64_1D],
     dt: float,
     method: _DiscretizeMethod = "zoh",
     alpha: float | None = None,
 ) -> tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], float]: ...
 @overload  # (+complex, +complex)
 def cont2discrete(
-    system: tuple[complex | onp.ToComplex2D, complex | onp.ToComplex1D],
+    system: tuple[complex | onp.ToComplex1D | onp.ToComplex2D, complex | onp.ToComplex1D],
     dt: float,
     method: _DiscretizeMethod = "zoh",
     alpha: float | None = None,

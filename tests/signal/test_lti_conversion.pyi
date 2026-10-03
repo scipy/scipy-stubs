@@ -26,6 +26,8 @@ _c64_1d: onp.Array1D[np.complex64]
 _c64_2d: onp.Array2D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
 _c128_2d: onp.Array2D[np.complex128]
+_py_f_1d: list[float]
+_py_c_1d: list[complex]
 
 _tf_c_f64: TransferFunctionContinuous[np.float64]
 _zpk_c_i64: ZerosPolesGainContinuous[np.int64, np.int64]
@@ -126,3 +128,5 @@ assert_type(cont2discrete(_zpk_c_i64, 0.01), ZerosPolesGainDiscrete[np.float64, 
 assert_type(cont2discrete(_zpk_c_f64, 0.01), ZerosPolesGainDiscrete[np.float64, np.float64])
 assert_type(cont2discrete(_ss_c_f64, 0.01), StateSpaceDiscrete[np.float64, np.float64])
 assert_type(cont2discrete(_lti_c_f64, 0.01), dlti[np.float64, np.float64])
+assert_type(cont2discrete((_py_f_1d, _py_f_1d), 0.01), tuple[onp.Array2D[np.float64], onp.Array1D[np.float64], float])
+assert_type(cont2discrete((_py_c_1d, _py_f_1d), 0.01), tuple[onp.Array2D[np.complex128 | Any], onp.Array1D[np.float64], float])
