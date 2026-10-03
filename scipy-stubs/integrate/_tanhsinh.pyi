@@ -256,3 +256,16 @@ def nsum(
     maxterms: int = 0x10_00_00,
     tolerances: _Tolerances | None = None,
 ) -> _NSumResultN: ...
+@overload  # fallback
+def nsum(
+    f: _IntegrandReal,
+    a: onp.ToFloat | onp.ToFloatND,
+    b: onp.ToFloat | onp.ToFloatND,
+    *,
+    step: onp.ToFloat | onp.ToFloatND = 1,
+    args: _ArgsND = (),
+    kwargs: _KwargsND | None = None,
+    log: bool = False,
+    maxterms: int = 0x10_00_00,
+    tolerances: _Tolerances | None = None,
+) -> _NSumResultN | Any: ...
