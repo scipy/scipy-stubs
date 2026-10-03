@@ -255,40 +255,40 @@ class FloaterHormannInterpolator(_BarycentricRational[_ScalarT_co, _ShapeT_co], 
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[npc.floating, tuple[int]],
+        self: FloaterHormannInterpolator[np.float64, tuple[int]],
         /,
-        points: onp.ToFloat1D,
-        values: onp.ToFloatStrict1D,
+        points: onp.ToFloat64_1D,
+        values: onp.ToFloat64Strict1D,
         *,
         d: int = 3,
         axis: int = 0,
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[npc.floating, tuple[int, int]],
+        self: FloaterHormannInterpolator[np.float64, tuple[int, int]],
         /,
-        points: onp.ToFloat1D,
-        values: onp.ToFloatStrict2D,
+        points: onp.ToFloat64_1D,
+        values: onp.ToFloat64Strict2D,
         *,
         d: int = 3,
         axis: int = 0,
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[npc.inexact, tuple[int]],
+        self: FloaterHormannInterpolator[np.complex128, tuple[int]],
         /,
-        points: onp.ToComplex1D,
-        values: onp.ToComplexStrict1D,
+        points: onp.ToComplex128_1D,
+        values: onp.ToComplex128Strict1D,
         *,
         d: int = 3,
         axis: int = 0,
     ) -> None: ...
     @overload
     def __init__(
-        self: FloaterHormannInterpolator[npc.inexact, tuple[int, int]],
+        self: FloaterHormannInterpolator[np.complex128, tuple[int, int]],
         /,
-        points: onp.ToComplex1D,
-        values: onp.ToComplexStrict2D,
+        points: onp.ToComplex128_1D,
+        values: onp.ToComplex128Strict2D,
         *,
         d: int = 3,
         axis: int = 0,
