@@ -30,6 +30,12 @@ _c128_2d: onp.Array2D[np.complex128]
 
 ###
 
+# CensoredData
+assert_type(
+    CensoredData(_py_float_1d, right=_py_float_1d, interval=_py_float_2d),
+    CensoredData[np.float64, np.float64, np.float64, np.float64],
+)
+
 # left_censored
 assert_type(CensoredData.left_censored(_py_float_1d, _py_bool_1d), _LeftCensored[np.float64])
 assert_type(CensoredData.left_censored(_f32_1d, _py_bool_1d), _LeftCensored[np.float64])
