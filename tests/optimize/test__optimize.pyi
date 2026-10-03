@@ -36,6 +36,7 @@ type _BracketInfo = tuple[_Float, _Float, _Float, _Float, _Float, _Float, int]
 _x0: list[float]
 _i8_1d: onp.Array1D[np.int8]
 _f64_1d: _Float1D
+_f64_2d: _Float2D
 _f32_1d: onp.Array1D[np.float32]
 _f32_2d: onp.Array2D[np.float32]
 _c64_1d: onp.Array1D[np.complex64]
@@ -53,6 +54,7 @@ assert_type(rosen(_i8_1d), np.float64)
 assert_type(rosen(_f32_1d), np.float32)
 assert_type(rosen(_c64_1d), np.complex64)
 assert_type(rosen(_f32_2d), onp.Array1D[np.float32])
+assert_type(rosen((_f64_2d, _f64_2d)), onp.ArrayND[np.float64] | Any)
 
 ###
 # rosen_der
