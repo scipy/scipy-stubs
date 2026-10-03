@@ -511,11 +511,11 @@ def softplus[FloatingT: npc.floating](
 ) -> FloatingT: ...
 @overload  # +float, dtype=T:floating
 def softplus[FloatingT: npc.floating](
-    x: onp.ToFloat, *, out: None, dtype: onp.ToDType[FloatingT], **kwds: Unpack[_KwBase]
+    x: onp.ToFloat, *, out: None = None, dtype: onp.ToDType[FloatingT], **kwds: Unpack[_KwBase]
 ) -> FloatingT: ...
 @overload  # +float, dtype=
 def softplus(
-    x: onp.ToFloat, *, out: None, dtype: onp.AnyFloatingDType | None = None, **kwds: Unpack[_KwBase]
+    x: onp.ToFloat, *, out: None = None, dtype: onp.AnyFloatingDType | None = None, **kwds: Unpack[_KwBase]
 ) -> np.float64 | Any: ...
 @overload  # 1d ~f64
 def softplus(
@@ -543,5 +543,5 @@ def softplus[FloatingT: npc.floating](
 ) -> onp.ArrayND[FloatingT]: ...
 @overload  # Nd +float, dtype=
 def softplus(
-    x: onp.ToFloatND, *, out: None, dtype: onp.AnyFloatingDType | None = None, **kwds: Unpack[_KwBase]
-) -> onp.ArrayND[np.float64 | Any]: ...
+    x: onp.ToFloatND, *, out: None = None, dtype: onp.AnyFloatingDType | None = None, **kwds: Unpack[_KwBase]
+) -> onp.ArrayND[np.float64 | Any, _WorkaroundForPyright]: ...
