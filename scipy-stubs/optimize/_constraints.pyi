@@ -198,7 +198,7 @@ class LinearConstraint(_Constraint[tuple[int], np.float64]):
     def __init__(
         self,
         /,
-        A: _ToFloat2D,
+        A: _ToFloat2D | onp.ToFloat1D,
         lb: onp.ToFloat | onp.ToFloat1D = ...,
         ub: onp.ToFloat | onp.ToFloat1D = ...,
         keep_feasible: bool | onp.ToBool1D = False,
