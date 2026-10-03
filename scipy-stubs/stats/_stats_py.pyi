@@ -3505,6 +3505,26 @@ def iqr(
 ) -> onp.ArrayND[np.float64]: ...
 
 #
+@overload  # +f64, ?d
+def median_abs_deviation(
+    x: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
+    axis: int = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
+@overload  # T@floating, ?d
+def median_abs_deviation[FloatT: npc.floating](
+    x: onp.ArrayND[FloatT, _JustAnyShape],
+    axis: int = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> FloatT | onp.ArrayND[FloatT]: ...
 @overload  # +f64, 1d
 def median_abs_deviation(
     x: onp.ToArrayStrict1D[float, npc.integer | np.bool],
@@ -4051,6 +4071,48 @@ def alexandergovern(
 ) -> AlexanderGovernResult[np.float64 | Any]: ...
 
 #
+@overload  # ?d +integer | ~float64, ?d|1d +floating
+def pearsonr(
+    x: onp.ArrayND[npc.integer | np.bool | np.float64, _JustAnyShape],
+    y: _ToFloatStrictND | onp.ToFloatStrict1D,
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
+@overload  # ?d|1d +floating, ?d +integer | ~float64
+def pearsonr(
+    x: _ToFloatStrictND | onp.ToFloatStrict1D,
+    y: onp.ArrayND[npc.integer | np.bool | np.float64, _JustAnyShape],
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> PearsonRResult[np.float64 | onp.ArrayND[np.float64], np.float64 | onp.ArrayND[np.float64]]: ...
+@overload  # ?d +floating, ?d|1d +floating
+def pearsonr(
+    x: _ToFloatStrictND,
+    y: _ToFloatStrictND | onp.ToFloatStrict1D,
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> (
+    PearsonRResult[np.float64 | Any, np.float64 | Any]
+    | PearsonRResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]
+): ...
+@overload  # ?d|1d +floating, ?d +floating
+def pearsonr(
+    x: _ToFloatStrictND | onp.ToFloatStrict1D,
+    y: _ToFloatStrictND,
+    *,
+    axis: int = 0,
+    alternative: Alternative = "two-sided",
+    method: ResamplingMethod | None = None,
+) -> (
+    PearsonRResult[np.float64 | Any, np.float64 | Any]
+    | PearsonRResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]
+): ...
 @overload  # 1d +integer | ~float64, +floating
 def pearsonr(
     x: onp.ToJustFloat64Strict1D | onp.ToIntStrict1D,
@@ -5298,6 +5360,28 @@ def power_divergence(
 ) -> Power_divergenceResult[np.float64 | Any]: ...
 
 #
+@overload  # ?d +f64
+def chisquare(
+    f_obs: _AsFloat64StrictND,
+    f_exp: _AsFloat64_ND | None = None,
+    ddof: int = 0,
+    axis: int = 0,
+    *,
+    sum_check: bool = True,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float64 | onp.ArrayND[np.float64]]: ...
+@overload  # ?d ~f32
+def chisquare(
+    f_obs: _AsFloat32StrictND,
+    f_exp: onp.ToJustFloat32_ND | None = None,
+    ddof: int = 0,
+    axis: int = 0,
+    *,
+    sum_check: bool = True,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[np.float32 | onp.ArrayND[np.float32]]: ...
 @overload  # 1d +f64
 def chisquare(
     f_obs: _AsFloat64_1D,

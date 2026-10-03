@@ -1162,6 +1162,8 @@ assert_type(chisquare(_f64_2d), Power_divergenceResult[np.float64 | Any])
 assert_type(chisquare(_f64_2d, axis=0), Power_divergenceResult[np.float64 | Any])
 assert_type(chisquare(_f64_2d, axis=1), Power_divergenceResult[np.float64 | Any])
 assert_type(chisquare(_f64_2d, keepdims=False), Power_divergenceResult[np.float64 | Any])
+assert_type(chisquare(_f64_nd), Power_divergenceResult[np.float64 | onp.ArrayND[np.float64]])  # pyrefly:ignore[assert-type]
+assert_type(chisquare(_f32_nd), Power_divergenceResult[np.float32 | onp.ArrayND[np.float32]])  # pyrefly:ignore[assert-type]
 
 # ks_1samp
 
@@ -1454,6 +1456,8 @@ assert_type(median_abs_deviation(_f64_nd, axis=None), np.float64)
 assert_type(median_abs_deviation(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(median_abs_deviation(_f64_nd, axis=None, keepdims=True), onp.ArrayND[np.float64])
 assert_type(median_abs_deviation(_f64_1d, center=np.mean), np.float64)
+assert_type(median_abs_deviation(_i16_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(median_abs_deviation(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 
 # zscore
 
