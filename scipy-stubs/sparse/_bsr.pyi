@@ -24,7 +24,9 @@ type _ToMatrix[ScalarT: npc.number | np.bool] = (
     _spbase[ScalarT] | onp.CanArrayND[ScalarT] | Sequence[onp.CanArrayND[ScalarT]] | _ToMatrixPy[ScalarT]
 )
 
-type _ToData2[ScalarT: npc.number | np.bool] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[npc.integer]]
+type _ToData2[ScalarT: npc.number | np.bool] = tuple[
+    onp.ArrayND[ScalarT], onp.ArrayND[npc.integer] | tuple[onp.ToJustInt1D, onp.ToJustInt1D]
+]
 type _ToData3[ScalarT: npc.number | np.bool] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[npc.integer], onp.ArrayND[npc.integer]]
 type _ToData[ScalarT: npc.number | np.bool] = _ToData2[ScalarT] | _ToData3[ScalarT]
 
