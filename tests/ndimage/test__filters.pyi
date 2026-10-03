@@ -102,6 +102,12 @@ assert_type(convolve(float_2d, weights_nd), onp.ArrayND[np.float64])
 assert_type(convolve(complex_2d, weights_nd), onp.ArrayND[np.complex128])
 assert_type(convolve(f64_nd, weights_nd), onp.ArrayND[np.float64])
 assert_type(convolve(c128_nd, weights_nd), onp.ArrayND[np.complex128])
+assert_type(convolve(f64_2d, weights_nd, origin=(0, 1)), onp.Array2D[np.float64])
+assert_type(convolve(int_2d, weights_nd, origin=(0, 1)), onp.ArrayND[np.intp])
+assert_type(convolve(float_2d, weights_nd, origin=(0, 1)), onp.ArrayND[np.float64])
+assert_type(convolve(complex_2d, weights_nd, origin=(0, 1)), onp.ArrayND[np.complex128])
+assert_type(convolve(f64_nd, weights_nd, output=np.float32, origin=(0, 1)), onp.ArrayND[np.float32])
+assert_type(convolve(f64_nd, weights_nd, output="f4", origin=(0, 1)), onp.ArrayND[Any])
 
 ###
 # prewitt
