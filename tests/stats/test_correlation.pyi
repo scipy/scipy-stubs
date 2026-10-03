@@ -26,10 +26,10 @@ assert_type(chatterjeexi(_f32_2d, _f32_2d).statistic, onp.Array1D[np.float32])
 assert_type(chatterjeexi(_f64_2d, _f64_2d, keepdims=True).statistic, onp.ArrayND[np.float64])
 assert_type(chatterjeexi(_f32_2d, _f32_2d, keepdims=True).statistic, onp.ArrayND[np.float32])
 assert_type(chatterjeexi(_f32_1d, _f64_1d).statistic, np.float64 | Any)
-assert_type(chatterjeexi(_f64_nd, _f64_nd).statistic, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(chatterjeexi(_f64_1d, _f64_nd).statistic, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(chatterjeexi(_f32_nd, _f32_nd).statistic, np.float32 | onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
-assert_type(chatterjeexi(_f32_1d, _f32_nd).statistic, np.float32 | onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
+assert_type(chatterjeexi(_f64_nd, _f64_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(chatterjeexi(_f64_1d, _f64_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(chatterjeexi(_f32_nd, _f32_nd).statistic, np.float32 | Any)  # pyrefly:ignore[assert-type]
+assert_type(chatterjeexi(_f32_1d, _f32_nd).statistic, np.float32 | Any)  # pyrefly:ignore[assert-type]
 
 # spearmanrho
 assert_type(spearmanrho(_f64_1d, _f64_1d).statistic, np.float64)
@@ -39,10 +39,10 @@ assert_type(spearmanrho(_f32_2d, _f32_2d).statistic, onp.Array1D[np.float32])
 assert_type(spearmanrho(_f64_2d, _f64_2d, keepdims=True).statistic, onp.ArrayND[np.float64])
 assert_type(spearmanrho(_f32_2d, _f32_2d, keepdims=True).statistic, onp.ArrayND[np.float32])
 assert_type(spearmanrho(_f32_1d, _f64_1d).statistic, np.float64 | Any)
-assert_type(spearmanrho(_f64_nd, _f64_nd).statistic, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(spearmanrho(_f64_1d, _f64_nd).statistic, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(spearmanrho(_f32_nd, _f32_nd).statistic, np.float32 | onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
-assert_type(spearmanrho(_f32_1d, _f32_nd).statistic, np.float32 | onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
+assert_type(spearmanrho(_f64_nd, _f64_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(spearmanrho(_f64_1d, _f64_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(spearmanrho(_f32_nd, _f32_nd).statistic, np.float32 | Any)  # pyrefly:ignore[assert-type]
+assert_type(spearmanrho(_f32_1d, _f32_nd).statistic, np.float32 | Any)  # pyrefly:ignore[assert-type]
 
 # theilslopes
 assert_type(theilslopes(_f64_1d).slope, np.float64)

@@ -40,7 +40,7 @@ def chatterjeexi(
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> SignificanceResult[np.float64 | Any]: ...
 @overload  # +f64, ?d +f64  (workaround)
 def chatterjeexi(
     x: _AsF64_ND,
@@ -51,7 +51,7 @@ def chatterjeexi(
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> SignificanceResult[np.float64 | Any]: ...
 @overload  # ?d ~f32, ~f32  (workaround)
 def chatterjeexi(
     x: _AsF32StrictND,
@@ -62,7 +62,7 @@ def chatterjeexi(
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float32 | onp.ArrayND[np.float32]]: ...
+) -> SignificanceResult[np.float32 | Any]: ...
 @overload  # ~f32, ?d ~f32  (workaround)
 def chatterjeexi(
     x: onp.ToJustFloat32_ND,
@@ -73,7 +73,7 @@ def chatterjeexi(
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float32 | onp.ArrayND[np.float32]]: ...
+) -> SignificanceResult[np.float32 | Any]: ...
 @overload  # 1d +f64, 1d +f64
 def chatterjeexi(
     x: _AsF64_1D,
@@ -175,7 +175,7 @@ def spearmanrho(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> SignificanceResult[np.float64 | Any]: ...
 @overload  # +f64, ?d +f64  (workaround)
 def spearmanrho(
     x: _AsF64_ND,
@@ -187,7 +187,7 @@ def spearmanrho(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64]]: ...
+) -> SignificanceResult[np.float64 | Any]: ...
 @overload  # ?d ~f32, ~f32  (workaround)
 def spearmanrho(
     x: _AsF32StrictND,
@@ -199,7 +199,7 @@ def spearmanrho(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float32 | onp.ArrayND[np.float32]]: ...
+) -> SignificanceResult[np.float32 | Any]: ...
 @overload  # ~f32, ?d ~f32  (workaround)
 def spearmanrho(
     x: onp.ToJustFloat32_ND,
@@ -211,7 +211,7 @@ def spearmanrho(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float32 | onp.ArrayND[np.float32]]: ...
+) -> SignificanceResult[np.float32 | Any]: ...
 @overload  # 1d +f64, 1d +f64
 def spearmanrho(
     x: _AsF64_1D,
