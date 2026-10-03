@@ -28,7 +28,7 @@ __all__ = [
 type _AsF64ND = onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool]
 type _AsF64Strict1D = onp.ToArrayStrict1D[float, npc.floating64 | npc.integer | np.bool]
 
-type _ToCDF = str | Callable[Concatenate[float, ...], float | np.float32]
+type _ToCDF = str | Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloat | onp.ToFloatND]
 type _ToCDFArgs = tuple[onp.ToFloat, ...]
 
 type _CV2Method = Literal["auto", "asymptotic", "exact"]
