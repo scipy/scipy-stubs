@@ -1,5 +1,5 @@
 from _typeshed import Unused
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Mapping, Sequence
 from typing import Any, Concatenate, Generic, Literal, TypedDict, overload, type_check_only
 from typing_extensions import TypeVar
 
@@ -104,6 +104,7 @@ type _CallbackFn[ScalarT: npc.inexact, ShapeT: tuple[int, ...]] = Callable[
 
 type _ToFloatOrND = onp.ToFloat | onp.ToFloatND
 type _ToComplexOrND = onp.ToComplex | onp.ToComplexND
+type _ToFloat64OrND = onp.ToFloat64 | onp.ToFloat64_ND
 
 ###
 
@@ -145,6 +146,30 @@ def root(
     callback: _CallbackFn[np.float64, tuple[int]] | None = None,
     options: _RootOptionsHybr | _RootOptionsLM | None = None,
 ) -> OptimizeResult[np.float64, tuple[int]]: ...
+@overload  # df-sane, x0: f64 array
+def root[ShapeT: tuple[int, ...]](
+    fun: Callable[Concatenate[onp.ArrayND[np.float64, ShapeT], ...], _ToFloat64OrND],
+    x0: onp.ArrayND[np.float64, ShapeT],
+    args: tuple[object, ...] = (),
+    *,
+    method: Literal["df-sane"],
+    jac: None = None,
+    tol: float | None = None,
+    callback: _CallbackFn[np.float64, ShapeT] | None = None,
+    options: _RootOptionsDFSane | None = None,
+) -> OptimizeResult[np.float64, ShapeT]: ...
+@overload  # df-sane, x0: float 1d
+def root(
+    fun: Callable[Concatenate[onp.Array1D[np.float64], ...], _ToComplexOrND],
+    x0: Sequence[float] | onp.ToIntStrict1D,
+    args: tuple[object, ...] = (),
+    *,
+    method: Literal["df-sane"],
+    jac: None = None,
+    tol: float | None = None,
+    callback: _CallbackFn[np.float64, tuple[int]] | None = None,
+    options: _RootOptionsDFSane | None = None,
+) -> OptimizeResult[np.float64, tuple[int]]: ...
 @overload  # df-sane, complex
 def root[ScalarT: npc.inexact, ShapeT: tuple[int, ...]](
     fun: Callable[Concatenate[onp.ArrayND[ScalarT, ShapeT], ...], _ToComplexOrND],
@@ -157,6 +182,30 @@ def root[ScalarT: npc.inexact, ShapeT: tuple[int, ...]](
     callback: _CallbackFn[ScalarT, ShapeT] | None = None,
     options: _RootOptionsDFSane | None = None,
 ) -> OptimizeResult[ScalarT, ShapeT]: ...
+@overload  # broyden1 | broyden2 | anderson | linearmixing | diagbroyden | excitingmixing | krylov, x0: f64 array
+def root[ShapeT: tuple[int, ...]](
+    fun: Callable[Concatenate[onp.ArrayND[np.float64, ShapeT], ...], _ToFloat64OrND],
+    x0: onp.ArrayND[np.float64, ShapeT],
+    args: tuple[object, ...] = (),
+    *,
+    method: _MethodNonlin,
+    jac: Callable[Concatenate[onp.ArrayND[np.float64, ShapeT], ...], _ToComplexOrND] | Literal[False] | None = None,
+    tol: float | None = None,
+    callback: _CallbackFn[np.float64, ShapeT] | None = None,
+    options: _RootOptionsNonlin[_JacOptionsNonlin] | None = None,
+) -> OptimizeResult[np.float64, ShapeT]: ...
+@overload  # broyden1 | broyden2 | anderson | linearmixing | diagbroyden | excitingmixing | krylov, x0: float 1d
+def root(
+    fun: Callable[Concatenate[onp.Array1D[np.float64], ...], _ToComplexOrND],
+    x0: Sequence[float] | onp.ToIntStrict1D,
+    args: tuple[object, ...] = (),
+    *,
+    method: _MethodNonlin,
+    jac: Callable[Concatenate[onp.Array1D[np.float64], ...], _ToComplexOrND] | Literal[False] | None = None,
+    tol: float | None = None,
+    callback: _CallbackFn[np.float64, tuple[int]] | None = None,
+    options: _RootOptionsNonlin[_JacOptionsNonlin] | None = None,
+) -> OptimizeResult[np.float64, tuple[int]]: ...
 @overload  # broyden1 | broyden2 | anderson | linearmixing | diagbroyden | excitingmixing | krylov
 def root[ScalarT: npc.inexact, ShapeT: tuple[int, ...]](
     fun: Callable[Concatenate[onp.ArrayND[ScalarT, ShapeT], ...], _ToComplexOrND],
@@ -169,6 +218,30 @@ def root[ScalarT: npc.inexact, ShapeT: tuple[int, ...]](
     callback: _CallbackFn[ScalarT, ShapeT] | None = None,
     options: _RootOptionsNonlin[_JacOptionsNonlin] | None = None,
 ) -> OptimizeResult[ScalarT, ShapeT]: ...
+@overload  # broyden1 | broyden2 | anderson | linearmixing | diagbroyden | excitingmixing | krylov, jac=True, x0: f64 array
+def root[ShapeT: tuple[int, ...]](
+    fun: Callable[Concatenate[onp.ArrayND[np.float64, ShapeT], ...], tuple[_ToFloat64OrND, _ToComplexOrND]],
+    x0: onp.ArrayND[np.float64, ShapeT],
+    args: tuple[object, ...] = (),
+    *,
+    method: _MethodNonlin,
+    jac: Literal[True],
+    tol: float | None = None,
+    callback: _CallbackFn[np.float64, ShapeT] | None = None,
+    options: _RootOptionsNonlin[_JacOptionsNonlin] | None = None,
+) -> OptimizeResult[np.float64, ShapeT]: ...
+@overload  # broyden1 | broyden2 | anderson | linearmixing | diagbroyden | excitingmixing | krylov, jac=True, x0: float 1d
+def root(
+    fun: Callable[Concatenate[onp.Array1D[np.float64], ...], tuple[_ToComplexOrND, _ToComplexOrND]],
+    x0: Sequence[float] | onp.ToIntStrict1D,
+    args: tuple[object, ...] = (),
+    *,
+    method: _MethodNonlin,
+    jac: Literal[True],
+    tol: float | None = None,
+    callback: _CallbackFn[np.float64, tuple[int]] | None = None,
+    options: _RootOptionsNonlin[_JacOptionsNonlin] | None = None,
+) -> OptimizeResult[np.float64, tuple[int]]: ...
 @overload  # broyden1 | broyden2 | anderson | linearmixing | diagbroyden | excitingmixing | krylov, jac=True
 def root[ScalarT: npc.inexact, ShapeT: tuple[int, ...]](
     fun: Callable[Concatenate[onp.ArrayND[ScalarT, ShapeT], ...], tuple[_ToComplexOrND, _ToComplexOrND]],
