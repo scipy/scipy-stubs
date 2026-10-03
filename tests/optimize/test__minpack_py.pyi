@@ -1,4 +1,4 @@
-from typing import Literal, assert_type
+from typing import Any, Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -15,13 +15,14 @@ type _IERFlag = Literal[1, 2, 3, 4, 5, 6, 7, 8]
 ###
 
 def _func(x: _Float1D, /) -> list[float]: ...
+def _func_0d(x: _Float1D, /) -> float: ...
 def _jac(x: _Float1D, /) -> list[list[float]]: ...
 def _model(x: _Float1D, a: float, b: float) -> list[float]: ...
 
 ###
 # fsolve
 
-assert_type(fsolve(_func, [1.0, 2.0]), _Float1D)
+assert_type(fsolve(_func_0d, 1.0), _Float1D)
 assert_type(fsolve(_func, [1.0, 2.0], (), None, True), tuple[_Float1D, _InfoDictSolve, _IERFlag, str])
 assert_type(fsolve(_func, [1.0, 2.0], full_output=True), tuple[_Float1D, _InfoDictSolve, _IERFlag, str])
 
@@ -29,11 +30,12 @@ _info: _InfoDictSolve
 assert_type(_info["nfev"], int)
 assert_type(_info["fjac"], _Float2D)
 assert_type(_info.get("njev"), int | None)
+assert_type(_info["fvec"], _Float1D | Any)
 
 ###
 # leastsq
 
-assert_type(leastsq(_func, [1.0, 2.0]), tuple[_Float1D, _IERFlag])
+assert_type(leastsq(_func_0d, 1.0), tuple[_Float1D, _IERFlag])
 assert_type(leastsq(_func, [1.0, 2.0], (), None, True), tuple[_Float1D, _Float2D | None, _InfoDictLSQ, str, _IERFlag])
 assert_type(leastsq(_func, [1.0, 2.0], full_output=True), tuple[_Float1D, _Float2D | None, _InfoDictLSQ, str, _IERFlag])
 
