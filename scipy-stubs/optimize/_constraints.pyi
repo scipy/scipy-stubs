@@ -203,7 +203,7 @@ class LinearConstraint(_Constraint[tuple[int], np.float64]):
     def residual(self, /, x: onp.ToFloat1D) -> _Tuple2[onp.Array1D[np.float64]]: ...
 
 class NonlinearConstraint(Generic[_BoundT_co, _KeepFeasibleT_co]):
-    fun: Final[Callable[[onp.Array1D[np.float64]], onp.ToFloat1D]]
+    fun: Final[Callable[[onp.Array1D[np.float64]], onp.ToFloat | onp.ToFloat1D]]
     lb: _BoundT_co
     ub: _BoundT_co
     keep_feasible: _KeepFeasibleT_co
@@ -216,7 +216,7 @@ class NonlinearConstraint(Generic[_BoundT_co, _KeepFeasibleT_co]):
     def __init__[BoundT: onp.ToFloat | onp.ToFloat1D](
         self: NonlinearConstraint[BoundT, bool],
         /,
-        fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat1D],
+        fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat | onp.ToFloat1D],
         lb: BoundT,
         ub: BoundT,
         jac: _ToJac = "2-point",
@@ -229,7 +229,7 @@ class NonlinearConstraint(Generic[_BoundT_co, _KeepFeasibleT_co]):
     def __init__(
         self,
         /,
-        fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat1D],
+        fun: Callable[[onp.Array1D[np.float64]], onp.ToFloat | onp.ToFloat1D],
         lb: _BoundT_co,
         ub: _BoundT_co,
         jac: _ToJac = "2-point",
