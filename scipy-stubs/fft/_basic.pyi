@@ -167,41 +167,8 @@ def ifft(
 
 # keep in sync with `ihfft`
 @overload
-def rfft[ShapeT: tuple[int, ...]](
-    x: _AsFloat64[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
-    norm: _Norm | None = None,
-    overwrite_x: bool = False,
-    workers: int | None = None,
-    *,
-    plan: Unused | None = None,
-) -> onp.ArrayND[np.complex128, ShapeT]: ...
-@overload
-def rfft[ShapeT: tuple[int, ...]](
-    x: _AsFloat32[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
-    norm: _Norm | None = None,
-    overwrite_x: bool = False,
-    workers: int | None = None,
-    *,
-    plan: Unused | None = None,
-) -> onp.ArrayND[np.complex64, ShapeT]: ...
-@overload
-def rfft[ShapeT: tuple[int, ...]](
-    x: _AsFloat80[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
-    norm: _Norm | None = None,
-    overwrite_x: bool = False,
-    workers: int | None = None,
-    *,
-    plan: Unused | None = None,
-) -> onp.ArrayND[np.clongdouble, ShapeT]: ...
-@overload
 def rfft(
-    x: Sequence[float],
+    x: onp.ToArrayStrict1D[float, npc.floating64 | _CoInteger],
     n: int | None = None,
     axis: int = -1,
     norm: _Norm | None = None,
@@ -210,6 +177,94 @@ def rfft(
     *,
     plan: Unused | None = None,
 ) -> onp.Array1D[np.complex128]: ...
+@overload
+def rfft(
+    x: onp.ToArrayStrict2D[float, npc.floating64 | _CoInteger],
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.Array2D[np.complex128]: ...
+@overload
+def rfft(
+    x: onp.ToArrayStrict3D[float, npc.floating64 | _CoInteger],
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.Array3D[np.complex128]: ...
+@overload
+def rfft(
+    x: onp.ToJustFloat32Strict1D,
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.Array1D[np.complex64]: ...
+@overload
+def rfft(
+    x: onp.ToJustFloat32Strict2D,
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.Array2D[np.complex64]: ...
+@overload
+def rfft(
+    x: onp.ToJustFloat32Strict3D,
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.Array3D[np.complex64]: ...
+@overload
+def rfft(
+    x: onp.ToJustLongDoubleStrict1D,
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.Array1D[np.clongdouble]: ...
+@overload
+def rfft(
+    x: onp.ToJustLongDoubleStrict2D,
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.Array2D[np.clongdouble]: ...
+@overload
+def rfft(
+    x: onp.ToJustLongDoubleStrict3D,
+    n: int | None = None,
+    axis: int = -1,
+    norm: _Norm | None = None,
+    overwrite_x: bool = False,
+    workers: int | None = None,
+    *,
+    plan: Unused | None = None,
+) -> onp.Array3D[np.clongdouble]: ...
 @overload
 def rfft(
     x: _ToFloat64_ND,
