@@ -1,6 +1,6 @@
 import types
 from collections.abc import Callable, Mapping
-from typing import Any, Final, Generic, Literal, SupportsIndex, final, overload
+from typing import Any, Final, Generic, Literal, SupportsIndex, final
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -33,12 +33,9 @@ class SuperLU(Generic[_InexactT_co]):
     def __class_getitem__(cls, arg: object, /) -> types.GenericAlias: ...
 
     #
-    @overload
-    def solve(self, /, rhs: onp.Array1D[npc.number], trans: _Trans = "N") -> onp.Array1D[_InexactT_co]: ...  # 1d
-    @overload
-    def solve(self, /, rhs: onp.Array2D[npc.number], trans: _Trans = "N") -> onp.Array2D[_InexactT_co]: ...  # 2d
-    @overload
-    def solve(self, /, rhs: onp.ArrayND[npc.number], trans: _Trans = "N") -> onp.ArrayND[_InexactT_co]: ...  # fallback
+    def solve[ShapeT: tuple[int] | tuple[int, int]](
+        self, /, rhs: onp.ArrayND[npc.number, ShapeT], trans: _Trans = "N"
+    ) -> onp.ArrayND[_InexactT_co, ShapeT]: ...
 
 def gssv(
     N: SupportsIndex,
