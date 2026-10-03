@@ -1,6 +1,6 @@
 # type-tests for `stats/_entropy.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -12,6 +12,7 @@ i8_1d: onp.Array1D[np.int8]
 i8_2d: onp.Array2D[np.int8]
 i8_3d: onp.Array3D[np.int8]
 i8_nd: onp.ArrayND[np.int8, tuple[int, ...]]
+_i8_any: onp.ArrayND[np.int8]
 
 f16_0d: np.float16
 f16_1d: onp.Array1D[np.float16]
@@ -24,12 +25,14 @@ f32_1d: onp.Array1D[np.float32]
 f32_2d: onp.Array2D[np.float32]
 f32_3d: onp.Array3D[np.float32]
 f32_nd: onp.ArrayND[np.float32, tuple[int, ...]]
+_f32_any: onp.ArrayND[np.float32]
 
 f64_0d: np.float64
 f64_1d: onp.Array1D[np.float64]
 f64_2d: onp.Array2D[np.float64]
 f64_3d: onp.Array3D[np.float64]
 f64_nd: onp.ArrayND[np.float64, tuple[int, ...]]
+_f64_any: onp.ArrayND[np.float64]
 
 f80_0d: np.float128
 f80_1d: onp.Array1D[np.float128]
@@ -165,6 +168,8 @@ assert_type(entropy(py_f_3d, py_f_0d), onp.Array2D[np.float64])
 assert_type(entropy(py_f_nd, py_f_0d), np.float64 | onp.ArrayND[np.float64])
 assert_type(entropy(py_f_nd, py_f_0d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(entropy(py_f_nd, py_f_0d, axis=None), np.float64)
+assert_type(entropy(_f64_any), np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(entropy(_f32_any), np.float32 | Any)  # pyrefly:ignore[assert-type]
 
 ###
 # differential_entropy
@@ -225,3 +230,5 @@ assert_type(differential_entropy(py_c_3d), onp.Array2D[np.complex128])
 assert_type(differential_entropy(py_c_nd), np.complex128 | onp.ArrayND[np.complex128])
 assert_type(differential_entropy(py_c_nd, keepdims=True), onp.ArrayND[np.complex128])
 assert_type(differential_entropy(py_c_nd, axis=None), np.complex128)
+assert_type(differential_entropy(_f64_any), np.float64 | Any)  # pyrefly:ignore[assert-type]
+assert_type(differential_entropy(_i8_any), np.float64 | Any)  # pyrefly:ignore[assert-type]
