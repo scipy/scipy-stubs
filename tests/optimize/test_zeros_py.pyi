@@ -15,7 +15,6 @@ type _RR = RootResults[float | np.float64]
 def f(x: float) -> float: ...
 def g(x: onp.Array1D[np.float64]) -> onp.Array1D[np.float64]: ...
 def g2(x: onp.Array2D[np.float64]) -> onp.Array2D[np.float64]: ...
-def h(x: float) -> tuple[float, float]: ...
 def k(x: float) -> tuple[float, float, float]: ...
 
 arr_1d: onp.Array1D[np.float64]
@@ -62,6 +61,7 @@ assert_type(root_scalar(f, bracket=arr_1d), RootResults[float])
 assert_type(root_scalar(f, (), "brentq", [0.0, 1.0]), RootResults[float])
 assert_type(root_scalar(f, method="secant", x0=0.5), RootResults[float])
 assert_type(root_scalar(f, method="newton", fprime=f, x0=0.5), RootResults[float])
-assert_type(root_scalar(h, method="newton", fprime=True, x0=0.5), RootResults[float])
+assert_type(root_scalar(k, method="newton", fprime=True, x0=0.5), RootResults[float])
 assert_type(root_scalar(f, method="halley", fprime=f, fprime2=f, x0=0.5), RootResults[float])
+assert_type(root_scalar(k, method="halley", fprime=True, fprime2=f, x0=0.5), RootResults[float])
 assert_type(root_scalar(k, method="halley", fprime=True, fprime2=True, x0=0.5), RootResults[float])
