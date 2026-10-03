@@ -160,6 +160,9 @@ assert_type(sp.beta(2.0, _f4), np.float32)
 assert_type(sp.beta(1, _f4), np.float32)
 assert_type(sp.beta(_f8, 2.0), np.float64)
 assert_type(sp.beta(2.0, _f8), np.float64)
+assert_type(sp.beta(1, 2.0), np.float64)
+assert_type(sp.beta(_i4_nd, 2.0), _Float64ND)
+assert_type(sp.beta(_i1_nd, _i4_nd), _Float64ND)
 
 # _UFunc21ldf
 assert_type(sp.yn.ntypes, L[3])
