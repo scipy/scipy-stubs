@@ -29,8 +29,8 @@ __all__ = [
 
 ###
 
-type __Func1[T] = Callable[[onp.ToComplex | onp.ToComplexND], T]
-type __Func2[T] = Callable[[onp.ToComplex | onp.ToComplexND, onp.ToComplex | onp.ToComplexND], T]
+type __Func1[T] = Callable[[onp.Array1D[Any]], T]
+type __Func2[T] = Callable[[onp.Array1D[Any], onp.Array1D[np.intp]], T]
 type _ComprehensionFunc[T] = __Func1[T] | __Func2[T]
 
 type _Idx0D = tuple[np.intp, ...]

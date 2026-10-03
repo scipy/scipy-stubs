@@ -47,8 +47,8 @@ _py_c_1d: list[complex]
 _i32_i64_nd: onp.ArrayND[np.int32 | np.int64]
 
 # helper function for labeled_comprehension
-def _stat_func(x: onp.ToComplex | onp.ToComplexND) -> np.float64: ...
-def _stat_func_with_positions(x: onp.ToComplex | onp.ToComplexND, positions: onp.ToComplex | onp.ToComplexND) -> np.float64: ...
+def _stat_func(x: onp.ArrayND[np.float64]) -> np.float64: ...
+def _stat_func_with_positions(x: onp.ArrayND[np.float64], positions: onp.ArrayND[np.intp]) -> np.float64: ...
 
 ###
 # label
@@ -113,7 +113,7 @@ assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, _stat_func, np.dty
 assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, _stat_func, np.intp, 0), onp.ArrayND[np.intp])
 # out_dtype: AnyFloat64DType | None -> ArrayND[np.float64]
 assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, _stat_func, None, 0.0), onp.ArrayND[np.float64])
-assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, _stat_func, np.float64, 0.0), onp.ArrayND[np.float64])
+assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, np.mean, np.float64, 0.0), onp.ArrayND[np.float64])
 # out_dtype: AnyComplex128DType -> ArrayND[np.complex128]
 assert_type(labeled_comprehension(_f64_2d, _i32_1d, _intp_1d, _stat_func, np.complex128, 0.0), onp.ArrayND[np.complex128])
 
