@@ -3505,17 +3505,7 @@ def iqr(
 ) -> onp.ArrayND[np.float64]: ...
 
 #
-@overload  # +f64, ?d  (workaround)
-def median_abs_deviation(
-    x: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
-    axis: int = 0,
-    center: np.ufunc | _MADCenterFunc | None = None,
-    scale: L["normal"] | float = 1.0,
-    nan_policy: NanPolicy = "propagate",
-    *,
-    keepdims: L[False] = False,
-) -> np.float64 | onp.ArrayND[np.float64]: ...
-@overload  # T@floating, ?d  (workaround)
+@overload  # ?d T@floating  (workaround)
 def median_abs_deviation[FloatT: npc.floating](
     x: onp.ArrayND[FloatT, _JustAnyShape],
     axis: int = 0,
@@ -3525,6 +3515,16 @@ def median_abs_deviation[FloatT: npc.floating](
     *,
     keepdims: L[False] = False,
 ) -> FloatT | onp.ArrayND[FloatT]: ...
+@overload  # ?d +f64  (workaround)
+def median_abs_deviation(
+    x: onp.ArrayND[npc.integer | np.bool, _JustAnyShape],
+    axis: int = 0,
+    center: np.ufunc | _MADCenterFunc | None = None,
+    scale: L["normal"] | float = 1.0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # +f64, 1d
 def median_abs_deviation(
     x: onp.ToArrayStrict1D[float, npc.integer | np.bool],
