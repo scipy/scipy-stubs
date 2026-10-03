@@ -247,14 +247,14 @@ def binary_fill_holes(
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.bool]: ...
 @overload
-def binary_fill_holes[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
+def binary_fill_holes(
     input: onp.ToFloatND,
     structure: onp.ToFloatND | None = None,
     *,
-    output: OutputArrayT,
+    output: onp.ArrayND[np.bool | npc.integer | npc.floating],
     origin: _Origin = 0,
     axes: tuple[int, ...] | None = None,
-) -> OutputArrayT: ...
+) -> None: ...
 
 #
 @overload
