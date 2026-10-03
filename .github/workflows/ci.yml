@@ -125,7 +125,7 @@ jobs:
         run: zuban check scipy-stubs scripts
 
       - name: mypy
-        run: mypy --cache-dir=/dev/null scipy-stubs
+        run: mypy scipy-stubs
 
       - name: basedpyright
         run: basedpyright scipy-stubs scripts
@@ -172,7 +172,7 @@ jobs:
         run: pyrefly check --output-format=github tests
 
       - name: mypy tests
-        run: mypy --cache-dir=/dev/null tests
+        run: mypy tests
 
       - name: basedpyright tests
         run: basedpyright tests
