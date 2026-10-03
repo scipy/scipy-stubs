@@ -17,6 +17,8 @@ from scipy.stats.contingency import (
 
 ###
 
+_i64: np.int64
+
 _bool_2d: onp.Array2D[np.bool]
 _i64_2d: onp.Array2D[np.int64]
 _f32_2d: onp.Array2D[np.float32]
@@ -60,7 +62,7 @@ _or = odds_ratio(_py_i_2d)
 assert_type(_or.statistic, float)
 
 # relative_risk
-_rr = relative_risk(10, 100, 5, 100)
+_rr = relative_risk(_i64, 100, 5, 100)
 assert_type(_rr.relative_risk, float)
 assert_type(_rr.exposed_cases, int)
 assert_type(_rr.exposed_total, int)
