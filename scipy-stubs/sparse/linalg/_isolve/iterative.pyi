@@ -167,6 +167,18 @@ def cgs[ComplexT: _Complex](
     M: _ToLinearOperator[_ToComplex] | None = None,
     callback: _Callback[ComplexT] | None = None,
 ) -> tuple[onp.Array1D[ComplexT], int]: ...
+@overload  # real A, complex b
+def cgs(
+    A: _ToLinearOperator[_ToFloat],
+    b: onp.ToJustComplex1D,
+    x0: onp.ToComplex1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToComplex] | None = None,
+    callback: _Callback[np.complex128] | None = None,
+) -> tuple[onp.Array1D[np.complex128], int]: ...
 
 #
 @overload  # real, callback_type: {"pr_norm", "legacy"} | None = ...
