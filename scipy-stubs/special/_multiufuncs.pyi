@@ -339,7 +339,7 @@ class _SphHarmYAll(MultiUFunc):
     @overload  # 0d +f64, 0d +f64, diff_n=2
     def __call__(
         self, /, n: int, m: int, theta: _AsF64, phi: _AsF64, *, diff_n: L[2]
-    ) -> tuple[onp.Array2D[np.complex128], onp.Array3D[np.complex128], onp.ArrayND[np.complex128, tuple[int, int, int, int]]]: ...
+    ) -> tuple[onp.Array2D[np.complex128], onp.Array3D[np.complex128], onp.Array4D[np.complex128]]: ...
     @overload  # 0d ~f32, 0d ~f32, diff_n=0
     def __call__(
         self, /, n: int, m: int, theta: onp.ToJustFloat32, phi: onp.ToJustFloat32, *, diff_n: L[0] = 0
@@ -351,7 +351,7 @@ class _SphHarmYAll(MultiUFunc):
     @overload  # 0d ~f32, 0d ~f32, diff_n=2
     def __call__(
         self, /, n: int, m: int, theta: onp.ToJustFloat32, phi: onp.ToJustFloat32, *, diff_n: L[2]
-    ) -> tuple[onp.Array2D[np.complex64], onp.Array3D[np.complex64], onp.ArrayND[np.complex64, tuple[int, int, int, int]]]: ...
+    ) -> tuple[onp.Array2D[np.complex64], onp.Array3D[np.complex64], onp.Array4D[np.complex64]]: ...
     @overload  # >=0d +f64, >0d +f64, diff_n=0
     def __call__(self, /, n: int, m: int, theta: _AsF64_D, phi: _AsF64ND, *, diff_n: L[0] = 0) -> _ArrayMin3D[np.complex128]: ...
     @overload  # >=0d +f64, >0d +f64, diff_n=1
