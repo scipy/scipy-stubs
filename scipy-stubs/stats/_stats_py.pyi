@@ -1666,7 +1666,7 @@ def tmin(
 ) -> np.int_: ...
 @overload  # 1d +float|integer
 def tmin(
-    a: onp.ToArrayStrict1D[float, npc.floating64],
+    a: onp.ToJustFloat64Strict1D,
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1716,7 +1716,7 @@ def tmin(
 ) -> onp.Array1D[np.int_]: ...
 @overload  # 2d +float|integer
 def tmin(
-    a: onp.ToArrayStrict2D[float, npc.floating64],
+    a: onp.ToJustFloat64Strict2D,
     lowerlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1766,7 +1766,7 @@ def tmin(
 ) -> np.int_: ...
 @overload  # ?d +f64, axis=None
 def tmin(
-    a: onp.ToArrayND[float, npc.floating64],
+    a: onp.ToJustFloat64_ND,
     lowerlimit: _RealLimit | None = None,
     *,
     axis: None,
@@ -1888,7 +1888,7 @@ def tmax(
 ) -> np.int_: ...
 @overload  # 1d +float|integer
 def tmax(
-    a: onp.ToArrayStrict1D[float, npc.floating64],
+    a: onp.ToJustFloat64Strict1D,
     upperlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1938,7 +1938,7 @@ def tmax(
 ) -> onp.Array1D[np.int_]: ...
 @overload  # 2d +float|integer
 def tmax(
-    a: onp.ToArrayStrict2D[float, npc.floating64],
+    a: onp.ToJustFloat64Strict2D,
     upperlimit: _RealLimit | None = None,
     axis: int = 0,
     inclusive: bool = True,
@@ -1988,7 +1988,7 @@ def tmax(
 ) -> np.int_: ...
 @overload  # ?d +f64, axis=None
 def tmax(
-    a: onp.ToArrayND[float, npc.floating64],
+    a: onp.ToJustFloat64_ND,
     upperlimit: _RealLimit | None = None,
     *,
     axis: None,
