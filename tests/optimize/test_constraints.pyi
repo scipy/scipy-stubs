@@ -2,6 +2,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.optimize import Bounds, LinearConstraint, NonlinearConstraint
 
@@ -43,6 +44,7 @@ assert_type(Bounds(f32_nd, f32_nd), Bounds[tuple[Any, ...], np.float32])
 
 assert_type(LinearConstraint([[1.0, 2.0]], 0.0, 1.0), LinearConstraint)
 assert_type(LinearConstraint([[1.0, 2.0]]), LinearConstraint)
+assert_subtype[tuple[int, ...]](LinearConstraint(floats_2d).A.shape)
 
 ###
 # NonlinearConstraint
