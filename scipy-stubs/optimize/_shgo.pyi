@@ -24,7 +24,7 @@ class _SHGOOptions(TypedDict, total=False):
     maxiter: int
     maxfev: int
     maxev: int
-    mmaxtime: float
+    maxtime: float
     minhgrd: int
     symmetry: Sequence[int] | bool
     jac: _Fun1D[onp.ToFloat1D] | bool  # gradient

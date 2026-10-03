@@ -10,4 +10,5 @@ a2d: onp.Array2D[np.float64]
 
 assert_type(quadratic_assignment(a2d, a2d), OptimizeResult)
 assert_type(quadratic_assignment(a2d, a2d, method="faq"), OptimizeResult)
+assert_type(quadratic_assignment(a2d, a2d, options={"shuffle_input": True}), OptimizeResult)
 assert_type(quadratic_assignment(a2d, a2d, method="2opt"), OptimizeResult)

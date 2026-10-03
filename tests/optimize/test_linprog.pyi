@@ -21,6 +21,7 @@ assert_type(res.message, str)
 
 _1: OptimizeResult[np.float64] = linprog(c, bounds=bound)
 _2: OptimizeResult[np.float64] = linprog(c, bounds=bounds)
+_3: OptimizeResult[np.float64] = linprog(c, method="highs", options={"mip_rel_gap": 1e-3})
 
 ###
 # linprog_verbose_callback

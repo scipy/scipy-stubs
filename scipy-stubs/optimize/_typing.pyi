@@ -46,7 +46,7 @@ class _ConstraintDict(TypedDict):
 type Constraint = LinearConstraint | NonlinearConstraint | _ConstraintDict
 type Constraints = Constraint | Sequence[Constraint]
 
-type Solver = Literal["minimize", "minimize_scalar", "root", "root_salar", "linprog", "quadratic_assignment"]
+type Solver = Literal["minimize", "minimize_scalar", "root", "root_scalar", "linprog", "quadratic_assignment"]
 type TRSolver = Literal["exact", "lsmr"]
 
 type MethodMimimize = Literal[
