@@ -1,7 +1,7 @@
 # ruff: file-ignore[typed-argument-default-in-stub]
 
 from collections.abc import Callable, Iterable
-from typing import Any, Concatenate, Final, Generic, Literal, Protocol, overload, type_check_only
+from typing import Any, Concatenate, Final, Generic, Literal, Protocol, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -81,7 +81,11 @@ class _DoesMap(Protocol):
 # NOTE: Unlike the docs suggest, `OptimizeResult` has no attributes by default:
 #   For example, `RootResult` does not have any of the documented attributes,
 #   even though it is a subclass of `OptimizeResult`
-class OptimizeResult(_RichResult[_ResultValueT_co], Generic[_ResultValueT_co]): ...
+class OptimizeResult(_RichResult[_ResultValueT_co], Generic[_ResultValueT_co]):
+    def __init__(self, /, *args: Any, **kwargs: Any) -> None: ...
+    @override
+    def __setattr__(self, name: str, value: object, /) -> None: ...
+    def __setitem__(self, key: str, value: object, /) -> None: ...
 
 #
 class OptimizeWarning(UserWarning): ...

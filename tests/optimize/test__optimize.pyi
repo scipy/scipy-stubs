@@ -4,6 +4,7 @@ import numpy as np
 import optype.numpy as onp
 
 from scipy.optimize import (
+    OptimizeResult,
     approx_fprime,
     bracket,
     brent,
@@ -196,3 +197,12 @@ assert_type(
     line_search(_f, _fprime, _f64_1d, _f64_1d, _f64_1d), tuple[_Float | None, int, int, _Float | None, _Float, _Float1D | None]
 )
 assert_type(line_search(_f, _fprime, _f64_1d, _f64_1d)[5], _Float1D | None)
+
+###
+# OptimizeResult
+
+_res: OptimizeResult[Any]
+
+assert_type(OptimizeResult(fun=1.0, x=_f64_1d), OptimizeResult[Any])
+_res.message = "done"
+_res["nit"] = 3
