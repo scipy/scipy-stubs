@@ -126,8 +126,8 @@ assert_type(Mixture([_uniform_0d_f64, _uniform_0d_f64]), Mixture[np.float64])
 ###
 # make_distribution
 
-assert_subtype[type[ContinuousDistribution]](make_distribution(_DuckRV))
-assert_subtype[type[ContinuousDistribution]](make_distribution(_MultiDuckRV))
+assert_subtype[type[ContinuousDistribution]](make_distribution(_DuckRV()))
+assert_subtype[type[ContinuousDistribution]](make_distribution(_MultiDuckRV()))
 
 _LogUniform = make_distribution(distributions.loguniform)
 assert_type(_LogUniform(a=1.0, b=2.0).cdf(1.0), np.float64)  # type:ignore[assert-type]  # mypy infers 0d
