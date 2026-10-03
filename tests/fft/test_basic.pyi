@@ -1,5 +1,3 @@
-from typing import assert_type
-
 import numpy as np
 import optype.numpy as onp
 from optype.test import assert_subtype
@@ -147,7 +145,7 @@ assert_subtype[onp.Array3D[np.complex64]](rfft(f32_3d))
 assert_subtype[onp.Array3D[np.complex128]](rfft(f64_3d))
 assert_subtype[onp.Array3D[np.clongdouble]](rfft(f80_3d))
 assert_subtype[onp.ArrayND[np.complex64]](rfft(_f32_nd))
-assert_type(rfft(_f64_nd), onp.ArrayND[np.complex128])
+assert_subtype[onp.ArrayND[np.complex128]](rfft(_f64_nd))
 assert_subtype[onp.ArrayND[np.clongdouble]](rfft(_f80_nd))
 
 # irfft (same as hfft)
