@@ -5,7 +5,7 @@ import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
-from scipy.sparse import csc_array, csc_matrix, csr_array, csr_matrix, lil_array, lil_matrix
+from scipy.sparse import csc_array, csc_matrix, csr_array, csr_matrix, lil_array, lil_matrix, sparray, spmatrix
 from scipy.sparse._base import _spbase
 
 ###
@@ -58,9 +58,16 @@ def csgraph_to_dense(csgraph: _SparseGraph[_Real], null_value: float | None = 0)
 def csgraph_to_masked(csgraph: _SparseGraph[_Real]) -> onp.MArray2D[np.float64]: ...
 
 #
+@overload
+def reconstruct_path(csgraph: spmatrix[_Real], predecessors: onp.ToFloatND, directed: bool = True) -> csr_matrix[np.float64]: ...
+@overload
 def reconstruct_path(
-    csgraph: _ToGraph, predecessors: onp.ToFloatND, directed: bool = True
+    csgraph: onp.ToFloat2D | sparray[_Real, tuple[int, int]], predecessors: onp.ToFloatND, directed: bool = True
 ) -> csr_array[np.float64, tuple[int, int]]: ...
+@overload
+def reconstruct_path(
+    csgraph: _spbase[_Real, tuple[int, int]], predecessors: onp.ToFloatND, directed: bool = True
+) -> csr_array[np.float64, tuple[int, int]] | Any: ...
 
 #
 def construct_dist_matrix(
