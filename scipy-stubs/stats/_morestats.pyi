@@ -1173,7 +1173,7 @@ def mood(
 ) -> SignificanceResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
 
 #
-@overload  # ?d ~f64
+@overload  # ?d ~f64  (workaround)
 def wilcoxon(
     x: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
     y: _AsF64 | _AsF64_ND | None = None,
@@ -1186,7 +1186,7 @@ def wilcoxon(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[False] = False,
 ) -> WilcoxonResult[np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d ~f32
+@overload  # ?d ~f32  (workaround)
 def wilcoxon(
     x: onp.ArrayND[np.float32, _JustAnyShape],
     y: onp.ToJustFloat32_ND | None = None,
