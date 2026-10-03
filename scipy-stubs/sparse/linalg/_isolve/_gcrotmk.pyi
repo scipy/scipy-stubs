@@ -58,7 +58,7 @@ def gcrotmk(
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
     maxiter: int = 1_000,
-    M: _ToLinearOperator[_ComplexT] | None = None,
+    M: _ToLinearOperator[_Inexact | _ToInt] | None = None,
     callback: _Callback[_ComplexT] | None = None,
     m: int = 20,
     k: int | None = None,

@@ -31,7 +31,7 @@ def tfqmr(
     rtol: float = 1e-5,
     atol: float = 0.0,
     maxiter: int | None = None,
-    M: _ToLinearOperator[_FloatT] | None = None,
+    M: _ToLinearOperator[npc.floating64 | npc.floating32 | npc.integer | np.bool] | None = None,
     callback: _Callback[_FloatT] | None = None,
     show: bool = False,
 ) -> tuple[onp.Array1D[_FloatT], int]: ...
@@ -44,7 +44,7 @@ def tfqmr(
     rtol: float = 1e-5,
     atol: float = 0.0,
     maxiter: int | None = None,
-    M: _ToLinearOperator[_ComplexT] | None = None,
+    M: _ToLinearOperator[npc.inexact64 | npc.inexact32 | npc.integer | np.bool] | None = None,
     callback: _Callback[_ComplexT] | None = None,
     show: bool = False,
 ) -> tuple[onp.Array1D[_ComplexT], int]: ...

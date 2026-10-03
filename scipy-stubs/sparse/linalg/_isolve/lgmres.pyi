@@ -53,7 +53,7 @@ def lgmres(
     rtol: onp.ToFloat = 1e-5,
     atol: onp.ToFloat = 0.0,
     maxiter: int = 1_000,
-    M: _ToLinearOperator[_ComplexT] | None = None,
+    M: _ToLinearOperator[_Float | _Complex | _ToInt] | None = None,
     callback: _Callback[_ComplexT] | None = None,
     inner_m: int = 30,
     outer_k: int = 3,
