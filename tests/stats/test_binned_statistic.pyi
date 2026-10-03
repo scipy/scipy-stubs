@@ -18,6 +18,8 @@ _c128_1d: onp.Array1D[np.complex128]
 _c128_2d: onp.Array2D[np.complex128]
 _c128_nd: onp.ArrayND[np.complex128]
 _g_1d: onp.Array1D[np.longdouble]
+_py_i_1d: list[int]
+_py_i_2d: list[list[int]]
 
 def _to_f64(a: onp.Array1D[np.float64], /) -> np.float64: ...
 def _to_c128(a: onp.Array1D[np.float64], /) -> np.complex128: ...
@@ -61,6 +63,9 @@ assert_subtype[onp.Array[tuple[int] | tuple[int, int], np.float64 | np.complex12
 # unsupported `values` dtypes fall back to a gradual result; on numpy<2.2 `longdouble` is `floating[Any]`, so it matches `_AsF64`
 assert_subtype[onp.ArrayND[np.float64 | np.complex128]](binned_statistic(_f64_1d, _g_1d, "median").statistic)
 
+assert_type(binned_statistic(_f64_1d, _f64_1d, range=_py_i_1d).statistic, onp.Array1D[np.float64])
+assert_type(binned_statistic(_f64_1d, _f64_1d, range=_py_i_2d).statistic, onp.Array1D[np.float64])
+
 # binned_statistic_2d
 
 assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d).x_edge, onp.Array1D[np.float64 | Any])
@@ -97,6 +102,8 @@ assert_subtype[onp.Array[tuple[int, int] | tuple[int, int, int], np.float64 | np
 )
 assert_subtype[onp.ArrayND[np.float64 | np.complex128]](binned_statistic_2d(_f64_1d, _f64_1d, _g_1d, "median").statistic)
 
+assert_type(binned_statistic_2d(_f64_1d, _f64_1d, _f64_1d, range=_py_i_2d).statistic, onp.Array2D[np.float64])
+
 # binned_statistic_dd
 
 assert_type(binned_statistic_dd(_f64_2d, _f64_1d).bin_edges, list[onp.Array1D[np.float64 | Any]])
@@ -126,3 +133,5 @@ assert_subtype[onp.ArrayND[np.float64 | np.complex128]](binned_statistic_dd(_f64
 
 _dd_result = binned_statistic_dd(_f64_2d, _f64_1d)
 assert_type(binned_statistic_dd(_f64_2d, _c128_1d, binned_statistic_result=_dd_result).statistic, onp.ArrayND[np.complex128])
+
+assert_type(binned_statistic_dd(_f64_2d, _f64_1d, range=_py_i_2d).statistic, onp.ArrayND[np.float64])
