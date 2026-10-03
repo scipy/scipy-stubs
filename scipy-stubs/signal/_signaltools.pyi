@@ -4,7 +4,7 @@
 # mypy: disable-error-code=overload-overlap
 
 from collections.abc import Callable, Sequence
-from typing import Any, Literal as L, TypedDict, overload, type_check_only
+from typing import Any, Literal as L, Never, TypedDict, overload, type_check_only
 
 import numpy as np
 import numpy_typing_compat as nptc
@@ -54,9 +54,7 @@ __all__ = [
 
 ###
 
-type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
-type _2D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
-type _3D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
+type _JustAnyShape = tuple[Never, Never, Never, Never]
 
 type _Tuple2[_T] = tuple[_T, _T]
 
@@ -143,12 +141,12 @@ def convolve(
     in1: onp.ToJustBoolND, in2: onp.ToJustBoolND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[np.bool]: ...
 @overload  # generic
-def convolve[AnyShapeT: (_1D, _2D, _3D), NumericT: npc.number | np.bool](
-    in1: nptc.CanArray[AnyShapeT, np.dtype[NumericT]],
-    in2: nptc.CanArray[AnyShapeT, np.dtype[NumericT]],
+def convolve[ShapeT: tuple[int, ...], NumericT: npc.number | np.bool](
+    in1: nptc.CanArray[ShapeT, np.dtype[NumericT]],
+    in2: nptc.CanArray[ShapeT, np.dtype[NumericT]],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
-) -> onp.ArrayND[NumericT, AnyShapeT]: ...
+) -> onp.ArrayND[NumericT, ShapeT]: ...
 @overload  # ~int64, +int64
 def convolve(
     in1: onp.ToJustInt64_ND, in2: onp.ToIntND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
@@ -184,12 +182,12 @@ def correlate(
     in1: onp.ToJustBoolND, in2: onp.ToJustBoolND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
 ) -> onp.ArrayND[np.bool]: ...
 @overload  # generic
-def correlate[AnyShapeT: (_1D, _2D, _3D), NumericT: npc.number | np.bool](
-    in1: nptc.CanArray[AnyShapeT, np.dtype[NumericT]],
-    in2: nptc.CanArray[AnyShapeT, np.dtype[NumericT]],
+def correlate[ShapeT: tuple[int, ...], NumericT: npc.number | np.bool](
+    in1: nptc.CanArray[ShapeT, np.dtype[NumericT]],
+    in2: nptc.CanArray[ShapeT, np.dtype[NumericT]],
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
-) -> onp.ArrayND[NumericT, AnyShapeT]: ...
+) -> onp.ArrayND[NumericT, ShapeT]: ...
 @overload  # ~int64, +int64
 def correlate(
     in1: onp.ToJustInt64_ND, in2: onp.ToIntND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
@@ -353,26 +351,23 @@ def correlate2d(
 
 # NOTE: keep in sync with `oaconvolve`
 @overload  # float64 | integer | bool, float64 | integer | bool, generic shape
-def fftconvolve[AnyShapeT: (_1D, _2D, _3D)](
-    in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, AnyShapeT],
-    in2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, AnyShapeT],
+def fftconvolve[ShapeT: tuple[int, ...]](
+    in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, ShapeT],
+    in2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, ShapeT],
     mode: onp.ConvolveMode = "full",
     axes: None = None,
-) -> onp.ArrayND[np.float64, AnyShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # float32 | float16, float32 | float16, generic shape
-def fftconvolve[AnyShapeT: (_1D, _2D, _3D)](
-    in1: onp.ArrayND[np.float16 | np.float32, AnyShapeT],
-    in2: onp.ArrayND[np.float16 | np.float32, AnyShapeT],
+def fftconvolve[ShapeT: tuple[int, ...]](
+    in1: onp.ArrayND[np.float16 | np.float32, ShapeT],
+    in2: onp.ArrayND[np.float16 | np.float32, ShapeT],
     mode: onp.ConvolveMode = "full",
     axes: None = None,
-) -> onp.ArrayND[np.float32, AnyShapeT]: ...
+) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # generic dtype, generic, shape
-def fftconvolve[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating, AnyShapeT: (_1D, _2D, _3D)](
-    in1: onp.ArrayND[InexactT3, AnyShapeT],
-    in2: onp.ArrayND[InexactT3, AnyShapeT],
-    mode: onp.ConvolveMode = "full",
-    axes: None = None,
-) -> onp.ArrayND[InexactT3, AnyShapeT]: ...
+def fftconvolve[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating, ShapeT: tuple[int, ...]](
+    in1: onp.ArrayND[InexactT3, ShapeT], in2: onp.ArrayND[InexactT3, ShapeT], mode: onp.ConvolveMode = "full", axes: None = None
+) -> onp.ArrayND[InexactT3, ShapeT]: ...
 @overload  # ~float64, ~float64
 def fftconvolve(
     in1: onp.SequenceND[float], in2: onp.SequenceND[float], mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
@@ -400,26 +395,23 @@ def fftconvolve(
 
 # NOTE: keep in sync with `fftconvolve`
 @overload  # float64 | integer | bool, float64 | integer | bool, generic shape
-def oaconvolve[AnyShapeT: (_1D, _2D, _3D)](
-    in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, AnyShapeT],
-    in2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, AnyShapeT],
+def oaconvolve[ShapeT: tuple[int, ...]](
+    in1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, ShapeT],
+    in2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, ShapeT],
     mode: onp.ConvolveMode = "full",
     axes: None = None,
-) -> onp.ArrayND[np.float64, AnyShapeT]: ...
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # float32 | float16, float32 | float16, generic shape
-def oaconvolve[AnyShapeT: (_1D, _2D, _3D)](
-    in1: onp.ArrayND[np.float16 | np.float32, AnyShapeT],
-    in2: onp.ArrayND[np.float16 | np.float32, AnyShapeT],
+def oaconvolve[ShapeT: tuple[int, ...]](
+    in1: onp.ArrayND[np.float16 | np.float32, ShapeT],
+    in2: onp.ArrayND[np.float16 | np.float32, ShapeT],
     mode: onp.ConvolveMode = "full",
     axes: None = None,
-) -> onp.ArrayND[np.float32, AnyShapeT]: ...
+) -> onp.ArrayND[np.float32, ShapeT]: ...
 @overload  # generic dtype, generic, shape
-def oaconvolve[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating, AnyShapeT: (_1D, _2D, _3D)](
-    in1: onp.ArrayND[InexactT3, AnyShapeT],
-    in2: onp.ArrayND[InexactT3, AnyShapeT],
-    mode: onp.ConvolveMode = "full",
-    axes: None = None,
-) -> onp.ArrayND[InexactT3, AnyShapeT]: ...
+def oaconvolve[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating, ShapeT: tuple[int, ...]](
+    in1: onp.ArrayND[InexactT3, ShapeT], in2: onp.ArrayND[InexactT3, ShapeT], mode: onp.ConvolveMode = "full", axes: None = None
+) -> onp.ArrayND[InexactT3, ShapeT]: ...
 @overload  # ~float64, ~float64
 def oaconvolve(
     in1: onp.SequenceND[float], in2: onp.SequenceND[float], mode: onp.ConvolveMode = "full", axes: AnyShape | None = None
@@ -1401,6 +1393,26 @@ def vectorstrength(events: float | onp.ToFloat1D, period: float) -> _Tuple2[np.f
 def vectorstrength(events: float | onp.ToFloat1D, period: onp.ToFloat1D) -> _Tuple2[onp.Array1D[np.float64]]: ...
 
 #
+@overload  # ?d f16
+def envelope(
+    z: onp.ArrayND[np.float16, _JustAnyShape],
+    bp_in: tuple[int | None, int | None] = (1, None),
+    *,
+    n_out: int | None = None,
+    squared: bool = False,
+    residual: _ResidualKind = "lowpass",
+    axis: int = -1,
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ?d
+def envelope[InexactT3: np.float32 | np.float64 | npc.floating80 | npc.complexfloating](
+    z: onp.ArrayND[InexactT3, _JustAnyShape],
+    bp_in: tuple[int | None, int | None] = (1, None),
+    *,
+    n_out: int | None = None,
+    squared: bool = False,
+    residual: _ResidualKind = "lowpass",
+    axis: int = -1,
+) -> onp.ArrayND[InexactT3]: ...
 @overload
 def envelope(
     z: onp.Array1D[np.float16],
