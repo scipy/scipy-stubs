@@ -172,7 +172,7 @@ def derivative[FloatT: npc.floating](
 @overload  # Nd f64
 def derivative(
     f: _FunctionNN[np.float64],
-    x: _AsF64ND,
+    x: float | npc.integer | np.bool | _AsF64ND,
     *,
     args: _ToArgsND = (),
     kwargs: _ToKwargsND | None = None,

@@ -36,7 +36,7 @@ assert_type(derivative(_f_f64_0d, _i32_0d), _DerivativeResult0D[np.float64])
 assert_type(derivative(_f_f32_0d, _f32_0d), _DerivativeResult0D[np.float32])
 
 assert_type(derivative(_f_f64_1d, _f64_1d), _DerivativeResultND[np.float64, tuple[int]])
-assert_type(derivative(_f_f64_nd, _f64_2d), _DerivativeResultND[np.float64, tuple[Any, ...]])
+assert_type(derivative(_f_f64_nd, 1.0, initial_step=_f64_2d), _DerivativeResultND[np.float64, tuple[Any, ...]])
 assert_type(
     derivative(_f_f64_1d, _f64_1d, initial_step=_f64_1d, step_direction=_i64_1d), _DerivativeResultND[np.float64, tuple[int]]
 )
