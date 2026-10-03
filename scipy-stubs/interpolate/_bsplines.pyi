@@ -1,4 +1,5 @@
 import types
+from collections.abc import Iterable
 from typing import Any, Generic, Literal, Self, SupportsIndex, TypeVar, overload, override
 
 import numpy as np
@@ -15,7 +16,8 @@ _CT_co = TypeVar("_CT_co", bound=np.float64 | np.complex128, default=np.float64,
 
 type _Extrapolate = Literal["periodic"] | bool
 type _BCType = Literal["not-a-knot", "natural", "clamped", "periodic"]
-type _ToBCType = tuple[onp.ToFloat, onp.ToFloat] | _BCType
+type _ToBCSide = Literal["clamped", "natural"] | Iterable[tuple[int, onp.ToComplex | onp.ToComplexND]] | None
+type _ToBCType = tuple[_ToBCSide, _ToBCSide] | _BCType
 type _LSQMethod = Literal["qr", "norm-eq"]
 
 ###
