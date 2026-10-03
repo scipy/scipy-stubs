@@ -292,7 +292,7 @@ def convolve[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
     output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
-    origin: int = 0,
+    origin: _Ints = 0,
     *,
     axes: ShapeT | None = None,
 ) -> np.ndarray[ShapeT, DTypeT]: ...
@@ -303,7 +303,7 @@ def convolve(
     output: onp.AnyIntPDType | None = None,
     mode: _Modes = "reflect",
     cval: float | onp.ToInt = 0.0,
-    origin: int = 0,
+    origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.intp]: ...
@@ -314,7 +314,7 @@ def convolve(
     output: onp.AnyFloat64DType | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToFloat64 = 0.0,
-    origin: int = 0,
+    origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.float64]: ...
@@ -325,7 +325,7 @@ def convolve(
     output: onp.AnyComplex128DType | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex128 = 0.0,
-    origin: int = 0,
+    origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.complex128]: ...
@@ -336,7 +336,7 @@ def convolve(
     output: onp.ArrayND[_ScalarT] | onp.ToDType[_ScalarT] | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
-    origin: int = 0,
+    origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[_ScalarT]: ...
@@ -347,7 +347,7 @@ def convolve(
     output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
-    origin: int = 0,
+    origin: _Ints = 0,
     *,
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[Any]: ...
