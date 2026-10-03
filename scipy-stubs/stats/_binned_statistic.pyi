@@ -23,11 +23,11 @@ type _AsF64 = npc.floating64 | npc.floating32 | npc.floating16 | npc.integer | n
 type _AsC128 = npc.complexfloating128 | npc.complexfloating64
 
 type _ToBins = onp.ToInt | onp.ToFloat1D
-type _ToRange = tuple[float, float] | Sequence[tuple[float, float]] | None
+type _ToRange = onp.ToFloat1D | onp.ToFloat2D | None
 
 type _ToSample = onp.ToFloat1D | onp.ToFloat2D
 type _ToBinsND = onp.ToInt | onp.ToFloat1D | Sequence[onp.ToFloat1D]
-type _ToRangeND = Sequence[tuple[float, float]] | None
+type _ToRangeND = onp.ToFloat2D | None
 
 type _Shape1Or2 = tuple[int] | tuple[int, int]
 type _Shape2Or3 = tuple[int, int] | tuple[int, int, int]
