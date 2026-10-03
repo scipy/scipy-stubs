@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from typing import Any, Literal, SupportsIndex, overload
 from typing_extensions import TypeVar
 
@@ -36,6 +36,7 @@ type _Metric1 = Literal["euclidean"]
 type _Metric2 = Literal["taxicab", "cityblock", "manhattan"]
 type _Metric3 = Literal["chessboard"]
 
+type _Ints = int | Sequence[int]
 type _Origin = int | tuple[int, ...]
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
@@ -259,7 +260,7 @@ def binary_fill_holes[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floa
 @overload
 def grey_erosion[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -272,7 +273,7 @@ def grey_erosion[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_erosion[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     *,
@@ -285,7 +286,7 @@ def grey_erosion[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_erosion(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -298,7 +299,7 @@ def grey_erosion(
 @overload
 def grey_erosion(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -311,7 +312,7 @@ def grey_erosion(
 @overload
 def grey_erosion(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -326,7 +327,7 @@ def grey_erosion(
 @overload
 def grey_dilation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -339,7 +340,7 @@ def grey_dilation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating
 @overload
 def grey_dilation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     *,
@@ -352,7 +353,7 @@ def grey_dilation[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating
 @overload
 def grey_dilation(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -365,7 +366,7 @@ def grey_dilation(
 @overload
 def grey_dilation(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -378,7 +379,7 @@ def grey_dilation(
 @overload
 def grey_dilation(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -393,7 +394,7 @@ def grey_dilation(
 @overload
 def grey_opening[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -406,7 +407,7 @@ def grey_opening[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_opening[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     *,
@@ -419,7 +420,7 @@ def grey_opening[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_opening(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -432,7 +433,7 @@ def grey_opening(
 @overload
 def grey_opening(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -445,7 +446,7 @@ def grey_opening(
 @overload
 def grey_opening(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -460,7 +461,7 @@ def grey_opening(
 @overload
 def grey_closing[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -473,7 +474,7 @@ def grey_closing[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_closing[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     *,
@@ -486,7 +487,7 @@ def grey_closing[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def grey_closing(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -499,7 +500,7 @@ def grey_closing(
 @overload
 def grey_closing(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -512,7 +513,7 @@ def grey_closing(
 @overload
 def grey_closing(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -527,7 +528,7 @@ def grey_closing(
 @overload
 def morphological_gradient[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -540,7 +541,7 @@ def morphological_gradient[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc
 @overload
 def morphological_gradient[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     *,
@@ -553,7 +554,7 @@ def morphological_gradient[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc
 @overload
 def morphological_gradient(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -566,7 +567,7 @@ def morphological_gradient(
 @overload
 def morphological_gradient(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -579,7 +580,7 @@ def morphological_gradient(
 @overload
 def morphological_gradient(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -594,7 +595,7 @@ def morphological_gradient(
 @overload
 def morphological_laplace[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -607,7 +608,7 @@ def morphological_laplace[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.
 @overload
 def morphological_laplace[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     *,
@@ -620,7 +621,7 @@ def morphological_laplace[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.
 @overload
 def morphological_laplace(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -633,7 +634,7 @@ def morphological_laplace(
 @overload
 def morphological_laplace(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -646,7 +647,7 @@ def morphological_laplace(
 @overload
 def morphological_laplace(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -661,7 +662,7 @@ def morphological_laplace(
 @overload
 def white_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -674,7 +675,7 @@ def white_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def white_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     *,
@@ -687,7 +688,7 @@ def white_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def white_tophat(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -700,7 +701,7 @@ def white_tophat(
 @overload
 def white_tophat(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -713,7 +714,7 @@ def white_tophat(
 @overload
 def white_tophat(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -728,7 +729,7 @@ def white_tophat(
 @overload
 def black_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: OutputArrayT,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -741,7 +742,7 @@ def black_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def black_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
     input: onp.ToFloatND,
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     *,
@@ -754,7 +755,7 @@ def black_tophat[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]
 @overload
 def black_tophat(
     input: onp.SequenceND[bool],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -767,7 +768,7 @@ def black_tophat(
 @overload
 def black_tophat(
     input: onp.SequenceND[list[int]] | list[int],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
@@ -780,7 +781,7 @@ def black_tophat(
 @overload
 def black_tophat(
     input: onp.SequenceND[list[float]] | list[float],
-    size: tuple[int, ...] | None = None,
+    size: _Ints | None = None,
     footprint: onp.ToFloatND | None = None,
     structure: onp.ToFloatND | None = None,
     output: None = None,
