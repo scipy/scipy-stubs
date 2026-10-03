@@ -1131,14 +1131,39 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def copy(self, /) -> Self: ...
 
     #
-    @overload
-    def reshape[Sp1DT: _spbase[_Scalar, _1D]](
-        self: Sp1DT, shape: tuple[SupportsIndex], /, *, order: L["C", "F"] = "C", copy: bool = False
-    ) -> Sp1DT: ...
-    @overload
-    def reshape[Sp2DT: _spbase[_Scalar, _2D]](
-        self: Sp2DT, shape: tuple[SupportsIndex, SupportsIndex], /, *, order: L["C", "F"] = "C", copy: bool = False
-    ) -> Sp2DT: ...
+    @overload  # sparray, 1d
+    def reshape[ST: _Scalar](
+        self: sparray[ST], shape: SupportsIndex | tuple[SupportsIndex], /, *, order: L["C", "F"] = "C", copy: bool = False
+    ) -> coo_array[ST, _1D]: ...
+    @overload  # sparray, 2d
+    def reshape[ST: _Scalar](
+        self: sparray[ST], shape: tuple[SupportsIndex, SupportsIndex], /, *, order: L["C", "F"] = "C", copy: bool = False
+    ) -> coo_array[ST, _2D]: ...
+    @overload  # sparray, 2d (varargs)
+    def reshape[ST: _Scalar](
+        self: sparray[ST], m: SupportsIndex, n: SupportsIndex, /, *, order: L["C", "F"] = "C", copy: bool = False
+    ) -> coo_array[ST, _2D]: ...
+    @overload  # sparray, >2d
+    def reshape[ST: _Scalar](
+        self: sparray[ST],
+        shape: tuple[SupportsIndex, SupportsIndex, SupportsIndex, *tuple[SupportsIndex, ...]],
+        /,
+        *,
+        order: L["C", "F"] = "C",
+        copy: bool = False,
+    ) -> coo_array[ST, tuple[int, int, int, *tuple[Any, ...]]]: ...
+    @overload  # sparray, ?d
+    def reshape[ST: _Scalar](
+        self: sparray[ST], /, *shape: SupportsIndex | tuple[SupportsIndex, ...], order: L["C", "F"] = "C", copy: bool = False
+    ) -> coo_array[ST]: ...
+    @overload  # spmatrix
+    def reshape[ST: _Scalar](
+        self: spmatrix[ST], /, *shape: SupportsIndex | tuple[SupportsIndex, ...], order: L["C", "F"] = "C", copy: bool = False
+    ) -> coo_matrix[ST]: ...
+    @overload  # fallback
+    def reshape[ST: _Scalar](
+        self: _spbase[ST], /, *shape: SupportsIndex | tuple[SupportsIndex, ...], order: L["C", "F"] = "C", copy: bool = False
+    ) -> _spbase[ST]: ...
 
     #
     @overload  # current type
