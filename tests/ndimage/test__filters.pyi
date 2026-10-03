@@ -223,6 +223,7 @@ assert_type(maximum_filter(float_2d), onp.ArrayND[np.float64])
 assert_type(maximum_filter(complex_2d), onp.ArrayND[np.complex128])
 assert_type(maximum_filter(f64_nd), onp.ArrayND[np.float64])
 assert_type(maximum_filter(c128_nd), onp.ArrayND[np.complex128])
+assert_type(maximum_filter(f64_2d, footprint=f64_2d), onp.Array2D[np.float64])
 
 ###
 # minimum_filter1d
@@ -243,6 +244,7 @@ assert_type(minimum_filter(int_2d), onp.ArrayND[np.intp])
 assert_type(minimum_filter(float_2d), onp.ArrayND[np.float64])
 assert_type(minimum_filter(c128_nd), onp.ArrayND[np.complex128])
 assert_type(minimum_filter(f64_nd), onp.ArrayND[np.float64])
+assert_type(minimum_filter(f64_2d, footprint=f64_2d), onp.Array2D[np.float64])
 
 ###
 # median_filter
@@ -253,6 +255,7 @@ assert_type(median_filter(int_2d), onp.ArrayND[np.intp])
 assert_type(median_filter(float_2d), onp.ArrayND[np.float64])
 assert_type(median_filter(c128_nd), onp.ArrayND[np.complex128])
 assert_type(median_filter(f64_nd), onp.ArrayND[np.float64])
+assert_type(median_filter(f64_2d, footprint=f64_2d), onp.Array2D[np.float64])
 
 ###
 # rank_filter
@@ -263,6 +266,7 @@ assert_type(rank_filter(int_2d, rank=1, size=3), onp.ArrayND[np.intp])
 assert_type(rank_filter(float_2d, rank=1, size=3), onp.ArrayND[np.float64])
 assert_type(rank_filter(c128_nd, rank=1, size=3), onp.ArrayND[np.complex128])
 assert_type(rank_filter(f64_nd, rank=1, size=3), onp.ArrayND[np.float64])
+assert_type(rank_filter(f64_2d, rank=1, footprint=f64_2d), onp.Array2D[np.float64])
 
 ###
 # percentile_filter
@@ -273,6 +277,7 @@ assert_type(percentile_filter(int_2d, percentile=50, size=3), onp.ArrayND[np.int
 assert_type(percentile_filter(float_2d, percentile=50, size=3), onp.ArrayND[np.float64])
 assert_type(percentile_filter(c128_nd, percentile=50, size=3), onp.ArrayND[np.complex128])
 assert_type(percentile_filter(f64_nd, percentile=50, size=3), onp.ArrayND[np.float64])
+assert_type(percentile_filter(f64_2d, percentile=50, footprint=f64_2d), onp.Array2D[np.float64])
 
 ###
 # output=type[ScalarT]: matches ToDType[_ScalarT] -> returned as ArrayND[_ScalarT]
@@ -315,6 +320,7 @@ assert_type(generic_filter1d(f64_nd, _filter1d, 3), onp.ArrayND[np.float64])
 assert_type(generic_filter(f64_2d, _filternd, size=3), onp.Array2D[np.float64])
 assert_type(generic_filter(float_2d, _filternd, size=3), onp.ArrayND[np.float64])
 assert_type(generic_filter(f64_nd, _filternd, size=3), onp.ArrayND[np.float64])
+assert_type(generic_filter(f64_2d, _filternd, footprint=f64_2d), onp.Array2D[np.float64])
 
 ###
 # vectorized_filter
