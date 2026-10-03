@@ -1,3 +1,5 @@
+from typing import assert_type
+
 import numpy as np
 import optype.numpy as onp
 from optype.test import assert_subtype
@@ -137,6 +139,9 @@ assert_subtype[onp.Array2D[np.clongdouble]](rfft(f80_2d))
 rfft(c64_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 rfft(c128_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 rfft(c160_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+assert_type(rfft(f32_3d), onp.Array3D[np.complex64])
+assert_type(rfft(f64_3d), onp.Array3D[np.complex128])
+assert_type(rfft(f80_3d), onp.Array3D[np.clongdouble])
 
 # irfft (same as hfft)
 assert_subtype[onp.Array1D[np.float64]](irfft(int_1d))
