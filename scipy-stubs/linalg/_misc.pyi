@@ -87,6 +87,42 @@ def norm(
     keepdims: Literal[False] = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float32] | Any: ...
+@overload  # 1d +inexact64, axis: 0d
+def norm(
+    a: onp.ToArrayStrict1D[complex, _SubScalar],
+    ord: _Order | None = None,
+    *,
+    axis: SupportsIndex,
+    keepdims: Literal[False] = False,
+    check_finite: bool = True,
+) -> np.float64: ...
+@overload  # 2d +inexact64, axis: 2-tuple
+def norm(
+    a: onp.ToArrayStrict2D[complex, _SubScalar],
+    ord: _Order | None = None,
+    *,
+    axis: tuple[SupportsIndex, SupportsIndex],
+    keepdims: Literal[False] = False,
+    check_finite: bool = True,
+) -> np.float64: ...
+@overload  # 1d ~inexact32, axis: 0d
+def norm(
+    a: onp.ToArrayStrict1D[Never, npc.inexact32],
+    ord: _Order | None = None,
+    *,
+    axis: SupportsIndex,
+    keepdims: Literal[False] = False,
+    check_finite: bool = True,
+) -> np.float32: ...
+@overload  # 2d ~inexact32, axis: 2-tuple
+def norm(
+    a: onp.ToArrayStrict2D[Never, npc.inexact32],
+    ord: _Order | None = None,
+    *,
+    axis: tuple[SupportsIndex, SupportsIndex],
+    keepdims: Literal[False] = False,
+    check_finite: bool = True,
+) -> np.float32: ...
 @overload  # Nd +inexact64, axis: <given>
 def norm(
     a: onp.ToArrayND[complex, _SubScalar],
