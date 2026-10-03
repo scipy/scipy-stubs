@@ -1,5 +1,5 @@
 import types
-from typing import Any, ClassVar, Final, Generic, Literal, Self, final, overload, override, type_check_only
+from typing import Any, ClassVar, Final, Generic, Literal, Protocol, Self, final, overload, override, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -92,6 +92,10 @@ type _ToLTIInexact = _ToTFContInexact | _ToZPKContInexact | _ToSSContInexact
 type _ToLTIInexact32 = _ToTFContInexact32 | _ToZPKContInexact32 | _ToSSContInexact32
 type _ToLTIInexact64 = _ToTFContInexact64 | _ToZPKContInexact64 | _ToSSContInexact64
 type _ToDLTI = _ToTFDisc | _ToZPKDisc | _ToSSDisc
+
+@type_check_only
+class _CanToTF[TransferFunctionT: TransferFunction](Protocol):
+    def to_tf(self, /) -> TransferFunctionT: ...
 
 ###
 
@@ -322,6 +326,10 @@ class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Gen
     def __new__[DTT: onp.ToComplex | None](
         cls, system: dlti[Any, Any, DTT], /, *, dt: None = None
     ) -> TransferFunctionDiscrete[np.float64 | Any, DTT]: ...
+    @overload  # system
+    def __new__[TransferFunctionT: TransferFunction](  # type: ignore[misc]
+        cls, system: _CanToTF[TransferFunctionT], /, *, dt: None = None
+    ) -> TransferFunctionT: ...
     @overload
     def __new__[DTT: onp.ToComplex](
         cls,
@@ -349,16 +357,6 @@ class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Gen
     ) -> TransferFunctionDiscrete[_Float, DTT]: ...
 
     #
-    @overload  # system: ~integer
-    def __init__[DTT: onp.ToComplex | None](
-        self: TransferFunction[np.float64, DTT], system: LinearTimeInvariant[npc.integer, npc.integer, DTT], /, *, dt: None = None
-    ) -> None: ...
-    @overload  # system
-    def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], /, *, dt: None = None) -> None: ...
-    @overload  # +float, +float
-    def __init__(self, num: _ToFloat12D, den: onp.ToFloat1D, /, *, dt: _DTT_co = ...) -> None: ...
-
-    #
     @property
     def num(self, /) -> _Array12D[_PolesT_co]: ...
     @num.setter
@@ -380,6 +378,20 @@ class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Gen
 
 @final
 class TransferFunctionContinuous(TransferFunction[_PolesT_co, None], lti[_PolesT_co, _PolesT_co], Generic[_PolesT_co]):
+    @overload  # system: ~integer
+    def __init__(
+        self: TransferFunctionContinuous[np.float64],
+        system: LinearTimeInvariant[npc.integer, npc.integer, None],
+        /,
+        *,
+        dt: None = None,
+    ) -> None: ...
+    @overload  # system
+    def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, None], /, *, dt: None = None) -> None: ...
+    @overload  # +float, +float
+    def __init__(self, numerator: _ToFloat12D, denominator: onp.ToFloat1D, /, *, dt: None = None) -> None: ...
+
+    #
     @override
     def to_tf(self, /) -> Self: ...
     @override
