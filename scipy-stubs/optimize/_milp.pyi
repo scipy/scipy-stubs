@@ -69,8 +69,8 @@ class OptimizeResult(_OptimizeResult):
 def milp(
     c: onp.ToFloat1D,
     *,
-    integrality: Sequence[_Max3 | npc.integer] | onp.CanArrayND[npc.integer] | None = None,
-    bounds: Bounds | None = None,
+    integrality: _Max3 | bool | npc.integer | Sequence[_Max3 | npc.integer] | onp.CanArrayND[npc.integer] | None = None,
+    bounds: Bounds | tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | None = None,
     constraints: _ToLinearConstraint | Sequence[_ToLinearConstraint] | None = None,
     options: _OptionsMILP | None = None,
 ) -> _OptimizeResultSucess | _OptimizeResultNoSolution: ...
