@@ -46,7 +46,7 @@ class _KwargsCurveFit(TypedDict, total=False):
     # least_squares
     x_scale: float | onp.ToFloatND | Literal["jac"]
     f_scale: float
-    loss: _Fun[_Float1D, onp.ToFloat1D] | Literal["linear", "soft_l1", "huber", "cauchy", "arctan"]
+    loss: _Fun[_Float1D, onp.ToFloat2D] | Literal["linear", "soft_l1", "huber", "cauchy", "arctan"]
     diff_step: onp.ToFloat1D | None
     tr_solver: Literal["exact", "lsmr"]
     tr_options: Mapping[str, object]

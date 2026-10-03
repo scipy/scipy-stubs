@@ -31,7 +31,7 @@ type _XScaleMethod = Literal["jac"]
 type _XScale = onp.ToFloat | onp.ToFloatND | _XScaleMethod
 
 type _LossMethod = Literal["linear", "soft_l1", "huber", "cauchy", "arctan"]
-type _Loss = _UserLossFunction | _LossMethod
+type _Loss = Callable[[_Float1D], onp.ToFloat2D] | _LossMethod
 
 type _ResidFunction = Callable[Concatenate[_Float1D, ...], onp.ToFloat1D | onp.ToFloat]
 
