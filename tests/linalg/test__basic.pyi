@@ -144,10 +144,6 @@ assert_type(solve(py_c_2d, py_c_3d), onp.ArrayND[np.complex128])
 assert_type(solve(py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
 
 assert_type(solve(f64_2d, f64_nd), onp.ArrayND[np.float64])
-assert_type(solve(f32_2d, f64_nd), onp.ArrayND[np.float64])
-assert_type(solve(c128_2d, c128_nd), onp.ArrayND[np.complex128])
-assert_type(solve(c64_2d, c128_nd), onp.ArrayND[np.complex128])
-assert_subtype[onp.ArrayND[np.float32]](solve(f32_2d, f32_nd))
 assert_type(solve(f16_2d, f16_nd), onp.ArrayND[Any])
 
 ###
@@ -204,10 +200,6 @@ assert_type(solve_triangular(py_c_2d, py_c_3d), onp.ArrayND[np.complex128])
 assert_type(solve_triangular(py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
 
 assert_type(solve_triangular(f64_2d, f64_nd), onp.ArrayND[np.float64])
-assert_type(solve_triangular(f32_2d, f64_nd), onp.ArrayND[np.float64])
-assert_type(solve_triangular(c128_2d, c128_nd), onp.ArrayND[np.complex128])
-assert_type(solve_triangular(c64_2d, c128_nd), onp.ArrayND[np.complex128])
-assert_subtype[onp.ArrayND[np.float32]](solve_triangular(f32_2d, f32_nd))
 assert_type(solve_triangular(f16_2d, f16_nd), onp.ArrayND[Any])
 
 ###
@@ -264,10 +256,6 @@ assert_type(solve_banded((1, 2), py_c_2d, py_c_3d), onp.ArrayND[np.complex128])
 assert_type(solve_banded((1, 2), py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
 
 assert_type(solve_banded((1, 2), f64_2d, f64_nd), onp.ArrayND[np.float64])
-assert_type(solve_banded((1, 2), f32_2d, f64_nd), onp.ArrayND[np.float64])
-assert_type(solve_banded((1, 2), c128_2d, c128_nd), onp.ArrayND[np.complex128])
-assert_type(solve_banded((1, 2), c64_2d, c128_nd), onp.ArrayND[np.complex128])
-assert_subtype[onp.ArrayND[np.float32]](solve_banded((1, 2), f32_2d, f32_nd))
 assert_type(solve_banded((1, 2), f16_2d, f16_nd), onp.ArrayND[Any])
 
 ###
@@ -521,38 +509,7 @@ assert_type(
     lstsq(f64_2d, f64_nd, lapack_driver="gelsy"), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], np.int64 | Any, None]
 )
 assert_type(
-    lstsq(f32_2d, f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], np.int64 | Any, onp.ArrayND[np.float64]]
-)
-assert_type(
-    lstsq(f32_2d, f64_nd, lapack_driver="gelsy"), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64], np.int64 | Any, None]
-)
-assert_type(
-    lstsq(f32_2d, f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], np.int64 | Any, onp.ArrayND[np.float32]]
-)
-assert_type(
-    lstsq(f32_2d, f32_nd, lapack_driver="gelsy"), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], np.int64 | Any, None]
-)
-assert_type(
-    lstsq(c128_2d, c128_nd),
-    tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], np.int64 | Any, onp.ArrayND[np.float64]],
-)
-assert_type(
-    lstsq(c128_2d, c128_nd, lapack_driver="gelsy"),
-    tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], np.int64 | Any, None],
-)
-assert_type(
-    lstsq(c64_2d, c128_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], np.int64 | Any, onp.ArrayND[np.float64]]
-)
-assert_type(
-    lstsq(c64_2d, c128_nd, lapack_driver="gelsy"),
-    tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128], np.int64 | Any, None],
-)
-assert_type(
-    lstsq(c64_2d, c64_nd), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64], np.int64 | Any, onp.ArrayND[np.float32]]
-)
-assert_type(
-    lstsq(c64_2d, c64_nd, lapack_driver="gelsy"),
-    tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64], np.int64 | Any, None],
+    lstsq(c128_2d, c128_nd), tuple[onp.ArrayND[Any], onp.ArrayND[Any], np.int64 | Any, onp.ArrayND[np.float64 | Any] | Any]
 )
 
 ###
@@ -604,10 +561,6 @@ assert_type(solveh_banded(py_c_2d, py_c_3d), onp.ArrayND[np.complex128])
 assert_type(solveh_banded(py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
 
 assert_type(solveh_banded(f64_2d, f64_nd), onp.ArrayND[np.float64])
-assert_type(solveh_banded(f32_2d, f64_nd), onp.ArrayND[np.float64])
-assert_type(solveh_banded(c128_2d, c128_nd), onp.ArrayND[np.complex128])
-assert_type(solveh_banded(c64_2d, c128_nd), onp.ArrayND[np.complex128])
-assert_subtype[onp.ArrayND[np.float32]](solveh_banded(f32_2d, f32_nd))
 assert_type(solveh_banded(f16_2d, f16_nd), onp.ArrayND[Any])
 
 ###

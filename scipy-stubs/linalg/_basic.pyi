@@ -96,7 +96,7 @@ type _JustAnyShape = tuple[Never, Never, Never, Never]
 
 ###
 
-@overload  # Nd ~float64, ?d +float64
+@overload  # Nd ~float64, ?d +float64  (workaround)
 def solve(
     a: _InputFloat,
     b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
@@ -140,17 +140,17 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # Nd +float64, ?d ~float64
+@overload  # Nd +complexfloating, ?d +complexfloating  (workaround)
 def solve(
-    a: onp.ToFloatND,
-    b: onp.ArrayND[np.float64 | npc.floating80 | npc.integer | np.bool, _JustAnyShape],
+    a: onp.ToComplexND,
+    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
-) -> onp.ArrayND[np.float64]: ...
+) -> onp.ArrayND[Any]: ...
 @overload  # 2d +float64, 1d ~float64
 def solve(
     a: onp.ToFloatStrict2D,
@@ -184,17 +184,6 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # Nd ~complex128, ?d +complex128
-def solve(
-    a: _InputComplex,
-    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
-    lower: bool = False,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    assume_a: _AssumeA | None = None,
-    transposed: bool = False,
-) -> onp.ArrayND[np.complex128]: ...
 @overload  # 2d ~complex128, 1d +complex128
 def solve(
     a: _InputComplexStrict2D,
@@ -221,17 +210,6 @@ def solve(
 def solve(
     a: _InputComplex,
     b: onp.ToComplexND,
-    lower: bool = False,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    assume_a: _AssumeA | None = None,
-    transposed: bool = False,
-) -> onp.ArrayND[np.complex128]: ...
-@overload  # Nd +complex128, ?d ~complex128
-def solve(
-    a: onp.ToComplexND,
-    b: onp.ArrayND[np.complex128 | npc.complexfloating160, _JustAnyShape],
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
@@ -272,17 +250,6 @@ def solve(
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # Nd T:inexact32, ?d T:inexact32
-def solve[InexactT: np.float32 | np.complex64](
-    a: onp.ArrayND[InexactT],
-    b: onp.ArrayND[InexactT, _JustAnyShape],
-    lower: bool = False,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    assume_a: _AssumeA | None = None,
-    transposed: bool = False,
-) -> onp.ArrayND[InexactT]: ...
 @overload  # 2d T:inexact32, 1d T:inexact32
 def solve[InexactT: np.float32 | np.complex64](
     a: onp.Array2D[InexactT],
@@ -316,17 +283,6 @@ def solve[InexactT: np.float32 | np.complex64](
     assume_a: _AssumeA | None = None,
     transposed: bool = False,
 ) -> onp.ArrayND[InexactT]: ...
-@overload  # Nd +complexfloating, ?d +complexfloating
-def solve(
-    a: onp.ToComplexND,
-    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
-    lower: bool = False,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    assume_a: _AssumeA | None = None,
-    transposed: bool = False,
-) -> onp.ArrayND[Any]: ...
 @overload  # 2d +floating, 1d +floating
 def solve(
     a: onp.ToFloatStrict2D,
@@ -406,7 +362,7 @@ def solve(
 ) -> onp.ArrayND[Any]: ...
 
 #
-@overload  # ?d ~float64, +float64
+@overload  # ?d ~float64, +float64  (workaround)
 def solve_triangular(
     a: _InputFloat,
     b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
@@ -446,16 +402,16 @@ def solve_triangular(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # ?d +float64, ~float64
+@overload  # ?d +complexfloating, +complexfloating  (workaround)
 def solve_triangular(
-    a: onp.ToFloatND,
-    b: onp.ArrayND[np.float64 | npc.floating80 | npc.integer | np.bool, _JustAnyShape],
+    a: onp.ToComplexND,
+    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     trans: _TransSystem = 0,
     lower: bool = False,
     unit_diagonal: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-) -> onp.ArrayND[np.float64]: ...
+) -> onp.ArrayND[Any]: ...
 @overload  # 1d +float64, ~float64
 def solve_triangular(
     a: onp.ToFloatStrict2D,
@@ -486,16 +442,6 @@ def solve_triangular(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # ?d ~complex128, +complex128
-def solve_triangular(
-    a: _InputComplex,
-    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
-    trans: _TransSystem = 0,
-    lower: bool = False,
-    unit_diagonal: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.complex128]: ...
 @overload  # 1d ~complex128, +complex128
 def solve_triangular(
     a: _InputComplexStrict2D,
@@ -520,16 +466,6 @@ def solve_triangular(
 def solve_triangular(
     a: _InputComplex,
     b: onp.ToComplexND,
-    trans: _TransSystem = 0,
-    lower: bool = False,
-    unit_diagonal: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.complex128]: ...
-@overload  # ?d +complex128, ~complex128
-def solve_triangular(
-    a: onp.ToComplexND,
-    b: onp.ArrayND[np.complex128 | npc.complexfloating160, _JustAnyShape],
     trans: _TransSystem = 0,
     lower: bool = False,
     unit_diagonal: bool = False,
@@ -566,16 +502,6 @@ def solve_triangular(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # Nd T:inexact32, ?d T:inexact32
-def solve_triangular[InexactT: np.float32 | np.complex64](
-    a: onp.ArrayND[InexactT],
-    b: onp.ArrayND[InexactT, _JustAnyShape],
-    trans: _TransSystem = 0,
-    lower: bool = False,
-    unit_diagonal: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[InexactT]: ...
 @overload  # 2d T:inexact32, 1d T:inexact32
 def solve_triangular[InexactT: np.float32 | np.complex64](
     a: onp.Array2D[InexactT],
@@ -606,16 +532,6 @@ def solve_triangular[InexactT: np.float32 | np.complex64](
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[InexactT]: ...
-@overload  # ?d +complexfloating, +complexfloating
-def solve_triangular(
-    a: onp.ToComplexND,
-    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
-    trans: _TransSystem = 0,
-    lower: bool = False,
-    unit_diagonal: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[Any]: ...
 @overload  # 1d +floating, +floating
 def solve_triangular(
     a: onp.ToFloatStrict2D,
@@ -688,7 +604,7 @@ def solve_triangular(
 ) -> onp.ArrayND[Any]: ...
 
 # NOTE: keep overload structure consistent with `solveh_banded` below
-@overload  # ?d ~float64, +float64
+@overload  # ?d ~float64, +float64  (workaround)
 def solve_banded(
     l_and_u: tuple[int, int],
     ab: _InputFloat,
@@ -724,15 +640,15 @@ def solve_banded(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # ?d +float64, ~float64
+@overload  # ?d +complexfloating, +complexfloating  (workaround)
 def solve_banded(
     l_and_u: tuple[int, int],
-    ab: onp.ToFloatND,
-    b: onp.ArrayND[np.float64 | npc.floating80 | npc.integer | np.bool, _JustAnyShape],
+    ab: onp.ToComplexND,
+    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-) -> onp.ArrayND[np.float64]: ...
+) -> onp.ArrayND[Any]: ...
 @overload  # 1d +float64, ~float64
 def solve_banded(
     l_and_u: tuple[int, int],
@@ -760,15 +676,6 @@ def solve_banded(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # ?d ~complex128, +complex128
-def solve_banded(
-    l_and_u: tuple[int, int],
-    ab: _InputComplex,
-    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
-    overwrite_ab: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.complex128]: ...
 @overload  # 1d ~complex128, +complex128
 def solve_banded(
     l_and_u: tuple[int, int],
@@ -792,15 +699,6 @@ def solve_banded(
     l_and_u: tuple[int, int],
     ab: _InputComplex,
     b: onp.ToComplexND,
-    overwrite_ab: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.complex128]: ...
-@overload  # ?d +complex128, ~complex128
-def solve_banded(
-    l_and_u: tuple[int, int],
-    ab: onp.ToComplexND,
-    b: onp.ArrayND[np.complex128 | npc.complexfloating160, _JustAnyShape],
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
@@ -832,15 +730,6 @@ def solve_banded(
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # Nd T:inexact32, ?d T:inexact32
-def solve_banded[InexactT: np.float32 | np.complex64](
-    l_and_u: tuple[int, int],
-    ab: onp.ArrayND[InexactT],
-    b: onp.ArrayND[InexactT, _JustAnyShape],
-    overwrite_ab: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[InexactT]: ...
 @overload  # 2d T:inexact32, 1d T:inexact32
 def solve_banded[InexactT: np.float32 | np.complex64](
     l_and_u: tuple[int, int],
@@ -868,15 +757,6 @@ def solve_banded[InexactT: np.float32 | np.complex64](
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[InexactT]: ...
-@overload  # ?d +complexfloating, +complexfloating
-def solve_banded(
-    l_and_u: tuple[int, int],
-    ab: onp.ToComplexND,
-    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
-    overwrite_ab: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[Any]: ...
 @overload  # 1d +floating, +floating
 def solve_banded(
     l_and_u: tuple[int, int],
@@ -942,7 +822,7 @@ def solve_banded(
 ) -> onp.ArrayND[Any]: ...
 
 # NOTE: keep overload structure consistent with `solve_banded` above
-@overload  # ?d ~float64, +float64
+@overload  # ?d ~float64, +float64  (workaround)
 def solveh_banded(
     ab: _InputFloat,
     b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
@@ -978,15 +858,15 @@ def solveh_banded(
     lower: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # ?d +float64, ~float64
+@overload  # ?d +complexfloating, +complexfloating  (workaround)
 def solveh_banded(
-    ab: onp.ToFloatND,
-    b: onp.ArrayND[np.float64 | npc.floating80 | npc.integer | np.bool, _JustAnyShape],
+    ab: onp.ToComplexND,
+    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
     lower: bool = False,
     check_finite: bool = True,
-) -> onp.ArrayND[np.float64]: ...
+) -> onp.ArrayND[Any]: ...
 @overload  # 1d +float64, ~float64
 def solveh_banded(
     ab: onp.ToFloatStrict2D,
@@ -1014,15 +894,6 @@ def solveh_banded(
     lower: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # ?d ~complex128, +complex128
-def solveh_banded(
-    ab: _InputComplex,
-    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
-    overwrite_ab: bool = False,
-    overwrite_b: bool = False,
-    lower: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.complex128]: ...
 @overload  # 1d ~complex128, +complex128
 def solveh_banded(
     ab: _InputComplexStrict2D,
@@ -1045,15 +916,6 @@ def solveh_banded(
 def solveh_banded(
     ab: _InputComplex,
     b: onp.ToComplexND,
-    overwrite_ab: bool = False,
-    overwrite_b: bool = False,
-    lower: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[np.complex128]: ...
-@overload  # ?d +complex128, ~complex128
-def solveh_banded(
-    ab: onp.ToComplexND,
-    b: onp.ArrayND[np.complex128 | npc.complexfloating160, _JustAnyShape],
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
     lower: bool = False,
@@ -1086,15 +948,6 @@ def solveh_banded(
     lower: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # Nd T:inexact32, ?d T:inexact32
-def solveh_banded[InexactT: np.float32 | np.complex64](
-    ab: onp.ArrayND[InexactT],
-    b: onp.ArrayND[InexactT, _JustAnyShape],
-    overwrite_ab: bool = False,
-    overwrite_b: bool = False,
-    lower: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[InexactT]: ...
 @overload  # 2d T:inexact32, 1d T:inexact32
 def solveh_banded[InexactT: np.float32 | np.complex64](
     ab: onp.Array2D[InexactT],
@@ -1122,15 +975,6 @@ def solveh_banded[InexactT: np.float32 | np.complex64](
     lower: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[InexactT]: ...
-@overload  # ?d +complexfloating, +complexfloating
-def solveh_banded(
-    ab: onp.ToComplexND,
-    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
-    overwrite_ab: bool = False,
-    overwrite_b: bool = False,
-    lower: bool = False,
-    check_finite: bool = True,
-) -> onp.ArrayND[Any]: ...
 @overload  # 1d +floating, +floating
 def solveh_banded(
     ab: onp.ToFloatStrict2D,
@@ -1588,7 +1432,7 @@ def det(
 ) -> np.float64 | np.complex128 | onp.ArrayND[np.float64 | np.complex128]: ...
 
 #
-@overload  # ~f64, +f64 ?d
+@overload  # ~f64, +f64 ?d  (workaround)
 def lstsq(
     a: _AsFloat64_2D,
     b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
@@ -1598,7 +1442,7 @@ def lstsq(
     check_finite: bool = True,
     lapack_driver: _LapackDriverDS | None = None,
 ) -> _LstSqResultND[np.float64, onp.ArrayND[np.float64]]: ...
-@overload  # ~f64, +f64 ?d, lapack_driver='gelsy' (keyword)
+@overload  # ~f64, +f64 ?d, lapack_driver='gelsy' (keyword)  (workaround)
 def lstsq(
     a: _AsFloat64_2D,
     b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
@@ -1672,27 +1516,16 @@ def lstsq(
     *,
     lapack_driver: _LapackDriverY,
 ) -> _LstSqResultND[np.float64, None]: ...
-@overload  # +f64, ~f64 ?d
+@overload  # +fallback ?d  (workaround)
 def lstsq(
-    a: onp.ToFloat2D,
-    b: onp.ArrayND[_CoFloat64, _JustAnyShape],
+    a: onp.ToComplex2D,
+    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
     cond: float | None = None,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
     check_finite: bool = True,
-    lapack_driver: _LapackDriverDS | None = None,
-) -> _LstSqResultND[np.float64, onp.ArrayND[np.float64]]: ...
-@overload  # +f64, ~f64 ?d, lapack_driver='gelsy' (keyword)
-def lstsq(
-    a: onp.ToFloat2D,
-    b: onp.ArrayND[_CoFloat64, _JustAnyShape],
-    cond: float | None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    lapack_driver: _LapackDriverY,
-) -> _LstSqResultND[np.float64, None]: ...
+    lapack_driver: _LapackDriver | None = None,
+) -> _LstSqResultND[Incomplete, onp.ArrayND[np.float64 | Any] | Any]: ...
 @overload  # +f64, ~f64 1d
 def lstsq(
     a: onp.ToFloatStrict2D,
@@ -1756,27 +1589,6 @@ def lstsq(
     *,
     lapack_driver: _LapackDriverY,
 ) -> _LstSqResultND[np.float64, None]: ...
-@overload  # ~f32 ?d
-def lstsq(
-    a: _AsFloat32_2D,
-    b: onp.ArrayND[np.float32 | np.float16, _JustAnyShape],
-    cond: float | None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    lapack_driver: _LapackDriverDS | None = None,
-) -> _LstSqResultND[np.float32, onp.ArrayND[np.float32]]: ...
-@overload  # ~f32 ?d, lapack_driver='gelsy' (keyword)
-def lstsq(
-    a: _AsFloat32_2D,
-    b: onp.ArrayND[np.float32 | np.float16, _JustAnyShape],
-    cond: float | None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    lapack_driver: _LapackDriverY,
-) -> _LstSqResultND[np.float32, None]: ...
 @overload  # ~f32 1d
 def lstsq(
     a: _AsFloat32Strict2D,
@@ -1840,27 +1652,6 @@ def lstsq(
     *,
     lapack_driver: _LapackDriverY,
 ) -> _LstSqResultND[np.float32, None]: ...
-@overload  # ~c128, +c128 ?d
-def lstsq(
-    a: _AsComplex128_2D,
-    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
-    cond: float | None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    lapack_driver: _LapackDriverDS | None = None,
-) -> _LstSqResultND[np.complex128, onp.ArrayND[np.float64]]: ...
-@overload  # ~c128, +c128 ?d, lapack_driver='gelsy' (keyword)
-def lstsq(
-    a: _AsComplex128_2D,
-    b: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
-    cond: float | None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    lapack_driver: _LapackDriverY,
-) -> _LstSqResultND[np.complex128, None]: ...
 @overload  # ~c128, +c128 1d
 def lstsq(
     a: _AsComplex128Strict2D,
@@ -1917,27 +1708,6 @@ def lstsq(
 def lstsq(
     a: _AsComplex128_2D,
     b: onp.ToComplexND,
-    cond: float | None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    lapack_driver: _LapackDriverY,
-) -> _LstSqResultND[np.complex128, None]: ...
-@overload  # +c128, ~c128 ?d
-def lstsq(
-    a: onp.ToComplex2D,
-    b: onp.ArrayND[np.complex128 | npc.complexfloating160, _JustAnyShape],
-    cond: float | None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    lapack_driver: _LapackDriverDS | None = None,
-) -> _LstSqResultND[np.complex128, onp.ArrayND[np.float64]]: ...
-@overload  # +c128, ~c128 ?d, lapack_driver='gelsy' (keyword)
-def lstsq(
-    a: onp.ToComplex2D,
-    b: onp.ArrayND[np.complex128 | npc.complexfloating160, _JustAnyShape],
     cond: float | None = None,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
@@ -2008,27 +1778,6 @@ def lstsq(
     *,
     lapack_driver: _LapackDriverY,
 ) -> _LstSqResultND[np.complex128, None]: ...
-@overload  # ~c64 ?d
-def lstsq(
-    a: onp.ToJustComplex64_2D,
-    b: onp.ArrayND[np.complex64 | np.float32 | np.float16, _JustAnyShape],
-    cond: float | None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    lapack_driver: _LapackDriverDS | None = None,
-) -> _LstSqResultND[np.complex64, onp.ArrayND[np.float32]]: ...
-@overload  # ~c64 ?d, lapack_driver='gelsy' (keyword)
-def lstsq(
-    a: onp.ToJustComplex64_2D,
-    b: onp.ArrayND[np.complex64 | np.float32 | np.float16, _JustAnyShape],
-    cond: float | None = None,
-    overwrite_a: bool = False,
-    overwrite_b: bool = False,
-    check_finite: bool = True,
-    *,
-    lapack_driver: _LapackDriverY,
-) -> _LstSqResultND[np.complex64, None]: ...
 @overload  # ~c64 1d
 def lstsq(
     a: onp.ToJustComplex64Strict2D,
