@@ -5,7 +5,7 @@ import numpy as np
 
 from scipy.integrate import dblquad, nquad, quad, tplquad
 from scipy.integrate._quadpack_py import _QuadExplain, _QuadOutputNC
-from scipy.integrate._typing import QuadInfoDict
+from scipy.integrate._typing import QuadInfoDict, QuadOpts
 
 TRUE: Literal[True] = True
 
@@ -79,3 +79,10 @@ assert_type(nquad(_f2_0, [(0, 1), (0, 1)], full_output=True), tuple[float, float
 assert_type(nquad(_f2_1, [(0, 1), (0, 1)], args=(2,), full_output=True), tuple[float, float, _QuadOutputNC])
 assert_type(nquad(_f3_0, [(0, 1), (0, 1), (0, 1)], full_output=True), tuple[float, float, _QuadOutputNC])
 assert_type(nquad(_f3_1, [(0, 1), (0, 1), (0, 1)], args=(2,), full_output=True), tuple[float, float, _QuadOutputNC])
+
+def _range_1(x: float) -> tuple[float, float]: ...
+def _opts_1(x: float) -> QuadOpts: ...
+
+assert_type(nquad(_f2_0, [_range_1, (0, 1)]), tuple[float, float])
+assert_type(nquad(_f2_0, [_range_1, (0, 1)], None, [_opts_1, _opts_1], True), tuple[float, float, _QuadOutputNC])
+assert_type(nquad(_f2_0, [_range_1, (0, 1)], opts=[_opts_1, _opts_1], full_output=True), tuple[float, float, _QuadOutputNC])
