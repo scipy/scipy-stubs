@@ -100,3 +100,11 @@ def crosstab(
 def crosstab(
     arg0: Sequence[str], arg1: Sequence[str], /, *, levels: _ToLevels | None = None, sparse: Literal[True]
 ) -> CrosstabResult[np.str_, coo_array[np.intp]]: ...
+@overload  # fallback
+def crosstab(
+    arg0: onp.ToArrayND, /, *args: onp.ToArrayND, levels: _ToLevels | None = None, sparse: Literal[False] = False
+) -> CrosstabResult[Any, onp.ArrayND[np.intp]]: ...
+@overload  # fallback, sparse=True
+def crosstab(
+    arg0: onp.ToArrayND, arg1: onp.ToArrayND, /, *, levels: _ToLevels | None = None, sparse: Literal[True]
+) -> CrosstabResult[Any, coo_array[np.intp]]: ...
