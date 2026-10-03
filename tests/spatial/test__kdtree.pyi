@@ -61,9 +61,9 @@ assert_type(_ctree.query_pairs(1.0, output_type="ndarray"), onp.ArrayND[np.intp]
 assert_type(_ctree.count_neighbors(_ctree, 1.0), int)
 assert_type(_ctree.count_neighbors(_ctree, 1.0, 2.0, (_f64_1d, _f64_1d)), np.float64)
 assert_type(_ctree.count_neighbors(_ctree, 1.0, weights=(_f64_1d, _f64_1d)), np.float64)
-assert_type(_ctree.count_neighbors(_ctree, _f64_1d), int | onp.Array1D[np.intp])
-assert_type(_ctree.count_neighbors(_ctree, _f64_1d, 2.0, (_f64_1d, _f64_1d)), np.float64 | onp.Array1D[np.float64])
-assert_type(_ctree.count_neighbors(_ctree, _f64_1d, weights=(_f64_1d, _f64_1d)), np.float64 | onp.Array1D[np.float64])
+assert_type(_ctree.count_neighbors(_ctree, _f64_1d), onp.Array1D[np.intp] | Any)
+assert_type(_ctree.count_neighbors(_ctree, _f64_1d, 2.0, (_f64_1d, _f64_1d)), onp.Array1D[np.float64] | Any)
+assert_type(_ctree.count_neighbors(_ctree, _f64_1d, weights=(_f64_1d, _f64_1d)), onp.Array1D[np.float64] | Any)
 
 # cKDTree.sparse_distance_matrix
 
