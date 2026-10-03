@@ -43,6 +43,7 @@ assert_type(Bounds(f32_nd, f32_nd), Bounds[tuple[Any, ...], np.float32])
 
 assert_type(LinearConstraint([[1.0, 2.0]], 0.0, 1.0), LinearConstraint)
 assert_type(LinearConstraint([[1.0, 2.0]]), LinearConstraint)
+assert_type(LinearConstraint(floats_2d).A.shape, tuple[int, int])
 
 ###
 # NonlinearConstraint

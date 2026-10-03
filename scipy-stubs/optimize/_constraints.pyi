@@ -22,6 +22,7 @@ import optype.numpy.compat as npc
 
 from scipy.optimize._differentiable_functions import LinearVectorFunction, VectorFunction
 from scipy.optimize._hessian_update_strategy import HessianUpdateStrategy
+from scipy.sparse._base import _spbase
 from scipy.sparse._typing import _Sparse2D
 from scipy.sparse.linalg import LinearOperator
 
@@ -192,7 +193,7 @@ class Bounds(_Constraint[_ShapeT_co, _NumberT_co], Generic[_ShapeT_co, _NumberT_
     ) -> _Tuple2[onp.ArrayND[ST, ShapeT]]: ...
 
 class LinearConstraint(_Constraint[tuple[int], np.float64]):
-    A: Final[onp.Array2D[np.float64] | _Sparse2D[np.float64]]
+    A: Final[onp.Array2D[np.float64] | _spbase[np.float64 | Any, tuple[int, int]]]
 
     def __init__(
         self,
