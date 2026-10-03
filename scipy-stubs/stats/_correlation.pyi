@@ -30,7 +30,7 @@ type _AsF32StrictND = onp.ArrayND[np.float32, _JustAnyShape]
 
 ###
 
-@overload  # ?d +f64, +f64  (workaround)
+@overload  # ?d +f64, Nd +f64  (workaround)
 def chatterjeexi(
     x: _AsF64StrictND,
     y: _AsF64_ND,
@@ -41,7 +41,7 @@ def chatterjeexi(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[np.float64 | Any]: ...
-@overload  # +f64, ?d +f64  (workaround)
+@overload  # Nd +f64, ?d +f64  (workaround)
 def chatterjeexi(
     x: _AsF64_ND,
     y: _AsF64StrictND,
@@ -52,7 +52,7 @@ def chatterjeexi(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[np.float64 | Any]: ...
-@overload  # ?d ~f32, ~f32  (workaround)
+@overload  # ?d ~f32, Nd ~f32  (workaround)
 def chatterjeexi(
     x: _AsF32StrictND,
     y: onp.ToJustFloat32_ND,
@@ -63,7 +63,7 @@ def chatterjeexi(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[np.float32 | Any]: ...
-@overload  # ~f32, ?d ~f32  (workaround)
+@overload  # Nd ~f32, ?d ~f32  (workaround)
 def chatterjeexi(
     x: onp.ToJustFloat32_ND,
     y: _AsF32StrictND,
@@ -164,7 +164,7 @@ def chatterjeexi(
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 # keep in sync with `chatterjeexi` above
-@overload  # ?d +f64, +f64  (workaround)
+@overload  # ?d +f64, Nd +f64  (workaround)
 def spearmanrho(
     x: _AsF64StrictND,
     y: _AsF64_ND,
@@ -176,7 +176,7 @@ def spearmanrho(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[np.float64 | Any]: ...
-@overload  # +f64, ?d +f64  (workaround)
+@overload  # Nd +f64, ?d +f64  (workaround)
 def spearmanrho(
     x: _AsF64_ND,
     y: _AsF64StrictND,
@@ -188,7 +188,7 @@ def spearmanrho(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[np.float64 | Any]: ...
-@overload  # ?d ~f32, ~f32  (workaround)
+@overload  # ?d ~f32, Nd ~f32  (workaround)
 def spearmanrho(
     x: _AsF32StrictND,
     y: onp.ToJustFloat32_ND,
@@ -200,7 +200,7 @@ def spearmanrho(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[np.float32 | Any]: ...
-@overload  # ~f32, ?d ~f32  (workaround)
+@overload  # Nd ~f32, ?d ~f32  (workaround)
 def spearmanrho(
     x: onp.ToJustFloat32_ND,
     y: _AsF32StrictND,
