@@ -4,7 +4,7 @@ import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 
-from scipy.integrate import solve_ivp
+from scipy.integrate import DenseOutput, OdeSolution, solve_ivp
 
 type _VecF64 = onp.Array1D[np.float64]
 type _MatF64 = onp.Array2D[np.float64]
@@ -84,3 +84,4 @@ assert_type(solve_ivp(deriv_vec, list_float, vec_c128, t_eval=arr_f64).y, _MatC1
 
 assert_type(solve_ivp(_rot, list_float, list_complex, events=_rot_event, args=(1.0,)).y, _MatC128)
 assert_type(solve_ivp(_rot_vec, list_float, list_complex, events=_rot_event, vectorized=True, args=(1.0,)).y, _MatC128)
+assert_type(solve_ivp(deriv_vec, list_float, list_complex, dense_output=True).sol, OdeSolution[DenseOutput[np.complex128]] | None)
