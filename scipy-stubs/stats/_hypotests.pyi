@@ -90,7 +90,7 @@ class BarnardExactResult:
     statistic: Final[float]
     pvalue: Final[float]
 
-@overload  # ?d +f64, ?d|1d +f64
+@overload  # ?d +f64, ?d|1d +f64  (workaround)
 def epps_singleton_2samp(
     x: _AsF64StrictND,
     y: _AsF64StrictND | _AsF64Strict1D,
@@ -100,7 +100,7 @@ def epps_singleton_2samp(
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
 ) -> Epps_Singleton_2sampResult[np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d|1d +f64, ?d +f64
+@overload  # ?d|1d +f64, ?d +f64  (workaround)
 def epps_singleton_2samp(
     x: _AsF64StrictND | _AsF64Strict1D,
     y: _AsF64StrictND,
@@ -110,7 +110,7 @@ def epps_singleton_2samp(
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
 ) -> Epps_Singleton_2sampResult[np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d ~f32, ?d|1d ~f32
+@overload  # ?d ~f32, ?d|1d ~f32  (workaround)
 def epps_singleton_2samp(
     x: _AsF32StrictND,
     y: _AsF32StrictND | onp.ToJustFloat32Strict1D,
@@ -120,7 +120,7 @@ def epps_singleton_2samp(
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
 ) -> Epps_Singleton_2sampResult[np.float32 | Any]: ...
-@overload  # ?d|1d ~f32, ?d ~f32
+@overload  # ?d|1d ~f32, ?d ~f32  (workaround)
 def epps_singleton_2samp(
     x: _AsF32StrictND | onp.ToJustFloat32Strict1D,
     y: _AsF32StrictND,
@@ -242,7 +242,7 @@ def cramervonmises(
 ) -> CramerVonMisesResult: ...
 
 #
-@overload  # ?d +f64, ?d|1d +f64
+@overload  # ?d +f64, ?d|1d +f64  (workaround)
 def cramervonmises_2samp(
     x: _AsF64StrictND,
     y: _AsF64StrictND | _AsF64Strict1D,
@@ -252,7 +252,7 @@ def cramervonmises_2samp(
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
 ) -> CramerVonMisesResult[np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d|1d +f64, ?d +f64
+@overload  # ?d|1d +f64, ?d +f64  (workaround)
 def cramervonmises_2samp(
     x: _AsF64StrictND | _AsF64Strict1D,
     y: _AsF64StrictND,
@@ -262,7 +262,7 @@ def cramervonmises_2samp(
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
 ) -> CramerVonMisesResult[np.float64 | onp.ArrayND[np.float64]]: ...
-@overload  # ?d ~f32, ?d|1d ~f32
+@overload  # ?d ~f32, ?d|1d ~f32  (workaround)
 def cramervonmises_2samp(
     x: _AsF32StrictND,
     y: _AsF32StrictND | onp.ToJustFloat32Strict1D,
@@ -272,7 +272,7 @@ def cramervonmises_2samp(
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToFalse = False,
 ) -> CramerVonMisesResult[np.float32 | Any]: ...
-@overload  # ?d|1d ~f32, ?d ~f32
+@overload  # ?d|1d ~f32, ?d ~f32  (workaround)
 def cramervonmises_2samp(
     x: _AsF32StrictND | onp.ToJustFloat32Strict1D,
     y: _AsF32StrictND,
