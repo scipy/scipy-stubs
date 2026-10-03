@@ -83,8 +83,6 @@ class _DuckDistributionMulti(_DuckDistributionBase, Protocol):
     def parameters(self, /) -> tuple[Mapping[str, _ParameterSpec], ...]: ...
     def process_parameters(self, /) -> Mapping[str, onp.ToFloat]: ...
 
-type _DuckDistributionType = type[_DuckDistributionSingle | _DuckDistributionMulti]
-
 ###
 
 type _Real = npc.floating | npc.integer
@@ -1958,7 +1956,9 @@ class _CustomDiscreteDistributionKind(Protocol):
     def __call__(self, /, **parameters: onp.ToFloatND) -> _CustomDiscreteDistribution[tuple[int, *tuple[Any, ...]]]: ...
 
 @overload
-def make_distribution(dist: _DuckDistributionType) -> type[_CustomContinuousDistribution[tuple[()]]]: ...
+def make_distribution(
+    dist: _DuckDistributionSingle | _DuckDistributionMulti,
+) -> type[_CustomContinuousDistribution[tuple[()]]]: ...
 @overload
 def make_distribution(dist: rv_continuous) -> _CustomContinuousDistributionKind: ...
 @overload
