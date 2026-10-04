@@ -16,6 +16,7 @@ type _ResultConstrained = OptimizeResult[list[onp.Array2D[np.float64]] | None]
 def _obj(x: onp.Array1D[np.float64]) -> float: ...
 def _obj_vec(x: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
 def _polish(func: Callable[..., float], x0: onp.Array1D[np.float64], **kwds: object) -> so.OptimizeResult: ...
+def _cb(intermediate_result: so.OptimizeResult) -> bool: ...
 
 _b: list[tuple[float, float]]
 _nlc: NonlinearConstraint
@@ -31,6 +32,8 @@ assert_type(differential_evolution(_obj_vec, _b, updating="deferred", vectorized
 assert_type(differential_evolution(_obj_vec, _b, updating="deferred", constraints=_nlc, vectorized=True), _ResultConstrained)
 assert_type(differential_evolution(_obj, _b, polish=_polish), _ResultUnconstrained)
 assert_type(differential_evolution(_obj, _b, polish=_polish, constraints=_nlc), _ResultConstrained)
+assert_type(differential_evolution(_obj, _b, callback=_cb), _ResultUnconstrained)
+assert_type(differential_evolution(_obj, _b, callback=_cb, constraints=_nlc), _ResultConstrained)
 
 _res: OptimizeResult
 

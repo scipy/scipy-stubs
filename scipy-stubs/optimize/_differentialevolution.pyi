@@ -1,3 +1,4 @@
+from _typeshed import Unused
 from collections.abc import Callable, Iterable
 from typing import Concatenate, Generic, Literal, Protocol, overload, type_check_only
 from typing_extensions import TypeVar
@@ -61,7 +62,7 @@ def differential_evolution(
     mutation: onp.ToFloat | tuple[onp.ToFloat, onp.ToFloat] = (0.5, 1),
     recombination: onp.ToFloat = 0.7,
     rng: onp.random.ToRNG | None = None,
-    callback: Callable[[OptimizeResult], None] | Callable[[onp.Array1D[np.float64], onp.ToFloat], None] | None = None,
+    callback: Callable[[OptimizeResult], Unused] | Callable[[onp.Array1D[np.float64], onp.ToFloat], Unused] | None = None,
     disp: bool = False,
     polish: bool | Callable[..., _OptimizeResult] = True,
     init: onp.ToFloat2D | Literal["sobol", "halton", "random", "latinhypercube"] = "latinhypercube",
@@ -87,7 +88,7 @@ def differential_evolution(
     mutation: onp.ToFloat | tuple[onp.ToFloat, onp.ToFloat] = (0.5, 1),
     recombination: onp.ToFloat = 0.7,
     rng: onp.random.ToRNG | None = None,
-    callback: Callable[[OptimizeResult], None] | Callable[[onp.Array1D[np.float64], onp.ToFloat], None] | None = None,
+    callback: Callable[[OptimizeResult], Unused] | Callable[[onp.Array1D[np.float64], onp.ToFloat], Unused] | None = None,
     disp: bool = False,
     polish: bool | Callable[..., _OptimizeResult] = True,
     init: onp.ToFloat2D | Literal["sobol", "halton", "random", "latinhypercube"] = "latinhypercube",
