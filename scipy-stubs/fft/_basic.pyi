@@ -1,6 +1,6 @@
 from _typeshed import Unused
 from collections.abc import Sequence
-from typing import Any, Literal, overload
+from typing import Any, Literal, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -33,8 +33,8 @@ type _ToComplex128_ND = onp.ToArrayND[complex, npc.inexact64 | _CoInteger]
 @overload
 def fft[ShapeT: tuple[int, ...]](
     x: _AsComplex128[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -44,8 +44,8 @@ def fft[ShapeT: tuple[int, ...]](
 @overload
 def fft[ShapeT: tuple[int, ...]](
     x: _AsComplex64[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -55,8 +55,8 @@ def fft[ShapeT: tuple[int, ...]](
 @overload
 def fft[ShapeT: tuple[int, ...]](
     x: _AsComplex160[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -66,8 +66,8 @@ def fft[ShapeT: tuple[int, ...]](
 @overload
 def fft(
     x: Sequence[complex],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -77,8 +77,8 @@ def fft(
 @overload
 def fft(
     x: _ToComplex128_ND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -88,8 +88,8 @@ def fft(
 @overload
 def fft(
     x: onp.ToComplexND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -101,8 +101,8 @@ def fft(
 @overload
 def ifft[ShapeT: tuple[int, ...]](
     x: _AsComplex128[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -112,8 +112,8 @@ def ifft[ShapeT: tuple[int, ...]](
 @overload
 def ifft[ShapeT: tuple[int, ...]](
     x: _AsComplex64[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -123,8 +123,8 @@ def ifft[ShapeT: tuple[int, ...]](
 @overload
 def ifft[ShapeT: tuple[int, ...]](
     x: _AsComplex160[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -134,8 +134,8 @@ def ifft[ShapeT: tuple[int, ...]](
 @overload
 def ifft(
     x: Sequence[complex],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -145,8 +145,8 @@ def ifft(
 @overload
 def ifft(
     x: _ToComplex128_ND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -156,8 +156,8 @@ def ifft(
 @overload
 def ifft(
     x: onp.ToComplexND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -169,8 +169,8 @@ def ifft(
 @overload
 def rfft[ShapeT: tuple[int, ...]](
     x: _AsFloat64[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -180,8 +180,8 @@ def rfft[ShapeT: tuple[int, ...]](
 @overload
 def rfft[ShapeT: tuple[int, ...]](
     x: _AsFloat32[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -191,8 +191,8 @@ def rfft[ShapeT: tuple[int, ...]](
 @overload
 def rfft[ShapeT: tuple[int, ...]](
     x: _AsFloat80[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -202,8 +202,8 @@ def rfft[ShapeT: tuple[int, ...]](
 @overload
 def rfft(
     x: Sequence[float],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -213,8 +213,8 @@ def rfft(
 @overload
 def rfft(
     x: _ToFloat64_ND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -224,8 +224,8 @@ def rfft(
 @overload
 def rfft(
     x: onp.ToFloatND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -237,8 +237,8 @@ def rfft(
 @overload
 def irfft[ShapeT: tuple[int, ...]](
     x: _AsComplex128[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -248,8 +248,8 @@ def irfft[ShapeT: tuple[int, ...]](
 @overload
 def irfft[ShapeT: tuple[int, ...]](
     x: _AsComplex64[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -259,8 +259,8 @@ def irfft[ShapeT: tuple[int, ...]](
 @overload
 def irfft[ShapeT: tuple[int, ...]](
     x: _AsComplex160[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -270,8 +270,8 @@ def irfft[ShapeT: tuple[int, ...]](
 @overload
 def irfft(
     x: Sequence[complex],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -281,8 +281,8 @@ def irfft(
 @overload
 def irfft(
     x: _ToComplex128_ND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -292,8 +292,8 @@ def irfft(
 @overload
 def irfft(
     x: onp.ToComplexND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -305,8 +305,8 @@ def irfft(
 @overload
 def hfft[ShapeT: tuple[int, ...]](
     x: _AsComplex128[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -316,8 +316,8 @@ def hfft[ShapeT: tuple[int, ...]](
 @overload
 def hfft[ShapeT: tuple[int, ...]](
     x: _AsComplex64[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -327,8 +327,8 @@ def hfft[ShapeT: tuple[int, ...]](
 @overload
 def hfft[ShapeT: tuple[int, ...]](
     x: _AsComplex160[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -338,8 +338,8 @@ def hfft[ShapeT: tuple[int, ...]](
 @overload
 def hfft(
     x: Sequence[complex],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -349,8 +349,8 @@ def hfft(
 @overload
 def hfft(
     x: _ToComplex128_ND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -360,8 +360,8 @@ def hfft(
 @overload
 def hfft(
     x: onp.ToComplexND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -374,8 +374,8 @@ def hfft(
 @overload
 def ihfft[ShapeT: tuple[int, ...]](
     x: _AsFloat64[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -385,8 +385,8 @@ def ihfft[ShapeT: tuple[int, ...]](
 @overload
 def ihfft[ShapeT: tuple[int, ...]](
     x: _AsFloat32[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -396,8 +396,8 @@ def ihfft[ShapeT: tuple[int, ...]](
 @overload
 def ihfft[ShapeT: tuple[int, ...]](
     x: _AsFloat80[ShapeT],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -407,8 +407,8 @@ def ihfft[ShapeT: tuple[int, ...]](
 @overload
 def ihfft(
     x: Sequence[float],
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -418,8 +418,8 @@ def ihfft(
 @overload
 def ihfft(
     x: _ToFloat64_ND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
@@ -429,8 +429,8 @@ def ihfft(
 @overload
 def ihfft(
     x: onp.ToFloatND,
-    n: int | None = None,
-    axis: int = -1,
+    n: onp.ToJustInt | None = None,
+    axis: SupportsIndex = -1,
     norm: _Norm | None = None,
     overwrite_x: bool = False,
     workers: int | None = None,
