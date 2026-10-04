@@ -201,7 +201,7 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     # NOTE: Will raise a `TypeError` with n-D parameters.
     @overload  # complex_func: False  (default)
     def expect(
-        self: rv_frozen[_RVT, float],
+        self: rv_frozen[_RVT, float | np.float64],
         /,
         func: _Expectant | None = None,
         lb: onp.ToFloat | None = None,
@@ -213,7 +213,7 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     ) -> _Float: ...
     @overload  # complex_func: True
     def expect(
-        self: rv_frozen[_RVT, float],
+        self: rv_frozen[_RVT, float | np.float64],
         /,
         func: Callable[[float], onp.ToComplex] | None = None,
         lb: onp.ToFloat | None = None,
@@ -271,7 +271,7 @@ class rv_discrete_frozen(rv_frozen[_DRVT_co, _FloatNDT_co], Generic[_DRVT_co, _F
     #
     @override
     def expect(
-        self: rv_discrete_frozen[_DRVT_co, float],
+        self: rv_discrete_frozen[_DRVT_co, float | np.float64],
         /,
         func: Callable[[onp.Array1D[np.int_]], onp.ToFloatND] | None = None,
         lb: onp.ToInt | None = None,
