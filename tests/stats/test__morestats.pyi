@@ -184,7 +184,9 @@ assert_type(ansari(_f32_1d, _f32_nd), AnsariResult[np.float32 | Any])  # pyrefly
 
 assert_type(bartlett(_f64_nd, _f64_nd, axis=None), BartlettResult[np.float64])
 assert_type(bartlett(_f64_nd, _f64_nd, keepdims=True), BartlettResult[onp.ArrayND[np.float64]])
-assert_type(bartlett(_f64_nd, _f64_nd), BartlettResult[np.float64 | onp.ArrayND[np.float64] | Any])
+assert_type(bartlett(_f64_2d, _f64_2d), BartlettResult[np.float64 | onp.ArrayND[np.float64] | Any])
+assert_type(bartlett(_py_f_1d, _py_f_1d), BartlettResult[np.float64])
+assert_type(bartlett(_f32_1d, _f32_1d), BartlettResult[np.float32])
 
 ###
 # levene
