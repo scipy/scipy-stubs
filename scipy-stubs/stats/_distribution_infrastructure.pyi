@@ -494,9 +494,11 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     #
     @override
     @overload
-    def entropy(self: _BaseDist0[npc.number], /, *, method: _EntropyMethod | None = None) -> np.float64: ...
+    def entropy(self: _BaseDist0[npc.number], /, *, method: _EntropyMethod | None = None) -> np.float64 | Any: ...
     @overload
-    def entropy(self: _BaseDistribution[Any, _ShapeT1], /, *, method: _EntropyMethod | None = None) -> _FloatND[_ShapeT1]: ...  # ty:ignore[invalid-method-override]
+    def entropy(  # ty:ignore[invalid-method-override]
+        self: _BaseDistribution[Any, _ShapeT1], /, *, method: _EntropyMethod | None = None
+    ) -> onp.ArrayND[np.float64 | Any, _ShapeT1]: ...
 
     #
     @override
