@@ -62,8 +62,8 @@ class FitResult(Generic[_PXFT_co]):
 
 class GoodnessOfFitResult(NamedTuple):
     fit_result: FitResult[_PXF2n]  # always continuous
-    statistic: float | np.float64
-    pvalue: float | np.float64
+    statistic: np.float64 | Any
+    pvalue: np.float64
     null_distribution: onp.Array1D[np.float64]
 
 @overload

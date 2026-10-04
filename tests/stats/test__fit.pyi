@@ -1,6 +1,6 @@
 # type-tests for `stats/_fit.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -42,8 +42,8 @@ assert_type(fit(_rv_c, _f64_1d, method="mse"), FitResult[_PXF2n])
 _gof = goodness_of_fit(_rv_c, _f64_1d)
 assert_type(_gof, GoodnessOfFitResult)
 assert_type(_gof.fit_result, FitResult[_PXF2n])
-assert_type(_gof.statistic, float | np.float64)
-assert_type(_gof.pvalue, float | np.float64)
+assert_type(_gof.statistic, np.float64 | Any)
+assert_type(_gof.pvalue, np.float64)
 assert_type(_gof.null_distribution, onp.Array1D[np.float64])
 
 assert_type(goodness_of_fit(_rv_c, _f64_1d, statistic="ks", n_mc_samples=100), GoodnessOfFitResult)
