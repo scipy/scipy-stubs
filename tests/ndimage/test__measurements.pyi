@@ -279,11 +279,11 @@ assert_type(maximum_position(_f64_2d, _i32_1d, [1, 2]), list[tuple[np.intp, ...]
 # no index / scalar index -> _Coord0D
 assert_type(center_of_mass(_f64_2d), tuple[np.float64, ...])
 assert_type(center_of_mass(_f64_2d, _i32_1d, 1), tuple[np.float64, ...])
+assert_type(center_of_mass(_f64_2d, index=_intp_1d), tuple[np.float64, ...])
 
 # list of int indices -> _Coord1D
 assert_type(center_of_mass(_f64_2d, _i32_1d, [1, 2, 3]), list[tuple[np.float64, ...]])
 assert_type(center_of_mass(_f64_2d, _i32_1d, _intp_1d), list[tuple[np.float64, ...]])
-assert_type(center_of_mass(_f64_2d, index=[1, 2, 3]), list[tuple[np.float64, ...]])
 
 ###
 # histogram
