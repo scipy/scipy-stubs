@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Literal, overload
+from typing import Any, Literal, overload
 
 import numpy as np
 import optype as op
@@ -13,6 +13,7 @@ __all__ = ["rsf2csf", "schur"]
 type _Tuple2[T] = tuple[T, T]
 type _Tuple2i[T] = tuple[T, T, int]
 type _Tuple2iND[T] = tuple[T, T, onp.ArrayND[np.int64]]
+type _Tuple2iAny[T] = tuple[T, T, int | Any]
 
 type _OutputReal = Literal["real", "r"]
 type _OutputComplex = Literal["complex", "c"]
@@ -225,7 +226,7 @@ def schur(
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.float64]]: ...
+) -> _Tuple2iAny[onp.ArrayND[np.float64]]: ...
 @overload  # ?d f64, output="complex"
 def schur(
     a: onp.ToArrayND[float, _as_f64],
@@ -244,7 +245,7 @@ def schur(
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex128]]: ...
+) -> _Tuple2iAny[onp.ArrayND[np.complex128]]: ...
 @overload  # ?d f32
 def schur(
     a: onp.ToArrayND[np.float32, _as_f32],
@@ -263,7 +264,7 @@ def schur(
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.float32]]: ...
+) -> _Tuple2iAny[onp.ArrayND[np.float32]]: ...
 @overload  # ?d f32, output="complex"
 def schur(
     a: onp.ToArrayND[np.float32, _as_f32],
@@ -282,7 +283,7 @@ def schur(
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex64]]: ...
+) -> _Tuple2iAny[onp.ArrayND[np.complex64]]: ...
 @overload  # ?d c128
 def schur(
     a: onp.ToArrayND[op.JustComplex, _as_c128],
@@ -301,7 +302,7 @@ def schur(
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex128]]: ...
+) -> _Tuple2iAny[onp.ArrayND[np.complex128]]: ...
 @overload  # ?d c64
 def schur(
     a: onp.ToJustComplex64_ND,
@@ -320,7 +321,7 @@ def schur(
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex64]]: ...
+) -> _Tuple2iAny[onp.ArrayND[np.complex64]]: ...
 
 # will raise for dtypes that don't have character code in `ilfdFD`
 @overload  # ?d c128|f64|i64|i32, ?d c128|f64|i64|i32
