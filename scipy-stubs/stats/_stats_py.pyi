@@ -2077,11 +2077,21 @@ def gstd(
 ) -> np.float64: ...
 @overload
 def gstd(
-    a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, *, keepdims: L[True], nan_policy: NanPolicy = "propagate"
+    a: onp.ToFloatND,
+    axis: int | tuple[int, ...] | None = 0,
+    ddof: int = 1,
+    *,
+    keepdims: L[True],
+    nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64]: ...
 @overload
 def gstd(
-    a: onp.ToFloatND, axis: int | None = 0, ddof: int = 1, *, keepdims: bool = False, nan_policy: NanPolicy = "propagate"
+    a: onp.ToFloatND,
+    axis: int | tuple[int, ...] | None = 0,
+    ddof: int = 1,
+    *,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 
 #

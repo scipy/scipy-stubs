@@ -811,8 +811,9 @@ assert_type(tmax(_c128_nd, axis=None), np.complex128)
 
 assert_type(gstd(_f64_1d), np.float64)
 assert_type(gstd(_f64_nd, axis=None), np.float64)
-assert_type(gstd(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
+assert_type(gstd(_f64_nd, axis=(1, 2), keepdims=True), onp.ArrayND[np.float64])
 assert_type(gstd(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(gstd(_f64_3d, axis=(1, 2)), np.float64 | onp.ArrayND[np.float64])
 
 # describe
 
