@@ -59,10 +59,11 @@ assert_type(boxcox_llf(0.5, _f32_2d, axis=None), np.float32)
 assert_type(boxcox_llf(0.5, _f64_2d, axis=None), np.float64)
 
 assert_type(boxcox_llf(0.5, _py_float_2d, keepdims=True), onp.ArrayND[np.float64])
-assert_type(boxcox_llf(0.5, _i8_2d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(boxcox_llf(0.5, _i8_2d, axis=(0, 1), keepdims=True), onp.ArrayND[np.float64])
 assert_type(boxcox_llf(0.5, _f16_2d, keepdims=True), onp.ArrayND[np.float16])
 assert_type(boxcox_llf(0.5, _f32_2d, keepdims=True), onp.ArrayND[np.float32])
-assert_type(boxcox_llf(0.5, _f64_2d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(boxcox_llf(0.5, _f64_2d, axis=(0, 1), keepdims=True), onp.ArrayND[np.float64])
+assert_type(boxcox_llf(0.5, _f64_2d, axis=(0, 1)), onp.ArrayND[np.float64 | Any] | Any)
 
 # boxcox
 

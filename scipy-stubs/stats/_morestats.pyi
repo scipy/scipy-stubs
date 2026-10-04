@@ -295,7 +295,7 @@ def kstat[FloatT: np.float32 | np.float64](
     data: onp.ArrayND[FloatT],
     n: _KStatOrder = 2,
     *,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> onp.ArrayND[FloatT]: ...
@@ -313,7 +313,7 @@ def kstat(
     data: _AsF64_ND,
     n: _KStatOrder = 2,
     *,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> onp.ArrayND[np.float64]: ...
@@ -322,7 +322,7 @@ def kstat(
     data: onp.ToFloatND,
     n: _KStatOrder = 2,
     *,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> np.float64 | onp.ArrayND[np.float64] | Any: ...
@@ -342,7 +342,7 @@ def kstatvar[FloatT: np.float32 | np.float64](
     data: onp.ArrayND[FloatT],
     n: _KStatOrder = 2,
     *,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> onp.ArrayND[FloatT]: ...
@@ -360,7 +360,7 @@ def kstatvar(
     data: _AsF64_ND,
     n: _KStatOrder = 2,
     *,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> onp.ArrayND[np.float64]: ...
@@ -369,7 +369,7 @@ def kstatvar(
     data: onp.ToFloatND,
     n: _KStatOrder = 2,
     *,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> np.float64 | onp.ArrayND[np.float64] | Any: ...
@@ -549,7 +549,7 @@ def boxcox_llf(
     lmb: float | np.float64,
     data: onp.ToArrayND[float, npc.integer],
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64]: ...
@@ -594,7 +594,7 @@ def boxcox_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
     data: onp.ToArrayND[FloatingT, FloatingT],
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[FloatingT]: ...
@@ -621,7 +621,7 @@ def boxcox_llf(
     lmb: float | np.float64,
     data: onp.ToFloatND,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64 | Any]: ...
@@ -630,7 +630,7 @@ def boxcox_llf(
     lmb: float | np.float64,
     data: onp.ToFloatND,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64 | Any] | Any: ...
@@ -677,7 +677,7 @@ def yeojohnson_llf(
     lmb: float | np.float64,
     data: onp.ToArrayND[float, npc.integer],
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64]: ...
@@ -722,7 +722,7 @@ def yeojohnson_llf[FloatingT: npc.floating](
     lmb: float | np.float64,
     data: onp.ToArrayND[FloatingT, FloatingT],
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[FloatingT]: ...
@@ -749,7 +749,7 @@ def yeojohnson_llf(
     lmb: float | np.float64,
     data: onp.ToFloatND,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: Literal[True],
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64 | Any]: ...
@@ -758,7 +758,7 @@ def yeojohnson_llf(
     lmb: float | np.float64,
     data: onp.ToFloatND,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: Literal[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64 | Any] | Any: ...
@@ -962,7 +962,11 @@ def shapiro[FloatT: np.float32 | np.float64](
 ) -> ShapiroResult[FloatT]: ...
 @overload  # T:f32|f64, keepdims=True
 def shapiro[FloatT: np.float32 | np.float64](
-    x: onp.ArrayND[FloatT], *, axis: SupportsIndex | None = None, nan_policy: NanPolicy = "propagate", keepdims: Literal[True]
+    x: onp.ArrayND[FloatT],
+    *,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[True],
 ) -> ShapiroResult[onp.ArrayND[FloatT]]: ...
 @overload  # ~f64, axis=None (default)
 def shapiro(
@@ -970,11 +974,19 @@ def shapiro(
 ) -> ShapiroResult[np.float64]: ...
 @overload  # ~f64, keepdims=True
 def shapiro(
-    x: _AsF64_ND, *, axis: SupportsIndex | None = None, nan_policy: NanPolicy = "propagate", keepdims: Literal[True]
+    x: _AsF64_ND,
+    *,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[True],
 ) -> ShapiroResult[onp.ArrayND[np.float64]]: ...
 @overload  # fallback
 def shapiro(
-    x: onp.ToFloatND, *, axis: SupportsIndex | None = None, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+    x: onp.ToFloatND,
+    *,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
 ) -> ShapiroResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
 
 #
@@ -1039,7 +1051,7 @@ def ansari(
     y: _AsF64 | _AsF64_ND,
     alternative: Alternative = "two-sided",
     *,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     method: _AnsariMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
@@ -1072,7 +1084,7 @@ def ansari(
     y: onp.ToJustFloat32_ND,
     alternative: Alternative = "two-sided",
     *,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     method: _AnsariMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
@@ -1094,7 +1106,7 @@ def ansari(
     y: onp.ToFloat | onp.ToFloatND,
     alternative: Alternative = "two-sided",
     *,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     method: _AnsariMethod = "auto",
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
@@ -1147,7 +1159,10 @@ def bartlett(
 ) -> BartlettResult[np.float64]: ...
 @overload  # ~f64, keepdims=True
 def bartlett(
-    *samples: _AsF64_ND, axis: SupportsIndex | None = 0, nan_policy: NanPolicy = "propagate", keepdims: Literal[True]
+    *samples: _AsF64_ND,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[True],
 ) -> BartlettResult[onp.ArrayND[np.float64]]: ...
 @overload  # 1d ~f64
 def bartlett(
@@ -1159,7 +1174,10 @@ def bartlett(
 ) -> BartlettResult[np.float32]: ...
 @overload  # ~f32, keepdims=True
 def bartlett(
-    *samples: onp.ToJustFloat32_ND, axis: SupportsIndex | None = 0, nan_policy: NanPolicy = "propagate", keepdims: Literal[True]
+    *samples: onp.ToJustFloat32_ND,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[True],
 ) -> BartlettResult[onp.ArrayND[np.float32]]: ...
 @overload  # 1d ~f32
 def bartlett(
@@ -1170,7 +1188,10 @@ def bartlett(
 ) -> BartlettResult[np.float32]: ...
 @overload  # fallback
 def bartlett(
-    *samples: onp.ToFloatND, axis: SupportsIndex | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+    *samples: onp.ToFloatND,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
 ) -> BartlettResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
 
 #
@@ -1236,7 +1257,7 @@ def levene(
     *samples: _AsF64_ND,
     center: _CenterMethod = "median",
     proportiontocut: onp.ToFloat = 0.05,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> LeveneResult[onp.ArrayND[np.float64]]: ...
@@ -1263,7 +1284,7 @@ def levene(
     *samples: onp.ToJustFloat32_ND,
     center: _CenterMethod = "median",
     proportiontocut: onp.ToFloat = 0.05,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> LeveneResult[onp.ArrayND[np.float32]]: ...
@@ -1281,7 +1302,7 @@ def levene(
     *samples: onp.ToFloatND,
     center: _CenterMethod = "median",
     proportiontocut: onp.ToFloat = 0.05,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> LeveneResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
@@ -1349,7 +1370,7 @@ def fligner(
     *samples: _AsF64_ND,
     center: _CenterMethod = "median",
     proportiontocut: onp.ToFloat = 0.05,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> FlignerResult[onp.ArrayND[np.float64]]: ...
@@ -1376,7 +1397,7 @@ def fligner(
     *samples: onp.ToJustFloat32_ND,
     center: _CenterMethod = "median",
     proportiontocut: onp.ToFloat = 0.05,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> FlignerResult[onp.ArrayND[np.float32]]: ...
@@ -1394,7 +1415,7 @@ def fligner(
     *samples: onp.ToFloatND,
     center: _CenterMethod = "median",
     proportiontocut: onp.ToFloat = 0.05,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> FlignerResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
@@ -1454,7 +1475,7 @@ def mood(
 def mood(
     x: _AsF64 | _AsF64_ND,
     y: _AsF64 | _AsF64_ND,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     alternative: Alternative = "two-sided",
     *,
     nan_policy: NanPolicy = "propagate",
@@ -1484,7 +1505,7 @@ def mood(
 def mood(
     x: onp.ToJustFloat32_ND,
     y: onp.ToJustFloat32_ND,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     alternative: Alternative = "two-sided",
     *,
     nan_policy: NanPolicy = "propagate",
@@ -1504,7 +1525,7 @@ def mood(
 def mood(
     x: onp.ToFloat | onp.ToFloatND,
     y: onp.ToFloat | onp.ToFloatND,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     alternative: Alternative = "two-sided",
     *,
     nan_policy: NanPolicy = "propagate",
@@ -1560,7 +1581,7 @@ def wilcoxon(
     alternative: Alternative = "two-sided",
     method: _WilcoxonMethod = "auto",
     *,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> WilcoxonResult[onp.ArrayND[np.float64]]: ...
@@ -1612,7 +1633,7 @@ def wilcoxon(
     alternative: Alternative = "two-sided",
     method: _WilcoxonMethod = "auto",
     *,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> WilcoxonResult[onp.ArrayND[np.float32]]: ...
@@ -1664,7 +1685,7 @@ def wilcoxon(
     alternative: Alternative = "two-sided",
     method: _WilcoxonMethod = "auto",
     *,
-    axis: SupportsIndex | None = 0,
+    axis: SupportsIndex | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> WilcoxonResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
@@ -1718,7 +1739,7 @@ def circmean[FloatT: np.float32 | np.float64](
     samples: onp.ArrayND[FloatT],
     high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: Literal[True],
@@ -1738,7 +1759,7 @@ def circmean(
     samples: _AsF64_ND,
     high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: Literal[True],
@@ -1748,7 +1769,7 @@ def circmean(
     samples: onp.ToFloatND,
     high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: bool = False,
@@ -1770,7 +1791,7 @@ def circvar[FloatT: np.float32 | np.float64](
     samples: onp.ArrayND[FloatT],
     high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: Literal[True],
@@ -1790,7 +1811,7 @@ def circvar(
     samples: _AsF64_ND,
     high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: Literal[True],
@@ -1800,7 +1821,7 @@ def circvar(
     samples: onp.ToFloatND,
     high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: bool = False,
@@ -1823,7 +1844,7 @@ def circstd[FloatT: np.float32 | np.float64](
     samples: onp.ArrayND[FloatT],
     high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     normalize: bool = False,
@@ -1845,7 +1866,7 @@ def circstd(
     samples: _AsF64_ND,
     high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     normalize: bool = False,
@@ -1856,7 +1877,7 @@ def circstd(
     samples: onp.ToFloatND,
     high: onp.ToFloat = 6.283_185_307_179_586,  # 2 * pi
     low: onp.ToFloat = 0,
-    axis: SupportsIndex | None = None,
+    axis: SupportsIndex | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     *,
     normalize: bool = False,
