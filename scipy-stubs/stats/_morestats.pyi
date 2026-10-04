@@ -1101,6 +1101,46 @@ def ansari(
 ) -> AnsariResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
 
 #
+@overload  # ?d ~f64, ?d|1d ~f64  (workaround)
+def bartlett(
+    sample1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    sample2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    /,
+    *samples: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> BartlettResult[np.float64 | Any]: ...
+@overload  # ?d|1d ~f64, ?d ~f64  (workaround)
+def bartlett(
+    sample1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    sample2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    /,
+    *samples: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> BartlettResult[np.float64 | Any]: ...
+@overload  # ?d ~f32, ?d|1d ~f32  (workaround)
+def bartlett(
+    sample1: onp.ArrayND[np.float32, _JustAnyShape],
+    sample2: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    /,
+    *samples: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> BartlettResult[np.float32 | Any]: ...
+@overload  # ?d|1d ~f32, ?d ~f32  (workaround)
+def bartlett(
+    sample1: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    sample2: onp.ArrayND[np.float32, _JustAnyShape],
+    /,
+    *samples: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> BartlettResult[np.float32 | Any]: ...
 @overload  # ~f64, axis=None
 def bartlett(
     *samples: _AsF64_ND, axis: None, nan_policy: NanPolicy = "propagate", keepdims: Literal[False] = False
