@@ -2301,15 +2301,15 @@ class _UFunc31ldf(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     ) -> _Float: ...
     @overload
     def __call__[ST: _Float_D](
-        self, a: onp.ToFloat64, b: onp.ToFloat64, x: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+        self, a: ST, b: ST | _ToFloat32, x: ST | _ToFloat32, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
     ) -> ST: ...
     @overload
     def __call__[ST: _Float_D](
-        self, a: onp.ToFloat64, b: ST, x: onp.ToFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+        self, a: ST | _ToFloat32, b: ST, x: ST | _ToFloat32, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
     ) -> ST: ...
     @overload
     def __call__[ST: _Float_D](
-        self, a: ST, b: onp.ToFloat64, x: onp.ToFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+        self, a: ST | _ToFloat32, b: ST | _ToFloat32, x: ST, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
     ) -> ST: ...
     @overload
     def __call__(
