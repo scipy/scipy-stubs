@@ -2,6 +2,7 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.linalg import diagsvd, null_space, orth, subspace_angles, svd, svdvals
 
@@ -121,3 +122,7 @@ assert_type(subspace_angles(_f32_2d, _f64_2d), onp.Array1D[np.float64])
 assert_type(subspace_angles(_f64_3d, _f64_3d), onp.ArrayND[np.float64])
 assert_type(subspace_angles(_f32_3d, _f64_3d), onp.ArrayND[np.float64])
 assert_type(subspace_angles(_f32_3d, _f32_3d), onp.ArrayND[np.float32])
+assert_subtype[onp.ArrayND[np.float64]](subspace_angles(_f64_nd, _f64_2d))
+assert_subtype[onp.ArrayND[np.float64]](subspace_angles(_f64_2d, _f64_nd))
+assert_subtype[onp.ArrayND[np.float32]](subspace_angles(_f32_nd, _f32_2d))
+assert_subtype[onp.ArrayND[np.float32]](subspace_angles(_f32_2d, _f32_nd))
