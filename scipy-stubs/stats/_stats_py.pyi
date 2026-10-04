@@ -3211,7 +3211,7 @@ def jarque_bera(
 # keep in sync with `percentileofscore`
 @overload
 def scoreatpercentile(
-    a: onp.ToFloat1D,
+    a: onp.ToFloatStrict1D,
     per: onp.ToFloat,
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: _QuantileInterpolation = "fraction",
@@ -3219,28 +3219,53 @@ def scoreatpercentile(
 ) -> np.float64: ...
 @overload
 def scoreatpercentile(
-    a: onp.ToFloat1D,
+    a: onp.ToFloatND,
+    per: onp.ToFloat,
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    axis: None = None,
+) -> np.float64: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloatND,
     per: Sequence[onp.ToFloat],
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: _QuantileInterpolation = "fraction",
-    axis: int | None = None,
+    axis: None = None,
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def scoreatpercentile[ShapeT: tuple[int, ...]](
-    a: onp.ToFloat1D,
+    a: onp.ToFloatND,
     per: onp.ArrayND[npc.floating | npc.integer, ShapeT],
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: _QuantileInterpolation = "fraction",
-    axis: int | None = None,
+    axis: None = None,
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload
 def scoreatpercentile(
-    a: onp.ToFloat1D,
+    a: onp.ToFloatND,
     per: onp.ToFloatND,
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: _QuantileInterpolation = "fraction",
-    axis: int | None = None,
+    axis: None = None,
 ) -> onp.ArrayND[np.float64]: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloatStrict2D | onp.ToFloatStrict3D,
+    per: onp.ToFloat | onp.ToFloatND,
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    *,
+    axis: int,
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloatND,
+    per: onp.ToFloat | onp.ToFloatND,
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    axis: int | None = None,
+) -> onp.ArrayND[np.float64] | Any: ...
 
 # keep in sync with `scoreatpercentile`
 @overload
