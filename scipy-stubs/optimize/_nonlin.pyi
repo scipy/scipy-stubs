@@ -337,7 +337,7 @@ def broyden1(
     tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _InexactND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 def broyden2(
     F: _ResidFunc,
     xin: onp.ToComplexND,
@@ -354,7 +354,7 @@ def broyden2(
     tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _InexactND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 def anderson(
     F: _ResidFunc,
     xin: onp.ToComplexND,
@@ -371,7 +371,7 @@ def anderson(
     tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _InexactND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 def linearmixing(
     F: _ResidFunc,
     xin: onp.ToComplexND,
@@ -386,7 +386,7 @@ def linearmixing(
     tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _InexactND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 def diagbroyden(
     F: _ResidFunc,
     xin: onp.ToComplexND,
@@ -401,7 +401,7 @@ def diagbroyden(
     tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _InexactND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 def excitingmixing(
     F: _ResidFunc,
     xin: onp.ToComplexND,
@@ -417,7 +417,7 @@ def excitingmixing(
     tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _InexactND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 def newton_krylov(
     F: _ResidFunc,
     xin: onp.ToComplexND,
@@ -436,4 +436,4 @@ def newton_krylov(
     tol_norm: _TolNorm | None = None,
     line_search: _LineSearch | None = "armijo",
     callback: _Callback | None = None,
-) -> _InexactND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
