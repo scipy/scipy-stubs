@@ -69,13 +69,14 @@ assert_type(poisson.rvs(1.0, size=4), onp.ArrayND[np.int64])
 # .pmf (same as .logpmf, .cdf, .logcdf, .sf, .logsf, .ppf, .isf)
 
 assert_type(binom.pmf(_py_i_1d, 10, 0.3), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
+assert_type(binom.pmf(3, 10, 0.3), np.float64)
 
 # .expect
 
 _frozen = poisson(1.0)
-assert_type(_frozen.expect(), float | np.float64)
-assert_type(_frozen.expect(lambda k: k), float | np.float64)
-assert_type(_frozen.expect(lambda k: k, lb=0, ub=5, conditional=True), float | np.float64)
-assert_type(_frozen.expect(lambda k: k, maxcount=2000), float | np.float64)
-assert_type(_frozen.expect(lambda k: k, tolerance=1e-8), float | np.float64)
-assert_type(_frozen.expect(lambda k: k, chunksize=64), float | np.float64)
+assert_type(_frozen.expect(), np.float64)
+assert_type(_frozen.expect(lambda k: k), np.float64)
+assert_type(_frozen.expect(lambda k: k, lb=0, ub=5, conditional=True), np.float64)
+assert_type(_frozen.expect(lambda k: k, maxcount=2000), np.float64)
+assert_type(_frozen.expect(lambda k: k, tolerance=1e-8), np.float64)
+assert_type(_frozen.expect(lambda k: k, chunksize=64), np.float64)

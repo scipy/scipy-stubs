@@ -44,5 +44,5 @@ assert_type(mydist.rvs(s=_f64_nd), onp.ArrayND[np.float64])
 ###
 # expect
 
-assert_type(mydist.expect(), float | np.float64)
+assert_type(mydist.expect(), np.float64)
 assert_type(mydist.expect(_f2c, complex_func=True), np.complex128)
