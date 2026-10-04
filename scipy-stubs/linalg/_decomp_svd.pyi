@@ -146,16 +146,31 @@ def null_space[InexactT: np.float32 | np.float64 | np.complex64 | np.complex128]
 #
 @overload
 def subspace_angles(  # type: ignore[overload-overlap]
-    A: onp.ToArray2D[complex, npc.number64 | npc.inexact80 | npc.integer32], B: onp.ToComplex2D
+    A: onp.ToArrayStrict2D[complex, npc.number64 | npc.inexact80 | npc.integer32], B: onp.ToComplexStrict2D
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def subspace_angles(  # type: ignore[overload-overlap]
-    A: onp.ToComplex2D, B: onp.ToArray2D[complex, npc.number64 | npc.inexact80 | npc.integer32]
+    A: onp.ToComplexStrict2D, B: onp.ToArrayStrict2D[complex, npc.number64 | npc.inexact80 | npc.integer32]
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def subspace_angles(
-    A: onp.ToArray2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
-    B: onp.ToArray2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
+    A: onp.ToArrayStrict2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
+    B: onp.ToArrayStrict2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
 ) -> onp.Array1D[np.float32]: ...
 @overload
-def subspace_angles(A: onp.ToComplex2D, B: onp.ToComplex2D) -> onp.Array1D[np.float64 | np.float32]: ...
+def subspace_angles(  # type: ignore[overload-overlap]
+    A: onp.ToArrayND[complex, npc.number64 | npc.inexact80 | npc.integer32], B: onp.ToComplexND
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def subspace_angles(  # type: ignore[overload-overlap]
+    A: onp.ToComplexND, B: onp.ToArrayND[complex, npc.number64 | npc.inexact80 | npc.integer32]
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def subspace_angles(
+    A: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
+    B: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
+) -> onp.ArrayND[np.float32]: ...
+@overload
+def subspace_angles(A: onp.ToComplexStrict2D, B: onp.ToComplexStrict2D) -> onp.Array1D[np.float64 | np.float32]: ...
+@overload
+def subspace_angles(A: onp.ToComplexND, B: onp.ToComplexND) -> onp.ArrayND[np.float64 | np.float32]: ...
