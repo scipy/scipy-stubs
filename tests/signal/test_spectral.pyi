@@ -4,6 +4,7 @@ from typing import Any, Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from scipy.signal import check_COLA, check_NOLA, coherence, csd, istft, lombscargle, periodogram, spectrogram, stft, welch
 
@@ -27,7 +28,7 @@ _f80_1d: onp.Array1D[np.float96 | np.float128]
 _c64_1d: onp.Array1D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
 _c160_1d: onp.Array1D[np.complex192 | np.complex256]
-_num_1d: onp.Array1D[np.number[Any]]
+_num_1d: onp.Array1D[npc.number]
 
 _mode_real: Literal["psd", "magnitude", "angle", "phase"]
 
