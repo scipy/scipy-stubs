@@ -176,7 +176,7 @@ def epps_singleton_2samp(
     y: onp.ToFloatND,
     t: onp.ToFloatND = (0.4, 0.8),
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToTrue,
 ) -> Epps_Singleton_2sampResult[onp.ArrayND[np.float64]]: ...
@@ -186,7 +186,7 @@ def epps_singleton_2samp(
     y: onp.ToFloatND,
     t: onp.ToFloatND = (0.4, 0.8),
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> Epps_Singleton_2sampResult: ...
@@ -226,7 +226,7 @@ def cramervonmises(
     cdf: _ToCDF,
     args: _ToCDFArgs = (),
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToTrue,
 ) -> CramerVonMisesResult[onp.ArrayND[np.float64]]: ...
@@ -236,7 +236,7 @@ def cramervonmises(
     cdf: _ToCDF,
     args: _ToCDFArgs = (),
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> CramerVonMisesResult: ...
@@ -328,7 +328,7 @@ def cramervonmises_2samp(
     y: onp.ToFloatND,
     method: _CV2Method = "auto",
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: onp.ToTrue,
 ) -> CramerVonMisesResult[onp.ArrayND[np.float64]]: ...
@@ -338,7 +338,7 @@ def cramervonmises_2samp(
     y: onp.ToFloatND,
     method: _CV2Method = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> CramerVonMisesResult: ...

@@ -52,7 +52,10 @@ def _cdf(x: onp.ArrayND[np.float64], /) -> onp.ArrayND[np.float64]: ...
 assert_type(epps_singleton_2samp(_py_f_1d, _py_f_1d), Epps_Singleton_2sampResult[np.float64])
 assert_type(epps_singleton_2samp(_f64_1d, _f64_1d), Epps_Singleton_2sampResult[np.float64])
 assert_type(epps_singleton_2samp(_f64_nd, _f64_nd, axis=None), Epps_Singleton_2sampResult[np.float64])
-assert_type(epps_singleton_2samp(_f64_nd, _f64_nd, keepdims=True), Epps_Singleton_2sampResult[onp.ArrayND[np.float64]])
+assert_type(
+    epps_singleton_2samp(_f64_nd, _f64_nd, axis=(1, 2), keepdims=True), Epps_Singleton_2sampResult[onp.ArrayND[np.float64]]
+)
+assert_type(epps_singleton_2samp(_f64_2d, _f64_2d, axis=(0, 1)), Epps_Singleton_2sampResult[Any])
 
 assert_type(epps_singleton_2samp(_f32_1d, _f32_1d), Epps_Singleton_2sampResult[np.float32])
 assert_type(epps_singleton_2samp(_f32_2d, _f32_2d, axis=None), Epps_Singleton_2sampResult[np.float32])
@@ -70,8 +73,8 @@ assert_type(epps_singleton_2samp(_f32_1d, _f32_nd), Epps_Singleton_2sampResult[n
 assert_type(cramervonmises(_py_f_1d, "norm"), CramerVonMisesResult[np.float64])
 assert_type(cramervonmises(_f64_1d, _cdf), CramerVonMisesResult[np.float64])
 assert_type(cramervonmises(_f64_nd, _cdf, axis=None), CramerVonMisesResult[np.float64])
-assert_type(cramervonmises(_f64_nd, _cdf, keepdims=True), CramerVonMisesResult[onp.ArrayND[np.float64]])
-assert_type(cramervonmises(_f64_2d, _cdf), CramerVonMisesResult[Any])
+assert_type(cramervonmises(_f64_nd, _cdf, axis=(1, 2), keepdims=True), CramerVonMisesResult[onp.ArrayND[np.float64]])
+assert_type(cramervonmises(_f64_2d, _cdf, axis=(0, 1)), CramerVonMisesResult[Any])
 
 assert_type(cramervonmises(_f32_1d, "norm"), CramerVonMisesResult[np.float64])
 
@@ -85,7 +88,8 @@ assert_type(cramervonmises(_f64_nd, _cdf), CramerVonMisesResult[np.float64 | Any
 assert_type(cramervonmises_2samp(_py_f_1d, _py_f_1d), CramerVonMisesResult[np.float64])
 assert_type(cramervonmises_2samp(_f64_1d, _f64_1d), CramerVonMisesResult[np.float64])
 assert_type(cramervonmises_2samp(_f64_nd, _f64_nd, axis=None), CramerVonMisesResult[np.float64])
-assert_type(cramervonmises_2samp(_f64_nd, _f64_nd, keepdims=True), CramerVonMisesResult[onp.ArrayND[np.float64]])
+assert_type(cramervonmises_2samp(_f64_nd, _f64_nd, axis=(1, 2), keepdims=True), CramerVonMisesResult[onp.ArrayND[np.float64]])
+assert_type(cramervonmises_2samp(_f64_2d, _f64_2d, axis=(0, 1)), CramerVonMisesResult[Any])
 
 assert_type(cramervonmises_2samp(_f32_1d, _f32_1d), CramerVonMisesResult[np.float32])
 assert_type(cramervonmises_2samp(_f32_2d, _f32_2d, axis=None), CramerVonMisesResult[np.float32])
