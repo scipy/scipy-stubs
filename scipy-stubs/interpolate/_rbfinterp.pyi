@@ -20,16 +20,16 @@ type _Kernel = Literal[
     "gaussian",
 ]  # fmt: skip
 
-type _State1[ShapeT: tuple[int, ...]] = tuple[
+type _State1 = tuple[
     onp.Array2D[np.float64],  # y
-    onp.Array[ShapeT, np.float64],  # d
-    ShapeT,  # d_shape
+    onp.Array2D[np.float64],  # d
+    tuple[int, ...],  # d_shape
     type[float | complex],  # d_dtype
-    int,  # neighbors
+    int | None,  # neighbors
     onp.Array1D[np.float64],  # smoothing
     _Kernel,  # kernel
     float,  # epsilon
-    int,  # powers
+    onp.Array2D[np.int64],  # powers
 ]
 type _State2 = (
     tuple[
@@ -41,7 +41,7 @@ type _State2 = (
         KDTree[None, None],  # tree
     ]
 )
-type _State[ShapeT: tuple[int, ...]] = tuple[_State1[ShapeT], _State2]
+type _State = tuple[_State1, _State2]
 
 _Inexact64T_co = TypeVar("_Inexact64T_co", bound=np.float64 | np.complex128, default=np.float64, covariant=True)
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...], covariant=True)
@@ -211,8 +211,8 @@ class RBFInterpolator(Generic[_Inexact64T_co, _ShapeT_co]):
 
     #
     @override
-    def __getstate__[ShapeT: tuple[int, ...]](self: RBFInterpolator[Any, ShapeT]) -> _State[ShapeT]: ...  # ty: ignore[invalid-method-override]
-    def __setstate__[ShapeT: tuple[int, ...]](self, state: _State[ShapeT], /) -> None: ...
+    def __getstate__(self) -> _State: ...
+    def __setstate__(self, state: _State, /) -> None: ...
 
     # TODO(jorenham): Return `onp.Array[tuple[int, Unpack[_ShapeT_co]], _SCT_co]` once mypy supports it (if ever)
     def __call__(self, /, x: onp.ToFloat2D) -> onp.ArrayND[_Inexact64T_co]: ...
