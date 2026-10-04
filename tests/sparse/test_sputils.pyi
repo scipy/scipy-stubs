@@ -10,15 +10,17 @@ i16_1d: onp.Array1D[np.int16]
 i32_1d: onp.Array1D[np.int32]
 u32_1d: onp.Array1D[np.uint32]
 i64_1d: onp.Array1D[np.int64]
+_n: int
 
 # get_index_dtype
 
 assert_type(sparse.get_index_dtype(), type[np.int32])
 assert_type(sparse.get_index_dtype((i16_1d, i16_1d)), type[np.int32])
-assert_type(sparse.get_index_dtype((i32_1d, i32_1d)), type[np.int32])
+assert_type(sparse.get_index_dtype(i32_1d), type[np.int32])
 assert_type(sparse.get_index_dtype((u32_1d, u32_1d)), type[np.int64])
-assert_type(sparse.get_index_dtype((i64_1d, i64_1d)), type[np.int64])
+assert_type(sparse.get_index_dtype(i64_1d), type[np.int64])
 assert_type(sparse.get_index_dtype((i32_1d, i64_1d)), type[np.int32 | np.int64])
+assert_type(sparse.get_index_dtype(maxval=_n), type[np.int32 | np.int64])
 
 # safely_cast_index_arrays
 

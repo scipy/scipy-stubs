@@ -1,4 +1,4 @@
-from collections.abc import Iterable
+from collections.abc import Iterable, Sequence
 from typing import Any, Final, Literal as L, Protocol, SupportsIndex, TypeVar, overload, type_check_only
 from typing_extensions import TypeIs
 
@@ -106,24 +106,22 @@ type _ContraInt32 = np.uint32 | np.int64 | np.uint64
 
 #
 @overload
-def get_index_dtype(
-    arrays: tuple[()] = (), maxval: onp.ToFloat | None = None, check_contents: bool = False
-) -> type[np.int32]: ...
+def get_index_dtype(arrays: tuple[()] = (), maxval: None = None, check_contents: bool = False) -> type[np.int32]: ...
 @overload
 def get_index_dtype(
-    arrays: tuple[onp.CanArrayND[_CoInt32], *tuple[onp.CanArrayND[_CoInt32], ...]],
-    maxval: onp.ToFloat | None = None,
+    arrays: onp.ArrayND[_CoInt32] | tuple[onp.CanArrayND[_CoInt32], *tuple[onp.CanArrayND[_CoInt32], ...]],
+    maxval: None = None,
     check_contents: bool = False,
 ) -> type[np.int32]: ...
 @overload
 def get_index_dtype(
-    arrays: tuple[onp.CanArrayND[_ContraInt32], *tuple[onp.CanArrayND[_ContraInt32], ...]],
+    arrays: onp.ArrayND[_ContraInt32] | tuple[onp.CanArrayND[_ContraInt32], *tuple[onp.CanArrayND[_ContraInt32], ...]],
     maxval: onp.ToFloat | None = None,
     check_contents: bool = False,
 ) -> type[np.int64]: ...
 @overload
 def get_index_dtype(
-    arrays: tuple[onp.ToInt | onp.ToIntND, ...], maxval: onp.ToFloat | None = None, check_contents: bool = False
+    arrays: onp.ToIntND | Sequence[onp.ToInt | onp.ToIntND] = (), maxval: onp.ToFloat | None = None, check_contents: bool = False
 ) -> type[_IntP]: ...
 
 #
