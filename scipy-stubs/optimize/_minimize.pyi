@@ -58,8 +58,8 @@ class _CallbackVectorState(Protocol):
     def __call__(self, xk: _Float1D, state: OptimizeResult[Any], /) -> object: ...
 
 @type_check_only
-class _MinimizeMethodFun(Protocol):
-    def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args) -> _OptimizeResult[Any]: ...
+class _MinimizeMethodFun[ResultT: _OptimizeResult[Any]](Protocol):
+    def __call__(self, fun: _Fun1D[float], x0: _Float1D, /, args: tuple[Any, ...]) -> ResultT: ...
 
 @type_check_only
 class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
@@ -226,7 +226,7 @@ def minimize[Float1DT: _Float1D](
     fun: Callable[Concatenate[Float1DT, ...], Float1DT],
     x0: onp.ToFloat,
     args: _Args = (),
-    method: MethodMimimize | _MinimizeMethodFun | None = None,
+    method: MethodMimimize | None = None,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
     hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
@@ -303,7 +303,7 @@ def minimize[FunT: onp.ToFloat](
     fun: _Fun1D[FunT],
     x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
-    method: MethodMimimize | _MinimizeMethodFun | None = None,
+    method: MethodMimimize | None = None,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
     hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
@@ -318,7 +318,7 @@ def minimize[FunT: onp.ToFloat](
     fun: _Fun1D[_ToJac[FunT]],
     x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args,
-    method: MethodMimimize | _MinimizeMethodFun | None,
+    method: MethodMimimize | None,
     jac: onp.ToTrue,
     hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
@@ -333,7 +333,7 @@ def minimize[FunT: onp.ToFloat](
     fun: _Fun1D[_ToJac[FunT]],
     x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
-    method: MethodMimimize | _MinimizeMethodFun | None = None,
+    method: MethodMimimize | None = None,
     *,
     jac: onp.ToTrue,
     hess: _ToHess | None = None,
@@ -344,6 +344,37 @@ def minimize[FunT: onp.ToFloat](
     callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[FunT]: ...
+@overload  # method=<custom>  (positional)
+def minimize[ResultT: _OptimizeResult[Any]](
+    fun: _Fun1D[object],
+    x0: onp.ToFloat | onp.ToFloat1D,
+    args: _Args,
+    method: _MinimizeMethodFun[ResultT],
+    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToBool | None = None,
+    hess: _ToHess | None = None,
+    hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
+    bounds: Bounds | None = None,
+    constraints: Constraints = (),
+    tol: onp.ToFloat | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
+    options: Mapping[str, object] | None = None,
+) -> ResultT: ...
+@overload  # method=<custom>  (keyword)
+def minimize[ResultT: _OptimizeResult[Any]](
+    fun: _Fun1D[object],
+    x0: onp.ToFloat | onp.ToFloat1D,
+    args: _Args = (),
+    *,
+    method: _MinimizeMethodFun[ResultT],
+    jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToBool | None = None,
+    hess: _ToHess | None = None,
+    hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
+    bounds: Bounds | None = None,
+    constraints: Constraints = (),
+    tol: onp.ToFloat | None = None,
+    callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
+    options: Mapping[str, object] | None = None,
+) -> ResultT: ...
 
 #
 @overload  # method="brent" or method="golden"
