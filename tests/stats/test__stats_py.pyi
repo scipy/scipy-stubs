@@ -978,9 +978,10 @@ assert_type(jarque_bera(_f64_2d), SignificanceResult[np.float64])
 
 assert_type(jarque_bera(_py_f_1d, axis=1), SignificanceResult[onp.ArrayND[np.float64]])
 assert_type(jarque_bera(_i64_1d, axis=1), SignificanceResult[onp.ArrayND[np.float64]])
-assert_type(jarque_bera(_f32_1d, axis=1), SignificanceResult[onp.ArrayND[np.float32]])
+assert_type(jarque_bera(_f32_3d, axis=(0, 1)), SignificanceResult[onp.ArrayND[np.float32]])
 assert_type(jarque_bera(_f64_1d, axis=1), SignificanceResult[onp.ArrayND[np.float64]])
-assert_type(jarque_bera(_f64_2d, axis=1), SignificanceResult[onp.ArrayND[np.float64]])
+assert_type(jarque_bera(_f64_3d, axis=(0, 1)), SignificanceResult[onp.ArrayND[np.float64]])
+assert_type(jarque_bera(_f16_nd, axis=(0, 1)), SignificanceResult[onp.ArrayND[np.float64 | Any]])
 
 assert_type(jarque_bera(_py_f_1d, keepdims=True), SignificanceResult[onp.ArrayND[np.float64]])
 assert_type(jarque_bera(_i64_1d, keepdims=True), SignificanceResult[onp.Array1D[np.float64]])
