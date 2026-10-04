@@ -11,6 +11,7 @@ from scipy.stats import yeojohnson, yeojohnson_llf, yeojohnson_normmax, yeojohns
 ###
 
 _f32_0d: np.float32
+_f64_0d: np.float64
 
 _py_float_1d: list[float]
 _i8_1d: onp.Array1D[np.int8]
@@ -87,6 +88,7 @@ assert_type(yeojohnson(_f16_1d, 0.1), onp.Array1D[np.float16])
 assert_type(yeojohnson(_f32_2d, 0.1), onp.Array2D[np.float32])
 assert_type(yeojohnson(_f64_1d, 0.1), onp.Array1D[np.float64])
 assert_type(yeojohnson(_f32_0d, 0.1), onp.Array0D[np.float32])
+assert_type(yeojohnson(_f32_1d, _f64_0d), onp.Array1D[np.float64])
 assert_type(yeojohnson(2.0, 0.1), onp.Array0D[np.float64])
 assert_type(yeojohnson(_py_float_2d, 0.1), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
 

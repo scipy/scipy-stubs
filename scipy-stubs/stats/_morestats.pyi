@@ -833,6 +833,10 @@ def yeojohnson[FloatingT: npc.floating](
 ) -> onp.Array0D[FloatingT]: ...
 @overload  # 0d +f64, lmbda=<given>
 def yeojohnson(x: float | npc.integer, lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate") -> onp.Array0D[np.float64]: ...
+@overload  # Nd ~f16|f32, lmbda=~f64
+def yeojohnson[ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[np.float16 | np.float32, ShapeT], lmbda: np.float64, *, nan_policy: NanPolicy = "propagate"
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # Nd ~floating, lmbda=<given>
 def yeojohnson[FloatingT: npc.floating, ShapeT: tuple[int, ...]](
     x: onp.ArrayND[FloatingT, ShapeT], lmbda: onp.ToFloat, *, nan_policy: NanPolicy = "propagate"
