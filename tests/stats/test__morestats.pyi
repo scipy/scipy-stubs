@@ -195,16 +195,20 @@ assert_type(bartlett(_f32_1d, _f32_nd), BartlettResult[np.float32 | Any])  # pyr
 ###
 # levene
 
-assert_type(levene(_f64_nd, _f64_nd), LeveneResult[np.float64 | onp.ArrayND[np.float64] | Any])
+assert_type(levene(_f64_2d, _f64_2d), LeveneResult[np.float64 | onp.ArrayND[np.float64] | Any])
 assert_type(levene(_f64_nd, _f64_nd, axis=None), LeveneResult[np.float64])
 assert_type(levene(_f64_nd, _f64_nd, keepdims=True), LeveneResult[onp.ArrayND[np.float64]])
+assert_type(levene(_py_f_1d, _py_f_1d), LeveneResult[np.float64])
+assert_type(levene(_f32_1d, _f32_1d), LeveneResult[np.float32])
 
 ###
 # fligner
 
 assert_type(fligner(_f64_nd, _f64_nd, axis=None), FlignerResult[np.float64])
 assert_type(fligner(_f64_nd, _f64_nd, keepdims=True), FlignerResult[onp.ArrayND[np.float64]])
-assert_type(fligner(_f64_nd, _f64_nd), FlignerResult[np.float64 | onp.ArrayND[np.float64] | Any])
+assert_type(fligner(_f64_2d, _f64_2d), FlignerResult[np.float64 | onp.ArrayND[np.float64] | Any])
+assert_type(fligner(_py_f_1d, _py_f_1d), FlignerResult[np.float64])
+assert_type(fligner(_f32_1d, _f32_1d), FlignerResult[np.float32])
 
 ###
 # mood

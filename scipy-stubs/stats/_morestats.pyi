@@ -1192,6 +1192,15 @@ def levene(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> LeveneResult[onp.ArrayND[np.float64]]: ...
+@overload  # 1d ~f64
+def levene(
+    *samples: _AsF64_1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> LeveneResult[np.float64]: ...
 @overload  # ~f32, axis=None
 def levene(
     *samples: onp.ToJustFloat32_ND,
@@ -1210,6 +1219,15 @@ def levene(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> LeveneResult[onp.ArrayND[np.float32]]: ...
+@overload  # 1d ~f32
+def levene(
+    *samples: onp.ToJustFloat32Strict1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> LeveneResult[np.float32]: ...
 @overload  # fallback
 def levene(
     *samples: onp.ToFloatND,
@@ -1239,6 +1257,15 @@ def fligner(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> FlignerResult[onp.ArrayND[np.float64]]: ...
+@overload  # 1d ~f64
+def fligner(
+    *samples: _AsF64_1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> FlignerResult[np.float64]: ...
 @overload  # ~f32, axis=None
 def fligner(
     *samples: onp.ToJustFloat32_ND,
@@ -1257,6 +1284,15 @@ def fligner(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> FlignerResult[onp.ArrayND[np.float32]]: ...
+@overload  # 1d ~f32
+def fligner(
+    *samples: onp.ToJustFloat32Strict1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> FlignerResult[np.float32]: ...
 @overload  # fallback
 def fligner(
     *samples: onp.ToFloatND,
