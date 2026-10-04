@@ -68,6 +68,10 @@ class _MultiDuckRV:
 # plot
 assert_type(_uniform_0d_f64.plot(t=("x", -1, 5), ax=_ax), Axes)
 
+# entropy
+assert_type(_uniform_0d_f64.entropy(), np.float64 | Any)
+assert_type(_uniform_1d_f64.entropy(), onp.Array1D[np.float64 | Any])
+
 # logentropy
 assert_type(_uniform_0d_f64.logentropy(), np.complex128 | Any)
 assert_type(_uniform_1d_f64.logentropy(), onp.Array1D[np.complex128 | Any])
