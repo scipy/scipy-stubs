@@ -1139,6 +1139,8 @@ assert_type(power_divergence(_f64_1d), Power_divergenceResult[np.float64])
 assert_type(power_divergence(_f32_1d), Power_divergenceResult[np.float32])
 assert_type(power_divergence(_f64_nd, axis=None), Power_divergenceResult[np.float64])
 assert_type(power_divergence(_f64_nd, keepdims=True), Power_divergenceResult[onp.ArrayND[np.float64]])
+assert_type(power_divergence(_f64_1d, None, _py_i_1d), Power_divergenceResult[onp.ArrayND[np.float64] | Any])
+assert_type(power_divergence(_f64_1d, ddof=_py_i_1d), Power_divergenceResult[onp.ArrayND[np.float64] | Any])
 
 # chisquare
 
@@ -1164,6 +1166,9 @@ assert_type(chisquare(_f64_2d, axis=1), Power_divergenceResult[np.float64 | Any]
 assert_type(chisquare(_f64_2d, keepdims=False), Power_divergenceResult[np.float64 | Any])
 assert_type(chisquare(_f64_nd), Power_divergenceResult[np.float64 | Any])
 assert_type(chisquare(_f32_nd), Power_divergenceResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
+
+assert_type(chisquare(_f64_1d, None, _py_i_1d), Power_divergenceResult[onp.ArrayND[np.float64] | Any])
+assert_type(chisquare(_f64_1d, ddof=_py_i_1d), Power_divergenceResult[onp.ArrayND[np.float64] | Any])
 
 # ks_1samp
 
