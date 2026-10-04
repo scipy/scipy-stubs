@@ -50,14 +50,14 @@ _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, ...], default=tuple[Any, ...
 
 class RBFInterpolator(Generic[_Inexact64T_co, _ShapeT_co]):
     y: onp.Array2D[np.float64]
-    d: onp.Array[_ShapeT_co, np.float64]
-    d_shape: _ShapeT_co
+    d: onp.Array2D[np.float64]
+    d_shape: tuple[int, ...]
     d_dtype: type[float | complex]
-    neighbors: int
+    neighbors: int | None
     smoothing: onp.Array1D[np.float64]
     kernel: _Kernel
     epsilon: float
-    powers: int
+    powers: onp.Array2D[np.int64]
 
     #
     @classmethod
