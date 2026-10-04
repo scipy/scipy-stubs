@@ -1,4 +1,4 @@
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from types import ModuleType
 from typing import Any, Generic, Literal, NamedTuple, Never, Protocol, Self, SupportsIndex, final, overload, type_check_only
 from typing_extensions import TypeVar, deprecated
@@ -378,7 +378,7 @@ def kstatvar(
 @overload  # +f64
 def probplot[ScalarT: npc.floating | npc.integer | np.bool](
     x: onp.ToArrayND[ScalarT, ScalarT],
-    sparams: tuple[()] = (),
+    sparams: tuple[()] | None = (),
     dist: _RVC0 | _CanPPF = "norm",
     fit: Literal[True] = True,
     plot: _CanPlotText | ModuleType | None = None,
@@ -387,7 +387,7 @@ def probplot[ScalarT: npc.floating | npc.integer | np.bool](
 @overload  # +f64, fit=False
 def probplot[ScalarT: npc.floating | npc.integer | np.bool](
     x: onp.ToArrayND[ScalarT, ScalarT],
-    sparams: tuple[()] = (),
+    sparams: tuple[()] | None = (),
     dist: _RVC0 | _CanPPF = "norm",
     *,
     fit: Literal[False],
@@ -397,7 +397,7 @@ def probplot[ScalarT: npc.floating | npc.integer | np.bool](
 @overload  # +f64, sparams
 def probplot[ScalarT: npc.floating | npc.integer | np.bool](
     x: onp.ToArrayND[ScalarT, ScalarT],
-    sparams: tuple[onp.ToFloat, ...],
+    sparams: onp.ToFloat | Sequence[onp.ToFloat],
     dist: str | _CanPPF = "norm",
     fit: Literal[True] = True,
     plot: _CanPlotText | ModuleType | None = None,
@@ -406,7 +406,7 @@ def probplot[ScalarT: npc.floating | npc.integer | np.bool](
 @overload  # +f64, sparams, fit=False
 def probplot[ScalarT: npc.floating | npc.integer | np.bool](
     x: onp.ToArrayND[ScalarT, ScalarT],
-    sparams: tuple[onp.ToFloat, ...],
+    sparams: onp.ToFloat | Sequence[onp.ToFloat],
     dist: str | _CanPPF = "norm",
     *,
     fit: Literal[False],
@@ -416,7 +416,7 @@ def probplot[ScalarT: npc.floating | npc.integer | np.bool](
 @overload  # ~f64
 def probplot(
     x: onp.ToJustFloat64_ND,
-    sparams: tuple[()] = (),
+    sparams: tuple[()] | None = (),
     dist: _RVC0 | _CanPPF = "norm",
     fit: Literal[True] = True,
     plot: _CanPlotText | ModuleType | None = None,
@@ -425,7 +425,7 @@ def probplot(
 @overload  # ~f64, fit=False
 def probplot(
     x: onp.ToJustFloat64_ND,
-    sparams: tuple[()] = (),
+    sparams: tuple[()] | None = (),
     dist: _RVC0 | _CanPPF = "norm",
     *,
     fit: Literal[False],
@@ -435,7 +435,7 @@ def probplot(
 @overload  # ~f64, sparams
 def probplot(
     x: onp.ToJustFloat64_ND,
-    sparams: tuple[onp.ToFloat, ...],
+    sparams: onp.ToFloat | Sequence[onp.ToFloat],
     dist: str | _CanPPF = "norm",
     fit: Literal[True] = True,
     plot: _CanPlotText | ModuleType | None = None,
@@ -444,7 +444,7 @@ def probplot(
 @overload  # ~f64, sparams, fit=False
 def probplot(
     x: onp.ToJustFloat64_ND,
-    sparams: tuple[onp.ToFloat, ...],
+    sparams: onp.ToFloat | Sequence[onp.ToFloat],
     dist: str | _CanPPF = "norm",
     *,
     fit: Literal[False],
@@ -454,7 +454,7 @@ def probplot(
 @overload  # fallback
 def probplot(
     x: onp.ToFloat | onp.ToFloatND,
-    sparams: tuple[()] = (),
+    sparams: tuple[()] | None = (),
     dist: _RVC0 | _CanPPF = "norm",
     fit: Literal[True] = True,
     plot: _CanPlotText | ModuleType | None = None,
@@ -463,7 +463,7 @@ def probplot(
 @overload  # fallback, fit=False
 def probplot(
     x: onp.ToFloat | onp.ToFloatND,
-    sparams: tuple[()] = (),
+    sparams: tuple[()] | None = (),
     dist: _RVC0 | _CanPPF = "norm",
     *,
     fit: Literal[False],
@@ -473,7 +473,7 @@ def probplot(
 @overload  # fallback, sparams
 def probplot(
     x: onp.ToFloat | onp.ToFloatND,
-    sparams: tuple[onp.ToFloat, ...],
+    sparams: onp.ToFloat | Sequence[onp.ToFloat],
     dist: str | _CanPPF = "norm",
     fit: Literal[True] = True,
     plot: _CanPlotText | ModuleType | None = None,
@@ -482,7 +482,7 @@ def probplot(
 @overload  # fallback, sparams, fit=False
 def probplot(
     x: onp.ToFloat | onp.ToFloatND,
-    sparams: tuple[onp.ToFloat, ...],
+    sparams: onp.ToFloat | Sequence[onp.ToFloat],
     dist: str | _CanPPF = "norm",
     *,
     fit: Literal[False],
