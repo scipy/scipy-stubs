@@ -36,8 +36,8 @@ class _HasPPF(Protocol):
 
 @dataclass
 class BootstrapSobolResult:
-    first_order: BootstrapResult
-    total_order: BootstrapResult
+    first_order: BootstrapResult[onp.ArrayND[np.float64]]
+    total_order: BootstrapResult[onp.ArrayND[np.float64]]
 
 @dataclass
 class SobolResult(Generic[_ShapeT_co]):

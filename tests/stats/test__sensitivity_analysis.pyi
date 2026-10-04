@@ -42,5 +42,5 @@ assert_type(_si_dict.total_order, onp.ArrayND[np.float64])
 
 _bs = _si_2d.bootstrap(confidence_level=0.95, n_resamples=100)
 assert_type(_bs, BootstrapSobolResult)
-assert_type(_bs.first_order, BootstrapResult)
-assert_type(_bs.total_order, BootstrapResult)
+assert_type(_bs.first_order, BootstrapResult[onp.ArrayND[np.float64]])
+assert_type(_bs.total_order, BootstrapResult[onp.ArrayND[np.float64]])
