@@ -1174,6 +1174,54 @@ def bartlett(
 ) -> BartlettResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
 
 #
+@overload  # ?d ~f64, ?d|1d ~f64  (workaround)
+def levene(
+    sample1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    sample2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    /,
+    *samples: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> LeveneResult[np.float64 | Any]: ...
+@overload  # ?d|1d ~f64, ?d ~f64  (workaround)
+def levene(
+    sample1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    sample2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    /,
+    *samples: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> LeveneResult[np.float64 | Any]: ...
+@overload  # ?d ~f32, ?d|1d ~f32  (workaround)
+def levene(
+    sample1: onp.ArrayND[np.float32, _JustAnyShape],
+    sample2: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    /,
+    *samples: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> LeveneResult[np.float32 | Any]: ...
+@overload  # ?d|1d ~f32, ?d ~f32  (workaround)
+def levene(
+    sample1: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    sample2: onp.ArrayND[np.float32, _JustAnyShape],
+    /,
+    *samples: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> LeveneResult[np.float32 | Any]: ...
 @overload  # ~f64, axis=None
 def levene(
     *samples: _AsF64_ND,
@@ -1239,6 +1287,54 @@ def levene(
 ) -> LeveneResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
 
 #
+@overload  # ?d ~f64, ?d|1d ~f64  (workaround)
+def fligner(
+    sample1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    sample2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    /,
+    *samples: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> FlignerResult[np.float64 | Any]: ...
+@overload  # ?d|1d ~f64, ?d ~f64  (workaround)
+def fligner(
+    sample1: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    sample2: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    /,
+    *samples: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> FlignerResult[np.float64 | Any]: ...
+@overload  # ?d ~f32, ?d|1d ~f32  (workaround)
+def fligner(
+    sample1: onp.ArrayND[np.float32, _JustAnyShape],
+    sample2: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    /,
+    *samples: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> FlignerResult[np.float32 | Any]: ...
+@overload  # ?d|1d ~f32, ?d ~f32  (workaround)
+def fligner(
+    sample1: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    sample2: onp.ArrayND[np.float32, _JustAnyShape],
+    /,
+    *samples: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    center: _CenterMethod = "median",
+    proportiontocut: onp.ToFloat = 0.05,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> FlignerResult[np.float32 | Any]: ...
 @overload  # ~f64, axis=None
 def fligner(
     *samples: _AsF64_ND,
