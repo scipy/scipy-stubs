@@ -153,10 +153,7 @@ def subspace_angles(  # type: ignore[overload-overlap]
     A: onp.ToComplexStrict2D, B: onp.ToArrayStrict2D[complex, npc.number64 | npc.inexact80 | npc.integer32]
 ) -> onp.Array1D[np.float64]: ...
 @overload
-def subspace_angles(
-    A: onp.ToArrayStrict2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
-    B: onp.ToArrayStrict2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
-) -> onp.Array1D[np.float32]: ...
+def subspace_angles(A: onp.ToComplex64Strict2D, B: onp.ToComplex64Strict2D) -> onp.Array1D[np.float32]: ...
 @overload
 def subspace_angles(  # type: ignore[overload-overlap]
     A: onp.ToArrayND[complex, npc.number64 | npc.inexact80 | npc.integer32], B: onp.ToComplexND
@@ -166,10 +163,7 @@ def subspace_angles(  # type: ignore[overload-overlap]
     A: onp.ToComplexND, B: onp.ToArrayND[complex, npc.number64 | npc.inexact80 | npc.integer32]
 ) -> onp.ArrayND[np.float64]: ...
 @overload
-def subspace_angles(
-    A: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
-    B: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
-) -> onp.ArrayND[np.float32]: ...
+def subspace_angles(A: onp.ToComplex64_ND, B: onp.ToComplex64_ND) -> onp.ArrayND[np.float32]: ...
 @overload  # keep below the N-d overloads to avoid a pyright error on numpy<2.1
 def subspace_angles(A: onp.ToComplexStrict2D, B: onp.ToComplexStrict2D) -> onp.Array1D[np.float64 | np.float32]: ...
 @overload
