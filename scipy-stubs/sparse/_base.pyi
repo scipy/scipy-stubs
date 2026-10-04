@@ -111,6 +111,14 @@ class _CanAsFloat64[ST: _Scalar, OutT](Protocol):
 
 @final
 @type_check_only
+class _CanDataAsFloat64[ST: _Scalar, OutT](Protocol):
+    @property
+    def data(self, /) -> onp.ArrayND[ST]: ...
+    @type_check_only
+    def __assoc_as_float64__(self, /) -> OutT: ...
+
+@final
+@type_check_only
 class _CanAsComplex128[ST: _Scalar, OutT](Protocol):
     @property
     def dtype(self, /) -> np.dtype[ST]: ...
@@ -824,6 +832,8 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def __truediv__[SelfT: _spbase[np.float64]](self: SelfT, rhs: onp.ToFloat64, /) -> SelfT: ...
     @overload
     def __truediv__[SelfT: _spbase[np.complex128]](self: SelfT, rhs: onp.ToComplex128, /) -> SelfT: ...
+    @overload
+    def __truediv__[OutT](self: _CanDataAsFloat64[_ToFloat32, OutT], rhs: onp.ToFloat64, /) -> OutT: ...
     @overload
     def __truediv__[OutT](self: _CanAsAny[OutT], rhs: onp.ToComplex, /) -> OutT: ...
     @overload
