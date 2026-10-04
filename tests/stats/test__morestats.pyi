@@ -208,6 +208,10 @@ assert_type(mood(_f64_nd, _f64_nd, keepdims=True), SignificanceResult[onp.ArrayN
 assert_type(mood(_f64_2d, _f64_2d), SignificanceResult[np.float64 | onp.ArrayND[np.float64] | Any])
 assert_type(mood(_py_f_1d, _py_f_1d), SignificanceResult[np.float64])
 assert_type(mood(_f32_1d, _f32_1d), SignificanceResult[np.float32])
+assert_type(mood(_f64_nd, _f64_nd), SignificanceResult[np.float64 | Any])
+assert_type(mood(_f64_1d, _f64_nd), SignificanceResult[np.float64 | Any])
+assert_type(mood(_f32_nd, _f32_nd), SignificanceResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
+assert_type(mood(_f32_1d, _f32_nd), SignificanceResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
 
 ###
 # wilcoxon
