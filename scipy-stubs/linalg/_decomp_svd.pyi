@@ -146,9 +146,6 @@ def null_space[InexactT: np.float32 | np.float64 | np.complex64 | np.complex128]
     lapack_driver: _LapackDriver = "gesdd",
 ) -> onp.ArrayND[InexactT]: ...
 
-# pyright reports a false positive `reportOverlappingOverload` error on numpy<2.1
-# pyright: reportOverlappingOverload=false
-
 #
 @overload  # ?d  (workaround)
 def subspace_angles(
@@ -172,8 +169,6 @@ def subspace_angles(
     B: onp.ToArrayStrict2D[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
 ) -> onp.Array1D[np.float32]: ...
 @overload
-def subspace_angles(A: onp.ToComplexStrict2D, B: onp.ToComplexStrict2D) -> onp.Array1D[np.float64 | np.float32]: ...
-@overload
 def subspace_angles(  # type: ignore[overload-overlap]
     A: onp.ToArrayND[complex, npc.number64 | npc.inexact80 | npc.integer32], B: onp.ToComplexND
 ) -> onp.ArrayND[np.float64]: ...
@@ -186,5 +181,7 @@ def subspace_angles(
     A: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
     B: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
 ) -> onp.ArrayND[np.float32]: ...
+@overload  # keep below the N-d overloads to avoid a pyright error on numpy<2.1
+def subspace_angles(A: onp.ToComplexStrict2D, B: onp.ToComplexStrict2D) -> onp.Array1D[np.float64 | np.float32]: ...
 @overload
 def subspace_angles(A: onp.ToComplexND, B: onp.ToComplexND) -> onp.ArrayND[np.float64 | np.float32]: ...
