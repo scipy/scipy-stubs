@@ -85,6 +85,9 @@ class SomersDResult:
     pvalue: Final[float]
     table: Final[onp.Array2D[np.int_]]
 
+    @property
+    def correlation(self, /) -> float: ...
+
 @dataclass
 class BarnardExactResult:
     statistic: Final[float]
