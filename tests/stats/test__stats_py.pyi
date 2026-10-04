@@ -229,6 +229,8 @@ assert_type(gmean(_f64_2d, dtype=np.float16, keepdims=True), onp.ArrayND[np.floa
 assert_type(gmean(_f64_nd, dtype=np.float16, axis=(1, 2), keepdims=True), onp.ArrayND[np.float16])
 assert_type(gmean(_f64_3d, axis=(1, 2), dtype=float), Any)
 
+assert_type(gmean(_py_f_2d, axis=(0, 1)), np.float64 | onp.ArrayND[np.float64])
+
 # hmean (same as above)
 
 assert_type(hmean(_py_i_1d), np.float64)
@@ -319,6 +321,8 @@ assert_type(hmean(_f64_2d, dtype=np.float16, keepdims=True), onp.ArrayND[np.floa
 assert_type(hmean(_f64_nd, dtype=np.float16, axis=(1, 2), keepdims=True), onp.ArrayND[np.float16])
 assert_type(hmean(_f64_3d, axis=(1, 2), dtype=float), Any)
 
+assert_type(hmean(_py_f_2d, axis=(0, 1)), np.float64 | onp.ArrayND[np.float64])
+
 # pmean (same as above)
 
 assert_type(pmean(_py_i_1d, 2), np.float64)
@@ -408,6 +412,8 @@ assert_type(pmean(_py_f_2d, 2, dtype=np.float16, keepdims=True), onp.ArrayND[np.
 assert_type(pmean(_f64_2d, 2, dtype=np.float16, keepdims=True), onp.ArrayND[np.float16])
 assert_type(pmean(_f64_nd, 2, dtype=np.float16, axis=(1, 2), keepdims=True), onp.ArrayND[np.float16])
 assert_type(pmean(_f64_3d, 2, axis=(1, 2), dtype=float), Any)
+
+assert_type(pmean(_py_f_2d, 2, axis=(0, 1)), np.float64 | onp.ArrayND[np.float64])
 
 # tmean
 

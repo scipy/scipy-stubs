@@ -535,6 +535,16 @@ def gmean(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # Nd float, axis=<tuple>
+def gmean(
+    a: onp.SequenceND[float],
+    axis: tuple[int, ...],
+    dtype: None = None,
+    weights: onp.ToFloatND | None = None,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # Nd float, keepdims=True
 def gmean(
     a: onp.SequenceND[float],
@@ -797,6 +807,16 @@ def hmean(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # Nd float, axis=<tuple>
+def hmean(
+    a: onp.SequenceND[float],
+    axis: tuple[int, ...],
+    dtype: None = None,
+    *,
+    weights: onp.ToFloatND | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # Nd float, keepdims=True
 def hmean(
     a: onp.SequenceND[float],
@@ -1071,6 +1091,17 @@ def pmean(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # Nd float, axis=<tuple>
+def pmean(
+    a: onp.SequenceND[float],
+    p: float,
+    *,
+    axis: tuple[int, ...],
+    dtype: None = None,
+    weights: onp.ToFloatND | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # Nd float, keepdims=True
 def pmean(
     a: onp.SequenceND[float],
