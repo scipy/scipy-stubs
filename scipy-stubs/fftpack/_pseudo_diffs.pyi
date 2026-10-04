@@ -1,5 +1,5 @@
 from _thread import _local as _Cache  # seriously, typeshed?
-from typing import overload
+from typing import Any, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -8,7 +8,7 @@ __all__ = ["cc_diff", "cs_diff", "diff", "hilbert", "ihilbert", "itilbert", "sc_
 
 # the suffix correspond to the relevant dtype charcode(s)
 type _Vec_d = onp.Array1D[np.float64]
-type _Vec_dD = onp.Array1D[np.float64 | np.complex128]
+type _Vec_dD = onp.Array1D[np.complex128 | Any]
 
 ###
 
