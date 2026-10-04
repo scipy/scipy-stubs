@@ -968,6 +968,9 @@ assert_type(scoreatpercentile(_f64_1d, _py_f_1d), onp.Array1D[np.float64])
 assert_type(scoreatpercentile(_f64_1d, _f64_1d), onp.Array1D[np.float64])
 assert_type(scoreatpercentile(_f64_1d, _f64_2d), onp.Array2D[np.float64])
 assert_type(scoreatpercentile(_f64_1d, _f64_nd), onp.ArrayND[np.float64])
+assert_type(scoreatpercentile(_py_f_2d, 50), np.float64)
+assert_type(scoreatpercentile(_f64_2d, 50, axis=0), onp.ArrayND[np.float64])
+assert_type(scoreatpercentile(_f64_1d, _py_f_1d, axis=0), onp.ArrayND[np.float64] | Any)
 
 # percentileofscore
 
