@@ -66,7 +66,7 @@ class _GaussianKwargs(TypedDict, total=False):
 @overload
 def vectorized_filter(
     input: onp.ToComplexND,
-    function: Callable[..., _ScalarT],
+    function: Callable[..., _ScalarT | onp.ArrayND[_ScalarT]],
     *,
     size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
     footprint: onp.Array | None = None,
@@ -80,7 +80,7 @@ def vectorized_filter(
 @overload
 def vectorized_filter(
     input: onp.ToComplexND,
-    function: Callable[..., onp.ToComplex],
+    function: Callable[..., onp.ToComplex | onp.ToComplexND],
     *,
     size: SupportsIndex | tuple[SupportsIndex, ...] | None = None,
     footprint: onp.Array | None = None,
