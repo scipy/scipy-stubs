@@ -186,7 +186,7 @@ def power(
     vectorized: bool | None = None,
     n_resamples: int = 10_000,
     batch: int | None = None,
-) -> PowerResult: ...  # undocumented
+) -> PowerResult[onp.ArrayND[np.float64] | Any]: ...  # undocumented
 
 ###
 

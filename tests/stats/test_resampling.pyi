@@ -126,6 +126,9 @@ assert_type(PermutationMethod(), PermutationMethod)
 assert_type(PermutationMethod(n_resamples=np.inf), PermutationMethod)
 
 # power
-assert_type(power(_statistic_1d, (np.random.standard_normal, np.random.standard_normal), [10, 20]), PowerResult[Any])
-assert_type(power(_statistic_1d, np.random.standard_normal, 10), PowerResult[Any])
-assert_type(power(jarque_bera, np.random.standard_normal, 10), PowerResult[Any])
+assert_type(
+    power(_statistic_1d, (np.random.standard_normal, np.random.standard_normal), [10, 20]),
+    PowerResult[onp.ArrayND[np.float64] | Any],
+)
+assert_type(power(_statistic_1d, np.random.standard_normal, 10), PowerResult[onp.ArrayND[np.float64] | Any])
+assert_type(power(jarque_bera, np.random.standard_normal, 10), PowerResult[onp.ArrayND[np.float64] | Any])
