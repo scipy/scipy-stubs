@@ -201,16 +201,16 @@ def binary_hit_or_miss(
     axes: tuple[int, ...] | None = None,
 ) -> onp.ArrayND[np.bool]: ...
 @overload
-def binary_hit_or_miss[OutputArrayT: onp.ArrayND[np.bool | npc.integer | npc.floating]](
+def binary_hit_or_miss(
     input: onp.ToFloatND,
     structure1: onp.ToFloatND | None = None,
     structure2: onp.ToFloatND | None = None,
     *,
-    output: OutputArrayT,
+    output: onp.ArrayND[np.bool | npc.integer | npc.floating],
     origin1: _Origin = 0,
     origin2: _Origin | None = None,
     axes: tuple[int, ...] | None = None,
-) -> OutputArrayT: ...
+) -> None: ...
 
 # keep roughly in sync with `binary_erosion`
 @overload
