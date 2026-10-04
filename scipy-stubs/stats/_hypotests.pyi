@@ -1,6 +1,6 @@
 from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, overload
+from typing import Any, Concatenate, Final, Generic, Literal, NamedTuple, Never, overload, type_check_only
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -85,8 +85,9 @@ class SomersDResult:
     pvalue: Final[float]
     table: Final[onp.Array2D[np.int_]]
 
-    @property
-    def correlation(self, /) -> float: ...
+@type_check_only
+class _SomersDResult(SomersDResult):
+    correlation: float
 
 @dataclass
 class BarnardExactResult:
@@ -360,7 +361,7 @@ def poisson_means_test(
 #
 def somersd(
     x: onp.ToFloat1D | onp.ToFloat2D, y: onp.ToFloat1D | None = None, alternative: Alternative = "two-sided"
-) -> SomersDResult: ...
+) -> _SomersDResult: ...
 
 #
 def barnard_exact(
