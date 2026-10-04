@@ -5531,6 +5531,28 @@ def power_divergence(
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> Power_divergenceResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d, ddof: Nd
+def power_divergence(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None,
+    ddof: onp.ToIntND,
+    axis: int | None = 0,
+    lambda_: PowerDivergenceStatistic | float | None = None,
+    *,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[onp.ArrayND[np.float64] | Any]: ...
+@overload  # ?d, ddof: Nd (keyword)
+def power_divergence(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None = None,
+    *,
+    ddof: onp.ToIntND,
+    axis: int | None = 0,
+    lambda_: PowerDivergenceStatistic | float | None = None,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[onp.ArrayND[np.float64] | Any]: ...
 @overload  # fallback
 def power_divergence(
     f_obs: onp.ToFloatND,
@@ -5654,6 +5676,28 @@ def chisquare(
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> Power_divergenceResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d, ddof: Nd
+def chisquare(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None,
+    ddof: onp.ToIntND,
+    axis: int | None = 0,
+    *,
+    sum_check: bool = True,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[onp.ArrayND[np.float64] | Any]: ...
+@overload  # ?d, ddof: Nd (keyword)
+def chisquare(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None = None,
+    *,
+    ddof: onp.ToIntND,
+    axis: int | None = 0,
+    sum_check: bool = True,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[onp.ArrayND[np.float64] | Any]: ...
 @overload  # fallback
 def chisquare(
     f_obs: onp.ToFloatND,
