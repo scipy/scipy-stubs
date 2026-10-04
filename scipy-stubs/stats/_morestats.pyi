@@ -1109,6 +1109,10 @@ def bartlett(
 def bartlett(
     *samples: _AsF64_ND, axis: SupportsIndex | None = 0, nan_policy: NanPolicy = "propagate", keepdims: Literal[True]
 ) -> BartlettResult[onp.ArrayND[np.float64]]: ...
+@overload  # 1d ~f64
+def bartlett(
+    *samples: _AsF64_1D, axis: SupportsIndex = 0, nan_policy: NanPolicy = "propagate", keepdims: Literal[False] = False
+) -> BartlettResult[np.float64]: ...
 @overload  # ~f32, axis=None
 def bartlett(
     *samples: onp.ToJustFloat32_ND, axis: None, nan_policy: NanPolicy = "propagate", keepdims: Literal[False] = False
@@ -1117,6 +1121,13 @@ def bartlett(
 def bartlett(
     *samples: onp.ToJustFloat32_ND, axis: SupportsIndex | None = 0, nan_policy: NanPolicy = "propagate", keepdims: Literal[True]
 ) -> BartlettResult[onp.ArrayND[np.float32]]: ...
+@overload  # 1d ~f32
+def bartlett(
+    *samples: onp.ToJustFloat32Strict1D,
+    axis: SupportsIndex = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> BartlettResult[np.float32]: ...
 @overload  # fallback
 def bartlett(
     *samples: onp.ToFloatND, axis: SupportsIndex | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
