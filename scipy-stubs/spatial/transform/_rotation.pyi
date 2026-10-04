@@ -431,7 +431,7 @@ class Rotation(Generic[_ShapeT_co]):
         b: onp.ToFloat1D | onp.ToFloat2D,
         weights: onp.ToFloat1D | None = None,
         return_sensitivity: L[False] = False,
-    ) -> tuple[Rotation[tuple[()]], float]: ...
+    ) -> tuple[Rotation[tuple[()]], np.float64]: ...
     @overload
     @staticmethod
     def align_vectors(
@@ -440,7 +440,7 @@ class Rotation(Generic[_ShapeT_co]):
         weights: onp.ToFloat1D | None = None,
         *,
         return_sensitivity: L[True],
-    ) -> tuple[Rotation[tuple[()]], float, onp.Array2D[np.float64]]: ...
+    ) -> tuple[Rotation[tuple[()]], np.float64, onp.Array2D[np.float64]]: ...
     @overload
     @staticmethod
     def align_vectors(
@@ -448,7 +448,7 @@ class Rotation(Generic[_ShapeT_co]):
         b: onp.ToFloat1D | onp.ToFloat2D,
         weights: onp.ToFloat1D | None,
         return_sensitivity: L[True],
-    ) -> tuple[Rotation[tuple[()]], float, onp.Array2D[np.float64]]: ...
+    ) -> tuple[Rotation[tuple[()]], np.float64, onp.Array2D[np.float64]]: ...
 
 class Slerp:
     times: Final[onp.Array1D[np.float64]]
