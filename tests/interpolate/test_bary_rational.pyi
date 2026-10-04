@@ -18,6 +18,8 @@ _f80_1d: onp.Array1D[npc.floating80]
 _c64_1d: onp.Array1D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
 _c160_1d: onp.Array1D[npc.complexfloating160]
+_f32_0d: np.float32
+_c64_0d: np.complex64
 _f_1d: list[float]
 _f_2d: list[list[float]]
 _c_1d: list[complex]
@@ -38,9 +40,9 @@ assert_type(AAA(_c64_1d, _c64_1d), AAA[np.complex64])
 assert_type(AAA(_c128_1d, _c128_1d), AAA[np.complex128])
 assert_type(AAA(_c160_1d, _c160_1d), AAA[npc.complexfloating160])
 
-assert_type(_aaa(1), onp.Array1D[np.float32])
-assert_type(_aaa(1.0), onp.Array1D[np.float64])
-assert_type(_aaa(1j), onp.Array1D[np.complex128])
+assert_type(_aaa(1), onp.ArrayND[np.float32])
+assert_type(_aaa(1.0), onp.ArrayND[np.float64])
+assert_type(_aaa(1j), onp.ArrayND[np.complex128])
 
 assert_type(_aaa.weights, onp.Array1D[np.float32])
 assert_type(_aaa.support_values, onp.Array1D[np.float32])
@@ -49,6 +51,13 @@ assert_type(_aaa.residues(), onp.Array1D[np.float32])
 assert_type(_aaa.poles(), onp.Array1D[np.complex64])
 assert_type(_aaa.roots(), onp.Array1D[np.complex64])
 assert_type(_aaa.errors, onp.Array1D[np.float64 | Any])
+assert_type(AAA(_f64_1d, _f64_1d)(1.0), onp.ArrayND[np.float64])
+assert_type(AAA(_c128_1d, _c128_1d)(1j), onp.ArrayND[np.complex128])
+assert_type(_aaa(_f32_0d), onp.ArrayND[np.float32])
+assert_type(AAA(_f80_1d, _f80_1d)(1.0), onp.ArrayND[np.longdouble])
+assert_type(AAA(_c64_1d, _c64_1d)(_c64_0d), onp.ArrayND[np.complex64])
+assert_type(AAA(_c64_1d, _c64_1d)(1j), onp.ArrayND[np.complex128])
+assert_type(AAA(_c160_1d, _c160_1d)(1j), onp.ArrayND[np.clongdouble])
 
 # FloaterHormannInterpolator
 
@@ -67,11 +76,12 @@ assert_type(FloaterHormannInterpolator(_f64_1d, _f_2d), FloaterHormannInterpolat
 assert_type(FloaterHormannInterpolator(_f64_1d, _c_1d), FloaterHormannInterpolator[np.complex128, tuple[int]])
 assert_type(FloaterHormannInterpolator(_f64_1d, _c_2d), FloaterHormannInterpolator[np.complex128, tuple[int, int]])
 
-assert_type(_fhi(1), onp.Array2D[np.float32])
-assert_type(_fhi(1.0), onp.Array2D[np.float64])
-assert_type(_fhi(1j), onp.Array2D[np.complex128])
+assert_type(_fhi(1), onp.ArrayND[np.float32])
+assert_type(_fhi(1.0), onp.ArrayND[np.float64])
+assert_type(_fhi(1j), onp.ArrayND[np.complex128])
 
 assert_type(_fhi.residues(), onp.Array2D[np.float32])
-assert_type(_fhi.poles(), onp.Array2D[np.complex64])
+assert_type(_fhi.poles(), onp.Array1D[np.complex64])
 assert_type(_fhi.roots(), onp.Array2D[np.complex64])
 assert_type(_fhi.weights, onp.Array1D[np.float64 | Any])
+assert_type(FloaterHormannInterpolator(_f64_1d, _f_2d).poles(), onp.Array1D[np.complex128])
