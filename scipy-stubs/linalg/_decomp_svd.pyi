@@ -1,4 +1,4 @@
-from typing import Literal, SupportsIndex, overload
+from typing import Literal, Never, SupportsIndex, overload
 
 import numpy as np
 import optype as op
@@ -16,6 +16,9 @@ type _SVD_ND[ScalarT1: np.generic, ScalarT2: np.generic] = tuple[
 ]  # fmt: skip
 
 type _LapackDriver = Literal["gesdd", "gesvd"]
+
+# workaround for mypy & pyright's failure to conform to the overload typing specification
+type _JustAnyShape = tuple[Never, Never, Never, Never]
 
 ###
 
@@ -147,6 +150,14 @@ def null_space[InexactT: np.float32 | np.float64 | np.complex64 | np.complex128]
 # pyright: reportOverlappingOverload=false
 
 #
+@overload  # ?d  (workaround)
+def subspace_angles(
+    A: onp.ArrayND[npc.number | np.bool, _JustAnyShape], B: onp.ToComplexND
+) -> onp.ArrayND[np.float64 | np.float32]: ...
+@overload  # ?d  (workaround)
+def subspace_angles(
+    A: onp.ToComplexND, B: onp.ArrayND[npc.number | np.bool, _JustAnyShape]
+) -> onp.ArrayND[np.float64 | np.float32]: ...
 @overload
 def subspace_angles(  # type: ignore[overload-overlap]
     A: onp.ToArrayStrict2D[complex, npc.number64 | npc.inexact80 | npc.integer32], B: onp.ToComplexStrict2D
