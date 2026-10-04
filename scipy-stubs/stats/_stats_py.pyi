@@ -1421,6 +1421,26 @@ def tmean(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
+@overload  # Nd T@inexact, axis=<given>
+def tmean[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: int | tuple[int, ...],
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> InexactT | onp.ArrayND[InexactT]: ...
+@overload  # Nd +integer, axis=<given>
+def tmean(
+    a: onp.ArrayND[npc.integer | np.bool],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    *,
+    axis: int | tuple[int, ...],
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # S@Nd T@inexact, keepdims=True
 def tmean[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[InexactT, ShapeT],
@@ -1551,6 +1571,28 @@ def tvar(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
+@overload  # Nd T@inexact
+def tvar[InexactT: npc.inexact](
+    a: onp.ArrayND[InexactT],
+    limits: _ComplexLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int | tuple[int, ...] = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> InexactT | onp.ArrayND[InexactT]: ...
+@overload  # Nd +integer
+def tvar(
+    a: onp.ArrayND[npc.integer | np.bool],
+    limits: _RealLimits | None = None,
+    inclusive: tuple[bool, bool] = (True, True),
+    axis: int | tuple[int, ...] = 0,
+    ddof: int = 1,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload  # ?d T@inexact, axis=None
 def tvar[InexactT: npc.inexact](
     a: onp.ArrayND[InexactT],

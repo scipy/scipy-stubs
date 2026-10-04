@@ -477,6 +477,9 @@ assert_type(tmean(_f64_nd, axis=(1, 2), keepdims=True), onp.ArrayND[np.float64])
 assert_type(tmean(_c64_nd, keepdims=True), onp.ArrayND[np.complex64])
 assert_type(tmean(_c128_nd, keepdims=True), onp.ArrayND[np.complex128])
 
+assert_type(tmean(_f32_3d, axis=0), np.float32 | onp.ArrayND[np.float32])
+assert_type(tmean(_i16_3d, axis=0), np.float64 | onp.ArrayND[np.float64])
+
 # tvar
 
 assert_type(tvar(_py_i_1d), np.float64)
@@ -544,6 +547,9 @@ assert_type(tvar(_f32_nd, axis=None), np.float32)
 assert_type(tvar(_f64_nd, axis=None), np.float64)
 assert_type(tvar(_c64_nd, axis=None), np.complex64)
 assert_type(tvar(_c128_nd, axis=None), np.complex128)
+
+assert_type(tvar(_f32_3d), np.float32 | onp.ArrayND[np.float32])
+assert_type(tvar(_i16_3d), np.float64 | onp.ArrayND[np.float64])
 
 # tstd (same as above)
 
