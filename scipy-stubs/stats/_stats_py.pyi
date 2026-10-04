@@ -2082,14 +2082,41 @@ def gstd(
     a: onp.ToFloatND, axis: None, ddof: int = 1, *, keepdims: L[False] = False, nan_policy: NanPolicy = "propagate"
 ) -> np.float64: ...
 @overload
+def gstd[InexactT: npc.inexact](
+    a: onp.ToArrayStrict1D[InexactT, InexactT],
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> InexactT: ...
+@overload
 def gstd(
-    a: onp.ToFloatStrict1D,
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     axis: int | None = 0,
     ddof: int = 1,
     *,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> np.float64: ...
+@overload
+def gstd[InexactT: npc.inexact](
+    a: onp.ToArrayStrict2D[InexactT, InexactT],
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[InexactT]: ...
+@overload
+def gstd(
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
+    axis: int = 0,
+    ddof: int = 1,
+    *,
+    keepdims: L[False] = False,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.Array1D[np.float64]: ...
 @overload
 def gstd(
     a: onp.ToFloatND,
@@ -3903,14 +3930,41 @@ def trim_mean(
     a: _ToFloatStrictND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload
+def trim_mean[InexactT: npc.inexact](
+    a: onp.ToArrayStrict1D[InexactT, InexactT],
+    proportiontocut: float,
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> InexactT: ...
+@overload
 def trim_mean(
-    a: onp.ToFloatStrict1D,
+    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     proportiontocut: float,
     axis: int | None = 0,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> np.float64: ...
+@overload
+def trim_mean[InexactT: npc.inexact](
+    a: onp.ToArrayStrict2D[InexactT, InexactT],
+    proportiontocut: float,
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[InexactT]: ...
+@overload
+def trim_mean(
+    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
+    proportiontocut: float,
+    axis: int = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
+) -> onp.Array1D[np.float64]: ...
 @overload
 def trim_mean(
     a: onp.ToFloatND, proportiontocut: float, axis: None, *, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
