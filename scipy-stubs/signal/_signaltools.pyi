@@ -1339,7 +1339,7 @@ def resample(
 ) -> tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]]: ...
 @overload  # ~complex, unknown shape, t=None (default)
 def resample(
-    x: onp.SequenceND[op.JustComplex | np.complex128],
+    x: onp.ToJustComplex128_ND,
     num: int,
     t: None = None,
     axis: int = 0,
@@ -1348,7 +1348,7 @@ def resample(
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # ~complex, unknown shape, t=<given>
 def resample(
-    x: onp.SequenceND[op.JustComplex | np.complex128],
+    x: onp.ToJustComplex128_ND,
     num: int,
     t: onp.ToFloat1D,
     axis: int = 0,

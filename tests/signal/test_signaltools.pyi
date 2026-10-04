@@ -517,6 +517,8 @@ assert_type(resample(_c128_2d, 1), onp.Array2D[np.complex128])
 assert_type(resample(_c160_2d, 1), onp.Array2D[npc.complexfloating160])
 
 assert_type(resample(_f64_nd, 1, _f64_1d), tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]])
+assert_type(resample(_c128_nd, 1), onp.ArrayND[np.complex128])
+assert_type(resample(_c128_nd, 1, _f64_1d), tuple[onp.ArrayND[np.complex128], onp.Array1D[np.float64]])
 
 # resample_poly
 
