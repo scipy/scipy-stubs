@@ -1,6 +1,6 @@
 from _typeshed import Unused
 from collections.abc import Callable, Sequence
-from typing import Final, Literal, TypedDict, overload, type_check_only
+from typing import Any, Final, Literal, TypedDict, overload, type_check_only
 from typing_extensions import deprecated
 
 import numpy as np
@@ -9,6 +9,7 @@ import optype.numpy.compat as npc
 
 from ._optimize import OptimizeResult as _OptimizeResult
 from ._typing import Bound, MethodLinprog, MethodLinprogLegacy
+from scipy.sparse._base import _spbase
 
 __all__ = ["linprog", "linprog_terse_callback", "linprog_verbose_callback"]
 
@@ -116,9 +117,9 @@ def linprog_terse_callback(res: OptimizeResult) -> None: ...
 @overload  # highs (default)
 def linprog(
     c: onp.ToFloat1D,
-    A_ub: onp.ToFloat2D | None = None,
+    A_ub: onp.ToFloat2D | _spbase[Any, tuple[int, int]] | None = None,
     b_ub: onp.ToFloat1D | None = None,
-    A_eq: onp.ToFloat2D | None = None,
+    A_eq: onp.ToFloat2D | _spbase[Any, tuple[int, int]] | None = None,
     b_eq: onp.ToFloat1D | None = None,
     bounds: _ToBounds = (0, None),
     method: Literal["highs"] = "highs",
@@ -130,9 +131,9 @@ def linprog(
 @overload  # highs-ds
 def linprog(
     c: onp.ToFloat1D,
-    A_ub: onp.ToFloat2D | None = None,
+    A_ub: onp.ToFloat2D | _spbase[Any, tuple[int, int]] | None = None,
     b_ub: onp.ToFloat1D | None = None,
-    A_eq: onp.ToFloat2D | None = None,
+    A_eq: onp.ToFloat2D | _spbase[Any, tuple[int, int]] | None = None,
     b_eq: onp.ToFloat1D | None = None,
     bounds: _ToBounds = (0, None),
     *,
@@ -145,9 +146,9 @@ def linprog(
 @overload  # highs-ipm
 def linprog(
     c: onp.ToFloat1D,
-    A_ub: onp.ToFloat2D | None = None,
+    A_ub: onp.ToFloat2D | _spbase[Any, tuple[int, int]] | None = None,
     b_ub: onp.ToFloat1D | None = None,
-    A_eq: onp.ToFloat2D | None = None,
+    A_eq: onp.ToFloat2D | _spbase[Any, tuple[int, int]] | None = None,
     b_eq: onp.ToFloat1D | None = None,
     bounds: _ToBounds = (0, None),
     *,
@@ -161,9 +162,9 @@ def linprog(
 @deprecated("`method='interior-point'` is deprecated. Please use one of the HIGHS solvers.")
 def linprog(
     c: onp.ToFloat1D,
-    A_ub: onp.ToFloat2D | None = None,
+    A_ub: onp.ToFloat2D | _spbase[Any, tuple[int, int]] | None = None,
     b_ub: onp.ToFloat1D | None = None,
-    A_eq: onp.ToFloat2D | None = None,
+    A_eq: onp.ToFloat2D | _spbase[Any, tuple[int, int]] | None = None,
     b_eq: onp.ToFloat1D | None = None,
     bounds: _ToBounds = (0, None),
     *,
@@ -208,9 +209,9 @@ def linprog(
 @overload  # any "highs"
 def linprog(
     c: onp.ToFloat1D,
-    A_ub: onp.ToFloat2D | None = None,
+    A_ub: onp.ToFloat2D | _spbase[Any, tuple[int, int]] | None = None,
     b_ub: onp.ToFloat1D | None = None,
-    A_eq: onp.ToFloat2D | None = None,
+    A_eq: onp.ToFloat2D | _spbase[Any, tuple[int, int]] | None = None,
     b_eq: onp.ToFloat1D | None = None,
     bounds: _ToBounds = (0, None),
     method: MethodLinprog = "highs",
