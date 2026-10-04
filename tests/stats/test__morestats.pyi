@@ -211,6 +211,7 @@ assert_type(wilcoxon(_f32_nd), WilcoxonResult[np.float32 | Any])  # pyrefly:igno
 
 assert_type(median_test(_f64_1d, _f64_1d), MedianTestResult[np.float64])
 assert_type(median_test(_f64_1d, _f64_1d, _f64_1d), MedianTestResult[np.float64])
+assert_type(median_test(_f64_1d, _f64_1d)[3], onp.Array2D[np.int_])  # pyrefly:ignore[assert-type]
 
 ###
 # circmean
