@@ -10,6 +10,7 @@ from scipy.stats._new_distributions import StandardNormal
 
 ###
 
+_i64: np.int64
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
@@ -28,6 +29,7 @@ assert_type(_norm_1d_f32.sigma, onp.Array1D[np.float32])
 
 assert_type(Normal(), StandardNormal)  # type:ignore[assert-type]
 assert_type(Normal(mu=0.0, sigma=1.0), Normal[tuple[()], np.float64])
+assert_type(Normal(mu=_i64, sigma=_i64), Normal[tuple[()], np.float64 | Any])
 assert_type(Normal(mu=0.0, sigma=[1.0]), Normal[tuple[int], np.float64 | Any])
 assert_type(Normal(mu=0.0, sigma=[[1.0]]), Normal[tuple[int, int], np.float64 | Any])
 assert_type(Normal(mu=0.0, sigma=[[[1.0]]]), Normal[tuple[int, int, int], np.float64 | Any])
@@ -65,6 +67,7 @@ assert_type(_unif_1d_f32.b, onp.Array1D[np.float32])
 assert_type(_unif_1d_f32.ab, onp.Array1D[np.float32])
 
 assert_type(Uniform(a=0.0, b=1.0), Uniform[tuple[()], np.float64])
+assert_type(Uniform(a=_i64, b=_i64), Uniform[tuple[()], np.float64 | Any])
 assert_type(Uniform(a=0.0, b=[1.0]), Uniform[tuple[int], np.float64 | Any])
 assert_type(Uniform(a=0.0, b=[[1.0]]), Uniform[tuple[int, int], np.float64 | Any])
 assert_type(Uniform(a=0.0, b=[[[1.0]]]), Uniform[tuple[int, int, int], np.float64 | Any])
