@@ -3211,7 +3211,7 @@ def jarque_bera(
 def jarque_bera(
     x: onp.ToArrayND[float, npc.floating64 | npc.integer],
     *,
-    axis: int,
+    axis: int | tuple[int, ...],
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
@@ -3237,7 +3237,7 @@ def jarque_bera(
 ) -> SignificanceResult[np.float32]: ...
 @overload  # ?d ~f32, axis=<given>
 def jarque_bera(
-    x: onp.ToJustFloat32_ND, *, axis: int, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+    x: onp.ToJustFloat32_ND, *, axis: int | tuple[int, ...], nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
 ) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
 @overload  # Nd ~f32, keepdims=True
 def jarque_bera[ShapeT: tuple[int, ...]](
@@ -3261,7 +3261,11 @@ def jarque_bera(
 ) -> SignificanceResult[np.float64 | Any]: ...
 @overload  # ?d floating, axis=<given>
 def jarque_bera(
-    x: onp.ToArrayND[npc.floating, npc.floating], *, axis: int, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+    x: onp.ToArrayND[npc.floating, npc.floating],
+    *,
+    axis: int | tuple[int, ...],
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
 ) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 @overload  # Nd floating, keepdims=True
 def jarque_bera[ShapeT: tuple[int, ...]](
