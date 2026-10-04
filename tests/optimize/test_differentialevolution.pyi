@@ -5,7 +5,7 @@ import numpy as np
 import optype.numpy as onp
 
 import scipy.optimize as so
-from scipy.optimize import Bounds, NonlinearConstraint, differential_evolution
+from scipy.optimize import Bounds, LinearConstraint, NonlinearConstraint, differential_evolution
 from scipy.optimize._differentialevolution import OptimizeResult
 
 ###
@@ -20,6 +20,7 @@ def _cb(intermediate_result: so.OptimizeResult) -> bool: ...
 
 _b: list[tuple[float, float]]
 _nlc: NonlinearConstraint
+_lc: LinearConstraint
 
 ###
 
@@ -28,6 +29,7 @@ assert_type(differential_evolution(_obj, bounds=[(-5.0, 5.0), (-2.0, 2.0)]), _Re
 assert_type(differential_evolution(_obj, bounds=[[-5.0, 5.0], [-2.0, 2.0]]), _ResultUnconstrained)
 assert_type(differential_evolution(_obj, _b, constraints=_nlc), _ResultConstrained)
 assert_type(differential_evolution(_obj, _b, constraints=Bounds(0, 1)), _ResultConstrained)
+assert_type(differential_evolution(_obj, _b, constraints=[_nlc, _lc]), OptimizeResult)
 assert_type(differential_evolution(_obj_vec, _b, updating="deferred", vectorized=True), _ResultUnconstrained)
 assert_type(differential_evolution(_obj_vec, _b, updating="deferred", constraints=_nlc, vectorized=True), _ResultConstrained)
 assert_type(differential_evolution(_obj, _b, polish=_polish), _ResultUnconstrained)
