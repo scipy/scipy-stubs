@@ -1458,18 +1458,18 @@ def decimate(
     axis: int = -1,
     zero_phase: bool = True,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # f32
-def decimate(
-    x: onp.ToJustFloat32_ND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
-) -> onp.ArrayND[np.float32]: ...
 @overload  # c128
 def decimate(
     x: onp.ToJustComplex128_ND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
 ) -> onp.ArrayND[np.complex128]: ...
-@overload  # c64
+@overload  # T: inexact
+def decimate[InexactT: npc.inexact](
+    x: onp.CanArrayND[InexactT], q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
+) -> onp.ArrayND[InexactT]: ...
+@overload  # fallback
 def decimate(
-    x: onp.ToJustComplex64_ND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
-) -> onp.ArrayND[np.complex64]: ...
+    x: onp.ToComplexND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
+) -> onp.ArrayND[Any]: ...
 
 # complex periods are always cast to float64, and therefore not supported here
 @overload  # 0d
