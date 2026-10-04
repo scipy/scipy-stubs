@@ -203,7 +203,7 @@ class Model:
     fjacb: Final[_FCN]
     fjacd: Final[_FCN]
     extra_args: Final[tuple[Any, ...]]
-    estimate: onp.ToFloat1D | None
+    estimate: Callable[[Data], onp.ToFloat1D] | None
     implicit: Final[bool | Literal[0, 1]]
     meta: Final[dict[str, Any]]
 
@@ -214,7 +214,7 @@ class Model:
         fjacb: _FCN | None = None,
         fjacd: _FCN | None = None,
         extra_args: Iterable[object] | None = None,
-        estimate: onp.ToFloat1D | None = None,
+        estimate: Callable[[Data], onp.ToFloat1D] | None = None,
         implicit: bool | Literal[0, 1] = 0,
         meta: dict[str, Any] | None = None,
     ) -> None: ...
