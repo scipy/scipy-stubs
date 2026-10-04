@@ -157,13 +157,11 @@ def subspace_angles(  # type: ignore[overload-overlap]  # mypy NBit false positi
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # ?d +f32  (workaround)
 def subspace_angles(
-    A: onp.ArrayND[npc.inexact32 | npc.number16 | npc.integer8 | np.bool, _JustAnyShape],
-    B: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
+    A: onp.ArrayND[npc.inexact32 | npc.number16 | npc.integer8 | np.bool, _JustAnyShape], B: onp.ToComplex64_ND
 ) -> onp.ArrayND[np.float32]: ...
 @overload  # ?d +f32  (workaround)
 def subspace_angles(
-    A: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
-    B: onp.ArrayND[npc.inexact32 | npc.number16 | npc.integer8 | np.bool, _JustAnyShape],
+    A: onp.ToComplex64_ND, B: onp.ArrayND[npc.inexact32 | npc.number16 | npc.integer8 | np.bool, _JustAnyShape]
 ) -> onp.ArrayND[np.float32]: ...
 @overload
 def subspace_angles(  # type: ignore[overload-overlap]
