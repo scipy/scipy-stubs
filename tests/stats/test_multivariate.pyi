@@ -214,6 +214,7 @@ assert_type(dirichlet([1, 2]).rvs(size=_shape_nd), onp.Array[tuple[int, *tuple[A
 
 assert_type(wishart.rvs(1, 1).dtype, np.dtype[np.float64])
 assert_type(wishart().rvs().dtype, np.dtype[np.float64])
+assert_type(wishart(1, _f_2d).df, float)
 
 # invwishart
 

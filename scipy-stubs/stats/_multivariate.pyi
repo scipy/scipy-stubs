@@ -1241,7 +1241,7 @@ class wishart_frozen(multi_rv_frozen[wishart_gen]):
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
 
     dim: Final[int]
-    df: Final[onp.ToFloat]
+    df: Final[float]
     scale: Final[onp.Array2D[np.float64]]
     C: Final[onp.Array2D[np.float64]]
     log_det_scale: Final[float]
