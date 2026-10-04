@@ -164,7 +164,9 @@ assert_type(shapiro(_f64_nd, keepdims=True), ShapiroResult[onp.ArrayND[np.float6
 
 assert_type(ansari(_f64_nd, _f64_nd, axis=None), AnsariResult[np.float64])
 assert_type(ansari(_f64_nd, _f64_nd, keepdims=True), AnsariResult[onp.ArrayND[np.float64]])
-assert_type(ansari(_f64_nd, _f64_nd), AnsariResult[np.float64 | onp.ArrayND[np.float64] | Any])
+assert_type(ansari(_f64_2d, _f64_2d), AnsariResult[np.float64 | onp.ArrayND[np.float64] | Any])
+assert_type(ansari(_py_f_1d, _py_f_1d), AnsariResult[np.float64])
+assert_type(ansari(_f32_1d, _f32_1d), AnsariResult[np.float32])
 
 ###
 # bartlett

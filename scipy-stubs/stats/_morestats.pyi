@@ -1000,6 +1000,17 @@ def ansari(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> AnsariResult[onp.ArrayND[np.float64]]: ...
+@overload  # 1d ~f64
+def ansari(
+    x: _AsF64_1D,
+    y: _AsF64_1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float64]: ...
 @overload  # ~f32, axis=None
 def ansari(
     x: onp.ToJustFloat32_ND,
@@ -1022,6 +1033,17 @@ def ansari(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> AnsariResult[onp.ArrayND[np.float32]]: ...
+@overload  # 1d ~f32
+def ansari(
+    x: onp.ToJustFloat32Strict1D,
+    y: onp.ToJustFloat32Strict1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float32]: ...
 @overload  # fallback
 def ansari(
     x: onp.ToFloat | onp.ToFloatND,
