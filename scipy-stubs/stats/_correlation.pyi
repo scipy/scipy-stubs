@@ -134,7 +134,7 @@ def chatterjeexi(
     x: _AsF64_ND,
     y: _AsF64_ND,
     *,
-    axis: SupportsIndex = 0,
+    axis: SupportsIndex | tuple[int, ...] = 0,
     y_continuous: bool = False,
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
@@ -145,7 +145,7 @@ def chatterjeexi(
     x: onp.ToJustFloat32_ND,
     y: onp.ToJustFloat32_ND,
     *,
-    axis: SupportsIndex = 0,
+    axis: SupportsIndex | tuple[int, ...] = 0,
     y_continuous: bool = False,
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
@@ -156,7 +156,7 @@ def chatterjeexi(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
     *,
-    axis: SupportsIndex = 0,
+    axis: SupportsIndex | tuple[int, ...] = 0,
     y_continuous: bool = False,
     method: _PermutationMethod = "asymptotic",
     nan_policy: NanPolicy = "propagate",
@@ -280,7 +280,7 @@ def spearmanrho(
     *,
     alternative: _Alternative = "two-sided",
     method: _resampling.ResamplingMethod | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
@@ -292,7 +292,7 @@ def spearmanrho(
     *,
     alternative: _Alternative = "two-sided",
     method: _resampling.ResamplingMethod | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
@@ -304,7 +304,7 @@ def spearmanrho(
     *,
     alternative: _Alternative = "two-sided",
     method: _resampling.ResamplingMethod | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> SignificanceResult[np.float64 | Any]: ...
@@ -396,7 +396,7 @@ def siegelslopes(
     x: _AsF64_ND | None = None,
     method: _SlopesMethod = "hierarchical",
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> SiegelslopesResult[onp.ArrayND[np.float64]]: ...
@@ -406,7 +406,7 @@ def siegelslopes(
     x: onp.ToJustFloat32_ND | None = None,
     method: _SlopesMethod = "hierarchical",
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> SiegelslopesResult[onp.ArrayND[np.float32]]: ...
@@ -416,7 +416,7 @@ def siegelslopes(
     x: onp.ToFloatND | None = None,
     method: _SlopesMethod = "hierarchical",
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     keepdims: bool = False,
     nan_policy: NanPolicy = "propagate",
 ) -> SiegelslopesResult[np.float64 | Any]: ...
@@ -517,7 +517,7 @@ def theilslopes(
     alpha: float | npc.floating = 0.95,
     method: _SlopesMethod = "separate",
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> TheilslopesResult[onp.ArrayND[np.float64]]: ...
@@ -528,7 +528,7 @@ def theilslopes(
     alpha: float | npc.floating = 0.95,
     method: _SlopesMethod = "separate",
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> TheilslopesResult[onp.ArrayND[np.float32]]: ...
@@ -539,7 +539,7 @@ def theilslopes(
     alpha: float | npc.floating = 0.95,
     method: _SlopesMethod = "separate",
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     keepdims: bool = False,
     nan_policy: NanPolicy = "propagate",
 ) -> TheilslopesResult[np.float64 | Any]: ...
