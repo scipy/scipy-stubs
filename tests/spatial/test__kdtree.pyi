@@ -54,8 +54,8 @@ assert_type(_ctree.query_ball_point(_f64_nd, 1.0, return_length=True), onp.Array
 # cKDTree.query_pairs
 
 assert_type(_ctree.query_pairs(1.0), set[tuple[int, int]])
-assert_type(_ctree.query_pairs(1.0, 2.0, 0.0, "ndarray"), onp.ArrayND[np.intp])
-assert_type(_ctree.query_pairs(1.0, output_type="ndarray"), onp.ArrayND[np.intp])
+assert_type(_ctree.query_pairs(1.0, 2.0, 0.0, "ndarray"), onp.Array2D[np.intp])
+assert_type(_ctree.query_pairs(1.0, output_type="ndarray"), onp.Array2D[np.intp])
 
 # cKDTree.count_neighbors
 
@@ -74,7 +74,7 @@ assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="dok_array"),
 assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="coo_matrix"), coo_matrix[np.float64])
 assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="coo_array"), coo_array[np.float64, tuple[int, int]])
 assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="dict"), dict[tuple[int, int], float])
-assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="ndarray"), onp.ArrayND[np.void])
+assert_type(_ctree.sparse_distance_matrix(_ctree, 1.0, output_type="ndarray"), onp.Array1D[np.void])
 
 ###
 # Rectangle
@@ -136,7 +136,7 @@ assert_type(_tree.query_ball_tree(_tree, r=1.0), list[list[int]])
 
 assert_type(_tree.query_pairs(1.0), set[tuple[int, int]])
 assert_type(_tree.query_pairs(1.0, output_type="set"), set[tuple[int, int]])
-assert_type(_tree.query_pairs(1.0, output_type="ndarray"), onp.ArrayND[np.intp])
+assert_type(_tree.query_pairs(1.0, output_type="ndarray"), onp.Array2D[np.intp])
 
 # KDTree.count_neighbors
 
@@ -149,7 +149,7 @@ assert_type(_tree.sparse_distance_matrix(_tree, max_distance=1.0), dok_matrix[np
 assert_type(_tree.sparse_distance_matrix(_tree, max_distance=1.0, output_type="dok_matrix"), dok_matrix[np.float64])
 assert_type(_tree.sparse_distance_matrix(_tree, max_distance=1.0, output_type="coo_matrix"), coo_matrix[np.float64])
 assert_type(_tree.sparse_distance_matrix(_tree, max_distance=1.0, output_type="dict"), dict[tuple[int, int], float])
-assert_type(_tree.sparse_distance_matrix(_tree, max_distance=1.0, output_type="ndarray"), onp.ArrayND[np.void])
+assert_type(_tree.sparse_distance_matrix(_tree, max_distance=1.0, output_type="ndarray"), onp.Array1D[np.void])
 
 ###
 # minkowski_distance_p

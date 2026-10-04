@@ -319,11 +319,11 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     @overload
     def query_pairs(
         self, /, r: onp.ToFloat, p: onp.ToFloat, eps: onp.ToFloat, output_type: L["ndarray"]
-    ) -> onp.ArrayND[np.intp]: ...
+    ) -> onp.Array2D[np.intp]: ...
     @overload
     def query_pairs(
         self, /, r: onp.ToFloat, p: onp.ToFloat = 2.0, eps: onp.ToFloat = 0.0, *, output_type: L["ndarray"]
-    ) -> onp.ArrayND[np.intp]: ...
+    ) -> onp.Array2D[np.intp]: ...
 
     #
     @overload
@@ -394,4 +394,4 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     @overload
     def sparse_distance_matrix(
         self, /, other: cKDTree, max_distance: onp.ToFloat, p: onp.ToFloat = 2.0, *, output_type: L["ndarray"]
-    ) -> onp.ArrayND[np.void]: ...
+    ) -> onp.Array1D[np.void]: ...
