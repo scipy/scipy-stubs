@@ -19,6 +19,7 @@ assert_type(rbf_f1.d, onp.Array2D[np.float64])
 assert_type(rbf_f1.d_shape, tuple[int, ...])
 assert_type(rbf_f1.neighbors, int | None)
 assert_type(rbf_f1.powers, onp.Array2D[np.int64])
+assert_type(rbf_f1.__getstate__()[0][8], onp.Array2D[np.int64])
 
 rbf_c1 = RBFInterpolator(y2d, d1d_c)
 assert_type(rbf_c1, RBFInterpolator[np.complex128, tuple[int]])
