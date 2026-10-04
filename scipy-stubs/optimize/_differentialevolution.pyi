@@ -1,5 +1,5 @@
 from _typeshed import Unused
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Sequence
 from typing import Concatenate, Generic, Literal, Protocol, overload, type_check_only
 from typing_extensions import TypeVar
 
@@ -102,3 +102,29 @@ def differential_evolution(
     vectorized: bool = False,
     seed: onp.random.ToRNG | None = None,
 ) -> OptimizeResult[list[onp.Array2D[np.float64]] | None]: ...
+@overload  # constraints=[...]
+def differential_evolution(
+    func: Callable[Concatenate[onp.ArrayND[np.float64], ...], onp.ToFloat | onp.ToFloat1D],
+    bounds: onp.ToFloat2D | Bounds,
+    args: tuple[object, ...] = (),
+    strategy: _StrategyName | Callable[[int, onp.Array2D[np.float64], np.random.Generator], onp.ToFloat1D] = "best1bin",
+    maxiter: onp.ToJustInt = 1000,
+    popsize: onp.ToJustInt = 15,
+    tol: onp.ToFloat = 0.01,
+    mutation: onp.ToFloat | tuple[onp.ToFloat, onp.ToFloat] = (0.5, 1),
+    recombination: onp.ToFloat = 0.7,
+    rng: onp.random.ToRNG | None = None,
+    callback: Callable[[OptimizeResult], Unused] | Callable[[onp.Array1D[np.float64], onp.ToFloat], Unused] | None = None,
+    disp: bool = False,
+    polish: bool | Callable[..., _OptimizeResult] = True,
+    init: onp.ToFloat2D | Literal["sobol", "halton", "random", "latinhypercube"] = "latinhypercube",
+    atol: onp.ToFloat = 0,
+    updating: Literal["immediate", "deferred"] = "immediate",
+    workers: int | _DoesMap = 1,
+    *,
+    constraints: Sequence[NonlinearConstraint | LinearConstraint | Bounds],
+    x0: onp.ToArray1D | None = None,
+    integrality: onp.ToBool1D | None = None,
+    vectorized: bool = False,
+    seed: onp.random.ToRNG | None = None,
+) -> OptimizeResult: ...
