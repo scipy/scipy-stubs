@@ -1,6 +1,6 @@
 # type-tests for `signal/_czt.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -36,6 +36,8 @@ assert_type(_zoom_transform(_f64_1d), onp.Array1D[_Complex])
 assert_type(_zoom_transform(_f64_2d), onp.Array2D[_Complex])
 assert_type(_zoom_transform(_f64_3d), onp.Array3D[_Complex])
 assert_type(_zoom_transform(_f64_nd), onp.ArrayND[_Complex])
+assert_type(_zoom_transform.f1, float | Any)
+assert_type(_zoom_transform.f2, float | Any)
 
 # czt_points
 

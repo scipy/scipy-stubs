@@ -1,4 +1,4 @@
-from typing import Final, Never, SupportsIndex, overload
+from typing import Any, Final, Never, SupportsIndex, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -40,8 +40,8 @@ class CZT:
     def points(self, /) -> onp.Array1D[np.complex128]: ...
 
 class ZoomFFT(CZT):
-    f1: onp.ToFloat
-    f2: onp.ToFloat
+    f1: float | Any
+    f2: float | Any
     fs: float
 
     def __init__(
