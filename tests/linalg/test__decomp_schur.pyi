@@ -4,6 +4,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy.linalg import rsf2csf, schur
 
@@ -29,7 +30,10 @@ _f32_3d: onp.Array3D[np.float32]
 _f64_3d: onp.Array3D[np.float64]
 _c64_3d: onp.Array3D[np.complex64]
 _c128_3d: onp.Array3D[np.complex128]
+_f32_nd: onp.ArrayND[np.float32]
 _f64_nd: onp.ArrayND[np.float64]
+_c64_nd: onp.ArrayND[np.complex64]
+_c128_nd: onp.ArrayND[np.complex128]
 
 def _sort(x: complex, /) -> bool: ...
 
@@ -109,6 +113,12 @@ assert_type(schur(_f64_3d, output="c", sort="lhp"), _Res3_3D[np.complex128])
 assert_type(schur(_py_f_2d, sort="lhp"), _Res3_ND[np.float64])
 assert_type(schur(_py_f_2d, output="c", sort="lhp"), _Res3_ND[np.complex128])
 assert_type(schur(_py_c_2d, sort="lhp"), _Res3_ND[np.complex128])
+assert_subtype[_Res3_ND[np.float32]](schur(_f32_nd, sort="lhp"))
+assert_subtype[_Res3_ND[np.float64]](schur(_f64_nd, sort="lhp"))
+assert_subtype[_Res3_ND[np.complex64]](schur(_c64_nd, sort="lhp"))
+assert_subtype[_Res3_ND[np.complex128]](schur(_c128_nd, sort="lhp"))
+assert_subtype[_Res3_ND[np.complex64]](schur(_f32_nd, output="c", sort="lhp"))
+assert_subtype[_Res3_ND[np.complex128]](schur(_f64_nd, output="c", sort="lhp"))
 
 ###
 # rsf2csf
