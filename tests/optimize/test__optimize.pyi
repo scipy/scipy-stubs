@@ -45,6 +45,8 @@ def _f(x: _Float1D, /) -> float: ...
 def _f_vec(x: _Float1D, /) -> _Float1D: ...
 def _f0d(x: float, /) -> float: ...
 def _fprime(x: _Float1D, /) -> _Float1D: ...
+def _grad(x: _Float1D, /) -> list[float]: ...
+def _hess(x: _Float1D, /) -> list[list[float]]: ...
 
 ###
 # rosen
@@ -91,7 +93,7 @@ assert_type(approx_fprime([1.0, 2.0], _f_vec, 1e-8), _Float2D)
 ###
 # check_grad
 
-assert_type(check_grad(_f, _fprime, [1.0, 2.0]), _Float)
+assert_type(check_grad(_f, _grad, [1.0, 2.0]), _Float)
 
 ###
 # bracket
@@ -154,7 +156,7 @@ assert_type(fmin(_f, _x0, full_output=True, retall=True), tuple[_Float1D, onp.To
 ###
 # fmin_bfgs
 
-assert_type(fmin_bfgs(_f, _x0), _Float1D)
+assert_type(fmin_bfgs(_f, _x0, _grad), _Float1D)
 assert_type(fmin_bfgs(_f, _x0, retall=True), tuple[_Float1D, _AllVecs])
 assert_type(fmin_bfgs(_f, _x0, full_output=True), tuple[_Float1D, _Float, _Float1D, _Float2D, int, int, _WarnFlag])
 assert_type(
@@ -164,7 +166,7 @@ assert_type(
 ###
 # fmin_cg
 
-assert_type(fmin_cg(_f, _x0, epsilon=_x0), _Float1D)
+assert_type(fmin_cg(_f, _x0, _grad, epsilon=_x0), _Float1D)
 assert_type(fmin_cg(_f, _x0, retall=True), tuple[_Float1D, _AllVecs])
 assert_type(fmin_cg(_f, _x0, full_output=True), tuple[_Float1D, _Float, int, int, _WarnFlag])
 assert_type(fmin_cg(_f, _x0, full_output=True, retall=True), tuple[_Float1D, _Float, int, int, _WarnFlag, _AllVecs])
@@ -172,7 +174,7 @@ assert_type(fmin_cg(_f, _x0, full_output=True, retall=True), tuple[_Float1D, _Fl
 ###
 # fmin_ncg
 
-assert_type(fmin_ncg(_f, _x0, _fprime, epsilon=_x0), _Float1D)
+assert_type(fmin_ncg(_f, _x0, _grad, fhess=_hess, epsilon=_x0), _Float1D)
 assert_type(fmin_ncg(_f, _x0, _fprime, retall=True), tuple[_Float1D, _AllVecs])
 assert_type(fmin_ncg(_f, _x0, _fprime, full_output=True), tuple[_Float1D, _Float, int, int, int, _WarnFlag])
 assert_type(
