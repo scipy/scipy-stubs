@@ -21,6 +21,8 @@ type _ToInt = npc.integer | np.bool
 type _ToFloat = _Float | _ToInt
 type _ToComplex = _Complex | _ToFloat
 
+type _ToFloatNotF32_1D = onp.ToArray1D[float, _ToInt | np.float16 | np.float64 | npc.floating80]
+
 type _ToLinearOperator[_ScalarT: npc.number | np.bool] = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
 
 type _Callback[_ScalarT: npc.number | np.bool] = Callable[[onp.Array1D[_ScalarT]], Unused]
@@ -29,6 +31,18 @@ _FloatT = TypeVar("_FloatT", bound=_Float, default=np.float64)
 
 ###
 
+@overload  # real, non-f32 real
+def bicg(
+    A: _ToLinearOperator[_ToFloat],
+    b: _ToFloatNotF32_1D,
+    x0: onp.ToFloat1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToFloat] | None = None,
+    callback: _Callback[np.float64] | None = None,
+) -> tuple[onp.Array1D[np.float64], int]: ...
 @overload  # real, real
 def bicg(
     A: _ToLinearOperator[_FloatT | _ToInt],
@@ -67,6 +81,18 @@ def bicg(
 ) -> tuple[onp.Array1D[np.complex128], int]: ...
 
 #
+@overload  # real, non-f32 real
+def bicgstab(
+    A: _ToLinearOperator[_ToFloat],
+    b: _ToFloatNotF32_1D,
+    x0: onp.ToFloat1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToFloat] | None = None,
+    callback: _Callback[np.float64] | None = None,
+) -> tuple[onp.Array1D[np.float64], int]: ...
 @overload  # real, real
 def bicgstab(
     A: _ToLinearOperator[_FloatT | _ToInt],
@@ -105,6 +131,18 @@ def bicgstab(
 ) -> tuple[onp.Array1D[np.complex128], int]: ...
 
 #
+@overload  # real, non-f32 real
+def cg(
+    A: _ToLinearOperator[_ToFloat],
+    b: _ToFloatNotF32_1D,
+    x0: onp.ToFloat1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToFloat] | None = None,
+    callback: _Callback[np.float64] | None = None,
+) -> tuple[onp.Array1D[np.float64], int]: ...
 @overload  # real, real
 def cg(
     A: _ToLinearOperator[_FloatT | _ToInt],
@@ -143,6 +181,18 @@ def cg(
 ) -> tuple[onp.Array1D[np.complex128], int]: ...
 
 #
+@overload  # real, non-f32 real
+def cgs(
+    A: _ToLinearOperator[_ToFloat],
+    b: _ToFloatNotF32_1D,
+    x0: onp.ToFloat1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToFloat] | None = None,
+    callback: _Callback[np.float64] | None = None,
+) -> tuple[onp.Array1D[np.float64], int]: ...
 @overload  # real, real
 def cgs(
     A: _ToLinearOperator[_FloatT | _ToInt],
@@ -181,6 +231,20 @@ def cgs(
 ) -> tuple[onp.Array1D[np.complex128], int]: ...
 
 #
+@overload  # real, non-f32 real, callback_type: {"pr_norm", "legacy"} | None = ...
+def gmres(
+    A: _ToLinearOperator[_ToFloat],
+    b: _ToFloatNotF32_1D,
+    x0: onp.ToFloat1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    restart: int | None = None,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToFloat] | None = None,
+    callback: Callable[[float], Unused] | Callable[[np.float64], Unused] | None = None,
+    callback_type: Literal["pr_norm", "legacy"] | None = None,
+) -> tuple[onp.Array1D[np.float64], int]: ...
 @overload  # real, real, callback_type: {"pr_norm", "legacy"} | None = ...
 def gmres(
     A: _ToLinearOperator[_FloatT | _ToInt],
@@ -195,6 +259,20 @@ def gmres(
     callback: Callable[[float], Unused] | Callable[[np.float64], Unused] | None = None,
     callback_type: Literal["pr_norm", "legacy"] | None = None,
 ) -> tuple[onp.Array1D[_FloatT], int]: ...
+@overload  # real, non-f32 real, callback_type: {"x"}
+def gmres(
+    A: _ToLinearOperator[_ToFloat],
+    b: _ToFloatNotF32_1D,
+    x0: onp.ToFloat1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    restart: int | None = None,
+    maxiter: int | None = None,
+    M: _ToLinearOperator[_ToFloat] | None = None,
+    callback: _Callback[np.float64] | None = None,
+    callback_type: Literal["x"],
+) -> tuple[onp.Array1D[np.float64], int]: ...
 @overload  # real, real, callback_type: {"x"}
 def gmres(
     A: _ToLinearOperator[_FloatT | _ToInt],
@@ -267,6 +345,19 @@ def gmres(
 ) -> tuple[onp.Array1D[np.complex128], int]: ...
 
 #
+@overload  # real, non-f32 real
+def qmr(
+    A: _ToLinearOperator[_ToFloat],
+    b: _ToFloatNotF32_1D,
+    x0: onp.ToFloat1D | None = None,
+    *,
+    rtol: onp.ToFloat = 1e-5,
+    atol: onp.ToFloat = 0.0,
+    maxiter: int | None = None,
+    M1: _ToLinearOperator[_ToFloat] | None = None,
+    M2: _ToLinearOperator[_ToFloat] | None = None,
+    callback: _Callback[np.float64] | None = None,
+) -> tuple[onp.Array1D[np.float64], int]: ...
 @overload  # real, real
 def qmr(
     A: _ToLinearOperator[_FloatT | _ToInt],
