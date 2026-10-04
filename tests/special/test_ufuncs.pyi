@@ -43,7 +43,7 @@ _c16_nd: _Complex128ND
 
 # _UFunc
 assert_type(sp.cbrt.__name__, L["cbrt"])
-assert_type(sp.cbrt.identity, L[0])
+assert_type(sp.cbrt.identity, None)
 assert_type(sp.geterr()["singular"], _ErrOption)
 assert_type(sp.geterr()["underflow"], _ErrOption)
 assert_type(sp.geterr()["memory"], _ErrOption)
