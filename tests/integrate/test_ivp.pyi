@@ -21,8 +21,8 @@ _c_list: list[complex]
 
 ###
 # BDF
-assert_type(BDF(_f_f64, 0.0, _f64_nd, 10.0), BDF[np.float64])
-assert_type(BDF(_f_c128, 0.0, _c128_nd, 10.0), BDF[np.complex128])
+assert_type(BDF(_f_f64, 0.0, _f64_nd, 10.0, atol=_f64_nd), BDF[np.float64])
+assert_type(BDF(_f_c128, 0.0, _c128_nd, 10.0, atol=_f64_nd), BDF[np.complex128])
 assert_type(BDF(_f_c128, 0.0, _c128_nd, 10.0).dense_output(), DenseOutput[np.complex128])
 # DOP853
 assert_type(DOP853(_f_f64, 0.0, _f64_nd, 10.0, rtol=_f64_nd, atol=_f64_nd), DOP853[np.float64])
@@ -50,7 +50,7 @@ assert_type(OdeSolver(_f_f64, 0.0, _f64_nd, 10.0, False).dense_output(), DenseOu
 assert_type(LSODA(_f_f64, 0.0, _f64_nd, 10.0), LSODA)
 assert_type(LSODA(_f_f64_list, 0.0, _f_list, 10.0), LSODA)
 # LSODA
-assert_type(Radau(_f_f64, 0.0, _f64_nd, 10.0), Radau)
+assert_type(Radau(_f_f64, 0.0, _f64_nd, 10.0, atol=_f64_nd), Radau)
 
 ###
 # DenseOutput

@@ -67,7 +67,7 @@ class BDF(OdeSolver[_InexactT], Generic[_InexactT]):
         t_bound: float,
         max_step: float = ...,  # = np.inf
         rtol: float = 1e-3,
-        atol: float = 1e-6,
+        atol: float | onp.ToFloat1D = 1e-6,
         jac: _ToJacReal | Callable[[float, onp.ArrayND[np.float64]], _ToJacReal] | None = None,
         jac_sparsity: _ToJacReal | None = None,
         vectorized: bool = False,
@@ -84,7 +84,7 @@ class BDF(OdeSolver[_InexactT], Generic[_InexactT]):
         t_bound: float,
         max_step: float = ...,  # = np.inf
         rtol: float = 1e-3,
-        atol: float = 1e-6,
+        atol: float | onp.ToFloat1D = 1e-6,
         jac: _ToJacComplex | Callable[[float, onp.ArrayND[np.complex128]], _ToJacComplex] | None = None,
         jac_sparsity: _ToJacComplex | None = None,
         vectorized: bool = False,
