@@ -7723,7 +7723,7 @@ def expectile(
     alpha: float = 0.5,
     *,
     weights: onp.ToFloatND | None = None,
-    axis: int,
+    axis: int | tuple[int, ...],
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> onp.ArrayND[np.float64]: ...
