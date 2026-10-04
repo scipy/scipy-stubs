@@ -1,4 +1,4 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import numpy.typing as npt
@@ -29,6 +29,7 @@ def bc1(ya: npt.NDArray[np.float64], yb: npt.NDArray[np.float64], p: npt.NDArray
 
 res1 = solve_bvp(fun1, bc1, x, y, p=[6])
 assert_type(res1.sol, PPoly)
+assert_type(res1.p, onp.Array1D[np.float64] | Any)
 assert_type(res1.x, onp.Array1D[np.float64])
 assert_type(res1.y, onp.Array2D[np.float64])
 assert_type(res1.yp, onp.Array2D[np.float64])

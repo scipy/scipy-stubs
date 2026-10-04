@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Final, Generic, Literal, overload
+from typing import Any, Final, Generic, Literal, overload
 from typing_extensions import TypeVar
 
 import numpy as np
@@ -84,7 +84,7 @@ TERMINATION_MESSAGES: Final[dict[Literal[0, 1, 2, 3], str]] = ...
 # still aren't a thing), it was omitted as a base class here.
 class BVPResult(Generic[_InexactT]):
     sol: Final[PPoly]
-    p: Final[onp.Array1D[np.float64] | None]
+    p: Final[onp.Array1D[np.float64] | Any]
     x: Final[onp.Array1D[np.float64]]
     rms_residuals: Final[onp.Array1D[np.float64]]
     niter: Final[int]
