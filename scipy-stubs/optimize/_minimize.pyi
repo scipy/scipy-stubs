@@ -59,7 +59,7 @@ class _CallbackVectorState(Protocol):
 
 @type_check_only
 class _MinimizeMethodFun[ResultT: _OptimizeResult[Any]](Protocol):
-    def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args) -> ResultT: ...
+    def __call__(self, fun: _Fun1D[float], x0: _Float1D, /, args: tuple[Any, ...]) -> ResultT: ...
 
 @type_check_only
 class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
