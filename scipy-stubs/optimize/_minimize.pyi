@@ -32,7 +32,11 @@ type _Fun1Dp[RT] = Callable[Concatenate[_Float1D, _Float1D, ...], RT]
 type _ToJac[T] = tuple[T, *tuple[onp.ToFloat1D, ...]]
 
 type _FDMethod = Literal["2-point", "3-point", "cs"]
-type _ToHess = _Fun1D[onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy
+type _ToHess = (
+    _Fun1D[onp.ToFloat2D | _spbase[Any, tuple[int, int]] | LinearOperator[Any, tuple[int, int]]]
+    | _FDMethod
+    | HessianUpdateStrategy
+)
 
 type _MethodCobyla = Literal["COBYLA", "cobyla"]
 type _MethodF64 = Literal["Nelder-Mead", "nelder-mead", "COBYQA", "cobyqa"]

@@ -1,7 +1,7 @@
 # type-check-only helper types for internal use
 
 from collections.abc import Callable, Sequence
-from typing import Concatenate, Literal, NotRequired, Required, type_check_only
+from typing import Any, Concatenate, Literal, NotRequired, Required, type_check_only
 from typing_extensions import TypedDict
 
 import numpy as np
@@ -100,7 +100,11 @@ type _FDMethod = Literal["2-point", "3-point", "cs"]
 class _MinimizerKwargsBase(TypedDict, total=False):
     args: _Args
     method: MethodMimimize
-    hess: Callable[Concatenate[_Float1D, ...], onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy
+    hess: (
+        Callable[Concatenate[_Float1D, ...], onp.ToFloat2D | _spbase[Any, tuple[int, int]] | LinearOperator[Any, tuple[int, int]]]
+        | _FDMethod
+        | HessianUpdateStrategy
+    )
     hessp: Callable[Concatenate[_Float1D, _Float1D, ...], onp.ToFloat1D]
     bounds: Bounds
     constraints: Constraints
