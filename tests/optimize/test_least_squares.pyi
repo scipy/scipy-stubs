@@ -50,3 +50,9 @@ assert_type(least_squares(_f_f64_0d, 0.0, "2-point", (0, 1), "dogbox", diff_step
 # `jac`
 
 assert_type(least_squares(_f_f64_nd, _f64_nd).jac, onp.Array2D[np.float64] | Any)
+
+###
+# `cost` and `optimality`
+
+assert_type(least_squares(_f_f64_nd, _f64_nd).cost, np.float64)
+assert_type(least_squares(_f_f64_nd, _f64_nd).optimality, np.float64)

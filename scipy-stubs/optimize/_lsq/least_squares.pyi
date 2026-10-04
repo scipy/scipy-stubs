@@ -55,11 +55,11 @@ _MaskT_co = TypeVar("_MaskT_co", bound=npc.number, default=np.int_ | np.float64,
 @type_check_only
 class _BaseOptimizeResult(_OptimizeResult, Generic[_MaskT_co]):
     x: _Float1D
-    cost: float
+    cost: np.float64
     fun: _Float1D
     jac: onp.Array2D[np.float64] | Any
     grad: _Float1D
-    optimality: float
+    optimality: np.float64
     active_mask: onp.Array1D[_MaskT_co]
     nfev: int
     njev: int | None
