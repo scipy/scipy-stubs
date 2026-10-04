@@ -48,7 +48,10 @@ assert_type(bootstrap((_py_f_1d,), np.mean), BootstrapResult[np.float64, onp.Arr
 
 # permutation_test
 assert_type(permutation_test((_py_f_1d, _py_f_1d), _statistic_1d), PermutationTestResult[np.float64, onp.Array1D[np.float64]])
-assert_type(permutation_test((_f64_1d, _f64_1d), _statistic_1d), PermutationTestResult[np.float64, onp.Array1D[np.float64]])
+assert_type(
+    permutation_test((_f64_1d, _f64_1d), _statistic_1d, n_resamples=np.inf),
+    PermutationTestResult[np.float64, onp.Array1D[np.float64]],
+)
 assert_type(
     permutation_test((_f64_2d, _f64_2d), _statistic_2d), PermutationTestResult[onp.Array1D[np.float64], onp.Array2D[np.float64]]
 )
@@ -109,7 +112,7 @@ assert_type(MonteCarloMethod(n_resamples=999), MonteCarloMethod)
 
 # PermutationMethod
 assert_type(PermutationMethod(), PermutationMethod)
-assert_type(PermutationMethod(n_resamples=999), PermutationMethod)
+assert_type(PermutationMethod(n_resamples=np.inf), PermutationMethod)
 
 # power
 assert_type(power(_statistic_1d, (np.random.standard_normal, np.random.standard_normal), [10, 20]), PowerResult[Any])
