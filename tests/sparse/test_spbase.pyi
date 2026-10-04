@@ -42,8 +42,12 @@ _csr_mat_bool: sparse.csr_matrix[np.bool]
 _csr_mat_i16: sparse.csr_matrix[np.int16]
 _csr_mat_i64: sparse.csr_matrix[np.int64]
 _csr_mat_f64: sparse.csr_matrix[np.float64]
+_csr_mat_c128: sparse.csr_matrix[np.complex128]
 _csr_mat_f80: sparse.csr_matrix[npc.floating80]
 _spmat_f32: sparse.spmatrix[np.float32]
+_spmat_i64: sparse.spmatrix[np.int64]
+_spmat_f64: sparse.spmatrix[np.float64]
+_spmat_c128: sparse.spmatrix[np.complex128]
 _csr_arr_bool: sparse.csr_array[np.bool, tuple[int, int]]
 _csr_arr_i64: sparse.csr_array[np.int64, tuple[int, int]]
 _csr_arr_f64: sparse.csr_array[np.float64, tuple[int, int]]
@@ -164,6 +168,9 @@ assert_type(_csr_mat_f80.multiply(1j), _SpMatrix[np.clongdouble])
 assert_type(_csr_mat_i64 * 0.5, sparse.csr_matrix[np.float64])
 assert_type(1j * _csr_mat_f64, sparse.csr_matrix[np.complex128])
 assert_type(_csr_mat_bool.dot(2), sparse.csr_matrix[Any])
+assert_type(_csr_mat_i64.multiply(i64_1d), sparse.coo_matrix[np.int64])
+assert_type(_csr_mat_f64.multiply(_f64_1d), sparse.coo_matrix[np.float64])
+assert_type(_csr_mat_c128.multiply(_c128_1d), sparse.coo_matrix[np.complex128])
 
 # CSR array
 # assert_type(sparse.csr_array(dense_2d), sparse.csr_array[ScalarType])
@@ -194,6 +201,12 @@ assert_type(2 * _csr_arr_bool, sparse.csr_array[Any, tuple[int, int]])
 assert_type(_csr_arr_i64.dot(0.5), sparse.csr_array[np.float64, tuple[int, int]])
 assert_type(_csr_arr_f64.dot(1j), sparse.csr_array[np.complex128, tuple[int, int]])
 assert_type(_csr_arr_bool.multiply(2), sparse.csr_array[Any, tuple[int, int]])
+assert_type(_csr_arr_i64 * i64_1d, sparse.coo_array[np.int64, tuple[int, int]])
+assert_type(_csr_arr_f64 * _f64_1d, sparse.coo_array[np.float64, tuple[int, int]])
+assert_type(_csr_arr_c128 * _c128_1d, sparse.coo_array[np.complex128, tuple[int, int]])
+assert_type(_csr_arr_i64.multiply(i64_1d), sparse.coo_array[np.int64, tuple[int, int]])
+assert_type(_csr_arr_f64.multiply(_f64_1d), sparse.coo_array[np.float64, tuple[int, int]])
+assert_type(_csr_arr_c128.multiply(_c128_1d), sparse.coo_array[np.complex128, tuple[int, int]])
 
 # TODO(jorenham): test other arithmetic operations for all formats
 
@@ -213,6 +226,12 @@ assert_type(_csr_arr_c128 @ _c128_1d, np.ndarray[tuple[Any, ...], np.dtype[np.co
 # spmatrix.__mul__ (same as spmatrix.__rmul__)
 
 assert_type(_spmat_f32 * _f32_1d, np.ndarray[tuple[Any, ...], np.dtype[np.float32]])
+assert_type(_csr_mat_i64 * i64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.int64]])
+assert_type(_csr_mat_f64 * _f64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.float64]])
+assert_type(_csr_mat_c128 * _c128_1d, np.ndarray[tuple[Any, ...], np.dtype[np.complex128]])
+assert_type(_spmat_i64 * i64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.int64]])
+assert_type(_spmat_f64 * _f64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.float64]])
+assert_type(_spmat_c128 * _c128_1d, np.ndarray[tuple[Any, ...], np.dtype[np.complex128]])
 
 # __eq__ (same as __ne__)
 
