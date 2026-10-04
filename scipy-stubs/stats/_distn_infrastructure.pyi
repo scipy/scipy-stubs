@@ -29,7 +29,7 @@ type _CoFloat = _Floating | npc.integer
 
 type _Bool = bool | np.bool
 type _Int = int | np.int32 | np.int64
-type _Float = float | np.float64
+type _Float = np.float64
 
 type _Float0D = onp.Array0D[np.float64]
 type _Float1D = onp.Array1D[np.float64]
@@ -42,7 +42,7 @@ type _CoFloatND = onp.ArrayND[_CoFloat]
 
 type _BoolOrND = _Bool | _BoolND
 type _IntOrND = _Int | _IntND
-type _FloatOrND = _Float | _FloatND
+type _FloatOrND = float | np.float64 | _FloatND
 
 # pyright bug workaround on `numpy<2.1` (note the weird shape-type)
 type _Float1ND = onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]]
@@ -107,7 +107,7 @@ parse_arg_template: Final[str] = ...
 
 class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     dist: _RVT_co
-    args: _RVArgs[_FloatNDT_co]
+    args: _RVArgs[float | _FloatNDT_co]
     kwds: _RVKwds
     a: Final[float]
     b: Final[float]
@@ -201,7 +201,7 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     # NOTE: Will raise a `TypeError` with n-D parameters.
     @overload  # complex_func: False  (default)
     def expect(
-        self: rv_frozen[_RVT, _Float],
+        self: rv_frozen[_RVT, float],
         /,
         func: _Expectant | None = None,
         lb: onp.ToFloat | None = None,
@@ -213,7 +213,7 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     ) -> _Float: ...
     @overload  # complex_func: True
     def expect(
-        self: rv_frozen[_RVT, _Float],
+        self: rv_frozen[_RVT, float],
         /,
         func: Callable[[float], onp.ToComplex] | None = None,
         lb: onp.ToFloat | None = None,
@@ -225,7 +225,7 @@ class rv_frozen(Generic[_RVT_co, _FloatNDT_co]):
     ) -> np.complex128: ...
 
     #
-    def support(self, /) -> _Tuple2[_FloatNDT_co]: ...
+    def support(self, /) -> _Tuple2[_FloatNDT_co | Any]: ...
     def interval(self, /, confidence: onp.ToFloat | None = None) -> _Tuple2[_FloatNDT_co]: ...
 
 # undocumented
@@ -271,7 +271,7 @@ class rv_discrete_frozen(rv_frozen[_DRVT_co, _FloatNDT_co], Generic[_DRVT_co, _F
     #
     @override
     def expect(
-        self: rv_discrete_frozen[_DRVT_co, _Float],
+        self: rv_discrete_frozen[_DRVT_co, float],
         /,
         func: Callable[[onp.Array1D[np.int_]], onp.ToFloatND] | None = None,
         lb: onp.ToInt | None = None,
@@ -326,7 +326,7 @@ class rv_generic:
     @overload
     def freeze(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> rv_frozen[Self]: ...
     #
-    def _stats(self, /, *args: onp.ToFloat, **kwds: object) -> _Tuple4[_Float | None] | _Tuple4[_FloatND | None]: ...
+    def _stats(self, /, *args: onp.ToFloat, **kwds: object) -> _Tuple4[float | None] | _Tuple4[_FloatND | None]: ...
     def _munp(self, /, n: onp.ToInt | onp.ToIntND, *args: onp.ToFloat) -> _FloatND: ...
 
     #
@@ -441,7 +441,7 @@ class rv_generic:
 
     #
     @overload
-    def support(self, /, *args: onp.ToFloat, **kwds: onp.ToFloat) -> _Tuple2[_Float]: ...
+    def support(self, /, *args: onp.ToFloat, **kwds: onp.ToFloat) -> _Tuple2[_Float | Any]: ...
     @overload
     def support(self, /, *args: _ToFloatOrND, **kwds: _ToFloatOrND) -> _Tuple2[_FloatOrND]: ...
 
@@ -456,27 +456,27 @@ class rv_generic:
     def nnlf(self, /, theta: onp.ToFloat1D, x: onp.ToFloatND) -> _FloatOrND: ...
 
     #
-    def _nnlf(self, /, x: _CoFloatND, *args: onp.ToFloat) -> _Float | _Float0D: ...
-    def _penalized_nnlf(self, /, theta: Sequence[Any], x: _CoFloatND) -> _Float | _Float0D: ...
-    def _penalized_nlpsf(self, /, theta: Sequence[Any], x: _CoFloatND) -> _Float | _Float0D: ...
+    def _nnlf(self, /, x: _CoFloatND, *args: onp.ToFloat) -> float | _Float0D: ...
+    def _penalized_nnlf(self, /, theta: Sequence[Any], x: _CoFloatND) -> float | _Float0D: ...
+    def _penalized_nlpsf(self, /, theta: Sequence[Any], x: _CoFloatND) -> float | _Float0D: ...
 
 class _ShapeInfo:
     name: Final[str]
     integrality: Final[bool]
-    endpoints: Final[Sequence[_Float]]
+    endpoints: Final[Sequence[float]]
     inclusive: Final[bool]
-    domain: Final[Sequence[_Float]]  # in practice always a list of size two
+    domain: Final[Sequence[float]]  # in practice always a list of size two
 
     def __init__(
-        self, /, name: str, integrality: bool = False, domain: Sequence[_Float] = ..., inclusive: Sequence[bool] = (True, True)
+        self, /, name: str, integrality: bool = False, domain: Sequence[float] = ..., inclusive: Sequence[bool] = (True, True)
     ) -> None: ...
 
 @type_check_only
 class _rv_mixin:
     name: Final[str]
-    a: Final[_Float]
-    b: Final[_Float]
-    badvalue: Final[_Float]
+    a: Final[float]
+    b: Final[float]
+    badvalue: Final[float]
     shapes: Final[str]
 
     def generic_moment(self, /, n: onp.ToInt | onp.ToIntND, *args: onp.ToFloat) -> _FloatND: ...
@@ -486,7 +486,7 @@ class _rv_mixin:
     def _param_info(self, /) -> list[_ShapeInfo]: ...
     def _attach_methods(self, /) -> None: ...
     def _logpxf(self, /, x: _CoFloatND, *args: onp.ToFloat) -> _FloatND: ...
-    def _cdf_single(self, /, x: onp.ToFloat, *args: onp.ToFloat) -> _Float: ...
+    def _cdf_single(self, /, x: onp.ToFloat, *args: onp.ToFloat) -> float: ...
     def _cdfvec(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
     def _cdf(self, /, x: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
     def _ppfvec(self, /, q: _FloatNDT, *args: onp.ToFloat) -> _FloatNDT: ...
@@ -499,16 +499,16 @@ class _rv_mixin:
 
 class rv_continuous(_rv_mixin, rv_generic):
     moment_type: Final[_MomentType]
-    xtol: Final[_Float]
+    xtol: Final[float]
 
     def __init__(
         self,
         /,
         momtype: _MomentType = 1,
-        a: _Float | None = None,
-        b: _Float | None = None,
-        xtol: _Float = 1e-14,
-        badvalue: _Float | None = None,
+        a: float | None = None,
+        b: float | None = None,
+        xtol: float = 1e-14,
+        badvalue: float | None = None,
         name: str | None = None,
         longname: str | None = None,
         shapes: str | None = None,
@@ -741,28 +741,28 @@ class rv_continuous(_rv_mixin, rv_generic):
     ) -> _FloatOr1ND: ...
 
     #
-    def _nnlf_and_penalty(self, /, x: _FloatND, args: Sequence[onp.ToFloat]) -> _Float: ...
+    def _nnlf_and_penalty(self, /, x: _FloatND, args: Sequence[onp.ToFloat]) -> float: ...
 
     #
     def _reduce_func(
         self, /, args: tuple[onp.ToFloat, ...], kwds: Mapping[str, onp.ToFloat], data: _ToFloatOrND | None = None
     ) -> tuple[
-        list[_Float],
-        Callable[[list[onp.ToFloat], _CoFloatND], _Float],
-        Callable[[list[onp.ToFloat], _CoFloatND], list[_Float]],
-        list[_Float],
+        list[float],
+        Callable[[list[onp.ToFloat], _CoFloatND], float],
+        Callable[[list[onp.ToFloat], _CoFloatND], list[float]],
+        list[float],
     ]: ...
 
     #
-    def _moment_error(self, /, theta: list[onp.ToFloat], x: _CoFloatND, data_moments: onp.ToFloat1D) -> _Float: ...
+    def _moment_error(self, /, theta: list[onp.ToFloat], x: _CoFloatND, data_moments: onp.ToFloat1D) -> float: ...
 
     #
     def _fitstart(
         self, /, data: _FloatND, args: tuple[onp.ToFloat, ...] | None = None
-    ) -> tuple[*tuple[_Float, ...], _Float, _Float]: ...
+    ) -> tuple[*tuple[float, ...], float, float]: ...
 
     #
-    def _fit_loc_scale_support(self, /, data: _ToFloatOrND, *args: onp.ToFloat) -> _Tuple2[np.int32 | np.int64 | _Float]: ...
+    def _fit_loc_scale_support(self, /, data: _ToFloatOrND, *args: onp.ToFloat) -> _Tuple2[np.int32 | np.int64 | float]: ...
     def fit_loc_scale(self, /, data: _ToFloatOrND, *args: onp.ToFloat) -> _Tuple2[_Float]: ...
 
     #
@@ -774,7 +774,7 @@ class rv_continuous(_rv_mixin, rv_generic):
         optimizer: Callable[[FuncT, X0T, ArgsT, int], onp.ToFloat1D] | None = ...,
         method: _FitMethod = "MLE",
         **kwds: onp.ToFloat,
-    ) -> tuple[_Float, ...]: ...
+    ) -> tuple[float, ...]: ...
 
     #
     @overload  # complex_func: False  (default)
@@ -937,8 +937,8 @@ class rv_discrete(_rv_mixin, rv_generic):
         a: onp.ToFloat = 0,
         b: onp.ToFloat = ...,
         name: str | None = None,
-        badvalue: _Float | None = None,
-        moment_tol: _Float = 1e-8,
+        badvalue: float | None = None,
+        moment_tol: float = 1e-8,
         values: None = None,
         inc: int | np.int_ = 1,
         longname: str | None = None,
@@ -952,8 +952,8 @@ class rv_discrete(_rv_mixin, rv_generic):
         a: onp.ToFloat,
         b: onp.ToFloat,
         name: str | None,
-        badvalue: _Float | None,
-        moment_tol: _Float,
+        badvalue: float | None,
+        moment_tol: float,
         values: tuple[onp.ToIntND, onp.ToFloatND],
         inc: int | np.int_ = 1,
         longname: str | None = None,
@@ -966,8 +966,8 @@ class rv_discrete(_rv_mixin, rv_generic):
         a: onp.ToFloat = 0,
         b: onp.ToFloat = ...,
         name: str | None = None,
-        badvalue: _Float | None = None,
-        moment_tol: _Float = 1e-8,
+        badvalue: float | None = None,
+        moment_tol: float = 1e-8,
         *,
         values: tuple[onp.ToIntND, onp.ToFloatND],
         inc: int | np.int_ = 1,
@@ -981,8 +981,8 @@ class rv_discrete(_rv_mixin, rv_generic):
         a: onp.ToFloat,
         b: onp.ToFloat,
         name: str | None,
-        badvalue: _Float | None,
-        moment_tol: _Float,
+        badvalue: float | None,
+        moment_tol: float,
         values: tuple[onp.ToJustFloatND, onp.ToFloatND],
         inc: int | np.int_ = 1,
         longname: str | None = None,
@@ -995,8 +995,8 @@ class rv_discrete(_rv_mixin, rv_generic):
         a: onp.ToFloat = 0,
         b: onp.ToFloat = ...,
         name: str | None = None,
-        badvalue: _Float | None = None,
-        moment_tol: _Float = 1e-8,
+        badvalue: float | None = None,
+        moment_tol: float = 1e-8,
         *,
         values: tuple[onp.ToJustFloatND, onp.ToFloatND],
         inc: int | np.int_ = 1,
@@ -1012,8 +1012,8 @@ class rv_discrete(_rv_mixin, rv_generic):
         a: onp.ToFloat = 0,
         b: onp.ToFloat = ...,
         name: str | None = None,
-        badvalue: _Float | None = None,
-        moment_tol: _Float = 1e-8,
+        badvalue: float | None = None,
+        moment_tol: float = 1e-8,
         # mypy workaround: `values` can only be None
         values: _Tuple2[onp.ToFloatND] | None = None,
         inc: int | np.int_ = 1,
@@ -1199,8 +1199,8 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
         a: onp.ToFloat = 0,
         b: onp.ToFloat = ...,
         name: str | None = None,
-        badvalue: _Float | None = None,
-        moment_tol: _Float = 1e-8,
+        badvalue: float | None = None,
+        moment_tol: float = 1e-8,
         # never None in practice, but required by stubtest
         values: _Tuple2[onp.ToFloatND] | None = None,
         inc: int | np.int_ = 1,
@@ -1210,7 +1210,7 @@ class rv_sample(rv_discrete, Generic[_XKT_co, _PKT_co]):
     ) -> None: ...
 
     #
-    def _entropy(self, /) -> _Float: ...
+    def _entropy(self, /) -> float: ...
     vecentropy: Final = _entropy
 
     #

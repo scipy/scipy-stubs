@@ -1,4 +1,4 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -7,8 +7,8 @@ from scipy.stats import distributions as d
 
 ###
 
-type _Float = float | np.float64
-type _FloatND = _Float | onp.ArrayND[np.float64]
+type _Float = np.float64
+type _FloatND = float | np.float64 | onp.ArrayND[np.float64]
 
 def _f2c(x: float, /) -> complex: ...
 
@@ -48,6 +48,8 @@ assert_type(d.bernoulli(0.5, 1).mean(), _Float)
 assert_type(d.bernoulli(0.5, loc=1).mean(), _Float)
 # pyrefly: ignore [bad-argument-type]
 d.bernoulli([0, 0.5]).expect()  # type: ignore[misc]  # pyright: ignore[reportUnknownMemberType, reportAttributeAccessIssue]
+# .support()
+assert_type(d.binom(10, 0.3).support(), tuple[np.float64 | Any, np.float64 | Any])
 ###
 
 # TODO: more tests

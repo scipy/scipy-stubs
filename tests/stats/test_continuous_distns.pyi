@@ -297,9 +297,44 @@ assert_type(norm.fit(_f64_nd, floc=0.0), tuple[float, np.float64])
 assert_type(norm.fit(_f64_nd, floc=_f32), tuple[np.float32, np.float64])
 assert_type(norm.fit(_f64_nd, fscale=1), tuple[np.float64, int])
 assert_type(norm.fit(_f64_nd, fscale=2.0), tuple[np.float64, float])
-assert_type(gamma.fit(_f64_nd, optimizer=_optimizer), tuple[float | np.float64, ...])
+assert_type(gamma.fit(_f64_nd, optimizer=_optimizer), tuple[float, ...])
 
 # .cdf (same as .pdf, .logpdf, .logcdf, .sf, .logsf, .ppf, .isf)
 
 assert_type(gamma.cdf(_py_f_1d, 2.0), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
 assert_type(norm.cdf(_py_f_1d), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
+assert_type(gamma.cdf(0.5, 2.0), np.float64)
+assert_type(norm.cdf(0.5), np.float64)
+
+# .mean (same as .median, .var, .std, .entropy)
+
+assert_type(gamma.mean(2.0), np.float64)
+assert_type(norm.mean(), np.float64)
+
+# .moment
+
+assert_type(gamma.moment(2, 2.0), np.float64)
+assert_type(norm.moment(2), np.float64)
+
+# .stats
+
+assert_type(gamma.stats(2.0), tuple[np.float64, np.float64])
+assert_type(norm.stats(), tuple[np.float64, np.float64])
+
+# .interval
+
+assert_type(gamma.interval(0.9, 2.0), tuple[np.float64, np.float64])
+assert_type(norm.interval(0.9), tuple[np.float64, np.float64])
+
+# .support
+
+assert_type(gamma.support(2.0), tuple[np.float64 | Any, np.float64 | Any])
+assert_type(norm.support(), tuple[np.float64, np.float64])
+
+# .nnlf
+
+assert_type(gamma.nnlf(_py_f_1d, _py_f_1d), np.float64 | onp.Array0D[np.float64])
+
+# .fit_loc_scale
+
+assert_type(gamma.fit_loc_scale(_f64_nd, 2.0), tuple[np.float64, np.float64])
