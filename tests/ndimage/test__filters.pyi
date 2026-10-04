@@ -1,10 +1,13 @@
 # type-tests for `ndimage/_filters.pyi`
 
+import ctypes as ct
 from typing import Any, assert_type
+from typing_extensions import CapsuleType
 
 import numpy as np
 import optype.numpy as onp
 
+from scipy import LowLevelCallable
 from scipy.ndimage import (
     convolve,
     convolve1d,
@@ -50,6 +53,9 @@ weights_1d: onp.Array1D[np.float64]
 weights_nd: onp.ArrayND[np.float64]
 _origin: tuple[int, int]
 _dtype: str
+
+# low-level callback with `user_data`
+_llc: LowLevelCallable[CapsuleType, ct.c_void_p]
 
 # plain-Python sequences -> the JustInt / JustFloat64 / JustComplex128 overloads
 int_2d: list[list[int]]
@@ -324,6 +330,7 @@ assert_type(generic_gradient_magnitude(complex_2d, _deriv), onp.ArrayND[Any])
 assert_type(generic_filter1d(f64_2d, _filter1d, 3), onp.Array2D[np.float64])
 assert_type(generic_filter1d(float_2d, _filter1d, 3), onp.ArrayND[np.float64])
 assert_type(generic_filter1d(f64_nd, _filter1d, 3), onp.ArrayND[np.float64])
+assert_type(generic_filter1d(f64_2d, _llc, 3), onp.Array2D[np.float64])
 
 ###
 # generic_filter
@@ -332,6 +339,7 @@ assert_type(generic_filter(f64_2d, _filternd, size=3), onp.Array2D[np.float64])
 assert_type(generic_filter(float_2d, _filternd, size=3), onp.ArrayND[np.float64])
 assert_type(generic_filter(f64_nd, _filternd, size=3), onp.ArrayND[np.float64])
 assert_type(generic_filter(f64_2d, _filternd, footprint=f64_2d), onp.Array2D[np.float64])
+assert_type(generic_filter(f64_2d, _llc, size=3), onp.Array2D[np.float64])
 
 ###
 # vectorized_filter
