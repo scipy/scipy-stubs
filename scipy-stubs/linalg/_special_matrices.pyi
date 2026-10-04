@@ -271,6 +271,10 @@ def leslie[ScalarT: np.generic](
     f: onp.ToArrayStrict1D[ScalarT, ScalarT], s: onp.ToArrayStrict1D[ScalarT, ScalarT]
 ) -> onp.Array2D[ScalarT]: ...
 @overload
+def leslie[ScalarT: np.generic](
+    f: onp.ToArrayND[ScalarT, ScalarT], s: onp.ToArrayND[ScalarT, ScalarT]
+) -> onp.ArrayND[ScalarT]: ...
+@overload
 def leslie(f: onp.ToComplexND, s: onp.ToComplexND) -> onp.ArrayND[Any]: ...
 
 #
