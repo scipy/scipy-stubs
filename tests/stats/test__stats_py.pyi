@@ -749,6 +749,8 @@ assert_type(tmin(_f64_nd, axis=None), np.float64)
 assert_type(tmin(_c64_nd, axis=None), np.complex64)
 assert_type(tmin(_c128_nd, axis=None), np.complex128)
 
+assert_type(tmin(_f64_3d), np.float64 | onp.ArrayND[np.float64])
+
 # tmax (same as above)
 
 assert_type(tmax(_py_i_1d), np.int_)
@@ -816,6 +818,8 @@ assert_type(tmax(_f32_nd, axis=None), np.float32)
 assert_type(tmax(_f64_nd, axis=None), np.float64)
 assert_type(tmax(_c64_nd, axis=None), np.complex64)
 assert_type(tmax(_c128_nd, axis=None), np.complex128)
+
+assert_type(tmax(_f64_3d), np.float64 | onp.ArrayND[np.float64])
 
 # gstd
 
