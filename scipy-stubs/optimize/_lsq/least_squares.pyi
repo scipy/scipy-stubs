@@ -9,7 +9,6 @@ import optype.numpy.compat as npc
 
 from scipy.optimize import Bounds, OptimizeResult as _OptimizeResult
 from scipy.optimize._differentiable_functions import _Workers
-from scipy.sparse import csr_array
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
@@ -58,7 +57,7 @@ class _BaseOptimizeResult(_OptimizeResult, Generic[_MaskT_co]):
     x: _Float1D
     cost: float
     fun: _Float1D
-    jac: onp.Array2D[np.float64] | csr_array[np.float64] | LinearOperator[np.float64]
+    jac: onp.Array2D[np.float64] | Any
     grad: _Float1D
     optimality: float
     active_mask: onp.Array1D[_MaskT_co]
