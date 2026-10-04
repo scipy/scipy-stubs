@@ -280,6 +280,7 @@ type _ToInt_D = onp.ToInt | onp.ToIntND
 
 type _Float32ND = onp.ArrayND[np.float32]
 type _Float64ND = onp.ArrayND[np.float64]
+type _Complex128ND = onp.ArrayND[np.complex128]
 
 type _Float = np.float32 | np.float64
 type _FloatND = onp.ArrayND[_Float]
@@ -323,6 +324,8 @@ type _ToSubFloat64ND = _ToND[_SubFloat64, op.JustFloat | op.JustInt]
 type _ToFloat64NoF32 = op.JustFloat | np.float64 | onp.ToInt
 
 type _ToSubComplex = op.JustComplex | _ToSubFloat  # does not overlap with complex64 | complex128
+type _ToSubComplex128 = op.JustComplex | _ToSubFloat64
+type _ToSubComplex128ND = _ToND[_SubFloat64, op.JustComplex | op.JustFloat | op.JustInt]
 
 type _ToND[CoT: np.generic, ToT] = onp.CanArrayND[CoT] | onp.SequenceND[onp.CanArrayND[CoT]] | onp.SequenceND[ToT]
 
@@ -853,6 +856,10 @@ class _UFunc11c(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def types(self, /) -> list[L["F->F", "D->D"]]: ...
     #
     @overload
+    def __call__(self, x: _ToSubComplex128, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.complex128: ...
+    @overload
+    def __call__(self, x: _ToSubComplex128ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Complex128ND: ...
+    @overload
     def __call__(self, x: _ToSubComplex, /, out: _Out1[None] = None, **kw: Unpack[_Kw11c]) -> _Complex: ...
     @overload
     def __call__(self, x: np.float64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.complex128: ...
@@ -939,6 +946,10 @@ class _UFunc12c(_UFunc12[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     @override
     def types(self, /) -> list[L["f->FF", "d->DD"]]: ...
     #
+    @overload
+    def __call__(self, x: _ToSubFloat64, /, out: _None2 = ..., **kw: Unpack[_KwBase]) -> _Tuple2[np.complex128]: ...
+    @overload
+    def __call__(self, x: _ToSubFloat64ND, /, out: _None2 = ..., **kw: Unpack[_KwBase]) -> _Tuple2[_Complex128ND]: ...
     @overload
     def __call__(self, x: onp.ToFloat64, /, out: _None2 = ..., **kw: Unpack[_Kw12c]) -> _Tuple2[_Complex]: ...
     @overload
@@ -1027,6 +1038,10 @@ class _UFunc14c(_UFunc14[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     @override
     def types(self, /) -> list[L["f->FFFF", "d->DDDD"]]: ...
     #
+    @overload
+    def __call__(self, x: _ToSubFloat64, /, out: _None4 = ..., **kw: Unpack[_KwBase]) -> _Tuple4[np.complex128]: ...
+    @overload
+    def __call__(self, x: _ToSubFloat64ND, /, out: _None4 = ..., **kw: Unpack[_KwBase]) -> _Tuple4[_Complex128ND]: ...
     @overload
     def __call__(self, x: onp.ToFloat64, /, out: _None4 = ..., **kw: Unpack[_Kw14c]) -> _Tuple4[_Complex]: ...
     @overload
@@ -1409,6 +1424,18 @@ class _UFunc21c1(_UFuncWithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Gene
     @override
     def types(self, /) -> list[L["fF->F", "dD->D"]]: ...
     #
+    @overload
+    def __call__(
+        self, a: _ToSubFloat64, b: _ToSubComplex128, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.complex128: ...
+    @overload
+    def __call__(
+        self, a: _ToSubFloat64ND, b: _ToComplex128_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Complex128ND: ...
+    @overload
+    def __call__(
+        self, a: _ToFloat64OrND, b: _ToSubComplex128ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Complex128ND: ...
     @overload
     def __call__(self, a: onp.ToFloat64, b: _ToSubComplex, /, out: _Out1[None] = None, **kw: Unpack[_Kw21c1]) -> _Complex: ...
     @overload

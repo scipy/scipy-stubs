@@ -146,6 +146,8 @@ sp.logit.at(_c16, _i)  # type:ignore[arg-type]  # pyright: ignore[reportArgument
 
 # _UFunc11c - TODO: wofz
 assert_type(sp.wofz(_f8), np.complex128)
+assert_type(sp.wofz(1j), np.complex128)
+assert_type(sp.wofz(_i4_nd), _Complex128ND)
 
 # _UFunc11fc - TODO: erf
 assert_type(sp.erf(_i4), np.float64)
@@ -157,6 +159,10 @@ assert_type(sp.erf(_i4_nd), _Float64ND)
 assert_type(sp.it2i0k0(1.0), tuple[np.float64, np.float64])
 assert_type(sp.it2i0k0(_i4_nd), tuple[_Float64ND, _Float64ND])
 
+# _UFunc12c
+assert_type(sp.modfresnelm(1.0), tuple[np.complex128, np.complex128])
+assert_type(sp.modfresnelm(_i4_nd), tuple[_Complex128ND, _Complex128ND])
+
 # _UFunc12fc
 assert_type(sp.fresnel(1.0), tuple[np.float64, np.float64])
 assert_type(sp.fresnel(_i4_nd), tuple[_Float64ND, _Float64ND])
@@ -166,6 +172,10 @@ assert_type(sp.fresnel(_i4_nd), tuple[_Float64ND, _Float64ND])
 # _UFunc14f
 assert_type(sp.itairy(1.0), tuple[np.float64, np.float64, np.float64, np.float64])
 assert_type(sp.itairy(_i4_nd), tuple[_Float64ND, _Float64ND, _Float64ND, _Float64ND])
+
+# _UFunc14c
+assert_type(sp.kelvin(1.0), tuple[np.complex128, np.complex128, np.complex128, np.complex128])
+assert_type(sp.kelvin(_i4_nd), tuple[_Complex128ND, _Complex128ND, _Complex128ND, _Complex128ND])
 
 # _UFunc14fc
 assert_type(sp.airy(1.0), tuple[np.float64, np.float64, np.float64, np.float64])
@@ -205,6 +215,9 @@ assert_type(sp.yn(_f8, _f8_nd), _Float64ND)
 # _UFunc21c1
 assert_type(sp.hankel1(1, _f8), np.complex128)
 assert_type(sp.hankel1(_f8, _c8), np.complex128)
+assert_type(sp.hankel1(1, 2j), np.complex128)
+assert_type(sp.hankel1(_i4_nd, _c8), _Complex128ND)
+assert_type(sp.hankel1(1.0, _i4_nd), _Complex128ND)
 
 # _UFunc21fc1
 assert_type(sp.jv(2.0, _f4), np.float32)
