@@ -56,7 +56,7 @@ def quantile[FloatT: npc.floating](
 ) -> FloatT: ...
 @overload  # 1d, 0d
 def quantile(
-    x: onp.ToArrayStrict1D[float, npc.integer],
+    x: onp.ToArrayStrict1D[float, npc.integer | npc.floating64],
     p: onp.ToJustFloat,
     *,
     method: _QuantileMethodAll = "linear",
@@ -78,7 +78,7 @@ def quantile[FloatT: npc.floating](
 ) -> onp.Array1D[FloatT]: ...
 @overload  # 2d, 0d
 def quantile(
-    x: onp.ToArrayStrict2D[float, npc.integer],
+    x: onp.ToArrayStrict2D[float, npc.integer | npc.floating64],
     p: onp.ToJustFloat,
     *,
     method: _QuantileMethodAll = "linear",
@@ -100,7 +100,7 @@ def quantile[FloatT: npc.floating](
 ) -> onp.Array2D[FloatT]: ...
 @overload  # 3d, 0d
 def quantile(
-    x: onp.ToArrayStrict3D[float, npc.integer],
+    x: onp.ToArrayStrict3D[float, npc.integer | npc.floating64],
     p: onp.ToJustFloat,
     *,
     method: _QuantileMethodAll = "linear",
