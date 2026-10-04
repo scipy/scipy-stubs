@@ -118,3 +118,4 @@ assert_type(PermutationMethod(n_resamples=np.inf), PermutationMethod)
 
 # power
 assert_type(power(_statistic_1d, (np.random.standard_normal, np.random.standard_normal), [10, 20]), PowerResult[Any])
+assert_type(power(_statistic_1d, np.random.standard_normal, 10), PowerResult[Any])
