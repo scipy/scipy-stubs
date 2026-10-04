@@ -1,6 +1,6 @@
 # type-tests for `signal/_spectral_py.pyi`
 
-from typing import Literal, assert_type
+from typing import Any, Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -27,6 +27,7 @@ _f80_1d: onp.Array1D[np.float96 | np.float128]
 _c64_1d: onp.Array1D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
 _c160_1d: onp.Array1D[np.complex192 | np.complex256]
+_num_1d: onp.Array1D[np.number[Any]]
 
 _mode_real: Literal["psd", "magnitude", "angle", "phase"]
 
@@ -51,6 +52,7 @@ assert_type(periodogram(_c64_1d), tuple[_F64_1D, _F32_ND])
 assert_type(periodogram(_c128_1d), tuple[_F64_1D, _F64_ND])
 assert_type(periodogram(_c160_1d), tuple[_F64_1D, _F80_ND])
 assert_type(periodogram(_f64_1d, window=_f64_1d), tuple[_F64_1D, _F64_ND])
+assert_type(periodogram(_num_1d), tuple[_F64_1D, onp.ArrayND[np.float64 | Any]])
 
 # welch
 
@@ -64,6 +66,7 @@ assert_type(welch(_c128_1d), tuple[_F64_1D, _F64_ND])
 assert_type(welch(_c160_1d), tuple[_F64_1D, _F80_ND])
 assert_type(welch(_f64_1d, window=_f64_1d), tuple[_F64_1D, _F64_ND])
 assert_type(welch(_f64_1d, window=[1.0, 2.0, 3.0]), tuple[_F64_1D, _F64_ND])
+assert_type(welch(_num_1d), tuple[_F64_1D, onp.ArrayND[np.float64 | Any]])
 
 # csd
 

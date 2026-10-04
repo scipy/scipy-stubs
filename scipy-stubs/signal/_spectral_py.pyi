@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Literal, overload
+from typing import Any, Literal, overload
 from typing_extensions import deprecated
 
 import numpy as np
@@ -98,6 +98,17 @@ def periodogram(
     scaling: _Scaling = "density",
     axis: int = -1,
 ) -> tuple[_float64_1d, _float80_nd]: ...
+@overload  # fallback
+def periodogram(
+    x: onp.ToComplexND,
+    fs: float = 1.0,
+    window: _ToWindowOrArray | None = "boxcar",
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: bool = True,
+    scaling: _Scaling = "density",
+    axis: int = -1,
+) -> tuple[_float64_1d, onp.ArrayND[np.float64 | Any]]: ...
 
 #
 @overload  # f64
@@ -142,6 +153,20 @@ def welch(
     axis: int = -1,
     average: _Average = "mean",
 ) -> tuple[_float64_1d, _float80_nd]: ...
+@overload  # fallback
+def welch(
+    x: onp.ToComplexND,
+    fs: float = 1.0,
+    window: _ToWindowOrArray = "hann_periodic",
+    nperseg: int | None = None,
+    noverlap: int | None = None,
+    nfft: int | None = None,
+    detrend: _Detrend = "constant",
+    return_onesided: bool = True,
+    scaling: _Scaling = "density",
+    axis: int = -1,
+    average: _Average = "mean",
+) -> tuple[_float64_1d, onp.ArrayND[np.float64 | Any]]: ...
 
 # NOTE: We assume that `x is not y` always holds here.
 # See https://github.com/scipy/scipy/issues/24285 for details.
