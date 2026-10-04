@@ -102,6 +102,9 @@ assert_type(PoissonDisk(2).l_bounds, onp.Array1D[np.float64])
 assert_type(PoissonDisk(2).cell_size, np.float64)
 assert_type(PoissonDisk(2).random(8), onp.Array2D[np.float64])
 assert_type(PoissonDisk(2).fill_space(), onp.Array2D[np.float64])
+assert_type(PoissonDisk(2).radius, float)
+assert_type(PoissonDisk(2).radius_squared, float)
+assert_type(PoissonDisk(2).ncandidates, int)
 
 ###
 # MultivariateNormalQMC

@@ -211,9 +211,9 @@ class Sobol(QMCEngine[np.float64]):
 class PoissonDisk(QMCEngine[np.float64]):
     hypersphere_method: Final[_HypersphereMethod]
     radius_factor: Final[float]
-    radius: Final[onp.ToFloat]
-    radius_squared: Final[onp.ToFloat]
-    ncandidates: Final[onp.ToInt]
+    radius: Final[float]
+    radius_squared: Final[float]
+    ncandidates: Final[int]
 
     l_bounds: onp.Array1D[np.float64]
     u_bounds: onp.Array1D[np.float64]
