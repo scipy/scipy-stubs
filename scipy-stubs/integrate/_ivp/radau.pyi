@@ -65,7 +65,7 @@ class Radau(OdeSolver[np.float64]):
         t_bound: onp.ToFloat,
         max_step: onp.ToFloat = ...,
         rtol: onp.ToFloat = 0.001,
-        atol: onp.ToFloat = 1e-06,
+        atol: onp.ToFloat | onp.ToFloat1D = 1e-06,
         jac: _ToJac | Callable[[float, onp.Array1D[np.float64]], _ToJac] | None = None,
         jac_sparsity: _ToJac | None = None,
         vectorized: bool = False,
