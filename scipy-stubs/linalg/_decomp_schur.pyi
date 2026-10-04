@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Literal, overload
+from typing import Any, Literal, Never, overload
 
 import numpy as np
 import optype as op
@@ -25,6 +25,9 @@ type _as_f32 = np.float32 | np.float16 | np.bool  # ruff: ignore[snake-case-type
 type _as_f64 = npc.floating64 | npc.floating80 | npc.integer  # ruff: ignore[snake-case-type-alias]
 type _as_c128 = npc.complexfloating128 | npc.complexfloating160  # ruff: ignore[snake-case-type-alias]
 
+# workaround for mypy & pyright's failure to conform to the overload typing specification
+type _JustAnyShape = tuple[Never, Never, Never, Never]
+
 ###
 
 # NOTE: On numpy<2.1, pyright reports 12 false positive incompatible overload errors here.
@@ -43,6 +46,16 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.float64, Shape2T]]: ...
+@overload  # ?d f64, sort=<given>  (workaround)
+def schur(
+    a: onp.ArrayND[_as_f64, _JustAnyShape],
+    output: _OutputReal = "real",
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iAny[onp.ArrayND[np.float64]]: ...
 @overload  # 2d f64, sort=<given>
 def schur(
     a: onp.Array2D[_as_f64],
@@ -72,6 +85,16 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.complex128, Shape2T]]: ...
+@overload  # ?d f64, output="complex", sort=<given>  (workaround)
+def schur(
+    a: onp.ArrayND[_as_f64, _JustAnyShape],
+    output: _OutputComplex,
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iAny[onp.ArrayND[np.complex128]]: ...
 @overload  # 2d f64, output="complex", sort=<given>
 def schur(
     a: onp.Array2D[_as_f64],
@@ -101,6 +124,16 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.float32, Shape2T]]: ...
+@overload  # ?d f32, sort=<given>  (workaround)
+def schur(
+    a: onp.ArrayND[_as_f32, _JustAnyShape],
+    output: _OutputReal = "real",
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iAny[onp.ArrayND[np.float32]]: ...
 @overload  # 2d f32, sort=<given>
 def schur(
     a: onp.Array2D[_as_f32],
@@ -130,6 +163,16 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.complex64, Shape2T]]: ...
+@overload  # ?d f32, output="complex", sort=<given>  (workaround)
+def schur(
+    a: onp.ArrayND[_as_f32, _JustAnyShape],
+    output: _OutputComplex,
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iAny[onp.ArrayND[np.complex64]]: ...
 @overload  # 2d f32, output="complex", sort=<given>
 def schur(
     a: onp.Array2D[_as_f32],
@@ -159,6 +202,16 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.complex128, Shape2T]]: ...
+@overload  # ?d c128, sort=<given>  (workaround)
+def schur(
+    a: onp.ArrayND[_as_c128, _JustAnyShape],
+    output: _Output = "real",
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iAny[onp.ArrayND[np.complex128]]: ...
 @overload  # 2d c128, sort=<given>
 def schur(
     a: onp.Array2D[_as_c128],
@@ -188,6 +241,16 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.complex64, Shape2T]]: ...
+@overload  # ?d c64, sort=<given>  (workaround)
+def schur(
+    a: onp.ArrayND[np.complex64, _JustAnyShape],
+    output: _Output = "real",
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iAny[onp.ArrayND[np.complex64]]: ...
 @overload  # 2d c64, sort=<given>
 def schur(
     a: onp.Array2D[np.complex64],
