@@ -20,6 +20,7 @@ type _C160_ND = onp.ArrayND[np.complex192 | np.complex256]
 
 ###
 
+_i16_1d: onp.Array1D[np.int16]
 _i64_1d: onp.Array1D[np.int64]
 _f16_1d: onp.Array1D[np.float16]
 _f32_1d: onp.Array1D[np.float32]
@@ -45,7 +46,7 @@ assert_type(lombscargle(_f64_1d, _f64_1d, _f64_1d, precenter=True), _F64_1D)  # 
 # periodogram
 
 assert_type(periodogram(_i64_1d), tuple[_F64_1D, _F64_ND])
-assert_type(periodogram(_f16_1d), tuple[_F64_1D, _F32_ND])
+assert_type(periodogram(_i16_1d), tuple[_F64_1D, _F32_ND])
 assert_type(periodogram(_f32_1d), tuple[_F64_1D, _F32_ND])
 assert_type(periodogram(_f64_1d), tuple[_F64_1D, _F64_ND])
 assert_type(periodogram(_f80_1d), tuple[_F64_1D, _F80_ND])
@@ -58,7 +59,7 @@ assert_type(periodogram(_num_1d), tuple[_F64_1D, onp.ArrayND[np.float64 | Any]])
 # welch
 
 assert_type(welch(_i64_1d), tuple[_F64_1D, _F64_ND])
-assert_type(welch(_f16_1d), tuple[_F64_1D, _F32_ND])
+assert_type(welch(_i16_1d), tuple[_F64_1D, _F32_ND])
 assert_type(welch(_f32_1d), tuple[_F64_1D, _F32_ND])
 assert_type(welch(_f64_1d), tuple[_F64_1D, _F64_ND])
 assert_type(welch(_f80_1d), tuple[_F64_1D, _F80_ND])
@@ -72,7 +73,7 @@ assert_type(welch(_num_1d), tuple[_F64_1D, onp.ArrayND[np.float64 | Any]])
 # csd
 
 assert_type(csd(_i64_1d, _i64_1d), tuple[_F64_1D, _C128_ND])
-assert_type(csd(_f16_1d, _f16_1d), tuple[_F64_1D, _C64_ND])
+assert_type(csd(_i16_1d, _i16_1d), tuple[_F64_1D, _C64_ND])
 assert_type(csd(_f32_1d, _f32_1d), tuple[_F64_1D, _C64_ND])
 assert_type(csd(_f64_1d, _f64_1d), tuple[_F64_1D, _C128_ND])
 assert_type(csd(_f80_1d, _f80_1d), tuple[_F64_1D, _C160_ND])
@@ -84,7 +85,7 @@ assert_type(csd(_f64_1d, _f64_1d, window=_f64_1d), tuple[_F64_1D, _C128_ND])
 # spectrogram
 
 assert_type(spectrogram(_i64_1d), tuple[_F64_1D, _F64_1D, _F64_ND])
-assert_type(spectrogram(_f16_1d), tuple[_F64_1D, _F64_1D, _F32_ND])
+assert_type(spectrogram(_i16_1d), tuple[_F64_1D, _F64_1D, _F32_ND])
 assert_type(spectrogram(_f32_1d), tuple[_F64_1D, _F64_1D, _F32_ND])
 assert_type(spectrogram(_f64_1d), tuple[_F64_1D, _F64_1D, _F64_ND])
 assert_type(spectrogram(_f80_1d), tuple[_F64_1D, _F64_1D, _F80_ND])
@@ -93,7 +94,7 @@ assert_type(spectrogram(_c128_1d), tuple[_F64_1D, _F64_1D, _F64_ND])
 assert_type(spectrogram(_c160_1d), tuple[_F64_1D, _F64_1D, _F80_ND])
 
 assert_type(spectrogram(_i64_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C128_ND])
-assert_type(spectrogram(_f16_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C64_ND])
+assert_type(spectrogram(_i16_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C64_ND])
 assert_type(spectrogram(_f32_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C64_ND])
 assert_type(spectrogram(_f64_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C128_ND])
 assert_type(spectrogram(_f80_1d, mode="complex"), tuple[_F64_1D, _F64_1D, _C160_ND])
@@ -113,7 +114,7 @@ assert_type(check_NOLA(_f64_1d, 8, 4), np.bool)
 # stft
 
 assert_type(stft(_i64_1d), tuple[_F64_1D, _F64_1D, _C128_ND])
-assert_type(stft(_f16_1d), tuple[_F64_1D, _F64_1D, _C64_ND])
+assert_type(stft(_i16_1d), tuple[_F64_1D, _F64_1D, _C64_ND])
 assert_type(stft(_f32_1d), tuple[_F64_1D, _F64_1D, _C64_ND])
 assert_type(stft(_f64_1d), tuple[_F64_1D, _F64_1D, _C128_ND])
 assert_type(stft(_f80_1d), tuple[_F64_1D, _F64_1D, _C160_ND])
@@ -125,7 +126,7 @@ assert_type(stft(_f64_1d, window=_f64_1d), tuple[_F64_1D, _F64_1D, _C128_ND])
 
 # istft
 
-assert_type(istft(_i64_1d), tuple[_F64_1D, _F64_ND])
+assert_type(istft(_i16_1d), tuple[_F64_1D, _F64_ND])
 assert_type(istft(_f16_1d), tuple[_F64_1D, _F32_ND])
 assert_type(istft(_f32_1d), tuple[_F64_1D, _F32_ND])
 assert_type(istft(_f64_1d), tuple[_F64_1D, _F64_ND])
@@ -134,7 +135,7 @@ assert_type(istft(_c64_1d), tuple[_F64_1D, _F32_ND])
 assert_type(istft(_c128_1d), tuple[_F64_1D, _F64_ND])
 assert_type(istft(_c160_1d), tuple[_F64_1D, _F80_ND])
 
-assert_type(istft(_i64_1d, input_onesided=False), tuple[_F64_1D, _C128_ND])
+assert_type(istft(_i16_1d, input_onesided=False), tuple[_F64_1D, _C128_ND])
 assert_type(istft(_f16_1d, input_onesided=False), tuple[_F64_1D, _C64_ND])
 assert_type(istft(_f32_1d, input_onesided=False), tuple[_F64_1D, _C64_ND])
 assert_type(istft(_f64_1d, input_onesided=False), tuple[_F64_1D, _C128_ND])
@@ -148,7 +149,7 @@ assert_type(istft(_c128_1d, window=_f64_1d), tuple[_F64_1D, _F64_ND])
 # coherence
 
 assert_type(coherence(_i64_1d, _i64_1d), tuple[_F64_1D, _F64_ND])
-assert_type(coherence(_f16_1d, _f16_1d), tuple[_F64_1D, _F32_ND])
+assert_type(coherence(_i16_1d, _i16_1d), tuple[_F64_1D, _F32_ND])
 assert_type(coherence(_f32_1d, _f32_1d), tuple[_F64_1D, _F32_ND])
 assert_type(coherence(_f64_1d, _f64_1d), tuple[_F64_1D, _F64_ND])
 assert_type(coherence(_f80_1d, _f80_1d), tuple[_F64_1D, _F80_ND])

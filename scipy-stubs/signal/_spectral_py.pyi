@@ -21,8 +21,8 @@ type _complex64_nd = onp.ArrayND[np.complex64]  # ruff: ignore[snake-case-type-a
 type _complex128_nd = onp.ArrayND[np.complex128]  # ruff: ignore[snake-case-type-alias]
 type _complex160_nd = onp.ArrayND[np.complex192 | np.complex256]  # ruff: ignore[snake-case-type-alias]
 
-type _ToInexact32ND = onp.ToArrayND[npc.inexact32, npc.inexact32 | npc.floating16]
-type _ToInexact64ND = onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool]
+type _ToInexact32ND = onp.ToArrayND[npc.inexact32, npc.inexact32 | npc.floating16 | npc.integer16 | npc.integer8 | np.bool]
+type _ToInexact64ND = onp.ToArrayND[complex, npc.inexact64 | npc.integer64 | npc.integer32]
 type _ToInexact80ND = onp.ToArrayND[npc.inexact80, npc.inexact80]
 
 type _Detrend = _TrendType | Literal[False] | Callable[[onp.ArrayND], onp.ArrayND]
@@ -405,7 +405,7 @@ def stft(
 # and would significantly complicate the overloads. Thus, we only support passing it as keyword argument here (if `False`).
 @overload  # f64, input_onesided=True (default)
 def istft(
-    Zxx: _ToInexact64ND,
+    Zxx: onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool],
     fs: float = 1.0,
     window: _ToWindowOrArray = "hann_periodic",
     nperseg: int | None = None,
@@ -419,7 +419,7 @@ def istft(
 ) -> tuple[_float64_1d, _float64_nd]: ...
 @overload  # c128, input_onesided=False
 def istft(
-    Zxx: _ToInexact64ND,
+    Zxx: onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool],
     fs: float = 1.0,
     window: _ToWindowOrArray = "hann_periodic",
     nperseg: int | None = None,
@@ -434,7 +434,7 @@ def istft(
 ) -> tuple[_float64_1d, _complex128_nd]: ...
 @overload  # f32, input_onesided=True (default)
 def istft(
-    Zxx: _ToInexact32ND,
+    Zxx: onp.ToArrayND[npc.inexact32, npc.inexact32 | npc.floating16],
     fs: float = 1.0,
     window: _ToWindowOrArray = "hann_periodic",
     nperseg: int | None = None,
@@ -448,7 +448,7 @@ def istft(
 ) -> tuple[_float64_1d, _float32_nd]: ...
 @overload  # c64, input_onesided=False
 def istft(
-    Zxx: _ToInexact32ND,
+    Zxx: onp.ToArrayND[npc.inexact32, npc.inexact32 | npc.floating16],
     fs: float = 1.0,
     window: _ToWindowOrArray = "hann_periodic",
     nperseg: int | None = None,
