@@ -75,7 +75,7 @@ def vectorized_filter(
     cval: onp.ToFloat | None = None,
     origin: onp.ToInt | onp.ToInt1D | None = None,
     axes: tuple[SupportsIndex, ...] | None = None,
-    batch_memory: int = 1_073_741_824,
+    batch_memory: onp.ToFloat = 1_073_741_824,
 ) -> onp.ArrayND[_ScalarT]: ...
 @overload
 def vectorized_filter(
@@ -89,7 +89,7 @@ def vectorized_filter(
     cval: onp.ToFloat | None = None,
     origin: onp.ToInt | onp.ToInt1D | None = None,
     axes: tuple[SupportsIndex, ...] | None = None,
-    batch_memory: int = 1_073_741_824,
+    batch_memory: onp.ToFloat = 1_073_741_824,
 ) -> onp.ArrayND[_ScalarT]: ...
 
 # keep roughly in sync with sobel
