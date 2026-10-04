@@ -87,8 +87,10 @@ assert_type(mannwhitneyu(_f64_3d, _f64_3d, axis=None).statistic, np.float64)
 assert_type(mannwhitneyu(_py_i_3d, _py_i_3d, keepdims=True).statistic, onp.ArrayND[np.float64])
 assert_type(mannwhitneyu(_py_f_3d, _py_f_3d, keepdims=True).statistic, onp.ArrayND[np.float64])
 assert_type(mannwhitneyu(_i16_3d, _i16_3d, keepdims=True).statistic, onp.ArrayND[np.float64])
-assert_type(mannwhitneyu(_f32_3d, _f32_3d, keepdims=True).statistic, onp.ArrayND[np.float32])
-assert_type(mannwhitneyu(_f64_3d, _f64_3d, keepdims=True).statistic, onp.ArrayND[np.float64])
+assert_type(mannwhitneyu(_f32_3d, _f32_3d, axis=(1, 2), keepdims=True).statistic, onp.ArrayND[np.float32])
+assert_type(mannwhitneyu(_f64_3d, _f64_3d, axis=(1, 2), keepdims=True).statistic, onp.ArrayND[np.float64])
+assert_type(mannwhitneyu(_f32_3d, _f32_3d, axis=(1, 2)).statistic, np.float32 | onp.ArrayND[np.float32])
+assert_type(mannwhitneyu(_f64_3d, _f64_3d, axis=(1, 2)).statistic, np.float64 | onp.ArrayND[np.float64])
 
 # nd
 assert_type(mannwhitneyu(_i16_nd, _i16_nd).statistic, np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
