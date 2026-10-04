@@ -2092,7 +2092,7 @@ def gstd[InexactT: npc.inexact](
 ) -> InexactT: ...
 @overload
 def gstd(
-    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
+    a: onp.ToFloat64Strict1D,
     axis: int | None = 0,
     ddof: int = 1,
     *,
@@ -2110,12 +2110,7 @@ def gstd[InexactT: npc.inexact](
 ) -> onp.Array1D[InexactT]: ...
 @overload
 def gstd(
-    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
-    axis: int = 0,
-    ddof: int = 1,
-    *,
-    keepdims: L[False] = False,
-    nan_policy: NanPolicy = "propagate",
+    a: onp.ToFloat64Strict2D, axis: int = 0, ddof: int = 1, *, keepdims: L[False] = False, nan_policy: NanPolicy = "propagate"
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def gstd(
@@ -3940,7 +3935,7 @@ def trim_mean[InexactT: npc.inexact](
 ) -> InexactT: ...
 @overload
 def trim_mean(
-    a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
+    a: onp.ToFloat64Strict1D,
     proportiontocut: float,
     axis: int | None = 0,
     *,
@@ -3958,7 +3953,7 @@ def trim_mean[InexactT: npc.inexact](
 ) -> onp.Array1D[InexactT]: ...
 @overload
 def trim_mean(
-    a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
+    a: onp.ToFloat64Strict2D,
     proportiontocut: float,
     axis: int = 0,
     *,
