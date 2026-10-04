@@ -147,14 +147,24 @@ def null_space[InexactT: np.float32 | np.float64 | np.complex64 | np.complex128]
 ) -> onp.ArrayND[InexactT]: ...
 
 #
-@overload  # ?d  (workaround)
+@overload  # ?d +f64  (workaround)
+def subspace_angles(  # type: ignore[overload-overlap]  # mypy NBit false positive
+    A: onp.ArrayND[npc.number64 | npc.inexact80 | npc.integer32, _JustAnyShape], B: onp.ToComplexND
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d +f64  (workaround)
+def subspace_angles(  # type: ignore[overload-overlap]  # mypy NBit false positive
+    A: onp.ToComplexND, B: onp.ArrayND[npc.number64 | npc.inexact80 | npc.integer32, _JustAnyShape]
+) -> onp.ArrayND[np.float64]: ...
+@overload  # ?d +f32  (workaround)
 def subspace_angles(
-    A: onp.ArrayND[npc.number | np.bool, _JustAnyShape], B: onp.ToComplexND
-) -> onp.ArrayND[np.float64 | np.float32]: ...
-@overload  # ?d  (workaround)
+    A: onp.ArrayND[npc.inexact32 | npc.number16 | npc.integer8 | np.bool, _JustAnyShape],
+    B: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
+) -> onp.ArrayND[np.float32]: ...
+@overload  # ?d +f32  (workaround)
 def subspace_angles(
-    A: onp.ToComplexND, B: onp.ArrayND[npc.number | np.bool, _JustAnyShape]
-) -> onp.ArrayND[np.float64 | np.float32]: ...
+    A: onp.ToArrayND[np.float32, npc.inexact32 | npc.number16 | npc.integer8 | np.bool],
+    B: onp.ArrayND[npc.inexact32 | npc.number16 | npc.integer8 | np.bool, _JustAnyShape],
+) -> onp.ArrayND[np.float32]: ...
 @overload
 def subspace_angles(  # type: ignore[overload-overlap]
     A: onp.ToArrayStrict2D[complex, npc.number64 | npc.inexact80 | npc.integer32], B: onp.ToComplexStrict2D
