@@ -1215,6 +1215,8 @@ assert_type(ks_2samp(_f64_nd, _f64_2d), KstestResult[onp.ArrayND[np.float64], on
 assert_type(ks_2samp(_f64_nd, _f64_3d), KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]])  # pyrefly:ignore[assert-type]
 assert_type(ks_2samp(_f64_nd, _f64_nd), KstestResult[np.float64 | Any, np.int8 | Any])  # pyrefly:ignore[assert-type]
 
+assert_type(ks_2samp(_i64_1d, _i64_1d).statistic_location, np.float64 | Any)
+
 # kstest
 
 assert_type(kstest(_f64_1d, "norm"), KstestResult[np.float64, np.int8])
