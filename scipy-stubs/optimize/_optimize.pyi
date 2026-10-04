@@ -205,7 +205,7 @@ def fmin(
     retall: onp.ToFalse = 0,
     callback: _Callback_1d | None = None,
     initial_simplex: onp.ToFloat2D | None = None,
-) -> tuple[_Float1D, onp.ToFloat, int, int, _WarnFlag]: ...  # x, fun, nit, nfev, status
+) -> tuple[_Float1D, np.float64, int, int, _WarnFlag]: ...  # x, fun, nit, nfev, status
 @overload  # full_output: True  (keyword), retall: True
 def fmin(
     func: _Fn1_1d[onp.ToFloat],
@@ -221,7 +221,7 @@ def fmin(
     retall: onp.ToTrue,
     callback: _Callback_1d | None = None,
     initial_simplex: onp.ToFloat2D | None = None,
-) -> tuple[_Float1D, onp.ToFloat, int, int, _WarnFlag, _AllVecs]: ...  # x, fun, nit, nfev, status, allvecs
+) -> tuple[_Float1D, np.float64, int, int, _WarnFlag, _AllVecs]: ...  # x, fun, nit, nfev, status, allvecs
 
 #
 @overload  # full_output: False = ..., retall: False = ...

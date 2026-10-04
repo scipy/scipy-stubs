@@ -150,8 +150,8 @@ assert_type(brute(_f, _py_f2_n, full_output=True), tuple[_Float1D | Any, np.floa
 
 assert_type(fmin(_f, _x0), _Float1D)
 assert_type(fmin(_f, _x0, retall=True), tuple[_Float1D, _AllVecs])
-assert_type(fmin(_f, _x0, full_output=True), tuple[_Float1D, onp.ToFloat, int, int, _WarnFlag])
-assert_type(fmin(_f, _x0, full_output=True, retall=True), tuple[_Float1D, onp.ToFloat, int, int, _WarnFlag, _AllVecs])
+assert_type(fmin(_f, _x0, full_output=True), tuple[_Float1D, np.float64, int, int, _WarnFlag])
+assert_type(fmin(_f, _x0, full_output=True, retall=True), tuple[_Float1D, np.float64, int, int, _WarnFlag, _AllVecs])
 
 ###
 # fmin_bfgs
