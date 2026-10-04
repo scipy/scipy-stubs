@@ -173,7 +173,7 @@ class BootstrapMethod(ResamplingMethod):
 #
 def power(
     test: _Statistic,
-    rvs: _RVSCallable,
+    rvs: _RVSCallable | Sequence[_RVSCallable],
     n_observations: onp.ToJustInt1D | onp.ToJustInt2D,
     *,
     significance: onp.ToFloat | onp.ToFloatND = 0.01,
