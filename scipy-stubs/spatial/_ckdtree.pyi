@@ -19,7 +19,7 @@ type _Float2D = onp.Array2D[np.float64]
 type _JustAnyShape = tuple[Never, Never, Never, Never]  # workaround for https://github.com/microsoft/pyright/issues/10232
 
 _NodeT_co = TypeVar("_NodeT_co", bound=_KDTreeNode | None, default=_KDTreeNode | None, covariant=True)
-_BoxSizeT_co = TypeVar("_BoxSizeT_co", bound=_Float2D | None, default=_Float2D | None, covariant=True)
+_BoxSizeT_co = TypeVar("_BoxSizeT_co", bound=_Float1D | None, default=_Float1D | None, covariant=True)
 _BoxSizeDataT_co = TypeVar("_BoxSizeDataT_co", bound=_Float1D | None, default=_Float1D | None, covariant=True)
 
 @type_check_only
@@ -100,18 +100,18 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
     ) -> None: ...
     @overload
     def __init__(
-        self: cKDTree[_Float2D, _Float1D],
+        self: cKDTree[_Float1D, _Float1D],
         /,
         data: onp.ToFloat2D,
         leafsize: int,
         compact_nodes: bool,
         copy_data: bool,
         balanced_tree: bool,
-        boxsize: onp.ToFloat2D,
+        boxsize: onp.ToFloat | onp.ToFloat1D,
     ) -> None: ...
     @overload
     def __init__(
-        self: cKDTree[_Float2D, _Float1D],
+        self: cKDTree[_Float1D, _Float1D],
         /,
         data: onp.ToFloat2D,
         leafsize: int = 16,
@@ -119,7 +119,7 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         copy_data: bool = False,
         balanced_tree: bool = True,
         *,
-        boxsize: onp.ToFloat2D,
+        boxsize: onp.ToFloat | onp.ToFloat1D,
     ) -> None: ...
 
     #
