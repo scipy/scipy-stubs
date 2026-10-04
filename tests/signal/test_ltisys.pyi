@@ -187,6 +187,14 @@ assert_type(dlti(_c128_2d, _c128_2d, _c128_2d, _c128_2d, dt=0.1), StateSpaceDisc
 assert_subtype[dlti[Any, np.float64 | Any, float]](dlti(_f64_1d, _c128_1d, 5, dt=0.1))
 
 ###
+# zeros / poles
+
+assert_type(_tf_cont_f64.zeros, onp.ArrayND[np.float64 | Any, tuple[int] | tuple[int, int]])
+assert_type(_tf_cont_f64.poles, onp.Array1D[np.float64 | Any])
+assert_type(_ss_cont_f32.zeros, onp.ArrayND[np.float32 | Any, tuple[int] | tuple[int, int]])
+assert_type(_ss_cont_f32.poles, onp.Array1D[np.float32 | Any])
+
+###
 # lsim (same as impulse and step)
 
 # i64
