@@ -280,6 +280,11 @@ class QuantileTestResult(Generic[_FloatT]):
     def confidence_interval(self, /, confidence_level: float = 0.95) -> ConfidenceInterval[_FloatT]: ...
 
 class SignificanceResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co]): ...
+
+@type_check_only
+class _CorrelationResult(SignificanceResult[_FloatOrArrayT_co], Generic[_FloatOrArrayT_co]):
+    correlation: _FloatOrArrayT_co
+
 class PearsonRResultBase(
     _TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT2_co], Generic[_FloatOrArrayT_co, _FloatOrArrayT2_co]
 ): ...
@@ -4464,7 +4469,7 @@ def spearmanr(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[np.float64 | onp.Array2D[np.float64]]: ...
+) -> _CorrelationResult[np.float64 | onp.Array2D[np.float64]]: ...
 @overload  # 1d, 1d
 def spearmanr(
     a: onp.ToFloatStrict1D,
@@ -4472,7 +4477,7 @@ def spearmanr(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 @overload  # 2d, 2d
 def spearmanr(
     a: onp.ToFloatStrict2D,
@@ -4480,15 +4485,15 @@ def spearmanr(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+) -> _CorrelationResult[onp.Array2D[np.float64]]: ...
 @overload  # axis=None
 def spearmanr(
     a: onp.ToFloatND, b: onp.ToFloatND, axis: None, nan_policy: NanPolicy = "propagate", alternative: Alternative = "two-sided"
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 @overload  # 2d, None
 def spearmanr(
     a: onp.ToFloat2D, b: None = None, axis: int = 0, nan_policy: NanPolicy = "propagate", alternative: Alternative = "two-sided"
-) -> SignificanceResult[np.float64 | onp.Array2D[np.float64]]: ...
+) -> _CorrelationResult[np.float64 | onp.Array2D[np.float64]]: ...
 
 #
 @overload  # ?d +integer, +integer | ~f64, axis=None
@@ -4499,7 +4504,7 @@ def pointbiserialr(
     axis: None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 @overload  # 1d +integer, +integer | ~f64
 def pointbiserialr(
     x: onp.ToIntStrict1D,
@@ -4508,7 +4513,7 @@ def pointbiserialr(
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 @overload  # 2d +integer, +integer | ~f64
 def pointbiserialr(
     x: onp.ToIntStrict2D,
@@ -4517,7 +4522,7 @@ def pointbiserialr(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[onp.Array1D[np.float64]]: ...
+) -> _CorrelationResult[onp.Array1D[np.float64]]: ...
 @overload  # 3d +integer, +integer | ~f64
 def pointbiserialr(
     x: onp.ToIntStrict3D,
@@ -4526,7 +4531,7 @@ def pointbiserialr(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+) -> _CorrelationResult[onp.Array2D[np.float64]]: ...
 @overload  # ?d +integer, +integer | ~f64, keepdims=True
 def pointbiserialr(
     x: onp.ToIntND,
@@ -4535,11 +4540,11 @@ def pointbiserialr(
     axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+) -> _CorrelationResult[onp.ArrayND[np.float64]]: ...
 @overload  # ?d +bool, ~f32, axis=None
 def pointbiserialr(
     x: onp.ToBoolND, y: onp.ToJustFloat32_ND, *, axis: None, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
-) -> SignificanceResult[np.float32]: ...
+) -> _CorrelationResult[np.float32]: ...
 @overload  # 1d +bool, ~f32
 def pointbiserialr(
     x: onp.ToBoolStrict1D,
@@ -4548,7 +4553,7 @@ def pointbiserialr(
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[np.float32]: ...
+) -> _CorrelationResult[np.float32]: ...
 @overload  # 2d +bool, ~f32
 def pointbiserialr(
     x: onp.ToBoolStrict2D,
@@ -4557,7 +4562,7 @@ def pointbiserialr(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[onp.Array1D[np.float32]]: ...
+) -> _CorrelationResult[onp.Array1D[np.float32]]: ...
 @overload  # 3d +bool, ~f32
 def pointbiserialr(
     x: onp.ToBoolStrict3D,
@@ -4566,7 +4571,7 @@ def pointbiserialr(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[onp.Array2D[np.float32]]: ...
+) -> _CorrelationResult[onp.Array2D[np.float32]]: ...
 @overload  # ?d +bool, ~f32, keepdims=True
 def pointbiserialr(
     x: onp.ToBoolND,
@@ -4575,7 +4580,7 @@ def pointbiserialr(
     axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
+) -> _CorrelationResult[onp.ArrayND[np.float32]]: ...
 @overload  # ?d +bool, ~f32, fallback
 def pointbiserialr(
     x: onp.ToBoolND,
@@ -4584,7 +4589,7 @@ def pointbiserialr(
     axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
-) -> SignificanceResult[np.float32 | Any]: ...
+) -> _CorrelationResult[np.float32 | Any]: ...
 @overload  # 2d +integer, +floating
 def pointbiserialr(
     x: onp.ToIntStrict2D,
@@ -4593,7 +4598,7 @@ def pointbiserialr(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[onp.Array1D[np.float64 | Any]]: ...
+) -> _CorrelationResult[onp.Array1D[np.float64 | Any]]: ...
 @overload  # 3d +integer, +floating
 def pointbiserialr(
     x: onp.ToIntStrict3D,
@@ -4602,7 +4607,7 @@ def pointbiserialr(
     axis: int = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> SignificanceResult[onp.Array2D[np.float64 | Any]]: ...
+) -> _CorrelationResult[onp.Array2D[np.float64 | Any]]: ...
 @overload  # ?d +integer, +floating, keepdims=True
 def pointbiserialr(
     x: onp.ToIntND,
@@ -4611,7 +4616,7 @@ def pointbiserialr(
     axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
-) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
+) -> _CorrelationResult[onp.ArrayND[np.float64 | Any]]: ...
 @overload  # fallback
 def pointbiserialr(
     x: onp.ToIntND,
@@ -4620,7 +4625,7 @@ def pointbiserialr(
     axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
-) -> SignificanceResult[np.float64 | Any]: ...
+) -> _CorrelationResult[np.float64 | Any]: ...
 
 #
 @overload  # nd, axis=None (default)
@@ -4634,7 +4639,7 @@ def kendalltau(
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 @overload  # ?d, axis: int
 def kendalltau(
     x: onp.ArrayND[npc.number | np.bool, _JustAnyShape],
@@ -4646,7 +4651,7 @@ def kendalltau(
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[onp.ArrayND[np.float64] | Any]: ...
+) -> _CorrelationResult[onp.ArrayND[np.float64] | Any]: ...
 @overload  # 1d, axis: int
 def kendalltau(
     x: onp.ToComplexStrict1D,
@@ -4658,7 +4663,7 @@ def kendalltau(
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 @overload  # 2d, axis: int
 def kendalltau(
     x: onp.ToComplexStrict2D,
@@ -4670,7 +4675,7 @@ def kendalltau(
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[onp.Array1D[np.float64]]: ...
+) -> _CorrelationResult[onp.Array1D[np.float64]]: ...
 @overload  # 3d, axis: int
 def kendalltau(
     x: onp.ToComplexStrict3D,
@@ -4682,7 +4687,7 @@ def kendalltau(
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+) -> _CorrelationResult[onp.Array2D[np.float64]]: ...
 @overload  # nd, axis: int
 def kendalltau(
     x: onp.ToComplexND,
@@ -4694,7 +4699,7 @@ def kendalltau(
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[onp.ArrayND[np.float64] | Any]: ...
+) -> _CorrelationResult[onp.ArrayND[np.float64] | Any]: ...
 @overload  # ?d, keepdims=True
 def kendalltau(
     x: onp.ToComplexND,
@@ -4706,7 +4711,7 @@ def kendalltau(
     variant: _KendallTauVariant = "b",
     alternative: Alternative = "two-sided",
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+) -> _CorrelationResult[onp.ArrayND[np.float64]]: ...
 
 #
 @overload
@@ -4720,7 +4725,7 @@ def weightedtau(
     axis: None = None,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 @overload
 def weightedtau(
     x: onp.ToFloatStrict1D,
@@ -4732,7 +4737,7 @@ def weightedtau(
     axis: int | None = None,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 @overload
 def weightedtau(
     x: onp.ToFloatStrict2D,
@@ -4744,7 +4749,7 @@ def weightedtau(
     axis: int,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[onp.Array1D[np.float64]]: ...
+) -> _CorrelationResult[onp.Array1D[np.float64]]: ...
 @overload
 def weightedtau(
     x: onp.ToFloatStrict3D,
@@ -4756,7 +4761,7 @@ def weightedtau(
     axis: int,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+) -> _CorrelationResult[onp.Array2D[np.float64]]: ...
 @overload
 def weightedtau(
     x: onp.ToFloatND,
@@ -4768,7 +4773,7 @@ def weightedtau(
     axis: int | tuple[int, ...] | None = None,
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+) -> _CorrelationResult[onp.ArrayND[np.float64]]: ...
 @overload
 def weightedtau(
     x: onp.ToFloatND,
@@ -4780,7 +4785,7 @@ def weightedtau(
     axis: int | tuple[int, ...] | None = None,
     keepdims: bool = False,
     nan_policy: NanPolicy = "propagate",
-) -> SignificanceResult[np.float64 | Any]: ...
+) -> _CorrelationResult[np.float64 | Any]: ...
 
 #
 def pack_TtestResult[FloatOrArrayT: _ScalarOrND[npc.floating]](

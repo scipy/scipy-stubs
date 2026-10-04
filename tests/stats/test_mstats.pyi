@@ -205,10 +205,12 @@ assert_type(spearmanr(_f64_2d, _f64_2d, axis=1).statistic, onp.Array2D[np.float6
 assert_type(spearmanr(_m_f64_nd, _m_f64_nd, axis=0).statistic, onp.Array2D[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(spearmanr(_f32_3d, _f32_3d, axis=0).statistic, onp.Array2D[np.float64] | Any)
 assert_type(spearmanr(_f64_2d, axis=1).statistic, onp.Array2D[np.float64] | Any)
+assert_type(spearmanr(_f64_1d, _f64_1d).correlation, np.float64)
 
 # kentalltau
 assert_type(kendalltau(_py_i_1d, _f16_1d).statistic, np.float64)
 assert_type(kendalltau(_f64_2d, _f32_2d, method="exact").pvalue, np.float64)
+assert_type(kendalltau(_f64_1d, _f64_1d).correlation, np.float64)
 
 # kendalltau_seasonal
 assert_type(kendalltau_seasonal(_f32_2d)["seasonal tau"], onp.MArray1D[np.float64])

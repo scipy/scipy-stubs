@@ -83,6 +83,7 @@ from scipy.stats._stats_py import (
     SignificanceResult,
     SkewtestResult,
     Ttest_indResult,
+    _CorrelationResult,
 )
 
 ###
@@ -1098,50 +1099,52 @@ assert_type(alexandergovern(_f64_3d, _f64_3d, axis=(0, 1), keepdims=True), Alexa
 
 # pointbiserialr
 
-assert_type(pointbiserialr(_py_i_1d, _py_i_1d), SignificanceResult[np.float64])
-assert_type(pointbiserialr(_py_i_1d, _py_f_1d), SignificanceResult[np.float64])
-assert_type(pointbiserialr(_bool_1d, _bool_1d), SignificanceResult[np.float64])
-assert_type(pointbiserialr(_bool_1d, _i64_1d), SignificanceResult[np.float64])
-assert_type(pointbiserialr(_bool_1d, _f64_1d), SignificanceResult[np.float64])
-assert_type(pointbiserialr(_bool_1d, _f32_1d), SignificanceResult[np.float32])
-assert_type(pointbiserialr(_bool_1d, _f16_1d), SignificanceResult[np.float64 | Any])
-assert_type(pointbiserialr(_i16_1d, _i64_1d), SignificanceResult[np.float64])
-assert_type(pointbiserialr(_i16_1d, _f64_1d), SignificanceResult[np.float64])
-assert_type(pointbiserialr(_i16_1d, _f32_1d), SignificanceResult[np.float64 | Any])
+assert_type(pointbiserialr(_py_i_1d, _py_i_1d), _CorrelationResult[np.float64])
+assert_type(pointbiserialr(_py_i_1d, _py_f_1d), _CorrelationResult[np.float64])
+assert_type(pointbiserialr(_bool_1d, _bool_1d), _CorrelationResult[np.float64])
+assert_type(pointbiserialr(_bool_1d, _i64_1d), _CorrelationResult[np.float64])
+assert_type(pointbiserialr(_bool_1d, _f64_1d), _CorrelationResult[np.float64])
+assert_type(pointbiserialr(_bool_1d, _f32_1d), _CorrelationResult[np.float32])
+assert_type(pointbiserialr(_bool_1d, _f16_1d), _CorrelationResult[np.float64 | Any])
+assert_type(pointbiserialr(_i16_1d, _i64_1d), _CorrelationResult[np.float64])
+assert_type(pointbiserialr(_i16_1d, _f64_1d), _CorrelationResult[np.float64])
+assert_type(pointbiserialr(_i16_1d, _f32_1d), _CorrelationResult[np.float64 | Any])
 
-assert_type(pointbiserialr(_py_i_2d, _f64_2d), SignificanceResult[onp.Array1D[np.float64]])
-assert_type(pointbiserialr(_bool_2d, _f64_2d), SignificanceResult[onp.Array1D[np.float64]])
-assert_type(pointbiserialr(_bool_2d, _f64_2d, axis=1), SignificanceResult[onp.Array1D[np.float64]])
-assert_type(pointbiserialr(_bool_2d, _f32_2d), SignificanceResult[onp.Array1D[np.float32]])
-assert_type(pointbiserialr(_bool_2d, _f16_2d), SignificanceResult[onp.Array1D[np.float64 | Any]])
-assert_type(pointbiserialr(_i16_2d, _f32_2d), SignificanceResult[onp.Array1D[np.float64 | Any]])
+assert_type(pointbiserialr(_py_i_2d, _f64_2d), _CorrelationResult[onp.Array1D[np.float64]])
+assert_type(pointbiserialr(_bool_2d, _f64_2d), _CorrelationResult[onp.Array1D[np.float64]])
+assert_type(pointbiserialr(_bool_2d, _f64_2d, axis=1), _CorrelationResult[onp.Array1D[np.float64]])
+assert_type(pointbiserialr(_bool_2d, _f32_2d), _CorrelationResult[onp.Array1D[np.float32]])
+assert_type(pointbiserialr(_bool_2d, _f16_2d), _CorrelationResult[onp.Array1D[np.float64 | Any]])
+assert_type(pointbiserialr(_i16_2d, _f32_2d), _CorrelationResult[onp.Array1D[np.float64 | Any]])
 
-assert_type(pointbiserialr(_bool_3d, _f64_3d), SignificanceResult[onp.Array2D[np.float64]])
-assert_type(pointbiserialr(_bool_3d, _f32_3d), SignificanceResult[onp.Array2D[np.float32]])
-assert_type(pointbiserialr(_i16_3d, _f32_3d), SignificanceResult[onp.Array2D[np.float64 | Any]])
+assert_type(pointbiserialr(_bool_3d, _f64_3d), _CorrelationResult[onp.Array2D[np.float64]])
+assert_type(pointbiserialr(_bool_3d, _f32_3d), _CorrelationResult[onp.Array2D[np.float32]])
+assert_type(pointbiserialr(_i16_3d, _f32_3d), _CorrelationResult[onp.Array2D[np.float64 | Any]])
 
-assert_type(pointbiserialr(_bool_1d, _f64_1d, axis=None), SignificanceResult[np.float64])
-assert_type(pointbiserialr(_bool_2d, _f64_2d, axis=None), SignificanceResult[np.float64])
-assert_type(pointbiserialr(_bool_2d, _f32_2d, axis=None), SignificanceResult[np.float32])
-assert_type(pointbiserialr(_i16_2d, _f32_2d, axis=None), SignificanceResult[np.float64 | Any])
+assert_type(pointbiserialr(_bool_1d, _f64_1d, axis=None), _CorrelationResult[np.float64])
+assert_type(pointbiserialr(_bool_2d, _f64_2d, axis=None), _CorrelationResult[np.float64])
+assert_type(pointbiserialr(_bool_2d, _f32_2d, axis=None), _CorrelationResult[np.float32])
+assert_type(pointbiserialr(_i16_2d, _f32_2d, axis=None), _CorrelationResult[np.float64 | Any])
 
-assert_type(pointbiserialr(_bool_nd, _i64_nd, keepdims=True), SignificanceResult[onp.ArrayND[np.float64]])
-assert_type(pointbiserialr(_bool_nd, _f64_nd, axis=(1, 2), keepdims=True), SignificanceResult[onp.ArrayND[np.float64]])
-assert_type(pointbiserialr(_bool_nd, _f32_nd, keepdims=True), SignificanceResult[onp.ArrayND[np.float32]])
-assert_type(pointbiserialr(_i16_nd, _f32_nd, keepdims=True), SignificanceResult[onp.ArrayND[np.float64 | Any]])
-assert_type(pointbiserialr(_bool_3d, _f64_3d, axis=(1, 2)), SignificanceResult[np.float64 | Any])
+assert_type(pointbiserialr(_bool_nd, _i64_nd, keepdims=True), _CorrelationResult[onp.ArrayND[np.float64]])
+assert_type(pointbiserialr(_bool_nd, _f64_nd, axis=(1, 2), keepdims=True), _CorrelationResult[onp.ArrayND[np.float64]])
+assert_type(pointbiserialr(_bool_nd, _f32_nd, keepdims=True), _CorrelationResult[onp.ArrayND[np.float32]])
+assert_type(pointbiserialr(_i16_nd, _f32_nd, keepdims=True), _CorrelationResult[onp.ArrayND[np.float64 | Any]])
+assert_type(pointbiserialr(_bool_3d, _f64_3d, axis=(1, 2)), _CorrelationResult[np.float64 | Any])
+assert_type(pointbiserialr(_bool_1d, _f64_1d).correlation, np.float64)
 
 # weightedtau
 
-assert_type(weightedtau(_f64_1d, _f64_1d, axis=None), SignificanceResult[np.float64])
-assert_type(weightedtau(_f64_1d, _f64_1d), SignificanceResult[np.float64])
-assert_type(weightedtau(_f64_1d, _f64_1d, rank=None), SignificanceResult[np.float64])
-assert_type(weightedtau(_f64_1d, _f64_1d, rank=False), SignificanceResult[np.float64])
-assert_type(weightedtau(_f64_1d, _f64_1d, rank=[0, 1, 2]), SignificanceResult[np.float64])
-assert_type(weightedtau(_f64_2d, _f64_2d, axis=0), SignificanceResult[onp.Array1D[np.float64]])
-assert_type(weightedtau(_f64_3d, _f64_3d, axis=0), SignificanceResult[onp.Array2D[np.float64]])
-assert_type(weightedtau(_f64_nd, _f64_nd, axis=(1, 2), keepdims=True), SignificanceResult[onp.ArrayND[np.float64]])
-assert_type(weightedtau(_f64_3d, _f64_3d, axis=(1, 2)), SignificanceResult[np.float64 | Any])
+assert_type(weightedtau(_f64_1d, _f64_1d, axis=None), _CorrelationResult[np.float64])
+assert_type(weightedtau(_f64_1d, _f64_1d), _CorrelationResult[np.float64])
+assert_type(weightedtau(_f64_1d, _f64_1d, rank=None), _CorrelationResult[np.float64])
+assert_type(weightedtau(_f64_1d, _f64_1d, rank=False), _CorrelationResult[np.float64])
+assert_type(weightedtau(_f64_1d, _f64_1d, rank=[0, 1, 2]), _CorrelationResult[np.float64])
+assert_type(weightedtau(_f64_2d, _f64_2d, axis=0), _CorrelationResult[onp.Array1D[np.float64]])
+assert_type(weightedtau(_f64_3d, _f64_3d, axis=0), _CorrelationResult[onp.Array2D[np.float64]])
+assert_type(weightedtau(_f64_nd, _f64_nd, axis=(1, 2), keepdims=True), _CorrelationResult[onp.ArrayND[np.float64]])
+assert_type(weightedtau(_f64_3d, _f64_3d, axis=(1, 2)), _CorrelationResult[np.float64 | Any])
+assert_type(weightedtau(_f64_1d, _f64_1d).correlation, np.float64)
 
 # ttest_ind_from_stats
 
