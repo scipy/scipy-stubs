@@ -42,7 +42,6 @@ type _MethodF64 = Literal["Nelder-Mead", "nelder-mead", "COBYQA", "cobyqa"]
 
 type _Ignored = object
 
-_MinimizeResultT_co = TypeVar("_MinimizeResultT_co", bound=_OptimizeResult[Any], covariant=True)
 _MinimizeScalarResultT_co = TypeVar("_MinimizeScalarResultT_co", bound=_OptimizeResult[Any], covariant=True)
 _FunT_co = TypeVar("_FunT_co", bound=onp.ToFloat, default=float, covariant=True)
 
@@ -59,8 +58,8 @@ class _CallbackVectorState(Protocol):
     def __call__(self, xk: _Float1D, state: OptimizeResult[Any], /) -> object: ...
 
 @type_check_only
-class _MinimizeMethodFun(Protocol[_MinimizeResultT_co]):
-    def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args) -> _MinimizeResultT_co: ...
+class _MinimizeMethodFun[ResultT: _OptimizeResult[Any]](Protocol):
+    def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args) -> ResultT: ...
 
 @type_check_only
 class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
