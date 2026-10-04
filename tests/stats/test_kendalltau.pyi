@@ -73,3 +73,5 @@ assert_type(kendalltau(_i8_nd, _i8_nd, axis=0).statistic, onp.ArrayND[np.float64
 assert_type(kendalltau(_f16_nd, _f16_nd, axis=0).statistic, onp.ArrayND[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(kendalltau(_f64_nd, _f64_nd, axis=0).statistic, onp.ArrayND[np.float64] | Any)  # pyrefly:ignore[assert-type]
 assert_type(kendalltau(_f64_3d, _f64_3d, axis=(1, 2)).statistic, onp.ArrayND[np.float64] | Any)
+
+assert_type(kendalltau(_f64_1d, _f64_1d).correlation, np.float64)

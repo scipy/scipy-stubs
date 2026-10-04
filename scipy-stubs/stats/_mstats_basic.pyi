@@ -23,7 +23,7 @@ import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._stats_mstats_common import SiegelslopesResult, TheilslopesResult
-from ._stats_py import KstestResult, LinregressResult, PearsonRResult, SignificanceResult
+from ._stats_py import KstestResult, LinregressResult, PearsonRResult, _CorrelationResult
 from ._typing import Alternative, BaseBunch, NanPolicy
 
 __all__ = [
@@ -325,7 +325,7 @@ def spearmanr(
     axis: None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 @overload  # ?d, ?d, axis=<given>
 def spearmanr(
     x: _ToFloatStrictND,
@@ -335,7 +335,7 @@ def spearmanr(
     axis: SupportsIndex,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[onp.Array2D[np.float64] | Any]: ...
+) -> _CorrelationResult[onp.Array2D[np.float64] | Any]: ...
 @overload  # 1d, 1d, axis=<given>
 def spearmanr(
     x: onp.ToFloatStrict1D,
@@ -345,7 +345,7 @@ def spearmanr(
     axis: SupportsIndex,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 @overload  # 2d, 2d, axis=<given>
 def spearmanr(
     x: onp.ToFloatStrict2D,
@@ -355,7 +355,7 @@ def spearmanr(
     axis: SupportsIndex,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[onp.Array2D[np.float64]]: ...
+) -> _CorrelationResult[onp.Array2D[np.float64]]: ...
 @overload  # fallback
 def spearmanr(
     x: onp.ToFloatND,
@@ -364,7 +364,7 @@ def spearmanr(
     axis: SupportsIndex | None = None,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[onp.Array2D[np.float64] | Any]: ...
+) -> _CorrelationResult[onp.Array2D[np.float64] | Any]: ...
 
 # NOTE: flattens input
 def kendalltau(
@@ -374,7 +374,7 @@ def kendalltau(
     use_missing: bool = False,
     method: _KendallTauMethod = "auto",
     alternative: Alternative = "two-sided",
-) -> SignificanceResult[np.float64]: ...
+) -> _CorrelationResult[np.float64]: ...
 
 #
 def kendalltau_seasonal(x: onp.ToFloatND) -> _KendallTauSeasonalResult: ...

@@ -55,3 +55,5 @@ assert_type(spearmanr(_f64_nd, _f64_nd).statistic, np.float64 | onp.Array2D[np.f
 assert_type(spearmanr(_i8_nd).statistic, np.float64 | onp.Array2D[np.float64])
 assert_type(spearmanr(_f16_nd).statistic, np.float64 | onp.Array2D[np.float64])
 assert_type(spearmanr(_f64_nd).statistic, np.float64 | onp.Array2D[np.float64])
+
+assert_type(spearmanr(_f64_1d, _f64_1d).correlation, np.float64)
