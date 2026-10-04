@@ -1,4 +1,4 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import numpy.typing as npt
@@ -45,3 +45,8 @@ assert_type(least_squares(_f_f64_0d, 0.0, "2-point", (0, 1), "dogbox", loss=_rho
 assert_type(least_squares(_f_f64_0d, 0.0, diff_step=0.1).x, onp.Array1D[np.float64])
 assert_type(least_squares(_f_f64_0d, 0.0, method="dogbox", diff_step=0.1).x, onp.Array1D[np.float64])
 assert_type(least_squares(_f_f64_0d, 0.0, "2-point", (0, 1), "dogbox", diff_step=0.1).x, onp.Array1D[np.float64])
+
+###
+# `jac`
+
+assert_type(least_squares(_f_f64_nd, _f64_nd).jac, onp.Array2D[np.float64] | Any)
