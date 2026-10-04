@@ -18,8 +18,8 @@ type _IntegratorComplex = Literal["vode", "zvode"]
 @type_check_only
 class _IntegratorParams(TypedDict, total=False):
     with_jacobian: bool
-    rtol: float
-    atol: float
+    rtol: float | onp.ToFloat1D
+    atol: float | onp.ToFloat1D
     lband: float | None
     uband: float | None
     order: int
