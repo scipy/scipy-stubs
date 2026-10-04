@@ -216,12 +216,13 @@ assert_type(_rot_nd.reduce(_rot_nd, _rot_nd, return_indices=True), tuple[Rotatio
 
 _aligned = Rotation.align_vectors(_f64_2d, _f64_2d)
 assert_type(_aligned[0], Rotation[tuple[()]])
-assert_type(_aligned[1], float)
+assert_type(_aligned[1], np.float64)
 
 _aligned_sens = Rotation.align_vectors(_f64_2d, _f64_2d, return_sensitivity=True)
 assert_type(_aligned_sens[0], Rotation[tuple[()]])
-assert_type(_aligned_sens[1], float)
+assert_type(_aligned_sens[1], np.float64)
 assert_type(_aligned_sens[2], onp.Array2D[np.float64])
+assert_type(Rotation.align_vectors(_f64_2d, _f64_2d, _f64_1d, True)[1], np.float64)
 
 ###
 # Slerp
