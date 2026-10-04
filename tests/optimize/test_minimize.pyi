@@ -78,7 +78,8 @@ assert_type(minimize(_f_float, _f64_1d, callback=lambda p: _f64_1d_list.append(p
 assert_type(minimize(_f_float, _f64_1d, method="trust-constr", callback=_callback_x_state).fun, float)
 assert_type(minimize(_f_float, _f64_1d, method="CG", options={"maxiter": None}).fun, float)
 
-assert_type(minimize(_f_float, _f64_1d, method=_custmin).fun, float)
+assert_type(minimize(_f_float, _f64_1d, method=_custmin), OptimizeResult)
+assert_type(minimize(_f_float, _f64_1d, (), _custmin), OptimizeResult)
 
 assert_type(minimize(_f_float, _f64_1d, method="trust-constr", hess=_hess_sparse).fun, float)
 assert_type(minimize(_f_float, _f64_1d, method="Newton-CG", hess=_hess_linop).fun, float)
