@@ -17,7 +17,7 @@ __all__ = ["bootstrap", "monte_carlo_test", "permutation_test"]
 type _BootstrapMethod = Literal["percentile", "basic", "bca", "BCa"]
 type _PermutationType = Literal["independent", "samples", "pairings"]
 
-type _Statistic = Callable[..., onp.ToFloat] | Callable[..., onp.ToFloatND]
+type _Statistic = Callable[..., onp.ToFloat | onp.ToFloatND]
 
 type _JustAnyShape = tuple[Never, Never, Never, Never]
 
