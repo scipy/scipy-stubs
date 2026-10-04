@@ -62,7 +62,7 @@ def variation(
 @overload  # nd +float64
 def variation(
     a: onp.ToArrayND[float, _co_integer],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
@@ -80,7 +80,7 @@ def variation(
 @overload  # T:nd +float64, keepdims=True
 def variation[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[_co_integer, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
@@ -89,7 +89,7 @@ def variation[ShapeT: tuple[int, ...]](
 @overload  # nd +float64, keepdims=True
 def variation(
     a: onp.ToArrayND[float, _co_integer],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
@@ -125,7 +125,7 @@ def variation[FloatingT: npc.floating](
 @overload  # nd ~T:floating
 def variation[FloatingT: npc.floating](
     a: onp.ToArrayND[FloatingT, FloatingT],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
@@ -143,7 +143,7 @@ def variation[FloatingT: npc.floating](
 @overload  # T:nd ~T:floating, keepdims=True
 def variation[FloatingT: npc.floating, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[FloatingT, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
@@ -152,7 +152,7 @@ def variation[FloatingT: npc.floating, ShapeT: tuple[int, ...]](
 @overload  # nd ~T:floating, keepdims=True
 def variation[FloatingT: npc.floating](
     a: onp.ToArrayND[FloatingT, FloatingT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     ddof: int = 0,
     *,
@@ -160,5 +160,10 @@ def variation[FloatingT: npc.floating](
 ) -> onp.ArrayND[FloatingT]: ...
 @overload  # fallback
 def variation(
-    a: onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", ddof: int = 0, *, keepdims: bool = False
+    a: onp.ToFloatND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    ddof: int = 0,
+    *,
+    keepdims: bool = False,
 ) -> onp.ArrayND[np.float64 | Any] | Any: ...
