@@ -1,6 +1,6 @@
 # type-tests for `stats/_new_distributions.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -13,6 +13,7 @@ from scipy.stats._new_distributions import StandardNormal
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
+_f64_4d: onp.ArrayND[np.float64, tuple[int, int, int, int]]
 
 ###
 # Normal
@@ -27,21 +28,23 @@ assert_type(_norm_1d_f32.sigma, onp.Array1D[np.float32])
 
 assert_type(Normal(), StandardNormal)  # type:ignore[assert-type]
 assert_type(Normal(mu=0.0, sigma=1.0), Normal[tuple[()], np.float64])
-assert_type(Normal(mu=0.0, sigma=[1.0]), Normal[tuple[int]])
-assert_type(Normal(mu=0.0, sigma=[[1.0]]), Normal[tuple[int, int]])
-assert_type(Normal(mu=0.0, sigma=[[[1.0]]]), Normal[tuple[int, int, int]])
-assert_type(Normal(mu=[0.0], sigma=1.0), Normal[tuple[int]])
-assert_type(Normal(mu=[0.0], sigma=[1.0]), Normal[tuple[int]])
-assert_type(Normal(mu=[0.0], sigma=[[1.0]]), Normal[tuple[int, int]])
-assert_type(Normal(mu=[0.0], sigma=[[[1.0]]]), Normal[tuple[int, int, int]])
-assert_type(Normal(mu=[[0.0]], sigma=1.0), Normal[tuple[int, int]])
-assert_type(Normal(mu=[[0.0]], sigma=[1.0]), Normal[tuple[int, int]])
-assert_type(Normal(mu=[[0.0]], sigma=[[1.0]]), Normal[tuple[int, int]])
-assert_type(Normal(mu=[[0.0]], sigma=[[[1.0]]]), Normal[tuple[int, int, int]])
-assert_type(Normal(mu=[[[0.0]]], sigma=1.0), Normal[tuple[int, int, int]])
-assert_type(Normal(mu=[[[0.0]]], sigma=[1.0]), Normal[tuple[int, int, int]])
-assert_type(Normal(mu=[[[0.0]]], sigma=[[1.0]]), Normal[tuple[int, int, int]])
-assert_type(Normal(mu=[[[0.0]]], sigma=[[[1.0]]]), Normal[tuple[int, int, int]])
+assert_type(Normal(mu=0.0, sigma=[1.0]), Normal[tuple[int], np.float64 | Any])
+assert_type(Normal(mu=0.0, sigma=[[1.0]]), Normal[tuple[int, int], np.float64 | Any])
+assert_type(Normal(mu=0.0, sigma=[[[1.0]]]), Normal[tuple[int, int, int], np.float64 | Any])
+assert_type(Normal(mu=[0.0], sigma=1.0), Normal[tuple[int], np.float64 | Any])
+assert_type(Normal(mu=[0.0], sigma=[1.0]), Normal[tuple[int], np.float64 | Any])
+assert_type(Normal(mu=[0.0], sigma=[[1.0]]), Normal[tuple[int, int], np.float64 | Any])
+assert_type(Normal(mu=[0.0], sigma=[[[1.0]]]), Normal[tuple[int, int, int], np.float64 | Any])
+assert_type(Normal(mu=[[0.0]], sigma=1.0), Normal[tuple[int, int], np.float64 | Any])
+assert_type(Normal(mu=[[0.0]], sigma=[1.0]), Normal[tuple[int, int], np.float64 | Any])
+assert_type(Normal(mu=[[0.0]], sigma=[[1.0]]), Normal[tuple[int, int], np.float64 | Any])
+assert_type(Normal(mu=[[0.0]], sigma=[[[1.0]]]), Normal[tuple[int, int, int], np.float64 | Any])
+assert_type(Normal(mu=[[[0.0]]], sigma=1.0), Normal[tuple[int, int, int], np.float64 | Any])
+assert_type(Normal(mu=[[[0.0]]], sigma=[1.0]), Normal[tuple[int, int, int], np.float64 | Any])
+assert_type(Normal(mu=[[[0.0]]], sigma=[[1.0]]), Normal[tuple[int, int, int], np.float64 | Any])
+assert_type(Normal(mu=[[[0.0]]], sigma=[[[1.0]]]), Normal[tuple[int, int, int], np.float64 | Any])
+assert_type(Normal(mu=_f64_4d, sigma=1.0), Normal[onp.AtLeast1D[Any], np.float64 | Any])
+assert_type(Normal(mu=0.0, sigma=_f64_4d), Normal[onp.AtLeast1D[Any], np.float64 | Any])
 
 ###
 # Logistic
@@ -62,21 +65,23 @@ assert_type(_unif_1d_f32.b, onp.Array1D[np.float32])
 assert_type(_unif_1d_f32.ab, onp.Array1D[np.float32])
 
 assert_type(Uniform(a=0.0, b=1.0), Uniform[tuple[()], np.float64])
-assert_type(Uniform(a=0.0, b=[1.0]), Uniform[tuple[int]])
-assert_type(Uniform(a=0.0, b=[[1.0]]), Uniform[tuple[int, int]])
-assert_type(Uniform(a=0.0, b=[[[1.0]]]), Uniform[tuple[int, int, int]])
-assert_type(Uniform(a=[0.0], b=1.0), Uniform[tuple[int]])
-assert_type(Uniform(a=[0.0], b=[1.0]), Uniform[tuple[int]])
-assert_type(Uniform(a=[0.0], b=[[1.0]]), Uniform[tuple[int, int]])
-assert_type(Uniform(a=[0.0], b=[[[1.0]]]), Uniform[tuple[int, int, int]])
-assert_type(Uniform(a=[[0.0]], b=1.0), Uniform[tuple[int, int]])
-assert_type(Uniform(a=[[0.0]], b=[1.0]), Uniform[tuple[int, int]])
-assert_type(Uniform(a=[[0.0]], b=[[1.0]]), Uniform[tuple[int, int]])
-assert_type(Uniform(a=[[0.0]], b=[[[1.0]]]), Uniform[tuple[int, int, int]])
-assert_type(Uniform(a=[[[0.0]]], b=1.0), Uniform[tuple[int, int, int]])
-assert_type(Uniform(a=[[[0.0]]], b=[1.0]), Uniform[tuple[int, int, int]])
-assert_type(Uniform(a=[[[0.0]]], b=[[1.0]]), Uniform[tuple[int, int, int]])
-assert_type(Uniform(a=[[[0.0]]], b=[[[1.0]]]), Uniform[tuple[int, int, int]])
+assert_type(Uniform(a=0.0, b=[1.0]), Uniform[tuple[int], np.float64 | Any])
+assert_type(Uniform(a=0.0, b=[[1.0]]), Uniform[tuple[int, int], np.float64 | Any])
+assert_type(Uniform(a=0.0, b=[[[1.0]]]), Uniform[tuple[int, int, int], np.float64 | Any])
+assert_type(Uniform(a=[0.0], b=1.0), Uniform[tuple[int], np.float64 | Any])
+assert_type(Uniform(a=[0.0], b=[1.0]), Uniform[tuple[int], np.float64 | Any])
+assert_type(Uniform(a=[0.0], b=[[1.0]]), Uniform[tuple[int, int], np.float64 | Any])
+assert_type(Uniform(a=[0.0], b=[[[1.0]]]), Uniform[tuple[int, int, int], np.float64 | Any])
+assert_type(Uniform(a=[[0.0]], b=1.0), Uniform[tuple[int, int], np.float64 | Any])
+assert_type(Uniform(a=[[0.0]], b=[1.0]), Uniform[tuple[int, int], np.float64 | Any])
+assert_type(Uniform(a=[[0.0]], b=[[1.0]]), Uniform[tuple[int, int], np.float64 | Any])
+assert_type(Uniform(a=[[0.0]], b=[[[1.0]]]), Uniform[tuple[int, int, int], np.float64 | Any])
+assert_type(Uniform(a=[[[0.0]]], b=1.0), Uniform[tuple[int, int, int], np.float64 | Any])
+assert_type(Uniform(a=[[[0.0]]], b=[1.0]), Uniform[tuple[int, int, int], np.float64 | Any])
+assert_type(Uniform(a=[[[0.0]]], b=[[1.0]]), Uniform[tuple[int, int, int], np.float64 | Any])
+assert_type(Uniform(a=[[[0.0]]], b=[[[1.0]]]), Uniform[tuple[int, int, int], np.float64 | Any])
+assert_type(Uniform(a=_f64_4d, b=1.0), Uniform[onp.AtLeast1D[Any], np.float64 | Any])
+assert_type(Uniform(a=0.0, b=_f64_4d), Uniform[onp.AtLeast1D[Any], np.float64 | Any])
 
 ###
 # Binomial
