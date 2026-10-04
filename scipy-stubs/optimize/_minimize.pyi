@@ -37,7 +37,7 @@ type _MethodF64 = Literal["Nelder-Mead", "nelder-mead", "COBYQA", "cobyqa"]
 
 type _Ignored = object
 
-_MinimizeScalarResultT_co = TypeVar("_MinimizeScalarResultT_co", bound=_MinimizeScalarResultBase, covariant=True)
+_MinimizeScalarResultT_co = TypeVar("_MinimizeScalarResultT_co", bound=_OptimizeResult[Any], covariant=True)
 _FunT_co = TypeVar("_FunT_co", bound=onp.ToFloat, default=float, covariant=True)
 
 @type_check_only
@@ -54,12 +54,12 @@ class _CallbackVectorState(Protocol):
 
 @type_check_only
 class _MinimizeMethodFun(Protocol):
-    def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args) -> OptimizeResult[Any]: ...
+    def __call__(self, fun: _Fun1D[onp.ToFloat], x0: onp.ToFloat1D, /, args: _Args) -> _OptimizeResult[Any]: ...
 
 @type_check_only
 class _MinimizeScalarMethodFun(Protocol[_MinimizeScalarResultT_co]):
     def __call__(
-        self, fun: _Fun0D[onp.ToFloat], /, *, args: _Args, bracket: onp.ToFloat1D, bound: onp.ToFloat1D
+        self, fun: _Fun0D[onp.ToFloat], /, *, args: _Args, bracket: onp.ToFloat1D, bounds: onp.ToFloat1D
     ) -> _MinimizeScalarResultT_co: ...
 
 @type_check_only
@@ -373,7 +373,7 @@ def minimize_scalar(
     options: _MinimizeScalarOptionsBounded | None = None,
 ) -> _MinimizeScalarResult: ...
 @overload  # method=<custom>  (positional)
-def minimize_scalar[ResultT: _MinimizeScalarResultBase](
+def minimize_scalar[ResultT: _OptimizeResult[Any]](
     fun: _Fun0D[onp.ToFloat],
     bracket: onp.ToFloat1D | None,
     bounds: onp.ToFloat1D | None,
@@ -383,7 +383,7 @@ def minimize_scalar[ResultT: _MinimizeScalarResultBase](
     options: Mapping[str, object] | None = None,
 ) -> ResultT: ...
 @overload  # method=<custom>  (keyword)
-def minimize_scalar[ResultT: _MinimizeScalarResultBase](
+def minimize_scalar[ResultT: _OptimizeResult[Any]](
     fun: _Fun0D[onp.ToFloat],
     bracket: onp.ToFloat1D | None = None,
     bounds: onp.ToFloat1D | None = None,

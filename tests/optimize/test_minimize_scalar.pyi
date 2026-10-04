@@ -1,12 +1,16 @@
+from collections.abc import Callable
 from typing import assert_type
 
 import numpy as np
 import numpy.polynomial as npp
 import optype.numpy as onp
 
-from scipy.optimize import minimize_scalar
+from scipy.optimize import OptimizeResult, minimize_scalar
 
 def f(x: float, /) -> float: ...
+def _custmin(
+    fun: Callable[..., object], args: tuple[object, ...] = (), bracket: object = None, bounds: object = None
+) -> OptimizeResult: ...
 
 bracket: None
 bounds: tuple[float, float]
@@ -31,3 +35,6 @@ res = minimize_scalar(f, bounds=arr_1d, method="bounded")
 p = npp.Polynomial([3, -2, 1, 1, 0.2])
 res_poly = minimize_scalar(p)
 assert_type(res.success, bool)
+
+assert_type(minimize_scalar(f, bracket, bounds, (), _custmin), OptimizeResult)
+assert_type(minimize_scalar(f, bracket=arr_1d, method=_custmin), OptimizeResult)
