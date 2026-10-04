@@ -978,6 +978,50 @@ def shapiro(
 ) -> ShapiroResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
 
 #
+@overload  # ?d ~f64, ?d|1d ~f64  (workaround)
+def ansari(
+    x: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    y: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float64 | Any]: ...
+@overload  # ?d|1d ~f64, ?d ~f64  (workaround)
+def ansari(
+    x: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    y: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float64 | Any]: ...
+@overload  # ?d ~f32, ?d|1d ~f32  (workaround)
+def ansari(
+    x: onp.ArrayND[np.float32, _JustAnyShape],
+    y: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float32 | Any]: ...
+@overload  # ?d|1d ~f32, ?d ~f32  (workaround)
+def ansari(
+    x: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    y: onp.ArrayND[np.float32, _JustAnyShape],
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float32 | Any]: ...
 @overload  # ~f64, axis=None
 def ansari(
     x: _AsF64 | _AsF64_ND,

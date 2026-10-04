@@ -174,6 +174,10 @@ assert_type(ansari(_f64_nd, _f64_nd, keepdims=True), AnsariResult[onp.ArrayND[np
 assert_type(ansari(_f64_2d, _f64_2d), AnsariResult[np.float64 | onp.ArrayND[np.float64] | Any])
 assert_type(ansari(_py_f_1d, _py_f_1d), AnsariResult[np.float64])
 assert_type(ansari(_f32_1d, _f32_1d), AnsariResult[np.float32])
+assert_type(ansari(_f64_nd, _f64_nd), AnsariResult[np.float64 | Any])
+assert_type(ansari(_f64_1d, _f64_nd), AnsariResult[np.float64 | Any])
+assert_type(ansari(_f32_nd, _f32_nd), AnsariResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
+assert_type(ansari(_f32_1d, _f32_nd), AnsariResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
 
 ###
 # bartlett
