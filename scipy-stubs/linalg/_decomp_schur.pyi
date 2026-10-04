@@ -12,6 +12,7 @@ __all__ = ["rsf2csf", "schur"]
 
 type _Tuple2[T] = tuple[T, T]
 type _Tuple2i[T] = tuple[T, T, int]
+type _Tuple2iND[T] = tuple[T, T, onp.ArrayND[np.int64]]
 
 type _OutputReal = Literal["real", "r"]
 type _OutputComplex = Literal["complex", "c"]
@@ -41,16 +42,26 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.float64, Shape2T]]: ...
-@overload  # Nd f64, sort=<given>
-def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
-    a: onp.ArrayND[_as_f64, Shape2T],
+@overload  # 2d f64, sort=<given>
+def schur(
+    a: onp.Array2D[_as_f64],
     output: _OutputReal = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.float64, Shape2T]]: ...
+) -> _Tuple2i[onp.Array2D[np.float64]]: ...
+@overload  # >=3d f64, sort=<given>
+def schur[ShapeT: onp.AtLeast3D](
+    a: onp.ArrayND[_as_f64, ShapeT],
+    output: _OutputReal = "real",
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iND[onp.ArrayND[np.float64, ShapeT]]: ...
 @overload  # Nd f64, output="complex"
 def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: onp.ArrayND[_as_f64, Shape2T],
@@ -60,16 +71,26 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.complex128, Shape2T]]: ...
-@overload  # Nd f64, output="complex", sort=<given>
-def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
-    a: onp.ArrayND[_as_f64, Shape2T],
+@overload  # 2d f64, output="complex", sort=<given>
+def schur(
+    a: onp.Array2D[_as_f64],
     output: _OutputComplex,
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex128, Shape2T]]: ...
+) -> _Tuple2i[onp.Array2D[np.complex128]]: ...
+@overload  # >=3d f64, output="complex", sort=<given>
+def schur[ShapeT: onp.AtLeast3D](
+    a: onp.ArrayND[_as_f64, ShapeT],
+    output: _OutputComplex,
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iND[onp.ArrayND[np.complex128, ShapeT]]: ...
 @overload  # Nd f32
 def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: onp.ArrayND[_as_f32, Shape2T],
@@ -79,16 +100,26 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.float32, Shape2T]]: ...
-@overload  # Nd f32, sort=<given>
-def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
-    a: onp.ArrayND[_as_f32, Shape2T],
+@overload  # 2d f32, sort=<given>
+def schur(
+    a: onp.Array2D[_as_f32],
     output: _OutputReal = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.float32, Shape2T]]: ...
+) -> _Tuple2i[onp.Array2D[np.float32]]: ...
+@overload  # >=3d f32, sort=<given>
+def schur[ShapeT: onp.AtLeast3D](
+    a: onp.ArrayND[_as_f32, ShapeT],
+    output: _OutputReal = "real",
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iND[onp.ArrayND[np.float32, ShapeT]]: ...
 @overload  # Nd f32, output="complex"
 def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: onp.ArrayND[_as_f32, Shape2T],
@@ -98,16 +129,26 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.complex64, Shape2T]]: ...
-@overload  # Nd f32, output="complex", sort=<given>
-def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
-    a: onp.ArrayND[_as_f32, Shape2T],
+@overload  # 2d f32, output="complex", sort=<given>
+def schur(
+    a: onp.Array2D[_as_f32],
     output: _OutputComplex,
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex64, Shape2T]]: ...
+) -> _Tuple2i[onp.Array2D[np.complex64]]: ...
+@overload  # >=3d f32, output="complex", sort=<given>
+def schur[ShapeT: onp.AtLeast3D](
+    a: onp.ArrayND[_as_f32, ShapeT],
+    output: _OutputComplex,
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iND[onp.ArrayND[np.complex64, ShapeT]]: ...
 @overload  # Nd c128
 def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: onp.ArrayND[_as_c128, Shape2T],
@@ -117,16 +158,26 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.complex128, Shape2T]]: ...
-@overload  # Nd c128, sort=<given>
-def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
-    a: onp.ArrayND[_as_c128, Shape2T],
+@overload  # 2d c128, sort=<given>
+def schur(
+    a: onp.Array2D[_as_c128],
     output: _Output = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex128, Shape2T]]: ...
+) -> _Tuple2i[onp.Array2D[np.complex128]]: ...
+@overload  # >=3d c128, sort=<given>
+def schur[ShapeT: onp.AtLeast3D](
+    a: onp.ArrayND[_as_c128, ShapeT],
+    output: _Output = "real",
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iND[onp.ArrayND[np.complex128, ShapeT]]: ...
 @overload  # Nd c64
 def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     a: onp.ArrayND[np.complex64, Shape2T],
@@ -136,16 +187,26 @@ def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
     sort: None = None,
     check_finite: bool = True,
 ) -> _Tuple2[onp.ArrayND[np.complex64, Shape2T]]: ...
-@overload  # Nd c64, sort=<given>
-def schur[Shape2T: tuple[int, int, *tuple[int, ...]]](
-    a: onp.ArrayND[np.complex64, Shape2T],
+@overload  # 2d c64, sort=<given>
+def schur(
+    a: onp.Array2D[np.complex64],
     output: _Output = "real",
     lwork: int | None = None,
     overwrite_a: bool = False,
     *,
     sort: _Sort,
     check_finite: bool = True,
-) -> _Tuple2i[onp.ArrayND[np.complex64, Shape2T]]: ...
+) -> _Tuple2i[onp.Array2D[np.complex64]]: ...
+@overload  # >=3d c64, sort=<given>
+def schur[ShapeT: onp.AtLeast3D](
+    a: onp.ArrayND[np.complex64, ShapeT],
+    output: _Output = "real",
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iND[onp.ArrayND[np.complex64, ShapeT]]: ...
 @overload  # ?d f64
 def schur(
     a: onp.ToArrayND[float, _as_f64],

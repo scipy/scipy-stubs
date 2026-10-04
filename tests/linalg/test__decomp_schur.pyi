@@ -22,7 +22,10 @@ _c64_2d: onp.Array2D[np.complex64]
 _c128_2d: onp.Array2D[np.complex128]
 _c160_2d: onp.Array2D[np.complex256]
 
+_f32_3d: onp.Array3D[np.float32]
 _f64_3d: onp.Array3D[np.float64]
+_c64_3d: onp.Array3D[np.complex64]
+_c128_3d: onp.Array3D[np.complex128]
 _f64_nd: onp.ArrayND[np.float64]
 
 def _sort(x: complex, /) -> bool: ...
@@ -31,6 +34,7 @@ type _Res2_2D[ScalarT: np.generic] = tuple[onp.Array2D[ScalarT], onp.Array2D[Sca
 type _Res2_3D[ScalarT: np.generic] = tuple[onp.Array3D[ScalarT], onp.Array3D[ScalarT]]
 type _Res2_ND[ScalarT: np.generic] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[ScalarT]]
 type _Res3_2D[ScalarT: np.generic] = tuple[onp.Array2D[ScalarT], onp.Array2D[ScalarT], int]
+type _Res3_3D[ScalarT: np.generic] = tuple[onp.Array3D[ScalarT], onp.Array3D[ScalarT], onp.ArrayND[np.int64]]
 
 ###
 # schur
@@ -92,6 +96,12 @@ assert_type(schur(_c128_2d, sort=_sort), _Res3_2D[np.complex128])
 
 assert_type(schur(_f64_3d), _Res2_3D[np.float64])
 assert_type(schur(_f64_nd), _Res2_ND[np.float64])
+assert_type(schur(_f32_3d, sort="lhp"), _Res3_3D[np.float32])
+assert_type(schur(_f64_3d, sort="lhp"), _Res3_3D[np.float64])
+assert_type(schur(_c64_3d, sort="lhp"), _Res3_3D[np.complex64])
+assert_type(schur(_c128_3d, sort="lhp"), _Res3_3D[np.complex128])
+assert_type(schur(_f32_3d, output="c", sort="lhp"), _Res3_3D[np.complex64])
+assert_type(schur(_f64_3d, output="c", sort="lhp"), _Res3_3D[np.complex128])
 
 ###
 # rsf2csf
