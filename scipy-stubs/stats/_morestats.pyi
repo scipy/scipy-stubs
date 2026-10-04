@@ -164,8 +164,8 @@ class _TestResult(NamedTuple, Generic[_NDT_co]):
 
 @type_check_only
 class _ConfidenceInterval(NamedTuple):
-    statistic: float
-    minmax: tuple[float, float]
+    statistic: np.float64
+    minmax: tuple[np.float64, np.float64]
 
 # represents the e.g. `matplotlib.pyplot` module and a `matplotlib.axes.Axes` object with a `plot` and `text` method
 @type_check_only

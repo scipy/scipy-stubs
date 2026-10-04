@@ -89,6 +89,8 @@ _ax: Axes
 
 assert_type(bayes_mvs(_py_f_1d), tuple[Mean, Variance, Std_dev])
 assert_type(bayes_mvs(_f64_1d), tuple[Mean, Variance, Std_dev])
+assert_type(bayes_mvs(_f64_1d)[0].statistic, np.float64)
+assert_type(bayes_mvs(_f64_1d)[0].minmax, tuple[np.float64, np.float64])
 
 ###
 # mvsdist
