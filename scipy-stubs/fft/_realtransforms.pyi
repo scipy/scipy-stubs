@@ -302,7 +302,7 @@ def idstn(
 def dct[ShapeT: tuple[int, ...]](
     x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -313,7 +313,7 @@ def dct[ShapeT: tuple[int, ...]](
 def dct[ShapeT: tuple[int, ...]](
     x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -324,7 +324,7 @@ def dct[ShapeT: tuple[int, ...]](
 def dct[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
     x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -335,7 +335,7 @@ def dct[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.
 def dct(
     x: onp.SequenceND[float],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -346,7 +346,7 @@ def dct(
 def dct(
     x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -357,7 +357,7 @@ def dct(
 def dct(
     x: onp.ToFloatND,
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -370,7 +370,7 @@ def dct(
 def idct[ShapeT: tuple[int, ...]](
     x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -381,7 +381,7 @@ def idct[ShapeT: tuple[int, ...]](
 def idct[ShapeT: tuple[int, ...]](
     x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -392,7 +392,7 @@ def idct[ShapeT: tuple[int, ...]](
 def idct[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
     x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -403,7 +403,7 @@ def idct[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc
 def idct(
     x: onp.SequenceND[float],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -414,7 +414,7 @@ def idct(
 def idct(
     x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -425,7 +425,7 @@ def idct(
 def idct(
     x: onp.ToFloatND,
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -438,7 +438,7 @@ def idct(
 def dst[ShapeT: tuple[int, ...]](
     x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -449,7 +449,7 @@ def dst[ShapeT: tuple[int, ...]](
 def dst[ShapeT: tuple[int, ...]](
     x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -460,7 +460,7 @@ def dst[ShapeT: tuple[int, ...]](
 def dst[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
     x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -471,7 +471,7 @@ def dst[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.
 def dst(
     x: onp.SequenceND[float],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -482,7 +482,7 @@ def dst(
 def dst(
     x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -493,7 +493,7 @@ def dst(
 def dst(
     x: onp.ToFloatND,
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -506,7 +506,7 @@ def dst(
 def idst[ShapeT: tuple[int, ...]](
     x: onp.CanArrayND[npc.integer, ShapeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -517,7 +517,7 @@ def idst[ShapeT: tuple[int, ...]](
 def idst[ShapeT: tuple[int, ...]](
     x: onp.CanArrayND[np.float16, ShapeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -528,7 +528,7 @@ def idst[ShapeT: tuple[int, ...]](
 def idst[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc.floating80 | npc.complexfloating]](
     x: onp.CanArray[ShapeT, DTypeT],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -539,7 +539,7 @@ def idst[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.float32 | np.float64 | npc
 def idst(
     x: onp.SequenceND[float],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -550,7 +550,7 @@ def idst(
 def idst(
     x: onp.SequenceND[list[complex]] | list[complex],
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,
@@ -561,7 +561,7 @@ def idst(
 def idst(
     x: onp.ToFloatND,
     type: DCTType = 2,
-    n: int | None = None,
+    n: onp.ToJustInt | None = None,
     axis: SupportsIndex = -1,
     norm: NormalizationMode | None = None,
     overwrite_x: bool = False,

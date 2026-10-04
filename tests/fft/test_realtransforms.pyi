@@ -26,6 +26,8 @@ from .test_basic import (
 )
 from scipy.fft import dct, dctn, dst, dstn, idct, idctn, idst, idstn
 
+_i64: np.int64
+
 ###
 # NOTE: the signatures are practically equivalent
 
@@ -51,6 +53,7 @@ assert_subtype[onp.Array2D[np.longdouble]](dct(f80_2d))
 assert_subtype[onp.Array2D[np.complex64]](dct(c64_2d))
 assert_subtype[onp.Array2D[np.complex128]](dct(c128_2d))
 assert_subtype[onp.Array2D[np.clongdouble]](dct(c160_2d))
+assert_subtype[onp.Array1D[np.float64]](dct(f64_1d, n=_i64))
 # idct
 assert_subtype[onp.Array1D[np.float64]](idct(int_1d))
 assert_subtype[onp.Array1D[np.float64]](idct(float_1d))
@@ -73,6 +76,7 @@ assert_subtype[onp.Array2D[np.longdouble]](idct(f80_2d))
 assert_subtype[onp.Array2D[np.complex64]](idct(c64_2d))
 assert_subtype[onp.Array2D[np.complex128]](idct(c128_2d))
 assert_subtype[onp.Array2D[np.clongdouble]](idct(c160_2d))
+assert_subtype[onp.Array1D[np.float64]](idct(f64_1d, n=_i64))
 
 # dst
 assert_subtype[onp.Array1D[np.float64]](dst(int_1d))
@@ -96,6 +100,7 @@ assert_subtype[onp.Array2D[np.longdouble]](dst(f80_2d))
 assert_subtype[onp.Array2D[np.complex64]](dst(c64_2d))
 assert_subtype[onp.Array2D[np.complex128]](dst(c128_2d))
 assert_subtype[onp.Array2D[np.clongdouble]](dst(c160_2d))
+assert_subtype[onp.Array1D[np.float64]](dst(f64_1d, n=_i64))
 # idst
 assert_subtype[onp.Array1D[np.float64]](idst(int_1d))
 assert_subtype[onp.Array1D[np.float64]](idst(float_1d))
@@ -118,6 +123,7 @@ assert_subtype[onp.Array2D[np.longdouble]](idst(f80_2d))
 assert_subtype[onp.Array2D[np.complex64]](idst(c64_2d))
 assert_subtype[onp.Array2D[np.complex128]](idst(c128_2d))
 assert_subtype[onp.Array2D[np.clongdouble]](idst(c160_2d))
+assert_subtype[onp.Array1D[np.float64]](idst(f64_1d, n=_i64))
 
 # dctn
 assert_subtype[onp.Array1D[np.float64]](dctn(int_1d))
