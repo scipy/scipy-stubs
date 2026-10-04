@@ -101,7 +101,7 @@ assert_type(convolve1d(c128_nd, weights_1d), onp.ArrayND[np.complex128])
 # convolve
 
 assert_type(convolve(f64_2d, weights_nd), onp.Array2D[np.float64])
-assert_type(convolve(f32_2d, weights_nd), onp.Array2D[np.float32])
+assert_type(convolve(f32_2d, weights_nd, axes=_axes), onp.Array2D[np.float32])
 assert_type(convolve(int_2d, weights_nd), onp.ArrayND[np.intp])
 assert_type(convolve(float_2d, weights_nd), onp.ArrayND[np.float64])
 assert_type(convolve(complex_2d, weights_nd), onp.ArrayND[np.complex128])
@@ -140,7 +140,7 @@ assert_type(sobel(c128_nd), onp.ArrayND[np.complex128])
 # laplace
 
 assert_type(laplace(f64_2d), onp.Array2D[np.float64])
-assert_type(laplace(f32_2d), onp.Array2D[np.float32])
+assert_type(laplace(f32_2d, axes=_axes), onp.Array2D[np.float32])
 assert_type(laplace(int_2d), onp.ArrayND[np.intp])
 assert_type(laplace(float_2d), onp.ArrayND[np.float64])
 assert_type(laplace(complex_2d), onp.ArrayND[np.complex128])
@@ -151,7 +151,7 @@ assert_type(laplace(c128_nd), onp.ArrayND[np.complex128])
 # gaussian_laplace
 
 assert_type(gaussian_laplace(f64_2d, sigma=1), onp.Array2D[np.float64])
-assert_type(gaussian_laplace(f32_2d, sigma=1), onp.Array2D[np.float32])
+assert_type(gaussian_laplace(f32_2d, sigma=1, axes=_axes), onp.Array2D[np.float32])
 assert_type(gaussian_laplace(int_2d, sigma=1), onp.ArrayND[np.intp])
 assert_type(gaussian_laplace(float_2d, sigma=1), onp.ArrayND[np.float64])
 assert_type(gaussian_laplace(complex_2d, sigma=1), onp.ArrayND[np.complex128])
@@ -162,7 +162,7 @@ assert_type(gaussian_laplace(c128_nd, sigma=1), onp.ArrayND[np.complex128])
 # gaussian_gradient_magnitude
 
 assert_type(gaussian_gradient_magnitude(f64_2d, sigma=1), onp.Array2D[np.float64])
-assert_type(gaussian_gradient_magnitude(f32_2d, sigma=1), onp.Array2D[np.float32])
+assert_type(gaussian_gradient_magnitude(f32_2d, sigma=1, axes=_axes), onp.Array2D[np.float32])
 assert_type(gaussian_gradient_magnitude(int_2d, sigma=1), onp.ArrayND[np.intp])
 assert_type(gaussian_gradient_magnitude(float_2d, sigma=1), onp.ArrayND[np.float64])
 assert_type(gaussian_gradient_magnitude(complex_2d, sigma=1), onp.ArrayND[np.complex128])
@@ -307,14 +307,14 @@ def _vf_func(arr: onp.Array1D[Any]) -> np.float64: ...
 ###
 # generic_laplace
 
-assert_type(generic_laplace(f64_2d, _deriv), onp.Array2D[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
+assert_type(generic_laplace(f64_2d, _deriv, axes=_axes), onp.Array2D[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
 assert_type(generic_laplace(float_2d, _deriv), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
 assert_type(generic_laplace(complex_2d, _deriv), onp.ArrayND[Any])
 
 ###
 # generic_gradient_magnitude
 
-assert_type(generic_gradient_magnitude(f64_2d, _deriv), onp.Array2D[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
+assert_type(generic_gradient_magnitude(f64_2d, _deriv, axes=_axes), onp.Array2D[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
 assert_type(generic_gradient_magnitude(float_2d, _deriv), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
 assert_type(generic_gradient_magnitude(complex_2d, _deriv), onp.ArrayND[Any])
 

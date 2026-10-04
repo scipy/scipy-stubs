@@ -294,7 +294,7 @@ def convolve[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
     cval: onp.ToComplex = 0.0,
     origin: _Ints = 0,
     *,
-    axes: ShapeT | None = None,
+    axes: tuple[int, ...] | None = None,
 ) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def convolve(
@@ -460,7 +460,7 @@ def laplace[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
-    axes: ShapeT | None = None,
+    axes: tuple[int, ...] | None = None,
 ) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def laplace(
@@ -517,7 +517,7 @@ def gaussian_laplace[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.num
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
-    axes: ShapeT | None = None,
+    axes: tuple[int, ...] | None = None,
     **kwargs: Unpack[_GaussianKwargs],
 ) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
@@ -587,7 +587,7 @@ def generic_laplace[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.numb
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, Any] | None = None,
     *,
-    axes: ShapeT | None = None,
+    axes: tuple[int, ...] | None = None,
 ) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def generic_laplace(
@@ -659,7 +659,7 @@ def gaussian_gradient_magnitude[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.boo
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
     *,
-    axes: ShapeT | None = None,
+    axes: tuple[int, ...] | None = None,
     **kwargs: Unpack[_GaussianKwargs],
 ) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
@@ -729,7 +729,7 @@ def generic_gradient_magnitude[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool
     extra_arguments: tuple[object, ...] = (),
     extra_keywords: dict[str, Any] | None = None,
     *,
-    axes: ShapeT | None = None,
+    axes: tuple[int, ...] | None = None,
 ) -> np.ndarray[ShapeT, DTypeT]: ...
 @overload
 def generic_gradient_magnitude(
