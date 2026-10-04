@@ -1,4 +1,4 @@
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from typing import Literal, assert_type, overload
 
 import numpy as np
@@ -18,6 +18,9 @@ def _callback_x(x: onp.ArrayND[np.float64]) -> bool: ...
 def _callback_x_state(x: onp.ArrayND[np.float64], state: OptimizeResult) -> bool: ...
 def _g_1d(x: onp.Array1D[np.float64]) -> onp.Array1D[np.float64]: ...
 def _dg_2d(x: onp.Array1D[np.float64]) -> onp.Array2D[np.float64]: ...
+def _custmin(
+    fun: Callable[..., object], x0: onp.ToFloat1D, args: tuple[object, ...] = (), **options: object
+) -> OptimizeResult: ...
 
 #
 @overload
@@ -73,3 +76,5 @@ assert_type(minimize(_f_float, _f64_1d, callback=_callback_x).fun, float)
 assert_type(minimize(_f_float, _f64_1d, callback=lambda p: _f64_1d_list.append(p.copy())).fun, float)
 assert_type(minimize(_f_float, _f64_1d, method="trust-constr", callback=_callback_x_state).fun, float)
 assert_type(minimize(_f_float, _f64_1d, method="CG", options={"maxiter": None}).fun, float)
+
+assert_type(minimize(_f_float, _f64_1d, method=_custmin).fun, float)
