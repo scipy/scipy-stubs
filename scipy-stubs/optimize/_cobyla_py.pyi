@@ -9,10 +9,14 @@ __all__ = ["fmin_cobyla"]
 
 ###
 
+type _Constraint = Callable[[onp.Array1D[np.float64]], onp.ToFloat | onp.ToFloat1D]
+
+###
+
 def fmin_cobyla(
     func: Callable[Concatenate[onp.Array1D[np.float64], ...], onp.ToFloat],
     x0: onp.ToArray1D,
-    cons: Sequence[Callable[[onp.Array1D[np.float64]], onp.ToFloat | onp.ToFloat1D]],
+    cons: _Constraint | Sequence[_Constraint],
     args: tuple[object, ...] = (),
     consargs: tuple[object, ...] | None = None,
     rhobeg: onp.ToFloat = 1.0,
