@@ -310,6 +310,7 @@ type _CoComplex128ND = onp.ArrayND[_CoComplex128]
 type _SubFloat = np.float16 | _CoInt  # anything "below" float32 | float64 that isn't float32 | float64
 type _ToSubFloat = op.JustFloat | int | _SubFloat  # does not overlap with float32 | float64
 type _ToSubFloatND = _ToND[_SubFloat, op.JustFloat | int]
+type _ToSubFloat_D = _ToSubFloat | _ToSubFloatND
 
 # `_SubFloat` split by the loop it selects: `f->f` accepts everything that's safely castable to float32, and the wider
 # integers force `d->d`. Note that `bool` picks the `f->f` loop, but `int` does not (it's coerced to `intp` first).
@@ -876,7 +877,9 @@ class _UFunc11fc(_UFunc11[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
     def types(self, /) -> list[L["f->f", "d->d", "F->F", "D->D"]]: ...
     #
     @overload
-    def __call__(self, x: op.JustFloat | op.JustInt, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.float64: ...
+    def __call__(self, x: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.float64: ...
+    @overload
+    def __call__(self, x: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
     @overload
     def __call__(self, x: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw11fc]) -> _Float: ...
     @overload
@@ -906,6 +909,10 @@ class _UFunc12f(_UFunc12[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     @override
     def types(self, /) -> list[L["f->ff", "d->dd"]]: ...
     #
+    @overload
+    def __call__(self, x: _ToSubFloat64, /, out: _None2 = ..., **kw: Unpack[_KwBase]) -> _Tuple2[np.float64]: ...
+    @overload
+    def __call__(self, x: _ToSubFloat64ND, /, out: _None2 = ..., **kw: Unpack[_KwBase]) -> _Tuple2[_Float64ND]: ...
     @overload
     def __call__(self, x: _ToSubFloat, /, out: _None2 = ..., **kw: Unpack[_Kw12f]) -> _Tuple2[_Float]: ...
     @overload
@@ -957,6 +964,10 @@ class _UFunc12fc(_UFunc12[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
     def types(self, /) -> list[L["f->ff", "d->dd", "F->FF", "D->DD"]]: ...
     #
     @overload
+    def __call__(self, x: _ToSubFloat64, /, out: _None2 = ..., **kw: Unpack[_KwBase]) -> _Tuple2[np.float64]: ...
+    @overload
+    def __call__(self, x: _ToSubFloat64ND, /, out: _None2 = ..., **kw: Unpack[_KwBase]) -> _Tuple2[_Float64ND]: ...
+    @overload
     def __call__(self, x: _ToSubFloat, /, out: _None2 = ..., **kw: Unpack[_Kw12fc]) -> _Tuple2[_Float]: ...
     @overload
     def __call__(self, x: _ToSubComplex, /, out: _None2 = ..., **kw: Unpack[_Kw12fc]) -> _Tuple2[_Inexact]: ...
@@ -986,6 +997,10 @@ class _UFunc14f(_UFunc14[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     @override
     def types(self, /) -> list[L["f->ffff", "d->dddd"]]: ...
     #
+    @overload
+    def __call__(self, x: _ToSubFloat64, /, out: _None4 = ..., **kw: Unpack[_KwBase]) -> _Tuple4[np.float64]: ...
+    @overload
+    def __call__(self, x: _ToSubFloat64ND, /, out: _None4 = ..., **kw: Unpack[_KwBase]) -> _Tuple4[_Float64ND]: ...
     @overload
     def __call__(self, x: _ToSubFloat, /, out: _None4 = ..., **kw: Unpack[_Kw14f]) -> _Tuple4[_Float]: ...
     @overload
@@ -1036,6 +1051,10 @@ class _UFunc14fc(_UFunc14[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identit
     @override
     def types(self, /) -> list[L["f->ffff", "d->dddd", "F->FFFF", "D->DDDD"]]: ...
     #
+    @overload
+    def __call__(self, x: _ToSubFloat64, /, out: _None4 = ..., **kw: Unpack[_KwBase]) -> _Tuple4[np.float64]: ...
+    @overload
+    def __call__(self, x: _ToSubFloat64ND, /, out: _None4 = ..., **kw: Unpack[_KwBase]) -> _Tuple4[_Float64ND]: ...
     @overload
     def __call__(self, x: _ToSubFloat, /, out: _None4 = ..., **kw: Unpack[_Kw14fc]) -> _Tuple4[_Float]: ...
     @overload
@@ -1100,13 +1119,9 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     @overload
     def __call__(self, a: _ToSubFloat64, b: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.float64: ...
     @overload
-    def __call__(
-        self, a: _ToSubFloat64ND, b: _ToSubFloat | _ToSubFloatND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
-    ) -> _Float64ND: ...
+    def __call__(self, a: _ToSubFloat64ND, b: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
     @overload
-    def __call__(
-        self, a: _ToSubFloat | _ToSubFloatND, b: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
-    ) -> _Float64ND: ...
+    def __call__(self, a: _ToSubFloat_D, b: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
     @overload
     def __call__(self, a: _ToSubFloat, b: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw21f]) -> _Float: ...
     @overload
@@ -1232,6 +1247,12 @@ class _UFunc21ldf(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @override
     def types(self, /) -> list[L["ld->d", "ff->f", "dd->d"]]: ...
     #
+    @overload
+    def __call__(self, a: _ToSubFloat64, b: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.float64: ...
+    @overload
+    def __call__(self, a: _ToSubFloat64ND, b: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
+    def __call__(self, a: _ToSubFloat_D, b: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
     @overload
     def __call__(self, a: onp.ToInt, b: onp.ToFloat64, /, out: _Out1[None] = None, **kw: Unpack[_Kw21ldf]) -> np.float64: ...
     @overload
@@ -1423,6 +1444,12 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     def types(self, /) -> list[L["ff->f", "dd->d", "fF->F", "dD->D"]]: ...
     #
     @overload
+    def __call__(self, a: _ToSubFloat64, b: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.float64: ...
+    @overload
+    def __call__(self, a: _ToSubFloat64ND, b: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
+    def __call__(self, a: _ToSubFloat_D, b: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
     def __call__(self, a: onp.ToFloat64, b: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw21fc1]) -> _Float: ...
     @overload
     def __call__(
@@ -1578,6 +1605,12 @@ class _UFunc21ldfc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Iden
     @override
     def types(self, /) -> list[L["ld->d", "ff->f", "fF->F", "dd->d", "dD->D"]]: ...
     #
+    @overload
+    def __call__(self, a: _ToSubFloat64, b: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.float64: ...
+    @overload
+    def __call__(self, a: _ToSubFloat64ND, b: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
+    def __call__(self, a: _ToSubFloat_D, b: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
     @overload
     def __call__(self, a: onp.ToInt, b: onp.ToFloat64, /, out: _Out1[None] = None, **kw: Unpack[_Kw21fc1]) -> np.float64: ...
     @overload
@@ -1739,6 +1772,12 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @override
     def types(self, /) -> list[L["ff->f", "dd->d", "FF->F", "DD->D"]]: ...
     #
+    @overload
+    def __call__(self, a: _ToSubFloat64, b: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.float64: ...
+    @overload
+    def __call__(self, a: _ToSubFloat64ND, b: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
+    def __call__(self, a: _ToSubFloat_D, b: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
     @overload
     def __call__(self, a: _ToSubFloat, b: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw21fc2]) -> _Float: ...
     @overload
@@ -1939,6 +1978,18 @@ class _UFunc22f(_UFunc22[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def types(self, /) -> list[L["ff->ff", "dd->dd"]]: ...
     #
     @overload
+    def __call__(
+        self, v: _ToSubFloat64, x: _ToSubFloat64, /, out: _None2 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple2[np.float64]: ...
+    @overload
+    def __call__(
+        self, v: _ToSubFloat64ND, x: _ToSubFloat_D, /, out: _None2 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
+        self, v: _ToSubFloat_D, x: _ToSubFloat64ND, /, out: _None2 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
     def __call__(self, v: _ToSubFloat, x: _ToSubFloat, /, out: _None2 = ..., **kw: Unpack[_Kw22f]) -> _Tuple2[_Float]: ...
     @overload
     def __call__[ST: _Float_D](self, v: _ToFloat32, x: ST, /, out: _None2 = ..., **kw: Unpack[_KwBase]) -> _Tuple2[ST]: ...
@@ -1995,6 +2046,18 @@ class _UFunc24f(_UFunc24[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def types(self, /) -> list[L["ff->ffff", "dd->dddd"]]: ...
     #
     @overload
+    def __call__(
+        self, u: _ToSubFloat64, m: _ToSubFloat64, /, out: _None4 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple4[np.float64]: ...
+    @overload
+    def __call__(
+        self, u: _ToSubFloat64ND, m: _ToSubFloat_D, /, out: _None4 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple4[_Float64ND]: ...
+    @overload
+    def __call__(
+        self, u: _ToSubFloat_D, m: _ToSubFloat64ND, /, out: _None4 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple4[_Float64ND]: ...
+    @overload
     def __call__(self, u: _ToSubFloat, m: _ToSubFloat, /, out: _None4 = ..., **kw: Unpack[_Kw24f]) -> _Tuple4[_Float]: ...
     @overload
     def __call__[ST: _Float_D](self, u: ST | _ToFloat32, m: ST, /, out: _None4 = ..., **kw: Unpack[_KwBase]) -> _Tuple4[ST]: ...
@@ -2045,6 +2108,22 @@ class _UFunc31f(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     #
     @overload
     def __call__(
+        self, a: _ToSubFloat64, b: _ToSubFloat64, x: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.float64: ...
+    @overload
+    def __call__(
+        self, a: _ToSubFloat64ND, b: _ToSubFloat_D, x: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self, a: _ToSubFloat_D, b: _ToSubFloat64ND, x: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self, a: _ToSubFloat_D, b: _ToSubFloat_D, x: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
         self, a: _ToSubFloat, b: _ToSubFloat, x: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw31f]
     ) -> _Float: ...
     @overload
@@ -2087,6 +2166,22 @@ class _UFunc31ldf(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @override
     def types(self, /) -> list[L["lld->d", "fff->f", "ddd->d"]]: ...
     #
+    @overload
+    def __call__(
+        self, a: _ToSubFloat64, b: _ToSubFloat64, x: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.float64: ...
+    @overload
+    def __call__(
+        self, a: _ToSubFloat64ND, b: _ToSubFloat_D, x: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self, a: _ToSubFloat_D, b: _ToSubFloat64ND, x: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self, a: _ToSubFloat_D, b: _ToSubFloat_D, x: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
     @overload
     def __call__(
         self, a: onp.ToInt, b: onp.ToInt, x: onp.ToFloat64, /, out: _Out1[None] = None, **kw: Unpack[_Kw31f]
@@ -2147,6 +2242,22 @@ class _UFunc31fc1(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @override
     def types(self, /) -> list[L["fff->f", "ffF->F", "ddd->d", "ddD->D"]]: ...
     #
+    @overload
+    def __call__(
+        self, n: _ToSubFloat64, a: _ToSubFloat64, x: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.float64: ...
+    @overload
+    def __call__(
+        self, n: _ToSubFloat64ND, a: _ToSubFloat_D, x: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self, n: _ToSubFloat_D, a: _ToSubFloat64ND, x: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self, n: _ToSubFloat_D, a: _ToSubFloat_D, x: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
     @overload
     def __call__(
         self, n: _ToSubFloat, a: _ToSubFloat, x: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw31fc1]
@@ -2227,6 +2338,22 @@ class _UFunc31ldfc1(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Iden
     @override
     def types(self, /) -> list[L["ldd->d", "fff->f", "ffF->F", "ddd->d", "ddD->D"]]: ...
     #
+    @overload
+    def __call__(
+        self, n: _ToSubFloat64, a: _ToSubFloat64, x: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.float64: ...
+    @overload
+    def __call__(
+        self, n: _ToSubFloat64ND, a: _ToSubFloat_D, x: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self, n: _ToSubFloat_D, a: _ToSubFloat64ND, x: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self, n: _ToSubFloat_D, a: _ToSubFloat_D, x: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
     @overload
     def __call__(
         self, n: onp.ToInt, a: onp.ToFloat64, x: onp.ToFloat64, /, out: _Out1[None] = None, **kw: Unpack[_Kw31fc1]
@@ -2325,6 +2452,22 @@ class _UFunc31fc3(_UFunc31[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     #
     @overload
     def __call__(
+        self, x: _ToSubFloat64, y: _ToSubFloat64, z: _ToSubFloat64, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> np.float64: ...
+    @overload
+    def __call__(
+        self, x: _ToSubFloat64ND, y: _ToSubFloat_D, z: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self, x: _ToSubFloat_D, y: _ToSubFloat64ND, z: _ToSubFloat_D, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self, x: _ToSubFloat_D, y: _ToSubFloat_D, z: _ToSubFloat64ND, /, out: _Out1[None] = None, **kw: Unpack[_KwBase]
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
         self, x: _ToSubFloat, y: _ToSubFloat, z: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw31fc3]
     ) -> _Float: ...
     @overload
@@ -2384,6 +2527,22 @@ class _UFunc32f(_UFunc32[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     #
     @overload
     def __call__(
+        self, m: _ToSubFloat64, q: _ToSubFloat64, x: _ToSubFloat64, /, out: _None2 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple2[np.float64]: ...
+    @overload
+    def __call__(
+        self, m: _ToSubFloat64ND, q: _ToSubFloat_D, x: _ToSubFloat_D, /, out: _None2 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
+        self, m: _ToSubFloat_D, q: _ToSubFloat64ND, x: _ToSubFloat_D, /, out: _None2 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
+        self, m: _ToSubFloat_D, q: _ToSubFloat_D, x: _ToSubFloat64ND, /, out: _None2 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
         self, m: _ToSubFloat, q: _ToSubFloat, x: _ToSubFloat, /, out: _None2 = ..., **kw: Unpack[_Kw32f]
     ) -> _Tuple2[_Float]: ...
     @overload
@@ -2429,6 +2588,61 @@ class _UFunc41f(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     @override
     def types(self, /) -> list[L["ffff->f", "dddd->d"]]: ...
     #
+    @overload
+    def __call__(
+        self,
+        dfn: _ToSubFloat64,
+        dfd: _ToSubFloat64,
+        nc: _ToSubFloat64,
+        f: _ToSubFloat64,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.float64: ...
+    @overload
+    def __call__(
+        self,
+        dfn: _ToSubFloat64ND,
+        dfd: _ToSubFloat_D,
+        nc: _ToSubFloat_D,
+        f: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        dfn: _ToSubFloat_D,
+        dfd: _ToSubFloat64ND,
+        nc: _ToSubFloat_D,
+        f: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        dfn: _ToSubFloat_D,
+        dfd: _ToSubFloat_D,
+        nc: _ToSubFloat64ND,
+        f: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        dfn: _ToSubFloat_D,
+        dfd: _ToSubFloat_D,
+        nc: _ToSubFloat_D,
+        f: _ToSubFloat64ND,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
     @overload
     def __call__(
         self,
@@ -2551,6 +2765,61 @@ class _UFunc41fc1(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @override
     def types(self, /) -> list[L["ffff->f", "dddd->d", "fffF->F", "dddD->D"]]: ...
     #
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat64,
+        a: _ToSubFloat64,
+        b: _ToSubFloat64,
+        x: _ToSubFloat64,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.float64: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat64ND,
+        a: _ToSubFloat_D,
+        b: _ToSubFloat_D,
+        x: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat_D,
+        a: _ToSubFloat64ND,
+        b: _ToSubFloat_D,
+        x: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat_D,
+        a: _ToSubFloat_D,
+        b: _ToSubFloat64ND,
+        x: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat_D,
+        a: _ToSubFloat_D,
+        b: _ToSubFloat_D,
+        x: _ToSubFloat64ND,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
     @overload
     def __call__(
         self, n: _ToSubFloat, a: _ToSubFloat, b: _ToSubFloat, x: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw41fc1]
@@ -2745,6 +3014,61 @@ class _UFunc41ldfc1(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Iden
     @override
     def types(self, /) -> list[L["lddd->d", "ffff->f", "fffF->F", "dddd->d", "dddD->D"]]: ...
     #
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat64,
+        a: _ToSubFloat64,
+        b: _ToSubFloat64,
+        x: _ToSubFloat64,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.float64: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat64ND,
+        a: _ToSubFloat_D,
+        b: _ToSubFloat_D,
+        x: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat_D,
+        a: _ToSubFloat64ND,
+        b: _ToSubFloat_D,
+        x: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat_D,
+        a: _ToSubFloat_D,
+        b: _ToSubFloat64ND,
+        x: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        n: _ToSubFloat_D,
+        a: _ToSubFloat_D,
+        b: _ToSubFloat_D,
+        x: _ToSubFloat64ND,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
     @overload
     def __call__(
         self,
@@ -2996,6 +3320,61 @@ class _UFunc41fc4(_UFunc41[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     #
     @overload
     def __call__(
+        self,
+        x: _ToSubFloat64,
+        y: _ToSubFloat64,
+        z: _ToSubFloat64,
+        p: _ToSubFloat64,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> np.float64: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToSubFloat64ND,
+        y: _ToSubFloat_D,
+        z: _ToSubFloat_D,
+        p: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToSubFloat_D,
+        y: _ToSubFloat64ND,
+        z: _ToSubFloat_D,
+        p: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToSubFloat_D,
+        y: _ToSubFloat_D,
+        z: _ToSubFloat64ND,
+        p: _ToSubFloat_D,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
+        self,
+        x: _ToSubFloat_D,
+        y: _ToSubFloat_D,
+        z: _ToSubFloat_D,
+        p: _ToSubFloat64ND,
+        /,
+        out: _Out1[None] = None,
+        **kw: Unpack[_KwBase],
+    ) -> _Float64ND: ...
+    @overload
+    def __call__(
         self, x: _ToSubFloat, y: _ToSubFloat, z: _ToSubFloat, p: _ToSubFloat, /, out: _Out1[None] = None, **kw: Unpack[_Kw41fc4]
     ) -> _Float: ...
     @overload
@@ -3165,6 +3544,54 @@ class _UFunc42f(_UFunc42[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     #
     @overload
     def __call__(
+        self, m: _ToSubFloat64, n: _ToSubFloat64, c: _ToSubFloat64, x: _ToSubFloat64, /, out: _None2 = ..., **kw: Unpack[_KwBase]
+    ) -> _Tuple2[np.float64]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat64ND,
+        n: _ToSubFloat_D,
+        c: _ToSubFloat_D,
+        x: _ToSubFloat_D,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_KwBase],
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat_D,
+        n: _ToSubFloat64ND,
+        c: _ToSubFloat_D,
+        x: _ToSubFloat_D,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_KwBase],
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat_D,
+        n: _ToSubFloat_D,
+        c: _ToSubFloat64ND,
+        x: _ToSubFloat_D,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_KwBase],
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat_D,
+        n: _ToSubFloat_D,
+        c: _ToSubFloat_D,
+        x: _ToSubFloat64ND,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_KwBase],
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
         self, m: _ToSubFloat, n: _ToSubFloat, c: _ToSubFloat, x: _ToSubFloat, /, out: _None2 = ..., **kw: Unpack[_Kw42f]
     ) -> _Tuple2[_Float]: ...
     @overload
@@ -3261,6 +3688,78 @@ class _UFunc52f(_UFunc52[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     @override
     def types(self, /) -> list[L["fffff->ff", "ddddd->dd"]]: ...
     #
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat64,
+        n: _ToSubFloat64,
+        c: _ToSubFloat64,
+        cv: _ToSubFloat64,
+        x: _ToSubFloat64,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_KwBase],
+    ) -> _Tuple2[np.float64]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat64ND,
+        n: _ToSubFloat_D,
+        c: _ToSubFloat_D,
+        cv: _ToSubFloat_D,
+        x: _ToSubFloat_D,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_KwBase],
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat_D,
+        n: _ToSubFloat64ND,
+        c: _ToSubFloat_D,
+        cv: _ToSubFloat_D,
+        x: _ToSubFloat_D,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_KwBase],
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat_D,
+        n: _ToSubFloat_D,
+        c: _ToSubFloat64ND,
+        cv: _ToSubFloat_D,
+        x: _ToSubFloat_D,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_KwBase],
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat_D,
+        n: _ToSubFloat_D,
+        c: _ToSubFloat_D,
+        cv: _ToSubFloat64ND,
+        x: _ToSubFloat_D,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_KwBase],
+    ) -> _Tuple2[_Float64ND]: ...
+    @overload
+    def __call__(
+        self,
+        m: _ToSubFloat_D,
+        n: _ToSubFloat_D,
+        c: _ToSubFloat_D,
+        cv: _ToSubFloat_D,
+        x: _ToSubFloat64ND,
+        /,
+        out: _None2 = ...,
+        **kw: Unpack[_KwBase],
+    ) -> _Tuple2[_Float64ND]: ...
     @overload
     def __call__(
         self,

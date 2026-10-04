@@ -148,9 +148,28 @@ sp.logit.at(_c16, _i)  # type:ignore[arg-type]  # pyright: ignore[reportArgument
 assert_type(sp.wofz(_f8), np.complex128)
 
 # _UFunc11fc - TODO: erf
+assert_type(sp.erf(_i4), np.float64)
+assert_type(sp.erf(_i4_nd), _Float64ND)
 
 # _UFunc12 - TODO
+
+# _UFunc12f
+assert_type(sp.it2i0k0(1.0), tuple[np.float64, np.float64])
+assert_type(sp.it2i0k0(_i4_nd), tuple[_Float64ND, _Float64ND])
+
+# _UFunc12fc
+assert_type(sp.fresnel(1.0), tuple[np.float64, np.float64])
+assert_type(sp.fresnel(_i4_nd), tuple[_Float64ND, _Float64ND])
+
 # _UFunc14 - TODO
+
+# _UFunc14f
+assert_type(sp.itairy(1.0), tuple[np.float64, np.float64, np.float64, np.float64])
+assert_type(sp.itairy(_i4_nd), tuple[_Float64ND, _Float64ND, _Float64ND, _Float64ND])
+
+# _UFunc14fc
+assert_type(sp.airy(1.0), tuple[np.float64, np.float64, np.float64, np.float64])
+assert_type(sp.airy(_i4_nd), tuple[_Float64ND, _Float64ND, _Float64ND, _Float64ND])
 
 ###
 
@@ -175,6 +194,9 @@ assert_type(sp.yn(1, _f4_nd), _Float64ND)
 assert_type(sp.yn(2.0, _f4), np.float32)
 assert_type(sp.yn(_f2, _f4), np.float32)
 assert_type(sp.yn(_f4, 1), np.float32)
+assert_type(sp.yn(1.0, 2.0), np.float64)
+assert_type(sp.yn(_i4_nd, 2.0), _Float64ND)
+assert_type(sp.yn(_i1_nd, _i4_nd), _Float64ND)
 
 # _UFunc21c1
 assert_type(sp.hankel1(1, _f8), np.complex128)
@@ -187,6 +209,9 @@ assert_type(sp.jv(2.0, _c8), np.complex64)
 assert_type(sp.jv(_f8, _c16), np.complex128)
 assert_type(sp.jv(_f8, _c8), np.complex128)
 assert_type(sp.jv(_f8, 1j), np.complex128)
+assert_type(sp.jv(1, 2.0), np.float64)
+assert_type(sp.jv(_i4_nd, 2.0), _Float64ND)
+assert_type(sp.jv(_i1_nd, _i4_nd), _Float64ND)
 
 # _UFunc21ldfc1
 assert_type(sp.eval_legendre.ntypes, L[5])
@@ -201,37 +226,72 @@ assert_type(sp.eval_legendre(1, _c8_nd), _Complex64ND)
 assert_type(sp.eval_legendre(_f8, _c16), np.complex128)
 assert_type(sp.eval_legendre(_f8, _c8), np.complex128)
 assert_type(sp.eval_legendre(1, 1j), np.complex128)
+assert_type(sp.eval_legendre(1.0, 0.5), np.float64)
+assert_type(sp.eval_legendre(_i4_nd, 0.5), _Float64ND)
+assert_type(sp.eval_legendre(1.0, _i4_nd), _Float64ND)
 
 # _UFunc21fc2
 assert_type(sp.xlogy(_f4_nd, 2.0), _Float32ND)
 assert_type(sp.xlogy(_f8_nd, 2.0), _Float64ND)
 assert_type(sp.xlogy(_f8, _f8), np.float64)
 assert_type(sp.xlogy(_c16, _c16), np.complex128)
+assert_type(sp.xlogy(1, 2.0), np.float64)
+assert_type(sp.xlogy(_i4_nd, 2.0), _Float64ND)
+assert_type(sp.xlogy(2.0, _i4_nd), _Float64ND)
 
 # _UFunc22 - TODO
 
 # _UFunc22f
 assert_type(sp.pbdv(_f8, _f8), tuple[np.float64, np.float64])
+assert_type(sp.pbdv(1, 2.0), tuple[np.float64, np.float64])
+assert_type(sp.pbdv(_i4_nd, 2.0), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pbdv(2.0, _i4_nd), tuple[_Float64ND, _Float64ND])
 
 # _UFunc24 - TODO
+
+# _UFunc24f
+assert_type(sp.ellipj(1.0, 0.5), tuple[np.float64, np.float64, np.float64, np.float64])
+assert_type(sp.ellipj(_i4_nd, 0.5), tuple[_Float64ND, _Float64ND, _Float64ND, _Float64ND])
+assert_type(sp.ellipj(1.0, _i4_nd), tuple[_Float64ND, _Float64ND, _Float64ND, _Float64ND])
 
 ###
 
 # _UFunc31f
 assert_type(sp.voigt_profile(_f4, 1.0, 1.0), np.float32)
 assert_type(sp.voigt_profile(_f8, 1.0, _f4), np.float64)
+assert_type(sp.voigt_profile(1, 1.0, 1.0), np.float64)
+assert_type(sp.voigt_profile(_i4_nd, 1.0, 1.0), _Float64ND)
+assert_type(sp.voigt_profile(1.0, _i4_nd, 1.0), _Float64ND)
+assert_type(sp.voigt_profile(1.0, 1.0, _i4_nd), _Float64ND)
 
 # _UFunc32 - TODO
+
+# _UFunc32f
+assert_type(sp.mathieu_cem(1.0, 2.0, 0.5), tuple[np.float64, np.float64])
+assert_type(sp.mathieu_cem(_i4_nd, 2.0, 0.5), tuple[_Float64ND, _Float64ND])
+assert_type(sp.mathieu_cem(1.0, _i4_nd, 0.5), tuple[_Float64ND, _Float64ND])
+assert_type(sp.mathieu_cem(1.0, 2.0, _i4_nd), tuple[_Float64ND, _Float64ND])
 
 # _UFunc42f
 assert_type(sp.pro_ang1(_f4, 1.0, 1.0, 1.0), tuple[np.float32, np.float32])
 assert_type(sp.pro_ang1(_f8, 1.0, 1.0, _f4), tuple[np.float64, np.float64])
 assert_type(sp.pro_ang1(_f8_nd, 1.0, 1.0, 1.0), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pro_ang1(1, 1.0, 1.0, 1.0), tuple[np.float64, np.float64])
+assert_type(sp.pro_ang1(_i4_nd, 1.0, 1.0, 1.0), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pro_ang1(1.0, _i4_nd, 1.0, 1.0), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pro_ang1(1.0, 1.0, _i4_nd, 1.0), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pro_ang1(1.0, 1.0, 1.0, _i4_nd), tuple[_Float64ND, _Float64ND])
 
 # _UFunc52f
 assert_type(sp.pro_ang1_cv(_f4, 1.0, 1.0, 1.0, 1.0), tuple[np.float32, np.float32])
 assert_type(sp.pro_ang1_cv(_f8, 1.0, 1.0, 1.0, _f4), tuple[np.float64, np.float64])
 assert_type(sp.pro_ang1_cv(_f8_nd, 1.0, 1.0, 1.0, 1.0), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pro_ang1_cv(1, 1.0, 1.0, 1.0, 1.0), tuple[np.float64, np.float64])
+assert_type(sp.pro_ang1_cv(_i4_nd, 1.0, 1.0, 1.0, 1.0), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pro_ang1_cv(1.0, _i4_nd, 1.0, 1.0, 1.0), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pro_ang1_cv(1.0, 1.0, _i4_nd, 1.0, 1.0), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pro_ang1_cv(1.0, 1.0, 1.0, _i4_nd, 1.0), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pro_ang1_cv(1.0, 1.0, 1.0, 1.0, _i4_nd), tuple[_Float64ND, _Float64ND])
 
 # _UFunc31lldf
 assert_type(sp.nbdtr.ntypes, L[3])
@@ -241,12 +301,20 @@ assert_type(sp.nbdtr(_i4_nd, 1, _f4), _Float64ND)
 assert_type(sp.nbdtr(1, 2, _f4_nd), _Float64ND)
 assert_type(sp.nbdtr(1, _f4, _f4), np.float32)
 assert_type(sp.nbdtr(_f4, 1, _f4), np.float32)
+assert_type(sp.nbdtr(1.0, 2.0, 0.5), np.float64)
+assert_type(sp.nbdtr(_i4_nd, 2.0, 0.5), _Float64ND)
+assert_type(sp.nbdtr(1.0, _i4_nd, 0.5), _Float64ND)
+assert_type(sp.nbdtr(1.0, 2.0, _i4_nd), _Float64ND)
 
 # _UFunc31fc1
 assert_type(sp.hyp1f1(_f8, 2.0, _c16), np.complex128)
 assert_type(sp.hyp1f1(_f8, _i4, _c8), np.complex128)
 assert_type(sp.hyp1f1(2.0, _f8, _c8), np.complex128)
 assert_type(sp.hyp1f1(_f8, 2.0, 1j), np.complex128)
+assert_type(sp.hyp1f1(1, 2.0, 0.5), np.float64)
+assert_type(sp.hyp1f1(_i4_nd, 2.0, 0.5), _Float64ND)
+assert_type(sp.hyp1f1(1.0, _i4_nd, 0.5), _Float64ND)
+assert_type(sp.hyp1f1(1.0, 2.0, _i4_nd), _Float64ND)
 
 # _UFunc31lddfc1
 assert_type(sp.eval_gegenbauer.ntypes, L[5])
@@ -260,8 +328,25 @@ assert_type(sp.eval_gegenbauer(1, _f8, _c16), np.complex128)
 assert_type(sp.eval_gegenbauer(_f8, 2.0, _c8), np.complex128)
 assert_type(sp.eval_gegenbauer(_i4, _f8, _c8), np.complex128)
 assert_type(sp.eval_gegenbauer(1, _f8, 1j), np.complex128)
+assert_type(sp.eval_gegenbauer(1.0, 2.0, 0.5), np.float64)
+assert_type(sp.eval_gegenbauer(_i4_nd, 2.0, 0.5), _Float64ND)
+assert_type(sp.eval_gegenbauer(1.0, _i4_nd, 0.5), _Float64ND)
+assert_type(sp.eval_gegenbauer(1.0, 2.0, _i4_nd), _Float64ND)
+
+# _UFunc31fc3
+assert_type(sp.elliprd(1, 2.0, 3.0), np.float64)
+assert_type(sp.elliprd(_i4_nd, 2.0, 3.0), _Float64ND)
+assert_type(sp.elliprd(1.0, _i4_nd, 3.0), _Float64ND)
+assert_type(sp.elliprd(1.0, 2.0, _i4_nd), _Float64ND)
 
 ###
+
+# _UFunc41f
+assert_type(sp.ncfdtr(1, 2.0, 3.0, 0.5), np.float64)
+assert_type(sp.ncfdtr(_i4_nd, 2.0, 3.0, 0.5), _Float64ND)
+assert_type(sp.ncfdtr(1.0, _i4_nd, 3.0, 0.5), _Float64ND)
+assert_type(sp.ncfdtr(1.0, 2.0, _i4_nd, 0.5), _Float64ND)
+assert_type(sp.ncfdtr(1.0, 2.0, 3.0, _i4_nd), _Float64ND)
 
 # _UFunc41fc1
 assert_type(sp.hyp2f1(1.0, 2.0, _f8, _c16), np.complex128)
@@ -269,6 +354,11 @@ assert_type(sp.hyp2f1(_f8, _f8, _i4, _c8), np.complex128)
 assert_type(sp.hyp2f1(1.0, _f8, 2.0, _c8), np.complex128)
 assert_type(sp.hyp2f1(1.0, 2.0, _f8, _c8), np.complex128)
 assert_type(sp.hyp2f1(1.0, 2.0, _f8, 1j), np.complex128)
+assert_type(sp.hyp2f1(1, 2.0, 3.0, 0.5), np.float64)
+assert_type(sp.hyp2f1(_i4_nd, 2.0, 3.0, 0.5), _Float64ND)
+assert_type(sp.hyp2f1(1.0, _i4_nd, 3.0, 0.5), _Float64ND)
+assert_type(sp.hyp2f1(1.0, 2.0, _i4_nd, 0.5), _Float64ND)
+assert_type(sp.hyp2f1(1.0, 2.0, 3.0, _i4_nd), _Float64ND)
 
 # _UFunc41ldfc1
 assert_type(sp.eval_jacobi.ntypes, L[5])
@@ -283,6 +373,18 @@ assert_type(sp.eval_jacobi(_f8, 2.0, 3.0, _c8), np.complex128)
 assert_type(sp.eval_jacobi(_i4, _f8, _f8, _c8), np.complex128)
 assert_type(sp.eval_jacobi(1, 2.0, _f8, _c8), np.complex128)
 assert_type(sp.eval_jacobi(1, _f8, 3.0, 1j), np.complex128)
+assert_type(sp.eval_jacobi(1.0, 2.0, 3.0, 0.5), np.float64)
+assert_type(sp.eval_jacobi(_i4_nd, 2.0, 3.0, 0.5), _Float64ND)
+assert_type(sp.eval_jacobi(1.0, _i4_nd, 3.0, 0.5), _Float64ND)
+assert_type(sp.eval_jacobi(1.0, 2.0, _i4_nd, 0.5), _Float64ND)
+assert_type(sp.eval_jacobi(1.0, 2.0, 3.0, _i4_nd), _Float64ND)
+
+# _UFunc41fc4
+assert_type(sp.elliprj(1, 2.0, 3.0, 4.0), np.float64)
+assert_type(sp.elliprj(_i4_nd, 2.0, 3.0, 4.0), _Float64ND)
+assert_type(sp.elliprj(1.0, _i4_nd, 3.0, 4.0), _Float64ND)
+assert_type(sp.elliprj(1.0, 2.0, _i4_nd, 4.0), _Float64ND)
+assert_type(sp.elliprj(1.0, 2.0, 3.0, _i4_nd), _Float64ND)
 
 # _UFunc42 - TODO
 
