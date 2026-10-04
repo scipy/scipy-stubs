@@ -506,7 +506,7 @@ assert_type(resample(_c128_1d, 1), onp.Array1D[np.complex128])
 assert_type(resample(_c160_1d, 1), onp.Array1D[npc.complexfloating160])
 
 assert_type(resample(_py_i_2d, 1), onp.ArrayND[np.float64])
-assert_type(resample(_py_f_2d, 1), onp.ArrayND[np.float64])
+assert_type(resample(_f64_nd, 1), onp.ArrayND[np.float64])
 assert_type(resample(_i8_2d, 1), onp.Array2D[np.float64])
 assert_type(resample(_f16_2d, 1), onp.Array2D[np.float32])
 assert_type(resample(_f32_2d, 1), onp.Array2D[np.float32])
@@ -515,6 +515,8 @@ assert_type(resample(_f80_2d, 1), onp.Array2D[npc.floating80])
 assert_type(resample(_c64_2d, 1), onp.Array2D[np.complex64])
 assert_type(resample(_c128_2d, 1), onp.Array2D[np.complex128])
 assert_type(resample(_c160_2d, 1), onp.Array2D[npc.complexfloating160])
+
+assert_type(resample(_f64_nd, 1, _f64_1d), tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]])
 
 # resample_poly
 
@@ -532,7 +534,7 @@ assert_type(resample_poly(_c128_1d, 1, 1), onp.Array1D[np.complex128])
 resample_poly(_c160_1d, 1, 1)  # type: ignore[type-var]  # pyright: ignore[reportArgumentType, reportCallIssue]
 
 assert_type(resample_poly(_py_i_2d, 1, 1), onp.ArrayND[np.float64])
-assert_type(resample_poly(_py_f_2d, 1, 1), onp.ArrayND[np.float64])
+assert_type(resample_poly(_f64_nd, 1, 1), onp.ArrayND[np.float64])
 assert_type(resample_poly(_i8_2d, 1, 1), onp.Array2D[np.float64])
 assert_type(resample_poly(_f16_2d, 1, 1), onp.Array2D[np.float32])
 assert_type(resample_poly(_f32_2d, 1, 1), onp.Array2D[np.float32])
