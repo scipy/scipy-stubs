@@ -65,6 +65,7 @@ _lti_f32: lti[np.float32, np.float32]
 _lti_f64: lti[np.float64, np.float64]
 _lti_c64: lti[np.complex64, np.float32]
 _lti_c128: lti[np.complex128, np.float64]
+_lti_f32_f64: lti[_F32_64, _F32_64]
 _dlti_f32: dlti[np.float32, np.float32, float]
 _dlti_f64: dlti[np.float64, np.float64, float]
 _dlti_c64: dlti[np.complex64, np.float32, float]
@@ -168,11 +169,11 @@ assert_type(_ss_cont_c64.A, onp.Array2D[np.complex64])
 assert_type(_ss_cont_c128.A, onp.Array2D[np.complex128])
 
 # lti
-assert_type(lti(_f64_1d, _f64_1d), TransferFunctionContinuous[_F32_64])  # type: ignore[assert-type]
+assert_type(lti(_f64_1d, _f64_1d), TransferFunctionContinuous[np.float64 | Any])  # type: ignore[assert-type]
 assert_type(lti(_i64_1d, _i64_1d, 5), ZerosPolesGainContinuous[np.int64, np.int64])  # type: ignore[assert-type]
-assert_type(lti(_f64_1d, _f64_1d, 5), ZerosPolesGainContinuous[_F32_64, np.float64 | Any])  # type: ignore[assert-type]
+assert_type(lti(_f64_1d, _f64_1d, 5), ZerosPolesGainContinuous[np.float64 | Any, np.float64 | Any])  # type: ignore[assert-type]
 assert_type(lti(_c128_1d, _f64_1d, 5), ZerosPolesGainContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
-assert_type(lti(_f64_2d, _f64_2d, _f64_2d, _f64_2d), StateSpaceContinuous[_F32_64, np.float64 | Any])  # type: ignore[assert-type]
+assert_type(lti(_f64_2d, _f64_2d, _f64_2d, _f64_2d), StateSpaceContinuous[np.float64 | Any, np.float64 | Any])  # type: ignore[assert-type]
 assert_type(lti(_c128_2d, _c128_2d, _c128_2d, _c128_2d), StateSpaceContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
 assert_type(lti(_f64_1d, _c128_1d, 5), ZerosPolesGainContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
 
@@ -333,6 +334,8 @@ assert_type(freqresp(_lti_c128), tuple[_VecF64, _VecC128])
 assert_type(freqresp(_to_tf_cont_c128), tuple[_VecF64, _VecC128])
 assert_type(freqresp(_to_zpk_cont_c128), tuple[_VecF64, _VecC128])
 assert_type(freqresp(_to_ss_cont_c128), tuple[_VecF64, _VecC128])
+# f32 | f64
+assert_type(freqresp(_lti_f32_f64), tuple[onp.Array1D[_F32_64], onp.Array1D[np.complex64 | np.complex128]])
 
 # lti.freqresp method
 assert_type(_lti_f32.freqresp(), tuple[_VecF32, _VecC64])
