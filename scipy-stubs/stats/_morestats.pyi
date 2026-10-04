@@ -782,6 +782,15 @@ def boxcox[ShapeT: tuple[int, ...]](
     *,
     nan_policy: NanPolicy = "propagate",
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # Nd ~f16|f32, lmbda=~f64
+def boxcox[ShapeT: tuple[int, ...]](
+    x: onp.ArrayND[np.float32 | np.float16, ShapeT],
+    lmbda: np.float64,
+    alpha: float | None = None,
+    optimizer: _MinFun1D | None = None,
+    *,
+    nan_policy: NanPolicy = "propagate",
+) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload
 def boxcox[ShapeT: tuple[int, ...]](
     x: onp.ArrayND[np.float32 | np.float16, ShapeT],

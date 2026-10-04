@@ -78,6 +78,7 @@ assert_type(boxcox(_f64_1d, alpha=0.1), tuple[onp.Array1D[np.float64], np.float6
 assert_type(boxcox(_f64_2d, 0.5), onp.Array2D[np.float64])
 assert_type(boxcox(_py_float_2d, 0.5), onp.ArrayND[np.float64 | Any, tuple[int] | tuple[Any, ...]])
 assert_type(boxcox(_f32_2d, 0.5), onp.Array2D[np.float32 | Any])
+assert_type(boxcox(_f32_2d, np.float64(0.5)), onp.Array2D[np.float64])
 
 # boxcox_normmax
 
