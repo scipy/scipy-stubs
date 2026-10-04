@@ -81,6 +81,8 @@ assert_type(bary_c_f32.derivative(0), np.ndarray[tuple[Any, ...], np.dtype[np.co
 assert_type(bary_f_f32.derivatives(0), np.ndarray[tuple[Any, ...], np.dtype[np.float64]])
 assert_type(bary_c_f32.derivatives(0), np.ndarray[tuple[Any, ...], np.dtype[np.complex128]])
 
+assert_type(bary_f_f32.wi, onp.Array1D[np.float64 | Any])
+
 ###
 # krogh_interpolate
 

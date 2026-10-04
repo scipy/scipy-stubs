@@ -168,7 +168,7 @@ class KroghInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_YT_co, 
 class BarycentricInterpolator(_Interpolator1DWithDerivatives[_YT_co], Generic[_YT_co]):
     xi: onp.Array1D[np.float64]
     yi: onp.Array2D[_YT_co] | None
-    wi: onp.Array1D[npc.floating] | None
+    wi: onp.Array1D[np.float64 | Any]
 
     n: Final[int]  # undocumented
     r: Final[int]  # undocumented
