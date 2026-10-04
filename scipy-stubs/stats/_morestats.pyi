@@ -1237,6 +1237,16 @@ def mood(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
+@overload  # 1d ~f64
+def mood(
+    x: _AsF64_1D,
+    y: _AsF64_1D,
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> SignificanceResult[np.float64]: ...
 @overload  # ~f32, axis=None
 def mood(
     x: onp.ToJustFloat32_ND,
@@ -1257,6 +1267,16 @@ def mood(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
+@overload  # 1d ~f32
+def mood(
+    x: onp.ToJustFloat32Strict1D,
+    y: onp.ToJustFloat32Strict1D,
+    axis: SupportsIndex = 0,
+    alternative: Alternative = "two-sided",
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> SignificanceResult[np.float32]: ...
 @overload  # fallback
 def mood(
     x: onp.ToFloat | onp.ToFloatND,
