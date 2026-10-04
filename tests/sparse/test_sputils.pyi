@@ -21,6 +21,7 @@ assert_type(sparse.get_index_dtype((u32_1d, u32_1d)), type[np.int64])
 assert_type(sparse.get_index_dtype(i64_1d), type[np.int64])
 assert_type(sparse.get_index_dtype((i32_1d, i64_1d)), type[np.int32 | np.int64])
 assert_type(sparse.get_index_dtype(maxval=_n), type[np.int32 | np.int64])
+assert_type(sparse.get_index_dtype(i64_1d, check_contents=True), type[np.int32 | np.int64])
 
 # safely_cast_index_arrays
 

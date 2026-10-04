@@ -117,7 +117,7 @@ def get_index_dtype(
 def get_index_dtype(
     arrays: onp.ArrayND[_ContraInt32] | tuple[onp.CanArrayND[_ContraInt32], *tuple[onp.CanArrayND[_ContraInt32], ...]],
     maxval: onp.ToFloat | None = None,
-    check_contents: bool = False,
+    check_contents: L[False] = False,
 ) -> type[np.int64]: ...
 @overload
 def get_index_dtype(
