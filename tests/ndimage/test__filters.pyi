@@ -370,6 +370,6 @@ assert_type(generic_filter(i32_2d, _filternd, size=3, output=f64_2d), onp.ArrayN
 ###
 # vectorized_filter
 
-assert_type(vectorized_filter(f64_2d, _vf_func_nd, size=3), onp.ArrayND[np.float64])
+assert_type(vectorized_filter(f64_2d, _vf_func_nd, size=3, mode="valid"), onp.ArrayND[np.float64])
 assert_type(vectorized_filter(float_2d, _vf_func, size=3), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
 assert_type(vectorized_filter(f64_2d, _vf_func_nd, size=3, output=f32_2d), onp.ArrayND[np.float32])
