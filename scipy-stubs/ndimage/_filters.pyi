@@ -956,7 +956,7 @@ def gaussian_filter(
 @overload
 def generic_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
     input: nptc.CanArray[ShapeT, DTypeT],
-    function: _FilterFunc1D | LowLevelCallable,
+    function: _FilterFunc1D | LowLevelCallable[Any, Any],
     filter_size: float,
     axis: int = -1,
     output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
@@ -969,7 +969,7 @@ def generic_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.num
 @overload
 def generic_filter1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
-    function: _FilterFunc1D | LowLevelCallable,
+    function: _FilterFunc1D | LowLevelCallable[Any, Any],
     filter_size: float,
     axis: int = -1,
     output: onp.AnyIntPDType | None = None,
@@ -982,7 +982,7 @@ def generic_filter1d(
 @overload
 def generic_filter1d(
     input: onp.ToJustFloat64 | onp.ToJustFloat64_ND,
-    function: _FilterFunc1D | LowLevelCallable,
+    function: _FilterFunc1D | LowLevelCallable[Any, Any],
     filter_size: float,
     axis: int = -1,
     output: onp.AnyFloat64DType | None = None,
@@ -995,7 +995,7 @@ def generic_filter1d(
 @overload
 def generic_filter1d(
     input: onp.ToFloat | onp.ToFloatND,
-    function: _FilterFunc1D | LowLevelCallable,
+    function: _FilterFunc1D | LowLevelCallable[Any, Any],
     filter_size: float,
     axis: int = -1,
     output: onp.ArrayND[_ScalarT] | onp.ToDType[_ScalarT] | None = None,
@@ -1008,7 +1008,7 @@ def generic_filter1d(
 @overload
 def generic_filter1d(
     input: onp.ToFloat | onp.ToFloatND,
-    function: _FilterFunc1D | LowLevelCallable,
+    function: _FilterFunc1D | LowLevelCallable[Any, Any],
     filter_size: float,
     axis: int = -1,
     output: _AnyOutput | None = None,
@@ -1023,7 +1023,7 @@ def generic_filter1d(
 @overload
 def generic_filter[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
     input: nptc.CanArray[ShapeT, DTypeT],
-    function: _FilterFuncND | LowLevelCallable,
+    function: _FilterFuncND | LowLevelCallable[Any, Any],
     size: _Ints | None = None,
     footprint: onp.ToFloat | onp.ToFloatND | None = None,
     output: np.ndarray[ShapeT, DTypeT] | DTypeT | None = None,
@@ -1038,7 +1038,7 @@ def generic_filter[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.numbe
 @overload
 def generic_filter(
     input: onp.ToArrayND[op.JustInt, np.intp],
-    function: _FilterFuncND | LowLevelCallable,
+    function: _FilterFuncND | LowLevelCallable[Any, Any],
     size: _Ints | None = None,
     footprint: onp.ToFloat | onp.ToFloatND | None = None,
     output: onp.AnyIntPDType | None = None,
@@ -1053,7 +1053,7 @@ def generic_filter(
 @overload
 def generic_filter(
     input: onp.ToJustFloat64 | onp.ToJustFloat64_ND,
-    function: _FilterFuncND | LowLevelCallable,
+    function: _FilterFuncND | LowLevelCallable[Any, Any],
     size: _Ints | None = None,
     footprint: onp.ToFloat | onp.ToFloatND | None = None,
     output: onp.AnyFloat64DType | None = None,
@@ -1068,7 +1068,7 @@ def generic_filter(
 @overload
 def generic_filter(
     input: onp.ToFloat | onp.ToFloatND,
-    function: _FilterFuncND | LowLevelCallable,
+    function: _FilterFuncND | LowLevelCallable[Any, Any],
     size: _Ints | None = None,
     footprint: onp.ToFloat | onp.ToFloatND | None = None,
     output: onp.ArrayND[_ScalarT] | onp.ToDType[_ScalarT] | None = None,
@@ -1083,7 +1083,7 @@ def generic_filter(
 @overload
 def generic_filter(
     input: onp.ToFloat | onp.ToFloatND,
-    function: _FilterFuncND | LowLevelCallable,
+    function: _FilterFuncND | LowLevelCallable[Any, Any],
     size: _Ints | None = None,
     footprint: onp.ToFloat | onp.ToFloatND | None = None,
     output: _AnyOutput | None = None,
