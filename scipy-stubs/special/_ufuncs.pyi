@@ -1164,6 +1164,11 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     def at(self, a: _CoFloat64ND, indices: _Indices, b: _ToFloat64OrND, /) -> None: ...
     #
     @override
+    @overload
+    def accumulate(
+        self, /, array: _ToSubFloat64ND, axis: SupportsIndex = 0, dtype: None = None, out: _Out1[None] = None
+    ) -> _Float64ND: ...
+    @overload
     def accumulate(
         self,
         /,
@@ -1174,6 +1179,43 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     ) -> _FloatND: ...
     #
     @override
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: None,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        keepdims: onp.ToFalse = False,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> np.float64: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: _Axis = 0,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        keepdims: onp.ToFalse = False,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> np.float64 | _Float64ND: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: _Axis = 0,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        *,
+        keepdims: onp.ToTrue,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> _Float64ND: ...
     @overload
     def reduce(
         self,
@@ -1249,6 +1291,12 @@ class _UFunc21f(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identity
     ) -> _FloatND: ...
     #
     @override
+    @overload
+    def outer(self, a: _ToSubFloat64, b: _ToSubFloat64, /, *, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.float64: ...
+    @overload
+    def outer(self, a: _ToSubFloat64ND, b: _ToSubFloat_D, /, *, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
+    def outer(self, a: _ToSubFloat_D, b: _ToSubFloat64ND, /, *, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
     @overload
     def outer(self, a: onp.ToFloat64, b: onp.ToFloat64, /, *, out: _Out1[None] = None, **kw: Unpack[_Kw21f]) -> _Float: ...
     @overload
@@ -1313,6 +1361,11 @@ class _UFunc21ldf(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     def at(self, a: _CoFloat64ND, indices: _Indices, b: _ToFloat64OrND, /) -> None: ...
     #
     @override
+    @overload
+    def accumulate(
+        self, /, array: _ToSubFloat64ND, axis: SupportsIndex = 0, dtype: None = None, out: _Out1[None] = None
+    ) -> _Float64ND: ...
+    @overload
     def accumulate(
         self,
         /,
@@ -1323,6 +1376,43 @@ class _UFunc21ldf(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     ) -> _FloatND: ...
     #
     @override
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: None,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        keepdims: onp.ToFalse = False,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> np.float64: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: _Axis = 0,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        keepdims: onp.ToFalse = False,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> np.float64 | _Float64ND: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: _Axis = 0,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        *,
+        keepdims: onp.ToTrue,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> _Float64ND: ...
     @overload
     def reduce(
         self,
@@ -1398,6 +1488,12 @@ class _UFunc21ldf(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     ) -> _FloatND: ...
     #
     @override
+    @overload
+    def outer(self, a: _ToSubFloat64, b: _ToSubFloat64, /, *, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> np.float64: ...
+    @overload
+    def outer(self, a: _ToSubFloat64ND, b: _ToSubFloat_D, /, *, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
+    def outer(self, a: _ToSubFloat_D, b: _ToSubFloat64ND, /, *, out: _Out1[None] = None, **kw: Unpack[_KwBase]) -> _Float64ND: ...
     @overload
     def outer(self, a: onp.ToFloat64, b: onp.ToFloat64, /, *, out: _Out1[None] = None, **kw: Unpack[_Kw21ldf]) -> _Float: ...
     @overload
@@ -1465,6 +1561,12 @@ class _UFunc21c1(_UFuncWithoutIdentity, _UFunc21[_NameT_co, _IdentityT_co], Gene
 
     #
     @override
+    @overload
+    def outer(self, a: _ToSubFloat64, b: _ToSubComplex128, /, **kw: Unpack[_KwBase]) -> np.complex128: ...
+    @overload
+    def outer(self, a: _ToSubFloat64ND, b: _ToComplex128_D, /, **kw: Unpack[_KwBase]) -> _Complex128ND: ...
+    @overload
+    def outer(self, a: _ToFloat64OrND, b: _ToSubComplex128ND, /, **kw: Unpack[_KwBase]) -> _Complex128ND: ...
     @overload
     def outer(self, a: onp.ToFloat64, b: _ToComplex128, /, **kw: Unpack[_Kw21c1]) -> _Complex: ...
     @overload
@@ -1543,6 +1645,11 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     def at(self, a: _CoFloat64ND, indices: _Indices, b: _ToFloat64OrND, /) -> None: ...
     #
     @override
+    @overload
+    def accumulate(
+        self, /, array: _ToSubFloat64ND, axis: SupportsIndex = 0, dtype: None = None, out: _Out1[None] = None
+    ) -> _Float64ND: ...
+    @overload
     def accumulate(
         self,
         /,
@@ -1553,6 +1660,43 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     ) -> _FloatND: ...
     #
     @override
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: None,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        keepdims: onp.ToFalse = False,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> np.float64: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: _Axis = 0,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        keepdims: onp.ToFalse = False,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> np.float64 | _Float64ND: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: _Axis = 0,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        *,
+        keepdims: onp.ToTrue,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> _Float64ND: ...
     @overload
     def reduce(
         self,
@@ -1628,6 +1772,12 @@ class _UFunc21fc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     ) -> _FloatND: ...
     #
     @override
+    @overload
+    def outer(self, a: _ToSubFloat64, b: _ToSubFloat64, /, **kw: Unpack[_KwBase]) -> np.float64: ...
+    @overload
+    def outer(self, a: _ToSubFloat64ND, b: _ToSubFloat_D, /, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
+    def outer(self, a: _ToSubFloat_D, b: _ToSubFloat64ND, /, **kw: Unpack[_KwBase]) -> _Float64ND: ...
     @overload
     def outer(self, a: onp.ToFloat64, b: onp.ToFloat64, /, **kw: Unpack[_Kw21fc1]) -> _Float: ...
     @overload
@@ -1719,6 +1869,11 @@ class _UFunc21ldfc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Iden
     def at(self, a: _CoFloat64ND, indices: _Indices, b: _ToFloat64OrND, /) -> None: ...
     #
     @override
+    @overload
+    def accumulate(
+        self, /, array: _ToSubFloat64ND, axis: SupportsIndex = 0, dtype: None = None, out: _Out1[None] = None
+    ) -> _Float64ND: ...
+    @overload
     def accumulate(
         self,
         /,
@@ -1729,6 +1884,43 @@ class _UFunc21ldfc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Iden
     ) -> _FloatND: ...
     #
     @override
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: None,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        keepdims: onp.ToFalse = False,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> np.float64: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: _Axis = 0,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        keepdims: onp.ToFalse = False,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> np.float64 | _Float64ND: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: _Axis = 0,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        *,
+        keepdims: onp.ToTrue,
+        initial: onp.ToFloat64 = ...,
+        where: _ToBool_D = True,
+    ) -> _Float64ND: ...
     @overload
     def reduce(
         self,
@@ -1805,6 +1997,12 @@ class _UFunc21ldfc1(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Iden
     #
     @override
     @overload
+    def outer(self, a: _ToSubFloat64, b: _ToSubFloat64, /, **kw: Unpack[_KwBase]) -> np.float64: ...
+    @overload
+    def outer(self, a: _ToSubFloat64ND, b: _ToSubFloat_D, /, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
+    def outer(self, a: _ToSubFloat_D, b: _ToSubFloat64ND, /, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
     def outer(self, a: onp.ToFloat64, b: onp.ToFloat64, /, **kw: Unpack[_Kw21fc1]) -> _Float: ...
     @overload
     def outer(self, a: onp.ToFloat64, b: _ToComplex128, /, **kw: Unpack[_Kw21fc1]) -> _Inexact: ...
@@ -1879,6 +2077,10 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     @override
     @overload
     def accumulate(
+        self, /, array: _ToSubFloat64ND, axis: SupportsIndex = 0, dtype: None = None, out: _Out1[None] = None
+    ) -> _Float64ND: ...
+    @overload
+    def accumulate(
         self,
         /,
         array: onp.ToFloat64_ND,
@@ -1897,6 +2099,43 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     ) -> _InexactND: ...
     #
     @override
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: None,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        keepdims: onp.ToFalse = False,
+        initial: onp.ToFloat = ...,
+        where: _ToBool_D = True,
+    ) -> np.float64: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: _Axis = 0,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        keepdims: onp.ToFalse = False,
+        initial: onp.ToFloat = ...,
+        where: _ToBool_D = True,
+    ) -> np.float64 | _Float64ND: ...
+    @overload
+    def reduce(
+        self,
+        /,
+        array: _ToSubFloat64ND,
+        axis: _Axis = 0,
+        dtype: None = None,
+        out: _Out1[None] = None,
+        *,
+        keepdims: onp.ToTrue,
+        initial: onp.ToFloat = ...,
+        where: _ToBool_D = True,
+    ) -> _Float64ND: ...
     @overload
     def reduce(
         self,
@@ -2008,6 +2247,12 @@ class _UFunc21fc2(_UFunc21[_NameT_co, _IdentityT_co], Generic[_NameT_co, _Identi
     ) -> _InexactND: ...
     #
     @override
+    @overload
+    def outer(self, a: _ToSubFloat64, b: _ToSubFloat64, /, **kw: Unpack[_KwBase]) -> np.float64: ...
+    @overload
+    def outer(self, a: _ToSubFloat64ND, b: _ToSubFloat_D, /, **kw: Unpack[_KwBase]) -> _Float64ND: ...
+    @overload
+    def outer(self, a: _ToSubFloat_D, b: _ToSubFloat64ND, /, **kw: Unpack[_KwBase]) -> _Float64ND: ...
     @overload
     def outer(self, a: onp.ToFloat64, b: onp.ToFloat64, /, **kw: Unpack[_Kw21fc2]) -> _Float: ...
     @overload
