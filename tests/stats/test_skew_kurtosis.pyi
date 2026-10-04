@@ -1,6 +1,6 @@
 # type-tests for `skew` from `stats/_stats_py.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -73,6 +73,7 @@ assert_type(skew(_py_f_3d), onp.Array2D[np.float64])
 assert_type(skew(_i16_3d), onp.Array2D[np.float64])
 assert_type(skew(_f32_3d), onp.Array2D[np.float32])
 assert_type(skew(_f64_3d), onp.Array2D[np.float64])
+assert_type(skew(_f64_3d, axis=(1, 2)), onp.ArrayND[np.float64] | Any)
 assert_type(skew(_py_i_3d, axis=None), np.float64)
 assert_type(skew(_py_f_3d, axis=None), np.float64)
 assert_type(skew(_i16_3d, axis=None), np.float64)
@@ -93,7 +94,7 @@ assert_type(skew(_f32_nd, axis=None), np.float32)
 assert_type(skew(_f64_nd, axis=None), np.float64)
 assert_type(skew(_i16_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(skew(_f32_nd, keepdims=True), onp.ArrayND[np.float32])
-assert_type(skew(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
+assert_type(skew(_f64_nd, axis=(1, 2), keepdims=True), onp.ArrayND[np.float64])
 
 ###
 # kurtosis
@@ -138,6 +139,7 @@ assert_type(kurtosis(_py_f_3d), onp.Array2D[np.float64])
 assert_type(kurtosis(_i16_3d), onp.Array2D[np.float64])
 assert_type(kurtosis(_f32_3d), onp.Array2D[np.float32])
 assert_type(kurtosis(_f64_3d), onp.Array2D[np.float64])
+assert_type(kurtosis(_f64_3d, axis=(1, 2)), onp.ArrayND[np.float64] | Any)
 assert_type(kurtosis(_py_i_3d, axis=None), np.float64)
 assert_type(kurtosis(_py_f_3d, axis=None), np.float64)
 assert_type(kurtosis(_i16_3d, axis=None), np.float64)
@@ -158,4 +160,4 @@ assert_type(kurtosis(_f32_nd, axis=None), np.float32)
 assert_type(kurtosis(_f64_nd, axis=None), np.float64)
 assert_type(kurtosis(_i16_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(kurtosis(_f32_nd, keepdims=True), onp.ArrayND[np.float32])
-assert_type(kurtosis(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
+assert_type(kurtosis(_f64_nd, axis=(1, 2), keepdims=True), onp.ArrayND[np.float64])

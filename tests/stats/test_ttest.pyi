@@ -62,6 +62,7 @@ assert_type(ttest_1samp(_i8_3d, 0).statistic, onp.Array2D[np.float64])
 assert_type(ttest_1samp(_f16_3d, 0.0).statistic, onp.Array2D[np.float16])
 assert_type(ttest_1samp(_f32_3d, 0.0).statistic, onp.Array2D[np.float32])
 assert_type(ttest_1samp(_f64_3d, 0.0).statistic, onp.Array2D[np.float64])
+assert_type(ttest_1samp(_f64_3d, 0.0, axis=(1, 2)).statistic, onp.ArrayND[np.float64 | Any] | np.float64 | Any)
 
 # https://github.com/facebook/pyrefly/issues/4910
 assert_type(ttest_1samp(_i8_nd, 0).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
@@ -75,7 +76,7 @@ assert_type(ttest_1samp(_i8_1d, _f64_1d).statistic, np.float64)
 assert_type(ttest_1samp(_f64_1d, _f32_1d).statistic, np.float64 | Any)
 
 assert_type(ttest_1samp(_f64_nd, 0.0, axis=None).statistic, np.float64)
-assert_type(ttest_1samp(_f64_nd, 0.0, keepdims=True).statistic, onp.ArrayND[np.float64])
+assert_type(ttest_1samp(_f64_nd, 0.0, axis=(1, 2), keepdims=True).statistic, onp.ArrayND[np.float64])
 assert_type(ttest_1samp(_f32_nd, 0.0, axis=None).statistic, np.float32)
 assert_type(ttest_1samp(_f32_nd, 0.0, keepdims=True).statistic, onp.ArrayND[np.float32])
 
@@ -107,6 +108,7 @@ assert_type(ttest_ind(_i8_3d, _i8_3d).statistic, onp.Array2D[np.float64])
 assert_type(ttest_ind(_f16_3d, _f16_3d).statistic, onp.Array2D[np.float16])
 assert_type(ttest_ind(_f32_3d, _f32_3d).statistic, onp.Array2D[np.float32])
 assert_type(ttest_ind(_f64_3d, _f64_3d).statistic, onp.Array2D[np.float64])
+assert_type(ttest_ind(_f64_3d, _f64_3d, axis=(1, 2)).statistic, onp.ArrayND[np.float64 | Any] | np.float64 | Any)
 
 # https://github.com/facebook/pyrefly/issues/4910
 assert_type(ttest_ind(_i8_nd, _i8_nd).statistic, np.float64 | Any)  # pyrefly:ignore[assert-type]
@@ -136,6 +138,7 @@ assert_type(ttest_rel(_i8_3d, _i8_3d).statistic, onp.Array2D[np.float64])
 assert_type(ttest_rel(_f16_3d, _f16_3d).statistic, onp.Array2D[np.float16])
 assert_type(ttest_rel(_f32_3d, _f32_3d).statistic, onp.Array2D[np.float32])
 assert_type(ttest_rel(_f64_3d, _f64_3d).statistic, onp.Array2D[np.float64])
+assert_type(ttest_rel(_f64_3d, _f64_3d, axis=(1, 2)).statistic, onp.ArrayND[np.float64 | Any] | np.float64 | Any)
 
 assert_type(ttest_rel(_py_i_1d, _py_i_1d).df, np.int_)
 assert_type(ttest_rel(_py_i_2d, _py_i_2d).df, onp.Array1D[np.int_])

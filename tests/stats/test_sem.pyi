@@ -1,6 +1,6 @@
 # type-tests for `sem` from `stats/_stats_py.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -50,6 +50,7 @@ assert_type(sem(f32_2d), onp.ArrayND[np.float32])
 assert_type(sem(f64_2d), onp.ArrayND[np.float64])
 assert_type(sem(c64_2d), onp.ArrayND[np.float32])
 assert_type(sem(c128_2d), onp.ArrayND[np.float64])
+assert_type(sem(f64_2d, axis=(0, 1)), onp.ArrayND[np.float64 | Any] | Any)
 
 assert_type(sem(py_i_1d, axis=None), np.float64)
 assert_type(sem(py_f_1d, axis=None), np.float64)
@@ -83,6 +84,6 @@ assert_type(sem(py_f_2d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(sem(bool_2d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(sem(i16_2d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(sem(f32_2d, keepdims=True), onp.ArrayND[np.float32])
-assert_type(sem(f64_2d, keepdims=True), onp.ArrayND[np.float64])
+assert_type(sem(f64_2d, axis=(0, 1), keepdims=True), onp.ArrayND[np.float64])
 assert_type(sem(c64_2d, keepdims=True), onp.ArrayND[np.float32])
 assert_type(sem(c128_2d, keepdims=True), onp.ArrayND[np.float64])
