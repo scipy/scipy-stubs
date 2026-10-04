@@ -10,6 +10,8 @@ import optype.numpy as onp
 from ._constraints import Bounds as _Bounds, LinearConstraint, NonlinearConstraint
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._minimize import _MinimizeOptions
+from scipy.sparse._base import _spbase
+from scipy.sparse.linalg import LinearOperator
 
 __all__ = [
     "Bound",
@@ -98,7 +100,7 @@ type _FDMethod = Literal["2-point", "3-point", "cs"]
 class _MinimizerKwargsBase(TypedDict, total=False):
     args: _Args
     method: MethodMimimize
-    hess: Callable[Concatenate[_Float1D, ...], onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy
+    hess: Callable[Concatenate[_Float1D, ...], onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy
     hessp: Callable[Concatenate[_Float1D, _Float1D, ...], onp.ToFloat1D]
     bounds: Bounds
     constraints: Constraints

@@ -11,6 +11,7 @@ from ._hessian_update_strategy import HessianUpdateStrategy
 from ._optimize import OptimizeResult as _OptimizeResult, _DoesMap
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
 from scipy.sparse import csr_array
+from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["minimize", "minimize_scalar"]
@@ -223,7 +224,7 @@ def minimize[Float1DT: _Float1D](
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _Fun1D[onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -238,7 +239,7 @@ def minimize(
     args: _Args,
     method: _MethodCobyla,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _Fun1D[onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -254,7 +255,7 @@ def minimize(
     *,
     method: _MethodCobyla,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _Fun1D[onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -269,7 +270,7 @@ def minimize(
     args: _Args,
     method: _MethodF64,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _Fun1D[onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -285,7 +286,7 @@ def minimize(
     *,
     method: _MethodF64,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _Fun1D[onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -300,7 +301,7 @@ def minimize[FunT: onp.ToFloat](
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _Fun1D[onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -315,7 +316,7 @@ def minimize[FunT: onp.ToFloat](
     args: _Args,
     method: MethodMimimize | _MinimizeMethodFun | None,
     jac: onp.ToTrue,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _Fun1D[onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -331,7 +332,7 @@ def minimize[FunT: onp.ToFloat](
     method: MethodMimimize | _MinimizeMethodFun | None = None,
     *,
     jac: onp.ToTrue,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _Fun1D[onp.ToFloat2D | _spbase | LinearOperator] | _FDMethod | HessianUpdateStrategy | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),

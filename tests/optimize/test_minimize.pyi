@@ -6,6 +6,7 @@ import optype.numpy as onp
 
 from scipy.optimize import Bounds, OptimizeResult, minimize
 from scipy.sparse import csr_array
+from scipy.sparse.linalg import LinearOperator
 
 ###
 
@@ -18,6 +19,8 @@ def _callback_x(x: onp.ArrayND[np.float64]) -> bool: ...
 def _callback_x_state(x: onp.ArrayND[np.float64], state: OptimizeResult) -> bool: ...
 def _g_1d(x: onp.Array1D[np.float64]) -> onp.Array1D[np.float64]: ...
 def _dg_2d(x: onp.Array1D[np.float64]) -> onp.Array2D[np.float64]: ...
+def _hess_sparse(x: onp.Array1D[np.float64]) -> csr_array[np.float64]: ...
+def _hess_linop(x: onp.Array1D[np.float64]) -> LinearOperator[np.float64]: ...
 def _custmin(
     fun: Callable[..., object], x0: onp.ToFloat1D, args: tuple[object, ...] = (), **options: object
 ) -> OptimizeResult: ...
@@ -78,3 +81,6 @@ assert_type(minimize(_f_float, _f64_1d, method="trust-constr", callback=_callbac
 assert_type(minimize(_f_float, _f64_1d, method="CG", options={"maxiter": None}).fun, float)
 
 assert_type(minimize(_f_float, _f64_1d, method=_custmin).fun, float)
+
+assert_type(minimize(_f_float, _f64_1d, method="trust-constr", hess=_hess_sparse).fun, float)
+assert_type(minimize(_f_float, _f64_1d, method="Newton-CG", hess=_hess_linop).fun, float)
