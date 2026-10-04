@@ -10,6 +10,8 @@ from numpy_typing_compat import ABCPolyBase
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._optimize import OptimizeResult as _OptimizeResult, _DoesMap
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
+from scipy.sparse._base import _spbase
+from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["minimize", "minimize_scalar"]
 
@@ -29,6 +31,11 @@ type _Fun1Dp[RT] = Callable[Concatenate[_Float1D, _Float1D, ...], RT]
 type _ToJac[T] = tuple[T, *tuple[onp.ToFloat1D, ...]]
 
 type _FDMethod = Literal["2-point", "3-point", "cs"]
+type _ToHess = (
+    _Fun1D[onp.ToFloat2D | _spbase[Any, tuple[int, int]] | LinearOperator[Any, tuple[int, int]]]
+    | _FDMethod
+    | HessianUpdateStrategy
+)
 
 type _MethodCobyla = Literal["COBYLA", "cobyla"]
 type _MethodF64 = Literal["Nelder-Mead", "nelder-mead", "COBYQA", "cobyqa"]
@@ -221,7 +228,7 @@ def minimize[Float1DT: _Float1D](
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -236,7 +243,7 @@ def minimize(
     args: _Args,
     method: _MethodCobyla,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -252,7 +259,7 @@ def minimize(
     *,
     method: _MethodCobyla,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -267,7 +274,7 @@ def minimize(
     args: _Args,
     method: _MethodF64,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -283,7 +290,7 @@ def minimize(
     *,
     method: _MethodF64,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -298,7 +305,7 @@ def minimize[FunT: onp.ToFloat](
     args: _Args = (),
     method: MethodMimimize | _MinimizeMethodFun | None = None,
     jac: _Fun1D[onp.ToFloat1D] | _FDMethod | onp.ToFalse | None = None,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -313,7 +320,7 @@ def minimize[FunT: onp.ToFloat](
     args: _Args,
     method: MethodMimimize | _MinimizeMethodFun | None,
     jac: onp.ToTrue,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),
@@ -329,7 +336,7 @@ def minimize[FunT: onp.ToFloat](
     method: MethodMimimize | _MinimizeMethodFun | None = None,
     *,
     jac: onp.ToTrue,
-    hess: _Fun1D[onp.ToFloat2D] | _FDMethod | HessianUpdateStrategy | None = None,
+    hess: _ToHess | None = None,
     hessp: _Fun1Dp[onp.ToFloat1D] | None = None,
     bounds: Bounds | None = None,
     constraints: Constraints = (),

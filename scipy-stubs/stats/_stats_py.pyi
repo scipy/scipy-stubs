@@ -339,7 +339,7 @@ class TtestResult(TtestResultBase[_FloatOrArrayT_co, _IntFloatOrArrayT_co], Gene
 
 class KstestResult(_TestResultBunch[_FloatOrArrayT_co, _FloatOrArrayT_co], Generic[_FloatOrArrayT_co, _SignOrArrayT_co]):
     @property
-    def statistic_location(self, /) -> _FloatOrArrayT_co: ...
+    def statistic_location(self, /) -> _FloatOrArrayT_co | Any: ...
     @property
     def statistic_sign(self, /) -> _SignOrArrayT_co: ...
 
@@ -3209,9 +3209,18 @@ def jarque_bera(
 ) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 
 # keep in sync with `percentileofscore`
+@overload  # ?d, axis=<given>  (workaround)
+def scoreatpercentile(
+    a: _ToFloatStrictND,
+    per: onp.ToFloat | onp.ToFloatND,
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    *,
+    axis: int,
+) -> onp.ArrayND[np.float64] | Any: ...
 @overload
 def scoreatpercentile(
-    a: onp.ToFloat1D,
+    a: onp.ToFloatStrict1D,
     per: onp.ToFloat,
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: _QuantileInterpolation = "fraction",
@@ -3219,28 +3228,53 @@ def scoreatpercentile(
 ) -> np.float64: ...
 @overload
 def scoreatpercentile(
-    a: onp.ToFloat1D,
+    a: onp.ToFloatND,
+    per: onp.ToFloat,
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    axis: None = None,
+) -> np.float64: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloatND,
     per: Sequence[onp.ToFloat],
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: _QuantileInterpolation = "fraction",
-    axis: int | None = None,
+    axis: None = None,
 ) -> onp.Array1D[np.float64]: ...
 @overload
 def scoreatpercentile[ShapeT: tuple[int, ...]](
-    a: onp.ToFloat1D,
+    a: onp.ToFloatND,
     per: onp.ArrayND[npc.floating | npc.integer, ShapeT],
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: _QuantileInterpolation = "fraction",
-    axis: int | None = None,
+    axis: None = None,
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload
 def scoreatpercentile(
-    a: onp.ToFloat1D,
+    a: onp.ToFloatND,
     per: onp.ToFloatND,
     limit: _RealLimits | tuple[()] = (),
     interpolation_method: _QuantileInterpolation = "fraction",
-    axis: int | None = None,
+    axis: None = None,
 ) -> onp.ArrayND[np.float64]: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloatStrict2D | onp.ToFloatStrict3D,
+    per: onp.ToFloat | onp.ToFloatND,
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    *,
+    axis: int,
+) -> onp.ArrayND[np.float64]: ...
+@overload
+def scoreatpercentile(
+    a: onp.ToFloatND,
+    per: onp.ToFloat | onp.ToFloatND,
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    axis: int | None = None,
+) -> onp.ArrayND[np.float64] | Any: ...
 
 # keep in sync with `scoreatpercentile`
 @overload
@@ -5497,6 +5531,28 @@ def power_divergence(
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> Power_divergenceResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d, ddof: Nd
+def power_divergence(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None,
+    ddof: onp.ToIntND,
+    axis: int | None = 0,
+    lambda_: PowerDivergenceStatistic | float | None = None,
+    *,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[onp.ArrayND[np.float64] | Any]: ...
+@overload  # ?d, ddof: Nd (keyword)
+def power_divergence(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None = None,
+    *,
+    ddof: onp.ToIntND,
+    axis: int | None = 0,
+    lambda_: PowerDivergenceStatistic | float | None = None,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[onp.ArrayND[np.float64] | Any]: ...
 @overload  # fallback
 def power_divergence(
     f_obs: onp.ToFloatND,
@@ -5620,6 +5676,28 @@ def chisquare(
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> Power_divergenceResult[onp.ArrayND[np.float32]]: ...
+@overload  # ?d, ddof: Nd
+def chisquare(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None,
+    ddof: onp.ToIntND,
+    axis: int | None = 0,
+    *,
+    sum_check: bool = True,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[onp.ArrayND[np.float64] | Any]: ...
+@overload  # ?d, ddof: Nd (keyword)
+def chisquare(
+    f_obs: onp.ToFloatND,
+    f_exp: onp.ToFloatND | None = None,
+    *,
+    ddof: onp.ToIntND,
+    axis: int | None = 0,
+    sum_check: bool = True,
+    keepdims: bool = False,
+    nan_policy: NanPolicy = "propagate",
+) -> Power_divergenceResult[onp.ArrayND[np.float64] | Any]: ...
 @overload  # fallback
 def chisquare(
     f_obs: onp.ToFloatND,

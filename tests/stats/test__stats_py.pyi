@@ -969,6 +969,10 @@ assert_type(scoreatpercentile(_f64_1d, _py_f_1d), onp.Array1D[np.float64])
 assert_type(scoreatpercentile(_f64_1d, _f64_1d), onp.Array1D[np.float64])
 assert_type(scoreatpercentile(_f64_1d, _f64_2d), onp.Array2D[np.float64])
 assert_type(scoreatpercentile(_f64_1d, _f64_nd), onp.ArrayND[np.float64])
+assert_type(scoreatpercentile(_py_f_2d, 50), np.float64)
+assert_type(scoreatpercentile(_f64_2d, 50, axis=0), onp.ArrayND[np.float64])
+assert_type(scoreatpercentile(_f64_1d, _py_f_1d, axis=0), onp.ArrayND[np.float64] | Any)
+assert_subtype[onp.ArrayND[np.float64] | Any](scoreatpercentile(_f64_nd, 50, axis=0))
 
 # percentileofscore
 
@@ -1140,6 +1144,8 @@ assert_type(power_divergence(_f64_1d), Power_divergenceResult[np.float64])
 assert_type(power_divergence(_f32_1d), Power_divergenceResult[np.float32])
 assert_type(power_divergence(_f64_nd, axis=None), Power_divergenceResult[np.float64])
 assert_type(power_divergence(_f64_nd, keepdims=True), Power_divergenceResult[onp.ArrayND[np.float64]])
+assert_type(power_divergence(_f64_1d, None, _py_i_1d), Power_divergenceResult[onp.ArrayND[np.float64] | Any])
+assert_type(power_divergence(_f64_1d, ddof=_py_i_1d), Power_divergenceResult[onp.ArrayND[np.float64] | Any])
 
 # chisquare
 
@@ -1165,6 +1171,9 @@ assert_type(chisquare(_f64_2d, axis=1), Power_divergenceResult[np.float64 | Any]
 assert_type(chisquare(_f64_2d, keepdims=False), Power_divergenceResult[np.float64 | Any])
 assert_type(chisquare(_f64_nd), Power_divergenceResult[np.float64 | Any])
 assert_type(chisquare(_f32_nd), Power_divergenceResult[np.float32 | Any])  # pyrefly:ignore[assert-type]
+
+assert_type(chisquare(_f64_1d, None, _py_i_1d), Power_divergenceResult[onp.ArrayND[np.float64] | Any])
+assert_type(chisquare(_f64_1d, ddof=_py_i_1d), Power_divergenceResult[onp.ArrayND[np.float64] | Any])
 
 # ks_1samp
 
@@ -1205,6 +1214,8 @@ assert_type(ks_2samp(_f64_nd, _f64_1d), KstestResult[np.float64 | Any, np.int8 |
 assert_type(ks_2samp(_f64_nd, _f64_2d), KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]])  # pyrefly:ignore[assert-type]
 assert_type(ks_2samp(_f64_nd, _f64_3d), KstestResult[onp.ArrayND[np.float64], onp.ArrayND[np.int8]])  # pyrefly:ignore[assert-type]
 assert_type(ks_2samp(_f64_nd, _f64_nd), KstestResult[np.float64 | Any, np.int8 | Any])  # pyrefly:ignore[assert-type]
+
+assert_type(ks_2samp(_i64_1d, _i64_1d).statistic_location, np.float64 | Any)
 
 # kstest
 

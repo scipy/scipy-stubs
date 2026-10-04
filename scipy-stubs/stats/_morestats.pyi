@@ -248,7 +248,7 @@ class WilcoxonResult(BaseBunch[_NDT_co, _NDT_co], Generic[_NDT_co]):  # pyright:
     def __new__(_cls, statistic: _NDT_co, pvalue: _NDT_co) -> Self: ...
     def __init__(self, /, statistic: _NDT_co, pvalue: _NDT_co) -> None: ...
 
-class MedianTestResult[MedianT: npc.floating](BaseBunch[np.float64, np.float64, MedianT, onp.Array2D[np.float64]]):
+class MedianTestResult[MedianT: npc.floating](BaseBunch[np.float64, np.float64, MedianT, onp.Array2D[np.int_]]):
     @property
     def statistic(self, /) -> np.float64: ...
     @property
@@ -259,8 +259,8 @@ class MedianTestResult[MedianT: npc.floating](BaseBunch[np.float64, np.float64, 
     def table(self, /) -> onp.Array2D[np.int_]: ...
 
     #
-    def __new__(_cls, statistic: np.float64, pvalue: np.float64, median: MedianT, table: onp.Array2D[np.float64]) -> Self: ...
-    def __init__(self, /, statistic: np.float64, pvalue: np.float64, median: MedianT, table: onp.Array2D[np.float64]) -> None: ...
+    def __new__(_cls, statistic: np.float64, pvalue: np.float64, median: MedianT, table: onp.Array2D[np.int_]) -> Self: ...
+    def __init__(self, /, statistic: np.float64, pvalue: np.float64, median: MedianT, table: onp.Array2D[np.int_]) -> None: ...
 
 def bayes_mvs(data: onp.ToFloatND, alpha: onp.ToFloat = 0.9) -> tuple[Mean, Variance, Std_dev]: ...
 
@@ -978,6 +978,50 @@ def shapiro(
 ) -> ShapiroResult[np.float64 | onp.ArrayND[np.float64] | Any]: ...
 
 #
+@overload  # ?d ~f64, ?d|1d ~f64  (workaround)
+def ansari(
+    x: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    y: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float64 | Any]: ...
+@overload  # ?d|1d ~f64, ?d ~f64  (workaround)
+def ansari(
+    x: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape] | _AsF64_1D,
+    y: onp.ArrayND[npc.floating64 | npc.integer | np.bool, _JustAnyShape],
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float64 | Any]: ...
+@overload  # ?d ~f32, ?d|1d ~f32  (workaround)
+def ansari(
+    x: onp.ArrayND[np.float32, _JustAnyShape],
+    y: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float32 | Any]: ...
+@overload  # ?d|1d ~f32, ?d ~f32  (workaround)
+def ansari(
+    x: onp.ArrayND[np.float32, _JustAnyShape] | onp.ToJustFloat32Strict1D,
+    y: onp.ArrayND[np.float32, _JustAnyShape],
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float32 | Any]: ...
 @overload  # ~f64, axis=None
 def ansari(
     x: _AsF64 | _AsF64_ND,
@@ -1000,6 +1044,17 @@ def ansari(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> AnsariResult[onp.ArrayND[np.float64]]: ...
+@overload  # 1d ~f64
+def ansari(
+    x: _AsF64_1D,
+    y: _AsF64_1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float64]: ...
 @overload  # ~f32, axis=None
 def ansari(
     x: onp.ToJustFloat32_ND,
@@ -1022,6 +1077,17 @@ def ansari(
     nan_policy: NanPolicy = "propagate",
     keepdims: Literal[True],
 ) -> AnsariResult[onp.ArrayND[np.float32]]: ...
+@overload  # 1d ~f32
+def ansari(
+    x: onp.ToJustFloat32Strict1D,
+    y: onp.ToJustFloat32Strict1D,
+    alternative: Alternative = "two-sided",
+    *,
+    axis: SupportsIndex = 0,
+    method: _AnsariMethod = "auto",
+    nan_policy: NanPolicy = "propagate",
+    keepdims: Literal[False] = False,
+) -> AnsariResult[np.float32]: ...
 @overload  # fallback
 def ansari(
     x: onp.ToFloat | onp.ToFloatND,
