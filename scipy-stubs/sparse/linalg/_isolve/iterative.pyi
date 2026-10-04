@@ -21,7 +21,7 @@ type _ToInt = npc.integer | np.bool
 type _ToFloat = _Float | _ToInt
 type _ToComplex = _Complex | _ToFloat
 
-type _ToFloatNotF32_1D = onp.ToArray1D[float, _ToInt | np.float16 | np.float64 | npc.floating80]
+type _AsF64_1D = onp.ToArray1D[float, _ToInt | np.float16 | np.float64 | npc.floating80]
 
 type _ToLinearOperator[_ScalarT: npc.number | np.bool] = onp.CanArrayND[_ScalarT] | _spbase[_ScalarT] | LinearOperator[_ScalarT]
 
@@ -34,7 +34,7 @@ _FloatT = TypeVar("_FloatT", bound=_Float, default=np.float64)
 @overload  # real, non-f32 real
 def bicg(
     A: _ToLinearOperator[_ToFloat],
-    b: _ToFloatNotF32_1D,
+    b: _AsF64_1D,
     x0: onp.ToFloat1D | None = None,
     *,
     rtol: onp.ToFloat = 1e-5,
@@ -84,7 +84,7 @@ def bicg(
 @overload  # real, non-f32 real
 def bicgstab(
     A: _ToLinearOperator[_ToFloat],
-    b: _ToFloatNotF32_1D,
+    b: _AsF64_1D,
     x0: onp.ToFloat1D | None = None,
     *,
     rtol: onp.ToFloat = 1e-5,
@@ -134,7 +134,7 @@ def bicgstab(
 @overload  # real, non-f32 real
 def cg(
     A: _ToLinearOperator[_ToFloat],
-    b: _ToFloatNotF32_1D,
+    b: _AsF64_1D,
     x0: onp.ToFloat1D | None = None,
     *,
     rtol: onp.ToFloat = 1e-5,
@@ -184,7 +184,7 @@ def cg(
 @overload  # real, non-f32 real
 def cgs(
     A: _ToLinearOperator[_ToFloat],
-    b: _ToFloatNotF32_1D,
+    b: _AsF64_1D,
     x0: onp.ToFloat1D | None = None,
     *,
     rtol: onp.ToFloat = 1e-5,
@@ -234,7 +234,7 @@ def cgs(
 @overload  # real, non-f32 real, callback_type: {"pr_norm", "legacy"} | None = ...
 def gmres(
     A: _ToLinearOperator[_ToFloat],
-    b: _ToFloatNotF32_1D,
+    b: _AsF64_1D,
     x0: onp.ToFloat1D | None = None,
     *,
     rtol: onp.ToFloat = 1e-5,
@@ -262,7 +262,7 @@ def gmres(
 @overload  # real, non-f32 real, callback_type: {"x"}
 def gmres(
     A: _ToLinearOperator[_ToFloat],
-    b: _ToFloatNotF32_1D,
+    b: _AsF64_1D,
     x0: onp.ToFloat1D | None = None,
     *,
     rtol: onp.ToFloat = 1e-5,
@@ -348,7 +348,7 @@ def gmres(
 @overload  # real, non-f32 real
 def qmr(
     A: _ToLinearOperator[_ToFloat],
-    b: _ToFloatNotF32_1D,
+    b: _AsF64_1D,
     x0: onp.ToFloat1D | None = None,
     *,
     rtol: onp.ToFloat = 1e-5,
