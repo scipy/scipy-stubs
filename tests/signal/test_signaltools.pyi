@@ -443,7 +443,9 @@ assert_type(detrend(_c128_1d), onp.ArrayND[np.complex128])
 
 assert_type(unique_roots(_py_f_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.int_]])
 assert_type(unique_roots(_f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.int_]])
+assert_type(unique_roots(_py_i_1d), tuple[onp.Array1D[np.int_], onp.Array1D[np.int_]])
 assert_type(unique_roots(_c128_1d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.int_]])
+assert_type(unique_roots(_py_i_1d, rtype="avg"), tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.int_]])
 
 # residue
 

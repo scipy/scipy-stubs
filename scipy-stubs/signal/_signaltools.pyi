@@ -1172,8 +1172,12 @@ def detrend(
 #
 @overload  # f64
 def unique_roots(
-    p: onp.ToInt1D | onp.ToJustFloat64_1D, tol: float = 0.001, rtype: _ResidueType = "min"
+    p: onp.ToJustFloat64_1D, tol: float = 0.001, rtype: _ResidueType = "min"
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.int_]]: ...
+@overload  # i64, rtype: min | max
+def unique_roots(
+    p: onp.ToJustInt64_1D, tol: float = 0.001, rtype: L["min", "minimum", "max", "maximum"] = "min"
+) -> tuple[onp.Array1D[np.int_], onp.Array1D[np.int_]]: ...
 @overload  # c128
 def unique_roots(
     p: onp.ToJustComplex128_1D, tol: float = 0.001, rtype: _ResidueType = "min"
@@ -1182,6 +1186,10 @@ def unique_roots(
 def unique_roots[InexactT: npc.inexact](
     p: onp.ToArray1D[InexactT, InexactT], tol: float = 0.001, rtype: _ResidueType = "min"
 ) -> tuple[onp.Array1D[InexactT], onp.Array1D[np.int_]]: ...
+@overload  # fallback
+def unique_roots(
+    p: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "min"
+) -> tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.int_]]: ...
 
 #
 @overload  # real
