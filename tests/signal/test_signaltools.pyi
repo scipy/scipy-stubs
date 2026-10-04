@@ -568,6 +568,7 @@ assert_type(decimate(_f64_1d, 2), onp.ArrayND[np.float64])
 assert_type(decimate(_f32_1d, 2), onp.ArrayND[np.float32])
 assert_type(decimate(_c128_1d, 2), onp.ArrayND[np.complex128])
 assert_type(decimate(_c64_1d, 2), onp.ArrayND[np.complex64])
+assert_type(decimate(_f80_1d, 2), onp.ArrayND[Any])
 
 # vectorstrength
 

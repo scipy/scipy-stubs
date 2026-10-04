@@ -1470,6 +1470,10 @@ def decimate(
 def decimate(
     x: onp.ToJustComplex64_ND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
 ) -> onp.ArrayND[np.complex64]: ...
+@overload  # fallback
+def decimate(
+    x: onp.ToComplexND, q: int, n: int | None = None, ftype: _FilterType = "iir", axis: int = -1, zero_phase: bool = True
+) -> onp.ArrayND[Any]: ...
 
 # complex periods are always cast to float64, and therefore not supported here
 @overload  # 0d
