@@ -34,7 +34,9 @@ dense_2d: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
 _b_1d: np.ndarray[tuple[int], np.dtype[np.bool]]
 _i8_1d: np.ndarray[tuple[int], np.dtype[np.int8]]
 _f32_1d: np.ndarray[tuple[int], np.dtype[np.float32]]
+_f64_1d: np.ndarray[tuple[int], np.dtype[np.float64]]
 _c64_1d: np.ndarray[tuple[int], np.dtype[np.complex64]]
+_c128_1d: np.ndarray[tuple[int], np.dtype[np.complex128]]
 
 _csr_mat_bool: sparse.csr_matrix[np.bool]
 _csr_mat_i16: sparse.csr_matrix[np.int16]
@@ -45,6 +47,7 @@ _spmat_f32: sparse.spmatrix[np.float32]
 _csr_arr_bool: sparse.csr_array[np.bool, tuple[int, int]]
 _csr_arr_i64: sparse.csr_array[np.int64, tuple[int, int]]
 _csr_arr_f64: sparse.csr_array[np.float64, tuple[int, int]]
+_csr_arr_c128: sparse.csr_array[np.complex128, tuple[int, int]]
 
 _coo_arr_f64: sparse.coo_array[np.float64]
 
@@ -203,6 +206,9 @@ assert_type(_csr_arr_c64 @ _c64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.comp
 assert_type(_csr_mat_bool @ _i8_1d, np.ndarray[tuple[Any, ...], np.dtype[np.int_ | Any]])
 assert_type(_csr_mat_i64 @ _f32_1d, np.ndarray[tuple[Any, ...], np.dtype[np.float64 | Any]])
 assert_type(_csr_mat_f64 @ _c64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.complex128 | Any]])
+assert_type(_csr_arr_i64 @ i64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.int64]])
+assert_type(_csr_arr_f64 @ _f64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.float64]])
+assert_type(_csr_arr_c128 @ _c128_1d, np.ndarray[tuple[Any, ...], np.dtype[np.complex128]])
 
 # spmatrix.__mul__ (same as spmatrix.__rmul__)
 
