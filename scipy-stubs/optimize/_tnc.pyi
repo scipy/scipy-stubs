@@ -32,9 +32,9 @@ USERABORT: Final = 7
 RCSTRINGS: Final[dict[_ReturnCode, str]]
 
 def fmin_tnc(
-    func: Callable[..., onp.ToFloat] | Callable[..., tuple[onp.ToFloat, onp.ToFloat]],
+    func: Callable[..., onp.ToFloat] | Callable[..., tuple[onp.ToFloat, onp.ToFloat | onp.ToFloat1D]],
     x0: onp.ToFloat | onp.ToFloat1D,
-    fprime: Callable[..., onp.ToFloat] | None = None,
+    fprime: Callable[..., onp.ToFloat | onp.ToFloat1D] | None = None,
     args: tuple[object, ...] = (),
     approx_grad: int = 0,
     bounds: Sequence[tuple[float | None, float | None]] | None = None,
