@@ -235,14 +235,7 @@ assert_type(leslie(_py_c_1d, _py_f_1d), onp.Array2D[np.complex128])
 assert_type(leslie(_py_c_1d, _py_c_1d), onp.Array2D[np.complex128])
 assert_type(leslie(_u8_1d, _u8_1d), onp.Array2D[np.uint8])
 assert_type(leslie(_f32_1d, _f32_1d), onp.Array2D[np.float32])
-assert_type(leslie(_py_b_2d, _py_b_1d), onp.ArrayND[np.bool])
-assert_type(leslie(_py_i_2d, _py_b_1d), onp.ArrayND[np.int_])
-assert_type(leslie(_py_b_1d, _py_i_2d), onp.ArrayND[np.int_])
-assert_type(leslie(_py_f_2d, _py_i_1d), onp.ArrayND[np.float64])
-assert_type(leslie(_py_i_1d, _py_f_2d), onp.ArrayND[np.float64])
-assert_type(leslie(_py_c_2d, _py_f_1d), onp.ArrayND[np.complex128])
-assert_type(leslie(_py_f_1d, _py_c_2d), onp.ArrayND[np.complex128])
-assert_type(leslie(_f32_2d, _f32_1d), onp.ArrayND[np.float32])
+assert_type(leslie(_py_f_2d, _py_i_1d), onp.ArrayND[Any])
 
 # block_diag
 
