@@ -232,15 +232,19 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 
 ### `scipy.signal`
 
-| generic type                                         | `scipy-stubs` | `scipy`  |                                                                                                 |
-| ---------------------------------------------------- | ------------- | -------- | ----------------------------------------------------------------------------------------------- |
-| `ShortTimeFFT[T: inexact]`                           | `>=1.16.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html)     |
-| `ShortTimeFFT[T: inexact, I: f64 \| c128]`           | `>=1.18.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html)     |
-| `StateSpace[Z: inexact, P: floating, D: scalar]`     | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.StateSpace.html)       |
-| `TransferFunction[P: floating, D: scalar]`           | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.TransferFunction.html) |
-| `ZerosPolesGain[Z: inexact, P: floating, D: scalar]` | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ZerosPolesGain.html)   |
-| `lti[Z: inexact, P: floating]`                       | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.lti.html)              |
-| `dlti[Z: inexact, P: floating, D: scalar]`           | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.dlti.html)             |
+| generic type                                                     | `scipy-stubs` | `scipy`  |                                                                                                 |
+| ---------------------------------------------------------------- | ------------- | -------- | ----------------------------------------------------------------------------------------------- |
+| `ShortTimeFFT[T: inexact]`                                       | `>=1.16.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html)     |
+| `ShortTimeFFT[T: inexact, I: f64 \| c128]`                       | `>=1.18.0.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ShortTimeFFT.html)     |
+| *`StateSpace[Z: inexact, P: floating, D: scalar]`*               | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.StateSpace.html)       |
+| `StateSpace[Z: inexact, P: floating, D: scalar, C: c64 \| c128]` | `>=1.18.1.2`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.StateSpace.html)       |
+| *`TransferFunction[P: floating, D: scalar]`*                     | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.TransferFunction.html) |
+| `TransferFunction[P: floating, D: scalar, C: c64 \| c128]`       | `>=1.18.1.2`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.TransferFunction.html) |
+| `ZerosPolesGain[Z: inexact, P: floating, D: scalar]`             | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.ZerosPolesGain.html)   |
+| *`lti[Z: inexact, P: floating]`*                                 | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.lti.html)              |
+| `lti[Z: inexact, P: floating, C: c64 \| c128]`                   | `>=1.18.1.2`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.lti.html)              |
+| *`dlti[Z: inexact, P: floating, D: scalar]`*                     | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.dlti.html)             |
+| `dlti[Z: inexact, P: floating, D: scalar, C: c64 \| c128]`       | `>=1.18.1.2`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.dlti.html)             |
 
 ### `scipy.sparse`
 
