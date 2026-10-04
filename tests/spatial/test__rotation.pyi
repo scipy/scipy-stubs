@@ -108,9 +108,11 @@ assert_type(_rot_nd * _rot_1d, Rotation)
 assert_type(_rot_nd**2.0, Rotation)
 assert_type(_rot_1d[0], Rotation[tuple[()]])
 assert_type(_rot_2d[0], Rotation)
+assert_type(_rot_nd[0], Rotation)
 assert_type(_rot_nd[0:2], Rotation)
 assert_type(next(iter(_rot_1d)), Rotation[tuple[()]])
 assert_type(next(iter(_rot_2d)), Rotation)
+assert_type(next(iter(_rot_nd)), Rotation)
 
 # inv
 
