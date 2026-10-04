@@ -330,6 +330,7 @@ def _deriv(a: np.ndarray[Any, np.dtype[np.float64]], axis: int, output: Any, mod
 def _filter1d(iline: onp.Array1D[np.float64], oline: onp.Array1D[np.float64]) -> None: ...
 def _filternd(buffer: onp.Array1D[np.float64]) -> float: ...
 def _vf_func(arr: onp.Array1D[Any]) -> np.float64: ...
+def _vf_func_nd(arr: onp.ArrayND[np.float64], *, axis: tuple[int, ...]) -> onp.ArrayND[np.float64]: ...
 
 ###
 # generic_laplace
@@ -369,5 +370,6 @@ assert_type(generic_filter(i32_2d, _filternd, size=3, output=f64_2d), onp.ArrayN
 ###
 # vectorized_filter
 
-assert_type(vectorized_filter(f64_2d, _vf_func, size=3), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
+assert_type(vectorized_filter(f64_2d, _vf_func_nd, size=3), onp.ArrayND[np.float64])
 assert_type(vectorized_filter(float_2d, _vf_func, size=3), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # mypy bug
+assert_type(vectorized_filter(f64_2d, _vf_func_nd, size=3, output=f32_2d), onp.ArrayND[np.float32])
