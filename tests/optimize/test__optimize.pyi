@@ -180,6 +180,7 @@ assert_type(fmin_ncg(_f, _x0, _fprime, full_output=True), tuple[_Float1D, _Float
 assert_type(
     fmin_ncg(_f, _x0, _fprime, full_output=True, retall=True), tuple[_Float1D, _Float, int, int, int, _WarnFlag, _AllVecs]
 )
+assert_type(fmin_ncg(_f, _x0, _fprime, fhess_p=rosen_hess_prod), _Float1D)
 
 ###
 # fmin_powell
