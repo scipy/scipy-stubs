@@ -6,6 +6,7 @@ from typing_extensions import CapsuleType
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from scipy import LowLevelCallable
 from scipy.ndimage import (
@@ -78,6 +79,7 @@ assert_type(correlate1d(complex_2d, weights_1d), onp.ArrayND[np.complex128])
 # ArrayND: shape loosens to tuple[int, ...]
 assert_type(correlate1d(f64_nd, weights_1d), onp.ArrayND[np.float64])
 assert_type(correlate1d(c128_nd, weights_1d), onp.ArrayND[np.complex128])
+assert_type(correlate1d(i32_2d, weights_1d, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # correlate
@@ -91,6 +93,7 @@ assert_type(correlate(f64_nd, weights_nd), onp.ArrayND[np.float64])
 assert_type(correlate(c128_nd, weights_nd), onp.ArrayND[np.complex128])
 assert_type(correlate(f64_nd, weights_nd, output=np.float32, origin=_origin), onp.ArrayND[np.float32])
 assert_type(correlate(f64_nd, weights_nd, output=_dtype, origin=_origin), onp.ArrayND[Any])
+assert_type(correlate(i32_2d, weights_nd, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # convolve1d
@@ -102,6 +105,7 @@ assert_type(convolve1d(float_2d, weights_1d), onp.ArrayND[np.float64])
 assert_type(convolve1d(complex_2d, weights_1d), onp.ArrayND[np.complex128])
 assert_type(convolve1d(f64_nd, weights_1d), onp.ArrayND[np.float64])
 assert_type(convolve1d(c128_nd, weights_1d), onp.ArrayND[np.complex128])
+assert_type(convolve1d(i32_2d, weights_1d, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # convolve
@@ -119,6 +123,7 @@ assert_type(convolve(float_2d, weights_nd, origin=(0, 1)), onp.ArrayND[np.float6
 assert_type(convolve(complex_2d, weights_nd, origin=(0, 1)), onp.ArrayND[np.complex128])
 assert_type(convolve(f64_nd, weights_nd, output=np.float32, origin=(0, 1)), onp.ArrayND[np.float32])
 assert_type(convolve(f64_nd, weights_nd, output="f4", origin=(0, 1)), onp.ArrayND[Any])
+assert_type(convolve(i32_2d, weights_nd, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # prewitt
@@ -130,6 +135,7 @@ assert_type(prewitt(float_2d), onp.ArrayND[np.float64])
 assert_type(prewitt(complex_2d), onp.ArrayND[np.complex128])
 assert_type(prewitt(f64_nd), onp.ArrayND[np.float64])
 assert_type(prewitt(c128_nd), onp.ArrayND[np.complex128])
+assert_type(prewitt(i32_2d, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # sobel
@@ -141,6 +147,7 @@ assert_type(sobel(float_2d), onp.ArrayND[np.float64])
 assert_type(sobel(complex_2d), onp.ArrayND[np.complex128])
 assert_type(sobel(f64_nd), onp.ArrayND[np.float64])
 assert_type(sobel(c128_nd), onp.ArrayND[np.complex128])
+assert_type(sobel(i32_2d, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # laplace
@@ -152,6 +159,7 @@ assert_type(laplace(float_2d), onp.ArrayND[np.float64])
 assert_type(laplace(complex_2d), onp.ArrayND[np.complex128])
 assert_type(laplace(f64_nd), onp.ArrayND[np.float64])
 assert_type(laplace(c128_nd), onp.ArrayND[np.complex128])
+assert_type(laplace(i32_2d, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # gaussian_laplace
@@ -163,6 +171,7 @@ assert_type(gaussian_laplace(float_2d, sigma=1), onp.ArrayND[np.float64])
 assert_type(gaussian_laplace(complex_2d, sigma=1), onp.ArrayND[np.complex128])
 assert_type(gaussian_laplace(f64_nd, sigma=1), onp.ArrayND[np.float64])
 assert_type(gaussian_laplace(c128_nd, sigma=1), onp.ArrayND[np.complex128])
+assert_type(gaussian_laplace(i32_2d, sigma=1, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # gaussian_gradient_magnitude
@@ -174,6 +183,7 @@ assert_type(gaussian_gradient_magnitude(float_2d, sigma=1), onp.ArrayND[np.float
 assert_type(gaussian_gradient_magnitude(complex_2d, sigma=1), onp.ArrayND[np.complex128])
 assert_type(gaussian_gradient_magnitude(f64_nd, sigma=1), onp.ArrayND[np.float64])
 assert_type(gaussian_gradient_magnitude(c128_nd, sigma=1), onp.ArrayND[np.complex128])
+assert_type(gaussian_gradient_magnitude(i32_2d, sigma=1, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # gaussian_filter1d
@@ -185,6 +195,7 @@ assert_type(gaussian_filter1d(float_2d, sigma=1), onp.ArrayND[np.float64])
 assert_type(gaussian_filter1d(complex_2d, sigma=1), onp.ArrayND[np.complex128])
 assert_type(gaussian_filter1d(f64_nd, sigma=1), onp.ArrayND[np.float64])
 assert_type(gaussian_filter1d(c128_nd, sigma=1), onp.ArrayND[np.complex128])
+assert_type(gaussian_filter1d(i32_2d, sigma=1, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # gaussian_filter
@@ -196,6 +207,7 @@ assert_type(gaussian_filter(float_2d, sigma=1), onp.ArrayND[np.float64])
 assert_type(gaussian_filter(complex_2d, sigma=1), onp.ArrayND[np.complex128])
 assert_type(gaussian_filter(f64_nd, sigma=1), onp.ArrayND[np.float64])
 assert_type(gaussian_filter(c128_nd, sigma=1), onp.ArrayND[np.complex128])
+assert_type(gaussian_filter(i32_2d, sigma=1, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # uniform_filter1d
@@ -207,6 +219,7 @@ assert_type(uniform_filter1d(float_2d, size=3), onp.ArrayND[np.float64])
 assert_type(uniform_filter1d(complex_2d, size=3), onp.ArrayND[np.complex128])
 assert_type(uniform_filter1d(f64_nd, size=3), onp.ArrayND[np.float64])
 assert_type(uniform_filter1d(c128_nd, size=3), onp.ArrayND[np.complex128])
+assert_type(uniform_filter1d(i32_2d, size=3, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # uniform_filter
@@ -218,6 +231,7 @@ assert_type(uniform_filter(float_2d), onp.ArrayND[np.float64])
 assert_type(uniform_filter(complex_2d), onp.ArrayND[np.complex128])
 assert_type(uniform_filter(f64_nd), onp.ArrayND[np.float64])
 assert_type(uniform_filter(c128_nd), onp.ArrayND[np.complex128])
+assert_type(uniform_filter(i32_2d, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # maximum_filter1d
@@ -229,6 +243,7 @@ assert_type(maximum_filter1d(float_2d, size=3), onp.ArrayND[np.float64])
 assert_type(maximum_filter1d(complex_2d, size=3), onp.ArrayND[np.complex128])
 assert_type(maximum_filter1d(f64_nd, size=3), onp.ArrayND[np.float64])
 assert_type(maximum_filter1d(c128_nd, size=3), onp.ArrayND[np.complex128])
+assert_type(maximum_filter1d(i32_2d, size=3, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # maximum_filter
@@ -241,6 +256,7 @@ assert_type(maximum_filter(complex_2d), onp.ArrayND[np.complex128])
 assert_type(maximum_filter(f64_nd), onp.ArrayND[np.float64])
 assert_type(maximum_filter(c128_nd), onp.ArrayND[np.complex128])
 assert_type(maximum_filter(f64_2d, footprint=f64_2d), onp.Array2D[np.float64])
+assert_type(maximum_filter(i32_2d, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # minimum_filter1d
@@ -251,6 +267,7 @@ assert_type(minimum_filter1d(int_2d, size=3), onp.ArrayND[np.intp])
 assert_type(minimum_filter1d(float_2d, size=3), onp.ArrayND[np.float64])
 assert_type(minimum_filter1d(c128_nd, size=3), onp.ArrayND[np.complex128])
 assert_type(minimum_filter1d(f64_nd, size=3), onp.ArrayND[np.float64])
+assert_type(minimum_filter1d(i32_2d, size=3, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # minimum_filter
@@ -262,6 +279,7 @@ assert_type(minimum_filter(float_2d), onp.ArrayND[np.float64])
 assert_type(minimum_filter(c128_nd), onp.ArrayND[np.complex128])
 assert_type(minimum_filter(f64_nd), onp.ArrayND[np.float64])
 assert_type(minimum_filter(f64_2d, footprint=f64_2d), onp.Array2D[np.float64])
+assert_type(minimum_filter(i32_2d, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # median_filter
@@ -273,6 +291,7 @@ assert_type(median_filter(float_2d), onp.ArrayND[np.float64])
 assert_type(median_filter(c128_nd), onp.ArrayND[np.complex128])
 assert_type(median_filter(f64_nd), onp.ArrayND[np.float64])
 assert_type(median_filter(f64_2d, footprint=f64_2d), onp.Array2D[np.float64])
+assert_type(median_filter(i32_2d, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # rank_filter
@@ -284,6 +303,7 @@ assert_type(rank_filter(float_2d, rank=1, size=3), onp.ArrayND[np.float64])
 assert_type(rank_filter(c128_nd, rank=1, size=3), onp.ArrayND[np.complex128])
 assert_type(rank_filter(f64_nd, rank=1, size=3), onp.ArrayND[np.float64])
 assert_type(rank_filter(f64_2d, rank=1, footprint=f64_2d), onp.Array2D[np.float64])
+assert_type(rank_filter(i32_2d, rank=1, size=3, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # percentile_filter
@@ -295,6 +315,7 @@ assert_type(percentile_filter(float_2d, percentile=50, size=3), onp.ArrayND[np.f
 assert_type(percentile_filter(c128_nd, percentile=50, size=3), onp.ArrayND[np.complex128])
 assert_type(percentile_filter(f64_nd, percentile=50, size=3), onp.ArrayND[np.float64])
 assert_type(percentile_filter(f64_2d, percentile=50, footprint=f64_2d), onp.Array2D[np.float64])
+assert_type(percentile_filter(i32_2d, percentile=50, size=3, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # output=type[ScalarT]: matches ToDType[_ScalarT] -> returned as ArrayND[_ScalarT]
@@ -316,6 +337,7 @@ def _vf_func(arr: onp.Array1D[Any]) -> np.float64: ...
 assert_type(generic_laplace(f64_2d, _deriv, axes=_axes), onp.Array2D[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
 assert_type(generic_laplace(float_2d, _deriv), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
 assert_type(generic_laplace(complex_2d, _deriv), onp.ArrayND[Any])
+assert_subtype[onp.ArrayND[np.float64]](generic_laplace(i32_2d, _deriv, output=f64_2d))
 
 ###
 # generic_gradient_magnitude
@@ -323,6 +345,7 @@ assert_type(generic_laplace(complex_2d, _deriv), onp.ArrayND[Any])
 assert_type(generic_gradient_magnitude(f64_2d, _deriv, axes=_axes), onp.Array2D[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
 assert_type(generic_gradient_magnitude(float_2d, _deriv), onp.ArrayND[np.float64])  # type: ignore[assert-type]  # pyrefly: ignore[assert-type]
 assert_type(generic_gradient_magnitude(complex_2d, _deriv), onp.ArrayND[Any])
+assert_subtype[onp.ArrayND[np.float64]](generic_gradient_magnitude(i32_2d, _deriv, output=f64_2d))
 
 ###
 # generic_filter1d
@@ -331,6 +354,7 @@ assert_type(generic_filter1d(f64_2d, _filter1d, 3), onp.Array2D[np.float64])
 assert_type(generic_filter1d(float_2d, _filter1d, 3), onp.ArrayND[np.float64])
 assert_type(generic_filter1d(f64_nd, _filter1d, 3), onp.ArrayND[np.float64])
 assert_type(generic_filter1d(f64_2d, _llc, 3), onp.Array2D[np.float64])
+assert_type(generic_filter1d(i32_2d, _filter1d, 3, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # generic_filter
@@ -340,6 +364,7 @@ assert_type(generic_filter(float_2d, _filternd, size=3), onp.ArrayND[np.float64]
 assert_type(generic_filter(f64_nd, _filternd, size=3), onp.ArrayND[np.float64])
 assert_type(generic_filter(f64_2d, _filternd, footprint=f64_2d), onp.Array2D[np.float64])
 assert_type(generic_filter(f64_2d, _llc, size=3), onp.Array2D[np.float64])
+assert_type(generic_filter(i32_2d, _filternd, size=3, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
 # vectorized_filter
