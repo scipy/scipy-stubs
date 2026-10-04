@@ -669,7 +669,7 @@ class StateSpace(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_
 
     #
     @overload
-    def __init__(self, system: StateSpace[_ZerosT_co, _PolesT_co, _DTT_co], /) -> None: ...
+    def __init__(self, system: LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], /) -> None: ...
     @overload
     def __init__(
         self: StateSpace[np.float64, np.float64],
@@ -773,7 +773,7 @@ class StateSpaceDiscrete(
     StateSpace[_ZerosT_co, _PolesT_co, _DTT_co], dlti[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]
 ):
     @overload
-    def __init__(self, system: StateSpace[_ZerosT_co, _PolesT_co, _DTT_co], /) -> None: ...
+    def __init__(self, system: LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], /) -> None: ...
     @overload
     def __init__[DTT: onp.ToComplex | None](
         self: StateSpaceDiscrete[np.float64, np.float64, DTT],

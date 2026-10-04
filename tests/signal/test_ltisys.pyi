@@ -157,8 +157,8 @@ assert_type(ZerosPolesGain(_f64_1d, _c128_1d, 5), ZerosPolesGainContinuous[Any, 
 assert_type(ZerosPolesGain(_f64_1d, _c128_1d, 5, dt=0.1), ZerosPolesGainDiscrete[Any, np.float64 | Any, float])  # type: ignore[assert-type]
 
 # StateSpace
-assert_type(StateSpace(_ss_cont_f32), StateSpaceContinuous[np.float32, np.float32])  # type: ignore[assert-type]
-assert_type(StateSpace(_ss_disc_f32), StateSpaceDiscrete[np.float32, np.float32, float])  # type: ignore[assert-type]
+assert_type(StateSpace(_tf_cont_f32), StateSpaceContinuous[np.float32, np.float32])  # type: ignore[assert-type]
+assert_type(StateSpace(_tf_disc_f32), StateSpaceDiscrete[np.float32, np.float32, float])  # type: ignore[assert-type]
 assert_type(StateSpace(_f64_2d, _f64_2d, _f64_2d, _f64_2d), StateSpaceContinuous[np.float64, np.float64])  # type: ignore[assert-type]
 assert_type(StateSpace(_c128_2d, _c128_2d, _c128_2d, _c128_2d), StateSpaceContinuous[np.complex128, np.float64])  # type: ignore[assert-type]
 assert_type(StateSpace(_f64_2d, _f64_2d, _f64_2d, _f64_2d, dt=0.1), StateSpaceDiscrete[np.float64, np.float64, float])  # type: ignore[assert-type]
