@@ -237,6 +237,8 @@ assert_type(leslie(_u8_1d, _u8_1d), onp.Array2D[np.uint8])
 assert_type(leslie(_f32_1d, _f32_1d), onp.Array2D[np.float32])
 assert_type(leslie(_f32_2d, _f32_1d), onp.ArrayND[np.float32])
 assert_type(leslie(_py_f_2d, _py_i_1d), onp.ArrayND[Any])
+assert_type(leslie(_f64_nd, _py_f_1d), onp.ArrayND[Any])
+assert_type(leslie(_py_f_1d, _f64_nd), onp.ArrayND[Any])
 
 # block_diag
 
