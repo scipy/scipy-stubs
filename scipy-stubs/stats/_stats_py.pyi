@@ -1754,6 +1754,16 @@ def tmin(
     *,
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
+@overload  # Nd T@+number
+def tmin[ScalarT: npc.number | np.bool](
+    a: onp.ArrayND[ScalarT],
+    lowerlimit: _ComplexLimit | None = None,
+    axis: int | tuple[int, ...] = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> ScalarT | onp.ArrayND[ScalarT]: ...
 @overload  # ?d T@inexact, axis=None
 def tmin[InexactT: npc.inexact](
     a: onp.ArrayND[InexactT],
@@ -1976,6 +1986,16 @@ def tmax(
     *,
     keepdims: L[False] = False,
 ) -> onp.Array1D[np.complex128]: ...
+@overload  # Nd T@+number
+def tmax[ScalarT: npc.number | np.bool](
+    a: onp.ArrayND[ScalarT],
+    upperlimit: _ComplexLimit | None = None,
+    axis: int | tuple[int, ...] = 0,
+    inclusive: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
+) -> ScalarT | onp.ArrayND[ScalarT]: ...
 @overload  # ?d T@inexact, axis=None
 def tmax[InexactT: npc.inexact](
     a: onp.ArrayND[InexactT],
