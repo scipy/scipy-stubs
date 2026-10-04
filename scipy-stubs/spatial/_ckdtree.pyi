@@ -11,7 +11,7 @@ __all__ = ["cKDTree"]
 
 ###
 
-type _Weights = onp.ToFloatND | tuple[onp.ToFloatND, onp.ToFloatND]
+type _Weights = onp.ToFloatND | tuple[onp.ToFloatND, onp.ToFloatND | None] | tuple[onp.ToFloatND | None, onp.ToFloatND]
 type _Indices = onp.Array1D[np.intp]
 type _Float1D = onp.Array1D[np.float64]
 type _Float2D = onp.Array2D[np.float64]
