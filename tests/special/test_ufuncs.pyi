@@ -338,11 +338,12 @@ assert_type(sp.nbdtr(1, 2, _f4), np.float64)
 assert_type(sp.nbdtr(_i4_nd, 1, _f4), _Float64ND)
 assert_type(sp.nbdtr(1, 2, _f4_nd), _Float64ND)
 assert_type(sp.nbdtr(1, _f4, _f4), np.float32)
-assert_type(sp.nbdtr(_f4, 1, _f4), np.float32)
+assert_type(sp.nbdtr(_f8, 2.0, _f4), np.float64)
 assert_type(sp.nbdtr(1.0, 2.0, 0.5), np.float64)
 assert_type(sp.nbdtr(_i4_nd, 2.0, 0.5), _Float64ND)
 assert_type(sp.nbdtr(1.0, _i4_nd, 0.5), _Float64ND)
 assert_type(sp.nbdtr(1.0, 2.0, _i4_nd), _Float64ND)
+assert_type(sp.nbdtr(1.0, 2.0, _f4), np.float32)
 
 # _UFunc31fc1
 assert_type(sp.hyp1f1(_f8, 2.0, _c16), np.complex128)
