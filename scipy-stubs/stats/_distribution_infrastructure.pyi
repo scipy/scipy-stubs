@@ -301,7 +301,7 @@ type _Float1ND = onp.Array[tuple[int, *tuple[Any, ...]], np.float64]
 type _Float2ND = onp.Array[tuple[int, int, *tuple[Any, ...]], np.float64]
 type _Float3ND = onp.Array[tuple[int, int, int, *tuple[Any, ...]], np.float64]
 
-type _Complex = np.complex128 | np.clongdouble
+type _Complex = np.complex128 | Any
 type _ComplexND[ShapeT: tuple[int, *tuple[int, ...]]] = onp.ArrayND[_Complex, ShapeT]
 
 type _ToFloatND[ShapeT: tuple[int, *tuple[int, ...]]] = onp.CanArrayND[_Real | np.bool, ShapeT]

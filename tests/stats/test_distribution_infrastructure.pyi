@@ -1,6 +1,6 @@
 # type-tests for `stats/_distribution_infrastructure.pyi`
 
-from typing import assert_type, type_check_only
+from typing import Any, assert_type, type_check_only
 
 import numpy as np
 import optype.numpy as onp
@@ -67,6 +67,10 @@ class _MultiDuckRV:
 
 # plot
 assert_type(_uniform_0d_f64.plot(t=("x", -1, 5), ax=_ax), Axes)
+
+# logentropy
+assert_type(_uniform_0d_f64.logentropy(), np.complex128 | Any)
+assert_type(_uniform_1d_f64.logentropy(), onp.Array1D[np.complex128 | Any])
 
 # __neg__
 assert_type(-_uniform_0d_f64, ShiftedScaledDistribution[Uniform[_0d, np.float64], np.float64, _0d])
