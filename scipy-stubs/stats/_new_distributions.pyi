@@ -109,7 +109,9 @@ class Normal(
         cls, /, *, mu: FloatT | onp.ToInt, sigma: FloatT, **kw: Unpack[_DistOpts]
     ) -> Normal[_0D, FloatT]: ...
     @overload  # a, sigma: 0-d
-    def __new__(cls, /, *, mu: onp.ToFloat = 0.0, sigma: onp.ToFloat = 1.0, **kw: Unpack[_DistOpts]) -> Normal[_0D]: ...
+    def __new__(
+        cls, /, *, mu: onp.ToFloat = 0.0, sigma: onp.ToFloat = 1.0, **kw: Unpack[_DistOpts]
+    ) -> Normal[_0D, np.float64 | Any]: ...
     @overload  # mu: 1-d
     def __new__(
         cls, /, *, mu: onp.ToFloatStrict1D, sigma: _ToFloat_1D = 1.0, **kw: Unpack[_DistOpts]
@@ -177,7 +179,9 @@ class Normal(
         self: Normal[_0D, FloatT], /, *, mu: FloatT | onp.ToInt, sigma: FloatT, **kw: Unpack[_DistOpts]
     ) -> None: ...
     @overload  # a, sigma: 0-d
-    def __init__(self: Normal[_0D], /, *, mu: onp.ToFloat = 0.0, sigma: onp.ToFloat = 1.0, **kw: Unpack[_DistOpts]) -> None: ...
+    def __init__(
+        self: Normal[_0D, np.float64 | Any], /, *, mu: onp.ToFloat = 0.0, sigma: onp.ToFloat = 1.0, **kw: Unpack[_DistOpts]
+    ) -> None: ...
     @overload  # mu: 1-d
     def __init__(
         self: Normal[_1D, np.float64 | Any], /, *, mu: onp.ToFloatStrict1D, sigma: _ToFloat_1D = 1.0, **kw: Unpack[_DistOpts]
@@ -265,7 +269,7 @@ class Uniform(
         self: Uniform[_0D, FloatT], /, *, a: FloatT | onp.ToInt, b: FloatT, **kw: Unpack[_DistOpts]
     ) -> None: ...
     @overload  # a, b: 0-d
-    def __init__(self: Uniform[_0D], /, *, a: onp.ToFloat, b: onp.ToFloat, **kw: Unpack[_DistOpts]) -> None: ...
+    def __init__(self: Uniform[_0D, np.float64 | Any], /, *, a: onp.ToFloat, b: onp.ToFloat, **kw: Unpack[_DistOpts]) -> None: ...
     @overload  # a: 1-d
     def __init__(
         self: Uniform[_1D, np.float64 | Any], /, *, a: onp.ToFloatStrict1D, b: _ToFloat_1D, **kw: Unpack[_DistOpts]
