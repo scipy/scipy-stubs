@@ -63,6 +63,7 @@ _f16_1d: onp.Array1D[np.float16]
 _f32_1d: onp.Array1D[np.float32]
 _f64_1d: onp.Array1D[np.float64]
 _f80_1d: onp.Array1D[npc.floating80]
+_num_1d: onp.Array1D[npc.number]
 _c64_1d: onp.Array1D[np.complex64]
 _c128_1d: onp.Array1D[np.complex128]
 _c160_1d: onp.Array1D[npc.complexfloating160]
@@ -568,7 +569,8 @@ assert_type(decimate(_f64_1d, 2), onp.ArrayND[np.float64])
 assert_type(decimate(_f32_1d, 2), onp.ArrayND[np.float32])
 assert_type(decimate(_c128_1d, 2), onp.ArrayND[np.complex128])
 assert_type(decimate(_c64_1d, 2), onp.ArrayND[np.complex64])
-assert_type(decimate(_f80_1d, 2), onp.ArrayND[Any])
+assert_type(decimate(_f80_1d, 2), onp.ArrayND[npc.floating80])
+assert_type(decimate(_num_1d, 2), onp.ArrayND[Any])
 
 # vectorstrength
 
