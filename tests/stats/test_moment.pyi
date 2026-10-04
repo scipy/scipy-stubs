@@ -1,6 +1,6 @@
 # type-tests for `moment` from `stats/_stats_py.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -109,6 +109,7 @@ assert_type(moment(_py_f_3d), onp.Array2D[np.float64])
 assert_type(moment(_i16_3d), onp.Array2D[np.float64])
 assert_type(moment(_f32_3d), onp.Array2D[np.float32])
 assert_type(moment(_f64_3d), onp.Array2D[np.float64])
+assert_type(moment(_f64_3d, axis=(1, 2)), onp.ArrayND[np.float64] | Any)
 assert_type(moment(_py_i_3d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_py_f_3d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_i16_3d, [1, 2]), onp.ArrayND[np.float64])
@@ -144,7 +145,7 @@ assert_type(moment(_f32_nd), np.float32 | onp.ArrayND[np.float32])  # pyrefly:ig
 assert_type(moment(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 assert_type(moment(_i16_nd, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_f32_nd, [1, 2]), onp.ArrayND[np.float32])
-assert_type(moment(_f64_nd, [1, 2]), onp.ArrayND[np.float64])
+assert_type(moment(_f64_nd, [1, 2], axis=(1, 2)), onp.ArrayND[np.float64])
 
 assert_type(moment(_i16_nd, axis=None), np.float64)
 assert_type(moment(_f32_nd, axis=None), np.float32)
@@ -155,7 +156,7 @@ assert_type(moment(_f64_nd, [1, 2], axis=None), onp.ArrayND[np.float64])
 
 assert_type(moment(_i16_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_f32_nd, keepdims=True), onp.ArrayND[np.float32])
-assert_type(moment(_f64_nd, keepdims=True), onp.ArrayND[np.float64])
+assert_type(moment(_f64_nd, axis=(1, 2), keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_i16_nd, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_f32_nd, [1, 2], keepdims=True), onp.ArrayND[np.float32])
 assert_type(moment(_f64_nd, [1, 2], keepdims=True), onp.ArrayND[np.float64])

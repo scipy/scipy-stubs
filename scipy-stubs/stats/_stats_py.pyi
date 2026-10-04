@@ -493,7 +493,7 @@ def gmean(
 @overload  # Nd T@inexact
 def gmean[InexactT: npc.inexact](
     a: onp.ArrayND[InexactT],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
@@ -503,7 +503,7 @@ def gmean[InexactT: npc.inexact](
 @overload  # Nd T@inexact, keepdims=True
 def gmean[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[InexactT, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
@@ -533,7 +533,7 @@ def gmean(
 @overload  # Nd float, keepdims=True
 def gmean(
     a: onp.SequenceND[float],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
@@ -553,7 +553,7 @@ def gmean(
 @overload  # Nd ~complex, keepdims=True
 def gmean(
     a: onp.SequenceND[list[complex]] | list[complex],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
@@ -573,7 +573,7 @@ def gmean(
 @overload  # Nd +int
 def gmean(
     a: onp.ArrayND[npc.integer | np.bool],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
@@ -583,7 +583,7 @@ def gmean(
 @overload  # Nd +int, keepdims=True
 def gmean[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.integer | np.bool, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     *,
@@ -633,7 +633,7 @@ def gmean[InexactT: npc.inexact](
 @overload  # Nd, dtype=<known>
 def gmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     *,
     dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
@@ -643,7 +643,7 @@ def gmean[InexactT: npc.inexact](
 @overload  # Nd, dtype=<known>, keepdims=True
 def gmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     *,
     dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
@@ -663,7 +663,7 @@ def gmean[InexactT: npc.inexact](
 @overload  # dtype=? (fallback)
 def gmean(
     a: onp.ToComplexND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     *,
     dtype: str | type,
     weights: onp.ToFloatND | None = None,
@@ -755,7 +755,7 @@ def hmean(
 @overload  # Nd T@inexact
 def hmean[InexactT: npc.inexact](
     a: onp.ArrayND[InexactT],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
@@ -765,7 +765,7 @@ def hmean[InexactT: npc.inexact](
 @overload  # Nd T@inexact, keepdims=True
 def hmean[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[InexactT, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
@@ -795,7 +795,7 @@ def hmean(
 @overload  # Nd float, keepdims=True
 def hmean(
     a: onp.SequenceND[float],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
@@ -815,7 +815,7 @@ def hmean(
 @overload  # Nd ~complex, keepdims=True
 def hmean(
     a: onp.SequenceND[list[complex]] | list[complex],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
@@ -835,7 +835,7 @@ def hmean(
 @overload  # Nd +int
 def hmean(
     a: onp.ArrayND[npc.integer | np.bool],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
@@ -845,7 +845,7 @@ def hmean(
 @overload  # Nd +int, keepdims=True
 def hmean[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.integer | np.bool, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     *,
     weights: onp.ToFloatND | None = None,
@@ -895,7 +895,7 @@ def hmean[InexactT: npc.inexact](
 @overload  # Nd, dtype=<known>
 def hmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     *,
     dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
@@ -905,7 +905,7 @@ def hmean[InexactT: npc.inexact](
 @overload  # Nd, dtype=<known>, keepdims=True
 def hmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     *,
     dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
@@ -925,7 +925,7 @@ def hmean[InexactT: npc.inexact](
 @overload  # dtype=? (fallback)
 def hmean(
     a: onp.ToComplexND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     *,
     dtype: str | type,
     weights: onp.ToFloatND | None = None,
@@ -1027,7 +1027,7 @@ def pmean[InexactT: npc.inexact](
     a: onp.ArrayND[InexactT],
     p: float,
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -1038,7 +1038,7 @@ def pmean[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[InexactT, ShapeT],
     p: float,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -1071,7 +1071,7 @@ def pmean(
     a: onp.SequenceND[float],
     p: float,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -1093,7 +1093,7 @@ def pmean(
     a: onp.SequenceND[list[complex]] | list[complex],
     p: float,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -1115,7 +1115,7 @@ def pmean(
     a: onp.ArrayND[npc.integer | np.bool],
     p: float,
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -1126,7 +1126,7 @@ def pmean[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.integer | np.bool, ShapeT],
     p: float,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: None = None,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -1181,7 +1181,7 @@ def pmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     p: float,
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -1192,7 +1192,7 @@ def pmean[InexactT: npc.inexact](
     a: onp.ToComplexND,
     p: float,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: onp.ToDType[InexactT],
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -1214,7 +1214,7 @@ def pmean(
     a: onp.ToComplexND,
     p: float,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     dtype: str | type,
     weights: onp.ToFloatND | None = None,
     nan_policy: NanPolicy = "propagate",
@@ -1232,7 +1232,11 @@ def mode(
 ) -> ModeResult[np.int_, np.intp]: ...
 @overload  # int ?d, keepdims=True (keyword)
 def mode(
-    a: int | onp.SequenceND[int], axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: int | onp.SequenceND[int],
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
 ) -> ModeResult[onp.ArrayND[np.int_], onp.ArrayND[np.intp]]: ...
 @overload  # int >1d, axis: int (default)
 def mode(  # type: ignore[overload-overlap]
@@ -1252,7 +1256,7 @@ def mode(
 @overload  # float ?d, keepdims=True (keyword)
 def mode(
     a: op.JustFloat | onp.SequenceND[op.JustFloat],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
@@ -1271,7 +1275,11 @@ def mode[ST: _Real0D](
 ) -> ModeResult[ST, np.intp]: ...
 @overload  # T@real ?d, keepdims=True (keyword)
 def mode[ST: _Real0D](
-    a: ST | onp.ToArrayND[Never, ST], axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: ST | onp.ToArrayND[Never, ST],
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
 ) -> ModeResult[onp.ArrayND[ST], onp.ArrayND[np.intp]]: ...
 @overload  # T@real >1d, axis: int (default)
 def mode[ST: _Real0D](
@@ -1283,11 +1291,18 @@ def mode(
 ) -> ModeResult[np.float64 | Any, np.intp]: ...
 @overload  # real ?d, keepdims=True (keyword)
 def mode(
-    a: onp.ToFloat | onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: onp.ToFloat | onp.ToFloatND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
 ) -> ModeResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.intp]]: ...
 @overload  # real ?d
 def mode(
-    a: onp.ToFloat | onp.ToFloatND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+    a: onp.ToFloat | onp.ToFloatND,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
 ) -> ModeResult: ...
 
 #
@@ -1406,7 +1421,7 @@ def tmean[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[InexactT, ShapeT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
@@ -1416,7 +1431,7 @@ def tmean[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.integer | np.bool, ShapeT],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
@@ -1426,7 +1441,7 @@ def tmean(
     a: onp.SequenceND[float],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
@@ -1436,7 +1451,7 @@ def tmean(
     a: onp.SequenceND[list[complex]] | list[complex],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     *,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
@@ -1569,7 +1584,7 @@ def tvar[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[InexactT, ShapeT],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     ddof: int = 1,
     *,
     nan_policy: NanPolicy = "propagate",
@@ -1580,7 +1595,7 @@ def tvar[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.integer | np.bool, ShapeT],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     ddof: int = 1,
     *,
     nan_policy: NanPolicy = "propagate",
@@ -1591,7 +1606,7 @@ def tvar(
     a: onp.SequenceND[float],
     limits: _RealLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     ddof: int = 1,
     *,
     nan_policy: NanPolicy = "propagate",
@@ -1602,7 +1617,7 @@ def tvar(
     a: onp.SequenceND[list[complex]] | list[complex],
     limits: _ComplexLimits | None = None,
     inclusive: tuple[bool, bool] = (True, True),
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     ddof: int = 1,
     *,
     nan_policy: NanPolicy = "propagate",
@@ -1788,7 +1803,7 @@ def tmin(
 def tmin[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[InexactT, ShapeT],
     lowerlimit: _ComplexLimit | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -1798,7 +1813,7 @@ def tmin[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
 def tmin[ScalarT: npc.integer | np.bool, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[ScalarT, ShapeT],
     lowerlimit: _RealLimit | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -1808,7 +1823,7 @@ def tmin[ScalarT: npc.integer | np.bool, ShapeT: tuple[int, ...]](
 def tmin(
     a: onp.SequenceND[list[int]] | list[int],
     lowerlimit: _RealLimit | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -1818,7 +1833,7 @@ def tmin(
 def tmin(
     a: onp.SequenceND[float],
     lowerlimit: _RealLimit | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -1828,7 +1843,7 @@ def tmin(
 def tmin(
     a: onp.SequenceND[list[complex]] | list[complex],
     lowerlimit: _ComplexLimit | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -2010,7 +2025,7 @@ def tmax(
 def tmax[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[InexactT, ShapeT],
     upperlimit: _ComplexLimit | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -2020,7 +2035,7 @@ def tmax[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
 def tmax[ScalarT: npc.integer | np.bool, ShapeT: tuple[int, ...]](
     a: onp.ArrayND[ScalarT, ShapeT],
     upperlimit: _RealLimit | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -2030,7 +2045,7 @@ def tmax[ScalarT: npc.integer | np.bool, ShapeT: tuple[int, ...]](
 def tmax(
     a: onp.SequenceND[list[int]] | list[int],
     upperlimit: _RealLimit | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -2040,7 +2055,7 @@ def tmax(
 def tmax(
     a: onp.SequenceND[float],
     upperlimit: _RealLimit | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -2050,7 +2065,7 @@ def tmax(
 def tmax(
     a: onp.SequenceND[list[complex]] | list[complex],
     upperlimit: _ComplexLimit | None = None,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     inclusive: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -2179,7 +2194,7 @@ def moment[FloatT: npc.floating](
 def moment(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     order: int = 1,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
@@ -2209,7 +2224,7 @@ def moment(
 def moment(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     order: onp.ToIntND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
@@ -2219,7 +2234,7 @@ def moment(
 def moment(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     order: int | onp.ToIntND = 1,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
@@ -2229,7 +2244,7 @@ def moment(
 def moment[FloatT: npc.floating](
     a: onp.ToArrayND[FloatT, FloatT],
     order: int = 1,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
@@ -2259,7 +2274,7 @@ def moment[FloatT: npc.floating](
 def moment[FloatT: npc.floating](
     a: onp.ToArrayND[FloatT, FloatT],
     order: onp.ToIntND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
@@ -2269,7 +2284,7 @@ def moment[FloatT: npc.floating](
 def moment[FloatT: npc.floating](
     a: onp.ToArrayND[FloatT, FloatT],
     order: int | onp.ToIntND = 1,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
@@ -2279,7 +2294,7 @@ def moment[FloatT: npc.floating](
 def moment(
     a: onp.ToFloatND,
     order: int = 1,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
@@ -2309,7 +2324,7 @@ def moment(
 def moment(
     a: onp.ToFloatND,
     order: onp.ToIntND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
@@ -2319,7 +2334,7 @@ def moment(
 def moment(
     a: onp.ToFloatND,
     order: int | onp.ToIntND = 1,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
@@ -2402,7 +2417,7 @@ def skew[FloatT: npc.floating](
 @overload  # nd ~f64
 def skew(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -2420,7 +2435,7 @@ def skew(
 @overload  # nd ~f64, keepdims=True
 def skew(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -2429,7 +2444,7 @@ def skew(
 @overload  # nd ~T
 def skew[FloatT: npc.floating](
     a: onp.ToArrayND[FloatT, FloatT],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -2447,7 +2462,7 @@ def skew[FloatT: npc.floating](
 @overload  # nd ~T, keepdims=True
 def skew[FloatT: npc.floating](
     a: onp.ToArrayND[FloatT, FloatT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -2455,7 +2470,12 @@ def skew[FloatT: npc.floating](
 ) -> onp.ArrayND[FloatT]: ...
 @overload  # nd +floating
 def skew(
-    a: onp.ToFloatND, axis: int = 0, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+    a: onp.ToFloatND,
+    axis: int | tuple[int, ...] = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[False] = False,
 ) -> onp.ArrayND[np.float64 | Any] | Any: ...
 @overload  # nd +floating, axis=None
 def skew(
@@ -2463,7 +2483,12 @@ def skew(
 ) -> np.float64 | Any: ...
 @overload  # nd +floating, keepdims=True
 def skew(
-    a: onp.ToFloatND, axis: int | None = 0, bias: bool = True, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: onp.ToFloatND,
+    axis: int | tuple[int, ...] | None = 0,
+    bias: bool = True,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
 ) -> onp.ArrayND[np.float64 | Any]: ...
 
 # keep in sync with skew
@@ -2550,7 +2575,7 @@ def kurtosis[FloatT: npc.floating](
 @overload  # nd ~f64
 def kurtosis(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2570,7 +2595,7 @@ def kurtosis(
 @overload  # nd ~f64, keepdims=True
 def kurtosis(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2580,7 +2605,7 @@ def kurtosis(
 @overload  # nd ~T
 def kurtosis[FloatT: npc.floating](
     a: onp.ToArrayND[FloatT, FloatT],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2600,7 +2625,7 @@ def kurtosis[FloatT: npc.floating](
 @overload  # nd ~T, keepdims=True
 def kurtosis[FloatT: npc.floating](
     a: onp.ToArrayND[FloatT, FloatT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2610,7 +2635,7 @@ def kurtosis[FloatT: npc.floating](
 @overload  # nd +floating
 def kurtosis(
     a: onp.ToFloatND,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2630,7 +2655,7 @@ def kurtosis(
 @overload  # nd +floating, keepdims=True
 def kurtosis(
     a: onp.ToFloatND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     fisher: bool = True,
     bias: bool = True,
     nan_policy: NanPolicy = "propagate",
@@ -2740,7 +2765,7 @@ def skewtest(
 @overload  # Nd ~f64, axis=<given>  (default)
 def skewtest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2749,7 +2774,7 @@ def skewtest(
 @overload  # Nd ~f64, keepdims=True
 def skewtest[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.floating64 | npc.integer, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2758,7 +2783,7 @@ def skewtest[ShapeT: tuple[int, ...]](
 @overload  # ?d ~f64, keepdims=True
 def skewtest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2803,7 +2828,7 @@ def skewtest(
 @overload  # Nd ~f32, axis=<given>  (default)
 def skewtest(
     a: onp.ToJustFloat32_ND,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2812,7 +2837,7 @@ def skewtest(
 @overload  # Nd ~f32, keepdims=True
 def skewtest[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[np.float32, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2821,7 +2846,7 @@ def skewtest[ShapeT: tuple[int, ...]](
 @overload  # ?d ~f32, keepdims=True
 def skewtest(
     a: onp.ToJustFloat32_ND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2839,7 +2864,7 @@ def skewtest(
 @overload  # Nd floating, axis=<given>  (default)
 def skewtest(
     a: onp.ToArrayND[npc.floating, npc.floating],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2848,7 +2873,7 @@ def skewtest(
 @overload  # Nd floating, keepdims=True
 def skewtest[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.floating, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2857,7 +2882,7 @@ def skewtest[ShapeT: tuple[int, ...]](
 @overload  # ?d floating, keepdims=True
 def skewtest(
     a: onp.ToArrayND[npc.floating, npc.floating],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2904,7 +2929,7 @@ def kurtosistest(
 @overload  # Nd ~f64, axis=<given>  (default)
 def kurtosistest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2913,7 +2938,7 @@ def kurtosistest(
 @overload  # Nd ~f64, keepdims=True
 def kurtosistest[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.floating64 | npc.integer, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2922,7 +2947,7 @@ def kurtosistest[ShapeT: tuple[int, ...]](
 @overload  # ?d ~f64, keepdims=True
 def kurtosistest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2967,7 +2992,7 @@ def kurtosistest(
 @overload  # Nd ~f32, axis=<given>  (default)
 def kurtosistest(
     a: onp.ToJustFloat32_ND,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2976,7 +3001,7 @@ def kurtosistest(
 @overload  # Nd ~f32, keepdims=True
 def kurtosistest[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[np.float32, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -2985,7 +3010,7 @@ def kurtosistest[ShapeT: tuple[int, ...]](
 @overload  # ?d ~f32, keepdims=True
 def kurtosistest(
     a: onp.ToJustFloat32_ND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -3003,7 +3028,7 @@ def kurtosistest(
 @overload  # Nd floating, axis=<given>  (default)
 def kurtosistest(
     a: onp.ToArrayND[npc.floating, npc.floating],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -3012,7 +3037,7 @@ def kurtosistest(
 @overload  # Nd floating, keepdims=True
 def kurtosistest[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.floating, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -3021,7 +3046,7 @@ def kurtosistest[ShapeT: tuple[int, ...]](
 @overload  # ?d floating, keepdims=True
 def kurtosistest(
     a: onp.ToArrayND[npc.floating, npc.floating],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -3064,7 +3089,7 @@ def normaltest(
 @overload  # Nd ~f64, axis=<given>  (default)
 def normaltest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
@@ -3072,7 +3097,7 @@ def normaltest(
 @overload  # Nd ~f64, keepdims=True
 def normaltest[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.floating64 | npc.integer, ShapeT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
@@ -3080,7 +3105,7 @@ def normaltest[ShapeT: tuple[int, ...]](
 @overload  # ?d ~f64, keepdims=True
 def normaltest(
     a: onp.ToArrayND[float, npc.floating64 | npc.integer],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[True],
@@ -3103,15 +3128,19 @@ def normaltest(
 ) -> NormaltestResult[onp.Array1D[np.float32]]: ...
 @overload  # Nd ~f32, axis=<given>  (default)
 def normaltest(
-    a: onp.ToJustFloat32_ND, axis: int = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
+    a: onp.ToJustFloat32_ND, axis: int | tuple[int, ...] = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[False] = False
 ) -> NormaltestResult[onp.ArrayND[np.float32] | np.float32]: ...
 @overload  # Nd ~f32, keepdims=True
 def normaltest[ShapeT: tuple[int, ...]](
-    a: onp.ArrayND[np.float32, ShapeT], axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: onp.ArrayND[np.float32, ShapeT],
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
 ) -> NormaltestResult[onp.ArrayND[np.float32, ShapeT]]: ...
 @overload  # ?d ~f32, keepdims=True
 def normaltest(
-    a: onp.ToJustFloat32_ND, axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: onp.ToJustFloat32_ND, axis: int | tuple[int, ...] | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
 ) -> NormaltestResult[onp.ArrayND[np.float32]]: ...
 @overload  # ?d floating, axis=None
 def normaltest(
@@ -3120,18 +3149,26 @@ def normaltest(
 @overload  # Nd floating, axis=<given>  (default)
 def normaltest(
     a: onp.ToArrayND[npc.floating, npc.floating],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     keepdims: L[False] = False,
 ) -> NormaltestResult[onp.ArrayND[np.float64 | Any] | Any]: ...
 @overload  # Nd floating, keepdims=True
 def normaltest[ShapeT: tuple[int, ...]](
-    a: onp.ArrayND[npc.floating, ShapeT], axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: onp.ArrayND[npc.floating, ShapeT],
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
 ) -> NormaltestResult[onp.ArrayND[np.float64 | Any, ShapeT]]: ...
 @overload  # ?d floating, keepdims=True
 def normaltest(
-    a: onp.ToArrayND[npc.floating, npc.floating], axis: int | None = 0, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: onp.ToArrayND[npc.floating, npc.floating],
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
 ) -> NormaltestResult[onp.ArrayND[np.float64 | Any]]: ...
 
 # keep in sync with `skewtest`, `kurtosistest`, and `normaltest` (but with axis=None instead of axis=0)
@@ -3155,7 +3192,7 @@ def jarque_bera(
 def jarque_bera[ShapeT: tuple[int, ...]](
     x: onp.ArrayND[npc.floating64 | npc.integer, ShapeT],
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64, ShapeT]]: ...
@@ -3163,7 +3200,7 @@ def jarque_bera[ShapeT: tuple[int, ...]](
 def jarque_bera(
     x: onp.ToArrayND[float, npc.floating64 | npc.integer],
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
@@ -3177,11 +3214,15 @@ def jarque_bera(
 ) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
 @overload  # Nd ~f32, keepdims=True
 def jarque_bera[ShapeT: tuple[int, ...]](
-    x: onp.ArrayND[np.float32, ShapeT], *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+    x: onp.ArrayND[np.float32, ShapeT],
+    *,
+    axis: int | tuple[int, ...] | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float32, ShapeT]]: ...
 @overload  # ?d ~f32, keepdims=True
 def jarque_bera(
-    x: onp.ToJustFloat32_ND, *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+    x: onp.ToJustFloat32_ND, *, axis: int | tuple[int, ...] | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
 ) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
 @overload  # ?d floating, axis=None (default)
 def jarque_bera(
@@ -3197,13 +3238,17 @@ def jarque_bera(
 ) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 @overload  # Nd floating, keepdims=True
 def jarque_bera[ShapeT: tuple[int, ...]](
-    x: onp.ArrayND[npc.floating, ShapeT], *, axis: int | None = None, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+    x: onp.ArrayND[npc.floating, ShapeT],
+    *,
+    axis: int | tuple[int, ...] | None = None,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64 | Any, ShapeT]]: ...
 @overload  # ?d floating, keepdims=True
 def jarque_bera(
     x: onp.ToArrayND[npc.floating, npc.floating],
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
@@ -3358,7 +3403,7 @@ def sem(
 @overload  # ?d ~inexact64 | +integer, keepdims=True
 def sem(
     a: onp.ToArrayND[complex, npc.inexact64 | npc.integer | np.bool],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     ddof: int = 1,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -3394,7 +3439,7 @@ def sem(
 @overload  # ?d ~inexact32, keepdims=True
 def sem(
     a: onp.ToArrayND[Never, npc.inexact32],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     ddof: int = 1,
     nan_policy: NanPolicy = "propagate",
     *,
@@ -3424,11 +3469,21 @@ def sem(
 ) -> np.float64 | Any: ...
 @overload  # ?d +complex, keepdims=True
 def sem(
-    a: onp.ToComplexND, axis: int | None = 0, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: L[True]
+    a: onp.ToComplexND,
+    axis: int | tuple[int, ...] | None = 0,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: L[True],
 ) -> onp.ArrayND[np.float64 | Any]: ...
 @overload  # ?d +complex
 def sem(
-    a: onp.ToComplexND, axis: int | None = 0, ddof: int = 1, nan_policy: NanPolicy = "propagate", *, keepdims: bool = False
+    a: onp.ToComplexND,
+    axis: int | tuple[int, ...] | None = 0,
+    ddof: int = 1,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    keepdims: bool = False,
 ) -> onp.ArrayND[np.float64 | Any] | Any: ...
 
 # NOTE: keep in sync with `gzscore` and `zmap`
@@ -3732,7 +3787,7 @@ def median_abs_deviation(
 @overload  # +f64, axis=<given>  (default)
 def median_abs_deviation(
     x: onp.ToArrayND[float, npc.integer | np.bool],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     center: np.ufunc | _MADCenterFunc | None = None,
     scale: L["normal"] | float = 1.0,
     nan_policy: NanPolicy = "propagate",
@@ -3742,7 +3797,7 @@ def median_abs_deviation(
 @overload  # +f64, keepdims=True
 def median_abs_deviation(
     x: onp.ToArrayND[float, npc.integer | np.bool],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     center: np.ufunc | _MADCenterFunc | None = None,
     scale: L["normal"] | float = 1.0,
     nan_policy: NanPolicy = "propagate",
@@ -3772,7 +3827,7 @@ def median_abs_deviation[FloatT: npc.floating](
 @overload  # T@floating, axis=<given>  (default)
 def median_abs_deviation[FloatT: npc.floating](
     x: onp.ToArrayND[FloatT, FloatT],
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     center: np.ufunc | _MADCenterFunc | None = None,
     scale: L["normal"] | float = 1.0,
     nan_policy: NanPolicy = "propagate",
@@ -3782,7 +3837,7 @@ def median_abs_deviation[FloatT: npc.floating](
 @overload  # T@floating, keepdims=True
 def median_abs_deviation[FloatT: npc.floating](
     x: onp.ToArrayND[FloatT, FloatT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     center: np.ufunc | _MADCenterFunc | None = None,
     scale: L["normal"] | float = 1.0,
     nan_policy: NanPolicy = "propagate",
@@ -3862,11 +3917,21 @@ def trim_mean(
 ) -> np.float64: ...
 @overload
 def trim_mean(
-    a: onp.ToFloatND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[False] = False
+    a: onp.ToFloatND,
+    proportiontocut: float,
+    axis: int | tuple[int, ...] = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[False] = False,
 ) -> np.float64 | onp.ArrayND[np.float64]: ...
 @overload
 def trim_mean(
-    a: onp.ToFloatND, proportiontocut: float, axis: int = 0, *, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+    a: onp.ToFloatND,
+    proportiontocut: float,
+    axis: int | tuple[int, ...] = 0,
+    *,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
 ) -> onp.ArrayND[np.float64]: ...
 
 #
@@ -4031,7 +4096,7 @@ def f_oneway(
     /,
     *samples: _AsFloat64_ND,
     equal_var: bool = True,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> F_onewayResult[onp.ArrayND[np.float64] | Any]: ...
@@ -4042,7 +4107,7 @@ def f_oneway(
     /,
     *samples: onp.ToJustFloat32_ND,
     equal_var: bool = True,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> F_onewayResult[onp.ArrayND[np.float32] | Any]: ...
@@ -4075,7 +4140,7 @@ def f_oneway(
     /,
     *samples: _AsFloat64_ND,
     equal_var: bool = True,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> F_onewayResult[onp.ArrayND[np.float64]]: ...
@@ -4086,7 +4151,7 @@ def f_oneway(
     /,
     *samples: onp.ToJustFloat32_ND,
     equal_var: bool = True,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> F_onewayResult[onp.ArrayND[np.float32]]: ...
@@ -4097,7 +4162,7 @@ def f_oneway(
     /,
     *samples: onp.ToFloatND,
     equal_var: bool = True,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> F_onewayResult[np.float64 | Any]: ...
@@ -4467,7 +4532,7 @@ def pointbiserialr(
     x: onp.ToIntND,
     y: onp.ToIntND | onp.ToJustFloat64_ND,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
@@ -4504,11 +4569,21 @@ def pointbiserialr(
 ) -> SignificanceResult[onp.Array2D[np.float32]]: ...
 @overload  # ?d +bool, ~f32, keepdims=True
 def pointbiserialr(
-    x: onp.ToBoolND, y: onp.ToJustFloat32_ND, *, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+    x: onp.ToBoolND,
+    y: onp.ToJustFloat32_ND,
+    *,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float32]]: ...
 @overload  # ?d +bool, ~f32, fallback
 def pointbiserialr(
-    x: onp.ToBoolND, y: onp.ToJustFloat32_ND, *, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+    x: onp.ToBoolND,
+    y: onp.ToJustFloat32_ND,
+    *,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
 ) -> SignificanceResult[np.float32 | Any]: ...
 @overload  # 2d +integer, +floating
 def pointbiserialr(
@@ -4530,11 +4605,21 @@ def pointbiserialr(
 ) -> SignificanceResult[onp.Array2D[np.float64 | Any]]: ...
 @overload  # ?d +integer, +floating, keepdims=True
 def pointbiserialr(
-    x: onp.ToIntND, y: onp.ToFloatND, *, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: L[True]
+    x: onp.ToIntND,
+    y: onp.ToFloatND,
+    *,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 @overload  # fallback
 def pointbiserialr(
-    x: onp.ToIntND, y: onp.ToFloatND, *, axis: int | None = 0, nan_policy: NanPolicy = "propagate", keepdims: bool = False
+    x: onp.ToIntND,
+    y: onp.ToFloatND,
+    *,
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    keepdims: bool = False,
 ) -> SignificanceResult[np.float64 | Any]: ...
 
 #
@@ -4603,7 +4688,7 @@ def kendalltau(
     x: onp.ToComplexND,
     y: onp.ToComplexND,
     *,
-    axis: int,
+    axis: int | tuple[int, ...],
     keepdims: bool = False,
     method: _KendallTauMethod = "auto",
     variant: _KendallTauVariant = "b",
@@ -4680,7 +4765,7 @@ def weightedtau(
     weigher: _Weigher | None = None,
     additive: bool = True,
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
@@ -4692,7 +4777,7 @@ def weightedtau(
     weigher: _Weigher | None = None,
     additive: bool = True,
     *,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     keepdims: bool = False,
     nan_policy: NanPolicy = "propagate",
 ) -> SignificanceResult[np.float64 | Any]: ...
@@ -4844,7 +4929,7 @@ def ttest_1samp(  # type: ignore[overload-overlap]
 def ttest_1samp(  # type: ignore[overload-overlap]
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     popmean: _AsFloat64OrND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -4864,7 +4949,7 @@ def ttest_1samp[FloatT: np.float32 | np.float16](
 def ttest_1samp[FloatT: np.float32 | np.float16](
     a: onp.ToArrayND[FloatT, FloatT],
     popmean: op.JustFloat | FloatT | onp.ToArrayND[op.JustFloat, FloatT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -4884,7 +4969,7 @@ def ttest_1samp(
 def ttest_1samp(
     a: onp.ToFloatND,
     popmean: _ToFloatOrND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -4894,7 +4979,7 @@ def ttest_1samp(
 def ttest_1samp(
     a: onp.ToFloatND,
     popmean: _ToFloatOrND,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -5186,7 +5271,7 @@ def ttest_ind(  # type: ignore[overload-overlap]
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     b: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     equal_var: bool = True,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -5212,7 +5297,7 @@ def ttest_ind[FloatT: np.float32 | np.float16](
     a: onp.ToArrayND[FloatT, FloatT],
     b: onp.ToArrayND[FloatT, FloatT],
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     equal_var: bool = True,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -5238,7 +5323,7 @@ def ttest_ind(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     equal_var: bool = True,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -5251,7 +5336,7 @@ def ttest_ind(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     equal_var: bool = True,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
@@ -5385,7 +5470,7 @@ def ttest_rel(  # type: ignore[overload-overlap]
 def ttest_rel(  # type: ignore[overload-overlap]
     a: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
     b: onp.ToArrayND[float, npc.floating64 | npc.integer | np.bool],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -5405,7 +5490,7 @@ def ttest_rel[FloatT: np.float32 | np.float16](
 def ttest_rel[FloatT: np.float32 | np.float16](
     a: onp.ToArrayND[FloatT, FloatT],
     b: onp.ToArrayND[FloatT, FloatT],
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -5425,7 +5510,7 @@ def ttest_rel(
 def ttest_rel(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -5435,7 +5520,7 @@ def ttest_rel(
 def ttest_rel(
     a: onp.ToFloatND,
     b: onp.ToFloatND,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     alternative: Alternative = "two-sided",
     *,
@@ -5492,7 +5577,7 @@ def power_divergence(
     f_obs: _AsFloat64_ND,
     f_exp: _AsFloat64_ND | None = None,
     ddof: int = 0,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     lambda_: PowerDivergenceStatistic | float | None = None,
     *,
     keepdims: L[True],
@@ -5525,7 +5610,7 @@ def power_divergence(
     f_obs: onp.ToJustFloat32_ND,
     f_exp: onp.ToJustFloat32_ND | None = None,
     ddof: int = 0,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     lambda_: PowerDivergenceStatistic | float | None = None,
     *,
     keepdims: L[True],
@@ -5536,7 +5621,7 @@ def power_divergence(
     f_obs: onp.ToFloatND,
     f_exp: onp.ToFloatND | None,
     ddof: onp.ToIntND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     lambda_: PowerDivergenceStatistic | float | None = None,
     *,
     keepdims: bool = False,
@@ -5548,7 +5633,7 @@ def power_divergence(
     f_exp: onp.ToFloatND | None = None,
     *,
     ddof: onp.ToIntND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     lambda_: PowerDivergenceStatistic | float | None = None,
     keepdims: bool = False,
     nan_policy: NanPolicy = "propagate",
@@ -5558,7 +5643,7 @@ def power_divergence(
     f_obs: onp.ToFloatND,
     f_exp: onp.ToFloatND | None = None,
     ddof: int = 0,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     lambda_: PowerDivergenceStatistic | float | None = None,
     *,
     keepdims: bool = False,
@@ -5637,7 +5722,7 @@ def chisquare(
     f_obs: _AsFloat64_ND,
     f_exp: _AsFloat64_ND | None = None,
     ddof: int = 0,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     *,
     sum_check: bool = True,
     keepdims: L[True],
@@ -5670,7 +5755,7 @@ def chisquare(
     f_obs: onp.ToJustFloat32_ND,
     f_exp: onp.ToJustFloat32_ND | None = None,
     ddof: int = 0,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     *,
     sum_check: bool = True,
     keepdims: L[True],
@@ -5681,7 +5766,7 @@ def chisquare(
     f_obs: onp.ToFloatND,
     f_exp: onp.ToFloatND | None,
     ddof: onp.ToIntND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     *,
     sum_check: bool = True,
     keepdims: bool = False,
@@ -5693,7 +5778,7 @@ def chisquare(
     f_exp: onp.ToFloatND | None = None,
     *,
     ddof: onp.ToIntND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     sum_check: bool = True,
     keepdims: bool = False,
     nan_policy: NanPolicy = "propagate",
@@ -5703,7 +5788,7 @@ def chisquare(
     f_obs: onp.ToFloatND,
     f_exp: onp.ToFloatND | None = None,
     ddof: int = 0,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     *,
     sum_check: bool = True,
     keepdims: bool = False,
@@ -5827,7 +5912,7 @@ def ks_1samp(
     alternative: Alternative = "two-sided",
     method: _KS1TestMethod = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> _KstestResultN: ...
@@ -5839,7 +5924,7 @@ def ks_1samp(
     alternative: Alternative = "two-sided",
     method: _KS1TestMethod = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> KstestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int8]]: ...
@@ -5851,7 +5936,7 @@ def ks_1samp(
     alternative: Alternative = "two-sided",
     method: _KS1TestMethod = "auto",
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
@@ -6018,7 +6103,7 @@ def ks_2samp(
     alternative: Alternative = "two-sided",
     method: _KS2TestMethod = "auto",
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> KstestResult[np.float32 | Any, np.int8 | Any]: ...
@@ -6029,7 +6114,7 @@ def ks_2samp(
     alternative: Alternative = "two-sided",
     method: _KS2TestMethod = "auto",
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
@@ -6040,7 +6125,7 @@ def ks_2samp(
     alternative: Alternative = "two-sided",
     method: _KS2TestMethod = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> KstestResult[onp.ArrayND[np.float32], onp.ArrayND[np.int8]]: ...
@@ -6073,7 +6158,7 @@ def ks_2samp(
     alternative: Alternative = "two-sided",
     method: _KS2TestMethod = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> _KstestResultN: ...
@@ -6205,7 +6290,7 @@ def kstest(
     alternative: Alternative = "two-sided",
     method: _KS1TestMethod = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> _KstestResultN: ...
@@ -6218,7 +6303,7 @@ def kstest(
     alternative: Alternative = "two-sided",
     method: _KS1TestMethod = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> KstestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int8]]: ...
@@ -6231,7 +6316,7 @@ def kstest(
     alternative: Alternative = "two-sided",
     method: _KS1TestMethod = "auto",
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
@@ -6510,7 +6595,7 @@ def kstest(  # type: ignore[overload-overlap]
     alternative: Alternative = "two-sided",
     method: _KS2TestMethod = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> _KstestResultN: ...
@@ -6523,7 +6608,7 @@ def kstest[FloatT: np.float32 | np.float16](
     alternative: Alternative = "two-sided",
     method: _KS2TestMethod = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> KstestResult[onp.ArrayND[FloatT], onp.ArrayND[np.int8]]: ...
@@ -6536,7 +6621,7 @@ def kstest(
     alternative: Alternative = "two-sided",
     method: _KS2TestMethod = "auto",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> KstestResult[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.int8]]: ...
@@ -6549,7 +6634,7 @@ def kstest(
     alternative: Alternative = "two-sided",
     method: _KS2TestMethod = "auto",
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> KstestResult[np.float64 | Any, np.int8 | Any]: ...
@@ -6654,7 +6739,7 @@ def ranksums(
     y: onp.ToFloat64_ND,
     alternative: Alternative = "two-sided",
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> RanksumsResult[np.float64 | Any]: ...
@@ -6674,7 +6759,7 @@ def ranksums(
     y: onp.ToFloat64_ND,
     alternative: Alternative = "two-sided",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> RanksumsResult[onp.ArrayND[np.float64]]: ...
@@ -6826,7 +6911,7 @@ def kruskal(
     sample2: _AsFloat64_ND,
     /,
     *samples: _AsFloat64_ND,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> KruskalResult[onp.ArrayND[np.float64] | Any]: ...
@@ -6836,7 +6921,7 @@ def kruskal(
     sample2: onp.ToJustFloat32_ND,
     /,
     *samples: onp.ToJustFloat32_ND,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> KruskalResult[onp.ArrayND[np.float32] | Any]: ...
@@ -6866,7 +6951,7 @@ def kruskal(
     sample2: _AsFloat64_ND,
     /,
     *samples: _AsFloat64_ND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> KruskalResult[onp.ArrayND[np.float64]]: ...
@@ -6876,7 +6961,7 @@ def kruskal(
     sample2: onp.ToJustFloat32_ND,
     /,
     *samples: onp.ToJustFloat32_ND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> KruskalResult[onp.ArrayND[np.float32]]: ...
@@ -6886,7 +6971,7 @@ def kruskal(
     sample2: onp.ToFloatND,
     /,
     *samples: onp.ToFloatND,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool = False,
 ) -> KruskalResult[np.float64 | Any]: ...
@@ -7254,7 +7339,7 @@ def brunnermunzel(
     distribution: L["t", "normal"] = "t",
     nan_policy: NanPolicy = "propagate",
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     keepdims: L[False] = False,
 ) -> BrunnerMunzelResult[onp.ArrayND[np.float64] | Any]: ...
 @overload  # Nd ~f32, Nd ~f32
@@ -7265,7 +7350,7 @@ def brunnermunzel(
     distribution: L["t", "normal"] = "t",
     nan_policy: NanPolicy = "propagate",
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     keepdims: L[False] = False,
 ) -> BrunnerMunzelResult[onp.ArrayND[np.float32] | Any]: ...
 @overload  # ?d +f64, ?d +f64, axis=None
@@ -7298,7 +7383,7 @@ def brunnermunzel(
     distribution: L["t", "normal"] = "t",
     nan_policy: NanPolicy = "propagate",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: L[True],
 ) -> BrunnerMunzelResult[onp.ArrayND[np.float64]]: ...
 @overload  # ?d ~f32, ?d ~f32, keepdims=True
@@ -7309,7 +7394,7 @@ def brunnermunzel(
     distribution: L["t", "normal"] = "t",
     nan_policy: NanPolicy = "propagate",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: L[True],
 ) -> BrunnerMunzelResult[onp.ArrayND[np.float32]]: ...
 @overload  # fallback
@@ -7320,7 +7405,7 @@ def brunnermunzel(
     distribution: L["t", "normal"] = "t",
     nan_policy: NanPolicy = "propagate",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: bool = False,
 ) -> BrunnerMunzelResult[np.float64 | Any]: ...
 
@@ -7381,7 +7466,7 @@ def combine_pvalues[FloatT: npc.floating](
     method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloatND | None = None,
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> SignificanceResult[FloatT | onp.ArrayND[FloatT]]: ...
@@ -7421,7 +7506,7 @@ def combine_pvalues[FloatT: npc.floating, ShapeT: tuple[int, ...]](
     method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloatND | None = None,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[FloatT, ShapeT]]: ...
@@ -7431,7 +7516,7 @@ def combine_pvalues(
     method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloatND | None = None,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64]]: ...
@@ -7441,7 +7526,7 @@ def combine_pvalues(
     method: _CombinePValuesMethod = "fisher",
     weights: onp.ToFloatND | None = None,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
@@ -7594,7 +7679,7 @@ def expectile[ShapeT: tuple[int, ...]](
     alpha: float = 0.5,
     *,
     weights: onp.ToFloatND | None = None,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
@@ -7604,7 +7689,7 @@ def expectile(
     alpha: float = 0.5,
     *,
     weights: onp.ToFloatND | None = None,
-    axis: int | None = None,
+    axis: int | tuple[int, ...] | None = None,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64]: ...
@@ -7686,7 +7771,7 @@ def linregress(
     y: onp.ToFloatND,
     alternative: Alternative = "two-sided",
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     keepdims: L[False] = False,
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[np.float64 | Any]: ...
@@ -7696,7 +7781,7 @@ def linregress[FloatT: np.float32 | np.float64](
     y: onp.ArrayND[FloatT],
     alternative: Alternative = "two-sided",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[onp.ArrayND[FloatT]]: ...
@@ -7706,7 +7791,7 @@ def linregress(
     y: _AsFloat64_ND,
     alternative: Alternative = "two-sided",
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: L[True],
     nan_policy: NanPolicy = "propagate",
 ) -> LinregressResult[onp.ArrayND[np.float64]]: ...
@@ -7983,7 +8068,7 @@ def lmoment(
     sample: _AsFloat64_ND,
     order: onp.ToInt1D | None = None,
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     keepdims: bool = False,
     sorted: bool = False,
     standardize: bool = True,
@@ -8005,7 +8090,7 @@ def lmoment(
     sample: _AsFloat64_ND,
     order: int,
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     keepdims: L[False] = False,
     sorted: bool = False,
     standardize: bool = True,
@@ -8016,7 +8101,7 @@ def lmoment(
     sample: _AsFloat64_ND,
     order: int,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: L[True],
     sorted: bool = False,
     standardize: bool = True,
@@ -8038,7 +8123,7 @@ def lmoment(
     sample: _AsFloat32_ND,
     order: onp.ToInt1D | None = None,
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     keepdims: bool = False,
     sorted: bool = False,
     standardize: bool = True,
@@ -8060,7 +8145,7 @@ def lmoment(
     sample: _AsFloat32_ND,
     order: int,
     *,
-    axis: int = 0,
+    axis: int | tuple[int, ...] = 0,
     keepdims: L[False] = False,
     sorted: bool = False,
     standardize: bool = True,
@@ -8071,7 +8156,7 @@ def lmoment(
     sample: _AsFloat32_ND,
     order: int,
     *,
-    axis: int | None = 0,
+    axis: int | tuple[int, ...] | None = 0,
     keepdims: L[True],
     sorted: bool = False,
     standardize: bool = True,

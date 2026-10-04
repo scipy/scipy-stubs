@@ -62,6 +62,6 @@ assert_type(mode(i8_1d, keepdims=True)[0], onp.ArrayND[np.int8])
 assert_type(mode(f16_1d, keepdims=True)[0], onp.ArrayND[np.float16])
 
 assert_type(mode([[1]], keepdims=True)[0], onp.ArrayND[np.intp])
-assert_type(mode(py_f_2d, keepdims=True)[0], onp.ArrayND[np.float64])
+assert_type(mode(py_f_2d, axis=(0, 1), keepdims=True)[0], onp.ArrayND[np.float64])
 assert_type(mode(i8_2d, keepdims=True)[0], onp.ArrayND[np.int8])
 assert_type(mode(f16_2d, keepdims=True)[0], onp.ArrayND[np.float16])
