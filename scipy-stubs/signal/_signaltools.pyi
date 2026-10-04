@@ -1189,7 +1189,7 @@ def unique_roots[InexactT: npc.inexact](
 @overload  # fallback
 def unique_roots(
     p: onp.ToFloat1D, tol: float = 0.001, rtype: _ResidueType = "min"
-) -> tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.int_]]: ...
+) -> tuple[onp.Array1D[Any], onp.Array1D[np.int_]]: ...
 
 #
 @overload  # real
