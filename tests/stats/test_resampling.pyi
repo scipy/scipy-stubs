@@ -27,6 +27,7 @@ def _statistic_1d(x: onp.Array1D[np.float64], y: onp.Array1D[np.float64]) -> np.
 def _statistic_2d(x: onp.Array2D[np.float64], y: onp.Array2D[np.float64]) -> onp.Array1D[np.float64]: ...
 def _statistic_3d(x: onp.Array3D[np.float64], y: onp.Array3D[np.float64]) -> onp.Array2D[np.float64]: ...
 def _statistic_nd(x: onp.ArrayND[np.float64], y: onp.ArrayND[np.float64]) -> onp.ArrayND[np.float64]: ...
+def _statistic_union(x: onp.ArrayND[np.float64], y: onp.ArrayND[np.float64]) -> np.float64 | onp.ArrayND[np.float64]: ...
 
 ###
 
@@ -45,6 +46,7 @@ assert_type(bootstrap((_f32_1d,), np.mean), BootstrapResult[np.float32, onp.Arra
 assert_type(bootstrap((_f64_1d,), np.mean), BootstrapResult[np.float64, onp.Array1D[np.float64]])
 assert_type(bootstrap((_f64_1d, _f32_1d), np.mean), BootstrapResult[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.float64 | Any]])
 assert_type(bootstrap((_py_f_1d,), np.mean), BootstrapResult[np.float64, onp.Array1D[np.float64]])
+assert_type(bootstrap((_f64_1d, _f64_1d), _statistic_union, paired=True), BootstrapResult[np.float64, onp.Array1D[np.float64]])
 
 # permutation_test
 assert_type(permutation_test((_py_f_1d, _py_f_1d), _statistic_1d), PermutationTestResult[np.float64, onp.Array1D[np.float64]])
