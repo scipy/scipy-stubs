@@ -12,9 +12,8 @@ __all__ = ["KDTree", "Rectangle", "distance_matrix", "minkowski_distance", "mink
 ###
 
 type _Float1D = onp.Array1D[np.float64]
-type _Float2D = onp.Array2D[np.float64]
 
-_BoxSizeT_co = TypeVar("_BoxSizeT_co", bound=_Float2D | None, default=_Float2D | None, covariant=True)
+_BoxSizeT_co = TypeVar("_BoxSizeT_co", bound=_Float1D | None, default=_Float1D | None, covariant=True)
 _BoxSizeDataT_co = TypeVar("_BoxSizeDataT_co", bound=_Float1D | None, default=_Float1D | None, covariant=True)
 
 ###
@@ -80,18 +79,18 @@ class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _Box
     ) -> None: ...
     @overload
     def __init__(
-        self: KDTree[_Float2D, _Float1D],
+        self: KDTree[_Float1D, _Float1D],
         /,
         data: onp.ToComplexND,
         leafsize: onp.ToInt,
         compact_nodes: bool,
         copy_data: bool,
         balanced_tree: bool,
-        boxsize: onp.ToFloat2D,
+        boxsize: onp.ToFloat | onp.ToFloat1D,
     ) -> None: ...
     @overload
     def __init__(
-        self: KDTree[_Float2D, _Float1D],
+        self: KDTree[_Float1D, _Float1D],
         /,
         data: onp.ToComplexND,
         leafsize: onp.ToInt = 10,
@@ -99,7 +98,7 @@ class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _Box
         copy_data: bool = False,
         balanced_tree: bool = True,
         *,
-        boxsize: onp.ToFloat2D,
+        boxsize: onp.ToFloat | onp.ToFloat1D,
     ) -> None: ...
 
     #
