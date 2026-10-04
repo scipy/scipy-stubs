@@ -299,7 +299,7 @@ def nonlin_solve(
     callback: _Callback | None = None,
     full_output: Literal[False] = False,
     raise_exception: bool = True,
-) -> _InexactND: ...
+) -> onp.ArrayND[np.float64 | Any]: ...
 @overload
 def nonlin_solve(
     F: _ResidFunc,
@@ -318,7 +318,7 @@ def nonlin_solve(
     *,
     full_output: Literal[True],
     raise_exception: bool = True,
-) -> tuple[_InexactND, _NonlinInfoDict]: ...
+) -> tuple[onp.ArrayND[np.float64 | Any], _NonlinInfoDict]: ...
 
 #
 def broyden1(
