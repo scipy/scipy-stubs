@@ -20,8 +20,8 @@ from scipy.stats._hypotests import (
     BoschlooExactResult,
     CramerVonMisesResult,
     Epps_Singleton_2sampResult,
-    SomersDResult,
     TukeyHSDResult,
+    _SomersDResult,
 )
 from scipy.stats._stats_py import SignificanceResult
 
@@ -110,11 +110,12 @@ assert_type(poisson_means_test(5, 100.0, 3, 80.0).pvalue, np.float64)
 
 # somersd
 
-assert_type(somersd(_py_f_1d, _py_f_1d), SomersDResult)
-assert_type(somersd(_f64_1d, _f64_1d), SomersDResult)
-assert_type(somersd(_f64_2d), SomersDResult)
+assert_type(somersd(_py_f_1d, _py_f_1d), _SomersDResult)
+assert_type(somersd(_f64_1d, _f64_1d), _SomersDResult)
+assert_type(somersd(_f64_2d), _SomersDResult)
 assert_type(somersd(_f64_1d, _f64_1d).statistic, float)
 assert_type(somersd(_f64_1d, _f64_1d).pvalue, float)
+assert_type(somersd(_f64_1d, _f64_1d).correlation, float)
 
 # barnard_exact
 
