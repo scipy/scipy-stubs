@@ -10,7 +10,6 @@ from numpy_typing_compat import ABCPolyBase
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._optimize import OptimizeResult as _OptimizeResult, _DoesMap
 from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
-from scipy.sparse import csr_array
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
@@ -189,10 +188,10 @@ class OptimizeResult(_OptimizeResult, Generic[_FunT_co]):
     maxcv: float  # requires `bounds`
     fun: _FunT_co
     nfev: int
-    jac: _Float1D | Sequence[_Float2D | csr_array[np.float64]]  # is a list when method="trust-constr"
+    jac: _Float1D | Any  # is a list when method="trust-constr"
     njev: int  # requires `jac`
     hess: _Float2D  # requires `hess` or `hessp`
-    hess_inv: _Float2D | LinearOperator  # requires `hess` or `hessp`, depends on solver
+    hess_inv: _Float2D | Any  # requires `hess` or `hessp`, depends on solver
     nhev: int  # requires `hess` or `hessp`
     final_simplex: tuple[_Float2D, _Float1D]  # requires method="Nelder-Mead"
     direc: _Float2D  # requires method="Powell"
