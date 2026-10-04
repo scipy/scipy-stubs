@@ -77,6 +77,7 @@ _c160_2d: onp.Array2D[np.complex256]
 _c160_3d: onp.Array3D[np.complex256]
 _c160_nd: onp.ArrayND[np.complex256]
 
+_py_f: float
 _py_i_1d: list[int]
 _py_f_1d: list[float]
 _py_f_2d: list[list[float]]
@@ -122,8 +123,14 @@ assert_type(probplot(_f32_1d), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[
 assert_type(probplot(_f64_1d), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], _tuple3[np.float64]])
 assert_type(probplot(_py_i_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]])
 assert_type(probplot(_f32_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float32]])
-assert_type(probplot(_f64_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
+assert_type(probplot(_f64_1d, sparams=None, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
 assert_type(probplot(_f64_1d, plot=_ax), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], _tuple3[np.float64]])
+assert_type(probplot(_py_i_1d, _py_f), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]], _tuple3[np.float64]])
+assert_type(probplot(_f32_1d, _py_f), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float32]], _tuple3[np.float64]])
+assert_type(probplot(_f64_1d, _py_f), tuple[tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]], _tuple3[np.float64]])
+assert_type(probplot(_py_i_1d, _py_f_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64 | Any]])
+assert_type(probplot(_f32_1d, _py_f_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float32]])
+assert_type(probplot(_f64_1d, _py_f_1d, fit=False), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
 
 ###
 # ppcc_max
