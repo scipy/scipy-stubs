@@ -68,6 +68,8 @@ c160_1d: onp.Array1D[np.complex256]
 c160_2d: onp.Array2D[np.complex256]
 c160_3d: onp.Array3D[np.complex256]
 
+_i64: np.int64
+
 ###
 
 ###
@@ -93,6 +95,7 @@ assert_subtype[onp.Array2D[np.clongdouble]](fft(f80_2d))
 assert_subtype[onp.Array2D[np.complex64]](fft(c64_2d))
 assert_subtype[onp.Array2D[np.complex128]](fft(c128_2d))
 assert_subtype[onp.Array2D[np.clongdouble]](fft(c160_2d))
+assert_subtype[onp.Array1D[np.complex128]](fft(f64_1d, n=_i64, axis=_i64))
 
 # ifft (same as fft)
 assert_subtype[onp.Array1D[np.complex128]](ifft(int_1d))
@@ -115,6 +118,7 @@ assert_subtype[onp.Array2D[np.clongdouble]](ifft(f80_2d))
 assert_subtype[onp.Array2D[np.complex64]](ifft(c64_2d))
 assert_subtype[onp.Array2D[np.complex128]](ifft(c128_2d))
 assert_subtype[onp.Array2D[np.clongdouble]](ifft(c160_2d))
+assert_subtype[onp.Array1D[np.complex128]](ifft(f64_1d, n=_i64, axis=_i64))
 
 # rfft (same as ihfft)
 assert_subtype[onp.Array1D[np.complex128]](rfft(int_1d))
@@ -137,6 +141,7 @@ assert_subtype[onp.Array2D[np.clongdouble]](rfft(f80_2d))
 rfft(c64_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 rfft(c128_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 rfft(c160_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+assert_subtype[onp.Array1D[np.complex128]](rfft(f64_1d, n=_i64, axis=_i64))
 
 # irfft (same as hfft)
 assert_subtype[onp.Array1D[np.float64]](irfft(int_1d))
@@ -159,6 +164,7 @@ assert_subtype[onp.Array2D[np.longdouble]](irfft(f80_2d))
 assert_subtype[onp.Array2D[np.float32]](irfft(c64_2d))
 assert_subtype[onp.Array2D[np.float64]](irfft(c128_2d))
 assert_subtype[onp.Array2D[np.longdouble]](irfft(c160_2d))
+assert_subtype[onp.Array1D[np.float64]](irfft(f64_1d, n=_i64, axis=_i64))
 
 # hfft (same as irfft)
 assert_subtype[onp.Array1D[np.float64]](hfft(int_1d))
@@ -181,6 +187,7 @@ assert_subtype[onp.Array2D[np.longdouble]](hfft(f80_2d))
 assert_subtype[onp.Array2D[np.float32]](hfft(c64_2d))
 assert_subtype[onp.Array2D[np.float64]](hfft(c128_2d))
 assert_subtype[onp.Array2D[np.longdouble]](hfft(c160_2d))
+assert_subtype[onp.Array1D[np.float64]](hfft(f64_1d, n=_i64, axis=_i64))
 
 # ihfft (same as rfft)
 assert_subtype[onp.Array1D[np.complex128]](ihfft(int_1d))
@@ -203,6 +210,7 @@ assert_subtype[onp.Array2D[np.clongdouble]](ihfft(f80_2d))
 ihfft(c64_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 ihfft(c128_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
 ihfft(c160_2d)  # type:ignore[arg-type] # pyright:ignore[reportArgumentType, reportCallIssue] # pyrefly:ignore[no-matching-overload]
+assert_subtype[onp.Array1D[np.complex128]](ihfft(f64_1d, n=_i64, axis=_i64))
 
 # fft2 (same as ifft2)
 assert_subtype[onp.Array2D[np.complex128]](fft2(int_2d))
