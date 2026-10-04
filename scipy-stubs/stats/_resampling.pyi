@@ -28,6 +28,11 @@ _DistT = TypeVar("_DistT", bound=onp.ArrayND[npc.floating], default=onp.ArrayND[
 class _RVSCallable(Protocol):
     def __call__(self, /, *, size: tuple[int, ...]) -> onp.ArrayND[npc.floating | npc.integer]: ...
 
+@type_check_only
+class _HasPValue(Protocol):
+    @property
+    def pvalue(self, /) -> onp.ToFloat | onp.ToFloatND: ...
+
 ###
 
 @dataclass
@@ -172,7 +177,7 @@ class BootstrapMethod(ResamplingMethod):
 
 #
 def power(
-    test: _Statistic,
+    test: Callable[..., onp.ToFloat | onp.ToFloatND | _HasPValue],
     rvs: _RVSCallable | Sequence[_RVSCallable],
     n_observations: onp.ToJustInt | onp.ToJustInt1D | onp.ToJustInt2D,
     *,
