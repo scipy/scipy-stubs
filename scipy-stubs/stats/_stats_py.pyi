@@ -3199,6 +3199,15 @@ def jarque_bera(
 ) -> SignificanceResult[onp.ArrayND[np.float64 | Any]]: ...
 
 # keep in sync with `percentileofscore`
+@overload  # ?d, axis=<given>  (workaround)
+def scoreatpercentile(
+    a: _ToFloatStrictND,
+    per: onp.ToFloat | onp.ToFloatND,
+    limit: _RealLimits | tuple[()] = (),
+    interpolation_method: _QuantileInterpolation = "fraction",
+    *,
+    axis: int,
+) -> onp.ArrayND[np.float64] | Any: ...
 @overload
 def scoreatpercentile(
     a: onp.ToFloatStrict1D,
