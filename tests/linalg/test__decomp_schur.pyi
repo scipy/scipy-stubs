@@ -1,6 +1,6 @@
 # type-tests for `linalg/_decomp_schur.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -8,6 +8,9 @@ import optype.numpy as onp
 from scipy.linalg import rsf2csf, schur
 
 ###
+
+_py_f_2d: list[list[float]]
+_py_c_2d: list[list[complex]]
 
 _bool_2d: onp.Array2D[np.bool]
 _i8_2d: onp.Array2D[np.int8]
@@ -35,6 +38,7 @@ type _Res2_3D[ScalarT: np.generic] = tuple[onp.Array3D[ScalarT], onp.Array3D[Sca
 type _Res2_ND[ScalarT: np.generic] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[ScalarT]]
 type _Res3_2D[ScalarT: np.generic] = tuple[onp.Array2D[ScalarT], onp.Array2D[ScalarT], int]
 type _Res3_3D[ScalarT: np.generic] = tuple[onp.Array3D[ScalarT], onp.Array3D[ScalarT], onp.ArrayND[np.int64]]
+type _Res3_ND[ScalarT: np.generic] = tuple[onp.ArrayND[ScalarT], onp.ArrayND[ScalarT], int | Any]
 
 ###
 # schur
@@ -102,6 +106,9 @@ assert_type(schur(_c64_3d, sort="lhp"), _Res3_3D[np.complex64])
 assert_type(schur(_c128_3d, sort="lhp"), _Res3_3D[np.complex128])
 assert_type(schur(_f32_3d, output="c", sort="lhp"), _Res3_3D[np.complex64])
 assert_type(schur(_f64_3d, output="c", sort="lhp"), _Res3_3D[np.complex128])
+assert_type(schur(_py_f_2d, sort="lhp"), _Res3_ND[np.float64])
+assert_type(schur(_py_f_2d, output="c", sort="lhp"), _Res3_ND[np.complex128])
+assert_type(schur(_py_c_2d, sort="lhp"), _Res3_ND[np.complex128])
 
 ###
 # rsf2csf
