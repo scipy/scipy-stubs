@@ -440,7 +440,7 @@ def gmean[InexactT: npc.inexact](
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> InexactT: ...
-@overload  # 1d float|+int
+@overload  # 1d +float
 def gmean(
     a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     axis: int = 0,
@@ -470,7 +470,7 @@ def gmean[InexactT: npc.inexact](
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> onp.Array1D[InexactT]: ...
-@overload  # 2d float|+int
+@overload  # 2d +float
 def gmean(
     a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
     axis: int = 0,
@@ -590,7 +590,7 @@ def gmean[ShapeT: tuple[int, ...]](
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # Nd float|+int, axis=None
+@overload  # Nd +float, axis=None
 def gmean(
     a: onp.ToArrayND[float, npc.integer | np.bool],
     axis: None,
@@ -702,7 +702,7 @@ def hmean[InexactT: npc.inexact](
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> InexactT: ...
-@overload  # 1d float|+int
+@overload  # 1d +float
 def hmean(
     a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     axis: int = 0,
@@ -732,7 +732,7 @@ def hmean[InexactT: npc.inexact](
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> onp.Array1D[InexactT]: ...
-@overload  # 2d float|+int
+@overload  # 2d +float
 def hmean(
     a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
     axis: int = 0,
@@ -852,7 +852,7 @@ def hmean[ShapeT: tuple[int, ...]](
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # Nd float|+int, axis=None
+@overload  # Nd +float, axis=None
 def hmean(
     a: onp.ToArrayND[float, npc.integer | np.bool],
     axis: None,
@@ -967,7 +967,7 @@ def pmean[InexactT: npc.inexact](
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> InexactT: ...
-@overload  # 1d float|+int
+@overload  # 1d +float
 def pmean(
     a: onp.ToArrayStrict1D[float, npc.integer | np.bool],
     p: float,
@@ -1000,7 +1000,7 @@ def pmean[InexactT: npc.inexact](
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> onp.Array1D[InexactT]: ...
-@overload  # 2d float|+int
+@overload  # 2d +float
 def pmean(
     a: onp.ToArrayStrict2D[float, npc.integer | np.bool],
     p: float,
@@ -1132,7 +1132,7 @@ def pmean[ShapeT: tuple[int, ...]](
     nan_policy: NanPolicy = "propagate",
     keepdims: L[True],
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # Nd float|+int, axis=None
+@overload  # Nd +float, axis=None
 def pmean(
     a: onp.ToArrayND[float, npc.integer | np.bool],
     p: float,
