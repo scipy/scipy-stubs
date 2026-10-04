@@ -161,7 +161,7 @@ assert_type(tf2sos(_f64_1d, _f64_1d), onp.Array2D[np.float64])
 assert_type(zpk2tf(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(zpk2tf(_f64_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.float64 | Any]])
 assert_type(zpk2tf(_c128_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.float64 | Any]])
-assert_type(zpk2tf(_c128_1d, _c128_1d, 1.0), tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.float64 | Any]])
+assert_type(zpk2tf(_c128_1d, _c128_1d, 1j), tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.float64 | Any]])
 
 # zpk2sos
 assert_type(zpk2sos(_f64_1d, _f64_1d, 1.0), onp.Array2D[np.float64])
