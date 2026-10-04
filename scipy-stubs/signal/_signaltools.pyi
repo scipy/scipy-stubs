@@ -948,6 +948,10 @@ def sosfilt(sos: onp.ToComplex64_2D, x: onp.ToJustComplex64_ND, axis: int = -1, 
 def sosfilt(
     sos: onp.ToComplex64_2D, x: onp.ToJustComplex64_ND, *, axis: int = -1, zi: onp.ToComplex64_ND
 ) -> _Tuple2[onp.ArrayND[np.complex64]]: ...
+@overload  # fallback, zi: None (default)
+def sosfilt(sos: onp.ToComplex2D, x: onp.ToComplexND, axis: int = -1, zi: None = None) -> onp.ArrayND[Any]: ...
+@overload  # fallback, *, zi: +complex
+def sosfilt(sos: onp.ToComplex2D, x: onp.ToComplexND, *, axis: int = -1, zi: onp.ToComplexND) -> _Tuple2[onp.ArrayND[Any]]: ...
 
 #
 @overload  # ~float64 | integer, +float64

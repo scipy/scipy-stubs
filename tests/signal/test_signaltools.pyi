@@ -553,11 +553,13 @@ assert_type(sosfilt(_f32_2d, _f32_1d), onp.ArrayND[np.float32])
 assert_type(sosfilt(_f64_2d, _f64_1d), onp.ArrayND[np.float64])
 assert_type(sosfilt(_c64_2d, _c64_1d), onp.ArrayND[np.complex64])
 assert_type(sosfilt(_c128_2d, _c128_1d), onp.ArrayND[np.complex128])
+assert_type(sosfilt(_f64_2d, _f80_1d), onp.ArrayND[Any])
 
 assert_type(sosfilt(_f64_2d, _f64_1d, zi=_f64_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]])
 assert_type(sosfilt(_f32_2d, _f32_1d, zi=_f32_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
 assert_type(sosfilt(_c128_2d, _c128_1d, zi=_c128_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 assert_type(sosfilt(_c64_2d, _c64_1d, zi=_c64_nd), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
+assert_type(sosfilt(_f64_2d, _f80_1d, zi=_f64_nd), tuple[onp.ArrayND[Any], onp.ArrayND[Any]])
 
 # decimate
 
