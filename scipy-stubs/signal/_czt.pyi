@@ -8,11 +8,11 @@ __all__ = ["CZT", "ZoomFFT", "czt", "czt_points", "zoom_fft"]
 
 ###
 
-type _Complex = np.complex128 | np.clongdouble
+type _ToInexact80ND = onp.ToArrayND[npc.inexact80, npc.inexact80]
 
 # workaround for non-overload-spec-compliant type-checkers
 type _JustAnyShape = tuple[Never, Never, Never, Never]
-type _ToComplexStrictND = onp.ArrayND[npc.number | np.bool, _JustAnyShape]
+type _ToComplex128StrictND = onp.ArrayND[npc.number64 | npc.number32 | npc.number16 | npc.integer | np.bool, _JustAnyShape]
 
 ###
 
@@ -26,15 +26,17 @@ class CZT:
 
     #
     @overload
-    def __call__(self, /, x: _ToComplexStrictND, *, axis: SupportsIndex = -1) -> onp.ArrayND[_Complex]: ...
+    def __call__(self, /, x: _ToComplex128StrictND, *, axis: SupportsIndex = -1) -> onp.ArrayND[np.complex128]: ...
     @overload
-    def __call__(self, /, x: onp.ToComplexStrict1D, *, axis: SupportsIndex = -1) -> onp.Array1D[_Complex]: ...
+    def __call__(self, /, x: onp.ToComplex128Strict1D, *, axis: SupportsIndex = -1) -> onp.Array1D[np.complex128]: ...
     @overload
-    def __call__(self, /, x: onp.ToComplexStrict2D, *, axis: SupportsIndex = -1) -> onp.Array2D[_Complex]: ...
+    def __call__(self, /, x: onp.ToComplex128Strict2D, *, axis: SupportsIndex = -1) -> onp.Array2D[np.complex128]: ...
     @overload
-    def __call__(self, /, x: onp.ToComplexStrict3D, *, axis: SupportsIndex = -1) -> onp.Array3D[_Complex]: ...
+    def __call__(self, /, x: onp.ToComplex128Strict3D, *, axis: SupportsIndex = -1) -> onp.Array3D[np.complex128]: ...
     @overload
-    def __call__(self, /, x: onp.ToComplexND, *, axis: SupportsIndex = -1) -> onp.ArrayND[_Complex]: ...
+    def __call__(self, /, x: _ToInexact80ND, *, axis: SupportsIndex = -1) -> onp.ArrayND[np.clongdouble]: ...
+    @overload
+    def __call__(self, /, x: onp.ToComplexND, *, axis: SupportsIndex = -1) -> onp.ArrayND[np.complex128 | Any]: ...
 
     #
     def points(self, /) -> onp.Array1D[np.complex128]: ...
@@ -57,66 +59,80 @@ def czt_points(m: int, w: complex | None = None, a: complex = 1 + 0j) -> onp.Arr
 #
 @overload
 def czt(
-    x: _ToComplexStrictND, m: int | None = None, w: complex | None = None, a: complex = 1 + 0j, *, axis: SupportsIndex = -1
-) -> onp.ArrayND[_Complex]: ...
+    x: _ToComplex128StrictND, m: int | None = None, w: complex | None = None, a: complex = 1 + 0j, *, axis: SupportsIndex = -1
+) -> onp.ArrayND[np.complex128]: ...
 @overload
 def czt(
-    x: onp.ToComplexStrict1D, m: int | None = None, w: complex | None = None, a: complex = 1 + 0j, *, axis: SupportsIndex = -1
-) -> onp.Array1D[_Complex]: ...
+    x: onp.ToComplex128Strict1D, m: int | None = None, w: complex | None = None, a: complex = 1 + 0j, *, axis: SupportsIndex = -1
+) -> onp.Array1D[np.complex128]: ...
 @overload
 def czt(
-    x: onp.ToComplexStrict2D, m: int | None = None, w: complex | None = None, a: complex = 1 + 0j, *, axis: SupportsIndex = -1
-) -> onp.Array2D[_Complex]: ...
+    x: onp.ToComplex128Strict2D, m: int | None = None, w: complex | None = None, a: complex = 1 + 0j, *, axis: SupportsIndex = -1
+) -> onp.Array2D[np.complex128]: ...
 @overload
 def czt(
-    x: onp.ToComplexStrict3D, m: int | None = None, w: complex | None = None, a: complex = 1 + 0j, *, axis: SupportsIndex = -1
-) -> onp.Array3D[_Complex]: ...
+    x: onp.ToComplex128Strict3D, m: int | None = None, w: complex | None = None, a: complex = 1 + 0j, *, axis: SupportsIndex = -1
+) -> onp.Array3D[np.complex128]: ...
+@overload
+def czt(
+    x: _ToInexact80ND, m: int | None = None, w: complex | None = None, a: complex = 1 + 0j, *, axis: SupportsIndex = -1
+) -> onp.ArrayND[np.clongdouble]: ...
 @overload
 def czt(
     x: onp.ToComplexND, m: int | None = None, w: complex | None = None, a: complex = 1 + 0j, *, axis: SupportsIndex = -1
-) -> onp.ArrayND[_Complex]: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
 
 #
 @overload
 def zoom_fft(
-    x: _ToComplexStrictND,
+    x: _ToComplex128StrictND,
     fn: float | onp.ToFloat1D,
     m: int | None = None,
     *,
     fs: float = 2,
     endpoint: bool = False,
     axis: SupportsIndex = -1,
-) -> onp.ArrayND[_Complex]: ...
+) -> onp.ArrayND[np.complex128]: ...
 @overload
 def zoom_fft(
-    x: onp.ToComplexStrict1D,
+    x: onp.ToComplex128Strict1D,
     fn: float | onp.ToFloat1D,
     m: int | None = None,
     *,
     fs: float = 2,
     endpoint: bool = False,
     axis: SupportsIndex = -1,
-) -> onp.Array1D[_Complex]: ...
+) -> onp.Array1D[np.complex128]: ...
 @overload
 def zoom_fft(
-    x: onp.ToComplexStrict2D,
+    x: onp.ToComplex128Strict2D,
     fn: float | onp.ToFloat1D,
     m: int | None = None,
     *,
     fs: float = 2,
     endpoint: bool = False,
     axis: SupportsIndex = -1,
-) -> onp.Array2D[_Complex]: ...
+) -> onp.Array2D[np.complex128]: ...
 @overload
 def zoom_fft(
-    x: onp.ToComplexStrict3D,
+    x: onp.ToComplex128Strict3D,
     fn: float | onp.ToFloat1D,
     m: int | None = None,
     *,
     fs: float = 2,
     endpoint: bool = False,
     axis: SupportsIndex = -1,
-) -> onp.Array3D[_Complex]: ...
+) -> onp.Array3D[np.complex128]: ...
+@overload
+def zoom_fft(
+    x: _ToInexact80ND,
+    fn: float | onp.ToFloat1D,
+    m: int | None = None,
+    *,
+    fs: float = 2,
+    endpoint: bool = False,
+    axis: SupportsIndex = -1,
+) -> onp.ArrayND[np.clongdouble]: ...
 @overload
 def zoom_fft(
     x: onp.ToComplexND,
@@ -126,4 +142,4 @@ def zoom_fft(
     fs: float = 2,
     endpoint: bool = False,
     axis: SupportsIndex = -1,
-) -> onp.ArrayND[_Complex]: ...
+) -> onp.ArrayND[np.complex128 | Any]: ...
