@@ -10,6 +10,7 @@ from scipy.stats import estimated_cdf, quantile
 
 ###
 
+_f64_0d: np.float64
 _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
@@ -71,6 +72,9 @@ assert_type(quantile(_f64_1d, _f64_1d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(quantile(_f64_2d, _f64_1d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(quantile(_f64_3d, _f64_1d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(quantile(_f64_1d, 0.5, method="harrell-davis"), np.float64)
+assert_type(quantile(_f64_1d, _f64_0d), np.float64)
+assert_type(quantile(_f64_2d, _f64_0d), onp.Array1D[np.float64])
+assert_type(quantile(_f64_3d, _f64_0d), onp.Array2D[np.float64])
 
 ###
 # estimated_cdf
