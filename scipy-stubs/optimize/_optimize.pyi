@@ -313,7 +313,7 @@ def fmin_cg(
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _ToFloatingND = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     full_output: onp.ToFalse = 0,
     disp: _Disp = 1,
@@ -330,7 +330,7 @@ def fmin_cg(
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _ToFloatingND = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     full_output: onp.ToFalse = 0,
     disp: _Disp = 1,
@@ -348,7 +348,7 @@ def fmin_cg(
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _ToFloatingND = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     *,
     full_output: onp.ToTrue,
@@ -366,7 +366,7 @@ def fmin_cg(
     args: _Args = (),
     gtol: onp.ToFloat = 1e-05,
     norm: onp.ToFloat = ...,  # inf
-    epsilon: onp.ToFloat | _ToFloatingND = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     *,
     full_output: onp.ToTrue,
@@ -385,7 +385,7 @@ def fmin_ncg(
     fhess: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _ToFloatingND = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     full_output: onp.ToFalse = 0,
     disp: _Disp = 1,
@@ -403,7 +403,7 @@ def fmin_ncg(
     fhess: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _ToFloatingND = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     full_output: onp.ToFalse = 0,
     disp: _Disp = 1,
@@ -422,7 +422,7 @@ def fmin_ncg(
     fhess: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _ToFloatingND = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     *,
     full_output: onp.ToTrue,
@@ -441,7 +441,7 @@ def fmin_ncg(
     fhess: _Fn1_1d[_ToFloatingND] | None = None,
     args: _Args = (),
     avextol: onp.ToFloat = 1e-5,
-    epsilon: onp.ToFloat | _ToFloatingND = ...,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
     maxiter: int | None = None,
     *,
     full_output: onp.ToTrue,
@@ -771,11 +771,11 @@ def show_options(solver: Solver | None = None, method: MethodAll | None = None, 
 #
 @overload
 def approx_fprime(
-    xk: onp.ToFloat1D, f: _Fn1_1d[_Float], epsilon: onp.ToFloat | _ToFloatingND = ..., *args: object
+    xk: onp.ToFloat1D, f: _Fn1_1d[_Float], epsilon: onp.ToFloat | onp.ToFloat1D = ..., *args: object
 ) -> _Float1D: ...
 @overload
 def approx_fprime(
-    xk: onp.ToFloat1D, f: _Fn1_1d[_Float1D], epsilon: onp.ToFloat | _ToFloatingND = ..., *args: object
+    xk: onp.ToFloat1D, f: _Fn1_1d[_Float1D], epsilon: onp.ToFloat | onp.ToFloat1D = ..., *args: object
 ) -> _Float2D: ...
 
 #
