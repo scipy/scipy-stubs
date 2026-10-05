@@ -21,6 +21,8 @@ from scipy.ndimage import (
 
 ###
 
+_i: int
+
 _i16_2d: onp.Array2D[np.int16]
 _f32_2d: onp.Array2D[np.float32]
 _f64_2d: onp.Array2D[np.float64]
@@ -46,6 +48,7 @@ assert_type(spline_filter1d(_f64_2d, output=complex), onp.ArrayND[np.complex128]
 
 assert_type(spline_filter1d(_f64_2d, 3, -1, np.dtype(np.float32)), onp.ArrayND[np.float32])
 assert_type(spline_filter1d(_f64_2d, output=np.dtype(np.complex64)), onp.ArrayND[np.complex64])
+assert_type(spline_filter1d(_f64_2d, _i), onp.ArrayND[np.float64])
 
 # spline_filter
 
@@ -56,6 +59,7 @@ assert_type(spline_filter(_f64_2d, output=complex), onp.ArrayND[np.complex128])
 
 assert_type(spline_filter(_f64_2d, 3, np.dtype(np.float32)), onp.ArrayND[np.float32])
 assert_type(spline_filter(_f64_2d, output=np.dtype(np.complex64)), onp.ArrayND[np.complex64])
+assert_type(spline_filter(_f64_2d, _i), onp.ArrayND[np.float64])
 
 # geometric_transform
 
@@ -74,6 +78,7 @@ assert_type(geometric_transform(_f64_2d, _mapping, output=complex), onp.ArrayND[
 assert_type(geometric_transform(_f64_2d, _mapping, None, np.dtype(np.float32)), onp.ArrayND[np.float32])
 assert_type(geometric_transform(_f64_2d, _mapping, output=np.dtype(np.float32)), onp.ArrayND[np.float32])
 assert_type(geometric_transform(_f64_2d, _mapping_llc), onp.Array2D[np.float64])
+assert_type(geometric_transform(_f64_2d, _mapping, order=_i), onp.Array2D[np.float64])
 
 # map_coordinates
 
@@ -91,6 +96,7 @@ assert_type(map_coordinates(_f64_2d, _f64_2d, output=int), onp.ArrayND[np.int_])
 assert_type(map_coordinates(_f64_2d, _f64_2d, output=float), onp.ArrayND[np.float64])
 assert_type(map_coordinates(_f64_2d, _f64_2d, output=complex), onp.ArrayND[np.complex128])
 assert_type(map_coordinates(_f64_2d, _f64_2d, np.dtype(np.float32)), onp.ArrayND[np.float32])
+assert_type(map_coordinates(_f64_2d, _f64_2d, order=_i), onp.ArrayND[np.float64])
 
 # affine_transform
 
@@ -107,6 +113,7 @@ assert_type(affine_transform(_f64_2d, _f64_2d, output=int), onp.ArrayND[np.int_]
 assert_type(affine_transform(_f64_2d, _f64_2d, output=float), onp.ArrayND[np.float64])
 assert_type(affine_transform(_f64_2d, _f64_2d, output=complex), onp.ArrayND[np.complex128])
 assert_type(affine_transform(_f64_2d, _f64_2d, output=np.dtype(np.float32)), onp.ArrayND[np.float32])
+assert_type(affine_transform(_f64_2d, _f64_2d, order=_i), onp.ArrayND[np.float64])
 
 # shift
 
@@ -123,6 +130,7 @@ assert_type(shift(_f64_2d, 1.0, output=int), onp.ArrayND[np.int_])
 assert_type(shift(_f64_2d, 1.0, output=float), onp.ArrayND[np.float64])
 assert_type(shift(_f64_2d, 1.0, output=complex), onp.ArrayND[np.complex128])
 assert_type(shift(_f64_2d, 1.0, np.dtype(np.float32)), onp.ArrayND[np.float32])
+assert_type(shift(_f64_2d, 1.0, order=_i), onp.Array2D[np.float64])
 
 # zoom
 
@@ -139,6 +147,7 @@ assert_type(zoom(_f64_2d, 2.0, output=int), onp.ArrayND[np.int_])
 assert_type(zoom(_f64_2d, 2.0, output=float), onp.ArrayND[np.float64])
 assert_type(zoom(_f64_2d, 2.0, output=complex), onp.ArrayND[np.complex128])
 assert_type(zoom(_f64_2d, 2.0, np.dtype(np.float32)), onp.ArrayND[np.float32])
+assert_type(zoom(_f64_2d, 2.0, order=_i), onp.Array2D[np.float64])
 
 # rotate
 
@@ -155,3 +164,4 @@ assert_type(rotate(_f64_2d, 2.0, output=int), onp.ArrayND[np.int_])
 assert_type(rotate(_f64_2d, 2.0, output=float), onp.ArrayND[np.float64])
 assert_type(rotate(_f64_2d, 2.0, output=complex), onp.ArrayND[np.complex128])
 assert_type(rotate(_f64_2d, 2.0, output=np.dtype(np.float32)), onp.ArrayND[np.float32])
+assert_type(rotate(_f64_2d, 2.0, order=_i), onp.Array2D[np.float64])
