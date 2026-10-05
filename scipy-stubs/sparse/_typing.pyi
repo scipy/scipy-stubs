@@ -1,14 +1,16 @@
 # NOTE(scipy-stubs): This module only exists `if typing.TYPE_CHECKING: ...`, and has no stable API.
 
+from collections.abc import Sequence
 from typing import Literal, Protocol, SupportsIndex, TypeVar, final, type_check_only
 
 import numpy as np
+import optype.numpy as onp
 import optype.numpy.compat as npc
 
 from ._base import _spbase, sparray
 from ._matrix import spmatrix
 
-__all__ = "_CanAsAny", "_CanStack", "_CanStackAs", "_Format", "_Sparse2D", "_ToShape1D", "_ToShape2D"
+__all__ = "_CanAsAny", "_CanStack", "_CanStackAs", "_Format", "_Sparse2D", "_ToShape1D", "_ToShape2D", "_ToShapeND"
 
 ###
 
@@ -17,6 +19,7 @@ type _Sparse2D[_ScalarT: npc.number | np.bool] = _spbase[_ScalarT, tuple[int, in
 
 type _ToShape1D = tuple[SupportsIndex]  # ndim == 1
 type _ToShape2D = tuple[SupportsIndex, SupportsIndex]  # ndim == 2
+type _ToShapeND = Sequence[SupportsIndex] | onp.ToJustInt1D
 
 type _Format = Literal["bsr", "coo", "csc", "csr", "dia", "dok", "lil"]
 

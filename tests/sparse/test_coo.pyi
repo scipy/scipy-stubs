@@ -3,7 +3,7 @@ from typing import assert_type
 import numpy as np
 import optype.numpy as onp
 
-from ._types import coo_arr, coo_vec
+from ._types import ScalarType, coo_arr, coo_vec
 from scipy.sparse import coo_array, coo_matrix
 
 ###
@@ -14,6 +14,7 @@ _py_f_1d: list[float]
 _py_c_1d: list[complex]
 _py_i_2d: list[list[int]]
 _f64_1d: onp.Array1D[np.float64]
+_shape_nd: tuple[int, ...]
 
 ###
 # coo_array
@@ -55,6 +56,8 @@ assert_type(coo_array((_py_b_1d, (_py_i_1d, _py_i_1d))), coo_array[np.bool, tupl
 assert_type(coo_array((_py_i_1d, (_py_i_1d, _py_i_1d))), coo_array[np.int_, tuple[int, int]])
 assert_type(coo_array((_py_f_1d, (_py_i_1d, _py_i_1d))), coo_array[np.float64, tuple[int, int]])
 assert_type(coo_array((_py_c_1d, (_py_i_1d, _py_i_1d))), coo_array[np.complex128, tuple[int, int]])
+assert_type(coo_array((_py_f_1d, (_py_i_1d, _py_i_1d)), shape=_py_i_1d), coo_array[np.float64, tuple[int, int]])
+assert_type(coo_array(coo_arr, shape=_py_i_1d), coo_array[ScalarType, tuple[int, int]])
 
 assert_type(coo_vec.count_nonzero(), np.intp)
 assert_type(coo_arr.count_nonzero(), np.intp)
@@ -75,6 +78,7 @@ assert_type(coo_matrix((_py_b_1d, (_py_i_1d, _py_i_1d))), coo_matrix[np.bool])
 assert_type(coo_matrix((_py_i_1d, (_py_i_1d, _py_i_1d))), coo_matrix[np.int_])
 assert_type(coo_matrix((_py_f_1d, (_py_i_1d, _py_i_1d))), coo_matrix[np.float64])
 assert_type(coo_matrix((_py_c_1d, (_py_i_1d, _py_i_1d))), coo_matrix[np.complex128])
+assert_type(coo_matrix((_f64_1d, (_py_i_1d, _py_i_1d)), shape=_shape_nd), coo_matrix[np.float64])
 
 assert_type(coo_matrix((2, 3)), coo_matrix[np.float64])
 assert_type(coo_matrix((2, 3), dtype=np.bool), coo_matrix[np.bool])

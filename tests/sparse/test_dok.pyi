@@ -19,6 +19,8 @@ _py_i_2d: list[list[int]]
 _py_f_2d: list[list[float]]
 _py_c_2d: list[list[complex]]
 
+_shape_nd: tuple[int, ...]
+
 ###
 # NOTE: Keep these tests in sync with the `csr` tests.
 
@@ -67,6 +69,10 @@ assert_type(dok_matrix(_py_b_2d), dok_matrix[np.bool])
 assert_type(dok_matrix(_py_i_2d), dok_matrix[np.int64])
 assert_type(dok_matrix(_py_f_2d), dok_matrix[np.float64])
 assert_type(dok_matrix(_py_c_2d), dok_matrix[np.complex128])
+
+assert_type(dok_array(_py_f_2d, shape=_py_i_1d), dok_array[np.float64, tuple[int, int]])
+assert_type(dok_matrix(_py_f_2d, shape=_shape_nd), dok_matrix[np.float64])
+assert_type(dok_array(dok_arr, shape=_py_i_1d), dok_array[ScalarType, tuple[int, int]])
 
 ###
 # DOK-specific tests
