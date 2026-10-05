@@ -47,6 +47,7 @@ _py_i_2d: list[list[int]]
 _py_f_2d: list[list[float]]
 
 _i32: np.int32
+_i32_1d: onp.Array1D[np.int32]
 
 ###
 
@@ -82,6 +83,7 @@ assert_type(binary_erosion(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
 assert_type(binary_erosion(_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
 assert_type(binary_erosion(_f64_2d, structure=_f64_2d, mask=_f64_2d), onp.ArrayND[np.bool])
 assert_type(binary_erosion(_f64_2d, structure=_f64_2d, mask=_f64_2d, output=_f64_2d), onp.Array2D[np.float64])
+assert_type(binary_erosion(_f64_2d, origin=_i32_1d), onp.ArrayND[np.bool])
 
 # binary_dilation (same as above)
 assert_type(binary_dilation(_py_i_2d), onp.ArrayND[np.bool])
@@ -174,6 +176,7 @@ assert_type(grey_dilation(_py_i_2d, output=_f64_2d), onp.Array2D[np.float64])
 assert_type(grey_dilation(_py_f_2d, output=_f64_2d), onp.Array2D[np.float64])
 assert_type(grey_dilation(_f64_2d, footprint=_f64_2d, structure=_f64_2d), onp.Array2D[np.float64])
 assert_type(grey_dilation(_f64_2d, size=3), onp.Array2D[np.float64])
+assert_type(grey_dilation(_f64_2d, size=(_i32, _i32)), onp.Array2D[np.float64])
 
 # grey_opening (same as above)
 assert_type(grey_opening(_b_1d), onp.Array1D[np.bool])
