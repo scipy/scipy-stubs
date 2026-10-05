@@ -312,6 +312,7 @@ assert_type(sparse.hstack([csc_arr, csc_arr], format="csr", dtype=np.complex64),
 assert_type(sparse.hstack([csc_arr, csc_arr], format="dia", dtype=np.complex64), sparse.dia_array[np.complex64])
 assert_type(sparse.hstack([csc_arr, csc_arr], format="dok", dtype=np.complex64), sparse.dok_array[np.complex64, tuple[int, int]])
 assert_type(sparse.hstack([csc_arr, csc_arr], format="lil", dtype=np.complex64), sparse.lil_array[np.complex64])
+assert_type(sparse.hstack([csr_mat, dense_2d]), Any)
 
 ###
 # vstack
@@ -358,6 +359,7 @@ assert_type(sparse.vstack([csc_arr, csc_arr], format="csr", dtype=np.complex64),
 assert_type(sparse.vstack([csc_arr, csc_arr], format="dia", dtype=np.complex64), sparse.dia_array[np.complex64])
 assert_type(sparse.vstack([csc_arr, csc_arr], format="dok", dtype=np.complex64), sparse.dok_array[np.complex64, tuple[int, int]])
 assert_type(sparse.vstack([csc_arr, csc_arr], format="lil", dtype=np.complex64), sparse.lil_array[np.complex64])
+assert_type(sparse.vstack([csr_arr, dense_1d], format="csr"), Any)
 
 ###
 # block_array
