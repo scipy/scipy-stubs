@@ -20,33 +20,33 @@ _BT_co = TypeVar("_BT_co", bound=bool, covariant=True, default=bool)
 type _IntLike = int | npc.integer
 type _FloatLike = float | npc.floating
 type _ComplexLike = complex | npc.inexact
-type _FloatOut = _FloatLike | onp.ArrayND[npc.floating]
+type _FloatOrND = _FloatLike | onp.ArrayND[npc.floating]
 
 # NOTE: Technically allowing `x: float64` here is type-unsafe. But in practice that isn't likely to be a problem at all.
 type _QuadFunc10[_T] = Callable[[float], _T] | Callable[[np.float64], _T] | LowLevelCallable
 type _QuadFunc1N[_T] = Callable[Concatenate[float, ...], _T] | Callable[Concatenate[np.float64, ...], _T] | LowLevelCallable
 
-type _QuadFunc20 = Callable[[float, float], _FloatOut] | Callable[[np.float64, np.float64], _FloatOut] | LowLevelCallable
+type _QuadFunc20 = Callable[[float, float], _FloatOrND] | Callable[[np.float64, np.float64], _FloatOrND] | LowLevelCallable
 type _QuadFunc2N = (
-    Callable[Concatenate[float, float, ...], _FloatOut]
-    | Callable[Concatenate[np.float64, np.float64, ...], _FloatOut]
+    Callable[Concatenate[float, float, ...], _FloatOrND]
+    | Callable[Concatenate[np.float64, np.float64, ...], _FloatOrND]
     | LowLevelCallable
 )  # fmt: skip
 
 type _QuadFunc30 = (
-    Callable[[float, float, float], _FloatOut]
-    | Callable[[np.float64, np.float64, np.float64], _FloatOut]
+    Callable[[float, float, float], _FloatOrND]
+    | Callable[[np.float64, np.float64, np.float64], _FloatOrND]
     | LowLevelCallable
 )  # fmt: skip
 type _QuadFunc3N = (
-    Callable[Concatenate[float, float, float, ...], _FloatOut]
-    | Callable[Concatenate[np.float64, np.float64, np.float64, ...], _FloatOut]
+    Callable[Concatenate[float, float, float, ...], _FloatOrND]
+    | Callable[Concatenate[np.float64, np.float64, np.float64, ...], _FloatOrND]
     | LowLevelCallable
 )  # fmt: skip
 
 type _QuadFuncN = (
-    Callable[Concatenate[float, ...], _FloatOut]
-    | Callable[Concatenate[np.float64, ...], _FloatOut]
+    Callable[Concatenate[float, ...], _FloatOrND]
+    | Callable[Concatenate[np.float64, ...], _FloatOrND]
     | LowLevelCallable
 )  # fmt: skip
 
@@ -120,7 +120,7 @@ class IntegrationWarning(UserWarning): ...
 
 @overload
 def quad(
-    func: _QuadFunc10[_FloatOut],
+    func: _QuadFunc10[_FloatOrND],
     a: onp.ToFloat,
     b: onp.ToFloat,
     args: tuple[()] = (),
@@ -138,7 +138,7 @@ def quad(
 ) -> tuple[float, float]: ...
 @overload
 def quad(
-    func: _QuadFunc1N[_FloatOut],
+    func: _QuadFunc1N[_FloatOrND],
     a: onp.ToFloat,
     b: onp.ToFloat,
     args: tuple[object, ...],
@@ -156,7 +156,7 @@ def quad(
 ) -> tuple[float, float]: ...
 @overload
 def quad(
-    func: _QuadFunc10[_FloatOut],
+    func: _QuadFunc10[_FloatOrND],
     a: onp.ToFloat,
     b: onp.ToFloat,
     args: tuple[()],
@@ -178,7 +178,7 @@ def quad(
 ): ...
 @overload
 def quad(
-    func: _QuadFunc10[_FloatOut],
+    func: _QuadFunc10[_FloatOrND],
     a: onp.ToFloat,
     b: onp.ToFloat,
     args: tuple[()] = (),
@@ -201,7 +201,7 @@ def quad(
 ): ...
 @overload
 def quad(
-    func: _QuadFunc1N[_FloatOut],
+    func: _QuadFunc1N[_FloatOrND],
     a: onp.ToFloat,
     b: onp.ToFloat,
     args: tuple[object, ...],
