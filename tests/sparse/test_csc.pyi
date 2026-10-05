@@ -317,3 +317,4 @@ _csc_sc[_py_i_1d, :] = 1.0
 _csc_sc[_py_i_1d, :] = _arr_2d
 _csc_sc[_py_i_1d, _py_i_1d] = 1.0
 _csc_sc[_py_i_1d, _py_i_1d] = _arr_2d
+_csc_sc[:, :] = _csc_f64

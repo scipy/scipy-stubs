@@ -69,5 +69,8 @@ class IndexMixin(Generic[_ScalarT_co, _ShapeT_co]):
     def __setitem__(self: IndexMixin[Any, _1D], ix: _ToIndex1, x: _ToNumber, /) -> None: ...
     @overload
     def __setitem__(
-        self: IndexMixin[Any, _2D], ix: _ToIndex1Of2 | _ToIndex2Of2 | _ToSlice1 | _ToSlice2, x: _ToNumber, /
+        self: IndexMixin[Any, _2D],
+        ix: _ToIndex1Of2 | _ToIndex2Of2 | _ToSlice1 | _ToSlice2,
+        x: onp.ToComplex | onp.ToComplexND | _spbase,
+        /,
     ) -> None: ...
