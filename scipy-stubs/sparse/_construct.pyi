@@ -1486,7 +1486,11 @@ def hstack(blocks: Seq[sparray], format: _FmtDOK, dtype: _ToDType) -> _DOKArray2
 @overload  # sparray, format: "lil", dtype: <unknown>
 def hstack(blocks: Seq[sparray], format: _FmtLIL, dtype: _ToDType) -> lil_array: ...
 @overload
-def hstack(blocks: Seq[_spbase], format: _Format, dtype: _ToDType | None = None) -> Incomplete: ...
+def hstack(
+    blocks: Seq[_spbase | spmatrix | onp.ToComplex1D | onp.ToComplex2D],
+    format: _Format | None = None,
+    dtype: _ToDType | None = None,
+) -> Incomplete: ...
 
 # NOTE: keep in sync with `hstack`
 @overload  # sparray, format: <default>, dtype: <default>
@@ -1604,7 +1608,11 @@ def vstack(blocks: Seq[sparray], format: _FmtDOK, dtype: _ToDType) -> _DOKArray2
 @overload  # sparray, format: "lil", dtype: <unknown>
 def vstack(blocks: Seq[sparray], format: _FmtLIL, dtype: _ToDType) -> lil_array: ...
 @overload
-def vstack(blocks: Seq[_spbase], format: _Format, dtype: _ToDType | None = None) -> Incomplete: ...
+def vstack(
+    blocks: Seq[_spbase | spmatrix | onp.ToComplex1D | onp.ToComplex2D],
+    format: _Format | None = None,
+    dtype: _ToDType | None = None,
+) -> Incomplete: ...
 
 #
 @overload  # blocks: <known, known>, format: <default>, dtype: <default>
