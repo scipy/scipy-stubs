@@ -37,6 +37,11 @@ class _MatVec:
 class _MatVecDType(_MatVec):
     dtype: np.dtype[np.float64]
 
+class _Diag(LinearOperator[np.float64]):
+    def __init__(self, /, n: int) -> None: ...
+
+_diag: _Diag
+
 ###
 # LinearOperator.__new__
 
@@ -53,6 +58,11 @@ assert_type(LinearOperator(_3d, matvec=mv, dtype=int), _CustomLinearOperator[np.
 assert_type(LinearOperator(_3d, matvec=mv, dtype=float), _CustomLinearOperator[np.float64, tuple[int, int, int]])
 assert_type(LinearOperator(_3d, matvec=mv, dtype=complex), _CustomLinearOperator[np.complex128, tuple[int, int, int]])
 assert_type(LinearOperator(_3d, matvec=mv), _CustomLinearOperator[np.int8 | Any, tuple[int, int, int]])
+
+###
+# LinearOperator.__init__
+
+assert_type(super(_Diag, _diag).__init__(np.float64, _2d), None)
 
 ###
 # aslinearoperator
