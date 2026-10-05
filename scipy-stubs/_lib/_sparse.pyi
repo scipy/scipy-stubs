@@ -35,11 +35,11 @@ def issparse(
     | dia_matrix[Any]
     | dok_matrix[Any]
     | lil_matrix[Any]
-    | bsr_array
+    | bsr_array[Any]
     | coo_array[Any, Any]
-    | csc_array
+    | csc_array[Any]
     | csr_array[Any, Any]
-    | dia_array
+    | dia_array[Any]
     | dok_array[Any, Any]
-    | lil_array
+    | lil_array[Any]
 ]: ...
