@@ -22,6 +22,8 @@ assert_type(loadmat("file.mat", struct_as_record=True), dict[str, Any])  # pyrig
 assert_type(loadmat("file.mat", verify_compressed_data_integrity=True), dict[str, Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(loadmat("file.mat", simplify_cells=True), dict[str, Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(loadmat("file.mat", variable_names=("a", "b")), dict[str, Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(loadmat("file.mat", uint16_codec=None), dict[str, Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(loadmat("file.mat", spmatrix=False, uint16_codec="utf-8"), dict[str, Any])
 
 # savemat
 assert_type(savemat("file.mat", {"": ""}), None)
