@@ -41,6 +41,7 @@ class _ReaderKwargs(TypedDict, total=False):
     matlab_compatible: bool
     struct_as_record: bool
     verify_compressed_data_integrity: bool
+    uint16_codec: str | None
     simplify_cells: bool
     variable_names: list[str] | tuple[str, ...] | None
 
