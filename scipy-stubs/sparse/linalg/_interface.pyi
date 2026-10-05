@@ -1,5 +1,5 @@
 from _typeshed import Incomplete
-from collections.abc import Callable
+from collections.abc import Callable, Iterable
 from types import GenericAlias, ModuleType
 from typing import Any, ClassVar, Final, Generic, Protocol, Self, SupportsIndex, final, overload, override, type_check_only
 from typing_extensions import TypeVar
@@ -52,12 +52,29 @@ class _HasShapeAndDTypeAndMatVec(Protocol[_SCT_co, _ShapeT_co]):
     #
     def matvec(self, x: onp.ArrayND[Any], /) -> onp.ToComplexND: ...
 
+@type_check_only
+class _LinearOperatorInit:
+    @overload  # subclass
+    def __init__(self, /, dtype: Incomplete, shape: Iterable[SupportsIndex], xp: ModuleType | None = None) -> None: ...
+    @overload  # factory
+    def __init__(
+        self,
+        /,
+        shape: Incomplete,
+        matvec: _FunMatVec,
+        rmatvec: _FunMatVec | None = None,
+        matmat: _FunMatMat | None = None,
+        dtype: Incomplete = None,
+        rmatmat: _FunMatMat | None = None,
+        xp: Incomplete = None,
+    ) -> None: ...
+
 ###
 
 # ruff: file-ignore[commented-out-code]
 # ^^^ needed for the commented-out `LinearOperator.__init__`  code below (mypy workaround)
 
-class LinearOperator(Generic[_SCT_co, _ShapeT_co]):
+class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
     __array_ufunc__: ClassVar[None] = None
 
     @classmethod
