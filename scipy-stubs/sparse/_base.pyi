@@ -33,7 +33,7 @@ from ._dok import dok_array, dok_matrix
 from ._lil import lil_array, lil_matrix
 from ._matrix import spmatrix as spmatrix
 from ._typing import _CanAsAny, _Format
-from scipy._lib._sparse import SparseABC
+from scipy._lib._sparse import SparseABC, issparse
 
 __all__ = ["SparseEfficiencyWarning", "SparseWarning", "issparse", "isspmatrix", "sparray"]
 
@@ -1429,16 +1429,4 @@ class sparray(Generic[_ScalarT_co, _ShapeT_co]):
     @classmethod
     def __class_getitem__(cls, arg: type | object, /) -> GenericAlias: ...
 
-def issparse(
-    x: object,
-) -> TypeIs[
-    _SpMatrix[Any]
-    | bsr_array
-    | coo_array[Any, Any]
-    | csc_array
-    | csr_array[Any, Any]
-    | dia_array
-    | dok_array[Any, Any]
-    | lil_array
-]: ...
 def isspmatrix(x: object) -> TypeIs[spmatrix]: ...
