@@ -48,6 +48,8 @@ f64_nd: onp.ArrayND[np.float64]
 c64_nd: onp.ArrayND[np.complex64]
 c128_nd: onp.ArrayND[np.complex128]
 _axes: tuple[int]
+_i64: np.int64
+_i64_1d: onp.Array1D[np.int64]
 
 # weights for convolve/correlate
 weights_1d: onp.Array1D[np.float64]
@@ -94,6 +96,7 @@ assert_type(correlate(c128_nd, weights_nd), onp.ArrayND[np.complex128])
 assert_type(correlate(f64_nd, weights_nd, output=np.float32, origin=_origin), onp.ArrayND[np.float32])
 assert_type(correlate(f64_nd, weights_nd, output=_dtype, origin=_origin), onp.ArrayND[Any])
 assert_type(correlate(i32_2d, weights_nd, output=f64_2d), onp.ArrayND[np.float64])
+assert_type(correlate(f64_2d, weights_nd, origin=_i64_1d), onp.Array2D[np.float64])
 
 ###
 # convolve1d
@@ -208,6 +211,7 @@ assert_type(gaussian_filter(complex_2d, sigma=1), onp.ArrayND[np.complex128])
 assert_type(gaussian_filter(f64_nd, sigma=1), onp.ArrayND[np.float64])
 assert_type(gaussian_filter(c128_nd, sigma=1), onp.ArrayND[np.complex128])
 assert_type(gaussian_filter(i32_2d, sigma=1, output=f64_2d), onp.ArrayND[np.float64])
+assert_type(gaussian_filter(f64_2d, sigma=1, radius=_i64_1d), onp.Array2D[np.float64])
 
 ###
 # uniform_filter1d
@@ -220,6 +224,7 @@ assert_type(uniform_filter1d(complex_2d, size=3), onp.ArrayND[np.complex128])
 assert_type(uniform_filter1d(f64_nd, size=3), onp.ArrayND[np.float64])
 assert_type(uniform_filter1d(c128_nd, size=3), onp.ArrayND[np.complex128])
 assert_type(uniform_filter1d(i32_2d, size=3, output=f64_2d), onp.ArrayND[np.float64])
+assert_type(uniform_filter1d(f64_2d, size=_i64), onp.Array2D[np.float64])
 
 ###
 # uniform_filter
@@ -232,6 +237,7 @@ assert_type(uniform_filter(complex_2d), onp.ArrayND[np.complex128])
 assert_type(uniform_filter(f64_nd), onp.ArrayND[np.float64])
 assert_type(uniform_filter(c128_nd), onp.ArrayND[np.complex128])
 assert_type(uniform_filter(i32_2d, output=f64_2d), onp.ArrayND[np.float64])
+assert_type(uniform_filter(f64_2d, size=_i64), onp.Array2D[np.float64])
 
 ###
 # maximum_filter1d
@@ -244,6 +250,7 @@ assert_type(maximum_filter1d(complex_2d, size=3), onp.ArrayND[np.complex128])
 assert_type(maximum_filter1d(f64_nd, size=3), onp.ArrayND[np.float64])
 assert_type(maximum_filter1d(c128_nd, size=3), onp.ArrayND[np.complex128])
 assert_type(maximum_filter1d(i32_2d, size=3, output=f64_2d), onp.ArrayND[np.float64])
+assert_type(maximum_filter1d(f64_2d, size=_i64), onp.Array2D[np.float64])
 
 ###
 # maximum_filter
@@ -268,6 +275,7 @@ assert_type(minimum_filter1d(float_2d, size=3), onp.ArrayND[np.float64])
 assert_type(minimum_filter1d(c128_nd, size=3), onp.ArrayND[np.complex128])
 assert_type(minimum_filter1d(f64_nd, size=3), onp.ArrayND[np.float64])
 assert_type(minimum_filter1d(i32_2d, size=3, output=f64_2d), onp.ArrayND[np.float64])
+assert_type(minimum_filter1d(f64_2d, size=_i64), onp.Array2D[np.float64])
 
 ###
 # minimum_filter
@@ -292,6 +300,7 @@ assert_type(median_filter(c128_nd), onp.ArrayND[np.complex128])
 assert_type(median_filter(f64_nd), onp.ArrayND[np.float64])
 assert_type(median_filter(f64_2d, footprint=f64_2d), onp.Array2D[np.float64])
 assert_type(median_filter(i32_2d, output=f64_2d), onp.ArrayND[np.float64])
+assert_type(median_filter(f64_2d, size=_i64_1d), onp.Array2D[np.float64])
 
 ###
 # rank_filter

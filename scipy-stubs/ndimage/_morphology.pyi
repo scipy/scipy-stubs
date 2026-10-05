@@ -1,4 +1,4 @@
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable
 from typing import Any, Literal, SupportsIndex, overload
 from typing_extensions import TypeVar
 
@@ -36,8 +36,8 @@ type _Metric1 = Literal["euclidean"]
 type _Metric2 = Literal["taxicab", "cityblock", "manhattan"]
 type _Metric3 = Literal["chessboard"]
 
-type _Ints = int | Sequence[int]
-type _Origin = int | tuple[int, ...]
+type _Ints = onp.ToInt | onp.ToInt1D
+type _Origin = onp.ToInt | onp.ToInt1D
 
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[Any, ...])
 _OriginScalarT = TypeVar("_OriginScalarT", bound=int | npc.integer, default=int)

@@ -41,7 +41,7 @@ __all__ = [
 
 type _Mode = Literal["reflect", "constant", "nearest", "mirror", "wrap", "grid-constant", "grid-mirror", "grid-wrap"]
 type _Modes = _Mode | Sequence[_Mode]
-type _Ints = int | Sequence[int]
+type _Ints = onp.ToInt | onp.ToInt1D
 type _AnyOutput = onp.ArrayND[npc.number | np.bool] | onp.AnyDType
 
 type _FilterFunc1D = Callable[Concatenate[onp.Array1D[np.float64], onp.Array1D[np.float64], ...], Unused]
@@ -1092,7 +1092,7 @@ def generic_filter(
 @overload
 def uniform_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
     input: nptc.CanArray[ShapeT, DTypeT],
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: None = None,
     mode: _Modes = "reflect",
@@ -1102,7 +1102,7 @@ def uniform_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.num
 @overload
 def uniform_filter1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.AnyIntPDType | None = None,
     mode: _Modes = "reflect",
@@ -1112,7 +1112,7 @@ def uniform_filter1d(
 @overload
 def uniform_filter1d(
     input: onp.ToJustFloat64 | onp.ToJustFloat64_ND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.AnyFloat64DType | None = None,
     mode: _Modes = "reflect",
@@ -1122,7 +1122,7 @@ def uniform_filter1d(
 @overload
 def uniform_filter1d(
     input: onp.ToJustComplex128 | onp.ToJustComplex128_ND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.AnyComplex128DType | None = None,
     mode: _Modes = "reflect",
@@ -1132,7 +1132,7 @@ def uniform_filter1d(
 @overload
 def uniform_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.ArrayND[_ScalarT] | onp.ToDType[_ScalarT] | None = None,
     mode: _Modes = "reflect",
@@ -1142,7 +1142,7 @@ def uniform_filter1d(
 @overload
 def uniform_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
@@ -1222,7 +1222,7 @@ def uniform_filter(
 @overload
 def minimum_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
     input: nptc.CanArray[ShapeT, DTypeT],
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: None = None,
     mode: _Modes = "reflect",
@@ -1232,7 +1232,7 @@ def minimum_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.num
 @overload
 def minimum_filter1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.AnyIntPDType | None = None,
     mode: _Modes = "reflect",
@@ -1242,7 +1242,7 @@ def minimum_filter1d(
 @overload
 def minimum_filter1d(
     input: onp.ToJustFloat64 | onp.ToJustFloat64_ND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.AnyFloat64DType | None = None,
     mode: _Modes = "reflect",
@@ -1252,7 +1252,7 @@ def minimum_filter1d(
 @overload
 def minimum_filter1d(
     input: onp.ToJustComplex128 | onp.ToJustComplex128_ND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.AnyComplex128DType | None = None,
     mode: _Modes = "reflect",
@@ -1262,7 +1262,7 @@ def minimum_filter1d(
 @overload
 def minimum_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.ArrayND[_ScalarT] | onp.ToDType[_ScalarT] | None = None,
     mode: _Modes = "reflect",
@@ -1272,7 +1272,7 @@ def minimum_filter1d(
 @overload
 def minimum_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
@@ -1358,7 +1358,7 @@ def minimum_filter(
 @overload
 def maximum_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.number]](
     input: nptc.CanArray[ShapeT, DTypeT],
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: None = None,
     mode: _Modes = "reflect",
@@ -1368,7 +1368,7 @@ def maximum_filter1d[ShapeT: tuple[int, ...], DTypeT: np.dtype[np.bool | npc.num
 @overload
 def maximum_filter1d(
     input: onp.ToArrayND[op.JustInt, np.intp],
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.AnyIntPDType | None = None,
     mode: _Modes = "reflect",
@@ -1378,7 +1378,7 @@ def maximum_filter1d(
 @overload
 def maximum_filter1d(
     input: onp.ToJustFloat64 | onp.ToJustFloat64_ND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.AnyFloat64DType | None = None,
     mode: _Modes = "reflect",
@@ -1388,7 +1388,7 @@ def maximum_filter1d(
 @overload
 def maximum_filter1d(
     input: onp.ToJustComplex128 | onp.ToJustComplex128_ND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.AnyComplex128DType | None = None,
     mode: _Modes = "reflect",
@@ -1398,7 +1398,7 @@ def maximum_filter1d(
 @overload
 def maximum_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: onp.ArrayND[_ScalarT] | onp.ToDType[_ScalarT] | None = None,
     mode: _Modes = "reflect",
@@ -1408,7 +1408,7 @@ def maximum_filter1d(
 @overload
 def maximum_filter1d(
     input: onp.ToComplex | onp.ToComplexND,
-    size: int,
+    size: SupportsIndex,
     axis: int = -1,
     output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
