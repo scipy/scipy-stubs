@@ -15,6 +15,8 @@ _py_c_1d: list[complex]
 _py_i_2d: list[list[int]]
 _f64_1d: onp.Array1D[np.float64]
 _shape_nd: tuple[int, ...]
+_intp: np.intp
+_coo_3d: coo_array[ScalarType, tuple[int, int, int]]
 
 ###
 # coo_array
@@ -77,6 +79,15 @@ assert_type(coo_arr.count_nonzero(), np.intp)
 assert_type(coo_arr.count_nonzero(axis=0), onp.Array1D[np.intp])
 # pyrefly: ignore [no-matching-overload]
 coo_vec.count_nonzero(axis=0)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType]
+
+# __getitem__
+assert_type(coo_vec[_intp], ScalarType)
+assert_type(coo_arr[_intp], coo_array[ScalarType, tuple[int]])
+assert_type(coo_arr[_intp, _intp], ScalarType)
+assert_type(_coo_3d[_intp], coo_array[ScalarType])
+
+# __setitem__
+coo_arr[_intp] = 0
 
 ###
 # coo_matrix

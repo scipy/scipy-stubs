@@ -20,11 +20,13 @@ type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
 type _2D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
 
 # 1d simple index
-type _ToIndex1 = int | tuple[int]
+type _ToIndex1 = int | npc.integer | tuple[int | npc.integer]
 # 2d simple index
-type _ToIndex2 = tuple[int, int]
+type _ToIndex2 = tuple[int | npc.integer, int | npc.integer]
 # 1d multi-index of a 2d array
-type _ToIndex1Of2 = _ToIndex1 | tuple[int, _ToSlice | onp.ToInt1D] | tuple[_ToSlice | onp.ToInt1D, int]
+type _ToIndex1Of2 = (
+    _ToIndex1 | tuple[int | npc.integer, _ToSlice | onp.ToInt1D] | tuple[_ToSlice | onp.ToInt1D, int | npc.integer]
+)
 # 2d multi-index of a 2d array
 type _ToIndex2Of2 = tuple[onp.ToInt1D, onp.ToInt1D]
 
@@ -46,7 +48,7 @@ INT_TYPES: tuple[type[int], type[npc.integer]] = ...
 
 class IndexMixin(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
-    def __getitem__[ST: _Scalar](self: IndexMixin[ST, _1D], ix: int, /) -> ST: ...
+    def __getitem__[ST: _Scalar](self: IndexMixin[ST, _1D], ix: int | npc.integer, /) -> ST: ...
     @overload
     def __getitem__[ST: _Scalar](self: IndexMixin[ST, _1D], ix: None, /) -> coo_array[ST, tuple[int, int]]: ...
     @overload

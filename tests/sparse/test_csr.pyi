@@ -21,6 +21,7 @@ _py_c_2d: list[list[complex]]
 _f32_1d: onp.Array1D[np.float32]
 _f32_nd: onp.ArrayND[np.float32]
 
+_intp: np.intp
 _shape_nd: tuple[int, ...]
 _ixs: tuple[slice | int, ...]
 
@@ -217,6 +218,14 @@ assert_type(csr_mat[None, 0], csr_matrix[ScalarType])
 assert_type(csr_mat[_py_i_1d, _py_i_1d], np.matrix[tuple[int, int], np.dtype[ScalarType]])
 
 assert_type(csr_arr[_ixs], Any)
+assert_type(csr_vec[_intp], ScalarType)
+assert_type(csr_arr[_intp, _intp], ScalarType)
+assert_type(csr_arr[_intp], coo_array[ScalarType, tuple[int]])
+assert_type(csr_mat[_intp], csr_matrix[ScalarType])
+
+# __setitem__
+csr_vec[_intp] = 0
+csr_arr[_intp] = 0
 
 # T
 assert_type(csr_vec.T, csr_array[ScalarType, tuple[int]])
