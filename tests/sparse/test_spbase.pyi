@@ -18,6 +18,7 @@ from ._types import (
     csr_arr,
     csr_mat,
     dia_mat,
+    dok_arr,
     dok_mat,
     lil_arr,
     lil_mat,
@@ -213,6 +214,22 @@ assert_type(_csr_arr_f64.multiply(_f64_1d), sparse.coo_array[np.float64, tuple[i
 assert_type(_csr_arr_c128.multiply(_c128_1d), sparse.coo_array[np.complex128, tuple[int, int]])
 
 # TODO(jorenham): test other arithmetic operations for all formats
+
+# __add__ (same as __radd__)
+
+assert_type(coo_arr + coo_arr, sparse.csr_array[ScalarType, tuple[int, int]])
+assert_type(lil_arr + lil_arr, sparse.csr_array[ScalarType, tuple[int, int]])
+assert_type(coo_mat + lil_mat, sparse.csr_matrix[ScalarType])
+assert_type(lil_mat + lil_mat, sparse.csr_matrix[ScalarType])
+
+# __sub__ (same as __rsub__)
+
+assert_type(coo_arr - coo_arr, sparse.csr_array[ScalarType, tuple[int, int]])
+assert_type(dok_arr - dok_arr, sparse.csr_array[ScalarType, tuple[int, int]])
+assert_type(lil_arr - lil_arr, sparse.csr_array[ScalarType, tuple[int, int]])
+assert_type(coo_mat - coo_mat, sparse.csr_matrix[ScalarType])
+assert_type(dok_mat - dok_mat, sparse.csr_matrix[ScalarType])
+assert_type(lil_mat - lil_mat, sparse.csr_matrix[ScalarType])
 
 # __matmul__ (same as dot, and spmatrix __mul__, __rmul__)
 
