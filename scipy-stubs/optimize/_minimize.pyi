@@ -9,7 +9,7 @@ from numpy_typing_compat import ABCPolyBase
 
 from ._hessian_update_strategy import HessianUpdateStrategy
 from ._optimize import OptimizeResult as _OptimizeResult, _DoesMap
-from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar
+from ._typing import Bound, Bounds, Constraint, Constraints, MethodMimimize, MethodMinimizeScalar, ToFloat0D
 from scipy.sparse._base import _spbase
 from scipy.sparse.linalg import LinearOperator
 
@@ -22,8 +22,6 @@ type _Args = tuple[object, ...]
 type _Floating = float | npc.floating
 type _Float1D = onp.Array1D[np.float64]
 type _Float2D = onp.Array2D[np.float64]
-
-type _ToFloat0D = onp.ToFloat | onp.CanArray0[npc.floating | npc.integer]
 
 # NOTE: `ABCPolyBase` is required to work around https://github.com/scipy/scipy-stubs/issues/465
 type _Fun0D[RT] = Callable[Concatenate[float, ...], RT] | Callable[Concatenate[np.float64, ...], RT] | ABCPolyBase
@@ -240,7 +238,7 @@ def minimize[Float1DT: _Float1D](
 ) -> OptimizeResult[np.float64]: ...
 @overload  # method={COBYLA}  (positional)
 def minimize(
-    fun: _Fun1D[onp.ToFloat],
+    fun: _Fun1D[ToFloat0D],
     x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args,
     method: _MethodCobyla,
@@ -255,7 +253,7 @@ def minimize(
 ) -> _CobylaResult: ...
 @overload  # method={COBYLA}  (keyword)
 def minimize(
-    fun: _Fun1D[onp.ToFloat],
+    fun: _Fun1D[ToFloat0D],
     x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     *,
@@ -271,7 +269,7 @@ def minimize(
 ) -> _CobylaResult: ...
 @overload  # method={nelder-mead,COBYQA}  (positional)
 def minimize(
-    fun: _Fun1D[onp.ToFloat],
+    fun: _Fun1D[ToFloat0D],
     x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args,
     method: _MethodF64,
@@ -286,7 +284,7 @@ def minimize(
 ) -> OptimizeResult[np.float64]: ...
 @overload  # method={nelder-mead,COBYQA}  (keyword)
 def minimize(
-    fun: _Fun1D[onp.ToFloat],
+    fun: _Fun1D[ToFloat0D],
     x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     *,
@@ -316,8 +314,8 @@ def minimize[FunT: onp.ToFloat](
     options: _MinimizeOptions | None = None,
 ) -> OptimizeResult[FunT]: ...
 @overload  # `fun` return 0-d array, `jac` not truthy
-def minimize(
-    fun: _Fun1D[_ToFloat0D],
+def minimize[ScalarT: npc.floating | npc.integer](
+    fun: _Fun1D[onp.CanArray0[ScalarT]],
     x0: onp.ToFloat | onp.ToFloat1D,
     args: _Args = (),
     method: MethodMimimize | None = None,
@@ -329,7 +327,7 @@ def minimize(
     tol: onp.ToFloat | None = None,
     callback: _CallbackResult | _CallbackVector | _CallbackVectorState | None = None,
     options: _MinimizeOptions | None = None,
-) -> OptimizeResult[np.float64 | Any]: ...
+) -> OptimizeResult[ScalarT]: ...
 @overload  # fun` return (scalar, vector), `jac` truthy  (positional)
 def minimize[FunT: onp.ToFloat](
     fun: _Fun1D[_ToJac[FunT]],
@@ -396,7 +394,7 @@ def minimize[ResultT: _OptimizeResult[Any]](
 #
 @overload  # method="brent" or method="golden"
 def minimize_scalar(
-    fun: _Fun0D[_ToFloat0D],
+    fun: _Fun0D[ToFloat0D],
     bracket: onp.ToFloat1D | None = None,
     bounds: None = None,
     args: _Args = (),
@@ -406,7 +404,7 @@ def minimize_scalar(
 ) -> _MinimizeScalarResult: ...
 @overload  # bound=<given>  (positional)
 def minimize_scalar(
-    fun: _Fun0D[_ToFloat0D],
+    fun: _Fun0D[ToFloat0D],
     bracket: _Ignored | None,
     bounds: onp.ToFloat1D,
     args: _Args = (),
@@ -416,7 +414,7 @@ def minimize_scalar(
 ) -> _MinimizeScalarResult: ...
 @overload  # bound=<given>  (keyword)
 def minimize_scalar(
-    fun: _Fun0D[_ToFloat0D],
+    fun: _Fun0D[ToFloat0D],
     bracket: _Ignored | None = None,
     *,
     bounds: onp.ToFloat1D,

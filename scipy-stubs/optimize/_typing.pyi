@@ -6,6 +6,7 @@ from typing_extensions import TypedDict
 
 import numpy as np
 import optype.numpy as onp
+import optype.numpy.compat as npc
 
 from ._constraints import Bounds as _Bounds, LinearConstraint, NonlinearConstraint
 from ._hessian_update_strategy import HessianUpdateStrategy
@@ -28,12 +29,15 @@ __all__ = [
     "MinimizerKwargsJac",
     "Solver",
     "TRSolver",
+    "ToFloat0D",
 ]
 
 type _Float1D = onp.Array1D[np.float64]
 type _Args = tuple[object, ...]
 
 # bounds
+type ToFloat0D = onp.ToFloat | onp.CanArray0[npc.floating | npc.integer]
+
 type Bound = Sequence[onp.ToFloat | None]
 type Bounds = Sequence[Bound] | onp.ToFloat2D | _Bounds
 

@@ -46,7 +46,7 @@ minimize(_f_f64_f64, x0=6400, args=(_f64_nd,), method="Nelder-Mead", options={"f
 assert_type(minimize(_f_f32, _f64_1d).fun, np.float32)
 assert_type(minimize(_f_f64, _f64_1d).fun, np.float64)
 assert_type(minimize(_f_float, _f64_1d).fun, float)
-assert_type(minimize(_f_nd, _f64_1d).fun, np.float64 | Any)
+assert_type(minimize(_f_nd, _f64_1d).fun, np.float64)
 assert_type(minimize(_f_f32, _f64_1d, method="BFGS").fun, np.float32)
 assert_type(minimize(_f_jac_f32, _f64_1d, jac=True).fun, np.float32)
 assert_type(minimize(_f_jac_f32, _f64_1d, (), "SLSQP", True).fun, np.float32)
