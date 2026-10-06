@@ -2,6 +2,9 @@ import io
 from pathlib import Path
 from typing import Any, assert_type
 
+import numpy as np
+import optype.numpy as onp
+
 from ._types import (
     bsr_arr,
     bsr_mat,
@@ -19,7 +22,20 @@ from ._types import (
     lil_mat,
 )
 from scipy import sparse
-from scipy.sparse._data import _data_matrix
+
+type _Loaded = (
+    sparse.bsr_array[Any]
+    | sparse.coo_array[Any]
+    | sparse.csc_array[Any]
+    | sparse.csr_array[Any, tuple[Any, ...]]
+    | sparse.dia_array[Any]
+    | sparse.bsr_matrix[Any]
+    | sparse.coo_matrix[Any]
+    | sparse.csc_matrix[Any]
+    | sparse.csr_matrix[Any]
+    | sparse.dia_matrix[Any]
+    | Any
+)
 
 ###
 # save_npz
@@ -58,7 +74,15 @@ assert_type(sparse.save_npz(file="", matrix=coo_arr, compressed=True), None)
 ###
 # load_npz
 
-assert_type(sparse.load_npz(""), _data_matrix | Any)
-assert_type(sparse.load_npz(b""), _data_matrix | Any)
-assert_type(sparse.load_npz(Path()), _data_matrix | Any)
-assert_type(sparse.load_npz(io.BytesIO()), _data_matrix | Any)
+assert_type(sparse.load_npz(""), _Loaded)
+assert_type(sparse.load_npz(b""), _Loaded)
+assert_type(sparse.load_npz(Path()), _Loaded)
+assert_type(sparse.load_npz(io.BytesIO()), _Loaded)
+assert_type(
+    sparse.load_npz("").tocsr(),
+    sparse.csr_array[Any, tuple[int, int]] | sparse.csr_array[Any, tuple[Any, ...]] | sparse.csr_matrix[Any] | Any,
+)
+assert_type(
+    sparse.load_npz("").tocoo(), sparse.coo_array[Any, tuple[int, int]] | sparse.coo_array[Any] | sparse.coo_matrix[Any] | Any
+)
+assert_type(sparse.load_npz("").sum(axis=0), onp.Array1D[Any] | np.matrix[tuple[int, int], np.dtype[Any]] | Any)
