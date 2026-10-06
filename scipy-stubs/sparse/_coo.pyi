@@ -132,26 +132,33 @@ class _coo_base(_data_matrix[_ScalarT_co, _ShapeT_co], _minmax_mixin[_ScalarT_co
     @overload
     def __getitem__(self, key: _IndexSlice | tuple[()], /) -> Self: ...
     @overload
-    def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int]], key: int, /) -> ST: ...
+    def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int]], key: int | npc.integer, /) -> ST: ...
     @overload
     def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int]], key: None, /) -> coo_array[ST, tuple[int, int]]: ...
     @overload
     def __getitem__[ST: _Scalar](
-        self: _coo_base[ST, tuple[int, int]], key: int | tuple[int, _IndexSlice] | tuple[_IndexSlice, int], /
+        self: _coo_base[ST, tuple[int, int]],
+        key: int | npc.integer | tuple[int | npc.integer, _IndexSlice] | tuple[_IndexSlice, int | npc.integer],
+        /,
     ) -> coo_array[ST, tuple[int]]: ...
     @overload
-    def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int, int]], key: tuple[int, int], /) -> ST: ...
+    def __getitem__[ST: _Scalar](
+        self: _coo_base[ST, tuple[int, int]], key: tuple[int | npc.integer, int | npc.integer], /
+    ) -> ST: ...
     @overload
     def __getitem__[ST: _Scalar](
         self: _coo_base[ST, tuple[int, int, int, *tuple[int, ...]]],
-        key: tuple[int | _IndexSlice | None, *tuple[int | _IndexSlice | None, ...]] | int | None,
+        key: tuple[int | npc.integer | _IndexSlice | None, *tuple[int | npc.integer | _IndexSlice | None, ...]]
+        | int
+        | npc.integer
+        | None,
         /,
     ) -> coo_array[ST]: ...
 
     #
     def __setitem__(
         self,
-        key: tuple[int | _IndexSlice | None, ...] | int | _IndexSlice | None,
+        key: tuple[int | npc.integer | _IndexSlice | None, ...] | int | npc.integer | _IndexSlice | None,
         val: onp.ToComplex | onp.ToComplexND | _spbase,
         /,
     ) -> None: ...
