@@ -26,6 +26,7 @@ from scipy.linalg import (
 
 ###
 
+py_c_0d: complex
 py_i_2d: list[list[int]]
 py_i_3d: list[list[list[int]]]
 py_f_2d: list[list[float]]
@@ -83,6 +84,7 @@ assert_type(expm(f32_nd), onp.ArrayND[np.float32])
 assert_type(expm(f64_nd), onp.ArrayND[np.float64])
 assert_type(expm(c64_nd), onp.ArrayND[np.complex64])
 assert_type(expm(c128_nd), onp.ArrayND[np.complex128])
+assert_type(expm(py_c_0d), onp.ArrayND[Any, tuple[int, int] | tuple[Any, ...]])
 
 assert_type(cosm(py_f_2d), onp.Array2D[np.float64])
 assert_type(cosm(py_c_2d), onp.Array2D[np.complex128])
@@ -212,6 +214,7 @@ assert_type(sqrtm(f64_nd), onp.ArrayND[np.float64 | np.complex128])
 assert_type(sqrtm(c64_nd), onp.ArrayND[np.complex64])
 assert_type(sqrtm(c128_nd), onp.ArrayND[np.complex128])
 assert_type(sqrtm(c160_nd), onp.ArrayND[np.complex128])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(sqrtm(py_c_0d), onp.ArrayND[Any, tuple[int, int] | tuple[Any, ...]])
 
 ###
 # logm
