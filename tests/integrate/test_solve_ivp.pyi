@@ -1,4 +1,4 @@
-from typing import assert_type, type_check_only
+from typing import Any, assert_type, type_check_only
 
 import numpy as np
 import numpy.typing as npt
@@ -84,4 +84,4 @@ assert_type(solve_ivp(deriv_vec, list_float, vec_c128, t_eval=arr_f64).y, _MatC1
 
 assert_type(solve_ivp(_rot, list_float, list_complex, events=_rot_event, args=(1.0,)).y, _MatC128)
 assert_type(solve_ivp(_rot_vec, list_float, list_complex, events=_rot_event, vectorized=True, args=(1.0,)).y, _MatC128)
-assert_type(solve_ivp(deriv_vec, list_float, list_complex, dense_output=True).sol, OdeSolution[DenseOutput[np.complex128]] | None)
+assert_type(solve_ivp(deriv_vec, list_float, list_complex, dense_output=True).sol, OdeSolution[DenseOutput[np.complex128]] | Any)

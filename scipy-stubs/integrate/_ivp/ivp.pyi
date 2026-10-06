@@ -68,7 +68,7 @@ MESSAGES: Final[dict[int, str]] = ...
 class OdeResult(_RichResult[Any], Generic[_Inexact64T_co]):
     t: _Float1D
     y: onp.Array2D[_Inexact64T_co]
-    sol: OdeSolution[DenseOutput[_Inexact64T_co]] | None
+    sol: OdeSolution[DenseOutput[_Inexact64T_co]] | Any
     t_events: list[_Float1D] | Any
     y_events: list[onp.ArrayND[_Inexact64T_co]] | Any
     nfev: int
