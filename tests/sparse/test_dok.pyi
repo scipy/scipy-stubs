@@ -1,4 +1,4 @@
-from typing import Literal, assert_type
+from typing import Any, Literal, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -54,6 +54,7 @@ assert_type(dok_matrix((2, 3), dtype=np.complex128), dok_matrix[np.complex128])
 assert_type(dok_matrix((2, 3), dtype=np.int8), dok_matrix[np.int8])
 assert_type(dok_matrix((2, 3), dtype=np.float32), dok_matrix[np.float32])
 assert_type(dok_matrix((2, 3), dtype=np.complex64), dok_matrix[np.complex64])
+assert_type(dok_matrix((2, 3), dtype=int), dok_matrix[Any])
 
 assert_type(dok_array(_py_b_1d), dok_array[np.bool, tuple[int]])
 assert_type(dok_array(_py_i_1d), dok_array[np.int64, tuple[int]])
