@@ -3,6 +3,7 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
+from optype.test import assert_subtype
 
 from ._types import ScalarType, csr_arr, csr_mat
 from scipy.sparse import coo_array, csc_array, csc_matrix
@@ -96,6 +97,7 @@ assert_type(csc_matrix(_csc_spec2, dtype=bool), csc_matrix[np.bool])
 assert_type(csc_matrix(_csc_spec2, dtype=int), csc_matrix[np.int_])
 assert_type(csc_matrix(_csc_spec2, dtype=float), csc_matrix[np.float64])
 assert_type(csc_matrix(_csc_spec2, dtype=complex), csc_matrix[np.complex128])
+assert_subtype[csc_matrix[ScalarType]](csc_matrix((_sc_1d, [_py_i_1d, _py_i_1d])))
 
 # csc_matrix((data, indices, indptr), [shape=(M, N)])
 assert_type(csc_matrix(_csc_spec3), csc_matrix[ScalarType])
@@ -143,6 +145,7 @@ assert_type(csc_array(_csc_spec2, dtype=bool), csc_array[np.bool])
 assert_type(csc_array(_csc_spec2, dtype=int), csc_array[np.int_])
 assert_type(csc_array(_csc_spec2, dtype=float), csc_array[np.float64])
 assert_type(csc_array(_csc_spec2, dtype=complex), csc_array[np.complex128])
+assert_subtype[csc_array[ScalarType]](csc_array((_sc_1d, [_py_i_1d, _py_i_1d])))
 
 # csc_array((data, indices, indptr), [shape=(M, N)])
 assert_type(csc_array(_csc_spec3), csc_array[ScalarType])

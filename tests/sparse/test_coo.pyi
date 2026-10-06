@@ -60,6 +60,7 @@ assert_type(coo_array((_py_f_1d, (_py_i_1d, _py_i_1d))), coo_array[np.float64, t
 assert_type(coo_array((_py_c_1d, (_py_i_1d, _py_i_1d))), coo_array[np.complex128, tuple[int, int]])
 assert_type(coo_array((_py_f_1d, (_py_i_1d, _py_i_1d)), shape=_py_i_1d), coo_array[np.float64, tuple[int, int]])
 assert_type(coo_array(coo_arr, shape=_py_i_1d), coo_array[ScalarType, tuple[int, int]])
+assert_type(coo_array((_f64_1d, [_py_i_1d, _py_i_1d])), coo_array[np.float64])
 
 assert_type(coo_array((_f64_1d, (_py_i_1d,)), dtype=bool), coo_array[np.bool, tuple[int]])
 assert_type(coo_array((_f64_1d, (_py_i_1d, _py_i_1d)), dtype=bool), coo_array[np.bool, tuple[int, int]])
@@ -104,6 +105,7 @@ assert_type(coo_matrix((_py_i_1d, (_py_i_1d, _py_i_1d))), coo_matrix[np.int_])
 assert_type(coo_matrix((_py_f_1d, (_py_i_1d, _py_i_1d))), coo_matrix[np.float64])
 assert_type(coo_matrix((_py_c_1d, (_py_i_1d, _py_i_1d))), coo_matrix[np.complex128])
 assert_type(coo_matrix((_f64_1d, (_py_i_1d, _py_i_1d)), shape=_shape_nd), coo_matrix[np.float64])
+assert_type(coo_matrix((_f64_1d, [_py_i_1d, _py_i_1d])), coo_matrix[np.float64])
 
 assert_type(coo_matrix((_f64_1d, (_py_i_1d, _py_i_1d)), dtype=float), coo_matrix[np.float64])
 assert_type(coo_matrix((_f64_1d, (_py_i_1d, _py_i_1d)), dtype=bool), coo_matrix[np.bool])
