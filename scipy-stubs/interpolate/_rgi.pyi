@@ -1,5 +1,5 @@
 import types
-from collections.abc import Iterable
+from collections.abc import Iterable, Mapping
 from typing import Any, Generic, Literal, overload
 from typing_extensions import TypeVar
 
@@ -51,7 +51,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
         fill_value: onp.ToFloat | None = ...,  # np.nan
         *,
         solver: _SolverFunc[npc.floating | npc.integer] | None = None,
-        solver_args: tuple[object, ...] | None = None,
+        solver_args: Mapping[str, object] | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -64,7 +64,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
         fill_value: onp.ToComplex | None = ...,  # np.nan
         *,
         solver: _SolverFunc[npc.number] | None = None,
-        solver_args: tuple[object, ...] | None = None,
+        solver_args: Mapping[str, object] | None = None,
     ) -> None: ...
     @overload
     def __init__(
@@ -77,7 +77,7 @@ class RegularGridInterpolator(Generic[_CT_co]):
         fill_value: onp.ToComplex | None = ...,  # np.nan
         *,
         solver: _SolverFunc[npc.number] | None = None,
-        solver_args: tuple[object, ...] | None = None,
+        solver_args: Mapping[str, object] | None = None,
     ) -> None: ...
 
     #
