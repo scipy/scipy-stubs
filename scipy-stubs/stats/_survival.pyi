@@ -21,14 +21,13 @@ type _Int1D = onp.Array1D[np.int_]
 type _Float1D = onp.Array1D[np.float64]
 
 _QuantileT_co = TypeVar("_QuantileT_co", bound=np.float64 | npc.floating80, default=np.float64, covariant=True)
-_KwargsT_contra = TypeVar("_KwargsT_contra", contravariant=True)
 _LineT = TypeVar("_LineT")
 
 type _SampleData = onp.ToFloatND | CensoredData[np.float64]
 
 @type_check_only
-class _CanStep(Protocol[_KwargsT_contra, _LineT]):
-    def step(self, x: _Float1D, y: _Float1D, /, **kwargs: _KwargsT_contra) -> list[_LineT]: ...
+class _CanStep(Protocol[_LineT]):
+    def step(self, x: _Float1D, y: _Float1D, /, *args: Any, **kwargs: Any) -> list[_LineT]: ...
 
 ###
 
@@ -47,7 +46,7 @@ class EmpiricalDistributionFunction(Generic[_QuantileT_co]):
     @overload
     def plot(self, /, ax: None = None, **kwds: object) -> list[Any]: ...
     @overload
-    def plot[KwargsT, LineT](self, /, ax: _CanStep[KwargsT, LineT], **kwds: KwargsT) -> list[LineT]: ...
+    def plot[LineT](self, /, ax: _CanStep[LineT], **kwds: object) -> list[LineT]: ...
     def confidence_interval(
         self, /, confidence_level: onp.ToFloat = 0.95, *, method: _CIMethod = "linear"
     ) -> ConfidenceInterval[Self]: ...
