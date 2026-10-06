@@ -15,23 +15,22 @@ from ._matrix import spmatrix
 
 type _Scalar = npc.number | np.bool
 type _ToNumber = SupportsIndex | SupportsInt | SupportsFloat | SupportsComplex | str | Buffer
+type _ToInt = int | npc.integer
 
 type _1D = tuple[int]  # ruff: ignore[snake-case-type-alias]
 type _2D = tuple[int, int]  # ruff: ignore[snake-case-type-alias]
 
 # 1d simple index
-type _ToIndex1 = int | npc.integer | tuple[int | npc.integer]
+type _ToIndex1 = _ToInt | tuple[_ToInt]
 # 2d simple index
-type _ToIndex2 = tuple[int | npc.integer, int | npc.integer]
+type _ToIndex2 = tuple[_ToInt, _ToInt]
 # 1d multi-index of a 2d array
-type _ToIndex1Of2 = (
-    _ToIndex1 | tuple[int | npc.integer, _ToSlice | onp.ToInt1D] | tuple[_ToSlice | onp.ToInt1D, int | npc.integer]
-)
+type _ToIndex1Of2 = _ToIndex1 | tuple[_ToInt, _ToSlice | onp.ToInt1D] | tuple[_ToSlice | onp.ToInt1D, _ToInt]
 # 2d multi-index of a 2d array
 type _ToIndex2Of2 = tuple[onp.ToInt1D, onp.ToInt1D]
 
 # single slice-like index (maintains axis)
-type _ToSlice = slice[int | npc.integer | None, int | npc.integer | None, int | npc.integer | None] | EllipsisType
+type _ToSlice = slice[_ToInt | None, _ToInt | None, _ToInt | None] | EllipsisType
 # axis-wise slice (maintains 1d or 2d shape)
 type _ToSlice1 = (
     _ToSlice | onp.ToInt1D | tuple[int, None] | tuple[None, int] | tuple[_ToSlice, onp.ToInt1D] | tuple[onp.ToInt1D, _ToSlice]
@@ -48,7 +47,7 @@ INT_TYPES: tuple[type[int], type[npc.integer]] = ...
 
 class IndexMixin(Generic[_ScalarT_co, _ShapeT_co]):
     @overload
-    def __getitem__[ST: _Scalar](self: IndexMixin[ST, _1D], ix: int | npc.integer, /) -> ST: ...
+    def __getitem__[ST: _Scalar](self: IndexMixin[ST, _1D], ix: _ToInt, /) -> ST: ...
     @overload
     def __getitem__[ST: _Scalar](self: IndexMixin[ST, _1D], ix: None, /) -> coo_array[ST, tuple[int, int]]: ...
     @overload
