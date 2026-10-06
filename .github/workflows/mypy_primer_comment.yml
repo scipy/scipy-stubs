@@ -24,7 +24,7 @@ jobs:
       pull-requests: write # to create and update the mypy_primer results comment
 
     steps:
-      - uses: dawidd6/action-download-artifact@27e4ae67c24b67d3b54bc6d6a45475be1e28031b # v26
+      - uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
         name: download pr-number
         with:
           name: pr-number
@@ -39,7 +39,7 @@ jobs:
             echo "pr-number=$(<"$RUNNER_TEMP/artifacts/pr-number")" >> "$GITHUB_OUTPUT"
           fi
 
-      - uses: dawidd6/action-download-artifact@27e4ae67c24b67d3b54bc6d6a45475be1e28031b # v26
+      - uses: dawidd6/action-download-artifact@eab87c9830c39eff17e5a6eadb20bfb4bc880477 # v27
         name: download mypy_primer.diff
         id: download-mypy_primer-diff
         if: steps.pr-number.outputs.pr-number
