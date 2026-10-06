@@ -90,6 +90,7 @@ _f64_nd: onp.ArrayND[np.float64]
 _f80_nd: onp.ArrayND[npc.floating80]
 _c64_nd: onp.ArrayND[np.complex64]
 _c128_nd: onp.ArrayND[np.complex128]
+_any_nd: onp.ArrayND[Any]
 
 ###
 
@@ -143,6 +144,7 @@ assert_type(convolve(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(convolve(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
 assert_type(convolve(_f64_nd, _f64_nd), onp.ArrayND[np.float64])
 assert_type(convolve(_f64_2d, _f64_nd), onp.ArrayND[np.float64])
+assert_subtype[onp.ArrayND[np.float64]](convolve(_any_nd, _any_nd))
 
 # correlate (same as convolve)
 
@@ -156,6 +158,7 @@ assert_type(correlate(_c64_1d, _c64_1d), onp.Array1D[np.complex64])
 assert_type(correlate(_c128_1d, _c128_1d), onp.Array1D[np.complex128])
 assert_type(correlate(_f64_nd, _f64_nd), onp.ArrayND[np.float64])
 assert_type(correlate(_f64_2d, _f64_nd), onp.ArrayND[np.float64])
+assert_subtype[onp.ArrayND[np.float64]](correlate(_any_nd, _any_nd))
 
 # convolve2d (same as correlate2d)
 

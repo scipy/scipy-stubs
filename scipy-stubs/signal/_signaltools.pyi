@@ -139,10 +139,6 @@ def choose_conv_method(
 ) -> tuple[_ConvMethod, _ConvMeasureDict]: ...
 
 # NOTE: keep in sync with `correlate`
-@overload  # ~bool, ~bool
-def convolve(
-    in1: onp.ToJustBoolND, in2: onp.ToJustBoolND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
-) -> onp.ArrayND[np.bool]: ...
 @overload  # ?d, Nd generic  (workaround)
 def convolve[ScalarT: npc.number | np.bool](
     in1: onp.ArrayND[ScalarT, _JustAnyShape],
@@ -164,6 +160,10 @@ def convolve[AnyShapeT: (_1D, _2D, _3D), ScalarT: npc.number | np.bool](
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
 ) -> onp.ArrayND[ScalarT, AnyShapeT]: ...
+@overload  # ~bool, ~bool
+def convolve(
+    in1: onp.ToJustBoolND, in2: onp.ToJustBoolND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
+) -> onp.ArrayND[np.bool]: ...
 @overload  # ~int64, +int64
 def convolve(
     in1: onp.ToJustInt64_ND, in2: onp.ToIntND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
@@ -194,10 +194,6 @@ def convolve(
 ) -> onp.ArrayND[Any, _WorkaroundForPyright]: ...
 
 # NOTE: keep in sync with `convolve`
-@overload  # ~bool, ~bool
-def correlate(
-    in1: onp.ToJustBoolND, in2: onp.ToJustBoolND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
-) -> onp.ArrayND[np.bool]: ...
 @overload  # ?d, Nd generic  (workaround)
 def correlate[ScalarT: npc.number | np.bool](
     in1: onp.ArrayND[ScalarT, _JustAnyShape],
@@ -219,6 +215,10 @@ def correlate[AnyShapeT: (_1D, _2D, _3D), ScalarT: npc.number | np.bool](
     mode: onp.ConvolveMode = "full",
     method: _ToConvMethod = "auto",
 ) -> onp.ArrayND[ScalarT, AnyShapeT]: ...
+@overload  # ~bool, ~bool
+def correlate(
+    in1: onp.ToJustBoolND, in2: onp.ToJustBoolND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
+) -> onp.ArrayND[np.bool]: ...
 @overload  # ~int64, +int64
 def correlate(
     in1: onp.ToJustInt64_ND, in2: onp.ToIntND, mode: onp.ConvolveMode = "full", method: _ToConvMethod = "auto"
