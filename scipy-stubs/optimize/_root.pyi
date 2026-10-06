@@ -89,7 +89,7 @@ class _RootOptionsDFSane(TypedDict, total=False):
     fnorm: Callable[[onp.ArrayND[np.float64]], float]
     maxfev: int
     disp: bool
-    eta_strategy: Callable[[int, onp.ArrayND[np.float64], onp.ArrayND[np.float64]], onp.ToFloat1D]
+    eta_strategy: Callable[[int, onp.ArrayND[np.float64], onp.ArrayND[np.float64]], _ToFloatOrND]
     sigma_eps: float
     sigma_0: float
     M: int
