@@ -1923,6 +1923,7 @@ class _CustomDiscreteDistribution(DiscreteDistribution[np.float64, _ShapeT_co]):
 # Workarounds for the lack of higher-kinded typing (HKT) support in Python.
 # See https://github.com/python/typing/issues/548 and https://github.com/jorenham/hkt-survey for details.
 
+# TODO(@jorenham): use a `TypedDict` with `extra_items` (PEP 728) for these keywords once mypy supports it
 @type_check_only
 class _CustomContinuousDistributionKind(Protocol):
     @overload
@@ -1985,6 +1986,7 @@ class _CustomContinuousDistributionKind(Protocol):
         **parameters: onp.ToFloatND,
     ) -> _CustomContinuousDistribution[tuple[int, *tuple[Any, ...]]]: ...
 
+# TODO(@jorenham): use a `TypedDict` with `extra_items` (PEP 728) for these keywords once mypy supports it
 @type_check_only
 class _CustomDiscreteDistributionKind(Protocol):
     @overload
