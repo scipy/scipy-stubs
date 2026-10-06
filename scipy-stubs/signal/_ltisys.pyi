@@ -53,6 +53,7 @@ type _Complex1D = onp.Array1D[_Complex]
 
 type _ToFloat12D = onp.ToFloat1D | onp.ToFloat2D
 type _ToFloat012D = onp.ToFloat | _ToFloat12D
+type _ToFloat01D = onp.ToFloat | onp.ToFloat1D
 type _ToComplex12D = onp.ToComplex1D | onp.ToComplex2D
 type _ToComplex012D = onp.ToComplex | _ToComplex12D
 
@@ -123,7 +124,7 @@ class LinearTimeInvariant(Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
 
 class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co, _PolesT_co]):
     @overload  # +float, +float
-    def __new__(cls, num: _ToFloat12D, den: onp.ToFloat1D, /) -> TransferFunctionContinuous[np.float64 | Any]: ...
+    def __new__(cls, num: _ToFloat012D, den: _ToFloat01D, /) -> TransferFunctionContinuous[np.float64 | Any]: ...
     @overload  # ~float, ~float, +float
     def __new__(
         cls, zeros: onp.ToJustFloat1D, poles: onp.ToJustFloat1D, gain: onp.ToFloat, /
@@ -143,7 +144,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
 
     #
     @overload
-    def __init__(self, num: _ToComplex12D, den: onp.ToComplex1D, /) -> None: ...
+    def __init__(self, num: _ToComplex012D, den: onp.ToComplex | onp.ToComplex1D, /) -> None: ...
     @overload
     def __init__(self, zeros: onp.ToComplex1D, poles: onp.ToComplex1D, gain: onp.ToFloat, /) -> None: ...
     @overload
@@ -230,7 +231,7 @@ class lti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, None], Generic[_ZerosT_co,
 class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT_co, _PolesT_co, _DTT_co]):
     @overload  # +float, +float
     def __new__(
-        cls, num: _ToFloat12D, den: onp.ToFloat1D, /, *, dt: _DTT_co = ...
+        cls, num: _ToFloat012D, den: _ToFloat01D, /, *, dt: _DTT_co = ...
     ) -> TransferFunctionDiscrete[_Float, _DTT_co]: ...
     @overload  # ~float, ~float, +float
     def __new__(
@@ -255,7 +256,7 @@ class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT
 
     #
     @overload
-    def __init__(self, num: _ToComplex12D, den: onp.ToComplex1D, /, *, dt: _DTT_co = ...) -> None: ...
+    def __init__(self, num: _ToComplex012D, den: onp.ToComplex | onp.ToComplex1D, /, *, dt: _DTT_co = ...) -> None: ...
     @overload
     def __init__(self, zeros: onp.ToComplex1D, poles: onp.ToComplex1D, gain: onp.ToFloat, /, *, dt: _DTT_co = ...) -> None: ...
     @overload
@@ -311,7 +312,7 @@ class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Gen
         cls, num: onp.ToFloat32_1D | onp.ToFloat32_2D, den: onp.ToJustFloat32_1D, /, *, dt: None = None
     ) -> TransferFunctionContinuous[np.float32]: ...
     @overload
-    def __new__(cls, num: _ToFloat12D, den: onp.ToFloat1D, /, *, dt: None = None) -> TransferFunctionContinuous[_Float]: ...
+    def __new__(cls, num: _ToFloat012D, den: _ToFloat01D, /, *, dt: None = None) -> TransferFunctionContinuous[_Float]: ...
     @overload  # dlti
     def __new__[PolesT: _Float, DTT: onp.ToComplex | None](
         cls, system: dlti[PolesT, PolesT, DTT], /, *, dt: None = None
@@ -347,7 +348,7 @@ class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Gen
     ) -> TransferFunctionDiscrete[np.float32, DTT]: ...
     @overload
     def __new__[DTT: onp.ToComplex](
-        cls, num: _ToFloat12D, den: onp.ToFloat1D, /, *, dt: DTT
+        cls, num: _ToFloat012D, den: _ToFloat01D, /, *, dt: DTT
     ) -> TransferFunctionDiscrete[_Float, DTT]: ...
 
     #
@@ -358,7 +359,7 @@ class TransferFunction(LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], Gen
     @overload  # system
     def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], /, *, dt: None = None) -> None: ...
     @overload  # +float, +float
-    def __init__(self, num: _ToFloat12D, den: onp.ToFloat1D, /, *, dt: _DTT_co = ...) -> None: ...
+    def __init__(self, num: _ToFloat012D, den: _ToFloat01D, /, *, dt: _DTT_co = ...) -> None: ...
 
     #
     @property
@@ -404,7 +405,7 @@ class TransferFunctionDiscrete(
     @overload  # system
     def __init__(self, system: LinearTimeInvariant[_PolesT_co, _PolesT_co, _DTT_co], /, *, dt: None = None) -> None: ...
     @overload  # +float, +float
-    def __init__(self, numerator: _ToFloat12D, denominator: onp.ToFloat1D, /, *, dt: _DTT_co = ...) -> None: ...
+    def __init__(self, numerator: _ToFloat012D, denominator: _ToFloat01D, /, *, dt: _DTT_co = ...) -> None: ...
 
     #
     @override
