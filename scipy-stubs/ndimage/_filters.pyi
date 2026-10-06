@@ -146,7 +146,7 @@ def correlate1d(
 @overload
 def correlate1d(
     input: onp.ToComplexND,
-    weights: onp.ToFloat1D,
+    weights: onp.ToComplex1D,
     axis: int = -1,
     output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
@@ -213,7 +213,7 @@ def correlate(
 @overload
 def correlate(
     input: onp.ToComplexND,
-    weights: onp.ToFloatND,
+    weights: onp.ToComplexND,
     output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
@@ -276,7 +276,7 @@ def convolve1d(
 @overload
 def convolve1d(
     input: onp.ToComplexND,
-    weights: onp.ToFloat1D,
+    weights: onp.ToComplex1D,
     axis: int = -1,
     output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
@@ -343,7 +343,7 @@ def convolve(
 @overload
 def convolve(
     input: onp.ToComplexND,
-    weights: onp.ToFloatND,
+    weights: onp.ToComplexND,
     output: _AnyOutput | None = None,
     mode: _Modes = "reflect",
     cval: onp.ToComplex = 0.0,
