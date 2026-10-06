@@ -47,7 +47,7 @@ assert_type(splev(2.5, tck_1d), _FloatND)
 assert_type(splev(_f64_1d, tck_1d), _FloatND)
 assert_type(splev(2.5, tck_2d), list[_FloatND])
 assert_type(splev(_f64_1d, tck_2d), list[_FloatND])
-assert_type(splev(_f64_1d, tck_nd), _FloatND | list[_FloatND])
+assert_type(splev(_f64_1d, tck_nd), list[_FloatND])
 
 ###
 # splint
