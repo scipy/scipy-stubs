@@ -8,7 +8,7 @@ from scipy.stats import distributions as d
 ###
 
 type _Float = np.float64
-type _FloatND = float | np.float64 | onp.ArrayND[np.float64]
+type _FloatND = onp.ArrayND[np.float64] | Any
 
 def _f2c(x: float, /) -> complex: ...
 
