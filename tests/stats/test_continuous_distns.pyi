@@ -305,6 +305,9 @@ assert_type(gamma.cdf(_py_f_1d, 2.0), onp.ArrayND[np.float64, tuple[int] | tuple
 assert_type(norm.cdf(_py_f_1d), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
 assert_type(gamma.cdf(0.5, 2.0), np.float64)
 assert_type(norm.cdf(0.5), np.float64)
+assert_type(gamma.cdf(0.5, _f64_nd), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]] | Any)
+assert_type(norm.cdf(0.5, _f64_nd), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]] | Any)
+assert_type(norm.pdf(0.5, _f64_nd), onp.ArrayND[np.float64])
 
 # .mean (same as .median, .var, .std, .entropy)
 
@@ -325,11 +328,13 @@ assert_type(norm.stats(), tuple[np.float64, np.float64])
 
 assert_type(gamma.interval(0.9, 2.0), tuple[np.float64, np.float64])
 assert_type(norm.interval(0.9), tuple[np.float64, np.float64])
+assert_type(norm.interval(0.9, _f64_nd), tuple[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.float64] | Any])
 
 # .support
 
 assert_type(gamma.support(2.0), tuple[np.float64 | Any, np.float64 | Any])
 assert_type(norm.support(), tuple[np.float64, np.float64])
+assert_type(norm.support(_f64_nd), tuple[onp.ArrayND[np.float64] | Any, onp.ArrayND[np.float64] | Any])
 
 # .nnlf
 
