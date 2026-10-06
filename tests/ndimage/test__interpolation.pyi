@@ -29,6 +29,7 @@ _f64_2d: onp.Array2D[np.float64]
 _c64_2d: onp.Array2D[np.complex64]
 _c128_2d: onp.Array2D[np.complex128]
 
+_py_i_1d: list[int]
 _py_i_2d: list[list[int]]
 _py_f_2d: list[list[float]]
 _py_c_2d: list[list[complex]]
@@ -79,6 +80,7 @@ assert_type(geometric_transform(_f64_2d, _mapping, None, np.dtype(np.float32)), 
 assert_type(geometric_transform(_f64_2d, _mapping, output=np.dtype(np.float32)), onp.ArrayND[np.float32])
 assert_type(geometric_transform(_f64_2d, _mapping_llc), onp.Array2D[np.float64])
 assert_type(geometric_transform(_f64_2d, _mapping, order=_i), onp.Array2D[np.float64])
+assert_type(geometric_transform(_f64_2d, _mapping, output_shape=_py_i_1d), onp.Array2D[np.float64])
 
 # map_coordinates
 
@@ -114,6 +116,7 @@ assert_type(affine_transform(_f64_2d, _f64_2d, output=float), onp.ArrayND[np.flo
 assert_type(affine_transform(_f64_2d, _f64_2d, output=complex), onp.ArrayND[np.complex128])
 assert_type(affine_transform(_f64_2d, _f64_2d, output=np.dtype(np.float32)), onp.ArrayND[np.float32])
 assert_type(affine_transform(_f64_2d, _f64_2d, order=_i), onp.ArrayND[np.float64])
+assert_type(affine_transform(_f64_2d, _f64_2d, output_shape=_py_i_1d), onp.ArrayND[np.float64])
 
 # shift
 
