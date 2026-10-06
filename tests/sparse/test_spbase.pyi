@@ -310,3 +310,8 @@ assert_type(lil_mat.reshape(3, 2), sparse.lil_matrix[ScalarType])
 # astype
 
 assert_type(_csr_arr_f64.astype(_dtype_str), sparse.csr_array[Any, tuple[int, int]])
+
+###
+# asformat
+
+assert_type(_csr_arr_f64.asformat(None), sparse.csr_array[np.float64, tuple[int, int]])
