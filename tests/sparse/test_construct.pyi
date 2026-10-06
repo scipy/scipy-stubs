@@ -1,6 +1,7 @@
 from typing import Any, assert_type
 
 import numpy as np
+import optype.numpy.compat as npc
 
 import scipy.sparse as sparse
 from ._types import (
@@ -41,6 +42,16 @@ sctype: type[ScalarType]
 _dtype_str: str
 
 int_list: list[int]
+
+type _SpMatrix[ScalarT: npc.number | np.bool] = (
+    sparse.bsr_matrix[ScalarT]
+    | sparse.coo_matrix[ScalarT]
+    | sparse.csc_matrix[ScalarT]
+    | sparse.csr_matrix[ScalarT]
+    | sparse.dia_matrix[ScalarT]
+    | sparse.dok_matrix[ScalarT]
+    | sparse.lil_matrix[ScalarT]
+)
 
 ###
 # diags_array
@@ -386,6 +397,14 @@ assert_type(sparse.bmat([[csr_mat], [None]]), sparse.csr_matrix[ScalarType])  # 
 assert_type(sparse.bmat([[dok_mat], [None]], dtype=np.complex64), sparse.coo_matrix[np.complex64])  # type: ignore[assert-type,arg-type]
 assert_type(sparse.bmat([[csr_arr], [None]]), sparse.csr_array[ScalarType, tuple[int, int]])  # type: ignore[assert-type,arg-type]
 assert_type(sparse.bmat([[dok_arr], [None]], dtype=np.complex64), sparse.coo_array[np.complex64, tuple[int, int]])  # type: ignore[assert-type,arg-type]
+assert_type(sparse.bmat([[csr_mat]], format="csr"), _SpMatrix[ScalarType])
+assert_type(sparse.bmat([[csr_mat]], format="csc", dtype=sctype), _SpMatrix[ScalarType])
+assert_type(
+    sparse.bmat([[csr_arr]], format="csc", dtype=np.complex64),
+    _SpMatrix[np.complex64] | sparse.sparray[np.complex64, tuple[int, int]],
+)
+assert_type(sparse.bmat([[csr_mat]], format="coo", dtype=_dtype_str), _SpMatrix[Any])
+assert_type(sparse.bmat([[csr_arr]], format="coo", dtype=_dtype_str), _SpMatrix[Any] | sparse.sparray[Any, tuple[int, int]])
 
 # block_diag
 assert_type(sparse.block_diag([any_arr, any_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
