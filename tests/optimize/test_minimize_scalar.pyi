@@ -8,6 +8,7 @@ import optype.numpy as onp
 from scipy.optimize import OptimizeResult, minimize_scalar
 
 def f(x: float, /) -> float: ...
+def _f_nd(x: float, /) -> onp.ArrayND[np.float64]: ...
 def _custmin(
     fun: Callable[..., object], args: tuple[object, ...] = (), bracket: object = None, bounds: object = None
 ) -> OptimizeResult: ...
@@ -30,6 +31,10 @@ res = minimize_scalar(f, bracket=[0, 1, 2])
 res = minimize_scalar(f, bracket=arr_1d)
 res = minimize_scalar(f, bounds=[0, 2], method="bounded")
 res = minimize_scalar(f, bounds=arr_1d, method="bounded")
+
+assert_type(minimize_scalar(_f_nd).fun, np.float64)
+assert_type(minimize_scalar(_f_nd, bounds=bounds).fun, np.float64)
+assert_type(minimize_scalar(_f_nd, bracket, bounds).fun, np.float64)
 
 # https://github.com/scipy/scipy-stubs/issues/465
 p = npp.Polynomial([3, -2, 1, 1, 0.2])

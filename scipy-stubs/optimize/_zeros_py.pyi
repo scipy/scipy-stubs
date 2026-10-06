@@ -18,7 +18,8 @@ type _FlagKey = Literal[0, -1, -2, -3, -4, 1]
 type _Float = float | np.float64
 type _Floating = float | npc.floating
 
-type _Fun0D = Callable[Concatenate[float, ...], onp.ToFloat] | Callable[Concatenate[np.float64, ...], onp.ToFloat]
+type _ToFloat0D = onp.ToFloat | onp.CanArray0[npc.floating | npc.integer]
+type _Fun0D = Callable[Concatenate[float, ...], _ToFloat0D] | Callable[Concatenate[np.float64, ...], _ToFloat0D]
 type _FunND[ShapeT: tuple[int, ...]] = Callable[Concatenate[onp.Array[ShapeT, np.float64], ...], onp.Array[ShapeT, np.float64]]
 
 type _State = tuple[_FlagKey, _Float]
