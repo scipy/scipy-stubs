@@ -55,6 +55,8 @@ _csr_arr_c128: sparse.csr_array[np.complex128, tuple[int, int]]
 
 _coo_arr_f64: sparse.coo_array[np.float64]
 
+_dtype_str: str
+
 type _SpMatrix[ScalarT: npc.number | np.bool] = (
     sparse.bsr_matrix[ScalarT]
     | sparse.coo_matrix[ScalarT]
@@ -286,3 +288,8 @@ assert_type(csr_arr.reshape(_shape_nd), sparse.coo_array[ScalarType])
 assert_type(csr_mat.reshape(3, 2), sparse.coo_matrix[ScalarType])
 assert_type(lil_arr.reshape(3, 2), sparse.lil_array[ScalarType])
 assert_type(lil_mat.reshape(3, 2), sparse.lil_matrix[ScalarType])
+
+###
+# astype
+
+assert_type(_csr_arr_f64.astype(_dtype_str), sparse.csr_array[Any, tuple[int, int]])
