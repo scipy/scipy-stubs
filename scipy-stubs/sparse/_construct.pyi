@@ -856,31 +856,31 @@ def diags(
 # NOTE: `diags_array` should be prefered over `spdiags`
 @overload
 def spdiags[ScalarT: _Numeric](
-    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: int, n: int, format: _FmtDIA | None = None
+    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDIA | None = None
 ) -> dia_matrix[ScalarT]: ...
 @overload
 def spdiags[ScalarT: _Numeric](
-    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: int, n: int, format: _FmtBSR
+    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtBSR
 ) -> bsr_matrix[ScalarT]: ...
 @overload
 def spdiags[ScalarT: _Numeric](
-    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: int, n: int, format: _FmtCOO
+    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCOO
 ) -> coo_matrix[ScalarT]: ...
 @overload
 def spdiags[ScalarT: _Numeric](
-    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: int, n: int, format: _FmtCSC
+    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSC
 ) -> csc_matrix[ScalarT]: ...
 @overload
 def spdiags[ScalarT: _Numeric](
-    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: int, n: int, format: _FmtCSR
+    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtCSR
 ) -> csr_matrix[ScalarT]: ...
 @overload
 def spdiags[ScalarT: _Numeric](
-    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: int, n: int, format: _FmtDOK
+    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtDOK
 ) -> dok_matrix[ScalarT]: ...
 @overload
 def spdiags[ScalarT: _Numeric](
-    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: int, n: int, format: _FmtLIL
+    data: _ToArray1D2D[ScalarT], diags: _Offsets, m: onp.ToJustInt, n: onp.ToJustInt, format: _FmtLIL
 ) -> lil_matrix[ScalarT]: ...
 @overload
 def spdiags[ScalarT: _Numeric](
@@ -913,357 +913,480 @@ def spdiags[ScalarT: _Numeric](
 
 ###
 @overload  # dtype: float64-like (default), format: "dia" | None
-def identity(n: int, dtype: onp.AnyFloat64DType = "d", format: _FmtDIA | None = None) -> dia_matrix[np.float64]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyFloat64DType = "d", format: _FmtDIA | None = None) -> dia_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "bsr"
-def identity(n: int, dtype: onp.AnyFloat64DType = "d", *, format: _FmtBSR) -> bsr_matrix[np.float64]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyFloat64DType = "d", *, format: _FmtBSR) -> bsr_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "coo"
-def identity(n: int, dtype: onp.AnyFloat64DType = "d", *, format: _FmtCOO) -> coo_matrix[np.float64]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyFloat64DType = "d", *, format: _FmtCOO) -> coo_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "csc"
-def identity(n: int, dtype: onp.AnyFloat64DType = "d", *, format: _FmtCSC) -> csc_matrix[np.float64]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyFloat64DType = "d", *, format: _FmtCSC) -> csc_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "csr"
-def identity(n: int, dtype: onp.AnyFloat64DType = "d", *, format: _FmtCSR) -> csr_matrix[np.float64]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyFloat64DType = "d", *, format: _FmtCSR) -> csr_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "dok"
-def identity(n: int, dtype: onp.AnyFloat64DType = "d", *, format: _FmtDOK) -> dok_matrix[np.float64]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyFloat64DType = "d", *, format: _FmtDOK) -> dok_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "lil"
-def identity(n: int, dtype: onp.AnyFloat64DType = "d", *, format: _FmtLIL) -> lil_matrix[np.float64]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyFloat64DType = "d", *, format: _FmtLIL) -> lil_matrix[np.float64]: ...
 @overload  # dtype: bool-like, format: "dia" | None
-def identity(n: int, dtype: onp.AnyBoolDType, format: _FmtDIA | None = None) -> dia_matrix[np.bool]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyBoolDType, format: _FmtDIA | None = None) -> dia_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "bsr"
-def identity(n: int, dtype: onp.AnyBoolDType, format: _FmtBSR) -> bsr_matrix[np.bool]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyBoolDType, format: _FmtBSR) -> bsr_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "coo"
-def identity(n: int, dtype: onp.AnyBoolDType, format: _FmtCOO) -> coo_matrix[np.bool]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyBoolDType, format: _FmtCOO) -> coo_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "csc"
-def identity(n: int, dtype: onp.AnyBoolDType, format: _FmtCSC) -> csc_matrix[np.bool]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyBoolDType, format: _FmtCSC) -> csc_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "csr"
-def identity(n: int, dtype: onp.AnyBoolDType, format: _FmtCSR) -> csr_matrix[np.bool]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyBoolDType, format: _FmtCSR) -> csr_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "dok"
-def identity(n: int, dtype: onp.AnyBoolDType, format: _FmtDOK) -> dok_matrix[np.bool]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyBoolDType, format: _FmtDOK) -> dok_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "lil"
-def identity(n: int, dtype: onp.AnyBoolDType, format: _FmtLIL) -> lil_matrix[np.bool]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyBoolDType, format: _FmtLIL) -> lil_matrix[np.bool]: ...
 @overload  # dtype: int-like, format: "dia" | None
-def identity(n: int, dtype: onp.AnyIntDType, format: _FmtDIA | None = None) -> dia_matrix[np.int_]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyIntDType, format: _FmtDIA | None = None) -> dia_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "bsr"
-def identity(n: int, dtype: onp.AnyIntDType, format: _FmtBSR) -> bsr_matrix[np.int_]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyIntDType, format: _FmtBSR) -> bsr_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "coo"
-def identity(n: int, dtype: onp.AnyIntDType, format: _FmtCOO) -> coo_matrix[np.int_]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyIntDType, format: _FmtCOO) -> coo_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "csc"
-def identity(n: int, dtype: onp.AnyIntDType, format: _FmtCSC) -> csc_matrix[np.int_]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyIntDType, format: _FmtCSC) -> csc_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "csr"
-def identity(n: int, dtype: onp.AnyIntDType, format: _FmtCSR) -> csr_matrix[np.int_]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyIntDType, format: _FmtCSR) -> csr_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "dok"
-def identity(n: int, dtype: onp.AnyIntDType, format: _FmtDOK) -> dok_matrix[np.int_]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyIntDType, format: _FmtDOK) -> dok_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "lil"
-def identity(n: int, dtype: onp.AnyIntDType, format: _FmtLIL) -> lil_matrix[np.int_]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyIntDType, format: _FmtLIL) -> lil_matrix[np.int_]: ...
 @overload  # dtype: complex128-like, format: "dia" | None
-def identity(n: int, dtype: onp.AnyComplex128DType, format: _FmtDIA | None = None) -> dia_matrix[np.complex128]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyComplex128DType, format: _FmtDIA | None = None) -> dia_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "bsr"
-def identity(n: int, dtype: onp.AnyComplex128DType, format: _FmtBSR) -> bsr_matrix[np.complex128]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyComplex128DType, format: _FmtBSR) -> bsr_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "coo"
-def identity(n: int, dtype: onp.AnyComplex128DType, format: _FmtCOO) -> coo_matrix[np.complex128]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyComplex128DType, format: _FmtCOO) -> coo_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "csc"
-def identity(n: int, dtype: onp.AnyComplex128DType, format: _FmtCSC) -> csc_matrix[np.complex128]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyComplex128DType, format: _FmtCSC) -> csc_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "csr"
-def identity(n: int, dtype: onp.AnyComplex128DType, format: _FmtCSR) -> csr_matrix[np.complex128]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyComplex128DType, format: _FmtCSR) -> csr_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "dok"
-def identity(n: int, dtype: onp.AnyComplex128DType, format: _FmtDOK) -> dok_matrix[np.complex128]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyComplex128DType, format: _FmtDOK) -> dok_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "lil"
-def identity(n: int, dtype: onp.AnyComplex128DType, format: _FmtLIL) -> lil_matrix[np.complex128]: ...
+def identity(n: onp.ToJustInt, dtype: onp.AnyComplex128DType, format: _FmtLIL) -> lil_matrix[np.complex128]: ...
 @overload  # dtype: <known>, format: "dia" | None
-def identity[ScalarT: _Numeric](n: int, dtype: onp.ToDType[ScalarT], format: _FmtDIA | None = None) -> dia_matrix[ScalarT]: ...
+def identity[ScalarT: _Numeric](
+    n: onp.ToJustInt, dtype: onp.ToDType[ScalarT], format: _FmtDIA | None = None
+) -> dia_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "bsr"
-def identity[ScalarT: _Numeric](n: int, dtype: onp.ToDType[ScalarT], format: _FmtBSR) -> bsr_matrix[ScalarT]: ...
+def identity[ScalarT: _Numeric](n: onp.ToJustInt, dtype: onp.ToDType[ScalarT], format: _FmtBSR) -> bsr_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "coo"
-def identity[ScalarT: _Numeric](n: int, dtype: onp.ToDType[ScalarT], format: _FmtCOO) -> coo_matrix[ScalarT]: ...
+def identity[ScalarT: _Numeric](n: onp.ToJustInt, dtype: onp.ToDType[ScalarT], format: _FmtCOO) -> coo_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "csc"
-def identity[ScalarT: _Numeric](n: int, dtype: onp.ToDType[ScalarT], format: _FmtCSC) -> csc_matrix[ScalarT]: ...
+def identity[ScalarT: _Numeric](n: onp.ToJustInt, dtype: onp.ToDType[ScalarT], format: _FmtCSC) -> csc_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "csr"
-def identity[ScalarT: _Numeric](n: int, dtype: onp.ToDType[ScalarT], format: _FmtCSR) -> csr_matrix[ScalarT]: ...
+def identity[ScalarT: _Numeric](n: onp.ToJustInt, dtype: onp.ToDType[ScalarT], format: _FmtCSR) -> csr_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "dok"
-def identity[ScalarT: _Numeric](n: int, dtype: onp.ToDType[ScalarT], format: _FmtDOK) -> dok_matrix[ScalarT]: ...
+def identity[ScalarT: _Numeric](n: onp.ToJustInt, dtype: onp.ToDType[ScalarT], format: _FmtDOK) -> dok_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "lil"
-def identity[ScalarT: _Numeric](n: int, dtype: onp.ToDType[ScalarT], format: _FmtLIL) -> lil_matrix[ScalarT]: ...
+def identity[ScalarT: _Numeric](n: onp.ToJustInt, dtype: onp.ToDType[ScalarT], format: _FmtLIL) -> lil_matrix[ScalarT]: ...
 @overload  # dtype: <unknown>, format: "dia" | None
-def identity(n: int, dtype: _ToDType, format: _FmtDIA | None = None) -> dia_matrix[Incomplete]: ...
+def identity(n: onp.ToJustInt, dtype: _ToDType, format: _FmtDIA | None = None) -> dia_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "bsr"
-def identity(n: int, dtype: _ToDType, format: _FmtBSR) -> bsr_matrix[Incomplete]: ...
+def identity(n: onp.ToJustInt, dtype: _ToDType, format: _FmtBSR) -> bsr_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "coo"
-def identity(n: int, dtype: _ToDType, format: _FmtCOO) -> coo_matrix[Incomplete]: ...
+def identity(n: onp.ToJustInt, dtype: _ToDType, format: _FmtCOO) -> coo_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csc"
-def identity(n: int, dtype: _ToDType, format: _FmtCSC) -> csc_matrix[Incomplete]: ...
+def identity(n: onp.ToJustInt, dtype: _ToDType, format: _FmtCSC) -> csc_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csr"
-def identity(n: int, dtype: _ToDType, format: _FmtCSR) -> csr_matrix[Incomplete]: ...
+def identity(n: onp.ToJustInt, dtype: _ToDType, format: _FmtCSR) -> csr_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "dok"
-def identity(n: int, dtype: _ToDType, format: _FmtDOK) -> dok_matrix[Incomplete]: ...
+def identity(n: onp.ToJustInt, dtype: _ToDType, format: _FmtDOK) -> dok_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "lil"
-def identity(n: int, dtype: _ToDType, format: _FmtLIL) -> lil_matrix[Incomplete]: ...
+def identity(n: onp.ToJustInt, dtype: _ToDType, format: _FmtLIL) -> lil_matrix[Incomplete]: ...
 
 #
 @overload  # dtype: float64-like (default), format: "dia" | None
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtDIA | None = None
+    m: onp.ToJustInt,
+    n: onp.ToJustInt | None = None,
+    *,
+    k: onp.ToJustInt = 0,
+    dtype: onp.AnyFloat64DType = ...,
+    format: _FmtDIA | None = None,
 ) -> dia_array[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "bsr"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtBSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtBSR
 ) -> bsr_array[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "coo"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtCOO
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtCOO
 ) -> _COOArray2D[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "csc"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtCSC
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtCSC
 ) -> csc_array[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "csr"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtCSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtCSR
 ) -> _CSRArray2D[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "dok"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtDOK
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtDOK
 ) -> _DOKArray2D[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "lil"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtLIL
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtLIL
 ) -> lil_array[np.float64]: ...
 @overload  # dtype: bool-like, format: "dia" | None
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyBoolDType, format: _FmtDIA | None = None
+    m: onp.ToJustInt,
+    n: onp.ToJustInt | None = None,
+    *,
+    k: onp.ToJustInt = 0,
+    dtype: onp.AnyBoolDType,
+    format: _FmtDIA | None = None,
 ) -> dia_array[np.bool]: ...
 @overload  # dtype: bool-like, format: "bsr"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyBoolDType, format: _FmtBSR) -> bsr_array[np.bool]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyBoolDType, format: _FmtBSR
+) -> bsr_array[np.bool]: ...
 @overload  # dtype: bool-like, format: "coo"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyBoolDType, format: _FmtCOO) -> _COOArray2D[np.bool]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyBoolDType, format: _FmtCOO
+) -> _COOArray2D[np.bool]: ...
 @overload  # dtype: bool-like, format: "csc"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyBoolDType, format: _FmtCSC) -> csc_array[np.bool]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyBoolDType, format: _FmtCSC
+) -> csc_array[np.bool]: ...
 @overload  # dtype: bool-like, format: "csr"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyBoolDType, format: _FmtCSR) -> _CSRArray2D[np.bool]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyBoolDType, format: _FmtCSR
+) -> _CSRArray2D[np.bool]: ...
 @overload  # dtype: bool-like, format: "dok"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyBoolDType, format: _FmtDOK) -> _DOKArray2D[np.bool]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyBoolDType, format: _FmtDOK
+) -> _DOKArray2D[np.bool]: ...
 @overload  # dtype: bool-like, format: "lil"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyBoolDType, format: _FmtLIL) -> lil_array[np.bool]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyBoolDType, format: _FmtLIL
+) -> lil_array[np.bool]: ...
 @overload  # dtype: int-like, format: "dia" | None
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyIntDType, format: _FmtDIA | None = None
+    m: onp.ToJustInt,
+    n: onp.ToJustInt | None = None,
+    *,
+    k: onp.ToJustInt = 0,
+    dtype: onp.AnyIntDType,
+    format: _FmtDIA | None = None,
 ) -> dia_array[np.int_]: ...
 @overload  # dtype: int-like, format: "bsr"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyIntDType, format: _FmtBSR) -> bsr_array[np.int_]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyIntDType, format: _FmtBSR
+) -> bsr_array[np.int_]: ...
 @overload  # dtype: int-like, format: "coo"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyIntDType, format: _FmtCOO) -> _COOArray2D[np.int_]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyIntDType, format: _FmtCOO
+) -> _COOArray2D[np.int_]: ...
 @overload  # dtype: int-like, format: "csc"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyIntDType, format: _FmtCSC) -> csc_array[np.int_]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyIntDType, format: _FmtCSC
+) -> csc_array[np.int_]: ...
 @overload  # dtype: int-like, format: "csr"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyIntDType, format: _FmtCSR) -> _CSRArray2D[np.int_]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyIntDType, format: _FmtCSR
+) -> _CSRArray2D[np.int_]: ...
 @overload  # dtype: int-like, format: "dok"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyIntDType, format: _FmtDOK) -> _DOKArray2D[np.int_]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyIntDType, format: _FmtDOK
+) -> _DOKArray2D[np.int_]: ...
 @overload  # dtype: int-like, format: "lil"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyIntDType, format: _FmtLIL) -> lil_array[np.int_]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyIntDType, format: _FmtLIL
+) -> lil_array[np.int_]: ...
 @overload  # dtype: complex128-like, format: "dia" | None
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyComplex128DType, format: _FmtDIA | None = None
+    m: onp.ToJustInt,
+    n: onp.ToJustInt | None = None,
+    *,
+    k: onp.ToJustInt = 0,
+    dtype: onp.AnyComplex128DType,
+    format: _FmtDIA | None = None,
 ) -> dia_array[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "bsr"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyComplex128DType, format: _FmtBSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyComplex128DType, format: _FmtBSR
 ) -> bsr_array[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "coo"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyComplex128DType, format: _FmtCOO
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyComplex128DType, format: _FmtCOO
 ) -> _COOArray2D[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "csc"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyComplex128DType, format: _FmtCSC
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyComplex128DType, format: _FmtCSC
 ) -> csc_array[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "csr"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyComplex128DType, format: _FmtCSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyComplex128DType, format: _FmtCSR
 ) -> _CSRArray2D[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "dok"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyComplex128DType, format: _FmtDOK
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyComplex128DType, format: _FmtDOK
 ) -> _DOKArray2D[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "lil"
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.AnyComplex128DType, format: _FmtLIL
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.AnyComplex128DType, format: _FmtLIL
 ) -> lil_array[np.complex128]: ...
 @overload  # dtype: <known>, format: "dia" | None
 def eye_array[ScalarT: _Numeric](
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.ToDType[ScalarT], format: _FmtDIA | None = None
+    m: onp.ToJustInt,
+    n: onp.ToJustInt | None = None,
+    *,
+    k: onp.ToJustInt = 0,
+    dtype: onp.ToDType[ScalarT],
+    format: _FmtDIA | None = None,
 ) -> dia_array[ScalarT]: ...
 @overload  # dtype: <known>, format: "bsr"
 def eye_array[ScalarT: _Numeric](
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.ToDType[ScalarT], format: _FmtBSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.ToDType[ScalarT], format: _FmtBSR
 ) -> bsr_array[ScalarT]: ...
 @overload  # dtype: <known>, format: "coo"
 def eye_array[ScalarT: _Numeric](
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.ToDType[ScalarT], format: _FmtCOO
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.ToDType[ScalarT], format: _FmtCOO
 ) -> _COOArray2D[ScalarT]: ...
 @overload  # dtype: <known>, format: "csc"
 def eye_array[ScalarT: _Numeric](
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.ToDType[ScalarT], format: _FmtCSC
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.ToDType[ScalarT], format: _FmtCSC
 ) -> csc_array[ScalarT]: ...
 @overload  # dtype: <known>, format: "csr"
 def eye_array[ScalarT: _Numeric](
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.ToDType[ScalarT], format: _FmtCSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.ToDType[ScalarT], format: _FmtCSR
 ) -> _CSRArray2D[ScalarT]: ...
 @overload  # dtype: <known>, format: "dok"
 def eye_array[ScalarT: _Numeric](
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.ToDType[ScalarT], format: _FmtDOK
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.ToDType[ScalarT], format: _FmtDOK
 ) -> _DOKArray2D[ScalarT]: ...
 @overload  # dtype: <known>, format: "lil"
 def eye_array[ScalarT: _Numeric](
-    m: int, n: int | None = None, *, k: int = 0, dtype: onp.ToDType[ScalarT], format: _FmtLIL
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: onp.ToDType[ScalarT], format: _FmtLIL
 ) -> lil_array[ScalarT]: ...
 @overload  # dtype: <unknown>, format: "dia" | None
 def eye_array(
-    m: int, n: int | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtDIA | None = None
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: _ToDType, format: _FmtDIA | None = None
 ) -> dia_array[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "bsr"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtBSR) -> bsr_array[Incomplete]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: _ToDType, format: _FmtBSR
+) -> bsr_array[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "coo"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtCOO) -> _COOArray2D[Incomplete]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: _ToDType, format: _FmtCOO
+) -> _COOArray2D[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csc"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtCSC) -> csc_array[Incomplete]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: _ToDType, format: _FmtCSC
+) -> csc_array[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csr"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtCSR) -> _CSRArray2D[Incomplete]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: _ToDType, format: _FmtCSR
+) -> _CSRArray2D[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "dok"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtDOK) -> _DOKArray2D[Incomplete]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: _ToDType, format: _FmtDOK
+) -> _DOKArray2D[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "lil"
-def eye_array(m: int, n: int | None = None, *, k: int = 0, dtype: _ToDType, format: _FmtLIL) -> lil_array[Incomplete]: ...
+def eye_array(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, *, k: onp.ToJustInt = 0, dtype: _ToDType, format: _FmtLIL
+) -> lil_array[Incomplete]: ...
 
 # NOTE: `eye_array` should be prefered over `eye`
 @overload  # dtype: float64-like (default), format: "dia" | None
 def eye(
-    m: int, n: int | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., format: _FmtDIA | None = None
+    m: onp.ToJustInt,
+    n: onp.ToJustInt | None = None,
+    k: onp.ToJustInt = 0,
+    dtype: onp.AnyFloat64DType = ...,
+    format: _FmtDIA | None = None,
 ) -> dia_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "bsr"
 def eye(
-    m: int, n: int | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtBSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtBSR
 ) -> bsr_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "coo"
 def eye(
-    m: int, n: int | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtCOO
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtCOO
 ) -> coo_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "csc"
 def eye(
-    m: int, n: int | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtCSC
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtCSC
 ) -> csc_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "csr"
 def eye(
-    m: int, n: int | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtCSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtCSR
 ) -> csr_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "dok"
 def eye(
-    m: int, n: int | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtDOK
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtDOK
 ) -> dok_matrix[np.float64]: ...
 @overload  # dtype: float64-like (default), format: "lil"
 def eye(
-    m: int, n: int | None = None, k: int = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtLIL
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, dtype: onp.AnyFloat64DType = ..., *, format: _FmtLIL
 ) -> lil_matrix[np.float64]: ...
 @overload  # dtype: bool-like, format: "dia" | None
 def eye(
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtDIA | None = None
+    m: onp.ToJustInt,
+    n: onp.ToJustInt | None = None,
+    k: onp.ToJustInt = 0,
+    *,
+    dtype: onp.AnyBoolDType,
+    format: _FmtDIA | None = None,
 ) -> dia_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "bsr"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtBSR) -> bsr_matrix[np.bool]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyBoolDType, format: _FmtBSR
+) -> bsr_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "coo"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtCOO) -> coo_matrix[np.bool]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyBoolDType, format: _FmtCOO
+) -> coo_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "csc"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtCSC) -> csc_matrix[np.bool]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyBoolDType, format: _FmtCSC
+) -> csc_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "csr"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtCSR) -> csr_matrix[np.bool]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyBoolDType, format: _FmtCSR
+) -> csr_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "dok"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtDOK) -> dok_matrix[np.bool]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyBoolDType, format: _FmtDOK
+) -> dok_matrix[np.bool]: ...
 @overload  # dtype: bool-like, format: "lil"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyBoolDType, format: _FmtLIL) -> lil_matrix[np.bool]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyBoolDType, format: _FmtLIL
+) -> lil_matrix[np.bool]: ...
 @overload  # dtype: int-like, format: "dia" | None
 def eye(
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtDIA | None = None
+    m: onp.ToJustInt,
+    n: onp.ToJustInt | None = None,
+    k: onp.ToJustInt = 0,
+    *,
+    dtype: onp.AnyIntDType,
+    format: _FmtDIA | None = None,
 ) -> dia_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "bsr"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtBSR) -> bsr_matrix[np.int_]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyIntDType, format: _FmtBSR
+) -> bsr_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "coo"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtCOO) -> coo_matrix[np.int_]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyIntDType, format: _FmtCOO
+) -> coo_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "csc"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtCSC) -> csc_matrix[np.int_]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyIntDType, format: _FmtCSC
+) -> csc_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "csr"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtCSR) -> csr_matrix[np.int_]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyIntDType, format: _FmtCSR
+) -> csr_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "dok"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtDOK) -> dok_matrix[np.int_]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyIntDType, format: _FmtDOK
+) -> dok_matrix[np.int_]: ...
 @overload  # dtype: int-like, format: "lil"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyIntDType, format: _FmtLIL) -> lil_matrix[np.int_]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyIntDType, format: _FmtLIL
+) -> lil_matrix[np.int_]: ...
 @overload  # dtype: complex128-like, format: "dia" | None
 def eye(
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtDIA | None = None
+    m: onp.ToJustInt,
+    n: onp.ToJustInt | None = None,
+    k: onp.ToJustInt = 0,
+    *,
+    dtype: onp.AnyComplex128DType,
+    format: _FmtDIA | None = None,
 ) -> dia_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "bsr"
 def eye(
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtBSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyComplex128DType, format: _FmtBSR
 ) -> bsr_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "coo"
 def eye(
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtCOO
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyComplex128DType, format: _FmtCOO
 ) -> coo_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "csc"
 def eye(
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtCSC
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyComplex128DType, format: _FmtCSC
 ) -> csc_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "csr"
 def eye(
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtCSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyComplex128DType, format: _FmtCSR
 ) -> csr_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "dok"
 def eye(
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtDOK
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyComplex128DType, format: _FmtDOK
 ) -> dok_matrix[np.complex128]: ...
 @overload  # dtype: complex128-like, format: "lil"
 def eye(
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.AnyComplex128DType, format: _FmtLIL
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.AnyComplex128DType, format: _FmtLIL
 ) -> lil_matrix[np.complex128]: ...
 @overload  # dtype: <known>, format: "dia" | None
 def eye[ScalarT: _Numeric](
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtDIA | None = None
+    m: onp.ToJustInt,
+    n: onp.ToJustInt | None = None,
+    k: onp.ToJustInt = 0,
+    *,
+    dtype: onp.ToDType[ScalarT],
+    format: _FmtDIA | None = None,
 ) -> dia_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "bsr"
 def eye[ScalarT: _Numeric](
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtBSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtBSR
 ) -> bsr_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "coo"
 def eye[ScalarT: _Numeric](
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtCOO
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtCOO
 ) -> coo_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "csc"
 def eye[ScalarT: _Numeric](
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtCSC
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtCSC
 ) -> csc_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "csr"
 def eye[ScalarT: _Numeric](
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtCSR
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtCSR
 ) -> csr_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "dok"
 def eye[ScalarT: _Numeric](
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtDOK
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtDOK
 ) -> dok_matrix[ScalarT]: ...
 @overload  # dtype: <known>, format: "lil"
 def eye[ScalarT: _Numeric](
-    m: int, n: int | None = None, k: int = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtLIL
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: onp.ToDType[ScalarT], format: _FmtLIL
 ) -> lil_matrix[ScalarT]: ...
 @overload  # dtype: <unknown>, format: "dia" | None
 def eye(
-    m: int, n: int | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtDIA | None = None
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: _ToDType, format: _FmtDIA | None = None
 ) -> dia_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "bsr"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtBSR) -> bsr_matrix[Incomplete]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: _ToDType, format: _FmtBSR
+) -> bsr_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "coo"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtCOO) -> coo_matrix[Incomplete]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: _ToDType, format: _FmtCOO
+) -> coo_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csc"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtCSC) -> csc_matrix[Incomplete]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: _ToDType, format: _FmtCSC
+) -> csc_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "csr"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtCSR) -> csr_matrix[Incomplete]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: _ToDType, format: _FmtCSR
+) -> csr_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "dok"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtDOK) -> dok_matrix[Incomplete]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: _ToDType, format: _FmtDOK
+) -> dok_matrix[Incomplete]: ...
 @overload  # dtype: <unknown>, format: "lil"
-def eye(m: int, n: int | None = None, k: int = 0, *, dtype: _ToDType, format: _FmtLIL) -> lil_matrix[Incomplete]: ...
+def eye(
+    m: onp.ToJustInt, n: onp.ToJustInt | None = None, k: onp.ToJustInt = 0, *, dtype: _ToDType, format: _FmtLIL
+) -> lil_matrix[Incomplete]: ...
 
 #
 @overload  # A: spmatrix or 2d array-like, B: spmatrix, format: None (default)
@@ -2294,8 +2417,8 @@ def random_array(
 # NOTE: `random_array` should be prefered over `random`
 @overload  # format: <default>, dtype: <default>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
     dtype: onp.AnyFloat64DType | None = None,
@@ -2306,8 +2429,8 @@ def random(
 ) -> coo_matrix[np.float64]: ...
 @overload  # format: "bsr", dtype: <default>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtBSR,
@@ -2318,8 +2441,8 @@ def random(
 ) -> bsr_matrix[np.float64]: ...
 @overload  # format: "csc", dtype: <default>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSC,
@@ -2330,8 +2453,8 @@ def random(
 ) -> csc_matrix[np.float64]: ...
 @overload  # format: "csr", dtype: <default>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSR,
@@ -2342,8 +2465,8 @@ def random(
 ) -> csr_matrix[np.float64]: ...
 @overload  # format: "dia", dtype: <default>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDIA,
@@ -2354,8 +2477,8 @@ def random(
 ) -> dia_matrix[np.float64]: ...
 @overload  # format: "dok", dtype: <default>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDOK,
@@ -2366,8 +2489,8 @@ def random(
 ) -> dok_matrix[np.float64]: ...
 @overload  # format: "lil", dtype: <default>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtLIL,
@@ -2378,8 +2501,8 @@ def random(
 ) -> lil_matrix[np.float64]: ...
 @overload  # format: <default>, dtype: <known>
 def random[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
     *,
@@ -2390,8 +2513,8 @@ def random[ScalarT: _Numeric](
 ) -> coo_matrix[ScalarT]: ...
 @overload  # format: "bsr", dtype: <known>
 def random[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtBSR,
@@ -2402,8 +2525,8 @@ def random[ScalarT: _Numeric](
 ) -> bsr_matrix[ScalarT]: ...
 @overload  # format: "csc", dtype: <known>
 def random[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSC,
@@ -2414,8 +2537,8 @@ def random[ScalarT: _Numeric](
 ) -> csc_matrix[ScalarT]: ...
 @overload  # format: "csr", dtype: <known>
 def random[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSR,
@@ -2426,8 +2549,8 @@ def random[ScalarT: _Numeric](
 ) -> csr_matrix[ScalarT]: ...
 @overload  # format: "dia", dtype: <known>
 def random[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDIA,
@@ -2438,8 +2561,8 @@ def random[ScalarT: _Numeric](
 ) -> dia_matrix[ScalarT]: ...
 @overload  # format: "dok", dtype: <known>
 def random[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDOK,
@@ -2450,8 +2573,8 @@ def random[ScalarT: _Numeric](
 ) -> dok_matrix[ScalarT]: ...
 @overload  # format: "lil", dtype: <known>
 def random[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtLIL,
@@ -2462,8 +2585,8 @@ def random[ScalarT: _Numeric](
 ) -> lil_matrix[ScalarT]: ...
 @overload  # format: <default>, dtype: complex
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
     *,
@@ -2474,8 +2597,8 @@ def random(
 ) -> coo_matrix[np.complex128]: ...
 @overload  # format: "bsr", dtype: complex
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtBSR,
@@ -2486,8 +2609,8 @@ def random(
 ) -> bsr_matrix[np.complex128]: ...
 @overload  # format: "csc", dtype: complex
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSC,
@@ -2498,8 +2621,8 @@ def random(
 ) -> csc_matrix[np.complex128]: ...
 @overload  # format: "csr", dtype: complex
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSR,
@@ -2510,8 +2633,8 @@ def random(
 ) -> csr_matrix[np.complex128]: ...
 @overload  # format: "dia", dtype: complex
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDIA,
@@ -2522,8 +2645,8 @@ def random(
 ) -> dia_matrix[np.complex128]: ...
 @overload  # format: "dok", dtype: complex
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDOK,
@@ -2534,8 +2657,8 @@ def random(
 ) -> dok_matrix[np.complex128]: ...
 @overload  # format: "lil", dtype: complex
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtLIL,
@@ -2546,8 +2669,8 @@ def random(
 ) -> lil_matrix[np.complex128]: ...
 @overload  # format: <default>, dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
     dtype: onp.AnyDType | None = None,
@@ -2558,8 +2681,8 @@ def random(
 ) -> coo_matrix: ...
 @overload  # format: "bsr", dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtBSR,
@@ -2570,8 +2693,8 @@ def random(
 ) -> bsr_matrix: ...
 @overload  # format: "csc", dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSC,
@@ -2582,8 +2705,8 @@ def random(
 ) -> csc_matrix: ...
 @overload  # format: "csr", dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSR,
@@ -2594,8 +2717,8 @@ def random(
 ) -> csr_matrix: ...
 @overload  # format: "dia", dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDIA,
@@ -2606,8 +2729,8 @@ def random(
 ) -> dia_matrix: ...
 @overload  # format: "dok", dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDOK,
@@ -2618,8 +2741,8 @@ def random(
 ) -> dok_matrix: ...
 @overload  # format: "lil", dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtLIL,
@@ -2630,8 +2753,8 @@ def random(
 ) -> lil_matrix: ...
 @overload  # format: "bsr" (positional), dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtBSR,
     dtype: onp.AnyDType | None = None,
@@ -2642,8 +2765,8 @@ def random(
 ) -> bsr_matrix: ...
 @overload  # format: "csc" (positional), dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtCSC,
     dtype: onp.AnyDType | None = None,
@@ -2654,8 +2777,8 @@ def random(
 ) -> csc_matrix: ...
 @overload  # format: "csr" (positional), dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtCSR,
     dtype: onp.AnyDType | None = None,
@@ -2666,8 +2789,8 @@ def random(
 ) -> csr_matrix: ...
 @overload  # format: "dia" (positional), dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtDIA,
     dtype: onp.AnyDType | None = None,
@@ -2678,8 +2801,8 @@ def random(
 ) -> dia_matrix: ...
 @overload  # format: "dok" (positional), dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtDOK,
     dtype: onp.AnyDType | None = None,
@@ -2690,8 +2813,8 @@ def random(
 ) -> dok_matrix: ...
 @overload  # format: "lil" (positional), dtype: <unknown>
 def random(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtLIL,
     dtype: onp.AnyDType | None = None,
@@ -2704,8 +2827,8 @@ def random(
 # NOTE: `random_array` should be prefered over `rand`
 @overload  # format: <default>, dtype: <default>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
     dtype: onp.AnyFloat64DType | None = None,
@@ -2715,8 +2838,8 @@ def rand(
 ) -> coo_matrix[np.float64]: ...
 @overload  # format: "bsr", dtype: <default>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtBSR,
@@ -2726,8 +2849,8 @@ def rand(
 ) -> bsr_matrix[np.float64]: ...
 @overload  # format: "csc", dtype: <default>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSC,
@@ -2737,8 +2860,8 @@ def rand(
 ) -> csc_matrix[np.float64]: ...
 @overload  # format: "csr", dtype: <default>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSR,
@@ -2748,8 +2871,8 @@ def rand(
 ) -> csr_matrix[np.float64]: ...
 @overload  # format: "dia", dtype: <default>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDIA,
@@ -2759,8 +2882,8 @@ def rand(
 ) -> dia_matrix[np.float64]: ...
 @overload  # format: "dok", dtype: <default>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDOK,
@@ -2770,8 +2893,8 @@ def rand(
 ) -> dok_matrix[np.float64]: ...
 @overload  # format: "lil", dtype: <default>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtLIL,
@@ -2781,8 +2904,8 @@ def rand(
 ) -> lil_matrix[np.float64]: ...
 @overload  # format: <default>, dtype: <known>
 def rand[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
     *,
@@ -2792,8 +2915,8 @@ def rand[ScalarT: _Numeric](
 ) -> coo_matrix[ScalarT]: ...
 @overload  # format: "bsr", dtype: <known>
 def rand[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtBSR,
@@ -2803,8 +2926,8 @@ def rand[ScalarT: _Numeric](
 ) -> bsr_matrix[ScalarT]: ...
 @overload  # format: "csc", dtype: <known>
 def rand[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSC,
@@ -2814,8 +2937,8 @@ def rand[ScalarT: _Numeric](
 ) -> csc_matrix[ScalarT]: ...
 @overload  # format: "csr", dtype: <known>
 def rand[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSR,
@@ -2825,8 +2948,8 @@ def rand[ScalarT: _Numeric](
 ) -> csr_matrix[ScalarT]: ...
 @overload  # format: "dia", dtype: <known>
 def rand[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDIA,
@@ -2836,8 +2959,8 @@ def rand[ScalarT: _Numeric](
 ) -> dia_matrix[ScalarT]: ...
 @overload  # format: "dok", dtype: <known>
 def rand[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDOK,
@@ -2847,8 +2970,8 @@ def rand[ScalarT: _Numeric](
 ) -> dok_matrix[ScalarT]: ...
 @overload  # format: "lil", dtype: <known>
 def rand[ScalarT: _Numeric](
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtLIL,
@@ -2858,8 +2981,8 @@ def rand[ScalarT: _Numeric](
 ) -> lil_matrix[ScalarT]: ...
 @overload  # format: <default>, dtype: complex
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
     *,
@@ -2869,8 +2992,8 @@ def rand(
 ) -> coo_matrix[np.complex128]: ...
 @overload  # format: "bsr", dtype: complex
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtBSR,
@@ -2880,8 +3003,8 @@ def rand(
 ) -> bsr_matrix[np.complex128]: ...
 @overload  # format: "csc", dtype: complex
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSC,
@@ -2891,8 +3014,8 @@ def rand(
 ) -> csc_matrix[np.complex128]: ...
 @overload  # format: "csr", dtype: complex
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSR,
@@ -2902,8 +3025,8 @@ def rand(
 ) -> csr_matrix[np.complex128]: ...
 @overload  # format: "dia", dtype: complex
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDIA,
@@ -2913,8 +3036,8 @@ def rand(
 ) -> dia_matrix[np.complex128]: ...
 @overload  # format: "dok", dtype: complex
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDOK,
@@ -2924,8 +3047,8 @@ def rand(
 ) -> dok_matrix[np.complex128]: ...
 @overload  # format: "lil", dtype: complex
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtLIL,
@@ -2935,8 +3058,8 @@ def rand(
 ) -> lil_matrix[np.complex128]: ...
 @overload  # format: <default>, dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     format: _FmtCOO = "coo",
     dtype: _ToDType | None = None,
@@ -2946,8 +3069,8 @@ def rand(
 ) -> coo_matrix: ...
 @overload  # format: "bsr", dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtBSR,
@@ -2957,8 +3080,8 @@ def rand(
 ) -> bsr_matrix: ...
 @overload  # format: "csc", dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSC,
@@ -2968,8 +3091,8 @@ def rand(
 ) -> csc_matrix: ...
 @overload  # format: "csr", dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtCSR,
@@ -2979,8 +3102,8 @@ def rand(
 ) -> csr_matrix: ...
 @overload  # format: "dia", dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDIA,
@@ -2990,8 +3113,8 @@ def rand(
 ) -> dia_matrix: ...
 @overload  # format: "dok", dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtDOK,
@@ -3001,8 +3124,8 @@ def rand(
 ) -> dok_matrix: ...
 @overload  # format: "lil", dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating = 0.01,
     *,
     format: _FmtLIL,
@@ -3012,8 +3135,8 @@ def rand(
 ) -> lil_matrix: ...
 @overload  # format: "bsr" (positional), dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtBSR,
     dtype: _ToDType | None = None,
@@ -3023,8 +3146,8 @@ def rand(
 ) -> bsr_matrix: ...
 @overload  # format: "csc" (positional), dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtCSC,
     dtype: _ToDType | None = None,
@@ -3034,8 +3157,8 @@ def rand(
 ) -> csc_matrix: ...
 @overload  # format: "csr" (positional), dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtCSR,
     dtype: _ToDType | None = None,
@@ -3045,8 +3168,8 @@ def rand(
 ) -> csr_matrix: ...
 @overload  # format: "dia" (positional), dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtDIA,
     dtype: _ToDType | None = None,
@@ -3056,8 +3179,8 @@ def rand(
 ) -> dia_matrix: ...
 @overload  # format: "dok" (positional), dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtDOK,
     dtype: _ToDType | None = None,
@@ -3067,8 +3190,8 @@ def rand(
 ) -> dok_matrix: ...
 @overload  # format: "lil" (positional), dtype: <unknown>
 def rand(
-    m: int,
-    n: int,
+    m: onp.ToJustInt,
+    n: onp.ToJustInt,
     density: float | npc.floating,
     format: _FmtLIL,
     dtype: _ToDType | None = None,
