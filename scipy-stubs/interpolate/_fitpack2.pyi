@@ -21,8 +21,6 @@ __all__ = [
 type _Float1D = onp.Array1D[np.float64]
 type _FloatND = onp.ArrayND[np.float64]
 
-type _Degree = Literal[1, 2, 3, 4, 5]
-
 type _ExtInt = Literal[0, 1, 2, 3]
 type _ExtStr = Literal["extrapolate", "zeros", "raise", "const"]
 type _Ext = _ExtInt | _ExtStr
@@ -45,7 +43,7 @@ class UnivariateSpline:
         y: onp.ToFloat1D,
         w: onp.ToFloat1D | None = None,
         bbox: _ToBBox = [None, None],  # size 2
-        k: _Degree = 3,
+        k: onp.ToInt = 3,
         s: float | None = None,
         ext: _Ext = 0,
         check_finite: bool = False,
@@ -87,7 +85,7 @@ class UnivariateSpline:
         y: onp.ToFloat1D,
         w: onp.ToFloat1D,
         bbox: _ToBBox,
-        k: _Degree,
+        k: onp.ToInt,
         s: float | None,
         ext: _Ext,
         check_finite: bool,
@@ -101,7 +99,7 @@ class InterpolatedUnivariateSpline(UnivariateSpline):
         y: onp.ToFloat1D,
         w: onp.ToFloat1D | None = None,
         bbox: _ToBBox = [None, None],  # size 2
-        k: _Degree = 3,
+        k: onp.ToInt = 3,
         ext: _Ext = 0,
         check_finite: bool = False,
     ) -> None: ...
@@ -115,7 +113,7 @@ class LSQUnivariateSpline(UnivariateSpline):
         t: onp.ToFloat1D,
         w: onp.ToFloat1D | None = None,
         bbox: _ToBBox = [None, None],  # size 2
-        k: _Degree = 3,
+        k: onp.ToInt = 3,
         ext: _Ext = 0,
         check_finite: bool = False,
     ) -> None: ...

@@ -19,6 +19,7 @@ from scipy.interpolate import (
 x: onp.Array1D[np.float64]
 y: onp.Array1D[np.float64]
 x2d: onp.Array2D[np.float64]
+_k: int
 
 # UnivariateSpline
 us = UnivariateSpline(x, y)
@@ -33,16 +34,19 @@ assert_type(us.derivatives(0.5), onp.Array1D[np.float64])
 assert_type(us.derivative(), UnivariateSpline)
 assert_type(us.antiderivative(), UnivariateSpline)
 assert_type(us.integral(0.0, 1.0), float)
+assert_type(UnivariateSpline(x, y, k=_k), UnivariateSpline)
 
 # InterpolatedUnivariateSpline
 ius = InterpolatedUnivariateSpline(x, y)
 assert_type(ius, InterpolatedUnivariateSpline)
 assert_type(ius(x), onp.Array1D[np.float64])
+assert_type(InterpolatedUnivariateSpline(x, y, k=_k), InterpolatedUnivariateSpline)
 
 # LSQUnivariateSpline
 lus = LSQUnivariateSpline(x, y, x[2:-2])
 assert_type(lus, LSQUnivariateSpline)
 assert_type(lus(x), onp.Array1D[np.float64])
+assert_type(LSQUnivariateSpline(x, y, x[2:-2], k=_k), LSQUnivariateSpline)
 
 # SmoothBivariateSpline
 sbs = SmoothBivariateSpline(x, y, y)
