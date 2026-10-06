@@ -54,6 +54,7 @@ _i64_1d: onp.Array1D[np.int64]
 # weights for convolve/correlate
 weights_1d: onp.Array1D[np.float64]
 weights_nd: onp.ArrayND[np.float64]
+_c128_1d: onp.Array1D[np.complex128]
 _origin: tuple[int, int]
 _dtype: str
 
@@ -82,6 +83,7 @@ assert_type(correlate1d(complex_2d, weights_1d), onp.ArrayND[np.complex128])
 assert_type(correlate1d(f64_nd, weights_1d), onp.ArrayND[np.float64])
 assert_type(correlate1d(c128_nd, weights_1d), onp.ArrayND[np.complex128])
 assert_type(correlate1d(i32_2d, weights_1d, output=f64_2d), onp.ArrayND[np.float64])
+assert_type(correlate1d(f64_nd, _c128_1d), onp.ArrayND[Any])
 
 ###
 # correlate
@@ -94,7 +96,7 @@ assert_type(correlate(complex_2d, weights_nd, origin=_origin), onp.ArrayND[np.co
 assert_type(correlate(f64_nd, weights_nd), onp.ArrayND[np.float64])
 assert_type(correlate(c128_nd, weights_nd), onp.ArrayND[np.complex128])
 assert_type(correlate(f64_nd, weights_nd, output=np.float32, origin=_origin), onp.ArrayND[np.float32])
-assert_type(correlate(f64_nd, weights_nd, output=_dtype, origin=_origin), onp.ArrayND[Any])
+assert_type(correlate(f64_nd, c128_nd, output=_dtype, origin=_origin), onp.ArrayND[Any])
 assert_type(correlate(i32_2d, weights_nd, output=f64_2d), onp.ArrayND[np.float64])
 assert_type(correlate(f64_2d, weights_nd, origin=_i64_1d), onp.Array2D[np.float64])
 
@@ -109,6 +111,7 @@ assert_type(convolve1d(complex_2d, weights_1d), onp.ArrayND[np.complex128])
 assert_type(convolve1d(f64_nd, weights_1d), onp.ArrayND[np.float64])
 assert_type(convolve1d(c128_nd, weights_1d), onp.ArrayND[np.complex128])
 assert_type(convolve1d(i32_2d, weights_1d, output=f64_2d), onp.ArrayND[np.float64])
+assert_type(convolve1d(f64_nd, _c128_1d), onp.ArrayND[Any])
 
 ###
 # convolve
@@ -125,7 +128,7 @@ assert_type(convolve(int_2d, weights_nd, origin=(0, 1)), onp.ArrayND[np.intp])
 assert_type(convolve(float_2d, weights_nd, origin=(0, 1)), onp.ArrayND[np.float64])
 assert_type(convolve(complex_2d, weights_nd, origin=(0, 1)), onp.ArrayND[np.complex128])
 assert_type(convolve(f64_nd, weights_nd, output=np.float32, origin=(0, 1)), onp.ArrayND[np.float32])
-assert_type(convolve(f64_nd, weights_nd, output="f4", origin=(0, 1)), onp.ArrayND[Any])
+assert_type(convolve(f64_nd, c128_nd, output="f4", origin=(0, 1)), onp.ArrayND[Any])
 assert_type(convolve(i32_2d, weights_nd, output=f64_2d), onp.ArrayND[np.float64])
 
 ###
