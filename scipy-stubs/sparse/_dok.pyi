@@ -695,7 +695,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex2D,
+        arg1: onp.ToComplex2D | _ToShape2D | _spbase,
         shape: _ToShapeND | None = None,
         dtype: npt.DTypeLike | None = None,
         copy: bool = False,

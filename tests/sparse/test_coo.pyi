@@ -1,4 +1,4 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -107,3 +107,4 @@ assert_type(coo_matrix((2, 3), dtype=np.int8), coo_matrix[np.int8])
 assert_type(coo_matrix((2, 3), dtype=np.uint8), coo_matrix[np.uint8])
 assert_type(coo_matrix((2, 3), dtype=np.float32), coo_matrix[np.float32])
 assert_type(coo_matrix((2, 3), dtype=np.complex64), coo_matrix[np.complex64])
+assert_type(coo_matrix((2, 3), dtype=int), coo_matrix[Any])

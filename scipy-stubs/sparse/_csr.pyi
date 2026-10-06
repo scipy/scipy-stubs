@@ -526,7 +526,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex2D,
+        arg1: onp.ToComplex2D | _ToShape2D | _spbase | _ToData[onp.ToComplex1D],
         shape: _ToShapeND | None = None,
         dtype: npt.DTypeLike | None = None,
         copy: bool = False,

@@ -249,6 +249,17 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: _ToAnyCSC,
+        shape: _ToShapeND | None = None,
+        dtype: onp.AnyDType | None = None,
+        copy: bool = False,
+        *,
+        maxprint: int | None = None,
+    ) -> None: ...
 
     #
     @override
@@ -441,6 +452,17 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         *,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
+        maxprint: int | None = None,
+    ) -> None: ...
+    @overload  # dtype: <unknown>
+    def __init__(
+        self,
+        /,
+        arg1: _ToAnyCSC,
+        shape: _ToShapeND | None = None,
+        dtype: onp.AnyDType | None = None,
+        copy: bool = False,
+        *,
         maxprint: int | None = None,
     ) -> None: ...
 

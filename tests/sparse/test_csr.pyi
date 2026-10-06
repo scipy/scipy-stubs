@@ -75,6 +75,7 @@ assert_type(csr_matrix((2, 3), dtype=np.int8), csr_matrix[np.int8])
 assert_type(csr_matrix((2, 3), dtype=np.uint8), csr_matrix[np.uint8])
 assert_type(csr_matrix((2, 3), dtype=np.float32), csr_matrix[np.float32])
 assert_type(csr_matrix((2, 3), dtype=np.complex64), csr_matrix[np.complex64])
+assert_type(csr_matrix((2, 3), dtype=int), csr_matrix[Any])
 
 assert_type(csr_array(_py_b_1d), csr_array[np.bool, tuple[int]])
 assert_type(csr_array(_py_i_1d), csr_array[np.int64, tuple[int]])

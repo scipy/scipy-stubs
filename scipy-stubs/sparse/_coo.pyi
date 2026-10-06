@@ -683,7 +683,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex2D,
+        arg1: onp.ToComplex2D | _ToShape2D | _spbase | _ToData[_Scalar] | _ToPyData[Any],
         shape: _ToShapeND | None = None,
         dtype: npt.DTypeLike | None = None,
         copy: bool = False,
