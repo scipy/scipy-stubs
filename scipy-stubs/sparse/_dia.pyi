@@ -20,7 +20,7 @@ type _Scalar = npc.number | np.bool
 
 type _ToMatrixPy[T] = Sequence[T] | Sequence[Sequence[T]]
 type _ToMatrix[ST: _Scalar] = _spbase[ST] | onp.CanArrayND[ST] | Sequence[onp.CanArrayND[ST]] | _ToMatrixPy[ST]
-type _ToData[ST: _Scalar] = tuple[onp.ArrayND[ST], onp.ArrayND[npc.integer]]
+type _ToData[ST: _Scalar] = tuple[onp.ArrayND[ST] | Sequence[onp.CanArray1D[ST]], onp.ToJustInt | onp.ToJustInt1D]
 
 _ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
 
