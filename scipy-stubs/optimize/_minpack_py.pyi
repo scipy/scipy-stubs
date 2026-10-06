@@ -1,4 +1,4 @@
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Mapping, Sequence
 from typing import Any, Concatenate, Literal, NotRequired, TypedDict, Unpack, final, overload, type_check_only
 
 import numpy as np
@@ -22,7 +22,7 @@ type _Fun2D = _Fun[_Float2D, onp.ToFloat1D]
 type _Jac1D = _Fun[_Float1D, onp.ToFloat2D]
 type _Jac2D = _Fun[_Float2D, onp.ToFloat2D]
 
-type _FloatBounds = tuple[float | onp.ToFloat1D, float | onp.ToFloat1D]
+type _FloatBounds = Sequence[float | onp.ToFloat1D] | onp.ToFloat1D | onp.ToFloat2D
 
 type _JacMethod = Literal["2-point", "3-point", "cs"]
 type _CurveFitMethod = Literal["lm", "trf", "dogbox"]

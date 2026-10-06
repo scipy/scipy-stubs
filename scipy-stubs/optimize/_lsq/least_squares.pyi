@@ -1,5 +1,5 @@
 from _typeshed import Unused
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from typing import Any, Concatenate, Final, Generic, Literal, Protocol, SupportsIndex, overload, type_check_only
 from typing_extensions import TypeVar
 
@@ -24,7 +24,7 @@ type _ToJac2D = onp.ToFloat2D | _spbase
 type _JacFunction = Callable[Concatenate[_Float1D, ...], _ToJac2D | LinearOperator]
 type _ToJac = _JacFunction | _JacMethod
 
-type _ToBounds = tuple[onp.ToFloat | onp.ToFloat1D, onp.ToFloat | onp.ToFloat1D] | Bounds
+type _ToBounds = Sequence[onp.ToFloat | onp.ToFloat1D] | onp.ToFloat1D | onp.ToFloat2D | Bounds
 
 type _XScaleMethod = Literal["jac"]
 type _XScale = onp.ToFloat | onp.ToFloatND | _XScaleMethod
