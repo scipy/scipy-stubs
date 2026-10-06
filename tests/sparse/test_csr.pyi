@@ -223,6 +223,10 @@ assert_type(csr_vec[_intp], ScalarType)
 assert_type(csr_arr[_intp, _intp], ScalarType)
 assert_type(csr_arr[_intp], coo_array[ScalarType, tuple[int]])
 assert_type(csr_mat[_intp], csr_matrix[ScalarType])
+assert_type(csr_arr[_intp:_intp], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[_intp:_intp, _intp:_intp], csr_array[ScalarType, tuple[int, int]])
+assert_type(csr_arr[0, _intp:_intp], coo_array[ScalarType, tuple[int]])
+assert_type(csr_mat[0, _intp:_intp], csr_matrix[ScalarType])
 
 # __setitem__
 csr_vec[_intp] = 0

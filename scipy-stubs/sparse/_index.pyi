@@ -31,7 +31,7 @@ type _ToIndex1Of2 = (
 type _ToIndex2Of2 = tuple[onp.ToInt1D, onp.ToInt1D]
 
 # single slice-like index (maintains axis)
-type _ToSlice = slice[int | None, int | None, int | None] | EllipsisType
+type _ToSlice = slice[int | npc.integer | None, int | npc.integer | None, int | npc.integer | None] | EllipsisType
 # axis-wise slice (maintains 1d or 2d shape)
 type _ToSlice1 = (
     _ToSlice | onp.ToInt1D | tuple[int, None] | tuple[None, int] | tuple[_ToSlice, onp.ToInt1D] | tuple[onp.ToInt1D, _ToSlice]
