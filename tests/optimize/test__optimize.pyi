@@ -94,6 +94,7 @@ assert_type(approx_fprime([1.0, 2.0], _f_vec, 1e-8), _Float2D)
 # check_grad
 
 assert_type(check_grad(_f, _grad, [1.0, 2.0]), _Float)
+assert_type(check_grad(_f_vec, _hess, _x0), _Float)
 
 ###
 # bracket

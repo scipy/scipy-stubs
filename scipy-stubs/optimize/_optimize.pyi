@@ -780,7 +780,7 @@ def approx_fprime(
 
 #
 def check_grad(
-    func: _Fn1_1d[onp.ToFloat],
+    func: _Fn1_1d[onp.ToFloat | onp.ToFloat1D],
     grad: _Fn1_1d[onp.ToFloatND],
     x0: onp.ToFloat | onp.ToFloat1D,
     *args: object,
