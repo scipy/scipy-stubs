@@ -22,7 +22,7 @@ def fmin_cobyla(
     rhobeg: onp.ToFloat = 1.0,
     rhoend: onp.ToFloat = 0.0001,
     maxfun: onp.ToInt = 1000,
-    disp: Literal[0, 1, 2, 3] | None = None,
+    disp: Literal[0, 1, 2, 3] | bool | None = None,
     catol: onp.ToFloat = 0.0002,
     *,
     callback: Callable[[onp.Array1D[np.float64]], Unused] | None = None,
