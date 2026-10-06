@@ -73,6 +73,9 @@ c160_nd: onp.ArrayND[np.complex256]
 
 any_nd: onp.ArrayND[Any]
 
+py_f: float
+py_c: complex
+
 py_b_2d: list[list[bool]]
 py_b_3d: list[list[list[bool]]]
 
@@ -145,6 +148,8 @@ assert_type(solve(py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
 
 assert_type(solve(f64_2d, f64_nd), onp.ArrayND[np.float64])
 assert_type(solve(f16_2d, f16_nd), onp.ArrayND[Any])
+assert_type(solve(py_f, py_f_1d), onp.ArrayND[np.float64 | Any])
+assert_type(solve(py_c, py_c_1d), onp.ArrayND[Any])
 
 ###
 # solve_triangular

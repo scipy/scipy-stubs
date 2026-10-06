@@ -80,6 +80,7 @@ assert_type(solve_continuous_lyapunov(_i8_nd, _f32_nd), onp.ArrayND[np.float64])
 assert_type(solve_continuous_lyapunov(_f32_nd, _py_f_2d), onp.ArrayND[np.float64])
 assert_type(solve_continuous_lyapunov(_f64_nd, _f64_nd), onp.ArrayND[np.float64])
 assert_type(solve_continuous_lyapunov(_py_f_2d, _py_f_2d), onp.ArrayND[np.float64])
+assert_type(solve_continuous_lyapunov(_py_f, _py_f), onp.ArrayND[np.float64 | Any])
 
 assert_type(solve_continuous_lyapunov(_c64_nd, _c64_nd), onp.ArrayND[np.complex64])
 assert_type(solve_continuous_lyapunov(_c64_nd, _i8_nd), onp.ArrayND[np.complex64])
@@ -89,6 +90,7 @@ assert_type(solve_continuous_lyapunov(_f64_nd, _c64_nd), onp.ArrayND[np.complex1
 assert_type(solve_continuous_lyapunov(_c128_nd, _f64_nd), onp.ArrayND[np.complex128])
 assert_type(solve_continuous_lyapunov(_f64_nd, _c128_nd), onp.ArrayND[np.complex128])
 assert_type(solve_continuous_lyapunov(_py_c_2d, _py_c_2d), onp.ArrayND[np.complex128])
+assert_type(solve_continuous_lyapunov(_py_c, _py_f), onp.ArrayND[np.complex128 | Any])
 
 assert_type(solve_continuous_lyapunov(_bool_nd, _f64_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(solve_continuous_lyapunov(_f64_nd, _f16_nd), onp.ArrayND[Any])  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]

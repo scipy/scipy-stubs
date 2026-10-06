@@ -12,6 +12,8 @@ from scipy.linalg import ldl
 ###
 # Input arrays
 
+py_float: float
+py_complex: complex
 py_int_2d: list[list[int]]
 py_float_2d: list[list[float]]
 py_complex_2d: list[list[op.JustComplex]]
@@ -46,6 +48,9 @@ assert_type(ldl(i64_2d), tuple[onp.Array2D[np.float64], onp.Array2D[np.float64],
 
 # -> float32 | float64
 assert_type(ldl(i16_2d), tuple[onp.Array2D[np.float32 | np.float64], onp.Array2D[np.float32 | np.float64], onp.Array1D[np.intp]])
+assert_type(
+    ldl(py_float), tuple[onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.float32 | np.float64], onp.ArrayND[np.intp]]
+)
 
 # -> complex64
 assert_type(ldl(c64_2d), tuple[onp.Array2D[np.complex64], onp.Array2D[np.complex64], onp.Array1D[np.intp]])
@@ -59,6 +64,14 @@ assert_type(ldl(c128_3d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.compl
 # -> f32 | f64 | c64 | c128
 assert_type(
     ldl(inexact_3d),
+    tuple[
+        onp.ArrayND[np.float32 | np.float64 | np.complex64 | np.complex128],
+        onp.ArrayND[np.float32 | np.float64 | np.complex64 | np.complex128],
+        onp.ArrayND[np.intp],
+    ],
+)
+assert_type(
+    ldl(py_complex),
     tuple[
         onp.ArrayND[np.float32 | np.float64 | np.complex64 | np.complex128],
         onp.ArrayND[np.float32 | np.float64 | np.complex64 | np.complex128],

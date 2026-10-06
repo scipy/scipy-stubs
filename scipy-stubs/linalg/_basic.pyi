@@ -307,8 +307,8 @@ def solve(
 ) -> onp.Array2D[np.float64 | Any]: ...
 @overload  # Nd +floating, Nd +floating
 def solve(
-    a: onp.ToFloatND,
-    b: onp.ToFloatND,
+    a: onp.ToFloat | onp.ToFloatND,
+    b: onp.ToFloat | onp.ToFloatND,
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
@@ -351,8 +351,8 @@ def solve(
 ) -> onp.ArrayND[np.complex128 | Any]: ...
 @overload  # Nd +complexfloating, Nd +complexfloating
 def solve(
-    a: onp.ToComplexND,
-    b: onp.ToComplexND,
+    a: onp.ToComplex | onp.ToComplexND,
+    b: onp.ToComplex | onp.ToComplexND,
     lower: bool = False,
     overwrite_a: bool = False,
     overwrite_b: bool = False,
