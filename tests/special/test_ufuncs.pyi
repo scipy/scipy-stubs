@@ -262,6 +262,8 @@ assert_type(sp.xlogy(_c16, _c16), np.complex128)
 assert_type(sp.xlogy(1, 2.0), np.float64)
 assert_type(sp.xlogy(_i4_nd, 2.0), _Float64ND)
 assert_type(sp.xlogy(2.0, _i4_nd), _Float64ND)
+assert_type(sp.xlogy(_f8_nd, _f4_nd), _Float64ND)
+assert_type(sp.xlogy(_f8, _f8_nd), _Float64ND)
 
 # _UFunc22 - TODO
 
@@ -270,6 +272,8 @@ assert_type(sp.pbdv(_f8, _f8), tuple[np.float64, np.float64])
 assert_type(sp.pbdv(1, 2.0), tuple[np.float64, np.float64])
 assert_type(sp.pbdv(_i4_nd, 2.0), tuple[_Float64ND, _Float64ND])
 assert_type(sp.pbdv(2.0, _i4_nd), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pbdv(_f8_nd, _f4_nd), tuple[_Float64ND, _Float64ND])
+assert_type(sp.pbdv(_f8, _f8_nd), tuple[_Float64ND, _Float64ND])
 
 # _UFunc24 - TODO
 
