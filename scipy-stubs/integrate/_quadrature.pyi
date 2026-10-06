@@ -1,5 +1,5 @@
 from collections.abc import Callable
-from typing import Any, Concatenate, Literal, NamedTuple, Never, overload
+from typing import Any, Concatenate, NamedTuple, Never, overload
 
 import numpy as np
 import optype as op
@@ -210,7 +210,7 @@ def cumulative_trapezoid[ShapeT: tuple[int, ...]](
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
-    initial: Literal[0] | None = None,
+    initial: float | None = None,
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
 @overload  # +float, shape 1d
 def cumulative_trapezoid(
@@ -218,7 +218,7 @@ def cumulative_trapezoid(
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
-    initial: Literal[0] | None = None,
+    initial: float | None = None,
 ) -> onp.Array1D[np.float64]: ...
 @overload  # +float, shape 2d
 def cumulative_trapezoid(
@@ -226,11 +226,11 @@ def cumulative_trapezoid(
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
-    initial: Literal[0] | None = None,
+    initial: float | None = None,
 ) -> onp.Array2D[np.float64]: ...
 @overload  # +float, shape unknown
 def cumulative_trapezoid(
-    y: onp.SequenceND[float], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: Literal[0] | None = None
+    y: onp.SequenceND[float], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: float | None = None
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # T:inexact, shape known
 def cumulative_trapezoid[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
@@ -238,27 +238,19 @@ def cumulative_trapezoid[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
-    initial: Literal[0] | None = None,
+    initial: float | None = None,
 ) -> onp.ArrayND[InexactT, ShapeT]: ...
 @overload  # ~complex, shape 1d
 def cumulative_trapezoid(
-    y: onp.ToJustComplex128Strict1D,
-    x: onp.ToFloatND | None = None,
-    dx: float = 1.0,
-    axis: int = -1,
-    initial: Literal[0] | None = None,
+    y: onp.ToJustComplex128Strict1D, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: float | None = None
 ) -> onp.Array1D[np.complex128]: ...
 @overload  # ~complex, shape 2d
 def cumulative_trapezoid(
-    y: onp.ToJustComplex128Strict2D,
-    x: onp.ToFloatND | None = None,
-    dx: float = 1.0,
-    axis: int = -1,
-    initial: Literal[0] | None = None,
+    y: onp.ToJustComplex128Strict2D, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: float | None = None
 ) -> onp.Array2D[np.complex128]: ...
 @overload  # ~complex, shape unknown
 def cumulative_trapezoid(
-    y: onp.ToJustComplex128_ND, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: Literal[0] | None = None
+    y: onp.ToJustComplex128_ND, x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: float | None = None
 ) -> onp.ArrayND[np.complex128]: ...
 @overload  # fallback
 def cumulative_trapezoid(
@@ -266,7 +258,7 @@ def cumulative_trapezoid(
     x: onp.ToFloatND | None = None,
     dx: float = 1.0,
     axis: int = -1,
-    initial: Literal[0] | None = None,
+    initial: float | None = None,
 ) -> onp.Array: ...
 
 # NOTE: unlike `cumulative_trapezoid`, propagates 64bit sctypes if it matches `x`
