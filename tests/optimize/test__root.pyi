@@ -15,6 +15,7 @@ def _fn_f_1_12(x: onp.Array1D[np.float64]) -> tuple[list[float], list[list[float
 def _fn_f_2_23(x: onp.Array2D[np.float64]) -> tuple[list[list[float]], list[list[list[float]]]]: ...
 def _fn_f_n_12(x: onp.ArrayND[np.float64]) -> tuple[list[float], list[list[float]]]: ...
 def _fn_c_n_12(x: onp.ArrayND[np.complex128]) -> tuple[list[complex], list[list[complex]]]: ...
+def _eta(k: int, x: onp.ArrayND[np.float64], f: onp.ArrayND[np.float64]) -> float: ...
 
 ###
 # root
@@ -53,7 +54,7 @@ assert_type(root(_fn_f_1_12, _x0_f, method="lm", jac=True).x, onp.Array1D[np.flo
 # df-sane
 
 assert_type(root(_fn_f_1_1, _x0_f, method="df-sane").x, onp.Array1D[np.float64])
-assert_type(root(_fn_f_n_1, _x0_f, method="df-sane").x, onp.ArrayND[np.float64])
+assert_type(root(_fn_f_n_1, _x0_f, method="df-sane", options={"eta_strategy": _eta}).x, onp.ArrayND[np.float64])
 assert_type(root(_fn_c_n_1, _x0_c, method="df-sane").x, onp.ArrayND[np.complex128])
 
 # nonlin
