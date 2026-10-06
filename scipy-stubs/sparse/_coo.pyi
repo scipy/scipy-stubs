@@ -281,7 +281,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.float64, tuple[int]],
         /,
-        arg1: _ToShape1D,
+        arg1: _ToShape1D | _ToData1D[_Scalar],
         shape: _ToShape1D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -292,33 +292,11 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.float64, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 1-d (data, ij), dtype: float64-like
-    def __init__(
-        self: coo_array[np.float64, tuple[int]],
-        /,
-        arg1: _ToData1D[_Scalar],
-        shape: _ToShape1D | None = None,
-        *,
-        dtype: onp.AnyFloat64DType,
-        copy: bool = False,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d (data, ij), dtype: float64-like
-    def __init__(
-        self: coo_array[np.float64, tuple[int, int]],
-        /,
-        arg1: _ToData2D[_Scalar],
-        shape: _ToShapeND | None = None,
-        *,
-        dtype: onp.AnyFloat64DType,
-        copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: complex128-like
@@ -606,22 +584,11 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __init__(
         self: coo_matrix[np.float64],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # (data, ij), dtype: float64-like
-    def __init__(
-        self: coo_matrix[np.float64],
-        /,
-        arg1: _ToData2D[_Scalar],
-        shape: _ToShapeND | None = None,
-        *,
-        dtype: onp.AnyFloat64DType,
-        copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: bool-like

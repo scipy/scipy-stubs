@@ -151,22 +151,11 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.float64, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # 2-d (data, ij), dtype: float64-like
-    def __init__(
-        self: csr_array[np.float64, tuple[int, int]],
-        /,
-        arg1: _ToData[onp.ToArray1D[_Scalar, _Scalar]],
-        shape: _ToShapeND | None = None,
-        *,
-        dtype: onp.AnyFloat64DType,
-        copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 1-d shape-like, dtype: bool-like (keyword)
@@ -438,22 +427,11 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.float64],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
         *,
-        maxprint: int | None = None,
-    ) -> None: ...
-    @overload  # (data, ij), dtype: float64-like
-    def __init__(
-        self: csr_matrix[np.float64],
-        /,
-        arg1: _ToData[onp.ToArray1D[_Scalar, _Scalar]],
-        shape: _ToShapeND | None = None,
-        *,
-        dtype: onp.AnyFloat64DType,
-        copy: bool = False,
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d shape-like, dtype: bool-like
