@@ -21,6 +21,8 @@ _py_c_2d: list[list[complex]]
 _f32_1d: onp.Array1D[np.float32]
 _f32_nd: onp.ArrayND[np.float32]
 
+_shape_nd: tuple[int, ...]
+
 ###
 # NOTE: Keep these tests in sync with the `dok` tests.
 
@@ -87,6 +89,9 @@ assert_type(csr_matrix(_py_b_2d), csr_matrix[np.bool])
 assert_type(csr_matrix(_py_i_2d), csr_matrix[np.int64])
 assert_type(csr_matrix(_py_f_2d), csr_matrix[np.float64])
 assert_type(csr_matrix(_py_c_2d), csr_matrix[np.complex128])
+
+assert_type(csr_array(_py_f_2d, shape=_py_i_1d), csr_array[np.float64, tuple[int, int]])
+assert_type(csr_matrix(_py_f_2d, shape=_shape_nd), csr_matrix[np.float64])
 
 # https://github.com/scipy/scipy-stubs/issues/1060
 

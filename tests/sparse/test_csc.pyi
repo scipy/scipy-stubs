@@ -9,6 +9,7 @@ from scipy.sparse import coo_array, csc_array, csc_matrix
 
 _dtype: np.dtype[ScalarType]
 _shape_2d: tuple[int, int]
+_shape_nd: tuple[int, ...]
 
 _py_i_1d: list[int]
 
@@ -79,6 +80,7 @@ assert_type(csc_matrix(_shape_2d, dtype=complex), csc_matrix[np.complex128])
 assert_type(csc_matrix(_csc_spec2), csc_matrix[ScalarType])
 assert_type(csc_matrix(_csc_spec2, _shape_2d), csc_matrix[ScalarType])
 assert_type(csc_matrix(_csc_spec2, shape=_shape_2d), csc_matrix[ScalarType])
+assert_type(csc_matrix(_csc_spec2, shape=_shape_nd), csc_matrix[ScalarType])
 
 assert_type(csc_matrix(_csc_spec2, dtype=_dtype), csc_matrix[ScalarType])
 assert_type(csc_matrix(_csc_spec2, dtype=bool), csc_matrix[np.bool])
@@ -124,6 +126,7 @@ assert_type(csc_array(_shape_2d, dtype=complex), csc_array[np.complex128])
 assert_type(csc_array(_csc_spec2), csc_array[ScalarType])
 assert_type(csc_array(_csc_spec2, _shape_2d), csc_array[ScalarType])
 assert_type(csc_array(_csc_spec2, shape=_shape_2d), csc_array[ScalarType])
+assert_type(csc_array(_csc_spec2, shape=_py_i_1d), csc_array[ScalarType])
 
 assert_type(csc_array(_csc_spec2, dtype=_dtype), csc_array[ScalarType])
 assert_type(csc_array(_csc_spec2, dtype=bool), csc_array[np.bool])

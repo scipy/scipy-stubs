@@ -17,6 +17,8 @@ _py_2d_c: list[list[complex]]
 _dtype: np.dtype[ScalarType]
 
 _shape2: tuple[int, int]
+_shape_nd: tuple[int, ...]
+_blocksize: list[int]
 _data2: onp.Array2D[ScalarType]
 _data2_concrete: onp.Array2D[np.float32]
 
@@ -106,6 +108,8 @@ assert_type(bsr_matrix(csr_mat), bsr_matrix[ScalarType])
 
 assert_type(bsr_array(_bsr_spec2, _shape2), bsr_array[ScalarType])
 assert_type(bsr_matrix(_bsr_spec2, _shape2), bsr_matrix[ScalarType])
+assert_type(bsr_array(_bsr_spec2, _shape_nd), bsr_array[ScalarType])
+assert_type(bsr_matrix(_bsr_spec2, _shape_nd), bsr_matrix[ScalarType])
 
 ###
 # (data, indices, indptr), [shape=(M, N)], [blocksize]
@@ -173,6 +177,8 @@ assert_type(bsr_array(_py_i_2d, blocksize=(2, 2)), bsr_array[np.int_])  # type: 
 assert_type(bsr_array(_data2, blocksize=(2, 2)), bsr_array[ScalarType])
 assert_type(bsr_matrix(_py_i_2d, blocksize=(2, 2)), bsr_matrix[np.int_])  # type: ignore[assert-type]
 assert_type(bsr_matrix(_data2, blocksize=(2, 2)), bsr_matrix[ScalarType])
+assert_type(bsr_array(_data2, blocksize=_blocksize), bsr_array[ScalarType])
+assert_type(bsr_matrix(_data2, blocksize=_blocksize), bsr_matrix[ScalarType])
 
 ###
 # bsr_matrix (M, N) shape constructor — only supports dtype=None per stub

@@ -10,6 +10,7 @@ from scipy.sparse import lil_array, lil_matrix
 dtype: np.dtype[ScalarType]
 
 shape2: tuple[int, int]
+_shape_nd: tuple[int, ...]
 
 data2: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
 
@@ -24,6 +25,7 @@ assert_type(lil_matrix(data2, dtype=bool), lil_matrix[np.bool])
 assert_type(lil_matrix(data2, dtype=int), lil_matrix[np.int_])
 assert_type(lil_matrix(data2, dtype=float), lil_matrix[np.float64])
 assert_type(lil_matrix(data2, dtype=complex), lil_matrix[np.complex128])
+assert_type(lil_matrix(data2, shape=_shape_nd), lil_matrix[ScalarType])
 
 # lil_matrix(S)
 assert_type(lil_matrix(lil_arr), lil_matrix[ScalarType])
@@ -47,6 +49,7 @@ assert_type(lil_array(data2, dtype=bool), lil_array[np.bool])
 assert_type(lil_array(data2, dtype=int), lil_array[np.int_])
 assert_type(lil_array(data2, dtype=float), lil_array[np.float64])
 assert_type(lil_array(data2, dtype=complex), lil_array[np.complex128])
+assert_type(lil_array(data2, shape=_shape_nd), lil_array[ScalarType])
 
 # lil_array(S)
 assert_type(lil_array(lil_arr), lil_array[ScalarType])
