@@ -8,6 +8,8 @@ from scipy.optimize import fmin_l_bfgs_b
 
 i64_1d: np.ndarray[tuple[int], np.dtype[np.int64]]
 f64_1d: np.ndarray[tuple[int], np.dtype[np.float64]]
+_f64_nd: npt.NDArray[np.float64]
+_f_2d: list[list[float]]
 
 def f2(theta: npt.NDArray[np.float64], arg1: npt.NDArray[np.float64], arg2: int) -> float: ...
 def g2(theta: npt.NDArray[np.float64], arg1: npt.NDArray[np.float64], arg2: int) -> npt.NDArray[npc.floating]: ...
@@ -39,3 +41,5 @@ fmin_l_bfgs_b(fg0, f64_1d, (1,))  # type: ignore[call-overload]  # pyright: igno
 fmin_l_bfgs_b(f0, f64_1d)  # type: ignore[arg-type]  # pyright: ignore[reportArgumentType, reportCallIssue]
 fmin_l_bfgs_b(f0, f64_1d, fprime=g0)
 fmin_l_bfgs_b(f0, f64_1d, approx_grad=1)
+fmin_l_bfgs_b(f0, f64_1d, approx_grad=True, bounds=_f_2d)
+fmin_l_bfgs_b(f0, f64_1d, approx_grad=True, bounds=_f64_nd)
