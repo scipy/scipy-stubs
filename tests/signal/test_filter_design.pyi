@@ -60,6 +60,7 @@ from scipy.signal import (
 
 _f32: np.float32
 _f64: np.float64
+_c128: np.complex128
 
 _i64_1d: onp.Array1D[np.int64]
 _f16_1d: onp.Array1D[np.float16]
@@ -139,7 +140,7 @@ assert_type(tf2zpk(_f32_1d, _c64_1d), tuple[onp.Array1D[np.complex64], onp.Array
 assert_type(tf2zpk(_c64_1d, _f32_1d), tuple[onp.Array1D[np.complex64], onp.Array1D[np.complex64], np.complex64])
 assert_type(tf2zpk(_c64_1d, _c64_1d), tuple[onp.Array1D[np.complex64], onp.Array1D[np.complex64], np.complex64])
 assert_type(
-    tf2zpk(_f32_1d, _f64_1d), tuple[onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64 | np.complex128], np.float64]
+    tf2zpk(_f32, _f64_1d), tuple[onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64 | np.complex128], np.float64]
 )
 assert_type(
     tf2zpk(_f64_1d, _f32_1d), tuple[onp.Array1D[np.float64 | np.complex128], onp.Array1D[np.float64 | np.complex128], np.float64]
@@ -153,9 +154,10 @@ assert_type(tf2zpk(_c128_1d, _c128_1d), tuple[onp.Array1D[np.complex128], onp.Ar
 assert_type(
     tf2zpk(_f16_1d, _f32_1d), tuple[onp.Array1D[np.float32 | np.complex64], onp.Array1D[np.float32 | np.complex64], np.float32]
 )
+assert_type(tf2zpk(_c128, _f64_1d), tuple[onp.Array1D[Any], onp.Array1D[Any], Any])
 
 # tf2sos
-assert_type(tf2sos(_f64_1d, _f64_1d), onp.Array2D[np.float64])
+assert_type(tf2sos(_f64, _f64_1d), onp.Array2D[np.float64])
 
 # zpk2tf
 assert_type(zpk2tf(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -176,6 +178,8 @@ assert_type(normalize(_f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.Arra
 assert_type(normalize(_f64_1d, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.Array1D[np.complex128]])
 assert_type(normalize(_c128_1d, _f64_1d), tuple[onp.ArrayND[np.complex128], onp.Array1D[np.complex128]])
 assert_type(normalize(_c128_1d, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.Array1D[np.complex128]])
+assert_type(normalize(_f32, _f64_1d), tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]])
+assert_type(normalize(_f32, _f32_1d), tuple[onp.ArrayND[Any], onp.Array1D[Any]])
 
 # sos2tf
 assert_type(sos2tf(_i64_2d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -193,21 +197,25 @@ assert_type(sos2zpk(_c128_2d), tuple[onp.Array1D[np.complex128], onp.Array1D[np.
 
 # lp2lp
 assert_type(lp2lp(_i64_1d, _i64_1d), tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]])
-assert_type(lp2lp(_f32_1d, _f32_1d), tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]])
+assert_type(lp2lp(_f32, _f32_1d), tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]])
 assert_type(lp2lp(_f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.Array1D[np.float64]])
 assert_type(lp2lp(_f80_1d, _f80_1d), tuple[onp.ArrayND[np.longdouble], onp.Array1D[np.longdouble]])
 assert_type(lp2lp(_c64_1d, _c64_1d), tuple[onp.ArrayND[np.complex128], onp.Array1D[np.complex128]])
 assert_type(lp2lp(_c128_1d, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.Array1D[np.complex128]])
 assert_type(lp2lp(_c160_1d, _c160_1d), tuple[onp.ArrayND[np.clongdouble], onp.Array1D[np.clongdouble]])
+assert_type(lp2lp(_c128, _c128_1d), tuple[onp.ArrayND[Any], onp.Array1D[Any]])
 
 # lp2hp
-assert_type(lp2hp(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(lp2hp(_f64, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(lp2hp(_c128, _c128_1d), tuple[onp.Array1D[Any], onp.Array1D[Any]])
 
 # lp2bp
-assert_type(lp2bp(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(lp2bp(_f64, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(lp2bp(_c128, _c128_1d), tuple[onp.Array1D[Any], onp.Array1D[Any]])
 
 # lp2bs
-assert_type(lp2bs(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(lp2bs(_f64, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(lp2bs(_c128, _c128_1d), tuple[onp.Array1D[Any], onp.Array1D[Any]])
 
 # lp2lp_zpk
 assert_type(lp2lp_zpk(_f64_1d, _f64_1d, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], float])
@@ -253,7 +261,7 @@ assert_type(
 )
 
 # bilinear
-assert_type(bilinear(_f64_1d, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(bilinear(_f64, _f64_1d), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 
 # bilinear_zpk
 assert_type(bilinear_zpk(_f64_1d, _f64_1d, 1.0, 1.0), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64], np.float64])

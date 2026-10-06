@@ -49,6 +49,7 @@ type _ArrC128ish = onp.ArrayND[np.complex128 | Any]
 
 ###
 
+_f64: np.float64
 _f32_1d: _VecF32
 _f32_2d: onp.Array2D[np.float32]
 _f64_1d: _VecF64
@@ -134,6 +135,8 @@ assert_type(TransferFunction(_f32_1d, _f32_1d, dt=0.1), TransferFunctionDiscrete
 assert_type(TransferFunction(_f32_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])  # type: ignore[assert-type]
 assert_type(TransferFunction(_f64_1d, _f32_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])  # type: ignore[assert-type]
 assert_type(TransferFunction(_f64_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[np.float64, float])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f64, _f64), TransferFunctionContinuous[_F32_64])  # type: ignore[assert-type]
+assert_type(TransferFunction(_f64, _f64_1d, dt=0.1), TransferFunctionDiscrete[_F32_64, float])  # type: ignore[assert-type]
 
 # ZerosPolesGain
 assert_type(ZerosPolesGain(_zpk_cont_f32), ZerosPolesGainContinuous[np.float32, np.float32])  # type: ignore[assert-type]
@@ -169,7 +172,7 @@ assert_type(_ss_cont_c64.A, onp.Array2D[np.complex64])
 assert_type(_ss_cont_c128.A, onp.Array2D[np.complex128])
 
 # lti
-assert_type(lti(_f64_1d, _f64_1d), TransferFunctionContinuous[np.float64 | Any])  # type: ignore[assert-type]
+assert_type(lti(_f64, _f64_1d), TransferFunctionContinuous[np.float64 | Any])  # type: ignore[assert-type]
 assert_type(lti(_i64_1d, _i64_1d, 5), ZerosPolesGainContinuous[np.int64, np.int64])  # type: ignore[assert-type]
 assert_type(lti(_f64_1d, _f64_1d, 5), ZerosPolesGainContinuous[np.float64 | Any, np.float64 | Any])  # type: ignore[assert-type]
 assert_type(lti(_c128_1d, _f64_1d, 5), ZerosPolesGainContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
@@ -178,7 +181,7 @@ assert_type(lti(_c128_2d, _c128_2d, _c128_2d, _c128_2d), StateSpaceContinuous[An
 assert_type(lti(_f64_1d, _c128_1d, 5), ZerosPolesGainContinuous[Any, np.float64 | Any])  # type: ignore[assert-type]
 
 # dlti
-assert_type(dlti(_f64_1d, _f64_1d), TransferFunctionDiscrete[_F32_64, Any])  # type: ignore[assert-type]
+assert_type(dlti(_f64, _f64_1d), TransferFunctionDiscrete[_F32_64, Any])  # type: ignore[assert-type]
 assert_type(dlti(_f64_1d, _f64_1d, dt=0.1), TransferFunctionDiscrete[_F32_64, float])  # type: ignore[assert-type]
 assert_type(dlti(_i64_1d, _i64_1d, 5, dt=0.1), ZerosPolesGainDiscrete[np.int64, np.int64, float])  # type: ignore[assert-type]
 assert_type(dlti(_f64_1d, _f64_1d, 5, dt=0.1), ZerosPolesGainDiscrete[_F32_64, _F32_64, float])  # type: ignore[assert-type]
