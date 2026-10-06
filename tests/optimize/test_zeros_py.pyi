@@ -19,28 +19,34 @@ def k(x: float) -> tuple[float, float, float]: ...
 
 arr_1d: onp.Array1D[np.float64]
 arr_2d: onp.Array2D[np.float64]
+_b: bool
 
 ###
 
 # bisect
 assert_type(bisect(f, 0.0, 1.0), float)
 assert_type(bisect(f, 0.0, 1.0, full_output=True), tuple[float, _RR])
+assert_type(bisect(f, 0.0, 1.0, full_output=_b), float | tuple[float, _RR])
 
 # ridder
 assert_type(ridder(f, 0.0, 1.0), float)
 assert_type(ridder(f, 0.0, 1.0, full_output=True), tuple[float, _RR])
+assert_type(ridder(f, 0.0, 1.0, full_output=_b), float | tuple[float, _RR])
 
 # brentq
 assert_type(brentq(f, 0.0, 1.0), float)
 assert_type(brentq(f, 0.0, 1.0, full_output=True), tuple[float, _RR])
+assert_type(brentq(f, 0.0, 1.0, full_output=_b), float | tuple[float, _RR])
 
 # brenth
 assert_type(brenth(f, 0.0, 1.0), float)
 assert_type(brenth(f, 0.0, 1.0, full_output=True), tuple[float, _RR])
+assert_type(brenth(f, 0.0, 1.0, full_output=_b), float | tuple[float, _RR])
 
 # toms748
 assert_type(toms748(f, 0.0, 1.0), np.float64)
 assert_type(toms748(f, 0.0, 1.0, full_output=True), tuple[np.float64, _RR])
+assert_type(toms748(f, 0.0, 1.0, full_output=_b), np.float64 | tuple[np.float64, _RR])
 
 # newton
 assert_type(newton(f, 0.5), _Float)

@@ -91,6 +91,27 @@ def fmin_slsqp(
     epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float).eps)
     callback: Callable[[onp.Array1D[np.float64]], Unused] | None = None,
 ) -> tuple[onp.Array1D[np.float64], float | np.float64, int, _ExitMode, _ExitDesc]: ...
+@overload
+def fmin_slsqp(
+    func: _Fun0D,
+    x0: onp.ToFloat1D,
+    eqcons: Sequence[_Fun0D] = (),
+    f_eqcons: _Fun1D | None = None,
+    ieqcons: Sequence[_Fun0D] = (),
+    f_ieqcons: _Fun1D | None = None,
+    bounds: Sequence[tuple[onp.ToFloat, onp.ToFloat]] = (),
+    fprime: _Fun1D | None = None,
+    fprime_eqcons: _Fun2D | None = None,
+    fprime_ieqcons: _Fun2D | None = None,
+    args: Sequence[object] = (),
+    iter: onp.ToJustInt = 100,
+    acc: onp.ToFloat = 1e-06,
+    iprint: onp.ToJustInt = 1,
+    disp: onp.ToInt | None = None,
+    full_output: onp.ToBool = 0,
+    epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float).eps)
+    callback: Callable[[onp.Array1D[np.float64]], Unused] | None = None,
+) -> onp.Array1D[np.float64] | tuple[onp.Array1D[np.float64], float | np.float64, int, _ExitMode, _ExitDesc]: ...
 
 #
 def _eval_constraint(d: onp.Array1D[np.float64], x: onp.Array1D[npc.floating], cons: _ConsDict, m: int, meq: int) -> None: ...

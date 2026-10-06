@@ -217,6 +217,18 @@ def bisect(
     full_output: onp.ToTrue,
     disp: bool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
+@overload
+def bisect(
+    f: _Fun0D,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
+    args: tuple[object, ...] = (),
+    xtol: onp.ToFloat = 2e-12,
+    rtol: onp.ToFloat = ...,
+    maxiter: onp.ToJustInt = 100,
+    full_output: onp.ToBool = False,
+    disp: bool = True,
+) -> float | tuple[float, RootResults[_Float]]: ...
 
 #
 @overload
@@ -244,6 +256,18 @@ def ridder(
     full_output: onp.ToTrue,
     disp: bool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
+@overload
+def ridder(
+    f: _Fun0D,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
+    args: tuple[object, ...] = (),
+    xtol: onp.ToFloat = 2e-12,
+    rtol: onp.ToFloat = ...,
+    maxiter: onp.ToJustInt = 100,
+    full_output: onp.ToBool = False,
+    disp: bool = True,
+) -> float | tuple[float, RootResults[_Float]]: ...
 
 #
 @overload
@@ -271,6 +295,18 @@ def brentq(
     full_output: onp.ToTrue,
     disp: bool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
+@overload
+def brentq(
+    f: _Fun0D,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
+    args: tuple[object, ...] = (),
+    xtol: onp.ToFloat = 2e-12,
+    rtol: onp.ToFloat = ...,
+    maxiter: onp.ToJustInt = 100,
+    full_output: onp.ToBool = False,
+    disp: bool = True,
+) -> float | tuple[float, RootResults[_Float]]: ...
 
 #
 @overload
@@ -298,6 +334,18 @@ def brenth(
     full_output: onp.ToTrue,
     disp: bool = True,
 ) -> tuple[float, RootResults[_Float]]: ...
+@overload
+def brenth(
+    f: _Fun0D,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
+    args: tuple[object, ...] = (),
+    xtol: onp.ToFloat = 2e-12,
+    rtol: onp.ToFloat = ...,
+    maxiter: onp.ToJustInt = 100,
+    full_output: onp.ToBool = False,
+    disp: bool = True,
+) -> float | tuple[float, RootResults[_Float]]: ...
 
 #
 @overload
@@ -327,3 +375,16 @@ def toms748(
     full_output: onp.ToTrue,
     disp: bool = True,
 ) -> tuple[np.float64, RootResults[_Float]]: ...
+@overload
+def toms748(
+    f: _Fun0D,
+    a: onp.ToFloat,
+    b: onp.ToFloat,
+    args: tuple[object, ...] = (),
+    k: onp.ToJustInt = 1,
+    xtol: onp.ToFloat = 2e-12,
+    rtol: onp.ToFloat = ...,
+    maxiter: onp.ToJustInt = 100,
+    full_output: onp.ToBool = False,
+    disp: bool = True,
+) -> np.float64 | tuple[np.float64, RootResults[_Float]]: ...

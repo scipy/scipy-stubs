@@ -222,6 +222,21 @@ def fmin(
     callback: _Callback_1d | None = None,
     initial_simplex: onp.ToFloat2D | None = None,
 ) -> tuple[_Float1D, np.float64, int, int, _WarnFlag, _AllVecs]: ...  # x, fun, nit, nfev, status, allvecs
+@overload  # fallback
+def fmin(
+    func: _Fn1_1d[onp.ToFloat],
+    x0: onp.ToFloat | onp.ToFloat1D,
+    args: _Args = (),
+    xtol: onp.ToFloat = 1e-4,
+    ftol: onp.ToFloat = 1e-4,
+    maxiter: int | None = None,
+    maxfun: int | None = None,
+    full_output: onp.ToBool = 0,
+    disp: _Disp = 1,
+    retall: onp.ToBool = 0,
+    callback: _Callback_1d | None = None,
+    initial_simplex: onp.ToFloat2D | None = None,
+) -> _Float1D | tuple[_Float1D, *tuple[Any, ...]]: ...
 
 #
 @overload  # full_output: False = ..., retall: False = ...
@@ -303,6 +318,25 @@ def fmin_bfgs(
     c2: onp.ToFloat = 0.9,
     hess_inv0: onp.ToFloat2D | None = None,
 ) -> tuple[_Float1D, _Float, _Float1D, _Float2D, int, int, _WarnFlag, _AllVecs]: ...
+@overload  # fallback
+def fmin_bfgs(
+    f: _Fn1_1d[onp.ToFloat],
+    x0: onp.ToFloat | onp.ToFloat1D,
+    fprime: _Fn1_1d[onp.ToFloatND] | None = None,
+    args: _Args = (),
+    gtol: onp.ToFloat = 1e-05,
+    norm: onp.ToFloat = ...,  # inf
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
+    maxiter: int | None = None,
+    full_output: onp.ToBool = 0,
+    disp: _Disp = 1,
+    retall: onp.ToBool = 0,
+    callback: _Callback_1d | None = None,
+    xrtol: onp.ToFloat = 0,
+    c1: onp.ToFloat = 1e-4,
+    c2: onp.ToFloat = 0.9,
+    hess_inv0: onp.ToFloat2D | None = None,
+) -> _Float1D | tuple[_Float1D, *tuple[Any, ...]]: ...
 
 #
 @overload  # full_output: False = ..., retall: False = ...
@@ -376,6 +410,23 @@ def fmin_cg(
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.4,
 ) -> tuple[_Float1D, _Float, int, int, _WarnFlag, _AllVecs]: ...
+@overload  # fallback
+def fmin_cg(
+    f: _Fn1_1d[onp.ToFloat],
+    x0: onp.ToFloat | onp.ToFloat1D,
+    fprime: _Fn1_1d[onp.ToFloatND] | None = None,
+    args: _Args = (),
+    gtol: onp.ToFloat = 1e-05,
+    norm: onp.ToFloat = ...,  # inf
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
+    maxiter: int | None = None,
+    full_output: onp.ToBool = 0,
+    disp: _Disp = 1,
+    retall: onp.ToBool = 0,
+    callback: _Callback_1d | None = None,
+    c1: onp.ToFloat = 1e-4,
+    c2: onp.ToFloat = 0.4,
+) -> _Float1D | tuple[_Float1D, *tuple[Any, ...]]: ...
 @overload  # full_output: False = ..., retall: False = ...
 def fmin_ncg(
     f: _Fn1_1d[onp.ToFloat],
@@ -451,6 +502,24 @@ def fmin_ncg(
     c1: onp.ToFloat = 1e-4,
     c2: onp.ToFloat = 0.9,
 ) -> tuple[_Float1D, _Float, int, int, int, _WarnFlag, _AllVecs]: ...
+@overload  # fallback
+def fmin_ncg(
+    f: _Fn1_1d[onp.ToFloat],
+    x0: onp.ToFloat | onp.ToFloat1D,
+    fprime: _Fn1_1d[onp.ToFloatND],
+    fhess_p: _Fn2[_Float1D, _Float1D, onp.ToFloat | onp.ToFloat1D] | None = None,
+    fhess: _Fn1_1d[onp.ToFloatND] | None = None,
+    args: _Args = (),
+    avextol: onp.ToFloat = 1e-5,
+    epsilon: onp.ToFloat | onp.ToFloat1D = ...,
+    maxiter: int | None = None,
+    full_output: onp.ToBool = 0,
+    disp: _Disp = 1,
+    retall: onp.ToBool = 0,
+    callback: _Callback_1d | None = None,
+    c1: onp.ToFloat = 1e-4,
+    c2: onp.ToFloat = 0.9,
+) -> _Float1D | tuple[_Float1D, *tuple[Any, ...]]: ...
 
 #
 @overload  # full_output: False = ..., retall: False = ...
@@ -516,6 +585,21 @@ def fmin_powell(
     callback: _Callback_1d | None = None,
     direc: onp.ToFloat2D | None = None,
 ) -> tuple[_Float1D, _Float, _Float2D, int, int, _WarnFlag, _AllVecs]: ...
+@overload  # fallback
+def fmin_powell(
+    func: _Fn1_1d[onp.ToFloat],
+    x0: onp.ToFloat | onp.ToFloat1D,
+    args: _Args = (),
+    xtol: onp.ToFloat = 1e-4,
+    ftol: onp.ToFloat = 1e-4,
+    maxiter: int | None = None,
+    maxfun: int | None = None,
+    full_output: onp.ToBool = 0,
+    disp: _Disp = 1,
+    retall: onp.ToBool = 0,
+    callback: _Callback_1d | None = None,
+    direc: onp.ToFloat2D | None = None,
+) -> _Float1D | tuple[_Float1D, *tuple[Any, ...]]: ...
 
 #
 @overload  # full_output: False = ...
