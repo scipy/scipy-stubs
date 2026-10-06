@@ -4,6 +4,8 @@ from typing import assert_type
 
 import numpy as np
 import optype.numpy as onp
+from matplotlib.axes import Axes
+from matplotlib.lines import Line2D
 
 from scipy.stats import ecdf, logrank
 from scipy.stats._common import ConfidenceInterval
@@ -19,6 +21,8 @@ _f80_1d: onp.Array1D[np.float128]
 
 _py_f_1d: list[float]
 
+_ax: Axes
+
 ###
 # ecdf
 
@@ -33,6 +37,7 @@ assert_type(_edf.probabilities, onp.Array1D[np.float64])
 assert_type(_edf.evaluate(_f64_nd), onp.ArrayND[np.float64])
 assert_type(_edf.confidence_interval(), ConfidenceInterval[EmpiricalDistributionFunction])
 assert_type(_edf.confidence_interval(0.99, method="log-log"), ConfidenceInterval[EmpiricalDistributionFunction])
+assert_type(_edf.plot(_ax, color="r"), list[Line2D])
 
 assert_type(ecdf(_f64_1d), ECDFResult)
 assert_type(ecdf(_f32_1d), ECDFResult)
