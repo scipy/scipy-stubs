@@ -116,10 +116,23 @@ class multivariate_normal_gen(multi_rv_generic):
         cov: onp.ToFloat = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
+        *,
+        maxpts: int | None = None,
+        abseps: float = 1e-5,
+        releps: float = 1e-5,
     ) -> multivariate_normal_frozen[tuple[()]]: ...
     @overload  # 1d, 0d|2d
     def __call__(
-        self, /, mean: onp.ToFloat1D, cov: _ToCov = 1, allow_singular: bool = False, seed: onp.random.ToRNG | None = None
+        self,
+        /,
+        mean: onp.ToFloat1D,
+        cov: _ToCov = 1,
+        allow_singular: bool = False,
+        seed: onp.random.ToRNG | None = None,
+        *,
+        maxpts: int | None = None,
+        abseps: float = 1e-5,
+        releps: float = 1e-5,
     ) -> multivariate_normal_frozen[tuple[int]]: ...
     @overload  # None, 2d (positional)
     def __call__(
@@ -129,10 +142,23 @@ class multivariate_normal_gen(multi_rv_generic):
         cov: _AsCov,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
+        *,
+        maxpts: int | None = None,
+        abseps: float = 1e-5,
+        releps: float = 1e-5,
     ) -> multivariate_normal_frozen[tuple[int]]: ...
     @overload  # None, 2d (keyword)
     def __call__(
-        self, /, mean: None = None, *, cov: _AsCov, allow_singular: bool = False, seed: onp.random.ToRNG | None = None
+        self,
+        /,
+        mean: None = None,
+        *,
+        cov: _AsCov,
+        allow_singular: bool = False,
+        seed: onp.random.ToRNG | None = None,
+        maxpts: int | None = None,
+        abseps: float = 1e-5,
+        releps: float = 1e-5,
     ) -> multivariate_normal_frozen[tuple[int]]: ...
 
     #
