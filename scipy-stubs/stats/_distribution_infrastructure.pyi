@@ -1926,36 +1926,126 @@ class _CustomDiscreteDistribution(DiscreteDistribution[np.float64, _ShapeT_co]):
 @type_check_only
 class _CustomContinuousDistributionKind(Protocol):
     @overload
-    def __call__(self, /) -> _CustomContinuousDistribution[tuple[()]]: ...  # pyright: ignore[reportOverlappingOverload]
-    @overload
-    def __call__(self, /, **parameters: onp.ToFloat) -> _CustomContinuousDistribution[tuple[()]]: ...
+    def __call__(  # pyright: ignore[reportOverlappingOverload]
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+    ) -> _CustomContinuousDistribution[tuple[()]]: ...
     @overload
     def __call__(
-        self, /, **parameters: onp.ArrayND[_Real, tuple[Never, Never, Never]]
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ToFloat,
+    ) -> _CustomContinuousDistribution[tuple[()]]: ...
+    @overload
+    def __call__(
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ArrayND[_Real, tuple[Never, Never, Never]],
     ) -> _CustomContinuousDistribution[tuple[()]] | _CustomContinuousDistribution[tuple[Any, ...]]: ...
     @overload
-    def __call__(self, /, **parameters: onp.ToFloatStrict1D) -> _CustomContinuousDistribution[tuple[int]]: ...
+    def __call__(
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ToFloatStrict1D,
+    ) -> _CustomContinuousDistribution[tuple[int]]: ...
     @overload
-    def __call__(self, /, **parameters: onp.ToFloatStrict2D) -> _CustomContinuousDistribution[tuple[int, int]]: ...
+    def __call__(
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ToFloatStrict2D,
+    ) -> _CustomContinuousDistribution[tuple[int, int]]: ...
     @overload
-    def __call__(self, /, **parameters: onp.ToFloatND) -> _CustomContinuousDistribution[tuple[int, *tuple[Any, ...]]]: ...
+    def __call__(
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ToFloatND,
+    ) -> _CustomContinuousDistribution[tuple[int, *tuple[Any, ...]]]: ...
 
 @type_check_only
 class _CustomDiscreteDistributionKind(Protocol):
     @overload
-    def __call__(self, /) -> _CustomDiscreteDistribution[tuple[()]]: ...  # pyright: ignore[reportOverlappingOverload]
-    @overload
-    def __call__(self, /, **parameters: onp.ToFloat) -> _CustomDiscreteDistribution[tuple[()]]: ...
+    def __call__(  # pyright: ignore[reportOverlappingOverload]
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+    ) -> _CustomDiscreteDistribution[tuple[()]]: ...
     @overload
     def __call__(
-        self, /, **parameters: onp.ArrayND[_Real, tuple[Never, Never, Never]]
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ToFloat,
+    ) -> _CustomDiscreteDistribution[tuple[()]]: ...
+    @overload
+    def __call__(
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ArrayND[_Real, tuple[Never, Never, Never]],
     ) -> _CustomDiscreteDistribution[tuple[()]] | _CustomDiscreteDistribution[tuple[Any, ...]]: ...
     @overload
-    def __call__(self, /, **parameters: onp.ToFloatStrict1D) -> _CustomDiscreteDistribution[tuple[int]]: ...
+    def __call__(
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ToFloatStrict1D,
+    ) -> _CustomDiscreteDistribution[tuple[int]]: ...
     @overload
-    def __call__(self, /, **parameters: onp.ToFloatStrict2D) -> _CustomDiscreteDistribution[tuple[int, int]]: ...
+    def __call__(
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ToFloatStrict2D,
+    ) -> _CustomDiscreteDistribution[tuple[int, int]]: ...
     @overload
-    def __call__(self, /, **parameters: onp.ToFloatND) -> _CustomDiscreteDistribution[tuple[int, *tuple[Any, ...]]]: ...
+    def __call__(
+        self,
+        /,
+        *,
+        tol: _ToTol | npc.floating | None = ...,
+        validation_policy: _ValidationPolicy = None,
+        cache_policy: _CachePolicy = None,
+        **parameters: onp.ToFloatND,
+    ) -> _CustomDiscreteDistribution[tuple[int, *tuple[Any, ...]]]: ...
 
 @overload
 def make_distribution(
