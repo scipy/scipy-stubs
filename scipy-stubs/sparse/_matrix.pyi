@@ -85,6 +85,8 @@ class spmatrix(Generic[_ScalarT_co]):
     def __mul__[SelfT: spmatrix[npc.complexfloating]](self: SelfT, other: onp.ToComplex, /) -> SelfT: ...
     @overload  # M@{bsr,csc,csr,dia}_matrix, M
     def __mul__[SelfT: bsr_matrix | csc_matrix | csr_matrix | dia_matrix](self: SelfT, other: SelfT, /) -> SelfT: ...  # type:ignore[misc]
+    @overload  # {bsr,csc,csr}_matrix T, sparse T | bool
+    def __mul__[SelfT: _SpMatrixOut[Any]](self: SelfT, other: _spbase[np.bool | _ScalarT_co], /) -> SelfT: ...  # type:ignore[misc]  # mypy rejects subclass self-types
     @overload  # M@{coo,dok,lil}_matrix, M  TODO
     def __mul__[SelfT: (coo_matrix, dok_matrix, lil_matrix)](self: SelfT, other: SelfT, /) -> csr_matrix[_ScalarT_co]: ...
     @overload  # spmatrix bool, scalar | sparse int

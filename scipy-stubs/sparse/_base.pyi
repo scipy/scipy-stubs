@@ -467,6 +467,8 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def __mul__[SpMatrixT: bsr_matrix | csc_matrix | csr_matrix | dia_matrix](
         self: SpMatrixT, other: SpMatrixT, /
     ) -> SpMatrixT: ...
+    @overload  # {bsr,csc,csr}_matrix T, sparse T | bool
+    def __mul__[SpMatrixT: _SpMatrixOut[Any]](self: SpMatrixT, other: _spbase[np.bool | _ScalarT_co], /) -> SpMatrixT: ...
     @overload  # M@{coo,dok,lil}_matrix, M  TODO
     def __mul__[SpMatrixT: (coo_matrix, dok_matrix, lil_matrix)](
         self: SpMatrixT, other: SpMatrixT, /
@@ -714,6 +716,8 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def __rmul__[SpMatrixT: bsr_matrix | csc_matrix | csr_matrix | dia_matrix](
         self: SpMatrixT, other: SpMatrixT, /
     ) -> SpMatrixT: ...
+    @overload  # {bsr,csc,csr}_matrix T, sparse T | bool
+    def __rmul__[SpMatrixT: _SpMatrixOut[Any]](self: SpMatrixT, other: _spbase[np.bool | _ScalarT_co], /) -> SpMatrixT: ...
     @overload  # M@{coo,dok,lil}_matrix, M  TODO
     def __rmul__[SpMatrixT: (coo_matrix, dok_matrix, lil_matrix)](
         self: SpMatrixT, other: SpMatrixT, /
@@ -784,6 +788,8 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def __matmul__[SpMatrixT: bsr_matrix | csc_matrix | csr_matrix | dia_matrix](
         self: SpMatrixT, other: SpMatrixT, /
     ) -> SpMatrixT: ...
+    @overload  # {bsr,csc,csr}_matrix T, sparse T | bool
+    def __matmul__[SpMatrixT: _SpMatrixOut[Any]](self: SpMatrixT, other: _spbase[np.bool | _ScalarT_co], /) -> SpMatrixT: ...
     @overload  # M@{coo,dok,lil}_matrix, M  TODO
     def __matmul__[SpMatrixT: (coo_matrix, dok_matrix, lil_matrix)](
         self: SpMatrixT, other: SpMatrixT, /
@@ -908,6 +914,8 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def dot[ST: npc.complexfloating](self: sparray[ST], /, other: _spbase[_ToComplex64 | ST]) -> _SpArrayOut[ST]: ...
     @overload  # M@{bsr,csc,csr,dia}_matrix, M
     def dot[SpMatrixT: bsr_matrix | csc_matrix | csr_matrix | dia_matrix](self: SpMatrixT, /, other: SpMatrixT) -> SpMatrixT: ...
+    @overload  # {bsr,csc,csr}_matrix T, sparse T | bool
+    def dot[SpMatrixT: _SpMatrixOut[Any]](self: SpMatrixT, /, other: _spbase[np.bool | _ScalarT_co]) -> SpMatrixT: ...
     @overload  # M@{coo,dok,lil}_matrix, M  TODO
     def dot[SpMatrixT: (coo_matrix, dok_matrix, lil_matrix)](self: SpMatrixT, /, other: SpMatrixT) -> csr_matrix[_ScalarT_co]: ...
     @overload  # spmatrix bool, sparse int

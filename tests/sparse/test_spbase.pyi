@@ -224,6 +224,7 @@ assert_type(_csr_mat_f64 @ _c64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.comp
 assert_type(_csr_arr_i64 @ i64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.int64]])
 assert_type(_csr_arr_f64 @ _f64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.float64]])
 assert_type(_csr_arr_c128 @ _c128_1d, np.ndarray[tuple[Any, ...], np.dtype[np.complex128]])
+assert_type(csc_mat @ csr_mat, sparse.csc_matrix[ScalarType])
 
 # spmatrix.__mul__ (same as spmatrix.__rmul__)
 
@@ -234,6 +235,7 @@ assert_type(_csr_mat_c128 * _c128_1d, np.ndarray[tuple[Any, ...], np.dtype[np.co
 assert_type(_spmat_i64 * i64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.int64]])
 assert_type(_spmat_f64 * _f64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.float64]])
 assert_type(_spmat_c128 * _c128_1d, np.ndarray[tuple[Any, ...], np.dtype[np.complex128]])
+assert_type(csr_mat * csc_mat, sparse.csr_matrix[ScalarType])
 
 # __eq__ (same as __ne__)
 
