@@ -22,6 +22,7 @@ _f32_1d: onp.Array1D[np.float32]
 _f32_nd: onp.ArrayND[np.float32]
 
 _shape_nd: tuple[int, ...]
+_ixs: tuple[slice | int, ...]
 
 ###
 # NOTE: Keep these tests in sync with the `dok` tests.
@@ -202,6 +203,8 @@ assert_type(csr_mat[_py_i_1d], csr_matrix[ScalarType])
 assert_type(csr_mat[0, None], csr_matrix[ScalarType])
 assert_type(csr_mat[None, 0], csr_matrix[ScalarType])
 assert_type(csr_mat[_py_i_1d, _py_i_1d], np.matrix[tuple[int, int], np.dtype[ScalarType]])
+
+assert_type(csr_arr[_ixs], Any)
 
 # T
 assert_type(csr_vec.T, csr_array[ScalarType, tuple[int]])
