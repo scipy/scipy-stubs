@@ -13,6 +13,7 @@ type _Float2D = onp.Array2D[np.float64]
 type _IERFlag = Literal[1, 2, 3, 4, 5, 6, 7, 8]
 
 _lb_ub: list[list[float]]
+_p0: float
 
 ###
 
@@ -20,6 +21,7 @@ def _func(x: _Float1D, /) -> list[float]: ...
 def _func_0d(x: _Float1D, /) -> float: ...
 def _jac(x: _Float1D, /) -> list[list[float]]: ...
 def _model(x: _Float1D, a: float, b: float) -> list[float]: ...
+def _model_a(x: _Float1D, a: float) -> list[float]: ...
 
 ###
 # fsolve
@@ -62,6 +64,7 @@ def _rho(z: _Float1D, /) -> _Float2D: ...
 assert_type(curve_fit(_model, [1.0, 2.0], [3.0, 4.0], method="trf", loss=_rho), tuple[_Float1D, _Float2D])
 assert_type(curve_fit(_model, [1.0, 2.0], [3.0, 4.0], diff_step=1e-6), tuple[_Float1D, _Float2D])
 assert_type(curve_fit(_model, [1.0, 2.0], [3.0, 4.0], bounds=_lb_ub), tuple[_Float1D, _Float2D])
+assert_type(curve_fit(_model_a, [1.0, 2.0], [3.0, 4.0], _p0), tuple[_Float1D, _Float2D])
 
 ###
 # fixed_point
