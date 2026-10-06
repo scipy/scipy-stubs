@@ -1,4 +1,4 @@
-from collections.abc import Callable
+from collections.abc import Callable, Sequence
 from typing import Any, Concatenate, Literal, overload
 
 import numpy as np
@@ -73,7 +73,7 @@ def spline_filter[ScalarT: np.generic](
 def geometric_transform[ArrayT: onp.ArrayND[np.bool | npc.integer | npc.inexact32 | npc.inexact64]](
     input: ArrayT,
     mapping: _MappingFunc,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     output: None = None,
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -86,7 +86,7 @@ def geometric_transform[ArrayT: onp.ArrayND[np.bool | npc.integer | npc.inexact3
 def geometric_transform(
     input: onp.SequenceND[int],
     mapping: _MappingFunc,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     output: None = None,
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -99,7 +99,7 @@ def geometric_transform(
 def geometric_transform(
     input: onp.SequenceND[list[float]] | list[float],
     mapping: _MappingFunc,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     output: None = None,
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -112,7 +112,7 @@ def geometric_transform(
 def geometric_transform(
     input: onp.SequenceND[list[complex]] | list[complex],
     mapping: _MappingFunc,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     output: None = None,
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -125,7 +125,7 @@ def geometric_transform(
 def geometric_transform(
     input: onp.ToComplexND,
     mapping: _MappingFunc,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     output: None = None,
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -138,7 +138,7 @@ def geometric_transform(
 def geometric_transform[ScalarT: np.generic](
     input: onp.ToComplexND,
     mapping: _MappingFunc,
-    output_shape: tuple[int, ...] | None,
+    output_shape: Sequence[int] | None,
     output: _ArrayOrDType[ScalarT],
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -151,7 +151,7 @@ def geometric_transform[ScalarT: np.generic](
 def geometric_transform[ScalarT: np.generic](
     input: onp.ToComplexND,
     mapping: _MappingFunc,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     *,
     output: _ArrayOrDType[ScalarT],
     order: onp.ToInt = 3,
@@ -165,7 +165,7 @@ def geometric_transform[ScalarT: np.generic](
 def geometric_transform(
     input: onp.ToComplexND,
     mapping: _MappingFunc,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     *,
     output: type[int],
     order: onp.ToInt = 3,
@@ -179,7 +179,7 @@ def geometric_transform(
 def geometric_transform(
     input: onp.ToComplexND,
     mapping: _MappingFunc,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     *,
     output: type[op.JustFloat],
     order: onp.ToInt = 3,
@@ -193,7 +193,7 @@ def geometric_transform(
 def geometric_transform(
     input: onp.ToComplexND,
     mapping: _MappingFunc,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     *,
     output: type[op.JustComplex],
     order: onp.ToInt = 3,
@@ -312,7 +312,7 @@ def affine_transform[NumberT: npc.number](
     input: onp.ArrayND[NumberT],
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     output: None = None,
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -324,7 +324,7 @@ def affine_transform(
     input: onp.SequenceND[int],
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     output: None = None,
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -336,7 +336,7 @@ def affine_transform(
     input: onp.SequenceND[list[float]] | list[float],
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     output: None = None,
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -348,7 +348,7 @@ def affine_transform(
     input: onp.SequenceND[list[complex]] | list[complex],
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     output: None = None,
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -360,7 +360,7 @@ def affine_transform(
     input: onp.ToComplexND,
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     output: None = None,
     order: onp.ToInt = 3,
     mode: _Mode = "constant",
@@ -372,7 +372,7 @@ def affine_transform[ScalarT: np.generic](
     input: onp.ToComplexND,
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     *,
     output: _ArrayOrDType[ScalarT],
     order: onp.ToInt = 3,
@@ -385,7 +385,7 @@ def affine_transform(
     input: onp.ToComplexND,
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     *,
     output: type[int],
     order: onp.ToInt = 3,
@@ -398,7 +398,7 @@ def affine_transform(
     input: onp.ToComplexND,
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     *,
     output: type[op.JustFloat],
     order: onp.ToInt = 3,
@@ -411,7 +411,7 @@ def affine_transform(
     input: onp.ToComplexND,
     matrix: onp.ToFloat1D | onp.ToFloat2D,
     offset: onp.ToFloat | onp.ToFloat1D = 0.0,
-    output_shape: tuple[int, ...] | None = None,
+    output_shape: Sequence[int] | None = None,
     *,
     output: type[op.JustComplex],
     order: onp.ToInt = 3,
