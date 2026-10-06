@@ -91,6 +91,7 @@ assert_type(csr_matrix(_py_b_2d), csr_matrix[np.bool])
 assert_type(csr_matrix(_py_i_2d), csr_matrix[np.int64])
 assert_type(csr_matrix(_py_f_2d), csr_matrix[np.float64])
 assert_type(csr_matrix(_py_c_2d), csr_matrix[np.complex128])
+assert_type(csr_matrix(_py_i_1d), csr_matrix[np.int64])
 
 assert_type(csr_array(_py_f_2d, shape=_py_i_1d), csr_array[np.float64, tuple[int, int]])
 assert_type(csr_matrix(_py_f_2d, shape=_shape_nd), csr_matrix[np.float64])

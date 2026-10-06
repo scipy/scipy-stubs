@@ -460,7 +460,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.bool],
         /,
-        arg1: onp.ToJustBoolStrict2D | _ToData[list[bool]],
+        arg1: list[bool] | onp.ToJustBoolStrict2D | _ToData[list[bool]],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyBoolDType | None = None,
         copy: bool = False,
@@ -471,7 +471,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.int64],
         /,
-        arg1: onp.ToJustInt64Strict2D | _ToData[list[int]],
+        arg1: list[int] | onp.ToJustInt64Strict2D | _ToData[list[int]],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyIntDType | None = None,
         copy: bool = False,
@@ -482,7 +482,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.float64],
         /,
-        arg1: onp.ToJustFloat64Strict2D | _ToData[list[float]],
+        arg1: list[float] | onp.ToJustFloat64Strict2D | _ToData[list[float]],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -493,7 +493,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.complex128],
         /,
-        arg1: onp.ToJustComplex128Strict2D | _ToData[list[complex]],
+        arg1: list[complex] | onp.ToJustComplex128Strict2D | _ToData[list[complex]],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyComplex128DType | None = None,
         copy: bool = False,

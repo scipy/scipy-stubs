@@ -85,6 +85,7 @@ assert_type(coo_matrix([[True]]), coo_matrix[np.bool])
 assert_type(coo_matrix([[1]]), coo_matrix[np.int_])
 assert_type(coo_matrix([[1.0]]), coo_matrix[np.float64])
 assert_type(coo_matrix([[1j]]), coo_matrix[np.complex128])
+assert_type(coo_matrix(_py_i_1d), coo_matrix[np.int_])
 
 assert_type(coo_matrix((_f64_1d, (_py_i_1d, _py_i_1d))), coo_matrix[np.float64])
 assert_type(coo_matrix((_py_b_1d, (_py_i_1d, _py_i_1d))), coo_matrix[np.bool])
