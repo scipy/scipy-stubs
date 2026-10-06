@@ -277,7 +277,7 @@ class dlti(LinearTimeInvariant[_ZerosT_co, _PolesT_co, _DTT_co], Generic[_ZerosT
     ) -> tuple[onp.Array1D[np.float64], tuple[onp.Array2D[np.float64], ...]]: ...
     def bode(self, /, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[onp.Array1D[np.float64]]: ...
     def freqresp(
-        self, /, w: onp.ToFloat1D | None = None, n: int = 10_000, whole: bool = False
+        self, /, w: onp.ToFloat1D | None = None, n: int = 10_000, whole: onp.ToBool = False
     ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
 
 #
@@ -1006,5 +1006,5 @@ def dbode(system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 100) 
 
 #
 def dfreqresp(
-    system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 10_000, whole: bool = False
+    system: dlti | _ToDLTI, w: onp.ToFloat1D | None = None, n: int = 10_000, whole: onp.ToBool = False
 ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
