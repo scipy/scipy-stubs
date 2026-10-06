@@ -26,6 +26,7 @@ type _Complex3_D = onp.ArrayND[np.complex128, onp.AtLeast3D[Any]]
 
 ###
 
+_i: int
 _i64: np.int64
 _i64_1d: onp.Array1D[np.int64]
 _f64_1d: onp.Array1D[np.float64]
@@ -85,9 +86,11 @@ assert_type(sph_harm_y(3, 2, 1.0, 2.0), _Complex0D)
 assert_type(sph_harm_y(n=3, m=2, theta=np.float32(1.0), phi=np.float32(2.0)), onp.Array0D[np.complex64])
 assert_type(sph_harm_y(3, 2, 1.0, _f64_1d), _Complex1_D)
 assert_type(sph_harm_y(3, 2, 1.0, 2.0, diff_n=0), _Complex0D)
+assert_type(sph_harm_y(3, 2, 1.0, 2.0, diff_n=_i), Any)
 
 # sph_harm_y_all
 assert_type(sph_harm_y_all(_i64, _i64, 1.0, 2.0), _Complex2D)
 assert_type(sph_harm_y_all(n=_i64, m=_i64, theta=np.float32(1.0), phi=np.float32(2.0)), onp.Array2D[np.complex64])
 assert_type(sph_harm_y_all(_i64, _i64, 1.0, _f64_1d), _Complex3_D)
 assert_type(sph_harm_y_all(3, 2, 1.0, 2.0, diff_n=0), _Complex2D)
+assert_type(sph_harm_y_all(3, 2, 1.0, 2.0, diff_n=_i), Any)

@@ -345,6 +345,8 @@ class _SphHarmY(MultiUFunc):
     def __call__(
         self, /, n: _ToInt_D, m: _ToInt_D, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: L[2]
     ) -> tuple[onp.ArrayND[Any], onp.ArrayND[Any], onp.ArrayND[Any]]: ...
+    @overload  # fallback, diff_n: int
+    def __call__(self, /, n: _ToInt_D, m: _ToInt_D, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: int) -> Any: ...
 
 @type_check_only
 class _SphHarmYAll(MultiUFunc):
@@ -432,6 +434,8 @@ class _SphHarmYAll(MultiUFunc):
     def __call__(
         self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: L[2]
     ) -> tuple[onp.ArrayND[Any], onp.ArrayND[Any], onp.ArrayND[Any]]: ...
+    @overload  # fallback, diff_n: int
+    def __call__(self, /, n: onp.ToInt, m: onp.ToInt, theta: _ToFloat_D, phi: _ToFloat_D, *, diff_n: int) -> Any: ...
 
 ###
 
