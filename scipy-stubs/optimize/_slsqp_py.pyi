@@ -63,7 +63,7 @@ def fmin_slsqp(
     args: Sequence[object] = (),
     iter: onp.ToJustInt = 100,
     acc: onp.ToFloat = 1e-06,
-    iprint: onp.ToJustInt = 1,
+    iprint: onp.ToInt = 1,
     disp: onp.ToInt | None = None,
     full_output: onp.ToFalse = 0,
     epsilon: onp.ToFloat = ...,  # = np.sqrt(np.finfo(float).eps)
@@ -84,7 +84,7 @@ def fmin_slsqp(
     args: Sequence[object] = (),
     iter: onp.ToJustInt = 100,
     acc: onp.ToFloat = 1e-06,
-    iprint: onp.ToJustInt = 1,
+    iprint: onp.ToInt = 1,
     disp: onp.ToInt | None = None,
     *,
     full_output: onp.ToTrue,

@@ -13,3 +13,4 @@ def _con(x: onp.Array1D[np.float64]) -> float: ...
 
 assert_type(fmin_cobyla(_func, [0.5, 0.5], [_con]), onp.Array1D[np.float64])
 assert_type(fmin_cobyla(_func, [0.5, 0.5], _con), onp.Array1D[np.float64])
+assert_type(fmin_cobyla(_func, [0.5, 0.5], _con, disp=False), onp.Array1D[np.float64])
