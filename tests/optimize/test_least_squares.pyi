@@ -12,6 +12,8 @@ def _f_f64_0d(x: npt.NDArray[np.float64]) -> float: ...
 def _f_f64_nd(x: npt.NDArray[np.float64]) -> npt.NDArray[np.float64]: ...
 
 _f64_nd: npt.NDArray[np.float64]
+_f64_2d: onp.Array2D[np.float64]
+_lb_ub: list[list[float]]
 
 ###
 # Regression tests for a mypy bug, see:
@@ -56,3 +58,9 @@ assert_type(least_squares(_f_f64_nd, _f64_nd).jac, onp.Array2D[np.float64] | Any
 
 assert_type(least_squares(_f_f64_nd, _f64_nd).cost, np.float64)
 assert_type(least_squares(_f_f64_nd, _f64_nd).optimality, np.float64)
+
+###
+# `bounds` as `[lb, ub]` or a `(2, n)` array
+
+assert_type(least_squares(_f_f64_nd, _f64_nd, bounds=_lb_ub).x, onp.Array1D[np.float64])
+assert_type(least_squares(_f_f64_nd, _f64_nd, bounds=_f64_2d).x, onp.Array1D[np.float64])
