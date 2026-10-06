@@ -177,7 +177,7 @@ assert_type(fresnelc_zeros(5), onp.Array1D[np.complex128])
 assert_type(fresnels_zeros(5), onp.Array1D[np.complex128])
 
 # fresnel_zeros
-assert_type(fresnel_zeros(5), onp.Array1D[np.complex128])
+assert_type(fresnel_zeros(5), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128]])
 
 # assoc_laguerre
 assert_type(assoc_laguerre(1.0, 3), np.float64)
