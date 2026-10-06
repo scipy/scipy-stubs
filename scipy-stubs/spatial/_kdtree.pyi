@@ -100,6 +100,17 @@ class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _Box
         *,
         boxsize: onp.ToFloat | onp.ToFloat1D,
     ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        /,
+        data: onp.ToComplexND,
+        leafsize: onp.ToInt = 10,
+        compact_nodes: bool = True,
+        copy_data: bool = False,
+        balanced_tree: bool = True,
+        boxsize: onp.ToFloat | onp.ToFloat1D | None = None,
+    ) -> None: ...
 
     #
     @override  # type:ignore[override]
