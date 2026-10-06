@@ -70,6 +70,7 @@ assert_type(poisson.rvs(1.0, size=4), onp.ArrayND[np.int64])
 
 assert_type(binom.pmf(_py_i_1d, 10, 0.3), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]])
 assert_type(binom.pmf(3, 10, 0.3), np.float64)
+assert_type(binom.pmf(3, _py_i_1d, 0.3), onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]] | Any)
 
 # .expect
 

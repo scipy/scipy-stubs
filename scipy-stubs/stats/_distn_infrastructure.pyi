@@ -45,7 +45,7 @@ type _FloatOrND = float | np.float64 | _FloatND
 
 # pyright bug workaround on `numpy<2.1` (note the weird shape-type)
 type _Float1ND = onp.ArrayND[np.float64, tuple[int] | tuple[Any, ...]]
-type _FloatOr1ND = np.float64 | _Float1ND
+type _FloatOr1ND = _Float1ND | Any
 
 type _ToFloatOrND = onp.ToFloat | onp.ToFloatND
 
@@ -1375,14 +1375,14 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def interval(
         self, /, confidence: _ToFloatOrND, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1
-    ) -> _Tuple2[np.float64] | _Tuple2[_FloatND]: ...
+    ) -> _Tuple2[_FloatND | Any]: ...
 
     #
     @override
     @overload
     def support(self, /, loc: onp.ToFloat = 0, scale: onp.ToFloat = 1) -> _Tuple2[np.float64]: ...
     @overload
-    def support(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _Tuple2[np.float64] | _Tuple2[_FloatND]: ...
+    def support(self, /, loc: _ToFloatOrND = 0, scale: _ToFloatOrND = 1) -> _Tuple2[_FloatND | Any]: ...
 
     # overrides of rv_continuous
     @override
@@ -1411,7 +1411,7 @@ class _rv_continuous_0(rv_continuous):
     @overload
     def pdf(self, /, x: onp.ToFloat, loc: _ToFloatOrND = 0, *, scale: onp.ToFloatND) -> _FloatND: ...
     @overload
-    def pdf(self, /, x: onp.ToFloat, loc: onp.ToFloatND, scale: _ToFloatOrND) -> _FloatND: ...
+    def pdf(self, /, x: onp.ToFloat, loc: onp.ToFloatND, scale: _ToFloatOrND = 1) -> _FloatND: ...
     @overload
     def pdf(
         self, /, x: onp.CanArrayND[_CoFloat, _ShapeT], loc: onp.ToFloat = 0, scale: onp.ToFloat = 1
