@@ -106,6 +106,7 @@ assert_type(freqz(_f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[
 assert_type(freqz(_f64_1d, _f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
 assert_type(freqz(_f64_1d, _f64_1d, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 assert_type(freqz(_f64_1d, worN=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(freqz(_f64_1d, _f64_1d, whole=1), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
 
 # freqz_zpk
 assert_type(freqz_zpk(_f64_1d, _f64_1d, _f64), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
@@ -377,6 +378,7 @@ assert_type(cheby2(8, 3, 0.1), tuple[onp.Array1D[np.float64], onp.Array1D[np.flo
 assert_type(cheby2(8, 3, 0.1, output="ba"), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(cheby2(8, 3, 0.1, output="zpk"), tuple[onp.Array1D[np.complex128], onp.Array1D[np.complex128], np.float64])
 assert_type(cheby2(8, 3, 0.1, output="sos"), onp.Array2D[np.float64])
+assert_type(cheby2(8, 3, 0.1, analog=0, output="sos"), onp.Array2D[np.float64])
 
 # ellip
 assert_type(ellip(8, 5, 40, 100), tuple[onp.Array1D[np.float64], onp.Array1D[np.float64]])
@@ -413,6 +415,7 @@ assert_type(cheb2ord(0.2, 0.3, 3, 40), tuple[int, np.float64])
 assert_type(cheb2ord(0.2, _f64_1d, 3, 40), tuple[int, np.float64])
 assert_type(cheb2ord(0.2, _f80_1d, 3, 40), tuple[int, np.longdouble])
 assert_type(cheb2ord(_f64_1d, 0.3, 3, 40), tuple[int, onp.Array1D[np.float64]])
+assert_type(cheb2ord(0.2, 0.3, 3, 40, analog=0), tuple[int, np.float64])
 
 # ellipord
 assert_type(ellipord(0.2, 0.3, 3, 40), tuple[int, np.float64])
