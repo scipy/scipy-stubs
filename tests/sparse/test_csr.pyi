@@ -111,6 +111,12 @@ csr_array((_py_f_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright:
 # pyrefly: ignore [no-matching-overload]
 csr_array((_py_c_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 
+assert_type(csr_array((_f32_1d, (_py_i_1d, _py_i_1d)), dtype=float), csr_array[np.float64, tuple[int, int]])
+assert_type(csr_array((_f32_1d, (_py_i_1d, _py_i_1d)), dtype=bool), csr_array[np.bool, tuple[int, int]])
+assert_type(csr_array((_f32_1d, (_py_i_1d, _py_i_1d)), dtype=int), csr_array[np.int64, tuple[int, int]])
+assert_type(csr_array((_f32_1d, (_py_i_1d, _py_i_1d)), dtype=complex), csr_array[np.complex128, tuple[int, int]])
+assert_type(csr_array((_f32_1d, (_py_i_1d, _py_i_1d)), dtype=np.int8), csr_array[np.int8, tuple[int, int]])
+
 assert_type(csr_matrix((_f32_nd, (_py_i_1d, _py_i_1d))), csr_matrix[np.float32])
 assert_type(csr_matrix((_f32_1d, (_py_i_1d, _py_i_1d))), csr_matrix[np.float32])
 assert_type(csr_matrix((_py_b_1d, (_py_i_1d, _py_i_1d))), csr_matrix[np.bool])
@@ -125,6 +131,11 @@ csr_matrix((_py_i_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright
 csr_matrix((_py_f_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
 # pyrefly: ignore [no-matching-overload]
 csr_matrix((_py_c_2d, (_py_i_1d, _py_i_1d)))  # type: ignore[type-var] # pyright: ignore[reportArgumentType, reportCallIssue]
+
+assert_type(csr_matrix((_f32_1d, (_py_i_1d, _py_i_1d)), dtype=float), csr_matrix[np.float64])
+assert_type(csr_matrix((_f32_1d, (_py_i_1d, _py_i_1d)), dtype=bool), csr_matrix[np.bool])
+assert_type(csr_matrix((_f32_1d, (_py_i_1d, _py_i_1d)), dtype=np.int8), csr_matrix[np.int8])
+assert_type(csr_matrix((_f32_1d, (_py_i_1d, _py_i_1d)), None, np.int8), csr_matrix[np.int8])
 
 ###
 # CSR-specific tests

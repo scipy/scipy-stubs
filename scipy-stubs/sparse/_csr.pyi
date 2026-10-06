@@ -151,7 +151,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.float64, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -173,7 +173,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.bool, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyBoolDType,
@@ -195,7 +195,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.int64, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyIntDType,
@@ -228,7 +228,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: csr_array[np.complex128, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyComplex128DType,
@@ -239,7 +239,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__[ST: _Scalar](
         self: csr_array[ST, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.ToDType[ST],
@@ -418,7 +418,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         /,
         arg1: _ToData[onp.ToArray1D[ST, ST]],
         shape: _ToShapeND | None = None,
-        dtype: onp.ToDType[ST] | None = None,
+        dtype: None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -427,7 +427,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.float64],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -438,7 +438,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csr_matrix[np.bool],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyBoolDType,
@@ -449,7 +449,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self,
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
@@ -504,7 +504,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self,
         /,
-        arg1: onp.ToComplex2D,
+        arg1: onp.ToComplex2D | _ToData[onp.ToArray1D[_Scalar, _Scalar]],
         shape: _ToShapeND | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,

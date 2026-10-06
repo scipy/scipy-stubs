@@ -23,10 +23,9 @@ __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 
 type _Scalar = npc.number | np.bool
 
-type _ToData[ST: _Scalar] = tuple[
-    onp.ArrayND[ST],
-    tuple[onp.ToJustInt1D, onp.ToJustInt1D] | tuple[onp.ToJustInt1D],
-]  # fmt: skip
+type _ToData1D[ST: _Scalar] = tuple[onp.ArrayND[ST], tuple[onp.ToJustInt1D]]
+type _ToData2D[ST: _Scalar] = tuple[onp.ArrayND[ST], tuple[onp.ToJustInt1D, onp.ToJustInt1D]]
+type _ToData[ST: _Scalar] = _ToData2D[ST] | _ToData1D[ST]
 type _ToPyData[T] = Sequence[Sequence[T]] | tuple[list[T], tuple[onp.ToJustInt1D, onp.ToJustInt1D]]
 
 type _ScalarOrDense[ST: _Scalar] = onp.ArrayND[ST] | ST
@@ -196,7 +195,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         /,
         arg1: _ToData[_ScalarT_co],
         shape: _ShapeT_co | None = None,
-        dtype: onp.ToDType[_ScalarT_co] | None = None,
+        dtype: None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -216,7 +215,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.bool, tuple[int]],
         /,
-        arg1: _ToShape1D,
+        arg1: _ToShape1D | _ToData1D[_Scalar],
         shape: _ToShape1D | None = None,
         *,
         dtype: onp.AnyBoolDType,
@@ -227,7 +226,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.bool, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyBoolDType,
@@ -249,7 +248,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.int64, tuple[int]],
         /,
-        arg1: _ToShape1D,
+        arg1: _ToShape1D | _ToData1D[_Scalar],
         shape: _ToShape1D | None = None,
         *,
         dtype: onp.AnyIntDType,
@@ -260,7 +259,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.int64, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyIntDType,
@@ -282,7 +281,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.float64, tuple[int]],
         /,
-        arg1: _ToShape1D,
+        arg1: _ToShape1D | _ToData1D[_Scalar],
         shape: _ToShape1D | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -293,7 +292,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.float64, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -304,7 +303,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.complex128, tuple[int]],
         /,
-        arg1: _ToShape1D,
+        arg1: _ToShape1D | _ToData1D[_Scalar],
         shape: _ToShape1D | None = None,
         *,
         dtype: onp.AnyComplex128DType,
@@ -315,7 +314,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__(
         self: coo_array[np.complex128, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyComplex128DType,
@@ -337,7 +336,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__[ST: _Scalar](
         self: coo_array[ST, tuple[int]],
         /,
-        arg1: _ToShape1D,
+        arg1: _ToShape1D | _ToData1D[_Scalar],
         shape: _ToShape1D | None = None,
         *,
         dtype: onp.ToDType[ST],
@@ -348,7 +347,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__[ST: _Scalar](
         self: coo_array[ST, tuple[int, int]],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.ToDType[ST],
@@ -458,7 +457,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__[ST: _Scalar](
         self: coo_array[ST, tuple[int]],
         /,
-        arg1: onp.ToComplexStrict1D,
+        arg1: onp.ToComplexStrict1D | _ToData1D[_Scalar],
         shape: _ToShape1D | None,
         dtype: onp.ToDType[ST],
         copy: bool = False,
@@ -480,7 +479,7 @@ class coo_array(_coo_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     def __init__[ST: _Scalar](
         self: coo_array[ST, tuple[int, int]],
         /,
-        arg1: onp.ToComplexStrict2D,
+        arg1: onp.ToComplexStrict2D | _ToData2D[_Scalar],
         shape: _ToShape2D | None,
         dtype: onp.ToDType[ST],
         copy: bool = False,
@@ -576,7 +575,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
         /,
         arg1: _ToData[_ScalarT_co],
         shape: _ToShapeND | None = None,
-        dtype: onp.ToDType[_ScalarT_co] | None = None,
+        dtype: None = None,
         copy: bool = False,
         *,
         maxprint: int | None = None,
@@ -585,7 +584,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __init__(
         self: coo_matrix[np.float64],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyFloat64DType | None = None,
         copy: bool = False,
@@ -596,7 +595,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __init__(
         self: coo_matrix[np.bool],
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyBoolDType,
@@ -607,7 +606,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __init__(
         self,
         /,
-        arg1: _ToShape2D,
+        arg1: _ToShape2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
@@ -662,7 +661,7 @@ class coo_matrix(_coo_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co],
     def __init__[ST: _Scalar](
         self: coo_matrix[ST],
         /,
-        arg1: onp.ToComplexStrict2D,
+        arg1: onp.ToComplexStrict2D | _ToData2D[_Scalar],
         shape: _ToShapeND | None,
         dtype: onp.ToDType[ST],
         copy: bool = False,
