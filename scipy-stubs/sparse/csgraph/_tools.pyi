@@ -10,7 +10,7 @@ from scipy.sparse._base import _spbase
 
 ###
 
-type _Real = npc.integer | npc.floating
+type _Real = np.bool | npc.integer | npc.floating
 
 type _SparseGraph[RealT: _Real] = (
     csr_array[RealT] | csr_matrix[RealT]

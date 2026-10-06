@@ -11,7 +11,7 @@ from scipy.sparse._base import _spbase
 
 type _Pair[T] = tuple[T, T]
 
-type _Real = npc.integer | npc.floating
+type _Real = np.bool | npc.integer | npc.floating
 type _Int1D = onp.Array1D[np.int32]
 
 type _ToGraph = onp.ToFloat2D | _spbase[_Real, tuple[int, int]]
