@@ -121,6 +121,17 @@ class cKDTree(_CythonMixin, Generic[_BoxSizeT_co, _BoxSizeDataT_co]):
         *,
         boxsize: onp.ToFloat | onp.ToFloat1D,
     ) -> None: ...
+    @overload
+    def __init__(
+        self,
+        /,
+        data: onp.ToFloat2D,
+        leafsize: int = 16,
+        compact_nodes: bool = True,
+        copy_data: bool = False,
+        balanced_tree: bool = True,
+        boxsize: onp.ToFloat | onp.ToFloat1D | None = None,
+    ) -> None: ...
 
     #
     @overload  # ?d  (workaround)

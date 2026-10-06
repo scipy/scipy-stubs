@@ -16,6 +16,9 @@ _f64_nd: onp.ArrayND[np.float64]
 _c128_1d: onp.Array1D[np.complex128]
 _c128_2d: onp.Array2D[np.complex128]
 
+class _CKDTreeSub(cKDTree): ...
+class _KDTreeSub(KDTree): ...
+
 ###
 # cKDTree
 
@@ -24,6 +27,7 @@ _ctree: cKDTree[None, None]
 assert_type(cKDTree(_f64_2d), cKDTree[None, None])
 assert_type(cKDTree(_f64_2d, boxsize=_f64_1d), cKDTree[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(cKDTree(_f64_2d, 16, True, False, True, 1.0), cKDTree[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(_CKDTreeSub(_f64_2d), _CKDTreeSub)
 
 assert_type(_ctree.data, onp.Array2D[np.float64])
 assert_type(_ctree.leafsize, int)
@@ -111,6 +115,7 @@ _tree_box: KDTree[onp.Array1D[np.float64], onp.Array1D[np.float64]]
 
 assert_type(KDTree(_f64_2d, boxsize=1.0), KDTree[onp.Array1D[np.float64], onp.Array1D[np.float64]])
 assert_type(KDTree(_f64_2d, 10, True, False, True, _f64_1d), KDTree[onp.Array1D[np.float64], onp.Array1D[np.float64]])
+assert_type(_KDTreeSub(_f64_2d), _KDTreeSub)
 assert_type(_tree_box.boxsize, onp.Array1D[np.float64])
 
 # KDTree.query
