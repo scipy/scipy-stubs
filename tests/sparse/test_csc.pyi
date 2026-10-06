@@ -12,7 +12,10 @@ _dtype_str: str
 _shape_2d: tuple[int, int]
 _shape_nd: tuple[int, ...]
 
+_py_b_1d: list[bool]
 _py_i_1d: list[int]
+_py_f_1d: list[float]
+_py_c_1d: list[complex]
 
 _bool_1d: onp.Array1D[np.bool]
 _i64_1d: onp.Array1D[np.int64]
@@ -64,6 +67,10 @@ assert_type(csc_matrix(_sc_2d, dtype=bool), csc_matrix[np.bool])
 assert_type(csc_matrix(_sc_2d, dtype=int), csc_matrix[np.int_])
 assert_type(csc_matrix(_sc_2d, dtype=float), csc_matrix[np.float64])
 assert_type(csc_matrix(_sc_2d, dtype=complex), csc_matrix[np.complex128])
+assert_type(csc_matrix(_py_b_1d), csc_matrix[np.bool])
+assert_type(csc_matrix(_py_i_1d), csc_matrix[np.int_])
+assert_type(csc_matrix(_py_f_1d), csc_matrix[np.float64])
+assert_type(csc_matrix(_py_c_1d), csc_matrix[np.complex128])
 
 # csc_matrix(S)
 assert_type(csc_matrix(csr_arr), csc_matrix[ScalarType])

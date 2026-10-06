@@ -304,7 +304,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csc_matrix[np.bool],
         /,
-        arg1: _ToBoolCSC,
+        arg1: list[bool] | _ToBoolCSC,
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -315,7 +315,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csc_matrix[np.int_],
         /,
-        arg1: _ToIntCSC,
+        arg1: list[int] | _ToIntCSC,
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -326,7 +326,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csc_matrix[np.float64],
         /,
-        arg1: _ToFloatCSC,
+        arg1: list[float] | _ToFloatCSC,
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -337,7 +337,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     def __init__(
         self: csc_matrix[np.complex128],
         /,
-        arg1: _ToComplexCSC,
+        arg1: list[complex] | _ToComplexCSC,
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
