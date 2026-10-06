@@ -89,7 +89,7 @@ type _FitMethod = L["MLE", "MM"]
 _ShapeT = TypeVar("_ShapeT", bound=tuple[int, ...], default=tuple[int, ...])
 _FloatNDT = TypeVar("_FloatNDT", bound=_FloatOrND, default=_FloatOrND)
 
-_FloatNDT_co = TypeVar("_FloatNDT_co", bound=_FloatOrND, default=_FloatOrND, covariant=True)
+_FloatNDT_co = TypeVar("_FloatNDT_co", bound=_FloatOrND, default=_FloatND | Any, covariant=True)
 _RVT = TypeVar("_RVT", bound=rv_generic, default=rv_generic)
 _RVT_co = TypeVar("_RVT_co", bound=rv_generic, default=rv_generic, covariant=True)
 _CRVT_co = TypeVar("_CRVT_co", bound=rv_continuous, default=rv_continuous, covariant=True)
