@@ -1,6 +1,6 @@
 from _typeshed import Incomplete
 from collections.abc import Iterable, Iterator, Sequence
-from typing import Final, Literal as L, Protocol, SupportsIndex, TypeVar, overload, type_check_only
+from typing import Any, Final, Literal as L, Protocol, SupportsIndex, TypeVar, overload, type_check_only
 
 import numpy as np
 import numpy.typing as npt
@@ -178,8 +178,8 @@ class _SequenceNotStr(Protocol[_VT_co]):
     def __reversed__(self, /) -> Iterator[_VT_co]: ...
     def __contains__(self, value: object, /) -> bool: ...  # <-- the trick
     def __len__(self, /) -> int: ...
-    def index(self, value: object, start: int = 0, stop: int = ..., /) -> int: ...
-    def count(self, value: object, /) -> int: ...
+    def index(self, value: Any, start: int = 0, stop: int = ..., /) -> int: ...
+    def count(self, value: Any, /) -> int: ...
 
 # NOTE: used in `lapack.pyi`
 @type_check_only
@@ -214,14 +214,14 @@ def find_best_blas_type(
 #
 @overload
 def get_blas_funcs(
-    names: str, arrays: Sequence[onp.ArrayND] = (), dtype: npt.DTypeLike | None = None, ilp64: L["preferred"] = "preferred"
+    names: str, arrays: Sequence[onp.ArrayND] = (), dtype: npt.DTypeLike | None = None, ilp64: L["preferred"] | bool = "preferred"
 ) -> _FortranFunction: ...
 @overload
 def get_blas_funcs(
     names: _SequenceNotStr[str],
     arrays: Sequence[onp.ArrayND] = (),
     dtype: npt.DTypeLike | None = None,
-    ilp64: L["preferred"] = "preferred",
+    ilp64: L["preferred"] | bool = "preferred",
 ) -> list[_FortranFunction]: ...
 @overload
 def get_blas_funcs(

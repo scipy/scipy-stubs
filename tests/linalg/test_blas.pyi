@@ -23,6 +23,6 @@ assert_type(
 ###
 # get_blas_funcs
 
-assert_type(get_blas_funcs("gemm"), _FortranFunction)
-assert_type(get_blas_funcs(["gemm", "larf"]), list[_FortranFunction] | _FortranFunction)
+assert_type(get_blas_funcs("gemm", ilp64=False), _FortranFunction)
+assert_type(get_blas_funcs(["gemm", "larf"]), list[_FortranFunction])
 assert_type(get_blas_funcs(iter(["gemm"])), list[_FortranFunction] | _FortranFunction)
