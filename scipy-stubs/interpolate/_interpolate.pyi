@@ -22,7 +22,9 @@ type _Extrapolate = Literal["periodic"] | bool
 
 type _Interp1dKind = Literal["linear", "nearest", "nearest-up", "zero", "slinear", "quadratic", "cubic", "previous", "next"]
 type _Interp1dKindPoly = Literal["linear", "zero", "slinear", "quadratic", "cubic"]
-type _Interp1dFillValue = onp.ToFloat | onp.ToFloatND | tuple[onp.ToFloat | onp.ToFloatND, onp.ToFloat | onp.ToFloatND]
+type _Interp1dFillValue = (
+    onp.ToComplex | onp.ToComplexND | tuple[onp.ToComplex | onp.ToComplexND, onp.ToComplex | onp.ToComplexND]
+)
 
 type _Array2ND[NumberT: npc.number] = onp.Array[tuple[int, int, *tuple[Any, ...]], NumberT]
 

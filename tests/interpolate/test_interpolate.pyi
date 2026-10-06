@@ -88,6 +88,8 @@ assert_type(interp1d(_f64_1d, _c128_1d), interp1d[np.complex128])
 assert_type(interp1d(_f64_1d, _f64_1d)(0.5), onp.ArrayND[np.float64])
 assert_type(interp1d(_f64_1d, _c128_1d)(0.5), onp.ArrayND[np.complex128])
 assert_type(interp1d_f(0.5), onp.ArrayND[Any])
+assert_type(interp1d(_f64_1d, _c128_1d, bounds_error=False, fill_value=(1j, 2j)), interp1d[np.complex128])
+interp1d_f.fill_value = 1j
 
 ###
 # interp2d (deprecated, __init__ takes Never)
