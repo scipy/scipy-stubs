@@ -182,6 +182,8 @@ assert_type(csr_arr + 0, sparse.csr_array[ScalarType])
 assert_type(csr_arr - 0, sparse.csr_array[ScalarType])
 assert_type(csr_arr * 3, sparse.csr_array[ScalarType])
 assert_type(csr_arr**3, sparse.csr_array[ScalarType])
+assert_type(csr_arr**0.5, Any)
+assert_type(csr_arr.power(0.5), Any)
 # pyrefly: ignore [unsupported-operation]
 csr_arr + 1  # type: ignore[operator]  # pyright: ignore[reportOperatorIssue]
 # pyrefly: ignore [unsupported-operation]
