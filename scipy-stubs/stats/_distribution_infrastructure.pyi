@@ -1927,15 +1927,6 @@ class _CustomDiscreteDistribution(DiscreteDistribution[np.float64, _ShapeT_co]):
 @type_check_only
 class _CustomContinuousDistributionKind(Protocol):
     @overload
-    def __call__(  # pyright: ignore[reportOverlappingOverload]
-        self,
-        /,
-        *,
-        tol: _ToTol | npc.floating | None = ...,
-        validation_policy: _ValidationPolicy = None,
-        cache_policy: _CachePolicy = None,
-    ) -> _CustomContinuousDistribution[tuple[()]]: ...
-    @overload
     def __call__(
         self,
         /,
@@ -1954,7 +1945,7 @@ class _CustomContinuousDistributionKind(Protocol):
         validation_policy: _ValidationPolicy = None,
         cache_policy: _CachePolicy = None,
         **parameters: onp.ArrayND[_Real, tuple[Never, Never, Never]],
-    ) -> _CustomContinuousDistribution[tuple[()]] | _CustomContinuousDistribution[tuple[Any, ...]]: ...
+    ) -> _CustomContinuousDistribution[tuple[Any, ...]]: ...
     @overload
     def __call__(
         self,
@@ -1990,15 +1981,6 @@ class _CustomContinuousDistributionKind(Protocol):
 @type_check_only
 class _CustomDiscreteDistributionKind(Protocol):
     @overload
-    def __call__(  # pyright: ignore[reportOverlappingOverload]
-        self,
-        /,
-        *,
-        tol: _ToTol | npc.floating | None = ...,
-        validation_policy: _ValidationPolicy = None,
-        cache_policy: _CachePolicy = None,
-    ) -> _CustomDiscreteDistribution[tuple[()]]: ...
-    @overload
     def __call__(
         self,
         /,
@@ -2017,7 +1999,7 @@ class _CustomDiscreteDistributionKind(Protocol):
         validation_policy: _ValidationPolicy = None,
         cache_policy: _CachePolicy = None,
         **parameters: onp.ArrayND[_Real, tuple[Never, Never, Never]],
-    ) -> _CustomDiscreteDistribution[tuple[()]] | _CustomDiscreteDistribution[tuple[Any, ...]]: ...
+    ) -> _CustomDiscreteDistribution[tuple[Any, ...]]: ...
     @overload
     def __call__(
         self,
