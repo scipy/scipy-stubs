@@ -38,6 +38,7 @@ dense_2d: np.ndarray[tuple[int, int], np.dtype[ScalarType]]
 dense_1d_list: list[np.ndarray[tuple[int], np.dtype[ScalarType]]]
 
 sctype: type[ScalarType]
+_dtype_str: str
 
 int_list: list[int]
 
@@ -440,6 +441,7 @@ assert_type(sparse.random(4, 2, format="dia", dtype="int"), sparse.dia_matrix)
 assert_type(sparse.random(4, 2, 0.5, "csc"), sparse.csc_matrix)
 assert_type(sparse.random(4, 2, 0.5, "bsr", complex), sparse.bsr_matrix)
 assert_type(sparse.random(4, 2, 0.5, "coo", sctype), sparse.coo_matrix)
+assert_type(sparse.random(4, 2, dtype=_dtype_str), sparse.coo_matrix)
 
 # rand
 assert_type(sparse.rand(4, 2), sparse.coo_matrix[np.float64])
