@@ -190,6 +190,11 @@ assert_type(multivariate_normal.marginal(_i_1d, 0.0, _cov_i).rvs(), onp.Array1D[
 assert_type(multivariate_normal(0.0, _cov_i).marginal(_i_1d).rvs(), onp.Array1D[np.float64])
 assert_type(multivariate_normal(_f_1d).marginal(_i_1d).rvs(), onp.Array1D[np.float64])
 
+assert_type(multivariate_normal(maxpts=100_000).rvs(), np.float64)
+assert_type(multivariate_normal(_f_1d, abseps=1e-8).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal(None, _f_2d, releps=1e-6).rvs(), onp.Array1D[np.float64])
+assert_type(multivariate_normal(cov=_f_2d, maxpts=None, abseps=1e-8, releps=1e-6).rvs(), onp.Array1D[np.float64])
+
 # matrix_normal
 
 assert_type(matrix_normal.rvs().dtype, np.dtype[np.float64])
