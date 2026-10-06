@@ -6,6 +6,7 @@ from typing_extensions import TypeVarTuple
 import numpy as np
 import optype.numpy as onp
 
+from ._typing import Bound
 from scipy.sparse.linalg import LinearOperator
 
 __all__ = ["LbfgsInvHessProduct", "fmin_l_bfgs_b"]
@@ -14,7 +15,7 @@ _Ts = TypeVarTuple("_Ts", default=Unpack[tuple[()]])
 
 type _Fn[T, *Ts] = Callable[[onp.Array1D[np.float64], *Ts], T]
 
-type _Bounds = Sequence[tuple[onp.ToFloat | None, onp.ToFloat | None]]
+type _Bounds = Sequence[Bound] | onp.ToFloat2D
 type _FMinResult = tuple[onp.Array1D[np.float64], float, _InfoDict]
 
 type _ToFloatOr1D = onp.ToFloat | onp.ToFloat1D
