@@ -48,6 +48,7 @@ _spmat_f32: sparse.spmatrix[np.float32]
 _spmat_i64: sparse.spmatrix[np.int64]
 _spmat_f64: sparse.spmatrix[np.float64]
 _spmat_c128: sparse.spmatrix[np.complex128]
+_sparr_f64: sparse.sparray[np.float64, tuple[int, int]]
 _csr_arr_bool: sparse.csr_array[np.bool, tuple[int, int]]
 _csr_arr_i64: sparse.csr_array[np.int64, tuple[int, int]]
 _csr_arr_f64: sparse.csr_array[np.float64, tuple[int, int]]
@@ -232,6 +233,7 @@ assert_type(_csr_mat_c128 * _c128_1d, np.ndarray[tuple[Any, ...], np.dtype[np.co
 assert_type(_spmat_i64 * i64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.int64]])
 assert_type(_spmat_f64 * _f64_1d, np.ndarray[tuple[Any, ...], np.dtype[np.float64]])
 assert_type(_spmat_c128 * _c128_1d, np.ndarray[tuple[Any, ...], np.dtype[np.complex128]])
+assert_type(_spmat_i64 * 1.5, sparse.spmatrix[Any])
 
 # __eq__ (same as __ne__)
 
@@ -284,3 +286,18 @@ assert_type(csr_arr.reshape(_shape_nd), sparse.coo_array[ScalarType])
 assert_type(csr_mat.reshape(3, 2), sparse.coo_matrix[ScalarType])
 assert_type(lil_arr.reshape(3, 2), sparse.lil_array[ScalarType])
 assert_type(lil_mat.reshape(3, 2), sparse.lil_matrix[ScalarType])
+
+###
+# spmatrix
+
+assert_type(_spmat_f64.dtype, np.dtype[np.float64])
+assert_type(_spmat_f64.tocsr(), sparse.csr_matrix[np.float64])
+assert_type(sparse.csr_matrix(_spmat_f64), sparse.csr_matrix[np.float64])
+assert_type(_spmat_f64.astype(np.float32), sparse.spmatrix[np.float32])
+
+###
+# sparray
+
+assert_type(_sparr_f64.dtype, np.dtype[np.float64])
+assert_type(_sparr_f64.toarray(), np.ndarray[tuple[int, int], np.dtype[np.float64]])
+assert_type(_sparr_f64.astype(np.float32), sparse.sparray[np.float32, tuple[int, int]])

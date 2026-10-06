@@ -252,7 +252,7 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
 
     #
     @override
-    def transpose(  # type: ignore[override]
+    def transpose(  # type: ignore[override] # pyrefly: ignore[bad-override]
         self, /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
     ) -> csr_array[_ScalarT_co, tuple[int, int]]: ...
 
@@ -446,7 +446,7 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
 
     #
     @override
-    def transpose(  # type: ignore[override]
+    def transpose(  # type: ignore[override] # pyrefly: ignore[bad-override]
         self, /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
     ) -> csr_matrix[_ScalarT_co]: ...
 

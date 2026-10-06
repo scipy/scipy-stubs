@@ -161,7 +161,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:igno
     ) -> _dok_base[np.complex128, _1D]: ...
 
 #
-class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):  # ty:ignore[invalid-method-override]
+class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):  # pyright: ignore[reportIncompatibleVariableOverride]  # ty:ignore[invalid-method-override]
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
@@ -556,7 +556,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> dok_array[np.complex128, _1D]: ...
 
 #
-class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # ty:ignore[invalid-method-override]
+class dok_matrix(_dok_base[_ScalarT_co, tuple[int, int]], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # pyright: ignore[reportIncompatibleVariableOverride]  # ty:ignore[invalid-method-override]
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override

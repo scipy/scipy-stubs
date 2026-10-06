@@ -14,6 +14,7 @@ from typing import (
     SupportsIndex,
     final,
     overload,
+    override,
     type_check_only,
 )
 from typing_extensions import TypeIs, TypeVar
@@ -1300,6 +1301,14 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def astype[ST: _Scalar](
         self: lil_matrix, /, dtype: onp.ToDType[ST], casting: _Casting = "unsafe", copy: bool = True
     ) -> lil_matrix[ST]: ...
+    @overload
+    def astype[ST: _Scalar, ShapeT: tuple[Any, ...]](
+        self: sparray[Any, ShapeT], /, dtype: onp.ToDType[ST], casting: _Casting = "unsafe", copy: bool = True
+    ) -> sparray[ST, ShapeT]: ...
+    @overload
+    def astype[ST: _Scalar](
+        self: spmatrix, /, dtype: onp.ToDType[ST], casting: _Casting = "unsafe", copy: bool = True
+    ) -> spmatrix[ST]: ...
     @overload  # catch-all
     def astype(self, /, dtype: npt.DTypeLike, casting: _Casting = "unsafe", copy: bool = True) -> _spbase[Any, _ShapeT_co]: ...
 
@@ -1417,13 +1426,25 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     #
     def setdiag(self, /, values: onp.ToComplex | onp.ToComplex1D, k: int = 0) -> None: ...
 
-class sparray(Generic[_ScalarT_co, _ShapeT_co]):
+class sparray(_spbase[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):
     # NOTE: These two methods do not exist at runtime.
     # See the relevant comment in `_spbase` for more information.
+    @override
     @type_check_only
     def __assoc_stacked__(self, /) -> _StackedSparseArray[_ScalarT_co]: ...
+    @override
     @type_check_only
     def __assoc_stacked_as__[ST: _Scalar](self, sctype: ST, /) -> _StackedSparseArray[ST]: ...
+
+    #
+    @override
+    @type_check_only
+    def __assoc_as_any__(self, /) -> sparray[Any, _ShapeT_co]: ...
+
+    #
+    @property
+    @type_check_only
+    def dtype(self, /) -> np.dtype[_ScalarT_co]: ...
 
     #
     @classmethod
