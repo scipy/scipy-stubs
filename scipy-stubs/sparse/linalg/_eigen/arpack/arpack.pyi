@@ -55,23 +55,6 @@ class ArpackNoConvergence(ArpackError):
     ) -> None: ...
 
 #
-@overload  # ~f32 | ~c64, returns_eigenvectors: truthy (default)
-def eigs(
-    A: _AsMatF32C64,
-    k: int = 6,
-    M: _ToMatComplex | None = None,
-    sigma: onp.ToComplex | None = None,
-    which: _Which_eigs = "LM",
-    v0: onp.ToComplex1D | None = None,
-    ncv: int | None = None,
-    maxiter: int | None = None,
-    tol: float = 0,
-    return_eigenvectors: onp.ToTrue = True,
-    Minv: _ToMatComplex | None = None,
-    OPinv: _ToMatComplex | None = None,
-    OPpart: _OPpart | None = None,
-    rng: onp.random.ToRNG | None = None,
-) -> tuple[onp.Array1D[np.complex64], onp.Array2D[np.complex64]]: ...
 @overload  # +f64 | ~c128, returns_eigenvectors: truthy (default)
 def eigs(
     A: _ToMatC128,
@@ -89,6 +72,23 @@ def eigs(
     OPpart: _OPpart | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array1D[np.complex128], onp.Array2D[np.complex128]]: ...
+@overload  # ~f32 | ~c64, returns_eigenvectors: truthy (default)
+def eigs(
+    A: _AsMatF32C64,
+    k: int = 6,
+    M: _ToMatComplex | None = None,
+    sigma: onp.ToComplex | None = None,
+    which: _Which_eigs = "LM",
+    v0: onp.ToComplex1D | None = None,
+    ncv: int | None = None,
+    maxiter: int | None = None,
+    tol: float = 0,
+    return_eigenvectors: onp.ToTrue = True,
+    Minv: _ToMatComplex | None = None,
+    OPinv: _ToMatComplex | None = None,
+    OPpart: _OPpart | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.complex64], onp.Array2D[np.complex64]]: ...
 @overload  # +complex (fallback), returns_eigenvectors: truthy (default)
 def eigs(
     A: _ToMatComplex,
@@ -106,24 +106,6 @@ def eigs(
     OPpart: _OPpart | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array1D[np.complex128 | Any], onp.Array2D[np.complex128 | Any]]: ...
-@overload  # ~f32 | ~c64, returns_eigenvectors: falsy (keyword)
-def eigs(
-    A: _AsMatF32C64,
-    k: int = 6,
-    M: _ToMatComplex | None = None,
-    sigma: onp.ToComplex | None = None,
-    which: _Which_eigs = "LM",
-    v0: onp.ToComplex1D | None = None,
-    ncv: int | None = None,
-    maxiter: int | None = None,
-    tol: float = 0,
-    *,
-    return_eigenvectors: onp.ToFalse,
-    Minv: _ToMatComplex | None = None,
-    OPinv: _ToMatComplex | None = None,
-    OPpart: _OPpart | None = None,
-    rng: onp.random.ToRNG | None = None,
-) -> onp.Array1D[np.complex64]: ...
 @overload  # +f64 | ~c128, returns_eigenvectors: falsy (keyword)
 def eigs(
     A: _ToMatC128,
@@ -142,6 +124,24 @@ def eigs(
     OPpart: _OPpart | None = None,
     rng: onp.random.ToRNG | None = None,
 ) -> onp.Array1D[np.complex128]: ...
+@overload  # ~f32 | ~c64, returns_eigenvectors: falsy (keyword)
+def eigs(
+    A: _AsMatF32C64,
+    k: int = 6,
+    M: _ToMatComplex | None = None,
+    sigma: onp.ToComplex | None = None,
+    which: _Which_eigs = "LM",
+    v0: onp.ToComplex1D | None = None,
+    ncv: int | None = None,
+    maxiter: int | None = None,
+    tol: float = 0,
+    *,
+    return_eigenvectors: onp.ToFalse,
+    Minv: _ToMatComplex | None = None,
+    OPinv: _ToMatComplex | None = None,
+    OPpart: _OPpart | None = None,
+    rng: onp.random.ToRNG | None = None,
+) -> onp.Array1D[np.complex64]: ...
 @overload  # +complex (fallback), returns_eigenvectors: falsy (keyword)
 def eigs(
     A: _ToMatComplex,
@@ -162,57 +162,6 @@ def eigs(
 ) -> onp.Array1D[np.complex128 | Any]: ...
 
 #
-@overload  # ~f32, returns_eigenvectors: truthy (default)
-def eigsh(
-    A: _AsMatF32,
-    k: int = 6,
-    M: _ToMatFloat | None = None,
-    sigma: onp.ToFloat | None = None,
-    which: _Which_eigsh = "LM",
-    v0: onp.ToFloat1D | None = None,
-    ncv: int | None = None,
-    maxiter: int | None = None,
-    tol: float = 0,
-    return_eigenvectors: onp.ToTrue = True,
-    Minv: _ToMatFloat | None = None,
-    OPinv: _ToMatFloat | None = None,
-    mode: _Mode = "normal",
-    rng: onp.random.ToRNG | None = None,
-) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.float32]]: ...
-@overload  # ~c64, returns_eigenvectors: truthy (default)
-def eigsh(
-    A: _AsMatC64,
-    k: int = 6,
-    M: _ToMatComplex | None = None,
-    sigma: onp.ToFloat | None = None,
-    which: _Which_eigsh = "LM",
-    v0: onp.ToComplex1D | None = None,
-    ncv: int | None = None,
-    maxiter: int | None = None,
-    tol: float = 0,
-    return_eigenvectors: onp.ToTrue = True,
-    Minv: _ToMatComplex | None = None,
-    OPinv: _ToMatComplex | None = None,
-    mode: _Mode = "normal",
-    rng: onp.random.ToRNG | None = None,
-) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.complex64]]: ...
-@overload  # ~f32 | ~c64, returns_eigenvectors: truthy (default)
-def eigsh(
-    A: _AsMatF32C64,
-    k: int = 6,
-    M: _ToMatComplex | None = None,
-    sigma: onp.ToFloat | None = None,
-    which: _Which_eigsh = "LM",
-    v0: onp.ToComplex1D | None = None,
-    ncv: int | None = None,
-    maxiter: int | None = None,
-    tol: float = 0,
-    return_eigenvectors: onp.ToTrue = True,
-    Minv: _ToMatComplex | None = None,
-    OPinv: _ToMatComplex | None = None,
-    mode: _Mode = "normal",
-    rng: onp.random.ToRNG | None = None,
-) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.float32 | np.complex64]]: ...
 @overload  # +f64, returns_eigenvectors: truthy (default)
 def eigsh(
     A: _ToMatF64,
@@ -264,6 +213,57 @@ def eigsh(
     mode: _Mode = "normal",
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array1D[np.float64], onp.Array2D[np.float64 | np.complex128]]: ...
+@overload  # ~f32, returns_eigenvectors: truthy (default)
+def eigsh(
+    A: _AsMatF32,
+    k: int = 6,
+    M: _ToMatFloat | None = None,
+    sigma: onp.ToFloat | None = None,
+    which: _Which_eigsh = "LM",
+    v0: onp.ToFloat1D | None = None,
+    ncv: int | None = None,
+    maxiter: int | None = None,
+    tol: float = 0,
+    return_eigenvectors: onp.ToTrue = True,
+    Minv: _ToMatFloat | None = None,
+    OPinv: _ToMatFloat | None = None,
+    mode: _Mode = "normal",
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.float32]]: ...
+@overload  # ~c64, returns_eigenvectors: truthy (default)
+def eigsh(
+    A: _AsMatC64,
+    k: int = 6,
+    M: _ToMatComplex | None = None,
+    sigma: onp.ToFloat | None = None,
+    which: _Which_eigsh = "LM",
+    v0: onp.ToComplex1D | None = None,
+    ncv: int | None = None,
+    maxiter: int | None = None,
+    tol: float = 0,
+    return_eigenvectors: onp.ToTrue = True,
+    Minv: _ToMatComplex | None = None,
+    OPinv: _ToMatComplex | None = None,
+    mode: _Mode = "normal",
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.complex64]]: ...
+@overload  # ~f32 | ~c64, returns_eigenvectors: truthy (default)
+def eigsh(
+    A: _AsMatF32C64,
+    k: int = 6,
+    M: _ToMatComplex | None = None,
+    sigma: onp.ToFloat | None = None,
+    which: _Which_eigsh = "LM",
+    v0: onp.ToComplex1D | None = None,
+    ncv: int | None = None,
+    maxiter: int | None = None,
+    tol: float = 0,
+    return_eigenvectors: onp.ToTrue = True,
+    Minv: _ToMatComplex | None = None,
+    OPinv: _ToMatComplex | None = None,
+    mode: _Mode = "normal",
+    rng: onp.random.ToRNG | None = None,
+) -> tuple[onp.Array1D[np.float32], onp.Array2D[np.float32 | np.complex64]]: ...
 @overload  # +complex (fallback), returns_eigenvectors: truthy (default)
 def eigsh(
     A: _ToMatComplex,
@@ -281,24 +281,6 @@ def eigsh(
     mode: _Mode = "normal",
     rng: onp.random.ToRNG | None = None,
 ) -> tuple[onp.Array1D[np.float64 | Any], onp.Array2D[np.float64 | np.complex128 | Any]]: ...
-@overload  # ~f32 | ~c64, returns_eigenvectors: falsy (keyword)
-def eigsh(
-    A: _AsMatF32C64,
-    k: int = 6,
-    M: _ToMatComplex | None = None,
-    sigma: onp.ToFloat | None = None,
-    which: _Which_eigsh = "LM",
-    v0: onp.ToComplex1D | None = None,
-    ncv: int | None = None,
-    maxiter: int | None = None,
-    tol: float = 0,
-    *,
-    return_eigenvectors: onp.ToFalse,
-    Minv: _ToMatComplex | None = None,
-    OPinv: _ToMatComplex | None = None,
-    mode: _Mode = "normal",
-    rng: onp.random.ToRNG | None = None,
-) -> onp.Array1D[np.float32]: ...
 @overload  # +f64 | ~c128, returns_eigenvectors: falsy (keyword)
 def eigsh(
     A: _ToMatC128,
@@ -317,6 +299,24 @@ def eigsh(
     mode: _Mode = "normal",
     rng: onp.random.ToRNG | None = None,
 ) -> onp.Array1D[np.float64]: ...
+@overload  # ~f32 | ~c64, returns_eigenvectors: falsy (keyword)
+def eigsh(
+    A: _AsMatF32C64,
+    k: int = 6,
+    M: _ToMatComplex | None = None,
+    sigma: onp.ToFloat | None = None,
+    which: _Which_eigsh = "LM",
+    v0: onp.ToComplex1D | None = None,
+    ncv: int | None = None,
+    maxiter: int | None = None,
+    tol: float = 0,
+    *,
+    return_eigenvectors: onp.ToFalse,
+    Minv: _ToMatComplex | None = None,
+    OPinv: _ToMatComplex | None = None,
+    mode: _Mode = "normal",
+    rng: onp.random.ToRNG | None = None,
+) -> onp.Array1D[np.float32]: ...
 @overload  # +complex (fallback), returns_eigenvectors: falsy (keyword)
 def eigsh(
     A: _ToMatComplex,
