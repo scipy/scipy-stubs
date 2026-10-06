@@ -63,6 +63,8 @@ class IndexMixin(Generic[_ScalarT_co, _ShapeT_co]):
     def __getitem__[ST: _Scalar](self: spmatrix[ST], ixs: _ToIndex2Of2, /) -> onp.Matrix[ST]: ...  # type: ignore[misc]
     @overload
     def __getitem__[ST: _Scalar](self: sparray[ST, _2D], ixs: _ToIndex2Of2, /) -> onp.Array1D[ST]: ...  # type: ignore[misc]
+    @overload
+    def __getitem__(self, ixs: tuple[int | _ToSlice | onp.ToInt1D, ...], /) -> Any: ...
 
     #
     @overload
