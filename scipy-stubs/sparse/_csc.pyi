@@ -21,19 +21,19 @@ type _Scalar = npc.number | np.bool
 type _ToIndices = onp.CanArrayND[npc.integer] | Sequence[int]
 
 # `(data, (row_ind, col_ind))` or `(data, indices, indptr)`
-type _RawCSC[T, IndT] = tuple[T, tuple[_ToIndices, _ToIndices] | list[IndT]] | tuple[T, _ToIndices, _ToIndices]
-type _ToCSC[ST: _Scalar, IndT] = (
+type _RawCSC[T, IndexT] = tuple[T, tuple[_ToIndices, _ToIndices] | list[IndexT]] | tuple[T, _ToIndices, _ToIndices]
+type _ToCSC[ST: _Scalar, IndexT] = (
     _Sparse2D[ST]
     | onp.CanArrayND[ST]
-    | _RawCSC[onp.CanArrayND[ST] | Sequence[ST], IndT]
+    | _RawCSC[onp.CanArrayND[ST] | Sequence[ST], IndexT]
     | Sequence[Sequence[ST]]
     | list[onp.ArrayND[ST]]
 )
-type _ToAnyCSC[IndT] = _ToShape2D | _Sparse2D[_Scalar] | onp.ToArray2D[complex, _Scalar] | _RawCSC[onp.ToComplex1D, IndT]
-type _ToBoolCSC[IndT] = Sequence[Sequence[bool]] | _RawCSC[Sequence[bool], IndT]
-type _ToIntCSC[IndT] = Sequence[Sequence[int]] | _RawCSC[Sequence[int], IndT]
-type _ToFloatCSC[IndT] = Sequence[Sequence[float]] | _RawCSC[Sequence[float], IndT] | _ToShape2D
-type _ToComplexCSC[IndT] = Sequence[Sequence[complex]] | _RawCSC[Sequence[complex], IndT]
+type _ToAnyCSC[IndexT] = _ToShape2D | _Sparse2D[_Scalar] | onp.ToArray2D[complex, _Scalar] | _RawCSC[onp.ToComplex1D, IndexT]
+type _ToBoolCSC[IndexT] = Sequence[Sequence[bool]] | _RawCSC[Sequence[bool], IndexT]
+type _ToIntCSC[IndexT] = Sequence[Sequence[int]] | _RawCSC[Sequence[int], IndexT]
+type _ToFloatCSC[IndexT] = Sequence[Sequence[float]] | _RawCSC[Sequence[float], IndexT] | _ToShape2D
+type _ToComplexCSC[IndexT] = Sequence[Sequence[complex]] | _RawCSC[Sequence[complex], IndexT]
 
 _ScalarT_co = TypeVar("_ScalarT_co", bound=_Scalar, default=Any, covariant=True)
 
@@ -85,10 +85,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
 
     # NOTE: keep in sync with `csc_matrix.__init__`
     @overload  # matrix-like (known dtype)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self,
         /,
-        arg1: _ToCSC[_ScalarT_co, IndT],
+        arg1: _ToCSC[_ScalarT_co, IndexT],
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -96,10 +96,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like bool
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.bool],
         /,
-        arg1: _ToBoolCSC[IndT],
+        arg1: _ToBoolCSC[IndexT],
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -107,10 +107,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like ~int
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.int_],
         /,
-        arg1: _ToIntCSC[IndT],
+        arg1: _ToIntCSC[IndexT],
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -118,10 +118,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like ~float
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.float64],
         /,
-        arg1: _ToFloatCSC[IndT],
+        arg1: _ToFloatCSC[IndexT],
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -129,10 +129,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like ~complex
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.complex128],
         /,
-        arg1: _ToComplexCSC[IndT],
+        arg1: _ToComplexCSC[IndexT],
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -140,10 +140,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: bool-like (positional)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.bool],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
@@ -151,10 +151,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: bool-like (keyword)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.bool],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyBoolDType,
@@ -162,10 +162,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: int-like (positional)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.int_],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
@@ -173,10 +173,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: int-like (keyword)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.int_],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyIntDType,
@@ -184,10 +184,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: float-like (positional)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.float64],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None,
         dtype: onp.AnyFloat64DType,
         copy: bool = False,
@@ -195,10 +195,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: float-like (keyword)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.float64],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyFloat64DType,
@@ -206,10 +206,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: complex128-like (positional)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.complex128],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
@@ -217,10 +217,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: complex128-like (keyword)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_array[np.complex128],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyComplex128DType,
@@ -228,10 +228,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (positional)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self,
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -239,10 +239,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (keyword)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self,
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
@@ -250,10 +250,10 @@ class csc_array(_csc_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: <unknown>
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self,
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyDType | None = None,
         copy: bool = False,
@@ -290,10 +290,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
 
     # NOTE: keep in sync with `csc_array.__init__`
     @overload  # matrix-like (known dtype)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self,
         /,
-        arg1: _ToCSC[_ScalarT_co, IndT],
+        arg1: _ToCSC[_ScalarT_co, IndexT],
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -301,10 +301,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like bool
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.bool],
         /,
-        arg1: list[bool] | _ToBoolCSC[IndT],
+        arg1: list[bool] | _ToBoolCSC[IndexT],
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -312,10 +312,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like ~int
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.int_],
         /,
-        arg1: list[int] | _ToIntCSC[IndT],
+        arg1: list[int] | _ToIntCSC[IndexT],
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -323,10 +323,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like ~float
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.float64],
         /,
-        arg1: list[float] | _ToFloatCSC[IndT],
+        arg1: list[float] | _ToFloatCSC[IndexT],
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -334,10 +334,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-d array-like ~complex
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.complex128],
         /,
-        arg1: list[complex] | _ToComplexCSC[IndT],
+        arg1: list[complex] | _ToComplexCSC[IndexT],
         shape: _ToShapeND | None = None,
         dtype: None = None,
         copy: bool = False,
@@ -345,10 +345,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: bool-like (positional)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.bool],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None,
         dtype: onp.AnyBoolDType,
         copy: bool = False,
@@ -356,10 +356,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: bool-like (keyword)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.bool],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyBoolDType,
@@ -367,10 +367,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: int-like (positional)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.int_],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None,
         dtype: onp.AnyIntDType,
         copy: bool = False,
@@ -378,10 +378,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: int-like (keyword)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.int_],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyIntDType,
@@ -389,10 +389,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: float-like (positional)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.float64],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None,
         dtype: onp.AnyFloat64DType,
         copy: bool = False,
@@ -400,10 +400,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: float-like (keyword)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.float64],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyFloat64DType,
@@ -411,10 +411,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: complex128-like (positional)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.complex128],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None,
         dtype: onp.AnyComplex128DType,
         copy: bool = False,
@@ -422,10 +422,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: complex128-like (keyword)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self: csc_matrix[np.complex128],
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.AnyComplex128DType,
@@ -433,10 +433,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (positional)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self,
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None,
         dtype: onp.ToDType[_ScalarT_co],
         copy: bool = False,
@@ -444,10 +444,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # 2-D, dtype: <known> (keyword)
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self,
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         *,
         dtype: onp.ToDType[_ScalarT_co],
@@ -455,10 +455,10 @@ class csc_matrix(_csc_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
         maxprint: int | None = None,
     ) -> None: ...
     @overload  # dtype: <unknown>
-    def __init__[IndT: _ToIndices](
+    def __init__[IndexT: _ToIndices](
         self,
         /,
-        arg1: _ToAnyCSC[IndT],
+        arg1: _ToAnyCSC[IndexT],
         shape: _ToShapeND | None = None,
         dtype: onp.AnyDType | None = None,
         copy: bool = False,
