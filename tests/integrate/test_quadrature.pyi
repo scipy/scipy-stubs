@@ -12,6 +12,8 @@ from scipy.integrate import cumulative_simpson, cumulative_trapezoid, fixed_quad
 
 ###
 
+_f_0d: float
+
 float_1d: list[float]
 float_2d: list[list[float]]
 
@@ -162,6 +164,8 @@ assert_type(cumulative_trapezoid(c64_nd), onp.ArrayND[np.complex64])  # pyrefly:
 assert_type(cumulative_trapezoid(c128_1d), onp.Array1D[np.complex128])
 assert_type(cumulative_trapezoid(c128_2d), onp.Array2D[np.complex128])
 assert_type(cumulative_trapezoid(c128_nd), onp.ArrayND[np.complex128])
+
+assert_type(cumulative_trapezoid(f64_2d, initial=_f_0d), onp.Array2D[np.float64])
 
 ###
 # cumulative_simpson
