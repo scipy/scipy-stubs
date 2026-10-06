@@ -52,6 +52,15 @@ type _SpArray2D[ScalarT: _Numeric] = sparray[ScalarT, tuple[int, int]]
 type _COOArray2D[ScalarT: _Numeric] = coo_array[ScalarT, tuple[int, int]]
 type _CSRArray2D[ScalarT: _Numeric] = csr_array[ScalarT, tuple[int, int]]
 type _DOKArray2D[ScalarT: _Numeric] = dok_array[ScalarT, tuple[int, int]]
+type _SpMatrix[ScalarT: _Numeric] = (
+    bsr_matrix[ScalarT]
+    | coo_matrix[ScalarT]
+    | csc_matrix[ScalarT]
+    | csr_matrix[ScalarT]
+    | dia_matrix[ScalarT]
+    | dok_matrix[ScalarT]
+    | lil_matrix[ScalarT]
+)
 
 type _ToArray1D2D[ScalarT: _Numeric] = (
     onp.CanArray[tuple[int] | tuple[int, int], np.dtype[ScalarT]] | Seq[ScalarT | Seq[ScalarT] | onp.CanArrayND[ScalarT]]
@@ -1762,7 +1771,7 @@ def block_array(blocks: _ToBlocksUnkown, *, format: _FmtLIL, dtype: _ToDType | N
 @overload  # blocks: <known, known>, format: <default>, dtype: <default>
 def bmat[T](blocks: _ToBlocks[_CanStack[T]], format: None = None, dtype: None = None) -> T: ...
 @overload  # blocks: <matrix, known>, format: <otherwise>, dtype: <default>
-def bmat[ScalarT: _Numeric](blocks: _ToBlocks[spmatrix[ScalarT]], format: _Format, dtype: None = None) -> spmatrix[ScalarT]: ...
+def bmat[ScalarT: _Numeric](blocks: _ToBlocks[spmatrix[ScalarT]], format: _Format, dtype: None = None) -> _SpMatrix[ScalarT]: ...
 @overload  # blocks: <known, known>, format: <default>, dtype: <known>
 def bmat[ScalarT: _Numeric, T](
     blocks: _ToBlocksCanStackAs[ScalarT, T], format: None = None, *, dtype: onp.ToDType[ScalarT]
@@ -1770,17 +1779,17 @@ def bmat[ScalarT: _Numeric, T](
 @overload  # blocks: <matrix, known>, format: <otherwise>, dtype: <known>
 def bmat[ScalarT: _Numeric](
     blocks: _ToBlocks[spmatrix[ScalarT]], format: _Format, dtype: onp.ToDType[ScalarT]
-) -> spmatrix[ScalarT]: ...
+) -> _SpMatrix[ScalarT]: ...
 @overload  # blocks: <unknown, unknown>, format: <otherwise>, dtype: <known>
 def bmat[ScalarT: _Numeric](
     blocks: _ToBlocksUnkown, format: _Format, dtype: onp.ToDType[ScalarT]
-) -> spmatrix[ScalarT] | _SpArray2D[ScalarT]: ...
+) -> _SpMatrix[ScalarT] | _SpArray2D[ScalarT]: ...
 @overload  # blocks: <known, unknown>, format: <default>, dtype: <unknown>
 def bmat[T](blocks: _ToBlocksCanStackAs[Any, T], format: None = None, *, dtype: _ToDType) -> T: ...
 @overload  # blocks: <matrix, unknown>, format: <otherwise>, dtype: <unknown>
-def bmat(blocks: _ToBlocks[spmatrix[_Numeric]], format: _Format, *, dtype: _ToDType) -> spmatrix: ...
+def bmat(blocks: _ToBlocks[spmatrix[_Numeric]], format: _Format, *, dtype: _ToDType) -> _SpMatrix[Any]: ...
 @overload  # blocks: <unknown, unknown>, format: <otherwise>, dtype: <unknown>
-def bmat(blocks: _ToBlocksUnkown, format: _Format, *, dtype: _ToDType) -> spmatrix | _SpArray2D[Any]: ...
+def bmat(blocks: _ToBlocksUnkown, format: _Format, *, dtype: _ToDType) -> _SpMatrix[Any] | _SpArray2D[Any]: ...
 
 #
 @overload  # mats: <array, known>, format: <default>, dtype: None
