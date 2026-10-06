@@ -1,4 +1,4 @@
-from typing import Literal as L, assert_type
+from typing import Any, Literal as L, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -28,6 +28,7 @@ _f8: np.float64
 _c8: np.complex64
 _c16: np.complex128
 
+_any_nd: onp.ArrayND[Any]
 _b1_nd: onp.ArrayND[np.bool]
 _i1_nd: onp.ArrayND[np.uint8 | np.int8]
 _i4_nd: onp.ArrayND[np.int32]
@@ -91,6 +92,7 @@ assert_type(sp.cbrt.at(_f8_nd, _i), None)
 # pyrefly: ignore [bad-argument-type]
 sp.cbrt.at(_c16, _i)  # type:ignore[arg-type]  # pyright: ignore[reportArgumentType]
 assert_type(sp.cbrt.nin, L[1])
+assert_subtype[_Float64ND](sp.cbrt(_any_nd))
 
 # _UFunc11g
 assert_type(sp.expit.ntypes, L[3])
@@ -115,6 +117,7 @@ assert_type(sp.expit(0.0), np.float64)
 assert_type(sp.expit([0.0]), _Float64ND)
 # pyrefly: ignore [no-matching-overload]
 sp.expit(_c16)  # type:ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
+assert_subtype[_Float64ND](sp.expit(_any_nd))
 
 # _UFunc11dfg: `d->d` comes first, so sub-f32 promotes to float64 instead of float32
 assert_type(sp.logit.ntypes, L[3])
