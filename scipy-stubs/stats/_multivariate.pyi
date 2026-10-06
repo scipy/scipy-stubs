@@ -1777,7 +1777,7 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat | None = None,
         shape: onp.ToFloat = 1,
-        df: onp.ToJustInt = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
     ) -> multivariate_t_frozen[tuple[()]]: ...
@@ -1787,7 +1787,7 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat1D,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: onp.ToJustInt = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
     ) -> multivariate_t_frozen[tuple[int]]: ...
@@ -1797,7 +1797,7 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat1D | None,
         shape: onp.ToFloat2D,
-        df: onp.ToJustInt = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
     ) -> multivariate_t_frozen[tuple[int]]: ...
@@ -1808,7 +1808,7 @@ class multivariate_t_gen(multi_rv_generic):
         loc: None = None,
         *,
         shape: onp.ToFloat2D,
-        df: onp.ToJustInt = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
     ) -> multivariate_t_frozen[tuple[int]]: ...
@@ -1821,11 +1821,11 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloat,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
     ) -> np.float64: ...
     @overload  # ?d, loc: 0d, shape: 0d  (workaround)
     def logpdf(
-        self, /, x: _ToFloatJustND, loc: onp.ToFloat | None = None, shape: onp.ToFloat = 1, df: int = 1
+        self, /, x: _ToFloatJustND, loc: onp.ToFloat | None = None, shape: onp.ToFloat = 1, df: onp.ToFloat = 1
     ) -> onp.ArrayND[np.float64]: ...
     @overload  # ?d  (workaround)
     def logpdf(
@@ -1834,21 +1834,23 @@ class multivariate_t_gen(multi_rv_generic):
         x: _ToFloatJustND,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
     ) -> np.float64 | onp.ArrayND[np.float64]: ...
     @overload  # 1d, loc: 0d, shape: 0d
     def logpdf(
-        self, /, x: onp.ToFloatStrict1D, loc: onp.ToFloat | None = None, shape: onp.ToFloat = 1, df: int = 1
+        self, /, x: onp.ToFloatStrict1D, loc: onp.ToFloat | None = None, shape: onp.ToFloat = 1, df: onp.ToFloat = 1
     ) -> onp.Array1D[np.float64]: ...
     @overload  # 1d, shape: 2d  (positional)
-    def logpdf(self, /, x: onp.ToFloatStrict1D, loc: onp.ToFloat1D | None, shape: onp.ToFloat2D, df: int = 1) -> np.float64: ...
+    def logpdf(
+        self, /, x: onp.ToFloatStrict1D, loc: onp.ToFloat1D | None, shape: onp.ToFloat2D, df: onp.ToFloat = 1
+    ) -> np.float64: ...
     @overload  # 1d, shape: 2d  (keyword)
     def logpdf(
-        self, /, x: onp.ToFloatStrict1D, loc: onp.ToFloat1D | None = None, *, shape: onp.ToFloat2D, df: int = 1
+        self, /, x: onp.ToFloatStrict1D, loc: onp.ToFloat1D | None = None, *, shape: onp.ToFloat2D, df: onp.ToFloat = 1
     ) -> np.float64: ...
     @overload  # 1d, loc: 1d
     def logpdf(
-        self, /, x: onp.ToFloatStrict1D, loc: onp.ToFloat1D, shape: onp.ToFloat | onp.ToFloat2D = 1, df: int = 1
+        self, /, x: onp.ToFloatStrict1D, loc: onp.ToFloat1D, shape: onp.ToFloat | onp.ToFloat2D = 1, df: onp.ToFloat = 1
     ) -> np.float64: ...
     @overload  # 2d
     def logpdf(
@@ -1857,7 +1859,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict2D,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
     ) -> onp.Array1D[np.float64]: ...
     @overload  # 3d
     def logpdf(
@@ -1866,7 +1868,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict3D,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
     ) -> onp.Array2D[np.float64]: ...
     @overload  # fallback
     def logpdf(
@@ -1875,7 +1877,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatND,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
     ) -> np.float64 | onp.ArrayND[np.float64]: ...
 
     # keep in sync with `logpdf`
@@ -1886,7 +1888,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloat,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> np.float64: ...
     @overload  # ?d, loc: 0d, shape: 0d  (workaround)
@@ -1896,7 +1898,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: _ToFloatJustND,
         loc: onp.ToFloat | None = None,
         shape: onp.ToFloat = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> onp.ArrayND[np.float64]: ...
     @overload  # ?d  (workaround)
@@ -1906,7 +1908,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: _ToFloatJustND,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> np.float64 | onp.ArrayND[np.float64]: ...
     @overload  # 1d, loc: 0d, shape: 0d
@@ -1916,7 +1918,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict1D,
         loc: onp.ToFloat | None = None,
         shape: onp.ToFloat = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> onp.Array1D[np.float64]: ...
     @overload  # 1d, shape: 2d  (positional)
@@ -1926,7 +1928,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict1D,
         loc: onp.ToFloat1D | None,
         shape: onp.ToFloat2D,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> np.float64: ...
     @overload  # 1d, shape: 2d  (keyword)
@@ -1937,7 +1939,7 @@ class multivariate_t_gen(multi_rv_generic):
         loc: onp.ToFloat1D | None = None,
         *,
         shape: onp.ToFloat2D,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> np.float64: ...
     @overload  # 1d, loc: 1d
@@ -1947,7 +1949,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict1D,
         loc: onp.ToFloat1D,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> np.float64: ...
     @overload  # 2d
@@ -1957,7 +1959,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict2D,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> onp.Array1D[np.float64]: ...
     @overload  # 3d
@@ -1967,7 +1969,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict3D,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> onp.Array2D[np.float64]: ...
     @overload  # fallback
@@ -1977,7 +1979,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatND,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> np.float64 | onp.ArrayND[np.float64]: ...
 
@@ -1989,7 +1991,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloat,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         *,
         maxpts: int | None = None,
@@ -2003,7 +2005,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: _ToFloatJustND,
         loc: onp.ToFloat | None = None,
         shape: onp.ToFloat = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         *,
         maxpts: int | None = None,
@@ -2017,7 +2019,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: _ToFloatJustND,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         *,
         maxpts: int | None = None,
@@ -2031,7 +2033,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict1D,
         loc: onp.ToFloat | None = None,
         shape: onp.ToFloat = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         *,
         maxpts: int | None = None,
@@ -2045,7 +2047,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict1D,
         loc: onp.ToFloat1D | None,
         shape: onp.ToFloat2D,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         *,
         maxpts: int | None = None,
@@ -2060,7 +2062,7 @@ class multivariate_t_gen(multi_rv_generic):
         loc: onp.ToFloat1D | None = None,
         *,
         shape: onp.ToFloat2D,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         maxpts: int | None = None,
         lower_limit: onp.ToFloat | onp.ToFloat1D | None = None,
@@ -2073,7 +2075,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict1D,
         loc: onp.ToFloat1D,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         *,
         maxpts: int | None = None,
@@ -2087,7 +2089,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict2D,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         *,
         maxpts: int | None = None,
@@ -2101,7 +2103,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatStrict3D,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         *,
         maxpts: int | None = None,
@@ -2115,7 +2117,7 @@ class multivariate_t_gen(multi_rv_generic):
         x: onp.ToFloatND,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         *,
         maxpts: int | None = None,
@@ -2125,7 +2127,7 @@ class multivariate_t_gen(multi_rv_generic):
 
     #
     def entropy(
-        self, /, loc: onp.ToFloat1D | None = None, shape: onp.ToFloat | onp.ToFloat2D = 1, df: int = 1
+        self, /, loc: onp.ToFloat1D | None = None, shape: onp.ToFloat | onp.ToFloat2D = 1, df: onp.ToFloat = 1
     ) -> onp.Array0D[np.float64]: ...
 
     #
@@ -2135,7 +2137,7 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat | None = None,
         shape: onp.ToFloat = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         size: Literal[1] = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> np.float64: ...
@@ -2145,7 +2147,7 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat1D | None,
         shape: onp.ToFloat2D,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         size: int | tuple[int, ...] = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> onp.ArrayND[np.float64]: ...
@@ -2156,7 +2158,7 @@ class multivariate_t_gen(multi_rv_generic):
         loc: onp.ToFloat1D | None = None,
         *,
         shape: onp.ToFloat2D,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         size: int | tuple[int, ...] = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> onp.ArrayND[np.float64]: ...
@@ -2166,7 +2168,7 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         *,
         size: tuple[int, ...],
         random_state: onp.random.ToRNG | None = None,
@@ -2177,7 +2179,7 @@ class multivariate_t_gen(multi_rv_generic):
         /,
         loc: onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         size: int | tuple[int, ...] = 1,
         random_state: onp.random.ToRNG | None = None,
     ) -> np.float64 | onp.ArrayND[np.float64]: ...
@@ -2189,7 +2191,7 @@ class multivariate_t_gen(multi_rv_generic):
         dimensions: int,
         loc: onp.ToFloat | onp.ToFloat1D | None = None,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> multivariate_t_frozen[tuple[()]]: ...
     @overload  # 1d, loc: 0d, shape: 0d
@@ -2198,12 +2200,17 @@ class multivariate_t_gen(multi_rv_generic):
         dimensions: onp.ToInt1D,
         loc: onp.ToFloat | None = None,
         shape: onp.ToFloat = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> multivariate_t_frozen[tuple[()]]: ...
     @overload  # 1d, shape: 2d  (positional)
     def marginal(
-        self, dimensions: onp.ToInt1D, loc: onp.ToFloat1D | None, shape: onp.ToFloat2D, df: int = 1, allow_singular: bool = False
+        self,
+        dimensions: onp.ToInt1D,
+        loc: onp.ToFloat1D | None,
+        shape: onp.ToFloat2D,
+        df: onp.ToFloat = 1,
+        allow_singular: bool = False,
     ) -> multivariate_t_frozen[tuple[int]]: ...
     @overload  # 1d, shape: 2d  (keyword)
     def marginal(
@@ -2212,7 +2219,7 @@ class multivariate_t_gen(multi_rv_generic):
         loc: onp.ToFloat1D | None = None,
         *,
         shape: onp.ToFloat2D,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> multivariate_t_frozen[tuple[int]]: ...
     @overload  # 1d, loc: 1d
@@ -2221,7 +2228,7 @@ class multivariate_t_gen(multi_rv_generic):
         dimensions: onp.ToInt1D,
         loc: onp.ToFloat1D,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
     ) -> multivariate_t_frozen[tuple[int]]: ...
 
@@ -2231,7 +2238,7 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen], Generic[_ShapeT
     __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
 
     dim: Final[int]
-    df: Final[int]
+    df: Final[float | Any]
     loc: Final[onp.Array1D[np.float64]]
     shape: Final[onp.Array2D[np.float64]]
     shape_info: Final[_PSD]
@@ -2243,7 +2250,7 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen], Generic[_ShapeT
         /,
         loc: onp.ToFloat | None = None,
         shape: onp.ToFloat = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
@@ -2253,7 +2260,7 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen], Generic[_ShapeT
         /,
         loc: onp.ToFloat1D,
         shape: onp.ToFloat | onp.ToFloat2D = 1,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
@@ -2263,7 +2270,7 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen], Generic[_ShapeT
         /,
         loc: None,
         shape: onp.ToFloat2D,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
@@ -2274,7 +2281,7 @@ class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen], Generic[_ShapeT
         loc: None = None,
         *,
         shape: onp.ToFloat2D,
-        df: int = 1,
+        df: onp.ToFloat = 1,
         allow_singular: bool = False,
         seed: onp.random.ToRNG | None = None,
     ) -> None: ...
