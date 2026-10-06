@@ -862,6 +862,8 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def __pow__[
         SelfT: bsr_array | bsr_matrix | csc_array | csc_matrix | csr_array | csr_matrix | coo_array | dia_array | dia_matrix
     ](self: SelfT, rhs: SupportsIndex, /) -> SelfT: ...
+    @overload  # fallback
+    def __pow__(self: sparray, rhs: onp.ToComplex, /) -> Any: ...
 
     #
     __radd__ = __add__
@@ -1048,6 +1050,8 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def power[SelfKindT: (bsr_array, bsr_matrix, csc_array, csc_matrix, coo_array, coo_matrix, dia_array, dia_matrix)](
         self: SelfKindT, /, n: SupportsIndex, dtype: onp.ToDType[_Scalar] | type[complex] | str
     ) -> SelfKindT: ...
+    @overload  # fallback
+    def power(self, /, n: onp.ToComplex, dtype: onp.AnyDType | None = None) -> Any: ...
 
     #
     @overload
