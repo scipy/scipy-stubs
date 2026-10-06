@@ -39,6 +39,5 @@ def load_npz(
     | csc_matrix[Any]
     | csr_matrix[Any]
     | dia_matrix[Any]
-    | Any
 ): ...
 def save_npz(file: op.io.ToPath[str] | op.io.CanWrite[bytes], matrix: _data_matrix, compressed: bool = True) -> None: ...

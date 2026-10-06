@@ -34,7 +34,6 @@ type _Loaded = (
     | sparse.csc_matrix[Any]
     | sparse.csr_matrix[Any]
     | sparse.dia_matrix[Any]
-    | Any
 )
 
 ###
@@ -80,9 +79,7 @@ assert_type(sparse.load_npz(Path()), _Loaded)
 assert_type(sparse.load_npz(io.BytesIO()), _Loaded)
 assert_type(
     sparse.load_npz("").tocsr(),
-    sparse.csr_array[Any, tuple[int, int]] | sparse.csr_array[Any, tuple[Any, ...]] | sparse.csr_matrix[Any] | Any,
+    sparse.csr_array[Any, tuple[int, int]] | sparse.csr_array[Any, tuple[Any, ...]] | sparse.csr_matrix[Any],
 )
-assert_type(
-    sparse.load_npz("").tocoo(), sparse.coo_array[Any, tuple[int, int]] | sparse.coo_array[Any] | sparse.coo_matrix[Any] | Any
-)
-assert_type(sparse.load_npz("").sum(axis=0), onp.Array1D[Any] | np.matrix[tuple[int, int], np.dtype[Any]] | Any)
+assert_type(sparse.load_npz("").tocoo(), sparse.coo_array[Any, tuple[int, int]] | sparse.coo_array[Any] | sparse.coo_matrix[Any])
+assert_type(sparse.load_npz("").sum(axis=0), onp.Array1D[Any] | np.matrix[tuple[int, int], np.dtype[Any]])
