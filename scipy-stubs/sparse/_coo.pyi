@@ -22,7 +22,7 @@ __all__ = ["coo_array", "coo_matrix", "isspmatrix_coo"]
 ###
 
 type _Scalar = npc.number | np.bool
-type _ToInt = int | npc.integer
+type _AsInt = int | npc.integer
 
 type _ToData1D[ST: _Scalar] = tuple[onp.ArrayND[ST], tuple[onp.ToJustInt1D]]
 type _ToData2D[ST: _Scalar] = tuple[onp.ArrayND[ST], tuple[onp.ToJustInt1D, onp.ToJustInt1D]]
@@ -133,26 +133,26 @@ class _coo_base(_data_matrix[_ScalarT_co, _ShapeT_co], _minmax_mixin[_ScalarT_co
     @overload
     def __getitem__(self, key: _IndexSlice | tuple[()], /) -> Self: ...
     @overload
-    def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int]], key: _ToInt, /) -> ST: ...
+    def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int]], key: _AsInt, /) -> ST: ...
     @overload
     def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int]], key: None, /) -> coo_array[ST, tuple[int, int]]: ...
     @overload
     def __getitem__[ST: _Scalar](
-        self: _coo_base[ST, tuple[int, int]], key: _ToInt | tuple[_ToInt, _IndexSlice] | tuple[_IndexSlice, _ToInt], /
+        self: _coo_base[ST, tuple[int, int]], key: _AsInt | tuple[_AsInt, _IndexSlice] | tuple[_IndexSlice, _AsInt], /
     ) -> coo_array[ST, tuple[int]]: ...
     @overload
-    def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int, int]], key: tuple[_ToInt, _ToInt], /) -> ST: ...
+    def __getitem__[ST: _Scalar](self: _coo_base[ST, tuple[int, int]], key: tuple[_AsInt, _AsInt], /) -> ST: ...
     @overload
     def __getitem__[ST: _Scalar](
         self: _coo_base[ST, tuple[int, int, int, *tuple[int, ...]]],
-        key: tuple[_ToInt | _IndexSlice | None, *tuple[_ToInt | _IndexSlice | None, ...]] | _ToInt | None,
+        key: tuple[_AsInt | _IndexSlice | None, *tuple[_AsInt | _IndexSlice | None, ...]] | _AsInt | None,
         /,
     ) -> coo_array[ST]: ...
 
     #
     def __setitem__(
         self,
-        key: tuple[_ToInt | _IndexSlice | None, ...] | _ToInt | _IndexSlice | None,
+        key: tuple[_AsInt | _IndexSlice | None, ...] | _AsInt | _IndexSlice | None,
         val: onp.ToComplex | onp.ToComplexND | _spbase,
         /,
     ) -> None: ...
