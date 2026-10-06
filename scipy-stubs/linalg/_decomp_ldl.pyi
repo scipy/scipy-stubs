@@ -56,7 +56,11 @@ def ldl(
 ) -> tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32], _ISizeND]: ...
 @overload  # nd: real -> float32 | float64
 def ldl(
-    A: onp.ToFloatND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
+    A: onp.ToFloat | onp.ToFloatND,
+    lower: bool = True,
+    hermitian: bool = True,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
 ) -> tuple[_FloatND, _FloatND, _ISizeND]: ...
 @overload  # 2d: -> complex128
 def ldl(
@@ -92,5 +96,9 @@ def ldl(
 ) -> tuple[_ComplexND, _ComplexND, _ISizeND]: ...
 @overload  # nd: -> f32 | f64 | c64 | c128
 def ldl(
-    A: onp.ToComplexND, lower: bool = True, hermitian: bool = True, overwrite_a: bool = False, check_finite: bool = True
+    A: onp.ToComplex | onp.ToComplexND,
+    lower: bool = True,
+    hermitian: bool = True,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
 ) -> tuple[_InexactND, _InexactND, _ISizeND]: ...
