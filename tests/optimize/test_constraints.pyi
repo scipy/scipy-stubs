@@ -5,6 +5,7 @@ import optype.numpy as onp
 from optype.test import assert_subtype
 
 from scipy.optimize import Bounds, LinearConstraint, NonlinearConstraint
+from scipy.sparse import csr_array
 
 ints_1d: list[int]
 ints_2d: list[list[int]]
@@ -15,6 +16,8 @@ floats_2d: list[list[float]]
 f32_1d: onp.Array1D[np.float32]
 f32_2d: onp.Array2D[np.float32]
 f32_nd: onp.ArrayND[np.float32]
+
+_f64_csr: csr_array[np.float64]
 
 ###
 # Bounds
@@ -42,10 +45,11 @@ assert_type(Bounds(f32_nd, f32_nd), Bounds[tuple[Any, ...], np.float32])
 ###
 # LinearConstraint
 
-assert_type(LinearConstraint([[1.0, 2.0]], 0.0, 1.0), LinearConstraint)
-assert_type(LinearConstraint([[1.0, 2.0]]), LinearConstraint)
+assert_type(LinearConstraint([[1.0, 2.0]], 0.0, 1.0), LinearConstraint[onp.Array2D[np.float64]])
+assert_type(LinearConstraint([[1.0, 2.0]]), LinearConstraint[onp.Array2D[np.float64]])
 assert_subtype[tuple[int, ...]](LinearConstraint(floats_2d).A.shape)
-assert_type(LinearConstraint(ints_1d, 1, 1), LinearConstraint)
+assert_type(LinearConstraint(ints_1d, 1, 1), LinearConstraint[onp.Array2D[np.float64]])
+assert_type(LinearConstraint(_f64_csr, 0, 1), LinearConstraint[csr_array[np.float64]])
 
 ###
 # NonlinearConstraint

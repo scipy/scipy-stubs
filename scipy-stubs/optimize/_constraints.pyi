@@ -22,7 +22,6 @@ import optype.numpy.compat as npc
 
 from scipy.optimize._differentiable_functions import LinearVectorFunction, VectorFunction
 from scipy.optimize._hessian_update_strategy import HessianUpdateStrategy
-from scipy.sparse._base import _spbase
 from scipy.sparse._typing import _Sparse2D
 from scipy.sparse.linalg import LinearOperator
 
@@ -32,6 +31,9 @@ _NumberT_co = TypeVar("_NumberT_co", bound=npc.number, default=np.float64 | Any,
 _ShapeT_co = TypeVar("_ShapeT_co", bound=tuple[int, *tuple[int, ...]], default=_AnyShape, covariant=True)
 _BoundT_co = TypeVar("_BoundT_co", bound=onp.ToFloat | onp.ToFloat1D, default=float | Any, covariant=True)
 _KeepFeasibleT_co = TypeVar("_KeepFeasibleT_co", default=bool, covariant=True)
+_MatrixT_co = TypeVar(
+    "_MatrixT_co", bound=onp.Array2D[np.float64] | _Sparse2D[npc.floating | npc.integer], default=Any, covariant=True
+)
 
 type _Tuple2[T] = tuple[T, T]
 type _MethodJac = Literal["2-point", "3-point", "cs"]
@@ -192,13 +194,23 @@ class Bounds(_Constraint[_ShapeT_co, _NumberT_co], Generic[_ShapeT_co, _NumberT_
         self: Bounds[ShapeT, ST], /, x: onp.ToComplex128 | onp.ToComplex128_1D
     ) -> _Tuple2[onp.ArrayND[ST, ShapeT]]: ...
 
-class LinearConstraint(_Constraint[tuple[int], np.float64]):
-    A: Final[onp.Array2D[np.float64] | _spbase[np.float64 | Any, tuple[int, int]]]
+class LinearConstraint(_Constraint[tuple[int], np.float64], Generic[_MatrixT_co]):
+    A: _MatrixT_co
 
-    def __init__(
-        self,
+    @overload
+    def __init__[SparseT: _Sparse2D[npc.floating | npc.integer]](
+        self: LinearConstraint[SparseT],
         /,
-        A: _ToFloat2D | onp.ToFloat1D,
+        A: SparseT,
+        lb: onp.ToFloat | onp.ToFloat1D = ...,
+        ub: onp.ToFloat | onp.ToFloat1D = ...,
+        keep_feasible: bool | onp.ToBool1D = False,
+    ) -> None: ...
+    @overload
+    def __init__(
+        self: LinearConstraint[onp.Array2D[np.float64]],
+        /,
+        A: onp.ToFloat2D | onp.ToFloat1D,
         lb: onp.ToFloat | onp.ToFloat1D = ...,
         ub: onp.ToFloat | onp.ToFloat1D = ...,
         keep_feasible: bool | onp.ToBool1D = False,
