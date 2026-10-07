@@ -10,6 +10,7 @@ from scipy.sparse import coo_array, coo_matrix
 ###
 
 _str_io: io.StringIO
+_bool: bool
 
 _arr_f64_2d: onp.Array2D[np.float64]
 _arr_u64_2d: onp.Array2D[np.uint64]
@@ -34,6 +35,7 @@ assert_type(
 assert_type(mmread("file.mtx"), onp.Array2D | coo_matrix)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(mmread(_str_io, spmatrix=True), onp.Array2D | coo_matrix)
 assert_type(mmread(_str_io, spmatrix=False), onp.Array2D | coo_array[Any, tuple[int, int]])
+assert_type(mmread(_str_io, spmatrix=_bool), onp.Array2D | coo_matrix | coo_array[Any, tuple[int, int]])
 
 # mmwrite
 assert_type(mmwrite("file_out.mtx", _arr_f64_2d), None)
