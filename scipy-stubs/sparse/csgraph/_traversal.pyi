@@ -27,6 +27,10 @@ def connected_components(
 ) -> tuple[int, _Int1D]: ...
 @overload
 def connected_components(
+    csgraph: _ToGraph, directed: bool, connection: Literal["weak", "strong"], return_labels: Literal[False]
+) -> int: ...
+@overload
+def connected_components(
     csgraph: _ToGraph, directed: bool = True, connection: Literal["weak", "strong"] = "weak", *, return_labels: Literal[False]
 ) -> int: ...
 
