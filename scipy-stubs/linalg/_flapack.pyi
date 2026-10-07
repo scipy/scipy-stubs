@@ -23,7 +23,7 @@ class _function_gbcon[ST: np.generic](Protocol):
         /,
         kl: int,
         ku: int,
-        ab: onp.Array2D[ST],
+        ab: onp.ToComplex2D,
         ipiv: onp.Array1D[np.int32],
         anorm: float,
         *,
@@ -39,7 +39,7 @@ zgbcon: _function_gbcon[np.complex128] = ...
 # (a, anorm, [norm]) -> (rcond, info)
 @type_check_only
 class _function_gecon[ST: np.generic](Protocol):
-    def __call__(self, /, a: onp.Array2D[ST], anorm: float, *, norm: str | bytes = "1") -> tuple[_rcond, _info]: ...
+    def __call__(self, /, a: onp.ToComplex2D, anorm: float, *, norm: str | bytes = "1") -> tuple[_rcond, _info]: ...
 
 sgecon: _function_gecon[np.float32] = ...
 dgecon: _function_gecon[np.float64] = ...
@@ -50,7 +50,7 @@ zgecon: _function_gecon[np.complex128] = ...
 @type_check_only
 class _function_gbsv[ST: np.generic](Protocol):
     def __call__(
-        self, /, kl: int, ku: int, ab: onp.Array2D[ST], b: onp.Array2D[ST], *, overwrite_ab: int = 0, overwrite_b: int = 0
+        self, /, kl: int, ku: int, ab: onp.ToComplex2D, b: onp.ToComplex2D, *, overwrite_ab: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array1D[np.int32], onp.Array2D[ST], _info]: ...
 
 sgbsv: _function_gbsv[np.float32] = ...
@@ -64,7 +64,7 @@ class _function_gbtrf[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[ST],
+        ab: onp.ToComplex2D,
         kl: int,
         ku: int,
         m: int = ...,  # = ab.shape[1]
@@ -85,10 +85,10 @@ class _function_gbtrs[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[ST],
+        ab: onp.ToComplex2D,
         kl: int,
         ku: int,
-        b: onp.Array2D[ST],
+        b: onp.ToComplex2D,
         ipiv: onp.Array1D[np.int32],
         *,
         trans: int = 0,
@@ -107,7 +107,7 @@ zgbtrs: _function_gbtrs[np.complex128] = ...
 @type_check_only
 class _function_gebal[ST: np.generic, RT: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], *, scale: int = 0, permute: int = 0, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, *, scale: int = 0, permute: int = 0, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], int, int, onp.Array1D[RT], _info]: ...
 
 sgebal: _function_gebal[np.float32, np.float32] = ...
@@ -118,7 +118,7 @@ zgebal: _function_gebal[np.complex128, np.float64] = ...
 # (a) -> (r, c, rowcnd, colcnd, amax, info)
 @type_check_only
 class _function_geequ[ST: np.generic, RT: np.generic](Protocol):
-    def __call__(self, /, a: onp.Array2D[ST]) -> tuple[onp.Array1D[RT], onp.Array1D[RT], float, float, float, _info]: ...
+    def __call__(self, /, a: onp.ToComplex2D) -> tuple[onp.Array1D[RT], onp.Array1D[RT], float, float, float, _info]: ...
 
 sgeequ: _function_geequ[np.float32, np.float32] = ...
 dgeequ: _function_geequ[np.float64, np.float64] = ...
@@ -137,7 +137,7 @@ class _function_gees_s(Protocol):
         self,
         /,
         sselect: Callable[..., int],
-        a: onp.Array2D[np.float32],
+        a: onp.ToFloat2D,
         *,
         compute_v: int = 1,
         sort_t: int = 0,
@@ -162,7 +162,7 @@ class _function_gees_d(Protocol):
         self,
         /,
         dselect: Callable[..., int],
-        a: onp.Array2D[np.float64],
+        a: onp.ToFloat2D,
         *,
         compute_v: int = 1,
         sort_t: int = 0,
@@ -188,7 +188,7 @@ class _function_gees_c(Protocol):
         self,
         /,
         cselect: Callable[..., int],
-        a: onp.Array2D[np.complex64],
+        a: onp.ToComplex2D,
         *,
         compute_v: int = 1,
         sort_t: int = 0,
@@ -207,7 +207,7 @@ class _function_gees_z(Protocol):
         self,
         /,
         zselect: Callable[..., int],
-        a: onp.Array2D[np.complex128],
+        a: onp.ToComplex2D,
         *,
         compute_v: int = 1,
         sort_t: int = 0,
@@ -226,7 +226,7 @@ class _function_geev_sd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToFloat2D,
         *,
         compute_vl: int = 1,
         compute_vr: int = 1,
@@ -243,7 +243,7 @@ class _function_geev_cz[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         *,
         compute_vl: int = 1,
         compute_vr: int = 1,
@@ -270,7 +270,7 @@ class _function_gehrd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         *,
         lo: int = 0,
         hi: int = ...,  # = n - 1
@@ -306,7 +306,7 @@ class _function_gejsv[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToFloat2D,
         *,
         joba: int = 4,
         jobu: int = 0,
@@ -327,8 +327,8 @@ class _function_gels[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         trans: str | bytes = "N",
         lwork: int = ...,  # = max(min(m, n) + max(min(m, n), nrhs), 1)
@@ -357,8 +357,8 @@ class _function_gelsd_sd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
         lwork: int,
         size_iwork: int,
         *,
@@ -376,8 +376,8 @@ class _function_gelsd_cz[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
-        b: onp.Array2D[CT],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         lwork: int,
         size_rwork: int,
         size_iwork: int,
@@ -414,8 +414,8 @@ class _function_gelss_sd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
         *,
         cond: float = -1.0,
         lwork: int = ...,  # = max(3 * minmn + max(2 * minmn, max(maxmn, nrhs)), 1)
@@ -431,8 +431,8 @@ class _function_gelss_cz[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
-        b: onp.Array2D[CT],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         cond: float = -1.0,
         lwork: int = ...,  # = max(2 * minmn + max(maxmn, nrhs), 1)
@@ -459,8 +459,8 @@ class _function_gelsy[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         jptv: onp.Array1D[np.int32],
         cond: float,
         lwork: int,
@@ -490,9 +490,9 @@ class _function_gemqrt[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        v: onp.Array2D[ST],
-        t: onp.Array2D[ST],
-        c: onp.Array2D[ST],
+        v: onp.ToComplex2D,
+        t: onp.ToComplex2D,
+        c: onp.ToComplex2D,
         *,
         side: str | bytes = "L",
         trans: str | bytes = "N",
@@ -510,7 +510,7 @@ class _function_geqp3[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         *,
         lwork: int = ...,  # = max(3 * (n + 1), 1)
         overwrite_a: int = 0,
@@ -527,7 +527,7 @@ class _function_geqrf[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         *,
         lwork: int = ...,  # = max(3 * n, 1)
         overwrite_a: int = 0,
@@ -554,7 +554,7 @@ class _function_geqrfp[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         *,
         lwork: int = ...,  # = max(1, n)
         overwrite_a: int = 0,
@@ -579,7 +579,7 @@ zgeqrfp_lwork: _function_geqrfp_lwork[complex] = ...
 @type_check_only
 class _function_geqrt[ST: np.generic](Protocol):
     def __call__(
-        self, /, nb: int, a: onp.Array2D[ST], *, overwrite_a: int = 0
+        self, /, nb: int, a: onp.ToComplex2D, *, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array2D[ST], _info]: ...
 
 sgeqrt: _function_geqrt[np.float32] = ...
@@ -593,7 +593,7 @@ class _function_gerqf[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         *,
         lwork: int = ...,  # = max(3 * m, 1)
         overwrite_a: int = 0,
@@ -610,8 +610,8 @@ class _function_gesc2[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        lu: onp.Array2D[ST],
-        rhs: onp.Array1D[ST],
+        lu: onp.ToComplex2D,
+        rhs: onp.ToComplex1D,
         ipiv: onp.Array1D[np.int32],
         jpiv: onp.Array1D[np.int32],
         *,
@@ -627,7 +627,7 @@ zgesc2: _function_gesc2[np.complex128] = ...
 @type_check_only
 class _function_gesdd_sd[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], *, compute_uv: int = 1, full_matrices: int = 1, lwork: int = ..., overwrite_a: int = 0
+        self, /, a: onp.ToFloat2D, *, compute_uv: int = 1, full_matrices: int = 1, lwork: int = ..., overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array1D[ST], onp.Array2D[ST], _info]: ...
 
 sgesdd: _function_gesdd_sd[np.float32] = ...
@@ -638,7 +638,7 @@ class _function_gesdd_cz[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
+        a: onp.ToComplex2D,
         *,
         compute_uv: int = 1,
         full_matrices: int = 1,
@@ -663,7 +663,7 @@ zgesdd_lwork: _function_gesdd_lwork[complex] = ...
 @type_check_only
 class _function_gesv[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], b: onp.Array2D[ST], *, overwrite_a: int = 0, overwrite_b: int = 0
+        self, /, a: onp.ToComplex2D, b: onp.ToComplex2D, *, overwrite_a: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array1D[np.int32], onp.Array2D[ST], _info]: ...
 
 sgesv: _function_gesv[np.float32] = ...
@@ -677,7 +677,7 @@ class _function_gesvd_sd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToFloat2D,
         *,
         compute_uv: int = 1,
         full_matrices: int = 1,
@@ -693,7 +693,7 @@ class _function_gesvd_cz[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
+        a: onp.ToComplex2D,
         *,
         compute_uv: int = 1,
         full_matrices: int = 1,
@@ -720,16 +720,16 @@ class _function_gesvx[ST: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         fact: str | bytes = "E",
         trans: str | bytes = "N",
-        af: onp.Array2D[ST] | None = None,
+        af: onp.ToComplex2D | None = None,
         ipiv: onp.Array1D[np.int32] | None = None,
         equed: str | bytes = "B",
-        r: onp.Array1D[RT] | None = None,
-        c: onp.Array1D[RT] | None = None,
+        r: onp.ToFloat1D | None = None,
+        c: onp.ToFloat1D | None = None,
         overwrite_a: int = 0,
         overwrite_b: int = 0,
     ) -> tuple[
@@ -756,7 +756,7 @@ zgesvx: _function_gesvx[np.complex128, np.float64] = ...
 @type_check_only
 class _function_getc2[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], *, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, *, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array1D[np.int32], onp.Array1D[np.int32], _info]: ...
 
 sgetc2: _function_getc2[np.float32] = ...
@@ -768,7 +768,7 @@ zgetc2: _function_getc2[np.complex128] = ...
 @type_check_only
 class _function_getrf[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], *, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, *, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array1D[np.int32], _info]: ...
 
 sgetrf: _function_getrf[np.float32] = ...
@@ -782,7 +782,7 @@ class _function_getri[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        lu: onp.Array2D[ST],
+        lu: onp.ToComplex2D,
         piv: onp.Array1D[np.int32],
         *,
         lwork: int = ...,  # = max(3 * n, 1)
@@ -808,7 +808,7 @@ zgetri_lwork: _function_getri_lwork[complex] = ...
 @type_check_only
 class _function_getrs[ST: np.generic](Protocol):
     def __call__(
-        self, /, lu: onp.Array2D[ST], piv: onp.Array1D[np.int32], b: onp.Array2D[ST], *, trans: int = 0, overwrite_b: int = 0
+        self, /, lu: onp.ToComplex2D, piv: onp.Array1D[np.int32], b: onp.ToComplex2D, *, trans: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 sgetrs: _function_getrs[np.float32] = ...
@@ -823,8 +823,8 @@ class _function_gges_s(Protocol):
         self,
         /,
         sselect: Callable[..., int],
-        a: onp.Array2D[np.float32],
-        b: onp.Array2D[np.float32],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
         *,
         jobvsl: int = 1,
         jobvsr: int = 1,
@@ -856,8 +856,8 @@ class _function_gges_d(Protocol):
         self,
         /,
         dselect: Callable[..., int],
-        a: onp.Array2D[np.float64],
-        b: onp.Array2D[np.float64],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
         *,
         jobvsl: int = 1,
         jobvsr: int = 1,
@@ -890,8 +890,8 @@ class _function_gges_c(Protocol):
         self,
         /,
         cselect: Callable[..., int],
-        a: onp.Array2D[np.complex64],
-        b: onp.Array2D[np.complex64],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         jobvsl: int = 1,
         jobvsr: int = 1,
@@ -922,8 +922,8 @@ class _function_gges_z(Protocol):
         self,
         /,
         zselect: Callable[..., int],
-        a: onp.Array2D[np.complex128],
-        b: onp.Array2D[np.complex128],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         jobvsl: int = 1,
         jobvsr: int = 1,
@@ -954,8 +954,8 @@ class _function_ggev_sd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
         *,
         compute_vl: int = 1,
         compute_vr: int = 1,
@@ -973,8 +973,8 @@ class _function_ggev_cz[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         compute_vl: int = 1,
         compute_vr: int = 1,
@@ -992,10 +992,10 @@ class _function_gglse[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
-        c: onp.Array1D[ST],
-        d: onp.Array1D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
+        c: onp.ToComplex1D,
+        d: onp.ToComplex1D,
         *,
         lwork: int = ...,  # = max(m + n + p, 1)
         overwrite_a: int = 0,
@@ -1025,10 +1025,10 @@ class _function_gtcon[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        dl: onp.Array1D[ST],
-        d: onp.Array1D[ST],
-        du: onp.Array1D[ST],
-        du2: onp.Array1D[ST],
+        dl: onp.ToComplex1D,
+        d: onp.ToComplex1D,
+        du: onp.ToComplex1D,
+        du2: onp.ToComplex1D,
         ipiv: onp.Array1D[np.int32],
         anorm: float,
         *,
@@ -1046,10 +1046,10 @@ class _function_gtsv[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        dl: onp.Array1D[ST],
-        d: onp.Array1D[ST],
-        du: onp.Array1D[ST],
-        b: onp.Array2D[ST],
+        dl: onp.ToComplex1D,
+        d: onp.ToComplex1D,
+        du: onp.ToComplex1D,
+        b: onp.ToComplex2D,
         *,
         overwrite_dl: int = 0,
         overwrite_d: int = 0,
@@ -1068,17 +1068,17 @@ class _function_gtsvx[ST: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        dl: onp.Array1D[ST],
-        d: onp.Array1D[ST],
-        du: onp.Array1D[ST],
-        b: onp.Array2D[ST],
+        dl: onp.ToComplex1D,
+        d: onp.ToComplex1D,
+        du: onp.ToComplex1D,
+        b: onp.ToComplex2D,
         *,
         fact: str | bytes = "N",
         trans: str | bytes = "N",
-        dlf: onp.Array1D[ST] | None = None,
-        df: onp.Array1D[ST] | None = None,
-        duf: onp.Array1D[ST] | None = None,
-        du2: onp.Array1D[ST] | None = None,
+        dlf: onp.ToComplex1D | None = None,
+        df: onp.ToComplex1D | None = None,
+        duf: onp.ToComplex1D | None = None,
+        du2: onp.ToComplex1D | None = None,
         ipiv: onp.Array1D[np.int32] | None = None,
     ) -> tuple[
         onp.Array1D[ST],
@@ -1104,9 +1104,9 @@ class _function_gttrf[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        dl: onp.Array1D[ST],
-        d: onp.Array1D[ST],
-        du: onp.Array1D[ST],
+        dl: onp.ToComplex1D,
+        d: onp.ToComplex1D,
+        du: onp.ToComplex1D,
         *,
         overwrite_dl: int = 0,
         overwrite_d: int = 0,
@@ -1124,12 +1124,12 @@ class _function_gttrs[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        dl: onp.Array1D[ST],
-        d: onp.Array1D[ST],
-        du: onp.Array1D[ST],
-        du2: onp.Array1D[ST],
+        dl: onp.ToComplex1D,
+        d: onp.ToComplex1D,
+        du: onp.ToComplex1D,
+        du2: onp.ToComplex1D,
         ipiv: onp.Array1D[np.int32],
-        b: onp.Array2D[ST],
+        b: onp.ToComplex2D,
         *,
         trans: str | bytes = "N",
         overwrite_b: int = 0,
@@ -1146,7 +1146,7 @@ class _function_hbevd[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[CT],
+        ab: onp.ToComplex2D,
         *,
         compute_v: int = 1,
         lower: int = 0,
@@ -1165,7 +1165,7 @@ class _function_hbevx[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[CT],
+        ab: onp.ToComplex2D,
         vl: float,
         vu: float,
         il: int,
@@ -1187,7 +1187,7 @@ zhbevx: _function_hbevx[np.complex128, np.float64] = ...
 @type_check_only
 class _function_hecon[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], ipiv: onp.Array1D[np.int32], anorm: float, *, lower: int = 0
+        self, /, a: onp.ToComplex2D, ipiv: onp.Array1D[np.int32], anorm: float, *, lower: int = 0
     ) -> tuple[_rcond, _info]: ...
 
 checon: _function_hecon[np.complex64] = ...
@@ -1196,7 +1196,7 @@ zhecon: _function_hecon[np.complex128] = ...
 # (a, [lower]) -> (s, scond, amax, info)
 @type_check_only
 class _function_heequb[CT: np.generic, RT: np.generic](Protocol):
-    def __call__(self, /, a: onp.Array2D[CT], *, lower: int = 0) -> tuple[onp.Array1D[RT], float, float, _info]: ...
+    def __call__(self, /, a: onp.ToComplex2D, *, lower: int = 0) -> tuple[onp.Array1D[RT], float, float, _info]: ...
 
 cheequb: _function_heequb[np.complex64, np.float32] = ...
 zheequb: _function_heequb[np.complex128, np.float64] = ...
@@ -1207,7 +1207,7 @@ class _function_heev[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
+        a: onp.ToComplex2D,
         *,
         compute_v: int = 1,
         lower: int = 0,
@@ -1232,7 +1232,7 @@ class _function_heevd[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
+        a: onp.ToComplex2D,
         *,
         compute_v: int = 1,
         lower: int = 0,
@@ -1259,7 +1259,7 @@ class _function_heevr[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
+        a: onp.ToComplex2D,
         *,
         compute_v: int = 1,
         range: str | bytes = "A",
@@ -1292,7 +1292,7 @@ class _function_heevx[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
+        a: onp.ToComplex2D,
         *,
         compute_v: int = 1,
         range: str | bytes = "A",
@@ -1321,7 +1321,7 @@ zheevx_lwork: _function_heevx_lwork = ...
 @type_check_only
 class _function_hegst[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], b: onp.Array2D[ST], *, itype: int = 1, lower: int = 0, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, b: onp.ToComplex2D, *, itype: int = 1, lower: int = 0, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 chegst: _function_hegst[np.complex64] = ...
@@ -1333,8 +1333,8 @@ class _function_hegv[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
-        b: onp.Array2D[CT],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         itype: int = 1,
         jobz: str | bytes = "V",
@@ -1361,8 +1361,8 @@ class _function_hegvd[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
-        b: onp.Array2D[CT],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         itype: int = 1,
         jobz: str | bytes = "V",
@@ -1383,8 +1383,8 @@ class _function_hegvx[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
-        b: onp.Array2D[CT],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         itype: int = 1,
         jobz: str | bytes = "V",
@@ -1417,8 +1417,8 @@ class _function_hesv[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         lwork: int = ...,  # = max(n, 1)
         lower: int = 0,
@@ -1443,10 +1443,10 @@ class _function_hesvx[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
-        b: onp.Array2D[CT],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
-        af: onp.Array2D[CT] | None = None,
+        af: onp.ToComplex2D | None = None,
         ipiv: onp.Array1D[np.int32] | None = None,
         lwork: int = ...,  # = max(2 * n, 1)
         factored: int = 0,
@@ -1472,7 +1472,7 @@ class _function_hetrd[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[CT],
+        a: onp.ToComplex2D,
         *,
         lower: int = 0,
         lwork: int = ...,  # = max(n, 1)
@@ -1496,7 +1496,7 @@ class _function_hetrf[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         *,
         lower: int = 0,
         lwork: int = ...,  # = max(n, 1)
@@ -1518,7 +1518,7 @@ zhetrf_lwork: _function_hetrf_lwork = ...
 @type_check_only
 class _function_hetri[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], ipiv: onp.Array1D[np.int32], *, lower: int = 0, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, ipiv: onp.Array1D[np.int32], *, lower: int = 0, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 chetri: _function_hetri[np.complex64] = ...
@@ -1528,7 +1528,7 @@ zhetri: _function_hetri[np.complex128] = ...
 @type_check_only
 class _function_hetrs[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], ipiv: onp.Array1D[np.int32], b: onp.Array2D[ST], *, lower: int = 0, overwrite_b: int = 0
+        self, /, a: onp.ToComplex2D, ipiv: onp.Array1D[np.int32], b: onp.ToComplex2D, *, lower: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 chetrs: _function_hetrs[np.complex64] = ...
@@ -1543,9 +1543,9 @@ class _function_hfrk[ST: np.generic](Protocol):
         n: int,
         k: int,
         alpha: float,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         beta: float,
-        c: onp.Array1D[ST],
+        c: onp.ToComplex1D,
         *,
         transr: str | bytes = "N",
         uplo: str | bytes = "U",
@@ -1573,7 +1573,7 @@ class _function_langb[ST: np.generic](Protocol):
         norm: str | bytes,
         kl: int,
         ku: int,
-        ab: onp.Array2D[ST],
+        ab: onp.ToComplex2D,
         *,
         ldab: int = ...,  # = kl + ku + 1
     ) -> float: ...
@@ -1586,7 +1586,7 @@ zlangb: _function_langb[np.complex128] = ...
 # (norm, a) -> n2
 @type_check_only
 class _function_lange[ST: np.generic](Protocol):
-    def __call__(self, /, norm: str | bytes, a: onp.Array2D[ST]) -> float: ...
+    def __call__(self, /, norm: str | bytes, a: onp.ToComplex2D) -> float: ...
 
 slange: _function_lange[np.float32] = ...
 dlange: _function_lange[np.float64] = ...
@@ -1597,7 +1597,7 @@ zlange: _function_lange[np.complex128] = ...
 @type_check_only
 class _function_lantr[ST: np.generic](Protocol):
     def __call__(
-        self, /, norm: str | bytes, a: onp.Array2D[ST], *, uplo: str | bytes = "U", diag: str | bytes = "N"
+        self, /, norm: str | bytes, a: onp.ToComplex2D, *, uplo: str | bytes = "U", diag: str | bytes = "N"
     ) -> float: ...
 
 slantr: _function_lantr[np.float32] = ...
@@ -1611,10 +1611,10 @@ class _function_larf[ST: np.generic, WorkT](Protocol):
     def __call__(
         self,
         /,
-        v: onp.Array1D[ST],
+        v: onp.ToComplex1D,
         tau: WorkT,
-        c: onp.Array2D[ST],
-        work: onp.Array1D[ST],
+        c: onp.ToComplex2D,
+        work: onp.ToComplex1D,
         *,
         side: str | bytes = "L",
         incv: int = 1,
@@ -1630,7 +1630,7 @@ zlarf: _function_larf[np.complex128, complex] = ...
 @type_check_only
 class _function_larfg[ST: np.generic, WorkT](Protocol):
     def __call__(
-        self, /, n: int, alpha: WorkT, x: onp.Array1D[ST], *, incx: int = 1, overwrite_x: int = 0
+        self, /, n: int, alpha: WorkT, x: onp.ToComplex1D, *, incx: int = 1, overwrite_x: int = 0
     ) -> tuple[WorkT, onp.Array1D[ST], WorkT]: ...
 
 slarfg: _function_larfg[np.float32, float] = ...
@@ -1652,7 +1652,7 @@ zlartg: _function_lartg[complex] = ...
 @type_check_only
 class _function_lasd4[ST: np.generic](Protocol):
     def __call__(
-        self, /, i: int, d: onp.Array1D[ST], z: onp.Array1D[ST], *, rho: float = 1.0
+        self, /, i: int, d: onp.ToFloat1D, z: onp.ToFloat1D, *, rho: float = 1.0
     ) -> tuple[onp.Array1D[ST], float, onp.Array1D[ST], _info]: ...
 
 slasd4: _function_lasd4[np.float32] = ...
@@ -1664,7 +1664,7 @@ class _function_laswp[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         piv: onp.Array1D[np.int32],
         *,
         k1: int = 0,
@@ -1682,7 +1682,7 @@ zlaswp: _function_laswp[np.complex128] = ...
 # (c, [lower, overwrite_c]) -> (a, info)
 @type_check_only
 class _function_lauum[ST: np.generic](Protocol):
-    def __call__(self, /, c: onp.Array2D[ST], *, lower: int = 0, overwrite_c: int = 0) -> tuple[onp.Array2D[ST], _info]: ...
+    def __call__(self, /, c: onp.ToComplex2D, *, lower: int = 0, overwrite_c: int = 0) -> tuple[onp.Array2D[ST], _info]: ...
 
 slauum: _function_lauum[np.float32] = ...
 dlauum: _function_lauum[np.float64] = ...
@@ -1695,10 +1695,10 @@ class _function_orcsd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        x11: onp.Array2D[ST],
-        x12: onp.Array2D[ST],
-        x21: onp.Array2D[ST],
-        x22: onp.Array2D[ST],
+        x11: onp.ToFloat2D,
+        x12: onp.ToFloat2D,
+        x21: onp.ToFloat2D,
+        x22: onp.ToFloat2D,
         *,
         compute_u1: int = 1,
         compute_u2: int = 1,
@@ -1741,8 +1741,8 @@ class _function_orghr[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        tau: onp.Array1D[ST],
+        a: onp.ToFloat2D,
+        tau: onp.ToFloat1D,
         *,
         lo: int = 0,
         hi: int = ...,  # = n - 1
@@ -1774,8 +1774,8 @@ class _function_orgqr[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        tau: onp.Array1D[ST],
+        a: onp.ToFloat2D,
+        tau: onp.ToFloat1D,
         *,
         lwork: int = ...,  # = max(3 * n, 1)
         overwrite_a: int = 0,
@@ -1789,8 +1789,8 @@ class _function_orgrq[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        tau: onp.Array1D[ST],
+        a: onp.ToFloat2D,
+        tau: onp.ToFloat1D,
         *,
         lwork: int = ...,  # = max(3 * m, 1)
         overwrite_a: int = 0,
@@ -1807,9 +1807,9 @@ class _function_ormqr[ST: np.generic](Protocol):
         /,
         side: str | bytes,
         trans: str | bytes,
-        a: onp.Array2D[ST],
-        tau: onp.Array1D[ST],
-        c: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        tau: onp.ToFloat1D,
+        c: onp.ToFloat2D,
         lwork: int,
         *,
         overwrite_c: int = 0,
@@ -1824,9 +1824,9 @@ class _function_ormrz[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        tau: onp.Array1D[ST],
-        c: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        tau: onp.ToFloat1D,
+        c: onp.ToFloat2D,
         *,
         side: str | bytes = "L",
         trans: str | bytes = "N",
@@ -1851,8 +1851,8 @@ class _function_pbsv[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        ab: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         lower: int = 0,
         ldab: int = ...,  # = ab.shape[0]
@@ -1871,7 +1871,7 @@ class _function_pbtrf[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[ST],
+        ab: onp.ToComplex2D,
         *,
         lower: int = 0,
         ldab: int = ...,  # = ab.shape[0]
@@ -1889,8 +1889,8 @@ class _function_pbtrs[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        ab: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         lower: int = 0,
         ldab: int = ...,  # = ab.shape[0]
@@ -1906,7 +1906,7 @@ zpbtrs: _function_pbtrs[np.complex128] = ...
 @type_check_only
 class _function_pftrf[ST: np.generic](Protocol):
     def __call__(
-        self, /, n: int, a: onp.Array1D[ST], *, transr: str | bytes = "N", uplo: str | bytes = "U", overwrite_a: int = 0
+        self, /, n: int, a: onp.ToComplex1D, *, transr: str | bytes = "N", uplo: str | bytes = "U", overwrite_a: int = 0
     ) -> tuple[onp.Array1D[ST], _info]: ...
 
 spftrf: _function_pftrf[np.float32] = ...
@@ -1918,7 +1918,7 @@ zpftrf: _function_pftrf[np.complex128] = ...
 @type_check_only
 class _function_pftri[ST: np.generic](Protocol):
     def __call__(
-        self, /, n: int, a: onp.Array1D[ST], *, transr: str | bytes = "N", uplo: str | bytes = "U", overwrite_a: int = 0
+        self, /, n: int, a: onp.ToComplex1D, *, transr: str | bytes = "N", uplo: str | bytes = "U", overwrite_a: int = 0
     ) -> tuple[onp.Array1D[ST], _info]: ...
 
 spftri: _function_pftri[np.float32] = ...
@@ -1933,8 +1933,8 @@ class _function_pftrs[ST: np.generic](Protocol):
         self,
         /,
         n: int,
-        a: onp.Array1D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex1D,
+        b: onp.ToComplex2D,
         *,
         transr: str | bytes = "N",
         uplo: str | bytes = "U",
@@ -1949,7 +1949,7 @@ zpftrs: _function_pftrs[np.complex128] = ...
 # (a, anorm, [uplo]) -> (rcond, info)
 @type_check_only
 class _function_pocon[ST: np.generic](Protocol):
-    def __call__(self, /, a: onp.Array2D[ST], anorm: float, *, uplo: str | bytes = "U") -> tuple[_rcond, _info]: ...
+    def __call__(self, /, a: onp.ToComplex2D, anorm: float, *, uplo: str | bytes = "U") -> tuple[_rcond, _info]: ...
 
 spocon: _function_pocon[np.float32] = ...
 dpocon: _function_pocon[np.float64] = ...
@@ -1960,7 +1960,7 @@ zpocon: _function_pocon[np.complex128] = ...
 @type_check_only
 class _function_posv[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], b: onp.Array2D[ST], *, lower: int = 0, overwrite_a: int = 0, overwrite_b: int = 0
+        self, /, a: onp.ToComplex2D, b: onp.ToComplex2D, *, lower: int = 0, overwrite_a: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array2D[ST], _info]: ...
 
 sposv: _function_posv[np.float32] = ...
@@ -1974,13 +1974,13 @@ class _function_posvx[ST: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         fact: str | bytes = "E",
-        af: onp.Array2D[ST] | None = None,
+        af: onp.ToComplex2D | None = None,
         equed: str | bytes = "Y",
-        s: onp.Array1D[RT] | None = None,
+        s: onp.ToFloat1D | None = None,
         lower: int = 0,
         overwrite_a: int = 0,
         overwrite_b: int = 0,
@@ -2006,7 +2006,7 @@ zposvx: _function_posvx[np.complex128, np.float64] = ...
 @type_check_only
 class _function_potrf[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], *, lower: int = 0, clean: int = 1, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, *, lower: int = 0, clean: int = 1, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 spotrf: _function_potrf[np.float32] = ...
@@ -2017,7 +2017,7 @@ zpotrf: _function_potrf[np.complex128] = ...
 # (c, [lower, overwrite_c]) -> (inv_a, info)
 @type_check_only
 class _function_potri[ST: np.generic](Protocol):
-    def __call__(self, /, c: onp.Array2D[ST], *, lower: int = 0, overwrite_c: int = 0) -> tuple[onp.Array2D[ST], _info]: ...
+    def __call__(self, /, c: onp.ToComplex2D, *, lower: int = 0, overwrite_c: int = 0) -> tuple[onp.Array2D[ST], _info]: ...
 
 spotri: _function_potri[np.float32] = ...
 dpotri: _function_potri[np.float64] = ...
@@ -2028,7 +2028,7 @@ zpotri: _function_potri[np.complex128] = ...
 @type_check_only
 class _function_potrs[ST: np.generic](Protocol):
     def __call__(
-        self, /, c: onp.Array2D[ST], b: onp.Array2D[ST], *, lower: int = 0, overwrite_b: int = 0
+        self, /, c: onp.ToComplex2D, b: onp.ToComplex2D, *, lower: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 spotrs: _function_potrs[np.float32] = ...
@@ -2039,7 +2039,7 @@ zpotrs: _function_potrs[np.complex128] = ...
 # (n, ap, anorm, [lower]) -> (rcond, info)
 @type_check_only
 class _function_ppcon[ST: np.generic](Protocol):
-    def __call__(self, /, n: int, ap: onp.Array1D[ST], anorm: float, *, lower: int = 0) -> tuple[_rcond, _info]: ...
+    def __call__(self, /, n: int, ap: onp.ToComplex1D, anorm: float, *, lower: int = 0) -> tuple[_rcond, _info]: ...
 
 sppcon: _function_ppcon[np.float32] = ...
 dppcon: _function_ppcon[np.float64] = ...
@@ -2050,7 +2050,7 @@ zppcon: _function_ppcon[np.complex128] = ...
 @type_check_only
 class _function_ppsv[ST: np.generic](Protocol):
     def __call__(
-        self, /, n: int, ap: onp.Array1D[ST], b: onp.Array2D[ST], *, lower: int = 0, overwrite_b: int = 0
+        self, /, n: int, ap: onp.ToComplex1D, b: onp.ToComplex2D, *, lower: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 sppsv: _function_ppsv[np.float32] = ...
@@ -2062,7 +2062,7 @@ zppsv: _function_ppsv[np.complex128] = ...
 @type_check_only
 class _function_pptrf[ST: np.generic](Protocol):
     def __call__(
-        self, /, n: int, ap: onp.Array1D[ST], *, lower: int = 0, overwrite_ap: int = 0
+        self, /, n: int, ap: onp.ToComplex1D, *, lower: int = 0, overwrite_ap: int = 0
     ) -> tuple[onp.Array1D[ST], _info]: ...
 
 spptrf: _function_pptrf[np.float32] = ...
@@ -2074,7 +2074,7 @@ zpptrf: _function_pptrf[np.complex128] = ...
 @type_check_only
 class _function_pptri[ST: np.generic](Protocol):
     def __call__(
-        self, /, n: int, ap: onp.Array1D[ST], *, lower: int = 0, overwrite_ap: int = 0
+        self, /, n: int, ap: onp.ToComplex1D, *, lower: int = 0, overwrite_ap: int = 0
     ) -> tuple[onp.Array1D[ST], _info]: ...
 
 spptri: _function_pptri[np.float32] = ...
@@ -2086,7 +2086,7 @@ zpptri: _function_pptri[np.complex128] = ...
 @type_check_only
 class _function_pptrs[ST: np.generic](Protocol):
     def __call__(
-        self, /, n: int, ap: onp.Array1D[ST], b: onp.Array2D[ST], *, lower: int = 0, overwrite_b: int = 0
+        self, /, n: int, ap: onp.ToComplex1D, b: onp.ToComplex2D, *, lower: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 spptrs: _function_pptrs[np.float32] = ...
@@ -2098,7 +2098,7 @@ zpptrs: _function_pptrs[np.complex128] = ...
 @type_check_only
 class _function_pstf2[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], *, tol: float = -1.0, lower: int = 0, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, *, tol: float = -1.0, lower: int = 0, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array1D[np.int32], int, _info]: ...
 
 spstf2: _function_pstf2[np.float32] = ...
@@ -2109,7 +2109,7 @@ zpstf2: _function_pstf2[np.complex128] = ...
 @type_check_only
 class _function_pstrf[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], *, tol: float = -1.0, lower: int = 0, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, *, tol: float = -1.0, lower: int = 0, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array1D[np.int32], int, _info]: ...
 
 spstrf: _function_pstrf[np.float32] = ...
@@ -2123,9 +2123,9 @@ class _function_pteqr[ST: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        d: onp.Array1D[RT],
-        e: onp.Array1D[RT],
-        z: onp.Array2D[ST],
+        d: onp.ToFloat1D,
+        e: onp.ToFloat1D,
+        z: onp.ToComplex2D,
         *,
         compute_z: int = 0,
         overwrite_d: int = 0,
@@ -2144,9 +2144,9 @@ class _function_ptsv[ST: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        d: onp.Array1D[RT],
-        e: onp.Array1D[ST],
-        b: onp.Array2D[ST],
+        d: onp.ToFloat1D,
+        e: onp.ToComplex1D,
+        b: onp.ToComplex2D,
         *,
         overwrite_d: int = 0,
         overwrite_e: int = 0,
@@ -2164,13 +2164,13 @@ class _function_ptsvx[ST: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        d: onp.Array1D[RT],
-        e: onp.Array1D[ST],
-        b: onp.Array2D[ST],
+        d: onp.ToFloat1D,
+        e: onp.ToComplex1D,
+        b: onp.ToComplex2D,
         *,
         fact: str | bytes = "N",
-        df: onp.Array1D[RT] | None = None,
-        ef: onp.Array1D[ST] | None = None,
+        df: onp.ToFloat1D | None = None,
+        ef: onp.ToComplex1D | None = None,
     ) -> tuple[onp.Array1D[RT], onp.Array1D[ST], onp.Array2D[ST], _rcond, onp.Array1D[RT], onp.Array1D[RT], _info]: ...
 
 sptsvx: _function_ptsvx[np.float32, np.float32] = ...
@@ -2182,7 +2182,7 @@ zptsvx: _function_ptsvx[np.complex128, np.float64] = ...
 @type_check_only
 class _function_pttrf[ST: np.generic, RT: np.generic](Protocol):
     def __call__(
-        self, /, d: onp.Array1D[RT], e: onp.Array1D[ST], *, overwrite_d: int = 0, overwrite_e: int = 0
+        self, /, d: onp.ToFloat1D, e: onp.ToComplex1D, *, overwrite_d: int = 0, overwrite_e: int = 0
     ) -> tuple[onp.Array1D[RT], onp.Array1D[ST], _info]: ...
 
 spttrf: _function_pttrf[np.float32, np.float32] = ...
@@ -2194,7 +2194,7 @@ zpttrf: _function_pttrf[np.complex128, np.float64] = ...
 @type_check_only
 class _function_pttrs_sd[ST: np.generic](Protocol):
     def __call__(
-        self, /, d: onp.Array1D[ST], e: onp.Array1D[ST], b: onp.Array2D[ST], *, overwrite_b: int = 0
+        self, /, d: onp.ToFloat1D, e: onp.ToFloat1D, b: onp.ToFloat2D, *, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 spttrs: _function_pttrs_sd[np.float32] = ...
@@ -2204,7 +2204,7 @@ dpttrs: _function_pttrs_sd[np.float64] = ...
 @type_check_only
 class _function_pttrs_cz[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
-        self, /, d: onp.Array1D[RT], e: onp.Array1D[CT], b: onp.Array2D[CT], *, lower: int = 0, overwrite_b: int = 0
+        self, /, d: onp.ToFloat1D, e: onp.ToComplex1D, b: onp.ToComplex2D, *, lower: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[CT], _info]: ...
 
 cpttrs: _function_pttrs_cz[np.complex64, np.float32] = ...
@@ -2216,8 +2216,8 @@ class _function_rot[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        x: onp.Array1D[ST],
-        y: onp.Array1D[ST],
+        x: onp.ToComplex1D,
+        y: onp.ToComplex1D,
         c: float,
         s: complex,
         *,
@@ -2239,7 +2239,7 @@ class _function_sbev[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[ST],
+        ab: onp.ToFloat2D,
         *,
         compute_v: int = 1,
         lower: int = 0,
@@ -2256,7 +2256,7 @@ class _function_sbevd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[ST],
+        ab: onp.ToFloat2D,
         *,
         compute_v: int = 1,
         lower: int = 0,
@@ -2274,7 +2274,7 @@ class _function_sbevx[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[ST],
+        ab: onp.ToFloat2D,
         vl: float,
         vu: float,
         il: int,
@@ -2301,9 +2301,9 @@ class _function_sfrk[ST: np.generic](Protocol):
         n: int,
         k: int,
         alpha: float,
-        a: onp.Array2D[ST],
+        a: onp.ToFloat2D,
         beta: float,
-        c: onp.Array1D[ST],
+        c: onp.ToFloat1D,
         *,
         transr: str | bytes = "N",
         uplo: str | bytes = "U",
@@ -2320,8 +2320,8 @@ class _function_stebz[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        d: onp.Array1D[ST],
-        e: onp.Array1D[ST],
+        d: onp.ToFloat1D,
+        e: onp.ToFloat1D,
         range: int,
         vl: float,
         vu: float,
@@ -2340,9 +2340,9 @@ class _function_stein[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        d: onp.Array1D[ST],
-        e: onp.Array1D[ST],
-        w: onp.Array1D[ST],
+        d: onp.ToFloat1D,
+        e: onp.ToFloat1D,
+        w: onp.ToFloat1D,
         iblock: onp.Array1D[np.int32],
         isplit: onp.Array1D[np.int32],
     ) -> tuple[onp.Array2D[ST], _info]: ...
@@ -2356,8 +2356,8 @@ class _function_stemr[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        d: onp.Array1D[ST],
-        e: onp.Array1D[ST],
+        d: onp.ToFloat1D,
+        e: onp.ToFloat1D,
         range: int,
         vl: float,
         vu: float,
@@ -2379,8 +2379,8 @@ class _function_stemr_lwork[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        d: onp.Array1D[ST],
-        e: onp.Array1D[ST],
+        d: onp.ToFloat1D,
+        e: onp.ToFloat1D,
         range: int,
         vl: float,
         vu: float,
@@ -2399,7 +2399,7 @@ dstemr_lwork: _function_stemr_lwork[np.float64] = ...
 @type_check_only
 class _function_sterf[ST: np.generic](Protocol):
     def __call__(
-        self, /, d: onp.Array1D[ST], e: onp.Array1D[ST], *, overwrite_d: int = 0, overwrite_e: int = 0
+        self, /, d: onp.ToFloat1D, e: onp.ToFloat1D, *, overwrite_d: int = 0, overwrite_e: int = 0
     ) -> tuple[onp.Array1D[ST], _info]: ...
 
 ssterf: _function_sterf[np.float32] = ...
@@ -2409,7 +2409,7 @@ dsterf: _function_sterf[np.float64] = ...
 @type_check_only
 class _function_stev[ST: np.generic](Protocol):
     def __call__(
-        self, /, d: onp.Array1D[ST], e: onp.Array1D[ST], *, compute_v: int = 1, overwrite_d: int = 0, overwrite_e: int = 0
+        self, /, d: onp.ToFloat1D, e: onp.ToFloat1D, *, compute_v: int = 1, overwrite_d: int = 0, overwrite_e: int = 0
     ) -> tuple[onp.Array1D[ST], onp.Array2D[ST], _info]: ...
 
 sstev: _function_stev[np.float32] = ...
@@ -2421,8 +2421,8 @@ class _function_stevd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        d: onp.Array1D[ST],
-        e: onp.Array1D[ST],
+        d: onp.ToFloat1D,
+        e: onp.ToFloat1D,
         *,
         compute_v: int = 1,
         lwork: int = ...,  # = (1 + 4 * n + n * n if compute_v else 1)
@@ -2438,7 +2438,7 @@ dstevd: _function_stevd[np.float64] = ...
 @type_check_only
 class _function_sycon[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], ipiv: onp.Array1D[np.int32], anorm: float, *, lower: int = 0
+        self, /, a: onp.ToComplex2D, ipiv: onp.Array1D[np.int32], anorm: float, *, lower: int = 0
     ) -> tuple[_rcond, _info]: ...
 
 ssycon: _function_sycon[np.float32] = ...
@@ -2450,7 +2450,7 @@ zsycon: _function_sycon[np.complex128] = ...
 @type_check_only
 class _function_syconv[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], ipiv: onp.Array1D[np.int32], *, lower: int = 0, way: int = 0, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, ipiv: onp.Array1D[np.int32], *, lower: int = 0, way: int = 0, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array1D[ST], _info]: ...
 
 ssyconv: _function_syconv[np.float32] = ...
@@ -2461,7 +2461,7 @@ zsyconv: _function_syconv[np.complex128] = ...
 # (a, [lower]) -> (s, scond, amax, info)
 @type_check_only
 class _function_syequb[ST: np.generic, RT: np.generic](Protocol):
-    def __call__(self, /, a: onp.Array2D[ST], *, lower: int = 0) -> tuple[onp.Array1D[RT], float, float, _info]: ...
+    def __call__(self, /, a: onp.ToComplex2D, *, lower: int = 0) -> tuple[onp.Array1D[RT], float, float, _info]: ...
 
 ssyequb: _function_syequb[np.float32, np.float32] = ...
 dsyequb: _function_syequb[np.float64, np.float64] = ...
@@ -2474,7 +2474,7 @@ class _function_syev[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToFloat2D,
         *,
         compute_v: int = 1,
         lower: int = 0,
@@ -2499,7 +2499,7 @@ class _function_syevd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToFloat2D,
         *,
         compute_v: int = 1,
         lower: int = 0,
@@ -2525,7 +2525,7 @@ class _function_syevr[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToFloat2D,
         *,
         compute_v: int = 1,
         range: str | bytes = "A",
@@ -2557,7 +2557,7 @@ class _function_syevx[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToFloat2D,
         *,
         compute_v: int = 1,
         range: str | bytes = "A",
@@ -2586,7 +2586,7 @@ dsyevx_lwork: _function_syevx_lwork = ...
 @type_check_only
 class _function_sygst[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], b: onp.Array2D[ST], *, itype: int = 1, lower: int = 0, overwrite_a: int = 0
+        self, /, a: onp.ToFloat2D, b: onp.ToFloat2D, *, itype: int = 1, lower: int = 0, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 ssygst: _function_sygst[np.float32] = ...
@@ -2598,8 +2598,8 @@ class _function_sygv[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
         *,
         itype: int = 1,
         jobz: str | bytes = "V",
@@ -2626,8 +2626,8 @@ class _function_sygvd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
         *,
         itype: int = 1,
         jobz: str | bytes = "V",
@@ -2647,8 +2647,8 @@ class _function_sygvx[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
         *,
         itype: int = 1,
         jobz: str | bytes = "V",
@@ -2681,8 +2681,8 @@ class _function_sysv[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         lwork: int = ...,  # = max(n, 1)
         lower: int = 0,
@@ -2711,10 +2711,10 @@ class _function_sysvx[ST: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
-        af: onp.Array2D[ST] | None = None,
+        af: onp.ToComplex2D | None = None,
         ipiv: onp.Array1D[np.int32] | None = None,
         lwork: int = ...,  # = max(3 * n, 1)
         factored: int = 0,
@@ -2752,7 +2752,7 @@ zsysvx_lwork: _function_sysvx_lwork[complex] = ...
 @type_check_only
 class _function_sytf2[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], *, lower: int = 0, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, *, lower: int = 0, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array1D[np.int32], _info]: ...
 
 ssytf2: _function_sytf2[np.float32] = ...
@@ -2766,7 +2766,7 @@ class _function_sytrd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToFloat2D,
         *,
         lower: int = 0,
         lwork: int = ...,  # = max(n, 1)
@@ -2790,7 +2790,7 @@ class _function_sytrf[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         *,
         lower: int = 0,
         lwork: int = ...,  # = max(n, 1)
@@ -2816,7 +2816,7 @@ zsytrf_lwork: _function_sytrf_lwork[complex] = ...
 @type_check_only
 class _function_sytri[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], ipiv: onp.Array1D[np.int32], *, lower: int = 0, overwrite_a: int = 0
+        self, /, a: onp.ToComplex2D, ipiv: onp.Array1D[np.int32], *, lower: int = 0, overwrite_a: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 ssytri: _function_sytri[np.float32] = ...
@@ -2828,7 +2828,7 @@ zsytri: _function_sytri[np.complex128] = ...
 @type_check_only
 class _function_sytrs[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], ipiv: onp.Array1D[np.int32], b: onp.Array2D[ST], *, lower: int = 0, overwrite_b: int = 0
+        self, /, a: onp.ToComplex2D, ipiv: onp.Array1D[np.int32], b: onp.ToComplex2D, *, lower: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 ssytrs: _function_sytrs[np.float32] = ...
@@ -2842,8 +2842,8 @@ class _function_tbtrs[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        ab: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        ab: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         uplo: str | bytes = "U",
         trans: str | bytes = "N",
@@ -2863,8 +2863,8 @@ class _function_tfsm[ST: np.generic, WorkT](Protocol):
         self,
         /,
         alpha: WorkT,
-        a: onp.Array1D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex1D,
+        b: onp.ToComplex2D,
         *,
         transr: str | bytes = "N",
         side: str | bytes = "L",
@@ -2883,7 +2883,7 @@ ztfsm: _function_tfsm[np.complex128, complex] = ...
 @type_check_only
 class _function_tfttp[ST: np.generic](Protocol):
     def __call__(
-        self, /, n: int, arf: onp.Array1D[ST], *, transr: str | bytes = "N", uplo: str | bytes = "U"
+        self, /, n: int, arf: onp.ToComplex1D, *, transr: str | bytes = "N", uplo: str | bytes = "U"
     ) -> tuple[onp.Array1D[ST], _info]: ...
 
 stfttp: _function_tfttp[np.float32] = ...
@@ -2895,7 +2895,7 @@ ztfttp: _function_tfttp[np.complex128] = ...
 @type_check_only
 class _function_tfttr[ST: np.generic](Protocol):
     def __call__(
-        self, /, n: int, arf: onp.Array1D[ST], *, transr: str | bytes = "N", uplo: str | bytes = "U"
+        self, /, n: int, arf: onp.ToComplex1D, *, transr: str | bytes = "N", uplo: str | bytes = "U"
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 stfttr: _function_tfttr[np.float32] = ...
@@ -2909,10 +2909,10 @@ class _function_tgexc_sd[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
-        q: onp.Array2D[ST],
-        z: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
+        q: onp.ToFloat2D,
+        z: onp.ToFloat2D,
         ifst: int,
         ilst: int,
         *,
@@ -2934,10 +2934,10 @@ class _function_tgexc_cz[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
-        q: onp.Array2D[ST],
-        z: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
+        q: onp.ToComplex2D,
+        z: onp.ToComplex2D,
         ifst: int,
         ilst: int,
         *,
@@ -2959,10 +2959,10 @@ class _function_tgsen_sd[ST: np.generic](Protocol):
         self,
         /,
         select: onp.Array1D[np.int32],
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
-        q: onp.Array2D[ST],
-        z: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
+        q: onp.ToFloat2D,
+        z: onp.ToFloat2D,
         *,
         ijob: int = 4,
         wantq: int = 1,
@@ -2998,10 +2998,10 @@ class _function_tgsen_cz[CT: np.generic, RT: np.generic](Protocol):
         self,
         /,
         select: onp.Array1D[np.int32],
-        a: onp.Array2D[CT],
-        b: onp.Array2D[CT],
-        q: onp.Array2D[CT],
-        z: onp.Array2D[CT],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
+        q: onp.ToComplex2D,
+        z: onp.ToComplex2D,
         *,
         ijob: int = 4,
         wantq: int = 1,
@@ -3032,7 +3032,7 @@ ztgsen: _function_tgsen_cz[np.complex128, np.float64] = ...
 # (select, a, [ijob]) -> (work, iwork, info)
 @type_check_only
 class _function_tgsen_lwork_sd[ST: np.generic](Protocol):
-    def __call__(self, /, select: onp.Array1D[np.int32], a: onp.Array2D[ST], *, ijob: int = 4) -> tuple[float, int, _info]: ...
+    def __call__(self, /, select: onp.Array1D[np.int32], a: onp.ToFloat2D, *, ijob: int = 4) -> tuple[float, int, _info]: ...
 
 stgsen_lwork: _function_tgsen_lwork_sd[np.float32] = ...
 dtgsen_lwork: _function_tgsen_lwork_sd[np.float64] = ...
@@ -3041,7 +3041,7 @@ dtgsen_lwork: _function_tgsen_lwork_sd[np.float64] = ...
 @type_check_only
 class _function_tgsen_lwork_cz[ST: np.generic](Protocol):
     def __call__(
-        self, /, select: onp.Array1D[np.int32], a: onp.Array2D[ST], b: onp.Array2D[ST], *, ijob: int = 4
+        self, /, select: onp.Array1D[np.int32], a: onp.ToComplex2D, b: onp.ToComplex2D, *, ijob: int = 4
     ) -> tuple[complex, int, _info]: ...
 
 ctgsen_lwork: _function_tgsen_lwork_cz[np.complex64] = ...
@@ -3053,12 +3053,12 @@ class _function_tgsyl[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
-        c: onp.Array2D[ST],
-        d: onp.Array2D[ST],
-        e: onp.Array2D[ST],
-        f: onp.Array2D[ST],
+        a: onp.ToFloat2D,
+        b: onp.ToFloat2D,
+        c: onp.ToFloat2D,
+        d: onp.ToFloat2D,
+        e: onp.ToFloat2D,
+        f: onp.ToFloat2D,
         *,
         trans: str | bytes = "N",
         ijob: int = 0,
@@ -3077,10 +3077,10 @@ class _function_tpmqrt[ST: np.generic](Protocol):
         self,
         /,
         l: int,
-        v: onp.Array2D[ST],
-        t: onp.Array2D[ST],
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        v: onp.ToComplex2D,
+        t: onp.ToComplex2D,
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         side: str | bytes = "L",
         trans: str | bytes = "N",
@@ -3097,7 +3097,7 @@ ztpmqrt: _function_tpmqrt[np.complex128] = ...
 @type_check_only
 class _function_tpqrt[ST: np.generic](Protocol):
     def __call__(
-        self, /, l: int, nb: int, a: onp.Array2D[ST], b: onp.Array2D[ST], *, overwrite_a: int = 0, overwrite_b: int = 0
+        self, /, l: int, nb: int, a: onp.ToComplex2D, b: onp.ToComplex2D, *, overwrite_a: int = 0, overwrite_b: int = 0
     ) -> tuple[onp.Array2D[ST], onp.Array2D[ST], onp.Array2D[ST], _info]: ...
 
 stpqrt: _function_tpqrt[np.float32] = ...
@@ -3109,7 +3109,7 @@ ztpqrt: _function_tpqrt[np.complex128] = ...
 @type_check_only
 class _function_tpttf[ST: np.generic](Protocol):
     def __call__(
-        self, /, n: int, ap: onp.Array1D[ST], *, transr: str | bytes = "N", uplo: str | bytes = "U"
+        self, /, n: int, ap: onp.ToComplex1D, *, transr: str | bytes = "N", uplo: str | bytes = "U"
     ) -> tuple[onp.Array1D[ST], _info]: ...
 
 stpttf: _function_tpttf[np.float32] = ...
@@ -3120,7 +3120,7 @@ ztpttf: _function_tpttf[np.complex128] = ...
 # (n, ap, [uplo]) -> (a, info)
 @type_check_only
 class _function_tpttr[ST: np.generic](Protocol):
-    def __call__(self, /, n: int, ap: onp.Array1D[ST], *, uplo: str | bytes = "U") -> tuple[onp.Array2D[ST], _info]: ...
+    def __call__(self, /, n: int, ap: onp.ToComplex1D, *, uplo: str | bytes = "U") -> tuple[onp.Array2D[ST], _info]: ...
 
 stpttr: _function_tpttr[np.float32] = ...
 dtpttr: _function_tpttr[np.float64] = ...
@@ -3131,7 +3131,7 @@ ztpttr: _function_tpttr[np.complex128] = ...
 @type_check_only
 class _function_trcon[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], *, norm: str | bytes = "1", uplo: str | bytes = "U", diag: str | bytes = "N"
+        self, /, a: onp.ToComplex2D, *, norm: str | bytes = "1", uplo: str | bytes = "U", diag: str | bytes = "N"
     ) -> tuple[_rcond, _info]: ...
 
 strcon: _function_trcon[np.float32] = ...
@@ -3145,8 +3145,8 @@ class _function_trexc[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        q: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        q: onp.ToComplex2D,
         ifst: int,
         ilst: int,
         *,
@@ -3167,8 +3167,8 @@ class _function_trsen_sd[ST: np.generic](Protocol):
         self,
         /,
         select: onp.Array1D[np.int32],
-        t: onp.Array2D[ST],
-        q: onp.Array2D[ST],
+        t: onp.ToFloat2D,
+        q: onp.ToFloat2D,
         *,
         job: str | bytes = "B",
         wantq: int = 1,
@@ -3188,8 +3188,8 @@ class _function_trsen_cz[ST: np.generic](Protocol):
         self,
         /,
         select: onp.Array1D[np.int32],
-        t: onp.Array2D[ST],
-        q: onp.Array2D[ST],
+        t: onp.ToComplex2D,
+        q: onp.ToComplex2D,
         *,
         job: str | bytes = "B",
         wantq: int = 1,
@@ -3205,7 +3205,7 @@ ztrsen: _function_trsen_cz[np.complex128] = ...
 @type_check_only
 class _function_trsen_lwork_sd[ST: np.generic](Protocol):
     def __call__(
-        self, /, select: onp.Array1D[np.int32], t: onp.Array2D[ST], *, job: str | bytes = "B"
+        self, /, select: onp.Array1D[np.int32], t: onp.ToFloat2D, *, job: str | bytes = "B"
     ) -> tuple[float, int, _info]: ...
 
 strsen_lwork: _function_trsen_lwork_sd[np.float32] = ...
@@ -3215,7 +3215,7 @@ dtrsen_lwork: _function_trsen_lwork_sd[np.float64] = ...
 @type_check_only
 class _function_trsen_lwork_cz[ST: np.generic](Protocol):
     def __call__(
-        self, /, select: onp.Array1D[np.int32], t: onp.Array2D[ST], *, job: str | bytes = "B"
+        self, /, select: onp.Array1D[np.int32], t: onp.ToComplex2D, *, job: str | bytes = "B"
     ) -> tuple[complex, _info]: ...
 
 ctrsen_lwork: _function_trsen_lwork_cz[np.complex64] = ...
@@ -3227,9 +3227,9 @@ class _function_trsyl[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
-        c: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
+        c: onp.ToComplex2D,
         *,
         trana: str | bytes = "N",
         tranb: str | bytes = "N",
@@ -3246,7 +3246,7 @@ ztrsyl: _function_trsyl[np.complex128] = ...
 @type_check_only
 class _function_trtri[ST: np.generic](Protocol):
     def __call__(
-        self, /, c: onp.Array2D[ST], *, lower: int = 0, unitdiag: int = 0, overwrite_c: int = 0
+        self, /, c: onp.ToComplex2D, *, lower: int = 0, unitdiag: int = 0, overwrite_c: int = 0
     ) -> tuple[onp.Array2D[ST], _info]: ...
 
 strtri: _function_trtri[np.float32] = ...
@@ -3260,8 +3260,8 @@ class _function_trtrs[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        b: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        b: onp.ToComplex2D,
         *,
         lower: int = 0,
         trans: int = 0,
@@ -3279,7 +3279,7 @@ ztrtrs: _function_trtrs[np.complex128] = ...
 @type_check_only
 class _function_trttf[ST: np.generic](Protocol):
     def __call__(
-        self, /, a: onp.Array2D[ST], *, transr: str | bytes = "N", uplo: str | bytes = "U"
+        self, /, a: onp.ToComplex2D, *, transr: str | bytes = "N", uplo: str | bytes = "U"
     ) -> tuple[onp.Array1D[ST], _info]: ...
 
 strttf: _function_trttf[np.float32] = ...
@@ -3290,7 +3290,7 @@ ztrttf: _function_trttf[np.complex128] = ...
 # (a, [uplo]) -> (ap, info)
 @type_check_only
 class _function_trttp[ST: np.generic](Protocol):
-    def __call__(self, /, a: onp.Array2D[ST], *, uplo: str | bytes = "U") -> tuple[onp.Array1D[ST], _info]: ...
+    def __call__(self, /, a: onp.ToComplex2D, *, uplo: str | bytes = "U") -> tuple[onp.Array1D[ST], _info]: ...
 
 strttp: _function_trttp[np.float32] = ...
 dtrttp: _function_trttp[np.float64] = ...
@@ -3303,7 +3303,7 @@ class _function_tzrzf[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
+        a: onp.ToComplex2D,
         *,
         lwork: int = ...,  # = max(m, 1)
         overwrite_a: int = 0,
@@ -3330,10 +3330,10 @@ class _function_uncsd[CT: np.generic, RT: np.generic](Protocol):
     def __call__(
         self,
         /,
-        x11: onp.Array2D[CT],
-        x12: onp.Array2D[CT],
-        x21: onp.Array2D[CT],
-        x22: onp.Array2D[CT],
+        x11: onp.ToComplex2D,
+        x12: onp.ToComplex2D,
+        x21: onp.ToComplex2D,
+        x22: onp.ToComplex2D,
         *,
         compute_u1: int = 1,
         compute_u2: int = 1,
@@ -3377,8 +3377,8 @@ class _function_unghr[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        tau: onp.Array1D[ST],
+        a: onp.ToComplex2D,
+        tau: onp.ToComplex1D,
         *,
         lo: int = 0,
         hi: int = ...,  # = n - 1
@@ -3410,8 +3410,8 @@ class _function_ungqr[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        tau: onp.Array1D[ST],
+        a: onp.ToComplex2D,
+        tau: onp.ToComplex1D,
         *,
         lwork: int = ...,  # = max(3 * n, 1)
         overwrite_a: int = 0,
@@ -3425,8 +3425,8 @@ class _function_ungrq[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        tau: onp.Array1D[ST],
+        a: onp.ToComplex2D,
+        tau: onp.ToComplex1D,
         *,
         lwork: int = ...,  # = max(3 * m, 1)
         overwrite_a: int = 0,
@@ -3443,9 +3443,9 @@ class _function_unmqr[ST: np.generic](Protocol):
         /,
         side: str | bytes,
         trans: str | bytes,
-        a: onp.Array2D[ST],
-        tau: onp.Array1D[ST],
-        c: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        tau: onp.ToComplex1D,
+        c: onp.ToComplex2D,
         lwork: int,
         *,
         overwrite_c: int = 0,
@@ -3460,9 +3460,9 @@ class _function_unmrz[ST: np.generic](Protocol):
     def __call__(
         self,
         /,
-        a: onp.Array2D[ST],
-        tau: onp.Array1D[ST],
-        c: onp.Array2D[ST],
+        a: onp.ToComplex2D,
+        tau: onp.ToComplex1D,
+        c: onp.ToComplex2D,
         *,
         side: str | bytes = "L",
         trans: str | bytes = "N",

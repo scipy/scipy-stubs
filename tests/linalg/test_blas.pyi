@@ -5,7 +5,11 @@ from typing import Literal as L, assert_type
 import numpy as np
 
 from scipy.linalg import find_best_blas_type, get_blas_funcs
-from scipy.linalg.blas import _FortranFunction
+from scipy.linalg.blas import _FortranFunction, ddot
+
+###
+
+_f_1d: list[float]
 
 ###
 # find_best_blas_type
@@ -26,3 +30,8 @@ assert_type(
 assert_type(get_blas_funcs("gemm", ilp64=False), _FortranFunction)
 assert_type(get_blas_funcs(["gemm", "larf"]), list[_FortranFunction])
 assert_type(get_blas_funcs(iter(["gemm"])), list[_FortranFunction] | _FortranFunction)
+
+###
+# ddot
+
+assert_type(ddot(_f_1d, _f_1d), float)
