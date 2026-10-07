@@ -255,3 +255,15 @@ def lu(
     check_finite: bool = True,
     p_indices: bool = False,
 ) -> tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]]: ...
+@overload  # fallback
+def lu(
+    a: onp.ToComplexND,
+    permute_l: Literal[False] = False,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    p_indices: bool = False,
+) -> tuple[onp.ArrayND[Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...
+@overload  # fallback, permute_l=True
+def lu(
+    a: onp.ToComplexND, permute_l: Literal[True], overwrite_a: bool = False, check_finite: bool = True, p_indices: bool = False
+) -> tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]]: ...

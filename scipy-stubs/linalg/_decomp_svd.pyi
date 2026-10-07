@@ -1,4 +1,4 @@
-from typing import Literal, Never, SupportsIndex, overload
+from typing import Any, Literal, Never, SupportsIndex, overload
 
 import numpy as np
 import optype as op
@@ -78,6 +78,25 @@ def svd(
     check_finite: bool = True,
     lapack_driver: _LapackDriver = "gesdd",
 ) -> onp.ArrayND[np.float32]: ...
+@overload  # fallback
+def svd(
+    a: onp.ToComplexND,
+    full_matrices: bool = True,
+    compute_uv: Literal[True] = True,
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    lapack_driver: _LapackDriver = "gesdd",
+) -> _SVD_ND[np.float64 | Any, np.float64 | Any]: ...
+@overload  # fallback, compute_uv=False (keyword)
+def svd(
+    a: onp.ToComplexND,
+    full_matrices: bool = True,
+    *,
+    compute_uv: Literal[False],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    lapack_driver: _LapackDriver = "gesdd",
+) -> onp.ArrayND[np.float64 | Any]: ...
 
 #
 @overload

@@ -1400,6 +1400,15 @@ def inv[ShapeT: tuple[int, ...]](
     assume_a: _AssumeA | None = None,
     lower: bool = False,
 ) -> onp.ArrayND[np.complex128, ShapeT]: ...
+@overload  # fallback
+def inv[ShapeT: tuple[int, ...]](
+    a: onp.CanArrayND[npc.number | np.bool, ShapeT],
+    overwrite_a: bool = False,
+    check_finite: bool = True,
+    *,
+    assume_a: _AssumeA | None = None,
+    lower: bool = False,
+) -> onp.ArrayND[np.float64 | Any, ShapeT]: ...
 
 # NOTE: The order of the overloads has been carefully chosen to avoid triggering a Pyright bug.
 @overload  # +float64 2d

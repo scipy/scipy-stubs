@@ -1,4 +1,4 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -24,6 +24,7 @@ _f80_nd: onp.ArrayND[np.float128]
 _c64_nd: onp.ArrayND[np.complex64]
 _c128_nd: onp.ArrayND[np.complex128]
 _c160_nd: onp.ArrayND[np.complex256]
+_f_nd: onp.ArrayND[np.float32 | np.float64]
 
 _bool_2d: onp.Array2D[np.bool]
 _i8_2d: onp.Array2D[np.int8]
@@ -53,6 +54,7 @@ assert_type(svd(_f80_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]
 assert_type(svd(_c64_nd), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.float32], onp.ArrayND[np.complex64]])
 assert_type(svd(_c128_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
 assert_type(svd(_c160_nd), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(svd(_f_nd), tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]])
 
 assert_type(svd(_py_i_2d, compute_uv=False), onp.ArrayND[np.float64])
 assert_type(svd(_py_f_2d, compute_uv=False), onp.ArrayND[np.float64])
@@ -64,6 +66,7 @@ assert_type(svd(_f80_nd, compute_uv=False), onp.ArrayND[np.float64])
 assert_type(svd(_c64_nd, compute_uv=False), onp.ArrayND[np.float32])
 assert_type(svd(_c128_nd, compute_uv=False), onp.ArrayND[np.float64])
 assert_type(svd(_c160_nd, compute_uv=False), onp.ArrayND[np.float64])
+assert_type(svd(_f_nd, compute_uv=False), onp.ArrayND[np.float64 | Any])
 
 # svdvals
 

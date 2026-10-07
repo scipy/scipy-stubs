@@ -385,6 +385,25 @@ def schur(
     sort: _Sort,
     check_finite: bool = True,
 ) -> _Tuple2iAny[onp.ArrayND[np.complex64]]: ...
+@overload  # fallback
+def schur(
+    a: onp.ToComplexND,
+    output: _Output = "real",
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    sort: None = None,
+    check_finite: bool = True,
+) -> _Tuple2[onp.ArrayND[np.float64 | Any]]: ...
+@overload  # fallback, sort=<given>
+def schur(
+    a: onp.ToComplexND,
+    output: _Output = "real",
+    lwork: int | None = None,
+    overwrite_a: bool = False,
+    *,
+    sort: _Sort,
+    check_finite: bool = True,
+) -> _Tuple2iAny[onp.ArrayND[np.float64 | Any]]: ...
 
 # will raise for dtypes that don't have character code in `ilfdFD`
 @overload  # ?d c128|f64|i64|i32, ?d c128|f64|i64|i32

@@ -50,6 +50,7 @@ f64_1d: onp.Array1D[np.float64]
 f64_2d: onp.Array2D[np.float64]
 f64_3d: onp.Array3D[np.float64]
 f64_nd: onp.ArrayND[np.float64]
+f_nd: onp.ArrayND[np.float32 | np.float64]
 
 f80_1d: onp.Array1D[np.float128]
 f80_2d: onp.Array2D[np.float128]
@@ -404,6 +405,7 @@ assert_subtype[onp.ArrayND[np.complex128]](inv(c128_nd))
 assert_subtype[onp.ArrayND[np.complex128]](inv(c160_nd))
 
 assert_subtype[onp.ArrayND[np.float64]](inv(any_nd))
+assert_subtype[onp.ArrayND[np.float64 | Any]](inv(f_nd))
 
 ###
 # det
