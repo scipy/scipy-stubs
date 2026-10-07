@@ -1,10 +1,11 @@
+from collections.abc import Callable
 from typing import Any, assert_type, type_check_only
 
 import numpy as np
 import numpy.typing as npt
 import optype.numpy as onp
 
-from scipy.integrate import DenseOutput, OdeSolution, solve_ivp
+from scipy.integrate import DenseOutput, OdeSolution, OdeSolver, solve_ivp
 
 type _VecF64 = onp.Array1D[np.float64]
 type _MatF64 = onp.Array2D[np.float64]
@@ -34,6 +35,12 @@ def _rot(t: float, y: _ArrC128, omega: float) -> _ArrC128: ...
 def _rot_vec(t: _VecF64, y: _MatC128, omega: float) -> _MatC128: ...
 @type_check_only
 def _rot_event(t: float, y: _ArrC128, omega: float) -> float: ...
+
+@type_check_only
+class _Euler(OdeSolver[np.float64]):
+    def __init__(
+        self, fun: Callable[..., Any], t0: float, y0: list[float], t_bound: float, vectorized: bool = False, num_t_steps: int = 15
+    ) -> None: ...
 
 # NOTE: these examples are based on the `solve_ivp` docstring, and use common (suboptimal) type annotation patterns.
 ###
@@ -85,3 +92,7 @@ assert_type(solve_ivp(deriv_vec, list_float, vec_c128, t_eval=arr_f64).y, _MatC1
 assert_type(solve_ivp(_rot, list_float, list_complex, events=_rot_event, args=(1.0,)).y, _MatC128)
 assert_type(solve_ivp(_rot_vec, list_float, list_complex, events=_rot_event, vectorized=True, args=(1.0,)).y, _MatC128)
 assert_type(solve_ivp(deriv_vec, list_float, list_complex, dense_output=True).sol, OdeSolution[DenseOutput[np.complex128]] | Any)
+
+###
+
+assert_type(solve_ivp(exponential_decay, list_float, list_float, method=_Euler, num_t_steps=16).y, _MatF64)

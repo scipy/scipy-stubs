@@ -206,3 +206,16 @@ def solve_ivp[*Ts](
     args: tuple[*Ts],
     **options: Unpack[_SolverOptions],
 ) -> OdeResult[np.complex128]: ...
+@overload  # method=<OdeSolver subclass>, **options=<any>
+def solve_ivp[Inexact64T: np.float64 | np.complex128, *Ts](
+    fun: Callable[..., Any],
+    t_span: Sequence[float],
+    y0: onp.ToComplex1D,
+    method: type[OdeSolver[Inexact64T]],
+    t_eval: onp.ToFloat1D | None = None,
+    dense_output: bool = False,
+    events: _Events[Any, *Ts] | None = None,
+    vectorized: bool = False,
+    args: tuple[*Ts] | None = None,
+    **options: Any,
+) -> OdeResult[Inexact64T]: ...
