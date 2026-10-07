@@ -228,6 +228,7 @@ See the `scipy` columns below for which classes are subscriptable at runtime.
 | `InverseJacobian[T: inexact]`                       | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.InverseJacobian.html)     |
 | `KrylovJacobian[T: inexact]`                        | `>=1.15.2.0`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.KrylovJacobian.html)      |
 | `Bounds[S: (int, int, ...), T: scalar]`             | `>=1.16.0.1`  | `>=1.17` | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.Bounds.html)              |
+| `LinearConstraint[A: f64 2d array \| 2d sparse]`    | `>=1.18.1.2`  |          | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.LinearConstraint.html)    |
 | `NonlinearConstraint[B: float scalar/1d, K = bool]` | `>=1.18.0.1`  | `>=2.0`  | [docs](https://docs.scipy.org/doc/scipy/reference/generated/scipy.optimize.NonlinearConstraint.html) |
 
 ### `scipy.signal`
