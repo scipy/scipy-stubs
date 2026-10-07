@@ -51,6 +51,7 @@ def exponential_decay(t: float, y: _ArrF64) -> _ArrF64: ...
 assert_type(solve_ivp(exponential_decay, list_float, list_float).t, _VecF64)
 assert_type(solve_ivp(exponential_decay, list_float, list_float).y, _MatF64)
 assert_type(solve_ivp(exponential_decay, list_float, list_float, args=()).y, _MatF64)
+assert_type(solve_ivp(exponential_decay, list_float, list_float, method=_Euler, num_t_steps=16).y, _MatF64)
 
 ###
 
@@ -92,7 +93,3 @@ assert_type(solve_ivp(deriv_vec, list_float, vec_c128, t_eval=arr_f64).y, _MatC1
 assert_type(solve_ivp(_rot, list_float, list_complex, events=_rot_event, args=(1.0,)).y, _MatC128)
 assert_type(solve_ivp(_rot_vec, list_float, list_complex, events=_rot_event, vectorized=True, args=(1.0,)).y, _MatC128)
 assert_type(solve_ivp(deriv_vec, list_float, list_complex, dense_output=True).sol, OdeSolution[DenseOutput[np.complex128]] | Any)
-
-###
-
-assert_type(solve_ivp(exponential_decay, list_float, list_float, method=_Euler, num_t_steps=16).y, _MatF64)
