@@ -34,6 +34,7 @@ _f32_nd: onp.ArrayND[np.float32]
 _f64_nd: onp.ArrayND[np.float64]
 _c64_nd: onp.ArrayND[np.complex64]
 _c128_nd: onp.ArrayND[np.complex128]
+_f_nd: onp.ArrayND[np.float32 | np.float64]
 
 def _sort(x: complex, /) -> bool: ...
 
@@ -119,6 +120,8 @@ assert_subtype[_Res3_ND[np.complex64]](schur(_c64_nd, sort="lhp"))
 assert_subtype[_Res3_ND[np.complex128]](schur(_c128_nd, sort="lhp"))
 assert_subtype[_Res3_ND[np.complex64]](schur(_f32_nd, output="c", sort="lhp"))
 assert_subtype[_Res3_ND[np.complex128]](schur(_f64_nd, output="c", sort="lhp"))
+assert_type(schur(_f_nd), _Res2_ND[np.float64 | Any])
+assert_type(schur(_f_nd, sort="lhp"), _Res3_ND[np.float64 | Any])
 
 ###
 # rsf2csf

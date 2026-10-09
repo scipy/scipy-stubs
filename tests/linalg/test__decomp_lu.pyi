@@ -1,6 +1,6 @@
 # type-tests for `linalg/_decomp_lu.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -60,6 +60,7 @@ _f80_nd: onp.ArrayND[np.float128]
 _c64_nd: onp.ArrayND[np.complex64]
 _c128_nd: onp.ArrayND[np.complex128]
 _c160_nd: onp.ArrayND[np.complex256]
+_f_nd: onp.ArrayND[np.float32 | np.float64]
 
 ###
 # lu_factor
@@ -135,6 +136,7 @@ assert_type(lu(_f80_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64],
 assert_type(lu(_c64_nd), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
 assert_type(lu(_c128_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 assert_type(lu(_c160_nd), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lu(_f_nd), tuple[onp.ArrayND[Any], onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]])
 
 assert_type(lu(_bool_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
 assert_type(lu(_i8_nd, p_indices=True), tuple[onp.ArrayND[np.int32], onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
@@ -161,6 +163,7 @@ assert_type(lu(_f80_nd, permute_l=True), tuple[onp.ArrayND[np.float64], onp.Arra
 assert_type(lu(_c64_nd, permute_l=True), tuple[onp.ArrayND[np.complex64], onp.ArrayND[np.complex64]])
 assert_type(lu(_c128_nd, permute_l=True), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 assert_type(lu(_c160_nd, permute_l=True), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(lu(_f_nd, permute_l=True), tuple[onp.ArrayND[np.float64 | Any], onp.ArrayND[np.float64 | Any]])
 
 assert_type(lu(_bool_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
 assert_type(lu(_i8_nd, permute_l=True, p_indices=True), tuple[onp.ArrayND[np.float32], onp.ArrayND[np.float32]])
