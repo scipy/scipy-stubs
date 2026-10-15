@@ -100,8 +100,8 @@ assert_type(estimated_cdf(_f32_2d, 0.5, keepdims=True), onp.Array2D[np.float32])
 assert_type(estimated_cdf(_py_f_3d, 0.5, keepdims=True), onp.Array3D[np.float64])
 assert_type(estimated_cdf(_f64_3d, 0.5, keepdims=True), onp.Array3D[np.float64])
 assert_type(estimated_cdf(_f32_3d, 0.5, keepdims=True), onp.Array3D[np.float32])
-assert_type(estimated_cdf(_f64_nd, 0.5, keepdims=True), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(estimated_cdf(_f32_nd, 0.5, keepdims=True), onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
+assert_type(estimated_cdf(_f64_nd, 0.5, keepdims=True), onp.ArrayND[np.float64])
+assert_type(estimated_cdf(_f32_nd, 0.5, keepdims=True), onp.ArrayND[np.float32])
 
 assert_type(estimated_cdf(_py_f_1d, _py_f_1d), onp.ArrayND[np.float64])
 assert_type(estimated_cdf(_f64_1d, _py_f_1d), onp.ArrayND[np.float64])

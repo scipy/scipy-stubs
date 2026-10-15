@@ -74,5 +74,5 @@ assert_type(rankdata(_i8_3d, axis=0), onp.Array3D[np.float64])
 assert_type(rankdata(_f16_3d, axis=0), onp.Array3D[np.float16])
 assert_type(rankdata(_f64_3d, axis=0), onp.Array3D[np.float64])
 
-assert_type(rankdata(_i8_nd, axis=0), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
-assert_type(rankdata(_f64_nd, axis=0), onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
+assert_type(rankdata(_i8_nd, axis=0), onp.ArrayND[np.float64])
+assert_type(rankdata(_f64_nd, axis=0), onp.ArrayND[np.float64])

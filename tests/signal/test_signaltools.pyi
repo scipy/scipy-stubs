@@ -418,10 +418,10 @@ assert_type(hilbert(_f64_2d), onp.Array2D[np.complex128])
 assert_type(hilbert(_f80_2d), onp.Array2D[np.clongdouble])
 
 assert_type(hilbert(_u8_nd), onp.ArrayND[np.complex128])
-assert_type(hilbert(_f16_nd), onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
-assert_type(hilbert(_f32_nd), onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
+assert_type(hilbert(_f16_nd), onp.ArrayND[np.complex64])
+assert_type(hilbert(_f32_nd), onp.ArrayND[np.complex64])
 assert_type(hilbert(_f64_nd), onp.ArrayND[np.complex128])
-assert_type(hilbert(_f80_nd), onp.ArrayND[np.clongdouble])  # pyrefly:ignore[assert-type]
+assert_type(hilbert(_f80_nd), onp.ArrayND[np.clongdouble])
 
 # hilbert2
 
