@@ -168,7 +168,10 @@ jobs:
           NUMPY_VERSION: ${{ matrix.np }}
         run: uv pip install --exact --group type "numpy==${NUMPY_VERSION}.*" .
 
+      # NOTE: pyrefly 1.4.0 behaves differently with numpy 2.0, see
+      # https://github.com/scipy/scipy-stubs/pull/2811#issuecomment-6203528262
       - name: pyrefly check tests
+        if: matrix.np != '2.0'
         run: pyrefly check --output-format=github tests
 
       - name: mypy tests
