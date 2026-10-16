@@ -52,29 +52,9 @@ class _HasShapeAndDTypeAndMatVec(Protocol[_SCT_co, _ShapeT_co]):
     #
     def matvec(self, x: onp.ArrayND[Any], /) -> onp.ToComplexND: ...
 
-@type_check_only
-class _LinearOperatorInit:
-    @overload  # subclass
-    def __init__(self, /, dtype: Incomplete, shape: Iterable[SupportsIndex], xp: ModuleType | None = None) -> None: ...
-    @overload  # factory
-    def __init__(
-        self,
-        /,
-        shape: Incomplete,
-        matvec: _FunMatVec,
-        rmatvec: _FunMatVec | None = None,
-        matmat: _FunMatMat | None = None,
-        dtype: Incomplete = None,
-        rmatmat: _FunMatMat | None = None,
-        xp: Incomplete = None,
-    ) -> None: ...
-
 ###
 
-# ruff: file-ignore[commented-out-code]
-# ^^^ needed for the commented-out `LinearOperator.__init__`  code below (mypy workaround)
-
-class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
+class LinearOperator(Generic[_SCT_co, _ShapeT_co]):
     __array_ufunc__: ClassVar[None] = None
 
     @classmethod
@@ -85,10 +65,13 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
     ndim: Final[int]
     _xp: Final[ModuleType]
 
+    def __new__(cls, /, *args: Incomplete, **kwargs: Incomplete) -> Self: ...
+
     # keep in sync with `_CustomLinearOperator.__init__`
     @overload  # no dtype
-    def __new__[ShapeT: _Shape](
-        cls,
+    def __init__[ShapeT: _Shape](
+        self: LinearOperator[np.int8 | Any, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
@@ -96,10 +79,11 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         dtype: None = None,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.int8 | Any, ShapeT]: ...
+    ) -> None: ...
     @overload  # dtype known (positional)
-    def __new__[SCT: _Scalar, ShapeT: _Shape](
-        cls,
+    def __init__[SCT: _Scalar, ShapeT: _Shape](
+        self: LinearOperator[SCT, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
@@ -107,10 +91,11 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         dtype: onp.ToDType[SCT],
         rmatmat: _FunMatMat | None = None,
         xp: ModuleType | None = None,
-    ) -> _CustomLinearOperator[SCT, ShapeT]: ...
+    ) -> None: ...
     @overload  # dtype known (keyword)
-    def __new__[SCT: _Scalar, ShapeT: _Shape](
-        cls,
+    def __init__[SCT: _Scalar, ShapeT: _Shape](
+        self: LinearOperator[SCT, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
@@ -119,10 +104,11 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         dtype: onp.ToDType[SCT],
         rmatmat: _FunMatMat | None = None,
         xp: ModuleType | None = None,
-    ) -> _CustomLinearOperator[SCT, ShapeT]: ...
+    ) -> None: ...
     @overload  # dtype-like int_ (positional)
-    def __new__[ShapeT: _Shape](
-        cls,
+    def __init__[ShapeT: _Shape](
+        self: LinearOperator[np.int_, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
@@ -130,10 +116,11 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         dtype: onp.AnyIntDType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.int_, ShapeT]: ...
+    ) -> None: ...
     @overload  # dtype-like int_ (keyword)
-    def __new__[ShapeT: _Shape](
-        cls,
+    def __init__[ShapeT: _Shape](
+        self: LinearOperator[np.int_, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
@@ -142,10 +129,11 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         dtype: onp.AnyIntDType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.int_, ShapeT]: ...
+    ) -> None: ...
     @overload  # dtype-like float64 (positional)
-    def __new__[ShapeT: _Shape](
-        cls,
+    def __init__[ShapeT: _Shape](
+        self: LinearOperator[np.float64, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
@@ -153,10 +141,11 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         dtype: onp.AnyFloat64DType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.float64, ShapeT]: ...
+    ) -> None: ...
     @overload  # dtype-like float64 (positional)
-    def __new__[ShapeT: _Shape](
-        cls,
+    def __init__[ShapeT: _Shape](
+        self: LinearOperator[np.float64, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
@@ -165,10 +154,11 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         dtype: onp.AnyFloat64DType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.float64, ShapeT]: ...
+    ) -> None: ...
     @overload  # dtype-like complex128 (positional)
-    def __new__[ShapeT: _Shape](
-        cls,
+    def __init__[ShapeT: _Shape](
+        self: LinearOperator[np.complex128, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None,
@@ -176,10 +166,11 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         dtype: onp.AnyComplex128DType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.complex128, ShapeT]: ...
+    ) -> None: ...
     @overload  # dtype-like complex128 (keyword)
-    def __new__[ShapeT: _Shape](
-        cls,
+    def __init__[ShapeT: _Shape](
+        self: LinearOperator[np.complex128, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
@@ -188,10 +179,11 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         dtype: onp.AnyComplex128DType,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[np.complex128, ShapeT]: ...
+    ) -> None: ...
     @overload  # unknown dtype
-    def __new__[ShapeT: _Shape](
-        cls,
+    def __init__[ShapeT: _Shape](
+        self: LinearOperator[Any, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
@@ -199,10 +191,11 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         dtype: type | str | None = None,
         rmatmat: _FunMatMat | None = None,
         xp: None = None,
-    ) -> _CustomLinearOperator[Any, ShapeT]: ...
+    ) -> None: ...
     @overload  # xp given
-    def __new__[ShapeT: _Shape](
-        cls,
+    def __init__[ShapeT: _Shape](
+        self: LinearOperator[Any, ShapeT],
+        /,
         shape: ShapeT,
         matvec: _FunMatVec,
         rmatvec: _FunMatVec | None = None,
@@ -211,26 +204,9 @@ class LinearOperator(_LinearOperatorInit, Generic[_SCT_co, _ShapeT_co]):
         rmatmat: _FunMatMat | None = None,
         *,
         xp: ModuleType,
-    ) -> _CustomLinearOperator[Any, ShapeT]: ...
-
-    # NOTE: the `__init__` method cannot be annotated, because it will cause mypy to ignore `__new__`:
-    # https://github.com/python/mypy/issues/17251
-
-    # @overload
-    # def __init__(self, /, dtype: onp.ToDType[_SCT_co], shape: _ShapeT_co) -> None: ...
-    # @overload
-    # def __init__[ShapeT: _Shape](self: LinearOperator[np.int_, ShapeT], /, dtype: onp.AnyIntDType, shape: ShapeT) -> None: ...
-    # @overload
-    # def __init__[ShapeT: _Shape](
-    #     self: LinearOperator[np.float64, ShapeT], /, dtype: onp.AnyFloat64DType, shape: ShapeT
-    # ) -> None: ...
-    # @overload
-    # def __init__[ShapeT: _Shape](
-    #     self: LinearOperator[np.complex128, ShapeT], /, dtype: onp.AnyComplex128DType, shape: ShapeT
-    # ) -> None: ...
-    # @overload
-    # def __init__[ShapeT: _Shape](self: LinearOperator[Any, ShapeT], /, dtype: type | str | None, shape: ShapeT) -> None: ...
-
+    ) -> None: ...
+    @overload  # subclass
+    def __init__(self, /, dtype: Incomplete, shape: Iterable[SupportsIndex], xp: ModuleType | None = None) -> None: ...
     @override
     def __getstate__(self, /) -> dict[str, Any]: ...
     def __setstate__(self, state: dict[str, Any], /) -> None: ...

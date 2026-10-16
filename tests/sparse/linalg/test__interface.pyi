@@ -1,3 +1,4 @@
+from types import ModuleType
 from typing import Any, assert_type
 
 import numpy as np
@@ -11,6 +12,8 @@ from scipy.sparse.linalg._interface import MatrixLinearOperator, _CustomLinearOp
 _type_int: type[int]
 _type_float: type[float]
 _type_complex: type[complex]
+_dtype_str: str
+_xp: ModuleType
 
 _2d: tuple[int, int]
 _3d: tuple[int, int, int]
@@ -38,31 +41,36 @@ class _MatVecDType(_MatVec):
     dtype: np.dtype[np.float64]
 
 class _Diag(LinearOperator[np.float64]):
-    def __init__(self, /, n: int) -> None: ...
+    def __init__(self, /, shape: tuple[int, int]) -> None: ...
 
 _diag: _Diag
 
 ###
-# LinearOperator.__new__
+# LinearOperator.__init__
 
 def mv(v: npt.NDArray[np.float64 | np.complex128]) -> npt.NDArray[np.float64 | np.complex128]: ...
 
-assert_type(LinearOperator(_2d, matvec=mv, dtype=np.int16), _CustomLinearOperator[np.int16, tuple[int, int]])
-assert_type(LinearOperator(_2d, matvec=mv, dtype=int), _CustomLinearOperator[np.int_, tuple[int, int]])
-assert_type(LinearOperator(_2d, matvec=mv, dtype=float), _CustomLinearOperator[np.float64, tuple[int, int]])
-assert_type(LinearOperator(_2d, matvec=mv, dtype=complex), _CustomLinearOperator[np.complex128, tuple[int, int]])
-assert_type(LinearOperator(_2d, matvec=mv), _CustomLinearOperator[np.int8 | Any, tuple[int, int]])
+assert_type(LinearOperator(_2d, matvec=mv, dtype=np.int16), LinearOperator[np.int16, tuple[int, int]])
+assert_type(LinearOperator(_2d, matvec=mv, dtype=int), LinearOperator[np.int_, tuple[int, int]])
+assert_type(LinearOperator(_2d, matvec=mv, dtype=float), LinearOperator[np.float64, tuple[int, int]])
+assert_type(LinearOperator(_2d, matvec=mv, dtype=complex), LinearOperator[np.complex128, tuple[int, int]])
+assert_type(LinearOperator(_2d, matvec=mv), LinearOperator[np.int8 | Any, tuple[int, int]])
 
-assert_type(LinearOperator(_3d, matvec=mv, dtype=np.int16), _CustomLinearOperator[np.int16, tuple[int, int, int]])
-assert_type(LinearOperator(_3d, matvec=mv, dtype=int), _CustomLinearOperator[np.int_, tuple[int, int, int]])
-assert_type(LinearOperator(_3d, matvec=mv, dtype=float), _CustomLinearOperator[np.float64, tuple[int, int, int]])
-assert_type(LinearOperator(_3d, matvec=mv, dtype=complex), _CustomLinearOperator[np.complex128, tuple[int, int, int]])
-assert_type(LinearOperator(_3d, matvec=mv), _CustomLinearOperator[np.int8 | Any, tuple[int, int, int]])
+assert_type(LinearOperator(_3d, matvec=mv, dtype=np.int16), LinearOperator[np.int16, tuple[int, int, int]])
+assert_type(LinearOperator(_3d, matvec=mv, dtype=int), LinearOperator[np.int_, tuple[int, int, int]])
+assert_type(LinearOperator(_3d, matvec=mv, dtype=float), LinearOperator[np.float64, tuple[int, int, int]])
+assert_type(LinearOperator(_3d, matvec=mv, dtype=complex), LinearOperator[np.complex128, tuple[int, int, int]])
+assert_type(LinearOperator(_3d, matvec=mv), LinearOperator[np.int8 | Any, tuple[int, int, int]])
 
-###
-# LinearOperator.__init__
+assert_type(LinearOperator(_2d, mv, None, None, np.int16), LinearOperator[np.int16, tuple[int, int]])
+assert_type(LinearOperator(_2d, mv, None, None, int), LinearOperator[np.int_, tuple[int, int]])
+assert_type(LinearOperator(_2d, mv, None, None, float), LinearOperator[np.float64, tuple[int, int]])
+assert_type(LinearOperator(_2d, mv, None, None, complex), LinearOperator[np.complex128, tuple[int, int]])
+assert_type(LinearOperator(_2d, matvec=mv, dtype=_dtype_str), LinearOperator[Any, tuple[int, int]])
+assert_type(LinearOperator(_2d, matvec=mv, xp=_xp), LinearOperator[Any, tuple[int, int]])
 
 assert_type(super(_Diag, _diag).__init__(np.float64, _2d), None)
+assert_type(_Diag(_2d), _Diag)
 
 ###
 # aslinearoperator
