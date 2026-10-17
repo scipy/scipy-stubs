@@ -275,7 +275,7 @@ def cumulative_trapezoid(
     dx: float = 1.0,
     axis: int = -1,
     initial: float | None = None,
-) -> onp.Array: ...
+) -> onp.ArrayND[Any, tuple[Any, ...] | tuple[int]]: ...  # workaround for pyright on numpy<2.1
 
 # NOTE: omitted `x` promotes to 64-bit here; `cumulative_trapezoid` keeps `y`'s dtype unless `x` is wider
 @overload  # +int, shape known
