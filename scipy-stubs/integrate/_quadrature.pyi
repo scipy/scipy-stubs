@@ -16,6 +16,9 @@ type _FixedQuadFunc[T] = Callable[Concatenate[onp.Array1D[np.float64], ...], T]
 
 # workaround for mypy & pyright's failure to conform to the overload typing specification
 type _JustAnyShape = tuple[Never, Never, Never]
+# numpy 2.2 spells NDArray[Any] as ndarray[tuple[int, ...], dtype[Any]], which misses
+# `_JustAnyShape` and then matches longdouble. dtype[Never] still matches that Any.
+type _GradualArray = onp.ArrayND[Any, _JustAnyShape] | onp.ArrayND[Never]
 
 ###
 
@@ -248,18 +251,14 @@ def cumulative_trapezoid[ShapeT: tuple[int, ...]](
 @overload  # ~f16/f32, shape known, gradual x
 def cumulative_trapezoid[ShapeT: tuple[int, ...]](
     y: onp.ArrayND[np.float16 | np.float32, ShapeT],
-    x: onp.ArrayND[Any, _JustAnyShape],
+    x: _GradualArray,
     dx: float = 1.0,
     axis: int = -1,
     initial: float | None = None,
 ) -> Any: ...
 @overload  # ~c64, shape known, gradual x
 def cumulative_trapezoid[ShapeT: tuple[int, ...]](
-    y: onp.ArrayND[np.complex64, ShapeT],
-    x: onp.ArrayND[Any, _JustAnyShape],
-    dx: float = 1.0,
-    axis: int = -1,
-    initial: float | None = None,
+    y: onp.ArrayND[np.complex64, ShapeT], x: _GradualArray, dx: float = 1.0, axis: int = -1, initial: float | None = None
 ) -> Any: ...
 @overload  # ~f16/f32/f64, shape known, longdouble x
 def cumulative_trapezoid[ShapeT: tuple[int, ...]](
