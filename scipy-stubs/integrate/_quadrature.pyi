@@ -203,7 +203,7 @@ def romb(y: onp.ToComplexND, dx: float = 1.0, axis: int = -1, show: bool = False
 
 # sample-based cumulative integration
 
-# NOTE: unlike `cumulative_simpson`, this is dtype-preserving for dtypes below 64-bits precision
+# NOTE: sub-64-bit `y` is kept unless `x` or `dx` promotes it
 @overload  # +int, shape known
 def cumulative_trapezoid[ShapeT: tuple[int, ...]](
     y: onp.ArrayND[npc.integer | np.bool, ShapeT],
@@ -232,21 +232,58 @@ def cumulative_trapezoid(
 def cumulative_trapezoid(
     y: onp.SequenceND[float], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: float | None = None
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # f16 widened by an f32 x
-def cumulative_trapezoid[ShapeT: tuple[int, ...]](
-    y: onp.ArrayND[np.float16, ShapeT], x: onp.ToJustFloat32_ND, dx: float = 1.0, axis: int = -1, initial: float | None = None
-) -> onp.ArrayND[np.float32, ShapeT]: ...
-@overload  # f16/f32 widened by an f64 x
+@overload  # ~f16/f32, shape known, promoting dx
 def cumulative_trapezoid[ShapeT: tuple[int, ...]](
     y: onp.ArrayND[np.float16 | np.float32, ShapeT],
-    x: onp.ToJustFloat64_ND,
-    dx: float = 1.0,
+    x: None = None,
+    *,
+    dx: np.float64,
     axis: int = -1,
     initial: float | None = None,
 ) -> onp.ArrayND[np.float64, ShapeT]: ...
-@overload  # c64 widened by an f64 x
+@overload  # ~c64, shape known, promoting dx
 def cumulative_trapezoid[ShapeT: tuple[int, ...]](
-    y: onp.ArrayND[np.complex64, ShapeT], x: onp.ToJustFloat64_ND, dx: float = 1.0, axis: int = -1, initial: float | None = None
+    y: onp.ArrayND[np.complex64, ShapeT], x: None = None, *, dx: np.float64, axis: int = -1, initial: float | None = None
+) -> onp.ArrayND[np.complex128, ShapeT]: ...
+@overload  # ~f16/f32, shape known, gradual x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.float16 | np.float32, ShapeT],
+    x: onp.ArrayND[Any, _JustAnyShape],
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | None = None,
+) -> Any: ...
+@overload  # ~c64, shape known, gradual x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.complex64, ShapeT],
+    x: onp.ArrayND[Any, _JustAnyShape],
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | None = None,
+) -> Any: ...
+@overload  # ~f16/f32/f64, shape known, longdouble x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.float16 | np.float32 | np.float64, ShapeT],
+    x: onp.ToJustLongDoubleND,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | None = None,
+) -> onp.ArrayND[np.longdouble, ShapeT]: ...
+@overload  # ~c64/c128, shape known, longdouble x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.complex64 | np.complex128, ShapeT],
+    x: onp.ToJustLongDoubleND,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | None = None,
+) -> onp.ArrayND[np.clongdouble, ShapeT]: ...
+@overload  # ~f16/f32, shape known, promoting x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.float16 | np.float32, ShapeT], x: _ToF64ND, dx: float = 1.0, axis: int = -1, initial: float | None = None
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # ~c64, shape known, promoting x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.complex64, ShapeT], x: _ToF64ND, dx: float = 1.0, axis: int = -1, initial: float | None = None
 ) -> onp.ArrayND[np.complex128, ShapeT]: ...
 @overload  # T:inexact, shape known
 def cumulative_trapezoid[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
@@ -277,7 +314,7 @@ def cumulative_trapezoid(
     initial: float | None = None,
 ) -> onp.ArrayND[Any, tuple[Any, ...] | tuple[int]]: ...  # workaround for pyright on numpy<2.1
 
-# NOTE: omitted `x` promotes to 64-bit here; `cumulative_trapezoid` keeps `y`'s dtype unless `x` is wider
+# NOTE: unlike `cumulative_trapezoid`, propagates 64bit sctypes if it matches `x`
 @overload  # +int, shape known
 def cumulative_simpson[ShapeT: tuple[int, ...]](
     y: onp.ArrayND[npc.integer | np.bool, ShapeT],
