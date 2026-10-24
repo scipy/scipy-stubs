@@ -40,6 +40,10 @@ c128_1d: onp.Array1D[np.complex128]
 c128_2d: onp.Array2D[np.complex128]
 c128_nd: onp.ArrayND[np.complex128]
 
+f64_dx: np.float64
+any_nd: npt.NDArray[Any]
+ld_1d: onp.Array1D[np.longdouble]
+
 ###
 # trapezoid
 
@@ -152,6 +156,10 @@ assert_type(cumulative_trapezoid(i64_nd), onp.ArrayND[np.float64])
 assert_type(cumulative_trapezoid(f32_1d), onp.Array1D[np.float32])
 assert_type(cumulative_trapezoid(f32_2d), onp.Array2D[np.float32])
 assert_type(cumulative_trapezoid(f32_nd), onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
+assert_type(cumulative_trapezoid(f32_1d, i64_1d), onp.Array1D[np.float64])
+assert_type(cumulative_trapezoid(f32_1d, ld_1d), onp.Array1D[np.longdouble])
+assert_type(cumulative_trapezoid(f32_1d, dx=f64_dx), onp.Array1D[np.float64])
+assert_type(cumulative_trapezoid(f32_1d, any_nd), Any)
 
 assert_type(cumulative_trapezoid(f64_1d), onp.Array1D[np.float64])
 assert_type(cumulative_trapezoid(f64_2d), onp.Array2D[np.float64])
@@ -160,6 +168,10 @@ assert_type(cumulative_trapezoid(f64_nd), onp.ArrayND[np.float64])  # pyrefly:ig
 assert_type(cumulative_trapezoid(c64_1d), onp.Array1D[np.complex64])
 assert_type(cumulative_trapezoid(c64_2d), onp.Array2D[np.complex64])
 assert_type(cumulative_trapezoid(c64_nd), onp.ArrayND[np.complex64])  # pyrefly:ignore[assert-type]
+assert_type(cumulative_trapezoid(c64_1d, f64_1d), onp.Array1D[np.complex128])
+assert_type(cumulative_trapezoid(c64_1d, ld_1d), onp.Array1D[np.clongdouble])
+assert_type(cumulative_trapezoid(c64_1d, dx=f64_dx), onp.Array1D[np.complex128])
+assert_type(cumulative_trapezoid(c64_1d, any_nd), Any)
 
 assert_type(cumulative_trapezoid(c128_1d), onp.Array1D[np.complex128])
 assert_type(cumulative_trapezoid(c128_2d), onp.Array2D[np.complex128])
