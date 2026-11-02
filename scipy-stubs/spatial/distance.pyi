@@ -78,12 +78,11 @@ type _MetricNameMinkowski = Literal["minkowski", "mi", "m", "pnorm"]
 type _MetricNameSEuclidean = Literal["seuclidean", "se", "s"]
 type _MetricNameMahalanobis = Literal["mahalanobis", "mahal", "mah"]
 type _MetricNameJS = Literal["jensenshannon", "js"]
-type _MetricNameAll = _MetricName | _MetricNameMinkowski | _MetricNameSEuclidean | _MetricNameMahalanobis | _MetricNameJS
 
 ###
 
 type _MetricFunc = Callable[[onp.Array1D[np.float64], onp.Array1D[np.float64]], onp.ToFloat | None]
-type _Metric = _MetricNameAll | _MetricFunc  # ruff: ignore[unused-private-type-alias]
+type _Metric = _MetricName | _MetricNameMinkowski | _MetricNameSEuclidean | _MetricNameMahalanobis | _MetricNameJS | _MetricFunc  # ruff: ignore[unused-private-type-alias]
 
 type _Force = Literal["NO", "No", "no", "TOMATRIX", "ToMatrix", "tomatrix", "TOVECTOR", "ToVector", "tovector"]
 
