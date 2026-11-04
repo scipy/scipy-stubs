@@ -65,18 +65,44 @@ def _f(u: Unused, v: Unused) -> float: ...
 # cdist
 assert_type(cdist(_f64_2d, _f64_2d), onp.Array2D[np.float64])
 assert_type(cdist(_f64_2d, _f64_2d, "euclidean"), onp.Array2D[np.float64])
+assert_type(cdist(_f64_2d, _f64_2d, "euclidean", w=_f64_1d), onp.Array2D[np.float64])
 assert_type(cdist(_f64_2d, _f64_2d, "cosine"), onp.Array2D[np.float64])
 assert_type(cdist(_f64_2d, _f64_2d, "matching"), onp.Array2D[np.float64])
+assert_type(cdist(_f64_2d, _f64_2d, "correlation", w=_f64_1d, centered=False), onp.Array2D[np.float64])
+assert_type(cdist(_f64_2d, _f64_2d, "minkowski", p=3, w=_f64_1d), onp.Array2D[np.float64])
 assert_type(cdist(_py_f_2d, _py_f_2d, "seuclidean", V=_py_f_1d), onp.Array2D[np.float64])
+assert_type(cdist(_f64_2d, _f64_2d, "mahalanobis", VI=_f64_2d), onp.Array2D[np.float64])
+assert_type(cdist(_f64_2d, _f64_2d, "jensenshannon"), onp.Array2D[np.float64])
 assert_type(cdist(_f64_2d, _f64_2d, metric=_f), onp.Array2D[np.float64])
+# pyrefly: ignore [no-matching-overload]
+cdist(_f64_2d, _f64_2d, "euclidean", p=3)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
+# pyrefly: ignore [no-matching-overload]
+cdist(_f64_2d, _f64_2d, "correlation", centered=False)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType]
+# pyrefly: ignore [no-matching-overload]
+cdist(_f64_2d, _f64_2d, "seuclidean", w=_f64_1d)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
+# pyrefly: ignore [no-matching-overload]
+cdist(_f64_2d, _f64_2d, "jensenshannon", w=_f64_1d)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 
 # pdist
 assert_type(pdist(_f64_2d), onp.Array1D[np.float64])
 assert_type(pdist(_f64_2d, "euclidean"), onp.Array1D[np.float64])
+assert_type(pdist(_f64_2d, "euclidean", w=_f64_1d), onp.Array1D[np.float64])
 assert_type(pdist(_f64_2d, "cosine"), onp.Array1D[np.float64])
 assert_type(pdist(_f64_2d, "matching"), onp.Array1D[np.float64])
+assert_type(pdist(_f64_2d, "correlation", w=_f64_1d, centered=False), onp.Array1D[np.float64])
+assert_type(pdist(_f64_2d, "minkowski", p=3, w=_f64_1d), onp.Array1D[np.float64])
 assert_type(pdist(_py_f_2d, "seuclidean", V=_py_f_1d), onp.Array1D[np.float64])
+assert_type(pdist(_f64_2d, "mahalanobis", VI=_f64_2d), onp.Array1D[np.float64])
+assert_type(pdist(_f64_2d, "jensenshannon"), onp.Array1D[np.float64])
 assert_type(pdist(_f64_2d, metric=_f), onp.Array1D[np.float64])
+# pyrefly: ignore [no-matching-overload]
+pdist(_f64_2d, "euclidean", p=3)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
+# pyrefly: ignore [no-matching-overload]
+pdist(_f64_2d, "correlation", centered=False)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType]
+# pyrefly: ignore [no-matching-overload]
+pdist(_f64_2d, "seuclidean", w=_f64_1d)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
+# pyrefly: ignore [no-matching-overload]
+pdist(_f64_2d, "jensenshannon", w=_f64_1d)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
 
 # squareform
 assert_type(squareform(_py_i_1d), onp.Array2D[np.intp])
