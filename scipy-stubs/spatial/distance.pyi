@@ -133,6 +133,7 @@ def cdist(
     metric: _MetricNameSEuclidean,
     *,
     out: onp.Array2D[np.float64] | None = None,
+    w: None = None,
     V: onp.ToFloat1D | None = None,
 ) -> onp.Array2D[np.float64]: ...
 @overload  # mahalanobis
@@ -142,11 +143,12 @@ def cdist(
     metric: _MetricNameMahalanobis,
     *,
     out: onp.Array2D[np.float64] | None = None,
+    w: None = None,
     VI: onp.ToFloat2D | None = None,
 ) -> onp.Array2D[np.float64]: ...
 @overload  # jensenshannon
 def cdist(
-    XA: onp.ToFloat2D, XB: onp.ToFloat2D, metric: _MetricNameJS, *, out: onp.Array2D[np.float64] | None = None
+    XA: onp.ToFloat2D, XB: onp.ToFloat2D, metric: _MetricNameJS, *, out: onp.Array2D[np.float64] | None = None, w: None = None
 ) -> onp.Array2D[np.float64]: ...
 @overload  # custom metric
 def cdist(
@@ -182,7 +184,12 @@ def pdist(
 ) -> onp.Array1D[np.float64]: ...
 @overload  # seuclidean
 def pdist(
-    X: onp.ToFloat2D, metric: _MetricNameSEuclidean, *, out: onp.Array1D[np.float64] | None = None, V: onp.ToFloat1D | None = None
+    X: onp.ToFloat2D,
+    metric: _MetricNameSEuclidean,
+    *,
+    out: onp.Array1D[np.float64] | None = None,
+    w: None = None,
+    V: onp.ToFloat1D | None = None,
 ) -> onp.Array1D[np.float64]: ...
 @overload  # mahalanobis
 def pdist(
@@ -190,10 +197,13 @@ def pdist(
     metric: _MetricNameMahalanobis,
     *,
     out: onp.Array1D[np.float64] | None = None,
+    w: None = None,
     VI: onp.ToFloat2D | None = None,
 ) -> onp.Array1D[np.float64]: ...
 @overload  # jensenshannon
-def pdist(X: onp.ToFloat2D, metric: _MetricNameJS, *, out: onp.Array1D[np.float64] | None = None) -> onp.Array1D[np.float64]: ...
+def pdist(
+    X: onp.ToFloat2D, metric: _MetricNameJS, *, out: onp.Array1D[np.float64] | None = None, w: None = None
+) -> onp.Array1D[np.float64]: ...
 @overload  # custom metric
 def pdist(
     X: onp.ToFloat2D, metric: _MetricFunc, *, out: onp.Array1D[np.float64] | None = None, **kwargs: object
