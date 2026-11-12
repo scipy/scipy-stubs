@@ -99,8 +99,8 @@ class RealData(Data):
     covy: Final[onp.ArrayND[_ToFloatScalar] | None]
 
     # readonly attributes that are dynamically computed in `RealData.__getattr__`
-    wd: onp.ArrayND[_ToFloatScalar] | None  # pyrefly: ignore[bad-override]
-    we: onp.ArrayND[_ToFloatScalar] | None  # pyrefly: ignore[bad-override]
+    wd: onp.ArrayND[_ToFloatScalar] | None  # pyrefly:ignore[bad-override] # ty:ignore[incompatible-mutable-override]
+    we: onp.ArrayND[_ToFloatScalar] | None  # pyrefly:ignore[bad-override] # ty:ignore[incompatible-mutable-override]
 
     @overload
     def __init__(

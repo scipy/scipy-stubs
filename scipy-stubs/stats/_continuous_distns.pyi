@@ -342,7 +342,7 @@ class norm_gen(_rv_continuous_0):
         self, /, data: onp.ToFloat64_ND | CensoredData[np.float64], *, floc: LocT, fscale: None = None, **kwds: onp.ToFloat64
     ) -> tuple[LocT, np.float64]: ...
     @overload  # fscale=<given>
-    def fit[ScaleT: onp.ToFloat64](  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def fit[ScaleT: onp.ToFloat64](  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
         self, /, data: onp.ToFloat64_ND | CensoredData[np.float64], *, floc: None = None, fscale: ScaleT, **kwds: onp.ToFloat64
     ) -> tuple[np.float64, ScaleT]: ...
 

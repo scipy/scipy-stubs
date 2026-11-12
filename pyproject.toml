@@ -226,7 +226,7 @@ include = [
   "scipy-stubs/stats/_distn_infrastructure.pyi",
   "scipy-stubs/special/_ufuncs.pyi",
 ]
-rules = { invalid-method-override = "ignore" }
+rules = { incompatible-method-override = "ignore" }
 
 # repo-review
 

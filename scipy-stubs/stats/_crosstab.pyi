@@ -28,7 +28,7 @@ class CrosstabResult(BaseBunch[Any, Any], Generic[_ScalarT_co, _CountT_co]):
     def elements(self, /) -> tuple[onp.Array1D[_ScalarT_co], *tuple[onp.Array1D[_ScalarT_co], ...]]: ...
     @property
     @override
-    def count(self, /) -> _CountT_co: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override]
+    def count(self, /) -> _CountT_co: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty:ignore[incompatible-property-override]
 
     #
     def __new__(_cls, elements: tuple[onp.ArrayND[_ScalarT_co], ...], count: _CountT_co) -> Self: ...

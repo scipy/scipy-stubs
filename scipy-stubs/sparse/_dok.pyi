@@ -44,7 +44,7 @@ _ShapeT_co = TypeVar("_ShapeT_co", bound=_1D | _2D, default=_2D, covariant=True)
 
 ###
 
-class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:ignore[invalid-method-override]
+class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:ignore[incompatible-method-override]
     _spbase[_ScalarT_co, _ShapeT_co],
     IndexMixin[_ScalarT_co, _ShapeT_co],
     dict[tuple[Any, ...], _ScalarT_co | Any],  # pyrefly:ignore[invalid-variance] # ty:ignore[invalid-generic-class]
@@ -81,7 +81,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:igno
     @override
     def __len__(self, /) -> int: ...
     @override
-    def __delitem__[ShapeT: _1D | _2D](self: _dok_base[Any, ShapeT], key: ShapeT, /) -> None: ...  # pyrefly: ignore[bad-override]  # ty:ignore[invalid-method-override]
+    def __delitem__[ShapeT: _1D | _2D](self: _dok_base[Any, ShapeT], key: ShapeT, /) -> None: ...  # pyrefly: ignore[bad-override]  # ty:ignore[incompatible-method-override]
 
     #
     @override
@@ -92,7 +92,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:igno
     @overload
     def setdefault[ST: _Scalar, ShapeT: _1D | _2D](  # pyright: ignore[reportIncompatibleMethodOverride]
         self: _dok_base[ST, ShapeT], key: ShapeT, default: None = None, /
-    ) -> ST | None: ...  # ty:ignore[invalid-method-override]
+    ) -> ST | None: ...
 
     #
     @override
@@ -101,17 +101,17 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:igno
         self: _dok_base[ST, ShapeT], /, key: ShapeT, default: T
     ) -> ST | T: ...
     @overload
-    def get[ST: _Scalar, ShapeT: _1D | _2D](self: _dok_base[ST, ShapeT], /, key: ShapeT, default: float = 0.0) -> ST | float: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+    def get[ST: _Scalar, ShapeT: _1D | _2D](self: _dok_base[ST, ShapeT], /, key: ShapeT, default: float = 0.0) -> ST | float: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[incompatible-method-override]
 
     #
     @override
-    def __or__(self, other: Never, /) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
+    def __or__(self, other: Never, /) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[incompatible-method-override]
     @override
-    def __ror__(self, other: Never, /) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
+    def __ror__(self, other: Never, /) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[incompatible-method-override]
     @override
-    def __ior__(self, other: Never, /) -> Self: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
+    def __ior__(self, other: Never, /) -> Self: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[incompatible-method-override]
     @override
-    def update(self, /, val: Never) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
+    def update(self, /, val: Never) -> Never: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[incompatible-method-override]
 
     #
     @override
@@ -156,12 +156,12 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:igno
     def fromkeys[SelfT: _dok_base[np.float64, _2D]](cls: type[SelfT], iterable: _ToKeys2, v: op.JustComplex, /) -> SelfT: ...
     @overload
     @classmethod
-    def fromkeys(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]q
+    def fromkeys(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]q
         cls: type[_dok_base[np.complex128, _1D]], iterable: _ToKeys1, v: op.JustComplex, /
     ) -> _dok_base[np.complex128, _1D]: ...
 
 #
-class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):  # ty:ignore[invalid-method-override]
+class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT_co], Generic[_ScalarT_co, _ShapeT_co]):  # ty:ignore[incompatible-method-override]
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
@@ -496,7 +496,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     @overload
     def __getitem__[ST: _Scalar](self: dok_array[ST, _1D], key: _ToKey1D, /) -> ST: ...
     @overload
-    def __getitem__[ST: _Scalar](self: dok_array[ST, _2D], key: _ToKey1D, /) -> coo_array[ST, _1D]: ...  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def __getitem__[ST: _Scalar](self: dok_array[ST, _2D], key: _ToKey1D, /) -> coo_array[ST, _1D]: ...  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
 
     # NOTE: This horrible code duplication is required due to the lack of higher-kinded typing (HKT) support.
     # https://github.com/python/typing/issues/548
@@ -556,7 +556,7 @@ class dok_array(_dok_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
     ) -> dok_array[np.complex128, _1D]: ...
 
 #
-class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # ty:ignore[invalid-method-override]
+class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_ScalarT_co]):  # ty:ignore[incompatible-method-override]
     # NOTE: These four methods do not exist at runtime.
     # See the relevant comment in `sparse._base._spbase` for more information.
     @override
@@ -710,7 +710,7 @@ class dok_matrix(_dok_base[_ScalarT_co, _2D], spmatrix[_ScalarT_co], Generic[_Sc
         self, key: _ToKey1D | onp.CanArrayND[np.bool | npc.integer] | _spbase[np.bool, _2D] | list[int] | slice, /
     ) -> Self: ...
     @overload
-    def __getitem__(self, key: _ToKey2D, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+    def __getitem__(self, key: _ToKey2D, /) -> _ScalarT_co: ...  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[incompatible-method-override]
 
     #
     @override

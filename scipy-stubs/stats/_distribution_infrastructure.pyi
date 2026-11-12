@@ -180,15 +180,15 @@ class _Interval(_Domain[_XT_co], Generic[_XT_co]):  # pyrefly: ignore[implicit-a
     #
     def __init__(self, /, endpoints: _ToDomain = ..., inclusive: tuple[bool, bool] = (False, False)) -> None: ...
     @override
-    def get_numerical_endpoints(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-param-name-override] # ty: ignore[invalid-method-override]
+    def get_numerical_endpoints(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-param-name-override] # ty: ignore[lost-keyword-for-regular-parameter]
         self, /, parameter_values: _ParamValues
     ) -> tuple[onp.ArrayND[np.float64], onp.ArrayND[np.float64]]: ...
     @override
-    def contains(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
+    def contains(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[lost-keyword-for-regular-parameter]
         self, /, item: onp.ArrayND[_Real], parameter_values: _ParamValues | None = None
     ) -> onp.ArrayND[np.bool]: ...
     @override
-    def draw(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
+    def draw(  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[incompatible-method-override]
         self,
         /,
         n: int,
@@ -248,7 +248,7 @@ class _RealParameter(_Parameter[_FloatT_co], Generic[_FloatT_co]):
     # pyrefly: ignore[bad-override]
     def validate(self, /, arr: onp.ToFloat, parameter_values: _ParamValues) -> _ValidateOut0D[_FloatT_co]: ...
     @overload
-    def validate(self, /, arr: onp.ToFloatND, parameter_values: _ParamValues) -> _ValidateOutND[_FloatT_co, tuple[Any, ...]]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+    def validate(self, /, arr: onp.ToFloatND, parameter_values: _ParamValues) -> _ValidateOutND[_FloatT_co, tuple[Any, ...]]: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[incompatible-method-override]
 
 class _Parameterization:
     parameters: Final[Mapping[str, _Parameter]]
@@ -316,14 +316,14 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def support(self: _BaseDist0[_XT], /) -> _Tuple2[_XT]: ...
     @overload
-    def support(self: _BaseDistribution[_XT, _ShapeT1], /) -> _Tuple2[onp.Array[_ShapeT1, _XT]]: ...  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def support(self: _BaseDistribution[_XT, _ShapeT1], /) -> _Tuple2[onp.Array[_ShapeT1, _XT]]: ...  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
 
     #
     @override
     @overload
     def median(self: _BaseDist0[_XT], /, *, method: _MedianMethod | None = None) -> _XT: ...
     @overload
-    def median(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def median(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _MedianMethod | None = None
     ) -> onp.Array[_ShapeT1, _XT]: ...
 
@@ -332,7 +332,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def mode(self: _BaseDist0[_XT], /, *, method: _ModeMethod | None = None) -> _XT: ...
     @overload
-    def mode(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def mode(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _ModeMethod | None = None
     ) -> onp.Array[_ShapeT1, _XT]: ...
 
@@ -378,7 +378,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def mean(self: _BaseDist0[_XT], /, *, method: _RMomentMethod | None = None) -> _XT: ...
     @overload
-    def mean(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def mean(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _RMomentMethod | None = None
     ) -> onp.ArrayND[_XT, _ShapeT1]: ...
 
@@ -387,7 +387,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def variance(self: _BaseDist0[_XT], /, *, method: _CMomentMethod | None = None) -> _XT: ...
     @overload
-    def variance(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def variance(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _CMomentMethod | None = None
     ) -> onp.ArrayND[_XT, _ShapeT1]: ...
 
@@ -396,7 +396,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def standard_deviation(self: _BaseDist0[_XT], /, *, method: _CMomentMethod | None = None) -> _XT: ...
     @overload
-    def standard_deviation(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def standard_deviation(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _CMomentMethod | None = None
     ) -> onp.ArrayND[_XT, _ShapeT1]: ...
 
@@ -405,7 +405,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def skewness(self: _BaseDist0[_XT], /, *, method: _SMomentMethod | None = None) -> _XT: ...
     @overload
-    def skewness(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def skewness(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
         self: _BaseDistribution[_XT, _ShapeT1], /, *, method: _SMomentMethod | None = None
     ) -> onp.ArrayND[_XT, _ShapeT1]: ...
 
@@ -416,7 +416,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDist0[_XT], /, *, method: _SMomentMethod | None = None, convention: _KurtosisConvention = "non-excess"
     ) -> _XT: ...
     @overload
-    def kurtosis(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def kurtosis(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
         self: _BaseDistribution[_XT, _ShapeT1],
         /,
         *,
@@ -478,7 +478,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         method: _SMomentMethod | None = None,
     ) -> _FloatND[_ShapeT1]: ...
     @overload
-    def moment(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def moment(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
         self: _BaseDistribution[Any, _ShapeT1],
         /,
         order: onp.ToInt = 1,
@@ -496,7 +496,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def entropy(self: _BaseDist0[npc.number], /, *, method: _EntropyMethod | None = None) -> np.float64 | Any: ...
     @overload
-    def entropy(  # ty:ignore[invalid-method-override]
+    def entropy(  # ty:ignore[incompatible-method-override]
         self: _BaseDistribution[Any, _ShapeT1], /, *, method: _EntropyMethod | None = None
     ) -> onp.ArrayND[np.float64 | Any, _ShapeT1]: ...
 
@@ -505,7 +505,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload
     def logentropy(self: _BaseDist0[npc.number], /, *, method: _EntropyMethod | None = None) -> _Complex: ...
     @overload
-    def logentropy(  # ty:ignore[invalid-method-override]
+    def logentropy(  # ty:ignore[incompatible-method-override]
         self: _BaseDistribution[Any, _ShapeT1], /, *, method: _EntropyMethod | None = None
     ) -> _ComplexND[_ShapeT1]: ...
 
@@ -544,7 +544,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, x: >=1-d
     def pdf(self: _BaseDist3[npc.number], x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def pdf(  # ty:ignore[invalid-method-override]
+    def pdf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -583,7 +583,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, x: >=1-d
     def logpdf(self: _BaseDist3[npc.number], x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def logpdf(  # ty:ignore[invalid-method-override]
+    def logpdf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -622,7 +622,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, x: >=1-d
     def pmf(self: _BaseDist3[npc.number], x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def pmf(  # ty:ignore[invalid-method-override]
+    def pmf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -661,7 +661,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, x: >=1-d
     def logpmf(self: _BaseDist3[npc.number], x: onp.ToFloatND, /, *, method: _PXFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def logpmf(  # ty:ignore[invalid-method-override]
+    def logpmf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, /, *, method: _PXFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -811,7 +811,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDist3[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod | None = None
     ) -> _Float3ND: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
-    def cdf(  # ty:ignore[invalid-method-override]
+    def cdf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -960,7 +960,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDist3[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod | None = None
     ) -> _Float3ND: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
-    def logcdf(  # ty:ignore[invalid-method-override]
+    def logcdf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1109,7 +1109,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDist3[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod | None = None
     ) -> _Float3ND: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
-    def ccdf(  # ty:ignore[invalid-method-override]
+    def ccdf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1258,7 +1258,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
         self: _BaseDist3[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod | None = None
     ) -> _Float3ND: ...
     @overload  # self: >=1-d, x: >=0-d, y?: >=0-d
-    def logccdf(  # ty:ignore[invalid-method-override]
+    def logccdf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], x: _ToFloat0ND, y: _ToFloat0ND | None = None, /, *, method: _CCDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1297,7 +1297,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, p: >=1-d
     def icdf(self: _BaseDist3[npc.number], p: onp.ToFloatND, /, *, method: _ICDFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def icdf(  # ty:ignore[invalid-method-override]
+    def icdf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], p: _ToFloat0ND, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1336,7 +1336,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, logp: >=1-d
     def ilogcdf(self: _BaseDist3[npc.number], logp: onp.ToFloatND, /, *, method: _ICDFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def ilogcdf(  # ty:ignore[invalid-method-override]
+    def ilogcdf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], logp: _ToFloat0ND, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1375,7 +1375,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, p: >=1-d
     def iccdf(self: _BaseDist3[npc.number], p: onp.ToFloatND, /, *, method: _ICDFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def iccdf(  # ty:ignore[invalid-method-override]
+    def iccdf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], p: _ToFloat0ND, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1426,7 +1426,7 @@ class _BaseDistribution(_ProbabilityDistribution[_XT_co], Generic[_XT_co, _Shape
     @overload  # self: 3-d, logp: >=1-d
     def ilogccdf(self: _BaseDist3[npc.number], logp: onp.ToFloatND, /, *, method: _ICDFMethod | None = None) -> _Float3ND: ...
     @overload  # self: >=1-d
-    def ilogccdf(  # ty:ignore[invalid-method-override]
+    def ilogccdf(  # ty:ignore[incompatible-method-override]
         self: _BaseDist1N[npc.number], logp: _ToFloat0ND, /, *, method: _ICDFMethod | None = None
     ) -> _FloatND[tuple[Any, ...]]: ...
 
@@ -1797,7 +1797,7 @@ class Mixture(_BaseDistribution[_FloatT_co, _0D], Generic[_FloatT_co]):
     def __init__(self, /, components: Sequence[_CDist0[_FloatT_co]], *, weights: onp.ToFloat1D | None = None) -> None: ...
     #
     @override
-    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> np.float64: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[invalid-method-override]
+    def kurtosis(self, /, *, method: _SMomentMethod | None = None) -> np.float64: ...  # pyright: ignore[reportIncompatibleMethodOverride] # ty: ignore[incompatible-method-override]
 
     # always raises NotImplementedError`
     @override

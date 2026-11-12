@@ -658,7 +658,7 @@ class multivariate_normal_gen(multi_rv_generic):
 #
 class multivariate_normal_frozen(multi_rv_frozen[multivariate_normal_gen], Generic[_ShapeT_co]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment] # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     dim: Final[int]
     allow_singular: Final[bool]
@@ -1045,7 +1045,7 @@ class matrix_normal_gen(multi_rv_generic):
 
 class matrix_normal_frozen(multi_rv_frozen[matrix_normal_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     dims: Final[tuple[int, int]]
     mean: Final[onp.Array2D[np.float64]]
@@ -1191,7 +1191,7 @@ class dirichlet_gen(multi_rv_generic):
 
 class dirichlet_frozen(multi_rv_frozen[dirichlet_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     alpha: Final[onp.Array1D[npc.integer | npc.floating]]
 
@@ -1264,7 +1264,7 @@ class wishart_gen(multi_rv_generic):
 
 class wishart_frozen(multi_rv_frozen[wishart_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     dim: Final[int]
     df: Final[float]
@@ -1294,7 +1294,7 @@ class invwishart_gen(wishart_gen):
     @override
     def __call__(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # pyrefly: ignore[bad-override]
         self, /, df: onp.ToFloat | None = None, scale: _ToFloatMax2D | None = None, seed: onp.random.ToRNG | None = None
-    ) -> invwishart_frozen: ...  # ty: ignore[invalid-method-override]
+    ) -> invwishart_frozen: ...  # ty: ignore[incompatible-method-override]
 
     #
     @override
@@ -1308,18 +1308,18 @@ class invwishart_gen(wishart_gen):
     @overload
     def mean(self, /, df: onp.ToFloat, scale: onp.ToFloat) -> np.float64 | None: ...  # pyrefly:ignore[bad-override]
     @overload
-    def mean(self, /, df: onp.ToFloat, scale: onp.ToFloat1D | onp.ToFloat2D) -> onp.Array2D[np.float64] | None: ...  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def mean(self, /, df: onp.ToFloat, scale: onp.ToFloat1D | onp.ToFloat2D) -> onp.Array2D[np.float64] | None: ...  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
 
     #
     @override  # type:ignore[override]
     @overload
     def var(self, /, df: onp.ToFloat, scale: onp.ToFloat) -> np.float64 | None: ...  # pyrefly:ignore[bad-override]
     @overload
-    def var(self, /, df: onp.ToFloat, scale: onp.ToFloat1D | onp.ToFloat2D) -> onp.Array2D[np.float64] | None: ...  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[invalid-method-override]
+    def var(self, /, df: onp.ToFloat, scale: onp.ToFloat1D | onp.ToFloat2D) -> onp.Array2D[np.float64] | None: ...  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
 
 class invwishart_frozen(multi_rv_frozen[invwishart_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     dim: Final[int]
     df: Final[float]
@@ -1712,15 +1712,15 @@ class _group_rv_frozen_mixin(Generic[_ScalarT_co]):
 
 #
 class special_ortho_group_gen(_group_rv_gen_mixin[special_ortho_group_frozen], multi_rv_generic): ...
-class special_ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[special_ortho_group_gen]): ...  # type: ignore[misc] # pyrefly: ignore[inconsistent-inheritance]
+class special_ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[special_ortho_group_gen]): ...  # type:ignore[misc] # pyrefly:ignore[inconsistent-inheritance] # ty:ignore[incompatible-attribute-override]
 
 #
 class ortho_group_gen(_group_rv_gen_mixin[ortho_group_frozen], multi_rv_generic): ...
-class ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[ortho_group_gen]): ...  # type: ignore[misc] # pyrefly: ignore[inconsistent-inheritance]
+class ortho_group_frozen(_group_rv_frozen_mixin, multi_rv_frozen[ortho_group_gen]): ...  # type:ignore[misc] # pyrefly:ignore[inconsistent-inheritance] # ty:ignore[incompatible-attribute-override]
 
 #
 class unitary_group_gen(_group_rv_gen_mixin[unitary_group_frozen, np.complex128], multi_rv_generic): ...
-class unitary_group_frozen(_group_rv_frozen_mixin[np.complex128], multi_rv_frozen[unitary_group_gen]): ...  # type: ignore[misc] # pyrefly: ignore[inconsistent-inheritance]
+class unitary_group_frozen(_group_rv_frozen_mixin[np.complex128], multi_rv_frozen[unitary_group_gen]): ...  # type:ignore[misc] # pyrefly:ignore[inconsistent-inheritance] # ty:ignore[incompatible-attribute-override]
 
 class uniform_direction_gen(multi_rv_generic):
     def __call__(self, /, dim: int | None = None, seed: onp.random.ToRNG | None = None) -> uniform_direction_frozen: ...
@@ -1778,7 +1778,7 @@ class random_correlation_gen(multi_rv_generic):
 
 class random_correlation_frozen(multi_rv_frozen[random_correlation_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]  # ty:ignore[incompatible-attribute-override]
 
     eigs: Final[onp.Array1D[np.float64]]
     tol: Final[float]
@@ -2261,7 +2261,7 @@ class multivariate_t_gen(multi_rv_generic):
 #
 class multivariate_t_frozen(multi_rv_frozen[multivariate_t_gen], Generic[_ShapeT_co]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]  # ty:ignore[incompatible-attribute-override]
 
     dim: Final[int]
     df: Final[float | Any]
@@ -2941,7 +2941,7 @@ class random_table_gen(multi_rv_generic):
 
 class random_table_frozen(multi_rv_frozen[random_table_gen]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]  # ty:ignore[incompatible-attribute-override]
 
     def __init__(self, /, row: onp.ToJustIntND, col: onp.ToJustIntND, *, seed: onp.random.ToRNG | None = None) -> None: ...
 

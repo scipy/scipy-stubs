@@ -69,7 +69,7 @@ class _lil_base(_spbase[_ScalarT_co, tuple[int, int]], IndexMixin[_ScalarT_co, t
     @override
     def tolil(self, /, copy: bool = False) -> Self: ...  # type: ignore[override]
     @override
-    def resize(self, /, *shape: int) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override] # zuban: ignore[override]
+    def resize(self, /, *shape: int) -> None: ...  # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[incompatible-method-override] # zuban: ignore[override]
 
     #
     @override
@@ -294,7 +294,7 @@ class lil_array(_lil_base[_ScalarT_co], sparray[_ScalarT_co, tuple[int, int]], G
 
     #
     @override
-    def reshape(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+    def reshape(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[incompatible-method-override]
         self, /, *shape: SupportsIndex | tuple[SupportsIndex, ...], order: Literal["C", "F"] = "C", copy: bool = False
     ) -> lil_array[_ScalarT_co]: ...
 
@@ -510,7 +510,7 @@ class lil_matrix(_lil_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
 
     #
     @override
-    def reshape(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+    def reshape(  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[incompatible-method-override]
         self, /, *shape: SupportsIndex | tuple[SupportsIndex, ...], order: Literal["C", "F"] = "C", copy: bool = False
     ) -> lil_matrix[_ScalarT_co]: ...
 
