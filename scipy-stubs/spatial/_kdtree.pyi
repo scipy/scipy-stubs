@@ -63,7 +63,7 @@ class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _Box
 
     @property
     @override
-    def tree(self, /) -> KDTree.innernode | KDTree.leafnode: ...  # type:ignore[override]  # pyright:ignore[reportIncompatibleMethodOverride]  # pyrefly:ignore[bad-override]
+    def tree(self, /) -> KDTree.innernode | KDTree.leafnode: ...  # type:ignore[override] # pyright:ignore[reportIncompatibleMethodOverride] # pyrefly:ignore[bad-override] # ty:ignore[incompatible-property-override]
 
     #
     @overload
@@ -159,7 +159,7 @@ class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _Box
         workers: int | None = 1,
     ) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.intp]]: ...
     @overload  # 2d
-    def query(  # pyright:ignore[reportIncompatibleMethodOverride]  # ty:ignore[invalid-method-override]
+    def query(  # pyright:ignore[reportIncompatibleMethodOverride]  # ty:ignore[incompatible-method-override]
         self,
         /,
         x: onp.ToFloatStrict2D,

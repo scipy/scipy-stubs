@@ -2,6 +2,7 @@
 
 # pyright: reportIncompatibleMethodOverride=false
 # mypy: disable-error-code="overload-overlap, override"
+# ty: ignore[incompatible-property-override]
 
 from types import EllipsisType
 from typing import (

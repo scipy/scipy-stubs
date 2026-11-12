@@ -76,21 +76,21 @@ class CovViaDiagonal(Covariance[_ScalarT_co], Generic[_ScalarT_co]):
 # undocumented
 class CovViaPrecision(Covariance[np.float64]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     def __init__(self, /, precision: onp.ToFloat2D, covariance: onp.ToFloat2D | None = None) -> None: ...
 
 # undocumented
 class CovViaCholesky(Covariance[np.float64]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     def __init__(self, /, cholesky: onp.ToFloat2D) -> None: ...
 
 # undocumented
 class CovViaEigendecomposition(Covariance[np.float64]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     def __init__(self, /, eigendecomposition: tuple[onp.ToFloat1D, onp.ToFloat2D]) -> None: ...
 
@@ -110,7 +110,7 @@ class _PSD(Protocol):
 # undocumented
 class CovViaPSD(Covariance[np.float64]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment] # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     _LP: Final[onp.ArrayND[np.float64]]
     _log_pdet: Final[float]

@@ -98,7 +98,7 @@ class complex_ode(ode[np.complex128, *_Ts], Generic[*_Ts]):
 
     @override
     # pyrefly: ignore [bad-override]
-    def set_integrator(self, /, name: _IntegratorReal, **integrator_params: Unpack[_IntegratorParams]) -> Self: ...  # type:ignore[override]  # pyright:ignore[reportIncompatibleMethodOverride]  # ty:ignore[invalid-method-override]
+    def set_integrator(self, /, name: _IntegratorReal, **integrator_params: Unpack[_IntegratorParams]) -> Self: ...  # type:ignore[override]  # pyright:ignore[reportIncompatibleMethodOverride]  # ty:ignore[incompatible-method-override]
     @override
     def set_initial_value(self, /, y: complex | onp.ToComplex1D, t: float = 0.0) -> Self: ...
 
@@ -206,18 +206,18 @@ class vode(IntegratorBase[_InexactT_co], Generic[_InexactT_co]):
 # undocumented
 class zvode(vode[np.complex128]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment] # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     active_global_handle: int
     zwork: onp.Array1D[np.complex128]
     # pyrefly: ignore [bad-override]
-    call_args: list[float | onp.ArrayND[np.complex128] | onp.ArrayND[np.float64] | onp.ArrayND[np.int32]]  # type: ignore[assignment] # pyright: ignore[reportIncompatibleVariableOverride]
+    call_args: list[float | onp.ArrayND[np.complex128] | onp.ArrayND[np.float64] | onp.ArrayND[np.int32]]  # type:ignore[assignment] # pyright:ignore[reportIncompatibleVariableOverride] # ty:ignore[incompatible-attribute-override]
     initialized: bool
 
 # undocumented
 class dopri5(IntegratorBase[np.float64]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment] # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     name: ClassVar[str] = "dopri5"
     messages: ClassVar[dict[int, str]] = ...
@@ -282,7 +282,7 @@ class dop853(dopri5):
 # undocumented
 class lsoda(IntegratorBase[np.float64]):
     # pyrefly: ignore [bad-override]
-    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleMethodOverride]
+    __class_getitem__: ClassVar[None] = None  # type:ignore[assignment] # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-attribute-override]
 
     active_global_handle: ClassVar[int] = 0
     messages: ClassVar[dict[int, str]] = ...

@@ -46,7 +46,7 @@ class _TextToBytesWrapper(io.BufferedReader):
     def peek(self, /, size: int = -1) -> bytes: ...
     @override
     # pyrefly: ignore [bad-override]
-    def seek(self, /, offset: int, whence: int = 0) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+    def seek(self, /, offset: int, whence: int = 0) -> None: ...  # type: ignore[override]  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[incompatible-method-override]
 
 #
 @overload

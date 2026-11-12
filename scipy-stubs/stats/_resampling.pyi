@@ -81,7 +81,7 @@ class MonteCarloMethod(ResamplingMethod):
 @dataclass
 class PermutationMethod(ResamplingMethod):
     # this is a workaround for the horrible way in which `rng` is declared at runtime
-    __match_args__: ClassVar[tuple[str, ...]] = "n_resamples", "batch", "rng"  # pyright:ignore[reportIncompatibleVariableOverride] # pyrefly:ignore[bad-override] # ty:ignore[invalid-attribute-override]
+    __match_args__: ClassVar[tuple[str, ...]] = "n_resamples", "batch", "rng"  # pyright:ignore[reportIncompatibleVariableOverride] # pyrefly:ignore[bad-override] # ty:ignore[incompatible-attribute-override]
 
     @property
     def rng(self, /) -> onp.random.ToRNG | None: ...
@@ -127,7 +127,7 @@ class PermutationMethod(ResamplingMethod):
 @dataclass(match_args=False)
 class BootstrapMethod(ResamplingMethod):
     # this is a workaround for the horrible way in which `rng` is declared at runtime
-    __match_args__: ClassVar[tuple[str, ...]] = "n_resamples", "batch", "rng", "method"  # pyright:ignore[reportIncompatibleVariableOverride] # pyrefly:ignore[bad-override] # ty:ignore[invalid-attribute-override]
+    __match_args__: ClassVar[tuple[str, ...]] = "n_resamples", "batch", "rng", "method"  # pyright:ignore[reportIncompatibleVariableOverride] # pyrefly:ignore[bad-override] # ty:ignore[incompatible-attribute-override]
 
     method: _BootstrapMethod = "BCa"
 

@@ -613,7 +613,7 @@ class MatrixLinearOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co,
 @final
 class _AdjointMatrixOperator(MatrixLinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     # pyrefly: ignore [bad-override]
-    args: tuple[LinearOperator[_SCT_co, _ShapeT_co]]  # type: ignore[assignment]  # pyright: ignore[reportIncompatibleVariableOverride]
+    args: tuple[LinearOperator[_SCT_co, _ShapeT_co]]  # type: ignore[assignment] # pyright: ignore[reportIncompatibleVariableOverride] # ty: ignore[incompatible-attribute-override]
 
     #
     def __new__(cls, A: LinearOperator[_SCT_co, _ShapeT_co], xp: ModuleType | None = None) -> Self: ...
@@ -621,7 +621,7 @@ class _AdjointMatrixOperator(MatrixLinearOperator[_SCT_co, _ShapeT_co], Generic[
 
     #
     @override
-    def _adjoint(self, /) -> MatrixLinearOperator[_SCT_co, _ShapeT_co]: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[invalid-method-override]
+    def _adjoint(self, /) -> MatrixLinearOperator[_SCT_co, _ShapeT_co]: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty: ignore[incompatible-method-override]
 
 class IdentityOperator(LinearOperator[_SCT_co, _ShapeT_co], Generic[_SCT_co, _ShapeT_co]):
     @overload

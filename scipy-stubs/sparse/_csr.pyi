@@ -375,7 +375,7 @@ class csr_array(_csr_base[_ScalarT_co, _ShapeT_co], sparray[_ScalarT_co, _ShapeT
         self: csr_array[ST, tuple[int, int]], /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
     ) -> csc_array[ST]: ...
     @overload
-    def transpose[ST: _Scalar](  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[invalid-method-override]
+    def transpose[ST: _Scalar](  # pyright: ignore[reportIncompatibleMethodOverride]  # ty: ignore[incompatible-method-override]
         self: csr_array[ST, tuple[int]], /, axes: None = None, copy: bool = False
     ) -> csr_array[ST, tuple[int]]: ...
 
@@ -543,7 +543,7 @@ class csr_matrix(_csr_base[_ScalarT_co], spmatrix[_ScalarT_co], Generic[_ScalarT
     @override
     def transpose(  # type: ignore[override] # pyrefly: ignore[bad-override]
         self, /, axes: tuple[Literal[1, -1], Literal[0]] | None = None, copy: bool = False
-    ) -> csc_matrix[_ScalarT_co]: ...  # ty: ignore[invalid-method-override]
+    ) -> csc_matrix[_ScalarT_co]: ...  # ty: ignore[incompatible-method-override]
 
     #
     @override

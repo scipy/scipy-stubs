@@ -76,7 +76,7 @@ type = [
   "mypy[faster-cache]==2.4.1",
   "pyrefly==1.4.1",
   "stubdefaulter>=0.1.0",
-  "ty==0.0.85",
+  "ty==0.0.102",
   "zuban==0.10.2",
 ]
 dev = [
@@ -226,7 +226,7 @@ include = [
   "scipy-stubs/stats/_distn_infrastructure.pyi",
   "scipy-stubs/special/_ufuncs.pyi",
 ]
-rules = { invalid-method-override = "ignore" }
+rules = { incompatible-method-override = "ignore" }
 
 # repo-review
 

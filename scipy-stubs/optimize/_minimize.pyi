@@ -219,7 +219,7 @@ class OptimizeResult(_OptimizeResult, Generic[_FunT_co]):
 
 @type_check_only
 class _CobylaResult(OptimizeResult[np.float64]):
-    nfev: np.intp  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleVariableOverride] # pyrefly:ignore[bad-override-mutable-attribute]
+    nfev: np.intp  # type:ignore[assignment]  # pyright:ignore[reportIncompatibleVariableOverride] # pyrefly:ignore[bad-override-mutable-attribute] # ty:ignore[incompatible-attribute-override]
 
 @overload  # identity function with and one parameter, `jac` not truthy
 def minimize[Float1DT: _Float1D](
