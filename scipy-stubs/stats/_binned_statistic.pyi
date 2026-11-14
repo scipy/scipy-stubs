@@ -461,6 +461,62 @@ def binned_statistic_2d(
 ) -> BinnedStatistic2dResult[np.float64 | Any, _Shape2Or3, tuple[int, int]]: ...
 
 #
+# NOTE: an expanded 2d `sample` assumes `D > 1`; an `(N, 1)` sample squeezes `binnumber` to 1d at runtime
+@overload  # count|std, expanded (keyword)  (workaround)
+def binned_statistic_dd(
+    sample: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    values: onp.ToArrayND[complex, _AsF64 | _AsC128],
+    statistic: _StatisticF64,
+    bins: _ToBinsND = 10,
+    range: _ToRangeND = None,
+    *,
+    expand_binnumbers: Literal[True],
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
+) -> BinnedStatisticddResult[np.float64, tuple[Any, ...]]: ...
+@overload  # real, expanded (keyword)  (workaround)
+def binned_statistic_dd(
+    sample: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    values: onp.ToArrayND[float, _AsF64],
+    statistic: _StatisticPromoted | _StatFunc[np.float64, onp.ToFloat] = "mean",
+    bins: _ToBinsND = 10,
+    range: _ToRangeND = None,
+    *,
+    expand_binnumbers: Literal[True],
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
+) -> BinnedStatisticddResult[np.float64, tuple[Any, ...]]: ...
+@overload  # ~complex, expanded (keyword)  (workaround)
+def binned_statistic_dd(
+    sample: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    values: onp.ToArrayND[op.JustComplex, _AsC128],
+    statistic: _StatisticPromoted | _StatFunc[np.complex128, onp.ToComplex] = "mean",
+    bins: _ToBinsND = 10,
+    range: _ToRangeND = None,
+    *,
+    expand_binnumbers: Literal[True],
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
+) -> BinnedStatisticddResult[np.complex128, tuple[Any, ...]]: ...
+@overload  # real, ~complex statistic, expanded (keyword)  (workaround)
+def binned_statistic_dd(
+    sample: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    values: onp.ToArrayND[float, _AsF64],
+    statistic: _StatFunc[np.float64, onp.ToJustComplex],
+    bins: _ToBinsND = 10,
+    range: _ToRangeND = None,
+    *,
+    expand_binnumbers: Literal[True],
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
+) -> BinnedStatisticddResult[np.complex128, tuple[Any, ...]]: ...
+@overload  # values=None, count, expanded (keyword)  (workaround)
+def binned_statistic_dd(
+    sample: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
+    values: None,
+    statistic: Literal["count"],
+    bins: _ToBinsND = 10,
+    range: _ToRangeND = None,
+    *,
+    expand_binnumbers: Literal[True],
+    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
+) -> BinnedStatisticddResult[np.float64, tuple[Any, ...]]: ...
 @overload  # count|std
 def binned_statistic_dd(
     sample: _ToSample,
@@ -482,9 +538,9 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int]]: ...
-@overload  # count|std, expanded (keyword), 2d sample
+@overload  # count|std, expanded (keyword) (assumes D > 1)
 def binned_statistic_dd(
-    sample: onp.ToFloat2D,
+    sample: onp.ToFloatStrict2D,
     values: onp.ToArrayND[complex, _AsF64 | _AsC128],
     statistic: _StatisticF64,
     bins: _ToBinsND = 10,
@@ -492,7 +548,7 @@ def binned_statistic_dd(
     *,
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.float64]: ...
+) -> BinnedStatisticddResult[np.float64, tuple[int, int]]: ...
 @overload  # real
 def binned_statistic_dd(
     sample: _ToSample,
@@ -514,9 +570,9 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int]]: ...
-@overload  # real, expanded (keyword), 2d sample
+@overload  # real, expanded (keyword) (assumes D > 1)
 def binned_statistic_dd(
-    sample: onp.ToFloat2D,
+    sample: onp.ToFloatStrict2D,
     values: onp.ToArrayND[float, _AsF64],
     statistic: _StatisticPromoted | _StatFunc[np.float64, onp.ToFloat] = "mean",
     bins: _ToBinsND = 10,
@@ -524,7 +580,7 @@ def binned_statistic_dd(
     *,
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.float64]: ...
+) -> BinnedStatisticddResult[np.float64, tuple[int, int]]: ...
 @overload  # ~complex
 def binned_statistic_dd(
     sample: _ToSample,
@@ -546,9 +602,9 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.complex128, tuple[int]]: ...
-@overload  # ~complex, expanded (keyword), 2d sample
+@overload  # ~complex, expanded (keyword) (assumes D > 1)
 def binned_statistic_dd(
-    sample: onp.ToFloat2D,
+    sample: onp.ToFloatStrict2D,
     values: onp.ToArrayND[op.JustComplex, _AsC128],
     statistic: _StatisticPromoted | _StatFunc[np.complex128, onp.ToComplex] = "mean",
     bins: _ToBinsND = 10,
@@ -556,7 +612,7 @@ def binned_statistic_dd(
     *,
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.complex128]: ...
+) -> BinnedStatisticddResult[np.complex128, tuple[int, int]]: ...
 @overload  # real, ~complex statistic
 def binned_statistic_dd(
     sample: _ToSample,
@@ -578,9 +634,9 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.complex128, tuple[int]]: ...
-@overload  # real, ~complex statistic, expanded (keyword), 2d sample
+@overload  # real, ~complex statistic, expanded (keyword) (assumes D > 1)
 def binned_statistic_dd(
-    sample: onp.ToFloat2D,
+    sample: onp.ToFloatStrict2D,
     values: onp.ToArrayND[float, _AsF64],
     statistic: _StatFunc[np.float64, onp.ToJustComplex],
     bins: _ToBinsND = 10,
@@ -588,7 +644,7 @@ def binned_statistic_dd(
     *,
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.complex128]: ...
+) -> BinnedStatisticddResult[np.complex128, tuple[int, int]]: ...
 @overload  # values=None, count
 def binned_statistic_dd(
     sample: _ToSample,
@@ -610,9 +666,9 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int]]: ...
-@overload  # values=None, count, expanded (keyword), 2d sample
+@overload  # values=None, count, expanded (keyword) (assumes D > 1)
 def binned_statistic_dd(
-    sample: onp.ToFloat2D,
+    sample: onp.ToFloatStrict2D,
     values: None,
     statistic: Literal["count"],
     bins: _ToBinsND = 10,
@@ -620,7 +676,7 @@ def binned_statistic_dd(
     *,
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.float64]: ...
+) -> BinnedStatisticddResult[np.float64, tuple[int, int]]: ...
 @overload  # fallback
 def binned_statistic_dd(
     sample: _ToSample,
@@ -641,4 +697,4 @@ def binned_statistic_dd(
     *,
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.float64 | Any]: ...
+) -> BinnedStatisticddResult[np.float64 | Any, tuple[Any, ...]]: ...
