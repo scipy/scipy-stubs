@@ -47,6 +47,11 @@ _OriginScalarT = TypeVar("_OriginScalarT", bound=int | npc.integer, default=int)
 # NOTE: On numpy<2.1, pyright reports 2 false positive incompatible overload errors here.
 # pyright: reportOverlappingOverload=false
 
+# `iterations` 0 or 1 returns a copy of `structure` (dtype kept); a plain `int` is assumed to be > 1.
+@overload  # known shape, iterations=0|1
+def iterate_structure[ScalarT: np.bool | npc.integer | npc.floating, ShapeT: tuple[int, ...]](  # type: ignore[overload-overlap]
+    structure: onp.ArrayND[ScalarT, ShapeT], iterations: Literal[0, 1], origin: None = None
+) -> onp.ArrayND[ScalarT, ShapeT]: ...
 @overload  # known shape
 def iterate_structure(
     structure: onp.ArrayND[np.bool | npc.integer | npc.floating, _ShapeT], iterations: int, origin: None = None
@@ -57,6 +62,8 @@ def iterate_structure(
     iterations: int,
     origin: _OriginScalarT | Iterable[_OriginScalarT],
 ) -> tuple[onp.ArrayND[np.bool, _ShapeT], list[_OriginScalarT]]: ...
+@overload  # unknown shape, iterations=0|1
+def iterate_structure(structure: onp.ToFloatND, iterations: Literal[0, 1], origin: None = None) -> onp.ArrayND[Any]: ...
 @overload  # unknown shape
 def iterate_structure(structure: onp.ToFloatND, iterations: int, origin: None = None) -> onp.ArrayND[np.bool]: ...
 @overload  # unknown shape, origin=<given>
