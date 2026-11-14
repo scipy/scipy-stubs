@@ -100,9 +100,25 @@ def cspline1d_eval[InexactT: npc.inexact](
 ) -> onp.Array1D[InexactT]: ...
 
 #
-def qspline1d_eval[InexactQT: npc.inexact64 | npc.inexact80](
-    cj: onp.Array1D[InexactQT], newx: onp.ToFloatND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
-) -> onp.Array1D[InexactQT]: ...
+@overload
+def qspline1d_eval(
+    cj: onp.Array1D[np.float64 | npc.floating80], newx: onp.ToJustFloat32_ND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
+) -> onp.Array1D[np.float32]: ...
+@overload
+def qspline1d_eval(
+    cj: onp.Array1D[np.float64 | npc.floating80], newx: onp.ToJustLongDoubleND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
+) -> onp.Array1D[np.longdouble]: ...
+@overload
+def qspline1d_eval(
+    cj: onp.Array1D[np.float64 | npc.floating80],
+    newx: onp.ToJustFloat64_ND | onp.ToIntND,
+    dx: onp.ToFloat = 1.0,
+    x0: onp.ToFloat = 0,
+) -> onp.Array1D[np.float64]: ...
+@overload
+def qspline1d_eval(
+    cj: onp.Array1D[np.float64 | npc.floating80], newx: onp.ToFloatND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
+) -> onp.Array1D[np.floating]: ...
 
 #
 def symiirorder1[InexactDT: npc.inexact32 | npc.inexact64, ShapeT: tuple[int, ...]](

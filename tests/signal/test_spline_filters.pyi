@@ -31,6 +31,7 @@ type _FQ_2D = onp.Array2D[np.float64 | np.longdouble]
 type _FQ_3D = onp.Array3D[np.float64 | np.longdouble]
 type _FQ_ND = onp.ArrayND[np.float64 | np.longdouble, tuple[int] | tuple[Any, ...]]
 type _F80_1D = onp.Array1D[npc.floating80]
+type _LD_1D = onp.Array1D[np.longdouble]
 type _C64_1D = onp.Array1D[np.complex64]
 type _C64_2D = onp.Array2D[np.complex64]
 type _C128_1D = onp.Array1D[np.complex128]
@@ -139,9 +140,9 @@ assert_type(qspline1d(_c64_2d, _n), _CQ_1D)
 
 assert_type(qspline1d_eval(_f64_1d, _i64_1d), _F64_1D)
 assert_type(qspline1d_eval(_f64_1d, _f64_1d), _F64_1D)
-assert_type(qspline1d_eval(_f80_1d, _f64_1d), _F80_1D)
-assert_type(qspline1d_eval(_c128_1d, _f64_1d), _C128_1D)
-assert_type(qspline1d_eval(_c160_1d, _f64_1d), _C160_1D)
+assert_type(qspline1d_eval(_f80_1d, _f64_1d), _F64_1D)
+assert_type(qspline1d_eval(_f64_1d, _f32_1d), _F32_1D)
+assert_type(qspline1d_eval(_f64_1d, _f80_1d), _LD_1D)
 
 # qspline2d
 
