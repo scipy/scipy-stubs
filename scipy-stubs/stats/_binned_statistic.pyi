@@ -631,20 +631,9 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[False] = False,
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64 | Any, tuple[int]]: ...
-@overload  # fallback, expanded (keyword), 1d sample
+@overload  # fallback, expanded (keyword)
 def binned_statistic_dd(
-    sample: onp.ToFloatStrict1D,
-    values: onp.ToComplexND | None,
-    statistic: _Statistic | _StatFunc[Any, onp.ToComplex] = "mean",
-    bins: _ToBinsND = 10,
-    range: _ToRangeND = None,
-    *,
-    expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.float64 | Any, tuple[int]]: ...
-@overload  # fallback, expanded (keyword), 2d sample
-def binned_statistic_dd(
-    sample: onp.ToFloat2D,
+    sample: _ToSample,
     values: onp.ToComplexND | None,
     statistic: _Statistic | _StatFunc[Any, onp.ToComplex] = "mean",
     bins: _ToBinsND = 10,
