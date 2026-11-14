@@ -104,8 +104,12 @@ assert_type(freqs_zpk(_f64_1d, _f64_1d, _f64, _c128_1d), tuple[onp.Array1D[np.co
 assert_type(freqz(_f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
 assert_type(freqz(_f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
 assert_type(freqz(_f64_1d, _f64_1d, _f64_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
-assert_type(freqz(_f64_1d, _f64_1d, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
-assert_type(freqz(_f64_1d, worN=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(freqz(_f64_1d, _f64_1d, _c128_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(freqz(_f64_1d, worN=_c128_1d), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
+assert_type(freqz(_c128_1d, worN=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(freqz(_f64_1d, _c128_1d, worN=_c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(freqz(_c128_1d, _f64_1d, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
+assert_type(freqz(_f64_1d, _c128_1d, _c128_1d), tuple[onp.ArrayND[np.complex128], onp.ArrayND[np.complex128]])
 assert_type(freqz(_f64_1d, _f64_1d, whole=1), tuple[onp.ArrayND[np.float64], onp.ArrayND[np.complex128]])
 
 # freqz_zpk
