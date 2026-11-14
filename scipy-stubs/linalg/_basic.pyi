@@ -836,7 +836,7 @@ def solve_banded(
 # NOTE: keep overload structure consistent with `solve_banded` above
 @overload  # ?d ~float64, +float64  (workaround)
 def solveh_banded(
-    ab: _InputFloat,
+    ab: onp.ToArrayND[float, _AsF64],
     b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
@@ -845,7 +845,7 @@ def solveh_banded(
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # 1D ~float64, +float64
 def solveh_banded(
-    ab: _InputFloatStrict2D,
+    ab: onp.ToArrayStrict2D[float, _AsF64],
     b: onp.ToFloatStrict1D,
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
@@ -854,7 +854,7 @@ def solveh_banded(
 ) -> onp.Array1D[np.float64]: ...
 @overload  # 2D ~float64, +float64
 def solveh_banded(
-    ab: _InputFloatStrict2D,
+    ab: onp.ToArrayStrict2D[float, _AsF64],
     b: onp.ToFloatStrict2D,
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
@@ -863,7 +863,7 @@ def solveh_banded(
 ) -> onp.Array2D[np.float64]: ...
 @overload  # Nd ~float64, +float64
 def solveh_banded(
-    ab: _InputFloat,
+    ab: onp.ToArrayND[float, _AsF64],
     b: onp.ToFloatND,
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
@@ -882,7 +882,7 @@ def solveh_banded(
 @overload  # 1d +float64, ~float64
 def solveh_banded(
     ab: onp.ToFloatStrict2D,
-    b: _InputFloatStrict1D,
+    b: onp.ToArrayStrict1D[float, _AsF64],
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
     lower: bool = False,
@@ -891,7 +891,7 @@ def solveh_banded(
 @overload  # 2d +float64, ~float64
 def solveh_banded(
     ab: onp.ToFloatStrict2D,
-    b: _InputFloatStrict2D,
+    b: onp.ToArrayStrict2D[float, _AsF64],
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
     lower: bool = False,
@@ -900,7 +900,7 @@ def solveh_banded(
 @overload  # Nd +float64, ~float64
 def solveh_banded(
     ab: onp.ToFloatND,
-    b: _InputFloat,
+    b: onp.ToArrayND[float, _AsF64],
     overwrite_ab: bool = False,
     overwrite_b: bool = False,
     lower: bool = False,
@@ -987,6 +987,15 @@ def solveh_banded[InexactT: np.float32 | np.complex64](
     lower: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[InexactT]: ...
+@overload  # Nd ~float32, ~float32
+def solveh_banded(
+    ab: onp.ToFloat32_ND,
+    b: onp.ToFloat32_ND,
+    overwrite_ab: bool = False,
+    overwrite_b: bool = False,
+    lower: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
 @overload  # 1d +floating, +floating
 def solveh_banded(
     ab: onp.ToFloatStrict2D,
