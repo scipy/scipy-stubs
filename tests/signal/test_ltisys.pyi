@@ -39,10 +39,13 @@ from scipy.signal._ltisys import (
 type _F32_64 = np.float32 | np.float64
 
 type _VecF32 = onp.Array1D[np.float32]
+type _VecF32_64 = onp.Array1D[_F32_64]
 type _VecF64 = onp.Array1D[np.float64]
+type _VecF64ish = onp.Array1D[np.float64 | Any]
 type _MatF64 = onp.Array2D[np.float64]
 type _ArrF64 = onp.ArrayND[np.float64]
 type _VecC64 = onp.Array1D[np.complex64]
+type _VecC64_128 = onp.Array1D[np.complex64 | np.complex128]
 type _VecC128 = onp.Array1D[np.complex128]
 type _ArrC128 = onp.ArrayND[np.complex128]
 type _ArrC128ish = onp.ArrayND[np.complex128 | Any]
@@ -296,25 +299,28 @@ assert_type(_lti_c128.step(), tuple[_VecF64, _ArrC128])
 # what's going on with mypy here...?
 
 # f32
-assert_type(bode(_lti_f32), tuple[_VecF32, _VecF32, _VecF32])
-assert_type(bode(_to_tf_cont_f32), tuple[_VecF32, _VecF32, _VecF32])
-assert_type(bode(_to_zpk_cont_f32), tuple[_VecF32, _VecF32, _VecF32])
-assert_type(bode(_to_ss_cont_f32), tuple[_VecF32, _VecF32, _VecF32])
+assert_type(bode(_lti_f32), tuple[_VecF32_64, _VecF32_64, _VecF32_64])
+assert_type(bode(_to_tf_cont_f32), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_to_zpk_cont_f32), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_to_ss_cont_f32), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_zpk_cont_f32), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_tf_cont_f32), tuple[_VecF32_64, _VecF32_64, _VecF32_64])
 # c64
-assert_type(bode(_lti_c64), tuple[_VecF32, _VecF32, _VecF32])
-assert_type(bode(_to_tf_cont_c64), tuple[_VecF32, _VecF32, _VecF32])
-assert_type(bode(_to_zpk_cont_c64), tuple[_VecF32, _VecF32, _VecF32])
-assert_type(bode(_to_ss_cont_c64), tuple[_VecF32, _VecF32, _VecF32])
+assert_type(bode(_lti_c64), tuple[_VecF32_64, _VecF32_64, _VecF32_64])
+assert_type(bode(_to_tf_cont_c64), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_to_zpk_cont_c64), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_to_ss_cont_c64), tuple[_VecF64ish, _VecF64, _VecF64])
 # f64
-assert_type(bode(_lti_f64), tuple[_VecF64, _VecF64, _VecF64])
-assert_type(bode(_to_tf_cont_f64), tuple[_VecF64, _VecF64, _VecF64])
-assert_type(bode(_to_zpk_cont_f64), tuple[_VecF64, _VecF64, _VecF64])
-assert_type(bode(_to_ss_cont_f64), tuple[_VecF64, _VecF64, _VecF64])
+assert_type(bode(_lti_f64), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_to_tf_cont_f64), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_to_zpk_cont_f64), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_to_ss_cont_f64), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_tf_cont_f64), tuple[_VecF64ish, _VecF64, _VecF64])
 # c128
-assert_type(bode(_lti_c128), tuple[_VecF64, _VecF64, _VecF64])
-assert_type(bode(_to_tf_cont_c128), tuple[_VecF64, _VecF64, _VecF64])
-assert_type(bode(_to_zpk_cont_c128), tuple[_VecF64, _VecF64, _VecF64])
-assert_type(bode(_to_ss_cont_c128), tuple[_VecF64, _VecF64, _VecF64])
+assert_type(bode(_lti_c128), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_to_tf_cont_c128), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_to_zpk_cont_c128), tuple[_VecF64ish, _VecF64, _VecF64])
+assert_type(bode(_to_ss_cont_c128), tuple[_VecF64ish, _VecF64, _VecF64])
 
 # lti.bode method
 assert_type(_lti_f32.bode(), tuple[_VecF32, _VecF32, _VecF32])
@@ -326,25 +332,28 @@ assert_type(_lti_c128.bode(), tuple[_VecF64, _VecF64, _VecF64])
 # freqresp
 
 # f32
-assert_type(freqresp(_lti_f32), tuple[_VecF32, _VecC64])
-assert_type(freqresp(_to_tf_cont_f32), tuple[_VecF32, _VecC64])
-assert_type(freqresp(_to_zpk_cont_f32), tuple[_VecF32, _VecC64])
-assert_type(freqresp(_to_ss_cont_f32), tuple[_VecF32, _VecC64])
+assert_type(freqresp(_lti_f32), tuple[_VecF32_64, _VecC64_128])
+assert_type(freqresp(_to_tf_cont_f32), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_to_zpk_cont_f32), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_to_ss_cont_f32), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_zpk_cont_f32), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_tf_cont_f32), tuple[_VecF32_64, _VecC64_128])
 # c64
-assert_type(freqresp(_lti_c64), tuple[_VecF32, _VecC64])
-assert_type(freqresp(_to_tf_cont_c64), tuple[_VecF32, _VecC64])
-assert_type(freqresp(_to_zpk_cont_c64), tuple[_VecF32, _VecC64])
-assert_type(freqresp(_to_ss_cont_c64), tuple[_VecF32, _VecC64])
+assert_type(freqresp(_lti_c64), tuple[_VecF32_64, _VecC64_128])
+assert_type(freqresp(_to_tf_cont_c64), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_to_zpk_cont_c64), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_to_ss_cont_c64), tuple[_VecF64ish, _VecC128])
 # f64
-assert_type(freqresp(_lti_f64), tuple[_VecF64, _VecC128])
-assert_type(freqresp(_to_tf_cont_f64), tuple[_VecF64, _VecC128])
-assert_type(freqresp(_to_zpk_cont_f64), tuple[_VecF64, _VecC128])
-assert_type(freqresp(_to_ss_cont_f64), tuple[_VecF64, _VecC128])
+assert_type(freqresp(_lti_f64), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_to_tf_cont_f64), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_to_zpk_cont_f64), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_to_ss_cont_f64), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_tf_cont_f64), tuple[_VecF64ish, _VecC128])
 # c128
-assert_type(freqresp(_lti_c128), tuple[_VecF64, _VecC128])
-assert_type(freqresp(_to_tf_cont_c128), tuple[_VecF64, _VecC128])
-assert_type(freqresp(_to_zpk_cont_c128), tuple[_VecF64, _VecC128])
-assert_type(freqresp(_to_ss_cont_c128), tuple[_VecF64, _VecC128])
+assert_type(freqresp(_lti_c128), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_to_tf_cont_c128), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_to_zpk_cont_c128), tuple[_VecF64ish, _VecC128])
+assert_type(freqresp(_to_ss_cont_c128), tuple[_VecF64ish, _VecC128])
 # f32 | f64
 assert_type(freqresp(_lti_f32_f64), tuple[onp.Array1D[_F32_64], onp.Array1D[np.complex64 | np.complex128]])
 
