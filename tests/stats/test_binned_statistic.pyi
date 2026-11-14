@@ -110,7 +110,10 @@ assert_type(binned_statistic_dd(_f64_2d, _f64_1d).bin_edges, list[onp.Array1D[np
 
 assert_type(binned_statistic_dd(_f64_1d, _f64_1d).binnumber, onp.Array1D[np.intp])
 assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=False).binnumber, onp.Array1D[np.intp])
-assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array2D[np.intp])
+assert_type(binned_statistic_dd(_f64_1d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array1D[np.intp])
+assert_type(
+    binned_statistic_dd(_f64_2d, _f64_1d, expand_binnumbers=True).binnumber, onp.Array[tuple[int] | tuple[int, int], np.intp]
+)
 
 # the statistic rank is `D` (`+ 1` for 2-d `values`), which isn't known statically
 assert_type(binned_statistic_dd(_f64_2d, _f64_1d).statistic, onp.ArrayND[np.float64])
