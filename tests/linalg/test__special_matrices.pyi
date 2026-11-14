@@ -54,9 +54,14 @@ _f32_nd: onp.ArrayND[np.float32]
 
 _f64_1d: onp.Array1D[np.float64]
 _any_1d: onp.Array1D[Any]
+_any_nd: onp.ArrayND[Any]
 _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
+
+_c128_1d: onp.Array1D[np.complex128]
+_c128_2d: onp.Array2D[np.complex128]
+_c128_nd: onp.ArrayND[np.complex128]
 
 ###
 
@@ -159,9 +164,9 @@ assert_type(fiedler(_py_f_1d), onp.Array2D[np.float64])
 assert_type(fiedler(_py_f_2d), onp.Array3D[np.float64])
 assert_type(fiedler(_py_f_3d), onp.ArrayND[np.float64])
 
-assert_type(fiedler(_py_c_1d), onp.Array2D[np.complex128])
-assert_type(fiedler(_py_c_2d), onp.Array3D[np.complex128])
-assert_type(fiedler(_py_c_3d), onp.ArrayND[np.complex128])
+assert_type(fiedler(_py_c_1d), onp.Array2D[np.float64])
+assert_type(fiedler(_py_c_2d), onp.Array3D[np.float64])
+assert_type(fiedler(_py_c_3d), onp.ArrayND[np.float64 | Any])
 
 assert_type(fiedler(_u8_1d), onp.Array2D[np.uint8])
 assert_type(fiedler(_u8_2d), onp.Array3D[np.uint8])
@@ -172,6 +177,12 @@ assert_type(fiedler(_f32_1d), onp.Array2D[np.float32])
 assert_type(fiedler(_f32_2d), onp.Array3D[np.float32])
 assert_type(fiedler(_f32_3d), onp.ArrayND[np.float32])
 assert_type(fiedler(_f32_nd), onp.ArrayND[np.float32])
+
+assert_type(fiedler(_c128_1d), onp.Array2D[np.float64 | Any])
+assert_type(fiedler(_c128_2d), onp.Array3D[np.float64 | Any])
+assert_type(fiedler(_c128_nd), onp.ArrayND[np.float64 | Any])
+
+assert_subtype[onp.ArrayND[np.float32]](fiedler(_any_nd))
 
 # companion
 
