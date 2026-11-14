@@ -25,7 +25,7 @@ type _ToLevels = Sequence[onp.ToArray1D | None] | onp.ToArrayND
 
 class CrosstabResult(BaseBunch[Any, Any], Generic[_ScalarT_co, _CountT_co]):
     @property
-    def elements(self, /) -> tuple[onp.Array1D[_ScalarT_co], *tuple[onp.Array1D[_ScalarT_co], ...]]: ...
+    def elements(self, /) -> Sequence[onp.Array1D[_ScalarT_co] | Any]: ...
     @property
     @override
     def count(self, /) -> _CountT_co: ...  # type: ignore[override] # pyright: ignore[reportIncompatibleMethodOverride] # pyrefly: ignore[bad-override] # ty:ignore[incompatible-property-override]
