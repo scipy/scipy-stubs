@@ -1,6 +1,6 @@
 # type-tests for `signal/_fir_filter_design.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -101,5 +101,6 @@ assert_type(minimum_phase(_py_i_1d), onp.Array1D[np.float64])
 assert_type(minimum_phase(_py_f_1d), onp.Array1D[np.float64])
 assert_type(minimum_phase(_u8_1d), onp.Array1D[np.float64])
 assert_type(minimum_phase(_i16_1d), onp.Array1D[np.float64])
-assert_type(minimum_phase(_f32_1d), onp.Array1D[np.float64])
+assert_type(minimum_phase(_f32_1d), onp.Array1D[np.float32])
+assert_type(minimum_phase(_f32_1d, "hilbert"), onp.Array1D[np.float64 | Any])
 assert_type(minimum_phase(_f64_1d), onp.Array1D[np.float64])

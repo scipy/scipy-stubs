@@ -1,5 +1,5 @@
 from collections.abc import Sequence
-from typing import Literal, overload
+from typing import Any, Literal, overload
 
 import numpy as np
 import optype.numpy as onp
@@ -94,6 +94,23 @@ def remez(
 ) -> onp.Array1D[np.float64]: ...
 
 #
+@overload  # ~f64 | int
+def minimum_phase(
+    h: onp.ToJustFloat64_1D | onp.ToInt1D,
+    method: _LinearPhaseFIRMethod = "homomorphic",
+    n_fft: int | None = None,
+    *,
+    half: bool = True,
+) -> onp.Array1D[np.float64]: ...
+@overload  # ~f32 | ~f16, method: homomorphic
+def minimum_phase(
+    h: onp.ToJustFloat32_1D | onp.ToJustFloat16_1D,
+    method: Literal["homomorphic"] = "homomorphic",
+    n_fft: int | None = None,
+    *,
+    half: bool = True,
+) -> onp.Array1D[np.float32]: ...
+@overload  # fallback
 def minimum_phase(
     h: onp.ToFloat1D, method: _LinearPhaseFIRMethod = "homomorphic", n_fft: int | None = None, *, half: bool = True
-) -> onp.Array1D[np.float64]: ...
+) -> onp.Array1D[np.float64 | Any]: ...
