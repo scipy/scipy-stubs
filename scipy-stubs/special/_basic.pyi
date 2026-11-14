@@ -1,7 +1,8 @@
 # mypy reports false positive `overload-overlap` errors for `zeta`, which vary per numpy version
 # mypy: disable-error-code=overload-overlap
 
-from typing import Any, Literal as L, Never, Unpack, overload
+from typing import Any, Literal as L, Never, Unpack, overload, type_check_only
+from typing_extensions import TypedDict
 
 import numpy as np
 import optype as op
@@ -98,6 +99,12 @@ type _c8_nd = onp.ArrayND[np.complex128]
 
 # workaround for a strange bug in pyright's overlapping overload detection with `numpy<2.1`
 type _WorkaroundForPyright = tuple[int] | tuple[Any, ...]
+
+@type_check_only
+class _KwSoftplus(TypedDict, total=False, closed=True):
+    order: L["K", "A", "C", "F"]
+    casting: L["no", "equiv", "safe", "same_kind", "unsafe"]
+    subok: bool
 
 ###
 
@@ -496,27 +503,53 @@ def zeta(x: onp.ToComplex, q: onp.ToFloatND, out: None = None) -> onp.ArrayND[np
 @overload  # out=
 def softplus[ArrayT: onp.ArrayND](x: _ToFloatOrND, *, out: ArrayT, dtype: None = None, **kwds: Unpack[_KwBase]) -> ArrayT: ...
 @overload  # +f64
-def softplus(x: float | np.float64, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> np.float64: ...
-@overload  # +int
-def softplus(x: int | np.bool, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> np.float64: ...
+def softplus(
+    x: float | np.float64 | np.bool,
+    *,
+    out: None = None,
+    dtype: None = None,
+    where: onp.ToBool = True,
+    **kwds: Unpack[_KwSoftplus],
+) -> np.float64: ...
 @overload  # ~integer
-def softplus(x: npc.integer, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]) -> np.float64 | Any: ...
+def softplus(
+    x: npc.integer, *, out: None = None, dtype: None = None, where: onp.ToBool = True, **kwds: Unpack[_KwSoftplus]
+) -> np.float64 | Any: ...
 @overload  # Nd +int
 def softplus(
     x: onp.ToIntND, *, out: None = None, dtype: None = None, **kwds: Unpack[_KwBase]
 ) -> onp.ArrayND[np.float64 | Any]: ...
 @overload  # T:floating
 def softplus[FloatingT: npc.floating](
-    x: FloatingT, *, out: None = None, dtype: onp.ToDType[FloatingT] | None = None, **kwds: Unpack[_KwBase]
+    x: FloatingT,
+    *,
+    out: None = None,
+    dtype: onp.ToDType[FloatingT] | None = None,
+    where: onp.ToBool = True,
+    **kwds: Unpack[_KwSoftplus],
 ) -> FloatingT: ...
 @overload  # +float, dtype=T:floating
 def softplus[FloatingT: npc.floating](
-    x: onp.ToFloat, *, out: None = None, dtype: onp.ToDType[FloatingT], **kwds: Unpack[_KwBase]
+    x: onp.ToFloat, *, out: None = None, dtype: onp.ToDType[FloatingT], where: onp.ToBool = True, **kwds: Unpack[_KwSoftplus]
 ) -> FloatingT: ...
 @overload  # +float, dtype=
 def softplus(
-    x: onp.ToFloat, *, out: None = None, dtype: onp.AnyFloatingDType | None = None, **kwds: Unpack[_KwBase]
+    x: onp.ToFloat,
+    *,
+    out: None = None,
+    dtype: onp.AnyFloatingDType | None = None,
+    where: onp.ToBool = True,
+    **kwds: Unpack[_KwSoftplus],
 ) -> np.float64 | Any: ...
+@overload  # Nd where
+def softplus(
+    x: onp.ToFloat,
+    *,
+    out: None = None,
+    dtype: onp.AnyFloatingDType | None = None,
+    where: onp.ToBoolND,
+    **kwds: Unpack[_KwSoftplus],
+) -> onp.ArrayND[np.float64 | Any]: ...
 @overload  # 1d ~f64
 def softplus(
     x: onp.ToJustFloat64Strict1D, *, out: None = None, dtype: onp.AnyFloat64DType | None = None, **kwds: Unpack[_KwBase]
