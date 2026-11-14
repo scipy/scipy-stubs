@@ -20,6 +20,8 @@ _i16_2d: onp.Array2D[np.int16]
 _i16_3d: onp.Array3D[np.int16]
 _i16_nd: onp.ArrayND[np.int16]
 
+_f16_nd: onp.ArrayND[np.float16]
+
 _f32_1d: onp.Array1D[np.float32]
 _f32_2d: onp.Array2D[np.float32]
 _f32_3d: onp.Array3D[np.float32]
@@ -29,6 +31,8 @@ _f64_1d: onp.Array1D[np.float64]
 _f64_2d: onp.Array2D[np.float64]
 _f64_3d: onp.Array3D[np.float64]
 _f64_nd: onp.ArrayND[np.float64]
+
+_f80_nd: onp.ArrayND[np.float128]
 
 ###
 
@@ -42,7 +46,7 @@ assert_type(moment(_f64_1d), np.float64)
 assert_type(moment(_py_i_1d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_py_f_1d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_i16_1d, [1, 2]), onp.ArrayND[np.float64])
-assert_type(moment(_f32_1d, [1, 2]), onp.ArrayND[np.float32])
+assert_type(moment(_f32_1d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_f64_1d, [1, 2]), onp.ArrayND[np.float64])
 
 assert_type(moment(_py_i_1d, axis=None), np.float64)
@@ -53,7 +57,7 @@ assert_type(moment(_f64_1d, axis=None), np.float64)
 assert_type(moment(_py_i_1d, [1, 2], axis=None), onp.ArrayND[np.float64])
 assert_type(moment(_py_f_1d, [1, 2], axis=None), onp.ArrayND[np.float64])
 assert_type(moment(_i16_1d, [1, 2], axis=None), onp.ArrayND[np.float64])
-assert_type(moment(_f32_1d, [1, 2], axis=None), onp.ArrayND[np.float32])
+assert_type(moment(_f32_1d, [1, 2], axis=None), onp.ArrayND[np.float64])
 assert_type(moment(_f64_1d, [1, 2], axis=None), onp.ArrayND[np.float64])
 
 assert_type(moment(_py_i_1d, keepdims=True), onp.ArrayND[np.float64])
@@ -64,7 +68,7 @@ assert_type(moment(_f64_1d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_py_i_1d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_py_f_1d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_i16_1d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
-assert_type(moment(_f32_1d, [1, 2], keepdims=True), onp.ArrayND[np.float32])
+assert_type(moment(_f32_1d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_f64_1d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 
 # 2d
@@ -77,7 +81,7 @@ assert_type(moment(_f64_2d), onp.Array1D[np.float64])
 assert_type(moment(_py_i_2d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_py_f_2d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_i16_2d, [1, 2]), onp.ArrayND[np.float64])
-assert_type(moment(_f32_2d, [1, 2]), onp.ArrayND[np.float32])
+assert_type(moment(_f32_2d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_f64_2d, [1, 2]), onp.ArrayND[np.float64])
 
 assert_type(moment(_py_i_2d, axis=None), np.float64)
@@ -88,7 +92,7 @@ assert_type(moment(_f64_2d, axis=None), np.float64)
 assert_type(moment(_py_i_2d, [1, 2], axis=None), onp.ArrayND[np.float64])
 assert_type(moment(_py_f_2d, [1, 2], axis=None), onp.ArrayND[np.float64])
 assert_type(moment(_i16_2d, [1, 2], axis=None), onp.ArrayND[np.float64])
-assert_type(moment(_f32_2d, [1, 2], axis=None), onp.ArrayND[np.float32])
+assert_type(moment(_f32_2d, [1, 2], axis=None), onp.ArrayND[np.float64])
 assert_type(moment(_f64_2d, [1, 2], axis=None), onp.ArrayND[np.float64])
 
 assert_type(moment(_py_i_2d, keepdims=True), onp.ArrayND[np.float64])
@@ -99,7 +103,7 @@ assert_type(moment(_f64_2d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_py_i_2d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_py_f_2d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_i16_2d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
-assert_type(moment(_f32_2d, [1, 2], keepdims=True), onp.ArrayND[np.float32])
+assert_type(moment(_f32_2d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_f64_2d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 
 # 3d
@@ -113,7 +117,7 @@ assert_type(moment(_f64_3d, axis=(1, 2)), onp.ArrayND[np.float64] | Any)
 assert_type(moment(_py_i_3d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_py_f_3d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_i16_3d, [1, 2]), onp.ArrayND[np.float64])
-assert_type(moment(_f32_3d, [1, 2]), onp.ArrayND[np.float32])
+assert_type(moment(_f32_3d, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_f64_3d, [1, 2]), onp.ArrayND[np.float64])
 
 assert_type(moment(_py_i_3d, axis=None), np.float64)
@@ -124,7 +128,7 @@ assert_type(moment(_f64_3d, axis=None), np.float64)
 assert_type(moment(_py_i_3d, [1, 2], axis=None), onp.ArrayND[np.float64])
 assert_type(moment(_py_f_3d, [1, 2], axis=None), onp.ArrayND[np.float64])
 assert_type(moment(_i16_3d, [1, 2], axis=None), onp.ArrayND[np.float64])
-assert_type(moment(_f32_3d, [1, 2], axis=None), onp.ArrayND[np.float32])
+assert_type(moment(_f32_3d, [1, 2], axis=None), onp.ArrayND[np.float64])
 assert_type(moment(_f64_3d, [1, 2], axis=None), onp.ArrayND[np.float64])
 
 assert_type(moment(_py_i_3d, keepdims=True), onp.ArrayND[np.float64])
@@ -135,7 +139,7 @@ assert_type(moment(_f64_3d, keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_py_i_3d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_py_f_3d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_i16_3d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
-assert_type(moment(_f32_3d, [1, 2], keepdims=True), onp.ArrayND[np.float32])
+assert_type(moment(_f32_3d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_f64_3d, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 
 # nd
@@ -144,19 +148,24 @@ assert_type(moment(_i16_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ig
 assert_type(moment(_f32_nd), np.float32 | onp.ArrayND[np.float32])  # pyrefly:ignore[assert-type]
 assert_type(moment(_f64_nd), np.float64 | onp.ArrayND[np.float64])  # pyrefly:ignore[assert-type]
 assert_type(moment(_i16_nd, [1, 2]), onp.ArrayND[np.float64])
-assert_type(moment(_f32_nd, [1, 2]), onp.ArrayND[np.float32])
+assert_type(moment(_f16_nd, [1, 2]), onp.ArrayND[np.float64])
+assert_type(moment(_f32_nd, [1, 2]), onp.ArrayND[np.float64])
 assert_type(moment(_f64_nd, [1, 2], axis=(1, 2)), onp.ArrayND[np.float64])
+assert_type(moment(_f80_nd, [1, 2]), onp.ArrayND[np.longdouble])
 
 assert_type(moment(_i16_nd, axis=None), np.float64)
 assert_type(moment(_f32_nd, axis=None), np.float32)
 assert_type(moment(_f64_nd, axis=None), np.float64)
 assert_type(moment(_i16_nd, [1, 2], axis=None), onp.ArrayND[np.float64])
-assert_type(moment(_f32_nd, [1, 2], axis=None), onp.ArrayND[np.float32])
+assert_type(moment(_f32_nd, [1, 2], axis=None), onp.ArrayND[np.float64])
 assert_type(moment(_f64_nd, [1, 2], axis=None), onp.ArrayND[np.float64])
 
 assert_type(moment(_i16_nd, keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_f32_nd, keepdims=True), onp.ArrayND[np.float32])
 assert_type(moment(_f64_nd, axis=(1, 2), keepdims=True), onp.ArrayND[np.float64])
+assert_type(moment(_f80_nd, keepdims=True), onp.ArrayND[np.float128])
 assert_type(moment(_i16_nd, [1, 2], keepdims=True), onp.ArrayND[np.float64])
-assert_type(moment(_f32_nd, [1, 2], keepdims=True), onp.ArrayND[np.float32])
+assert_type(moment(_f16_nd, [1, 2], keepdims=True), onp.ArrayND[np.float64])
+assert_type(moment(_f32_nd, [1, 2], keepdims=True), onp.ArrayND[np.float64])
 assert_type(moment(_f64_nd, [1, 2], keepdims=True), onp.ArrayND[np.float64])
+assert_type(moment(_f80_nd, [1, 2], keepdims=True), onp.ArrayND[np.longdouble])

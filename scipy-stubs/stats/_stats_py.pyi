@@ -2394,20 +2394,30 @@ def moment[FloatT: npc.floating](
     center: float | None = None,
     keepdims: L[False] = False,
 ) -> FloatT: ...
-@overload  # nd ~T: floating, order: nd
-def moment[FloatT: npc.floating](
-    a: onp.ToArrayND[FloatT, FloatT],
+@overload  # nd ~f32, order: nd
+def moment(
+    a: onp.ToFloat32_ND,
+    order: onp.ToArrayND[op.JustInt, npc.integer32 | npc.integer64],
+    axis: int | tuple[int, ...] | None = 0,
+    nan_policy: NanPolicy = "propagate",
+    *,
+    center: float | None = None,
+    keepdims: bool = False,
+) -> onp.ArrayND[np.float64]: ...
+@overload  # nd ~f80, order: nd
+def moment(
+    a: onp.ToJustLongDoubleND,
     order: onp.ToIntND,
     axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
     center: float | None = None,
-    keepdims: L[False] = False,
-) -> onp.ArrayND[FloatT]: ...
-@overload  # nd ~T: floating, keepdims=True
+    keepdims: bool = False,
+) -> onp.ArrayND[np.longdouble]: ...
+@overload  # nd ~T: floating, order: 0d, keepdims=True
 def moment[FloatT: npc.floating](
     a: onp.ToArrayND[FloatT, FloatT],
-    order: int | onp.ToIntND = 1,
+    order: int = 1,
     axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     *,
