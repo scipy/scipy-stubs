@@ -26,12 +26,15 @@ from ._types import (
     lil_arr,
     lil_mat,
 )
+from scipy.sparse._base import _spbase
 
 shape_1d: tuple[int]
 shape_2d: tuple[int, int]
 shape_3d: tuple[int, int, int]
 _coo_1d: sparse.coo_array[ScalarType, tuple[int]]
 _coo_3d: sparse.coo_array[ScalarType, tuple[int, int, int]]
+_spbase_2d: _spbase[ScalarType, tuple[int, int]]
+_blocks_mixed: list[list[sparse.spmatrix[ScalarType] | sparse.sparray[ScalarType, tuple[int, int]] | None]]
 
 # TODO(julvandenbroeck): add tests for arrays with unknown shape, like np.ndarray[tuple[int, ...], np.dtype[ScalarType]]
 dense_1d: np.ndarray[tuple[int], np.dtype[ScalarType]]
@@ -398,10 +401,14 @@ assert_type(sparse.bmat([[dia_mat]], dtype=np.int_), sparse.coo_matrix[np.int_])
 assert_type(sparse.bmat([[bsr_arr]]), sparse.coo_array[ScalarType, tuple[int, int]])
 assert_type(sparse.bmat([[dia_arr]], dtype=np.int_), sparse.coo_array[np.int_, tuple[int, int]])
 # NOTE: mypy reports false positive errors here, because of join vs. union approach
-assert_type(sparse.bmat([[csr_mat], [None]]), sparse.csr_matrix[ScalarType])  # type: ignore[assert-type,arg-type]
-assert_type(sparse.bmat([[dok_mat], [None]], dtype=np.complex64), sparse.coo_matrix[np.complex64])  # type: ignore[assert-type,arg-type]
-assert_type(sparse.bmat([[csr_arr], [None]]), sparse.csr_array[ScalarType, tuple[int, int]])  # type: ignore[assert-type,arg-type]
-assert_type(sparse.bmat([[dok_arr], [None]], dtype=np.complex64), sparse.coo_array[np.complex64, tuple[int, int]])  # type: ignore[assert-type,arg-type]
+assert_type(sparse.bmat([[csr_mat], [None]]), sparse.coo_matrix[ScalarType] | Any)  # type: ignore[assert-type,arg-type]
+assert_type(sparse.bmat([[dok_mat], [None]], dtype=np.complex64), sparse.coo_matrix[np.complex64] | Any)
+assert_type(sparse.bmat([[csr_arr], [None]]), sparse.coo_array[ScalarType, tuple[int, int]] | Any)  # type: ignore[assert-type,arg-type]
+assert_type(sparse.bmat([[dok_arr], [None]], dtype=np.complex64), sparse.coo_array[np.complex64, tuple[int, int]] | Any)
+assert_type(sparse.bmat([[_spbase_2d, None]]), sparse.coo_array[ScalarType, tuple[int, int]] | Any)
+assert_type(sparse.bmat(_blocks_mixed), sparse.coo_array[ScalarType, tuple[int, int]] | Any)
+assert_type(sparse.bmat([[_spbase_2d, None]], dtype=np.complex64), sparse.coo_array[np.complex64, tuple[int, int]] | Any)
+assert_type(sparse.bmat(_blocks_mixed, dtype=np.complex64), sparse.coo_array[np.complex64, tuple[int, int]] | Any)
 assert_type(sparse.bmat([[csr_mat]], format="csr"), _SpMatrix[ScalarType])
 assert_type(sparse.bmat([[csr_mat]], format="csc", dtype=sctype), _SpMatrix[ScalarType])
 assert_type(
@@ -410,6 +417,11 @@ assert_type(
 )
 assert_type(sparse.bmat([[csr_mat]], format="coo", dtype=_dtype_str), _SpMatrix[Any])
 assert_type(sparse.bmat([[csr_arr]], format="coo", dtype=_dtype_str), _SpMatrix[Any] | sparse.sparray[Any, tuple[int, int]])
+assert_type(sparse.bmat([[csr_mat]], dtype=_dtype_str), sparse.csr_matrix[Any])
+assert_type(sparse.bmat([[csr_mat, None]], dtype=_dtype_str), sparse.coo_matrix[Any] | Any)
+assert_type(sparse.bmat([[csr_arr, None]], dtype=_dtype_str), sparse.coo_array[Any, tuple[int, int]] | Any)
+assert_type(sparse.bmat([[_spbase_2d, None]], dtype=_dtype_str), sparse.coo_array[Any, tuple[int, int]] | Any)
+assert_type(sparse.bmat(_blocks_mixed, dtype=_dtype_str), sparse.coo_array[Any, tuple[int, int]] | Any)
 
 # block_diag
 assert_type(sparse.block_diag([any_arr, any_arr]), sparse.coo_array[ScalarType, tuple[int, int]])
