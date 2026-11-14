@@ -12,6 +12,8 @@ from scipy.linalg import rsf2csf, schur
 
 _py_f_2d: list[list[float]]
 _py_c_2d: list[list[complex]]
+_f80_2d_list: list[list[np.float128]]
+_c160_2d_list: list[list[np.complex256]]
 
 _bool_2d: onp.Array2D[np.bool]
 _i8_2d: onp.Array2D[np.int8]
@@ -30,10 +32,12 @@ _f32_3d: onp.Array3D[np.float32]
 _f64_3d: onp.Array3D[np.float64]
 _c64_3d: onp.Array3D[np.complex64]
 _c128_3d: onp.Array3D[np.complex128]
+_c160_3d: onp.Array3D[np.complex256]
 _f32_nd: onp.ArrayND[np.float32]
 _f64_nd: onp.ArrayND[np.float64]
 _c64_nd: onp.ArrayND[np.complex64]
 _c128_nd: onp.ArrayND[np.complex128]
+_c160_nd: onp.ArrayND[np.complex256]
 _f_nd: onp.ArrayND[np.float32 | np.float64]
 
 def _sort(x: complex, /) -> bool: ...
@@ -82,10 +86,10 @@ assert_type(schur(_i64_2d, output="c"), _Res2_2D[np.complex128])
 assert_type(schur(_f16_2d, output="c"), _Res2_2D[np.complex64])
 assert_type(schur(_f32_2d, output="c"), _Res2_2D[np.complex64])
 assert_type(schur(_f64_2d, output="c"), _Res2_2D[np.complex128])
-assert_type(schur(_f80_2d, output="c"), _Res2_2D[np.complex128])
+assert_type(schur(_f80_2d, output="c"), _Res2_2D[np.complex64])
 assert_type(schur(_c64_2d, output="c"), _Res2_2D[np.complex64])
 assert_type(schur(_c128_2d, output="c"), _Res2_2D[np.complex128])
-assert_type(schur(_c160_2d, output="c"), _Res2_2D[np.complex128])
+assert_type(schur(_c160_2d, output="c"), _Res2_2D[np.complex64])
 
 assert_type(schur(_bool_2d, output="c", sort="lhp"), _Res3_2D[np.complex64])
 assert_type(schur(_i8_2d, output="c", sort="lhp"), _Res3_2D[np.complex128])
@@ -95,10 +99,10 @@ assert_type(schur(_i64_2d, output="c", sort="lhp"), _Res3_2D[np.complex128])
 assert_type(schur(_f16_2d, output="c", sort="lhp"), _Res3_2D[np.complex64])
 assert_type(schur(_f32_2d, output="c", sort="lhp"), _Res3_2D[np.complex64])
 assert_type(schur(_f64_2d, output="c", sort="lhp"), _Res3_2D[np.complex128])
-assert_type(schur(_f80_2d, output="c", sort="lhp"), _Res3_2D[np.complex128])
+assert_type(schur(_f80_2d, output="c", sort="lhp"), _Res3_2D[np.complex64])
 assert_type(schur(_c64_2d, output="c", sort="lhp"), _Res3_2D[np.complex64])
 assert_type(schur(_c128_2d, output="c", sort="lhp"), _Res3_2D[np.complex128])
-assert_type(schur(_c160_2d, output="c", sort="lhp"), _Res3_2D[np.complex128])
+assert_type(schur(_c160_2d, output="c", sort="lhp"), _Res3_2D[np.complex64])
 
 assert_type(schur(_f64_2d, output="c", sort=_sort), _Res3_2D[np.complex128])
 assert_type(schur(_c128_2d, sort=_sort), _Res3_2D[np.complex128])
@@ -122,6 +126,14 @@ assert_subtype[_Res3_ND[np.complex64]](schur(_f32_nd, output="c", sort="lhp"))
 assert_subtype[_Res3_ND[np.complex128]](schur(_f64_nd, output="c", sort="lhp"))
 assert_type(schur(_f_nd), _Res2_ND[np.float64 | Any])
 assert_type(schur(_f_nd, sort="lhp"), _Res3_ND[np.float64 | Any])
+assert_type(schur(_c160_3d, sort="lhp"), _Res3_3D[np.complex128])
+assert_subtype[_Res3_ND[np.complex128]](schur(_c160_nd, sort="lhp"))
+assert_type(schur(_f80_2d_list, output="c"), _Res2_ND[np.complex64])
+assert_type(schur(_f80_2d_list, output="c", sort="lhp"), _Res3_ND[np.complex64])
+assert_type(schur(_c160_2d_list), _Res2_ND[np.complex128])
+assert_type(schur(_c160_2d_list, sort="lhp"), _Res3_ND[np.complex128])
+assert_type(schur(_py_f_2d, output="c"), _Res2_ND[np.complex128])
+assert_type(schur(_py_c_2d), _Res2_ND[np.complex128])
 
 ###
 # rsf2csf
