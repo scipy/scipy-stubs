@@ -1892,6 +1892,8 @@ def block_array(blocks: _ToBlocksUnkown, *, format: _FmtDOK, dtype: _ToDType | N
 def block_array(blocks: _ToBlocksUnkown, *, format: _FmtLIL, dtype: _ToDType | None = None) -> lil_array: ...
 
 #
+# The `None`-block overloads return `... | Any`: blocks typed `X | None` may hold no `None` (then csr/csc),
+# and all-`None` blocks match both the matrix and array overloads.
 @overload  # blocks: <known, known>, format: <default>, dtype: <default>
 def bmat[T](blocks: Seq[Seq[_CanStack[T]]], format: None = None, dtype: None = None) -> T: ...
 @overload  # blocks: <matrix | None, known>, format: <default>, dtype: <default>
