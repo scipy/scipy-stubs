@@ -148,9 +148,9 @@ def freqz(
     fs: float = 6.283185307179586,
     include_nyquist: bool = False,
 ) -> tuple[_FloatND, _ComplexND]: ...
-@overload  # worN: complex  (keyword)
+@overload  # ~complex b; worN: complex  (keyword)
 def freqz(
-    b: onp.ToComplex | onp.ToComplexND,
+    b: onp.ToJustComplex | onp.ToJustComplexND,
     a: onp.ToComplex | onp.ToComplexND = 1,
     *,
     worN: onp.ToJustComplex1D,
@@ -158,17 +158,38 @@ def freqz(
     plot: Callable[[_FloatND, _ComplexND], object] | None = None,
     fs: float = 6.283185307179586,
     include_nyquist: bool = False,
-) -> tuple[onp.ArrayND[np.float64 | np.complex128], _ComplexND]: ...
-@overload  # worN: complex  (positional)
+) -> tuple[_ComplexND, _ComplexND]: ...
+@overload  # ~complex a; worN: complex  (keyword)
 def freqz(
     b: onp.ToComplex | onp.ToComplexND,
+    a: onp.ToJustComplex | onp.ToJustComplexND,
+    *,
+    worN: onp.ToJustComplex1D,
+    whole: onp.ToBool = False,
+    plot: Callable[[_FloatND, _ComplexND], object] | None = None,
+    fs: float = 6.283185307179586,
+    include_nyquist: bool = False,
+) -> tuple[_ComplexND, _ComplexND]: ...
+@overload  # ~complex b; worN: complex  (positional)
+def freqz(
+    b: onp.ToJustComplex | onp.ToJustComplexND,
     a: onp.ToComplex | onp.ToComplexND,
     worN: onp.ToJustComplex1D,
     whole: onp.ToBool = False,
     plot: Callable[[_FloatND, _ComplexND], object] | None = None,
     fs: float = 6.283185307179586,
     include_nyquist: bool = False,
-) -> tuple[onp.ArrayND[np.float64 | np.complex128], _ComplexND]: ...
+) -> tuple[_ComplexND, _ComplexND]: ...
+@overload  # ~complex a; worN: complex  (positional)
+def freqz(
+    b: onp.ToComplex | onp.ToComplexND,
+    a: onp.ToJustComplex | onp.ToJustComplexND,
+    worN: onp.ToJustComplex1D,
+    whole: onp.ToBool = False,
+    plot: Callable[[_FloatND, _ComplexND], object] | None = None,
+    fs: float = 6.283185307179586,
+    include_nyquist: bool = False,
+) -> tuple[_ComplexND, _ComplexND]: ...
 
 #
 @overload  # worN: real
