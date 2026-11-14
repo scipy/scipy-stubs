@@ -595,11 +595,11 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def multiply[SpT: coo_matrix | dok_matrix | lil_matrix](self: SpT, /, other: SpT) -> csr_matrix[_ScalarT_co]: ...
     @overload  # spmatrix bool, scalar | sparse int
     def multiply(self: spmatrix[np.bool], /, other: _SparseLike[op.JustInt, _IntT]) -> _SpMatrix[_IntT]: ...
-    @overload  # spmatrix bool, dense int
+    @overload  # spmatrix bool, dense int  (assumes size > 1)
     def multiply(self: spmatrix[np.bool], /, other: _To2DLike[op.JustInt, _IntT]) -> coo_matrix[_IntT]: ...
     @overload  # spmatrix +i16, scalar | sparse float
     def multiply(self: spmatrix[_ToInt16], /, other: _SparseLike[op.JustFloat, _FloatT]) -> _SpMatrix[_FloatT]: ...
-    @overload  # spmatrix +i16, dense float
+    @overload  # spmatrix +i16, dense float  (assumes size > 1)
     def multiply(self: spmatrix[_ToInt16], /, other: _To2DLike[op.JustFloat, _FloatT]) -> coo_matrix[_FloatT]: ...
     @overload  # spmatrix i32 | i64, scalar | sparse float
     def multiply(
@@ -607,7 +607,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
         /,
         other: _SparseLike[op.JustFloat | np.float32 | _spbase[np.float32], _Float64T],
     ) -> _SpMatrix[_Float64T]: ...
-    @overload  # spmatrix i32 | i64, dense float
+    @overload  # spmatrix i32 | i64, dense float  (assumes size > 1)
     def multiply(
         self: spmatrix[npc.integer32 | npc.integer64],
         /,
@@ -617,7 +617,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     def multiply(self: spmatrix[np.float32], /, other: _SparseLike[op.JustComplex, _Complex64T]) -> _SpMatrix[_Complex64T]: ...
     @overload  # spmatrix +i16, scalar | sparse complex
     def multiply(self: spmatrix[_ToInt16], /, other: _SparseLike[op.JustComplex, _ComplexT]) -> _SpMatrix[_ComplexT]: ...
-    @overload  # spmatrix f32 | +i16, dense complex
+    @overload  # spmatrix f32 | +i16, dense complex  (assumes size > 1)
     def multiply(
         self: spmatrix[np.float32 | _ToInt16], /, other: _To2DLike[op.JustComplex, _ComplexT]
     ) -> coo_matrix[_ComplexT]: ...
@@ -627,7 +627,7 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
         /,
         other: _SparseLike[op.JustComplex | np.complex64 | _spbase[np.complex64], _Complex128T],
     ) -> _SpMatrix[_Complex128T]: ...
-    @overload  # spmatrix f64 | i32 | i64, dense complex
+    @overload  # spmatrix f64 | i32 | i64, dense complex  (assumes size > 1)
     def multiply(
         self: spmatrix[np.float64 | npc.integer32 | npc.integer64],
         /,
@@ -641,25 +641,25 @@ class _spbase(SparseABC, Generic[_ScalarT_co, _ShapeT_co]):
     ) -> _SpMatrix[np.clongdouble]: ...
     @overload  # spmatrix T, sparse bool
     def multiply[ST: _Scalar](self: spmatrix[ST], /, other: _spbase[np.bool]) -> _SpMatrixOut[ST]: ...
-    @overload  # spmatrix T, dense +bool
+    @overload  # spmatrix T, dense +bool  (assumes size > 1)
     def multiply[ST: _Scalar](self: spmatrix[ST], /, other: _To2DLike[bool, np.bool]) -> coo_matrix[ST]: ...
     @overload  # spmatrix T@+int, sparse +i8
     def multiply[ST: _ToInt](self: spmatrix[ST], /, other: _spbase[_ToInt8]) -> _SpMatrixOut[ST]: ...
-    @overload  # spmatrix T@+int, dense +i8
+    @overload  # spmatrix T@+int, dense +i8  (assumes size > 1)
     def multiply[ST: _ToInt](self: spmatrix[ST], /, other: _To2DLike[bool, _ToInt8]) -> coo_matrix[ST]: ...
-    @overload  # spmatrix ~i64, dense ~i64
+    @overload  # spmatrix ~i64, dense ~i64  (assumes size > 1)
     def multiply(self: spmatrix[np.int64], /, other: _To2DLike[int, np.int64]) -> coo_matrix[np.int64]: ...
     @overload  # spmatrix T@float, sparse T | +f32
     def multiply[ST: npc.floating](self: spmatrix[ST], /, other: _spbase[_ToFloat32 | ST]) -> _SpMatrixOut[ST]: ...
-    @overload  # spmatrix T@float, dense +f32
+    @overload  # spmatrix T@float, dense +f32  (assumes size > 1)
     def multiply[ST: npc.floating](self: spmatrix[ST], /, other: _To2DLike[int, _ToFloat32]) -> coo_matrix[ST]: ...
-    @overload  # spmatrix ~f64, dense ~f64
+    @overload  # spmatrix ~f64, dense ~f64  (assumes size > 1)
     def multiply(self: spmatrix[np.float64], /, other: _To2DLike[float, np.float64]) -> coo_matrix[np.float64]: ...
     @overload  # spmatrix T@complex, sparse T | +c64
     def multiply[ST: npc.complexfloating](self: spmatrix[ST], /, other: _spbase[_ToComplex64 | ST]) -> _SpMatrixOut[ST]: ...
-    @overload  # spmatrix T@complex, dense +c64
+    @overload  # spmatrix T@complex, dense +c64  (assumes size > 1)
     def multiply[ST: npc.complexfloating](self: spmatrix[ST], /, other: _To2DLike[int, _ToComplex64]) -> coo_matrix[ST]: ...
-    @overload  # spmatrix ~c128, dense ~c128
+    @overload  # spmatrix ~c128, dense ~c128  (assumes size > 1)
     def multiply(self: spmatrix[np.complex128], /, other: _To2DLike[complex, np.complex128]) -> coo_matrix[np.complex128]: ...
     @overload  # sparse bool, scalar T@number
     def multiply[ST: npc.number, ShapeT: tuple[Any, ...]](
