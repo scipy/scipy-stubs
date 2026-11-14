@@ -462,61 +462,17 @@ def binned_statistic_2d(
 
 #
 # NOTE: an expanded 2d `sample` assumes `D > 1`; an `(N, 1)` sample squeezes `binnumber` to 1d at runtime
-@overload  # count|std, expanded (keyword)  (workaround)
+@overload  # fallback, expanded (keyword)  (workaround)
 def binned_statistic_dd(
     sample: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
-    values: onp.ToArrayND[complex, _AsF64 | _AsC128],
-    statistic: _StatisticF64,
+    values: onp.ToComplexND | None,
+    statistic: _Statistic | _StatFunc[Any, onp.ToComplex] = "mean",
     bins: _ToBinsND = 10,
     range: _ToRangeND = None,
     *,
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.float64, tuple[Any, ...]]: ...
-@overload  # real, expanded (keyword)  (workaround)
-def binned_statistic_dd(
-    sample: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
-    values: onp.ToArrayND[float, _AsF64],
-    statistic: _StatisticPromoted | _StatFunc[np.float64, onp.ToFloat] = "mean",
-    bins: _ToBinsND = 10,
-    range: _ToRangeND = None,
-    *,
-    expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.float64, tuple[Any, ...]]: ...
-@overload  # ~complex, expanded (keyword)  (workaround)
-def binned_statistic_dd(
-    sample: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
-    values: onp.ToArrayND[op.JustComplex, _AsC128],
-    statistic: _StatisticPromoted | _StatFunc[np.complex128, onp.ToComplex] = "mean",
-    bins: _ToBinsND = 10,
-    range: _ToRangeND = None,
-    *,
-    expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.complex128, tuple[Any, ...]]: ...
-@overload  # real, ~complex statistic, expanded (keyword)  (workaround)
-def binned_statistic_dd(
-    sample: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
-    values: onp.ToArrayND[float, _AsF64],
-    statistic: _StatFunc[np.float64, onp.ToJustComplex],
-    bins: _ToBinsND = 10,
-    range: _ToRangeND = None,
-    *,
-    expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.complex128, tuple[Any, ...]]: ...
-@overload  # values=None, count, expanded (keyword)  (workaround)
-def binned_statistic_dd(
-    sample: onp.ArrayND[npc.floating | npc.integer, _JustAnyShape],
-    values: None,
-    statistic: Literal["count"],
-    bins: _ToBinsND = 10,
-    range: _ToRangeND = None,
-    *,
-    expand_binnumbers: Literal[True],
-    binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
-) -> BinnedStatisticddResult[np.float64, tuple[Any, ...]]: ...
+) -> BinnedStatisticddResult[np.float64 | Any, tuple[Any, ...]]: ...
 @overload  # count|std
 def binned_statistic_dd(
     sample: _ToSample,
