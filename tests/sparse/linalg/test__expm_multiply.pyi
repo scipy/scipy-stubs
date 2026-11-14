@@ -1,4 +1,4 @@
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -16,6 +16,8 @@ _dense_i8_nd: onp.ArrayND[np.int8]
 _dense_f32_1d: onp.Array1D[np.float32]
 _dense_f32_2d: onp.Array2D[np.float32]
 _dense_f32_nd: onp.ArrayND[np.float32]
+
+_dense_c64_2d: onp.Array2D[np.complex64]
 
 _sparse_i8_1d: coo_array[np.int8, tuple[int]]
 _sparse_i8_2d: coo_array[np.int8, tuple[int, int]]
@@ -85,4 +87,5 @@ assert_type(expm_multiply(_linop_i8, _sparse_i8_2d), _spbase[np.float64, tuple[i
 assert_type(expm_multiply(_dense_i8_2d, _dense_f32_1d, 0.0, 1.0), onp.ArrayND[np.float64])
 assert_type(expm_multiply(_dense_i8_2d, _dense_f32_2d, start=0.0, stop=1.0, num=5), onp.ArrayND[np.float64])
 assert_type(expm_multiply(_dense_i8_2d, _sparse_f32_2d, start=0.0, stop=1.0), onp.ArrayND[np.float64])
-assert_type(expm_multiply(_dense_f32_2d, _dense_f32_1d, start=0.0, stop=1.0), onp.ArrayND[np.float32])
+assert_type(expm_multiply(_dense_f32_2d, _dense_f32_1d, start=0.0, stop=1.0), onp.ArrayND[np.float64])
+assert_type(expm_multiply(_dense_c64_2d, _dense_f32_2d, start=0.0, stop=1.0), onp.ArrayND[Any])
