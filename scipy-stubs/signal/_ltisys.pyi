@@ -57,40 +57,31 @@ type _ToFloat01D = onp.ToFloat | onp.ToFloat1D
 type _ToComplex12D = onp.ToComplex1D | onp.ToComplex2D
 type _ToComplex012D = onp.ToComplex | _ToComplex12D
 
-type _ToInexact32_1D = onp.ToJustFloat32_1D | onp.ToJustComplex64_1D
-type _ToInexact32_2D = onp.ToJustFloat32_2D | onp.ToJustComplex64_2D
-type _ToInexact64_1D = onp.ToArray1D[complex, npc.inexact64 | npc.integer]
-type _ToInexact64_2D = onp.ToArray2D[complex, npc.inexact64 | npc.integer]
-
 ###
 
 # numerator, denominator
 type _ToTFContFloat = tuple[_ToFloat12D, onp.ToComplex1D]
 type _ToTFContInexact = tuple[_ToComplex12D, onp.ToComplex1D]
-type _ToTFContInexact32 = tuple[_ToInexact32_1D | _ToInexact32_2D, _ToInexact32_1D]
-type _ToTFContInexact64 = tuple[_ToInexact64_1D | _ToInexact64_2D, _ToInexact64_1D]
+type _ToTFContInexact64 = tuple[onp.ToComplex128_1D | onp.ToComplex128_2D, onp.ToComplex128_1D]
 # numerator, denominator, dt
 type _ToTFDisc = tuple[_ToFloat12D, onp.ToComplex1D, onp.ToFloat]
 
 # zeros, poles, gain
 type _ToZPKContFloat = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat]
 type _ToZPKContInexact = tuple[onp.ToComplex1D, onp.ToComplex1D, onp.ToFloat]
-type _ToZPKContInexact32 = tuple[_ToInexact32_1D, _ToInexact32_1D, onp.ToFloat]
-type _ToZPKContInexact64 = tuple[_ToInexact64_1D, _ToInexact64_1D, onp.ToFloat]
+type _ToZPKContInexact64 = tuple[onp.ToComplex128_1D, onp.ToComplex128_1D, onp.ToFloat]
 # zeros, poles, gain, dt
 type _ToZPKDisc = tuple[onp.ToFloat1D, onp.ToFloat1D, onp.ToFloat, onp.ToFloat]
 
 # A, B, C, D
 type _ToSSContFloat = _Tuple4[onp.ToFloat2D]
 type _ToSSContInexact = _Tuple4[onp.ToComplex2D]
-type _ToSSContInexact32 = _Tuple4[_ToInexact32_2D]
-type _ToSSContInexact64 = _Tuple4[_ToInexact64_2D]
+type _ToSSContInexact64 = _Tuple4[onp.ToComplex128_2D]
 # A, B, C, D, dt
 type _ToSSDisc = tuple[onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat2D, onp.ToFloat]
 
 type _ToLTIFloat = _ToTFContFloat | _ToZPKContFloat | _ToSSContFloat
 type _ToLTIInexact = _ToTFContInexact | _ToZPKContInexact | _ToSSContInexact
-type _ToLTIInexact32 = _ToTFContInexact32 | _ToZPKContInexact32 | _ToSSContInexact32
 type _ToLTIInexact64 = _ToTFContInexact64 | _ToZPKContInexact64 | _ToSSContInexact64
 type _ToDLTI = _ToTFDisc | _ToZPKDisc | _ToSSDisc
 
@@ -952,24 +943,30 @@ def step(
 #
 @overload
 def bode(
-    system: lti[npc.inexact64 | npc.integer] | _ToLTIInexact64, w: onp.ToFloat1D | None = None, n: int = 100
-) -> _Tuple3[onp.Array1D[np.float64]]: ...
-@overload
-def bode(
-    system: lti[npc.inexact32] | _ToLTIInexact32, w: onp.ToFloat1D | None = None, n: int = 100
-) -> _Tuple3[onp.Array1D[np.float32]]: ...
+    system: (
+        lti[npc.inexact64 | npc.integer]
+        | ZerosPolesGainContinuous[npc.inexact32]
+        | StateSpaceContinuous[npc.inexact32]
+        | _ToLTIInexact64
+    ),
+    w: onp.ToFloat1D | None = None,
+    n: int = 100,
+) -> tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.float64], onp.Array1D[np.float64]]: ...
 @overload
 def bode(system: lti | _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 100) -> _Tuple3[_Float1D]: ...
 
 #
 @overload
 def freqresp(
-    system: lti[npc.inexact64 | npc.integer] | _ToLTIInexact64, w: onp.ToFloat1D | None = None, n: int = 10_000
-) -> tuple[onp.Array1D[np.float64], onp.Array1D[np.complex128]]: ...
-@overload
-def freqresp(
-    system: lti[npc.inexact32] | _ToLTIInexact32, w: onp.ToFloat1D | None = None, n: int = 10_000
-) -> tuple[onp.Array1D[np.float32], onp.Array1D[np.complex64]]: ...
+    system: (
+        lti[npc.inexact64 | npc.integer]
+        | ZerosPolesGainContinuous[npc.inexact32]
+        | StateSpaceContinuous[npc.inexact32]
+        | _ToLTIInexact64
+    ),
+    w: onp.ToFloat1D | None = None,
+    n: int = 10_000,
+) -> tuple[onp.Array1D[np.float64 | Any], onp.Array1D[np.complex128]]: ...
 @overload
 def freqresp(system: lti | _ToLTIInexact, w: onp.ToFloat1D | None = None, n: int = 10_000) -> tuple[_Float1D, _Complex1D]: ...
 
