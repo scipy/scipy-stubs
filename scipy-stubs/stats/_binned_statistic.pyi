@@ -538,7 +538,7 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int]]: ...
-@overload  # count|std, expanded (keyword) (assumes D > 1)
+@overload  # count|std, expanded (keyword)  (assumes D > 1)
 def binned_statistic_dd(
     sample: onp.ToFloatStrict2D,
     values: onp.ToArrayND[complex, _AsF64 | _AsC128],
@@ -570,7 +570,7 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int]]: ...
-@overload  # real, expanded (keyword) (assumes D > 1)
+@overload  # real, expanded (keyword)  (assumes D > 1)
 def binned_statistic_dd(
     sample: onp.ToFloatStrict2D,
     values: onp.ToArrayND[float, _AsF64],
@@ -602,7 +602,7 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.complex128, tuple[int]]: ...
-@overload  # ~complex, expanded (keyword) (assumes D > 1)
+@overload  # ~complex, expanded (keyword)  (assumes D > 1)
 def binned_statistic_dd(
     sample: onp.ToFloatStrict2D,
     values: onp.ToArrayND[op.JustComplex, _AsC128],
@@ -634,7 +634,7 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.complex128, tuple[int]]: ...
-@overload  # real, ~complex statistic, expanded (keyword) (assumes D > 1)
+@overload  # real, ~complex statistic, expanded (keyword)  (assumes D > 1)
 def binned_statistic_dd(
     sample: onp.ToFloatStrict2D,
     values: onp.ToArrayND[float, _AsF64],
@@ -666,7 +666,7 @@ def binned_statistic_dd(
     expand_binnumbers: Literal[True],
     binned_statistic_result: BinnedStatisticddResult[Any, Any] | None = None,
 ) -> BinnedStatisticddResult[np.float64, tuple[int]]: ...
-@overload  # values=None, count, expanded (keyword) (assumes D > 1)
+@overload  # values=None, count, expanded (keyword)  (assumes D > 1)
 def binned_statistic_dd(
     sample: onp.ToFloatStrict2D,
     values: None,
