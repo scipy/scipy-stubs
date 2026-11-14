@@ -5,13 +5,14 @@ import numpy as np
 import optype.numpy as onp
 from optype.test import assert_subtype
 
-from ._types import ScalarType, csr_arr, csr_mat
+from ._types import ScalarType, csc_mat, csr_arr, csr_mat
 from scipy.sparse import coo_array, csc_array, csc_matrix
 
 _dtype: np.dtype[ScalarType]
 _dtype_str: str
 _shape_2d: tuple[int, int]
 _shape_nd: tuple[int, ...]
+_axis: int
 
 _py_b_1d: list[bool]
 _py_i_1d: list[int]
@@ -334,3 +335,9 @@ _csc_sc[_py_i_1d, :] = _arr_2d
 _csc_sc[_py_i_1d, _py_i_1d] = 1.0
 _csc_sc[_py_i_1d, _py_i_1d] = _arr_2d
 _csc_sc[:, :] = _csc_f64
+
+# .getnnz() (only matrix)
+assert_type(csc_mat.getnnz(), int)
+assert_type(csc_mat.getnnz(0), onp.Array1D[np.int32 | Any])
+assert_type(csc_mat.getnnz(1), onp.Array1D[np.intp])
+assert_type(csc_mat.getnnz(_axis), onp.Array1D[np.int32 | Any])

@@ -3,6 +3,7 @@
 from typing import assert_type
 
 import numpy as np
+import optype.numpy as onp
 
 from ._types import ScalarType, lil_arr, lil_mat
 from scipy.sparse import lil_array, lil_matrix
@@ -62,3 +63,7 @@ assert_type(lil_array(shape2, dtype=bool), lil_array[np.bool])
 assert_type(lil_array(shape2, dtype=int), lil_array[np.int_])
 assert_type(lil_array(shape2, dtype=float), lil_array[np.float64])
 assert_type(lil_array(shape2, dtype=complex), lil_array[np.complex128])
+
+# .getnnz() (only matrix)
+assert_type(lil_mat.getnnz(), int)
+assert_type(lil_mat.getnnz(0), onp.Array1D[np.intp])
