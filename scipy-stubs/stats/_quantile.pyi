@@ -369,20 +369,20 @@ def estimated_cdf(
     nan_policy: NanPolicy = "propagate",
     keepdims: bool | None = None,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # Nd float, Nd T
-def estimated_cdf[FloatT: npc.floating](
-    x: onp.ToArrayND[float, FloatT],
-    y: onp.ToArrayND[FloatT, FloatT],
+@overload  # Nd ~f32, Nd float
+def estimated_cdf(
+    x: onp.ToArrayND[Never, npc.floating32 | npc.floating16],
+    y: onp.SequenceND[float],
     *,
     method: _QuantileMethod = "linear",
     axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool | None = None,
-) -> onp.ArrayND[FloatT]: ...
-@overload  # Nd ~f32, Nd +f32
+) -> onp.ArrayND[np.float64]: ...
+@overload  # Nd float, Nd T
 def estimated_cdf[FloatT: npc.floating](
-    x: onp.ToArrayND[FloatT, FloatT],
-    y: onp.ToArrayND[float, FloatT],
+    x: onp.ToArrayND[float, FloatT],
+    y: onp.ToArrayND[FloatT, FloatT],
     *,
     method: _QuantileMethod = "linear",
     axis: int | None = 0,
