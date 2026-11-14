@@ -1457,14 +1457,18 @@ assert_type(energy_distance(_f64_1d, _f64_1d), np.float64)
 # expectile
 
 assert_type(expectile(_f64_1d), np.float64)
-assert_type(expectile(_f64_2d), np.float64)
-assert_type(expectile(_f64_3d), np.float64)
-assert_type(expectile(_f64_1d, axis=1), onp.ArrayND[np.float64])
-assert_type(expectile(_f64_2d, axis=1), onp.ArrayND[np.float64])
-assert_type(expectile(_f64_3d, axis=(0, 1)), onp.ArrayND[np.float64])
+assert_type(expectile(_f64_2d), onp.Array1D[np.float64])
+assert_type(expectile(_f64_3d), onp.ArrayND[np.float64] | Any)
+assert_type(expectile(_f64_nd), Any)
+assert_type(expectile(_f64_3d, axis=None), np.float64)
+assert_type(expectile(_f64_nd, axis=None), np.float64)
+assert_type(expectile(_f64_1d, axis=0), np.float64)
+assert_type(expectile(_f64_2d, axis=1), onp.Array1D[np.float64])
+assert_type(expectile(_f64_3d, axis=(0, 1)), onp.ArrayND[np.float64] | Any)
 assert_type(expectile(_f64_1d, keepdims=True), onp.Array1D[np.float64])
 assert_type(expectile(_f64_2d, keepdims=True), onp.Array2D[np.float64])
 assert_type(expectile(_f64_3d, axis=(1, 2), keepdims=True), onp.Array3D[np.float64])
+assert_type(expectile(_py_f_2d, keepdims=True), onp.ArrayND[np.float64])
 
 # iqr
 
