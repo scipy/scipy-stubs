@@ -1,6 +1,6 @@
 # type-tests for `ndimage/_morphology.pyi`
 
-from typing import assert_type
+from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
@@ -59,10 +59,12 @@ assert_type(iterate_structure(_b_1d, 1, origin=0), tuple[onp.Array1D[np.bool], l
 assert_type(iterate_structure(_b_2d, 1, origin=0), tuple[onp.Array2D[np.bool], list[int]])
 assert_type(iterate_structure(_b_nd, 1, origin=0), tuple[onp.ArrayND[np.bool], list[int]])
 assert_type(iterate_structure(_b_nd, 1, origin=_i32), tuple[onp.ArrayND[np.bool], list[np.int32]])
-assert_type(iterate_structure(_f64_2d, 1), onp.Array2D[np.bool])
+assert_type(iterate_structure(_f64_2d, 1), onp.Array2D[np.float64])
 assert_type(iterate_structure(_f64_2d, 1, origin=0), tuple[onp.Array2D[np.bool], list[int]])
-assert_type(iterate_structure(_py_f_2d, 1), onp.ArrayND[np.bool])
+assert_type(iterate_structure(_py_f_2d, 1), onp.ArrayND[Any])
 assert_type(iterate_structure(_py_f_2d, 1, origin=0), tuple[onp.ArrayND[np.bool], list[int]])
+assert_type(iterate_structure(_f64_2d, 2), onp.Array2D[np.bool])
+assert_type(iterate_structure(_py_f_2d, 2), onp.ArrayND[np.bool])
 
 # generate_binary_structure
 assert_type(generate_binary_structure(-3, 1), onp.Array0D[np.bool])
