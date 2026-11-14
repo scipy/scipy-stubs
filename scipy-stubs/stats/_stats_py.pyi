@@ -7827,7 +7827,7 @@ def expectile(
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
 ) -> np.float64: ...
-@overload  # ?d
+@overload  # ?d  (workaround)
 def expectile(
     a: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
     alpha: float = 0.5,
@@ -7836,7 +7836,7 @@ def expectile(
     axis: int | tuple[int, ...] | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> np.float64 | onp.ArrayND[np.float64]: ...
+) -> Any: ...
 @overload  # 1d
 def expectile(
     a: onp.ToFloatStrict1D,
@@ -7866,7 +7866,7 @@ def expectile(
     axis: int | tuple[int, ...] = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: L[False] = False,
-) -> np.float64 | onp.ArrayND[np.float64]: ...
+) -> onp.ArrayND[np.float64] | Any: ...
 @overload  # known shape, keepdims=True
 def expectile[ShapeT: tuple[int, ...]](
     a: onp.ArrayND[npc.floating | npc.integer, ShapeT],
