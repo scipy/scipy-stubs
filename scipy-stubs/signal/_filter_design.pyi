@@ -127,6 +127,27 @@ def freqz(
     fs: float = 6.283185307179586,
     include_nyquist: bool = False,
 ) -> tuple[_FloatND, _ComplexND]: ...
+@overload  # b, a: real; worN: complex  (keyword)
+def freqz(
+    b: onp.ToFloat | onp.ToFloatND,
+    a: onp.ToFloat | onp.ToFloatND = 1,
+    *,
+    worN: onp.ToJustComplex1D,
+    whole: onp.ToBool = False,
+    plot: Callable[[_FloatND, _ComplexND], object] | None = None,
+    fs: float = 6.283185307179586,
+    include_nyquist: bool = False,
+) -> tuple[_FloatND, _ComplexND]: ...
+@overload  # b, a: real; worN: complex  (positional)
+def freqz(
+    b: onp.ToFloat | onp.ToFloatND,
+    a: onp.ToFloat | onp.ToFloatND,
+    worN: onp.ToJustComplex1D,
+    whole: onp.ToBool = False,
+    plot: Callable[[_FloatND, _ComplexND], object] | None = None,
+    fs: float = 6.283185307179586,
+    include_nyquist: bool = False,
+) -> tuple[_FloatND, _ComplexND]: ...
 @overload  # worN: complex  (keyword)
 def freqz(
     b: onp.ToComplex | onp.ToComplexND,
@@ -137,7 +158,7 @@ def freqz(
     plot: Callable[[_FloatND, _ComplexND], object] | None = None,
     fs: float = 6.283185307179586,
     include_nyquist: bool = False,
-) -> tuple[_ComplexND, _ComplexND]: ...
+) -> tuple[onp.ArrayND[np.float64 | np.complex128], _ComplexND]: ...
 @overload  # worN: complex  (positional)
 def freqz(
     b: onp.ToComplex | onp.ToComplexND,
@@ -147,7 +168,7 @@ def freqz(
     plot: Callable[[_FloatND, _ComplexND], object] | None = None,
     fs: float = 6.283185307179586,
     include_nyquist: bool = False,
-) -> tuple[_ComplexND, _ComplexND]: ...
+) -> tuple[onp.ArrayND[np.float64 | np.complex128], _ComplexND]: ...
 
 #
 @overload  # worN: real
