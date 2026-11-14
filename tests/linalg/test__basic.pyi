@@ -155,15 +155,15 @@ assert_type(solve(py_c, py_c_1d), onp.ArrayND[Any])
 ###
 # solve_triangular
 
-assert_type(solve_triangular(i8_2d, i8_1d), onp.Array1D[np.float64])
-assert_type(solve_triangular(i8_2d, i8_2d), onp.Array2D[np.float64])
-assert_type(solve_triangular(i8_2d, i8_3d), onp.ArrayND[np.float64])
-assert_type(solve_triangular(i8_3d, i8_1d), onp.ArrayND[np.float64])
+assert_type(solve_triangular(i8_2d, i8_1d), onp.ArrayND[np.float32])
+assert_type(solve_triangular(i8_2d, i8_2d), onp.ArrayND[np.float32])
+assert_type(solve_triangular(i8_2d, i8_3d), onp.ArrayND[np.float32])
+assert_type(solve_triangular(i8_3d, i8_1d), onp.ArrayND[np.float32])
 
-assert_type(solve_triangular(f16_2d, f16_1d), onp.Array1D[np.float64 | Any])
-assert_type(solve_triangular(f16_2d, f16_2d), onp.Array2D[np.float64 | Any])
-assert_type(solve_triangular(f16_2d, f16_3d), onp.ArrayND[np.float64 | Any])
-assert_type(solve_triangular(f16_3d, f16_1d), onp.ArrayND[np.float64 | Any])
+assert_type(solve_triangular(f16_2d, f16_1d), onp.ArrayND[np.float32])
+assert_type(solve_triangular(f16_2d, f16_2d), onp.ArrayND[np.float32])
+assert_type(solve_triangular(f16_2d, f16_3d), onp.ArrayND[np.float32])
+assert_type(solve_triangular(f16_3d, f16_1d), onp.ArrayND[np.float32])
 
 assert_type(solve_triangular(f32_2d, f32_1d), onp.Array1D[np.float32])
 assert_type(solve_triangular(f32_2d, f32_2d), onp.Array2D[np.float32])
@@ -204,6 +204,11 @@ assert_type(solve_triangular(py_c_2d, py_c_1d), onp.Array1D[np.complex128])
 assert_type(solve_triangular(py_c_2d, py_c_2d), onp.Array2D[np.complex128])
 assert_type(solve_triangular(py_c_2d, py_c_3d), onp.ArrayND[np.complex128])
 assert_type(solve_triangular(py_c_3d, py_c_1d), onp.ArrayND[np.complex128])
+
+assert_type(solve_triangular(i8_2d, i32_1d), onp.Array1D[np.float64])
+assert_type(solve_triangular(i8_2d, i32_2d), onp.Array2D[np.float64])
+assert_type(solve_triangular(i8_2d, i32_3d), onp.ArrayND[np.float64])
+assert_type(solve_triangular(i8_3d, i32_1d), onp.ArrayND[np.float64])
 
 assert_type(solve_triangular(f64_2d, f64_nd), onp.ArrayND[np.float64])
 assert_type(solve_triangular(f16_2d, f16_nd), onp.ArrayND[Any])

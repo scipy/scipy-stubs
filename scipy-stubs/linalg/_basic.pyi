@@ -65,6 +65,8 @@ type _LapackDriver = Literal["gelsd", "gelsy", "gelss"]
 type _LapackDriverDS = Literal["gelsd", "gelss"]
 type _LapackDriverY = Literal["gelsy"]
 
+type _AsF64 = np.float64 | npc.floating80 | npc.integer32 | npc.integer64
+
 # `lstsq` inputs, named after the scalar-type of the result they produce
 type _CoFloat64 = np.float64 | npc.floating80 | npc.integer | np.bool
 
@@ -364,7 +366,7 @@ def solve(
 #
 @overload  # ?d ~float64, +float64  (workaround)
 def solve_triangular(
-    a: _InputFloat,
+    a: onp.ToArrayND[float, _AsF64],
     b: onp.ArrayND[npc.floating | npc.integer | np.bool, _JustAnyShape],
     trans: _TransSystem = 0,
     lower: bool = False,
@@ -374,7 +376,7 @@ def solve_triangular(
 ) -> onp.ArrayND[np.float64]: ...
 @overload  # 1D ~float64, +float64
 def solve_triangular(
-    a: _InputFloatStrict2D,
+    a: onp.ToArrayStrict2D[float, _AsF64],
     b: onp.ToFloatStrict1D,
     trans: _TransSystem = 0,
     lower: bool = False,
@@ -384,7 +386,7 @@ def solve_triangular(
 ) -> onp.Array1D[np.float64]: ...
 @overload  # 2D ~float64, +float64
 def solve_triangular(
-    a: _InputFloatStrict2D,
+    a: onp.ToArrayStrict2D[float, _AsF64],
     b: onp.ToFloatStrict2D,
     trans: _TransSystem = 0,
     lower: bool = False,
@@ -394,7 +396,7 @@ def solve_triangular(
 ) -> onp.Array2D[np.float64]: ...
 @overload  # Nd ~float64, +float64
 def solve_triangular(
-    a: _InputFloat,
+    a: onp.ToArrayND[float, _AsF64],
     b: onp.ToFloatND,
     trans: _TransSystem = 0,
     lower: bool = False,
@@ -415,7 +417,7 @@ def solve_triangular(
 @overload  # 1d +float64, ~float64
 def solve_triangular(
     a: onp.ToFloatStrict2D,
-    b: _InputFloatStrict1D,
+    b: onp.ToArrayStrict1D[float, _AsF64],
     trans: _TransSystem = 0,
     lower: bool = False,
     unit_diagonal: bool = False,
@@ -425,7 +427,7 @@ def solve_triangular(
 @overload  # 2d +float64, ~float64
 def solve_triangular(
     a: onp.ToFloatStrict2D,
-    b: _InputFloatStrict2D,
+    b: onp.ToArrayStrict2D[float, _AsF64],
     trans: _TransSystem = 0,
     lower: bool = False,
     unit_diagonal: bool = False,
@@ -435,7 +437,7 @@ def solve_triangular(
 @overload  # Nd +float64, ~float64
 def solve_triangular(
     a: onp.ToFloatND,
-    b: _InputFloat,
+    b: onp.ToArrayND[float, _AsF64],
     trans: _TransSystem = 0,
     lower: bool = False,
     unit_diagonal: bool = False,
@@ -532,6 +534,16 @@ def solve_triangular[InexactT: np.float32 | np.complex64](
     overwrite_b: bool = False,
     check_finite: bool = True,
 ) -> onp.ArrayND[InexactT]: ...
+@overload  # Nd ~float32, ~float32
+def solve_triangular(
+    a: onp.ToFloat32_ND,
+    b: onp.ToFloat32_ND,
+    trans: _TransSystem = 0,
+    lower: bool = False,
+    unit_diagonal: bool = False,
+    overwrite_b: bool = False,
+    check_finite: bool = True,
+) -> onp.ArrayND[np.float32]: ...
 @overload  # 1d +floating, +floating
 def solve_triangular(
     a: onp.ToFloatStrict2D,
