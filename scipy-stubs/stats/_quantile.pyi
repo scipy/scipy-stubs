@@ -115,7 +115,7 @@ def quantile(
     p: onp.ToJustFloatND,
     *,
     method: _QuantileMethodAll = "linear",
-    axis: int = 0,
+    axis: int | None = 0,
     nan_policy: NanPolicy = "propagate",
     keepdims: bool | None = None,
     weights: onp.ToJustFloatND | None = None,
@@ -134,7 +134,7 @@ def quantile[FloatT: npc.floating](
 @overload  # axis=None, ?d +f64, 0d float
 def quantile(
     x: onp.ToArrayND[float, npc.integer],
-    p: onp.ToJustFloat | onp.ToJustFloatND,
+    p: onp.ToJustFloat,
     *,
     method: _QuantileMethodAll = "linear",
     axis: None,
@@ -145,7 +145,7 @@ def quantile(
 @overload  # axis=None
 def quantile(
     x: onp.ToFloatND,
-    p: npc.floating | onp.ToJustFloatND,
+    p: npc.floating,
     *,
     method: _QuantileMethodAll = "linear",
     axis: None,
