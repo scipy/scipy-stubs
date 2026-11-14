@@ -1748,6 +1748,14 @@ def vstack(
 ) -> Incomplete: ...
 
 #
+@overload  # blocks: <matrix | None, known>, format: <default>, dtype: <default>
+def block_array[ScalarT: _Numeric](
+    blocks: _ToBlocks[spmatrix[ScalarT]], *, format: None = None, dtype: None = None
+) -> _COOArray2D[ScalarT] | Any: ...
+@overload  # blocks: <matrix | None, unknown>, format: <default>, dtype: <unknown>
+def block_array(
+    blocks: _ToBlocks[spmatrix], *, format: None = None, dtype: _ToDType | onp.ToDType[_Numeric] | None
+) -> _COOArray2D[Any] | Any: ...
 @overload  # blocks: <known, known>, format: <default>, dtype: <default>
 def block_array[T](blocks: _ToBlocks[_CanStack[T]], *, format: None = None, dtype: None = None) -> T: ...
 @overload  # blocks: <array, known>, format: "bsr", dtype: <default>
