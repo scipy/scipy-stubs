@@ -118,7 +118,7 @@ def qspline1d_eval(
 @overload
 def qspline1d_eval(
     cj: onp.Array1D[np.float64 | npc.floating80], newx: onp.ToFloatND, dx: onp.ToFloat = 1.0, x0: onp.ToFloat = 0
-) -> onp.Array1D[np.floating]: ...
+) -> onp.Array1D[np.floating[Any]]: ...
 
 #
 def symiirorder1[InexactDT: npc.inexact32 | npc.inexact64, ShapeT: tuple[int, ...]](
