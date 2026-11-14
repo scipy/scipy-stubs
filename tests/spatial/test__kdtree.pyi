@@ -4,7 +4,6 @@ from typing import Any, assert_type
 
 import numpy as np
 import optype.numpy as onp
-from optype.test import assert_subtype
 
 from scipy.sparse import coo_array, coo_matrix, dok_array, dok_matrix
 from scipy.spatial import KDTree, Rectangle, cKDTree, distance_matrix, minkowski_distance, minkowski_distance_p
@@ -163,8 +162,8 @@ assert_type(_tree.sparse_distance_matrix(_tree, max_distance=1.0, output_type="n
 assert_type(minkowski_distance_p(_f64_1d, _f64_1d), np.float64)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(minkowski_distance_p(_c128_1d, _c128_1d), np.float64)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(minkowski_distance_p(_f64_2d, _f64_1d), onp.ArrayND[np.float64] | Any)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
-assert_subtype[np.float64 | Any](minkowski_distance_p(_f64_nd, _f64_1d))  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
-assert_subtype[np.float64 | Any](minkowski_distance_p(_f64_1d, _f64_nd))  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(minkowski_distance_p(_f64_nd, _f64_1d), Any)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(minkowski_distance_p(_f64_1d, _f64_nd), Any)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # minkowski_distance
@@ -172,8 +171,8 @@ assert_subtype[np.float64 | Any](minkowski_distance_p(_f64_1d, _f64_nd))  # pyri
 assert_type(minkowski_distance(_f64_1d, _f64_1d), np.float64)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(minkowski_distance(_c128_1d, _c128_1d), np.float64)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 assert_type(minkowski_distance(_f64_2d, _f64_1d), onp.ArrayND[np.float64] | Any)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
-assert_subtype[np.float64 | Any](minkowski_distance(_f64_nd, _f64_1d))  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
-assert_subtype[np.float64 | Any](minkowski_distance(_f64_1d, _f64_nd))  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(minkowski_distance(_f64_nd, _f64_1d), Any)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
+assert_type(minkowski_distance(_f64_1d, _f64_nd), Any)  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # distance_matrix

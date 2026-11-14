@@ -173,14 +173,10 @@ class KDTree(cKDTree[_BoxSizeT_co, _BoxSizeDataT_co], Generic[_BoxSizeT_co, _Box
 
 @overload  # ?d, nd  (workaround)
 @deprecated("This function is deprecated in favor of `scipy.spatial.distance.minkowski` and will be removed in SciPy 2.1.0.")
-def minkowski_distance_p(
-    x: onp.ArrayND[npc.number | np.bool, _JustAnyShape], y: onp.ToComplexND, p: float = 2.0
-) -> np.float64 | Any: ...
+def minkowski_distance_p(x: onp.ArrayND[npc.number | np.bool, _JustAnyShape], y: onp.ToComplexND, p: float = 2.0) -> Any: ...
 @overload  # nd, ?d  (workaround)
 @deprecated("This function is deprecated in favor of `scipy.spatial.distance.minkowski` and will be removed in SciPy 2.1.0.")
-def minkowski_distance_p(
-    x: onp.ToComplexND, y: onp.ArrayND[npc.number | np.bool, _JustAnyShape], p: float = 2.0
-) -> np.float64 | Any: ...
+def minkowski_distance_p(x: onp.ToComplexND, y: onp.ArrayND[npc.number | np.bool, _JustAnyShape], p: float = 2.0) -> Any: ...
 @overload  # 1d, 1d
 @deprecated("This function is deprecated in favor of `scipy.spatial.distance.minkowski` and will be removed in SciPy 2.1.0.")
 def minkowski_distance_p(x: onp.ToComplexStrict1D, y: onp.ToComplexStrict1D, p: float = 2.0) -> np.float64: ...
@@ -191,14 +187,10 @@ def minkowski_distance_p(x: onp.ToComplexND, y: onp.ToComplexND, p: float = 2.0)
 #
 @overload  # ?d, nd  (workaround)
 @deprecated("This function is deprecated in favor of `scipy.spatial.distance.minkowski` and will be removed in SciPy 2.1.0.")
-def minkowski_distance(
-    x: onp.ArrayND[npc.number | np.bool, _JustAnyShape], y: onp.ToComplexND, p: float = 2.0
-) -> np.float64 | Any: ...
+def minkowski_distance(x: onp.ArrayND[npc.number | np.bool, _JustAnyShape], y: onp.ToComplexND, p: float = 2.0) -> Any: ...
 @overload  # nd, ?d  (workaround)
 @deprecated("This function is deprecated in favor of `scipy.spatial.distance.minkowski` and will be removed in SciPy 2.1.0.")
-def minkowski_distance(
-    x: onp.ToComplexND, y: onp.ArrayND[npc.number | np.bool, _JustAnyShape], p: float = 2.0
-) -> np.float64 | Any: ...
+def minkowski_distance(x: onp.ToComplexND, y: onp.ArrayND[npc.number | np.bool, _JustAnyShape], p: float = 2.0) -> Any: ...
 @overload  # 1d, 1d
 @deprecated("This function is deprecated in favor of `scipy.spatial.distance.minkowski` and will be removed in SciPy 2.1.0.")
 def minkowski_distance(x: onp.ToComplexStrict1D, y: onp.ToComplexStrict1D, p: float = 2.0) -> np.float64: ...
