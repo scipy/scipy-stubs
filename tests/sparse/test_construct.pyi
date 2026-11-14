@@ -43,6 +43,7 @@ dense_1d_list: list[np.ndarray[tuple[int], np.dtype[ScalarType]]]
 
 sctype: type[ScalarType]
 _dtype_str: str
+_dtype_str_opt: str | None
 
 int_list: list[int]
 _i64: np.int64
@@ -383,7 +384,9 @@ assert_type(sparse.vstack([csr_arr, dense_1d], format="csr"), Any)
 
 ###
 # block_array
-assert_type(sparse.block_array([[bsr_mat]]), sparse.coo_matrix[ScalarType])
+assert_type(sparse.block_array([[bsr_mat]]), sparse.coo_array[ScalarType, tuple[int, int]] | Any)
+assert_type(sparse.block_array([[lil_mat]], dtype=_dtype_str_opt), sparse.coo_array[Any, tuple[int, int]] | Any)
+assert_type(sparse.block_array([[lil_mat]], dtype=_i64), sparse.coo_array[Any, tuple[int, int]] | Any)
 assert_type(sparse.block_array([[bsr_arr]]), sparse.coo_array[ScalarType, tuple[int, int]])
 assert_type(sparse.block_array([[coo_arr]], dtype=int), sparse.coo_array[np.int64, tuple[int, int]])
 assert_type(sparse.block_array([[csr_arr]], dtype=sctype), sparse.csr_array[ScalarType, tuple[int, int]])
