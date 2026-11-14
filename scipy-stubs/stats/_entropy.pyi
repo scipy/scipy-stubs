@@ -1,6 +1,7 @@
 from typing import Any, Literal, Never, overload
 
 import numpy as np
+import optype as op
 import optype.numpy as onp
 import optype.numpy.compat as npc
 
@@ -12,6 +13,7 @@ __all__ = ["differential_entropy", "entropy"]
 
 type _AsF32 = np.float16 | np.float32
 type _AsF64 = np.float64 | npc.integer | np.bool
+type _ToPyFloat = op.JustFloat | int
 
 type _DifferentialMethod = Literal["vasicek", "van es", "ebrahimi", "correa", "auto"]
 
@@ -25,6 +27,11 @@ type _ToArrayMax2D[ScalarT: npc.number | np.bool, PyScalarT] = (
 type _ToArrayMax3D[ScalarT: npc.number | np.bool, PyScalarT] = (
     onp.ToArrayStrict3D[PyScalarT, ScalarT] | _ToArrayMax2D[ScalarT, PyScalarT]
 )
+
+type _ToF64MaxND = onp.ToArrayND[float, _AsF64] | _AsF64
+type _ToF64Max1D = onp.ToArrayStrict1D[float, _AsF64] | _AsF64
+type _ToF64Max2D = onp.ToArrayStrict2D[float, _AsF64] | _ToF64Max1D
+type _ToF64Max3D = onp.ToArrayStrict3D[float, _AsF64] | _ToF64Max2D
 
 ###
 
@@ -64,7 +71,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64_ND | onp.ToFloat64,
-    qk: _ToArrayMaxND[_AsF64, float],
+    qk: _ToF64MaxND,
     base: float | None,
     axis: None,
     *,
@@ -84,7 +91,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64_ND | onp.ToFloat64,
-    qk: _ToArrayMaxND[_AsF64, float],
+    qk: _ToF64MaxND,
     base: float | None = None,
     *,
     axis: None,
@@ -104,7 +111,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64 | onp.ToFloat64Strict1D,
-    qk: _ToArrayMax1D[_AsF64, float],
+    qk: _ToF64Max1D,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -144,7 +151,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64Strict2D,
-    qk: _ToArrayMax2D[_AsF64, float],
+    qk: _ToF64Max2D,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -184,7 +191,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64Strict3D,
-    qk: _ToArrayMax3D[_AsF64, float],
+    qk: _ToF64Max3D,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -204,7 +211,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64_ND | onp.ToFloat64,
-    qk: _ToArrayMaxND[_AsF64, float],
+    qk: _ToF64MaxND,
     base: float | None = None,
     axis: int | tuple[int, ...] = 0,
     *,
@@ -224,7 +231,7 @@ def entropy(
 @overload
 def entropy(
     pk: onp.ToFloat64_ND | onp.ToFloat64,
-    qk: _ToArrayMaxND[_AsF64, float],
+    qk: _ToF64MaxND,
     base: float | None = None,
     axis: int | tuple[int, ...] = 0,
     *,
@@ -234,7 +241,7 @@ def entropy(
 @overload  # Nd float32 | float16, axis=None (positional) -> 0d float32
 def entropy(
     pk: _ToArrayMaxND[_AsF32, np.float32],
-    qk: _ToArrayMaxND[_AsF32, np.float32] | None,
+    qk: _ToArrayMaxND[_AsF32, np.float32] | _ToPyFloat | None,
     base: float | None,
     axis: None,
     *,
@@ -244,7 +251,7 @@ def entropy(
 @overload  # Nd float32 | float16, axis=None (keyword) -> 0d float32
 def entropy(
     pk: _ToArrayMaxND[_AsF32, np.float32],
-    qk: _ToArrayMaxND[_AsF32, np.float32] | None = None,
+    qk: _ToArrayMaxND[_AsF32, np.float32] | _ToPyFloat | None = None,
     base: float | None = None,
     *,
     axis: None,
@@ -254,7 +261,7 @@ def entropy(
 @overload  # 1d float32 | float16 -> 0d float32
 def entropy(
     pk: _ToArrayMax1D[_AsF32, np.float32],
-    qk: _ToArrayMax1D[_AsF32, np.float32] | None = None,
+    qk: _ToArrayMax1D[_AsF32, np.float32] | _ToPyFloat | None = None,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -264,7 +271,7 @@ def entropy(
 @overload  # 2d float32 | float16 -> 1d float32
 def entropy(
     pk: onp.ToArrayStrict2D[np.float32, _AsF32],
-    qk: _ToArrayMax2D[_AsF32, np.float32] | None = None,
+    qk: _ToArrayMax2D[_AsF32, np.float32] | _ToPyFloat | None = None,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -284,7 +291,7 @@ def entropy(
 @overload  # 3d float32 | float16 -> 2d float32
 def entropy(
     pk: onp.ToArrayStrict3D[np.float32, _AsF32],
-    qk: _ToArrayMax3D[_AsF32, np.float32] | None = None,
+    qk: _ToArrayMax3D[_AsF32, np.float32] | _ToPyFloat | None = None,
     base: float | None = None,
     axis: int = 0,
     *,
@@ -304,7 +311,7 @@ def entropy(
 @overload  # Nd float32 | float16, keepdims=True -> Nd float32
 def entropy(
     pk: _ToArrayMaxND[_AsF32, np.float32],
-    qk: _ToArrayMaxND[_AsF32, np.float32] | None = None,
+    qk: _ToArrayMaxND[_AsF32, np.float32] | _ToPyFloat | None = None,
     base: float | None = None,
     axis: int | tuple[int, ...] = 0,
     *,
@@ -314,7 +321,7 @@ def entropy(
 @overload  # Nd float32 | float16 -> 0d float32 | Nd float32
 def entropy(
     pk: _ToArrayMaxND[_AsF32, np.float32],
-    qk: _ToArrayMaxND[_AsF32, np.float32] | None = None,
+    qk: _ToArrayMaxND[_AsF32, np.float32] | _ToPyFloat | None = None,
     base: float | None = None,
     axis: int | tuple[int, ...] = 0,
     *,
