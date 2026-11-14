@@ -166,9 +166,9 @@ assert_type(csr_arr.count_nonzero(axis=0), _Index1D)
 # .getnnz() (only matrix)
 assert_type(csr_mat.getnnz(), int)
 assert_type(csr_mat.getnnz(None), int)
-assert_type(csr_mat.getnnz(1), _Index1D)
+assert_type(csr_mat.getnnz(1), onp.Array1D[np.int32 | Any])
 assert_type(csr_mat.getnnz(0), _Index1D)
-assert_type(csr_mat.getnnz(-1), _Index1D)
+assert_type(csr_mat.getnnz(-1), onp.Array1D[np.int32 | Any])
 assert_type(csr_mat.getnnz(-2), _Index1D)
 # pyrefly: ignore [no-matching-overload]
 csr_mat.getnnz(2)  # type: ignore[call-overload]  # pyright: ignore[reportArgumentType, reportCallIssue]
