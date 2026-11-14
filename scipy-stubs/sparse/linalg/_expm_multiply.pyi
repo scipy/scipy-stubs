@@ -28,7 +28,7 @@ type _JustAnyShape = tuple[Never, Never, Never]
 
 @overload  # start: <given>, +f64
 def expm_multiply(
-    A: _ToLinearOperator[_AsFloat64],
+    A: _ToLinearOperator[_ToFloat64],
     B: _SparseOrDense[_ToFloat64, tuple[Any, ...]],
     start: onp.ToFloat,
     stop: onp.ToFloat,
@@ -36,26 +36,16 @@ def expm_multiply(
     endpoint: bool | None = None,
     traceA: onp.ToFloat | None = None,
 ) -> onp.ArrayND[np.float64]: ...
-@overload  # start: <given>, ~integer | ~bool
-def expm_multiply[InexactT: npc.inexact](
-    A: _ToLinearOperator[InexactT],
-    B: _SparseOrDense[npc.integer | np.bool, tuple[Any, ...]],
+@overload  # start: <given>, fallback
+def expm_multiply(
+    A: _ToLinearOperator[npc.number | np.bool],
+    B: _SparseOrDense[npc.number | np.bool, tuple[Any, ...]],
     start: onp.ToFloat,
     stop: onp.ToFloat,
     num: SupportsIndex | None = None,
     endpoint: bool | None = None,
     traceA: onp.ToComplex | None = None,
-) -> onp.ArrayND[InexactT]: ...
-@overload  # start: <given>, ~inexact
-def expm_multiply[InexactT: npc.inexact](
-    A: _ToLinearOperator[InexactT],
-    B: _SparseOrDense[InexactT, tuple[Any, ...]],
-    start: onp.ToFloat,
-    stop: onp.ToFloat,
-    num: SupportsIndex | None = None,
-    endpoint: bool | None = None,
-    traceA: onp.ToComplex | None = None,
-) -> onp.ArrayND[InexactT]: ...
+) -> onp.ArrayND[Any]: ...
 @overload  # ~sparse, +f64
 def expm_multiply(
     A: _ToLinearOperator[_AsFloat64],
