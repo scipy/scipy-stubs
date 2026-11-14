@@ -1509,7 +1509,7 @@ def trimmed_stde(
 ) -> onp.MArray[np.longdouble] | Any: ...
 
 #
-# NOTE: f32/c64 promotes to f64/c128
+# NOTE: unmasked f32/c64 input without `limits` keeps its dtype at runtime; we assume a mask, which promotes to f64/c128
 @overload  # ?d ~f64, axis=None (default)
 def tmean(
     a: onp.ToArrayND[float, _AsF64 | np.float32],
