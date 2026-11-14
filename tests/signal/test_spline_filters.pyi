@@ -5,6 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 import optype.numpy.compat as npc
+from optype.test import assert_subtype
 
 from scipy.signal import (
     cspline1d,
@@ -52,6 +53,7 @@ _c64_1d: _C64_1D
 _c64_2d: _C64_2D
 _f64_1d: _F64_1D
 _f80_1d: _F80_1D
+_any_nd: onp.ArrayND[Any]
 _c128_1d: _C128_1D
 _c160_1d: _C160_1D
 
@@ -143,6 +145,7 @@ assert_type(qspline1d_eval(_f64_1d, _f64_1d), _F64_1D)
 assert_type(qspline1d_eval(_f80_1d, _f64_1d), _F64_1D)
 assert_type(qspline1d_eval(_f64_1d, _f32_1d), _F32_1D)
 assert_type(qspline1d_eval(_f64_1d, _f80_1d), _LD_1D)
+assert_subtype[_F64_1D](qspline1d_eval(_f64_1d, _any_nd))
 
 # qspline2d
 
