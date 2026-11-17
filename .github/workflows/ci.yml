@@ -43,7 +43,7 @@ jobs:
         uses: dprint/check@371a959e3c77f34a76a03d2c50df2e3f2302d016 # v2.6
 
       - name: typos
-        uses: crate-ci/typos@4c8b7f51ca60df14e3c5ca82770dfbbe6c3dae85 # v1.52.0
+        uses: crate-ci/typos@2611abd15acb0c2e317fb9e45855aabb8b35a414 # v1.52.1
 
       - name: ruff check
         run: uv run ruff check --output-format=github
