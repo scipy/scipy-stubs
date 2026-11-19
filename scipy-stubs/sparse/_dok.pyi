@@ -124,7 +124,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:igno
     @override
     @overload
     @classmethod
-    def fromkeys(cls: type[_dok_base[np.bool, _2D]], iterable: _ToKeys2, v: bool, /) -> _dok_base[np.bool, _2D]: ...
+    def fromkeys(cls: type[_dok_base[np.bool, _2D]], iterable: _ToKeys2, v: bool, /) -> _dok_base[np.bool, _2D]: ...  # pyrefly:ignore[bad-override]
     @overload
     @classmethod
     def fromkeys(cls: type[_dok_base[np.bool, _1D]], iterable: _ToKeys1, v: bool, /) -> _dok_base[np.bool, _1D]: ...
@@ -156,7 +156,7 @@ class _dok_base(  # pyright: ignore[reportIncompatibleMethodOverride]  # ty:igno
     def fromkeys[SelfT: _dok_base[np.float64, _2D]](cls: type[SelfT], iterable: _ToKeys2, v: op.JustComplex, /) -> SelfT: ...
     @overload
     @classmethod
-    def fromkeys(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]q
+    def fromkeys(  # pyright:ignore[reportIncompatibleMethodOverride] # ty:ignore[incompatible-method-override]
         cls: type[_dok_base[np.complex128, _1D]], iterable: _ToKeys1, v: op.JustComplex, /
     ) -> _dok_base[np.complex128, _1D]: ...
 

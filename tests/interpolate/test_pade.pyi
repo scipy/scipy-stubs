@@ -2,7 +2,7 @@ from typing import assert_type
 
 import numpy as np
 
-from scipy.interpolate import pade
+from scipy.interpolate import pade  # pyrefly:ignore[deprecated]
 
 coeffs: list[float]
 coeffs_c: list[complex]

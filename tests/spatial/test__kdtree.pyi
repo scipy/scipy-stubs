@@ -6,7 +6,7 @@ import numpy as np
 import optype.numpy as onp
 
 from scipy.sparse import coo_array, coo_matrix, dok_array, dok_matrix
-from scipy.spatial import KDTree, Rectangle, cKDTree, distance_matrix, minkowski_distance, minkowski_distance_p
+from scipy.spatial import KDTree, Rectangle, cKDTree, distance_matrix, minkowski_distance, minkowski_distance_p  # pyrefly:ignore[deprecated]
 
 ###
 
