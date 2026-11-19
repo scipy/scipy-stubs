@@ -6,7 +6,7 @@ import optype.numpy as onp
 from scipy.interpolate import (
     BarycentricInterpolator,
     KroghInterpolator,
-    approximate_taylor_polynomial,
+    approximate_taylor_polynomial,  # pyrefly:ignore[deprecated]
     barycentric_interpolate,
     krogh_interpolate,
 )

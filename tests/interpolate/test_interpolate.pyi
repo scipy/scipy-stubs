@@ -5,7 +5,7 @@ from typing import Any, assert_type
 import numpy as np
 import optype.numpy as onp
 
-from scipy.interpolate import BPoly, BSpline, NdPPoly, PPoly, interp1d, interp2d, lagrange
+from scipy.interpolate import BPoly, BSpline, NdPPoly, PPoly, interp1d, interp2d, lagrange  # pyrefly:ignore[deprecated]
 
 ###
 
@@ -94,7 +94,7 @@ interp1d_f.fill_value = 1j
 ###
 # interp2d (deprecated, __init__ takes Never)
 
-_interp2d_type: type[interp2d]  # pyright: ignore[reportDeprecated]
+_interp2d_type: type[interp2d]  # pyright:ignore[reportDeprecated] # pyrefly:ignore[deprecated]
 
 ###
 # lagrange
