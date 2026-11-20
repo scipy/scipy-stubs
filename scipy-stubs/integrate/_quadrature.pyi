@@ -16,6 +16,9 @@ type _FixedQuadFunc[T] = Callable[Concatenate[onp.Array1D[np.float64], ...], T]
 
 # workaround for mypy & pyright's failure to conform to the overload typing specification
 type _JustAnyShape = tuple[Never, Never, Never]
+# numpy 2.2 spells NDArray[Any] as ndarray[tuple[int, ...], dtype[Any]], which misses
+# `_JustAnyShape` and then matches longdouble. dtype[Never] still matches that Any.
+type _GradualArray = onp.ArrayND[Any, _JustAnyShape] | onp.ArrayND[Never]
 
 ###
 
@@ -203,7 +206,7 @@ def romb(y: onp.ToComplexND, dx: float = 1.0, axis: int = -1, show: bool = False
 
 # sample-based cumulative integration
 
-# NOTE: unlike `cumulative_simpson`, this is dtype-preserving for dtypes below 64-bits precision
+# NOTE: sub-64-bit `y` is kept unless `x` or `dx` promotes it
 @overload  # +int, shape known
 def cumulative_trapezoid[ShapeT: tuple[int, ...]](
     y: onp.ArrayND[npc.integer | np.bool, ShapeT],
@@ -232,6 +235,55 @@ def cumulative_trapezoid(
 def cumulative_trapezoid(
     y: onp.SequenceND[float], x: onp.ToFloatND | None = None, dx: float = 1.0, axis: int = -1, initial: float | None = None
 ) -> onp.ArrayND[np.float64]: ...
+@overload  # ~f16/f32, shape known, promoting dx
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.float16 | np.float32, ShapeT],
+    x: None = None,
+    *,
+    dx: np.float64,
+    axis: int = -1,
+    initial: float | None = None,
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # ~c64, shape known, promoting dx
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.complex64, ShapeT], x: None = None, *, dx: np.float64, axis: int = -1, initial: float | None = None
+) -> onp.ArrayND[np.complex128, ShapeT]: ...
+@overload  # ~f16/f32, shape known, gradual x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.float16 | np.float32, ShapeT],
+    x: _GradualArray,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | None = None,
+) -> Any: ...
+@overload  # ~c64, shape known, gradual x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.complex64, ShapeT], x: _GradualArray, dx: float = 1.0, axis: int = -1, initial: float | None = None
+) -> Any: ...
+@overload  # ~f16/f32/f64, shape known, longdouble x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.float16 | np.float32 | np.float64, ShapeT],
+    x: onp.ToJustLongDoubleND,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | None = None,
+) -> onp.ArrayND[np.longdouble, ShapeT]: ...
+@overload  # ~c64/c128, shape known, longdouble x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.complex64 | np.complex128, ShapeT],
+    x: onp.ToJustLongDoubleND,
+    dx: float = 1.0,
+    axis: int = -1,
+    initial: float | None = None,
+) -> onp.ArrayND[np.clongdouble, ShapeT]: ...
+@overload  # ~f16/f32, shape known, promoting x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.float16 | np.float32, ShapeT], x: _ToF64ND, dx: float = 1.0, axis: int = -1, initial: float | None = None
+) -> onp.ArrayND[np.float64, ShapeT]: ...
+@overload  # ~c64, shape known, promoting x
+def cumulative_trapezoid[ShapeT: tuple[int, ...]](
+    y: onp.ArrayND[np.complex64, ShapeT], x: _ToF64ND, dx: float = 1.0, axis: int = -1, initial: float | None = None
+) -> onp.ArrayND[np.complex128, ShapeT]: ...
 @overload  # T:inexact, shape known
 def cumulative_trapezoid[InexactT: npc.inexact, ShapeT: tuple[int, ...]](
     y: onp.ArrayND[InexactT, ShapeT],
@@ -259,7 +311,7 @@ def cumulative_trapezoid(
     dx: float = 1.0,
     axis: int = -1,
     initial: float | None = None,
-) -> onp.Array: ...
+) -> onp.ArrayND[Any, tuple[Any, ...] | tuple[int]]: ...  # workaround for pyright on numpy<2.1
 
 # NOTE: unlike `cumulative_trapezoid`, propagates 64bit sctypes if it matches `x`
 @overload  # +int, shape known
